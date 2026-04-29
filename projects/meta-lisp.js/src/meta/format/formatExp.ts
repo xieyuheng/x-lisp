@@ -77,6 +77,18 @@ export function formatExp(exp: M.Exp): string {
       return `(begin (= ${exp.name} ${rhs}) ${body})`
     }
 
+    case "Let": {
+      const bindings = exp.bindings.map(formatBinding).join(" ")
+      const body = formatBody(exp.body)
+      return `(let (${bindings}) ${body})`
+    }
+
+    case "LetStar": {
+      const bindings = exp.bindings.map(formatBinding).join(" ")
+      const body = formatBody(exp.body)
+      return `(let* (${bindings}) ${body})`
+    }
+
     case "Begin1": {
       const head = formatExp(exp.head)
       const body = formatBody(exp.body)
@@ -239,9 +251,9 @@ export function formatExp(exp: M.Exp): string {
   }
 }
 
-// export function formatBinding(clause: Exps.CondClause): string {
-//   return `(${formatExp(clause.question)} ${formatExp(clause.answer)})`
-// }
+export function formatBinding(binding: M.Binding): string {
+  return `(${binding.name} ${formatExp(binding.rhs)})`
+}
 
 export function formatCondClause(clause: M.CondClause): string {
   return `(${formatExp(clause.question)} ${formatExp(clause.answer)})`

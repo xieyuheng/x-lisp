@@ -35,6 +35,26 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.location)
     }
 
+    case "Let": {
+      return M.Let(
+        exp.bindings.map((binding) =>
+          M.Binding(binding.name, onExp(binding.rhs), binding.location),
+        ),
+        onExp(exp.body),
+        exp.location,
+      )
+    }
+
+    case "LetStar": {
+      return M.LetStar(
+        exp.bindings.map((binding) =>
+          M.Binding(binding.name, onExp(binding.rhs), binding.location),
+        ),
+        onExp(exp.body),
+        exp.location,
+      )
+    }
+
     case "Begin1": {
       return M.Begin1(onExp(exp.head), onExp(exp.body), exp.location)
     }

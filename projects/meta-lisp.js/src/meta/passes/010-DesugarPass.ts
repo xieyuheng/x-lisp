@@ -200,6 +200,14 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       )
     }
 
+    case "LetStar": {
+      return desugar(mod, desugarLetStar(exp.bindings, exp.body, exp.location))
+    }
+
+    case "Let": {
+      return desugar(mod, desugarLet(exp.bindings, exp.body, exp.location))
+    }
+
     case "LiteralRecord": {
       return M.LiteralRecord(
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
@@ -258,6 +266,49 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       return M.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.location)
     }
   }
+}
+
+function desugarLetStar(
+  bindings: Array<M.Binding>,
+  body: M.Exp,
+  location?: S.SourceLocation,
+): M.Exp {
+  if (bindings.length === 0) return body
+  if (bindings.length === 1) {
+    const [binding] = bindings
+    return M.Let1(binding.name, binding.rhs, body, location)
+  }
+
+  const [binding, ...restBindings] = bindings
+  return M.Let1(
+    binding.name,
+    binding.rhs,
+    desugarLetStar(restBindings, body, location),
+    location,
+  )
+}
+
+function desugarLet(
+  bindings: Array<M.Binding>,
+  body: M.Exp,
+  location?: S.SourceLocation,
+): M.Exp {
+  if (bindings.length === 0) return body
+  if (bindings.length === 1) {
+    const [binding] = bindings
+    return M.Let1(binding.name, binding.rhs, body, location)
+  }
+
+  const tmpBindings: Array<M.Binding> = []
+  const newBindings: Array<M.Binding> = []
+  for (const binding of bindings) {
+    // TODO
+    binding.name
+    binding.rhs
+    binding.location
+  }
+
+  return M.LetStar([...tmpBindings, ...newBindings], body, location)
 }
 
 function desugarBegin(

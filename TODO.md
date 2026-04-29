@@ -1,8 +1,6 @@
-[meta-lisp.js] add `Let` and `LetStar` to `Exp` -- to avoid using `(begin)` in `(if)`
 [meta-lisp.js] parse `(let)` and `(let*)`
-
-[meta-lisp.js] `DesugarPass` -- desugar `(let*)` to `(let1)`
-[meta-lisp.js] `DesugarPass` -- desugar `(let)` to `(let*)` -- take `state` to generate new name
+[meta-lisp.js] `DesugarPass` -- `desugar` -- take `state` to generate new name
+[meta-lisp.js] `DesugarPass` -- `desugarLet` -- desugar `(let)` to `(let*)`
 
 # parse
 

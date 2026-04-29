@@ -11,8 +11,8 @@ export type Exp =
   | Lambda
   | Apply
   | Let1
-  // | Let
-  // | LetStar
+  | Let
+  | LetStar
   | Begin1
   | BeginSugar
   | AssignSugar
@@ -204,7 +204,23 @@ export function Let1(
   }
 }
 
-export type Binding = { name: string; rhs: Exp }
+export type Binding = {
+  name: string
+  rhs: Exp
+  location?: SourceLocation
+}
+
+export function Binding(
+  name: string,
+  rhs: Exp,
+  location?: SourceLocation,
+): Binding {
+  return {
+    name,
+    rhs,
+    location,
+  }
+}
 
 export type Let = {
   kind: "Let"
