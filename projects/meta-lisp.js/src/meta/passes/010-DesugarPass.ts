@@ -8,11 +8,13 @@ export function DesugarPass(mod: M.Mod): void {
 
 type State = {
   mod: M.Mod
+  nameCounts: Map<string, number>
 }
 
 export function createDesugarState(mod: M.Mod): State {
   return {
     mod,
+    nameCounts: new Map(),
   }
 }
 
@@ -226,7 +228,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "Let": {
-      return desugar(state, desugarLet(exp.bindings, exp.body, exp.location))
+      return desugar(
+        state,
+        desugarLet(state, exp.bindings, exp.body, exp.location),
+      )
     }
 
     case "LiteralRecord": {
@@ -317,7 +322,19 @@ function desugarLetStar(
   )
 }
 
+function generateFreshName(state: State, name: string): string {
+  const count = state.nameCounts.get(name)
+  if (count) {
+    state.nameCounts.set(name, count + 1)
+    return `${name}.${count + 1}`
+  } else {
+    state.nameCounts.set(name, 1)
+    return `${name}.${1}`
+  }
+}
+
 function desugarLet(
+  state: State,
   bindings: Array<M.Binding>,
   body: M.Exp,
   location?: S.SourceLocation,
@@ -331,10 +348,15 @@ function desugarLet(
   const tmpBindings: Array<M.Binding> = []
   const newBindings: Array<M.Binding> = []
   for (const binding of bindings) {
-    // TODO
-    binding.name
-    binding.rhs
-    binding.location
+    const tmpName = generateFreshName(state, binding.name)
+    tmpBindings.push(M.Binding(tmpName, binding.rhs, binding.location))
+    newBindings.push(
+      M.Binding(
+        binding.name,
+        M.Var(tmpName, binding.location),
+        binding.location,
+      ),
+    )
   }
 
   return M.LetStar([...tmpBindings, ...newBindings], body, location)

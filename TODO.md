@@ -1,7 +1,3 @@
-[meta-lisp.js] `UniquifyPass` -- take `state`
-[meta-lisp.js] `DesugarPass` -- `desugar` -- `State` has `nameCounts` and `nameTable`
-[meta-lisp.js] `DesugarPass` -- `desugarLet` -- desugar `(let)` to `(let*)`
-
 # parse
 
 [meta-lisp.meta] `parse-body` -- `begin-sugar-exp`
