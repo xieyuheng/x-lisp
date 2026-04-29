@@ -1,4 +1,3 @@
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -60,8 +59,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
     case "Lambda": {
       const freeNames = Array.from(M.expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
-      const subscript = stringToSubscript(liftedCount.toString())
-      const newFunctionName = `${state.definition.name}©λ${subscript}`
+      const newFunctionName = `${state.definition.name}©λ${liftedCount}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
       assert(exp.location)

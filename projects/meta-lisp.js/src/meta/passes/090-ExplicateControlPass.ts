@@ -1,4 +1,3 @@
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
@@ -113,8 +112,7 @@ function generateLabel(
   name: string,
   instrs: Array<B.Instr>,
 ): string {
-  const subscript = stringToSubscript(state.blocks.size.toString())
-  const label = `${name}${subscript}`
+  const label = `${name}.${state.blocks.size}`
   const block = B.Block(label, instrs)
   addBlock(state, block)
   return label
