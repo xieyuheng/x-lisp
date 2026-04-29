@@ -2,6 +2,65 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
+export function DesugarPass(mod: M.Mod): void {
+  M.modForEachOwnDefinition(mod, desugarDefinition)
+}
+
+function desugarDefinition(definition: M.Definition): null {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration":
+    case "PrimitiveFunctionDefinition":
+    case "PrimitiveVariableDefinition": {
+      return null
+    }
+
+    case "FunctionDefinition": {
+      definition.body = desugar(definition.mod, definition.body)
+      return null
+    }
+
+    case "VariableDefinition": {
+      definition.body = desugar(definition.mod, definition.body)
+      return null
+    }
+
+    case "TestDefinition": {
+      definition.body = desugar(definition.mod, definition.body)
+      return null
+    }
+
+    case "TypeDefinition": {
+      definition.body = desugar(definition.mod, definition.body)
+      return null
+    }
+
+    case "DataDefinition": {
+      definition.dataConstructors = definition.dataConstructors.map(
+        ({ name, fields }) => ({
+          definition,
+          name,
+          fields: fields.map(({ name, type }) => ({
+            name,
+            type: desugar(definition.mod, type),
+          })),
+        }),
+      )
+
+      return null
+    }
+
+    case "InterfaceDefinition": {
+      definition.attributeTypes = recordMapValue(
+        definition.attributeTypes,
+        (attributeType) => desugar(definition.mod, attributeType),
+      )
+
+      return null
+    }
+  }
+}
+
 export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":

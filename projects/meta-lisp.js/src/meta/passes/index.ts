@@ -1,3 +1,5 @@
+export * from "./005-ClaimPass.ts"
+export * from "./010-DesugarPass.ts"
 export * from "./020-LocatePass.ts"
 export * from "./030-QualifyPass.ts"
 export * from "./040-CheckPass.ts"

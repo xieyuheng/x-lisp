@@ -19,9 +19,9 @@ export function projectBuild(
     verbose: boolean
   },
 ): void {
-  M.projectPerformClaim(project)
-  if (options.dump) projectDumpMods(project, "000-load")
-  M.projectPerformDesugar(project)
+  M.projectForEachMod(project, M.ClaimPass)
+  if (options.dump) projectDumpMods(project, "005-claim")
+  M.projectForEachMod(project, M.DesugarPass)
   if (options.dump) projectDumpMods(project, "010-desugar")
   M.projectForEachMod(project, M.QualifyPass)
   if (options.dump) projectDumpMods(project, "020-qualify")
