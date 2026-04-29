@@ -1,6 +1,7 @@
+[meta-lisp.js] add back `(let)` -- to avoid using `(begin)` in `(if)`
+
 # parse
 
-[meta-lisp.meta] `parse-exp` -- refactor -- maybe need pattern match on `list-t`
 [meta-lisp.meta] `parse-body` -- `begin-sugar-exp`
 [meta-lisp.meta] `parse-exp` -- handle `qualified-var-exp` on `symbol-sexp`
 

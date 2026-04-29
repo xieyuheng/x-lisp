@@ -6,28 +6,57 @@
 
 (define (parse-exp sexp)
   (match sexp
-    ((symbol-sexp content location)
-     (var-exp content location))
-    ((keyword-sexp content location)
-     (keyword-exp content location))
-    ((string-sexp content location)
-     (string-exp content location))
-    ((int-sexp content location)
-     (int-exp content location))
-    ((float-sexp content location)
-     (float-exp content location))
-    ((list-sexp elements location)
-     (= head (list-head elements))
-     (if (symbol-sexp? head)
-       (begin
-         (= tag (symbol-sexp-content head))
-         (cond ((equal? tag 'lambda)
-                (= parameters (parse-parameters (car (cdr elements))))
-                (= body (parse-body (cdr (cdr elements)) location))
-                (lambda-exp parameters body location))
-               (else (parse-apply-exp elements location))))
-       (parse-apply-exp elements location)))
-    (else (error "todo"))))
+    ((symbol-sexp content location) (var-exp content location))
+    ((keyword-sexp content location) (keyword-exp content location))
+    ((string-sexp content location) (string-exp content location))
+    ((int-sexp content location) (int-exp content location))
+    ((float-sexp content location) (float-exp content location))
+    ((list-sexp elements location) (parse-compound-exp elements location))))
+
+(claim parse-compound-exp
+  (-> (list-t located-sexp-t) source-location-t
+      exp-t))
+
+(define syntax-keywords
+  ['lambda])
+
+(define (parse-compound-exp elements location)
+  (if (symbol-sexp? (list-head elements))
+    (begin
+      (= tag (symbol-sexp-content (list-head elements)))
+      (if (list-some? (equal? tag) syntax-keywords)
+        (parse-special-form-exp tag elements location)
+        (parse-apply-exp elements location)))
+    (parse-apply-exp elements location)))
+
+;; (define (parse-compound-exp elements location)
+;;   (if (symbol-sexp? (list-head elements))
+;;     (let ((tag (symbol-sexp-content (list-head elements))))
+;;       (if (list-some? (equal? tag) syntax-keywords)
+;;         (parse-special-form-exp tag elements location)
+;;         (parse-apply-exp elements location)))
+;;     (parse-apply-exp elements location)))
+
+(claim parse-apply-exp
+  (-> (list-t located-sexp-t) source-location-t
+      exp-t))
+
+(define (parse-apply-exp sexps location)
+  (apply-exp (parse-exp (car sexps))
+             (list-map parse-exp (cdr sexps))
+             location))
+
+(claim parse-special-form-exp
+  (-> symbol-t (list-t located-sexp-t) source-location-t
+      exp-t))
+
+(define (parse-special-form-exp tag sexps location)
+  (cond ((equal? tag 'lambda)
+         (= parameters (car (cdr sexps)))
+         (= body (cdr (cdr sexps)))
+         (lambda-exp (parse-parameters parameters)
+                     (parse-body body location)
+                     location))))
 
 (claim parse-parameters
   (-> located-sexp-t
@@ -44,12 +73,3 @@
 (define (parse-body sexps location)
   (assert-equal 1 (list-length sexps))
   (parse-exp (car sexps)))
-
-(claim parse-apply-exp
-  (-> (list-t located-sexp-t) source-location-t
-      exp-t))
-
-(define (parse-apply-exp sexps location)
-  (apply-exp (parse-exp (car sexps))
-             (list-map parse-exp (cdr sexps))
-             location))
