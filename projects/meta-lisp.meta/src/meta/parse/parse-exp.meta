@@ -22,20 +22,11 @@
 
 (define (parse-compound-exp elements location)
   (if (symbol-sexp? (list-head elements))
-    (begin
-      (= tag (symbol-sexp-content (list-head elements)))
+    (let ((tag (symbol-sexp-content (list-head elements))))
       (if (list-some? (equal? tag) syntax-keywords)
         (parse-special-form-exp tag elements location)
         (parse-apply-exp elements location)))
     (parse-apply-exp elements location)))
-
-;; (define (parse-compound-exp elements location)
-;;   (if (symbol-sexp? (list-head elements))
-;;     (let ((tag (symbol-sexp-content (list-head elements))))
-;;       (if (list-some? (equal? tag) syntax-keywords)
-;;         (parse-special-form-exp tag elements location)
-;;         (parse-apply-exp elements location)))
-;;     (parse-apply-exp elements location)))
 
 (claim parse-apply-exp
   (-> (list-t located-sexp-t) source-location-t
@@ -63,12 +54,8 @@
       (list-t symbol-t)))
 
 (define (parse-parameters sexp)
-  (= elements (list-sexp-elements sexp))
-  (list-map symbol-sexp-content elements))
-
-;; (define (parse-parameters sexp)
-;;   (let ((elements (list-sexp-elements sexp)))
-;;     (list-map symbol-sexp-content elements)))
+  (let ((elements (list-sexp-elements sexp)))
+    (list-map symbol-sexp-content elements)))
 
 (claim parse-body
   (-> (list-t located-sexp-t) source-location-t
