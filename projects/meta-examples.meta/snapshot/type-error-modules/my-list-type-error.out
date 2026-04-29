@@ -1,4 +1,3 @@
-[check] my-list-type-error/my-list
 src/my-list/my-list-type-error.meta:7:23 -- unification fail
   inferred type: (my-list/my-list-t string-t)
   given type: (my-list/my-list-t int-t)

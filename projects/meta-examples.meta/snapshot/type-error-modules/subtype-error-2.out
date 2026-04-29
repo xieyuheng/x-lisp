@@ -1,6 +1,3 @@
-[check] subtype-error-2/point-t
-[check] subtype-error-2/point-println
-[check] subtype-error-2/main
 src/record/subtype-error-1.meta:14:18 -- inferred type is not a subtype of given type
   inferred type: (interface :x float-t)
   given type: point-t

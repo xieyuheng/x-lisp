@@ -18,17 +18,32 @@ export function CheckPass(
       (file) => {
         withOutputToFile(file, () => {
           M.modForEachOwnDefinition(mod, (definition) => {
-            if (options.verbose)
-              M.log("check", `${mod.name}/${definition.name}`)
-            M.definitionCheck(definition)
+            checkDefinition(definition, options)
           })
         })
       },
     )
   } else {
     M.modForEachOwnDefinition(mod, (definition) => {
-      if (options.verbose) M.log("check", `${mod.name}/${definition.name}`)
-      M.definitionCheck(definition)
+      checkDefinition(definition, options)
     })
   }
+}
+
+function checkDefinition(
+  definition: M.Definition,
+  options: {
+    verbose: boolean
+  },
+): void {
+  const name = `${definition.mod.name}/${definition.name}`
+  const start = performance.now()
+  if (options.verbose) M.log("check", `${name} -- start`)
+
+  M.definitionCheck(definition)
+
+  const end = performance.now()
+  const passed = end - start
+  if (options.verbose)
+    M.log("check", `${name} -- end in ${passed.toFixed(3)}ms`)
 }

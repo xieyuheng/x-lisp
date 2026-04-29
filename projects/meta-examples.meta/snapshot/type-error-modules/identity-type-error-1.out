@@ -1,4 +1,3 @@
-[check] identity-type-error-1/identity
 src/function/identity-type-error-1.meta:7:2 -- given type is not a substitution instance of inferred type
   inferred type: (-> A A)
   given type: (-> B C)
