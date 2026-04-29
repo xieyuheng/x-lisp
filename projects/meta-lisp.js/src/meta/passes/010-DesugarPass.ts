@@ -6,6 +6,16 @@ export function DesugarPass(mod: M.Mod): void {
   M.modForEachOwnDefinition(mod, desugarDefinition)
 }
 
+type State = {
+  mod: M.Mod
+}
+
+export function createDesugarState(mod: M.Mod): State {
+  return {
+    mod,
+  }
+}
+
 function desugarDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
@@ -16,44 +26,52 @@ function desugarDefinition(definition: M.Definition): null {
     }
 
     case "FunctionDefinition": {
-      definition.body = desugar(definition.mod, definition.body)
+      const state = createDesugarState(definition.mod)
+      definition.body = desugar(state, definition.body)
       return null
     }
 
     case "VariableDefinition": {
-      definition.body = desugar(definition.mod, definition.body)
+      const state = createDesugarState(definition.mod)
+      definition.body = desugar(state, definition.body)
       return null
     }
 
     case "TestDefinition": {
-      definition.body = desugar(definition.mod, definition.body)
+      const state = createDesugarState(definition.mod)
+      definition.body = desugar(state, definition.body)
       return null
     }
 
     case "TypeDefinition": {
-      definition.body = desugar(definition.mod, definition.body)
+      const state = createDesugarState(definition.mod)
+      definition.body = desugar(state, definition.body)
       return null
     }
 
     case "DataDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
-        ({ name, fields }) => ({
-          definition,
-          name,
-          fields: fields.map(({ name, type }) => ({
+        ({ name, fields }) => {
+          const state = createDesugarState(definition.mod)
+          return {
+            definition,
             name,
-            type: desugar(definition.mod, type),
-          })),
-        }),
+            fields: fields.map(({ name, type }) => ({
+              name,
+              type: desugar(state, type),
+            })),
+          }
+        },
       )
 
       return null
     }
 
     case "InterfaceDefinition": {
+      const state = createDesugarState(definition.mod)
       definition.attributeTypes = recordMapValue(
         definition.attributeTypes,
-        (attributeType) => desugar(definition.mod, attributeType),
+        (attributeType) => desugar(state, attributeType),
       )
 
       return null
@@ -61,7 +79,7 @@ function desugarDefinition(definition: M.Definition): null {
   }
 }
 
-export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
+export function desugar(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -74,7 +92,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     }
 
     case "BeginSugar": {
-      return desugar(mod, desugarBegin(exp.sequence, exp.location))
+      return desugar(state, desugarBegin(exp.sequence, exp.location))
     }
 
     case "AssignSugar": {
@@ -87,18 +105,18 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
 
     case "If": {
       return M.If(
-        desugar(mod, exp.condition),
-        desugar(mod, exp.consequent),
-        desugar(mod, exp.alternative),
+        desugar(state, exp.condition),
+        desugar(state, exp.consequent),
+        desugar(state, exp.alternative),
         exp.location,
       )
     }
 
     case "When": {
       return M.If(
-        desugar(mod, exp.condition),
+        desugar(state, exp.condition),
         M.Begin1(
-          desugar(mod, exp.consequent),
+          desugar(state, exp.consequent),
           M.VoidVar(exp.location),
           exp.location,
         ),
@@ -109,10 +127,10 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
 
     case "Unless": {
       return M.If(
-        desugar(mod, exp.condition),
+        desugar(state, exp.condition),
         M.VoidVar(exp.location),
         M.Begin1(
-          desugar(mod, exp.alternative),
+          desugar(state, exp.alternative),
           M.VoidVar(exp.location),
           exp.location,
         ),
@@ -121,15 +139,15 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     }
 
     case "And": {
-      return desugar(mod, desugarAnd(exp.exps, exp.location))
+      return desugar(state, desugarAnd(exp.exps, exp.location))
     }
 
     case "Or": {
-      return desugar(mod, desugarOr(exp.exps, exp.location))
+      return desugar(state, desugarOr(exp.exps, exp.location))
     }
 
     case "Cond": {
-      return desugar(mod, desugarCond(exp.clauses, exp.location))
+      return desugar(state, desugarCond(exp.clauses, exp.location))
     }
 
     case "Match": {
@@ -140,9 +158,9 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       )
 
       return desugar(
-        mod,
+        state,
         M.simplifyMatch(
-          mod,
+          state.mod,
           exp.targets,
           exp.clauses,
           defaultExp,
@@ -152,41 +170,41 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     }
 
     case "LiteralList": {
-      return desugar(mod, desugarList(exp.elements, exp.location))
+      return desugar(state, desugarList(exp.elements, exp.location))
     }
 
     case "LiteralSet": {
-      return desugar(mod, desugarSet(exp.elements, exp.location))
+      return desugar(state, desugarSet(exp.elements, exp.location))
     }
 
     case "LiteralHash": {
-      return desugar(mod, desugarHash(exp.entries, exp.location))
+      return desugar(state, desugarHash(exp.entries, exp.location))
     }
 
     case "Quote": {
-      return desugar(mod, desugarQuote(exp.sexp, exp.location))
+      return desugar(state, desugarQuote(exp.sexp, exp.location))
     }
 
     case "Apply": {
       return M.Apply(
-        desugar(mod, exp.target),
-        exp.args.map((e) => desugar(mod, e)),
+        desugar(state, exp.target),
+        exp.args.map((e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "Arrow": {
       return M.Arrow(
-        exp.argTypes.map((e) => desugar(mod, e)),
-        desugar(mod, exp.retType),
+        exp.argTypes.map((e) => desugar(state, e)),
+        desugar(state, exp.retType),
         exp.location,
       )
     }
 
     case "Begin1": {
       return M.Begin1(
-        desugar(mod, exp.head),
-        desugar(mod, exp.body),
+        desugar(state, exp.head),
+        desugar(state, exp.body),
         exp.location,
       )
     }
@@ -194,76 +212,87 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     case "Let1": {
       return M.Let1(
         exp.name,
-        desugar(mod, exp.rhs),
-        desugar(mod, exp.body),
+        desugar(state, exp.rhs),
+        desugar(state, exp.body),
         exp.location,
       )
     }
 
     case "LetStar": {
-      return desugar(mod, desugarLetStar(exp.bindings, exp.body, exp.location))
+      return desugar(
+        state,
+        desugarLetStar(exp.bindings, exp.body, exp.location),
+      )
     }
 
     case "Let": {
-      return desugar(mod, desugarLet(exp.bindings, exp.body, exp.location))
+      return desugar(state, desugarLet(exp.bindings, exp.body, exp.location))
     }
 
     case "LiteralRecord": {
       return M.LiteralRecord(
-        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        recordMapValue(exp.attributes, (e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "Interface": {
       return M.Interface(
-        recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
+        recordMapValue(exp.attributeTypes, (e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "ExtendInterface": {
       return M.ExtendInterface(
-        desugar(mod, exp.baseType),
-        recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
+        desugar(state, exp.baseType),
+        recordMapValue(exp.attributeTypes, (e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "Extend": {
       return M.Extend(
-        desugar(mod, exp.base),
-        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        desugar(state, exp.base),
+        recordMapValue(exp.attributes, (e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "Update": {
       return M.Update(
-        desugar(mod, exp.base),
-        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        desugar(state, exp.base),
+        recordMapValue(exp.attributes, (e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "UpdateMut": {
       return M.UpdateMut(
-        desugar(mod, exp.base),
-        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        desugar(state, exp.base),
+        recordMapValue(exp.attributes, (e) => desugar(state, e)),
         exp.location,
       )
     }
 
     case "The": {
-      return M.The(desugar(mod, exp.type), desugar(mod, exp.exp), exp.location)
+      return M.The(
+        desugar(state, exp.type),
+        desugar(state, exp.exp),
+        exp.location,
+      )
     }
 
     case "Lambda": {
-      return M.Lambda(exp.parameters, desugar(mod, exp.body), exp.location)
+      return M.Lambda(exp.parameters, desugar(state, exp.body), exp.location)
     }
 
     case "Polymorphic": {
-      return M.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.location)
+      return M.Polymorphic(
+        exp.parameters,
+        desugar(state, exp.body),
+        exp.location,
+      )
     }
   }
 }
@@ -311,7 +340,7 @@ function desugarLet(
   return M.LetStar([...tmpBindings, ...newBindings], body, location)
 }
 
-function desugarBegin(
+export function desugarBegin(
   sequence: Array<M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {

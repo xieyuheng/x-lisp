@@ -58,32 +58,23 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
     }
 
     case "The": {
-      return onExp(mod, M.desugar(mod, exp.exp))
+      return onExp(mod, exp.exp)
     }
 
     case "LiteralRecord": {
-      return onExp(mod, shrinkRecord(mod, exp.attributes, exp.location))
+      return onExp(mod, shrinkRecord(exp.attributes, exp.location))
     }
 
     case "Extend": {
-      return onExp(
-        mod,
-        shrinkUpdate(mod, exp.base, exp.attributes, exp.location),
-      )
+      return onExp(mod, shrinkUpdate(exp.base, exp.attributes, exp.location))
     }
 
     case "Update": {
-      return onExp(
-        mod,
-        shrinkUpdate(mod, exp.base, exp.attributes, exp.location),
-      )
+      return onExp(mod, shrinkUpdate(exp.base, exp.attributes, exp.location))
     }
 
     case "UpdateMut": {
-      return onExp(
-        mod,
-        shrinkUpdateMut(mod, exp.base, exp.attributes, exp.location),
-      )
+      return onExp(mod, shrinkUpdateMut(exp.base, exp.attributes, exp.location))
     }
 
     default: {
@@ -92,16 +83,7 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
   }
 }
 
-function shrinkTuple(
-  mod: M.Mod,
-  elements: Array<M.Exp>,
-  location?: S.SourceLocation,
-): M.Exp {
-  return M.desugar(mod, M.desugarList(elements, location))
-}
-
 function shrinkRecord(
-  mod: M.Mod,
   attributes: Record<string, M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
@@ -110,59 +92,52 @@ function shrinkRecord(
     [],
     location,
   )
-  return shrinkUpdateMut(mod, base, attributes, location)
+
+  return shrinkUpdateMut(base, attributes, location)
 }
 
 function shrinkUpdateMut(
-  mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.desugar(
-    mod,
-    M.BeginSugar(
-      [
-        M.AssignSugar("record", base, location),
-        ...Object.entries(attributes).map(([key, value]) =>
-          M.Apply(
-            M.QualifiedVar("builtin", "record-put!", location),
-            [M.Keyword(key), value, M.Var("record", location)],
-            location,
-          ),
+  return M.desugarBegin(
+    [
+      M.AssignSugar("record", base, location),
+      ...Object.entries(attributes).map(([key, value]) =>
+        M.Apply(
+          M.QualifiedVar("builtin", "record-put!", location),
+          [M.Keyword(key), value, M.Var("record", location)],
+          location,
         ),
-        M.Var("record", location),
-      ],
-      location,
-    ),
+      ),
+      M.Var("record", location),
+    ],
+    location,
   )
 }
 
 function shrinkUpdate(
-  mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.desugar(
-    mod,
-    M.BeginSugar(
-      [
-        M.AssignSugar("record", base, location),
-        ...Object.entries(attributes).map(([key, value]) =>
-          M.AssignSugar(
-            "record",
-            M.Apply(
-              M.QualifiedVar("builtin", "record-put", location),
-              [M.Keyword(key), value, M.Var("record", location)],
-              location,
-            ),
+  return M.desugarBegin(
+    [
+      M.AssignSugar("record", base, location),
+      ...Object.entries(attributes).map(([key, value]) =>
+        M.AssignSugar(
+          "record",
+          M.Apply(
+            M.QualifiedVar("builtin", "record-put", location),
+            [M.Keyword(key), value, M.Var("record", location)],
             location,
           ),
+          location,
         ),
-        M.Var("record", location),
-      ],
-      location,
-    ),
+      ),
+      M.Var("record", location),
+    ],
+    location,
   )
 }

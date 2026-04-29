@@ -1,4 +1,5 @@
-[meta-lisp.js] `DesugarPass` -- `desugar` -- take `state` to generate new name
+[meta-lisp.js] `UniquifyPass` -- take `state`
+[meta-lisp.js] `DesugarPass` -- `desugar` -- `State` has `nameCounts` and `nameTable`
 [meta-lisp.js] `DesugarPass` -- `desugarLet` -- desugar `(let)` to `(let*)`
 
 # parse
