@@ -1,2 +1,0 @@
-#(definition builtin/iadd)
-(@curry #(definition builtin/iadd) 1 [1])

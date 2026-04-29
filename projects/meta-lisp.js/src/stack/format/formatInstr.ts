@@ -6,7 +6,11 @@ export function formatInstr(instr: Instr): string {
     const operands = instr.operands.map(formatOperand).join(" ")
     return `${operands}`
   } else {
-    const operands = instr.operands.map(formatOperand).join(" ")
-    return `(${instr.op} ${operands})`
+    if (instr.operands.length === 0) {
+      return `(${instr.op})`
+    } else {
+      const operands = instr.operands.map(formatOperand).join(" ")
+      return `(${instr.op} ${operands})`
+    }
   }
 }
