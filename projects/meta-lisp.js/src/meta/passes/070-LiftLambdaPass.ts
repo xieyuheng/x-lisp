@@ -1,3 +1,5 @@
+import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
+import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -57,7 +59,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
     }
 
     case "Lambda": {
-      const freeNames = Array.from(M.expFreeNames(new Set(), exp))
+      const freeNames = Array.from(expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
       const newFunctionName = `${state.definition.name}©λ${liftedCount}`
       const newParameters = [...freeNames, ...exp.parameters]
@@ -87,6 +89,82 @@ function onExp(state: State, exp: M.Exp): M.Exp {
 
     default: {
       return M.expTraverse((e) => onExp(state, e), exp)
+    }
+  }
+}
+
+function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
+  switch (exp.kind) {
+    case "Symbol":
+    case "Keyword":
+    case "String":
+    case "Int":
+    case "Float":
+    case "QualifiedVar": {
+      return new Set()
+    }
+
+    case "Var": {
+      if (boundNames.has(exp.name)) {
+        return new Set()
+      } else {
+        return new Set([exp.name])
+      }
+    }
+
+    case "Lambda": {
+      const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
+      return expFreeNames(newBoundNames, exp.body)
+    }
+
+    case "Polymorphic": {
+      const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
+      return expFreeNames(newBoundNames, exp.body)
+    }
+
+    case "Let1": {
+      const newBoundNames = setAdd(boundNames, exp.name)
+      return setUnionMany([
+        expFreeNames(boundNames, exp.rhs),
+        expFreeNames(newBoundNames, exp.body),
+      ])
+    }
+
+    case "Apply": {
+      const children = [exp.target, ...exp.args]
+      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
+    }
+
+    case "Begin1": {
+      const children = [exp.head, exp.body]
+      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
+    }
+
+    case "If": {
+      const children = [exp.condition, exp.consequent, exp.alternative]
+      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
+    }
+
+    case "Arrow": {
+      const children = [...exp.argTypes, exp.retType]
+      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
+    }
+
+    case "Interface": {
+      const children = Object.values(exp.attributeTypes)
+      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
+    }
+
+    case "ExtendInterface": {
+      const children = [exp.baseType, ...Object.values(exp.attributeTypes)]
+      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
+    }
+
+    default: {
+      let message = `[LiftLambdaPass / expFreeNames] unhandled exp`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
     }
   }
 }

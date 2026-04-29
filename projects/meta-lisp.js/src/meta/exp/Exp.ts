@@ -11,6 +11,8 @@ export type Exp =
   | Lambda
   | Apply
   | Let1
+  // | Let
+  // | LetStar
   | Begin1
   | BeginSugar
   | AssignSugar
@@ -197,6 +199,48 @@ export function Let1(
     kind: "Let1",
     name,
     rhs,
+    body,
+    location,
+  }
+}
+
+export type Binding = { name: string; rhs: Exp }
+
+export type Let = {
+  kind: "Let"
+  bindings: Array<Binding>
+  body: Exp
+  location?: SourceLocation
+}
+
+export function Let(
+  bindings: Array<Binding>,
+  body: Exp,
+  location?: SourceLocation,
+): Let {
+  return {
+    kind: "Let",
+    bindings,
+    body,
+    location,
+  }
+}
+
+export type LetStar = {
+  kind: "LetStar"
+  bindings: Array<Binding>
+  body: Exp
+  location?: SourceLocation
+}
+
+export function LetStar(
+  bindings: Array<Binding>,
+  body: Exp,
+  location?: SourceLocation,
+): LetStar {
+  return {
+    kind: "LetStar",
+    bindings,
     body,
     location,
   }
