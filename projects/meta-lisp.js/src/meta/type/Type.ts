@@ -1,6 +1,5 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -74,10 +73,9 @@ export function varTypeSerialNumber(value: M.Value): bigint {
 
 export function varTypeId(value: M.Value): string {
   assert(isVarType(value))
-  return (
-    M.varTypeName(value) +
-    stringToSubscript(M.varTypeSerialNumber(value).toString())
-  )
+  const name = M.varTypeName(value)
+  const serialNumber = M.varTypeSerialNumber(value)
+  return `${name}.${serialNumber}`
 }
 
 export function varTypeEqual(x: M.Value, y: M.Value): boolean {

@@ -1,5 +1,4 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as M from "../index.ts"
 
 export function UnnestOperandPass(mod: M.Mod): void {
@@ -36,8 +35,7 @@ function onDefinition(definition: M.Definition): null {
 
 function generateFreshName(state: State): string {
   state.freshNameCount++
-  const subscript = stringToSubscript(state.freshNameCount.toString())
-  return `_${subscript}`
+  return `_.${state.freshNameCount}`
 }
 
 function onExp(state: State, exp: M.Exp): M.Exp {
