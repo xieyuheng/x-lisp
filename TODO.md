@@ -1,4 +1,14 @@
-[meta-lisp.js] add back `(let)` -- to avoid using `(begin)` in `(if)`
+[meta-lisp.js] `ClaimPass`
+[meta-lisp.js] `DesugarPass`
+[meta-lisp.js] `LocatePass`
+[meta-lisp.js] `QualifyPass`
+[meta-lisp.js] `CheckPass`
+
+[meta-lisp.js] add back `(let)` and `(let*)` -- to avoid using `(begin)` in `(if)`
+[meta-lisp.js] add `Let` and `LetStar` to `Exp`
+[meta-lisp.js] parse `(let)` and `(let*)`
+[meta-lisp.js] desugar `(let*)` to `(let1)`
+[meta-lisp.js] desugar `(let)` to `(let*)`
 
 # parse
 

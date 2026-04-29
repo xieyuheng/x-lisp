@@ -66,6 +66,10 @@
   (= elements (list-sexp-elements sexp))
   (list-map symbol-sexp-content elements))
 
+;; (define (parse-parameters sexp)
+;;   (let ((elements (list-sexp-elements sexp)))
+;;     (list-map symbol-sexp-content elements)))
+
 (claim parse-body
   (-> (list-t located-sexp-t) source-location-t
       exp-t))
