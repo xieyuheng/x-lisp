@@ -1,0 +1,9 @@
+(module test-suite)
+
+(define-test let-test
+  (assert-equal 3 (let ((x 1)
+                        (y 2))
+                    (iadd x y)))
+  (assert-equal 3 (let* ((x 1)
+                         (y (iadd 1 x)))
+                    (iadd x y))))
