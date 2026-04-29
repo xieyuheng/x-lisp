@@ -1,8 +1,68 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function locateSpecialApply(exp: M.Exp): M.Exp {
+export function LocatePass(mod: M.Mod): void {
+  M.modForEachOwnDefinition(mod, locateDefinition)
+}
+
+function locateDefinition(definition: M.Definition): null {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration":
+    case "PrimitiveFunctionDefinition":
+    case "PrimitiveVariableDefinition": {
+      return null
+    }
+
+    case "FunctionDefinition": {
+      definition.body = locateSpecialApply(definition.body)
+      return null
+    }
+
+    case "VariableDefinition": {
+      definition.body = locateSpecialApply(definition.body)
+      return null
+    }
+
+    case "TestDefinition": {
+      definition.body = locateSpecialApply(definition.body)
+      return null
+    }
+
+    case "TypeDefinition": {
+      definition.body = locateSpecialApply(definition.body)
+      return null
+    }
+
+    case "DataDefinition": {
+      definition.dataConstructors = definition.dataConstructors.map(
+        ({ name, fields }) => ({
+          definition,
+          name,
+          fields: fields.map(({ name, type }) => ({
+            name,
+            type: locateSpecialApply(type),
+          })),
+        }),
+      )
+
+      return null
+    }
+
+    case "InterfaceDefinition": {
+      definition.attributeTypes = recordMapValue(
+        definition.attributeTypes,
+        (attributeType) => locateSpecialApply(attributeType),
+      )
+
+      return null
+    }
+  }
+}
+
+function locateSpecialApply(exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":

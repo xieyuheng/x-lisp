@@ -25,7 +25,7 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "010-desugar")
   M.projectForEachMod(project, M.QualifyPass)
   if (options.dump) projectDumpMods(project, "020-qualify")
-  M.projectPerformLocate(project)
+  M.projectForEachMod(project, M.LocatePass)
   if (options.dump) projectDumpMods(project, "030-locate")
   M.projectForEachMod(project, (mod) =>
     M.CheckPass(mod, { verbose: options.verbose }),

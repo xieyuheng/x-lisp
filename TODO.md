@@ -1,4 +1,3 @@
-[meta-lisp.js] `LocatePass`
 [meta-lisp.js] `DesugarPass`
 [meta-lisp.js] `ClaimPass`
 
