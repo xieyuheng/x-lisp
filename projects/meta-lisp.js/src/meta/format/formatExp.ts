@@ -1,12 +1,11 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Exps from "../exp/index.ts"
-import { type Exp } from "../exp/index.ts"
+import * as M from "../index.ts"
 
-export function formatExps(exps: Array<Exp>): string {
+export function formatExps(exps: Array<M.Exp>): string {
   return exps.map(formatExp).join(" ")
 }
 
-export function formatExpAttributes(attributes: Record<string, Exp>): string {
+export function formatExpAttributes(attributes: Record<string, M.Exp>): string {
   return Object.entries(attributes)
     .map(([k, e]) => `:${k} ${formatExp(e)}`)
     .join(" ")
@@ -16,7 +15,7 @@ export function formatParameters(parameters: Array<string>): string {
   return parameters.join(" ")
 }
 
-export function formatExp(exp: Exp): string {
+export function formatExp(exp: M.Exp): string {
   switch (exp.kind) {
     case "Keyword": {
       return `:${exp.content}`
@@ -240,15 +239,19 @@ export function formatExp(exp: Exp): string {
   }
 }
 
-export function formatCondClause(clause: Exps.CondClause): string {
+// export function formatBinding(clause: Exps.CondClause): string {
+//   return `(${formatExp(clause.question)} ${formatExp(clause.answer)})`
+// }
+
+export function formatCondClause(clause: M.CondClause): string {
   return `(${formatExp(clause.question)} ${formatExp(clause.answer)})`
 }
 
-export function formatMatchClauses(clauses: Array<Exps.MatchClause>): string {
+export function formatMatchClauses(clauses: Array<M.MatchClause>): string {
   return clauses.map(formatMatchClause).join(" ")
 }
 
-export function formatMatchClause(clause: Exps.MatchClause): string {
+export function formatMatchClause(clause: M.MatchClause): string {
   if (clause.patterns.length === 1) {
     const pattern = formatExp(clause.patterns[0])
     const body = formatBody(clause.body)
@@ -260,7 +263,7 @@ export function formatMatchClause(clause: Exps.MatchClause): string {
   }
 }
 
-export function formatBody(body: Exp): string {
+export function formatBody(body: M.Exp): string {
   if (body.kind === "Begin1") {
     return `${formatExp(body.head)} ${formatBody(body.body)}`
   } else if (body.kind === "Let1") {

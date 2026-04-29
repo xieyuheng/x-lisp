@@ -1,19 +1,17 @@
 import assert from "node:assert"
-import * as Values from "../value/index.ts"
-import { type Value } from "../value/index.ts"
-import { formatBody } from "./index.ts"
+import * as M from "../index.ts"
 
 type Options = { digest?: boolean }
 
 export function formatValues(
-  values: Array<Value>,
+  values: Array<M.Value>,
   options: Options = {},
 ): string {
   return values.map((v) => formatValue(v, options)).join(" ")
 }
 
 function formatAttributes(
-  attributes: Record<string, Value>,
+  attributes: Record<string, M.Value>,
   options: Options = {},
 ): string {
   if (options.digest) {
@@ -29,7 +27,7 @@ function formatAttributes(
 }
 
 function formatSetElements(
-  elements: Array<Value>,
+  elements: Array<M.Value>,
   options: Options = {},
 ): string {
   if (options.digest) {
@@ -43,7 +41,7 @@ function formatSetElements(
 }
 
 function formatHashEntries(
-  entries: Array<Values.HashEntry>,
+  entries: Array<M.HashEntry>,
   options: Options = {},
 ): string {
   if (options.digest) {
@@ -66,7 +64,7 @@ function formatHashEntries(
   }
 }
 
-export function formatValue(value: Value, options: Options = {}): string {
+export function formatValue(value: M.Value, options: Options = {}): string {
   switch (value.kind) {
     case "BoolValue": {
       if (value.content) {
@@ -123,12 +121,12 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "SetValue": {
-      const elements = formatSetElements(Values.setElements(value), options)
+      const elements = formatSetElements(M.setElements(value), options)
       return `{${elements}}`
     }
 
     case "HashValue": {
-      const entries = formatHashEntries(Values.hashEntries(value), options)
+      const entries = formatHashEntries(M.hashEntries(value), options)
       if (entries === "") {
         return `(@hash)`
       } else {
@@ -137,7 +135,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "ClosureValue": {
-      return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
+      return `(lambda (${value.parameters.join(" ")}) ${M.formatBody(value.body)})`
     }
 
     case "CurryValue": {

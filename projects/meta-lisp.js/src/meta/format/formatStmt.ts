@@ -1,27 +1,25 @@
 import * as M from "../index.ts"
-import type { Stmt } from "../stmt/index.ts"
-import { formatBody, formatExp } from "./formatExp.ts"
 
-export function formatStmt(stmt: Stmt): string {
+export function formatStmt(stmt: M.Stmt): string {
   switch (stmt.kind) {
     case "DefineFunction": {
       const parameters = stmt.parameters.join(" ")
-      const body = formatBody(stmt.body)
+      const body = M.formatBody(stmt.body)
       return `(define (${stmt.name} ${parameters}) ${body})`
     }
 
     case "DefineVariable": {
-      const body = formatBody(stmt.body)
+      const body = M.formatBody(stmt.body)
       return `(define ${stmt.name} ${body})`
     }
 
     case "DefineTest": {
-      const body = formatBody(stmt.body)
+      const body = M.formatBody(stmt.body)
       return `(define-test ${stmt.name} ${body})`
     }
 
     case "DefineType": {
-      const body = formatBody(stmt.body)
+      const body = M.formatBody(stmt.body)
       return `(define-type ${stmt.name} ${body})`
     }
 
@@ -40,7 +38,7 @@ export function formatStmt(stmt: Stmt): string {
     }
 
     case "Claim": {
-      return `(claim ${stmt.name} ${formatExp(stmt.type)})`
+      return `(claim ${stmt.name} ${M.formatExp(stmt.type)})`
     }
 
     case "Exempt": {
@@ -105,5 +103,5 @@ function formatDataConstructor(
 }
 
 function formatDataField(field: M.DataField): string {
-  return `(${field.name} ${formatExp(field.type)})`
+  return `(${field.name} ${M.formatExp(field.type)})`
 }

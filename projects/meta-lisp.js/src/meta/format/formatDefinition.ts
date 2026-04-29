@@ -1,8 +1,6 @@
-import { type Definition } from "../definition/index.ts"
 import * as M from "../index.ts"
-import { formatBody, formatExp } from "./formatExp.ts"
 
-export function formatDefinition(definition: Definition): string {
+export function formatDefinition(definition: M.Definition): string {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
     case "PrimitiveFunctionDeclaration": {
@@ -17,7 +15,7 @@ export function formatDefinition(definition: Definition): string {
     case "FunctionDefinition": {
       const name = definition.name
       const parameters = definition.parameters.join(" ")
-      const body = formatBody(definition.body)
+      const body = M.formatBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define (${name} ${parameters}) ${body})`
@@ -28,7 +26,7 @@ export function formatDefinition(definition: Definition): string {
 
     case "VariableDefinition": {
       const name = definition.name
-      const body = formatBody(definition.body)
+      const body = M.formatBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define ${name} ${body})`
@@ -39,7 +37,7 @@ export function formatDefinition(definition: Definition): string {
 
     case "TestDefinition": {
       const name = definition.name
-      const body = formatBody(definition.body)
+      const body = M.formatBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define-test ${name} ${body})`
@@ -50,7 +48,7 @@ export function formatDefinition(definition: Definition): string {
 
     case "TypeDefinition": {
       const name = definition.name
-      const body = formatBody(definition.body)
+      const body = M.formatBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define-type ${name} ${body})`
@@ -85,7 +83,7 @@ export function formatDefinition(definition: Definition): string {
 
 function formatDataConstructor(dataConstructor: M.DataConstructor): string {
   const fields = dataConstructor.fields
-    .map((field) => `(${field.name} ${formatExp(field.type)})`)
+    .map((field) => `(${field.name} ${M.formatExp(field.type)})`)
     .join(" ")
   if (dataConstructor.fields.length === 0) {
     return `${dataConstructor.name}`
@@ -97,7 +95,7 @@ function formatDataConstructor(dataConstructor: M.DataConstructor): string {
 function formatDefinitionType(mod: M.Mod, name: string): string | undefined {
   const claimedEntry = M.modLookupClaimedEntry(mod, name)
   if (claimedEntry) {
-    return `(claim ${name} ${formatExp(claimedEntry.exp)})`
+    return `(claim ${name} ${M.formatExp(claimedEntry.exp)})`
   }
 
   const inferredType = M.modLookupInferredType(mod, name)
