@@ -2,13 +2,13 @@
 [meta-lisp.js] `DesugarPass`
 [meta-lisp.js] `LocatePass`
 [meta-lisp.js] `QualifyPass`
-[meta-lisp.js] `CheckPass`
 
 [meta-lisp.js] add back `(let)` and `(let*)` -- to avoid using `(begin)` in `(if)`
 [meta-lisp.js] add `Let` and `LetStar` to `Exp`
 [meta-lisp.js] parse `(let)` and `(let*)`
-[meta-lisp.js] desugar `(let*)` to `(let1)`
-[meta-lisp.js] desugar `(let)` to `(let*)`
+
+[meta-lisp.js] `DesugarPass` -- desugar `(let*)` to `(let1)`
+[meta-lisp.js] `DesugarPass` -- desugar `(let)` to `(let*)` -- take `state` to generate new name
 
 # parse
 

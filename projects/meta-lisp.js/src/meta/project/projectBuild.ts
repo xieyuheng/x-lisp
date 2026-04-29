@@ -27,9 +27,10 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "020-qualify")
   M.projectPerformLocate(project)
   if (options.dump) projectDumpMods(project, "030-locate")
-  M.projectPerformCheck(project, { verbose: options.verbose })
+  M.projectForEachMod(project, (mod) =>
+    M.CheckPass(mod, { verbose: options.verbose }),
+  )
   if (options.dump) projectDumpMods(project, "040-check")
-
   M.projectForEachMod(project, M.ShrinkPass)
   if (options.dump) projectDumpMods(project, "050-shrink")
   M.projectForEachMod(project, M.UniquifyPass)
@@ -38,7 +39,6 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "070-lift-lambda")
   M.projectForEachMod(project, M.UnnestOperandPass)
   if (options.dump) projectDumpMods(project, "080-unnest-operand")
-
   if (options.basic) projectBundleBasic(project)
   projectBundleStack(project)
 }
