@@ -1,4 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
 export function QualifyPass(mod: M.Mod): void {
@@ -15,7 +16,7 @@ function qualifyDefinition(definition: M.Definition): null {
     }
 
     case "FunctionDefinition": {
-      definition.body = M.qualifyFreeVar(
+      definition.body = qualifyFreeVar(
         definition.mod,
         new Set(definition.parameters),
         definition.body,
@@ -24,7 +25,7 @@ function qualifyDefinition(definition: M.Definition): null {
     }
 
     case "VariableDefinition": {
-      definition.body = M.qualifyFreeVar(
+      definition.body = qualifyFreeVar(
         definition.mod,
         new Set(),
         definition.body,
@@ -33,7 +34,7 @@ function qualifyDefinition(definition: M.Definition): null {
     }
 
     case "TestDefinition": {
-      definition.body = M.qualifyFreeVar(
+      definition.body = qualifyFreeVar(
         definition.mod,
         new Set(),
         definition.body,
@@ -42,7 +43,7 @@ function qualifyDefinition(definition: M.Definition): null {
     }
 
     case "TypeDefinition": {
-      definition.body = M.qualifyFreeVar(
+      definition.body = qualifyFreeVar(
         definition.mod,
         new Set(definition.parameters),
         definition.body,
@@ -58,7 +59,7 @@ function qualifyDefinition(definition: M.Definition): null {
           name,
           fields: fields.map(({ name, type }) => ({
             name,
-            type: M.qualifyFreeVar(definition.mod, boundNames, type),
+            type: qualifyFreeVar(definition.mod, boundNames, type),
           })),
         }),
       )
@@ -71,10 +72,102 @@ function qualifyDefinition(definition: M.Definition): null {
       definition.attributeTypes = recordMapValue(
         definition.attributeTypes,
         (attributeType) =>
-          M.qualifyFreeVar(definition.mod, boundNames, attributeType),
+          qualifyFreeVar(definition.mod, boundNames, attributeType),
       )
 
       return null
+    }
+  }
+}
+
+// - can not handle `Match`, must be called after `desugar`.
+
+export function qualifyFreeVar(
+  mod: M.Mod,
+  boundNames: Set<string>,
+  exp: M.Exp,
+): M.Exp {
+  switch (exp.kind) {
+    case "Symbol":
+    case "Keyword":
+    case "String":
+    case "Int":
+    case "Float": {
+      return exp
+    }
+
+    case "Quote": {
+      return exp
+    }
+
+    case "QualifiedVar": {
+      return exp
+    }
+
+    case "Var": {
+      if (boundNames.has(exp.name)) {
+        return exp
+      }
+
+      const builtinMod = M.loadBuiltinMod(mod.project)
+
+      const definition = M.modLookupDefinition(builtinMod, exp.name)
+      if (definition) {
+        return M.QualifiedVar(builtinMod.name, exp.name, exp.location)
+      }
+
+      const claimedType = M.modLookupClaimedType(builtinMod, exp.name)
+      if (claimedType) {
+        return M.QualifiedVar(builtinMod.name, exp.name, exp.location)
+      }
+
+      return M.QualifiedVar(mod.name, exp.name, exp.location)
+    }
+
+    // no need to avoid free variable in lhs
+
+    case "Lambda": {
+      return M.Lambda(
+        exp.parameters,
+        qualifyFreeVar(
+          mod,
+          setUnion(boundNames, new Set(exp.parameters)),
+          exp.body,
+        ),
+        exp.location,
+      )
+    }
+
+    case "Polymorphic": {
+      return M.Polymorphic(
+        exp.parameters,
+        qualifyFreeVar(
+          mod,
+          setUnion(boundNames, new Set(exp.parameters)),
+          exp.body,
+        ),
+        exp.location,
+      )
+    }
+
+    case "Let1": {
+      return M.Let1(
+        exp.name,
+        qualifyFreeVar(mod, boundNames, exp.rhs),
+        qualifyFreeVar(
+          mod,
+          setUnion(boundNames, new Set([exp.name])),
+          exp.body,
+        ),
+        exp.location,
+      )
+    }
+
+    default: {
+      return M.expTraverse(
+        (child) => qualifyFreeVar(mod, boundNames, child),
+        exp,
+      )
     }
   }
 }
