@@ -1,4 +1,3 @@
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
@@ -6,8 +5,7 @@ export function createFreshVar(
   name: string,
   location?: S.SourceLocation,
 ): M.Var {
-  const subscript = stringToSubscript(generateVarSerialNumber(name).toString())
-  return M.Var(`${name}${subscript}`, location)
+  return M.Var(`${name}.${generateVarSerialNumber(name)}`, location)
 }
 
 const serialNumberMap: Map<string, bigint> = new Map()
