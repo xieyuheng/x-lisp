@@ -88,6 +88,20 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return parseBody(body)
   },
 
+  "(cons* 'let bindings body)": ({ bindings, body }, { location }) => {
+    return M.Let(
+      S.listElements(bindings).map(parseBinding),
+      parseBody(body),
+      location)
+  },
+
+  "(cons* 'let* bindings body)": ({ bindings, body }, { location }) => {
+    return M.LetStar(
+      S.listElements(bindings).map(parseBinding),
+      parseBody(body),
+      location)
+  },
+
   "(cons* '@list elements)": ({ elements }, { location }) => {
     return M.LiteralList(S.listElements(elements).map(parseExp), location)
   },
@@ -223,6 +237,12 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
         }
       }
     }
+  },
+})
+
+const parseBinding = S.createRouter<M.Binding>({
+  "`(,name ,rhs)": ({ name, rhs }, { location }) => {
+    return M.Binding(S.symbolContent(name), parseExp(rhs), location)
   },
 })
 

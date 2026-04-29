@@ -1,4 +1,3 @@
-[meta-lisp.js] parse `(let)` and `(let*)`
 [meta-lisp.js] `DesugarPass` -- `desugar` -- take `state` to generate new name
 [meta-lisp.js] `DesugarPass` -- `desugarLet` -- desugar `(let)` to `(let*)`
 
