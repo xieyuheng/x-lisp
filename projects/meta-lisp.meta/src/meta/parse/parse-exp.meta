@@ -43,11 +43,11 @@
 
 (define (parse-special-form-exp tag sexps location)
   (cond ((equal? tag 'lambda)
-         (= parameters (car (cdr sexps)))
-         (= body (cdr (cdr sexps)))
-         (lambda-exp (parse-parameters parameters)
-                     (parse-body body location)
-                     location))))
+         (let ((parameters (car (cdr sexps)))
+               (body (cdr (cdr sexps))))
+           (lambda-exp (parse-parameters parameters)
+                       (parse-body body location)
+                       location)))))
 
 (claim parse-parameters
   (-> located-sexp-t
