@@ -10,8 +10,8 @@ export function projectCheck(
 ): void {
   projectPerformClaim(project)
   projectPerformDesugar(project)
+  M.projectForEachMod(project, M.QualifyPass)
   projectPerformLocate(project)
-  projectPerformQualify(project)
   M.projectForEachMod(project, (mod) =>
     M.CheckPass(mod, { verbose: options.verbose }),
   )
@@ -42,10 +42,6 @@ export function projectPerformClaim(project: M.Project): void {
 
 export function projectPerformDesugar(project: M.Project): void {
   M.projectForEachDefinition(project, M.definitionDesugar)
-}
-
-export function projectPerformQualify(project: M.Project): void {
-  M.projectForEachDefinition(project, M.definitionQualifyFreeVar)
 }
 
 export function projectPerformLocate(project: M.Project): void {

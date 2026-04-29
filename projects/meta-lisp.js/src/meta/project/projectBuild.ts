@@ -23,7 +23,7 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "000-load")
   M.projectPerformDesugar(project)
   if (options.dump) projectDumpMods(project, "010-desugar")
-  M.projectPerformQualify(project)
+  M.projectForEachMod(project, M.QualifyPass)
   if (options.dump) projectDumpMods(project, "020-qualify")
   M.projectPerformLocate(project)
   if (options.dump) projectDumpMods(project, "030-locate")

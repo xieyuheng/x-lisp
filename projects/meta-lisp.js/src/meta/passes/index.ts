@@ -1,3 +1,4 @@
+export * from "./030-QualifyPass.ts"
 export * from "./040-CheckPass.ts"
 export * from "./050-ShrinkPass.ts"
 export * from "./060-UniquifyPass.ts"

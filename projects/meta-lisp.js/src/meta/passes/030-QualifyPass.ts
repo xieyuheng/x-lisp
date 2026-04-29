@@ -1,7 +1,11 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
 
-export function definitionQualifyFreeVar(definition: M.Definition): null {
+export function QualifyPass(mod: M.Mod): void {
+  M.modForEachOwnDefinition(mod, qualifyDefinition)
+}
+
+function qualifyDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration":
