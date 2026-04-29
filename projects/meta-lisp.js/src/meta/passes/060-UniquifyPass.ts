@@ -109,7 +109,6 @@ function generateNameInCounts(
   if (count === undefined) {
     return name
   } else {
-    const subscript = stringToSubscript(count.toString())
-    return `${name}${subscript}`
+    return `${name}.${count}`
   }
 }

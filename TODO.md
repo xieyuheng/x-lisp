@@ -1,5 +1,3 @@
-[meta-lisp.js] `UniquifyPass` -- use `.n` instead of subscript
-
 [meta-lisp.js] add `Let` and `LetStar` to `Exp` -- to avoid using `(begin)` in `(if)`
 [meta-lisp.js] parse `(let)` and `(let*)`
 
