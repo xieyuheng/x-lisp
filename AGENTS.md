@@ -43,8 +43,9 @@ x-lisp 项目是我计划设计的一些列类 lisp 语言的集合。
 
 # 文档
 
+- docs/design -- 我计划设计的新 lisp 语言。
 - docs/diary -- 这个项目的编程日志，记录设计决策。
-- docs/design -- 计划设计的 lisp 语言。
+  在解决问题的过程中，你可以经常参考这个日志中的笔记。
 
 # 任务
 
@@ -56,3 +57,18 @@ x-lisp 项目是我计划设计的一些列类 lisp 语言的集合。
 
 - 每个 `projects/` 中的每个 project 都有 `scripts/`，
   其中包含测试脚本与其他工具脚本。
+
+项目顶层的 `scripts/` 中包含：
+
+- 清理：`sh scripts/clean.sh`
+- 构建：`sh scripts/build.sh`
+- 测试：`sh scripts/test.sh`
+- 格式化：`sh scripts/format.sh`
+- 完整流程：`sh scripts/all.sh`
+
+注意事项：
+
+- C 项目必须先于 JS 包构建（因为 JS 包可能依赖 C 项目生成的文件）。
+- meta 项目不在 `pnpm run -r test` 覆盖范围内，需要单独运行。
+- 快照文件在 `projects/*/snapshot/` 目录中。
+- JS 包使用 `pnpm run test` 进行测试。
