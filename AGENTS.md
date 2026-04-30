@@ -49,7 +49,7 @@ x-lisp 项目是我计划设计的一些列类 lisp 语言的集合。
 
 # 任务
 
-当前任务是把 meta-lisp.js 迁移到 meta-lisp.meta 以完成编译器自举。
+我会在 TODO.md 中记录我计划做的任务。
 
 # 开发
 

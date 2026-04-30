@@ -1,3 +1,5 @@
+> 当前任务是把 meta-lisp.js 迁移到 meta-lisp.meta 以完成编译器自举。
+
 # parse
 
 [meta-lisp.meta] `parse-body` -- `begin-sugar-exp`
