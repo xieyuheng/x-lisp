@@ -7,7 +7,7 @@
   (int-exp (content int-t) (location source-location-t))
   (float-exp (content float-t) (location source-location-t))
   (var-exp (name symbol-t) (location source-location-t))
-  (qualified-var-exp (mod-name string-t) (name symbol-t)
+  (qualified-var-exp (mod-name symbol-t) (name symbol-t)
                      (location source-location-t))
   (apply-exp (target exp-t) (args (list-t exp-t))
              (location source-location-t))

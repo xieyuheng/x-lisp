@@ -6,7 +6,15 @@
 
 (define (parse-exp sexp)
   (match sexp
-    ((symbol-sexp content location) (var-exp content location))
+    ((symbol-sexp content location)
+     (let ((str (symbol-to-string content)))
+       (if (string-contains? str "/")
+         (let ((parts (string-split str "/")))
+           (qualified-var-exp
+            (string-to-symbol (list-get 0 parts))
+            (string-to-symbol (list-get 1 parts))
+            location))
+         (var-exp content location))))
     ((keyword-sexp content location) (keyword-exp content location))
     ((string-sexp content location) (string-exp content location))
     ((int-sexp content location) (int-exp content location))
