@@ -2,7 +2,6 @@
 
 # parse
 
-[meta-lisp.meta] `parse-body` -- `begin-sugar-exp`
 [meta-lisp.meta] `parse-exp` -- handle `qualified-var-exp` on `symbol-sexp`
 
 # evaluate

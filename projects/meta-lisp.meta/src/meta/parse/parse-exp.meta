@@ -62,5 +62,7 @@
       exp-t))
 
 (define (parse-body sexps location)
-  (assert-equal 1 (list-length sexps))
-  (parse-exp (car sexps)))
+  (let ((exps (list-map parse-exp sexps)))
+    (if (equal? (list-length sexps) 1)
+      (car exps)
+      (begin-sugar-exp exps location))))
