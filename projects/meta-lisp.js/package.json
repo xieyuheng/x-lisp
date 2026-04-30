@@ -33,12 +33,12 @@
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
-    "zod": "^4.3.6"
+    "zod": "^4.4.1"
   },
   "devDependencies": {
-    "prettier-plugin-organize-imports": "^4.3.0",
     "@types/node": "^25.6.0",
     "prettier": "^3.8.3",
+    "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^5.9.3"
   }
 }
