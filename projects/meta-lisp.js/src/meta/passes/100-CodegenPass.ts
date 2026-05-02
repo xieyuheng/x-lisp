@@ -1,12 +1,16 @@
 import * as B from "../../basic/index.ts"
+import * as M from "../../meta/index.ts"
 import * as Stk from "../../stack/index.ts"
 
-export function CodegenPass(basicMod: B.Mod, stackMod: Stk.Mod): void {
+export function CodegenPass(project: M.Project, basicMod: B.Mod): Stk.Mod {
+  const stackMod = Stk.createMod()
   for (const definition of basicMod.definitions.values()) {
     for (const stackDefinition of onDefinition(basicMod, definition)) {
       stackMod.definitions.set(stackDefinition.name, stackDefinition)
     }
   }
+
+  return stackMod
 }
 
 type State = {

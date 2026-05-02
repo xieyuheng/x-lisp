@@ -1,4 +1,3 @@
-[meta-lisp.js] `CodegenPass` return stack module
 [meta-lisp.js] `(import)` as a pass
 [meta-lisp.js] `expand*` as a pass
 [meta-lisp.js] support `(import-all)`

@@ -28,7 +28,8 @@ export function BuildPipeline(
   M.UnnestOperandPass(project, { dump: options.dump })
   const basicMod = M.ExplicateControlPass(project)
   if (options.basic) BasicBundle(project, basicMod)
-  StackBundle(project, basicMod)
+  const stackMod = M.CodegenPass(project, basicMod)
+  StackBundle(project, stackMod)
 }
 
 function BasicBundle(project: M.Project, basicMod: B.Mod): void {
@@ -38,10 +39,7 @@ function BasicBundle(project: M.Project, basicMod: B.Mod): void {
   )
 }
 
-function StackBundle(project: M.Project, basicMod: B.Mod): void {
-  const stackMod = Stk.createMod()
-  M.CodegenPass(basicMod, stackMod)
-
+function StackBundle(project: M.Project, stackMod: Stk.Mod): void {
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) => {
     for (const definition of stackMod.definitions.values()) {
