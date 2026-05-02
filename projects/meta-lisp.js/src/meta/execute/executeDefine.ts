@@ -11,6 +11,16 @@ export function executeDefine(
   scope: M.ExecutionScope,
   stmt: M.Stmt,
 ): void {
+  if (stmt.kind === "Exempt") {
+    for (const name of stmt.names) {
+      mod.exempted.add(name)
+    }
+  }
+
+  if (stmt.kind === "Claim") {
+    M.modClaim(mod, stmt.name, M.qualifyImported(scope, stmt.type))
+  }
+
   if (stmt.kind === "DeclarePrimitiveFunction") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
@@ -46,10 +56,6 @@ export function executeDefine(
         M.PrimitiveVariableDeclaration(mod, stmt.name, stmt.location),
       )
     }
-  }
-
-  if (stmt.kind === "Claim") {
-    M.modClaim(mod, stmt.name, M.qualifyImported(scope, stmt.type))
   }
 
   if (stmt.kind === "DefineFunction") {
