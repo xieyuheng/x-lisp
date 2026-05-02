@@ -6,11 +6,7 @@ import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
 
-export function loadDefine(
-  mod: M.Mod,
-  fragment: M.ModFragment,
-  stmt: M.Stmt,
-): void {
+export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
@@ -49,14 +45,11 @@ export function loadDefine(
   }
 
   if (stmt.kind === "Claim") {
-    M.modClaim(mod, stmt.name, M.qualifyImported(fragment, stmt.type))
+    M.modClaim(mod, stmt.name, M.qualifyImported(scope, stmt.type))
   }
 
   if (stmt.kind === "DefineFunction") {
-    const newScope = M.modFragmentFilterBoundNames(
-      fragment,
-      new Set(stmt.parameters),
-    )
+    const newScope = M.modScopeFilterBoundNames(scope, new Set(stmt.parameters))
     M.modDefine(
       mod,
       stmt.name,
@@ -77,7 +70,7 @@ export function loadDefine(
       M.VariableDefinition(
         mod,
         stmt.name,
-        M.qualifyImported(fragment, stmt.body),
+        M.qualifyImported(scope, stmt.body),
         stmt.location,
       ),
     )
@@ -90,7 +83,7 @@ export function loadDefine(
       M.TestDefinition(
         mod,
         stmt.name,
-        M.qualifyImported(fragment, stmt.body),
+        M.qualifyImported(scope, stmt.body),
         stmt.location,
       ),
     )
@@ -117,15 +110,15 @@ export function loadDefine(
         mod,
         stmt.name,
         stmt.parameters,
-        M.qualifyImported(fragment, stmt.body),
+        M.qualifyImported(scope, stmt.body),
         stmt.location,
       ),
     )
   }
 
   if (stmt.kind === "DefineData") {
-    const newScope = M.modFragmentFilterBoundNames(
-      fragment,
+    const newScope = M.modScopeFilterBoundNames(
+      scope,
       new Set(stmt.dataTypeConstructor.parameters),
     )
 
@@ -183,8 +176,8 @@ export function loadDefine(
   }
 
   if (stmt.kind === "DefineInterface") {
-    const newScope = M.modFragmentFilterBoundNames(
-      fragment,
+    const newScope = M.modScopeFilterBoundNames(
+      scope,
       new Set(stmt.interfaceConstructor.parameters),
     )
 
