@@ -5,8 +5,6 @@ import * as M from "../index.ts"
 export type ModFragment = {
   modName: string
   isTypeErrorModule?: boolean
-  code: string
-  sexps: Array<S.Sexp>
   stmts: Array<M.Stmt>
 }
 
@@ -18,8 +16,6 @@ export function loadModFragment(path: string): ModFragment {
   return {
     modName,
     isTypeErrorModule,
-    code,
-    sexps,
     stmts,
   }
 }
