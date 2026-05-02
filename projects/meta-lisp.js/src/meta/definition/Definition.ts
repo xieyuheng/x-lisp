@@ -227,12 +227,14 @@ export type DataTypeConstructor = {
   definition: DataDefinition
   name: string
   parameters: Array<string>
+  location?: SourceLocation
 }
 
 export type DataConstructor = {
   definition: DataDefinition
   name: string
   fields: Array<DataField>
+  location?: SourceLocation
 }
 
 export function dataConstructorEqual(
@@ -245,6 +247,7 @@ export function dataConstructorEqual(
 export type DataField = {
   name: string
   type: Exp
+  location?: SourceLocation
 }
 
 export function DataDefinition(

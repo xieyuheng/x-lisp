@@ -1,10 +1,6 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
-import { expandDataConstructor } from "./expandDataConstructor.ts"
-import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
-import { expandDataGetter } from "./expandDataGetter.ts"
-import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function executeDefine(
   mod: M.Mod,
@@ -178,13 +174,6 @@ export function executeDefine(
 
     for (const dataConstructor of dataConstructors) {
       mod.dataConstructors.set(dataConstructor.name, dataConstructor)
-    }
-
-    for (const dataConstructor of dataConstructors) {
-      expandDataConstructor(mod, definition, dataConstructor)
-      expandDataConstructorPredicate(mod, definition, dataConstructor)
-      expandDataGetter(mod, definition, dataConstructor)
-      expandDataPutter(mod, definition, dataConstructor)
     }
   }
 
