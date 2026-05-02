@@ -1,4 +1,3 @@
-[meta-lisp.js] `ModFragment` has `ownNames`
 [meta-lisp.js] `ImportPass` -- support `(import-all)`
 [meta-lisp.js] `ImportPass` -- handle builtin by `(import-all)`
 

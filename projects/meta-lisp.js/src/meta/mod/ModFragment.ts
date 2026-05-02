@@ -6,6 +6,7 @@ export type ModFragment = {
   modName: string
   isTypeErrorModule?: boolean
   stmts: Array<M.Stmt>
+  names: Set<string>
 }
 
 export function loadModFragment(path: string): ModFragment {
@@ -13,10 +14,41 @@ export function loadModFragment(path: string): ModFragment {
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
   const { modName, isTypeErrorModule } = findModName(stmts)
+  const names = new Set<string>()
+  for (const stmt of stmts) {
+    collectNameFromStmt(names, stmt)
+  }
+
   return {
     modName,
     isTypeErrorModule,
     stmts,
+    names,
+  }
+}
+
+function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
+  switch (stmt.kind) {
+    case "DefineFunction":
+    case "DefineVariable":
+    case "DefineTest":
+    case "DefineType":
+    case "Claim":
+    case "DeclarePrimitiveFunction":
+    case "DeclarePrimitiveVariable": {
+      names.add(stmt.name)
+      return
+    }
+
+    case "DefineInterface": {
+      names.add(stmt.interfaceConstructor.name)
+      return
+    }
+
+    case "DefineData": {
+      names.add(stmt.dataTypeConstructor.name)
+      return
+    }
   }
 }
 
