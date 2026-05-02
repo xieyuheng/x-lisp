@@ -1,10 +1,12 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-export function UniquifyPass(mod: M.Mod): void {
-  for (const definition of M.modOwnDefinitions(mod)) {
-    onDefinition(definition)
-  }
+export function UniquifyPass(project: M.Project): void {
+  M.projectForEachMod(project, (mod) => {
+    for (const definition of M.modOwnDefinitions(mod)) {
+      onDefinition(definition)
+    }
+  })
 }
 
 function onDefinition(definition: M.Definition): null {

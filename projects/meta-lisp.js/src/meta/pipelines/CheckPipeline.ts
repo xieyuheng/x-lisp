@@ -7,11 +7,9 @@ export function CheckPipeline(
   },
 ): void {
   M.ExecutePass(project)
-  M.projectForEachMod(project, M.ClaimPass)
-  M.projectForEachMod(project, M.DesugarPass)
-  M.projectForEachMod(project, M.QualifyPass)
-  M.projectForEachMod(project, M.LocatePass)
-  M.projectForEachMod(project, (mod) =>
-    M.CheckPass(mod, { verbose: options.verbose }),
-  )
+  M.ClaimPass(project)
+  M.DesugarPass(project)
+  M.QualifyPass(project)
+  M.LocatePass(project)
+  M.CheckPass(project, { verbose: options.verbose })
 }

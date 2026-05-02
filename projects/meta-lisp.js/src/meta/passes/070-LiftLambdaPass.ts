@@ -3,12 +3,14 @@ import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function LiftLambdaPass(mod: M.Mod): void {
-  mod.definitions = new Map(
-    M.modOwnDefinitions(mod)
-      .flatMap((definition) => onDefinition(mod, definition))
-      .map((definition) => [definition.name, definition]),
-  )
+export function LiftLambdaPass(project: M.Project): void {
+  M.projectForEachMod(project, (mod) => {
+    mod.definitions = new Map(
+      M.modOwnDefinitions(mod)
+        .flatMap((definition) => onDefinition(mod, definition))
+        .map((definition) => [definition.name, definition]),
+    )
+  })
 }
 
 type State = {

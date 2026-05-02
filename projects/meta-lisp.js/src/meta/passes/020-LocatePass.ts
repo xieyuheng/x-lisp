@@ -3,8 +3,10 @@ import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function LocatePass(mod: M.Mod): void {
-  M.modForEachOwnDefinition(mod, locateDefinition)
+export function LocatePass(project: M.Project): void {
+  M.projectForEachMod(project, (mod) => {
+    M.modForEachOwnDefinition(mod, locateDefinition)
+  })
 }
 
 function locateDefinition(definition: M.Definition): null {

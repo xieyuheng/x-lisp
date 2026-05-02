@@ -6,28 +6,30 @@ import {
 import * as M from "../index.ts"
 
 export function CheckPass(
-  mod: M.Mod,
+  project: M.Project,
   options: {
     verbose: boolean
   },
 ): void {
-  if (mod.isTypeErrorModule) {
-    const directory = M.projectSnapshotDirectory(mod.project)
-    callWithFile(
-      openOutputFile(`${directory}/type-error-modules/${mod.name}.out`),
-      (file) => {
-        withOutputToFile(file, () => {
-          M.modForEachOwnDefinition(mod, (definition) => {
-            checkDefinition(definition, options)
+  M.projectForEachMod(project, (mod) => {
+    if (mod.isTypeErrorModule) {
+      const directory = M.projectSnapshotDirectory(mod.project)
+      callWithFile(
+        openOutputFile(`${directory}/type-error-modules/${mod.name}.out`),
+        (file) => {
+          withOutputToFile(file, () => {
+            M.modForEachOwnDefinition(mod, (definition) => {
+              checkDefinition(definition, options)
+            })
           })
-        })
-      },
-    )
-  } else {
-    M.modForEachOwnDefinition(mod, (definition) => {
-      checkDefinition(definition, options)
-    })
-  }
+        },
+      )
+    } else {
+      M.modForEachOwnDefinition(mod, (definition) => {
+        checkDefinition(definition, options)
+      })
+    }
+  })
 }
 
 function checkDefinition(

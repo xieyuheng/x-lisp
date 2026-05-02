@@ -20,25 +20,23 @@ export function BuildPipeline(
   },
 ): void {
   M.ExecutePass(project)
-  M.projectForEachMod(project, M.ClaimPass)
+  M.ClaimPass(project)
   if (options.dump) projectDumpMods(project, "005-claim")
-  M.projectForEachMod(project, M.DesugarPass)
+  M.DesugarPass(project)
   if (options.dump) projectDumpMods(project, "010-desugar")
-  M.projectForEachMod(project, M.QualifyPass)
+  M.QualifyPass(project)
   if (options.dump) projectDumpMods(project, "020-qualify")
-  M.projectForEachMod(project, M.LocatePass)
+  M.LocatePass(project)
   if (options.dump) projectDumpMods(project, "030-locate")
-  M.projectForEachMod(project, (mod) =>
-    M.CheckPass(mod, { verbose: options.verbose }),
-  )
+  M.CheckPass(project, { verbose: options.verbose })
   if (options.dump) projectDumpMods(project, "040-check")
-  M.projectForEachMod(project, M.ShrinkPass)
+  M.ShrinkPass(project)
   if (options.dump) projectDumpMods(project, "050-shrink")
-  M.projectForEachMod(project, M.UniquifyPass)
+  M.UniquifyPass(project)
   if (options.dump) projectDumpMods(project, "060-uniquify")
-  M.projectForEachMod(project, M.LiftLambdaPass)
+  M.LiftLambdaPass(project)
   if (options.dump) projectDumpMods(project, "070-lift-lambda")
-  M.projectForEachMod(project, M.UnnestOperandPass)
+  M.UnnestOperandPass(project)
   if (options.dump) projectDumpMods(project, "080-unnest-operand")
   if (options.basic) projectBundleBasic(project)
   projectBundleStack(project)
@@ -82,7 +80,7 @@ function projectBundleBasic(project: M.Project): void {
   )
 }
 
-function projectDumpMods(project: M.Project, tag: string): void {
+export function projectDumpMods(project: M.Project, tag: string): void {
   M.projectForEachMod(project, (mod) => {
     const code = M.prettyModDefinitions(textWidth, mod)
     projectDumpCode(project, mod, tag, code)

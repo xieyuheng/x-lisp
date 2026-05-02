@@ -1,10 +1,12 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ShrinkPass(mod: M.Mod): void {
-  for (const definition of M.modOwnDefinitions(mod)) {
-    onDefinition(mod, definition)
-  }
+export function ShrinkPass(project: M.Project): void {
+  M.projectForEachMod(project, (mod) => {
+    for (const definition of M.modOwnDefinitions(mod)) {
+      onDefinition(mod, definition)
+    }
+  })
 }
 
 function onDefinition(mod: M.Mod, definition: M.Definition): null {

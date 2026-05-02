@@ -2,8 +2,10 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function DesugarPass(mod: M.Mod): void {
-  M.modForEachOwnDefinition(mod, desugarDefinition)
+export function DesugarPass(project: M.Project): void {
+  M.projectForEachMod(project, (mod) => {
+    M.modForEachOwnDefinition(mod, desugarDefinition)
+  })
 }
 
 type State = {

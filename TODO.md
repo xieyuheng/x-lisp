@@ -1,4 +1,4 @@
-[meta-lisp.js] passes take `project` as the main arg
+~~[meta-lisp.js] passes take `project` as the main arg~~ ✅
 [meta-lisp.js] passes knows about how to dump
 
 [meta-lisp.js] `(import)` as a pass

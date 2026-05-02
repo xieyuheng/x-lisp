@@ -2,8 +2,10 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
-export function QualifyPass(mod: M.Mod): void {
-  M.modForEachOwnDefinition(mod, qualifyDefinition)
+export function QualifyPass(project: M.Project): void {
+  M.projectForEachMod(project, (mod) => {
+    M.modForEachOwnDefinition(mod, qualifyDefinition)
+  })
 }
 
 function qualifyDefinition(definition: M.Definition): null {
