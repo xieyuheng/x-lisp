@@ -19,6 +19,7 @@ export function BuildPipeline(
     verbose: boolean
   },
 ): void {
+  M.ExecutePass(project)
   M.projectForEachMod(project, M.ClaimPass)
   if (options.dump) projectDumpMods(project, "005-claim")
   M.projectForEachMod(project, M.DesugarPass)

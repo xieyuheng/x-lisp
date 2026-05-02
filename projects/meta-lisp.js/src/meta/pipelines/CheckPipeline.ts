@@ -6,6 +6,7 @@ export function CheckPipeline(
     verbose: boolean
   },
 ): void {
+  M.ExecutePass(project)
   M.projectForEachMod(project, M.ClaimPass)
   M.projectForEachMod(project, M.DesugarPass)
   M.projectForEachMod(project, M.QualifyPass)
