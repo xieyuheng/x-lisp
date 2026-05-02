@@ -1,22 +1,22 @@
-export type ModScope = {
+export type ModFragment = {
   importedNames: Map<string, { modName: string; name: string }>
   importedPrefixes: Map<string, { modName: string }>
 }
 
-export function createModScope(): ModScope {
+export function createModFragment(): ModFragment {
   return {
     importedNames: new Map(),
     importedPrefixes: new Map(),
   }
 }
 
-export function modScopeFilterBoundNames(
-  scope: ModScope,
+export function modFragmentFilterBoundNames(
+  fragment: ModFragment,
   boundNames: Set<string>,
-): ModScope {
+): ModFragment {
   const importedNames: Map<string, { modName: string; name: string }> =
     new Map()
-  for (const [key, entry] of scope.importedNames) {
+  for (const [key, entry] of fragment.importedNames) {
     if (!boundNames.has(key)) {
       importedNames.set(key, entry)
     }
@@ -24,13 +24,15 @@ export function modScopeFilterBoundNames(
 
   return {
     importedNames,
-    importedPrefixes: scope.importedPrefixes,
+    importedPrefixes: fragment.importedPrefixes,
   }
 }
 
-export function modScopeDropImportedNames(scope: ModScope): ModScope {
+export function modFragmentDropImportedNames(
+  fragment: ModFragment,
+): ModFragment {
   return {
     importedNames: new Map(),
-    importedPrefixes: scope.importedPrefixes,
+    importedPrefixes: fragment.importedPrefixes,
   }
 }

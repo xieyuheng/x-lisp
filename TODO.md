@@ -1,4 +1,4 @@
-[meta-lisp.js] `ModFragment` -- setup
+[meta-lisp.js] `DefragmentPass`
 [meta-lisp.js] `(import)` as a pass
 [meta-lisp.js] `expand*` as a pass
 [meta-lisp.js] support `(import-all)`

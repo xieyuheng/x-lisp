@@ -22,11 +22,11 @@ export function loadCode(project: M.Project, path: string): void {
 }
 
 export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
-  const scope = M.createModScope()
+  const fragment = M.createModFragment()
 
-  for (const stmt of stmts) loadExempt(mod, scope, stmt)
-  for (const stmt of stmts) loadImport(mod, scope, stmt)
-  for (const stmt of stmts) loadDefine(mod, scope, stmt)
+  for (const stmt of stmts) loadExempt(mod, fragment, stmt)
+  for (const stmt of stmts) loadImport(mod, fragment, stmt)
+  for (const stmt of stmts) loadDefine(mod, fragment, stmt)
 }
 
 function findModName(stmts: Array<M.Stmt>): {

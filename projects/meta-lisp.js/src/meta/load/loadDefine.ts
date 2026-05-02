@@ -6,7 +6,11 @@ import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
 
-export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
+export function loadDefine(
+  mod: M.Mod,
+  fragment: M.ModFragment,
+  stmt: M.Stmt,
+): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
@@ -45,11 +49,14 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "Claim") {
-    M.modClaim(mod, stmt.name, M.qualifyImported(scope, stmt.type))
+    M.modClaim(mod, stmt.name, M.qualifyImported(fragment, stmt.type))
   }
 
   if (stmt.kind === "DefineFunction") {
-    const newScope = M.modScopeFilterBoundNames(scope, new Set(stmt.parameters))
+    const newScope = M.modFragmentFilterBoundNames(
+      fragment,
+      new Set(stmt.parameters),
+    )
     M.modDefine(
       mod,
       stmt.name,
@@ -70,7 +77,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       M.VariableDefinition(
         mod,
         stmt.name,
-        M.qualifyImported(scope, stmt.body),
+        M.qualifyImported(fragment, stmt.body),
         stmt.location,
       ),
     )
@@ -83,7 +90,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       M.TestDefinition(
         mod,
         stmt.name,
-        M.qualifyImported(scope, stmt.body),
+        M.qualifyImported(fragment, stmt.body),
         stmt.location,
       ),
     )
@@ -110,15 +117,15 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
         mod,
         stmt.name,
         stmt.parameters,
-        M.qualifyImported(scope, stmt.body),
+        M.qualifyImported(fragment, stmt.body),
         stmt.location,
       ),
     )
   }
 
   if (stmt.kind === "DefineData") {
-    const newScope = M.modScopeFilterBoundNames(
-      scope,
+    const newScope = M.modFragmentFilterBoundNames(
+      fragment,
       new Set(stmt.dataTypeConstructor.parameters),
     )
 
@@ -176,8 +183,8 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "DefineInterface") {
-    const newScope = M.modScopeFilterBoundNames(
-      scope,
+    const newScope = M.modFragmentFilterBoundNames(
+      fragment,
       new Set(stmt.interfaceConstructor.parameters),
     )
 
