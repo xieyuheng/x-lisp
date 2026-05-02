@@ -5,6 +5,6 @@ export function formatModStmts(mod: M.Mod): string {
 }
 
 export function formatModDefinitions(mod: M.Mod): string {
-  const definitions = M.modOwnDefinitions(mod).map(M.formatDefinition)
+  const definitions = mod.definitions.values().map(M.formatDefinition)
   return Array.from(definitions).join(" ")
 }

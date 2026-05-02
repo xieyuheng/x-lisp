@@ -20,14 +20,14 @@ export function CheckPass(
         openOutputFile(`${directory}/type-error-modules/${mod.name}.out`),
         (file) => {
           withOutputToFile(file, () => {
-            for (const definition of M.modOwnDefinitions(mod)) {
+            for (const definition of mod.definitions.values()) {
               checkDefinition(definition, options)
             }
           })
         },
       )
     } else {
-      for (const definition of M.modOwnDefinitions(mod)) {
+      for (const definition of mod.definitions.values()) {
         checkDefinition(definition, options)
       }
     }

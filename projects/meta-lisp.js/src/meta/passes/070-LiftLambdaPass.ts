@@ -10,7 +10,8 @@ export function LiftLambdaPass(
 ): void {
   for (const mod of project.mods.values()) {
     mod.definitions = new Map(
-      M.modOwnDefinitions(mod)
+      mod.definitions
+        .values()
         .flatMap((definition) => onDefinition(mod, definition))
         .map((definition) => [definition.name, definition]),
     )

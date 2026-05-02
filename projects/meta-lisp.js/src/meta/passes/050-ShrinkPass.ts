@@ -7,7 +7,7 @@ export function ShrinkPass(
   options: { dump: boolean },
 ): void {
   for (const mod of project.mods.values()) {
-    for (const definition of M.modOwnDefinitions(mod)) {
+    for (const definition of mod.definitions.values()) {
       onDefinition(mod, definition)
     }
   }

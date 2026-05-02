@@ -5,10 +5,10 @@ import type {
   InterfaceConstructor,
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
-import type { AboutImport } from "./AboutImport.ts"
 
 export type Stmt =
-  | AboutImport
+  | Import
+  | ImportAs
   | DefineFunction
   | DefineVariable
   | DefineTest
@@ -21,6 +21,46 @@ export type Stmt =
   | DeclareTypeErrorModule
   | DeclarePrimitiveFunction
   | DeclarePrimitiveVariable
+
+export type Import = {
+  kind: "Import"
+  modName: string
+  names: Array<string>
+  location?: SourceLocation
+}
+
+export function Import(
+  modName: string,
+  names: Array<string>,
+  location?: SourceLocation,
+): Import {
+  return {
+    kind: "Import",
+    modName,
+    names,
+    location,
+  }
+}
+
+export type ImportAs = {
+  kind: "ImportAs"
+  modName: string
+  prefix: string
+  location?: SourceLocation
+}
+
+export function ImportAs(
+  modName: string,
+  prefix: string,
+  location?: SourceLocation,
+): ImportAs {
+  return {
+    kind: "ImportAs",
+    modName,
+    prefix,
+    location,
+  }
+}
 
 export type DefineFunction = {
   kind: "DefineFunction"

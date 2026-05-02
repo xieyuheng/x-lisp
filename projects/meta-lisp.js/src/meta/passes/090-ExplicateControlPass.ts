@@ -7,7 +7,7 @@ export function ExplicateControlPass(project: M.Project): B.Mod {
 
   for (const mod of project.mods.values()) {
     if (!mod.isTypeErrorModule) {
-      for (const definition of M.modOwnDefinitions(mod)) {
+      for (const definition of mod.definitions.values()) {
         for (const basicDefinition of onDefinition(basicMod, definition)) {
           basicMod.definitions.set(basicDefinition.name, basicDefinition)
         }

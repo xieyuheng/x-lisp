@@ -73,16 +73,6 @@ export function modLookupNameByDefinition(
   return undefined
 }
 
-export function modDefinitionEntries(mod: Mod): Array<[string, Definition]> {
-  return Array.from(mod.definitions.entries())
-}
-
-export function modOwnDefinitions(mod: Mod): Array<Definition> {
-  return Array.from(
-    mod.definitions.values().filter((definition) => definition.mod === mod),
-  )
-}
-
 export function modNameIsAsDefined(mod: Mod, name: string): boolean {
   const definition = mod.definitions.get(name)
   return definition !== undefined && definition.name === name
