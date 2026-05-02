@@ -3,10 +3,7 @@ import { executeDefine } from "./executeDefine.ts"
 import { executeExempt } from "./executeExempt.ts"
 import { executeImport } from "./executeImport.ts"
 
-export function executeStmts(
-  mod: M.Mod,
-  stmts: Array<M.Stmt>,
-): void {
+export function executeStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
   const scope = M.createModScope()
 
   for (const stmt of stmts) executeExempt(mod, scope, stmt)

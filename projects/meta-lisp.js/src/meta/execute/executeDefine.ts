@@ -6,7 +6,11 @@ import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
 
-export function executeDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
+export function executeDefine(
+  mod: M.Mod,
+  scope: M.ModScope,
+  stmt: M.Stmt,
+): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
