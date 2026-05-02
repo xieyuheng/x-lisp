@@ -1,1 +1,1 @@
-export * from "./formatMod.ts"
+export * from "./formatDefinition.ts"

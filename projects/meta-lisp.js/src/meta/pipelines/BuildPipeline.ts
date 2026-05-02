@@ -26,19 +26,19 @@ export function BuildPipeline(
   M.UniquifyPass(project, { dump: options.dump })
   M.LiftLambdaPass(project, { dump: options.dump })
   M.UnnestOperandPass(project, { dump: options.dump })
-  if (options.basic) projectBundleBasic(project)
-  projectBundleStack(project)
+  const basicMod = M.ExplicateControlPass(project)
+  if (options.basic) BasicBundle(project, basicMod)
+  StackBundle(project, basicMod)
 }
 
-function projectBundleStack(project: M.Project): void {
-  const basicMod = B.createMod()
-  M.projectForEachMod(project, (mod) => {
-    if (!mod.isTypeErrorModule) {
-      M.log("bundle.stack", mod.name)
-      M.ExplicateControlPass(mod, basicMod)
-    }
-  })
+function BasicBundle(project: M.Project, basicMod: B.Mod): void {
+  const directory = M.projectOutputDirectory(project)
+  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) =>
+    fileWriteln(file, B.prettyMod(textWidth, basicMod)),
+  )
+}
 
+function StackBundle(project: M.Project, basicMod: B.Mod): void {
   const stackMod = Stk.createMod()
   M.CodegenPass(basicMod, stackMod)
 
@@ -48,22 +48,4 @@ function projectBundleStack(project: M.Project): void {
       fileWriteln(file, Stk.formatDefinition(definition))
     }
   })
-}
-
-function projectBundleBasic(project: M.Project): void {
-  let code = ""
-  M.projectForEachMod(project, (mod) => {
-    if (!mod.isTypeErrorModule) {
-      M.log("bundle.basic", mod.name)
-      const basicMod = B.createMod()
-      M.ExplicateControlPass(mod, basicMod)
-      code += B.prettyMod(textWidth, basicMod)
-      code += "\n\n"
-    }
-  })
-
-  const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) =>
-    fileWriteln(file, code.trim()),
-  )
 }

@@ -2,12 +2,20 @@ import * as S from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
 
-export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
-  for (const definition of M.modOwnDefinitions(mod)) {
-    for (const basicDefinition of onDefinition(basicMod, definition)) {
-      basicMod.definitions.set(basicDefinition.name, basicDefinition)
+export function ExplicateControlPass(project: M.Project): B.Mod {
+  const basicMod = B.createMod()
+
+  M.projectForEachMod(project, (mod) => {
+    if (!mod.isTypeErrorModule) {
+      for (const definition of M.modOwnDefinitions(mod)) {
+        for (const basicDefinition of onDefinition(basicMod, definition)) {
+          basicMod.definitions.set(basicDefinition.name, basicDefinition)
+        }
+      }
     }
-  }
+  })
+
+  return basicMod
 }
 
 function definitionQualifiedName(definition: M.Definition): string {

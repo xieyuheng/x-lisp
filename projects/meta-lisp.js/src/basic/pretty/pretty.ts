@@ -1,5 +1,17 @@
 import * as S from "@xieyuheng/sexp.js"
-import { formatMod } from "../format/index.ts"
+import { formatDefinition } from "../format/formatDefinition.ts"
+import type { Mod } from "../mod/index.ts"
 import { sexpConfig } from "./sexpConfig.ts"
 
-export const prettyMod = S.prettySexpByFormat(formatMod, sexpConfig)
+export const prettyDefinition = S.prettySexpByFormat(
+  formatDefinition,
+  sexpConfig,
+)
+
+export function prettyMod(textWidth: number, mod: Mod) {
+  return Array.from(
+    mod.definitions
+      .values()
+      .map((definition) => prettyDefinition(textWidth, definition)),
+  ).join("\n")
+}
