@@ -11,12 +11,14 @@ export function loadProject(configPath?: string): M.Project {
   M.loadBuiltinMod(project)
 
   const sourceDirectory = M.projectSourceDirectory(project)
-  for (const path of fs.readdirSync(sourceDirectory, {
+  for (const name of fs.readdirSync(sourceDirectory, {
     encoding: "utf-8",
     recursive: true,
   })) {
-    if (path.endsWith(".meta")) {
-      M.projectLoadModFragment(project, Path.join(sourceDirectory, path))
+    if (name.endsWith(".meta")) {
+      const path = Path.join(sourceDirectory, name)
+      const fragment = M.loadModFragment(path)
+      M.projectPutFragment(project, path, fragment)
     }
   }
 

@@ -48,12 +48,14 @@ export function loadBuiltinMod(project: M.Project): M.Mod {
   builtinError(mod)
   builtinType(mod)
 
-  for (const path of fs.readdirSync(builtinPath, {
+  for (const name of fs.readdirSync(builtinPath, {
     encoding: "utf-8",
     recursive: true,
   })) {
-    if (path.endsWith(".meta")) {
-      M.projectLoadModFragment(project, Path.join(builtinPath, path))
+    if (name.endsWith(".meta")) {
+      const path = Path.join(builtinPath, name)
+      const fragment = M.loadModFragment(path)
+      M.projectPutFragment(project, path, fragment)
     }
   }
 

@@ -1,4 +1,3 @@
-[meta-lisp.js] inline `projectLoadModFragment`
 [meta-lisp.js] passes take `project` as the main arg
 [meta-lisp.js] passes knows about how to dump
 
