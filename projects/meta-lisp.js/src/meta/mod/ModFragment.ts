@@ -38,5 +38,5 @@ function findModName(stmts: Array<M.Stmt>): {
     }
   }
 
-  throw new Error(`[findModName] no module name`)
+  throw new Error(`[loadModFragment] no module name`)
 }
