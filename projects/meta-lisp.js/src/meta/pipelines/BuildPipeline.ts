@@ -34,16 +34,20 @@ export function BuildPipeline(
 
 function BasicBundle(project: M.Project, basicMod: B.Mod): void {
   const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) =>
-    fileWriteln(file, B.prettyMod(textWidth, basicMod)),
-  )
+  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) => {
+    const definitions = Array.from(basicMod.definitions.values())
+    const code = definitions
+      .map((definition) => B.prettyDefinition(textWidth, definition))
+      .join("\n")
+    fileWriteln(file, code)
+  })
 }
 
 function StackBundle(project: M.Project, stackMod: Stk.Mod): void {
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) => {
-    for (const definition of stackMod.definitions.values()) {
-      fileWriteln(file, Stk.formatDefinition(definition))
-    }
+    const definitions = Array.from(stackMod.definitions.values())
+    const code = definitions.map(Stk.formatDefinition).join("\n")
+    fileWriteln(file, code)
   })
 }
