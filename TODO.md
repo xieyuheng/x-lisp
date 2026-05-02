@@ -1,5 +1,5 @@
-[meta-lisp.js] `(import)` as a pass
-[meta-lisp.js] `expand*` as a pass
+[meta-lisp.js] `expand*` as a pass -- at the level of `Stmt` and `ModFragment`
+[meta-lisp.js] `(import)` as a pass -- at the level of `Stmt` and `ModFragment`
 [meta-lisp.js] support `(import-all)`
 [meta-lisp.js] handle builtin by `(import-all)`
 [meta-lisp.js] error report for unclaimed recursive definition

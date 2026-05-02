@@ -1,3 +1,3 @@
 export * from "./executeStmts.ts"
-export * from "./ModScope.ts"
+export * from "./ExecutionScope.ts"
 export * from "./qualifyImported.ts"

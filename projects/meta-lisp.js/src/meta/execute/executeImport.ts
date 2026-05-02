@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export function executeImport(
   mod: M.Mod,
-  scope: M.ModScope,
+  scope: M.ExecutionScope,
   stmt: M.Stmt,
 ): void {
   if (stmt.kind === "Import") {

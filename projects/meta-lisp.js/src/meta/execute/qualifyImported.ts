@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 
-export function qualifyImported(scope: M.ModScope, exp: M.Exp): M.Exp {
+export function qualifyImported(scope: M.ExecutionScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -35,7 +35,7 @@ export function qualifyImported(scope: M.ModScope, exp: M.Exp): M.Exp {
     // no need to avoid free variable in lhs
 
     case "Lambda": {
-      const newScope = M.modScopeFilterBoundNames(
+      const newScope = M.executionScopeFilterBoundNames(
         scope,
         new Set(exp.parameters),
       )
@@ -47,7 +47,7 @@ export function qualifyImported(scope: M.ModScope, exp: M.Exp): M.Exp {
     }
 
     case "Polymorphic": {
-      const newScope = M.modScopeFilterBoundNames(
+      const newScope = M.executionScopeFilterBoundNames(
         scope,
         new Set(exp.parameters),
       )
@@ -59,7 +59,10 @@ export function qualifyImported(scope: M.ModScope, exp: M.Exp): M.Exp {
     }
 
     case "Let1": {
-      const newScope = M.modScopeFilterBoundNames(scope, new Set([exp.name]))
+      const newScope = M.executionScopeFilterBoundNames(
+        scope,
+        new Set([exp.name]),
+      )
       return M.Let1(
         exp.name,
         qualifyImported(scope, exp.rhs),
@@ -75,7 +78,10 @@ export function qualifyImported(scope: M.ModScope, exp: M.Exp): M.Exp {
       const clauses = exp.clauses.map((clause) =>
         M.MatchClause(
           clause.patterns,
-          qualifyImported(M.modScopeDropImportedNames(scope), clause.body),
+          qualifyImported(
+            M.executionScopeDropImportedNames(scope),
+            clause.body,
+          ),
           clause.location,
         ),
       )

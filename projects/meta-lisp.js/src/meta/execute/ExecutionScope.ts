@@ -1,19 +1,19 @@
-export type ModScope = {
+export type ExecutionScope = {
   importedNames: Map<string, { modName: string; name: string }>
   importedPrefixes: Map<string, { modName: string }>
 }
 
-export function createModScope(): ModScope {
+export function createExecutionScope(): ExecutionScope {
   return {
     importedNames: new Map(),
     importedPrefixes: new Map(),
   }
 }
 
-export function modScopeFilterBoundNames(
-  scope: ModScope,
+export function executionScopeFilterBoundNames(
+  scope: ExecutionScope,
   boundNames: Set<string>,
-): ModScope {
+): ExecutionScope {
   const importedNames: Map<string, { modName: string; name: string }> =
     new Map()
   for (const [key, entry] of scope.importedNames) {
@@ -28,7 +28,9 @@ export function modScopeFilterBoundNames(
   }
 }
 
-export function modScopeDropImportedNames(scope: ModScope): ModScope {
+export function executionScopeDropImportedNames(
+  scope: ExecutionScope,
+): ExecutionScope {
   return {
     importedNames: new Map(),
     importedPrefixes: scope.importedPrefixes,

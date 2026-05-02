@@ -8,7 +8,7 @@ import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function executeDefine(
   mod: M.Mod,
-  scope: M.ModScope,
+  scope: M.ExecutionScope,
   stmt: M.Stmt,
 ): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {
@@ -53,7 +53,10 @@ export function executeDefine(
   }
 
   if (stmt.kind === "DefineFunction") {
-    const newScope = M.modScopeFilterBoundNames(scope, new Set(stmt.parameters))
+    const newScope = M.executionScopeFilterBoundNames(
+      scope,
+      new Set(stmt.parameters),
+    )
     M.modDefine(
       mod,
       stmt.name,
@@ -121,7 +124,7 @@ export function executeDefine(
   }
 
   if (stmt.kind === "DefineData") {
-    const newScope = M.modScopeFilterBoundNames(
+    const newScope = M.executionScopeFilterBoundNames(
       scope,
       new Set(stmt.dataTypeConstructor.parameters),
     )
@@ -180,7 +183,7 @@ export function executeDefine(
   }
 
   if (stmt.kind === "DefineInterface") {
-    const newScope = M.modScopeFilterBoundNames(
+    const newScope = M.executionScopeFilterBoundNames(
       scope,
       new Set(stmt.interfaceConstructor.parameters),
     )
