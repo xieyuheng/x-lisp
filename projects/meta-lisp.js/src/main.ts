@@ -43,11 +43,6 @@ router.defineHandlers({
       verbose: options["--verbose"] !== undefined,
     })
   },
-
-  clean: ({ options }) => {
-    const project = M.loadProject(options["--config"])
-    M.projectClean(project)
-  },
 })
 
 try {
