@@ -1,17 +1,18 @@
 import * as M from "../index.ts"
 
 export function ExpandPass(project: M.Project): void {
-  for (const [path, fragment] of project.fragments) {
-    let mod =
-      M.projectLookupMod(project, fragment.modName) ||
-      M.createMod(fragment.modName, project)
+  for (const fragment of project.fragments.values()) {
+    fragment.stmts = fragment.stmts.flatMap(expandStmt)
+  }
+}
 
-    M.projectAddMod(project, mod)
+function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
+  switch (stmt.kind) {
+    // case "DefineData": {
+    // }
 
-    if (fragment.isTypeErrorModule) {
-      mod.isTypeErrorModule = true
+    default: {
+      return [stmt]
     }
-
-    M.executeStmts(mod, fragment.stmts)
   }
 }

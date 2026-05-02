@@ -7,6 +7,8 @@ export function CheckPipeline(
     dump: boolean
   },
 ): void {
+  M.ExpandPass(project)
+  M.ImportPass(project)
   M.ExecutePass(project)
   M.ClaimPass(project, { dump: options.dump })
   M.DesugarPass(project, { dump: options.dump })
