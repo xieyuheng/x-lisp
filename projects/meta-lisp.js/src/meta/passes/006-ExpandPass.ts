@@ -1,8 +1,33 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function ExpandPass(project: M.Project): void {
   for (const fragment of project.fragments.values()) {
     fragment.stmts = fragment.stmts.flatMap(expandStmt)
+  }
+}
+
+function getDataType(stmt: M.DefineData): M.Exp {
+  if (stmt.dataTypeConstructor.parameters.length === 0) {
+    return M.Var(stmt.dataTypeConstructor.name)
+  } else {
+    return M.Apply(
+      M.Var(stmt.dataTypeConstructor.name),
+      stmt.dataTypeConstructor.parameters.map((parameter) => M.Var(parameter)),
+    )
+  }
+}
+
+function claimWithParameters(
+  name: string,
+  parameters: Array<string>,
+  type: M.Exp,
+  location?: S.SourceLocation,
+): M.Stmt {
+  if (parameters.length === 0) {
+    return M.Claim(name, type, location)
+  } else {
+    return M.Claim(name, M.Polymorphic(parameters, type), location)
   }
 }
 
@@ -47,31 +72,14 @@ function expandDataConstructor(
       ),
     )
 
-    if (stmt.dataTypeConstructor.parameters.length === 0) {
-      stmts.push(
-        M.Claim(
-          dataConstructor.name,
-          M.Var(stmt.dataTypeConstructor.name),
-          dataConstructor.location,
-        ),
-      )
-    } else {
-      stmts.push(
-        M.Claim(
-          dataConstructor.name,
-          M.Polymorphic(
-            stmt.dataTypeConstructor.parameters,
-            M.Apply(
-              M.Var(stmt.dataTypeConstructor.name),
-              stmt.dataTypeConstructor.parameters.map((parameter) =>
-                M.Var(parameter),
-              ),
-            ),
-          ),
-          dataConstructor.location,
-        ),
-      )
-    }
+    stmts.push(
+      claimWithParameters(
+        dataConstructor.name,
+        stmt.dataTypeConstructor.parameters,
+        getDataType(stmt),
+        dataConstructor.location,
+      ),
+    )
   } else {
     const parameters = dataConstructor.fields.map((field) => field.name)
     const args = parameters.map((name) => M.Var(name))
@@ -84,37 +92,17 @@ function expandDataConstructor(
       ),
     )
 
-    if (stmt.dataTypeConstructor.parameters.length === 0) {
-      stmts.push(
-        M.Claim(
-          dataConstructor.name,
-          M.Arrow(
-            dataConstructor.fields.map((field) => field.type),
-            M.Var(stmt.dataTypeConstructor.name),
-          ),
-          dataConstructor.location,
+    stmts.push(
+      claimWithParameters(
+        dataConstructor.name,
+        stmt.dataTypeConstructor.parameters,
+        M.Arrow(
+          dataConstructor.fields.map((field) => field.type),
+          getDataType(stmt),
         ),
-      )
-    } else {
-      stmts.push(
-        M.Claim(
-          dataConstructor.name,
-          M.Polymorphic(
-            stmt.dataTypeConstructor.parameters,
-            M.Arrow(
-              dataConstructor.fields.map((field) => field.type),
-              M.Apply(
-                M.Var(stmt.dataTypeConstructor.name),
-                stmt.dataTypeConstructor.parameters.map((parameter) =>
-                  M.Var(parameter),
-                ),
-              ),
-            ),
-          ),
-          dataConstructor.location,
-        ),
-      )
-    }
+        dataConstructor.location,
+      ),
+    )
   }
 
   return stmts
@@ -163,41 +151,19 @@ export function expandDataConstructorPredicate(
     )
   }
 
-  if (stmt.dataTypeConstructor.parameters.length === 0) {
-    stmts.push(
-      M.Claim(
-        name,
-        M.Arrow([M.Var(stmt.dataTypeConstructor.name)], M.Var("bool-t")),
-        dataConstructor.location,
-      ),
-    )
-  } else {
-    stmts.push(
-      M.Claim(
-        name,
-        M.Polymorphic(
-          stmt.dataTypeConstructor.parameters,
-          M.Arrow(
-            [
-              M.Apply(
-                M.Var(stmt.dataTypeConstructor.name),
-                stmt.dataTypeConstructor.parameters.map((parameter) =>
-                  M.Var(parameter),
-                ),
-              ),
-            ],
-            M.Var("bool-t"),
-          ),
-        ),
-        dataConstructor.location,
-      ),
-    )
-  }
+  stmts.push(
+    claimWithParameters(
+      name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow([getDataType(stmt)], M.Var("bool-t")),
+      dataConstructor.location,
+    ),
+  )
 
   return stmts
 }
 
-export function expandDataGetter(
+function expandDataGetter(
   stmt: M.DefineData,
   dataConstructor: Omit<M.DataConstructor, "definition">,
   index: number,
@@ -218,41 +184,19 @@ export function expandDataGetter(
     ),
   )
 
-  if (stmt.dataTypeConstructor.parameters.length === 0) {
-    stmts.push(
-      M.Claim(
-        name,
-        M.Arrow([M.Var(stmt.dataTypeConstructor.name)], field.type),
-        field.location,
-      ),
-    )
-  } else {
-    stmts.push(
-      M.Claim(
-        name,
-        M.Polymorphic(
-          stmt.dataTypeConstructor.parameters,
-          M.Arrow(
-            [
-              M.Apply(
-                M.Var(stmt.dataTypeConstructor.name),
-                stmt.dataTypeConstructor.parameters.map((parameter) =>
-                  M.Var(parameter),
-                ),
-              ),
-            ],
-            field.type,
-          ),
-        ),
-        field.location,
-      ),
-    )
-  }
+  stmts.push(
+    claimWithParameters(
+      name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow([getDataType(stmt)], field.type),
+      field.location,
+    ),
+  )
 
   return stmts
 }
 
-export function expandDataPutter(
+function expandDataPutter(
   stmt: M.DefineData,
   dataConstructor: Omit<M.DataConstructor, "definition">,
   index: number,
@@ -260,123 +204,61 @@ export function expandDataPutter(
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
-  {
-    const name = `${dataConstructor.name}-put-${field.name}`
+  stmts.push(
+    ...expandDataPutterHelper(
+      stmt,
+      index,
+      field,
+      `${dataConstructor.name}-put-${field.name}`,
+      "list-put",
+    ),
+  )
 
-    stmts.push(M.Exempt([name], field.location))
+  stmts.push(
+    ...expandDataPutterHelper(
+      stmt,
+      index,
+      field,
+      `${dataConstructor.name}-put-${field.name}!`,
+      "list-put!",
+    ),
+  )
 
-    stmts.push(
-      M.DefineFunction(
-        name,
-        ["value", "target"],
-        M.Apply(M.Var("list-put"), [
-          M.Int(BigInt(index + 1)),
-          M.Var("value"),
-          M.Var("target"),
-        ]),
-        field.location,
-      ),
-    )
+  return stmts
+}
 
-    if (stmt.dataTypeConstructor.parameters.length === 0) {
-      stmts.push(
-        M.Claim(
-          name,
-          M.Arrow(
-            [field.type, M.Var(stmt.dataTypeConstructor.name)],
-            M.Var(stmt.dataTypeConstructor.name),
-          ),
-          field.location,
-        ),
-      )
-    } else {
-      stmts.push(
-        M.Claim(
-          name,
-          M.Polymorphic(
-            stmt.dataTypeConstructor.parameters,
-            M.Arrow(
-              [
-                field.type,
-                M.Apply(
-                  M.Var(stmt.dataTypeConstructor.name),
-                  stmt.dataTypeConstructor.parameters.map((parameter) =>
-                    M.Var(parameter),
-                  ),
-                ),
-              ],
-              M.Apply(
-                M.Var(stmt.dataTypeConstructor.name),
-                stmt.dataTypeConstructor.parameters.map((parameter) =>
-                  M.Var(parameter),
-                ),
-              ),
-            ),
-          ),
-          field.location,
-        ),
-      )
-    }
-  }
+function expandDataPutterHelper(
+  stmt: M.DefineData,
+  index: number,
+  field: M.DataField,
+  name: string,
+  builtinFn: string,
+): Array<M.Stmt> {
+  const stmts: Array<M.Stmt> = []
 
-  {
-    const name = `${dataConstructor.name}-put-${field.name}!`
+  stmts.push(M.Exempt([name], field.location))
 
-    stmts.push(M.Exempt([name], field.location))
+  stmts.push(
+    M.DefineFunction(
+      name,
+      ["value", "target"],
+      M.Apply(M.Var(builtinFn), [
+        M.Int(BigInt(index + 1)),
+        M.Var("value"),
+        M.Var("target"),
+      ]),
+      field.location,
+    ),
+  )
 
-    stmts.push(
-      M.DefineFunction(
-        name,
-        ["value", "target"],
-        M.Apply(M.Var("list-put!"), [
-          M.Int(BigInt(index + 1)),
-          M.Var("value"),
-          M.Var("target"),
-        ]),
-        field.location,
-      ),
-    )
-
-    if (stmt.dataTypeConstructor.parameters.length === 0) {
-      stmts.push(
-        M.Claim(
-          name,
-          M.Arrow(
-            [field.type, M.Var(stmt.dataTypeConstructor.name)],
-            M.Var(stmt.dataTypeConstructor.name),
-          ),
-          field.location,
-        ),
-      )
-    } else {
-      stmts.push(
-        M.Claim(
-          name,
-          M.Polymorphic(
-            stmt.dataTypeConstructor.parameters,
-            M.Arrow(
-              [
-                field.type,
-                M.Apply(
-                  M.Var(stmt.dataTypeConstructor.name),
-                  stmt.dataTypeConstructor.parameters.map((parameter) =>
-                    M.Var(parameter),
-                  ),
-                ),
-              ],
-              M.Apply(
-                M.Var(stmt.dataTypeConstructor.name),
-                stmt.dataTypeConstructor.parameters.map((parameter) =>
-                  M.Var(parameter),
-                ),
-              ),
-            ),
-          ),
-          field.location,
-        ),
-      )
-    }
-  }
+  stmts.push(
+    claimWithParameters(
+      name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow([field.type, getDataType(stmt)], getDataType(stmt)),
+      field.location,
+    ),
+  )
 
   return stmts
 }
