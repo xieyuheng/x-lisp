@@ -1,4 +1,3 @@
-[meta-lisp.js] `ExpandPass` -- setup
 [meta-lisp.js] `ExpandPass` -- at the level of `Stmt` and `ModFragment`
 [meta-lisp.js] `ImportPass` -- call `qualifyImported` at the level of `Stmt` and `ModFragment`
 [meta-lisp.js] inline `executeStmts` to `ExecutePass`
