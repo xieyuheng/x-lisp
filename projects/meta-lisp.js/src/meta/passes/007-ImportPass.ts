@@ -152,8 +152,6 @@ function onExp(scope: Scope, exp: M.Exp): M.Exp {
       }
     }
 
-    // no need to avoid free variable in lhs
-
     case "Lambda": {
       const newScope = scopeFilterBoundNames(scope, new Set(exp.parameters))
       return M.Lambda(exp.parameters, onExp(newScope, exp.body), exp.location)
