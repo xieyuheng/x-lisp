@@ -2,6 +2,7 @@ import Path from "node:path"
 import * as M from "../index.ts"
 
 export type Project = {
+  fragments: Map<string, M.ModFragment>
   mods: Map<string, M.Mod>
   rootDirectory: string
   config: M.ProjectConfig
@@ -12,6 +13,7 @@ export function createProject(
   config: M.ProjectConfig,
 ): Project {
   return {
+    fragments: new Map(),
     mods: new Map(),
     rootDirectory,
     config,

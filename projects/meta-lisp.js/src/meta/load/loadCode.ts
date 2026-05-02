@@ -4,19 +4,19 @@ import { loadExempt as executeExempt } from "./executeExempt.ts"
 import { loadImport as executeImport } from "./executeImport.ts"
 
 export function loadCode(project: M.Project, path: string): void {
-  const fregament = M.loadModFragment(path)
+  const fragment = M.loadModFragment(path)
   let mod =
-    M.projectLookupMod(project, fregament.modName) ||
-    M.createMod(fregament.modName, project)
+    M.projectLookupMod(project, fragment.modName) ||
+    M.createMod(fragment.modName, project)
 
   M.projectAddMod(project, mod)
 
-  if (fregament.isTypeErrorModule) {
+  if (fragment.isTypeErrorModule) {
     mod.isTypeErrorModule = true
   }
 
   const scope = M.createModScope()
-  executeStmts(mod, scope, fregament.stmts)
+  executeStmts(mod, scope, fragment.stmts)
 }
 
 function executeStmts(
