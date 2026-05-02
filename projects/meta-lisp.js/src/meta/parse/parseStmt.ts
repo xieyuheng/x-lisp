@@ -151,6 +151,7 @@ const parseInterfaceConstructor = S.createRouter<
       definition: undefined,
       name: S.symbolContent(name),
       parameters: S.listElements(parameters).map(S.symbolContent),
+      location,
     }
   },
 
@@ -159,6 +160,7 @@ const parseInterfaceConstructor = S.createRouter<
       definition: undefined,
       name: S.symbolContent(name),
       parameters: [],
+      location,
     }
   },
 })
@@ -170,6 +172,7 @@ const parseDataConstructor = S.createRouter<
     return {
       name: S.symbolContent(name),
       fields: S.listElements(fields).map(parseDataField),
+      location,
     }
   },
 
@@ -177,6 +180,7 @@ const parseDataConstructor = S.createRouter<
     return {
       name: S.symbolContent(name),
       fields: [],
+      location,
     }
   },
 })
@@ -186,6 +190,7 @@ const parseDataField = S.createRouter<M.DataField>({
     return {
       name: S.symbolContent(name),
       type: parseExp(exp),
+      location,
     }
   },
 })
