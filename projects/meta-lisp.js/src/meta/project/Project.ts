@@ -31,6 +31,14 @@ export function projectAddMod(project: Project, mod: M.Mod): void {
   project.mods.set(mod.name, mod)
 }
 
+export function projectPutFragment(
+  project: Project,
+  path: string,
+  fragment: M.ModFragment,
+): void {
+  project.fragments.set(path, fragment)
+}
+
 export function projectMods(project: Project): Array<M.Mod> {
   return Array.from(project.mods.values())
 }

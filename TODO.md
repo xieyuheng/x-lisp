@@ -1,4 +1,8 @@
-[meta-lisp.js] extract `ExecutePass` from `projectLoadModFragment`
+[meta-lisp.js] inline `projectLoadModFragment`
+[meta-lisp.js] extract `001-ExecutePass` from `projectLoadModFragment`
+[meta-lisp.js] passes take `project` as the main arg
+[meta-lisp.js] passes knows about how to dump
+
 [meta-lisp.js] `(import)` as a pass
 [meta-lisp.js] `expand*` as a pass
 [meta-lisp.js] support `(import-all)`
