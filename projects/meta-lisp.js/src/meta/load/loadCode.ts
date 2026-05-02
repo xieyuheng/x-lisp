@@ -1,9 +1,9 @@
 import * as S from "@xieyuheng/sexp.js"
 import fs from "node:fs"
 import * as M from "../index.ts"
-import { loadDefine } from "./loadDefine.ts"
-import { loadExempt } from "./loadExempt.ts"
-import { loadImport } from "./loadImport.ts"
+import { loadDefine as executeDefine } from "./executeDefine.ts"
+import { loadExempt as executeExempt } from "./executeExempt.ts"
+import { loadImport as executeImport } from "./executeImport.ts"
 
 export function loadCode(project: M.Project, path: string): void {
   const code = fs.readFileSync(path, "utf-8")
@@ -18,15 +18,18 @@ export function loadCode(project: M.Project, path: string): void {
     mod.isTypeErrorModule = isTypeErrorModule
   }
 
-  loadStmts(mod, stmts)
+  const scope = M.createModScope()
+  executeStmts(mod, scope, stmts)
 }
 
-export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
-  const scope = M.createModScope()
-
-  for (const stmt of stmts) loadExempt(mod, scope, stmt)
-  for (const stmt of stmts) loadImport(mod, scope, stmt)
-  for (const stmt of stmts) loadDefine(mod, scope, stmt)
+function executeStmts(
+  mod: M.Mod,
+  scope: M.ModScope,
+  stmts: Array<M.Stmt>,
+): void {
+  for (const stmt of stmts) executeExempt(mod, scope, stmt)
+  for (const stmt of stmts) executeImport(mod, scope, stmt)
+  for (const stmt of stmts) executeDefine(mod, scope, stmt)
 }
 
 function findModName(stmts: Array<M.Stmt>): {
