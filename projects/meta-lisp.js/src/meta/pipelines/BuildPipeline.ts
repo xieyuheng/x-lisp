@@ -28,8 +28,10 @@ export function BuildPipeline(
   M.UniquifyPass(project, { dump: options.dump })
   M.LiftLambdaPass(project, { dump: options.dump })
   M.UnnestOperandPass(project, { dump: options.dump })
+
   const basicMod = M.ExplicateControlPass(project)
   if (options.basic) BasicBundle(project, basicMod)
+
   const stackMod = M.CodegenPass(project, basicMod)
   StackBundle(project, stackMod)
 }
