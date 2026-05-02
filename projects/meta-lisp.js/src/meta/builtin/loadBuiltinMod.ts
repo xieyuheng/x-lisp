@@ -53,7 +53,7 @@ export function loadBuiltinMod(project: M.Project): M.Mod {
     recursive: true,
   })) {
     if (path.endsWith(".meta")) {
-      M.loadCode(project, Path.join(builtinPath, path))
+      M.projectLoadModFragment(project, Path.join(builtinPath, path))
     }
   }
 

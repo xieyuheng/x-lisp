@@ -3,7 +3,7 @@ import { loadDefine as executeDefine } from "./executeDefine.ts"
 import { loadExempt as executeExempt } from "./executeExempt.ts"
 import { loadImport as executeImport } from "./executeImport.ts"
 
-export function loadCode(project: M.Project, path: string): void {
+export function projectLoadModFragment(project: M.Project, path: string): void {
   const fragment = M.loadModFragment(path)
   let mod =
     M.projectLookupMod(project, fragment.modName) ||

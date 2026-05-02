@@ -16,7 +16,7 @@ export function loadProject(configPath?: string): M.Project {
     recursive: true,
   })) {
     if (path.endsWith(".meta")) {
-      M.loadCode(project, Path.join(sourceDirectory, path))
+      M.projectLoadModFragment(project, Path.join(sourceDirectory, path))
     }
   }
 

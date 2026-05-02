@@ -1,4 +1,6 @@
-[meta-lisp.js] `ExecutePass`
+[meta-lisp.js] move `projectLoadModFragment` to `projects/`
+[meta-lisp.js] extract `execute/`
+[meta-lisp.js] extract `ExecutePass` from `projectLoadModFragment`
 [meta-lisp.js] `(import)` as a pass
 [meta-lisp.js] `expand*` as a pass
 [meta-lisp.js] support `(import-all)`
