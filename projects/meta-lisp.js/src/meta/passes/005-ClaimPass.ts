@@ -1,8 +1,12 @@
 import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function ClaimPass(project: M.Project): void {
+export function ClaimPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     for (const [name, entry] of mod.claimed) {
       if (!mod.exempted.has(name) && mod.definitions.get(name) === undefined) {
@@ -23,4 +27,6 @@ export function ClaimPass(project: M.Project): void {
       entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
     })
   })
+
+  if (options.dump) projectDumpMods(project, "005-claim")
 }

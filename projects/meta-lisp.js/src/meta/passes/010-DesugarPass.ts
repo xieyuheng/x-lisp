@@ -1,11 +1,17 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function DesugarPass(project: M.Project): void {
+export function DesugarPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     M.modForEachOwnDefinition(mod, desugarDefinition)
   })
+
+  if (options.dump) projectDumpMods(project, "010-desugar")
 }
 
 type State = {

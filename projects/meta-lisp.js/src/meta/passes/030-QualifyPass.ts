@@ -1,11 +1,17 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function QualifyPass(project: M.Project): void {
+export function QualifyPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     M.modForEachOwnDefinition(mod, qualifyDefinition)
   })
+
+  if (options.dump) projectDumpMods(project, "020-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {

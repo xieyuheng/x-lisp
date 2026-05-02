@@ -12,7 +12,7 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
-  "check --config --verbose",
+  "check --config --verbose --dump",
   "build --config --verbose --dump --basic",
   "test  --config --verbose --profile --builtin",
   "clean --config",
@@ -23,24 +23,25 @@ router.defineHandlers({
     const project = M.loadProject(options["--config"])
     M.CheckPipeline(project, {
       verbose: options["--verbose"] !== undefined,
+      dump: options["--dump"] !== undefined,
     })
   },
 
   build: ({ options }) => {
     const project = M.loadProject(options["--config"])
     M.BuildPipeline(project, {
+      verbose: options["--verbose"] !== undefined,
       dump: options["--dump"] !== undefined,
       basic: options["--basic"] !== undefined,
-      verbose: options["--verbose"] !== undefined,
     })
   },
 
   test: ({ options }) => {
     const project = M.loadProject(options["--config"])
     M.TestPipeline(project, {
-      builtin: options["--builtin"] !== undefined,
-      profile: options["--profile"] !== undefined,
       verbose: options["--verbose"] !== undefined,
+      profile: options["--profile"] !== undefined,
+      builtin: options["--builtin"] !== undefined,
     })
   },
 })

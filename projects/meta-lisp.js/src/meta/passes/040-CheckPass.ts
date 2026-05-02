@@ -4,11 +4,13 @@ import {
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function CheckPass(
   project: M.Project,
   options: {
     verbose: boolean
+    dump: boolean
   },
 ): void {
   M.projectForEachMod(project, (mod) => {
@@ -30,6 +32,8 @@ export function CheckPass(
       })
     }
   })
+
+  if (options.dump) projectDumpMods(project, "040-check")
 }
 
 function checkDefinition(

@@ -2,8 +2,12 @@ import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function LiftLambdaPass(project: M.Project): void {
+export function LiftLambdaPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     mod.definitions = new Map(
       M.modOwnDefinitions(mod)
@@ -11,6 +15,8 @@ export function LiftLambdaPass(project: M.Project): void {
         .map((definition) => [definition.name, definition]),
     )
   })
+
+  if (options.dump) projectDumpMods(project, "070-lift-lambda")
 }
 
 type State = {

@@ -1,12 +1,18 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function UnnestOperandPass(project: M.Project): void {
+export function UnnestOperandPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     for (const definition of M.modOwnDefinitions(mod)) {
       onDefinition(definition)
     }
   })
+
+  if (options.dump) projectDumpMods(project, "080-unnest-operand")
 }
 
 type State = {

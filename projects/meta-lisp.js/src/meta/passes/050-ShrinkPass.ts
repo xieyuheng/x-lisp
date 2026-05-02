@@ -1,12 +1,18 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function ShrinkPass(project: M.Project): void {
+export function ShrinkPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     for (const definition of M.modOwnDefinitions(mod)) {
       onDefinition(mod, definition)
     }
   })
+
+  if (options.dump) projectDumpMods(project, "050-shrink")
 }
 
 function onDefinition(mod: M.Mod, definition: M.Definition): null {

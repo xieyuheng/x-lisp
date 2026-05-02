@@ -2,11 +2,17 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
+import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function LocatePass(project: M.Project): void {
+export function LocatePass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   M.projectForEachMod(project, (mod) => {
     M.modForEachOwnDefinition(mod, locateDefinition)
   })
+
+  if (options.dump) projectDumpMods(project, "030-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {

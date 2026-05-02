@@ -7,7 +7,6 @@ import * as B from "../../basic/index.ts"
 import { textWidth } from "../../config.ts"
 import * as Stk from "../../stack/index.ts"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function BuildPipeline(
   project: M.Project,
@@ -18,24 +17,15 @@ export function BuildPipeline(
   },
 ): void {
   M.ExecutePass(project)
-  M.ClaimPass(project)
-  if (options.dump) projectDumpMods(project, "005-claim")
-  M.DesugarPass(project)
-  if (options.dump) projectDumpMods(project, "010-desugar")
-  M.QualifyPass(project)
-  if (options.dump) projectDumpMods(project, "020-qualify")
-  M.LocatePass(project)
-  if (options.dump) projectDumpMods(project, "030-locate")
-  M.CheckPass(project, { verbose: options.verbose })
-  if (options.dump) projectDumpMods(project, "040-check")
-  M.ShrinkPass(project)
-  if (options.dump) projectDumpMods(project, "050-shrink")
-  M.UniquifyPass(project)
-  if (options.dump) projectDumpMods(project, "060-uniquify")
-  M.LiftLambdaPass(project)
-  if (options.dump) projectDumpMods(project, "070-lift-lambda")
-  M.UnnestOperandPass(project)
-  if (options.dump) projectDumpMods(project, "080-unnest-operand")
+  M.ClaimPass(project, { dump: options.dump })
+  M.DesugarPass(project, { dump: options.dump })
+  M.QualifyPass(project, { dump: options.dump })
+  M.LocatePass(project, { dump: options.dump })
+  M.CheckPass(project, { verbose: options.verbose, dump: options.dump })
+  M.ShrinkPass(project, { dump: options.dump })
+  M.UniquifyPass(project, { dump: options.dump })
+  M.LiftLambdaPass(project, { dump: options.dump })
+  M.UnnestOperandPass(project, { dump: options.dump })
   if (options.basic) projectBundleBasic(project)
   projectBundleStack(project)
 }
