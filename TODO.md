@@ -1,4 +1,3 @@
-[meta-lisp.js] `loadModFragment` -- has `modName` and `code` and `sexps` and `stmts`
 [meta-lisp.js] `ExecutePass`
 [meta-lisp.js] `(import)` as a pass
 [meta-lisp.js] `expand*` as a pass
