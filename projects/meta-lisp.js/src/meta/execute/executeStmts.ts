@@ -1,7 +1,7 @@
 import * as M from "../index.ts"
-import { loadDefine as executeDefine } from "./executeDefine.ts"
-import { loadExempt as executeExempt } from "./executeExempt.ts"
-import { loadImport as executeImport } from "./executeImport.ts"
+import { executeDefine } from "./executeDefine.ts"
+import { executeExempt } from "./executeExempt.ts"
+import { executeImport } from "./executeImport.ts"
 
 export function executeStmts(
   mod: M.Mod,
