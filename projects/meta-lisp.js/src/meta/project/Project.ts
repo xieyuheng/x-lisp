@@ -48,24 +48,6 @@ export function projectModNames(project: Project): Array<string> {
   return mods.map((mod) => mod.name)
 }
 
-export function projectForEachMod(
-  project: Project,
-  callback: (mod: M.Mod) => void,
-): void {
-  for (const mod of project.mods.values()) {
-    callback(mod)
-  }
-}
-
-export function projectForEachDefinition(
-  project: Project,
-  callback: (definition: M.Definition) => void,
-): void {
-  M.projectForEachMod(project, (mod) => {
-    M.modForEachOwnDefinition(mod, callback)
-  })
-}
-
 export function projectSourceDirectory(project: M.Project): string {
   return Path.resolve(
     project.rootDirectory,

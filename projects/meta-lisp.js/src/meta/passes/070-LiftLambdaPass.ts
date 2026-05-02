@@ -8,13 +8,13 @@ export function LiftLambdaPass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     mod.definitions = new Map(
       M.modOwnDefinitions(mod)
         .flatMap((definition) => onDefinition(mod, definition))
         .map((definition) => [definition.name, definition]),
     )
-  })
+  }
 
   if (options.dump) projectDumpMods(project, "070-lift-lambda")
 }

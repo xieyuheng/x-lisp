@@ -8,9 +8,11 @@ export function LocatePass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
-    M.modForEachOwnDefinition(mod, locateDefinition)
-  })
+  for (const mod of project.mods.values()) {
+    for (const definition of M.modOwnDefinitions(mod)) {
+      locateDefinition(definition)
+    }
+  }
 
   if (options.dump) projectDumpMods(project, "030-locate")
 }

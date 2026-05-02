@@ -7,9 +7,11 @@ export function DesugarPass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
-    M.modForEachOwnDefinition(mod, desugarDefinition)
-  })
+  for (const mod of project.mods.values()) {
+    for (const definition of M.modOwnDefinitions(mod)) {
+      desugarDefinition(definition)
+    }
+  }
 
   if (options.dump) projectDumpMods(project, "010-desugar")
 }

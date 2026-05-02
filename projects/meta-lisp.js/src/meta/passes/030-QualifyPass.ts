@@ -7,9 +7,11 @@ export function QualifyPass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
-    M.modForEachOwnDefinition(mod, qualifyDefinition)
-  })
+  for (const mod of project.mods.values()) {
+    for (const definition of M.modOwnDefinitions(mod)) {
+      qualifyDefinition(definition)
+    }
+  }
 
   if (options.dump) projectDumpMods(project, "020-qualify")
 }

@@ -88,17 +88,6 @@ export function modNameIsAsDefined(mod: Mod, name: string): boolean {
   return definition !== undefined && definition.name === name
 }
 
-export function modForEachOwnDefinition(
-  mod: Mod,
-  callback: (definition: M.Definition) => void,
-): void {
-  for (const definition of mod.definitions.values()) {
-    if (definition.mod === mod) {
-      callback(definition)
-    }
-  }
-}
-
 // Claimed
 
 export function modClaim(mod: Mod, name: string, exp: Exp): void {

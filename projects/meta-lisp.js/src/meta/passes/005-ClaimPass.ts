@@ -7,7 +7,7 @@ export function ClaimPass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     for (const [name, entry] of mod.claimed) {
       if (!mod.exempted.has(name) && mod.definitions.get(name) === undefined) {
         let message = `undefined claimed name`
@@ -26,7 +26,7 @@ export function ClaimPass(
       entry.exp = M.desugar(M.createDesugarState(mod), entry.exp)
       entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
     })
-  })
+  }
 
   if (options.dump) projectDumpMods(project, "005-claim")
 }

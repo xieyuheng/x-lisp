@@ -6,11 +6,11 @@ export function UniquifyPass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     for (const definition of M.modOwnDefinitions(mod)) {
       onDefinition(definition)
     }
-  })
+  }
 
   if (options.dump) projectDumpMods(project, "060-uniquify")
 }

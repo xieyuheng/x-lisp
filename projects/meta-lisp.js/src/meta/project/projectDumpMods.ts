@@ -9,10 +9,10 @@ import { textWidth } from "../../config.ts"
 import * as M from "../index.ts"
 
 export function projectDumpMods(project: M.Project, tag: string): void {
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     const code = M.prettyModDefinitions(textWidth, mod)
     projectDumpCode(project, mod, tag, code)
-  })
+  }
 }
 
 function projectDumpCode(

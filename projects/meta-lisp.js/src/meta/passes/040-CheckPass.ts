@@ -13,25 +13,25 @@ export function CheckPass(
     dump: boolean
   },
 ): void {
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     if (mod.isTypeErrorModule) {
       const directory = M.projectSnapshotDirectory(mod.project)
       callWithFile(
         openOutputFile(`${directory}/type-error-modules/${mod.name}.out`),
         (file) => {
           withOutputToFile(file, () => {
-            M.modForEachOwnDefinition(mod, (definition) => {
+            for (const definition of M.modOwnDefinitions(mod)) {
               checkDefinition(definition, options)
-            })
+            }
           })
         },
       )
     } else {
-      M.modForEachOwnDefinition(mod, (definition) => {
+      for (const definition of M.modOwnDefinitions(mod)) {
         checkDefinition(definition, options)
-      })
+      }
     }
-  })
+  }
 
   if (options.dump) projectDumpMods(project, "040-check")
 }

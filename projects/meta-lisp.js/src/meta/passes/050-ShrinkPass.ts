@@ -6,11 +6,11 @@ export function ShrinkPass(
   project: M.Project,
   options: { dump: boolean },
 ): void {
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     for (const definition of M.modOwnDefinitions(mod)) {
       onDefinition(mod, definition)
     }
-  })
+  }
 
   if (options.dump) projectDumpMods(project, "050-shrink")
 }

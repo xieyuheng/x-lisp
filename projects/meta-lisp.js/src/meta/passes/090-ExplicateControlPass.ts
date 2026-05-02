@@ -5,7 +5,7 @@ import * as M from "../index.ts"
 export function ExplicateControlPass(project: M.Project): B.Mod {
   const basicMod = B.createMod()
 
-  M.projectForEachMod(project, (mod) => {
+  for (const mod of project.mods.values()) {
     if (!mod.isTypeErrorModule) {
       for (const definition of M.modOwnDefinitions(mod)) {
         for (const basicDefinition of onDefinition(basicMod, definition)) {
@@ -13,7 +13,7 @@ export function ExplicateControlPass(project: M.Project): B.Mod {
         }
       }
     }
-  })
+  }
 
   return basicMod
 }
