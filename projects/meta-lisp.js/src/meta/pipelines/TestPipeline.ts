@@ -10,7 +10,7 @@ export const StackLispInterpreterPath = Path.join(
   "../../../../stack-lisp.c/src/stack-lisp.exe",
 )
 
-export function projectTest(
+export function TestPipeline(
   project: M.Project,
   options: {
     verbose: boolean
@@ -18,7 +18,7 @@ export function projectTest(
     builtin: boolean
   },
 ): void {
-  M.projectBuild(project, {
+  M.BuildPipeline(project, {
     dump: false,
     basic: false,
     verbose: options.verbose,

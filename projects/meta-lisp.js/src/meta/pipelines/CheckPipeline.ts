@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 
-export function projectCheck(
+export function CheckPipeline(
   project: M.Project,
   options: {
     verbose: boolean

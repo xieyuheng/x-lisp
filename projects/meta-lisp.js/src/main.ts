@@ -21,14 +21,14 @@ router.defineRoutes([
 router.defineHandlers({
   check: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.projectCheck(project, {
+    M.CheckPipeline(project, {
       verbose: options["--verbose"] !== undefined,
     })
   },
 
   build: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.projectBuild(project, {
+    M.BuildPipeline(project, {
       dump: options["--dump"] !== undefined,
       basic: options["--basic"] !== undefined,
       verbose: options["--verbose"] !== undefined,
@@ -37,7 +37,7 @@ router.defineHandlers({
 
   test: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.projectTest(project, {
+    M.TestPipeline(project, {
       builtin: options["--builtin"] !== undefined,
       profile: options["--profile"] !== undefined,
       verbose: options["--verbose"] !== undefined,

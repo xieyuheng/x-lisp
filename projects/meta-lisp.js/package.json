@@ -33,7 +33,7 @@
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
-    "zod": "^4.4.1"
+    "zod": "^4.4.2"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

@@ -1,6 +1,5 @@
-[diary] pass and pipeline
+[meta-lisp.js] `ModFragment`
 
-[meta-lisp.js] pipeline and pass
 [meta-lisp.js] `(import)` as a pass
 [meta-lisp.js] `expand*` as a pass
 [meta-lisp.js] support `(import-all)`

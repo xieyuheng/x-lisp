@@ -11,7 +11,7 @@ import { textWidth } from "../../config.ts"
 import * as Stk from "../../stack/index.ts"
 import * as M from "../index.ts"
 
-export function projectBuild(
+export function BuildPipeline(
   project: M.Project,
   options: {
     dump: boolean
