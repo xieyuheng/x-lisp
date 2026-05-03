@@ -4,9 +4,9 @@ import * as M from "../index.ts"
 
 export function ImportPass(project: M.Project): void {
   for (const fragment of project.fragments.values()) {
-    // if (fragment.name !== "builtin") {
-    //   fragment.stmts.unshift(M.ImportAll("builtin"))
-    // }
+    if (fragment.name !== "builtin") {
+      fragment.stmts.unshift(M.ImportAll("builtin"))
+    }
 
     const scope = createScope()
     for (const stmt of fragment.stmts) {
