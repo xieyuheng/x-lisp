@@ -2,9 +2,11 @@ import * as S from "@xieyuheng/sexp.js"
 
 export const sexpConfig: S.Config = {
   keywords: [
-    ["import", 0],
+    ["import", 1],
     ["import-as", 0],
+    ["import-all", 0],
     ["claim", 1],
+    ["admit", 1],
     ["define", 1],
     ["interface", 0],
     ["extend-interface", 1],
@@ -13,9 +15,7 @@ export const sexpConfig: S.Config = {
     ["define-test", 1],
     ["define-type", 1],
     ["let", 1],
-    ["let1", 2],
-    ["@let1", 2],
-    ["@begin1", 1],
+    ["let*", 1],
     ["the", 1],
     ["assert", 0],
     ["assert-not", 0],
@@ -23,7 +23,6 @@ export const sexpConfig: S.Config = {
     ["assert-equal", 0],
     ["assert-not-equal", 0],
     ["begin", 0],
-    ["@begin", 0],
     ["lambda", 1],
     ["match", 1],
     ["match-many", 1],
@@ -37,7 +36,6 @@ export const sexpConfig: S.Config = {
     ["@record", 0],
     ["@set", 0],
     ["@hash", 0],
-    ["specific", 1],
     ["polymorphic", 1],
   ],
 }
