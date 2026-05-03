@@ -252,7 +252,7 @@ const parseCondClause = S.createRouter<M.CondClause>({
   "(cons* question body)": ({ question, body }, { location }) => {
     if (question.kind === "Symbol" && question.content === "else") {
       return M.CondClause(
-        M.BoolQualifiedVar(true, location),
+        M.QualifiedVar("builtin", "true", location),
         parseBody(body),
         location,
       )

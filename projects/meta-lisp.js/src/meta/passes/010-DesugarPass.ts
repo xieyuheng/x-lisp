@@ -395,24 +395,24 @@ export function desugarBegin(
 }
 
 function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.BoolQualifiedVar(true, location)
+  if (exps.length === 0) return M.QualifiedVar("builtin", "true", location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return M.If(
     head,
     desugarAnd(restExps, location),
-    M.BoolQualifiedVar(false, location),
+    M.QualifiedVar("builtin", "true", location),
     location,
   )
 }
 
 function desugarOr(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.BoolQualifiedVar(false, location)
+  if (exps.length === 0) return M.QualifiedVar("builtin", "false", location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return M.If(
     head,
-    M.BoolQualifiedVar(true, location),
+    M.QualifiedVar("builtin", "true", location),
     desugarOr(restExps, location),
     location,
   )
