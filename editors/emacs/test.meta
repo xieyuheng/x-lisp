@@ -1,15 +1,20 @@
+;; module declaration
+
 (module test)
 
-;; Definitions
+;; definition
+
 (define (add x y) (iadd x y))
 (define-test my-test (= 3 (add 1 2)))
 
-;; Type declarations
+;; type declaration
+
 (claim add (-> int-t int-t int-t))
 (admit cons (-> int-t (list-t int-t) (list-t int-t)))
 (private internal-fn)
 
-;; 控制流
+;; conditional
+
 (if (equal? x 1) 1 2)
 (when (true? x) (println "yes"))
 (unless (false? x) (println "no"))
@@ -20,47 +25,57 @@
   ((var-exp name) name)
   (else (error "unknown")))
 
-;; Binding
+;; binding
+
 (let ((x 1) (y 2)) (iadd x y))
 (let* ((x 1) (y (iadd 1 x))) (iadd x y))
 (begin (println "hello") (println "world"))
 (lambda (x) x)
 (polymorphic (A) (-> A A))
 
-;; 模块
+;; module system
+
 (import builtin foo)
 (import-as builtin b)
 (import-all builtin)
 
-;; Records and types
+;; type
+
 (the int-t 42)
+(-> int-t int-t)
+
+;; record
+
 (extend base :x 1 :y 2)
 (update base :x 3)
 (update! base :y 4)
-(-> int-t int-t)
 (interface (:x int-t :y int-t))
 (extend-interface base (:z int-t))
 
-;; Literals
-[1 2 3]                        ; shorthand for (@list 1 2 3)
+;; literal
+
+[1 2 3]
 [1 2 3
  1 2 3]
-{:x 1 :y 2}                    ; shorthand for (@record :x 1 :y 2)
+{:x 1 :y 2}
 {:x 1
  :y 2}
 (@set 1 2 3)
 (@hash "x" 1 "y" 2)
 (@quote (a b c))
 
-;; Keywords
-[:foo :bar :baz]
+;; keyword
 
-;; Data definitions
+:foo :bar :baz
+
+;; algebraic data type
+
 (define-data (my-list-t E)
   (nil)
   (li (head E) (tail (my-list-t E))))
 
-;; Interface definitions
+;; interface
+
 (define-interface point-t
   :x float-t
   :y float-t)
