@@ -79,11 +79,6 @@
     (,(regexp-opt meta-lisp--binding-keywords 'words)
      . font-lock-keyword-face)
 
-    ;; Special handling for keywords ending with * or !
-    ;; regexp-opt with 'words fails to match let* and update!
-    ("\\<let\\*\\>" . font-lock-keyword-face)
-    ("\\<update\\!\\>" . font-lock-keyword-face)
-
     ;; Module keywords - font-lock-builtin-face
     (,(regexp-opt meta-lisp--module-keywords 'words)
      . font-lock-builtin-face)
@@ -130,41 +125,12 @@
   (setq lisp-body-indent 2)
   (setq lisp-indent-offset 2)
 
-  ;; Add indentation support for [] - no indent for second line
-  ;; [] is shorthand for (@list ...), should not indent body
-  (put '\[ 'lisp-indent-function 'meta-lisp--indent-bracket)
-  (put '\] 'lisp-indent-function 'meta-lisp--indent-bracket)
-
-  ;; Add indentation support for {} - no indent for second line
-  ;; {} is shorthand for (@record ...), should not indent body
-  (put '\{ 'lisp-indent-function 'meta-lisp--indent-bracket)
-  (put '\} 'lisp-indent-function 'meta-lisp--indent-bracket)
-
-  ;; Make * and ! part of symbol for keyword highlighting
-  ;; This ensures "let*" and "update!" are matched as whole words
-  ;; MUST come before font-lock settings
-  (modify-syntax-entry ?* "_")
-  (modify-syntax-entry ?! "_")
-
   ;; Treat [], {}, and () as parentheses for bracket matching
   ;; This enables show-paren-mode and electric-pair-mode for all bracket types
   (modify-syntax-entry ?\[ "(]")
   (modify-syntax-entry ?\] ")[")
   (modify-syntax-entry ?\{ "(}")
   (modify-syntax-entry ?\} "){"))
-
-;;; Indentation function for [] - no indent for second line
-(defun meta-lisp--indent-bracket (indent-point state)
-  "Indentation function for [] brackets.
-Second line is not indented (aligned with [)."
-  (let ((containing-sexp (car (cdr state))))
-    (if (and containing-sexp
-             (eq (char-after containing-sexp) ?\[))
-        (save-excursion
-          (goto-char containing-sexp)
-          (current-column))
-      ;; fallback to lisp-indent-function
-      (lisp-indent-function indent-point state))))
 
 ;;; File association
 (add-to-list 'auto-mode-alist '("\\.meta\\'" . meta-lisp-mode))

@@ -43,7 +43,11 @@
 
 ;; Literals
 [1 2 3]                        ; shorthand for (@list 1 2 3)
+[1 2 3
+ 1 2 3]
 {:x 1 :y 2}                    ; shorthand for (@record :x 1 :y 2)
+{:x 1
+ :y 2}
 (@set 1 2 3)
 (@hash "x" 1 "y" 2)
 (@quote (a b c))
