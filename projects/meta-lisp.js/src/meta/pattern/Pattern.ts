@@ -1,69 +1,40 @@
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function isPattern(mod: M.Mod, exp: M.Exp): boolean {
-  return isVarPattern(mod, exp) || isDataPattern(mod, exp)
+export function isPattern(exp: M.Exp): boolean {
+  return isVarPattern(exp) || isDataPattern(exp)
 }
 
 // VarPattern
 
-export function isVarPattern(mod: M.Mod, exp: M.Exp): boolean {
-  if (exp.kind === "Var") {
-    return !isDataConstructorName(mod, exp.name)
-  }
-
-  return false
+export function isVarPattern(exp: M.Exp): boolean {
+  return exp.kind === "Var"
 }
 
-function isDataConstructorName(mod: M.Mod, name: string): boolean {
-  const definition = M.modLookupDefinition(mod, name)
-  if (definition) {
-    return M.definitionIsDataConstructor(definition)
-  }
-
-  const builtinMod = M.loadBuiltinMod(mod.project)
-  const builtinDefinition = M.modLookupDefinition(builtinMod, name)
-  if (builtinDefinition) {
-    return M.definitionIsDataConstructor(builtinDefinition)
-  }
-
-  return false
-}
-
-export function createVarPattern(mod: M.Mod, name: string) {
-  assert(!isDataConstructorName(mod, name))
+export function createVarPattern(name: string) {
   return M.Var(name)
 }
 
-export function varPatternName(mod: M.Mod, exp: M.Exp) {
-  assert(isVarPattern(mod, exp))
+export function varPatternName(exp: M.Exp) {
+  assert(isVarPattern(exp))
   assert(exp.kind === "Var")
   return exp.name
 }
 
 // DataPattern
 
-export function isDataPattern(mod: M.Mod, exp: M.Exp): boolean {
-  if (exp.kind === "Var") {
-    return isDataConstructorName(mod, exp.name)
-  }
-
+export function isDataPattern(exp: M.Exp): boolean {
   if (exp.kind === "Apply" && exp.target.kind === "Var") {
-    return (
-      isDataConstructorName(mod, exp.target.name) &&
-      exp.args.every((e) => isPattern(mod, e))
-    )
+    return exp.args.every((e) => isPattern(e))
   }
 
   return false
 }
 
 export function createDataPattern(
-  mod: M.Mod,
   dataConstructor: M.DataConstructor,
   args: Array<M.Exp>,
 ): M.Exp {
-  assert(isDataConstructorName(mod, dataConstructor.name))
   return M.Apply(M.Var(dataConstructor.name), args)
 }
 
@@ -71,14 +42,6 @@ export function dataPatternDataConstructor(
   mod: M.Mod,
   exp: M.Exp,
 ): M.DataConstructor {
-  assert(isDataPattern(mod, exp))
-
-  if (exp.kind === "Var") {
-    const dataConstructor = M.modLookupDataConstructor(mod, exp.name)
-    assert(dataConstructor)
-    return dataConstructor
-  }
-
   if (exp.kind === "Apply" && exp.target.kind === "Var") {
     const dataConstructor = M.modLookupDataConstructor(mod, exp.target.name)
     assert(dataConstructor)
@@ -88,8 +51,8 @@ export function dataPatternDataConstructor(
   throw new Error("[dataPatternDataConstructor] unhandled exp")
 }
 
-export function dataPatternArgPatterns(mod: M.Mod, exp: M.Exp): Array<M.Exp> {
-  assert(isDataPattern(mod, exp))
+export function dataPatternArgPatterns(exp: M.Exp): Array<M.Exp> {
+  assert(isDataPattern(exp))
 
   if (exp.kind === "Var") {
     return []
@@ -101,3 +64,7 @@ export function dataPatternArgPatterns(mod: M.Mod, exp: M.Exp): Array<M.Exp> {
 
   throw new Error("[dataPatternArgPatterns] unhandled exp")
 }
+
+// boundNames
+
+// export function patternBoundNames(pattern: Pattern):

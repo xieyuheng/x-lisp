@@ -183,14 +183,6 @@ const parseDataConstructor = S.createRouter<
       location,
     }
   },
-
-  name: ({ name }, { location }) => {
-    return {
-      name: S.symbolContent(name),
-      fields: [],
-      location,
-    }
-  },
 })
 
 const parseDataField = S.createRouter<M.DataField>({

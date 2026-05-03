@@ -7,12 +7,12 @@
 
 (define (my-list-append left right)
   (match left
-    (nil right)
+    ((nil) right)
     ((li head tail) (li head (my-list-append tail right)))))
 
 (define-test my-list-append-test
-  (assert-equal nil (my-list-append nil nil))
+  (assert-equal (nil) (my-list-append (nil) (nil)))
   (assert-equal
-    (li 1 (li 2 (li 3 (li 4 (li 5 (li 6 nil))))))
-    (my-list-append (li 1 (li 2 (li 3 nil)))
-                    (li 4 (li 5 (li 6 nil))))))
+    (li 1 (li 2 (li 3 (li 4 (li 5 (li 6 (nil)))))))
+    (my-list-append (li 1 (li 2 (li 3 (nil))))
+                    (li 4 (li 5 (li 6 (nil)))))))

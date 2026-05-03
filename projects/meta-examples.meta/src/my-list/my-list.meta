@@ -1,5 +1,5 @@
 (module my-list)
 
 (define-data (my-list-t E)
-  nil
+  (nil)
   (li (head E) (tail (my-list-t E))))

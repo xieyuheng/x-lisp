@@ -2,4 +2,4 @@
 
 (define-data (maybe-t A)
   (just (value A))
-  nothing)
+  (nothing))

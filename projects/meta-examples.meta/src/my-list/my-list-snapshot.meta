@@ -1,5 +1,5 @@
 (module my-list)
 
 (define-test my-list-snapshot
-  (println nil)
-  (println (li 1 (li 2 (li 3 nil)))))
+  (println (nil))
+  (println (li 1 (li 2 (li 3 (nil))))))

@@ -7,9 +7,9 @@
 
 (define (my-list-length list)
   (match list
-    (nil 0)
+    ((nil) 0)
     ((li head tail) (iadd 1 (my-list-length tail)))))
 
 (define-test my-list-length-test
-  (assert-equal 0 (my-list-length nil))
-  (assert-equal 3 (my-list-length (li 1 (li 2 (li 3 nil))))))
+  (assert-equal 0 (my-list-length (nil)))
+  (assert-equal 3 (my-list-length (li 1 (li 2 (li 3 (nil)))))))

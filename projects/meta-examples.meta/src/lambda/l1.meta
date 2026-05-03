@@ -6,7 +6,7 @@
   (lambda-exp (parameter symbol-t) (body exp-t)))
 
 (define-data env-t
-  empty-env
+  (empty-env)
   (extend-env (key symbol-t) (value value-t) (rest env-t)))
 
 (claim env-has?
@@ -15,7 +15,7 @@
 
 (define (env-has? name env)
   (match env
-    (empty-env false)
+    ((empty-env) false)
     ((extend-env key value rest)
      (or (equal? key name)
          (env-has? name rest)))))
@@ -26,7 +26,7 @@
 
 (define (env-lookup-of-fail name env)
   (match env
-    (empty-env (error "undefined name"))
+    ((empty-env) (error "undefined name"))
     ((extend-env key value rest)
      (if (equal? key name)
        value

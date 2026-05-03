@@ -1,5 +1,3 @@
-[meta-lisp.js] `(define-data)` -- simple nullary data-constructor
-
 [meta-lisp.js] `ImportPass` -- fix `Match` and remove `scopeDropImportedNames`
 [meta-lisp.js] `ImportPass` -- handle builtin mod by `(import-all)`
 [meta-lisp.js] builtin mod should not be a special case in anywhere else beside `ImportPass`

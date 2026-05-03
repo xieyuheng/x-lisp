@@ -6,13 +6,13 @@
         (maybe-t A))))
 
 (define (list-find p list)
-  (cond ((list-empty? list) nothing)
+  (cond ((list-empty? list) (nothing))
         ((p (car list)) (just (car list)))
         (else (list-find p (cdr list)))))
 
 (define-test list-find-test
   (assert-equal (just 3) (list-find int? ['a 'b 3 'd]))
-  (assert-equal nothing (list-find int? ['a 'b 'c 'd])))
+  (assert-equal (nothing) (list-find int? ['a 'b 'c 'd])))
 
 (claim list-find-index
   (polymorphic (A)

@@ -63,47 +63,29 @@ function expandDataConstructor(
 
   stmts.push(M.Exempt([dataConstructor.name], dataConstructor.location))
 
-  if (dataConstructor.fields.length === 0) {
-    stmts.push(
-      M.DefineVariable(
-        dataConstructor.name,
-        M.Symbol(dataConstructor.name),
-        dataConstructor.location,
-      ),
-    )
+  const parameters = dataConstructor.fields.map((field) => field.name)
+  const args = parameters.map((name) => M.Var(name))
 
-    stmts.push(
-      claimWithParameters(
-        dataConstructor.name,
-        stmt.dataTypeConstructor.parameters,
+  stmts.push(
+    M.DefineFunction(
+      dataConstructor.name,
+      parameters,
+      M.LiteralList([M.Symbol(dataConstructor.name), ...args]),
+      dataConstructor.location,
+    ),
+  )
+
+  stmts.push(
+    claimWithParameters(
+      dataConstructor.name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow(
+        dataConstructor.fields.map((field) => field.type),
         getDataType(stmt),
-        dataConstructor.location,
       ),
-    )
-  } else {
-    const parameters = dataConstructor.fields.map((field) => field.name)
-    const args = parameters.map((name) => M.Var(name))
-    stmts.push(
-      M.DefineFunction(
-        dataConstructor.name,
-        parameters,
-        M.LiteralList([M.Symbol(dataConstructor.name), ...args]),
-        dataConstructor.location,
-      ),
-    )
-
-    stmts.push(
-      claimWithParameters(
-        dataConstructor.name,
-        stmt.dataTypeConstructor.parameters,
-        M.Arrow(
-          dataConstructor.fields.map((field) => field.type),
-          getDataType(stmt),
-        ),
-        dataConstructor.location,
-      ),
-    )
-  }
+      dataConstructor.location,
+    ),
+  )
 
   return stmts
 }
@@ -118,38 +100,24 @@ export function expandDataConstructorPredicate(
 
   stmts.push(M.Exempt([name], dataConstructor.location))
 
-  if (dataConstructor.fields.length === 0) {
-    stmts.push(
-      M.DefineFunction(
-        name,
-        ["value"],
+  stmts.push(
+    M.DefineFunction(
+      name,
+      ["value"],
+      M.And([
+        M.Apply(M.Var("list?"), [M.Var("value")]),
         M.Apply(M.Var("equal?"), [
-          M.Var("value"),
+          M.Apply(M.Var("list-length"), [M.Var("value")]),
+          M.Int(BigInt(dataConstructor.fields.length + 1)),
+        ]),
+        M.Apply(M.Var("equal?"), [
+          M.Apply(M.Var("list-head"), [M.Var("value")]),
           M.Symbol(dataConstructor.name),
         ]),
-        dataConstructor.location,
-      ),
-    )
-  } else {
-    stmts.push(
-      M.DefineFunction(
-        name,
-        ["value"],
-        M.And([
-          M.Apply(M.Var("list?"), [M.Var("value")]),
-          M.Apply(M.Var("equal?"), [
-            M.Apply(M.Var("list-length"), [M.Var("value")]),
-            M.Int(BigInt(dataConstructor.fields.length + 1)),
-          ]),
-          M.Apply(M.Var("equal?"), [
-            M.Apply(M.Var("list-head"), [M.Var("value")]),
-            M.Symbol(dataConstructor.name),
-          ]),
-        ]),
-        dataConstructor.location,
-      ),
-    )
-  }
+      ]),
+      dataConstructor.location,
+    ),
+  )
 
   stmts.push(
     claimWithParameters(

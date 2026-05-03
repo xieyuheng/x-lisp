@@ -3,7 +3,7 @@ src/my-list/my-list-type-error.meta:7:23 -- unification fail
   given type: (my-list/my-list-t int-t)
  5 | 
  6 | (claim my-list (my-list-t int-t))
- 7 | (define my-list (li 1 (li "3" nil)))
-   |                       ~~~~~~~~~~~~   
+ 7 | (define my-list (li 1 (li "3" (nil))))
+   |                       ~~~~~~~~~~~~~~   
  8 | 
 

@@ -1,7 +1,7 @@
 (module l2)
 
 (define (evaluate-and-print exp)
-  (println (evaluate exp empty-env)))
+  (println (evaluate exp (empty-env))))
 
 (define-test l2-test
   (evaluate-and-print

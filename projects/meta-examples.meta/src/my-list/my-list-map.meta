@@ -7,11 +7,11 @@
 
 (define (my-list-map f list)
   (match list
-    (nil nil)
+    ((nil) (nil))
     ((li head tail) (li (f head) (my-list-map f tail)))))
 
 (define-test my-list-map-test
-  (assert-equal nil (my-list-map (iadd 1) nil))
+  (assert-equal (nil) (my-list-map (iadd 1) (nil)))
   (assert-equal
-    (li 2 (li 3 (li 4 nil)))
-    (my-list-map (iadd 1) (li 1 (li 2 (li 3 nil))))))
+    (li 2 (li 3 (li 4 (nil))))
+    (my-list-map (iadd 1) (li 1 (li 2 (li 3 (nil)))))))

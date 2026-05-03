@@ -172,12 +172,14 @@ function onExp(scope: Scope, exp: M.Exp): M.Exp {
     }
 
     case "Lambda": {
-      const newScope = scopeFilterBoundNames(scope, new Set(exp.parameters))
+      const boundNames = new Set(exp.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
       return M.Lambda(exp.parameters, onExp(newScope, exp.body), exp.location)
     }
 
     case "Polymorphic": {
-      const newScope = scopeFilterBoundNames(scope, new Set(exp.parameters))
+      const boundNames = new Set(exp.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
       return M.Polymorphic(
         exp.parameters,
         onExp(newScope, exp.body),
@@ -186,7 +188,8 @@ function onExp(scope: Scope, exp: M.Exp): M.Exp {
     }
 
     case "Let1": {
-      const newScope = scopeFilterBoundNames(scope, new Set([exp.name]))
+      const boundNames = new Set([exp.name])
+      const newScope = scopeFilterBoundNames(scope, boundNames)
       return M.Let1(
         exp.name,
         onExp(scope, exp.rhs),

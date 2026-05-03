@@ -8,8 +8,8 @@
 (define (hash-get-maybe key hash)
   (if (hash-has? key hash)
     (just (hash-get key hash))
-    nothing))
+    (nothing)))
 
 (define-test hash-get-maybe-test
   (assert-equal (just "b") (hash-get-maybe 2 (@hash 1 "a" 2 "b" 3 "c")))
-  (assert-equal nothing (hash-get-maybe 4 (@hash 1 "a" 2 "b" 3 "c"))))
+  (assert-equal (nothing) (hash-get-maybe 4 (@hash 1 "a" 2 "b" 3 "c"))))

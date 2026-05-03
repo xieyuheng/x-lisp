@@ -7,18 +7,18 @@
 
 (define (my-list-adjacent-dedup list)
   (match list
-    (nil nil)
-    ((li head nil) (li head nil))
+    ((nil) (nil))
+    ((li head (nil)) (li head (nil)))
     ((li first (li second rest))
      (if (equal? first second)
        (my-list-adjacent-dedup (li second rest))
        (li first (my-list-adjacent-dedup (li second rest)))))))
 
 (define-test my-list-adjacent-dedup-test
-  (assert-equal nil (my-list-adjacent-dedup nil))
+  (assert-equal (nil) (my-list-adjacent-dedup (nil)))
   (assert-equal
-    (li 1 (li 2 (li 3 (li 1 (li 2 (li 3 nil))))))
-    (my-list-adjacent-dedup (li 1 (li 2 (li 3 (li 1 (li 2 (li 3 nil))))))))
+    (li 1 (li 2 (li 3 (li 1 (li 2 (li 3 (nil)))))))
+    (my-list-adjacent-dedup (li 1 (li 2 (li 3 (li 1 (li 2 (li 3 (nil)))))))))
   (assert-equal
-    (li 1 (li 2 (li 3 nil)))
-    (my-list-adjacent-dedup (li 1 (li 1 (li 2 (li 2 (li 3 (li 3 nil)))))))))
+    (li 1 (li 2 (li 3 (nil))))
+    (my-list-adjacent-dedup (li 1 (li 1 (li 2 (li 2 (li 3 (li 3 (nil))))))))))

@@ -30,7 +30,7 @@ export function simplifyMatch(
     return clause.body
   }
 
-  if (clauses.every((clause) => clauseHeadIsVarPattern(mod, clause))) {
+  if (clauses.every(clauseHeadIsVarPattern)) {
     const [target, ...restTargets] = targets
     return simplifyMatch(
       mod,
@@ -49,7 +49,7 @@ export function simplifyMatch(
     )
   }
 
-  if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
+  if (clauses.every(clauseHeadIsDataPattern)) {
     const [target, ...restTargets] = targets
 
     const groups = groupClausesByHeadDataConstructor(mod, clauses)
@@ -111,14 +111,14 @@ export function simplifyMatch(
   )
 }
 
-function clauseHeadIsVarPattern(mod: M.Mod, clause: M.MatchClause): boolean {
+function clauseHeadIsVarPattern(clause: M.MatchClause): boolean {
   assert(clause.patterns.length > 0)
-  return M.isVarPattern(mod, clause.patterns[0])
+  return M.isVarPattern(clause.patterns[0])
 }
 
-function clauseHeadIsDataPattern(mod: M.Mod, clause: M.MatchClause): boolean {
+function clauseHeadIsDataPattern(clause: M.MatchClause): boolean {
   assert(clause.patterns.length > 0)
-  return M.isDataPattern(mod, clause.patterns[0])
+  return M.isDataPattern(clause.patterns[0])
 }
 
 type GroupByHeadDataConstructor = {
@@ -158,7 +158,7 @@ function groupClausesByHeadDataConstructor(
           dataConstructor,
         )
       ) {
-        const argPatterns = M.dataPatternArgPatterns(mod, pattern)
+        const argPatterns = M.dataPatternArgPatterns(pattern)
         const newPatterns = [...argPatterns, ...restPatterns]
         const newClause = M.MatchClause(
           newPatterns,
@@ -210,8 +210,8 @@ function groupClausesByHeadPatternKind(
 
     const group = groups[groups.length - 1]
     if (
-      [clause, ...group].every((c) => clauseHeadIsVarPattern(mod, c)) ||
-      [clause, ...group].every((c) => clauseHeadIsDataPattern(mod, c))
+      [clause, ...group].every(clauseHeadIsVarPattern) ||
+      [clause, ...group].every(clauseHeadIsDataPattern)
     ) {
       group.push(clause)
       continue
