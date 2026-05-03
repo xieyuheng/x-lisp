@@ -12,7 +12,7 @@ export function loadModFragment(path: string): ModFragment {
   const code = fs.readFileSync(path, "utf-8")
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
-  const { modName, isTypeErrorModule } = findModName(stmts)
+  const { modName, isTypeErrorModule } = findModName(path, stmts)
 
   return {
     modName,
@@ -21,7 +21,10 @@ export function loadModFragment(path: string): ModFragment {
   }
 }
 
-function findModName(stmts: Array<M.Stmt>): {
+function findModName(
+  path: string,
+  stmts: Array<M.Stmt>,
+): {
   modName: string
   isTypeErrorModule?: boolean
 } {
@@ -35,7 +38,9 @@ function findModName(stmts: Array<M.Stmt>): {
     }
   }
 
-  throw new Error(`[loadModFragment] no module name`)
+  let message = `[loadModFragment] expect (module) statement in module fragment`
+  message += `\n  path: ${path}`
+  throw new Error(message)
 }
 
 export function modFragmentNames(fragment: ModFragment): Set<string> {
