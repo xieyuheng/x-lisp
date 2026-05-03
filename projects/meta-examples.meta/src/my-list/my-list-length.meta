@@ -1,9 +1,12 @@
 (module my-list)
 
-(claim my-list-length
-  (polymorphic (E)
-    (-> (my-list-t E)
-        int-t)))
+;; - can infer type of recursive function.
+;; - assume type variables are the same during recursive call.
+
+;; (claim my-list-length
+;;   (polymorphic (E)
+;;     (-> (my-list-t E)
+;;         int-t)))
 
 (define (my-list-length list)
   (match list

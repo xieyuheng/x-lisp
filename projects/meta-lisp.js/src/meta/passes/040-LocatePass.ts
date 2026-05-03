@@ -14,7 +14,7 @@ export function LocatePass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "030-locate")
+  if (options.dump) projectDumpMods(project, "040-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {

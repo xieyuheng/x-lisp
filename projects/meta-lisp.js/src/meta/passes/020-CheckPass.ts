@@ -33,7 +33,7 @@ export function CheckPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "040-check")
+  if (options.dump) projectDumpMods(project, "020-check")
 }
 
 function checkDefinition(

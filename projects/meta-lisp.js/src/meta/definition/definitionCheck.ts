@@ -131,8 +131,8 @@ function checkClaimedType(mod: M.Mod, exp: M.Exp, type: M.Value): void {
 }
 
 function checkByInfer(mod: M.Mod, name: string, exp: M.Exp): void {
-  const ctx = M.emptyCtx()
-  // const ctx = M.ctxPut(M.emptyCtx(), name, M.createFreshVarType(name))
+  // const ctx = M.emptyCtx()
+  const ctx = M.ctxPut(M.emptyCtx(), name, M.createFreshVarType(name))
   const effect = M.typeInfer(mod, ctx, exp)
   const result = effect(M.emptySubst())
   if (result.kind === "InferError") {

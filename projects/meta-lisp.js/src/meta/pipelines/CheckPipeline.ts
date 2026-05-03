@@ -12,7 +12,7 @@ export function CheckPipeline(
   M.ExecutePass(project)
   M.ClaimPass(project, { dump: options.dump })
   M.DesugarPass(project, { dump: options.dump })
+  M.CheckPass(project, { verbose: options.verbose, dump: options.dump })
   M.QualifyPass(project, { dump: options.dump })
   M.LocatePass(project, { dump: options.dump })
-  M.CheckPass(project, { verbose: options.verbose, dump: options.dump })
 }
