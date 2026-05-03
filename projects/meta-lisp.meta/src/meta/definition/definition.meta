@@ -1,28 +1,5 @@
 (module meta)
 
-(define-data data-type-constructor-t
-  (data-type-constructor
-   (definition definition-t)
-   (name symbol-t)
-   (parameters (list-t symbol-t))))
-
-(define-data data-constructor-t
-  (data-constructor
-   (definition definition-t)
-   (name symbol-t)
-   (fields (list-t data-field-t))))
-
-(define-data data-field-t
-  (data-field
-   (name symbol-t)
-   (type exp-t)))
-
-(define-data interface-constructor-t
-  (interface-constructor
-   (definition definition-t)
-   (name symbol-t)
-   (parameters (list-t symbol-t))))
-
 (define-data definition-t
   (primitive-function-definition
    (mod mod-t)
@@ -79,3 +56,22 @@
    (interface-constructor interface-constructor-t)
    (attribute-types (hash-t keyword-t exp-t))
    (location source-location-t)))
+
+(define-interface data-type-constructor-t
+  :definition definition-t
+  :name symbol-t
+  :parameters (list-t symbol-t))
+
+(define-interface data-constructor-t
+  :definition definition-t
+  :name symbol-t
+  :fields (list-t data-field-t))
+
+(define-interface data-field-t
+  :name symbol-t
+  :type exp-t)
+
+(define-interface interface-constructor-t
+  :definition definition-t
+  :name symbol-t
+  :parameters (list-t symbol-t))
