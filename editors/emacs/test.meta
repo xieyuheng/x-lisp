@@ -1,10 +1,10 @@
 (module test)
 
-;; 定义类
+;; Definitions
 (define (add x y) (iadd x y))
 (define-test my-test (= 3 (add 1 2)))
 
-;; 类型声明
+;; Type declarations
 (claim add (-> int-t int-t int-t))
 (admit cons (-> int-t (list-t int-t) (list-t int-t)))
 (private internal-fn)
@@ -20,7 +20,7 @@
   ((var-exp name) name)
   (else (error "unknown")))
 
-;; 绑定
+;; Binding
 (let ((x 1) (y 2)) (iadd x y))
 (let* ((x 1) (y (iadd 1 x))) (iadd x y))
 (begin (println "hello") (println "world"))
@@ -32,7 +32,7 @@
 (import-as builtin b)
 (import-all builtin)
 
-;; 记录与类型
+;; Records and types
 (the int-t 42)
 (extend base :x 1 :y 2)
 (update base :x 3)
@@ -41,7 +41,7 @@
 (interface (:x int-t :y int-t))
 (extend-interface base (:z int-t))
 
-;; 字面量
+;; Literals
 (list 1 2 3)
 (@record :x 1 :y 2)
 (@set 1 2 3)
@@ -51,12 +51,12 @@
 ;; Keywords
 [:foo :bar :baz]
 
-;; 数据定义
+;; Data definitions
 (define-data (my-list-t E)
   (nil)
   (li (head E) (tail (my-list-t E))))
 
-;; 接口定义
+;; Interface definitions
 (define-interface point-t
   :x float-t
   :y float-t)
