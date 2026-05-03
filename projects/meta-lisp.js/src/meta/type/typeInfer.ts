@@ -33,35 +33,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "Var": {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
-
-        const claimedType = M.modLookupClaimedType(mod, exp.name)
-        if (claimedType) return M.okInferEffect(claimedType)(subst)
-
-        const definition = M.modLookupDefinition(mod, exp.name)
-        if (definition === undefined) {
-          let message = `undefined variable`
-          message += `\n  name: ${exp.name}`
-          return M.errorInferEffect(exp, message)(subst)
-        }
-
-        {
-          // - for mutual recursive function
-          const inferredType = M.modLookupInferredType(mod, exp.name)
-          if (inferredType) return M.okInferEffect(inferredType)(subst)
-        }
-
-        M.definitionCheck(definition)
-
-        {
-          const inferredType = M.modLookupInferredType(mod, exp.name)
-          if (inferredType) return M.okInferEffect(inferredType)(subst)
-        }
-
-        let message = `[typeInfer/Var] internal error: infer fail after check`
-        message += `\n  name: ${exp.name}`
-        if (exp.location)
-          throw new S.ErrorWithSourceLocation(message, exp.location)
-        else throw new Error(message)
+        return typeInferVarInMod(mod, exp.name, exp)(subst)
       }
 
       case "QualifiedVar": {
@@ -73,26 +45,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         }
-
-        const claimedType = M.modLookupClaimedType(qualifiedMod, exp.name)
-        if (claimedType) return M.okInferEffect(claimedType)(subst)
-
-        const definition = M.modLookupDefinition(qualifiedMod, exp.name)
-        if (definition === undefined) {
-          let message = `undefined qualified variable`
-          message += `\n  name: ${exp.modName}/${exp.name}`
-          return M.errorInferEffect(exp, message)(subst)
-        }
-
-        M.definitionCheck(definition)
-        const inferredType = M.modLookupInferredType(qualifiedMod, exp.name)
-        if (inferredType) return M.okInferEffect(inferredType)(subst)
-
-        let message = `[typeInfer/QualifiedVar] internal error: infer fail after check`
-        message += `\n  name: ${exp.modName}/${exp.name}`
-        if (exp.location)
-          throw new S.ErrorWithSourceLocation(message, exp.location)
-        else throw new Error(message)
+        return typeInferVarInMod(qualifiedMod, exp.name, exp)(subst)
       }
 
       case "Apply": {
@@ -363,6 +316,43 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.errorInferEffect(exp, message)(subst)
       }
     }
+  }
+}
+
+function typeInferVarInMod(
+  mod: M.Mod,
+  name: string,
+  exp: M.Exp,
+): M.InferEffect {
+  return (subst) => {
+    const claimedType = M.modLookupClaimedType(mod, name)
+    if (claimedType) return M.okInferEffect(claimedType)(subst)
+
+    const definition = M.modLookupDefinition(mod, name)
+    if (definition === undefined) {
+      let message = `undefined variable`
+      message += `\n  name: ${mod.name}/${name}`
+      return M.errorInferEffect(exp, message)(subst)
+    }
+
+    {
+      // - for mutual recursive function
+      const inferredType = M.modLookupInferredType(mod, name)
+      if (inferredType) return M.okInferEffect(inferredType)(subst)
+    }
+
+    M.definitionCheck(definition)
+
+    {
+      const inferredType = M.modLookupInferredType(mod, name)
+      if (inferredType) return M.okInferEffect(inferredType)(subst)
+    }
+
+    let message = `[typeInferVarInMod] internal error: infer fail after check`
+    message += `\n  module name: ${mod.name}`
+    message += `\n  name: ${name}`
+    if (exp.location) throw new S.ErrorWithSourceLocation(message, exp.location)
+    else throw new Error(message)
   }
 }
 

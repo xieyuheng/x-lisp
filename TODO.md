@@ -1,5 +1,5 @@
-[meta-lisp.js] refactor `evaluate` on `Var` and `QualifiedVar`
-[meta-lisp.js] refactor `typeInfer` on `Var` and `QualifiedVar`
+[meta-lisp.js] record builtin functions are untyped (not unchecked)
+[meta-lisp.js] `(claim)` vs `(admit)` -- remove `(exempt)`
 
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
