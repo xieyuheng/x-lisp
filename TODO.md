@@ -1,5 +1,3 @@
-[meta-lisp.js] infer type of mutual recursive function
-
 [meta-lisp.js] refactor `evaluate` on `Var` and `QualifiedVar`
 [meta-lisp.js] refactor `typeInfer` on `Var` and `QualifiedVar`
 

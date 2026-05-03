@@ -129,12 +129,6 @@ export function modLookupInferredType(
 }
 
 export function modPutInferredType(mod: Mod, name: string, type: Value): void {
-  if (mod.inferredTypes.has(name)) {
-    let message = `[modPutInferredType] name already inferred`
-    message += `\n  name: ${name}`
-    throw new Error(message)
-  }
-
   mod.inferredTypes.set(name, type)
 }
 

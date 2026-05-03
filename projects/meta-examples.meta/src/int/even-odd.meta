@@ -1,11 +1,11 @@
 (module test-suite)
 
+;; can infer type of mutual recursive function
+
 (define (even? n)
   (if (equal? n 0)
     true
     (odd? (isub n 1))))
-
-(claim odd? (-> int-t bool-t))
 
 (define (odd? n)
   (if (equal? n 0)

@@ -44,9 +44,18 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           return M.errorInferEffect(exp, message)(subst)
         }
 
+        {
+          // - for mutual recursive function
+          const inferredType = M.modLookupInferredType(mod, exp.name)
+          if (inferredType) return M.okInferEffect(inferredType)(subst)
+        }
+
         M.definitionCheck(definition)
-        const inferredType = M.modLookupInferredType(mod, exp.name)
-        if (inferredType) return M.okInferEffect(inferredType)(subst)
+
+        {
+          const inferredType = M.modLookupInferredType(mod, exp.name)
+          if (inferredType) return M.okInferEffect(inferredType)(subst)
+        }
 
         let message = `[typeInfer/Var] internal error: infer fail after check`
         message += `\n  name: ${exp.name}`
