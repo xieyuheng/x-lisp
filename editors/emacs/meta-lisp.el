@@ -117,7 +117,7 @@
 ;;;###autoload
 (define-derived-mode meta-lisp-mode lisp-mode "meta-lisp"
   "Major mode for editing meta-lisp files.
-\\{meta-lisp-mode-map}"
+\{meta-lisp-mode-map}"
 
   ;; Syntax highlighting
   (setq font-lock-defaults '(meta-lisp--font-lock-keywords))
@@ -130,15 +130,19 @@
   (setq lisp-body-indent 2)
   (setq lisp-indent-offset 2)
 
-  ;; Add indentation support for [] and {}
-  ;; lisp-mode only handles () by default
-  (put '\[ 'lisp-indent-function 'lisp-indent-function)
-  (put '\] 'lisp-indent-function 'lisp-indent-function)
-  (put '\{ 'lisp-indent-function 'lisp-indent-function)
-  (put '\} 'lisp-indent-function 'lisp-indent-function)
+  ;; Add indentation support for [] - no indent for second line
+  ;; [] is shorthand for (@list ...), should not indent body
+  (put '\[ 'lisp-indent-function 'meta-lisp--indent-bracket)
+  (put '\] 'lisp-indent-function 'meta-lisp--indent-bracket)
+
+  ;; Add indentation support for {} - no indent for second line
+  ;; {} is shorthand for (@record ...), should not indent body
+  (put '\{ 'lisp-indent-function 'meta-lisp--indent-bracket)
+  (put '\} 'lisp-indent-function 'meta-lisp--indent-bracket)
 
   ;; Make * and ! part of symbol for keyword highlighting
   ;; This ensures "let*" and "update!" are matched as whole words
+  ;; MUST come before font-lock settings
   (modify-syntax-entry ?* "_")
   (modify-syntax-entry ?! "_")
 
@@ -148,6 +152,19 @@
   (modify-syntax-entry ?\] ")[")
   (modify-syntax-entry ?\{ "(}")
   (modify-syntax-entry ?\} "){"))
+
+;;; Indentation function for [] - no indent for second line
+(defun meta-lisp--indent-bracket (indent-point state)
+  "Indentation function for [] brackets.
+Second line is not indented (aligned with [)."
+  (let ((containing-sexp (car (cdr state))))
+    (if (and containing-sexp
+             (eq (char-after containing-sexp) ?\[))
+        (save-excursion
+          (goto-char containing-sexp)
+          (current-column))
+      ;; fallback to lisp-indent-function
+      (lisp-indent-function indent-point state))))
 
 ;;; File association
 (add-to-list 'auto-mode-alist '("\\.meta\\'" . meta-lisp-mode))
