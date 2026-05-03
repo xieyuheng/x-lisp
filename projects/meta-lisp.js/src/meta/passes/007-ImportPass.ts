@@ -31,7 +31,7 @@ function createScope(): Scope {
 
 function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   if (stmt.kind === "Import") {
-    const privateNames = collectPrivateNamesFromProject(project, stmt.modName)
+    const privateNames = collectPrivateNames(project, stmt.modName)
     for (const name of stmt.names) {
       if (privateNames.has(name)) continue
       scope.importedNames.set(name, { modName: stmt.modName, name })
@@ -44,7 +44,7 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
 
   if (stmt.kind === "ImportAll") {
     const names = new Set<string>()
-    const privateNames = collectPrivateNamesFromProject(project, stmt.modName)
+    const privateNames = collectPrivateNames(project, stmt.modName)
     for (const fragment of project.fragments.values()) {
       if (fragment.modName === stmt.modName) {
         for (const name of M.modFragmentNames(fragment)) {
@@ -60,7 +60,7 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   }
 }
 
-function collectPrivateNamesFromProject(
+function collectPrivateNames(
   project: M.Project,
   modName: string,
 ): Set<string> {
@@ -76,6 +76,7 @@ function collectPrivateNamesFromProject(
       }
     }
   }
+  
   return privateNames
 }
 
