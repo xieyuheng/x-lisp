@@ -60,10 +60,7 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   }
 }
 
-function collectPrivateNames(
-  project: M.Project,
-  modName: string,
-): Set<string> {
+function collectPrivateNames(project: M.Project, modName: string): Set<string> {
   const privateNames = new Set<string>()
   for (const fragment of project.fragments.values()) {
     if (fragment.modName === modName) {
@@ -76,7 +73,7 @@ function collectPrivateNames(
       }
     }
   }
-  
+
   return privateNames
 }
 
