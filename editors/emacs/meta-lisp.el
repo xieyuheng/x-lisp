@@ -124,7 +124,14 @@
   ;; Make * and ! part of symbol for keyword highlighting
   ;; This ensures "let*" and "update!" are matched as whole words
   (modify-syntax-entry ?* "_")
-  (modify-syntax-entry ?! "_"))
+  (modify-syntax-entry ?! "_")
+
+  ;; Treat [], {}, and () as parentheses for bracket matching
+  ;; This enables show-paren-mode and electric-pair-mode for all bracket types
+  (modify-syntax-entry ?\[ "(]")
+  (modify-syntax-entry ?\] ")[")
+  (modify-syntax-entry ?\{ "(}")
+  (modify-syntax-entry ?\} "){"))
 
 ;;; File association
 (add-to-list 'auto-mode-alist '("\\.meta\\'" . meta-lisp-mode))
