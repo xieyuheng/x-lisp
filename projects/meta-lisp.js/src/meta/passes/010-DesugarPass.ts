@@ -401,7 +401,7 @@ function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
   return M.If(
     head,
     desugarAnd(restExps, location),
-    M.QualifiedVar("builtin", "true", location),
+    M.QualifiedVar("builtin", "false", location),
     location,
   )
 }

@@ -1,6 +1,4 @@
-[meta-lisp.js] 区分 untyped（比如 record-put）和 unchecked（现在的 exempt）
-
-[meta-lisp.js] error report for unclaimed recursive definition
+[meta-lisp.js] infer type of (mutual) recursive function
 
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
