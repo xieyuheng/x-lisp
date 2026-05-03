@@ -118,14 +118,6 @@
   ;; Syntax highlighting
   (setq font-lock-defaults '(meta-lisp--font-lock-keywords))
 
-  ;; Comment style (same as lisp)
-  (setq comment-start ";")
-  (setq comment-end "")
-
-  ;; Indentation (inherit from lisp-mode)
-  (setq lisp-body-indent 2)
-  (setq lisp-indent-offset 2)
-
   ;; Treat [], {}, and () as parentheses for bracket matching
   ;; This enables show-paren-mode and electric-pair-mode for all bracket types
   (modify-syntax-entry ?\[ "(]")
