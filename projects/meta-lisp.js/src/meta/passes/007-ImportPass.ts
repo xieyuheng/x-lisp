@@ -38,8 +38,10 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   if (stmt.kind === "ImportAll") {
     const names = new Set<string>()
     for (const fragment of project.fragments.values()) {
-      for (const name of fragment.names) {
-        names.add(name)
+      if (fragment.modName === stmt.modName) {
+        for (const name of fragment.names) {
+          names.add(name)
+        }
       }
     }
 

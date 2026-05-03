@@ -1,0 +1,8 @@
+(module nat)
+
+(define zero 0)
+
+(define one 1)
+
+(define (add1 n)
+  (iadd 1 n))

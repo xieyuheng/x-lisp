@@ -1,0 +1,12 @@
+(module nat-test)
+
+(import-all nat)
+
+(define-test nat-test
+  (assert-equal nat/zero 0)
+  (assert-equal nat/one 1)
+  (assert-equal (nat/add1 1) 2)
+
+  (assert-equal zero 0)
+  (assert-equal one 1)
+  (assert-equal (add1 1) 2))
