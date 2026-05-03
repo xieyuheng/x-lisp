@@ -70,16 +70,24 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.DeclareTypeErrorModule(S.symbolContent(name), location)
   },
 
-  "(cons* 'import path entries)": ({ path, entries }, { location }) => {
+  "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
     return M.Import(
-      S.symbolContent(path),
+      S.symbolContent(modName),
       S.listElements(entries).map(S.symbolContent),
       location,
     )
   },
 
-  "`(import-as ,path ,prefix)": ({ path, prefix }, { location }) => {
-    return M.ImportAs(S.symbolContent(path), S.symbolContent(prefix), location)
+  "`(import-as ,modName ,prefix)": ({ modName, prefix }, { location }) => {
+    return M.ImportAs(
+      S.symbolContent(modName),
+      S.symbolContent(prefix),
+      location,
+    )
+  },
+
+  "`(import-all ,modName)": ({ modName, prefix }, { location }) => {
+    return M.ImportAll(S.symbolContent(modName), location)
   },
 
   "(cons* 'define-data head constructors)": (

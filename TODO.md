@@ -1,4 +1,3 @@
-[meta-lisp.js] parse `(import-all)`
 [meta-lisp.js] `ImportPass` -- support `(import-all)`
 
 [meta-lisp.js] `ImportPass` -- handle builtin mod by `(import-all)`
