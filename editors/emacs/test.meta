@@ -49,14 +49,14 @@
 (@quote (a b c))
 
 ;; Keywords
-(:foo :bar :baz)
+[:foo :bar :baz]
 
 ;; 数据定义
-(define-data (list-t E)
-  nil
-  (cons (head E) (tail (list-t E))))
+(define-data (my-list-t E)
+  (nil)
+  (li (head E) (tail (my-list-t E))))
 
 ;; 接口定义
-(define-interface (point-t)
+(define-interface point-t
   :x float-t
   :y float-t)

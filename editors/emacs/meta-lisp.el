@@ -125,6 +125,13 @@
   (setq lisp-body-indent 2)
   (setq lisp-indent-offset 2)
 
+  ;; Add indentation support for [] and {}
+  ;; lisp-mode only handles () by default
+  (put '\[ 'lisp-indent-function 'lisp-indent-function)
+  (put '\] 'lisp-indent-function 'lisp-indent-function)
+  (put '\{ 'lisp-indent-function 'lisp-indent-function)
+  (put '\} 'lisp-indent-function 'lisp-indent-function)
+
   ;; Make * and ! part of symbol for keyword highlighting
   ;; This ensures "let*" and "update!" are matched as whole words
   (modify-syntax-entry ?* "_")
