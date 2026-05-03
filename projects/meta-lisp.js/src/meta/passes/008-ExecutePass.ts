@@ -30,6 +30,11 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     M.modClaim(mod, stmt.name, stmt.type)
   }
 
+  if (stmt.kind === "Admit") {
+    M.modClaim(mod, stmt.name, stmt.type)
+    mod.exempted.add(stmt.name)
+  }
+
   if (stmt.kind === "DeclarePrimitiveFunction") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {

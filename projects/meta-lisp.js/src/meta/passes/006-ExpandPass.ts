@@ -18,16 +18,16 @@ function getDataType(stmt: M.DefineData): M.Exp {
   }
 }
 
-function claimWithParameters(
+function admitWithParameters(
   name: string,
   parameters: Array<string>,
   type: M.Exp,
   location?: S.SourceLocation,
 ): M.Stmt {
   if (parameters.length === 0) {
-    return M.Claim(name, type, location)
+    return M.Admit(name, type, location)
   } else {
-    return M.Claim(name, M.Polymorphic(parameters, type), location)
+    return M.Admit(name, M.Polymorphic(parameters, type), location)
   }
 }
 
@@ -61,28 +61,26 @@ function expandDataConstructor(
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
-  stmts.push(M.Exempt([dataConstructor.name], dataConstructor.location))
-
   const parameters = dataConstructor.fields.map((field) => field.name)
   const args = parameters.map((name) => M.Var(name))
 
   stmts.push(
-    M.DefineFunction(
-      dataConstructor.name,
-      parameters,
-      M.LiteralList([M.Symbol(dataConstructor.name), ...args]),
-      dataConstructor.location,
-    ),
-  )
-
-  stmts.push(
-    claimWithParameters(
+    admitWithParameters(
       dataConstructor.name,
       stmt.dataTypeConstructor.parameters,
       M.Arrow(
         dataConstructor.fields.map((field) => field.type),
         getDataType(stmt),
       ),
+      dataConstructor.location,
+    ),
+  )
+
+  stmts.push(
+    M.DefineFunction(
+      dataConstructor.name,
+      parameters,
+      M.LiteralList([M.Symbol(dataConstructor.name), ...args]),
       dataConstructor.location,
     ),
   )
@@ -98,7 +96,14 @@ export function expandDataConstructorPredicate(
 
   const name = `${dataConstructor.name}?`
 
-  stmts.push(M.Exempt([name], dataConstructor.location))
+  stmts.push(
+    admitWithParameters(
+      name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow([getDataType(stmt)], M.Var("bool-t")),
+      dataConstructor.location,
+    ),
+  )
 
   stmts.push(
     M.DefineFunction(
@@ -119,15 +124,6 @@ export function expandDataConstructorPredicate(
     ),
   )
 
-  stmts.push(
-    claimWithParameters(
-      name,
-      stmt.dataTypeConstructor.parameters,
-      M.Arrow([getDataType(stmt)], M.Var("bool-t")),
-      dataConstructor.location,
-    ),
-  )
-
   return stmts
 }
 
@@ -141,22 +137,20 @@ function expandDataGetter(
 
   const name = `${dataConstructor.name}-${field.name}`
 
-  stmts.push(M.Exempt([name], field.location))
+  stmts.push(
+    admitWithParameters(
+      name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow([getDataType(stmt)], field.type),
+      field.location,
+    ),
+  )
 
   stmts.push(
     M.DefineFunction(
       name,
       ["target"],
       M.Apply(M.Var("list-get"), [M.Int(BigInt(index + 1)), M.Var("target")]),
-      field.location,
-    ),
-  )
-
-  stmts.push(
-    claimWithParameters(
-      name,
-      stmt.dataTypeConstructor.parameters,
-      M.Arrow([getDataType(stmt)], field.type),
       field.location,
     ),
   )
@@ -204,7 +198,14 @@ function expandDataPutterHelper(
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
-  stmts.push(M.Exempt([name], field.location))
+  stmts.push(
+    admitWithParameters(
+      name,
+      stmt.dataTypeConstructor.parameters,
+      M.Arrow([field.type, getDataType(stmt)], getDataType(stmt)),
+      field.location,
+    ),
+  )
 
   stmts.push(
     M.DefineFunction(
@@ -215,15 +216,6 @@ function expandDataPutterHelper(
         M.Var("value"),
         M.Var("target"),
       ]),
-      field.location,
-    ),
-  )
-
-  stmts.push(
-    claimWithParameters(
-      name,
-      stmt.dataTypeConstructor.parameters,
-      M.Arrow([field.type, getDataType(stmt)], getDataType(stmt)),
       field.location,
     ),
   )

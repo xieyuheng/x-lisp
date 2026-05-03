@@ -115,6 +115,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.Claim(S.symbolContent(name), parseExp(type), location)
   },
 
+  "`(admit ,name ,type)": ({ name, type }, { location }) => {
+    return M.Admit(S.symbolContent(name), parseExp(type), location)
+  },
+
   "`(declare-primitive-function ,name ,arity)": (
     { name, arity },
     { location },

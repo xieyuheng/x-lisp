@@ -17,6 +17,7 @@ export type Stmt =
   | DefineData
   | DefineInterface
   | Claim
+  | Admit
   | Exempt
   | DeclareModule
   | DeclareTypeErrorModule
@@ -220,6 +221,26 @@ export function Claim(
 ): Claim {
   return {
     kind: "Claim",
+    name,
+    type,
+    location,
+  }
+}
+
+export type Admit = {
+  kind: "Admit"
+  name: string
+  type: Exp
+  location?: SourceLocation
+}
+
+export function Admit(
+  name: string,
+  type: Exp,
+  location?: SourceLocation,
+): Admit {
+  return {
+    kind: "Admit",
     name,
     type,
     location,

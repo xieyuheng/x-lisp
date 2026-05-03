@@ -77,6 +77,10 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
       return M.Claim(stmt.name, onExp(scope, stmt.type), stmt.location)
     }
 
+    case "Admit": {
+      return M.Admit(stmt.name, onExp(scope, stmt.type), stmt.location)
+    }
+
     case "DefineFunction": {
       const boundNames = new Set(stmt.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
