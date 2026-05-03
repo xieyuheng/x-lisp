@@ -1,5 +1,3 @@
-[meta-lisp.js] `ImportPass` -- support `(import-all)`
-
 [meta-lisp.js] `ImportPass` -- handle builtin mod by `(import-all)`
 
 - builtin mod should not be a special case in anywhere else beside `ImportPass`

@@ -5,7 +5,7 @@ export function ImportPass(project: M.Project): void {
   for (const fragment of project.fragments.values()) {
     const scope = createScope()
     for (const stmt of fragment.stmts) {
-      scopeExecuteStmt(scope, stmt)
+      executeImport(project, scope, stmt)
     }
 
     fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
@@ -24,7 +24,7 @@ function createScope(): Scope {
   }
 }
 
-function scopeExecuteStmt(scope: Scope, stmt: M.Stmt): void {
+function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   if (stmt.kind === "Import") {
     for (const name of stmt.names) {
       scope.importedNames.set(name, { modName: stmt.modName, name })
@@ -33,6 +33,19 @@ function scopeExecuteStmt(scope: Scope, stmt: M.Stmt): void {
 
   if (stmt.kind === "ImportAs") {
     scope.importedPrefixes.set(stmt.prefix, { modName: stmt.modName })
+  }
+
+  if (stmt.kind === "ImportAll") {
+    const names = new Set<string>()
+    for (const fragment of project.fragments.values()) {
+      for (const name of fragment.names) {
+        names.add(name)
+      }
+    }
+
+    for (const name of names) {
+      scope.importedNames.set(name, { modName: stmt.modName, name })
+    }
   }
 }
 
