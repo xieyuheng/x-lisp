@@ -79,6 +79,11 @@
     (,(regexp-opt meta-lisp--binding-keywords 'words)
      . font-lock-keyword-face)
 
+    ;; Special handling for keywords ending with * or !
+    ;; regexp-opt with 'words fails to match let* and update!
+    ("\\<let\\*\\>" . font-lock-keyword-face)
+    ("\\<update\\!\\>" . font-lock-keyword-face)
+
     ;; Module keywords - font-lock-builtin-face
     (,(regexp-opt meta-lisp--module-keywords 'words)
      . font-lock-builtin-face)
