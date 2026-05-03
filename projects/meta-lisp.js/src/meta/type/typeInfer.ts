@@ -65,7 +65,9 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
 
         let message = `[typeInfer/QualifiedVar] internal error: infer fail after check`
         message += `\n  name: ${exp.modName}/${exp.name}`
-        throw new Error(message)
+        if (exp.location)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
+        else throw new Error(message)
       }
 
       case "Apply": {
