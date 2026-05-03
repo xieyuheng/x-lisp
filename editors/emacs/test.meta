@@ -5,7 +5,7 @@
 ;; definition
 
 (define (add x y) (iadd x y))
-(define-test my-test (= 3 (add 1 2)))
+(define-test my-test (assert-equal 3 (add 1 2)))
 
 ;; type declaration
 
