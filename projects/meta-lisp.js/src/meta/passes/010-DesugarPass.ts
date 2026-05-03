@@ -129,10 +129,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
         desugar(state, exp.condition),
         M.Begin1(
           desugar(state, exp.consequent),
-          M.VoidVar(exp.location),
+          M.VoidQualifiedVar(exp.location),
           exp.location,
         ),
-        M.VoidVar(exp.location),
+        M.VoidQualifiedVar(exp.location),
         exp.location,
       )
     }
@@ -140,10 +140,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     case "Unless": {
       return M.If(
         desugar(state, exp.condition),
-        M.VoidVar(exp.location),
+        M.VoidQualifiedVar(exp.location),
         M.Begin1(
           desugar(state, exp.alternative),
-          M.VoidVar(exp.location),
+          M.VoidQualifiedVar(exp.location),
           exp.location,
         ),
         exp.location,
@@ -395,24 +395,24 @@ export function desugarBegin(
 }
 
 function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.BoolVar(true, location)
+  if (exps.length === 0) return M.BoolQualifiedVar(true, location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return M.If(
     head,
     desugarAnd(restExps, location),
-    M.BoolVar(false, location),
+    M.BoolQualifiedVar(false, location),
     location,
   )
 }
 
 function desugarOr(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.BoolVar(false, location)
+  if (exps.length === 0) return M.BoolQualifiedVar(false, location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return M.If(
     head,
-    M.BoolVar(true, location),
+    M.BoolQualifiedVar(true, location),
     desugarOr(restExps, location),
     location,
   )

@@ -1,4 +1,5 @@
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
+import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -25,11 +26,11 @@ export function varPatternName(exp: M.Exp) {
 // DataPattern
 
 export function isDataPattern(exp: M.Exp): boolean {
-  if (exp.kind === "Apply" && exp.target.kind === "Var") {
-    return exp.args.every((e) => isPattern(e))
-  }
+  if (exp.kind !== "Apply") return false
+  if (exp.target.kind !== "Var" && exp.target.kind !== "QualifiedVar")
+    return false
 
-  return false
+  return exp.args.every((e) => isPattern(e))
 }
 
 export function createDataPattern(
@@ -43,9 +44,37 @@ export function dataPatternDataConstructor(
   mod: M.Mod,
   exp: M.Exp,
 ): M.DataConstructor {
-  if (exp.kind === "Apply" && exp.target.kind === "Var") {
+  assert(isDataPattern(exp))
+  assert(exp.kind === "Apply")
+
+  if (exp.target.kind === "Var") {
     const dataConstructor = M.modLookupDataConstructor(mod, exp.target.name)
-    assert(dataConstructor)
+    if (!dataConstructor) {
+      let message = `[dataPatternDataConstructor] undefined target name`
+      message += `\n  exp: ${M.formatExp(exp)}`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
+    }
+
+    return dataConstructor
+  }
+
+  if (exp.target.kind === "QualifiedVar") {
+    const qualifiedMod = M.projectLookupMod(mod.project, exp.target.modName)
+    assert(qualifiedMod)
+    const dataConstructor = M.modLookupDataConstructor(
+      qualifiedMod,
+      exp.target.name,
+    )
+    if (!dataConstructor) {
+      let message = `[dataPatternDataConstructor] undefined target name`
+      message += `\n  exp: ${M.formatExp(exp)}`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
+    }
+
     return dataConstructor
   }
 
@@ -53,18 +82,16 @@ export function dataPatternDataConstructor(
 }
 
 export function dataPatternArgPatterns(exp: M.Exp): Array<M.Exp> {
-  if (exp.kind === "Apply" && exp.target.kind === "Var") {
-    return exp.args
-  }
-
-  throw new Error("[dataPatternArgPatterns] unhandled exp")
+  assert(isDataPattern(exp))
+  assert(exp.kind === "Apply")
+  return exp.args
 }
 
 // boundNames
 
 export function patternBoundNames(pattern: M.Exp): Set<string> {
   if (isVarPattern(pattern)) {
-    return new Set(varPatternName(pattern))
+    return new Set([varPatternName(pattern)])
   }
 
   if (isDataPattern(pattern)) {

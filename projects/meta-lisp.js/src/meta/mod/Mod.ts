@@ -149,11 +149,5 @@ export function modLookupDataConstructor(
     return M.definitionToDataConstructor(definition)
   }
 
-  const builtinMod = M.loadBuiltinMod(mod.project)
-  const builtinDefinition = M.modLookupDefinition(builtinMod, name)
-  if (builtinDefinition) {
-    return M.definitionToDataConstructor(builtinDefinition)
-  }
-
   return undefined
 }

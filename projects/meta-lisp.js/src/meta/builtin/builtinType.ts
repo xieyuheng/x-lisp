@@ -8,7 +8,7 @@ import { type Mod } from "../mod/index.ts"
 export function builtinType(mod: Mod) {
   definePrimitiveVariable(mod, "type-t", M.createTypeType())
   mod.claimed.set("type-t", {
-    exp: M.Var("type-t"),
+    exp: M.QualifiedVar("builtin", "type-t"),
     type: M.createTypeType(),
   })
 

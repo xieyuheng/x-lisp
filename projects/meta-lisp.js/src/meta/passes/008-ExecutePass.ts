@@ -99,14 +99,16 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
   if (stmt.kind === "DefineType") {
     if (stmt.parameters.length === 0) {
-      M.modClaim(mod, stmt.name, M.Var("type-t"))
+      M.modClaim(mod, stmt.name, M.QualifiedVar("builtin", "type-t"))
     } else {
       M.modClaim(
         mod,
         stmt.name,
         M.Arrow(
-          range(stmt.parameters.length).map((_) => M.Var("type-t")),
-          M.Var("type-t"),
+          range(stmt.parameters.length).map((_) =>
+            M.QualifiedVar("builtin", "type-t"),
+          ),
+          M.QualifiedVar("builtin", "type-t"),
         ),
       )
     }
@@ -152,16 +154,16 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     M.modDefine(mod, name, definition)
 
     if (dataTypeConstructor.parameters.length === 0) {
-      M.modClaim(mod, name, M.Var("type-t"))
+      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t"))
     } else {
       M.modClaim(
         mod,
         name,
         M.Arrow(
           range(dataTypeConstructor.parameters.length).map((_) =>
-            M.Var("type-t"),
+            M.QualifiedVar("builtin", "type-t"),
           ),
-          M.Var("type-t"),
+          M.QualifiedVar("builtin", "type-t"),
         ),
       )
     }
@@ -186,16 +188,16 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     M.modDefine(mod, name, definition)
 
     if (interfaceConstructor.parameters.length === 0) {
-      M.modClaim(mod, name, M.Var("type-t"))
+      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t"))
     } else {
       M.modClaim(
         mod,
         name,
         M.Arrow(
           range(interfaceConstructor.parameters.length).map((_) =>
-            M.Var("type-t"),
+            M.QualifiedVar("builtin", "type-t"),
           ),
-          M.Var("type-t"),
+          M.QualifiedVar("builtin", "type-t"),
         ),
       )
     }

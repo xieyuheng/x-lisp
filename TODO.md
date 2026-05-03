@@ -1,4 +1,5 @@
-[meta-lisp.js] builtin mod should not be a special case in anywhere else beside `ImportPass`
+[meta-lisp.js] inline `VoidQualifiedVar`
+[meta-lisp.js] inline `BoolQualifiedVar`
 [meta-lisp.js] 区分 untyped（比如 record-put）和 unchecked（现在的 exempt）
 
 [meta-lisp.js] error report for unclaimed recursive definition

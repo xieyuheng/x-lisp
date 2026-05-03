@@ -90,8 +90,6 @@ function qualifyDefinition(definition: M.Definition): null {
   }
 }
 
-// - can not handle `Match`, must be called after `desugar`.
-
 export function qualifyFreeVar(
   mod: M.Mod,
   boundNames: Set<string>,
@@ -119,22 +117,8 @@ export function qualifyFreeVar(
         return exp
       }
 
-      const builtinMod = M.loadBuiltinMod(mod.project)
-
-      const definition = M.modLookupDefinition(builtinMod, exp.name)
-      if (definition) {
-        return M.QualifiedVar(builtinMod.name, exp.name, exp.location)
-      }
-
-      const claimedType = M.modLookupClaimedType(builtinMod, exp.name)
-      if (claimedType) {
-        return M.QualifiedVar(builtinMod.name, exp.name, exp.location)
-      }
-
       return M.QualifiedVar(mod.name, exp.name, exp.location)
     }
-
-    // no need to avoid free variable in lhs
 
     case "Lambda": {
       return M.Lambda(

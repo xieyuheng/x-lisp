@@ -6,7 +6,6 @@ export type ModFragment = {
   modName: string
   isTypeErrorModule?: boolean
   stmts: Array<M.Stmt>
-  names: Set<string>
 }
 
 export function loadModFragment(path: string): ModFragment {
@@ -14,17 +13,38 @@ export function loadModFragment(path: string): ModFragment {
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
   const { modName, isTypeErrorModule } = findModName(stmts)
-  const names = new Set<string>()
-  for (const stmt of stmts) {
-    collectNameFromStmt(names, stmt)
-  }
 
   return {
     modName,
     isTypeErrorModule,
     stmts,
-    names,
   }
+}
+
+function findModName(stmts: Array<M.Stmt>): {
+  modName: string
+  isTypeErrorModule?: boolean
+} {
+  for (const stmt of stmts) {
+    if (stmt.kind === "DeclareModule") {
+      return { modName: stmt.name }
+    }
+
+    if (stmt.kind === "DeclareTypeErrorModule") {
+      return { modName: stmt.name, isTypeErrorModule: true }
+    }
+  }
+
+  throw new Error(`[loadModFragment] no module name`)
+}
+
+export function modFragmentNames(fragment: ModFragment): Set<string> {
+  const names = new Set<string>()
+  for (const stmt of fragment.stmts) {
+    collectNameFromStmt(names, stmt)
+  }
+
+  return names
 }
 
 function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
@@ -50,21 +70,4 @@ function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
       return
     }
   }
-}
-
-function findModName(stmts: Array<M.Stmt>): {
-  modName: string
-  isTypeErrorModule?: boolean
-} {
-  for (const stmt of stmts) {
-    if (stmt.kind === "DeclareModule") {
-      return { modName: stmt.name }
-    }
-
-    if (stmt.kind === "DeclareTypeErrorModule") {
-      return { modName: stmt.name, isTypeErrorModule: true }
-    }
-  }
-
-  throw new Error(`[loadModFragment] no module name`)
 }

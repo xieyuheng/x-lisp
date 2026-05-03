@@ -44,7 +44,7 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
     const names = new Set<string>()
     for (const fragment of project.fragments.values()) {
       if (fragment.modName === stmt.modName) {
-        for (const name of fragment.names) {
+        for (const name of M.modFragmentNames(fragment)) {
           names.add(name)
         }
       }
@@ -201,7 +201,7 @@ function onExp(scope: Scope, exp: M.Exp): M.Exp {
           )
           const newScope = scopeFilterBoundNames(scope, boundNames)
           return M.MatchClause(
-            clause.patterns,
+            clause.patterns.map((pattern) => onExp(newScope, pattern)),
             onExp(newScope, clause.body),
             clause.location,
           )

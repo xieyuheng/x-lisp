@@ -29,10 +29,6 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       const value = M.envLookupValue(env, exp.name)
       if (value) return value
 
-      const builtinMod = M.loadBuiltinMod(mod.project)
-      const builtinDefinition = M.modLookupDefinition(builtinMod, exp.name)
-      if (builtinDefinition) return M.definitionMeaning(builtinDefinition)
-
       let message = `[evaluate] undefined variable`
       message += `\n  name: ${exp.name}`
       if (exp.location)
