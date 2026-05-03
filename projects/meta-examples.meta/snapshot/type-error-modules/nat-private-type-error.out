@@ -1,0 +1,8 @@
+src/module/nat-private-type-error.meta:8:17 -- undefined variable
+  name: nat-private-type-error/two
+ 6 |   (assert-equal zero 0)
+ 7 |   (assert-equal one 1)
+ 8 |   (assert-equal two 2))
+   |                 ~~~     
+ 9 | 
+

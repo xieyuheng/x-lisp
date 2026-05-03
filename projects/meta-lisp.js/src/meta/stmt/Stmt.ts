@@ -18,6 +18,7 @@ export type Stmt =
   | DefineInterface
   | Claim
   | Admit
+  | Private
   | Exempt
   | DeclareModule
   | DeclareTypeErrorModule
@@ -259,6 +260,23 @@ export function Exempt(
 ): Exempt {
   return {
     kind: "Exempt",
+    names,
+    location,
+  }
+}
+
+export type Private = {
+  kind: "Private"
+  names: Array<string>
+  location?: SourceLocation
+}
+
+export function Private(
+  names: Array<string>,
+  location?: SourceLocation,
+): Private {
+  return {
+    kind: "Private",
     names,
     location,
   }

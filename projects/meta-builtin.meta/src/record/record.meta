@@ -6,6 +6,12 @@
   record-put
   record-put!)
 
+(private
+  make-record
+  record-get
+  record-put
+  record-put!)
+
 (declare-primitive-function make-record 0)
 (declare-primitive-function record-get 2)
 (declare-primitive-function record-put 3)

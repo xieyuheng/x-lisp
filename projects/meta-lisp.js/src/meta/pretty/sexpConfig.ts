@@ -5,6 +5,8 @@ export const sexpConfig: S.Config = {
     ["import", 1],
     ["import-as", 0],
     ["import-all", 0],
+    ["exempt", 0],
+    ["private", 0],
     ["claim", 1],
     ["admit", 1],
     ["define", 1],

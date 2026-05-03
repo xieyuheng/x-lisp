@@ -61,6 +61,10 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(exempt ${stmt.names.join(" ")})`
     }
 
+    case "Private": {
+      return `(private ${stmt.names.join(" ")})`
+    }
+
     case "DeclareModule": {
       return `(module ${stmt.name})`
     }

@@ -62,6 +62,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.Exempt(S.listElements(names).map(S.symbolContent), location)
   },
 
+  "(cons* 'private names)": ({ names }, { location }) => {
+    return M.Private(S.listElements(names).map(S.symbolContent), location)
+  },
+
   "`(module ,name)": ({ name }, { location }) => {
     return M.DeclareModule(S.symbolContent(name), location)
   },
