@@ -129,10 +129,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
         desugar(state, exp.condition),
         M.Begin1(
           desugar(state, exp.consequent),
-          M.VoidQualifiedVar(exp.location),
+          M.QualifiedVar("builtin", "void", exp.location),
           exp.location,
         ),
-        M.VoidQualifiedVar(exp.location),
+        M.QualifiedVar("builtin", "void", exp.location),
         exp.location,
       )
     }
@@ -140,10 +140,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     case "Unless": {
       return M.If(
         desugar(state, exp.condition),
-        M.VoidQualifiedVar(exp.location),
+        M.QualifiedVar("builtin", "void", exp.location),
         M.Begin1(
           desugar(state, exp.alternative),
-          M.VoidQualifiedVar(exp.location),
+          M.QualifiedVar("builtin", "void", exp.location),
           exp.location,
         ),
         exp.location,
