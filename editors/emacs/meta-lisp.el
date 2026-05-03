@@ -91,8 +91,9 @@
     (,(regexp-opt meta-lisp--type-constructor-keywords 'words)
      . font-lock-type-face)
 
-    ;; Type names ending with -t (int-t, float-t, list-t, etc.)
-    ("[a-zA-Z0-9]+-t\\>"
+    ;; Type names ending with -t (int-t, float-t, my-list-t, etc.)
+    ;; Must include - in the character class to match names like my-list-t
+    ("\\<[a-zA-Z0-9-]+-t\\>"
      . font-lock-type-face)
 
     ;; Literal prefixes: @list, @record, @set, @hash
