@@ -22,7 +22,7 @@ export function ExecutePass(project: M.Project): void {
 function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
   if (stmt.kind === "Exempt") {
     for (const name of stmt.names) {
-      mod.exempted.add(name)
+      mod.admitted.add(name)
     }
   }
 
@@ -32,7 +32,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
   if (stmt.kind === "Admit") {
     M.modClaim(mod, stmt.name, stmt.type)
-    mod.exempted.add(stmt.name)
+    mod.admitted.add(stmt.name)
   }
 
   if (stmt.kind === "DeclarePrimitiveFunction") {

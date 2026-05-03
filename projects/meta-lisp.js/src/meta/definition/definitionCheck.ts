@@ -11,7 +11,7 @@ export function definitionCheck(definition: M.Definition): null {
   const mod = definition.mod
   const name = definition.name
 
-  if (mod.exempted.has(name)) {
+  if (mod.admitted.has(name)) {
     definition.isChecked = true
     return null
   }

@@ -13,7 +13,7 @@ export type ClaimedEntry = {
 export type Mod = {
   name: string
   stmts: Array<Stmt>
-  exempted: Set<string>
+  admitted: Set<string>
   definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>
   inferredTypes: Map<string, Value>
@@ -26,7 +26,7 @@ export function createMod(name: string, project: M.Project): Mod {
   return {
     name,
     stmts: [],
-    exempted: new Set(),
+    admitted: new Set(),
     definitions: new Map(),
     claimed: new Map(),
     inferredTypes: new Map(),

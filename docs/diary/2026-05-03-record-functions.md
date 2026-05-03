@@ -43,3 +43,10 @@ date: 2026-05-03
 - 把 `(exempt)` 的生命机制改成 `(internal)` 的声明机制，
   专门用来处理不能被用户调用，但是需要被编译器生成的函数调用。
 - `ImportPass` 在 import builtin 的时候会掠过这些 internal 名字。
+
+方案 C：
+
+- 设计一个一般的 `(private)` 机制，private name 不能被 import。
+  由于 builtin 是用 `(import-all)` 实现的，
+  所以这个机制可以用来隐藏 builtin functions。
+- 此时需要保留 `(exempt)` 机制，因为这些函数没有类型声明。
