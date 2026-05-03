@@ -1,4 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
 export function ImportPass(project: M.Project): void {
@@ -66,13 +67,6 @@ function scopeFilterBoundNames(scope: Scope, boundNames: Set<string>): Scope {
 
   return {
     importedNames,
-    importedPrefixes: scope.importedPrefixes,
-  }
-}
-
-function scopeDropImportedNames(scope: Scope): Scope {
-  return {
-    importedNames: new Map(),
     importedPrefixes: scope.importedPrefixes,
   }
 }
@@ -199,22 +193,21 @@ function onExp(scope: Scope, exp: M.Exp): M.Exp {
     }
 
     case "Match": {
-      const targets = exp.targets.map((target) => onExp(scope, target))
-      const clauses = exp.clauses.map((clause) =>
-        M.MatchClause(
-          clause.patterns,
-          onExp(scopeDropImportedNames(scope), clause.body),
-          clause.location,
-        ),
+      return M.Match(
+        exp.targets.map((target) => onExp(scope, target)),
+        exp.clauses.map((clause) => {
+          const boundNames = setUnionMany(
+            clause.patterns.map(M.patternBoundNames),
+          )
+          const newScope = scopeFilterBoundNames(scope, boundNames)
+          return M.MatchClause(
+            clause.patterns,
+            onExp(newScope, clause.body),
+            clause.location,
+          )
+        }),
+        exp.location,
       )
-
-      let result: M.Exp = M.Match(targets, clauses, exp.location)
-      for (const [name, entry] of scope.importedNames) {
-        const rhs = M.QualifiedVar(entry.modName, entry.name, exp.location)
-        result = M.Let1(name, rhs, result, exp.location)
-      }
-
-      return result
     }
 
     default: {

@@ -1,3 +1,4 @@
+import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -52,12 +53,6 @@ export function dataPatternDataConstructor(
 }
 
 export function dataPatternArgPatterns(exp: M.Exp): Array<M.Exp> {
-  assert(isDataPattern(exp))
-
-  if (exp.kind === "Var") {
-    return []
-  }
-
   if (exp.kind === "Apply" && exp.target.kind === "Var") {
     return exp.args
   }
@@ -67,4 +62,14 @@ export function dataPatternArgPatterns(exp: M.Exp): Array<M.Exp> {
 
 // boundNames
 
-// export function patternBoundNames(pattern: Pattern):
+export function patternBoundNames(pattern: M.Exp): Set<string> {
+  if (isVarPattern(pattern)) {
+    return new Set(varPatternName(pattern))
+  }
+
+  if (isDataPattern(pattern)) {
+    return setUnionMany(dataPatternArgPatterns(pattern).map(patternBoundNames))
+  }
+
+  throw new Error("[patternBoundNames] unhandled exp")
+}
