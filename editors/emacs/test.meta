@@ -55,14 +55,22 @@
 ;; literal
 
 [1 2 3]
-[1 2 3
- 1 2 3]
 {:x 1 :y 2}
-{:x 1
- :y 2}
 (@set 1 2 3)
 (@hash "x" 1 "y" 2)
 (@quote (a b c))
+
+;; indentation
+
+(iadd
+ x
+ y)
+(iadd x
+      y)
+[1 2 3
+ 1 2 3]
+{:x 1
+ :y 2}
 
 ;; keyword
 
