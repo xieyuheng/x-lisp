@@ -53,10 +53,6 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         if (exp.location)
           throw new S.ErrorWithSourceLocation(message, exp.location)
         else throw new Error(message)
-
-        // let message = `undefined variable`
-        // message += `\n  name: ${exp.name}`
-        // return M.errorInferEffect(exp, message)(subst)
       }
 
       case "QualifiedVar": {
