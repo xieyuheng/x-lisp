@@ -1,0 +1,62 @@
+(module test)
+
+;; 定义类
+(define (add x y) (iadd x y))
+(define-test my-test (= 3 (add 1 2)))
+
+;; 类型声明
+(claim add (-> int-t int-t int-t))
+(admit cons (-> int-t (list-t int-t) (list-t int-t)))
+(private internal-fn)
+
+;; 控制流
+(if (equal? x 1) 1 2)
+(when (true? x) (println "yes"))
+(unless (false? x) (println "no"))
+(cond ((= x 1) 1) (else 0))
+(and true true)
+(or false true)
+(match exp
+  ((var-exp name) name)
+  (else (error "unknown")))
+
+;; 绑定
+(let ((x 1) (y 2)) (iadd x y))
+(let* ((x 1) (y (iadd 1 x))) (iadd x y))
+(begin (println "hello") (println "world"))
+(lambda (x) x)
+(polymorphic (A) (-> A A))
+
+;; 模块
+(import builtin foo)
+(import-as builtin b)
+(import-all builtin)
+
+;; 记录与类型
+(the int-t 42)
+(extend base :x 1 :y 2)
+(update base :x 3)
+(update! base :y 4)
+(-> int-t int-t)
+(interface (:x int-t :y int-t))
+(extend-interface base (:z int-t))
+
+;; 字面量
+(list 1 2 3)
+(@record :x 1 :y 2)
+(@set 1 2 3)
+(@hash "x" 1 "y" 2)
+(@quote (a b c))
+
+;; Keywords
+(:foo :bar :baz)
+
+;; 数据定义
+(define-data (list-t E)
+  nil
+  (cons (head E) (tail (list-t E))))
+
+;; 接口定义
+(define-interface (point-t)
+  :x float-t
+  :y float-t)
