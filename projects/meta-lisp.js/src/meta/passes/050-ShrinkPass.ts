@@ -2,6 +2,9 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
 
+// - ShrinkPass is like DesugarPass,
+//   but must be done only after CheckPass.
+
 export function ShrinkPass(
   project: M.Project,
   options: { dump: boolean },
