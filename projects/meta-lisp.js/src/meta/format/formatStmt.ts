@@ -2,6 +2,18 @@ import * as M from "../index.ts"
 
 export function formatStmt(stmt: M.Stmt): string {
   switch (stmt.kind) {
+    case "Import": {
+      return `(import ${stmt.modName} ${stmt.names.join(" ")})`
+    }
+
+    case "ImportAs": {
+      return `(import-as ${stmt.modName} ${stmt.prefix})`
+    }
+
+    case "ImportAll": {
+      return `(import-all ${stmt.modName})`
+    }
+
     case "DefineFunction": {
       const parameters = stmt.parameters.join(" ")
       const body = M.formatBody(stmt.body)
@@ -43,14 +55,6 @@ export function formatStmt(stmt: M.Stmt): string {
 
     case "Exempt": {
       return `(exempt ${stmt.names.join(" ")})`
-    }
-
-    case "Import": {
-      return `(import ${stmt.modName} ${stmt.names.join(" ")})`
-    }
-
-    case "ImportAs": {
-      return `(import-as ${stmt.modName} ${stmt.prefix})`
     }
 
     case "DeclareModule": {

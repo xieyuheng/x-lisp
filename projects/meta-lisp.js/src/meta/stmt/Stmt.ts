@@ -9,6 +9,7 @@ import { type Exp } from "../exp/index.ts"
 export type Stmt =
   | Import
   | ImportAs
+  | ImportAll
   | DefineFunction
   | DefineVariable
   | DefineTest
@@ -58,6 +59,23 @@ export function ImportAs(
     kind: "ImportAs",
     modName,
     prefix,
+    location,
+  }
+}
+
+export type ImportAll = {
+  kind: "ImportAll"
+  modName: string
+  location?: SourceLocation
+}
+
+export function ImportAll(
+  modName: string,
+  location?: SourceLocation,
+): ImportAll {
+  return {
+    kind: "ImportAll",
+    modName,
     location,
   }
 }

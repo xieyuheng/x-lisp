@@ -1,4 +1,3 @@
-[meta-lisp.js] `ImportAll` as `Stmt`
 [meta-lisp.js] parse `(import-all)`
 [meta-lisp.js] `ImportPass` -- support `(import-all)`
 
