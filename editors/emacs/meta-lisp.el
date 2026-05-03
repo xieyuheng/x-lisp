@@ -116,7 +116,7 @@
 \{meta-lisp-mode-map}"
 
   ;; Syntax highlighting
-  (setq font-lock-defaults '(meta-lisp--font-lock-keywords))
+  (setq-local font-lock-defaults '(meta-lisp--font-lock-keywords))
 
   ;; Treat [], {}, and () as parentheses for bracket matching
   ;; This enables show-paren-mode and electric-pair-mode for all bracket types
