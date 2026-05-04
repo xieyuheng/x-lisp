@@ -1,6 +1,3 @@
-[helpers.c] `fs_recursive_iter_t`
-[helpers.c] `fs_make_recursive_iter`
-
 [stack-lisp.js] `fs-list-recursive`
 
 [meta-lisp.meta] `cmd`
