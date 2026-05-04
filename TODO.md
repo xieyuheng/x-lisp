@@ -1,5 +1,9 @@
+[helpers.c] `fs_recursive_iter_t`
+[helpers.c] `fs_make_recursive_iter`
+
 [stack-lisp.js] `fs-list-recursive`
 
+[meta-lisp.meta] `cmd`
 [meta-lisp.meta] `project-t`
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
