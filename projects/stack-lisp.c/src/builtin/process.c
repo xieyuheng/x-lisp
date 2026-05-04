@@ -1,11 +1,8 @@
 #include "index.h"
 
-static int saved_argc = 0;
-static char **saved_argv = NULL;
-
-void save_argv(int argc, char **argv) {
-  saved_argc = argc;
-  saved_argv = argv;
+value_t x_exit(value_t status) {
+  exit(to_int64(status));
+  return x_void;
 }
 
 value_t x_current_directory(void) {
@@ -13,9 +10,12 @@ value_t x_current_directory(void) {
   return x_object(make_xstring_take(cwd));
 }
 
-value_t x_exit(value_t status) {
-  exit(to_int64(status));
-  return x_void;
+static int saved_argc = 0;
+static char **saved_argv = NULL;
+
+void save_argv(int argc, char **argv) {
+  saved_argc = argc;
+  saved_argv = argv;
 }
 
 value_t x_current_command_line_args(void) {
