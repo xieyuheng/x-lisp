@@ -2,6 +2,7 @@
 
 path_t *make_path(const char *string);
 void path_free(path_t *self);
+char *path_into_string(path_t *self);
 
 path_t *make_cwd_path(void);
 

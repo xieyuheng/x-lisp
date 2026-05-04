@@ -21,6 +21,14 @@ void path_free(path_t *self) {
   free(self);
 }
 
+char *path_into_string(path_t *self) {
+  char *result = self->string;
+  self->string = NULL;
+  stack_free(self->segment_stack);
+  free(self);
+  return result;
+}
+
 path_t *make_cwd_path(void) {
   char *cwd = getcwd(NULL, 0);
   path_t *cwd_path = make_path(cwd);

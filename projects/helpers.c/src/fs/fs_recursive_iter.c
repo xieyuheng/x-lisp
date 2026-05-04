@@ -33,12 +33,8 @@ char *fs_recursive_iter_next(fs_recursive_iter_t *self) {
     }
 
     path_t *relative_path = path_relative(self->path, full_path);
-    char *relative_name = string_copy(path_raw_string(relative_path));
-
-    path_free(relative_path);
     path_free(full_path);
-
-    return relative_name;
+    return path_into_string(relative_path);
   }
 
   return NULL;
