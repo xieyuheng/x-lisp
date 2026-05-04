@@ -9,4 +9,5 @@
   (fs-write "src/fs/file-2.txt" "abc\n")
   (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
 
-  (println (fs-list "src/fs")))
+  (println (fs-list "src"))
+  (println (fs-list-recursive "src")))
