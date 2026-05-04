@@ -5,7 +5,7 @@
 
 struct fs_iter_t {
   DIR *dir;
-  path_t *dir_path;
+  path_t *path;
 };
 
 fs_iter_t *fs_make_iter(const char *pathname);

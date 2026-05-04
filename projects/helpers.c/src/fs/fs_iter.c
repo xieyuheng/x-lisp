@@ -4,17 +4,13 @@ fs_iter_t *fs_make_iter(const char *pathname) {
   fs_iter_t *self = new(fs_iter_t);
   self->dir = opendir(pathname);
   assert(self->dir != NULL);
-  self->dir_path = make_path(pathname);
+  self->path = make_path(pathname);
   return self;
 }
 
 void fs_iter_free(fs_iter_t *self) {
-  if (self->dir) {
-    closedir(self->dir);
-  }
-  if (self->dir_path) {
-    path_free(self->dir_path);
-  }
+  if (self->dir) closedir(self->dir);
+  path_free(self->path);
   free(self);
 }
 
@@ -31,7 +27,8 @@ char *fs_iter_next(fs_iter_t *self) {
       return NULL;
     }
 
-    if (string_equal(entry->d_name, ".") || string_equal(entry->d_name, "..")) {
+    if (string_equal(entry->d_name, ".") ||
+        string_equal(entry->d_name, "..")) {
       continue;
     }
 

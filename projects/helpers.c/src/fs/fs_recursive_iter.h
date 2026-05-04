@@ -6,7 +6,7 @@
 
 struct fs_recursive_iter_t {
   stack_t *stack;
-  path_t *base_path;
+  path_t *path;
 };
 
 fs_recursive_iter_t *fs_make_recursive_iter(const char *pathname);
