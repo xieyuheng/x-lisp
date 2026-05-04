@@ -37,8 +37,19 @@ value_t x_fs_list(value_t path) {
     x_list_push_mut(x_object(make_xstring_take(name)), list);
     name = fs_iter_next(iter);
   }
-
   fs_iter_free(iter);
+  return list;
+}
+
+value_t x_fs_list_recursive(value_t path) {
+  value_t list = x_make_list();
+  fs_recursive_iter_t *iter = fs_make_recursive_iter(xstring_string(to_xstring(path)));
+  char *name = fs_recursive_iter_next(iter);
+  while (name) {
+    x_list_push_mut(x_object(make_xstring_take(name)), list);
+    name = fs_recursive_iter_next(iter);
+  }
+  fs_recursive_iter_free(iter);
   return list;
 }
 

@@ -266,6 +266,7 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/fs-read", x_fs_read);
   define_primitive_2(mod, "builtin/fs-write", x_fs_write);
   define_primitive_1(mod, "builtin/fs-list", x_fs_list);
+  define_primitive_1(mod, "builtin/fs-list-recursive", x_fs_list_recursive);
   define_primitive_1(mod, "builtin/fs-ensure-file", x_fs_ensure_file);
   define_primitive_1(mod, "builtin/fs-ensure-directory", x_fs_ensure_directory);
   define_primitive_1(mod, "builtin/fs-delete-file", x_fs_delete_file);

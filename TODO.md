@@ -1,5 +1,3 @@
-[stack-lisp.js] `fs-list-recursive`
-
 [meta-lisp.meta] `cmd`
 [meta-lisp.meta] `project-t`
 [meta-lisp.meta] `mod-t` -- complete
