@@ -6,9 +6,6 @@ static void handle_hello(cmd_ctx_t *ctx) {
 }
 
 static void handle_add(cmd_ctx_t *ctx) {
-  size_t n = cmd_count_args(ctx);
-  printf("n: %ld\n", n);
-
   char *arg0 = cmd_get_arg(ctx, 0);
   char *arg1 = cmd_get_arg(ctx, 1);
   double x = string_parse_double(arg0);
