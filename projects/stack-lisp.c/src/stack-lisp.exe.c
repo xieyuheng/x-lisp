@@ -37,6 +37,8 @@ static void init(void) {
 int main(int argc, char *argv[]) {
   sanity_check();
 
+  save_argv(argc, argv);
+
   init();
 
   cmd_router_t *router = cmd_make_router("stack-lisp", "0.1.0");

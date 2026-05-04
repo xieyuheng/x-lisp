@@ -275,7 +275,8 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/fs-rename", x_fs_rename);
 
   // process
-
+  
   define_primitive_0(mod, "builtin/current-directory", x_current_directory);
   define_primitive_1(mod, "builtin/exit", x_exit);
+  define_primitive_0(mod, "builtin/current-command-line-args", x_current_command_line_args);
 }
