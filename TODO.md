@@ -1,4 +1,5 @@
-[meta-lisp.meta] `cmd`
+[stack-lisp.c] call command pass string argument to function
+
 [meta-lisp.meta] `project-t`
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`

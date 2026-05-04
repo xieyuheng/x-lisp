@@ -41,26 +41,41 @@ void cmd_route_free(cmd_route_t *self) {
   free(self);
 }
 
-void cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
-  size_t base = 2;
-  for (size_t i = 0; i < array_length(self->arg_names); i++) {
-    const char *arg = ctx->argv[base + i];
-    assert(arg);
-    array_push(ctx->args, string_copy(arg));
+static void match_arg(cmd_ctx_t *ctx, size_t *cursor_pointer) {
+  size_t cursor = *cursor_pointer;
+  const char *token = ctx->argv[cursor];
+  array_push(ctx->args, string_copy(token));
+  *cursor_pointer = cursor + 1;
+}
+
+static void match_option(cmd_ctx_t *ctx, size_t *cursor_pointer) {
+  size_t cursor = *cursor_pointer;
+  const char *token = ctx->argv[cursor];
+  if (cursor >= ctx->argc) {
+    record_insert(ctx->options, token, NULL);
+    *cursor_pointer = cursor + 1;
+    return;
   }
 
-  base += array_length(self->arg_names);
-  size_t cursor = base;
+  const char *next_token = ctx->argv[cursor];
+  if (string_starts_with(next_token, "-")) {
+    record_insert(ctx->options, token, NULL);
+    *cursor_pointer = cursor + 1;
+  } else {
+    record_insert(ctx->options, token, string_copy(next_token));
+    *cursor_pointer = cursor + 2;
+  }
+}
+
+void cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
+  (void) self;
+  size_t cursor = 2;
   while (cursor < ctx->argc) {
-    const char *option_name = ctx->argv[cursor];
-    const char *option_value = ctx->argv[cursor + 1];
-    if (option_value == NULL || string_starts_with(option_value, "-")) {
-      record_insert(ctx->options, option_name, NULL);
-      cursor++;
+    const char *token = ctx->argv[cursor];
+    if (string_starts_with(token, "-")) {
+      match_option(ctx, &cursor);
     } else {
-      record_insert(ctx->options, option_name, string_copy(option_value));
-      cursor++;
-      cursor++;
+      match_arg(ctx, &cursor);
     }
   }
 }

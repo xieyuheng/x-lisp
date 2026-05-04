@@ -19,6 +19,10 @@ char *cmd_get_arg(cmd_ctx_t *ctx, size_t i) {
   return array_get(ctx->args, i);
 }
 
+size_t cmd_count_args(cmd_ctx_t *ctx) {
+  return array_length(ctx->args);
+}
+
 bool cmd_has_option(cmd_ctx_t *ctx, const char *name) {
   return record_has(ctx->options, name);
 }
