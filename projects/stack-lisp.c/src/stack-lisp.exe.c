@@ -12,7 +12,7 @@ static void handle_run(cmd_ctx_t *ctx) {
   (void) mod;
 }
 
-static void handle_run_fn(cmd_ctx_t *ctx){
+static void handle_call(cmd_ctx_t *ctx){
   char *name = cmd_get_arg(ctx, 0);
   char *pathname = cmd_get_arg(ctx, 1);
   bool profile = cmd_has_option(ctx, "--profile");
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   cmd_define_route(router, "test file --profile --snapshot --builtin");
 
   cmd_define_handler(router, "run", handle_run);
-  cmd_define_handler(router, "call", handle_run_fn);
+  cmd_define_handler(router, "call", handle_call);
   cmd_define_handler(router, "test", handle_test);
 
   cmd_router_run(router, argc, argv);

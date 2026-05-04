@@ -51,13 +51,13 @@ static void match_arg(cmd_ctx_t *ctx, size_t *cursor_pointer) {
 static void match_option(cmd_ctx_t *ctx, size_t *cursor_pointer) {
   size_t cursor = *cursor_pointer;
   const char *token = ctx->argv[cursor];
-  if (cursor >= ctx->argc) {
+  if (cursor + 1 >= ctx->argc) {
     record_insert(ctx->options, token, NULL);
     *cursor_pointer = cursor + 1;
     return;
   }
 
-  const char *next_token = ctx->argv[cursor];
+  const char *next_token = ctx->argv[cursor + 1];
   if (string_starts_with(next_token, "-")) {
     record_insert(ctx->options, token, NULL);
     *cursor_pointer = cursor + 1;

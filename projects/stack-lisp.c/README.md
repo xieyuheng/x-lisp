@@ -1,1 +1,1 @@
-# li.c
+# stack-lisp.c
