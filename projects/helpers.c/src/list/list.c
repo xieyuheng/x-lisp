@@ -107,8 +107,9 @@ bool list_member(const list_t *self, const void *value) {
   list_node_t *node = self->first_node;
   while (node) {
     if ((node->value == value) ||
-      (self->equal_fn && self->equal_fn(node->value, value)))
+        (self->equal_fn && self->equal_fn(node->value, value))) {
       return true;
+    }
 
     node = node->next;
   }
@@ -121,8 +122,10 @@ bool list_remove(list_t *self, const void *value) {
 
   while (node != NULL) {
     if ((node->value == value) ||
-      (self->equal_fn && self->equal_fn(node->value, value)))
+        (self->equal_fn && self->equal_fn(node->value, value))) {
       break;
+    }
+
     node = node->next;
   }
 
@@ -152,8 +155,7 @@ void *list_find(list_t *self, const void *value) {
   list_node_t *node = self->first_node;
   while (node) {
     if ((node->value == value) ||
-      (self->equal_fn && self->equal_fn(node->value, value)))
-    {
+        (self->equal_fn && self->equal_fn(node->value, value))) {
       return node->value;
     }
 

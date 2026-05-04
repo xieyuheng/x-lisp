@@ -223,7 +223,7 @@ bool hash_delete(hash_t *self, const void *key) {
 static bool hash_is_overload(hash_t *self) {
   size_t limit = hash_primes[self->prime_index];
   return ((self->length >= limit * LENGTH_REHASH_PERCENTAGE / 100) ||
-      (self->used_indexes_size >= limit * INDEX_REHASH_PERCENTAGE / 100));
+          (self->used_indexes_size >= limit * INDEX_REHASH_PERCENTAGE / 100));
 }
 
 static void hash_order_push_entry(hash_t *self, hash_entry_t *entry) {

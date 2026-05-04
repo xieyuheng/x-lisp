@@ -112,8 +112,7 @@ static void path_execute(path_t *self, char *segment) {
     string_free(segment);
   } else if (string_equal(segment, "..")) {
     if (stack_is_empty(self->segment_stack) ||
-      string_equal(stack_top(self->segment_stack), ".."))
-    {
+        string_equal(stack_top(self->segment_stack), "..")) {
       stack_push(self->segment_stack, segment);
     } else {
       string_free(segment);
@@ -196,7 +195,7 @@ static size_t find_relative_index(const path_t *from, const path_t *to) {
 
 path_t *path_relative(const path_t *from, const path_t *to) {
   assert((path_is_relative(from) && path_is_relative(to)) ||
-       (path_is_absolute(from) && path_is_absolute(to)));
+         (path_is_absolute(from) && path_is_absolute(to)));
 
   size_t relative_index = find_relative_index(from, to);
   size_t from_length = stack_length(from->segment_stack);
