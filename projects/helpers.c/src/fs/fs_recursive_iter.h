@@ -5,8 +5,8 @@
 #include "../path/index.h"
 
 struct fs_recursive_iter_t {
-  stack_t *stack;       // 目录栈，元素为 recursive_iter_frame_t *
-  path_t *base_path;    // 起始目录
+  stack_t *stack;
+  path_t *base_path;
 };
 
 fs_recursive_iter_t *fs_make_recursive_iter(const char *pathname);
