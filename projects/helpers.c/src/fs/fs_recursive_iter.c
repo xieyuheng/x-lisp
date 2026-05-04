@@ -23,11 +23,7 @@ static recursive_iter_frame_t *make_frame(const char *pathname) {
 fs_recursive_iter_t *fs_make_recursive_iter(const char *pathname) {
   fs_recursive_iter_t *self = new(fs_recursive_iter_t);
   self->stack = make_stack_with(free_frame);
-
-  // 规范化 base_path，去掉末尾的 /
-  path_t *base = make_path(pathname);
-  self->base_path = string_copy(path_raw_string(base));
-  path_free(base);
+  self->base_path = make_path(pathname);
 
   stack_push(self->stack, make_frame(pathname));
   return self;
@@ -38,7 +34,7 @@ void fs_recursive_iter_free(fs_recursive_iter_t *self) {
     stack_free(self->stack);
   }
   if (self->base_path) {
-    string_free(self->base_path);
+    path_free(self->base_path);
   }
   free(self);
 }
@@ -64,21 +60,11 @@ char *fs_recursive_iter_next(fs_recursive_iter_t *self) {
       stack_push(self->stack, make_frame(full_path_str));
     }
 
-    // 计算相对路径
-    const char *base = self->base_path;
-    size_t base_len = string_length(base);
-    char *relative = NULL;
+    // 用 path_relative 计算相对路径
+    path_t *relative_path = path_relative(self->base_path, full_path);
+    char *relative = string_copy(path_raw_string(relative_path));
 
-    if (string_starts_with(full_path_str, base)) {
-      size_t start = base_len;
-      if (full_path_str[start] == '/') {
-        start++;
-      }
-      relative = string_substring(full_path_str, start, string_length(full_path_str));
-    } else {
-      relative = string_copy(full_path_str);
-    }
-
+    path_free(relative_path);
     path_free(full_path);
     string_free(name);
     return relative;

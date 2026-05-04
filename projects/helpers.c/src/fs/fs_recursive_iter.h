@@ -2,10 +2,11 @@
 
 #include "types.h"
 #include "../stack/index.h"
+#include "../path/index.h"
 
 struct fs_recursive_iter_t {
   stack_t *stack;       // 目录栈，元素为 recursive_iter_frame_t *
-  char *base_path;      // 起始目录（规范化，无末尾 /）
+  path_t *base_path;    // 起始目录
 };
 
 fs_recursive_iter_t *fs_make_recursive_iter(const char *pathname);
