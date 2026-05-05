@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-call() {
+function call {
     ../stack-lisp.c/src/stack-lisp.exe call build/bundle.stack $@
 }
 
-main() {
+function main {
     local command=$1; shift
     case $command in
         (check)
@@ -12,7 +12,7 @@ main() {
             call meta/check-command $path
             ;;
         (*)
-            echo "unknown command: $command" >&2
+            echo "unknown command: $command"
             exit 1
             ;;
     esac
