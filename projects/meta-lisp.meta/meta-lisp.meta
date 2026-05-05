@@ -7,11 +7,11 @@ call() {
 main() {
     local command=$1; shift
     case $command in
-        check)
+        (check)
             local path=${1:-"project.sexp"}
             call meta/check-command $path
             ;;
-        *)
+        (*)
             echo "unknown command: $command" >&2
             exit 1
             ;;
