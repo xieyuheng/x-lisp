@@ -1,0 +1,6 @@
+(module meta)
+
+(define-interface mod-fragment-t
+  :mod-name symbol-t
+  :is-type-error-module bool-t
+  :stmts (list-t stmt-t))

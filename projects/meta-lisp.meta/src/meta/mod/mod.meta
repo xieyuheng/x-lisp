@@ -2,8 +2,26 @@
 
 (define-interface mod-t
   :name symbol-t
-  :definitions (hash-t string-t definition-t))
+  :stmts (list-t stmt-t)
+  :admitted (set-t symbol-t)
+  :definitions (hash-t symbol-t definition-t)
+  :claimed (hash-t symbol-t claim-entry-t)
+  :inferred-types (hash-t symbol-t value-t)
+  :data-constructors (hash-t symbol-t data-constructor-t)
+  :project project-t
+  :is-type-error-module bool-t)
 
-(define (make-mod name)
+(define-interface claim-entry-t
+  :exp exp-t
+  :type (maybe-t value-t))
+
+(define (make-mod name project)
   {:name name
-   :definitions (make-hash)})
+   :stmts []
+   :admitted (make-set)
+   :definitions (make-hash)
+   :claimed (make-hash)
+   :inferred-types (make-hash)
+   :data-constructors (make-hash)
+   :project project
+   :is-type-error-module false})

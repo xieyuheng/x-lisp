@@ -7,6 +7,9 @@
   :root-directory string-t
   :config project-config-t)
 
+(define (make-project-config)
+  {})
+
 (define (make-project root-directory config)
   {:root-directory root-directory
    :config config})
