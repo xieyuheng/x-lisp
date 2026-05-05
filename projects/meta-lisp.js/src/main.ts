@@ -15,7 +15,6 @@ router.defineRoutes([
   "check --config --verbose --dump",
   "build --config --verbose --dump --basic",
   "test  --config --verbose --profile --builtin",
-  "clean --config",
 ])
 
 router.defineHandlers({

@@ -1,4 +1,4 @@
 (module meta)
 
 (define (check-command config-path)
-  (println config-path))
+  (println [:config-path config-path]))
