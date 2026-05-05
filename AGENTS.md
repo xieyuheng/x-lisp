@@ -21,7 +21,7 @@ title: AI Agent Instructions
 
 # meta-lisp 语言简介
 
-meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 Scheme。
+meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 
 ## 语法特性
 
@@ -31,6 +31,13 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 Scheme。
 - 匿名函数：`(lambda (arg ...) body)`
 
 ## 类型系统
+
+特点：
+
+- 类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
+- 没有 TypeScript 的 union 和 intersection type。
+
+类型：
 
 - 基础类型：`int-t`, `float-t`, `string-t`, `symbol-t`, `keyword-t`, `bool-t`, `void-t`
 - 复合类型：`(list-t E)`, `(set-t E)`, `(hash-t K V)`
