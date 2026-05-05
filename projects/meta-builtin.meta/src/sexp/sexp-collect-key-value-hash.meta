@@ -1,0 +1,22 @@
+(module builtin)
+
+(claim sexp-collect-key-value-hash
+  (-> (list-t sexp-t) (hash-t keyword-t sexp-t)))
+
+(define (sexp-collect-key-value-hash-loop remaining result)
+  (if (list-empty? remaining)
+      result
+      (let ((first (car remaining)))
+        (match first
+          ((keyword-sexp content location)
+           (let ((rest (cdr remaining)))
+             (if (list-empty? rest)
+                 (sexp-collect-key-value-hash-loop rest result)
+                 (sexp-collect-key-value-hash-loop
+                  (cdr rest)
+                  (hash-put content (car rest) result)))))
+          (else
+           (sexp-collect-key-value-hash-loop (cdr remaining) result))))))
+
+(define (sexp-collect-key-value-hash sexps)
+  (sexp-collect-key-value-hash-loop sexps (@hash)))

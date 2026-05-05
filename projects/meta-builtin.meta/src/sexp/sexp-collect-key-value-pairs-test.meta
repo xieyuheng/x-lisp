@@ -29,3 +29,18 @@
     (assert-equal (list-length result) 2)
     (assert-equal (pair-first (list-head result)) :x)
     (assert-equal (pair-first (list-head (cdr result))) :y)))
+
+(define-test sexp-collect-key-value-hash-test
+  (let ((sexps (parse-sexps "test" ":x 1 :y 2 :z 3")))
+    (= result (sexp-collect-key-value-hash sexps))
+    (assert-equal 3 (hash-length result))
+    (assert (hash-has? :x result))
+    (assert (hash-has? :y result))
+    (assert (hash-has? :z result))))
+
+(define-test sexp-collect-key-value-hash-empty-test
+  (assert-equal 0 (hash-length (sexp-collect-key-value-hash []))))
+
+(define-test sexp-collect-key-value-hash-no-keywords-test
+  (let ((sexps (parse-sexps "test" "a b c")))
+    (assert-equal 0 (hash-length (sexp-collect-key-value-hash sexps)))))
