@@ -1,6 +1,15 @@
+[sexp.js] 减少 import 数量。
+
+- 在 sexp.js 项目中，检查所有的文件，尽量使用：
+
+  ```ts
+  import * as S from "../index.ts"
+  ```
+
+  而不是很多独立的 import。
+
+[sexp.js] merge listHelpers.ts into Sexp.ts
 [sexp.js] inline `Cons`
-[sexp.js] merge atomHelpers into Sexp.ts
-[sexp.js] merge listHelpers into Sexp.ts
 [sexp.js] extract `collectKeyValuePairs` -- from list of `Sexp`
 [sexp.js] remove `listCollectKeyValuePairs`
 

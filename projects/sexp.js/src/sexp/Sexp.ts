@@ -1,3 +1,4 @@
+import { formatSexp } from "../format/index.ts"
 import type { SourceLocation } from "../token/index.ts"
 
 export type Sexp = Atom | List
@@ -18,6 +19,15 @@ export function Symbol(content: string, location?: SourceLocation): Symbol {
   }
 }
 
+export function isSymbol(sexp: Sexp): sexp is Symbol {
+  return sexp.kind === "Symbol"
+}
+
+export function asSymbol(sexp: Sexp): Symbol {
+  if (isSymbol(sexp)) return sexp
+  throw new Error(`[asSymbol] fail on: ${formatSexp(sexp)}`)
+}
+
 export type String = {
   kind: "String"
   content: string
@@ -30,6 +40,15 @@ export function String(content: string, location?: SourceLocation): String {
     content,
     location,
   }
+}
+
+export function isString(sexp: Sexp): sexp is String {
+  return sexp.kind === "String"
+}
+
+export function asString(sexp: Sexp): String {
+  if (isString(sexp)) return sexp
+  throw new Error(`[asString] fail on: ${formatSexp(sexp)}`)
 }
 
 export type Int = {
@@ -46,6 +65,15 @@ export function Int(content: bigint, location?: SourceLocation): Int {
   }
 }
 
+export function isInt(sexp: Sexp): sexp is Int {
+  return sexp.kind === "Int"
+}
+
+export function asInt(sexp: Sexp): Int {
+  if (isInt(sexp)) return sexp
+  throw new Error(`[asInt] fail on: ${formatSexp(sexp)}`)
+}
+
 export type Float = {
   kind: "Float"
   content: number
@@ -60,6 +88,15 @@ export function Float(content: number, location?: SourceLocation): Float {
   }
 }
 
+export function isFloat(sexp: Sexp): sexp is Float {
+  return sexp.kind === "Float"
+}
+
+export function asFloat(sexp: Sexp): Float {
+  if (isFloat(sexp)) return sexp
+  throw new Error(`[asFloat] fail on: ${formatSexp(sexp)}`)
+}
+
 export type Keyword = {
   kind: "Keyword"
   content: string
@@ -72,6 +109,15 @@ export function Keyword(content: string, location?: SourceLocation): Keyword {
     content,
     location,
   }
+}
+
+export function isKeyword(sexp: Sexp): sexp is Keyword {
+  return sexp.kind === "Keyword"
+}
+
+export function asKeyword(sexp: Sexp): Keyword {
+  if (isKeyword(sexp)) return sexp
+  throw new Error(`[asKeyword] fail on: ${formatSexp(sexp)}`)
 }
 
 export type List = {
