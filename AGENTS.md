@@ -19,6 +19,71 @@ title: AI Agent Instructions
 - meta-examples.meta -- 测试用的 meta-lisp 项目。
 - meta-lisp.meta -- meta-lisp 的 self-hosting 编译器（WIP）。
 
+# meta-lisp 语言简介
+
+meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 Scheme。
+
+## 语法特性
+
+- S-expression 语法：`(function arg1 arg2 ...)`
+- 类型声明使用 `claim`：`(claim function-name (-> arg-type ... ret-type))`
+- 函数定义使用 `define`：`(define (function-name arg ...) body)`
+- 匿名函数：`(lambda (arg ...) body)`
+
+## 类型系统
+
+- 基础类型：`int-t`, `float-t`, `string-t`, `symbol-t`, `keyword-t`, `bool-t`, `void-t`
+- 复合类型：
+  - `(list-t T)` -- 列表
+  - `(set-t T)` -- 集合
+  - `(hash-t K V)` -- 哈希表
+- 函数类型：`(-> arg-type ... ret-type)`
+- 多态类型：`(polymorphic (A B ...) type)`
+- 记录类型（行多态）：
+  ```lisp
+  (define-interface point-t :x int-t :y int-t)
+  (@record :x 1 :y 2)
+  (extend point :color "red")
+  ```
+
+## 代数数据类型
+
+```lisp
+(define-data exp-t
+  (var-exp (name symbol-t))
+  (lambda-exp (parameter symbol-t) (body exp-t)))
+```
+
+模式匹配使用 `match`：
+```lisp
+(match exp
+  ((var-exp name) ...)
+  ((lambda-exp parameter body) ...))
+```
+
+## 模块系统
+
+- `(module name)` 声明模块
+- `(import mod-name name ...)` 从模块导入名字
+- `(import-as mod-name alias)` 更换模具名字前缀
+- `(import-all mod-name)` 导入模块中的所有名字
+- 限定变量：`mod-name/name`
+- 内置函数为 `builtin/` 前缀：`(builtin/string-length "abc")`
+
+## 项目组件
+
+- `meta-lisp.js` -- bootstrap 编译器（TypeScript 实现）
+- `meta-lisp.meta` -- self-hosting 编译器（meta-lisp 实现，WIP）
+- `meta-builtin.meta` -- builtin 函数声明与简单实现
+- `meta-examples.meta` -- 测试示例
+
+## 内置函数声明
+
+在 `meta-builtin.meta/src/` 中，每个类型有独立目录：
+- `int/`, `float/`, `string/`, `list/`, `hash/`, `set/`, `record/` 等
+- 使用 `(declare-primitive-function name arity)` 声明
+- 使用 `(claim name type)` 指定类型
+
 # 文档
 
 - docs/design -- 我计划设计的新 lisp 语言。
