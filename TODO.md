@@ -1,4 +1,9 @@
+[sexp.js] inline `isAtom`
+[sexp.js] inline `Cons`
+[sexp.js] merge atomHelpers into Sexp.ts
+[sexp.js] merge listHelpers into Sexp.ts
 [sexp.js] extract `collectKeyValuePairs` -- from list of `Sexp`
+[sexp.js] remove `listCollectKeyValuePairs`
 
 [meta-builtin.meta] rename `located-sexp-t` to `sexp-t` -- like `exp-t` always have `location`
 [stack-lisp.c] rename `parse-located-sexps` `parse-sexps` -- always have `location`
