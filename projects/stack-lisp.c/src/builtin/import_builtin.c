@@ -157,6 +157,8 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/string-trim", x_string_trim);
   define_primitive_1(mod, "builtin/string-int?", x_string_int_p);
   define_primitive_1(mod, "builtin/string-float?", x_string_float_p);
+  define_primitive_1(mod, "builtin/string-to-int", x_string_to_int);
+  define_primitive_1(mod, "builtin/string-to-float", x_string_to_float);
 
   // list
 

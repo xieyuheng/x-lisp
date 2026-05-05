@@ -29,6 +29,8 @@
 (declare-primitive-function string-trim 1)
 (declare-primitive-function string-int? 1)
 (declare-primitive-function string-float? 1)
+(declare-primitive-function string-to-int 1)
+(declare-primitive-function string-to-float 1)
 
 (claim string-t type-t)
 (claim string? (polymorphic (A) (-> A bool-t)))
@@ -59,3 +61,5 @@
 (claim string-trim (-> string-t string-t))
 (claim string-int? (-> string-t bool-t))
 (claim string-float? (-> string-t bool-t))
+(claim string-to-int (-> string-t int-t))
+(claim string-to-float (-> string-t float-t))

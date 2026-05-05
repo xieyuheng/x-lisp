@@ -222,3 +222,17 @@ value_t x_string_float_p(value_t string) {
   const char *str = xstring_string(to_xstring(string));
   return x_bool(string_is_double(str) && string_contains(str, "."));
 }
+
+value_t x_string_to_int(value_t string) {
+  assert(xstring_p(string));
+  const char *str = xstring_string(to_xstring(string));
+  assert(string_is_int(str));
+  return x_int(string_parse_int(str));
+}
+
+value_t x_string_to_float(value_t string) {
+  assert(xstring_p(string));
+  const char *str = xstring_string(to_xstring(string));
+  assert(string_is_double(str));
+  return x_float(string_parse_double(str));
+}

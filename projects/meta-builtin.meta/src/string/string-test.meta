@@ -101,3 +101,14 @@
   (assert-not (string-float? "abc"))
   (assert-not (string-float? "123"))
   (assert-not (string-float? "")))
+
+(define-test string-to-int-test
+  (assert-equal 123 (string-to-int "123"))
+  (assert-equal -123 (string-to-int "-123"))
+  (assert-equal 0 (string-to-int "0")))
+
+(define-test string-to-float-test
+  (assert-equal 123.0 (string-to-float "123.0"))
+  (assert-equal -123.5 (string-to-float "-123.5"))
+  (assert-equal 0.0 (string-to-float "0.0"))
+  (assert-equal 0.5 (string-to-float ".5")))

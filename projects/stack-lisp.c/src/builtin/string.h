@@ -28,3 +28,5 @@ x_fn_1_t x_string_trim_end;
 x_fn_1_t x_string_trim;
 x_fn_1_t x_string_int_p;
 x_fn_1_t x_string_float_p;
+x_fn_1_t x_string_to_int;
+x_fn_1_t x_string_to_float;
