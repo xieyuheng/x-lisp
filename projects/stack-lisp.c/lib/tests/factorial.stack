@@ -21,12 +21,6 @@
   (local-load 0 n)
   (tail-call builtin/imul))
 
-(define-function main 0
-  (literal 3)
-  (call factorial)
-  (call builtin/println)
-  (return))
-
 (define-test factorial-test
   (literal 3)
   (call factorial)

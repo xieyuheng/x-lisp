@@ -17,7 +17,7 @@ static void handle_call(cmd_ctx_t *ctx){
   char *name = cmd_get_arg(ctx, 1);
   bool profile = cmd_has_option(ctx, "--profile");
   mod_t *mod = stk_load(make_path(pathname), profile);
-  stk_call(mod, name);
+  stk_call(mod, name, NULL);
 }
 
 static void handle_test(cmd_ctx_t *ctx) {

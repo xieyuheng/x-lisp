@@ -1,4 +1,4 @@
-[stack-lisp.c] call command pass string argument to function
+[stack-lisp.c] `handle_call` -- `collect_args`
 
 [meta-lisp.meta] `project-t`
 [meta-lisp.meta] `mod-t` -- complete

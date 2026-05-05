@@ -9,7 +9,7 @@ void stk_setup(mod_t *mod);
 
 void stk_compile_function(mod_t *mod, function_t *function, value_t sexp);
 
-void stk_call(mod_t *mod, const char *name);
+void stk_call(mod_t *mod, const char *name, const array_t *args);
 void stk_test(mod_t *mod, const char *snapshot, bool profile);
 void stk_builtin_test(mod_t *mod, const char *snapshot, bool profile);
 void stk_test_definition(mod_t *mod, const char *snapshot, bool profile, definition_t *definition);

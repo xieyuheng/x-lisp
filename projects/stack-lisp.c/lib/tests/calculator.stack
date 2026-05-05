@@ -1,0 +1,8 @@
+(define-function add 2
+  (local-store 1)
+  (local-store 0)
+  (local-load 0)
+  (call builtin/println)
+  (local-load 1)
+  (call builtin/println)
+  (return))

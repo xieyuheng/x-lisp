@@ -32,7 +32,7 @@ void stk_test_definition(mod_t *mod, const char *snapshot, bool profile, definit
   assert(definition->kind == FUNCTION_DEFINITION);
   double testing_start = time_millisecond();
   if (snapshot == NULL) {
-    stk_call(mod, definition->name);
+    stk_call(mod, definition->name, NULL);
   } else {
     path_t *path = make_path(snapshot);
     path_join(path, "modules");
@@ -43,7 +43,7 @@ void stk_test_definition(mod_t *mod, const char *snapshot, bool profile, definit
     path_push_segment(path, segment);
 
     stdout_push(path_raw_string(path));
-    stk_call(mod, definition->name);
+    stk_call(mod, definition->name, NULL);
     stdout_drop();
 
     char *output = fs_read(path_raw_string(path));
