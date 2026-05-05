@@ -1,0 +1,67 @@
+(module meta)
+
+(define-data stmt-t
+  (import-stmt
+    (mod-name symbol-t)
+    (names (list-t symbol-t))
+    (location source-location-t))
+  (import-as-stmt
+    (mod-name symbol-t)
+    (prefix symbol-t)
+    (location source-location-t))
+  (import-all-stmt
+    (mod-name symbol-t)
+    (location source-location-t))
+  (define-function-stmt
+    (name symbol-t)
+    (parameters (list-t symbol-t))
+    (body exp-t)
+    (location source-location-t))
+  (define-variable-stmt
+    (name symbol-t)
+    (body exp-t)
+    (location source-location-t))
+  (define-test-stmt
+    (name symbol-t)
+    (body exp-t)
+    (location source-location-t))
+  (define-type-stmt
+    (name symbol-t)
+    (parameters (list-t symbol-t))
+    (body exp-t)
+    (location source-location-t))
+  (define-data-stmt
+    (data-type-constructor data-type-constructor-t)
+    (data-constructors (list-t data-constructor-t))
+    (location source-location-t))
+  (define-interface-stmt
+    (interface-constructor interface-constructor-t)
+    (attribute-types (hash-t keyword-t exp-t))
+    (location source-location-t))
+  (claim-stmt
+    (name symbol-t)
+    (type exp-t)
+    (location source-location-t))
+  (admit-stmt
+    (name symbol-t)
+    (type exp-t)
+    (location source-location-t))
+  (private-stmt
+    (names (list-t symbol-t))
+    (location source-location-t))
+  (exempt-stmt
+    (names (list-t symbol-t))
+    (location source-location-t))
+  (declare-module-stmt
+    (name symbol-t)
+    (location source-location-t))
+  (declare-type-error-module-stmt
+    (name symbol-t)
+    (location source-location-t))
+  (declare-primitive-function-stmt
+    (name symbol-t)
+    (arity int-t)
+    (location source-location-t))
+  (declare-primitive-variable-stmt
+    (name symbol-t)
+    (location source-location-t)))

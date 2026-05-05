@@ -2,68 +2,56 @@
 
 (define-data definition-t
   (primitive-function-definition
-   (mod mod-t)
-   (name string-t)
+   (name symbol-t)
    (arity int-t)
    (fn (-> (list-t value-t) value-t))
    (location source-location-t))
   (primitive-variable-definition
-   (mod mod-t)
-   (name string-t)
+   (name symbol-t)
    (value value-t)
    (location source-location-t))
   (primitive-function-declaration
-   (mod mod-t)
-   (name string-t)
+   (name symbol-t)
    (arity int-t)
    (location source-location-t))
   (primitive-variable-declaration
-   (mod mod-t)
-   (name string-t)
+   (name symbol-t)
    (location source-location-t))
   (function-definition
-   (mod mod-t)
    (name symbol-t)
    (parameters (list-t symbol-t))
    (body exp-t)
    (location source-location-t))
   (variable-definition
-   (mod mod-t)
    (name symbol-t)
    (body exp-t)
    (value (maybe-t value-t))
    (location source-location-t))
   (test-definition
-   (mod mod-t)
    (name symbol-t)
    (body exp-t)
    (location source-location-t))
   (type-definition
-   (mod mod-t)
    (name symbol-t)
    (parameters (list-t symbol-t))
    (body exp-t)
    (location source-location-t))
   (data-definition
-   (mod mod-t)
    (name symbol-t)
    (data-type-constructor data-type-constructor-t)
    (data-constructors (list-t data-constructor-t))
    (location source-location-t))
   (interface-definition
-   (mod mod-t)
    (name symbol-t)
    (interface-constructor interface-constructor-t)
    (attribute-types (hash-t keyword-t exp-t))
    (location source-location-t)))
 
 (define-interface data-type-constructor-t
-  :definition definition-t
   :name symbol-t
   :parameters (list-t symbol-t))
 
 (define-interface data-constructor-t
-  :definition definition-t
   :name symbol-t
   :fields (list-t data-field-t))
 
@@ -72,6 +60,5 @@
   :type exp-t)
 
 (define-interface interface-constructor-t
-  :definition definition-t
   :name symbol-t
   :parameters (list-t symbol-t))
