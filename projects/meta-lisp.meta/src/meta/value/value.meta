@@ -10,6 +10,8 @@
   (void-value (content void-t))
   (list-value (elements (list-t value-t)))
   (record-value (attributes (hash-t keyword-t value-t)))
+  (set-value (elements (set-t value-t)))
+  (hash-value (entries (hash-t value-t value-t)))
   (closure-value (mod mod-t) (env env-t)
                  (parameters (list-t symbol-t)) (body exp-t))
   (curry-value (target value-t) (arity int-t) (args (list-t value-t)))
