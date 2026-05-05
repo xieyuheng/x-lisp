@@ -1,17 +1,14 @@
-[meta-builtin.meta] `sexp-collect-key-value-pairs`
+[meta-lisp.meta] `parse-project-config-from-sexp`
 
-- 把 [sexp.js] 的 src/collectKeyValuePairs.ts
-  迁移到 [meta-builtin.meta] 的 src/sexp/sexp-collect-key-value-pairs.meta
+- 下面利用 `sexp-collect-key-value-pairs` 实现 `parse-project-config-from-sexp`
 
-- sexp-collect-key-value-pairs 的类型应是：
+- 实现之后写一些简单的测试。
 
-  ```meta-lisp
-  (claim sexp-collect-key-value-pairs (-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t))))
-  ```
+- 注意，你可以在 projects/meta-lisp.meta 中：
 
-- 注意，meta-lisp 中没有「循环」相关控制流，需要用尾部递归函数实现「循环」。
+  调用 ./meta-lisp.js check 来做类型检查。
+  调用 ./meta-lisp.js test 来做测试。
 
-[meta-lisp.meta] `parse-project-config`
 [meta-lisp.meta] `load-project-config`
 [meta-lisp.meta] `load-project`
 [meta-lisp.meta] `check-pipeline`

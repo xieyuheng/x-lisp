@@ -1,0 +1,31 @@
+(module builtin)
+
+(define-test sexp-collect-key-value-pairs-test
+  (let ((sexps (parse-sexps "test" ":x 1 :y 2 :z 3")))
+    (assert-equal
+      (list-length (sexp-collect-key-value-pairs sexps))
+      3)))
+
+(define-test sexp-collect-key-value-pairs-empty-test
+  (assert-equal
+    (sexp-collect-key-value-pairs [])
+    []))
+
+(define-test sexp-collect-key-value-pairs-no-keywords-test
+  (let ((sexps (parse-sexps "test" "a b c")))
+    (assert-equal
+      (sexp-collect-key-value-pairs sexps)
+      [])))
+
+(define-test sexp-collect-key-value-pairs-trailing-keyword-test
+  (let ((sexps (parse-sexps "test" ":x 1 :y")))
+    (= result (sexp-collect-key-value-pairs sexps))
+    (assert-equal (list-length result) 1)
+    (assert-equal (pair-first (list-head result)) :x)))
+
+(define-test sexp-collect-key-value-pairs-mixed-test
+  (let ((sexps (parse-sexps "test" "a :x 1 b :y 2 c")))
+    (= result (sexp-collect-key-value-pairs sexps))
+    (assert-equal (list-length result) 2)
+    (assert-equal (pair-first (list-head result)) :x)
+    (assert-equal (pair-first (list-head (cdr result))) :y)))

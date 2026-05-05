@@ -1,0 +1,22 @@
+(module builtin)
+
+(claim sexp-collect-key-value-pairs
+  (-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t))))
+
+(define (sexp-collect-key-value-pairs-loop remaining result)
+  (if (list-empty? remaining)
+    (list-reverse result)
+    (let ((first (car remaining)))
+      (match first
+        ((keyword-sexp content location)
+         (let ((rest (cdr remaining)))
+           (if (list-empty? rest)
+             (sexp-collect-key-value-pairs-loop rest result)
+             (sexp-collect-key-value-pairs-loop
+              (cdr rest)
+              (cons (make-pair content (car rest)) result)))))
+        (else
+          (sexp-collect-key-value-pairs-loop (cdr remaining) result))))))
+
+(define (sexp-collect-key-value-pairs sexps)
+  (sexp-collect-key-value-pairs-loop sexps []))
