@@ -1,4 +1,4 @@
-import * as S from "../lang/index.ts"
+import * as S from "../index.ts"
 
 export type Router<A> = (sexp: S.Sexp) => A
 export type Routes<A> = Record<string, S.MatcherCallback<A>>

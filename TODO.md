@@ -1,4 +1,3 @@
-[sexp.js] move `lang/` to top level
 [sexp.js] extract `collectKeyValuePairs` -- from list of `Sexp`
 
 [meta-builtin.meta] rename `located-sexp-t` to `sexp-t` -- like `exp-t` always have `location`
