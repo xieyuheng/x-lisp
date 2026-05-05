@@ -1,15 +1,5 @@
 import * as S from "../index.ts"
 
-export function isAtom(sexp: S.Sexp): sexp is S.Atom {
-  return (
-    sexp.kind === "Symbol" ||
-    sexp.kind === "String" ||
-    sexp.kind === "Int" ||
-    sexp.kind === "Float" ||
-    sexp.kind === "Keyword"
-  )
-}
-
 export function isSymbol(sexp: S.Sexp): sexp is S.Symbol {
   return sexp.kind === "Symbol"
 }

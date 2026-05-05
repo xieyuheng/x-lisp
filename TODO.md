@@ -1,4 +1,3 @@
-[sexp.js] inline `isAtom`
 [sexp.js] inline `Cons`
 [sexp.js] merge atomHelpers into Sexp.ts
 [sexp.js] merge listHelpers into Sexp.ts

@@ -1,6 +1,6 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import { formatSexp } from "../format/index.ts"
-import { isAtom, type Sexp } from "../sexp/index.ts"
+import * as S from "../index.ts"
 import { defaultConfig } from "./defaultConfig.ts"
 
 export type Config = {
@@ -11,7 +11,7 @@ type KeywordConfig = [name: string, headerLength: number]
 
 export function prettySexp(
   width: number,
-  sexp: Sexp,
+  sexp: S.Sexp,
   config: Config = defaultConfig,
 ): string {
   return Ppml.format(renderSexp(sexp)(config), { width })
@@ -19,9 +19,15 @@ export function prettySexp(
 
 type Render = (config: Config) => Ppml.Node
 
-export function renderSexp(sexp: Sexp): Render {
+export function renderSexp(sexp: S.Sexp): Render {
   return (config) => {
-    if (isAtom(sexp)) {
+    if (
+      S.isSymbol(sexp) ||
+      S.isString(sexp) ||
+      S.isInt(sexp) ||
+      S.isFloat(sexp) ||
+      S.isKeyword(sexp)
+    ) {
       return Ppml.text(formatSexp(sexp))
     }
 
@@ -65,7 +71,7 @@ export function renderSexp(sexp: Sexp): Render {
   }
 }
 
-function renderSet(elements: Array<Sexp>): Render {
+function renderSet(elements: Array<S.Sexp>): Render {
   return (config) => {
     const bodyNode = Ppml.group(
       Ppml.indent(
@@ -78,7 +84,7 @@ function renderSet(elements: Array<Sexp>): Render {
   }
 }
 
-function renderList(elements: Array<Sexp>): Render {
+function renderList(elements: Array<S.Sexp>): Render {
   return (config) => {
     if (elements.length === 0) {
       return Ppml.group(Ppml.text("["), Ppml.text("]"))
@@ -97,7 +103,7 @@ function renderList(elements: Array<Sexp>): Render {
 
 function findKeywordConfig(
   config: Config,
-  sexp: Sexp,
+  sexp: S.Sexp,
 ): KeywordConfig | undefined {
   if (sexp.kind === "Symbol") {
     return config.keywords.find(([name]) => name === sexp.content)
@@ -106,8 +112,8 @@ function findKeywordConfig(
 
 function renderSyntax(
   name: string,
-  header: Array<Sexp>,
-  body: Array<Sexp>,
+  header: Array<S.Sexp>,
+  body: Array<S.Sexp>,
 ): Render {
   return (config) => {
     const headNode = Ppml.indent(
@@ -131,7 +137,7 @@ function renderSyntax(
   }
 }
 
-function renderApplication(elements: Array<Sexp>): Render {
+function renderApplication(elements: Array<S.Sexp>): Render {
   return (config) => {
     // "short target" heuristic -- for `and` `or` `->` `*->`
     const shortLength = 3
@@ -165,13 +171,13 @@ function renderApplication(elements: Array<Sexp>): Render {
   }
 }
 
-function renderAttribute([key, sexp]: [string, Sexp]): Render {
+function renderAttribute([key, sexp]: [string, S.Sexp]): Render {
   return (config) => {
     return Ppml.group(Ppml.text(`:${key}`), Ppml.br(), renderSexp(sexp)(config))
   }
 }
 
-function renderAttributes(attributes: Record<string, Sexp>): Render {
+function renderAttributes(attributes: Record<string, S.Sexp>): Render {
   return (config) => {
     return Ppml.flex(
       Object.entries(attributes).map((entry) => renderAttribute(entry)(config)),
