@@ -50,3 +50,9 @@ date: 2026-05-03
   由于 builtin 是用 `(import-all)` 实现的，
   所以这个机制可以用来隐藏 builtin functions。
 - 此时需要保留 `(exempt)` 机制，因为这些函数没有类型声明。
+
+[2026-05-05]
+
+目前的实现方式是「方案 C」，
+但是也许应该用「方案 A」，并且不加 `internal-` 前缀。
+因为 `record-put!` 是 untyped，但是可以在 unchecked 函数中引用。
