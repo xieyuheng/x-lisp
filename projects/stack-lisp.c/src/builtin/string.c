@@ -210,3 +210,15 @@ value_t x_string_trim(value_t string) {
       string_trim(
         xstring_string(to_xstring(string)))));
 }
+
+value_t x_string_int_p(value_t string) {
+  assert(xstring_p(string));
+  const char *str = xstring_string(to_xstring(string));
+  return x_bool(string_is_int(str) && !string_contains(str, "."));
+}
+
+value_t x_string_float_p(value_t string) {
+  assert(xstring_p(string));
+  const char *str = xstring_string(to_xstring(string));
+  return x_bool(string_is_double(str) && string_contains(str, "."));
+}

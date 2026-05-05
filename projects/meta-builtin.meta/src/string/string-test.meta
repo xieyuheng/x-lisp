@@ -84,3 +84,20 @@
   (assert-equal "abc  " (string-trim-start "  abc  "))
   (assert-equal "  abc" (string-trim-end "  abc  "))
   (assert-equal "abc" (string-trim "  abc  ")))
+
+(define-test string-int?-test
+  (assert (string-int? "123"))
+  (assert (string-int? "-123"))
+  (assert (string-int? "0"))
+  (assert-not (string-int? "abc"))
+  (assert-not (string-int? "123.0"))
+  (assert-not (string-int? "")))
+
+(define-test string-float?-test
+  (assert (string-float? "123.0"))
+  (assert (string-float? "-123.5"))
+  (assert (string-float? "0.0"))
+  (assert (string-float? ".5"))
+  (assert-not (string-float? "abc"))
+  (assert-not (string-float? "123"))
+  (assert-not (string-float? "")))
