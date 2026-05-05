@@ -44,6 +44,12 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 - meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 - 没有 TypeScript 的 union 和 intersection type。
 
+## 控制流
+
+注意：
+
+- meta-lisp 中没有「循环」相关控制流，需要用尾部递归函数实现「循环」。
+
 ## 记录类型（行多态）
 
 ```lisp
