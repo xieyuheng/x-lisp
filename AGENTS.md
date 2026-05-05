@@ -32,17 +32,17 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 
 ## 类型系统
 
-特点：
-
-- 类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
-- 没有 TypeScript 的 union 和 intersection type。
-
 类型：
 
 - 基础类型：`int-t`, `float-t`, `string-t`, `symbol-t`, `keyword-t`, `bool-t`, `void-t`
 - 复合类型：`(list-t E)`, `(set-t E)`, `(hash-t K V)`
 - 函数类型：`(-> arg-type ... ret-type)`
 - 多态类型：`(polymorphic (A B ...) type)`
+
+注意 meta-lisp 类型系统与 TypeScript 的差异：
+
+- meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
+- 没有 TypeScript 的 union 和 intersection type。
 
 ## 记录类型（行多态）
 
