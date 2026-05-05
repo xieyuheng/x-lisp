@@ -41,7 +41,7 @@ function formatSetElements(
 }
 
 function formatHashEntries(
-  entries: Array<M.HashEntry>,
+  entries: Array<M.HashValueEntry>,
   options: Options = {},
 ): string {
   if (options.digest) {
@@ -121,12 +121,12 @@ export function formatValue(value: M.Value, options: Options = {}): string {
     }
 
     case "SetValue": {
-      const elements = formatSetElements(M.setElements(value), options)
+      const elements = formatSetElements(M.setValueElements(value), options)
       return `{${elements}}`
     }
 
     case "HashValue": {
-      const entries = formatHashEntries(M.hashEntries(value), options)
+      const entries = formatHashEntries(M.hashValueEntries(value), options)
       if (entries === "") {
         return `(@hash)`
       } else {

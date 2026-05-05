@@ -5,8 +5,8 @@ import { type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type AtomValue } from "./Atom.ts"
-import { type HashValue } from "./Hash.ts"
-import { type SetValue } from "./Set.ts"
+import { type HashValue } from "./HashValue.ts"
+import { type SetValue } from "./SetValue.ts"
 
 export type Value =
   | AtomValue

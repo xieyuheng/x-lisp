@@ -14,8 +14,12 @@ export function valueEqual(lhs: Value, rhs: Value): boolean {
 
   if (lhs.kind === "SetValue" && rhs.kind === "SetValue") {
     return (
-      Values.setElements(lhs).every((left) => Values.setHas(rhs, left)) &&
-      Values.setElements(rhs).every((right) => Values.setHas(lhs, right))
+      Values.setValueElements(lhs).every((left) =>
+        Values.setValueHas(rhs, left),
+      ) &&
+      Values.setValueElements(rhs).every((right) =>
+        Values.setValueHas(lhs, right),
+      )
     )
   }
 
@@ -60,13 +64,13 @@ function valueEqualAttributes(
 }
 
 function valueEqualHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
-  const lhsEntries = Values.hashEntries(lhs)
-  const rhsEntries = Values.hashEntries(rhs)
+  const lhsEntries = Values.hashValueEntries(lhs)
+  const rhsEntries = Values.hashValueEntries(rhs)
   if (lhsEntries.length !== rhsEntries.length) return false
 
   for (const lhsEntry of lhsEntries) {
     const lhsValue = lhsEntry.value
-    const rhsValue = Values.hashGet(rhs, lhsEntry.key)
+    const rhsValue = Values.hashValueGet(rhs, lhsEntry.key)
     if (rhsValue === undefined) return false
     if (!valueEqual(lhsValue, rhsValue)) return false
   }

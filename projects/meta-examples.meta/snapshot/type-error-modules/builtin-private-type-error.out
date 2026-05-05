@@ -1,5 +1,6 @@
 src/module/builtin-private-type-error.meta:4:12 -- undefined variable
-  name: builtin-private-type-error/record-put
+  module: builtin-private-type-error
+  name: record-put
  2 | 
  3 | (define-test record-test
  4 |   (println record-put)

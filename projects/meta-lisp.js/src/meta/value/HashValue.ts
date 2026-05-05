@@ -4,10 +4,10 @@ import * as Values from "./index.ts"
 
 export type HashValue = {
   kind: "HashValue"
-  entries: Map<string, HashEntry>
+  entries: Map<string, HashValueEntry>
 }
 
-export type HashEntry = {
+export type HashValueEntry = {
   hashKey: string
   key: Value
   value: Value
@@ -29,15 +29,15 @@ export function asHashValue(value: Value): HashValue {
   throw new Error(`[asHashValue] fail on: ${formatValue(value)}`)
 }
 
-export function hashEntries(hash: HashValue): Array<HashEntry> {
+export function hashValueEntries(hash: HashValue): Array<HashValueEntry> {
   return Array.from(hash.entries.values())
 }
 
-export function hashLength(hash: HashValue): number {
+export function hashValueLength(hash: HashValue): number {
   return Array.from(hash.entries.values()).length
 }
 
-export function hashGet(hash: HashValue, key: Value): Value | undefined {
+export function hashValueGet(hash: HashValue, key: Value): Value | undefined {
   const hashKey = formatValue(key, { digest: true })
   const entry = hash.entries.get(hashKey)
   if (entry === undefined) {
@@ -47,7 +47,7 @@ export function hashGet(hash: HashValue, key: Value): Value | undefined {
   }
 }
 
-export function hashPut(hash: HashValue, key: Value, value: Value): void {
+export function hashValuePut(hash: HashValue, key: Value, value: Value): void {
   const hashKey = formatValue(key, { digest: true })
   const entry = hash.entries.get(hashKey)
   if (entry === undefined) {
@@ -57,7 +57,7 @@ export function hashPut(hash: HashValue, key: Value, value: Value): void {
   }
 }
 
-export function hashDelete(hash: HashValue, key: Value): void {
+export function hashValueDelete(hash: HashValue, key: Value): void {
   const hashKey = formatValue(key, { digest: true })
   hash.entries.delete(hashKey)
 }
@@ -74,11 +74,13 @@ export function isHashable(value: Value): boolean {
   }
 
   if (value.kind === "SetValue") {
-    return Values.setElements(value).every(isHashable)
+    return Values.setValueElements(value).every(isHashable)
   }
 
   if (value.kind === "HashValue") {
-    return Values.hashEntries(value).every((entry) => isHashable(entry.value))
+    return Values.hashValueEntries(value).every((entry) =>
+      isHashable(entry.value),
+    )
   }
 
   return false

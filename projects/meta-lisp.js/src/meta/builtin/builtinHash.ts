@@ -11,13 +11,13 @@ export function builtinHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-empty?", 1, (hash) => {
     return Values.BoolValue(
-      Values.hashEntries(Values.asHashValue(hash)).length === 0,
+      Values.hashValueEntries(Values.asHashValue(hash)).length === 0,
     )
   })
 
   definePrimitiveFunction(mod, "hash-length", 1, (hash) => {
     return Values.IntValue(
-      BigInt(Values.hashEntries(Values.asHashValue(hash)).length),
+      BigInt(Values.hashValueEntries(Values.asHashValue(hash)).length),
     )
   })
 
@@ -29,7 +29,7 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    const found = Values.hashGet(Values.asHashValue(hash), key)
+    const found = Values.hashValueGet(Values.asHashValue(hash), key)
     if (found === undefined) {
       let message = `(hash-get) no such key`
       message += `\n  key: ${formatValue(key)}`
@@ -47,7 +47,7 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    const found = Values.hashGet(Values.asHashValue(hash), key)
+    const found = Values.hashValueGet(Values.asHashValue(hash), key)
     return Values.BoolValue(found !== undefined)
   })
 
@@ -60,11 +60,11 @@ export function builtinHash(mod: Mod) {
     }
 
     const newHash = Values.HashValue()
-    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
-      Values.hashPut(newHash, entry.key, entry.value)
+    for (const entry of Values.hashValueEntries(Values.asHashValue(hash))) {
+      Values.hashValuePut(newHash, entry.key, entry.value)
     }
 
-    Values.hashPut(newHash, key, value)
+    Values.hashValuePut(newHash, key, value)
     return newHash
   })
 
@@ -76,7 +76,7 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    Values.hashPut(Values.asHashValue(hash), key, value)
+    Values.hashValuePut(Values.asHashValue(hash), key, value)
     return hash
   })
 
@@ -87,14 +87,14 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    Values.hashDelete(Values.asHashValue(hash), key)
+    Values.hashValueDelete(Values.asHashValue(hash), key)
     return hash
   })
 
   definePrimitiveFunction(mod, "hash-copy", 1, (hash) => {
     const newHash = Values.HashValue()
-    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
-      Values.hashPut(newHash, entry.key, entry.value)
+    for (const entry of Values.hashValueEntries(Values.asHashValue(hash))) {
+      Values.hashValuePut(newHash, entry.key, entry.value)
     }
 
     return newHash
@@ -102,7 +102,7 @@ export function builtinHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-entries", 1, (hash) => {
     const elements: Array<Value> = []
-    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
+    for (const entry of Values.hashValueEntries(Values.asHashValue(hash))) {
       elements.push(Values.RecordValue({ key: entry.key, value: entry.value }))
     }
 
@@ -111,7 +111,7 @@ export function builtinHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-keys", 1, (hash) => {
     const elements: Array<Value> = []
-    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
+    for (const entry of Values.hashValueEntries(Values.asHashValue(hash))) {
       elements.push(entry.key)
     }
 
@@ -120,7 +120,7 @@ export function builtinHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-values", 1, (hash) => {
     const elements: Array<Value> = []
-    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
+    for (const entry of Values.hashValueEntries(Values.asHashValue(hash))) {
       elements.push(entry.value)
     }
 

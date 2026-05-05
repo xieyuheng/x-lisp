@@ -4,10 +4,10 @@ import * as Values from "./index.ts"
 
 export type SetValue = {
   kind: "SetValue"
-  entries: Map<string, SetEntry>
+  entries: Map<string, SetValueEntry>
 }
 
-export type SetEntry = {
+export type SetValueEntry = {
   hashKey: string
   element: Value
 }
@@ -19,7 +19,7 @@ export function SetValue(elements: Array<Value>): SetValue {
   }
 
   for (const element of elements) {
-    setAdd(set, element)
+    setValueAdd(set, element)
   }
 
   return set
@@ -34,16 +34,16 @@ export function asSetValue(value: Value): SetValue {
   throw new Error(`[asSetValue] fail on: ${formatValue(value)}`)
 }
 
-export function setCopy(target: Value): SetValue {
-  return SetValue(setElements(target))
+export function setValueCopy(target: Value): SetValue {
+  return SetValue(setValueElements(target))
 }
 
-export function setElements(target: Value): Array<Value> {
+export function setValueElements(target: Value): Array<Value> {
   const set = asSetValue(target)
   return Array.from(set.entries.values()).map((entry) => entry.element)
 }
 
-export function setHas(target: Value, element: Value): boolean {
+export function setValueHas(target: Value, element: Value): boolean {
   if (!Values.isHashable(element)) {
     let message = `[setHas] element is not hashable`
     message += `\n  element: ${formatValue(element)}`
@@ -56,7 +56,7 @@ export function setHas(target: Value, element: Value): boolean {
   return set.entries.has(hashKey)
 }
 
-export function setAdd(target: Value, element: Value): void {
+export function setValueAdd(target: Value, element: Value): void {
   if (!Values.isHashable(element)) {
     let message = `[setAdd] element is not hashable`
     message += `\n  element: ${formatValue(element)}`
@@ -74,7 +74,7 @@ export function setAdd(target: Value, element: Value): void {
   }
 }
 
-export function setDelete(target: Value, element: Value): void {
+export function setValueDelete(target: Value, element: Value): void {
   if (!Values.isHashable(element)) {
     let message = `[setDelete] element is not hashable`
     message += `\n  element: ${formatValue(element)}`
@@ -87,7 +87,7 @@ export function setDelete(target: Value, element: Value): void {
   set.entries.delete(hashKey)
 }
 
-export function setDeleteAll(target: Value): void {
+export function setValueClear(target: Value): void {
   const set = asSetValue(target)
   set.entries = new Map()
 }
