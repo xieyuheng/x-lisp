@@ -1,13 +1,3 @@
-[sexp.js] [refactor] inline and remove `listCollectKeyValuePairs`
-
-- 在调用 `listCollectKeyValuePairs` 的地方 inline `listCollectKeyValuePairs`
-- inline 之后删除 `listCollectKeyValuePairs`
-
-[sexp.js] [refactor] merge sexpGetters.ts into Sexp.ts
-
-- 处理相关类型的函数放在一起。
-- merge 之后删除 sexpGetters.ts。
-
 [meta-builtin.meta] rename `located-sexp-t` to `sexp-t` -- like `exp-t` always have `location`
 [stack-lisp.c] rename `parse-located-sexps` `parse-sexps` -- always have `location`
 [meta-builtin.meta] `sexp-collect-key-value-pairs`

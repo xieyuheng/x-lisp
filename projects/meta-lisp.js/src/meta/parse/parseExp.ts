@@ -109,7 +109,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* '@record body)": ({ body }, { location }) => {
-    const entries = S.listCollectKeyValuePairs(body)
+    const entries = S.collectKeyValuePairs(S.asList(body).elements)
     M.assertNoDuplicatedKey(entries)
     return M.LiteralRecord(
       recordMapValue(Object.fromEntries(entries), parseExp),
@@ -144,7 +144,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* 'interface body)": ({ body }, { location }) => {
-    const entries = S.listCollectKeyValuePairs(body)
+    const entries = S.collectKeyValuePairs(S.asList(body).elements)
     M.assertNoDuplicatedKey(entries)
     return M.Interface(
       recordMapValue(Object.fromEntries(entries), parseExp),
@@ -153,7 +153,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* 'extend-interface head body)": ({ head, body }, { location }) => {
-    const entries = S.listCollectKeyValuePairs(body)
+    const entries = S.collectKeyValuePairs(S.asList(body).elements)
     M.assertNoDuplicatedKey(entries)
     return M.ExtendInterface(
       parseExp(head),
@@ -163,7 +163,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* 'extend head body)": ({ head, body }, { location }) => {
-    const entries = S.listCollectKeyValuePairs(body)
+    const entries = S.collectKeyValuePairs(S.asList(body).elements)
     M.assertNoDuplicatedKey(entries)
     return M.Extend(
       parseExp(head),
@@ -173,7 +173,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* 'update head body)": ({ head, body }, { location }) => {
-    const entries = S.listCollectKeyValuePairs(body)
+    const entries = S.collectKeyValuePairs(S.asList(body).elements)
     M.assertNoDuplicatedKey(entries)
     return M.Update(
       parseExp(head),
@@ -183,7 +183,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* 'update! head body)": ({ head, body }, { location }) => {
-    const entries = S.listCollectKeyValuePairs(body)
+    const entries = S.collectKeyValuePairs(S.asList(body).elements)
     M.assertNoDuplicatedKey(entries)
     return M.UpdateMut(
       parseExp(head),

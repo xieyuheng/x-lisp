@@ -22,15 +22,3 @@ export function collectKeyValuePairs(
 
   return entries
 }
-
-export function listCollectKeyValuePairs(
-  sexp: S.Sexp,
-): Array<[string, S.Sexp]> {
-  if (sexp.kind !== "List") {
-    throw new Error(
-      `[listCollectKeyValuePairs] wrong sexp: ${S.formatSexp(sexp)}`,
-    )
-  }
-
-  return collectKeyValuePairs(sexp.elements)
-}
