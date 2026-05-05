@@ -1,14 +1,8 @@
 (module meta)
 
-(define-interface project-config-t
-  )
-
 (define-interface project-t
   :root-directory string-t
   :config project-config-t)
-
-(define (make-project-config)
-  {})
 
 (define (make-project root-directory config)
   {:root-directory root-directory

@@ -5,8 +5,8 @@ export type ProjectConfig = {
   version: string
   build: {
     "source-directory": string
-    "output-directory"?: string
-    "snapshot-directory"?: string
+    "output-directory": string
+    "snapshot-directory": string
   }
 }
 
@@ -15,7 +15,7 @@ export const ProjectConfigSchema = z.object({
   version: z.string(),
   build: z.object({
     "source-directory": z.string(),
-    "output-directory": z.string().optional(),
-    "snapshot-directory": z.string().optional(),
+    "output-directory": z.string(),
+    "snapshot-directory": z.string(),
   }),
 })

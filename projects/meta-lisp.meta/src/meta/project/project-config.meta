@@ -1,0 +1,9 @@
+(module meta)
+
+(define-interface project-config-t
+  :name string-t
+  :version string-t
+  :build (interface
+           :source-directory string-t
+           :output-directory string-t
+           :snapshot-directory string-t))
