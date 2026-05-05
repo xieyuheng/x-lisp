@@ -7,3 +7,10 @@
            :source-directory string-t
            :output-directory string-t
            :snapshot-directory string-t))
+
+(define (parse-project-config path string)
+  (= sexps (parse-located-sexps path string))
+  (parse-project-config-from-sexp (car sexps)))
+
+(define (parse-project-config-from-sexp sexp)
+  (error "todo"))

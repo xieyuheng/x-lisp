@@ -106,7 +106,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "(cons* 'define-interface head body)": ({ head, body }, { location }) => {
-    const entries = S.listCollectKeywordEntries(body)
+    const entries = S.listCollectKeyValuePairs(body)
     M.assertNoDuplicatedKey(entries)
     return M.DefineInterface(
       parseInterfaceConstructor(head),
