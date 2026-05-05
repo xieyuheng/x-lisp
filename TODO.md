@@ -1,8 +1,7 @@
-[sexp.js] merge listHelpers.ts into Sexp.ts
+[sexp.js] 在调用 Cons 的地方 inline `Cons`
 
-- 处理相同数据类型的函数放在一起。
-- 在 as* 函数中调用 is* 函数，而不是直接用 ===。
-- merge 之后删除 listHelpers.ts
+- 在需要保证 tail 是 List 的地方，当场调用 asList。
+- inline 之后删除 Cons。
 
 [sexp.js] improve error handling。
 
@@ -10,7 +9,6 @@
   而是在 if 判断 sexp 带有 location 的时候，调用 throw new S.ErrorWithSourceLocation(message, ...)
   如果 sexp 不带 location，还是调用 throw new Error(message)。
 
-[sexp.js] inline `Cons`
 [sexp.js] extract `collectKeyValuePairs` -- from list of `Sexp`
 [sexp.js] remove `listCollectKeyValuePairs`
 
