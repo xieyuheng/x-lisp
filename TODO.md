@@ -9,6 +9,17 @@
   而不是很多独立的 import。
 
 [sexp.js] merge listHelpers.ts into Sexp.ts
+
+- 处理相同数据类型的函数放在一起。
+- 在 as* 函数中调用 is* 函数，而不是直接用 ===。
+- merge 之后删除 listHelpers.ts
+
+[sexp.js] improve error handling。
+
+- 当 as* 函数出错的时候，只是 throw new Error(message)
+  而是在 if 判断 sexp 带有 location 的时候，调用 throw new S.ErrorWithSourceLocation(message, ...)
+  如果 sexp 不带 location，还是调用 throw new Error(message)。
+
 [sexp.js] inline `Cons`
 [sexp.js] extract `collectKeyValuePairs` -- from list of `Sexp`
 [sexp.js] remove `listCollectKeyValuePairs`
