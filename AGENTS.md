@@ -1,30 +1,8 @@
-# 价值
+---
+title: AI Agent Instructions
+---
 
-我是一个 lisp / scheme 程序员。
-x-lisp 项目是我计划设计的一些列类 lisp 语言的集合。
-
-目前正在设计的是 meta-lisp，其首要目标是加快新语言开发的速度。
-适合用来写新的解释器与编译器，以探索新的计算模型。
-
-比如：
-
-- interaction net
-- pi-calculus
-- rewrite system
-- propagator model
-- logic constraint programming
-- reactive programming
-
-之所以能加快新语言开发，假设是：
-在 lisp 的语法框架内，可以更快地设计和迭代新语法，
-从而加快新语言的开发速度。
-
-次要目标：
-
-- 方便用 C 扩展，可以作为用 C 实现的 library 和 app 的脚本语言。
-- 尽量使实现独立，简化所依赖的技术栈。
-
-# 范围
+# 子项目
 
 目前 x-lisp 的子项目：
 
@@ -47,11 +25,11 @@ x-lisp 项目是我计划设计的一些列类 lisp 语言的集合。
 - docs/diary -- 这个项目的编程日志，记录设计决策。
   在解决问题的过程中，你可以经常参考这个日志中的笔记。
 
-# 任务
-
-我会在 TODO.md 中记录我计划做的任务。
-
 # 开发
+
+任务：
+
+- 我会在 TODO.md 中记录我计划做的任务。
 
 测试：
 

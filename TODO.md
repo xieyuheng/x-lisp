@@ -1,3 +1,5 @@
+[meta-lisp.js] fix value/HashValue and value/SetValue naming
+
 [meta-lisp.meta] `project-t`
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
