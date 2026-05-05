@@ -76,7 +76,13 @@ export class Parser {
             token,
             tokens.slice(1),
           )
-          return { sexp: S.Cons(S.Symbol("@list"), sexp), remain }
+          return {
+            sexp: S.List(
+              [S.Symbol("@list"), ...S.asList(sexp).elements],
+              sexp.location,
+            ),
+            remain,
+          }
         }
 
         if (token.value === "{") {
@@ -84,7 +90,13 @@ export class Parser {
             token,
             tokens.slice(1),
           )
-          return { sexp: S.Cons(S.Symbol("@record"), sexp), remain }
+          return {
+            sexp: S.List(
+              [S.Symbol("@record"), ...S.asList(sexp).elements],
+              sexp.location,
+            ),
+            remain,
+          }
         }
 
         return this.handleTokensInBracket(token, tokens.slice(1))

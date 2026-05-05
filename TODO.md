@@ -1,8 +1,3 @@
-[sexp.js] 在调用 Cons 的地方 inline `Cons`
-
-- 在需要保证 tail 是 List 的地方，当场调用 asList。
-- inline 之后删除 Cons。
-
 [sexp.js] improve error handling。
 
 - 当 as* 函数出错的时候，只是 throw new Error(message)

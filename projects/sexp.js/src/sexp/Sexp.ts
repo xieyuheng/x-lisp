@@ -142,11 +142,3 @@ export function asList(sexp: Sexp): List {
   if (isList(sexp)) return sexp
   throw new Error(`[asList] fail on: ${S.formatSexp(sexp)}`)
 }
-
-export function Cons(head: Sexp, tail: Sexp): List {
-  if (!isList(tail)) {
-    throw new Error(`[Cons] tail to be a list, tail kind: ${tail.kind}.`)
-  }
-
-  return List([head, ...tail.elements], tail.location)
-}
