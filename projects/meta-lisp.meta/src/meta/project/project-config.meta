@@ -35,4 +35,4 @@
 (define-test load-project-config-test
   (= path "project.sexp")
   (= config (load-project-config path))
-  (assert-equal "test-project" (:name config)))
+  (assert-equal "meta-lisp" (:name config)))

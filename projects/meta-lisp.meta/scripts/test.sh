@@ -2,4 +2,4 @@
 
 set -e
 
-./meta-lisp.js check
+./meta-lisp.js test --profile
