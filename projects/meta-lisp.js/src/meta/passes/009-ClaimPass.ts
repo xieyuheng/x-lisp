@@ -11,7 +11,8 @@ export function ClaimPass(
     for (const [name, entry] of mod.claimed) {
       if (!mod.admitted.has(name) && mod.definitions.get(name) === undefined) {
         let message = `undefined claimed name`
-        message += `\n  name: ${mod.name}/${name}`
+        message += `\n  module: ${mod.name}`
+        message += `\n  name: ${name}`
 
         if (entry.exp.location) {
           writeln(S.sourceLocationReport(entry.exp.location, message))

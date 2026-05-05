@@ -40,7 +40,8 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         const qualifiedMod = M.projectLookupMod(mod.project, exp.modName)
         if (qualifiedMod === undefined) {
           let message = `undefined module prefix`
-          message += `\n  name: ${exp.modName}/${exp.name}`
+          message += `\n  module: ${exp.modName}`
+          message += `\n  name: ${exp.name}`
           if (exp.location)
             throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
@@ -331,7 +332,8 @@ function typeInferVarInMod(
     const definition = M.modLookupDefinition(mod, name)
     if (definition === undefined) {
       let message = `undefined variable`
-      message += `\n  name: ${mod.name}/${name}`
+      message += `\n  module: ${mod.name}`
+      message += `\n  name: ${name}`
       return M.errorInferEffect(exp, message)(subst)
     }
 

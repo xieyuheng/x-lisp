@@ -5,8 +5,8 @@
 
 (define-interface project-t
   :root-directory string-t
-  :config: project-config-t)
+  :config project-config-t)
 
 (define (make-project root-directory config)
   {:root-directory root-directory
-   :config: config})
+   :config config})
