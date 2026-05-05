@@ -9,6 +9,6 @@
   (list-sexp (elements (list-t located-sexp-t))
              (location source-location-t)))
 
-(declare-primitive-function parse-located-sexps 2)
+(declare-primitive-function parse-sexps 2)
 
-(claim parse-located-sexps (-> string-t string-t (list-t located-sexp-t)))
+(claim parse-sexps (-> string-t string-t (list-t located-sexp-t)))

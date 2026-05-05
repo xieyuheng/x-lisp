@@ -1,5 +1,4 @@
 [meta-builtin.meta] rename `located-sexp-t` to `sexp-t` -- like `exp-t` always have `location`
-[stack-lisp.c] rename `parse-located-sexps` `parse-sexps` -- always have `location`
 [meta-builtin.meta] `sexp-collect-key-value-pairs`
 
 [meta-lisp.meta] `parse-project-config`
