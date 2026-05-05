@@ -1,7 +1,7 @@
 (module meta)
 
 (claim parse-exp
-  (-> located-sexp-t
+  (-> sexp-t
       exp-t))
 
 (define (parse-exp sexp)
@@ -22,7 +22,7 @@
     ((list-sexp elements location) (parse-compound-exp elements location))))
 
 (claim parse-compound-exp
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       exp-t))
 
 (define syntax-keywords
@@ -37,7 +37,7 @@
     (parse-apply-exp elements location)))
 
 (claim parse-apply-exp
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       exp-t))
 
 (define (parse-apply-exp sexps location)
@@ -46,7 +46,7 @@
              location))
 
 (claim parse-special-form-exp
-  (-> symbol-t (list-t located-sexp-t) source-location-t
+  (-> symbol-t (list-t sexp-t) source-location-t
       exp-t))
 
 (define (parse-special-form-exp tag sexps location)
@@ -58,7 +58,7 @@
                        location)))))
 
 (claim parse-parameters
-  (-> located-sexp-t
+  (-> sexp-t
       (list-t symbol-t)))
 
 (define (parse-parameters sexp)
@@ -66,7 +66,7 @@
     (list-map symbol-sexp-content elements)))
 
 (claim parse-body
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       exp-t))
 
 (define (parse-body sexps location)

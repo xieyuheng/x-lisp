@@ -1,0 +1,4 @@
+(module builtin)
+
+(define-test format-sexp-test
+  (assert-equal "(a b c)" (format-sexp '(a b c))))

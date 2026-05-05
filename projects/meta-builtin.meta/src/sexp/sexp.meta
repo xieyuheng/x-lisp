@@ -1,8 +1,16 @@
 (module builtin)
 
+(define-data sexp-t
+  (symbol-sexp (content symbol-t) (location source-location-t))
+  (keyword-sexp (content keyword-t) (location source-location-t))
+  (string-sexp (content string-t) (location source-location-t))
+  (int-sexp (content int-t) (location source-location-t))
+  (float-sexp (content float-t) (location source-location-t))
+  (list-sexp (elements (list-t sexp-t))
+             (location source-location-t)))
+
+(declare-primitive-function parse-sexps 2)
 (declare-primitive-function format-sexp 1)
 
+(claim parse-sexps (-> string-t string-t (list-t sexp-t)))
 (claim format-sexp (polymorphic (A) (-> A string-t)))
-
-(define-test format-sexp-test
-  (assert-equal "(a b c)" (format-sexp '(a b c))))
