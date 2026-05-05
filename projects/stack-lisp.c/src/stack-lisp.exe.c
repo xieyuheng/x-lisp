@@ -23,14 +23,9 @@ static void handle_test(cmd_ctx_t *ctx) {
   stk_test(mod, snapshot, profile);
 }
 
-static void init(void) {
-  init_global_gc();
-}
-
 int main(int argc, char *argv[]) {
   sanity_check();
-
-  init();
+  init_global_gc();
 
   cmd_router_t *router = cmd_make_router("stack-lisp", "0.1.0");
 
