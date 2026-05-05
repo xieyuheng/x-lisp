@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+call() {
+    ../stack-lisp.c/src/stack-lisp.exe call build/bundle.stack $@
+}
+
+main() {
+    local command=$1; shift
+    case $command in
+        check)
+            local path=${1:-"project.sexp"}
+            call meta/check-command $path
+            ;;
+        *)
+            echo "unknown command: $command" >&2
+            exit 1
+            ;;
+    esac
+}
+
+main $@

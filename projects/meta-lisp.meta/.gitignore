@@ -1,5 +1,6 @@
 # meta-lisp
 build
+self-build
 
 # meta-lisp
 *.o
