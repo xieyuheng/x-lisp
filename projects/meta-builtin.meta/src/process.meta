@@ -2,8 +2,6 @@
 
 (declare-primitive-function exit 1)
 (declare-primitive-function current-directory 0)
-(declare-primitive-function current-command-line-args 0)
 
 (claim exit (-> int-t void-t))
 (claim current-directory (-> string-t))
-(claim current-command-line-args (-> (list-t string-t)))

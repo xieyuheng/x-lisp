@@ -1,4 +1,0 @@
-(module test-suite)
-
-(define-test current-command-line-args-test
-  (println (current-command-line-args)))
