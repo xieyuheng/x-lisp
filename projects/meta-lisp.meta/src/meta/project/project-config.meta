@@ -12,5 +12,44 @@
   (= sexps (parse-sexps path string))
   (parse-project-config-from-sexp (car sexps)))
 
+(define (config-lookup pairs key)
+  (if (list-empty? pairs)
+      (error "config key not found")
+      (let ((pair (list-head pairs)))
+        (if (equal? (pair-first pair) key)
+            (pair-second pair)
+            (config-lookup (cdr pairs) key)))))
+
+(define (config-lookup-string pairs key)
+  (let ((sexp (config-lookup pairs key)))
+    (match sexp
+      ((string-sexp content location) content)
+      (else (error "expected string")))))
+
+(define (parse-build-config sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (let ((pairs (sexp-collect-key-value-pairs elements)))
+       {:source-directory (config-lookup-string pairs :source-directory)
+        :output-directory (config-lookup-string pairs :output-directory)
+        :snapshot-directory (config-lookup-string pairs :snapshot-directory)}))
+    (else (error "expected list sexp for build config"))))
+
 (define (parse-project-config-from-sexp sexp)
-  (error "todo"))
+  (match sexp
+    ((list-sexp elements location)
+     (let ((pairs (sexp-collect-key-value-pairs elements)))
+       {:name (config-lookup-string pairs :name)
+        :version (config-lookup-string pairs :version)
+        :build (parse-build-config (config-lookup pairs :build))}))
+    (else (error "expected list sexp for project config"))))
+
+(define-test parse-project-config-test
+  (let ((sexps (parse-sexps "test"
+                "(list :name \"test-project\" :version \"0.1.0\" :build (list :source-directory \"src\" :output-directory \"lib\" :snapshot-directory \"snapshot\"))")))
+    (= config (parse-project-config-from-sexp (car sexps)))
+    (assert-equal "test-project" (:name config))
+    (assert-equal "0.1.0" (:version config))
+    (assert-equal "src" (:source-directory (:build config)))
+    (assert-equal "lib" (:output-directory (:build config)))
+    (assert-equal "snapshot" (:snapshot-directory (:build config)))))

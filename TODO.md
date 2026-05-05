@@ -1,13 +1,12 @@
-[meta-lisp.meta] `parse-project-config-from-sexp`
+[meta-lisp.meta] refactor  `parse-project-config-from-sexp`
 
-- 下面利用 `sexp-collect-key-value-pairs` 实现 `parse-project-config-from-sexp`
+- 在 [meta-builtin.meta] 中，在 sexp-collect-key-value-pairs 之外，
+  加上一个辅助函数 sexp-collect-key-value-hash。
 
-- 实现之后写一些简单的测试。
+  这样实现 parse-project-config-from-sexp 的时候，
+  就不用自己实现 lookup 函数了，直接用 hash 的 API 就可以了。
 
-- 注意，你可以在 projects/meta-lisp.meta 中：
-
-  调用 ./meta-lisp.js check 来做类型检查。
-  调用 ./meta-lisp.js test 来做测试。
+  hash 的 API 可以在 [meta-builtin.meta] 项目中找到。
 
 [meta-lisp.meta] `load-project-config`
 [meta-lisp.meta] `load-project`
