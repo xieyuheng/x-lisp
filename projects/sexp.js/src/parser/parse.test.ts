@@ -1,15 +1,13 @@
 import { test } from "node:test"
-import { formatSexp } from "../format/index.ts"
-import * as S from "../sexp/index.ts"
-import { parseSexp } from "./index.ts"
+import * as S from "../index.ts"
 
 function assertParse(text: string, expected: S.Sexp): void {
-  const sexp = parseSexp(text, { path: "[assertParse]" })
+  const sexp = S.parseSexp(text, { path: "[assertParse]" })
   const ok = S.sexpEqual(expected, sexp)
   if (!ok) {
     let message = `[assertParse] fail\n`
-    message += `  sexp: ${formatSexp(sexp)}\n`
-    message += `  expected: ${formatSexp(expected)}\n`
+    message += `  sexp: ${S.formatSexp(sexp)}\n`
+    message += `  expected: ${S.formatSexp(expected)}\n`
     throw new Error(message)
   }
 }

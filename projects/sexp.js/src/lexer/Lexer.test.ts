@@ -1,13 +1,12 @@
 import assert from "node:assert"
 import { test } from "node:test"
-import { Lexer } from "../lexer/index.ts"
-import { type Token } from "../token/index.ts"
+import * as S from "../index.ts"
 
 function assertTokens(
   text: string,
-  tokens: Array<Omit<Token, "location">>,
+  tokens: Array<Omit<S.Token, "location">>,
 ): void {
-  const lexer = new Lexer({ path: "test:path" })
+  const lexer = new S.Lexer({ path: "test:path" })
   const results = lexer.lex(text).map(({ kind, value }) => ({ kind, value }))
   assert.deepStrictEqual(results, tokens)
 }

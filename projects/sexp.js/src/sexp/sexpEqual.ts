@@ -1,7 +1,7 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
-import type { Sexp } from "./Sexp.ts"
+import * as S from "../index.ts"
 
-export function sexpEqual(x: Sexp, y: Sexp): boolean {
+export function sexpEqual(x: S.Sexp, y: S.Sexp): boolean {
   if (
     (x.kind === "Symbol" && y.kind === "Symbol") ||
     (x.kind === "String" && y.kind === "String") ||
@@ -19,7 +19,7 @@ export function sexpEqual(x: Sexp, y: Sexp): boolean {
   return false
 }
 
-export function sexpEqualArray(xs: Array<Sexp>, ys: Array<Sexp>): boolean {
+export function sexpEqualArray(xs: Array<S.Sexp>, ys: Array<S.Sexp>): boolean {
   if (xs.length !== ys.length) return false
   for (const [x, y] of arrayZip(xs, ys)) {
     if (!sexpEqual(x, y)) return false
@@ -29,8 +29,8 @@ export function sexpEqualArray(xs: Array<Sexp>, ys: Array<Sexp>): boolean {
 }
 
 export function sexpEqualRecord(
-  x: Record<string, Sexp>,
-  y: Record<string, Sexp>,
+  x: Record<string, S.Sexp>,
+  y: Record<string, S.Sexp>,
 ): boolean {
   if (Object.keys(x).length !== Object.keys(y).length) return false
 

@@ -1,17 +1,16 @@
 import { jsonParseNumber } from "@xieyuheng/helpers.js/json"
 import { stringIsBlank } from "@xieyuheng/helpers.js/string"
-import type { Consumer } from "../Consumer.ts"
-import { lexerMarks, type Lexer } from "../index.ts"
+import * as S from "../index.ts"
 
-export class NumberConsumer implements Consumer {
+export class NumberConsumer implements S.Consumer {
   kind = "Number" as const
 
-  canConsume(lexer: Lexer): boolean {
+  canConsume(lexer: S.Lexer): boolean {
     const word = lexer.word()
     return lastSuccessAt(lexer, word) !== undefined
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     const word = lexer.word()
     const index = lastSuccessAt(lexer, word)
     if (index === undefined) {
@@ -24,7 +23,7 @@ export class NumberConsumer implements Consumer {
   }
 }
 
-function lastSuccessAt(lexer: Lexer, text: string): number | undefined {
+function lastSuccessAt(lexer: S.Lexer, text: string): number | undefined {
   let index = 0
   let lastSuccessAt: number | undefined = undefined
   while (index <= text.length) {
@@ -37,7 +36,7 @@ function lastSuccessAt(lexer: Lexer, text: string): number | undefined {
       !stringIsBlank(lastChar) &&
       (nextChar === undefined ||
         stringIsBlank(nextChar) ||
-        lexerMarks().includes(nextChar))
+        S.lexerMarks().includes(nextChar))
     ) {
       lastSuccessAt = index
     }

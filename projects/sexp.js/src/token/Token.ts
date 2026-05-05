@@ -1,4 +1,4 @@
-import { type SourceLocation } from "./SourceLocation.ts"
+import * as S from "../index.ts"
 
 export type TokenKind =
   | "Symbol"
@@ -12,5 +12,5 @@ export type TokenKind =
 export type Token = {
   kind: TokenKind
   value: string
-  location: SourceLocation
+  location: S.SourceLocation
 }

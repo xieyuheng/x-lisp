@@ -1,15 +1,14 @@
-import type { Consumer } from "../Consumer.ts"
-import type { Lexer } from "../Lexer.ts"
+import * as S from "../index.ts"
 import { consumeSymbol } from "./SymbolConsumer.ts"
 
-export class KeywordConsumer implements Consumer {
+export class KeywordConsumer implements S.Consumer {
   kind = "Keyword" as const
 
-  canConsume(lexer: Lexer): boolean {
+  canConsume(lexer: S.Lexer): boolean {
     return lexer.char() === ":"
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     lexer.forward(1)
     return consumeSymbol(lexer)
   }

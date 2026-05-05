@@ -1,15 +1,14 @@
 import { stringIsBlank } from "@xieyuheng/helpers.js/string"
-import type { Consumer } from "../Consumer.ts"
-import type { Lexer } from "../Lexer.ts"
+import * as S from "../index.ts"
 
-export class SpaceConsumer implements Consumer {
+export class SpaceConsumer implements S.Consumer {
   kind = undefined
 
-  canConsume(lexer: Lexer): boolean {
+  canConsume(lexer: S.Lexer): boolean {
     return stringIsBlank(lexer.char())
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     let value = lexer.char()
     lexer.forward(1)
     while (!lexer.isEnd() && lexer.char().trim() === "") {

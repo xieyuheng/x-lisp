@@ -1,17 +1,16 @@
 import { jsonParseString } from "@xieyuheng/helpers.js/json"
 import { ErrorWithSourceLocation } from "../../errors/ErrorWithSourceLocation.ts"
 import { positionForwardChar } from "../../span/Position.ts"
-import type { Consumer } from "../Consumer.ts"
-import type { Lexer } from "../Lexer.ts"
+import * as S from "../index.ts"
 
-export class StringConsumer implements Consumer {
+export class StringConsumer implements S.Consumer {
   kind = "String" as const
 
-  canConsume(lexer: Lexer): boolean {
+  canConsume(lexer: S.Lexer): boolean {
     return lexer.char() === '"'
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     const line = lexer.line()
     let index = 2 // over first `"` and the folloing char.
     while (index <= line.length) {

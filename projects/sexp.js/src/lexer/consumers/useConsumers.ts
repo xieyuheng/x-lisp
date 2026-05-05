@@ -1,4 +1,4 @@
-import { type Consumer } from "../Consumer.ts"
+import * as S from "../index.ts"
 import { BracketEndConsumer } from "./BracketEndConsumer.ts"
 import { BracketStartConsumer } from "./BracketStartConsumer.ts"
 import { CommentConsumer } from "./CommentConsumer.ts"
@@ -9,7 +9,7 @@ import { SpaceConsumer } from "./SpaceConsumer.ts"
 import { StringConsumer } from "./StringConsumer.ts"
 import { SymbolConsumer } from "./SymbolConsumer.ts"
 
-export function useConsumers(): Array<Consumer> {
+export function useConsumers(): Array<S.Consumer> {
   return [
     // The order matters.
     new SpaceConsumer(),

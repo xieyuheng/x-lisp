@@ -1,6 +1,6 @@
-import { type Sexp } from "../sexp/index.ts"
+import * as S from "../index.ts"
 
-export function formatSexp(sexp: Sexp): string {
+export function formatSexp(sexp: S.Sexp): string {
   switch (sexp.kind) {
     case "Symbol": {
       return sexp.content

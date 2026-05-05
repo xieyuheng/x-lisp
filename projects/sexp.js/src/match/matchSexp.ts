@@ -1,4 +1,4 @@
-import * as S from "../sexp/index.ts"
+import * as S from "../index.ts"
 
 export type Subst = Record<string, S.Sexp>
 export type Mode = "NormalMode" | "QuoteMode" | "QuasiquoteMode"

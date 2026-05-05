@@ -1,6 +1,6 @@
-import { type Span } from "../span/index.ts"
+import * as S from "../index.ts"
 
 export type SourceLocation = {
   path: string
-  span: Span
+  span: S.Span
 }

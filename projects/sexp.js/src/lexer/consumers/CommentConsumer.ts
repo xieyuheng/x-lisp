@@ -1,14 +1,13 @@
-import type { Consumer } from "../Consumer.ts"
-import type { Lexer } from "../Lexer.ts"
+import * as S from "../index.ts"
 
-export class CommentConsumer implements Consumer {
+export class CommentConsumer implements S.Consumer {
   kind = undefined
 
-  canConsume(lexer: Lexer): boolean {
+  canConsume(lexer: S.Lexer): boolean {
     return lexer.remain().startsWith(";")
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     let value = lexer.char()
     lexer.forward(1)
     while (!lexer.isEnd() && lexer.char() !== "\n") {

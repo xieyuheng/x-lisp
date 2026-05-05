@@ -1,8 +1,7 @@
-import { type Token } from "../token/index.ts"
-import { Lexer } from "./Lexer.ts"
+import * as S from "../index.ts"
 import { useConsumers } from "./consumers/useConsumers.ts"
 
-export function consume(lexer: Lexer): Token | undefined {
+export function consume(lexer: S.Lexer): S.Token | undefined {
   for (const consumer of useConsumers()) {
     if (consumer.canConsume(lexer)) {
       const start = lexer.position

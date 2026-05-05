@@ -1,9 +1,9 @@
-import { sourceLocationReport, type SourceLocation } from "../token/index.ts"
+import * as S from "../index.ts"
 
 export class ErrorWithSourceLocation extends Error {
-  location: SourceLocation
+  location: S.SourceLocation
 
-  constructor(message: string, location: SourceLocation) {
+  constructor(message: string, location: S.SourceLocation) {
     super(reportWithSourceLocation(message, location))
     this.location = location
   }
@@ -11,11 +11,11 @@ export class ErrorWithSourceLocation extends Error {
 
 export function reportWithSourceLocation(
   message: string,
-  location?: SourceLocation,
+  location?: S.SourceLocation,
 ): string {
   if (location) {
     message += "\n"
-    message += sourceLocationReport(location)
+    message += S.sourceLocationReport(location)
     return message
   } else {
     return message

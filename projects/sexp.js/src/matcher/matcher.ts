@@ -1,28 +1,25 @@
 import assert from "node:assert"
-import { matchSexp, type Subst } from "../match/index.ts"
-import { parseSexp } from "../parser/index.ts"
-import * as S from "../sexp/index.ts"
-import { type SourceLocation } from "../token/index.ts"
+import * as S from "../index.ts"
 
 export type Matcher<A> = (sexp: S.Sexp) => A | undefined
 
 export type MatcherCallback<A> = (
-  subst: Subst,
-  options: { sexp: S.Sexp; location: SourceLocation },
+  subst: S.Subst,
+  options: { sexp: S.Sexp; location: S.SourceLocation },
 ) => A | undefined
 
 export function matcher<A>(
   patternText: string,
   f: MatcherCallback<A>,
 ): Matcher<A> {
-  const pattern = parseSexp(patternText, { path: "[matcher]" })
+  const pattern = S.parseSexp(patternText, { path: "[matcher]" })
   return (sexp) => {
-    const subst = matchSexp("NormalMode", pattern, sexp)({})
+    const subst = S.matchSexp("NormalMode", pattern, sexp)({})
     if (!subst) return undefined
     assert(sexp.location)
     return f(subst, {
       sexp: sexp,
-      location: sexp.location as SourceLocation,
+      location: sexp.location as S.SourceLocation,
     })
   }
 }

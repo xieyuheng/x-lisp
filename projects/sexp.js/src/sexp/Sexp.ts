@@ -1,4 +1,4 @@
-import { formatSexp } from "../format/index.ts"
+import * as S from "../index.ts"
 import type { SourceLocation } from "../token/index.ts"
 
 export type Sexp = Atom | List
@@ -25,7 +25,7 @@ export function isSymbol(sexp: Sexp): sexp is Symbol {
 
 export function asSymbol(sexp: Sexp): Symbol {
   if (isSymbol(sexp)) return sexp
-  throw new Error(`[asSymbol] fail on: ${formatSexp(sexp)}`)
+  throw new Error(`[asSymbol] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export type String = {
@@ -48,7 +48,7 @@ export function isString(sexp: Sexp): sexp is String {
 
 export function asString(sexp: Sexp): String {
   if (isString(sexp)) return sexp
-  throw new Error(`[asString] fail on: ${formatSexp(sexp)}`)
+  throw new Error(`[asString] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export type Int = {
@@ -71,7 +71,7 @@ export function isInt(sexp: Sexp): sexp is Int {
 
 export function asInt(sexp: Sexp): Int {
   if (isInt(sexp)) return sexp
-  throw new Error(`[asInt] fail on: ${formatSexp(sexp)}`)
+  throw new Error(`[asInt] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export type Float = {
@@ -94,7 +94,7 @@ export function isFloat(sexp: Sexp): sexp is Float {
 
 export function asFloat(sexp: Sexp): Float {
   if (isFloat(sexp)) return sexp
-  throw new Error(`[asFloat] fail on: ${formatSexp(sexp)}`)
+  throw new Error(`[asFloat] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export type Keyword = {
@@ -117,7 +117,7 @@ export function isKeyword(sexp: Sexp): sexp is Keyword {
 
 export function asKeyword(sexp: Sexp): Keyword {
   if (isKeyword(sexp)) return sexp
-  throw new Error(`[asKeyword] fail on: ${formatSexp(sexp)}`)
+  throw new Error(`[asKeyword] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export type List = {

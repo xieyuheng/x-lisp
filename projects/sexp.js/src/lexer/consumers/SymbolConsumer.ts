@@ -1,24 +1,23 @@
-import type { Consumer } from "../Consumer.ts"
-import { lexerMarks, type Lexer } from "../index.ts"
+import * as S from "../index.ts"
 
-export class SymbolConsumer implements Consumer {
+export class SymbolConsumer implements S.Consumer {
   kind = "Symbol" as const
 
-  canConsume(lexer: Lexer): boolean {
+  canConsume(lexer: S.Lexer): boolean {
     return true
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     return consumeSymbol(lexer)
   }
 }
 
-export function consumeSymbol(lexer: Lexer): string {
+export function consumeSymbol(lexer: S.Lexer): string {
   let value = ""
   while (
     !lexer.isEnd() &&
     lexer.char().trim() !== "" &&
-    !lexerMarks().includes(lexer.char())
+    !S.lexerMarks().includes(lexer.char())
   ) {
     value += lexer.char()
     lexer.forward(1)

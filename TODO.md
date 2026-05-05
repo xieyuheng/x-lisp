@@ -1,13 +1,3 @@
-[sexp.js] 减少 import 数量。
-
-- 在 sexp.js 项目中，检查所有的文件，尽量使用：
-
-  ```ts
-  import * as S from "../index.ts"
-  ```
-
-  而不是很多独立的 import。
-
 [sexp.js] merge listHelpers.ts into Sexp.ts
 
 - 处理相同数据类型的函数放在一起。

@@ -1,27 +1,22 @@
 import { stringIsBigInt, stringIsNumber } from "@xieyuheng/helpers.js/string"
-import { ErrorWithSourceLocation } from "../errors/index.ts"
-import { Lexer, lexerMatchBrackets } from "../lexer/index.ts"
-import * as S from "../sexp/index.ts"
-import { type Sexp } from "../sexp/index.ts"
-import { spanUnion } from "../span/index.ts"
-import { type Token } from "../token/index.ts"
+import * as S from "../index.ts"
 
-type Result = { sexp: Sexp; remain: Array<Token> }
+type Result = { sexp: S.Sexp; remain: Array<S.Token> }
 
 export type ParserOptions = {
   path: string
 }
 
 export class Parser {
-  lexer: Lexer
+  lexer: S.Lexer
 
   constructor(options: ParserOptions) {
-    this.lexer = new Lexer(options)
+    this.lexer = new S.Lexer(options)
   }
 
-  parse(text: string): Array<Sexp> {
+  parse(text: string): Array<S.Sexp> {
     let tokens = this.lexer.lex(text)
-    const array: Array<Sexp> = []
+    const array: Array<S.Sexp> = []
     while (tokens.length > 0) {
       const { sexp, remain } = this.handleTokens(tokens)
       array.push(sexp)
@@ -33,7 +28,7 @@ export class Parser {
     return array
   }
 
-  private handleTokens(tokens: Array<Token>): Result {
+  private handleTokens(tokens: Array<S.Token>): Result {
     if (tokens[0] === undefined) {
       let message = "I expect a token, but there is no token remain\n"
       throw new Error(message)
@@ -97,7 +92,7 @@ export class Parser {
 
       case "BracketEnd": {
         let message = `I found extra BracketEnd\n`
-        throw new ErrorWithSourceLocation(message, token.location)
+        throw new S.ErrorWithSourceLocation(message, token.location)
       }
 
       case "QuotationMark": {
@@ -126,27 +121,30 @@ export class Parser {
     }
   }
 
-  private handleTokensInBracket(start: Token, tokens: Array<Token>): Result {
+  private handleTokensInBracket(
+    start: S.Token,
+    tokens: Array<S.Token>,
+  ): Result {
     const array: Array<S.Sexp> = []
 
     while (true) {
       if (tokens[0] === undefined) {
         let message = `I found missing BracketEnd\n`
-        throw new ErrorWithSourceLocation(message, start.location)
+        throw new S.ErrorWithSourceLocation(message, start.location)
       }
 
       const token = tokens[0]
 
       if (token.kind === "BracketEnd") {
-        if (!lexerMatchBrackets(start.value, token.value)) {
+        if (!S.lexerMatchBrackets(start.value, token.value)) {
           let message = `I expect a matching BracketEnd\n`
-          throw new ErrorWithSourceLocation(message, token.location)
+          throw new S.ErrorWithSourceLocation(message, token.location)
         }
 
         return {
           sexp: S.List(array, {
             ...token.location,
-            span: spanUnion(start.location.span, token.location.span),
+            span: S.spanUnion(start.location.span, token.location.span),
           }),
           remain: tokens.slice(1),
         }

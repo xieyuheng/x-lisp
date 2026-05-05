@@ -1,6 +1,6 @@
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import fs from "node:fs"
-import { spanReport, type Position } from "../span/index.ts"
+import * as S from "../index.ts"
 import type { SourceLocation } from "./SourceLocation.ts"
 
 export function sourceLocationReport(
@@ -10,7 +10,7 @@ export function sourceLocationReport(
   const text = fs.existsSync(location.path)
     ? fs.readFileSync(location.path, "utf-8")
     : ""
-  const context = spanReport(location.span, text)
+  const context = S.spanReport(location.span, text)
   let message = ""
   if (location.path) {
     message += pathRelativeToCwd(location.path)
@@ -27,6 +27,6 @@ export function sourceLocationReport(
   return message
 }
 
-function formatPosition(position: Position): string {
+function formatPosition(position: S.Position): string {
   return `${position.row + 1}:${position.column + 1}`
 }

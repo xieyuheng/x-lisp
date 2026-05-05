@@ -1,14 +1,13 @@
-import type { Consumer } from "../Consumer.ts"
-import { lexerQuotes, type Lexer } from "../index.ts"
+import * as S from "../index.ts"
 
-export class QuoteConsumer implements Consumer {
+export class QuoteConsumer implements S.Consumer {
   kind = "QuotationMark" as const
 
-  canConsume(lexer: Lexer): boolean {
-    return lexerQuotes().includes(lexer.char())
+  canConsume(lexer: S.Lexer): boolean {
+    return S.lexerQuotes().includes(lexer.char())
   }
 
-  consume(lexer: Lexer): string {
+  consume(lexer: S.Lexer): string {
     const char = lexer.char()
     lexer.forward(1)
     return char

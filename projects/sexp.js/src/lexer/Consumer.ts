@@ -1,8 +1,7 @@
-import { type TokenKind } from "../token/index.ts"
-import { Lexer } from "./Lexer.ts"
+import * as S from "../index.ts"
 
 export interface Consumer {
-  kind: TokenKind | undefined
-  canConsume(lexer: Lexer): boolean
-  consume(lexer: Lexer): string
+  kind: S.TokenKind | undefined
+  canConsume(lexer: S.Lexer): boolean
+  consume(lexer: S.Lexer): string
 }
