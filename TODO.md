@@ -1,10 +1,7 @@
-[sexp.js] [refactor] extract `collectKeyValuePairs` from `listCollectKeyValuePairs`
-
-- `collectKeyValuePairs` 以 `sexps: Array<S.Sexp>` 为参数
-
 [sexp.js] [refactor] inline and remove `listCollectKeyValuePairs`
 
 - 在调用 `listCollectKeyValuePairs` 的地方 inline `listCollectKeyValuePairs`
+- inline 之后删除 `listCollectKeyValuePairs`
 
 [sexp.js] [refactor] merge sexpGetters.ts into Sexp.ts
 
