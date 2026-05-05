@@ -6,16 +6,22 @@ static void sanity_check(void) {
 }
 
 static void handle_call(cmd_ctx_t *ctx){
-  char *pathname = cmd_get_arg(ctx, 0);
-  char *name = cmd_get_arg(ctx, 1);
+  const char *pathname = cmd_get_arg(ctx, 0);
+  const char *name = cmd_get_arg(ctx, 1);
   bool profile = cmd_has_option(ctx, "--profile");
   mod_t *mod = stk_load(make_path(pathname), profile);
-  stk_call(mod, name, NULL);
+  array_t *args = make_array();
+  for (size_t i = 2; i < cmd_count_args(ctx); i ++) {
+    value_t arg = x_object(make_xstring(cmd_get_arg(ctx, i)));
+    array_push(args, (void *) arg);
+  }
+
+  stk_call(mod, name, args);
 }
 
 static void handle_test(cmd_ctx_t *ctx) {
-  char *pathname = cmd_get_arg(ctx, 0);
-  char *snapshot = cmd_get_option(ctx, "--snapshot");
+  const char *pathname = cmd_get_arg(ctx, 0);
+  const char *snapshot = cmd_get_option(ctx, "--snapshot");
   bool profile = cmd_has_option(ctx, "--profile");
   bool builtin = cmd_has_option(ctx, "--builtin");
   mod_t *mod = stk_load(make_path(pathname), profile);

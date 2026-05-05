@@ -1,5 +1,3 @@
-[stack-lisp.c] `handle_call` -- `collect_args`
-
 [meta-lisp.meta] `project-t`
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`

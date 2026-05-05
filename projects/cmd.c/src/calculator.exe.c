@@ -6,21 +6,21 @@ static void handle_hello(cmd_ctx_t *ctx) {
 }
 
 static void handle_add(cmd_ctx_t *ctx) {
-  char *arg0 = cmd_get_arg(ctx, 0);
-  char *arg1 = cmd_get_arg(ctx, 1);
+  const char *arg0 = cmd_get_arg(ctx, 0);
+  const char *arg1 = cmd_get_arg(ctx, 1);
   double x = string_parse_double(arg0);
   double y = string_parse_double(arg1);
   printf("%f\n", x + y);
 }
 
 static void handle_mul(cmd_ctx_t *ctx) {
-  char *option_x = cmd_get_option(ctx, "--x");
+  const char *option_x = cmd_get_option(ctx, "--x");
   if (!option_x) {
     printf("--x is required\n");
     exit(1);
   }
 
-  char *option_y = cmd_get_option(ctx, "--y");
+  const char *option_y = cmd_get_option(ctx, "--y");
   if (!option_y) {
     printf("--y is required\n");
     exit(1);
