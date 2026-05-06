@@ -32,7 +32,7 @@ date: 2026-02-26
 
 (define (li head tail) [#li head tail])
 
-;; DataGetter
+;; DataAccessor
 
 (claim li-head
   (polymorphic (E)
@@ -48,7 +48,7 @@ date: 2026-02-26
 
 (define (li-tail target) (list-get 2 target))
 
-;; DataPutter
+;; DataModifier
 
 (claim li-put-head!
   (polymorphic (E)

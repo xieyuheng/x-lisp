@@ -41,8 +41,8 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
         stmts.push(...expandDataConstructorPredicate(stmt, dataConstructor))
 
         for (const [index, field] of dataConstructor.fields.entries()) {
-          stmts.push(...expandDataGetter(stmt, dataConstructor, index, field))
-          stmts.push(...expandDataPutter(stmt, dataConstructor, index, field))
+          stmts.push(...expandDataAccessor(stmt, dataConstructor, index, field))
+          stmts.push(...expandDataModifier(stmt, dataConstructor, index, field))
         }
       }
 
@@ -127,7 +127,7 @@ export function expandDataConstructorPredicate(
   return stmts
 }
 
-function expandDataGetter(
+function expandDataAccessor(
   stmt: M.DefineData,
   dataConstructor: Omit<M.DataConstructor, "definition">,
   index: number,
@@ -158,7 +158,7 @@ function expandDataGetter(
   return stmts
 }
 
-function expandDataPutter(
+function expandDataModifier(
   stmt: M.DefineData,
   dataConstructor: Omit<M.DataConstructor, "definition">,
   index: number,
@@ -167,7 +167,7 @@ function expandDataPutter(
   const stmts: Array<M.Stmt> = []
 
   stmts.push(
-    ...expandDataPutterHelper(
+    ...expandDataModifierHelper(
       stmt,
       index,
       field,
@@ -177,7 +177,7 @@ function expandDataPutter(
   )
 
   stmts.push(
-    ...expandDataPutterHelper(
+    ...expandDataModifierHelper(
       stmt,
       index,
       field,
@@ -189,7 +189,7 @@ function expandDataPutter(
   return stmts
 }
 
-function expandDataPutterHelper(
+function expandDataModifierHelper(
   stmt: M.DefineData,
   index: number,
   field: M.DataField,

@@ -30,9 +30,9 @@ date: 2026-03-19
    (direct-predecessor-hash (hash-t V (set-t V)))))
 ```
 
-# getter 名字的问题
+# accessor 名字的问题
 
-`define-datatype` 可以生成很多 getter 函数，
+`define-datatype` 可以生成很多 accessor 函数，
 但是名字不太好：
 
 ```scheme
@@ -41,7 +41,7 @@ cons-digraph-direct-successor-hash
 cons-digraph-direct-predecessor-hash
 ```
 
-为了生成更好的 getter 函数名字，
+为了生成更好的 accessor 函数名字，
 假设有语法关键词 `define-single-datatype`：
 
 ```scheme
@@ -51,7 +51,7 @@ cons-digraph-direct-predecessor-hash
   (direct-predecessor-hash (hash-t V (set-t V))))
 ```
 
-可以根据类型的名字 `digraph-t`，生成 getter 名：
+可以根据类型的名字 `digraph-t`，生成 accessor 名：
 
 ```scheme
 digraph-vertex-set

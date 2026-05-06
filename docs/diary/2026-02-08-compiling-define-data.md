@@ -19,8 +19,8 @@ export type AboutData =
   | DataPredicate
   | DataConstructor
   | DataConstructorPredicate
-  | DataGetter
-  | DataPutter
+  | DataAccessor
+  | DataModifier
 ```
 
 用编译器时，最简单的方案是把这些编译为函数：
@@ -39,12 +39,12 @@ export type AboutData =
        (equal? (list-length value) 3)
        (equal? (list-head value) #li)))
 
-;; DataGetter
+;; DataAccessor
 
 (define (li-head target) (list-get 1 target))
 (define (li-tail target) (list-get 2 target))
 
-;; DataPutter
+;; DataModifier
 
 (define (li-put-head! value target) (list-put! 1 value target))
 (define (li-put-tail! value target) (list-put! 2 value target))

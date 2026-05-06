@@ -84,14 +84,17 @@ export function simplifyMatch(
         for (const i of range(group.dataConstructor.fields.length)) {
           const field = group.dataConstructor.fields[i]
 
-          const dataFieldGetterName = `${group.dataConstructor.name}-${field.name}`
-          const dataFieldGetter = M.modNameIsAsDefined(mod, dataFieldGetterName)
-            ? M.Var(dataFieldGetterName, answer.location)
-            : M.QualifiedVar(path, dataFieldGetterName, answer.location)
+          const dataFieldAccessorName = `${group.dataConstructor.name}-${field.name}`
+          const dataFieldAccessor = M.modNameIsAsDefined(
+            mod,
+            dataFieldAccessorName,
+          )
+            ? M.Var(dataFieldAccessorName, answer.location)
+            : M.QualifiedVar(path, dataFieldAccessorName, answer.location)
 
           answer = M.Let1(
             freshVars[i].name,
-            M.Apply(dataFieldGetter, [target], answer.location),
+            M.Apply(dataFieldAccessor, [target], answer.location),
             answer,
             answer.location,
           )

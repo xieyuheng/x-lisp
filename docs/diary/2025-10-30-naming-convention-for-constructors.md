@@ -56,4 +56,4 @@ variant 就是特殊的 constructor。
 
 这样能在两种语言的代码中保持命名惯例一致。
 
-同样，scalable c 中的 setter 也应该改成 putter。
+同样，scalable c 中的 setter 也应该改成 modifier。

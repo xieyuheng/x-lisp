@@ -56,7 +56,7 @@ put-make-block-instrs!
 ```
 
 此时 data constructor 是 `make-block`，
-但是生成 getter 和 putter 的依据不是 data constructor，
+但是生成 accessor 和 modifier 的依据不是 data constructor，
 而是 data predicate 的名字。
 
 也就是说生成下列名字：

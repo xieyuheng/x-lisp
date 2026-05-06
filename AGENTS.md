@@ -107,10 +107,10 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 ;; data constructor predicate
 (claim nil? (polymorphic (E) (-> (list-t E) bool-t)))
 (claim li? (polymorphic (E) (-> (list-t E) bool-t)))
-;; data getter
+;; data accessor
 (claim li-head (polymorphic (E) (-> (list-t E) E)))
 (claim li-tail (polymorphic (E) (-> (list-t E) (list-t E))))
-;; data putter
+;; data modifier
 (claim li-put-head (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim li-put-tail (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
 (claim li-put-head! (polymorphic (E) (-> E (list-t E) (list-t E))))
