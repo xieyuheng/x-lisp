@@ -12,8 +12,3 @@
 [meta-lisp.js] support using `define` in function body -- use lambda lift
 
 - support recursive and mutual recursive function
-
-# refactor passes
-
-[meta-lisp.js] rethink `ClaimPass`
-[maybe] [diary] about compile time evaluate
