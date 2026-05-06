@@ -1,6 +1,5 @@
 # pipe
 
-[sexp.js] `sourceLocationUnion`
 [meta-lisp.js] `desugarPipe`
 
 # setup feedback loop

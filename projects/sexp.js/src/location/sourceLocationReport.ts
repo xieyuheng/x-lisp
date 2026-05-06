@@ -1,10 +1,9 @@
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import fs from "node:fs"
 import * as S from "../index.ts"
-import type { SourceLocation } from "./SourceLocation.ts"
 
 export function sourceLocationReport(
-  location: SourceLocation,
+  location: S.SourceLocation,
   errorMessage?: string,
 ): string {
   const text = fs.existsSync(location.path)
