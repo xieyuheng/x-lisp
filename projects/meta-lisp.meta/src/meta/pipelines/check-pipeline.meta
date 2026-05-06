@@ -1,11 +1,4 @@
 (module meta)
 
 (define (check-pipeline project options)
-  (pipe (:fragments project)
-    (hash-each
-     (lambda (path fragment)
-       (println path)
-       (pipe (:stmts fragment)
-         (list-each
-          (lambda (stmt)
-            (writeln (format-sexp stmt)))))))))
+  (expand-pass project))
