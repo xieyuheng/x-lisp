@@ -1,3 +1,5 @@
+[meta-lisp.js] `ImportPass` -- check undefined modules
+
 # setup feedback loop
 
 [meta-lisp.meta] `expand-pass`
