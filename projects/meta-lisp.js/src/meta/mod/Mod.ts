@@ -110,15 +110,6 @@ export function modLookupClaimedEntry(
   return mod.claimed.get(name)
 }
 
-export function modForEachClaimEntry(
-  mod: Mod,
-  callback: (entry: ClaimedEntry) => void,
-): void {
-  for (const entry of mod.claimed.values()) {
-    callback(entry)
-  }
-}
-
 // Inferred
 
 export function modLookupInferredType(

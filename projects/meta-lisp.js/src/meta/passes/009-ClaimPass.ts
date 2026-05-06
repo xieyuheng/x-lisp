@@ -22,12 +22,6 @@ export function ClaimPass(
         }
       }
     }
-
-    M.modForEachClaimEntry(mod, (entry) => {
-      // - claimed exp will be evaluated during compile time,
-      //   only desugared exp can be evaluated.
-      entry.exp = M.desugar(M.createDesugarState(mod), entry.exp)
-    })
   }
 
   if (options.dump) projectDumpMods(project, "005-claim")
