@@ -2,4 +2,4 @@
 
 (define (check-command config-path)
   (= project (load-project config-path))
-  (println project))
+  (check-pipeline project {}))

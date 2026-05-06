@@ -174,19 +174,88 @@ void format_sexp(buffer_t *buffer, value_t sexp) {
   if (xlist_p(sexp)) {
     xlist_t *xlist = to_xlist(sexp);
     size_t length = array_length(xlist->elements);
-    if (length == 0) {
-      format_string(buffer, "()");
-      return;
-    } else {
-      format_string(buffer, "(");
-      for (size_t i = 0; i < length; i++) {
-        if (i > 0) format_string(buffer, " ");
-        format_sexp(buffer, xlist_get(xlist, i));
-      }
-
-      format_string(buffer, ")");
-      return;
+    format_string(buffer, "(");
+    for (size_t i = 0; i < length; i++) {
+      if (i > 0) format_string(buffer, " ");
+      format_sexp(buffer, xlist_get(xlist, i));
     }
+
+    format_string(buffer, ")");
+    return;
+  }
+
+
+  if (xset_p(sexp)) {
+    xset_t *xset = to_xset(sexp);
+    set_iter_t iter;
+    set_iter_init(&iter, xset->set);
+    format_string(buffer, "(@set");
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    if (entry) {
+      format_sexp(buffer, (value_t) entry->value);
+      entry = set_iter_next_entry(&iter);
+    }
+
+    while (entry) {
+      format_string(buffer, " ");
+      format_sexp(buffer, (value_t) entry->value);
+      entry = set_iter_next_entry(&iter);
+    }
+
+    format_string(buffer, ")");
+    return;
+  }
+
+  if (xrecord_p(sexp)) {
+    xrecord_t *xrecord = to_xrecord(sexp);
+    format_string(buffer, "{");
+    record_iter_t iter;
+    record_iter_init(&iter, xrecord->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    if (entry) {
+      format_string(buffer, ":");
+      format_string(buffer, entry->key);
+      format_string(buffer, " ");
+      format_sexp(buffer, (value_t) entry->value);
+      entry = record_iter_next_entry(&iter);
+    }
+
+    while (entry) {
+      format_string(buffer, " ");
+      format_string(buffer, ":");
+      format_string(buffer, entry->key);
+      format_string(buffer, " ");
+      format_sexp(buffer, (value_t) entry->value);
+      entry = record_iter_next_entry(&iter);
+    }
+
+    format_string(buffer, "}");
+    return;
+  }
+
+  if (xhash_p(sexp)) {
+    xhash_t *xhash = to_xhash(sexp);
+    format_string(buffer, "(@hash");
+    hash_iter_t iter;
+    hash_iter_init(&iter, xhash->hash);
+    const hash_entry_t *entry = hash_iter_next_entry(&iter);
+    if (entry) {
+      format_sexp(buffer, (value_t) entry->key);
+      format_string(buffer, " ");
+      format_sexp(buffer, (value_t) entry->value);
+      entry = hash_iter_next_entry(&iter);
+    }
+
+    while (entry) {
+      format_string(buffer, " ");
+      format_sexp(buffer, (value_t) entry->key);
+      format_string(buffer, " ");
+      format_sexp(buffer, (value_t) entry->value);
+      entry = hash_iter_next_entry(&iter);
+    }
+
+    format_string(buffer, ")");
+    return;
   }
 
   who_printf("non sexp value: "); print_value(sexp); newline();
