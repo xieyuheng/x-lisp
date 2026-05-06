@@ -1,6 +1,5 @@
 # pipe
 
-[meta-lisp.js] parse `(pipe)`
 [meta-lisp.js] `desugarPipe`
 
 # setup feedback loop

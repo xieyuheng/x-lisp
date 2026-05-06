@@ -204,6 +204,14 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* 'pipe target steps)": ({ target, steps }, { location }) => {
+    return M.Pipe(
+      parseExp(target),
+      S.asList(steps).elements.map(parseExp),
+      location,
+    )
+  },
+
   // - The following two cases must be at the end.
 
   "(cons* target args)": ({ target, args }, { location }) => {
