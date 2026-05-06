@@ -25,7 +25,6 @@ export function ClaimPass(
 
     M.modForEachClaimEntry(mod, (entry) => {
       entry.exp = M.desugar(M.createDesugarState(mod), entry.exp)
-      entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
     })
   }
 

@@ -1,7 +1,8 @@
-# argument order and currying
+# pipe
 
-[diary] argument order and currying
-[meta-lisp.meta] [maybe] change builtin argument order to be normal order -- instead of currying order
+[meta-lisp.js] `Pipe` as `Exp`
+[meta-lisp.js] parse `(pipe)`
+[meta-lisp.js] `DesugarPass` -- handle `desugarPipe`
 
 # setup feedback loop
 
