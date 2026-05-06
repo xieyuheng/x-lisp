@@ -1,6 +1,6 @@
 # setup feedback loop
 
-[meta-lisp.meta] fix `load-mod-fragment`
+[meta-lisp.meta] complete `parse-exp`
 [meta-lisp.meta] `parse-stmt`
 [meta-lisp.meta] `check-pipeline`
 [meta-lisp.meta] `mod-t` -- complete

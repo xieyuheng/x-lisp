@@ -5,14 +5,16 @@
   (= sexps (parse-sexps path code))
   ;; (= stmts (list-map parse-stmt sexps))
   (= stmts (make-list))
-  (= result (find-mod-name path stmts))
-  {:mod-name (:name result)
-   :is-type-error-module (:is-type-error-module result)
-   :stmts stmts})
-
-(define (find-mod-name stmts)
-  (pipe stmts
-    (list-find
-     (lambda (stmt)
-       (or (declare-module-stmt? stmt)
-           (declare-type-error-module-stmt? stmt))))))
+  (= module-stmt
+     (pipe stmts
+       (list-find
+        (lambda (stmt)
+          (or (declare-module-stmt? stmt)
+              (declare-type-error-module-stmt? stmt))))))
+  (match module-stmt
+    ((just (declare-module-stmt name location))
+     {:mod-name name :stmts stmts :is-type-error-module false})
+    ((just (declare-type-error-module-stmt name location))
+     {:mod-name name :stmts stmts :is-type-error-module true})
+    ((nothing)
+     (error "(load-mod-fragment) expect (module) statement in fragment"))))
