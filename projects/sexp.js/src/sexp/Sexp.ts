@@ -1,5 +1,4 @@
 import * as S from "../index.ts"
-import type { SourceLocation } from "../token/index.ts"
 
 export type Sexp = Atom | List
 
@@ -8,10 +7,10 @@ export type Atom = Symbol | String | Int | Float | Keyword
 export type Symbol = {
   kind: "Symbol"
   content: string
-  location?: SourceLocation
+  location?: S.SourceLocation
 }
 
-export function Symbol(content: string, location?: SourceLocation): Symbol {
+export function Symbol(content: string, location?: S.SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -33,10 +32,10 @@ export function asSymbol(sexp: Sexp): Symbol {
 export type String = {
   kind: "String"
   content: string
-  location?: SourceLocation
+  location?: S.SourceLocation
 }
 
-export function String(content: string, location?: SourceLocation): String {
+export function String(content: string, location?: S.SourceLocation): String {
   return {
     kind: "String",
     content,
@@ -58,10 +57,10 @@ export function asString(sexp: Sexp): String {
 export type Int = {
   kind: "Int"
   content: bigint
-  location?: SourceLocation
+  location?: S.SourceLocation
 }
 
-export function Int(content: bigint, location?: SourceLocation): Int {
+export function Int(content: bigint, location?: S.SourceLocation): Int {
   return {
     kind: "Int",
     content,
@@ -83,10 +82,10 @@ export function asInt(sexp: Sexp): Int {
 export type Float = {
   kind: "Float"
   content: number
-  location?: SourceLocation
+  location?: S.SourceLocation
 }
 
-export function Float(content: number, location?: SourceLocation): Float {
+export function Float(content: number, location?: S.SourceLocation): Float {
   return {
     kind: "Float",
     content,
@@ -108,10 +107,10 @@ export function asFloat(sexp: Sexp): Float {
 export type Keyword = {
   kind: "Keyword"
   content: string
-  location?: SourceLocation
+  location?: S.SourceLocation
 }
 
-export function Keyword(content: string, location?: SourceLocation): Keyword {
+export function Keyword(content: string, location?: S.SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
@@ -133,10 +132,10 @@ export function asKeyword(sexp: Sexp): Keyword {
 export type List = {
   kind: "List"
   elements: Array<Sexp>
-  location?: SourceLocation
+  location?: S.SourceLocation
 }
 
-export function List(elements: Array<Sexp>, location?: SourceLocation): List {
+export function List(elements: Array<Sexp>, location?: S.SourceLocation): List {
   return {
     kind: "List",
     elements,

@@ -1,5 +1,7 @@
 # pipe
 
+[sexp.js] rename span to location
+[sexp.js] `sourceLocationUnion`
 [meta-lisp.js] `desugarPipe`
 
 # setup feedback loop

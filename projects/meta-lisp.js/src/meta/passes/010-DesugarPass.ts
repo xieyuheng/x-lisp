@@ -398,8 +398,14 @@ export function desugarBegin(
   }
 }
 
-function desugarPipe(target: M.Exp, steps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
-  throw new Error("TODO")
+function desugarPipe(
+  target: M.Exp,
+  steps: Array<M.Exp>,
+  location?: S.SourceLocation,
+): M.Exp {
+  let result = target
+  // TODO
+  return result
 }
 
 function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {

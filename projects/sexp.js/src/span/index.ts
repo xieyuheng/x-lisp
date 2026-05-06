@@ -1,4 +1,6 @@
 export * from "./Position.ts"
+export * from "./SourceLocation.ts"
+export * from "./sourceLocationReport.ts"
 export * from "./Span.ts"
 export * from "./spanReport.ts"
 export * from "./spanUnion.ts"
