@@ -1,5 +1,3 @@
-[diary] about package manager
-
 # setup feedback loop
 
 [meta-lisp.meta] fix `load-mod-fragment`
