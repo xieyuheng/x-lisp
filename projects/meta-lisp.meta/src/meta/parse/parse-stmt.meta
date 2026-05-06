@@ -1,0 +1,182 @@
+(module meta)
+
+(claim parse-stmt
+  (-> sexp-t
+      stmt-t))
+
+(define (parse-stmt sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (parse-stmt-from-elements elements location))))
+
+(claim parse-stmt-from-elements
+  (-> (list-t sexp-t) source-location-t
+      stmt-t))
+
+(define (parse-stmt-from-elements elements location)
+  (let ((tag (symbol-sexp-content (list-head elements))))
+    (cond ((equal? tag 'define)
+           (parse-define-stmt elements location))
+          ((equal? tag 'define-test)
+           (define-test-stmt
+             (symbol-sexp-content (list-get 1 elements))
+             (parse-body (list-drop 2 elements) location)
+             location))
+          ((equal? tag 'define-type)
+           (parse-define-type-stmt elements location))
+          ((equal? tag 'exempt)
+           (exempt-stmt
+            (list-map symbol-sexp-content (list-sexp-elements (list-get 1 elements)))
+            location))
+          ((equal? tag 'private)
+           (private-stmt
+            (list-map symbol-sexp-content (list-sexp-elements (list-get 1 elements)))
+            location))
+          ((equal? tag 'module)
+           (declare-module-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            location))
+          ((equal? tag 'type-error-module)
+           (declare-type-error-module-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            location))
+          ((equal? tag 'import)
+           (import-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            (list-map symbol-sexp-content (list-sexp-elements (list-get 2 elements)))
+            location))
+          ((equal? tag 'import-as)
+           (import-as-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            (symbol-sexp-content (list-get 2 elements))
+            location))
+          ((equal? tag 'import-all)
+           (import-all-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            location))
+          ((equal? tag 'define-data)
+           (parse-define-data-stmt elements location))
+          ((equal? tag 'define-interface)
+           (parse-define-interface-stmt elements location))
+          ((equal? tag 'claim)
+           (claim-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            (parse-exp (list-get 2 elements))
+            location))
+          ((equal? tag 'admit)
+           (admit-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            (parse-exp (list-get 2 elements))
+            location))
+          ((equal? tag 'declare-primitive-function)
+           (declare-primitive-function-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            (int-sexp-content (list-get 2 elements))
+            location))
+          ((equal? tag 'declare-primitive-variable)
+           (declare-primitive-variable-stmt
+            (symbol-sexp-content (list-get 1 elements))
+            location)))))
+
+(claim parse-define-stmt
+  (-> (list-t sexp-t) source-location-t
+      stmt-t))
+
+(define (parse-define-stmt elements location)
+  (let ((second (list-get 1 elements)))
+    (if (list-sexp? second)
+      (define-function-stmt
+        (symbol-sexp-content (list-head (list-sexp-elements second)))
+        (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
+        (parse-body (list-drop 2 elements) location)
+        location)
+      (define-variable-stmt
+        (symbol-sexp-content second)
+        (parse-body (list-drop 2 elements) location)
+        location))))
+
+(claim parse-define-type-stmt
+  (-> (list-t sexp-t) source-location-t
+      stmt-t))
+
+(define (parse-define-type-stmt elements location)
+  (let ((second (list-get 1 elements)))
+    (if (list-sexp? second)
+      (define-type-stmt
+        (symbol-sexp-content (list-head (list-sexp-elements second)))
+        (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
+        (parse-body (list-drop 2 elements) location)
+        location)
+      (define-type-stmt
+        (symbol-sexp-content second)
+        []
+        (parse-body (list-drop 2 elements) location)
+        location))))
+
+(claim parse-define-data-stmt
+  (-> (list-t sexp-t) source-location-t
+      stmt-t))
+
+(define (parse-define-data-stmt elements location)
+  (define-data-stmt
+    (parse-data-type-constructor (list-get 1 elements))
+    (list-map parse-data-constructor (list-sexp-elements (list-get 2 elements)))
+    location))
+
+(claim parse-data-type-constructor
+  (-> sexp-t
+      data-type-constructor-t))
+
+(define (parse-data-type-constructor sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :name (symbol-sexp-content (list-head elements))
+              :parameters (list-map symbol-sexp-content (list-drop 1 elements))))
+    ((symbol-sexp content location)
+     (@record :name content :parameters []))))
+
+(claim parse-data-constructor
+  (-> sexp-t
+      data-constructor-t))
+
+(define (parse-data-constructor sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :name (symbol-sexp-content (list-head elements))
+              :fields (list-map parse-data-field (list-drop 1 elements))
+              :location location))))
+
+(claim parse-data-field
+  (-> sexp-t
+      data-field-t))
+
+(define (parse-data-field sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :name (symbol-sexp-content (list-head elements))
+              :type (parse-exp (list-head (list-drop 1 elements)))
+              :location location))))
+
+(claim parse-define-interface-stmt
+  (-> (list-t sexp-t) source-location-t
+      stmt-t))
+
+(define (parse-define-interface-stmt elements location)
+  (define-interface-stmt
+    (parse-interface-constructor (list-get 1 elements))
+    (let ((pairs (sexp-collect-key-value-hash (list-drop 2 elements))))
+      (hash-map-value parse-exp pairs))
+    location))
+
+(claim parse-interface-constructor
+  (-> sexp-t
+      interface-constructor-t))
+
+(define (parse-interface-constructor sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :name (symbol-sexp-content (list-head elements))
+              :parameters (list-map symbol-sexp-content (list-drop 1 elements))
+              :location location))
+    ((symbol-sexp content location)
+     (@record :name content :parameters []))))
