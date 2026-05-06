@@ -206,7 +206,7 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "Pipe": {
-      return desugar(state, desugarPipe(exp.target, exp.steps, exp.location))
+      return desugar(state, desugarPipe(exp.target, exp.steps,))
     }
 
     case "Arrow": {
@@ -401,10 +401,18 @@ export function desugarBegin(
 function desugarPipe(
   target: M.Exp,
   steps: Array<M.Exp>,
-  location?: S.SourceLocation,
 ): M.Exp {
   let result = target
-  // TODO
+  for (const step of steps) {
+    const location =
+      target.location && step.location
+        ? S.sourceLocationUnion(target.location, step.location)
+        : target.location === undefined
+          ? step.location
+          : target.location
+    result = M.Apply(step, [result], location)
+  }
+
   return result
 }
 

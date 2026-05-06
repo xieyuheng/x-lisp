@@ -1,7 +1,3 @@
-# pipe
-
-[meta-lisp.js] `desugarPipe`
-
 # setup feedback loop
 
 [meta-lisp.meta] fix `load-mod-fragment`
