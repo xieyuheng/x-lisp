@@ -108,6 +108,8 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 
 ## 内置函数声明
 
+你可以且只可以用 meta-builtin.meta 中所声明过的 builtin 函数。
+
 在 `meta-builtin.meta/src/` 中，每个类型有独立目录：
 - `int/`, `float/`, `string/`, `list/`, `hash/`, `set/`, `record/` 等
 - 使用 `(declare-primitive-function name arity)` 声明
