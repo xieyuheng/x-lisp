@@ -1,10 +1,10 @@
 (module meta)
 
 (define (project-load-mod-fragments project directory)
-  (list-each
-   (lambda (name)
-     (when (string-ends-with? ".meta" name)
-       (= path (path-join directory name))
-       (= fragment (load-mod-fragment path))
-       (project-put-fragment! path fragment project)))
-   (fs-list-recursive directory)))
+  (pipe (fs-list-recursive directory)
+    (list-each
+     (lambda (name)
+       (when (string-ends-with? ".meta" name)
+         (= path (path-join directory name))
+         (= fragment (load-mod-fragment path))
+         (project-put-fragment! path fragment project))))))

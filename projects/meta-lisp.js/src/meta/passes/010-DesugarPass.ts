@@ -206,7 +206,7 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "Pipe": {
-      return desugar(state, desugarPipe(exp.target, exp.steps,))
+      return desugar(state, desugarPipe(exp.target, exp.steps))
     }
 
     case "Arrow": {
@@ -398,10 +398,7 @@ export function desugarBegin(
   }
 }
 
-function desugarPipe(
-  target: M.Exp,
-  steps: Array<M.Exp>,
-): M.Exp {
+function desugarPipe(target: M.Exp, steps: Array<M.Exp>): M.Exp {
   let result = target
   for (const step of steps) {
     const location =
