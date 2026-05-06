@@ -59,12 +59,12 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.Begin1(onExp(exp.head), onExp(exp.body), exp.location)
     }
 
-    case "BeginSugar": {
-      return M.BeginSugar(exp.sequence.map(onExp), exp.location)
+    case "Begin": {
+      return M.Begin(exp.sequence.map(onExp), exp.location)
     }
 
-    case "AssignSugar": {
-      return M.AssignSugar(exp.name, onExp(exp.rhs), exp.location)
+    case "Assign": {
+      return M.Assign(exp.name, onExp(exp.rhs), exp.location)
     }
 
     case "When": {

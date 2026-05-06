@@ -8,7 +8,7 @@ export function parseBody(body: S.Sexp): M.Exp {
   if (elements.length === 1) {
     return elements[0]
   } else {
-    return M.BeginSugar(elements, body.location)
+    return M.Begin(elements, body.location)
   }
 }
 
@@ -81,7 +81,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "`(= ,name ,rhs)": ({ name, rhs }, { location }) => {
-    return M.AssignSugar(S.asSymbol(name).content, parseExp(rhs), location)
+    return M.Assign(S.asSymbol(name).content, parseExp(rhs), location)
   },
 
   "(cons* 'begin body)": ({ body }, { location }) => {
@@ -266,7 +266,7 @@ const parseMatchClause = S.createRouter<M.MatchClause>({
   "(cons* pattern body)": ({ pattern, body }, { location }) =>
     M.MatchClause(
       [parseExp(pattern)],
-      M.BeginSugar(S.asList(body).elements.map(parseExp), location),
+      M.Begin(S.asList(body).elements.map(parseExp), location),
       location,
     ),
 })
@@ -275,7 +275,7 @@ const parseMatchManyClause = S.createRouter<M.MatchClause>({
   "(cons* patterns body)": ({ patterns, body }, { location }) =>
     M.MatchClause(
       S.asList(patterns).elements.map(parseExp),
-      M.BeginSugar(S.asList(body).elements.map(parseExp), location),
+      M.Begin(S.asList(body).elements.map(parseExp), location),
       location,
     ),
 })

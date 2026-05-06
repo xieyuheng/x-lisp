@@ -114,7 +114,7 @@ function shrinkUpdateMut(
 ): M.Exp {
   return M.desugarBegin(
     [
-      M.AssignSugar("record", base, location),
+      M.Assign("record", base, location),
       ...Object.entries(attributes).map(([key, value]) =>
         M.Apply(
           M.QualifiedVar("builtin", "record-put!", location),
@@ -135,9 +135,9 @@ function shrinkUpdate(
 ): M.Exp {
   return M.desugarBegin(
     [
-      M.AssignSugar("record", base, location),
+      M.Assign("record", base, location),
       ...Object.entries(attributes).map(([key, value]) =>
-        M.AssignSugar(
+        M.Assign(
           "record",
           M.Apply(
             M.QualifiedVar("builtin", "record-put", location),

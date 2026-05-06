@@ -103,11 +103,11 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return exp
     }
 
-    case "BeginSugar": {
+    case "Begin": {
       return desugar(state, desugarBegin(exp.sequence, exp.location))
     }
 
-    case "AssignSugar": {
+    case "Assign": {
       let message = `[desugar] (=) must occur in the head of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
       if (exp.location)
@@ -387,7 +387,7 @@ export function desugarBegin(
     return head
   }
 
-  if (head.kind === "AssignSugar") {
+  if (head.kind === "Assign") {
     return M.Let1(head.name, head.rhs, desugarBegin(rest), location)
   } else {
     return M.Begin1(head, desugarBegin(rest), location)
@@ -441,9 +441,9 @@ export function desugarList(
   elements: Array<M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.BeginSugar(
+  return M.Begin(
     [
-      M.AssignSugar(
+      M.Assign(
         "list",
         M.Apply(M.QualifiedVar("builtin", "make-list", location), [], location),
         location,
@@ -465,9 +465,9 @@ function desugarSet(
   elements: Array<M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.BeginSugar(
+  return M.Begin(
     [
-      M.AssignSugar(
+      M.Assign(
         "set",
         M.Apply(M.QualifiedVar("builtin", "make-set", location), [], location),
         location,
@@ -489,9 +489,9 @@ function desugarHash(
   entries: Array<{ key: M.Exp; value: M.Exp }>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.BeginSugar(
+  return M.Begin(
     [
-      M.AssignSugar(
+      M.Assign(
         "hash",
         M.Apply(M.QualifiedVar("builtin", "make-hash", location), [], location),
         location,

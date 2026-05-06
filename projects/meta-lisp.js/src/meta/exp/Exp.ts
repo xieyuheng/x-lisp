@@ -10,12 +10,13 @@ export type Exp =
   | QualifiedVar
   | Lambda
   | Apply
+  // | Pipe
   | Let1
   | Let
   | LetStar
   | Begin1
-  | BeginSugar
-  | AssignSugar
+  | Begin
+  | Assign
   | If
   | When
   | Unless
@@ -181,6 +182,26 @@ export function Apply(
   }
 }
 
+// export type Pipe = {
+//   kind: "Pipe"
+//   target: Exp
+//   operators: Array<Exp>
+//   location?: SourceLocation
+// }
+
+// export function Pipe(
+//   target: Exp,
+//   operators: Array<Exp>,
+//   location?: SourceLocation,
+// ): Pipe {
+//   return {
+//     kind: "Pipe",
+//     target,
+//     operators,
+//     location,
+//   }
+// }
+
 export type Let1 = {
   kind: "Let1"
   name: string
@@ -282,37 +303,34 @@ export function Begin1(
   }
 }
 
-export type BeginSugar = {
-  kind: "BeginSugar"
+export type Begin = {
+  kind: "Begin"
   sequence: Array<Exp>
   location?: SourceLocation
 }
 
-export function BeginSugar(
-  sequence: Array<Exp>,
-  location?: SourceLocation,
-): BeginSugar {
+export function Begin(sequence: Array<Exp>, location?: SourceLocation): Begin {
   return {
-    kind: "BeginSugar",
+    kind: "Begin",
     sequence,
     location,
   }
 }
 
-export type AssignSugar = {
-  kind: "AssignSugar"
+export type Assign = {
+  kind: "Assign"
   name: string
   rhs: Exp
   location?: SourceLocation
 }
 
-export function AssignSugar(
+export function Assign(
   name: string,
   rhs: Exp,
   location?: SourceLocation,
-): AssignSugar {
+): Assign {
   return {
-    kind: "AssignSugar",
+    kind: "Assign",
     name,
     rhs,
     location,

@@ -95,12 +95,12 @@ export function formatExp(exp: M.Exp): string {
       return `(begin ${head} ${body})`
     }
 
-    case "BeginSugar": {
+    case "Begin": {
       const sequence = formatExps(exp.sequence)
       return `(begin ${sequence})`
     }
 
-    case "AssignSugar": {
+    case "Assign": {
       return `(= ${exp.name} ${formatExp(exp.rhs)})`
     }
 
@@ -280,7 +280,7 @@ export function formatBody(body: M.Exp): string {
     return `${formatExp(body.head)} ${formatBody(body.body)}`
   } else if (body.kind === "Let1") {
     return `(= ${body.name} ${formatExp(body.rhs)}) ${formatBody(body.body)}`
-  } else if (body.kind === "BeginSugar") {
+  } else if (body.kind === "Begin") {
     return formatExps(body.sequence)
   } else {
     return formatExp(body)
