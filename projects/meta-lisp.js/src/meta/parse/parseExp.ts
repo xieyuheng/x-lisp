@@ -212,6 +212,20 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* 'chain steps)": ({ steps }, { location }) => {
+    return M.Chain(
+      S.asList(steps).elements.map(parseExp),
+      location,
+    )
+  },
+
+  "(cons* 'compose steps)": ({ steps }, { location }) => {
+    return M.Compose(
+      S.asList(steps).elements.map(parseExp),
+      location,
+    )
+  },
+
   // - The following two cases must be at the end.
 
   "(cons* target args)": ({ target, args }, { location }) => {

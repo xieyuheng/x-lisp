@@ -11,6 +11,8 @@ export type Exp =
   | Lambda
   | Apply
   | Pipe
+  | Chain
+  | Compose
   | Let1
   | Let
   | LetStar
@@ -197,6 +199,34 @@ export function Pipe(
   return {
     kind: "Pipe",
     target,
+    steps,
+    location,
+  }
+}
+
+export type Chain = {
+  kind: "Chain"
+  steps: Array<Exp>
+  location?: SourceLocation
+}
+
+export function Chain(steps: Array<Exp>, location?: SourceLocation): Chain {
+  return {
+    kind: "Chain",
+    steps,
+    location,
+  }
+}
+
+export type Compose = {
+  kind: "Compose"
+  steps: Array<Exp>
+  location?: SourceLocation
+}
+
+export function Compose(steps: Array<Exp>, location?: SourceLocation): Compose {
+  return {
+    kind: "Compose",
     steps,
     location,
   }

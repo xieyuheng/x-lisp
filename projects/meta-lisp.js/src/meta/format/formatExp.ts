@@ -81,6 +81,24 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
+    case "Chain": {
+      const steps = formatExps(exp.steps)
+      if (steps === "") {
+        return `(chain)`
+      } else {
+        return `(chain ${steps})`
+      }
+    }
+
+    case "Compose": {
+      const steps = formatExps(exp.steps)
+      if (steps === "") {
+        return `(compose)`
+      } else {
+        return `(compose ${steps})`
+      }
+    }
+
     case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatBody(exp.body)

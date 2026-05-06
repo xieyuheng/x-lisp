@@ -1,0 +1,23 @@
+(module function-test-suite)
+
+(define (add1 x)   (iadd 1 x))
+(define (double x) (iadd x x))
+(define (square x) (imul x x))
+
+(define-test pipe-test
+  (assert-equal 12 (pipe 5 add1 double))
+  (assert-equal 11 (pipe 5 double add1))
+  (assert-equal 36 (pipe 2 add1 double square))
+  (assert-equal  9 (pipe 2 square double add1)))
+
+(define-test chain-test
+  (assert-equal 12 ((chain add1 double) 5))
+  (assert-equal 11 ((chain double add1) 5))
+  (assert-equal 36 ((chain add1 double square) 2))
+  (assert-equal  9 ((chain square double add1) 2)))
+
+(define-test compose-test
+  (assert-equal 11 ((compose add1 double) 5))
+  (assert-equal 12 ((compose double add1) 5))
+  (assert-equal  9 ((compose add1 double square) 2))
+  (assert-equal 36 ((compose square double add1) 2)))

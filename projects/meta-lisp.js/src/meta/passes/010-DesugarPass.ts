@@ -206,7 +206,15 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "Pipe": {
-      return desugar(state, desugarPipe(exp.target, exp.steps))
+      return desugar(state, desugarPipe(exp.target, exp.steps, exp.location))
+    }
+
+    case "Chain": {
+      return desugar(state, desugarChain(exp.steps, exp.location))
+    }
+
+    case "Compose": {
+      return desugar(state, desugarCompose(exp.steps, exp.location))
     }
 
     case "Arrow": {
@@ -398,7 +406,11 @@ export function desugarBegin(
   }
 }
 
-function desugarPipe(target: M.Exp, steps: Array<M.Exp>): M.Exp {
+function desugarPipe(
+  target: M.Exp,
+  steps: Array<M.Exp>,
+  location?: S.SourceLocation,
+): M.Exp {
   let result = target
   for (const step of steps) {
     const location =
@@ -411,6 +423,18 @@ function desugarPipe(target: M.Exp, steps: Array<M.Exp>): M.Exp {
   }
 
   return result
+}
+
+function desugarChain(steps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+  const target = M.createFreshVar("target", location)
+  return M.Lambda([target.name], M.Pipe(target, steps, location), location)
+}
+
+function desugarCompose(
+  steps: Array<M.Exp>,
+  location?: S.SourceLocation,
+): M.Exp {
+  return desugarChain(steps.toReversed(), location)
 }
 
 function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {

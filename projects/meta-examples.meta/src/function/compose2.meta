@@ -1,0 +1,11 @@
+(module test-suite)
+
+(claim compose2
+  (polymorphic (A B C)
+    (-> (-> B C) (-> A B) (-> A C))))
+
+(define (compose2 f g x) (f (g x)))
+
+(define-test compose2-test
+  (= add1 (iadd 1))
+  (assert-equal 3 ((compose2 add1 add1) 1)))

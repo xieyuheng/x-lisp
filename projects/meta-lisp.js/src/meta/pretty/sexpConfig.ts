@@ -29,6 +29,7 @@ export const sexpConfig: S.Config = {
     ["match", 1],
     ["match-many", 1],
     ["pipe", 1],
+    ["chain", 0],
     ["compose", 0],
     ["if", 1],
     ["when", 1],
