@@ -26,7 +26,10 @@
       exp-t))
 
 (define syntax-keywords
-  ['lambda])
+  ['lambda 'quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
+           'begin 'let 'let* '@list '@record '@set '@hash
+           '-> 'interface 'extend-interface 'extend 'update 'update!
+           'the 'polymorphic 'pipe 'chain 'compose])
 
 (define (parse-compound-exp elements location)
   (if (symbol-sexp? (list-head elements))
@@ -51,11 +54,111 @@
 
 (define (parse-special-form-exp tag sexps location)
   (cond ((equal? tag 'lambda)
-         (let ((parameters (car (cdr sexps)))
-               (body (cdr (cdr sexps))))
+         (let ((parameters (list-get 1 sexps))
+               (body (list-drop 2 sexps)))
            (lambda-exp (parse-parameters parameters)
                        (parse-body body location)
-                       location)))))
+                       location)))
+        ((equal? tag 'quote)
+         (quote-exp (list-get 1 sexps) location))
+        ((equal? tag 'if)
+         (if-exp (parse-exp (list-get 1 sexps))
+                 (parse-exp (list-get 2 sexps))
+                 (parse-exp (list-get 3 sexps))
+                 location))
+        ((equal? tag 'when)
+         (when-exp (parse-exp (list-get 1 sexps))
+                   (parse-body (list-drop 2 sexps) location)
+                   location))
+        ((equal? tag 'unless)
+         (unless-exp (parse-exp (list-get 1 sexps))
+                     (parse-body (list-drop 2 sexps) location)
+                     location))
+        ((equal? tag 'and)
+         (and-exp (list-map parse-exp (list-drop 1 sexps)) location))
+        ((equal? tag 'or)
+         (or-exp (list-map parse-exp (list-drop 1 sexps)) location))
+        ((equal? tag 'cond)
+         (cond-exp (list-map parse-cond-clause (list-drop 1 sexps)) location))
+        ((equal? tag 'match)
+         (match-exp [(parse-exp (list-get 1 sexps))]
+                    (list-map parse-match-clause (list-drop 2 sexps))
+                    location))
+        ((equal? tag 'match-many)
+         (match-exp (list-map parse-exp (list-drop 1 sexps))
+                    (list-map parse-match-many-clause (list-drop 2 sexps))
+                    location))
+        ((equal? tag '=)
+         (assign-exp (symbol-sexp-content (list-get 1 sexps))
+                     (parse-exp (list-get 2 sexps))
+                     location))
+        ((equal? tag 'begin)
+         (parse-body (list-drop 1 sexps) location))
+        ((equal? tag 'let)
+         (let-exp (list-map parse-binding (list-sexp-elements (list-get 1 sexps)))
+                  (parse-body (list-drop 2 sexps) location)
+                  location))
+        ((equal? tag 'let*)
+         (let-star-exp (list-map parse-binding (list-sexp-elements (list-get 1 sexps)))
+                       (parse-body (list-drop 2 sexps) location)
+                       location))
+        ((equal? tag '@list)
+         (literal-list-exp (list-map parse-exp (list-drop 1 sexps)) location))
+        ((equal? tag '@record)
+         (let ((pairs (sexp-collect-key-value-hash (list-drop 1 sexps))))
+           (literal-record-exp (hash-map-value parse-exp pairs) location)))
+        ((equal? tag '@set)
+         (literal-set-exp (list-map parse-exp (list-drop 1 sexps)) location))
+        ((equal? tag '@hash)
+         (literal-hash-exp (parse-hash-entries (list-drop 1 sexps)) location))
+        ((equal? tag '->)
+         (let ((exps (list-map parse-exp (list-drop 1 sexps))))
+           (arrow-exp (list-take (isub (list-length exps) 1) exps)
+                      (list-last exps)
+                      location)))
+        ((equal? tag 'interface)
+         (let ((pairs (sexp-collect-key-value-hash (list-drop 1 sexps))))
+           (interface-exp (hash-map-value parse-exp pairs) location)))
+        ((equal? tag 'extend-interface)
+         (extend-interface-exp (parse-exp (list-get 1 sexps))
+                               (hash-map-value
+                                parse-exp
+                                (sexp-collect-key-value-hash (list-drop 2 sexps)))
+                               location))
+        ((equal? tag 'extend)
+         (extend-exp (parse-exp (list-get 1 sexps))
+                     (hash-map-value
+                      parse-exp
+                      (sexp-collect-key-value-hash (list-drop 2 sexps)))
+                     location))
+        ((equal? tag 'update)
+         (update-exp (parse-exp (list-get 1 sexps))
+                     (hash-map-value
+                      parse-exp
+                      (sexp-collect-key-value-hash (list-drop 2 sexps)))
+                     location))
+        ((equal? tag 'update!)
+         (update-mut-exp (parse-exp (list-get 1 sexps))
+                         (hash-map-value
+                          parse-exp
+                          (sexp-collect-key-value-hash (list-drop 2 sexps)))
+                         location))
+        ((equal? tag 'the)
+         (the-exp (parse-exp (list-get 1 sexps))
+                  (parse-exp (list-get 2 sexps))
+                  location))
+        ((equal? tag 'polymorphic)
+         (polymorphic-exp (parse-parameters (list-get 1 sexps))
+                          (parse-exp (list-get 2 sexps))
+                          location))
+        ((equal? tag 'pipe)
+         (pipe-exp (parse-exp (list-get 1 sexps))
+                   (list-map parse-exp (list-drop 2 sexps))
+                   location))
+        ((equal? tag 'chain)
+         (chain-exp (list-map parse-exp (list-drop 1 sexps)) location))
+        ((equal? tag 'compose)
+         (compose-exp (list-map parse-exp (list-drop 1 sexps)) location))))
 
 (claim parse-parameters
   (-> sexp-t
@@ -74,3 +177,69 @@
     (if (equal? (list-length sexps) 1)
       (car exps)
       (begin-exp exps location))))
+
+(claim parse-cond-clause
+  (-> sexp-t
+      cond-clause-t))
+
+(define (parse-cond-clause sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (if (symbol-sexp? (list-head elements))
+       (let ((first-content (symbol-sexp-content (list-head elements))))
+         (if (equal? first-content 'else)
+           (@record :question (qualified-var-exp 'builtin 'true location)
+                    :answer (parse-body (list-drop 1 elements) location)
+                    :location location)
+           (@record :question (parse-exp (list-head elements))
+                    :answer (parse-body (list-drop 1 elements) location)
+                    :location location)))
+       (@record :question (parse-exp (list-head elements))
+                :answer (parse-body (list-drop 1 elements) location)
+                :location location)))))
+
+(claim parse-match-clause
+  (-> sexp-t
+      match-clause-t))
+
+(define (parse-match-clause sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :patterns [(parse-exp (list-head elements))]
+              :body (parse-body (list-drop 1 elements) location)
+              :location location))))
+
+(claim parse-match-many-clause
+  (-> sexp-t
+      match-clause-t))
+
+(define (parse-match-many-clause sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :patterns (list-map parse-exp (list-sexp-elements (list-head elements)))
+              :body (parse-body (list-drop 1 elements) location)
+              :location location))))
+
+(claim parse-binding
+  (-> sexp-t
+      binding-t))
+
+(define (parse-binding sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (@record :name (symbol-sexp-content (list-head elements))
+              :rhs (parse-exp (list-head (list-drop 1 elements)))
+              :location location))))
+
+(claim parse-hash-entries
+  (-> (list-t sexp-t)
+      (list-t (interface :key exp-t :value exp-t))))
+
+(define (parse-hash-entries sexps)
+  (if (list-empty? sexps)
+    []
+    (let ((key (list-head sexps))
+          (value (list-head (list-drop 1 sexps)))
+          (rest (list-drop 2 sexps)))
+      (cons (@record :key (parse-exp key) :value (parse-exp value))
+            (parse-hash-entries rest)))))
