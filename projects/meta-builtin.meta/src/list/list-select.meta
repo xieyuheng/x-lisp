@@ -14,7 +14,7 @@
 
 (define-test list-select-test
   (assert-equal
-    (list-select (negate (equal? 0)) [0 1 0 2 0 3])
+    (list-select (negation (equal? 0)) [0 1 0 2 0 3])
     [1 2 3]))
 
 (claim list-reject
@@ -23,7 +23,7 @@
         (list-t A))))
 
 (define (list-reject p list)
-  (list-select (negate p) list))
+  (list-select (negation p) list))
 
 (define-test list-reject-test
   (assert-equal

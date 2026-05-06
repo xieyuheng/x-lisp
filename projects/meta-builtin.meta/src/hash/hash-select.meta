@@ -48,7 +48,7 @@
         (hash-t K V))))
 
 (define (hash-reject-key p hash)
-  (hash-select-key (negate p) hash))
+  (hash-select-key (negation p) hash))
 
 (claim hash-reject-value
   (polymorphic (K V)
@@ -56,7 +56,7 @@
         (hash-t K V))))
 
 (define (hash-reject-value p hash)
-  (hash-select-value (negate p) hash))
+  (hash-select-value (negation p) hash))
 
 (define-test test-hash-select
  (assert-equal

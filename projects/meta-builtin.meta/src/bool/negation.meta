@@ -1,0 +1,9 @@
+(module builtin)
+
+(define (negation p x)
+  (not (p x)))
+
+(define-test negation-test
+  (assert (not (int? 'a)))
+  (assert (negation int? 'a))
+  (assert ((negation int?) 'a)))

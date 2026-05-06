@@ -23,7 +23,7 @@
         (set-t A))))
 
 (define (set-reject p set)
-  (set-select (negate p) set))
+  (set-select (negation p) set))
 
 (define-test set-reject-test
   (assert-equal (@set -1 -2) (set-reject int-non-negative? (@set -2 -1 0 1 2))))
