@@ -1,12 +1,8 @@
 import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function ClaimPass(
-  project: M.Project,
-  options: { dump: boolean },
-): void {
+export function ClaimPass(project: M.Project): void {
   for (const mod of project.mods.values()) {
     for (const [name, entry] of mod.claimed) {
       if (!mod.admitted.has(name) && mod.definitions.get(name) === undefined) {
@@ -23,6 +19,4 @@ export function ClaimPass(
       }
     }
   }
-
-  if (options.dump) projectDumpMods(project, "005-claim")
 }
