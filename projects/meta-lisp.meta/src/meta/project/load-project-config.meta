@@ -1,0 +1,12 @@
+(module meta)
+
+(define (load-project-config path)
+  (= file (open-input-file path))
+  (= string (file-read file))
+  (file-close file)
+  (parse-project-config path string))
+
+(define-test load-project-config-test
+  (= path "project.sexp")
+  (= config (load-project-config path))
+  (assert-equal "meta-lisp" (:name config)))

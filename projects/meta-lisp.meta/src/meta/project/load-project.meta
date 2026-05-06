@@ -1,0 +1,10 @@
+(module meta)
+
+(define (load-project config-path)
+  (= config (load-project-config config-path))
+  (= root-directory (path-directory-name config-path))
+  (= project (make-project root-directory config))
+  ;; (load-builtin-mod project) ;; not implemented yet
+  (= source-directory (project-source-directory project))
+  (project-load-mod-fragments project source-directory)
+  project)

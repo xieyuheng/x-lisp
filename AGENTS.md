@@ -90,6 +90,33 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
   ((lambda-exp parameter body) ...))
 ```
 
+比如 my-list：
+
+```scheme
+(define-data (my-list? E)
+  (nil)
+  (li (head E) (tail (my-list? E))))
+```
+
+会生成的 name 有：
+
+```scheme
+;; data constructor
+(claim nil (polymorphic (E) (-> (list-t E))))
+(claim li (polymorphic (E) (-> E (list-t E) (list-t E))))
+;; data constructor predicate
+(claim nil? (polymorphic (E) (-> (list-t E) bool-t)))
+(claim li? (polymorphic (E) (-> (list-t E) bool-t)))
+;; data getter
+(claim li-head (polymorphic (E) (-> (list-t E) E)))
+(claim li-tail (polymorphic (E) (-> (list-t E) (list-t E))))
+;; data putter
+(claim li-put-head (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim li-put-tail (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
+(claim li-put-head! (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim li-put-tail! (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
+```
+
 ## 模块系统
 
 - `(module name)` 声明模块
