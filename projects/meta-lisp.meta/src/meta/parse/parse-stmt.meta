@@ -26,11 +26,11 @@
            (parse-define-type-stmt elements location))
           ((equal? tag 'exempt)
            (exempt-stmt
-            (list-map symbol-sexp-content (list-sexp-elements (list-get 1 elements)))
+            (list-map symbol-sexp-content (list-drop 1 elements))
             location))
           ((equal? tag 'private)
            (private-stmt
-            (list-map symbol-sexp-content (list-sexp-elements (list-get 1 elements)))
+            (list-map symbol-sexp-content (list-drop 1 elements))
             location))
           ((equal? tag 'module)
            (declare-module-stmt
@@ -43,7 +43,7 @@
           ((equal? tag 'import)
            (import-stmt
             (symbol-sexp-content (list-get 1 elements))
-            (list-map symbol-sexp-content (list-sexp-elements (list-get 2 elements)))
+            (list-map symbol-sexp-content (list-drop 2 elements))
             location))
           ((equal? tag 'import-as)
            (import-as-stmt
@@ -120,7 +120,7 @@
 (define (parse-define-data-stmt elements location)
   (define-data-stmt
     (parse-data-type-constructor (list-get 1 elements))
-    (list-map parse-data-constructor (list-sexp-elements (list-get 2 elements)))
+    (list-map parse-data-constructor (list-drop 2 elements))
     location))
 
 (claim parse-data-type-constructor

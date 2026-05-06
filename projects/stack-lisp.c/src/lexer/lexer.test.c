@@ -268,8 +268,8 @@ int main(void) {
   }
 
   {
-    // space after line comment introducer is required.
-    list_t *tokens = test_lex("a b //symbol\n c");
+    // space after line comment introducer is not required.
+    list_t *tokens = test_lex("a b //comment\n c");
     assert(list_length(tokens) == 4);
 
     {
@@ -288,8 +288,8 @@ int main(void) {
 
     {
       token_t *token = list_pop_front(tokens);
-      assert(token->kind == SYMBOL_TOKEN);
-      assert(string_equal(token->content, "//symbol"));
+      assert(token->kind == LINE_COMMENT_TOKEN);
+      assert(string_equal(token->content, "//comment"));
       token_free(token);
     }
 

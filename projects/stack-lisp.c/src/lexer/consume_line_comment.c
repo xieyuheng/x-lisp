@@ -5,7 +5,7 @@ bool can_consume_line_comment(lexer_t *lexer) {
     return false;
 
   char *word = lexer_next_word_string(lexer);
-  bool result = string_equal(word, lexer->line_comment_introducer);
+  bool result = string_starts_with(word, lexer->line_comment_introducer);
   string_free(word);
   return result;
 }

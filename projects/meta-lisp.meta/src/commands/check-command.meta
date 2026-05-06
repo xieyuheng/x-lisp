@@ -1,4 +1,5 @@
 (module meta)
 
 (define (check-command config-path)
-  (println [:config-path config-path]))
+  (= project (load-project config-path))
+  (println project))

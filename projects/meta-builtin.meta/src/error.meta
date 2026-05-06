@@ -3,5 +3,5 @@
 (declare-primitive-function error 1)
 (declare-primitive-function error-with-location 2)
 
-(claim error (polymorphic (A) (-> string-t A)))
-(claim error-with-location (polymorphic (A) (-> string-t source-location-t A)))
+(claim error (polymorphic (A B) (-> A B)))
+(claim error-with-location (polymorphic (A B) (-> A source-location-t B)))

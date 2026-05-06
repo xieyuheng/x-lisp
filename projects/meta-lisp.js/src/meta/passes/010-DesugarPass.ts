@@ -174,7 +174,15 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     case "Match": {
       const defaultExp = M.Apply(
         M.QualifiedVar("builtin", "error", exp.location),
-        [M.String("match mismatch", exp.location)],
+        [
+          M.LiteralRecord(
+            {
+              message: M.String("match mismatch", exp.location),
+              targets: M.LiteralList(exp.targets, exp.location),
+            },
+            exp.location,
+          ),
+        ],
         exp.location,
       )
 
