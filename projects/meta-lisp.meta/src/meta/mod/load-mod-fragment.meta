@@ -1,0 +1,59 @@
+(module meta)
+
+(define (load-mod-fragment path)
+  (= code (fs-read path))
+  (= sexps (parse-sexps path code))
+  (= stmts (list-map parse-stmt sexps))
+  (= result (find-mod-name path sexps))
+  {:mod-name (:name result)
+   :is-type-error-module (:is-type-error-module result)
+   :stmts stmts})
+
+(define (find-mod-name path sexps)
+  (if (list-empty? sexps)
+    (error "expect (module) statement in module fragment")
+    (let ((sexp (car sexps)))
+      (match sexp
+        ((list-sexp elements location)
+         (if (list-empty? elements)
+           (find-mod-name path (cdr sexps))
+           (let ((head (car elements)))
+             (if (symbol-sexp? head)
+               (let ((tag (symbol-sexp-content head)))
+                 (cond
+                   ((equal? tag 'module)
+                    (if (equal? (list-length elements) 2)
+                      {:name (symbol-sexp-content (list-get 1 elements)) :is-type-error-module false}
+                      (error "invalid module statement")))
+                   ((equal? tag 'type-error-module)
+                    (if (equal? (list-length elements) 2)
+                      {:name (symbol-sexp-content (list-get 1 elements)) :is-type-error-module true}
+                      (error "invalid type-error-module statement")))
+                   (else
+                    (find-mod-name path (cdr sexps)))))
+               (find-mod-name path (cdr sexps))))))
+        (else
+          (find-mod-name path (cdr sexps)))))))
+
+(define (parse-stmt sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (if (list-empty? elements)
+       (error "empty statement")
+       (let ((head (car elements)))
+         (if (symbol-sexp? head)
+           (let ((tag (symbol-sexp-content head)))
+             (cond
+               ((equal? tag 'module)
+                (if (equal? (list-length elements) 2)
+                  (declare-module-stmt (symbol-sexp-content (list-get 1 elements)) location)
+                  (error "invalid module statement")))
+               ((equal? tag 'type-error-module)
+                (if (equal? (list-length elements) 2)
+                  (declare-type-error-module-stmt (symbol-sexp-content (list-get 1 elements)) location)
+                  (error "invalid type-error-module statement")))
+               (else
+                (error "unknown statement"))))
+           (error "statement must start with a symbol")))))
+    (_ (error "statement must be a list"))))
+module meta)
