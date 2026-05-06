@@ -71,6 +71,16 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
+    case "Pipe": {
+      const target = formatExp(exp.target)
+      const steps = formatExps(exp.steps)
+      if (steps === "") {
+        return `(pipe ${target})`
+      } else {
+        return `(pipe ${target} ${steps})`
+      }
+    }
+
     case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatBody(exp.body)

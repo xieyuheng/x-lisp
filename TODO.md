@@ -1,8 +1,7 @@
 # pipe
 
-[meta-lisp.js] `Pipe` as `Exp`
 [meta-lisp.js] parse `(pipe)`
-[meta-lisp.js] `DesugarPass` -- handle `desugarPipe`
+[meta-lisp.js] `desugarPipe`
 
 # setup feedback loop
 

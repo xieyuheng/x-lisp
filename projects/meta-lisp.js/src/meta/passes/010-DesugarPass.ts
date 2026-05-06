@@ -205,6 +205,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       )
     }
 
+    case "Pipe": {
+      return desugar(state, desugarPipe(exp.target, exp.steps, exp.location))
+    }
+
     case "Arrow": {
       return M.Arrow(
         exp.argTypes.map((e) => desugar(state, e)),
@@ -392,6 +396,10 @@ export function desugarBegin(
   } else {
     return M.Begin1(head, desugarBegin(rest), location)
   }
+}
+
+function desugarPipe(target: M.Exp, steps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+  throw new Error("TODO")
 }
 
 function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {

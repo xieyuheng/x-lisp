@@ -10,7 +10,7 @@ export type Exp =
   | QualifiedVar
   | Lambda
   | Apply
-  // | Pipe
+  | Pipe
   | Let1
   | Let
   | LetStar
@@ -182,25 +182,25 @@ export function Apply(
   }
 }
 
-// export type Pipe = {
-//   kind: "Pipe"
-//   target: Exp
-//   operators: Array<Exp>
-//   location?: SourceLocation
-// }
+export type Pipe = {
+  kind: "Pipe"
+  target: Exp
+  steps: Array<Exp>
+  location?: SourceLocation
+}
 
-// export function Pipe(
-//   target: Exp,
-//   operators: Array<Exp>,
-//   location?: SourceLocation,
-// ): Pipe {
-//   return {
-//     kind: "Pipe",
-//     target,
-//     operators,
-//     location,
-//   }
-// }
+export function Pipe(
+  target: Exp,
+  steps: Array<Exp>,
+  location?: SourceLocation,
+): Pipe {
+  return {
+    kind: "Pipe",
+    target,
+    steps,
+    location,
+  }
+}
 
 export type Let1 = {
   kind: "Let1"
