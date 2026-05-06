@@ -1,6 +1,6 @@
 import { jsonParseString } from "@xieyuheng/helpers.js/json"
 import { ErrorWithSourceLocation } from "../../errors/ErrorWithSourceLocation.ts"
-import { positionForwardChar } from "../../span/Position.ts"
+import { positionForwardChar } from "../../location/Position.ts"
 import * as S from "../index.ts"
 
 export class StringConsumer implements S.Consumer {
