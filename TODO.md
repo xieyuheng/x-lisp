@@ -1,5 +1,3 @@
-[helpers.js] fix `fileWrite` -- should append
-
 # setup feedback loop
 
 [meta-lisp.meta] `expand-pass`

@@ -1,9 +1,4 @@
-import {
-  callWithFile,
-  openOutputFile,
-  withOutputToFile,
-  writeln,
-} from "@xieyuheng/helpers.js/file"
+import { writeln } from "@xieyuheng/helpers.js/file"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
@@ -16,32 +11,12 @@ export function ImportPass(project: M.Project): void {
     }
 
     const scope = createScope()
-    if (fragment.isErrorModule) {
-      M.withOutputToErrorModuleSnapshot(project, fragment.modName, () => {
-        for (const stmt of fragment.stmts) {
-          executeImport(project, scope, stmt)
-        }
-      })
-    } else {
-      for (const stmt of fragment.stmts) {
-        executeImport(project, scope, stmt)
-      }
+    for (const stmt of fragment.stmts) {
+      executeImport(project, scope, stmt)
     }
 
     fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
   }
-}
-
-export function withOutputToErrorModuleSnapshot<A>(
-  project: M.Project,
-  modName: string,
-  callback: () => A,
-): A {
-  const directory = M.projectSnapshotDirectory(project)
-  return callWithFile(
-    openOutputFile(`${directory}/error-modules/${modName}.out`),
-    (file) => withOutputToFile(file, callback),
-  )
 }
 
 type Scope = {
