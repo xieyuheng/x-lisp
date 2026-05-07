@@ -2,6 +2,9 @@
 *.o
 *.exe
 
+# cmake
+build/
+
 # c
 *.o
 *.a
