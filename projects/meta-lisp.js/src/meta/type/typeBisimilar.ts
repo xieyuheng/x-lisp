@@ -114,28 +114,13 @@ export function typeBisimilar(
 
   if (M.isDefinedDataType(lhs) && M.isDefinedDataType(rhs)) {
     trail = M.trailAdd(trail, lhs, rhs)
-    return typeBisimilar(
-      trail,
-      M.definedDataTypeUnfold(lhs),
-      M.definedDataTypeUnfold(rhs),
-    )
-  }
-
-  if (M.isDefinedDataType(lhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeBisimilar(trail, M.definedDataTypeUnfold(lhs), rhs)
-  }
-
-  if (M.isDefinedDataType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeBisimilar(trail, lhs, M.definedDataTypeUnfold(rhs))
-  }
-
-  if (M.isSumType(lhs) && M.isSumType(rhs)) {
-    return typeBisimilarRecord(
-      trail,
-      M.sumTypeVariantTypes(lhs),
-      M.sumTypeVariantTypes(rhs),
+    return (
+      M.definedDataTypeDefinition(lhs) === M.definedDataTypeDefinition(rhs) &&
+      typeBisimilarMany(
+        trail,
+        M.definedDataTypeArgTypes(lhs),
+        M.definedDataTypeArgTypes(rhs),
+      )
     )
   }
 

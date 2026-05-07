@@ -81,12 +81,6 @@ export function typeFreshen(type: M.Value): M.Value {
     )
   }
 
-  if (M.isSumType(type)) {
-    return M.createSumType(
-      recordMapValue(M.sumTypeVariantTypes(type), (t) => typeFreshen(t)),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     return typeFreshen(M.polymorphicTypeFreshBodyType(type))
   }

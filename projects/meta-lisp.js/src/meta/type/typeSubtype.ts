@@ -111,38 +111,14 @@ export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
 
   if (M.isDefinedDataType(lhs) && M.isDefinedDataType(rhs)) {
     trail = M.trailAdd(trail, lhs, rhs)
-    return typeSubtype(
-      trail,
-      M.definedDataTypeUnfold(lhs),
-      M.definedDataTypeUnfold(rhs),
+    return (
+      M.definedDataTypeDefinition(lhs) === M.definedDataTypeDefinition(rhs) &&
+      typeSubtypeMany(
+        trail,
+        M.definedDataTypeArgTypes(lhs),
+        M.definedDataTypeArgTypes(rhs),
+      )
     )
-  }
-
-  if (M.isDefinedDataType(lhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, M.definedDataTypeUnfold(lhs), rhs)
-  }
-
-  if (M.isDefinedDataType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, lhs, M.definedDataTypeUnfold(rhs))
-  }
-
-  if (M.isSumType(lhs) && M.isSumType(rhs)) {
-    return typeSubtypeVariants(
-      trail,
-      M.sumTypeVariantTypes(lhs),
-      M.sumTypeVariantTypes(rhs),
-    )
-  }
-
-  if (M.isSumType(rhs)) {
-    const variantTypes = M.sumTypeVariantTypes(rhs)
-    for (const variantType of Object.values(variantTypes)) {
-      if (typeSubtype(trail, lhs, variantType)) {
-        return true
-      }
-    }
   }
 
   if (M.isDefinedInterfaceType(lhs) && M.isDefinedInterfaceType(rhs)) {

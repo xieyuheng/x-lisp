@@ -19,7 +19,6 @@ export function isType(value: M.Value): boolean {
     isSetType(value) ||
     isHashType(value) ||
     isDefinedDataType(value) ||
-    isSumType(value) ||
     isPolymorphicType(value)
   )
 }
@@ -509,53 +508,6 @@ export function definedDataTypeDefinition(value: M.Value): M.DataDefinition {
 export function definedDataTypeArgTypes(value: M.Value): Array<M.Value> {
   assert(isDefinedDataType(value))
   return M.asListValue(M.asListValue(value).elements[2]).elements
-}
-
-export function definedDataTypeUnfold(value: M.Value): M.Value {
-  assert(M.isDefinedDataType(value))
-  const definition = M.definedDataTypeDefinition(value)
-  const argTypes = M.definedDataTypeArgTypes(value)
-
-  const env = M.envPutMany(
-    M.emptyEnv(),
-    definition.dataTypeConstructor.parameters,
-    argTypes,
-  )
-
-  const variantTypes: Record<string, M.Value> = {}
-  for (const dataConstructor of definition.dataConstructors) {
-    const elementTypes = dataConstructor.fields.map((field) =>
-      M.evaluate(definition.mod, env, field.type),
-    )
-
-    variantTypes[dataConstructor.name] = M.createTauType([
-      M.SymbolValue(dataConstructor.name),
-      ...elementTypes,
-    ])
-  }
-
-  return M.createSumType(variantTypes)
-}
-
-// SumType
-
-export function isSumType(value: M.Value): boolean {
-  return (
-    M.isListValue(value) &&
-    value.elements.length === 2 &&
-    M.valueEqual(value.elements[0], M.SymbolValue("sum")) &&
-    M.isRecordValue(value.elements[1]) &&
-    Object.values(M.asRecordValue(value.elements[1]).attributes).every(isType)
-  )
-}
-
-export function createSumType(variantTypes: Record<string, M.Value>): M.Value {
-  return M.ListValue([M.SymbolValue("sum"), M.RecordValue(variantTypes)])
-}
-
-export function sumTypeVariantTypes(value: M.Value): Record<string, M.Value> {
-  assert(isSumType(value))
-  return M.asRecordValue(M.asListValue(value).elements[1]).attributes
 }
 
 // PolymorphicType

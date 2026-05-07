@@ -1,4 +1,4 @@
-(module l2-l1)
+(type-error-module l2-l1-type-error)
 
 (define (evaluate-and-print exp)
   (println (l2/evaluate exp (l2/empty-env))))

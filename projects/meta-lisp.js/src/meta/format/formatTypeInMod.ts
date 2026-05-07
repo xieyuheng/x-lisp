@@ -109,11 +109,6 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     }
   }
 
-  if (M.isSumType(type)) {
-    const variantTypes = formatTypeRecordInMod(mod, M.sumTypeVariantTypes(type))
-    return `(sum ${variantTypes})`
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = formatTypesInMod(mod, M.polymorphicTypeVarTypes(type))
     const bodyType = formatTypeInMod(mod, M.polymorphicTypeBodyType(type))

@@ -98,12 +98,6 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
-  if (M.isSumType(type)) {
-    return Object.values(M.sumTypeVariantTypes(type)).some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = M.polymorphicTypeVarTypes(type)
     return typeVarOccurredInTypeWithBoundIds(

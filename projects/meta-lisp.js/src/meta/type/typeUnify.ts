@@ -247,30 +247,15 @@ export function typeUnify(
 
   if (M.isDefinedDataType(lhs) && M.isDefinedDataType(rhs)) {
     trail = M.trailAdd(trail, lhs, rhs)
-    return typeUnify(
+    if (M.definedDataTypeDefinition(lhs) !== M.definedDataTypeDefinition(rhs)) {
+      return undefined
+    }
+
+    return typeUnifyMany(
       trail,
       subst,
-      M.definedDataTypeUnfold(lhs),
-      M.definedDataTypeUnfold(rhs),
-    )
-  }
-
-  if (M.isDefinedDataType(lhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, M.definedDataTypeUnfold(lhs), rhs)
-  }
-
-  if (M.isDefinedDataType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, lhs, M.definedDataTypeUnfold(rhs))
-  }
-
-  if (M.isSumType(lhs) && M.isSumType(rhs)) {
-    return typeUnifyRecord(
-      trail,
-      subst,
-      M.sumTypeVariantTypes(lhs),
-      M.sumTypeVariantTypes(rhs),
+      M.definedDataTypeArgTypes(lhs),
+      M.definedDataTypeArgTypes(rhs),
     )
   }
 

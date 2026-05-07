@@ -124,14 +124,6 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
-  if (M.isSumType(type)) {
-    return M.createSumType(
-      recordMapValue(M.sumTypeVariantTypes(type), (t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
-      ),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     // - Be careful about the "name-capture" problem.
     type = M.polymorphicTypeFreshSelf(type)

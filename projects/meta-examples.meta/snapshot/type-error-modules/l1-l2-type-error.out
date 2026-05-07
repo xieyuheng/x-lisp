@@ -1,4 +1,4 @@
-src/lambda/l1-l2-type-error.meta:27:4 -- inferred type is not a subtype of given type
+src/lambda/l1-l2-type-error.meta:27:4 -- unification fail
   inferred type: l2/exp-t
   given type: l1/exp-t
  25 | 

@@ -85,12 +85,6 @@ export function typeFreeVarTypes(
     )
   }
 
-  if (M.isSumType(type)) {
-    return Object.values(M.sumTypeVariantTypes(type)).flatMap((t) =>
-      typeFreeVarTypes(boundIds, t),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = M.polymorphicTypeVarTypes(type)
     return typeFreeVarTypes(
