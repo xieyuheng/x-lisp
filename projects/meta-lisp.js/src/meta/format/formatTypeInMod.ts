@@ -1,4 +1,3 @@
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as M from "../index.ts"
 
 export function formatTypesInMod(mod: M.Mod, types: Array<M.Value>): string {
@@ -100,7 +99,7 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     const definition = M.definedInterfaceTypeDefinition(type)
     const foundName = M.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, M.definedInterfaceTypeArgTypes(type))
-    const path = pathRelativeToCwd(definition.mod.name)
+    const path = definition.mod.name
     const name = foundName || `<${definition.name} from ${path}>`
     if (argTypes.length === 0) {
       return `${name}`

@@ -1,5 +1,12 @@
+import {
+  callWithFile,
+  openOutputFile,
+  withOutputToFile,
+  writeln,
+} from "@xieyuheng/helpers.js/file"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function ImportPass(project: M.Project): void {
@@ -9,12 +16,32 @@ export function ImportPass(project: M.Project): void {
     }
 
     const scope = createScope()
-    for (const stmt of fragment.stmts) {
-      executeImport(project, scope, stmt)
+    if (fragment.isTypeErrorModule) {
+      M.withOutputToErrorModuleSnapshot(project, fragment.modName, () => {
+        for (const stmt of fragment.stmts) {
+          executeImport(project, scope, stmt)
+        }
+      })
+    } else {
+      for (const stmt of fragment.stmts) {
+        executeImport(project, scope, stmt)
+      }
     }
 
     fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
   }
+}
+
+export function withOutputToErrorModuleSnapshot<A>(
+  project: M.Project,
+  modName: string,
+  callback: () => A,
+): A {
+  const directory = M.projectSnapshotDirectory(project)
+  return callWithFile(
+    openOutputFile(`${directory}/type-error-modules/${modName}.out`),
+    (file) => withOutputToFile(file, callback),
+  )
 }
 
 type Scope = {
@@ -31,6 +58,8 @@ function createScope(): Scope {
 
 function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   if (stmt.kind === "Import") {
+    if (!ensureModExists(project, stmt.modName, stmt.location)) return
+
     const privateNames = collectPrivateNames(project, stmt.modName)
     for (const name of stmt.names) {
       if (privateNames.has(name)) continue
@@ -39,10 +68,14 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "ImportAs") {
+    if (!ensureModExists(project, stmt.modName, stmt.location)) return
+
     scope.importedPrefixes.set(stmt.prefix, { modName: stmt.modName })
   }
 
   if (stmt.kind === "ImportAll") {
+    if (!ensureModExists(project, stmt.modName, stmt.location)) return
+
     const names = new Set<string>()
     const privateNames = collectPrivateNames(project, stmt.modName)
     for (const fragment of project.fragments.values()) {
@@ -58,6 +91,27 @@ function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
       scope.importedNames.set(name, { modName: stmt.modName, name })
     }
   }
+}
+
+function ensureModExists(
+  project: M.Project,
+  modName: string,
+  location?: S.SourceLocation,
+): boolean {
+  for (const fragment of project.fragments.values()) {
+    if (fragment.modName === modName) {
+      return true
+    }
+  }
+
+  const errorMessage = `undefined module: ${modName}`
+  if (location) {
+    writeln(S.sourceLocationReport(location, errorMessage))
+  } else {
+    writeln(`${modName} -- ${errorMessage}`)
+  }
+
+  return false
 }
 
 function collectPrivateNames(project: M.Project, modName: string): Set<string> {

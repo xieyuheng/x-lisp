@@ -237,6 +237,8 @@ export type DataConstructor = {
   location?: SourceLocation
 }
 
+// - should not use ref equal (===) compare DataConstructor.
+
 export function dataConstructorEqual(
   x: DataConstructor,
   y: DataConstructor,

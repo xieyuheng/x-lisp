@@ -1,5 +1,4 @@
 import { writeln } from "@xieyuheng/helpers.js/file"
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
@@ -162,6 +161,6 @@ function reportUnclaimedPrimitiveDefinition(definition: M.Definition): string {
   if (definition.location) {
     return S.sourceLocationReport(definition.location, errorMessage)
   } else {
-    return `${pathRelativeToCwd(definition.mod.name)} -- ${errorMessage}`
+    return `${definition.mod.name} -- ${errorMessage}`
   }
 }

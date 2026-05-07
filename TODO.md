@@ -1,4 +1,5 @@
-[meta-lisp.js] `ImportPass` -- check undefined modules
+[meta-lisp.js] rename type-error-module to error-module
+[helpers.js] fix `fileWrite` -- should append
 
 # setup feedback loop
 

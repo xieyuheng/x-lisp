@@ -1,8 +1,3 @@
-import {
-  callWithFile,
-  openOutputFile,
-  withOutputToFile,
-} from "@xieyuheng/helpers.js/file"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
 
@@ -15,17 +10,11 @@ export function CheckPass(
 ): void {
   for (const mod of project.mods.values()) {
     if (mod.isTypeErrorModule) {
-      const directory = M.projectSnapshotDirectory(mod.project)
-      callWithFile(
-        openOutputFile(`${directory}/type-error-modules/${mod.name}.out`),
-        (file) => {
-          withOutputToFile(file, () => {
-            for (const definition of mod.definitions.values()) {
-              checkDefinition(definition, options)
-            }
-          })
-        },
-      )
+      M.withOutputToErrorModuleSnapshot(project, mod.name, () => {
+        for (const definition of mod.definitions.values()) {
+          checkDefinition(definition, options)
+        }
+      })
     } else {
       for (const definition of mod.definitions.values()) {
         checkDefinition(definition, options)
