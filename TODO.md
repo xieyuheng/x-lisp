@@ -1,3 +1,4 @@
+[meta-lisp.js] [maybe] disable subtype between `(define-date)` -- for fast type checking
 [meta-lisp.js] `ImportPass` -- check undefined modules
 
 # setup feedback loop
