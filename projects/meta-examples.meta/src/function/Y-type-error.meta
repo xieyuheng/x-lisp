@@ -1,4 +1,4 @@
-(type-error-module Y-type-error)
+(error-module Y-type-error)
 
 (claim Y
   (polymorphic (A)

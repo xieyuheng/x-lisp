@@ -1,4 +1,4 @@
-(type-error-module row-polymorphism-edge-case)
+(error-module row-polymorphism-edge-case)
 
 ;; - rows with a common tail but a distinct prefix.
 ;;   ```caml

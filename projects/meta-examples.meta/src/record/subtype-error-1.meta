@@ -1,4 +1,4 @@
-(type-error-module subtype-error-2)
+(error-module subtype-error-2)
 
 (define-interface point-t
   :x float-t

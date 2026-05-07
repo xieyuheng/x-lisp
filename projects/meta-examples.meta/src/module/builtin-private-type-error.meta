@@ -1,4 +1,4 @@
-(type-error-module builtin-private-type-error)
+(error-module builtin-private-type-error)
 
 (define-test record-test
   (println record-put)

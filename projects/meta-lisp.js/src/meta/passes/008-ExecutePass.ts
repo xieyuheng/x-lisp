@@ -9,8 +9,8 @@ export function ExecutePass(project: M.Project): void {
 
     M.projectAddMod(project, mod)
 
-    if (fragment.isTypeErrorModule) {
-      mod.isTypeErrorModule = true
+    if (fragment.isErrorModule) {
+      mod.isErrorModule = true
     }
 
     for (const stmt of fragment.stmts) {

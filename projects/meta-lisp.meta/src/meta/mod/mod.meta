@@ -9,7 +9,7 @@
   :inferred-types (hash-t symbol-t value-t)
   :data-constructors (hash-t symbol-t data-constructor-t)
   :project project-t
-  :is-type-error-module bool-t)
+  :is-error-module bool-t)
 
 (define-interface claim-entry-t
   :exp exp-t
@@ -24,4 +24,4 @@
    :inferred-types (make-hash)
    :data-constructors (make-hash)
    :project project
-   :is-type-error-module false})
+   :is-error-module false})

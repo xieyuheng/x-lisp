@@ -16,7 +16,7 @@ export function ImportPass(project: M.Project): void {
     }
 
     const scope = createScope()
-    if (fragment.isTypeErrorModule) {
+    if (fragment.isErrorModule) {
       M.withOutputToErrorModuleSnapshot(project, fragment.modName, () => {
         for (const stmt of fragment.stmts) {
           executeImport(project, scope, stmt)
@@ -39,7 +39,7 @@ export function withOutputToErrorModuleSnapshot<A>(
 ): A {
   const directory = M.projectSnapshotDirectory(project)
   return callWithFile(
-    openOutputFile(`${directory}/type-error-modules/${modName}.out`),
+    openOutputFile(`${directory}/error-modules/${modName}.out`),
     (file) => withOutputToFile(file, callback),
   )
 }

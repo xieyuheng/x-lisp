@@ -1,4 +1,4 @@
-(type-error-module nat-private-type-error)
+(error-module nat-private-type-error)
 
 (import-all nat)
 

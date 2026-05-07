@@ -9,7 +9,7 @@ export function CheckPass(
   },
 ): void {
   for (const mod of project.mods.values()) {
-    if (mod.isTypeErrorModule) {
+    if (mod.isErrorModule) {
       M.withOutputToErrorModuleSnapshot(project, mod.name, () => {
         for (const definition of mod.definitions.values()) {
           checkDefinition(definition, options)

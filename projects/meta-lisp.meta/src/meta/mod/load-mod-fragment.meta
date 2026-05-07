@@ -9,11 +9,11 @@
        (list-find
         (lambda (stmt)
           (or (declare-module-stmt? stmt)
-              (declare-type-error-module-stmt? stmt))))))
+              (declare-error-module-stmt? stmt))))))
   (match module-stmt
     ((just (declare-module-stmt name location))
-     {:mod-name name :stmts stmts :is-type-error-module false})
-    ((just (declare-type-error-module-stmt name location))
-     {:mod-name name :stmts stmts :is-type-error-module true})
+     {:mod-name name :stmts stmts :is-error-module false})
+    ((just (declare-error-module-stmt name location))
+     {:mod-name name :stmts stmts :is-error-module true})
     ((nothing)
      (error "(load-mod-fragment) expect (module) statement in fragment"))))

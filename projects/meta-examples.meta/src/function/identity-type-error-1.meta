@@ -1,4 +1,4 @@
-(type-error-module identity-type-error-1)
+(error-module identity-type-error-1)
 
 (claim identity
   (polymorphic (A B)

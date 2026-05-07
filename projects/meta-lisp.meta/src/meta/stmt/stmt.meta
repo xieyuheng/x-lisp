@@ -55,7 +55,7 @@
   (declare-module-stmt
     (name symbol-t)
     (location source-location-t))
-  (declare-type-error-module-stmt
+  (declare-error-module-stmt
     (name symbol-t)
     (location source-location-t))
   (declare-primitive-function-stmt

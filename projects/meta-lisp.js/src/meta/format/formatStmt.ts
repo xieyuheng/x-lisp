@@ -69,8 +69,8 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(module ${stmt.name})`
     }
 
-    case "DeclareTypeErrorModule": {
-      return `(type-error-module ${stmt.name})`
+    case "DeclareErrorModule": {
+      return `(error-module ${stmt.name})`
     }
 
     case "DeclarePrimitiveFunction": {
