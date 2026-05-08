@@ -1,3 +1,6 @@
+[diary] note about any and an untyped version of meta-lisp
+[meta-lisp.js] `test` command should not `build` -- fix `scripts/`
+
 # setup feedback loop
 
 [meta-lisp.meta] `expand-pass`
