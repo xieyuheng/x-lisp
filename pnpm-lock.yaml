@@ -13,8 +13,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^25.6.0
-        version: 25.6.0
+        specifier: ^25.6.2
+        version: 25.6.2
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -28,8 +28,8 @@ importers:
   projects/helpers.js:
     devDependencies:
       '@types/node':
-        specifier: ^25.6.0
-        version: 25.6.0
+        specifier: ^25.6.2
+        version: 25.6.2
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -59,8 +59,8 @@ importers:
         version: 4.4.3
     devDependencies:
       '@types/node':
-        specifier: ^25.6.0
-        version: 25.6.0
+        specifier: ^25.6.2
+        version: 25.6.2
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -78,8 +78,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^25.6.0
-        version: 25.6.0
+        specifier: ^25.6.2
+        version: 25.6.2
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -100,8 +100,8 @@ importers:
         version: link:../ppml.js
     devDependencies:
       '@types/node':
-        specifier: ^25.6.0
-        version: 25.6.0
+        specifier: ^25.6.2
+        version: 25.6.2
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -114,8 +114,8 @@ importers:
 
 packages:
 
-  '@types/node@25.6.0':
-    resolution: {integrity: sha512-+qIYRKdNYJwY3vRCZMdJbPLJAtGjQBudzZzdzwQYkEPQd+PJGixUL5QfvCLDaULoLv+RhT3LDkwEfKaAkgSmNQ==}
+  '@types/node@25.6.2':
+    resolution: {integrity: sha512-sokuT28dxf9JT5Kady1fsXOvI4HVpjZa95NKT5y9PNTIrs2AsobR4GFAA90ZG8M+nxVRLysCXsVj6eGC7Vbrlw==}
 
   prettier-plugin-organize-imports@4.3.0:
     resolution: {integrity: sha512-FxFz0qFhyBsGdIsb697f/EkvHzi5SZOhWAjxcx2dLt+Q532bAlhswcXGYB1yzjZ69kW8UoadFBw7TyNwlq96Iw==}
@@ -145,7 +145,7 @@ packages:
 
 snapshots:
 
-  '@types/node@25.6.0':
+  '@types/node@25.6.2':
     dependencies:
       undici-types: 7.19.2
 
