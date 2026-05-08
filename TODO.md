@@ -1,5 +1,3 @@
-[meta-lisp.js] `test` command should not `build` -- fix `scripts/`
-
 # setup feedback loop
 
 [meta-lisp.meta] `expand-pass`

@@ -2,6 +2,6 @@
 
 set -e
 
-# ./meta-lisp.js check --verbose
-# ./meta-lisp.js build --dump --basic
+./meta-lisp.js check
+./meta-lisp.js build
 ./meta-lisp.js test --profile --builtin

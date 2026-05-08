@@ -13,17 +13,10 @@ export const StackLispInterpreterPath = Path.join(
 export function TestPipeline(
   project: M.Project,
   options: {
-    verbose: boolean
     profile: boolean
     builtin: boolean
   },
 ): void {
-  M.BuildPipeline(project, {
-    dump: false,
-    basic: false,
-    verbose: options.verbose,
-  })
-
   systemShellRun(StackLispInterpreterPath, [
     "test",
     Path.join(M.projectOutputDirectory(project), "bundle.stack"),
