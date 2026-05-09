@@ -1,7 +1,9 @@
-[meta-lisp.js] add `any-t` to `builtinType`
+[meta-builtin.meta] `value.meta` -- claim `any-t`
+[stack-lisp.c] add `any-t`
 
-[meta-lisp.js] [learn] learn about how to add `any-t`
-[meta-lisp.js] add `any-t`
+[meta-lisp.js] `typeBisimilar` handle `AnyType` -- equal only to itself
+[meta-lisp.js] `typeSubtype` handle `AnyType` -- as top type
+
 [meta-lisp.js] be clear about how to use untyped meta-lisp
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record
 
