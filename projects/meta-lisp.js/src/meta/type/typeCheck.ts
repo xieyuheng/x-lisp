@@ -28,7 +28,7 @@ export function typeCheckSubstInstance(
     inferredType = M.substApplyToType(subst, inferredType)
     type = M.substApplyToType(subst, type)
     // - In the theory of polymorphic type,
-    //   inferredType should be more general than given type.
+    //   inferredType should be more general than expected type.
     if (!M.typeSubstInstance(type, inferredType)) {
       const prettyUnknownSubst = M.generatePrettyUnknownSubst([
         inferredType,
@@ -38,9 +38,9 @@ export function typeCheckSubstInstance(
       inferredType = M.substApplyToType(prettyUnknownSubst, inferredType)
       type = M.substApplyToType(prettyUnknownSubst, type)
 
-      let message = `given type is not a substitution instance of inferred type`
+      let message = `expected type is not a substitution instance of inferred type`
       message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
-      message += `\n  given type: ${M.formatTypeInMod(mod, type)}`
+      message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
       return M.errorCheckEffect(exp, message)(subst)
     }
 
@@ -87,7 +87,7 @@ export function typeCheckUnify(
 
       let message = `unification fail`
       message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
-      message += `\n  given type: ${M.formatTypeInMod(mod, type)}`
+      message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
       return M.errorCheckEffect(exp, message)(subst)
     }
 
@@ -114,9 +114,9 @@ export function typeCheckSubtype(
       inferredType = M.substApplyToType(prettyUnknownSubst, inferredType)
       type = M.substApplyToType(prettyUnknownSubst, type)
 
-      let message = `inferred type is not a subtype of given type`
+      let message = `inferred type is not a subtype of expected type`
       message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
-      message += `\n  given type: ${M.formatTypeInMod(mod, type)}`
+      message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
       return M.errorCheckEffect(exp, message)(subst)
     }
 

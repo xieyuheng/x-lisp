@@ -1,6 +1,6 @@
 src/lambda/l1-l2-type-error.meta:10:23 -- unification fail
   inferred type: l2/exp-t
-  given type: l1/exp-t
+  expected type: l1/exp-t
   8 |   (evaluate-and-print (l1/lambda-exp 'x (l1/var-exp 'x)))
   9 |   ;; l2 -- error
  10 |   (evaluate-and-print (l2/lambda-exp 'x (l2/var-exp 'x))))
