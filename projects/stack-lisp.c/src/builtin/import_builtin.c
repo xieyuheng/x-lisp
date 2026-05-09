@@ -60,6 +60,7 @@ void import_builtin(mod_t *mod) {
   // type
 
   define_variable_primitive_0(mod, "builtin/type-t", x_type_t);
+  define_variable_primitive_0(mod, "builtin/any-t", x_any_t);
   define_variable_primitive_0(mod, "builtin/int-t", x_int_t);
   define_variable_primitive_0(mod, "builtin/float-t", x_float_t);
   define_variable_primitive_0(mod, "builtin/string-t", x_string_t);

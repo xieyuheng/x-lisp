@@ -1,5 +1,3 @@
-[stack-lisp.c] add `any-t`
-
 [meta-lisp.js] `typeBisimilar` handle `AnyType` -- equal only to itself
 [meta-lisp.js] `typeSubtype` handle `AnyType` -- as top type
 

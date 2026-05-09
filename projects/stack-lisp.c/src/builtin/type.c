@@ -6,6 +6,12 @@ value_t x_type_t(void) {
   return type;
 }
 
+value_t x_any_t(void) {
+  value_t type = x_make_list();
+  x_list_push_mut(x_object(intern_symbol("any")), type);
+  return type;
+}
+
 value_t x_int_t(void) {
   value_t type = x_make_list();
   x_list_push_mut(x_object(intern_symbol("atom")), type);
