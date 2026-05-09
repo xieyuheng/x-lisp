@@ -1,4 +1,4 @@
-[meta-lisp.js] `typeSubtype` handle `AnyType` -- as top type
+[meta-lisp.js] remove `TauType`
 
 [meta-lisp.js] be clear about how to use untyped meta-lisp
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record

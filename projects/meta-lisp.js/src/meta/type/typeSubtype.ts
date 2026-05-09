@@ -17,6 +17,11 @@ export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
     return true
   }
 
+  // - any-t is the top type.
+  if (M.isAnyType(rhs)) {
+    return true
+  }
+
   if (M.isTauType(lhs) && M.isTauType(rhs)) {
     return typeSubtypeMany(
       trail,
