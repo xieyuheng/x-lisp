@@ -37,6 +37,10 @@ export function typeBisimilar(
     return M.valueEqual(lhs, rhs)
   }
 
+  if (M.isAnyType(lhs) && M.isAnyType(rhs)) {
+    return M.valueEqual(lhs, rhs)
+  }
+
   if (M.isLiteralType(lhs) && M.isLiteralType(rhs)) {
     return M.valueEqual(lhs, rhs)
   }

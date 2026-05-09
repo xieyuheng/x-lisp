@@ -1,4 +1,3 @@
-[meta-lisp.js] `typeBisimilar` handle `AnyType` -- equal only to itself
 [meta-lisp.js] `typeSubtype` handle `AnyType` -- as top type
 
 [meta-lisp.js] be clear about how to use untyped meta-lisp
