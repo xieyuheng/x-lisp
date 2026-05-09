@@ -1,3 +1,8 @@
+[meta-lisp.js] [learn] learn about how to add `any-t`
+[meta-lisp.js] add `any-t`
+[meta-lisp.js] be clear about how to use untyped meta-lisp
+[meta-lisp.js] `(define-data)` defines new value -- different from list and record
+
 # setup feedback loop
 
 [meta-lisp.meta] `expand-pass`
@@ -9,5 +14,4 @@
 # local (define)
 
 [meta-lisp.js] support using `define` in function body -- use lambda lift
-
 - support recursive and mutual recursive function
