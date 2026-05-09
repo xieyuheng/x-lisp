@@ -45,14 +45,6 @@ function substApplyToTypeWithBoundIds(
     return type
   }
 
-  if (M.isTauType(type)) {
-    return M.createTauType(
-      M.tauTypeElementTypes(type).map((t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
-      ),
-    )
-  }
-
   if (M.isInterfaceType(type)) {
     return M.createInterfaceType(
       recordMapValue(M.interfaceTypeAttributeTypes(type), (t) =>

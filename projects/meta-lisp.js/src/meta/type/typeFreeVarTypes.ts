@@ -38,12 +38,6 @@ export function typeFreeVarTypes(
     ]
   }
 
-  if (M.isTauType(type)) {
-    return M.tauTypeElementTypes(type).flatMap((t) =>
-      typeFreeVarTypes(boundIds, t),
-    )
-  }
-
   if (M.isInterfaceType(type)) {
     return Object.values(M.interfaceTypeAttributeTypes(type)).flatMap((t) =>
       typeFreeVarTypes(boundIds, t),

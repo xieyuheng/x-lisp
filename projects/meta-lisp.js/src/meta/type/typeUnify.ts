@@ -74,15 +74,6 @@ export function typeUnify(
     return subst
   }
 
-  if (M.isTauType(lhs) && M.isTauType(rhs)) {
-    return typeUnifyMany(
-      trail,
-      subst,
-      M.tauTypeElementTypes(lhs),
-      M.tauTypeElementTypes(rhs),
-    )
-  }
-
   if (M.isInterfaceType(lhs) && M.isInterfaceType(rhs)) {
     return typeUnifyRecord(
       trail,

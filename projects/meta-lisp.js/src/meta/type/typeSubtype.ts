@@ -22,14 +22,6 @@ export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
     return true
   }
 
-  if (M.isTauType(lhs) && M.isTauType(rhs)) {
-    return typeSubtypeMany(
-      trail,
-      M.tauTypeElementTypes(lhs),
-      M.tauTypeElementTypes(rhs),
-    )
-  }
-
   if (M.isInterfaceType(lhs) && M.isInterfaceType(rhs)) {
     return typeSubtypeAttributes(
       trail,

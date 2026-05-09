@@ -22,12 +22,6 @@ export function typeFreshen(type: M.Value): M.Value {
     return type
   }
 
-  if (M.isTauType(type)) {
-    return M.createTauType(
-      M.tauTypeElementTypes(type).map((t) => typeFreshen(t)),
-    )
-  }
-
   if (M.isInterfaceType(type)) {
     return M.createInterfaceType(
       recordMapValue(M.interfaceTypeAttributeTypes(type), (t) =>

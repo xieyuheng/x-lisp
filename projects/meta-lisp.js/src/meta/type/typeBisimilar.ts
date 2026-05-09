@@ -49,14 +49,6 @@ export function typeBisimilar(
     return M.atomTypeName(lhs) === M.atomTypeName(rhs)
   }
 
-  if (M.isTauType(lhs) && M.isTauType(rhs)) {
-    return typeBisimilarMany(
-      trail,
-      M.tauTypeElementTypes(lhs),
-      M.tauTypeElementTypes(rhs),
-    )
-  }
-
   if (M.isInterfaceType(lhs) && M.isInterfaceType(rhs)) {
     return typeBisimilarRecord(
       trail,

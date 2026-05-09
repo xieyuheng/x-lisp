@@ -43,12 +43,6 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
-  if (M.isTauType(type)) {
-    return M.tauTypeElementTypes(type).some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
-
   if (M.isInterfaceType(type)) {
     return Object.values(M.interfaceTypeAttributeTypes(type)).some((t) =>
       typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),

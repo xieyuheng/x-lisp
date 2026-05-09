@@ -47,11 +47,6 @@ export function formatType(type: M.Value): string {
     }
   }
 
-  if (M.isTauType(type)) {
-    const elementTypes = formatTypes(M.tauTypeElementTypes(type))
-    return `(tau ${elementTypes})`
-  }
-
   if (M.isInterfaceType(type)) {
     const attributeTypes = formatTypeRecord(M.interfaceTypeAttributeTypes(type))
     return `(interface ${attributeTypes})`

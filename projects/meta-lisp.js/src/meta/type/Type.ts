@@ -12,7 +12,6 @@ export function isType(value: M.Value): boolean {
     isLiteralType(value) ||
     isAtomType(value) ||
     isArrowType(value) ||
-    isTauType(value) ||
     isInterfaceType(value) ||
     isExtendInterfaceType(value) ||
     isDefinedInterfaceType(value) ||
@@ -242,25 +241,6 @@ export function arrowTypeUncurrying(value: M.Value): M.Value {
   }
 
   return value
-}
-
-// TauType
-
-export function isTauType(value: M.Value): boolean {
-  return (
-    M.isListValue(value) &&
-    M.valueEqual(value.elements[0], M.SymbolValue("tau")) &&
-    value.elements.slice(1).every(isType)
-  )
-}
-
-export function createTauType(elementTypes: Array<M.Value>): M.Value {
-  return M.ListValue([M.SymbolValue("tau"), ...elementTypes])
-}
-
-export function tauTypeElementTypes(value: M.Value): Array<M.Value> {
-  assert(isTauType(value))
-  return M.asListValue(value).elements.slice(1)
 }
 
 // InterfaceType

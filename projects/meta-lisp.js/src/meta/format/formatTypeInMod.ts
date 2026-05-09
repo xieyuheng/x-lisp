@@ -47,11 +47,6 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     }
   }
 
-  if (M.isTauType(type)) {
-    const elementTypes = formatTypesInMod(mod, M.tauTypeElementTypes(type))
-    return `(tau ${elementTypes})`
-  }
-
   if (M.isInterfaceType(type)) {
     const attributeTypes = formatTypeRecordInMod(
       mod,
