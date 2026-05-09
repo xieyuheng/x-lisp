@@ -1,4 +1,9 @@
-[meta-lisp.js] be clear about how to use untyped meta-lisp
+# untyped
+
+[meta-lisp.js] design syntax for narrowing by `(if)` and predicate
+[meta-lisp.js] be clear about how to use untyped meta-lisp -- untyped `(define)` + `(admit)`
+- only typed name can be used in typed module.
+- how about name that is private? maybe need a syntax which is `exempt + define` -- untyped define
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record
 
 # setup feedback loop
