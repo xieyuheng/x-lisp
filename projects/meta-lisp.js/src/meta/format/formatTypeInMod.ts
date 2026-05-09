@@ -23,6 +23,10 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     return `type-t`
   }
 
+  if (M.isAnyType(type)) {
+    return `any-t`
+  }
+
   if (M.isLiteralType(type)) {
     return M.formatValue(type)
   }

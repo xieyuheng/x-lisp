@@ -1,10 +1,3 @@
-[meta-lisp.js] 在 `Type.ts` 中模仿 // TypeType 部分的代码，实现 AnyType。
-
-- 并且，模仿 TypeType 的情况实现 format 相关的代码：
-
-  src/meta/format/formatType.ts
-  src/meta/format/formatTypeInMod.ts
-
 [meta-lisp.js] add `any-t` to `builtinType`
 
 [meta-lisp.js] [learn] learn about how to add `any-t`

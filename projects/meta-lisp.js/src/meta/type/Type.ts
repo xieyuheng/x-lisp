@@ -8,6 +8,7 @@ export function isType(value: M.Value): boolean {
     isVarType(value) ||
     isCanonicalLabelType(value) ||
     isTypeType(value) ||
+    isAnyType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
     isArrowType(value) ||
@@ -116,6 +117,20 @@ export function isTypeType(value: M.Value): boolean {
 
 export function createTypeType(): M.Value {
   return M.ListValue([M.SymbolValue("type")])
+}
+
+// AnyType
+
+export function isAnyType(value: M.Value): boolean {
+  return (
+    M.isListValue(value) &&
+    value.elements.length === 1 &&
+    M.valueEqual(value.elements[0], M.SymbolValue("any"))
+  )
+}
+
+export function createAnyType(): M.Value {
+  return M.ListValue([M.SymbolValue("any")])
 }
 
 // LiteralType
