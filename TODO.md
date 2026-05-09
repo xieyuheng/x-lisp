@@ -1,4 +1,3 @@
-[meta-builtin.meta] `value.meta` -- claim `any-t`
 [stack-lisp.c] add `any-t`
 
 [meta-lisp.js] `typeBisimilar` handle `AnyType` -- equal only to itself
