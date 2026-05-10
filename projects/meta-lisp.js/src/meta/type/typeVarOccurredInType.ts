@@ -29,6 +29,10 @@ function typeVarOccurredInTypeWithBoundIds(
     return false
   }
 
+  if (M.isAnyType(type)) {
+    return false
+  }
+
   if (M.isLiteralType(type)) {
     return false
   }

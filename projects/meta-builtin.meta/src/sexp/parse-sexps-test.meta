@@ -1,0 +1,5 @@
+(module builtin)
+
+(define-test parse-sexps-test
+  (assert-equal '((a b c)) (parse-sexps "(a b c)"))
+  (assert-equal '((a b c) (1 2 3)) (parse-sexps "(a b c) (1 2 3)")))
