@@ -1,7 +1,7 @@
 (module meta)
 
 (claim parse-stmt
-  (-> sexp-t
+  (-> located-sexp-t
       stmt-t))
 
 (define (parse-stmt sexp)
@@ -10,7 +10,7 @@
      (parse-stmt-from-elements elements location))))
 
 (claim parse-stmt-from-elements
-  (-> (list-t sexp-t) source-location-t
+  (-> (list-t located-sexp-t) source-location-t
       stmt-t))
 
 (define (parse-stmt-from-elements elements location)
@@ -79,7 +79,7 @@
             location)))))
 
 (claim parse-define-stmt
-  (-> (list-t sexp-t) source-location-t
+  (-> (list-t located-sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-stmt elements location)
@@ -96,7 +96,7 @@
         location))))
 
 (claim parse-define-type-stmt
-  (-> (list-t sexp-t) source-location-t
+  (-> (list-t located-sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-type-stmt elements location)
@@ -114,7 +114,7 @@
         location))))
 
 (claim parse-define-data-stmt
-  (-> (list-t sexp-t) source-location-t
+  (-> (list-t located-sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-data-stmt elements location)
@@ -124,7 +124,7 @@
     location))
 
 (claim parse-data-type-constructor
-  (-> sexp-t
+  (-> located-sexp-t
       data-type-constructor-t))
 
 (define (parse-data-type-constructor sexp)
@@ -136,7 +136,7 @@
      (@record :name content :parameters []))))
 
 (claim parse-data-constructor
-  (-> sexp-t
+  (-> located-sexp-t
       data-constructor-t))
 
 (define (parse-data-constructor sexp)
@@ -147,7 +147,7 @@
               :location location))))
 
 (claim parse-data-field
-  (-> sexp-t
+  (-> located-sexp-t
       data-field-t))
 
 (define (parse-data-field sexp)
@@ -158,7 +158,7 @@
               :location location))))
 
 (claim parse-define-interface-stmt
-  (-> (list-t sexp-t) source-location-t
+  (-> (list-t located-sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-interface-stmt elements location)
@@ -169,7 +169,7 @@
     location))
 
 (claim parse-interface-constructor
-  (-> sexp-t
+  (-> located-sexp-t
       interface-constructor-t))
 
 (define (parse-interface-constructor sexp)
