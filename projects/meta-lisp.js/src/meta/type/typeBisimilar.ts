@@ -18,10 +18,9 @@ export function typeBisimilar(
     return true
   }
 
+  // - We assume unification and `substApplyToType` are performed on
+  //   `lhs` and `rhs`, before calling `typeBisimilar` and `typeSubtype`.
   if (M.isVarType(lhs) && M.isVarType(rhs)) {
-    // We assume unification and `substApplyToType` are performed on
-    // `lhs` and `rhs`, before calling `typeBisimilar` and
-    // `typeSubtype`.
     if (M.varTypeId(lhs) === M.varTypeId(rhs)) {
       return true
     } else {
