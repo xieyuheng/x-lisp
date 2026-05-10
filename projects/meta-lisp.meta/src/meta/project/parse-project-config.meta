@@ -1,7 +1,7 @@
 (module meta)
 
 (define (parse-project-config path string)
-  (= sexps (parse-sexps path string))
+  (= sexps (parse-located-sexps path string))
   (parse-project-config-from-sexp (car sexps)))
 
 (define (parse-build-config sexp)
