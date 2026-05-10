@@ -1,8 +1,5 @@
 # untyped
 
-[meta-lisp.js] `typeInfer` handle `As` -- can only cast `AnyType` and `VarType`
-[meta-lisp.js] support `(as any-t e)`
-
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record
 
 # setup feedback loop
