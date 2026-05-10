@@ -196,6 +196,10 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.The(parseExp(schema), parseExp(exp), location)
   },
 
+  "`(as ,type ,exp)": ({ type, exp }, { location }) => {
+    return M.As(parseExp(type), parseExp(exp), location)
+  },
+
   "`(polymorphic ,parameters ,type)": ({ parameters, type }, { location }) => {
     return M.Polymorphic(
       S.asList(parameters).elements.map((x) => S.asSymbol(x).content),

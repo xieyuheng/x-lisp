@@ -217,6 +217,10 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       return evaluate(mod, env, exp.exp)
     }
 
+    case "As": {
+      return evaluate(mod, env, exp.exp)
+    }
+
     default: {
       let message = `[evaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`

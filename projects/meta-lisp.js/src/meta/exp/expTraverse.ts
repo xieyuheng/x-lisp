@@ -165,6 +165,10 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.The(onExp(exp.type), onExp(exp.exp), exp.location)
     }
 
+    case "As": {
+      return M.As(onExp(exp.type), onExp(exp.exp), exp.location)
+    }
+
     case "Interface": {
       return M.Interface(
         recordMapValue(exp.attributeTypes, onExp),

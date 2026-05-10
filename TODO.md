@@ -1,7 +1,5 @@
 # untyped
 
-[meta-lisp.js] add `As` as `Exp` -- like `The`
-[meta-lisp.js] parse `(as)` -- syntax for casting
 [meta-lisp.js] `typeInfer` handle `As` -- can only cast `AnyType` and `VarType`
 [meta-lisp.js] support `(as any-t e)`
 

@@ -137,6 +137,14 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
+      case "As": {
+        const type = M.evaluate(mod, M.emptyEnv(), exp.type)
+        return M.checkThenInfer(
+          M.typeCheckAssignable(mod, ctx, exp.exp, type),
+          M.okInferEffect(type),
+        )(subst)
+      }
+
       case "If": {
         const type = M.createFreshVarType("X")
         return M.checkThenInfer(
