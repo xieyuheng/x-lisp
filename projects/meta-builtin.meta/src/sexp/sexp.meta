@@ -13,4 +13,4 @@
 (declare-primitive-function format-sexp 1)
 
 (claim parse-located-sexps (-> string-t string-t (list-t located-sexp-t)))
-(claim format-sexp (polymorphic (A) (-> A string-t)))
+(claim format-sexp (-> any-t string-t))

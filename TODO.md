@@ -1,5 +1,7 @@
 # untyped
 
+[stack-lisp.c] `parse-sexps`
+[meta-builtin.meta] test `parse-sexps`
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record
 
 # setup feedback loop
