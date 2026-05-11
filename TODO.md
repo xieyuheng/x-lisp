@@ -1,5 +1,5 @@
-[meta-lisp.js] remove `any-t` and `(as)`
 [meta-lisp.js] remove subtype
+[meta-lisp.js] [maybe] remove `keyword-t`
 
 # algebraic type
 
