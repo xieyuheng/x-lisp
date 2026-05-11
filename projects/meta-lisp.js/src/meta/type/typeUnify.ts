@@ -35,8 +35,8 @@ export function typeUnify(
   //   base case of recursive unification.
   // - unification is mainly about var type,
   //   while subtype relation does not handle var type,
-  //   i.e. return true (via typeBisimilar)
-  //   only when two var types are the same.
+  //   i.e. return true only when two var types are the same.
+  // - subtype relation will stop type propagation through var type.
   if (M.typeSubtype([], lhs, rhs) || M.typeSubtype([], rhs, lhs)) {
     return subst
   }

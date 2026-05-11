@@ -1,0 +1,9 @@
+src/record/subtype-error-3.meta:20:14 -- inferred type is not a subtype of expected type
+  inferred type: point-t
+  expected type: (extend-interface A :x float-t :y float-t :z B)
+ 18 | (define (print-point-example x)
+ 19 |   (print-point x)
+ 20 |   (print (:z x)))
+    |              ~    
+ 21 | 
+

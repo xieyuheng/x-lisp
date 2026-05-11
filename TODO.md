@@ -1,5 +1,6 @@
 # untyped
 
+[meta-lisp.js] maybe `any-t` should not be bound to type variable
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record
 
 # setup feedback loop
