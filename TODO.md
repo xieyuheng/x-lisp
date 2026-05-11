@@ -1,7 +1,18 @@
-# untyped
+[diary] note about named argument
+[meta-lisp.js] remove `any-t` and `(as)`
 
-[meta-lisp.js] maybe `any-t` should not be bound to type variable
+# subtype
+
+[meta-lisp.js] remove subtype
+
+# algebraic type
+
 [meta-lisp.js] `(define-data)` defines new value -- different from list and record
+[meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
+
+# any-t
+
+[learn] learn from haskell's `Dynamic`
 
 # setup feedback loop
 
