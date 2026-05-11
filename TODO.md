@@ -1,4 +1,3 @@
-[diary] note about named argument
 [meta-lisp.js] remove `any-t` and `(as)`
 
 # subtype

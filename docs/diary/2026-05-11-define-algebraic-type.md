@@ -143,10 +143,33 @@ date: 2026-05-11
    (tail li-tail li-put-tail!)))
 ```
 
-# TODO named argument
+显然可以省略 predicate、accessor 和 modifier，来使用默认的生成名字的方式。
+并且把 `(define-data)` 作为 `(define-algebraic-type)` 的 sugar。
 
-TODO 按照你的 `:<key> <value>` 这种思路，
-`(define-record-type)` 也应该用这种 `:<key> <value>` 来设计了，
-但是 schemer 没有这样设计，而是用了更简单的 `(<key> <value>)`，
-并且把所有的名字，包括：constructor、predicate、accessor 和 modifiler，
-都设计成了 explicit 的。
+# keyword argument
+
+关于 keyword argument 的语法设计，
+也可以跳出 `:key value` 语法的设计思路，
+模仿 `(define-record-type)`。
+
+```scheme
+(define-keyword (<function-name> (<parameter> <default-arg>) ...) ...)
+(call/keyword <function-name> (<keyword> <value>) ...)
+```
+
+在 `define-keyword` 中 `<parameter>` 起到 keyword 的作用，
+parameter 名字是暴露给用户的 API 的一部分。
+
+但是还需要让 `(->)` 支持 keyword。
+假设有 `arrow/keyword` 语法关键词，缩写为 `->/kw`。
+模仿 `(let)` 的语法：
+
+```scheme
+(->/kw ((depth int-t)
+        (width int-t)
+        (bg string-t))
+  window-t)
+```
+
+这也许启示我们应该用 `:` 做 module prefix 的分隔符，
+把 `/` 保留为可用的 symbol。
