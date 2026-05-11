@@ -265,6 +265,9 @@ export function formatExp(exp: M.Exp): string {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
 
+    case "As": {
+      return `(as ${formatExp(exp.type)} ${formatExp(exp.exp)})`
+    }
 
     case "Match": {
       if (exp.targets.length === 1) {

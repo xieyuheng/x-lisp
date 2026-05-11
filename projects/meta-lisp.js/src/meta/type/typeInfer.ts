@@ -137,7 +137,38 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
+      case "As": {
+        const type = M.evaluate(mod, M.emptyEnv(), exp.type)
+        if (M.isAnyType(type)) {
+          // - always allow casting to any-t -- (as any-t <exp>)
+          return M.okInferEffect(type)(subst)
+        }
 
+        return M.inferThenInfer(
+          M.typeInfer(mod, ctx, exp.exp),
+          (inferredType) => (subst) => {
+            inferredType = M.substApplyToType(subst, inferredType)
+            if (M.isAnyType(inferredType)) {
+              return M.okInferEffect(type)(subst)
+            } else if (M.isVarType(inferredType)) {
+              const newSubst = M.typeUnify([], subst, type, inferredType)
+              if (!newSubst) {
+                let message = `[typeInfer] fail to unify source type variable with target type`
+                message += `\n  cast from source type: ${M.formatTypeInMod(mod, inferredType)}`
+                message += `\n  cast to target type: ${M.formatTypeInMod(mod, type)}`
+                return M.errorInferEffect(exp, message)(subst)
+              }
+
+              return M.okInferEffect(type)(newSubst)
+            } else {
+              let message = `can only cast any-t and type variable`
+              message += `\n  cast from source type: ${M.formatTypeInMod(mod, inferredType)}`
+              message += `\n  cast to target type: ${M.formatTypeInMod(mod, type)}`
+              return M.errorInferEffect(exp, message)(subst)
+            }
+          },
+        )(subst)
+      }
 
       case "If": {
         const type = M.createFreshVarType("X")
