@@ -173,3 +173,104 @@ parameter 名字是暴露给用户的 API 的一部分。
 
 这也许启示我们应该用 `:` 做 module prefix 的分隔符，
 把 `/` 保留为可用的 symbol。
+
+# (define-record-type) is not acceptable
+
+尝试使用了一下 `(define-record-type)`。
+
+如果要把：
+
+```scheme
+(define-interface source-position-t
+  :index int-t
+  :row int-t
+  :column int-t)
+```
+
+写成：
+
+```scheme
+(define-record-type source-position-t
+  (make-source-position
+   (index int-t)
+   (row int-t)
+   (column int-t))
+  source-position?
+  (index source-position-index)
+  (row source-position-row)
+  (column source-position-column))
+```
+
+或者把：
+
+```scheme
+(define-interface mod-t
+  :name symbol-t
+  :stmts (list-t stmt-t)
+  :admitted (set-t symbol-t)
+  :definitions (hash-t symbol-t definition-t)
+  :claimed (hash-t symbol-t claim-entry-t)
+  :inferred-types (hash-t symbol-t value-t)
+  :data-constructors (hash-t symbol-t data-constructor-t)
+  :project project-t
+  :is-error-module bool-t)
+```
+
+写成：
+
+```scheme
+(define-record-type mod-t
+  (cons-mod
+   (name symbol-t)
+   (stmts (list-t stmt-t))
+   (admitted (set-t symbol-t))
+   (definitions (hash-t symbol-t definition-t))
+   (claimed (hash-t symbol-t claim-entry-t))
+   (inferred-types (hash-t symbol-t value-t))
+   (data-constructors (hash-t symbol-t data-constructor-t))
+   (project project-t)
+   (is-error-module bool-t))
+  mod?
+  (name mod-name)
+  (stmts mod-stmts)
+  (admitted mod-admitted)
+  (definitions mod-definitions)
+  (claimed mod-claimed)
+  (inferred-types mod-inferred-types)
+  (data-constructors mod-data-constructors)
+  (project mod-project)
+  (is-error-module mod-is-error-module))
+```
+
+还是有点接受不了。
+因为开始设计 meta-lisp 的动机之一，
+就是没法接受在 typescript 中定义 algebraic data type 的时候，
+一个名字要出现多次，而现在一个名字又出现了三次。
+
+一种方案是用：
+
+```scheme
+(define-interface mod-t
+  (name symbol-t)
+  (stmts (list-t stmt-t))
+  (admitted (set-t symbol-t))
+  (definitions (hash-t symbol-t definition-t))
+  (claimed (hash-t symbol-t claim-entry-t))
+  (inferred-types (hash-t symbol-t value-t))
+  (data-constructors (hash-t symbol-t data-constructor-t))
+  (project project-t)
+  (is-error-module bool-t))
+```
+
+然后根据 type 的名字，去掉 `-t` 后缀，
+来生成对应的 `define-record-type`。
+
+这样也许就不能叫 `define-interface` 了，
+因为如此定义的 type 之间没有子类关系。
+
+也许应该：
+
+- `define-record-type` 改名为 `define-product-type`，
+  避免与 python 的 dict 和 javascript 的 object 混淆。
+- `define-struct` 作为 `define-product-type` 的 sugar，
+  避免一个名字重复多次。
