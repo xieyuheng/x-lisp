@@ -5,9 +5,3 @@
 (define (I x) x)
 
 (define SKI (S K I))
-
-(define SKI-record
-  (= S (lambda (x y z) (x z (y z))))
-  (= K (lambda (x y) x))
-  (= I (lambda (x) x))
-  {:S S :K K :I I})

@@ -1,8 +1,4 @@
 [meta-lisp.js] remove `any-t` and `(as)`
-[meta-lisp.js] rename `DefinedDataType` to `DataType` or `AlgebraicType`
-
-# subtype
-
 [meta-lisp.js] remove subtype
 
 # algebraic type
@@ -13,6 +9,7 @@
 - or `datum_t`
 - or `xrecord_t` -- because of `(define-record-type)`?
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
+[meta-lisp.js] rename `DefinedDataType` to `DataType` or `AlgebraicType`
 
 # any-t
 
