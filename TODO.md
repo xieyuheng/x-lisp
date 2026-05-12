@@ -1,6 +1,13 @@
 # algebraic type
 
+[meta-lisp.js] setup new `Type.ts`
+[meta-lisp.js] 在 evaluate.ts 之外定义 typeEvaluate.ts
+
 [meta-lisp.js] `Type` should not be encoded in `Value`
+
+-  现在在 Type.ts 的定义中，Type 的概念是嵌入在 Value 中。
+   模仿 Value.ts 的定义，把 Type.ts 中的 Type 定义为 ADT。
+
 [meta-lisp.js] remove `evaluate`
 [meta-lisp.js] remove `Value`
 

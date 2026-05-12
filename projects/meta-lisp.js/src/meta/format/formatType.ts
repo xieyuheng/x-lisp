@@ -23,10 +23,6 @@ export function formatType(type: M.Value): string {
     return `type-t`
   }
 
-  if (M.isLiteralType(type)) {
-    return M.formatValue(type)
-  }
-
   if (M.isAtomType(type)) {
     const name = M.atomTypeName(type)
     return `${name}-t`

@@ -54,10 +54,6 @@ export function typeUnify(
     return M.valueEqual(lhs, rhs) ? subst : undefined
   }
 
-  if (M.isLiteralType(lhs) && M.isLiteralType(rhs)) {
-    return M.valueEqual(lhs, rhs) ? subst : undefined
-  }
-
   if (M.isAtomType(lhs) && M.isAtomType(rhs)) {
     return M.atomTypeName(lhs) === M.atomTypeName(rhs) ? subst : undefined
   }

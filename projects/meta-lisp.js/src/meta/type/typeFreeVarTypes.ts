@@ -21,10 +21,6 @@ export function typeFreeVarTypes(
     return []
   }
 
-  if (M.isLiteralType(type)) {
-    return []
-  }
-
   if (M.isAtomType(type)) {
     return []
   }

@@ -13,10 +13,6 @@ export function typeFreshen(type: M.Value): M.Value {
     return type
   }
 
-  if (M.isLiteralType(type)) {
-    return type
-  }
-
   if (M.isAtomType(type)) {
     return type
   }

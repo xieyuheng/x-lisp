@@ -7,7 +7,6 @@ export function isType(value: M.Value): boolean {
     isVarType(value) ||
     isCanonicalLabelType(value) ||
     isTypeType(value) ||
-    isLiteralType(value) ||
     isAtomType(value) ||
     isArrowType(value) ||
     isListType(value) ||
@@ -111,12 +110,6 @@ export function isTypeType(value: M.Value): boolean {
 
 export function createTypeType(): M.Value {
   return M.ListValue([M.SymbolValue("type")])
-}
-
-// LiteralType
-
-export function isLiteralType(value: M.Value): boolean {
-  return M.isAtomValue(value)
 }
 
 // AtomType

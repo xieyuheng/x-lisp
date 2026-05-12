@@ -38,10 +38,6 @@ function substDeepWalkWithBoundIds(
     return type
   }
 
-  if (M.isLiteralType(type)) {
-    return type
-  }
-
   if (M.isAtomType(type)) {
     return type
   }
