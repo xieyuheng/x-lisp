@@ -370,7 +370,7 @@ export function polymorphicTypeFreshSelf(value: M.Value): M.Value {
     createFreshVarType(varTypeName(varType)),
   )
   const subst = M.substExtendMany(M.emptySubst(), varTypes, newVarTypes)
-  const newBodyType = M.substApplyToType(subst, bodyType)
+  const newBodyType = M.substDeepWalk(subst, bodyType)
   return createPolymorphicType(newVarTypes, newBodyType)
 }
 
@@ -386,7 +386,7 @@ export function polymorphicTypePrettifyVarTypes(value: M.Value): M.Value {
     createVarType(generatePrettyTypeVariableName(i), BigInt(0)),
   )
   const subst = M.substExtendMany(M.emptySubst(), varTypes, newVarTypes)
-  const newBodyType = M.substApplyToType(subst, bodyType)
+  const newBodyType = M.substDeepWalk(subst, bodyType)
   return createPolymorphicType(newVarTypes, newBodyType)
 }
 

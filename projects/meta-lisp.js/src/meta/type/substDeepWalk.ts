@@ -1,15 +1,15 @@
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import * as M from "../index.ts"
 
-export function substApplyToType(subst: M.Subst, type: M.Value): M.Value {
-  return substApplyToTypeWithBoundIds(new Set(), subst, type)
+export function substDeepWalk(subst: M.Subst, type: M.Value): M.Value {
+  return substDeepWalkWithBoundIds(new Set(), subst, type)
 }
 
-export function substApplyToCtx(subst: M.Subst, ctx: M.Ctx): M.Ctx {
-  return mapMapValue(ctx, (t) => M.substApplyToType(subst, t))
+export function substDeepWalkCtx(subst: M.Subst, ctx: M.Ctx): M.Ctx {
+  return mapMapValue(ctx, (t) => M.substDeepWalk(subst, t))
 }
 
-function substApplyToTypeWithBoundIds(
+function substDeepWalkWithBoundIds(
   boundIds: Set<string>,
   subst: M.Subst,
   type: M.Value,
@@ -49,32 +49,28 @@ function substApplyToTypeWithBoundIds(
   if (M.isArrowType(type)) {
     return M.createArrowType(
       M.arrowTypeArgTypes(type).map((t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
+        substDeepWalkWithBoundIds(boundIds, subst, t),
       ),
-      substApplyToTypeWithBoundIds(boundIds, subst, M.arrowTypeRetType(type)),
+      substDeepWalkWithBoundIds(boundIds, subst, M.arrowTypeRetType(type)),
     )
   }
 
   if (M.isListType(type)) {
     return M.createListType(
-      substApplyToTypeWithBoundIds(
-        boundIds,
-        subst,
-        M.listTypeElementType(type),
-      ),
+      substDeepWalkWithBoundIds(boundIds, subst, M.listTypeElementType(type)),
     )
   }
 
   if (M.isSetType(type)) {
     return M.createSetType(
-      substApplyToTypeWithBoundIds(boundIds, subst, M.setTypeElementType(type)),
+      substDeepWalkWithBoundIds(boundIds, subst, M.setTypeElementType(type)),
     )
   }
 
   if (M.isHashType(type)) {
     return M.createHashType(
-      substApplyToTypeWithBoundIds(boundIds, subst, M.hashTypeKeyType(type)),
-      substApplyToTypeWithBoundIds(boundIds, subst, M.hashTypeValueType(type)),
+      substDeepWalkWithBoundIds(boundIds, subst, M.hashTypeKeyType(type)),
+      substDeepWalkWithBoundIds(boundIds, subst, M.hashTypeValueType(type)),
     )
   }
 
@@ -82,7 +78,7 @@ function substApplyToTypeWithBoundIds(
     return M.createDefinedDataType(
       M.definedDataTypeDefinition(type),
       M.definedDataTypeArgTypes(type).map((t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
+        substDeepWalkWithBoundIds(boundIds, subst, t),
       ),
     )
   }
@@ -96,7 +92,7 @@ function substApplyToTypeWithBoundIds(
 
     return M.createPolymorphicType(
       varTypes,
-      substApplyToTypeWithBoundIds(
+      substDeepWalkWithBoundIds(
         new Set([...boundIds, ...varTypes.map(M.varTypeId)]),
         subst,
         bodyType,
@@ -104,7 +100,7 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
-  let message = `[substApplyToTypeWithBoundIds] unhandled type`
+  let message = `[substDeepWalkWithBoundIds] unhandled type`
   message += `\n  type: ${M.formatType(type)}`
   throw new Error(message)
 }

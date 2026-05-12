@@ -25,8 +25,8 @@ export function typeCheckSubstInstance(
   type: M.Value,
 ): M.CheckEffect {
   return (subst) => {
-    inferredType = M.substApplyToType(subst, inferredType)
-    type = M.substApplyToType(subst, type)
+    inferredType = M.substDeepWalk(subst, inferredType)
+    type = M.substDeepWalk(subst, type)
     // - In the theory of polymorphic type,
     //   inferredType should be more general than expected type.
     if (!M.typeSubstInstance(type, inferredType)) {
@@ -35,8 +35,8 @@ export function typeCheckSubstInstance(
         type,
       ])
 
-      inferredType = M.substApplyToType(prettyUnknownSubst, inferredType)
-      type = M.substApplyToType(prettyUnknownSubst, type)
+      inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
+      type = M.substDeepWalk(prettyUnknownSubst, type)
 
       let message = `expected type is not a substitution instance of inferred type`
       message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
@@ -68,16 +68,16 @@ export function typeCheckUnify(
   return (subst) => {
     const newSubst = M.typeUnify(subst, inferredType, type)
     if (newSubst === undefined) {
-      inferredType = M.substApplyToType(subst, inferredType)
-      type = M.substApplyToType(subst, type)
+      inferredType = M.substDeepWalk(subst, inferredType)
+      type = M.substDeepWalk(subst, type)
 
       const prettyUnknownSubst = M.generatePrettyUnknownSubst([
         inferredType,
         type,
       ])
 
-      inferredType = M.substApplyToType(prettyUnknownSubst, inferredType)
-      type = M.substApplyToType(prettyUnknownSubst, type)
+      inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
+      type = M.substDeepWalk(prettyUnknownSubst, type)
 
       let message = `unification fail`
       message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`

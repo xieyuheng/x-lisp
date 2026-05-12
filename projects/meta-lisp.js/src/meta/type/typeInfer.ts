@@ -134,8 +134,8 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.inferThenInfer(
           M.typeInfer(mod, ctx, exp.rhs),
           (inferredType) => (subst) => {
-            ctx = M.substApplyToCtx(subst, ctx)
-            inferredType = M.substApplyToType(subst, inferredType)
+            ctx = M.substDeepWalkCtx(subst, ctx)
+            inferredType = M.substDeepWalk(subst, inferredType)
             inferredType = M.typeGeneralizeInCtx(ctx, inferredType)
             ctx = M.ctxPut(ctx, exp.name, inferredType)
             return typeInfer(mod, ctx, exp.body)(subst)
@@ -275,7 +275,7 @@ function typeInferApplyArrowType(
       const arrowType = M.createArrowType([], retType)
       const newSubst = M.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
-        type = M.substApplyToType(subst, type)
+        type = M.substDeepWalk(subst, type)
         let message = `expecting nullary arrow type`
         message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
         return M.errorInferEffect(originalExp, message)(subst)
@@ -288,7 +288,7 @@ function typeInferApplyArrowType(
       const arrowType = M.createArrowType([argType], retType)
       const newSubst = M.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
-        type = M.substApplyToType(subst, type)
+        type = M.substDeepWalk(subst, type)
         let message = `expecting arrow type`
         message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
         message += `\n  args: ${M.formatExps(args)}`
@@ -306,7 +306,7 @@ function typeInferApplyArrowType(
       const arrowType = M.createArrowType([argType], retType)
       const newSubst = M.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
-        type = M.substApplyToType(subst, type)
+        type = M.substDeepWalk(subst, type)
         let message = `expecting arrow type`
         message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
         message += `\n  args: ${M.formatExps(args)}`

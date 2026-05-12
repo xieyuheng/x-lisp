@@ -116,7 +116,7 @@ function checkByInfer(mod: M.Mod, name: string, exp: M.Exp): void {
   if (result.kind === "InferError") {
     writeln(reportTypeCheckError(result.exp, result.message))
   } else {
-    let inferredType = M.substApplyToType(result.subst, result.type)
+    let inferredType = M.substDeepWalk(result.subst, result.type)
     inferredType = M.typeGeneralizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
   }
