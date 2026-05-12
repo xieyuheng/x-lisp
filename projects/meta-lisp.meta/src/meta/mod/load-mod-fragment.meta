@@ -12,8 +12,8 @@
               (declare-error-module-stmt? stmt))))))
   (match module-stmt
     ((just (declare-module-stmt name location))
-     {:mod-name name :stmts stmts :is-error-module false})
+     (make-mod-fragment name false stmts))
     ((just (declare-error-module-stmt name location))
-     {:mod-name name :stmts stmts :is-error-module true})
+     (make-mod-fragment name true stmts))
     ((nothing)
      (error "(load-mod-fragment) expect (module) statement in fragment"))))

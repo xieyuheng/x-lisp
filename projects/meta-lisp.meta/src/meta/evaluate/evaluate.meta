@@ -39,7 +39,7 @@
     ;; (set-exp (elements (list-t exp-t)) (location source-location-t))
     ;; (record-exp (attributes (hash-t keyword-t exp-t))
     ;;             (location source-location-t))
-    ;; (hash-exp (entries (list-t (interface :key exp-t :value exp-t)))
+    ;; (hash-exp (entries (list-t hash-entry-t))
     ;;           (location source-location-t))
     ;; (quote-exp (sexp located-sexp-t) (location source-location-t))
     ;; (arrow-exp (arg-types (list-t exp-t)) (ret-type exp-t)

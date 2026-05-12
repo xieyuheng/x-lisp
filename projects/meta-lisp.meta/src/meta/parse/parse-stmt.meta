@@ -55,9 +55,11 @@
             (symbol-sexp-content (list-get 1 elements))
             location))
           ((equal? tag 'define-enum)
-           (parse-define-enum-stmt elements location))
+            (parse-define-enum-stmt elements location))
+          ((equal? tag 'define-struct)
+            (parse-define-struct-stmt elements location))
           ((equal? tag 'define-interface)
-           (parse-define-interface-stmt elements location))
+            (parse-define-interface-stmt elements location))
           ((equal? tag 'claim)
            (claim-stmt
             (symbol-sexp-content (list-get 1 elements))
@@ -113,6 +115,27 @@
         (parse-body (list-drop 2 elements) location)
         location))))
 
+(claim parse-define-struct-stmt
+  (-> (list-t located-sexp-t) source-location-t
+      stmt-t))
+
+(define (parse-define-struct-stmt elements location)
+  (define-struct-stmt
+    (parse-interface-constructor (list-get 1 elements))
+    (list-map parse-struct-field (list-drop 2 elements))
+    location))
+
+(claim parse-struct-field
+  (-> located-sexp-t
+      data-field-t))
+
+(define (parse-struct-field sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (make-data-field
+       (symbol-sexp-content (list-head elements))
+       (parse-exp (list-head (list-drop 1 elements)))))))
+
 (claim parse-define-enum-stmt
   (-> (list-t located-sexp-t) source-location-t
       stmt-t))
@@ -130,10 +153,11 @@
 (define (parse-data-type-constructor sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :name (symbol-sexp-content (list-head elements))
-              :parameters (list-map symbol-sexp-content (list-drop 1 elements))))
+     (make-data-type-constructor
+       (symbol-sexp-content (list-head elements))
+       (list-map symbol-sexp-content (list-drop 1 elements))))
     ((symbol-sexp content location)
-     (@record :name content :parameters []))))
+     (make-data-type-constructor content []))))
 
 (claim parse-data-constructor
   (-> located-sexp-t
@@ -142,9 +166,9 @@
 (define (parse-data-constructor sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :name (symbol-sexp-content (list-head elements))
-              :fields (list-map parse-data-field (list-drop 1 elements))
-              :location location))))
+     (make-data-constructor
+       (symbol-sexp-content (list-head elements))
+       (list-map parse-data-field (list-drop 1 elements))))))
 
 (claim parse-data-field
   (-> located-sexp-t
@@ -153,9 +177,9 @@
 (define (parse-data-field sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :name (symbol-sexp-content (list-head elements))
-              :type (parse-exp (list-head (list-drop 1 elements)))
-              :location location))))
+     (make-data-field
+       (symbol-sexp-content (list-head elements))
+       (parse-exp (list-head (list-drop 1 elements)))))))
 
 (claim parse-define-interface-stmt
   (-> (list-t located-sexp-t) source-location-t
@@ -175,8 +199,8 @@
 (define (parse-interface-constructor sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :name (symbol-sexp-content (list-head elements))
-              :parameters (list-map symbol-sexp-content (list-drop 1 elements))
-              :location location))
+     (make-interface-constructor
+       (symbol-sexp-content (list-head elements))
+       (list-map symbol-sexp-content (list-drop 1 elements))))
     ((symbol-sexp content location)
-     (@record :name content :parameters []))))
+     (make-interface-constructor content []))))

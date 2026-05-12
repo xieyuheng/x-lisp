@@ -187,16 +187,16 @@
     ((list-sexp elements location)
      (if (symbol-sexp? (list-head elements))
        (let ((first-content (symbol-sexp-content (list-head elements))))
-         (if (equal? first-content 'else)
-           (@record :question (qualified-var-exp 'builtin 'true location)
-                    :answer (parse-body (list-drop 1 elements) location)
-                    :location location)
-           (@record :question (parse-exp (list-head elements))
-                    :answer (parse-body (list-drop 1 elements) location)
-                    :location location)))
-       (@record :question (parse-exp (list-head elements))
-                :answer (parse-body (list-drop 1 elements) location)
-                :location location)))))
+          (if (equal? first-content 'else)
+            (make-cond-clause (qualified-var-exp 'builtin 'true location)
+                              (parse-body (list-drop 1 elements) location)
+                              location)
+            (make-cond-clause (parse-exp (list-head elements))
+                              (parse-body (list-drop 1 elements) location)
+                              location)))
+        (make-cond-clause (parse-exp (list-head elements))
+                          (parse-body (list-drop 1 elements) location)
+                          location)))))
 
 (claim parse-match-clause
   (-> located-sexp-t
@@ -205,9 +205,9 @@
 (define (parse-match-clause sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :patterns [(parse-exp (list-head elements))]
-              :body (parse-body (list-drop 1 elements) location)
-              :location location))))
+     (make-match-clause [(parse-exp (list-head elements))]
+                         (parse-body (list-drop 1 elements) location)
+                         location))))
 
 (claim parse-match-many-clause
   (-> located-sexp-t
@@ -216,9 +216,9 @@
 (define (parse-match-many-clause sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :patterns (list-map parse-exp (list-sexp-elements (list-head elements)))
-              :body (parse-body (list-drop 1 elements) location)
-              :location location))))
+     (make-match-clause (list-map parse-exp (list-sexp-elements (list-head elements)))
+                         (parse-body (list-drop 1 elements) location)
+                         location))))
 
 (claim parse-binding
   (-> located-sexp-t
@@ -227,13 +227,13 @@
 (define (parse-binding sexp)
   (match sexp
     ((list-sexp elements location)
-     (@record :name (symbol-sexp-content (list-head elements))
-              :rhs (parse-exp (list-head (list-drop 1 elements)))
-              :location location))))
+     (make-binding (symbol-sexp-content (list-head elements))
+                   (parse-exp (list-head (list-drop 1 elements)))
+                   location))))
 
 (claim parse-hash-entries
   (-> (list-t located-sexp-t)
-      (list-t (interface :key exp-t :value exp-t))))
+      (list-t (hash-entry-t exp-t exp-t))))
 
 (define (parse-hash-entries sexps)
   (if (list-empty? sexps)
@@ -241,5 +241,5 @@
     (let ((key (list-head sexps))
           (value (list-head (list-drop 1 sexps)))
           (rest (list-drop 2 sexps)))
-      (cons (@record :key (parse-exp key) :value (parse-exp value))
+      (cons (make-hash-entry (parse-exp key) (parse-exp value))
             (parse-hash-entries rest)))))

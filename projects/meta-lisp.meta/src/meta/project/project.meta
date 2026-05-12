@@ -1,19 +1,18 @@
 (module meta)
 
-(define-interface project-t
-  :root-directory string-t
-  :config project-config-t
-  :fragments (hash-t string-t mod-fragment-t))
+(define-struct* project-t
+  (cons-project
+   (root-directory string-t)
+   (config project-config-t)
+   (fragments (hash-t string-t mod-fragment-t))))
 
 (define (make-project root-directory config)
-  {:root-directory root-directory
-   :config config
-   :fragments (make-hash)})
+  (cons-project root-directory config (make-hash)))
 
 (define (project-put-fragment! path fragment project)
-  (hash-put! path fragment (:fragments project)))
+  (hash-put! path fragment (project-fragments project)))
 
 (define (project-source-directory project)
   (path-join
-    (:root-directory project)
-    (:source-directory (:build (:config project)))))
+    (project-root-directory project)
+    (build-config-source-directory (project-config-build (project-config project)))))

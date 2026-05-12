@@ -1,27 +1,19 @@
 (module meta)
 
-(define-interface mod-t
-  :name symbol-t
-  :stmts (list-t stmt-t)
-  :admitted (set-t symbol-t)
-  :definitions (hash-t symbol-t definition-t)
-  :claimed (hash-t symbol-t claim-entry-t)
-  :inferred-types (hash-t symbol-t value-t)
-  :data-constructors (hash-t symbol-t data-constructor-t)
-  :project project-t
-  :is-error-module bool-t)
+(define-struct mod-t
+  (name symbol-t)
+  (stmts (list-t stmt-t))
+  (admitted (set-t symbol-t))
+  (definitions (hash-t symbol-t definition-t))
+  (claimed (hash-t symbol-t claim-entry-t))
+  (inferred-types (hash-t symbol-t value-t))
+  (data-constructors (hash-t symbol-t data-constructor-t))
+  (project project-t)
+  (is-error-module bool-t))
 
-(define-interface claim-entry-t
-  :exp exp-t
-  :type (maybe-t value-t))
+(define-struct claim-entry-t
+  (exp exp-t)
+  (type (maybe-t value-t)))
 
-(define (make-mod name project)
-  {:name name
-   :stmts []
-   :admitted (make-set)
-   :definitions (make-hash)
-   :claimed (make-hash)
-   :inferred-types (make-hash)
-   :data-constructors (make-hash)
-   :project project
-   :is-error-module false})
+(define (make-new-mod name project)
+  (make-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) project false))

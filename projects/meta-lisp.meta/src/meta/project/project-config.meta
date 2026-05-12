@@ -1,9 +1,11 @@
 (module meta)
 
-(define-interface project-config-t
-  :name string-t
-  :version string-t
-  :build (interface
-           :source-directory string-t
-           :output-directory string-t
-           :snapshot-directory string-t))
+(define-struct build-config-t
+  (source-directory string-t)
+  (output-directory string-t)
+  (snapshot-directory string-t))
+
+(define-struct project-config-t
+  (name string-t)
+  (version string-t)
+  (build build-config-t))

@@ -1,4 +1,8 @@
-[meta-lisp.meta] 中的 define-interface 旧语法，改为 define-struct 新语法。
+更新 AGENTS.md 中的旧语法：(define-data) 和 (define-interface)。
+
+- 改为新语法 (define-enum) 和 (define-struct)。
+  - 并说明二者如何展开为更 explicit 的 (define-algebraic-type)。
+- 说明语言已经没有子类型关系了。
 
 # literal hash syntax
 

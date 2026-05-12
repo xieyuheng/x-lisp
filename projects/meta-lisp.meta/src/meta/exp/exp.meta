@@ -1,9 +1,9 @@
 (module meta)
 
-(define-interface binding-t
-  :name symbol-t
-  :rhs exp-t
-  :location source-location-t)
+(define-struct binding-t
+  (name symbol-t)
+  (rhs exp-t)
+  (location source-location-t))
 
 (define-enum exp-t
   (symbol-exp (content symbol-t) (location source-location-t))
@@ -47,7 +47,7 @@
   (literal-set-exp (elements (list-t exp-t)) (location source-location-t))
   (literal-record-exp (attributes (hash-t keyword-t exp-t))
                      (location source-location-t))
-  (literal-hash-exp (entries (list-t (interface :key exp-t :value exp-t)))
+  (literal-hash-exp (entries (list-t (hash-entry-t exp-t exp-t)))
                     (location source-location-t))
   (quote-exp (sexp located-sexp-t) (location source-location-t))
   (arrow-exp (arg-types (list-t exp-t)) (ret-type exp-t)
@@ -70,12 +70,16 @@
              (clauses (list-t match-clause-t))
              (location source-location-t)))
 
-(define-interface cond-clause-t
-  :question exp-t
-  :answer exp-t
-  :location source-location-t)
+(define-struct cond-clause-t
+  (question exp-t)
+  (answer exp-t)
+  (location source-location-t))
 
-(define-interface match-clause-t
-  :patterns (list-t exp-t)
-  :body exp-t
-  :location source-location-t)
+(define-struct match-clause-t
+  (patterns (list-t exp-t))
+  (body exp-t)
+  (location source-location-t))
+
+(define-struct hash-entry-t
+  (key exp-t)
+  (value exp-t))
