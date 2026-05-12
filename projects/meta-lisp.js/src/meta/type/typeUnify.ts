@@ -14,21 +14,21 @@ export function typeUnify(
   lhs = M.substWalk(subst, lhs)
   rhs = M.substWalk(subst, rhs)
 
-  if (lhs.kind === "PolymorphicType") {
+  if (M.isPolymorphicType(lhs)) {
     return typeUnify(subst, M.polymorphicTypeFreshBodyType(lhs), rhs)
   }
 
-  if (rhs.kind === "PolymorphicType") {
+  if (M.isPolymorphicType(rhs)) {
     return typeUnify(subst, lhs, M.polymorphicTypeFreshBodyType(rhs))
   }
 
-  if (lhs.kind === "VarType" && rhs.kind === "VarType") {
+  if (M.isVarType(lhs) && M.isVarType(rhs)) {
     if (M.varTypeId(lhs) === M.varTypeId(rhs)) {
       return subst
     }
   }
 
-  if (lhs.kind === "VarType") {
+  if (M.isVarType(lhs)) {
     if (typeVarOccurredInType(lhs, rhs)) {
       return undefined
     } else {
@@ -36,7 +36,7 @@ export function typeUnify(
     }
   }
 
-  if (rhs.kind === "VarType") {
+  if (M.isVarType(rhs)) {
     if (typeVarOccurredInType(rhs, lhs)) {
       return undefined
     } else {
@@ -44,19 +44,19 @@ export function typeUnify(
     }
   }
 
-  if (lhs.kind === "CanonicalLabelType" && rhs.kind === "CanonicalLabelType") {
+  if (M.isCanonicalLabelType(lhs) && M.isCanonicalLabelType(rhs)) {
     return lhs.serialNumber === rhs.serialNumber ? subst : undefined
   }
 
-  if (lhs.kind === "TypeType" && rhs.kind === "TypeType") {
+  if (M.isTypeType(lhs) && M.isTypeType(rhs)) {
     return subst
   }
 
-  if (lhs.kind === "AtomType" && rhs.kind === "AtomType") {
+  if (M.isAtomType(lhs) && M.isAtomType(rhs)) {
     return lhs.name === rhs.name ? subst : undefined
   }
 
-  if (lhs.kind === "ArrowType" && rhs.kind === "ArrowType") {
+  if (M.isArrowType(lhs) && M.isArrowType(rhs)) {
     const curriedLhs = M.arrowTypeCurrying(lhs) as M.ArrowType
     const curriedRhs = M.arrowTypeCurrying(rhs) as M.ArrowType
     subst = typeUnifyMany(subst, curriedLhs.argTypes, curriedRhs.argTypes)
@@ -64,21 +64,21 @@ export function typeUnify(
     return subst
   }
 
-  if (lhs.kind === "ListType" && rhs.kind === "ListType") {
+  if (M.isListType(lhs) && M.isListType(rhs)) {
     return typeUnify(subst, lhs.elementType, rhs.elementType)
   }
 
-  if (lhs.kind === "SetType" && rhs.kind === "SetType") {
+  if (M.isSetType(lhs) && M.isSetType(rhs)) {
     return typeUnify(subst, lhs.elementType, rhs.elementType)
   }
 
-  if (lhs.kind === "HashType" && rhs.kind === "HashType") {
+  if (M.isHashType(lhs) && M.isHashType(rhs)) {
     subst = typeUnify(subst, lhs.keyType, rhs.keyType)
     subst = typeUnify(subst, lhs.valueType, rhs.valueType)
     return subst
   }
 
-  if (lhs.kind === "DefinedDataType" && rhs.kind === "DefinedDataType") {
+  if (M.isDefinedDataType(lhs) && M.isDefinedDataType(rhs)) {
     if (lhs.definition !== rhs.definition) {
       return undefined
     }

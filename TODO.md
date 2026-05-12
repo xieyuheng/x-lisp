@@ -1,5 +1,3 @@
-[meta-lisp.js] 在 typeUnify 中用 Type 的 `is*` 函数，而不要用 `*.kind === `
-
 [meta-lisp.js] move `TypeEnv` to `type/`
 [meta-lisp.js] `typeEvaluate` no need to handle `The`
 [meta-lisp.js] `substDeepWalkWithBoundIds` should handle `CurryType`
