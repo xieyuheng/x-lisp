@@ -33,10 +33,9 @@ export function typeUnify(
   //   which means we view subtype relation as
   //   base case of recursive unification.
   // - unification is mainly about var type,
-  //   while subtype relation does not handle var type,
+  //   while bisimilar relation does not handle var type,
   //   i.e. return true only when two var types are the same.
-  // - subtype relation will stop type propagation through var type.
-  if (M.typeSubtype([], lhs, rhs) || M.typeSubtype([], rhs, lhs)) {
+  if (M.typeBisimilar([], lhs, rhs)) {
     return subst
   }
 
@@ -141,25 +140,6 @@ export function typeUnifyMany(
 
   for (const i of range(lhs.length)) {
     subst = typeUnify(trail, subst, lhs[i], rhs[i])
-  }
-
-  return subst
-}
-
-export function typeUnifyRecord(
-  trail: M.Trail,
-  subst: M.Subst | undefined,
-  lhs: Record<string, M.Value>,
-  rhs: Record<string, M.Value>,
-): M.Subst | undefined {
-  if (subst === undefined) {
-    return undefined
-  }
-
-  for (const key of Object.keys(lhs)) {
-    if (rhs[key] !== undefined) {
-      subst = typeUnify(trail, subst, lhs[key], rhs[key])
-    }
   }
 
   return subst

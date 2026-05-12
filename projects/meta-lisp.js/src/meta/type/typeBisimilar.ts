@@ -105,18 +105,3 @@ function typeBisimilarMany(
     arrayZip(lhs, rhs).every(([l, r]) => typeBisimilar(trail, l, r))
   )
 }
-
-function typeBisimilarRecord(
-  trail: Trail,
-  lhs: Record<string, M.Value>,
-  rhs: Record<string, M.Value>,
-): boolean {
-  if (Object.keys(lhs).length !== Object.keys(rhs).length) return false
-
-  for (const k of Object.keys(lhs)) {
-    if (rhs[k] === undefined) return false
-    if (!typeBisimilar(trail, lhs[k], rhs[k])) return false
-  }
-
-  return true
-}

@@ -1,6 +1,4 @@
-# subtype
-
-[meta-lisp.js] remove `typeSubtype`
+[meta-lisp.js] remove `typeBisimilar`
 
 # algebraic type
 
