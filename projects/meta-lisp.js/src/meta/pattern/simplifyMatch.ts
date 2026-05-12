@@ -106,7 +106,7 @@ export function simplifyMatch(
     )
   }
 
-  const groups = groupClausesByHeadPatternKind(mod, clauses)
+  const groups = groupClausesByHeadPatternKind(clauses)
   return groups.reduceRight(
     (accumulatedExp, group) =>
       simplifyMatch(mod, targets, group, accumulatedExp, location),
@@ -201,7 +201,6 @@ function findDataDefinitionFromClauses(
 }
 
 function groupClausesByHeadPatternKind(
-  mod: M.Mod,
   clauses: Array<M.MatchClause>,
 ): Array<Array<M.MatchClause>> {
   const groups: Array<Array<M.MatchClause>> = []
