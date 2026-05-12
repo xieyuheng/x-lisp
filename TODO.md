@@ -1,12 +1,12 @@
 # subtype
 
-[meta-lisp.js] remove row-polymorphism
-[meta-lisp.js] remove subtype
+[meta-lisp.js] remove `Interface` and `LiteralRecord`
+[meta-lisp.js] remove `typeSubtype`
 
 # algebraic type
 
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
-[meta-lisp.js] remove `Interface` and `DefineInterface`
+
 [meta-lisp.js] rename `DefineData` to `DefineEnum`
 [meta-lisp.js] `DefineStruct`
 [meta-lisp.js] `DefineEnum`
