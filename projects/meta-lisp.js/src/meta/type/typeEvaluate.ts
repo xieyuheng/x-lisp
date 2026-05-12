@@ -71,10 +71,6 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
       return M.typeApply(target, args)
     }
 
-    case "The": {
-      return typeEvaluate(mod, typeEnv, exp.exp)
-    }
-
     default: {
       let message = `[typeEvaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`

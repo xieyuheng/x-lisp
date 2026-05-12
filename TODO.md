@@ -1,4 +1,3 @@
-[meta-lisp.js] `typeEvaluate` no need to handle `The`
 [meta-lisp.js] `substDeepWalkWithBoundIds` should handle `CurryType`
 
 # algebraic type
