@@ -10,7 +10,7 @@ export type Stmt =
   | DefineVariable
   | DefineTest
   | DefineType
-  | DefineData
+  | DefineEnum
   | Claim
   | Admit
   | Private
@@ -163,20 +163,20 @@ export function DefineType(
   }
 }
 
-export type DefineData = {
-  kind: "DefineData"
+export type DefineEnum = {
+  kind: "DefineEnum"
   typeConstructor: Omit<TypeConstructor, "definition">
   dataConstructors: Array<Omit<DataConstructor, "definition">>
   location?: SourceLocation
 }
 
-export function DefineData(
+export function DefineEnum(
   typeConstructor: Omit<TypeConstructor, "definition">,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
   location?: SourceLocation,
-): DefineData {
+): DefineEnum {
   return {
-    kind: "DefineData",
+    kind: "DefineEnum",
     typeConstructor,
     dataConstructors,
     location,

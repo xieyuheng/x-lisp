@@ -7,7 +7,7 @@ export function ExpandPass(project: M.Project): void {
   }
 }
 
-function getDataType(stmt: M.DefineData): M.Exp {
+function getDataType(stmt: M.DefineEnum): M.Exp {
   if (stmt.typeConstructor.parameters.length === 0) {
     return M.Var(stmt.typeConstructor.name)
   } else {
@@ -33,7 +33,7 @@ function admitWithParameters(
 
 function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
   switch (stmt.kind) {
-    case "DefineData": {
+    case "DefineEnum": {
       const stmts: Array<M.Stmt> = [stmt]
 
       for (const dataConstructor of stmt.dataConstructors) {
@@ -56,7 +56,7 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
 }
 
 function expandDataConstructor(
-  stmt: M.DefineData,
+  stmt: M.DefineEnum,
   dataConstructor: Omit<M.DataConstructor, "definition">,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
@@ -89,7 +89,7 @@ function expandDataConstructor(
 }
 
 export function expandDataConstructorPredicate(
-  stmt: M.DefineData,
+  stmt: M.DefineEnum,
   dataConstructor: Omit<M.DataConstructor, "definition">,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
@@ -128,7 +128,7 @@ export function expandDataConstructorPredicate(
 }
 
 function expandDataAccessor(
-  stmt: M.DefineData,
+  stmt: M.DefineEnum,
   dataConstructor: Omit<M.DataConstructor, "definition">,
   index: number,
   field: M.DataField,
@@ -159,7 +159,7 @@ function expandDataAccessor(
 }
 
 function expandDataModifier(
-  stmt: M.DefineData,
+  stmt: M.DefineEnum,
   dataConstructor: Omit<M.DataConstructor, "definition">,
   index: number,
   field: M.DataField,

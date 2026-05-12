@@ -158,7 +158,7 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
       )
     }
 
-    case "DefineData": {
+    case "DefineEnum": {
       const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
       for (const dataConstructor of stmt.dataConstructors) {

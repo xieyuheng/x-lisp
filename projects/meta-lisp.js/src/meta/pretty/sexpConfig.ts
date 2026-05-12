@@ -13,7 +13,7 @@ export const sexpConfig: S.Config = {
     ["interface", 0],
     ["extend-interface", 1],
     ["define-interface", 1],
-    ["define-data", 1],
+    ["define-enum", 1],
     ["define-test", 1],
     ["define-type", 1],
     ["let", 1],

@@ -28,7 +28,7 @@ function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
       return
     }
 
-    case "DefineData": {
+    case "DefineEnum": {
       names.add(stmt.typeConstructor.name)
       return
     }

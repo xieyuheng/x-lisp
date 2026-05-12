@@ -1,6 +1,6 @@
 (module builtin)
 
-(define-data (hash-entry-t K V)
+(define-enum (hash-entry-t K V)
   (cons-hash-entry (key K) (value V)))
 
 (define make-hash-entry cons-hash-entry)

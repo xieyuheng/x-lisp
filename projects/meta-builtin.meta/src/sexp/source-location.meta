@@ -1,6 +1,6 @@
 (module builtin)
 
-(define-data source-location-t
+(define-enum source-location-t
   (cons-source-location
    (path string-t)
    (span source-span-t)))
@@ -11,7 +11,7 @@
 (define source-location-put-path! cons-source-location-put-path!)
 (define source-location-put-span! cons-source-location-put-span!)
 
-(define-data source-span-t
+(define-enum source-span-t
   (cons-source-span
    (start source-position-t)
    (end source-position-t)))
@@ -22,7 +22,7 @@
 (define source-span-put-start! cons-source-span-put-start!)
 (define source-span-put-end! cons-source-span-put-end!)
 
-(define-data source-position-t
+(define-enum source-position-t
   (cons-source-position
    (index int-t)
    (row int-t)

@@ -99,11 +99,11 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.ImportAll(S.asSymbol(modName).content, location)
   },
 
-  "(cons* 'define-data head constructors)": (
+  "(cons* 'define-enum head constructors)": (
     { head, constructors },
     { location },
   ) => {
-    return M.DefineData(
+    return M.DefineEnum(
       parseTypeConstructor(head),
       S.asList(constructors).elements.map(parseDataConstructor),
       location,

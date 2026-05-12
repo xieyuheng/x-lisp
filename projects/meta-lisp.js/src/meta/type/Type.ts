@@ -15,7 +15,7 @@ export type Type =
   | CurryType
   | DefinitionType
 
-// --- VarType ---
+// VarType
 
 export type VarType = {
   kind: "VarType"
@@ -36,7 +36,7 @@ export function asVarType(type: Type): VarType {
   throw new Error(`[asVarType] fail on: ${type.kind}`)
 }
 
-// --- CanonicalLabelType ---
+// CanonicalLabelType
 
 export type CanonicalLabelType = {
   kind: "CanonicalLabelType"
@@ -56,7 +56,7 @@ export function asCanonicalLabelType(type: Type): CanonicalLabelType {
   throw new Error(`[asCanonicalLabelType] fail on: ${type.kind}`)
 }
 
-// --- TypeType ---
+// TypeType
 
 export type TypeType = {
   kind: "TypeType"
@@ -75,7 +75,7 @@ export function asTypeType(type: Type): TypeType {
   throw new Error(`[asTypeType] fail on: ${type.kind}`)
 }
 
-// --- AtomType ---
+// AtomType
 
 export type AtomType = {
   kind: "AtomType"
@@ -95,7 +95,7 @@ export function asAtomType(type: Type): AtomType {
   throw new Error(`[asAtomType] fail on: ${type.kind}`)
 }
 
-// --- ArrowType ---
+// ArrowType
 
 export type ArrowType = {
   kind: "ArrowType"
@@ -116,7 +116,7 @@ export function asArrowType(type: Type): ArrowType {
   throw new Error(`[asArrowType] fail on: ${type.kind}`)
 }
 
-// --- ListType ---
+// ListType
 
 export type ListType = {
   kind: "ListType"
@@ -136,7 +136,7 @@ export function asListType(type: Type): ListType {
   throw new Error(`[asListType] fail on: ${type.kind}`)
 }
 
-// --- SetType ---
+// SetType
 
 export type SetType = {
   kind: "SetType"
@@ -156,7 +156,7 @@ export function asSetType(type: Type): SetType {
   throw new Error(`[asSetType] fail on: ${type.kind}`)
 }
 
-// --- HashType ---
+// HashType
 
 export type HashType = {
   kind: "HashType"
@@ -177,7 +177,7 @@ export function asHashType(type: Type): HashType {
   throw new Error(`[asHashType] fail on: ${type.kind}`)
 }
 
-// --- AlgebraicDataType ---
+// AlgebraicDataType
 
 export type AlgebraicDataType = {
   kind: "AlgebraicDataType"
@@ -201,7 +201,7 @@ export function asAlgebraicDataType(type: Type): AlgebraicDataType {
   throw new Error(`[asAlgebraicDataType] fail on: ${type.kind}`)
 }
 
-// --- PolymorphicType ---
+// PolymorphicType
 
 export type PolymorphicType = {
   kind: "PolymorphicType"
@@ -225,7 +225,7 @@ export function asPolymorphicType(type: Type): PolymorphicType {
   throw new Error(`[asPolymorphicType] fail on: ${type.kind}`)
 }
 
-// --- CurryType ---
+// CurryType
 
 export type CurryType = {
   kind: "CurryType"
@@ -251,7 +251,7 @@ export function asCurryType(type: Type): CurryType {
   throw new Error(`[asCurryType] fail on: ${type.kind}`)
 }
 
-// --- DefinitionType ---
+// DefinitionType
 
 export type DefinitionType = {
   kind: "DefinitionType"
@@ -271,7 +271,7 @@ export function asDefinitionType(type: Type): DefinitionType {
   throw new Error(`[asDefinitionType] fail on: ${type.kind}`)
 }
 
-// --- Utility functions ---
+// Helpers
 
 export function varTypeId(type: VarType): string {
   return `${type.name}.${type.serialNumber}`

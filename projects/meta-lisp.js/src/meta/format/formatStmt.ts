@@ -35,12 +35,12 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-type ${stmt.name} ${body})`
     }
 
-    case "DefineData": {
+    case "DefineEnum": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
-      return `(define-data ${type} ${constructors})`
+      return `(define-enum ${type} ${constructors})`
     }
 
     case "Claim": {

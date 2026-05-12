@@ -131,7 +131,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineData") {
+  if (stmt.kind === "DefineEnum") {
     const name = stmt.typeConstructor.name
     const typeConstructor = stmt.typeConstructor as unknown as M.TypeConstructor
     const dataConstructors =

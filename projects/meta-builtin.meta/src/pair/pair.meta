@@ -1,6 +1,6 @@
 (module builtin)
 
-(define-data (pair-t A B)
+(define-enum (pair-t A B)
   (cons-pair (first A) (second B)))
 
 (define make-pair cons-pair)

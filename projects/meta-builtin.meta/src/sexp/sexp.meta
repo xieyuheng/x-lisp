@@ -1,6 +1,6 @@
 (module builtin)
 
-(define-data located-sexp-t
+(define-enum located-sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
   (keyword-sexp (content keyword-t) (location source-location-t))
   (string-sexp (content string-t) (location source-location-t))

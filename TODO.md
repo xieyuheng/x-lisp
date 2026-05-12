@@ -1,7 +1,5 @@
 # algebraic type
 
-[meta-lisp.js] rename `DefineData` to `DefineEnum`
-- also rename `(define-data)` syntax to `(define-enum)`
 [meta-lisp.js] add `DefineAlgebraicType`
 [meta-lisp.js] `DefineStruct`
 [meta-lisp.js] `DefineEnum` desugar to `DefineAlgebraicType`

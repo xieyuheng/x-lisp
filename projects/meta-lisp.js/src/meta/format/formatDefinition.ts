@@ -62,7 +62,7 @@ export function formatDefinition(definition: M.Definition): string {
         .map(formatDataConstructor)
         .join(" ")
       if (definition.typeConstructor.parameters.length === 0) {
-        return `(define-data ${definition.name} ${dataConstructors})`
+        return `(define-enum ${definition.name} ${dataConstructors})`
       } else {
         const parameters = definition.typeConstructor.parameters.join(" ")
         return `(define-data (${definition.name} ${parameters}) ${dataConstructors})`
