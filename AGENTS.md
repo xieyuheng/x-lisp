@@ -43,6 +43,7 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 
 - meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 - 没有 TypeScript 的 union 和 intersection type。
+- 没有子类型关系（structural 子类型、行多态均已移除）。
 
 ## 控制流
 
@@ -70,18 +71,50 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 
 - meta-lisp 中没有「循环」相关控制流，需要用尾部递归函数实现「循环」。
 
-## 记录类型（行多态）
+## 结构体（struct）
 
-```lisp
-(define-interface point-t :x int-t :y int-t)
-(@record :x 1 :y 2)
-(extend point :color "red")
+```scheme
+(define-struct point-t
+  (x int-t)
+  (y int-t))
+
+;; 自动生成的名称：
+;;   构造器：make-point
+;;   谓词：point?
+;;   访问器：point-x, point-y
+;;   修改器：point-put-x!, point-put-y!
+
+(define p (make-point 1 2))
+(point-x p)  ;; => 1
+```
+
+`(define-struct)` 会展开为 `(define-algebraic-type)`：
+
+```scheme
+(define-struct point-t
+  (x int-t)
+  (y int-t))
+
+;; 等价于：
+(define-algebraic-type point-t
+  ((make-point (x int-t) (y int-t))
+   point?
+   (x point-x point-put-x!)
+   (y point-y point-put-y!)))
+```
+
+如果类型名不以 `-t` 结尾，编译会报错，提示你使用 explicit 的 `(define-algebraic-type)` 语法。
+
+如果需要自定义构造器名，用 `(define-struct*)`：
+
+```scheme
+(define-struct* point-t (cons-point (x int-t) (y int-t)))
 ```
 
 ## 代数数据类型与模式匹配
 
-```lisp
-(define-data exp-t
+```scheme
+(define-enum exp-t
   (var-exp (name symbol-t))
   (lambda-exp (parameter symbol-t) (body exp-t)))
 
@@ -90,10 +123,12 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
   ((lambda-exp parameter body) ...))
 ```
 
+`(define-enum)` 会展开为 `(define-algebraic-type)`，每个构造器的名字会用来生成谓词、访问器和修改器的名字。
+
 比如 my-list：
 
 ```scheme
-(define-data (my-list? E)
+(define-enum (my-list? E)
   (nil)
   (li (head E) (tail (my-list? E))))
 ```
@@ -115,6 +150,17 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 (claim li-put-tail (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
 (claim li-put-head! (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim li-put-tail! (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
+```
+
+`(define-algebraic-type)` 是最 explicit 的语法，所有名字都需要显式给出：
+
+```scheme
+(define-algebraic-type exp-t
+  ((var-exp (name symbol-t)) var-exp?
+   (name var-exp-name var-exp-put-name!))
+  ((lambda-exp (parameter symbol-t) (body exp-t)) lambda-exp?
+   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
+   (body lambda-exp-body lambda-exp-put-body!)))
 ```
 
 ## 模块系统
