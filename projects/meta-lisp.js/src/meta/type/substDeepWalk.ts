@@ -76,6 +76,12 @@ function substDeepWalkWithBoundIds(
     }
 
     case "CurryType":
+      return M.CurryType(
+        substDeepWalkWithBoundIds(boundIds, subst, type.target),
+        type.arity,
+        type.args.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
+      )
+
     case "DefinitionType":
       return type
   }
