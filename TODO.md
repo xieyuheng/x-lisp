@@ -1,7 +1,10 @@
 # algebraic type
 
-[meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
 [meta-lisp.js] refactor `simplifyMatch` -- maybe no need `mod`?
+
+[meta-lisp.js] `Type` should not be encoded in `Value`
+[meta-lisp.js] remove `evaluate`
+[meta-lisp.js] remove `Value`
 
 [meta-lisp.js] rename `DefineData` to `DefineEnum`
 [meta-lisp.js] `DefineStruct`

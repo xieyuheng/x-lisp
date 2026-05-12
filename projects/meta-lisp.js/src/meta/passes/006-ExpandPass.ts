@@ -165,38 +165,7 @@ function expandDataModifier(
   field: M.DataField,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
-
-  stmts.push(
-    ...expandDataModifierHelper(
-      stmt,
-      index,
-      field,
-      `${dataConstructor.name}-put-${field.name}`,
-      "list-put",
-    ),
-  )
-
-  stmts.push(
-    ...expandDataModifierHelper(
-      stmt,
-      index,
-      field,
-      `${dataConstructor.name}-put-${field.name}!`,
-      "list-put!",
-    ),
-  )
-
-  return stmts
-}
-
-function expandDataModifierHelper(
-  stmt: M.DefineData,
-  index: number,
-  field: M.DataField,
-  name: string,
-  builtinFn: string,
-): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = []
+  const name = `${dataConstructor.name}-put-${field.name}!`
 
   stmts.push(
     admitWithParameters(
@@ -211,7 +180,7 @@ function expandDataModifierHelper(
     M.DefineFunction(
       name,
       ["value", "target"],
-      M.Apply(M.Var(builtinFn), [
+      M.Apply(M.Var("list-put!"), [
         M.Int(BigInt(index + 1)),
         M.Var("value"),
         M.Var("target"),
