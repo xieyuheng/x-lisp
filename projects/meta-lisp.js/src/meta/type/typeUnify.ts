@@ -29,13 +29,11 @@ export function typeUnify(
     return subst
   }
 
-  // - we check subtype relation first,
-  //   which means we view subtype relation as
-  //   base case of recursive unification.
-  // - unification is mainly about var type,
-  //   while bisimilar relation does not handle var type,
-  //   i.e. return true only when two var types are the same.
-  if (M.typeBisimilar([], lhs, rhs)) {
+  if (
+    M.isVarType(lhs) &&
+    M.isVarType(rhs) &&
+    M.varTypeId(lhs) === M.varTypeId(rhs)
+  ) {
     return subst
   }
 
@@ -53,6 +51,22 @@ export function typeUnify(
     } else {
       return M.substExtend(subst, rhs, lhs)
     }
+  }
+
+  if (M.isCanonicalLabelType(lhs) && M.isCanonicalLabelType(rhs)) {
+    return M.valueEqual(lhs, rhs) ? subst : undefined
+  }
+
+  if (M.isTypeType(lhs) && M.isTypeType(rhs)) {
+    return M.valueEqual(lhs, rhs) ? subst : undefined
+  }
+
+  if (M.isLiteralType(lhs) && M.isLiteralType(rhs)) {
+    return M.valueEqual(lhs, rhs) ? subst : undefined
+  }
+
+  if (M.isAtomType(lhs) && M.isAtomType(rhs)) {
+    return M.atomTypeName(lhs) === M.atomTypeName(rhs) ? subst : undefined
   }
 
   if (M.isArrowType(lhs) && M.isArrowType(rhs)) {

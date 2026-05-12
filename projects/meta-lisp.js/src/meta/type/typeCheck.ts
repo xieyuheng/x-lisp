@@ -13,7 +13,6 @@ export function typeCheckAssignable(
     return M.sequenceCheckEffect([
       typeCheckSubstInstance(mod, exp, inferredType, type),
       typeCheckUnify(mod, exp, inferredType, type),
-      // typeCheckEqual(mod, exp, inferredType, type),
     ])
   })
 }
@@ -58,10 +57,7 @@ export function typeCheckByInfer(
     inferredType = M.typeFreshen(inferredType)
     type = M.typeFreshen(type)
 
-    return M.sequenceCheckEffect([
-      typeCheckUnify(mod, exp, inferredType, type),
-      // typeCheckEqual(mod, exp, inferredType, type),
-    ])
+    return M.sequenceCheckEffect([typeCheckUnify(mod, exp, inferredType, type)])
   })
 }
 
@@ -92,34 +88,5 @@ export function typeCheckUnify(
     }
 
     return M.okCheckEffect()(newSubst)
-  }
-}
-
-export function typeCheckEqual(
-  mod: M.Mod,
-  exp: M.Exp,
-  inferredType: M.Value,
-  type: M.Value,
-): M.CheckEffect {
-  return (subst) => {
-    inferredType = M.substApplyToType(subst, inferredType)
-    type = M.substApplyToType(subst, type)
-
-    if (!M.typeBisimilar([], inferredType, type)) {
-      const prettyUnknownSubst = M.generatePrettyUnknownSubst([
-        inferredType,
-        type,
-      ])
-
-      inferredType = M.substApplyToType(prettyUnknownSubst, inferredType)
-      type = M.substApplyToType(prettyUnknownSubst, type)
-
-      let message = `inferred type is not equal to expected type`
-      message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
-      message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
-      return M.errorCheckEffect(exp, message)(subst)
-    }
-
-    return M.okCheckEffect()(subst)
   }
 }

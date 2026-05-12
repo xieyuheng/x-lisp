@@ -1,5 +1,3 @@
-[meta-lisp.js] remove `typeBisimilar`
-
 # algebraic type
 
 [meta-lisp.js] remove `formatTypeInMod`
