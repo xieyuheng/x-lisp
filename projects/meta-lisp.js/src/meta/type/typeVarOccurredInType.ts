@@ -1,78 +1,70 @@
 import * as M from "../index.ts"
 
 export function typeVarOccurredInType(
-  varType: M.Value,
-  type: M.Value,
+  varType: M.VarType,
+  type: M.Type,
 ): boolean {
   return typeVarOccurredInTypeWithBoundIds(new Set(), varType, type)
 }
 
 function typeVarOccurredInTypeWithBoundIds(
   boundIds: Set<string>,
-  varType: M.Value,
-  type: M.Value,
+  varType: M.VarType,
+  type: M.Type,
 ): boolean {
-  if (M.isVarType(type)) {
-    const id = M.varTypeId(type)
-    if (boundIds.has(id)) {
-      return false
-    } else {
-      return M.varTypeId(type) === M.varTypeId(varType)
+  switch (type.kind) {
+    case "VarType": {
+      const id = M.varTypeId(type)
+      if (boundIds.has(id)) {
+        return false
+      } else {
+        return M.varTypeId(type) === M.varTypeId(varType)
+      }
     }
-  }
 
-  if (M.isCanonicalLabelType(type)) {
-    return false
-  }
+    case "CanonicalLabelType":
+    case "TypeType":
+    case "AtomType":
+      return false
 
-  if (M.isTypeType(type)) {
-    return false
-  }
+    case "ArrowType":
+      return [...type.argTypes, type.retType].some((t) =>
+        typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
+      )
 
-  if (M.isAtomType(type)) {
-    return false
-  }
+    case "ListType":
+      return typeVarOccurredInTypeWithBoundIds(
+        boundIds,
+        varType,
+        type.elementType,
+      )
 
-  if (M.isArrowType(type)) {
-    return [...M.arrowTypeArgTypes(type), M.arrowTypeRetType(type)].some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
+    case "SetType":
+      return typeVarOccurredInTypeWithBoundIds(
+        boundIds,
+        varType,
+        type.elementType,
+      )
 
-  if (M.isListType(type)) {
-    return [M.listTypeElementType(type)].some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
+    case "HashType":
+      return [type.keyType, type.valueType].some((t) =>
+        typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
+      )
 
-  if (M.isSetType(type)) {
-    return [M.setTypeElementType(type)].some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
+    case "DefinedDataType":
+      return type.argTypes.some((t) =>
+        typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
+      )
 
-  if (M.isHashType(type)) {
-    return [M.hashTypeKeyType(type), M.hashTypeValueType(type)].some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
+    case "PolymorphicType":
+      return typeVarOccurredInTypeWithBoundIds(
+        new Set([...boundIds, ...type.varTypes.map(M.varTypeId)]),
+        varType,
+        type.bodyType,
+      )
 
-  if (M.isDefinedDataType(type)) {
-    return M.definedDataTypeArgTypes(type).some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
+    case "CurryType":
+    case "DefinitionType":
+      return false
   }
-
-  if (M.isPolymorphicType(type)) {
-    const varTypes = M.polymorphicTypeVarTypes(type)
-    return typeVarOccurredInTypeWithBoundIds(
-      new Set([...boundIds, ...varTypes.map(M.varTypeId)]),
-      varType,
-      M.polymorphicTypeBodyType(type),
-    )
-  }
-
-  let message = `[typeVarOccurredInTypeWithBoundIds] unhandled type`
-  message += `\n  type: ${M.formatType(type)}`
-  throw new Error(message)
 }

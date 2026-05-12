@@ -1,9 +1,8 @@
 import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import assert from "node:assert"
 import * as M from "../index.ts"
-import { type Value } from "../value/index.ts"
 
-export type Ctx = Map<string, Value>
+export type Ctx = Map<string, M.Type>
 
 export function emptyCtx(): Ctx {
   return new Map()
@@ -13,41 +12,41 @@ export function ctxNames(ctx: Ctx): Set<string> {
   return new Set(ctx.keys())
 }
 
-export function ctxTypes(ctx: Ctx): Array<Value> {
+export function ctxTypes(ctx: Ctx): Array<M.Type> {
   return Array.from(ctx.values())
 }
 
-export function ctxLookupType(ctx: Ctx, name: string): undefined | Value {
+export function ctxLookupType(ctx: Ctx, name: string): undefined | M.Type {
   return ctx.get(name)
 }
 
-export function ctxPut(ctx: Ctx, name: string, value: Value): Ctx {
-  return new Map([...ctx, [name, value]])
+export function ctxPut(ctx: Ctx, name: string, type: M.Type): Ctx {
+  return new Map([...ctx, [name, type]])
 }
 
 export function ctxPutMany(
   ctx: Ctx,
   parameters: Array<string>,
-  values: Array<Value>,
+  types: Array<M.Type>,
 ): Ctx {
-  assert(parameters.length === values.length)
+  assert(parameters.length === types.length)
   for (const [index, name] of parameters.entries()) {
-    ctx = ctxPut(ctx, name, values[index])
+    ctx = ctxPut(ctx, name, types[index])
   }
   return ctx
 }
 
 export function ctxUpdate(base: Ctx, ctx: Ctx): Ctx {
   for (const name of ctxNames(ctx)) {
-    const value = ctxLookupType(ctx, name)
-    assert(value)
-    base = ctxPut(base, name, value)
+    const type = ctxLookupType(ctx, name)
+    assert(type)
+    base = ctxPut(base, name, type)
   }
 
   return base
 }
 
-export function ctxFreeVarTypes(ctx: Ctx): Array<Value> {
+export function ctxFreeVarTypes(ctx: Ctx): Array<M.Type> {
   return arrayDedup(
     M.ctxTypes(ctx).flatMap((t) => M.typeFreeVarTypes(new Set(), t)),
     M.varTypeEqual,

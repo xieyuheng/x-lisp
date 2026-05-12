@@ -3,11 +3,10 @@ import { type DataConstructor, type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as M from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
-import { type Value } from "../value/index.ts"
 
 export type ClaimedEntry = {
   exp: Exp
-  type?: Value
+  type?: M.Type
 }
 
 export type Mod = {
@@ -16,7 +15,7 @@ export type Mod = {
   admitted: Set<string>
   definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>
-  inferredTypes: Map<string, Value>
+  inferredTypes: Map<string, M.Type>
   dataConstructors: Map<string, DataConstructor>
   project: M.Project
   isErrorModule?: boolean
@@ -80,12 +79,12 @@ export function modClaim(mod: Mod, name: string, exp: Exp): void {
 export function modLookupClaimedType(
   mod: Mod,
   name: string,
-): Value | undefined {
+): M.Type | undefined {
   const claimedEntry = mod.claimed.get(name)
   if (!claimedEntry) return undefined
   if (claimedEntry.type) return claimedEntry.type
 
-  const type = M.evaluate(mod, M.emptyEnv(), claimedEntry.exp)
+  const type = M.typeEvaluate(mod, M.typeEnvEmpty(), claimedEntry.exp)
   claimedEntry.type = type
   return type
 }
@@ -102,11 +101,11 @@ export function modLookupClaimedEntry(
 export function modLookupInferredType(
   mod: Mod,
   name: string,
-): Value | undefined {
+): M.Type | undefined {
   return mod.inferredTypes.get(name)
 }
 
-export function modPutInferredType(mod: Mod, name: string, type: Value): void {
+export function modPutInferredType(mod: Mod, name: string, type: M.Type): void {
   mod.inferredTypes.set(name, type)
 }
 

@@ -4,8 +4,8 @@ import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
 
 export function typeUnify(
   subst: M.Subst | undefined,
-  lhs: M.Value,
-  rhs: M.Value,
+  lhs: M.Type,
+  rhs: M.Type,
 ): M.Subst | undefined {
   if (subst === undefined) {
     return undefined
@@ -14,23 +14,21 @@ export function typeUnify(
   lhs = M.substWalk(subst, lhs)
   rhs = M.substWalk(subst, rhs)
 
-  if (M.isPolymorphicType(lhs)) {
+  if (lhs.kind === "PolymorphicType") {
     return typeUnify(subst, M.polymorphicTypeFreshBodyType(lhs), rhs)
   }
 
-  if (M.isPolymorphicType(rhs)) {
+  if (rhs.kind === "PolymorphicType") {
     return typeUnify(subst, lhs, M.polymorphicTypeFreshBodyType(rhs))
   }
 
-  if (
-    M.isVarType(lhs) &&
-    M.isVarType(rhs) &&
-    M.varTypeId(lhs) === M.varTypeId(rhs)
-  ) {
-    return subst
+  if (lhs.kind === "VarType" && rhs.kind === "VarType") {
+    if (M.varTypeId(lhs) === M.varTypeId(rhs)) {
+      return subst
+    }
   }
 
-  if (M.isVarType(lhs)) {
+  if (lhs.kind === "VarType") {
     if (typeVarOccurredInType(lhs, rhs)) {
       return undefined
     } else {
@@ -38,7 +36,7 @@ export function typeUnify(
     }
   }
 
-  if (M.isVarType(rhs)) {
+  if (rhs.kind === "VarType") {
     if (typeVarOccurredInType(rhs, lhs)) {
       return undefined
     } else {
@@ -46,62 +44,46 @@ export function typeUnify(
     }
   }
 
-  if (M.isCanonicalLabelType(lhs) && M.isCanonicalLabelType(rhs)) {
-    return M.valueEqual(lhs, rhs) ? subst : undefined
+  if (lhs.kind === "CanonicalLabelType" && rhs.kind === "CanonicalLabelType") {
+    return lhs.serialNumber === rhs.serialNumber ? subst : undefined
   }
 
-  if (M.isTypeType(lhs) && M.isTypeType(rhs)) {
-    return M.valueEqual(lhs, rhs) ? subst : undefined
-  }
-
-  if (M.isAtomType(lhs) && M.isAtomType(rhs)) {
-    return M.atomTypeName(lhs) === M.atomTypeName(rhs) ? subst : undefined
-  }
-
-  if (M.isArrowType(lhs) && M.isArrowType(rhs)) {
-    lhs = M.arrowTypeCurrying(lhs)
-    rhs = M.arrowTypeCurrying(rhs)
-    subst = typeUnifyMany(
-      subst,
-      M.arrowTypeArgTypes(lhs),
-      M.arrowTypeArgTypes(rhs),
-    )
-    subst = typeUnify(subst, M.arrowTypeRetType(lhs), M.arrowTypeRetType(rhs))
+  if (lhs.kind === "TypeType" && rhs.kind === "TypeType") {
     return subst
   }
 
-  if (M.isListType(lhs) && M.isListType(rhs)) {
-    return typeUnify(
-      subst,
-      M.listTypeElementType(lhs),
-      M.listTypeElementType(rhs),
-    )
+  if (lhs.kind === "AtomType" && rhs.kind === "AtomType") {
+    return lhs.name === rhs.name ? subst : undefined
   }
 
-  if (M.isSetType(lhs) && M.isSetType(rhs)) {
-    return typeUnify(
-      subst,
-      M.setTypeElementType(lhs),
-      M.setTypeElementType(rhs),
-    )
-  }
-
-  if (M.isHashType(lhs) && M.isHashType(rhs)) {
-    subst = typeUnify(subst, M.hashTypeKeyType(lhs), M.hashTypeKeyType(rhs))
-    subst = typeUnify(subst, M.hashTypeValueType(lhs), M.hashTypeValueType(rhs))
+  if (lhs.kind === "ArrowType" && rhs.kind === "ArrowType") {
+    const curriedLhs = M.arrowTypeCurrying(lhs) as M.ArrowType
+    const curriedRhs = M.arrowTypeCurrying(rhs) as M.ArrowType
+    subst = typeUnifyMany(subst, curriedLhs.argTypes, curriedRhs.argTypes)
+    subst = typeUnify(subst, curriedLhs.retType, curriedRhs.retType)
     return subst
   }
 
-  if (M.isDefinedDataType(lhs) && M.isDefinedDataType(rhs)) {
-    if (M.definedDataTypeDefinition(lhs) !== M.definedDataTypeDefinition(rhs)) {
+  if (lhs.kind === "ListType" && rhs.kind === "ListType") {
+    return typeUnify(subst, lhs.elementType, rhs.elementType)
+  }
+
+  if (lhs.kind === "SetType" && rhs.kind === "SetType") {
+    return typeUnify(subst, lhs.elementType, rhs.elementType)
+  }
+
+  if (lhs.kind === "HashType" && rhs.kind === "HashType") {
+    subst = typeUnify(subst, lhs.keyType, rhs.keyType)
+    subst = typeUnify(subst, lhs.valueType, rhs.valueType)
+    return subst
+  }
+
+  if (lhs.kind === "DefinedDataType" && rhs.kind === "DefinedDataType") {
+    if (lhs.definition !== rhs.definition) {
       return undefined
     }
 
-    return typeUnifyMany(
-      subst,
-      M.definedDataTypeArgTypes(lhs),
-      M.definedDataTypeArgTypes(rhs),
-    )
+    return typeUnifyMany(subst, lhs.argTypes, rhs.argTypes)
   }
 
   return undefined
@@ -109,8 +91,8 @@ export function typeUnify(
 
 export function typeUnifyMany(
   subst: M.Subst | undefined,
-  lhs: Array<M.Value>,
-  rhs: Array<M.Value>,
+  lhs: Array<M.Type>,
+  rhs: Array<M.Type>,
 ): M.Subst | undefined {
   if (subst === undefined) {
     return undefined

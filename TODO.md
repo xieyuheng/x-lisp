@@ -1,15 +1,11 @@
+[meta-lisp.js] 恢复 typeCheck.ts 和 typeInfer.ts 和 typeSubstInstance.ts 中你删掉的注释
+[meta-lisp.js] 在 typeUnify 中用 Type 的 `is*` 函数，而不要用 `*.kind === `
+
+[meta-lisp.js] move `TypeEnv` to `type/`
+[meta-lisp.js] `typeEvaluate` no need to handle `The`
+[meta-lisp.js] `substDeepWalkWithBoundIds` should handle `CurryType`
+
 # algebraic type
-
-[meta-lisp.js] `Type` should not be encoded in `Value`
-
--  现在在 Type.ts 的定义中，Type 的概念是嵌入在 Value 中。
-   模仿 Value.ts 的定义，把 Type.ts 中的 Type 定义为 ADT。
-
-- 在 evaluate.ts 之外，在 type/typeEvaluate.ts 定义 typeEvaluate 返回 Type，独立于 evaluate。
-- 不需要保留 evaluate.ts 和 Value.ts。
-
-[meta-lisp.js] remove `evaluate`
-[meta-lisp.js] remove `Value`
 
 [meta-lisp.js] `DefineAlgebraicType`
 
@@ -19,10 +15,6 @@
 [meta-lisp.js] `DefineStruct` to desugar to `DefineAlgebraicType`
 
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
-
-# any-t
-
-[learn] learn from haskell's `Dynamic`
 
 # setup feedback loop
 

@@ -5,27 +5,27 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   return (subst) => {
     switch (exp.kind) {
       case "Symbol": {
-        const type = M.createAtomType("symbol")
+        const type = M.AtomType("symbol")
         return M.okInferEffect(type)(subst)
       }
 
       case "Keyword": {
-        const type = M.createAtomType("keyword")
+        const type = M.AtomType("keyword")
         return M.okInferEffect(type)(subst)
       }
 
       case "String": {
-        const type = M.createAtomType("string")
+        const type = M.AtomType("string")
         return M.okInferEffect(type)(subst)
       }
 
       case "Int": {
-        const type = M.createAtomType("int")
+        const type = M.AtomType("int")
         return M.okInferEffect(type)(subst)
       }
 
       case "Float": {
-        const type = M.createAtomType("float")
+        const type = M.AtomType("float")
         return M.okInferEffect(type)(subst)
       }
 
@@ -57,7 +57,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "Lambda": {
         if (exp.parameters.length === 0) {
           const retType = M.createFreshVarType("R")
-          const type = M.createArrowType([], retType)
+          const type = M.ArrowType([], retType)
           return M.checkThenInfer(
             M.typeCheckByInfer(mod, ctx, exp.body, retType),
             M.okInferEffect(type),
@@ -65,7 +65,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         } else if (exp.parameters.length === 1) {
           const argType = M.createFreshVarType("A")
           const retType = M.createFreshVarType("R")
-          const type = M.createArrowType([argType], retType)
+          const type = M.ArrowType([argType], retType)
           const [parameter] = exp.parameters
           return M.checkThenInfer(
             M.typeCheckByInfer(
@@ -79,7 +79,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         } else {
           const argType = M.createFreshVarType("A")
           const retType = M.createFreshVarType("R")
-          const type = M.createArrowType([argType], retType)
+          const type = M.ArrowType([argType], retType)
           const [parameter, ...restParameters] = exp.parameters
           return M.checkThenInfer(
             M.typeCheckByInfer(
@@ -98,15 +98,15 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.exps.map((subExp) =>
-              M.typeCheckByInfer(mod, ctx, subExp, M.createAtomType("bool")),
+              M.typeCheckByInfer(mod, ctx, subExp, M.AtomType("bool")),
             ),
           ),
-          M.okInferEffect(M.createAtomType("bool")),
+          M.okInferEffect(M.AtomType("bool")),
         )(subst)
       }
 
       case "The": {
-        const type = M.evaluate(mod, M.emptyEnv(), exp.type)
+        const type = M.typeEvaluate(mod, M.typeEnvEmpty(), exp.type)
         return M.checkThenInfer(
           M.typeCheckAssignable(mod, ctx, exp.exp, type),
           M.okInferEffect(type),
@@ -117,12 +117,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         const type = M.createFreshVarType("X")
         return M.checkThenInfer(
           M.sequenceCheckEffect([
-            M.typeCheckByInfer(
-              mod,
-              ctx,
-              exp.condition,
-              M.createAtomType("bool"),
-            ),
+            M.typeCheckByInfer(mod, ctx, exp.condition, M.AtomType("bool")),
             M.typeCheckByInfer(mod, ctx, exp.consequent, type),
             M.typeCheckByInfer(mod, ctx, exp.alternative, type),
           ]),
@@ -151,7 +146,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
 
       case "LiteralList": {
         const elementType = M.createFreshVarType("E")
-        const type = M.createListType(elementType)
+        const type = M.ListType(elementType)
         return M.checkThenInfer(
           M.sequenceCheckEffect([
             ...exp.elements.map((element) =>
@@ -164,7 +159,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
 
       case "LiteralSet": {
         const elementType = M.createFreshVarType("E")
-        const type = M.createSetType(elementType)
+        const type = M.SetType(elementType)
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.elements.map((element) =>
@@ -178,7 +173,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "LiteralHash": {
         const keyType = M.createFreshVarType("K")
         const valueType = M.createFreshVarType("V")
-        const type = M.createHashType(keyType, valueType)
+        const type = M.HashType(keyType, valueType)
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.entries.flatMap((entry) => [
@@ -191,7 +186,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       }
 
       case "Arrow": {
-        const type = M.createTypeType()
+        const type = M.TypeType()
         return M.checkThenInfer(
           M.sequenceCheckEffect([
             ...exp.argTypes.map((argType) =>
@@ -204,7 +199,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       }
 
       case "Polymorphic": {
-        const type = M.createTypeType()
+        const type = M.TypeType()
         ctx = M.ctxPutMany(
           ctx,
           exp.parameters,
@@ -242,7 +237,6 @@ function typeInferVarInMod(
     }
 
     {
-      // - for mutual recursive function
       const inferredType = M.modLookupInferredType(mod, name)
       if (inferredType) return M.okInferEffect(inferredType)(subst)
     }
@@ -265,14 +259,14 @@ function typeInferVarInMod(
 function typeInferApplyArrowType(
   mod: M.Mod,
   ctx: M.Ctx,
-  type: M.Value,
+  type: M.Type,
   args: Array<M.Exp>,
   originalExp: M.Exp,
 ): M.InferEffect {
   return (subst) => {
     if (args.length === 0) {
       const retType = M.createFreshVarType("R")
-      const arrowType = M.createArrowType([], retType)
+      const arrowType = M.ArrowType([], retType)
       const newSubst = M.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = M.substDeepWalk(subst, type)
@@ -285,7 +279,7 @@ function typeInferApplyArrowType(
     } else if (args.length === 1) {
       const argType = M.createFreshVarType("A")
       const retType = M.createFreshVarType("R")
-      const arrowType = M.createArrowType([argType], retType)
+      const arrowType = M.ArrowType([argType], retType)
       const newSubst = M.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = M.substDeepWalk(subst, type)
@@ -303,7 +297,7 @@ function typeInferApplyArrowType(
     } else {
       const argType = M.createFreshVarType("A")
       const retType = M.createFreshVarType("R")
-      const arrowType = M.createArrowType([argType], retType)
+      const arrowType = M.ArrowType([argType], retType)
       const newSubst = M.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = M.substDeepWalk(subst, type)

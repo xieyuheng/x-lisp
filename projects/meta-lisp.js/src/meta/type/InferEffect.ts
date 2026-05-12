@@ -2,12 +2,12 @@ import * as M from "../index.ts"
 import type { CheckEffect } from "./CheckEffect.ts"
 
 export type InferResult =
-  | { kind: "InferOk"; subst: M.Subst; type: M.Value }
+  | { kind: "InferOk"; subst: M.Subst; type: M.Type }
   | { kind: "InferError"; exp: M.Exp; message: string }
 
 export type InferEffect = (subst: M.Subst) => InferResult
 
-export function okInferEffect(type: M.Value): InferEffect {
+export function okInferEffect(type: M.Type): InferEffect {
   return (subst) => {
     return {
       kind: "InferOk",
@@ -29,7 +29,7 @@ export function errorInferEffect(exp: M.Exp, message: string): InferEffect {
 
 export function inferThenInfer(
   effect: InferEffect,
-  fn: (type: M.Value) => InferEffect,
+  fn: (type: M.Type) => InferEffect,
 ): InferEffect {
   return (subst) => {
     const result = effect(subst)
@@ -48,7 +48,7 @@ export function inferThenInfer(
 
 export function inferThenCheck(
   effect: InferEffect,
-  fn: (type: M.Value) => CheckEffect,
+  fn: (type: M.Type) => CheckEffect,
 ): CheckEffect {
   return (subst) => {
     const result = effect(subst)

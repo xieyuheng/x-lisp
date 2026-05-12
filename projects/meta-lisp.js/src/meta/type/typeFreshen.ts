@@ -1,56 +1,39 @@
 import * as M from "../index.ts"
 
-export function typeFreshen(type: M.Value): M.Value {
-  if (M.isVarType(type)) {
-    return type
-  }
+export function typeFreshen(type: M.Type): M.Type {
+  switch (type.kind) {
+    case "VarType":
+    case "CanonicalLabelType":
+    case "TypeType":
+    case "AtomType":
+      return type
 
-  if (M.isCanonicalLabelType(type)) {
-    return type
-  }
+    case "ArrowType":
+      return M.ArrowType(
+        type.argTypes.map((t) => typeFreshen(t)),
+        typeFreshen(type.retType),
+      )
 
-  if (M.isTypeType(type)) {
-    return type
-  }
+    case "ListType":
+      return M.ListType(typeFreshen(type.elementType))
 
-  if (M.isAtomType(type)) {
-    return type
-  }
+    case "SetType":
+      return M.SetType(typeFreshen(type.elementType))
 
-  if (M.isArrowType(type)) {
-    return M.createArrowType(
-      M.arrowTypeArgTypes(type).map((t) => typeFreshen(t)),
-      typeFreshen(M.arrowTypeRetType(type)),
-    )
-  }
+    case "HashType":
+      return M.HashType(typeFreshen(type.keyType), typeFreshen(type.valueType))
 
-  if (M.isListType(type)) {
-    return M.createListType(typeFreshen(M.listTypeElementType(type)))
-  }
+    case "DefinedDataType":
+      return M.DefinedDataType(
+        type.definition,
+        type.argTypes.map((t) => typeFreshen(t)),
+      )
 
-  if (M.isSetType(type)) {
-    return M.createSetType(typeFreshen(M.setTypeElementType(type)))
-  }
+    case "PolymorphicType":
+      return typeFreshen(M.polymorphicTypeFreshBodyType(type))
 
-  if (M.isHashType(type)) {
-    return M.createHashType(
-      typeFreshen(M.hashTypeKeyType(type)),
-      typeFreshen(M.hashTypeValueType(type)),
-    )
+    case "CurryType":
+    case "DefinitionType":
+      return type
   }
-
-  if (M.isDefinedDataType(type)) {
-    return M.createDefinedDataType(
-      M.definedDataTypeDefinition(type),
-      M.definedDataTypeArgTypes(type).map((t) => typeFreshen(t)),
-    )
-  }
-
-  if (M.isPolymorphicType(type)) {
-    return typeFreshen(M.polymorphicTypeFreshBodyType(type))
-  }
-
-  let message = `[typeFreshen] unhandled type`
-  message += `\n  type: ${M.formatType(type)}`
-  throw new Error(message)
 }

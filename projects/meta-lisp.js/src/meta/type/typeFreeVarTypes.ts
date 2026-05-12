@@ -2,67 +2,51 @@ import * as M from "../index.ts"
 
 export function typeFreeVarTypes(
   boundIds: Set<string>,
-  type: M.Value,
-): Array<M.Value> {
-  if (M.isVarType(type)) {
-    const id = M.varTypeId(type)
-    if (boundIds.has(id)) {
-      return []
-    } else {
-      return [type]
+  type: M.Type,
+): Array<M.Type> {
+  switch (type.kind) {
+    case "VarType": {
+      const id = M.varTypeId(type)
+      if (boundIds.has(id)) {
+        return []
+      } else {
+        return [type]
+      }
     }
-  }
 
-  if (M.isCanonicalLabelType(type)) {
-    return []
-  }
+    case "CanonicalLabelType":
+    case "TypeType":
+    case "AtomType":
+      return []
 
-  if (M.isTypeType(type)) {
-    return []
-  }
+    case "ArrowType":
+      return [
+        ...type.argTypes.flatMap((t) => typeFreeVarTypes(boundIds, t)),
+        ...typeFreeVarTypes(boundIds, type.retType),
+      ]
 
-  if (M.isAtomType(type)) {
-    return []
-  }
+    case "ListType":
+      return typeFreeVarTypes(boundIds, type.elementType)
 
-  if (M.isArrowType(type)) {
-    return [
-      ...M.arrowTypeArgTypes(type).flatMap((t) =>
+    case "SetType":
+      return typeFreeVarTypes(boundIds, type.elementType)
+
+    case "HashType":
+      return [type.keyType, type.valueType].flatMap((t) =>
         typeFreeVarTypes(boundIds, t),
-      ),
-      ...typeFreeVarTypes(boundIds, M.arrowTypeRetType(type)),
-    ]
-  }
+      )
 
-  if (M.isListType(type)) {
-    return typeFreeVarTypes(boundIds, M.listTypeElementType(type))
-  }
+    case "DefinedDataType":
+      return type.argTypes.flatMap((t) => typeFreeVarTypes(boundIds, t))
 
-  if (M.isSetType(type)) {
-    return typeFreeVarTypes(boundIds, M.setTypeElementType(type))
-  }
+    case "PolymorphicType":
+      return typeFreeVarTypes(
+        new Set([...boundIds, ...type.varTypes.map(M.varTypeId)]),
+        type.bodyType,
+      )
 
-  if (M.isHashType(type)) {
-    return [M.hashTypeKeyType(type), M.hashTypeValueType(type)].flatMap((t) =>
-      typeFreeVarTypes(boundIds, t),
-    )
+    case "CurryType":
+    case "DefinitionType":
+      return []
   }
-
-  if (M.isDefinedDataType(type)) {
-    return M.definedDataTypeArgTypes(type).flatMap((t) =>
-      typeFreeVarTypes(boundIds, t),
-    )
-  }
-
-  if (M.isPolymorphicType(type)) {
-    const varTypes = M.polymorphicTypeVarTypes(type)
-    return typeFreeVarTypes(
-      new Set([...boundIds, ...varTypes.map(M.varTypeId)]),
-      M.polymorphicTypeBodyType(type),
-    )
-  }
-
-  let message = `[typeFreeVarTypes] unhandled type`
-  message += `\n  type: ${M.formatType(type)}`
-  throw new Error(message)
 }

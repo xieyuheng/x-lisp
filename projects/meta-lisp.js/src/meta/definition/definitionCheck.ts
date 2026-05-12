@@ -96,7 +96,7 @@ function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
   }
 }
 
-function checkClaimedType(mod: M.Mod, exp: M.Exp, type: M.Value): void {
+function checkClaimedType(mod: M.Mod, exp: M.Exp, type: M.Type): void {
   const ctx = M.emptyCtx()
   const effect = M.typeCheckAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())

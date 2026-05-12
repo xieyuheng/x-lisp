@@ -1,83 +1,77 @@
 import * as M from "../index.ts"
 
-export function formatTypes(types: Array<M.Value>): string {
+export function formatTypes(types: Array<M.Type>): string {
   return types.map((t) => formatType(t)).join(" ")
 }
 
-export function formatType(type: M.Value): string {
-  if (M.isVarType(type)) {
-    const serialNumber = M.varTypeSerialNumber(type)
-    if (serialNumber === 0n) {
-      return M.varTypeName(type)
-    } else {
-      return M.varTypeId(type)
+export function formatType(type: M.Type): string {
+  switch (type.kind) {
+    case "VarType": {
+      if (type.serialNumber === 0n) {
+        return type.name
+      } else {
+        return M.varTypeId(type)
+      }
+    }
+
+    case "CanonicalLabelType": {
+      return `_.${type.serialNumber}`
+    }
+
+    case "TypeType": {
+      return `type-t`
+    }
+
+    case "AtomType": {
+      return `${type.name}-t`
+    }
+
+    case "ArrowType": {
+      const uncurried = M.arrowTypeUncurrying(type) as M.ArrowType
+      const argTypes = formatTypes(uncurried.argTypes)
+      const retType = formatType(uncurried.retType)
+      if (argTypes.length === 0) {
+        return `(-> ${retType})`
+      } else {
+        return `(-> ${argTypes} ${retType})`
+      }
+    }
+
+    case "ListType": {
+      const elementType = formatType(type.elementType)
+      return `(list-t ${elementType})`
+    }
+
+    case "SetType": {
+      const elementType = formatType(type.elementType)
+      return `(set-t ${elementType})`
+    }
+
+    case "HashType": {
+      const keyType = formatType(type.keyType)
+      const valueType = formatType(type.valueType)
+      return `(hash-t ${keyType} ${valueType})`
+    }
+
+    case "DefinedDataType": {
+      const definition = type.definition
+      const argTypes = formatTypes(type.argTypes)
+      if (argTypes.length === 0) {
+        return `${definition.mod.name}/${definition.name}`
+      } else {
+        return `(${definition.mod.name}/${definition.name} ${argTypes})`
+      }
+    }
+
+    case "PolymorphicType": {
+      const varTypes = formatTypes(type.varTypes)
+      const bodyType = formatType(type.bodyType)
+      return `(polymorphic (${varTypes}) ${bodyType})`
+    }
+
+    case "CurryType":
+    case "DefinitionType": {
+      return `{${type.kind}}`
     }
   }
-
-  if (M.isCanonicalLabelType(type)) {
-    const serialNumber = M.canonicalLabelTypeSerialNumber(type)
-    return `_.${serialNumber}`
-  }
-
-  if (M.isTypeType(type)) {
-    return `type-t`
-  }
-
-  if (M.isAtomType(type)) {
-    const name = M.atomTypeName(type)
-    return `${name}-t`
-  }
-
-  if (M.isArrowType(type)) {
-    type = M.arrowTypeUncurrying(type)
-    const argTypes = formatTypes(M.arrowTypeArgTypes(type))
-    const retType = formatType(M.arrowTypeRetType(type))
-    if (argTypes.length === 0) {
-      return `(-> ${retType})`
-    } else {
-      return `(-> ${argTypes} ${retType})`
-    }
-  }
-
-  if (M.isListType(type)) {
-    const elementType = formatType(M.listTypeElementType(type))
-    return `(list-t ${elementType})`
-  }
-
-  if (M.isSetType(type)) {
-    const elementType = formatType(M.setTypeElementType(type))
-    return `(set-t ${elementType})`
-  }
-
-  if (M.isHashType(type)) {
-    const keyType = formatType(M.hashTypeKeyType(type))
-    const valueType = formatType(M.hashTypeValueType(type))
-    return `(hash-t ${keyType} ${valueType})`
-  }
-
-  if (M.isDefinedDataType(type)) {
-    const definition = M.definedDataTypeDefinition(type)
-    const argTypes = formatTypes(M.definedDataTypeArgTypes(type))
-    if (argTypes.length === 0) {
-      return `${definition.mod.name}/${definition.name}`
-    } else {
-      return `(${definition.mod.name}/${definition.name} ${argTypes})`
-    }
-  }
-
-  if (M.isPolymorphicType(type)) {
-    const varTypes = formatTypes(M.polymorphicTypeVarTypes(type))
-    const bodyType = formatType(M.polymorphicTypeBodyType(type))
-    return `(polymorphic (${varTypes}) ${bodyType})`
-  }
-
-  let message = `[formatType] unhandled type`
-  message += `\n  type: ${M.formatValue(type)}`
-  throw new Error(message)
-}
-
-function formatTypeRecord(record: Record<string, M.Value>): string {
-  return Object.entries(record)
-    .map(([k, t]) => `:${k} ${formatType(t)}`)
-    .join(" ")
 }

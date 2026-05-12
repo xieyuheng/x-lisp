@@ -1,4 +1,5 @@
-import type { DataDefinition } from "../definition/index.ts"
+import { range } from "@xieyuheng/helpers.js/range"
+import type { DataDefinition, Definition } from "../definition/index.ts"
 
 export type Type =
   | VarType
@@ -11,6 +12,8 @@ export type Type =
   | HashType
   | DefinedDataType
   | PolymorphicType
+  | CurryType
+  | DefinitionType
 
 // --- VarType ---
 
@@ -220,4 +223,254 @@ export function isPolymorphicType(type: Type): type is PolymorphicType {
 export function asPolymorphicType(type: Type): PolymorphicType {
   if (isPolymorphicType(type)) return type
   throw new Error(`[asPolymorphicType] fail on: ${type.kind}`)
+}
+
+// --- CurryType ---
+
+export type CurryType = {
+  kind: "CurryType"
+  target: Type
+  arity: number
+  args: Array<Type>
+}
+
+export function CurryType(
+  target: Type,
+  arity: number,
+  args: Array<Type>,
+): CurryType {
+  return { kind: "CurryType", target, arity, args }
+}
+
+export function isCurryType(type: Type): type is CurryType {
+  return type.kind === "CurryType"
+}
+
+export function asCurryType(type: Type): CurryType {
+  if (isCurryType(type)) return type
+  throw new Error(`[asCurryType] fail on: ${type.kind}`)
+}
+
+// --- DefinitionType ---
+
+export type DefinitionType = {
+  kind: "DefinitionType"
+  definition: Definition
+}
+
+export function DefinitionType(definition: Definition): DefinitionType {
+  return { kind: "DefinitionType", definition }
+}
+
+export function isDefinitionType(type: Type): type is DefinitionType {
+  return type.kind === "DefinitionType"
+}
+
+export function asDefinitionType(type: Type): DefinitionType {
+  if (isDefinitionType(type)) return type
+  throw new Error(`[asDefinitionType] fail on: ${type.kind}`)
+}
+
+// --- Utility functions ---
+
+export function varTypeId(type: VarType): string {
+  return `${type.name}.${type.serialNumber}`
+}
+
+export function varTypeEqual(x: Type, y: Type): boolean {
+  return (
+    x.kind === "VarType" &&
+    y.kind === "VarType" &&
+    x.name === y.name &&
+    x.serialNumber === y.serialNumber
+  )
+}
+
+const serialNumberMap: Map<string, bigint> = new Map()
+
+function generateVarTypeSerialNumber(name: string): bigint {
+  const count = serialNumberMap.get(name)
+  if (count) {
+    serialNumberMap.set(name, count + 1n)
+    return count + 1n
+  } else {
+    serialNumberMap.set(name, 1n)
+    return 1n
+  }
+}
+
+export function createFreshVarType(name: string): VarType {
+  return VarType(name, generateVarTypeSerialNumber(name))
+}
+
+export function arrowTypeCurrying(type: Type): Type {
+  if (type.kind !== "ArrowType") return type
+
+  const argTypes = type.argTypes
+  const retType = type.retType
+
+  if (retType.kind !== "ArrowType") {
+    if (argTypes.length <= 1) return type
+    const [firstArgType, ...restArgTypes] = argTypes
+    return ArrowType([firstArgType], ArrowType(restArgTypes, retType))
+  }
+
+  if (argTypes.length === 0) {
+    return ArrowType(argTypes, arrowTypeCurrying(retType))
+  }
+
+  if (argTypes.length === 1) {
+    return ArrowType(argTypes, arrowTypeCurrying(retType))
+  }
+
+  const [firstArgType, ...restArgTypes] = argTypes
+  return ArrowType(
+    [firstArgType],
+    arrowTypeCurrying(ArrowType(restArgTypes, retType)),
+  )
+}
+
+export function arrowTypeUncurrying(type: Type): Type {
+  if (type.kind !== "ArrowType") return type
+
+  const argTypes = type.argTypes
+  const retType = type.retType
+
+  if (retType.kind !== "ArrowType") return type
+
+  const retTypeArgTypes = retType.argTypes
+  const retTypeRetType = retType.retType
+
+  if (argTypes.length === 0) {
+    return ArrowType(argTypes, arrowTypeUncurrying(retType))
+  }
+
+  return ArrowType(
+    [...argTypes, ...retTypeArgTypes],
+    arrowTypeUncurrying(retTypeRetType),
+  )
+}
+
+export function polymorphicTypeFreshSelf(
+  type: PolymorphicType,
+): PolymorphicType {
+  const varTypes = type.varTypes
+  const bodyType = type.bodyType
+  const newVarTypes = varTypes.map((vt) => createFreshVarType(vt.name))
+  const substMap = new Map<VarType, VarType>()
+  for (const i of range(varTypes.length)) {
+    substMap.set(varTypes[i], newVarTypes[i])
+  }
+  const newBodyType = replaceVarTypesInType(bodyType, substMap)
+  return PolymorphicType(newVarTypes, newBodyType)
+}
+
+export function polymorphicTypeFreshBodyType(type: PolymorphicType): Type {
+  const freshened = polymorphicTypeFreshSelf(type)
+  return freshened.bodyType
+}
+
+export function polymorphicTypePrettifyVarTypes(
+  type: PolymorphicType,
+): PolymorphicType {
+  const varTypes = type.varTypes
+  const bodyType = type.bodyType
+  const newVarTypes = range(varTypes.length).map((i) =>
+    VarType(generatePrettyTypeVariableName(i), BigInt(0)),
+  )
+  const substMap = new Map<VarType, VarType>()
+  for (const i of range(varTypes.length)) {
+    substMap.set(varTypes[i], newVarTypes[i])
+  }
+  const newBodyType = replaceVarTypesInType(bodyType, substMap)
+  return PolymorphicType(newVarTypes, newBodyType)
+}
+
+function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
+  if (type.kind === "VarType") {
+    const found = subst.get(type)
+    if (found) return found
+    return type
+  }
+
+  if (type.kind === "ArrowType") {
+    return ArrowType(
+      type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
+      replaceVarTypesInType(type.retType, subst),
+    )
+  }
+
+  if (type.kind === "ListType") {
+    return ListType(replaceVarTypesInType(type.elementType, subst))
+  }
+
+  if (type.kind === "SetType") {
+    return SetType(replaceVarTypesInType(type.elementType, subst))
+  }
+
+  if (type.kind === "HashType") {
+    return HashType(
+      replaceVarTypesInType(type.keyType, subst),
+      replaceVarTypesInType(type.valueType, subst),
+    )
+  }
+
+  if (type.kind === "DefinedDataType") {
+    return DefinedDataType(
+      type.definition,
+      type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
+    )
+  }
+
+  if (type.kind === "PolymorphicType") {
+    const newVarTypes = type.varTypes.map((vt) => {
+      const found = subst.get(vt)
+      return found || vt
+    })
+    const innerIds = new Set(type.varTypes.map((vt) => varTypeId(vt)))
+    const filteredSubst = new Map<VarType, VarType>()
+    for (const [k, v] of subst) {
+      if (!innerIds.has(varTypeId(k))) {
+        filteredSubst.set(k, v)
+      }
+    }
+    return PolymorphicType(
+      newVarTypes,
+      replaceVarTypesInType(type.bodyType, filteredSubst),
+    )
+  }
+
+  return type
+}
+
+const prettyTypeVariableNames = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+]
+
+export function generatePrettyTypeVariableName(n: number): string {
+  const found = prettyTypeVariableNames[n]
+  if (found) {
+    return found
+  } else {
+    return `T${n}`
+  }
 }
