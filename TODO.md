@@ -1,5 +1,3 @@
-[diary] give up subtype
-
 [meta-lisp.js] remove `any-t` and `(as)`
 [meta-lisp.js] rename `DefinedDataType` to `DataType` or `AlgebraicType`
 
