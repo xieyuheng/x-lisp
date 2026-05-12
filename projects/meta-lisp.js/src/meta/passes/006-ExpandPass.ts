@@ -7,7 +7,7 @@ export function ExpandPass(project: M.Project): void {
   }
 }
 
-function getDataType(stmt: M.DefineEnum): M.Exp {
+function getDataType(stmt: M.DefineAlgebraicType): M.Exp {
   if (stmt.typeConstructor.parameters.length === 0) {
     return M.Var(stmt.typeConstructor.name)
   } else {
@@ -34,19 +34,12 @@ function admitWithParameters(
 function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
   switch (stmt.kind) {
     case "DefineEnum": {
-      const stmts: Array<M.Stmt> = [stmt]
+      const algebraicType = desugarDefineEnum(stmt)
+      return expandDefineAlgebraicType(algebraicType)
+    }
 
-      for (const dataConstructor of stmt.dataConstructors) {
-        stmts.push(...expandDataConstructor(stmt, dataConstructor))
-        stmts.push(...expandDataConstructorPredicate(stmt, dataConstructor))
-
-        for (const [index, field] of dataConstructor.fields.entries()) {
-          stmts.push(...expandDataAccessor(stmt, dataConstructor, index, field))
-          stmts.push(...expandDataModifier(stmt, dataConstructor, index, field))
-        }
-      }
-
-      return stmts
+    case "DefineAlgebraicType": {
+      return expandDefineAlgebraicType(stmt)
     }
 
     default: {
@@ -55,91 +48,128 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
   }
 }
 
-function expandDataConstructor(
-  stmt: M.DefineEnum,
-  dataConstructor: Omit<M.DataConstructor, "definition">,
+function desugarDefineEnum(stmt: M.DefineEnum): M.DefineAlgebraicType {
+  const dataConstructors = stmt.dataConstructors.map((ctor) => {
+    const fields = ctor.fields.map((field) => ({
+      name: field.name,
+      type: field.type,
+      accessorName: `${ctor.name}-${field.name}`,
+      modifierName: `${ctor.name}-put-${field.name}!`,
+      location: field.location,
+    }))
+
+    return {
+      name: ctor.name,
+      fields,
+      predicate: `${ctor.name}?`,
+      location: ctor.location,
+    }
+  })
+
+  return M.DefineAlgebraicType(
+    stmt.typeConstructor,
+    dataConstructors,
+    stmt.location,
+  )
+}
+
+function expandDefineAlgebraicType(stmt: M.DefineAlgebraicType): Array<M.Stmt> {
+  const stmts: Array<M.Stmt> = [stmt]
+
+  for (const ctor of stmt.dataConstructors) {
+    stmts.push(...expandConstructor(stmt, ctor))
+    stmts.push(...expandPredicate(stmt, ctor))
+
+    for (const [index, field] of ctor.fields.entries()) {
+      stmts.push(...expandAccessor(stmt, ctor, index, field))
+      stmts.push(...expandModifier(stmt, ctor, index, field))
+    }
+  }
+
+  return stmts
+}
+
+function expandConstructor(
+  stmt: M.DefineAlgebraicType,
+  ctor: M.AlgebraicTypeConstructor,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
-  const parameters = dataConstructor.fields.map((field) => field.name)
+  const parameters = ctor.fields.map((field) => field.name)
   const args = parameters.map((name) => M.Var(name))
 
   stmts.push(
     admitWithParameters(
-      dataConstructor.name,
+      ctor.name,
       stmt.typeConstructor.parameters,
       M.Arrow(
-        dataConstructor.fields.map((field) => field.type),
+        ctor.fields.map((field) => field.type),
         getDataType(stmt),
       ),
-      dataConstructor.location,
+      ctor.location,
     ),
   )
 
   stmts.push(
     M.DefineFunction(
-      dataConstructor.name,
+      ctor.name,
       parameters,
-      M.LiteralList([M.Symbol(dataConstructor.name), ...args]),
-      dataConstructor.location,
+      M.LiteralList([M.Symbol(ctor.name), ...args]),
+      ctor.location,
     ),
   )
 
   return stmts
 }
 
-export function expandDataConstructorPredicate(
-  stmt: M.DefineEnum,
-  dataConstructor: Omit<M.DataConstructor, "definition">,
+function expandPredicate(
+  stmt: M.DefineAlgebraicType,
+  ctor: M.AlgebraicTypeConstructor,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
-  const name = `${dataConstructor.name}?`
-
   stmts.push(
     admitWithParameters(
-      name,
+      ctor.predicate,
       stmt.typeConstructor.parameters,
       M.Arrow([getDataType(stmt)], M.Var("bool-t")),
-      dataConstructor.location,
+      ctor.location,
     ),
   )
 
   stmts.push(
     M.DefineFunction(
-      name,
+      ctor.predicate,
       ["value"],
       M.And([
         M.Apply(M.Var("list?"), [M.Var("value")]),
         M.Apply(M.Var("equal?"), [
           M.Apply(M.Var("list-length"), [M.Var("value")]),
-          M.Int(BigInt(dataConstructor.fields.length + 1)),
+          M.Int(BigInt(ctor.fields.length + 1)),
         ]),
         M.Apply(M.Var("equal?"), [
           M.Apply(M.Var("list-head"), [M.Var("value")]),
-          M.Symbol(dataConstructor.name),
+          M.Symbol(ctor.name),
         ]),
       ]),
-      dataConstructor.location,
+      ctor.location,
     ),
   )
 
   return stmts
 }
 
-function expandDataAccessor(
-  stmt: M.DefineEnum,
-  dataConstructor: Omit<M.DataConstructor, "definition">,
+function expandAccessor(
+  stmt: M.DefineAlgebraicType,
+  ctor: M.AlgebraicTypeConstructor,
   index: number,
-  field: M.DataField,
+  field: M.AlgebraicTypeField,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
-  const name = `${dataConstructor.name}-${field.name}`
-
   stmts.push(
     admitWithParameters(
-      name,
+      field.accessorName,
       stmt.typeConstructor.parameters,
       M.Arrow([getDataType(stmt)], field.type),
       field.location,
@@ -148,7 +178,7 @@ function expandDataAccessor(
 
   stmts.push(
     M.DefineFunction(
-      name,
+      field.accessorName,
       ["target"],
       M.Apply(M.Var("list-get"), [M.Int(BigInt(index + 1)), M.Var("target")]),
       field.location,
@@ -158,18 +188,17 @@ function expandDataAccessor(
   return stmts
 }
 
-function expandDataModifier(
-  stmt: M.DefineEnum,
-  dataConstructor: Omit<M.DataConstructor, "definition">,
+function expandModifier(
+  stmt: M.DefineAlgebraicType,
+  ctor: M.AlgebraicTypeConstructor,
   index: number,
-  field: M.DataField,
+  field: M.AlgebraicTypeField,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
-  const name = `${dataConstructor.name}-put-${field.name}!`
 
   stmts.push(
     admitWithParameters(
-      name,
+      field.modifierName,
       stmt.typeConstructor.parameters,
       M.Arrow([field.type, getDataType(stmt)], getDataType(stmt)),
       field.location,
@@ -178,7 +207,7 @@ function expandDataModifier(
 
   stmts.push(
     M.DefineFunction(
-      name,
+      field.modifierName,
       ["value", "target"],
       M.Apply(M.Var("list-put!"), [
         M.Int(BigInt(index + 1)),

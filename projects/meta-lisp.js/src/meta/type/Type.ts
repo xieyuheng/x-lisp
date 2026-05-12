@@ -1,5 +1,8 @@
 import { range } from "@xieyuheng/helpers.js/range"
-import type { AlgebraicTypeDefinition, Definition } from "../definition/index.ts"
+import type {
+  AlgebraicTypeDefinition,
+  Definition,
+} from "../definition/index.ts"
 
 export type Type =
   | VarType

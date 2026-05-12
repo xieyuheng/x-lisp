@@ -171,6 +171,19 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
       return stmt
     }
 
+    case "DefineAlgebraicType": {
+      const boundNames = new Set(stmt.typeConstructor.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      for (const ctor of stmt.dataConstructors) {
+        ctor.fields = ctor.fields.map((field) => ({
+          ...field,
+          type: onExp(newScope, field.type),
+        }))
+      }
+
+      return stmt
+    }
+
     default: {
       return stmt
     }

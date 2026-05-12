@@ -43,6 +43,14 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-enum ${type} ${constructors})`
     }
 
+    case "DefineAlgebraicType": {
+      const type = formatTypeConstructor(stmt.typeConstructor)
+      const constructors = stmt.dataConstructors
+        .map(formatAlgebraicTypeConstructor)
+        .join(" ")
+      return `(define-algebraic-type ${type} ${constructors})`
+    }
+
     case "Claim": {
       return `(claim ${stmt.name} ${M.formatExp(stmt.type)})`
     }
@@ -99,5 +107,21 @@ function formatDataConstructor(
 }
 
 function formatDataField(field: M.DataField): string {
+  return `(${field.name} ${M.formatExp(field.type)})`
+}
+
+function formatAlgebraicTypeConstructor(
+  ctor: M.AlgebraicTypeConstructor,
+): string {
+  const group = `(${ctor.name} ${ctor.fields.map(formatAlgebraicTypeField).join(" ")})`
+  const accessors = ctor.fields
+    .map(
+      (field) => `(${field.name} ${field.accessorName} ${field.modifierName})`,
+    )
+    .join(" ")
+  return `(${group} ${ctor.predicate} ${accessors})`
+}
+
+function formatAlgebraicTypeField(field: M.AlgebraicTypeField): string {
   return `(${field.name} ${M.formatExp(field.type)})`
 }

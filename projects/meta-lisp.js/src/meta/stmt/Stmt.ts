@@ -11,6 +11,7 @@ export type Stmt =
   | DefineTest
   | DefineType
   | DefineEnum
+  | DefineAlgebraicType
   | Claim
   | Admit
   | Private
@@ -177,6 +178,41 @@ export function DefineEnum(
 ): DefineEnum {
   return {
     kind: "DefineEnum",
+    typeConstructor,
+    dataConstructors,
+    location,
+  }
+}
+
+export type AlgebraicTypeField = {
+  name: string
+  type: Exp
+  accessorName: string
+  modifierName: string
+  location?: SourceLocation
+}
+
+export type AlgebraicTypeConstructor = {
+  name: string
+  fields: Array<AlgebraicTypeField>
+  predicate: string
+  location?: SourceLocation
+}
+
+export type DefineAlgebraicType = {
+  kind: "DefineAlgebraicType"
+  typeConstructor: Omit<TypeConstructor, "definition">
+  dataConstructors: Array<AlgebraicTypeConstructor>
+  location?: SourceLocation
+}
+
+export function DefineAlgebraicType(
+  typeConstructor: Omit<TypeConstructor, "definition">,
+  dataConstructors: Array<AlgebraicTypeConstructor>,
+  location?: SourceLocation,
+): DefineAlgebraicType {
+  return {
+    kind: "DefineAlgebraicType",
     typeConstructor,
     dataConstructors,
     location,
