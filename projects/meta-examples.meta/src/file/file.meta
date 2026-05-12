@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (define-test file-test
   (= file (open-input-file "src/file/file-1.txt"))

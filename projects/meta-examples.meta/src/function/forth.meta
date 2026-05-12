@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (claim swap
   (polymorphic (X Y Z)

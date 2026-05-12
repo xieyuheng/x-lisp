@@ -15,6 +15,7 @@ export const sexpConfig: S.Config = {
     ["define-interface", 1],
     ["define-enum", 1],
     ["define-algebraic-type", 1],
+    ["define-struct", 1],
     ["define-test", 1],
     ["define-type", 1],
     ["let", 1],

@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (define-test eoc-03-01
   ;; figure-3.1

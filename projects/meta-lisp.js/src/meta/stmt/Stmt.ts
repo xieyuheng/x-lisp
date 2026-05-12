@@ -12,6 +12,7 @@ export type Stmt =
   | DefineType
   | DefineEnum
   | DefineAlgebraicType
+  | DefineStruct
   | Claim
   | Admit
   | Private
@@ -180,6 +181,26 @@ export function DefineEnum(
     kind: "DefineEnum",
     typeConstructor,
     dataConstructors,
+    location,
+  }
+}
+
+export type DefineStruct = {
+  kind: "DefineStruct"
+  typeConstructor: Omit<TypeConstructor, "definition">
+  dataConstructor: Omit<DataConstructor, "definition">
+  location?: SourceLocation
+}
+
+export function DefineStruct(
+  typeConstructor: Omit<TypeConstructor, "definition">,
+  dataConstructor: Omit<DataConstructor, "definition">,
+  location?: SourceLocation,
+): DefineStruct {
+  return {
+    kind: "DefineStruct",
+    typeConstructor,
+    dataConstructor,
     location,
   }
 }

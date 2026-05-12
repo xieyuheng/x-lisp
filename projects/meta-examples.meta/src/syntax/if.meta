@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (define-test if-test
   (assert-equal (if true 1 2) 1)

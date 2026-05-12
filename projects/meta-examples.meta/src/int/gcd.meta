@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (claim gcd (-> int-t int-t int-t))
 

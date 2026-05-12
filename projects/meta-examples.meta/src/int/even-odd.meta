@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 ;; can infer type of mutual recursive function
 

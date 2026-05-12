@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (define-test eoc-04-01
   (println (if true 1 2)))

@@ -121,6 +121,14 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
+  "(cons* 'define-struct head ctor)": ({ head, ctor }, { location }) => {
+    return M.DefineStruct(
+      parseTypeConstructor(head),
+      parseDataConstructor(S.asList(ctor).elements[0]),
+      location,
+    )
+  },
+
   "`(claim ,name ,type)": ({ name, type }, { location }) => {
     return M.Claim(S.asSymbol(name).content, parseExp(type), location)
   },

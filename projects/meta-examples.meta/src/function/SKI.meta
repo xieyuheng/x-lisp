@@ -1,4 +1,4 @@
-(module test-suite)
+(module examples)
 
 (define (S x y z) (x z (y z)))
 (define (K x y) x)

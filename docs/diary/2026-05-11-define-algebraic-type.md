@@ -292,3 +292,43 @@ parameter 名字是暴露给用户的 API 的一部分。
 - `define-struct` 和 `define-enum` desugar 到 `define-algebraic-type`。
 
 最终选择方案 C。
+
+# (define-struct)
+
+与 `(define-enum)` 不同的是，`(define-struct)` 只有一个 constructor。
+不是根据 constructor 的名字，而是根据 `<type-name>` 的名字去掉后缀 `-t`，
+来生成 `<predicate-name>` `<accessor-name>` `<modifier-name>`。
+
+比如：
+
+```scheme
+(define-struct point-t
+  (make-point (x float-t) (y float-t)))
+```
+
+展开为：
+
+```scheme
+(define-algebraic-type point-t
+  (make-point (x float-t) (y float-t))
+  point?
+  (x point-x point-put-x!)
+  (y point-y point-put-y!))
+```
+
+又比如：
+
+```scheme
+(define-struct (pair-t A B)
+  (make-pair (first A) (second B)))
+```
+
+展开为：
+
+```scheme
+(define-algebraic-type (pair-t A B)
+  (make-pair (first A) (second B))
+  pair?
+  (first pair-first pair-put-first!)
+  (second point-second point-put-second!))
+```
