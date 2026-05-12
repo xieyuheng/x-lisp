@@ -3,7 +3,6 @@ import * as M from "../index.ts"
 import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
 
 export function typeUnify(
-  trail: M.Trail,
   subst: M.Subst | undefined,
   lhs: M.Value,
   rhs: M.Value,
@@ -17,17 +16,6 @@ export function typeUnify(
 
   lhs = M.typeFreshen(lhs)
   rhs = M.typeFreshen(rhs)
-
-  if (
-    M.trailSome(
-      trail,
-      (entry) =>
-        (M.valueEqual(entry.lhs, lhs) && M.valueEqual(entry.rhs, rhs)) ||
-        (M.valueEqual(entry.lhs, rhs) && M.valueEqual(entry.rhs, lhs)),
-    )
-  ) {
-    return subst
-  }
 
   if (
     M.isVarType(lhs) &&
@@ -73,23 +61,16 @@ export function typeUnify(
     lhs = M.arrowTypeCurrying(lhs)
     rhs = M.arrowTypeCurrying(rhs)
     subst = typeUnifyMany(
-      trail,
       subst,
       M.arrowTypeArgTypes(lhs),
       M.arrowTypeArgTypes(rhs),
     )
-    subst = typeUnify(
-      trail,
-      subst,
-      M.arrowTypeRetType(lhs),
-      M.arrowTypeRetType(rhs),
-    )
+    subst = typeUnify(subst, M.arrowTypeRetType(lhs), M.arrowTypeRetType(rhs))
     return subst
   }
 
   if (M.isListType(lhs) && M.isListType(rhs)) {
     return typeUnify(
-      trail,
       subst,
       M.listTypeElementType(lhs),
       M.listTypeElementType(rhs),
@@ -98,7 +79,6 @@ export function typeUnify(
 
   if (M.isSetType(lhs) && M.isSetType(rhs)) {
     return typeUnify(
-      trail,
       subst,
       M.setTypeElementType(lhs),
       M.setTypeElementType(rhs),
@@ -106,29 +86,17 @@ export function typeUnify(
   }
 
   if (M.isHashType(lhs) && M.isHashType(rhs)) {
-    subst = typeUnify(
-      trail,
-      subst,
-      M.hashTypeKeyType(lhs),
-      M.hashTypeKeyType(rhs),
-    )
-    subst = typeUnify(
-      trail,
-      subst,
-      M.hashTypeValueType(lhs),
-      M.hashTypeValueType(rhs),
-    )
+    subst = typeUnify(subst, M.hashTypeKeyType(lhs), M.hashTypeKeyType(rhs))
+    subst = typeUnify(subst, M.hashTypeValueType(lhs), M.hashTypeValueType(rhs))
     return subst
   }
 
   if (M.isDefinedDataType(lhs) && M.isDefinedDataType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
     if (M.definedDataTypeDefinition(lhs) !== M.definedDataTypeDefinition(rhs)) {
       return undefined
     }
 
     return typeUnifyMany(
-      trail,
       subst,
       M.definedDataTypeArgTypes(lhs),
       M.definedDataTypeArgTypes(rhs),
@@ -139,7 +107,6 @@ export function typeUnify(
 }
 
 export function typeUnifyMany(
-  trail: M.Trail,
   subst: M.Subst | undefined,
   lhs: Array<M.Value>,
   rhs: Array<M.Value>,
@@ -153,7 +120,7 @@ export function typeUnifyMany(
   }
 
   for (const i of range(lhs.length)) {
-    subst = typeUnify(trail, subst, lhs[i], rhs[i])
+    subst = typeUnify(subst, lhs[i], rhs[i])
   }
 
   return subst

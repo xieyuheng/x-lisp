@@ -68,7 +68,7 @@ export function typeCheckUnify(
   type: M.Value,
 ): M.CheckEffect {
   return (subst) => {
-    const newSubst = M.typeUnify([], subst, inferredType, type)
+    const newSubst = M.typeUnify(subst, inferredType, type)
     if (newSubst === undefined) {
       inferredType = M.substApplyToType(subst, inferredType)
       type = M.substApplyToType(subst, type)
