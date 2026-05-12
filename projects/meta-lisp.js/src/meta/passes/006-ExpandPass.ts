@@ -8,12 +8,12 @@ export function ExpandPass(project: M.Project): void {
 }
 
 function getDataType(stmt: M.DefineData): M.Exp {
-  if (stmt.dataTypeConstructor.parameters.length === 0) {
-    return M.Var(stmt.dataTypeConstructor.name)
+  if (stmt.typeConstructor.parameters.length === 0) {
+    return M.Var(stmt.typeConstructor.name)
   } else {
     return M.Apply(
-      M.Var(stmt.dataTypeConstructor.name),
-      stmt.dataTypeConstructor.parameters.map((parameter) => M.Var(parameter)),
+      M.Var(stmt.typeConstructor.name),
+      stmt.typeConstructor.parameters.map((parameter) => M.Var(parameter)),
     )
   }
 }
@@ -67,7 +67,7 @@ function expandDataConstructor(
   stmts.push(
     admitWithParameters(
       dataConstructor.name,
-      stmt.dataTypeConstructor.parameters,
+      stmt.typeConstructor.parameters,
       M.Arrow(
         dataConstructor.fields.map((field) => field.type),
         getDataType(stmt),
@@ -99,7 +99,7 @@ export function expandDataConstructorPredicate(
   stmts.push(
     admitWithParameters(
       name,
-      stmt.dataTypeConstructor.parameters,
+      stmt.typeConstructor.parameters,
       M.Arrow([getDataType(stmt)], M.Var("bool-t")),
       dataConstructor.location,
     ),
@@ -140,7 +140,7 @@ function expandDataAccessor(
   stmts.push(
     admitWithParameters(
       name,
-      stmt.dataTypeConstructor.parameters,
+      stmt.typeConstructor.parameters,
       M.Arrow([getDataType(stmt)], field.type),
       field.location,
     ),
@@ -170,7 +170,7 @@ function expandDataModifier(
   stmts.push(
     admitWithParameters(
       name,
-      stmt.dataTypeConstructor.parameters,
+      stmt.typeConstructor.parameters,
       M.Arrow([field.type, getDataType(stmt)], getDataType(stmt)),
       field.location,
     ),

@@ -36,7 +36,7 @@ export function formatStmt(stmt: M.Stmt): string {
     }
 
     case "DefineData": {
-      const type = formatDataTypeConstructor(stmt.dataTypeConstructor)
+      const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
@@ -77,13 +77,13 @@ export function formatStmt(stmt: M.Stmt): string {
   }
 }
 
-function formatDataTypeConstructor(
-  dataTypeConstructor: Omit<M.DataTypeConstructor, "definition">,
+function formatTypeConstructor(
+  typeConstructor: Omit<M.TypeConstructor, "definition">,
 ): string {
-  if (dataTypeConstructor.parameters.length === 0) {
-    return dataTypeConstructor.name
+  if (typeConstructor.parameters.length === 0) {
+    return typeConstructor.name
   } else {
-    return `(${dataTypeConstructor.name} ${dataTypeConstructor.parameters.join(" ")})`
+    return `(${typeConstructor.name} ${typeConstructor.parameters.join(" ")})`
   }
 }
 

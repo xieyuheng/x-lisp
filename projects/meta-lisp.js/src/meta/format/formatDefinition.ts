@@ -61,10 +61,10 @@ export function formatDefinition(definition: M.Definition): string {
       const dataConstructors = definition.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
-      if (definition.dataTypeConstructor.parameters.length === 0) {
+      if (definition.typeConstructor.parameters.length === 0) {
         return `(define-data ${definition.name} ${dataConstructors})`
       } else {
-        const parameters = definition.dataTypeConstructor.parameters.join(" ")
+        const parameters = definition.typeConstructor.parameters.join(" ")
         return `(define-data (${definition.name} ${parameters}) ${dataConstructors})`
       }
     }

@@ -159,7 +159,7 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
     }
 
     case "DefineData": {
-      const boundNames = new Set(stmt.dataTypeConstructor.parameters)
+      const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
       for (const dataConstructor of stmt.dataConstructors) {
         dataConstructor.fields = dataConstructor.fields.map((field) => ({

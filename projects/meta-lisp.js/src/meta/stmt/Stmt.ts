@@ -1,8 +1,5 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import type {
-  DataConstructor,
-  DataTypeConstructor,
-} from "../definition/index.ts"
+import type { DataConstructor, TypeConstructor } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 
 export type Stmt =
@@ -168,19 +165,19 @@ export function DefineType(
 
 export type DefineData = {
   kind: "DefineData"
-  dataTypeConstructor: Omit<DataTypeConstructor, "definition">
+  typeConstructor: Omit<TypeConstructor, "definition">
   dataConstructors: Array<Omit<DataConstructor, "definition">>
   location?: SourceLocation
 }
 
 export function DefineData(
-  dataTypeConstructor: Omit<DataTypeConstructor, "definition">,
+  typeConstructor: Omit<TypeConstructor, "definition">,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
   location?: SourceLocation,
 ): DefineData {
   return {
     kind: "DefineData",
-    dataTypeConstructor,
+    typeConstructor,
     dataConstructors,
     location,
   }

@@ -29,7 +29,7 @@ function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
     }
 
     case "DefineData": {
-      names.add(stmt.dataTypeConstructor.name)
+      names.add(stmt.typeConstructor.name)
       return
     }
   }

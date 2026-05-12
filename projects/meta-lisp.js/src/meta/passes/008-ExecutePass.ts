@@ -132,21 +132,20 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "DefineData") {
-    const name = stmt.dataTypeConstructor.name
-    const dataTypeConstructor =
-      stmt.dataTypeConstructor as unknown as M.DataTypeConstructor
+    const name = stmt.typeConstructor.name
+    const typeConstructor = stmt.typeConstructor as unknown as M.TypeConstructor
     const dataConstructors =
       stmt.dataConstructors as unknown as Array<M.DataConstructor>
 
     const definition = M.DataDefinition(
       mod,
       name,
-      dataTypeConstructor,
+      typeConstructor,
       dataConstructors,
       stmt.location,
     )
 
-    dataTypeConstructor.definition = definition
+    typeConstructor.definition = definition
 
     for (const dataConstructor of dataConstructors) {
       dataConstructor.definition = definition
@@ -158,14 +157,14 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
     M.modDefine(mod, name, definition)
 
-    if (dataTypeConstructor.parameters.length === 0) {
+    if (typeConstructor.parameters.length === 0) {
       M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t"))
     } else {
       M.modClaim(
         mod,
         name,
         M.Arrow(
-          range(dataTypeConstructor.parameters.length).map((_) =>
+          range(typeConstructor.parameters.length).map((_) =>
             M.QualifiedVar("builtin", "type-t"),
           ),
           M.QualifiedVar("builtin", "type-t"),

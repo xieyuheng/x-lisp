@@ -61,7 +61,7 @@ function qualifyDefinition(definition: M.Definition): null {
     }
 
     case "DataDefinition": {
-      const boundNames = new Set(definition.dataTypeConstructor.parameters)
+      const boundNames = new Set(definition.typeConstructor.parameters)
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields }) => ({
           definition,

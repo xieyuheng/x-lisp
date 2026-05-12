@@ -20,10 +20,10 @@ export function definitionCheck(definition: M.Definition): null {
       for (const dataConstructor of definition.dataConstructors) {
         for (const field of dataConstructor.fields) {
           const exp =
-            definition.dataTypeConstructor.parameters.length === 0
+            definition.typeConstructor.parameters.length === 0
               ? field.type
               : M.Lambda(
-                  definition.dataTypeConstructor.parameters,
+                  definition.typeConstructor.parameters,
                   field.type,
                   definition.location,
                 )

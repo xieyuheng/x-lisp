@@ -104,7 +104,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { location },
   ) => {
     return M.DefineData(
-      parseDataTypeConstructor(head),
+      parseTypeConstructor(head),
       S.asList(constructors).elements.map(parseDataConstructor),
       location,
     )
@@ -134,8 +134,8 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 })
 
-const parseDataTypeConstructor = S.createRouter<
-  Omit<M.DataTypeConstructor, "definition">
+const parseTypeConstructor = S.createRouter<
+  Omit<M.TypeConstructor, "definition">
 >({
   "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {

@@ -215,12 +215,12 @@ export type DataDefinition = {
   kind: "DataDefinition"
   mod: Mod
   name: string
-  dataTypeConstructor: DataTypeConstructor
+  typeConstructor: TypeConstructor
   dataConstructors: Array<DataConstructor>
   location?: SourceLocation
 } & DefinitionState
 
-export type DataTypeConstructor = {
+export type TypeConstructor = {
   definition: DataDefinition
   name: string
   parameters: Array<string>
@@ -252,7 +252,7 @@ export type DataField = {
 export function DataDefinition(
   mod: Mod,
   name: string,
-  dataTypeConstructor: DataTypeConstructor,
+  typeConstructor: TypeConstructor,
   dataConstructors: Array<DataConstructor>,
   location?: SourceLocation,
 ): DataDefinition {
@@ -260,7 +260,7 @@ export function DataDefinition(
     kind: "DataDefinition",
     mod,
     name,
-    dataTypeConstructor,
+    typeConstructor,
     dataConstructors,
     location,
   }
