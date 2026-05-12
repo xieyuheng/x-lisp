@@ -1,9 +1,0 @@
-src/any/any-type-error.meta:5:18 -- inferred type is not a subtype of expected type
-  inferred type: any-t
-  expected type: int-t
- 3 | (define-test any-test
- 4 |   (= x (the any-t 1))
- 5 |   (println (iadd x x)))
-   |                  ~      
- 6 | 
-
