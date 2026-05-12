@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { type Type } from "../type/index.ts"
+import { type Type } from "./Type.ts"
 
 export type TypeEnv = Map<string, Type>
 
