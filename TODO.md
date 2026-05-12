@@ -1,3 +1,5 @@
+[meta-lisp.meta] 中的 define-interface 旧语法，改为 define-struct 新语法。
+
 # literal hash syntax
 
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure

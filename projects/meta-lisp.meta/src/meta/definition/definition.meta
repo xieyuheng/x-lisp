@@ -1,6 +1,6 @@
 (module meta)
 
-(define-data definition-t
+(define-enum definition-t
   (primitive-function-definition
    (name symbol-t)
    (arity int-t)

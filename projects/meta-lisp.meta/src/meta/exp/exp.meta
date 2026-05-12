@@ -5,7 +5,7 @@
   :rhs exp-t
   :location source-location-t)
 
-(define-data exp-t
+(define-enum exp-t
   (symbol-exp (content symbol-t) (location source-location-t))
   (keyword-exp (content keyword-t) (location source-location-t))
   (string-exp (content string-t) (location source-location-t))

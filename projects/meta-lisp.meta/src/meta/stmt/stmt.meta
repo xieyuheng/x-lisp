@@ -1,6 +1,6 @@
 (module meta)
 
-(define-data stmt-t
+(define-enum stmt-t
   (import-stmt
     (mod-name symbol-t)
     (names (list-t symbol-t))
@@ -30,7 +30,7 @@
     (parameters (list-t symbol-t))
     (body exp-t)
     (location source-location-t))
-  (define-data-stmt
+  (define-enum-stmt
     (data-type-constructor data-type-constructor-t)
     (data-constructors (list-t data-constructor-t))
     (location source-location-t))

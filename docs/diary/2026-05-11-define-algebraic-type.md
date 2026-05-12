@@ -303,14 +303,17 @@ parameter 名字是暴露给用户的 API 的一部分。
 
 ```scheme
 (define-struct point-t
-  (make-point (x float-t) (y float-t)))
+  (x float-t)
+  (y float-t))
 ```
 
 展开为：
 
 ```scheme
 (define-algebraic-type point-t
-  (make-point (x float-t) (y float-t))
+  (make-point
+   (x float-t)
+   (y float-t))
   point?
   (x point-x point-put-x!)
   (y point-y point-put-y!))
@@ -320,15 +323,23 @@ parameter 名字是暴露给用户的 API 的一部分。
 
 ```scheme
 (define-struct (pair-t A B)
-  (make-pair (first A) (second B)))
+  (first A)
+  (second B))
 ```
 
 展开为：
 
 ```scheme
 (define-algebraic-type (pair-t A B)
-  (make-pair (first A) (second B))
+  (make-pair
+   (first A)
+   (second B))
   pair?
   (first pair-first pair-put-first!)
   (second point-second point-put-second!))
 ```
+
+给 `(define-struct)` 一个变体 `(define-struct*)`：
+
+- `(define-struct*)` -- 用户提供 constructor-name。
+- `(define-struct)` -- 根据 type-name 生成 constructor-name -- 用 make- 前缀。

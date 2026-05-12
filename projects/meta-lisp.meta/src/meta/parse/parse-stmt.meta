@@ -54,8 +54,8 @@
            (import-all-stmt
             (symbol-sexp-content (list-get 1 elements))
             location))
-          ((equal? tag 'define-data)
-           (parse-define-data-stmt elements location))
+          ((equal? tag 'define-enum)
+           (parse-define-enum-stmt elements location))
           ((equal? tag 'define-interface)
            (parse-define-interface-stmt elements location))
           ((equal? tag 'claim)
@@ -113,12 +113,12 @@
         (parse-body (list-drop 2 elements) location)
         location))))
 
-(claim parse-define-data-stmt
+(claim parse-define-enum-stmt
   (-> (list-t located-sexp-t) source-location-t
       stmt-t))
 
-(define (parse-define-data-stmt elements location)
-  (define-data-stmt
+(define (parse-define-enum-stmt elements location)
+  (define-enum-stmt
     (parse-data-type-constructor (list-get 1 elements))
     (list-map parse-data-constructor (list-drop 2 elements))
     location))

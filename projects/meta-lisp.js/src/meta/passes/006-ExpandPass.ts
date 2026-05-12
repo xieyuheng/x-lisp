@@ -38,6 +38,11 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
       return expandDefineAlgebraicType(algebraicType)
     }
 
+    case "DefineStructStar": {
+      const algebraicType = desugarDefineStructStar(stmt)
+      return expandDefineAlgebraicType(algebraicType)
+    }
+
     case "DefineStruct": {
       const algebraicType = desugarDefineStruct(stmt)
       return expandDefineAlgebraicType(algebraicType)
@@ -78,7 +83,9 @@ function desugarDefineEnum(stmt: M.DefineEnum): M.DefineAlgebraicType {
   )
 }
 
-function desugarDefineStruct(stmt: M.DefineStruct): M.DefineAlgebraicType {
+function desugarDefineStructStar(
+  stmt: M.DefineStructStar,
+): M.DefineAlgebraicType {
   const typeName = stmt.typeConstructor.name
 
   if (!typeName.endsWith("-t")) {
@@ -105,6 +112,42 @@ function desugarDefineStruct(stmt: M.DefineStruct): M.DefineAlgebraicType {
       fields,
       predicate: `${base}?`,
       location: ctor.location,
+    },
+  ]
+
+  return M.DefineAlgebraicType(
+    stmt.typeConstructor,
+    dataConstructors,
+    stmt.location,
+  )
+}
+
+function desugarDefineStruct(stmt: M.DefineStruct): M.DefineAlgebraicType {
+  const typeName = stmt.typeConstructor.name
+
+  if (!typeName.endsWith("-t")) {
+    let message = `[desugarDefineStruct] type name must end with "-t"`
+    message += `\n  type name: ${typeName}`
+    message += `\n  hint: use the explicit (define-algebraic-type) syntax instead`
+    throw new Error(message)
+  }
+
+  const base = typeName.slice(0, -2)
+
+  const fields = stmt.fields.map((field) => ({
+    name: field.name,
+    type: field.type,
+    accessorName: `${base}-${field.name}`,
+    modifierName: `${base}-put-${field.name}!`,
+    location: field.location,
+  }))
+
+  const dataConstructors = [
+    {
+      name: `make-${base}`,
+      fields,
+      predicate: `${base}?`,
+      location: stmt.location,
     },
   ]
 

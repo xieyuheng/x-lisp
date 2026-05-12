@@ -1,6 +1,6 @@
 (module meta)
 
-(define-data value-t
+(define-enum value-t
   (symbol-value (content symbol-t))
   (keyword-value (content keyword-t))
   (string-value (content string-t))

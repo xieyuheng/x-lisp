@@ -1,5 +1,9 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import type { DataConstructor, TypeConstructor } from "../definition/index.ts"
+import type {
+  DataConstructor,
+  DataField,
+  TypeConstructor,
+} from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 
 export type Stmt =
@@ -13,6 +17,7 @@ export type Stmt =
   | DefineEnum
   | DefineAlgebraicType
   | DefineStruct
+  | DefineStructStar
   | Claim
   | Admit
   | Private
@@ -185,22 +190,42 @@ export function DefineEnum(
   }
 }
 
-export type DefineStruct = {
-  kind: "DefineStruct"
+export type DefineStructStar = {
+  kind: "DefineStructStar"
   typeConstructor: Omit<TypeConstructor, "definition">
   dataConstructor: Omit<DataConstructor, "definition">
   location?: SourceLocation
 }
 
-export function DefineStruct(
+export function DefineStructStar(
   typeConstructor: Omit<TypeConstructor, "definition">,
   dataConstructor: Omit<DataConstructor, "definition">,
+  location?: SourceLocation,
+): DefineStructStar {
+  return {
+    kind: "DefineStructStar",
+    typeConstructor,
+    dataConstructor,
+    location,
+  }
+}
+
+export type DefineStruct = {
+  kind: "DefineStruct"
+  typeConstructor: Omit<TypeConstructor, "definition">
+  fields: Array<DataField>
+  location?: SourceLocation
+}
+
+export function DefineStruct(
+  typeConstructor: Omit<TypeConstructor, "definition">,
+  fields: Array<DataField>,
   location?: SourceLocation,
 ): DefineStruct {
   return {
     kind: "DefineStruct",
     typeConstructor,
-    dataConstructor,
+    fields,
     location,
   }
 }

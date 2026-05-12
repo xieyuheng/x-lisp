@@ -1,7 +1,7 @@
 (module examples)
 
 (define-struct point-t
-  (make-point (x float-t) (y float-t)))
+  (x float-t) (y float-t))
 
 (define (point-distance-squared point)
   (fadd (fmul (point-x point) (point-x point))

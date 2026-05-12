@@ -43,10 +43,16 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-enum ${type} ${constructors})`
     }
 
-    case "DefineStruct": {
+    case "DefineStructStar": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructor = formatDataConstructor(stmt.dataConstructor)
-      return `(define-struct ${type} ${constructor})`
+      return `(define-struct* ${type} ${constructor})`
+    }
+
+    case "DefineStruct": {
+      const type = formatTypeConstructor(stmt.typeConstructor)
+      const fields = stmt.fields.map(formatDataField).join(" ")
+      return `(define-struct ${type} ${fields})`
     }
 
     case "DefineAlgebraicType": {

@@ -121,10 +121,18 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
-  "(cons* 'define-struct head ctor)": ({ head, ctor }, { location }) => {
-    return M.DefineStruct(
+  "(cons* 'define-struct* head ctor)": ({ head, ctor }, { location }) => {
+    return M.DefineStructStar(
       parseTypeConstructor(head),
       parseDataConstructor(S.asList(ctor).elements[0]),
+      location,
+    )
+  },
+
+  "(cons* 'define-struct head fields)": ({ head, fields }, { location }) => {
+    return M.DefineStruct(
+      parseTypeConstructor(head),
+      S.asList(fields).elements.map(parseDataField),
       location,
     )
   },
