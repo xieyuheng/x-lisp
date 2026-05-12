@@ -1,15 +1,18 @@
 # subtype
 
-[meta-builtin.meta] `source-span-t` use `(define-data)`
-
 [meta-lisp.js] remove row-polymorphism
 [meta-lisp.js] remove subtype
 
 # algebraic type
 
-[meta-lisp.js] rename `DefineInterface` to `DefineRecordType`
-[meta-lisp.js] rename `DefineData` to `DefineAlgebraicType`
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
+[meta-lisp.js] remove `Interface` and `DefineInterface`
+[meta-lisp.js] rename `DefineData` to `DefineEnum`
+[meta-lisp.js] `DefineStruct`
+[meta-lisp.js] `DefineEnum`
+[meta-lisp.js] `DefineEnum` desugar to `DefineAlgebraicType`
+[meta-lisp.js] `DefineStruct` to desugar to `DefineAlgebraicType`
+[meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
 
 # any-t
 

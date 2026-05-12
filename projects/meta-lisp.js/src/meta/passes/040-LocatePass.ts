@@ -136,21 +136,23 @@ function targetWithLocation(exp: M.Exp): M.Exp {
 }
 
 function expFromSourceLocation(location: S.SourceLocation): M.Exp {
-  return M.LiteralRecord(
-    {
-      path: M.String(location.path, location),
-      span: expFromSpan(location.span, location),
-    },
+  return M.desugarList(
+    [
+      M.Symbol("cons-source-location"),
+      M.String(location.path, location),
+      expFromSpan(location.span, location),
+    ],
     location,
   )
 }
 
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
-  return M.LiteralRecord(
-    {
-      start: expFromPosition(span.start, location),
-      end: expFromPosition(span.end, location),
-    },
+  return M.desugarList(
+    [
+      M.Symbol("cons-source-span"),
+      expFromPosition(span.start, location),
+      expFromPosition(span.end, location),
+    ],
     location,
   )
 }
@@ -159,12 +161,13 @@ function expFromPosition(
   position: S.Position,
   location: S.SourceLocation,
 ): M.Exp {
-  return M.LiteralRecord(
-    {
-      index: M.Int(BigInt(position.index), location),
-      row: M.Int(BigInt(position.row), location),
-      column: M.Int(BigInt(position.column), location),
-    },
+  return M.desugarList(
+    [
+      M.Symbol("cons-source-position"),
+      M.Int(BigInt(position.index), location),
+      M.Int(BigInt(position.row), location),
+      M.Int(BigInt(position.column), location),
+    ],
     location,
   )
 }

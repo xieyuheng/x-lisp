@@ -1,45 +1,51 @@
 #include "index.h"
 
 value_t value_from_position(struct position_t position) {
-  xrecord_t *record = make_xrecord();
-  xrecord_put(record, "index", x_int(position.index));
-  xrecord_put(record, "row", x_int(position.row));
-  xrecord_put(record, "column", x_int(position.column));
-  return x_object(record);
+  value_t data = x_make_list();
+  value_t tag = x_object(intern_symbol("cons-source-position"));
+  x_list_push_mut(tag, data);
+  x_list_push_mut(x_int(position.index), data);
+  x_list_push_mut(x_int(position.row), data);
+  x_list_push_mut(x_int(position.column), data);
+  return data;
 }
 
 value_t value_from_span(struct span_t span) {
-  xrecord_t *record = make_xrecord();
-  xrecord_put(record, "start", value_from_position(span.start));
-  xrecord_put(record, "end", value_from_position(span.end));
-  return x_object(record);
+  value_t data = x_make_list();
+  value_t tag = x_object(intern_symbol("cons-source-span"));
+  x_list_push_mut(tag, data);
+  x_list_push_mut(value_from_position(span.start), data);
+  x_list_push_mut(value_from_position(span.end), data);
+  return data;
 }
 
 value_t value_from_source_location(struct source_location_t location) {
-  xrecord_t *record = make_xrecord();
-  xrecord_put(record, "path", x_object(make_xstring(location.pathname)));
-  xrecord_put(record, "span", value_from_span(location.span));
-  return x_object(record);
+  value_t data = x_make_list();
+  value_t tag = x_object(intern_symbol("cons-source-location"));
+  x_list_push_mut(tag, data);
+  x_list_push_mut(x_object(make_xstring(location.pathname)), data);
+  x_list_push_mut(value_from_span(location.span), data);
+  return data;
 }
 
 struct position_t value_to_position(value_t value) {
   return (struct position_t) {
-    .index = to_int64(xrecord_get(to_xrecord(value), "index")),
-    .row = to_int64(xrecord_get(to_xrecord(value), "row")),
-    .column = to_int64(xrecord_get(to_xrecord(value), "column")),
+    .index = to_int64(xlist_get(to_xlist(value), 1)),
+    .row = to_int64(xlist_get(to_xlist(value), 2)),
+    .column = to_int64(xlist_get(to_xlist(value), 3)),
   };
 }
 
 struct span_t value_to_span(value_t value) {
   return (struct span_t) {
-    .start = value_to_position(xrecord_get(to_xrecord(value), "start")),
-    .end = value_to_position(xrecord_get(to_xrecord(value), "end")),
+    .start = value_to_position(xlist_get(to_xlist(value), 1)),
+    .end = value_to_position(xlist_get(to_xlist(value), 2)),
   };
 }
 
 struct source_location_t value_to_source_location(value_t value) {
   return (struct source_location_t) {
-    .pathname = xstring_string(to_xstring(xrecord_get(to_xrecord(value), "path"))),
-    .span = value_to_span(xrecord_get(to_xrecord(value), "span")),
+    .pathname = xstring_string(to_xstring(xlist_get(to_xlist(value), 1))),
+    .span = value_to_span(xlist_get(to_xlist(value), 2)),
   };
 }

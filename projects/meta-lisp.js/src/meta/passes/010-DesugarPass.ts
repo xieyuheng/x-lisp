@@ -501,7 +501,7 @@ export function desugarList(
   elements: Array<M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.Begin(
+  return M.desugarBegin(
     [
       M.Assign(
         "list",
@@ -525,7 +525,7 @@ function desugarSet(
   elements: Array<M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.Begin(
+  return M.desugarBegin(
     [
       M.Assign(
         "set",
@@ -549,7 +549,7 @@ function desugarHash(
   entries: Array<{ key: M.Exp; value: M.Exp }>,
   location?: S.SourceLocation,
 ): M.Exp {
-  return M.Begin(
+  return M.desugarBegin(
     [
       M.Assign(
         "hash",
