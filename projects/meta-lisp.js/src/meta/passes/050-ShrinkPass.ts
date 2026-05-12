@@ -72,10 +72,6 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
       return onExp(mod, exp.exp)
     }
 
-    case "As": {
-      return onExp(mod, exp.exp)
-    }
-
     case "LiteralRecord": {
       return onExp(mod, shrinkRecord(exp.attributes, exp.location))
     }

@@ -1,17 +1,11 @@
-[meta-lisp.js] remove `any-t` and `(as)`
-[meta-lisp.js] rename `DefinedDataType` to `DataType` or `AlgebraicType`
-
 # subtype
 
+[meta-lisp.js] row-polymorphism
 [meta-lisp.js] remove subtype
 
 # algebraic type
 
-[meta-lisp.js] `(define-data)` defines new value -- different from list and record
-[stack-lisp.c] support `xdata_t`
-- or `algebraic_data_t`
-- or `datum_t`
-- or `xrecord_t` -- because of `(define-record-type)`?
+[meta-lisp.js] rename `DefinedDataType` to `DataType` or `AlgebraicType`
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
 
 # any-t

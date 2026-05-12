@@ -17,10 +17,6 @@ export function typeFreeVarTypes(
     return []
   }
 
-  if (M.isAnyType(type)) {
-    return []
-  }
-
   if (M.isTypeType(type)) {
     return []
   }

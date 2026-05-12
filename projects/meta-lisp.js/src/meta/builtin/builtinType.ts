@@ -12,8 +12,6 @@ export function builtinType(mod: Mod) {
     type: M.createTypeType(),
   })
 
-  definePrimitiveVariable(mod, "any-t", M.createAnyType())
-
   definePrimitiveVariable(mod, "int-t", M.createAtomType("int"))
   definePrimitiveVariable(mod, "float-t", M.createAtomType("float"))
   definePrimitiveVariable(mod, "string-t", M.createAtomType("string"))

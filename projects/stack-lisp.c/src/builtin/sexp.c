@@ -6,11 +6,6 @@ value_t x_parse_located_sexps(value_t path, value_t string) {
     xstring_string(to_xstring(string)));
 }
 
-value_t x_parse_sexps(value_t string) {
-  return parse_sexps(
-    xstring_string(to_xstring(string)));
-}
-
 value_t x_format_sexp(value_t sexp) {
   buffer_t *buffer = make_buffer();
   format_sexp(buffer, sexp);

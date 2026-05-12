@@ -327,14 +327,6 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       )
     }
 
-    case "As": {
-      return M.As(
-        desugar(state, exp.type),
-        desugar(state, exp.exp),
-        exp.location,
-      )
-    }
-
     case "Lambda": {
       return M.Lambda(exp.parameters, desugar(state, exp.body), exp.location)
     }

@@ -14,10 +14,6 @@ export function typeFreshen(type: M.Value): M.Value {
     return type
   }
 
-  if (M.isAnyType(type)) {
-    return type
-  }
-
   if (M.isLiteralType(type)) {
     return type
   }

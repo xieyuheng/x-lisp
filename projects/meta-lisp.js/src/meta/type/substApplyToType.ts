@@ -37,10 +37,6 @@ function substApplyToTypeWithBoundIds(
     return type
   }
 
-  if (M.isAnyType(type)) {
-    return type
-  }
-
   if (M.isLiteralType(type)) {
     return type
   }

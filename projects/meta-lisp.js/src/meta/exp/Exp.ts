@@ -37,7 +37,6 @@ export type Exp =
   | Update
   | UpdateMut
   | The
-  | As
   | Polymorphic
   | Match
 
@@ -703,22 +702,6 @@ export type The = {
 export function The(type: Exp, exp: Exp, location?: SourceLocation): The {
   return {
     kind: "The",
-    type,
-    exp,
-    location,
-  }
-}
-
-export type As = {
-  kind: "As"
-  type: Exp
-  exp: Exp
-  location?: SourceLocation
-}
-
-export function As(type: Exp, exp: Exp, location?: SourceLocation): As {
-  return {
-    kind: "As",
     type,
     exp,
     location,

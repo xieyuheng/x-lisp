@@ -17,13 +17,6 @@ export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
     return true
   }
 
-  // - any-t is the top type, 
-  //   but there is not subtype relation between var types,
-  //   unless the two var types are the same.
-  if (!M.isVarType(lhs) && M.isAnyType(rhs)) {
-    return true
-  }
-
   if (M.isInterfaceType(lhs) && M.isInterfaceType(rhs)) {
     return typeSubtypeAttributes(
       trail,

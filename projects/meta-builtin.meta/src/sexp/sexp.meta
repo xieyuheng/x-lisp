@@ -10,10 +10,7 @@
              (location source-location-t)))
 
 (declare-primitive-function parse-located-sexps 2)
-(declare-primitive-function parse-sexps 1)
 (declare-primitive-function format-sexp 1)
 
 (claim parse-located-sexps (-> string-t string-t (list-t located-sexp-t)))
-(claim parse-sexps (-> string-t (list-t any-t)))
-;; (claim parse-sexps (polymorphic (A) (-> string-t (list-t A))))
 (claim format-sexp (polymorphic (A) (-> A string-t)))
