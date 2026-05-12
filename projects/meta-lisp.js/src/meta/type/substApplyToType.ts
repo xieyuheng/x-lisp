@@ -14,6 +14,8 @@ function substApplyToTypeWithBoundIds(
   subst: M.Subst,
   type: M.Value,
 ): M.Value {
+  type = M.substWalk(subst, type)
+
   if (M.isVarType(type)) {
     const id = M.varTypeId(type)
     if (boundIds.has(id)) {

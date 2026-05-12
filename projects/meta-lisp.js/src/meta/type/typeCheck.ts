@@ -7,6 +7,8 @@ export function typeCheckAssignable(
   type: M.Value,
 ): M.CheckEffect {
   return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) => {
+    // - need to use typeFreshen to remove polymorphic type
+    //   before calling typeCheckSubstInstance.
     inferredType = M.typeFreshen(inferredType)
     type = M.typeFreshen(type)
     return M.sequenceCheckEffect([

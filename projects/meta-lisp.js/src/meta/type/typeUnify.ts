@@ -11,15 +11,15 @@ export function typeUnify(
     return undefined
   }
 
-  lhs = M.substApplyToType(subst, lhs)
-  rhs = M.substApplyToType(subst, rhs)
+  lhs = M.substWalk(subst, lhs)
+  rhs = M.substWalk(subst, rhs)
 
   if (M.isPolymorphicType(lhs)) {
-    lhs = M.polymorphicTypeFreshBodyType(lhs)
+    return typeUnify(subst, M.polymorphicTypeFreshBodyType(lhs), rhs)
   }
 
   if (M.isPolymorphicType(rhs)) {
-    rhs = M.polymorphicTypeFreshBodyType(rhs)
+    return typeUnify(subst, lhs, M.polymorphicTypeFreshBodyType(rhs))
   }
 
   if (

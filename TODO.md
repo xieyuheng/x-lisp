@@ -1,6 +1,6 @@
 # algebraic type
 
-[meta-lisp.js] no deep walk duing `typeUnify`
+[meta-lisp.js] rename `substApplyToType` to `substDeepWalk`
 [meta-lisp.js] remove `formatTypeInMod`
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
 [meta-lisp.js] refactor `simplifyMatch` -- maybe no need `mod`?
