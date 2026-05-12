@@ -1,6 +1,5 @@
 # algebraic type
 
-[meta-lisp.js] remove `formatTypeInMod`
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
 [meta-lisp.js] refactor `simplifyMatch` -- maybe no need `mod`?
 

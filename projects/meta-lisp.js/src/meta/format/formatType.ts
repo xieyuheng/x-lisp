@@ -63,9 +63,9 @@ export function formatType(type: M.Value): string {
     const definition = M.definedDataTypeDefinition(type)
     const argTypes = formatTypes(M.definedDataTypeArgTypes(type))
     if (argTypes.length === 0) {
-      return `${definition.name}`
+      return `${definition.mod.name}/${definition.name}`
     } else {
-      return `(${definition.name} ${argTypes})`
+      return `(${definition.mod.name}/${definition.name} ${argTypes})`
     }
   }
 

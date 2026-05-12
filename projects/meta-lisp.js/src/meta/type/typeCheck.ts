@@ -39,8 +39,8 @@ export function typeCheckSubstInstance(
       type = M.substDeepWalk(prettyUnknownSubst, type)
 
       let message = `expected type is not a substitution instance of inferred type`
-      message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
-      message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
+      message += `\n  inferred type: ${M.formatType(inferredType)}`
+      message += `\n  expected type: ${M.formatType(type)}`
       return M.errorCheckEffect(exp, message)(subst)
     }
 
@@ -80,8 +80,8 @@ export function typeCheckUnify(
       type = M.substDeepWalk(prettyUnknownSubst, type)
 
       let message = `unification fail`
-      message += `\n  inferred type: ${M.formatTypeInMod(mod, inferredType)}`
-      message += `\n  expected type: ${M.formatTypeInMod(mod, type)}`
+      message += `\n  inferred type: ${M.formatType(inferredType)}`
+      message += `\n  expected type: ${M.formatType(type)}`
       return M.errorCheckEffect(exp, message)(subst)
     }
 
