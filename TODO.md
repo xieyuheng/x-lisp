@@ -1,16 +1,16 @@
 # algebraic type
 
-[meta-lisp.js] refactor `simplifyMatch` -- maybe no need `mod`?
-
 [meta-lisp.js] `Type` should not be encoded in `Value`
 [meta-lisp.js] remove `evaluate`
 [meta-lisp.js] remove `Value`
 
+[meta-lisp.js] `DefineAlgebraicType`
+
 [meta-lisp.js] rename `DefineData` to `DefineEnum`
 [meta-lisp.js] `DefineStruct`
-[meta-lisp.js] `DefineEnum`
 [meta-lisp.js] `DefineEnum` desugar to `DefineAlgebraicType`
 [meta-lisp.js] `DefineStruct` to desugar to `DefineAlgebraicType`
+
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
 
 # any-t

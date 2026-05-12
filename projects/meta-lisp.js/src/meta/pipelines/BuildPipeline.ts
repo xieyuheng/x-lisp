@@ -8,6 +8,8 @@ import { textWidth } from "../../config.ts"
 import * as Stk from "../../stack/index.ts"
 import * as M from "../index.ts"
 
+// - no CheckPass during BuildPipeline.
+
 export function BuildPipeline(
   project: M.Project,
   options: {
@@ -20,7 +22,6 @@ export function BuildPipeline(
   M.ExecutePass(project)
   M.ClaimPass(project)
   M.DesugarPass(project, { dump: options.dump })
-  // - no type check during build
   M.QualifyPass(project, { dump: options.dump })
   M.LocatePass(project, { dump: options.dump })
   M.ShrinkPass(project, { dump: options.dump })

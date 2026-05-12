@@ -12,7 +12,9 @@ export function CheckPipeline(
   M.ExecutePass(project)
   M.ClaimPass(project)
   M.DesugarPass(project, { dump: options.dump })
-  M.CheckPass(project, { verbose: options.verbose, dump: options.dump })
   M.QualifyPass(project, { dump: options.dump })
+  // - CheckPass still need to handle unqualified Var,
+  //   which is used by by inferring type of recursive function.
+  M.CheckPass(project, { verbose: options.verbose, dump: options.dump })
   M.LocatePass(project, { dump: options.dump })
 }
