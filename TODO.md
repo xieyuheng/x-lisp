@@ -1,6 +1,5 @@
 # subtype
 
-[meta-builtin.meta] `hash-entry-t` use `(define-data)`
 [meta-builtin.meta] `source-span-t` use `(define-data)`
 
 [meta-lisp.js] remove row-polymorphism

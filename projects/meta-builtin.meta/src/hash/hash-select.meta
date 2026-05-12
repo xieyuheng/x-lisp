@@ -8,7 +8,7 @@
 (define (hash-select p hash)
   (hash-from-entries
    (list-select
-    (lambda (entry) (p (:key entry) (:value entry)))
+    (lambda (entry) (p (hash-entry-key entry) (hash-entry-value entry)))
     (hash-entries hash))))
 
 (claim hash-select-key
@@ -19,7 +19,7 @@
 (define (hash-select-key p hash)
   (hash-from-entries
    (list-select
-    (lambda (entry) (p (:key entry)))
+    (lambda (entry) (p (hash-entry-key entry)))
     (hash-entries hash))))
 
 (claim hash-select-value
@@ -30,7 +30,7 @@
 (define (hash-select-value p hash)
   (hash-from-entries
    (list-select
-    (lambda (entry) (p (:value entry)))
+    (lambda (entry) (p (hash-entry-value entry)))
     (hash-entries hash))))
 
 (claim hash-reject

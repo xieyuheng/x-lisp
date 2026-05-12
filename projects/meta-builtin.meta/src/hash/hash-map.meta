@@ -8,7 +8,7 @@
 (define (hash-map-key f hash)
   (hash-from-entries
    (list-map (lambda (entry)
-               (make-hash-entry (f (:key entry)) (:value entry)))
+               (make-hash-entry (f (hash-entry-key entry)) (hash-entry-value entry)))
              (hash-entries hash))))
 
 (define-test hash-map-key-test
@@ -24,7 +24,7 @@
 (define (hash-map-value f hash)
   (hash-from-entries
    (list-map (lambda (entry)
-               (make-hash-entry (:key entry) (f (:value entry))))
+               (make-hash-entry (hash-entry-key entry) (f (hash-entry-value entry))))
              (hash-entries hash))))
 
 (define-test hash-map-value-test
@@ -49,8 +49,8 @@
     (hash-map-entry
      (lambda (entry)
        (make-hash-entry
-        (iadd 1 (:key entry))
-        (iadd 1 (:value entry))))
+        (iadd 1 (hash-entry-key entry))
+        (iadd 1 (hash-entry-value entry))))
      (@hash 1 2 3 4))))
 
 (claim hash-map
@@ -63,7 +63,7 @@
   (hash-from-entries
    (list-map
     (lambda (entry)
-      (f (:key entry) (:value entry)))
+      (f (hash-entry-key entry) (hash-entry-value entry)))
     (hash-entries hash))))
 
 (define-test hash-map-test

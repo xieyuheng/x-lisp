@@ -80,13 +80,15 @@ value_t x_hash_entries(value_t hash) {
   hash_iter_t iter;
   hash_iter_init(&iter, to_xhash(hash)->hash);
   const hash_entry_t *entry = hash_iter_next_entry(&iter);
+  value_t tag = x_object(intern_symbol("cons-hash-entry"));
   while (entry) {
     value_t key = (value_t) entry->key;
     value_t value = (value_t) entry->value;
-    xrecord_t *record = make_xrecord();
-    xrecord_put(record, "key", key);
-    xrecord_put(record, "value", value);
-    xlist_push(entries, x_object(record));
+    xlist_t *data = make_xlist();
+    xlist_push(data, tag);
+    xlist_push(data, key);
+    xlist_push(data, value);
+    xlist_push(entries, x_object(data));
     entry = hash_iter_next_entry(&iter);
   }
 

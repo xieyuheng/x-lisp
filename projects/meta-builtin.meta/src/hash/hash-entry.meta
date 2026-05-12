@@ -1,0 +1,10 @@
+(module builtin)
+
+(define-data (hash-entry-t K V)
+  (cons-hash-entry (key K) (value V)))
+
+(define make-hash-entry cons-hash-entry)
+(define hash-entry-key cons-hash-entry-key)
+(define hash-entry-value cons-hash-entry-value)
+(define hash-entry-put-key! cons-hash-entry-put-key!)
+(define hash-entry-put-value! cons-hash-entry-put-value!)

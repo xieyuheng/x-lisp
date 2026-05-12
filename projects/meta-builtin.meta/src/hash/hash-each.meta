@@ -31,7 +31,7 @@
 
 (define (hash-each f hash)
   (list-each (lambda (entry)
-               (f (:key entry) (:value entry)))
+               (f (hash-entry-key entry) (hash-entry-value entry)))
              (hash-entries hash)))
 
 (define-test hash-each-value-test
