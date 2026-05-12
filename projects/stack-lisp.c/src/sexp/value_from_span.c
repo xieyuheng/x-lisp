@@ -2,7 +2,7 @@
 
 value_t value_from_position(struct position_t position) {
   value_t data = x_make_list();
-  value_t tag = x_object(intern_symbol("cons-source-position"));
+  value_t tag = x_object(intern_symbol("make-source-position"));
   x_list_push_mut(tag, data);
   x_list_push_mut(x_int(position.index), data);
   x_list_push_mut(x_int(position.row), data);
@@ -12,7 +12,7 @@ value_t value_from_position(struct position_t position) {
 
 value_t value_from_span(struct span_t span) {
   value_t data = x_make_list();
-  value_t tag = x_object(intern_symbol("cons-source-span"));
+  value_t tag = x_object(intern_symbol("make-source-span"));
   x_list_push_mut(tag, data);
   x_list_push_mut(value_from_position(span.start), data);
   x_list_push_mut(value_from_position(span.end), data);
@@ -21,7 +21,7 @@ value_t value_from_span(struct span_t span) {
 
 value_t value_from_source_location(struct source_location_t location) {
   value_t data = x_make_list();
-  value_t tag = x_object(intern_symbol("cons-source-location"));
+  value_t tag = x_object(intern_symbol("make-source-location"));
   x_list_push_mut(tag, data);
   x_list_push_mut(x_object(make_xstring(location.pathname)), data);
   x_list_push_mut(value_from_span(location.span), data);

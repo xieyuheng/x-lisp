@@ -94,7 +94,7 @@ static value_t list_sexp(value_t elements, value_t location) {
 
 static value_t make_source_location_sexp(value_t path, value_t span) {
   value_t data = x_make_list();
-  value_t tag = x_object(intern_symbol("cons-source-location"));
+  value_t tag = x_object(intern_symbol("make-source-location"));
   x_list_push_mut(tag, data);
   x_list_push_mut(path, data);
   x_list_push_mut(span, data);

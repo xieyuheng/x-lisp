@@ -1,10 +1,5 @@
 (module builtin)
 
-(define-enum (pair-t A B)
-  (cons-pair (first A) (second B)))
-
-(define make-pair cons-pair)
-(define pair-first cons-pair-first)
-(define pair-second cons-pair-second)
-(define pair-put-first! cons-pair-put-first!)
-(define pair-put-second! cons-pair-put-second!)
+(define-struct (pair-t A B)
+  (first A)
+  (second B))

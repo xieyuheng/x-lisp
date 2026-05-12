@@ -128,7 +128,7 @@ function targetWithLocation(exp: M.Exp): M.Exp {
 function expFromSourceLocation(location: S.SourceLocation): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("cons-source-location"),
+      M.Symbol("make-source-location"),
       M.String(location.path, location),
       expFromSpan(location.span, location),
     ],
@@ -139,7 +139,7 @@ function expFromSourceLocation(location: S.SourceLocation): M.Exp {
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("cons-source-span"),
+      M.Symbol("make-source-span"),
       expFromPosition(span.start, location),
       expFromPosition(span.end, location),
     ],
@@ -153,7 +153,7 @@ function expFromPosition(
 ): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("cons-source-position"),
+      M.Symbol("make-source-position"),
       M.Int(BigInt(position.index), location),
       M.Int(BigInt(position.row), location),
       M.Int(BigInt(position.column), location),

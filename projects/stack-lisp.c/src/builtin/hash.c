@@ -80,7 +80,7 @@ value_t x_hash_entries(value_t hash) {
   hash_iter_t iter;
   hash_iter_init(&iter, to_xhash(hash)->hash);
   const hash_entry_t *entry = hash_iter_next_entry(&iter);
-  value_t tag = x_object(intern_symbol("cons-hash-entry"));
+  value_t tag = x_object(intern_symbol("make-hash-entry"));
   while (entry) {
     value_t key = (value_t) entry->key;
     value_t value = (value_t) entry->value;
