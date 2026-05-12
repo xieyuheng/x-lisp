@@ -9,7 +9,6 @@ export function typeCheckAssignable(
   return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) => {
     inferredType = M.typeFreshen(inferredType)
     type = M.typeFreshen(type)
-
     return M.sequenceCheckEffect([
       typeCheckSubstInstance(mod, exp, inferredType, type),
       typeCheckUnify(mod, exp, inferredType, type),
@@ -53,12 +52,9 @@ export function typeCheckByInfer(
   exp: M.Exp,
   type: M.Value,
 ): M.CheckEffect {
-  return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) => {
-    inferredType = M.typeFreshen(inferredType)
-    type = M.typeFreshen(type)
-
-    return M.sequenceCheckEffect([typeCheckUnify(mod, exp, inferredType, type)])
-  })
+  return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) =>
+    typeCheckUnify(mod, exp, inferredType, type),
+  )
 }
 
 export function typeCheckUnify(

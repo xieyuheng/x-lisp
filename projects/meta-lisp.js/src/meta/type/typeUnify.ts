@@ -14,8 +14,13 @@ export function typeUnify(
   lhs = M.substApplyToType(subst, lhs)
   rhs = M.substApplyToType(subst, rhs)
 
-  lhs = M.typeFreshen(lhs)
-  rhs = M.typeFreshen(rhs)
+  if (M.isPolymorphicType(lhs)) {
+    lhs = M.polymorphicTypeFreshBodyType(lhs)
+  }
+
+  if (M.isPolymorphicType(rhs)) {
+    rhs = M.polymorphicTypeFreshBodyType(rhs)
+  }
 
   if (
     M.isVarType(lhs) &&
