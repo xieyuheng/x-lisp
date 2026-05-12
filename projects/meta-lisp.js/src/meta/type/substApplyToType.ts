@@ -1,5 +1,4 @@
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
 
 export function substApplyToType(subst: M.Subst, type: M.Value): M.Value {
@@ -43,27 +42,6 @@ function substApplyToTypeWithBoundIds(
 
   if (M.isAtomType(type)) {
     return type
-  }
-
-  if (M.isInterfaceType(type)) {
-    return M.createInterfaceType(
-      recordMapValue(M.interfaceTypeAttributeTypes(type), (t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
-      ),
-    )
-  }
-
-  if (M.isExtendInterfaceType(type)) {
-    return M.createExtendInterfaceType(
-      substApplyToTypeWithBoundIds(
-        boundIds,
-        subst,
-        M.extendInterfaceTypeBaseType(type),
-      ),
-      recordMapValue(M.extendInterfaceTypeAttributeTypes(type), (t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
-      ),
-    )
   }
 
   if (M.isArrowType(type)) {

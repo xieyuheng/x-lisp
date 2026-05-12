@@ -17,52 +17,6 @@ export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
     return true
   }
 
-  if (M.isInterfaceType(lhs) && M.isInterfaceType(rhs)) {
-    return typeSubtypeAttributes(
-      trail,
-      M.interfaceTypeAttributeTypes(lhs),
-      M.interfaceTypeAttributeTypes(rhs),
-    )
-  }
-
-  if (M.isInterfaceType(lhs) && M.isExtendInterfaceType(rhs)) {
-    rhs = M.extendInterfaceTypeMerge(rhs)
-
-    return typeSubtypeAttributes(
-      trail,
-      M.interfaceTypeAttributeTypes(lhs),
-      M.extendInterfaceTypeAttributeTypes(rhs),
-    )
-  }
-
-  if (M.isExtendInterfaceType(lhs) && M.isInterfaceType(rhs)) {
-    lhs = M.extendInterfaceTypeMerge(lhs)
-
-    return typeSubtypeAttributes(
-      trail,
-      M.extendInterfaceTypeAttributeTypes(lhs),
-      M.interfaceTypeAttributeTypes(rhs),
-    )
-  }
-
-  if (M.isExtendInterfaceType(lhs) && M.isExtendInterfaceType(rhs)) {
-    lhs = M.extendInterfaceTypeMerge(lhs)
-    rhs = M.extendInterfaceTypeMerge(rhs)
-
-    return (
-      typeSubtype(
-        trail,
-        M.extendInterfaceTypeBaseType(lhs),
-        M.extendInterfaceTypeBaseType(rhs),
-      ) &&
-      typeSubtypeAttributes(
-        trail,
-        M.extendInterfaceTypeAttributeTypes(lhs),
-        M.extendInterfaceTypeAttributeTypes(rhs),
-      )
-    )
-  }
-
   if (M.isArrowType(lhs) && M.isArrowType(rhs)) {
     // contravariant on ArgTypes
     lhs = M.arrowTypeCurrying(lhs)

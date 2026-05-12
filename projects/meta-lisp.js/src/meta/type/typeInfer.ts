@@ -49,32 +49,9 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       }
 
       case "Apply": {
-        if (exp.target.kind === "Keyword") {
-          const targetType = M.createPolymorphicType(
-            [M.createVarType("R", 0n), M.createVarType("A", 0n)],
-            M.createArrowType(
-              [
-                M.createExtendInterfaceType(M.createVarType("R", 0n), {
-                  [exp.target.content]: M.createVarType("A", 0n),
-                }),
-              ],
-              M.createVarType("A", 0n),
-            ),
-          )
-          return typeInferApplyArrowType(
-            mod,
-            ctx,
-            targetType,
-            exp.args,
-            exp,
-          )(subst)
-        } else {
-          return M.inferThenInfer(
-            typeInfer(mod, ctx, exp.target),
-            (targetType) =>
-              typeInferApplyArrowType(mod, ctx, targetType, exp.args, exp),
-          )(subst)
-        }
+        return M.inferThenInfer(typeInfer(mod, ctx, exp.target), (targetType) =>
+          typeInferApplyArrowType(mod, ctx, targetType, exp.args, exp),
+        )(subst)
       }
 
       case "Lambda": {

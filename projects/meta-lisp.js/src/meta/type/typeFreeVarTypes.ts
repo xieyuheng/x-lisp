@@ -38,21 +38,6 @@ export function typeFreeVarTypes(
     ]
   }
 
-  if (M.isInterfaceType(type)) {
-    return Object.values(M.interfaceTypeAttributeTypes(type)).flatMap((t) =>
-      typeFreeVarTypes(boundIds, t),
-    )
-  }
-
-  if (M.isExtendInterfaceType(type)) {
-    return [
-      ...typeFreeVarTypes(boundIds, M.extendInterfaceTypeBaseType(type)),
-      ...Object.values(M.extendInterfaceTypeAttributeTypes(type)).flatMap((t) =>
-        typeFreeVarTypes(boundIds, t),
-      ),
-    ]
-  }
-
   if (M.isListType(type)) {
     return typeFreeVarTypes(boundIds, M.listTypeElementType(type))
   }

@@ -10,8 +10,6 @@ export function isType(value: M.Value): boolean {
     isLiteralType(value) ||
     isAtomType(value) ||
     isArrowType(value) ||
-    isInterfaceType(value) ||
-    isExtendInterfaceType(value) ||
     isListType(value) ||
     isSetType(value) ||
     isHashType(value) ||
@@ -224,105 +222,6 @@ export function arrowTypeUncurrying(value: M.Value): M.Value {
   }
 
   return value
-}
-
-// InterfaceType
-
-export function isInterfaceType(value: M.Value): boolean {
-  return (
-    M.isListValue(value) &&
-    M.valueEqual(value.elements[0], M.SymbolValue("interface")) &&
-    M.isRecordValue(value.elements[1]) &&
-    Object.values(M.asRecordValue(value.elements[1]).attributes).every(isType)
-  )
-}
-
-export function createInterfaceType(
-  attributeTypes: Record<string, M.Value>,
-): M.Value {
-  return M.ListValue([
-    M.SymbolValue("interface"),
-    M.RecordValue(attributeTypes),
-  ])
-}
-
-export function interfaceTypeAttributeTypes(
-  value: M.Value,
-): Record<string, M.Value> {
-  if (!isInterfaceType(value)) {
-    let message = `[interfaceTypeAttributeTypes] expecting InterfaceType`
-    message += `\n  value: ${M.formatValue(value)}`
-    throw new Error(message)
-  }
-
-  return M.asRecordValue(M.asListValue(value).elements[1]).attributes
-}
-
-// ExtendInterfaceType
-
-export function isExtendInterfaceType(value: M.Value): boolean {
-  return (
-    M.isListValue(value) &&
-    M.valueEqual(value.elements[0], M.SymbolValue("extend-interface")) &&
-    M.isType(value.elements[1]) &&
-    M.isRecordValue(value.elements[2]) &&
-    Object.values(M.asRecordValue(value.elements[2]).attributes).every(isType)
-  )
-}
-
-export function createExtendInterfaceType(
-  baseType: M.Value,
-  attributeTypes: Record<string, M.Value>,
-): M.Value {
-  return M.ListValue([
-    M.SymbolValue("extend-interface"),
-    baseType,
-    M.RecordValue(attributeTypes),
-  ])
-}
-
-export function populateExtendInterfaceType(keys: Array<string>): M.Value {
-  if (keys.length === 0) {
-    return createFreshVarType("R")
-  }
-
-  return M.ListValue([
-    M.SymbolValue("extend-interface"),
-    createFreshVarType("R"),
-    M.RecordValue(
-      Object.fromEntries(keys.map((key) => [key, createFreshVarType("A")])),
-    ),
-  ])
-}
-
-export function extendInterfaceTypeBaseType(value: M.Value): M.Value {
-  assert(isExtendInterfaceType(value))
-  return M.asListValue(value).elements[1]
-}
-
-export function extendInterfaceTypeAttributeTypes(
-  value: M.Value,
-): Record<string, M.Value> {
-  assert(isExtendInterfaceType(value))
-  return M.asRecordValue(M.asListValue(value).elements[2]).attributes
-}
-
-export function extendInterfaceTypeMerge(value: M.Value): M.Value {
-  assert(isExtendInterfaceType(value))
-  const baseType = extendInterfaceTypeBaseType(value)
-  const attributeTypes = extendInterfaceTypeAttributeTypes(value)
-  if (isExtendInterfaceType(baseType)) {
-    const newBaseType = extendInterfaceTypeMerge(baseType)
-    const baseTypeBaseType = extendInterfaceTypeBaseType(newBaseType)
-    const baseTypeAttributeTypes =
-      extendInterfaceTypeAttributeTypes(newBaseType)
-    return createExtendInterfaceType(baseTypeBaseType, {
-      ...baseTypeAttributeTypes,
-      ...attributeTypes,
-    })
-  } else {
-    return value
-  }
 }
 
 // ListType

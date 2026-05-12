@@ -43,21 +43,6 @@ export function formatType(type: M.Value): string {
     }
   }
 
-  if (M.isInterfaceType(type)) {
-    const attributeTypes = formatTypeRecord(M.interfaceTypeAttributeTypes(type))
-    return `(interface ${attributeTypes})`
-  }
-
-  if (M.isExtendInterfaceType(type)) {
-    type = M.extendInterfaceTypeMerge(type)
-
-    const baseType = formatType(M.extendInterfaceTypeBaseType(type))
-    const attributeTypes = formatTypeRecord(
-      M.extendInterfaceTypeAttributeTypes(type),
-    )
-    return `(extend-interface ${baseType} ${attributeTypes})`
-  }
-
   if (M.isListType(type)) {
     const elementType = formatType(M.listTypeElementType(type))
     return `(list-t ${elementType})`

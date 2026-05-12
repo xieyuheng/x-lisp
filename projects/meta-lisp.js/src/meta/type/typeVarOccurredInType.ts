@@ -43,25 +43,6 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
-  if (M.isInterfaceType(type)) {
-    return Object.values(M.interfaceTypeAttributeTypes(type)).some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
-
-  if (M.isExtendInterfaceType(type)) {
-    return (
-      typeVarOccurredInTypeWithBoundIds(
-        boundIds,
-        varType,
-        M.extendInterfaceTypeBaseType(type),
-      ) ||
-      Object.values(M.extendInterfaceTypeAttributeTypes(type)).some((t) =>
-        typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-      )
-    )
-  }
-
   if (M.isListType(type)) {
     return [M.listTypeElementType(type)].some((t) =>
       typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),

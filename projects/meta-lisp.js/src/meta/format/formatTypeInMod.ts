@@ -43,25 +43,6 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     }
   }
 
-  if (M.isInterfaceType(type)) {
-    const attributeTypes = formatTypeRecordInMod(
-      mod,
-      M.interfaceTypeAttributeTypes(type),
-    )
-    return `(interface ${attributeTypes})`
-  }
-
-  if (M.isExtendInterfaceType(type)) {
-    type = M.extendInterfaceTypeMerge(type)
-
-    const baseType = formatTypeInMod(mod, M.extendInterfaceTypeBaseType(type))
-    const attributeTypes = formatTypeRecordInMod(
-      mod,
-      M.extendInterfaceTypeAttributeTypes(type),
-    )
-    return `(extend-interface ${baseType} ${attributeTypes})`
-  }
-
   if (M.isListType(type)) {
     const elementType = formatTypeInMod(mod, M.listTypeElementType(type))
     return `(list-t ${elementType})`

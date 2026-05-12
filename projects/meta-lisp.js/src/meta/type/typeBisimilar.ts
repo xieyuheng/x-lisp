@@ -44,29 +44,6 @@ export function typeBisimilar(
     return M.atomTypeName(lhs) === M.atomTypeName(rhs)
   }
 
-  if (M.isInterfaceType(lhs) && M.isInterfaceType(rhs)) {
-    return typeBisimilarRecord(
-      trail,
-      M.interfaceTypeAttributeTypes(lhs),
-      M.interfaceTypeAttributeTypes(rhs),
-    )
-  }
-
-  if (M.isExtendInterfaceType(lhs) && M.isExtendInterfaceType(rhs)) {
-    return (
-      typeBisimilar(
-        trail,
-        M.extendInterfaceTypeBaseType(lhs),
-        M.extendInterfaceTypeBaseType(rhs),
-      ) &&
-      typeBisimilarRecord(
-        trail,
-        M.extendInterfaceTypeAttributeTypes(lhs),
-        M.extendInterfaceTypeAttributeTypes(rhs),
-      )
-    )
-  }
-
   if (M.isArrowType(lhs) && M.isArrowType(rhs)) {
     lhs = M.arrowTypeCurrying(lhs)
     rhs = M.arrowTypeCurrying(rhs)
