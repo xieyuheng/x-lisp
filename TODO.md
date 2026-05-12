@@ -1,4 +1,3 @@
-[meta-lisp.js] 恢复 typeCheck.ts 和 typeInfer.ts 和 typeSubstInstance.ts 中你删掉的注释
 [meta-lisp.js] 在 typeUnify 中用 Type 的 `is*` 函数，而不要用 `*.kind === `
 
 [meta-lisp.js] move `TypeEnv` to `type/`

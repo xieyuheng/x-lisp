@@ -7,6 +7,8 @@ export function typeCheckAssignable(
   type: M.Type,
 ): M.CheckEffect {
   return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) => {
+    // - need to use typeFreshen to remove polymorphic type
+    //   before calling typeCheckSubstInstance.
     inferredType = M.typeFreshen(inferredType)
     type = M.typeFreshen(type)
     return M.sequenceCheckEffect([
@@ -25,6 +27,8 @@ export function typeCheckSubstInstance(
   return (subst) => {
     inferredType = M.substDeepWalk(subst, inferredType)
     type = M.substDeepWalk(subst, type)
+    // - In the theory of polymorphic type,
+    //   inferredType should be more general than expected type.
     if (!M.typeSubstInstance(type, inferredType)) {
       const prettyUnknownSubst = M.generatePrettyUnknownSubst([
         inferredType,

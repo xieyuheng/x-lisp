@@ -237,6 +237,7 @@ function typeInferVarInMod(
     }
 
     {
+      // - for mutual recursive function
       const inferredType = M.modLookupInferredType(mod, name)
       if (inferredType) return M.okInferEffect(inferredType)(subst)
     }
