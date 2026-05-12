@@ -58,8 +58,8 @@ function substDeepWalkWithBoundIds(
         substDeepWalkWithBoundIds(boundIds, subst, type.valueType),
       )
 
-    case "DefinedDataType":
-      return M.DefinedDataType(
+    case "AlgebraicDataType":
+      return M.AlgebraicDataType(
         type.definition,
         type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
       )

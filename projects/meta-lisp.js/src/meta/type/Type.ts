@@ -10,7 +10,7 @@ export type Type =
   | ListType
   | SetType
   | HashType
-  | DefinedDataType
+  | AlgebraicDataType
   | PolymorphicType
   | CurryType
   | DefinitionType
@@ -177,28 +177,28 @@ export function asHashType(type: Type): HashType {
   throw new Error(`[asHashType] fail on: ${type.kind}`)
 }
 
-// --- DefinedDataType ---
+// --- AlgebraicDataType ---
 
-export type DefinedDataType = {
-  kind: "DefinedDataType"
+export type AlgebraicDataType = {
+  kind: "AlgebraicDataType"
   definition: DataDefinition
   argTypes: Array<Type>
 }
 
-export function DefinedDataType(
+export function AlgebraicDataType(
   definition: DataDefinition,
   argTypes: Array<Type>,
-): DefinedDataType {
-  return { kind: "DefinedDataType", definition, argTypes }
+): AlgebraicDataType {
+  return { kind: "AlgebraicDataType", definition, argTypes }
 }
 
-export function isDefinedDataType(type: Type): type is DefinedDataType {
-  return type.kind === "DefinedDataType"
+export function isAlgebraicDataType(type: Type): type is AlgebraicDataType {
+  return type.kind === "AlgebraicDataType"
 }
 
-export function asDefinedDataType(type: Type): DefinedDataType {
-  if (isDefinedDataType(type)) return type
-  throw new Error(`[asDefinedDataType] fail on: ${type.kind}`)
+export function asAlgebraicDataType(type: Type): AlgebraicDataType {
+  if (isAlgebraicDataType(type)) return type
+  throw new Error(`[asAlgebraicDataType] fail on: ${type.kind}`)
 }
 
 // --- PolymorphicType ---
@@ -415,8 +415,8 @@ function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
     )
   }
 
-  if (type.kind === "DefinedDataType") {
-    return DefinedDataType(
+  if (type.kind === "AlgebraicDataType") {
+    return AlgebraicDataType(
       type.definition,
       type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
     )
