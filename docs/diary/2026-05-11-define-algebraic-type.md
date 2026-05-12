@@ -285,3 +285,10 @@ parameter 名字是暴露给用户的 API 的一部分。
   detailed 版本甚至可以完全不要缩写，使用
   `(constructor)` `(predicate)` 和 `(fields)` 来标记。
 - 另外有 `define-type-alias`，用来做简单的 alias。
+
+方案 C：
+
+- `define-algebraic-type` 模仿带有类型信息的 `define-record-type`。
+- `define-struct` 和 `define-enum` desugar 到 `define-algebraic-type`。
+
+最终选择方案 C。
