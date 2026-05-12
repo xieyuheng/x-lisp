@@ -1,17 +1,12 @@
 (module builtin)
 
-(define-interface (pair-t A B)
-  :first A
-  :second B)
+(define-data (pair-t A B)
+  (cons-pair (first A) (second B)))
 
-(define (make-pair first second)
-  {:first first :second second})
+(define make-pair cons-pair)
 
-(define (pair-first pair) (:first pair))
-(define (pair-second pair) (:second pair))
+(define pair-first cons-pair-first)
+(define pair-second cons-pair-second)
 
-(define (pair-put-first first pair) (update pair :first first))
-(define (pair-put-second second pair) (update pair :second second))
-
-(define (pair-put-first! first pair) (update! pair :first first))
-(define (pair-put-second! second pair) (update! pair :second second))
+(define pair-put-first! cons-pair-put-first!)
+(define pair-put-second! cons-pair-put-second!)

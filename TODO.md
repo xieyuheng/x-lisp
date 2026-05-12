@@ -1,11 +1,15 @@
 # subtype
 
-[meta-lisp.js] row-polymorphism
+[meta-builtin.meta] `hash-entry-t` use `(define-data)`
+[meta-builtin.meta] `source-span-t` use `(define-data)`
+
+[meta-lisp.js] remove row-polymorphism
 [meta-lisp.js] remove subtype
 
 # algebraic type
 
-[meta-lisp.js] rename `DefinedDataType` to `DataType` or `AlgebraicType`
+[meta-lisp.js] rename `DefineInterface` to `DefineRecordType`
+[meta-lisp.js] rename `DefineData` to `DefineAlgebraicType`
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
 
 # any-t
