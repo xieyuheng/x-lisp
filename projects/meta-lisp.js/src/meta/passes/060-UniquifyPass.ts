@@ -21,8 +21,7 @@ function onDefinition(definition: M.Definition): null {
     case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
-    case "DataDefinition":
-    case "InterfaceDefinition": {
+    case "DataDefinition": {
       return null
     }
 

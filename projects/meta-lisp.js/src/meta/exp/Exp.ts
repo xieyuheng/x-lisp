@@ -26,16 +26,10 @@ export type Exp =
   | Or
   | Cond
   | LiteralList
-  | LiteralRecord
   | LiteralSet
   | LiteralHash
   | Quote
   | Arrow
-  | Interface
-  | ExtendInterface
-  | Extend
-  | Update
-  | UpdateMut
   | The
   | Polymorphic
   | Match
@@ -510,23 +504,6 @@ export function LiteralList(
   }
 }
 
-export type LiteralRecord = {
-  kind: "LiteralRecord"
-  attributes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function LiteralRecord(
-  attributes: Record<string, Exp>,
-  location?: SourceLocation,
-): LiteralRecord {
-  return {
-    kind: "LiteralRecord",
-    attributes,
-    location,
-  }
-}
-
 export type LiteralSet = {
   kind: "LiteralSet"
   elements: Array<Exp>
@@ -591,103 +568,6 @@ export function Arrow(
     kind: "Arrow",
     argTypes,
     retType,
-    location,
-  }
-}
-
-export type Interface = {
-  kind: "Interface"
-  attributeTypes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function Interface(
-  attributeTypes: Record<string, Exp>,
-  location?: SourceLocation,
-): Interface {
-  return {
-    kind: "Interface",
-    attributeTypes,
-    location,
-  }
-}
-
-export type ExtendInterface = {
-  kind: "ExtendInterface"
-  baseType: Exp
-  attributeTypes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function ExtendInterface(
-  baseType: Exp,
-  attributeTypes: Record<string, Exp>,
-  location?: SourceLocation,
-): ExtendInterface {
-  return {
-    kind: "ExtendInterface",
-    baseType,
-    attributeTypes,
-    location,
-  }
-}
-
-export type Extend = {
-  kind: "Extend"
-  base: Exp
-  attributes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function Extend(
-  base: Exp,
-  attributes: Record<string, Exp>,
-  location?: SourceLocation,
-): Extend {
-  return {
-    kind: "Extend",
-    base,
-    attributes,
-    location,
-  }
-}
-
-export type Update = {
-  kind: "Update"
-  base: Exp
-  attributes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function Update(
-  base: Exp,
-  attributes: Record<string, Exp>,
-  location?: SourceLocation,
-): Update {
-  return {
-    kind: "Update",
-    base,
-    attributes,
-    location,
-  }
-}
-
-export type UpdateMut = {
-  kind: "UpdateMut"
-  base: Exp
-  attributes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function UpdateMut(
-  base: Exp,
-  attributes: Record<string, Exp>,
-  location?: SourceLocation,
-): UpdateMut {
-  return {
-    kind: "UpdateMut",
-    base,
-    attributes,
     location,
   }
 }

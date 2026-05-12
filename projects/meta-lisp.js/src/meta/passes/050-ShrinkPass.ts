@@ -24,8 +24,7 @@ function onDefinition(mod: M.Mod, definition: M.Definition): null {
     case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
-    case "DataDefinition":
-    case "InterfaceDefinition": {
+    case "DataDefinition": {
       return null
     }
 
@@ -70,22 +69,6 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
 
     case "The": {
       return onExp(mod, exp.exp)
-    }
-
-    case "LiteralRecord": {
-      return onExp(mod, shrinkRecord(exp.attributes, exp.location))
-    }
-
-    case "Extend": {
-      return onExp(mod, shrinkUpdate(exp.base, exp.attributes, exp.location))
-    }
-
-    case "Update": {
-      return onExp(mod, shrinkUpdate(exp.base, exp.attributes, exp.location))
-    }
-
-    case "UpdateMut": {
-      return onExp(mod, shrinkUpdateMut(exp.base, exp.attributes, exp.location))
     }
 
     default: {

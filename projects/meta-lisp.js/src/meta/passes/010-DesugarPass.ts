@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
@@ -87,16 +86,6 @@ function desugarDefinition(mod: M.Mod, definition: M.Definition): null {
 
       return null
     }
-
-    case "InterfaceDefinition": {
-      const state = createDesugarState(definition.mod)
-      definition.attributeTypes = recordMapValue(
-        definition.attributeTypes,
-        (attributeType) => desugar(state, attributeType),
-      )
-
-      return null
-    }
   }
 }
 
@@ -175,11 +164,11 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       const defaultExp = M.Apply(
         M.QualifiedVar("builtin", "error", exp.location),
         [
-          M.LiteralRecord(
-            {
-              message: M.String("match mismatch", exp.location),
-              targets: M.LiteralList(exp.targets, exp.location),
-            },
+          M.LiteralList(
+            [
+              M.String("match mismatch", exp.location),
+              M.LiteralList(exp.targets, exp.location),
+            ],
             exp.location,
           ),
         ],
@@ -270,52 +259,6 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return desugar(
         state,
         desugarLet(state, exp.bindings, exp.body, exp.location),
-      )
-    }
-
-    case "LiteralRecord": {
-      return M.LiteralRecord(
-        recordMapValue(exp.attributes, (e) => desugar(state, e)),
-        exp.location,
-      )
-    }
-
-    case "Interface": {
-      return M.Interface(
-        recordMapValue(exp.attributeTypes, (e) => desugar(state, e)),
-        exp.location,
-      )
-    }
-
-    case "ExtendInterface": {
-      return M.ExtendInterface(
-        desugar(state, exp.baseType),
-        recordMapValue(exp.attributeTypes, (e) => desugar(state, e)),
-        exp.location,
-      )
-    }
-
-    case "Extend": {
-      return M.Extend(
-        desugar(state, exp.base),
-        recordMapValue(exp.attributes, (e) => desugar(state, e)),
-        exp.location,
-      )
-    }
-
-    case "Update": {
-      return M.Update(
-        desugar(state, exp.base),
-        recordMapValue(exp.attributes, (e) => desugar(state, e)),
-        exp.location,
-      )
-    }
-
-    case "UpdateMut": {
-      return M.UpdateMut(
-        desugar(state, exp.base),
-        recordMapValue(exp.attributes, (e) => desugar(state, e)),
-        exp.location,
       )
     }
 

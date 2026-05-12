@@ -68,13 +68,6 @@ export function typeFreshen(type: M.Value): M.Value {
     )
   }
 
-  if (M.isDefinedInterfaceType(type)) {
-    return M.createDefinedInterfaceType(
-      M.definedInterfaceTypeDefinition(type),
-      M.definedInterfaceTypeArgTypes(type).map((t) => typeFreshen(t)),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     return typeFreshen(M.polymorphicTypeFreshBodyType(type))
   }

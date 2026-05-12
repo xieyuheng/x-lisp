@@ -90,19 +90,6 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     }
   }
 
-  if (M.isDefinedInterfaceType(type)) {
-    const definition = M.definedInterfaceTypeDefinition(type)
-    const foundName = M.modLookupNameByDefinition(mod, definition)
-    const argTypes = formatTypesInMod(mod, M.definedInterfaceTypeArgTypes(type))
-    const path = definition.mod.name
-    const name = foundName || `<${definition.name} from ${path}>`
-    if (argTypes.length === 0) {
-      return `${name}`
-    } else {
-      return `(${name} ${argTypes})`
-    }
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = formatTypesInMod(mod, M.polymorphicTypeVarTypes(type))
     const bodyType = formatTypeInMod(mod, M.polymorphicTypeBodyType(type))

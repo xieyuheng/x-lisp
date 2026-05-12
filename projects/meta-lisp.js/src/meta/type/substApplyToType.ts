@@ -107,15 +107,6 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
-  if (M.isDefinedInterfaceType(type)) {
-    return M.createDefinedInterfaceType(
-      M.definedInterfaceTypeDefinition(type),
-      M.definedInterfaceTypeArgTypes(type).map((t) =>
-        substApplyToTypeWithBoundIds(boundIds, subst, t),
-      ),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     // - Be careful about the "name-capture" problem.
     type = M.polymorphicTypeFreshSelf(type)

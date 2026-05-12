@@ -85,10 +85,6 @@ export function apply(target: M.Value, args: Array<M.Value>): M.Value {
           return M.createDefinedDataType(target.definition, args)
         }
 
-        case "InterfaceDefinition": {
-          return M.createDefinedInterfaceType(target.definition, args)
-        }
-
         default: {
           let message = `[apply] can not handle this kind of definition`
           message += formatUnderTag(2, `target:`, M.formatValue(target))
@@ -133,10 +129,6 @@ function getArity(target: M.Value, args: Array<M.Value>): number {
 
         case "DataDefinition": {
           return target.definition.dataTypeConstructor.parameters.length
-        }
-
-        case "InterfaceDefinition": {
-          return target.definition.interfaceConstructor.parameters.length
         }
 
         default: {

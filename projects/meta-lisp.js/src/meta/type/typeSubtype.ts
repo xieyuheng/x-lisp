@@ -113,25 +113,6 @@ export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
     )
   }
 
-  if (M.isDefinedInterfaceType(lhs) && M.isDefinedInterfaceType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeSubtype(
-      trail,
-      M.definedInterfaceTypeUnfold(lhs),
-      M.definedInterfaceTypeUnfold(rhs),
-    )
-  }
-
-  if (M.isDefinedInterfaceType(lhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, M.definedInterfaceTypeUnfold(lhs), rhs)
-  }
-
-  if (M.isDefinedInterfaceType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, lhs, M.definedInterfaceTypeUnfold(rhs))
-  }
-
   return false
 }
 

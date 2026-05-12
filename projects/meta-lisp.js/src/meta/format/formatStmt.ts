@@ -43,12 +43,6 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-data ${type} ${constructors})`
     }
 
-    case "DefineInterface": {
-      const type = formatInterfaceTypeConstructor(stmt.interfaceConstructor)
-      const attributeTypes = M.formatExpAttributes(stmt.attributeTypes)
-      return `(define-interface ${type} ${attributeTypes})`
-    }
-
     case "Claim": {
       return `(claim ${stmt.name} ${M.formatExp(stmt.type)})`
     }
@@ -90,16 +84,6 @@ function formatDataTypeConstructor(
     return dataTypeConstructor.name
   } else {
     return `(${dataTypeConstructor.name} ${dataTypeConstructor.parameters.join(" ")})`
-  }
-}
-
-function formatInterfaceTypeConstructor(
-  interfaceConstructor: Omit<M.InterfaceConstructor, "definition">,
-): string {
-  if (interfaceConstructor.parameters.length === 0) {
-    return interfaceConstructor.name
-  } else {
-    return `(${interfaceConstructor.name} ${interfaceConstructor.parameters.join(" ")})`
   }
 }
 

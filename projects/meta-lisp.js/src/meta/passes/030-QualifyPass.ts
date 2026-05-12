@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
@@ -72,17 +71,6 @@ function qualifyDefinition(definition: M.Definition): null {
             type: qualifyFreeVar(definition.mod, boundNames, type),
           })),
         }),
-      )
-
-      return null
-    }
-
-    case "InterfaceDefinition": {
-      const boundNames = new Set(definition.interfaceConstructor.parameters)
-      definition.attributeTypes = recordMapValue(
-        definition.attributeTypes,
-        (attributeType) =>
-          qualifyFreeVar(definition.mod, boundNames, attributeType),
       )
 
       return null

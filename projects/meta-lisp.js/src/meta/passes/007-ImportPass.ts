@@ -1,5 +1,4 @@
 import { writeln } from "@xieyuheng/helpers.js/file"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
@@ -169,15 +168,6 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
         }))
       }
 
-      return stmt
-    }
-
-    case "DefineInterface": {
-      const boundNames = new Set(stmt.interfaceConstructor.parameters)
-      const newScope = scopeFilterBoundNames(scope, boundNames)
-      stmt.attributeTypes = recordMapValue(stmt.attributeTypes, (type) =>
-        onExp(newScope, type),
-      )
       return stmt
     }
 

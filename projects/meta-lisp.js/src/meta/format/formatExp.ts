@@ -177,15 +177,6 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "LiteralRecord": {
-      const attributes = formatExpAttributes(exp.attributes)
-      if (attributes === "") {
-        return `(@record)`
-      } else {
-        return `(@record ${attributes})`
-      }
-    }
-
     case "LiteralSet": {
       const elements = formatExps(exp.elements)
       return `(@set ${elements})`
@@ -210,55 +201,6 @@ export function formatExp(exp: M.Exp): string {
       const argTypes = exp.argTypes.map(formatExp).join(" ")
       const retType = formatExp(exp.retType)
       return `(-> ${argTypes} ${retType})`
-    }
-
-    case "Interface": {
-      const attributeTypes = formatExpAttributes(exp.attributeTypes)
-      if (attributeTypes === "") {
-        return `(interface)`
-      } else {
-        return `(interface ${attributeTypes})`
-      }
-    }
-
-    case "ExtendInterface": {
-      const baseType = formatExp(exp.baseType)
-      const attributeTypes = formatExpAttributes(exp.attributeTypes)
-      if (attributeTypes === "") {
-        return `(extend-interface ${baseType})`
-      } else {
-        return `(extend-interface ${baseType} ${attributeTypes})`
-      }
-    }
-
-    case "Extend": {
-      const base = formatExp(exp.base)
-      const attributes = formatExpAttributes(exp.attributes)
-      if (attributes === "") {
-        return `(extend ${base})`
-      } else {
-        return `(extend ${base} ${attributes})`
-      }
-    }
-
-    case "Update": {
-      const base = formatExp(exp.base)
-      const attributes = formatExpAttributes(exp.attributes)
-      if (attributes === "") {
-        return `(update ${base})`
-      } else {
-        return `(update ${base} ${attributes})`
-      }
-    }
-
-    case "UpdateMut": {
-      const base = formatExp(exp.base)
-      const attributes = formatExpAttributes(exp.attributes)
-      if (attributes === "") {
-        return `(update! ${base})`
-      } else {
-        return `(update! ${base} ${attributes})`
-      }
     }
 
     case "The": {

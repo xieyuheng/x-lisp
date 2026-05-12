@@ -2,7 +2,6 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type {
   DataConstructor,
   DataTypeConstructor,
-  InterfaceConstructor,
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 
@@ -15,7 +14,6 @@ export type Stmt =
   | DefineTest
   | DefineType
   | DefineData
-  | DefineInterface
   | Claim
   | Admit
   | Private
@@ -184,26 +182,6 @@ export function DefineData(
     kind: "DefineData",
     dataTypeConstructor,
     dataConstructors,
-    location,
-  }
-}
-
-export type DefineInterface = {
-  kind: "DefineInterface"
-  interfaceConstructor: Omit<InterfaceConstructor, "definition">
-  attributeTypes: Record<string, Exp>
-  location?: SourceLocation
-}
-
-export function DefineInterface(
-  interfaceConstructor: Omit<InterfaceConstructor, "definition">,
-  attributeTypes: Record<string, Exp>,
-  location?: SourceLocation,
-): DefineInterface {
-  return {
-    kind: "DefineInterface",
-    interfaceConstructor,
-    attributeTypes,
     location,
   }
 }

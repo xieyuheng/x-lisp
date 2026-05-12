@@ -177,34 +177,4 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       mod.dataConstructors.set(dataConstructor.name, dataConstructor)
     }
   }
-
-  if (stmt.kind === "DefineInterface") {
-    const name = stmt.interfaceConstructor.name
-    const interfaceConstructor =
-      stmt.interfaceConstructor as unknown as M.InterfaceConstructor
-    const definition = M.InterfaceDefinition(
-      mod,
-      name,
-      interfaceConstructor,
-      stmt.attributeTypes,
-      stmt.location,
-    )
-    interfaceConstructor.definition = definition
-    M.modDefine(mod, name, definition)
-
-    if (interfaceConstructor.parameters.length === 0) {
-      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t"))
-    } else {
-      M.modClaim(
-        mod,
-        name,
-        M.Arrow(
-          range(interfaceConstructor.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t"),
-          ),
-          M.QualifiedVar("builtin", "type-t"),
-        ),
-      )
-    }
-  }
 }

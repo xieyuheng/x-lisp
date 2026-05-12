@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { parseBody, parseExp } from "./parseExp.ts"
@@ -111,16 +110,6 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
-  "(cons* 'define-interface head body)": ({ head, body }, { location }) => {
-    const entries = S.collectKeyValuePairs(S.asList(body).elements)
-    M.assertNoDuplicatedKey(entries)
-    return M.DefineInterface(
-      parseInterfaceConstructor(head),
-      recordMapValue(Object.fromEntries(entries), parseExp),
-      location,
-    )
-  },
-
   "`(claim ,name ,type)": ({ name, type }, { location }) => {
     return M.Claim(S.asSymbol(name).content, parseExp(type), location)
   },
@@ -163,30 +152,6 @@ const parseDataTypeConstructor = S.createRouter<
       definition: undefined,
       name: S.asSymbol(name).content,
       parameters: [],
-    }
-  },
-})
-
-const parseInterfaceConstructor = S.createRouter<
-  Omit<M.InterfaceConstructor, "definition">
->({
-  "(cons* name parameters)": ({ name, parameters }, { location }) => {
-    return {
-      definition: undefined,
-      name: S.asSymbol(name).content,
-      parameters: S.asList(parameters).elements.map(
-        (x) => S.asSymbol(x).content,
-      ),
-      location,
-    }
-  },
-
-  name: ({ name }, { location }) => {
-    return {
-      definition: undefined,
-      name: S.asSymbol(name).content,
-      parameters: [],
-      location,
     }
   },
 })

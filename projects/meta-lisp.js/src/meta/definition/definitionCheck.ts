@@ -17,44 +17,20 @@ export function definitionCheck(definition: M.Definition): null {
 
   switch (definition.kind) {
     case "DataDefinition": {
-      const bodyType = M.Interface(
-        Object.fromEntries(
-          definition.dataConstructors.map((dataConstructor) => [
-            dataConstructor.name,
-            M.Interface(
-              Object.fromEntries(
-                dataConstructor.fields.map((field) => [field.name, field.type]),
-              ),
-              definition.location,
-            ),
-          ]),
-        ),
-        definition.location,
-      )
+      for (const dataConstructor of definition.dataConstructors) {
+        for (const field of dataConstructor.fields) {
+          const exp =
+            definition.dataTypeConstructor.parameters.length === 0
+              ? field.type
+              : M.Lambda(
+                  definition.dataTypeConstructor.parameters,
+                  field.type,
+                  definition.location,
+                )
+          checkExp(mod, name, exp)
+        }
+      }
 
-      const exp =
-        definition.dataTypeConstructor.parameters.length === 0
-          ? bodyType
-          : M.Lambda(
-              definition.dataTypeConstructor.parameters,
-              bodyType,
-              definition.location,
-            )
-      checkExp(mod, name, exp)
-      definition.isChecked = true
-      return null
-    }
-
-    case "InterfaceDefinition": {
-      const exp =
-        definition.interfaceConstructor.parameters.length === 0
-          ? M.Interface(definition.attributeTypes, definition.location)
-          : M.Lambda(
-              definition.interfaceConstructor.parameters,
-              M.Interface(definition.attributeTypes, definition.location),
-              definition.location,
-            )
-      checkExp(mod, name, exp)
       definition.isChecked = true
       return null
     }

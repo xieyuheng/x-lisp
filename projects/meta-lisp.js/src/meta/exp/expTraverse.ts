@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import type { Exp } from "./Exp.ts"
@@ -132,13 +131,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return onExp(exp)
     }
 
-    case "LiteralRecord": {
-      return M.LiteralRecord(
-        recordMapValue(exp.attributes, onExp),
-        exp.location,
-      )
-    }
-
     case "LiteralList": {
       return M.LiteralList(exp.elements.map(onExp), exp.location)
     }
@@ -163,45 +155,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
 
     case "The": {
       return M.The(onExp(exp.type), onExp(exp.exp), exp.location)
-    }
-
-    case "Interface": {
-      return M.Interface(
-        recordMapValue(exp.attributeTypes, onExp),
-        exp.location,
-      )
-    }
-
-    case "ExtendInterface": {
-      return M.ExtendInterface(
-        onExp(exp.baseType),
-        recordMapValue(exp.attributeTypes, onExp),
-        exp.location,
-      )
-    }
-
-    case "Extend": {
-      return M.Extend(
-        onExp(exp.base),
-        recordMapValue(exp.attributes, onExp),
-        exp.location,
-      )
-    }
-
-    case "Update": {
-      return M.Update(
-        onExp(exp.base),
-        recordMapValue(exp.attributes, onExp),
-        exp.location,
-      )
-    }
-
-    case "UpdateMut": {
-      return M.UpdateMut(
-        onExp(exp.base),
-        recordMapValue(exp.attributes, onExp),
-        exp.location,
-      )
     }
 
     case "Match": {

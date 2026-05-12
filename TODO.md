@@ -1,11 +1,12 @@
 # subtype
 
-[meta-lisp.js] remove `Interface` and `LiteralRecord`
 [meta-lisp.js] remove `typeSubtype`
 
 # algebraic type
 
+[meta-lisp.js] remove `formatTypeInMod`
 [meta-lisp.js] `ExpandPass` -- should only generate modifiler with side-effect
+[meta-lisp.js] refactor `simplifyMatch` -- maybe no need `mod`?
 
 [meta-lisp.js] rename `DefineData` to `DefineEnum`
 [meta-lisp.js] `DefineStruct`

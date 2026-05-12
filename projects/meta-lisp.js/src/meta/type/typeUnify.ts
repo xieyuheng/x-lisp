@@ -257,26 +257,6 @@ export function typeUnify(
     )
   }
 
-  if (M.isDefinedInterfaceType(lhs) && M.isDefinedInterfaceType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeUnify(
-      trail,
-      subst,
-      M.definedInterfaceTypeUnfold(lhs),
-      M.definedInterfaceTypeUnfold(rhs),
-    )
-  }
-
-  if (M.isDefinedInterfaceType(lhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, M.definedInterfaceTypeUnfold(lhs), rhs)
-  }
-
-  if (M.isDefinedInterfaceType(rhs)) {
-    trail = M.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, lhs, M.definedInterfaceTypeUnfold(rhs))
-  }
-
   return undefined
 }
 

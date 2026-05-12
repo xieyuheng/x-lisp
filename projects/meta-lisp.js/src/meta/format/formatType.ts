@@ -84,16 +84,6 @@ export function formatType(type: M.Value): string {
     }
   }
 
-  if (M.isDefinedInterfaceType(type)) {
-    const definition = M.definedInterfaceTypeDefinition(type)
-    const argTypes = formatTypes(M.definedInterfaceTypeArgTypes(type))
-    if (argTypes.length === 0) {
-      return `${definition.name}`
-    } else {
-      return `(${definition.name} ${argTypes})`
-    }
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = formatTypes(M.polymorphicTypeVarTypes(type))
     const bodyType = formatType(M.polymorphicTypeBodyType(type))

@@ -73,12 +73,6 @@ export function typeFreeVarTypes(
     )
   }
 
-  if (M.isDefinedInterfaceType(type)) {
-    return M.definedInterfaceTypeArgTypes(type).flatMap((t) =>
-      typeFreeVarTypes(boundIds, t),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = M.polymorphicTypeVarTypes(type)
     return typeFreeVarTypes(

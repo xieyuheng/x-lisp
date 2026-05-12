@@ -28,11 +28,6 @@ function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
       return
     }
 
-    case "DefineInterface": {
-      names.add(stmt.interfaceConstructor.name)
-      return
-    }
-
     case "DefineData": {
       names.add(stmt.dataTypeConstructor.name)
       return

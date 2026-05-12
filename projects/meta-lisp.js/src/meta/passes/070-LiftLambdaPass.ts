@@ -35,8 +35,7 @@ function onDefinition(
     case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
-    case "DataDefinition":
-    case "InterfaceDefinition": {
+    case "DataDefinition": {
       return [definition]
     }
 
@@ -156,16 +155,6 @@ function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
 
     case "Arrow": {
       const children = [...exp.argTypes, exp.retType]
-      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
-    }
-
-    case "Interface": {
-      const children = Object.values(exp.attributeTypes)
-      return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
-    }
-
-    case "ExtendInterface": {
-      const children = [exp.baseType, ...Object.values(exp.attributeTypes)]
       return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
     }
 

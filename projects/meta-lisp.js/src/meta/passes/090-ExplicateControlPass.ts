@@ -51,7 +51,6 @@ function onDefinition(
     }
 
     case "DataDefinition":
-    case "InterfaceDefinition":
     case "TypeDefinition": {
       return []
     }

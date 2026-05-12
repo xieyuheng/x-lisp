@@ -13,7 +13,6 @@ export type Definition =
   | TestDefinition
   | TypeDefinition
   | DataDefinition
-  | InterfaceDefinition
 
 export type DefinitionState = {
   isChecked?: boolean
@@ -265,38 +264,6 @@ export function DataDefinition(
     name,
     dataTypeConstructor,
     dataConstructors,
-    location,
-  }
-}
-
-export type InterfaceDefinition = {
-  kind: "InterfaceDefinition"
-  mod: Mod
-  name: string
-  interfaceConstructor: InterfaceConstructor
-  attributeTypes: Record<string, Exp>
-  location?: SourceLocation
-} & DefinitionState
-
-export type InterfaceConstructor = {
-  definition: InterfaceDefinition
-  name: string
-  parameters: Array<string>
-}
-
-export function InterfaceDefinition(
-  mod: Mod,
-  name: string,
-  interfaceConstructor: InterfaceConstructor,
-  attributeTypes: Record<string, Exp>,
-  location?: SourceLocation,
-): InterfaceDefinition {
-  return {
-    kind: "InterfaceDefinition",
-    mod,
-    name,
-    interfaceConstructor,
-    attributeTypes,
     location,
   }
 }

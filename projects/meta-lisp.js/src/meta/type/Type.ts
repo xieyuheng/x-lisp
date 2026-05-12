@@ -1,5 +1,4 @@
 import { range } from "@xieyuheng/helpers.js/range"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -13,7 +12,6 @@ export function isType(value: M.Value): boolean {
     isArrowType(value) ||
     isInterfaceType(value) ||
     isExtendInterfaceType(value) ||
-    isDefinedInterfaceType(value) ||
     isListType(value) ||
     isSetType(value) ||
     isHashType(value) ||
@@ -325,65 +323,6 @@ export function extendInterfaceTypeMerge(value: M.Value): M.Value {
   } else {
     return value
   }
-}
-
-// DefinedInterfaceType
-
-export function isDefinedInterfaceType(value: M.Value): boolean {
-  return (
-    M.isListValue(value) &&
-    value.elements.length === 3 &&
-    M.valueEqual(value.elements[0], M.SymbolValue("defined-interface")) &&
-    M.isDefinitionValue(value.elements[1]) &&
-    M.isListValue(value.elements[2]) &&
-    M.asListValue(value.elements[2]).elements.every(isType)
-  )
-}
-
-export function createDefinedInterfaceType(
-  definition: M.InterfaceDefinition,
-  argTypes: Array<M.Value>,
-): M.Value {
-  return M.ListValue([
-    M.SymbolValue("defined-interface"),
-    M.DefinitionValue(definition),
-    M.ListValue(argTypes),
-  ])
-}
-
-export function definedInterfaceTypeDefinition(
-  value: M.Value,
-): M.InterfaceDefinition {
-  assert(isDefinedInterfaceType(value))
-  const definition = M.asDefinitionValue(
-    M.asListValue(value).elements[1],
-  ).definition
-  assert(definition.kind === "InterfaceDefinition")
-  return definition
-}
-
-export function definedInterfaceTypeArgTypes(value: M.Value): Array<M.Value> {
-  assert(isDefinedInterfaceType(value))
-  return M.asListValue(M.asListValue(value).elements[2]).elements
-}
-
-export function definedInterfaceTypeUnfold(value: M.Value): M.Value {
-  assert(M.isDefinedInterfaceType(value))
-  const definition = definedInterfaceTypeDefinition(value)
-  const argTypes = definedInterfaceTypeArgTypes(value)
-
-  const env = M.envPutMany(
-    M.emptyEnv(),
-    definition.interfaceConstructor.parameters,
-    argTypes,
-  )
-
-  const attributeTypes = recordMapValue(
-    definition.attributeTypes,
-    (attributeType) => M.evaluate(definition.mod, env, attributeType),
-  )
-
-  return M.createInterfaceType(attributeTypes)
 }
 
 // ListType

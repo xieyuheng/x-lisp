@@ -86,12 +86,6 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
-  if (M.isDefinedInterfaceType(type)) {
-    return M.definedInterfaceTypeArgTypes(type).some((t) =>
-      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
-    )
-  }
-
   if (M.isPolymorphicType(type)) {
     const varTypes = M.polymorphicTypeVarTypes(type)
     return typeVarOccurredInTypeWithBoundIds(

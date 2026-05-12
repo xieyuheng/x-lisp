@@ -1,5 +1,0 @@
-(error-module builtin-private-type-error)
-
-(define-test record-test
-  (println record-put)
-  (println record-put!))

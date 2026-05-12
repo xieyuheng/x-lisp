@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
@@ -56,15 +55,6 @@ function locateDefinition(definition: M.Definition): null {
             type: locateSpecialApply(type),
           })),
         }),
-      )
-
-      return null
-    }
-
-    case "InterfaceDefinition": {
-      definition.attributeTypes = recordMapValue(
-        definition.attributeTypes,
-        (attributeType) => locateSpecialApply(attributeType),
       )
 
       return null

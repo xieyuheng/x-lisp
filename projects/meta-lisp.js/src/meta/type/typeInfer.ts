@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
@@ -211,78 +210,6 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             ]),
           ),
           M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "LiteralRecord": {
-        const attributeTypes = recordMapValue(exp.attributes, (_) =>
-          M.createFreshVarType("A"),
-        )
-        const type = M.createInterfaceType(attributeTypes)
-        return M.checkThenInfer(
-          M.sequenceCheckEffect(
-            Object.keys(exp.attributes).map((key) =>
-              M.typeCheckByInfer(
-                mod,
-                ctx,
-                exp.attributes[key],
-                attributeTypes[key],
-              ),
-            ),
-          ),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "Interface": {
-        const type = M.createTypeType()
-        return M.checkThenInfer(
-          M.sequenceCheckEffect(
-            Object.keys(exp.attributeTypes).map((key) =>
-              M.typeCheckByInfer(mod, ctx, exp.attributeTypes[key], type),
-            ),
-          ),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "ExtendInterface": {
-        const type = M.createTypeType()
-        return M.checkThenInfer(
-          M.sequenceCheckEffect([
-            M.typeCheckByInfer(mod, ctx, exp.baseType, type),
-            ...Object.keys(exp.attributeTypes).map((key) =>
-              M.typeCheckByInfer(mod, ctx, exp.attributeTypes[key], type),
-            ),
-          ]),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "Extend": {
-        const baseType = M.createExtendInterfaceType(
-          M.createFreshVarType("R"),
-          {},
-        )
-        const type = M.createExtendInterfaceType(
-          baseType,
-          recordMapValue(exp.attributes, (_) => M.createFreshVarType("A")),
-        )
-        return M.checkThenInfer(
-          M.typeCheckByInfer(mod, ctx, exp.base, baseType),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "Update":
-      case "UpdateMut": {
-        const baseType = M.createExtendInterfaceType(
-          M.createFreshVarType("R"),
-          recordMapValue(exp.attributes, (_) => M.createFreshVarType("A")),
-        )
-        return M.checkThenInfer(
-          M.typeCheckByInfer(mod, ctx, exp.base, baseType),
-          M.typeInfer(mod, ctx, exp.base),
         )(subst)
       }
 

@@ -65,13 +65,5 @@ export function definitionMeaning(definition: M.Definition): M.Value {
         return M.DefinitionValue(definition)
       }
     }
-
-    case "InterfaceDefinition": {
-      if (definition.interfaceConstructor.parameters.length === 0) {
-        return M.createDefinedInterfaceType(definition, [])
-      } else {
-        return M.DefinitionValue(definition)
-      }
-    }
   }
 }
