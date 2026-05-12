@@ -1,11 +1,23 @@
 # algebraic type
 
-[meta-examples.meta] 把 src/lambda/l2.meta 中的 `(define-enum)` 改为 explicit 的 `(define-algebraic-type)`
+[meta-lisp.js] 增加 `(define-struct)` 语法
 
-- 作为对 `(define-algebraic-type)` 的测试
+- 与 `(define-enum)` 类似，也是 desugar 到 `(define-algebraic-type)`
+- 与 `(define-enum)` 不同的是，`(define-struct)` 只有一个 constructor。
 
-[meta-lisp.js] `DefineStruct`
-[meta-lisp.js] `DefineEnum` desugar to `DefineAlgebraicType`
+  比如：
+
+  ```scheme
+  (define-struct point-t
+    (x ))
+  ```
+
+  又比如：
+
+  ```scheme
+  (define-struct (pair-t A B))
+  ```
+
 [meta-lisp.js] `DefineStruct` to desugar to `DefineAlgebraicType`
 
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure

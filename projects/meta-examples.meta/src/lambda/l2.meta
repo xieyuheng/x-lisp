@@ -1,14 +1,31 @@
 (module l2)
 
-(define-enum exp-t
-  (var-exp (name symbol-t))
-  (apply-exp (target exp-t) (arg exp-t))
-  (lambda-exp (parameter symbol-t) (body exp-t))
-  (let-exp (name symbol-t) (rhs exp-t) (body exp-t)))
+(define-algebraic-type exp-t
+  ((var-exp (name symbol-t))
+   var-exp?
+   (name var-exp-name var-exp-put-name!))
+  ((apply-exp (target exp-t) (arg exp-t))
+   apply-exp?
+   (target apply-exp-target apply-exp-put-target!)
+   (arg apply-exp-arg apply-exp-put-arg!))
+  ((lambda-exp (parameter symbol-t) (body exp-t))
+   lambda-exp?
+   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
+   (body lambda-exp-body lambda-exp-put-body!))
+  ((let-exp (name symbol-t) (rhs exp-t) (body exp-t))
+   let-exp?
+   (name let-exp-name let-exp-put-name!)
+   (rhs let-exp-rhs let-exp-put-rhs!)
+   (body let-exp-body let-exp-put-body!)))
 
-(define-enum env-t
-  (empty-env)
-  (extend-env (key symbol-t) (value value-t) (rest env-t)))
+(define-algebraic-type env-t
+  ((empty-env)
+   empty-env?)
+  ((extend-env (key symbol-t) (value value-t) (rest env-t))
+   extend-env?
+   (key extend-env-key extend-env-put-key!)
+   (value extend-env-value extend-env-put-value!)
+   (rest extend-env-rest extend-env-put-rest!)))
 
 (claim env-has?
   (-> symbol-t env-t
@@ -33,8 +50,12 @@
        value
        (env-lookup-of-fail name rest)))))
 
-(define-enum value-t
-  (closure-value (env env-t) (parameter symbol-t) (body exp-t)))
+(define-algebraic-type value-t
+  ((closure-value (env env-t) (parameter symbol-t) (body exp-t))
+   closure-value?
+   (env closure-value-env closure-value-put-env!)
+   (parameter closure-value-parameter closure-value-put-parameter!)
+   (body closure-value-body closure-value-put-body!)))
 
 (claim evaluate
   (-> exp-t env-t
