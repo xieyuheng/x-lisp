@@ -50,7 +50,7 @@ function onDefinition(
       ]
     }
 
-    case "DataDefinition":
+    case "AlgebraicTypeDefinition":
     case "TypeDefinition": {
       return []
     }

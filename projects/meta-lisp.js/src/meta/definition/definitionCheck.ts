@@ -16,7 +16,7 @@ export function definitionCheck(definition: M.Definition): null {
   }
 
   switch (definition.kind) {
-    case "DataDefinition": {
+    case "AlgebraicTypeDefinition": {
       for (const dataConstructor of definition.dataConstructors) {
         for (const field of dataConstructor.fields) {
           const exp =

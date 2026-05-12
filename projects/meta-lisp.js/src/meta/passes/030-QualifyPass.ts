@@ -60,7 +60,7 @@ function qualifyDefinition(definition: M.Definition): null {
       return null
     }
 
-    case "DataDefinition": {
+    case "AlgebraicTypeDefinition": {
       const boundNames = new Set(definition.typeConstructor.parameters)
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields }) => ({

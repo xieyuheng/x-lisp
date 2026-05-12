@@ -47,7 +47,7 @@ function applyDefinition(definition: M.Definition, args: Array<Type>): Type {
       return M.typeEvaluate(definition.mod, typeEnv, definition.body)
     }
 
-    case "DataDefinition": {
+    case "AlgebraicTypeDefinition": {
       return M.AlgebraicDataType(definition, args)
     }
 

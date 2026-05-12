@@ -69,7 +69,7 @@ function desugarDefinition(mod: M.Mod, definition: M.Definition): null {
       return null
     }
 
-    case "DataDefinition": {
+    case "AlgebraicTypeDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields }) => {
           const state = createDesugarState(definition.mod)

@@ -1,5 +1,5 @@
 import { range } from "@xieyuheng/helpers.js/range"
-import type { DataDefinition, Definition } from "../definition/index.ts"
+import type { AlgebraicTypeDefinition, Definition } from "../definition/index.ts"
 
 export type Type =
   | VarType
@@ -181,12 +181,12 @@ export function asHashType(type: Type): HashType {
 
 export type AlgebraicDataType = {
   kind: "AlgebraicDataType"
-  definition: DataDefinition
+  definition: AlgebraicTypeDefinition
   argTypes: Array<Type>
 }
 
 export function AlgebraicDataType(
-  definition: DataDefinition,
+  definition: AlgebraicTypeDefinition,
   argTypes: Array<Type>,
 ): AlgebraicDataType {
   return { kind: "AlgebraicDataType", definition, argTypes }

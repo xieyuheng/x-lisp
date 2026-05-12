@@ -12,7 +12,7 @@ export type Definition =
   | VariableDefinition
   | TestDefinition
   | TypeDefinition
-  | DataDefinition
+  | AlgebraicTypeDefinition
 
 export type DefinitionState = {
   isChecked?: boolean
@@ -211,8 +211,8 @@ export function TypeDefinition(
   }
 }
 
-export type DataDefinition = {
-  kind: "DataDefinition"
+export type AlgebraicTypeDefinition = {
+  kind: "AlgebraicTypeDefinition"
   mod: Mod
   name: string
   typeConstructor: TypeConstructor
@@ -221,14 +221,14 @@ export type DataDefinition = {
 } & DefinitionState
 
 export type TypeConstructor = {
-  definition: DataDefinition
+  definition: AlgebraicTypeDefinition
   name: string
   parameters: Array<string>
   location?: SourceLocation
 }
 
 export type DataConstructor = {
-  definition: DataDefinition
+  definition: AlgebraicTypeDefinition
   name: string
   fields: Array<DataField>
   location?: SourceLocation
@@ -249,15 +249,15 @@ export type DataField = {
   location?: SourceLocation
 }
 
-export function DataDefinition(
+export function AlgebraicTypeDefinition(
   mod: Mod,
   name: string,
   typeConstructor: TypeConstructor,
   dataConstructors: Array<DataConstructor>,
   location?: SourceLocation,
-): DataDefinition {
+): AlgebraicTypeDefinition {
   return {
-    kind: "DataDefinition",
+    kind: "AlgebraicTypeDefinition",
     mod,
     name,
     typeConstructor,

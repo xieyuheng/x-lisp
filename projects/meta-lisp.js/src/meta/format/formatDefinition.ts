@@ -57,7 +57,7 @@ export function formatDefinition(definition: M.Definition): string {
       }
     }
 
-    case "DataDefinition": {
+    case "AlgebraicTypeDefinition": {
       const dataConstructors = definition.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
@@ -65,7 +65,7 @@ export function formatDefinition(definition: M.Definition): string {
         return `(define-enum ${definition.name} ${dataConstructors})`
       } else {
         const parameters = definition.typeConstructor.parameters.join(" ")
-        return `(define-data (${definition.name} ${parameters}) ${dataConstructors})`
+        return `(define-enum (${definition.name} ${parameters}) ${dataConstructors})`
       }
     }
   }

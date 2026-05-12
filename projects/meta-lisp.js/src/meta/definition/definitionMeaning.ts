@@ -52,7 +52,7 @@ export function definitionMeaning(
       return undefined
     }
 
-    case "DataDefinition": {
+    case "AlgebraicTypeDefinition": {
       if (definition.typeConstructor.parameters.length === 0) {
         return M.AlgebraicDataType(definition, [])
       } else {

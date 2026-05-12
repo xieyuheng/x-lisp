@@ -149,7 +149,7 @@ function groupClausesByHeadDataConstructor(
   mod: M.Mod,
   clauses: Array<M.MatchClause>,
 ): Array<GroupByHeadDataConstructor> {
-  const definition = findDataDefinitionFromClauses(mod, clauses)
+  const definition = findAlgebraicTypeDefinitionFromClauses(mod, clauses)
   return definition.dataConstructors.map((dataConstructor) => {
     const groupedClauses: Array<M.MatchClause> = []
     for (const clause of clauses) {
@@ -176,11 +176,11 @@ function groupClausesByHeadDataConstructor(
   })
 }
 
-function findDataDefinitionFromClauses(
+function findAlgebraicTypeDefinitionFromClauses(
   mod: M.Mod,
   clauses: Array<M.MatchClause>,
-): M.DataDefinition {
-  let definition: M.DataDefinition | undefined = undefined
+): M.AlgebraicTypeDefinition {
+  let definition: M.AlgebraicTypeDefinition | undefined = undefined
   for (const clause of clauses) {
     assert(clause.patterns.length > 0)
     const [pattern, ...restPatterns] = clause.patterns
@@ -188,7 +188,7 @@ function findDataDefinitionFromClauses(
     if (definition === undefined) {
       definition = dataConstructor.definition
     } else if (dataConstructor.definition !== definition) {
-      let message = `[findDataDefinitionFromClauses] datatype definition mismatch`
+      let message = `[findAlgebraicTypeDefinitionFromClauses] datatype definition mismatch`
       message += `\n  definition name: ${definition.name}`
       if (clause.location)
         throw new S.ErrorWithSourceLocation(message, clause.location)

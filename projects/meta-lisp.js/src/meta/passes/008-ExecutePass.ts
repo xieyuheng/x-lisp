@@ -137,7 +137,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     const dataConstructors =
       stmt.dataConstructors as unknown as Array<M.DataConstructor>
 
-    const definition = M.DataDefinition(
+    const definition = M.AlgebraicTypeDefinition(
       mod,
       name,
       typeConstructor,
