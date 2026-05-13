@@ -8,10 +8,7 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
       if (fromTypeEnv) return fromTypeEnv
 
       const definition = M.modLookupDefinition(mod, exp.name)
-      if (definition) {
-        const type = M.definitionMeaning(definition)
-        if (type) return type
-      }
+      if (definition) return M.definitionMeaning(definition)
 
       const claimedType = M.modLookupClaimedType(mod, exp.name)
       if (claimedType) return claimedType
@@ -31,10 +28,7 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
       }
 
       const definition = M.modLookupDefinition(qualifiedMod, exp.name)
-      if (definition) {
-        const type = M.definitionMeaning(definition)
-        if (type) return type
-      }
+      if (definition) return M.definitionMeaning(definition)
 
       const claimedType = M.modLookupClaimedType(qualifiedMod, exp.name)
       if (claimedType) return claimedType

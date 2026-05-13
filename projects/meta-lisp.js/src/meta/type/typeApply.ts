@@ -38,7 +38,7 @@ function applyDefinition(definition: M.Definition, args: Array<Type>): Type {
     }
 
     case "TypeDefinition": {
-      const typeEnv = M.typeEnvEmpty()
+      const typeEnv = M.emptyTypeEnv()
       for (const i of range(definition.parameters.length)) {
         if (args[i] !== undefined) {
           typeEnv.set(definition.parameters[i], args[i])

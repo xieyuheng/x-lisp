@@ -190,7 +190,6 @@ export type TypeDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  value?: Type
   location?: SourceLocation
 } & DefinitionState
 

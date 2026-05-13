@@ -1,8 +1,6 @@
 import * as M from "../index.ts"
 
-export function definitionMeaning(
-  definition: M.Definition,
-): M.Type | undefined {
+export function definitionMeaning(definition: M.Definition): M.Type {
   M.definitionCheck(definition)
 
   switch (definition.kind) {
@@ -34,22 +32,14 @@ export function definitionMeaning(
 
     case "TypeDefinition": {
       if (definition.parameters.length === 0) {
-        if (!definition.value) {
-          definition.value = M.typeEvaluate(
-            definition.mod,
-            M.typeEnvEmpty(),
-            definition.body,
-          )
-        }
-
-        return definition.value
+        return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body)
       } else {
         return M.DefinitionType(definition)
       }
     }
 
     case "VariableDefinition": {
-      return undefined
+      return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body)
     }
 
     case "AlgebraicTypeDefinition": {

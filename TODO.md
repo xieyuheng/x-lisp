@@ -1,5 +1,19 @@
 # syntax
 
+[meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
+
+- module can override builtin names
+
+[meta-examples.meta] test module can override builtin names
+
+[meta-lisp.js] fix the use of `type-t` and remove `(define-type)`
+
+- maybe add `(claim-type)` syntax `(claim-type type-t)` is not recursive like `(claim type-t type-t)`
+
+[meta-lisp.js] `ImportPass` -- `ImportAll` -- need to handle builtin mod specially
+
+- `type-t` is not declared in fragment
+
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
 
 # setup feedback loop

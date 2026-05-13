@@ -3,7 +3,7 @@ import { type Type } from "./Type.ts"
 
 export type TypeEnv = Map<string, Type>
 
-export function typeEnvEmpty(): TypeEnv {
+export function emptyTypeEnv(): TypeEnv {
   return new Map()
 }
 
