@@ -4,8 +4,6 @@
 
 - module can override builtin names
 
-[meta-lisp.js] fix pass ordering `CheckPass` after `QualifyPass`
-
 [meta-examples.meta] test module can override builtin names
 
 [meta-lisp.js] fix the use of `type-t` and remove `(define-type)`
