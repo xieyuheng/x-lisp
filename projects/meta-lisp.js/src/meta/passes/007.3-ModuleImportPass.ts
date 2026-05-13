@@ -2,11 +2,14 @@ import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
 export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
-  for (const fragment of project.fragments.values()) {
+  for (const [path, fragment] of project.fragments) {
     const key = `${fragment.modName}:${fragment.serialNumber}`
     const scope = info.fragmentScopes.get(key)
     if (scope) {
       fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
+    } else {
+      let message = `[ModuleImportPass] missing scope for: ${key} (${path})`
+      throw new Error(message)
     }
   }
 }
