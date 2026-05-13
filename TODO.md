@@ -1,8 +1,12 @@
 # syntax
 
+[meta-lisp.js] refactor `ImportPass`
+
 [meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
 
 - module can override builtin names
+
+[meta-lisp.js] fix pass ordering `CheckPass` after `QualifyPass`
 
 [meta-examples.meta] test module can override builtin names
 

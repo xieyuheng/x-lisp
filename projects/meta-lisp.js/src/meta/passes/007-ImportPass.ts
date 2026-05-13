@@ -158,19 +158,6 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
       )
     }
 
-    case "DefineEnum": {
-      const boundNames = new Set(stmt.typeConstructor.parameters)
-      const newScope = scopeFilterBoundNames(scope, boundNames)
-      for (const dataConstructor of stmt.dataConstructors) {
-        dataConstructor.fields = dataConstructor.fields.map((field) => ({
-          name: field.name,
-          type: onExp(newScope, field.type),
-        }))
-      }
-
-      return stmt
-    }
-
     case "DefineAlgebraicType": {
       const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
