@@ -428,7 +428,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 `=` 不能在顶层使用。顶层用 `define`。
 
-### define（变量定义）
+### (define)
 
 `(define name expr)` -- 定义模块级常量。
 
@@ -442,7 +442,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 函数组合
 
-### pipe
+### (pipe)
 
 `(pipe init f1 f2 ... fn)` -- 管道。
 
@@ -453,7 +453,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (pipe 2 add1 double square)  ;; square(double(add1(2))) => 36
 ```
 
-### chain
+### (chain)
 
 `(chain f1 f2 ... fn)` -- 函数链。
 
@@ -466,7 +466,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 ((chain add1 double square) 2)  ;; square(double(add1(2))) => 36
 ```
 
-### compose
+### (compose)
 
 `(compose f1 f2 ... fn)` -- 反向函数组合。
 
@@ -480,7 +480,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 模式匹配与代数数据类型
 
-### match
+### (match)
 
 `(match target (constructor field ...) body)` -- 模式匹配。
 
@@ -500,7 +500,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 构造器名必须匹配 `define-enum` 或 `define-algebraic-type` 中定义的构造器。所有分支必须覆盖目标类型的所有可能。
 
-### define-enum
+### (define-enum)
 
 `(define-enum name (constructor (field-type) ...) ...)` -- 定义多个构造器的代数数据类型。
 
@@ -521,7 +521,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 | 访问器 | `<constructor>-<field>` | `var-exp-name` |
 | 修改器 | `<constructor>-put-<field>!` | `var-exp-put-name!` |
 
-### define-struct
+### (define-struct)
 
 `(define-struct name (field-type) ...)` -- 定义单构造器结构体。
 
@@ -536,7 +536,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (point-x p)  ;; => 1.0
 ```
 
-### define-struct*
+### (define-struct*)
 
 `(define-struct* name (constructor (field-type) ...))` -- 定义单构造器结构体，自定义构造器名。
 
@@ -546,7 +546,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (cons-point 1 2)
 ```
 
-### define-algebraic-type
+### (define-algebraic-type)
 
 最 explicit 的代数数据类型定义。所有名字由你指定。
 
@@ -566,7 +566,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 模块
 
-### module
+### (module)
 
 `(module name)` -- 声明当前模块。
 
@@ -576,7 +576,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (module math)
 ```
 
-### import
+### (import)
 
 `(import mod-name name ...)` -- 从其他模块导入指定名字。
 
@@ -587,7 +587,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (import list length map)
 ```
 
-### import-as
+### (import-as)
 
 `(import-as mod-name prefix)` -- 导入模块并用前缀。
 
@@ -599,7 +599,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (L/length '(1 2 3))
 ```
 
-### import-all
+### (import-all)
 
 `(import-all mod-name)` -- 导入模块中所有名字。
 
@@ -612,7 +612,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 访问控制
 
-### private
+### (private)
 
 `(private name ...)` -- 将名字标记为私有。
 
@@ -627,7 +627,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (private counter-state reset)
 ```
 
-### exempt
+### (exempt)
 
 `(exempt name ...)` -- 免除未使用警告。
 
@@ -640,40 +640,17 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (exempt internal)
 ```
 
-
 ## 测试
 
-### define-test
+### (define-test)
 
 `(define-test name body)` -- 定义测试。
 
-`body` 中包含断言。通过 `./meta-lisp.js test` 运行。不需要 `claim`。
+`body` 中可以用断言来做测试。
+通过 `./meta-lisp.js test` 运行。
 
 ```scheme
 (define-test add1-test
   (assert-equal 2 (add1 1))
   (assert-equal 0 (add1 -1)))
-```
-
-
-## 内建声明
-
-以下语句只在 `meta-builtin.meta` 项目中使用。
-
-### declare-primitive-function
-
-`(declare-primitive-function name arity)` -- 告诉编译器 `name` 是一个运行时实现的内置函数，`arity` 是参数个数。
-
-```scheme
-(declare-primitive-function iadd 2)
-(declare-primitive-function println 1)
-```
-
-### declare-primitive-variable
-
-`(declare-primitive-variable name)` -- 告诉编译器 `name` 是一个运行时提供的内置常量。
-
-```scheme
-(declare-primitive-variable int-t)
-(declare-primitive-variable true)
 ```
