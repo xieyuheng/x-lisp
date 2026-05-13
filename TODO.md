@@ -1,7 +1,3 @@
-# syntax
-
-[stack-lisp.c] ambr @list @square-bracket
-
 # local (define)
 
 [meta-lisp.js] support using `define` in function body -- use lambda lift

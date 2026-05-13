@@ -49,7 +49,12 @@ test("parse -- square brackets", () => {
   assertParse("[]", S.List([S.Symbol("@square-bracket")]))
   assertParse(
     "[a b c]",
-    S.List([S.Symbol("@square-bracket"), S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]),
+    S.List([
+      S.Symbol("@square-bracket"),
+      S.Symbol("a"),
+      S.Symbol("b"),
+      S.Symbol("c"),
+    ]),
   )
 })
 
