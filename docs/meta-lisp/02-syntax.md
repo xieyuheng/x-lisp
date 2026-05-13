@@ -89,7 +89,7 @@ builtin/list-length
 builtin/list-empty?
 ```
 
-### quote
+### (quote)
 
 `'exp` 阻止 `exp` 被求值，通常用来创建列表数据。
 
@@ -117,7 +117,7 @@ builtin/list-empty?
 ((lambda (x) x) 1)      ;; 函数位置也可以是表达式
 ```
 
-### lambda
+### (lambda)
 
 `(lambda (parameter ...) body)` -- 创建匿名函数。
 
@@ -142,7 +142,7 @@ builtin/list-empty?
 
 lambda 的参数个数必须与调用时传入的参数个数一致。
 
-### define（函数定义）
+### (define)（函数定义）
 
 `(define (name parameter ...) body)` -- 定义命名函数。
 
@@ -176,7 +176,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 类型声明
 
-### claim
+### (claim)
 
 `(claim name type)` -- 声明一个名字的类型。
 
@@ -192,7 +192,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 `define-test` 不需要 `claim`。
 
-### the
+### (the)
 
 `(the type expr)` -- 显式标注 `expr` 的类型。
 
@@ -203,7 +203,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (the (-> int-t int-t) (lambda (x) (iadd x 1)))
 ```
 
-### polymorphic
+### (polymorphic)
 
 `(polymorphic (A B ...) type)` -- 声明包含类型参数的类型。
 
@@ -217,7 +217,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
   (polymorphic (A B) (-> A B (list-t A))))
 ```
 
-### claim-type
+### (claim-type)
 
 `(claim-type name)` -- 声明 `name` 的类型是 `type-t`。
 
@@ -227,7 +227,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 (claim-type my-custom-t)
 ```
 
-### admit
+### (admit)
 
 `(admit name type)` -- 绕过类型检查，声明名字的类型。
 
@@ -240,7 +240,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 条件
 
-### if
+### (if)
 
 `(if condition consequent alternative)` -- 条件分支。
 
@@ -257,7 +257,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
   (if (int-less? x 0) (ineg x) x))
 ```
 
-### when
+### (when)
 
 `(when condition body)` -- 条件为真时执行。
 
@@ -270,7 +270,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 没有 else 分支。需要 else 分支时用 `if`。
 
-### unless
+### (unless)
 
 `(unless condition body)` -- 条件为假时执行。
 
@@ -281,7 +281,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
   (println (idiv 1 x)))
 ```
 
-### cond
+### (cond)
 
 `(cond (q1 a1) (q2 a2) ... (else an))` -- 多分支条件。
 
@@ -295,7 +295,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
    (else "zero")))
 ```
 
-### and
+### (and)
 
 `(and e1 e2 ...)` -- 短路与。
 
@@ -307,7 +307,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 零个参数时返回 `true`。
 
-### or
+### (or)
 
 `(or e1 e2 ...)` -- 短路或。
 
@@ -320,7 +320,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ## 顺序执行与绑定
 
-### begin
+### (begin)
 
 `(begin e1 e2 ... en)` -- 顺序执行。
 
@@ -341,7 +341,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
   (imul y 2))       ;; 最后一条作为返回值
 ```
 
-### let
+### (let)
 
 `(let ((name expr) ...) body)` -- 并行局部变量绑定。
 
@@ -382,7 +382,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
   (imul x 2))
 ```
 
-### let*
+### (let*)
 
 `(let* ((name expr) ...) body)` -- 顺序局部变量绑定。
 
@@ -402,7 +402,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
     (iadd x y)))
 ```
 
-### =
+### (=)
 
 `(= name expr)` -- 赋值。
 
