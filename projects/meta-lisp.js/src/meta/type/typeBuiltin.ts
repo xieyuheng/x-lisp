@@ -1,57 +1,36 @@
 import * as M from "../index.ts"
 import { type Type } from "../index.ts"
+import {
+  definePrimitiveFunction,
+  definePrimitiveVariable,
+} from "../mod/define.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function typeBuiltin(mod: Mod) {
-  M.modDefine(
-    mod,
-    "type-t",
-    M.PrimitiveVariableDefinition(mod, "type-t", M.TypeType()),
-  )
+  definePrimitiveVariable(mod, "type-t", M.TypeType())
   mod.claimed.set("type-t", {
     exp: M.QualifiedVar("builtin", "type-t"),
     type: M.TypeType(),
   })
 
-  const atomNames = [
-    "int",
-    "float",
-    "string",
-    "symbol",
-    "keyword",
-    "bool",
-    "void",
-    "file",
-  ]
-  for (const name of atomNames) {
-    M.modDefine(
-      mod,
-      `${name}-t`,
-      M.PrimitiveVariableDefinition(mod, `${name}-t`, M.AtomType(name)),
-    )
-  }
+  definePrimitiveVariable(mod, "int-t", M.AtomType("int"))
+  definePrimitiveVariable(mod, "float-t", M.AtomType("float"))
+  definePrimitiveVariable(mod, "string-t", M.AtomType("string"))
+  definePrimitiveVariable(mod, "symbol-t", M.AtomType("symbol"))
+  definePrimitiveVariable(mod, "keyword-t", M.AtomType("keyword"))
+  definePrimitiveVariable(mod, "bool-t", M.AtomType("bool"))
+  definePrimitiveVariable(mod, "void-t", M.AtomType("void"))
+  definePrimitiveVariable(mod, "file-t", M.AtomType("file"))
 
-  M.modDefine(
-    mod,
-    "list-t",
-    M.PrimitiveFunctionDefinition(mod, "list-t", 1, (...args: Array<Type>) =>
-      M.ListType(args[0]),
-    ),
-  )
+  definePrimitiveFunction(mod, "list-t", 1, (...args: Array<Type>) => {
+    return M.ListType(args[0])
+  })
 
-  M.modDefine(
-    mod,
-    "set-t",
-    M.PrimitiveFunctionDefinition(mod, "set-t", 1, (...args: Array<Type>) =>
-      M.SetType(args[0]),
-    ),
-  )
+  definePrimitiveFunction(mod, "set-t", 1, (...args: Array<Type>) => {
+    return M.SetType(args[0])
+  })
 
-  M.modDefine(
-    mod,
-    "hash-t",
-    M.PrimitiveFunctionDefinition(mod, "hash-t", 2, (...args: Array<Type>) =>
-      M.HashType(args[0], args[1]),
-    ),
-  )
+  definePrimitiveFunction(mod, "hash-t", 2, (...args: Array<Type>) => {
+    return M.HashType(args[0], args[1])
+  })
 }

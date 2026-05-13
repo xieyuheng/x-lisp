@@ -1,5 +1,3 @@
-[meta-lisp.js] refactor -- remove `PrimitiveFunctionDefinition`
-
 # syntax
 
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
@@ -10,8 +8,7 @@
 [meta-lisp.meta] `expand-pass`
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
-[meta-lisp.meta] `evaluate` -- handle type
-[meta-lisp.meta] `evaluate` -- fix error report -- maybe need `buffer-t`
+[meta-lisp.meta] fix error report -- maybe need `buffer-t`
 
 # local (define)
 
