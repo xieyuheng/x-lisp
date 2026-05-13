@@ -5,8 +5,8 @@ meta-lisp 是静态类型的 lisp 方言，
 
 改良了部分 scheme 语法，比如：
 
-- 用 `(@list 1 2 3)` 而不是 `(list 1 2 3)`，来写 list literal。
-  避免占用 `list` 这个 builtin name。
+- 用 `(@list 1 2 3)` 而不是 `(list 1 2 3)` 来写列表，
+  从而避免占用 `list` 这个变量名。
 - 在带有多个表达式的函数体中，可以用 `(= <name> <exp>)` 来代替嵌套的 `(let)`。
 - 给 `(define-record-type)` 增加了 field 的类型声明，
   并且在类似的语法设计方向上，增加了 `(define-algebraic-type)` 的语法。

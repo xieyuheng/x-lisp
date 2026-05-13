@@ -1,9 +1,9 @@
 # 语法
 
-meta-lisp 使用 S-expression 语法。
+meta-lisp 使用**符号表达式**（S-expression）语法。
 
-模块顶层由**语句**（statement）组成。
-语句内由**表达式**（expression）组成。
+- 模块顶层由**语句**（statement）组成。
+- 语句内由**表达式**（expression）组成。
 
 下面分组介绍 meta-lisp 的所有语法。
 
@@ -64,19 +64,21 @@ meta-lisp 使用 S-expression 语法。
 
 ### 复合
 
-`@list` 创建列表。
+`(@list)` 创建列表。
 
 ```scheme
 (@list 1 2 3)
 ```
 
-`@set` 创建集合。
+增加 `@` 前缀，是为了避免占用 `list` 这个变量名。
+
+`(@set)` 创建集合。
 
 ```scheme
 (@set 1 2 3)
 ```
 
-`@hash` 创建哈希表。
+`(@hash)` 创建哈希表。
 
 ```scheme
 (@hash "a" 1 "b" 2)
@@ -85,8 +87,15 @@ meta-lisp 使用 S-expression 语法。
 方括号 `[...]` 是 `@list` 的语法糖。
 
 ```scheme
-[1 2 3]          ;; 等价于 (@list 1 2 3)
+[1 2 3]
 ["a" "b" "c"]
+```
+
+等价于：
+
+```scheme
+(@list 1 2 3)
+(@list "a" "b" "c")
 ```
 
 ### (quote)
@@ -140,22 +149,18 @@ list-length
 list-empty?
 ```
 
-变量从以下来源查找：
-
-- 局部绑定：`lambda` 的参数、`let` 的绑定
-- 模块内顶层 `define`
-- 从其他模块 `import` 进来的名字
-
 ### 限定变量
 
-`mod/name` 引用其他模块中的名字。
-
-限定名不需要先 `import`，可以直接使用。
+`<module-name>/<name>` 引用其他模块中的名字。
 
 ```scheme
 builtin/list-length
 builtin/list-empty?
 ```
+
+限定名不需要先 `(import)`，可以直接使用。
+`(import)` 是专门用来取消 `<module-name>` 前缀的。
+
 
 ## 函数
 
@@ -167,7 +172,7 @@ builtin/list-empty?
 
 函数作用是最重要的语法。
 
-如果表达式的第一个位置不是语法关键词，就被认为是函数作用。
+如果符号表达式的第一个位置不是语法关键词，就被认为是函数作用。
 
 第一个位置是函数，其余是参数。
 
@@ -181,10 +186,37 @@ builtin/list-empty?
 ((lambda (x) x) 1)
 ```
 
+当函数作用的参数个数不足时，会形成部分作用，又称作**柯里化**（currying）。
+
+```scheme
+((iadd 1) 2)
+```
+
+等价于：
+
+```scheme
+(iadd 1 2)
+```
+
+并且 `(iadd 1)` 可以作为值传递给函数，或者作为结果返回。
+
+```scheme
+(define add1
+  (iadd 1))
+```
+
+等价于：
+
+```scheme
+(define (add1 x)
+  (iadd 1 x))
+```
+
 ### (lambda)
 
 ```scheme
-(lambda (<parameter> ...) <body>)
+(lambda (<parameter> ...)
+  <body>)
 ```
 
 创建匿名函数。
@@ -201,54 +233,40 @@ builtin/list-empty?
 多个参数：
 
 ```scheme
-(lambda (a b) (iadd a b))
-```
-
-### Currying
-
-meta-lisp 的函数是 currying 的：多参数函数实际上是用嵌套的单参数函数实现的。
-
-```scheme
-(lambda (a b) (iadd a b))
+(lambda (x y)
+  (iadd x y))
 ```
 
 等价于：
 
 ```scheme
-(lambda (a) (lambda (b) (iadd a b)))
-```
-
-因此 `(-> int-t int-t int-t)` 实际等价于 `(-> int-t (-> int-t int-t))` ——
-接收一个 `int-t`，返回一个函数。
-
-Currying 使部分施用在 meta-lisp 中非常自然：
-
-```scheme
-(claim add (-> int-t int-t int-t))
-(define (add a b) (iadd a b))
-
-(define add1 (add 1))  ;; 部分施用：add1 是 (-> int-t int-t)
-(add1 2)               ;; => 3
+(lambda (x)
+  (lambda (y)
+    (iadd x y)))
 ```
 
 ### (define)
 
 ```scheme
-(define (<name> <parameter> ...) <body>)
+(define (<name> <parameter> ...)
+  <body>)
 ```
 
-定义命名函数。
+定义函数。
 
-在当前模块中引入一个新的名字绑定。函数定义等价于定义了值为 lambda 的变量。
+定义函数等价于定义值为 lambda 的变量。
 
 ```scheme
-(define (add1 x) (iadd x 1))
+(define (add1 x)
+  (iadd 1 x))
 ```
 
 等价于：
 
 ```scheme
-(define add1 (lambda (x) (iadd x 1)))
+(define add1
+  (lambda (x)
+    (iadd 1 x)))
 ```
 
 函数体 `<body>` 可以是多个表达式：
@@ -258,14 +276,6 @@ Currying 使部分施用在 meta-lisp 中非常自然：
   (= y (iadd x 1))
   (imul y 2))
 ```
-
-所有函数必须先 `claim` 再 `define`。
-
-```scheme
-(claim square (-> int-t int-t))
-(define (square x) (imul x x))
-```
-
 
 ## 类型
 
@@ -277,7 +287,8 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 
 声称一个名字的类型。
 
-编译器会检查 `define` 的实现是否与 `claim` 的类型一致。
+编译器会从 `(define)` 的 `<body>` 推导出类型，
+然后检查是否与 `(claim)` 的类型一致。
 
 ```scheme
 (claim add1 (-> int-t int-t))
@@ -295,7 +306,7 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 
 承认名字的类型。
 
-与 `(claim)` 类似，但是编译器不会检查对应的 `(define)`。
+与 `(claim)` 类似，但是编译器不会检查 `(define)` 的 `<body>`。
 
 ```scheme
 (admit make-point (-> float-t float-t point-t))
@@ -315,13 +326,16 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 
 ```scheme
 (the int-t 42)
-(the (-> int-t int-t) (lambda (x) (iadd x 1)))
+(the (-> int-t int-t)
+  (lambda (x)
+    (iadd x 1)))
 ```
 
 ### (polymorphic)
 
 ```scheme
-(polymorphic (<type-parameter> ...) <type>)
+(polymorphic (<type-parameter> ...)
+  <type>)
 ```
 
 包含类型变量的类型。
@@ -353,8 +367,6 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 `<condition>` 被求值。
 如果为真，求值 `<consequent>` 并返回。
 否则求值 `<alternative>` 并返回。
-
-`(if)` 必须有 else 分支。
 
 ```scheme
 (define (abs x)
@@ -549,7 +561,6 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 
 `<body>` 中的局部变量绑定。
 
-
 只能在 `<body>` 中使用。
 用来代替嵌套的 `(let)`，以减少缩进。
 
@@ -653,20 +664,21 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 
 ### (define-algebraic-type)
 
-代数数据类型是构建复合数据结构的核心机制。
-`(define-algebraic-type)` 是最基础的形式，所有名字由你显式指定。
+**代数数据类型**（algebraic data type）是构建复合数据结构的核心机制。
+
+`(define-algebraic-type)` 是最基础的语法形式，
+其中所有名字由你显式指定。
 
 ```scheme
-(define-algebraic-type <name>
-  ((<constructor> (<field> <type>) ...)
-   <predicate>
-   (<field> <accessor> <modifier>) ...)
+(define-algebraic-type <type-name>
+  ((<constructor-name> (<field-name> <field-type>) ...)
+   <predicate-name>
+   (<field-name> <accessor-name> <modifier-name>)
+   ...)
   ...)
 ```
 
-每个构造器的格式为：构造器名 + 字段列表 + 谓词 + 字段的访问器/修改器列表。
-
-先用一个简单的单构造器类型 `point-t` 来理解基本结构：
+例如：
 
 ```scheme
 (define-algebraic-type point-t
@@ -676,11 +688,16 @@ Currying 使部分施用在 meta-lisp 中非常自然：
    (y point-y point-put-y!)))
 ```
 
-其中：
+将会生成具有下列类型的函数：
 
-- `make-point` 是构造器，`point?` 是谓词
-- `point-x` 是 `x` 字段的访问器，`point-put-x!` 是 `x` 字段的修改器
-- `point-y` 是 `y` 字段的访问器，`point-put-y!` 是 `y` 字段的修改器
+```scheme
+(claim make-point (-> float-t float-t point-t))
+(claim point? (-> point-t bool-t))
+(claim point-x (-> point-t float-t))
+(claim point-y (-> point-t float-t))
+(claim point-put-x! (-> float-t point-t point-t))
+(claim point-put-y! (-> float-t point-t point-t))
+```
 
 使用：
 
@@ -689,6 +706,42 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 (point? p)      ;; => true
 (point-x p)     ;; => 1.0
 (point-put-x! p 3.0)
+(point-x p)     ;; => 3.0
+```
+
+对于只有单一构造子的代数类型而言，
+谓词 `point?` 是多余的，没每意义的。
+只有代数类型有多个构造子时，
+所生成的谓词才有意义。
+
+`(define-algebraic-type)` 所定义的类型可以带有类型参数：
+
+```scheme
+(define-algebraic-type (<type-name> <type-parameter> ...)
+  ((<constructor-name> (<field-name> <field-type>) ...)
+   <predicate-name>
+   (<field-name> <accessor-name> <modifier-name>)
+   ...)
+  ...)
+```
+
+例如：
+
+```scheme
+(define-algebraic-type (my-list-t E)
+  ((nil)
+   nil?)
+  ((li (head E) (tail (my-list-t E)))
+   li?
+   (head li-head li-put-head!)
+   (tail li-tail li-put-tail!)))
+```
+
+将会生成具有下列类型的函数：
+
+```scheme
+(claim nil (polymorphic (E) (-> (my-list-t E))))
+...
 ```
 
 再看一个稍复杂的表达式类型 `exp-t`，它有多个构造器，且字段可以引用自身：
@@ -843,7 +896,7 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 ### (import)
 
 ```scheme
-(import <mod-name> <name> ...)
+(import <module-name> <name> ...)
 ```
 
 从其他模块导入指定名字。
@@ -858,7 +911,7 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 ### (import-as)
 
 ```scheme
-(import-as <mod-name> <prefix>)
+(import-as <module-name> <prefix>)
 ```
 
 导入模块并用前缀。
@@ -874,7 +927,7 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 ### (import-all)
 
 ```scheme
-(import-all <mod-name>)
+(import-all <module-name>)
 ```
 
 导入模块中所有名字。
@@ -884,9 +937,6 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 
 (length '(1 2 3))
 ```
-
-
-## 访问控制
 
 ### (private)
 
@@ -899,29 +949,21 @@ Currying 使部分施用在 meta-lisp 中非常自然：
 被标记为私有的名字不能被其他模块引用。
 
 ```scheme
-(module counter)
+(module serial-number)
 
-(define counter-state 0)
-(define (reset) (= counter-state 0))
+(private serial-number-hash)
+(claim serial-number-hash (hash-t symbol-t int-t))
+(define serial-number-hash (make-hash))
 
-(private counter-state reset)
-```
-
-### (exempt)
-
-```scheme
-(exempt <name> ...)
-```
-
-免除未使用警告。
-
-如果顶层定义在当前模块中没有被使用，编译器会警告。`exempt` 免除这个警告。
-
-```scheme
-(define (internal x) (imul x 2))
-(define (public x) (internal x))
-
-(exempt internal)
+(claim generate-serial-number (-> symbol-t int-t))
+(define (generate-serial-number name)
+  (match (hash-get-maybe name serial-number-hash)
+    ((just count)
+     (hash-put! name (iadd 1 count) hash)
+     (iadd 1 count))
+    ((nothing)
+     (hash-put! name 1 hash)
+     1)))
 ```
 
 ## 测试
