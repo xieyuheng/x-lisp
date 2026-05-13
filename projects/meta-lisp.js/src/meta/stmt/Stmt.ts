@@ -256,7 +256,7 @@ export type AlgebraicTypeField = {
   name: string
   type: Exp
   accessorName: string
-  modifierName: string
+  modifierName?: string
   location?: SourceLocation
 }
 

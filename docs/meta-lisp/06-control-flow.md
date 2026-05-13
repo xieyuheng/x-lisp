@@ -2,7 +2,7 @@
 
 ## 顺序执行
 
-### begin
+### (begin)
 
 `(begin e1 e2 ... en)` 依次执行表达式，返回最后一个表达式的值。
 
@@ -31,7 +31,7 @@
 
 ## 局部变量
 
-### let
+### (let)
 
 ```scheme
 (let ((x 1) (y 2))
@@ -46,7 +46,7 @@
   (iadd x y))
 ```
 
-### let*
+### (let*)
 
 ```scheme
 (let* ((x 1)
@@ -63,7 +63,7 @@
   (iadd x 1))  ;; => 2
 ```
 
-### let 与 = 的关系
+### (let) 与 (=) 的关系
 
 ```scheme
 (let ((x 1)) body)
@@ -82,7 +82,7 @@
 
 ### 赋值 =
 
-`(= name expr)` 修改已有变量的值。变量必须先通过 `let`、`let*` 或函数参数绑定。
+`(= name exp)` 修改已有变量的值。变量必须先通过 `let`、`let*` 或函数参数绑定。
 
 ```scheme
 (define (f n)
@@ -95,7 +95,7 @@
 
 ## 条件
 
-### if
+### (if)
 
 `if` 必须有 else 分支：
 
@@ -113,7 +113,7 @@
   (if (int-less? x 0) (ineg x) x))
 ```
 
-### when / unless
+### (when) / (unless)
 
 `when` 在条件为真时执行，没有 else 分支：
 
@@ -130,7 +130,7 @@
   (display (idiv 1 x)))
 ```
 
-### cond
+### (cond)
 
 `cond` 是多分支条件。最后一个条件可以是 `else`：
 
@@ -142,7 +142,7 @@
    (else "zero")))
 ```
 
-### and / or
+### (and) / (or)
 
 短路求值：
 
@@ -153,7 +153,7 @@
 
 ## 函数组合
 
-### pipe
+### (pipe)
 
 `(pipe init f1 f2 ... fn)` 将 `init` 传入 `f1`，结果传入 `f2`，以此类推。
 
@@ -161,7 +161,7 @@
 (pipe 5 add1 double)  ;; 等价于 (double (add1 5)) => 12
 ```
 
-### chain
+### (chain)
 
 `(chain f1 f2 ... fn)` 返回一个函数，等价于从左到右组合。
 
@@ -169,7 +169,7 @@
 ((chain add1 double) 5)  ;; 等价于 (double (add1 5)) => 12
 ```
 
-### compose
+### (compose)
 
 `(compose f1 f2 ... fn)` 返回一个函数，等价于从右到左组合。
 

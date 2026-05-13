@@ -4,7 +4,13 @@
   (make-point (x float-t) (y float-t))
   point?
   (x point-x point-put-x!)
-  (y point-y point-put-y!))
+  (y point-y))
+
+;; - if <modifier-name> is not provided,
+;;   modifier is hidden.
+;; - test hidden modifier by redefining.
+
+(define point-put-y! 42)
 
 (define (point-distance-squared point)
   (fadd (fmul (point-x point) (point-x point))

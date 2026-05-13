@@ -11,7 +11,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
 所有便捷语法最终都**展开为** `define-algebraic-type`。
 
-## define-struct
+## (define-struct)
 
 用于只有一个构造器的数据类型。
 
@@ -51,7 +51,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
 类型名必须以 `-t` 结尾，否则报错并提示使用 `define-algebraic-type`。
 
-## define-struct*
+## (define-struct*)
 
 用于只有一个构造器，但想自定义构造器名。
 
@@ -62,7 +62,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 (cons-point 1 2)
 ```
 
-## define-enum
+## (define-enum)
 
 用于多个构造器的代数数据类型（枚举/联合）。
 
@@ -103,7 +103,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
    (arg apply-exp-arg apply-exp-put-arg!)))
 ```
 
-## define-algebraic-type
+## (define-algebraic-type)
 
 用于需要对命名有完全控制时。
 
@@ -173,7 +173,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
      (set-delete (free-variables body) parameter))))
 ```
 
-### match 语法
+### (match) 语法
 
 ```scheme
 (match target

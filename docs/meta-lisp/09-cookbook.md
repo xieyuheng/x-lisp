@@ -43,7 +43,7 @@ meta-lisp 没有 `for`/`while`。用尾递归函数实现循环。
 
 ## 函数组合
 
-### pipe
+### (pipe)
 
 ```scheme
 (define (add1 x)   (iadd 1 x))
@@ -55,7 +55,7 @@ meta-lisp 没有 `for`/`while`。用尾递归函数实现循环。
 (pipe 2 add1 double square)   ;; => 36  (square(double(add1(2))))
 ```
 
-### chain
+### (chain)
 
 ```scheme
 ((chain add1 double) 5)       ;; => 12
@@ -63,7 +63,7 @@ meta-lisp 没有 `for`/`while`。用尾递归函数实现循环。
 ((chain add1 double square) 2) ;; => 36
 ```
 
-### compose
+### (compose)
 
 ```scheme
 ((compose add1 double) 5)     ;; => 11  (add1(double(5)))

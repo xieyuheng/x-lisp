@@ -155,14 +155,20 @@ export const parseStmt = S.createRouter<M.Stmt>({
     const accessorList = S.asList(accessors).elements
     const accessorMap = new Map<
       string,
-      { accessorName: string; modifierName: string }
+      { accessorName: string; modifierName?: string }
     >()
     for (const accessor of accessorList) {
       const entry = S.asList(accessor).elements
-      accessorMap.set(S.asSymbol(entry[0]).content, {
+      const fieldEntry: {
+        accessorName: string
+        modifierName?: string
+      } = {
         accessorName: S.asSymbol(entry[1]).content,
-        modifierName: S.asSymbol(entry[2]).content,
-      })
+      }
+      if (entry.length >= 3) {
+        fieldEntry.modifierName = S.asSymbol(entry[2]).content
+      }
+      accessorMap.set(S.asSymbol(entry[0]).content, fieldEntry)
     }
 
     return M.DefineRecordType(
@@ -176,9 +182,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
             accessorName: names
               ? names.accessorName
               : `${constructorName}-${field.name}`,
-            modifierName: names
-              ? names.modifierName
-              : `${constructorName}-put-${field.name}!`,
+            modifierName: names ? names.modifierName : undefined,
           }
         }),
         predicate: S.asSymbol(predicate).content,
@@ -280,14 +284,20 @@ const parseAlgebraicTypeConstructor =
       const accessorList = S.asList(accessors).elements
       const accessorMap = new Map<
         string,
-        { accessorName: string; modifierName: string }
+        { accessorName: string; modifierName?: string }
       >()
       for (const accessor of accessorList) {
         const entry = S.asList(accessor).elements
-        accessorMap.set(S.asSymbol(entry[0]).content, {
+        const fieldEntry: {
+          accessorName: string
+          modifierName?: string
+        } = {
           accessorName: S.asSymbol(entry[1]).content,
-          modifierName: S.asSymbol(entry[2]).content,
-        })
+        }
+        if (entry.length >= 3) {
+          fieldEntry.modifierName = S.asSymbol(entry[2]).content
+        }
+        accessorMap.set(S.asSymbol(entry[0]).content, fieldEntry)
       }
 
       return {
@@ -297,9 +307,7 @@ const parseAlgebraicTypeConstructor =
           return {
             ...field,
             accessorName: names ? names.accessorName : `${name}-${field.name}`,
-            modifierName: names
-              ? names.modifierName
-              : `${name}-put-${field.name}!`,
+            modifierName: names ? names.modifierName : undefined,
           }
         }),
         predicate: S.asSymbol(predicate).content,

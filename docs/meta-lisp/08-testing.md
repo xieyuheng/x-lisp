@@ -2,7 +2,7 @@
 
 meta-lisp 内置测试框架。
 
-## define-test
+## (define-test)
 
 使用 `(define-test name body)` 定义测试：
 

@@ -136,9 +136,13 @@ function formatAlgebraicTypeConstructor(
 ): string {
   const group = `(${ctor.name} ${ctor.fields.map(formatAlgebraicTypeField).join(" ")})`
   const accessors = ctor.fields
-    .map(
-      (field) => `(${field.name} ${field.accessorName} ${field.modifierName})`,
-    )
+    .map((field) => {
+      if (field.modifierName !== undefined) {
+        return `(${field.name} ${field.accessorName} ${field.modifierName})`
+      } else {
+        return `(${field.name} ${field.accessorName})`
+      }
+    })
     .join(" ")
   return `(${group} ${ctor.predicate} ${accessors})`
 }

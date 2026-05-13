@@ -79,7 +79,7 @@
 - **无惰性求值**：meta-lisp 是严格求值（call-by-value）
 - **副作用**：meta-lisp 允许副作用（I/O、打印等）
 
-## claim 和 define 的规则？
+## (claim) 和 (define) 的规则？
 
 所有函数和变量必须先声明类型再定义：
 
@@ -117,6 +117,6 @@
 
 ```
 Type mismatch: expected int-t, got string-t    ← 参数类型不对
-Expected function type, got int-t               ← 把非函数当函数调用了
+Expected function type, got int-t               ← 把非函数当函数作用了
 Unbound variable: foo                           ← 变量未定义或未导入
 ```

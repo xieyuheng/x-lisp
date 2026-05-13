@@ -176,7 +176,9 @@ function expandDefineAlgebraicType(stmt: M.DefineAlgebraicType): Array<M.Stmt> {
 
     for (const [index, field] of ctor.fields.entries()) {
       stmts.push(...expandAccessor(stmt, ctor, index, field))
-      stmts.push(...expandModifier(stmt, ctor, index, field))
+      if (field.modifierName !== undefined) {
+        stmts.push(...expandModifier(stmt, ctor, index, field))
+      }
     }
   }
 
@@ -289,6 +291,8 @@ function expandModifier(
   field: M.AlgebraicTypeField,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
+
+  if (field.modifierName === undefined) return stmts
 
   stmts.push(
     admitWithParameters(
