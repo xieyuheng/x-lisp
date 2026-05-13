@@ -16,5 +16,4 @@
 #include "xhash.h"
 #include "xset.h"
 #include "xlist.h"
-#include "xrecord.h"
 #include "xfile.h"

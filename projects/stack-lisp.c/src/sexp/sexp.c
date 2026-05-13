@@ -206,33 +206,6 @@ void format_sexp(buffer_t *buffer, value_t sexp) {
     return;
   }
 
-  if (xrecord_p(sexp)) {
-    xrecord_t *xrecord = to_xrecord(sexp);
-    format_string(buffer, "{");
-    record_iter_t iter;
-    record_iter_init(&iter, xrecord->attributes);
-    const hash_entry_t *entry = record_iter_next_entry(&iter);
-    if (entry) {
-      format_string(buffer, ":");
-      format_string(buffer, entry->key);
-      format_string(buffer, " ");
-      format_sexp(buffer, (value_t) entry->value);
-      entry = record_iter_next_entry(&iter);
-    }
-
-    while (entry) {
-      format_string(buffer, " ");
-      format_string(buffer, ":");
-      format_string(buffer, entry->key);
-      format_string(buffer, " ");
-      format_sexp(buffer, (value_t) entry->value);
-      entry = record_iter_next_entry(&iter);
-    }
-
-    format_string(buffer, "}");
-    return;
-  }
-
   if (xhash_p(sexp)) {
     xhash_t *xhash = to_xhash(sexp);
     format_string(buffer, "(@hash");

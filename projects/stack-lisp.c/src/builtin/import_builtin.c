@@ -187,24 +187,6 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/list-reverse", x_list_reverse);
   define_primitive_1(mod, "builtin/list-to-set", x_list_to_set);
 
-  // record
-
-  define_primitive_0(mod, "builtin/make-record", x_make_record);
-  define_primitive_1(mod, "builtin/record?", x_any_record_p);
-  define_primitive_1(mod, "builtin/record-copy", x_record_copy);
-  define_primitive_1(mod, "builtin/record-length", x_record_length);
-  define_primitive_1(mod, "builtin/record-empty?", x_record_empty_p);
-  define_primitive_2(mod, "builtin/record-get", x_record_get);
-  define_primitive_2(mod, "builtin/record-has?", x_record_has_p);
-  define_primitive_3(mod, "builtin/record-put!", x_record_put_mut);
-  define_primitive_3(mod, "builtin/record-put", x_record_put);
-  define_primitive_2(mod, "builtin/record-delete!", x_record_delete_mut);
-  define_primitive_2(mod, "builtin/record-delete", x_record_delete);
-  define_primitive_2(mod, "builtin/record-append", x_record_append);
-  define_primitive_1(mod, "builtin/record-keys", x_record_keys);
-  define_primitive_1(mod, "builtin/record-values", x_record_values);
-  define_primitive_1(mod, "builtin/record-entries", x_record_entries);
-
   // hash
 
   define_primitive_0(mod, "builtin/make-hash", x_make_hash);

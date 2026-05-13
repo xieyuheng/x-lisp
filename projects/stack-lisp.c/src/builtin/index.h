@@ -10,7 +10,6 @@
 #include "symbol.h"
 #include "keyword.h"
 #include "list.h"
-#include "record.h"
 #include "hash.h"
 #include "set.h"
 #include "random.h"

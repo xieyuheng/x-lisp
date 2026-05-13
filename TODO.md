@@ -1,7 +1,5 @@
 # syntax
 
-[stack-lisp.c] remove `xrecord_t`
-
 [sexp.js] ambr @list @square-bracket
 [stack-lisp.c] ambr @list @square-bracket
 
