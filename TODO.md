@@ -1,6 +1,7 @@
 # syntax
 
-[meta-lisp.js] refactor `ImportPass`
+[meta-lisp.js] `ModuleImportPass` 在找不到 scope 时报错。
+[meta-lisp.js] 定义一个 `007-ModulePass` -- 避免在 pipeline 里调用很多 pass。
 
 [meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
 

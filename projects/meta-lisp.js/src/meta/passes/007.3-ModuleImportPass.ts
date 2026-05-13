@@ -1,126 +1,17 @@
-import { writeln } from "@xieyuheng/helpers.js/file"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ImportPass(project: M.Project): void {
+export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
   for (const fragment of project.fragments.values()) {
-    if (fragment.modName !== "builtin") {
-      fragment.stmts.unshift(M.ImportAll("builtin"))
-    }
-
-    const scope = createScope()
-    for (const stmt of fragment.stmts) {
-      executeImport(project, scope, stmt)
-    }
-
-    fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
-  }
-}
-
-type Scope = {
-  importedNames: Map<string, { modName: string; name: string }>
-  importedPrefixes: Map<string, { modName: string }>
-}
-
-function createScope(): Scope {
-  return {
-    importedNames: new Map(),
-    importedPrefixes: new Map(),
-  }
-}
-
-function executeImport(project: M.Project, scope: Scope, stmt: M.Stmt): void {
-  if (stmt.kind === "Import") {
-    if (!ensureModExists(project, stmt.modName, stmt.location)) return
-
-    const privateNames = collectPrivateNames(project, stmt.modName)
-    for (const name of stmt.names) {
-      if (privateNames.has(name)) continue
-      scope.importedNames.set(name, { modName: stmt.modName, name })
-    }
-  }
-
-  if (stmt.kind === "ImportAs") {
-    if (!ensureModExists(project, stmt.modName, stmt.location)) return
-
-    scope.importedPrefixes.set(stmt.prefix, { modName: stmt.modName })
-  }
-
-  if (stmt.kind === "ImportAll") {
-    if (!ensureModExists(project, stmt.modName, stmt.location)) return
-
-    const names = new Set<string>()
-    const privateNames = collectPrivateNames(project, stmt.modName)
-    for (const fragment of project.fragments.values()) {
-      if (fragment.modName === stmt.modName) {
-        for (const name of M.modFragmentNames(fragment)) {
-          if (privateNames.has(name)) continue
-          names.add(name)
-        }
-      }
-    }
-
-    for (const name of names) {
-      scope.importedNames.set(name, { modName: stmt.modName, name })
+    const key = `${fragment.modName}:${fragment.serialNumber}`
+    const scope = info.fragmentScopes.get(key)
+    if (scope) {
+      fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
     }
   }
 }
 
-function ensureModExists(
-  project: M.Project,
-  modName: string,
-  location?: S.SourceLocation,
-): boolean {
-  for (const fragment of project.fragments.values()) {
-    if (fragment.modName === modName) {
-      return true
-    }
-  }
-
-  const errorMessage = `undefined module: ${modName}`
-  if (location) {
-    writeln(S.sourceLocationReport(location, errorMessage))
-  } else {
-    writeln(`${modName} -- ${errorMessage}`)
-  }
-
-  return false
-}
-
-function collectPrivateNames(project: M.Project, modName: string): Set<string> {
-  const privateNames = new Set<string>()
-  for (const fragment of project.fragments.values()) {
-    if (fragment.modName === modName) {
-      for (const stmt of fragment.stmts) {
-        if (stmt.kind === "Private") {
-          for (const name of stmt.names) {
-            privateNames.add(name)
-          }
-        }
-      }
-    }
-  }
-
-  return privateNames
-}
-
-function scopeFilterBoundNames(scope: Scope, boundNames: Set<string>): Scope {
-  const importedNames: Map<string, { modName: string; name: string }> =
-    new Map()
-  for (const [key, entry] of scope.importedNames) {
-    if (!boundNames.has(key)) {
-      importedNames.set(key, entry)
-    }
-  }
-
-  return {
-    importedNames,
-    importedPrefixes: scope.importedPrefixes,
-  }
-}
-
-function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
+function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
   switch (stmt.kind) {
     case "Claim": {
       return M.Claim(stmt.name, onExp(scope, stmt.type), stmt.location)
@@ -177,7 +68,7 @@ function onStmt(scope: Scope, stmt: M.Stmt): M.Stmt {
   }
 }
 
-function onExp(scope: Scope, exp: M.Exp): M.Exp {
+function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -257,5 +148,23 @@ function onExp(scope: Scope, exp: M.Exp): M.Exp {
     default: {
       return M.expTraverse((child) => onExp(scope, child), exp)
     }
+  }
+}
+
+function scopeFilterBoundNames(
+  scope: M.FragmentScope,
+  boundNames: Set<string>,
+): M.FragmentScope {
+  const importedNames: Map<string, { modName: string; name: string }> =
+    new Map()
+  for (const [key, entry] of scope.importedNames) {
+    if (!boundNames.has(key)) {
+      importedNames.set(key, entry)
+    }
+  }
+
+  return {
+    importedNames,
+    importedPrefixes: scope.importedPrefixes,
   }
 }

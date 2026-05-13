@@ -1,6 +1,7 @@
 import * as M from "../index.ts"
 
 export type ModFragment = {
+  serialNumber: number
   modName: string
   isErrorModule?: boolean
   stmts: Array<M.Stmt>
