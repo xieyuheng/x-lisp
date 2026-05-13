@@ -1,7 +1,5 @@
 # syntax
 
-[meta-lisp.js] 定义一个 `007-ModulePass` -- 避免在 pipeline 里调用很多 pass。
-
 [meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
 
 - module can override builtin names

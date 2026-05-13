@@ -1,4 +1,5 @@
 export * from "./006-ExpandPass.ts"
+export * from "./007-ModulePass.ts"
 export * from "./007.1-ModuleInjectBuiltinPass.ts"
 export * from "./007.2-ModuleAnalysisPass.ts"
 export * from "./007.3-ModuleImportPass.ts"

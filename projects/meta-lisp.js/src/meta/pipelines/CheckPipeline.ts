@@ -8,9 +8,7 @@ export function CheckPipeline(
   },
 ): void {
   M.ExpandPass(project)
-  M.ModuleInjectBuiltinPass(project)
-  const modInfo = M.ModuleAnalysisPass(project)
-  M.ModuleImportPass(project, modInfo)
+  M.ModulePass(project)
   M.ExecutePass(project)
   M.ClaimPass(project)
   M.DesugarPass(project, { dump: options.dump })
