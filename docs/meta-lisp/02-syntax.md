@@ -791,10 +791,27 @@ builtin/list-empty?
    (y point-y point-put-y!)))
 ```
 
+`(define-record-type)` 这个语法来自 scheme，
+起源于 scheme 48 这个 scheme 方言。
+
+我们给这个语法加上了 `<field-name>` 的类型声明，
+即 `(<field-name> <type>)`。
+
+`(define-algebraic-type)` 模仿 `(define-record-type)`，
+进一步支持了多个构造子。
+
 ### (define-enum)
 
 ```scheme
 (define-enum <type-name>
+  (<constructor-name> (<field-name> <type>) ...)
+  ...)
+```
+
+或带有类型参数：
+
+```scheme
+(define-enum (<type-name> <type-parameter> ...)
   (<constructor-name> (<field-name> <type>) ...)
   ...)
 ```
@@ -838,7 +855,16 @@ builtin/list-empty?
 
 ```scheme
 (define-struct <type-name>
-  (<field-name> <type>) ...)
+  (<field-name> <type>)
+  ...)
+```
+
+或带有类型参数：
+
+```scheme
+(define-struct (<type-name> <type-parameter> ...)
+  (<field-name> <type>)
+  ...)
 ```
 
 定义单构造器结构体。
@@ -867,8 +893,20 @@ builtin/list-empty?
 
 ```scheme
 (define-struct* <type-name>
-  (<constructor-name> (<field-name> <type>) ...))
+  (<constructor-name>
+   (<field-name> <type>)
+   ...))
 ```
+
+或带有类型参数：
+
+```scheme
+(define-struct* (<type-name> <type-parameter> ...)
+  (<constructor-name>
+   (<field-name> <type>)
+   ...))
+```
+
 
 与 `(define-struct)` 类似，
 但是 `<constructor-name>` 有用户给出。
