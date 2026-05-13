@@ -92,7 +92,7 @@ export class Parser {
           )
           return {
             sexp: S.List(
-              [S.Symbol("@record"), ...S.asList(sexp).elements],
+              [S.Symbol("@curly-bracket"), ...S.asList(sexp).elements],
               sexp.location,
             ),
             remain,

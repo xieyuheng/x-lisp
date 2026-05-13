@@ -1,6 +1,5 @@
 # syntax
 
-[sexp.js] ambr @record @curly-bracket
 [stack-lisp.c] ambr @record @curly-bracket
 [stack-lisp.c] remove `xrecord_t`
 

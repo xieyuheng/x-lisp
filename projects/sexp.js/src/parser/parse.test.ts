@@ -54,11 +54,11 @@ test("parse -- square brackets", () => {
 })
 
 test("parse -- flower brackets", () => {
-  assertParse("{}", S.List([S.Symbol("@record")]))
+  assertParse("{}", S.List([S.Symbol("@curly-bracket")]))
   assertParse(
     "{:x 1 :y 2}",
     S.List([
-      S.Symbol("@record"),
+      S.Symbol("@curly-bracket"),
       S.Keyword("x"),
       S.Int(BigInt(1)),
       S.Keyword("y"),
