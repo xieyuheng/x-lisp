@@ -1,5 +1,4 @@
 import * as M from "../index.ts"
-import { type Type } from "../index.ts"
 import {
   definePrimitiveFunction,
   definePrimitiveVariable,
@@ -21,16 +20,7 @@ export function typeBuiltin(mod: Mod) {
   definePrimitiveVariable(mod, "bool-t", M.AtomType("bool"))
   definePrimitiveVariable(mod, "void-t", M.AtomType("void"))
   definePrimitiveVariable(mod, "file-t", M.AtomType("file"))
-
-  definePrimitiveFunction(mod, "list-t", 1, (...args: Array<Type>) => {
-    return M.ListType(args[0])
-  })
-
-  definePrimitiveFunction(mod, "set-t", 1, (...args: Array<Type>) => {
-    return M.SetType(args[0])
-  })
-
-  definePrimitiveFunction(mod, "hash-t", 2, (...args: Array<Type>) => {
-    return M.HashType(args[0], args[1])
-  })
+  definePrimitiveFunction(mod, "list-t", 1, (E) => M.ListType(E))
+  definePrimitiveFunction(mod, "set-t", 1, (E) => M.SetType(E))
+  definePrimitiveFunction(mod, "hash-t", 2, (K, V) => M.HashType(K, V))
 }
