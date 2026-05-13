@@ -664,11 +664,6 @@ builtin/list-empty?
 
 ### (define-algebraic-type)
 
-**代数数据类型**（algebraic data type）是构建复合数据结构的核心机制。
-
-`(define-algebraic-type)` 是最基础的语法形式，
-其中所有名字由你显式指定。
-
 ```scheme
 (define-algebraic-type <type-name>
   ((<constructor-name> (<field-name> <type>) ...)
@@ -677,6 +672,21 @@ builtin/list-empty?
    ...)
   ...)
 ```
+
+或带有类型参数：
+
+```scheme
+(define-algebraic-type (<type-name> <type-parameter> ...)
+  ((<constructor-name> (<field-name> <type>) ...)
+   <predicate-name>
+   (<field-name> <accessor-name> <modifier-name>)
+   ...)
+  ...)
+```
+
+**代数数据类型**（algebraic data type）是构建复合数据结构的核心机制。
+
+`(define-algebraic-type)` 是最基础的语法形式，其中所有名字由你显式指定。
 
 例如：
 
@@ -714,16 +724,7 @@ builtin/list-empty?
 只有代数类型有多个构造子时，
 所生成的谓词才有意义。
 
-`(define-algebraic-type)` 所定义的类型可以带有类型参数：
-
-```scheme
-(define-algebraic-type (<type-name> <type-parameter> ...)
-  ((<constructor-name> (<field-name> <type>) ...)
-   <predicate-name>
-   (<field-name> <accessor-name> <modifier-name>)
-   ...)
-  ...)
-```
+`(define-algebraic-type)` 所定义的类型可以带有类型参数。
 
 例如：
 
@@ -748,6 +749,46 @@ builtin/list-empty?
 (claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 (claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 (claim li-put-tail! (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+```
+
+### (define-record-type)
+
+```scheme
+(define-record-type <type-name>
+  (<constructor-name> (<field-name> <type>) ...)
+  <predicate-name>
+  (<field-name> <accessor-name> <modifier-name>)
+  ...)
+```
+
+或带有类型参数：
+
+```scheme
+(define-record-type (<type-name> <type-parameter> ...)
+  (<constructor-name> (<field-name> <type>) ...)
+  <predicate-name>
+  (<field-name> <accessor-name> <modifier-name>)
+  ...)
+```
+
+与 `(define-algebraic-type)` 类似，但是只有一个构造子。
+
+```scheme
+(define-record-type point-t
+  (make-point (x float-t) (y float-t))
+  point?
+  (x point-x point-put-x!)
+  (y point-y point-put-y!))
+```
+
+等价于：
+
+```scheme
+(define-algebraic-type point-t
+  ((make-point (x float-t) (y float-t))
+   point?
+   (x point-x point-put-x!)
+   (y point-y point-put-y!)))
 ```
 
 ### (define-enum)
