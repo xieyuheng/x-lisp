@@ -671,7 +671,7 @@ builtin/list-empty?
 
 ```scheme
 (define-algebraic-type <type-name>
-  ((<constructor-name> (<field-name> <field-type>) ...)
+  ((<constructor-name> (<field-name> <type>) ...)
    <predicate-name>
    (<field-name> <accessor-name> <modifier-name>)
    ...)
@@ -718,7 +718,7 @@ builtin/list-empty?
 
 ```scheme
 (define-algebraic-type (<type-name> <type-parameter> ...)
-  ((<constructor-name> (<field-name> <field-type>) ...)
+  ((<constructor-name> (<field-name> <type>) ...)
    <predicate-name>
    (<field-name> <accessor-name> <modifier-name>)
    ...)
@@ -741,42 +741,25 @@ builtin/list-empty?
 
 ```scheme
 (claim nil (polymorphic (E) (-> (my-list-t E))))
-...
+(claim nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+(claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li-put-tail! (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 ```
 
-再看一个稍复杂的表达式类型 `exp-t`，它有多个构造器，且字段可以引用自身：
+### (define-enum)
 
 ```scheme
-(define-algebraic-type exp-t
-  ((var-exp (name symbol-t))
-   var-exp?
-   (name var-exp-name var-exp-put-name!))
-  ((apply-exp (target exp-t) (arg exp-t))
-   apply-exp?
-   (target apply-exp-target apply-exp-put-target!)
-   (arg apply-exp-arg apply-exp-put-arg!))
-  ((lambda-exp (parameter symbol-t) (body exp-t))
-   lambda-exp?
-   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
-   (body lambda-exp-body lambda-exp-put-body!)))
-```
-
-其中：
-
-- `var-exp` 是变量表达式，`var-exp-name` 读取变量名
-- `apply-exp` 是函数调用，`apply-exp-target` 是调用的目标，`apply-exp-arg` 是参数
-- `lambda-exp` 是匿名函数，`lambda-exp-parameter` 是参数名，`lambda-exp-body` 是函数体
-
-### (define-enum) —— 展开为 define-algebraic-type
-
-```scheme
-(define-enum <name>
-  (<constructor> (<field> <type>) ...)
+(define-enum <type-name>
+  (<constructor-name> (<field-name> <type>) ...)
   ...)
 ```
 
 定义多个构造器的代数数据类型。
-每个构造器按照命名约定自动生成构造器、谓词、访问器、修改器。
+每个构造器按照约定生成谓词、访问器和修改器的名字。
 
 ```scheme
 (define-enum exp-t
@@ -802,52 +785,80 @@ builtin/list-empty?
    (body lambda-exp-body lambda-exp-put-body!)))
 ```
 
-自动生成的命名规则：
-
-- 构造器：`<constructor>`，例如 `var-exp`
-- 谓词：`<constructor>?`，例如 `var-exp?`
-- 访问器：`<constructor>-<field>`，例如 `var-exp-name`
-- 修改器：`<constructor>-put-<field>!`，例如 `var-exp-put-name!`
-
-### (define-struct) —— 展开为 define-algebraic-type
+对于某个给定的 `<constructor-name>` 生成其名字的规则如下：
 
 ```scheme
-(define-struct <name>
-  (<field> <type>) ...)
+<predicate-name> = <constructor-name>? -- var-exp?
+<accessor-name> = <constructor-name>-<field-name> -- var-exp-name
+<modifier-name> = <constructor-name>-put-<field-name>! -- var-exp-put-name!
+```
+
+### (define-struct)
+
+```scheme
+(define-struct <type-name>
+  (<field-name> <type>) ...)
 ```
 
 定义单构造器结构体。
-类型名必须以 `-t` 结尾，构造器名自动生成为 `make-<base>`。
+`<type-name>` 类型名必须以 `-t`，
+结构为 `<base-name>-t`。
+
+`<base-name>` 将被用于生成其他名字。
 
 ```scheme
 (define-struct point-t
   (x float-t)
   (y float-t))
+```
 
-;; 等价于：
+等价于：
+
+```scheme
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
    (x point-x point-put-x!)
    (y point-y point-put-y!)))
-
-(define p (make-point 1.0 2.0))
-(point-x p)  ;; => 1.0
 ```
 
-### (define-struct*) —— 展开为 define-algebraic-type
+### (define-struct*)
 
 ```scheme
-(define-struct* <name>
-  (<constructor> (<field> <type>) ...))
+(define-struct* <type-name>
+  (<constructor-name> (<field-name> <type>) ...))
 ```
 
-定义单构造器结构体，自定义构造器名。
+与 `(define-struct)` 类似，
+但是 `<constructor-name>` 有用户给出。
 
 ```scheme
-(define-struct* point-t (cons-point (x int-t) (y int-t)))
+(define-struct point-t
+  (x float-t)
+  (y float-t))
+```
 
-(cons-point 1 2)
+等价于：
+
+```scheme
+(define-struct* point-t
+  (make-point
+   (x float-t)
+   (y float-t)))
+```
+
+之所以给 `(define-struct)` 增加这个变体，
+是因为有时需要把 `make-<base-name>` 保留给更简单的构造函数。
+
+```scheme
+(define-struct* project-t
+  (cons-project
+   (root-directory string-t)
+   (config project-config-t)
+   (fragments (hash-t string-t mod-fragment-t))))
+
+(define (make-project root-directory config)
+  (cons-project root-directory config (make-hash)))
 ```
 
 ### (match)
@@ -858,40 +869,41 @@ builtin/list-empty?
   ...)
 ```
 
-模式匹配——解构代数数据类型。
-
-`target` 是要匹配的值。每个子句以一个构造器名开头，后面的符号绑定到对应字段。
-第一个匹配的子句的 body 被求值。
-所有分支必须覆盖目标类型的所有可能。
+用模式匹配的方式解构代数数据类型。
 
 ```scheme
-(define (free-variables exp)
+(define-enum exp-t
+  (var-exp (name symbol-t))
+  (apply-exp (target exp-t) (arg exp-t))
+  (lambda-exp (parameter symbol-t) (body exp-t)))
+
+(define (evaluate exp env)
   (match exp
     ((var-exp name)
-     (make-set name))
+     (env-lookup-of-fail name env))
     ((apply-exp target arg)
-     (set-union (free-variables target)
-                (free-variables arg)))
+     (apply (evaluate target env) (evaluate arg env)))
     ((lambda-exp parameter body)
-     (set-delete (free-variables body) parameter))))
+     (closure-value env parameter body))))
 ```
-
 
 ## 模块
 
 ### (module)
 
 ```scheme
-(module <name>)
+(module <module-name>)
 ```
 
 声明当前模块。
 
-每个 `.meta` 文件必须以 `module` 开头。`name` 通常与文件名一致。
+每个 `.meta` 文件必须以 `(module)` 开头。
 
-```scheme
-(module math)
-```
+模块系统与文件系统解耦，存放模块的路径和文件名并不重要。
+具有相同 `<module-name>` 的代码，可以拆分到不同文件中，
+只要给出相同的 `(module <module-name>)` 模块声明即可。
+
+在同一个项目中，可以通过 `<module-name>/<name>` 引用别的模块中的名字。
 
 ### (import)
 
@@ -905,7 +917,20 @@ builtin/list-empty?
 
 ```scheme
 (import math pi circumference)
-(import list length map)
+```
+
+之后，
+
+```scheme
+math/pi
+math/circumference
+```
+
+可简写为：
+
+```scheme
+pi
+circumference
 ```
 
 ### (import-as)
@@ -914,14 +939,24 @@ builtin/list-empty?
 (import-as <module-name> <prefix>)
 ```
 
-导入模块并用前缀。
+导入模块并修改前缀。
 
-使用时用 `prefix/name`。
+`<module-name>/<name>` 改为 `<prefix>/<name>`。
 
 ```scheme
-(import-as list L)
+(import-as meta m)
+```
 
-(L/length '(1 2 3))
+之后，
+
+```scheme
+meta/exp-t
+```
+
+可简写为：
+
+```scheme
+m/exp-t
 ```
 
 ### (import-all)
@@ -932,11 +967,13 @@ builtin/list-empty?
 
 导入模块中所有名字。
 
-```scheme
-(import-all list)
+使得所有名字都可以不用前缀就能引用。
 
-(length '(1 2 3))
-```
+如果当前模块已经有重复的名字，
+就略过这个名字不导入。
+
+因此，不带前缀的引用，还是会引用到当前模块自己的名字。
+或者说本地的定义，可以覆盖 `(import-all)` 所引入的定义。
 
 ### (private)
 
@@ -952,18 +989,7 @@ builtin/list-empty?
 (module serial-number)
 
 (private serial-number-hash)
-(claim serial-number-hash (hash-t symbol-t int-t))
 (define serial-number-hash (make-hash))
-
-(claim generate-serial-number (-> symbol-t int-t))
-(define (generate-serial-number name)
-  (match (hash-get-maybe name serial-number-hash)
-    ((just count)
-     (hash-put! name (iadd 1 count) hash)
-     (iadd 1 count))
-    ((nothing)
-     (hash-put! name 1 hash)
-     1)))
 ```
 
 ## 测试
@@ -971,13 +997,12 @@ builtin/list-empty?
 ### (define-test)
 
 ```scheme
-(define-test <name> <body>)
+(define-test <test-name> <body>)
 ```
 
 定义测试。
 
-`body` 中可以用断言来做测试。
-通过 `./meta-lisp.js test` 运行。
+`<body>` 中可以用断言来做测试。
 
 ```scheme
 (claim add1 (-> int-t int-t))
