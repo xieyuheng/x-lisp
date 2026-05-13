@@ -688,6 +688,9 @@ builtin/list-empty?
 
 `(define-algebraic-type)` 是最基础的语法形式，其中所有名字由你显式指定。
 
+只有 `<modifier-name>` 是可选的。
+如果不写，这个 field 的引用就是不可修改的。
+
 例如：
 
 ```scheme
