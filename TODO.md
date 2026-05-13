@@ -1,3 +1,7 @@
+# real docs
+
+[docs]
+
 # syntax
 
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
