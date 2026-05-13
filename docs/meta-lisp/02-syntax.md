@@ -142,7 +142,7 @@ builtin/list-empty?
 
 lambda 的参数个数必须与调用时传入的参数个数一致。
 
-### (define)（函数定义）
+### (define)
 
 `(define (name parameter ...) body)` -- 定义命名函数。
 
