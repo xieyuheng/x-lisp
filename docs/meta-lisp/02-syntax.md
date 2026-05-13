@@ -62,6 +62,33 @@ meta-lisp 使用 S-expression 语法。
 
 空值用 `void`，它也不是字面量，而是绑定了空值的变量。
 
+### 复合
+
+`@list` 创建列表。
+
+```scheme
+(@list 1 2 3)
+```
+
+`@set` 创建集合。
+
+```scheme
+(@set 1 2 3)
+```
+
+`@hash` 创建哈希表。
+
+```scheme
+(@hash "a" 1 "b" 2)
+```
+
+方括号 `[...]` 是 `@list` 的语法糖。
+
+```scheme
+[1 2 3]          ;; 等价于 (@list 1 2 3)
+["a" "b" "c"]
+```
+
 ### (quote)
 
 ```scheme
@@ -132,22 +159,26 @@ builtin/list-empty?
 
 ## 函数
 
-### 函数调用
+### 函数作用
 
 ```scheme
 (<target> <arg> ...)
 ```
 
-函数调用是 S-expression 的核心形式。
+函数作用是最重要的语法。
 
-如果表达式的第一个元素不是语法关键词，就被认为是函数调用。
-第一个元素是函数，其余是参数。
-所有参数在调用前先求值。
+如果表达式的第一个位置不是语法关键词，就被认为是函数作用。
+
+第一个位置是函数，其余是参数。
+
+先求值函数位置的表达式，
+然后求值所有参数位置的表达式，
+然后进行函数作用。
 
 ```scheme
-(iadd 1 2)              ;; 调用 iadd
-(println "hello")       ;; 调用 println
-((lambda (x) x) 1)      ;; 函数位置也可以是表达式
+(iadd 1 2)
+(println "hello")
+((lambda (x) x) 1)
 ```
 
 ### (lambda)
@@ -160,15 +191,10 @@ builtin/list-empty?
 
 `(<parameter> ...)` 是形式参数列表，
 `<body>` 是一个或多个表达式。
-当函数被调用时，实际参数被绑定到形式参数，然后求值 `<body>`。
+当函数被作用时，实际参数被绑定到形式参数，然后求值 `<body>`。
 
 ```scheme
 (lambda (x) (iadd x 1))
-```
-
-立即调用：
-
-```scheme
 ((lambda (x) (iadd x 1)) 2)  ;; => 3
 ```
 
@@ -598,33 +624,70 @@ builtin/list-empty?
 
 ## 代数数据类型
 
-### (match)
+### (define-algebraic-type)
+
+代数数据类型是构建复合数据结构的核心机制。
+`(define-algebraic-type)` 是最基础的形式，所有名字由你显式指定。
 
 ```scheme
-(match <target>
-  (<pattern> <body>)
+(define-algebraic-type <name>
+  ((<constructor> (<field> <type>) ...)
+   <predicate>
+   (<field> <accessor> <modifier>) ...)
   ...)
 ```
 
-模式匹配。
+每个构造器的格式为：构造器名 + 字段列表 + 谓词 + 字段的访问器/修改器列表。
 
-`target` 是要匹配的值。每个子句以一个构造器名开头，后面的符号绑定到对应字段。第一个匹配的子句的 body 被求值。
+先用一个简单的单构造器类型 `point-t` 来理解基本结构：
 
 ```scheme
-(define-enum exp-t
-  (var-exp (name symbol-t))
-  (lambda-exp (parameter symbol-t) (body exp-t)))
-
-(define (free-variables exp)
-  (match exp
-    ((var-exp name) (make-set name))
-    ((lambda-exp parameter body)
-     (set-delete (free-variables body) parameter))))
+(define-algebraic-type point-t
+  ((make-point (x float-t) (y float-t))
+   point?
+   (x point-x point-put-x!)
+   (y point-y point-put-y!)))
 ```
 
-构造器名必须匹配 `define-enum` 或 `define-algebraic-type` 中定义的构造器。所有分支必须覆盖目标类型的所有可能。
+其中：
 
-### (define-enum)
+- `make-point` 是构造器，`point?` 是谓词
+- `point-x` 是 `x` 字段的访问器，`point-put-x!` 是 `x` 字段的修改器
+- `point-y` 是 `y` 字段的访问器，`point-put-y!` 是 `y` 字段的修改器
+
+使用：
+
+```scheme
+(define p (make-point 1.0 2.0))
+(point? p)      ;; => true
+(point-x p)     ;; => 1.0
+(point-put-x! p 3.0)
+```
+
+再看一个稍复杂的表达式类型 `exp-t`，它有多个构造器，且字段可以引用自身：
+
+```scheme
+(define-algebraic-type exp-t
+  ((var-exp (name symbol-t))
+   var-exp?
+   (name var-exp-name var-exp-put-name!))
+  ((apply-exp (target exp-t) (arg exp-t))
+   apply-exp?
+   (target apply-exp-target apply-exp-put-target!)
+   (arg apply-exp-arg apply-exp-put-arg!))
+  ((lambda-exp (parameter symbol-t) (body exp-t))
+   lambda-exp?
+   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
+   (body lambda-exp-body lambda-exp-put-body!)))
+```
+
+其中：
+
+- `var-exp` 是变量表达式，`var-exp-name` 读取变量名
+- `apply-exp` 是函数调用，`apply-exp-target` 是调用的目标，`apply-exp-arg` 是参数
+- `lambda-exp` 是匿名函数，`lambda-exp-parameter` 是参数名，`lambda-exp-body` 是函数体
+
+### (define-enum) —— 展开为 define-algebraic-type
 
 ```scheme
 (define-enum <name>
@@ -633,23 +696,40 @@ builtin/list-empty?
 ```
 
 定义多个构造器的代数数据类型。
-
-每个构造器自动生成构造器、谓词、访问器、修改器。
+每个构造器按照命名约定自动生成构造器、谓词、访问器、修改器。
 
 ```scheme
 (define-enum exp-t
   (var-exp (name symbol-t))
+  (apply-exp (target exp-t) (arg exp-t))
   (lambda-exp (parameter symbol-t) (body exp-t)))
 ```
 
-生成的名字：
+等价于：
+
+```scheme
+(define-algebraic-type exp-t
+  ((var-exp (name symbol-t))
+   var-exp?
+   (name var-exp-name var-exp-put-name!))
+  ((apply-exp (target exp-t) (arg exp-t))
+   apply-exp?
+   (target apply-exp-target apply-exp-put-target!)
+   (arg apply-exp-arg apply-exp-put-arg!))
+  ((lambda-exp (parameter symbol-t) (body exp-t))
+   lambda-exp?
+   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
+   (body lambda-exp-body lambda-exp-put-body!)))
+```
+
+自动生成的命名规则：
 
 - 构造器：`<constructor>`，例如 `var-exp`
 - 谓词：`<constructor>?`，例如 `var-exp?`
 - 访问器：`<constructor>-<field>`，例如 `var-exp-name`
 - 修改器：`<constructor>-put-<field>!`，例如 `var-exp-put-name!`
 
-### (define-struct)
+### (define-struct) —— 展开为 define-algebraic-type
 
 ```scheme
 (define-struct <name>
@@ -657,19 +737,25 @@ builtin/list-empty?
 ```
 
 定义单构造器结构体。
-
-类型名必须以 `-t` 结尾。构造器名自动生成为 `make-<base>`。
+类型名必须以 `-t` 结尾，构造器名自动生成为 `make-<base>`。
 
 ```scheme
 (define-struct point-t
   (x float-t)
   (y float-t))
 
+;; 等价于：
+(define-algebraic-type point-t
+  ((make-point (x float-t) (y float-t))
+   point?
+   (x point-x point-put-x!)
+   (y point-y point-put-y!)))
+
 (define p (make-point 1.0 2.0))
 (point-x p)  ;; => 1.0
 ```
 
-### (define-struct*)
+### (define-struct*) —— 展开为 define-algebraic-type
 
 ```scheme
 (define-struct* <name>
@@ -684,30 +770,31 @@ builtin/list-empty?
 (cons-point 1 2)
 ```
 
-### (define-algebraic-type)
+### (match)
 
 ```scheme
-(define-algebraic-type <name>
-  ((<constructor> (<field> <type>) ...)
-   <predicate>
-   (<field> <accessor> <modifier>) ...)
+(match <target>
+  (<pattern> <body>)
   ...)
 ```
 
-最 explicit 的代数数据类型定义。所有名字由你指定。
+模式匹配——解构代数数据类型。
+
+`target` 是要匹配的值。每个子句以一个构造器名开头，后面的符号绑定到对应字段。
+第一个匹配的子句的 body 被求值。
+所有分支必须覆盖目标类型的所有可能。
 
 ```scheme
-(define-algebraic-type exp-t
-  ((var-exp (name symbol-t))
-   var-exp?
-   (name var-exp-name var-exp-put-name!))
-  ((lambda-exp (parameter symbol-t) (body exp-t))
-   lambda-exp?
-   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
-   (body lambda-exp-body lambda-exp-put-body!)))
+(define (free-variables exp)
+  (match exp
+    ((var-exp name)
+     (make-set name))
+    ((apply-exp target arg)
+     (set-union (free-variables target)
+                (free-variables arg)))
+    ((lambda-exp parameter body)
+     (set-delete (free-variables body) parameter))))
 ```
-
-每定义一个构造器，格式为：构造器名 + 字段列表 + 谓词 + 字段的访问器/修改器列表。
 
 
 ## 模块
@@ -824,7 +911,8 @@ builtin/list-empty?
 通过 `./meta-lisp.js test` 运行。
 
 ```scheme
-(define add1 (iadd 1))
+(claim add1 (-> int-t int-t))
+(define (add1 x) (iadd x 1))
 
 (define-test add1-test
   (assert-equal 2 (add1 1))
