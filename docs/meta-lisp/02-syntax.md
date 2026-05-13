@@ -15,6 +15,8 @@ meta-lisp 使用 S-expression 语法。
 
 ## 字面量
 
+### 原子
+
 整数由数字组成，可选负号。
 
 ```scheme
@@ -55,8 +57,38 @@ meta-lisp 使用 S-expression 语法。
 
 空值用 `void`，它也不是字面量，而是绑定了空值的变量。
 
+### (quote)
 
-## 变量与引用
+```scheme
+'<exp>
+(quote <exp>)
+```
+
+阻止 `exp` 被求值，通常用来创建列表数据。
+
+```scheme
+'(1 2 3)         ;; => [1 2 3]
+'(a b c)         ;; => ['a 'b 'c]
+'foo             ;; => 'foo
+(quote (1 2 3))  ;; => [1 2 3]
+(quote (a b c))  ;; => ['a 'b 'c]
+(quote foo)      ;; => 'foo
+```
+
+## 变量
+
+### (define)
+
+```scheme
+(define <name> <exp>)
+```
+
+定义模块级变量。
+
+```scheme
+(define answer 42)
+(define greeting "hello")
+```
 
 ### 变量
 
@@ -86,24 +118,6 @@ list-empty?
 ```scheme
 builtin/list-length
 builtin/list-empty?
-```
-
-### (quote)
-
-```scheme
-'<exp>
-(quote <exp>)
-```
-
-阻止 `exp` 被求值，通常用来创建列表数据。
-
-```scheme
-'(1 2 3)         ;; => [1 2 3]
-'(a b c)         ;; => ['a 'b 'c]
-'foo             ;; => 'foo
-(quote (1 2 3))  ;; => [1 2 3]
-(quote (a b c))  ;; => ['a 'b 'c]
-(quote foo)      ;; => 'foo
 ```
 
 ## 函数
@@ -174,7 +188,7 @@ builtin/list-empty?
 (define add1 (lambda (x) (iadd x 1)))
 ```
 
-函数体 `<body>` 中可以直接写多个表达式：
+函数体 `<body>` 可以是多个表达式：
 
 ```scheme
 (define (f x)
@@ -190,7 +204,7 @@ builtin/list-empty?
 ```
 
 
-## 类型声明
+## 类型
 
 ### (claim)
 
@@ -198,7 +212,7 @@ builtin/list-empty?
 (claim <name> <type>)
 ```
 
-声明一个名字的类型。
+声称一个名字的类型。
 
 编译器会检查 `define` 的实现是否与 `claim` 的类型一致。
 
@@ -210,7 +224,21 @@ builtin/list-empty?
 (define answer 42)
 ```
 
-`define-test` 不需要 `claim`。
+### (admit)
+
+```scheme
+(admit <name> <type>)
+```
+
+承认名字的类型。
+
+与 `(claim)` 类似，但是编译器不会检查对应的 `(define)`。
+
+```scheme
+(admit make-point (-> float-t float-t point-t))
+(define (make-point x y)
+  (@list 'make-point x y))
+```
 
 ### (the)
 
@@ -233,44 +261,17 @@ builtin/list-empty?
 (polymorphic (<type-parameter> ...) <type>)
 ```
 
-声明包含类型参数的类型。
+包含类型变量的类型。
 
-`A` 和 `B` 是类型变量，在 type 中可以被引用。用于 `claim` 中声明多态函数。
-
-```scheme
-(claim identity
-  (polymorphic (A) (-> A A)))
-
-(claim pair
-  (polymorphic (A B) (-> A B (list-t A))))
-```
-
-### (claim-type)
+类型变量通常用单个大写字母表示，在 `<type>` 中可以被引用。
+用于 `claim` 中声称多态函数。
 
 ```scheme
-(claim-type <name>)
-```
+(claim identity (polymorphic (A) (-> A A)))
 
-声明 `name` 的类型是 `type-t`。
-
-用于定义新的类型常量。通常只在 `meta-builtin.meta` 中使用。
-
-```scheme
-(claim-type my-custom-t)
-```
-
-### (admit)
-
-```scheme
-(admit <name> <type>)
-```
-
-绕过类型检查，声明名字的类型。
-
-用于逐步开发——先用 `admit` 占位，后续再补上实现。
-
-```scheme
-(admit complex-function (-> int-t string-t))
+(claim car (polymorphic (E) (-> (list-t E) E)))
+(claim cdr (polymorphic (E) (-> (list-t E) (list-t E))))
+(claim cons (polymorphic (E) (-> E (list-t E) (list-t E))))
 ```
 
 
@@ -279,54 +280,62 @@ builtin/list-empty?
 ### (if)
 
 ```scheme
-(if <condition> <consequent> <alternative>)
+(if <condition>
+  <consequent>
+  <alternative>)
 ```
 
 条件分支。
 
-`condition` 被求值。如果为真，求值 `consequent` 并返回。否则求值 `alternative` 并返回。
+`<condition>` 被求值。
+如果为真，求值 `<consequent>` 并返回。
+否则求值 `<alternative>` 并返回。
 
-`if` 必须有 else 分支。
+`(if)` 必须有 else 分支。
 
 ```scheme
-(if (int-positive? x)
-  "positive"
-  "non-positive")
-
 (define (abs x)
-  (if (int-less? x 0) (ineg x) x))
+  (if (int-less? x 0)
+    (ineg x)
+    x))
 ```
 
 ### (when)
 
 ```scheme
-(when <condition> <body>)
+(when <condition>
+  <body>)
 ```
 
-条件为真时执行。
+条件为真时执行，用于副作用。
 
-`condition` 为真时求值 `body`。否则跳过。返回值是 `void`。
+`<condition>` 为真时求值 `<body>`，否则跳过。
+`<body>` 中可以写多个表达式。
+`(when)` 表达式的返回值总是 `void`。
 
 ```scheme
 (when debug?
-  (println "debug mode"))
+  (print "debug mode")
+  (newline))
 ```
-
-没有 else 分支。需要 else 分支时用 `if`。
 
 ### (unless)
 
 ```scheme
-(unless <condition> <body>)
+(unless <condition>
+  <body>)
 ```
 
-条件为假时执行。
+条件为假时执行，用于副作用。
 
-`condition` 为假时求值 `body`。否则跳过。返回值是 `void`。
+`<condition>` 为假时求值 `<body>`，否则跳过。
+`<body>` 中可以写多个表达式。
+`(unless)` 表达式的返回值总是 `void`。
 
 ```scheme
 (unless (equal? x 0)
-  (println (idiv 1 x)))
+  (print (idiv 1 x))
+  (newline))
 ```
 
 ### (cond)
@@ -339,7 +348,9 @@ builtin/list-empty?
 
 多分支条件。
 
-依次求值每个 `q`。第一个为真的分支的 `a` 被求值并返回。`else` 是默认分支。
+依次求值每个 `<question>`。
+第一个为真的分支的 `<answer>` 被求值并返回。
+末尾的 `<question>` 可以写 `else` 作为默认分支。
 
 ```scheme
 (define (classify x)
@@ -379,18 +390,21 @@ builtin/list-empty?
 (or (equal? x 0) (equal? x 1))
 ```
 
+零个参数时返回 `false`。
 
-## 顺序执行与绑定
+## 顺序与绑定
 
 ### (begin)
 
 ```scheme
-(begin <exp> ...)
+(begin <body>)
 ```
 
 顺序执行。
 
-依次求值 `e1` 到 `en`，返回 `en` 的值。前面的表达式通常是为了副作用。
+`<body>` 可以是多个表达式 `<exp> ...`，
+依次求值，返回最后一个表达式的值。
+前面的表达式通常是为了副作用。
 
 ```scheme
 (begin
@@ -399,26 +413,34 @@ builtin/list-empty?
   42)  ;; => 42
 ```
 
-在函数体中，`begin` 可以省略：
+`(lambda)` 和 `(define)` 中的 `<body>` 函数体，
+都类似于 `(begin)` 的 `<body>`。
 
 ```scheme
 (define (f x)
-  (= y (iadd x 1))  ;; 相当于 begin 的第一条
-  (imul y 2))       ;; 最后一条作为返回值
+  (= y (iadd x 1))
+  (imul y 2))
 ```
 
 ### (let)
 
 ```scheme
-(let ((<name> <exp>) ...) <body>)
+(let ((<name> <exp>)
+      ...)
+  <body>)
 ```
 
 并行局部变量绑定。
 
-所有右侧 `exp` 在同一个外层作用域中求值，互相不可见。然后所有 `name` 同时绑定到求值结果，再求值 `body`。
+所有右侧 `<exp>` 在同一个外层作用域中求值，互相不可见。
+然后所有 `<name>` 同时绑定到求值结果，再求值 `<body>`。
 
 ```scheme
-(let ((x 1) (y 2))
+(let ((x 1))
+  (iadd x 1))  ;; => 2
+
+(let ((x 1)
+      (y 2))
   (iadd x y))  ;; => 3
 ```
 
@@ -430,37 +452,17 @@ builtin/list-empty?
   (iadd x y))
 ```
 
-单绑定的简写形式：
-
-```scheme
-(let (x 1)
-  (iadd x 1))  ;; => 2
-```
-
-等价于：
-
-```scheme
-(let ((x 1))
-  (iadd x 1))
-```
-
-`(let ((x e1)) body)` 等价于 `(begin (= x e1) body)`：
-
-```scheme
-(define (f n)
-  (= x (iadd n 1))
-  (imul x 2))
-```
-
 ### (let*)
 
 ```scheme
-(let* ((<name> <exp>) ...) <body>)
+(let* ((<name> <exp>)
+       ...)
+  <body>)
 ```
 
 顺序局部变量绑定。
 
-每个 `exp` 可以引用前面绑定的名字。
+每个 `<exp>` 可以引用前面绑定的名字。
 
 ```scheme
 (let* ((x 1)
@@ -468,7 +470,7 @@ builtin/list-empty?
   (iadd x y))  ;; => 3
 ```
 
-`let*` 等价于嵌套的 `let`：
+`(let*)` 等价于嵌套的 `(let)`：
 
 ```scheme
 (let ((x 1))
@@ -484,42 +486,30 @@ builtin/list-empty?
 
 赋值。
 
-将 `exp` 的值赋给已存在的变量 `name`。变量必须先通过 `lambda` 参数、`let` 或 `let*` 绑定。
+将 `<exp>` 的值赋给已存在的变量 `<name>`，
+只能在 `<body>` 中使用。
 
-`=` 和 `let` 一样引入一个新的绑定。唯一的区别是 `=` 不创建新的作用域。
-
-```scheme
-(define (f n)
-  (= x 0)
-  (= x n)
-  x)
-```
-
-在函数体中，`=` 常用来代替嵌套的 `let`，减少缩进：
+`(=)` 常用来代替嵌套的 `(let)`，减少缩进：
 
 ```scheme
 (define (f x)
   (= y (iadd x 1))
+  (println y)
   (= z (iadd y 1))
+  (println z)
   (iadd y z))
 ```
 
-`=` 不能在顶层使用。顶层用 `define`。
-
-### (define)（变量定义）
+等价于：
 
 ```scheme
-(define <name> <exp>)
+(define (f x)
+  (let ((y (iadd x 1)))
+    (println y)
+    (let ((z (iadd y 1)))
+      (println z)
+      (iadd y z))))
 ```
-
-定义模块级常量。
-
-```scheme
-(define answer 42)
-(define greeting "hello")
-```
-
-必须先 `claim` 再 `define`。
 
 
 ## 函数组合
@@ -532,11 +522,18 @@ builtin/list-empty?
 
 管道。
 
-将 `init` 传入 `f1`，结果传入 `f2`，以此类推。返回 `fn` 的结果。等价于从左到右的函数组合，直接传入初始值。
+将 `<init>` 传入第一个 `<step>`，结果传入第二个 `<step>`，以此类推。
 
 ```scheme
-(pipe 5 add1 double)        ;; double(add1(5)) => 12
-(pipe 2 add1 double square)  ;; square(double(add1(2))) => 36
+(pipe 5 add1 double)        ;; => 12
+(pipe 2 add1 double square) ;; => 36
+```
+
+等价于：
+
+```scheme
+(double (add1 5))           ;; => 12
+(square (double (add1 2)))  ;;  => 36
 ```
 
 ### (chain)
@@ -545,15 +542,27 @@ builtin/list-empty?
 (chain <step> ...)
 ```
 
-函数链。
+管道式函数复合。
 
-返回一个函数，等价于从左到右组合 `f1` 到 `fn`。
-
-与 `pipe` 的区别：`chain` 不传入初始值，而是返回一个函数。
+与 `(pipe)` 的区别是 `(chain)` 不传入初始值，而是返回一个函数。
 
 ```scheme
-((chain add1 double) 5)         ;; double(add1(5)) => 12
-((chain add1 double square) 2)  ;; square(double(add1(2))) => 36
+(chain add1 double)
+(chain add1 double square)
+```
+
+等价于：
+
+```scheme
+(lambda (x) (pipe x add1 double))
+(lambda (x) (pipe x add1 double square))
+```
+
+等价于：
+
+```scheme
+(lambda (x) (double (add1 x)))
+(lambda (x) (square (double (add1 x))))
 ```
 
 ### (compose)
@@ -562,15 +571,21 @@ builtin/list-empty?
 (compose <step> ...)
 ```
 
-反向函数组合。
+数学式函数组合。
 
-返回一个函数，等价于从右到左组合 `f1` 到 `fn`。方向与 `chain` 相反。
+与 `(chain)` 的复合方向相反。
 
 ```scheme
-((compose add1 double) 5)          ;; add1(double(5)) => 11
-((compose square double add1) 2)   ;; square(double(add1(2))) => 36
+(compose add1 double)
+(compose add1 double square)
 ```
 
+等价于：
+
+```scheme
+(lambda (x) (add1 (double x)))
+(lambda (x) (add1 (double (square x))))
+```
 
 ## 模式匹配与代数数据类型
 
@@ -800,6 +815,8 @@ builtin/list-empty?
 通过 `./meta-lisp.js test` 运行。
 
 ```scheme
+(define add1 (iadd 1))
+
 (define-test add1-test
   (assert-equal 2 (add1 1))
   (assert-equal 0 (add1 -1)))
