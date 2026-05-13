@@ -7,7 +7,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 每个 `.meta` 文件必须以 `(module name)` 开头：
 
 ```scheme
-;; src/math.meta
+;; src/math.meta —— math 是用户自定义模块，并非语言内置
 (module math)
 
 (claim pi float-t)

@@ -206,8 +206,8 @@ builtin/list-empty?
 (claim add1 (-> int-t int-t))
 (define (add1 x) (iadd x 1))
 
-(claim pi int-t)
-(define pi 314)
+(claim answer int-t)
+(define answer 42)
 ```
 
 `define-test` 不需要 `claim`。
@@ -515,7 +515,7 @@ builtin/list-empty?
 定义模块级常量。
 
 ```scheme
-(define pi 314)
+(define answer 42)
 (define greeting "hello")
 ```
 
