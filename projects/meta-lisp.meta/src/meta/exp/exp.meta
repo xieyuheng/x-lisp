@@ -80,6 +80,3 @@
   (body exp-t)
   (location source-location-t))
 
-(define-struct hash-entry-t
-  (key exp-t)
-  (value exp-t))

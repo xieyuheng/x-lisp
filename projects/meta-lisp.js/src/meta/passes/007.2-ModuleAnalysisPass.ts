@@ -12,7 +12,14 @@ export function ModuleAnalysisPass(project: M.Project): M.ModInfo {
     fragmentScopes.set(fragmentScopeKey(fragment), scope)
 
     for (const stmt of fragment.stmts) {
-      executeImport(project, definedNames, privateNames, scope, stmt)
+      executeImport(
+        project,
+        definedNames,
+        privateNames,
+        fragment.modName,
+        scope,
+        stmt,
+      )
     }
   }
 
@@ -34,6 +41,7 @@ function executeImport(
   project: M.Project,
   definedNames: Map<string, Set<string>>,
   privateNames: Map<string, Set<string>>,
+  currentModName: string,
   scope: M.FragmentScope,
   stmt: M.Stmt,
 ): void {
@@ -62,6 +70,15 @@ function executeImport(
     if (names) {
       for (const name of names) {
         if (privates?.has(name)) continue
+
+        // Skip names already defined in the current module,
+        // so that local definitions can override imported ones.
+        // This is especially important for the auto-injected
+        // ImportAll("builtin") — if a module defines its own
+        // version of a builtin name, the builtin import should
+        // not shadow it.
+        if (definedNames.get(currentModName)?.has(name)) continue
+
         scope.importedNames.set(name, { modName: stmt.modName, name })
       }
     }

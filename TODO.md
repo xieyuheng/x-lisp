@@ -1,10 +1,7 @@
-# (import-all) override
+[meta-examples.meta] more test about builtin override
 
-[meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
-
-- module can override builtin names
-
-[meta-examples.meta] test module can override builtin names
+- 在 [meta-examples.meta] 写一个简短的测试，通过把 type-t 定义为 define-enum，
+  证明 type-t 这个 builtin type，可以被 override。
 
 # syntax
 
