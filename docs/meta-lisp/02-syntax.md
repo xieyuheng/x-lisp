@@ -92,17 +92,19 @@ builtin/list-empty?
 
 ```scheme
 '<exp>
+(quote <exp>)
 ```
 
 阻止 `exp` 被求值，通常用来创建列表数据。
 
 ```scheme
-'(1 2 3)        ;; => [1 2 3]
-'(a b c)        ;; => ['a 'b 'c]
-'foo            ;; => 'foo
+'(1 2 3)         ;; => [1 2 3]
+'(a b c)         ;; => ['a 'b 'c]
+'foo             ;; => 'foo
+(quote (1 2 3))  ;; => [1 2 3]
+(quote (a b c))  ;; => ['a 'b 'c]
+(quote foo)      ;; => 'foo
 ```
-
-`'exp` 是 `(quote exp)` 的语法糖。
 
 ## 函数
 
@@ -132,8 +134,9 @@ builtin/list-empty?
 
 创建匿名函数。
 
-`(parameter ...)` 是形式参数列表，`body` 是一个或多个表达式。
-当函数被调用时，实际参数被绑定到形式参数，然后求值 `body`。
+`(<parameter> ...)` 是形式参数列表，
+`<body>` 是一个或多个表达式。
+当函数被调用时，实际参数被绑定到形式参数，然后求值 `<body>`。
 
 ```scheme
 (lambda (x) (iadd x 1))
@@ -151,7 +154,7 @@ builtin/list-empty?
 (lambda (a b) (iadd a b))
 ```
 
-### (define)（函数定义）
+### (define)
 
 ```scheme
 (define (<name> <parameter> ...) <body>)
@@ -171,7 +174,7 @@ builtin/list-empty?
 (define add1 (lambda (x) (iadd x 1)))
 ```
 
-函数体中可以直接写多个表达式，省略 `begin`：
+函数体 `<body>` 中可以直接写多个表达式：
 
 ```scheme
 (define (f x)
@@ -197,7 +200,7 @@ builtin/list-empty?
 
 声明一个名字的类型。
 
-`claim` 必须在对应的 `define` 之前出现。编译器会检查 `define` 的实现是否与 `claim` 的类型一致。
+编译器会检查 `define` 的实现是否与 `claim` 的类型一致。
 
 ```scheme
 (claim add1 (-> int-t int-t))
