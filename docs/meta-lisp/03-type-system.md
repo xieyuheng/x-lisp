@@ -9,16 +9,16 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 
 ## 基础类型
 
-| 类型 | 含义 | 字面量示例 |
-|---|---|---|
-| `int-t` | 整数 | `42` `-1` `0` |
-| `float-t` | 浮点数 | `3.14` `-2.5` |
-| `string-t` | 字符串 | `"hello"` |
-| `symbol-t` | 符号 | `'foo` |
-| `keyword-t` | 关键字 | `:key` |
-| `bool-t` | 布尔值 | `true` `false` |
-| `void-t` | 空值（函数无返回值） | — |
-| `type-t` | 类型的类型 | — |
+| 类型        | 含义                 | 字面量示例     |
+|-------------|----------------------|----------------|
+| `int-t`     | 整数                 | `42` `-1` `0`  |
+| `float-t`   | 浮点数               | `3.14` `-2.5`  |
+| `string-t`  | 字符串               | `"hello"`      |
+| `symbol-t`  | 符号                 | `'foo`         |
+| `keyword-t` | 关键字               | `:key`         |
+| `bool-t`    | 布尔值               | `true` `false` |
+| `void-t`    | 空值（函数无返回值） | —             |
+| `type-t`    | 类型的类型           | —             |
 
 ```scheme
 (claim x int-t)
