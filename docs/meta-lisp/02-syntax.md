@@ -13,7 +13,6 @@ meta-lisp 使用 S-expression 语法。
 (define x 42) ;; 行尾注释
 ```
 
-
 ## 字面量
 
 整数由数字组成，可选负号。
@@ -91,7 +90,11 @@ builtin/list-empty?
 
 ### (quote)
 
-`'exp` 阻止 `exp` 被求值，通常用来创建列表数据。
+```scheme
+'<exp>
+```
+
+阻止 `exp` 被求值，通常用来创建列表数据。
 
 ```scheme
 '(1 2 3)        ;; => [1 2 3]
@@ -105,9 +108,13 @@ builtin/list-empty?
 
 ### 函数调用
 
+```scheme
+(<target> <arg> ...)
+```
+
 函数调用是 S-expression 的核心形式。
 
-如果表达式的第一个元素不是语法关键词，就被认为是函数调。
+如果表达式的第一个元素不是语法关键词，就被认为是函数调用。
 第一个元素是函数，其余是参数。
 所有参数在调用前先求值。
 
@@ -119,7 +126,11 @@ builtin/list-empty?
 
 ### (lambda)
 
-`(lambda (parameter ...) body)` -- 创建匿名函数。
+```scheme
+(lambda (<parameter> ...) <body>)
+```
+
+创建匿名函数。
 
 `(parameter ...)` 是形式参数列表，`body` 是一个或多个表达式。
 当函数被调用时，实际参数被绑定到形式参数，然后求值 `body`。
@@ -140,11 +151,13 @@ builtin/list-empty?
 (lambda (a b) (iadd a b))
 ```
 
-lambda 的参数个数必须与调用时传入的参数个数一致。
+### (define)（函数定义）
 
-### (define)
+```scheme
+(define (<name> <parameter> ...) <body>)
+```
 
-`(define (name parameter ...) body)` -- 定义命名函数。
+定义命名函数。
 
 在当前模块中引入一个新的名字绑定。函数定义等价于定义了值为 lambda 的变量。
 
@@ -178,7 +191,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (claim)
 
-`(claim name type)` -- 声明一个名字的类型。
+```scheme
+(claim <name> <type>)
+```
+
+声明一个名字的类型。
 
 `claim` 必须在对应的 `define` 之前出现。编译器会检查 `define` 的实现是否与 `claim` 的类型一致。
 
@@ -194,9 +211,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (the)
 
-`(the type expr)` -- 显式标注 `expr` 的类型。
+```scheme
+(the <type> <exp>)
+```
 
-编译器会检查 `expr` 的实际类型是否匹配。可用于澄清代码意图或帮助类型推断。
+显式标注 `exp` 的类型。
+
+编译器会检查 `exp` 的实际类型是否匹配。可用于澄清代码意图或帮助类型推断。
 
 ```scheme
 (the int-t 42)
@@ -205,7 +226,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (polymorphic)
 
-`(polymorphic (A B ...) type)` -- 声明包含类型参数的类型。
+```scheme
+(polymorphic (<type-parameter> ...) <type>)
+```
+
+声明包含类型参数的类型。
 
 `A` 和 `B` 是类型变量，在 type 中可以被引用。用于 `claim` 中声明多态函数。
 
@@ -219,9 +244,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (claim-type)
 
-`(claim-type name)` -- 声明 `name` 的类型是 `type-t`。
+```scheme
+(claim-type <name>)
+```
 
-用于定义新的类型常量。通常只在 `meta-builtin.meta` 中-使用。
+声明 `name` 的类型是 `type-t`。
+
+用于定义新的类型常量。通常只在 `meta-builtin.meta` 中使用。
 
 ```scheme
 (claim-type my-custom-t)
@@ -229,9 +258,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (admit)
 
-`(admit name type)` -- 绕过类型检查，声明名字的类型。
+```scheme
+(admit <name> <type>)
+```
 
-用于逐步开发----先用 `admit` 占位，后续再补上实现。
+绕过类型检查，声明名字的类型。
+
+用于逐步开发——先用 `admit` 占位，后续再补上实现。
 
 ```scheme
 (admit complex-function (-> int-t string-t))
@@ -242,7 +275,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (if)
 
-`(if condition consequent alternative)` -- 条件分支。
+```scheme
+(if <condition> <consequent> <alternative>)
+```
+
+条件分支。
 
 `condition` 被求值。如果为真，求值 `consequent` 并返回。否则求值 `alternative` 并返回。
 
@@ -259,7 +296,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (when)
 
-`(when condition body)` -- 条件为真时执行。
+```scheme
+(when <condition> <body>)
+```
+
+条件为真时执行。
 
 `condition` 为真时求值 `body`。否则跳过。返回值是 `void`。
 
@@ -272,7 +313,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (unless)
 
-`(unless condition body)` -- 条件为假时执行。
+```scheme
+(unless <condition> <body>)
+```
+
+条件为假时执行。
 
 `condition` 为假时求值 `body`。否则跳过。返回值是 `void`。
 
@@ -283,7 +328,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (cond)
 
-`(cond (q1 a1) (q2 a2) ... (else an))` -- 多分支条件。
+```scheme
+(cond
+  (<question> <answer>)
+  ...)
+```
+
+多分支条件。
 
 依次求值每个 `q`。第一个为真的分支的 `a` 被求值并返回。`else` 是默认分支。
 
@@ -297,7 +348,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (and)
 
-`(and e1 e2 ...)` -- 短路与。
+```scheme
+(and <exp> ...)
+```
+
+短路与。
 
 从左到右求值。遇到第一个假值就停止并返回该值。全真时返回最后一个值。
 
@@ -309,7 +364,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (or)
 
-`(or e1 e2 ...)` -- 短路或。
+```scheme
+(or <exp> ...)
+```
+
+短路或。
 
 从左到右求值。遇到第一个真值就停止并返回该值。全假时返回最后一个值。
 
@@ -322,7 +381,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (begin)
 
-`(begin e1 e2 ... en)` -- 顺序执行。
+```scheme
+(begin <exp> ...)
+```
+
+顺序执行。
 
 依次求值 `e1` 到 `en`，返回 `en` 的值。前面的表达式通常是为了副作用。
 
@@ -343,9 +406,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (let)
 
-`(let ((name expr) ...) body)` -- 并行局部变量绑定。
+```scheme
+(let ((<name> <exp>) ...) <body>)
+```
 
-所有右侧 `expr` 在同一个外层作用域中求值，互相不可见。然后所有 `name` 同时绑定到求值结果，再求值 `body`。
+并行局部变量绑定。
+
+所有右侧 `exp` 在同一个外层作用域中求值，互相不可见。然后所有 `name` 同时绑定到求值结果，再求值 `body`。
 
 ```scheme
 (let ((x 1) (y 2))
@@ -384,9 +451,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (let*)
 
-`(let* ((name expr) ...) body)` -- 顺序局部变量绑定。
+```scheme
+(let* ((<name> <exp>) ...) <body>)
+```
 
-每个 `expr` 可以引用前面绑定的名字。
+顺序局部变量绑定。
+
+每个 `exp` 可以引用前面绑定的名字。
 
 ```scheme
 (let* ((x 1)
@@ -404,9 +475,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (=)
 
-`(= name expr)` -- 赋值。
+```scheme
+(= <name> <exp>)
+```
 
-将 `expr` 的值赋给已存在的变量 `name`。变量必须先通过 `lambda` 参数、`let` 或 `let*` 绑定。
+赋值。
+
+将 `exp` 的值赋给已存在的变量 `name`。变量必须先通过 `lambda` 参数、`let` 或 `let*` 绑定。
 
 `=` 和 `let` 一样引入一个新的绑定。唯一的区别是 `=` 不创建新的作用域。
 
@@ -428,9 +503,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 `=` 不能在顶层使用。顶层用 `define`。
 
-### (define)
+### (define)（变量定义）
 
-`(define name expr)` -- 定义模块级常量。
+```scheme
+(define <name> <exp>)
+```
+
+定义模块级常量。
 
 ```scheme
 (define pi 314)
@@ -444,7 +523,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (pipe)
 
-`(pipe init f1 f2 ... fn)` -- 管道。
+```scheme
+(pipe <init> <step> ...)
+```
+
+管道。
 
 将 `init` 传入 `f1`，结果传入 `f2`，以此类推。返回 `fn` 的结果。等价于从左到右的函数组合，直接传入初始值。
 
@@ -455,7 +538,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (chain)
 
-`(chain f1 f2 ... fn)` -- 函数链。
+```scheme
+(chain <step> ...)
+```
+
+函数链。
 
 返回一个函数，等价于从左到右组合 `f1` 到 `fn`。
 
@@ -468,7 +555,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (compose)
 
-`(compose f1 f2 ... fn)` -- 反向函数组合。
+```scheme
+(compose <step> ...)
+```
+
+反向函数组合。
 
 返回一个函数，等价于从右到左组合 `f1` 到 `fn`。方向与 `chain` 相反。
 
@@ -482,7 +573,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (match)
 
-`(match target (constructor field ...) body)` -- 模式匹配。
+```scheme
+(match <target>
+  (<pattern> <body>)
+  ...)
+```
+
+模式匹配。
 
 `target` 是要匹配的值。每个子句以一个构造器名开头，后面的符号绑定到对应字段。第一个匹配的子句的 body 被求值。
 
@@ -502,7 +599,13 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (define-enum)
 
-`(define-enum name (constructor (field-type) ...) ...)` -- 定义多个构造器的代数数据类型。
+```scheme
+(define-enum <name>
+  (<constructor> (<field> <type>) ...)
+  ...)
+```
+
+定义多个构造器的代数数据类型。
 
 每个构造器自动生成构造器、谓词、访问器、修改器。
 
@@ -514,16 +617,19 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 生成的名字：
 
-| 类别 | 命名规则 | 示例 |
-|---|---|---|
-| 构造器 | `<constructor>` | `var-exp` |
-| 谓词 | `<constructor>?` | `var-exp?` |
-| 访问器 | `<constructor>-<field>` | `var-exp-name` |
-| 修改器 | `<constructor>-put-<field>!` | `var-exp-put-name!` |
+- 构造器：`<constructor>`，例如 `var-exp`
+- 谓词：`<constructor>?`，例如 `var-exp?`
+- 访问器：`<constructor>-<field>`，例如 `var-exp-name`
+- 修改器：`<constructor>-put-<field>!`，例如 `var-exp-put-name!`
 
 ### (define-struct)
 
-`(define-struct name (field-type) ...)` -- 定义单构造器结构体。
+```scheme
+(define-struct <name>
+  (<field> <type>) ...)
+```
+
+定义单构造器结构体。
 
 类型名必须以 `-t` 结尾。构造器名自动生成为 `make-<base>`。
 
@@ -538,7 +644,12 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (define-struct*)
 
-`(define-struct* name (constructor (field-type) ...))` -- 定义单构造器结构体，自定义构造器名。
+```scheme
+(define-struct* <name>
+  (<constructor> (<field> <type>) ...))
+```
+
+定义单构造器结构体，自定义构造器名。
 
 ```scheme
 (define-struct* point-t (cons-point (x int-t) (y int-t)))
@@ -547,6 +658,14 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 ```
 
 ### (define-algebraic-type)
+
+```scheme
+(define-algebraic-type <name>
+  ((<constructor> (<field> <type>) ...)
+   <predicate>
+   (<field> <accessor> <modifier>) ...)
+  ...)
+```
 
 最 explicit 的代数数据类型定义。所有名字由你指定。
 
@@ -568,7 +687,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (module)
 
-`(module name)` -- 声明当前模块。
+```scheme
+(module <name>)
+```
+
+声明当前模块。
 
 每个 `.meta` 文件必须以 `module` 开头。`name` 通常与文件名一致。
 
@@ -578,7 +701,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (import)
 
-`(import mod-name name ...)` -- 从其他模块导入指定名字。
+```scheme
+(import <mod-name> <name> ...)
+```
+
+从其他模块导入指定名字。
 
 导入后可以直接使用，不需要限定前缀。
 
@@ -589,7 +716,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (import-as)
 
-`(import-as mod-name prefix)` -- 导入模块并用前缀。
+```scheme
+(import-as <mod-name> <prefix>)
+```
+
+导入模块并用前缀。
 
 使用时用 `prefix/name`。
 
@@ -601,7 +732,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (import-all)
 
-`(import-all mod-name)` -- 导入模块中所有名字。
+```scheme
+(import-all <mod-name>)
+```
+
+导入模块中所有名字。
 
 ```scheme
 (import-all list)
@@ -614,7 +749,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (private)
 
-`(private name ...)` -- 将名字标记为私有。
+```scheme
+(private <name> ...)
+```
+
+将名字标记为私有。
 
 被标记为私有的名字不能被其他模块引用。
 
@@ -629,7 +768,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (exempt)
 
-`(exempt name ...)` -- 免除未使用警告。
+```scheme
+(exempt <name> ...)
+```
+
+免除未使用警告。
 
 如果顶层定义在当前模块中没有被使用，编译器会警告。`exempt` 免除这个警告。
 
@@ -644,7 +787,11 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### (define-test)
 
-`(define-test name body)` -- 定义测试。
+```scheme
+(define-test <name> <body>)
+```
+
+定义测试。
 
 `body` 中可以用断言来做测试。
 通过 `./meta-lisp.js test` 运行。
