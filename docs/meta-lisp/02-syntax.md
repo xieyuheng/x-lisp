@@ -320,9 +320,9 @@ builtin/list-empty?
 (the <type> <exp>)
 ```
 
-显式标注 `exp` 的类型。
+显式标注 `<exp>` 的类型。
 
-编译器会检查 `exp` 的实际类型是否匹配。可用于澄清代码意图或帮助类型推断。
+编译器会检查 `<exp>` 的实际类型是否匹配。可用于澄清代码意图或帮助类型推断。
 
 ```scheme
 (the int-t 42)
@@ -719,9 +719,9 @@ builtin/list-empty?
 (point-x p)     ;; => 3.0
 ```
 
-对于只有单一构造子的代数类型而言，
-谓词 `point?` 是多余的，没每意义的。
-只有代数类型有多个构造子时，
+对于只有单一构造器的代数类型而言，
+谓词 `point?` 是多余的，没有意义的。
+只有代数类型有多个构造器时，
 所生成的谓词才有意义。
 
 `(define-algebraic-type)` 所定义的类型可以带有类型参数。
@@ -771,7 +771,7 @@ builtin/list-empty?
   ...)
 ```
 
-与 `(define-algebraic-type)` 类似，但是只有一个构造子。
+与 `(define-algebraic-type)` 类似，但是只有一个构造器。
 
 ```scheme
 (define-record-type point-t
@@ -798,7 +798,7 @@ builtin/list-empty?
 即 `(<field-name> <type>)`。
 
 `(define-algebraic-type)` 模仿 `(define-record-type)`，
-进一步支持了多个构造子。
+进一步支持了多个构造器。
 
 ### (define-enum)
 
@@ -909,7 +909,7 @@ builtin/list-empty?
 
 
 与 `(define-struct)` 类似，
-但是 `<constructor-name>` 有用户给出。
+但是 `<constructor-name>` 由用户给出。
 
 ```scheme
 (define-struct point-t
