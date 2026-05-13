@@ -193,7 +193,7 @@ static value_t for_sexp(value_t path, list_t *tokens) {
       value_t span = value_from_span(token->span);
       value_t location = make_source_location_sexp(path, span);
       value_t elements = for_elements(path, "}", tokens);
-      value_t content = x_object(intern_symbol("@record"));
+      value_t content = x_object(intern_symbol("@curly-bracket"));
       value_t head = symbol_sexp(content, location);
       x_list_push_front_mut(head, elements);
       token_free(token);

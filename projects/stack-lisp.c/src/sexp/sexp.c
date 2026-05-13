@@ -106,7 +106,7 @@ static value_t for_sexp(list_t *tokens) {
       return x_cons(x_object(intern_symbol("@list")), for_list("]", tokens));
     } else if (string_equal(token->content, "{")) {
       token_free(token);
-      return x_cons(x_object(intern_symbol("@record")), for_list("}", tokens));
+      return x_cons(x_object(intern_symbol("@curly-bracket")), for_list("}", tokens));
     } else {
       who_printf("unexpected bracket start: %s\n", token->content);
       exit(1);
