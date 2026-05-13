@@ -152,7 +152,7 @@ function matchListLiteral(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
       sexp.kind === "List" &&
       pattern.elements.length >= 1 &&
       pattern.elements[0].kind === "Symbol" &&
-      pattern.elements[0].content === "@list",
+      pattern.elements[0].content === "@square-bracket",
     () => {
       const patternBody = S.asList(pattern).elements.slice(1)
       const sexpBody = S.asList(sexp).elements

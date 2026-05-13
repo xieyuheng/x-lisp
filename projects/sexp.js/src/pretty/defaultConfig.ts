@@ -26,7 +26,6 @@ export const defaultConfig: Config = {
     ["unless", 1],
     ["cond", 0],
     ["@list", 0],
-    ["@list", 0],
     ["@set", 0],
     ["@hash", 0],
     ["specific", 1],

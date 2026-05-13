@@ -52,7 +52,7 @@ export function renderSexp(sexp: S.Sexp): Render {
       switch (first.content) {
         case "@set":
           return renderSet(rest)(config)
-        case "@list":
+        case "@square-bracket":
           return renderList(rest)(config)
       }
     }
@@ -80,7 +80,7 @@ function renderSet(elements: Array<S.Sexp>): Render {
       ),
     )
 
-    return Ppml.group(Ppml.text("{"), bodyNode, Ppml.text("}"))
+    return Ppml.group(Ppml.text("(@set"), bodyNode, Ppml.text(")"))
   }
 }
 

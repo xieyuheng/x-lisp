@@ -103,6 +103,10 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '@square-bracket elements)": ({ elements }, { location }) => {
+    return M.LiteralList(S.asList(elements).elements.map(parseExp), location)
+  },
+
   "(cons* '@list elements)": ({ elements }, { location }) => {
     return M.LiteralList(S.asList(elements).elements.map(parseExp), location)
   },
