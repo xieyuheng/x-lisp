@@ -8,6 +8,7 @@ export const sexpConfig: S.Config = {
     ["exempt", 0],
     ["private", 0],
     ["claim", 1],
+    ["claim-type", 1],
     ["admit", 1],
     ["define", 1],
     ["interface", 0],

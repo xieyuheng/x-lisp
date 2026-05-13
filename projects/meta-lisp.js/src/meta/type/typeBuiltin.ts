@@ -7,11 +7,6 @@ import { type Mod } from "../mod/index.ts"
 
 export function typeBuiltin(mod: Mod) {
   definePrimitiveVariable(mod, "type-t", M.TypeType())
-  mod.claimed.set("type-t", {
-    exp: M.QualifiedVar("builtin", "type-t"),
-    type: M.TypeType(),
-  })
-
   definePrimitiveVariable(mod, "int-t", M.AtomType("int"))
   definePrimitiveVariable(mod, "float-t", M.AtomType("float"))
   definePrimitiveVariable(mod, "string-t", M.AtomType("string"))

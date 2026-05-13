@@ -141,6 +141,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.Claim(S.asSymbol(name).content, parseExp(type), location)
   },
 
+  "`(claim-type ,name)": ({ name }, { location }) => {
+    return M.ClaimType(S.asSymbol(name).content, location)
+  },
+
   "`(admit ,name ,type)": ({ name, type }, { location }) => {
     return M.Admit(S.asSymbol(name).content, parseExp(type), location)
   },

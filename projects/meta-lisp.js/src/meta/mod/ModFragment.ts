@@ -23,6 +23,7 @@ function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
     case "DefineTest":
     case "DefineType":
     case "Claim":
+    case "ClaimType":
     case "DeclarePrimitiveFunction":
     case "DeclarePrimitiveVariable": {
       names.add(stmt.name)

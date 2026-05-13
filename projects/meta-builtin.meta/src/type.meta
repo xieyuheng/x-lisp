@@ -1,5 +1,7 @@
 (module builtin)
 
+(claim-type type-t)
+
 (define-test type-test
   (println type-t)
   (println int-t)

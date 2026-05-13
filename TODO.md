@@ -1,7 +1,6 @@
 # remove (define-type)
 
-[meta-lisp.js] add `(claim-type)` syntax `(claim-type type-t)` is not recursive like `(claim type-t type-t)`
-[meta-lisp.js] fix the use of `type-t` and remove `(define-type)`
+[meta-lisp.js] 删除 `(define-type)`
 
 # (import-all) override
 

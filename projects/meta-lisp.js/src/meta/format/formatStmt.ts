@@ -67,6 +67,10 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(claim ${stmt.name} ${M.formatExp(stmt.type)})`
     }
 
+    case "ClaimType": {
+      return `(claim-type ${stmt.name})`
+    }
+
     case "Admit": {
       return `(admit ${stmt.name} ${M.formatExp(stmt.type)})`
     }

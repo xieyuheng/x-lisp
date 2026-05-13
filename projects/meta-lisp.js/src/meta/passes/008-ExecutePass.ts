@@ -30,6 +30,13 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     M.modClaim(mod, stmt.name, stmt.type)
   }
 
+  if (stmt.kind === "ClaimType") {
+    mod.claimed.set(stmt.name, {
+      exp: M.QualifiedVar("builtin", "type-t"),
+      type: M.TypeType(),
+    })
+  }
+
   if (stmt.kind === "Admit") {
     M.modClaim(mod, stmt.name, stmt.type)
     mod.admitted.add(stmt.name)

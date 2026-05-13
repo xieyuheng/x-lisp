@@ -19,6 +19,7 @@ export type Stmt =
   | DefineStruct
   | DefineStructStar
   | Claim
+  | ClaimType
   | Admit
   | Private
   | Exempt
@@ -281,6 +282,20 @@ export function Claim(
     kind: "Claim",
     name,
     type,
+    location,
+  }
+}
+
+export type ClaimType = {
+  kind: "ClaimType"
+  name: string
+  location?: SourceLocation
+}
+
+export function ClaimType(name: string, location?: SourceLocation): ClaimType {
+  return {
+    kind: "ClaimType",
+    name,
     location,
   }
 }
