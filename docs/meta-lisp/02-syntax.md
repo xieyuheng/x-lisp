@@ -2,11 +2,16 @@
 
 meta-lisp 使用 S-expression 语法。
 
-顶层由**语句**（statement）组成。语句内由**表达式**（expression）组成。
+模块顶层由**语句**（statement）组成。
+语句内由**表达式**（expression）组成。
+
+下面分组介绍 meta-lisp 的所有语法。
 
 ## 注释
 
-注释以 `;;` 开头，直到行尾。
+注释以 `;` 开头，直到行尾。
+
+在写行注释的时候 lisp 程序员通常写两个 `;;`。
 
 ```scheme
 ;; 这是一条注释
@@ -70,6 +75,11 @@ meta-lisp 使用 S-expression 语法。
 '(1 2 3)         ;; => [1 2 3]
 '(a b c)         ;; => ['a 'b 'c]
 'foo             ;; => 'foo
+```
+
+等价于：
+
+```scheme
 (quote (1 2 3))  ;; => [1 2 3]
 (quote (a b c))  ;; => ['a 'b 'c]
 (quote foo)      ;; => 'foo
@@ -484,12 +494,11 @@ builtin/list-empty?
 (= <name> <exp>)
 ```
 
-赋值。
+`<body>` 中的局部变量绑定。
 
-将 `<exp>` 的值赋给已存在的变量 `<name>`，
+
 只能在 `<body>` 中使用。
-
-`(=)` 常用来代替嵌套的 `(let)`，减少缩进：
+用来代替嵌套的 `(let)`，以减少缩进。
 
 ```scheme
 (define (f x)
@@ -587,7 +596,7 @@ builtin/list-empty?
 (lambda (x) (add1 (double (square x))))
 ```
 
-## 模式匹配与代数数据类型
+## 代数数据类型
 
 ### (match)
 
