@@ -204,6 +204,33 @@ builtin/list-empty?
 (lambda (a b) (iadd a b))
 ```
 
+### Currying
+
+meta-lisp 的函数是 currying 的：多参数函数实际上是用嵌套的单参数函数实现的。
+
+```scheme
+(lambda (a b) (iadd a b))
+```
+
+等价于：
+
+```scheme
+(lambda (a) (lambda (b) (iadd a b)))
+```
+
+因此 `(-> int-t int-t int-t)` 实际等价于 `(-> int-t (-> int-t int-t))` ——
+接收一个 `int-t`，返回一个函数。
+
+Currying 使部分施用在 meta-lisp 中非常自然：
+
+```scheme
+(claim add (-> int-t int-t int-t))
+(define (add a b) (iadd a b))
+
+(define add1 (add 1))  ;; 部分施用：add1 是 (-> int-t int-t)
+(add1 2)               ;; => 3
+```
+
 ### (define)
 
 ```scheme
