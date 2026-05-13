@@ -1,4 +1,9 @@
-# syntax
+# remove (define-type)
+
+[meta-lisp.js] add `(claim-type)` syntax `(claim-type type-t)` is not recursive like `(claim type-t type-t)`
+[meta-lisp.js] fix the use of `type-t` and remove `(define-type)`
+
+# (import-all) override
 
 [meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
 
@@ -6,13 +11,7 @@
 
 [meta-examples.meta] test module can override builtin names
 
-[meta-lisp.js] fix the use of `type-t` and remove `(define-type)`
-
-- maybe add `(claim-type)` syntax `(claim-type type-t)` is not recursive like `(claim type-t type-t)`
-
-[meta-lisp.js] `ImportPass` -- `ImportAll` -- need to handle builtin mod specially
-
-- `type-t` is not declared in fragment
+# syntax
 
 [meta-lisp.js] give `{}` sugar to `(@hash)` -- like clojure
 

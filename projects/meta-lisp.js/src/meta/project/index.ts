@@ -1,3 +1,4 @@
+export * from "./loadBuiltinMod.ts"
 export * from "./loadProject.ts"
 export * from "./loadProjectConfig.ts"
 export * from "./Project.ts"
