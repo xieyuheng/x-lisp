@@ -46,14 +46,14 @@ meta-lisp 使用 S-expression 语法。
 
 ### 条件
 
-| 名字   | 语法                               | 语义                  | 示例                                         |
-|--------|------------------------------------|-----------------------|----------------------------------------------|
-| if     | `(if cond conseq alt)`             | 条件分支，必须有 else | `(if (int-less? x 0) (ineg x) x)`            |
-| when   | `(when cond body)`                 | 条件为真时执行        | `(when debug? (display "debug"))`            |
-| unless | `(unless cond body)`               | 条件为假时执行        | `(unless (equal? x 0) (idiv 1 x))`           |
-| cond   | `(cond (q1 a1) (q2 a2) (else an))` | 多分支条件            | `(cond ((int-less? x 0) "负")(else "非负"))` |
-| and    | `(and e1 e2 ...)`                  | 短路与                | `(and (int? x) (int-positive? x))`           |
-| or     | `(or e1 e2 ...)`                   | 短路或                | `(or (equal? x 0) (equal? x 1))`             |
+| 名字   | 语法                                    | 语义                      | 示例                                          |
+|--------|-----------------------------------------|---------------------------|-----------------------------------------------|
+| if     | `(if condition consequent alternative)` | 条件分支，必须有 else     | `(if (int-less? x 0) (ineg x) x)`             |
+| when   | `(when condition body)`                 | 条件为真时执行，返回 void | `(when debug? (println "debug"))`             |
+| unless | `(unless condition body)`               | 条件为假时执行，返回 void | `(unless (equal? x 0) (println (idiv 1 x)))`  |
+| cond   | `(cond (q1 a1) (q2 a2) (else an))`      | 多分支条件                | `(cond ((int-less? x 0) "负") (else "非负"))` |
+| and    | `(and e1 e2 ...)`                       | 短路与                    | `(and (int? x) (int-positive? x))`            |
+| or     | `(or e1 e2 ...)`                        | 短路或                    | `(or (equal? x 0) (equal? x 1))`              |
 
 `cond` 的最后一个条件可以是 `else`，表示默认分支。
 
