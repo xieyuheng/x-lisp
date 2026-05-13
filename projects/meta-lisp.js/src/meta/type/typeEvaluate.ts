@@ -4,14 +4,8 @@ import { type Type, type TypeEnv } from "../index.ts"
 export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
   switch (exp.kind) {
     case "Var": {
-      const fromTypeEnv = M.typeEnvLookup(typeEnv, exp.name)
-      if (fromTypeEnv) return fromTypeEnv
-
-      const definition = M.modLookupDefinition(mod, exp.name)
-      if (definition) return M.definitionMeaning(definition)
-
-      const claimedType = M.modLookupClaimedType(mod, exp.name)
-      if (claimedType) return claimedType
+      const type = typeLookup(mod, typeEnv, exp.name)
+      if (type) return type
 
       let message = `[typeEvaluate] undefined variable`
       message += `\n  name: ${exp.name}`
@@ -27,11 +21,8 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
         throw new Error(message)
       }
 
-      const definition = M.modLookupDefinition(qualifiedMod, exp.name)
-      if (definition) return M.definitionMeaning(definition)
-
-      const claimedType = M.modLookupClaimedType(qualifiedMod, exp.name)
-      if (claimedType) return claimedType
+      const type = typeLookup(qualifiedMod, M.emptyTypeEnv(), exp.name)
+      if (type) return type
 
       let message = `[typeEvaluate] undefined qualified variable`
       message += `\n  module: ${exp.modName}`
@@ -69,6 +60,66 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
       let message = `[typeEvaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
       throw new Error(message)
+    }
+  }
+}
+
+function typeLookup(
+  mod: M.Mod,
+  typeEnv: TypeEnv,
+  name: string,
+): M.Type | undefined {
+  const fromTypeEnv = M.typeEnvLookup(typeEnv, name)
+  if (fromTypeEnv) return fromTypeEnv
+
+  const definition = M.modLookupDefinition(mod, name)
+  if (definition) return definitionToType(definition)
+
+  return M.modLookupClaimedType(mod, name)
+}
+
+function definitionToType(definition: M.Definition): M.Type {
+  M.definitionCheck(definition)
+
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration": {
+      let message = `[definitionToType] can not handle declared primitive function`
+      throw new Error(message)
+    }
+
+    case "PrimitiveVariableDeclaration": {
+      let message = `[definitionToType] can not handle declared primitive variable`
+      throw new Error(message)
+    }
+
+    case "PrimitiveFunctionDefinition":
+    case "FunctionDefinition":
+    case "TestDefinition": {
+      return M.DefinitionType(definition)
+    }
+
+    case "PrimitiveVariableDefinition": {
+      return definition.value
+    }
+
+    case "TypeDefinition": {
+      if (definition.parameters.length === 0) {
+        return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body)
+      } else {
+        return M.DefinitionType(definition)
+      }
+    }
+
+    case "VariableDefinition": {
+      return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body)
+    }
+
+    case "AlgebraicTypeDefinition": {
+      if (definition.typeConstructor.parameters.length === 0) {
+        return M.AlgebraicDataType(definition, [])
+      } else {
+        return M.DefinitionType(definition)
+      }
     }
   }
 }

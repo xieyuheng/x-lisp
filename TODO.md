@@ -1,5 +1,3 @@
-[meta-lisp.js] refactor `definitionMeaning`
-
 # (import-all) override
 
 [meta-lisp.js] `ImportPass` -- `ImportAll` -- if name is already defined in the module, do not import
