@@ -868,10 +868,9 @@ builtin/list-empty?
 ```
 
 定义单构造器结构体。
-`<type-name>` 类型名必须以 `-t`，
-结构为 `<base-name>-t`。
-
-`<base-name>` 将被用于生成其他名字。
+`<type-name>` 类型名必须以 `-t` 结尾，
+格式为 `<base-name>-t`。
+其中 `<base-name>` 将被用于生成其他名字。
 
 ```scheme
 (define-struct point-t
@@ -908,16 +907,7 @@ builtin/list-empty?
 ```
 
 
-与 `(define-struct)` 类似，
-但是 `<constructor-name>` 由用户给出。
-
-```scheme
-(define-struct point-t
-  (x float-t)
-  (y float-t))
-```
-
-等价于：
+与 `(define-struct)` 类似，但是 `<constructor-name>` 由用户给出。
 
 ```scheme
 (define-struct* point-t
@@ -926,8 +916,16 @@ builtin/list-empty?
    (y float-t)))
 ```
 
+等价于：
+
+```scheme
+(define-struct point-t
+  (x float-t)
+  (y float-t))
+```
+
 之所以给 `(define-struct)` 增加这个变体，
-是因为有时需要把 `make-<base-name>` 保留给更简单的构造函数。
+是因为有时需要把 `make-<base-name>` 保留给更简单的构造器。
 
 ```scheme
 (define-struct* project-t
@@ -976,7 +974,7 @@ builtin/list-empty?
 
 声明当前模块。
 
-每个 `.meta` 文件必须以 `(module)` 开头。
+每个 `.meta` 文件必带有一个模块声明，一般放在开头。
 
 模块系统与文件系统解耦，存放模块的路径和文件名并不重要。
 具有相同 `<module-name>` 的代码，可以拆分到不同文件中，

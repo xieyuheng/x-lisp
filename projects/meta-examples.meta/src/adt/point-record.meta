@@ -1,0 +1,17 @@
+(module point-record)
+
+(define-record-type point-t
+  (make-point (x float-t) (y float-t))
+  point?
+  (x point-x point-put-x!)
+  (y point-y point-put-y!))
+
+(define (point-distance-squared point)
+  (fadd (fmul (point-x point) (point-x point))
+        (fmul (point-y point) (point-y point))))
+
+(define-test point-test
+  (= point (make-point 1.0 2.0))
+  (assert-equal 1.0 (point-x point))
+  (assert-equal 2.0 (point-y point))
+  (assert-equal 5.0 (point-distance-squared point)))

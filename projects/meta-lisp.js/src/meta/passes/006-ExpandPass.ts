@@ -48,6 +48,15 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
       return expandDefineAlgebraicType(algebraicType)
     }
 
+    case "DefineRecordType": {
+      const algebraicType = M.DefineAlgebraicType(
+        stmt.typeConstructor,
+        [stmt.dataConstructor],
+        stmt.location,
+      )
+      return expandDefineAlgebraicType(algebraicType)
+    }
+
     case "DefineAlgebraicType": {
       return expandDefineAlgebraicType(stmt)
     }

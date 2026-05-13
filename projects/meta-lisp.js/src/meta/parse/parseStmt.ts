@@ -137,6 +137,57 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
+  "(cons* 'define-record-type head ctor predicate accessors)": (
+    { head, ctor, predicate, accessors },
+    { location },
+  ) => {
+    const ctorList = S.asList(ctor).elements
+    const constructorName = S.asSymbol(ctorList[0]).content
+    const fields = ctorList.slice(1).map((field) => {
+      const fieldList = S.asList(field).elements
+      return {
+        name: S.asSymbol(fieldList[0]).content,
+        type: parseExp(fieldList[1]),
+        location,
+      }
+    })
+
+    const accessorList = S.asList(accessors).elements
+    const accessorMap = new Map<
+      string,
+      { accessorName: string; modifierName: string }
+    >()
+    for (const accessor of accessorList) {
+      const entry = S.asList(accessor).elements
+      accessorMap.set(S.asSymbol(entry[0]).content, {
+        accessorName: S.asSymbol(entry[1]).content,
+        modifierName: S.asSymbol(entry[2]).content,
+      })
+    }
+
+    return M.DefineRecordType(
+      parseTypeConstructor(head),
+      {
+        name: constructorName,
+        fields: fields.map((field) => {
+          const names = accessorMap.get(field.name)
+          return {
+            ...field,
+            accessorName: names
+              ? names.accessorName
+              : `${constructorName}-${field.name}`,
+            modifierName: names
+              ? names.modifierName
+              : `${constructorName}-put-${field.name}!`,
+          }
+        }),
+        predicate: S.asSymbol(predicate).content,
+        location,
+      },
+      location,
+    )
+  },
+
   "`(claim ,name ,type)": ({ name, type }, { location }) => {
     return M.Claim(S.asSymbol(name).content, parseExp(type), location)
   },

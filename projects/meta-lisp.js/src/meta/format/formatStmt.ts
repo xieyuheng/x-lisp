@@ -55,6 +55,11 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-struct ${type} ${fields})`
     }
 
+    case "DefineRecordType": {
+      const type = formatTypeConstructor(stmt.typeConstructor)
+      return `(define-record-type ${type} ${formatAlgebraicTypeConstructor(stmt.dataConstructor)})`
+    }
+
     case "DefineAlgebraicType": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors

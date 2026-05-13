@@ -18,6 +18,7 @@ export type Stmt =
   | DefineAlgebraicType
   | DefineStruct
   | DefineStructStar
+  | DefineRecordType
   | Claim
   | ClaimType
   | Admit
@@ -227,6 +228,26 @@ export function DefineStruct(
     kind: "DefineStruct",
     typeConstructor,
     fields,
+    location,
+  }
+}
+
+export type DefineRecordType = {
+  kind: "DefineRecordType"
+  typeConstructor: Omit<TypeConstructor, "definition">
+  dataConstructor: AlgebraicTypeConstructor
+  location?: SourceLocation
+}
+
+export function DefineRecordType(
+  typeConstructor: Omit<TypeConstructor, "definition">,
+  dataConstructor: AlgebraicTypeConstructor,
+  location?: SourceLocation,
+): DefineRecordType {
+  return {
+    kind: "DefineRecordType",
+    typeConstructor,
+    dataConstructor,
     location,
   }
 }

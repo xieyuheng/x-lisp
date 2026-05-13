@@ -18,6 +18,7 @@ export const sexpConfig: S.Config = {
     ["define-algebraic-type", 1],
     ["define-struct", 1],
     ["define-struct*", 1],
+    ["define-record-type", 1],
     ["define-test", 1],
     ["define-type", 1],
     ["let", 1],
