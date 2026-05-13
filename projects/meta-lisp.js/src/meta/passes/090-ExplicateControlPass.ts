@@ -50,6 +50,7 @@ function onDefinition(
       ]
     }
 
+    // - do not generate code for type.
     case "AlgebraicTypeDefinition":
     case "TypeDefinition": {
       return []

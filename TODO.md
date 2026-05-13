@@ -1,6 +1,4 @@
-[meta-builtin.meta] 把所有的 (claim <name> type-t) 改为 (claim-type <name>)
-[meta-lisp.js] 把 `(define-type)` 语法改名为 `(define-type-alias)`
-- 相应的 `DefineType` Stmt 也要改为 DefineTypeAlias
+[meta-lisp.js] refactor `definitionMeaning`
 
 # (import-all) override
 
