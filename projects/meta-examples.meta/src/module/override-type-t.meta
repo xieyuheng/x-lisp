@@ -1,0 +1,11 @@
+(module override-type-t)
+
+(define-enum type-t
+  (a-type)
+  (b-type))
+
+(define-test override-type-t-test
+  (assert (a-type? (a-type)))
+  (assert (b-type? (b-type)))
+  (assert-not (a-type? (b-type)))
+  (assert-not (b-type? (a-type))))
