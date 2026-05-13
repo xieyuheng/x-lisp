@@ -68,9 +68,8 @@ meta-lisp 使用 S-expression 语法。
 ```scheme
 x
 factorial
-add1
-empty?
-point-put-x!
+list-length
+list-empty?
 ```
 
 变量从以下来源查找：
@@ -81,50 +80,49 @@ point-put-x!
 
 ### 限定变量
 
-`mod/name` 引用其他模块中导出的名字。
+`mod/name` 引用其他模块中的名字。
 
 限定名不需要先 `import`，可以直接使用。
 
 ```scheme
 builtin/list-length
-math/pi
-utils/add1
+builtin/list-empty?
 ```
 
 ### quote
 
-`'expr` 阻止 `expr` 被求值，返回它原始的 S-expression 数据。
-
-通常用来创建列表数据。
+`'exp` 阻止 `exp` 被求值，通常用来创建列表数据。
 
 ```scheme
-'(1 2 3)        ;; 一个列表，不是函数调用
-'(+ 1 2)        ;; 包含符号的列表，不是求值为 3
-'foo            ;; 等同于符号 foo
+'(1 2 3)        ;; => [1 2 3]
+'(a b c)        ;; => ['a 'b 'c]
+'foo            ;; => 'foo
 ```
 
-`'expr` 是 `(quote expr)` 的语法糖。
-
+`'exp` 是 `(quote exp)` 的语法糖。
 
 ## 函数
 
 ### 函数调用
 
-函数调用是 S-expression 的核心形式。没有 keyword。
+函数调用是 S-expression 的核心形式。
 
-`(f args ...)` — 列表的第一个元素是函数，其余是参数。所有参数在调用前先求值。
+如果表达式的第一个元素不是语法关键词，就被认为是函数调。
+第一个元素是函数，其余是参数。
+所有参数在调用前先求值。
 
 ```scheme
 (iadd 1 2)              ;; 调用 iadd
-(display "hello")       ;; 调用 display
+(println "hello")       ;; 调用 println
 ((lambda (x) x) 1)      ;; 函数位置也可以是表达式
 ```
 
 ### lambda
 
-`(lambda (parameters ...) body)` — 创建匿名函数。
+`(lambda (parameter ...) body)` -- 创建匿名函数。
 
-parameters 是符号列表。body 是一个表达式。当函数被调用时，参数被绑定到形参，然后求值 body。
+`(parameter ...)` 是形式参数列表，`body` 是一个或多个表达式。
+当函数被调用时，实际参数被绑定到形式参数，然后求值 `body`。
 
 ```scheme
 (lambda (x) (iadd x 1))
@@ -146,7 +144,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### define（函数定义）
 
-`(define (name parameters ...) body)` — 定义命名函数。
+`(define (name parameter ...) body)` -- 定义命名函数。
 
 在当前模块中引入一个新的名字绑定。函数定义等价于定义了值为 lambda 的变量。
 
@@ -180,7 +178,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### claim
 
-`(claim name type)` — 声明一个名字的类型。
+`(claim name type)` -- 声明一个名字的类型。
 
 `claim` 必须在对应的 `define` 之前出现。编译器会检查 `define` 的实现是否与 `claim` 的类型一致。
 
@@ -196,7 +194,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### the
 
-`(the type expr)` — 显式标注 `expr` 的类型。
+`(the type expr)` -- 显式标注 `expr` 的类型。
 
 编译器会检查 `expr` 的实际类型是否匹配。可用于澄清代码意图或帮助类型推断。
 
@@ -207,7 +205,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### polymorphic
 
-`(polymorphic (A B ...) type)` — 声明包含类型参数的类型。
+`(polymorphic (A B ...) type)` -- 声明包含类型参数的类型。
 
 `A` 和 `B` 是类型变量，在 type 中可以被引用。用于 `claim` 中声明多态函数。
 
@@ -221,7 +219,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### claim-type
 
-`(claim-type name)` — 声明 `name` 的类型是 `type-t`。
+`(claim-type name)` -- 声明 `name` 的类型是 `type-t`。
 
 用于定义新的类型常量。通常只在 `meta-builtin.meta` 中-使用。
 
@@ -231,9 +229,9 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### admit
 
-`(admit name type)` — 绕过类型检查，声明名字的类型。
+`(admit name type)` -- 绕过类型检查，声明名字的类型。
 
-用于逐步开发——先用 `admit` 占位，后续再补上实现。
+用于逐步开发----先用 `admit` 占位，后续再补上实现。
 
 ```scheme
 (admit complex-function (-> int-t string-t))
@@ -244,7 +242,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### if
 
-`(if condition consequent alternative)` — 条件分支。
+`(if condition consequent alternative)` -- 条件分支。
 
 `condition` 被求值。如果为真，求值 `consequent` 并返回。否则求值 `alternative` 并返回。
 
@@ -261,31 +259,31 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### when
 
-`(when condition body)` — 条件为真时执行。
+`(when condition body)` -- 条件为真时执行。
 
 `condition` 为真时求值 `body`。否则跳过。返回值是 `void`。
 
 ```scheme
 (when debug?
-  (display "debug mode"))
+  (println "debug mode"))
 ```
 
 没有 else 分支。需要 else 分支时用 `if`。
 
 ### unless
 
-`(unless condition body)` — 条件为假时执行。
+`(unless condition body)` -- 条件为假时执行。
 
 `condition` 为假时求值 `body`。否则跳过。返回值是 `void`。
 
 ```scheme
 (unless (equal? x 0)
-  (display (idiv 1 x)))
+  (println (idiv 1 x)))
 ```
 
 ### cond
 
-`(cond (q1 a1) (q2 a2) ... (else an))` — 多分支条件。
+`(cond (q1 a1) (q2 a2) ... (else an))` -- 多分支条件。
 
 依次求值每个 `q`。第一个为真的分支的 `a` 被求值并返回。`else` 是默认分支。
 
@@ -299,7 +297,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### and
 
-`(and e1 e2 ...)` — 短路与。
+`(and e1 e2 ...)` -- 短路与。
 
 从左到右求值。遇到第一个假值就停止并返回该值。全真时返回最后一个值。
 
@@ -311,7 +309,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### or
 
-`(or e1 e2 ...)` — 短路或。
+`(or e1 e2 ...)` -- 短路或。
 
 从左到右求值。遇到第一个真值就停止并返回该值。全假时返回最后一个值。
 
@@ -324,14 +322,14 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### begin
 
-`(begin e1 e2 ... en)` — 顺序执行。
+`(begin e1 e2 ... en)` -- 顺序执行。
 
 依次求值 `e1` 到 `en`，返回 `en` 的值。前面的表达式通常是为了副作用。
 
 ```scheme
 (begin
-  (display "step 1")
-  (display "step 2")
+  (println "step 1")
+  (println "step 2")
   42)  ;; => 42
 ```
 
@@ -345,7 +343,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### let
 
-`(let ((name expr) ...) body)` — 并行局部变量绑定。
+`(let ((name expr) ...) body)` -- 并行局部变量绑定。
 
 所有右侧 `expr` 在同一个外层作用域中求值，互相不可见。然后所有 `name` 同时绑定到求值结果，再求值 `body`。
 
@@ -386,7 +384,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### let*
 
-`(let* ((name expr) ...) body)` — 顺序局部变量绑定。
+`(let* ((name expr) ...) body)` -- 顺序局部变量绑定。
 
 每个 `expr` 可以引用前面绑定的名字。
 
@@ -406,7 +404,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### =
 
-`(= name expr)` — 赋值。
+`(= name expr)` -- 赋值。
 
 将 `expr` 的值赋给已存在的变量 `name`。变量必须先通过 `lambda` 参数、`let` 或 `let*` 绑定。
 
@@ -432,7 +430,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### define（变量定义）
 
-`(define name expr)` — 定义模块级常量。
+`(define name expr)` -- 定义模块级常量。
 
 ```scheme
 (define pi 314)
@@ -446,7 +444,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### pipe
 
-`(pipe init f1 f2 ... fn)` — 管道。
+`(pipe init f1 f2 ... fn)` -- 管道。
 
 将 `init` 传入 `f1`，结果传入 `f2`，以此类推。返回 `fn` 的结果。等价于从左到右的函数组合，直接传入初始值。
 
@@ -457,7 +455,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### chain
 
-`(chain f1 f2 ... fn)` — 函数链。
+`(chain f1 f2 ... fn)` -- 函数链。
 
 返回一个函数，等价于从左到右组合 `f1` 到 `fn`。
 
@@ -470,7 +468,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### compose
 
-`(compose f1 f2 ... fn)` — 反向函数组合。
+`(compose f1 f2 ... fn)` -- 反向函数组合。
 
 返回一个函数，等价于从右到左组合 `f1` 到 `fn`。方向与 `chain` 相反。
 
@@ -484,7 +482,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### match
 
-`(match target (constructor field ...) body)` — 模式匹配。
+`(match target (constructor field ...) body)` -- 模式匹配。
 
 `target` 是要匹配的值。每个子句以一个构造器名开头，后面的符号绑定到对应字段。第一个匹配的子句的 body 被求值。
 
@@ -504,7 +502,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### define-enum
 
-`(define-enum name (constructor (field-type) ...) ...)` — 定义多个构造器的代数数据类型。
+`(define-enum name (constructor (field-type) ...) ...)` -- 定义多个构造器的代数数据类型。
 
 每个构造器自动生成构造器、谓词、访问器、修改器。
 
@@ -525,7 +523,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### define-struct
 
-`(define-struct name (field-type) ...)` — 定义单构造器结构体。
+`(define-struct name (field-type) ...)` -- 定义单构造器结构体。
 
 类型名必须以 `-t` 结尾。构造器名自动生成为 `make-<base>`。
 
@@ -540,7 +538,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### define-struct*
 
-`(define-struct* name (constructor (field-type) ...))` — 定义单构造器结构体，自定义构造器名。
+`(define-struct* name (constructor (field-type) ...))` -- 定义单构造器结构体，自定义构造器名。
 
 ```scheme
 (define-struct* point-t (cons-point (x int-t) (y int-t)))
@@ -570,7 +568,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### module
 
-`(module name)` — 声明当前模块。
+`(module name)` -- 声明当前模块。
 
 每个 `.meta` 文件必须以 `module` 开头。`name` 通常与文件名一致。
 
@@ -580,7 +578,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### import
 
-`(import mod-name name ...)` — 从其他模块导入指定名字。
+`(import mod-name name ...)` -- 从其他模块导入指定名字。
 
 导入后可以直接使用，不需要限定前缀。
 
@@ -591,7 +589,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### import-as
 
-`(import-as mod-name prefix)` — 导入模块并用前缀。
+`(import-as mod-name prefix)` -- 导入模块并用前缀。
 
 使用时用 `prefix/name`。
 
@@ -603,7 +601,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### import-all
 
-`(import-all mod-name)` — 导入模块中所有名字。
+`(import-all mod-name)` -- 导入模块中所有名字。
 
 ```scheme
 (import-all list)
@@ -616,7 +614,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### private
 
-`(private name ...)` — 将名字标记为私有。
+`(private name ...)` -- 将名字标记为私有。
 
 被标记为私有的名字不能被其他模块引用。
 
@@ -631,7 +629,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### exempt
 
-`(exempt name ...)` — 免除未使用警告。
+`(exempt name ...)` -- 免除未使用警告。
 
 如果顶层定义在当前模块中没有被使用，编译器会警告。`exempt` 免除这个警告。
 
@@ -647,7 +645,7 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### define-test
 
-`(define-test name body)` — 定义测试。
+`(define-test name body)` -- 定义测试。
 
 `body` 中包含断言。通过 `./meta-lisp.js test` 运行。不需要 `claim`。
 
@@ -664,16 +662,16 @@ lambda 的参数个数必须与调用时传入的参数个数一致。
 
 ### declare-primitive-function
 
-`(declare-primitive-function name arity)` — 告诉编译器 `name` 是一个运行时实现的内置函数，`arity` 是参数个数。
+`(declare-primitive-function name arity)` -- 告诉编译器 `name` 是一个运行时实现的内置函数，`arity` 是参数个数。
 
 ```scheme
 (declare-primitive-function iadd 2)
-(declare-primitive-function display 1)
+(declare-primitive-function println 1)
 ```
 
 ### declare-primitive-variable
 
-`(declare-primitive-variable name)` — 告诉编译器 `name` 是一个运行时提供的内置常量。
+`(declare-primitive-variable name)` -- 告诉编译器 `name` 是一个运行时提供的内置常量。
 
 ```scheme
 (declare-primitive-variable int-t)
