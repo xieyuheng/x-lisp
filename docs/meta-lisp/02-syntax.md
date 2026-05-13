@@ -19,8 +19,6 @@ meta-lisp 使用 S-expression 语法。
 
 ## 字面量
 
-字面量没有 keyword。它们是自求值的。
-
 整数由数字组成，可选负号。
 
 ```scheme
@@ -57,7 +55,9 @@ meta-lisp 使用 S-expression 语法。
 :name
 ```
 
-`true` 和 `false` 不是字面量，而是绑定了布尔值的变量。
+布尔值用 `true` 和 `false`，它们不是字面量，而是绑定了布尔值的变量。
+
+空值用 `void`，它也不是字面量，而是绑定了空值的变量。
 
 ---
 
