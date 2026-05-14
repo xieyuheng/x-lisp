@@ -1,9 +1,3 @@
-# docs
-
-[docs] [guide] 把 intro.md 翻译成英文，补充进入 README.md
-
-- 保留中文版本的 intro.md
-
 # local (define)
 
 [meta-lisp.js] support using `(define)` in function body -- use lambda lift
