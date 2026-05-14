@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
-import { createDesugarState, desugar } from "./020-DesugarPass.ts"
+import { createDesugarState, desugar, simplifyMatch } from "./020-DesugarPass.ts"
 
 export function LowerMatchPass(
   project: M.Project,
@@ -70,7 +70,7 @@ function lowerMatch(mod: M.Mod, exp: M.Exp): M.Exp {
 
       return desugar(
         state,
-        M.simplifyMatch(
+        simplifyMatch(
           mod,
           exp.targets.map((t) => lowerMatch(mod, t)),
           exp.clauses.map((clause) => ({
