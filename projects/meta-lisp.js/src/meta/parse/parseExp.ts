@@ -103,6 +103,14 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* 'letrec bindings body)": ({ bindings, body }, { location }) => {
+    return M.Letrec(
+      S.asList(bindings).elements.map(parseBinding),
+      parseBody(body),
+      location,
+    )
+  },
+
   "(cons* 'letrec* bindings body)": ({ bindings, body }, { location }) => {
     return M.LetrecStar(
       S.asList(bindings).elements.map(parseBinding),
