@@ -1,5 +1,14 @@
 # docs
 
+[docs] [guide] 删除 testing.md，测试相关介绍都在 syntax.md 中介绍。
+
+- 以 syntax.md 的风格和体例为主。
+- 在 syntax.md 的 (define-test) 章节中，介绍所有的断言。
+
+[docs] [reference] syntax.md 中「字面量」章节，同时介绍了类型是不是不太好？
+
+有没有其他方案？
+
 [docs] [reference] 设立 builtin/ 文件夹，在其中模仿 [meta-builtin.meta] 分主题设立子文件夹。
 
 - 删除现有的 reference/builtins.md

@@ -73,4 +73,3 @@ test pass
 (define-test will-fail
   (assert-equal 1 2))  ;; 运行时报错：assert-equal failed: expected 1, got 2
 ```
-
