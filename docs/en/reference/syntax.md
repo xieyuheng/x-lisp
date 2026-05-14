@@ -687,7 +687,7 @@ Equivalent to:
 
 Similar to `(let*)`, but supports recursion and mutual recursion.
 
-All `<exp>`s can reference all bound names (including itself and later ones).
+All `<exp>`s can reference all `<name>`s.
 
 Mutual recursion:
 
