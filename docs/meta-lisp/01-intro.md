@@ -1,9 +1,11 @@
-# 简介
+---
+title: 简介
+---
 
 meta-lisp 是静态类型的 lisp 方言，
 遵循 scheme 的极简主义语法设计。
 
-## 代码示例
+# 代码示例
 
 ```scheme
 (module examples)
@@ -19,7 +21,7 @@ meta-lisp 是静态类型的 lisp 方言，
   (assert-equal 120 (factorial 5)))
 ```
 
-## 核心特性
+# 核心特性
 
 - Hindley-Milner 类型系统。
 - 没有子类型关系，不支持传统的面向对象编程范式。
@@ -28,7 +30,7 @@ meta-lisp 是静态类型的 lisp 方言，
 - 与文件系统解耦的的模块系统。
 - 内置测试框架。
 
-## 语法设计
+# 语法设计
 
 改良了部分 scheme 语法，比如：
 
@@ -38,3 +40,4 @@ meta-lisp 是静态类型的 lisp 方言，
 - 在带有多个表达式的函数体中，可以用 `(= <name> <exp>)` 来代替嵌套的 `(let)`。
 - 给 `(define-record-type)` 增加了对字段的类型声明。
 - 增加了 `(define-algebraic-type)` 语法。
+
