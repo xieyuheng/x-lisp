@@ -1,8 +1,6 @@
 # docs
 
-[docs] [reference] builtin/ -- 删除对 assert-with-location 等等 with-location 系列函数的介绍。
-
-- 这些是内部 API。
+[docs] [reference] faq -- faq.md 中「有 for/while 循环吗？」的例子错了，因为 meta-lisp 目前不能再 body 内使用 (define)
 
 # local (define)
 

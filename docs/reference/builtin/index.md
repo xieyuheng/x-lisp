@@ -452,24 +452,14 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 测试用的断言函数。
 
-### 无位置
-
 - [`assert`](assert/assert.md) — 断言为真
 - [`assert-not`](assert/assert-not.md) — 断言为假
 - [`assert-equal`](assert/assert-equal.md) — 断言相等
 - [`assert-not-equal`](assert/assert-not-equal.md) — 断言不相等
 
-### 带源码位置
-
-- [`assert-with-location`](assert/assert-with-location.md) — 带位置的断言
-- [`assert-not-with-location`](assert/assert-not-with-location.md) — 带位置的否定断言
-- [`assert-equal-with-location`](assert/assert-equal-with-location.md) — 带位置的相等断言
-- [`assert-not-equal-with-location`](assert/assert-not-equal-with-location.md) — 带位置的不相等断言
-
 ## 错误处理
 
 - [`error`](error/error.md) — 抛出错误
-- [`error-with-location`](error/error-with-location.md) — 带位置的错误
 
 ## 进程
 
