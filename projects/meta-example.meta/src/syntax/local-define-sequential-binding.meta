@@ -4,3 +4,9 @@
   (define a 1)
   (define b (iadd a 1))
   (assert-equal 2 b))
+
+(define-test non-head-local-define-test
+  (= one 1)
+  (define a one)
+  (define b (iadd a one))
+  (assert-equal 2 b))
