@@ -1,5 +1,3 @@
-rename project to meta-lisp
-
 # docs
 
 [docs] [guide] 删除 type-system.md，类型相关的所有语法都在 syntax.md 中介绍。

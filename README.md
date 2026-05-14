@@ -1,6 +1,6 @@
-# x-lisp
+# meta-lisp
 
-My list processing language.
+TODO
 
 ## License
 

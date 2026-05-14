@@ -4,7 +4,7 @@ title: AI Agent Instructions
 
 # 子项目
 
-目前 x-lisp 的子项目：
+目前 meta-lisp 的子项目：
 
 - helpers.js -- 通用的 js/ts modules。
 - cmd.js -- 用来实现命令行程序的 js/ts modules。

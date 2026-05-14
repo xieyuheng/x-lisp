@@ -41,7 +41,7 @@ ninja
 cmake .. -DBUILD_SHARED_LIBS=ON
 
 # 指定安装目录
-cmake .. -DCMAKE_INSTALL_PREFIX=C:/x-lisp
+cmake .. -DCMAKE_INSTALL_PREFIX=C:/meta-lisp
 
 # 安装
 cmake --install .
