@@ -1,10 +1,5 @@
 # local (define)
 
-[docs] [reference] syntax.md -- 为 (letrec*) 和 local (define) 补充语法文档。
-
-- 先不要写 (letrec) 的文档，因为 letrec-sequential-binding 的情况有 runtime error。
-  其设计我还没有确定。
-
 [meta-lisp.js] fix the problem of letrec-sequential-binding-error.meta
 
 - 要么就放弃 letrec 这个语法。

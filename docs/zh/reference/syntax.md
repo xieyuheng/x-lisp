@@ -42,6 +42,8 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(let)](#let)
   - [(let*)](#let-1)
   - [(=)](#)
+  - [(letrec*)](#letrec-1)
+  - [local (define)](#local-define)
 - [函数组合](#函数组合)
   - [(pipe)](#pipe)
   - [(chain)](#chain)
@@ -677,6 +679,88 @@ builtin/list-empty?
     (let ((z (iadd y 1)))
       (println z)
       (iadd y z))))
+```
+
+## (letrec*)
+
+```scheme
+(letrec* ((<name> <exp>)
+          ...)
+  <body>)
+```
+
+与 `(let*)` 类似，但是允许递归与互相递归。
+
+所有 `<exp>` 可以引用所有绑定名（包括自身和后面的名字）。
+
+互相递归的例子：
+
+```scheme
+(letrec* ((even?
+           (lambda (n)
+             (if (equal? n 0)
+               true
+               (odd? (isub n 1)))))
+          (odd?
+           (lambda (n)
+             (if (equal? n 0)
+               false
+               (even? (isub n 1))))))
+  (assert (even? 4)))
+```
+
+顺序依赖的例子：
+
+```scheme
+(letrec* ((a 1)
+          (b (iadd a 1)))
+  (assert-equal 2 b))
+```
+
+## local (define)
+
+```scheme
+(define (<name> <parameter> ...) <body>)
+(define <name> <exp>)
+```
+
+`<body>` 中的局部可递归变量绑定。
+
+允许 `(define)` 在 `<body>` 中使用。
+用来代替嵌套的 `(letrec*)`，以减少缩进。
+
+互相递归的例子（与 `(letrec*)` 的例子等价）：
+
+```scheme
+(define (f x)
+  (define (even? n)
+    (if (equal? n 0)
+      true
+      (odd? (isub n 1))))
+  (define (odd? n)
+    (if (equal? n 0)
+      false
+      (even? (isub n 1))))
+  (even? x))
+```
+
+顺序依赖的例子：
+
+```scheme
+(define (g x)
+  (define a 1)
+  (define b (iadd a 1))
+  (assert-equal 2 b))
+```
+
+`(=)` 与 `(define)` 可以混合使用：
+
+```scheme
+(define (h x)
+  (= one 1)
+  (define a one)
+  (define b (iadd a one))
+  (assert-equal 2 b))
 ```
 
 

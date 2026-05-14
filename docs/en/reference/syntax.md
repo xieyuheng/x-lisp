@@ -42,6 +42,8 @@ All meta-lisp syntax is organized below.
   - [(let)](#let)
   - [(let*)](#let-1)
   - [(=)](#)
+  - [(letrec*)](#letrec-1)
+  - [local (define)](#local-define)
 - [Function composition](#function-composition)
   - [(pipe)](#pipe)
   - [(chain)](#chain)
@@ -674,6 +676,89 @@ Equivalent to:
       (println z)
       (iadd y z))))
 ```
+
+## (letrec*)
+
+```scheme
+(letrec* ((<name> <exp>)
+          ...)
+  <body>)
+```
+
+Similar to `(let*)`, but supports recursion and mutual recursion.
+
+All `<exp>`s can reference all bound names (including itself and later ones).
+
+Mutual recursion:
+
+```scheme
+(letrec* ((even?
+           (lambda (n)
+             (if (equal? n 0)
+               true
+               (odd? (isub n 1)))))
+          (odd?
+           (lambda (n)
+             (if (equal? n 0)
+               false
+               (even? (isub n 1))))))
+  (assert (even? 4)))
+```
+
+Sequential dependency:
+
+```scheme
+(letrec* ((a 1)
+          (b (iadd a 1)))
+  (assert-equal 2 b))
+```
+
+## local (define)
+
+```scheme
+(define (<name> <parameter> ...) <body>)
+(define <name> <exp>)
+```
+
+Local recursive variable bindings in `<body>`.
+
+Allows `(define)` inside `<body>`.
+Replaces nested `(letrec*)` to reduce indentation.
+
+Mutual recursion (equivalent to the `(letrec*)` example above):
+
+```scheme
+(define (f x)
+  (define (even? n)
+    (if (equal? n 0)
+      true
+      (odd? (isub n 1))))
+  (define (odd? n)
+    (if (equal? n 0)
+      false
+      (even? (isub n 1))))
+  (even? x))
+```
+
+Sequential dependency:
+
+```scheme
+(define (g x)
+  (define a 1)
+  (define b (iadd a 1))
+  (assert-equal 2 b))
+```
+
+`(=)` and `(define)` can be mixed:
+
+```scheme
+(define (h x)
+  (= one 1)
+  (define a one)
+  (define b (iadd a one))
+  (assert-equal 2 b))
+```
+
 
 # Function composition
 
