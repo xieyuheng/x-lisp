@@ -11,16 +11,9 @@ export function LowerMatchPass(
       lowerMatchDefinition(mod, definition)
     }
 
-    for (const entry of mod.claimed.values()) {
-      lowerMatchClaimedEntry(mod, entry)
-    }
   }
 
   if (options.dump) projectDumpMods(project, "015-lower-match")
-}
-
-function lowerMatchClaimedEntry(mod: M.Mod, entry: M.ClaimedEntry): void {
-  entry.exp = lowerMatch(mod, entry.exp)
 }
 
 function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {

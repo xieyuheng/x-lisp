@@ -1,6 +1,5 @@
 # local (define)
 
-[meta-lisp.js] [refactor] LowerMatchPass 不需要处理 mod.claimed
 [meta-lisp.js] [refactor] desugarDefinition 合并一些 case
 [meta-lisp.js] [refactor] lowerMatchDefinition 合并一些 case
 
