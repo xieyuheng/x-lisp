@@ -22,6 +22,7 @@ export function BuildPipeline(
   M.ExecutePass(project)
   M.ClaimPass(project)
   M.DesugarPass(project, { dump: options.dump })
+  M.LowerMatchPass(project, { dump: options.dump })
   M.QualifyPass(project, { dump: options.dump })
   M.LocatePass(project, { dump: options.dump })
   M.ShrinkPass(project, { dump: options.dump })

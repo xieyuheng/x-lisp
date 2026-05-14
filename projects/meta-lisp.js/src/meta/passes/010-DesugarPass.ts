@@ -161,33 +161,6 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return desugar(state, desugarCond(exp.clauses, exp.location))
     }
 
-    case "Match": {
-      const defaultExp = M.Apply(
-        M.QualifiedVar("builtin", "error", exp.location),
-        [
-          M.LiteralList(
-            [
-              M.String("match mismatch", exp.location),
-              M.LiteralList(exp.targets, exp.location),
-            ],
-            exp.location,
-          ),
-        ],
-        exp.location,
-      )
-
-      return desugar(
-        state,
-        M.simplifyMatch(
-          state.mod,
-          exp.targets,
-          exp.clauses,
-          defaultExp,
-          exp.location,
-        ),
-      )
-    }
-
     case "LiteralList": {
       return desugar(state, desugarList(exp.elements, exp.location))
     }
@@ -286,6 +259,20 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return M.Polymorphic(
         exp.parameters,
         desugar(state, exp.body),
+        exp.location,
+      )
+    }
+
+    case "Match": {
+      return M.Match(
+        exp.targets.map((t) => desugar(state, t)),
+        exp.clauses.map((clause) =>
+          M.MatchClause(
+            clause.patterns.map((p) => desugar(state, p)),
+            desugar(state, clause.body),
+            clause.location,
+          ),
+        ),
         exp.location,
       )
     }
