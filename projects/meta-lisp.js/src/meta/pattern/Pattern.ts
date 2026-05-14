@@ -9,7 +9,7 @@ export function isPattern(exp: M.Exp): boolean {
 
 // VarPattern
 
-export function isVarPattern(exp: M.Exp): boolean {
+export function isVarPattern(exp: M.Exp): exp is M.Var {
   return exp.kind === "Var"
 }
 
@@ -25,7 +25,7 @@ export function varPatternName(exp: M.Exp) {
 
 // DataPattern
 
-export function isDataPattern(exp: M.Exp): boolean {
+export function isDataPattern(exp: M.Exp): exp is M.Apply {
   if (exp.kind !== "Apply") return false
   if (exp.target.kind !== "Var" && exp.target.kind !== "QualifiedVar")
     return false

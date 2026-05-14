@@ -372,14 +372,14 @@ function renameVarInPattern(
   name: string,
   freshName: string,
 ): M.Exp {
-  if (pattern.kind === "Var") {
+  if (M.isVarPattern(pattern)) {
     if (pattern.name === name) {
       return M.Var(freshName, pattern.location)
     }
     return pattern
   }
 
-  if (pattern.kind === "Apply") {
+  if (M.isDataPattern(pattern)) {
     return M.Apply(
       pattern.target,
       pattern.args.map((arg) => renameVarInPattern(arg, name, freshName)),
