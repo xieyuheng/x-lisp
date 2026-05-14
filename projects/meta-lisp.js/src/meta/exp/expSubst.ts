@@ -44,7 +44,10 @@ export function expSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
     }
 
     case "LocalDefine": {
-      return substLocalDefine(exp, name, rhs)
+      let message = `[expSubst] local (define) can only appear in (begin)`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      throw new Error(message)
     }
 
     case "LetrecStar": {
@@ -94,14 +97,14 @@ export function expSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
     }
 
     case "Begin": {
-      return M.Begin(
-        exp.sequence.map((e) => expSubst(e, name, rhs)),
-        exp.location,
-      )
+      return substBegin(exp, name, rhs)
     }
 
     case "Assign": {
-      return M.Assign(exp.name, expSubst(exp.rhs, name, rhs), exp.location)
+      let message = `[expSubst] (=) can only appear in (begin)`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      throw new Error(message)
     }
 
     case "If": {
@@ -382,14 +385,140 @@ function substLetrecStar(exp: M.LetrecStar, name: string, rhs: M.Exp): M.Exp {
   return M.LetrecStar(newBindings, finalBody, exp.location)
 }
 
-function substLocalDefine(exp: M.LocalDefine, name: string, rhs: M.Exp): M.Exp {
-  if (exp.name === name) return exp
-  return M.LocalDefine(
-    exp.name,
-    exp.parameters,
-    expSubst(exp.body, name, rhs),
-    exp.location,
-  )
+function substBegin(exp: M.Begin, name: string, rhs: M.Exp): M.Exp {
+  const rhsFreeNames = M.expFreeNames(new Set(), rhs)
+  const allUsedNames = M.expOccurredNames(exp)
+  const renaming = new Map<string, string>()
+  let nameShadowed = false
+  const newSequence: Array<M.Exp> = []
+  let i = 0
+
+  while (i < exp.sequence.length) {
+    const element = exp.sequence[i]
+
+    if (element.kind === "LocalDefine") {
+      const defines = [element]
+      while (
+        i + defines.length < exp.sequence.length &&
+        exp.sequence[i + defines.length].kind === "LocalDefine"
+      ) {
+        defines.push(exp.sequence[i + defines.length] as M.LocalDefine)
+      }
+
+      const groupResult = substLocalDefineGroup(
+        defines,
+        name,
+        rhs,
+        rhsFreeNames,
+        allUsedNames,
+        renaming,
+        nameShadowed,
+      )
+
+      for (const d of groupResult) {
+        newSequence.push(d)
+      }
+
+      const allNames = new Set(defines.map((d) => d.name))
+      if (allNames.has(name)) {
+        nameShadowed = true
+      }
+
+      i += defines.length
+    } else if (element.kind === "Assign") {
+      const boundName = renaming.get(element.name) ?? element.name
+      const location = element.location
+
+      let newRhs = nameShadowed
+        ? element.rhs
+        : expSubst(element.rhs, name, rhs)
+      newRhs = applyRenamings(newRhs, renaming, location)
+
+      if (!renaming.has(element.name) && rhsFreeNames.has(element.name)) {
+        const fresh = M.generateRelativeFreshName(element.name, allUsedNames)
+        renaming.set(element.name, fresh)
+        newSequence.push(M.Assign(fresh, newRhs, location))
+      } else {
+        newSequence.push(M.Assign(boundName, newRhs, location))
+      }
+
+      if (element.name === name) {
+        nameShadowed = true
+      }
+
+      i++
+    } else {
+      let newElement = nameShadowed ? element : expSubst(element, name, rhs)
+      newElement = applyRenamings(newElement, renaming, element.location)
+      newSequence.push(newElement)
+      i++
+    }
+  }
+
+  return M.Begin(newSequence, exp.location)
+}
+
+function substLocalDefineGroup(
+  defines: Array<M.LocalDefine>,
+  name: string,
+  rhs: M.Exp,
+  rhsFreeNames: Set<string>,
+  allUsedNames: Set<string>,
+  renaming: Map<string, string>,
+  nameShadowed: boolean,
+): Array<M.LocalDefine> {
+  const allNames = new Set(defines.map((d) => d.name))
+  const nameShadowedInGroup = nameShadowed || allNames.has(name)
+
+  for (const d of defines) {
+    renaming.delete(d.name)
+  }
+
+  const conflict = [...allNames].some((n) => rhsFreeNames.has(n))
+  const groupRenaming = new Map<string, string>()
+
+  if (conflict) {
+    for (const d of defines) {
+      if (rhsFreeNames.has(d.name)) {
+        const fresh = M.generateRelativeFreshName(d.name, allUsedNames)
+        renaming.set(d.name, fresh)
+        groupRenaming.set(d.name, fresh)
+      }
+    }
+  }
+
+  return defines.map((d) => {
+    let body = nameShadowedInGroup
+      ? d.body
+      : expSubst(d.body, name, rhs)
+
+    body = applyRenamings(body, renaming, d.location)
+
+    if (groupRenaming.size > 0) {
+      for (const [oldName, freshName] of groupRenaming) {
+        body = expSubst(body, oldName, M.Var(freshName, d.location))
+      }
+    }
+
+    return M.LocalDefine(
+      groupRenaming.get(d.name) ?? d.name,
+      d.parameters,
+      body,
+      d.location,
+    )
+  })
+}
+
+function applyRenamings(
+  exp: M.Exp,
+  renaming: Map<string, string>,
+  location?: S.SourceLocation,
+): M.Exp {
+  let result = exp
+  for (const [oldName, freshName] of renaming) {
+    result = expSubst(result, oldName, M.Var(freshName, location))
+  }
+  return result
 }
 
 function substLetrec(exp: M.Letrec, name: string, rhs: M.Exp): M.Exp {

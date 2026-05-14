@@ -107,7 +107,21 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
     }
 
     case "Begin": {
-      return setUnionMany(exp.sequence.map((e) => expFreeNames(boundNames, e)))
+      let currentBoundNames = boundNames
+      const freeNamesSets: Array<Set<string>> = []
+      for (const e of exp.sequence) {
+        if (e.kind === "Assign") {
+          freeNamesSets.push(expFreeNames(currentBoundNames, e.rhs))
+          currentBoundNames = setAdd(currentBoundNames, e.name)
+        } else if (e.kind === "LocalDefine") {
+          const newBoundNames = setAdd(currentBoundNames, e.name)
+          freeNamesSets.push(expFreeNames(newBoundNames, e.body))
+          currentBoundNames = newBoundNames
+        } else {
+          freeNamesSets.push(expFreeNames(currentBoundNames, e))
+        }
+      }
+      return setUnionMany(freeNamesSets)
     }
 
     case "Assign": {
