@@ -6,6 +6,30 @@ title: Builtin Functions Index
 
 All builtin functions in meta-lisp, categorized by functionality.
 
+- [Generic](#generic)
+- [Booleans](#booleans)
+- [Integers](#integers)
+- [Floats](#floats)
+- [Strings](#strings)
+- [Symbols](#symbols)
+- [Keywords](#keywords)
+- [void](#void)
+- [Lists](#lists)
+- [Sets](#sets)
+- [Hash tables](#hash-tables)
+- [Pair](#pair)
+- [Maybe](#maybe)
+- [Function operations](#function-operations)
+- [File I/O](#file-io)
+- [File system](#file-system)
+- [Path operations](#path-operations)
+- [Assertions](#assertions)
+- [Error handling](#error-handling)
+- [Process](#process)
+- [Random](#random)
+- [S-expressions](#s-expressions)
+- [Type](#type)
+
 ## Generic
 
 Operations applicable to all types.
