@@ -9,11 +9,11 @@ export function DesugarPass(
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
-      desugarDefinition(mod, definition)
+      desugarDefinition(definition)
     }
 
     for (const entry of mod.claimed.values()) {
-      desugarClaimedEntry(mod, entry)
+      desugarClaimedEntry(entry)
     }
   }
 
@@ -30,12 +30,12 @@ export function createDesugarState(): State {
   }
 }
 
-function desugarClaimedEntry(mod: M.Mod, entry: M.ClaimedEntry): void {
+function desugarClaimedEntry(entry: M.ClaimedEntry): void {
   const state = createDesugarState()
   entry.exp = M.desugar(state, entry.exp)
 }
 
-function desugarDefinition(mod: M.Mod, definition: M.Definition): null {
+function desugarDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration":
