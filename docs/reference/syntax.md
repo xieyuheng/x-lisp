@@ -284,15 +284,16 @@ builtin/list-empty?
 
 ## 原子类型
 
-| 类型        | 字面量示例     | 说明   |
-|-------------|----------------|--------|
-| `int-t`     | `42` `-1`      | 整数   |
-| `float-t`   | `3.14` `-2.5`  | 浮点数 |
-| `string-t`  | `"hello"`      | 字符串 |
-| `symbol-t`  | `'foo`         | 符号   |
-| `keyword-t` | `:key`         | 关键字 |
-| `bool-t`    | `true` `false` | 布尔值 |
-| `void-t`    | `void`         | 空值   |
+| 类型        | 说明   | 例子                          |
+|-------------|--------|-------------------------------|
+| `int-t`     | 整数   | `42` `-1`                     |
+| `float-t`   | 浮点数 | `3.14` `-2.5`                 |
+| `string-t`  | 字符串 | `"hello"`                     |
+| `symbol-t`  | 符号   | `'foo`                        |
+| `keyword-t` | 关键字 | `:key`                        |
+| `bool-t`    | 布尔值 | `true` `false`                |
+| `void-t`    | 空值   | `void`                        |
+| `file-t`    | 文件   | `(open-input-file "abc.txt")` |
 
 ## 容器类型
 
