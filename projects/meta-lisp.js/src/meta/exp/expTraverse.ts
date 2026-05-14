@@ -168,10 +168,17 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     }
 
     case "Match": {
-      let message = `[expTraverse] can not handle Match`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      return M.Match(
+        exp.targets.map(onExp),
+        exp.clauses.map((clause) =>
+          M.MatchClause(
+            clause.patterns.map(onExp),
+            onExp(clause.body),
+            clause.location,
+          ),
+        ),
+        exp.location,
+      )
     }
   }
 }
