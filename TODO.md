@@ -1,8 +1,6 @@
 # local (define)
 
-[meta-lisp.js] [refactor] desugarDefinition 合并一些 case
 [meta-lisp.js] [refactor] lowerMatchDefinition 合并一些 case
-
 
 ---
 

@@ -46,24 +46,9 @@ function desugarDefinition(mod: M.Mod, definition: M.Definition): null {
       return null
     }
 
-    case "FunctionDefinition": {
-      const state = createDesugarState(definition.mod)
-      definition.body = desugar(state, definition.body)
-      return null
-    }
-
-    case "VariableDefinition": {
-      const state = createDesugarState(definition.mod)
-      definition.body = desugar(state, definition.body)
-      return null
-    }
-
-    case "TestDefinition": {
-      const state = createDesugarState(definition.mod)
-      definition.body = desugar(state, definition.body)
-      return null
-    }
-
+    case "FunctionDefinition":
+    case "VariableDefinition":
+    case "TestDefinition":
     case "TypeDefinition": {
       const state = createDesugarState(definition.mod)
       definition.body = desugar(state, definition.body)
