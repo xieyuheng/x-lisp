@@ -1,10 +1,5 @@
 # docs
 
-[docs] [guide] 删除 testing.md，测试相关介绍都在 syntax.md 中介绍。
-
-- 以 syntax.md 的风格和体例为主。
-- 在 syntax.md 的 (define-test) 章节中，介绍所有的断言。
-
 [docs] [reference] syntax.md 中「字面量」章节，同时介绍了类型是不是不太好？
 
 有没有其他方案？

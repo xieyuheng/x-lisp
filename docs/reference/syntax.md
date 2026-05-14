@@ -1146,7 +1146,7 @@ m/exp-t
 
 定义测试。
 
-`<body>` 中可以用断言来做测试。
+`<body>` 中可以包含多个断言。
 
 ```scheme
 (claim add1 (-> int-t int-t))
@@ -1156,3 +1156,10 @@ m/exp-t
   (assert-equal 2 (add1 1))
   (assert-equal 0 (add1 -1)))
 ```
+
+支持以下断言：
+
+- `(assert x)` -- 断言 `x` 为 `true`。
+- `(assert-not x)` -- 断言 `x` 为 `false`。
+- `(assert-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 相等（使用 `equal?` 比较）。
+- `(assert-not-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 不相等。。
