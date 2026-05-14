@@ -1,4 +1,6 @@
-# 内置函数参考
+---
+:title 内置函数参考
+---
 
 内置函数分为两类：
 
@@ -7,9 +9,9 @@
 
 内置函数通过 `builtin/` 前缀访问（如 `(builtin/string-length "hello")`），但通常直接使用名字就够了（因为 builtin 模块默认在作用域中）。
 
-## 基础类型
+# 基础类型
 
-### bool
+# bool
 
 ```scheme
 bool-t                          ;; 类型：type-t
@@ -19,7 +21,7 @@ false                           ;; 值：bool-t
 (not b)                         ;; (-> bool-t bool-t)               逻辑非
 ```
 
-### int
+# int
 
 ```scheme
 int-t                           ;; 类型：type-t
@@ -51,7 +53,7 @@ int-t                           ;; 类型：type-t
 (int-product xs)                ;; (-> (list-t int-t) int-t)        求积
 ```
 
-### float
+# float
 
 ```scheme
 float-t                         ;; 类型：type-t
@@ -82,7 +84,7 @@ float-t                         ;; 类型：type-t
 (float-product xs)              ;; (-> (list-t float-t) float-t)    求积
 ```
 
-### string
+# string
 
 ```scheme
 string-t                        ;; 类型：type-t
@@ -124,7 +126,7 @@ string-t                        ;; 类型：type-t
 (string-repeat n s)             ;; (-> int-t string-t string-t)     重复字符串 n 次
 ```
 
-### symbol
+# symbol
 
 ```scheme
 symbol-t                        ;; 类型：type-t
@@ -135,7 +137,7 @@ symbol-t                        ;; 类型：type-t
 (symbol-concat syms)            ;; (-> (list-t symbol-t) symbol-t)  拼接列表
 ```
 
-### keyword
+# keyword
 
 ```scheme
 keyword-t                       ;; 类型：type-t
@@ -146,7 +148,7 @@ keyword-t                       ;; 类型：type-t
 (keyword-concat kws)            ;; (-> (list-t keyword-t) keyword-t) 拼接列表
 ```
 
-### void
+# void
 
 ```scheme
 void-t                          ;; 类型：type-t
@@ -154,9 +156,9 @@ void                            ;; 值：void-t
 (void? x)                       ;; (-> A bool-t)                    是否为 void
 ```
 
-## 复合类型
+# 复合类型
 
-### list
+# list
 
 ```scheme
 (list-t E)                      ;; (-> type-t type-t)               类型构造器
@@ -216,7 +218,7 @@ void                            ;; 值：void-t
 (list-group key-fn vs)          ;; (-> (-> V K) (list-t V) (hash-t K (list-t V)))    按 key 分组
 ```
 
-### set
+# set
 
 ```scheme
 (set-t E)                       ;; (-> type-t type-t)               类型构造器
@@ -254,7 +256,7 @@ void                            ;; 值：void-t
 (set-map f s)                   ;; (-> (-> A B) (set-t A) (set-t B))              映射
 ```
 
-### hash
+# hash
 
 ```scheme
 (hash-t K V)                    ;; (-> type-t type-t type-t)          类型构造器
@@ -311,7 +313,7 @@ void                            ;; 值：void-t
 (hash-put-entries entries h)    ;; 从 entry 列表批量放入
 ```
 
-## 通用值操作
+# 通用值操作
 
 ```scheme
 value                          ;; (module builtin)
@@ -324,9 +326,9 @@ value                          ;; (module builtin)
 (total-compare a b)            ;; (-> A B int-t)                  全序比较
 ```
 
-## 数据结构
+# 数据结构
 
-### pair
+# pair
 
 ```scheme
 (pair-t A B)                   ;; 结构体：first + second
@@ -337,7 +339,7 @@ value                          ;; (module builtin)
 (pair-put-second! p x)         ;; 设置第二个
 ```
 
-### maybe
+# maybe
 
 ```scheme
 (maybe-t A)                    ;; 枚举：just / nothing
@@ -348,9 +350,9 @@ value                          ;; (module builtin)
 (just-value m)                 ;; 取出值
 ```
 
-## 文件和 I/O
+# 文件和 I/O
 
-### file
+# file
 
 ```scheme
 file-t                          ;; 类型：type-t
@@ -374,7 +376,7 @@ file-t                          ;; 类型：type-t
 (call-with-output-file path f)  ;; (-> string-t (-> file-t A) A)   同上（写模式）
 ```
 
-### fs（文件系统操作）
+# fs（文件系统操作）
 
 ```scheme
 (fs-exists? path)               ;; (-> string-t bool-t)            是否存在
@@ -392,7 +394,7 @@ file-t                          ;; 类型：type-t
 (fs-rename old new)             ;; (-> string-t string-t void-t)   重命名
 ```
 
-### path
+# path
 
 ```scheme
 (path-base-name path)           ;; (-> string-t string-t)           取文件名部分
@@ -405,7 +407,7 @@ file-t                          ;; 类型：type-t
 (path-normalize path)           ;; (-> string-t string-t)           标准化路径
 ```
 
-## 测试与断言
+# 测试与断言
 
 ```scheme
 (assert cond)                   ;; (-> bool-t void-t)               断言为真
@@ -421,14 +423,14 @@ file-t                          ;; 类型：type-t
 (assert-equal-with-location expected actual loc)
 ```
 
-## 错误处理
+# 错误处理
 
 ```scheme
 (error message)                 ;; (-> A B)                        抛出错误
 (error-with-location message loc) ;; (-> A source-location-t B)    带位置的错误
 ```
 
-## S-expression 解析
+# S-expression 解析
 
 ```scheme
 (parse-located-sexps path content)  ;; (-> string-t string-t (list-t located-sexp-t)) 解析 S-expression
@@ -441,21 +443,21 @@ file-t                          ;; 类型：type-t
 (source-position-t)              ;; 结构体：index + row + column
 ```
 
-## 进程
+# 进程
 
 ```scheme
 (exit code)                     ;; (-> int-t void-t)               退出进程
 (current-directory)             ;; (-> string-t)                   当前工作目录
 ```
 
-## 随机数
+# 随机数
 
 ```scheme
 (random-int min max)            ;; (-> int-t int-t int-t)          随机整数 [min, max)
 (random-float min max)          ;; (-> float-t float-t float-t)    随机浮点数 [min, max)
 ```
 
-## 函数工具（派生）
+# 函数工具（派生）
 
 ```scheme
 (identity x)                    ;; (-> A A)                        恒等函数

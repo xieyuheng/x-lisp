@@ -1,8 +1,10 @@
-# 测试
+---
+:title 测试
+---
 
 meta-lisp 内置测试框架。
 
-## (define-test)
+# (define-test)
 
 使用 `(define-test name body)` 定义测试：
 
@@ -14,7 +16,7 @@ meta-lisp 内置测试框架。
 
 测试体中可以包含多个断言。
 
-## 断言函数
+# 断言函数
 
 ```scheme
 (assert cond)                   ;; 断言为真，失败时报错
@@ -23,7 +25,7 @@ meta-lisp 内置测试框架。
 (assert-not-equal a b)          ;; 断言不相等
 ```
 
-## 运行测试
+# 运行测试
 
 在项目目录中：
 
@@ -45,7 +47,7 @@ test pass
 test pass
 ```
 
-## 完整示例
+# 完整示例
 
 ```scheme
 (module examples)

@@ -1,4 +1,6 @@
-# 语法
+---
+:title 语法
+---
 
 meta-lisp 使用**符号表达式**（S-expression）语法。
 
@@ -7,7 +9,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 下面分组介绍 meta-lisp 的所有语法。
 
-## 注释
+# 注释
 
 注释以 `;` 开头，直到行尾。
 
@@ -18,9 +20,9 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (define x 42) ;; 行尾注释
 ```
 
-## 字面量
+# 字面量
 
-### 原子
+# 原子
 
 整数由数字组成，可选负号。
 
@@ -62,7 +64,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 空值用 `void`，它也不是字面量，而是绑定了空值的变量。
 
-### 容器
+# 容器
 
 `(@list)` 创建列表。
 
@@ -98,7 +100,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (@list "a" "b" "c")
 ```
 
-### (quote)
+# (quote)
 
 ```scheme
 '<exp>
@@ -121,9 +123,9 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (quote foo)      ;; => 'foo
 ```
 
-## 变量
+# 变量
 
-### (define)
+# (define)
 
 ```scheme
 (define <name> <exp>)
@@ -136,7 +138,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (define greeting "hello")
 ```
 
-### 变量
+# 变量
 
 变量引用一个已绑定的名字。
 
@@ -149,7 +151,7 @@ list-length
 list-empty?
 ```
 
-### 限定变量
+# 限定变量
 
 `<module-name>/<name>` 引用其他模块中的名字。
 
@@ -162,9 +164,9 @@ builtin/list-empty?
 `(import)` 是专门用来取消 `<module-name>` 前缀的。
 
 
-## 函数
+# 函数
 
-### 函数作用
+# 函数作用
 
 ```scheme
 (<target> <arg> ...)
@@ -212,7 +214,7 @@ builtin/list-empty?
   (iadd 1 x))
 ```
 
-### (lambda)
+# (lambda)
 
 ```scheme
 (lambda (<parameter> ...)
@@ -245,7 +247,7 @@ builtin/list-empty?
     (iadd x y)))
 ```
 
-### (define)
+# (define)
 
 ```scheme
 (define (<name> <parameter> ...)
@@ -277,9 +279,9 @@ builtin/list-empty?
   (imul y 2))
 ```
 
-## 类型
+# 类型
 
-### (claim)
+# (claim)
 
 ```scheme
 (claim <name> <type>)
@@ -298,7 +300,7 @@ builtin/list-empty?
 (define answer 42)
 ```
 
-### (admit)
+# (admit)
 
 ```scheme
 (admit <name> <type>)
@@ -314,7 +316,7 @@ builtin/list-empty?
   (@list 'make-point x y))
 ```
 
-### (the)
+# (the)
 
 ```scheme
 (the <type> <exp>)
@@ -331,7 +333,7 @@ builtin/list-empty?
     (iadd x 1)))
 ```
 
-### (polymorphic)
+# (polymorphic)
 
 ```scheme
 (polymorphic (<type-parameter> ...)
@@ -352,9 +354,9 @@ builtin/list-empty?
 ```
 
 
-## 条件
+# 条件
 
-### (if)
+# (if)
 
 ```scheme
 (if <condition>
@@ -375,7 +377,7 @@ builtin/list-empty?
     x))
 ```
 
-### (when)
+# (when)
 
 ```scheme
 (when <condition>
@@ -394,7 +396,7 @@ builtin/list-empty?
   (newline))
 ```
 
-### (unless)
+# (unless)
 
 ```scheme
 (unless <condition>
@@ -413,7 +415,7 @@ builtin/list-empty?
   (newline))
 ```
 
-### (cond)
+# (cond)
 
 ```scheme
 (cond
@@ -435,7 +437,7 @@ builtin/list-empty?
    (else "zero")))
 ```
 
-### (and)
+# (and)
 
 ```scheme
 (and <exp> ...)
@@ -451,7 +453,7 @@ builtin/list-empty?
 
 零个参数时返回 `true`。
 
-### (or)
+# (or)
 
 ```scheme
 (or <exp> ...)
@@ -467,9 +469,9 @@ builtin/list-empty?
 
 零个参数时返回 `false`。
 
-## 顺序与绑定
+# 顺序与绑定
 
-### (begin)
+# (begin)
 
 ```scheme
 (begin <body>)
@@ -497,7 +499,7 @@ builtin/list-empty?
   (imul y 2))
 ```
 
-### (let)
+# (let)
 
 ```scheme
 (let ((<name> <exp>)
@@ -527,7 +529,7 @@ builtin/list-empty?
   (iadd x y))
 ```
 
-### (let*)
+# (let*)
 
 ```scheme
 (let* ((<name> <exp>)
@@ -553,7 +555,7 @@ builtin/list-empty?
     (iadd x y)))
 ```
 
-### (=)
+# (=)
 
 ```scheme
 (= <name> <exp>)
@@ -585,9 +587,9 @@ builtin/list-empty?
 ```
 
 
-## 函数组合
+# 函数组合
 
-### (pipe)
+# (pipe)
 
 ```scheme
 (pipe <init> <step> ...)
@@ -609,7 +611,7 @@ builtin/list-empty?
 (square (double (add1 2)))  ;;  => 36
 ```
 
-### (chain)
+# (chain)
 
 ```scheme
 (chain <step> ...)
@@ -638,7 +640,7 @@ builtin/list-empty?
 (lambda (x) (square (double (add1 x))))
 ```
 
-### (compose)
+# (compose)
 
 ```scheme
 (compose <step> ...)
@@ -660,9 +662,9 @@ builtin/list-empty?
 (lambda (x) (add1 (double (square x))))
 ```
 
-## 代数数据类型
+# 代数数据类型
 
-### (define-algebraic-type)
+# (define-algebraic-type)
 
 ```scheme
 (define-algebraic-type <type-name>
@@ -754,7 +756,7 @@ builtin/list-empty?
 (claim li-put-tail! (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 ```
 
-### (define-record-type)
+# (define-record-type)
 
 ```scheme
 (define-record-type <type-name>
@@ -803,7 +805,7 @@ builtin/list-empty?
 `(define-algebraic-type)` 模仿 `(define-record-type)`，
 进一步支持了多个构造器。
 
-### (define-enum)
+# (define-enum)
 
 ```scheme
 (define-enum <type-name>
@@ -852,7 +854,7 @@ builtin/list-empty?
 - `<accessor-name>` = `<constructor-name>-<field-name>` -- `var-exp-name`
 - `<modifier-name>` = `<constructor-name>-put-<field-name>!` -- `var-exp-put-name!`
 
-### (define-struct)
+# (define-struct)
 
 ```scheme
 (define-struct <type-name>
@@ -896,7 +898,7 @@ builtin/list-empty?
 - `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
 - `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
 
-### (define-struct*)
+# (define-struct*)
 
 ```scheme
 (define-struct* <type-name>
@@ -946,7 +948,7 @@ builtin/list-empty?
   (cons-project root-directory config (make-hash)))
 ```
 
-### (match)
+# (match)
 
 ```scheme
 (match <target>
@@ -972,9 +974,9 @@ builtin/list-empty?
      (closure-value env parameter body))))
 ```
 
-## 模块
+# 模块
 
-### (module)
+# (module)
 
 ```scheme
 (module <module-name>)
@@ -1014,7 +1016,7 @@ builtin/list-empty?
     (even? (isub n 1))))
 ```
 
-### (import)
+# (import)
 
 ```scheme
 (import <module-name> <name> ...)
@@ -1042,7 +1044,7 @@ pi
 circumference
 ```
 
-### (import-as)
+# (import-as)
 
 ```scheme
 (import-as <module-name> <prefix>)
@@ -1068,7 +1070,7 @@ meta/exp-t
 m/exp-t
 ```
 
-### (import-all)
+# (import-all)
 
 ```scheme
 (import-all <module-name>)
@@ -1084,7 +1086,7 @@ m/exp-t
 因此，不带前缀的引用，还是会引用到当前模块自己的名字。
 或者说本地的定义，可以覆盖 `(import-all)` 所引入的定义。
 
-### (private)
+# (private)
 
 ```scheme
 (private <name> ...)
@@ -1101,9 +1103,9 @@ m/exp-t
 (define serial-number-hash (make-hash))
 ```
 
-## 测试
+# 测试
 
-### (define-test)
+# (define-test)
 
 ```scheme
 (define-test <test-name> <body>)
