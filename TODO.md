@@ -1,34 +1,6 @@
 # docs
 
-[docs] [reference] 设立 builtin/ 文件夹，在其中模仿 [meta-builtin.meta] 分主题设立子文件夹。
-
-- 删除现有的 reference/builtins.md
-- 为每个 builtin 函数设立一个同名 .md 文件（带有 ? 和 ! 后缀的，文件名省略后缀）。
-- 在每个 builtin 函数文件中写这个 builtin 函数的文档。
-  体例是：
-
-  ```markdown
-  ---
-  title: 函数名
-  ---
-
-  # 类型
-
-  ```scheme
-  ...
-  ```
-
-  # 描述
-
-  简洁清晰的描述
-
-  # 例子
-
-  ```scheme
-  简介清晰的例子
-  ```
-
-  ```
+[docs] [reference] 编写 builtin/index.md，分类介绍所有 builtin 函数，并带有链接可以跳转到所有 builtin 函数。
 
 要求：
 
