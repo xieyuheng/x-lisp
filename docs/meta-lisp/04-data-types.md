@@ -1,5 +1,5 @@
 ---
-:title 数据类型
+title: 数据类型
 ---
 
 meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：

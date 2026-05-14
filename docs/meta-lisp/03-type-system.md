@@ -1,5 +1,5 @@
 ---
-:title 类型系统
+title: 类型系统
 ---
 
 meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。

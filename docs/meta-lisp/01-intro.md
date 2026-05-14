@@ -1,5 +1,5 @@
 ---
-:title 简介
+title: 简介
 ---
 
 meta-lisp 是静态类型的 lisp 方言，

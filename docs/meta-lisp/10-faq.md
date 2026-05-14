@@ -1,5 +1,5 @@
 ---
-:title 常见问题（FAQ）
+title: 常见问题（FAQ）
 ---
 
 # 有 for/while 循环吗？

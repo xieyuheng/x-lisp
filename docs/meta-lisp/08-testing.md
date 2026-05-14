@@ -1,5 +1,5 @@
 ---
-:title 测试
+title: 测试
 ---
 
 meta-lisp 内置测试框架。

@@ -1,5 +1,5 @@
 ---
-:title 语法
+title: 语法
 ---
 
 meta-lisp 使用**符号表达式**（S-expression）语法。

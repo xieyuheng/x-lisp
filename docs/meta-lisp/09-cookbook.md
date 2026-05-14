@@ -1,5 +1,5 @@
 ---
-:title 常见模式（Cookbook）
+title: 常见模式（Cookbook）
 ---
 
 # 尾递归实现循环
