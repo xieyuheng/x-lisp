@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import type { Exp } from "./Exp.ts"
 

@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
-import { createDesugarState, desugar } from "./010-DesugarPass.ts"
+import { createDesugarState, desugar } from "./020-DesugarPass.ts"
 
 export function LowerMatchPass(
   project: M.Project,
@@ -10,7 +10,6 @@ export function LowerMatchPass(
     for (const definition of mod.definitions.values()) {
       lowerMatchDefinition(mod, definition)
     }
-
   }
 
   if (options.dump) projectDumpMods(project, "015-lower-match")
