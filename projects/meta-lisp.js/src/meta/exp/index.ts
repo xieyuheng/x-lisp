@@ -1,4 +1,3 @@
-export * from "./createFreshVar.ts"
 export * from "./Exp.ts"
 export * from "./expFreeNames.ts"
 export * from "./expOccurredNames.ts"

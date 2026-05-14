@@ -1,4 +1,5 @@
 import { range } from "@xieyuheng/helpers.js/range"
+import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import Path from "node:path"
@@ -55,9 +56,15 @@ export function simplifyMatch(
     const groups = groupClausesByHeadDataConstructor(mod, clauses)
     return M.Cond(
       groups.map((group) => {
-        const freshVars = group.dataConstructor.fields.map((field) =>
-          M.createFreshVar(field.name, location),
-        )
+        const usedNames = setUnionMany([
+          ...targets.map((t) => M.expFreeNames(new Set(), t)),
+          ...group.clauses.map((c) => M.expFreeNames(new Set(), c.body)),
+        ])
+        const freshVars = group.dataConstructor.fields.map((field) => {
+          const freshName = M.generateRelativeFreshName(field.name, usedNames)
+          usedNames.add(freshName)
+          return M.Var(freshName, location)
+        })
 
         const definition = group.dataConstructor.definition
 

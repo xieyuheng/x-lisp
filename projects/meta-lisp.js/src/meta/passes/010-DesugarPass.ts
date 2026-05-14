@@ -1,3 +1,4 @@
+import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
@@ -386,8 +387,10 @@ function desugarPipe(
 }
 
 function desugarChain(steps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
-  const target = M.createFreshVar("target", location)
-  return M.Lambda([target.name], M.Pipe(target, steps, location), location)
+  const usedNames = setUnionMany(steps.map((s) => M.expFreeNames(new Set(), s)))
+  const targetName = M.generateRelativeFreshName("target", usedNames)
+  const target = M.Var(targetName, location)
+  return M.Lambda([targetName], M.Pipe(target, steps, location), location)
 }
 
 function desugarCompose(
