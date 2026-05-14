@@ -1,16 +1,10 @@
 # local (define)
 
-[meta-lisp.js] `expOccurredNames`
+[meta-lisp.js] `generateRelativeFreshName`
 
 ---
 
-[plan] [meta-lisp.js] 下面实现 `expOccurredNames` 函数。
-
-- 与 `expFreeNames` 类似，但是要收集 `Exp` 中出现的所有 name，包括 bound name。
-- 放在 `exp/expOccurredNames.ts` 中。
-- 不用写测试。
-
----
+[plan] 下面实现 `generateRelativeFreshName`
 
 [meta-lisp.js] `expSubst`
 
