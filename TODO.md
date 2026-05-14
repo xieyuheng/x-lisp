@@ -1,3 +1,7 @@
+# docs
+
+[docs] README.md 优先 en/，括号 zh/
+
 # local (define)
 
 [meta-lisp.js] support using `(define)` in function body -- use lambda lift

@@ -1,17 +1,10 @@
-# meta-lisp
+---
+title: Introduction
+---
 
-> A statically typed lisp for implementing new lisp languages.
+meta-lisp is a statically typed lisp dialect following Scheme's minimalist syntax design.
 
-meta-lisp is a statically typed lisp dialect
-following Scheme's minimalist syntax design.
-
-## Documentation
-
-- [Syntax Reference](docs/zh/reference/syntax.md) ([English](docs/en/reference/syntax.md))
-- [Builtin Functions](docs/zh/reference/builtin/index.md) ([English](docs/en/reference/builtin/index.md))
-- [FAQ](docs/zh/faq/faq.md) ([English](docs/en/faq/faq.md))
-
-## Example
+# Example
 
 ```scheme
 (module example)
@@ -32,7 +25,7 @@ following Scheme's minimalist syntax design.
   (assert-equal 120 (factorial 5)))
 ```
 
-## Features
+# Features
 
 - Hindley-Milner type system.
 - No subtyping — traditional OOP is not supported.
@@ -41,7 +34,7 @@ following Scheme's minimalist syntax design.
 - Module system decoupled from the file system.
 - Built-in testing framework.
 
-## Syntax Design
+# Syntax Design
 
 Improvements over Scheme:
 
@@ -50,7 +43,3 @@ Improvements over Scheme:
 - Use `(= <name> <exp>)` to avoid nested `(let)` in function bodies with multiple expressions.
 - Add type annotations for fields in `(define-record-type)`.
 - Add `(define-algebraic-type)` syntax.
-
-## License
-
-[GPLv3](LICENSE)
