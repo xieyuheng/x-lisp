@@ -701,11 +701,13 @@ builtin/list-empty?
 
 meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义数据类型：
 
-| 语法                    | 用途                          | 构造器名               |
-|-------------------------|-------------------------------|------------------------|
-| `define-algebraic-type` | 最 explicit，所有名字自己定   | 你指定                 || `define-struct`         | 只有一个构造器的结构体        | 自动生成 `make-<base>` |
-| `define-struct*`        | 只有一个构造器，自定义名字    | 你指定                 |
-| `define-enum`           | 多个构造器的枚举/代数数据类型 | 每个构造器名即其名字   |
+| 语法                      | 用途                         |
+|---------------------------|------------------------------|
+| `(define-algebraic-type)` | 多构造器，所有名字由你指定   |
+| `(define-record-type)`    | 单构造器，所有名字由你指定   |
+| `(define-struct*)`        | 单构造器，可指定构造器名字   |
+| `(define-struct)`         | 单构造器，按约定生成所有名字 |
+| `(define-enum)`           | 多构造器，按约定生成所有名字 |
 
 所有便捷语法最终都展开为 `(define-algebraic-type)`。
 其中最常用的是 `(define-enum)` 和 `(define-struct)`。
