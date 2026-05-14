@@ -39,6 +39,10 @@ export function expSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       return substLetStar(exp, name, rhs)
     }
 
+    case "LetrecStar": {
+      return substLetrecStar(exp, name, rhs)
+    }
+
     case "Match": {
       return substMatch(exp, name, rhs)
     }
@@ -319,6 +323,55 @@ function substLetStar(exp: M.LetStar, name: string, rhs: M.Exp): M.Exp {
     return M.LetStar(newBindings, body, exp.location)
   }
   return M.LetStar(newBindings, expSubst(body, name, rhs), exp.location)
+}
+
+function substLetrecStar(exp: M.LetrecStar, name: string, rhs: M.Exp): M.Exp {
+  const rhsFreeNames = M.expFreeNames(new Set(), rhs)
+  const allNames = new Set(exp.bindings.map((b) => b.name))
+  const nameShadowed = allNames.has(name)
+  const conflict = [...allNames].some((n) => rhsFreeNames.has(n))
+
+  const newRHSes = nameShadowed
+    ? exp.bindings.map((b) => b.rhs)
+    : exp.bindings.map((b) => expSubst(b.rhs, name, rhs))
+  let newBody = nameShadowed ? exp.body : expSubst(exp.body, name, rhs)
+
+  if (!conflict) {
+    if (nameShadowed) return exp
+    return M.LetrecStar(
+      exp.bindings.map((b, i) => M.Binding(b.name, newRHSes[i], b.location)),
+      newBody,
+      exp.location,
+    )
+  }
+
+  const usedNames = M.expOccurredNames(exp)
+  const renaming = new Map<string, string>()
+
+  for (const b of exp.bindings) {
+    if (rhsFreeNames.has(b.name)) {
+      renaming.set(b.name, M.generateRelativeFreshName(b.name, usedNames))
+    }
+  }
+
+  let finalBody = newBody
+  let finalRHSes = [...newRHSes]
+  for (const [oldName, freshName] of renaming) {
+    for (let i = 0; i < finalRHSes.length; i++) {
+      finalRHSes[i] = expSubst(
+        finalRHSes[i],
+        oldName,
+        M.Var(freshName, exp.location),
+      )
+    }
+    finalBody = expSubst(finalBody, oldName, M.Var(freshName, exp.location))
+  }
+
+  const newBindings = exp.bindings.map((b, i) =>
+    M.Binding(renaming.get(b.name) ?? b.name, finalRHSes[i], b.location),
+  )
+
+  return M.LetrecStar(newBindings, finalBody, exp.location)
 }
 
 function substMatch(exp: M.Match, name: string, rhs: M.Exp): M.Exp {

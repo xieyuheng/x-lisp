@@ -76,6 +76,16 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
+    case "LetrecStar": {
+      return M.LetrecStar(
+        exp.bindings.map((binding) =>
+          M.Binding(binding.name, onExp(binding.rhs), binding.location),
+        ),
+        onExp(exp.body),
+        exp.location,
+      )
+    }
+
     case "Begin1": {
       return M.Begin1(onExp(exp.head), onExp(exp.body), exp.location)
     }

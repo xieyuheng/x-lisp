@@ -117,6 +117,12 @@ export function formatExp(exp: M.Exp): string {
       return `(let* (${bindings}) ${body})`
     }
 
+    case "LetrecStar": {
+      const bindings = exp.bindings.map(formatBinding).join(" ")
+      const body = formatBody(exp.body)
+      return `(letrec* (${bindings}) ${body})`
+    }
+
     case "Begin1": {
       const head = formatExp(exp.head)
       const body = formatBody(exp.body)

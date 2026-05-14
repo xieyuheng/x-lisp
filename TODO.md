@@ -1,48 +1,18 @@
 # local (define)
 
-[meta-lisp.js] 新增 `(letrec*)` 语法
+[meta-lisp.js] fix missing case of 007.3-ModuleImportPass.ts
 
 ---
 
-[plan] [meta-lisp.js] 新增 `(letrec*)` 语法
+[plan] 007.3-ModuleImportPass.ts 有 bug，它只处理了 `Let1`，
+也就是只处理了 DesugarPass 之后的情况。
 
-```scheme
-(letrec* ((x1 e1)
-          (x2 e2)
-          ...
-          (xn en))
-  body)
-```
+我在考虑 010-DesugarPass.ts 可否放在 007-ModulePass 之前。
+但是 010-DesugarPass.ts 在调用  M.simplifyMatch 时，依赖了 `mod`。
 
-编译成：
-
-```scheme
-(let ((x1 (@list))      ; 每个变量绑定到一个 @list，初始内容为占位符
-      (x2 (@list))
-      ...
-      (xn (@list)))
-  (list-push! e1 x1)             ; 顺序求值 e1，存入 x1 的 list
-  (list-push! e2 x2)               ; e2 中可以引用 x1（通过 (list-get 1 x1) 获取值）
-  ...
-  (list-push! en xn)             ; en 中可以引用 x1..x_{n-1}
-  (begin                       ; 进入 body，其中每个 xi 都是 box
-    body))                     ; body 中需显式使用 (unbox xi) 访问值
-```
-
-其中 e1 e2 en 和 body
-中的 x1 x2 xn
-都要替换为 (list-get 1 x1) (list-get 1 x2) (list-get 1 xn)
-
-对表达式的替换，使用 `expSubst`。
-
-你需要：
-
-- 新增 `LetrecStar` `Exp` -- 模仿 `LetStar`
-- 在 parseExp 中解析 `(letrec*)` 语法，模仿 `(let*)`
-- 在 `DesugarPass` 中，实现 `desugarLetrecStar`，完成上述 letrec* 到 let 的转换。
+你帮我看一下 M.simplifyMatch 是否可以不依赖 `mod`。
 
 ---
-
 
 [meta-lisp.js] support using `(define)` in function body -- use lambda lift
 

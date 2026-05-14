@@ -16,6 +16,7 @@ export type Exp =
   | Let1
   | Let
   | LetStar
+  | LetrecStar
   | Begin1
   | Begin
   | Assign
@@ -301,6 +302,26 @@ export function LetStar(
 ): LetStar {
   return {
     kind: "LetStar",
+    bindings,
+    body,
+    location,
+  }
+}
+
+export type LetrecStar = {
+  kind: "LetrecStar"
+  bindings: Array<Binding>
+  body: Exp
+  location?: SourceLocation
+}
+
+export function LetrecStar(
+  bindings: Array<Binding>,
+  body: Exp,
+  location?: SourceLocation,
+): LetrecStar {
+  return {
+    kind: "LetrecStar",
     bindings,
     body,
     location,

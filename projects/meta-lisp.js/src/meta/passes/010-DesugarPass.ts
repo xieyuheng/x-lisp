@@ -256,6 +256,13 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       )
     }
 
+    case "LetrecStar": {
+      return desugar(
+        state,
+        desugarLetrecStar(exp.bindings, exp.body, exp.location),
+      )
+    }
+
     case "Let": {
       return desugar(
         state,
@@ -303,6 +310,53 @@ function desugarLetStar(
     desugarLetStar(restBindings, body, location),
     location,
   )
+}
+
+function desugarLetrecStar(
+  bindings: Array<M.Binding>,
+  body: M.Exp,
+  location?: S.SourceLocation,
+): M.Exp {
+  const newRHSes = bindings.map((b) => b.rhs)
+  let newBody = body
+
+  for (const b of bindings) {
+    const loc = b.location ?? location
+    const carExp = M.Apply(
+      M.QualifiedVar("builtin", "car", loc),
+      [M.Var(b.name, loc)],
+      loc,
+    )
+    for (let i = 0; i < newRHSes.length; i++) {
+      newRHSes[i] = M.expSubst(newRHSes[i], b.name, carExp)
+    }
+    newBody = M.expSubst(newBody, b.name, carExp)
+  }
+
+  const letBindings = bindings.map((b) => {
+    const loc = b.location ?? location
+    return M.Binding(
+      b.name,
+      M.Apply(M.QualifiedVar("builtin", "make-list", loc), [], loc),
+      loc,
+    )
+  })
+
+  let result: M.Exp = newBody
+  for (let i = bindings.length - 1; i >= 0; i--) {
+    const loc = bindings[i].location ?? location
+    result = M.Begin1(
+      M.Apply(
+        M.QualifiedVar("builtin", "list-push!", loc),
+        [newRHSes[i], M.Var(bindings[i].name, loc)],
+        loc,
+      ),
+      result,
+      loc,
+    )
+  }
+
+  return M.Let(letBindings, result, location)
 }
 
 function generateFreshName(state: State, name: string): string {
