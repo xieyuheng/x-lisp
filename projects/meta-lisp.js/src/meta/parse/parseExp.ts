@@ -83,6 +83,29 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.Assign(S.asSymbol(name).content, parseExp(rhs), location)
   },
 
+  "(cons* 'define (cons* name parameters) body)": (
+    { name, parameters, body },
+    { sexp },
+  ) => {
+    const keyword = S.asList(sexp).elements[0]
+    return M.LocalDefine(
+      S.asSymbol(name).content,
+      S.asList(parameters).elements.map((x) => S.asSymbol(x).content),
+      parseBody(body),
+      keyword.location,
+    )
+  },
+
+  "(cons* 'define name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asList(sexp).elements[0]
+    return M.LocalDefine(
+      S.asSymbol(name).content,
+      [],
+      parseBody(body),
+      keyword.location,
+    )
+  },
+
   "(cons* 'begin body)": ({ body }, { location }) => {
     return parseBody(body)
   },

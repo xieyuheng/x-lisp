@@ -43,6 +43,10 @@ export function expSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       return substLetrec(exp, name, rhs)
     }
 
+    case "LocalDefine": {
+      return substLocalDefine(exp, name, rhs)
+    }
+
     case "LetrecStar": {
       return substLetrecStar(exp, name, rhs)
     }
@@ -376,6 +380,16 @@ function substLetrecStar(exp: M.LetrecStar, name: string, rhs: M.Exp): M.Exp {
   )
 
   return M.LetrecStar(newBindings, finalBody, exp.location)
+}
+
+function substLocalDefine(exp: M.LocalDefine, name: string, rhs: M.Exp): M.Exp {
+  if (exp.name === name) return exp
+  return M.LocalDefine(
+    exp.name,
+    exp.parameters,
+    expSubst(exp.body, name, rhs),
+    exp.location,
+  )
 }
 
 function substLetrec(exp: M.Letrec, name: string, rhs: M.Exp): M.Exp {

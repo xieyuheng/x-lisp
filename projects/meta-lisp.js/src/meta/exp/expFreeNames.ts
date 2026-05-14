@@ -67,6 +67,11 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       ])
     }
 
+    case "LocalDefine": {
+      const newBoundNames = setAdd(boundNames, exp.name)
+      return expFreeNames(newBoundNames, exp.body)
+    }
+
     case "LetrecStar": {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const newBoundNames = setUnion(boundNames, allNames)

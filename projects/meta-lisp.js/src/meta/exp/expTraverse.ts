@@ -89,6 +89,15 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
+    case "LocalDefine": {
+      return M.LocalDefine(
+        exp.name,
+        exp.parameters,
+        onExp(exp.body),
+        exp.location,
+      )
+    }
+
     case "LetrecStar": {
       return M.LetrecStar(
         exp.bindings.map((binding) =>

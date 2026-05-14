@@ -123,6 +123,15 @@ export function formatExp(exp: M.Exp): string {
       return `(letrec (${bindings}) ${body})`
     }
 
+    case "LocalDefine": {
+      if (exp.parameters.length > 0) {
+        const params = exp.parameters.join(" ")
+        return `(define (${exp.name} ${params}) ${formatBody(exp.body)})`
+      } else {
+        return `(define ${exp.name} ${formatBody(exp.body)})`
+      }
+    }
+
     case "LetrecStar": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)

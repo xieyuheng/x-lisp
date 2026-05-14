@@ -18,6 +18,7 @@ export type Exp =
   | LetStar
   | LetrecStar
   | Letrec
+  | LocalDefine
   | Begin1
   | Begin
   | Assign
@@ -344,6 +345,29 @@ export function Letrec(
   return {
     kind: "Letrec",
     bindings,
+    body,
+    location,
+  }
+}
+
+export type LocalDefine = {
+  kind: "LocalDefine"
+  name: string
+  parameters: Array<string>
+  body: Exp
+  location?: SourceLocation
+}
+
+export function LocalDefine(
+  name: string,
+  parameters: Array<string>,
+  body: Exp,
+  location?: SourceLocation,
+): LocalDefine {
+  return {
+    kind: "LocalDefine",
+    name,
+    parameters,
     body,
     location,
   }

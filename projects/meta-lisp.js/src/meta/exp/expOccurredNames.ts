@@ -60,6 +60,13 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
+    case "LocalDefine": {
+      return setUnionMany([
+        new Set([exp.name, ...exp.parameters]),
+        expOccurredNames(exp.body),
+      ])
+    }
+
     case "LetrecStar": {
       const allNames = exp.bindings.map((b) => b.name)
       return setUnionMany([

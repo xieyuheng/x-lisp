@@ -376,15 +376,47 @@ export function desugarBegin(
   }
 
   const [head, ...rest] = sequence
+
+  if (head.kind === "LocalDefine") {
+    const defines = collectAdjacentDefines(sequence)
+    const remaining = sequence.slice(defines.length)
+
+    const bindings = defines.map((d) =>
+      M.Binding(
+        d.name,
+        d.parameters.length > 0
+          ? M.Lambda(d.parameters, d.body, d.location)
+          : d.body,
+        d.location,
+      ),
+    )
+
+    return M.LetrecStar(
+      bindings,
+      remaining.length === 0
+        ? M.QualifiedVar("builtin", "void")
+        : desugarBegin(remaining, location),
+      location,
+    )
+  }
+
   if (rest.length === 0) {
     return head
   }
 
   if (head.kind === "Assign") {
-    return M.Let1(head.name, head.rhs, desugarBegin(rest), location)
+    return M.Let1(head.name, head.rhs, desugarBegin(rest, location), location)
   } else {
-    return M.Begin1(head, desugarBegin(rest), location)
+    return M.Begin1(head, desugarBegin(rest, location), location)
   }
+}
+
+function collectAdjacentDefines(sequence: Array<M.Exp>): Array<M.LocalDefine> {
+  let i = 0
+  while (i < sequence.length && sequence[i].kind === "LocalDefine") {
+    i++
+  }
+  return sequence.slice(0, i) as Array<M.LocalDefine>
 }
 
 function desugarPipe(
