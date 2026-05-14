@@ -1,10 +1,8 @@
----
-title: 模块系统
----
+# 模块系统
 
 meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块。
 
-# 模块声明
+## 模块声明
 
 每个 `.meta` 文件必须以 `(module name)` 开头：
 
@@ -20,7 +18,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
   (fmul 2.0 (fmul pi r)))
 ```
 
-# 导入
+## 导入
 
 | 语句 | 语法 | 语义 |
 |---|---|---|
@@ -48,7 +46,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 (make-set 1 2 3)
 ```
 
-# 限定名
+## 限定名
 
 无论是否导入，都可以用 `mod/name` 语法通过限定名访问：
 
@@ -60,7 +58,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 
 限定名始终可用，不需要先 `import`。
 
-# (private)
+## (private)
 
 使用 `(private name ...)` 将名字标记为私有，外部模块不可见：
 
@@ -87,7 +85,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 
 另一个模块只能访问 `increment` 和 `get-count`，不能访问 `counter-state` 和 `internal-reset`。
 
-# 内置函数
+## 内置函数
 
 内置函数通过 `builtin/` 前缀访问：
 
@@ -98,7 +96,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 
 内置函数的声明在 `meta-builtin.meta/src/` 项目中，按类型分组到不同目录。
 
-# (exempt) 声明
+## (exempt) 声明
 
 如果一个名字定义了但没有使用，编译器会报错。使用 `(exempt name ...)` 免除这个检查：
 
@@ -114,7 +112,7 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 (exempt helper)  ;; helper 只在模块内部使用，标记为 exempt
 ```
 
-# 整体结构
+## 整体结构
 
 ```
 project/
@@ -136,7 +134,7 @@ project/
   (L/process-all (list 1 2 3)))
 ```
 
-# 模块解析规则
+## 模块解析规则
 
 - 编译器在 `source-directory` 中搜索 `.meta` 文件
 - 模块名对应文件名（不含 `.meta` 后缀）

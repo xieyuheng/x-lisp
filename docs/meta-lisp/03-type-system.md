@@ -1,6 +1,4 @@
----
-title: 类型系统
----
+# 类型系统
 
 meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 
@@ -9,7 +7,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 - 没有子类型关系（structural 子类型、行多态均已移除）
 - 所有类型在编译时确定
 
-# 基础类型
+## 基础类型
 
 | 类型        | 含义                 | 字面量示例     |
 |-------------|----------------------|----------------|
@@ -33,7 +31,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 (define flag true)
 ```
 
-# 复合类型
+## 复合类型
 
 | 类型 | 含义 | 示例 |
 |---|---|---|
@@ -49,7 +47,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 (define scores (hash ("alice" 95) ("bob" 87)))
 ```
 
-# 函数类型
+## 函数类型
 
 函数类型使用 `(-> arg-type ... ret-type)` 语法：
 
@@ -70,7 +68,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 (define (add a b) (iadd a b))
 ```
 
-# 多态（Polymorphism）
+## 多态（Polymorphism）
 
 使用 `(polymorphic (A B ...) type)` 声明通用类型：
 
@@ -100,7 +98,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 
 类型参数在 `(polymorphic (A B ...) ...)` 中声明，在类型体中引用。
 
-# 多态数据类型
+### 多态数据类型
 
 自定义数据类型也可以带多态参数：
 
@@ -112,7 +110,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 
 类型参数 `E` 在类型名后的括号中声明，类似于 Haskell 的 `data MyList a = Nil | Li a (MyList a)`。
 
-# 类型标注
+## 类型标注
 
 可以用 `(the type exp)` 显式标注表达式的类型：
 
@@ -123,7 +121,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 
 这对于帮助类型推断或澄清代码意图很有用。
 
-# 类型检查规则
+## 类型检查规则
 
 1. 所有函数和变量必须先 `claim` 再 `define`
 2. 类型检查是**全局的**——整个项目的所有文件一起检查
@@ -142,9 +140,9 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 (square "hello")  ;; 类型错误：期望 int-t，得到 string-t
 ```
 
-# 设计差异
+## 设计差异
 
-# 对比 TypeScript
+### 对比 TypeScript
 
 | TypeScript | meta-lisp |
 |---|---|
@@ -155,7 +153,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 | `any` / `unknown` | ❌ 不支持 |
 | 结构类型（structural typing） | ✅ nominal（注：文档说行多态已移除） |
 
-# 对比 Haskell
+### 对比 Haskell
 
 | Haskell | meta-lisp |
 |---|---|

@@ -1,10 +1,8 @@
----
-title: 控制流
----
+# 控制流
 
-# 顺序执行
+## 顺序执行
 
-# (begin)
+### (begin)
 
 `(begin e1 e2 ... en)` 依次执行表达式，返回最后一个表达式的值。
 
@@ -15,7 +13,7 @@ title: 控制流
   42)  ;; => 42
 ```
 
-# 函数体中的 begin
+### 函数体中的 begin
 
 在函数体中，`begin` 可以省略。多个表达式直接写：
 
@@ -31,9 +29,9 @@ title: 控制流
     (imul y 2)))
 ```
 
-# 局部变量
+## 局部变量
 
-# (let)
+### (let)
 
 ```scheme
 (let ((x 1) (y 2))
@@ -48,7 +46,7 @@ title: 控制流
   (iadd x y))
 ```
 
-# (let*)
+### (let*)
 
 ```scheme
 (let* ((x 1)
@@ -56,7 +54,7 @@ title: 控制流
   (iadd x y))           ;; => 3
 ```
 
-# 单绑定 let
+### 单绑定 let
 
 `(let (name rhs) body)` 是 `(let ((name rhs)) body)` 的简写。
 
@@ -65,7 +63,7 @@ title: 控制流
   (iadd x 1))  ;; => 2
 ```
 
-# (let) 与 (=) 的关系
+### (let) 与 (=) 的关系
 
 ```scheme
 (let ((x 1)) body)
@@ -82,7 +80,7 @@ title: 控制流
   (iadd y z))
 ```
 
-# 赋值 =
+### 赋值 =
 
 `(= name exp)` 修改已有变量的值。变量必须先通过 `let`、`let*` 或函数参数绑定。
 
@@ -95,9 +93,9 @@ title: 控制流
 
 `=` 不是可变变量意义上的赋值——变量本身仍然是不可变的。`=` 只是 `let` 的语法等价物。
 
-# 条件
+## 条件
 
-# (if)
+### (if)
 
 `if` 必须有 else 分支：
 
@@ -115,7 +113,7 @@ title: 控制流
   (if (int-less? x 0) (ineg x) x))
 ```
 
-# (when) / (unless)
+### (when) / (unless)
 
 `when` 在条件为真时执行，没有 else 分支：
 
@@ -132,7 +130,7 @@ title: 控制流
   (display (idiv 1 x)))
 ```
 
-# (cond)
+### (cond)
 
 `cond` 是多分支条件。最后一个条件可以是 `else`：
 
@@ -144,7 +142,7 @@ title: 控制流
    (else "zero")))
 ```
 
-# (and) / (or)
+### (and) / (or)
 
 短路求值：
 
@@ -153,9 +151,9 @@ title: 控制流
 (or (equal? x 0) (equal? x 1))     ;; 一真便真
 ```
 
-# 函数组合
+## 函数组合
 
-# (pipe)
+### (pipe)
 
 `(pipe init f1 f2 ... fn)` 将 `init` 传入 `f1`，结果传入 `f2`，以此类推。
 
@@ -163,7 +161,7 @@ title: 控制流
 (pipe 5 add1 double)  ;; 等价于 (double (add1 5)) => 12
 ```
 
-# (chain)
+### (chain)
 
 `(chain f1 f2 ... fn)` 返回一个函数，等价于从左到右组合。
 
@@ -171,7 +169,7 @@ title: 控制流
 ((chain add1 double) 5)  ;; 等价于 (double (add1 5)) => 12
 ```
 
-# (compose)
+### (compose)
 
 `(compose f1 f2 ... fn)` 返回一个函数，等价于从右到左组合。
 
@@ -179,7 +177,7 @@ title: 控制流
 ((compose add1 double) 5)  ;; 等价于 (add1 (double 5)) => 11
 ```
 
-# 区别总结
+### 区别总结
 
 | 形式 | 方向 | 接收 | 返回 |
 |---|---|---|---|
@@ -187,11 +185,11 @@ title: 控制流
 | `(chain f1 f2)` | 左→右 | 初始值 | 函数 |
 | `(compose f1 f2)` | 右→左 | 初始值 | 函数 |
 
-# 循环：用尾递归代替
+## 循环：用尾递归代替
 
 meta-lisp 没有 `for`、`while`、`loop` 等循环控制结构。所有"循环"都用**尾递归函数**实现。
 
-# 累加器模式
+### 累加器模式
 
 ```scheme
 (claim factorial (-> int-t int-t))
@@ -203,7 +201,7 @@ meta-lisp 没有 `for`、`while`、`loop` 等循环控制结构。所有"循环"
   (iter n 1))
 ```
 
-# 遍历列表
+### 遍历列表
 
 ```scheme
 (claim sum-list (-> (list-t int-t) int-t))
@@ -215,7 +213,7 @@ meta-lisp 没有 `for`、`while`、`loop` 等循环控制结构。所有"循环"
   (iter xs 0))
 ```
 
-# GCD（尾递归）
+### GCD（尾递归）
 
 ```scheme
 (claim gcd (-> int-t int-t int-t))

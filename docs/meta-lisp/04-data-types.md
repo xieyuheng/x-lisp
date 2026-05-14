@@ -1,6 +1,4 @@
----
-title: 数据类型
----
+# 数据类型
 
 meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
@@ -13,7 +11,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
 所有便捷语法最终都**展开为** `define-algebraic-type`。
 
-# (define-struct)
+## (define-struct)
 
 用于只有一个构造器的数据类型。
 
@@ -34,7 +32,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
 `define-struct` 自动生成构造器名 `make-<base>`，其中 `<base>` 是类型名去掉 `-t` 后缀。
 
-# 展开
+### 展开
 
 ```scheme
 (define-struct point-t
@@ -49,11 +47,11 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
    (y point-y point-put-y!)))
 ```
 
-# 约束
+### 约束
 
 类型名必须以 `-t` 结尾，否则报错并提示使用 `define-algebraic-type`。
 
-# (define-struct*)
+## (define-struct*)
 
 用于只有一个构造器，但想自定义构造器名。
 
@@ -64,7 +62,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 (cons-point 1 2)
 ```
 
-# (define-enum)
+## (define-enum)
 
 用于多个构造器的代数数据类型（枚举/联合）。
 
@@ -87,7 +85,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 | 访问器 | `<constructor-name>-<field>` | `var-exp-name` |
 | 修改器 | `<constructor-name>-put-<field>!` | `var-exp-put-name!` |
 
-# 展开
+### 展开
 
 ```scheme
 (define-enum exp-t
@@ -105,7 +103,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
    (arg apply-exp-arg apply-exp-put-arg!)))
 ```
 
-# (define-algebraic-type)
+## (define-algebraic-type)
 
 用于需要对命名有完全控制时。
 
@@ -137,7 +135,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
 每个构造器必须包含谓词和完整的访问器/修改器列表。
 
-# 多态类型参数
+## 多态类型参数
 
 所有四种语法都支持多态类型参数。
 
@@ -159,7 +157,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 
 类型参数在类型名后的括号中声明。构造器在命名时以构造器的名字为前缀（而不是类型名）。
 
-# 模式匹配 (match)
+## 模式匹配 (match)
 
 使用 `match` 来解构代数数据类型：
 
@@ -175,7 +173,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
      (set-delete (free-variables body) parameter))))
 ```
 
-# (match) 语法
+### (match) 语法
 
 ```scheme
 (match target
@@ -188,7 +186,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
 - `field-pattern` 是变量名，会被绑定到对应字段的值
 - 第一个匹配的分支执行其 body
 
-# 多态列表上的 match
+### 多态列表上的 match
 
 ```scheme
 (define (my-list-length list)
@@ -197,7 +195,7 @@ meta-lisp 提供了从便捷到 explicit 的三层语法来定义数据类型：
     ((li head tail) (iadd 1 (my-list-length tail)))))
 ```
 
-# 函数与结构体
+## 函数与结构体
 
 在 meta-lisp 中，结构体没有独立的方法。对结构体进行操作的函数是普通的顶层函数：
 
