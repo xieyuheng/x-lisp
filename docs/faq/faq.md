@@ -57,14 +57,14 @@ title: 常见问题（FAQ）
 
 # 和 TypeScript 有什么区别？
 
-| TypeScript | meta-lisp |
-|---|---|
-| union 类型 `string \| number` | ❌ 不支持 |
-| intersection 类型 | ❌ 不支持 |
-| 子类型（interface extends） | ❌ 不支持 |
-| 泛型 `<T>` | ✅ `(polymorphic (A) ...)` |
-| `any` / `unknown` | ❌ 不支持 |
-| 结构类型（structural typing） | ❌ 仅有 nominal 类型 |
+| TypeScript                    | meta-lisp                  |
+|-------------------------------|----------------------------|
+| union 类型 `string \| number` | ❌ 不支持                  |
+| intersection 类型             | ❌ 不支持                  |
+| 子类型（interface extends）   | ❌ 不支持                  |
+| 泛型 `<T>`                    | ✅ `(polymorphic (A) ...)` |
+| `any` / `unknown`             | ❌ 不支持                  |
+| 结构类型（structural typing） | ❌ 仅有 nominal 类型       |
 
 # 和 Scheme 有什么区别？
 
@@ -76,16 +76,16 @@ title: 常见问题（FAQ）
 
 # 和 Haskell 有什么区别？
 
-| Haskell | meta-lisp |
-|---|---|
-| `Int -> Int` | `(-> int-t int-t)` |
-| `forall a. a -> a` | `(polymorphic (A) (-> A A))` |
-| 类型类（Typeclass） | ❌ 不支持 |
+| Haskell                            | meta-lisp                                              |
+|------------------------------------|--------------------------------------------------------|
+| `Int -> Int`                       | `(-> int-t int-t)`                                     |
+| `forall a. a -> a`                 | `(polymorphic (A) (-> A A))`                           |
+| 类型类（Typeclass）                | ❌ 不支持                                              |
 | `data Maybe a = Nothing \| Just a` | `(define-enum (maybe-t A) (nothing) (just (value A)))` |
-| 代数数据类型 | ✅ `define-enum` |
-| 模式匹配 | ✅ `match` |
-| 惰性求值 | ❌ 严格求值（call-by-value）|
-| 纯函数式（无副作用） | ❌ 允许副作用（I/O、打印等）|
+| 代数数据类型                       | ✅ `define-enum`                                       |
+| 模式匹配                           | ✅ `match`                                             |
+| 惰性求值                           | ❌ 严格求值（call-by-value）                           |
+| 纯函数式（无副作用）               | ❌ 允许副作用（I/O、打印等）                           |
 
 # 类型系统有什么特点？
 
@@ -137,4 +137,3 @@ Type mismatch: expected int-t, got string-t    ← 参数类型不对
 Expected function type, got int-t               ← 把非函数当函数作用了
 Unbound variable: foo                           ← 变量未定义或未导入
 ```
-
