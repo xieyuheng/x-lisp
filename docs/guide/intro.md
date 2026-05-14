@@ -8,7 +8,7 @@ meta-lisp 是静态类型的 lisp 方言，
 # 代码示例
 
 ```scheme
-(module examples)
+(module example)
 
 (claim factorial (-> int-t int-t))
 
@@ -40,4 +40,3 @@ meta-lisp 是静态类型的 lisp 方言，
 - 在带有多个表达式的函数体中，可以用 `(= <name> <exp>)` 来代替嵌套的 `(let)`。
 - 给 `(define-record-type)` 增加了对字段的类型声明。
 - 增加了 `(define-algebraic-type)` 语法。
-

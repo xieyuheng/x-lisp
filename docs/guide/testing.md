@@ -50,7 +50,7 @@ test pass
 # 完整示例
 
 ```scheme
-(module examples)
+(module example)
 
 (claim factorial (-> int-t int-t))
 

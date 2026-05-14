@@ -16,7 +16,7 @@ title: AI Agent Instructions
 - helpers.c -- 通用的 c modules，用 scalable-c 风格写成。
 - stack-lisp.c -- stack VM 解释器。
 - meta-builtin.meta -- meta-lisp 中 builtin 函数的声明，与简单 builtin 函数的实现。
-- meta-examples.meta -- 测试用的 meta-lisp 项目。
+- meta-example.meta -- 测试用的 meta-lisp 项目。
 - meta-lisp.meta -- meta-lisp 的 self-hosting 编译器（WIP）。
 
 # meta-lisp 语言简介
@@ -177,7 +177,7 @@ meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
 - `meta-lisp.js` -- bootstrap 编译器（TypeScript 实现）
 - `meta-lisp.meta` -- self-hosting 编译器（meta-lisp 实现，WIP）
 - `meta-builtin.meta` -- builtin 函数声明与简单实现
-- `meta-examples.meta` -- 测试用的 meta-lisp 项目
+- `meta-example.meta` -- 测试用的 meta-lisp 项目
 
 ## 内置函数声明
 

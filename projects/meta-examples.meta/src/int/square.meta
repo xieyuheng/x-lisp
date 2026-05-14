@@ -1,9 +1,0 @@
-(module examples)
-
-(claim square (-> int-t int-t))
-
-(define (square x)
-  (imul x x))
-
-(define-test square-test
-  (assert-equal 81 (square (square 3))))
