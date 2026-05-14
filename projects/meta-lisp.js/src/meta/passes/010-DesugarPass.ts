@@ -1,23 +1,11 @@
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
-export function DesugarPass(
-  project: M.Project,
-  options: { dump: boolean },
-): void {
-  for (const mod of project.mods.values()) {
-    for (const definition of mod.definitions.values()) {
-      desugarDefinition(definition)
-    }
-
-    for (const entry of mod.claimed.values()) {
-      desugarClaimedEntry(entry)
-    }
+export function DesugarPass(project: M.Project): void {
+  for (const fragment of project.fragments.values()) {
+    fragment.stmts = fragment.stmts.map(desugarStmt)
   }
-
-  if (options.dump) projectDumpMods(project, "010-desugar")
 }
 
 type State = {
@@ -30,45 +18,65 @@ export function createDesugarState(): State {
   }
 }
 
-function desugarClaimedEntry(entry: M.ClaimedEntry): void {
-  const state = createDesugarState()
-  entry.exp = M.desugar(state, entry.exp)
-}
-
-function desugarDefinition(definition: M.Definition): null {
-  switch (definition.kind) {
-    case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration":
-    case "PrimitiveFunctionDefinition":
-    case "PrimitiveVariableDefinition": {
-      return null
+function desugarStmt(stmt: M.Stmt): M.Stmt {
+  switch (stmt.kind) {
+    case "DefineFunction": {
+      return {
+        ...stmt,
+        body: desugar(createDesugarState(), stmt.body),
+      }
     }
 
-    case "FunctionDefinition":
-    case "VariableDefinition":
-    case "TestDefinition":
-    case "TypeDefinition": {
-      const state = createDesugarState()
-      definition.body = desugar(state, definition.body)
-      return null
+    case "DefineVariable": {
+      return {
+        ...stmt,
+        body: desugar(createDesugarState(), stmt.body),
+      }
     }
 
-    case "AlgebraicTypeDefinition": {
-      definition.dataConstructors = definition.dataConstructors.map(
-        ({ name, fields }) => {
-          const state = createDesugarState()
-          return {
-            definition,
-            name,
-            fields: fields.map(({ name, type }) => ({
-              name,
-              type: desugar(state, type),
-            })),
-          }
-        },
-      )
+    case "DefineTest": {
+      return {
+        ...stmt,
+        body: desugar(createDesugarState(), stmt.body),
+      }
+    }
 
-      return null
+    case "DefineType": {
+      return {
+        ...stmt,
+        body: desugar(createDesugarState(), stmt.body),
+      }
+    }
+
+    case "Claim": {
+      return {
+        ...stmt,
+        type: desugar(createDesugarState(), stmt.type),
+      }
+    }
+
+    case "Admit": {
+      return {
+        ...stmt,
+        type: desugar(createDesugarState(), stmt.type),
+      }
+    }
+
+    case "DefineAlgebraicType": {
+      return {
+        ...stmt,
+        dataConstructors: stmt.dataConstructors.map((ctor) => ({
+          ...ctor,
+          fields: ctor.fields.map((field) => ({
+            ...field,
+            type: desugar(createDesugarState(), field.type),
+          })),
+        })),
+      }
+    }
+
+    default: {
+      return stmt
     }
   }
 }

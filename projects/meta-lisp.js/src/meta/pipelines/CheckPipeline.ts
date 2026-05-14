@@ -8,10 +8,10 @@ export function CheckPipeline(
   },
 ): void {
   M.ExpandPass(project)
+  M.DesugarPass(project)
   M.ModulePass(project)
   M.ExecutePass(project)
   M.ClaimPass(project)
-  M.DesugarPass(project, { dump: options.dump })
   M.LowerMatchPass(project, { dump: options.dump })
   M.QualifyPass(project, { dump: options.dump })
   M.CheckPass(project, { verbose: options.verbose, dump: options.dump })

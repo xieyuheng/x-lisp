@@ -18,10 +18,10 @@ export function BuildPipeline(
   },
 ): void {
   M.ExpandPass(project)
+  M.DesugarPass(project)
   M.ModulePass(project)
   M.ExecutePass(project)
   M.ClaimPass(project)
-  M.DesugarPass(project, { dump: options.dump })
   M.LowerMatchPass(project, { dump: options.dump })
   M.QualifyPass(project, { dump: options.dump })
   M.LocatePass(project, { dump: options.dump })
