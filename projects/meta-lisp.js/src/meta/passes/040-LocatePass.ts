@@ -64,17 +64,6 @@ function locateDefinition(definition: M.Definition): null {
 
 function locateSpecialApply(exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "Quote":
-    case "QualifiedVar":
-    case "Var": {
-      return exp
-    }
-
     case "Apply": {
       if (isSpecialTarget(exp.target)) {
         if (!exp.location) {

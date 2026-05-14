@@ -47,22 +47,6 @@ function generateFreshName(state: State): string {
 
 function onExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "QualifiedVar": {
-      return exp
-    }
-
-    case "Var": {
-      return exp
-    }
-
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float": {
-      return exp
-    }
-
     case "Apply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(

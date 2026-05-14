@@ -41,15 +41,6 @@ function onExp(
   exp: M.Exp,
 ): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "QualifiedVar": {
-      return exp
-    }
-
     case "Var": {
       const foundName = nameTable[exp.name]
       return foundName ? M.Var(foundName, exp.location) : exp

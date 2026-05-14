@@ -14,6 +14,10 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return exp
     }
 
+    case "Quote": {
+      return exp
+    }
+
     case "Lambda": {
       return M.Lambda(exp.parameters, onExp(exp.body), exp.location)
     }
@@ -135,10 +139,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
         onExp(exp.alternative),
         exp.location,
       )
-    }
-
-    case "Quote": {
-      return onExp(exp)
     }
 
     case "LiteralList": {

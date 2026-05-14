@@ -73,18 +73,6 @@ function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
 
 function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float": {
-      return exp
-    }
-
-    case "Quote": {
-      return exp
-    }
-
     case "Var": {
       const entry = scope.importedNames.get(exp.name)
       if (entry) {

@@ -54,16 +54,6 @@ function onDefinition(
 
 function onExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "QualifiedVar":
-    case "Var": {
-      return exp
-    }
-
     case "Lambda": {
       const freeNames = Array.from(M.expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1

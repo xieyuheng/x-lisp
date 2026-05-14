@@ -84,22 +84,6 @@ export function qualifyFreeVar(
   exp: M.Exp,
 ): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float": {
-      return exp
-    }
-
-    case "Quote": {
-      return exp
-    }
-
-    case "QualifiedVar": {
-      return exp
-    }
-
     case "Var": {
       if (boundNames.has(exp.name)) {
         return exp
