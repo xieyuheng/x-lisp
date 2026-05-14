@@ -1,6 +1,7 @@
 # local (define)
 
-[meta-lisp.js] [refactor] DesugarPass 的 desugar 函数，可否在某些平凡的 case 利用 expTraverse？
+
+[meta-lisp.js] [refactor] DesugarPass 的顺序调整到 007-ModulePass 之前
 
 ---
 

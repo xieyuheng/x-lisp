@@ -75,16 +75,6 @@ function desugarDefinition(definition: M.Definition): null {
 
 export function desugar(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "Var":
-    case "QualifiedVar": {
-      return exp
-    }
-
     case "Begin": {
       return desugar(state, desugarBegin(exp.sequence, exp.location))
     }
@@ -95,15 +85,6 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       if (exp.location)
         throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)
-    }
-
-    case "If": {
-      return M.If(
-        desugar(state, exp.condition),
-        desugar(state, exp.consequent),
-        desugar(state, exp.alternative),
-        exp.location,
-      )
     }
 
     case "When": {
@@ -160,14 +141,6 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return desugar(state, desugarQuote(exp.sexp, exp.location))
     }
 
-    case "Apply": {
-      return M.Apply(
-        desugar(state, exp.target),
-        exp.args.map((e) => desugar(state, e)),
-        exp.location,
-      )
-    }
-
     case "Pipe": {
       return desugar(state, desugarPipe(exp.target, exp.steps, exp.location))
     }
@@ -180,26 +153,9 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return desugar(state, desugarCompose(exp.steps, exp.location))
     }
 
-    case "Arrow": {
-      return M.Arrow(
-        exp.argTypes.map((e) => desugar(state, e)),
-        desugar(state, exp.retType),
-        exp.location,
-      )
-    }
-
     case "Begin1": {
       return M.Begin1(
         desugar(state, exp.head),
-        desugar(state, exp.body),
-        exp.location,
-      )
-    }
-
-    case "Let1": {
-      return M.Let1(
-        exp.name,
-        desugar(state, exp.rhs),
         desugar(state, exp.body),
         exp.location,
       )
@@ -226,14 +182,6 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       )
     }
 
-    case "The": {
-      return M.The(
-        desugar(state, exp.type),
-        desugar(state, exp.exp),
-        exp.location,
-      )
-    }
-
     case "Lambda": {
       return M.Lambda(exp.parameters, desugar(state, exp.body), exp.location)
     }
@@ -246,18 +194,8 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       )
     }
 
-    case "Match": {
-      return M.Match(
-        exp.targets.map((t) => desugar(state, t)),
-        exp.clauses.map((clause) =>
-          M.MatchClause(
-            clause.patterns.map((p) => desugar(state, p)),
-            desugar(state, clause.body),
-            clause.location,
-          ),
-        ),
-        exp.location,
-      )
+    default: {
+      return M.expTraverse((child) => desugar(state, child), exp)
     }
   }
 }
