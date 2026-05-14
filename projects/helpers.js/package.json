@@ -1,7 +1,7 @@
 {
   "name": "@xieyuheng/helpers.js",
   "version": "0.2.4",
-  "repository": "github:xieyuheng/x-lisp",
+  "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "exports": {
