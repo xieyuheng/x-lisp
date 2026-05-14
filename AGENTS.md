@@ -19,180 +19,22 @@ title: AI Agent Instructions
 - meta-example.meta -- 测试用的 meta-lisp 项目。
 - meta-lisp.meta -- meta-lisp 的 self-hosting 编译器（WIP）。
 
-# meta-lisp 语言简介
+# 语言参考
 
-meta-lisp 是一个静态类型的 lisp 方言，语法设计模仿 scheme。
+meta-lisp 的语法、类型系统、内置函数等详见文档：
 
-## 语法特性
-
-- S-expression 语法：`(function arg1 arg2 ...)`
-- 类型声明使用 `claim`：`(claim function-name (-> arg-type ... ret-type))`
-- 函数定义使用 `define`：`(define (function-name arg ...) body)`
-- 匿名函数：`(lambda (arg ...) body)`
-
-## 类型系统
-
-类型：
-
-- 基础类型：`int-t`, `float-t`, `string-t`, `symbol-t`, `keyword-t`, `bool-t`, `void-t`
-- 复合类型：`(list-t E)`, `(set-t E)`, `(hash-t K V)`
-- 函数类型：`(-> arg-type ... ret-type)`
-- 多态类型：`(polymorphic (A B ...) type)`
-
-注意 meta-lisp 类型系统与 TypeScript 的差异：
-
-- meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
-- 没有 TypeScript 的 union 和 intersection type。
-- 没有子类型关系（structural 子类型、行多态均已移除）。
-
-## 控制流
-
-关于局部变量：
-
-- 在 meta-lisp 中：
-
-  ```scheme
-  (let ((x ...))
-    ...)
-  ```
-
-  等价于
-
-  ```scheme
-  (begin
-   (= x ...)
-   ...)
-  ```
-
-  而在函数体中，可以省略 `(begin)`。
-  因此，你可以用 `(=)` 语法来代替嵌套的 `(let)` 来节省缩进。
-
-关于循环：
-
-- meta-lisp 中没有「循环」相关控制流，需要用尾部递归函数实现「循环」。
-
-## 结构体（struct）
-
-```scheme
-(define-struct point-t
-  (x int-t)
-  (y int-t))
-
-;; 自动生成的名称：
-;;   构造器：make-point
-;;   谓词：point?
-;;   访问器：point-x, point-y
-;;   修改器：point-put-x!, point-put-y!
-
-(define p (make-point 1 2))
-(point-x p)  ;; => 1
-```
-
-`(define-struct)` 会展开为 `(define-algebraic-type)`：
-
-```scheme
-(define-struct point-t
-  (x int-t)
-  (y int-t))
-
-;; 等价于：
-(define-algebraic-type point-t
-  ((make-point (x int-t) (y int-t))
-   point?
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
-```
-
-如果类型名不以 `-t` 结尾，编译会报错，提示你使用 explicit 的 `(define-algebraic-type)` 语法。
-
-如果需要自定义构造器名，用 `(define-struct*)`：
-
-```scheme
-(define-struct* point-t (cons-point (x int-t) (y int-t)))
-```
-
-## 代数数据类型与模式匹配
-
-```scheme
-(define-enum exp-t
-  (var-exp (name symbol-t))
-  (lambda-exp (parameter symbol-t) (body exp-t)))
-
-(match exp
-  ((var-exp name) ...)
-  ((lambda-exp parameter body) ...))
-```
-
-`(define-enum)` 会展开为 `(define-algebraic-type)`，每个构造器的名字会用来生成谓词、访问器和修改器的名字。
-
-比如 my-list：
-
-```scheme
-(define-enum (my-list? E)
-  (nil)
-  (li (head E) (tail (my-list? E))))
-```
-
-会生成的 name 有：
-
-```scheme
-;; data constructor
-(claim nil (polymorphic (E) (-> (list-t E))))
-(claim li (polymorphic (E) (-> E (list-t E) (list-t E))))
-;; data constructor predicate
-(claim nil? (polymorphic (E) (-> (list-t E) bool-t)))
-(claim li? (polymorphic (E) (-> (list-t E) bool-t)))
-;; data accessor
-(claim li-head (polymorphic (E) (-> (list-t E) E)))
-(claim li-tail (polymorphic (E) (-> (list-t E) (list-t E))))
-;; data modifier
-(claim li-put-head (polymorphic (E) (-> E (list-t E) (list-t E))))
-(claim li-put-tail (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
-(claim li-put-head! (polymorphic (E) (-> E (list-t E) (list-t E))))
-(claim li-put-tail! (polymorphic (E) (-> (list-t E) (list-t E) (list-t E))))
-```
-
-`(define-algebraic-type)` 是最 explicit 的语法，所有名字都需要显式给出：
-
-```scheme
-(define-algebraic-type exp-t
-  ((var-exp (name symbol-t)) var-exp?
-   (name var-exp-name var-exp-put-name!))
-  ((lambda-exp (parameter symbol-t) (body exp-t)) lambda-exp?
-   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
-   (body lambda-exp-body lambda-exp-put-body!)))
-```
-
-## 模块系统
-
-- `(module name)` 声明模块
-- `(import-as mod-name alias)` 更换模具名字前缀
-- `(import mod-name name ...)` 从模块导入名字
-- `(import-all mod-name)` 导入模块中的所有名字
-- 限定变量：`mod-name/name`
-- 内置函数为 `builtin/` 前缀：`(builtin/string-length "abc")`
-
-## 项目组件
-
-- `meta-lisp.js` -- bootstrap 编译器（TypeScript 实现）
-- `meta-lisp.meta` -- self-hosting 编译器（meta-lisp 实现，WIP）
-- `meta-builtin.meta` -- builtin 函数声明与简单实现
-- `meta-example.meta` -- 测试用的 meta-lisp 项目
-
-## 内置函数声明
-
-你可以且只可以用 meta-builtin.meta 中所声明过的 builtin 函数。
-
-在 `meta-builtin.meta/src/` 中，每个类型有独立目录：
-- `int/`, `float/`, `string/`, `list/`, `hash/`, `set/`, `record/` 等
-- 使用 `(declare-primitive-function name arity)` 声明
-- 使用 `(claim name type)` 指定类型
+- [语法参考](docs/zh/reference/syntax.md) ([en](docs/en/reference/syntax.md))
+- [内置函数索引](docs/zh/reference/builtin/index.md) ([en](docs/en/reference/builtin/index.md))
+- [FAQ](docs/zh/faq/faq.md) ([en](docs/en/faq/faq.md))
 
 # 文档
 
-- docs/design -- 我计划设计的新 lisp 语言。
-- docs/diary -- 这个项目的编程日志，记录设计决策。
+- docs/zh/ -- 中文文档（guide, reference, faq）
+- docs/en/ -- 英文文档
+- docs/design/ -- 我计划设计的新 lisp 语言。
+- docs/diary/ -- 这个项目的编程日志，记录设计决策。
   在解决问题的过程中，你可以经常参考这个日志中的笔记。
+- docs/tutorial/ -- 教程。
 
 # 开发
 
