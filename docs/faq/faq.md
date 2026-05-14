@@ -7,12 +7,13 @@ title: 常见问题（FAQ）
 没有。用**尾递归函数**代替：
 
 ```scheme
-(define (sum-list xs)
-  (define (iter xs acc)
-    (match xs
-      ((nil) acc)
-      ((li head tail) (iter tail (iadd acc head)))))
-  (iter xs 0))
+(define (list-sum xs)
+  (list-sum-loop xs 0))
+
+(define (list-sum-loop remaining result)
+  (match remaining
+    ((nil) result)
+    ((li head tail) (list-sum-loop tail (iadd result head)))))
 ```
 
 编译器会正确处理尾部调用，不消耗栈空间。

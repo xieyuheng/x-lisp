@@ -1,10 +1,12 @@
 # docs
 
-[docs] [reference] faq -- faq.md 中「有 for/while 循环吗？」的例子错了，因为 meta-lisp 目前不能再 body 内使用 (define)
+[docs] [guide] 把 intro.md 翻译成英文，补充进入 README.md
+
+- 保留中文版本的 intro.md
 
 # local (define)
 
-[meta-lisp.js] support using `define` in function body -- use lambda lift
+[meta-lisp.js] support using `(define)` in function body -- use lambda lift
 
 - support recursive and mutual recursive function
 
