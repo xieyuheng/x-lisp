@@ -62,7 +62,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 空值用 `void`，它也不是字面量，而是绑定了空值的变量。
 
-### 复合
+### 容器
 
 `(@list)` 创建列表。
 
@@ -712,7 +712,7 @@ builtin/list-empty?
 (claim point-put-y! (-> float-t point-t point-t))
 ```
 
-使用：
+使用举例：
 
 ```scheme
 (define p (make-point 1.0 2.0))
@@ -848,11 +848,9 @@ builtin/list-empty?
 
 对于某个给定的 `<constructor-name>` 生成其名字的规则如下：
 
-```scheme
-<predicate-name> = <constructor-name>? -- var-exp?
-<accessor-name> = <constructor-name>-<field-name> -- var-exp-name
-<modifier-name> = <constructor-name>-put-<field-name>! -- var-exp-put-name!
-```
+- `<predicate-name>` = `<constructor-name>?` -- `var-exp?`
+- `<accessor-name>` = `<constructor-name>-<field-name>` -- `var-exp-name`
+- `<modifier-name>` = `<constructor-name>-put-<field-name>!` -- `var-exp-put-name!`
 
 ### (define-struct)
 
@@ -890,6 +888,13 @@ builtin/list-empty?
    (x point-x point-put-x!)
    (y point-y point-put-y!)))
 ```
+
+对于某个给定的 `<type-name>` 生成其名字的规则如下：
+
+- `<type-name>` = `<base-name>-t` -- `point-t`
+- `<predicate-name>` = `<base-name>?` -- `point?`
+- `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
+- `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
 
 ### (define-struct*)
 
@@ -984,6 +989,30 @@ builtin/list-empty?
 只要给出相同的 `(module <module-name>)` 模块声明即可。
 
 在同一个项目中，可以通过 `<module-name>/<name>` 引用别的模块中的名字。
+
+同一个模块中的函数，就算写在不同的文件中，也可以相互递归。
+
+`even.meta`:
+
+```scheme
+(module example)
+
+(define (even? n)
+  (if (equal? n 0)
+    true
+    (odd? (isub n 1))))
+```
+
+`odd.meta`:
+
+```scheme
+(module example)
+
+(define (odd? n)
+  (if (equal? n 0)
+    false
+    (even? (isub n 1))))
+```
 
 ### (import)
 
