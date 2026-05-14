@@ -180,10 +180,7 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "Letrec": {
-      return desugar(
-        state,
-        desugarLetrec(exp.bindings, exp.body, exp.location),
-      )
+      return desugar(state, desugarLetrec(exp.bindings, exp.body, exp.location))
     }
 
     case "LetrecStar": {
@@ -243,10 +240,7 @@ function desugarLetrec(
   body: M.Exp,
   location?: S.SourceLocation,
 ): M.Exp {
-  const usedNames = M.expFreeNames(
-    new Set(bindings.map((b) => b.name)),
-    body,
-  )
+  const usedNames = M.expFreeNames(new Set(bindings.map((b) => b.name)), body)
   for (const binding of bindings) {
     const rhsFreeNames = M.expFreeNames(
       new Set(bindings.map((b) => b.name)),
@@ -281,11 +275,7 @@ function desugarLetrec(
     )
   }
 
-  return M.LetrecStar(
-    [...thunkBindings, ...callBindings],
-    body,
-    location,
-  )
+  return M.LetrecStar([...thunkBindings, ...callBindings], body, location)
 }
 
 function desugarLetrecStar(
