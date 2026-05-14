@@ -1,8 +1,6 @@
 # local (define)
 
-[meta-lisp.js] [refactor] lowerMatchDefinition 合并一些 case
-
-[meta-lisp.js] [refactor] DesugarPass 的 State 中，不需要依赖 mod 了。
+[meta-lisp.js] [refactor] DesugarPass 的 desugar 函数，可否在某些平凡的 case 利用 expTraverse？
 ---
 
 [plan] 007.3-ModuleImportPass.ts 有 bug，它只处理了 `Let1`，

@@ -21,19 +21,17 @@ export function DesugarPass(
 }
 
 type State = {
-  mod: M.Mod
   nameCounts: Map<string, number>
 }
 
-export function createDesugarState(mod: M.Mod): State {
+export function createDesugarState(): State {
   return {
-    mod,
     nameCounts: new Map(),
   }
 }
 
 function desugarClaimedEntry(mod: M.Mod, entry: M.ClaimedEntry): void {
-  const state = M.createDesugarState(mod)
+  const state = createDesugarState()
   entry.exp = M.desugar(state, entry.exp)
 }
 
@@ -50,7 +48,7 @@ function desugarDefinition(mod: M.Mod, definition: M.Definition): null {
     case "VariableDefinition":
     case "TestDefinition":
     case "TypeDefinition": {
-      const state = createDesugarState(definition.mod)
+      const state = createDesugarState()
       definition.body = desugar(state, definition.body)
       return null
     }
@@ -58,7 +56,7 @@ function desugarDefinition(mod: M.Mod, definition: M.Definition): null {
     case "AlgebraicTypeDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields }) => {
-          const state = createDesugarState(definition.mod)
+          const state = createDesugarState()
           return {
             definition,
             name,

@@ -53,7 +53,7 @@ function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {
 function lowerMatch(mod: M.Mod, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Match": {
-      const state = createDesugarState(mod)
+      const state = createDesugarState()
 
       const defaultExp = M.Apply(
         M.QualifiedVar("builtin", "error", exp.location),
