@@ -1,10 +1,8 @@
 # docs
 
-[docs] [reference] 编写 builtin/index.md，分类介绍所有 builtin 函数，并带有链接可以跳转到所有 builtin 函数。
+[docs] [reference] builtin/ -- 删除对 assert-with-location 等等 with-location 系列函数的介绍。
 
-要求：
-
-- 逐个函数地，精心编写。禁止用脚本批量生成。
+- 这些是内部 API。
 
 # local (define)
 
