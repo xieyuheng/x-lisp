@@ -25,21 +25,9 @@ function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {
       return null
     }
 
-    case "FunctionDefinition": {
-      definition.body = lowerMatch(mod, definition.body)
-      return null
-    }
-
-    case "VariableDefinition": {
-      definition.body = lowerMatch(mod, definition.body)
-      return null
-    }
-
-    case "TestDefinition": {
-      definition.body = lowerMatch(mod, definition.body)
-      return null
-    }
-
+    case "FunctionDefinition":
+    case "VariableDefinition":
+    case "TestDefinition":
     case "TypeDefinition": {
       definition.body = lowerMatch(mod, definition.body)
       return null

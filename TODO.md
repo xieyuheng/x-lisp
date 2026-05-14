@@ -2,6 +2,7 @@
 
 [meta-lisp.js] [refactor] lowerMatchDefinition 合并一些 case
 
+[meta-lisp.js] [refactor] DesugarPass 的 State 中，不需要依赖 mod 了。
 ---
 
 [plan] 007.3-ModuleImportPass.ts 有 bug，它只处理了 `Let1`，
