@@ -22,11 +22,11 @@ meta-lisp 的模块系统基于文件：每个 `.meta` 文件就是一个模块�
 
 # 导入
 
-| 语句 | 语法 | 语义 |
-|---|---|---|
-| `import` | `(import mod name ...)` | 从模块导入指定名字 |
-| `import-as` | `(import-as mod prefix)` | 导入模块并用前缀重命名 |
-| `import-all` | `(import-all mod)` | 导入模块中所有名字 |
+| 语句         | 语法                     | 语义                   |
+|--------------|--------------------------|------------------------|
+| `import`     | `(import mod name ...)`  | 从模块导入指定名字     |
+| `import-as`  | `(import-as mod prefix)` | 导入模块并用前缀重命名 |
+| `import-all` | `(import-all mod)`       | 导入模块中所有名字     |
 
 ```scheme
 ;; src/main.meta
@@ -142,4 +142,3 @@ project/
 - 模块名对应文件名（不含 `.meta` 后缀）
 - 同一项目中不能有两个同名模块
 - 不能导入项目范围之外的名字（没有包管理器）
-

@@ -1,5 +1,11 @@
 # docs
 
+[docs] [reference] syntax.md 修复 「代数数据类型」 章节开头的 table。
+
+- 其中 语法 要加括号。
+- 只需要写 用途  不需要 构造器名。
+- 用途 要写的清晰简洁。
+
 [docs] [reference] syntax.md 中「字面量」章节，同时介绍了类型是不是不太好？
 
 有没有其他方案？
