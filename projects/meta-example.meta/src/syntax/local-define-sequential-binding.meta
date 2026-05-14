@@ -1,0 +1,6 @@
+(module local-define-sequential-binding)
+
+(define-test sequential-binding-test
+  (define a 1)
+  (define b (iadd a 1))
+  (assert-equal 2 b))
