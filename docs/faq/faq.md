@@ -76,10 +76,25 @@ title: 常见问题（FAQ）
 
 # 和 Haskell 有什么区别？
 
-- **语法**：S-expression vs Haskell 的数学风格语法
-- **无类型类**：meta-lisp 没有 typeclass，多态通过 Hindley-Milner 实现
-- **无惰性求值**：meta-lisp 是严格求值（call-by-value）
-- **副作用**：meta-lisp 允许副作用（I/O、打印等）
+| Haskell | meta-lisp |
+|---|---|
+| `Int -> Int` | `(-> int-t int-t)` |
+| `forall a. a -> a` | `(polymorphic (A) (-> A A))` |
+| 类型类（Typeclass） | ❌ 不支持 |
+| `data Maybe a = Nothing \| Just a` | `(define-enum (maybe-t A) (nothing) (just (value A)))` |
+| 代数数据类型 | ✅ `define-enum` |
+| 模式匹配 | ✅ `match` |
+| 惰性求值 | ❌ 严格求值（call-by-value）|
+| 纯函数式（无副作用） | ❌ 允许副作用（I/O、打印等）|
+
+# 类型系统有什么特点？
+
+meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
+
+**核心原则：**
+- 没有 union 和 intersection 类型
+- 没有子类型关系（structural 子类型、行多态均已移除）
+- 所有类型在编译时确定
 
 # (claim) 和 (define) 的规则？
 

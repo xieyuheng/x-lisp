@@ -1,10 +1,38 @@
 # docs
 
-[docs] [guide] 删除 type-system.md，类型相关的所有语法都在 syntax.md 中介绍。
+[docs] [reference] 设立 builtin/ 文件夹，在其中模仿 [meta-builtin.meta] 分主题设立子文件夹。
 
-- 以 syntax.md 的风格和体例为主。
-- 要介绍和类型有关的所有语法，比如 (->)。
-- 在适当的章节，介绍所有内置类型。
+- 删除现有的 reference/builtins.md
+- 为每个 builtin 函数设立一个同名 .md 文件（带有 ? 和 ! 后缀的，文件名省略后缀）。
+- 在每个 builtin 函数文件中写这个 builtin 函数的文档。
+  体例是：
+
+  ```markdown
+  ---
+  title: 函数名
+  ---
+
+  # 类型
+
+  ```scheme
+  ...
+  ```
+
+  # 描述
+
+  简洁清晰的描述
+
+  # 例子
+
+  ```scheme
+  简介清晰的例子
+  ```
+
+  ```
+
+要求：
+
+- 逐个函数地，精心编写。禁止用脚本批量生成。
 
 # local (define)
 

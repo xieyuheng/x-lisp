@@ -24,6 +24,8 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 ## 原子
 
+**整数** — 类型 `int-t`
+
 整数由数字组成，可选负号。
 
 ```scheme
@@ -32,12 +34,16 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 0
 ```
 
+**浮点数** — 类型 `float-t`
+
 浮点数带小数点。
 
 ```scheme
 3.14
 -2.5
 ```
+
+**字符串** — 类型 `string-t`
 
 字符串用双引号包裹。
 
@@ -46,12 +52,16 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 ""
 ```
 
+**符号** — 类型 `symbol-t`
+
 符号用单引号开头，后面跟名字。
 
 ```scheme
 'foo
 'bar
 ```
+
+**关键字** — 类型 `keyword-t`
 
 关键字用冒号开头。
 
@@ -60,13 +70,17 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 :name
 ```
 
-布尔值用 `true` 和 `false`，它们不是字面量，而是绑定了布尔值的变量。
+**布尔值** — 类型 `bool-t`
 
-空值用 `void`，它也不是字面量，而是绑定了空值的变量。
+`true` 和 `false` 不是字面量，而是绑定了布尔值的变量。
+
+**空值** — 类型 `void-t`
+
+`void` 也不是字面量，而是绑定了空值的变量。
 
 ## 容器
 
-`(@list)` 创建列表。
+`(@list)` 创建列表 — 类型 `(list-t E)`，`E` 为元素类型。
 
 ```scheme
 (@list 1 2 3)
@@ -74,15 +88,16 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 增加 `@` 前缀，是为了避免占用 `list` 这个变量名。
 
-`(@set)` 创建集合。
+`(@set)` 创建集合 — 类型 `(set-t E)`，`E` 为元素类型。
 
 ```scheme
 (@set 1 2 3)
 ```
 
-`(@hash)` 创建哈希表。
+`(@hash)` 创建哈希表 — 类型 `(hash-t K V)`，`K` 为键类型，`V` 为值类型。
 
 ```scheme
+(@hash :a 1 :b 2)
 (@hash "a" 1 "b" 2)
 ```
 
@@ -280,6 +295,24 @@ builtin/list-empty?
 ```
 
 # 类型
+
+## (->)
+
+```scheme
+(-> <arg-type> ... <ret-type>)
+```
+
+函数类型。
+
+接收 `<arg-type>` 参数，返回 `<ret-type>`。
+
+例如：
+
+```scheme
+(-> int-t int-t)
+(-> int-t int-t int-t)
+(-> string-t bool-t)
+```
 
 ## (claim)
 
@@ -1123,4 +1156,3 @@ m/exp-t
   (assert-equal 2 (add1 1))
   (assert-equal 0 (add1 -1)))
 ```
-
