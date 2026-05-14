@@ -7,9 +7,9 @@ following Scheme's minimalist syntax design.
 
 ## Documentation
 
-- [Syntax Reference](docs/reference/syntax.md)
-- [Builtin Functions](docs/reference/builtin/index.md)
-- [FAQ](docs/faq/faq.md)
+- [Syntax Reference](docs/zh/reference/syntax.md)
+- [Builtin Functions](docs/zh/reference/builtin/index.md)
+- [FAQ](docs/zh/faq/faq.md)
 
 ## Example
 
