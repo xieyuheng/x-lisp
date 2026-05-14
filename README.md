@@ -1,6 +1,6 @@
 # meta-lisp
 
-TODO
+A statically typed lisp for implementing new lisp languages.
 
 ## License
 
