@@ -5,6 +5,12 @@
 meta-lisp is a statically typed lisp dialect
 following Scheme's minimalist syntax design.
 
+## Documentation
+
+- [Syntax Reference](docs/reference/syntax.md)
+- [Builtin Functions](docs/reference/builtin/index.md)
+- [FAQ](docs/faq/faq.md)
+
 ## Example
 
 ```scheme
