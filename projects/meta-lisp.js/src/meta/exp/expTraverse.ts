@@ -11,7 +11,7 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     case "Float":
     case "Var":
     case "QualifiedVar": {
-      return onExp(exp)
+      return exp
     }
 
     case "Lambda": {

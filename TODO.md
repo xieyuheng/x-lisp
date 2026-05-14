@@ -1,5 +1,7 @@
 # local (define)
 
+[meta-lisp.js] 把对 match 的处理从 DesugarPass 中拆出来，成为一个新的 pass -- LowerMatchPass。
+
 [meta-lisp.js] fix missing case of 007.3-ModuleImportPass.ts
 
 ---

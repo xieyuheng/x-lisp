@@ -1,9 +1,5 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
-
-// - ShrinkPass is like DesugarPass,
-//   but must be done only after CheckPass.
 
 export function ShrinkPass(
   project: M.Project,
@@ -11,14 +7,14 @@ export function ShrinkPass(
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
-      onDefinition(mod, definition)
+      onDefinition(definition)
     }
   }
 
   if (options.dump) projectDumpMods(project, "050-shrink")
 }
 
-function onDefinition(mod: M.Mod, definition: M.Definition): null {
+function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration":
@@ -32,106 +28,20 @@ function onDefinition(mod: M.Mod, definition: M.Definition): null {
     case "VariableDefinition":
     case "TestDefinition":
     case "TypeDefinition": {
-      definition.body = onExp(mod, definition.body)
+      definition.body = onExp(definition.body)
       return null
     }
   }
 }
 
-function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
+function onExp(exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "Var":
-    case "QualifiedVar": {
-      return exp
-    }
-
-    case "Apply": {
-      if (exp.target.kind === "Keyword") {
-        return onExp(
-          mod,
-          M.Apply(
-            M.Apply(M.QualifiedVar("builtin", "record-get", exp.location), [
-              exp.target,
-            ]),
-            exp.args,
-            exp.location,
-          ),
-        )
-      }
-
-      return M.expTraverse((e) => onExp(mod, e), exp)
-    }
-
     case "The": {
-      return onExp(mod, exp.exp)
+      return onExp(exp.exp)
     }
 
     default: {
-      return M.expTraverse((e) => onExp(mod, e), exp)
+      return M.expTraverse(onExp, exp)
     }
   }
-}
-
-function shrinkRecord(
-  attributes: Record<string, M.Exp>,
-  location?: S.SourceLocation,
-): M.Exp {
-  const base = M.Apply(
-    M.QualifiedVar("builtin", "make-record", location),
-    [],
-    location,
-  )
-
-  return shrinkUpdateMut(base, attributes, location)
-}
-
-function shrinkUpdateMut(
-  base: M.Exp,
-  attributes: Record<string, M.Exp>,
-  location?: S.SourceLocation,
-): M.Exp {
-  return M.desugarBegin(
-    [
-      M.Assign("record", base, location),
-      ...Object.entries(attributes).map(([key, value]) =>
-        M.Apply(
-          M.QualifiedVar("builtin", "record-put!", location),
-          [M.Keyword(key), value, M.Var("record", location)],
-          location,
-        ),
-      ),
-      M.Var("record", location),
-    ],
-    location,
-  )
-}
-
-function shrinkUpdate(
-  base: M.Exp,
-  attributes: Record<string, M.Exp>,
-  location?: S.SourceLocation,
-): M.Exp {
-  return M.desugarBegin(
-    [
-      M.Assign("record", base, location),
-      ...Object.entries(attributes).map(([key, value]) =>
-        M.Assign(
-          "record",
-          M.Apply(
-            M.QualifiedVar("builtin", "record-put", location),
-            [M.Keyword(key), value, M.Var("record", location)],
-            location,
-          ),
-          location,
-        ),
-      ),
-      M.Var("record", location),
-    ],
-    location,
-  )
 }
