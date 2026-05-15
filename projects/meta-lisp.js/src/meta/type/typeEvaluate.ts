@@ -157,7 +157,7 @@ function definitionToType(
           return M.typeEvaluate(
             definition.mod,
             M.emptyTypeEnv(),
-            definition.representationTypeExp,
+            definition.representationType,
             opaqueMode,
           )
         } else {

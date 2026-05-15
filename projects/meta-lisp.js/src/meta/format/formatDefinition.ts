@@ -75,9 +75,9 @@ export function formatDefinition(definition: M.Definition): string {
         definition.typeConstructor.parameters.length > 0
           ? `(${name} ${definition.typeConstructor.parameters.join(" ")})`
           : name
-      const repr = M.formatExp(definition.representationTypeExp)
+      const repr = M.formatExp(definition.representationType)
       const ifaces = definition.interfaceEntries
-        .map((entry) => `(${entry.name} ${M.formatExp(entry.typeExp)})`)
+        .map((entry) => `(${entry.name} ${M.formatExp(entry.type)})`)
         .join(" ")
       return `(define-opaque-type ${params} ${repr} ${ifaces})`
     }

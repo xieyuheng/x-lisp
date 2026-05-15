@@ -76,7 +76,7 @@ function applyDefinition(
         return M.typeEvaluate(
           definition.mod,
           typeEnv,
-          definition.representationTypeExp,
+          definition.representationType,
           opaqueMode,
         )
       } else {

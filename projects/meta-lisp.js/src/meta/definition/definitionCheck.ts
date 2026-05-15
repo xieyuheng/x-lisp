@@ -89,10 +89,10 @@ export function definitionCheck(definition: M.Definition): null {
       for (const entry of definition.interfaceEntries) {
         const exp =
           definition.typeConstructor.parameters.length === 0
-            ? entry.typeExp
+            ? entry.type
             : M.Lambda(
                 definition.typeConstructor.parameters,
-                entry.typeExp,
+                entry.type,
                 definition.location,
               )
         checkExp(mod, name, exp)
@@ -100,10 +100,10 @@ export function definitionCheck(definition: M.Definition): null {
 
       const reprExp =
         definition.typeConstructor.parameters.length === 0
-          ? definition.representationTypeExp
+          ? definition.representationType
           : M.Lambda(
               definition.typeConstructor.parameters,
-              definition.representationTypeExp,
+              definition.representationType,
               definition.location,
             )
       checkExp(mod, name, reprExp)

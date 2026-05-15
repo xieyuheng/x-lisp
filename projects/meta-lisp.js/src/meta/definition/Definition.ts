@@ -251,7 +251,7 @@ export type DataField = {
 
 export type InterfaceEntry = {
   name: string
-  typeExp: Exp
+  type: Exp
   location?: SourceLocation
 }
 
@@ -260,8 +260,7 @@ export type OpaqueTypeDefinition = {
   mod: Mod
   name: string
   typeConstructor: TypeConstructor
-  representationTypeExp: Exp
-  representationType?: Type
+  representationType: Exp
   interfaceEntries: Array<InterfaceEntry>
   location?: SourceLocation
 } & DefinitionState
@@ -270,8 +269,7 @@ export function OpaqueTypeDefinition(
   mod: Mod,
   name: string,
   typeConstructor: TypeConstructor,
-  representationTypeExp: Exp,
-  representationType: Type | undefined,
+  representationType: Exp,
   interfaceEntries: Array<InterfaceEntry>,
   location?: SourceLocation,
 ): OpaqueTypeDefinition {
@@ -280,7 +278,6 @@ export function OpaqueTypeDefinition(
     mod,
     name,
     typeConstructor,
-    representationTypeExp,
     representationType,
     interfaceEntries,
     location,

@@ -250,10 +250,9 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       name,
       typeConstructor,
       stmt.representationType,
-      undefined,
       stmt.interfaceFunctions.map((f) => ({
         name: f.name,
-        typeExp: f.type,
+        type: f.type,
         location: f.location,
       })),
       stmt.location,

@@ -1,20 +1,6 @@
-[meta-lisp.js] [refactor] LocatePass 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
-[meta-lisp.js] [refactor] qualifyDefinition 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
+[meta-lisp.js] [refactor] `typeEvaluate` 的 mode 参数 放在最前面，没有默认值，用大写字符串。
 
-[meta-lisp.js] [refactor] 简化 OpaqueTypeDefinition
-
-OpaqueTypeDefinition 是否不需要
-
-  representationTypeExp: Exp,
-  representationType?: Type,
-
-而是需要
-
-  representationType: Type,
-
-吧？
-
-[meta-lisp.js] [refactor] 这里错了，看来 TypeConstructor 的 definition 应该是一般的 definition 而不是 AlgebraicTypeDefinition
+[meta-lisp.js] [refactor] ExecutePass -- 这里错了 TypeConstructor 的 definition 被要求 AlgebraicTypeDefinition：
 
  ```
  if (stmt.kind === "DefineOpaqueType") {
@@ -26,6 +12,11 @@ OpaqueTypeDefinition 是否不需要
       location: stmt.location,
     }
  ```
+
+你有什么修改建议？
+
+[meta-lisp.js] [refactor] LocatePass 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
+[meta-lisp.js] [refactor] qualifyDefinition 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
 
 # setup feedback loop
 

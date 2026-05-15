@@ -78,10 +78,10 @@ function qualifyDefinition(definition: M.Definition): null {
 
     case "OpaqueTypeDefinition": {
       const boundNames = new Set(definition.typeConstructor.parameters)
-      definition.representationTypeExp = qualifyFreeVar(
+      definition.representationType = qualifyFreeVar(
         definition.mod,
         boundNames,
-        definition.representationTypeExp,
+        definition.representationType,
       )
 
       return null
