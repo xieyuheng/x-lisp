@@ -349,6 +349,11 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`hash-t`](hash/hash-t.md) — 哈希表类型构造器
 - [`make-hash`](hash/make-hash.md) — 创建空哈希表
+- [`hash-entry-t`](hash/hash-entry-t.md) — 条目类型构造器
+- [`make-hash-entry`](hash/make-hash-entry.md) — 构造条目
+- [`hash-entry-key`](hash/hash-entry-key.md) — 条目的键访问器
+- [`hash-entry-value`](hash/hash-entry-value.md) — 条目的值访问器
+- [`hash-from-entries`](hash/hash-from-entries.md) — 从条目列表构建哈希表
 
 ### 信息
 
@@ -356,13 +361,54 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`hash-length`](hash/hash-length.md) — 条目数
 - [`hash-has?`](hash/hash-has?.md) — 是否包含某键
 
-### 访问与修改
+### 访问
 
 - [`hash-get`](hash/hash-get.md) — 按键取值
+- [`hash-get-maybe`](hash/hash-get-maybe.md) — 取可选值
+
+### 转换
+
+- [`hash-keys`](hash/hash-keys.md) — 取所有键
+- [`hash-values`](hash/hash-values.md) — 取所有值
+- [`hash-entries`](hash/hash-entries.md) — 取所有条目
+
+### 修改
+
 - [`hash-put`](hash/hash-put.md) — 添加键值对（不可变）
 - [`hash-put!`](hash/hash-put!.md) — 添加键值对（可变）
+- [`hash-put-entries`](hash/hash-put-entries.md) — 批量放入条目（不可变）
+- [`hash-put-entries!`](hash/hash-put-entries!.md) — 批量放入条目（可变）
 - [`hash-delete!`](hash/hash-delete!.md) — 按键删除（可变）
 - [`hash-copy`](hash/hash-copy.md) — 复制哈希表
+
+### 遍历
+
+- [`hash-each`](hash/hash-each.md) — 遍历键值对
+- [`hash-each-key`](hash/hash-each-key.md) — 遍历键
+- [`hash-each-value`](hash/hash-each-value.md) — 遍历值
+- [`hash-each-entry`](hash/hash-each-entry.md) — 遍历条目
+
+### 映射
+
+- [`hash-map`](hash/hash-map.md) — 映射键值对
+- [`hash-map-key`](hash/hash-map-key.md) — 映射键
+- [`hash-map-value`](hash/hash-map-value.md) — 映射值
+- [`hash-map-entry`](hash/hash-map-entry.md) — 映射条目
+
+### 筛选
+
+- [`hash-select`](hash/hash-select.md) — 按键值谓词筛选
+- [`hash-select-key`](hash/hash-select-key.md) — 按键谓词筛选
+- [`hash-select-value`](hash/hash-select-value.md) — 按值谓词筛选
+- [`hash-reject`](hash/hash-reject.md) — 按键值谓词移除
+- [`hash-reject-key`](hash/hash-reject-key.md) — 按键谓词移除
+- [`hash-reject-value`](hash/hash-reject-value.md) — 按值谓词移除
+
+### 聚合
+
+- [`hash-append`](hash/hash-append.md) — 合并两个哈希表
+- [`hash-invert`](hash/hash-invert.md) — 键值互换
+- [`hash-invert-group`](hash/hash-invert-group.md) — 键值互换并归组
 
 ## pair
 

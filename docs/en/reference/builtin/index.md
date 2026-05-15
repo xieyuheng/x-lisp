@@ -349,6 +349,11 @@ Operations on `(hash-t K V)`.
 
 - [`hash-t`](hash/hash-t.md) — Hash table type constructor
 - [`make-hash`](hash/make-hash.md) — Create empty hash table
+- [`hash-entry-t`](hash/hash-entry-t.md) — Entry type constructor
+- [`make-hash-entry`](hash/make-hash-entry.md) — Construct an entry
+- [`hash-entry-key`](hash/hash-entry-key.md) — Entry key accessor
+- [`hash-entry-value`](hash/hash-entry-value.md) — Entry value accessor
+- [`hash-from-entries`](hash/hash-from-entries.md) — Build hash from entry list
 
 ### Info
 
@@ -356,13 +361,54 @@ Operations on `(hash-t K V)`.
 - [`hash-length`](hash/hash-length.md) — Entry count
 - [`hash-has?`](hash/hash-has?.md) — Check if contains key
 
-### Access and mutation
+### Access
 
 - [`hash-get`](hash/hash-get.md) — Get value by key
+- [`hash-get-maybe`](hash/hash-get-maybe.md) — Get value as maybe
+
+### Conversion
+
+- [`hash-keys`](hash/hash-keys.md) — Get key list
+- [`hash-values`](hash/hash-values.md) — Get value list
+- [`hash-entries`](hash/hash-entries.md) — Get entry list
+
+### Mutation
+
 - [`hash-put`](hash/hash-put.md) — Add key-value pair (immutable)
 - [`hash-put!`](hash/hash-put!.md) — Add key-value pair (mutable)
+- [`hash-put-entries`](hash/hash-put-entries.md) — Put entries (immutable)
+- [`hash-put-entries!`](hash/hash-put-entries!.md) — Put entries (mutable)
 - [`hash-delete!`](hash/hash-delete!.md) — Delete by key (mutable)
 - [`hash-copy`](hash/hash-copy.md) — Copy hash table
+
+### Iteration
+
+- [`hash-each`](hash/hash-each.md) — Iterate over key-value pairs
+- [`hash-each-key`](hash/hash-each-key.md) — Iterate over keys
+- [`hash-each-value`](hash/hash-each-value.md) — Iterate over values
+- [`hash-each-entry`](hash/hash-each-entry.md) — Iterate over entries
+
+### Mapping
+
+- [`hash-map`](hash/hash-map.md) — Map over key-value pairs
+- [`hash-map-key`](hash/hash-map-key.md) — Map over keys
+- [`hash-map-value`](hash/hash-map-value.md) — Map over values
+- [`hash-map-entry`](hash/hash-map-entry.md) — Map over entries
+
+### Selection
+
+- [`hash-select`](hash/hash-select.md) — Filter by key-value predicate
+- [`hash-select-key`](hash/hash-select-key.md) — Filter by key predicate
+- [`hash-select-value`](hash/hash-select-value.md) — Filter by value predicate
+- [`hash-reject`](hash/hash-reject.md) — Remove by key-value predicate
+- [`hash-reject-key`](hash/hash-reject-key.md) — Remove by key predicate
+- [`hash-reject-value`](hash/hash-reject-value.md) — Remove by value predicate
+
+### Aggregation
+
+- [`hash-append`](hash/hash-append.md) — Merge two hash tables
+- [`hash-invert`](hash/hash-invert.md) — Swap keys and values
+- [`hash-invert-group`](hash/hash-invert-group.md) — Invert with value grouping
 
 ## Pair
 
