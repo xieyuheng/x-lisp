@@ -1,8 +1,3 @@
-[stack-lisp.c] `make_static_xfile`  用来创建不被 gc 追踪的 xfile.
-
-- 和 static xstring 类似，但是这次所有 static xfile 要保存在一个 static array 里，而不是 record 中。
-- `ensure_standard_files` 调用  `make_static_xfile`
-
 [stack-lisp.c] 修复 `x_error_with_location`
 
 "(error) " 和 info 的内容，应该作为 message 传递给 format_message_with_source_location。

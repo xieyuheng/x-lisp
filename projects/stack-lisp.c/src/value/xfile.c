@@ -18,6 +18,23 @@ xfile_t *make_xfile(file_t *file) {
   return self;
 }
 
+static array_t *static_xfiles = NULL;
+
+xfile_t *make_static_xfile(file_t *file) {
+  if (!static_xfiles) {
+    static_xfiles = make_array();
+  }
+
+  xfile_t *self = new(xfile_t);
+  self->header.class = &xfile_class;
+  self->header.is_static = true;
+  self->file = file;
+  self->open_p = true;
+
+  array_push(static_xfiles, self);
+  return self;
+}
+
 void xfile_free(xfile_t *self) {
   xfile_close(self);
   if (self->pathname) {

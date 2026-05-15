@@ -6,8 +6,8 @@ static bool standard_files_initialized_p = false;
 
 static void ensure_standard_files(void) {
   if (!standard_files_initialized_p) {
-    stdout_file_value = x_object(make_xfile(stdout));
-    stderr_file_value = x_object(make_xfile(stderr));
+    stdout_file_value = x_object(make_static_xfile(stdout));
+    stderr_file_value = x_object(make_static_xfile(stderr));
     standard_files_initialized_p = true;
   }
 }

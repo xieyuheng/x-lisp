@@ -10,6 +10,7 @@ struct xfile_t {
 };
 
 xfile_t *make_xfile(file_t *file);
+xfile_t *make_static_xfile(file_t *file);
 void xfile_free(xfile_t *self);
 
 xfile_t *open_input_xfile(char *pathname);
