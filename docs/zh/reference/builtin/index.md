@@ -487,6 +487,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`write`](file/write.md) — 写入字符串
 - [`writeln`](file/writeln.md) — 写入字符串并换行
 - [`newline`](file/newline.md) — 打印换行符
+- [`current-stdout-file`](file/current-stdout-file.md) — 获取当前标准输出文件句柄
+- [`current-stderr-file`](file/current-stderr-file.md) — 获取当前标准错误文件句柄
 
 ## 文件系统
 

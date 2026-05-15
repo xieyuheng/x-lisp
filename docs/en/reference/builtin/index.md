@@ -487,6 +487,8 @@ File handle read/write operations.
 - [`write`](file/write.md) — Write a string
 - [`writeln`](file/writeln.md) — Write a string with newline
 - [`newline`](file/newline.md) — Print a newline
+- [`current-stdout-file`](file/current-stdout-file.md) — Get current stdout file handle
+- [`current-stderr-file`](file/current-stderr-file.md) — Get current stderr file handle
 
 ## File system
 
