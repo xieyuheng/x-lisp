@@ -287,6 +287,10 @@ function desugarLetrec(
   let newRHSes = bindings.map((b) => b.rhs)
   let newBody = body
 
+  // Using expNaiveSubst is safe here: we replace b.name with
+  // (builtin.box-get b.name), whose only free variable is b.name itself.
+  // When a binding inside the RHS or body shadows b.name, that occurrence
+  // was never a recursive reference — stopping at the shadow is correct.
   for (const b of bindings) {
     const loc = b.location ?? location
     const boxGetExp = M.Apply(
@@ -295,9 +299,9 @@ function desugarLetrec(
       loc,
     )
     for (let i = 0; i < newRHSes.length; i++) {
-      newRHSes[i] = M.expSubst(newRHSes[i], b.name, boxGetExp)
+      newRHSes[i] = M.expNaiveSubst(newRHSes[i], b.name, boxGetExp)
     }
-    newBody = M.expSubst(newBody, b.name, boxGetExp)
+    newBody = M.expNaiveSubst(newBody, b.name, boxGetExp)
   }
 
   const letBindings = bindings.map((b) => {
@@ -364,6 +368,9 @@ function desugarLetrecStar(
   const newRHSes = bindings.map((b) => b.rhs)
   let newBody = body
 
+  // Same reasoning as desugarLetrec — expNaiveSubst is safe here:
+  // carExp only refers to b.name, and any inner shadowing means
+  // that occurrence was never a recursive reference.
   for (const b of bindings) {
     const loc = b.location ?? location
     const carExp = M.Apply(
@@ -372,9 +379,9 @@ function desugarLetrecStar(
       loc,
     )
     for (let i = 0; i < newRHSes.length; i++) {
-      newRHSes[i] = M.expSubst(newRHSes[i], b.name, carExp)
+      newRHSes[i] = M.expNaiveSubst(newRHSes[i], b.name, carExp)
     }
-    newBody = M.expSubst(newBody, b.name, carExp)
+    newBody = M.expNaiveSubst(newBody, b.name, carExp)
   }
 
   const letBindings = bindings.map((b) => {

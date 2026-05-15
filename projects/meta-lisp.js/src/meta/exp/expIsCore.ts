@@ -13,10 +13,7 @@ export function expIsCore(exp: M.Exp): boolean {
     case "Lambda":
       return expIsCore(exp.body)
     case "Apply":
-      return (
-        expIsCore(exp.target) &&
-        exp.args.every((arg) => expIsCore(arg))
-      )
+      return expIsCore(exp.target) && exp.args.every((arg) => expIsCore(arg))
     case "Let1":
       return expIsCore(exp.rhs) && expIsCore(exp.body)
     case "Begin1":
@@ -28,10 +25,7 @@ export function expIsCore(exp: M.Exp): boolean {
         expIsCore(exp.alternative)
       )
     case "Arrow":
-      return (
-        exp.argTypes.every((t) => expIsCore(t)) &&
-        expIsCore(exp.retType)
-      )
+      return exp.argTypes.every((t) => expIsCore(t)) && expIsCore(exp.retType)
     case "The":
       return expIsCore(exp.type) && expIsCore(exp.exp)
     case "Polymorphic":

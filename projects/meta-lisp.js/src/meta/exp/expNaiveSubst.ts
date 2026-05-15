@@ -6,11 +6,7 @@ import * as M from "../index.ts"
 // Stops at a binding when the bound name equals `name` (shadowing).
 // Does NOT alpha-rename, even when free names in `rhs` would be captured.
 
-export function expNaiveSubst(
-  exp: M.Exp,
-  name: string,
-  rhs: M.Exp,
-): M.Exp {
+export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -49,9 +45,7 @@ export function expNaiveSubst(
       return M.Let1(
         exp.name,
         expNaiveSubst(exp.rhs, name, rhs),
-        exp.name === name
-          ? exp.body
-          : expNaiveSubst(exp.body, name, rhs),
+        exp.name === name ? exp.body : expNaiveSubst(exp.body, name, rhs),
         exp.location,
       )
     }
@@ -72,9 +66,7 @@ export function expNaiveSubst(
       const newBindings: Array<M.Binding> = []
       let shadowed = false
       for (const b of exp.bindings) {
-        const newRhs = shadowed
-          ? b.rhs
-          : expNaiveSubst(b.rhs, name, rhs)
+        const newRhs = shadowed ? b.rhs : expNaiveSubst(b.rhs, name, rhs)
         newBindings.push(M.Binding(b.name, newRhs, b.location))
         if (b.name === name) shadowed = true
       }
@@ -114,9 +106,7 @@ export function expNaiveSubst(
     }
 
     case "Match": {
-      const newTargets = exp.targets.map((t) =>
-        expNaiveSubst(t, name, rhs),
-      )
+      const newTargets = exp.targets.map((t) => expNaiveSubst(t, name, rhs))
       const newClauses = exp.clauses.map((clause) => {
         const patternsBoundNames = setUnionMany(
           clause.patterns.map(M.patternBoundNames),
@@ -124,9 +114,7 @@ export function expNaiveSubst(
         const shadowed = patternsBoundNames.has(name)
         return M.MatchClause(
           clause.patterns,
-          shadowed
-            ? clause.body
-            : expNaiveSubst(clause.body, name, rhs),
+          shadowed ? clause.body : expNaiveSubst(clause.body, name, rhs),
           clause.location,
         )
       })
@@ -142,7 +130,12 @@ export function expNaiveSubst(
             ? element.body
             : expNaiveSubst(element.body, name, rhs)
           newSequence.push(
-            M.LocalDefine(element.name, element.parameters, body, element.location),
+            M.LocalDefine(
+              element.name,
+              element.parameters,
+              body,
+              element.location,
+            ),
           )
           if (element.name === name) shadowed = true
         } else if (element.kind === "Assign") {
