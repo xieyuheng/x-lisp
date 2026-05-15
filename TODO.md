@@ -1,6 +1,5 @@
-[docs] [reference] syntax.md -- 补充我们新设计的 (define-opaque-type) 的语法文档。
+[docs] [reference] builtin -- 我们新增了 box/box.meta 需要你补全相关的文档。
 
-- 设计合适的章节
 - zh 和 en 两种语言
 - 保持简洁清晰
 - 尊重已有的体例

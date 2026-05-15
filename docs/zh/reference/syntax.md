@@ -56,6 +56,8 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(define-struct)](#define-struct)
   - [(define-struct*)](#define-struct-1)
   - [(match)](#match)
+- [不透明类型](#不透明类型)
+  - [(define-opaque-type)](#define-opaque-type)
 - [模块](#模块)
   - [(module)](#module)
   - [(import)](#import)
@@ -1208,7 +1210,68 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
     ((apply-exp target arg)
      (apply (evaluate target env) (evaluate arg env)))
     ((lambda-exp parameter body)
-     (closure-value env parameter body))))
+      (closure-value env parameter body))))
+```
+
+# 不透明类型
+
+## (define-opaque-type)
+
+```scheme
+(define-opaque-type (<name> <type-parameter> ...) <representation-type>
+  (<interface-name> <interface-type>)
+  ...)
+```
+
+定义不透明类型，隐藏内部表示。
+
+例如 builtin 中的 `box-t`，内部表示为 `(list-t E)`：
+
+```scheme
+(define-opaque-type (box-t E) (list-t E)
+  (make-box (-> (box-t E)))
+  (box-empty? (-> (box-t E) bool-t))
+  (box-put! (-> E (box-t E) (box-t E)))
+  (box-get-maybe (-> (box-t E) (maybe-t E))))
+```
+
+在实现接口函数的时候，等价于声明了：
+
+```scheme
+(claim make-box (polymorphic (E) (-> (list-t E))))
+(claim box-empty? (polymorphic (E) (-> (list-t E) bool-t)))
+(claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
+```
+
+因此接口函数内部可以使用 list API 来实现：
+
+```scheme
+(define (make-box) (make-list))
+
+(define (box-put! value box)
+  (if (box-empty? box)
+    (list-push! value box)
+    (list-put! 0 value box)))
+```
+
+在使用接口函数的时候，等价于声明了：
+
+```scheme
+(claim make-box (polymorphic (E) (-> (box-t E))))
+(claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
+(claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
+(claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
+```
+
+外部代码只能通过接口函数来操作 `box-t`：
+
+```scheme
+(claim box-get (polymorphic (E) (-> (box-t E) E)))
+(define (box-get box)
+  (match (box-get-maybe box)
+    ((just value) value)
+    ((nothing) (error "box is empty"))))
 ```
 
 # 模块

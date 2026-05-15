@@ -56,6 +56,8 @@ All meta-lisp syntax is organized below.
   - [(define-struct)](#define-struct)
   - [(define-struct*)](#define-struct*)
   - [(match)](#match)
+- [Opaque types](#opaque-types)
+  - [(define-opaque-type)](#define-opaque-type)
 - [Modules](#modules)
   - [(module)](#module)
   - [(import)](#import)
@@ -1201,7 +1203,68 @@ Destructures algebraic data types using pattern matching.
     ((apply-exp target arg)
      (apply (evaluate target env) (evaluate arg env)))
     ((lambda-exp parameter body)
-     (closure-value env parameter body))))
+      (closure-value env parameter body))))
+```
+
+# Opaque types
+
+## (define-opaque-type)
+
+```scheme
+(define-opaque-type (<name> <type-parameter> ...) <representation-type>
+  (<interface-name> <interface-type>)
+  ...)
+```
+
+Defines an opaque type, hiding its internal representation.
+
+For example, the builtin `box-t` with internal representation `(list-t E)`:
+
+```scheme
+(define-opaque-type (box-t E) (list-t E)
+  (make-box (-> (box-t E)))
+  (box-empty? (-> (box-t E) bool-t))
+  (box-put! (-> E (box-t E) (box-t E)))
+  (box-get-maybe (-> (box-t E) (maybe-t E))))
+```
+
+When implementing interface functions, it is equivalent to declaring:
+
+```scheme
+(claim make-box (polymorphic (E) (-> (list-t E))))
+(claim box-empty? (polymorphic (E) (-> (list-t E) bool-t)))
+(claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
+```
+
+Thus interface functions can use list APIs internally:
+
+```scheme
+(define (make-box) (make-list))
+
+(define (box-put! value box)
+  (if (box-empty? box)
+    (list-push! value box)
+    (list-put! 0 value box)))
+```
+
+When using interface functions, it is equivalent to declaring:
+
+```scheme
+(claim make-box (polymorphic (E) (-> (box-t E))))
+(claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
+(claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
+(claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
+```
+
+External code can only operate on `box-t` through interface functions:
+
+```scheme
+(claim box-get (polymorphic (E) (-> (box-t E) E)))
+(define (box-get box)
+  (match (box-get-maybe box)
+    ((just value) value)
+    ((nothing) (error "box is empty"))))
 ```
 
 # Modules
