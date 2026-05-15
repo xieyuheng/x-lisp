@@ -32,7 +32,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "Var": {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
-        return typeInferVarInMod(mod, ctx, exp.name, exp)(subst)
+        return typeInferLookup(mod, ctx, exp.name, exp)(subst)
       }
 
       case "QualifiedVar": {
@@ -45,7 +45,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         }
-        return typeInferVarInMod(qualifiedMod, ctx, exp.name, exp)(subst)
+        return typeInferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
       }
 
       case "Apply": {
@@ -219,7 +219,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   }
 }
 
-function typeInferVarInMod(
+function typeInferLookup(
   mod: M.Mod,
   ctx: M.Ctx,
   name: string,
@@ -263,7 +263,7 @@ function typeInferVarInMod(
       if (inferredType) return M.okInferEffect(inferredType)(subst)
     }
 
-    let message = `[typeInferVarInMod] internal error: infer fail after check`
+    let message = `[typeInferLookup] internal error: infer fail after check`
     message += `\n  module name: ${mod.name}`
     message += `\n  name: ${name}`
     if (exp.location) throw new S.ErrorWithSourceLocation(message, exp.location)

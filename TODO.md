@@ -16,8 +16,6 @@
 
 - 类似 OpaqueTypeDefinition 不需要处理 Match
 
-[meta-lisp.js] [refactor] typeInferVarInMod 改名为 typeInferLookup
-
 [meta-lisp.js] [refactor] 简化 OpaqueTypeDefinition
 
 OpaqueTypeDefinition 是否不需要
