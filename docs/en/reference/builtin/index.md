@@ -573,6 +573,4 @@ S-expression parsing, formatting, and related types.
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — Collect key-value pairs as a list
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — Collect key-value pairs as a hash
 
-## Type
 
-- [`type-t`](type/type-t.md) — The type of types

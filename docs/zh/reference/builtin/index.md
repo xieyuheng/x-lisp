@@ -573,6 +573,4 @@ S 表达式的解析、格式化和相关类型。
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — 收集键值对列表
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — 收集键值对哈希表
 
-## 类型
 
-- [`type-t`](type/type-t.md) — 类型的类型

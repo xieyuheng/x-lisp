@@ -30,8 +30,8 @@ The compiler handles tail calls correctly — no stack growth.
 ```scheme
 (print x)        ;; print a value
 (println x)      ;; print a value and newline
-(write s)        ;; print a string
-(writeln s)      ;; print a string and newline
+(write x)        ;; print a string
+(writeln x)      ;; print a string and newline
 (newline)        ;; print a newline
 (format x)       ;; format a value as a string
 ```
@@ -40,7 +40,7 @@ The compiler handles tail calls correctly — no stack growth.
 
 meta-lisp follows Scheme's minimalist syntax philosophy, but they are completely different languages.
 
-Many syntax improvements over Scheme. Not an implementation of Scheme's standard, not a Scheme dialect.
+meta-lisp has many syntax improvements over Scheme. It is not an implementation of the Scheme standard, nor a Scheme dialect.
 
 The most important difference: meta-lisp is statically typed, while Scheme is dynamically typed.
 
@@ -103,7 +103,7 @@ A very simple type system:
 | `any` / `unknown`            | ❌ Not supported            |
 | Structural typing            | ❌ Nominal typing only     |
 
-# How to specify a custom constructor name for (define-struct)?
+# How to use a custom constructor name?
 
 `(define-struct)` generates the constructor name as `make-<base-name>`:
 

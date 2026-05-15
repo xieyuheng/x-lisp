@@ -15,6 +15,7 @@ title: list-group
 # 例子
 
 ```scheme
+;; (swap imod 3) 翻转参数：(swap imod 3) => (lambda (x) (imod x 3))
 (list-group (swap imod 3) [0 1 2 3 4 5])
 ;; => (@hash 0 [0 3] 1 [1 4] 2 [2 5])
 ```

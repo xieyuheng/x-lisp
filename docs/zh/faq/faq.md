@@ -30,8 +30,8 @@ title: 常见问题（FAQ）
 ```scheme
 (print x)        ;; 打印值
 (println x)      ;; 打印值并换行
-(write s)        ;; 打印字符串
-(writeln s)      ;; 打印字符串并换行
+(write x)        ;; 打印字符串
+(writeln x)      ;; 打印字符串并换行
 (newline)        ;; 打印换行
 (format x)       ;; 将值格式化为字符串
 ```
@@ -105,7 +105,7 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 | `any` / `unknown`             | ❌ 不支持                  |
 | 结构类型（structural typing） | ❌ 仅有 nominal 类型       |
 
-# 如何指定 (define-struct) 构造器名？
+# 如何使用自定义构造器名？
 
 `(define-struct)` 默认的构造器名字为 `make-<base-name>`：
 
