@@ -1,6 +1,8 @@
 # local (define)
 
-[meta-lisp.js] fix the problem of letrec-sequential-binding-error.meta
+[meta-lisp.js] 删除 `(letrec)` 语法
+
+[docs] [reference] syntax.md -- 说明为什么没有 `(letrec)`
 
 - 要么就放弃 letrec 这个语法。
 - 要么给出更好的运行时报错。
