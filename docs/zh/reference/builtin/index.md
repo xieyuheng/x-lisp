@@ -19,6 +19,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [哈希表](#哈希表)
 - [pair](#pair)
 - [maybe](#maybe)
+- [box](#box)
 - [函数操作](#函数操作)
 - [文件 I/O](#文件-io)
 - [文件系统](#文件系统)
@@ -386,6 +387,17 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`nothing?`](maybe/nothing?.md) — 判断是否为 nothing
 - [`just-value`](maybe/just-value.md) — 提取 just 中的值
 - [`just-put-value!`](maybe/just-put-value!.md) — 替换 just 中的值
+
+## box
+
+不透明类型 `(box-t E)` 上的操作。
+
+- [`box-t`](box/box-t.md) — box 类型构造器
+- [`make-box`](box/make-box.md) — 创建空 box
+- [`box-empty?`](box/box-empty?.md) — 判断是否为空
+- [`box-put!`](box/box-put!.md) — 存入值
+- [`box-get-maybe`](box/box-get-maybe.md) — 取出可选值
+- [`box-get`](box/box-get.md) — 取出值（空 box 时报错）
 
 ## 函数操作
 

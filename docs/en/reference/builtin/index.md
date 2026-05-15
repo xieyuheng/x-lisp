@@ -19,6 +19,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Hash tables](#hash-tables)
 - [Pair](#pair)
 - [Maybe](#maybe)
+- [Box](#box)
 - [Function operations](#function-operations)
 - [File I/O](#file-io)
 - [File system](#file-system)
@@ -386,6 +387,17 @@ Operations on `(maybe-t A)`.
 - [`nothing?`](maybe/nothing?.md) — Check if nothing
 - [`just-value`](maybe/just-value.md) — Extract value from just
 - [`just-put-value!`](maybe/just-put-value!.md) — Replace value in just
+
+## Box
+
+Operations on the opaque type `(box-t E)`.
+
+- [`box-t`](box/box-t.md) — Box type constructor
+- [`make-box`](box/make-box.md) — Create an empty box
+- [`box-empty?`](box/box-empty?.md) — Check if empty
+- [`box-put!`](box/box-put!.md) — Store a value
+- [`box-get-maybe`](box/box-get-maybe.md) — Get value as maybe
+- [`box-get`](box/box-get.md) — Get value (error if empty)
 
 ## Function operations
 
