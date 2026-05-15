@@ -429,9 +429,7 @@ function substBegin(exp: M.Begin, name: string, rhs: M.Exp): M.Exp {
       const boundName = renaming.get(element.name) ?? element.name
       const location = element.location
 
-      let newRhs = nameShadowed
-        ? element.rhs
-        : expSubst(element.rhs, name, rhs)
+      let newRhs = nameShadowed ? element.rhs : expSubst(element.rhs, name, rhs)
       newRhs = applyRenamings(newRhs, renaming, location)
 
       if (!renaming.has(element.name) && rhsFreeNames.has(element.name)) {
@@ -488,9 +486,7 @@ function substLocalDefineGroup(
   }
 
   return defines.map((d) => {
-    let body = nameShadowedInGroup
-      ? d.body
-      : expSubst(d.body, name, rhs)
+    let body = nameShadowedInGroup ? d.body : expSubst(d.body, name, rhs)
 
     body = applyRenamings(body, renaming, d.location)
 

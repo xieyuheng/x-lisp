@@ -1,7 +1,17 @@
-[meta-builtin.meta] 用 list-t 实现 box
+[stack-lisp.c] `format_source_location_report` 函数改名为 `format_message_with_source_location`
 
-- make-box
-- box-put! box-get box-get-maybe
+- 交换 location 与 message 的顺序。
+
+[stack-lisp.c] 增加新的 builtin 函数 format-message-with-source-location
+
+- 放在 sexp.c 和 sexp.h 中。
+- format-message-with-source-location 的类型为：
+  (claim format-message-with-source-location (-> string-t source-location-t string-t))
+
+[meta-builtin.meta] format-message-with-source-location
+[meta-builtin.meta] box -- 实现 box-get-with-location 类似 assert-with-location
+
+- 在运行时报错的时候调用 format-message-with-source-location 来报错
 
 [meta-lisp.js] desugarLetrecStar 在代码中给出翻译例子 -- 使用 box
 [meta-lisp.js] 修复 letrec 的 desugarLetrec，在代码中给出翻译例子
