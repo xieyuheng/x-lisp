@@ -728,7 +728,7 @@ Replaces nested `(letrec*)` to reduce indentation.
 Mutual recursion (equivalent to the `(letrec*)` example above):
 
 ```scheme
-(define (f x)
+(begin
   (define (even? n)
     (if (equal? n 0)
       true
@@ -737,13 +737,13 @@ Mutual recursion (equivalent to the `(letrec*)` example above):
     (if (equal? n 0)
       false
       (even? (isub n 1))))
-  (even? x))
+  (even? 4))
 ```
 
 Sequential dependency:
 
 ```scheme
-(define (g x)
+(begin
   (define a 1)
   (define b (iadd a 1))
   b)  ;; => 2
@@ -752,7 +752,7 @@ Sequential dependency:
 `(=)` and `(define)` can be mixed:
 
 ```scheme
-(define (h x)
+(begin
   (= one 1)
   (define a one)
   (define b (iadd a one))

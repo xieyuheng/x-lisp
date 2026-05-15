@@ -732,7 +732,7 @@ builtin/list-empty?
 互相递归的例子（与 `(letrec*)` 的例子等价）：
 
 ```scheme
-(define (f x)
+(begin
   (define (even? n)
     (if (equal? n 0)
       true
@@ -741,13 +741,13 @@ builtin/list-empty?
     (if (equal? n 0)
       false
       (even? (isub n 1))))
-  (even? x))
+  (even? 4))
 ```
 
 顺序依赖的例子：
 
 ```scheme
-(define (g x)
+(begin
   (define a 1)
   (define b (iadd a 1))
   b)  ;; => 2
@@ -756,7 +756,7 @@ builtin/list-empty?
 `(=)` 与 `(define)` 可以混合使用：
 
 ```scheme
-(define (h x)
+(begin
   (= one 1)
   (define a one)
   (define b (iadd a one))
