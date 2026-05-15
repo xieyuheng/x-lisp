@@ -36,21 +36,7 @@ function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {
       return null
     }
 
-    case "AlgebraicTypeDefinition": {
-      definition.dataConstructors = definition.dataConstructors.map(
-        ({ name, fields }) => ({
-          definition,
-          name,
-          fields: fields.map(({ name, type }) => ({
-            name,
-            type: lowerMatch(mod, type),
-          })),
-        }),
-      )
-
-      return null
-    }
-
+    case "AlgebraicTypeDefinition":
     case "OpaqueTypeDefinition": {
       return null
     }

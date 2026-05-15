@@ -1,8 +1,5 @@
 [meta-lisp.js] [refactor] LocatePass 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
 [meta-lisp.js] [refactor] qualifyDefinition 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
-[meta-lisp.js] [refactor] lowerMatchDefinition 不用处理 AlgebraicTypeDefinition，因为里面不允许有 Match。
-
-- 类似 OpaqueTypeDefinition 不需要处理 Match
 
 [meta-lisp.js] [refactor] 简化 OpaqueTypeDefinition
 
