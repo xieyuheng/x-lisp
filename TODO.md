@@ -1,11 +1,7 @@
-# local (define)
+[meta-lisp.js] 目前的 expSubst 需要处理所有的语法，是否太复杂了？
 
-[meta-lisp.js] 删除 `(letrec)` 语法
-
-[docs] [reference] syntax.md -- 说明为什么没有 `(letrec)`
-
-- 要么就放弃 letrec 这个语法。
-- 要么给出更好的运行时报错。
+但是 expSubst 和 desugar 又相互依赖，有没有什么办法能解决这个问题？
+避免在 expSubst 中不得不处理所有语法。
 
 # setup feedback loop
 

@@ -696,17 +696,18 @@ builtin/list-empty?
 互相递归的例子：
 
 ```scheme
-(letrec* ((even?
-           (lambda (n)
-             (if (equal? n 0)
-               true
-               (odd? (isub n 1)))))
-          (odd?
-           (lambda (n)
-             (if (equal? n 0)
-               false
-               (even? (isub n 1))))))
-  (assert (even? 4)))
+(letrec*
+    ((even?
+      (lambda (n)
+        (if (equal? n 0)
+          true
+          (odd? (isub n 1)))))
+     (odd?
+      (lambda (n)
+        (if (equal? n 0)
+          false
+          (even? (isub n 1))))))
+  (even? 4))   ;; => true
 ```
 
 顺序依赖的例子：
@@ -714,8 +715,20 @@ builtin/list-empty?
 ```scheme
 (letrec* ((a 1)
           (b (iadd a 1)))
-  (assert-equal 2 b))
+  b)   ;; => 2
 ```
+
+meta-lisp 中没有采纳 scheme 的 `(letrec)` 语法。
+
+因为 `(letrec)` 在下面这种简单用法中的行为是未定义的，
+一般的 scheme 实现会在运行时报错。
+
+```scheme
+(letrec ((a 1)
+         (b (iadd a 1)))
+  b)   ;; => undefined behavior
+```
+
 
 ## local (define)
 
@@ -732,7 +745,7 @@ builtin/list-empty?
 互相递归的例子（与 `(letrec*)` 的例子等价）：
 
 ```scheme
-(define (f x)
+(begin
   (define (even? n)
     (if (equal? n 0)
       true
@@ -741,26 +754,26 @@ builtin/list-empty?
     (if (equal? n 0)
       false
       (even? (isub n 1))))
-  (even? x))
+  (even? x))   ;; => true
 ```
 
 顺序依赖的例子：
 
 ```scheme
-(define (g x)
+(begin
   (define a 1)
   (define b (iadd a 1))
-  (assert-equal 2 b))
+  b)   ;; => 2
 ```
 
 `(=)` 与 `(define)` 可以混合使用：
 
 ```scheme
-(define (h x)
+(begin
   (= one 1)
   (define a one)
   (define b (iadd a one))
-  (assert-equal 2 b))
+  b)   ;; => 2
 ```
 
 

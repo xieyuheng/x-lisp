@@ -58,15 +58,6 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       return setUnionMany([...rhses, expFreeNames(newBoundNames, exp.body)])
     }
 
-    case "Letrec": {
-      const allNames = new Set(exp.bindings.map((b) => b.name))
-      const newBoundNames = setUnion(boundNames, allNames)
-      return setUnionMany([
-        ...exp.bindings.map((b) => expFreeNames(newBoundNames, b.rhs)),
-        expFreeNames(newBoundNames, exp.body),
-      ])
-    }
-
     case "LocalDefine": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return expFreeNames(newBoundNames, exp.body)
