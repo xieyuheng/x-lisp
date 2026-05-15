@@ -15,6 +15,9 @@ Print any value to standard output followed by a newline.
 # Examples
 
 ```scheme
-(println "hello")  ;; prints hello\n
-(println 42)       ;; prints 42\n
+(for [i [1 2 3]] (println i))
+;; outputs:
+;; 1
+;; 2
+;; 3
 ```

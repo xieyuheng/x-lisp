@@ -15,5 +15,6 @@ Map a function over values, leaving keys unchanged.
 # Examples
 
 ```scheme
-(hash-map-value (iadd 1) (@hash 1 2 3 4))  ;; => (@hash 1 3 3 5)
+(hash-map-value (lambda (n) (iadd 10 n)) (@hash 'a 1 'b 2))
+;; => (@hash 'a 11 'b 12)
 ```

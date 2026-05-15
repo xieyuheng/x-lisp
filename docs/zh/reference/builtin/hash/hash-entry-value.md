@@ -15,5 +15,6 @@ title: hash-entry-value
 # 例子
 
 ```scheme
-(hash-entry-value (make-hash-entry "a" 1))  ;; => 1
+(= entries (hash-entries (@hash 'a 1 'b 2)))
+(list-map hash-entry-value entries)  ;; => [1 2]
 ```

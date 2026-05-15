@@ -15,5 +15,6 @@ title: hash-empty?
 # 例子
 
 ```scheme
-(hash-empty? (make-hash))   ;; => true
+(hash-empty? (make-hash))     ;; => true
+(hash-empty? (@hash 'a 1))    ;; => false
 ```

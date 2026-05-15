@@ -15,5 +15,6 @@ title: pair-second
 # 例子
 
 ```scheme
-(pair-second (make-pair 1 "hello"))  ;; => "hello"
+(let ((p (make-pair 1 "hello")))
+  (pair-second p))  ;; => "hello"
 ```

@@ -15,5 +15,6 @@ Get the value of an entry.
 # Examples
 
 ```scheme
-(hash-entry-value (make-hash-entry "a" 1))  ;; => 1
+(let ((entries (hash-entries (@hash 'a 1 'b 2))))
+  (list-map hash-entry-value entries))  ;; => [1 2]
 ```

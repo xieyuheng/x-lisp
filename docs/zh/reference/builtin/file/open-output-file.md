@@ -15,5 +15,7 @@ title: open-output-file
 # 例子
 
 ```scheme
-(= file (open-output-file "output.txt"))
+(let ((file (open-output-file "output.txt")))
+  (file-writeln "hello" file)
+  (file-close file))
 ```

@@ -15,5 +15,7 @@ Open file for writing. Takes a file path, returns a file handle. Creates the fil
 # Examples
 
 ```scheme
-(= file (open-output-file "output.txt"))
+(let ((file (open-output-file "output.txt")))
+  (file-writeln "hello" file)
+  (file-close file))
 ```

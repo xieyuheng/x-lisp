@@ -15,5 +15,6 @@ title: nothing
 # 例子
 
 ```scheme
-nothing  ;; 空的可选值
+(let ((m nothing))
+  (nothing? m))  ;; => true
 ```

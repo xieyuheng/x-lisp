@@ -15,5 +15,6 @@ Second element of a pair.
 # Examples
 
 ```scheme
-(pair-second (make-pair 1 "hello"))  ;; => "hello"
+(let ((p (make-pair 1 "hello")))
+  (pair-second p))  ;; => "hello"
 ```

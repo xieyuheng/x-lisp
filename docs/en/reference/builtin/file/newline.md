@@ -15,5 +15,7 @@ Print a newline to standard output.
 # Examples
 
 ```scheme
+(print "hello")
 (newline)
+;; outputs: hello\n
 ```

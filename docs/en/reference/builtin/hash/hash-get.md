@@ -16,4 +16,5 @@ Get value by key. Raises an error if the key does not exist.
 
 ```scheme
 (hash-get "a" (@hash "a" 1 "b" 2))  ;; => 1
+;; (hash-get "c" (@hash "a" 1 "b" 2))  ;; error: key not found
 ```

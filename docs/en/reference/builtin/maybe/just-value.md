@@ -16,4 +16,5 @@ Extract the value from a `just`. Errors if called on `nothing`.
 
 ```scheme
 (just-value (just 42))  ;; => 42
+;; (just-value nothing)  ;; error: cannot get value from nothing
 ```

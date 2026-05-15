@@ -15,5 +15,6 @@ Check if the hash table is empty.
 # Examples
 
 ```scheme
-(hash-empty? (make-hash))   ;; => true
+(hash-empty? (make-hash))     ;; => true
+(hash-empty? (@hash 'a 1))    ;; => false
 ```

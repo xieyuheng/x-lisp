@@ -15,5 +15,6 @@ title: hash-invert
 # 例子
 
 ```scheme
-(hash-invert (@hash 1 2 3 4))  ;; => (@hash 2 1 4 3)
+(hash-invert (@hash 1 2 3 4))        ;; => (@hash 2 1 4 3)
+(hash-invert (@hash 'x 1 'y 1 'z 2)) ;; => (@hash 1 'y 2 'z)
 ```

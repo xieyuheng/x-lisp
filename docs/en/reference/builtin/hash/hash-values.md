@@ -15,5 +15,6 @@ Get all values of a hash table as a list.
 # Examples
 
 ```scheme
-(hash-values (@hash 1 2 3 4))  ;; => [2 4]
+(let ((values (hash-values (@hash 1 2 3 4))))
+  (list-fold-left iadd 0 values))  ;; => 6
 ```

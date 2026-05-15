@@ -15,6 +15,6 @@ title: hash-entries
 # 例子
 
 ```scheme
-(hash-entries (@hash 'a 1 'b 2))
-;; => [(make-hash-entry 'a 1) (make-hash-entry 'b 2)]
+(= entries (hash-entries (@hash 'a 1 'b 2)))
+(hash-from-entries entries)  ;; => (@hash 'a 1 'b 2)
 ```

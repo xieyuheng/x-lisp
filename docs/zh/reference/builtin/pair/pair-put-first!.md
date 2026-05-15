@@ -15,5 +15,7 @@ title: pair-put-first!
 # 例子
 
 ```scheme
-(pair-put-first! 7 (make-pair 1 "hello"))  ;; => (7 . "hello")
+(let ((p (make-pair 1 "hello")))
+  (pair-put-first! 7 p)
+  (pair-first p))  ;; => 7
 ```

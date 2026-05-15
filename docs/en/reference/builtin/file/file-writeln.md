@@ -15,8 +15,8 @@ Write a string to a file followed by a newline.
 # Examples
 
 ```scheme
-(= file (open-output-file "output.txt"))
-(file-writeln file "hello")
-(file-writeln file "world")
-(file-close file)
+(let ((file (open-output-file "output.txt")))
+  (file-writeln file "hello")
+  (file-writeln file "world")
+  (file-close file))
 ```

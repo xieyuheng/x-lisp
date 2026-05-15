@@ -15,5 +15,6 @@ First element of a pair.
 # Examples
 
 ```scheme
-(pair-first (make-pair 1 "hello"))  ;; => 1
+(let ((p (make-pair 1 "hello")))
+  (pair-first p))  ;; => 1
 ```

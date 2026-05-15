@@ -15,9 +15,9 @@ title: hash-put-entries!
 # 例子
 
 ```scheme
-(= h (@hash))
-(hash-put-entries!
-  [(make-hash-entry 'a 1) (make-hash-entry 'b 2)]
+(let ((h (@hash)))
+  (hash-put-entries!
+    [(make-hash-entry 'a 1) (make-hash-entry 'b 2)]
+    h)
   h)
-h  ;; => (@hash 'a 1 'b 2)
 ```

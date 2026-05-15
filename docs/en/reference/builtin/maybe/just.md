@@ -15,6 +15,6 @@ Constructor of `maybe-t`, representing a present value.
 # Examples
 
 ```scheme
-(just 42)    ;; a maybe value containing 42
-(just "hi")  ;; a maybe value containing "hi"
+(let ((m (just 42)))
+  (just? m))       ;; => true
 ```

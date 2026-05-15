@@ -15,5 +15,6 @@ Constructor of `hash-entry-t`, creates a key-value entry.
 # Examples
 
 ```scheme
-(make-hash-entry "a" 1)  ;; => (hash-entry-t "a" . 1)
+(let ((e (make-hash-entry "a" 1)))
+  (hash-entry-key e))   ;; => "a"
 ```

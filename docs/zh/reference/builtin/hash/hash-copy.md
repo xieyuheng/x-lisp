@@ -15,5 +15,9 @@ title: hash-copy
 # 例子
 
 ```scheme
-(hash-copy (@hash "a" 1 "b" 2))
+(= h1 (@hash "a" 1 "b" 2))
+(= h2 (hash-copy h1))
+(hash-put! "c" 3 h2)
+h1  ;; => (@hash "a" 1 "b" 2)
+h2  ;; => (@hash "a" 1 "b" 2 "c" 3)
 ```

@@ -15,8 +15,8 @@ Iterate over each key-value pair with side effects.
 # Examples
 
 ```scheme
-(= h (@hash 1 2 3 4))
-(= acc [])
-(hash-each (lambda (k v) (list-push! k acc) (list-push! v acc)) h)
-acc  ;; => [1 2 3 4]
+(let ((h (@hash 1 2 3 4))
+      (acc []))
+  (hash-each (lambda (k v) (list-push! k acc) (list-push! v acc)) h)
+  acc)
 ```

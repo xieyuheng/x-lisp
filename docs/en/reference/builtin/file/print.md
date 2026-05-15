@@ -15,6 +15,6 @@ Print any value to standard output.
 # Examples
 
 ```scheme
-(print "hello")  ;; prints hello
-(print 42)       ;; prints 42
+(for [i [1 2 3]] (print i))
+;; outputs: 123
 ```

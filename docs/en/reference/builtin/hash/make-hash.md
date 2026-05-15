@@ -15,5 +15,8 @@ Create an empty hash table.
 # Examples
 
 ```scheme
-(make-hash)
+(let ((h (make-hash)))
+  (hash-put! 'a 1 h)
+  h)
+;; => (@hash 'a 1)
 ```

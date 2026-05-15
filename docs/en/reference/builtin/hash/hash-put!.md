@@ -15,5 +15,8 @@ Set a key-value pair, same as `hash-put`.
 # Examples
 
 ```scheme
-(hash-put! "c" 3 (@hash "a" 1 "b" 2))
+(let ((h (@hash "a" 1)))
+  (hash-put! "b" 2 h)
+  h)
+;; => (@hash "a" 1 "b" 2)
 ```

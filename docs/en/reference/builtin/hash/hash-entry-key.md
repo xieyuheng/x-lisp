@@ -15,5 +15,6 @@ Get the key of an entry.
 # Examples
 
 ```scheme
-(hash-entry-key (make-hash-entry "a" 1))  ;; => "a"
+(let ((entries (hash-entries (@hash 'a 1 'b 2))))
+  (list-map hash-entry-key entries))  ;; => ['a 'b]
 ```

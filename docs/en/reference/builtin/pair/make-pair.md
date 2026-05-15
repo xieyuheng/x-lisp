@@ -15,6 +15,6 @@ Constructor of `pair-t`, constructs a pair with two values.
 # Examples
 
 ```scheme
-(make-pair 1 "hello")   ;; => (1 . "hello")
-(make-pair "a" "b")     ;; => ("a" . "b")
+(let ((p (make-pair 1 "hello")))
+  (pair-first p))   ;; => 1
 ```

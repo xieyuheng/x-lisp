@@ -15,5 +15,7 @@ title: open-input-file
 # 例子
 
 ```scheme
-(= file (open-input-file "data.txt"))
+(let ((file (open-input-file "data.txt")))
+  (file-read file)
+  (file-close file))
 ```

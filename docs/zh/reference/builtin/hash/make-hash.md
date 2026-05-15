@@ -15,5 +15,8 @@ title: make-hash
 # 例子
 
 ```scheme
-(make-hash)
+(= h (make-hash))
+(hash-empty? h)  ;; => true
+(hash-put! 'a 1 h)
+h  ;; => (@hash 'a 1)
 ```

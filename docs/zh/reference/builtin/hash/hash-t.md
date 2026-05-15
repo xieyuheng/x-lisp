@@ -16,4 +16,6 @@ title: hash-t
 
 ```scheme
 (claim scores (hash-t string-t int-t))
+(= scores (@hash "alice" 95 "bob" 87))
+(hash-get "alice" scores)  ;; => 95
 ```

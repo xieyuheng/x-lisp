@@ -15,5 +15,6 @@ Constructor of `maybe-t`, representing a missing value.
 # Examples
 
 ```scheme
-nothing  ;; an empty maybe value
+(let ((m nothing))
+  (nothing? m))  ;; => true
 ```

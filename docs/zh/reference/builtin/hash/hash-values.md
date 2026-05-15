@@ -15,5 +15,6 @@ title: hash-values
 # 例子
 
 ```scheme
-(hash-values (@hash 1 2 3 4))  ;; => [2 4]
+(= values (hash-values (@hash 1 2 3 4)))
+(list-fold-left iadd 0 values)  ;; => 6
 ```

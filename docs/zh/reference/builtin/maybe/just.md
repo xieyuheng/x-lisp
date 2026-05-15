@@ -15,6 +15,6 @@ title: just
 # 例子
 
 ```scheme
-(just 42)    ;; 包含 42 的可选值
-(just "hi")  ;; 包含 "hi" 的可选值
+(let ((m (just 42)))
+  (just? m))       ;; => true
 ```

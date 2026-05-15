@@ -15,5 +15,7 @@ Open file for reading. Takes a file path, returns a file handle.
 # Examples
 
 ```scheme
-(= file (open-input-file "data.txt"))
+(let ((file (open-input-file "data.txt")))
+  (file-read file)
+  (file-close file))
 ```

@@ -15,7 +15,7 @@ Read entire content from a file.
 # Examples
 
 ```scheme
-(= file (open-input-file "data.txt"))
-(= content (file-read file))
-(file-close file)
+(let ((file (open-input-file "data.txt")))
+  (file-read file)
+  (file-close file))
 ```

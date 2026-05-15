@@ -15,6 +15,6 @@ Close a file handle.
 # Examples
 
 ```scheme
-(= file (open-input-file "data.txt"))
-(file-close file)
+(let ((file (open-input-file "data.txt")))
+  (file-close file))
 ```

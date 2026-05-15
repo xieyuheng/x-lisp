@@ -15,5 +15,7 @@ Replace the second element of a pair.
 # Examples
 
 ```scheme
-(pair-put-second! "world" (make-pair 1 "hello"))  ;; => (1 . "world")
+(let ((p (make-pair 1 "hello")))
+  (pair-put-second! "world" p)
+  (pair-second p))  ;; => "world"
 ```

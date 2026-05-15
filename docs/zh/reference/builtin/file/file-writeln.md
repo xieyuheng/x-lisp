@@ -15,8 +15,8 @@ title: file-writeln
 # 例子
 
 ```scheme
-(= file (open-output-file "output.txt"))
-(file-writeln file "hello")
-(file-writeln file "world")
-(file-close file)
+(let ((file (open-output-file "output.txt")))
+  (file-writeln file "hello")
+  (file-writeln file "world")
+  (file-close file))
 ```

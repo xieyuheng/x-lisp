@@ -15,6 +15,6 @@ title: make-pair
 # 例子
 
 ```scheme
-(make-pair 1 "hello")   ;; => (1 . "hello")
-(make-pair "a" "b")     ;; => ("a" . "b")
+(let ((p (make-pair 1 "hello")))
+  (pair-first p))   ;; => 1
 ```

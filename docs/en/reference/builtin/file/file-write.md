@@ -15,7 +15,7 @@ Write a string to a file.
 # Examples
 
 ```scheme
-(= file (open-output-file "output.txt"))
-(file-write file "hello world")
-(file-close file)
+(let ((file (open-output-file "output.txt")))
+  (file-write file "hello world")
+  (file-close file))
 ```

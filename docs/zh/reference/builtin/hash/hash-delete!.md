@@ -15,5 +15,7 @@ title: hash-delete!
 # 例子
 
 ```scheme
-(hash-delete! "a" (@hash "a" 1 "b" 2))  ;; => (@hash "b" 2)
+(= h (@hash "a" 1 "b" 2 "c" 3))
+(hash-delete! "a" h)
+h  ;; => (@hash "b" 2 "c" 3)
 ```

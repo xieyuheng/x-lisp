@@ -15,8 +15,8 @@ Iterate over each entry with side effects.
 # Examples
 
 ```scheme
-(= h (@hash 1 2 3 4))
-(= acc [])
-(hash-each-entry (lambda (e) (list-push! e acc)) h)
-acc  ;; => [(make-hash-entry 1 2) (make-hash-entry 3 4)]
+(let ((h (@hash 1 2 3 4))
+      (acc []))
+  (hash-each-entry (lambda (e) (list-push! e acc)) h)
+  acc)
 ```

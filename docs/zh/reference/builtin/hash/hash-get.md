@@ -16,4 +16,5 @@ title: hash-get
 
 ```scheme
 (hash-get "a" (@hash "a" 1 "b" 2))  ;; => 1
+;; (hash-get "c" (@hash "a" 1 "b" 2))  ;; 错误：键不存在
 ```

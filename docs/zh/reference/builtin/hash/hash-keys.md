@@ -15,5 +15,6 @@ title: hash-keys
 # 例子
 
 ```scheme
-(hash-keys (@hash 1 2 3 4))  ;; => [1 3]
+(= keys (hash-keys (@hash 1 2 3 4)))
+(list-map (iadd 1) keys)  ;; => [2 4]
 ```

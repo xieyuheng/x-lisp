@@ -15,5 +15,6 @@ Get all keys of a hash table as a list.
 # Examples
 
 ```scheme
-(hash-keys (@hash 1 2 3 4))  ;; => [1 3]
+(let ((keys (hash-keys (@hash 1 2 3 4))))
+  (list-map (iadd 1) keys))  ;; => [2 4]
 ```
