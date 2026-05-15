@@ -243,6 +243,31 @@ function desugarLetStar(
   )
 }
 
+// Desugar `(letrec)` using box:
+//
+//     (letrec ((x1 e1)
+//              (x2 e2)
+//              ...
+//              (xn en))
+//       body)
+//
+// where e1, e2, en, and body have their
+// x1, x2, xn replaced with (box-get x1), (box-get x2), (box-get xn)
+//
+//     (let ((x1 (make-box))
+//           (x2 (make-box))
+//           ...
+//           (xn (make-box)))
+//       (let ((v1 e1)
+//             (v2 e2)
+//             ...
+//             (vn en))
+//         (box-put! x1 v1)
+//         (box-put! x2 v2)
+//         ...
+//         (box-put! xn vn)
+//         body))
+
 function desugarLetrec(
   bindings: Array<M.Binding>,
   body: M.Exp,
@@ -259,53 +284,77 @@ function desugarLetrec(
     }
   }
 
-  const thunkBindings: Array<M.Binding> = []
-  const callBindings: Array<M.Binding> = []
+  let newRHSes = bindings.map((b) => b.rhs)
+  let newBody = body
 
-  for (const binding of bindings) {
-    const thunkName = M.generateRelativeFreshName(
-      `${binding.name}.thunk`,
-      usedNames,
+  for (const b of bindings) {
+    const loc = b.location ?? location
+    const boxGetExp = M.Apply(
+      M.QualifiedVar("builtin", "box-get", loc),
+      [M.Var(b.name, loc)],
+      loc,
     )
-    thunkBindings.push(
-      M.Binding(
-        thunkName,
-        M.Lambda([], binding.rhs, binding.location),
-        binding.location,
-      ),
+    for (let i = 0; i < newRHSes.length; i++) {
+      newRHSes[i] = M.expSubst(newRHSes[i], b.name, boxGetExp)
+    }
+    newBody = M.expSubst(newBody, b.name, boxGetExp)
+  }
+
+  const letBindings = bindings.map((b) => {
+    const loc = b.location ?? location
+    return M.Binding(
+      b.name,
+      M.Apply(M.QualifiedVar("builtin", "make-box", loc), [], loc),
+      loc,
     )
-    callBindings.push(
-      M.Binding(
-        binding.name,
-        M.Apply(M.Var(thunkName, binding.location), [], binding.location),
-        binding.location,
+  })
+
+  const freshNames = bindings.map((b) =>
+    M.generateRelativeFreshName(`${b.name}.value`, usedNames),
+  )
+
+  const innerBindings = bindings.map((b, i) =>
+    M.Binding(freshNames[i], newRHSes[i], b.location ?? location),
+  )
+
+  let result: M.Exp = newBody
+  for (let i = bindings.length - 1; i >= 0; i--) {
+    const loc = bindings[i].location ?? location
+    result = M.Begin1(
+      M.Apply(
+        M.QualifiedVar("builtin", "box-put!", loc),
+        [M.Var(freshNames[i], loc), M.Var(bindings[i].name, loc)],
+        loc,
       ),
+      result,
+      loc,
     )
   }
 
-  return M.LetrecStar([...thunkBindings, ...callBindings], body, location)
+  result = M.Let(innerBindings, result, location)
+  return M.Let(letBindings, result, location)
 }
 
 // Desugar `(letrec*)` using box:
 //
-//   (letrec* ((x1 e1)
-//             (x2 e2)
-//             ...
-//             (xn en))
-//     body)
+//     (letrec* ((x1 e1)
+//               (x2 e2)
+//               ...
+//               (xn en))
+//       body)
 //
-// → where e1, e2, en, and body have their
-//   x1, x2, xn replaced with (box-get x1), (box-get x2), (box-get xn)
+// where e1, e2, en, and body have their
+// x1, x2, xn replaced with (box-get x1), (box-get x2), (box-get xn)
 //
-//   (let ((x1 (make-box))
-//         (x2 (make-box))
-//         ...
-//         (xn (make-box)))
-//     (box-put! e1 x1)
-//     (box-put! e2 x2)
-//     ...
-//     (box-put! en xn)
-//     body)
+//     (let ((x1 (make-box))
+//           (x2 (make-box))
+//           ...
+//           (xn (make-box)))
+//       (box-put! e1 x1)
+//       (box-put! e2 x2)
+//       ...
+//       (box-put! en xn)
+//       body)
 
 function desugarLetrecStar(
   bindings: Array<M.Binding>,
