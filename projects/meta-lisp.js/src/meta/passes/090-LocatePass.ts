@@ -65,6 +65,14 @@ function locateDefinition(definition: M.Definition): null {
         definition.representationType,
       )
 
+      definition.interfaceEntries = definition.interfaceEntries.map(
+        ({ name, type, location }) => ({
+          name,
+          type: locateSpecialApply(type),
+          location,
+        }),
+      )
+
       return null
     }
   }

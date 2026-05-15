@@ -1,4 +1,3 @@
-[meta-lisp.js] [refactor] LocatePass 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
 [meta-lisp.js] [refactor] qualifyDefinition 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
 
 # setup feedback loop
