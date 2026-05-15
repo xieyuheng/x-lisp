@@ -15,6 +15,6 @@ title: hash-entry-key
 # 例子
 
 ```scheme
-(= entries (hash-entries (@hash 'a 1 'b 2)))
-(list-map hash-entry-key entries)  ;; => ['a 'b]
+(let ((h (@hash 'a 1 'b 2)))
+  (list-map hash-entry-key (hash-entries h)))  ;; => ['a 'b]
 ```

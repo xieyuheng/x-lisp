@@ -30,7 +30,6 @@ Hash table entry type constructor. `(hash-entry-t K V)` represents a key-value e
 # Examples
 
 ```scheme
-(= e (make-hash-entry "a" 1))
-(hash-entry-key e)   ;; => "a"
-(hash-entry-value e)  ;; => 1
+(let ((e (make-hash-entry "a" 1)))
+  (hash-entry-key e))   ;; => "a"
 ```

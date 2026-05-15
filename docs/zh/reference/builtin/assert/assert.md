@@ -15,6 +15,6 @@ title: assert
 # 例子
 
 ```scheme
-(assert (= 1 1))
-(assert (> 2 1))
+(assert (equal? 1 1))
+(assert (int-greater? 2 1))
 ```

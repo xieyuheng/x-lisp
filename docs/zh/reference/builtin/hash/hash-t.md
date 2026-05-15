@@ -15,7 +15,6 @@ title: hash-t
 # 例子
 
 ```scheme
-(claim scores (hash-t string-t int-t))
-(= scores (@hash "alice" 95 "bob" 87))
-(hash-get "alice" scores)  ;; => 95
+(let ((scores (@hash "alice" 95 "bob" 87)))
+  (hash-get "alice" scores))  ;; => 95
 ```

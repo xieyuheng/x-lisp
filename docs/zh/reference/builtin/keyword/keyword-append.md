@@ -15,6 +15,6 @@ title: keyword-append
 # 例子
 
 ```scheme
-(keyword-append :foo :bar)  ;; => ':foobar
-(keyword-append :a :b)      ;; => ':ab
+(keyword-append :foo :bar)  ;; => :foobar
+(keyword-append :a :b)      ;; => :ab
 ```

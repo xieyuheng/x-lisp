@@ -15,8 +15,6 @@ title: hash-length
 # 例子
 
 ```scheme
-(= h (@hash "a" 1))
-(hash-length h)  ;; => 1
-(hash-put! "b" 2 h)
-(hash-length h)  ;; => 2
+(let ((h (@hash "a" 1)))
+  (hash-length h))  ;; => 1
 ```

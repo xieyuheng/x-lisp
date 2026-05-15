@@ -15,6 +15,6 @@ title: hash-entry-value
 # 例子
 
 ```scheme
-(= entries (hash-entries (@hash 'a 1 'b 2)))
-(list-map hash-entry-value entries)  ;; => [1 2]
+(let ((h (@hash 'a 1 'b 2)))
+  (list-map hash-entry-value (hash-entries h)))  ;; => [1 2]
 ```

@@ -41,7 +41,7 @@ All meta-lisp syntax is organized below.
   - [(begin)](#begin)
   - [(let)](#let)
   - [(let*)](#let-1)
-  - [(=)](#)
+  - [(=)](#assign)
   - [(letrec)](#letrec)
   - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
@@ -54,7 +54,7 @@ All meta-lisp syntax is organized below.
   - [(define-record-type)](#define-record-type)
   - [(define-enum)](#define-enum)
   - [(define-struct)](#define-struct)
-  - [(define-struct*)](#define-struct*)
+  - [(define-struct*)](#define-struct-star)
   - [(match)](#match)
 - [Opaque types](#opaque-types)
   - [(define-opaque-type)](#define-opaque-type)
@@ -246,7 +246,7 @@ then the function is applied.
 ((lambda (x) x) 1)
 ```
 
-When a function is applied with insufficient arguments, partial application (also called **currying**) occurs.
+When a function is applied with insufficient arguments, partial application occurs (via **currying**).
 
 ```scheme
 ((iadd 1) 2)
@@ -649,6 +649,7 @@ Each `<exp>` can reference previously bound names.
     (iadd x y)))
 ```
 
+<a name="assign"></a>
 ## (=)
 
 ```scheme
@@ -722,7 +723,6 @@ Difference from `(letrec*)` (see below):
          (b (iadd a 1)))  ;; Error: a not visible here
   b)
 ```
-
 
 ## (letrec*)
 
@@ -806,7 +806,6 @@ Sequential dependency:
   b)  ;; => 2
 ```
 
-
 # Function composition
 
 ## (pipe)
@@ -828,7 +827,7 @@ Equivalent to:
 
 ```scheme
 (double (add1 5))           ;; => 12
-(square (double (add1 2)))  ;;  => 36
+(square (double (add1 2)))  ;; => 36
 ```
 
 ## (chain)
@@ -1132,6 +1131,7 @@ For a given `<type-name>`, the naming rules are:
 - `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
 - `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
 
+<a name="define-struct-star"></a>
 ## (define-struct*)
 
 ```scheme

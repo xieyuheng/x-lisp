@@ -41,7 +41,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(begin)](#begin)
   - [(let)](#let)
   - [(let*)](#let-1)
-  - [(=)](#)
+  - [(=)](#assign)
   - [(letrec)](#letrec)
   - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
@@ -54,7 +54,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(define-record-type)](#define-record-type)
   - [(define-enum)](#define-enum)
   - [(define-struct)](#define-struct)
-  - [(define-struct*)](#define-struct-1)
+  - [(define-struct*)](#define-struct-star)
   - [(match)](#match)
 - [不透明类型](#不透明类型)
   - [(define-opaque-type)](#define-opaque-type)
@@ -247,7 +247,7 @@ builtin/list-empty?
 ((lambda (x) x) 1)
 ```
 
-当函数作用的参数个数不足时，会形成部分作用，又称作**柯里化**（currying）。
+当函数作用的参数个数不足时，会形成部分作用（通过**柯里化**实现）。
 
 ```scheme
 ((iadd 1) 2)
@@ -653,6 +653,7 @@ builtin/list-empty?
     (iadd x y)))
 ```
 
+<a name="assign"></a>
 ## (=)
 
 ```scheme
@@ -726,7 +727,6 @@ builtin/list-empty?
          (b (iadd a 1)))  ;; 错误：a 在此处不可见
   b)
 ```
-
 
 ## (letrec*)
 
@@ -809,7 +809,6 @@ builtin/list-empty?
   (define b (iadd a one))
   b)  ;; => 2
 ```
-
 
 # 函数组合
 
@@ -1134,9 +1133,11 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 - `<type-name>` = `<base-name>-t` -- `point-t`
 - `<predicate-name>` = `<base-name>?` -- `point?`
+- `<constructor-name>` = `make-<base-name>` -- `make-point`
 - `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
 - `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
 
+<a name="define-struct-star"></a>
 ## (define-struct*)
 
 ```scheme
@@ -1433,4 +1434,4 @@ m/exp-t
 - `(assert x)` -- 断言 `x` 为 `true`。
 - `(assert-not x)` -- 断言 `x` 为 `false`。
 - `(assert-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 相等（使用 `equal?` 比较）。
-- `(assert-not-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 不相等。。
+- `(assert-not-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 不相等。

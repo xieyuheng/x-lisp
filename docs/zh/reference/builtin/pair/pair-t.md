@@ -43,7 +43,6 @@ title: pair-t
 # 例子
 
 ```scheme
-(= p (make-pair 1 "hello"))
-(pair-first p)   ;; => 1
-(pair-second p)  ;; => "hello"
+(let ((p (make-pair 1 "hello")))
+  (pair-first p))   ;; => 1
 ```

@@ -15,7 +15,6 @@ title: make-hash-entry
 # 例子
 
 ```scheme
-(= e (make-hash-entry "a" 1))
-(hash-entry-key e)   ;; => "a"
-(hash-entry-value e)  ;; => 1
+(let ((e (make-hash-entry "a" 1)))
+  (hash-entry-key e))   ;; => "a"
 ```

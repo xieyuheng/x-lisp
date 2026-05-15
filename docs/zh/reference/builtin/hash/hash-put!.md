@@ -15,7 +15,6 @@ title: hash-put!
 # 例子
 
 ```scheme
-(= h (@hash "a" 1))
-(hash-put! "b" 2 h)
-h  ;; => (@hash "a" 1 "b" 2)
+(let ((h (@hash "a" 1)))
+  (hash-put! "b" 2 h))
 ```

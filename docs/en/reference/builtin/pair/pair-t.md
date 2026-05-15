@@ -43,7 +43,6 @@ Pair type constructor. `(pair-t A B)` represents a pair containing values of typ
 # Examples
 
 ```scheme
-(= p (make-pair 1 "hello"))
-(pair-first p)   ;; => 1
-(pair-second p)  ;; => "hello"
+(let ((p (make-pair 1 "hello")))
+  (pair-first p))   ;; => 1
 ```
