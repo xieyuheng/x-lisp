@@ -1,5 +1,8 @@
-[meta-lisp.js] `desugar` 调用 expNaiveSubst 而不是 expSubst
-[meta-lisp.js] `expSubst` 简化为只处理 core 语法
+[docs] [reference] syntax.md -- 补充 `(letrec)` 的语法文档
+
+- 说明 `(letrec)` 和 `(letrec*)` 的差异
+- 保持简洁清晰，尊重当前的体例。
+- 同时写英文和中文文档。
 
 # setup feedback loop
 
