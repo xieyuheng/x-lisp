@@ -86,6 +86,14 @@ export function typeUnify(
     return typeUnifyMany(subst, lhs.argTypes, rhs.argTypes)
   }
 
+  if (M.isOpaqueType(lhs) && M.isOpaqueType(rhs)) {
+    if (lhs.definition !== rhs.definition) {
+      return undefined
+    }
+
+    return typeUnifyMany(subst, lhs.argTypes, rhs.argTypes)
+  }
+
   return undefined
 }
 

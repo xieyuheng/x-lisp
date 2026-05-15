@@ -1,10 +1,17 @@
 import * as M from "../index.ts"
 import { type Type, type TypeEnv } from "../index.ts"
 
-export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
+export type OpaqueMode = "opaque" | "transparent"
+
+export function typeEvaluate(
+  mod: M.Mod,
+  typeEnv: TypeEnv,
+  exp: M.Exp,
+  opaqueMode: OpaqueMode = "opaque",
+): Type {
   switch (exp.kind) {
     case "Var": {
-      const type = typeLookup(mod, typeEnv, exp.name)
+      const type = typeLookup(mod, typeEnv, exp.name, opaqueMode)
       if (type) return type
 
       let message = `[typeEvaluate] undefined variable`
@@ -21,7 +28,7 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
         throw new Error(message)
       }
 
-      const type = typeLookup(qualifiedMod, M.emptyTypeEnv(), exp.name)
+      const type = typeLookup(qualifiedMod, M.emptyTypeEnv(), exp.name, opaqueMode)
       if (type) return type
 
       let message = `[typeEvaluate] undefined qualified variable`
@@ -32,9 +39,9 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
 
     case "Arrow": {
       const argTypes = exp.argTypes.map((argType) =>
-        typeEvaluate(mod, typeEnv, argType),
+        typeEvaluate(mod, typeEnv, argType, opaqueMode),
       )
-      const retType = typeEvaluate(mod, typeEnv, exp.retType)
+      const retType = typeEvaluate(mod, typeEnv, exp.retType, opaqueMode)
       return M.ArrowType(argTypes, retType)
     }
 
@@ -46,14 +53,15 @@ export function typeEvaluate(mod: M.Mod, typeEnv: TypeEnv, exp: M.Exp): Type {
         mod,
         M.typeEnvPutMany(typeEnv, exp.parameters, varTypes),
         exp.body,
+        opaqueMode,
       )
       return M.PolymorphicType(varTypes, bodyType)
     }
 
     case "Apply": {
-      const target = typeEvaluate(mod, typeEnv, exp.target)
-      const args = exp.args.map((arg) => typeEvaluate(mod, typeEnv, arg))
-      return M.typeApply(target, args)
+      const target = typeEvaluate(mod, typeEnv, exp.target, opaqueMode)
+      const args = exp.args.map((arg) => typeEvaluate(mod, typeEnv, arg, opaqueMode))
+      return M.typeApply(target, args, opaqueMode)
     }
 
     default: {
@@ -68,17 +76,21 @@ function typeLookup(
   mod: M.Mod,
   typeEnv: TypeEnv,
   name: string,
+  opaqueMode: OpaqueMode = "opaque",
 ): M.Type | undefined {
   const fromTypeEnv = M.typeEnvLookup(typeEnv, name)
   if (fromTypeEnv) return fromTypeEnv
 
   const definition = M.modLookupDefinition(mod, name)
-  if (definition) return definitionToType(definition)
+  if (definition) return definitionToType(definition, opaqueMode)
 
   return M.modLookupClaimedType(mod, name)
 }
 
-function definitionToType(definition: M.Definition): M.Type {
+function definitionToType(
+  definition: M.Definition,
+  opaqueMode: OpaqueMode = "opaque",
+): M.Type {
   M.definitionCheck(definition)
 
   switch (definition.kind) {
@@ -104,14 +116,14 @@ function definitionToType(definition: M.Definition): M.Type {
 
     case "TypeDefinition": {
       if (definition.parameters.length === 0) {
-        return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body)
+        return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body, opaqueMode)
       } else {
         return M.DefinitionType(definition)
       }
     }
 
     case "VariableDefinition": {
-      return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body)
+      return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body, opaqueMode)
     }
 
     case "AlgebraicTypeDefinition": {
@@ -119,6 +131,22 @@ function definitionToType(definition: M.Definition): M.Type {
         return M.AlgebraicType(definition, [])
       } else {
         return M.DefinitionType(definition)
+      }
+    }
+
+    case "OpaqueTypeDefinition": {
+      if (opaqueMode === "transparent") {
+        if (definition.typeConstructor.parameters.length === 0) {
+          return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.representationTypeExp, opaqueMode)
+        } else {
+          return M.DefinitionType(definition)
+        }
+      } else {
+        if (definition.typeConstructor.parameters.length === 0) {
+          return M.OpaqueType(definition, [])
+        } else {
+          return M.DefinitionType(definition)
+        }
       }
     }
   }

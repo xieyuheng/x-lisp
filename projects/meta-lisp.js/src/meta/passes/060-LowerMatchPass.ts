@@ -50,6 +50,10 @@ function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {
 
       return null
     }
+
+    case "OpaqueTypeDefinition": {
+      return null
+    }
   }
 }
 

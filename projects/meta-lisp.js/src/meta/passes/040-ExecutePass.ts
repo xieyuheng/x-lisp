@@ -235,4 +235,55 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       mod.dataConstructors.set(dataConstructor.name, dataConstructor)
     }
   }
+
+  if (stmt.kind === "DefineOpaqueType") {
+    const name = stmt.name
+    const typeConstructor: M.TypeConstructor = {
+      definition: undefined as unknown as M.AlgebraicTypeDefinition,
+      name: stmt.name,
+      parameters: stmt.parameters,
+      location: stmt.location,
+    }
+
+    const definition = M.OpaqueTypeDefinition(
+      mod,
+      name,
+      typeConstructor,
+      stmt.representationType,
+      undefined,
+      stmt.interfaceFunctions.map((f) => ({
+        name: f.name,
+        typeExp: f.type,
+        location: f.location,
+      })),
+      stmt.location,
+    )
+
+    typeConstructor.definition =
+      definition as unknown as M.AlgebraicTypeDefinition
+
+    M.modDefine(mod, name, definition)
+
+    if (stmt.parameters.length === 0) {
+      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t", stmt.location))
+    } else {
+      M.modClaim(
+        mod,
+        name,
+        M.Arrow(
+          range(stmt.parameters.length).map((_) =>
+            M.QualifiedVar("builtin", "type-t", stmt.location),
+          ),
+          M.QualifiedVar("builtin", "type-t", stmt.location),
+          stmt.location,
+        ),
+      )
+    }
+
+    for (const iface of stmt.interfaceFunctions) {
+      const wrappedType = M.Polymorphic(stmt.parameters, iface.type, iface.location)
+      M.modClaim(mod, iface.name, wrappedType)
+      mod.opaqueClaimed.set(iface.name, wrappedType)
+    }
+  }
 }

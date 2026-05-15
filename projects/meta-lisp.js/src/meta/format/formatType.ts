@@ -53,7 +53,8 @@ export function formatType(type: M.Type): string {
       return `(hash-t ${keyType} ${valueType})`
     }
 
-    case "AlgebraicType": {
+    case "AlgebraicType":
+    case "OpaqueType": {
       const definition = type.definition
       const argTypes = formatTypes(type.argTypes)
       if (argTypes.length === 0) {

@@ -6,7 +6,10 @@ export function substDeepWalk(subst: M.Subst, type: M.Type): M.Type {
 }
 
 export function substDeepWalkCtx(subst: M.Subst, ctx: M.Ctx): M.Ctx {
-  return mapMapValue(ctx, (t) => M.substDeepWalk(subst, t))
+  return {
+    ...ctx,
+    bindings: mapMapValue(ctx.bindings, (t) => M.substDeepWalk(subst, t)),
+  }
 }
 
 function substDeepWalkWithBoundIds(
@@ -60,6 +63,12 @@ function substDeepWalkWithBoundIds(
 
     case "AlgebraicType":
       return M.AlgebraicType(
+        type.definition,
+        type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
+      )
+
+    case "OpaqueType":
+      return M.OpaqueType(
         type.definition,
         type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
       )

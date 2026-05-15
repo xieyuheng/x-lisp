@@ -110,6 +110,30 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
+  "(cons* 'define-opaque-type head representation ifaces)": (
+    { head, representation, ifaces },
+    { location },
+  ) => {
+    const typeConstructor = parseTypeConstructor(head)
+    const interfaceFunctions = S.asList(ifaces).elements.map(
+      (iface) => {
+        const parts = S.asList(iface).elements
+        return {
+          name: S.asSymbol(parts[0]).content,
+          type: parseExp(parts[1]),
+          location: parts[0].location,
+        }
+      },
+    )
+    return M.DefineOpaqueType(
+      typeConstructor.name,
+      typeConstructor.parameters,
+      parseExp(representation),
+      interfaceFunctions,
+      location,
+    )
+  },
+
   "(cons* 'define-algebraic-type head constructors)": (
     { head, constructors },
     { location },

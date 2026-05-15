@@ -59,6 +59,14 @@ function locateDefinition(definition: M.Definition): null {
 
       return null
     }
+
+    case "OpaqueTypeDefinition": {
+      definition.representationTypeExp = locateSpecialApply(
+        definition.representationTypeExp,
+      )
+
+      return null
+    }
   }
 }
 

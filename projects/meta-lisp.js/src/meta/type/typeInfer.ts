@@ -32,7 +32,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "Var": {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
-        return typeInferVarInMod(mod, exp.name, exp)(subst)
+        return typeInferVarInMod(mod, ctx, exp.name, exp)(subst)
       }
 
       case "QualifiedVar": {
@@ -45,7 +45,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         }
-        return typeInferVarInMod(qualifiedMod, exp.name, exp)(subst)
+        return typeInferVarInMod(qualifiedMod, ctx, exp.name, exp)(subst)
       }
 
       case "Apply": {
@@ -221,10 +221,24 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
 
 function typeInferVarInMod(
   mod: M.Mod,
+  ctx: M.Ctx,
   name: string,
   exp: M.Exp,
 ): M.InferEffect {
   return (subst) => {
+    if (ctx.transparentOpaqueNames.has(name)) {
+      const opaqueTypeExp = mod.opaqueClaimed.get(name)
+      if (opaqueTypeExp) {
+        const transparentType = M.typeEvaluate(
+          mod,
+          M.emptyTypeEnv(),
+          opaqueTypeExp,
+          "transparent",
+        )
+        return M.okInferEffect(transparentType)(subst)
+      }
+    }
+
     const claimedType = M.modLookupClaimedType(mod, name)
     if (claimedType) return M.okInferEffect(claimedType)(subst)
 

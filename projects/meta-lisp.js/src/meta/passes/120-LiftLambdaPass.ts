@@ -33,7 +33,8 @@ function onDefinition(
     case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
-    case "AlgebraicTypeDefinition": {
+    case "AlgebraicTypeDefinition":
+    case "OpaqueTypeDefinition": {
       return [definition]
     }
 

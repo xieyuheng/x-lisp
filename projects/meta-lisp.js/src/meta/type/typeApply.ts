@@ -2,10 +2,15 @@ import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
 import { type Type } from "../index.ts"
+import type { OpaqueMode } from "./typeEvaluate.ts"
 
-export function typeApply(target: Type, args: Array<Type>): Type {
+export function typeApply(
+  target: Type,
+  args: Array<Type>,
+  opaqueMode: OpaqueMode = "opaque",
+): Type {
   if (M.isDefinitionType(target)) {
-    return applyDefinition(target.definition, args)
+    return applyDefinition(target.definition, args, opaqueMode)
   }
 
   if (M.isCurryType(target)) {
@@ -15,10 +20,10 @@ export function typeApply(target: Type, args: Array<Type>): Type {
     }
 
     assert(allArgs.length === target.arity)
-    const result = typeApply(target.target, allArgs)
+    const result = typeApply(target.target, allArgs, opaqueMode)
     if (args.length > target.arity - target.args.length) {
       const extraArgs = allArgs.slice(target.arity)
-      return typeApply(result, extraArgs)
+      return typeApply(result, extraArgs, opaqueMode)
     }
 
     return result
@@ -30,7 +35,11 @@ export function typeApply(target: Type, args: Array<Type>): Type {
   throw new Error(message)
 }
 
-function applyDefinition(definition: M.Definition, args: Array<Type>): Type {
+function applyDefinition(
+  definition: M.Definition,
+  args: Array<Type>,
+  opaqueMode: OpaqueMode,
+): Type {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
       const fn = definition.fn as (...args: Array<Type>) => Type
@@ -44,11 +53,25 @@ function applyDefinition(definition: M.Definition, args: Array<Type>): Type {
           typeEnv.set(definition.parameters[i], args[i])
         }
       }
-      return M.typeEvaluate(definition.mod, typeEnv, definition.body)
+      return M.typeEvaluate(definition.mod, typeEnv, definition.body, opaqueMode)
     }
 
     case "AlgebraicTypeDefinition": {
       return M.AlgebraicType(definition, args)
+    }
+
+    case "OpaqueTypeDefinition": {
+      if (opaqueMode === "transparent") {
+        const typeEnv = M.emptyTypeEnv()
+        for (const i of range(definition.typeConstructor.parameters.length)) {
+          if (args[i] !== undefined) {
+            typeEnv.set(definition.typeConstructor.parameters[i], args[i])
+          }
+        }
+        return M.typeEvaluate(definition.mod, typeEnv, definition.representationTypeExp, opaqueMode)
+      } else {
+        return M.OpaqueType(definition, args)
+      }
     }
 
     default: {

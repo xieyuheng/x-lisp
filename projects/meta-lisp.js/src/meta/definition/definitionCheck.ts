@@ -84,20 +84,59 @@ export function definitionCheck(definition: M.Definition): null {
       definition.isChecked = true
       return null
     }
+
+    case "OpaqueTypeDefinition": {
+      definition.isChecked = true
+      return null
+    }
   }
 }
 
 function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
-  const type = M.modLookupClaimedType(mod, name)
-  if (type) {
-    checkClaimedType(mod, exp, type)
+  const opaqueTypeExp = mod.opaqueClaimed.get(name)
+  if (opaqueTypeExp) {
+    const opaqueType = M.typeEvaluate(
+      mod,
+      M.emptyTypeEnv(),
+      opaqueTypeExp,
+      "transparent",
+    )
+    const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
+    checkClaimedType(mod, exp, opaqueType, opaqueNames)
   } else {
-    checkByInfer(mod, name, exp)
+    const type = M.modLookupClaimedType(mod, name)
+    if (type) {
+      checkClaimedType(mod, exp, type, new Set())
+    } else {
+      checkByInfer(mod, name, exp)
+    }
   }
 }
 
-function checkClaimedType(mod: M.Mod, exp: M.Exp, type: M.Type): void {
+function findOpaqueNamesByInterfaceName(
+  mod: M.Mod,
+  name: string,
+): Set<string> | undefined {
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind === "OpaqueTypeDefinition") {
+      const entry = definition.interfaceEntries.find((e) => e.name === name)
+      if (entry) {
+        return new Set(definition.interfaceEntries.map((e) => e.name))
+      }
+    }
+  }
+
+  return undefined
+}
+
+function checkClaimedType(
+  mod: M.Mod,
+  exp: M.Exp,
+  type: M.Type,
+  opaqueNames: Set<string>,
+): void {
   const ctx = M.emptyCtx()
+  ctx.transparentOpaqueNames = opaqueNames
   const effect = M.typeCheckAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {

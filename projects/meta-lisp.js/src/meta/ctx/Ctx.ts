@@ -2,26 +2,32 @@ import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export type Ctx = Map<string, M.Type>
+export type Ctx = {
+  bindings: Map<string, M.Type>
+  transparentOpaqueNames: Set<string>
+}
 
 export function emptyCtx(): Ctx {
-  return new Map()
+  return { bindings: new Map(), transparentOpaqueNames: new Set() }
 }
 
 export function ctxNames(ctx: Ctx): Set<string> {
-  return new Set(ctx.keys())
+  return new Set(ctx.bindings.keys())
 }
 
 export function ctxTypes(ctx: Ctx): Array<M.Type> {
-  return Array.from(ctx.values())
+  return Array.from(ctx.bindings.values())
 }
 
 export function ctxLookupType(ctx: Ctx, name: string): undefined | M.Type {
-  return ctx.get(name)
+  return ctx.bindings.get(name)
 }
 
 export function ctxPut(ctx: Ctx, name: string, type: M.Type): Ctx {
-  return new Map([...ctx, [name, type]])
+  return {
+    ...ctx,
+    bindings: new Map([...ctx.bindings, [name, type]]),
+  }
 }
 
 export function ctxPutMany(

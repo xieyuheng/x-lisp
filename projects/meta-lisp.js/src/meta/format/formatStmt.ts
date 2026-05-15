@@ -60,6 +60,18 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-record-type ${type} ${formatAlgebraicTypeConstructor(stmt.dataConstructor)})`
     }
 
+    case "DefineOpaqueType": {
+      const params =
+        stmt.parameters.length > 0
+          ? `(${stmt.name} ${stmt.parameters.join(" ")})`
+          : stmt.name
+      const repr = M.formatExp(stmt.representationType)
+      const ifaces = stmt.interfaceFunctions
+        .map(({ name, type }) => `(${name} ${M.formatExp(type)})`)
+        .join(" ")
+      return `(define-opaque-type ${params} ${repr} ${ifaces})`
+    }
+
     case "DefineAlgebraicType": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors

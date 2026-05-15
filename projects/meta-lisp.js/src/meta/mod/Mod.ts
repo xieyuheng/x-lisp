@@ -15,6 +15,7 @@ export type Mod = {
   admitted: Set<string>
   definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>
+  opaqueClaimed: Map<string, M.Exp>
   inferredTypes: Map<string, M.Type>
   dataConstructors: Map<string, DataConstructor>
   project: M.Project
@@ -28,9 +29,11 @@ export function createMod(name: string, project: M.Project): Mod {
     admitted: new Set(),
     definitions: new Map(),
     claimed: new Map(),
+    opaqueClaimed: new Map(),
     inferredTypes: new Map(),
     dataConstructors: new Map(),
     project,
+
   }
 }
 

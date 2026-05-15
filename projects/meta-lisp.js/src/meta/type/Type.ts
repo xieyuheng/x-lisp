@@ -2,6 +2,7 @@ import { range } from "@xieyuheng/helpers.js/range"
 import type {
   AlgebraicTypeDefinition,
   Definition,
+  OpaqueTypeDefinition,
 } from "../definition/index.ts"
 
 export type Type =
@@ -14,6 +15,7 @@ export type Type =
   | SetType
   | HashType
   | AlgebraicType
+  | OpaqueType
   | PolymorphicType
   | CurryType
   | DefinitionType
@@ -202,6 +204,30 @@ export function isAlgebraicType(type: Type): type is AlgebraicType {
 export function asAlgebraicType(type: Type): AlgebraicType {
   if (isAlgebraicType(type)) return type
   throw new Error(`[asAlgebraicType] fail on: ${type.kind}`)
+}
+
+// OpaqueType
+
+export type OpaqueType = {
+  kind: "OpaqueType"
+  definition: OpaqueTypeDefinition
+  argTypes: Array<Type>
+}
+
+export function OpaqueType(
+  definition: OpaqueTypeDefinition,
+  argTypes: Array<Type>,
+): OpaqueType {
+  return { kind: "OpaqueType", definition, argTypes }
+}
+
+export function isOpaqueType(type: Type): type is OpaqueType {
+  return type.kind === "OpaqueType"
+}
+
+export function asOpaqueType(type: Type): OpaqueType {
+  if (isOpaqueType(type)) return type
+  throw new Error(`[asOpaqueType] fail on: ${type.kind}`)
 }
 
 // PolymorphicType
@@ -420,6 +446,13 @@ function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
 
   if (type.kind === "AlgebraicType") {
     return AlgebraicType(
+      type.definition,
+      type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
+    )
+  }
+
+  if (type.kind === "OpaqueType") {
+    return OpaqueType(
       type.definition,
       type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
     )

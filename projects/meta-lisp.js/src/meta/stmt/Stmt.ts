@@ -19,6 +19,7 @@ export type Stmt =
   | DefineStruct
   | DefineStructStar
   | DefineRecordType
+  | DefineOpaqueType
   | Claim
   | ClaimType
   | Admit
@@ -248,6 +249,40 @@ export function DefineRecordType(
     kind: "DefineRecordType",
     typeConstructor,
     dataConstructor,
+    location,
+  }
+}
+
+export type DefineOpaqueType = {
+  kind: "DefineOpaqueType"
+  name: string
+  parameters: Array<string>
+  representationType: Exp
+  interfaceFunctions: Array<{
+    name: string
+    type: Exp
+    location?: SourceLocation
+  }>
+  location?: SourceLocation
+}
+
+export function DefineOpaqueType(
+  name: string,
+  parameters: Array<string>,
+  representationType: Exp,
+  interfaceFunctions: Array<{
+    name: string
+    type: Exp
+    location?: SourceLocation
+  }>,
+  location?: SourceLocation,
+): DefineOpaqueType {
+  return {
+    kind: "DefineOpaqueType",
+    name,
+    parameters,
+    representationType,
+    interfaceFunctions,
     location,
   }
 }

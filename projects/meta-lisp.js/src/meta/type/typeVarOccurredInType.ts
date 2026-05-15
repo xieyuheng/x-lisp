@@ -52,6 +52,7 @@ function typeVarOccurredInTypeWithBoundIds(
       )
 
     case "AlgebraicType":
+    case "OpaqueType":
       return type.argTypes.some((t) =>
         typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
       )

@@ -1,0 +1,4 @@
+(error-module box-as-list-error)
+
+(define-test box-as-list-test
+  (list-length (make-box)))

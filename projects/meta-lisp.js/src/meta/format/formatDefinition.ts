@@ -68,6 +68,10 @@ export function formatDefinition(definition: M.Definition): string {
         return `(define-enum (${definition.name} ${parameters}) ${dataConstructors})`
       }
     }
+
+    case "OpaqueTypeDefinition": {
+      return `(define-opaque-type ${definition.name} ...)`
+    }
   }
 }
 

@@ -52,6 +52,7 @@ function onDefinition(
 
     // - do not generate code for type.
     case "AlgebraicTypeDefinition":
+    case "OpaqueTypeDefinition":
     case "TypeDefinition": {
       return []
     }

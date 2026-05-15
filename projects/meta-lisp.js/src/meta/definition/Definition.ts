@@ -13,6 +13,7 @@ export type Definition =
   | TestDefinition
   | TypeDefinition
   | AlgebraicTypeDefinition
+  | OpaqueTypeDefinition
 
 export type DefinitionState = {
   isChecked?: boolean
@@ -246,6 +247,44 @@ export type DataField = {
   name: string
   type: Exp
   location?: SourceLocation
+}
+
+export type InterfaceEntry = {
+  name: string
+  typeExp: Exp
+  location?: SourceLocation
+}
+
+export type OpaqueTypeDefinition = {
+  kind: "OpaqueTypeDefinition"
+  mod: Mod
+  name: string
+  typeConstructor: TypeConstructor
+  representationTypeExp: Exp
+  representationType?: Type
+  interfaceEntries: Array<InterfaceEntry>
+  location?: SourceLocation
+} & DefinitionState
+
+export function OpaqueTypeDefinition(
+  mod: Mod,
+  name: string,
+  typeConstructor: TypeConstructor,
+  representationTypeExp: Exp,
+  representationType: Type | undefined,
+  interfaceEntries: Array<InterfaceEntry>,
+  location?: SourceLocation,
+): OpaqueTypeDefinition {
+  return {
+    kind: "OpaqueTypeDefinition",
+    mod,
+    name,
+    typeConstructor,
+    representationTypeExp,
+    representationType,
+    interfaceEntries,
+    location,
+  }
 }
 
 export function AlgebraicTypeDefinition(
