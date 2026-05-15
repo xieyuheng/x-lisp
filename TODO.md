@@ -1,16 +1,8 @@
-[stack-lisp.c] 修复 `x_assert_with_location` 等函数
+[meta-lisp.js] 我们是否需要实现一个 `expIsCore` 函数来明确哪些是 desugar 之后的核心语法？
 
-下列函数也需要像 `x_error_with_location` 一样修复。
+[meta-lisp.js] 实现 `expNaiveSubst`
 
-```c
-x_fn_2_t x_assert_with_location;
-x_fn_2_t x_assert_not_with_location;
-x_fn_3_t x_assert_equal_with_location;
-x_fn_3_t x_assert_not_equal_with_location;
-```
-
-[meta-lisp.js] 可否先实现一个 `expIsCore` 函数来明确哪些是 desugar 之后的核心语法？
-[meta-lisp.js] 实现一个 `expNaiveSubst` 不处理 capture avoidance，只处理 bound variable shadowing
+- 类似 `expSubst`，但是不处理 capture avoidance，只处理 bound variable shadowing。
 
 # setup feedback loop
 
