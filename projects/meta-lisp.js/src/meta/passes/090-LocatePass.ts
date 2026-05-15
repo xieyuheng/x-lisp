@@ -102,6 +102,12 @@ const locateTable: Array<{
 }> = [
   { source: "error", sourceArity: 1, target: "error-with-location" },
   { source: "assert", sourceArity: 1, target: "assert-with-location" },
+  { source: "assert-not", sourceArity: 1, target: "assert-not-with-location" },
+  {
+    source: "assert-not-equal",
+    sourceArity: 2,
+    target: "assert-not-equal-with-location",
+  },
   {
     source: "assert-equal",
     sourceArity: 2,
