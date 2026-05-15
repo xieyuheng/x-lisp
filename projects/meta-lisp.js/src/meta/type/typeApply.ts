@@ -2,15 +2,15 @@ import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
 import { type Type } from "../index.ts"
-import type { OpaqueMode } from "./typeEvaluate.ts"
+import type { TypeEvaluationMode } from "./typeEvaluate.ts"
 
 export function typeApply(
+  mode: TypeEvaluationMode,
   target: Type,
   args: Array<Type>,
-  opaqueMode: OpaqueMode = "opaque",
 ): Type {
   if (M.isDefinitionType(target)) {
-    return applyDefinition(target.definition, args, opaqueMode)
+    return applyDefinition(mode, target.definition, args)
   }
 
   if (M.isCurryType(target)) {
@@ -20,10 +20,10 @@ export function typeApply(
     }
 
     assert(allArgs.length === target.arity)
-    const result = typeApply(target.target, allArgs, opaqueMode)
+    const result = typeApply(mode, target.target, allArgs)
     if (args.length > target.arity - target.args.length) {
       const extraArgs = allArgs.slice(target.arity)
-      return typeApply(result, extraArgs, opaqueMode)
+      return typeApply(mode, result, extraArgs)
     }
 
     return result
@@ -36,9 +36,9 @@ export function typeApply(
 }
 
 function applyDefinition(
+  mode: TypeEvaluationMode,
   definition: M.Definition,
   args: Array<Type>,
-  opaqueMode: OpaqueMode,
 ): Type {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
@@ -54,10 +54,10 @@ function applyDefinition(
         }
       }
       return M.typeEvaluate(
+        mode,
         definition.mod,
         typeEnv,
         definition.body,
-        opaqueMode,
       )
     }
 
@@ -66,7 +66,7 @@ function applyDefinition(
     }
 
     case "OpaqueTypeDefinition": {
-      if (opaqueMode === "transparent") {
+      if (mode === "TransparentMode") {
         const typeEnv = M.emptyTypeEnv()
         for (const i of range(definition.typeConstructor.parameters.length)) {
           if (args[i] !== undefined) {
@@ -74,10 +74,10 @@ function applyDefinition(
           }
         }
         return M.typeEvaluate(
+          mode,
           definition.mod,
           typeEnv,
           definition.representationType,
-          opaqueMode,
         )
       } else {
         return M.OpaqueType(definition, args)

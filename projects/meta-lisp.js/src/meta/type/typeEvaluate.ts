@@ -1,17 +1,17 @@
 import * as M from "../index.ts"
 import { type Type, type TypeEnv } from "../index.ts"
 
-export type OpaqueMode = "opaque" | "transparent"
+export type TypeEvaluationMode = "OpaqueMode" | "TransparentMode"
 
 export function typeEvaluate(
+  mode: TypeEvaluationMode,
   mod: M.Mod,
   typeEnv: TypeEnv,
   exp: M.Exp,
-  opaqueMode: OpaqueMode = "opaque",
 ): Type {
   switch (exp.kind) {
     case "Var": {
-      const type = typeLookup(mod, typeEnv, exp.name, opaqueMode)
+      const type = typeLookup(mode, mod, typeEnv, exp.name)
       if (type) return type
 
       let message = `[typeEvaluate] undefined variable`
@@ -29,10 +29,10 @@ export function typeEvaluate(
       }
 
       const type = typeLookup(
+        mode,
         qualifiedMod,
         M.emptyTypeEnv(),
         exp.name,
-        opaqueMode,
       )
       if (type) return type
 
@@ -44,9 +44,9 @@ export function typeEvaluate(
 
     case "Arrow": {
       const argTypes = exp.argTypes.map((argType) =>
-        typeEvaluate(mod, typeEnv, argType, opaqueMode),
+        typeEvaluate(mode, mod, typeEnv, argType),
       )
-      const retType = typeEvaluate(mod, typeEnv, exp.retType, opaqueMode)
+      const retType = typeEvaluate(mode, mod, typeEnv, exp.retType)
       return M.ArrowType(argTypes, retType)
     }
 
@@ -55,20 +55,20 @@ export function typeEvaluate(
         M.VarType(parameter, BigInt(0)),
       )
       const bodyType = typeEvaluate(
+        mode,
         mod,
         M.typeEnvPutMany(typeEnv, exp.parameters, varTypes),
         exp.body,
-        opaqueMode,
       )
       return M.PolymorphicType(varTypes, bodyType)
     }
 
     case "Apply": {
-      const target = typeEvaluate(mod, typeEnv, exp.target, opaqueMode)
+      const target = typeEvaluate(mode, mod, typeEnv, exp.target)
       const args = exp.args.map((arg) =>
-        typeEvaluate(mod, typeEnv, arg, opaqueMode),
+        typeEvaluate(mode, mod, typeEnv, arg),
       )
-      return M.typeApply(target, args, opaqueMode)
+      return M.typeApply(mode, target, args)
     }
 
     default: {
@@ -80,23 +80,23 @@ export function typeEvaluate(
 }
 
 function typeLookup(
+  mode: TypeEvaluationMode,
   mod: M.Mod,
   typeEnv: TypeEnv,
   name: string,
-  opaqueMode: OpaqueMode = "opaque",
 ): M.Type | undefined {
   const fromTypeEnv = M.typeEnvLookup(typeEnv, name)
   if (fromTypeEnv) return fromTypeEnv
 
   const definition = M.modLookupDefinition(mod, name)
-  if (definition) return definitionToType(definition, opaqueMode)
+  if (definition) return definitionToType(mode, definition)
 
   return M.modLookupClaimedType(mod, name)
 }
 
 function definitionToType(
+  mode: TypeEvaluationMode,
   definition: M.Definition,
-  opaqueMode: OpaqueMode = "opaque",
 ): M.Type {
   M.definitionCheck(definition)
 
@@ -124,10 +124,10 @@ function definitionToType(
     case "TypeDefinition": {
       if (definition.parameters.length === 0) {
         return M.typeEvaluate(
+          mode,
           definition.mod,
           M.emptyTypeEnv(),
           definition.body,
-          opaqueMode,
         )
       } else {
         return M.DefinitionType(definition)
@@ -136,10 +136,10 @@ function definitionToType(
 
     case "VariableDefinition": {
       return M.typeEvaluate(
+        mode,
         definition.mod,
         M.emptyTypeEnv(),
         definition.body,
-        opaqueMode,
       )
     }
 
@@ -152,13 +152,13 @@ function definitionToType(
     }
 
     case "OpaqueTypeDefinition": {
-      if (opaqueMode === "transparent") {
+      if (mode === "TransparentMode") {
         if (definition.typeConstructor.parameters.length === 0) {
           return M.typeEvaluate(
+            mode,
             definition.mod,
             M.emptyTypeEnv(),
             definition.representationType,
-            opaqueMode,
           )
         } else {
           return M.DefinitionType(definition)

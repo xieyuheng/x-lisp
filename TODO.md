@@ -1,5 +1,3 @@
-[meta-lisp.js] [refactor] `typeEvaluate` 的 mode 参数 放在最前面，没有默认值，用大写字符串。
-
 [meta-lisp.js] [refactor] ExecutePass -- 这里错了 TypeConstructor 的 definition 被要求 AlgebraicTypeDefinition：
 
  ```

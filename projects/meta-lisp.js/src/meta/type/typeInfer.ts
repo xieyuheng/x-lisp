@@ -106,7 +106,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       }
 
       case "The": {
-        const type = M.typeEvaluate(mod, M.emptyTypeEnv(), exp.type)
+        const type = M.typeEvaluate("OpaqueMode", mod, M.emptyTypeEnv(), exp.type)
         return M.checkThenInfer(
           M.typeCheckAssignable(mod, ctx, exp.exp, type),
           M.okInferEffect(type),
@@ -230,10 +230,10 @@ function typeInferLookup(
       const opaqueTypeExp = mod.opaqueClaimed.get(name)
       if (opaqueTypeExp) {
         const transparentType = M.typeEvaluate(
+          "TransparentMode",
           mod,
           M.emptyTypeEnv(),
           opaqueTypeExp,
-          "transparent",
         )
         return M.okInferEffect(transparentType)(subst)
       }
