@@ -102,13 +102,19 @@ const locateTable: Array<{
 }> = [
   { source: "error", sourceArity: 1, target: "error-with-location" },
   { source: "assert", sourceArity: 1, target: "assert-with-location" },
-  { source: "assert-equal", sourceArity: 2, target: "assert-equal-with-location" },
+  {
+    source: "assert-equal",
+    sourceArity: 2,
+    target: "assert-equal-with-location",
+  },
   { source: "box-get", sourceArity: 1, target: "box-get-with-location" },
 ]
 
-function findLocateEntry(
-  name: string,
-): { source: string; sourceArity: number; target: string } {
+function findLocateEntry(name: string): {
+  source: string
+  sourceArity: number
+  target: string
+} {
   const entry = locateTable.find((entry) => entry.source === name)
   if (entry === undefined) {
     throw new Error(`[findLocateEntry] unknown source: ${name}`)

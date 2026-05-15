@@ -4,3 +4,8 @@
   (letrec* ((a 1)
             (b (iadd a 1)))
     (assert-equal 2 b)))
+
+;; (define-test sequential-binding-runtime-error
+;;   (letrec* ((b (iadd a 1))
+;;             (a 1))
+;;     (assert-equal 2 b)))

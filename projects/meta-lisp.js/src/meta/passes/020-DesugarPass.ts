@@ -306,9 +306,6 @@ function desugarLetrec(
 //     ...
 //     (box-put! en xn)
 //     body)
-//
-// The actual implementation uses list primitives
-// (make-list, car, list-put!) instead of box.
 
 function desugarLetrecStar(
   bindings: Array<M.Binding>,
@@ -321,7 +318,7 @@ function desugarLetrecStar(
   for (const b of bindings) {
     const loc = b.location ?? location
     const carExp = M.Apply(
-      M.QualifiedVar("builtin", "car", loc),
+      M.QualifiedVar("builtin", "box-get", loc),
       [M.Var(b.name, loc)],
       loc,
     )
@@ -335,7 +332,7 @@ function desugarLetrecStar(
     const loc = b.location ?? location
     return M.Binding(
       b.name,
-      M.Apply(M.QualifiedVar("builtin", "make-list", loc), [], loc),
+      M.Apply(M.QualifiedVar("builtin", "make-box", loc), [], loc),
       loc,
     )
   })
@@ -345,7 +342,7 @@ function desugarLetrecStar(
     const loc = bindings[i].location ?? location
     result = M.Begin1(
       M.Apply(
-        M.QualifiedVar("builtin", "list-push!", loc),
+        M.QualifiedVar("builtin", "box-put!", loc),
         [newRHSes[i], M.Var(bindings[i].name, loc)],
         loc,
       ),
