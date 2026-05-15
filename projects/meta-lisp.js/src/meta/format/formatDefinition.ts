@@ -70,7 +70,16 @@ export function formatDefinition(definition: M.Definition): string {
     }
 
     case "OpaqueTypeDefinition": {
-      return `(define-opaque-type ${definition.name} ...)`
+      const name = definition.name
+      const params =
+        definition.typeConstructor.parameters.length > 0
+          ? `(${name} ${definition.typeConstructor.parameters.join(" ")})`
+          : name
+      const repr = M.formatExp(definition.representationTypeExp)
+      const ifaces = definition.interfaceEntries
+        .map((entry) => `(${entry.name} ${M.formatExp(entry.typeExp)})`)
+        .join(" ")
+      return `(define-opaque-type ${params} ${repr} ${ifaces})`
     }
   }
 }

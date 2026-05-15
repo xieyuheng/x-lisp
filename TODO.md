@@ -1,8 +1,3 @@
-[meta-lisp.js] [refactor] formatDefinition 在 OpaqueTypeDefinition 的 case 应该打印完整信息。
-
-- 你可以实现辅助函数来打印内部的信息。
-  模仿 formatDefinition 的其他 case。
-
 [meta-lisp.js] [refactor] LocatePass 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
 [meta-lisp.js] [refactor] qualifyDefinition 需要处理 OpaqueTypeDefinition，类似 AlgebraicTypeDefinition。
 [meta-lisp.js] [refactor] lowerMatchDefinition 不用处理 AlgebraicTypeDefinition，因为里面不允许有 Match。
