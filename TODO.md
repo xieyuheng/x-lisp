@@ -1,11 +1,3 @@
-[stack-lisp.c] 修复 `x_error_with_location`
-
-"(error) " 和 info 的内容，应该作为 message 传递给 format_message_with_source_location。
-
-注意；
-
-- 先构造用一个 buffer ，用 "(error) " 和 info 构造 message string。
-
 [stack-lisp.c] 修复 `x_assert_with_location` 等函数
 
 下列函数也需要像 `x_error_with_location` 一样修复。
