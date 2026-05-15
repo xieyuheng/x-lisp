@@ -32,7 +32,8 @@
 (define (box-get-with-location box location)
   (if (box-empty? box)
     (begin
-      (write (format-message-with-source-location "box is empty" location))
+      (file-write (current-stderr-file)
+        (format-message-with-source-location "box is empty" location))
       (error "box is empty"))
     (car box)))
 

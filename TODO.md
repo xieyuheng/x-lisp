@@ -1,10 +1,6 @@
-[meta-builtin.meta] 修复 box-get-with-location
+[stack-lisp.c] `make_static_xfile`  用来创建不ui被 gc 追踪的 xfile.
 
-```scheme
-(write (format-message-with-source-location "box is empty" location))
-```
-
-- 使用 file-write 和 (current-stderr-file)
+- `ensure_standard_files` 调用  `make_static_xfile`
 
 [stack-lisp.c] 修复 `x_error_with_location`
 
