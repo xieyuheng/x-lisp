@@ -53,12 +53,7 @@ function applyDefinition(
           typeEnv.set(definition.parameters[i], args[i])
         }
       }
-      return M.typeEvaluate(
-        mode,
-        definition.mod,
-        typeEnv,
-        definition.body,
-      )
+      return M.typeEvaluate(mode, definition.mod, typeEnv, definition.body)
     }
 
     case "AlgebraicTypeDefinition": {

@@ -140,7 +140,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
   if (stmt.kind === "DefineEnum") {
     const name = stmt.typeConstructor.name
-    const typeConstructor = stmt.typeConstructor as unknown as M.TypeConstructor
+    const typeConstructor = stmt.typeConstructor
     const dataConstructors =
       stmt.dataConstructors as unknown as Array<M.DataConstructor>
 
@@ -151,8 +151,6 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       dataConstructors,
       stmt.location,
     )
-
-    typeConstructor.definition = definition
 
     for (const dataConstructor of dataConstructors) {
       dataConstructor.definition = definition
@@ -186,7 +184,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
   if (stmt.kind === "DefineAlgebraicType") {
     const name = stmt.typeConstructor.name
-    const typeConstructor = stmt.typeConstructor as unknown as M.TypeConstructor
+    const typeConstructor = stmt.typeConstructor
     const dataConstructors = stmt.dataConstructors.map(
       (ctor): M.DataConstructor => ({
         definition: undefined as unknown as M.AlgebraicTypeDefinition,
@@ -207,8 +205,6 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       dataConstructors,
       stmt.location,
     )
-
-    typeConstructor.definition = definition
 
     for (const dataConstructor of dataConstructors) {
       dataConstructor.definition = definition
@@ -239,7 +235,6 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
   if (stmt.kind === "DefineOpaqueType") {
     const name = stmt.name
     const typeConstructor: M.TypeConstructor = {
-      definition: undefined as unknown as M.AlgebraicTypeDefinition,
       name: stmt.name,
       parameters: stmt.parameters,
       location: stmt.location,
@@ -257,9 +252,6 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       })),
       stmt.location,
     )
-
-    typeConstructor.definition =
-      definition as unknown as M.AlgebraicTypeDefinition
 
     M.modDefine(mod, name, definition)
 

@@ -28,12 +28,7 @@ export function typeEvaluate(
         throw new Error(message)
       }
 
-      const type = typeLookup(
-        mode,
-        qualifiedMod,
-        M.emptyTypeEnv(),
-        exp.name,
-      )
+      const type = typeLookup(mode, qualifiedMod, M.emptyTypeEnv(), exp.name)
       if (type) return type
 
       let message = `[typeEvaluate] undefined qualified variable`
@@ -65,9 +60,7 @@ export function typeEvaluate(
 
     case "Apply": {
       const target = typeEvaluate(mode, mod, typeEnv, exp.target)
-      const args = exp.args.map((arg) =>
-        typeEvaluate(mode, mod, typeEnv, arg),
-      )
+      const args = exp.args.map((arg) => typeEvaluate(mode, mod, typeEnv, arg))
       return M.typeApply(mode, target, args)
     }
 

@@ -242,9 +242,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 })
 
-const parseTypeConstructor = S.createRouter<
-  Omit<M.TypeConstructor, "definition">
->({
+const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
   "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {
       definition: undefined,

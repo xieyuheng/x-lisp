@@ -118,9 +118,7 @@ export function formatStmt(stmt: M.Stmt): string {
   }
 }
 
-function formatTypeConstructor(
-  typeConstructor: Omit<M.TypeConstructor, "definition">,
-): string {
+function formatTypeConstructor(typeConstructor: M.TypeConstructor): string {
   if (typeConstructor.parameters.length === 0) {
     return typeConstructor.name
   } else {

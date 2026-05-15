@@ -175,13 +175,13 @@ export function DefineType(
 
 export type DefineEnum = {
   kind: "DefineEnum"
-  typeConstructor: Omit<TypeConstructor, "definition">
+  typeConstructor: TypeConstructor
   dataConstructors: Array<Omit<DataConstructor, "definition">>
   location?: SourceLocation
 }
 
 export function DefineEnum(
-  typeConstructor: Omit<TypeConstructor, "definition">,
+  typeConstructor: TypeConstructor,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
   location?: SourceLocation,
 ): DefineEnum {
@@ -195,13 +195,13 @@ export function DefineEnum(
 
 export type DefineStructStar = {
   kind: "DefineStructStar"
-  typeConstructor: Omit<TypeConstructor, "definition">
+  typeConstructor: TypeConstructor
   dataConstructor: Omit<DataConstructor, "definition">
   location?: SourceLocation
 }
 
 export function DefineStructStar(
-  typeConstructor: Omit<TypeConstructor, "definition">,
+  typeConstructor: TypeConstructor,
   dataConstructor: Omit<DataConstructor, "definition">,
   location?: SourceLocation,
 ): DefineStructStar {
@@ -215,13 +215,13 @@ export function DefineStructStar(
 
 export type DefineStruct = {
   kind: "DefineStruct"
-  typeConstructor: Omit<TypeConstructor, "definition">
+  typeConstructor: TypeConstructor
   fields: Array<DataField>
   location?: SourceLocation
 }
 
 export function DefineStruct(
-  typeConstructor: Omit<TypeConstructor, "definition">,
+  typeConstructor: TypeConstructor,
   fields: Array<DataField>,
   location?: SourceLocation,
 ): DefineStruct {
@@ -235,13 +235,13 @@ export function DefineStruct(
 
 export type DefineRecordType = {
   kind: "DefineRecordType"
-  typeConstructor: Omit<TypeConstructor, "definition">
+  typeConstructor: TypeConstructor
   dataConstructor: AlgebraicTypeConstructor
   location?: SourceLocation
 }
 
 export function DefineRecordType(
-  typeConstructor: Omit<TypeConstructor, "definition">,
+  typeConstructor: TypeConstructor,
   dataConstructor: AlgebraicTypeConstructor,
   location?: SourceLocation,
 ): DefineRecordType {
@@ -304,13 +304,13 @@ export type AlgebraicTypeConstructor = {
 
 export type DefineAlgebraicType = {
   kind: "DefineAlgebraicType"
-  typeConstructor: Omit<TypeConstructor, "definition">
+  typeConstructor: TypeConstructor
   dataConstructors: Array<AlgebraicTypeConstructor>
   location?: SourceLocation
 }
 
 export function DefineAlgebraicType(
-  typeConstructor: Omit<TypeConstructor, "definition">,
+  typeConstructor: TypeConstructor,
   dataConstructors: Array<AlgebraicTypeConstructor>,
   location?: SourceLocation,
 ): DefineAlgebraicType {
