@@ -1,5 +1,5 @@
 [docs] [reference] syntax.md -- `local (define)` 章节的 assert-equal 改为用 ;; => 展示输出
-[docs] [reference] syntax.md -- `local (define)` 章节的 外层 define 改为 begin
+[docs] [reference] syntax.md -- `local (define)` 章节的 顶层 define 改为 begin
 
 [meta-lisp.js] desugarLetrecStar 在代码中给出翻译例子
 [meta-lisp.js] 修复 letrec 的 desugarLetrec，在代码中给出翻译例子

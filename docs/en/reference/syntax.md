@@ -746,7 +746,7 @@ Sequential dependency:
 (define (g x)
   (define a 1)
   (define b (iadd a 1))
-  (assert-equal 2 b))
+  b)  ;; => 2
 ```
 
 `(=)` and `(define)` can be mixed:
@@ -756,7 +756,7 @@ Sequential dependency:
   (= one 1)
   (define a one)
   (define b (iadd a one))
-  (assert-equal 2 b))
+  b)  ;; => 2
 ```
 
 
