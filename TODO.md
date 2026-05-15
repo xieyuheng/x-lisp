@@ -1,17 +1,8 @@
-[stack-lisp.c] 增加新的 builtin 函数 format-message-with-source-location
-
-- 放在 sexp.c 和 sexp.h 中。
-
-- format-message-with-source-location 的类型为：
-  (claim format-message-with-source-location (-> string-t source-location-t string-t))
-  第一个参数是 message，返回的 string 是 format 的结果。
-
-- 注意，[meta-builtin.meta] 中要增加对 format-message-with-source-location 的类型声明。
-  放在 sexp/source-location.meta 中即可。
-
 [meta-builtin.meta] box -- 实现 box-get-with-location 类似 assert-with-location
 
 - 在运行时报错的时候调用 format-message-with-source-location 来报错
+
+[meta-lisp.js] 在 LocatePass 中把参数充足的 box-get 转化为 box-get-with-location
 
 [meta-lisp.js] desugarLetrecStar 在代码中给出翻译例子 -- 使用 box
 [meta-lisp.js] 修复 letrec 的 desugarLetrec，在代码中给出翻译例子
