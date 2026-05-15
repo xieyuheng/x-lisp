@@ -28,6 +28,14 @@
     (nothing)
     (just (car box))))
 
+(claim box-get-with-location (polymorphic (E) (-> (box-t E) source-location-t E)))
+(define (box-get-with-location box location)
+  (if (box-empty? box)
+    (begin
+      (write (format-message-with-source-location "box is empty" location))
+      (error "box is empty"))
+    (car box)))
+
 (define-test box-test
   (let ((box (make-box)))
     (assert (box-empty? box))
