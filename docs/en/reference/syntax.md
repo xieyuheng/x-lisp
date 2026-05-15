@@ -710,7 +710,7 @@ Sequential dependency:
 ```scheme
 (letrec* ((a 1)
           (b (iadd a 1)))
-  (assert-equal 2 b))
+  b)  ;; => 2
 ```
 
 ## local (define)
