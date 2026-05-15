@@ -99,6 +99,7 @@ const specialNameRecord: Record<string, string> = {
   error: "error-with-location",
   assert: "assert-with-location",
   "assert-equal": "assert-equal-with-location",
+  "box-get": "box-get-with-location",
 }
 
 function isSpecialTarget(exp: M.Exp): boolean {
