@@ -94,6 +94,30 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 | 严格求值                              | ✅ 严格求值（call-by-value）                         |
 | 允许副作用                            | ✅ 允许副作用（I/O、打印等）                         |
 
+# 和 Clojure 有什么区别？
+
+| Clojure                                   | meta-lisp                                              |
+|-------------------------------------------|--------------------------------------------------------|
+| `(defn f [x] ...)`                        | `(define (f x) ...)`                                   |
+| `int -> int`                              | `(-> int-t int-t)`                                     |
+| 动态类型                                  | ✅ 静态类型（Hindley-Milner）                           |
+| 默认不可变数据                            | 默认可变数据                                            |
+| 运行在 JVM / CLR / JS 上                  | 独立的编译器（bootstrap + self-hosting）               |
+| STM 并发                                  | ❌ 不支持                                              |
+| 惰性序列                                  | ❌ 严格求值（call-by-value）                           |
+
+# 和 Common Lisp 有什么区别？
+
+| Common Lisp                               | meta-lisp                                              |
+|-------------------------------------------|--------------------------------------------------------|
+| `(defun f (x) ...)`                       | `(define (f x) ...)`                                   |
+| `(function (int) int)`                    | `(-> int-t int-t)`                                     |
+| 动态类型                                  | ✅ 静态类型（Hindley-Milner）                           |
+| CLOS（Common Lisp Object System）         | ❌ 不支持（用 define-struct / define-enum）            |
+| 多返回值                                  | ❌ 不支持                                              |
+| 重启/条件系统（restart / condition）      | ❌ 不支持                                              |
+| 严格求值                                  | ✅ 严格求值（call-by-value）                           |
+
 # 和 TypeScript 有什么区别？
 
 | TypeScript                    | meta-lisp                  |

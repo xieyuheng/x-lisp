@@ -92,6 +92,30 @@ A very simple type system:
 | Strict evaluation                     | ✅ Strict evaluation (call-by-value)                 |
 | Side effects allowed                  | ✅ Side effects allowed (I/O, printing)              |
 
+# Differences from Clojure?
+
+| Clojure                                   | meta-lisp                                            |
+|-------------------------------------------|------------------------------------------------------|
+| `(defn f [x] ...)`                        | `(define (f x) ...)`                                 |
+| `int -> int`                              | `(-> int-t int-t)`                                   |
+| Dynamic typing                            | ✅ Static typing (Hindley-Milner)                    |
+| Immutable data by default                 | Mutable data by default                              |
+| Running on JVM / CLR / JS                 | Standalone compiler (bootstrap + self-hosting)       |
+| STM for concurrency                       | ❌ Not supported                                      |
+| Lazy sequences                            | ❌ Strict evaluation (call-by-value)                 |
+
+# Differences from Common Lisp?
+
+| Common Lisp                               | meta-lisp                                            |
+|-------------------------------------------|------------------------------------------------------|
+| `(defun f (x) ...)`                       | `(define (f x) ...)`                                 |
+| `(function (int) int)`                    | `(-> int-t int-t)`                                   |
+| Dynamic typing                            | ✅ Static typing (Hindley-Milner)                    |
+| CLOS (Common Lisp Object System)          | ❌ Not supported (use define-struct / define-enum)   |
+| Multiple return values                    | ❌ Not supported                                      |
+| Restart / condition system                | ❌ Not supported                                      |
+| Strict evaluation                         | ✅ Strict evaluation (call-by-value)                 |
+
 # Differences from TypeScript?
 
 | TypeScript                    | meta-lisp                  |
