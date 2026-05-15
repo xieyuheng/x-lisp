@@ -42,6 +42,7 @@ All meta-lisp syntax is organized below.
   - [(let)](#let)
   - [(let*)](#let-1)
   - [(=)](#)
+  - [(letrec)](#letrec)
   - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
 - [Function composition](#function-composition)
@@ -676,6 +677,50 @@ Equivalent to:
       (println z)
       (iadd y z))))
 ```
+
+## (letrec)
+
+```scheme
+(letrec ((<name> <exp>)
+         ...)
+  <body>)
+```
+
+Similar to `(let)`, but supports recursion and mutual recursion.
+
+All `<exp>`s are evaluated in the same scope, invisible to each other.
+All `<name>`s are simultaneously bound to the results, then `<body>` is evaluated.
+
+Mutual recursion:
+
+```scheme
+(letrec ((even?
+          (lambda (n)
+            (if (equal? n 0)
+              true
+              (odd? (isub n 1)))))
+         (odd?
+          (lambda (n)
+            (if (equal? n 0)
+              false
+              (even? (isub n 1))))))
+  (assert (even? 4)))
+```
+
+Difference from `(letrec*)` (see below):
+
+```scheme
+;; (letrec*) supports sequential dependency:
+(letrec* ((a 1)
+          (b (iadd a 1)))
+  b)  ;; => 2
+
+;; (letrec) parallel semantics — no sequential dependency:
+(letrec ((a 1)
+         (b (iadd a 1)))  ;; Error: a not visible here
+  b)
+```
+
 
 ## (letrec*)
 

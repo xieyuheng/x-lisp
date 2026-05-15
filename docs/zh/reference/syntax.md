@@ -42,6 +42,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(let)](#let)
   - [(let*)](#let-1)
   - [(=)](#)
+  - [(letrec)](#letrec)
   - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
 - [函数组合](#函数组合)
@@ -680,6 +681,50 @@ builtin/list-empty?
       (println z)
       (iadd y z))))
 ```
+
+## (letrec)
+
+```scheme
+(letrec ((<name> <exp>)
+         ...)
+  <body>)
+```
+
+类似 `(let)`，但是允许递归与互相递归。
+
+所有 `<exp>` 在同一作用域中求值，互相不可见对方的值。
+所有 `<name>` 同时绑定到求值结果，然后求值 `<body>`。
+
+互相递归的例子：
+
+```scheme
+(letrec ((even?
+          (lambda (n)
+            (if (equal? n 0)
+              true
+              (odd? (isub n 1)))))
+         (odd?
+          (lambda (n)
+            (if (equal? n 0)
+              false
+              (even? (isub n 1))))))
+  (assert (even? 4)))
+```
+
+与 `(letrec*)`（见下文）的区别：
+
+```scheme
+;; (letrec*) 支持顺序依赖：
+(letrec* ((a 1)
+          (b (iadd a 1)))
+  b)  ;; => 2
+
+;; (letrec) 的并行语义不支持顺序依赖：
+(letrec ((a 1)
+         (b (iadd a 1)))  ;; 错误：a 在此处不可见
+  b)
+```
+
 
 ## (letrec*)
 

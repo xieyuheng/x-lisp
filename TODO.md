@@ -1,8 +1,34 @@
-[docs] [reference] syntax.md -- 补充 `(letrec)` 的语法文档
+# (define-opaque-type)
 
-- 说明 `(letrec)` 和 `(letrec*)` 的差异
-- 保持简洁清晰，尊重当前的体例。
-- 同时写英文和中文文档。
+[meta-lisp.js] `(define-abstract-type)` or `(define-opaque-type)`
+
+如何设计一种 define-abstract-type 或 define-opaque-type 语法，
+使得下面的 (box-t E) 类型定义为 (list-t E)，
+但是在类型检查的时候可以和可以和 (list-t E) 区分开。
+
+```scheme
+(define-type (box-t E) (list-t E))
+
+(claim make-box (polymorphic (E) (-> (box-t E))))
+(define (make-box)
+  (make-list))
+
+(claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
+(define (box-empty? box)
+  (list-empty? box))
+
+(claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
+(define (box-put! value box)
+  (if (box-empty? box)
+    (list-push! value box)
+    (list-put! 0 value box)))
+
+(claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
+(define (box-get-maybe box)
+  (if (box-empty? box)
+    (nothing)
+    (just (car box))))
+```
 
 # setup feedback loop
 
