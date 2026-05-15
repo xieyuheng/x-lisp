@@ -1203,7 +1203,7 @@ Destructures algebraic data types using pattern matching.
     ((apply-exp target arg)
      (apply (evaluate target env) (evaluate arg env)))
     ((lambda-exp parameter body)
-      (closure-value env parameter body))))
+     (closure-value env parameter body))))
 ```
 
 # Opaque types

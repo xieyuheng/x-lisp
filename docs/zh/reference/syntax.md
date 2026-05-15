@@ -1210,7 +1210,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
     ((apply-exp target arg)
      (apply (evaluate target env) (evaluate arg env)))
     ((lambda-exp parameter body)
-      (closure-value env parameter body))))
+     (closure-value env parameter body))))
 ```
 
 # 不透明类型
