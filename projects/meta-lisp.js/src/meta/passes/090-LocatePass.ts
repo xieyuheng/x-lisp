@@ -65,7 +65,7 @@ function locateDefinition(definition: M.Definition): null {
 function locateSpecialApply(exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Apply": {
-      if (isSpecialTarget(exp.target)) {
+      if (matchLocateEntry(exp.target, exp.args)) {
         if (!exp.location) {
           let message = `[locateSpecialApply] expect source location`
           message += `\n  exp: ${M.formatExp(exp)}`
@@ -95,24 +95,40 @@ function locateSpecialApply(exp: M.Exp): M.Exp {
   }
 }
 
-const specialNameRecord: Record<string, string> = {
-  error: "error-with-location",
-  assert: "assert-with-location",
-  "assert-equal": "assert-equal-with-location",
-  "box-get": "box-get-with-location",
+const locateTable: Array<{
+  source: string
+  sourceArity: number
+  target: string
+}> = [
+  { source: "error", sourceArity: 1, target: "error-with-location" },
+  { source: "assert", sourceArity: 1, target: "assert-with-location" },
+  { source: "assert-equal", sourceArity: 2, target: "assert-equal-with-location" },
+  { source: "box-get", sourceArity: 1, target: "box-get-with-location" },
+]
+
+function findLocateEntry(
+  name: string,
+): { source: string; sourceArity: number; target: string } {
+  const entry = locateTable.find((entry) => entry.source === name)
+  if (entry === undefined) {
+    throw new Error(`[findLocateEntry] unknown source: ${name}`)
+  }
+
+  return entry
 }
 
-function isSpecialTarget(exp: M.Exp): boolean {
-  return (
-    exp.kind === "QualifiedVar" &&
-    exp.modName === "builtin" &&
-    exp.name in specialNameRecord
-  )
+function matchLocateEntry(exp: M.Exp, args: M.Exp[]): boolean {
+  if (exp.kind !== "QualifiedVar") return false
+  if (exp.modName !== "builtin") return false
+  const entry = locateTable.find((entry) => entry.source === exp.name)
+  if (entry === undefined) return false
+  return args.length === entry.sourceArity
 }
 
 function targetWithLocation(exp: M.Exp): M.Exp {
   assert(exp.kind === "QualifiedVar")
-  return M.QualifiedVar(exp.modName, specialNameRecord[exp.name], exp.location)
+  const entry = findLocateEntry(exp.name)
+  return M.QualifiedVar(exp.modName, entry.target, exp.location)
 }
 
 function expFromSourceLocation(location: S.SourceLocation): M.Exp {

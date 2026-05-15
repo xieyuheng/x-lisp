@@ -1,8 +1,3 @@
-[meta-lisp.js] LocatePass 的 specialNameRecord 中目前只记录了名字
-
-- 需要确定只有在参数充足时才做转换，因此需要记录 arity。
-- isSpecialTarget 判断时要带上参数，根据 arity 判断当前参数是否充足，不充足就不用转化（也不用报错）。
-
 [meta-lisp.js] desugarLetrecStar 在代码前，用注释给出翻译例子，例子使用 box 而不是 list
 
 ```scheme
