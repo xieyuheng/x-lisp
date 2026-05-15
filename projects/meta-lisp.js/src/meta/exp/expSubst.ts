@@ -39,6 +39,10 @@ export function expSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       return substLetStar(exp, name, rhs)
     }
 
+    case "Letrec": {
+      return substLetrec(exp, name, rhs)
+    }
+
     case "LocalDefine": {
       let message = `[expSubst] local (define) can only appear in (begin)`
       if (exp.location)
@@ -515,6 +519,55 @@ function applyRenamings(
     result = expSubst(result, oldName, M.Var(freshName, location))
   }
   return result
+}
+
+function substLetrec(exp: M.Letrec, name: string, rhs: M.Exp): M.Exp {
+  const rhsFreeNames = M.expFreeNames(new Set(), rhs)
+  const allNames = new Set(exp.bindings.map((b) => b.name))
+  const nameShadowed = allNames.has(name)
+  const conflict = [...allNames].some((n) => rhsFreeNames.has(n))
+
+  const newRHSes = nameShadowed
+    ? exp.bindings.map((b) => b.rhs)
+    : exp.bindings.map((b) => expSubst(b.rhs, name, rhs))
+  let newBody = nameShadowed ? exp.body : expSubst(exp.body, name, rhs)
+
+  if (!conflict) {
+    if (nameShadowed) return exp
+    return M.Letrec(
+      exp.bindings.map((b, i) => M.Binding(b.name, newRHSes[i], b.location)),
+      newBody,
+      exp.location,
+    )
+  }
+
+  const usedNames = M.expOccurredNames(exp)
+  const renaming = new Map<string, string>()
+
+  for (const b of exp.bindings) {
+    if (rhsFreeNames.has(b.name)) {
+      renaming.set(b.name, M.generateRelativeFreshName(b.name, usedNames))
+    }
+  }
+
+  let finalBody = newBody
+  let finalRHSes = [...newRHSes]
+  for (const [oldName, freshName] of renaming) {
+    for (let i = 0; i < finalRHSes.length; i++) {
+      finalRHSes[i] = expSubst(
+        finalRHSes[i],
+        oldName,
+        M.Var(freshName, exp.location),
+      )
+    }
+    finalBody = expSubst(finalBody, oldName, M.Var(freshName, exp.location))
+  }
+
+  const newBindings = exp.bindings.map((b, i) =>
+    M.Binding(renaming.get(b.name) ?? b.name, finalRHSes[i], b.location),
+  )
+
+  return M.Letrec(newBindings, finalBody, exp.location)
 }
 
 function substMatch(exp: M.Match, name: string, rhs: M.Exp): M.Exp {

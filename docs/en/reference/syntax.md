@@ -692,18 +692,17 @@ All `<exp>`s can reference all `<name>`s.
 Mutual recursion:
 
 ```scheme
-(letrec*
-    ((even?
-      (lambda (n)
-        (if (equal? n 0)
-          true
-          (odd? (isub n 1)))))
-     (odd?
-      (lambda (n)
-        (if (equal? n 0)
-          false
-          (even? (isub n 1))))))
-  (even? 4))   ;; => true
+(letrec* ((even?
+           (lambda (n)
+             (if (equal? n 0)
+               true
+               (odd? (isub n 1)))))
+          (odd?
+           (lambda (n)
+             (if (equal? n 0)
+               false
+               (even? (isub n 1))))))
+  (assert (even? 4)))
 ```
 
 Sequential dependency:
@@ -711,18 +710,7 @@ Sequential dependency:
 ```scheme
 (letrec* ((a 1)
           (b (iadd a 1)))
-  b)   ;; => 2
-```
-
-meta-lisp does not adopt scheme's `(letrec)` syntax.
-
-Because the behavior of `(letrec)` in the following simple case is undefined,
-common scheme implementations will report a runtime error.
-
-```scheme
-(letrec ((a 1)
-         (b (iadd a 1)))
-  b)   ;; => undefined behavior
+  (assert-equal 2 b))
 ```
 
 ## local (define)
@@ -740,7 +728,7 @@ Replaces nested `(letrec*)` to reduce indentation.
 Mutual recursion (equivalent to the `(letrec*)` example above):
 
 ```scheme
-(begin
+(define (f x)
   (define (even? n)
     (if (equal? n 0)
       true
@@ -749,26 +737,26 @@ Mutual recursion (equivalent to the `(letrec*)` example above):
     (if (equal? n 0)
       false
       (even? (isub n 1))))
-  (even? x))   ;; => true
+  (even? x))
 ```
 
 Sequential dependency:
 
 ```scheme
-(begin
+(define (g x)
   (define a 1)
   (define b (iadd a 1))
-  b)   ;; => 2
+  (assert-equal 2 b))
 ```
 
 `(=)` and `(define)` can be mixed:
 
 ```scheme
-(begin
+(define (h x)
   (= one 1)
   (define a one)
   (define b (iadd a one))
-  b)   ;; => 2
+  (assert-equal 2 b))
 ```
 
 

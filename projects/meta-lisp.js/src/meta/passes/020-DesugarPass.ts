@@ -187,6 +187,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       )
     }
 
+    case "Letrec": {
+      return desugar(state, desugarLetrec(exp.bindings, exp.body, exp.location))
+    }
+
     case "LetrecStar": {
       return desugar(
         state,
@@ -237,6 +241,49 @@ function desugarLetStar(
     desugarLetStar(restBindings, body, location),
     location,
   )
+}
+
+function desugarLetrec(
+  bindings: Array<M.Binding>,
+  body: M.Exp,
+  location?: S.SourceLocation,
+): M.Exp {
+  const usedNames = M.expFreeNames(new Set(bindings.map((b) => b.name)), body)
+  for (const binding of bindings) {
+    const rhsFreeNames = M.expFreeNames(
+      new Set(bindings.map((b) => b.name)),
+      binding.rhs,
+    )
+    for (const name of rhsFreeNames) {
+      usedNames.add(name)
+    }
+  }
+
+  const thunkBindings: Array<M.Binding> = []
+  const callBindings: Array<M.Binding> = []
+
+  for (const binding of bindings) {
+    const thunkName = M.generateRelativeFreshName(
+      `${binding.name}.thunk`,
+      usedNames,
+    )
+    thunkBindings.push(
+      M.Binding(
+        thunkName,
+        M.Lambda([], binding.rhs, binding.location),
+        binding.location,
+      ),
+    )
+    callBindings.push(
+      M.Binding(
+        binding.name,
+        M.Apply(M.Var(thunkName, binding.location), [], binding.location),
+        binding.location,
+      ),
+    )
+  }
+
+  return M.LetrecStar([...thunkBindings, ...callBindings], body, location)
 }
 
 function desugarLetrecStar(

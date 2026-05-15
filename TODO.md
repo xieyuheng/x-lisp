@@ -1,7 +1,9 @@
-[meta-lisp.js] 目前的 expSubst 需要处理所有的语法，是否太复杂了？
+# local (define)
 
-但是 expSubst 和 desugar 又相互依赖，有没有什么办法能解决这个问题？
-避免在 expSubst 中不得不处理所有语法。
+[meta-lisp.js] fix the problem of letrec-sequential-binding-error.meta
+
+- 要么就放弃 letrec 这个语法。
+- 要么给出更好的运行时报错。
 
 # setup feedback loop
 

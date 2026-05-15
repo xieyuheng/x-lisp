@@ -1,0 +1,6 @@
+(module letrec-sequential-binding-error)
+
+;; (define-test sequential-binding-test
+;;   (letrec ((a 1)
+;;            (b (iadd a 1)))
+;;     (assert-equal 2 b)))
