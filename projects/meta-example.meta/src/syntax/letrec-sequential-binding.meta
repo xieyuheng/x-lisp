@@ -1,5 +1,7 @@
 (module letrec)
 
+;; - uncomment to see runtime error:
+
 ;; (define-test sequential-binding-runtime-error
 ;;   (letrec ((a 1)
 ;;            (b (iadd a 1)))

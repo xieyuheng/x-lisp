@@ -10,8 +10,6 @@
 向 stdout 打印 是 (write) 的行为。
 如何设计新的 API 向 stderr 打印？
 
-[meta-lisp.js] 修复 letrec-sequential-binding-error.meta
-
 [meta-lisp.js] 可否先实现一个 `expIsCore` 函数来明确哪些是 desugar 之后的核心语法？
 [meta-lisp.js] 实现一个 `expNaiveSubst` 不处理 capture avoidance，只处理 bound variable shadowing
 

@@ -5,6 +5,8 @@
             (b (iadd a 1)))
     (assert-equal 2 b)))
 
+;; - uncomment to see runtime error:
+
 ;; (define-test sequential-binding-runtime-error
 ;;   (letrec* ((b (iadd a 1))
 ;;             (a 1))
