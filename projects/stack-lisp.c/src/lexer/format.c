@@ -82,7 +82,7 @@ static void format_line_report(buffer_t *buffer, line_t *line, size_t prefix_mar
   }
 }
 
-void format_span_report(buffer_t *buffer, struct span_t span, const char *context) {
+void format_span_in_context(buffer_t *buffer, struct span_t span, const char *context) {
   size_t cursor = 0;
   size_t index = 0;
   char *content = string_next_line(context, &cursor);
@@ -110,7 +110,7 @@ static void format_position(buffer_t *buffer, struct position_t position) {
   format_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
 }
 
-void format_source_location_report(buffer_t *buffer, struct source_location_t location, const char *message) {
+void format_message_with_source_location(buffer_t *buffer, const char *message, struct source_location_t location) {
   assert(location.pathname);
 
   path_t *path = make_path(location.pathname);
@@ -127,7 +127,7 @@ void format_source_location_report(buffer_t *buffer, struct source_location_t lo
 
   if (fs_is_file(location.pathname)) {
     char *context = fs_read(location.pathname);
-    format_span_report(buffer, location.span, context);
+    format_span_in_context(buffer, location.span, context);
     string_free(context);
   }
 }

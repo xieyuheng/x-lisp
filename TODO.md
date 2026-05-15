@@ -1,14 +1,14 @@
-[stack-lisp.c] `format_source_location_report` 函数改名为 `format_message_with_source_location`
-
-- 交换 location 与 message 的顺序。
-
 [stack-lisp.c] 增加新的 builtin 函数 format-message-with-source-location
 
 - 放在 sexp.c 和 sexp.h 中。
+
 - format-message-with-source-location 的类型为：
   (claim format-message-with-source-location (-> string-t source-location-t string-t))
+  第一个参数是 message，返回的 string 是 format 的结果。
 
-[meta-builtin.meta] format-message-with-source-location
+- 注意，[meta-builtin.meta] 中要增加对 format-message-with-source-location 的类型声明。
+  放在 sexp/source-location.meta 中即可。
+
 [meta-builtin.meta] box -- 实现 box-get-with-location 类似 assert-with-location
 
 - 在运行时报错的时候调用 format-message-with-source-location 来报错

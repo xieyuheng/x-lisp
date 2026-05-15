@@ -49,7 +49,7 @@ value_t x_assert_with_location(value_t value, value_t location) {
   format_string(buffer, "(assert) fail");
   format_string(buffer, "\n  value: "); format_value(buffer, value);
   format_newline(buffer);
-  format_source_location_report(buffer, value_to_source_location(location), NULL);
+  format_message_with_source_location(buffer, NULL, value_to_source_location(location));
   buffer_write_and_exit(buffer, stderr, 1);
 }
 
@@ -60,7 +60,7 @@ value_t x_assert_not_with_location(value_t value, value_t location) {
   format_string(buffer, "(assert-not) fail");
   format_string(buffer, "\n  value: "); format_value(buffer, value);
   format_newline(buffer);
-  format_source_location_report(buffer, value_to_source_location(location), NULL);
+  format_message_with_source_location(buffer, NULL, value_to_source_location(location));
   buffer_write_and_exit(buffer, stderr, 1);
 }
 
@@ -72,7 +72,7 @@ value_t x_assert_equal_with_location(value_t lhs, value_t rhs, value_t location)
   format_string(buffer, "\n  lhs: "); format_value(buffer, lhs);
   format_string(buffer, "\n  rhs: "); format_value(buffer, rhs);
   format_newline(buffer);
-  format_source_location_report(buffer, value_to_source_location(location), NULL);
+  format_message_with_source_location(buffer, NULL, value_to_source_location(location));
   buffer_write_and_exit(buffer, stderr, 1);
 }
 
@@ -84,6 +84,6 @@ value_t x_assert_not_equal_with_location(value_t lhs, value_t rhs, value_t locat
   format_string(buffer, "\n  lhs: "); format_value(buffer, lhs);
   format_string(buffer, "\n  rhs: "); format_value(buffer, rhs);
   format_newline(buffer);
-  format_source_location_report(buffer, value_to_source_location(location), NULL);
+  format_message_with_source_location(buffer, NULL, value_to_source_location(location));
   buffer_write_and_exit(buffer, stderr, 1);
 }

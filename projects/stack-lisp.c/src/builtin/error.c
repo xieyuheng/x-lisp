@@ -13,6 +13,6 @@ value_t x_error_with_location(value_t info, value_t location) {
   format_string(buffer, "(error) ");
   format_value(buffer, info);
   format_newline(buffer);
-  format_source_location_report(buffer, value_to_source_location(location), NULL);
+  format_message_with_source_location(buffer, NULL, value_to_source_location(location));
   buffer_write_and_exit(buffer, stderr, 1);
 }
