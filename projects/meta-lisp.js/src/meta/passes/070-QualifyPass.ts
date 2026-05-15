@@ -84,6 +84,14 @@ function qualifyDefinition(definition: M.Definition): null {
         definition.representationType,
       )
 
+      definition.interfaceEntries = definition.interfaceEntries.map(
+        ({ name, type, location }) => ({
+          name,
+          type: qualifyFreeVar(definition.mod, boundNames, type),
+          location,
+        }),
+      )
+
       return null
     }
   }
