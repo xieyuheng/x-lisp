@@ -286,6 +286,30 @@ function desugarLetrec(
   return M.LetrecStar([...thunkBindings, ...callBindings], body, location)
 }
 
+// Desugar `(letrec*)` using box:
+//
+//   (letrec* ((x1 e1)
+//             (x2 e2)
+//             ...
+//             (xn en))
+//     body)
+//
+// → where e1, e2, en, and body have their
+//   x1, x2, xn replaced with (box-get x1), (box-get x2), (box-get xn)
+//
+//   (let ((x1 (make-box))
+//         (x2 (make-box))
+//         ...
+//         (xn (make-box)))
+//     (box-put! e1 x1)
+//     (box-put! e2 x2)
+//     ...
+//     (box-put! en xn)
+//     body)
+//
+// The actual implementation uses list primitives
+// (make-list, car, list-put!) instead of box.
+
 function desugarLetrecStar(
   bindings: Array<M.Binding>,
   body: M.Exp,
