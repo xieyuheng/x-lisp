@@ -102,11 +102,13 @@ function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
       "transparent",
     )
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
-    checkClaimedType(mod, exp, opaqueType, opaqueNames)
+    const ctx = M.emptyCtx()
+    ctx.transparentOpaqueNames = opaqueNames
+    checkClaimedType(mod, ctx, exp, opaqueType)
   } else {
     const type = M.modLookupClaimedType(mod, name)
     if (type) {
-      checkClaimedType(mod, exp, type, new Set())
+      checkClaimedType(mod, M.emptyCtx(), exp, type)
     } else {
       checkByInfer(mod, name, exp)
     }
@@ -131,12 +133,10 @@ function findOpaqueNamesByInterfaceName(
 
 function checkClaimedType(
   mod: M.Mod,
+  ctx: M.Ctx,
   exp: M.Exp,
   type: M.Type,
-  opaqueNames: Set<string>,
 ): void {
-  const ctx = M.emptyCtx()
-  ctx.transparentOpaqueNames = opaqueNames
   const effect = M.typeCheckAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {

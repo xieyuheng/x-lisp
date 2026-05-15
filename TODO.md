@@ -1,10 +1,12 @@
+[meta-lisp.js] [refactor] 在 checkClaimedType 外部构造 ctx，作为第二个参数传递进去。
+
+- 而不给 checkClaimedType 传递 opaqueNames，让它自己构造 ctx。
+
 [meta-lisp.js] [refactor] definitionCheck 在 OpaqueTypeDefinition 的情况，是需要展开检查内部的。
 
 - 类似 AlgebraicTypeDefinition 的情况。
 
-[meta-lisp.js] [refactor] 在 checkClaimedType 外部构造 ctx，作为第二个参数传递进去。
 
-- 而不给 checkClaimedType 传递 opaqueNames，让它自己构造 ctx。
 
 [meta-lisp.js] [refactor] formatDefinition 在 OpaqueTypeDefinition 的 case 应该打印完整信息。
   你可以实现辅助函数来打印内部的信息。
