@@ -23,8 +23,8 @@ export function typeFreshen(type: M.Type): M.Type {
     case "HashType":
       return M.HashType(typeFreshen(type.keyType), typeFreshen(type.valueType))
 
-    case "AlgebraicDataType":
-      return M.AlgebraicDataType(
+    case "AlgebraicType":
+      return M.AlgebraicType(
         type.definition,
         type.argTypes.map((t) => typeFreshen(t)),
       )

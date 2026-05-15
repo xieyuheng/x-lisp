@@ -116,7 +116,7 @@ function definitionToType(definition: M.Definition): M.Type {
 
     case "AlgebraicTypeDefinition": {
       if (definition.typeConstructor.parameters.length === 0) {
-        return M.AlgebraicDataType(definition, [])
+        return M.AlgebraicType(definition, [])
       } else {
         return M.DefinitionType(definition)
       }

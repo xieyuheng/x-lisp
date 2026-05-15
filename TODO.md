@@ -1,5 +1,3 @@
-[diary] 2026-05-15-define-opaque-type.md
-
 # setup feedback loop
 
 [meta-lisp.meta] remove `env` `evaluate` and `value`

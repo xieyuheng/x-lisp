@@ -48,7 +48,7 @@ function applyDefinition(definition: M.Definition, args: Array<Type>): Type {
     }
 
     case "AlgebraicTypeDefinition": {
-      return M.AlgebraicDataType(definition, args)
+      return M.AlgebraicType(definition, args)
     }
 
     default: {

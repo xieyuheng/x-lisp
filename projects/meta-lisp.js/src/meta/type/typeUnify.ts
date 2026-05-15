@@ -78,7 +78,7 @@ export function typeUnify(
     return subst
   }
 
-  if (M.isAlgebraicDataType(lhs) && M.isAlgebraicDataType(rhs)) {
+  if (M.isAlgebraicType(lhs) && M.isAlgebraicType(rhs)) {
     if (lhs.definition !== rhs.definition) {
       return undefined
     }
