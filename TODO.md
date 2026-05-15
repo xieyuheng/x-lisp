@@ -1,8 +1,5 @@
-[meta-lisp.js] 实现 `expNaiveSubst`
-
-- 类似 `expSubst`，但是不处理 capture avoidance，只处理 bound variable shadowing。
-- 放在 exp/expNaiveSubst.ts
-- 在代码的前面用注释说明 是不处理 capture avoidance，只处理 bound variable shadowing。
+[meta-lisp.js] `desugar` 调用 expNaiveSubst 而不是 expSubst
+[meta-lisp.js] `expSubst` 简化为只处理 core 语法
 
 # setup feedback loop
 
