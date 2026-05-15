@@ -115,16 +115,14 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { location },
   ) => {
     const typeConstructor = parseTypeConstructor(head)
-    const interfaceFunctions = S.asList(ifaces).elements.map(
-      (iface) => {
-        const parts = S.asList(iface).elements
-        return {
-          name: S.asSymbol(parts[0]).content,
-          type: parseExp(parts[1]),
-          location: parts[0].location,
-        }
-      },
-    )
+    const interfaceFunctions = S.asList(ifaces).elements.map((iface) => {
+      const parts = S.asList(iface).elements
+      return {
+        name: S.asSymbol(parts[0]).content,
+        type: parseExp(parts[1]),
+        location: parts[0].location,
+      }
+    })
     return M.DefineOpaqueType(
       typeConstructor.name,
       typeConstructor.parameters,

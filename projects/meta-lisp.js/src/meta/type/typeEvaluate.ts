@@ -28,7 +28,12 @@ export function typeEvaluate(
         throw new Error(message)
       }
 
-      const type = typeLookup(qualifiedMod, M.emptyTypeEnv(), exp.name, opaqueMode)
+      const type = typeLookup(
+        qualifiedMod,
+        M.emptyTypeEnv(),
+        exp.name,
+        opaqueMode,
+      )
       if (type) return type
 
       let message = `[typeEvaluate] undefined qualified variable`
@@ -60,7 +65,9 @@ export function typeEvaluate(
 
     case "Apply": {
       const target = typeEvaluate(mod, typeEnv, exp.target, opaqueMode)
-      const args = exp.args.map((arg) => typeEvaluate(mod, typeEnv, arg, opaqueMode))
+      const args = exp.args.map((arg) =>
+        typeEvaluate(mod, typeEnv, arg, opaqueMode),
+      )
       return M.typeApply(target, args, opaqueMode)
     }
 
@@ -116,14 +123,24 @@ function definitionToType(
 
     case "TypeDefinition": {
       if (definition.parameters.length === 0) {
-        return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body, opaqueMode)
+        return M.typeEvaluate(
+          definition.mod,
+          M.emptyTypeEnv(),
+          definition.body,
+          opaqueMode,
+        )
       } else {
         return M.DefinitionType(definition)
       }
     }
 
     case "VariableDefinition": {
-      return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.body, opaqueMode)
+      return M.typeEvaluate(
+        definition.mod,
+        M.emptyTypeEnv(),
+        definition.body,
+        opaqueMode,
+      )
     }
 
     case "AlgebraicTypeDefinition": {
@@ -137,7 +154,12 @@ function definitionToType(
     case "OpaqueTypeDefinition": {
       if (opaqueMode === "transparent") {
         if (definition.typeConstructor.parameters.length === 0) {
-          return M.typeEvaluate(definition.mod, M.emptyTypeEnv(), definition.representationTypeExp, opaqueMode)
+          return M.typeEvaluate(
+            definition.mod,
+            M.emptyTypeEnv(),
+            definition.representationTypeExp,
+            opaqueMode,
+          )
         } else {
           return M.DefinitionType(definition)
         }

@@ -86,6 +86,28 @@ export function definitionCheck(definition: M.Definition): null {
     }
 
     case "OpaqueTypeDefinition": {
+      for (const entry of definition.interfaceEntries) {
+        const exp =
+          definition.typeConstructor.parameters.length === 0
+            ? entry.typeExp
+            : M.Lambda(
+                definition.typeConstructor.parameters,
+                entry.typeExp,
+                definition.location,
+              )
+        checkExp(mod, name, exp)
+      }
+
+      const reprExp =
+        definition.typeConstructor.parameters.length === 0
+          ? definition.representationTypeExp
+          : M.Lambda(
+              definition.typeConstructor.parameters,
+              definition.representationTypeExp,
+              definition.location,
+            )
+      checkExp(mod, name, reprExp)
+
       definition.isChecked = true
       return null
     }

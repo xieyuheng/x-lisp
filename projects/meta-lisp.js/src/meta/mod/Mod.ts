@@ -33,7 +33,6 @@ export function createMod(name: string, project: M.Project): Mod {
     inferredTypes: new Map(),
     dataConstructors: new Map(),
     project,
-
   }
 }
 

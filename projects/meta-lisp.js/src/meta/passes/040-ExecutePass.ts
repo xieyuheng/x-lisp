@@ -281,7 +281,11 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     }
 
     for (const iface of stmt.interfaceFunctions) {
-      const wrappedType = M.Polymorphic(stmt.parameters, iface.type, iface.location)
+      const wrappedType = M.Polymorphic(
+        stmt.parameters,
+        iface.type,
+        iface.location,
+      )
       M.modClaim(mod, iface.name, wrappedType)
       mod.opaqueClaimed.set(iface.name, wrappedType)
     }

@@ -53,7 +53,12 @@ function applyDefinition(
           typeEnv.set(definition.parameters[i], args[i])
         }
       }
-      return M.typeEvaluate(definition.mod, typeEnv, definition.body, opaqueMode)
+      return M.typeEvaluate(
+        definition.mod,
+        typeEnv,
+        definition.body,
+        opaqueMode,
+      )
     }
 
     case "AlgebraicTypeDefinition": {
@@ -68,7 +73,12 @@ function applyDefinition(
             typeEnv.set(definition.typeConstructor.parameters[i], args[i])
           }
         }
-        return M.typeEvaluate(definition.mod, typeEnv, definition.representationTypeExp, opaqueMode)
+        return M.typeEvaluate(
+          definition.mod,
+          typeEnv,
+          definition.representationTypeExp,
+          opaqueMode,
+        )
       } else {
         return M.OpaqueType(definition, args)
       }
