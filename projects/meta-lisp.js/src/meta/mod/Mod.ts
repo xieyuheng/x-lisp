@@ -69,10 +69,19 @@ export function modNameIsAsDefined(mod: Mod, name: string): boolean {
 // Claimed
 
 export function modClaim(mod: Mod, name: string, exp: Exp): void {
-  if (mod.claimed.has(name)) {
+  const previous = mod.claimed.get(name)
+  if (previous) {
     let message = `[modClaim] name already claimed`
     message += `\n  name: ${name}`
-    throw new Error(message)
+    if (previous.exp.location) {
+      message += `\n`
+      message += S.sourceLocationReport(
+        previous.exp.location,
+        `revious claim`,
+      ).trim()
+    }
+    if (exp.location) throw new S.ErrorWithSourceLocation(message, exp.location)
+    else throw new Error(message)
   }
 
   mod.claimed.set(name, { exp })

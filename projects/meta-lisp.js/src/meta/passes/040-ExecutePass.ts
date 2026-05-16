@@ -138,51 +138,6 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineEnum") {
-    const name = stmt.typeConstructor.name
-    const typeConstructor = stmt.typeConstructor
-    const dataConstructors =
-      stmt.dataConstructors as unknown as Array<M.DataConstructor>
-
-    const definition = M.AlgebraicTypeDefinition(
-      mod,
-      name,
-      typeConstructor,
-      dataConstructors,
-      stmt.location,
-    )
-
-    for (const dataConstructor of dataConstructors) {
-      dataConstructor.definition = definition
-      dataConstructor.fields = dataConstructor.fields.map((field) => ({
-        name: field.name,
-        type: field.type,
-        location: field.location,
-      }))
-    }
-
-    M.modDefine(mod, name, definition)
-
-    if (typeConstructor.parameters.length === 0) {
-      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t"))
-    } else {
-      M.modClaim(
-        mod,
-        name,
-        M.Arrow(
-          range(typeConstructor.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t"),
-          ),
-          M.QualifiedVar("builtin", "type-t"),
-        ),
-      )
-    }
-
-    for (const dataConstructor of dataConstructors) {
-      mod.dataConstructors.set(dataConstructor.name, dataConstructor)
-    }
-  }
-
   if (stmt.kind === "DefineAlgebraicType") {
     const name = stmt.typeConstructor.name
     const typeConstructor = stmt.typeConstructor

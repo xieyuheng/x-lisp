@@ -201,6 +201,7 @@ function expandConstructor(
       M.Arrow(
         ctor.fields.map((field) => field.type),
         getDataType(stmt),
+        ctor.location,
       ),
       ctor.location,
     ),
@@ -210,7 +211,7 @@ function expandConstructor(
     M.DefineFunction(
       ctor.name,
       parameters,
-      M.LiteralList([M.Symbol(ctor.name), ...args]),
+      M.LiteralList([M.Symbol(ctor.name), ...args], ctor.location),
       ctor.location,
     ),
   )
@@ -228,7 +229,7 @@ function expandPredicate(
     admitWithParameters(
       ctor.predicate,
       stmt.typeConstructor.parameters,
-      M.Arrow([getDataType(stmt)], M.Var("bool-t")),
+      M.Arrow([getDataType(stmt)], M.Var("bool-t"), ctor.location),
       ctor.location,
     ),
   )
@@ -267,7 +268,7 @@ function expandAccessor(
     admitWithParameters(
       field.accessorName,
       stmt.typeConstructor.parameters,
-      M.Arrow([getDataType(stmt)], field.type),
+      M.Arrow([getDataType(stmt)], field.type, field.location),
       field.location,
     ),
   )
@@ -276,7 +277,11 @@ function expandAccessor(
     M.DefineFunction(
       field.accessorName,
       ["target"],
-      M.Apply(M.Var("list-get"), [M.Int(BigInt(index + 1)), M.Var("target")]),
+      M.Apply(
+        M.Var("list-get", field.location),
+        [M.Int(BigInt(index + 1)), M.Var("target", field.location)],
+        field.location,
+      ),
       field.location,
     ),
   )
@@ -298,7 +303,11 @@ function expandModifier(
     admitWithParameters(
       field.modifierName,
       stmt.typeConstructor.parameters,
-      M.Arrow([field.type, getDataType(stmt)], getDataType(stmt)),
+      M.Arrow(
+        [field.type, getDataType(stmt)],
+        getDataType(stmt),
+        field.location,
+      ),
       field.location,
     ),
   )
@@ -307,11 +316,15 @@ function expandModifier(
     M.DefineFunction(
       field.modifierName,
       ["value", "target"],
-      M.Apply(M.Var("list-put!"), [
-        M.Int(BigInt(index + 1)),
-        M.Var("value"),
-        M.Var("target"),
-      ]),
+      M.Apply(
+        M.Var("list-put!"),
+        [
+          M.Int(BigInt(index + 1), field.location),
+          M.Var("value", field.location),
+          M.Var("target", field.location),
+        ],
+        field.location,
+      ),
       field.location,
     ),
   )
