@@ -568,7 +568,7 @@ S-expression parsing, formatting, and related types.
 
 ### Operations
 
-- [`parse-located-sexps`](sexp/parse-located-sexps.md) — Parse to located S-expressions
+- [`parse-sexps`](sexp/parse-sexps.md) — Parse to located S-expressions
 - [`format-sexp`](sexp/format-sexp.md) — Format an S-expression
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — Collect key-value pairs as a list
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — Collect key-value pairs as a hash

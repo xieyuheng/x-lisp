@@ -1,5 +1,5 @@
 ---
-title: parse-located-sexps
+title: parse-sexps
 ---
 
 # 类型
@@ -15,6 +15,6 @@ title: parse-located-sexps
 # 例子
 
 ```scheme
-(parse-located-sexps "test" "(a b c)")
+(parse-sexps "test" "(a b c)")
 ;; => [(list-sexp [symbol-sexp a ...] ...)]
 ```

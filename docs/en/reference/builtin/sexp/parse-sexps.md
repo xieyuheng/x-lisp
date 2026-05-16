@@ -1,5 +1,5 @@
 ---
-title: parse-located-sexps
+title: parse-sexps
 ---
 
 # Type
@@ -15,6 +15,6 @@ Parse a string into a list of located S-expressions. The first argument is the f
 # Examples
 
 ```scheme
-(parse-located-sexps "test" "(a b c)")
+(parse-sexps "test" "(a b c)")
 ;; => [(list-sexp [symbol-sexp a ...] ...)]
 ```

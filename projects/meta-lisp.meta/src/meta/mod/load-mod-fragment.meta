@@ -2,7 +2,7 @@
 
 (define (load-mod-fragment path)
   (= code (fs-read path))
-  (= sexps (parse-located-sexps path code))
+  (= sexps (parse-sexps path code))
   (= stmts (list-map parse-stmt sexps))
   (= module-stmt
      (pipe stmts
