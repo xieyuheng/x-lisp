@@ -1,4 +1,4 @@
-import { type Value } from "./Value.ts"
+import { type Value } from "../value/Value.ts"
 
 export type Env = {
   bindings: Map<string, Value>

@@ -1,10 +1,10 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
-import { type Value } from "./Value.ts"
+import { type Value } from "../value/Value.ts"
 import type { EvaluationMode } from "./evaluate.ts"
 
-export function applyValue(
+export function apply(
   mode: EvaluationMode,
   target: Value,
   args: Array<Value>,
@@ -20,16 +20,16 @@ export function applyValue(
     }
 
     assert(allArgs.length === target.arity)
-    const result = M.applyValue(mode, target.target, allArgs)
+    const result = M.apply(mode, target.target, allArgs)
     if (args.length > target.arity - target.args.length) {
       const extraArgs = allArgs.slice(target.arity)
-      return M.applyValue(mode, result, extraArgs)
+      return M.apply(mode, result, extraArgs)
     }
 
     return result
   }
 
-  let message = `[applyValue] unhandled target`
+  let message = `[apply] unhandled target`
   message += `\n  target: ${M.formatValue(target)}`
   message += `\n  args: ${args.map((a) => M.formatValue(a)).join(", ")}`
   throw new Error(message)

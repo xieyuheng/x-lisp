@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
+import { type Value } from "../value/Value.ts"
 import { type Env } from "./Env.ts"
-import { type Value } from "./Value.ts"
 
 export type EvaluationMode = "OpaqueMode" | "TransparentMode"
 
@@ -32,9 +32,9 @@ export function evaluate(
 
     case "Arrow": {
       const argTypes = exp.argTypes.map((argType) =>
-        evaluateType(mode, mod, env, argType),
+        M.evaluateType(mode, mod, env, argType),
       )
-      const retType = evaluateType(mode, mod, env, exp.retType)
+      const retType = M.evaluateType(mode, mod, env, exp.retType)
       return M.TypeValue(M.ArrowType(argTypes, retType))
     }
 
@@ -42,7 +42,7 @@ export function evaluate(
       const varTypes = exp.parameters.map((parameter) =>
         M.VarType(parameter, BigInt(0)),
       )
-      const bodyType = evaluateType(
+      const bodyType = M.evaluateType(
         mode,
         mod,
         M.envPutMany(
@@ -58,7 +58,7 @@ export function evaluate(
     case "Apply": {
       const target = evaluate(mode, mod, env, exp.target)
       const args = exp.args.map((arg) => evaluate(mode, mod, env, arg))
-      return M.applyValue(mode, target, args)
+      return M.apply(mode, target, args)
     }
 
     default: {
@@ -67,21 +67,6 @@ export function evaluate(
       throw new Error(message)
     }
   }
-}
-
-export function evaluateType(
-  mode: EvaluationMode,
-  mod: M.Mod,
-  env: Env,
-  exp: M.Exp,
-): M.Type {
-  const value = evaluate(mode, mod, env, exp)
-  if (!M.isTypeValue(value)) {
-    let message = `[evaluateType] expected a type value`
-    message += `\n  value kind: ${value.kind}`
-    throw new Error(message)
-  }
-  return value.type
 }
 
 function valueFromMod(mode: EvaluationMode, mod: M.Mod, name: string): Value {
@@ -126,7 +111,7 @@ function definitionToValue(
 
     case "TypeDefinition": {
       if (definition.parameters.length === 0) {
-        const type = evaluateType(
+        const type = M.evaluateType(
           mode,
           definition.mod,
           M.emptyEnv(),
@@ -139,7 +124,7 @@ function definitionToValue(
     }
 
     case "VariableDefinition": {
-      const type = evaluateType(
+      const type = M.evaluateType(
         mode,
         definition.mod,
         M.emptyEnv(),
@@ -159,7 +144,7 @@ function definitionToValue(
     case "OpaqueTypeDefinition": {
       if (mode === "TransparentMode") {
         if (definition.typeConstructor.parameters.length === 0) {
-          const type = evaluateType(
+          const type = M.evaluateType(
             mode,
             definition.mod,
             M.emptyEnv(),

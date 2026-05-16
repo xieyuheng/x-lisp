@@ -16,6 +16,7 @@ export type Type =
   | AlgebraicType
   | OpaqueType
   | PolymorphicType
+
 // VarType
 
 export type VarType = {
