@@ -1,4 +1,4 @@
-[meta-lisp.js] [refactor] 设置 src/check/ 目录，把 typeInfer 和 typeCheck 相关的函数和 Ctx 放进去
+[meta-lisp.js] [refactor] 下面改善 src/check/ 目录下一部分函数的名字
 
 # setup feedback loop
 

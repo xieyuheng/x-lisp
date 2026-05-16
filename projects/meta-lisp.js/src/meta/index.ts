@@ -1,4 +1,4 @@
-export * from "./ctx/index.ts"
+export * from "./check/index.ts"
 export * from "./definition/index.ts"
 export * from "./evaluate/index.ts"
 export * from "./exp/index.ts"
