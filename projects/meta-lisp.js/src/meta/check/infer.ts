@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
+export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   return (subst) => {
     switch (exp.kind) {
       case "Symbol": {
@@ -32,7 +32,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "Var": {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
-        return typeInferLookup(mod, ctx, exp.name, exp)(subst)
+        return inferLookup(mod, ctx, exp.name, exp)(subst)
       }
 
       case "QualifiedVar": {
@@ -45,12 +45,12 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         }
-        return typeInferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
+        return inferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
       }
 
       case "Apply": {
-        return M.inferThenInfer(typeInfer(mod, ctx, exp.target), (targetType) =>
-          typeInferApplyArrowType(mod, ctx, targetType, exp.args, exp),
+        return M.inferThenInfer(infer(mod, ctx, exp.target), (targetType) =>
+          inferApplyArrowType(mod, ctx, targetType, exp.args, exp),
         )(subst)
       }
 
@@ -59,7 +59,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           const retType = M.createFreshVarType("R")
           const type = M.ArrowType([], retType)
           return M.checkThenInfer(
-            M.typeCheckByInfer(mod, ctx, exp.body, retType),
+            M.checkByInfer(mod, ctx, exp.body, retType),
             M.okInferEffect(type),
           )(subst)
         } else if (exp.parameters.length === 1) {
@@ -68,7 +68,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           const type = M.ArrowType([argType], retType)
           const [parameter] = exp.parameters
           return M.checkThenInfer(
-            M.typeCheckByInfer(
+            M.checkByInfer(
               mod,
               M.ctxPut(ctx, parameter, argType),
               exp.body,
@@ -82,7 +82,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           const type = M.ArrowType([argType], retType)
           const [parameter, ...restParameters] = exp.parameters
           return M.checkThenInfer(
-            M.typeCheckByInfer(
+            M.checkByInfer(
               mod,
               M.ctxPut(ctx, parameter, argType),
               M.Lambda(restParameters, exp.body, exp.location),
@@ -98,7 +98,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.exps.map((subExp) =>
-              M.typeCheckByInfer(mod, ctx, subExp, M.AtomType("bool")),
+              M.checkByInfer(mod, ctx, subExp, M.AtomType("bool")),
             ),
           ),
           M.okInferEffect(M.AtomType("bool")),
@@ -108,7 +108,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       case "The": {
         const type = M.evaluateType("OpaqueMode", mod, M.emptyEnv(), exp.type)
         return M.checkThenInfer(
-          M.typeCheckAssignable(mod, ctx, exp.exp, type),
+          M.checkAssignable(mod, ctx, exp.exp, type),
           M.okInferEffect(type),
         )(subst)
       }
@@ -117,9 +117,9 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         const type = M.createFreshVarType("X")
         return M.checkThenInfer(
           M.sequenceCheckEffect([
-            M.typeCheckByInfer(mod, ctx, exp.condition, M.AtomType("bool")),
-            M.typeCheckByInfer(mod, ctx, exp.consequent, type),
-            M.typeCheckByInfer(mod, ctx, exp.alternative, type),
+            M.checkByInfer(mod, ctx, exp.condition, M.AtomType("bool")),
+            M.checkByInfer(mod, ctx, exp.consequent, type),
+            M.checkByInfer(mod, ctx, exp.alternative, type),
           ]),
           M.okInferEffect(type),
         )(subst)
@@ -127,20 +127,20 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
 
       case "Let1": {
         return M.inferThenInfer(
-          M.typeInfer(mod, ctx, exp.rhs),
+          M.infer(mod, ctx, exp.rhs),
           (inferredType) => (subst) => {
             ctx = M.substDeepWalkCtx(subst, ctx)
             inferredType = M.substDeepWalk(subst, inferredType)
-            inferredType = M.typeGeneralizeInCtx(ctx, inferredType)
+            inferredType = M.generalizeInCtx(ctx, inferredType)
             ctx = M.ctxPut(ctx, exp.name, inferredType)
-            return typeInfer(mod, ctx, exp.body)(subst)
+            return infer(mod, ctx, exp.body)(subst)
           },
         )(subst)
       }
 
       case "Begin1": {
-        return M.inferThenInfer(typeInfer(mod, ctx, exp.head), (_headType) =>
-          typeInfer(mod, ctx, exp.body),
+        return M.inferThenInfer(infer(mod, ctx, exp.head), (_headType) =>
+          infer(mod, ctx, exp.body),
         )(subst)
       }
 
@@ -150,7 +150,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.sequenceCheckEffect([
             ...exp.elements.map((element) =>
-              M.typeCheckByInfer(mod, ctx, element, elementType),
+              M.checkByInfer(mod, ctx, element, elementType),
             ),
           ]),
           M.okInferEffect(type),
@@ -163,7 +163,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.elements.map((element) =>
-              M.typeCheckByInfer(mod, ctx, element, elementType),
+              M.checkByInfer(mod, ctx, element, elementType),
             ),
           ),
           M.okInferEffect(type),
@@ -177,8 +177,8 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.entries.flatMap((entry) => [
-              M.typeCheckByInfer(mod, ctx, entry.key, keyType),
-              M.typeCheckByInfer(mod, ctx, entry.value, valueType),
+              M.checkByInfer(mod, ctx, entry.key, keyType),
+              M.checkByInfer(mod, ctx, entry.value, valueType),
             ]),
           ),
           M.okInferEffect(type),
@@ -190,9 +190,9 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.sequenceCheckEffect([
             ...exp.argTypes.map((argType) =>
-              M.typeCheckByInfer(mod, ctx, argType, type),
+              M.checkByInfer(mod, ctx, argType, type),
             ),
-            M.typeCheckByInfer(mod, ctx, exp.retType, type),
+            M.checkByInfer(mod, ctx, exp.retType, type),
           ]),
           M.okInferEffect(type),
         )(subst)
@@ -206,7 +206,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           exp.parameters.map(() => type),
         )
         return M.checkThenInfer(
-          M.typeCheckByInfer(mod, ctx, exp.body, type),
+          M.checkByInfer(mod, ctx, exp.body, type),
           M.okInferEffect(type),
         )(subst)
       }
@@ -219,7 +219,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   }
 }
 
-function typeInferLookup(
+function inferLookup(
   mod: M.Mod,
   ctx: M.Ctx,
   name: string,
@@ -271,7 +271,7 @@ function typeInferLookup(
   }
 }
 
-function typeInferApplyArrowType(
+function inferApplyArrowType(
   mod: M.Mod,
   ctx: M.Ctx,
   type: M.Type,
@@ -306,7 +306,7 @@ function typeInferApplyArrowType(
 
       const [arg] = args
       return M.checkThenInfer(
-        M.typeCheckByInfer(mod, ctx, arg, argType),
+        M.checkByInfer(mod, ctx, arg, argType),
         M.okInferEffect(retType),
       )(newSubst)
     } else {
@@ -324,8 +324,8 @@ function typeInferApplyArrowType(
 
       const [arg, ...restArgs] = args
       return M.checkThenInfer(
-        M.typeCheckByInfer(mod, ctx, arg, argType),
-        typeInferApplyArrowType(mod, ctx, retType, restArgs, originalExp),
+        M.checkByInfer(mod, ctx, arg, argType),
+        inferApplyArrowType(mod, ctx, retType, restArgs, originalExp),
       )(newSubst)
     }
   }

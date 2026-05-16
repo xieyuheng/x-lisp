@@ -1,7 +1,7 @@
 import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-export function typeGeneralizeInCtx(ctx: M.Ctx, type: M.Type): M.Type {
+export function generalizeInCtx(ctx: M.Ctx, type: M.Type): M.Type {
   const freeVarTypesInCtx = M.ctxFreeVarTypes(ctx)
   const freeVarTypes = M.typeFreeVarTypes(new Set(), type).filter((varType) =>
     freeVarTypesInCtx.every((t) => !M.varTypeEqual(varType, t)),

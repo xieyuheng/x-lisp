@@ -1,4 +1,5 @@
-[meta-lisp.js] [refactor] 下面改善 src/check/ 目录下一部分函数的名字
+[meta-lisp.js] [refactor] 项目中还有一些函数是 check 开头的，但是和 check.ts 中的函数差异很大，如何改善命名？
+[meta-lisp.js] [refactor] 设置 src/unify/ 目录，把 typeUnify 和 typeReify 相关的函数和 Subst 放进去
 
 # setup feedback loop
 

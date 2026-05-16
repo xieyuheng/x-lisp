@@ -1,24 +1,24 @@
 import * as M from "../index.ts"
 
-export function typeCheckAssignable(
+export function checkAssignable(
   mod: M.Mod,
   ctx: M.Ctx,
   exp: M.Exp,
   type: M.Type,
 ): M.CheckEffect {
-  return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) => {
+  return M.inferThenCheck(M.infer(mod, ctx, exp), (inferredType) => {
     // - need to use typeFreshen to remove polymorphic type
-    //   before calling typeCheckSubstInstance.
+    //   before calling checkSubstInstance.
     inferredType = M.typeFreshen(inferredType)
     type = M.typeFreshen(type)
     return M.sequenceCheckEffect([
-      typeCheckSubstInstance(mod, exp, inferredType, type),
-      typeCheckUnify(mod, exp, inferredType, type),
+      checkSubstInstance(mod, exp, inferredType, type),
+      checkUnify(mod, exp, inferredType, type),
     ])
   })
 }
 
-export function typeCheckSubstInstance(
+export function checkSubstInstance(
   mod: M.Mod,
   exp: M.Exp,
   inferredType: M.Type,
@@ -48,18 +48,18 @@ export function typeCheckSubstInstance(
   }
 }
 
-export function typeCheckByInfer(
+export function checkByInfer(
   mod: M.Mod,
   ctx: M.Ctx,
   exp: M.Exp,
   type: M.Type,
 ): M.CheckEffect {
-  return M.inferThenCheck(M.typeInfer(mod, ctx, exp), (inferredType) =>
-    typeCheckUnify(mod, exp, inferredType, type),
+  return M.inferThenCheck(M.infer(mod, ctx, exp), (inferredType) =>
+    checkUnify(mod, exp, inferredType, type),
   )
 }
 
-export function typeCheckUnify(
+export function checkUnify(
   mod: M.Mod,
   exp: M.Exp,
   inferredType: M.Type,

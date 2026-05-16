@@ -159,7 +159,7 @@ function checkClaimedType(
   exp: M.Exp,
   type: M.Type,
 ): void {
-  const effect = M.typeCheckAssignable(mod, ctx, exp, type)
+  const effect = M.checkAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {
     writeln(reportTypeCheckError(result.exp, result.message))
@@ -172,13 +172,13 @@ function checkByInfer(mod: M.Mod, name: string, exp: M.Exp): void {
   const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
   // - for mutual recursive function
   M.modPutInferredType(mod, name, freshVarType)
-  const effect = M.typeInfer(mod, ctx, exp)
+  const effect = M.infer(mod, ctx, exp)
   const result = effect(M.emptySubst())
   if (result.kind === "InferError") {
     writeln(reportTypeCheckError(result.exp, result.message))
   } else {
     let inferredType = M.substDeepWalk(result.subst, result.type)
-    inferredType = M.typeGeneralizeInCtx(M.emptyCtx(), inferredType)
+    inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
   }
 }
