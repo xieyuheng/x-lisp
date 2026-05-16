@@ -19,7 +19,11 @@ export function definitionCheck(definition: M.Definition): null {
     case "AlgebraicTypeDefinition": {
       for (const dataConstructor of definition.dataConstructors) {
         for (const field of dataConstructor.fields) {
-          tryCheckTypeExp(mod, field.type, definition.typeConstructor.parameters)
+          tryCheckTypeExp(
+            mod,
+            field.type,
+            definition.typeConstructor.parameters,
+          )
         }
       }
 
@@ -54,7 +58,11 @@ export function definitionCheck(definition: M.Definition): null {
       const body =
         definition.parameters.length === 0
           ? definition.body
-          : M.Lambda(definition.parameters, definition.body, definition.location)
+          : M.Lambda(
+              definition.parameters,
+              definition.body,
+              definition.location,
+            )
       if (!tryCheckDefinitionBody(mod, name, body)) {
         tryInferDefinitionBody(mod, name, body)
       }
@@ -80,11 +88,23 @@ export function definitionCheck(definition: M.Definition): null {
         tryCheckTypeExp(mod, entry.type, definition.typeConstructor.parameters)
       }
 
-      tryCheckTypeExp(mod, definition.representationType, definition.typeConstructor.parameters)
+      tryCheckTypeExp(
+        mod,
+        definition.representationType,
+        definition.typeConstructor.parameters,
+      )
 
       definition.isChecked = true
       return null
     }
+  }
+}
+
+function tryCheckExp(mod: M.Mod, ctx: M.Ctx, exp: M.Exp, type: M.Type): void {
+  const effect = M.checkAssignable(mod, ctx, exp, type)
+  const result = effect(M.emptySubst())
+  if (result.kind === "CheckError") {
+    writeln(reportTypeCheckError(result.exp, result.message))
   }
 }
 
@@ -93,23 +113,14 @@ function tryCheckTypeExp(
   exp: M.Exp,
   typeParameters: Array<string>,
 ): void {
-  const type = M.TypeType()
   let ctx = M.emptyCtx()
   for (const name of typeParameters) {
     ctx = M.ctxPut(ctx, name, M.TypeType())
   }
-  const effect = M.checkAssignable(mod, ctx, exp, type)
-  const result = effect(M.emptySubst())
-  if (result.kind === "CheckError") {
-    writeln(reportTypeCheckError(result.exp, result.message))
-  }
+  tryCheckExp(mod, ctx, exp, M.TypeType())
 }
 
-function tryCheckDefinitionBody(
-  mod: M.Mod,
-  name: string,
-  exp: M.Exp,
-): boolean {
+function tryCheckDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): boolean {
   const opaqueTypeExp = mod.opaqueClaimed.get(name)
   if (opaqueTypeExp) {
     const opaqueType = M.evaluateType(
@@ -121,32 +132,20 @@ function tryCheckDefinitionBody(
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
     const ctx = M.emptyCtx()
     ctx.transparentOpaqueNames = opaqueNames
-    const effect = M.checkAssignable(mod, ctx, exp, opaqueType)
-    const result = effect(M.emptySubst())
-    if (result.kind === "CheckError") {
-      writeln(reportTypeCheckError(result.exp, result.message))
-    }
+    tryCheckExp(mod, ctx, exp, opaqueType)
     return true
   }
 
   const type = M.modLookupClaimedType(mod, name)
   if (type) {
-    const effect = M.checkAssignable(mod, M.emptyCtx(), exp, type)
-    const result = effect(M.emptySubst())
-    if (result.kind === "CheckError") {
-      writeln(reportTypeCheckError(result.exp, result.message))
-    }
+    tryCheckExp(mod, M.emptyCtx(), exp, type)
     return true
   }
 
   return false
 }
 
-function tryInferDefinitionBody(
-  mod: M.Mod,
-  name: string,
-  exp: M.Exp,
-): void {
+function tryInferDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): void {
   const freshVarType = M.createFreshVarType(name)
   // - for recursive function
   const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
