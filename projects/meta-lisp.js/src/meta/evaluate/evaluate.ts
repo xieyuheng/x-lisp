@@ -86,8 +86,6 @@ function definitionToValue(
   mode: EvaluationMode,
   definition: M.Definition,
 ): Value {
-  M.definitionCheck(definition)
-
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
       let message = `[definitionToValue] can not handle declared primitive function`

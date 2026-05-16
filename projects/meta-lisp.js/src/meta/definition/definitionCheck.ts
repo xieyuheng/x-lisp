@@ -59,10 +59,10 @@ export function definitionCheck(definition: M.Definition): null {
         definition.parameters.length === 0
           ? definition.body
           : M.Lambda(
-              definition.parameters,
-              definition.body,
-              definition.location,
-            )
+            definition.parameters,
+            definition.body,
+            definition.location,
+          )
       if (!tryCheckDefinitionBody(mod, name, body)) {
         tryInferDefinitionBody(mod, name, body)
       }
