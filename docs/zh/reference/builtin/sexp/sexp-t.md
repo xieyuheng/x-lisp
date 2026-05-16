@@ -1,5 +1,5 @@
 ---
-title: located-sexp-t
+title: sexp-t
 ---
 
 # 类型
@@ -14,7 +14,7 @@ title: located-sexp-t
 (string-sexp  (content string-t)   (location source-location-t))
 (int-sexp     (content int-t)      (location source-location-t))
 (float-sexp   (content float-t)    (location source-location-t))
-(list-sexp    (elements (list-t located-sexp-t))
+(list-sexp    (elements (list-t sexp-t))
                (location source-location-t))
 ```
 
@@ -23,12 +23,12 @@ title: located-sexp-t
 每个变体会生成构造器、谓词、访问器和修改器。例如 `symbol-sexp`：
 
 ```scheme
-(claim symbol-sexp  (-> symbol-t source-location-t located-sexp-t))
-(claim symbol-sexp? (-> located-sexp-t bool-t))
-(claim symbol-sexp-content  (-> located-sexp-t symbol-t))
-(claim symbol-sexp-location (-> located-sexp-t source-location-t))
-(claim symbol-sexp-put-content!  (-> symbol-t located-sexp-t located-sexp-t))
-(claim symbol-sexp-put-location! (-> source-location-t located-sexp-t located-sexp-t))
+(claim symbol-sexp  (-> symbol-t source-location-t sexp-t))
+(claim symbol-sexp? (-> sexp-t bool-t))
+(claim symbol-sexp-content  (-> sexp-t symbol-t))
+(claim symbol-sexp-location (-> sexp-t source-location-t))
+(claim symbol-sexp-put-content!  (-> symbol-t sexp-t sexp-t))
+(claim symbol-sexp-put-location! (-> source-location-t sexp-t sexp-t))
 ```
 
 其他变体类似。

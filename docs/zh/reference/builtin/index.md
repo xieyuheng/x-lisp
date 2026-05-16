@@ -561,7 +561,7 @@ S 表达式的解析、格式化和相关类型。
 
 ### 类型
 
-- [`located-sexp-t`](sexp/located-sexp-t.md) — 带位置的 S 表达式类型
+- [`sexp-t`](sexp/sexp-t.md) — 带位置的 S 表达式类型
 - [`source-location-t`](sexp/source-location-t.md) — 源码位置类型
 - [`source-span-t`](sexp/source-span-t.md) — 源码区间类型
 - [`source-position-t`](sexp/source-position-t.md) — 源码坐标类型

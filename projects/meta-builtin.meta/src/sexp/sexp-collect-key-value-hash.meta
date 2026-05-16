@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim sexp-collect-key-value-hash
-  (-> (list-t located-sexp-t) (hash-t keyword-t located-sexp-t)))
+  (-> (list-t sexp-t) (hash-t keyword-t sexp-t)))
 
 (define (sexp-collect-key-value-hash-loop remaining result)
   (if (list-empty? remaining)

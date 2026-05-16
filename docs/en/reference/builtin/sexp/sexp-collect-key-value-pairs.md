@@ -5,7 +5,7 @@ title: sexp-collect-key-value-pairs
 # Type
 
 ```scheme
-(-> (list-t located-sexp-t) (list-t (pair-t keyword-t located-sexp-t)))
+(-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t)))
 ```
 
 # Description

@@ -561,7 +561,7 @@ S-expression parsing, formatting, and related types.
 
 ### Types
 
-- [`located-sexp-t`](sexp/located-sexp-t.md) — Located S-expression type
+- [`sexp-t`](sexp/sexp-t.md) — Located S-expression type
 - [`source-location-t`](sexp/source-location-t.md) — Source location type
 - [`source-span-t`](sexp/source-span-t.md) — Source span type
 - [`source-position-t`](sexp/source-position-t.md) — Source position type

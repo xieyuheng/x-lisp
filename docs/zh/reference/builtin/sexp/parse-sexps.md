@@ -5,7 +5,7 @@ title: parse-sexps
 # 类型
 
 ```scheme
-(-> string-t string-t (list-t located-sexp-t))
+(-> string-t string-t (list-t sexp-t))
 ```
 
 # 描述

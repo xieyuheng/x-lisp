@@ -5,7 +5,7 @@ title: sexp-collect-key-value-hash
 # 类型
 
 ```scheme
-(-> (list-t located-sexp-t) (hash-t keyword-t located-sexp-t))
+(-> (list-t sexp-t) (hash-t keyword-t sexp-t))
 ```
 
 # 描述

@@ -1,5 +1,5 @@
 ---
-title: located-sexp-t
+title: sexp-t
 ---
 
 # Type
@@ -14,7 +14,7 @@ Algebraic data type. Represents a located S-expression with source location.
 (string-sexp  (content string-t)   (location source-location-t))
 (int-sexp     (content int-t)      (location source-location-t))
 (float-sexp   (content float-t)    (location source-location-t))
-(list-sexp    (elements (list-t located-sexp-t))
+(list-sexp    (elements (list-t sexp-t))
                (location source-location-t))
 ```
 
@@ -23,12 +23,12 @@ Algebraic data type. Represents a located S-expression with source location.
 Each variant generates a constructor, predicate, accessor and modifier. For example `symbol-sexp`:
 
 ```scheme
-(claim symbol-sexp  (-> symbol-t source-location-t located-sexp-t))
-(claim symbol-sexp? (-> located-sexp-t bool-t))
-(claim symbol-sexp-content  (-> located-sexp-t symbol-t))
-(claim symbol-sexp-location (-> located-sexp-t source-location-t))
-(claim symbol-sexp-put-content!  (-> symbol-t located-sexp-t located-sexp-t))
-(claim symbol-sexp-put-location! (-> source-location-t located-sexp-t located-sexp-t))
+(claim symbol-sexp  (-> symbol-t source-location-t sexp-t))
+(claim symbol-sexp? (-> sexp-t bool-t))
+(claim symbol-sexp-content  (-> sexp-t symbol-t))
+(claim symbol-sexp-location (-> sexp-t source-location-t))
+(claim symbol-sexp-put-content!  (-> symbol-t sexp-t sexp-t))
+(claim symbol-sexp-put-location! (-> source-location-t sexp-t sexp-t))
 ```
 
 Other variants are similar.

@@ -1,7 +1,7 @@
 (module meta)
 
 (claim parse-stmt
-  (-> located-sexp-t
+  (-> sexp-t
       stmt-t))
 
 (define (parse-stmt sexp)
@@ -10,7 +10,7 @@
      (parse-stmt-from-elements elements location))))
 
 (claim parse-stmt-from-elements
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-stmt-from-elements elements location)
@@ -81,7 +81,7 @@
             location)))))
 
 (claim parse-define-stmt
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-stmt elements location)
@@ -98,7 +98,7 @@
         location))))
 
 (claim parse-define-type-stmt
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-type-stmt elements location)
@@ -116,7 +116,7 @@
         location))))
 
 (claim parse-define-struct-stmt
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-struct-stmt elements location)
@@ -126,7 +126,7 @@
     location))
 
 (claim parse-struct-field
-  (-> located-sexp-t
+  (-> sexp-t
       data-field-t))
 
 (define (parse-struct-field sexp)
@@ -137,7 +137,7 @@
        (parse-exp (list-head (list-drop 1 elements)))))))
 
 (claim parse-define-enum-stmt
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-enum-stmt elements location)
@@ -147,7 +147,7 @@
     location))
 
 (claim parse-data-type-constructor
-  (-> located-sexp-t
+  (-> sexp-t
       data-type-constructor-t))
 
 (define (parse-data-type-constructor sexp)
@@ -160,7 +160,7 @@
      (make-data-type-constructor content []))))
 
 (claim parse-data-constructor
-  (-> located-sexp-t
+  (-> sexp-t
       data-constructor-t))
 
 (define (parse-data-constructor sexp)
@@ -171,7 +171,7 @@
        (list-map parse-data-field (list-drop 1 elements))))))
 
 (claim parse-data-field
-  (-> located-sexp-t
+  (-> sexp-t
       data-field-t))
 
 (define (parse-data-field sexp)
@@ -182,7 +182,7 @@
        (parse-exp (list-head (list-drop 1 elements)))))))
 
 (claim parse-define-interface-stmt
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-interface-stmt elements location)
@@ -193,7 +193,7 @@
     location))
 
 (claim parse-interface-constructor
-  (-> located-sexp-t
+  (-> sexp-t
       interface-constructor-t))
 
 (define (parse-interface-constructor sexp)

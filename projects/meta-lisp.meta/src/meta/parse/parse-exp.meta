@@ -1,7 +1,7 @@
 (module meta)
 
 (claim parse-exp
-  (-> located-sexp-t
+  (-> sexp-t
       exp-t))
 
 (define (parse-exp sexp)
@@ -22,7 +22,7 @@
     ((list-sexp elements location) (parse-compound-exp elements location))))
 
 (claim parse-compound-exp
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       exp-t))
 
 (define syntax-keywords
@@ -40,7 +40,7 @@
     (parse-apply-exp elements location)))
 
 (claim parse-apply-exp
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       exp-t))
 
 (define (parse-apply-exp sexps location)
@@ -49,7 +49,7 @@
              location))
 
 (claim parse-special-form-exp
-  (-> symbol-t (list-t located-sexp-t) source-location-t
+  (-> symbol-t (list-t sexp-t) source-location-t
       exp-t))
 
 (define (parse-special-form-exp tag sexps location)
@@ -161,7 +161,7 @@
          (compose-exp (list-map parse-exp (list-drop 1 sexps)) location))))
 
 (claim parse-parameters
-  (-> located-sexp-t
+  (-> sexp-t
       (list-t symbol-t)))
 
 (define (parse-parameters sexp)
@@ -169,7 +169,7 @@
     (list-map symbol-sexp-content elements)))
 
 (claim parse-body
-  (-> (list-t located-sexp-t) source-location-t
+  (-> (list-t sexp-t) source-location-t
       exp-t))
 
 (define (parse-body sexps location)
@@ -179,7 +179,7 @@
       (begin-exp exps location))))
 
 (claim parse-cond-clause
-  (-> located-sexp-t
+  (-> sexp-t
       cond-clause-t))
 
 (define (parse-cond-clause sexp)
@@ -199,7 +199,7 @@
                           location)))))
 
 (claim parse-match-clause
-  (-> located-sexp-t
+  (-> sexp-t
       match-clause-t))
 
 (define (parse-match-clause sexp)
@@ -210,7 +210,7 @@
                          location))))
 
 (claim parse-match-many-clause
-  (-> located-sexp-t
+  (-> sexp-t
       match-clause-t))
 
 (define (parse-match-many-clause sexp)
@@ -221,7 +221,7 @@
                          location))))
 
 (claim parse-binding
-  (-> located-sexp-t
+  (-> sexp-t
       binding-t))
 
 (define (parse-binding sexp)
@@ -232,7 +232,7 @@
                    location))))
 
 (claim parse-hash-entries
-  (-> (list-t located-sexp-t)
+  (-> (list-t sexp-t)
       (list-t (hash-entry-t exp-t exp-t))))
 
 (define (parse-hash-entries sexps)

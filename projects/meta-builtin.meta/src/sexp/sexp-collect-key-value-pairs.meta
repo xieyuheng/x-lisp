@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim sexp-collect-key-value-pairs
-  (-> (list-t located-sexp-t) (list-t (pair-t keyword-t located-sexp-t))))
+  (-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t))))
 
 (define (sexp-collect-key-value-pairs-loop remaining result)
   (if (list-empty? remaining)

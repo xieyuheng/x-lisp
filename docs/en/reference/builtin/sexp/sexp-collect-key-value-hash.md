@@ -5,7 +5,7 @@ title: sexp-collect-key-value-hash
 # Type
 
 ```scheme
-(-> (list-t located-sexp-t) (hash-t keyword-t located-sexp-t))
+(-> (list-t sexp-t) (hash-t keyword-t sexp-t))
 ```
 
 # Description
