@@ -37,6 +37,5 @@ export function typeFreshen(type: M.Type): M.Type {
 
     case "PolymorphicType":
       return typeFreshen(M.polymorphicTypeFreshBodyType(type))
-
   }
 }

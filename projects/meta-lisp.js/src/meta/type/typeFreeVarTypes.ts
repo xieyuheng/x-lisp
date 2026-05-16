@@ -45,6 +45,5 @@ export function typeFreeVarTypes(
         new Set([...boundIds, ...type.varTypes.map(M.varTypeId)]),
         type.bodyType,
       )
-
   }
 }

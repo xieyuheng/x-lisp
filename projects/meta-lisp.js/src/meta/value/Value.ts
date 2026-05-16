@@ -68,7 +68,3 @@ export function asDefinitionValue(value: Value): DefinitionValue {
   if (isDefinitionValue(value)) return value
   throw new Error(`[asDefinitionValue] fail on: ${value.kind}`)
 }
-
-// Env
-
-export type Env = Map<string, Value>

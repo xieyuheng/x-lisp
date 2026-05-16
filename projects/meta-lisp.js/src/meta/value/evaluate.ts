@@ -1,5 +1,6 @@
 import * as M from "../index.ts"
-import { type Value, type Env } from "./Value.ts"
+import { type Env } from "./Env.ts"
+import { type Value } from "./Value.ts"
 
 export type EvaluationMode = "OpaqueMode" | "TransparentMode"
 
@@ -11,7 +12,7 @@ export function evaluate(
 ): Value {
   switch (exp.kind) {
     case "Var": {
-      const fromEnv = env.get(exp.name)
+      const fromEnv = M.envLookup(env, exp.name)
       if (fromEnv) return fromEnv
 
       return valueFromMod(mode, mod, exp.name)
@@ -41,11 +42,16 @@ export function evaluate(
       const varTypes = exp.parameters.map((parameter) =>
         M.VarType(parameter, BigInt(0)),
       )
-      const newEnv = new Map(env)
-      for (const [i, name] of exp.parameters.entries()) {
-        newEnv.set(name, M.TypeValue(varTypes[i]))
-      }
-      const bodyType = evaluateType(mode, mod, newEnv, exp.body)
+      const bodyType = evaluateType(
+        mode,
+        mod,
+        M.envPutMany(
+          env,
+          exp.parameters,
+          varTypes.map((vt) => M.TypeValue(vt)),
+        ),
+        exp.body,
+      )
       return M.TypeValue(M.PolymorphicType(varTypes, bodyType))
     }
 
@@ -78,11 +84,7 @@ export function evaluateType(
   return value.type
 }
 
-function valueFromMod(
-  mode: EvaluationMode,
-  mod: M.Mod,
-  name: string,
-): Value {
+function valueFromMod(mode: EvaluationMode, mod: M.Mod, name: string): Value {
   const definition = M.modLookupDefinition(mod, name)
   if (definition) return definitionToValue(mode, definition)
 
@@ -127,7 +129,7 @@ function definitionToValue(
         const type = evaluateType(
           mode,
           definition.mod,
-          new Map(),
+          M.emptyEnv(),
           definition.body,
         )
         return M.TypeValue(type)
@@ -140,7 +142,7 @@ function definitionToValue(
       const type = evaluateType(
         mode,
         definition.mod,
-        new Map(),
+        M.emptyEnv(),
         definition.body,
       )
       return M.TypeValue(type)
@@ -160,7 +162,7 @@ function definitionToValue(
           const type = evaluateType(
             mode,
             definition.mod,
-            new Map(),
+            M.emptyEnv(),
             definition.representationType,
           )
           return M.TypeValue(type)

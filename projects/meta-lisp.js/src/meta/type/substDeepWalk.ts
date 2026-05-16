@@ -83,6 +83,5 @@ function substDeepWalkWithBoundIds(
       )
       return M.PolymorphicType(newVarTypes, newBodyType)
     }
-
   }
 }

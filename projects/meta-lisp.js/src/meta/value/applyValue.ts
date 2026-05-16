@@ -55,10 +55,10 @@ function applyDefinition(
     }
 
     case "TypeDefinition": {
-      const env = new Map<string, Value>()
+      let env = M.emptyEnv()
       for (const i of range(definition.parameters.length)) {
         if (args[i] !== undefined) {
-          env.set(definition.parameters[i], args[i])
+          env = M.envPut(env, definition.parameters[i], args[i])
         }
       }
       return M.evaluate(mode, definition.mod, env, definition.body)
@@ -82,12 +82,11 @@ function applyDefinition(
 
     case "OpaqueTypeDefinition": {
       if (mode === "TransparentMode") {
-        const env = new Map<string, Value>()
-        for (const i of range(
-          definition.typeConstructor.parameters.length,
-        )) {
+        let env = M.emptyEnv()
+        for (const i of range(definition.typeConstructor.parameters.length)) {
           if (args[i] !== undefined) {
-            env.set(
+            env = M.envPut(
+              env,
               definition.typeConstructor.parameters[i],
               args[i],
             )

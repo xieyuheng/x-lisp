@@ -120,7 +120,7 @@ function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
     const opaqueType = M.evaluateType(
       "TransparentMode",
       mod,
-      new Map(),
+      M.emptyEnv(),
       opaqueTypeExp,
     )
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()

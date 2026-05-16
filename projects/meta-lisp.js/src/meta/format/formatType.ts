@@ -69,6 +69,5 @@ export function formatType(type: M.Type): string {
       const bodyType = formatType(type.bodyType)
       return `(polymorphic (${varTypes}) ${bodyType})`
     }
-
   }
 }
