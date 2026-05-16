@@ -29,7 +29,7 @@ export function checkSubstInstance(
     type = M.substDeepWalk(subst, type)
     // - In the theory of polymorphic type,
     //   inferredType should be more general than expected type.
-    if (!M.typeSubstInstance(type, inferredType)) {
+    if (!M.isSubstitutionInstance(type, inferredType)) {
       const prettyUnknownSubst = M.generatePrettyUnknownSubst([
         inferredType,
         type,
@@ -66,7 +66,7 @@ export function checkUnify(
   type: M.Type,
 ): M.CheckEffect {
   return (subst) => {
-    const newSubst = M.typeUnify(subst, inferredType, type)
+    const newSubst = M.unify(subst, inferredType, type)
     if (newSubst === undefined) {
       inferredType = M.substDeepWalk(subst, inferredType)
       type = M.substDeepWalk(subst, type)

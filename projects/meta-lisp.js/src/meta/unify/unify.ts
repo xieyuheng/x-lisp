@@ -1,8 +1,8 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
-import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
+import { varOccurredInType } from "./varOccurredInType.ts"
 
-export function typeUnify(
+export function unify(
   subst: M.Subst | undefined,
   lhs: M.Type,
   rhs: M.Type,
@@ -15,11 +15,11 @@ export function typeUnify(
   rhs = M.substWalk(subst, rhs)
 
   if (M.isPolymorphicType(lhs)) {
-    return typeUnify(subst, M.polymorphicTypeFreshBodyType(lhs), rhs)
+    return unify(subst, M.polymorphicTypeFreshBodyType(lhs), rhs)
   }
 
   if (M.isPolymorphicType(rhs)) {
-    return typeUnify(subst, lhs, M.polymorphicTypeFreshBodyType(rhs))
+    return unify(subst, lhs, M.polymorphicTypeFreshBodyType(rhs))
   }
 
   if (M.isVarType(lhs) && M.isVarType(rhs)) {
@@ -29,7 +29,7 @@ export function typeUnify(
   }
 
   if (M.isVarType(lhs)) {
-    if (typeVarOccurredInType(lhs, rhs)) {
+    if (varOccurredInType(lhs, rhs)) {
       return undefined
     } else {
       return M.substExtend(subst, lhs, rhs)
@@ -37,7 +37,7 @@ export function typeUnify(
   }
 
   if (M.isVarType(rhs)) {
-    if (typeVarOccurredInType(rhs, lhs)) {
+    if (varOccurredInType(rhs, lhs)) {
       return undefined
     } else {
       return M.substExtend(subst, rhs, lhs)
@@ -59,22 +59,22 @@ export function typeUnify(
   if (M.isArrowType(lhs) && M.isArrowType(rhs)) {
     const curriedLhs = M.arrowTypeCurrying(lhs) as M.ArrowType
     const curriedRhs = M.arrowTypeCurrying(rhs) as M.ArrowType
-    subst = typeUnifyMany(subst, curriedLhs.argTypes, curriedRhs.argTypes)
-    subst = typeUnify(subst, curriedLhs.retType, curriedRhs.retType)
+    subst = unifyMany(subst, curriedLhs.argTypes, curriedRhs.argTypes)
+    subst = unify(subst, curriedLhs.retType, curriedRhs.retType)
     return subst
   }
 
   if (M.isListType(lhs) && M.isListType(rhs)) {
-    return typeUnify(subst, lhs.elementType, rhs.elementType)
+    return unify(subst, lhs.elementType, rhs.elementType)
   }
 
   if (M.isSetType(lhs) && M.isSetType(rhs)) {
-    return typeUnify(subst, lhs.elementType, rhs.elementType)
+    return unify(subst, lhs.elementType, rhs.elementType)
   }
 
   if (M.isHashType(lhs) && M.isHashType(rhs)) {
-    subst = typeUnify(subst, lhs.keyType, rhs.keyType)
-    subst = typeUnify(subst, lhs.valueType, rhs.valueType)
+    subst = unify(subst, lhs.keyType, rhs.keyType)
+    subst = unify(subst, lhs.valueType, rhs.valueType)
     return subst
   }
 
@@ -83,7 +83,7 @@ export function typeUnify(
       return undefined
     }
 
-    return typeUnifyMany(subst, lhs.argTypes, rhs.argTypes)
+    return unifyMany(subst, lhs.argTypes, rhs.argTypes)
   }
 
   if (M.isOpaqueType(lhs) && M.isOpaqueType(rhs)) {
@@ -91,13 +91,13 @@ export function typeUnify(
       return undefined
     }
 
-    return typeUnifyMany(subst, lhs.argTypes, rhs.argTypes)
+    return unifyMany(subst, lhs.argTypes, rhs.argTypes)
   }
 
   return undefined
 }
 
-export function typeUnifyMany(
+export function unifyMany(
   subst: M.Subst | undefined,
   lhs: Array<M.Type>,
   rhs: Array<M.Type>,
@@ -111,7 +111,7 @@ export function typeUnifyMany(
   }
 
   for (const i of range(lhs.length)) {
-    subst = typeUnify(subst, lhs[i], rhs[i])
+    subst = unify(subst, lhs[i], rhs[i])
   }
 
   return subst

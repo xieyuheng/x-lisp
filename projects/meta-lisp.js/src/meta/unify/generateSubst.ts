@@ -1,7 +1,7 @@
 import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-// - To implement `typeReify`.
+// - To implement `reify`.
 
 export function generateCanonicalLabelSubst(types: Array<M.Type>): M.Subst {
   const freeVarTypes: Array<M.VarType> = arrayDedup(

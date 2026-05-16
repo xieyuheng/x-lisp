@@ -1,5 +1,3 @@
-[meta-lisp.js] [refactor] 设置 src/unify/ 目录，把 typeUnify 和 typeReify 相关的函数和 Subst 放进去
-
 # setup feedback loop
 
 [meta-lisp.meta] remove `env` `evaluate` and `value`

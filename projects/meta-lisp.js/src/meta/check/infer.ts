@@ -282,7 +282,7 @@ function inferApplyArrowType(
     if (args.length === 0) {
       const retType = M.createFreshVarType("R")
       const arrowType = M.ArrowType([], retType)
-      const newSubst = M.typeUnify(subst, type, arrowType)
+      const newSubst = M.unify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = M.substDeepWalk(subst, type)
         let message = `expecting nullary arrow type`
@@ -295,7 +295,7 @@ function inferApplyArrowType(
       const argType = M.createFreshVarType("A")
       const retType = M.createFreshVarType("R")
       const arrowType = M.ArrowType([argType], retType)
-      const newSubst = M.typeUnify(subst, type, arrowType)
+      const newSubst = M.unify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = M.substDeepWalk(subst, type)
         let message = `expecting arrow type`
@@ -313,7 +313,7 @@ function inferApplyArrowType(
       const argType = M.createFreshVarType("A")
       const retType = M.createFreshVarType("R")
       const arrowType = M.ArrowType([argType], retType)
-      const newSubst = M.typeUnify(subst, type, arrowType)
+      const newSubst = M.unify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = M.substDeepWalk(subst, type)
         let message = `expecting arrow type`
