@@ -25,9 +25,9 @@ export function definitionCheck(definition: M.Definition): null {
               : M.Lambda(
                   definition.typeConstructor.parameters,
                   field.type,
-                  definition.location,
+                  field.type.location ?? field.location,
                 )
-          checkExp(mod, name, exp)
+          tryCheckTypeExp(mod, exp)
         }
       }
 
@@ -93,9 +93,9 @@ export function definitionCheck(definition: M.Definition): null {
             : M.Lambda(
                 definition.typeConstructor.parameters,
                 entry.type,
-                definition.location,
+                entry.type.location ?? entry.location,
               )
-        checkExp(mod, name, exp)
+        tryCheckTypeExp(mod, exp)
       }
 
       const reprExp =
@@ -104,13 +104,22 @@ export function definitionCheck(definition: M.Definition): null {
           : M.Lambda(
               definition.typeConstructor.parameters,
               definition.representationType,
-              definition.location,
+              definition.representationType.location,
             )
-      checkExp(mod, name, reprExp)
+      tryCheckTypeExp(mod, reprExp)
 
       definition.isChecked = true
       return null
     }
+  }
+}
+
+function tryCheckTypeExp(mod: M.Mod, exp: M.Exp): void {
+  const type = M.TypeType()
+  const effect = M.checkAssignable(mod, M.emptyCtx(), exp, type)
+  const result = effect(M.emptySubst())
+  if (result.kind === "CheckError") {
+    writeln(reportTypeCheckError(result.exp, result.message))
   }
 }
 

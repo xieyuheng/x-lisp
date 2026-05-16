@@ -157,6 +157,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       dataConstructor.fields = dataConstructor.fields.map((field) => ({
         name: field.name,
         type: field.type,
+        location: field.location,
       }))
     }
 
