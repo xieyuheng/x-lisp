@@ -1,9 +1,6 @@
 # meta-lisp
 
-> A statically typed lisp for implementing new lisp languages.
-
-meta-lisp is a statically typed lisp dialect
-following Scheme's minimalist syntax design.
+A simply typed lisp for implementing new lisp languages.
 
 ## Documentation
 
