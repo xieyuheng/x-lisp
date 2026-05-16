@@ -7,11 +7,17 @@ export function formatValue(value: M.Value): string {
     }
 
     case "CurryValue": {
-      return `{CurryValue}`
+      const args = M.formatValues(value.args)
+      const target = formatValue(value.target)
+      if (args.length === 0) {
+        return target
+      } else {
+        return `(${target} ${args})`
+      }
     }
 
     case "DefinitionValue": {
-      return `{DefinitionValue}`
+      return `${value.definition.mod.name}/${value.definition.name}`
     }
   }
 }
