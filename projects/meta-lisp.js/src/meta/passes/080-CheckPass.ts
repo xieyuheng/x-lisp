@@ -20,12 +20,12 @@ export function CheckPass(
     if (mod.isErrorModule) {
       withOutputToErrorModuleSnapshot(project, mod.name, () => {
         for (const definition of mod.definitions.values()) {
-          checkDefinition(definition, options)
+          performDefinitionCheck(definition, options)
         }
       })
     } else {
       for (const definition of mod.definitions.values()) {
-        checkDefinition(definition, options)
+        performDefinitionCheck(definition, options)
       }
     }
   }
@@ -45,7 +45,7 @@ function withOutputToErrorModuleSnapshot<A>(
   )
 }
 
-function checkDefinition(
+function performDefinitionCheck(
   definition: M.Definition,
   options: {
     verbose: boolean

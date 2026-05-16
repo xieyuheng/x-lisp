@@ -126,13 +126,35 @@ function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
     const ctx = M.emptyCtx()
     ctx.transparentOpaqueNames = opaqueNames
-    checkClaimedType(mod, ctx, exp, opaqueType)
+    const effect = M.checkAssignable(mod, ctx, exp, opaqueType)
+    const result = effect(M.emptySubst())
+    if (result.kind === "CheckError") {
+      writeln(reportTypeCheckError(result.exp, result.message))
+    }
+    return
+  }
+
+  const type = M.modLookupClaimedType(mod, name)
+  if (type) {
+    const effect = M.checkAssignable(mod, M.emptyCtx(), exp, type)
+    const result = effect(M.emptySubst())
+    if (result.kind === "CheckError") {
+      writeln(reportTypeCheckError(result.exp, result.message))
+    }
   } else {
-    const type = M.modLookupClaimedType(mod, name)
-    if (type) {
-      checkClaimedType(mod, M.emptyCtx(), exp, type)
+    const freshVarType = M.createFreshVarType(name)
+    // - for recursive function
+    const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
+    // - for mutual recursive function
+    M.modPutInferredType(mod, name, freshVarType)
+    const effect = M.infer(mod, ctx, exp)
+    const result = effect(M.emptySubst())
+    if (result.kind === "InferError") {
+      writeln(reportTypeCheckError(result.exp, result.message))
     } else {
-      checkByInfer(mod, name, exp)
+      let inferredType = M.substDeepWalk(result.subst, result.type)
+      inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
+      M.modPutInferredType(mod, name, inferredType)
     }
   }
 }
@@ -151,36 +173,6 @@ function findOpaqueNamesByInterfaceName(
   }
 
   return undefined
-}
-
-function checkClaimedType(
-  mod: M.Mod,
-  ctx: M.Ctx,
-  exp: M.Exp,
-  type: M.Type,
-): void {
-  const effect = M.checkAssignable(mod, ctx, exp, type)
-  const result = effect(M.emptySubst())
-  if (result.kind === "CheckError") {
-    writeln(reportTypeCheckError(result.exp, result.message))
-  }
-}
-
-function checkByInfer(mod: M.Mod, name: string, exp: M.Exp): void {
-  const freshVarType = M.createFreshVarType(name)
-  // - for recursive function
-  const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
-  // - for mutual recursive function
-  M.modPutInferredType(mod, name, freshVarType)
-  const effect = M.infer(mod, ctx, exp)
-  const result = effect(M.emptySubst())
-  if (result.kind === "InferError") {
-    writeln(reportTypeCheckError(result.exp, result.message))
-  } else {
-    let inferredType = M.substDeepWalk(result.subst, result.type)
-    inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
-    M.modPutInferredType(mod, name, inferredType)
-  }
 }
 
 function reportTypeCheckError(exp: M.Exp, errorMessage: string): string {
