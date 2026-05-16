@@ -70,9 +70,5 @@ export function formatType(type: M.Type): string {
       return `(polymorphic (${varTypes}) ${bodyType})`
     }
 
-    case "CurryType":
-    case "DefinitionType": {
-      return `{${type.kind}}`
-    }
   }
 }

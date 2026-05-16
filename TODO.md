@@ -1,3 +1,22 @@
+[meta-lisp.js] [refactor] Env 需要有自己的 API，内部的实现方式不透明，不能直接操作和创建 Map。
+
+- 具体 API 设计模仿 Ctx
+
+[meta-lisp.js] [refactor] formatValue 在 下面这两种情况，应该打印更多的信息
+
+CurryValue 应该 直接打印 部分 apply 的形状。
+
+    case "CurryValue": {
+      return `{CurryValue}`
+    }
+
+DefinitionValue 应该打印 Definition 的名字
+
+    case "DefinitionValue": {
+      return `{DefinitionValue}`
+    }
+
+
 # setup feedback loop
 
 [meta-lisp.meta] remove `env` `evaluate` and `value`

@@ -2,4 +2,4 @@
 
 (define (check-command config-path)
   (= project (load-project config-path))
-  (check-pipeline project (@hash)))
+  (check-pipeline project (make-hash)))

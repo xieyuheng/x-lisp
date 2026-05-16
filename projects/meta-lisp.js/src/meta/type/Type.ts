@@ -1,7 +1,6 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import type {
   AlgebraicTypeDefinition,
-  Definition,
   OpaqueTypeDefinition,
 } from "../definition/index.ts"
 
@@ -17,9 +16,6 @@ export type Type =
   | AlgebraicType
   | OpaqueType
   | PolymorphicType
-  | CurryType
-  | DefinitionType
-
 // VarType
 
 export type VarType = {
@@ -252,52 +248,6 @@ export function isPolymorphicType(type: Type): type is PolymorphicType {
 export function asPolymorphicType(type: Type): PolymorphicType {
   if (isPolymorphicType(type)) return type
   throw new Error(`[asPolymorphicType] fail on: ${type.kind}`)
-}
-
-// CurryType
-
-export type CurryType = {
-  kind: "CurryType"
-  target: Type
-  arity: number
-  args: Array<Type>
-}
-
-export function CurryType(
-  target: Type,
-  arity: number,
-  args: Array<Type>,
-): CurryType {
-  return { kind: "CurryType", target, arity, args }
-}
-
-export function isCurryType(type: Type): type is CurryType {
-  return type.kind === "CurryType"
-}
-
-export function asCurryType(type: Type): CurryType {
-  if (isCurryType(type)) return type
-  throw new Error(`[asCurryType] fail on: ${type.kind}`)
-}
-
-// DefinitionType
-
-export type DefinitionType = {
-  kind: "DefinitionType"
-  definition: Definition
-}
-
-export function DefinitionType(definition: Definition): DefinitionType {
-  return { kind: "DefinitionType", definition }
-}
-
-export function isDefinitionType(type: Type): type is DefinitionType {
-  return type.kind === "DefinitionType"
-}
-
-export function asDefinitionType(type: Type): DefinitionType {
-  if (isDefinitionType(type)) return type
-  throw new Error(`[asDefinitionType] fail on: ${type.kind}`)
 }
 
 // Helpers

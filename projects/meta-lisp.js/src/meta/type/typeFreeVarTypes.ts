@@ -46,8 +46,5 @@ export function typeFreeVarTypes(
         type.bodyType,
       )
 
-    case "CurryType":
-    case "DefinitionType":
-      return []
   }
 }

@@ -117,10 +117,10 @@ export function definitionCheck(definition: M.Definition): null {
 function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
   const opaqueTypeExp = mod.opaqueClaimed.get(name)
   if (opaqueTypeExp) {
-    const opaqueType = M.typeEvaluate(
+    const opaqueType = M.evaluateType(
       "TransparentMode",
       mod,
-      M.emptyTypeEnv(),
+      new Map(),
       opaqueTypeExp,
     )
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()

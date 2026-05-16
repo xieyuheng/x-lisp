@@ -86,10 +86,10 @@ export function modLookupClaimedType(
   if (!claimedEntry) return undefined
   if (claimedEntry.type) return claimedEntry.type
 
-  const type = M.typeEvaluate(
+  const type = M.evaluateType(
     "OpaqueMode",
     mod,
-    M.emptyTypeEnv(),
+    new Map(),
     claimedEntry.exp,
   )
   claimedEntry.type = type

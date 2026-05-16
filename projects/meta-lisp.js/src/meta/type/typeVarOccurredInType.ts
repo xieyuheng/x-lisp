@@ -64,8 +64,5 @@ function typeVarOccurredInTypeWithBoundIds(
         type.bodyType,
       )
 
-    case "CurryType":
-    case "DefinitionType":
-      return false
   }
 }
