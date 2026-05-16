@@ -41,38 +41,36 @@ export function definitionCheck(definition: M.Definition): null {
       return null
     }
 
-    case "VariableDefinition": {
-      checkExp(mod, name, definition.body)
-      definition.isChecked = true
-      return null
-    }
-
+    case "VariableDefinition":
     case "TestDefinition": {
-      checkExp(mod, name, definition.body)
+      if (!tryCheckDefinitionBody(mod, name, definition.body)) {
+        tryInferDefinitionBody(mod, name, definition.body)
+      }
       definition.isChecked = true
       return null
     }
 
     case "TypeDefinition": {
-      if (definition.parameters.length === 0) {
-        checkExp(mod, name, definition.body)
-      } else {
-        checkExp(
-          mod,
-          name,
-          M.Lambda(definition.parameters, definition.body, definition.location),
-        )
+      const body =
+        definition.parameters.length === 0
+          ? definition.body
+          : M.Lambda(definition.parameters, definition.body, definition.location)
+      if (!tryCheckDefinitionBody(mod, name, body)) {
+        tryInferDefinitionBody(mod, name, body)
       }
       definition.isChecked = true
       return null
     }
 
     case "FunctionDefinition": {
-      checkExp(
-        mod,
-        name,
-        M.Lambda(definition.parameters, definition.body, definition.location),
+      const body = M.Lambda(
+        definition.parameters,
+        definition.body,
+        definition.location,
       )
+      if (!tryCheckDefinitionBody(mod, name, body)) {
+        tryInferDefinitionBody(mod, name, body)
+      }
       definition.isChecked = true
       return null
     }
@@ -107,7 +105,11 @@ function tryCheckTypeExp(
   }
 }
 
-function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
+function tryCheckDefinitionBody(
+  mod: M.Mod,
+  name: string,
+  exp: M.Exp,
+): boolean {
   const opaqueTypeExp = mod.opaqueClaimed.get(name)
   if (opaqueTypeExp) {
     const opaqueType = M.evaluateType(
@@ -124,7 +126,7 @@ function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
     if (result.kind === "CheckError") {
       writeln(reportTypeCheckError(result.exp, result.message))
     }
-    return
+    return true
   }
 
   const type = M.modLookupClaimedType(mod, name)
@@ -134,21 +136,30 @@ function checkExp(mod: M.Mod, name: string, exp: M.Exp): void {
     if (result.kind === "CheckError") {
       writeln(reportTypeCheckError(result.exp, result.message))
     }
+    return true
+  }
+
+  return false
+}
+
+function tryInferDefinitionBody(
+  mod: M.Mod,
+  name: string,
+  exp: M.Exp,
+): void {
+  const freshVarType = M.createFreshVarType(name)
+  // - for recursive function
+  const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
+  // - for mutual recursive function
+  M.modPutInferredType(mod, name, freshVarType)
+  const effect = M.infer(mod, ctx, exp)
+  const result = effect(M.emptySubst())
+  if (result.kind === "InferError") {
+    writeln(reportTypeCheckError(result.exp, result.message))
   } else {
-    const freshVarType = M.createFreshVarType(name)
-    // - for recursive function
-    const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
-    // - for mutual recursive function
-    M.modPutInferredType(mod, name, freshVarType)
-    const effect = M.infer(mod, ctx, exp)
-    const result = effect(M.emptySubst())
-    if (result.kind === "InferError") {
-      writeln(reportTypeCheckError(result.exp, result.message))
-    } else {
-      let inferredType = M.substDeepWalk(result.subst, result.type)
-      inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
-      M.modPutInferredType(mod, name, inferredType)
-    }
+    let inferredType = M.substDeepWalk(result.subst, result.type)
+    inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
+    M.modPutInferredType(mod, name, inferredType)
   }
 }
 
