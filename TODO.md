@@ -14,6 +14,23 @@
 - 调用 sh scripts/test.sh 做测试。
 - 调用 sh scripts/self-check.sh 用 self-hosting 编译器做类型检查。
 
+---
+
+执行。
+
+你可以修改任何代码，目的是要和 [meta-lisp.js] 同步，以促进迁移工作。
+
+注意：
+
+- 关于 meta-lisp 语言，有不清楚的地方，可以查看文档：
+  - docs/zh/reference/*
+  或者看源代码：
+  - projects/meta-builtin.meta
+  或者看例子代码：
+  - projects/meta-example.meta
+
+---
+
 [meta-lisp.meta] `expand-pass`
 [meta-lisp.meta] `mod-t` -- complete
 [meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
