@@ -19,15 +19,7 @@ export function definitionCheck(definition: M.Definition): null {
     case "AlgebraicTypeDefinition": {
       for (const dataConstructor of definition.dataConstructors) {
         for (const field of dataConstructor.fields) {
-          const exp =
-            definition.typeConstructor.parameters.length === 0
-              ? field.type
-              : M.Lambda(
-                  definition.typeConstructor.parameters,
-                  field.type,
-                  field.type.location ?? field.location,
-                )
-          tryCheckTypeExp(mod, exp)
+          tryCheckTypeExp(mod, field.type, definition.typeConstructor.parameters)
         }
       }
 
@@ -87,26 +79,10 @@ export function definitionCheck(definition: M.Definition): null {
 
     case "OpaqueTypeDefinition": {
       for (const entry of definition.interfaceEntries) {
-        const exp =
-          definition.typeConstructor.parameters.length === 0
-            ? entry.type
-            : M.Lambda(
-                definition.typeConstructor.parameters,
-                entry.type,
-                entry.type.location ?? entry.location,
-              )
-        tryCheckTypeExp(mod, exp)
+        tryCheckTypeExp(mod, entry.type, definition.typeConstructor.parameters)
       }
 
-      const reprExp =
-        definition.typeConstructor.parameters.length === 0
-          ? definition.representationType
-          : M.Lambda(
-              definition.typeConstructor.parameters,
-              definition.representationType,
-              definition.representationType.location,
-            )
-      tryCheckTypeExp(mod, reprExp)
+      tryCheckTypeExp(mod, definition.representationType, definition.typeConstructor.parameters)
 
       definition.isChecked = true
       return null
@@ -114,9 +90,17 @@ export function definitionCheck(definition: M.Definition): null {
   }
 }
 
-function tryCheckTypeExp(mod: M.Mod, exp: M.Exp): void {
+function tryCheckTypeExp(
+  mod: M.Mod,
+  exp: M.Exp,
+  typeParameters: Array<string>,
+): void {
   const type = M.TypeType()
-  const effect = M.checkAssignable(mod, M.emptyCtx(), exp, type)
+  let ctx = M.emptyCtx()
+  for (const name of typeParameters) {
+    ctx = M.ctxPut(ctx, name, M.TypeType())
+  }
+  const effect = M.checkAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {
     writeln(reportTypeCheckError(result.exp, result.message))
