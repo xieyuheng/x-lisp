@@ -251,7 +251,7 @@ function inferLookup(
     }
 
     {
-      // - reach: inferLookup is called for B while checking A,
+      // - when: inferLookup is called for B while checking A,
       //   and tryInferDefinitionBody has pre-allocated a fresh type
       //   variable for B, meaning B is in a mutual-recursive group with A.
       //   Return this fresh variable immediately to avoid infinite recursion.
@@ -259,7 +259,7 @@ function inferLookup(
       if (inferredType) return M.okInferEffect(inferredType)(subst)
     }
 
-    // - reach: B is defined later in the module, so it has no pre-allocated
+    // - when: B is defined later in the module, so it has no pre-allocated
     //   type variable and no inferred type yet.
     //   Check B on demand to obtain its type.
     //   This branch must come AFTER the mutual-recursion check above,
@@ -267,7 +267,7 @@ function inferLookup(
     M.definitionCheck(definition)
 
     {
-      // - reach: after definitionCheck, tryInferDefinitionBody has stored
+      // - when: after definitionCheck, tryInferDefinitionBody has stored
       //   B's inferred type in mod.inferredTypes. Retrieve it.
       const inferredType = M.modLookupInferredType(mod, name)
       if (inferredType) return M.okInferEffect(inferredType)(subst)

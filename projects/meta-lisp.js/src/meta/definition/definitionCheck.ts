@@ -164,12 +164,12 @@ function tryCheckDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): boolean {
 
 function tryInferDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): void {
   const freshVarType = M.createFreshVarType(name)
-  // - for recursive function
+  // - why: for recursive function — put `name -> freshVarType`
+  //   into ctx so that the function body can refer to itself recursively.
   const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
-  // - for mutual recursive function.
-  // - this freshVarType as inferredType
-  //   should only be use during type inference of this body,
-  //   inferredType will be updated when this inference success.
+  // - why: for mutual recursive function — reserve a placeholder
+  //   in mod.inferredTypes for peers to find during type inference.
+  //   It will be overwritten with the actual inferred type on success.
   M.modPutInferredType(mod, name, freshVarType)
   const effect = M.infer(mod, ctx, exp)
   const result = effect(M.emptySubst())
