@@ -2,6 +2,23 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
+// definitionCheck is the single point where a definition's types are checked.
+// It is called from two places with distinct responsibilities:
+//
+//   - CheckPass (080-CheckPass.ts):
+//       Eager pass that iterates all definitions in all modules.
+//       This is the "official" type checking pass.
+//
+//   - inferLookup (check/infer.ts):
+//       Lazy fallback during type inference.
+//       When checking definition A that references definition B,
+//       and B hasn't been checked yet (B appears later in the iteration order),
+//       inferLookup calls definitionCheck(B) on demand.
+//       This avoids requiring definitions to be in topological order.
+//
+// definitionCheck is idempotent — once isChecked is set,
+// subsequent calls return immediately.
+
 export function definitionCheck(definition: M.Definition): null {
   if (definition.isChecked) {
     return null
@@ -59,10 +76,10 @@ export function definitionCheck(definition: M.Definition): null {
         definition.parameters.length === 0
           ? definition.body
           : M.Lambda(
-            definition.parameters,
-            definition.body,
-            definition.location,
-          )
+              definition.parameters,
+              definition.body,
+              definition.location,
+            )
       if (!tryCheckDefinitionBody(mod, name, body)) {
         tryInferDefinitionBody(mod, name, body)
       }
@@ -149,7 +166,10 @@ function tryInferDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): void {
   const freshVarType = M.createFreshVarType(name)
   // - for recursive function
   const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)
-  // - for mutual recursive function
+  // - for mutual recursive function.
+  // - this freshVarType as inferredType
+  //   should only be use during type inference of this body,
+  //   inferredType will be updated when this inference success.
   M.modPutInferredType(mod, name, freshVarType)
   const effect = M.infer(mod, ctx, exp)
   const result = effect(M.emptySubst())
