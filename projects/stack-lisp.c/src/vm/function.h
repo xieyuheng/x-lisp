@@ -1,6 +1,7 @@
 #pragma once
 
 struct function_t {
+  const char *name;
   record_t *label_offsets; // record of int32_t
   record_t *label_references; // record of list of int32_t
   size_t arity;
@@ -9,7 +10,7 @@ struct function_t {
   size_t code_length;
 };
 
-function_t *make_function(void);
+function_t *make_function(const char *name);
 void function_free(function_t *self);
 
 void function_append_instr(function_t *self, struct instr_t instr);

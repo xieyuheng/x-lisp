@@ -18,6 +18,7 @@ void stk_call(mod_t *mod, const char *name, const array_t *args) {
 
   if (args && definition_arity(definition) != array_length(args)) {
     who_printf("arity mismatch\n");
+    who_printf("  name: %s\n", name);    
     who_printf("  expected arity: %ld\n", definition_arity(definition));
     who_printf("  given arity: %ld\n", array_length(args));
     exit(1);

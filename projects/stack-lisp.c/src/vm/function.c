@@ -1,7 +1,8 @@
 #include "index.h"
 
-function_t *make_function(void) {
+function_t *make_function(const char *name) {
   function_t *self = new(function_t);
+  self->name = name;
   self->label_offsets = make_record();
   self->label_references = make_record_with((free_fn_t *) list_free);
   self->arity = 0;
@@ -20,11 +21,11 @@ void function_free(function_t *self) {
 
 static void function_maybe_grow_code_area(function_t *self, size_t length) {
   if (self->code_area_size <
-    self->code_length + length) {
+      self->code_length + length) {
     self->code_area =
       reallocate(self->code_area,
-             self->code_area_size,
-             self->code_area_size * 2);
+                 self->code_area_size,
+                 self->code_area_size * 2);
     self->code_area_size *= 2;
     function_maybe_grow_code_area(self, length);
   }
@@ -115,7 +116,11 @@ void function_patch_label_references(function_t *self) {
     list_t *reference_list = entry->value;
     for (size_t i = 0; i < list_length(reference_list); i++) {
       int32_t code_offset = (int32_t) (int64_t) list_get(reference_list, i);
-      assert(code_offset + sizeof(definition_t *) < self->code_area_size);
+      while (code_offset + sizeof(definition_t *) >= self->code_area_size) {
+        self->code_area = reallocate(self->code_area, self->code_area_size, self->code_area_size * 2);
+        self->code_area_size *= 2;
+      }
+
       uint8_t *code = self->code_area + code_offset;
       int32_t offset = label_offset - (code_offset + sizeof(int32_t));
       memory_store(code, offset);

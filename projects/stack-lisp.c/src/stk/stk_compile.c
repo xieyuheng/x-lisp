@@ -6,7 +6,7 @@ static value_t x_function_body(value_t sexp) { return x_cdr(x_cdr(sexp)); }
 
 static void prepare_define_function(mod_t *mod, value_t sexp) {
   const char *name = symbol_string(to_symbol(x_function_name(sexp)));
-  function_t *function = make_function();
+  function_t *function = make_function(name);
   function->arity = to_int64(x_function_arity(sexp));
   define_function(mod, name, function);
 }
@@ -24,7 +24,7 @@ static value_t x_variable_body(value_t sexp) { return x_cdr(sexp); }
 
 static void prepare_define_variable(mod_t *mod, value_t sexp) {
   const char *name = symbol_string(to_symbol(x_variable_name(sexp)));
-  function_t *function = make_function();
+  function_t *function = make_function(name);
   define_variable_function(mod, name, function);
 }
 
@@ -41,7 +41,7 @@ static value_t x_test_body(value_t sexp) { return x_cdr(sexp); }
 
 static void prepare_define_test(mod_t *mod, value_t sexp) {
   const char *name = symbol_string(to_symbol(x_test_name(sexp)));
-  function_t *function = make_function();
+  function_t *function = make_function(name);
   define_function(mod, name, function);
   set_add(mod->test_names, string_copy(name));
 }
