@@ -1,16 +1,14 @@
 (module meta)
 
 (define (expand-pass project options)
-  (hash-each
-    (lambda (path fragment)
-      (mod-fragment-put-stmts!
+  (pipe (project-fragments project)
+    (hash-each
+     (lambda (path fragment)
+       (mod-fragment-put-stmts!
         (expand-stmts (mod-fragment-stmts fragment))
-        fragment))
-    (project-fragments project))
-  (if (hash-has? 'dump options)
-    (project-dump-fragments project "010-expand")
-    void)
-  void)
+        fragment))))
+  (when (hash-has? 'dump options)
+    (project-dump-fragments project "010-expand")))
 
 (define (expand-stmts stmts)
   (list-flat-map expand-stmt stmts))

@@ -9,12 +9,7 @@ function main {
     case $command in
         (check)
             local path=${1:-"project.sexp"}
-            local dump_flag=$2
-            local dump=""
-            if [ "$dump_flag" = "--dump" ]; then
-                dump="true"
-            fi
-            call meta/check-command $path "$dump"
+            call meta/check-command $(realpath project.sexp) "true"
             ;;
         (*)
             echo "unknown command: $command"

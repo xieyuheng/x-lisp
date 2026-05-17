@@ -21,7 +21,7 @@
      (string-concat ["(" (format-exp target) " " (format-exps args) ")"]))
     ((arrow-exp arg-types ret-type location)
      (let ((args-str (format-exps arg-types)))
-       (if (list-empty? (list-tail arg-types))
+       (if (list-empty? arg-types)
          (string-concat ["(-> " args-str " " (format-exp ret-type) ")"])
          (string-concat ["(-> " args-str " " (format-exp ret-type) ")"]))))
     ((polymorphic-exp parameters body location)
