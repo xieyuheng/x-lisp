@@ -21,7 +21,7 @@ function projectDumpCode(
   tag: string,
   code: string,
 ): void {
-  const directory = Path.join(M.projectOutputDirectory(project), "dumps")
+  const directory = Path.join(M.projectOutputDirectory(project), "dumps", "modules")
   const dumpPath = `${directory}/${mod.name}.${tag}.dump`
   M.log(tag, pathRelativeToCwd(dumpPath))
   callWithFile(openOutputFile(dumpPath), (file) => {

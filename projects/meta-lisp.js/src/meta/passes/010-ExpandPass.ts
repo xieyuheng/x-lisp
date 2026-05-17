@@ -1,10 +1,15 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ExpandPass(project: M.Project): void {
+export function ExpandPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   for (const fragment of project.fragments.values()) {
     fragment.stmts = fragment.stmts.flatMap(expandStmt)
   }
+
+  if (options.dump) M.projectDumpFragments(project, "010-expand")
 }
 
 function getDataType(stmt: M.DefineAlgebraicType): M.Exp {

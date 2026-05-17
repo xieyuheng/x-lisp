@@ -1,7 +1,10 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
 
-export function ExecutePass(project: M.Project): void {
+export function ExecutePass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   for (const [path, fragment] of project.fragments) {
     let mod =
       M.projectLookupMod(project, fragment.modName) ||
@@ -17,6 +20,8 @@ export function ExecutePass(project: M.Project): void {
       executeStmt(mod, stmt)
     }
   }
+
+  if (options.dump) M.projectDumpMods(project, "040-execute")
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt): void {

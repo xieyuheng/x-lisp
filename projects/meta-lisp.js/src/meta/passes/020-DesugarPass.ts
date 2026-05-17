@@ -2,10 +2,15 @@ import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function DesugarPass(project: M.Project): void {
+export function DesugarPass(
+  project: M.Project,
+  options: { dump: boolean },
+): void {
   for (const fragment of project.fragments.values()) {
     fragment.stmts = fragment.stmts.map(desugarStmt)
   }
+
+  if (options.dump) M.projectDumpFragments(project, "020-desugar")
 }
 
 type State = {

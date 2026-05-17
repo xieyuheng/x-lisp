@@ -1,3 +1,3 @@
-[meta-lisp.js] 给每个 pass 都增加 dump 功能
+[meta-lisp.js] 给 `ModFragment` 在 `serialNumber` 之外加上 `path`
 
-- 不是按照 mod 为单位，而是按照 mod-fragment 为单位。
+- dump fragment 的时候，把 `path` 作为注释，写在 dump file 的开头。
