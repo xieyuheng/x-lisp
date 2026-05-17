@@ -34,11 +34,6 @@
         (claim-entry-type entry))
       (nothing))))
 
-(claim project-lookup-mod (-> project-t symbol-t (maybe-t mod-t)))
-(define (project-lookup-mod project name)
-  ;; TODO: implement proper mod lookup from project fragments
-  (nothing))
-
 (claim mod-lookup-claimed-entry (-> mod-t symbol-t (maybe-t claim-entry-t)))
 (define (mod-lookup-claimed-entry mod name)
   (let ((claimed (mod-claimed mod)))
