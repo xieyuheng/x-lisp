@@ -8,7 +8,7 @@
         fragment))
     (project-fragments project))
   (if (hash-has? 'dump options)
-    (dump-fragments project "010-expand")
+    (project-dump-fragments project "010-expand")
     void)
   void)
 
@@ -322,30 +322,5 @@
          [(int-exp position field-location)
           (var-exp 'value field-location)
           (var-exp 'target field-location)]
-         field-location)
-       field-location)]))
-
-(define (dump-fragments project tag)
-  (let ((config (meta-sexp-config))
-        (width 80))
-    (hash-each
-      (lambda (path fragment)
-        (let* ((name (string-concat [(symbol-to-string (mod-fragment-mod-name fragment))
-                                    "." (int-to-string (mod-fragment-serial-number fragment))]))
-               (stmts-code (format-fragment-stmts (mod-fragment-stmts fragment)))
-               (code (ppml/pretty-sexp-by-format (lambda (s) s) config width stmts-code))
-               (out-dir (path-join (project-root-directory project)
-                         (path-join (build-config-output-directory
-                                      (project-config-build (project-config project)))
-                           "dump")))
-               (frag-dir (path-join out-dir "fragments"))
-               (dump-path (string-concat [frag-dir "/" name "." tag ".dump"])))
-          (fs-ensure-directory frag-dir)
-          (call-with-output-file dump-path
-            (lambda (file)
-              (file-write file (string-concat [";; " path "\n\n" code]))
-              void))
-          (println (string-concat ["[" tag "] "
-                                  (path-relative-to-cwd dump-path)]))))
-      (project-fragments project))
-    void))
+          field-location)
+        field-location)]))

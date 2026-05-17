@@ -38,3 +38,17 @@
 (define (project-lookup-mod project name)
   ;; TODO: implement proper mod lookup from project fragments
   (nothing))
+
+(claim mod-lookup-claimed-entry (-> mod-t symbol-t (maybe-t claim-entry-t)))
+(define (mod-lookup-claimed-entry mod name)
+  (let ((claimed (mod-claimed mod)))
+    (if (hash-has? name claimed)
+      (just (hash-get name claimed))
+      (nothing))))
+
+(claim mod-lookup-inferred-type (-> mod-t symbol-t (maybe-t type-t)))
+(define (mod-lookup-inferred-type mod name)
+  (let ((inferred (mod-inferred-types mod)))
+    (if (hash-has? name inferred)
+      (just (hash-get name inferred))
+      (nothing))))
