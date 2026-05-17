@@ -269,6 +269,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 遍历与映射
 
 - [`list-each`](list/list-each.md) — 遍历执行副作用
+- [`list-flat-map`](list/list-flat-map.md) — 映射并扁平化
 - [`list-map`](list/list-map.md) — 映射
 - [`list-map-zip`](list/list-map-zip.md) — 同时映射两个列表
 - [`list-zip`](list/list-zip.md) — 按位置配对

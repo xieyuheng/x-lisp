@@ -269,6 +269,7 @@ Operations on `(list-t E)`.
 ### Iteration and mapping
 
 - [`list-each`](list/list-each.md) — Iterate with side effects
+- [`list-flat-map`](list/list-flat-map.md) — Map and flatten
 - [`list-map`](list/list-map.md) — Map over elements
 - [`list-map-zip`](list/list-map-zip.md) — Map over two lists in parallel
 - [`list-zip`](list/list-zip.md) — Pair elements by position
