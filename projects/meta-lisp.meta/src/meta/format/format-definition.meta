@@ -2,7 +2,82 @@
 
 (claim format-definition (-> definition-t string-t))
 (define (format-definition definition)
-  (format-definition-short definition))
+  (match definition
+    ((primitive-function-definition mod name arity fn is-checked location)
+     (let ((claim-str (format-definition-claim mod name)))
+       (string-concat [claim-str
+                       "(declare-primitive-function "
+                       (symbol-to-string name) " " (int-to-string arity) ")"])))
+    ((primitive-function-declaration mod name arity is-checked location)
+     (string-concat ["(declare-primitive-function " (symbol-to-string name) " " (int-to-string arity) ")"]))
+    ((primitive-variable-definition mod name value is-checked location)
+     (let ((claim-str (format-definition-claim mod name)))
+       (string-concat [claim-str
+                       "(declare-primitive-variable " (symbol-to-string name) ")"])))
+    ((primitive-variable-declaration mod name is-checked location)
+     (string-concat ["(declare-primitive-variable " (symbol-to-string name) ")"]))
+    ((function-definition mod name parameters body is-checked location)
+     (let ((claim-str (format-definition-claim mod name))
+           (params-str (string-join " " (list-map symbol-to-string parameters)))
+           (body-str (format-exp body)))
+       (string-concat [claim-str "(define (" (symbol-to-string name) " "
+                       params-str ") " body-str ")"])))
+    ((variable-definition mod name body value is-checked location)
+     (let ((claim-str (format-definition-claim mod name))
+           (body-str (format-exp body)))
+       (string-concat [claim-str "(define " (symbol-to-string name) " " body-str ")"])))
+    ((test-definition mod name body is-checked location)
+     (let ((claim-str (format-definition-claim mod name))
+           (body-str (format-exp body)))
+       (string-concat [claim-str "(define-test " (symbol-to-string name) " " body-str ")"])))
+    ((type-definition mod name parameters body is-checked location)
+     (let ((claim-str (format-definition-claim mod name))
+           (body-str (format-exp body)))
+       (string-concat [claim-str "(define-type " (symbol-to-string name) " " body-str ")"])))
+    ((algebraic-type-definition mod name type-constructor data-constructors is-checked location)
+     (let ((tc-name (type-constructor-name type-constructor))
+           (tc-params (type-constructor-parameters type-constructor))
+           (ctors-str (string-join " " (list-map format-data-constructor-old data-constructors))))
+       (if (list-empty? tc-params)
+         (string-concat ["(define-enum " (symbol-to-string tc-name) " " ctors-str ")"])
+         (string-concat ["(define-enum (" (symbol-to-string tc-name) " "
+                         (string-join " " (list-map symbol-to-string tc-params)) ") "
+                         ctors-str ")"]))))
+    ((opaque-type-definition mod name type-constructor representation-type interface-entries is-checked location)
+     (let ((tc-name (symbol-to-string name))
+           (tc-params (type-constructor-parameters type-constructor))
+           (repr-str (format-exp representation-type))
+           (ifaces-str (string-join " " (list-map format-interface-entry interface-entries))))
+       (if (list-empty? tc-params)
+         (string-concat ["(define-opaque-type " tc-name " " repr-str " " ifaces-str ")"])
+         (string-concat ["(define-opaque-type (" tc-name " "
+                         (string-join " " (list-map symbol-to-string tc-params)) ") "
+                         repr-str " " ifaces-str ")"]))))))
+
+(define (format-definition-claim mod name)
+  (let ((claimed-entry (mod-lookup-claimed-entry mod name)))
+    (if (not (nothing? claimed-entry))
+      (let ((exp (claim-entry-exp (just-value claimed-entry))))
+        (string-concat ["(claim " (symbol-to-string name) " " (format-exp exp) ") "]))
+      (let ((inferred-type (mod-lookup-inferred-type mod name)))
+        (if (not (nothing? inferred-type))
+          (string-concat ["(claim " (symbol-to-string name) " "
+                          (format-type (just-value inferred-type)) ") "])
+          "")))))
+
+(claim mod-lookup-claimed-entry (-> mod-t symbol-t (maybe-t claim-entry-t)))
+(define (mod-lookup-claimed-entry mod name)
+  (let ((claimed (mod-claimed mod)))
+    (if (hash-has? name claimed)
+      (just (hash-get name claimed))
+      (nothing))))
+
+(claim mod-lookup-inferred-type (-> mod-t symbol-t (maybe-t type-t)))
+(define (mod-lookup-inferred-type mod name)
+  (let ((inferred (mod-inferred-types mod)))
+    (if (hash-has? name inferred)
+      (just (hash-get name inferred))
+      (nothing))))
 
 (claim definition-mod-name (-> definition-t symbol-t))
 (define (definition-mod-name definition)
