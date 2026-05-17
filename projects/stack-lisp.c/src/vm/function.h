@@ -13,8 +13,6 @@ void function_free(function_t *self);
 
 void function_append_instr(function_t *self, struct instr_t instr);
 void function_put_instr(function_t *self, size_t code_index, struct instr_t instr);
-void function_put_definition(function_t *self, size_t code_index, definition_t *definition);
-
 void function_add_label(function_t *self, const char *name);
 bool function_has_label(const function_t *self, const char *name);
 int32_t function_get_label_offset(const function_t *self, const char *name);

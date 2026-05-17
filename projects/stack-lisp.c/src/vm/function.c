@@ -31,16 +31,6 @@ void function_put_instr(function_t *self, size_t code_index, struct instr_t inst
   instr_encode(code, instr);
 }
 
-void function_put_definition(
-  function_t *self,
-  size_t code_index,
-  definition_t *definition
-) {
-  buffer_ensure_capacity(self->buffer, code_index + sizeof(definition_t *));
-  uint8_t *code = buffer_raw_bytes(self->buffer) + code_index;
-  memory_store(code, definition);
-}
-
 void function_add_label(function_t *self, const char *name) {
   if (!function_has_label(self, name)) {
     record_insert(self->label_offsets, name, (void *)(int64_t)buffer_length(self->buffer));
