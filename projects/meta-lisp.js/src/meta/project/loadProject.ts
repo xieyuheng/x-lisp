@@ -10,7 +10,7 @@ export function loadProject(configPath?: string): M.Project {
   M.loadBuiltinMod(project)
 
   const sourceDirectory = M.projectSourceDirectory(project)
-  M.projectLoadModFragments(project, sourceDirectory)
+  M.projectLoadFragments(project, sourceDirectory)
 
   return project
 }

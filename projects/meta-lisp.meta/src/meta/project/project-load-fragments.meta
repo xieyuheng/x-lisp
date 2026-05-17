@@ -1,6 +1,6 @@
 (module meta)
 
-(define (project-load-mod-fragments project directory)
+(define (project-load-fragments project directory)
   (pipe (fs-list-recursive directory)
     (list-each
      (lambda (name)

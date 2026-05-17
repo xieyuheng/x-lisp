@@ -12,6 +12,6 @@ export function loadBuiltinMod(project: M.Project): M.Mod {
   const mod = M.createMod(modName, project)
   M.projectAddMod(project, mod)
   M.typeBuiltin(mod)
-  M.projectLoadModFragments(project, builtinPath)
+  M.projectLoadFragments(project, builtinPath)
   return mod
 }

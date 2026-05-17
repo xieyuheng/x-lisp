@@ -2,7 +2,7 @@ import fs from "node:fs"
 import Path from "node:path"
 import * as M from "../index.ts"
 
-export function projectLoadModFragments(
+export function projectLoadFragments(
   project: M.Project,
   directory: string,
 ): void {
