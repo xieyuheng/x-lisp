@@ -63,7 +63,8 @@ inline frame_t *vm_top_frame(const vm_t *vm) {
 }
 
 inline void vm_drop_frame(vm_t *vm) {
-  stack_pop(vm->frame_stack);
+  frame_t *frame = stack_pop(vm->frame_stack);
+  frame_free(frame);
 
   // - it is ok to try gc here,
   //   if we do not use loop syntax,
@@ -88,8 +89,7 @@ static inline void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t ins
   }
 
   case OP_RETURN: {
-    stack_pop(vm->frame_stack);
-    frame_free(frame);
+    vm_drop_frame(vm);
     return;
   }
 
@@ -99,8 +99,7 @@ static inline void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t ins
   }
 
   case OP_TAIL_CALL: {
-    stack_pop(vm->frame_stack);
-    frame_free(frame);
+    vm_drop_frame(vm);
     call_definition(vm, instr.ref.definition);
     return;
   }
@@ -145,8 +144,7 @@ static inline void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t ins
 
   case OP_TAIL_APPLY: {
     value_t target = vm_pop(vm);
-    stack_pop(vm->frame_stack);
-    frame_free(frame);
+    vm_drop_frame(vm);
     apply(vm, instr.apply.argc, target);
     return;
   }
@@ -187,7 +185,7 @@ void vm_execute(vm_t *vm) {
   while (vm_frame_count(vm) > 0) {
     frame_t *frame = stack_top(vm->frame_stack);
     if (frame->kind == BREAK_FRAME) {
-      stack_pop(vm->frame_stack);
+      vm_drop_frame(vm);
       return;
     }
 
@@ -254,9 +252,9 @@ void vm_gc_maybe_collect(vm_t *vm) {
   gc_report(global_gc);
 #endif
 
-  if (gc_object_count(global_gc) < GC_OBJECT_THRESHOLD) {
-    return;
-  }
+  // if (gc_object_count(global_gc) < GC_OBJECT_THRESHOLD) {
+  //   return;
+  // }
 
   array_t *roots = vm_gc_roots(vm);
   for (size_t i = 0; i < array_length(roots); i++) {
