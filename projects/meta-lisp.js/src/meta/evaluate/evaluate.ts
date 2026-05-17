@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { type Value } from "../value/Value.ts"
 import { type Env } from "./Env.ts"
@@ -15,7 +16,15 @@ export function evaluate(
       const fromEnv = M.envLookup(env, exp.name)
       if (fromEnv) return fromEnv
 
-      return valueFromMod(mode, mod, exp.name)
+      const definition = M.modLookupDefinition(mod, exp.name)
+      if (definition) return definitionToValue(mode, definition)
+
+      let message = `[evaluate] undefined variable`
+      message += `\n  module name: ${mod.name}`
+      message += `\n  name: ${exp.name}`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
     }
 
     case "QualifiedVar": {
@@ -24,10 +33,20 @@ export function evaluate(
         let message = `[evaluate] undefined module prefix`
         message += `\n  module: ${exp.modName}`
         message += `\n  name: ${exp.name}`
-        throw new Error(message)
+        if (exp.location)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
+        else throw new Error(message)
       }
 
-      return valueFromMod(mode, qualifiedMod, exp.name)
+      const definition = M.modLookupDefinition(qualifiedMod, exp.name)
+      if (definition) return definitionToValue(mode, definition)
+
+      let message = `[evaluate] undefined qualified variable`
+      message += `\n  module: ${qualifiedMod.name}`
+      message += `\n  name: ${exp.name}`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
     }
 
     case "Arrow": {
@@ -64,22 +83,11 @@ export function evaluate(
     default: {
       let message = `[evaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
-      throw new Error(message)
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
     }
   }
-}
-
-function valueFromMod(mode: EvaluationMode, mod: M.Mod, name: string): Value {
-  const definition = M.modLookupDefinition(mod, name)
-  if (definition) return definitionToValue(mode, definition)
-
-  const claimedType = M.modLookupClaimedType(mod, name)
-  if (claimedType) return M.TypeValue(claimedType)
-
-  let message = `[evaluate] undefined variable`
-  message += `\n  module name: ${mod.name}`
-  message += `\n  name: ${name}`
-  throw new Error(message)
 }
 
 function definitionToValue(

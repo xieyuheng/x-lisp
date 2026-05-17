@@ -65,6 +65,21 @@ function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return stmt
     }
 
+    case "DefineOpaqueType": {
+      const boundNames = new Set(stmt.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      return M.DefineOpaqueType(
+        stmt.name,
+        stmt.parameters,
+        onExp(newScope, stmt.representationType),
+        stmt.interfaceFunctions.map((f) => ({
+          ...f,
+          type: onExp(newScope, f.type),
+        })),
+        stmt.location,
+      )
+    }
+
     default: {
       return stmt
     }
