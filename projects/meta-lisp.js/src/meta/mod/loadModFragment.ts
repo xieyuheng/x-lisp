@@ -11,6 +11,7 @@ export function loadModFragment(path: string): M.ModFragment {
   return {
     serialNumber: 0,
     modName,
+    path,
     isErrorModule,
     stmts,
   }
