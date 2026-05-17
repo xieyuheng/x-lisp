@@ -1,6 +1,8 @@
-[meta-lisp.js] `expandConstructor` -- 生成 `args` 的时候，要带上 field 的 location
+[meta-lisp.meta] 迁移 [meta-lisp.js] 的 `ExpandPass` 到 [meta-lisp.meta] 的 `expand-pass`
 
-[meta-lisp.meta] `expand-pass`
-[meta-lisp.meta] `mod-t` -- complete
-[meta-lisp.meta] `definition-t` -- fix type of `(fn (-> (list-t value-t) value-t))`
+我下面计划迁移 [meta-lisp.js] 的 `ExpandPass` 到 [meta-lisp.meta] 的 `expand-pass`，
+请分析一下 ExpandPass 所依赖的代码。
+
+# [maybe]
+
 [meta-lisp.meta] fix error report -- maybe need `buffer-t`

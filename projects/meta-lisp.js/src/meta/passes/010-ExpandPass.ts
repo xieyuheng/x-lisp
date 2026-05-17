@@ -192,7 +192,7 @@ function expandConstructor(
   const stmts: Array<M.Stmt> = []
 
   const parameters = ctor.fields.map((field) => field.name)
-  const args = parameters.map((name) => M.Var(name))
+  const args = ctor.fields.map((field) => M.Var(field.name, field.location))
 
   stmts.push(
     admitWithParameters(
