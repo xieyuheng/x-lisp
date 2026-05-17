@@ -1,5 +1,323 @@
 (module meta)
 
 (define (expand-pass project)
-  ;; todo
+  (hash-each
+    (lambda (path fragment)
+      (mod-fragment-put-stmts!
+        (expand-stmts (mod-fragment-stmts fragment))
+        fragment))
+    (project-fragments project))  
   void)
+
+(define (expand-stmts stmts)
+  (list-flat-map expand-stmt stmts))
+
+(define (expand-stmt stmt)
+  (match stmt
+    ((define-enum-stmt type-constructor data-constructors location)
+     (let ((algebraic-type (desugar-define-enum stmt)))
+       (expand-define-algebraic-type algebraic-type)))
+    ((define-struct-star-stmt type-constructor data-constructor location)
+     (let ((algebraic-type (desugar-define-struct-star stmt)))
+       (expand-define-algebraic-type algebraic-type)))
+    ((define-struct-stmt type-constructor fields location)
+     (let ((algebraic-type (desugar-define-struct stmt)))
+       (expand-define-algebraic-type algebraic-type)))
+    ((define-record-type-stmt type-constructor data-constructor location)
+     (let ((algebraic-type (define-algebraic-type-stmt
+                             type-constructor
+                             [data-constructor]
+                             location)))
+       (expand-define-algebraic-type algebraic-type)))
+    ((define-algebraic-type-stmt type-constructor data-constructors location)
+     (expand-define-algebraic-type stmt))
+    (else [stmt])))
+
+;; Symbol and string utilities
+
+(define (symbol-append a b)
+  (string-to-symbol
+    (string-concat [(symbol-to-string a) "-" (symbol-to-string b)])))
+
+(define (symbol-append-put a b)
+  (string-to-symbol
+    (string-concat [(symbol-to-string a) "-put-" (symbol-to-string b) "!"])))
+
+(define (symbol-make-question a)
+  (string-to-symbol
+    (string-concat [(symbol-to-string a) "?"])))
+
+(define (drop-t-suffix name)
+  (let ((name-str (symbol-to-string name)))
+    (string-to-symbol
+      (string-substring 0 (isub (string-length name-str) 2) name-str))))
+
+;; getDataType
+
+(define (get-data-type stmt location)
+  (let* ((type-constructor (define-algebraic-type-stmt-type-constructor stmt))
+         (parameters (type-constructor-parameters type-constructor)))
+    (if (list-empty? parameters)
+      (var-exp (type-constructor-name type-constructor) location)
+      (apply-exp
+        (var-exp (type-constructor-name type-constructor) location)
+        (list-map (lambda (parameter) (var-exp parameter location)) parameters)
+        location))))
+
+;; admit-with-parameters
+
+(define (admit-with-parameters name parameters type location)
+  (if (list-empty? parameters)
+    (admit-stmt name type location)
+    (admit-stmt name (polymorphic-exp parameters type location) location)))
+
+;; desugar
+
+(define (desugar-define-enum stmt)
+  (let ((type-constructor (define-enum-stmt-type-constructor stmt))
+        (data-constructors (define-enum-stmt-data-constructors stmt))
+        (location (define-enum-stmt-location stmt)))
+    (define-algebraic-type-stmt
+      type-constructor
+      (list-map (lambda (ctor)
+                  (let* ((ctor-name (data-constructor-name ctor))
+                         (fields (data-constructor-fields ctor))
+                         (ctor-location (data-constructor-location ctor)))
+                    (make-algebraic-type-constructor
+                      ctor-name
+                      (list-map (lambda (field)
+                                  (let ((field-name (data-field-name field))
+                                        (field-type (data-field-type field))
+                                        (field-location (data-field-location field)))
+                                    (make-algebraic-type-field
+                                      field-name
+                                      field-type
+                                      (symbol-append ctor-name field-name)
+                                      (just (symbol-append-put ctor-name field-name))
+                                      field-location)))
+                                fields)
+                      (symbol-make-question ctor-name)
+                      ctor-location)))
+                data-constructors)
+      location)))
+
+(define (desugar-define-struct-star stmt)
+  (let* ((type-constructor (define-struct-star-stmt-type-constructor stmt))
+         (type-name (type-constructor-name type-constructor))
+         (data-constructor (define-struct-star-stmt-data-constructor stmt))
+         (location (define-struct-star-stmt-location stmt))
+         (type-name-str (symbol-to-string type-name)))
+    (if (not (string-ends-with? "-t" type-name-str))
+      (error (string-concat
+              ["[desugarDefineStructStar] type name must end with -t\n"
+               "  type name: " type-name-str "\n"]))
+      void)
+    (let* ((base (drop-t-suffix type-name))
+           (ctor-name (data-constructor-name data-constructor))
+           (fields (data-constructor-fields data-constructor))
+           (ctor-location (data-constructor-location data-constructor)))
+      (define-algebraic-type-stmt
+        type-constructor
+        [(make-algebraic-type-constructor
+           ctor-name
+           (list-map (lambda (field)
+                       (let ((field-name (data-field-name field))
+                             (field-type (data-field-type field))
+                             (field-location (data-field-location field)))
+                         (make-algebraic-type-field
+                           field-name
+                           field-type
+                           (symbol-append base field-name)
+                           (just (symbol-append-put base field-name))
+                           field-location)))
+                     fields)
+           (symbol-make-question base)
+           ctor-location)]
+        location))))
+
+(define (desugar-define-struct stmt)
+  (let* ((type-constructor (define-struct-stmt-type-constructor stmt))
+         (type-name (type-constructor-name type-constructor))
+         (fields (define-struct-stmt-fields stmt))
+         (location (define-struct-stmt-location stmt))
+         (type-name-str (symbol-to-string type-name)))
+    (if (not (string-ends-with? "-t" type-name-str))
+      (error (string-concat
+              ["[desugarDefineStruct] type name must end with -t\n"
+               "  type name: " type-name-str "\n"]))
+      void)
+    (let ((base (drop-t-suffix type-name)))
+      (define-algebraic-type-stmt
+        type-constructor
+        [(make-algebraic-type-constructor
+           (symbol-append 'make base)
+           (list-map (lambda (field)
+                       (let ((field-name (data-field-name field))
+                             (field-type (data-field-type field))
+                             (field-location (data-field-location field)))
+                         (make-algebraic-type-field
+                           field-name
+                           field-type
+                           (symbol-append base field-name)
+                           (just (symbol-append-put base field-name))
+                           field-location)))
+                     fields)
+           (symbol-make-question base)
+           location)]
+        location))))
+
+;; expand-define-algebraic-type
+
+(define (expand-define-algebraic-type stmt)
+  (let ((data-constructors (define-algebraic-type-stmt-data-constructors stmt)))
+    (list-concat
+      [[stmt]
+       (list-flat-map (lambda (ctor) (expand-constructor stmt ctor)) data-constructors)
+       (list-flat-map (lambda (ctor) (expand-predicate stmt ctor)) data-constructors)
+       (list-flat-map (lambda (ctor)
+                        (expand-accessors-and-modifiers stmt ctor 0
+                          (algebraic-type-constructor-fields ctor)))
+                      data-constructors)])))
+
+(define (expand-accessors-and-modifiers stmt ctor index fields)
+  (if (list-empty? fields)
+    []
+    (let* ((field (list-head fields))
+           (rest (list-tail fields))
+           (modifier-name (algebraic-type-field-modifier-name field))
+           (accessor-stmts (expand-accessor stmt ctor index field))
+           (modifier-stmts (if (nothing? modifier-name)
+                             []
+                             (expand-modifier stmt ctor index field)))
+           (rest-stmts (expand-accessors-and-modifiers stmt ctor
+                         (iadd index 1) rest)))
+      (list-append accessor-stmts
+        (list-append modifier-stmts rest-stmts)))))
+
+;; expand-constructor
+
+(define (expand-constructor stmt ctor)
+  (let* ((ctor-name (algebraic-type-constructor-name ctor))
+         (fields (algebraic-type-constructor-fields ctor))
+         (ctor-location (algebraic-type-constructor-location ctor))
+         (parameters (list-map (lambda (f) (algebraic-type-field-name f)) fields))
+         (args (list-map (lambda (f)
+                           (var-exp (algebraic-type-field-name f)
+                                    (algebraic-type-field-location f)))
+                         fields))
+         (type-params (type-constructor-parameters
+                        (define-algebraic-type-stmt-type-constructor stmt))))
+    [(admit-with-parameters
+       ctor-name
+       type-params
+       (arrow-exp
+         (list-map (lambda (f) (algebraic-type-field-type f)) fields)
+         (get-data-type stmt ctor-location)
+         ctor-location)
+       ctor-location)
+     (define-function-stmt
+       ctor-name
+       parameters
+       (literal-list-exp
+         (cons (symbol-exp ctor-name ctor-location) args)
+         ctor-location)
+       ctor-location)]))
+
+;; expand-predicate
+
+(define (expand-predicate stmt ctor)
+  (let* ((predicate (algebraic-type-constructor-predicate ctor))
+         (ctor-name (algebraic-type-constructor-name ctor))
+         (ctor-location (algebraic-type-constructor-location ctor))
+         (nfields (iadd (list-length (algebraic-type-constructor-fields ctor)) 1))
+         (type-params (type-constructor-parameters
+                        (define-algebraic-type-stmt-type-constructor stmt))))
+    [(admit-with-parameters
+       predicate
+       type-params
+       (arrow-exp
+         [(get-data-type stmt ctor-location)]
+         (var-exp 'bool-t ctor-location)
+         ctor-location)
+       ctor-location)
+     (define-function-stmt
+       predicate
+       ['value]
+       (and-exp
+         [(apply-exp
+            (var-exp 'list? ctor-location)
+            [(var-exp 'value ctor-location)]
+            ctor-location)
+          (apply-exp
+            (var-exp 'equal? ctor-location)
+            [(apply-exp
+               (var-exp 'list-length ctor-location)
+               [(var-exp 'value ctor-location)]
+               ctor-location)
+             (int-exp nfields ctor-location)]
+            ctor-location)
+          (apply-exp
+            (var-exp 'equal? ctor-location)
+            [(apply-exp
+               (var-exp 'list-head ctor-location)
+               [(var-exp 'value ctor-location)]
+               ctor-location)
+             (symbol-exp ctor-name ctor-location)]
+            ctor-location)]
+         ctor-location)
+       ctor-location)]))
+
+;; expand-accessor
+
+(define (expand-accessor stmt ctor index field)
+  (let* ((accessor-name (algebraic-type-field-accessor-name field))
+         (field-type (algebraic-type-field-type field))
+         (field-location (algebraic-type-field-location field))
+         (position (iadd index 1))
+         (type-params (type-constructor-parameters
+                        (define-algebraic-type-stmt-type-constructor stmt))))
+    [(admit-with-parameters
+       accessor-name
+       type-params
+       (arrow-exp
+         [(get-data-type stmt field-location)]
+         field-type
+         field-location)
+       field-location)
+     (define-function-stmt
+       accessor-name
+       ['target]
+       (apply-exp
+         (var-exp 'list-get field-location)
+         [(int-exp position field-location)
+          (var-exp 'target field-location)]
+         field-location)
+       field-location)]))
+
+;; expand-modifier
+
+(define (expand-modifier stmt ctor index field)
+  (let* ((modifier-name (just-value (algebraic-type-field-modifier-name field)))
+         (field-type (algebraic-type-field-type field))
+         (field-location (algebraic-type-field-location field))
+         (position (iadd index 1))
+         (type-params (type-constructor-parameters
+                        (define-algebraic-type-stmt-type-constructor stmt))))
+    [(admit-with-parameters
+       modifier-name
+       type-params
+       (arrow-exp
+         [field-type (get-data-type stmt field-location)]
+         (get-data-type stmt field-location)
+         field-location)
+       field-location)
+     (define-function-stmt
+       modifier-name
+       ['value 'target]
+       (apply-exp
+         (var-exp 'list-put! field-location)
+         [(int-exp position field-location)
+          (var-exp 'value field-location)
+          (var-exp 'target field-location)]
+         field-location)
+       field-location)]))
