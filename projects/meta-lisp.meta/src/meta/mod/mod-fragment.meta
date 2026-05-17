@@ -1,6 +1,7 @@
 (module meta)
 
 (define-struct mod-fragment-t
+  (serial-number int-t)
   (mod-name symbol-t)
   (is-error-module bool-t)
   (stmts (list-t stmt-t)))

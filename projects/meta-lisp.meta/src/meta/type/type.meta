@@ -1,0 +1,14 @@
+(module meta)
+
+(define-enum type-t
+  (var-type (name symbol-t) (serial-number int-t))
+  (canonical-label-type (serial-number int-t))
+  (type-type)
+  (atom-type (name symbol-t))
+  (arrow-type (arg-types (list-t type-t)) (ret-type type-t))
+  (list-type (element-type type-t))
+  (set-type (element-type type-t))
+  (hash-type (key-type type-t) (value-type type-t))
+  (algebraic-type (get-definition definition-t) (arg-types (list-t type-t)))
+  (opaque-type (get-definition definition-t) (arg-types (list-t type-t)))
+  (polymorphic-type (var-types (list-t type-t)) (body-type type-t)))
