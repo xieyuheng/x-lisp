@@ -85,3 +85,27 @@ value_t x_path_normalize(value_t string) {
   path_free(path);
   return x_object(make_xstring_take(path_name));
 }
+
+value_t x_path_relative(value_t from, value_t to) {
+  path_t *from_path = make_path(xstring_string(to_xstring(from)));
+  path_t *to_path = make_path(xstring_string(to_xstring(to)));
+  path_t *relative_path = path_relative(from_path, to_path);
+  char *result = string_copy(path_raw_string(relative_path));
+  path_free(from_path);
+  path_free(to_path);
+  path_free(relative_path);
+  return x_object(make_xstring_take(result));
+}
+
+value_t x_path_relative_to_cwd(value_t to) {
+  char *cwd = getcwd(NULL, 0);
+  path_t *cwd_path = make_path(cwd);
+  free(cwd);
+  path_t *to_path = make_path(xstring_string(to_xstring(to)));
+  path_t *relative = path_relative(cwd_path, to_path);
+  char *result = string_copy(path_raw_string(relative));
+  path_free(cwd_path);
+  path_free(to_path);
+  path_free(relative);
+  return x_object(make_xstring_take(result));
+}

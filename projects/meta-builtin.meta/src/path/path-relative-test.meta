@@ -1,0 +1,10 @@
+(module builtin)
+
+(define-test path-relative-test
+  (assert-equal (path-relative "/a/b/c" "/a/b/d/e") "../d/e")
+  (assert-equal (path-relative "/a/b/c" "/a/b/c/d") "d")
+  (assert-equal (path-relative "/a/b/c" "/a/b/c") "")
+  (assert-equal (path-relative "/app/config" "/app") "..")
+  (assert-equal (path-relative "a/b/c" "a/b/d/e") "../d/e")
+  (assert-equal (path-relative "a/b/c" "a/b/c/d") "d")
+  (assert-equal (path-relative "." "src") "src"))

@@ -108,6 +108,8 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/path-relative?", x_path_relative_p);
   define_primitive_2(mod, "builtin/path-join", x_path_join);
   define_primitive_1(mod, "builtin/path-normalize", x_path_normalize);
+  define_primitive_2(mod, "builtin/path-relative", x_path_relative);
+  define_primitive_1(mod, "builtin/path-relative-to-cwd", x_path_relative_to_cwd);
 
   // random
 

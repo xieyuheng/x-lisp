@@ -532,6 +532,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`path-relative?`](path/path-relative?.md) — 是否为相对路径
 - [`path-join`](path/path-join.md) — 连接路径
 - [`path-normalize`](path/path-normalize.md) — 标准化路径
+- [`path-relative`](path/path-relative.md) — 计算相对路径
+- [`path-relative-to-cwd`](path/path-relative-to-cwd.md) — 相对当前工作目录
 
 ## 断言
 

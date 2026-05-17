@@ -532,6 +532,8 @@ Path string manipulation functions.
 - [`path-relative?`](path/path-relative?.md) — Check if relative
 - [`path-join`](path/path-join.md) — Join paths
 - [`path-normalize`](path/path-normalize.md) — Normalize path
+- [`path-relative`](path/path-relative.md) — Compute relative path
+- [`path-relative-to-cwd`](path/path-relative-to-cwd.md) — Relative to current working directory
 
 ## Assertions
 

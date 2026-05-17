@@ -8,3 +8,5 @@ x_fn_1_t x_path_absolute_p;
 x_fn_1_t x_path_relative_p;
 x_fn_2_t x_path_join;
 x_fn_1_t x_path_normalize;
+x_fn_2_t x_path_relative;
+x_fn_1_t x_path_relative_to_cwd;
