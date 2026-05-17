@@ -1,0 +1,72 @@
+(module meta)
+
+(claim format-exp (-> exp-t string-t))
+(define (format-exp exp)
+  (match exp
+    ((symbol-exp content location)
+     (format-sexp content))
+    ((keyword-exp content location)
+     (format-sexp content))
+    ((string-exp content location)
+     (format-sexp content))
+    ((int-exp content location)
+     (format-sexp content))
+    ((float-exp content location)
+     (format-sexp content))
+    ((var-exp name location)
+     (symbol-to-string name))
+    ((qualified-var-exp mod-name name location)
+     (string-concat [(symbol-to-string mod-name) "/" (symbol-to-string name)]))
+    ((apply-exp target args location)
+     (string-concat ["(" (format-exp target) " " (format-exps args) ")"]))
+    ((arrow-exp arg-types ret-type location)
+     (let ((args-str (format-exps arg-types)))
+       (if (list-empty? (list-tail arg-types))
+         (string-concat ["(-> " args-str " " (format-exp ret-type) ")"])
+         (string-concat ["(-> " args-str " " (format-exp ret-type) ")"]))))
+    ((polymorphic-exp parameters body location)
+     (string-concat ["(polymorphic (" (string-join " " (list-map symbol-to-string parameters)) ") "
+                     (format-exp body) ")"]))
+    ((lambda-exp parameters body location)
+     (string-concat ["(lambda (" (string-join " " (list-map symbol-to-string parameters)) ") "
+                     (format-exp body) ")"]))
+    ((literal-list-exp elements location)
+     (if (list-empty? elements)
+       "[]"
+       (string-concat ["[" (format-exps elements) "]"])))
+    ((literal-set-exp elements location)
+     (if (list-empty? elements)
+       "(@set)"
+       (string-concat ["(@set " (format-exps elements) ")"])))
+    ((literal-hash-exp entries location)
+     (string-concat ["(@hash " (string-join " " (list-map format-hash-entry entries)) ")"]))
+    ((and-exp exps location)
+     (string-concat ["(and " (format-exps exps) ")"]))
+    ((let1-exp name rhs body location)
+     (string-concat ["(let ((" (symbol-to-string name) " " (format-exp rhs) ")) "
+                     (format-exp body) ")"]))
+    ((let-exp bindings body location)
+     (string-concat ["(let (" (format-bindings bindings) ") " (format-exp body) ")"]))
+    ((let-star-exp bindings body location)
+     (string-concat ["(let* (" (format-bindings bindings) ") " (format-exp body) ")"]))
+    ((begin-exp sequence location)
+     (string-concat ["(begin " (format-exps sequence) ")"]))
+    ((quote-exp sexp location)
+     (string-concat ["'" (format-sexp sexp)]))
+    (else
+     (format-sexp exp))))
+
+(claim format-exps (-> (list-t exp-t) string-t))
+(define (format-exps exps)
+  (string-join " " (list-map format-exp exps)))
+
+(define (format-bindings bindings)
+  (string-join " " (list-map format-binding bindings)))
+
+(define (format-binding binding)
+  (string-concat ["(" (symbol-to-string (binding-name binding)) " "
+                  (format-exp (binding-rhs binding)) ")"]))
+
+(define (format-hash-entry entry)
+  (string-concat ["(" (format-exp (hash-entry-key entry)) " "
+                  (format-exp (hash-entry-value entry)) ")"]))

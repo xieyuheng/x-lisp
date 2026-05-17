@@ -1,0 +1,19 @@
+(module meta)
+
+(claim format-value (-> value-t string-t))
+(define (format-value value)
+  (match value
+    ((type-value type)
+     (format-type type))
+    ((curry-value target arity args)
+     (let ((args-str (format-values args))
+           (target-str (format-value target)))
+       (if (equal? args-str "")
+         target-str
+         (string-concat ["(" target-str " " args-str ")"]))))
+    ((definition-value definition)
+     (format-definition definition))))
+
+(claim format-values (-> (list-t value-t) string-t))
+(define (format-values values)
+  (string-join " " (list-map format-value values)))

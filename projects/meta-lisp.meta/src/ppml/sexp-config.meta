@@ -1,0 +1,17 @@
+(module ppml)
+
+(define-opaque-type sexp-config-t (hash-t symbol-t int-t)
+  (make-sexp-config (-> (list-t (pair-t symbol-t int-t)) sexp-config-t))
+  (sexp-config-keyword-header-length (-> sexp-config-t symbol-t int-t)))
+
+(define (make-sexp-config entries)
+  (let ((hash (make-hash)))
+    (list-each (lambda (entry)
+                 (hash-put! (pair-first entry) (pair-second entry) hash))
+               entries)
+    hash))
+
+(define (sexp-config-keyword-header-length config keyword)
+  (if (hash-has? keyword config)
+    (hash-get keyword config)
+    (ineg 1)))

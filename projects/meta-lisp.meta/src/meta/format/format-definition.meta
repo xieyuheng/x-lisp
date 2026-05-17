@@ -1,0 +1,5 @@
+(module meta)
+
+(claim format-definition (-> definition-t string-t))
+(define (format-definition definition)
+  (format-definition-short definition))

@@ -1,0 +1,13 @@
+(module meta)
+
+(define (string-join separator strings)
+  (if (list-empty? strings)
+    ""
+    (if (list-empty? (list-tail strings))
+      (list-head strings)
+      (string-append (list-head strings)
+                     (string-append separator
+                                    (string-join separator (list-tail strings)))))))
+
+(define (int-to-string n)
+  (format-sexp n))

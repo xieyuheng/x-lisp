@@ -1,0 +1,9 @@
+(module meta)
+
+(claim format-mod-stmts (-> mod-t string-t))
+(define (format-mod-stmts mod)
+  (string-join " " (list-map format-stmt (mod-stmts mod))))
+
+(claim format-fragment-stmts (-> (list-t stmt-t) string-t))
+(define (format-fragment-stmts stmts)
+  (string-join "\n\n" (list-map format-stmt stmts)))

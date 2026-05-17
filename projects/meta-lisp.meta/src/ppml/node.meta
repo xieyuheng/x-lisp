@@ -1,0 +1,14 @@
+(module ppml)
+
+(define-enum node-t
+  (null-node)
+  (text-node (content string-t))
+  (append-node (left node-t) (right node-t))
+  (indent-node (length int-t) (child node-t))
+  (break-node (space string-t))
+  (group-node (child node-t)))
+
+(define-struct entry-t
+  (indentation int-t)
+  (mode symbol-t)
+  (node node-t))
