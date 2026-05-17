@@ -12,7 +12,9 @@
          target-str
          (string-concat ["(" target-str " " args-str ")"]))))
     ((definition-value definition)
-     (format-definition definition))))
+     (let ((mod-name (symbol-to-string (definition-mod-name definition)))
+           (name (symbol-to-string (definition-name definition))))
+       (string-concat [mod-name "/" name])))))
 
 (claim format-values (-> (list-t value-t) string-t))
 (define (format-values values)
