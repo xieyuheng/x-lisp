@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function call {
-    ../stack-lisp.c/src/stack-lisp.exe call build/bundle.stack $@
+    ../stack-lisp.c/src/stack-lisp.exe call build/bundle.stack "$@"
 }
 
 function main {
@@ -14,7 +14,7 @@ function main {
             if [ "$dump_flag" = "--dump" ]; then
                 dump="true"
             fi
-            call meta/check-command $path $dump
+            call meta/check-command $path "$dump"
             ;;
         (*)
             echo "unknown command: $command"

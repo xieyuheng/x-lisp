@@ -5,9 +5,7 @@ struct function_t {
   record_t *label_offsets; // record of int32_t
   record_t *label_references; // record of list of int32_t
   size_t arity;
-  uint8_t *code_area;
-  size_t code_area_size;
-  size_t code_length;
+  buffer_t *buffer;
 };
 
 function_t *make_function(const char *name);

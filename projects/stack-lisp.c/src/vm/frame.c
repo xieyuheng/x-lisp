@@ -3,7 +3,7 @@
 frame_t *make_function_frame(const function_t *function) {
   frame_t *self = new(frame_t);
   self->kind = FUNCTION_FRAME;
-  self->code = function->code_area;
+  self->code = buffer_raw_bytes(function->buffer);
   self->pc = self->code;
   self->locals = make_array();
   self->function_frame.function = function;
