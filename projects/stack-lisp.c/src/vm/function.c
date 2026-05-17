@@ -96,10 +96,7 @@ void function_patch_label_references(function_t *self) {
     for (size_t i = 0; i < list_length(reference_list); i++) {
       int32_t code_offset = (int32_t) (int64_t) list_get(reference_list, i);
       int32_t offset = label_offset - (code_offset + sizeof(int32_t));
-      buffer_put_byte(self->buffer, code_offset + 0, (offset >> 0) & 0xFF);
-      buffer_put_byte(self->buffer, code_offset + 1, (offset >> 8) & 0xFF);
-      buffer_put_byte(self->buffer, code_offset + 2, (offset >> 16) & 0xFF);
-      buffer_put_byte(self->buffer, code_offset + 3, (offset >> 24) & 0xFF);
+      buffer_put_bytes(self->buffer, code_offset, (const uint8_t *)&offset, sizeof(int32_t));
     }
 
     entry = record_iter_next_entry(&iter);

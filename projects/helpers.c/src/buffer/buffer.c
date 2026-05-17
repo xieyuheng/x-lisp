@@ -97,6 +97,12 @@ void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte) {
   self->bytes[index] = byte;
 }
 
+void buffer_put_bytes(buffer_t *self, size_t index, const uint8_t *bytes, size_t count) {
+  for (size_t i = 0; i < count; i++) {
+    buffer_put_byte(self, index + i, bytes[i]);
+  }
+}
+
 void buffer_append_byte(buffer_t *self, uint8_t byte) {
   buffer_put_byte(self, buffer_length(self), byte);
 }

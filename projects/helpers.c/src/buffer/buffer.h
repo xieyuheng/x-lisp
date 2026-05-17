@@ -19,6 +19,7 @@ void buffer_ensure_capacity(buffer_t *self, size_t length);
 
 uint8_t buffer_get_byte(const buffer_t *self, size_t index);
 void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte);
+void buffer_put_bytes(buffer_t *self, size_t index, const uint8_t *bytes, size_t count);
 
 void buffer_append_byte(buffer_t *self, uint8_t byte);
 void buffer_append_bytes(buffer_t *self, const uint8_t *bytes, size_t count);
