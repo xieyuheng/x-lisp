@@ -86,9 +86,17 @@ value_t x_path_normalize(value_t string) {
   return x_object(make_xstring_take(path_name));
 }
 
+value_t x_path_resolve(value_t x) {
+  if (to_bool(x_path_absolute_p(x)))
+    return x;
+  return x_path_normalize(x_path_join(x_current_directory(), x));
+}
+
 value_t x_path_relative(value_t from, value_t to) {
-  path_t *from_path = make_path(xstring_string(to_xstring(from)));
-  path_t *to_path = make_path(xstring_string(to_xstring(to)));
+  value_t resolved_from = x_path_resolve(from);
+  value_t resolved_to = x_path_resolve(to);
+  path_t *from_path = make_path(xstring_string(to_xstring(resolved_from)));
+  path_t *to_path = make_path(xstring_string(to_xstring(resolved_to)));
   path_t *relative_path = path_relative(from_path, to_path);
   char *result = string_copy(path_raw_string(relative_path));
   path_free(from_path);
@@ -98,10 +106,10 @@ value_t x_path_relative(value_t from, value_t to) {
 }
 
 value_t x_path_relative_to_cwd(value_t to) {
-  char *cwd = getcwd(NULL, 0);
-  path_t *cwd_path = make_path(cwd);
-  free(cwd);
-  path_t *to_path = make_path(xstring_string(to_xstring(to)));
+  value_t resolved_to = x_path_resolve(to);
+  value_t cwd = x_current_directory();
+  path_t *cwd_path = make_path(xstring_string(to_xstring(cwd)));
+  path_t *to_path = make_path(xstring_string(to_xstring(resolved_to)));
   path_t *relative = path_relative(cwd_path, to_path);
   char *result = string_copy(path_raw_string(relative));
   path_free(cwd_path);

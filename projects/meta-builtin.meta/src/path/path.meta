@@ -10,6 +10,7 @@
 (declare-primitive-function path-normalize 1)
 (declare-primitive-function path-relative 2)
 (declare-primitive-function path-relative-to-cwd 1)
+(declare-primitive-function path-resolve 1)
 
 (claim path-base-name (-> string-t string-t))
 (claim path-directory-name (-> string-t string-t))
@@ -21,3 +22,4 @@
 (claim path-normalize (-> string-t string-t))
 (claim path-relative (-> string-t string-t string-t))
 (claim path-relative-to-cwd (-> string-t string-t))
+(claim path-resolve (-> string-t string-t))
