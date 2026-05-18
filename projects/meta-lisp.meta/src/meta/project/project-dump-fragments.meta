@@ -20,6 +20,6 @@
          (= dump-path (string-concat [frag-dir "/" name "." tag ".dump"]))
          (fs-ensure-directory frag-dir)
          (fs-write dump-path (string-concat [";; " path "\n\n" code]))
-         (println (string-concat
+         (writeln (string-concat
                    ["[" tag "] "
                     (path-relative-to-cwd dump-path)])))))))
