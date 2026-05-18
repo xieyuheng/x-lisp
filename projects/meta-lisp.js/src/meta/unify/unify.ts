@@ -1,6 +1,6 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
-import { varOccurredInType } from "./varOccurredInType.ts"
+import { occurCheck } from "./occurCheck.ts"
 
 export function unify(
   subst: M.Subst | undefined,
@@ -29,20 +29,18 @@ export function unify(
   }
 
   if (M.isVarType(lhs)) {
-    const resolvedRhs = M.substDeepWalk(subst, rhs)
-    if (varOccurredInType(lhs, resolvedRhs)) {
+    if (occurCheck(subst, lhs, rhs)) {
       return undefined
     } else {
-      return M.substExtend(subst, lhs, resolvedRhs)
+      return M.substExtend(subst, lhs, rhs)
     }
   }
 
   if (M.isVarType(rhs)) {
-    const resolvedLhs = M.substDeepWalk(subst, lhs)
-    if (varOccurredInType(rhs, resolvedLhs)) {
+    if (occurCheck(subst, rhs, lhs)) {
       return undefined
     } else {
-      return M.substExtend(subst, rhs, resolvedLhs)
+      return M.substExtend(subst, rhs, lhs)
     }
   }
 
