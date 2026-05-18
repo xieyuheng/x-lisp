@@ -12,17 +12,6 @@ export function substDeepWalkCtx(subst: M.Subst, ctx: M.Ctx): M.Ctx {
   }
 }
 
-interface Frame {
-  state: "enter" | "exit"
-  type: M.Type
-  boundIds: Set<string>
-  childResults: M.Type[]
-  processedType?: M.Type
-  children?: M.Type[]
-  childIndex?: number
-  freshenedVarTypes?: M.VarType[]
-}
-
 function substDeepWalkWithBoundIds(
   boundIds: Set<string>,
   subst: M.Subst,
@@ -49,194 +38,50 @@ function substDeepWalkWithBoundIds(
     case "TypeType":
     case "AtomType":
       return type
-  }
 
-  const stack: Frame[] = [
-    { state: "enter", type, boundIds, childResults: [] },
-  ]
+    case "ArrowType":
+      return M.ArrowType(
+        type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
+        substDeepWalkWithBoundIds(boundIds, subst, type.retType),
+      )
 
-  while (stack.length > 0) {
-    const frame = stack[stack.length - 1]
+    case "ListType":
+      return M.ListType(
+        substDeepWalkWithBoundIds(boundIds, subst, type.elementType),
+      )
 
-    if (frame.state === "enter") {
-      const processedType = M.substWalk(subst, frame.type)
-      frame.processedType = processedType
+    case "SetType":
+      return M.SetType(
+        substDeepWalkWithBoundIds(boundIds, subst, type.elementType),
+      )
 
-      switch (processedType.kind) {
-        case "VarType": {
-          const id = M.varTypeId(processedType)
-          let result: M.Type
+    case "HashType":
+      return M.HashType(
+        substDeepWalkWithBoundIds(boundIds, subst, type.keyType),
+        substDeepWalkWithBoundIds(boundIds, subst, type.valueType),
+      )
 
-          if (frame.boundIds.has(id)) {
-            result = processedType
-          } else {
-            const found = M.substLookup(subst, id)
-            result = found !== undefined ? found : processedType
-          }
+    case "AlgebraicType":
+      return M.AlgebraicType(
+        type.definition,
+        type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
+      )
 
-          stack.pop()
-          if (stack.length > 0) {
-            stack[stack.length - 1].childResults.push(result)
-          } else {
-            return result
-          }
-          break
-        }
+    case "OpaqueType":
+      return M.OpaqueType(
+        type.definition,
+        type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
+      )
 
-        case "CanonicalLabelType":
-        case "TypeType":
-        case "AtomType":
-          stack.pop()
-          if (stack.length > 0) {
-            stack[stack.length - 1].childResults.push(processedType)
-          } else {
-            return processedType
-          }
-          break
-
-        case "ArrowType":
-          if (frame.children === undefined) {
-            frame.children = [
-              ...processedType.argTypes,
-              processedType.retType,
-            ]
-            frame.childIndex = 0
-          }
-          break
-
-        case "ListType":
-          if (frame.children === undefined) {
-            frame.children = [processedType.elementType]
-            frame.childIndex = 0
-          }
-          break
-
-        case "SetType":
-          if (frame.children === undefined) {
-            frame.children = [processedType.elementType]
-            frame.childIndex = 0
-          }
-          break
-
-        case "HashType":
-          if (frame.children === undefined) {
-            frame.children = [
-              processedType.keyType,
-              processedType.valueType,
-            ]
-            frame.childIndex = 0
-          }
-          break
-
-        case "AlgebraicType":
-          if (frame.children === undefined) {
-            frame.children = [...processedType.argTypes]
-            frame.childIndex = 0
-          }
-          break
-
-        case "OpaqueType":
-          if (frame.children === undefined) {
-            frame.children = [...processedType.argTypes]
-            frame.childIndex = 0
-          }
-          break
-
-        case "PolymorphicType": {
-          if (frame.children === undefined) {
-            const freshened = M.polymorphicTypeFreshSelf(processedType)
-            frame.freshenedVarTypes = freshened.varTypes
-            const newVarTypes = freshened.varTypes
-            frame.boundIds = new Set([
-              ...frame.boundIds,
-              ...newVarTypes.map(M.varTypeId),
-            ])
-            frame.children = [freshened.bodyType]
-            frame.childIndex = 0
-          }
-          break
-        }
-      }
-
-      if (frame.children !== undefined) {
-        if (frame.childIndex! < frame.children!.length) {
-          const childType = frame.children![frame.childIndex!]
-          frame.childIndex!++
-          stack.push({
-            state: "enter",
-            type: childType,
-            boundIds: frame.boundIds,
-            childResults: [],
-          })
-        } else {
-          frame.state = "exit"
-        }
-      }
-    } else {
-      stack.pop()
-      const childResults = frame.childResults
-      const processedType = frame.processedType!
-
-      let result: M.Type
-
-      switch (processedType.kind) {
-        case "ArrowType": {
-          const argCount = processedType.argTypes.length
-          result = M.ArrowType(
-            childResults.slice(0, argCount),
-            childResults[argCount],
-          )
-          break
-        }
-
-        case "ListType":
-          result = M.ListType(childResults[0])
-          break
-
-        case "SetType":
-          result = M.SetType(childResults[0])
-          break
-
-        case "HashType":
-          result = M.HashType(childResults[0], childResults[1])
-          break
-
-        case "AlgebraicType":
-          result = M.AlgebraicType(
-            (processedType as M.AlgebraicType).definition,
-            childResults,
-          )
-          break
-
-        case "OpaqueType":
-          result = M.OpaqueType(
-            (processedType as M.OpaqueType).definition,
-            childResults,
-          )
-          break
-
-        case "PolymorphicType":
-          result = M.PolymorphicType(
-            frame.freshenedVarTypes!,
-            childResults[0],
-          )
-          break
-
-        default:
-          throw new Error(
-            `[substDeepWalkWithBoundIds] unexpected exit kind: ${processedType.kind}`,
-          )
-      }
-
-      if (stack.length > 0) {
-        stack[stack.length - 1].childResults.push(result)
-      } else {
-        return result
-      }
+    case "PolymorphicType": {
+      const freshened = M.polymorphicTypeFreshSelf(type)
+      const newVarTypes = freshened.varTypes
+      const newBodyType = substDeepWalkWithBoundIds(
+        new Set([...boundIds, ...newVarTypes.map(M.varTypeId)]),
+        subst,
+        freshened.bodyType,
+      )
+      return M.PolymorphicType(newVarTypes, newBodyType)
     }
   }
-
-  throw new Error(
-    "[substDeepWalkWithBoundIds] unexpected end of iteration",
-  )
 }
