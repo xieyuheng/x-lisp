@@ -1,0 +1,12 @@
+(module meta)
+
+(define-struct qualified-name-entry-t
+  (mod-name symbol-t)
+  (name symbol-t))
+
+(define-struct prefix-entry-t
+  (mod-name symbol-t))
+
+(define-struct fragment-scope-t
+  (imported-names (hash-t symbol-t qualified-name-entry-t))
+  (imported-prefixes (hash-t symbol-t prefix-entry-t)))

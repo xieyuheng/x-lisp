@@ -31,7 +31,7 @@ char *fs_recursive_iter_next(fs_recursive_iter_t *self) {
     if (fs_is_directory(path_raw_string(full_path))) {
       stack_push(self->stack, fs_make_iter(path_raw_string(full_path)));
     }
-
+    
     path_t *relative_path = path_relative(self->path, full_path);
     path_free(full_path);
     return path_into_string(relative_path);

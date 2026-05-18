@@ -1,0 +1,10 @@
+(module meta)
+
+(define (module-pass project options)
+  (module-inject-builtin-pass project)
+  (let ((info (module-analysis-pass project)))
+    (module-import-pass project info))
+  (if (hash-has? 'dump options)
+    (project-dump-fragments project "030-module")
+    void)
+  void)

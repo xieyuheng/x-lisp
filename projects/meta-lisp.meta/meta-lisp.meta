@@ -8,9 +8,8 @@ function main {
     local command=$1; shift
     case $command in
         (check)
-            local path=${1:-"project.sexp"}
-            # call meta/check-command $path "true"
-            call meta/check-command $path "false"
+            # call meta/check-command $(realpath project.sexp) "true"
+            call meta/check-command $(realpath project.sexp) "false"
             ;;
         (*)
             echo "unknown command: $command"

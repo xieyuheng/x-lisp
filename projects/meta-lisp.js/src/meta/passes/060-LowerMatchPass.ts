@@ -136,14 +136,18 @@ function simplifyMatch(
     return M.Cond(
       groups.map((group) => {
         const usedNames = setUnionMany([
-          ...targets.map((t) => M.expFreeNames(new Set(), t)),
-          ...group.clauses.map((c) => M.expFreeNames(new Set(), c.body)),
+          M.expOccurredNames(defaultExp),
+          ...targets.map((t) => M.expOccurredNames(t)),
+          ...group.clauses.map((c) =>
+            setUnionMany([
+              ...c.patterns.map(M.expOccurredNames),
+              M.expOccurredNames(c.body),
+            ]),
+          ),
         ])
-        const freshVars = group.dataConstructor.fields.map((field) => {
-          const freshName = M.generateRelativeFreshName(field.name, usedNames)
-          usedNames.add(freshName)
-          return M.Var(freshName, location)
-        })
+        const freshVars = group.dataConstructor.fields.map((field) =>
+          M.Var(M.generateRelativeFreshName(field.name, usedNames), location),
+        )
 
         const definition = group.dataConstructor.definition
 

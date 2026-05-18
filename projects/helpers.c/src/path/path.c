@@ -202,8 +202,13 @@ static size_t find_relative_index(const path_t *from, const path_t *to) {
 }
 
 path_t *path_relative(const path_t *from, const path_t *to) {
-  assert((path_is_relative(from) && path_is_relative(to)) ||
-         (path_is_absolute(from) && path_is_absolute(to)));
+  if (!((path_is_relative(from) && path_is_relative(to)) ||
+        (path_is_absolute(from) && path_is_absolute(to)))) {
+    who_printf("from and to must be both absolute or both relative\n");
+    who_printf("  from: %s\n", path_raw_string(from));
+    who_printf("  to: %s\n", path_raw_string(to));
+    exit(1);
+  }
 
   size_t relative_index = find_relative_index(from, to);
   size_t from_length = stack_length(from->segment_stack);
