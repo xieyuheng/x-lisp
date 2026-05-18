@@ -279,7 +279,7 @@ function inIf(
     case "Var": {
       return [
         B.Test(
-          B.Apply(B.Var("equal?"), [B.Var(condition.name), B.Keyword("t")]),
+          B.Apply(B.Var("builtin/equal?"), [B.Var(condition.name), B.Keyword("t")]),
         ),
         B.Branch(
           generateLabel(state, "then", thenCont),
