@@ -4,6 +4,8 @@ static void apply_definition(vm_t *vm, size_t n, definition_t *definition);
 static void apply_curry(vm_t *vm, size_t n, curry_t *curry);
 
 void apply(vm_t *vm, size_t n, value_t target) {
+  vm_push_root(vm, target);
+
   if (definition_p(target)) {
     apply_definition(vm, n, to_definition(target));
   } else if (curry_p(target)) {
@@ -15,6 +17,8 @@ void apply(vm_t *vm, size_t n, value_t target) {
     vm_inspect(vm);
     exit(1);
   }
+
+  vm_drop_root(vm);
 }
 
 static void supply(vm_t *vm, size_t n, value_t target, size_t arity) {

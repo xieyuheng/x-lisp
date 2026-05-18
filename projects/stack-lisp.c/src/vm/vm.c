@@ -1,22 +1,18 @@
 #include "index.h"
 
-struct vm_t {
-  mod_t *mod;
-  stack_t *value_stack;
-  stack_t *frame_stack;
-};
-
 vm_t *make_vm(mod_t *mod) {
   vm_t *self = new(vm_t);
   self->mod = mod;
   self->value_stack = make_stack();
   self->frame_stack = make_stack_with((free_fn_t *) frame_free);
+  self->root_stack = make_stack();
   return self;
 }
 
 void vm_free(vm_t *self) {
   stack_free(self->value_stack);
   stack_free(self->frame_stack);
+  stack_free(self->root_stack);
   free(self);
 }
 
@@ -30,6 +26,14 @@ inline value_t vm_pop(vm_t *vm) {
 
 inline void vm_push(vm_t *vm, value_t value) {
   stack_push(vm->value_stack, (void *) value);
+}
+
+inline void vm_push_root(vm_t *vm, value_t value) {
+  stack_push(vm->root_stack, (void *) value);
+}
+
+inline void vm_drop_root(vm_t *vm) {
+  stack_pop(vm->root_stack);
 }
 
 inline void vm_swap_many(vm_t *vm, size_t m, size_t n) {
@@ -144,7 +148,9 @@ static inline void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t ins
 
   case OP_TAIL_APPLY: {
     value_t target = vm_pop(vm);
+    vm_push_root(vm, target);
     vm_drop_frame(vm);
+    vm_drop_root(vm);
     apply(vm, instr.apply.argc, target);
     return;
   }
@@ -244,18 +250,28 @@ static array_t *vm_gc_roots(vm_t *vm) {
   vm_gc_roots_in_value_stack(vm, roots);
   vm_gc_roots_in_frame_stack(vm, roots);
   vm_gc_roots_in_mod(vm, roots);
+
+  for (size_t i = 0; i < stack_length(vm->root_stack); i++) {
+    value_t value = (value_t) stack_get(vm->root_stack, i);
+    if (object_p(value)) {
+      array_push(roots, to_object(value));
+    }
+  }
+
   return roots;
 }
 
 void vm_gc_maybe_collect(vm_t *vm) {
+
+  size_t current = gc_object_count(global_gc);
+  if (current < global_gc->gc_threshold) return;
+
 #if GC_DEBUG
   who_printf("before\n");
   gc_report(global_gc);
 #endif
 
-  // if (gc_object_count(global_gc) < GC_OBJECT_THRESHOLD) {
-  //   return;
-  // }
+  global_gc->gc_prev_count = current;
 
   array_t *roots = vm_gc_roots(vm);
   for (size_t i = 0; i < array_length(roots); i++) {
@@ -270,6 +286,18 @@ void vm_gc_maybe_collect(vm_t *vm) {
   who_printf("after\n");
   gc_report(global_gc);
 #endif
+
+  size_t after = gc_object_count(global_gc);
+  size_t freed = global_gc->gc_prev_count - after;
+
+  if (freed < current / 10) {
+    global_gc->gc_threshold = current * 2;
+  } else {
+    global_gc->gc_threshold = after * 2;
+  }
+  if (global_gc->gc_threshold < 1024) {
+    global_gc->gc_threshold = 1024;
+  }
 }
 
 void vm_inspect(vm_t *vm) {

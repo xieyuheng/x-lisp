@@ -1,5 +1,12 @@
 #pragma once
 
+struct vm_t {
+  mod_t *mod;
+  stack_t *value_stack;
+  stack_t *frame_stack;
+  stack_t *root_stack;
+};
+
 vm_t *make_vm(mod_t *mod);
 void vm_free(vm_t *self);
 
@@ -17,5 +24,8 @@ size_t vm_frame_count(const vm_t *vm);
 void vm_execute(vm_t *vm);
 
 void vm_gc_maybe_collect(vm_t *vm);
+
+void vm_push_root(vm_t *vm, value_t value);
+void vm_drop_root(vm_t *vm);
 
 void vm_inspect(vm_t *vm);

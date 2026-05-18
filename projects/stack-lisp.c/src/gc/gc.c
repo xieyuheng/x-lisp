@@ -1,14 +1,11 @@
 #include "index.h"
 
-struct gc_t {
-  array_t *objects;
-  stack_t *work_stack;
-};
-
 gc_t *make_gc(void) {
   gc_t *self = new(gc_t);
   self->objects = make_array();
   self->work_stack = make_stack();
+  self->gc_threshold = 4096;
+  self->gc_prev_count = 0;
   return self;
 }
 
