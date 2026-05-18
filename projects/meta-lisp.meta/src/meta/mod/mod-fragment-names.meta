@@ -17,7 +17,7 @@
 (define (collect-name-from-stmt stmt names)
   (match stmt
     ((define-function-stmt name parameters body location)
-     (set-add 'name names))
+     (set-add name names))
     ((define-variable-stmt name body location)
      (set-add name names))
     ((define-test-stmt name body location)
