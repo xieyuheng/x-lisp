@@ -1,6 +1,4 @@
-
-
-[meta-builtin.meta]
+[stack-lisp.c] move gc_t to gc.c
 
 [meta-builtin.meta] 实现 path-resolve 把 relative path 根据 cwd 转化为 absolute path
 [meta-builtin.meta] 改善 path-relative 和 path-relative-to-cwd

@@ -1,5 +1,12 @@
 #include "index.h"
 
+struct vm_t {
+  mod_t *mod;
+  stack_t *value_stack;
+  stack_t *frame_stack;
+  stack_t *root_stack;
+};
+
 vm_t *make_vm(mod_t *mod) {
   vm_t *self = new(vm_t);
   self->mod = mod;
