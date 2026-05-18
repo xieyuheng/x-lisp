@@ -38,10 +38,6 @@ meta-lisp 的语法、类型系统、内置函数等详见文档：
 
 # 开发
 
-任务：
-
-- 我会在 TODO.md 中记录我计划做的任务。
-
 测试：
 
 - 每个 `projects/` 中的每个 project 都有 `scripts/`，
