@@ -9,7 +9,10 @@ void apply(vm_t *vm, size_t n, value_t target) {
   } else if (curry_p(target)) {
     apply_curry(vm, n, to_curry(target));
   } else {
-    who_printf("can not apply value: "); print_value(target); newline();
+    who_printf("unhandled value\n");
+    who_printf("  value: "); print_value(target); newline();
+    who_printf("  n: %ld\n", n);
+    vm_inspect(vm);
     exit(1);
   }
 }

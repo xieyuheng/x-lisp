@@ -141,7 +141,7 @@ hash_code_t xhash_hash_code(const xhash_t *self) {
   array_sort(entries, (compare_fn_t *) compare_hash_entry);
   for (size_t i = 0; i < array_length(entries); i++) {
     const hash_entry_t *entry = array_get(entries, i);
-    value_t key = (value_t) entry->value;
+    value_t key = (value_t) entry->key;
     value_t value = (value_t) entry->value;
     code = (code << 5) + code + value_hash_code(key);
     code = (code << 5) - code + value_hash_code(value);

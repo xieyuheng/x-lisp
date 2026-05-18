@@ -1,4 +1,6 @@
 [stack-lisp.js] gc bug -- test by [meta-builtin.meta] sh scripts/dev.sh
+[stack-lisp.js] fix `vm_gc_maybe_collect` -- should not use hard limit `GC_OBJECT_THRESHOLD`
+
 [meta-builtin.meta] 实现 path-resolve 把 relative path 根据 cwd 转化为 absolute path
 [meta-builtin.meta] 改善 path-relative 和 path-relative-to-cwd
 - 也许模仿 nodejs path.relative 的逻辑，自动 resolve relative path
