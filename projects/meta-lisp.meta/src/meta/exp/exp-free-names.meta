@@ -17,10 +17,10 @@
        (set-add name (make-set))))
 
     ((lambda-exp parameters body location)
-     (exp-free-names (list-fold-left set-add bound-names parameters) body))
+     (exp-free-names (list-fold-left (lambda (s e) (set-add e s)) bound-names parameters) body))
 
     ((polymorphic-exp parameters body location)
-     (exp-free-names (list-fold-left set-add bound-names parameters) body))
+     (exp-free-names (list-fold-left (lambda (s e) (set-add e s)) bound-names parameters) body))
 
     ((let1-exp name rhs body location)
      (let ((rhs-names (exp-free-names bound-names rhs))

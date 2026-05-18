@@ -29,18 +29,20 @@ export function unify(
   }
 
   if (M.isVarType(lhs)) {
-    if (varOccurredInType(lhs, rhs)) {
+    const resolvedRhs = M.substDeepWalk(subst, rhs)
+    if (varOccurredInType(lhs, resolvedRhs)) {
       return undefined
     } else {
-      return M.substExtend(subst, lhs, rhs)
+      return M.substExtend(subst, lhs, resolvedRhs)
     }
   }
 
   if (M.isVarType(rhs)) {
-    if (varOccurredInType(rhs, lhs)) {
+    const resolvedLhs = M.substDeepWalk(subst, lhs)
+    if (varOccurredInType(rhs, resolvedLhs)) {
       return undefined
     } else {
-      return M.substExtend(subst, rhs, lhs)
+      return M.substExtend(subst, rhs, resolvedLhs)
     }
   }
 

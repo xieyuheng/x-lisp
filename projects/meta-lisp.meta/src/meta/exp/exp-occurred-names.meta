@@ -15,11 +15,11 @@
      (set-add name (make-set)))
 
     ((lambda-exp parameters body location)
-     (set-union (list-fold-left set-add (make-set) parameters)
+     (set-union (list-fold-left (lambda (s e) (set-add e s)) (make-set) parameters)
                 (exp-occurred-names body)))
 
     ((polymorphic-exp parameters body location)
-     (set-union (list-fold-left set-add (make-set) parameters)
+     (set-union (list-fold-left (lambda (s e) (set-add e s)) (make-set) parameters)
                 (exp-occurred-names body)))
 
     ((let1-exp name rhs body location)
@@ -56,7 +56,7 @@
                      bindings))
 
     ((local-define-exp name parameters body location)
-     (set-union (list-fold-left set-add (set-add name (make-set)) parameters)
+     (set-union (list-fold-left (lambda (s e) (set-add e s)) (set-add name (make-set)) parameters)
                 (exp-occurred-names body)))
 
     ((apply-exp target args location)
