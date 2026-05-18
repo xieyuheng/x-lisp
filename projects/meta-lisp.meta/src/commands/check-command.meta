@@ -1,7 +1,7 @@
 (module meta)
 
 (define (check-command config-path dump)
-  (= project (load-project config-path))
+  (= project (load-project (path-resolve config-path)))
   (= options (make-hash))
   (when (equal? dump "true")
     (hash-put! 'dump true options))
