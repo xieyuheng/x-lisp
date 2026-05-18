@@ -534,6 +534,7 @@ Path string manipulation functions.
 - [`path-normalize`](path/path-normalize.md) — Normalize path
 - [`path-relative`](path/path-relative.md) — Compute relative path
 - [`path-relative-to-cwd`](path/path-relative-to-cwd.md) — Relative to current working directory
+- [`path-resolve`](path/path-resolve.md) — Resolve to absolute path
 
 ## Assertions
 

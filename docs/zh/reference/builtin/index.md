@@ -534,6 +534,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`path-normalize`](path/path-normalize.md) — 标准化路径
 - [`path-relative`](path/path-relative.md) — 计算相对路径
 - [`path-relative-to-cwd`](path/path-relative-to-cwd.md) — 相对当前工作目录
+- [`path-resolve`](path/path-resolve.md) — 解析为绝对路径
 
 ## 断言
 
