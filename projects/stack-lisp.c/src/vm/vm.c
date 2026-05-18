@@ -269,16 +269,15 @@ static array_t *vm_gc_roots(vm_t *vm) {
 }
 
 void vm_gc_maybe_collect(vm_t *vm) {
+  static size_t gc_threshold = 4096;
 
-  size_t current = gc_object_count(global_gc);
-  if (current < global_gc->gc_threshold) return;
+  size_t before = gc_object_count(global_gc);
+  if (before < gc_threshold) return;
 
 #if GC_DEBUG
   who_printf("before\n");
   gc_report(global_gc);
 #endif
-
-  global_gc->gc_prev_count = current;
 
   array_t *roots = vm_gc_roots(vm);
   for (size_t i = 0; i < array_length(roots); i++) {
@@ -295,15 +294,15 @@ void vm_gc_maybe_collect(vm_t *vm) {
 #endif
 
   size_t after = gc_object_count(global_gc);
-  size_t freed = global_gc->gc_prev_count - after;
+  size_t freed = before - after;
 
-  if (freed < current / 10) {
-    global_gc->gc_threshold = current * 2;
+  if (freed < before / 10) {
+    gc_threshold = before * 2;
   } else {
-    global_gc->gc_threshold = after * 2;
+    gc_threshold = after * 2;
   }
-  if (global_gc->gc_threshold < 1024) {
-    global_gc->gc_threshold = 1024;
+  if (gc_threshold < 1024) {
+    gc_threshold = 1024;
   }
 }
 

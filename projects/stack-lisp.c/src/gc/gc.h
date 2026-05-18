@@ -1,12 +1,5 @@
 #pragma once
 
-struct gc_t {
-  array_t *objects;
-  stack_t *work_stack;
-  size_t gc_threshold;
-  size_t gc_prev_count;
-};
-
 gc_t *make_gc(void);
 void gc_free(gc_t *self);
 
