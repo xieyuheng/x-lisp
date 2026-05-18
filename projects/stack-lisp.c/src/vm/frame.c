@@ -22,6 +22,7 @@ frame_t *make_code_frame(uint8_t *code) {
 frame_t *make_break_frame() {
   frame_t *self = new(frame_t);
   self->kind = BREAK_FRAME;
+  self->locals = make_array();
   return self;
 }
 
@@ -41,6 +42,7 @@ void frame_free(frame_t *self) {
   }
 
   case BREAK_FRAME: {
+    array_free(self->locals);
     free(self);
     return;
   }

@@ -214,6 +214,7 @@ static void vm_gc_roots_in_frame_stack(vm_t *vm, array_t *roots) {
   for (size_t i = 0; i < stack_length(vm->frame_stack); i++) {
     frame_t *frame = stack_get(vm->frame_stack, i);
     for (size_t i = 0; i < array_length(frame->locals); i++) {
+      (void) roots;
       value_t value = frame_get_local(frame, i);
       if (object_p(value)) {
         array_push(roots, to_object(value));
