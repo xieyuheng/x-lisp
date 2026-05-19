@@ -59,7 +59,13 @@ inline bool xhash_has(const xhash_t *self, value_t key) {
 
 inline value_t xhash_get(const xhash_t *self, value_t key) {
   hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
-  assert(entry);
+  if (!entry) {
+    who_printf("undefined key: ");
+    print_value(key);
+    newline();
+    exit(1);
+  }
+
   return (value_t) entry->value;
 }
 

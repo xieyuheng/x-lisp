@@ -1,24 +1,23 @@
 (module meta)
 
 (define (execute-pass project options)
-  (hash-each
-   (lambda (path fragment)
-     (let ((mod-name (mod-fragment-mod-name fragment)))
-       (let ((mod (match (project-lookup-mod project mod-name)
-                    ((just found) found)
-                    ((nothing)
-                     (let ((m (make-new-mod mod-name project)))
-                       (project-put-mod! mod-name m project)
-                       m)))))
-         (when (mod-fragment-is-error-module fragment)
-           (mod-put-is-error-module! true mod))
-         (list-each
-          (lambda (stmt) (execute-stmt mod stmt))
-          (mod-fragment-stmts fragment)))))
-   (project-fragments project))
-  (when (hash-get 'dump options)
-    (project-dump-mods project "040-execute"))
-  void)
+  (pipe (project-fragments project)
+    (hash-each
+     (lambda (path fragment)
+       (let ((mod-name (mod-fragment-mod-name fragment)))
+         (let ((mod (match (project-lookup-mod project mod-name)
+                      ((just found) found)
+                      ((nothing)
+                       (let ((m (make-new-mod mod-name project)))
+                         (project-put-mod! mod-name m project)
+                         m)))))
+           (when (mod-fragment-is-error-module fragment)
+             (mod-put-is-error-module! true mod))
+           (list-each
+            (lambda (stmt) (execute-stmt mod stmt))
+            (mod-fragment-stmts fragment)))))))
+  (when (hash-has? 'dump options)
+    (project-dump-mods project "040-execute")))
 
 (define (execute-stmt mod stmt)
   (match stmt
