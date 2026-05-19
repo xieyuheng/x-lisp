@@ -1,0 +1,6 @@
+(module meta)
+
+(claim reify (-> type-t type-t))
+(define (reify type)
+  (let ((subst (generate-canonical-label-subst [type])))
+    (subst-deep-walk subst type)))

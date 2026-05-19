@@ -1,0 +1,56 @@
+(module meta)
+
+;; Walk deeply through all type nodes, applying substitution.
+;; Freshens polymorphic type variables to avoid capture.
+
+(claim subst-deep-walk (-> subst-t type-t type-t))
+(define (subst-deep-walk subst type)
+  (subst-deep-walk-with-bound-ids (make-set) subst type))
+
+(claim subst-deep-walk-ctx (-> subst-t ctx-t ctx-t))
+(define (subst-deep-walk-ctx subst ctx)
+  (make-ctx
+    (hash-map-value (lambda (t) (subst-deep-walk subst t)) (ctx-bindings ctx))
+    (ctx-transparent-opaque-names ctx)))
+
+(define (subst-deep-walk-with-bound-ids bound-ids subst type)
+  (let ((type (subst-walk subst type)))
+    (match type
+      ((var-type name serial-number)
+       (if (set-member? (var-type-id type) bound-ids)
+         type
+         (let ((found (subst-lookup subst (var-type-id type))))
+           (if (not (nothing? found))
+             (just-value found)
+             type))))
+      ((canonical-label-type serial-number) type)
+      ((type-type) type)
+      ((atom-type name) type)
+      ((arrow-type arg-types ret-type)
+       (arrow-type
+         (list-map (lambda (t) (subst-deep-walk-with-bound-ids bound-ids subst t)) arg-types)
+         (subst-deep-walk-with-bound-ids bound-ids subst ret-type)))
+      ((list-type element-type)
+       (list-type (subst-deep-walk-with-bound-ids bound-ids subst element-type)))
+      ((set-type element-type)
+       (set-type (subst-deep-walk-with-bound-ids bound-ids subst element-type)))
+      ((hash-type key-type value-type)
+       (hash-type
+         (subst-deep-walk-with-bound-ids bound-ids subst key-type)
+         (subst-deep-walk-with-bound-ids bound-ids subst value-type)))
+      ((algebraic-type definition arg-types)
+       (algebraic-type definition
+         (list-map (lambda (t) (subst-deep-walk-with-bound-ids bound-ids subst t)) arg-types)))
+      ((opaque-type definition arg-types)
+       (opaque-type definition
+         (list-map (lambda (t) (subst-deep-walk-with-bound-ids bound-ids subst t)) arg-types)))
+      ((polymorphic-type var-types body-type)
+       (let ((freshened (polymorphic-type-fresh-self type)))
+         (match freshened
+           ((polymorphic-type new-var-types new-body-type)
+            (let ((new-bound-ids
+                    (list-fold-left
+                      (lambda (s vt) (set-add (var-type-id vt) s))
+                      bound-ids new-var-types)))
+              (polymorphic-type new-var-types
+                (subst-deep-walk-with-bound-ids new-bound-ids subst new-body-type))))))))))

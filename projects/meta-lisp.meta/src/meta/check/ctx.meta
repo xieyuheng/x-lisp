@@ -1,0 +1,59 @@
+(module meta)
+
+(define-struct ctx-t
+  (bindings (hash-t symbol-t type-t))
+  (transparent-opaque-names (set-t symbol-t)))
+
+(claim empty-ctx (-> ctx-t))
+(define (empty-ctx)
+  (make-ctx (make-hash) (make-set)))
+
+(claim ctx-names (-> ctx-t (list-t symbol-t)))
+(define (ctx-names ctx)
+  (hash-keys (ctx-bindings ctx)))
+
+(claim ctx-types (-> ctx-t (list-t type-t)))
+(define (ctx-types ctx)
+  (hash-values (ctx-bindings ctx)))
+
+(claim ctx-lookup-type (-> ctx-t symbol-t (maybe-t type-t)))
+(define (ctx-lookup-type ctx name)
+  (let ((bindings (ctx-bindings ctx)))
+    (if (hash-has? name bindings)
+      (just (hash-get name bindings))
+      (nothing))))
+
+(claim ctx-put (-> ctx-t symbol-t type-t ctx-t))
+(define (ctx-put ctx name type)
+  (make-ctx
+    (hash-put name type (ctx-bindings ctx))
+    (ctx-transparent-opaque-names ctx)))
+
+(claim ctx-put-many (-> ctx-t (list-t symbol-t) (list-t type-t) ctx-t))
+(define (ctx-put-many ctx names types)
+  (assert-equal (list-length names) (list-length types))
+  (if (list-empty? names)
+    ctx
+    (ctx-put-many
+      (ctx-put ctx (list-first names) (list-first types))
+      (list-tail names)
+      (list-tail types))))
+
+(claim ctx-update (-> ctx-t ctx-t ctx-t))
+(define (ctx-update base delta)
+  (let ((delta-names (ctx-names delta)))
+    (if (list-empty? delta-names)
+      base
+      (let* ((name (list-first delta-names))
+              (type (just-value (ctx-lookup-type delta name))))
+        (ctx-update (ctx-put base name type)
+                    (make-ctx
+                      (hash-delete! name (ctx-bindings delta))
+                      (ctx-transparent-opaque-names delta)))))))
+
+(claim ctx-free-var-types (-> ctx-t (list-t type-t)))
+(define (ctx-free-var-types ctx)
+  (dedup-var-types
+    (list-concat
+      (list-map (lambda (t) (type-free-var-types (make-set) t))
+                (ctx-types ctx)))))

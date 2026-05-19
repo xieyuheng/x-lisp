@@ -1,0 +1,41 @@
+(module meta)
+
+;; Subst is a mapping from type variable IDs to types.
+;; Represented as (hash-t symbol-t type-t).
+
+(define-type subst-t (hash-t symbol-t type-t))
+
+(claim empty-subst (-> subst-t))
+(define (empty-subst) (make-hash))
+
+(claim unit-subst (-> type-t type-t subst-t))
+(define (unit-subst var-type type)
+  (hash-put (var-type-id var-type) type (empty-subst)))
+
+(claim subst-extend (-> subst-t type-t type-t subst-t))
+(define (subst-extend subst var-type type)
+  (if (hash-has? (var-type-id var-type) subst)
+    (error (string-concat
+             ["[substExtend] type variable already in subst"
+              "\n  type variable: " (format-type var-type)]))
+    (hash-put (var-type-id var-type) type subst)))
+
+(claim subst-extend-many (-> subst-t (list-t type-t) (list-t type-t) subst-t))
+(define (subst-extend-many subst var-types types)
+  (assert-equal (list-length var-types) (list-length types))
+  (if (list-empty? var-types)
+    subst
+    (subst-extend-many
+      (subst-extend subst (list-first var-types) (list-first types))
+      (list-tail var-types)
+      (list-tail types))))
+
+(claim subst-lookup (-> subst-t symbol-t (maybe-t type-t)))
+(define (subst-lookup subst id)
+  (if (hash-has? id subst)
+    (just (hash-get id subst))
+    (nothing)))
+
+(claim subst-length (-> subst-t int-t))
+(define (subst-length subst)
+  (hash-length subst))

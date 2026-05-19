@@ -1,0 +1,11 @@
+(module meta)
+
+(claim subst-walk (-> subst-t type-t type-t))
+(define (subst-walk subst type)
+  (match type
+    ((var-type name serial-number)
+     (let ((found (subst-lookup subst (var-type-id type))))
+       (if (not (nothing? found))
+         (subst-walk subst (just-value found))
+         type)))
+    (else type)))

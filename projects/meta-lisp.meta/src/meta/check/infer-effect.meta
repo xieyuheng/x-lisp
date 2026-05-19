@@ -1,0 +1,42 @@
+(module meta)
+
+(define-enum infer-result-t
+  (infer-ok (subst subst-t) (type type-t))
+  (infer-error (exp exp-t) (message string-t)))
+
+(define-type infer-effect-t (-> subst-t infer-result-t))
+
+(claim ok-infer-effect (-> type-t infer-effect-t))
+(define (ok-infer-effect type)
+  (lambda (subst) (infer-ok subst type)))
+
+(claim error-infer-effect (-> exp-t string-t infer-effect-t))
+(define (error-infer-effect exp message)
+  (lambda (subst) (infer-error exp message)))
+
+(claim infer-then-infer (-> infer-effect-t (-> type-t infer-effect-t) infer-effect-t))
+(define (infer-then-infer effect fn)
+  (lambda (subst)
+    (match (effect subst)
+      ((infer-ok new-subst type)
+       ((fn type) new-subst))
+      ((infer-error exp message)
+       (infer-error exp message)))))
+
+(claim infer-then-check (-> infer-effect-t (-> type-t check-effect-t) check-effect-t))
+(define (infer-then-check effect fn)
+  (lambda (subst)
+    (match (effect subst)
+      ((infer-ok new-subst type)
+       ((fn type) new-subst))
+      ((infer-error exp message)
+       (check-error exp message)))))
+
+(claim check-then-infer (-> check-effect-t infer-effect-t infer-effect-t))
+(define (check-then-infer check-effect infer-effect)
+  (lambda (subst)
+    (match (check-effect subst)
+      ((check-ok new-subst)
+       (infer-effect new-subst))
+      ((check-error exp message)
+       (infer-error exp message)))))

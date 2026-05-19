@@ -1,0 +1,6 @@
+(module meta)
+
+(claim is-substitution-instance (-> type-t type-t bool-t))
+(define (is-substitution-instance lhs rhs)
+  (let ((subst (unify (just (empty-subst)) (reify lhs) rhs)))
+    (not (nothing? subst))))

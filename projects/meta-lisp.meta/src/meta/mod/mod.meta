@@ -19,8 +19,10 @@
 (define (make-new-mod name project)
   (make-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) project false))
 
+(claim mod-put-definition! (-> symbol-t definition-t mod-t void-t))
 (define (mod-put-definition! name definition mod)
-  (hash-put! name definition (mod-definitions mod)))
+  (hash-put! name definition (mod-definitions mod))
+  void)
 
 (claim mod-lookup-definition (-> mod-t symbol-t (maybe-t definition-t)))
 (define (mod-lookup-definition mod name)
@@ -69,4 +71,9 @@
                ["[mod-define] name already defined"
                 "\n  name: " (symbol-to-string name)]))
       (hash-put! name definition definitions)))
+  void)
+
+(claim mod-put-inferred-type! (-> mod-t symbol-t type-t void-t))
+(define (mod-put-inferred-type! mod name type)
+  (hash-put! name type (mod-inferred-types mod))
   void)

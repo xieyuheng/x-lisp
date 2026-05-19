@@ -1,0 +1,30 @@
+(module meta)
+
+(define-enum check-result-t
+  (check-ok (subst subst-t))
+  (check-error (exp exp-t) (message string-t)))
+
+(define-type check-effect-t (-> subst-t check-result-t))
+
+(claim ok-check-effect (-> check-effect-t))
+(define (ok-check-effect)
+  (lambda (subst) (check-ok subst)))
+
+(claim error-check-effect (-> exp-t string-t check-effect-t))
+(define (error-check-effect exp message)
+  (lambda (subst) (check-error exp message)))
+
+(claim sequence-check-effect (-> (list-t check-effect-t) check-effect-t))
+(define (sequence-check-effect effects)
+  (if (list-empty? effects)
+    (ok-check-effect)
+    (let ((effect (list-first effects))
+          (rest-effects (list-tail effects)))
+      (if (list-empty? rest-effects)
+        effect
+        (lambda (subst)
+          (match (effect subst)
+            ((check-ok new-subst)
+             ((sequence-check-effect rest-effects) new-subst))
+            ((check-error exp message)
+             (check-error exp message))))))))
