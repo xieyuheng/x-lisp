@@ -2,7 +2,6 @@ import { range } from "@xieyuheng/helpers.js/range"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
-import Path from "node:path"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
 import { createDesugarState, desugar } from "./020-DesugarPass.ts"
@@ -149,19 +148,13 @@ function simplifyMatch(
           M.Var(M.generateRelativeFreshName(field.name, usedNames), location),
         )
 
-        const path = Path.relative(
-          Path.dirname(mod.name),
-          group.dataConstructor.mod.name,
-        )
-
+        const modName = group.dataConstructor.mod.name
         const dataConstructorPredicateName = `${group.dataConstructor.name}?`
-        const dataConstructorPredicate = M.modNameIsAsDefined(
-          mod,
+        const dataConstructorPredicate = M.QualifiedVar(
+          modName,
           dataConstructorPredicateName,
+          location,
         )
-          ? M.Var(dataConstructorPredicateName, location)
-          : M.QualifiedVar(path, dataConstructorPredicateName, location)
-
         const question = M.Apply(
           dataConstructorPredicate,
           [target],
@@ -180,13 +173,11 @@ function simplifyMatch(
           const field = group.dataConstructor.fields[i]
 
           const dataFieldAccessorName = `${group.dataConstructor.name}-${field.name}`
-          const dataFieldAccessor = M.modNameIsAsDefined(
-            mod,
+          const dataFieldAccessor = M.QualifiedVar(
+            modName,
             dataFieldAccessorName,
+            answer.location,
           )
-            ? M.Var(dataFieldAccessorName, answer.location)
-            : M.QualifiedVar(path, dataFieldAccessorName, answer.location)
-
           answer = M.Let1(
             freshVars[i].name,
             M.Apply(dataFieldAccessor, [target], answer.location),

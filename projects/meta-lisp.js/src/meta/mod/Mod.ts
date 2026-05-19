@@ -61,11 +61,6 @@ export function modLookupDefinition(
   return mod.definitions.get(name)
 }
 
-export function modNameIsAsDefined(mod: Mod, name: string): boolean {
-  const definition = mod.definitions.get(name)
-  return definition !== undefined && definition.name === name
-}
-
 // Claimed
 
 export function modClaim(mod: Mod, name: string, exp: Exp): void {
