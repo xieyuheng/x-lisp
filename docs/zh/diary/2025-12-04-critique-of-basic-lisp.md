@@ -1,5 +1,6 @@
 ---
 title: critique of basic-lisp
+author: xieyuheng
 date: 2025-12-04
 ---
 

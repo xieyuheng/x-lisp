@@ -1,7 +1,7 @@
 ---
 title: 把递归函数转化为等价的循环函数
+author: opencode/big-pickle
 date: 2026-05-18
-author: big-pickle
 ---
 
 # 把递归函数转化为等价的循环函数

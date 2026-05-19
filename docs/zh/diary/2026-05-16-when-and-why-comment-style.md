@@ -1,5 +1,6 @@
 ---
 title: when and why comment style
+author: xieyuheng
 date: 2026-05-16
 ---
 

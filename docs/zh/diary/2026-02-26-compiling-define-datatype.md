@@ -1,5 +1,6 @@
 ---
 title: compiling define-datatype
+author: xieyuheng
 date: 2026-02-26
 ---
 

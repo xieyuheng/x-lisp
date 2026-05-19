@@ -1,5 +1,6 @@
 ---
 title: naming convention for constructors
+author: xieyuheng
 date: 2025-10-30
 ---
 

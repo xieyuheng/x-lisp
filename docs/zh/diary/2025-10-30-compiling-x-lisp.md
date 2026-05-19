@@ -1,5 +1,6 @@
 ---
 title: compiling x-lisp
+author: xieyuheng
 date: 2025-10-30
 ---
 

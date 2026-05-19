@@ -1,5 +1,6 @@
 ---
 title: (export) and simplification by being explicit
+author: xieyuheng
 date: 2025-09-03
 ---
 

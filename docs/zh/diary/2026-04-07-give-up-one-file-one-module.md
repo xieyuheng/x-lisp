@@ -1,5 +1,6 @@
 ---
 title: give up one file one module
+author: xieyuheng
 date: 2026-04-07
 ---
 

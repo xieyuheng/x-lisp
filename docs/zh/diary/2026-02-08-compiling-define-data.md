@@ -1,5 +1,6 @@
 ---
 title: compiling define-data
+author: xieyuheng
 date: 2026-02-08
 ---
 

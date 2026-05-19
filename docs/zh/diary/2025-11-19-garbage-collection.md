@@ -1,5 +1,6 @@
 ---
 title: garbage collection
+author: xieyuheng
 date: 2025-11-19
 ---
 

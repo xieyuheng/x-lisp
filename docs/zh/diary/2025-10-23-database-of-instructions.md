@@ -1,5 +1,6 @@
 ---
 title: database of instructions
+author: xieyuheng
 date: 2025-10-23
 ---
 

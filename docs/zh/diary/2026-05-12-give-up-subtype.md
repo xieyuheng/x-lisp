@@ -1,5 +1,6 @@
 ---
 title: give up subtype
+author: xieyuheng
 date: 2026-05-12
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: lisp and forth double semantics
+author: xieyuheng
 date: 2026-01-23
 ---
 

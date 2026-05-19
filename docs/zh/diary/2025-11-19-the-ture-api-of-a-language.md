@@ -1,5 +1,6 @@
 ---
 title: The ture API of a language
+author: xieyuheng
 date: 2025-11-19
 ---
 

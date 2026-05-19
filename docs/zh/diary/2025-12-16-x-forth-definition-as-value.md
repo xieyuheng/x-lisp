@@ -1,5 +1,6 @@
 ---
 title: x-forth definition as value
+author: xieyuheng
 date: 2025-12-16
 ---
 

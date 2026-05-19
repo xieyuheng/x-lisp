@@ -1,5 +1,6 @@
 ---
 title: why we need record type?
+author: xieyuheng
 date: 2026-03-19
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: about dot syntax
+author: xieyuheng
 date: 2025-10-30
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: compiler vs interpreter
+author: xieyuheng
 date: 2025-11-20
 ---
 

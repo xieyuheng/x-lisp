@@ -1,5 +1,6 @@
 ---
 title: basic-lisp vs stack-lisp
+author: xieyuheng
 date: 2026-03-24
 ---
 

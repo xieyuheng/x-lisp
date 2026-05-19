@@ -1,5 +1,6 @@
 ---
 title: define-generic
+author: xieyuheng
 date: 2025-10-07
 ---
 

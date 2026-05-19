@@ -1,7 +1,7 @@
 ---
 title: 我是如何找到两个 bug 的原因的
+author: opencode/big-pickle
 date: 2026-05-18
-author: big-pickle
 ---
 
 # 我是如何找到两个 bug 的原因的
@@ -99,7 +99,7 @@ case "VarType": {
 
 ```
 1. lhs = substWalk(subst, y) = y          // y 不在 subst 中
-2. rhs = substWalk(subst, ArrowType([x], x)) 
+2. rhs = substWalk(subst, ArrowType([x], x))
    = ArrowType([x], x)                    // 顶层是 ArrowType，直接返回
 3. lhs 是 VarType(y)，rhs 不是 VarType
 4. varOccurredInType(y, ArrowType([x], x))
@@ -215,6 +215,9 @@ case "Var": {
     B.Test(
       B.Apply(B.Var("equal?"), [B.Var(condition.name), B.Keyword("t")]),
     ),
+    ...
+  ]
+}
 ```
 
 这里处理 `(if var-name ...)` 模式，将其展开为 `(equal? var-name #t)`。但硬编码了 `B.Var("equal?")` 而不是 `B.Var("builtin/equal?")`。

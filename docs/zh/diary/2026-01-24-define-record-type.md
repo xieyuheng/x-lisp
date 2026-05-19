@@ -1,5 +1,6 @@
 ---
 title: define-record-type
+author: xieyuheng
 date: 2026-01-24
 ---
 

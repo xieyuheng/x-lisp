@@ -1,5 +1,6 @@
 ---
 title: quit using subscript
+author: xieyuheng
 date: 2026-04-30
 ---
 

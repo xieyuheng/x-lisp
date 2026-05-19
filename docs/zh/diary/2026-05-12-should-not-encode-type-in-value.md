@@ -1,5 +1,6 @@
 ---
 title: should not encode type in value
+author: xieyuheng
 date: 2026-05-12
 ---
 

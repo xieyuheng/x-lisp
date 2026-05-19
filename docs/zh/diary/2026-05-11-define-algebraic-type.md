@@ -1,5 +1,6 @@
 ---
 title: define-algebraic-type
+author: xieyuheng
 date: 2026-05-11
 ---
 

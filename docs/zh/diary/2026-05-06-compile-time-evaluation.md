@@ -1,5 +1,6 @@
 ---
 title: compile time evaluation
+author: xieyuheng
 date: 2026-05-06
 ---
 

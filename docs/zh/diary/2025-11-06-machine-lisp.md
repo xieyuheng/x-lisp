@@ -1,5 +1,6 @@
 ---
 title: machine-lisp
+author: xieyuheng
 date: 2025-11-06
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: any is nominal subtype
+author: xieyuheng
 date: 2026-05-10
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: record functions
+author: xieyuheng
 date: 2026-05-03
 ---
 

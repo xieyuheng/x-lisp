@@ -1,5 +1,6 @@
 ---
 title: give up tael and hashtag
+author: xieyuheng
 date: 2026-03-04
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: hashtag and self-evaluating value
+author: xieyuheng
 date: 2025-09-23
 ---
 

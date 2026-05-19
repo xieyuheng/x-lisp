@@ -1,5 +1,6 @@
 ---
 title: garbage collection and vm
+author: xieyuheng
 date: 2025-11-20
 ---
 

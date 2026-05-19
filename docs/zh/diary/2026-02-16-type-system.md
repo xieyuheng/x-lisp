@@ -1,5 +1,6 @@
 ---
 title: type system
+author: xieyuheng
 date: 2026-02-16
 ---
 

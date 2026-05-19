@@ -1,5 +1,6 @@
 ---
 title: package manager
+author: xieyuheng
 date: 2026-05-06
 ---
 

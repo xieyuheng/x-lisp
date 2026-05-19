@@ -1,5 +1,6 @@
 ---
 title: REPL prompt
+author: xieyuheng
 date: 2025-10-06
 ---
 

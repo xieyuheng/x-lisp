@@ -1,5 +1,6 @@
 ---
 title: function vs nullary lambda
+author: xieyuheng
 date: 2025-08-10
 ---
 

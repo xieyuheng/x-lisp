@@ -1,5 +1,6 @@
 ---
 title: row polymorphic and subtype
+author: xieyuheng
 date: 2026-03-15
 ---
 

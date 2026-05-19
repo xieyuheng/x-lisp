@@ -1,5 +1,6 @@
 ---
 title: simple row polymorphic can not handle record-merge
+author: xieyuheng
 date: 2026-03-20
 ---
 

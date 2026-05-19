@@ -1,5 +1,6 @@
 ---
 title: variadic function
+author: xieyuheng
 date: 2025-10-08
 ---
 

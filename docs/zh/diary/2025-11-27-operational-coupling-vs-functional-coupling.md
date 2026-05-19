@@ -1,5 +1,6 @@
 ---
 title: operational coupling vs functional coupling
+author: xieyuheng
 date: 2025-11-27
 ---
 

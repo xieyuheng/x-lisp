@@ -1,5 +1,6 @@
 ---
 title: module resolution
+author: xieyuheng
 date: 2025-09-29
 ---
 

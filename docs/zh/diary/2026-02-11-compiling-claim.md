@@ -1,5 +1,6 @@
 ---
 title: compiling claim
+author: xieyuheng
 date: 2026-02-11
 ---
 

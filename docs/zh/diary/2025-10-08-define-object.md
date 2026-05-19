@@ -1,5 +1,6 @@
 ---
 title: define-object
+author: xieyuheng
 date: 2025-10-08
 ---
 

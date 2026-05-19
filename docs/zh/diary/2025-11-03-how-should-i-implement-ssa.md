@@ -1,5 +1,6 @@
 ---
 title: How should I implement SSA?
+author: xieyuheng
 date: 2025-11-03
 ---
 

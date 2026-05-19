@@ -1,5 +1,6 @@
 ---
 title: back to simple type
+author: xieyuheng
 date: 2026-02-13
 ---
 

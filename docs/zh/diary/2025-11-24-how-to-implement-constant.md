@@ -1,5 +1,6 @@
 ---
 title: how to implement constant
+author: xieyuheng
 date: 2025-11-24
 ---
 

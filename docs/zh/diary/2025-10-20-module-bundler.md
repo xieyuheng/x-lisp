@@ -1,5 +1,6 @@
 ---
 title: module bundler
+author: xieyuheng
 date: 2025-10-20
 ---
 

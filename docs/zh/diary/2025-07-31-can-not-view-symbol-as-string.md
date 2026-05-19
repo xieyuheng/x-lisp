@@ -1,5 +1,6 @@
 ---
 title: can not view symbol as string
+author: xieyuheng
 date: 2025-07-31
 ---
 

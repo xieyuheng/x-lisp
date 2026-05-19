@@ -1,5 +1,6 @@
 ---
 title: (define-opaque-type)
+author: xieyuheng
 date: 2026-05-15
 ---
 

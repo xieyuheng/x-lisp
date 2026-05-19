@@ -1,5 +1,6 @@
 ---
 title: error report system
+author: xieyuheng
 date: 2026-02-24
 ---
 

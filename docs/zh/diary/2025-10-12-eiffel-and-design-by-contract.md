@@ -1,5 +1,6 @@
 ---
 title: eiffel and design by contract
+author: xieyuheng
 date: 2025-10-12
 ---
 

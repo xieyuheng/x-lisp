@@ -1,5 +1,6 @@
 ---
 title: scope of (assign) should be in (begin)
+author: xieyuheng
 date: 2026-02-22
 ---
 

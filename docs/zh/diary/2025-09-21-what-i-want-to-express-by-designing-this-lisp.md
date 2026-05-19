@@ -1,5 +1,6 @@
 ---
 title: what i want to express by designing this lisp
+author: xieyuheng
 date: 2025-09-21
 ---
 
