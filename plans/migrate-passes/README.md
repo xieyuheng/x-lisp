@@ -5,8 +5,8 @@
 ## Prompt 模板
 
 ```
-先阅读 plans/migrate-passes-plan-a/common.md，
-再阅读 plans/migrate-passes-plan-a/NNN-pass-name.md，
+先阅读 plans/migrate-passes/common.md，
+再阅读 plans/migrate-passes/NNN-pass-name.md，
 然后按照后者的指示实现。
 ```
 
