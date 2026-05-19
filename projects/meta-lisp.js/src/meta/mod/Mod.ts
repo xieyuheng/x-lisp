@@ -75,8 +75,7 @@ export function modClaim(mod: Mod, name: string, exp: Exp): void {
         `revious claim`,
       ).trim()
     }
-    if (exp.location) throw new S.ErrorWithSourceLocation(message, exp.location)
-    else throw new Error(message)
+    throw new S.ErrorWithSourceLocation(message, exp.location)
   }
 
   mod.claimed.set(name, { exp })

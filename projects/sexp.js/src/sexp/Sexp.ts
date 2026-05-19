@@ -25,8 +25,7 @@ export function isSymbol(sexp: Sexp): sexp is Symbol {
 export function asSymbol(sexp: Sexp): Symbol {
   if (isSymbol(sexp)) return sexp
   let message = `[asSymbol] fail on: ${S.formatSexp(sexp)}`
-  if (sexp.location) throw new S.ErrorWithSourceLocation(message, sexp.location)
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
 export type String = {
@@ -50,8 +49,7 @@ export function isString(sexp: Sexp): sexp is String {
 export function asString(sexp: Sexp): String {
   if (isString(sexp)) return sexp
   let message = `[asString] fail on: ${S.formatSexp(sexp)}`
-  if (sexp.location) throw new S.ErrorWithSourceLocation(message, sexp.location)
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
 export type Int = {
@@ -75,8 +73,7 @@ export function isInt(sexp: Sexp): sexp is Int {
 export function asInt(sexp: Sexp): Int {
   if (isInt(sexp)) return sexp
   let message = `[asInt] fail on: ${S.formatSexp(sexp)}`
-  if (sexp.location) throw new S.ErrorWithSourceLocation(message, sexp.location)
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
 export type Float = {
@@ -100,8 +97,7 @@ export function isFloat(sexp: Sexp): sexp is Float {
 export function asFloat(sexp: Sexp): Float {
   if (isFloat(sexp)) return sexp
   let message = `[asFloat] fail on: ${S.formatSexp(sexp)}`
-  if (sexp.location) throw new S.ErrorWithSourceLocation(message, sexp.location)
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
 export type Keyword = {
@@ -125,8 +121,7 @@ export function isKeyword(sexp: Sexp): sexp is Keyword {
 export function asKeyword(sexp: Sexp): Keyword {
   if (isKeyword(sexp)) return sexp
   let message = `[asKeyword] fail on: ${S.formatSexp(sexp)}`
-  if (sexp.location) throw new S.ErrorWithSourceLocation(message, sexp.location)
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
 export type List = {
@@ -150,6 +145,5 @@ export function isList(sexp: Sexp): sexp is List {
 export function asList(sexp: Sexp): List {
   if (isList(sexp)) return sexp
   let message = `[asList] fail on: ${S.formatSexp(sexp)}`
-  if (sexp.location) throw new S.ErrorWithSourceLocation(message, sexp.location)
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }

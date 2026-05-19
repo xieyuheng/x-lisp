@@ -276,8 +276,7 @@ function inferLookup(
     let message = `[typeInferLookup] internal error: infer fail after check`
     message += `\n  module name: ${mod.name}`
     message += `\n  name: ${name}`
-    if (exp.location) throw new S.ErrorWithSourceLocation(message, exp.location)
-    else throw new Error(message)
+    throw new S.ErrorWithSourceLocation(message, exp.location)
   }
 }
 

@@ -458,8 +458,7 @@ export function desugarBegin(
 ): M.Exp {
   if (sequence.length === 0) {
     let message = `[desugarBegin] (begin) must not be empty`
-    if (location) throw new S.ErrorWithSourceLocation(message, location)
-    else throw new Error(message)
+    throw new S.ErrorWithSourceLocation(message, location)
   }
 
   const [head, ...rest] = sequence
