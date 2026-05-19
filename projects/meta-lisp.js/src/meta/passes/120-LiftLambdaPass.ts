@@ -10,7 +10,7 @@ export function LiftLambdaPass(
     mod.definitions = new Map(
       mod.definitions
         .values()
-        .flatMap((definition) => onDefinition(mod, definition))
+        .flatMap((definition) => liftLambdaDefinition(mod, definition))
         .map((definition) => [definition.name, definition]),
     )
   }
@@ -24,7 +24,7 @@ type State = {
   definition: M.Definition
 }
 
-function onDefinition(
+function liftLambdaDefinition(
   mod: M.Mod,
   definition: M.Definition,
 ): Array<M.Definition> {
@@ -44,16 +44,18 @@ function onDefinition(
     case "TypeDefinition": {
       const lifted: Array<M.Definition> = []
       const state = { mod, lifted, definition }
-      definition.body = onExp(state, definition.body)
+      definition.body = liftLambdaExp(state, definition.body)
       return [
         definition,
-        ...lifted.flatMap((definition) => onDefinition(mod, definition)),
+        ...lifted.flatMap((definition) =>
+          liftLambdaDefinition(mod, definition),
+        ),
       ]
     }
   }
 }
 
-function onExp(state: State, exp: M.Exp): M.Exp {
+function liftLambdaExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Lambda": {
       const freeNames = Array.from(M.expFreeNames(new Set(), exp))
@@ -86,7 +88,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
     }
 
     default: {
-      return M.expTraverse((e) => onExp(state, e), exp)
+      return M.expTraverse((e) => liftLambdaExp(state, e), exp)
     }
   }
 }

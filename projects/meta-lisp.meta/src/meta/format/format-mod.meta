@@ -7,3 +7,7 @@
 (claim format-fragment-stmts (-> (list-t stmt-t) string-t))
 (define (format-fragment-stmts stmts)
   (string-join "\n\n" (list-map format-stmt stmts)))
+
+(claim format-mod-definitions (-> mod-t string-t))
+(define (format-mod-definitions mod)
+  (string-join " " (list-map format-definition (hash-values (mod-definitions mod)))))

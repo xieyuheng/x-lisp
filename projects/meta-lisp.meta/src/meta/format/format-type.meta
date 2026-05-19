@@ -49,7 +49,7 @@
      (symbol-to-string name))
     ((function-definition mod name parameters body is-checked location)
      (symbol-to-string name))
-    ((variable-definition mod name body value is-checked location)
+    ((variable-definition mod name body is-checked location)
      (symbol-to-string name))
     ((test-definition mod name body is-checked location)
      (symbol-to-string name))

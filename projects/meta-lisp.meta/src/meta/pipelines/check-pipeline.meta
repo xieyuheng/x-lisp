@@ -3,4 +3,5 @@
 (define (check-pipeline project options)
   (expand-pass project options)
   (desugar-pass project options)
-  (module-pass project options))
+  (module-pass project options)
+  (execute-pass project options))

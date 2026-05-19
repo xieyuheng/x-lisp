@@ -8,7 +8,7 @@ export function UnnestOperandPass(
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
-      onDefinition(definition)
+      unnestOperandDefinition(definition)
     }
   }
 
@@ -19,7 +19,7 @@ type State = {
   freshNameCount: number
 }
 
-function onDefinition(definition: M.Definition): null {
+function unnestOperandDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration":
@@ -35,7 +35,7 @@ function onDefinition(definition: M.Definition): null {
     case "TestDefinition":
     case "TypeDefinition": {
       const state = { freshNameCount: 0 }
-      definition.body = onExp(state, definition.body)
+      definition.body = unnestOperandExp(state, definition.body)
       return null
     }
   }
@@ -46,12 +46,12 @@ function generateFreshName(state: State): string {
   return `_.${state.freshNameCount}`
 }
 
-function onExp(state: State, exp: M.Exp): M.Exp {
+function unnestOperandExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Apply": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [targetEntries, newTarget] = unnestOperandAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(
-        exp.args.map((arg) => forAtom(state, arg)),
+        exp.args.map((arg) => unnestOperandAtom(state, arg)),
       )
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       return prependLets(
@@ -61,7 +61,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
     }
 
     default: {
-      return M.expTraverse((e) => onExp(state, e), exp)
+      return M.expTraverse((e) => unnestOperandExp(state, e), exp)
     }
   }
 }
@@ -81,7 +81,7 @@ function prependLets(entries: Array<Entry>, exp: M.Exp): M.Exp {
 
 type Entry = [string | null, M.Exp]
 
-function forAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
+function unnestOperandAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
   switch (exp.kind) {
     case "Var":
     case "QualifiedVar":
@@ -94,9 +94,9 @@ function forAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [targetEntries, newTarget] = unnestOperandAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(
-        exp.args.map((arg) => forAtom(state, arg)),
+        exp.args.map((arg) => unnestOperandAtom(state, arg)),
       )
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       const freshName = generateFreshName(state)
@@ -111,20 +111,20 @@ function forAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
     }
 
     case "Let1": {
-      const rhsEntry: Entry = [exp.name, onExp(state, exp.rhs)]
-      const [bodyEntries, newBody] = forAtom(state, exp.body)
+      const rhsEntry: Entry = [exp.name, unnestOperandExp(state, exp.rhs)]
+      const [bodyEntries, newBody] = unnestOperandAtom(state, exp.body)
       return [[rhsEntry, ...bodyEntries], newBody]
     }
 
     case "Begin1": {
-      const headEntry: Entry = [null, onExp(state, exp.head)]
-      const [bodyEntries, newBody] = forAtom(state, exp.body)
+      const headEntry: Entry = [null, unnestOperandExp(state, exp.head)]
+      const [bodyEntries, newBody] = unnestOperandAtom(state, exp.body)
       return [[headEntry, ...bodyEntries], newBody]
     }
 
     default: {
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, onExp(state, exp)]
+      const entry: Entry = [freshName, unnestOperandExp(state, exp)]
       return [[entry], M.Var(freshName, exp.location)]
     }
   }

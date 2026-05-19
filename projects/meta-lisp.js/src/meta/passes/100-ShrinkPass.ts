@@ -7,14 +7,14 @@ export function ShrinkPass(
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
-      onDefinition(definition)
+      shrinkDefinition(definition)
     }
   }
 
   if (options.dump) projectDumpMods(project, "100-shrink")
 }
 
-function onDefinition(definition: M.Definition): null {
+function shrinkDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration":
@@ -29,20 +29,20 @@ function onDefinition(definition: M.Definition): null {
     case "VariableDefinition":
     case "TestDefinition":
     case "TypeDefinition": {
-      definition.body = onExp(definition.body)
+      definition.body = shrinkExp(definition.body)
       return null
     }
   }
 }
 
-function onExp(exp: M.Exp): M.Exp {
+function shrinkExp(exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "The": {
-      return onExp(exp.exp)
+      return shrinkExp(exp.exp)
     }
 
     default: {
-      return M.expTraverse(onExp, exp)
+      return M.expTraverse(shrinkExp, exp)
     }
   }
 }

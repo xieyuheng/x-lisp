@@ -50,3 +50,23 @@
     (if (hash-has? name inferred)
       (just (hash-get name inferred))
       (nothing))))
+
+(claim mod-claim (-> mod-t symbol-t exp-t void-t))
+(define (mod-claim mod name exp)
+  (let ((claimed (mod-claimed mod)))
+    (if (hash-has? name claimed)
+      (error (string-concat
+               ["[mod-claim] name already claimed"
+                "\n  name: " (symbol-to-string name)]))
+      (hash-put! name (make-claim-entry exp (nothing)) claimed)))
+  void)
+
+(claim mod-define (-> mod-t symbol-t definition-t void-t))
+(define (mod-define mod name definition)
+  (let ((definitions (mod-definitions mod)))
+    (if (hash-has? name definitions)
+      (error (string-concat
+               ["[mod-define] name already defined"
+                "\n  name: " (symbol-to-string name)]))
+      (hash-put! name definition definitions)))
+  void)

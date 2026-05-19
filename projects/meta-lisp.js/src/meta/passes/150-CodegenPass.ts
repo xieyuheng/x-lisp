@@ -6,7 +6,7 @@ import * as Stk from "../../stack/index.ts"
 export function CodegenPass(project: M.Project, basicMod: B.Mod): Stk.Mod {
   const stackMod = Stk.createMod()
   for (const definition of basicMod.definitions.values()) {
-    for (const stackDefinition of onDefinition(basicMod, definition)) {
+    for (const stackDefinition of codegenDefinition(basicMod, definition)) {
       stackMod.definitions.set(stackDefinition.name, stackDefinition)
     }
   }
@@ -95,7 +95,7 @@ function lookupLocalIndex(state: State, name: string): number {
   return index
 }
 
-function onDefinition(
+function codegenDefinition(
   mod: B.Mod,
   definition: B.Definition,
 ): Array<Stk.Definition> {
@@ -136,7 +136,9 @@ function onDefinition(
               state.location,
             ),
           ),
-        ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
+        ...blocks.flatMap((block) =>
+          codegenBlock(state, definition.name, block),
+        ),
       ]
       return [
         Stk.FunctionDefinition(
@@ -153,7 +155,9 @@ function onDefinition(
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
       const instrs = [
-        ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
+        ...blocks.flatMap((block) =>
+          codegenBlock(state, definition.name, block),
+        ),
       ]
       return [
         Stk.VariableDefinition(definition.name, instrs, definition.location),
@@ -165,25 +169,35 @@ function onDefinition(
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
       const instrs = [
-        ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
+        ...blocks.flatMap((block) =>
+          codegenBlock(state, definition.name, block),
+        ),
       ]
       return [Stk.TestDefinition(definition.name, instrs, definition.location)]
     }
   }
 }
 
-function onBlock(state: State, name: string, block: B.Block): Array<Stk.Instr> {
+function codegenBlock(
+  state: State,
+  name: string,
+  block: B.Block,
+): Array<Stk.Instr> {
   return [
     Stk.Instr("label", [Stk.Var(block.label, state.location)], state.location),
-    ...block.instrs.flatMap((instr) => onInstr(state, name, instr)),
+    ...block.instrs.flatMap((instr) => codegenInstr(state, name, instr)),
   ]
 }
 
-function onInstr(state: State, name: string, instr: B.Instr): Array<Stk.Instr> {
+function codegenInstr(
+  state: State,
+  name: string,
+  instr: B.Instr,
+): Array<Stk.Instr> {
   switch (instr.kind) {
     case "Assign": {
       return [
-        ...onExp(state, name, instr.exp),
+        ...codegenExp(state, name, instr.exp),
         Stk.Instr(
           "local-store",
           [
@@ -200,13 +214,13 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<Stk.Instr> {
 
     case "Perform": {
       return [
-        ...onExp(state, name, instr.exp),
+        ...codegenExp(state, name, instr.exp),
         Stk.Instr("drop", [], state.location),
       ]
     }
 
     case "Test": {
-      return onExp(state, name, instr.exp)
+      return codegenExp(state, name, instr.exp)
     }
 
     case "Branch": {
@@ -235,12 +249,12 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<Stk.Instr> {
     }
 
     case "Return": {
-      return onTailExp(state, name, instr.exp)
+      return codegenTailExp(state, name, instr.exp)
     }
   }
 }
 
-function onExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
+function codegenExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -251,16 +265,20 @@ function onExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
     }
 
     case "Var": {
-      return onVar(state, name, exp)
+      return codegenVar(state, name, exp)
     }
 
     case "Apply": {
-      return onApply(state, name, exp)
+      return codegenApply(state, name, exp)
     }
   }
 }
 
-function onTailExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
+function codegenTailExp(
+  state: State,
+  name: string,
+  exp: B.Exp,
+): Array<Stk.Instr> {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -275,18 +293,18 @@ function onTailExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
 
     case "Var": {
       return [
-        ...onVar(state, name, exp),
+        ...codegenVar(state, name, exp),
         Stk.Instr("return", [], state.location),
       ]
     }
 
     case "Apply": {
-      return onTailApply(state, name, exp)
+      return codegenTailApply(state, name, exp)
     }
   }
 }
 
-function onVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
+function codegenVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
   const definition = B.modLookupDefinition(state.mod, exp.name)
   if (definition === undefined) {
     return [
@@ -303,7 +321,7 @@ function onVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
 
   switch (definition.kind) {
     case "TestDefinition": {
-      let message = `[CodegenPass / onVar] can not handle TestDefinition`
+      let message = `[CodegenPass / codegenVar] can not handle TestDefinition`
       throw new Error(message)
     }
 
@@ -327,19 +345,23 @@ function onVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
   }
 }
 
-function onApply(state: State, name: string, exp: B.Apply): Array<Stk.Instr> {
-  return onGeneralApply(state, name, exp, false)
-}
-
-function onTailApply(
+function codegenApply(
   state: State,
   name: string,
   exp: B.Apply,
 ): Array<Stk.Instr> {
-  return onGeneralApply(state, name, exp, true)
+  return codegenGeneralApply(state, name, exp, false)
 }
 
-function onGeneralApply(
+function codegenTailApply(
+  state: State,
+  name: string,
+  exp: B.Apply,
+): Array<Stk.Instr> {
+  return codegenGeneralApply(state, name, exp, true)
+}
+
+function codegenGeneralApply(
   state: State,
   name: string,
   exp: B.Apply,
@@ -350,7 +372,7 @@ function onGeneralApply(
   const definition = B.modLookupDefinition(state.mod, B.asVar(exp.target).name)
   if (definition === undefined) {
     return [
-      ...exp.args.flatMap((arg) => onExp(state, name, arg)),
+      ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
       Stk.Instr(
         "local-load",
         [
@@ -372,7 +394,7 @@ function onGeneralApply(
 
   switch (definition.kind) {
     case "TestDefinition": {
-      let message = `[CodegenPass / onGeneralApply] can not handle TestDefinition`
+      let message = `[CodegenPass / codegenGeneralApply] can not handle TestDefinition`
       throw new Error(message)
     }
 
@@ -381,7 +403,7 @@ function onGeneralApply(
       const arity = B.definitionArity(definition)
       if (exp.args.length < arity) {
         return [
-          ...exp.args.flatMap((arg) => onExp(state, name, arg)),
+          ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             "ref",
             [Stk.Var(B.asVar(exp.target).name, state.location)],
@@ -395,7 +417,7 @@ function onGeneralApply(
         ]
       } else if (exp.args.length === arity) {
         return [
-          ...exp.args.flatMap((arg) => onExp(state, name, arg)),
+          ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             callMode,
             [Stk.Var(B.asVar(exp.target).name, state.location)],
@@ -404,13 +426,17 @@ function onGeneralApply(
         ]
       } else {
         return [
-          ...exp.args.slice(0, arity).flatMap((arg) => onExp(state, name, arg)),
+          ...exp.args
+            .slice(0, arity)
+            .flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             "call",
             [Stk.Var(B.asVar(exp.target).name, state.location)],
             state.location,
           ),
-          ...exp.args.slice(arity).flatMap((arg) => onExp(state, name, arg)),
+          ...exp.args
+            .slice(arity)
+            .flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             applyMode,
             [Stk.Int(BigInt(exp.args.length - arity), state.location)],
@@ -423,7 +449,7 @@ function onGeneralApply(
     case "PrimitiveVariableDeclaration":
     case "VariableDefinition": {
       return [
-        ...exp.args.flatMap((arg) => onExp(state, name, arg)),
+        ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
         Stk.Instr(
           "global-load",
           [Stk.Var(B.asVar(exp.target).name, state.location)],

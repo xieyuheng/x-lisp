@@ -1,24 +1,28 @@
+# 计划
+
 迁移 [meta-lisp.js] 的 040-ExecutePass.ts 到 [meta-lisp.meta] 的 040-execute-pass.meta
 
-首先分析我们可能会遇到什么麻烦，比如：
+**我们首先让迁移变简单，然后做一个简单的迁移。**
+
+分析我们可能会遇到什么麻烦，比如：
 
 - 依赖缺失
 - 行为不一致
 - 等等问题
 
-## 注意
+# 注意
 
-- 在需要调用 builtin 函数时,**不要盲目猜测名称**,先查阅文档:
-  - **语法参考**:`docs/zh/reference/syntax.md`
-  - **内置函数索引**:`docs/zh/reference/builtin/index.md`
+- 核心需求是保持 [meta-lisp.js] 和 [meta-lisp.meta] 这两个版本的行为一致。
 
 - 如果一个 pass 依赖了某个函数，你就可以迁移这个函数。
   注意，迁移 [meta-lisp.js] 中的函数和文件时，
   要迁移到 [meta-lisp.meta] 中的对应路径下的文件。
 
-- 核心需求是保持 [meta-lisp.js] 和 [meta-lisp.meta] 这两个版本的行为一致。
+- 在需要调用 builtin 函数时,**不要盲目猜测名称**,先查阅文档:
+  - **语法参考**:`docs/zh/reference/syntax.md`
+  - **内置函数索引**:`docs/zh/reference/builtin/index.md`
 
-## 验证命令
+# 测试
 
 在根目录中：
 

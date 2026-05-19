@@ -36,7 +36,6 @@
    (mod mod-t)
    (name symbol-t)
    (body exp-t)
-   (value (maybe-t value-t))
    (is-checked bool-t)
    (location source-location-t))
   (test-definition

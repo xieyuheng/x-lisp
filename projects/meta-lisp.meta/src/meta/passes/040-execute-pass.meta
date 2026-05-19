@@ -1,0 +1,166 @@
+(module meta)
+
+(define (execute-pass project options)
+  (hash-each
+   (lambda (path fragment)
+     (let ((mod-name (mod-fragment-mod-name fragment)))
+       (let ((mod (match (project-lookup-mod project mod-name)
+                    ((just found) found)
+                    ((nothing)
+                     (let ((m (make-new-mod mod-name project)))
+                       (project-put-mod! mod-name m project)
+                       m)))))
+         (when (mod-fragment-is-error-module fragment)
+           (mod-put-is-error-module! true mod))
+         (list-each
+          (lambda (stmt) (execute-stmt mod stmt))
+          (mod-fragment-stmts fragment)))))
+   (project-fragments project))
+  (when (hash-get 'dump options)
+    (project-dump-mods project "040-execute"))
+  void)
+
+(define (execute-stmt mod stmt)
+  (match stmt
+    ((exempt-stmt names location)
+     (list-each (lambda (name) (set-add! name (mod-admitted mod))) names)
+     void)
+
+    ((claim-stmt name type location)
+     (mod-claim mod name type)
+     void)
+
+    ((claim-type-stmt name location)
+     (hash-put! name
+                (make-claim-entry (qualified-var-exp 'builtin 'type-t location)
+                                  (just (type-type)))
+                (mod-claimed mod))
+     void)
+
+    ((admit-stmt name type location)
+     (mod-claim mod name type)
+     (set-add! name (mod-admitted mod))
+     void)
+
+    ((declare-primitive-function-stmt name arity location)
+     (let ((definition (mod-lookup-definition mod name)))
+       (if (not (nothing? definition))
+         (let ((def (just-value definition)))
+           (if (primitive-function-definition? def)
+             (when (not (equal? (primitive-function-definition-arity def) arity))
+               (error (string-concat
+                        ["[execute-define] arity mismatch"
+                         "\n  definition name: " (symbol-to-string name)
+                         "\n  definition arity: " (int-to-string (primitive-function-definition-arity def))
+                         "\n  declared arity: " (int-to-string arity)])))
+             (mod-define mod name (primitive-function-declaration mod name arity false location))))
+         (mod-define mod name (primitive-function-declaration mod name arity false location))))
+     void)
+
+    ((declare-primitive-variable-stmt name location)
+     (let ((definition (mod-lookup-definition mod name)))
+       (if (not (nothing? definition))
+         (let ((def (just-value definition)))
+           (unless (primitive-variable-definition? def)
+             (mod-define mod name (primitive-variable-declaration mod name false location))))
+         (mod-define mod name (primitive-variable-declaration mod name false location))))
+     void)
+
+    ((define-function-stmt name parameters body location)
+     (mod-define mod name (function-definition mod name parameters body false location))
+     void)
+
+    ((define-variable-stmt name body location)
+     (mod-define mod name (variable-definition mod name body false location))
+     void)
+
+    ((define-test-stmt name body location)
+     (mod-define mod name (test-definition mod name body false location))
+     void)
+
+    ((define-type-stmt name parameters body location)
+     (if (list-empty? parameters)
+       (mod-claim mod name (qualified-var-exp 'builtin 'type-t location))
+       (mod-claim mod name (arrow-exp
+                             (list-map (lambda (_) (qualified-var-exp 'builtin 'type-t location)) parameters)
+                             (qualified-var-exp 'builtin 'type-t location)
+                             location)))
+     (mod-define mod name (type-definition mod name parameters body false location))
+     void)
+
+    ((define-algebraic-type-stmt type-constructor data-constructors location)
+     (let* ((name (type-constructor-name type-constructor))
+            (tc-params (type-constructor-parameters type-constructor))
+            (ctors (list-map
+                     (lambda (ctor)
+                       (make-data-constructor
+                         mod name
+                         (algebraic-type-constructor-name ctor)
+                         (list-map
+                           (lambda (field)
+                             (make-data-field
+                               (algebraic-type-field-name field)
+                               (algebraic-type-field-type field)
+                               (algebraic-type-field-location field)))
+                           (algebraic-type-constructor-fields ctor))
+                         (algebraic-type-constructor-location ctor)))
+                     data-constructors)))
+       (mod-define mod name (algebraic-type-definition mod name type-constructor ctors false location))
+       (list-each
+         (lambda (ctor)
+           (hash-put! (data-constructor-name ctor) ctor (mod-data-constructors mod)))
+         ctors)
+       (if (list-empty? tc-params)
+         (mod-claim mod name (qualified-var-exp 'builtin 'type-t location))
+         (mod-claim mod name (arrow-exp
+                               (list-map (lambda (_) (qualified-var-exp 'builtin 'type-t location)) tc-params)
+                               (qualified-var-exp 'builtin 'type-t location)
+                               location))))
+     void)
+
+    ((define-opaque-type-stmt name parameters representation-type interface-entries location)
+     (let ((type-constructor (make-type-constructor name parameters)))
+       (mod-define mod name (opaque-type-definition mod name type-constructor representation-type interface-entries false location))
+       (if (list-empty? parameters)
+         (mod-claim mod name (qualified-var-exp 'builtin 'type-t location))
+         (mod-claim mod name (arrow-exp
+                               (list-map (lambda (_) (qualified-var-exp 'builtin 'type-t location)) parameters)
+                               (qualified-var-exp 'builtin 'type-t location)
+                               location)))
+       (list-each
+         (lambda (iface)
+           (let ((wrapped-type (polymorphic-exp parameters (interface-entry-type iface) (interface-entry-location iface))))
+             (mod-claim mod (interface-entry-name iface) wrapped-type)
+             (hash-put! (interface-entry-name iface) wrapped-type (mod-opaque-claimed mod))))
+         interface-entries))
+     void)
+
+    ((import-stmt mod-name names location)
+     void)
+
+    ((import-as-stmt mod-name prefix location)
+     void)
+
+    ((import-all-stmt mod-name location)
+     void)
+
+    ((define-enum-stmt type-constructor data-constructors location)
+     void)
+
+    ((define-struct-stmt type-constructor fields location)
+     void)
+
+    ((define-struct-star-stmt type-constructor data-constructor location)
+     void)
+
+    ((define-record-type-stmt type-constructor data-constructor location)
+     void)
+
+    ((private-stmt names location)
+     void)
+
+    ((declare-module-stmt name location)
+     void)
+
+    ((declare-error-module-stmt name location)
+     void)))

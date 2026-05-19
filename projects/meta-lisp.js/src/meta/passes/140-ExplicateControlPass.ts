@@ -9,7 +9,10 @@ export function ExplicateControlPass(project: M.Project): B.Mod {
   for (const mod of project.mods.values()) {
     if (!mod.isErrorModule) {
       for (const definition of mod.definitions.values()) {
-        for (const basicDefinition of onDefinition(basicMod, definition)) {
+        for (const basicDefinition of explicateControlDefinition(
+          basicMod,
+          definition,
+        )) {
           basicMod.definitions.set(basicDefinition.name, basicDefinition)
         }
       }
@@ -23,7 +26,7 @@ function definitionQualifiedName(definition: M.Definition): string {
   return `${definition.mod.name}/${definition.name}`
 }
 
-function onDefinition(
+function explicateControlDefinition(
   basicMod: B.Mod,
   definition: M.Definition,
 ): Array<B.Definition> {
@@ -62,7 +65,7 @@ function onDefinition(
       const state = createState()
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
-      block.instrs = inTail(state, definition.body)
+      block.instrs = explicateControlInTail(state, definition.body)
       return [
         B.FunctionDefinition(
           basicMod,
@@ -78,7 +81,7 @@ function onDefinition(
       const state = createState()
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
-      block.instrs = inTail(state, definition.body)
+      block.instrs = explicateControlInTail(state, definition.body)
       return [
         B.TestDefinition(
           basicMod,
@@ -93,7 +96,7 @@ function onDefinition(
       const state = createState()
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
-      block.instrs = inTail(state, definition.body)
+      block.instrs = explicateControlInTail(state, definition.body)
       return [
         B.VariableDefinition(
           basicMod,
@@ -164,22 +167,31 @@ function toBasicExp(exp: M.Exp): B.Exp {
   }
 }
 
-function inTail(state: State, exp: M.Exp): Array<B.Instr> {
+function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
   switch (exp.kind) {
     case "Let1": {
-      return inLet1(state, exp.name, exp.rhs, inTail(state, exp.body))
+      return explicateControlInLet1(
+        state,
+        exp.name,
+        exp.rhs,
+        explicateControlInTail(state, exp.body),
+      )
     }
 
     case "Begin1": {
-      return inBegin1(state, exp.head, inTail(state, exp.body))
+      return explicateControlInBegin1(
+        state,
+        exp.head,
+        explicateControlInTail(state, exp.body),
+      )
     }
 
     case "If": {
-      return inIf(
+      return explicateControlInIf(
         state,
         exp.condition,
-        inTail(state, exp.consequent),
-        inTail(state, exp.alternative),
+        explicateControlInTail(state, exp.consequent),
+        explicateControlInTail(state, exp.alternative),
       )
     }
 
@@ -189,7 +201,7 @@ function inTail(state: State, exp: M.Exp): Array<B.Instr> {
   }
 }
 
-function inLet1(
+function explicateControlInLet1(
   state: State,
   name: string,
   rhs: M.Exp,
@@ -197,27 +209,31 @@ function inLet1(
 ): Array<B.Instr> {
   switch (rhs.kind) {
     case "Let1": {
-      return inLet1(
+      return explicateControlInLet1(
         state,
         rhs.name,
         rhs.rhs,
-        inLet1(state, name, rhs.body, cont),
+        explicateControlInLet1(state, name, rhs.body, cont),
       )
     }
 
     case "Begin1": {
-      return inBegin1(state, rhs.head, inLet1(state, name, rhs.body, cont))
+      return explicateControlInBegin1(
+        state,
+        rhs.head,
+        explicateControlInLet1(state, name, rhs.body, cont),
+      )
     }
 
     case "If": {
       const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
-      return inIf(
+      return explicateControlInIf(
         state,
         rhs.condition,
-        inLet1(state, name, rhs.consequent, [
+        explicateControlInLet1(state, name, rhs.consequent, [
           B.Goto(letBodyLabel, rhs.location),
         ]),
-        inLet1(state, name, rhs.alternative, [
+        explicateControlInLet1(state, name, rhs.alternative, [
           B.Goto(letBodyLabel, rhs.location),
         ]),
       )
@@ -229,32 +245,38 @@ function inLet1(
   }
 }
 
-function inBegin1(
+function explicateControlInBegin1(
   state: State,
   head: M.Exp,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
     case "Let1": {
-      return inLet1(
+      return explicateControlInLet1(
         state,
         head.name,
         head.rhs,
-        inBegin1(state, head.body, cont),
+        explicateControlInBegin1(state, head.body, cont),
       )
     }
 
     case "Begin1": {
-      return inBegin1(state, head.head, inBegin1(state, head.body, cont))
+      return explicateControlInBegin1(
+        state,
+        head.head,
+        explicateControlInBegin1(state, head.body, cont),
+      )
     }
 
     case "If": {
       const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
-      return inIf(
+      return explicateControlInIf(
         state,
         head.condition,
-        inBegin1(state, head.consequent, [B.Goto(letBodyLabel, head.location)]),
-        inBegin1(state, head.alternative, [
+        explicateControlInBegin1(state, head.consequent, [
+          B.Goto(letBodyLabel, head.location),
+        ]),
+        explicateControlInBegin1(state, head.alternative, [
           B.Goto(letBodyLabel, head.location),
         ]),
       )
@@ -266,7 +288,7 @@ function inBegin1(
   }
 }
 
-function inIf(
+function explicateControlInIf(
   state: State,
   condition: M.Exp,
   thenCont: Array<B.Instr>,
@@ -317,7 +339,7 @@ function inIf(
         condition.args.length === 1
       ) {
         const [negatedCondition] = condition.args
-        return inIf(state, negatedCondition, elseCont, thenCont)
+        return explicateControlInIf(state, negatedCondition, elseCont, thenCont)
       }
 
       return [
@@ -331,19 +353,19 @@ function inIf(
     }
 
     case "Let1": {
-      return inLet1(
+      return explicateControlInLet1(
         state,
         condition.name,
         condition.rhs,
-        inIf(state, condition.body, thenCont, elseCont),
+        explicateControlInIf(state, condition.body, thenCont, elseCont),
       )
     }
 
     case "Begin1": {
-      return inBegin1(
+      return explicateControlInBegin1(
         state,
         condition.head,
-        inIf(state, condition.body, thenCont, elseCont),
+        explicateControlInIf(state, condition.body, thenCont, elseCont),
       )
     }
 
@@ -360,16 +382,16 @@ function inIf(
           condition.location,
         ),
       ]
-      return inIf(
+      return explicateControlInIf(
         state,
         condition.condition,
-        inIf(state, condition.consequent, thenCont, elseCont),
-        inIf(state, condition.alternative, thenCont, elseCont),
+        explicateControlInIf(state, condition.consequent, thenCont, elseCont),
+        explicateControlInIf(state, condition.alternative, thenCont, elseCont),
       )
     }
 
     default: {
-      let message = `[ExplicateControlPass] [inIf] unhandled condition exp`
+      let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition exp`
       message += `\n  exp: ${M.formatExp(condition)}`
       if (condition.location)
         throw new S.ErrorWithSourceLocation(message, condition.location)

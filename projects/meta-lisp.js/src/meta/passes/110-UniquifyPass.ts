@@ -8,14 +8,14 @@ export function UniquifyPass(
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
-      onDefinition(definition)
+      uniquifyDefinition(definition)
     }
   }
 
   if (options.dump) projectDumpMods(project, "110-uniquify")
 }
 
-function onDefinition(definition: M.Definition): null {
+function uniquifyDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration":
@@ -30,13 +30,13 @@ function onDefinition(definition: M.Definition): null {
     case "VariableDefinition":
     case "TestDefinition":
     case "TypeDefinition": {
-      definition.body = onExp({}, {}, definition.body)
+      definition.body = uniquifyExp({}, {}, definition.body)
       return null
     }
   }
 }
 
-function onExp(
+function uniquifyExp(
   nameCounts: Record<string, number>,
   nameTable: Record<string, string>,
   exp: M.Exp,
@@ -58,7 +58,7 @@ function onExp(
       }
       return M.Lambda(
         parameters,
-        onExp(nameCounts, newNameTable, exp.body),
+        uniquifyExp(nameCounts, newNameTable, exp.body),
         exp.location,
       )
     }
@@ -69,14 +69,14 @@ function onExp(
       const newNameTable = { ...nameTable, [exp.name]: newName }
       return M.Let1(
         newName,
-        onExp(nameCounts, nameTable, exp.rhs),
-        onExp(nameCounts, newNameTable, exp.body),
+        uniquifyExp(nameCounts, nameTable, exp.rhs),
+        uniquifyExp(nameCounts, newNameTable, exp.body),
         exp.location,
       )
     }
 
     default: {
-      return M.expTraverse((e) => onExp(nameCounts, nameTable, e), exp)
+      return M.expTraverse((e) => uniquifyExp(nameCounts, nameTable, e), exp)
     }
   }
 }

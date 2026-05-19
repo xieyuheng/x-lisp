@@ -1,0 +1,20 @@
+(module meta)
+
+(define (project-dump-mods project tag)
+  (let ((config (meta-sexp-config))
+        (width 80))
+    (pipe (project-mods project)
+      (hash-each
+       (lambda (_name mod)
+         (= definitions-code (format-mod-definitions mod))
+         (= code (ppml/pretty-sexp-by-format (lambda (s) s) config width definitions-code))
+         (= out-dir (path-join
+                     (project-root-directory project)
+                     (path-join (build-config-output-directory
+                                 (project-config-build (project-config project)))
+                                "dump")))
+         (= mods-dir (path-join out-dir "modules"))
+         (= mod-name-str (symbol-to-string (mod-name mod)))
+         (= dump-path (string-concat [mods-dir "/" mod-name-str "." tag ".dump"]))
+         (fs-ensure-directory mods-dir)
+         (fs-write dump-path code))))))

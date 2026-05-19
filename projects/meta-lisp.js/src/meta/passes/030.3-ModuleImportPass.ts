@@ -5,7 +5,9 @@ export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
   for (const [path, fragment] of project.fragments) {
     const scope = info.fragmentScopes.get(path)
     if (scope) {
-      fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
+      fragment.stmts = fragment.stmts.map((stmt) =>
+        moduleImportStmt(scope, stmt),
+      )
     } else {
       let message = `[ModuleImportPass] missing scope for: ${path}`
       throw new Error(message)
@@ -13,14 +15,22 @@ export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
   }
 }
 
-function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
+function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
   switch (stmt.kind) {
     case "Claim": {
-      return M.Claim(stmt.name, onExp(scope, stmt.type), stmt.location)
+      return M.Claim(
+        stmt.name,
+        moduleImportExp(scope, stmt.type),
+        stmt.location,
+      )
     }
 
     case "Admit": {
-      return M.Admit(stmt.name, onExp(scope, stmt.type), stmt.location)
+      return M.Admit(
+        stmt.name,
+        moduleImportExp(scope, stmt.type),
+        stmt.location,
+      )
     }
 
     case "DefineFunction": {
@@ -29,24 +39,32 @@ function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return M.DefineFunction(
         stmt.name,
         stmt.parameters,
-        onExp(newScope, stmt.body),
+        moduleImportExp(newScope, stmt.body),
         stmt.location,
       )
     }
 
     case "DefineVariable": {
-      return M.DefineVariable(stmt.name, onExp(scope, stmt.body), stmt.location)
+      return M.DefineVariable(
+        stmt.name,
+        moduleImportExp(scope, stmt.body),
+        stmt.location,
+      )
     }
 
     case "DefineTest": {
-      return M.DefineTest(stmt.name, onExp(scope, stmt.body), stmt.location)
+      return M.DefineTest(
+        stmt.name,
+        moduleImportExp(scope, stmt.body),
+        stmt.location,
+      )
     }
 
     case "DefineType": {
       return M.DefineType(
         stmt.name,
         stmt.parameters,
-        onExp(scope, stmt.body),
+        moduleImportExp(scope, stmt.body),
         stmt.location,
       )
     }
@@ -57,7 +75,7 @@ function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       for (const ctor of stmt.dataConstructors) {
         ctor.fields = ctor.fields.map((field) => ({
           ...field,
-          type: onExp(newScope, field.type),
+          type: moduleImportExp(newScope, field.type),
         }))
       }
 
@@ -70,10 +88,10 @@ function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return M.DefineOpaqueType(
         stmt.name,
         stmt.parameters,
-        onExp(newScope, stmt.representationType),
+        moduleImportExp(newScope, stmt.representationType),
         stmt.interfaceFunctions.map((f) => ({
           ...f,
-          type: onExp(newScope, f.type),
+          type: moduleImportExp(newScope, f.type),
         })),
         stmt.location,
       )
@@ -85,7 +103,7 @@ function onStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
   }
 }
 
-function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
+function moduleImportExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Var": {
       const entry = scope.importedNames.get(exp.name)
@@ -108,7 +126,11 @@ function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
     case "Lambda": {
       const boundNames = new Set(exp.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.Lambda(exp.parameters, onExp(newScope, exp.body), exp.location)
+      return M.Lambda(
+        exp.parameters,
+        moduleImportExp(newScope, exp.body),
+        exp.location,
+      )
     }
 
     case "Polymorphic": {
@@ -116,7 +138,7 @@ function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
       const newScope = scopeFilterBoundNames(scope, boundNames)
       return M.Polymorphic(
         exp.parameters,
-        onExp(newScope, exp.body),
+        moduleImportExp(newScope, exp.body),
         exp.location,
       )
     }
@@ -126,23 +148,25 @@ function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
       const newScope = scopeFilterBoundNames(scope, boundNames)
       return M.Let1(
         exp.name,
-        onExp(scope, exp.rhs),
-        onExp(newScope, exp.body),
+        moduleImportExp(scope, exp.rhs),
+        moduleImportExp(newScope, exp.body),
         exp.location,
       )
     }
 
     case "Match": {
       return M.Match(
-        exp.targets.map((target) => onExp(scope, target)),
+        exp.targets.map((target) => moduleImportExp(scope, target)),
         exp.clauses.map((clause) => {
           const boundNames = setUnionMany(
             clause.patterns.map(M.patternBoundNames),
           )
           const newScope = scopeFilterBoundNames(scope, boundNames)
           return M.MatchClause(
-            clause.patterns.map((pattern) => onExp(newScope, pattern)),
-            onExp(newScope, clause.body),
+            clause.patterns.map((pattern) =>
+              moduleImportExp(newScope, pattern),
+            ),
+            moduleImportExp(newScope, clause.body),
             clause.location,
           )
         }),
@@ -151,7 +175,7 @@ function onExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
     }
 
     default: {
-      return M.expTraverse((child) => onExp(scope, child), exp)
+      return M.expTraverse((child) => moduleImportExp(scope, child), exp)
     }
   }
 }

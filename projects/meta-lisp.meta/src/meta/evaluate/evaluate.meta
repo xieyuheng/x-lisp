@@ -61,7 +61,7 @@
        (let ((type (evaluate-type mode mod (empty-env) body)))
          (type-value type))
        (definition-value definition)))
-    ((variable-definition mod name body value is-checked location)
+    ((variable-definition mod name body is-checked location)
      (let ((type (evaluate-type mode mod (empty-env) body)))
        (type-value type)))
     ((algebraic-type-definition mod name type-constructor data-constructors is-checked location)
