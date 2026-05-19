@@ -116,15 +116,14 @@
 (define (module-import-pass project info)
   (hash-each
     (lambda (path fragment)
-      (let ((key (fragment-scope-key fragment)))
-        (if (hash-has? key (mod-info-fragment-scopes info))
-          (let ((scope (hash-get key (mod-info-fragment-scopes info))))
-            (mod-fragment-put-stmts!
-              (list-map (lambda (stmt) (on-stmt scope stmt))
-                        (mod-fragment-stmts fragment))
-              fragment))
-          (let ((msg (string-concat
-                      ["[ModuleImportPass] missing scope for: " key " (" path ")"])))
-            (error msg)))))
+      (if (hash-has? path (mod-info-fragment-scopes info))
+        (let ((scope (hash-get path (mod-info-fragment-scopes info))))
+          (mod-fragment-put-stmts!
+            (list-map (lambda (stmt) (on-stmt scope stmt))
+                      (mod-fragment-stmts fragment))
+            fragment))
+        (let ((msg (string-concat
+                    ["[ModuleImportPass] missing scope for: " path])))
+          (error msg))))
     (project-fragments project))
   void)

@@ -4,12 +4,6 @@
 (define (set-union-many sets)
   (list-fold-left set-union (make-set) sets))
 
-(claim fragment-scope-key (-> mod-fragment-t string-t))
-(define (fragment-scope-key fragment)
-  (string-concat [(symbol-to-string (mod-fragment-mod-name fragment))
-                  ":"
-                  (int-to-string (mod-fragment-serial-number fragment))]))
-
 (claim collect-defined-names (-> project-t (hash-t symbol-t (set-t symbol-t))))
 (define (collect-defined-names project)
   (let ((result (make-hash)))
@@ -148,7 +142,7 @@
     (hash-each
       (lambda (path fragment)
         (let ((scope (make-fragment-scope (make-hash) (make-hash))))
-          (hash-put! (fragment-scope-key fragment) scope scopes)
+          (hash-put! path scope scopes)
           (analysis-process-stmts project defined-names private-names
                                   (mod-fragment-mod-name fragment) scope
                                   (mod-fragment-stmts fragment))

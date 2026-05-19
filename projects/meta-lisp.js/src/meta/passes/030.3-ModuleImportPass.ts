@@ -3,12 +3,11 @@ import * as M from "../index.ts"
 
 export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
   for (const [path, fragment] of project.fragments) {
-    const key = `${fragment.modName}:${fragment.serialNumber}`
-    const scope = info.fragmentScopes.get(key)
+    const scope = info.fragmentScopes.get(path)
     if (scope) {
       fragment.stmts = fragment.stmts.map((stmt) => onStmt(scope, stmt))
     } else {
-      let message = `[ModuleImportPass] missing scope for: ${key} (${path})`
+      let message = `[ModuleImportPass] missing scope for: ${path}`
       throw new Error(message)
     }
   }

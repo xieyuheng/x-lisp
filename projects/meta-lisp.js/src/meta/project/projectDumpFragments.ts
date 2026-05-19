@@ -9,11 +9,12 @@ import { textWidth } from "../../config.ts"
 import * as M from "../index.ts"
 
 export function projectDumpFragments(project: M.Project, tag: string): void {
+  const sourceDirectory = M.projectSourceDirectory(project)
+
   for (const fragment of project.fragments.values()) {
-    const name = `${fragment.modName}.${fragment.serialNumber}`
-    const relativePath = pathRelativeToCwd(fragment.path)
+    const name = Path.relative(sourceDirectory, fragment.path)
     const stmtsCode = M.prettyFragmentStmts(textWidth, fragment.stmts)
-    const code = `;; ${relativePath}\n\n${stmtsCode}`
+    const code = `${stmtsCode}`
     const directory = Path.join(
       M.projectOutputDirectory(project),
       "dump",

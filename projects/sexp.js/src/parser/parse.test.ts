@@ -54,7 +54,10 @@ test("parse -- round brackets", () => {
     S.List(
       [
         S.Symbol("a", S.zeroLocation("[test]")),
-        S.List([S.Symbol("b", S.zeroLocation("[test]"))], S.zeroLocation("[test]")),
+        S.List(
+          [S.Symbol("b", S.zeroLocation("[test]"))],
+          S.zeroLocation("[test]"),
+        ),
         S.Symbol("c", S.zeroLocation("[test]")),
       ],
       S.zeroLocation("[test]"),
@@ -65,7 +68,10 @@ test("parse -- round brackets", () => {
 test("parse -- square brackets", () => {
   assertParse(
     "[]",
-    S.List([S.Symbol("@square-bracket", S.zeroLocation("[test]"))], S.zeroLocation("[test]")),
+    S.List(
+      [S.Symbol("@square-bracket", S.zeroLocation("[test]"))],
+      S.zeroLocation("[test]"),
+    ),
   )
   assertParse(
     "[a b c]",
@@ -84,7 +90,10 @@ test("parse -- square brackets", () => {
 test("parse -- flower brackets", () => {
   assertParse(
     "{}",
-    S.List([S.Symbol("@curly-bracket", S.zeroLocation("[test]"))], S.zeroLocation("[test]")),
+    S.List(
+      [S.Symbol("@curly-bracket", S.zeroLocation("[test]"))],
+      S.zeroLocation("[test]"),
+    ),
   )
   assertParse(
     "{:x 1 :y 2}",
@@ -105,7 +114,10 @@ test("parse -- quotes", () => {
   assertParse(
     "'a",
     S.List(
-      [S.Symbol("@quote", S.zeroLocation("[test]")), S.Symbol("a", S.zeroLocation("[test]"))],
+      [
+        S.Symbol("@quote", S.zeroLocation("[test]")),
+        S.Symbol("a", S.zeroLocation("[test]")),
+      ],
       S.zeroLocation("[test]"),
     ),
   )
@@ -114,7 +126,10 @@ test("parse -- quotes", () => {
     S.List(
       [
         S.Symbol("@quote", S.zeroLocation("[test]")),
-        S.List([S.Symbol("a", S.zeroLocation("[test]"))], S.zeroLocation("[test]")),
+        S.List(
+          [S.Symbol("a", S.zeroLocation("[test]"))],
+          S.zeroLocation("[test]"),
+        ),
       ],
       S.zeroLocation("[test]"),
     ),
@@ -124,7 +139,10 @@ test("parse -- quotes", () => {
     S.List(
       [
         S.Symbol("@quote", S.zeroLocation("[test]")),
-        S.List([S.Keyword("a", S.zeroLocation("[test]"))], S.zeroLocation("[test]")),
+        S.List(
+          [S.Keyword("a", S.zeroLocation("[test]"))],
+          S.zeroLocation("[test]"),
+        ),
       ],
       S.zeroLocation("[test]"),
     ),

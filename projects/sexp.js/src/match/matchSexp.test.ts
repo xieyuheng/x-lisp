@@ -90,7 +90,10 @@ test("matchSexp -- cons", () => {
   assertMatch("(cons head tail)", "(f x y)", {
     head: S.Symbol("f", S.zeroLocation("[test]")),
     tail: S.List(
-      [S.Symbol("x", S.zeroLocation("[test]")), S.Symbol("y", S.zeroLocation("[test]"))],
+      [
+        S.Symbol("x", S.zeroLocation("[test]")),
+        S.Symbol("y", S.zeroLocation("[test]")),
+      ],
       S.zeroLocation("[test]"),
     ),
   })
@@ -100,6 +103,9 @@ test("matchSexp -- cons*", () => {
   assertMatch("(cons* head next tail)", "(f x y)", {
     head: S.Symbol("f", S.zeroLocation("[test]")),
     next: S.Symbol("x", S.zeroLocation("[test]")),
-    tail: S.List([S.Symbol("y", S.zeroLocation("[test]"))], S.zeroLocation("[test]")),
+    tail: S.List(
+      [S.Symbol("y", S.zeroLocation("[test]"))],
+      S.zeroLocation("[test]"),
+    ),
   })
 })

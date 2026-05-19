@@ -1,25 +1,17 @@
-[meta-lisp.js] ModFragment 删除 serialNumber -- 使用 path 作为 id
+把下列任务改写成适合 AI 编程的 prompt，保存在 PROMPT-2.md 中。
 
-- dump 的时候，把 id 直接换为相对于 source directory 的 path name。
-- [meta-lisp.meta] 的 mod-fragment-t 保持同步修改
+- 每个任务一个 headline。
+- 由于每个任务我要分批作为 prompt 让 AI 执行，所以，每个 headline 下的 prompt 要保持独立。
 
-[meta-lisp.meta] 迁移 [meta-lisp.js] 下列 pass 到 [meta-lisp.meta]
-
-040-ExecutePass.ts
-050-ClaimPass.ts
-060-LowerMatchPass.ts
-070-QualifyPass.ts
-
-[meta-lisp.meta] 迁移 [meta-lisp.js] 下列 pass 到 [meta-lisp.meta]
-
-080-CheckPass.ts
-
-[meta-lisp.meta] 迁移 [meta-lisp.js] 下列 pass 到 [meta-lisp.meta]
-
-090-LocatePass.ts
-100-ShrinkPass.ts
-110-UniquifyPass.ts
-120-LiftLambdaPass.ts
-130-UnnestOperandPass.ts
-140-ExplicateControlPass.ts
-150-CodegenPass.ts
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 040-ExecutePass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 050-ClaimPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 060-LowerMatchPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 070-QualifyPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 080-CheckPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 090-LocatePass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 100-ShrinkPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 110-UniquifyPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 120-LiftLambdaPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 130-UnnestOperandPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 140-ExplicateControlPass.ts 到 [meta-lisp.meta]
+[meta-lisp.meta] 迁移 [meta-lisp.js] 中的 150-CodegenPass.ts 到 [meta-lisp.meta]

@@ -9,7 +9,7 @@ export function ModuleAnalysisPass(project: M.Project): M.ModInfo {
 
   for (const [path, fragment] of project.fragments) {
     const scope = createFragmentScope()
-    fragmentScopes.set(fragmentScopeKey(fragment), scope)
+    fragmentScopes.set(path, scope)
 
     for (const stmt of fragment.stmts) {
       executeImport(
@@ -24,10 +24,6 @@ export function ModuleAnalysisPass(project: M.Project): M.ModInfo {
   }
 
   return { definedNames, privateNames, fragmentScopes }
-}
-
-function fragmentScopeKey(fragment: M.ModFragment): string {
-  return `${fragment.modName}:${fragment.serialNumber}`
 }
 
 function createFragmentScope(): M.FragmentScope {

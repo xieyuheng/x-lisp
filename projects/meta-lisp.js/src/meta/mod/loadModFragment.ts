@@ -9,7 +9,6 @@ export function loadModFragment(path: string): M.ModFragment {
   const { modName, isErrorModule } = findModName(path, stmts)
 
   return {
-    serialNumber: 0,
     modName,
     path,
     isErrorModule,
