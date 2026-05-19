@@ -35,6 +35,11 @@ export function matcherChoice<A>(matchers: Array<Matcher<A>>): Matcher<A> {
 
 export function match<A>(matcher: Matcher<A>, sexp: S.Sexp): A {
   const result = matcher(sexp)
-  if (result === undefined) throw new Error("match fail")
-  else return result
+  if (result === undefined) {
+    let message = "[match] match fail"
+    message += `\n  sexp: ${S.formatSexp(sexp)}`
+    throw new Error(message)
+  }
+
+  return result
 }
