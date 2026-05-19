@@ -1,7 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type {
-  DataConstructor,
   DataField,
+  PreDataConstructor,
   TypeConstructor,
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -176,13 +176,13 @@ export function DefineType(
 export type DefineEnum = {
   kind: "DefineEnum"
   typeConstructor: TypeConstructor
-  dataConstructors: Array<Omit<DataConstructor, "mod" | "typeName">>
+  dataConstructors: Array<PreDataConstructor>
   location: SourceLocation
 }
 
 export function DefineEnum(
   typeConstructor: TypeConstructor,
-  dataConstructors: Array<Omit<DataConstructor, "mod" | "typeName">>,
+  dataConstructors: Array<PreDataConstructor>,
   location: SourceLocation,
 ): DefineEnum {
   return {
@@ -196,13 +196,13 @@ export function DefineEnum(
 export type DefineStructStar = {
   kind: "DefineStructStar"
   typeConstructor: TypeConstructor
-  dataConstructor: Omit<DataConstructor, "mod" | "typeName">
+  dataConstructor: PreDataConstructor
   location: SourceLocation
 }
 
 export function DefineStructStar(
   typeConstructor: TypeConstructor,
-  dataConstructor: Omit<DataConstructor, "mod" | "typeName">,
+  dataConstructor: PreDataConstructor,
   location: SourceLocation,
 ): DefineStructStar {
   return {

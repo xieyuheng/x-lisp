@@ -264,9 +264,7 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
   },
 })
 
-const parseDataConstructor = S.createRouter<
-  Omit<M.DataConstructor, "mod" | "typeName">
->({
+const parseDataConstructor = S.createRouter<M.PreDataConstructor>({
   "(cons* name fields)": ({ name, fields }, { location }) => {
     return {
       name: S.asSymbol(name).content,

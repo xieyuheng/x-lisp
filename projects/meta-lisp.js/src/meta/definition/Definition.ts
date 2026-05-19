@@ -226,6 +226,12 @@ export type TypeConstructor = {
   location: SourceLocation
 }
 
+export type PreDataConstructor = {
+  name: string
+  fields: Array<DataField>
+  location: SourceLocation
+}
+
 export type DataConstructor = {
   mod: Mod
   typeName: string
