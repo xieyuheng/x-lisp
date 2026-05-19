@@ -24,6 +24,11 @@
   - **语法参考**:`docs/zh/reference/syntax.md`
   - **内置函数索引**:`docs/zh/reference/builtin/index.md`
 
+- meta-lisp 现在暂时不支持 (let loop ...) 语法，
+  但是你可以在 body 开头用 local (define) 定义局部递归函数。
+
+- 写 meta-lisp 代码的时候，一定要注意括号的匹配。
+
 # 测试
 
 在根目录中：

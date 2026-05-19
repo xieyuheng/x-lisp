@@ -83,6 +83,12 @@
   (fields (list-t data-field-t))
   (location source-location-t))
 
+(claim data-constructor-equal? (-> data-constructor-t data-constructor-t bool-t))
+(define (data-constructor-equal? a b)
+  (and (same? (data-constructor-mod a) (data-constructor-mod b))
+       (equal? (data-constructor-type-name a) (data-constructor-type-name b))
+       (equal? (data-constructor-name a) (data-constructor-name b))))
+
 (define-struct data-field-t
   (name symbol-t)
   (type exp-t)

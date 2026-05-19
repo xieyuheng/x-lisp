@@ -1,0 +1,274 @@
+(module meta)
+
+(define-struct data-constructor-group-t
+  (data-constructor data-constructor-t)
+  (clauses (list-t match-clause-t)))
+
+;; Entry point
+
+(define (lower-match-pass project options)
+  (hash-each
+    (lambda (_name mod)
+      (let ((def-names (hash-keys (mod-definitions mod))))
+        (list-each
+          (lambda (def-name)
+            (let ((definition (hash-get def-name (mod-definitions mod))))
+              (lower-match-definition mod definition)))
+          def-names)))
+    (project-mods project))
+  (when (hash-has? 'dump options)
+    (project-dump-mods project "060-lower-match"))
+  void)
+
+(define (lower-match-definition mod definition)
+  (when (function-definition? definition)
+    (mod-put-definition! (function-definition-name definition)
+      (function-definition (function-definition-mod definition)
+        (function-definition-name definition)
+        (function-definition-parameters definition)
+        (lower-match mod (function-definition-body definition))
+        (function-definition-is-checked definition)
+        (function-definition-location definition))
+      mod))
+  (when (variable-definition? definition)
+    (mod-put-definition! (variable-definition-name definition)
+      (variable-definition (variable-definition-mod definition)
+        (variable-definition-name definition)
+        (lower-match mod (variable-definition-body definition))
+        (variable-definition-is-checked definition)
+        (variable-definition-location definition))
+      mod))
+  (when (test-definition? definition)
+    (mod-put-definition! (test-definition-name definition)
+      (test-definition (test-definition-mod definition)
+        (test-definition-name definition)
+        (lower-match mod (test-definition-body definition))
+        (test-definition-is-checked definition)
+        (test-definition-location definition))
+      mod))
+  (when (type-definition? definition)
+    (mod-put-definition! (type-definition-name definition)
+      (type-definition (type-definition-mod definition)
+        (type-definition-name definition)
+        (type-definition-parameters definition)
+        (lower-match mod (type-definition-body definition))
+        (type-definition-is-checked definition)
+        (type-definition-location definition))
+      mod))
+  void)
+
+;; Lower match expressions
+
+(define (lower-match mod exp)
+  (match exp
+    ((match-exp targets clauses location)
+     (let ((state (create-desugar-state))
+           (lowered-targets (list-map (lambda (t) (lower-match mod t)) targets))
+           (lowered-clauses (list-map (lambda (clause)
+                                        (make-match-clause
+                                          (match-clause-patterns clause)
+                                          (lower-match mod (match-clause-body clause))
+                                          (match-clause-location clause)))
+                                      clauses))
+           (default-exp (apply-exp (qualified-var-exp 'builtin 'error location)
+                                   [(literal-list-exp
+                                      [(string-exp "match mismatch" location)
+                                       (literal-list-exp targets location)]
+                                      location)]
+                                   location)))
+       (desugar state
+         (simplify-match mod lowered-targets lowered-clauses default-exp location))))
+    (else
+     (exp-traverse (lambda (child) (lower-match mod child)) exp))))
+
+;; Core simplification algorithm
+
+(define (check-clauses-length targets clauses)
+  (let ((target-len (list-length targets)))
+    (list-each
+      (lambda (clause)
+        (when (not (equal? (list-length (match-clause-patterns clause)) target-len))
+          (error (string-concat
+                   ["[simplifyMatch] targets length mismatch"
+                    "\n  targets: " (format-exps targets)]))))
+      clauses)))
+
+(define (simplify-match mod targets clauses default-exp location)
+  (check-clauses-length targets clauses)
+  (if (list-empty? clauses)
+    default-exp
+    (if (list-empty? targets)
+      (match-clause-body (list-head clauses))
+      (if (list-every? clause-head-is-var-pattern? clauses)
+        (let* ((target (list-head targets))
+               (rest-targets (list-tail targets))
+               (new-clauses (list-map
+                              (lambda (clause)
+                                (let* ((patterns (match-clause-patterns clause))
+                                       (pattern (list-head patterns))
+                                       (rest-patterns (list-tail patterns))
+                                       (name (var-pattern-name pattern)))
+                                  (make-match-clause
+                                    rest-patterns
+                                    (let1-exp name target
+                                      (match-clause-body clause)
+                                      (match-clause-location clause))
+                                    (match-clause-location clause))))
+                              clauses)))
+          (simplify-match mod rest-targets new-clauses default-exp location))
+        (if (list-every? clause-head-is-data-pattern? clauses)
+          (let* ((target (list-head targets))
+                 (rest-targets (list-tail targets))
+                 (groups (group-clauses-by-head-data-constructor mod clauses)))
+            (cond-exp
+              (list-map
+                (lambda (group)
+                  (let* ((dc (data-constructor-group-data-constructor group))
+                         (fields (data-constructor-fields dc))
+                         (mod-name (mod-name (data-constructor-mod dc)))
+                         (used-names (set-union-many
+                                       [(exp-occurred-names default-exp)
+                                        (list-fold-left
+                                          (lambda (s t) (set-union s (exp-occurred-names t)))
+                                          (make-set) targets)
+                                        (list-fold-left
+                                          (lambda (s clause)
+                                            (set-union
+                                              (list-fold-left
+                                                (lambda (s2 p) (set-union s2 (exp-occurred-names p)))
+                                                (make-set)
+                                                (match-clause-patterns clause))
+                                              (exp-occurred-names (match-clause-body clause))))
+                                          (make-set)
+                                          (data-constructor-group-clauses group))]))
+                         (fresh-names (list-map
+                                       (lambda (field)
+                                         (generate-relative-fresh-name
+                                           (data-field-name field) used-names))
+                                       fields))
+                         (fresh-vars (list-map
+                                       (lambda (n) (var-exp n location))
+                                       fresh-names))
+                         (predicate (qualified-var-exp
+                                      mod-name
+                                      (symbol-make-question (data-constructor-name dc))
+                                      location))
+                         (question (apply-exp predicate [target] location))
+                          (inner-answer (simplify-match mod
+                                          (list-append fresh-vars rest-targets)
+                                          (data-constructor-group-clauses group)
+                                          default-exp
+                                          location)))
+                    (make-cond-clause question
+                      (process-fields fields fresh-names inner-answer dc target mod-name location)
+                      location)))
+                groups)
+              location))
+          ;; Fallthrough: group by pattern kind
+          (let ((groups (group-clauses-by-head-pattern-kind clauses)))
+            (list-fold-right
+              (lambda (group accumulated)
+                (simplify-match mod targets group accumulated location))
+              default-exp
+              groups)))))))
+
+;; Field processing
+
+(define (process-fields fields fresh-vars answer dc target mod-name location)
+  (if (list-empty? fields)
+    answer
+    (let* ((field (list-head fields))
+           (rest-fields (list-tail fields))
+           (fresh-var (list-head fresh-vars))
+           (rest-fresh (list-tail fresh-vars))
+           (accessor-name (symbol-append (data-constructor-name dc) (data-field-name field)))
+           (accessor (qualified-var-exp mod-name accessor-name location)))
+      (process-fields
+        rest-fields rest-fresh
+        (let1-exp fresh-var
+          (apply-exp accessor [target] location)
+          answer
+          location)
+        dc target mod-name location))))
+
+;; Clause head checks
+
+(define (clause-head-is-var-pattern? clause)
+  (let ((patterns (match-clause-patterns clause)))
+    (if (list-empty? patterns)
+      false
+      (var-pattern? (list-head patterns)))))
+
+(define (clause-head-is-data-pattern? clause)
+  (let ((patterns (match-clause-patterns clause)))
+    (if (list-empty? patterns)
+      false
+      (data-pattern? (list-head patterns)))))
+
+;; Grouping by data constructor
+
+(define (group-clauses-by-head-data-constructor mod clauses)
+  (let* ((definition (find-algebraic-type-definition-from-clauses mod clauses))
+         (data-constructors (algebraic-type-definition-data-constructors definition)))
+    (list-map
+      (lambda (dc)
+        (make-data-constructor-group
+          dc
+          (list-select
+            (lambda (clause)
+              (let* ((patterns (match-clause-patterns clause))
+                     (pattern (list-head patterns))
+                     (clause-dc (data-pattern-data-constructor mod pattern)))
+                (data-constructor-equal? clause-dc dc)))
+            clauses)))
+      data-constructors)))
+
+(define (find-algebraic-type-definition-from-clauses mod clauses)
+  (find-algebraic-type-definition-loop mod clauses (nothing)))
+
+(define (find-algebraic-type-definition-loop mod clauses found-definition)
+  (if (list-empty? clauses)
+    (match found-definition
+      ((just def) def)
+      ((nothing) (error "[findAlgebraicTypeDefinitionFromClauses] no clauses")))
+    (let* ((clause (list-head clauses))
+           (rest (list-tail clauses))
+           (pattern (list-head (match-clause-patterns clause)))
+           (dc (data-pattern-data-constructor mod pattern))
+           (ctor-mod (data-constructor-mod dc))
+           (type-name (data-constructor-type-name dc))
+           (maybe-def (mod-lookup-definition ctor-mod type-name)))
+      (match maybe-def
+        ((just def)
+         (if (not (algebraic-type-definition? def))
+           (error "[findAlgebraicTypeDefinitionFromClauses] definition is not an algebraic type definition")
+           (match found-definition
+             ((just prev)
+              (if (same? prev def)
+                (find-algebraic-type-definition-loop mod rest found-definition)
+                (error "[findAlgebraicTypeDefinitionFromClauses] datatype definition mismatch")))
+             ((nothing)
+              (find-algebraic-type-definition-loop mod rest (just def))))))
+        ((nothing)
+         (error "[findAlgebraicTypeDefinitionFromClauses] cannot find algebraic type definition"))))))
+
+;; Grouping by pattern kind
+
+(define (group-clauses-by-head-pattern-kind clauses)
+  (if (list-empty? clauses)
+    []
+    (group-clauses-by-head-pattern-kind-loop
+      (list-head clauses) (list-tail clauses) [(list-head clauses)] [])))
+
+(define (group-clauses-by-head-pattern-kind-loop current remaining current-group groups)
+  (if (list-empty? remaining)
+    (list-append groups [(list-reverse current-group)])
+    (let* ((next (list-head remaining))
+           (rest (list-tail remaining))
+           (current-kind (if (clause-head-is-var-pattern? current) 'var 'data))
+           (next-kind (if (clause-head-is-var-pattern? next) 'var 'data)))
+      (if (equal? current-kind next-kind)
+        (group-clauses-by-head-pattern-kind-loop
+          next rest (cons next current-group) groups)
+        (group-clauses-by-head-pattern-kind-loop
+          next rest [next] (list-append groups [(list-reverse current-group)]))))))
