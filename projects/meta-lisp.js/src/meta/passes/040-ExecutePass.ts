@@ -151,7 +151,15 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
   if (stmt.kind === "DefineAlgebraicType") {
     const name = stmt.typeConstructor.name
     const typeConstructor = stmt.typeConstructor
-    const dataConstructors = stmt.dataConstructors.map(
+    const definition = M.AlgebraicTypeDefinition(
+      mod,
+      name,
+      typeConstructor,
+      [],
+      stmt.location,
+    )
+
+    definition.dataConstructors = stmt.dataConstructors.map(
       (ctor): M.DataConstructor => ({
         definition: undefined as unknown as M.AlgebraicTypeDefinition,
         name: ctor.name,
@@ -163,18 +171,6 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
         location: ctor.location,
       }),
     )
-
-    const definition = M.AlgebraicTypeDefinition(
-      mod,
-      name,
-      typeConstructor,
-      dataConstructors,
-      stmt.location,
-    )
-
-    for (const dataConstructor of dataConstructors) {
-      dataConstructor.definition = definition
-    }
 
     M.modDefine(mod, name, definition)
 
@@ -194,7 +190,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       )
     }
 
-    for (const dataConstructor of dataConstructors) {
+    for (const dataConstructor of definition.dataConstructors) {
       mod.dataConstructors.set(dataConstructor.name, dataConstructor)
     }
   }

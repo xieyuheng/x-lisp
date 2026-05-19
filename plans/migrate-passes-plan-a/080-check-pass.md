@@ -1,32 +1,27 @@
 # 080-CheckPass.ts → 080-check-pass.meta
 
 **源文件**: `projects/meta-lisp.js/src/meta/passes/080-CheckPass.ts`（64 行）
-**目标文件**: `projects/meta-lisp.meta/src/meta/passes/080-check-pass.meta`（新建）
-**作用**: 对所有 module 的 definition 做类型检查。跳过 error module，对每个 definition 调用 definitionCheck。
-**流水线集成**: 迁移完成后，编辑 `projects/meta-lisp.meta/src/meta/pipelines/check-pipeline.meta`，在 `qualify-pass` 调用后添加 `(check-pass project options)`
+**作用**: 对所有 module 的 definition 做类型检查。跳过 error module，对每个 definition 调用类型检查。
+**流水线集成**: 迁移完成后，编辑 `check-pipeline.meta`，在 `qualify-pass` 调用后添加 `(check-pass project options)`
 
-## 查阅文档
+> 通用指导见 `common.md`。
 
-- 语法形式（`match`、`define` 等）：`docs/zh/reference/syntax.md`
-- 内置函数索引：`docs/zh/reference/builtin/index.md`
-- hash 操作（`hash-each`、`hash-has?` 等）：`docs/zh/reference/builtin/hash/` 目录
-- error 处理：`docs/zh/reference/builtin/error/error.md`
-- **参考已有实现**：`projects/meta-lisp.meta/src/meta/passes/010-expand-pass.meta`
+## 重要: `definition-check` 尚未实现
 
-## 迁移规则
+JS 侧的 `CheckPass` 调用 `definitionCheck(definition)` 做类型检查，但 meta-lisp.meta 中**没有** `src/meta/check/` 目录,`definition-check` 函数**不存在**。
 
-- JS 的 `export function XxxPass(...)` → .meta 的 `(define (xxx-pass ...) ...)`，放在 `(module meta)` 声明下
-- 精确对应 JS 源码迁移，不猜测、不添加 JS 中不存在的逻辑
-- 变量/字段名使用 kebab-case
-- 定义在 `define-enum`/`define-struct` 中的数据结构会**自动生成**访问器和修改器，直接可用，无需额外 import
+迁移此 pass 时有两种处理方式:
+1. **先实现类型检查器**（在 `src/meta/check/` 下创建），再迁移此 pass
+2. **暂时跳过类型检查逻辑**，让 check-pass 仅做遍历和 dump，类型检查部分留待后续
 
 ## 迁移要点
 
 - 函数接受 `project` 和 `options`（含 `verbose`, `dump` 字段）
-- 遍历 `(project-mods project)`，跳过 error modules
-- 对每个 definition 调用 `definition-check`（已定义在 `src/meta/definition/` 下）
-- verbose 模式下打印计时信息
-- 使用 dump: 若 `(hash-has? 'dump options)` 则调用 `project-dump-mods project "080-check"`
+- 遍历 `(project-mods project)`，跳过 error modules（`mod-is-error-module`）
+- 对每个 definition 调用 `definition-check`（需先实现或跳过）
+- verbose 模式下打印计时信息（用 `log` 函数或简化为 `writeln`）
+- error module 的错误输出可先简化处理（直接 `writeln` 或不输出）
+- 使用 dump: 若 `(hash-has? 'dump options)` 则调用 `(project-dump-mods project "080-check")`
 - 返回 `void-t`
 
 ## 验证
