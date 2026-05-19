@@ -6,7 +6,7 @@ import {
 } from "../mod/define.ts"
 import { type Mod } from "../mod/index.ts"
 
-const z = zeroLocation()
+const z = zeroLocation("/builtin")
 
 export function typeBuiltin(mod: Mod) {
   definePrimitiveVariable(mod, "type-t", M.TypeType(), z)

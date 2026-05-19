@@ -1,8 +1,9 @@
+[meta-lisp.meta] mod-fragment-t 带有 path （和 [meta-lisp.js] 保持一致）
+
+- 030.1-module-inject-builtin-pass.meta -- path 来自当前的 mod-fragment 的 path （而不是 mod-name）
+
 [sexp.js] & [meta-lisp.js] zeroLocation 带有 path 参数，可以选择 path
-
-[meta-lisp.js] ModuleInjectBuiltinPass -- 使用带有 path 参数的 zeroLocation，而不是查找 (module) stmt
-[meta-lisp.meta] module-inject-builtin-pass -- 使用带有 path 参数的 zero-location，而不是查找 (module) stmt
-
+[meta-lisp.js] 现在 passes/ 中有很多 dump tag 的 pass id 与文件的 pass id 不匹配，都改为文件的 pass id
 [meta-lisp.meta] 迁移 [meta-lisp.js] 下列 pass 到 [meta-lisp.meta]
 
 040-ExecutePass.ts

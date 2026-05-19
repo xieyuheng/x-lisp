@@ -15,8 +15,8 @@ export function createSourceLocation(
   }
 }
 
-export function zeroLocation(): SourceLocation {
-  return createSourceLocation("", {
+export function zeroLocation(path: string): SourceLocation {
+  return createSourceLocation(path, {
     start: S.initPosition(),
     end: S.initPosition(),
   })
