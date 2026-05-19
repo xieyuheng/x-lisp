@@ -1,0 +1,18 @@
+(module meta)
+
+(define (claim-pass project options)
+  (pipe (project-mods project)
+    (hash-each-value
+     (lambda (mod)
+       (hash-each
+        (lambda (name entry)
+          (when (and (not (set-member? name (mod-admitted mod)))
+                     (not (hash-has? name (mod-definitions mod))))
+            (let ((exp (claim-entry-exp entry))
+                  (msg (string-concat
+                         ["undefined claimed name"
+                          "\n  module: " (symbol-to-string (mod-name mod))
+                          "\n  name: " (symbol-to-string name)])))
+              (writeln
+                (format-message-with-source-location msg (exp-location exp))))))
+         (mod-claimed mod))))))

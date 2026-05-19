@@ -1,6 +1,6 @@
 # 计划
 
-迁移 [meta-lisp.js] 的 040-ExecutePass.ts 到 [meta-lisp.meta] 的 040-execute-pass.meta
+迁移 [meta-lisp.js] 的 060-LowerMatchPass.ts 到 [meta-lisp.meta] 的 060-lower-match-pass.meta
 
 **我们首先让迁移变简单，然后做一个简单的迁移。**
 
@@ -11,6 +11,8 @@
 - 等等问题
 
 # 注意
+
+- 你只需要关注这个 pass，别的 pass 交给我们团队的其他成员了
 
 - 核心需求是保持 [meta-lisp.js] 和 [meta-lisp.meta] 这两个版本的行为一致。
 
