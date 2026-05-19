@@ -1,6 +1,6 @@
 # 140-ExplicateControlPass：迁移到 meta-lisp.meta
 
-参考 `prompts/migrate-passes/common.md` 中的通用指导（文档、类型定义、验证命令）。
+参考 `plans/migrate-passes-plan-b/common.md` 中的通用指导（文档、类型定义、验证命令）。
 
 **重要**：此 pass 引入了一个新的 IR（basic IR），在 meta-lisp 中需要定义 basic IR 的类型。
 如果 basic IR 类型尚未在 meta-lisp.meta 中定义，需要：

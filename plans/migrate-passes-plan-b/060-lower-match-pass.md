@@ -1,6 +1,6 @@
 # 060-LowerMatchPass：迁移到 meta-lisp.meta
 
-参考 `prompts/migrate-passes/common.md` 中的通用指导（文档、类型定义、验证命令）。
+参考 `plans/migrate-passes-plan-b/common.md` 中的通用指导（文档、类型定义、验证命令）。
 
 ## 任务
 

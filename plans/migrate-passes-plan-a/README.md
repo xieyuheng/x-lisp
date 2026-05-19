@@ -5,7 +5,7 @@
 ## Prompt 模板
 
 ```
-请阅读 @prompts/migrate-passes--deepseek/NNN-pass-name.md 并执行其中的任务。
+请阅读 @plans/migrate-passes-plan-a/NNN-pass-name.md 并执行其中的任务。
 ```
 
 ## 验证

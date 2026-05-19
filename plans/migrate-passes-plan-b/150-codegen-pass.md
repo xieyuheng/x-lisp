@@ -1,6 +1,6 @@
 # 150-CodegenPass：迁移到 meta-lisp.meta
 
-参考 `prompts/migrate-passes/common.md` 中的通用指导（文档、类型定义、验证命令）。
+参考 `plans/migrate-passes-plan-b/common.md` 中的通用指导（文档、类型定义、验证命令）。
 
 **重要**：此 pass 生成 stack IR，需要 stack IR 类型定义。如果 140 中已定义了 basic IR 类型，此 pass 依赖 basic IR 和 stack IR 两种类型。
 

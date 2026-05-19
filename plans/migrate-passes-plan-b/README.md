@@ -5,8 +5,8 @@
 ```
 先读以下文件，再实现：
 
-1. prompts/migrate-passes/common.md
-2. prompts/migrate-passes/040-execute-pass.md
+1. plans/migrate-passes-plan-b/common.md
+2. plans/migrate-passes-plan-b/040-execute-pass.md
 
 先读完两个文件，然后按照第二份文件的指示实现。
 ```
