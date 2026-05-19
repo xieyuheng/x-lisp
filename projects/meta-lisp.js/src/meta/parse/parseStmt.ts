@@ -265,7 +265,7 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
 })
 
 const parseDataConstructor = S.createRouter<
-  Omit<M.DataConstructor, "definition">
+  Omit<M.DataConstructor, "mod" | "typeName">
 >({
   "(cons* name fields)": ({ name, fields }, { location }) => {
     return {

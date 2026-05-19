@@ -48,7 +48,8 @@ function locateDefinition(definition: M.Definition): null {
     case "AlgebraicTypeDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields, location }) => ({
-          definition,
+          mod: definition.mod,
+          typeName: definition.name,
           name,
           fields: fields.map(({ name, type, location }) => ({
             name,

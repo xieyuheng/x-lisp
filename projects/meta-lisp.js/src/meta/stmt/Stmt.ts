@@ -176,13 +176,13 @@ export function DefineType(
 export type DefineEnum = {
   kind: "DefineEnum"
   typeConstructor: TypeConstructor
-  dataConstructors: Array<Omit<DataConstructor, "definition">>
+  dataConstructors: Array<Omit<DataConstructor, "mod" | "typeName">>
   location: SourceLocation
 }
 
 export function DefineEnum(
   typeConstructor: TypeConstructor,
-  dataConstructors: Array<Omit<DataConstructor, "definition">>,
+  dataConstructors: Array<Omit<DataConstructor, "mod" | "typeName">>,
   location: SourceLocation,
 ): DefineEnum {
   return {
@@ -196,13 +196,13 @@ export function DefineEnum(
 export type DefineStructStar = {
   kind: "DefineStructStar"
   typeConstructor: TypeConstructor
-  dataConstructor: Omit<DataConstructor, "definition">
+  dataConstructor: Omit<DataConstructor, "mod" | "typeName">
   location: SourceLocation
 }
 
 export function DefineStructStar(
   typeConstructor: TypeConstructor,
-  dataConstructor: Omit<DataConstructor, "definition">,
+  dataConstructor: Omit<DataConstructor, "mod" | "typeName">,
   location: SourceLocation,
 ): DefineStructStar {
   return {

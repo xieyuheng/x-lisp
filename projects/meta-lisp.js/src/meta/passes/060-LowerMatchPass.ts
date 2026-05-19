@@ -149,9 +149,10 @@ function simplifyMatch(
           M.Var(M.generateRelativeFreshName(field.name, usedNames), location),
         )
 
-        const definition = group.dataConstructor.definition
-
-        const path = Path.relative(Path.dirname(mod.name), definition.mod.name)
+        const path = Path.relative(
+          Path.dirname(mod.name),
+          group.dataConstructor.mod.name,
+        )
 
         const dataConstructorPredicateName = `${group.dataConstructor.name}?`
         const dataConstructorPredicate = M.modNameIsAsDefined(
@@ -263,9 +264,22 @@ function findAlgebraicTypeDefinitionFromClauses(
     assert(clause.patterns.length > 0)
     const [pattern, ...restPatterns] = clause.patterns
     const dataConstructor = M.dataPatternDataConstructor(mod, pattern)
+    const ctorDefinition = dataConstructor.mod.definitions.get(
+      dataConstructor.typeName,
+    ) as M.AlgebraicTypeDefinition | undefined
+    if (ctorDefinition === undefined) {
+      let message = `[findAlgebraicTypeDefinitionFromClauses] cannot find algebraic type definition`
+      message += `\n  constructor name: ${dataConstructor.name}`
+      message += `\n  type name: ${dataConstructor.typeName}`
+      message += `\n  module name: ${dataConstructor.mod.name}`
+      if (clause.location)
+        throw new S.ErrorWithSourceLocation(message, clause.location)
+      else throw new Error(message)
+    }
+
     if (definition === undefined) {
-      definition = dataConstructor.definition
-    } else if (dataConstructor.definition !== definition) {
+      definition = ctorDefinition
+    } else if (ctorDefinition !== definition) {
       let message = `[findAlgebraicTypeDefinitionFromClauses] datatype definition mismatch`
       message += `\n  definition name: ${definition.name}`
       if (clause.location)

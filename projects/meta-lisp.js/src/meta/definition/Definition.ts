@@ -227,19 +227,18 @@ export type TypeConstructor = {
 }
 
 export type DataConstructor = {
-  definition: AlgebraicTypeDefinition
+  mod: Mod
+  typeName: string
   name: string
   fields: Array<DataField>
   location: SourceLocation
 }
 
-// - should not use ref equal (===) compare DataConstructor.
-
 export function dataConstructorEqual(
   x: DataConstructor,
   y: DataConstructor,
 ): boolean {
-  return x.definition === y.definition && x.name === y.name
+  return x.mod === y.mod && x.typeName === y.typeName && x.name === y.name
 }
 
 export type DataField = {

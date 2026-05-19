@@ -127,7 +127,7 @@ function formatTypeConstructor(typeConstructor: M.TypeConstructor): string {
 }
 
 function formatDataConstructor(
-  ctor: Omit<M.DataConstructor, "definition">,
+  ctor: Omit<M.DataConstructor, "mod" | "typeName">,
 ): string {
   if (ctor.fields.length === 0) {
     return ctor.name
