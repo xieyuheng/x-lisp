@@ -5,4 +5,5 @@
   (desugar-pass project options)
   (module-pass project options)
   (execute-pass project options)
-  (claim-pass project options))
+  (claim-pass project options)
+  (qualify-pass project options))

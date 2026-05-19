@@ -1,4 +1,3 @@
-迁移 [meta-lisp.js] 的 070-QualifyPass.ts 到 [meta-lisp.meta] 的 070-qualify-pass.meta
 迁移 [meta-lisp.js] 的 080-CheckPass.ts 到 [meta-lisp.meta] 的 080-check-pass.meta
 迁移 [meta-lisp.js] 的 090-LocatePass.ts 到 [meta-lisp.meta] 的 090-locate-pass.meta
 迁移 [meta-lisp.js] 的 100-ShrinkPass.ts 到 [meta-lisp.meta] 的 100-shrink-pass.meta
