@@ -30,7 +30,7 @@ export function CheckPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "020-check")
+  if (options.dump) projectDumpMods(project, "080-check")
 }
 
 function withOutputToErrorModuleSnapshot<A>(

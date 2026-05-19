@@ -17,7 +17,7 @@ export function LowerMatchPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "015-lower-match")
+  if (options.dump) projectDumpMods(project, "060-lower-match")
 }
 
 function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {

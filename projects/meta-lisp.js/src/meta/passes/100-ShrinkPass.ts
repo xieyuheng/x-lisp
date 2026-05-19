@@ -11,7 +11,7 @@ export function ShrinkPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "050-shrink")
+  if (options.dump) projectDumpMods(project, "100-shrink")
 }
 
 function onDefinition(definition: M.Definition): null {

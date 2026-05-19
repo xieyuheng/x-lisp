@@ -12,7 +12,7 @@ export function UniquifyPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "060-uniquify")
+  if (options.dump) projectDumpMods(project, "110-uniquify")
 }
 
 function onDefinition(definition: M.Definition): null {

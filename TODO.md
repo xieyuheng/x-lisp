@@ -1,9 +1,8 @@
-[meta-lisp.meta] mod-fragment-t 带有 path （和 [meta-lisp.js] 保持一致）
+[meta-lisp.js] ModFragment 删除 serialNumber -- 使用 path 作为 id
 
-- 030.1-module-inject-builtin-pass.meta -- path 来自当前的 mod-fragment 的 path （而不是 mod-name）
+- dump 的时候，把 id 直接换为相对于 source directory 的 path name。
+- [meta-lisp.meta] 的 mod-fragment-t 保持同步修改
 
-[sexp.js] & [meta-lisp.js] zeroLocation 带有 path 参数，可以选择 path
-[meta-lisp.js] 现在 passes/ 中有很多 dump tag 的 pass id 与文件的 pass id 不匹配，都改为文件的 pass id
 [meta-lisp.meta] 迁移 [meta-lisp.js] 下列 pass 到 [meta-lisp.meta]
 
 040-ExecutePass.ts
