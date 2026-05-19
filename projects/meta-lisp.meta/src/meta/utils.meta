@@ -1,0 +1,5 @@
+(module meta)
+
+(claim set-union-many (-> (list-t (set-t symbol-t)) (set-t symbol-t)))
+(define (set-union-many sets)
+  (list-fold-left set-union (make-set) sets))
