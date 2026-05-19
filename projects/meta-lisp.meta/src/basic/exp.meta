@@ -1,0 +1,48 @@
+(module basic)
+
+(define-enum exp-t
+  (symbol-exp (content symbol-t) (location source-location-t))
+  (keyword-exp (content keyword-t) (location source-location-t))
+  (string-exp (content string-t) (location source-location-t))
+  (int-exp (content int-t) (location source-location-t))
+  (float-exp (content float-t) (location source-location-t))
+  (var-exp (name symbol-t) (location source-location-t))
+  (apply-exp (target exp-t) (args (list-t exp-t)) (location source-location-t)))
+
+(claim is-var? (-> exp-t bool-t))
+(define (is-var? exp)
+  (match exp
+    ((var-exp name location) true)
+    (else false)))
+
+(claim as-var (-> exp-t symbol-t))
+(define (as-var exp)
+  (match exp
+    ((var-exp name location) name)
+    (else (error "(as-var) not a var-exp"))))
+
+(claim format-exp (-> exp-t string-t))
+(define (format-exp exp)
+  (match exp
+    ((symbol-exp content location)
+     (format-sexp content))
+    ((keyword-exp content location)
+     (format-sexp content))
+    ((string-exp content location)
+     (format-sexp content))
+    ((int-exp content location)
+     (format-sexp content))
+    ((float-exp content location)
+     (format-sexp content))
+    ((var-exp name location)
+     (symbol-to-string name))
+    ((apply-exp target args location)
+     (let ((target-str (format-exp target))
+           (args-str (format-exps args)))
+       (if (equal? args-str "")
+         (string-append "(" (string-append target-str ")"))
+         (string-concat ["(" target-str " " args-str ")"]))))))
+
+(claim format-exps (-> (list-t exp-t) string-t))
+(define (format-exps exps)
+  (string-join " " (list-map format-exp exps)))

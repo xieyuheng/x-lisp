@@ -1,0 +1,6 @@
+(module basic)
+
+(define-struct block-t
+  (label symbol-t)
+  (instrs (list-t instr-t))
+  (location source-location-t))
