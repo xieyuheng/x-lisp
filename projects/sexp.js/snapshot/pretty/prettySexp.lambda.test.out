@@ -1,0 +1,74 @@
+------------------------------|30
+(lambda (f x y) (f y x))
+--------------------|20
+(lambda (f x y)
+  (f y x))
+-------------|13
+(lambda
+    (f x y)
+  (f y x))
+----------|10
+(lambda
+    (f x y)
+  (f y x))
+-----|5
+(lambda
+    (f x
+       y)
+  (f y
+     x))
+------------------------------|30
+(lambda (f x y)
+  (begin (f y x)))
+--------------------|20
+(lambda (f x y)
+  (begin (f y x)))
+-------------|13
+(lambda
+    (f x y)
+  (begin
+    (f y x)))
+----------|10
+(lambda
+    (f x y)
+  (begin
+    (f y x)))
+-----|5
+(lambda
+    (f x
+       y)
+  (begin
+    (f y
+       x)))
+------------------------------------------------------------|60
+(lambda (f list)
+  (= new-hash (@hash))
+  (pipe list
+    (list-each
+     (lambda (value)
+       (= key (f value))
+       (= group (hash-get key new-hash))
+       (if (null? group)
+         (hash-put! key [value] new-hash)
+         (list-push! value group)))))
+  new-hash)
+------------------------------|30
+(lambda (f list)
+  (= new-hash (@hash))
+  (pipe list
+    (list-each
+     (lambda (value)
+       (= key (f value))
+       (= group
+          (hash-get
+           key
+           new-hash))
+       (if (null? group)
+         (hash-put!
+          key
+          [value]
+          new-hash)
+         (list-push!
+          value
+          group)))))
+  new-hash)

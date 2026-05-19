@@ -1,0 +1,18 @@
+I found missing BracketEnd
+
+test:lambda:1:1
+ 1 | 
+   | ~
+I found missing BracketEnd
+
+test:lambda:1:1
+ 1 | 
+   | ~
+I found extra BracketEnd
+
+test:lambda:1:4
+ 1 | 
+keywork should not be used as variable
+
+test:lambda:1:2
+ 1 | 

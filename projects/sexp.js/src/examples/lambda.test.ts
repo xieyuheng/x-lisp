@@ -1,7 +1,13 @@
 import { errorReport } from "@xieyuheng/helpers.js/error"
+import { snapshot } from "@xieyuheng/helpers.js/snapshot"
 import assert from "node:assert"
+import Path from "node:path"
 import { test } from "node:test"
+import { fileURLToPath } from "node:url"
 import * as S from "../index.ts"
+
+const currentDir = Path.dirname(fileURLToPath(import.meta.url))
+const snapshotDir = Path.join(currentDir, "..", "..", "snapshot")
 
 type Exp = Var | Lambda | Apply | Let
 type Var = { kind: "Var"; name: string }
@@ -67,19 +73,21 @@ test("examples/lambda", () => {
   )
 })
 
-function assertErrorWithSourceLocation(text: string): void {
+function assertErrorWithSourceLocation(text: string): string {
   try {
     const path = "test:lambda"
     parseExp(S.parseSexp(text, { path }))
+    return ""
   } catch (error) {
-    console.log(errorReport(error))
+    return errorReport(error)
   }
 }
 
 test("examples/lambda -- parsing errors", () => {
-  assertErrorWithSourceLocation("(f x")
-  assertErrorWithSourceLocation("(f x\n(g y)")
-  assertErrorWithSourceLocation("f x)")
-
-  assertErrorWithSourceLocation("(lambda x)")
+  const errors: Array<string> = []
+  errors.push(assertErrorWithSourceLocation("(f x"))
+  errors.push(assertErrorWithSourceLocation("(f x\n(g y)"))
+  errors.push(assertErrorWithSourceLocation("f x)"))
+  errors.push(assertErrorWithSourceLocation("(lambda x)"))
+  snapshot(snapshotDir, "examples/lambda.test.out", errors.join(""))
 })

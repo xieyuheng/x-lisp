@@ -1,0 +1,33 @@
+------------------------------|30
+(@curly-bracket
+ (@curly-bracket 1 2 3)
+ (@curly-bracket 4 5 6)
+ (@curly-bracket 7 8 9))
+--------------------|20
+(@curly-bracket
+ (@curly-bracket
+  1
+  2
+  3)
+ (@curly-bracket
+  4
+  5
+  6)
+ (@curly-bracket
+  7
+  8
+  9))
+----------|10
+(@curly-bracket
+ (@curly-bracket
+  1
+  2
+  3)
+ (@curly-bracket
+  4
+  5
+  6)
+ (@curly-bracket
+  7
+  8
+  9))
