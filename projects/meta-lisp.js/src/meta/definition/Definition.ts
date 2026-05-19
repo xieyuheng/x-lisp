@@ -1,7 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
-import type { Type } from "../type/index.ts"
+import type { Value } from "../value/Value.ts"
 
 export type Definition =
   | PrimitiveFunctionDefinition
@@ -19,7 +19,7 @@ export type DefinitionState = {
   isChecked?: boolean
 }
 
-export type TypeFunction = (...args: Array<Type>) => Type
+export type TypeFunction = (...args: Array<Value>) => Value
 
 export type PrimitiveFunctionDefinition = {
   kind: "PrimitiveFunctionDefinition"
@@ -51,14 +51,14 @@ export type PrimitiveVariableDefinition = {
   kind: "PrimitiveVariableDefinition"
   mod: Mod
   name: string
-  value: Type
+  value: Value
   location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
-  value: Type,
+  value: Value,
   location: SourceLocation,
 ): PrimitiveVariableDefinition {
   return {

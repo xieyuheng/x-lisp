@@ -112,7 +112,7 @@ function definitionToValue(
     }
 
     case "PrimitiveVariableDefinition": {
-      return M.TypeValue(definition.value)
+      return definition.value
     }
 
     case "TypeDefinition": {

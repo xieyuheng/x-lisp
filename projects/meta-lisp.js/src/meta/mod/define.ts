@@ -18,7 +18,7 @@ export function definePrimitiveFunction(
 export function definePrimitiveVariable(
   mod: M.Mod,
   name: string,
-  value: M.Type,
+  value: M.Value,
   location: SourceLocation,
 ): void {
   M.modDefine(

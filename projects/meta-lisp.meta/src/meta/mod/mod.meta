@@ -19,6 +19,9 @@
 (define (make-new-mod name project)
   (make-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) project false))
 
+(define (mod-put-definition! name definition mod)
+  (hash-put! name definition (mod-definitions mod)))
+
 (claim mod-lookup-definition (-> mod-t symbol-t (maybe-t definition-t)))
 (define (mod-lookup-definition mod name)
   (let ((definitions (mod-definitions mod)))

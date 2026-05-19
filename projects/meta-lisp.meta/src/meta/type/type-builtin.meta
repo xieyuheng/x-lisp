@@ -1,0 +1,27 @@
+(module meta)
+
+(define (type-builtin mod)
+  (= z (zero-location "/builtin"))
+  (define-primitive-variable mod 'type-t (type-value (type-type)) z)
+  (define-primitive-variable mod 'int-t (type-value (atom-type 'int)) z)
+  (define-primitive-variable mod 'float-t (type-value (atom-type 'float)) z)
+  (define-primitive-variable mod 'string-t (type-value (atom-type 'string)) z)
+  (define-primitive-variable mod 'symbol-t (type-value (atom-type 'symbol)) z)
+  (define-primitive-variable mod 'keyword-t (type-value (atom-type 'keyword)) z)
+  (define-primitive-variable mod 'bool-t (type-value (atom-type 'bool)) z)
+  (define-primitive-variable mod 'void-t (type-value (atom-type 'void)) z)
+  (define-primitive-variable mod 'file-t (type-value (atom-type 'file)) z)
+  (define-primitive-function mod 'list-t 1
+    (lambda (args)
+      (type-value (list-type (type-value-type (list-first args)))))
+    z)
+  (define-primitive-function mod 'set-t 1
+    (lambda (args)
+      (type-value (set-type (type-value-type (list-first args)))))
+    z)
+  (define-primitive-function mod 'hash-t 2
+    (lambda (args)
+      (= key (list-first args))
+      (= value (list-second args))
+      (type-value (hash-type (type-value-type key) (type-value-type value))))
+    z))

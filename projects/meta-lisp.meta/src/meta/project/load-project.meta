@@ -4,7 +4,7 @@
   (= config (load-project-config config-path))
   (= root-directory (path-directory-name config-path))
   (= project (make-project root-directory config))
-  ;; (load-builtin-mod project) ;; not implemented yet
+  (load-builtin-mod project)
   (= source-directory (project-source-directory project))
   (project-load-fragments project source-directory)
   project)

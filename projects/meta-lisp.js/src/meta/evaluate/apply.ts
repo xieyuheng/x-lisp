@@ -42,16 +42,7 @@ function applyDefinition(
 ): Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
-      const fn = definition.fn as (...args: Array<M.Type>) => M.Type
-      const typeArgs = args.map((arg) => {
-        if (!M.isTypeValue(arg)) {
-          let message = `[applyDefinition] expected type argument`
-          message += `\n  kind: ${arg.kind}`
-          throw new Error(message)
-        }
-        return arg.type
-      })
-      return M.TypeValue(fn(...typeArgs))
+      return definition.fn(...args)
     }
 
     case "TypeDefinition": {
