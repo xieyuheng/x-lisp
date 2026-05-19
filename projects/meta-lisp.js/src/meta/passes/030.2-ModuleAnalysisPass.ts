@@ -88,7 +88,7 @@ function executeImport(
 function ensureModExists(
   project: M.Project,
   modName: string,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): boolean {
   for (const fragment of project.fragments.values()) {
     if (fragment.modName === modName) {

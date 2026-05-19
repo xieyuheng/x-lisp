@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
 
@@ -59,7 +60,7 @@ function onDefinition(
 
     case "FunctionDefinition": {
       const state = createState()
-      const block = B.Block("body", [])
+      const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
@@ -75,7 +76,7 @@ function onDefinition(
 
     case "TestDefinition": {
       const state = createState()
-      const block = B.Block("body", [])
+      const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
@@ -90,7 +91,7 @@ function onDefinition(
 
     case "VariableDefinition": {
       const state = createState()
-      const block = B.Block("body", [])
+      const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
@@ -98,6 +99,7 @@ function onDefinition(
           basicMod,
           definitionQualifiedName(definition),
           state.blocks,
+          definition.location,
         ),
       ]
     }
@@ -120,9 +122,10 @@ function generateLabel(
   state: State,
   name: string,
   instrs: Array<B.Instr>,
+  location: SourceLocation,
 ): string {
   const label = `${name}.${state.blocks.size}`
-  const block = B.Block(label, instrs)
+  const block = B.Block(label, instrs, location)
   addBlock(state, block)
   return label
 }
@@ -143,7 +146,11 @@ function toBasicExp(exp: M.Exp): B.Exp {
     }
 
     case "Apply": {
-      return B.Apply(toBasicExp(exp.target), exp.args.map(toBasicExp))
+      return B.Apply(
+        toBasicExp(exp.target),
+        exp.args.map(toBasicExp),
+        exp.location,
+      )
     }
 
     default: {
@@ -177,7 +184,7 @@ function inTail(state: State, exp: M.Exp): Array<B.Instr> {
     }
 
     default: {
-      return [B.Return(toBasicExp(exp))]
+      return [B.Return(toBasicExp(exp), exp.location)]
     }
   }
 }
@@ -203,17 +210,21 @@ function inLet1(
     }
 
     case "If": {
-      const letBodyLabel = generateLabel(state, "let-body", cont)
+      const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
       return inIf(
         state,
         rhs.condition,
-        inLet1(state, name, rhs.consequent, [B.Goto(letBodyLabel)]),
-        inLet1(state, name, rhs.alternative, [B.Goto(letBodyLabel)]),
+        inLet1(state, name, rhs.consequent, [
+          B.Goto(letBodyLabel, rhs.location),
+        ]),
+        inLet1(state, name, rhs.alternative, [
+          B.Goto(letBodyLabel, rhs.location),
+        ]),
       )
     }
 
     default: {
-      return [B.Assign(name, toBasicExp(rhs)), ...cont]
+      return [B.Assign(name, toBasicExp(rhs), rhs.location), ...cont]
     }
   }
 }
@@ -238,17 +249,19 @@ function inBegin1(
     }
 
     case "If": {
-      const letBodyLabel = generateLabel(state, "let-body", cont)
+      const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
       return inIf(
         state,
         head.condition,
-        inBegin1(state, head.consequent, [B.Goto(letBodyLabel)]),
-        inBegin1(state, head.alternative, [B.Goto(letBodyLabel)]),
+        inBegin1(state, head.consequent, [B.Goto(letBodyLabel, head.location)]),
+        inBegin1(state, head.alternative, [
+          B.Goto(letBodyLabel, head.location),
+        ]),
       )
     }
 
     default: {
-      return [B.Perform(toBasicExp(head)), ...cont]
+      return [B.Perform(toBasicExp(head), head.location), ...cont]
     }
   }
 }
@@ -279,14 +292,20 @@ function inIf(
     case "Var": {
       return [
         B.Test(
-          B.Apply(B.Var("builtin/equal?"), [
-            B.Var(condition.name),
-            B.Keyword("t"),
-          ]),
+          B.Apply(
+            B.Var("builtin/equal?", condition.location),
+            [
+              B.Var(condition.name, condition.location),
+              B.Keyword("t", condition.location),
+            ],
+            condition.location,
+          ),
+          condition.location,
         ),
         B.Branch(
-          generateLabel(state, "then", thenCont),
-          generateLabel(state, "else", elseCont),
+          generateLabel(state, "then", thenCont, condition.location),
+          generateLabel(state, "else", elseCont, condition.location),
+          condition.location,
         ),
       ]
     }
@@ -302,10 +321,11 @@ function inIf(
       }
 
       return [
-        B.Test(toBasicExp(condition)),
+        B.Test(toBasicExp(condition), condition.location),
         B.Branch(
-          generateLabel(state, "then", thenCont),
-          generateLabel(state, "else", elseCont),
+          generateLabel(state, "then", thenCont, condition.location),
+          generateLabel(state, "else", elseCont, condition.location),
+          condition.location,
         ),
       ]
     }
@@ -328,8 +348,18 @@ function inIf(
     }
 
     case "If": {
-      thenCont = [B.Goto(generateLabel(state, "then", thenCont))]
-      elseCont = [B.Goto(generateLabel(state, "else", elseCont))]
+      thenCont = [
+        B.Goto(
+          generateLabel(state, "then", thenCont, condition.location),
+          condition.location,
+        ),
+      ]
+      elseCont = [
+        B.Goto(
+          generateLabel(state, "else", elseCont, condition.location),
+          condition.location,
+        ),
+      ]
       return inIf(
         state,
         condition.condition,

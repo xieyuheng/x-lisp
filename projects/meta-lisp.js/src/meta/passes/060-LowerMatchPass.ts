@@ -89,7 +89,7 @@ function simplifyMatch(
   targets: Array<M.Exp>,
   clauses: Array<M.MatchClause>,
   defaultExp: M.Exp,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   for (const clause of clauses) {
     if (clause.patterns.length !== targets.length) {
@@ -161,7 +161,11 @@ function simplifyMatch(
           ? M.Var(dataConstructorPredicateName, location)
           : M.QualifiedVar(path, dataConstructorPredicateName, location)
 
-        const question = M.Apply(dataConstructorPredicate, [target])
+        const question = M.Apply(
+          dataConstructorPredicate,
+          [target],
+          target.location,
+        )
 
         let answer = simplifyMatch(
           mod,

@@ -250,6 +250,7 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
       parameters: S.asList(parameters).elements.map(
         (x) => S.asSymbol(x).content,
       ),
+      location,
     }
   },
 
@@ -258,6 +259,7 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
       definition: undefined,
       name: S.asSymbol(name).content,
       parameters: [],
+      location,
     }
   },
 })

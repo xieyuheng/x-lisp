@@ -14,11 +14,14 @@ export function ExpandPass(
 
 function getDataType(stmt: M.DefineAlgebraicType): M.Exp {
   if (stmt.typeConstructor.parameters.length === 0) {
-    return M.Var(stmt.typeConstructor.name)
+    return M.Var(stmt.typeConstructor.name, stmt.typeConstructor.location)
   } else {
     return M.Apply(
-      M.Var(stmt.typeConstructor.name),
-      stmt.typeConstructor.parameters.map((parameter) => M.Var(parameter)),
+      M.Var(stmt.typeConstructor.name, stmt.typeConstructor.location),
+      stmt.typeConstructor.parameters.map((parameter) =>
+        M.Var(parameter, stmt.typeConstructor.location),
+      ),
+      stmt.typeConstructor.location,
     )
   }
 }
@@ -27,12 +30,12 @@ function admitWithParameters(
   name: string,
   parameters: Array<string>,
   type: M.Exp,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Stmt {
   if (parameters.length === 0) {
     return M.Admit(name, type, location)
   } else {
-    return M.Admit(name, M.Polymorphic(parameters, type), location)
+    return M.Admit(name, M.Polymorphic(parameters, type, location), location)
   }
 }
 
@@ -216,7 +219,10 @@ function expandConstructor(
     M.DefineFunction(
       ctor.name,
       parameters,
-      M.LiteralList([M.Symbol(ctor.name), ...args], ctor.location),
+      M.LiteralList(
+        [M.Symbol(ctor.name, ctor.location), ...args],
+        ctor.location,
+      ),
       ctor.location,
     ),
   )
@@ -234,7 +240,11 @@ function expandPredicate(
     admitWithParameters(
       ctor.predicate,
       stmt.typeConstructor.parameters,
-      M.Arrow([getDataType(stmt)], M.Var("bool-t"), ctor.location),
+      M.Arrow(
+        [getDataType(stmt)],
+        M.Var("bool-t", ctor.location),
+        ctor.location,
+      ),
       ctor.location,
     ),
   )
@@ -243,17 +253,40 @@ function expandPredicate(
     M.DefineFunction(
       ctor.predicate,
       ["value"],
-      M.And([
-        M.Apply(M.Var("list?"), [M.Var("value")]),
-        M.Apply(M.Var("equal?"), [
-          M.Apply(M.Var("list-length"), [M.Var("value")]),
-          M.Int(BigInt(ctor.fields.length + 1)),
-        ]),
-        M.Apply(M.Var("equal?"), [
-          M.Apply(M.Var("list-head"), [M.Var("value")]),
-          M.Symbol(ctor.name),
-        ]),
-      ]),
+      M.And(
+        [
+          M.Apply(
+            M.Var("list?", ctor.location),
+            [M.Var("value", ctor.location)],
+            ctor.location,
+          ),
+          M.Apply(
+            M.Var("equal?", ctor.location),
+            [
+              M.Apply(
+                M.Var("list-length", ctor.location),
+                [M.Var("value", ctor.location)],
+                ctor.location,
+              ),
+              M.Int(BigInt(ctor.fields.length + 1), ctor.location),
+            ],
+            ctor.location,
+          ),
+          M.Apply(
+            M.Var("equal?", ctor.location),
+            [
+              M.Apply(
+                M.Var("list-head", ctor.location),
+                [M.Var("value", ctor.location)],
+                ctor.location,
+              ),
+              M.Symbol(ctor.name, ctor.location),
+            ],
+            ctor.location,
+          ),
+        ],
+        ctor.location,
+      ),
       ctor.location,
     ),
   )
@@ -284,7 +317,10 @@ function expandAccessor(
       ["target"],
       M.Apply(
         M.Var("list-get", field.location),
-        [M.Int(BigInt(index + 1)), M.Var("target", field.location)],
+        [
+          M.Int(BigInt(index + 1), field.location),
+          M.Var("target", field.location),
+        ],
         field.location,
       ),
       field.location,
@@ -322,7 +358,7 @@ function expandModifier(
       field.modifierName,
       ["value", "target"],
       M.Apply(
-        M.Var("list-put!"),
+        M.Var("list-put!", field.location),
         [
           M.Int(BigInt(index + 1), field.location),
           M.Var("value", field.location),

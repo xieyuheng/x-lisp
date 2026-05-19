@@ -207,7 +207,7 @@ function matchCons(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
       const listSexp = S.asList(sexp)
       if (listSexp.elements.length === 0) return failEffect()
       const headSexp = listSexp.elements[0]
-      const tailSexp = S.List(listSexp.elements.slice(1))
+      const tailSexp = S.List(listSexp.elements.slice(1), listSexp.location)
 
       return sequenceEffect([
         matchSexp(mode, headPattern, headSexp),
@@ -233,7 +233,10 @@ function matchConsStar(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
       const listSexp = S.asList(sexp)
       if (listSexp.elements.length < prefixCount) return failEffect()
       const sexpPrefix = listSexp.elements.slice(0, prefixCount)
-      const tailSexp = S.List(listSexp.elements.slice(prefixCount))
+      const tailSexp = S.List(
+        listSexp.elements.slice(prefixCount),
+        listSexp.location,
+      )
 
       return sequenceEffect([
         matchManySexp(mode, patternPrefix, sexpPrefix),

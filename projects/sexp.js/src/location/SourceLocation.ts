@@ -15,6 +15,13 @@ export function createSourceLocation(
   }
 }
 
+export function zeroLocation(): SourceLocation {
+  return createSourceLocation("", {
+    start: S.initPosition(),
+    end: S.initPosition(),
+  })
+}
+
 export function sourceLocationUnion(
   lhs: SourceLocation,
   rhs: SourceLocation,

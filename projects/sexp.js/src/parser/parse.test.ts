@@ -13,92 +13,177 @@ function assertParse(text: string, expected: S.Sexp): void {
 }
 
 test("parse -- symbol", () => {
-  assertParse("abc", S.Symbol("abc"))
-  assertParse("3-sphere", S.Symbol("3-sphere"))
+  assertParse("abc", S.Symbol("abc", S.zeroLocation()))
+  assertParse("3-sphere", S.Symbol("3-sphere", S.zeroLocation()))
 })
 
 test("parse -- string", () => {
-  assertParse('"abc"', S.String("abc"))
+  assertParse('"abc"', S.String("abc", S.zeroLocation()))
 })
 
 test("parse -- keyword", () => {
-  assertParse(":t", S.Keyword("t"))
-  assertParse(":f", S.Keyword("f"))
-  assertParse(":null", S.Keyword("null"))
-  assertParse(":void", S.Keyword("void"))
+  assertParse(":t", S.Keyword("t", S.zeroLocation()))
+  assertParse(":f", S.Keyword("f", S.zeroLocation()))
+  assertParse(":null", S.Keyword("null", S.zeroLocation()))
+  assertParse(":void", S.Keyword("void", S.zeroLocation()))
 })
 
 test("parse -- number", () => {
-  assertParse("1", S.Int(1n))
-  assertParse("0", S.Int(0n))
-  assertParse("-1", S.Int(-1n))
-  assertParse("0.0", S.Float(0.0))
-  assertParse("3.14", S.Float(3.14))
+  assertParse("1", S.Int(1n, S.zeroLocation()))
+  assertParse("0", S.Int(0n, S.zeroLocation()))
+  assertParse("-1", S.Int(-1n, S.zeroLocation()))
+  assertParse("0.0", S.Float(0.0, S.zeroLocation()))
+  assertParse("3.14", S.Float(3.14, S.zeroLocation()))
 })
 
 test("parse -- round brackets", () => {
-  assertParse("()", S.List([]))
-  assertParse("(a b c)", S.List([S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]))
+  assertParse("()", S.List([], S.zeroLocation()))
+  assertParse(
+    "(a b c)",
+    S.List(
+      [
+        S.Symbol("a", S.zeroLocation()),
+        S.Symbol("b", S.zeroLocation()),
+        S.Symbol("c", S.zeroLocation()),
+      ],
+      S.zeroLocation(),
+    ),
+  )
   assertParse(
     "(a (b) c)",
-    S.List([S.Symbol("a"), S.List([S.Symbol("b")]), S.Symbol("c")]),
+    S.List(
+      [
+        S.Symbol("a", S.zeroLocation()),
+        S.List([S.Symbol("b", S.zeroLocation())], S.zeroLocation()),
+        S.Symbol("c", S.zeroLocation()),
+      ],
+      S.zeroLocation(),
+    ),
   )
 })
 
 test("parse -- square brackets", () => {
-  assertParse("[]", S.List([S.Symbol("@square-bracket")]))
+  assertParse(
+    "[]",
+    S.List([S.Symbol("@square-bracket", S.zeroLocation())], S.zeroLocation()),
+  )
   assertParse(
     "[a b c]",
-    S.List([
-      S.Symbol("@square-bracket"),
-      S.Symbol("a"),
-      S.Symbol("b"),
-      S.Symbol("c"),
-    ]),
+    S.List(
+      [
+        S.Symbol("@square-bracket", S.zeroLocation()),
+        S.Symbol("a", S.zeroLocation()),
+        S.Symbol("b", S.zeroLocation()),
+        S.Symbol("c", S.zeroLocation()),
+      ],
+      S.zeroLocation(),
+    ),
   )
 })
 
 test("parse -- flower brackets", () => {
-  assertParse("{}", S.List([S.Symbol("@curly-bracket")]))
+  assertParse(
+    "{}",
+    S.List([S.Symbol("@curly-bracket", S.zeroLocation())], S.zeroLocation()),
+  )
   assertParse(
     "{:x 1 :y 2}",
-    S.List([
-      S.Symbol("@curly-bracket"),
-      S.Keyword("x"),
-      S.Int(BigInt(1)),
-      S.Keyword("y"),
-      S.Int(BigInt(2)),
-    ]),
+    S.List(
+      [
+        S.Symbol("@curly-bracket", S.zeroLocation()),
+        S.Keyword("x", S.zeroLocation()),
+        S.Int(BigInt(1), S.zeroLocation()),
+        S.Keyword("y", S.zeroLocation()),
+        S.Int(BigInt(2), S.zeroLocation()),
+      ],
+      S.zeroLocation(),
+    ),
   )
 })
 
 test("parse -- quotes", () => {
-  assertParse("'a", S.List([S.Symbol("@quote"), S.Symbol("a")]))
-  assertParse("'(a)", S.List([S.Symbol("@quote"), S.List([S.Symbol("a")])]))
-  assertParse("'(:a)", S.List([S.Symbol("@quote"), S.List([S.Keyword("a")])]))
+  assertParse(
+    "'a",
+    S.List(
+      [S.Symbol("@quote", S.zeroLocation()), S.Symbol("a", S.zeroLocation())],
+      S.zeroLocation(),
+    ),
+  )
+  assertParse(
+    "'(a)",
+    S.List(
+      [
+        S.Symbol("@quote", S.zeroLocation()),
+        S.List([S.Symbol("a", S.zeroLocation())], S.zeroLocation()),
+      ],
+      S.zeroLocation(),
+    ),
+  )
+  assertParse(
+    "'(:a)",
+    S.List(
+      [
+        S.Symbol("@quote", S.zeroLocation()),
+        S.List([S.Keyword("a", S.zeroLocation())], S.zeroLocation()),
+      ],
+      S.zeroLocation(),
+    ),
+  )
   assertParse(
     "'(a b c)",
-    S.List([
-      S.Symbol("@quote"),
-      S.List([S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]),
-    ]),
+    S.List(
+      [
+        S.Symbol("@quote", S.zeroLocation()),
+        S.List(
+          [
+            S.Symbol("a", S.zeroLocation()),
+            S.Symbol("b", S.zeroLocation()),
+            S.Symbol("c", S.zeroLocation()),
+          ],
+          S.zeroLocation(),
+        ),
+      ],
+      S.zeroLocation(),
+    ),
   )
   assertParse(
     ",(a b c)",
-    S.List([
-      S.Symbol("@unquote"),
-      S.List([S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]),
-    ]),
+    S.List(
+      [
+        S.Symbol("@unquote", S.zeroLocation()),
+        S.List(
+          [
+            S.Symbol("a", S.zeroLocation()),
+            S.Symbol("b", S.zeroLocation()),
+            S.Symbol("c", S.zeroLocation()),
+          ],
+          S.zeroLocation(),
+        ),
+      ],
+      S.zeroLocation(),
+    ),
   )
   assertParse(
     "`(a ,b c)",
-    S.List([
-      S.Symbol("@quasiquote"),
-      S.List([
-        S.Symbol("a"),
-        S.List([S.Symbol("@unquote"), S.Symbol("b")]),
-        S.Symbol("c"),
-      ]),
-    ]),
+    S.List(
+      [
+        S.Symbol("@quasiquote", S.zeroLocation()),
+        S.List(
+          [
+            S.Symbol("a", S.zeroLocation()),
+            S.List(
+              [
+                S.Symbol("@unquote", S.zeroLocation()),
+                S.Symbol("b", S.zeroLocation()),
+              ],
+              S.zeroLocation(),
+            ),
+            S.Symbol("c", S.zeroLocation()),
+          ],
+          S.zeroLocation(),
+        ),
+      ],
+      S.zeroLocation(),
+    ),
   )
 })

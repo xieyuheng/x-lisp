@@ -75,11 +75,12 @@ function onExp(state: State, exp: M.Exp): M.Exp {
       const qualifiedFunctionName = `${state.mod.name}/${newFunctionName}`
 
       if (freeNames.length == 0) {
-        return M.Var(qualifiedFunctionName)
+        return M.Var(qualifiedFunctionName, exp.location)
       } else {
         return M.Apply(
-          M.Var(qualifiedFunctionName),
-          freeNames.map((name) => M.Var(name)),
+          M.Var(qualifiedFunctionName, exp.location),
+          freeNames.map((name) => M.Var(name, exp.location)),
+          exp.location,
         )
       }
     }

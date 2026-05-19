@@ -1,19 +1,16 @@
 (module meta)
 
-(define (no-location)
-  (make-source-location
-    ""
-    (make-source-span
-      (make-source-position 0 0 0)
-      (make-source-position 0 0 0))))
-
 (define (module-inject-builtin-pass project)
   (hash-each
     (lambda (path fragment)
       (unless (equal? (mod-fragment-mod-name fragment) 'builtin)
-        (let ((stmts (mod-fragment-stmts fragment)))
+        (let* ((stmts (mod-fragment-stmts fragment))
+               (module-stmt (list-head stmts))
+               (loc (if (declare-module-stmt? module-stmt)
+                      (declare-module-stmt-location module-stmt)
+                      (declare-error-module-stmt-location module-stmt))))
           (mod-fragment-put-stmts!
-            (cons (import-all-stmt 'builtin (no-location)) stmts)
+            (cons (import-all-stmt 'builtin loc) stmts)
             fragment))))
     (project-fragments project))
   void)

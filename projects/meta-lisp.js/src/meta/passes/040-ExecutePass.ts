@@ -37,7 +37,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
   if (stmt.kind === "ClaimType") {
     mod.claimed.set(stmt.name, {
-      exp: M.QualifiedVar("builtin", "type-t"),
+      exp: M.QualifiedVar("builtin", "type-t", stmt.location),
       type: M.TypeType(),
     })
   }
@@ -116,16 +116,21 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
 
   if (stmt.kind === "DefineType") {
     if (stmt.parameters.length === 0) {
-      M.modClaim(mod, stmt.name, M.QualifiedVar("builtin", "type-t"))
+      M.modClaim(
+        mod,
+        stmt.name,
+        M.QualifiedVar("builtin", "type-t", stmt.location),
+      )
     } else {
       M.modClaim(
         mod,
         stmt.name,
         M.Arrow(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t"),
+            M.QualifiedVar("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVar("builtin", "type-t"),
+          M.QualifiedVar("builtin", "type-t", stmt.location),
+          stmt.location,
         ),
       )
     }
@@ -174,16 +179,17 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     M.modDefine(mod, name, definition)
 
     if (typeConstructor.parameters.length === 0) {
-      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t"))
+      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t", stmt.location))
     } else {
       M.modClaim(
         mod,
         name,
         M.Arrow(
           range(typeConstructor.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t"),
+            M.QualifiedVar("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVar("builtin", "type-t"),
+          M.QualifiedVar("builtin", "type-t", stmt.location),
+          stmt.location,
         ),
       )
     }

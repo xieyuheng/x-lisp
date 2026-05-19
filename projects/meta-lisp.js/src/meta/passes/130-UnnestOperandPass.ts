@@ -73,9 +73,9 @@ function prependLets(entries: Array<Entry>, exp: M.Exp): M.Exp {
 
   const [[name, rhs], ...restEntries] = entries
   if (name === null) {
-    return M.Begin1(rhs, prependLets(restEntries, exp))
+    return M.Begin1(rhs, prependLets(restEntries, exp), exp.location)
   } else {
-    return M.Let1(name, rhs, prependLets(restEntries, exp))
+    return M.Let1(name, rhs, prependLets(restEntries, exp), exp.location)
   }
 }
 

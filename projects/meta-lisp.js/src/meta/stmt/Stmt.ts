@@ -34,13 +34,13 @@ export type Import = {
   kind: "Import"
   modName: string
   names: Array<string>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function Import(
   modName: string,
   names: Array<string>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): Import {
   return {
     kind: "Import",
@@ -54,13 +54,13 @@ export type ImportAs = {
   kind: "ImportAs"
   modName: string
   prefix: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function ImportAs(
   modName: string,
   prefix: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): ImportAs {
   return {
     kind: "ImportAs",
@@ -73,12 +73,12 @@ export function ImportAs(
 export type ImportAll = {
   kind: "ImportAll"
   modName: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function ImportAll(
   modName: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): ImportAll {
   return {
     kind: "ImportAll",
@@ -92,14 +92,14 @@ export type DefineFunction = {
   name: string
   parameters: Array<string>
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineFunction(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
@@ -114,13 +114,13 @@ export type DefineVariable = {
   kind: "DefineVariable"
   name: string
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineVariable(
   name: string,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineVariable {
   return {
     kind: "DefineVariable",
@@ -134,13 +134,13 @@ export type DefineTest = {
   kind: "DefineTest"
   name: string
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineTest(
   name: string,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineTest {
   return {
     kind: "DefineTest",
@@ -155,14 +155,14 @@ export type DefineType = {
   name: string
   parameters: Array<string>
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineType(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineType {
   return {
     kind: "DefineType",
@@ -177,13 +177,13 @@ export type DefineEnum = {
   kind: "DefineEnum"
   typeConstructor: TypeConstructor
   dataConstructors: Array<Omit<DataConstructor, "definition">>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineEnum(
   typeConstructor: TypeConstructor,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineEnum {
   return {
     kind: "DefineEnum",
@@ -197,13 +197,13 @@ export type DefineStructStar = {
   kind: "DefineStructStar"
   typeConstructor: TypeConstructor
   dataConstructor: Omit<DataConstructor, "definition">
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineStructStar(
   typeConstructor: TypeConstructor,
   dataConstructor: Omit<DataConstructor, "definition">,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineStructStar {
   return {
     kind: "DefineStructStar",
@@ -217,13 +217,13 @@ export type DefineStruct = {
   kind: "DefineStruct"
   typeConstructor: TypeConstructor
   fields: Array<DataField>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineStruct(
   typeConstructor: TypeConstructor,
   fields: Array<DataField>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineStruct {
   return {
     kind: "DefineStruct",
@@ -237,13 +237,13 @@ export type DefineRecordType = {
   kind: "DefineRecordType"
   typeConstructor: TypeConstructor
   dataConstructor: AlgebraicTypeConstructor
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineRecordType(
   typeConstructor: TypeConstructor,
   dataConstructor: AlgebraicTypeConstructor,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineRecordType {
   return {
     kind: "DefineRecordType",
@@ -261,9 +261,9 @@ export type DefineOpaqueType = {
   interfaceFunctions: Array<{
     name: string
     type: Exp
-    location?: SourceLocation
+    location: SourceLocation
   }>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineOpaqueType(
@@ -273,9 +273,9 @@ export function DefineOpaqueType(
   interfaceFunctions: Array<{
     name: string
     type: Exp
-    location?: SourceLocation
+    location: SourceLocation
   }>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineOpaqueType {
   return {
     kind: "DefineOpaqueType",
@@ -292,27 +292,27 @@ export type AlgebraicTypeField = {
   type: Exp
   accessorName: string
   modifierName?: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export type AlgebraicTypeConstructor = {
   name: string
   fields: Array<AlgebraicTypeField>
   predicate: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export type DefineAlgebraicType = {
   kind: "DefineAlgebraicType"
   typeConstructor: TypeConstructor
   dataConstructors: Array<AlgebraicTypeConstructor>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DefineAlgebraicType(
   typeConstructor: TypeConstructor,
   dataConstructors: Array<AlgebraicTypeConstructor>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DefineAlgebraicType {
   return {
     kind: "DefineAlgebraicType",
@@ -326,13 +326,13 @@ export type Claim = {
   kind: "Claim"
   name: string
   type: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function Claim(
   name: string,
   type: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): Claim {
   return {
     kind: "Claim",
@@ -345,10 +345,10 @@ export function Claim(
 export type ClaimType = {
   kind: "ClaimType"
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function ClaimType(name: string, location?: SourceLocation): ClaimType {
+export function ClaimType(name: string, location: SourceLocation): ClaimType {
   return {
     kind: "ClaimType",
     name,
@@ -360,13 +360,13 @@ export type Admit = {
   kind: "Admit"
   name: string
   type: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function Admit(
   name: string,
   type: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): Admit {
   return {
     kind: "Admit",
@@ -379,13 +379,10 @@ export function Admit(
 export type Exempt = {
   kind: "Exempt"
   names: Array<string>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Exempt(
-  names: Array<string>,
-  location?: SourceLocation,
-): Exempt {
+export function Exempt(names: Array<string>, location: SourceLocation): Exempt {
   return {
     kind: "Exempt",
     names,
@@ -396,12 +393,12 @@ export function Exempt(
 export type Private = {
   kind: "Private"
   names: Array<string>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function Private(
   names: Array<string>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): Private {
   return {
     kind: "Private",
@@ -413,12 +410,12 @@ export function Private(
 export type DeclareModule = {
   kind: "DeclareModule"
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DeclareModule(
   name: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DeclareModule {
   return {
     kind: "DeclareModule",
@@ -430,12 +427,12 @@ export function DeclareModule(
 export type DeclareErrorModule = {
   kind: "DeclareErrorModule"
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DeclareErrorModule(
   name: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DeclareErrorModule {
   return {
     kind: "DeclareErrorModule",
@@ -448,13 +445,13 @@ export type DeclarePrimitiveFunction = {
   kind: "DeclarePrimitiveFunction"
   name: string
   arity: number
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DeclarePrimitiveFunction(
   name: string,
   arity: number,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DeclarePrimitiveFunction {
   return {
     kind: "DeclarePrimitiveFunction",
@@ -467,12 +464,12 @@ export function DeclarePrimitiveFunction(
 export type DeclarePrimitiveVariable = {
   kind: "DeclarePrimitiveVariable"
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function DeclarePrimitiveVariable(
   name: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): DeclarePrimitiveVariable {
   return {
     kind: "DeclarePrimitiveVariable",

@@ -14,14 +14,14 @@ export type PrimitiveFunctionDeclaration = {
   mod: Mod
   name: string
   arity: number
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function PrimitiveFunctionDeclaration(
   mod: Mod,
   name: string,
   arity: number,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): PrimitiveFunctionDeclaration {
   return {
     kind: "PrimitiveFunctionDeclaration",
@@ -36,13 +36,13 @@ export type PrimitiveVariableDeclaration = {
   kind: "PrimitiveVariableDeclaration"
   mod: Mod
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function PrimitiveVariableDeclaration(
   mod: Mod,
   name: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): PrimitiveVariableDeclaration {
   return {
     kind: "PrimitiveVariableDeclaration",
@@ -58,7 +58,7 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   blocks: Map<string, Block>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function FunctionDefinition(
@@ -66,7 +66,7 @@ export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
   blocks: Map<string, Block>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
@@ -83,14 +83,14 @@ export type VariableDefinition = {
   mod: Mod
   name: string
   blocks: Map<string, Block>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
   blocks: Map<string, Block>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
@@ -106,14 +106,14 @@ export type TestDefinition = {
   mod: Mod
   name: string
   blocks: Map<string, Block>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function TestDefinition(
   mod: Mod,
   name: string,
   blocks: Map<string, Block>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): TestDefinition {
   return {
     kind: "TestDefinition",

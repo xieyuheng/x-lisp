@@ -5,10 +5,10 @@ export type Operand = Symbol | Keyword | String | Int | Float | Var
 export type Symbol = {
   kind: "Symbol"
   content: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Symbol(content: string, location?: SourceLocation): Symbol {
+export function Symbol(content: string, location: SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -19,10 +19,10 @@ export function Symbol(content: string, location?: SourceLocation): Symbol {
 export type String = {
   kind: "String"
   content: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function String(content: string, location?: SourceLocation): String {
+export function String(content: string, location: SourceLocation): String {
   return {
     kind: "String",
     content,
@@ -33,10 +33,10 @@ export function String(content: string, location?: SourceLocation): String {
 export type Keyword = {
   kind: "Keyword"
   content: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Keyword(content: string, location?: SourceLocation): Keyword {
+export function Keyword(content: string, location: SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
@@ -47,10 +47,10 @@ export function Keyword(content: string, location?: SourceLocation): Keyword {
 export type Int = {
   kind: "Int"
   content: bigint
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Int(content: bigint, location?: SourceLocation): Int {
+export function Int(content: bigint, location: SourceLocation): Int {
   return {
     kind: "Int",
     content,
@@ -61,10 +61,10 @@ export function Int(content: bigint, location?: SourceLocation): Int {
 export type Float = {
   kind: "Float"
   content: number
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Float(content: number, location?: SourceLocation): Float {
+export function Float(content: number, location: SourceLocation): Float {
   return {
     kind: "Float",
     content,
@@ -75,10 +75,10 @@ export function Float(content: number, location?: SourceLocation): Float {
 export type Var = {
   kind: "Var"
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Var(name: string, location?: SourceLocation): Var {
+export function Var(name: string, location: SourceLocation): Var {
   return {
     kind: "Var",
     name,

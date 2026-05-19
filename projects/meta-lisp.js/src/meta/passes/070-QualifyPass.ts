@@ -63,13 +63,15 @@ function qualifyDefinition(definition: M.Definition): null {
     case "AlgebraicTypeDefinition": {
       const boundNames = new Set(definition.typeConstructor.parameters)
       definition.dataConstructors = definition.dataConstructors.map(
-        ({ name, fields }) => ({
+        ({ name, fields, location }) => ({
           definition,
           name,
-          fields: fields.map(({ name, type }) => ({
+          fields: fields.map(({ name, type, location }) => ({
             name,
             type: qualifyFreeVar(definition.mod, boundNames, type),
+            location,
           })),
+          location,
         }),
       )
 

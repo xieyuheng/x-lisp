@@ -228,7 +228,7 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
 function desugarLetStar(
   bindings: Array<M.Binding>,
   body: M.Exp,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   if (bindings.length === 0) return body
   if (bindings.length === 1) {
@@ -273,7 +273,7 @@ function desugarLetStar(
 function desugarLetrec(
   bindings: Array<M.Binding>,
   body: M.Exp,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   const usedNames = M.expFreeNames(new Set(bindings.map((b) => b.name)), body)
   for (const binding of bindings) {
@@ -365,7 +365,7 @@ function desugarLetrec(
 function desugarLetrecStar(
   bindings: Array<M.Binding>,
   body: M.Exp,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   const newRHSes = bindings.map((b) => b.rhs)
   let newBody = body
@@ -427,7 +427,7 @@ function desugarLet(
   state: State,
   bindings: Array<M.Binding>,
   body: M.Exp,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   if (bindings.length === 0) return body
   if (bindings.length === 1) {
@@ -454,7 +454,7 @@ function desugarLet(
 
 export function desugarBegin(
   sequence: Array<M.Exp>,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   if (sequence.length === 0) {
     let message = `[desugarBegin] (begin) must not be empty`
@@ -481,7 +481,7 @@ export function desugarBegin(
     return M.LetrecStar(
       bindings,
       remaining.length === 0
-        ? M.QualifiedVar("builtin", "void")
+        ? M.QualifiedVar("builtin", "void", location)
         : desugarBegin(remaining, location),
       location,
     )
@@ -509,7 +509,7 @@ function collectAdjacentDefines(sequence: Array<M.Exp>): Array<M.LocalDefine> {
 function desugarPipe(
   target: M.Exp,
   steps: Array<M.Exp>,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   let result = target
   for (const step of steps) {
@@ -525,7 +525,7 @@ function desugarPipe(
   return result
 }
 
-function desugarChain(steps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+function desugarChain(steps: Array<M.Exp>, location: S.SourceLocation): M.Exp {
   const usedNames = setUnionMany(steps.map((s) => M.expFreeNames(new Set(), s)))
   const targetName = M.generateRelativeFreshName("target", usedNames)
   const target = M.Var(targetName, location)
@@ -534,12 +534,12 @@ function desugarChain(steps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
 
 function desugarCompose(
   steps: Array<M.Exp>,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   return desugarChain(steps.toReversed(), location)
 }
 
-function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+function desugarAnd(exps: Array<M.Exp>, location: S.SourceLocation): M.Exp {
   if (exps.length === 0) return M.QualifiedVar("builtin", "true", location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
@@ -551,7 +551,7 @@ function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
   )
 }
 
-function desugarOr(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+function desugarOr(exps: Array<M.Exp>, location: S.SourceLocation): M.Exp {
   if (exps.length === 0) return M.QualifiedVar("builtin", "false", location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
@@ -565,7 +565,7 @@ function desugarOr(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
 
 function desugarCond(
   clauses: Array<M.CondClause>,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   if (clauses.length === 0)
     return M.Apply(
@@ -584,7 +584,7 @@ function desugarCond(
 
 export function desugarList(
   elements: Array<M.Exp>,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   return M.desugarBegin(
     [
@@ -606,10 +606,7 @@ export function desugarList(
   )
 }
 
-function desugarSet(
-  elements: Array<M.Exp>,
-  location?: S.SourceLocation,
-): M.Exp {
+function desugarSet(elements: Array<M.Exp>, location: S.SourceLocation): M.Exp {
   return M.desugarBegin(
     [
       M.Assign(
@@ -632,7 +629,7 @@ function desugarSet(
 
 function desugarHash(
   entries: Array<{ key: M.Exp; value: M.Exp }>,
-  location?: S.SourceLocation,
+  location: S.SourceLocation,
 ): M.Exp {
   return M.desugarBegin(
     [
@@ -654,7 +651,7 @@ function desugarHash(
   )
 }
 
-function desugarQuote(sexp: S.Sexp, location?: S.SourceLocation): M.Exp {
+function desugarQuote(sexp: S.Sexp, location: S.SourceLocation): M.Exp {
   switch (sexp.kind) {
     case "Symbol": {
       return M.Symbol(sexp.content, location)

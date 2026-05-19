@@ -27,7 +27,7 @@ export type PrimitiveFunctionDefinition = {
   name: string
   arity: number
   fn: TypeFunction
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveFunctionDefinition(
@@ -35,7 +35,7 @@ export function PrimitiveFunctionDefinition(
   name: string,
   arity: number,
   fn: TypeFunction,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): PrimitiveFunctionDefinition {
   return {
     kind: "PrimitiveFunctionDefinition",
@@ -52,14 +52,14 @@ export type PrimitiveVariableDefinition = {
   mod: Mod
   name: string
   value: Type
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
   value: Type,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): PrimitiveVariableDefinition {
   return {
     kind: "PrimitiveVariableDefinition",
@@ -75,14 +75,14 @@ export type PrimitiveFunctionDeclaration = {
   mod: Mod
   name: string
   arity: number
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveFunctionDeclaration(
   mod: Mod,
   name: string,
   arity: number,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): PrimitiveFunctionDeclaration {
   return {
     kind: "PrimitiveFunctionDeclaration",
@@ -97,13 +97,13 @@ export type PrimitiveVariableDeclaration = {
   kind: "PrimitiveVariableDeclaration"
   mod: Mod
   name: string
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDeclaration(
   mod: Mod,
   name: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): PrimitiveVariableDeclaration {
   return {
     kind: "PrimitiveVariableDeclaration",
@@ -119,7 +119,7 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function FunctionDefinition(
@@ -127,7 +127,7 @@ export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
@@ -144,14 +144,14 @@ export type VariableDefinition = {
   mod: Mod
   name: string
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
@@ -167,14 +167,14 @@ export type TestDefinition = {
   mod: Mod
   name: string
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function TestDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): TestDefinition {
   return {
     kind: "TestDefinition",
@@ -191,7 +191,7 @@ export type TypeDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function TypeDefinition(
@@ -199,7 +199,7 @@ export function TypeDefinition(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): TypeDefinition {
   return {
     kind: "TypeDefinition",
@@ -217,20 +217,20 @@ export type AlgebraicTypeDefinition = {
   name: string
   typeConstructor: TypeConstructor
   dataConstructors: Array<DataConstructor>
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export type TypeConstructor = {
   name: string
   parameters: Array<string>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export type DataConstructor = {
   definition: AlgebraicTypeDefinition
   name: string
   fields: Array<DataField>
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 // - should not use ref equal (===) compare DataConstructor.
@@ -245,13 +245,13 @@ export function dataConstructorEqual(
 export type DataField = {
   name: string
   type: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export type InterfaceEntry = {
   name: string
   type: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export type OpaqueTypeDefinition = {
@@ -261,7 +261,7 @@ export type OpaqueTypeDefinition = {
   typeConstructor: TypeConstructor
   representationType: Exp
   interfaceEntries: Array<InterfaceEntry>
-  location?: SourceLocation
+  location: SourceLocation
 } & DefinitionState
 
 export function OpaqueTypeDefinition(
@@ -270,7 +270,7 @@ export function OpaqueTypeDefinition(
   typeConstructor: TypeConstructor,
   representationType: Exp,
   interfaceEntries: Array<InterfaceEntry>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): OpaqueTypeDefinition {
   return {
     kind: "OpaqueTypeDefinition",
@@ -288,7 +288,7 @@ export function AlgebraicTypeDefinition(
   name: string,
   typeConstructor: TypeConstructor,
   dataConstructors: Array<DataConstructor>,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): AlgebraicTypeDefinition {
   return {
     kind: "AlgebraicTypeDefinition",

@@ -47,13 +47,15 @@ function locateDefinition(definition: M.Definition): null {
 
     case "AlgebraicTypeDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
-        ({ name, fields }) => ({
+        ({ name, fields, location }) => ({
           definition,
           name,
-          fields: fields.map(({ name, type }) => ({
+          fields: fields.map(({ name, type, location }) => ({
             name,
             type: locateSpecialApply(type),
+            location,
           })),
+          location,
         }),
       )
 
@@ -162,7 +164,7 @@ function targetWithLocation(exp: M.Exp): M.Exp {
 function expFromSourceLocation(location: S.SourceLocation): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("make-source-location"),
+      M.Symbol("make-source-location", location),
       M.String(location.path, location),
       expFromSpan(location.span, location),
     ],
@@ -173,7 +175,7 @@ function expFromSourceLocation(location: S.SourceLocation): M.Exp {
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("make-source-span"),
+      M.Symbol("make-source-span", location),
       expFromPosition(span.start, location),
       expFromPosition(span.end, location),
     ],
@@ -187,7 +189,7 @@ function expFromPosition(
 ): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("make-source-position"),
+      M.Symbol("make-source-position", location),
       M.Int(BigInt(position.index), location),
       M.Int(BigInt(position.row), location),
       M.Int(BigInt(position.column), location),

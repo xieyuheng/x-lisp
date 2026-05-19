@@ -13,8 +13,8 @@ export function isVarPattern(exp: M.Exp): exp is M.Var {
   return exp.kind === "Var"
 }
 
-export function createVarPattern(name: string) {
-  return M.Var(name)
+export function createVarPattern(name: string, location: S.SourceLocation) {
+  return M.Var(name, location)
 }
 
 export function varPatternName(exp: M.Exp) {
@@ -36,8 +36,9 @@ export function isDataPattern(exp: M.Exp): exp is M.Apply {
 export function createDataPattern(
   dataConstructor: M.DataConstructor,
   args: Array<M.Exp>,
+  location: S.SourceLocation,
 ): M.Exp {
-  return M.Apply(M.Var(dataConstructor.name), args)
+  return M.Apply(M.Var(dataConstructor.name, location), args, location)
 }
 
 export function dataPatternDataConstructor(

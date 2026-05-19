@@ -7,13 +7,13 @@ export type Assign = {
   kind: "Assign"
   dest: string
   exp: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function Assign(
   dest: string,
   exp: Exp,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): Assign {
   return {
     kind: "Assign",
@@ -26,10 +26,10 @@ export function Assign(
 export type Perform = {
   kind: "Perform"
   exp: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Perform(exp: Exp, location?: SourceLocation): Perform {
+export function Perform(exp: Exp, location: SourceLocation): Perform {
   return {
     kind: "Perform",
     exp,
@@ -40,10 +40,10 @@ export function Perform(exp: Exp, location?: SourceLocation): Perform {
 export type Test = {
   kind: "Test"
   exp: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Test(exp: Exp, location?: SourceLocation): Test {
+export function Test(exp: Exp, location: SourceLocation): Test {
   return {
     kind: "Test",
     exp,
@@ -55,13 +55,13 @@ export type Branch = {
   kind: "Branch"
   thenLabel: string
   elseLabel: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function Branch(
   thenLabel: string,
   elseLabel: string,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): Branch {
   return {
     kind: "Branch",
@@ -74,10 +74,10 @@ export function Branch(
 export type Goto = {
   kind: "Goto"
   label: string
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Goto(label: string, location?: SourceLocation): Goto {
+export function Goto(label: string, location: SourceLocation): Goto {
   return {
     kind: "Goto",
     label,
@@ -88,10 +88,10 @@ export function Goto(label: string, location?: SourceLocation): Goto {
 export type Return = {
   kind: "Return"
   exp: Exp
-  location?: SourceLocation
+  location: SourceLocation
 }
 
-export function Return(exp: Exp, location?: SourceLocation): Return {
+export function Return(exp: Exp, location: SourceLocation): Return {
   return {
     kind: "Return",
     exp,

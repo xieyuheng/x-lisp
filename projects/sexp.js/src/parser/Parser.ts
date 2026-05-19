@@ -78,7 +78,10 @@ export class Parser {
           )
           return {
             sexp: S.List(
-              [S.Symbol("@square-bracket"), ...S.asList(sexp).elements],
+              [
+                S.Symbol("@square-bracket", token.location),
+                ...S.asList(sexp).elements,
+              ],
               sexp.location,
             ),
             remain,
@@ -92,7 +95,10 @@ export class Parser {
           )
           return {
             sexp: S.List(
-              [S.Symbol("@curly-bracket"), ...S.asList(sexp).elements],
+              [
+                S.Symbol("@curly-bracket", token.location),
+                ...S.asList(sexp).elements,
+              ],
               sexp.location,
             ),
             remain,

@@ -1,17 +1,7 @@
-[meta-lisp.meta] sh scripts/dev.sh 修复 [path_relative] 报错
+[sexp.js] & [meta-lisp.js] zeroLocation 带有 path 参数，可以选择 path
 
-现在要修复 [meta-lisp.meta] sh scripts/dev.sh 修复 [path_relative] 报错问题
-现在的报错是：
-
-$ sh scripts/dev.sh
-[path_relative] from and to must be both absolute or both relative
-[path_relative]   from: /home/xyh/projects/xieyuheng/meta-lisp/projects/meta-lisp.meta
-[path_relative]   to:
-
-我尝试注释掉了 [meta-lisp.meta] 代码中调用 path-relative 的地方，还是会遇到 [path_relative] 报错问题
-请帮我查看一下还有可能是哪里在调用 path_relative？
-
-
+[meta-lisp.js] ModuleInjectBuiltinPass -- 使用带有 path 参数的 zeroLocation，而不是查找 (module) stmt
+[meta-lisp.meta] module-inject-builtin-pass -- 使用带有 path 参数的 zero-location，而不是查找 (module) stmt
 
 [meta-lisp.meta] 迁移 [meta-lisp.js] 下列 pass 到 [meta-lisp.meta]
 

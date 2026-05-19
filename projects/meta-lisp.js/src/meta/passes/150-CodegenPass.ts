@@ -1,3 +1,4 @@
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
 import * as Stk from "../../stack/index.ts"
@@ -15,12 +16,14 @@ export function CodegenPass(project: M.Project, basicMod: B.Mod): Stk.Mod {
 
 type State = {
   mod: B.Mod
+  location: SourceLocation
   localIndexes: Map<string, number>
 }
 
-function createState(mod: B.Mod): State {
+function createState(mod: B.Mod, location: SourceLocation): State {
   return {
     mod,
+    location,
     localIndexes: new Map(),
   }
 }
@@ -114,17 +117,24 @@ function onDefinition(
     }
 
     case "FunctionDefinition": {
-      const state = createState(mod)
+      const state = createState(mod, definition.location)
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
       const instrs = [
         ...definition.parameters
           .toReversed()
           .map((parameter) =>
-            Stk.Instr("local-store", [
-              Stk.Int(BigInt(lookupLocalIndex(state, parameter))),
-              Stk.Var(parameter),
-            ]),
+            Stk.Instr(
+              "local-store",
+              [
+                Stk.Int(
+                  BigInt(lookupLocalIndex(state, parameter)),
+                  state.location,
+                ),
+                Stk.Var(parameter, state.location),
+              ],
+              state.location,
+            ),
           ),
         ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
       ]
@@ -139,7 +149,7 @@ function onDefinition(
     }
 
     case "VariableDefinition": {
-      const state = createState(mod)
+      const state = createState(mod, definition.location)
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
       const instrs = [
@@ -151,7 +161,7 @@ function onDefinition(
     }
 
     case "TestDefinition": {
-      const state = createState(mod)
+      const state = createState(mod, definition.location)
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
       const instrs = [
@@ -164,7 +174,7 @@ function onDefinition(
 
 function onBlock(state: State, name: string, block: B.Block): Array<Stk.Instr> {
   return [
-    Stk.Instr("label", [Stk.Var(block.label)]),
+    Stk.Instr("label", [Stk.Var(block.label, state.location)], state.location),
     ...block.instrs.flatMap((instr) => onInstr(state, name, instr)),
   ]
 }
@@ -174,15 +184,25 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<Stk.Instr> {
     case "Assign": {
       return [
         ...onExp(state, name, instr.exp),
-        Stk.Instr("local-store", [
-          Stk.Int(BigInt(lookupLocalIndex(state, instr.dest))),
-          Stk.Var(instr.dest),
-        ]),
+        Stk.Instr(
+          "local-store",
+          [
+            Stk.Int(
+              BigInt(lookupLocalIndex(state, instr.dest)),
+              state.location,
+            ),
+            Stk.Var(instr.dest, state.location),
+          ],
+          state.location,
+        ),
       ]
     }
 
     case "Perform": {
-      return [...onExp(state, name, instr.exp), Stk.Instr("drop", [])]
+      return [
+        ...onExp(state, name, instr.exp),
+        Stk.Instr("drop", [], state.location),
+      ]
     }
 
     case "Test": {
@@ -191,13 +211,27 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<Stk.Instr> {
 
     case "Branch": {
       return [
-        Stk.Instr("jump-if-not", [Stk.Var(instr.elseLabel)]),
-        Stk.Instr("jump", [Stk.Var(instr.thenLabel)]),
+        Stk.Instr(
+          "jump-if-not",
+          [Stk.Var(instr.elseLabel, state.location)],
+          state.location,
+        ),
+        Stk.Instr(
+          "jump",
+          [Stk.Var(instr.thenLabel, state.location)],
+          state.location,
+        ),
       ]
     }
 
     case "Goto": {
-      return [Stk.Instr("jump", [Stk.Var(instr.label)])]
+      return [
+        Stk.Instr(
+          "jump",
+          [Stk.Var(instr.label, state.location)],
+          state.location,
+        ),
+      ]
     }
 
     case "Return": {
@@ -213,7 +247,7 @@ function onExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
     case "String":
     case "Int":
     case "Float": {
-      return [Stk.Instr("literal", [exp])]
+      return [Stk.Instr("literal", [exp], state.location)]
     }
 
     case "Var": {
@@ -233,11 +267,17 @@ function onTailExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
     case "String":
     case "Int":
     case "Float": {
-      return [Stk.Instr("literal", [exp]), Stk.Instr("return", [])]
+      return [
+        Stk.Instr("literal", [exp], state.location),
+        Stk.Instr("return", [], state.location),
+      ]
     }
 
     case "Var": {
-      return [...onVar(state, name, exp), Stk.Instr("return", [])]
+      return [
+        ...onVar(state, name, exp),
+        Stk.Instr("return", [], state.location),
+      ]
     }
 
     case "Apply": {
@@ -250,10 +290,14 @@ function onVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
   const definition = B.modLookupDefinition(state.mod, exp.name)
   if (definition === undefined) {
     return [
-      Stk.Instr("local-load", [
-        Stk.Int(BigInt(lookupLocalIndex(state, exp.name))),
-        Stk.Var(exp.name),
-      ]),
+      Stk.Instr(
+        "local-load",
+        [
+          Stk.Int(BigInt(lookupLocalIndex(state, exp.name)), state.location),
+          Stk.Var(exp.name, state.location),
+        ],
+        state.location,
+      ),
     ]
   }
 
@@ -265,12 +309,20 @@ function onVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
 
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
-      return [Stk.Instr("ref", [Stk.Var(exp.name)])]
+      return [
+        Stk.Instr("ref", [Stk.Var(exp.name, state.location)], state.location),
+      ]
     }
 
     case "PrimitiveVariableDeclaration":
     case "VariableDefinition": {
-      return [Stk.Instr("global-load", [Stk.Var(exp.name)])]
+      return [
+        Stk.Instr(
+          "global-load",
+          [Stk.Var(exp.name, state.location)],
+          state.location,
+        ),
+      ]
     }
   }
 }
@@ -299,11 +351,22 @@ function onGeneralApply(
   if (definition === undefined) {
     return [
       ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-      Stk.Instr("local-load", [
-        Stk.Int(BigInt(lookupLocalIndex(state, B.asVar(exp.target).name))),
-        Stk.Var(B.asVar(exp.target).name),
-      ]),
-      Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length))]),
+      Stk.Instr(
+        "local-load",
+        [
+          Stk.Int(
+            BigInt(lookupLocalIndex(state, B.asVar(exp.target).name)),
+            state.location,
+          ),
+          Stk.Var(B.asVar(exp.target).name, state.location),
+        ],
+        state.location,
+      ),
+      Stk.Instr(
+        applyMode,
+        [Stk.Int(BigInt(exp.args.length), state.location)],
+        state.location,
+      ),
     ]
   }
 
@@ -319,20 +382,40 @@ function onGeneralApply(
       if (exp.args.length < arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-          Stk.Instr("ref", [Stk.Var(B.asVar(exp.target).name)]),
-          Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length))]),
+          Stk.Instr(
+            "ref",
+            [Stk.Var(B.asVar(exp.target).name, state.location)],
+            state.location,
+          ),
+          Stk.Instr(
+            applyMode,
+            [Stk.Int(BigInt(exp.args.length), state.location)],
+            state.location,
+          ),
         ]
       } else if (exp.args.length === arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-          Stk.Instr(callMode, [Stk.Var(B.asVar(exp.target).name)]),
+          Stk.Instr(
+            callMode,
+            [Stk.Var(B.asVar(exp.target).name, state.location)],
+            state.location,
+          ),
         ]
       } else {
         return [
           ...exp.args.slice(0, arity).flatMap((arg) => onExp(state, name, arg)),
-          Stk.Instr("call", [Stk.Var(B.asVar(exp.target).name)]),
+          Stk.Instr(
+            "call",
+            [Stk.Var(B.asVar(exp.target).name, state.location)],
+            state.location,
+          ),
           ...exp.args.slice(arity).flatMap((arg) => onExp(state, name, arg)),
-          Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length - arity))]),
+          Stk.Instr(
+            applyMode,
+            [Stk.Int(BigInt(exp.args.length - arity), state.location)],
+            state.location,
+          ),
         ]
       }
     }
@@ -341,8 +424,16 @@ function onGeneralApply(
     case "VariableDefinition": {
       return [
         ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-        Stk.Instr("global-load", [Stk.Var(B.asVar(exp.target).name)]),
-        Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length))]),
+        Stk.Instr(
+          "global-load",
+          [Stk.Var(B.asVar(exp.target).name, state.location)],
+          state.location,
+        ),
+        Stk.Instr(
+          applyMode,
+          [Stk.Int(BigInt(exp.args.length), state.location)],
+          state.location,
+        ),
       ]
     }
   }

@@ -145,6 +145,7 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
         exp.clauses.map((clause) => ({
           question: onExp(clause.question),
           answer: onExp(clause.answer),
+          location: clause.location,
         })),
         exp.location,
       )
