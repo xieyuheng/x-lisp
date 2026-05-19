@@ -72,7 +72,14 @@
   (name symbol-t)
   (parameters (list-t symbol-t)))
 
+(define-struct pre-data-constructor-t
+  (name symbol-t)
+  (fields (list-t data-field-t))
+  (location source-location-t))
+
 (define-struct data-constructor-t
+  (mod mod-t)
+  (type-name symbol-t)
   (name symbol-t)
   (fields (list-t data-field-t))
   (location source-location-t))

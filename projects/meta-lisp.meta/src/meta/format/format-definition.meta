@@ -37,7 +37,7 @@
     ((algebraic-type-definition mod name type-constructor data-constructors is-checked location)
      (let ((tc-name (type-constructor-name type-constructor))
            (tc-params (type-constructor-parameters type-constructor))
-           (ctors-str (string-join " " (list-map format-data-constructor-old data-constructors))))
+           (ctors-str (string-join " " (list-map format-data-constructor data-constructors))))
        (if (list-empty? tc-params)
          (string-concat ["(define-enum " (symbol-to-string tc-name) " " ctors-str ")"])
          (string-concat ["(define-enum (" (symbol-to-string tc-name) " "
@@ -52,7 +52,14 @@
          (string-concat ["(define-opaque-type " tc-name " " repr-str " " ifaces-str ")"])
          (string-concat ["(define-opaque-type (" tc-name " "
                          (string-join " " (list-map symbol-to-string tc-params)) ") "
-                         repr-str " " ifaces-str ")"]))))))
+                          repr-str " " ifaces-str ")"]))))))
+
+(define (format-data-constructor data-constructor)
+  (let ((name-str (symbol-to-string (data-constructor-name data-constructor)))
+        (fields (data-constructor-fields data-constructor)))
+    (if (list-empty? fields)
+      name-str
+      (string-concat ["(" name-str " " (string-join " " (list-map format-data-field fields)) ")"]))))
 
 (define (format-definition-claim mod name)
   (let ((claimed-entry (mod-lookup-claimed-entry mod name)))

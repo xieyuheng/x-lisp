@@ -132,7 +132,7 @@
 (define (parse-define-enum-stmt elements location)
   (define-enum-stmt
     (parse-type-constructor (list-get 1 elements))
-    (list-map parse-data-constructor-old (list-drop 2 elements))
+    (list-map parse-pre-data-constructor (list-drop 2 elements))
     location))
 
 (claim parse-define-struct-stmt
@@ -152,7 +152,7 @@
 (define (parse-define-struct-star-stmt elements location)
   (define-struct-star-stmt
     (parse-type-constructor (list-get 1 elements))
-    (parse-data-constructor-old (list-get 2 elements))
+    (parse-pre-data-constructor (list-get 2 elements))
     location))
 
 (claim parse-define-algebraic-type-stmt
@@ -253,14 +253,14 @@
     ((symbol-sexp content location)
      (make-type-constructor content []))))
 
-(claim parse-data-constructor-old
+(claim parse-pre-data-constructor
   (-> sexp-t
-      data-constructor-t))
+      pre-data-constructor-t))
 
-(define (parse-data-constructor-old sexp)
+(define (parse-pre-data-constructor sexp)
   (match sexp
     ((list-sexp elements location)
-     (make-data-constructor
+     (make-pre-data-constructor
        (symbol-sexp-content (list-head elements))
        (list-map parse-data-field-old (list-drop 1 elements))
        location))))

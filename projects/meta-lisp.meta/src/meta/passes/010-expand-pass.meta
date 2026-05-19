@@ -81,9 +81,9 @@
     (define-algebraic-type-stmt
       type-constructor
       (list-map (lambda (ctor)
-                  (let* ((ctor-name (data-constructor-name ctor))
-                         (fields (data-constructor-fields ctor))
-                         (ctor-location (data-constructor-location ctor)))
+                   (let* ((ctor-name (pre-data-constructor-name ctor))
+                          (fields (pre-data-constructor-fields ctor))
+                          (ctor-location (pre-data-constructor-location ctor)))
                     (make-algebraic-type-constructor
                       ctor-name
                       (list-map (lambda (field)
@@ -114,9 +114,9 @@
                "  type name: " type-name-str "\n"]))
       void)
     (let* ((base (drop-t-suffix type-name))
-           (ctor-name (data-constructor-name data-constructor))
-           (fields (data-constructor-fields data-constructor))
-           (ctor-location (data-constructor-location data-constructor)))
+           (ctor-name (pre-data-constructor-name data-constructor))
+           (fields (pre-data-constructor-fields data-constructor))
+           (ctor-location (pre-data-constructor-location data-constructor)))
       (define-algebraic-type-stmt
         type-constructor
         [(make-algebraic-type-constructor
