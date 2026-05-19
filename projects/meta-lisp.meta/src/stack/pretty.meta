@@ -1,0 +1,14 @@
+(module stack)
+
+(claim sexp-config (-> ppml/sexp-config-t))
+(define (sexp-config)
+  (ppml/make-sexp-config
+    [(make-pair 'define-function 2)
+     (make-pair 'define-variable 1)
+     (make-pair 'define-test 1)
+     (make-pair 'declare-primitive-function 2)
+     (make-pair 'declare-primitive-variable 1)]))
+
+(claim pretty-definition (-> int-t definition-t string-t))
+(define (pretty-definition width definition)
+  (ppml/pretty-sexp-by-format format-definition (sexp-config) width definition))

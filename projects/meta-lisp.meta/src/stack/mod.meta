@@ -1,0 +1,15 @@
+(module stack)
+
+(define-struct mod-t
+  (definitions (hash-t symbol-t definition-t)))
+
+(claim create-mod (-> mod-t))
+(define (create-mod)
+  (make-mod (make-hash)))
+
+(claim mod-lookup-definition (-> mod-t symbol-t (maybe-t definition-t)))
+(define (mod-lookup-definition mod name)
+  (let ((definitions (mod-definitions mod)))
+    (if (hash-has? name definitions)
+      (just (hash-get name definitions))
+      (nothing))))
