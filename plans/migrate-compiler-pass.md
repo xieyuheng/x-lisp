@@ -1,6 +1,6 @@
 # 计划
 
-迁移 [meta-lisp.js] 的 060-LowerMatchPass.ts 到 [meta-lisp.meta] 的 060-lower-match-pass.meta
+迁移 [meta-lisp.js] 的 check/ 和 unify/ 到 [meta-lisp.meta]
 
 **我们首先让迁移变简单，然后做一个简单的迁移。**
 
@@ -12,11 +12,9 @@
 
 # 注意
 
-- 你只需要关注这个 pass，别的 pass 交给我们团队的其他成员去完成了。
-
 - 核心需求是保持 [meta-lisp.js] 和 [meta-lisp.meta] 这两个版本的行为一致。
 
-- 如果一个 pass 依赖了某个函数，你就可以迁移这个函数。
+- 如果迁移过程中依赖了某个函数，你就可以迁移这个函数。
   注意，迁移 [meta-lisp.js] 中的函数和文件时，
   要迁移到 [meta-lisp.meta] 中的对应路径下的文件。
 
