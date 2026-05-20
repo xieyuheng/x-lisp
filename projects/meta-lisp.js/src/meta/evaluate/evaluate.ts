@@ -22,9 +22,7 @@ export function evaluate(
       let message = `[evaluate] undefined variable`
       message += `\n  module name: ${mod.name}`
       message += `\n  name: ${exp.name}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "QualifiedVar": {
@@ -33,9 +31,7 @@ export function evaluate(
         let message = `[evaluate] undefined module prefix`
         message += `\n  module: ${exp.modName}`
         message += `\n  name: ${exp.name}`
-        if (exp.location)
-          throw new S.ErrorWithSourceLocation(message, exp.location)
-        else throw new Error(message)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       }
 
       const definition = M.modLookupDefinition(qualifiedMod, exp.name)
@@ -44,9 +40,7 @@ export function evaluate(
       let message = `[evaluate] undefined qualified variable`
       message += `\n  module: ${qualifiedMod.name}`
       message += `\n  name: ${exp.name}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "Arrow": {
@@ -83,9 +77,7 @@ export function evaluate(
     default: {
       let message = `[evaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }

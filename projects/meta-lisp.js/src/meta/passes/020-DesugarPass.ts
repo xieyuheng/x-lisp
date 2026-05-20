@@ -95,17 +95,13 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     case "Assign": {
       let message = `[desugar] (=) must occur in the head of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "LocalDefine": {
       let message = `[desugar] local (define) must occur in the body of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "When": {

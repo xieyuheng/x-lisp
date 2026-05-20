@@ -160,9 +160,7 @@ function toBasicExp(exp: M.Exp): B.Exp {
       let message = `[ExplicateControlPass] [toBasicExp] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }
@@ -393,9 +391,7 @@ function explicateControlInIf(
     default: {
       let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition exp`
       message += `\n  exp: ${M.formatExp(condition)}`
-      if (condition.location)
-        throw new S.ErrorWithSourceLocation(message, condition.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }
 }

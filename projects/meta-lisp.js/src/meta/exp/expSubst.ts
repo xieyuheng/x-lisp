@@ -77,9 +77,7 @@ export function expSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
 
     default: {
       let message = `[expSubst] unhandled exp kind: ${exp.kind}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }

@@ -28,21 +28,45 @@
      (set-union (exp-free-names bound-names rhs)
                 (exp-free-names new-bound-names body)))
     ((let-exp bindings body location)
-     (= lhs-names (pipe bindings (list-map binding-name) list-to-set))
-     (= new-bound-names (set-union bound-names lhs-names))
+     (= binding-names (pipe bindings (list-map binding-name) list-to-set))
+     (= new-bound-names (set-union bound-names binding-names))
      (set-union
       (set-union-many
        (pipe bindings
          (list-map binding-rhs)
          (list-map (exp-free-names bound-names))))
       (exp-free-names new-bound-names body)))
-    ;;
     ((let-star-exp bindings body location)
-     (free-names-let-star bound-names bindings body))
+     (= new-bound-names bound-names)
+     (= rhs-free-names (make-set))
+     (pipe bindings
+       (list-each
+        (lambda (binding)
+          (= free-names (exp-free-names new-bound-names (binding-rhs binding)))
+          (set-each (swap set-add! rhs-free-names) free-names)
+          (set-add! (binding-name binding) new-bound-names))))
+     (exp-free-names new-bound-names body))
     ((letrec-exp bindings body location)
-     (free-names-letrec bound-names bindings body))
+     ;; like (let) but always use new-bound-names instead of bound-names
+     (= binding-names (pipe bindings (list-map binding-name) list-to-set))
+     (= new-bound-names (set-union bound-names binding-names))
+     (set-union
+      (set-union-many
+       (pipe bindings
+         (list-map binding-rhs)
+         (list-map (exp-free-names new-bound-names))))
+      (exp-free-names new-bound-names body)))
     ((letrec-star-exp bindings body location)
-     (free-names-letrec bound-names bindings body))
+     ;; same as (letrec)
+     (= binding-names (pipe bindings (list-map binding-name) list-to-set))
+     (= new-bound-names (set-union bound-names binding-names))
+     (set-union
+      (set-union-many
+       (pipe bindings
+         (list-map binding-rhs)
+         (list-map (exp-free-names new-bound-names))))
+      (exp-free-names new-bound-names body)))
+    ;;
     ((local-define-exp name parameters body location)
      (exp-free-names (set-add name bound-names) body))
     ((apply-exp target args location)
@@ -116,24 +140,6 @@
                            (set-union s (exp-free-names (set-union bound-names clause-bound-names)
                                                         (match-clause-body clause)))))
                        target-names clauses)))))
-
-(define (free-names-let-star bound-names bindings body)
-  (if (list-empty? bindings)
-    (exp-free-names bound-names body)
-    (let* ((binding (list-head bindings))
-           (rest (list-tail bindings))
-           (name (binding-name binding))
-           (rhs-names (exp-free-names bound-names (binding-rhs binding)))
-           (rest-names (free-names-let-star (set-add name bound-names) rest body)))
-      (set-union rhs-names rest-names))))
-
-(define (free-names-letrec bound-names bindings body)
-  (let ((all-names (list-fold-left (lambda (s b) (set-add (binding-name b) s))
-                                   (make-set) bindings)))
-    (list-fold-left (lambda (s b) (set-union s (exp-free-names (set-union bound-names all-names)
-                                                               (binding-rhs b))))
-                    (exp-free-names (set-union bound-names all-names) body)
-                    bindings)))
 
 (define (free-names-begin bound-names sequence)
   (if (list-empty? sequence)

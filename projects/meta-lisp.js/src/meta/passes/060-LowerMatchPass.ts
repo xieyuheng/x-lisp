@@ -263,9 +263,7 @@ function findAlgebraicTypeDefinitionFromClauses(
       message += `\n  constructor name: ${dataConstructor.name}`
       message += `\n  type name: ${dataConstructor.typeName}`
       message += `\n  module name: ${dataConstructor.mod.name}`
-      if (clause.location)
-        throw new S.ErrorWithSourceLocation(message, clause.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, clause.location)
     }
 
     if (definition === undefined) {
@@ -273,9 +271,7 @@ function findAlgebraicTypeDefinitionFromClauses(
     } else if (ctorDefinition !== definition) {
       let message = `[findAlgebraicTypeDefinitionFromClauses] datatype definition mismatch`
       message += `\n  definition name: ${definition.name}`
-      if (clause.location)
-        throw new S.ErrorWithSourceLocation(message, clause.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, clause.location)
     }
   }
 

@@ -54,7 +54,8 @@ export function definitionCheck(definition: M.Definition): null {
     case "PrimitiveVariableDefinition": {
       const type = M.modLookupClaimedType(mod, name)
       if (!type) {
-        writeln(reportUnclaimedPrimitiveDefinition(definition))
+        const errorMessage = `unclaimed primitive definition: ${definition.name}`
+        writeln(S.sourceLocationReport(definition.location, errorMessage))
         return null
       }
 
@@ -121,7 +122,7 @@ function tryCheckExp(mod: M.Mod, ctx: M.Ctx, exp: M.Exp, type: M.Type): void {
   const effect = M.checkAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {
-    writeln(reportTypeCheckError(result.exp, result.message))
+    writeln(S.sourceLocationReport(result.exp.location, result.message))
   }
 }
 
@@ -174,7 +175,7 @@ function tryInferDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): void {
   const effect = M.infer(mod, ctx, exp)
   const result = effect(M.emptySubst())
   if (result.kind === "InferError") {
-    writeln(reportTypeCheckError(result.exp, result.message))
+    writeln(S.sourceLocationReport(result.exp.location, result.message))
   } else {
     let inferredType = M.substDeepWalk(result.subst, result.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
@@ -196,23 +197,4 @@ function findOpaqueNamesByInterfaceName(
   }
 
   return undefined
-}
-
-function reportTypeCheckError(exp: M.Exp, errorMessage: string): string {
-  if (exp.location) {
-    return S.sourceLocationReport(exp.location, errorMessage)
-  } else {
-    let message = `-- ${errorMessage}`
-    message += `\n  exp: ${M.formatExp(exp)}`
-    return message
-  }
-}
-
-function reportUnclaimedPrimitiveDefinition(definition: M.Definition): string {
-  const errorMessage = `unclaimed primitive definition: ${definition.name}`
-  if (definition.location) {
-    return S.sourceLocationReport(definition.location, errorMessage)
-  } else {
-    return `${definition.mod.name} -- ${errorMessage}`
-  }
 }

@@ -41,9 +41,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           let message = `undefined module prefix`
           message += `\n  module: ${exp.modName}`
           message += `\n  name: ${exp.name}`
-          if (exp.location)
-            throw new S.ErrorWithSourceLocation(message, exp.location)
-          else throw new Error(message)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
         }
         return inferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
       }

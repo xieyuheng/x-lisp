@@ -53,9 +53,7 @@ export function dataPatternDataConstructor(
     if (!dataConstructor) {
       let message = `[dataPatternDataConstructor] undefined target name`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     return dataConstructor
@@ -71,9 +69,7 @@ export function dataPatternDataConstructor(
     if (!dataConstructor) {
       let message = `[dataPatternDataConstructor] undefined target name`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      else throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     return dataConstructor

@@ -155,16 +155,12 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
 
     case "LocalDefine": {
       let message = `[expNaiveSubst] local (define) can only appear in (begin)`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "Assign": {
       let message = `[expNaiveSubst] (=) can only appear in (begin)`
-      if (exp.location)
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "Apply": {

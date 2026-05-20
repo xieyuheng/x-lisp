@@ -46,9 +46,7 @@ export function modDefine(
   if (mod.definitions.has(name)) {
     let message = `[modDefine] name already defined`
     message += `\n  name: ${name}`
-    if (definition.location)
-      throw new S.ErrorWithSourceLocation(message, definition.location)
-    else throw new Error(message)
+    throw new S.ErrorWithSourceLocation(message, definition.location)
   }
 
   mod.definitions.set(name, definition)
