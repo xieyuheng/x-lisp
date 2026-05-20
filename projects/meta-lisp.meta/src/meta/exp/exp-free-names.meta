@@ -24,14 +24,16 @@
      (= new-bound-names (set-add name bound-names))
      (set-union (exp-free-names bound-names rhs)
                 (exp-free-names new-bound-names body)))
-    ;;
     ((let-exp bindings body location)
-     (let ((all-names (list-fold-left (lambda (s b) (set-add (binding-name b) s))
-                                      (make-set) bindings)))
-       (list-fold-left (lambda (s b)
-                         (set-union s (exp-free-names bound-names (binding-rhs b))))
-                       (exp-free-names (set-union bound-names all-names) body)
-                       bindings)))
+     (= all-names (list-map binding-name bindings))
+     (= new-bound-names (set-union bound-names (list-to-set all-names)))
+     (set-union
+      (set-union-many
+       (pipe bindings
+         (list-map binding-rhs)
+         (list-map (exp-free-names bound-names))))
+      (exp-free-names new-bound-names body)))
+    ;;    
     ((let-star-exp bindings body location)
      (free-names-let-star bound-names bindings body))
     ((letrec-exp bindings body location)

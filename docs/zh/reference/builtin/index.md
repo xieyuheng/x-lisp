@@ -35,9 +35,9 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 对所有类型适用的通用操作。
 
-- [`atom?`](value/atom?.md) — 判断是否为原子值
-- [`same?`](value/same?.md) — 引用相等判断
-- [`equal?`](value/equal?.md) — 结构相等判断
+- [`atom?`](value/atom-p.md) — 判断是否为原子值
+- [`same?`](value/same-p.md) — 引用相等判断
+- [`equal?`](value/equal-p.md) — 结构相等判断
 - [`format`](value/format.md) — 任意值格式化为字符串
 - [`hash-code`](value/hash-code.md) — 计算哈希码
 - [`total-compare`](value/total-compare.md) — 全序比较
@@ -46,7 +46,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 布尔类型 `bool-t` 上的操作。
 
-- [`bool?`](bool/bool?.md) — 判断是否为布尔值
+- [`bool?`](bool/bool-p.md) — 判断是否为布尔值
 - [`not`](bool/not.md) — 逻辑非
 
 ## 整数
@@ -55,7 +55,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 类型判断
 
-- [`int?`](int/int?.md) — 判断是否为整数
+- [`int?`](int/int-p.md) — 判断是否为整数
 
 ### 算术运算
 
@@ -68,16 +68,16 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 谓词
 
-- [`int-positive?`](int/int-positive?.md) — 是否为正数
-- [`int-non-negative?`](int/int-non-negative?.md) — 是否为非负数
-- [`int-non-zero?`](int/int-non-zero?.md) — 是否非零
+- [`int-positive?`](int/int-positive-p.md) — 是否为正数
+- [`int-non-negative?`](int/int-non-negative-p.md) — 是否为非负数
+- [`int-non-zero?`](int/int-non-zero-p.md) — 是否非零
 
 ### 比较
 
-- [`int-less?`](int/int-less?.md) — 小于
-- [`int-greater?`](int/int-greater?.md) — 大于
-- [`int-less-or-equal?`](int/int-less-or-equal?.md) — 小于等于
-- [`int-greater-or-equal?`](int/int-greater-or-equal?.md) — 大于等于
+- [`int-less?`](int/int-less-p.md) — 小于
+- [`int-greater?`](int/int-greater-p.md) — 大于
+- [`int-less-or-equal?`](int/int-less-or-equal-p.md) — 小于等于
+- [`int-greater-or-equal?`](int/int-greater-or-equal-p.md) — 大于等于
 - [`int-compare-ascending`](int/int-compare-ascending.md) — 升序比较函数
 - [`int-compare-descending`](int/int-compare-descending.md) — 降序比较函数
 
@@ -98,7 +98,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 类型判断
 
-- [`float?`](float/float?.md) — 判断是否为浮点数
+- [`float?`](float/float-p.md) — 判断是否为浮点数
 
 ### 算术运算
 
@@ -111,16 +111,16 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 谓词
 
-- [`float-positive?`](float/float-positive?.md) — 是否为正数
-- [`float-non-negative?`](float/float-non-negative?.md) — 是否为非负数
-- [`float-non-zero?`](float/float-non-zero?.md) — 是否非零
+- [`float-positive?`](float/float-positive-p.md) — 是否为正数
+- [`float-non-negative?`](float/float-non-negative-p.md) — 是否为非负数
+- [`float-non-zero?`](float/float-non-zero-p.md) — 是否非零
 
 ### 比较
 
-- [`float-less?`](float/float-less?.md) — 小于
-- [`float-greater?`](float/float-greater?.md) — 大于
-- [`float-less-or-equal?`](float/float-less-or-equal?.md) — 小于等于
-- [`float-greater-or-equal?`](float/float-greater-or-equal?.md) — 大于等于
+- [`float-less?`](float/float-less-p.md) — 小于
+- [`float-greater?`](float/float-greater-p.md) — 大于
+- [`float-less-or-equal?`](float/float-less-or-equal-p.md) — 小于等于
+- [`float-greater-or-equal?`](float/float-greater-or-equal-p.md) — 大于等于
 - [`float-compare-ascending`](float/float-compare-ascending.md) — 升序比较函数
 - [`float-compare-descending`](float/float-compare-descending.md) — 降序比较函数
 
@@ -140,15 +140,15 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 类型判断
 
-- [`string?`](string/string?.md) — 判断是否为字符串
-- [`string-int?`](string/string-int?.md) — 是否为整数格式
-- [`string-float?`](string/string-float?.md) — 是否为浮点数格式
+- [`string?`](string/string-p.md) — 判断是否为字符串
+- [`string-int?`](string/string-int-p.md) — 是否为整数格式
+- [`string-float?`](string/string-float-p.md) — 是否为浮点数格式
 
 ### 基本操作
 
 - [`string-length`](string/string-length.md) — 长度
-- [`string-empty?`](string/string-empty?.md) — 是否为空串
-- [`string-blank?`](string/string-blank?.md) — 是否为空白串
+- [`string-empty?`](string/string-empty-p.md) — 是否为空串
+- [`string-blank?`](string/string-blank-p.md) — 是否为空白串
 
 ### 拼接与分割
 
@@ -160,9 +160,9 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 查找与替换
 
-- [`string-starts-with?`](string/string-starts-with?.md) — 是否以某串开头
-- [`string-ends-with?`](string/string-ends-with?.md) — 是否以某串结尾
-- [`string-contains?`](string/string-contains?.md) — 是否包含子串
+- [`string-starts-with?`](string/string-starts-with-p.md) — 是否以某串开头
+- [`string-ends-with?`](string/string-ends-with-p.md) — 是否以某串结尾
+- [`string-contains?`](string/string-contains-p.md) — 是否包含子串
 - [`string-find-index`](string/string-find-index.md) — 查找子串位置
 - [`string-replace`](string/string-replace.md) — 替换子串
 
@@ -200,7 +200,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 符号类型 `symbol-t` 上的操作。
 
-- [`symbol?`](symbol/symbol?.md) — 判断是否为符号
+- [`symbol?`](symbol/symbol-p.md) — 判断是否为符号
 - [`symbol-length`](symbol/symbol-length.md) — 符号名的长度
 - [`symbol-append`](symbol/symbol-append.md) — 拼接两个符号
 - [`symbol-concat`](symbol/symbol-concat.md) — 拼接符号列表
@@ -210,7 +210,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 关键字类型 `keyword-t` 上的操作。
 
-- [`keyword?`](keyword/keyword?.md) — 判断是否为关键字
+- [`keyword?`](keyword/keyword-p.md) — 判断是否为关键字
 - [`keyword-length`](keyword/keyword-length.md) — 关键字名的长度
 - [`keyword-append`](keyword/keyword-append.md) — 拼接两个关键字
 - [`keyword-concat`](keyword/keyword-concat.md) — 拼接关键字列表
@@ -218,7 +218,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ## void
 
-- [`void?`](void/void?.md) — 判断是否为 void 值
+- [`void?`](void/void-p.md) — 判断是否为 void 值
 
 ## 列表
 
@@ -228,7 +228,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`list-t`](list/list-t.md) — 列表类型构造器
 - [`make-list`](list/make-list.md) — 创建空列表
-- [`list?`](list/list?.md) — 判断是否为列表
+- [`list?`](list/list-p.md) — 判断是否为列表
 - [`cons`](list/cons.md) — 在头部添加元素
 
 ### 访问
@@ -247,19 +247,19 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 信息
 
 - [`list-length`](list/list-length.md) — 列表长度
-- [`list-empty?`](list/list-empty?.md) — 是否为空列表
-- [`list-member?`](list/list-member?.md) — 是否包含某元素
+- [`list-empty?`](list/list-empty-p.md) — 是否为空列表
+- [`list-member?`](list/list-member-p.md) — 是否包含某元素
 
 ### 修改
 
 - [`list-copy`](list/list-copy.md) — 复制列表
 - [`list-put`](list/list-put.md) — 按索引替换元素（不可变）
-- [`list-put!`](list/list-put!.md) — 按索引替换元素（可变）
+- [`list-put!`](list/list-put-mut.md) — 按索引替换元素（可变）
 - [`list-push`](list/list-push.md) — 尾部追加（不可变）
-- [`list-push!`](list/list-push!.md) — 尾部追加（可变）
-- [`list-push-front!`](list/list-push-front!.md) — 头部添加（可变）
-- [`list-pop!`](list/list-pop!.md) — 弹出尾部元素（可变）
-- [`list-pop-front!`](list/list-pop-front!.md) — 弹出头部元素（可变）
+- [`list-push!`](list/list-push-mut.md) — 尾部追加（可变）
+- [`list-push-front!`](list/list-push-front-mut.md) — 头部添加（可变）
+- [`list-pop!`](list/list-pop-mut.md) — 弹出尾部元素（可变）
+- [`list-pop-front!`](list/list-pop-front-mut.md) — 弹出头部元素（可变）
 
 ### 变换
 
@@ -284,8 +284,8 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 量化
 
-- [`list-every?`](list/list-every?.md) — 所有元素满足条件
-- [`list-some?`](list/list-some?.md) — 存在元素满足条件
+- [`list-every?`](list/list-every-p.md) — 所有元素满足条件
+- [`list-some?`](list/list-some-p.md) — 存在元素满足条件
 
 ### 子列表
 
@@ -312,31 +312,31 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 信息
 
 - [`set-size`](set/set-size.md) — 大小
-- [`set-empty?`](set/set-empty?.md) — 是否为空集
-- [`set-member?`](set/set-member?.md) — 是否包含某元素
-- [`set-subset?`](set/set-subset?.md) — 是否为子集
+- [`set-empty?`](set/set-empty-p.md) — 是否为空集
+- [`set-member?`](set/set-member-p.md) — 是否包含某元素
+- [`set-subset?`](set/set-subset-p.md) — 是否为子集
 
 ### 修改
 
 - [`set-copy`](set/set-copy.md) — 复制集合
 - [`set-add`](set/set-add.md) — 添加元素（不可变）
-- [`set-add!`](set/set-add!.md) — 添加元素（可变）
+- [`set-add!`](set/set-add-mut.md) — 添加元素（可变）
 - [`set-delete`](set/set-delete.md) — 删除元素（不可变）
-- [`set-delete!`](set/set-delete!.md) — 删除元素（可变）
-- [`set-clear!`](set/set-clear!.md) — 清空集合（可变）
+- [`set-delete!`](set/set-delete-mut.md) — 删除元素（可变）
+- [`set-clear!`](set/set-clear-mut.md) — 清空集合（可变）
 
 ### 集合运算
 
 - [`set-union`](set/set-union.md) — 并集
 - [`set-inter`](set/set-inter.md) — 交集
 - [`set-difference`](set/set-difference.md) — 差集
-- [`set-disjoint?`](set/set-disjoint?.md) — 是否不相交
+- [`set-disjoint?`](set/set-disjoint-p.md) — 是否不相交
 
 ### 遍历与变换
 
 - [`set-each`](set/set-each.md) — 遍历执行副作用
-- [`set-every?`](set/set-every?.md) — 所有元素满足条件
-- [`set-some?`](set/set-some?.md) — 存在元素满足条件
+- [`set-every?`](set/set-every-p.md) — 所有元素满足条件
+- [`set-some?`](set/set-some-p.md) — 存在元素满足条件
 - [`set-map`](set/set-map.md) — 映射
 - [`set-select`](set/set-select.md) — 筛选
 - [`set-reject`](set/set-reject.md) — 反筛选
@@ -358,9 +358,9 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 信息
 
-- [`hash-empty?`](hash/hash-empty?.md) — 是否为空
+- [`hash-empty?`](hash/hash-empty-p.md) — 是否为空
 - [`hash-length`](hash/hash-length.md) — 条目数
-- [`hash-has?`](hash/hash-has?.md) — 是否包含某键
+- [`hash-has?`](hash/hash-has-p.md) — 是否包含某键
 
 ### 访问
 
@@ -376,10 +376,10 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 修改
 
 - [`hash-put`](hash/hash-put.md) — 添加键值对（不可变）
-- [`hash-put!`](hash/hash-put!.md) — 添加键值对（可变）
+- [`hash-put!`](hash/hash-put-mut.md) — 添加键值对（可变）
 - [`hash-put-entries`](hash/hash-put-entries.md) — 批量放入条目（不可变）
-- [`hash-put-entries!`](hash/hash-put-entries!.md) — 批量放入条目（可变）
-- [`hash-delete!`](hash/hash-delete!.md) — 按键删除（可变）
+- [`hash-put-entries!`](hash/hash-put-entries-mut.md) — 批量放入条目（可变）
+- [`hash-delete!`](hash/hash-delete-mut.md) — 按键删除（可变）
 - [`hash-copy`](hash/hash-copy.md) — 复制哈希表
 
 ### 遍历
@@ -417,11 +417,11 @@ pair 类型 `(pair-t A B)` 上的操作。
 
 - [`pair-t`](pair/pair-t.md) — pair 类型构造器
 - [`make-pair`](pair/make-pair.md) — 构造 pair
-- [`pair?`](pair/pair?.md) — 判断是否为 pair
+- [`pair?`](pair/pair-p.md) — 判断是否为 pair
 - [`pair-first`](pair/pair-first.md) — 取第一个元素
 - [`pair-second`](pair/pair-second.md) — 取第二个元素
-- [`pair-put-first!`](pair/pair-put-first!.md) — 替换第一个元素
-- [`pair-put-second!`](pair/pair-put-second!.md) — 替换第二个元素
+- [`pair-put-first!`](pair/pair-put-first-mut.md) — 替换第一个元素
+- [`pair-put-second!`](pair/pair-put-second-mut.md) — 替换第二个元素
 
 ## maybe
 
@@ -430,10 +430,10 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`maybe-t`](maybe/maybe-t.md) — maybe 类型构造器
 - [`just`](maybe/just.md) — 构造存在值
 - [`nothing`](maybe/nothing.md) — 表示缺失值
-- [`just?`](maybe/just?.md) — 判断是否为 just
-- [`nothing?`](maybe/nothing?.md) — 判断是否为 nothing
+- [`just?`](maybe/just-p.md) — 判断是否为 just
+- [`nothing?`](maybe/nothing-p.md) — 判断是否为 nothing
 - [`just-value`](maybe/just-value.md) — 提取 just 中的值
-- [`just-put-value!`](maybe/just-put-value!.md) — 替换 just 中的值
+- [`just-put-value!`](maybe/just-put-value-mut.md) — 替换 just 中的值
 
 ## box
 
@@ -441,8 +441,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 - [`box-t`](box/box-t.md) — box 类型构造器
 - [`make-box`](box/make-box.md) — 创建空 box
-- [`box-empty?`](box/box-empty?.md) — 判断是否为空
-- [`box-put!`](box/box-put!.md) — 存入值
+- [`box-empty?`](box/box-empty-p.md) — 判断是否为空
+- [`box-put!`](box/box-put-mut.md) — 存入值
 - [`box-get-maybe`](box/box-get-maybe.md) — 取出可选值
 - [`box-get`](box/box-get.md) — 取出值（空 box 时报错）
 
@@ -497,9 +497,9 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 ### 查询
 
-- [`fs-exists?`](fs/fs-exists?.md) — 路径是否存在
-- [`fs-file?`](fs/fs-file?.md) — 是否为文件
-- [`fs-directory?`](fs/fs-directory?.md) — 是否为目录
+- [`fs-exists?`](fs/fs-exists-p.md) — 路径是否存在
+- [`fs-file?`](fs/fs-file-p.md) — 是否为文件
+- [`fs-directory?`](fs/fs-directory-p.md) — 是否为目录
 
 ### 读写
 
@@ -528,8 +528,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`path-directory-name`](path/path-directory-name.md) — 取目录部分
 - [`path-extension`](path/path-extension.md) — 取扩展名
 - [`path-stem`](path/path-stem.md) — 取主干名
-- [`path-absolute?`](path/path-absolute?.md) — 是否为绝对路径
-- [`path-relative?`](path/path-relative?.md) — 是否为相对路径
+- [`path-absolute?`](path/path-absolute-p.md) — 是否为绝对路径
+- [`path-relative?`](path/path-relative-p.md) — 是否为相对路径
 - [`path-join`](path/path-join.md) — 连接路径
 - [`path-normalize`](path/path-normalize.md) — 标准化路径
 - [`path-relative`](path/path-relative.md) — 计算相对路径
