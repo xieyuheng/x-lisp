@@ -1,0 +1,9 @@
+src/box/box-as-list-error.meta:4:16 -- unification fail
+  inferred type: (builtin/box-t A)
+  expected type: (list-t B)
+ 2 | 
+ 3 | (define-test box-as-list-test
+ 4 |   (list-length (make-box)))
+   |                ~~~~~~~~~~   
+ 5 | 
+
