@@ -6,62 +6,133 @@
   (location source-location-t))
 
 (define-enum exp-t
-  (symbol-exp (content symbol-t) (location source-location-t))
-  (keyword-exp (content keyword-t) (location source-location-t))
-  (string-exp (content string-t) (location source-location-t))
-  (int-exp (content int-t) (location source-location-t))
-  (float-exp (content float-t) (location source-location-t))
-  (var-exp (name symbol-t) (location source-location-t))
-  (qualified-var-exp (mod-name symbol-t) (name symbol-t)
-                     (location source-location-t))
-  (apply-exp (target exp-t) (args (list-t exp-t))
-              (location source-location-t))
-  (pipe-exp (target exp-t) (steps (list-t exp-t))
-            (location source-location-t))
-  (chain-exp (steps (list-t exp-t))
-             (location source-location-t))
-  (compose-exp (steps (list-t exp-t))
-               (location source-location-t))
-  (lambda-exp (parameters (list-t symbol-t)) (body exp-t)
-              (location source-location-t))
-  (let1-exp (name symbol-t) (rhs exp-t) (body exp-t)
-            (location source-location-t))
-  (let-exp (bindings (list-t binding-t)) (body exp-t)
-           (location source-location-t))
-  (let-star-exp (bindings (list-t binding-t)) (body exp-t)
-                (location source-location-t))
-  (letrec-exp (bindings (list-t binding-t)) (body exp-t)
-              (location source-location-t))
-  (letrec-star-exp (bindings (list-t binding-t)) (body exp-t)
-                   (location source-location-t))
-  (local-define-exp (name symbol-t) (parameters (list-t symbol-t))
-                    (body exp-t) (location source-location-t))
-  (begin1-exp (head exp-t) (body exp-t)
-              (location source-location-t))
-  (begin-exp (sequence (list-t exp-t)) (location source-location-t))
-  (assign-exp (name symbol-t) (rhs exp-t) (location source-location-t))
-  (if-exp (condition exp-t) (consequent exp-t) (alternative exp-t)
-          (location source-location-t))
-  (when-exp (condition exp-t) (consequent exp-t)
-            (location source-location-t))
-  (unless-exp (condition exp-t) (alternative exp-t)
-              (location source-location-t))
-  (and-exp (exps (list-t exp-t)) (location source-location-t))
-  (or-exp (exps (list-t exp-t)) (location source-location-t))
-  (cond-exp (clauses (list-t cond-clause-t)) (location source-location-t))
-  (literal-list-exp (elements (list-t exp-t)) (location source-location-t))
-  (literal-set-exp (elements (list-t exp-t)) (location source-location-t))
-  (literal-hash-exp (entries (list-t (hash-entry-t exp-t exp-t)))
-                    (location source-location-t))
-  (quote-exp (sexp sexp-t) (location source-location-t))
-  (arrow-exp (arg-types (list-t exp-t)) (ret-type exp-t)
-             (location source-location-t))
-  (the-exp (type exp-t) (exp exp-t) (location source-location-t))
-  (polymorphic-exp (parameters (list-t symbol-t)) (body exp-t)
-                   (location source-location-t))
-  (match-exp (targets (list-t exp-t))
-             (clauses (list-t match-clause-t))
-             (location source-location-t)))
+  (symbol-exp
+   (content symbol-t)
+   (location source-location-t))
+  (keyword-exp
+   (content keyword-t)
+   (location source-location-t))
+  (string-exp
+   (content string-t)
+   (location source-location-t))
+  (int-exp
+   (content int-t)
+   (location source-location-t))
+  (float-exp
+   (content float-t)
+   (location source-location-t))
+  (var-exp
+   (name symbol-t)
+   (location source-location-t))
+  (qualified-var-exp
+   (mod-name symbol-t)
+   (name symbol-t)
+   (location source-location-t))
+  (apply-exp
+   (target exp-t)
+   (args (list-t exp-t))
+   (location source-location-t))
+  (pipe-exp
+   (target exp-t)
+   (steps (list-t exp-t))
+   (location source-location-t))
+  (chain-exp
+   (steps (list-t exp-t))
+   (location source-location-t))
+  (compose-exp
+   (steps (list-t exp-t))
+   (location source-location-t))
+  (lambda-exp
+   (parameters (list-t symbol-t))
+   (body exp-t)
+   (location source-location-t))
+  (let1-exp
+   (name symbol-t)
+   (rhs exp-t)
+   (body exp-t)
+   (location source-location-t))
+  (let-exp
+   (bindings (list-t binding-t))
+   (body exp-t)
+   (location source-location-t))
+  (let-star-exp
+   (bindings (list-t binding-t))
+   (body exp-t)
+   (location source-location-t))
+  (letrec-exp
+   (bindings (list-t binding-t))
+   (body exp-t)
+   (location source-location-t))
+  (letrec-star-exp
+   (bindings (list-t binding-t))
+   (body exp-t)
+   (location source-location-t))
+  (local-define-exp
+   (name symbol-t)
+   (parameters (list-t symbol-t))
+   (body exp-t)
+   (location source-location-t))
+  (begin1-exp
+   (head exp-t)
+   (body exp-t)
+   (location source-location-t))
+  (begin-exp
+   (sequence (list-t exp-t))
+   (location source-location-t))
+  (assign-exp
+   (name symbol-t)
+   (rhs exp-t)
+   (location source-location-t))
+  (if-exp
+   (condition exp-t)
+   (consequent exp-t)
+   (alternative exp-t)
+   (location source-location-t))
+  (when-exp
+   (condition exp-t)
+   (consequent exp-t)
+   (location source-location-t))
+  (unless-exp
+   (condition exp-t)
+   (alternative exp-t)
+   (location source-location-t))
+  (and-exp
+   (exps (list-t exp-t))
+   (location source-location-t))
+  (or-exp
+   (exps (list-t exp-t))
+   (location source-location-t))
+  (cond-exp
+   (clauses (list-t cond-clause-t))
+   (location source-location-t))
+  (literal-list-exp
+   (elements (list-t exp-t))
+   (location source-location-t))
+  (literal-set-exp
+   (elements (list-t exp-t))
+   (location source-location-t))
+  (literal-hash-exp
+   (entries (list-t (hash-entry-t exp-t exp-t)))
+   (location source-location-t))
+  (quote-exp
+   (sexp sexp-t)
+   (location source-location-t))
+  (arrow-exp
+   (arg-types (list-t exp-t))
+   (ret-type exp-t)
+   (location source-location-t))
+  (the-exp
+   (type exp-t)
+   (exp exp-t)
+   (location source-location-t))
+  (polymorphic-exp
+   (parameters (list-t symbol-t))
+   (body exp-t)
+   (location source-location-t))
+  (match-exp
+   (targets (list-t exp-t))
+   (clauses (list-t match-clause-t))
+   (location source-location-t)))
 
 (define-struct cond-clause-t
   (question exp-t)
@@ -72,4 +143,3 @@
   (patterns (list-t exp-t))
   (body exp-t)
   (location source-location-t))
-

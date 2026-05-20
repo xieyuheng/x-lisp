@@ -130,9 +130,9 @@
                                          (make-set) targets)))
        (list-fold-left (lambda (s clause)
                          (let ((clause-bound-names
-                                 (list-fold-left (lambda (s2 p) (set-union s2 (pattern-bound-names p)))
-                                                 (make-set)
-                                                 (match-clause-patterns clause))))
+                                (list-fold-left (lambda (s2 p) (set-union s2 (pattern-bound-names p)))
+                                                (make-set)
+                                                (match-clause-patterns clause))))
                            (set-union s (exp-free-names (set-union bound-names clause-bound-names)
                                                         (match-clause-body clause)))))
                        target-names clauses)))))
@@ -149,9 +149,9 @@
 
 (define (free-names-letrec bound-names bindings body)
   (let ((all-names (list-fold-left (lambda (s b) (set-add (binding-name b) s))
-                                    (make-set) bindings)))
+                                   (make-set) bindings)))
     (list-fold-left (lambda (s b) (set-union s (exp-free-names (set-union bound-names all-names)
-                                                                (binding-rhs b))))
+                                                               (binding-rhs b))))
                     (exp-free-names (set-union bound-names all-names) body)
                     bindings)))
 

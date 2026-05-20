@@ -2,16 +2,16 @@
 
 (define-enum stmt-t
   (import-stmt
-    (mod-name symbol-t)
-    (names (list-t symbol-t))
-    (location source-location-t))
+   (mod-name symbol-t)
+   (names (list-t symbol-t))
+   (location source-location-t))
   (import-as-stmt
-    (mod-name symbol-t)
-    (prefix symbol-t)
-    (location source-location-t))
+   (mod-name symbol-t)
+   (prefix symbol-t)
+   (location source-location-t))
   (import-all-stmt
-    (mod-name symbol-t)
-    (location source-location-t))
+   (mod-name symbol-t)
+   (location source-location-t))
   (define-function-stmt
     (name symbol-t)
     (parameters (list-t symbol-t))
@@ -57,32 +57,32 @@
     (interface-entries (list-t interface-entry-t))
     (location source-location-t))
   (claim-stmt
-    (name symbol-t)
-    (type exp-t)
-    (location source-location-t))
+   (name symbol-t)
+   (type exp-t)
+   (location source-location-t))
   (claim-type-stmt
-    (name symbol-t)
-    (location source-location-t))
+   (name symbol-t)
+   (location source-location-t))
   (admit-stmt
-    (name symbol-t)
-    (type exp-t)
-    (location source-location-t))
+   (name symbol-t)
+   (type exp-t)
+   (location source-location-t))
   (private-stmt
-    (names (list-t symbol-t))
-    (location source-location-t))
+   (names (list-t symbol-t))
+   (location source-location-t))
   (exempt-stmt
-    (names (list-t symbol-t))
-    (location source-location-t))
+   (names (list-t symbol-t))
+   (location source-location-t))
   (declare-module-stmt
-    (name symbol-t)
-    (location source-location-t))
+   (name symbol-t)
+   (location source-location-t))
   (declare-error-module-stmt
-    (name symbol-t)
-    (location source-location-t))
+   (name symbol-t)
+   (location source-location-t))
   (declare-primitive-function-stmt
-    (name symbol-t)
-    (arity int-t)
-    (location source-location-t))
+   (name symbol-t)
+   (arity int-t)
+   (location source-location-t))
   (declare-primitive-variable-stmt
-    (name symbol-t)
-    (location source-location-t)))
+   (name symbol-t)
+   (location source-location-t)))
