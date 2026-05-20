@@ -12,7 +12,9 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 - [注释](#注释)
 - [字面量](#字面量)
   - [原子](#原子)
-  - [容器](#容器)
+  - [(@list)](#@list)
+  - [(@set)](#@set)
+  - [(@hash)](#@hash)
   - [(quote)](#quote)
 - [变量](#变量)
   - [(define)](#define)
@@ -122,41 +124,54 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 空值用 `void`，它也不是字面量，而是绑定了空值的变量。
 
-## 容器
-
-`(@list)` 创建列表。
+## (@list)
 
 ```scheme
-(@list 1 2 3)
+[<exp> ...]
+(@list <exp> ...)
 ```
 
-增加 `@` 前缀，是为了避免占用 `list` 这个变量名。
-
-`(@set)` 创建集合。
-
-```scheme
-(@set 1 2 3)
-```
-
-`(@hash)` 创建哈希表。
-
-```scheme
-(@hash :a 1 :b 2)
-(@hash "a" 1 "b" 2)
-```
-
-方括号 `[...]` 是 `@list` 的语法糖。
+创建列表。
 
 ```scheme
 [1 2 3]
 ["a" "b" "c"]
 ```
 
-等价于：
+方括号 `[...]` 是 `(@list ...)` 的语法糖。
+
+上面的例子等价于：
 
 ```scheme
 (@list 1 2 3)
 (@list "a" "b" "c")
+```
+
+增加 `@` 前缀，是为了避免占用 `list` 这个变量名。
+
+## (@set)
+
+```scheme
+(@set <exp> ...)
+```
+
+创建集合。
+
+```scheme
+(@set 1 2 3)
+```
+
+## (@hash)
+
+```scheme
+(@hash <key> <value> ...)
+```
+
+创建哈希表。
+
+```scheme
+(@hash :a 1 :b 2)
+(@hash "a" 1 "b" 2)
 ```
 
 ## (quote)
@@ -166,7 +181,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (quote <exp>)
 ```
 
-阻止 `exp` 被求值，通常用来创建列表数据。
+阻止 `<exp>` 被求值，通常用来创建列表数据。
 
 ```scheme
 '(1 2 3)         ;; => [1 2 3]

@@ -12,7 +12,9 @@ All meta-Lisp syntax is presented below in groups.
 - [Comments](#comments)
 - [Literals](#literals)
   - [Atoms](#atoms)
-  - [Containers](#containers)
+  - [(@list)](#@list)
+  - [(@set)](#@set)
+  - [(@hash)](#@hash)
   - [(quote)](#quote)
 - [Variables](#variables)
   - [(define)](#define)
@@ -122,41 +124,54 @@ Booleans are `true` and `false` — they are not literals, but variables bound t
 
 The void value is `void` — also not a literal, but a variable bound to the void value.
 
-## Containers
-
-`(@list)` creates a list.
+## (@list)
 
 ```scheme
-(@list 1 2 3)
+[<exp> ...]
+(@list <exp> ...)
 ```
 
-The `@` prefix avoids occupying the variable name `list`.
-
-`(@set)` creates a set.
-
-```scheme
-(@set 1 2 3)
-```
-
-`(@hash)` creates a hash table.
-
-```scheme
-(@hash :a 1 :b 2)
-(@hash "a" 1 "b" 2)
-```
-
-Bracket notation `[...]` is syntactic sugar for `@list`.
+Creates a list.
 
 ```scheme
 [1 2 3]
 ["a" "b" "c"]
 ```
 
-Equivalent to:
+Bracket notation `[...]` is syntactic sugar for `(@list ...)`.
+
+The example above is equivalent to:
 
 ```scheme
 (@list 1 2 3)
 (@list "a" "b" "c")
+```
+
+The `@` prefix avoids occupying the variable name `list`.
+
+## (@set)
+
+```scheme
+(@set <exp> ...)
+```
+
+Creates a set.
+
+```scheme
+(@set 1 2 3)
+```
+
+## (@hash)
+
+```scheme
+(@hash <key> <value> ...)
+```
+
+Creates a hash table.
+
+```scheme
+(@hash :a 1 :b 2)
+(@hash "a" 1 "b" 2)
 ```
 
 ## (quote)
