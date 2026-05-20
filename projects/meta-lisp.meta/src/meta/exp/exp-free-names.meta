@@ -25,15 +25,15 @@
      (set-union (exp-free-names bound-names rhs)
                 (exp-free-names new-bound-names body)))
     ((let-exp bindings body location)
-     (= all-names (list-map binding-name bindings))
-     (= new-bound-names (set-union bound-names (list-to-set all-names)))
+     (= lhs-names (pipe bindings (list-map binding-name) list-to-set))
+     (= new-bound-names (set-union bound-names lhs-names))
      (set-union
       (set-union-many
        (pipe bindings
          (list-map binding-rhs)
          (list-map (exp-free-names bound-names))))
       (exp-free-names new-bound-names body)))
-    ;;    
+    ;;
     ((let-star-exp bindings body location)
      (free-names-let-star bound-names bindings body))
     ((letrec-exp bindings body location)
