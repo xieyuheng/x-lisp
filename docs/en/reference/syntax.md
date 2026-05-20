@@ -7,7 +7,7 @@ meta-lisp uses **S-expression** syntax.
 - The module top level consists of **statements**.
 - Statements are composed of **expressions**.
 
-All meta-lisp syntax is organized below.
+All meta-Lisp syntax is presented below in groups.
 
 - [Comments](#comments)
 - [Literals](#literals)
