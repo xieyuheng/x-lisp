@@ -10,23 +10,21 @@
     ((float-exp content location) (make-set))
     ((qualified-var-exp mod-name name location) (make-set))
     ((quote-exp sexp location) (make-set))
-
     ((var-exp name location)
      (if (set-member? name bound-names)
        (make-set)
        (set-add name (make-set))))
-
     ((lambda-exp parameters body location)
-     (exp-free-names (list-fold-left (lambda (s e) (set-add e s)) bound-names parameters) body))
-
+     (= new-bound-names (set-union bound-names (list-to-set parameters)))
+     (exp-free-names new-bound-names body))
     ((polymorphic-exp parameters body location)
-     (exp-free-names (list-fold-left (lambda (s e) (set-add e s)) bound-names parameters) body))
-
+     (= new-bound-names (set-union bound-names (list-to-set parameters)))
+     (exp-free-names new-bound-names body))
     ((let1-exp name rhs body location)
-     (let ((rhs-names (exp-free-names bound-names rhs))
-           (body-names (exp-free-names (set-add name bound-names) body)))
-       (set-union rhs-names body-names)))
-
+     (= new-bound-names (set-add name bound-names))
+     (set-union (exp-free-names bound-names rhs)
+                (exp-free-names new-bound-names body)))
+    ;;
     ((let-exp bindings body location)
      (let ((all-names (list-fold-left (lambda (s b) (set-add (binding-name b) s))
                                       (make-set) bindings)))
@@ -34,97 +32,74 @@
                          (set-union s (exp-free-names bound-names (binding-rhs b))))
                        (exp-free-names (set-union bound-names all-names) body)
                        bindings)))
-
     ((let-star-exp bindings body location)
      (free-names-let-star bound-names bindings body))
-
     ((letrec-exp bindings body location)
      (free-names-letrec bound-names bindings body))
-
     ((letrec-star-exp bindings body location)
      (free-names-letrec bound-names bindings body))
-
     ((local-define-exp name parameters body location)
      (exp-free-names (set-add name bound-names) body))
-
     ((apply-exp target args location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (exp-free-names bound-names target)
                      args))
-
     ((pipe-exp target steps location)
      (set-union (exp-free-names bound-names target)
                 (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                                 (make-set) steps)))
-
     ((chain-exp steps location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (make-set) steps))
-
     ((compose-exp steps location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (make-set) steps))
-
     ((begin1-exp head body location)
      (set-union (exp-free-names bound-names head)
                 (exp-free-names bound-names body)))
-
     ((begin-exp sequence location)
      (free-names-begin bound-names sequence))
-
     ((assign-exp name rhs location)
      (exp-free-names bound-names rhs))
-
     ((if-exp condition consequent alternative location)
      (set-union (exp-free-names bound-names condition)
                 (set-union (exp-free-names bound-names consequent)
                            (exp-free-names bound-names alternative))))
-
     ((when-exp condition consequent location)
      (set-union (exp-free-names bound-names condition)
                 (exp-free-names bound-names consequent)))
-
     ((unless-exp condition alternative location)
      (set-union (exp-free-names bound-names condition)
                 (exp-free-names bound-names alternative)))
-
     ((and-exp exps location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (make-set) exps))
-
     ((or-exp exps location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (make-set) exps))
-
     ((cond-exp clauses location)
      (list-fold-left (lambda (s clause)
                        (set-union (exp-free-names bound-names (cond-clause-question clause))
                                   (set-union s (exp-free-names bound-names (cond-clause-answer clause)))))
                      (make-set) clauses))
-
     ((literal-list-exp elements location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (make-set) elements))
-
     ((literal-set-exp elements location)
      (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                      (make-set) elements))
-
     ((literal-hash-exp entries location)
      (list-fold-left (lambda (s entry)
                        (set-union (exp-free-names bound-names (hash-entry-key entry))
                                   (set-union s (exp-free-names bound-names (hash-entry-value entry)))))
                      (make-set) entries))
-
     ((arrow-exp arg-types ret-type location)
      (set-union (exp-free-names bound-names ret-type)
                 (list-fold-left (lambda (s e) (set-union s (exp-free-names bound-names e)))
                                 (make-set) arg-types)))
-
     ((the-exp type exp2 location)
      (set-union (exp-free-names bound-names type)
                 (exp-free-names bound-names exp2)))
-
     ((match-exp targets clauses location)
      (let ((target-names (list-fold-left (lambda (s t) (set-union s (exp-free-names bound-names t)))
                                          (make-set) targets)))
