@@ -3,18 +3,3 @@
 (claim set-union-many (-> (list-t (set-t symbol-t)) (set-t symbol-t)))
 (define (set-union-many sets)
   (list-fold-left set-union (make-set) sets))
-
-(claim generate-relative-fresh-name (-> symbol-t (set-t symbol-t) symbol-t))
-(define (generate-relative-fresh-name name used-names)
-  (if (set-member? name used-names)
-    (generate-relative-fresh-name-helper name used-names 1)
-    name))
-
-(define (generate-relative-fresh-name-helper name used-names n)
-  (let ((candidate (string-to-symbol
-                    (string-concat
-                      [(symbol-to-string name) "."
-                       (int-to-string n)]))))
-    (if (set-member? candidate used-names)
-      (generate-relative-fresh-name-helper name used-names (iadd n 1))
-      candidate)))
