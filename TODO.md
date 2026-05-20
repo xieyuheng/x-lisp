@@ -1,4 +1,3 @@
-[meta-lisp.meta] [review] exp.meta
 [meta-lisp.meta] [review] stmt.meta
 [meta-lisp.meta] [review] value.meta
 [meta-lisp.meta] [review] type.meta
