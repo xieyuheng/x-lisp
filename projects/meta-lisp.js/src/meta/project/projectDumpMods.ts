@@ -2,6 +2,7 @@ import {
   callWithFile,
   fileWrite,
   openOutputFile,
+  writeln,
 } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
@@ -27,7 +28,7 @@ function projectDumpCode(
     "modules",
   )
   const dumpPath = `${directory}/${mod.name}.${tag}.dump`
-  M.log(tag, pathRelativeToCwd(dumpPath))
+  writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
   callWithFile(openOutputFile(dumpPath), (file) => {
     fileWrite(file, code)
   })
