@@ -1,6 +1,9 @@
 (module meta)
 
-(claim exp-free-names (-> (set-t symbol-t) exp-t (set-t symbol-t)))
+(claim exp-free-names
+  (-> (set-t symbol-t) exp-t
+      (set-t symbol-t)))
+
 (define (exp-free-names bound-names exp)
   (match exp
     ((symbol-exp content location) (make-set))
