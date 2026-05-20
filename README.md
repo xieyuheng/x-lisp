@@ -65,7 +65,7 @@ A simply typed lisp for implementing new lisp languages.
     1
     (imul (factorial (isub n 1)) n)))
 
-;; builtin test framework:
+;; built-in test framework:
 
 (define-test factorial-test
   (assert-equal 1 (factorial 0))
