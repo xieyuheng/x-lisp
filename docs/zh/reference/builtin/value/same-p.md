@@ -10,11 +10,12 @@ title: same?
 
 # 描述
 
-判断两个值是否相同（引用相等）。
+判断两个值是否原子相等或引用相等。
 
 # 例子
 
 ```scheme
-(same? 1 1)          ;; => true
-(same? "a" "a")      ;; => false（字符串可能不共享引用）
+(same? 1 1)              ;; => true
+(same? "a" "a")          ;; => true
+(same? [1 2 3] [1 2 3])  ;; => false
 ```

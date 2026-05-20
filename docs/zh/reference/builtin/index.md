@@ -36,7 +36,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 对所有类型适用的通用操作。
 
 - [`atom?`](value/atom-p.md) — 判断是否为原子值
-- [`same?`](value/same-p.md) — 引用相等判断
+- [`same?`](value/same-p.md) — 原子或引用相等判断
 - [`equal?`](value/equal-p.md) — 结构相等判断
 - [`format`](value/format.md) — 任意值格式化为字符串
 - [`hash-code`](value/hash-code.md) — 计算哈希码

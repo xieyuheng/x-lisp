@@ -1,0 +1,11 @@
+(module builtin)
+
+(define-test atom-test
+  (assert (atom? 1))
+  (assert (atom? 1.5))
+  (assert (atom? 'a))
+  (assert (atom? "a"))
+  (assert (atom? :a))
+  (assert-not (atom? [1 2 3]))
+  (assert-not (atom? (@set 1 2 3)))
+  (assert-not (atom? (@hash :x 1 :y 2))))

@@ -36,7 +36,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 Operations applicable to all types.
 
 - [`atom?`](value/atom-p.md) — Check if a value is an atom
-- [`same?`](value/same-p.md) — Reference equality
+- [`same?`](value/same-p.md) — Atom or reference equality
 - [`equal?`](value/equal-p.md) — Structural equality
 - [`format`](value/format.md) — Format any value as a string
 - [`hash-code`](value/hash-code.md) — Compute hash code
