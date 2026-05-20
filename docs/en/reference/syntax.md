@@ -181,20 +181,18 @@ Creates a hash table.
 (@quote <exp>)
 ```
 
-Prevents `<exp>` from being evaluated. Typically used to create list data.
+Create list of symbols or literal atoms.
 
 ```scheme
-'(1 2 3)         ;; => [1 2 3]
 '(a b c)         ;; => ['a 'b 'c]
-'foo             ;; => 'foo
+'(1 2 3)         ;; => [1 2 3]
 ```
 
 Equivalent to:
 
 ```scheme
-(@quote (1 2 3))  ;; => [1 2 3]
 (@quote (a b c))  ;; => ['a 'b 'c]
-(@quote foo)      ;; => 'foo
+(@quote (1 2 3))  ;; => [1 2 3]
 ```
 
 # Variables
