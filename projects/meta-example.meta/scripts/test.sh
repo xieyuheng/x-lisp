@@ -4,4 +4,4 @@ set -e
 
 ./meta-lisp.js check
 ./meta-lisp.js build
-./meta-lisp.js test --profile --builtin
+./meta-lisp.js test --builtin
