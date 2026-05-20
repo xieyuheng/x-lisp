@@ -10,7 +10,7 @@ A simply typed lisp for implementing new lisp languages.
 - Module system decoupled from the file system.
 - Built-in testing framework.
 
-## Example
+## Examples
 
 ```scheme
 (module example)
@@ -64,8 +64,8 @@ A simply typed lisp for implementing new lisp languages.
   (if (int-less-or-equal? n 1)
     1
     (imul (factorial (isub n 1)) n)))
-    
-;; builtin test framework    
+
+;; builtin test framework:
 
 (define-test factorial-test
   (assert-equal 1 (factorial 0))
