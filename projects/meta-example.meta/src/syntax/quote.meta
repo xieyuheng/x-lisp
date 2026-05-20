@@ -1,0 +1,5 @@
+(module example)
+
+(define-test quote-test
+  (assert-equal ['a 'b 'c] '(a b c))
+  (assert-equal ['a 'b 'c] (@quote (a b c))))

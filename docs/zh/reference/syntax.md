@@ -15,7 +15,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(@list)](#@list)
   - [(@set)](#@set)
   - [(@hash)](#@hash)
-  - [(quote)](#quote)
+  - [(@quote)](#quote)
 - [变量](#变量)
   - [(define)](#define)
   - [变量](#变量-1)
@@ -174,11 +174,11 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (@hash "a" 1 "b" 2)
 ```
 
-## (quote)
+## (@quote)
 
 ```scheme
 '<exp>
-(quote <exp>)
+(@quote <exp>)
 ```
 
 阻止 `<exp>` 被求值，通常用来创建列表数据。
@@ -192,9 +192,9 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 等价于：
 
 ```scheme
-(quote (1 2 3))  ;; => [1 2 3]
-(quote (a b c))  ;; => ['a 'b 'c]
-(quote foo)      ;; => 'foo
+(@quote (1 2 3))  ;; => [1 2 3]
+(@quote (a b c))  ;; => ['a 'b 'c]
+(@quote foo)      ;; => 'foo
 ```
 
 # 变量

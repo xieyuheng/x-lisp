@@ -15,7 +15,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(@list)](#@list)
   - [(@set)](#@set)
   - [(@hash)](#@hash)
-  - [(quote)](#quote)
+  - [(@quote)](#quote)
 - [Variables](#variables)
   - [(define)](#define)
   - [Variables](#variables-1)
@@ -174,11 +174,11 @@ Creates a hash table.
 (@hash "a" 1 "b" 2)
 ```
 
-## (quote)
+## (@quote)
 
 ```scheme
 '<exp>
-(quote <exp>)
+(@quote <exp>)
 ```
 
 Prevents `<exp>` from being evaluated. Typically used to create list data.
@@ -192,9 +192,9 @@ Prevents `<exp>` from being evaluated. Typically used to create list data.
 Equivalent to:
 
 ```scheme
-(quote (1 2 3))  ;; => [1 2 3]
-(quote (a b c))  ;; => ['a 'b 'c]
-(quote foo)      ;; => 'foo
+(@quote (1 2 3))  ;; => [1 2 3]
+(@quote (a b c))  ;; => ['a 'b 'c]
+(@quote foo)      ;; => 'foo
 ```
 
 # Variables

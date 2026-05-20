@@ -1,4 +1,3 @@
-[docs] fix the (quote) section
 [meta-lisp.meta] [review] stmt.meta
 [meta-lisp.meta] [review] value.meta
 [meta-lisp.meta] [review] type.meta
