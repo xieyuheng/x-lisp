@@ -2,5 +2,7 @@
 
 (define-test set-test
   (assert-equal (@set 1 2 3) (@set 3 2 1))
-
   (println (the (set-t int-t) (@set 1 2 3))))
+
+(define-test set-union-test
+  (assert-equal (@set 1 2 3 4) (set-union (@set 1 2) (@set 3 4))))
