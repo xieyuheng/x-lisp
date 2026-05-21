@@ -76,9 +76,6 @@
   (declare-module-stmt
    (name symbol-t)
    (location source-location-t))
-  (declare-error-module-stmt
-   (name symbol-t)
-   (location source-location-t))
   (declare-primitive-function-stmt
    (name symbol-t)
    (arity int-t)

@@ -7,7 +7,7 @@
   (match (project-lookup-mod project mod-name)
     ((just found) found)
     ((nothing)
-     (= mod (make-new-mod mod-name project))
+     (= mod (make-mod mod-name project))
      (project-put-mod! mod-name mod project)
      (type-builtin mod)
      (project-load-fragments project builtin-path)

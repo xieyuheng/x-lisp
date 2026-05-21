@@ -1,23 +1,23 @@
 (module meta)
 
-(define-struct mod-t
-  (name symbol-t)
-  (stmts (list-t stmt-t))
-  (admitted (set-t symbol-t))
-  (definitions (hash-t symbol-t definition-t))
-  (claimed (hash-t symbol-t claim-entry-t))
-  (opaque-claimed (hash-t symbol-t exp-t))
-  (inferred-types (hash-t symbol-t type-t))
-  (data-constructors (hash-t symbol-t data-constructor-t))
-  (project project-t)
-  (is-error-module bool-t))
+(define-struct* mod-t
+  (cons-mod
+   (name symbol-t)
+   (stmts (list-t stmt-t))
+   (admitted (set-t symbol-t))
+   (definitions (hash-t symbol-t definition-t))
+   (claimed (hash-t symbol-t claim-entry-t))
+   (opaque-claimed (hash-t symbol-t exp-t))
+   (inferred-types (hash-t symbol-t type-t))
+   (data-constructors (hash-t symbol-t data-constructor-t))
+   (project project-t)))
 
 (define-struct claim-entry-t
   (exp exp-t)
   (type (maybe-t type-t)))
 
-(define (make-new-mod name project)
-  (make-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) project false))
+(define (make-mod name project)
+  (cons-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) project))
 
 (claim mod-put-definition! (-> symbol-t definition-t mod-t void-t))
 (define (mod-put-definition! name definition mod)

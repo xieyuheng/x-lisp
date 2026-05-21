@@ -55,8 +55,6 @@
      (string-concat ["(exempt " (string-join " " (list-map symbol-to-string names)) ")"]))
     ((declare-module-stmt name location)
      (string-concat ["(module " (symbol-to-string name) ")"]))
-    ((declare-error-module-stmt name location)
-     (string-concat ["(error-module " (symbol-to-string name) ")"]))
     ((declare-primitive-function-stmt name arity location)
      (string-concat ["(declare-primitive-function " (symbol-to-string name) " "
                      (int-to-string arity) ")"]))

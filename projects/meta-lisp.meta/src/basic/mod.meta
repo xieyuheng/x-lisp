@@ -1,10 +1,11 @@
 (module basic)
 
-(define-struct mod-t
-  (definitions (hash-t symbol-t definition-t)))
+(define-struct* mod-t
+  (cons-mod
+   (definitions (hash-t symbol-t definition-t))))
 
-(define (create-mod)
-  (make-mod (make-hash)))
+(define (make-mod)
+  (cons-mod (make-hash)))
 
 (claim mod-lookup-definition (-> mod-t symbol-t (maybe-t definition-t)))
 (define (mod-lookup-definition mod name)

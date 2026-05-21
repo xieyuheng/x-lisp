@@ -4,16 +4,9 @@
   (= code (fs-read path))
   (= sexps (parse-sexps path code))
   (= stmts (list-map parse-stmt sexps))
-  (= module-stmt
-     (pipe stmts
-       (list-find
-        (lambda (stmt)
-          (or (declare-module-stmt? stmt)
-              (declare-error-module-stmt? stmt))))))
+  (= module-stmt (list-find declare-module-stmt? stmts))
   (match module-stmt
     ((just (declare-module-stmt name location))
-     (make-mod-fragment name false stmts))
-    ((just (declare-error-module-stmt name location))
-     (make-mod-fragment name true stmts))
+     (make-mod-fragment name stmts))
     ((nothing)
      (error "(load-mod-fragment) expect (module) statement in fragment"))))

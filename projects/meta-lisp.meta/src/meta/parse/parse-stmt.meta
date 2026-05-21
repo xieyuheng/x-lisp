@@ -36,10 +36,6 @@
            (declare-module-stmt
             (symbol-sexp-content (list-get 1 elements))
             location))
-          ((equal? tag 'error-module)
-           (declare-error-module-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            location))
           ((equal? tag 'import)
            (import-stmt
             (symbol-sexp-content (list-get 1 elements))
