@@ -18,21 +18,89 @@ export function makeDesugarMatchCtx(
   return { scope, currentModName, algebraicInfo }
 }
 
-// (match x
-//   ((just v) (f v))
-//   (nothing (g)))
-// =>
-// (cond
-//   ((just? x)
-//    (let* ((v (just-value x)))
-//      (f v)))
-//   ((nothing? x) (g))
-//   (else (builtin/error (builtin/format "match mismatch" (list x)))))
+// Desugar `(match)`, the basic idea is:
 //
-// When all clause heads are var-patterns, we just peel the first target
-// via let1-binding.  When they are data-patterns, we group by head
-// constructor and generate a cond that tests predicates in order.
-// Mixed heads are handled by reduceRight on pattern-kind groups.
+//     (match target
+//       ((ctor1 v11 v12 ...) body1)
+//       ((ctor2 v21 v22 ...) body2)
+//       ...)
+//
+// =>
+//
+//     (cond
+//       ((ctor1? target)
+//        (let* ((v11 (ctor1-accessor1 target))
+//               (v12 (ctor1-accessor2 target))
+//               ...)
+//          body1))
+//       ((ctor2? target)
+//        (let* ((v21 (ctor2-accessor1 target))
+//               (v22 (ctor2-accessor2 target))
+//               ...)
+//          body2))
+//       ...)
+//
+// We first need to generalize
+//
+//     (match target
+//       (pattern body)
+//       ...)
+//
+// to
+//
+//     (match-many (target ...)
+//       ((pattern ...) body)
+//       ...)
+//
+// When all clause heads are var patterns:
+//
+//     (match-many (target <target> ...)
+//       ((v1 <pattern> ...) <body>)
+//       ((v2 <pattern> ...) <body>)
+//       ...)
+//
+// =>
+//
+//     (match-many (<target> ...)
+//       ((<pattern> ...) (let ((v1 target)) <body>))
+//       ((<pattern> ...) (let ((v2 target)) <body>))
+//       ...)
+//
+// When all clause heads are data patterns:
+//
+//     (match-many (target <target> ...)
+//       (((ctor1 x1 ...) <pattern> ...) <body>)
+//       (((ctor1 y1 ...) <pattern> ...) <body>)
+//       (((ctor2 x2 ...) <pattern> ...) <body>)
+//       (((ctor2 y2 ...) <pattern> ...) <body>)
+//       ...)
+//
+// first group by head constructors:
+//
+//     (match-many (target <target> ...)
+//       (((ctor1 x1 ...) <pattern> ...) <body>)
+//       (((ctor1 y1 ...) <pattern> ...) <body>)
+//       ...)
+//
+//     (match-many (target <target> ...)
+//       (((ctor2 x2 ...) <pattern> ...) <body>)
+//       (((ctor2 y2 ...) <pattern> ...) <body>)
+//       ...)
+//
+// then spread the pattern vars in the data patterns:
+//
+//     (match-many ((ctor1-accessor1 target) ... <target> ...)
+//       ((x1 ... <pattern> ...) <body>)
+//       ((y1 ... <pattern> ...) <body>)
+//       ...)
+//
+//     (match-many ((ctor2-accessor1 target) ... <target> ...)
+//       ((x2 ... <pattern> ...) <body>)
+//       ((y2 ... <pattern> ...) <body>)
+//       ...)
+//
+// To handled mixed head patterns,
+// we first group clauses by head pattern kind.
 
 export function desugarMatch(
   ctx: DesugarMatchCtx,
@@ -115,19 +183,6 @@ type DataConstructorClauseGroup = {
   dataConstructorInfo: M.DataConstructorInfo
   clauses: Array<M.MatchClause>
 }
-
-// Given a group for constructor `just` bound to target `x`:
-//
-//   ((just v) (f v))
-//
-// generates one cond-clause:
-//
-//   question:  (just? x)
-//   answer:    (let* ((v (just-value x)))
-//                ... desugarMatch(restTargets, restClauses) ...)
-//
-// Fresh variables are generated from field names, accessor functions
-// are used to unpack fields from the target.
 
 function desugarDataConstructorClauseGroup(
   ctx: DesugarMatchCtx,
