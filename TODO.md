@@ -1,6 +1,5 @@
-[meta-lisp.js] DesugarPass use `ModInfo`
-[meta-lisp.js] `ModInfo` 带有每个 AlgebraicType 的 variant 信息，
-[meta-lisp.js] DesugarPass use `ModInfo`
+[meta-lisp.js] 我计划区分 Exp（desugar 之前表达式） 与 Term（desugar 之后表达式）。
+[meta-lisp.js] 把 LowerMatchPass 重新合并到 DesugarPass。
 
 [meta-lisp.meta] [review] exp-free-names.meta
 [meta-lisp.meta] [review] exp-location.meta
