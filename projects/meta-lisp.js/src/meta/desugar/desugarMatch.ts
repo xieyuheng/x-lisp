@@ -1,19 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export type DesugarMatchCtx = {
-  scope: M.FragmentScope
-  currentModName: string
-  algebraicInfo: M.AlgebraicInfo
-}
-
-export function makeDesugarMatchCtx(
-  scope: M.FragmentScope,
-  currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
-): DesugarMatchCtx {
-  return { scope, currentModName, algebraicInfo }
-}
 
 // Desugar `(match)`, the basic idea is:
 //
@@ -98,6 +85,20 @@ export function makeDesugarMatchCtx(
 //
 // To handled mixed head patterns,
 // we first group clauses by head pattern kind.
+
+export type DesugarMatchCtx = {
+  scope: M.FragmentScope
+  currentModName: string
+  algebraicInfo: M.AlgebraicInfo
+}
+
+export function makeDesugarMatchCtx(
+  scope: M.FragmentScope,
+  currentModName: string,
+  algebraicInfo: M.AlgebraicInfo,
+): DesugarMatchCtx {
+  return { scope, currentModName, algebraicInfo }
+}
 
 export function desugarMatch(
   ctx: DesugarMatchCtx,
