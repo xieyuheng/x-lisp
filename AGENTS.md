@@ -17,6 +17,7 @@ title: AI Agent Instructions
 - stack-lisp.c -- stack VM 解释器。
 - meta-builtin.meta -- meta-lisp 中 builtin 函数的声明，与简单 builtin 函数的实现。
 - meta-example.meta -- 测试用的 meta-lisp 项目。
+- meta-error.meta -- 错误模块测试项目。
 - meta-lisp.meta -- meta-lisp 的 self-hosting 编译器（WIP）。
 
 # 文档
