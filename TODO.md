@@ -1,15 +1,5 @@
 ---
 
-[meta-lisp.js] evaluate -- Env 应该像是 Ctx 一样。作为一个 可扩展的 record type 而存在，不应该直接定义为 Map。
-
-注意：
-
-- Env 的 API 尽量保持原样，或者模仿 Ctx 的 API。
-- Env 的所有操作都要通过 API 来完成，不能直接操作 Env。
-- 需要的时候你可以设计新的 API 函数。
-
----
-
 [meta-lisp.js] evaluate -- mode: EvaluationMode 参数放在 Env 中
 
 现在 [meta-lisp.js] 的 evaluate 函数所带有的 mode: EvaluationMode 参数。

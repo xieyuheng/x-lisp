@@ -18,6 +18,7 @@ export function envLookup(env: Env, name: string): Value | undefined {
 
 export function envPut(env: Env, name: string, value: Value): Env {
   return {
+    ...env,
     bindings: new Map([...env.bindings, [name, value]]),
   }
 }
