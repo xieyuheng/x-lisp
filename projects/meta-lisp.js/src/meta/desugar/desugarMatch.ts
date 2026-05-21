@@ -1,4 +1,4 @@
-import { range } from "@xieyuheng/helpers.js/range"
+import { arrayZip } from "@xieyuheng/helpers.js/array"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
@@ -17,6 +17,22 @@ export function makeDesugarMatchCtx(
 ): DesugarMatchCtx {
   return { scope, currentModName, algebraicInfo }
 }
+
+// (match x
+//   ((just v) (f v))
+//   (nothing (g)))
+// =>
+// (cond
+//   ((just? x)
+//    (let* ((v (just-value x)))
+//      (f v)))
+//   ((nothing? x) (g))
+//   (else (builtin/error (builtin/format "match mismatch" (list x)))))
+//
+// When all clause heads are var-patterns, we just peel the first target
+// via let1-binding.  When they are data-patterns, we group by head
+// constructor and generate a cond that tests predicates in order.
+// Mixed heads are handled by reduceRight on pattern-kind groups.
 
 export function desugarMatch(
   ctx: DesugarMatchCtx,
@@ -100,6 +116,19 @@ type DataConstructorClauseGroup = {
   clauses: Array<M.MatchClause>
 }
 
+// Given a group for constructor `just` bound to target `x`:
+//
+//   ((just v) (f v))
+//
+// generates one cond-clause:
+//
+//   question:  (just? x)
+//   answer:    (let* ((v (just-value x)))
+//                ... desugarMatch(restTargets, restClauses) ...)
+//
+// Fresh variables are generated from field names, accessor functions
+// are used to unpack fields from the target.
+
 function desugarDataConstructorClauseGroup(
   ctx: DesugarMatchCtx,
   group: DataConstructorClauseGroup,
@@ -118,18 +147,21 @@ function desugarDataConstructorClauseGroup(
       ]),
     ),
   ])
-  const freshVars = group.dataConstructorInfo.fieldNames.map((fieldName) =>
-    M.VarExp(M.generateRelativeFreshName(fieldName, usedNames), location),
+
+  const freshNames = group.dataConstructorInfo.fieldNames.map((fieldName) =>
+    M.generateRelativeFreshName(fieldName, usedNames),
   )
+  const freshVars = freshNames.map((name) => M.VarExp(name, location))
 
   const predicate = M.QualifiedVarExp(
     group.dataConstructorInfo.modName,
     group.dataConstructorInfo.predicateName,
     location,
   )
+
   const question = M.ApplyExp(predicate, [target], target.location)
 
-  let answer = desugarMatch(
+  const answer = desugarMatch(
     ctx,
     [...freshVars, ...restTargets],
     group.clauses,
@@ -137,22 +169,30 @@ function desugarDataConstructorClauseGroup(
     location,
   )
 
-  for (const i of range(group.dataConstructorInfo.fieldNames.length)) {
-    const accessorName = group.dataConstructorInfo.accessorNames[i]
-    const accessor = M.QualifiedVarExp(
-      group.dataConstructorInfo.modName,
-      accessorName,
-      answer.location,
-    )
-    answer = M.Let1Exp(
-      freshVars[i].name,
-      M.ApplyExp(accessor, [target], answer.location),
-      answer,
-      answer.location,
-    )
-  }
+  const bindings = arrayZip(
+    freshNames,
+    group.dataConstructorInfo.accessorNames,
+  ).map(([freshName, accessorName]) =>
+    M.Binding(
+      freshName,
+      M.ApplyExp(
+        M.QualifiedVarExp(
+          group.dataConstructorInfo.modName,
+          accessorName,
+          location,
+        ),
+        [target],
+        target.location,
+      ),
+      location,
+    ),
+  )
 
-  return M.CondClause(question, answer, location)
+  return M.CondClause(
+    question,
+    M.LetStarExp(bindings, answer, location),
+    location,
+  )
 }
 
 function groupClausesByHeadDataConstructor(
