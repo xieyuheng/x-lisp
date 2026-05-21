@@ -61,73 +61,28 @@ export function desugarMatch(
       defaultExp,
       location,
     )
-  }
-
-  if (clauses.every(clauseHeadIsDataPattern)) {
+  } else if (clauses.every(clauseHeadIsDataPattern)) {
     const groups = groupClausesByHeadDataConstructor(ctx, clauses)
     return M.CondExp(
-      groups.map((group) => {
-        const [target, ...restTargets] = targets
-        const usedNames = setUnionMany([
-          M.expOccurredNames(defaultExp),
-          ...targets.map((t) => M.expOccurredNames(t)),
-          ...group.clauses.map((c) =>
-            setUnionMany([
-              ...c.patterns.map(M.expOccurredNames),
-              M.expOccurredNames(c.body),
-            ]),
-          ),
-        ])
-        const freshVars = group.dataConstructorInfo.fieldNames.map(
-          (fieldName) =>
-            M.VarExp(
-              M.generateRelativeFreshName(fieldName, usedNames),
-              location,
-            ),
-        )
-
-        const predicate = M.QualifiedVarExp(
-          group.dataConstructorInfo.modName,
-          group.dataConstructorInfo.predicateName,
-          location,
-        )
-        const question = M.ApplyExp(predicate, [target], target.location)
-
-        let answer = desugarMatch(
+      groups.map((group) =>
+        desugarDataConstructorClauseGroup(
           ctx,
-          [...freshVars, ...restTargets],
-          group.clauses,
+          group,
+          targets,
           defaultExp,
           location,
-        )
-
-        for (const i of range(group.dataConstructorInfo.fieldNames.length)) {
-          const accessorName = group.dataConstructorInfo.accessorNames[i]
-          const accessor = M.QualifiedVarExp(
-            group.dataConstructorInfo.modName,
-            accessorName,
-            answer.location,
-          )
-          answer = M.Let1Exp(
-            freshVars[i].name,
-            M.ApplyExp(accessor, [target], answer.location),
-            answer,
-            answer.location,
-          )
-        }
-
-        return M.CondClause(question, answer, location)
-      }),
+        ),
+      ),
       location,
     )
+  } else {
+    const groups = groupClausesByHeadPatternKind(clauses)
+    return groups.reduceRight(
+      (accumulatedExp, group) =>
+        desugarMatch(ctx, targets, group, accumulatedExp, location),
+      defaultExp,
+    )
   }
-
-  const groups = groupClausesByHeadPatternKind(clauses)
-  return groups.reduceRight(
-    (accumulatedExp, group) =>
-      desugarMatch(ctx, targets, group, accumulatedExp, location),
-    defaultExp,
-  )
 }
 
 function clauseHeadIsVarPattern(clause: M.MatchClause): boolean {
@@ -140,17 +95,71 @@ function clauseHeadIsDataPattern(clause: M.MatchClause): boolean {
   return M.isDataPattern(clause.patterns[0])
 }
 
-type GroupByHeadDataConstructor = {
+type DataConstructorClauseGroup = {
   dataConstructorInfo: M.DataConstructorInfo
   clauses: Array<M.MatchClause>
 }
 
+function desugarDataConstructorClauseGroup(
+  ctx: DesugarMatchCtx,
+  group: DataConstructorClauseGroup,
+  targets: Array<M.Exp>,
+  defaultExp: M.Exp,
+  location: S.SourceLocation,
+): M.CondClause {
+  const [target, ...restTargets] = targets
+  const usedNames = setUnionMany([
+    M.expOccurredNames(defaultExp),
+    ...targets.map((t) => M.expOccurredNames(t)),
+    ...group.clauses.map((c) =>
+      setUnionMany([
+        ...c.patterns.map(M.expOccurredNames),
+        M.expOccurredNames(c.body),
+      ]),
+    ),
+  ])
+  const freshVars = group.dataConstructorInfo.fieldNames.map((fieldName) =>
+    M.VarExp(M.generateRelativeFreshName(fieldName, usedNames), location),
+  )
+
+  const predicate = M.QualifiedVarExp(
+    group.dataConstructorInfo.modName,
+    group.dataConstructorInfo.predicateName,
+    location,
+  )
+  const question = M.ApplyExp(predicate, [target], target.location)
+
+  let answer = desugarMatch(
+    ctx,
+    [...freshVars, ...restTargets],
+    group.clauses,
+    defaultExp,
+    location,
+  )
+
+  for (const i of range(group.dataConstructorInfo.fieldNames.length)) {
+    const accessorName = group.dataConstructorInfo.accessorNames[i]
+    const accessor = M.QualifiedVarExp(
+      group.dataConstructorInfo.modName,
+      accessorName,
+      answer.location,
+    )
+    answer = M.Let1Exp(
+      freshVars[i].name,
+      M.ApplyExp(accessor, [target], answer.location),
+      answer,
+      answer.location,
+    )
+  }
+
+  return M.CondClause(question, answer, location)
+}
 
 function groupClausesByHeadDataConstructor(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
-): Array<GroupByHeadDataConstructor> {
-  const map = new Map<string, GroupByHeadDataConstructor>()
+): Array<DataConstructorClauseGroup> {
+  const map = new Map<string, DataConstructorClauseGroup>()
   let typeKey: string | undefined
 
   for (const clause of clauses) {
@@ -206,7 +215,6 @@ function groupClausesByHeadDataConstructor(
     )
   })
 }
-
 
 function resolveDataConstructorQualifiedName(
   ctx: DesugarMatchCtx,
