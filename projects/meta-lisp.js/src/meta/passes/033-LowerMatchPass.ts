@@ -3,7 +3,6 @@ import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
-import { createDesugarState, desugar } from "./035-DesugarPass.ts"
 
 export function LowerMatchPass(
   project: M.Project,
@@ -53,44 +52,21 @@ function lowerMatch(
 ): M.Exp {
   switch (exp.kind) {
     case "MatchExp": {
-      const state = createDesugarState()
+      const defaultExp = makeDefaultExp(exp.targets, exp.location)
 
-      const defaultExp = M.ApplyExp(
-        M.QualifiedVarExp("builtin", "error", exp.location),
-        [
-          M.ApplyExp(
-            M.QualifiedVarExp("builtin", "format", exp.location),
-            [
-              M.ListExp(
-                [
-                  M.StringExp("match mismatch", exp.location),
-                  M.ListExp(exp.targets, exp.location),
-                ],
-                exp.location,
-              ),
-            ],
-            exp.location,
-          ),
-        ],
-        exp.location,
-      )
-
-      return desugar(
-        state,
-        simplifyMatch(
-          scope,
-          currentModName,
-          algebraicInfo,
-          exp.targets.map((t) =>
-            lowerMatch(scope, currentModName, algebraicInfo, t),
-          ),
-          exp.clauses.map((clause) => ({
-            ...clause,
-            body: lowerMatch(scope, currentModName, algebraicInfo, clause.body),
-          })),
-          defaultExp,
-          exp.location,
+      return simplifyMatch(
+        scope,
+        currentModName,
+        algebraicInfo,
+        exp.targets.map((t) =>
+          lowerMatch(scope, currentModName, algebraicInfo, t),
         ),
+        exp.clauses.map((clause) => ({
+          ...clause,
+          body: lowerMatch(scope, currentModName, algebraicInfo, clause.body),
+        })),
+        defaultExp,
+        exp.location,
       )
     }
 
@@ -101,6 +77,31 @@ function lowerMatch(
       )
     }
   }
+}
+
+function makeDefaultExp(
+  targets: Array<M.Exp>,
+  location: S.SourceLocation,
+): M.Exp {
+  return M.ApplyExp(
+    M.QualifiedVarExp("builtin", "error", location),
+    [
+      M.ApplyExp(
+        M.QualifiedVarExp("builtin", "format", location),
+        [
+          M.ListExp(
+            [
+              M.StringExp("match mismatch", location),
+              M.ListExp(targets, location),
+            ],
+            location,
+          ),
+        ],
+        location,
+      ),
+    ],
+    location,
+  )
 }
 
 function simplifyMatch(
@@ -250,35 +251,45 @@ type GroupByHeadDataConstructor = {
   clauses: Array<M.MatchClause>
 }
 
+function resolveDataConstructorQualifiedName(
+  scope: M.FragmentScope,
+  currentModName: string,
+  pattern: M.Exp,
+): { modName: string; name: string } {
+  assert(M.isDataPattern(pattern))
+  assert(pattern.kind === "ApplyExp")
+
+  const target = pattern.target
+
+  if (target.kind === "QualifiedVarExp") {
+    return { modName: target.modName, name: target.name }
+  }
+
+  if (target.kind === "VarExp") {
+    const entry = scope.importedNames.get(target.name)
+    if (entry) {
+      return { modName: entry.modName, name: entry.name }
+    } else {
+      return { modName: currentModName, name: target.name }
+    }
+  }
+
+  throw new Error(
+    "[resolveDataConstructorQualifiedName] unhandled pattern target kind",
+  )
+}
+
 function resolveDataConstructor(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicInfo: M.AlgebraicInfo,
   pattern: M.Exp,
 ): M.DataConstructorInfo {
-  assert(M.isDataPattern(pattern))
-  assert(pattern.kind === "ApplyExp")
-
-  const target = pattern.target
-
-  let modName: string
-  let name: string
-
-  if (target.kind === "QualifiedVarExp") {
-    modName = target.modName
-    name = target.name
-  } else if (target.kind === "VarExp") {
-    const entry = scope.importedNames.get(target.name)
-    if (entry) {
-      modName = entry.modName
-      name = entry.name
-    } else {
-      modName = currentModName
-      name = target.name
-    }
-  } else {
-    throw new Error("[resolveDataConstructor] unhandled pattern target kind")
-  }
+  const { modName, name } = resolveDataConstructorQualifiedName(
+    scope,
+    currentModName,
+    pattern,
+  )
 
   const info = algebraicInfo.dataConstructorInfos.get(`${modName}/${name}`)
   if (!info) {
