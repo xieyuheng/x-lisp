@@ -25,49 +25,49 @@ export function createDesugarState(): State {
 
 function desugarStmt(stmt: M.Stmt): M.Stmt {
   switch (stmt.kind) {
-    case "DefineFunction": {
+    case "DefineFunctionStmt": {
       return {
         ...stmt,
         body: desugar(createDesugarState(), stmt.body),
       }
     }
 
-    case "DefineVariable": {
+    case "DefineVariableStmt": {
       return {
         ...stmt,
         body: desugar(createDesugarState(), stmt.body),
       }
     }
 
-    case "DefineTest": {
+    case "DefineTestStmt": {
       return {
         ...stmt,
         body: desugar(createDesugarState(), stmt.body),
       }
     }
 
-    case "DefineType": {
+    case "DefineTypeStmt": {
       return {
         ...stmt,
         body: desugar(createDesugarState(), stmt.body),
       }
     }
 
-    case "Claim": {
+    case "ClaimStmt": {
       return {
         ...stmt,
         type: desugar(createDesugarState(), stmt.type),
       }
     }
 
-    case "Admit": {
+    case "AdmitStmt": {
       return {
         ...stmt,
         type: desugar(createDesugarState(), stmt.type),
       }
     }
 
-    case "DefineAlgebraicType": {
+    case "DefineAlgebraicTypeStmt": {
       return {
         ...stmt,
         dataConstructors: stmt.dataConstructors.map((ctor) => ({
@@ -88,127 +88,127 @@ function desugarStmt(stmt: M.Stmt): M.Stmt {
 
 export function desugar(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Begin": {
+    case "BeginExp": {
       return desugar(state, desugarBegin(exp.sequence, exp.location))
     }
 
-    case "Assign": {
+    case "AssignExp": {
       let message = `[desugar] (=) must occur in the head of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "LocalDefine": {
+    case "LocalDefineExp": {
       let message = `[desugar] local (define) must occur in the body of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "When": {
-      return M.If(
+    case "WhenExp": {
+      return M.IfExp(
         desugar(state, exp.condition),
-        M.Begin1(
+        M.Begin1Exp(
           desugar(state, exp.consequent),
-          M.QualifiedVar("builtin", "void", exp.location),
+          M.QualifiedVarExp("builtin", "void", exp.location),
           exp.location,
         ),
-        M.QualifiedVar("builtin", "void", exp.location),
+        M.QualifiedVarExp("builtin", "void", exp.location),
         exp.location,
       )
     }
 
-    case "Unless": {
-      return M.If(
+    case "UnlessExp": {
+      return M.IfExp(
         desugar(state, exp.condition),
-        M.QualifiedVar("builtin", "void", exp.location),
-        M.Begin1(
+        M.QualifiedVarExp("builtin", "void", exp.location),
+        M.Begin1Exp(
           desugar(state, exp.alternative),
-          M.QualifiedVar("builtin", "void", exp.location),
+          M.QualifiedVarExp("builtin", "void", exp.location),
           exp.location,
         ),
         exp.location,
       )
     }
 
-    case "And": {
+    case "AndExp": {
       return desugar(state, desugarAnd(exp.exps, exp.location))
     }
 
-    case "Or": {
+    case "OrExp": {
       return desugar(state, desugarOr(exp.exps, exp.location))
     }
 
-    case "Cond": {
+    case "CondExp": {
       return desugar(state, desugarCond(exp.clauses, exp.location))
     }
 
-    case "LiteralList": {
+    case "LiteralListExp": {
       return desugar(state, desugarList(exp.elements, exp.location))
     }
 
-    case "LiteralSet": {
+    case "LiteralSetExp": {
       return desugar(state, desugarSet(exp.elements, exp.location))
     }
 
-    case "LiteralHash": {
+    case "LiteralHashExp": {
       return desugar(state, desugarHash(exp.entries, exp.location))
     }
 
-    case "Quote": {
+    case "QuoteExp": {
       return desugar(state, desugarQuote(exp.sexp, exp.location))
     }
 
-    case "Pipe": {
+    case "PipeExp": {
       return desugar(state, desugarPipe(exp.target, exp.steps, exp.location))
     }
 
-    case "Chain": {
+    case "ChainExp": {
       return desugar(state, desugarChain(exp.steps, exp.location))
     }
 
-    case "Compose": {
+    case "ComposeExp": {
       return desugar(state, desugarCompose(exp.steps, exp.location))
     }
 
-    case "Begin1": {
-      return M.Begin1(
+    case "Begin1Exp": {
+      return M.Begin1Exp(
         desugar(state, exp.head),
         desugar(state, exp.body),
         exp.location,
       )
     }
 
-    case "LetStar": {
+    case "LetStarExp": {
       return desugar(
         state,
         desugarLetStar(exp.bindings, exp.body, exp.location),
       )
     }
 
-    case "Letrec": {
+    case "LetrecExp": {
       return desugar(state, desugarLetrec(exp.bindings, exp.body, exp.location))
     }
 
-    case "LetrecStar": {
+    case "LetrecStarExp": {
       return desugar(
         state,
         desugarLetrecStar(exp.bindings, exp.body, exp.location),
       )
     }
 
-    case "Let": {
+    case "LetExp": {
       return desugar(
         state,
         desugarLet(state, exp.bindings, exp.body, exp.location),
       )
     }
 
-    case "Lambda": {
-      return M.Lambda(exp.parameters, desugar(state, exp.body), exp.location)
+    case "LambdaExp": {
+      return M.LambdaExp(exp.parameters, desugar(state, exp.body), exp.location)
     }
 
-    case "Polymorphic": {
-      return M.Polymorphic(
+    case "PolymorphicExp": {
+      return M.PolymorphicExp(
         exp.parameters,
         desugar(state, exp.body),
         exp.location,
@@ -229,11 +229,11 @@ function desugarLetStar(
   if (bindings.length === 0) return body
   if (bindings.length === 1) {
     const [binding] = bindings
-    return M.Let1(binding.name, binding.rhs, body, location)
+    return M.Let1Exp(binding.name, binding.rhs, body, location)
   }
 
   const [binding, ...restBindings] = bindings
-  return M.Let1(
+  return M.Let1Exp(
     binding.name,
     binding.rhs,
     desugarLetStar(restBindings, body, location),
@@ -291,9 +291,9 @@ function desugarLetrec(
   // was never a recursive reference — stopping at the shadow is correct.
   for (const b of bindings) {
     const loc = b.location ?? location
-    const boxGetExp = M.Apply(
-      M.QualifiedVar("builtin", "box-get", loc),
-      [M.Var(b.name, loc)],
+    const boxGetExp = M.ApplyExp(
+      M.QualifiedVarExp("builtin", "box-get", loc),
+      [M.VarExp(b.name, loc)],
       loc,
     )
     for (let i = 0; i < newRHSes.length; i++) {
@@ -306,7 +306,7 @@ function desugarLetrec(
     const loc = b.location ?? location
     return M.Binding(
       b.name,
-      M.Apply(M.QualifiedVar("builtin", "make-box", loc), [], loc),
+      M.ApplyExp(M.QualifiedVarExp("builtin", "make-box", loc), [], loc),
       loc,
     )
   })
@@ -322,10 +322,10 @@ function desugarLetrec(
   let result: M.Exp = newBody
   for (let i = bindings.length - 1; i >= 0; i--) {
     const loc = bindings[i].location ?? location
-    result = M.Begin1(
-      M.Apply(
-        M.QualifiedVar("builtin", "box-put!", loc),
-        [M.Var(freshNames[i], loc), M.Var(bindings[i].name, loc)],
+    result = M.Begin1Exp(
+      M.ApplyExp(
+        M.QualifiedVarExp("builtin", "box-put!", loc),
+        [M.VarExp(freshNames[i], loc), M.VarExp(bindings[i].name, loc)],
         loc,
       ),
       result,
@@ -333,8 +333,8 @@ function desugarLetrec(
     )
   }
 
-  result = M.Let(innerBindings, result, location)
-  return M.Let(letBindings, result, location)
+  result = M.LetExp(innerBindings, result, location)
+  return M.LetExp(letBindings, result, location)
 }
 
 // Desugar `(letrec*)` using box:
@@ -371,9 +371,9 @@ function desugarLetrecStar(
   // that occurrence was never a recursive reference.
   for (const b of bindings) {
     const loc = b.location ?? location
-    const carExp = M.Apply(
-      M.QualifiedVar("builtin", "box-get", loc),
-      [M.Var(b.name, loc)],
+    const carExp = M.ApplyExp(
+      M.QualifiedVarExp("builtin", "box-get", loc),
+      [M.VarExp(b.name, loc)],
       loc,
     )
     for (let i = 0; i < newRHSes.length; i++) {
@@ -386,7 +386,7 @@ function desugarLetrecStar(
     const loc = b.location ?? location
     return M.Binding(
       b.name,
-      M.Apply(M.QualifiedVar("builtin", "make-box", loc), [], loc),
+      M.ApplyExp(M.QualifiedVarExp("builtin", "make-box", loc), [], loc),
       loc,
     )
   })
@@ -394,10 +394,10 @@ function desugarLetrecStar(
   let result: M.Exp = newBody
   for (let i = bindings.length - 1; i >= 0; i--) {
     const loc = bindings[i].location ?? location
-    result = M.Begin1(
-      M.Apply(
-        M.QualifiedVar("builtin", "box-put!", loc),
-        [newRHSes[i], M.Var(bindings[i].name, loc)],
+    result = M.Begin1Exp(
+      M.ApplyExp(
+        M.QualifiedVarExp("builtin", "box-put!", loc),
+        [newRHSes[i], M.VarExp(bindings[i].name, loc)],
         loc,
       ),
       result,
@@ -405,7 +405,7 @@ function desugarLetrecStar(
     )
   }
 
-  return M.Let(letBindings, result, location)
+  return M.LetExp(letBindings, result, location)
 }
 
 function generateFreshName(state: State, name: string): string {
@@ -428,7 +428,7 @@ function desugarLet(
   if (bindings.length === 0) return body
   if (bindings.length === 1) {
     const [binding] = bindings
-    return M.Let1(binding.name, binding.rhs, body, location)
+    return M.Let1Exp(binding.name, binding.rhs, body, location)
   }
 
   const tmpBindings: Array<M.Binding> = []
@@ -439,13 +439,13 @@ function desugarLet(
     newBindings.push(
       M.Binding(
         binding.name,
-        M.Var(tmpName, binding.location),
+        M.VarExp(tmpName, binding.location),
         binding.location,
       ),
     )
   }
 
-  return M.LetStar([...tmpBindings, ...newBindings], body, location)
+  return M.LetStarExp([...tmpBindings, ...newBindings], body, location)
 }
 
 export function desugarBegin(
@@ -459,7 +459,7 @@ export function desugarBegin(
 
   const [head, ...rest] = sequence
 
-  if (head.kind === "LocalDefine") {
+  if (head.kind === "LocalDefineExp") {
     const defines = collectAdjacentDefines(sequence)
     const remaining = sequence.slice(defines.length)
 
@@ -467,16 +467,16 @@ export function desugarBegin(
       M.Binding(
         d.name,
         d.parameters.length > 0
-          ? M.Lambda(d.parameters, d.body, d.location)
+          ? M.LambdaExp(d.parameters, d.body, d.location)
           : d.body,
         d.location,
       ),
     )
 
-    return M.LetrecStar(
+    return M.LetrecStarExp(
       bindings,
       remaining.length === 0
-        ? M.QualifiedVar("builtin", "void", location)
+        ? M.QualifiedVarExp("builtin", "void", location)
         : desugarBegin(remaining, location),
       location,
     )
@@ -486,19 +486,26 @@ export function desugarBegin(
     return head
   }
 
-  if (head.kind === "Assign") {
-    return M.Let1(head.name, head.rhs, desugarBegin(rest, location), location)
+  if (head.kind === "AssignExp") {
+    return M.Let1Exp(
+      head.name,
+      head.rhs,
+      desugarBegin(rest, location),
+      location,
+    )
   } else {
-    return M.Begin1(head, desugarBegin(rest, location), location)
+    return M.Begin1Exp(head, desugarBegin(rest, location), location)
   }
 }
 
-function collectAdjacentDefines(sequence: Array<M.Exp>): Array<M.LocalDefine> {
+function collectAdjacentDefines(
+  sequence: Array<M.Exp>,
+): Array<M.LocalDefineExp> {
   let i = 0
-  while (i < sequence.length && sequence[i].kind === "LocalDefine") {
+  while (i < sequence.length && sequence[i].kind === "LocalDefineExp") {
     i++
   }
-  return sequence.slice(0, i) as Array<M.LocalDefine>
+  return sequence.slice(0, i) as Array<M.LocalDefineExp>
 }
 
 function desugarPipe(
@@ -514,7 +521,7 @@ function desugarPipe(
         : target.location === undefined
           ? step.location
           : target.location
-    result = M.Apply(step, [result], location)
+    result = M.ApplyExp(step, [result], location)
   }
 
   return result
@@ -523,8 +530,8 @@ function desugarPipe(
 function desugarChain(steps: Array<M.Exp>, location: S.SourceLocation): M.Exp {
   const usedNames = setUnionMany(steps.map((s) => M.expFreeNames(new Set(), s)))
   const targetName = M.generateRelativeFreshName("target", usedNames)
-  const target = M.Var(targetName, location)
-  return M.Lambda([targetName], M.Pipe(target, steps, location), location)
+  const target = M.VarExp(targetName, location)
+  return M.LambdaExp([targetName], M.PipeExp(target, steps, location), location)
 }
 
 function desugarCompose(
@@ -535,24 +542,24 @@ function desugarCompose(
 }
 
 function desugarAnd(exps: Array<M.Exp>, location: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.QualifiedVar("builtin", "true", location)
+  if (exps.length === 0) return M.QualifiedVarExp("builtin", "true", location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
-  return M.If(
+  return M.IfExp(
     head,
     desugarAnd(restExps, location),
-    M.QualifiedVar("builtin", "false", location),
+    M.QualifiedVarExp("builtin", "false", location),
     location,
   )
 }
 
 function desugarOr(exps: Array<M.Exp>, location: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.QualifiedVar("builtin", "false", location)
+  if (exps.length === 0) return M.QualifiedVarExp("builtin", "false", location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
-  return M.If(
+  return M.IfExp(
     head,
-    M.QualifiedVar("builtin", "true", location),
+    M.QualifiedVarExp("builtin", "true", location),
     desugarOr(restExps, location),
     location,
   )
@@ -563,13 +570,13 @@ function desugarCond(
   location: S.SourceLocation,
 ): M.Exp {
   if (clauses.length === 0)
-    return M.Apply(
-      M.QualifiedVar("builtin", "error", location),
-      [M.String("cond mismatch", location)],
+    return M.ApplyExp(
+      M.QualifiedVarExp("builtin", "error", location),
+      [M.StringExp("cond mismatch", location)],
       location,
     )
   const [headClause, ...resClauses] = clauses
-  return M.If(
+  return M.IfExp(
     headClause.question,
     headClause.answer,
     desugarCond(resClauses, location),
@@ -583,19 +590,23 @@ export function desugarList(
 ): M.Exp {
   return M.desugarBegin(
     [
-      M.Assign(
+      M.AssignExp(
         "list",
-        M.Apply(M.QualifiedVar("builtin", "make-list", location), [], location),
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "make-list", location),
+          [],
+          location,
+        ),
         location,
       ),
       ...elements.map((e) =>
-        M.Apply(
-          M.QualifiedVar("builtin", "list-push!", location),
-          [e, M.Var("list", location)],
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "list-push!", location),
+          [e, M.VarExp("list", location)],
           location,
         ),
       ),
-      M.Var("list", location),
+      M.VarExp("list", location),
     ],
     location,
   )
@@ -604,19 +615,23 @@ export function desugarList(
 function desugarSet(elements: Array<M.Exp>, location: S.SourceLocation): M.Exp {
   return M.desugarBegin(
     [
-      M.Assign(
+      M.AssignExp(
         "set",
-        M.Apply(M.QualifiedVar("builtin", "make-set", location), [], location),
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "make-set", location),
+          [],
+          location,
+        ),
         location,
       ),
       ...elements.map((e) =>
-        M.Apply(
-          M.QualifiedVar("builtin", "set-add!", location),
-          [e, M.Var("set", location)],
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "set-add!", location),
+          [e, M.VarExp("set", location)],
           location,
         ),
       ),
-      M.Var("set", location),
+      M.VarExp("set", location),
     ],
     location,
   )
@@ -628,19 +643,23 @@ function desugarHash(
 ): M.Exp {
   return M.desugarBegin(
     [
-      M.Assign(
+      M.AssignExp(
         "hash",
-        M.Apply(M.QualifiedVar("builtin", "make-hash", location), [], location),
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "make-hash", location),
+          [],
+          location,
+        ),
         location,
       ),
       ...entries.map((entry) =>
-        M.Apply(
-          M.QualifiedVar("builtin", "hash-put!", location),
-          [entry.key, entry.value, M.Var("hash", location)],
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "hash-put!", location),
+          [entry.key, entry.value, M.VarExp("hash", location)],
           location,
         ),
       ),
-      M.Var("hash", location),
+      M.VarExp("hash", location),
     ],
     location,
   )
@@ -649,27 +668,27 @@ function desugarHash(
 function desugarQuote(sexp: S.Sexp, location: S.SourceLocation): M.Exp {
   switch (sexp.kind) {
     case "Symbol": {
-      return M.Symbol(sexp.content, location)
+      return M.SymbolExp(sexp.content, location)
     }
 
     case "String": {
-      return M.String(sexp.content, location)
+      return M.StringExp(sexp.content, location)
     }
 
     case "Int": {
-      return M.Int(sexp.content, location)
+      return M.IntExp(sexp.content, location)
     }
 
     case "Float": {
-      return M.Float(sexp.content, location)
+      return M.FloatExp(sexp.content, location)
     }
 
     case "Keyword": {
-      return M.Keyword(sexp.content, location)
+      return M.KeywordExp(sexp.content, location)
     }
 
     case "List": {
-      return M.LiteralList(
+      return M.LiteralListExp(
         sexp.elements.map((e) => desugarQuote(e, location)),
         location,
       )

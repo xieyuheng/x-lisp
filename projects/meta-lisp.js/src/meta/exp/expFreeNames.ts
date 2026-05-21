@@ -3,17 +3,17 @@ import * as M from "../index.ts"
 
 export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "QualifiedVar":
-    case "Quote": {
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp":
+    case "QualifiedVarExp":
+    case "QuoteExp": {
       return new Set()
     }
 
-    case "Var": {
+    case "VarExp": {
       if (boundNames.has(exp.name)) {
         return new Set()
       } else {
@@ -21,17 +21,17 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       }
     }
 
-    case "Lambda": {
+    case "LambdaExp": {
       const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "Polymorphic": {
+    case "PolymorphicExp": {
       const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return setUnionMany([
         expFreeNames(boundNames, exp.rhs),
@@ -39,7 +39,7 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       ])
     }
 
-    case "Let": {
+    case "LetExp": {
       const allNames = exp.bindings.map((b) => b.name)
       const newBoundNames = setUnion(boundNames, new Set(allNames))
       return setUnionMany([
@@ -48,7 +48,7 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       ])
     }
 
-    case "LetStar": {
+    case "LetStarExp": {
       let newBoundNames = boundNames
       const rhses = exp.bindings.map((b) => {
         const result = expFreeNames(newBoundNames, b.rhs)
@@ -58,7 +58,7 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       return setUnionMany([...rhses, expFreeNames(newBoundNames, exp.body)])
     }
 
-    case "Letrec": {
+    case "LetrecExp": {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const newBoundNames = setUnion(boundNames, allNames)
       return setUnionMany([
@@ -67,12 +67,12 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       ])
     }
 
-    case "LocalDefine": {
+    case "LocalDefineExp": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "LetrecStar": {
+    case "LetrecStarExp": {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const newBoundNames = setUnion(boundNames, allNames)
       return setUnionMany([
@@ -81,39 +81,39 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       ])
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       const children = [exp.target, ...exp.args]
       return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "Pipe": {
+    case "PipeExp": {
       const children = [exp.target, ...exp.steps]
       return setUnionMany(children.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "Chain": {
+    case "ChainExp": {
       return setUnionMany(exp.steps.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "Compose": {
+    case "ComposeExp": {
       return setUnionMany(exp.steps.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       return setUnionMany([
         expFreeNames(boundNames, exp.head),
         expFreeNames(boundNames, exp.body),
       ])
     }
 
-    case "Begin": {
+    case "BeginExp": {
       let currentBoundNames = boundNames
       const freeNamesSets: Array<Set<string>> = []
       for (const e of exp.sequence) {
-        if (e.kind === "Assign") {
+        if (e.kind === "AssignExp") {
           freeNamesSets.push(expFreeNames(currentBoundNames, e.rhs))
           currentBoundNames = setAdd(currentBoundNames, e.name)
-        } else if (e.kind === "LocalDefine") {
+        } else if (e.kind === "LocalDefineExp") {
           const newBoundNames = setAdd(currentBoundNames, e.name)
           freeNamesSets.push(expFreeNames(newBoundNames, e.body))
           currentBoundNames = newBoundNames
@@ -124,11 +124,11 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       return setUnionMany(freeNamesSets)
     }
 
-    case "Assign": {
+    case "AssignExp": {
       return expFreeNames(boundNames, exp.rhs)
     }
 
-    case "If": {
+    case "IfExp": {
       return setUnionMany([
         expFreeNames(boundNames, exp.condition),
         expFreeNames(boundNames, exp.consequent),
@@ -136,29 +136,29 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       ])
     }
 
-    case "When": {
+    case "WhenExp": {
       return setUnionMany([
         expFreeNames(boundNames, exp.condition),
         expFreeNames(boundNames, exp.consequent),
       ])
     }
 
-    case "Unless": {
+    case "UnlessExp": {
       return setUnionMany([
         expFreeNames(boundNames, exp.condition),
         expFreeNames(boundNames, exp.alternative),
       ])
     }
 
-    case "And": {
+    case "AndExp": {
       return setUnionMany(exp.exps.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "Or": {
+    case "OrExp": {
       return setUnionMany(exp.exps.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "Cond": {
+    case "CondExp": {
       return setUnionMany(
         exp.clauses.flatMap((clause) => [
           expFreeNames(boundNames, clause.question),
@@ -167,15 +167,15 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       )
     }
 
-    case "LiteralList": {
+    case "LiteralListExp": {
       return setUnionMany(exp.elements.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "LiteralSet": {
+    case "LiteralSetExp": {
       return setUnionMany(exp.elements.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "LiteralHash": {
+    case "LiteralHashExp": {
       return setUnionMany(
         exp.entries.flatMap((entry) => [
           expFreeNames(boundNames, entry.key),
@@ -184,21 +184,21 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       )
     }
 
-    case "Arrow": {
+    case "ArrowExp": {
       return setUnionMany([
         ...exp.argTypes.map((t) => expFreeNames(boundNames, t)),
         expFreeNames(boundNames, exp.retType),
       ])
     }
 
-    case "The": {
+    case "TheExp": {
       return setUnionMany([
         expFreeNames(boundNames, exp.type),
         expFreeNames(boundNames, exp.exp),
       ])
     }
 
-    case "Match": {
+    case "MatchExp": {
       return setUnionMany([
         setUnionMany(exp.targets.map((t) => expFreeNames(boundNames, t))),
         setUnionMany(

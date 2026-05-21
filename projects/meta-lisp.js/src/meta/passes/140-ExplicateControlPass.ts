@@ -135,35 +135,35 @@ function generateLabel(
 
 function toBasicExp(exp: M.Exp): B.Exp {
   switch (exp.kind) {
-    case "Symbol": {
+    case "SymbolExp": {
       return B.SymbolExp(exp.content, exp.location)
     }
 
-    case "Keyword": {
+    case "KeywordExp": {
       return B.KeywordExp(exp.content, exp.location)
     }
 
-    case "String": {
+    case "StringExp": {
       return B.StringExp(exp.content, exp.location)
     }
 
-    case "Int": {
+    case "IntExp": {
       return B.IntExp(exp.content, exp.location)
     }
 
-    case "Float": {
+    case "FloatExp": {
       return B.FloatExp(exp.content, exp.location)
     }
 
-    case "Var": {
+    case "VarExp": {
       return B.VarExp(exp.name, exp.location)
     }
 
-    case "QualifiedVar": {
+    case "QualifiedVarExp": {
       return B.VarExp(`${exp.modName}/${exp.name}`, exp.location)
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       return B.ApplyExp(
         toBasicExp(exp.target),
         exp.args.map(toBasicExp),
@@ -182,7 +182,7 @@ function toBasicExp(exp: M.Exp): B.Exp {
 
 function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
   switch (exp.kind) {
-    case "Let1": {
+    case "Let1Exp": {
       return explicateControlInLet1(
         state,
         exp.name,
@@ -191,7 +191,7 @@ function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
       )
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       return explicateControlInBegin1(
         state,
         exp.head,
@@ -199,7 +199,7 @@ function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
       )
     }
 
-    case "If": {
+    case "IfExp": {
       return explicateControlInIf(
         state,
         exp.condition,
@@ -221,7 +221,7 @@ function explicateControlInLet1(
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (rhs.kind) {
-    case "Let1": {
+    case "Let1Exp": {
       return explicateControlInLet1(
         state,
         rhs.name,
@@ -230,7 +230,7 @@ function explicateControlInLet1(
       )
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       return explicateControlInBegin1(
         state,
         rhs.head,
@@ -238,7 +238,7 @@ function explicateControlInLet1(
       )
     }
 
-    case "If": {
+    case "IfExp": {
       const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
       return explicateControlInIf(
         state,
@@ -264,7 +264,7 @@ function explicateControlInBegin1(
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
-    case "Let1": {
+    case "Let1Exp": {
       return explicateControlInLet1(
         state,
         head.name,
@@ -273,7 +273,7 @@ function explicateControlInBegin1(
       )
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       return explicateControlInBegin1(
         state,
         head.head,
@@ -281,7 +281,7 @@ function explicateControlInBegin1(
       )
     }
 
-    case "If": {
+    case "IfExp": {
       const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
       return explicateControlInIf(
         state,
@@ -308,7 +308,7 @@ function explicateControlInIf(
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
   if (
-    condition.kind === "QualifiedVar" &&
+    condition.kind === "QualifiedVarExp" &&
     condition.modName === "builtin" &&
     condition.name === "true"
   ) {
@@ -316,7 +316,7 @@ function explicateControlInIf(
   }
 
   if (
-    condition.kind === "QualifiedVar" &&
+    condition.kind === "QualifiedVarExp" &&
     condition.modName === "builtin" &&
     condition.name === "false"
   ) {
@@ -324,7 +324,7 @@ function explicateControlInIf(
   }
 
   switch (condition.kind) {
-    case "Var": {
+    case "VarExp": {
       return [
         B.TestInstr(
           B.ApplyExp(
@@ -345,9 +345,9 @@ function explicateControlInIf(
       ]
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       if (
-        condition.target.kind === "Var" &&
+        condition.target.kind === "VarExp" &&
         condition.target.name === "not" &&
         condition.args.length === 1
       ) {
@@ -365,7 +365,7 @@ function explicateControlInIf(
       ]
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       return explicateControlInLet1(
         state,
         condition.name,
@@ -374,7 +374,7 @@ function explicateControlInIf(
       )
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       return explicateControlInBegin1(
         state,
         condition.head,
@@ -382,7 +382,7 @@ function explicateControlInIf(
       )
     }
 
-    case "If": {
+    case "IfExp": {
       thenCont = [
         B.GotoInstr(
           generateLabel(state, "then", thenCont, condition.location),

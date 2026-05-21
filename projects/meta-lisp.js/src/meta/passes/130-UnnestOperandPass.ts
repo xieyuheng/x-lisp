@@ -48,7 +48,7 @@ function generateFreshName(state: State): string {
 
 function unnestOperandExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Apply": {
+    case "ApplyExp": {
       const [targetEntries, newTarget] = unnestOperandAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(
         exp.args.map((arg) => unnestOperandAtom(state, arg)),
@@ -56,7 +56,7 @@ function unnestOperandExp(state: State, exp: M.Exp): M.Exp {
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       return prependLets(
         [...targetEntries, ...argsEntries],
-        M.Apply(newTarget, newArgs, exp.location),
+        M.ApplyExp(newTarget, newArgs, exp.location),
       )
     }
 
@@ -73,9 +73,9 @@ function prependLets(entries: Array<Entry>, exp: M.Exp): M.Exp {
 
   const [[name, rhs], ...restEntries] = entries
   if (name === null) {
-    return M.Begin1(rhs, prependLets(restEntries, exp), exp.location)
+    return M.Begin1Exp(rhs, prependLets(restEntries, exp), exp.location)
   } else {
-    return M.Let1(name, rhs, prependLets(restEntries, exp), exp.location)
+    return M.Let1Exp(name, rhs, prependLets(restEntries, exp), exp.location)
   }
 }
 
@@ -83,17 +83,17 @@ type Entry = [string | null, M.Exp]
 
 function unnestOperandAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
   switch (exp.kind) {
-    case "Var":
-    case "QualifiedVar":
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float": {
+    case "VarExp":
+    case "QualifiedVarExp":
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp": {
       return [[], exp]
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       const [targetEntries, newTarget] = unnestOperandAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(
         exp.args.map((arg) => unnestOperandAtom(state, arg)),
@@ -102,21 +102,21 @@ function unnestOperandAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
       const freshName = generateFreshName(state)
       const entry: Entry = [
         freshName,
-        M.Apply(newTarget, newArgs, exp.location),
+        M.ApplyExp(newTarget, newArgs, exp.location),
       ]
       return [
         [...targetEntries, ...argsEntries, entry],
-        M.Var(freshName, exp.location),
+        M.VarExp(freshName, exp.location),
       ]
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       const rhsEntry: Entry = [exp.name, unnestOperandExp(state, exp.rhs)]
       const [bodyEntries, newBody] = unnestOperandAtom(state, exp.body)
       return [[rhsEntry, ...bodyEntries], newBody]
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       const headEntry: Entry = [null, unnestOperandExp(state, exp.head)]
       const [bodyEntries, newBody] = unnestOperandAtom(state, exp.body)
       return [[headEntry, ...bodyEntries], newBody]
@@ -125,7 +125,7 @@ function unnestOperandAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
     default: {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, unnestOperandExp(state, exp)]
-      return [[entry], M.Var(freshName, exp.location)]
+      return [[entry], M.VarExp(freshName, exp.location)]
     }
   }
 }

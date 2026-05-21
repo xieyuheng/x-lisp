@@ -12,14 +12,14 @@ export function ExpandPass(
   if (options.dump) M.projectDumpFragments(project, "010-expand")
 }
 
-function getDataType(stmt: M.DefineAlgebraicType): M.Exp {
+function getDataType(stmt: M.DefineAlgebraicTypeStmt): M.Exp {
   if (stmt.typeConstructor.parameters.length === 0) {
-    return M.Var(stmt.typeConstructor.name, stmt.typeConstructor.location)
+    return M.VarExp(stmt.typeConstructor.name, stmt.typeConstructor.location)
   } else {
-    return M.Apply(
-      M.Var(stmt.typeConstructor.name, stmt.typeConstructor.location),
+    return M.ApplyExp(
+      M.VarExp(stmt.typeConstructor.name, stmt.typeConstructor.location),
       stmt.typeConstructor.parameters.map((parameter) =>
-        M.Var(parameter, stmt.typeConstructor.location),
+        M.VarExp(parameter, stmt.typeConstructor.location),
       ),
       stmt.typeConstructor.location,
     )
@@ -33,31 +33,35 @@ function admitWithParameters(
   location: S.SourceLocation,
 ): M.Stmt {
   if (parameters.length === 0) {
-    return M.Admit(name, type, location)
+    return M.AdmitStmt(name, type, location)
   } else {
-    return M.Admit(name, M.Polymorphic(parameters, type, location), location)
+    return M.AdmitStmt(
+      name,
+      M.PolymorphicExp(parameters, type, location),
+      location,
+    )
   }
 }
 
 function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
   switch (stmt.kind) {
-    case "DefineEnum": {
+    case "DefineEnumStmt": {
       const algebraicType = desugarDefineEnum(stmt)
       return expandDefineAlgebraicType(algebraicType)
     }
 
-    case "DefineStructStar": {
+    case "DefineStructStarStmt": {
       const algebraicType = desugarDefineStructStar(stmt)
       return expandDefineAlgebraicType(algebraicType)
     }
 
-    case "DefineStruct": {
+    case "DefineStructStmt": {
       const algebraicType = desugarDefineStruct(stmt)
       return expandDefineAlgebraicType(algebraicType)
     }
 
-    case "DefineRecordType": {
-      const algebraicType = M.DefineAlgebraicType(
+    case "DefineRecordTypeStmt": {
+      const algebraicType = M.DefineAlgebraicTypeStmt(
         stmt.typeConstructor,
         [stmt.dataConstructor],
         stmt.location,
@@ -65,7 +69,7 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
       return expandDefineAlgebraicType(algebraicType)
     }
 
-    case "DefineAlgebraicType": {
+    case "DefineAlgebraicTypeStmt": {
       return expandDefineAlgebraicType(stmt)
     }
 
@@ -75,7 +79,7 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
   }
 }
 
-function desugarDefineEnum(stmt: M.DefineEnum): M.DefineAlgebraicType {
+function desugarDefineEnum(stmt: M.DefineEnumStmt): M.DefineAlgebraicTypeStmt {
   const dataConstructors = stmt.dataConstructors.map((ctor) => {
     const fields = ctor.fields.map((field) => ({
       name: field.name,
@@ -93,7 +97,7 @@ function desugarDefineEnum(stmt: M.DefineEnum): M.DefineAlgebraicType {
     }
   })
 
-  return M.DefineAlgebraicType(
+  return M.DefineAlgebraicTypeStmt(
     stmt.typeConstructor,
     dataConstructors,
     stmt.location,
@@ -101,8 +105,8 @@ function desugarDefineEnum(stmt: M.DefineEnum): M.DefineAlgebraicType {
 }
 
 function desugarDefineStructStar(
-  stmt: M.DefineStructStar,
-): M.DefineAlgebraicType {
+  stmt: M.DefineStructStarStmt,
+): M.DefineAlgebraicTypeStmt {
   const typeName = stmt.typeConstructor.name
 
   if (!typeName.endsWith("-t")) {
@@ -132,14 +136,16 @@ function desugarDefineStructStar(
     },
   ]
 
-  return M.DefineAlgebraicType(
+  return M.DefineAlgebraicTypeStmt(
     stmt.typeConstructor,
     dataConstructors,
     stmt.location,
   )
 }
 
-function desugarDefineStruct(stmt: M.DefineStruct): M.DefineAlgebraicType {
+function desugarDefineStruct(
+  stmt: M.DefineStructStmt,
+): M.DefineAlgebraicTypeStmt {
   const typeName = stmt.typeConstructor.name
 
   if (!typeName.endsWith("-t")) {
@@ -168,14 +174,16 @@ function desugarDefineStruct(stmt: M.DefineStruct): M.DefineAlgebraicType {
     },
   ]
 
-  return M.DefineAlgebraicType(
+  return M.DefineAlgebraicTypeStmt(
     stmt.typeConstructor,
     dataConstructors,
     stmt.location,
   )
 }
 
-function expandDefineAlgebraicType(stmt: M.DefineAlgebraicType): Array<M.Stmt> {
+function expandDefineAlgebraicType(
+  stmt: M.DefineAlgebraicTypeStmt,
+): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = [stmt]
 
   for (const ctor of stmt.dataConstructors) {
@@ -194,19 +202,19 @@ function expandDefineAlgebraicType(stmt: M.DefineAlgebraicType): Array<M.Stmt> {
 }
 
 function expandConstructor(
-  stmt: M.DefineAlgebraicType,
+  stmt: M.DefineAlgebraicTypeStmt,
   ctor: M.AlgebraicTypeConstructor,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
 
   const parameters = ctor.fields.map((field) => field.name)
-  const args = ctor.fields.map((field) => M.Var(field.name, field.location))
+  const args = ctor.fields.map((field) => M.VarExp(field.name, field.location))
 
   stmts.push(
     admitWithParameters(
       ctor.name,
       stmt.typeConstructor.parameters,
-      M.Arrow(
+      M.ArrowExp(
         ctor.fields.map((field) => field.type),
         getDataType(stmt),
         ctor.location,
@@ -216,11 +224,11 @@ function expandConstructor(
   )
 
   stmts.push(
-    M.DefineFunction(
+    M.DefineFunctionStmt(
       ctor.name,
       parameters,
-      M.LiteralList(
-        [M.Symbol(ctor.name, ctor.location), ...args],
+      M.LiteralListExp(
+        [M.SymbolExp(ctor.name, ctor.location), ...args],
         ctor.location,
       ),
       ctor.location,
@@ -231,7 +239,7 @@ function expandConstructor(
 }
 
 function expandPredicate(
-  stmt: M.DefineAlgebraicType,
+  stmt: M.DefineAlgebraicTypeStmt,
   ctor: M.AlgebraicTypeConstructor,
 ): Array<M.Stmt> {
   const stmts: Array<M.Stmt> = []
@@ -240,9 +248,9 @@ function expandPredicate(
     admitWithParameters(
       ctor.predicate,
       stmt.typeConstructor.parameters,
-      M.Arrow(
+      M.ArrowExp(
         [getDataType(stmt)],
-        M.Var("bool-t", ctor.location),
+        M.VarExp("bool-t", ctor.location),
         ctor.location,
       ),
       ctor.location,
@@ -250,37 +258,37 @@ function expandPredicate(
   )
 
   stmts.push(
-    M.DefineFunction(
+    M.DefineFunctionStmt(
       ctor.predicate,
       ["value"],
-      M.And(
+      M.AndExp(
         [
-          M.Apply(
-            M.Var("list?", ctor.location),
-            [M.Var("value", ctor.location)],
+          M.ApplyExp(
+            M.VarExp("list?", ctor.location),
+            [M.VarExp("value", ctor.location)],
             ctor.location,
           ),
-          M.Apply(
-            M.Var("equal?", ctor.location),
+          M.ApplyExp(
+            M.VarExp("equal?", ctor.location),
             [
-              M.Apply(
-                M.Var("list-length", ctor.location),
-                [M.Var("value", ctor.location)],
+              M.ApplyExp(
+                M.VarExp("list-length", ctor.location),
+                [M.VarExp("value", ctor.location)],
                 ctor.location,
               ),
-              M.Int(BigInt(ctor.fields.length + 1), ctor.location),
+              M.IntExp(BigInt(ctor.fields.length + 1), ctor.location),
             ],
             ctor.location,
           ),
-          M.Apply(
-            M.Var("equal?", ctor.location),
+          M.ApplyExp(
+            M.VarExp("equal?", ctor.location),
             [
-              M.Apply(
-                M.Var("list-head", ctor.location),
-                [M.Var("value", ctor.location)],
+              M.ApplyExp(
+                M.VarExp("list-head", ctor.location),
+                [M.VarExp("value", ctor.location)],
                 ctor.location,
               ),
-              M.Symbol(ctor.name, ctor.location),
+              M.SymbolExp(ctor.name, ctor.location),
             ],
             ctor.location,
           ),
@@ -295,7 +303,7 @@ function expandPredicate(
 }
 
 function expandAccessor(
-  stmt: M.DefineAlgebraicType,
+  stmt: M.DefineAlgebraicTypeStmt,
   ctor: M.AlgebraicTypeConstructor,
   index: number,
   field: M.AlgebraicTypeField,
@@ -306,20 +314,20 @@ function expandAccessor(
     admitWithParameters(
       field.accessorName,
       stmt.typeConstructor.parameters,
-      M.Arrow([getDataType(stmt)], field.type, field.location),
+      M.ArrowExp([getDataType(stmt)], field.type, field.location),
       field.location,
     ),
   )
 
   stmts.push(
-    M.DefineFunction(
+    M.DefineFunctionStmt(
       field.accessorName,
       ["target"],
-      M.Apply(
-        M.Var("list-get", field.location),
+      M.ApplyExp(
+        M.VarExp("list-get", field.location),
         [
-          M.Int(BigInt(index + 1), field.location),
-          M.Var("target", field.location),
+          M.IntExp(BigInt(index + 1), field.location),
+          M.VarExp("target", field.location),
         ],
         field.location,
       ),
@@ -331,7 +339,7 @@ function expandAccessor(
 }
 
 function expandModifier(
-  stmt: M.DefineAlgebraicType,
+  stmt: M.DefineAlgebraicTypeStmt,
   ctor: M.AlgebraicTypeConstructor,
   index: number,
   field: M.AlgebraicTypeField,
@@ -344,7 +352,7 @@ function expandModifier(
     admitWithParameters(
       field.modifierName,
       stmt.typeConstructor.parameters,
-      M.Arrow(
+      M.ArrowExp(
         [field.type, getDataType(stmt)],
         getDataType(stmt),
         field.location,
@@ -354,15 +362,15 @@ function expandModifier(
   )
 
   stmts.push(
-    M.DefineFunction(
+    M.DefineFunctionStmt(
       field.modifierName,
       ["value", "target"],
-      M.Apply(
-        M.Var("list-put!", field.location),
+      M.ApplyExp(
+        M.VarExp("list-put!", field.location),
         [
-          M.Int(BigInt(index + 1), field.location),
-          M.Var("value", field.location),
-          M.Var("target", field.location),
+          M.IntExp(BigInt(index + 1), field.location),
+          M.VarExp("value", field.location),
+          M.VarExp("target", field.location),
         ],
         field.location,
       ),

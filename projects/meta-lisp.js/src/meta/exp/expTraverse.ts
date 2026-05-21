@@ -3,64 +3,64 @@ import type { Exp } from "./Exp.ts"
 
 export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "Var":
-    case "QualifiedVar": {
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp":
+    case "VarExp":
+    case "QualifiedVarExp": {
       return exp
     }
 
-    case "Quote": {
+    case "QuoteExp": {
       return exp
     }
 
-    case "Lambda": {
-      return M.Lambda(exp.parameters, onExp(exp.body), exp.location)
+    case "LambdaExp": {
+      return M.LambdaExp(exp.parameters, onExp(exp.body), exp.location)
     }
 
-    case "Polymorphic": {
-      return M.Polymorphic(exp.parameters, onExp(exp.body), exp.location)
+    case "PolymorphicExp": {
+      return M.PolymorphicExp(exp.parameters, onExp(exp.body), exp.location)
     }
 
-    case "Apply": {
-      return M.Apply(
+    case "ApplyExp": {
+      return M.ApplyExp(
         onExp(exp.target),
         exp.args.map((e) => onExp(e)),
         exp.location,
       )
     }
 
-    case "Pipe": {
-      return M.Pipe(
+    case "PipeExp": {
+      return M.PipeExp(
         onExp(exp.target),
         exp.steps.map((e) => onExp(e)),
         exp.location,
       )
     }
 
-    case "Chain": {
-      return M.Chain(
+    case "ChainExp": {
+      return M.ChainExp(
         exp.steps.map((e) => onExp(e)),
         exp.location,
       )
     }
 
-    case "Compose": {
-      return M.Compose(
+    case "ComposeExp": {
+      return M.ComposeExp(
         exp.steps.map((e) => onExp(e)),
         exp.location,
       )
     }
 
-    case "Let1": {
-      return M.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.location)
+    case "Let1Exp": {
+      return M.Let1Exp(exp.name, onExp(exp.rhs), onExp(exp.body), exp.location)
     }
 
-    case "Let": {
-      return M.Let(
+    case "LetExp": {
+      return M.LetExp(
         exp.bindings.map((binding) =>
           M.Binding(binding.name, onExp(binding.rhs), binding.location),
         ),
@@ -69,8 +69,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "LetStar": {
-      return M.LetStar(
+    case "LetStarExp": {
+      return M.LetStarExp(
         exp.bindings.map((binding) =>
           M.Binding(binding.name, onExp(binding.rhs), binding.location),
         ),
@@ -79,8 +79,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "Letrec": {
-      return M.Letrec(
+    case "LetrecExp": {
+      return M.LetrecExp(
         exp.bindings.map((binding) =>
           M.Binding(binding.name, onExp(binding.rhs), binding.location),
         ),
@@ -89,8 +89,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "LocalDefine": {
-      return M.LocalDefine(
+    case "LocalDefineExp": {
+      return M.LocalDefineExp(
         exp.name,
         exp.parameters,
         onExp(exp.body),
@@ -98,8 +98,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "LetrecStar": {
-      return M.LetrecStar(
+    case "LetrecStarExp": {
+      return M.LetrecStarExp(
         exp.bindings.map((binding) =>
           M.Binding(binding.name, onExp(binding.rhs), binding.location),
         ),
@@ -108,40 +108,44 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "Begin1": {
-      return M.Begin1(onExp(exp.head), onExp(exp.body), exp.location)
+    case "Begin1Exp": {
+      return M.Begin1Exp(onExp(exp.head), onExp(exp.body), exp.location)
     }
 
-    case "Begin": {
-      return M.Begin(exp.sequence.map(onExp), exp.location)
+    case "BeginExp": {
+      return M.BeginExp(exp.sequence.map(onExp), exp.location)
     }
 
-    case "Assign": {
-      return M.Assign(exp.name, onExp(exp.rhs), exp.location)
+    case "AssignExp": {
+      return M.AssignExp(exp.name, onExp(exp.rhs), exp.location)
     }
 
-    case "When": {
-      return M.When(onExp(exp.condition), onExp(exp.consequent), exp.location)
+    case "WhenExp": {
+      return M.WhenExp(
+        onExp(exp.condition),
+        onExp(exp.consequent),
+        exp.location,
+      )
     }
 
-    case "Unless": {
-      return M.Unless(
+    case "UnlessExp": {
+      return M.UnlessExp(
         onExp(exp.condition),
         onExp(exp.alternative),
         exp.location,
       )
     }
 
-    case "And": {
-      return M.And(exp.exps.map(onExp), exp.location)
+    case "AndExp": {
+      return M.AndExp(exp.exps.map(onExp), exp.location)
     }
 
-    case "Or": {
-      return M.Or(exp.exps.map(onExp), exp.location)
+    case "OrExp": {
+      return M.OrExp(exp.exps.map(onExp), exp.location)
     }
 
-    case "Cond": {
-      return M.Cond(
+    case "CondExp": {
+      return M.CondExp(
         exp.clauses.map((clause) => ({
           question: onExp(clause.question),
           answer: onExp(clause.answer),
@@ -151,8 +155,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "If": {
-      return M.If(
+    case "IfExp": {
+      return M.IfExp(
         onExp(exp.condition),
         onExp(exp.consequent),
         onExp(exp.alternative),
@@ -160,16 +164,16 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "LiteralList": {
-      return M.LiteralList(exp.elements.map(onExp), exp.location)
+    case "LiteralListExp": {
+      return M.LiteralListExp(exp.elements.map(onExp), exp.location)
     }
 
-    case "LiteralSet": {
-      return M.LiteralSet(exp.elements.map(onExp), exp.location)
+    case "LiteralSetExp": {
+      return M.LiteralSetExp(exp.elements.map(onExp), exp.location)
     }
 
-    case "LiteralHash": {
-      return M.LiteralHash(
+    case "LiteralHashExp": {
+      return M.LiteralHashExp(
         exp.entries.map((entry) => ({
           key: onExp(entry.key),
           value: onExp(entry.value),
@@ -178,16 +182,20 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "Arrow": {
-      return M.Arrow(exp.argTypes.map(onExp), onExp(exp.retType), exp.location)
+    case "ArrowExp": {
+      return M.ArrowExp(
+        exp.argTypes.map(onExp),
+        onExp(exp.retType),
+        exp.location,
+      )
     }
 
-    case "The": {
-      return M.The(onExp(exp.type), onExp(exp.exp), exp.location)
+    case "TheExp": {
+      return M.TheExp(onExp(exp.type), onExp(exp.exp), exp.location)
     }
 
-    case "Match": {
-      return M.Match(
+    case "MatchExp": {
+      return M.MatchExp(
         exp.targets.map(onExp),
         exp.clauses.map((clause) =>
           M.MatchClause(

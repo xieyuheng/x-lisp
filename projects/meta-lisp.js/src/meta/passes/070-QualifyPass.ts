@@ -106,16 +106,16 @@ export function qualifyFreeVar(
   exp: M.Exp,
 ): M.Exp {
   switch (exp.kind) {
-    case "Var": {
+    case "VarExp": {
       if (boundNames.has(exp.name)) {
         return exp
       }
 
-      return M.QualifiedVar(mod.name, exp.name, exp.location)
+      return M.QualifiedVarExp(mod.name, exp.name, exp.location)
     }
 
-    case "Lambda": {
-      return M.Lambda(
+    case "LambdaExp": {
+      return M.LambdaExp(
         exp.parameters,
         qualifyFreeVar(
           mod,
@@ -126,8 +126,8 @@ export function qualifyFreeVar(
       )
     }
 
-    case "Polymorphic": {
-      return M.Polymorphic(
+    case "PolymorphicExp": {
+      return M.PolymorphicExp(
         exp.parameters,
         qualifyFreeVar(
           mod,
@@ -138,8 +138,8 @@ export function qualifyFreeVar(
       )
     }
 
-    case "Let1": {
-      return M.Let1(
+    case "Let1Exp": {
+      return M.Let1Exp(
         exp.name,
         qualifyFreeVar(mod, boundNames, exp.rhs),
         qualifyFreeVar(

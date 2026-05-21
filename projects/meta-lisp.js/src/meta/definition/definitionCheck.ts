@@ -76,7 +76,7 @@ export function definitionCheck(definition: M.Definition): null {
       const body =
         definition.parameters.length === 0
           ? definition.body
-          : M.Lambda(
+          : M.LambdaExp(
               definition.parameters,
               definition.body,
               definition.location,
@@ -89,7 +89,7 @@ export function definitionCheck(definition: M.Definition): null {
     }
 
     case "FunctionDefinition": {
-      const body = M.Lambda(
+      const body = M.LambdaExp(
         definition.parameters,
         definition.body,
         definition.location,

@@ -42,12 +42,12 @@ function uniquifyExp(
   exp: M.Exp,
 ): M.Exp {
   switch (exp.kind) {
-    case "Var": {
+    case "VarExp": {
       const foundName = nameTable[exp.name]
-      return foundName ? M.Var(foundName, exp.location) : exp
+      return foundName ? M.VarExp(foundName, exp.location) : exp
     }
 
-    case "Lambda": {
+    case "LambdaExp": {
       countNames(nameCounts, exp.parameters)
       const parameters = exp.parameters.map((name) =>
         generateNameInCounts(nameCounts, name),
@@ -56,18 +56,18 @@ function uniquifyExp(
         ...nameTable,
         ...Object.fromEntries(arrayZip(exp.parameters, parameters)),
       }
-      return M.Lambda(
+      return M.LambdaExp(
         parameters,
         uniquifyExp(nameCounts, newNameTable, exp.body),
         exp.location,
       )
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       countName(nameCounts, exp.name)
       const newName = generateNameInCounts(nameCounts, exp.name)
       const newNameTable = { ...nameTable, [exp.name]: newName }
-      return M.Let1(
+      return M.Let1Exp(
         newName,
         uniquifyExp(nameCounts, nameTable, exp.rhs),
         uniquifyExp(nameCounts, newNameTable, exp.body),

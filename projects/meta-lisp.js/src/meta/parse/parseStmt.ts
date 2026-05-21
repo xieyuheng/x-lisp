@@ -8,7 +8,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { sexp },
   ) => {
     const keyword = S.asList(sexp).elements[0]
-    return M.DefineFunction(
+    return M.DefineFunctionStmt(
       S.asSymbol(name).content,
       S.asList(parameters).elements.map((x) => S.asSymbol(x).content),
       parseBody(body),
@@ -18,7 +18,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
 
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    return M.DefineVariable(
+    return M.DefineVariableStmt(
       S.asSymbol(name).content,
       parseBody(body),
       keyword.location,
@@ -27,7 +27,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
 
   "(cons* 'define-test name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    return M.DefineTest(
+    return M.DefineTestStmt(
       S.asSymbol(name).content,
       parseBody(body),
       keyword.location,
@@ -39,7 +39,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { sexp },
   ) => {
     const keyword = S.asList(sexp).elements[0]
-    return M.DefineType(
+    return M.DefineTypeStmt(
       S.asSymbol(name).content,
       S.asList(parameters).elements.map((x) => S.asSymbol(x).content),
       parseBody(body),
@@ -49,7 +49,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
 
   "(cons* 'define-type name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    return M.DefineType(
+    return M.DefineTypeStmt(
       S.asSymbol(name).content,
       [],
       parseBody(body),
@@ -58,29 +58,29 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "(cons* 'exempt names)": ({ names }, { location }) => {
-    return M.Exempt(
+    return M.ExemptStmt(
       S.asList(names).elements.map((x) => S.asSymbol(x).content),
       location,
     )
   },
 
   "(cons* 'private names)": ({ names }, { location }) => {
-    return M.Private(
+    return M.PrivateStmt(
       S.asList(names).elements.map((x) => S.asSymbol(x).content),
       location,
     )
   },
 
   "`(module ,name)": ({ name }, { location }) => {
-    return M.DeclareModule(S.asSymbol(name).content, location)
+    return M.DeclareModuleStmt(S.asSymbol(name).content, location)
   },
 
   "`(error-module ,name)": ({ name }, { location }) => {
-    return M.DeclareErrorModule(S.asSymbol(name).content, location)
+    return M.DeclareErrorModuleStmt(S.asSymbol(name).content, location)
   },
 
   "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
-    return M.Import(
+    return M.ImportStmt(
       S.asSymbol(modName).content,
       S.asList(entries).elements.map((x) => S.asSymbol(x).content),
       location,
@@ -88,7 +88,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "`(import-as ,modName ,prefix)": ({ modName, prefix }, { location }) => {
-    return M.ImportAs(
+    return M.ImportAsStmt(
       S.asSymbol(modName).content,
       S.asSymbol(prefix).content,
       location,
@@ -96,14 +96,14 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "`(import-all ,modName)": ({ modName, prefix }, { location }) => {
-    return M.ImportAll(S.asSymbol(modName).content, location)
+    return M.ImportAllStmt(S.asSymbol(modName).content, location)
   },
 
   "(cons* 'define-enum head constructors)": (
     { head, constructors },
     { location },
   ) => {
-    return M.DefineEnum(
+    return M.DefineEnumStmt(
       parseTypeConstructor(head),
       S.asList(constructors).elements.map(parseDataConstructor),
       location,
@@ -123,7 +123,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
         location: parts[0].location,
       }
     })
-    return M.DefineOpaqueType(
+    return M.DefineOpaqueTypeStmt(
       typeConstructor.name,
       typeConstructor.parameters,
       parseExp(representation),
@@ -136,7 +136,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { head, constructors },
     { location },
   ) => {
-    return M.DefineAlgebraicType(
+    return M.DefineAlgebraicTypeStmt(
       parseTypeConstructor(head),
       S.asList(constructors).elements.map(parseAlgebraicTypeConstructor),
       location,
@@ -144,7 +144,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "(cons* 'define-struct* head ctor)": ({ head, ctor }, { location }) => {
-    return M.DefineStructStar(
+    return M.DefineStructStarStmt(
       parseTypeConstructor(head),
       parseDataConstructor(S.asList(ctor).elements[0]),
       location,
@@ -152,7 +152,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "(cons* 'define-struct head fields)": ({ head, fields }, { location }) => {
-    return M.DefineStruct(
+    return M.DefineStructStmt(
       parseTypeConstructor(head),
       S.asList(fields).elements.map(parseDataField),
       location,
@@ -193,7 +193,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
       accessorMap.set(S.asSymbol(entry[0]).content, fieldEntry)
     }
 
-    return M.DefineRecordType(
+    return M.DefineRecordTypeStmt(
       parseTypeConstructor(head),
       {
         name: constructorName,
@@ -215,22 +215,22 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "`(claim ,name ,type)": ({ name, type }, { location }) => {
-    return M.Claim(S.asSymbol(name).content, parseExp(type), location)
+    return M.ClaimStmt(S.asSymbol(name).content, parseExp(type), location)
   },
 
   "`(claim-type ,name)": ({ name }, { location }) => {
-    return M.ClaimType(S.asSymbol(name).content, location)
+    return M.ClaimTypeStmt(S.asSymbol(name).content, location)
   },
 
   "`(admit ,name ,type)": ({ name, type }, { location }) => {
-    return M.Admit(S.asSymbol(name).content, parseExp(type), location)
+    return M.AdmitStmt(S.asSymbol(name).content, parseExp(type), location)
   },
 
   "`(declare-primitive-function ,name ,arity)": (
     { name, arity },
     { location },
   ) => {
-    return M.DeclarePrimitiveFunction(
+    return M.DeclarePrimitiveFunctionStmt(
       S.asSymbol(name).content,
       Number(S.asInt(arity).content),
       location,
@@ -238,7 +238,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "`(declare-primitive-variable ,name)": ({ name }, { location }) => {
-    return M.DeclarePrimitiveVariable(S.asSymbol(name).content, location)
+    return M.DeclarePrimitiveVariableStmt(S.asSymbol(name).content, location)
   },
 })
 

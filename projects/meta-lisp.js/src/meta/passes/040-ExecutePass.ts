@@ -25,29 +25,29 @@ export function ExecutePass(
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
-  if (stmt.kind === "Exempt") {
+  if (stmt.kind === "ExemptStmt") {
     for (const name of stmt.names) {
       mod.admitted.add(name)
     }
   }
 
-  if (stmt.kind === "Claim") {
+  if (stmt.kind === "ClaimStmt") {
     M.modClaim(mod, stmt.name, stmt.type)
   }
 
-  if (stmt.kind === "ClaimType") {
+  if (stmt.kind === "ClaimTypeStmt") {
     mod.claimed.set(stmt.name, {
-      exp: M.QualifiedVar("builtin", "type-t", stmt.location),
+      exp: M.QualifiedVarExp("builtin", "type-t", stmt.location),
       type: M.TypeType(),
     })
   }
 
-  if (stmt.kind === "Admit") {
+  if (stmt.kind === "AdmitStmt") {
     M.modClaim(mod, stmt.name, stmt.type)
     mod.admitted.add(stmt.name)
   }
 
-  if (stmt.kind === "DeclarePrimitiveFunction") {
+  if (stmt.kind === "DeclarePrimitiveFunctionStmt") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
       if (definition.arity !== stmt.arity) {
@@ -71,7 +71,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     }
   }
 
-  if (stmt.kind === "DeclarePrimitiveVariable") {
+  if (stmt.kind === "DeclarePrimitiveVariableStmt") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveVariableDefinition") {
       return
@@ -84,7 +84,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     }
   }
 
-  if (stmt.kind === "DefineFunction") {
+  if (stmt.kind === "DefineFunctionStmt") {
     M.modDefine(
       mod,
       stmt.name,
@@ -98,7 +98,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineVariable") {
+  if (stmt.kind === "DefineVariableStmt") {
     M.modDefine(
       mod,
       stmt.name,
@@ -106,7 +106,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineTest") {
+  if (stmt.kind === "DefineTestStmt") {
     M.modDefine(
       mod,
       stmt.name,
@@ -114,22 +114,22 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineType") {
+  if (stmt.kind === "DefineTypeStmt") {
     if (stmt.parameters.length === 0) {
       M.modClaim(
         mod,
         stmt.name,
-        M.QualifiedVar("builtin", "type-t", stmt.location),
+        M.QualifiedVarExp("builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
         mod,
         stmt.name,
-        M.Arrow(
+        M.ArrowExp(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t", stmt.location),
+            M.QualifiedVarExp("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVar("builtin", "type-t", stmt.location),
+          M.QualifiedVarExp("builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
@@ -148,7 +148,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineAlgebraicType") {
+  if (stmt.kind === "DefineAlgebraicTypeStmt") {
     const name = stmt.typeConstructor.name
     const typeConstructor = stmt.typeConstructor
 
@@ -180,23 +180,27 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     }
 
     if (typeConstructor.parameters.length === 0) {
-      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t", stmt.location))
+      M.modClaim(
+        mod,
+        name,
+        M.QualifiedVarExp("builtin", "type-t", stmt.location),
+      )
     } else {
       M.modClaim(
         mod,
         name,
-        M.Arrow(
+        M.ArrowExp(
           range(typeConstructor.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t", stmt.location),
+            M.QualifiedVarExp("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVar("builtin", "type-t", stmt.location),
+          M.QualifiedVarExp("builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
     }
   }
 
-  if (stmt.kind === "DefineOpaqueType") {
+  if (stmt.kind === "DefineOpaqueTypeStmt") {
     const name = stmt.name
     const typeConstructor: M.TypeConstructor = {
       name: stmt.name,
@@ -220,23 +224,27 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
     M.modDefine(mod, name, definition)
 
     if (stmt.parameters.length === 0) {
-      M.modClaim(mod, name, M.QualifiedVar("builtin", "type-t", stmt.location))
+      M.modClaim(
+        mod,
+        name,
+        M.QualifiedVarExp("builtin", "type-t", stmt.location),
+      )
     } else {
       M.modClaim(
         mod,
         name,
-        M.Arrow(
+        M.ArrowExp(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVar("builtin", "type-t", stmt.location),
+            M.QualifiedVarExp("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVar("builtin", "type-t", stmt.location),
+          M.QualifiedVarExp("builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
     }
 
     for (const iface of stmt.interfaceFunctions) {
-      const wrappedType = M.Polymorphic(
+      const wrappedType = M.PolymorphicExp(
         stmt.parameters,
         iface.type,
         iface.location,

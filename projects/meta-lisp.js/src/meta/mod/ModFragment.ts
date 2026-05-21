@@ -18,21 +18,21 @@ export function modFragmentNames(fragment: ModFragment): Set<string> {
 
 function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
   switch (stmt.kind) {
-    case "DefineFunction":
-    case "DefineVariable":
-    case "DefineTest":
-    case "DefineType":
-    case "Claim":
-    case "ClaimType":
-    case "DeclarePrimitiveFunction":
-    case "DeclarePrimitiveVariable": {
+    case "DefineFunctionStmt":
+    case "DefineVariableStmt":
+    case "DefineTestStmt":
+    case "DefineTypeStmt":
+    case "ClaimStmt":
+    case "ClaimTypeStmt":
+    case "DeclarePrimitiveFunctionStmt":
+    case "DeclarePrimitiveVariableStmt": {
       names.add(stmt.name)
       return
     }
 
-    case "DefineEnum":
-    case "DefineAlgebraicType":
-    case "DefineRecordType": {
+    case "DefineEnumStmt":
+    case "DefineAlgebraicTypeStmt":
+    case "DefineRecordTypeStmt": {
       names.add(stmt.typeConstructor.name)
       return
     }

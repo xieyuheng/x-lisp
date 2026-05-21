@@ -17,23 +17,23 @@ export function formatParameters(parameters: Array<string>): string {
 
 export function formatExp(exp: M.Exp): string {
   switch (exp.kind) {
-    case "Keyword": {
+    case "KeywordExp": {
       return `:${exp.content}`
     }
 
-    case "Symbol": {
+    case "SymbolExp": {
       return `'${exp.content}`
     }
 
-    case "String": {
+    case "StringExp": {
       return JSON.stringify(exp.content)
     }
 
-    case "Int": {
+    case "IntExp": {
       return exp.content.toString()
     }
 
-    case "Float": {
+    case "FloatExp": {
       if (Number.isInteger(exp.content)) {
         return `${exp.content.toString()}.0`
       } else {
@@ -41,27 +41,27 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Var": {
+    case "VarExp": {
       return exp.name
     }
 
-    case "QualifiedVar": {
+    case "QualifiedVarExp": {
       return `${exp.modName}/${exp.name}`
     }
 
-    case "Lambda": {
+    case "LambdaExp": {
       const parameters = formatParameters(exp.parameters)
       const body = formatBody(exp.body)
       return `(lambda (${parameters}) ${body})`
     }
 
-    case "Polymorphic": {
+    case "PolymorphicExp": {
       const parameters = formatParameters(exp.parameters)
       const body = formatExp(exp.body)
       return `(polymorphic (${parameters}) ${body})`
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)
       if (args === "") {
@@ -71,7 +71,7 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Pipe": {
+    case "PipeExp": {
       const target = formatExp(exp.target)
       const steps = formatExps(exp.steps)
       if (steps === "") {
@@ -81,7 +81,7 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Chain": {
+    case "ChainExp": {
       const steps = formatExps(exp.steps)
       if (steps === "") {
         return `(chain)`
@@ -90,7 +90,7 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Compose": {
+    case "ComposeExp": {
       const steps = formatExps(exp.steps)
       if (steps === "") {
         return `(compose)`
@@ -99,31 +99,31 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       const rhs = formatExp(exp.rhs)
       const body = formatBody(exp.body)
       return `(begin (= ${exp.name} ${rhs}) ${body})`
     }
 
-    case "Let": {
+    case "LetExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
       return `(let (${bindings}) ${body})`
     }
 
-    case "LetStar": {
+    case "LetStarExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
       return `(let* (${bindings}) ${body})`
     }
 
-    case "Letrec": {
+    case "LetrecExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
       return `(letrec (${bindings}) ${body})`
     }
 
-    case "LocalDefine": {
+    case "LocalDefineExp": {
       if (exp.parameters.length > 0) {
         const params = exp.parameters.join(" ")
         return `(define (${exp.name} ${params}) ${formatBody(exp.body)})`
@@ -132,40 +132,40 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "LetrecStar": {
+    case "LetrecStarExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
       return `(letrec* (${bindings}) ${body})`
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       const head = formatExp(exp.head)
       const body = formatBody(exp.body)
       return `(begin ${head} ${body})`
     }
 
-    case "Begin": {
+    case "BeginExp": {
       const sequence = formatExps(exp.sequence)
       return `(begin ${sequence})`
     }
 
-    case "Assign": {
+    case "AssignExp": {
       return `(= ${exp.name} ${formatExp(exp.rhs)})`
     }
 
-    case "If": {
+    case "IfExp": {
       return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
     }
 
-    case "When": {
+    case "WhenExp": {
       return `(when ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
     }
 
-    case "Unless": {
+    case "UnlessExp": {
       return `(unless ${formatExp(exp.condition)} ${formatExp(exp.alternative)})`
     }
 
-    case "And": {
+    case "AndExp": {
       const exps = formatExps(exp.exps)
       if (exps === "") {
         return `(and)`
@@ -174,7 +174,7 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Or": {
+    case "OrExp": {
       const exps = formatExps(exp.exps)
       if (exps === "") {
         return `(or)`
@@ -183,12 +183,12 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Cond": {
+    case "CondExp": {
       const clauses = exp.clauses.map(formatCondClause)
       return `(cond ${clauses.join(" ")})`
     }
 
-    case "LiteralList": {
+    case "LiteralListExp": {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
@@ -198,12 +198,12 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "LiteralSet": {
+    case "LiteralSetExp": {
       const elements = formatExps(exp.elements)
       return `(@set ${elements})`
     }
 
-    case "LiteralHash": {
+    case "LiteralHashExp": {
       const entries = exp.entries
         .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
         .join(" ")
@@ -214,21 +214,21 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "Quote": {
+    case "QuoteExp": {
       return `(@quote ${S.formatSexp(exp.sexp)})`
     }
 
-    case "Arrow": {
+    case "ArrowExp": {
       const argTypes = exp.argTypes.map(formatExp).join(" ")
       const retType = formatExp(exp.retType)
       return `(-> ${argTypes} ${retType})`
     }
 
-    case "The": {
+    case "TheExp": {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
 
-    case "Match": {
+    case "MatchExp": {
       if (exp.targets.length === 1) {
         const target = formatExp(exp.targets[0])
         const clauses = formatMatchClauses(exp.clauses)
@@ -267,11 +267,11 @@ export function formatMatchClause(clause: M.MatchClause): string {
 }
 
 export function formatBody(body: M.Exp): string {
-  if (body.kind === "Begin1") {
+  if (body.kind === "Begin1Exp") {
     return `${formatExp(body.head)} ${formatBody(body.body)}`
-  } else if (body.kind === "Let1") {
+  } else if (body.kind === "Let1Exp") {
     return `(= ${body.name} ${formatExp(body.rhs)}) ${formatBody(body.body)}`
-  } else if (body.kind === "Begin") {
+  } else if (body.kind === "BeginExp") {
     return formatExps(body.sequence)
   } else {
     return formatExp(body)

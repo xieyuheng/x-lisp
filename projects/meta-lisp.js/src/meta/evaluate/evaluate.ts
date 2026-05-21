@@ -12,7 +12,7 @@ export function evaluate(
   exp: M.Exp,
 ): Value {
   switch (exp.kind) {
-    case "Var": {
+    case "VarExp": {
       const fromEnv = M.envLookup(env, exp.name)
       if (fromEnv) return fromEnv
 
@@ -25,7 +25,7 @@ export function evaluate(
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "QualifiedVar": {
+    case "QualifiedVarExp": {
       const qualifiedMod = M.projectLookupMod(mod.project, exp.modName)
       if (qualifiedMod === undefined) {
         let message = `[evaluate] undefined module prefix`
@@ -43,7 +43,7 @@ export function evaluate(
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "Arrow": {
+    case "ArrowExp": {
       const argTypes = exp.argTypes.map((argType) =>
         M.evaluateType(mode, mod, env, argType),
       )
@@ -51,7 +51,7 @@ export function evaluate(
       return M.TypeValue(M.ArrowType(argTypes, retType))
     }
 
-    case "Polymorphic": {
+    case "PolymorphicExp": {
       const varTypes = exp.parameters.map((parameter) =>
         M.VarType(parameter, BigInt(0)),
       )
@@ -68,7 +68,7 @@ export function evaluate(
       return M.TypeValue(M.PolymorphicType(varTypes, bodyType))
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       const target = evaluate(mode, mod, env, exp.target)
       const args = exp.args.map((arg) => evaluate(mode, mod, env, arg))
       return M.apply(mode, target, args)

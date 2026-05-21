@@ -3,29 +3,29 @@ import * as M from "../index.ts"
 
 export function expOccurredNames(exp: M.Exp): Set<string> {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "QualifiedVar":
-    case "Quote": {
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp":
+    case "QualifiedVarExp":
+    case "QuoteExp": {
       return new Set()
     }
 
-    case "Var": {
+    case "VarExp": {
       return new Set([exp.name])
     }
 
-    case "Lambda": {
+    case "LambdaExp": {
       return setUnionMany([new Set(exp.parameters), expOccurredNames(exp.body)])
     }
 
-    case "Polymorphic": {
+    case "PolymorphicExp": {
       return setUnionMany([new Set(exp.parameters), expOccurredNames(exp.body)])
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       return setUnionMany([
         new Set([exp.name]),
         expOccurredNames(exp.rhs),
@@ -33,7 +33,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
-    case "Let": {
+    case "LetExp": {
       const allNames = exp.bindings.map((b) => b.name)
       return setUnionMany([
         new Set(allNames),
@@ -42,7 +42,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
-    case "LetStar": {
+    case "LetStarExp": {
       const allNames = exp.bindings.map((b) => b.name)
       return setUnionMany([
         new Set(allNames),
@@ -51,7 +51,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
-    case "Letrec": {
+    case "LetrecExp": {
       const allNames = exp.bindings.map((b) => b.name)
       return setUnionMany([
         new Set(allNames),
@@ -60,14 +60,14 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
-    case "LocalDefine": {
+    case "LocalDefineExp": {
       return setUnionMany([
         new Set([exp.name, ...exp.parameters]),
         expOccurredNames(exp.body),
       ])
     }
 
-    case "LetrecStar": {
+    case "LetrecStarExp": {
       const allNames = exp.bindings.map((b) => b.name)
       return setUnionMany([
         new Set(allNames),
@@ -76,44 +76,44 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       return setUnionMany([
         expOccurredNames(exp.target),
         ...exp.args.map((a) => expOccurredNames(a)),
       ])
     }
 
-    case "Pipe": {
+    case "PipeExp": {
       return setUnionMany([
         expOccurredNames(exp.target),
         ...exp.steps.map((s) => expOccurredNames(s)),
       ])
     }
 
-    case "Chain": {
+    case "ChainExp": {
       return setUnionMany(exp.steps.map((s) => expOccurredNames(s)))
     }
 
-    case "Compose": {
+    case "ComposeExp": {
       return setUnionMany(exp.steps.map((s) => expOccurredNames(s)))
     }
 
-    case "Begin1": {
+    case "Begin1Exp": {
       return setUnionMany([
         expOccurredNames(exp.head),
         expOccurredNames(exp.body),
       ])
     }
 
-    case "Begin": {
+    case "BeginExp": {
       return setUnionMany(exp.sequence.map((e) => expOccurredNames(e)))
     }
 
-    case "Assign": {
+    case "AssignExp": {
       return setUnionMany([new Set([exp.name]), expOccurredNames(exp.rhs)])
     }
 
-    case "If": {
+    case "IfExp": {
       return setUnionMany([
         expOccurredNames(exp.condition),
         expOccurredNames(exp.consequent),
@@ -121,29 +121,29 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
 
-    case "When": {
+    case "WhenExp": {
       return setUnionMany([
         expOccurredNames(exp.condition),
         expOccurredNames(exp.consequent),
       ])
     }
 
-    case "Unless": {
+    case "UnlessExp": {
       return setUnionMany([
         expOccurredNames(exp.condition),
         expOccurredNames(exp.alternative),
       ])
     }
 
-    case "And": {
+    case "AndExp": {
       return setUnionMany(exp.exps.map((e) => expOccurredNames(e)))
     }
 
-    case "Or": {
+    case "OrExp": {
       return setUnionMany(exp.exps.map((e) => expOccurredNames(e)))
     }
 
-    case "Cond": {
+    case "CondExp": {
       return setUnionMany(
         exp.clauses.flatMap((clause) => [
           expOccurredNames(clause.question),
@@ -152,15 +152,15 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       )
     }
 
-    case "LiteralList": {
+    case "LiteralListExp": {
       return setUnionMany(exp.elements.map((e) => expOccurredNames(e)))
     }
 
-    case "LiteralSet": {
+    case "LiteralSetExp": {
       return setUnionMany(exp.elements.map((e) => expOccurredNames(e)))
     }
 
-    case "LiteralHash": {
+    case "LiteralHashExp": {
       return setUnionMany(
         exp.entries.flatMap((entry) => [
           expOccurredNames(entry.key),
@@ -169,21 +169,21 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       )
     }
 
-    case "Arrow": {
+    case "ArrowExp": {
       return setUnionMany([
         ...exp.argTypes.map((t) => expOccurredNames(t)),
         expOccurredNames(exp.retType),
       ])
     }
 
-    case "The": {
+    case "TheExp": {
       return setUnionMany([
         expOccurredNames(exp.type),
         expOccurredNames(exp.exp),
       ])
     }
 
-    case "Match": {
+    case "MatchExp": {
       return setUnionMany([
         ...exp.targets.map((t) => expOccurredNames(t)),
         ...exp.clauses.flatMap((clause) => [

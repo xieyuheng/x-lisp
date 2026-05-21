@@ -2,40 +2,40 @@ import * as M from "../index.ts"
 
 export function formatStmt(stmt: M.Stmt): string {
   switch (stmt.kind) {
-    case "Import": {
+    case "ImportStmt": {
       return `(import ${stmt.modName} ${stmt.names.join(" ")})`
     }
 
-    case "ImportAs": {
+    case "ImportAsStmt": {
       return `(import-as ${stmt.modName} ${stmt.prefix})`
     }
 
-    case "ImportAll": {
+    case "ImportAllStmt": {
       return `(import-all ${stmt.modName})`
     }
 
-    case "DefineFunction": {
+    case "DefineFunctionStmt": {
       const parameters = stmt.parameters.join(" ")
       const body = M.formatBody(stmt.body)
       return `(define (${stmt.name} ${parameters}) ${body})`
     }
 
-    case "DefineVariable": {
+    case "DefineVariableStmt": {
       const body = M.formatBody(stmt.body)
       return `(define ${stmt.name} ${body})`
     }
 
-    case "DefineTest": {
+    case "DefineTestStmt": {
       const body = M.formatBody(stmt.body)
       return `(define-test ${stmt.name} ${body})`
     }
 
-    case "DefineType": {
+    case "DefineTypeStmt": {
       const body = M.formatBody(stmt.body)
       return `(define-type ${stmt.name} ${body})`
     }
 
-    case "DefineEnum": {
+    case "DefineEnumStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
@@ -43,24 +43,24 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-enum ${type} ${constructors})`
     }
 
-    case "DefineStructStar": {
+    case "DefineStructStarStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructor = formatDataConstructor(stmt.dataConstructor)
       return `(define-struct* ${type} ${constructor})`
     }
 
-    case "DefineStruct": {
+    case "DefineStructStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const fields = stmt.fields.map(formatDataField).join(" ")
       return `(define-struct ${type} ${fields})`
     }
 
-    case "DefineRecordType": {
+    case "DefineRecordTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       return `(define-record-type ${type} ${formatAlgebraicTypeConstructor(stmt.dataConstructor)})`
     }
 
-    case "DefineOpaqueType": {
+    case "DefineOpaqueTypeStmt": {
       const params =
         stmt.parameters.length > 0
           ? `(${stmt.name} ${stmt.parameters.join(" ")})`
@@ -72,7 +72,7 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-opaque-type ${params} ${repr} ${ifaces})`
     }
 
-    case "DefineAlgebraicType": {
+    case "DefineAlgebraicTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors
         .map(formatAlgebraicTypeConstructor)
@@ -80,39 +80,39 @@ export function formatStmt(stmt: M.Stmt): string {
       return `(define-algebraic-type ${type} ${constructors})`
     }
 
-    case "Claim": {
+    case "ClaimStmt": {
       return `(claim ${stmt.name} ${M.formatExp(stmt.type)})`
     }
 
-    case "ClaimType": {
+    case "ClaimTypeStmt": {
       return `(claim-type ${stmt.name})`
     }
 
-    case "Admit": {
+    case "AdmitStmt": {
       return `(admit ${stmt.name} ${M.formatExp(stmt.type)})`
     }
 
-    case "Exempt": {
+    case "ExemptStmt": {
       return `(exempt ${stmt.names.join(" ")})`
     }
 
-    case "Private": {
+    case "PrivateStmt": {
       return `(private ${stmt.names.join(" ")})`
     }
 
-    case "DeclareModule": {
+    case "DeclareModuleStmt": {
       return `(module ${stmt.name})`
     }
 
-    case "DeclareErrorModule": {
+    case "DeclareErrorModuleStmt": {
       return `(error-module ${stmt.name})`
     }
 
-    case "DeclarePrimitiveFunction": {
+    case "DeclarePrimitiveFunctionStmt": {
       return `(declare-primitive-function ${stmt.name} ${stmt.arity})`
     }
 
-    case "DeclarePrimitiveVariable": {
+    case "DeclarePrimitiveVariableStmt": {
       return `(declare-primitive-variable ${stmt.name})`
     }
   }

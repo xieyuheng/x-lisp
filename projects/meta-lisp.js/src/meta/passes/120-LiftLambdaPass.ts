@@ -57,7 +57,7 @@ function liftLambdaDefinition(
 
 function liftLambdaExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Lambda": {
+    case "LambdaExp": {
       const freeNames = Array.from(M.expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
       const newFunctionName = `${state.definition.name}©λ${liftedCount}`
@@ -77,11 +77,11 @@ function liftLambdaExp(state: State, exp: M.Exp): M.Exp {
       const qualifiedFunctionName = `${state.mod.name}/${newFunctionName}`
 
       if (freeNames.length == 0) {
-        return M.Var(qualifiedFunctionName, exp.location)
+        return M.VarExp(qualifiedFunctionName, exp.location)
       } else {
-        return M.Apply(
-          M.Var(qualifiedFunctionName, exp.location),
-          freeNames.map((name) => M.Var(name, exp.location)),
+        return M.ApplyExp(
+          M.VarExp(qualifiedFunctionName, exp.location),
+          freeNames.map((name) => M.VarExp(name, exp.location)),
           exp.location,
         )
       }

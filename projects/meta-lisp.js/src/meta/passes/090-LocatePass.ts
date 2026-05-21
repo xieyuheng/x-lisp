@@ -83,7 +83,7 @@ function locateDefinition(definition: M.Definition): null {
 
 function locateSpecialApply(exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Apply": {
+    case "ApplyExp": {
       if (matchLocateEntry(exp.target, exp.args)) {
         if (!exp.location) {
           let message = `[locateSpecialApply] expect source location`
@@ -91,7 +91,7 @@ function locateSpecialApply(exp: M.Exp): M.Exp {
           throw new Error(message)
         }
 
-        return M.Apply(
+        return M.ApplyExp(
           targetWithLocation(exp.target),
           [
             ...exp.args.map((e) => locateSpecialApply(e)),
@@ -100,7 +100,7 @@ function locateSpecialApply(exp: M.Exp): M.Exp {
           exp.location,
         )
       } else {
-        return M.Apply(
+        return M.ApplyExp(
           exp.target,
           exp.args.map((e) => locateSpecialApply(e)),
           exp.location,
@@ -149,7 +149,7 @@ function findLocateEntry(name: string): {
 }
 
 function matchLocateEntry(exp: M.Exp, args: M.Exp[]): boolean {
-  if (exp.kind !== "QualifiedVar") return false
+  if (exp.kind !== "QualifiedVarExp") return false
   if (exp.modName !== "builtin") return false
   const entry = locateTable.find((entry) => entry.source === exp.name)
   if (entry === undefined) return false
@@ -157,16 +157,16 @@ function matchLocateEntry(exp: M.Exp, args: M.Exp[]): boolean {
 }
 
 function targetWithLocation(exp: M.Exp): M.Exp {
-  assert(exp.kind === "QualifiedVar")
+  assert(exp.kind === "QualifiedVarExp")
   const entry = findLocateEntry(exp.name)
-  return M.QualifiedVar(exp.modName, entry.target, exp.location)
+  return M.QualifiedVarExp(exp.modName, entry.target, exp.location)
 }
 
 function expFromSourceLocation(location: S.SourceLocation): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("make-source-location", location),
-      M.String(location.path, location),
+      M.SymbolExp("make-source-location", location),
+      M.StringExp(location.path, location),
       expFromSpan(location.span, location),
     ],
     location,
@@ -176,7 +176,7 @@ function expFromSourceLocation(location: S.SourceLocation): M.Exp {
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("make-source-span", location),
+      M.SymbolExp("make-source-span", location),
       expFromPosition(span.start, location),
       expFromPosition(span.end, location),
     ],
@@ -190,10 +190,10 @@ function expFromPosition(
 ): M.Exp {
   return M.desugarList(
     [
-      M.Symbol("make-source-position", location),
-      M.Int(BigInt(position.index), location),
-      M.Int(BigInt(position.row), location),
-      M.Int(BigInt(position.column), location),
+      M.SymbolExp("make-source-position", location),
+      M.IntExp(BigInt(position.index), location),
+      M.IntExp(BigInt(position.row), location),
+      M.IntExp(BigInt(position.column), location),
     ],
     location,
   )

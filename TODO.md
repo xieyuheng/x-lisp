@@ -1,15 +1,22 @@
 ---
 
-在 [meta-lisp.js] 的 meta 中，给 Exp 的 variant 加上 *Exp 后缀，给 Stmt 的 variant 加上 *Stmt 后缀。
+在 [sexp.js] 中，给所有 Sexp 加上 *Sexp，比如 AtomSexp ListSexp SymbolSexp 等等
 
 注意：
 
 - variant 的 constructor 函数也要修改。
 - kind 字段也要修改。
+- 所有依赖 sexp.js 的项目中的代码，也需要一起修改。
 
 ---
 
 [meta-lisp.js] evaluate -- Env 应该像是 Ctx 一样。作为一个 可扩展的 record type 而存在，不应该直接定义为 Map。
+
+注意：
+
+- Env 的 API 尽量保持原样，或者模仿 Ctx 的 API。
+- Env 的所有操作都要通过 API 来完成，不能直接操作 Env。
+- 需要的时候你可以设计新的 API 函数。
 
 ---
 

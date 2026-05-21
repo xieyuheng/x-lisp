@@ -7,102 +7,102 @@ import type {
 import { type Exp } from "../exp/index.ts"
 
 export type Stmt =
-  | Import
-  | ImportAs
-  | ImportAll
-  | DefineFunction
-  | DefineVariable
-  | DefineTest
-  | DefineType
-  | DefineEnum
-  | DefineAlgebraicType
-  | DefineStruct
-  | DefineStructStar
-  | DefineRecordType
-  | DefineOpaqueType
-  | Claim
-  | ClaimType
-  | Admit
-  | Private
-  | Exempt
-  | DeclareModule
-  | DeclareErrorModule
-  | DeclarePrimitiveFunction
-  | DeclarePrimitiveVariable
+  | ImportStmt
+  | ImportAsStmt
+  | ImportAllStmt
+  | DefineFunctionStmt
+  | DefineVariableStmt
+  | DefineTestStmt
+  | DefineTypeStmt
+  | DefineEnumStmt
+  | DefineAlgebraicTypeStmt
+  | DefineStructStmt
+  | DefineStructStarStmt
+  | DefineRecordTypeStmt
+  | DefineOpaqueTypeStmt
+  | ClaimStmt
+  | ClaimTypeStmt
+  | AdmitStmt
+  | PrivateStmt
+  | ExemptStmt
+  | DeclareModuleStmt
+  | DeclareErrorModuleStmt
+  | DeclarePrimitiveFunctionStmt
+  | DeclarePrimitiveVariableStmt
 
-export type Import = {
-  kind: "Import"
+export type ImportStmt = {
+  kind: "ImportStmt"
   modName: string
   names: Array<string>
   location: SourceLocation
 }
 
-export function Import(
+export function ImportStmt(
   modName: string,
   names: Array<string>,
   location: SourceLocation,
-): Import {
+): ImportStmt {
   return {
-    kind: "Import",
+    kind: "ImportStmt",
     modName,
     names,
     location,
   }
 }
 
-export type ImportAs = {
-  kind: "ImportAs"
+export type ImportAsStmt = {
+  kind: "ImportAsStmt"
   modName: string
   prefix: string
   location: SourceLocation
 }
 
-export function ImportAs(
+export function ImportAsStmt(
   modName: string,
   prefix: string,
   location: SourceLocation,
-): ImportAs {
+): ImportAsStmt {
   return {
-    kind: "ImportAs",
+    kind: "ImportAsStmt",
     modName,
     prefix,
     location,
   }
 }
 
-export type ImportAll = {
-  kind: "ImportAll"
+export type ImportAllStmt = {
+  kind: "ImportAllStmt"
   modName: string
   location: SourceLocation
 }
 
-export function ImportAll(
+export function ImportAllStmt(
   modName: string,
   location: SourceLocation,
-): ImportAll {
+): ImportAllStmt {
   return {
-    kind: "ImportAll",
+    kind: "ImportAllStmt",
     modName,
     location,
   }
 }
 
-export type DefineFunction = {
-  kind: "DefineFunction"
+export type DefineFunctionStmt = {
+  kind: "DefineFunctionStmt"
   name: string
   parameters: Array<string>
   body: Exp
   location: SourceLocation
 }
 
-export function DefineFunction(
+export function DefineFunctionStmt(
   name: string,
   parameters: Array<string>,
   body: Exp,
   location: SourceLocation,
-): DefineFunction {
+): DefineFunctionStmt {
   return {
-    kind: "DefineFunction",
+    kind: "DefineFunctionStmt",
     name,
     parameters,
     body,
@@ -110,62 +110,62 @@ export function DefineFunction(
   }
 }
 
-export type DefineVariable = {
-  kind: "DefineVariable"
+export type DefineVariableStmt = {
+  kind: "DefineVariableStmt"
   name: string
   body: Exp
   location: SourceLocation
 }
 
-export function DefineVariable(
+export function DefineVariableStmt(
   name: string,
   body: Exp,
   location: SourceLocation,
-): DefineVariable {
+): DefineVariableStmt {
   return {
-    kind: "DefineVariable",
+    kind: "DefineVariableStmt",
     name,
     body,
     location,
   }
 }
 
-export type DefineTest = {
-  kind: "DefineTest"
+export type DefineTestStmt = {
+  kind: "DefineTestStmt"
   name: string
   body: Exp
   location: SourceLocation
 }
 
-export function DefineTest(
+export function DefineTestStmt(
   name: string,
   body: Exp,
   location: SourceLocation,
-): DefineTest {
+): DefineTestStmt {
   return {
-    kind: "DefineTest",
+    kind: "DefineTestStmt",
     name,
     body,
     location,
   }
 }
 
-export type DefineType = {
-  kind: "DefineType"
+export type DefineTypeStmt = {
+  kind: "DefineTypeStmt"
   name: string
   parameters: Array<string>
   body: Exp
   location: SourceLocation
 }
 
-export function DefineType(
+export function DefineTypeStmt(
   name: string,
   parameters: Array<string>,
   body: Exp,
   location: SourceLocation,
-): DefineType {
+): DefineTypeStmt {
   return {
-    kind: "DefineType",
+    kind: "DefineTypeStmt",
     name,
     parameters,
     body,
@@ -173,88 +173,88 @@ export function DefineType(
   }
 }
 
-export type DefineEnum = {
-  kind: "DefineEnum"
+export type DefineEnumStmt = {
+  kind: "DefineEnumStmt"
   typeConstructor: TypeConstructor
   dataConstructors: Array<PreDataConstructor>
   location: SourceLocation
 }
 
-export function DefineEnum(
+export function DefineEnumStmt(
   typeConstructor: TypeConstructor,
   dataConstructors: Array<PreDataConstructor>,
   location: SourceLocation,
-): DefineEnum {
+): DefineEnumStmt {
   return {
-    kind: "DefineEnum",
+    kind: "DefineEnumStmt",
     typeConstructor,
     dataConstructors,
     location,
   }
 }
 
-export type DefineStructStar = {
-  kind: "DefineStructStar"
+export type DefineStructStarStmt = {
+  kind: "DefineStructStarStmt"
   typeConstructor: TypeConstructor
   dataConstructor: PreDataConstructor
   location: SourceLocation
 }
 
-export function DefineStructStar(
+export function DefineStructStarStmt(
   typeConstructor: TypeConstructor,
   dataConstructor: PreDataConstructor,
   location: SourceLocation,
-): DefineStructStar {
+): DefineStructStarStmt {
   return {
-    kind: "DefineStructStar",
+    kind: "DefineStructStarStmt",
     typeConstructor,
     dataConstructor,
     location,
   }
 }
 
-export type DefineStruct = {
-  kind: "DefineStruct"
+export type DefineStructStmt = {
+  kind: "DefineStructStmt"
   typeConstructor: TypeConstructor
   fields: Array<DataField>
   location: SourceLocation
 }
 
-export function DefineStruct(
+export function DefineStructStmt(
   typeConstructor: TypeConstructor,
   fields: Array<DataField>,
   location: SourceLocation,
-): DefineStruct {
+): DefineStructStmt {
   return {
-    kind: "DefineStruct",
+    kind: "DefineStructStmt",
     typeConstructor,
     fields,
     location,
   }
 }
 
-export type DefineRecordType = {
-  kind: "DefineRecordType"
+export type DefineRecordTypeStmt = {
+  kind: "DefineRecordTypeStmt"
   typeConstructor: TypeConstructor
   dataConstructor: AlgebraicTypeConstructor
   location: SourceLocation
 }
 
-export function DefineRecordType(
+export function DefineRecordTypeStmt(
   typeConstructor: TypeConstructor,
   dataConstructor: AlgebraicTypeConstructor,
   location: SourceLocation,
-): DefineRecordType {
+): DefineRecordTypeStmt {
   return {
-    kind: "DefineRecordType",
+    kind: "DefineRecordTypeStmt",
     typeConstructor,
     dataConstructor,
     location,
   }
 }
 
-export type DefineOpaqueType = {
-  kind: "DefineOpaqueType"
+export type DefineOpaqueTypeStmt = {
+  kind: "DefineOpaqueTypeStmt"
   name: string
   parameters: Array<string>
   representationType: Exp
@@ -266,7 +266,7 @@ export type DefineOpaqueType = {
   location: SourceLocation
 }
 
-export function DefineOpaqueType(
+export function DefineOpaqueTypeStmt(
   name: string,
   parameters: Array<string>,
   representationType: Exp,
@@ -276,9 +276,9 @@ export function DefineOpaqueType(
     location: SourceLocation
   }>,
   location: SourceLocation,
-): DefineOpaqueType {
+): DefineOpaqueTypeStmt {
   return {
-    kind: "DefineOpaqueType",
+    kind: "DefineOpaqueTypeStmt",
     name,
     parameters,
     representationType,
@@ -302,177 +302,183 @@ export type AlgebraicTypeConstructor = {
   location: SourceLocation
 }
 
-export type DefineAlgebraicType = {
-  kind: "DefineAlgebraicType"
+export type DefineAlgebraicTypeStmt = {
+  kind: "DefineAlgebraicTypeStmt"
   typeConstructor: TypeConstructor
   dataConstructors: Array<AlgebraicTypeConstructor>
   location: SourceLocation
 }
 
-export function DefineAlgebraicType(
+export function DefineAlgebraicTypeStmt(
   typeConstructor: TypeConstructor,
   dataConstructors: Array<AlgebraicTypeConstructor>,
   location: SourceLocation,
-): DefineAlgebraicType {
+): DefineAlgebraicTypeStmt {
   return {
-    kind: "DefineAlgebraicType",
+    kind: "DefineAlgebraicTypeStmt",
     typeConstructor,
     dataConstructors,
     location,
   }
 }
 
-export type Claim = {
-  kind: "Claim"
+export type ClaimStmt = {
+  kind: "ClaimStmt"
   name: string
   type: Exp
   location: SourceLocation
 }
 
-export function Claim(
+export function ClaimStmt(
   name: string,
   type: Exp,
   location: SourceLocation,
-): Claim {
+): ClaimStmt {
   return {
-    kind: "Claim",
+    kind: "ClaimStmt",
     name,
     type,
     location,
   }
 }
 
-export type ClaimType = {
-  kind: "ClaimType"
+export type ClaimTypeStmt = {
+  kind: "ClaimTypeStmt"
   name: string
   location: SourceLocation
 }
 
-export function ClaimType(name: string, location: SourceLocation): ClaimType {
+export function ClaimTypeStmt(
+  name: string,
+  location: SourceLocation,
+): ClaimTypeStmt {
   return {
-    kind: "ClaimType",
+    kind: "ClaimTypeStmt",
     name,
     location,
   }
 }
 
-export type Admit = {
-  kind: "Admit"
+export type AdmitStmt = {
+  kind: "AdmitStmt"
   name: string
   type: Exp
   location: SourceLocation
 }
 
-export function Admit(
+export function AdmitStmt(
   name: string,
   type: Exp,
   location: SourceLocation,
-): Admit {
+): AdmitStmt {
   return {
-    kind: "Admit",
+    kind: "AdmitStmt",
     name,
     type,
     location,
   }
 }
 
-export type Exempt = {
-  kind: "Exempt"
+export type ExemptStmt = {
+  kind: "ExemptStmt"
   names: Array<string>
   location: SourceLocation
 }
 
-export function Exempt(names: Array<string>, location: SourceLocation): Exempt {
-  return {
-    kind: "Exempt",
-    names,
-    location,
-  }
-}
-
-export type Private = {
-  kind: "Private"
-  names: Array<string>
-  location: SourceLocation
-}
-
-export function Private(
+export function ExemptStmt(
   names: Array<string>,
   location: SourceLocation,
-): Private {
+): ExemptStmt {
   return {
-    kind: "Private",
+    kind: "ExemptStmt",
     names,
     location,
   }
 }
 
-export type DeclareModule = {
-  kind: "DeclareModule"
+export type PrivateStmt = {
+  kind: "PrivateStmt"
+  names: Array<string>
+  location: SourceLocation
+}
+
+export function PrivateStmt(
+  names: Array<string>,
+  location: SourceLocation,
+): PrivateStmt {
+  return {
+    kind: "PrivateStmt",
+    names,
+    location,
+  }
+}
+
+export type DeclareModuleStmt = {
+  kind: "DeclareModuleStmt"
   name: string
   location: SourceLocation
 }
 
-export function DeclareModule(
+export function DeclareModuleStmt(
   name: string,
   location: SourceLocation,
-): DeclareModule {
+): DeclareModuleStmt {
   return {
-    kind: "DeclareModule",
+    kind: "DeclareModuleStmt",
     name,
     location,
   }
 }
 
-export type DeclareErrorModule = {
-  kind: "DeclareErrorModule"
+export type DeclareErrorModuleStmt = {
+  kind: "DeclareErrorModuleStmt"
   name: string
   location: SourceLocation
 }
 
-export function DeclareErrorModule(
+export function DeclareErrorModuleStmt(
   name: string,
   location: SourceLocation,
-): DeclareErrorModule {
+): DeclareErrorModuleStmt {
   return {
-    kind: "DeclareErrorModule",
+    kind: "DeclareErrorModuleStmt",
     name,
     location,
   }
 }
 
-export type DeclarePrimitiveFunction = {
-  kind: "DeclarePrimitiveFunction"
+export type DeclarePrimitiveFunctionStmt = {
+  kind: "DeclarePrimitiveFunctionStmt"
   name: string
   arity: number
   location: SourceLocation
 }
 
-export function DeclarePrimitiveFunction(
+export function DeclarePrimitiveFunctionStmt(
   name: string,
   arity: number,
   location: SourceLocation,
-): DeclarePrimitiveFunction {
+): DeclarePrimitiveFunctionStmt {
   return {
-    kind: "DeclarePrimitiveFunction",
+    kind: "DeclarePrimitiveFunctionStmt",
     name,
     arity,
     location,
   }
 }
 
-export type DeclarePrimitiveVariable = {
-  kind: "DeclarePrimitiveVariable"
+export type DeclarePrimitiveVariableStmt = {
+  kind: "DeclarePrimitiveVariableStmt"
   name: string
   location: SourceLocation
 }
 
-export function DeclarePrimitiveVariable(
+export function DeclarePrimitiveVariableStmt(
   name: string,
   location: SourceLocation,
-): DeclarePrimitiveVariable {
+): DeclarePrimitiveVariableStmt {
   return {
-    kind: "DeclarePrimitiveVariable",
+    kind: "DeclarePrimitiveVariableStmt",
     name,
     location,
   }

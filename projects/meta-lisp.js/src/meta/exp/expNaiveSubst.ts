@@ -8,41 +8,41 @@ import * as M from "../index.ts"
 
 export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "QualifiedVar":
-    case "Quote": {
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp":
+    case "QualifiedVarExp":
+    case "QuoteExp": {
       return exp
     }
 
-    case "Var": {
+    case "VarExp": {
       if (exp.name === name) return rhs
       return exp
     }
 
-    case "Lambda": {
+    case "LambdaExp": {
       if (exp.parameters.includes(name)) return exp
-      return M.Lambda(
+      return M.LambdaExp(
         exp.parameters,
         expNaiveSubst(exp.body, name, rhs),
         exp.location,
       )
     }
 
-    case "Polymorphic": {
+    case "PolymorphicExp": {
       if (exp.parameters.includes(name)) return exp
-      return M.Polymorphic(
+      return M.PolymorphicExp(
         exp.parameters,
         expNaiveSubst(exp.body, name, rhs),
         exp.location,
       )
     }
 
-    case "Let1": {
-      return M.Let1(
+    case "Let1Exp": {
+      return M.Let1Exp(
         exp.name,
         expNaiveSubst(exp.rhs, name, rhs),
         exp.name === name ? exp.body : expNaiveSubst(exp.body, name, rhs),
@@ -50,10 +50,10 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "Let": {
+    case "LetExp": {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const shadowed = allNames.has(name)
-      return M.Let(
+      return M.LetExp(
         exp.bindings.map((b) =>
           M.Binding(b.name, expNaiveSubst(b.rhs, name, rhs), b.location),
         ),
@@ -62,7 +62,7 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "LetStar": {
+    case "LetStarExp": {
       const newBindings: Array<M.Binding> = []
       let shadowed = false
       for (const b of exp.bindings) {
@@ -70,17 +70,17 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
         newBindings.push(M.Binding(b.name, newRhs, b.location))
         if (b.name === name) shadowed = true
       }
-      return M.LetStar(
+      return M.LetStarExp(
         newBindings,
         shadowed ? exp.body : expNaiveSubst(exp.body, name, rhs),
         exp.location,
       )
     }
 
-    case "Letrec": {
+    case "LetrecExp": {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const shadowed = allNames.has(name)
-      return M.Letrec(
+      return M.LetrecExp(
         shadowed
           ? exp.bindings
           : exp.bindings.map((b) =>
@@ -91,10 +91,10 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "LetrecStar": {
+    case "LetrecStarExp": {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const shadowed = allNames.has(name)
-      return M.LetrecStar(
+      return M.LetrecStarExp(
         shadowed
           ? exp.bindings
           : exp.bindings.map((b) =>
@@ -105,7 +105,7 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "Match": {
+    case "MatchExp": {
       const newTargets = exp.targets.map((t) => expNaiveSubst(t, name, rhs))
       const newClauses = exp.clauses.map((clause) => {
         const patternsBoundNames = setUnionMany(
@@ -118,19 +118,19 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
           clause.location,
         )
       })
-      return M.Match(newTargets, newClauses, exp.location)
+      return M.MatchExp(newTargets, newClauses, exp.location)
     }
 
-    case "Begin": {
+    case "BeginExp": {
       const newSequence: Array<M.Exp> = []
       let shadowed = false
       for (const element of exp.sequence) {
-        if (element.kind === "LocalDefine") {
+        if (element.kind === "LocalDefineExp") {
           const body = shadowed
             ? element.body
             : expNaiveSubst(element.body, name, rhs)
           newSequence.push(
-            M.LocalDefine(
+            M.LocalDefineExp(
               element.name,
               element.parameters,
               body,
@@ -138,11 +138,11 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
             ),
           )
           if (element.name === name) shadowed = true
-        } else if (element.kind === "Assign") {
+        } else if (element.kind === "AssignExp") {
           const newRhs = shadowed
             ? element.rhs
             : expNaiveSubst(element.rhs, name, rhs)
-          newSequence.push(M.Assign(element.name, newRhs, element.location))
+          newSequence.push(M.AssignExp(element.name, newRhs, element.location))
           if (element.name === name) shadowed = true
         } else {
           newSequence.push(
@@ -150,59 +150,59 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
           )
         }
       }
-      return M.Begin(newSequence, exp.location)
+      return M.BeginExp(newSequence, exp.location)
     }
 
-    case "LocalDefine": {
+    case "LocalDefineExp": {
       let message = `[expNaiveSubst] local (define) can only appear in (begin)`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "Assign": {
+    case "AssignExp": {
       let message = `[expNaiveSubst] (=) can only appear in (begin)`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "Apply": {
-      return M.Apply(
+    case "ApplyExp": {
+      return M.ApplyExp(
         expNaiveSubst(exp.target, name, rhs),
         exp.args.map((a) => expNaiveSubst(a, name, rhs)),
         exp.location,
       )
     }
 
-    case "Pipe": {
-      return M.Pipe(
+    case "PipeExp": {
+      return M.PipeExp(
         expNaiveSubst(exp.target, name, rhs),
         exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
         exp.location,
       )
     }
 
-    case "Chain": {
-      return M.Chain(
+    case "ChainExp": {
+      return M.ChainExp(
         exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
         exp.location,
       )
     }
 
-    case "Compose": {
-      return M.Compose(
+    case "ComposeExp": {
+      return M.ComposeExp(
         exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
         exp.location,
       )
     }
 
-    case "Begin1": {
-      return M.Begin1(
+    case "Begin1Exp": {
+      return M.Begin1Exp(
         expNaiveSubst(exp.head, name, rhs),
         expNaiveSubst(exp.body, name, rhs),
         exp.location,
       )
     }
 
-    case "If": {
-      return M.If(
+    case "IfExp": {
+      return M.IfExp(
         expNaiveSubst(exp.condition, name, rhs),
         expNaiveSubst(exp.consequent, name, rhs),
         expNaiveSubst(exp.alternative, name, rhs),
@@ -210,38 +210,38 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "When": {
-      return M.When(
+    case "WhenExp": {
+      return M.WhenExp(
         expNaiveSubst(exp.condition, name, rhs),
         expNaiveSubst(exp.consequent, name, rhs),
         exp.location,
       )
     }
 
-    case "Unless": {
-      return M.Unless(
+    case "UnlessExp": {
+      return M.UnlessExp(
         expNaiveSubst(exp.condition, name, rhs),
         expNaiveSubst(exp.alternative, name, rhs),
         exp.location,
       )
     }
 
-    case "And": {
-      return M.And(
+    case "AndExp": {
+      return M.AndExp(
         exp.exps.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )
     }
 
-    case "Or": {
-      return M.Or(
+    case "OrExp": {
+      return M.OrExp(
         exp.exps.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )
     }
 
-    case "Cond": {
-      return M.Cond(
+    case "CondExp": {
+      return M.CondExp(
         exp.clauses.map((clause) => ({
           question: expNaiveSubst(clause.question, name, rhs),
           answer: expNaiveSubst(clause.answer, name, rhs),
@@ -251,22 +251,22 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "LiteralList": {
-      return M.LiteralList(
+    case "LiteralListExp": {
+      return M.LiteralListExp(
         exp.elements.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )
     }
 
-    case "LiteralSet": {
-      return M.LiteralSet(
+    case "LiteralSetExp": {
+      return M.LiteralSetExp(
         exp.elements.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )
     }
 
-    case "LiteralHash": {
-      return M.LiteralHash(
+    case "LiteralHashExp": {
+      return M.LiteralHashExp(
         exp.entries.map((entry) => ({
           key: expNaiveSubst(entry.key, name, rhs),
           value: expNaiveSubst(entry.value, name, rhs),
@@ -275,16 +275,16 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "Arrow": {
-      return M.Arrow(
+    case "ArrowExp": {
+      return M.ArrowExp(
         exp.argTypes.map((t) => expNaiveSubst(t, name, rhs)),
         expNaiveSubst(exp.retType, name, rhs),
         exp.location,
       )
     }
 
-    case "The": {
-      return M.The(
+    case "TheExp": {
+      return M.TheExp(
         expNaiveSubst(exp.type, name, rhs),
         expNaiveSubst(exp.exp, name, rhs),
         exp.location,

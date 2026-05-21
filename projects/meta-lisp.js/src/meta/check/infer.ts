@@ -4,38 +4,38 @@ import * as M from "../index.ts"
 export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   return (subst) => {
     switch (exp.kind) {
-      case "Symbol": {
+      case "SymbolExp": {
         const type = M.AtomType("symbol")
         return M.okInferEffect(type)(subst)
       }
 
-      case "Keyword": {
+      case "KeywordExp": {
         const type = M.AtomType("keyword")
         return M.okInferEffect(type)(subst)
       }
 
-      case "String": {
+      case "StringExp": {
         const type = M.AtomType("string")
         return M.okInferEffect(type)(subst)
       }
 
-      case "Int": {
+      case "IntExp": {
         const type = M.AtomType("int")
         return M.okInferEffect(type)(subst)
       }
 
-      case "Float": {
+      case "FloatExp": {
         const type = M.AtomType("float")
         return M.okInferEffect(type)(subst)
       }
 
-      case "Var": {
+      case "VarExp": {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
         return inferLookup(mod, ctx, exp.name, exp)(subst)
       }
 
-      case "QualifiedVar": {
+      case "QualifiedVarExp": {
         const qualifiedMod = M.projectLookupMod(mod.project, exp.modName)
         if (qualifiedMod === undefined) {
           let message = `undefined module prefix`
@@ -46,13 +46,13 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return inferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
       }
 
-      case "Apply": {
+      case "ApplyExp": {
         return M.inferThenInfer(infer(mod, ctx, exp.target), (targetType) =>
           inferApplyArrowType(mod, ctx, targetType, exp.args, exp),
         )(subst)
       }
 
-      case "Lambda": {
+      case "LambdaExp": {
         if (exp.parameters.length === 0) {
           const retType = M.createFreshVarType("R")
           const type = M.ArrowType([], retType)
@@ -83,7 +83,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             M.checkByInfer(
               mod,
               M.ctxPut(ctx, parameter, argType),
-              M.Lambda(restParameters, exp.body, exp.location),
+              M.LambdaExp(restParameters, exp.body, exp.location),
               retType,
             ),
             M.okInferEffect(type),
@@ -91,8 +91,8 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         }
       }
 
-      case "And":
-      case "Or": {
+      case "AndExp":
+      case "OrExp": {
         return M.checkThenInfer(
           M.sequenceCheckEffect(
             exp.exps.map((subExp) =>
@@ -103,7 +103,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "The": {
+      case "TheExp": {
         const type = M.evaluateType("OpaqueMode", mod, M.emptyEnv(), exp.type)
         return M.checkThenInfer(
           M.checkAssignable(mod, ctx, exp.exp, type),
@@ -111,7 +111,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "If": {
+      case "IfExp": {
         const type = M.createFreshVarType("X")
         return M.checkThenInfer(
           M.sequenceCheckEffect([
@@ -123,7 +123,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "Let1": {
+      case "Let1Exp": {
         return M.inferThenInfer(
           M.infer(mod, ctx, exp.rhs),
           (inferredType) => (subst) => {
@@ -136,13 +136,13 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "Begin1": {
+      case "Begin1Exp": {
         return M.inferThenInfer(infer(mod, ctx, exp.head), (_headType) =>
           infer(mod, ctx, exp.body),
         )(subst)
       }
 
-      case "LiteralList": {
+      case "LiteralListExp": {
         const elementType = M.createFreshVarType("E")
         const type = M.ListType(elementType)
         return M.checkThenInfer(
@@ -155,7 +155,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "LiteralSet": {
+      case "LiteralSetExp": {
         const elementType = M.createFreshVarType("E")
         const type = M.SetType(elementType)
         return M.checkThenInfer(
@@ -168,7 +168,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "LiteralHash": {
+      case "LiteralHashExp": {
         const keyType = M.createFreshVarType("K")
         const valueType = M.createFreshVarType("V")
         const type = M.HashType(keyType, valueType)
@@ -183,7 +183,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "Arrow": {
+      case "ArrowExp": {
         const type = M.TypeType()
         return M.checkThenInfer(
           M.sequenceCheckEffect([
@@ -196,7 +196,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "Polymorphic": {
+      case "PolymorphicExp": {
         const type = M.TypeType()
         ctx = M.ctxPutMany(
           ctx,

@@ -9,25 +9,25 @@ export function isPattern(exp: M.Exp): boolean {
 
 // VarPattern
 
-export function isVarPattern(exp: M.Exp): exp is M.Var {
-  return exp.kind === "Var"
+export function isVarPattern(exp: M.Exp): exp is M.VarExp {
+  return exp.kind === "VarExp"
 }
 
 export function createVarPattern(name: string, location: S.SourceLocation) {
-  return M.Var(name, location)
+  return M.VarExp(name, location)
 }
 
 export function varPatternName(exp: M.Exp) {
   assert(isVarPattern(exp))
-  assert(exp.kind === "Var")
+  assert(exp.kind === "VarExp")
   return exp.name
 }
 
 // DataPattern
 
-export function isDataPattern(exp: M.Exp): exp is M.Apply {
-  if (exp.kind !== "Apply") return false
-  if (exp.target.kind !== "Var" && exp.target.kind !== "QualifiedVar")
+export function isDataPattern(exp: M.Exp): exp is M.ApplyExp {
+  if (exp.kind !== "ApplyExp") return false
+  if (exp.target.kind !== "VarExp" && exp.target.kind !== "QualifiedVarExp")
     return false
 
   return exp.args.every((e) => isPattern(e))
@@ -38,7 +38,7 @@ export function createDataPattern(
   args: Array<M.Exp>,
   location: S.SourceLocation,
 ): M.Exp {
-  return M.Apply(M.Var(dataConstructor.name, location), args, location)
+  return M.ApplyExp(M.VarExp(dataConstructor.name, location), args, location)
 }
 
 export function dataPatternDataConstructor(
@@ -46,9 +46,9 @@ export function dataPatternDataConstructor(
   exp: M.Exp,
 ): M.DataConstructor {
   assert(isDataPattern(exp))
-  assert(exp.kind === "Apply")
+  assert(exp.kind === "ApplyExp")
 
-  if (exp.target.kind === "Var") {
+  if (exp.target.kind === "VarExp") {
     const dataConstructor = M.modLookupDataConstructor(mod, exp.target.name)
     if (!dataConstructor) {
       let message = `[dataPatternDataConstructor] undefined target name`
@@ -59,7 +59,7 @@ export function dataPatternDataConstructor(
     return dataConstructor
   }
 
-  if (exp.target.kind === "QualifiedVar") {
+  if (exp.target.kind === "QualifiedVarExp") {
     const qualifiedMod = M.projectLookupMod(mod.project, exp.target.modName)
     assert(qualifiedMod)
     const dataConstructor = M.modLookupDataConstructor(
@@ -80,7 +80,7 @@ export function dataPatternDataConstructor(
 
 export function dataPatternArgPatterns(exp: M.Exp): Array<M.Exp> {
   assert(isDataPattern(exp))
-  assert(exp.kind === "Apply")
+  assert(exp.kind === "ApplyExp")
   return exp.args
 }
 

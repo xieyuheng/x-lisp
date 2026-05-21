@@ -1,250 +1,265 @@
 import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Exp =
-  | Symbol
-  | Keyword
-  | String
-  | Int
-  | Float
-  | Var
-  | QualifiedVar
-  | Lambda
-  | Apply
-  | Pipe
-  | Chain
-  | Compose
-  | Let1
-  | Let
-  | LetStar
-  | LetrecStar
-  | Letrec
-  | LocalDefine
-  | Begin1
-  | Begin
-  | Assign
-  | If
-  | When
-  | Unless
-  | And
-  | Or
-  | Cond
-  | LiteralList
-  | LiteralSet
-  | LiteralHash
-  | Quote
-  | Arrow
-  | The
-  | Polymorphic
-  | Match
+  | SymbolExp
+  | KeywordExp
+  | StringExp
+  | IntExp
+  | FloatExp
+  | VarExp
+  | QualifiedVarExp
+  | LambdaExp
+  | ApplyExp
+  | PipeExp
+  | ChainExp
+  | ComposeExp
+  | Let1Exp
+  | LetExp
+  | LetStarExp
+  | LetrecStarExp
+  | LetrecExp
+  | LocalDefineExp
+  | Begin1Exp
+  | BeginExp
+  | AssignExp
+  | IfExp
+  | WhenExp
+  | UnlessExp
+  | AndExp
+  | OrExp
+  | CondExp
+  | LiteralListExp
+  | LiteralSetExp
+  | LiteralHashExp
+  | QuoteExp
+  | ArrowExp
+  | TheExp
+  | PolymorphicExp
+  | MatchExp
 
-export type Symbol = {
-  kind: "Symbol"
+export type SymbolExp = {
+  kind: "SymbolExp"
   content: string
   location: SourceLocation
 }
 
-export function Symbol(content: string, location: SourceLocation): Symbol {
+export function SymbolExp(
+  content: string,
+  location: SourceLocation,
+): SymbolExp {
   return {
-    kind: "Symbol",
+    kind: "SymbolExp",
     content,
     location,
   }
 }
 
-export type String = {
-  kind: "String"
+export type StringExp = {
+  kind: "StringExp"
   content: string
   location: SourceLocation
 }
 
-export function String(content: string, location: SourceLocation): String {
+export function StringExp(
+  content: string,
+  location: SourceLocation,
+): StringExp {
   return {
-    kind: "String",
+    kind: "StringExp",
     content,
     location,
   }
 }
 
-export type Keyword = {
-  kind: "Keyword"
+export type KeywordExp = {
+  kind: "KeywordExp"
   content: string
   location: SourceLocation
 }
 
-export function Keyword(content: string, location: SourceLocation): Keyword {
+export function KeywordExp(
+  content: string,
+  location: SourceLocation,
+): KeywordExp {
   return {
-    kind: "Keyword",
+    kind: "KeywordExp",
     content,
     location,
   }
 }
 
-export type Int = {
-  kind: "Int"
+export type IntExp = {
+  kind: "IntExp"
   content: bigint
   location: SourceLocation
 }
 
-export function Int(content: bigint, location: SourceLocation): Int {
+export function IntExp(content: bigint, location: SourceLocation): IntExp {
   return {
-    kind: "Int",
+    kind: "IntExp",
     content,
     location,
   }
 }
 
-export type Float = {
-  kind: "Float"
+export type FloatExp = {
+  kind: "FloatExp"
   content: number
   location: SourceLocation
 }
 
-export function Float(content: number, location: SourceLocation): Float {
+export function FloatExp(content: number, location: SourceLocation): FloatExp {
   return {
-    kind: "Float",
+    kind: "FloatExp",
     content,
     location,
   }
 }
 
-export type Var = {
-  kind: "Var"
+export type VarExp = {
+  kind: "VarExp"
   name: string
   location: SourceLocation
 }
 
-export function Var(name: string, location: SourceLocation): Var {
+export function VarExp(name: string, location: SourceLocation): VarExp {
   return {
-    kind: "Var",
+    kind: "VarExp",
     name,
     location,
   }
 }
 
-export type QualifiedVar = {
-  kind: "QualifiedVar"
+export type QualifiedVarExp = {
+  kind: "QualifiedVarExp"
   modName: string
   name: string
   location: SourceLocation
 }
 
-export function QualifiedVar(
+export function QualifiedVarExp(
   modName: string,
   name: string,
   location: SourceLocation,
-): QualifiedVar {
+): QualifiedVarExp {
   return {
-    kind: "QualifiedVar",
+    kind: "QualifiedVarExp",
     modName,
     name,
     location,
   }
 }
 
-export type Lambda = {
-  kind: "Lambda"
+export type LambdaExp = {
+  kind: "LambdaExp"
   parameters: Array<string>
   body: Exp
   location: SourceLocation
 }
 
-export function Lambda(
+export function LambdaExp(
   parameters: Array<string>,
   body: Exp,
   location: SourceLocation,
-): Lambda {
+): LambdaExp {
   return {
-    kind: "Lambda",
+    kind: "LambdaExp",
     parameters,
     body,
     location,
   }
 }
 
-export type Apply = {
-  kind: "Apply"
+export type ApplyExp = {
+  kind: "ApplyExp"
   target: Exp
   args: Array<Exp>
   location: SourceLocation
 }
 
-export function Apply(
+export function ApplyExp(
   target: Exp,
   args: Array<Exp>,
   location: SourceLocation,
-): Apply {
+): ApplyExp {
   return {
-    kind: "Apply",
+    kind: "ApplyExp",
     target,
     args,
     location,
   }
 }
 
-export type Pipe = {
-  kind: "Pipe"
+export type PipeExp = {
+  kind: "PipeExp"
   target: Exp
   steps: Array<Exp>
   location: SourceLocation
 }
 
-export function Pipe(
+export function PipeExp(
   target: Exp,
   steps: Array<Exp>,
   location: SourceLocation,
-): Pipe {
+): PipeExp {
   return {
-    kind: "Pipe",
+    kind: "PipeExp",
     target,
     steps,
     location,
   }
 }
 
-export type Chain = {
-  kind: "Chain"
+export type ChainExp = {
+  kind: "ChainExp"
   steps: Array<Exp>
   location: SourceLocation
 }
 
-export function Chain(steps: Array<Exp>, location: SourceLocation): Chain {
+export function ChainExp(
+  steps: Array<Exp>,
+  location: SourceLocation,
+): ChainExp {
   return {
-    kind: "Chain",
+    kind: "ChainExp",
     steps,
     location,
   }
 }
 
-export type Compose = {
-  kind: "Compose"
+export type ComposeExp = {
+  kind: "ComposeExp"
   steps: Array<Exp>
   location: SourceLocation
 }
 
-export function Compose(steps: Array<Exp>, location: SourceLocation): Compose {
+export function ComposeExp(
+  steps: Array<Exp>,
+  location: SourceLocation,
+): ComposeExp {
   return {
-    kind: "Compose",
+    kind: "ComposeExp",
     steps,
     location,
   }
 }
 
-export type Let1 = {
-  kind: "Let1"
+export type Let1Exp = {
+  kind: "Let1Exp"
   name: string
   rhs: Exp
   body: Exp
   location: SourceLocation
 }
 
-export function Let1(
+export function Let1Exp(
   name: string,
   rhs: Exp,
   body: Exp,
   location: SourceLocation,
-): Let1 {
+): Let1Exp {
   return {
-    kind: "Let1",
+    kind: "Let1Exp",
     name,
     rhs,
     body,
@@ -270,102 +285,102 @@ export function Binding(
   }
 }
 
-export type Let = {
-  kind: "Let"
+export type LetExp = {
+  kind: "LetExp"
   bindings: Array<Binding>
   body: Exp
   location: SourceLocation
 }
 
-export function Let(
+export function LetExp(
   bindings: Array<Binding>,
   body: Exp,
   location: SourceLocation,
-): Let {
+): LetExp {
   return {
-    kind: "Let",
+    kind: "LetExp",
     bindings,
     body,
     location,
   }
 }
 
-export type LetStar = {
-  kind: "LetStar"
+export type LetStarExp = {
+  kind: "LetStarExp"
   bindings: Array<Binding>
   body: Exp
   location: SourceLocation
 }
 
-export function LetStar(
+export function LetStarExp(
   bindings: Array<Binding>,
   body: Exp,
   location: SourceLocation,
-): LetStar {
+): LetStarExp {
   return {
-    kind: "LetStar",
+    kind: "LetStarExp",
     bindings,
     body,
     location,
   }
 }
 
-export type LetrecStar = {
-  kind: "LetrecStar"
+export type LetrecStarExp = {
+  kind: "LetrecStarExp"
   bindings: Array<Binding>
   body: Exp
   location: SourceLocation
 }
 
-export function LetrecStar(
+export function LetrecStarExp(
   bindings: Array<Binding>,
   body: Exp,
   location: SourceLocation,
-): LetrecStar {
+): LetrecStarExp {
   return {
-    kind: "LetrecStar",
+    kind: "LetrecStarExp",
     bindings,
     body,
     location,
   }
 }
 
-export type Letrec = {
-  kind: "Letrec"
+export type LetrecExp = {
+  kind: "LetrecExp"
   bindings: Array<Binding>
   body: Exp
   location: SourceLocation
 }
 
-export function Letrec(
+export function LetrecExp(
   bindings: Array<Binding>,
   body: Exp,
   location: SourceLocation,
-): Letrec {
+): LetrecExp {
   return {
-    kind: "Letrec",
+    kind: "LetrecExp",
     bindings,
     body,
     location,
   }
 }
 
-export type LocalDefine = {
-  kind: "LocalDefine"
+export type LocalDefineExp = {
+  kind: "LocalDefineExp"
   name: string
   parameters: Array<string>
   body: Exp
   location: SourceLocation
 }
 
-export function LocalDefine(
+export function LocalDefineExp(
   name: string,
   parameters: Array<string>,
   body: Exp,
   location: SourceLocation,
-): LocalDefine {
+): LocalDefineExp {
   return {
-    kind: "LocalDefine",
+    kind: "LocalDefineExp",
     name,
     parameters,
     body,
@@ -373,72 +388,79 @@ export function LocalDefine(
   }
 }
 
-export type Begin1 = {
-  kind: "Begin1"
+export type Begin1Exp = {
+  kind: "Begin1Exp"
   head: Exp
   body: Exp
   location: SourceLocation
 }
 
-export function Begin1(head: Exp, body: Exp, location: SourceLocation): Begin1 {
+export function Begin1Exp(
+  head: Exp,
+  body: Exp,
+  location: SourceLocation,
+): Begin1Exp {
   return {
-    kind: "Begin1",
+    kind: "Begin1Exp",
     head,
     body,
     location,
   }
 }
 
-export type Begin = {
-  kind: "Begin"
+export type BeginExp = {
+  kind: "BeginExp"
   sequence: Array<Exp>
   location: SourceLocation
 }
 
-export function Begin(sequence: Array<Exp>, location: SourceLocation): Begin {
+export function BeginExp(
+  sequence: Array<Exp>,
+  location: SourceLocation,
+): BeginExp {
   return {
-    kind: "Begin",
+    kind: "BeginExp",
     sequence,
     location,
   }
 }
 
-export type Assign = {
-  kind: "Assign"
+export type AssignExp = {
+  kind: "AssignExp"
   name: string
   rhs: Exp
   location: SourceLocation
 }
 
-export function Assign(
+export function AssignExp(
   name: string,
   rhs: Exp,
   location: SourceLocation,
-): Assign {
+): AssignExp {
   return {
-    kind: "Assign",
+    kind: "AssignExp",
     name,
     rhs,
     location,
   }
 }
 
-export type If = {
-  kind: "If"
+export type IfExp = {
+  kind: "IfExp"
   condition: Exp
   consequent: Exp
   alternative: Exp
   location: SourceLocation
 }
 
-export function If(
+export function IfExp(
   condition: Exp,
   consequent: Exp,
   alternative: Exp,
   location: SourceLocation,
-): If {
+): IfExp {
   return {
-    kind: "If",
+    kind: "IfExp",
     condition,
     consequent,
     alternative,
@@ -446,76 +468,76 @@ export function If(
   }
 }
 
-export type When = {
-  kind: "When"
+export type WhenExp = {
+  kind: "WhenExp"
   condition: Exp
   consequent: Exp
   location: SourceLocation
 }
 
-export function When(
+export function WhenExp(
   condition: Exp,
   consequent: Exp,
   location: SourceLocation,
-): When {
+): WhenExp {
   return {
-    kind: "When",
+    kind: "WhenExp",
     condition,
     consequent,
     location,
   }
 }
 
-export type Unless = {
-  kind: "Unless"
+export type UnlessExp = {
+  kind: "UnlessExp"
   condition: Exp
   alternative: Exp
   location: SourceLocation
 }
 
-export function Unless(
+export function UnlessExp(
   condition: Exp,
   alternative: Exp,
   location: SourceLocation,
-): Unless {
+): UnlessExp {
   return {
-    kind: "Unless",
+    kind: "UnlessExp",
     condition,
     alternative,
     location,
   }
 }
 
-export type And = {
-  kind: "And"
+export type AndExp = {
+  kind: "AndExp"
   exps: Array<Exp>
   location: SourceLocation
 }
 
-export function And(exps: Array<Exp>, location: SourceLocation): And {
+export function AndExp(exps: Array<Exp>, location: SourceLocation): AndExp {
   return {
-    kind: "And",
+    kind: "AndExp",
     exps,
     location,
   }
 }
 
-export type Or = {
-  kind: "Or"
+export type OrExp = {
+  kind: "OrExp"
   exps: Array<Exp>
   location: SourceLocation
 }
 
-export function Or(exps: Array<Exp>, location: SourceLocation): Or {
+export function OrExp(exps: Array<Exp>, location: SourceLocation): OrExp {
   return {
-    kind: "Or",
+    kind: "OrExp",
     exps,
     location,
   }
 }
 
-export type Cond = {
-  kind: "Cond"
+export type CondExp = {
+  kind: "CondExp"
   clauses: Array<CondClause>
   location: SourceLocation
 }
@@ -538,140 +560,140 @@ export function CondClause(
   }
 }
 
-export function Cond(
+export function CondExp(
   clauses: Array<CondClause>,
   location: SourceLocation,
-): Cond {
+): CondExp {
   return {
-    kind: "Cond",
+    kind: "CondExp",
     clauses,
     location,
   }
 }
 
-export type LiteralList = {
-  kind: "LiteralList"
+export type LiteralListExp = {
+  kind: "LiteralListExp"
   elements: Array<Exp>
   location: SourceLocation
 }
 
-export function LiteralList(
+export function LiteralListExp(
   elements: Array<Exp>,
   location: SourceLocation,
-): LiteralList {
+): LiteralListExp {
   return {
-    kind: "LiteralList",
+    kind: "LiteralListExp",
     elements,
     location,
   }
 }
 
-export type LiteralSet = {
-  kind: "LiteralSet"
+export type LiteralSetExp = {
+  kind: "LiteralSetExp"
   elements: Array<Exp>
   location: SourceLocation
 }
 
-export function LiteralSet(
+export function LiteralSetExp(
   elements: Array<Exp>,
   location: SourceLocation,
-): LiteralSet {
+): LiteralSetExp {
   return {
-    kind: "LiteralSet",
+    kind: "LiteralSetExp",
     elements,
     location,
   }
 }
 
-export type LiteralHash = {
-  kind: "LiteralHash"
+export type LiteralHashExp = {
+  kind: "LiteralHashExp"
   entries: Array<{ key: Exp; value: Exp }>
   location: SourceLocation
 }
 
-export function LiteralHash(
+export function LiteralHashExp(
   entries: Array<{ key: Exp; value: Exp }>,
   location: SourceLocation,
-): LiteralHash {
+): LiteralHashExp {
   return {
-    kind: "LiteralHash",
+    kind: "LiteralHashExp",
     entries,
     location,
   }
 }
 
-export type Quote = {
-  kind: "Quote"
+export type QuoteExp = {
+  kind: "QuoteExp"
   sexp: Sexp
   location: SourceLocation
 }
 
-export function Quote(sexp: Sexp, location: SourceLocation): Quote {
+export function QuoteExp(sexp: Sexp, location: SourceLocation): QuoteExp {
   return {
-    kind: "Quote",
+    kind: "QuoteExp",
     sexp,
     location,
   }
 }
 
-export type Arrow = {
-  kind: "Arrow"
+export type ArrowExp = {
+  kind: "ArrowExp"
   argTypes: Array<Exp>
   retType: Exp
   location: SourceLocation
 }
 
-export function Arrow(
+export function ArrowExp(
   argTypes: Array<Exp>,
   retType: Exp,
   location: SourceLocation,
-): Arrow {
+): ArrowExp {
   return {
-    kind: "Arrow",
+    kind: "ArrowExp",
     argTypes,
     retType,
     location,
   }
 }
 
-export type The = {
-  kind: "The"
+export type TheExp = {
+  kind: "TheExp"
   type: Exp
   exp: Exp
   location: SourceLocation
 }
 
-export function The(type: Exp, exp: Exp, location: SourceLocation): The {
+export function TheExp(type: Exp, exp: Exp, location: SourceLocation): TheExp {
   return {
-    kind: "The",
+    kind: "TheExp",
     type,
     exp,
     location,
   }
 }
 
-export type Polymorphic = {
-  kind: "Polymorphic"
+export type PolymorphicExp = {
+  kind: "PolymorphicExp"
   parameters: Array<string>
   body: Exp
   location: SourceLocation
 }
 
-export function Polymorphic(
+export function PolymorphicExp(
   parameters: Array<string>,
   body: Exp,
   location: SourceLocation,
-): Polymorphic {
+): PolymorphicExp {
   return {
-    kind: "Polymorphic",
+    kind: "PolymorphicExp",
     parameters,
     body,
     location,
   }
 }
 
-export type Match = {
-  kind: "Match"
+export type MatchExp = {
+  kind: "MatchExp"
   targets: Array<Exp>
   clauses: Array<MatchClause>
   location: SourceLocation
@@ -695,13 +717,13 @@ export function MatchClause(
   }
 }
 
-export function Match(
+export function MatchExp(
   targets: Array<Exp>,
   clauses: Array<MatchClause>,
   location: SourceLocation,
-): Match {
+): MatchExp {
   return {
-    kind: "Match",
+    kind: "MatchExp",
     targets,
     clauses,
     location,

@@ -41,7 +41,7 @@ function executeImport(
   scope: M.FragmentScope,
   stmt: M.Stmt,
 ): void {
-  if (stmt.kind === "Import") {
+  if (stmt.kind === "ImportStmt") {
     if (!ensureModExists(project, stmt.modName, stmt.location)) return
 
     const privates = privateNames.get(stmt.modName)
@@ -51,13 +51,13 @@ function executeImport(
     }
   }
 
-  if (stmt.kind === "ImportAs") {
+  if (stmt.kind === "ImportAsStmt") {
     if (!ensureModExists(project, stmt.modName, stmt.location)) return
 
     scope.importedPrefixes.set(stmt.prefix, { modName: stmt.modName })
   }
 
-  if (stmt.kind === "ImportAll") {
+  if (stmt.kind === "ImportAllStmt") {
     if (!ensureModExists(project, stmt.modName, stmt.location)) return
 
     const names = definedNames.get(stmt.modName)
@@ -131,7 +131,7 @@ function collectPrivateNames(project: M.Project): Map<string, Set<string>> {
     }
 
     for (const stmt of fragment.stmts) {
-      if (stmt.kind === "Private") {
+      if (stmt.kind === "PrivateStmt") {
         for (const name of stmt.names) {
           names.add(name)
         }

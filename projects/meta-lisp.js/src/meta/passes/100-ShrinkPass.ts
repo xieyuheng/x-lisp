@@ -37,7 +37,7 @@ function shrinkDefinition(definition: M.Definition): null {
 
 function shrinkExp(exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "The": {
+    case "TheExp": {
       return shrinkExp(exp.exp)
     }
 

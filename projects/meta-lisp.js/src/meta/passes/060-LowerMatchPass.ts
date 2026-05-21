@@ -45,16 +45,16 @@ function lowerMatchDefinition(mod: M.Mod, definition: M.Definition): null {
 
 function lowerMatch(mod: M.Mod, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Match": {
+    case "MatchExp": {
       const state = createDesugarState()
 
-      const defaultExp = M.Apply(
-        M.QualifiedVar("builtin", "error", exp.location),
+      const defaultExp = M.ApplyExp(
+        M.QualifiedVarExp("builtin", "error", exp.location),
         [
-          M.LiteralList(
+          M.LiteralListExp(
             [
-              M.String("match mismatch", exp.location),
-              M.LiteralList(exp.targets, exp.location),
+              M.StringExp("match mismatch", exp.location),
+              M.LiteralListExp(exp.targets, exp.location),
             ],
             exp.location,
           ),
@@ -116,10 +116,10 @@ function simplifyMatch(
       restTargets,
       clauses.map((clause) => {
         const [pattern, ...restPatterns] = clause.patterns
-        assert(pattern.kind === "Var")
+        assert(pattern.kind === "VarExp")
         return M.MatchClause(
           restPatterns,
-          M.Let1(pattern.name, target, clause.body, clause.location),
+          M.Let1Exp(pattern.name, target, clause.body, clause.location),
           clause.location,
         )
       }),
@@ -132,7 +132,7 @@ function simplifyMatch(
     const [target, ...restTargets] = targets
 
     const groups = groupClausesByHeadDataConstructor(mod, clauses)
-    return M.Cond(
+    return M.CondExp(
       groups.map((group) => {
         const usedNames = setUnionMany([
           M.expOccurredNames(defaultExp),
@@ -145,17 +145,20 @@ function simplifyMatch(
           ),
         ])
         const freshVars = group.dataConstructor.fields.map((field) =>
-          M.Var(M.generateRelativeFreshName(field.name, usedNames), location),
+          M.VarExp(
+            M.generateRelativeFreshName(field.name, usedNames),
+            location,
+          ),
         )
 
         const modName = group.dataConstructor.mod.name
         const dataConstructorPredicateName = `${group.dataConstructor.name}?`
-        const dataConstructorPredicate = M.QualifiedVar(
+        const dataConstructorPredicate = M.QualifiedVarExp(
           modName,
           dataConstructorPredicateName,
           location,
         )
-        const question = M.Apply(
+        const question = M.ApplyExp(
           dataConstructorPredicate,
           [target],
           target.location,
@@ -173,14 +176,14 @@ function simplifyMatch(
           const field = group.dataConstructor.fields[i]
 
           const dataFieldAccessorName = `${group.dataConstructor.name}-${field.name}`
-          const dataFieldAccessor = M.QualifiedVar(
+          const dataFieldAccessor = M.QualifiedVarExp(
             modName,
             dataFieldAccessorName,
             answer.location,
           )
-          answer = M.Let1(
+          answer = M.Let1Exp(
             freshVars[i].name,
-            M.Apply(dataFieldAccessor, [target], answer.location),
+            M.ApplyExp(dataFieldAccessor, [target], answer.location),
             answer,
             answer.location,
           )

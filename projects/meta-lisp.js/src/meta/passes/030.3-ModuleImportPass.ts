@@ -17,26 +17,26 @@ export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
 
 function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
   switch (stmt.kind) {
-    case "Claim": {
-      return M.Claim(
+    case "ClaimStmt": {
+      return M.ClaimStmt(
         stmt.name,
         moduleImportExp(scope, stmt.type),
         stmt.location,
       )
     }
 
-    case "Admit": {
-      return M.Admit(
+    case "AdmitStmt": {
+      return M.AdmitStmt(
         stmt.name,
         moduleImportExp(scope, stmt.type),
         stmt.location,
       )
     }
 
-    case "DefineFunction": {
+    case "DefineFunctionStmt": {
       const boundNames = new Set(stmt.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.DefineFunction(
+      return M.DefineFunctionStmt(
         stmt.name,
         stmt.parameters,
         moduleImportExp(newScope, stmt.body),
@@ -44,24 +44,24 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       )
     }
 
-    case "DefineVariable": {
-      return M.DefineVariable(
+    case "DefineVariableStmt": {
+      return M.DefineVariableStmt(
         stmt.name,
         moduleImportExp(scope, stmt.body),
         stmt.location,
       )
     }
 
-    case "DefineTest": {
-      return M.DefineTest(
+    case "DefineTestStmt": {
+      return M.DefineTestStmt(
         stmt.name,
         moduleImportExp(scope, stmt.body),
         stmt.location,
       )
     }
 
-    case "DefineType": {
-      return M.DefineType(
+    case "DefineTypeStmt": {
+      return M.DefineTypeStmt(
         stmt.name,
         stmt.parameters,
         moduleImportExp(scope, stmt.body),
@@ -69,7 +69,7 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       )
     }
 
-    case "DefineAlgebraicType": {
+    case "DefineAlgebraicTypeStmt": {
       const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
       for (const ctor of stmt.dataConstructors) {
@@ -82,10 +82,10 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return stmt
     }
 
-    case "DefineOpaqueType": {
+    case "DefineOpaqueTypeStmt": {
       const boundNames = new Set(stmt.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.DefineOpaqueType(
+      return M.DefineOpaqueTypeStmt(
         stmt.name,
         stmt.parameters,
         moduleImportExp(newScope, stmt.representationType),
@@ -105,48 +105,48 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
 
 function moduleImportExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Var": {
+    case "VarExp": {
       const entry = scope.importedNames.get(exp.name)
       if (entry) {
-        return M.QualifiedVar(entry.modName, entry.name, exp.location)
+        return M.QualifiedVarExp(entry.modName, entry.name, exp.location)
       } else {
         return exp
       }
     }
 
-    case "QualifiedVar": {
+    case "QualifiedVarExp": {
       const entry = scope.importedPrefixes.get(exp.modName)
       if (entry) {
-        return M.QualifiedVar(entry.modName, exp.name, exp.location)
+        return M.QualifiedVarExp(entry.modName, exp.name, exp.location)
       } else {
         return exp
       }
     }
 
-    case "Lambda": {
+    case "LambdaExp": {
       const boundNames = new Set(exp.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.Lambda(
+      return M.LambdaExp(
         exp.parameters,
         moduleImportExp(newScope, exp.body),
         exp.location,
       )
     }
 
-    case "Polymorphic": {
+    case "PolymorphicExp": {
       const boundNames = new Set(exp.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.Polymorphic(
+      return M.PolymorphicExp(
         exp.parameters,
         moduleImportExp(newScope, exp.body),
         exp.location,
       )
     }
 
-    case "Let1": {
+    case "Let1Exp": {
       const boundNames = new Set([exp.name])
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.Let1(
+      return M.Let1Exp(
         exp.name,
         moduleImportExp(scope, exp.rhs),
         moduleImportExp(newScope, exp.body),
@@ -154,8 +154,8 @@ function moduleImportExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
       )
     }
 
-    case "Match": {
-      return M.Match(
+    case "MatchExp": {
+      return M.MatchExp(
         exp.targets.map((target) => moduleImportExp(scope, target)),
         exp.clauses.map((clause) => {
           const boundNames = setUnionMany(

@@ -24,11 +24,11 @@ function findModName(
   isErrorModule?: boolean
 } {
   for (const stmt of stmts) {
-    if (stmt.kind === "DeclareModule") {
+    if (stmt.kind === "DeclareModuleStmt") {
       return { modName: stmt.name }
     }
 
-    if (stmt.kind === "DeclareErrorModule") {
+    if (stmt.kind === "DeclareErrorModuleStmt") {
       return { modName: stmt.name, isErrorModule: true }
     }
   }
