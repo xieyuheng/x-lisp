@@ -1,6 +1,3 @@
 export * from "./Term.ts"
 export * from "./termFreeNames.ts"
-export * from "./termNaiveSubst.ts"
-export * from "./termOccurredNames.ts"
-export * from "./termSubst.ts"
 export * from "./termTraverse.ts"
