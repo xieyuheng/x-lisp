@@ -1,4 +1,3 @@
-import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
 export function ModuleImportPass(
@@ -156,26 +155,6 @@ function moduleImportExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
         exp.name,
         moduleImportExp(scope, exp.rhs),
         moduleImportExp(newScope, exp.body),
-        exp.location,
-      )
-    }
-
-    case "MatchExp": {
-      return M.MatchExp(
-        exp.targets.map((target) => moduleImportExp(scope, target)),
-        exp.clauses.map((clause) => {
-          const boundNames = setUnionMany(
-            clause.patterns.map(M.patternBoundNames),
-          )
-          const newScope = scopeFilterBoundNames(scope, boundNames)
-          return M.MatchClause(
-            clause.patterns.map((pattern) =>
-              moduleImportExp(newScope, pattern),
-            ),
-            moduleImportExp(newScope, clause.body),
-            clause.location,
-          )
-        }),
         exp.location,
       )
     }
