@@ -10,7 +10,7 @@ export function DesugarPass(
     fragment.stmts = fragment.stmts.map(desugarStmt)
   }
 
-  if (options.dump) M.projectDumpFragments(project, "020-desugar")
+  if (options.dump) M.projectDumpFragments(project, "035-desugar")
 }
 
 type State = {

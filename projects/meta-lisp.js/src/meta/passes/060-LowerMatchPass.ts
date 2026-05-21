@@ -4,7 +4,7 @@ import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
-import { createDesugarState, desugar } from "./020-DesugarPass.ts"
+import { createDesugarState, desugar } from "./035-DesugarPass.ts"
 
 export function LowerMatchPass(
   project: M.Project,

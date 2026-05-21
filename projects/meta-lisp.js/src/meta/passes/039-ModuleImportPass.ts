@@ -18,7 +18,7 @@ export function ModuleImportPass(
     }
   }
 
-  if (options.dump) M.projectDumpFragments(project, "032-module-import")
+  if (options.dump) M.projectDumpFragments(project, "039-module-import")
 }
 
 function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
