@@ -1,3 +1,5 @@
+[meta-builtin.meta] (error) should only take message string
+
 [meta-lisp.meta] [review] exp-free-names.meta
 [meta-lisp.meta] [review] exp-location.meta
 [meta-lisp.meta] [review] exp-naive-subst.meta
