@@ -7,7 +7,7 @@ export function collectKeyValuePairs(
   let i = 0
   while (i < sexps.length) {
     const keyword = sexps[i]
-    if (S.isKeyword(keyword)) {
+    if (S.isKeywordSexp(keyword)) {
       if (i + 1 < sexps.length) {
         const value = sexps[i + 1]
         entries.push([keyword.content, value])

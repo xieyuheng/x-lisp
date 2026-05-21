@@ -29,8 +29,8 @@ function assertMatchFail(patternInput: string, sexpInput: string): void {
 }
 
 test("matchSexp -- var", () => {
-  assertMatch("x", "1", { x: S.Int(BigInt(1), S.zeroLocation("[test]")) })
-  assertMatch("x", "hi", { x: S.Symbol("hi", S.zeroLocation("[test]")) })
+  assertMatch("x", "1", { x: S.IntSexp(BigInt(1), S.zeroLocation("[test]")) })
+  assertMatch("x", "hi", { x: S.SymbolSexp("hi", S.zeroLocation("[test]")) })
 })
 
 test("matchSexp -- bool int float", () => {
@@ -45,15 +45,15 @@ test("matchSexp -- bool int float", () => {
 
 test("matchSexp -- list", () => {
   assertMatch("[x y z]", "(1 2 3)", {
-    x: S.Int(BigInt(1), S.zeroLocation("[test]")),
-    y: S.Int(BigInt(2), S.zeroLocation("[test]")),
-    z: S.Int(BigInt(3), S.zeroLocation("[test]")),
+    x: S.IntSexp(BigInt(1), S.zeroLocation("[test]")),
+    y: S.IntSexp(BigInt(2), S.zeroLocation("[test]")),
+    z: S.IntSexp(BigInt(3), S.zeroLocation("[test]")),
   })
 
   assertMatch("[x [y] z]", "(1 (2) 3)", {
-    x: S.Int(BigInt(1), S.zeroLocation("[test]")),
-    y: S.Int(BigInt(2), S.zeroLocation("[test]")),
-    z: S.Int(BigInt(3), S.zeroLocation("[test]")),
+    x: S.IntSexp(BigInt(1), S.zeroLocation("[test]")),
+    y: S.IntSexp(BigInt(2), S.zeroLocation("[test]")),
+    z: S.IntSexp(BigInt(3), S.zeroLocation("[test]")),
   })
 
   assertMatchFail("[x y x]", "(1 2 3)")
@@ -66,7 +66,7 @@ test("matchSexp -- quote", () => {
   assertMatch("(@quote 3)", "3", {})
 
   assertMatch("['lambda [x] x]", "(lambda (x) x)", {
-    x: S.Symbol("x", S.zeroLocation("[test]")),
+    x: S.SymbolSexp("x", S.zeroLocation("[test]")),
   })
   assertMatch("'(lambda (x) x)", "(lambda (x) x)", {})
 })
@@ -74,25 +74,25 @@ test("matchSexp -- quote", () => {
 test("matchSexp -- quasiquote", () => {
   assertMatch("`x", "x", {})
   assertMatch("`(lambda (,x) ,x)", "(lambda (x) x)", {
-    x: S.Symbol("x", S.zeroLocation("[test]")),
+    x: S.SymbolSexp("x", S.zeroLocation("[test]")),
   })
   assertMatch("`(lambda (,name) ,ret)", "(lambda (x) x)", {
-    name: S.Symbol("x", S.zeroLocation("[test]")),
-    ret: S.Symbol("x", S.zeroLocation("[test]")),
+    name: S.SymbolSexp("x", S.zeroLocation("[test]")),
+    ret: S.SymbolSexp("x", S.zeroLocation("[test]")),
   })
   assertMatch("`(,target ,arg)", "(f x)", {
-    target: S.Symbol("f", S.zeroLocation("[test]")),
-    arg: S.Symbol("x", S.zeroLocation("[test]")),
+    target: S.SymbolSexp("f", S.zeroLocation("[test]")),
+    arg: S.SymbolSexp("x", S.zeroLocation("[test]")),
   })
 })
 
 test("matchSexp -- cons", () => {
   assertMatch("(cons head tail)", "(f x y)", {
-    head: S.Symbol("f", S.zeroLocation("[test]")),
-    tail: S.List(
+    head: S.SymbolSexp("f", S.zeroLocation("[test]")),
+    tail: S.ListSexp(
       [
-        S.Symbol("x", S.zeroLocation("[test]")),
-        S.Symbol("y", S.zeroLocation("[test]")),
+        S.SymbolSexp("x", S.zeroLocation("[test]")),
+        S.SymbolSexp("y", S.zeroLocation("[test]")),
       ],
       S.zeroLocation("[test]"),
     ),
@@ -101,10 +101,10 @@ test("matchSexp -- cons", () => {
 
 test("matchSexp -- cons*", () => {
   assertMatch("(cons* head next tail)", "(f x y)", {
-    head: S.Symbol("f", S.zeroLocation("[test]")),
-    next: S.Symbol("x", S.zeroLocation("[test]")),
-    tail: S.List(
-      [S.Symbol("y", S.zeroLocation("[test]"))],
+    head: S.SymbolSexp("f", S.zeroLocation("[test]")),
+    next: S.SymbolSexp("x", S.zeroLocation("[test]")),
+    tail: S.ListSexp(
+      [S.SymbolSexp("y", S.zeroLocation("[test]"))],
       S.zeroLocation("[test]"),
     ),
   })

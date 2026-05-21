@@ -1,12 +1,5 @@
----
-
-在 [sexp.js] 中，给所有 Sexp 加上 *Sexp，比如 AtomSexp ListSexp SymbolSexp 等等
-
-注意：
-
-- variant 的 constructor 函数也要修改。
-- kind 字段也要修改。
-- 所有依赖 sexp.js 的项目中的代码，也需要一起修改。
+[meta-lisp.js] drop Literal prefix of LiteralListExp
+[meta-lisp.meta] drop literal- prefix of literal-list-exp
 
 ---
 

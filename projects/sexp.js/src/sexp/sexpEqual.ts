@@ -3,16 +3,16 @@ import * as S from "../index.ts"
 
 export function sexpEqual(x: S.Sexp, y: S.Sexp): boolean {
   if (
-    (x.kind === "Symbol" && y.kind === "Symbol") ||
-    (x.kind === "String" && y.kind === "String") ||
-    (x.kind === "Int" && y.kind === "Int") ||
-    (x.kind === "Float" && y.kind === "Float") ||
-    (x.kind === "Keyword" && y.kind === "Keyword")
+    (x.kind === "SymbolSexp" && y.kind === "SymbolSexp") ||
+    (x.kind === "StringSexp" && y.kind === "StringSexp") ||
+    (x.kind === "IntSexp" && y.kind === "IntSexp") ||
+    (x.kind === "FloatSexp" && y.kind === "FloatSexp") ||
+    (x.kind === "KeywordSexp" && y.kind === "KeywordSexp")
   ) {
     return x.content === y.content
   }
 
-  if (x.kind === "List" && y.kind === "List") {
+  if (x.kind === "ListSexp" && y.kind === "ListSexp") {
     return sexpEqualArray(x.elements, y.elements)
   }
 

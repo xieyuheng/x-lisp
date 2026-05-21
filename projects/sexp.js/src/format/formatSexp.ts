@@ -2,23 +2,23 @@ import * as S from "../index.ts"
 
 export function formatSexp(sexp: S.Sexp): string {
   switch (sexp.kind) {
-    case "Symbol": {
+    case "SymbolSexp": {
       return sexp.content
     }
 
-    case "Keyword": {
+    case "KeywordSexp": {
       return `:${sexp.content}`
     }
 
-    case "String": {
+    case "StringSexp": {
       return JSON.stringify(sexp.content)
     }
 
-    case "Int": {
+    case "IntSexp": {
       return sexp.content.toString()
     }
 
-    case "Float": {
+    case "FloatSexp": {
       if (Number.isInteger(sexp.content)) {
         return `${sexp.content.toString()}.0`
       } else {
@@ -26,7 +26,7 @@ export function formatSexp(sexp: S.Sexp): string {
       }
     }
 
-    case "List": {
+    case "ListSexp": {
       const elements = sexp.elements.map(formatSexp)
 
       if (elements.length === 0) {

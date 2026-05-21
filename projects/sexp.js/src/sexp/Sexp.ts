@@ -1,149 +1,149 @@
 import * as S from "../index.ts"
 
-export type Sexp = Atom | List
+export type Sexp = AtomSexp | ListSexp
 
-export type Atom = Symbol | String | Int | Float | Keyword
+export type AtomSexp = SymbolSexp | StringSexp | IntSexp | FloatSexp | KeywordSexp
 
-export type Symbol = {
-  kind: "Symbol"
+export type SymbolSexp = {
+  kind: "SymbolSexp"
   content: string
   location: S.SourceLocation
 }
 
-export function Symbol(content: string, location: S.SourceLocation): Symbol {
+export function SymbolSexp(content: string, location: S.SourceLocation): SymbolSexp {
   return {
-    kind: "Symbol",
+    kind: "SymbolSexp",
     content,
     location,
   }
 }
 
-export function isSymbol(sexp: Sexp): sexp is Symbol {
-  return sexp.kind === "Symbol"
+export function isSymbolSexp(sexp: Sexp): sexp is SymbolSexp {
+  return sexp.kind === "SymbolSexp"
 }
 
-export function asSymbol(sexp: Sexp): Symbol {
-  if (isSymbol(sexp)) return sexp
-  let message = `[asSymbol] fail on: ${S.formatSexp(sexp)}`
+export function asSymbolSexp(sexp: Sexp): SymbolSexp {
+  if (isSymbolSexp(sexp)) return sexp
+  let message = `[asSymbolSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
-export type String = {
-  kind: "String"
+export type StringSexp = {
+  kind: "StringSexp"
   content: string
   location: S.SourceLocation
 }
 
-export function String(content: string, location: S.SourceLocation): String {
+export function StringSexp(content: string, location: S.SourceLocation): StringSexp {
   return {
-    kind: "String",
+    kind: "StringSexp",
     content,
     location,
   }
 }
 
-export function isString(sexp: Sexp): sexp is String {
-  return sexp.kind === "String"
+export function isStringSexp(sexp: Sexp): sexp is StringSexp {
+  return sexp.kind === "StringSexp"
 }
 
-export function asString(sexp: Sexp): String {
-  if (isString(sexp)) return sexp
-  let message = `[asString] fail on: ${S.formatSexp(sexp)}`
+export function asStringSexp(sexp: Sexp): StringSexp {
+  if (isStringSexp(sexp)) return sexp
+  let message = `[asStringSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
-export type Int = {
-  kind: "Int"
+export type IntSexp = {
+  kind: "IntSexp"
   content: bigint
   location: S.SourceLocation
 }
 
-export function Int(content: bigint, location: S.SourceLocation): Int {
+export function IntSexp(content: bigint, location: S.SourceLocation): IntSexp {
   return {
-    kind: "Int",
+    kind: "IntSexp",
     content,
     location,
   }
 }
 
-export function isInt(sexp: Sexp): sexp is Int {
-  return sexp.kind === "Int"
+export function isIntSexp(sexp: Sexp): sexp is IntSexp {
+  return sexp.kind === "IntSexp"
 }
 
-export function asInt(sexp: Sexp): Int {
-  if (isInt(sexp)) return sexp
-  let message = `[asInt] fail on: ${S.formatSexp(sexp)}`
+export function asIntSexp(sexp: Sexp): IntSexp {
+  if (isIntSexp(sexp)) return sexp
+  let message = `[asIntSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
-export type Float = {
-  kind: "Float"
+export type FloatSexp = {
+  kind: "FloatSexp"
   content: number
   location: S.SourceLocation
 }
 
-export function Float(content: number, location: S.SourceLocation): Float {
+export function FloatSexp(content: number, location: S.SourceLocation): FloatSexp {
   return {
-    kind: "Float",
+    kind: "FloatSexp",
     content,
     location,
   }
 }
 
-export function isFloat(sexp: Sexp): sexp is Float {
-  return sexp.kind === "Float"
+export function isFloatSexp(sexp: Sexp): sexp is FloatSexp {
+  return sexp.kind === "FloatSexp"
 }
 
-export function asFloat(sexp: Sexp): Float {
-  if (isFloat(sexp)) return sexp
-  let message = `[asFloat] fail on: ${S.formatSexp(sexp)}`
+export function asFloatSexp(sexp: Sexp): FloatSexp {
+  if (isFloatSexp(sexp)) return sexp
+  let message = `[asFloatSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
-export type Keyword = {
-  kind: "Keyword"
+export type KeywordSexp = {
+  kind: "KeywordSexp"
   content: string
   location: S.SourceLocation
 }
 
-export function Keyword(content: string, location: S.SourceLocation): Keyword {
+export function KeywordSexp(content: string, location: S.SourceLocation): KeywordSexp {
   return {
-    kind: "Keyword",
+    kind: "KeywordSexp",
     content,
     location,
   }
 }
 
-export function isKeyword(sexp: Sexp): sexp is Keyword {
-  return sexp.kind === "Keyword"
+export function isKeywordSexp(sexp: Sexp): sexp is KeywordSexp {
+  return sexp.kind === "KeywordSexp"
 }
 
-export function asKeyword(sexp: Sexp): Keyword {
-  if (isKeyword(sexp)) return sexp
-  let message = `[asKeyword] fail on: ${S.formatSexp(sexp)}`
+export function asKeywordSexp(sexp: Sexp): KeywordSexp {
+  if (isKeywordSexp(sexp)) return sexp
+  let message = `[asKeywordSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
-export type List = {
-  kind: "List"
+export type ListSexp = {
+  kind: "ListSexp"
   elements: Array<Sexp>
   location: S.SourceLocation
 }
 
-export function List(elements: Array<Sexp>, location: S.SourceLocation): List {
+export function ListSexp(elements: Array<Sexp>, location: S.SourceLocation): ListSexp {
   return {
-    kind: "List",
+    kind: "ListSexp",
     elements,
     location,
   }
 }
 
-export function isList(sexp: Sexp): sexp is List {
-  return sexp.kind === "List"
+export function isListSexp(sexp: Sexp): sexp is ListSexp {
+  return sexp.kind === "ListSexp"
 }
 
-export function asList(sexp: Sexp): List {
-  if (isList(sexp)) return sexp
-  let message = `[asList] fail on: ${S.formatSexp(sexp)}`
+export function asListSexp(sexp: Sexp): ListSexp {
+  if (isListSexp(sexp)) return sexp
+  let message = `[asListSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }

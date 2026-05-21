@@ -667,27 +667,27 @@ function desugarHash(
 
 function desugarQuote(sexp: S.Sexp, location: S.SourceLocation): M.Exp {
   switch (sexp.kind) {
-    case "Symbol": {
+    case "SymbolSexp": {
       return M.SymbolExp(sexp.content, location)
     }
 
-    case "String": {
+    case "StringSexp": {
       return M.StringExp(sexp.content, location)
     }
 
-    case "Int": {
+    case "IntSexp": {
       return M.IntExp(sexp.content, location)
     }
 
-    case "Float": {
+    case "FloatSexp": {
       return M.FloatExp(sexp.content, location)
     }
 
-    case "Keyword": {
+    case "KeywordSexp": {
       return M.KeywordExp(sexp.content, location)
     }
 
-    case "List": {
+    case "ListSexp": {
       return M.LiteralListExp(
         sexp.elements.map((e) => desugarQuote(e, location)),
         location,

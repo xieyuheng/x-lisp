@@ -22,11 +22,11 @@ type Render = (config: Config) => Ppml.Node
 export function renderSexp(sexp: S.Sexp): Render {
   return (config) => {
     if (
-      S.isSymbol(sexp) ||
-      S.isString(sexp) ||
-      S.isInt(sexp) ||
-      S.isFloat(sexp) ||
-      S.isKeyword(sexp)
+      S.isSymbolSexp(sexp) ||
+      S.isStringSexp(sexp) ||
+      S.isIntSexp(sexp) ||
+      S.isFloatSexp(sexp) ||
+      S.isKeywordSexp(sexp)
     ) {
       return Ppml.text(formatSexp(sexp))
     }
@@ -37,7 +37,7 @@ export function renderSexp(sexp: S.Sexp): Render {
 
     const [first, ...rest] = sexp.elements
 
-    if (first.kind === "Symbol" && rest.length === 1) {
+    if (first.kind === "SymbolSexp" && rest.length === 1) {
       switch (first.content) {
         case "@quote":
           return Ppml.concat(Ppml.text("'"), renderSexp(rest[0])(config))
@@ -48,7 +48,7 @@ export function renderSexp(sexp: S.Sexp): Render {
       }
     }
 
-    if (first.kind === "Symbol") {
+    if (first.kind === "SymbolSexp") {
       switch (first.content) {
         case "@set":
           return renderSet(rest)(config)
@@ -105,7 +105,7 @@ function findKeywordConfig(
   config: Config,
   sexp: S.Sexp,
 ): KeywordConfig | undefined {
-  if (sexp.kind === "Symbol") {
+  if (sexp.kind === "SymbolSexp") {
     return config.keywords.find(([name]) => name === sexp.content)
   }
 }
@@ -142,7 +142,7 @@ function renderApplication(elements: Array<S.Sexp>): Render {
     // "short target" heuristic -- for `and` `or` `->` `*->`
     const shortLength = 3
     const [head, ...rest] = elements
-    if (head.kind === "Symbol" && head.content.length <= shortLength) {
+    if (head.kind === "SymbolSexp" && head.content.length <= shortLength) {
       // +1 for "("
       // +1 for " "
       const indentation = head.content.length + 2

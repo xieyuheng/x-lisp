@@ -39,7 +39,7 @@ export class Parser {
     switch (token.kind) {
       case "Symbol": {
         return {
-          sexp: S.Symbol(token.value, token.location),
+          sexp: S.SymbolSexp(token.value, token.location),
           remain: tokens.slice(1),
         }
       }
@@ -47,14 +47,14 @@ export class Parser {
       case "Number": {
         if (stringIsBigInt(token.value)) {
           return {
-            sexp: S.Int(BigInt(token.value), token.location),
+            sexp: S.IntSexp(BigInt(token.value), token.location),
             remain: tokens.slice(1),
           }
         }
 
         if (stringIsNumber(token.value)) {
           return {
-            sexp: S.Float(Number(token.value), token.location),
+            sexp: S.FloatSexp(Number(token.value), token.location),
             remain: tokens.slice(1),
           }
         }
@@ -65,7 +65,7 @@ export class Parser {
 
       case "String": {
         return {
-          sexp: S.String(token.value, token.location),
+          sexp: S.StringSexp(token.value, token.location),
           remain: tokens.slice(1),
         }
       }
@@ -77,10 +77,10 @@ export class Parser {
             tokens.slice(1),
           )
           return {
-            sexp: S.List(
+            sexp: S.ListSexp(
               [
-                S.Symbol("@square-bracket", token.location),
-                ...S.asList(sexp).elements,
+                S.SymbolSexp("@square-bracket", token.location),
+                ...S.asListSexp(sexp).elements,
               ],
               sexp.location,
             ),
@@ -94,10 +94,10 @@ export class Parser {
             tokens.slice(1),
           )
           return {
-            sexp: S.List(
+            sexp: S.ListSexp(
               [
-                S.Symbol("@curly-bracket", token.location),
-                ...S.asList(sexp).elements,
+                S.SymbolSexp("@curly-bracket", token.location),
+                ...S.asListSexp(sexp).elements,
               ],
               sexp.location,
             ),
@@ -122,17 +122,17 @@ export class Parser {
           "`": "@quasiquote",
         }
 
-        const quoteSymbol = S.Symbol(quoteTable[token.value], token.location)
+        const quoteSymbol = S.SymbolSexp(quoteTable[token.value], token.location)
 
         return {
-          sexp: S.List([quoteSymbol, sexp], token.location),
+          sexp: S.ListSexp([quoteSymbol, sexp], token.location),
           remain,
         }
       }
 
       case "Keyword": {
         return {
-          sexp: S.Keyword(token.value, token.location),
+          sexp: S.KeywordSexp(token.value, token.location),
           remain: tokens.slice(1),
         }
       }
@@ -160,7 +160,7 @@ export class Parser {
         }
 
         return {
-          sexp: S.List(array, {
+          sexp: S.ListSexp(array, {
             ...token.location,
             span: S.spanUnion(start.location.span, token.location.span),
           }),

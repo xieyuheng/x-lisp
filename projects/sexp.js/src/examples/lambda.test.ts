@@ -33,13 +33,13 @@ function Let(name: string, rhs: Exp, body: Exp): Let {
 
 const parseExp: S.Router<Exp> = S.createRouter<Exp>({
   "`(lambda (,name) ,ret)": ({ name, ret }) =>
-    Lambda(S.asSymbol(name).content, parseExp(ret)),
+    Lambda(S.asSymbolSexp(name).content, parseExp(ret)),
   "`(let ((,name ,rhs)) ,body)": ({ name, rhs, body }) =>
-    Let(S.asSymbol(name).content, parseExp(rhs), parseExp(body)),
+    Let(S.asSymbolSexp(name).content, parseExp(rhs), parseExp(body)),
   "`(,target ,arg)": ({ target, arg }) =>
     Apply(parseExp(target), parseExp(arg)),
   name: ({ name }, { location }) => {
-    const nameSymbol = S.asSymbol(name).content
+    const nameSymbol = S.asSymbolSexp(name).content
     if (keywords.includes(nameSymbol)) {
       let message = "keywork should not be used as variable\n"
       throw new S.ErrorWithSourceLocation(message, location)

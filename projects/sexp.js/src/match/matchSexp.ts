@@ -18,8 +18,8 @@ export function matchSexp(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 function matchSymbol(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   switch (mode) {
     case "NormalMode": {
-      return ifEffect(pattern.kind === "Symbol", ({ subst }) => {
-        const key = S.asSymbol(pattern).content
+      return ifEffect(pattern.kind === "SymbolSexp", ({ subst }) => {
+        const key = S.asSymbolSexp(pattern).content
         const foundSexp = subst[key]
         return (subst) => {
           if (foundSexp) {
@@ -35,8 +35,8 @@ function matchSymbol(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
     case "QuasiquoteMode": {
       return guardEffect(
         () =>
-          pattern.kind === "Symbol" &&
-          sexp.kind === "Symbol" &&
+          pattern.kind === "SymbolSexp" &&
+          sexp.kind === "SymbolSexp" &&
           pattern.content === sexp.content,
       )
     }
@@ -46,8 +46,8 @@ function matchSymbol(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 function matchString(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return guardEffect(
     () =>
-      pattern.kind === "String" &&
-      sexp.kind === "String" &&
+      pattern.kind === "StringSexp" &&
+      sexp.kind === "StringSexp" &&
       pattern.content === sexp.content,
   )
 }
@@ -55,8 +55,8 @@ function matchString(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 function matchKeyword(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return guardEffect(
     () =>
-      pattern.kind === "Keyword" &&
-      sexp.kind === "Keyword" &&
+      pattern.kind === "KeywordSexp" &&
+      sexp.kind === "KeywordSexp" &&
       pattern.content === sexp.content,
   )
 }
@@ -64,8 +64,8 @@ function matchKeyword(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 function matchInt(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return guardEffect(
     () =>
-      pattern.kind === "Int" &&
-      sexp.kind === "Int" &&
+      pattern.kind === "IntSexp" &&
+      sexp.kind === "IntSexp" &&
       pattern.content === sexp.content,
   )
 }
@@ -73,8 +73,8 @@ function matchInt(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 function matchFloat(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return guardEffect(
     () =>
-      pattern.kind === "Float" &&
-      sexp.kind === "Float" &&
+      pattern.kind === "FloatSexp" &&
+      sexp.kind === "FloatSexp" &&
       pattern.content === sexp.content,
   )
 }
@@ -119,15 +119,15 @@ function matchManySexp(
 
 function matchQuotedList(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
-      sexp.kind === "List" &&
+    pattern.kind === "ListSexp" &&
+      sexp.kind === "ListSexp" &&
       pattern.elements.length === sexp.elements.length,
     () =>
       sequenceEffect([
         matchManySexp(
           mode,
-          S.asList(pattern).elements,
-          S.asList(sexp).elements,
+          S.asListSexp(pattern).elements,
+          S.asListSexp(sexp).elements,
         ),
       ]),
   )
@@ -135,12 +135,12 @@ function matchQuotedList(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 
 function matchUnquote(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
+    pattern.kind === "ListSexp" &&
       pattern.elements.length >= 2 &&
-      pattern.elements[0].kind === "Symbol" &&
+      pattern.elements[0].kind === "SymbolSexp" &&
       pattern.elements[0].content === "@unquote",
     () => {
-      const firstSexp = S.asList(pattern).elements[1]
+      const firstSexp = S.asListSexp(pattern).elements[1]
       return sequenceEffect([matchSexp("NormalMode", firstSexp, sexp)])
     },
   )
@@ -148,14 +148,14 @@ function matchUnquote(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 
 function matchListLiteral(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
-      sexp.kind === "List" &&
+    pattern.kind === "ListSexp" &&
+      sexp.kind === "ListSexp" &&
       pattern.elements.length >= 1 &&
-      pattern.elements[0].kind === "Symbol" &&
+      pattern.elements[0].kind === "SymbolSexp" &&
       pattern.elements[0].content === "@square-bracket",
     () => {
-      const patternBody = S.asList(pattern).elements.slice(1)
-      const sexpBody = S.asList(sexp).elements
+      const patternBody = S.asListSexp(pattern).elements.slice(1)
+      const sexpBody = S.asListSexp(sexp).elements
       return sequenceEffect([
         guardEffect(() => patternBody.length === sexpBody.length),
         ...patternBody
@@ -168,12 +168,12 @@ function matchListLiteral(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 
 function matchQuote(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
+    pattern.kind === "ListSexp" &&
       pattern.elements.length >= 2 &&
-      pattern.elements[0].kind === "Symbol" &&
+      pattern.elements[0].kind === "SymbolSexp" &&
       pattern.elements[0].content === "@quote",
     () => {
-      const firstSexp = S.asList(pattern).elements[1]
+      const firstSexp = S.asListSexp(pattern).elements[1]
       return sequenceEffect([matchSexp("QuoteMode", firstSexp, sexp)])
     },
   )
@@ -181,12 +181,12 @@ function matchQuote(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 
 function matchQuasiquote(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
+    pattern.kind === "ListSexp" &&
       pattern.elements.length >= 2 &&
-      pattern.elements[0].kind === "Symbol" &&
+      pattern.elements[0].kind === "SymbolSexp" &&
       pattern.elements[0].content === "@quasiquote",
     () => {
-      const firstSexp = S.asList(pattern).elements[1]
+      const firstSexp = S.asListSexp(pattern).elements[1]
       return sequenceEffect([matchSexp("QuasiquoteMode", firstSexp, sexp)])
     },
   )
@@ -194,20 +194,20 @@ function matchQuasiquote(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 
 function matchCons(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
-      sexp.kind === "List" &&
+    pattern.kind === "ListSexp" &&
+      sexp.kind === "ListSexp" &&
       pattern.elements.length === 3 &&
-      pattern.elements[0].kind === "Symbol" &&
+      pattern.elements[0].kind === "SymbolSexp" &&
       pattern.elements[0].content === "cons",
     () => {
-      const listPattern = S.asList(pattern)
+      const listPattern = S.asListSexp(pattern)
       const headPattern = listPattern.elements[1]
       const tailPattern = listPattern.elements[2]
 
-      const listSexp = S.asList(sexp)
+      const listSexp = S.asListSexp(sexp)
       if (listSexp.elements.length === 0) return failEffect()
       const headSexp = listSexp.elements[0]
-      const tailSexp = S.List(listSexp.elements.slice(1), listSexp.location)
+      const tailSexp = S.ListSexp(listSexp.elements.slice(1), listSexp.location)
 
       return sequenceEffect([
         matchSexp(mode, headPattern, headSexp),
@@ -219,21 +219,21 @@ function matchCons(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
 
 function matchConsStar(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return ifEffect(
-    pattern.kind === "List" &&
-      sexp.kind === "List" &&
+    pattern.kind === "ListSexp" &&
+      sexp.kind === "ListSexp" &&
       pattern.elements.length >= 3 &&
-      pattern.elements[0].kind === "Symbol" &&
+      pattern.elements[0].kind === "SymbolSexp" &&
       pattern.elements[0].content === "cons*",
     () => {
-      const listPattern = S.asList(pattern)
+      const listPattern = S.asListSexp(pattern)
       const prefixCount = listPattern.elements.length - 2
       const patternPrefix = listPattern.elements.slice(1, prefixCount + 1)
       const tailPattern = listPattern.elements[listPattern.elements.length - 1]
 
-      const listSexp = S.asList(sexp)
+      const listSexp = S.asListSexp(sexp)
       if (listSexp.elements.length < prefixCount) return failEffect()
       const sexpPrefix = listSexp.elements.slice(0, prefixCount)
-      const tailSexp = S.List(
+      const tailSexp = S.ListSexp(
         listSexp.elements.slice(prefixCount),
         listSexp.location,
       )

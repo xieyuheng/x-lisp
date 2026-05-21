@@ -7,28 +7,28 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { name, parameters, body },
     { sexp },
   ) => {
-    const keyword = S.asList(sexp).elements[0]
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineFunctionStmt(
-      S.asSymbol(name).content,
-      S.asList(parameters).elements.map((x) => S.asSymbol(x).content),
+      S.asSymbolSexp(name).content,
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseBody(body),
       keyword.location,
     )
   },
 
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asList(sexp).elements[0]
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineVariableStmt(
-      S.asSymbol(name).content,
+      S.asSymbolSexp(name).content,
       parseBody(body),
       keyword.location,
     )
   },
 
   "(cons* 'define-test name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asList(sexp).elements[0]
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineTestStmt(
-      S.asSymbol(name).content,
+      S.asSymbolSexp(name).content,
       parseBody(body),
       keyword.location,
     )
@@ -38,19 +38,19 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { name, parameters, body },
     { sexp },
   ) => {
-    const keyword = S.asList(sexp).elements[0]
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineTypeStmt(
-      S.asSymbol(name).content,
-      S.asList(parameters).elements.map((x) => S.asSymbol(x).content),
+      S.asSymbolSexp(name).content,
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseBody(body),
       keyword.location,
     )
   },
 
   "(cons* 'define-type name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asList(sexp).elements[0]
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineTypeStmt(
-      S.asSymbol(name).content,
+      S.asSymbolSexp(name).content,
       [],
       parseBody(body),
       keyword.location,
@@ -59,44 +59,44 @@ export const parseStmt = S.createRouter<M.Stmt>({
 
   "(cons* 'exempt names)": ({ names }, { location }) => {
     return M.ExemptStmt(
-      S.asList(names).elements.map((x) => S.asSymbol(x).content),
+      S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
       location,
     )
   },
 
   "(cons* 'private names)": ({ names }, { location }) => {
     return M.PrivateStmt(
-      S.asList(names).elements.map((x) => S.asSymbol(x).content),
+      S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
       location,
     )
   },
 
   "`(module ,name)": ({ name }, { location }) => {
-    return M.DeclareModuleStmt(S.asSymbol(name).content, location)
+    return M.DeclareModuleStmt(S.asSymbolSexp(name).content, location)
   },
 
   "`(error-module ,name)": ({ name }, { location }) => {
-    return M.DeclareErrorModuleStmt(S.asSymbol(name).content, location)
+    return M.DeclareErrorModuleStmt(S.asSymbolSexp(name).content, location)
   },
 
   "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
     return M.ImportStmt(
-      S.asSymbol(modName).content,
-      S.asList(entries).elements.map((x) => S.asSymbol(x).content),
+      S.asSymbolSexp(modName).content,
+      S.asListSexp(entries).elements.map((x) => S.asSymbolSexp(x).content),
       location,
     )
   },
 
   "`(import-as ,modName ,prefix)": ({ modName, prefix }, { location }) => {
     return M.ImportAsStmt(
-      S.asSymbol(modName).content,
-      S.asSymbol(prefix).content,
+      S.asSymbolSexp(modName).content,
+      S.asSymbolSexp(prefix).content,
       location,
     )
   },
 
   "`(import-all ,modName)": ({ modName, prefix }, { location }) => {
-    return M.ImportAllStmt(S.asSymbol(modName).content, location)
+    return M.ImportAllStmt(S.asSymbolSexp(modName).content, location)
   },
 
   "(cons* 'define-enum head constructors)": (
@@ -105,7 +105,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   ) => {
     return M.DefineEnumStmt(
       parseTypeConstructor(head),
-      S.asList(constructors).elements.map(parseDataConstructor),
+      S.asListSexp(constructors).elements.map(parseDataConstructor),
       location,
     )
   },
@@ -115,10 +115,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { location },
   ) => {
     const typeConstructor = parseTypeConstructor(head)
-    const interfaceFunctions = S.asList(ifaces).elements.map((iface) => {
-      const parts = S.asList(iface).elements
+    const interfaceFunctions = S.asListSexp(ifaces).elements.map((iface) => {
+      const parts = S.asListSexp(iface).elements
       return {
-        name: S.asSymbol(parts[0]).content,
+        name: S.asSymbolSexp(parts[0]).content,
         type: parseExp(parts[1]),
         location: parts[0].location,
       }
@@ -138,7 +138,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   ) => {
     return M.DefineAlgebraicTypeStmt(
       parseTypeConstructor(head),
-      S.asList(constructors).elements.map(parseAlgebraicTypeConstructor),
+      S.asListSexp(constructors).elements.map(parseAlgebraicTypeConstructor),
       location,
     )
   },
@@ -146,7 +146,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   "(cons* 'define-struct* head ctor)": ({ head, ctor }, { location }) => {
     return M.DefineStructStarStmt(
       parseTypeConstructor(head),
-      parseDataConstructor(S.asList(ctor).elements[0]),
+      parseDataConstructor(S.asListSexp(ctor).elements[0]),
       location,
     )
   },
@@ -154,7 +154,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
   "(cons* 'define-struct head fields)": ({ head, fields }, { location }) => {
     return M.DefineStructStmt(
       parseTypeConstructor(head),
-      S.asList(fields).elements.map(parseDataField),
+      S.asListSexp(fields).elements.map(parseDataField),
       location,
     )
   },
@@ -163,34 +163,34 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { head, ctor, predicate, accessors },
     { location },
   ) => {
-    const ctorList = S.asList(ctor).elements
-    const constructorName = S.asSymbol(ctorList[0]).content
+    const ctorList = S.asListSexp(ctor).elements
+    const constructorName = S.asSymbolSexp(ctorList[0]).content
     const fields = ctorList.slice(1).map((field) => {
-      const fieldList = S.asList(field).elements
+      const fieldList = S.asListSexp(field).elements
       return {
-        name: S.asSymbol(fieldList[0]).content,
+        name: S.asSymbolSexp(fieldList[0]).content,
         type: parseExp(fieldList[1]),
         location,
       }
     })
 
-    const accessorList = S.asList(accessors).elements
+    const accessorList = S.asListSexp(accessors).elements
     const accessorMap = new Map<
       string,
       { accessorName: string; modifierName?: string }
     >()
     for (const accessor of accessorList) {
-      const entry = S.asList(accessor).elements
+      const entry = S.asListSexp(accessor).elements
       const fieldEntry: {
         accessorName: string
         modifierName?: string
       } = {
-        accessorName: S.asSymbol(entry[1]).content,
+        accessorName: S.asSymbolSexp(entry[1]).content,
       }
       if (entry.length >= 3) {
-        fieldEntry.modifierName = S.asSymbol(entry[2]).content
+        fieldEntry.modifierName = S.asSymbolSexp(entry[2]).content
       }
-      accessorMap.set(S.asSymbol(entry[0]).content, fieldEntry)
+      accessorMap.set(S.asSymbolSexp(entry[0]).content, fieldEntry)
     }
 
     return M.DefineRecordTypeStmt(
@@ -207,7 +207,7 @@ export const parseStmt = S.createRouter<M.Stmt>({
             modifierName: names ? names.modifierName : undefined,
           }
         }),
-        predicate: S.asSymbol(predicate).content,
+        predicate: S.asSymbolSexp(predicate).content,
         location,
       },
       location,
@@ -215,15 +215,15 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "`(claim ,name ,type)": ({ name, type }, { location }) => {
-    return M.ClaimStmt(S.asSymbol(name).content, parseExp(type), location)
+    return M.ClaimStmt(S.asSymbolSexp(name).content, parseExp(type), location)
   },
 
   "`(claim-type ,name)": ({ name }, { location }) => {
-    return M.ClaimTypeStmt(S.asSymbol(name).content, location)
+    return M.ClaimTypeStmt(S.asSymbolSexp(name).content, location)
   },
 
   "`(admit ,name ,type)": ({ name, type }, { location }) => {
-    return M.AdmitStmt(S.asSymbol(name).content, parseExp(type), location)
+    return M.AdmitStmt(S.asSymbolSexp(name).content, parseExp(type), location)
   },
 
   "`(declare-primitive-function ,name ,arity)": (
@@ -231,14 +231,14 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { location },
   ) => {
     return M.DeclarePrimitiveFunctionStmt(
-      S.asSymbol(name).content,
-      Number(S.asInt(arity).content),
+      S.asSymbolSexp(name).content,
+      Number(S.asIntSexp(arity).content),
       location,
     )
   },
 
   "`(declare-primitive-variable ,name)": ({ name }, { location }) => {
-    return M.DeclarePrimitiveVariableStmt(S.asSymbol(name).content, location)
+    return M.DeclarePrimitiveVariableStmt(S.asSymbolSexp(name).content, location)
   },
 })
 
@@ -246,9 +246,9 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
   "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {
       definition: undefined,
-      name: S.asSymbol(name).content,
-      parameters: S.asList(parameters).elements.map(
-        (x) => S.asSymbol(x).content,
+      name: S.asSymbolSexp(name).content,
+      parameters: S.asListSexp(parameters).elements.map(
+        (x) => S.asSymbolSexp(x).content,
       ),
       location,
     }
@@ -257,7 +257,7 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
   name: ({ name }, { location }) => {
     return {
       definition: undefined,
-      name: S.asSymbol(name).content,
+      name: S.asSymbolSexp(name).content,
       parameters: [],
       location,
     }
@@ -267,8 +267,8 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
 const parseDataConstructor = S.createRouter<M.PreDataConstructor>({
   "(cons* name fields)": ({ name, fields }, { location }) => {
     return {
-      name: S.asSymbol(name).content,
-      fields: S.asList(fields).elements.map(parseDataField),
+      name: S.asSymbolSexp(name).content,
+      fields: S.asListSexp(fields).elements.map(parseDataField),
       location,
     }
   },
@@ -277,7 +277,7 @@ const parseDataConstructor = S.createRouter<M.PreDataConstructor>({
 const parseDataField = S.createRouter<M.DataField>({
   "`(,name ,exp)": ({ name, exp }, { location }) => {
     return {
-      name: S.asSymbol(name).content,
+      name: S.asSymbolSexp(name).content,
       type: parseExp(exp),
       location,
     }
@@ -290,34 +290,34 @@ const parseAlgebraicTypeConstructor =
       { group, predicate, accessors },
       { location },
     ) => {
-      const groupList = S.asList(group).elements
-      const name = S.asSymbol(groupList[0]).content
+      const groupList = S.asListSexp(group).elements
+      const name = S.asSymbolSexp(groupList[0]).content
       const fields = groupList.slice(1).map((field) => {
-        const fieldList = S.asList(field).elements
+        const fieldList = S.asListSexp(field).elements
         return {
-          name: S.asSymbol(fieldList[0]).content,
+          name: S.asSymbolSexp(fieldList[0]).content,
           type: parseExp(fieldList[1]),
           location,
         }
       })
 
-      const accessorList = S.asList(accessors).elements
+      const accessorList = S.asListSexp(accessors).elements
       const accessorMap = new Map<
         string,
         { accessorName: string; modifierName?: string }
       >()
       for (const accessor of accessorList) {
-        const entry = S.asList(accessor).elements
+        const entry = S.asListSexp(accessor).elements
         const fieldEntry: {
           accessorName: string
           modifierName?: string
         } = {
-          accessorName: S.asSymbol(entry[1]).content,
+          accessorName: S.asSymbolSexp(entry[1]).content,
         }
         if (entry.length >= 3) {
-          fieldEntry.modifierName = S.asSymbol(entry[2]).content
+          fieldEntry.modifierName = S.asSymbolSexp(entry[2]).content
         }
-        accessorMap.set(S.asSymbol(entry[0]).content, fieldEntry)
+        accessorMap.set(S.asSymbolSexp(entry[0]).content, fieldEntry)
       }
 
       return {
@@ -330,7 +330,7 @@ const parseAlgebraicTypeConstructor =
             modifierName: names ? names.modifierName : undefined,
           }
         }),
-        predicate: S.asSymbol(predicate).content,
+        predicate: S.asSymbolSexp(predicate).content,
         location,
       }
     },
