@@ -4,10 +4,22 @@ import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function desugarMatch(
+export type DesugarMatchCtx = {
+  scope: M.FragmentScope
+  currentModName: string
+  algebraicInfo: M.AlgebraicInfo
+}
+
+export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicInfo: M.AlgebraicInfo,
+): DesugarMatchCtx {
+  return { scope, currentModName, algebraicInfo }
+}
+
+export function desugarMatch(
+  ctx: DesugarMatchCtx,
   targets: Array<M.Exp>,
   clauses: Array<M.MatchClause>,
   defaultExp: M.Exp,
@@ -35,9 +47,7 @@ export function desugarMatch(
   if (clauses.every(clauseHeadIsVarPattern)) {
     const [target, ...restTargets] = targets
     return desugarMatch(
-      scope,
-      currentModName,
-      algebraicInfo,
+      ctx,
       restTargets,
       clauses.map((clause) => {
         const [pattern, ...restPatterns] = clause.patterns
@@ -54,16 +64,10 @@ export function desugarMatch(
   }
 
   if (clauses.every(clauseHeadIsDataPattern)) {
-    const [target, ...restTargets] = targets
-
-    const groups = groupClausesByHeadDataConstructor(
-      scope,
-      currentModName,
-      algebraicInfo,
-      clauses,
-    )
+    const groups = groupClausesByHeadDataConstructor(ctx, clauses)
     return M.CondExp(
       groups.map((group) => {
+        const [target, ...restTargets] = targets
         const usedNames = setUnionMany([
           M.expOccurredNames(defaultExp),
           ...targets.map((t) => M.expOccurredNames(t)),
@@ -90,9 +94,7 @@ export function desugarMatch(
         const question = M.ApplyExp(predicate, [target], target.location)
 
         let answer = desugarMatch(
-          scope,
-          currentModName,
-          algebraicInfo,
+          ctx,
           [...freshVars, ...restTargets],
           group.clauses,
           defaultExp,
@@ -123,15 +125,7 @@ export function desugarMatch(
   const groups = groupClausesByHeadPatternKind(clauses)
   return groups.reduceRight(
     (accumulatedExp, group) =>
-      desugarMatch(
-        scope,
-        currentModName,
-        algebraicInfo,
-        targets,
-        group,
-        accumulatedExp,
-        location,
-      ),
+      desugarMatch(ctx, targets, group, accumulatedExp, location),
     defaultExp,
   )
 }
@@ -151,9 +145,71 @@ type GroupByHeadDataConstructor = {
   clauses: Array<M.MatchClause>
 }
 
+
+function groupClausesByHeadDataConstructor(
+  ctx: DesugarMatchCtx,
+  clauses: Array<M.MatchClause>,
+): Array<GroupByHeadDataConstructor> {
+  const map = new Map<string, GroupByHeadDataConstructor>()
+  let typeKey: string | undefined
+
+  for (const clause of clauses) {
+    assert(clause.patterns.length > 0)
+    const [pattern, ...restPatterns] = clause.patterns
+
+    const { modName, name } = resolveDataConstructorQualifiedName(ctx, pattern)
+    const key = `${modName}/${name}`
+    const info = ctx.algebraicInfo.dataConstructorInfos.get(key)
+    if (!info) {
+      let message = `[groupClausesByHeadDataConstructor] undefined data constructor`
+      message += `\n  modName: ${modName}`
+      message += `\n  name: ${name}`
+      throw new S.ErrorWithSourceLocation(message, clause.location)
+    }
+
+    const currentTypeKey = `${info.modName}/${info.typeName}`
+    if (!typeKey) {
+      typeKey = currentTypeKey
+    } else if (currentTypeKey !== typeKey) {
+      let message = `[groupClausesByHeadDataConstructor] datatype definition mismatch`
+      message += `\n  current type: ${currentTypeKey}`
+      message += `\n  expected type: ${typeKey}`
+      throw new S.ErrorWithSourceLocation(message, clause.location)
+    }
+
+    let entry = map.get(key)
+    if (!entry) {
+      entry = { dataConstructorInfo: info, clauses: [] }
+      map.set(key, entry)
+    }
+    const argPatterns = M.dataPatternArgPatterns(pattern)
+    entry.clauses.push(
+      M.MatchClause(
+        [...argPatterns, ...restPatterns],
+        clause.body,
+        clause.location,
+      ),
+    )
+  }
+
+  assert(typeKey)
+  const typeInfo = ctx.algebraicInfo.algebraicTypeInfos.get(typeKey)
+  assert(typeInfo)
+
+  return typeInfo.constructorNames.map((ctorName) => {
+    const key = `${typeInfo.modName}/${ctorName}`
+    return (
+      map.get(key) ?? {
+        dataConstructorInfo: ctx.algebraicInfo.dataConstructorInfos.get(key)!,
+        clauses: [],
+      }
+    )
+  })
+}
+
+
 function resolveDataConstructorQualifiedName(
-  scope: M.FragmentScope,
-  currentModName: string,
+  ctx: DesugarMatchCtx,
   pattern: M.Exp,
 ): { modName: string; name: string } {
   assert(M.isDataPattern(pattern))
@@ -166,11 +222,11 @@ function resolveDataConstructorQualifiedName(
   }
 
   if (target.kind === "VarExp") {
-    const entry = scope.importedNames.get(target.name)
+    const entry = ctx.scope.importedNames.get(target.name)
     if (entry) {
       return { modName: entry.modName, name: entry.name }
     } else {
-      return { modName: currentModName, name: target.name }
+      return { modName: ctx.currentModName, name: target.name }
     }
   }
 
@@ -179,142 +235,23 @@ function resolveDataConstructorQualifiedName(
   throw new S.ErrorWithSourceLocation(message, pattern.location)
 }
 
-function resolveDataConstructor(
-  scope: M.FragmentScope,
-  currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
-  pattern: M.Exp,
-): M.DataConstructorInfo {
-  const { modName, name } = resolveDataConstructorQualifiedName(
-    scope,
-    currentModName,
-    pattern,
-  )
-
-  const info = algebraicInfo.dataConstructorInfos.get(`${modName}/${name}`)
-  if (!info) {
-    let message = `[resolveDataConstructor] undefined data constructor`
-    message += `\n  modName: ${modName}`
-    message += `\n  name: ${name}`
-    throw new S.ErrorWithSourceLocation(message, pattern.location)
-  }
-
-  return info
-}
-
-function groupClausesByHeadDataConstructor(
-  scope: M.FragmentScope,
-  currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
-  clauses: Array<M.MatchClause>,
-): Array<GroupByHeadDataConstructor> {
-  const typeInfo = findAlgebraicTypeInfoFromClauses(
-    scope,
-    currentModName,
-    algebraicInfo,
-    clauses,
-  )
-  return typeInfo.constructorNames.map((ctorName) => {
-    const key = `${typeInfo.modName}/${ctorName}`
-    const info = algebraicInfo.dataConstructorInfos.get(key)
-    assert(info)
-
-    const groupedClauses: Array<M.MatchClause> = []
-    for (const clause of clauses) {
-      assert(clause.patterns.length > 0)
-      const [pattern, ...restPatterns] = clause.patterns
-      const resolved = resolveDataConstructor(
-        scope,
-        currentModName,
-        algebraicInfo,
-        pattern,
-      )
-      if (
-        resolved.modName === info.modName &&
-        resolved.typeName === info.typeName &&
-        resolved.name === info.name
-      ) {
-        const argPatterns = M.dataPatternArgPatterns(pattern)
-        const newPatterns = [...argPatterns, ...restPatterns]
-        const newClause = M.MatchClause(
-          newPatterns,
-          clause.body,
-          clause.location,
-        )
-        groupedClauses.push(newClause)
-      }
-    }
-
-    return { dataConstructorInfo: info, clauses: groupedClauses }
-  })
-}
-
-function findAlgebraicTypeInfoFromClauses(
-  scope: M.FragmentScope,
-  currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
-  clauses: Array<M.MatchClause>,
-): M.AlgebraicTypeInfo {
-  let typeInfo: M.AlgebraicTypeInfo | undefined = undefined
-  for (const clause of clauses) {
-    assert(clause.patterns.length > 0)
-    const [pattern] = clause.patterns
-    const info = resolveDataConstructor(
-      scope,
-      currentModName,
-      algebraicInfo,
-      pattern,
-    )
-    const key = `${info.modName}/${info.typeName}`
-    const currentTypeInfo = algebraicInfo.algebraicTypeInfos.get(key)
-    if (!currentTypeInfo) {
-      let message = `[findAlgebraicTypeInfoFromClauses] cannot find algebraic type info`
-      message += `\n  constructor name: ${info.name}`
-      message += `\n  type name: ${info.typeName}`
-      message += `\n  module name: ${info.modName}`
-      throw new S.ErrorWithSourceLocation(message, clause.location)
-    }
-
-    if (!typeInfo) {
-      typeInfo = currentTypeInfo
-    } else if (
-      currentTypeInfo.modName !== typeInfo.modName ||
-      currentTypeInfo.name !== typeInfo.name
-    ) {
-      let message = `[findAlgebraicTypeInfoFromClauses] datatype definition mismatch`
-      message += `\n  definition name: ${typeInfo.name}`
-      throw new S.ErrorWithSourceLocation(message, clause.location)
-    }
-  }
-
-  assert(typeInfo)
-  return typeInfo
-}
-
 function groupClausesByHeadPatternKind(
   clauses: Array<M.MatchClause>,
 ): Array<Array<M.MatchClause>> {
   const groups: Array<Array<M.MatchClause>> = []
   for (const clause of clauses) {
-    if (groups.length === 0) {
-      groups.push([clause])
-      continue
-    }
-
-    const group = groups[groups.length - 1]
-    if (
-      [clause, ...group].every(clauseHeadIsVarPattern) ||
-      [clause, ...group].every(clauseHeadIsDataPattern)
-    ) {
-      group.push(clause)
-      continue
+    const last = groups.at(-1)
+    if (last && samePatternKind(clause, last[0])) {
+      last.push(clause)
     } else {
       groups.push([clause])
-      continue
     }
   }
-
   return groups
+}
+
+function samePatternKind(a: M.MatchClause, b: M.MatchClause): boolean {
+  return clauseHeadIsVarPattern(a) === clauseHeadIsVarPattern(b)
 }
 
 export function makeDefaultExp(

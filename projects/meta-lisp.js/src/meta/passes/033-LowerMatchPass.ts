@@ -48,12 +48,11 @@ function lowerMatch(
 ): M.Exp {
   switch (exp.kind) {
     case "MatchExp": {
+      const ctx = M.makeDesugarMatchCtx(scope, currentModName, algebraicInfo)
       const defaultExp = M.makeDefaultExp(exp.targets, exp.location)
 
       return M.desugarMatch(
-        scope,
-        currentModName,
-        algebraicInfo,
+        ctx,
         exp.targets.map((t) =>
           lowerMatch(scope, currentModName, algebraicInfo, t),
         ),

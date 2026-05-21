@@ -1,5 +1,3 @@
-[meta-lisp.js] [refactor] desugarMatch.ts
-
 [meta-lisp.js] 我计划区分 Exp（desugar 之前表达式） 与 Term（desugar 之后表达式）。
 
 [meta-lisp.meta] [review] exp-free-names.meta
