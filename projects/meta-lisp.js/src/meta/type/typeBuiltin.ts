@@ -27,14 +27,14 @@ export function typeBuiltin(mod: Mod) {
     mod,
     "list-t",
     1,
-    (E) => M.TypeValue(M.ListType((E as M.TypeValue).type)),
+    (E) => M.TypeValue(M.ListType(M.asTypeValue(E).type)),
     z,
   )
   definePrimitiveFunction(
     mod,
     "set-t",
     1,
-    (E) => M.TypeValue(M.SetType((E as M.TypeValue).type)),
+    (E) => M.TypeValue(M.SetType(M.asTypeValue(E).type)),
     z,
   )
   definePrimitiveFunction(
@@ -42,7 +42,7 @@ export function typeBuiltin(mod: Mod) {
     "hash-t",
     2,
     (K, V) =>
-      M.TypeValue(M.HashType((K as M.TypeValue).type, (V as M.TypeValue).type)),
+      M.TypeValue(M.HashType(M.asTypeValue(K).type, M.asTypeValue(V).type)),
     z,
   )
 }

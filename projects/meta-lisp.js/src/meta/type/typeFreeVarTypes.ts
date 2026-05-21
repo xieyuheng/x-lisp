@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 export function typeFreeVarTypes(
   boundIds: Set<string>,
   type: M.Type,
-): Array<M.Type> {
+): Array<M.VarType> {
   switch (type.kind) {
     case "VarType": {
       const id = M.varTypeId(type)

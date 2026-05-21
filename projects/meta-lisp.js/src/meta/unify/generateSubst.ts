@@ -4,10 +4,10 @@ import * as M from "../index.ts"
 // - To implement `reify`.
 
 export function generateCanonicalLabelSubst(types: Array<M.Type>): M.Subst {
-  const freeVarTypes: Array<M.VarType> = arrayDedup(
+  const freeVarTypes = arrayDedup(
     types.flatMap((type) => M.typeFreeVarTypes(new Set(), type)),
     M.varTypeEqual,
-  ) as Array<M.VarType>
+  )
 
   let subst = M.emptySubst()
   for (const freeVarType of freeVarTypes) {
@@ -22,10 +22,10 @@ export function generateCanonicalLabelSubst(types: Array<M.Type>): M.Subst {
 // - To improve error report.
 
 export function generatePrettyUnknownSubst(types: Array<M.Type>): M.Subst {
-  const freeVarTypes: Array<M.VarType> = arrayDedup(
+  const freeVarTypes = arrayDedup(
     types.flatMap((type) => M.typeFreeVarTypes(new Set(), type)),
     M.varTypeEqual,
-  ) as Array<M.VarType>
+  )
 
   let subst = M.emptySubst()
   for (const freeVarType of freeVarTypes) {

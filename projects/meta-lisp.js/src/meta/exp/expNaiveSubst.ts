@@ -2,9 +2,7 @@ import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-// Like `expSubst` but without capture avoidance.
-// Stops at a binding when the bound name equals `name` (shadowing).
-// Does NOT alpha-rename, even when free names in `rhs` would be captured.
+// Exp substitution with shadowing but **without** capture avoidance.
 
 export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
   switch (exp.kind) {

@@ -27,7 +27,7 @@ export function formatType(type: M.Type): string {
     }
 
     case "ArrowType": {
-      const uncurried = M.arrowTypeUncurrying(type) as M.ArrowType
+      const uncurried = M.asArrowType(M.arrowTypeUncurrying(type))
       const argTypes = formatTypes(uncurried.argTypes)
       const retType = formatType(uncurried.retType)
       if (argTypes.length === 0) {

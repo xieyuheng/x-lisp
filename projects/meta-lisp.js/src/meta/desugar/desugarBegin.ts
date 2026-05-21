@@ -13,7 +13,7 @@ export function desugarBegin(
   const [head, ...rest] = sequence
 
   if (head.kind === "LocalDefineExp") {
-    const defines = collectAdjacentDefines(sequence)
+    const defines = collectAdjacentLocalDefines(sequence)
     const remaining = sequence.slice(defines.length)
 
     const bindings = defines.map((d) =>
@@ -51,12 +51,17 @@ export function desugarBegin(
   }
 }
 
-function collectAdjacentDefines(
+function collectAdjacentLocalDefines(
   sequence: Array<M.Exp>,
 ): Array<M.LocalDefineExp> {
-  let i = 0
-  while (i < sequence.length && sequence[i].kind === "LocalDefineExp") {
-    i++
+  const localDefines: Array<M.LocalDefineExp> = []
+  for (const exp of sequence) {
+    if (exp.kind === "LocalDefineExp") {
+      localDefines.push(exp)
+    } else {
+      break
+    }
   }
-  return sequence.slice(0, i) as Array<M.LocalDefineExp>
+
+  return localDefines
 }

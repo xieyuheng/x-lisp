@@ -57,8 +57,8 @@ export function unify(
   }
 
   if (M.isArrowType(lhs) && M.isArrowType(rhs)) {
-    const curriedLhs = M.arrowTypeCurrying(lhs) as M.ArrowType
-    const curriedRhs = M.arrowTypeCurrying(rhs) as M.ArrowType
+    const curriedLhs = M.asArrowType(M.arrowTypeCurrying(lhs))
+    const curriedRhs = M.asArrowType(M.arrowTypeCurrying(rhs))
     subst = unifyMany(subst, curriedLhs.argTypes, curriedRhs.argTypes)
     subst = unify(subst, curriedLhs.retType, curriedRhs.retType)
     return subst
