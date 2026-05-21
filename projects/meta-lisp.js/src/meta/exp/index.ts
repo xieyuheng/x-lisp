@@ -1,5 +1,4 @@
 export * from "./Exp.ts"
-export * from "./expFreeNames.ts"
 export * from "./expNaiveSubst.ts"
 export * from "./expOccurredNames.ts"
 export * from "./expTraverse.ts"

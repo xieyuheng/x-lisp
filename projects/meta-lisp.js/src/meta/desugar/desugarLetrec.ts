@@ -31,12 +31,9 @@ export function desugarLetrec(
   body: M.Exp,
   location: SourceLocation,
 ): M.Exp {
-  const usedNames = M.expFreeNames(new Set(bindings.map((b) => b.name)), body)
+  const usedNames = M.expOccurredNames(body)
   for (const binding of bindings) {
-    const rhsFreeNames = M.expFreeNames(
-      new Set(bindings.map((b) => b.name)),
-      binding.rhs,
-    )
+    const rhsFreeNames = M.expOccurredNames(binding.rhs)
     for (const name of rhsFreeNames) {
       usedNames.add(name)
     }
