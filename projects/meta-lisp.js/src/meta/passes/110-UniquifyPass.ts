@@ -1,6 +1,5 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function UniquifyPass(
   project: M.Project,
@@ -12,7 +11,7 @@ export function UniquifyPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "110-uniquify")
+  if (options.dump) M.projectDumpMods(project, "110-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {

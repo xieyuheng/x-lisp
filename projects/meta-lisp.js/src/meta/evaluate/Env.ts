@@ -1,10 +1,10 @@
-import { type Value } from "../value/Value.ts"
+import * as M from "../index.ts"
 
 export type EvaluationMode = "OpaqueMode" | "TransparentMode"
 
 export type Env = {
   mode: EvaluationMode
-  bindings: Map<string, Value>
+  bindings: Map<string, M.Value>
 }
 
 export function emptyEnv(mode: EvaluationMode): Env {
@@ -19,11 +19,11 @@ export function envNames(env: Env): Set<string> {
   return new Set(env.bindings.keys())
 }
 
-export function envLookup(env: Env, name: string): Value | undefined {
+export function envLookup(env: Env, name: string): M.Value | undefined {
   return env.bindings.get(name)
 }
 
-export function envPut(env: Env, name: string, value: Value): Env {
+export function envPut(env: Env, name: string, value: M.Value): Env {
   return {
     ...env,
     bindings: new Map([...env.bindings, [name, value]]),
@@ -33,7 +33,7 @@ export function envPut(env: Env, name: string, value: Value): Env {
 export function envPutMany(
   env: Env,
   names: Array<string>,
-  values: Array<Value>,
+  values: Array<M.Value>,
 ): Env {
   for (const [index, name] of names.entries()) {
     env = envPut(env, name, values[index])

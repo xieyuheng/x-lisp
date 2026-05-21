@@ -1,6 +1,5 @@
 import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function QualifyPass(
   project: M.Project,
@@ -12,7 +11,7 @@ export function QualifyPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "070-qualify")
+  if (options.dump) M.projectDumpMods(project, "070-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {

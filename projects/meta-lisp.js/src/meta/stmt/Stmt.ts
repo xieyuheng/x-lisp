@@ -1,5 +1,4 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import type { TypeConstructor } from "../definition/index.ts"
 import * as M from "../index.ts"
 
 export type Stmt<E> =
@@ -170,13 +169,13 @@ export function DefineTypeStmt<E>(
 
 export type DefineEnumStmt<E> = {
   kind: "DefineEnumStmt"
-  typeConstructor: TypeConstructor
+  typeConstructor: M.TypeConstructor
   dataConstructors: Array<PreDataConstructor>
   location: SourceLocation
 }
 
 export function DefineEnumStmt<E>(
-  typeConstructor: TypeConstructor,
+  typeConstructor: M.TypeConstructor,
   dataConstructors: Array<PreDataConstructor>,
   location: SourceLocation,
 ): DefineEnumStmt<E> {
@@ -190,13 +189,13 @@ export function DefineEnumStmt<E>(
 
 export type DefineStructStarStmt<E> = {
   kind: "DefineStructStarStmt"
-  typeConstructor: TypeConstructor
+  typeConstructor: M.TypeConstructor
   dataConstructor: PreDataConstructor
   location: SourceLocation
 }
 
 export function DefineStructStarStmt<E>(
-  typeConstructor: TypeConstructor,
+  typeConstructor: M.TypeConstructor,
   dataConstructor: PreDataConstructor,
   location: SourceLocation,
 ): DefineStructStarStmt<E> {
@@ -210,13 +209,13 @@ export function DefineStructStarStmt<E>(
 
 export type DefineStructStmt<E> = {
   kind: "DefineStructStmt"
-  typeConstructor: TypeConstructor
+  typeConstructor: M.TypeConstructor
   fields: Array<PreDataField>
   location: SourceLocation
 }
 
 export function DefineStructStmt<E>(
-  typeConstructor: TypeConstructor,
+  typeConstructor: M.TypeConstructor,
   fields: Array<PreDataField>,
   location: SourceLocation,
 ): DefineStructStmt<E> {
@@ -242,13 +241,13 @@ export type PreDataField = {
 
 export type DefineRecordTypeStmt<E> = {
   kind: "DefineRecordTypeStmt"
-  typeConstructor: TypeConstructor
+  typeConstructor: M.TypeConstructor
   dataConstructor: AlgebraicTypeConstructor<E>
   location: SourceLocation
 }
 
 export function DefineRecordTypeStmt<E>(
-  typeConstructor: TypeConstructor,
+  typeConstructor: M.TypeConstructor,
   dataConstructor: AlgebraicTypeConstructor<E>,
   location: SourceLocation,
 ): DefineRecordTypeStmt<E> {
@@ -311,13 +310,13 @@ export type AlgebraicTypeConstructor<E> = {
 
 export type DefineAlgebraicTypeStmt<E> = {
   kind: "DefineAlgebraicTypeStmt"
-  typeConstructor: TypeConstructor
+  typeConstructor: M.TypeConstructor
   dataConstructors: Array<AlgebraicTypeConstructor<E>>
   location: SourceLocation
 }
 
 export function DefineAlgebraicTypeStmt<E>(
-  typeConstructor: TypeConstructor,
+  typeConstructor: M.TypeConstructor,
   dataConstructors: Array<AlgebraicTypeConstructor<E>>,
   location: SourceLocation,
 ): DefineAlgebraicTypeStmt<E> {

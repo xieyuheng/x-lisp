@@ -1,5 +1,4 @@
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 // - although after QualifyPass, CheckPass still need to handle unqualified Var,
 //   which is used by by inferring type of recursive function.
@@ -16,5 +15,5 @@ export function CheckPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "080-check")
+  if (options.dump) M.projectDumpMods(project, "080-check")
 }

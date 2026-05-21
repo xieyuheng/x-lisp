@@ -1,9 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import { type Value } from "../value/Value.ts"
 import { type Env, type EvaluationMode } from "./Env.ts"
 
-export function evaluate(mod: M.Mod, env: Env, exp: M.Term): Value {
+export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
   switch (exp.kind) {
     case "VarTerm": {
       const fromEnv = M.envLookup(env, exp.name)
@@ -77,7 +76,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): Value {
 function definitionToValue(
   mode: EvaluationMode,
   definition: M.Definition,
-): Value {
+): M.Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
       let message = `[definitionToValue] can not handle declared primitive function`

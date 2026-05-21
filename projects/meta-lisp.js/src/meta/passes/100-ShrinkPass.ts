@@ -1,5 +1,4 @@
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function ShrinkPass(
   project: M.Project,
@@ -11,7 +10,7 @@ export function ShrinkPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "100-shrink")
+  if (options.dump) M.projectDumpMods(project, "100-shrink")
 }
 
 function shrinkDefinition(definition: M.Definition): null {

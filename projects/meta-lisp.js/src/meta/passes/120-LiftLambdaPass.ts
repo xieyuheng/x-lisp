@@ -1,5 +1,4 @@
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function LiftLambdaPass(
   project: M.Project,
@@ -14,7 +13,7 @@ export function LiftLambdaPass(
     )
   }
 
-  if (options.dump) projectDumpMods(project, "120-lift-lambda")
+  if (options.dump) M.projectDumpMods(project, "120-lift-lambda")
 }
 
 type State = {

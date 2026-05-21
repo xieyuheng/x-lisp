@@ -1,17 +1,17 @@
-import type { Definition } from "../definition/index.ts"
-import type { Type } from "../type/Type.ts"
+import * as M from "../index.ts"
 
 export type Value = TypeValue | CurryValue | DefinitionValue
 
-// TypeValue
-
 export type TypeValue = {
   kind: "TypeValue"
-  type: Type
+  type: M.Type
 }
 
-export function TypeValue(type: Type): TypeValue {
-  return { kind: "TypeValue", type }
+export function TypeValue(type: M.Type): TypeValue {
+  return {
+    kind: "TypeValue",
+    type,
+  }
 }
 
 export function isTypeValue(value: Value): value is TypeValue {
@@ -22,8 +22,6 @@ export function asTypeValue(value: Value): TypeValue {
   if (isTypeValue(value)) return value
   throw new Error(`[asTypeValue] fail on: ${value.kind}`)
 }
-
-// CurryValue
 
 export type CurryValue = {
   kind: "CurryValue"
@@ -37,7 +35,12 @@ export function CurryValue(
   arity: number,
   args: Array<Value>,
 ): CurryValue {
-  return { kind: "CurryValue", target, arity, args }
+  return {
+    kind: "CurryValue",
+    target,
+    arity,
+    args,
+  }
 }
 
 export function isCurryValue(value: Value): value is CurryValue {
@@ -49,15 +52,16 @@ export function asCurryValue(value: Value): CurryValue {
   throw new Error(`[asCurryValue] fail on: ${value.kind}`)
 }
 
-// DefinitionValue
-
 export type DefinitionValue = {
   kind: "DefinitionValue"
-  definition: Definition
+  definition: M.Definition
 }
 
-export function DefinitionValue(definition: Definition): DefinitionValue {
-  return { kind: "DefinitionValue", definition }
+export function DefinitionValue(definition: M.Definition): DefinitionValue {
+  return {
+    kind: "DefinitionValue",
+    definition,
+  }
 }
 
 export function isDefinitionValue(value: Value): value is DefinitionValue {

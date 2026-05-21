@@ -1,12 +1,4 @@
-[meta-lisp.js] 还有哪些辅助性的数据类型没有分属 Exp 和 Term，但是没有 Exp 和 Term 前缀的？
-
-[meta-lisp.js] 调查一下，有哪些文件原本可以直接 import * as M from "../index.ts"
-但是还是单独 import 了某些函数或类型？
-或者已经有了 import * as M from "../index.ts"
-但是还是单独 import 了某些函数或类型？
-我需要把它们都改成 `import * as M` 的形式，
-以避免有多余的 import。
-引用的时候用 M.<name> 就可以了。
+[meta-lisp.js] [refactor] 重新给 passes 按顺序编号，间隔 10 一个编号（方便之后增加 pass）
 
 [meta-lisp.meta] [review] exp-free-names.meta
 [meta-lisp.meta] [review] exp-location.meta

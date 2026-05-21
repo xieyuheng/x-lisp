@@ -1,7 +1,5 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import type { Mod } from "../mod/index.ts"
-import type { Term } from "../term/Term.ts"
-import type { Value } from "../value/Value.ts"
+import * as M from "../index.ts"
 
 export type Definition =
   | PrimitiveFunctionDefinition
@@ -19,11 +17,11 @@ export type DefinitionState = {
   isChecked?: boolean
 }
 
-export type TypeFunction = (...args: Array<Value>) => Value
+export type TypeFunction = (...args: Array<M.Value>) => M.Value
 
 export type PrimitiveFunctionDefinition = {
   kind: "PrimitiveFunctionDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
   arity: number
   fn: TypeFunction
@@ -31,7 +29,7 @@ export type PrimitiveFunctionDefinition = {
 } & DefinitionState
 
 export function PrimitiveFunctionDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   arity: number,
   fn: TypeFunction,
@@ -49,16 +47,16 @@ export function PrimitiveFunctionDefinition(
 
 export type PrimitiveVariableDefinition = {
   kind: "PrimitiveVariableDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
-  value: Value
+  value: M.Value
   location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
-  value: Value,
+  value: M.Value,
   location: SourceLocation,
 ): PrimitiveVariableDefinition {
   return {
@@ -72,14 +70,14 @@ export function PrimitiveVariableDefinition(
 
 export type PrimitiveFunctionDeclaration = {
   kind: "PrimitiveFunctionDeclaration"
-  mod: Mod
+  mod: M.Mod
   name: string
   arity: number
   location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveFunctionDeclaration(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   arity: number,
   location: SourceLocation,
@@ -95,13 +93,13 @@ export function PrimitiveFunctionDeclaration(
 
 export type PrimitiveVariableDeclaration = {
   kind: "PrimitiveVariableDeclaration"
-  mod: Mod
+  mod: M.Mod
   name: string
   location: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDeclaration(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   location: SourceLocation,
 ): PrimitiveVariableDeclaration {
@@ -115,18 +113,18 @@ export function PrimitiveVariableDeclaration(
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
   parameters: Array<string>
-  body: Term
+  body: M.Term
   location: SourceLocation
 } & DefinitionState
 
 export function FunctionDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   parameters: Array<string>,
-  body: Term,
+  body: M.Term,
   location: SourceLocation,
 ): FunctionDefinition {
   return {
@@ -141,16 +139,16 @@ export function FunctionDefinition(
 
 export type VariableDefinition = {
   kind: "VariableDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
-  body: Term
+  body: M.Term
   location: SourceLocation
 } & DefinitionState
 
 export function VariableDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
-  body: Term,
+  body: M.Term,
   location: SourceLocation,
 ): VariableDefinition {
   return {
@@ -164,16 +162,16 @@ export function VariableDefinition(
 
 export type TestDefinition = {
   kind: "TestDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
-  body: Term
+  body: M.Term
   location: SourceLocation
 } & DefinitionState
 
 export function TestDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
-  body: Term,
+  body: M.Term,
   location: SourceLocation,
 ): TestDefinition {
   return {
@@ -187,18 +185,18 @@ export function TestDefinition(
 
 export type TypeDefinition = {
   kind: "TypeDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
   parameters: Array<string>
-  body: Term
+  body: M.Term
   location: SourceLocation
 } & DefinitionState
 
 export function TypeDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   parameters: Array<string>,
-  body: Term,
+  body: M.Term,
   location: SourceLocation,
 ): TypeDefinition {
   return {
@@ -213,7 +211,7 @@ export function TypeDefinition(
 
 export type AlgebraicTypeDefinition = {
   kind: "AlgebraicTypeDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
   typeConstructor: TypeConstructor
   dataConstructors: Array<DataConstructor>
@@ -228,12 +226,12 @@ export type TypeConstructor = {
 
 export type DataField = {
   name: string
-  type: Term
+  type: M.Term
   location: SourceLocation
 }
 
 export type DataConstructor = {
-  mod: Mod
+  mod: M.Mod
   typeName: string
   name: string
   fields: Array<DataField>
@@ -249,25 +247,25 @@ export function dataConstructorEqual(
 
 export type InterfaceEntry = {
   name: string
-  type: Term
+  type: M.Term
   location: SourceLocation
 }
 
 export type OpaqueTypeDefinition = {
   kind: "OpaqueTypeDefinition"
-  mod: Mod
+  mod: M.Mod
   name: string
   typeConstructor: TypeConstructor
-  representationType: Term
+  representationType: M.Term
   interfaceEntries: Array<InterfaceEntry>
   location: SourceLocation
 } & DefinitionState
 
 export function OpaqueTypeDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   typeConstructor: TypeConstructor,
-  representationType: Term,
+  representationType: M.Term,
   interfaceEntries: Array<InterfaceEntry>,
   location: SourceLocation,
 ): OpaqueTypeDefinition {
@@ -283,7 +281,7 @@ export function OpaqueTypeDefinition(
 }
 
 export function AlgebraicTypeDefinition(
-  mod: Mod,
+  mod: M.Mod,
   name: string,
   typeConstructor: TypeConstructor,
   dataConstructors: Array<DataConstructor>,

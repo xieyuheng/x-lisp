@@ -1,7 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
-import { type DataConstructor, type Definition } from "../definition/index.ts"
 import * as M from "../index.ts"
-import { type Stmt } from "../stmt/index.ts"
 
 export type ClaimedEntry = {
   exp: M.Term
@@ -10,13 +8,13 @@ export type ClaimedEntry = {
 
 export type Mod = {
   name: string
-  stmts: Array<Stmt<M.Exp>>
+  stmts: Array<M.Stmt<M.Exp>>
   admitted: Set<string>
-  definitions: Map<string, Definition>
+  definitions: Map<string, M.Definition>
   claimed: Map<string, ClaimedEntry>
   opaqueClaimed: Map<string, M.Term>
   inferredTypes: Map<string, M.Type>
-  dataConstructors: Map<string, DataConstructor>
+  dataConstructors: Map<string, M.DataConstructor>
   project: M.Project
 }
 
@@ -39,7 +37,7 @@ export function createMod(name: string, project: M.Project): Mod {
 export function modDefine(
   mod: Mod,
   name: string,
-  definition: Definition,
+  definition: M.Definition,
 ): void {
   if (mod.definitions.has(name)) {
     let message = `[modDefine] name already defined`
@@ -53,7 +51,7 @@ export function modDefine(
 export function modLookupDefinition(
   mod: Mod,
   name: string,
-): Definition | undefined {
+): M.Definition | undefined {
   return mod.definitions.get(name)
 }
 

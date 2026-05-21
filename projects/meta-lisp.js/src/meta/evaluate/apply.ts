@@ -1,14 +1,13 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
-import { type Value } from "../value/Value.ts"
 import type { EvaluationMode } from "./Env.ts"
 
 export function apply(
   mode: EvaluationMode,
-  target: Value,
-  args: Array<Value>,
-): Value {
+  target: M.Value,
+  args: Array<M.Value>,
+): M.Value {
   if (M.isDefinitionValue(target)) {
     return applyDefinition(mode, target.definition, args)
   }
@@ -38,8 +37,8 @@ export function apply(
 function applyDefinition(
   mode: EvaluationMode,
   definition: M.Definition,
-  args: Array<Value>,
-): Value {
+  args: Array<M.Value>,
+): M.Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
       return definition.fn(...args)

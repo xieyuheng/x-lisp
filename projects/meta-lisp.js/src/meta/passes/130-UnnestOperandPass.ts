@@ -1,6 +1,5 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function UnnestOperandPass(
   project: M.Project,
@@ -12,7 +11,7 @@ export function UnnestOperandPass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "130-unnest-operand")
+  if (options.dump) M.projectDumpMods(project, "130-unnest-operand")
 }
 
 type State = {

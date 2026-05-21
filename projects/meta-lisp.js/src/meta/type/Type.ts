@@ -1,8 +1,5 @@
 import { range } from "@xieyuheng/helpers.js/range"
-import type {
-  AlgebraicTypeDefinition,
-  OpaqueTypeDefinition,
-} from "../definition/index.ts"
+import * as M from "../index.ts"
 
 export type Type =
   | VarType
@@ -183,12 +180,12 @@ export function asHashType(type: Type): HashType {
 
 export type AlgebraicType = {
   kind: "AlgebraicType"
-  definition: AlgebraicTypeDefinition
+  definition: M.AlgebraicTypeDefinition
   argTypes: Array<Type>
 }
 
 export function AlgebraicType(
-  definition: AlgebraicTypeDefinition,
+  definition: M.AlgebraicTypeDefinition,
   argTypes: Array<Type>,
 ): AlgebraicType {
   return { kind: "AlgebraicType", definition, argTypes }
@@ -207,12 +204,12 @@ export function asAlgebraicType(type: Type): AlgebraicType {
 
 export type OpaqueType = {
   kind: "OpaqueType"
-  definition: OpaqueTypeDefinition
+  definition: M.OpaqueTypeDefinition
   argTypes: Array<Type>
 }
 
 export function OpaqueType(
-  definition: OpaqueTypeDefinition,
+  definition: M.OpaqueTypeDefinition,
   argTypes: Array<Type>,
 ): OpaqueType {
   return { kind: "OpaqueType", definition, argTypes }

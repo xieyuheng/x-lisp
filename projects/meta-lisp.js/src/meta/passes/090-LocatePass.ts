@@ -1,7 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
-import { projectDumpMods } from "../project/projectDumpMods.ts"
 
 export function LocatePass(
   project: M.Project,
@@ -13,7 +12,7 @@ export function LocatePass(
     }
   }
 
-  if (options.dump) projectDumpMods(project, "090-locate")
+  if (options.dump) M.projectDumpMods(project, "090-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {
