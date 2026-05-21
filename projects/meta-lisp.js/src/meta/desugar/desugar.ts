@@ -29,8 +29,7 @@ export function desugar(exp: M.Exp): M.Exp {
     }
 
     case "LocalDefineExp": {
-      let message =
-        `[desugar] local (define) must occur in the body of (begin)`
+      let message = `[desugar] local (define) must occur in the body of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
@@ -102,11 +101,7 @@ export function desugar(exp: M.Exp): M.Exp {
     }
 
     case "Begin1Exp": {
-      return M.Begin1Exp(
-        desugar(exp.head),
-        desugar(exp.body),
-        exp.location,
-      )
+      return M.Begin1Exp(desugar(exp.head), desugar(exp.body), exp.location)
     }
 
     case "LetStarExp": {
@@ -130,11 +125,7 @@ export function desugar(exp: M.Exp): M.Exp {
     }
 
     case "PolymorphicExp": {
-      return M.PolymorphicExp(
-        exp.parameters,
-        desugar(exp.body),
-        exp.location,
-      )
+      return M.PolymorphicExp(exp.parameters, desugar(exp.body), exp.location)
     }
 
     default: {

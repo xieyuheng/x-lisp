@@ -18,7 +18,7 @@ export function desugarMatch(
       let message = `[desugarMatch] targets length mismatch`
       message += `\n  targets: ${M.formatExps(targets)}`
       message += `\n  patterns: ${M.formatExps(clause.patterns)}`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, location)
     }
   }
 
@@ -174,9 +174,9 @@ function resolveDataConstructorQualifiedName(
     }
   }
 
-  throw new Error(
-    "[resolveDataConstructorQualifiedName] unhandled pattern target kind",
-  )
+  let message =
+    "[resolveDataConstructorQualifiedName] unhandled pattern target kind"
+  throw new S.ErrorWithSourceLocation(message, pattern.location)
 }
 
 function resolveDataConstructor(
