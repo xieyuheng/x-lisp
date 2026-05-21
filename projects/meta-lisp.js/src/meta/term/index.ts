@@ -1,4 +1,3 @@
-export * from "./formatTerm.ts"
 export * from "./Term.ts"
 export * from "./termFreeNames.ts"
 export * from "./termNaiveSubst.ts"

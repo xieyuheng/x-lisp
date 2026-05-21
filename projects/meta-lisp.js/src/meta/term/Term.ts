@@ -1,6 +1,21 @@
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 
-// Atom / Leaf
+export type Term =
+  | SymbolTerm
+  | KeywordTerm
+  | StringTerm
+  | IntTerm
+  | FloatTerm
+  | VarTerm
+  | QualifiedVarTerm
+  | LambdaTerm
+  | ApplyTerm
+  | Let1Term
+  | Begin1Term
+  | IfTerm
+  | ArrowTerm
+  | TheTerm
+  | PolymorphicTerm
 
 export type SymbolTerm = {
   kind: "SymbolTerm"
@@ -12,7 +27,11 @@ export function SymbolTerm(
   content: string,
   location: SourceLocation,
 ): SymbolTerm {
-  return { kind: "SymbolTerm", content, location }
+  return {
+    kind: "SymbolTerm",
+    content,
+    location,
+  }
 }
 
 export type KeywordTerm = {
@@ -25,7 +44,11 @@ export function KeywordTerm(
   content: string,
   location: SourceLocation,
 ): KeywordTerm {
-  return { kind: "KeywordTerm", content, location }
+  return {
+    kind: "KeywordTerm",
+    content,
+    location,
+  }
 }
 
 export type StringTerm = {
@@ -38,7 +61,11 @@ export function StringTerm(
   content: string,
   location: SourceLocation,
 ): StringTerm {
-  return { kind: "StringTerm", content, location }
+  return {
+    kind: "StringTerm",
+    content,
+    location,
+  }
 }
 
 export type IntTerm = {
@@ -48,7 +75,11 @@ export type IntTerm = {
 }
 
 export function IntTerm(content: bigint, location: SourceLocation): IntTerm {
-  return { kind: "IntTerm", content, location }
+  return {
+    kind: "IntTerm",
+    content,
+    location,
+  }
 }
 
 export type FloatTerm = {
@@ -61,7 +92,11 @@ export function FloatTerm(
   content: number,
   location: SourceLocation,
 ): FloatTerm {
-  return { kind: "FloatTerm", content, location }
+  return {
+    kind: "FloatTerm",
+    content,
+    location,
+  }
 }
 
 export type VarTerm = {
@@ -71,7 +106,11 @@ export type VarTerm = {
 }
 
 export function VarTerm(name: string, location: SourceLocation): VarTerm {
-  return { kind: "VarTerm", name, location }
+  return {
+    kind: "VarTerm",
+    name,
+    location,
+  }
 }
 
 export type QualifiedVarTerm = {
@@ -86,10 +125,13 @@ export function QualifiedVarTerm(
   name: string,
   location: SourceLocation,
 ): QualifiedVarTerm {
-  return { kind: "QualifiedVarTerm", modName, name, location }
+  return {
+    kind: "QualifiedVarTerm",
+    modName,
+    name,
+    location,
+  }
 }
-
-// Compound
 
 export type LambdaTerm = {
   kind: "LambdaTerm"
@@ -103,7 +145,12 @@ export function LambdaTerm(
   body: Term,
   location: SourceLocation,
 ): LambdaTerm {
-  return { kind: "LambdaTerm", parameters, body, location }
+  return {
+    kind: "LambdaTerm",
+    parameters,
+    body,
+    location,
+  }
 }
 
 export type ApplyTerm = {
@@ -118,7 +165,12 @@ export function ApplyTerm(
   args: Array<Term>,
   location: SourceLocation,
 ): ApplyTerm {
-  return { kind: "ApplyTerm", target, args, location }
+  return {
+    kind: "ApplyTerm",
+    target,
+    args,
+    location,
+  }
 }
 
 export type Let1Term = {
@@ -135,7 +187,13 @@ export function Let1Term(
   body: Term,
   location: SourceLocation,
 ): Let1Term {
-  return { kind: "Let1Term", name, rhs, body, location }
+  return {
+    kind: "Let1Term",
+    name,
+    rhs,
+    body,
+    location,
+  }
 }
 
 export type Begin1Term = {
@@ -150,7 +208,12 @@ export function Begin1Term(
   body: Term,
   location: SourceLocation,
 ): Begin1Term {
-  return { kind: "Begin1Term", head, body, location }
+  return {
+    kind: "Begin1Term",
+    head,
+    body,
+    location,
+  }
 }
 
 export type IfTerm = {
@@ -167,7 +230,13 @@ export function IfTerm(
   alternative: Term,
   location: SourceLocation,
 ): IfTerm {
-  return { kind: "IfTerm", condition, consequent, alternative, location }
+  return {
+    kind: "IfTerm",
+    condition,
+    consequent,
+    alternative,
+    location,
+  }
 }
 
 export type ArrowTerm = {
@@ -182,7 +251,12 @@ export function ArrowTerm(
   retType: Term,
   location: SourceLocation,
 ): ArrowTerm {
-  return { kind: "ArrowTerm", argTypes, retType, location }
+  return {
+    kind: "ArrowTerm",
+    argTypes,
+    retType,
+    location,
+  }
 }
 
 export type TheTerm = {
@@ -197,7 +271,12 @@ export function TheTerm(
   exp: Term,
   location: SourceLocation,
 ): TheTerm {
-  return { kind: "TheTerm", type, exp, location }
+  return {
+    kind: "TheTerm",
+    type,
+    exp,
+    location,
+  }
 }
 
 export type PolymorphicTerm = {
@@ -220,20 +299,22 @@ export function PolymorphicTerm(
   }
 }
 
-// Auxiliary
-
 export type TermBinding = {
   name: string
   rhs: Term
-  location?: SourceLocation
+  location: SourceLocation
 }
 
 export function TermBinding(
   name: string,
   rhs: Term,
-  location?: SourceLocation,
+  location: SourceLocation,
 ): TermBinding {
-  return { name, rhs, location }
+  return {
+    name,
+    rhs,
+    location,
+  }
 }
 
 export type TermCondClause = {
@@ -247,24 +328,9 @@ export function TermCondClause(
   answer: Term,
   location: SourceLocation,
 ): TermCondClause {
-  return { question, answer, location }
+  return {
+    question,
+    answer,
+    location,
+  }
 }
-
-// Union
-
-export type Term =
-  | SymbolTerm
-  | KeywordTerm
-  | StringTerm
-  | IntTerm
-  | FloatTerm
-  | VarTerm
-  | QualifiedVarTerm
-  | LambdaTerm
-  | ApplyTerm
-  | Let1Term
-  | Begin1Term
-  | IfTerm
-  | ArrowTerm
-  | TheTerm
-  | PolymorphicTerm

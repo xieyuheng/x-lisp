@@ -1,6 +1,10 @@
 import * as M from "../index.ts"
 import type { Term } from "./Term.ts"
 
+// Like `termSubst` but without capture avoidance.
+// Stops at a binding when the bound name equals `name` (shadowing).
+// Does NOT alpha-rename, even when free names in `rhs` would be captured.
+
 export function termNaiveSubst(
   term: Term,
   name: string,

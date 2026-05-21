@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import * as M from "../index.ts"
 import { projectDumpMods } from "../project/projectDumpMods.ts"
 
@@ -63,7 +62,6 @@ function liftLambdaExp(state: State, exp: M.Term): M.Term {
       const newFunctionName = `${state.definition.name}©λ${liftedCount}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
-      assert(exp.location)
       state.lifted.push(
         M.FunctionDefinition(
           state.mod,
