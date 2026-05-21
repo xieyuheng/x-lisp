@@ -1,5 +1,3 @@
-import { arrayZip } from "@xieyuheng/helpers.js/array"
-import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
@@ -192,21 +190,6 @@ function desugarDataConstructorClauseGroup(
   location: S.SourceLocation,
 ): M.CondClause {
   const [target, ...restTargets] = targets
-  const usedNames = setUnionMany([
-    M.expOccurredNames(defaultExp),
-    ...targets.map((t) => M.expOccurredNames(t)),
-    ...group.clauses.map((c) =>
-      setUnionMany([
-        ...c.patterns.map(M.expOccurredNames),
-        M.expOccurredNames(c.body),
-      ]),
-    ),
-  ])
-
-  const freshNames = group.dataConstructorInfo.fieldNames.map((fieldName) =>
-    M.generateRelativeFreshName(fieldName, usedNames),
-  )
-  const freshVars = freshNames.map((name) => M.VarExp(name, location))
 
   const predicate = M.QualifiedVarExp(
     group.dataConstructorInfo.modName,
@@ -216,20 +199,8 @@ function desugarDataConstructorClauseGroup(
 
   const question = M.ApplyExp(predicate, [target], target.location)
 
-  const answer = desugarMatch(
-    ctx,
-    [...freshVars, ...restTargets],
-    group.clauses,
-    defaultExp,
-    location,
-  )
-
-  const bindings = arrayZip(
-    freshNames,
-    group.dataConstructorInfo.accessorNames,
-  ).map(([freshName, accessorName]) =>
-    M.Binding(
-      freshName,
+  const newTargets = group.dataConstructorInfo.accessorNames.map(
+    (accessorName) =>
       M.ApplyExp(
         M.QualifiedVarExp(
           group.dataConstructorInfo.modName,
@@ -239,15 +210,17 @@ function desugarDataConstructorClauseGroup(
         [target],
         target.location,
       ),
-      location,
-    ),
   )
 
-  return M.CondClause(
-    question,
-    M.LetStarExp(bindings, answer, location),
+  const answer = desugarMatch(
+    ctx,
+    [...newTargets, ...restTargets],
+    group.clauses,
+    defaultExp,
     location,
   )
+
+  return M.CondClause(question, answer, location)
 }
 
 function groupClausesByHeadDataConstructor(
