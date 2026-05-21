@@ -1,99 +1,105 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
 
-export type Instr = Assign | Perform | Test | Branch | Goto | Return
+export type Instr =
+  | AssignInstr
+  | PerformInstr
+  | TestInstr
+  | BranchInstr
+  | GotoInstr
+  | ReturnInstr
 
-export type Assign = {
-  kind: "Assign"
+export type AssignInstr = {
+  kind: "AssignInstr"
   dest: string
   exp: Exp
   location: SourceLocation
 }
 
-export function Assign(
+export function AssignInstr(
   dest: string,
   exp: Exp,
   location: SourceLocation,
-): Assign {
+): AssignInstr {
   return {
-    kind: "Assign",
+    kind: "AssignInstr",
     dest,
     exp,
     location,
   }
 }
 
-export type Perform = {
-  kind: "Perform"
+export type PerformInstr = {
+  kind: "PerformInstr"
   exp: Exp
   location: SourceLocation
 }
 
-export function Perform(exp: Exp, location: SourceLocation): Perform {
+export function PerformInstr(exp: Exp, location: SourceLocation): PerformInstr {
   return {
-    kind: "Perform",
+    kind: "PerformInstr",
     exp,
     location,
   }
 }
 
-export type Test = {
-  kind: "Test"
+export type TestInstr = {
+  kind: "TestInstr"
   exp: Exp
   location: SourceLocation
 }
 
-export function Test(exp: Exp, location: SourceLocation): Test {
+export function TestInstr(exp: Exp, location: SourceLocation): TestInstr {
   return {
-    kind: "Test",
+    kind: "TestInstr",
     exp,
     location,
   }
 }
 
-export type Branch = {
-  kind: "Branch"
+export type BranchInstr = {
+  kind: "BranchInstr"
   thenLabel: string
   elseLabel: string
   location: SourceLocation
 }
 
-export function Branch(
+export function BranchInstr(
   thenLabel: string,
   elseLabel: string,
   location: SourceLocation,
-): Branch {
+): BranchInstr {
   return {
-    kind: "Branch",
+    kind: "BranchInstr",
     thenLabel,
     elseLabel,
     location,
   }
 }
 
-export type Goto = {
-  kind: "Goto"
+export type GotoInstr = {
+  kind: "GotoInstr"
   label: string
   location: SourceLocation
 }
 
-export function Goto(label: string, location: SourceLocation): Goto {
+export function GotoInstr(label: string, location: SourceLocation): GotoInstr {
   return {
-    kind: "Goto",
+    kind: "GotoInstr",
     label,
     location,
   }
 }
 
-export type Return = {
-  kind: "Return"
+export type ReturnInstr = {
+  kind: "ReturnInstr"
   exp: Exp
   location: SourceLocation
 }
 
-export function Return(exp: Exp, location: SourceLocation): Return {
+export function ReturnInstr(exp: Exp, location: SourceLocation): ReturnInstr {
   return {
-    kind: "Return",
+    kind: "ReturnInstr",
     exp,
     location,
   }

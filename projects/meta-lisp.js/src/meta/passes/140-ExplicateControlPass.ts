@@ -194,7 +194,7 @@ function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
     }
 
     default: {
-      return [B.Return(toBasicExp(exp), exp.location)]
+      return [B.ReturnInstr(toBasicExp(exp), exp.location)]
     }
   }
 }
@@ -229,16 +229,16 @@ function explicateControlInLet1(
         state,
         rhs.condition,
         explicateControlInLet1(state, name, rhs.consequent, [
-          B.Goto(letBodyLabel, rhs.location),
+          B.GotoInstr(letBodyLabel, rhs.location),
         ]),
         explicateControlInLet1(state, name, rhs.alternative, [
-          B.Goto(letBodyLabel, rhs.location),
+          B.GotoInstr(letBodyLabel, rhs.location),
         ]),
       )
     }
 
     default: {
-      return [B.Assign(name, toBasicExp(rhs), rhs.location), ...cont]
+      return [B.AssignInstr(name, toBasicExp(rhs), rhs.location), ...cont]
     }
   }
 }
@@ -272,16 +272,16 @@ function explicateControlInBegin1(
         state,
         head.condition,
         explicateControlInBegin1(state, head.consequent, [
-          B.Goto(letBodyLabel, head.location),
+          B.GotoInstr(letBodyLabel, head.location),
         ]),
         explicateControlInBegin1(state, head.alternative, [
-          B.Goto(letBodyLabel, head.location),
+          B.GotoInstr(letBodyLabel, head.location),
         ]),
       )
     }
 
     default: {
-      return [B.Perform(toBasicExp(head), head.location), ...cont]
+      return [B.PerformInstr(toBasicExp(head), head.location), ...cont]
     }
   }
 }
@@ -311,7 +311,7 @@ function explicateControlInIf(
   switch (condition.kind) {
     case "Var": {
       return [
-        B.Test(
+        B.TestInstr(
           B.Apply(
             B.Var("builtin/equal?", condition.location),
             [
@@ -322,7 +322,7 @@ function explicateControlInIf(
           ),
           condition.location,
         ),
-        B.Branch(
+        B.BranchInstr(
           generateLabel(state, "then", thenCont, condition.location),
           generateLabel(state, "else", elseCont, condition.location),
           condition.location,
@@ -341,8 +341,8 @@ function explicateControlInIf(
       }
 
       return [
-        B.Test(toBasicExp(condition), condition.location),
-        B.Branch(
+        B.TestInstr(toBasicExp(condition), condition.location),
+        B.BranchInstr(
           generateLabel(state, "then", thenCont, condition.location),
           generateLabel(state, "else", elseCont, condition.location),
           condition.location,
@@ -369,13 +369,13 @@ function explicateControlInIf(
 
     case "If": {
       thenCont = [
-        B.Goto(
+        B.GotoInstr(
           generateLabel(state, "then", thenCont, condition.location),
           condition.location,
         ),
       ]
       elseCont = [
-        B.Goto(
+        B.GotoInstr(
           generateLabel(state, "else", elseCont, condition.location),
           condition.location,
         ),

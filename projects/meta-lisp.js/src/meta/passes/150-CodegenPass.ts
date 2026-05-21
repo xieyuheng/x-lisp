@@ -72,7 +72,7 @@ function collectLocalIndexesFromBlock(state: State, block: B.Block): void {
 }
 
 function collectLocalIndexesFromInstr(state: State, instr: B.Instr): void {
-  if (instr.kind === "Assign") {
+  if (instr.kind === "AssignInstr") {
     addLocalIndexes(state, instr.dest)
   }
 }
@@ -199,7 +199,7 @@ function codegenInstr(
   instr: B.Instr,
 ): Array<Stk.Instr> {
   switch (instr.kind) {
-    case "Assign": {
+    case "AssignInstr": {
       return [
         ...codegenExp(state, name, instr.exp),
         Stk.Instr(
@@ -216,18 +216,18 @@ function codegenInstr(
       ]
     }
 
-    case "Perform": {
+    case "PerformInstr": {
       return [
         ...codegenExp(state, name, instr.exp),
         Stk.Instr("drop", [], state.location),
       ]
     }
 
-    case "Test": {
+    case "TestInstr": {
       return codegenExp(state, name, instr.exp)
     }
 
-    case "Branch": {
+    case "BranchInstr": {
       return [
         Stk.Instr(
           "jump-if-not",
@@ -242,7 +242,7 @@ function codegenInstr(
       ]
     }
 
-    case "Goto": {
+    case "GotoInstr": {
       return [
         Stk.Instr(
           "jump",
@@ -252,7 +252,7 @@ function codegenInstr(
       ]
     }
 
-    case "Return": {
+    case "ReturnInstr": {
       return codegenTailExp(state, name, instr.exp)
     }
   }

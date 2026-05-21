@@ -3,27 +3,27 @@ import { formatExp } from "./formatExp.ts"
 
 export function formatInstr(instr: Instr): string {
   switch (instr.kind) {
-    case "Assign": {
+    case "AssignInstr": {
       return `(= ${instr.dest} ${formatExp(instr.exp)})`
     }
 
-    case "Perform": {
+    case "PerformInstr": {
       return `(perform ${formatExp(instr.exp)})`
     }
 
-    case "Test": {
+    case "TestInstr": {
       return `(test ${formatExp(instr.exp)})`
     }
 
-    case "Branch": {
+    case "BranchInstr": {
       return `(branch ${instr.thenLabel} ${instr.elseLabel})`
     }
 
-    case "Goto": {
+    case "GotoInstr": {
       return `(goto ${instr.label})`
     }
 
-    case "Return": {
+    case "ReturnInstr": {
       return `(return ${formatExp(instr.exp)})`
     }
   }
