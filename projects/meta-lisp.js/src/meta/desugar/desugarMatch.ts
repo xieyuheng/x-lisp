@@ -1,7 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-
 // Desugar `(match)`, the basic idea is:
 //
 //     (match target
@@ -332,8 +331,7 @@ function resolveCtorQualifiedName(
     }
   }
 
-  let message =
-    "[resolveCtorQualifiedName] unhandled ctor kind"
+  let message = "[resolveCtorQualifiedName] unhandled ctor kind"
   throw new S.ErrorWithSourceLocation(message, ctor.location)
 }
 
