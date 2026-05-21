@@ -19,41 +19,24 @@ title: AI Agent Instructions
 - meta-example.meta -- 测试用的 meta-lisp 项目。
 - meta-lisp.meta -- meta-lisp 的 self-hosting 编译器（WIP）。
 
-# 语言参考
-
-meta-lisp 的语法、类型系统、内置函数等详见文档：
+# 文档
 
 - [语法参考](docs/zh/reference/syntax.md) ([en](docs/en/reference/syntax.md))
 - [内置函数索引](docs/zh/reference/builtin/index.md) ([en](docs/en/reference/builtin/index.md))
 - [FAQ](docs/zh/faq/faq.md) ([en](docs/en/faq/faq.md))
 
-# 文档
+# 测试
 
-- docs/zh/ -- 中文文档（guide, reference, faq）
-- docs/en/ -- 英文文档
-- docs/design/ -- 我计划设计的新 lisp 语言。
-- docs/diary/ -- 这个项目的编程日志，记录设计决策。
-  在解决问题的过程中，你可以经常参考这个日志中的笔记。
-- docs/tutorial/ -- 教程。
+项目顶层的 `scripts/` 中包含工具脚本：
 
-# 开发
+```bash
+sh scripts/clean.sh  # 清理
+sh scripts/format.sh # 格式化
+sh scripts/build.sh  # 构建
+sh scripts/test.sh   # 测试
+sh scripts/all.sh    # 完整流程
+```
 
-测试：
-
-- 每个 `projects/` 中的每个 project 都有 `scripts/`，
-  其中包含测试脚本与其他工具脚本。
-
-项目顶层的 `scripts/` 中包含：
-
-- 清理：`sh scripts/clean.sh`
-- 构建：`sh scripts/build.sh`
-- 测试：`sh scripts/test.sh`
-- 格式化：`sh scripts/format.sh`
-- 完整流程：`sh scripts/all.sh`
-
-注意事项：
-
-- C 项目必须先于 JS 包构建（因为 JS 包可能依赖 C 项目生成的文件）。
-- meta 项目不在 `pnpm run -r test` 覆盖范围内，需要单独运行。
-- 快照文件在 `projects/*/snapshot/` 目录中。
-- JS 包使用 `pnpm run test` 进行测试。
+`projects/` 中的每个 project
+都有类似的工具脚本文件夹 `scripts/`，
+其中包含测试脚本与其他工具脚本。

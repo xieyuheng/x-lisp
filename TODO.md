@@ -1,18 +1,16 @@
 ---
 
-[meta-lisp.js] evaluate -- mode: EvaluationMode 参数放在 Env 中
+[meta-error.meta] setup project
 
-现在 [meta-lisp.js] 的 evaluate 函数所带有的 mode: EvaluationMode 参数。
-
-是否在整个 递归调用的过程中，都是不变的？
-如果是不变的，那就应该放在 env 中。而不应该让 evaluate/ 在 env 这个参数之外多一个参数。
-
-- evaluateType 和 apply 也要类似的减少 mode: EvaluationMode 参数
+模仿 meta-example.meta 创建一个叫做 meta-error.meta 的新项目
 
 ---
 
-[meta-error.meta] setup project
-[meta-error.meta] move (module-error) to normal (module) here
+[meta-example.meta] move (error-module) to [meta-error.meta]
+[meta-builtin.meta] move (error-module) to [meta-error.meta]
+
+[meta-lisp.js] remove (error-module) support
+[meta-lisp.meta] remove (error-module) support
 
 [meta-builtin.meta] (error) should only take message string
 

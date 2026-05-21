@@ -142,9 +142,8 @@ function tryCheckDefinitionBody(mod: M.Mod, name: string, exp: M.Exp): boolean {
   const opaqueTypeExp = mod.opaqueClaimed.get(name)
   if (opaqueTypeExp) {
     const opaqueType = M.evaluateType(
-      "TransparentMode",
       mod,
-      M.emptyEnv(),
+      M.emptyEnv("TransparentMode"),
       opaqueTypeExp,
     )
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()

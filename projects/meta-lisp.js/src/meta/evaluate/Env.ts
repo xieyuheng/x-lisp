@@ -1,11 +1,18 @@
 import { type Value } from "../value/Value.ts"
 
+export type EvaluationMode = "OpaqueMode" | "TransparentMode"
+
 export type Env = {
+  mode: EvaluationMode
   bindings: Map<string, Value>
 }
 
-export function emptyEnv(): Env {
-  return { bindings: new Map() }
+export function emptyEnv(mode: EvaluationMode): Env {
+  return { mode, bindings: new Map() }
+}
+
+export function envMode(env: Env): EvaluationMode {
+  return env.mode
 }
 
 export function envNames(env: Env): Set<string> {

@@ -1,23 +1,16 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { type Value } from "../value/Value.ts"
-import { type Env } from "./Env.ts"
+import { type Env, type EvaluationMode } from "./Env.ts"
 
-export type EvaluationMode = "OpaqueMode" | "TransparentMode"
-
-export function evaluate(
-  mode: EvaluationMode,
-  mod: M.Mod,
-  env: Env,
-  exp: M.Exp,
-): Value {
+export function evaluate(mod: M.Mod, env: Env, exp: M.Exp): Value {
   switch (exp.kind) {
     case "VarExp": {
       const fromEnv = M.envLookup(env, exp.name)
       if (fromEnv) return fromEnv
 
       const definition = M.modLookupDefinition(mod, exp.name)
-      if (definition) return definitionToValue(mode, definition)
+      if (definition) return definitionToValue(M.envMode(env), definition)
 
       let message = `[evaluate] undefined variable`
       message += `\n  module name: ${mod.name}`
@@ -35,7 +28,7 @@ export function evaluate(
       }
 
       const definition = M.modLookupDefinition(qualifiedMod, exp.name)
-      if (definition) return definitionToValue(mode, definition)
+      if (definition) return definitionToValue(M.envMode(env), definition)
 
       let message = `[evaluate] undefined qualified variable`
       message += `\n  module: ${qualifiedMod.name}`
@@ -45,9 +38,9 @@ export function evaluate(
 
     case "ArrowExp": {
       const argTypes = exp.argTypes.map((argType) =>
-        M.evaluateType(mode, mod, env, argType),
+        M.evaluateType(mod, env, argType),
       )
-      const retType = M.evaluateType(mode, mod, env, exp.retType)
+      const retType = M.evaluateType(mod, env, exp.retType)
       return M.TypeValue(M.ArrowType(argTypes, retType))
     }
 
@@ -56,7 +49,6 @@ export function evaluate(
         M.VarType(parameter, BigInt(0)),
       )
       const bodyType = M.evaluateType(
-        mode,
         mod,
         M.envPutMany(
           env,
@@ -69,9 +61,9 @@ export function evaluate(
     }
 
     case "ApplyExp": {
-      const target = evaluate(mode, mod, env, exp.target)
-      const args = exp.args.map((arg) => evaluate(mode, mod, env, arg))
-      return M.apply(mode, target, args)
+      const target = evaluate(mod, env, exp.target)
+      const args = exp.args.map((arg) => evaluate(mod, env, arg))
+      return M.apply(M.envMode(env), target, args)
     }
 
     default: {
@@ -110,9 +102,8 @@ function definitionToValue(
     case "TypeDefinition": {
       if (definition.parameters.length === 0) {
         const type = M.evaluateType(
-          mode,
           definition.mod,
-          M.emptyEnv(),
+          M.emptyEnv(mode),
           definition.body,
         )
         return M.TypeValue(type)
@@ -123,9 +114,8 @@ function definitionToValue(
 
     case "VariableDefinition": {
       const type = M.evaluateType(
-        mode,
         definition.mod,
-        M.emptyEnv(),
+        M.emptyEnv(mode),
         definition.body,
       )
       return M.TypeValue(type)
@@ -143,9 +133,8 @@ function definitionToValue(
       if (mode === "TransparentMode") {
         if (definition.typeConstructor.parameters.length === 0) {
           const type = M.evaluateType(
-            mode,
             definition.mod,
-            M.emptyEnv(),
+            M.emptyEnv(mode),
             definition.representationType,
           )
           return M.TypeValue(type)

@@ -2,7 +2,7 @@ import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
 import { type Value } from "../value/Value.ts"
-import type { EvaluationMode } from "./evaluate.ts"
+import type { EvaluationMode } from "./Env.ts"
 
 export function apply(
   mode: EvaluationMode,
@@ -46,13 +46,13 @@ function applyDefinition(
     }
 
     case "TypeDefinition": {
-      let env = M.emptyEnv()
+      let env = M.emptyEnv(mode)
       for (const i of range(definition.parameters.length)) {
         if (args[i] !== undefined) {
           env = M.envPut(env, definition.parameters[i], args[i])
         }
       }
-      return M.evaluate(mode, definition.mod, env, definition.body)
+      return M.evaluate(definition.mod, env, definition.body)
     }
 
     case "AlgebraicTypeDefinition": {
@@ -73,7 +73,7 @@ function applyDefinition(
 
     case "OpaqueTypeDefinition": {
       if (mode === "TransparentMode") {
-        let env = M.emptyEnv()
+        let env = M.emptyEnv(mode)
         for (const i of range(definition.typeConstructor.parameters.length)) {
           if (args[i] !== undefined) {
             env = M.envPut(
@@ -83,12 +83,7 @@ function applyDefinition(
             )
           }
         }
-        return M.evaluate(
-          mode,
-          definition.mod,
-          env,
-          definition.representationType,
-        )
+        return M.evaluate(definition.mod, env, definition.representationType)
       } else {
         return M.TypeValue(
           M.OpaqueType(

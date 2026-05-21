@@ -104,7 +104,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       }
 
       case "TheExp": {
-        const type = M.evaluateType("OpaqueMode", mod, M.emptyEnv(), exp.type)
+        const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), exp.type)
         return M.checkThenInfer(
           M.checkAssignable(mod, ctx, exp.exp, type),
           M.okInferEffect(type),
@@ -228,9 +228,8 @@ function inferLookup(
       const opaqueTypeExp = mod.opaqueClaimed.get(name)
       if (opaqueTypeExp) {
         const transparentType = M.evaluateType(
-          "TransparentMode",
           mod,
-          M.emptyEnv(),
+          M.emptyEnv("TransparentMode"),
           opaqueTypeExp,
         )
         return M.okInferEffect(transparentType)(subst)
