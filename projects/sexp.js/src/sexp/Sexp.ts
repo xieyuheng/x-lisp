@@ -2,7 +2,12 @@ import * as S from "../index.ts"
 
 export type Sexp = AtomSexp | ListSexp
 
-export type AtomSexp = SymbolSexp | StringSexp | IntSexp | FloatSexp | KeywordSexp
+export type AtomSexp =
+  | SymbolSexp
+  | StringSexp
+  | IntSexp
+  | FloatSexp
+  | KeywordSexp
 
 export type SymbolSexp = {
   kind: "SymbolSexp"
@@ -10,7 +15,10 @@ export type SymbolSexp = {
   location: S.SourceLocation
 }
 
-export function SymbolSexp(content: string, location: S.SourceLocation): SymbolSexp {
+export function SymbolSexp(
+  content: string,
+  location: S.SourceLocation,
+): SymbolSexp {
   return {
     kind: "SymbolSexp",
     content,
@@ -34,7 +42,10 @@ export type StringSexp = {
   location: S.SourceLocation
 }
 
-export function StringSexp(content: string, location: S.SourceLocation): StringSexp {
+export function StringSexp(
+  content: string,
+  location: S.SourceLocation,
+): StringSexp {
   return {
     kind: "StringSexp",
     content,
@@ -82,7 +93,10 @@ export type FloatSexp = {
   location: S.SourceLocation
 }
 
-export function FloatSexp(content: number, location: S.SourceLocation): FloatSexp {
+export function FloatSexp(
+  content: number,
+  location: S.SourceLocation,
+): FloatSexp {
   return {
     kind: "FloatSexp",
     content,
@@ -106,7 +120,10 @@ export type KeywordSexp = {
   location: S.SourceLocation
 }
 
-export function KeywordSexp(content: string, location: S.SourceLocation): KeywordSexp {
+export function KeywordSexp(
+  content: string,
+  location: S.SourceLocation,
+): KeywordSexp {
   return {
     kind: "KeywordSexp",
     content,
@@ -130,7 +147,10 @@ export type ListSexp = {
   location: S.SourceLocation
 }
 
-export function ListSexp(elements: Array<Sexp>, location: S.SourceLocation): ListSexp {
+export function ListSexp(
+  elements: Array<Sexp>,
+  location: S.SourceLocation,
+): ListSexp {
   return {
     kind: "ListSexp",
     elements,

@@ -143,15 +143,15 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* '@square-bracket elements)": ({ elements }, { location }) => {
-    return M.LiteralListExp(S.asListSexp(elements).elements.map(parseExp), location)
+    return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
 
   "(cons* '@list elements)": ({ elements }, { location }) => {
-    return M.LiteralListExp(S.asListSexp(elements).elements.map(parseExp), location)
+    return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
 
   "(cons* '@set elements)": ({ elements }, { location }) => {
-    return M.LiteralSetExp(S.asListSexp(elements).elements.map(parseExp), location)
+    return M.SetExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
 
   "(cons* '@hash elements)": ({ elements }, { location }) => {
@@ -166,7 +166,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
         value: parseExp(value),
       }),
     )
-    return M.LiteralHashExp(entries, location)
+    return M.HashExp(entries, location)
   },
 
   "(cons* '-> exps)": ({ exps }, { location }) => {

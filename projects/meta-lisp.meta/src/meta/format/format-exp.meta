@@ -30,15 +30,15 @@
     ((lambda-exp parameters body location)
      (string-concat ["(lambda (" (string-join " " (list-map symbol-to-string parameters)) ") "
                      (format-exp body) ")"]))
-    ((literal-list-exp elements location)
+    ((list-exp elements location)
      (if (list-empty? elements)
        "[]"
        (string-concat ["[" (format-exps elements) "]"])))
-    ((literal-set-exp elements location)
+    ((set-exp elements location)
      (if (list-empty? elements)
        "(@set)"
        (string-concat ["(@set " (format-exps elements) ")"])))
-    ((literal-hash-exp entries location)
+    ((hash-exp entries location)
      (string-concat ["(@hash " (string-join " " (list-map format-hash-entry entries)) ")"]))
     ((and-exp exps location)
      (string-concat ["(and " (format-exps exps) ")"]))

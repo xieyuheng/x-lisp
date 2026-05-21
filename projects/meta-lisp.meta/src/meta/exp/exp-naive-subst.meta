@@ -128,14 +128,14 @@
                          clauses)
                location))
 
-    ((literal-list-exp elements location)
-     (literal-list-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
+    ((list-exp elements location)
+     (list-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
 
-    ((literal-set-exp elements location)
-     (literal-set-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
+    ((set-exp elements location)
+     (set-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
 
-    ((literal-hash-exp entries location)
-     (literal-hash-exp (list-map (lambda (entry)
+    ((hash-exp entries location)
+     (hash-exp (list-map (lambda (entry)
                                    (make-hash-entry
                                      (exp-naive-subst (hash-entry-key entry) name rhs)
                                      (exp-naive-subst (hash-entry-value entry) name rhs)))

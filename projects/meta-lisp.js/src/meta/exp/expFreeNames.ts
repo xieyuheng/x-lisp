@@ -167,15 +167,15 @@ export function expFreeNames(boundNames: Set<string>, exp: M.Exp): Set<string> {
       )
     }
 
-    case "LiteralListExp": {
+    case "ListExp": {
       return setUnionMany(exp.elements.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "LiteralSetExp": {
+    case "SetExp": {
       return setUnionMany(exp.elements.map((e) => expFreeNames(boundNames, e)))
     }
 
-    case "LiteralHashExp": {
+    case "HashExp": {
       return setUnionMany(
         exp.entries.flatMap((entry) => [
           expFreeNames(boundNames, entry.key),

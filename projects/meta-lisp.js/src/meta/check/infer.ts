@@ -142,7 +142,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "LiteralListExp": {
+      case "ListExp": {
         const elementType = M.createFreshVarType("E")
         const type = M.ListType(elementType)
         return M.checkThenInfer(
@@ -155,7 +155,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "LiteralSetExp": {
+      case "SetExp": {
         const elementType = M.createFreshVarType("E")
         const type = M.SetType(elementType)
         return M.checkThenInfer(
@@ -168,7 +168,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "LiteralHashExp": {
+      case "HashExp": {
         const keyType = M.createFreshVarType("K")
         const valueType = M.createFreshVarType("V")
         const type = M.HashType(keyType, valueType)

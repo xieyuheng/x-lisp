@@ -238,7 +238,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
   },
 
   "`(declare-primitive-variable ,name)": ({ name }, { location }) => {
-    return M.DeclarePrimitiveVariableStmt(S.asSymbolSexp(name).content, location)
+    return M.DeclarePrimitiveVariableStmt(
+      S.asSymbolSexp(name).content,
+      location,
+    )
   },
 })
 

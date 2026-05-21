@@ -28,9 +28,9 @@ export type Exp =
   | AndExp
   | OrExp
   | CondExp
-  | LiteralListExp
-  | LiteralSetExp
-  | LiteralHashExp
+  | ListExp
+  | SetExp
+  | HashExp
   | QuoteExp
   | ArrowExp
   | TheExp
@@ -571,52 +571,49 @@ export function CondExp(
   }
 }
 
-export type LiteralListExp = {
-  kind: "LiteralListExp"
+export type ListExp = {
+  kind: "ListExp"
   elements: Array<Exp>
   location: SourceLocation
 }
 
-export function LiteralListExp(
+export function ListExp(
   elements: Array<Exp>,
   location: SourceLocation,
-): LiteralListExp {
+): ListExp {
   return {
-    kind: "LiteralListExp",
+    kind: "ListExp",
     elements,
     location,
   }
 }
 
-export type LiteralSetExp = {
-  kind: "LiteralSetExp"
+export type SetExp = {
+  kind: "SetExp"
   elements: Array<Exp>
   location: SourceLocation
 }
 
-export function LiteralSetExp(
-  elements: Array<Exp>,
-  location: SourceLocation,
-): LiteralSetExp {
+export function SetExp(elements: Array<Exp>, location: SourceLocation): SetExp {
   return {
-    kind: "LiteralSetExp",
+    kind: "SetExp",
     elements,
     location,
   }
 }
 
-export type LiteralHashExp = {
-  kind: "LiteralHashExp"
+export type HashExp = {
+  kind: "HashExp"
   entries: Array<{ key: Exp; value: Exp }>
   location: SourceLocation
 }
 
-export function LiteralHashExp(
+export function HashExp(
   entries: Array<{ key: Exp; value: Exp }>,
   location: SourceLocation,
-): LiteralHashExp {
+): HashExp {
   return {
-    kind: "LiteralHashExp",
+    kind: "HashExp",
     entries,
     location,
   }

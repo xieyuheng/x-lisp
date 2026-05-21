@@ -164,16 +164,16 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "LiteralListExp": {
-      return M.LiteralListExp(exp.elements.map(onExp), exp.location)
+    case "ListExp": {
+      return M.ListExp(exp.elements.map(onExp), exp.location)
     }
 
-    case "LiteralSetExp": {
-      return M.LiteralSetExp(exp.elements.map(onExp), exp.location)
+    case "SetExp": {
+      return M.SetExp(exp.elements.map(onExp), exp.location)
     }
 
-    case "LiteralHashExp": {
-      return M.LiteralHashExp(
+    case "HashExp": {
+      return M.HashExp(
         exp.entries.map((entry) => ({
           key: onExp(entry.key),
           value: onExp(entry.value),

@@ -251,22 +251,22 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "LiteralListExp": {
-      return M.LiteralListExp(
+    case "ListExp": {
+      return M.ListExp(
         exp.elements.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )
     }
 
-    case "LiteralSetExp": {
-      return M.LiteralSetExp(
+    case "SetExp": {
+      return M.SetExp(
         exp.elements.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )
     }
 
-    case "LiteralHashExp": {
-      return M.LiteralHashExp(
+    case "HashExp": {
+      return M.HashExp(
         exp.entries.map((entry) => ({
           key: expNaiveSubst(entry.key, name, rhs),
           value: expNaiveSubst(entry.value, name, rhs),

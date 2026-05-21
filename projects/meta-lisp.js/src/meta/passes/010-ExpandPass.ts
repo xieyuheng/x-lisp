@@ -227,7 +227,7 @@ function expandConstructor(
     M.DefineFunctionStmt(
       ctor.name,
       parameters,
-      M.LiteralListExp(
+      M.ListExp(
         [M.SymbolExp(ctor.name, ctor.location), ...args],
         ctor.location,
       ),

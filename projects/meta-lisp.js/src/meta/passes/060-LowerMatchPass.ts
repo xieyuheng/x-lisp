@@ -51,10 +51,10 @@ function lowerMatch(mod: M.Mod, exp: M.Exp): M.Exp {
       const defaultExp = M.ApplyExp(
         M.QualifiedVarExp("builtin", "error", exp.location),
         [
-          M.LiteralListExp(
+          M.ListExp(
             [
               M.StringExp("match mismatch", exp.location),
-              M.LiteralListExp(exp.targets, exp.location),
+              M.ListExp(exp.targets, exp.location),
             ],
             exp.location,
           ),

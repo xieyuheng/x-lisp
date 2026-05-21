@@ -122,7 +122,10 @@ export class Parser {
           "`": "@quasiquote",
         }
 
-        const quoteSymbol = S.SymbolSexp(quoteTable[token.value], token.location)
+        const quoteSymbol = S.SymbolSexp(
+          quoteTable[token.value],
+          token.location,
+        )
 
         return {
           sexp: S.ListSexp([quoteSymbol, sexp], token.location),

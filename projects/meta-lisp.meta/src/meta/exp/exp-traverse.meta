@@ -100,14 +100,14 @@
     ((if-exp condition consequent alternative location)
      (if-exp (f condition) (f consequent) (f alternative) location))
 
-    ((literal-list-exp elements location)
-     (literal-list-exp (list-map f elements) location))
+    ((list-exp elements location)
+     (list-exp (list-map f elements) location))
 
-    ((literal-set-exp elements location)
-     (literal-set-exp (list-map f elements) location))
+    ((set-exp elements location)
+     (set-exp (list-map f elements) location))
 
-    ((literal-hash-exp entries location)
-     (literal-hash-exp (list-map (lambda (entry)
+    ((hash-exp entries location)
+     (hash-exp (list-map (lambda (entry)
                                    (make-hash-entry (f (hash-entry-key entry))
                                                     (f (hash-entry-value entry))))
                                  entries)

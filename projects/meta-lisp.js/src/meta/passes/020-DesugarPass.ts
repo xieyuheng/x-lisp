@@ -142,15 +142,15 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
       return desugar(state, desugarCond(exp.clauses, exp.location))
     }
 
-    case "LiteralListExp": {
+    case "ListExp": {
       return desugar(state, desugarList(exp.elements, exp.location))
     }
 
-    case "LiteralSetExp": {
+    case "SetExp": {
       return desugar(state, desugarSet(exp.elements, exp.location))
     }
 
-    case "LiteralHashExp": {
+    case "HashExp": {
       return desugar(state, desugarHash(exp.entries, exp.location))
     }
 
@@ -688,7 +688,7 @@ function desugarQuote(sexp: S.Sexp, location: S.SourceLocation): M.Exp {
     }
 
     case "ListSexp": {
-      return M.LiteralListExp(
+      return M.ListExp(
         sexp.elements.map((e) => desugarQuote(e, location)),
         location,
       )

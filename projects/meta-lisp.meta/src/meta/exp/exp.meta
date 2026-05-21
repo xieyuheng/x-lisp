@@ -100,13 +100,13 @@
   (cond-exp
    (clauses (list-t cond-clause-t))
    (location source-location-t))
-  (literal-list-exp
+  (list-exp
    (elements (list-t exp-t))
    (location source-location-t))
-  (literal-set-exp
+  (set-exp
    (elements (list-t exp-t))
    (location source-location-t))
-  (literal-hash-exp
+  (hash-exp
    (entries (list-t (hash-entry-t exp-t exp-t)))
    (location source-location-t))
   (quote-exp

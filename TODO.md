@@ -1,6 +1,3 @@
-[meta-lisp.js] drop Literal prefix of LiteralListExp
-[meta-lisp.meta] drop literal- prefix of literal-list-exp
-
 ---
 
 [meta-lisp.js] evaluate -- Env 应该像是 Ctx 一样。作为一个 可扩展的 record type 而存在，不应该直接定义为 Map。

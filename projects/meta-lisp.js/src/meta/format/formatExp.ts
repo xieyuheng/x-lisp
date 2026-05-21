@@ -188,7 +188,7 @@ export function formatExp(exp: M.Exp): string {
       return `(cond ${clauses.join(" ")})`
     }
 
-    case "LiteralListExp": {
+    case "ListExp": {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
@@ -198,12 +198,12 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "LiteralSetExp": {
+    case "SetExp": {
       const elements = formatExps(exp.elements)
       return `(@set ${elements})`
     }
 
-    case "LiteralHashExp": {
+    case "HashExp": {
       const entries = exp.entries
         .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
         .join(" ")

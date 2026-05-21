@@ -152,15 +152,15 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       )
     }
 
-    case "LiteralListExp": {
+    case "ListExp": {
       return setUnionMany(exp.elements.map((e) => expOccurredNames(e)))
     }
 
-    case "LiteralSetExp": {
+    case "SetExp": {
       return setUnionMany(exp.elements.map((e) => expOccurredNames(e)))
     }
 
-    case "LiteralHashExp": {
+    case "HashExp": {
       return setUnionMany(
         exp.entries.flatMap((entry) => [
           expOccurredNames(entry.key),
