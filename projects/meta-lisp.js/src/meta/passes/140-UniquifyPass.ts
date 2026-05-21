@@ -11,7 +11,7 @@ export function UniquifyPass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "110-uniquify")
+  if (options.dump) M.projectDumpMods(project, "140-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {

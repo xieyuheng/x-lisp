@@ -15,5 +15,5 @@ export function CheckPass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "080-check")
+  if (options.dump) M.projectDumpMods(project, "110-check")
 }

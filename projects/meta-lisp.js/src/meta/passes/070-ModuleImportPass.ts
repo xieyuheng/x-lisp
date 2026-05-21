@@ -17,7 +17,7 @@ export function ModuleImportPass(
     }
   }
 
-  if (options.dump) M.projectDumpFragments(project, "039-module-import")
+  if (options.dump) M.projectDumpFragments(project, "070-module-import")
 }
 
 function moduleImportStmt(

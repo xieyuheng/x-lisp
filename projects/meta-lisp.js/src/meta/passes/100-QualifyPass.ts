@@ -11,7 +11,7 @@ export function QualifyPass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "070-qualify")
+  if (options.dump) M.projectDumpMods(project, "100-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {

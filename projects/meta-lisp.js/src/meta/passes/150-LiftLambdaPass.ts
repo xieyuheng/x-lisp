@@ -13,7 +13,7 @@ export function LiftLambdaPass(
     )
   }
 
-  if (options.dump) M.projectDumpMods(project, "120-lift-lambda")
+  if (options.dump) M.projectDumpMods(project, "150-lift-lambda")
 }
 
 type State = {

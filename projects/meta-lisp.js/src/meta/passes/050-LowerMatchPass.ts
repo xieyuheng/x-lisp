@@ -16,7 +16,7 @@ export function LowerMatchPass(
     }
   }
 
-  if (options.dump) M.projectDumpFragments(project, "033-lower-match")
+  if (options.dump) M.projectDumpFragments(project, "050-lower-match")
 }
 
 function lowerMatchStmt(

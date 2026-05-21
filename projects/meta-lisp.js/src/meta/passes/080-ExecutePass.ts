@@ -17,7 +17,7 @@ export function ExecutePass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "040-execute")
+  if (options.dump) M.projectDumpMods(project, "080-execute")
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {

@@ -8,7 +8,7 @@ export function DesugarPass(
     fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
   }
 
-  if (options.dump) M.projectDumpFragments(project, "035-desugar")
+  if (options.dump) M.projectDumpFragments(project, "060-desugar")
 }
 
 function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
