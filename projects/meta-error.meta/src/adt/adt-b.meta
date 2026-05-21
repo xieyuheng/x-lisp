@@ -1,0 +1,3 @@
+(module adt-b)
+
+(define-struct point-t (x int-t) (y int-t))

@@ -1,0 +1,4 @@
+(module adt-type-error)
+
+(define-test adt-type-test
+  (adt-a/point-x (adt-b/make-point 1 2)))
