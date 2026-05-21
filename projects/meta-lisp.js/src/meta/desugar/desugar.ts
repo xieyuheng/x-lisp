@@ -15,12 +15,11 @@ import { desugarOr } from "./desugarOr.ts"
 import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
 import { desugarSet } from "./desugarSet.ts"
-import { type State } from "./desugarState.ts"
 
-export function desugar(state: State, exp: M.Exp): M.Exp {
+export function desugar(exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "BeginExp": {
-      return desugar(state, desugarBegin(exp.sequence, exp.location))
+      return desugar(desugarBegin(exp.sequence, exp.location))
     }
 
     case "AssignExp": {
@@ -30,16 +29,17 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "LocalDefineExp": {
-      let message = `[desugar] local (define) must occur in the body of (begin)`
+      let message =
+        `[desugar] local (define) must occur in the body of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "WhenExp": {
       return M.IfExp(
-        desugar(state, exp.condition),
+        desugar(exp.condition),
         M.Begin1Exp(
-          desugar(state, exp.consequent),
+          desugar(exp.consequent),
           M.QualifiedVarExp("builtin", "void", exp.location),
           exp.location,
         ),
@@ -50,10 +50,10 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
 
     case "UnlessExp": {
       return M.IfExp(
-        desugar(state, exp.condition),
+        desugar(exp.condition),
         M.QualifiedVarExp("builtin", "void", exp.location),
         M.Begin1Exp(
-          desugar(state, exp.alternative),
+          desugar(exp.alternative),
           M.QualifiedVarExp("builtin", "void", exp.location),
           exp.location,
         ),
@@ -62,92 +62,83 @@ export function desugar(state: State, exp: M.Exp): M.Exp {
     }
 
     case "AndExp": {
-      return desugar(state, desugarAnd(exp.exps, exp.location))
+      return desugar(desugarAnd(exp.exps, exp.location))
     }
 
     case "OrExp": {
-      return desugar(state, desugarOr(exp.exps, exp.location))
+      return desugar(desugarOr(exp.exps, exp.location))
     }
 
     case "CondExp": {
-      return desugar(state, desugarCond(exp.clauses, exp.location))
+      return desugar(desugarCond(exp.clauses, exp.location))
     }
 
     case "ListExp": {
-      return desugar(state, desugarList(exp.elements, exp.location))
+      return desugar(desugarList(exp.elements, exp.location))
     }
 
     case "SetExp": {
-      return desugar(state, desugarSet(exp.elements, exp.location))
+      return desugar(desugarSet(exp.elements, exp.location))
     }
 
     case "HashExp": {
-      return desugar(state, desugarHash(exp.entries, exp.location))
+      return desugar(desugarHash(exp.entries, exp.location))
     }
 
     case "QuoteExp": {
-      return desugar(state, desugarQuote(exp.sexp, exp.location))
+      return desugar(desugarQuote(exp.sexp, exp.location))
     }
 
     case "PipeExp": {
-      return desugar(state, desugarPipe(exp.target, exp.steps, exp.location))
+      return desugar(desugarPipe(exp.target, exp.steps, exp.location))
     }
 
     case "ChainExp": {
-      return desugar(state, desugarChain(exp.steps, exp.location))
+      return desugar(desugarChain(exp.steps, exp.location))
     }
 
     case "ComposeExp": {
-      return desugar(state, desugarCompose(exp.steps, exp.location))
+      return desugar(desugarCompose(exp.steps, exp.location))
     }
 
     case "Begin1Exp": {
       return M.Begin1Exp(
-        desugar(state, exp.head),
-        desugar(state, exp.body),
+        desugar(exp.head),
+        desugar(exp.body),
         exp.location,
       )
     }
 
     case "LetStarExp": {
-      return desugar(
-        state,
-        desugarLetStar(exp.bindings, exp.body, exp.location),
-      )
+      return desugar(desugarLetStar(exp.bindings, exp.body, exp.location))
     }
 
     case "LetrecExp": {
-      return desugar(state, desugarLetrec(exp.bindings, exp.body, exp.location))
+      return desugar(desugarLetrec(exp.bindings, exp.body, exp.location))
     }
 
     case "LetrecStarExp": {
-      return desugar(
-        state,
-        desugarLetrecStar(exp.bindings, exp.body, exp.location),
-      )
+      return desugar(desugarLetrecStar(exp.bindings, exp.body, exp.location))
     }
 
     case "LetExp": {
-      return desugar(
-        state,
-        desugarLet(state, exp.bindings, exp.body, exp.location),
-      )
+      return desugar(desugarLet(exp.bindings, exp.body, exp.location))
     }
 
     case "LambdaExp": {
-      return M.LambdaExp(exp.parameters, desugar(state, exp.body), exp.location)
+      return M.LambdaExp(exp.parameters, desugar(exp.body), exp.location)
     }
 
     case "PolymorphicExp": {
       return M.PolymorphicExp(
         exp.parameters,
-        desugar(state, exp.body),
+        desugar(exp.body),
         exp.location,
       )
     }
 
     default: {
-      return M.expTraverse((child) => desugar(state, child), exp)
+      return M.expTraverse((child) => desugar(child), exp)
     }
   }
 }

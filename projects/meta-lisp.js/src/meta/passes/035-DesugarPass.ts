@@ -16,42 +16,42 @@ function desugarStmt(stmt: M.Stmt): M.Stmt {
     case "DefineFunctionStmt": {
       return {
         ...stmt,
-        body: M.desugar(M.createDesugarState(), stmt.body),
+        body: M.desugar(stmt.body),
       }
     }
 
     case "DefineVariableStmt": {
       return {
         ...stmt,
-        body: M.desugar(M.createDesugarState(), stmt.body),
+        body: M.desugar(stmt.body),
       }
     }
 
     case "DefineTestStmt": {
       return {
         ...stmt,
-        body: M.desugar(M.createDesugarState(), stmt.body),
+        body: M.desugar(stmt.body),
       }
     }
 
     case "DefineTypeStmt": {
       return {
         ...stmt,
-        body: M.desugar(M.createDesugarState(), stmt.body),
+        body: M.desugar(stmt.body),
       }
     }
 
     case "ClaimStmt": {
       return {
         ...stmt,
-        type: M.desugar(M.createDesugarState(), stmt.type),
+        type: M.desugar(stmt.type),
       }
     }
 
     case "AdmitStmt": {
       return {
         ...stmt,
-        type: M.desugar(M.createDesugarState(), stmt.type),
+        type: M.desugar(stmt.type),
       }
     }
 
@@ -62,7 +62,7 @@ function desugarStmt(stmt: M.Stmt): M.Stmt {
           ...ctor,
           fields: ctor.fields.map((field) => ({
             ...field,
-            type: M.desugar(M.createDesugarState(), field.type),
+            type: M.desugar(field.type),
           })),
         })),
       }
