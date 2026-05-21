@@ -1,4 +1,3 @@
-[meta-error.meta] quit using (error-module)
 [meta-lisp.js] remove (error-module) support
 [meta-lisp.meta] remove (error-module) support
 

@@ -1,0 +1,46 @@
+src/function/Y-type-error.meta:8:19 -- unification fail
+  inferred type: (-> A B)
+  expected type: A
+  6 | 
+  7 | (define (Y f)
+  8 |   ((lambda (u) (u u))
+    |                   ~   
+  9 |    (lambda (x) (f (lambda (t) ((x x) t))))))
+ 10 | 
+
+src/function/identity-type-error-1.meta:7:2 -- expected type is not a substitution instance of inferred type
+  inferred type: (-> A A)
+  expected type: (-> B C)
+ 5 |     (-> A B)))
+ 6 | 
+ 7 | (define (identity x) x)
+   |  ~~~~~~                 
+ 8 | 
+
+src/function/identity-type-error-2.meta:11:37 -- expected type is not a substitution instance of inferred type
+  inferred type: (-> A A)
+  expected type: (-> B C)
+  9 | (define-test identity-test
+ 10 |   (the (polymorphic (A) (-> A A)) identity)
+ 11 |   (the (polymorphic (A B) (-> A B)) identity))
+    |                                     ~~~~~~~~   
+ 12 | 
+
+src/module/nat-private-type-error.meta:8:17 -- undefined variable
+  module: nat-private-type-error
+  name: two
+ 6 |   (assert-equal zero 0)
+ 7 |   (assert-equal one 1)
+ 8 |   (assert-equal two 2))
+   |                 ~~~     
+ 9 | 
+
+src/opaque-type/box-as-list-error.meta:4:16 -- unification fail
+  inferred type: (builtin/box-t A)
+  expected type: (list-t B)
+ 2 | 
+ 3 | (define-test box-as-list-test
+ 4 |   (list-length (make-box)))
+   |                ~~~~~~~~~~   
+ 5 | 
+

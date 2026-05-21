@@ -2,6 +2,4 @@
 
 set -e
 
-./meta-lisp.js check
-./meta-lisp.js build
-./meta-lisp.js test
+./meta-lisp.js check > type-check-error-report.txt
