@@ -223,64 +223,86 @@ function desugarDataConstructorClauseGroup(
   return M.CondClause(question, answer, location)
 }
 
+function lookupAlgebraicTypeInfo(
+  ctx: DesugarMatchCtx,
+  clause: M.MatchClause,
+): M.AlgebraicTypeInfo {
+  const [pattern] = clause.patterns
+  const { modName, name } = resolveDataConstructorQualifiedName(ctx, pattern)
+  const info = ctx.algebraicInfo.dataConstructorInfos.get(`${modName}/${name}`)
+  if (!info) {
+    let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
+    message += `\n  modName: ${modName}`
+    message += `\n  name: ${name}`
+    throw new S.ErrorWithSourceLocation(message, clause.location)
+  }
+  const algebraicTypeInfo = ctx.algebraicInfo.algebraicTypeInfos.get(
+    `${info.modName}/${info.typeName}`,
+  )
+  if (!algebraicTypeInfo) {
+    let message = `[lookupAlgebraicTypeInfo] cannot find algebraic type info`
+    message += `\n  constructor name: ${info.name}`
+    message += `\n  type name: ${info.typeName}`
+    message += `\n  module name: ${info.modName}`
+    throw new S.ErrorWithSourceLocation(message, clause.location)
+  }
+  return algebraicTypeInfo
+}
+
+function lookupSameAlgebraicType(
+  ctx: DesugarMatchCtx,
+  clauses: Array<M.MatchClause>,
+): M.AlgebraicTypeInfo {
+  const first = lookupAlgebraicTypeInfo(ctx, clauses[0])
+  for (const clause of clauses) {
+    const current = lookupAlgebraicTypeInfo(ctx, clause)
+    if (
+      current.modName !== first.modName ||
+      current.name !== first.name
+    ) {
+      let message = `[lookupSameAlgebraicType] algebraic data type mismatch`
+      message += `\n  first: ${first.modName}/${first.name}`
+      message += `\n  current: ${current.modName}/${current.name}`
+      throw new S.ErrorWithSourceLocation(message, clause.location)
+    }
+  }
+  return first
+}
+
+function matchesConstructor(
+  ctx: DesugarMatchCtx,
+  clause: M.MatchClause,
+  info: M.DataConstructorInfo,
+): boolean {
+  const [pattern] = clause.patterns
+  const { modName, name } = resolveDataConstructorQualifiedName(ctx, pattern)
+  return modName === info.modName && name === info.name
+}
+
+function stripConstructorWrapper(
+  clause: M.MatchClause,
+): M.MatchClause {
+  const [pattern, ...restPatterns] = clause.patterns
+  return M.MatchClause(
+    [...M.dataPatternArgPatterns(pattern), ...restPatterns],
+    clause.body,
+    clause.location,
+  )
+}
+
 function groupClausesByHeadDataConstructor(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
 ): Array<DataConstructorClauseGroup> {
-  const map = new Map<string, DataConstructorClauseGroup>()
-  let typeKey: string | undefined
+  const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
 
-  for (const clause of clauses) {
-    assert(clause.patterns.length > 0)
-    const [pattern, ...restPatterns] = clause.patterns
-
-    const { modName, name } = resolveDataConstructorQualifiedName(ctx, pattern)
-    const key = `${modName}/${name}`
-    const info = ctx.algebraicInfo.dataConstructorInfos.get(key)
-    if (!info) {
-      let message = `[groupClausesByHeadDataConstructor] undefined data constructor`
-      message += `\n  modName: ${modName}`
-      message += `\n  name: ${name}`
-      throw new S.ErrorWithSourceLocation(message, clause.location)
-    }
-
-    const currentTypeKey = `${info.modName}/${info.typeName}`
-    if (!typeKey) {
-      typeKey = currentTypeKey
-    } else if (currentTypeKey !== typeKey) {
-      let message = `[groupClausesByHeadDataConstructor] datatype definition mismatch`
-      message += `\n  current type: ${currentTypeKey}`
-      message += `\n  expected type: ${typeKey}`
-      throw new S.ErrorWithSourceLocation(message, clause.location)
-    }
-
-    let entry = map.get(key)
-    if (!entry) {
-      entry = { dataConstructorInfo: info, clauses: [] }
-      map.set(key, entry)
-    }
-    const argPatterns = M.dataPatternArgPatterns(pattern)
-    entry.clauses.push(
-      M.MatchClause(
-        [...argPatterns, ...restPatterns],
-        clause.body,
-        clause.location,
-      ),
-    )
-  }
-
-  assert(typeKey)
-  const typeInfo = ctx.algebraicInfo.algebraicTypeInfos.get(typeKey)
-  assert(typeInfo)
-
-  return typeInfo.constructorNames.map((ctorName) => {
-    const key = `${typeInfo.modName}/${ctorName}`
-    return (
-      map.get(key) ?? {
-        dataConstructorInfo: ctx.algebraicInfo.dataConstructorInfos.get(key)!,
-        clauses: [],
-      }
-    )
+  return algebraicTypeInfo.constructorNames.map((ctorName) => {
+    const key = `${algebraicTypeInfo.modName}/${ctorName}`
+    const info = ctx.algebraicInfo.dataConstructorInfos.get(key)!
+    const grouped = clauses
+      .filter((c) => matchesConstructor(ctx, c, info))
+      .map(stripConstructorWrapper)
+    return { dataConstructorInfo: info, clauses: grouped }
   })
 }
 
