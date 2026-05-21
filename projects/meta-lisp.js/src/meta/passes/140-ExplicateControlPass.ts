@@ -131,37 +131,33 @@ function generateLabel(
   return label
 }
 
-function toBasicExp(exp: M.Exp): B.Exp {
+function toBasicExp(exp: M.Term): B.Exp {
   switch (exp.kind) {
-    case "SymbolExp": {
+    case "SymbolTerm": {
       return B.SymbolExp(exp.content, exp.location)
     }
-
-    case "KeywordExp": {
+    case "KeywordTerm": {
       return B.KeywordExp(exp.content, exp.location)
     }
-
-    case "StringExp": {
+    case "StringTerm": {
       return B.StringExp(exp.content, exp.location)
     }
-
-    case "IntExp": {
+    case "IntTerm": {
       return B.IntExp(exp.content, exp.location)
     }
-
-    case "FloatExp": {
+    case "FloatTerm": {
       return B.FloatExp(exp.content, exp.location)
     }
 
-    case "VarExp": {
+    case "VarTerm": {
       return B.VarExp(exp.name, exp.location)
     }
 
-    case "QualifiedVarExp": {
+    case "QualifiedVarTerm": {
       return B.VarExp(`${exp.modName}/${exp.name}`, exp.location)
     }
 
-    case "ApplyExp": {
+    case "ApplyTerm": {
       return B.ApplyExp(
         toBasicExp(exp.target),
         exp.args.map(toBasicExp),
@@ -172,15 +168,15 @@ function toBasicExp(exp: M.Exp): B.Exp {
     default: {
       let message = `[ExplicateControlPass] [toBasicExp] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
-      message += `\n  exp: ${M.formatExp(exp)}`
+      message += `\n  exp: ${M.formatTerm(exp)}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }
 
-function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
+function explicateControlInTail(state: State, exp: M.Term): Array<B.Instr> {
   switch (exp.kind) {
-    case "Let1Exp": {
+    case "Let1Term": {
       return explicateControlInLet1(
         state,
         exp.name,
@@ -189,7 +185,7 @@ function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
       )
     }
 
-    case "Begin1Exp": {
+    case "Begin1Term": {
       return explicateControlInBegin1(
         state,
         exp.head,
@@ -197,7 +193,7 @@ function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
       )
     }
 
-    case "IfExp": {
+    case "IfTerm": {
       return explicateControlInIf(
         state,
         exp.condition,
@@ -215,11 +211,11 @@ function explicateControlInTail(state: State, exp: M.Exp): Array<B.Instr> {
 function explicateControlInLet1(
   state: State,
   name: string,
-  rhs: M.Exp,
+  rhs: M.Term,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (rhs.kind) {
-    case "Let1Exp": {
+    case "Let1Term": {
       return explicateControlInLet1(
         state,
         rhs.name,
@@ -228,7 +224,7 @@ function explicateControlInLet1(
       )
     }
 
-    case "Begin1Exp": {
+    case "Begin1Term": {
       return explicateControlInBegin1(
         state,
         rhs.head,
@@ -236,7 +232,7 @@ function explicateControlInLet1(
       )
     }
 
-    case "IfExp": {
+    case "IfTerm": {
       const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
       return explicateControlInIf(
         state,
@@ -258,11 +254,11 @@ function explicateControlInLet1(
 
 function explicateControlInBegin1(
   state: State,
-  head: M.Exp,
+  head: M.Term,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
-    case "Let1Exp": {
+    case "Let1Term": {
       return explicateControlInLet1(
         state,
         head.name,
@@ -271,7 +267,7 @@ function explicateControlInBegin1(
       )
     }
 
-    case "Begin1Exp": {
+    case "Begin1Term": {
       return explicateControlInBegin1(
         state,
         head.head,
@@ -279,7 +275,7 @@ function explicateControlInBegin1(
       )
     }
 
-    case "IfExp": {
+    case "IfTerm": {
       const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
       return explicateControlInIf(
         state,
@@ -301,12 +297,12 @@ function explicateControlInBegin1(
 
 function explicateControlInIf(
   state: State,
-  condition: M.Exp,
+  condition: M.Term,
   thenCont: Array<B.Instr>,
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
   if (
-    condition.kind === "QualifiedVarExp" &&
+    condition.kind === "QualifiedVarTerm" &&
     condition.modName === "builtin" &&
     condition.name === "true"
   ) {
@@ -314,7 +310,7 @@ function explicateControlInIf(
   }
 
   if (
-    condition.kind === "QualifiedVarExp" &&
+    condition.kind === "QualifiedVarTerm" &&
     condition.modName === "builtin" &&
     condition.name === "false"
   ) {
@@ -322,7 +318,7 @@ function explicateControlInIf(
   }
 
   switch (condition.kind) {
-    case "VarExp": {
+    case "VarTerm": {
       return [
         B.TestInstr(
           B.ApplyExp(
@@ -343,9 +339,9 @@ function explicateControlInIf(
       ]
     }
 
-    case "ApplyExp": {
+    case "ApplyTerm": {
       if (
-        condition.target.kind === "VarExp" &&
+        condition.target.kind === "VarTerm" &&
         condition.target.name === "not" &&
         condition.args.length === 1
       ) {
@@ -363,7 +359,7 @@ function explicateControlInIf(
       ]
     }
 
-    case "Let1Exp": {
+    case "Let1Term": {
       return explicateControlInLet1(
         state,
         condition.name,
@@ -372,7 +368,7 @@ function explicateControlInIf(
       )
     }
 
-    case "Begin1Exp": {
+    case "Begin1Term": {
       return explicateControlInBegin1(
         state,
         condition.head,
@@ -380,7 +376,7 @@ function explicateControlInIf(
       )
     }
 
-    case "IfExp": {
+    case "IfTerm": {
       thenCont = [
         B.GotoInstr(
           generateLabel(state, "then", thenCont, condition.location),
@@ -403,7 +399,7 @@ function explicateControlInIf(
 
     default: {
       let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition exp`
-      message += `\n  exp: ${M.formatExp(condition)}`
+      message += `\n  exp: ${M.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }

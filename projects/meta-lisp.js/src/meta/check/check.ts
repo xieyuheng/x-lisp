@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 export function checkAssignable(
   mod: M.Mod,
   ctx: M.Ctx,
-  exp: M.Exp,
+  exp: M.Term,
   type: M.Type,
 ): M.CheckEffect {
   return M.inferThenCheck(M.infer(mod, ctx, exp), (inferredType) => {
@@ -20,7 +20,7 @@ export function checkAssignable(
 
 export function checkSubstInstance(
   mod: M.Mod,
-  exp: M.Exp,
+  exp: M.Term,
   inferredType: M.Type,
   type: M.Type,
 ): M.CheckEffect {
@@ -51,7 +51,7 @@ export function checkSubstInstance(
 export function checkByInfer(
   mod: M.Mod,
   ctx: M.Ctx,
-  exp: M.Exp,
+  exp: M.Term,
   type: M.Type,
 ): M.CheckEffect {
   return M.inferThenCheck(M.infer(mod, ctx, exp), (inferredType) =>
@@ -61,7 +61,7 @@ export function checkByInfer(
 
 export function checkUnify(
   mod: M.Mod,
-  exp: M.Exp,
+  exp: M.Term,
   inferredType: M.Type,
   type: M.Type,
 ): M.CheckEffect {

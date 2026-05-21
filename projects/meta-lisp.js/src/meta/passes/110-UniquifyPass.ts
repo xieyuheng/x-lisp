@@ -39,15 +39,15 @@ function uniquifyDefinition(definition: M.Definition): null {
 function uniquifyExp(
   nameCounts: Record<string, number>,
   nameTable: Record<string, string>,
-  exp: M.Exp,
-): M.Exp {
+  exp: M.Term,
+): M.Term {
   switch (exp.kind) {
-    case "VarExp": {
+    case "VarTerm": {
       const foundName = nameTable[exp.name]
-      return foundName ? M.VarExp(foundName, exp.location) : exp
+      return foundName ? M.VarTerm(foundName, exp.location) : exp
     }
 
-    case "LambdaExp": {
+    case "LambdaTerm": {
       countNames(nameCounts, exp.parameters)
       const parameters = exp.parameters.map((name) =>
         generateNameInCounts(nameCounts, name),
@@ -56,18 +56,18 @@ function uniquifyExp(
         ...nameTable,
         ...Object.fromEntries(arrayZip(exp.parameters, parameters)),
       }
-      return M.LambdaExp(
+      return M.LambdaTerm(
         parameters,
         uniquifyExp(nameCounts, newNameTable, exp.body),
         exp.location,
       )
     }
 
-    case "Let1Exp": {
+    case "Let1Term": {
       countName(nameCounts, exp.name)
       const newName = generateNameInCounts(nameCounts, exp.name)
       const newNameTable = { ...nameTable, [exp.name]: newName }
-      return M.Let1Exp(
+      return M.Let1Term(
         newName,
         uniquifyExp(nameCounts, nameTable, exp.rhs),
         uniquifyExp(nameCounts, newNameTable, exp.body),
@@ -76,7 +76,7 @@ function uniquifyExp(
     }
 
     default: {
-      return M.expTraverse((e) => uniquifyExp(nameCounts, nameTable, e), exp)
+      return M.termTraverse((e) => uniquifyExp(nameCounts, nameTable, e), exp)
     }
   }
 }

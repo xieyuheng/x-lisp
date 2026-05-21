@@ -13,14 +13,14 @@ export function ExecutePass(
     M.projectAddMod(project, mod)
 
     for (const stmt of fragment.desugaredStmts) {
-      executeStmt(mod, termStmtToExpStmt(stmt))
+      executeStmt(mod, stmt)
     }
   }
 
   if (options.dump) M.projectDumpMods(project, "040-execute")
 }
 
-function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
+function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   if (stmt.kind === "ExemptStmt") {
     for (const name of stmt.names) {
       mod.admitted.add(name)
@@ -33,7 +33,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
 
   if (stmt.kind === "ClaimTypeStmt") {
     mod.claimed.set(stmt.name, {
-      exp: M.QualifiedVarExp("builtin", "type-t", stmt.location),
+      exp: M.QualifiedVarTerm("builtin", "type-t", stmt.location),
       type: M.TypeType(),
     })
   }
@@ -115,17 +115,17 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
       M.modClaim(
         mod,
         stmt.name,
-        M.QualifiedVarExp("builtin", "type-t", stmt.location),
+        M.QualifiedVarTerm("builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
         mod,
         stmt.name,
-        M.ArrowExp(
+        M.ArrowTerm(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVarExp("builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVarExp("builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm("builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
@@ -179,17 +179,17 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
       M.modClaim(
         mod,
         name,
-        M.QualifiedVarExp("builtin", "type-t", stmt.location),
+        M.QualifiedVarTerm("builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
         mod,
         name,
-        M.ArrowExp(
+        M.ArrowTerm(
           range(typeConstructor.parameters.length).map((_) =>
-            M.QualifiedVarExp("builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVarExp("builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm("builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
@@ -223,24 +223,24 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
       M.modClaim(
         mod,
         name,
-        M.QualifiedVarExp("builtin", "type-t", stmt.location),
+        M.QualifiedVarTerm("builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
         mod,
         name,
-        M.ArrowExp(
+        M.ArrowTerm(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVarExp("builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm("builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVarExp("builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm("builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
     }
 
     for (const iface of stmt.interfaceFunctions) {
-      const wrappedType = M.PolymorphicExp(
+      const wrappedType = M.PolymorphicTerm(
         stmt.parameters,
         iface.type,
         iface.location,
@@ -248,75 +248,5 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
       M.modClaim(mod, iface.name, wrappedType)
       mod.opaqueClaimed.set(iface.name, wrappedType)
     }
-  }
-}
-
-import type { Term as TermType } from "../term/Term.ts"
-
-function termStmtToExpStmt(stmt: M.Stmt<M.Term>): M.Stmt<M.Exp> {
-  switch (stmt.kind) {
-    case "DefineFunctionStmt":
-      return M.DefineFunctionStmt(
-        stmt.name,
-        stmt.parameters,
-        M.termToExp(stmt.body as TermType),
-        stmt.location,
-      )
-    case "DefineVariableStmt":
-      return M.DefineVariableStmt(
-        stmt.name,
-        M.termToExp(stmt.body as TermType),
-        stmt.location,
-      )
-    case "DefineTestStmt":
-      return M.DefineTestStmt(
-        stmt.name,
-        M.termToExp(stmt.body as TermType),
-        stmt.location,
-      )
-    case "DefineTypeStmt":
-      return M.DefineTypeStmt(
-        stmt.name,
-        stmt.parameters,
-        M.termToExp(stmt.body as TermType),
-        stmt.location,
-      )
-    case "ClaimStmt":
-      return M.ClaimStmt(
-        stmt.name,
-        M.termToExp(stmt.type as TermType),
-        stmt.location,
-      )
-    case "AdmitStmt":
-      return M.AdmitStmt(
-        stmt.name,
-        M.termToExp(stmt.type as TermType),
-        stmt.location,
-      )
-    case "DefineAlgebraicTypeStmt":
-      return M.DefineAlgebraicTypeStmt(
-        stmt.typeConstructor,
-        stmt.dataConstructors.map((ctor) => ({
-          ...ctor,
-          fields: ctor.fields.map((field) => ({
-            ...field,
-            type: M.termToExp(field.type as TermType),
-          })),
-        })),
-        stmt.location,
-      )
-    case "DefineOpaqueTypeStmt":
-      return M.DefineOpaqueTypeStmt(
-        stmt.name,
-        stmt.parameters,
-        M.termToExp(stmt.representationType as TermType),
-        stmt.interfaceFunctions.map((f) => ({
-          ...f,
-          type: M.termToExp(f.type as TermType),
-        })),
-        stmt.location,
-      )
-    default:
-      return stmt as unknown as M.Stmt<M.Exp>
   }
 }

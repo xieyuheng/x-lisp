@@ -3,7 +3,7 @@ import type { CheckEffect } from "./CheckEffect.ts"
 
 export type InferResult =
   | { kind: "InferOk"; subst: M.Subst; type: M.Type }
-  | { kind: "InferError"; exp: M.Exp; message: string }
+  | { kind: "InferError"; exp: M.Term; message: string }
 
 export type InferEffect = (subst: M.Subst) => InferResult
 
@@ -17,7 +17,7 @@ export function okInferEffect(type: M.Type): InferEffect {
   }
 }
 
-export function errorInferEffect(exp: M.Exp, message: string): InferEffect {
+export function errorInferEffect(exp: M.Term, message: string): InferEffect {
   return () => {
     return {
       kind: "InferError",

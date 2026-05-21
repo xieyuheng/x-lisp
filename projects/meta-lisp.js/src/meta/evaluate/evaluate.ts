@@ -3,9 +3,9 @@ import * as M from "../index.ts"
 import { type Value } from "../value/Value.ts"
 import { type Env, type EvaluationMode } from "./Env.ts"
 
-export function evaluate(mod: M.Mod, env: Env, exp: M.Exp): Value {
+export function evaluate(mod: M.Mod, env: Env, exp: M.Term): Value {
   switch (exp.kind) {
-    case "VarExp": {
+    case "VarTerm": {
       const fromEnv = M.envLookup(env, exp.name)
       if (fromEnv) return fromEnv
 
@@ -18,7 +18,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Exp): Value {
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "QualifiedVarExp": {
+    case "QualifiedVarTerm": {
       const qualifiedMod = M.projectLookupMod(mod.project, exp.modName)
       if (qualifiedMod === undefined) {
         let message = `[evaluate] undefined module prefix`
@@ -36,7 +36,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Exp): Value {
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
-    case "ArrowExp": {
+    case "ArrowTerm": {
       const argTypes = exp.argTypes.map((argType) =>
         M.evaluateType(mod, env, argType),
       )
@@ -44,7 +44,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Exp): Value {
       return M.TypeValue(M.ArrowType(argTypes, retType))
     }
 
-    case "PolymorphicExp": {
+    case "PolymorphicTerm": {
       const varTypes = exp.parameters.map((parameter) =>
         M.VarType(parameter, BigInt(0)),
       )
@@ -60,15 +60,15 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Exp): Value {
       return M.TypeValue(M.PolymorphicType(varTypes, bodyType))
     }
 
-    case "ApplyExp": {
+    case "ApplyTerm": {
       const target = evaluate(mod, env, exp.target)
       const args = exp.args.map((arg) => evaluate(mod, env, arg))
       return M.apply(M.envMode(env), target, args)
     }
 
     default: {
-      let message = `[evaluate] unhandled exp`
-      message += `\n  exp kind: ${exp.kind}`
+      let message = `[evaluate] unhandled term`
+      message += `\n  term kind: ${exp.kind}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }

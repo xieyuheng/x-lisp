@@ -277,3 +277,13 @@ export function formatBody(body: M.Exp): string {
     return formatExp(body)
   }
 }
+
+export function formatTermBody(body: M.Term): string {
+  if (body.kind === "Begin1Term") {
+    return `${M.formatTerm(body.head)} ${formatTermBody(body.body)}`
+  } else if (body.kind === "Let1Term") {
+    return `(= ${body.name} ${M.formatTerm(body.rhs)}) ${formatTermBody(body.body)}`
+  } else {
+    return M.formatTerm(body)
+  }
+}

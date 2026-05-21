@@ -103,19 +103,19 @@ function qualifyDefinition(definition: M.Definition): null {
 export function qualifyFreeVar(
   mod: M.Mod,
   boundNames: Set<string>,
-  exp: M.Exp,
-): M.Exp {
+  exp: M.Term,
+): M.Term {
   switch (exp.kind) {
-    case "VarExp": {
+    case "VarTerm": {
       if (boundNames.has(exp.name)) {
         return exp
       }
 
-      return M.QualifiedVarExp(mod.name, exp.name, exp.location)
+      return M.QualifiedVarTerm(mod.name, exp.name, exp.location)
     }
 
-    case "LambdaExp": {
-      return M.LambdaExp(
+    case "LambdaTerm": {
+      return M.LambdaTerm(
         exp.parameters,
         qualifyFreeVar(
           mod,
@@ -126,8 +126,8 @@ export function qualifyFreeVar(
       )
     }
 
-    case "PolymorphicExp": {
-      return M.PolymorphicExp(
+    case "PolymorphicTerm": {
+      return M.PolymorphicTerm(
         exp.parameters,
         qualifyFreeVar(
           mod,
@@ -138,8 +138,8 @@ export function qualifyFreeVar(
       )
     }
 
-    case "Let1Exp": {
-      return M.Let1Exp(
+    case "Let1Term": {
+      return M.Let1Term(
         exp.name,
         qualifyFreeVar(mod, boundNames, exp.rhs),
         qualifyFreeVar(
@@ -152,7 +152,7 @@ export function qualifyFreeVar(
     }
 
     default: {
-      return M.expTraverse(
+      return M.termTraverse(
         (child) => qualifyFreeVar(mod, boundNames, child),
         exp,
       )

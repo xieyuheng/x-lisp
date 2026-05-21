@@ -81,17 +81,17 @@ function locateDefinition(definition: M.Definition): null {
   }
 }
 
-function locateSpecialApply(exp: M.Exp): M.Exp {
+function locateSpecialApply(exp: M.Term): M.Term {
   switch (exp.kind) {
-    case "ApplyExp": {
+    case "ApplyTerm": {
       if (matchLocateEntry(exp.target, exp.args)) {
         if (!exp.location) {
           let message = `[locateSpecialApply] expect source location`
-          message += `\n  exp: ${M.formatExp(exp)}`
+          message += `\n  exp: ${M.formatTerm(exp)}`
           throw new Error(message)
         }
 
-        return M.ApplyExp(
+        return M.ApplyTerm(
           targetWithLocation(exp.target),
           [
             ...exp.args.map((e) => locateSpecialApply(e)),
@@ -100,7 +100,7 @@ function locateSpecialApply(exp: M.Exp): M.Exp {
           exp.location,
         )
       } else {
-        return M.ApplyExp(
+        return M.ApplyTerm(
           exp.target,
           exp.args.map((e) => locateSpecialApply(e)),
           exp.location,
@@ -109,7 +109,7 @@ function locateSpecialApply(exp: M.Exp): M.Exp {
     }
 
     default: {
-      return M.expTraverse((child) => locateSpecialApply(child), exp)
+      return M.termTraverse((child) => locateSpecialApply(child), exp)
     }
   }
 }
@@ -148,28 +148,30 @@ function findLocateEntry(name: string): {
   return entry
 }
 
-function matchLocateEntry(exp: M.Exp, args: M.Exp[]): boolean {
-  if (exp.kind !== "QualifiedVarExp") return false
+function matchLocateEntry(exp: M.Term, args: M.Term[]): boolean {
+  if (exp.kind !== "QualifiedVarTerm") return false
   if (exp.modName !== "builtin") return false
   const entry = locateTable.find((entry) => entry.source === exp.name)
   if (entry === undefined) return false
   return args.length === entry.sourceArity
 }
 
-function targetWithLocation(exp: M.Exp): M.Exp {
-  assert(exp.kind === "QualifiedVarExp")
+function targetWithLocation(exp: M.Term): M.Term {
+  assert(exp.kind === "QualifiedVarTerm")
   const entry = findLocateEntry(exp.name)
-  return M.QualifiedVarExp(exp.modName, entry.target, exp.location)
+  return M.QualifiedVarTerm(exp.modName, entry.target, exp.location)
 }
 
-function expFromSourceLocation(location: S.SourceLocation): M.Exp {
-  return M.desugarList(
-    [
-      M.SymbolExp("make-source-location", location),
-      M.StringExp(location.path, location),
-      expFromSpan(location.span, location),
-    ],
-    location,
+function expFromSourceLocation(location: S.SourceLocation): M.Term {
+  return M.desugar(
+    M.desugarList(
+      [
+        M.SymbolExp("make-source-location", location),
+        M.StringExp(location.path, location),
+        expFromSpan(location.span, location),
+      ],
+      location,
+    ),
   )
 }
 

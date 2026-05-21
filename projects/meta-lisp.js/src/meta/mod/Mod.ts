@@ -1,11 +1,10 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type DataConstructor, type Definition } from "../definition/index.ts"
-import { type Exp } from "../exp/index.ts"
 import * as M from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export type ClaimedEntry = {
-  exp: Exp
+  exp: M.Term
   type?: M.Type
 }
 
@@ -15,7 +14,7 @@ export type Mod = {
   admitted: Set<string>
   definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>
-  opaqueClaimed: Map<string, M.Exp>
+  opaqueClaimed: Map<string, M.Term>
   inferredTypes: Map<string, M.Type>
   dataConstructors: Map<string, DataConstructor>
   project: M.Project
@@ -60,7 +59,7 @@ export function modLookupDefinition(
 
 // Claimed
 
-export function modClaim(mod: Mod, name: string, exp: Exp): void {
+export function modClaim(mod: Mod, name: string, exp: M.Term): void {
   const previous = mod.claimed.get(name)
   if (previous) {
     let message = `[modClaim] name already claimed`

@@ -35,14 +35,14 @@ function shrinkDefinition(definition: M.Definition): null {
   }
 }
 
-function shrinkExp(exp: M.Exp): M.Exp {
+function shrinkExp(exp: M.Term): M.Term {
   switch (exp.kind) {
-    case "TheExp": {
+    case "TheTerm": {
       return shrinkExp(exp.exp)
     }
 
     default: {
-      return M.expTraverse(shrinkExp, exp)
+      return M.termTraverse(shrinkExp, exp)
     }
   }
 }

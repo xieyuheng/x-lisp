@@ -1,6 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
+import type { Term } from "../term/Term.ts"
 import type { Value } from "../value/Value.ts"
 
 export type Definition =
@@ -118,7 +119,7 @@ export type FunctionDefinition = {
   mod: Mod
   name: string
   parameters: Array<string>
-  body: Exp
+  body: Term
   location: SourceLocation
 } & DefinitionState
 
@@ -126,7 +127,7 @@ export function FunctionDefinition(
   mod: Mod,
   name: string,
   parameters: Array<string>,
-  body: Exp,
+  body: Term,
   location: SourceLocation,
 ): FunctionDefinition {
   return {
@@ -143,14 +144,14 @@ export type VariableDefinition = {
   kind: "VariableDefinition"
   mod: Mod
   name: string
-  body: Exp
+  body: Term
   location: SourceLocation
 } & DefinitionState
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
-  body: Exp,
+  body: Term,
   location: SourceLocation,
 ): VariableDefinition {
   return {
@@ -166,14 +167,14 @@ export type TestDefinition = {
   kind: "TestDefinition"
   mod: Mod
   name: string
-  body: Exp
+  body: Term
   location: SourceLocation
 } & DefinitionState
 
 export function TestDefinition(
   mod: Mod,
   name: string,
-  body: Exp,
+  body: Term,
   location: SourceLocation,
 ): TestDefinition {
   return {
@@ -190,7 +191,7 @@ export type TypeDefinition = {
   mod: Mod
   name: string
   parameters: Array<string>
-  body: Exp
+  body: Term
   location: SourceLocation
 } & DefinitionState
 
@@ -198,7 +199,7 @@ export function TypeDefinition(
   mod: Mod,
   name: string,
   parameters: Array<string>,
-  body: Exp,
+  body: Term,
   location: SourceLocation,
 ): TypeDefinition {
   return {
@@ -225,10 +226,21 @@ export type TypeConstructor = {
   parameters: Array<string>
   location: SourceLocation
 }
-
 export type PreDataConstructor = {
   name: string
   fields: Array<DataField>
+  location: SourceLocation
+}
+
+export type DataField = {
+  name: string
+  type: Exp
+  location: SourceLocation
+}
+
+export type TermDataField = {
+  name: string
+  type: Term
   location: SourceLocation
 }
 
@@ -236,7 +248,7 @@ export type DataConstructor = {
   mod: Mod
   typeName: string
   name: string
-  fields: Array<DataField>
+  fields: Array<TermDataField>
   location: SourceLocation
 }
 
@@ -247,15 +259,9 @@ export function dataConstructorEqual(
   return x.mod === y.mod && x.typeName === y.typeName && x.name === y.name
 }
 
-export type DataField = {
-  name: string
-  type: Exp
-  location: SourceLocation
-}
-
 export type InterfaceEntry = {
   name: string
-  type: Exp
+  type: Term
   location: SourceLocation
 }
 
@@ -264,7 +270,7 @@ export type OpaqueTypeDefinition = {
   mod: Mod
   name: string
   typeConstructor: TypeConstructor
-  representationType: Exp
+  representationType: Term
   interfaceEntries: Array<InterfaceEntry>
   location: SourceLocation
 } & DefinitionState
@@ -273,7 +279,7 @@ export function OpaqueTypeDefinition(
   mod: Mod,
   name: string,
   typeConstructor: TypeConstructor,
-  representationType: Exp,
+  representationType: Term,
   interfaceEntries: Array<InterfaceEntry>,
   location: SourceLocation,
 ): OpaqueTypeDefinition {

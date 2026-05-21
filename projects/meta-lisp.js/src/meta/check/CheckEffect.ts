@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export type CheckResult =
   | { kind: "CheckOk"; subst: M.Subst }
-  | { kind: "CheckError"; exp: M.Exp; message: string }
+  | { kind: "CheckError"; exp: M.Term; message: string }
 
 export type CheckEffect = (subst: M.Subst) => CheckResult
 
@@ -15,7 +15,7 @@ export function okCheckEffect(): CheckEffect {
   }
 }
 
-export function errorCheckEffect(exp: M.Exp, message: string): CheckEffect {
+export function errorCheckEffect(exp: M.Term, message: string): CheckEffect {
   return () => {
     return {
       kind: "CheckError",

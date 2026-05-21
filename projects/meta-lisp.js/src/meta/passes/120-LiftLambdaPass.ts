@@ -55,10 +55,10 @@ function liftLambdaDefinition(
   }
 }
 
-function liftLambdaExp(state: State, exp: M.Exp): M.Exp {
+function liftLambdaExp(state: State, exp: M.Term): M.Term {
   switch (exp.kind) {
-    case "LambdaExp": {
-      const freeNames = Array.from(M.expFreeNames(new Set(), exp))
+    case "LambdaTerm": {
+      const freeNames = Array.from(M.termFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
       const newFunctionName = `${state.definition.name}©λ${liftedCount}`
       const newParameters = [...freeNames, ...exp.parameters]
@@ -77,18 +77,18 @@ function liftLambdaExp(state: State, exp: M.Exp): M.Exp {
       const qualifiedFunctionName = `${state.mod.name}/${newFunctionName}`
 
       if (freeNames.length == 0) {
-        return M.VarExp(qualifiedFunctionName, exp.location)
+        return M.VarTerm(qualifiedFunctionName, exp.location)
       } else {
-        return M.ApplyExp(
-          M.VarExp(qualifiedFunctionName, exp.location),
-          freeNames.map((name) => M.VarExp(name, exp.location)),
+        return M.ApplyTerm(
+          M.VarTerm(qualifiedFunctionName, exp.location),
+          freeNames.map((name) => M.VarTerm(name, exp.location)),
           exp.location,
         )
       }
     }
 
     default: {
-      return M.expTraverse((e) => liftLambdaExp(state, e), exp)
+      return M.termTraverse((e) => liftLambdaExp(state, e), exp)
     }
   }
 }

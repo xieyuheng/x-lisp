@@ -15,7 +15,7 @@ export function formatDefinition(definition: M.Definition): string {
     case "FunctionDefinition": {
       const name = definition.name
       const parameters = definition.parameters.join(" ")
-      const body = M.formatBody(definition.body)
+      const body = M.formatTermBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define (${name} ${parameters}) ${body})`
@@ -26,7 +26,7 @@ export function formatDefinition(definition: M.Definition): string {
 
     case "VariableDefinition": {
       const name = definition.name
-      const body = M.formatBody(definition.body)
+      const body = M.formatTermBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define ${name} ${body})`
@@ -37,7 +37,7 @@ export function formatDefinition(definition: M.Definition): string {
 
     case "TestDefinition": {
       const name = definition.name
-      const body = M.formatBody(definition.body)
+      const body = M.formatTermBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define-test ${name} ${body})`
@@ -48,7 +48,7 @@ export function formatDefinition(definition: M.Definition): string {
 
     case "TypeDefinition": {
       const name = definition.name
-      const body = M.formatBody(definition.body)
+      const body = M.formatTermBody(definition.body)
       const type = formatDefinitionType(definition.mod, definition.name)
       if (type) {
         return `${type} (define-type ${name} ${body})`
@@ -75,9 +75,9 @@ export function formatDefinition(definition: M.Definition): string {
         definition.typeConstructor.parameters.length > 0
           ? `(${name} ${definition.typeConstructor.parameters.join(" ")})`
           : name
-      const repr = M.formatExp(definition.representationType)
+      const repr = M.formatTerm(definition.representationType)
       const ifaces = definition.interfaceEntries
-        .map((entry) => `(${entry.name} ${M.formatExp(entry.type)})`)
+        .map((entry) => `(${entry.name} ${M.formatTerm(entry.type)})`)
         .join(" ")
       return `(define-opaque-type ${params} ${repr} ${ifaces})`
     }
@@ -86,7 +86,7 @@ export function formatDefinition(definition: M.Definition): string {
 
 function formatDataConstructor(dataConstructor: M.DataConstructor): string {
   const fields = dataConstructor.fields
-    .map((field) => `(${field.name} ${M.formatExp(field.type)})`)
+    .map((field) => `(${field.name} ${M.formatTerm(field.type)})`)
     .join(" ")
   if (dataConstructor.fields.length === 0) {
     return `${dataConstructor.name}`
@@ -98,7 +98,7 @@ function formatDataConstructor(dataConstructor: M.DataConstructor): string {
 function formatDefinitionType(mod: M.Mod, name: string): string | undefined {
   const claimedEntry = M.modLookupClaimedEntry(mod, name)
   if (claimedEntry) {
-    return `(claim ${name} ${M.formatExp(claimedEntry.exp)})`
+    return `(claim ${name} ${M.formatTerm(claimedEntry.exp)})`
   }
 
   const inferredType = M.modLookupInferredType(mod, name)

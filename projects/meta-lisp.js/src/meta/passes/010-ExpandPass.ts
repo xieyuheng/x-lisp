@@ -61,7 +61,7 @@ function expandStmt(stmt: M.Stmt<M.Exp>): Array<M.Stmt<M.Exp>> {
     }
 
     case "DefineRecordTypeStmt": {
-      const algebraicType = M.DefineAlgebraicTypeStmt(
+      const algebraicType = M.DefineAlgebraicTypeStmt<M.Exp>(
         stmt.typeConstructor,
         [stmt.dataConstructor],
         stmt.location,
@@ -99,9 +99,9 @@ function desugarDefineEnum(
     }
   })
 
-  return M.DefineAlgebraicTypeStmt(
+  return M.DefineAlgebraicTypeStmt<M.Exp>(
     stmt.typeConstructor,
-    dataConstructors,
+    dataConstructors as Array<M.AlgebraicTypeConstructor<M.Exp>>,
     stmt.location,
   )
 }
@@ -138,7 +138,7 @@ function desugarDefineStructStar(
     },
   ]
 
-  return M.DefineAlgebraicTypeStmt(
+  return M.DefineAlgebraicTypeStmt<M.Exp>(
     stmt.typeConstructor,
     dataConstructors,
     stmt.location,
@@ -176,7 +176,7 @@ function desugarDefineStruct(
     },
   ]
 
-  return M.DefineAlgebraicTypeStmt(
+  return M.DefineAlgebraicTypeStmt<M.Exp>(
     stmt.typeConstructor,
     dataConstructors,
     stmt.location,

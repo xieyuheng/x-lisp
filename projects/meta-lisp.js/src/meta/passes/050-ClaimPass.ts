@@ -13,7 +13,7 @@ export function ClaimPass(project: M.Project): void {
         if (entry.exp.location) {
           writeln(S.sourceLocationReport(entry.exp.location, message))
         } else {
-          message += `\n  exp: ${M.formatExp(entry.exp)}`
+          message += `\n  exp: ${M.formatTerm(entry.exp)}`
           writeln(message)
         }
       }
