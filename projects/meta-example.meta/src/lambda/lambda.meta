@@ -1,4 +1,4 @@
-(module l2)
+(module example)
 
 (define-algebraic-type exp-t
   ((var-exp (name symbol-t))

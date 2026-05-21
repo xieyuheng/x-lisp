@@ -9,6 +9,8 @@
 [meta-example.meta] move (error-module) to [meta-error.meta]
 [meta-builtin.meta] move (error-module) to [meta-error.meta]
 
+[meta-error.meta] 设计一个测试，来验证两个模块中定义的相同结构的 adt，不相等。
+
 [meta-lisp.js] remove (error-module) support
 [meta-lisp.meta] remove (error-module) support
 
