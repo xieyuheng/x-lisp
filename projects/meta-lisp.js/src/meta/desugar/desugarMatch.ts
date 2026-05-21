@@ -1,5 +1,4 @@
 import * as S from "@xieyuheng/sexp.js"
-import assert from "node:assert"
 import * as M from "../index.ts"
 
 export type DesugarMatchCtx = {
@@ -122,7 +121,10 @@ export function desugarMatch(
 
   if (targets.length === 0) {
     const [clause] = clauses
-    assert(clause.patterns.length === 0)
+    if (clause.patterns.length !== 0) {
+      let message = `[desugarMatch] expected zero patterns when zero targets`
+      throw new S.ErrorWithSourceLocation(message, location)
+    }
     return clause.body
   }
 
@@ -133,7 +135,10 @@ export function desugarMatch(
       restTargets,
       clauses.map((clause) => {
         const [pattern, ...restPatterns] = clause.patterns
-        assert(pattern.kind === "VarExp")
+        if (pattern.kind !== "VarExp") {
+          let message = `[desugarMatch] expected VarExp pattern`
+          throw new S.ErrorWithSourceLocation(message, pattern.location)
+        }
         return M.MatchClause(
           restPatterns,
           M.Let1Exp(pattern.name, target, clause.body, clause.location),
@@ -168,13 +173,11 @@ export function desugarMatch(
 }
 
 function clauseHeadIsVarPattern(clause: M.MatchClause): boolean {
-  assert(clause.patterns.length > 0)
-  return M.isVarPattern(clause.patterns[0])
+  return clause.patterns.length > 0 && M.isVarPattern(clause.patterns[0])
 }
 
 function clauseHeadIsDataPattern(clause: M.MatchClause): boolean {
-  assert(clause.patterns.length > 0)
-  return M.isDataPattern(clause.patterns[0])
+  return clause.patterns.length > 0 && M.isDataPattern(clause.patterns[0])
 }
 
 type DataConstructorClauseGroup = {
@@ -228,7 +231,13 @@ function lookupAlgebraicTypeInfo(
   clause: M.MatchClause,
 ): M.AlgebraicTypeInfo {
   const [pattern] = clause.patterns
-  const { modName, name } = resolveDataConstructorQualifiedName(ctx, pattern)
+  if (!M.isDataPattern(pattern)) {
+    let message = `[lookupAlgebraicTypeInfo] expected data pattern`
+    message += `\n  pattern: ${M.formatExp(pattern)}`
+    throw new S.ErrorWithSourceLocation(message, clause.location)
+  }
+  const ctor = pattern.target
+  const { modName, name } = resolveCtorQualifiedName(ctx, ctor)
   const info = ctx.algebraicInfo.dataConstructorInfos.get(`${modName}/${name}`)
   if (!info) {
     let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
@@ -256,10 +265,7 @@ function lookupSameAlgebraicType(
   const first = lookupAlgebraicTypeInfo(ctx, clauses[0])
   for (const clause of clauses) {
     const current = lookupAlgebraicTypeInfo(ctx, clause)
-    if (
-      current.modName !== first.modName ||
-      current.name !== first.name
-    ) {
+    if (current.modName !== first.modName || current.name !== first.name) {
       let message = `[lookupSameAlgebraicType] algebraic data type mismatch`
       message += `\n  first: ${first.modName}/${first.name}`
       message += `\n  current: ${current.modName}/${current.name}`
@@ -275,16 +281,18 @@ function matchesConstructor(
   info: M.DataConstructorInfo,
 ): boolean {
   const [pattern] = clause.patterns
-  const { modName, name } = resolveDataConstructorQualifiedName(ctx, pattern)
+  if (!M.isDataPattern(pattern)) return false
+  const { modName, name } = resolveCtorQualifiedName(ctx, pattern.target)
   return modName === info.modName && name === info.name
 }
 
-function stripConstructorWrapper(
-  clause: M.MatchClause,
-): M.MatchClause {
+function stripConstructorWrapper(clause: M.MatchClause): M.MatchClause {
   const [pattern, ...restPatterns] = clause.patterns
+  const argPatterns = M.isDataPattern(pattern)
+    ? M.dataPatternArgPatterns(pattern)
+    : []
   return M.MatchClause(
-    [...M.dataPatternArgPatterns(pattern), ...restPatterns],
+    [...argPatterns, ...restPatterns],
     clause.body,
     clause.location,
   )
@@ -306,31 +314,26 @@ function groupClausesByHeadDataConstructor(
   })
 }
 
-function resolveDataConstructorQualifiedName(
+function resolveCtorQualifiedName(
   ctx: DesugarMatchCtx,
-  pattern: M.Exp,
+  ctor: M.Exp,
 ): { modName: string; name: string } {
-  assert(M.isDataPattern(pattern))
-  assert(pattern.kind === "ApplyExp")
-
-  const target = pattern.target
-
-  if (target.kind === "QualifiedVarExp") {
-    return { modName: target.modName, name: target.name }
+  if (ctor.kind === "QualifiedVarExp") {
+    return { modName: ctor.modName, name: ctor.name }
   }
 
-  if (target.kind === "VarExp") {
-    const entry = ctx.scope.importedNames.get(target.name)
+  if (ctor.kind === "VarExp") {
+    const entry = ctx.scope.importedNames.get(ctor.name)
     if (entry) {
       return { modName: entry.modName, name: entry.name }
     } else {
-      return { modName: ctx.currentModName, name: target.name }
+      return { modName: ctx.currentModName, name: ctor.name }
     }
   }
 
   let message =
-    "[resolveDataConstructorQualifiedName] unhandled pattern target kind"
-  throw new S.ErrorWithSourceLocation(message, pattern.location)
+    "[resolveCtorQualifiedName] unhandled ctor kind"
+  throw new S.ErrorWithSourceLocation(message, ctor.location)
 }
 
 function groupClausesByHeadPatternKind(
