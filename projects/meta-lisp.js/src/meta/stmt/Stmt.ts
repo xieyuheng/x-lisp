@@ -1,9 +1,6 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import type {
-  DataField,
-  PreDataConstructor,
-  TypeConstructor,
-} from "../definition/index.ts"
+import type { TypeConstructor } from "../definition/index.ts"
+import * as M from "../index.ts"
 
 export type Stmt<E> =
   | ImportStmt
@@ -214,13 +211,13 @@ export function DefineStructStarStmt<E>(
 export type DefineStructStmt<E> = {
   kind: "DefineStructStmt"
   typeConstructor: TypeConstructor
-  fields: Array<DataField>
+  fields: Array<PreDataField>
   location: SourceLocation
 }
 
 export function DefineStructStmt<E>(
   typeConstructor: TypeConstructor,
-  fields: Array<DataField>,
+  fields: Array<PreDataField>,
   location: SourceLocation,
 ): DefineStructStmt<E> {
   return {
@@ -229,6 +226,18 @@ export function DefineStructStmt<E>(
     fields,
     location,
   }
+}
+
+export type PreDataConstructor = {
+  name: string
+  fields: Array<PreDataField>
+  location: SourceLocation
+}
+
+export type PreDataField = {
+  name: string
+  type: M.Exp
+  location: SourceLocation
 }
 
 export type DefineRecordTypeStmt<E> = {

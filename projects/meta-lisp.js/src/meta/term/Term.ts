@@ -298,39 +298,3 @@ export function PolymorphicTerm(
     location,
   }
 }
-
-export type TermBinding = {
-  name: string
-  rhs: Term
-  location: SourceLocation
-}
-
-export function TermBinding(
-  name: string,
-  rhs: Term,
-  location: SourceLocation,
-): TermBinding {
-  return {
-    name,
-    rhs,
-    location,
-  }
-}
-
-export type TermCondClause = {
-  question: Term
-  answer: Term
-  location: SourceLocation
-}
-
-export function TermCondClause(
-  question: Term,
-  answer: Term,
-  location: SourceLocation,
-): TermCondClause {
-  return {
-    question,
-    answer,
-    location,
-  }
-}

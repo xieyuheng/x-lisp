@@ -134,7 +134,7 @@ function formatDataConstructor(ctor: M.PreDataConstructor): string {
   }
 }
 
-function formatDataField(field: M.DataField): string {
+function formatDataField(field: M.PreDataField): string {
   return `(${field.name} ${M.formatExp(field.type)})`
 }
 

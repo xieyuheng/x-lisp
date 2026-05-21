@@ -273,7 +273,7 @@ const parseDataConstructor = S.createRouter<M.PreDataConstructor>({
   },
 })
 
-const parseDataField = S.createRouter<M.DataField>({
+const parseDataField = S.createRouter<M.PreDataField>({
   "`(,name ,exp)": ({ name, exp }, { location }) => {
     return {
       name: S.asSymbolSexp(name).content,

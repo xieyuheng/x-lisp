@@ -1,5 +1,4 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Term } from "../term/Term.ts"
 import type { Value } from "../value/Value.ts"
@@ -226,19 +225,8 @@ export type TypeConstructor = {
   parameters: Array<string>
   location: SourceLocation
 }
-export type PreDataConstructor = {
-  name: string
-  fields: Array<DataField>
-  location: SourceLocation
-}
 
 export type DataField = {
-  name: string
-  type: Exp
-  location: SourceLocation
-}
-
-export type TermDataField = {
   name: string
   type: Term
   location: SourceLocation
@@ -248,7 +236,7 @@ export type DataConstructor = {
   mod: Mod
   typeName: string
   name: string
-  fields: Array<TermDataField>
+  fields: Array<DataField>
   location: SourceLocation
 }
 
