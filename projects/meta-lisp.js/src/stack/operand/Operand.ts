@@ -1,86 +1,107 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 
-export type Operand = Symbol | Keyword | String | Int | Float | Var
+export type Operand =
+  | SymbolOperand
+  | KeywordOperand
+  | StringOperand
+  | IntOperand
+  | FloatOperand
+  | VarOperand
 
-export type Symbol = {
-  kind: "Symbol"
+export type SymbolOperand = {
+  kind: "SymbolOperand"
   content: string
   location: SourceLocation
 }
 
-export function Symbol(content: string, location: SourceLocation): Symbol {
+export function SymbolOperand(
+  content: string,
+  location: SourceLocation,
+): SymbolOperand {
   return {
-    kind: "Symbol",
+    kind: "SymbolOperand",
     content,
     location,
   }
 }
 
-export type String = {
-  kind: "String"
+export type StringOperand = {
+  kind: "StringOperand"
   content: string
   location: SourceLocation
 }
 
-export function String(content: string, location: SourceLocation): String {
+export function StringOperand(
+  content: string,
+  location: SourceLocation,
+): StringOperand {
   return {
-    kind: "String",
+    kind: "StringOperand",
     content,
     location,
   }
 }
 
-export type Keyword = {
-  kind: "Keyword"
+export type KeywordOperand = {
+  kind: "KeywordOperand"
   content: string
   location: SourceLocation
 }
 
-export function Keyword(content: string, location: SourceLocation): Keyword {
+export function KeywordOperand(
+  content: string,
+  location: SourceLocation,
+): KeywordOperand {
   return {
-    kind: "Keyword",
+    kind: "KeywordOperand",
     content,
     location,
   }
 }
 
-export type Int = {
-  kind: "Int"
+export type IntOperand = {
+  kind: "IntOperand"
   content: bigint
   location: SourceLocation
 }
 
-export function Int(content: bigint, location: SourceLocation): Int {
+export function IntOperand(
+  content: bigint,
+  location: SourceLocation,
+): IntOperand {
   return {
-    kind: "Int",
+    kind: "IntOperand",
     content,
     location,
   }
 }
 
-export type Float = {
-  kind: "Float"
+export type FloatOperand = {
+  kind: "FloatOperand"
   content: number
   location: SourceLocation
 }
 
-export function Float(content: number, location: SourceLocation): Float {
+export function FloatOperand(
+  content: number,
+  location: SourceLocation,
+): FloatOperand {
   return {
-    kind: "Float",
+    kind: "FloatOperand",
     content,
     location,
   }
 }
 
-export type Var = {
-  kind: "Var"
+export type VarOperand = {
+  kind: "VarOperand"
   name: string
   location: SourceLocation
 }
 
-export function Var(name: string, location: SourceLocation): Var {
+export function VarOperand(name: string, location: SourceLocation): VarOperand {
   return {
-    kind: "Var",
+    kind: "VarOperand",
     name,
     location,
   }

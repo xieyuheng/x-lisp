@@ -2,23 +2,23 @@ import { type Operand } from "../operand/index.ts"
 
 export function formatOperand(operand: Operand): string {
   switch (operand.kind) {
-    case "Keyword": {
+    case "KeywordOperand": {
       return `:${operand.content}`
     }
 
-    case "Symbol": {
+    case "SymbolOperand": {
       return `'${operand.content}`
     }
 
-    case "String": {
+    case "StringOperand": {
       return JSON.stringify(operand.content)
     }
 
-    case "Int": {
+    case "IntOperand": {
       return operand.content.toString()
     }
 
-    case "Float": {
+    case "FloatOperand": {
       if (Number.isInteger(operand.content)) {
         return `${operand.content.toString()}.0`
       } else {
@@ -26,7 +26,7 @@ export function formatOperand(operand: Operand): string {
       }
     }
 
-    case "Var": {
+    case "VarOperand": {
       return operand.name
     }
   }

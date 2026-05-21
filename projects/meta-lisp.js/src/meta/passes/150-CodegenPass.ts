@@ -127,11 +127,11 @@ function codegenDefinition(
             Stk.Instr(
               "local-store",
               [
-                Stk.Int(
+                Stk.IntOperand(
                   BigInt(lookupLocalIndex(state, parameter)),
                   state.location,
                 ),
-                Stk.Var(parameter, state.location),
+                Stk.VarOperand(parameter, state.location),
               ],
               state.location,
             ),
@@ -184,7 +184,11 @@ function codegenBlock(
   block: B.Block,
 ): Array<Stk.Instr> {
   return [
-    Stk.Instr("label", [Stk.Var(block.label, state.location)], state.location),
+    Stk.Instr(
+      "label",
+      [Stk.VarOperand(block.label, state.location)],
+      state.location,
+    ),
     ...block.instrs.flatMap((instr) => codegenInstr(state, name, instr)),
   ]
 }
@@ -201,11 +205,11 @@ function codegenInstr(
         Stk.Instr(
           "local-store",
           [
-            Stk.Int(
+            Stk.IntOperand(
               BigInt(lookupLocalIndex(state, instr.dest)),
               state.location,
             ),
-            Stk.Var(instr.dest, state.location),
+            Stk.VarOperand(instr.dest, state.location),
           ],
           state.location,
         ),
@@ -227,12 +231,12 @@ function codegenInstr(
       return [
         Stk.Instr(
           "jump-if-not",
-          [Stk.Var(instr.elseLabel, state.location)],
+          [Stk.VarOperand(instr.elseLabel, state.location)],
           state.location,
         ),
         Stk.Instr(
           "jump",
-          [Stk.Var(instr.thenLabel, state.location)],
+          [Stk.VarOperand(instr.thenLabel, state.location)],
           state.location,
         ),
       ]
@@ -242,7 +246,7 @@ function codegenInstr(
       return [
         Stk.Instr(
           "jump",
-          [Stk.Var(instr.label, state.location)],
+          [Stk.VarOperand(instr.label, state.location)],
           state.location,
         ),
       ]
@@ -254,6 +258,28 @@ function codegenInstr(
   }
 }
 
+function basicAtomToOperand(exp: B.Exp): Stk.Operand {
+  switch (exp.kind) {
+    case "Symbol":
+      return Stk.SymbolOperand(exp.content, exp.location)
+    case "Keyword":
+      return Stk.KeywordOperand(exp.content, exp.location)
+    case "String":
+      return Stk.StringOperand(exp.content, exp.location)
+    case "Int":
+      return Stk.IntOperand(exp.content, exp.location)
+    case "Float":
+      return Stk.FloatOperand(exp.content, exp.location)
+    case "Var":
+      return Stk.VarOperand(exp.name, exp.location)
+    case "Apply": {
+      let message = `[basicAtomToOperand] unhandled exp`
+      message += `\n  exp: ${B.formatExp(exp)}`
+      throw new Error(message)
+    }
+  }
+}
+
 function codegenExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
   switch (exp.kind) {
     case "Symbol":
@@ -261,7 +287,7 @@ function codegenExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
     case "String":
     case "Int":
     case "Float": {
-      return [Stk.Instr("literal", [exp], state.location)]
+      return [Stk.Instr("literal", [basicAtomToOperand(exp)], state.location)]
     }
 
     case "Var": {
@@ -286,7 +312,7 @@ function codegenTailExp(
     case "Int":
     case "Float": {
       return [
-        Stk.Instr("literal", [exp], state.location),
+        Stk.Instr("literal", [basicAtomToOperand(exp)], state.location),
         Stk.Instr("return", [], state.location),
       ]
     }
@@ -311,8 +337,11 @@ function codegenVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
       Stk.Instr(
         "local-load",
         [
-          Stk.Int(BigInt(lookupLocalIndex(state, exp.name)), state.location),
-          Stk.Var(exp.name, state.location),
+          Stk.IntOperand(
+            BigInt(lookupLocalIndex(state, exp.name)),
+            state.location,
+          ),
+          Stk.VarOperand(exp.name, state.location),
         ],
         state.location,
       ),
@@ -328,7 +357,11 @@ function codegenVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
       return [
-        Stk.Instr("ref", [Stk.Var(exp.name, state.location)], state.location),
+        Stk.Instr(
+          "ref",
+          [Stk.VarOperand(exp.name, state.location)],
+          state.location,
+        ),
       ]
     }
 
@@ -337,7 +370,7 @@ function codegenVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
       return [
         Stk.Instr(
           "global-load",
-          [Stk.Var(exp.name, state.location)],
+          [Stk.VarOperand(exp.name, state.location)],
           state.location,
         ),
       ]
@@ -376,17 +409,17 @@ function codegenGeneralApply(
       Stk.Instr(
         "local-load",
         [
-          Stk.Int(
+          Stk.IntOperand(
             BigInt(lookupLocalIndex(state, B.asVar(exp.target).name)),
             state.location,
           ),
-          Stk.Var(B.asVar(exp.target).name, state.location),
+          Stk.VarOperand(B.asVar(exp.target).name, state.location),
         ],
         state.location,
       ),
       Stk.Instr(
         applyMode,
-        [Stk.Int(BigInt(exp.args.length), state.location)],
+        [Stk.IntOperand(BigInt(exp.args.length), state.location)],
         state.location,
       ),
     ]
@@ -406,12 +439,12 @@ function codegenGeneralApply(
           ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             "ref",
-            [Stk.Var(B.asVar(exp.target).name, state.location)],
+            [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
             state.location,
           ),
           Stk.Instr(
             applyMode,
-            [Stk.Int(BigInt(exp.args.length), state.location)],
+            [Stk.IntOperand(BigInt(exp.args.length), state.location)],
             state.location,
           ),
         ]
@@ -420,7 +453,7 @@ function codegenGeneralApply(
           ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             callMode,
-            [Stk.Var(B.asVar(exp.target).name, state.location)],
+            [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
             state.location,
           ),
         ]
@@ -431,7 +464,7 @@ function codegenGeneralApply(
             .flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             "call",
-            [Stk.Var(B.asVar(exp.target).name, state.location)],
+            [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
             state.location,
           ),
           ...exp.args
@@ -439,7 +472,7 @@ function codegenGeneralApply(
             .flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             applyMode,
-            [Stk.Int(BigInt(exp.args.length - arity), state.location)],
+            [Stk.IntOperand(BigInt(exp.args.length - arity), state.location)],
             state.location,
           ),
         ]
@@ -452,12 +485,12 @@ function codegenGeneralApply(
         ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
         Stk.Instr(
           "global-load",
-          [Stk.Var(B.asVar(exp.target).name, state.location)],
+          [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
           state.location,
         ),
         Stk.Instr(
           applyMode,
-          [Stk.Int(BigInt(exp.args.length), state.location)],
+          [Stk.IntOperand(BigInt(exp.args.length), state.location)],
           state.location,
         ),
       ]
