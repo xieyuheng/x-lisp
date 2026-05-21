@@ -19,7 +19,6 @@ export type Mod = {
   inferredTypes: Map<string, M.Type>
   dataConstructors: Map<string, DataConstructor>
   project: M.Project
-  isErrorModule?: boolean
 }
 
 export function createMod(name: string, project: M.Project): Mod {

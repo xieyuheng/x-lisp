@@ -75,10 +75,6 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.DeclareModuleStmt(S.asSymbolSexp(name).content, location)
   },
 
-  "`(error-module ,name)": ({ name }, { location }) => {
-    return M.DeclareErrorModuleStmt(S.asSymbolSexp(name).content, location)
-  },
-
   "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
     return M.ImportStmt(
       S.asSymbolSexp(modName).content,

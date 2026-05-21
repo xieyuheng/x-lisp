@@ -1,8 +1,3 @@
-[meta-lisp.js] remove (error-module) support
-
-[meta-error.meta] 在 src/ 中设计一个测试，来验证两个模块中定义的相同结构的 adt 不相等。
-[meta-error.meta] 在 src/ 中设计一个测试，来验证一个模块中 private name 不能被另一个模块使用
-
 [meta-builtin.meta] (error) should only take message string
 
 [meta-lisp.meta] [review] exp-free-names.meta

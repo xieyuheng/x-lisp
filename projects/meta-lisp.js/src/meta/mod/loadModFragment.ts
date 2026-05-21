@@ -6,30 +6,19 @@ export function loadModFragment(path: string): M.ModFragment {
   const code = fs.readFileSync(path, "utf-8")
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
-  const { modName, isErrorModule } = findModName(path, stmts)
+  const modName = findModName(path, stmts)
 
   return {
     modName,
     path,
-    isErrorModule,
     stmts,
   }
 }
 
-function findModName(
-  path: string,
-  stmts: Array<M.Stmt>,
-): {
-  modName: string
-  isErrorModule?: boolean
-} {
+function findModName(path: string, stmts: Array<M.Stmt>): string {
   for (const stmt of stmts) {
     if (stmt.kind === "DeclareModuleStmt") {
-      return { modName: stmt.name }
-    }
-
-    if (stmt.kind === "DeclareErrorModuleStmt") {
-      return { modName: stmt.name, isErrorModule: true }
+      return stmt.name
     }
   }
 

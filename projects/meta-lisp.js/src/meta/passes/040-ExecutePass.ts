@@ -12,10 +12,6 @@ export function ExecutePass(
 
     M.projectAddMod(project, mod)
 
-    if (fragment.isErrorModule) {
-      mod.isErrorModule = true
-    }
-
     for (const stmt of fragment.stmts) {
       executeStmt(mod, stmt)
     }

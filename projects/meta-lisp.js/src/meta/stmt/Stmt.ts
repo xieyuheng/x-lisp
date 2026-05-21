@@ -26,7 +26,6 @@ export type Stmt =
   | PrivateStmt
   | ExemptStmt
   | DeclareModuleStmt
-  | DeclareErrorModuleStmt
   | DeclarePrimitiveFunctionStmt
   | DeclarePrimitiveVariableStmt
 
@@ -425,23 +424,6 @@ export function DeclareModuleStmt(
 ): DeclareModuleStmt {
   return {
     kind: "DeclareModuleStmt",
-    name,
-    location,
-  }
-}
-
-export type DeclareErrorModuleStmt = {
-  kind: "DeclareErrorModuleStmt"
-  name: string
-  location: SourceLocation
-}
-
-export function DeclareErrorModuleStmt(
-  name: string,
-  location: SourceLocation,
-): DeclareErrorModuleStmt {
-  return {
-    kind: "DeclareErrorModuleStmt",
     name,
     location,
   }

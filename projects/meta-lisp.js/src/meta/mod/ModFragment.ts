@@ -3,7 +3,6 @@ import * as M from "../index.ts"
 export type ModFragment = {
   modName: string
   path: string
-  isErrorModule?: boolean
   stmts: Array<M.Stmt>
 }
 
