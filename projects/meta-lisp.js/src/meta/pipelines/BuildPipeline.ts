@@ -19,7 +19,9 @@ export function BuildPipeline(
 ): void {
   M.ExpandPass(project, { dump: options.dump })
   M.DesugarPass(project, { dump: options.dump })
-  M.ModulePass(project, { dump: options.dump })
+  M.ModuleInjectBuiltinPass(project)
+  const modInfo = M.ModuleAnalysisPass(project)
+  M.ModuleImportPass(project, modInfo, { dump: options.dump })
   M.ExecutePass(project, { dump: options.dump })
   M.ClaimPass(project)
   M.LowerMatchPass(project, { dump: options.dump })

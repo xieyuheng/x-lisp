@@ -1,7 +1,11 @@
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
-export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
+export function ModuleImportPass(
+  project: M.Project,
+  info: M.ModInfo,
+  options: { dump: boolean },
+): void {
   for (const [path, fragment] of project.fragments) {
     const scope = info.fragmentScopes.get(path)
     if (scope) {
@@ -13,6 +17,8 @@ export function ModuleImportPass(project: M.Project, info: M.ModInfo): void {
       throw new Error(message)
     }
   }
+
+  if (options.dump) M.projectDumpFragments(project, "032-module-import")
 }
 
 function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
