@@ -1,0 +1,10 @@
+(module nat)
+
+(private two)
+
+(define zero 0)
+(define one 1)
+(define two 2)
+
+(define (add1 n)
+  (iadd 1 n))

@@ -1,4 +1,4 @@
-../meta-builtin.meta/src/box/box-as-list-error.meta:4:16 -- unification fail
+src/opaque-type/box-as-list-error.meta:4:16 -- unification fail
   inferred type: (builtin/box-t A)
   expected type: (list-t B)
  2 | 
