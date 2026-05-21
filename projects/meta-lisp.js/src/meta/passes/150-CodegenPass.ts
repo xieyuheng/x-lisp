@@ -260,19 +260,19 @@ function codegenInstr(
 
 function basicAtomToOperand(exp: B.Exp): Stk.Operand {
   switch (exp.kind) {
-    case "Symbol":
+    case "SymbolExp":
       return Stk.SymbolOperand(exp.content, exp.location)
-    case "Keyword":
+    case "KeywordExp":
       return Stk.KeywordOperand(exp.content, exp.location)
-    case "String":
+    case "StringExp":
       return Stk.StringOperand(exp.content, exp.location)
-    case "Int":
+    case "IntExp":
       return Stk.IntOperand(exp.content, exp.location)
-    case "Float":
+    case "FloatExp":
       return Stk.FloatOperand(exp.content, exp.location)
-    case "Var":
+    case "VarExp":
       return Stk.VarOperand(exp.name, exp.location)
-    case "Apply": {
+    case "ApplyExp": {
       let message = `[basicAtomToOperand] unhandled exp`
       message += `\n  exp: ${B.formatExp(exp)}`
       throw new Error(message)
@@ -282,19 +282,19 @@ function basicAtomToOperand(exp: B.Exp): Stk.Operand {
 
 function codegenExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float": {
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp": {
       return [Stk.Instr("literal", [basicAtomToOperand(exp)], state.location)]
     }
 
-    case "Var": {
+    case "VarExp": {
       return codegenVar(state, name, exp)
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       return codegenApply(state, name, exp)
     }
   }
@@ -306,31 +306,35 @@ function codegenTailExp(
   exp: B.Exp,
 ): Array<Stk.Instr> {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float": {
+    case "SymbolExp":
+    case "KeywordExp":
+    case "StringExp":
+    case "IntExp":
+    case "FloatExp": {
       return [
         Stk.Instr("literal", [basicAtomToOperand(exp)], state.location),
         Stk.Instr("return", [], state.location),
       ]
     }
 
-    case "Var": {
+    case "VarExp": {
       return [
         ...codegenVar(state, name, exp),
         Stk.Instr("return", [], state.location),
       ]
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       return codegenTailApply(state, name, exp)
     }
   }
 }
 
-function codegenVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
+function codegenVar(
+  state: State,
+  name: string,
+  exp: B.VarExp,
+): Array<Stk.Instr> {
   const definition = B.modLookupDefinition(state.mod, exp.name)
   if (definition === undefined) {
     return [
@@ -381,7 +385,7 @@ function codegenVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
 function codegenApply(
   state: State,
   name: string,
-  exp: B.Apply,
+  exp: B.ApplyExp,
 ): Array<Stk.Instr> {
   return codegenGeneralApply(state, name, exp, false)
 }
@@ -389,7 +393,7 @@ function codegenApply(
 function codegenTailApply(
   state: State,
   name: string,
-  exp: B.Apply,
+  exp: B.ApplyExp,
 ): Array<Stk.Instr> {
   return codegenGeneralApply(state, name, exp, true)
 }
@@ -397,12 +401,15 @@ function codegenTailApply(
 function codegenGeneralApply(
   state: State,
   name: string,
-  exp: B.Apply,
+  exp: B.ApplyExp,
   isTail: boolean,
 ): Array<Stk.Instr> {
   const applyMode = isTail ? "tail-apply" : "apply"
   const callMode = isTail ? "tail-call" : "call"
-  const definition = B.modLookupDefinition(state.mod, B.asVar(exp.target).name)
+  const definition = B.modLookupDefinition(
+    state.mod,
+    B.asVarExp(exp.target).name,
+  )
   if (definition === undefined) {
     return [
       ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
@@ -410,10 +417,10 @@ function codegenGeneralApply(
         "local-load",
         [
           Stk.IntOperand(
-            BigInt(lookupLocalIndex(state, B.asVar(exp.target).name)),
+            BigInt(lookupLocalIndex(state, B.asVarExp(exp.target).name)),
             state.location,
           ),
-          Stk.VarOperand(B.asVar(exp.target).name, state.location),
+          Stk.VarOperand(B.asVarExp(exp.target).name, state.location),
         ],
         state.location,
       ),
@@ -439,7 +446,7 @@ function codegenGeneralApply(
           ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             "ref",
-            [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
+            [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
             state.location,
           ),
           Stk.Instr(
@@ -453,7 +460,7 @@ function codegenGeneralApply(
           ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             callMode,
-            [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
+            [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
             state.location,
           ),
         ]
@@ -464,7 +471,7 @@ function codegenGeneralApply(
             .flatMap((arg) => codegenExp(state, name, arg)),
           Stk.Instr(
             "call",
-            [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
+            [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
             state.location,
           ),
           ...exp.args
@@ -485,7 +492,7 @@ function codegenGeneralApply(
         ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
         Stk.Instr(
           "global-load",
-          [Stk.VarOperand(B.asVar(exp.target).name, state.location)],
+          [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
           state.location,
         ),
         Stk.Instr(

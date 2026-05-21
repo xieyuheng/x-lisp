@@ -6,23 +6,23 @@ export function formatExps(exps: Array<Exp>): string {
 
 export function formatExp(exp: Exp): string {
   switch (exp.kind) {
-    case "Keyword": {
+    case "KeywordExp": {
       return `:${exp.content}`
     }
 
-    case "Symbol": {
+    case "SymbolExp": {
       return `'${exp.content}`
     }
 
-    case "String": {
+    case "StringExp": {
       return JSON.stringify(exp.content)
     }
 
-    case "Int": {
+    case "IntExp": {
       return exp.content.toString()
     }
 
-    case "Float": {
+    case "FloatExp": {
       if (Number.isInteger(exp.content)) {
         return `${exp.content.toString()}.0`
       } else {
@@ -30,11 +30,11 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Var": {
+    case "VarExp": {
       return exp.name
     }
 
-    case "Apply": {
+    case "ApplyExp": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)
       if (args === "") {

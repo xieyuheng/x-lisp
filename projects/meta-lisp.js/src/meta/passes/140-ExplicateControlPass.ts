@@ -135,21 +135,36 @@ function generateLabel(
 
 function toBasicExp(exp: M.Exp): B.Exp {
   switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
+    case "Symbol": {
+      return B.SymbolExp(exp.content, exp.location)
+    }
+
+    case "Keyword": {
+      return B.KeywordExp(exp.content, exp.location)
+    }
+
+    case "String": {
+      return B.StringExp(exp.content, exp.location)
+    }
+
+    case "Int": {
+      return B.IntExp(exp.content, exp.location)
+    }
+
+    case "Float": {
+      return B.FloatExp(exp.content, exp.location)
+    }
+
     case "Var": {
-      return exp
+      return B.VarExp(exp.name, exp.location)
     }
 
     case "QualifiedVar": {
-      return B.Var(`${exp.modName}/${exp.name}`, exp.location)
+      return B.VarExp(`${exp.modName}/${exp.name}`, exp.location)
     }
 
     case "Apply": {
-      return B.Apply(
+      return B.ApplyExp(
         toBasicExp(exp.target),
         exp.args.map(toBasicExp),
         exp.location,
@@ -312,11 +327,11 @@ function explicateControlInIf(
     case "Var": {
       return [
         B.TestInstr(
-          B.Apply(
-            B.Var("builtin/equal?", condition.location),
+          B.ApplyExp(
+            B.VarExp("builtin/equal?", condition.location),
             [
-              B.Var(condition.name, condition.location),
-              B.Keyword("t", condition.location),
+              B.VarExp(condition.name, condition.location),
+              B.KeywordExp("t", condition.location),
             ],
             condition.location,
           ),

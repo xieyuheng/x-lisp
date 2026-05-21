@@ -1,14 +1,5 @@
 ---
 
-在 [meta-lisp.js] 的 basic 中，给 Exp 的 variant 加上 *Exp 后缀。
-
-注意：
-
-- variant 的 constructor 函数也要修改。
-- kind 字段也要修改。
-
----
-
 在 [meta-lisp.js] 的 meta 中，给 Exp 的 variant 加上 *Exp 后缀，给 Stmt 的 variant 加上 *Stmt 后缀。
 
 注意：

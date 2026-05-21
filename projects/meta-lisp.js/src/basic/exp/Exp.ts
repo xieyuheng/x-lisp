@@ -1,119 +1,134 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 
-export type Atom = Symbol | Keyword | String | Int | Float | Var
+export type Atom =
+  | SymbolExp
+  | KeywordExp
+  | StringExp
+  | IntExp
+  | FloatExp
+  | VarExp
 
-export type Exp = Atom | Apply
+export type Exp = Atom | ApplyExp
 
-export type Symbol = {
-  kind: "Symbol"
+export type SymbolExp = {
+  kind: "SymbolExp"
   content: string
   location: SourceLocation
 }
 
-export function Symbol(content: string, location: SourceLocation): Symbol {
+export function SymbolExp(
+  content: string,
+  location: SourceLocation,
+): SymbolExp {
   return {
-    kind: "Symbol",
+    kind: "SymbolExp",
     content,
     location,
   }
 }
 
-export type String = {
-  kind: "String"
+export type StringExp = {
+  kind: "StringExp"
   content: string
   location: SourceLocation
 }
 
-export function String(content: string, location: SourceLocation): String {
+export function StringExp(
+  content: string,
+  location: SourceLocation,
+): StringExp {
   return {
-    kind: "String",
+    kind: "StringExp",
     content,
     location,
   }
 }
 
-export type Keyword = {
-  kind: "Keyword"
+export type KeywordExp = {
+  kind: "KeywordExp"
   content: string
   location: SourceLocation
 }
 
-export function Keyword(content: string, location: SourceLocation): Keyword {
+export function KeywordExp(
+  content: string,
+  location: SourceLocation,
+): KeywordExp {
   return {
-    kind: "Keyword",
+    kind: "KeywordExp",
     content,
     location,
   }
 }
 
-export type Int = {
-  kind: "Int"
+export type IntExp = {
+  kind: "IntExp"
   content: bigint
   location: SourceLocation
 }
 
-export function Int(content: bigint, location: SourceLocation): Int {
+export function IntExp(content: bigint, location: SourceLocation): IntExp {
   return {
-    kind: "Int",
+    kind: "IntExp",
     content,
     location,
   }
 }
 
-export type Float = {
-  kind: "Float"
+export type FloatExp = {
+  kind: "FloatExp"
   content: number
   location: SourceLocation
 }
 
-export function Float(content: number, location: SourceLocation): Float {
+export function FloatExp(content: number, location: SourceLocation): FloatExp {
   return {
-    kind: "Float",
+    kind: "FloatExp",
     content,
     location,
   }
 }
 
-export type Var = {
-  kind: "Var"
+export type VarExp = {
+  kind: "VarExp"
   name: string
   location: SourceLocation
 }
 
-export function Var(name: string, location: SourceLocation): Var {
+export function VarExp(name: string, location: SourceLocation): VarExp {
   return {
-    kind: "Var",
+    kind: "VarExp",
     name,
     location,
   }
 }
 
-export function isVar(exp: Exp): exp is Var {
-  return exp.kind === "Var"
+export function isVarExp(exp: Exp): exp is VarExp {
+  return exp.kind === "VarExp"
 }
 
-export function asVar(exp: Exp): Var {
-  if (!isVar(exp)) {
-    throw new Error(`[asVar] fail`)
+export function asVarExp(exp: Exp): VarExp {
+  if (!isVarExp(exp)) {
+    throw new Error(`[asVarExp] fail`)
   }
 
   return exp
 }
 
-export type Apply = {
-  kind: "Apply"
+export type ApplyExp = {
+  kind: "ApplyExp"
   target: Exp
   args: Array<Exp>
   location: SourceLocation
 }
 
-export function Apply(
+export function ApplyExp(
   target: Exp,
   args: Array<Exp>,
   location: SourceLocation,
-): Apply {
+): ApplyExp {
   return {
-    kind: "Apply",
+    kind: "ApplyExp",
     target,
     args,
     location,
