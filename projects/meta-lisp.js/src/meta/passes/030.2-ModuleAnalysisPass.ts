@@ -2,10 +2,21 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ModuleAnalysisPass(project: M.Project): M.ModInfo {
+export type ModInfo = {
+  definedNames: Map<string, Set<string>>
+  privateNames: Map<string, Set<string>>
+  fragmentScopes: Map<string, FragmentScope>
+}
+
+export type FragmentScope = {
+  importedNames: Map<string, { modName: string; name: string }>
+  importedPrefixes: Map<string, { modName: string }>
+}
+
+export function ModuleAnalysisPass(project: M.Project): ModInfo {
   const definedNames = collectDefinedNames(project)
   const privateNames = collectPrivateNames(project)
-  const fragmentScopes = new Map<string, M.FragmentScope>()
+  const fragmentScopes = new Map<string, FragmentScope>()
 
   for (const [path, fragment] of project.fragments) {
     const scope = createFragmentScope()
@@ -26,7 +37,7 @@ export function ModuleAnalysisPass(project: M.Project): M.ModInfo {
   return { definedNames, privateNames, fragmentScopes }
 }
 
-function createFragmentScope(): M.FragmentScope {
+function createFragmentScope(): FragmentScope {
   return {
     importedNames: new Map(),
     importedPrefixes: new Map(),
@@ -38,7 +49,7 @@ function executeImport(
   definedNames: Map<string, Set<string>>,
   privateNames: Map<string, Set<string>>,
   currentModName: string,
-  scope: M.FragmentScope,
+  scope: FragmentScope,
   stmt: M.Stmt,
 ): void {
   if (stmt.kind === "ImportStmt") {

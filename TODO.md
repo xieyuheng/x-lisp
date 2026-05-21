@@ -1,4 +1,3 @@
-[meta-lisp.js] move ModInfo to ModuleAnalysisPass
 [meta-lisp.js] inline ModulePass
 
 [meta-lisp.meta] [review] exp-free-names.meta
