@@ -5,16 +5,15 @@ title: error
 # Type
 
 ```scheme
-(polymorphic (A B) (-> A B))
+(polymorphic (B) (-> string B))
 ```
 
 # Description
 
-Throw an error with an arbitrary value as the error message. Does not return.
+Throw an error with a string as the error message. Does not return.
 
 # Examples
 
 ```scheme
 (error "something went wrong")
-(error 42)
 ```
