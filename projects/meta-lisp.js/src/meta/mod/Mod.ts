@@ -11,7 +11,7 @@ export type ClaimedEntry = {
 
 export type Mod = {
   name: string
-  stmts: Array<Stmt>
+  stmts: Array<Stmt<M.Exp>>
   admitted: Set<string>
   definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>

@@ -8,7 +8,7 @@ export function ModuleImportPass(
   for (const [path, fragment] of project.fragments) {
     const scope = info.fragmentScopes.get(path)
     if (scope) {
-      fragment.stmts = fragment.stmts.map((stmt) =>
+      fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
         moduleImportStmt(scope, stmt),
       )
     } else {
@@ -20,12 +20,15 @@ export function ModuleImportPass(
   if (options.dump) M.projectDumpFragments(project, "039-module-import")
 }
 
-function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
+function moduleImportStmt(
+  scope: M.FragmentScope,
+  stmt: M.Stmt<M.Term>,
+): M.Stmt<M.Term> {
   switch (stmt.kind) {
     case "ClaimStmt": {
       return M.ClaimStmt(
         stmt.name,
-        moduleImportExp(scope, stmt.type),
+        moduleImportTerm(scope, stmt.type),
         stmt.location,
       )
     }
@@ -33,7 +36,7 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
     case "AdmitStmt": {
       return M.AdmitStmt(
         stmt.name,
-        moduleImportExp(scope, stmt.type),
+        moduleImportTerm(scope, stmt.type),
         stmt.location,
       )
     }
@@ -44,7 +47,7 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return M.DefineFunctionStmt(
         stmt.name,
         stmt.parameters,
-        moduleImportExp(newScope, stmt.body),
+        moduleImportTerm(newScope, stmt.body),
         stmt.location,
       )
     }
@@ -52,7 +55,7 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
     case "DefineVariableStmt": {
       return M.DefineVariableStmt(
         stmt.name,
-        moduleImportExp(scope, stmt.body),
+        moduleImportTerm(scope, stmt.body),
         stmt.location,
       )
     }
@@ -60,7 +63,7 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
     case "DefineTestStmt": {
       return M.DefineTestStmt(
         stmt.name,
-        moduleImportExp(scope, stmt.body),
+        moduleImportTerm(scope, stmt.body),
         stmt.location,
       )
     }
@@ -69,7 +72,7 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return M.DefineTypeStmt(
         stmt.name,
         stmt.parameters,
-        moduleImportExp(scope, stmt.body),
+        moduleImportTerm(scope, stmt.body),
         stmt.location,
       )
     }
@@ -78,12 +81,13 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
       for (const ctor of stmt.dataConstructors) {
-        ctor.fields = ctor.fields.map((field) => ({
-          ...field,
-          type: moduleImportExp(newScope, field.type),
-        }))
+        ctor.fields = ctor.fields.map(
+          (field: M.AlgebraicTypeField<M.Term>) => ({
+            ...field,
+            type: moduleImportTerm(newScope, field.type),
+          }),
+        )
       }
-
       return stmt
     }
 
@@ -93,10 +97,10 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
       return M.DefineOpaqueTypeStmt(
         stmt.name,
         stmt.parameters,
-        moduleImportExp(newScope, stmt.representationType),
+        moduleImportTerm(newScope, stmt.representationType),
         stmt.interfaceFunctions.map((f) => ({
           ...f,
-          type: moduleImportExp(newScope, f.type),
+          type: moduleImportTerm(newScope, f.type),
         })),
         stmt.location,
       )
@@ -108,59 +112,59 @@ function moduleImportStmt(scope: M.FragmentScope, stmt: M.Stmt): M.Stmt {
   }
 }
 
-function moduleImportExp(scope: M.FragmentScope, exp: M.Exp): M.Exp {
-  switch (exp.kind) {
-    case "VarExp": {
-      const entry = scope.importedNames.get(exp.name)
+function moduleImportTerm(scope: M.FragmentScope, term: M.Term): M.Term {
+  switch (term.kind) {
+    case "VarTerm": {
+      const entry = scope.importedNames.get(term.name)
       if (entry) {
-        return M.QualifiedVarExp(entry.modName, entry.name, exp.location)
+        return M.QualifiedVarTerm(entry.modName, entry.name, term.location)
       } else {
-        return exp
+        return term
       }
     }
 
-    case "QualifiedVarExp": {
-      const entry = scope.importedPrefixes.get(exp.modName)
+    case "QualifiedVarTerm": {
+      const entry = scope.importedPrefixes.get(term.modName)
       if (entry) {
-        return M.QualifiedVarExp(entry.modName, exp.name, exp.location)
+        return M.QualifiedVarTerm(entry.modName, term.name, term.location)
       } else {
-        return exp
+        return term
       }
     }
 
-    case "LambdaExp": {
-      const boundNames = new Set(exp.parameters)
+    case "LambdaTerm": {
+      const boundNames = new Set(term.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.LambdaExp(
-        exp.parameters,
-        moduleImportExp(newScope, exp.body),
-        exp.location,
+      return M.LambdaTerm(
+        term.parameters,
+        moduleImportTerm(newScope, term.body),
+        term.location,
       )
     }
 
-    case "PolymorphicExp": {
-      const boundNames = new Set(exp.parameters)
+    case "PolymorphicTerm": {
+      const boundNames = new Set(term.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.PolymorphicExp(
-        exp.parameters,
-        moduleImportExp(newScope, exp.body),
-        exp.location,
+      return M.PolymorphicTerm(
+        term.parameters,
+        moduleImportTerm(newScope, term.body),
+        term.location,
       )
     }
 
-    case "Let1Exp": {
-      const boundNames = new Set([exp.name])
+    case "Let1Term": {
+      const boundNames = new Set([term.name])
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.Let1Exp(
-        exp.name,
-        moduleImportExp(scope, exp.rhs),
-        moduleImportExp(newScope, exp.body),
-        exp.location,
+      return M.Let1Term(
+        term.name,
+        moduleImportTerm(scope, term.rhs),
+        moduleImportTerm(newScope, term.body),
+        term.location,
       )
     }
 
     default: {
-      return M.expTraverse((child) => moduleImportExp(scope, child), exp)
+      return M.termTraverse((child) => moduleImportTerm(scope, child), term)
     }
   }
 }

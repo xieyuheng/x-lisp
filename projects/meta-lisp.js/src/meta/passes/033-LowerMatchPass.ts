@@ -23,7 +23,7 @@ function lowerMatchStmt(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicInfo: M.AlgebraicInfo,
-  stmt: M.Stmt,
+  stmt: M.Stmt<M.Exp>,
 ): void {
   switch (stmt.kind) {
     case "DefineFunctionStmt":

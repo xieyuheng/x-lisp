@@ -3,7 +3,8 @@ import * as M from "../index.ts"
 export type ModFragment = {
   modName: string
   path: string
-  stmts: Array<M.Stmt>
+  stmts: Array<M.Stmt<M.Exp>>
+  desugaredStmts: Array<M.Stmt<M.Term>>
 }
 
 export function modFragmentNames(fragment: ModFragment): Set<string> {
@@ -15,7 +16,7 @@ export function modFragmentNames(fragment: ModFragment): Set<string> {
   return names
 }
 
-function collectNameFromStmt(names: Set<string>, stmt: M.Stmt): void {
+function collectNameFromStmt(names: Set<string>, stmt: M.Stmt<M.Exp>): void {
   switch (stmt.kind) {
     case "DefineFunctionStmt":
     case "DefineVariableStmt":

@@ -12,7 +12,7 @@ export function ExpandPass(
   if (options.dump) M.projectDumpFragments(project, "010-expand")
 }
 
-function getDataType(stmt: M.DefineAlgebraicTypeStmt): M.Exp {
+function getDataType(stmt: M.DefineAlgebraicTypeStmt<M.Exp>): M.Exp {
   if (stmt.typeConstructor.parameters.length === 0) {
     return M.VarExp(stmt.typeConstructor.name, stmt.typeConstructor.location)
   } else {
@@ -31,7 +31,7 @@ function admitWithParameters(
   parameters: Array<string>,
   type: M.Exp,
   location: S.SourceLocation,
-): M.Stmt {
+): M.Stmt<M.Exp> {
   if (parameters.length === 0) {
     return M.AdmitStmt(name, type, location)
   } else {
@@ -43,7 +43,7 @@ function admitWithParameters(
   }
 }
 
-function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
+function expandStmt(stmt: M.Stmt<M.Exp>): Array<M.Stmt<M.Exp>> {
   switch (stmt.kind) {
     case "DefineEnumStmt": {
       const algebraicType = desugarDefineEnum(stmt)
@@ -79,7 +79,9 @@ function expandStmt(stmt: M.Stmt): Array<M.Stmt> {
   }
 }
 
-function desugarDefineEnum(stmt: M.DefineEnumStmt): M.DefineAlgebraicTypeStmt {
+function desugarDefineEnum(
+  stmt: M.DefineEnumStmt<M.Exp>,
+): M.DefineAlgebraicTypeStmt<M.Exp> {
   const dataConstructors = stmt.dataConstructors.map((ctor) => {
     const fields = ctor.fields.map((field) => ({
       name: field.name,
@@ -105,8 +107,8 @@ function desugarDefineEnum(stmt: M.DefineEnumStmt): M.DefineAlgebraicTypeStmt {
 }
 
 function desugarDefineStructStar(
-  stmt: M.DefineStructStarStmt,
-): M.DefineAlgebraicTypeStmt {
+  stmt: M.DefineStructStarStmt<M.Exp>,
+): M.DefineAlgebraicTypeStmt<M.Exp> {
   const typeName = stmt.typeConstructor.name
 
   if (!typeName.endsWith("-t")) {
@@ -144,8 +146,8 @@ function desugarDefineStructStar(
 }
 
 function desugarDefineStruct(
-  stmt: M.DefineStructStmt,
-): M.DefineAlgebraicTypeStmt {
+  stmt: M.DefineStructStmt<M.Exp>,
+): M.DefineAlgebraicTypeStmt<M.Exp> {
   const typeName = stmt.typeConstructor.name
 
   if (!typeName.endsWith("-t")) {
@@ -182,9 +184,9 @@ function desugarDefineStruct(
 }
 
 function expandDefineAlgebraicType(
-  stmt: M.DefineAlgebraicTypeStmt,
-): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = [stmt]
+  stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
+): Array<M.Stmt<M.Exp>> {
+  const stmts: Array<M.Stmt<M.Exp>> = [stmt]
 
   for (const ctor of stmt.dataConstructors) {
     stmts.push(...expandConstructor(stmt, ctor))
@@ -202,10 +204,10 @@ function expandDefineAlgebraicType(
 }
 
 function expandConstructor(
-  stmt: M.DefineAlgebraicTypeStmt,
-  ctor: M.AlgebraicTypeConstructor,
-): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = []
+  stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
+  ctor: M.AlgebraicTypeConstructor<M.Exp>,
+): Array<M.Stmt<M.Exp>> {
+  const stmts: Array<M.Stmt<M.Exp>> = []
 
   const parameters = ctor.fields.map((field) => field.name)
   const args = ctor.fields.map((field) => M.VarExp(field.name, field.location))
@@ -239,10 +241,10 @@ function expandConstructor(
 }
 
 function expandPredicate(
-  stmt: M.DefineAlgebraicTypeStmt,
-  ctor: M.AlgebraicTypeConstructor,
-): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = []
+  stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
+  ctor: M.AlgebraicTypeConstructor<M.Exp>,
+): Array<M.Stmt<M.Exp>> {
+  const stmts: Array<M.Stmt<M.Exp>> = []
 
   stmts.push(
     admitWithParameters(
@@ -303,12 +305,12 @@ function expandPredicate(
 }
 
 function expandAccessor(
-  stmt: M.DefineAlgebraicTypeStmt,
-  ctor: M.AlgebraicTypeConstructor,
+  stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
+  ctor: M.AlgebraicTypeConstructor<M.Exp>,
   index: number,
-  field: M.AlgebraicTypeField,
-): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = []
+  field: M.AlgebraicTypeField<M.Exp>,
+): Array<M.Stmt<M.Exp>> {
+  const stmts: Array<M.Stmt<M.Exp>> = []
 
   stmts.push(
     admitWithParameters(
@@ -339,12 +341,12 @@ function expandAccessor(
 }
 
 function expandModifier(
-  stmt: M.DefineAlgebraicTypeStmt,
-  ctor: M.AlgebraicTypeConstructor,
+  stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
+  ctor: M.AlgebraicTypeConstructor<M.Exp>,
   index: number,
-  field: M.AlgebraicTypeField,
-): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = []
+  field: M.AlgebraicTypeField<M.Exp>,
+): Array<M.Stmt<M.Exp>> {
+  const stmts: Array<M.Stmt<M.Exp>> = []
 
   if (field.modifierName === undefined) return stmts
 

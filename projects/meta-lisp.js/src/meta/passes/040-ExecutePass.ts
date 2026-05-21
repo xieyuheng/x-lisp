@@ -12,15 +12,15 @@ export function ExecutePass(
 
     M.projectAddMod(project, mod)
 
-    for (const stmt of fragment.stmts) {
-      executeStmt(mod, stmt)
+    for (const stmt of fragment.desugaredStmts) {
+      executeStmt(mod, termStmtToExpStmt(stmt))
     }
   }
 
   if (options.dump) M.projectDumpMods(project, "040-execute")
 }
 
-function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
+function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Exp>): void {
   if (stmt.kind === "ExemptStmt") {
     for (const name of stmt.names) {
       mod.admitted.add(name)
@@ -248,5 +248,75 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt): void {
       M.modClaim(mod, iface.name, wrappedType)
       mod.opaqueClaimed.set(iface.name, wrappedType)
     }
+  }
+}
+
+import type { Term as TermType } from "../term/Term.ts"
+
+function termStmtToExpStmt(stmt: M.Stmt<M.Term>): M.Stmt<M.Exp> {
+  switch (stmt.kind) {
+    case "DefineFunctionStmt":
+      return M.DefineFunctionStmt(
+        stmt.name,
+        stmt.parameters,
+        M.termToExp(stmt.body as TermType),
+        stmt.location,
+      )
+    case "DefineVariableStmt":
+      return M.DefineVariableStmt(
+        stmt.name,
+        M.termToExp(stmt.body as TermType),
+        stmt.location,
+      )
+    case "DefineTestStmt":
+      return M.DefineTestStmt(
+        stmt.name,
+        M.termToExp(stmt.body as TermType),
+        stmt.location,
+      )
+    case "DefineTypeStmt":
+      return M.DefineTypeStmt(
+        stmt.name,
+        stmt.parameters,
+        M.termToExp(stmt.body as TermType),
+        stmt.location,
+      )
+    case "ClaimStmt":
+      return M.ClaimStmt(
+        stmt.name,
+        M.termToExp(stmt.type as TermType),
+        stmt.location,
+      )
+    case "AdmitStmt":
+      return M.AdmitStmt(
+        stmt.name,
+        M.termToExp(stmt.type as TermType),
+        stmt.location,
+      )
+    case "DefineAlgebraicTypeStmt":
+      return M.DefineAlgebraicTypeStmt(
+        stmt.typeConstructor,
+        stmt.dataConstructors.map((ctor) => ({
+          ...ctor,
+          fields: ctor.fields.map((field) => ({
+            ...field,
+            type: M.termToExp(field.type as TermType),
+          })),
+        })),
+        stmt.location,
+      )
+    case "DefineOpaqueTypeStmt":
+      return M.DefineOpaqueTypeStmt(
+        stmt.name,
+        stmt.parameters,
+        M.termToExp(stmt.representationType as TermType),
+        stmt.interfaceFunctions.map((f) => ({
+          ...f,
+          type: M.termToExp(f.type as TermType),
+        })),
+        stmt.location,
+      )
+    default:
+      return stmt as unknown as M.Stmt<M.Exp>
   }
 }

@@ -12,10 +12,11 @@ export function loadModFragment(path: string): M.ModFragment {
     modName,
     path,
     stmts,
+    desugaredStmts: [],
   }
 }
 
-function findModName(path: string, stmts: Array<M.Stmt>): string {
+function findModName(path: string, stmts: Array<M.Stmt<M.Exp>>): string {
   for (const stmt of stmts) {
     if (stmt.kind === "DeclareModuleStmt") {
       return stmt.name

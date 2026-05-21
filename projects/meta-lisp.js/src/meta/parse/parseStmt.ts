@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { parseBody, parseExp } from "./parseExp.ts"
 
-export const parseStmt = S.createRouter<M.Stmt>({
+export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   "(cons* 'define (cons* name parameters) body)": (
     { name, parameters, body },
     { sexp },
@@ -283,54 +283,55 @@ const parseDataField = S.createRouter<M.DataField>({
   },
 })
 
-const parseAlgebraicTypeConstructor =
-  S.createRouter<M.AlgebraicTypeConstructor>({
-    "(cons* group predicate accessors)": (
-      { group, predicate, accessors },
-      { location },
-    ) => {
-      const groupList = S.asListSexp(group).elements
-      const name = S.asSymbolSexp(groupList[0]).content
-      const fields = groupList.slice(1).map((field) => {
-        const fieldList = S.asListSexp(field).elements
-        return {
-          name: S.asSymbolSexp(fieldList[0]).content,
-          type: parseExp(fieldList[1]),
-          location,
-        }
-      })
-
-      const accessorList = S.asListSexp(accessors).elements
-      const accessorMap = new Map<
-        string,
-        { accessorName: string; modifierName?: string }
-      >()
-      for (const accessor of accessorList) {
-        const entry = S.asListSexp(accessor).elements
-        const fieldEntry: {
-          accessorName: string
-          modifierName?: string
-        } = {
-          accessorName: S.asSymbolSexp(entry[1]).content,
-        }
-        if (entry.length >= 3) {
-          fieldEntry.modifierName = S.asSymbolSexp(entry[2]).content
-        }
-        accessorMap.set(S.asSymbolSexp(entry[0]).content, fieldEntry)
-      }
-
+const parseAlgebraicTypeConstructor = S.createRouter<
+  M.AlgebraicTypeConstructor<M.Exp>
+>({
+  "(cons* group predicate accessors)": (
+    { group, predicate, accessors },
+    { location },
+  ) => {
+    const groupList = S.asListSexp(group).elements
+    const name = S.asSymbolSexp(groupList[0]).content
+    const fields = groupList.slice(1).map((field) => {
+      const fieldList = S.asListSexp(field).elements
       return {
-        name,
-        fields: fields.map((field) => {
-          const names = accessorMap.get(field.name)
-          return {
-            ...field,
-            accessorName: names ? names.accessorName : `${name}-${field.name}`,
-            modifierName: names ? names.modifierName : undefined,
-          }
-        }),
-        predicate: S.asSymbolSexp(predicate).content,
+        name: S.asSymbolSexp(fieldList[0]).content,
+        type: parseExp(fieldList[1]),
         location,
       }
-    },
-  })
+    })
+
+    const accessorList = S.asListSexp(accessors).elements
+    const accessorMap = new Map<
+      string,
+      { accessorName: string; modifierName?: string }
+    >()
+    for (const accessor of accessorList) {
+      const entry = S.asListSexp(accessor).elements
+      const fieldEntry: {
+        accessorName: string
+        modifierName?: string
+      } = {
+        accessorName: S.asSymbolSexp(entry[1]).content,
+      }
+      if (entry.length >= 3) {
+        fieldEntry.modifierName = S.asSymbolSexp(entry[2]).content
+      }
+      accessorMap.set(S.asSymbolSexp(entry[0]).content, fieldEntry)
+    }
+
+    return {
+      name,
+      fields: fields.map((field) => {
+        const names = accessorMap.get(field.name)
+        return {
+          ...field,
+          accessorName: names ? names.accessorName : `${name}-${field.name}`,
+          modifierName: names ? names.modifierName : undefined,
+        }
+      }),
+      predicate: S.asSymbolSexp(predicate).content,
+      location,
+    }
+  },
+})

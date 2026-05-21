@@ -1,11 +1,11 @@
 import * as M from "../index.ts"
 
 export function formatModStmts(mod: M.Mod): string {
-  return mod.stmts.map(M.formatStmt).join(" ")
+  return mod.stmts.map((stmt) => M.formatStmt(stmt, M.formatExp)).join(" ")
 }
 
-export function formatFragmentStmts(stmts: Array<M.Stmt>): string {
-  return stmts.map(M.formatStmt).join("\n\n")
+export function formatFragmentStmts(stmts: Array<M.Stmt<M.Exp>>): string {
+  return stmts.map((stmt) => M.formatStmt(stmt, M.formatExp)).join("\n\n")
 }
 
 export function formatModDefinitions(mod: M.Mod): string {

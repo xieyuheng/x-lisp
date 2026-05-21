@@ -4,25 +4,24 @@ import type {
   PreDataConstructor,
   TypeConstructor,
 } from "../definition/index.ts"
-import { type Exp } from "../exp/index.ts"
 
-export type Stmt =
+export type Stmt<E> =
   | ImportStmt
   | ImportAsStmt
   | ImportAllStmt
-  | DefineFunctionStmt
-  | DefineVariableStmt
-  | DefineTestStmt
-  | DefineTypeStmt
-  | DefineEnumStmt
-  | DefineAlgebraicTypeStmt
-  | DefineStructStmt
-  | DefineStructStarStmt
-  | DefineRecordTypeStmt
-  | DefineOpaqueTypeStmt
-  | ClaimStmt
+  | DefineFunctionStmt<E>
+  | DefineVariableStmt<E>
+  | DefineTestStmt<E>
+  | DefineTypeStmt<E>
+  | DefineEnumStmt<E>
+  | DefineAlgebraicTypeStmt<E>
+  | DefineStructStmt<E>
+  | DefineStructStarStmt<E>
+  | DefineRecordTypeStmt<E>
+  | DefineOpaqueTypeStmt<E>
+  | ClaimStmt<E>
   | ClaimTypeStmt
-  | AdmitStmt
+  | AdmitStmt<E>
   | PrivateStmt
   | ExemptStmt
   | DeclareModuleStmt
@@ -86,20 +85,20 @@ export function ImportAllStmt(
   }
 }
 
-export type DefineFunctionStmt = {
+export type DefineFunctionStmt<E> = {
   kind: "DefineFunctionStmt"
   name: string
   parameters: Array<string>
-  body: Exp
+  body: E
   location: SourceLocation
 }
 
-export function DefineFunctionStmt(
+export function DefineFunctionStmt<E>(
   name: string,
   parameters: Array<string>,
-  body: Exp,
+  body: E,
   location: SourceLocation,
-): DefineFunctionStmt {
+): DefineFunctionStmt<E> {
   return {
     kind: "DefineFunctionStmt",
     name,
@@ -109,18 +108,18 @@ export function DefineFunctionStmt(
   }
 }
 
-export type DefineVariableStmt = {
+export type DefineVariableStmt<E> = {
   kind: "DefineVariableStmt"
   name: string
-  body: Exp
+  body: E
   location: SourceLocation
 }
 
-export function DefineVariableStmt(
+export function DefineVariableStmt<E>(
   name: string,
-  body: Exp,
+  body: E,
   location: SourceLocation,
-): DefineVariableStmt {
+): DefineVariableStmt<E> {
   return {
     kind: "DefineVariableStmt",
     name,
@@ -129,18 +128,18 @@ export function DefineVariableStmt(
   }
 }
 
-export type DefineTestStmt = {
+export type DefineTestStmt<E> = {
   kind: "DefineTestStmt"
   name: string
-  body: Exp
+  body: E
   location: SourceLocation
 }
 
-export function DefineTestStmt(
+export function DefineTestStmt<E>(
   name: string,
-  body: Exp,
+  body: E,
   location: SourceLocation,
-): DefineTestStmt {
+): DefineTestStmt<E> {
   return {
     kind: "DefineTestStmt",
     name,
@@ -149,20 +148,20 @@ export function DefineTestStmt(
   }
 }
 
-export type DefineTypeStmt = {
+export type DefineTypeStmt<E> = {
   kind: "DefineTypeStmt"
   name: string
   parameters: Array<string>
-  body: Exp
+  body: E
   location: SourceLocation
 }
 
-export function DefineTypeStmt(
+export function DefineTypeStmt<E>(
   name: string,
   parameters: Array<string>,
-  body: Exp,
+  body: E,
   location: SourceLocation,
-): DefineTypeStmt {
+): DefineTypeStmt<E> {
   return {
     kind: "DefineTypeStmt",
     name,
@@ -172,18 +171,18 @@ export function DefineTypeStmt(
   }
 }
 
-export type DefineEnumStmt = {
+export type DefineEnumStmt<E> = {
   kind: "DefineEnumStmt"
   typeConstructor: TypeConstructor
   dataConstructors: Array<PreDataConstructor>
   location: SourceLocation
 }
 
-export function DefineEnumStmt(
+export function DefineEnumStmt<E>(
   typeConstructor: TypeConstructor,
   dataConstructors: Array<PreDataConstructor>,
   location: SourceLocation,
-): DefineEnumStmt {
+): DefineEnumStmt<E> {
   return {
     kind: "DefineEnumStmt",
     typeConstructor,
@@ -192,18 +191,18 @@ export function DefineEnumStmt(
   }
 }
 
-export type DefineStructStarStmt = {
+export type DefineStructStarStmt<E> = {
   kind: "DefineStructStarStmt"
   typeConstructor: TypeConstructor
   dataConstructor: PreDataConstructor
   location: SourceLocation
 }
 
-export function DefineStructStarStmt(
+export function DefineStructStarStmt<E>(
   typeConstructor: TypeConstructor,
   dataConstructor: PreDataConstructor,
   location: SourceLocation,
-): DefineStructStarStmt {
+): DefineStructStarStmt<E> {
   return {
     kind: "DefineStructStarStmt",
     typeConstructor,
@@ -212,18 +211,18 @@ export function DefineStructStarStmt(
   }
 }
 
-export type DefineStructStmt = {
+export type DefineStructStmt<E> = {
   kind: "DefineStructStmt"
   typeConstructor: TypeConstructor
   fields: Array<DataField>
   location: SourceLocation
 }
 
-export function DefineStructStmt(
+export function DefineStructStmt<E>(
   typeConstructor: TypeConstructor,
   fields: Array<DataField>,
   location: SourceLocation,
-): DefineStructStmt {
+): DefineStructStmt<E> {
   return {
     kind: "DefineStructStmt",
     typeConstructor,
@@ -232,18 +231,18 @@ export function DefineStructStmt(
   }
 }
 
-export type DefineRecordTypeStmt = {
+export type DefineRecordTypeStmt<E> = {
   kind: "DefineRecordTypeStmt"
   typeConstructor: TypeConstructor
-  dataConstructor: AlgebraicTypeConstructor
+  dataConstructor: AlgebraicTypeConstructor<E>
   location: SourceLocation
 }
 
-export function DefineRecordTypeStmt(
+export function DefineRecordTypeStmt<E>(
   typeConstructor: TypeConstructor,
-  dataConstructor: AlgebraicTypeConstructor,
+  dataConstructor: AlgebraicTypeConstructor<E>,
   location: SourceLocation,
-): DefineRecordTypeStmt {
+): DefineRecordTypeStmt<E> {
   return {
     kind: "DefineRecordTypeStmt",
     typeConstructor,
@@ -252,30 +251,30 @@ export function DefineRecordTypeStmt(
   }
 }
 
-export type DefineOpaqueTypeStmt = {
+export type DefineOpaqueTypeStmt<E> = {
   kind: "DefineOpaqueTypeStmt"
   name: string
   parameters: Array<string>
-  representationType: Exp
+  representationType: E
   interfaceFunctions: Array<{
     name: string
-    type: Exp
+    type: E
     location: SourceLocation
   }>
   location: SourceLocation
 }
 
-export function DefineOpaqueTypeStmt(
+export function DefineOpaqueTypeStmt<E>(
   name: string,
   parameters: Array<string>,
-  representationType: Exp,
+  representationType: E,
   interfaceFunctions: Array<{
     name: string
-    type: Exp
+    type: E
     location: SourceLocation
   }>,
   location: SourceLocation,
-): DefineOpaqueTypeStmt {
+): DefineOpaqueTypeStmt<E> {
   return {
     kind: "DefineOpaqueTypeStmt",
     name,
@@ -286,33 +285,33 @@ export function DefineOpaqueTypeStmt(
   }
 }
 
-export type AlgebraicTypeField = {
+export type AlgebraicTypeField<E> = {
   name: string
-  type: Exp
+  type: E
   accessorName: string
   modifierName?: string
   location: SourceLocation
 }
 
-export type AlgebraicTypeConstructor = {
+export type AlgebraicTypeConstructor<E> = {
   name: string
-  fields: Array<AlgebraicTypeField>
+  fields: Array<AlgebraicTypeField<E>>
   predicate: string
   location: SourceLocation
 }
 
-export type DefineAlgebraicTypeStmt = {
+export type DefineAlgebraicTypeStmt<E> = {
   kind: "DefineAlgebraicTypeStmt"
   typeConstructor: TypeConstructor
-  dataConstructors: Array<AlgebraicTypeConstructor>
+  dataConstructors: Array<AlgebraicTypeConstructor<E>>
   location: SourceLocation
 }
 
-export function DefineAlgebraicTypeStmt(
+export function DefineAlgebraicTypeStmt<E>(
   typeConstructor: TypeConstructor,
-  dataConstructors: Array<AlgebraicTypeConstructor>,
+  dataConstructors: Array<AlgebraicTypeConstructor<E>>,
   location: SourceLocation,
-): DefineAlgebraicTypeStmt {
+): DefineAlgebraicTypeStmt<E> {
   return {
     kind: "DefineAlgebraicTypeStmt",
     typeConstructor,
@@ -321,18 +320,18 @@ export function DefineAlgebraicTypeStmt(
   }
 }
 
-export type ClaimStmt = {
+export type ClaimStmt<E> = {
   kind: "ClaimStmt"
   name: string
-  type: Exp
+  type: E
   location: SourceLocation
 }
 
-export function ClaimStmt(
+export function ClaimStmt<E>(
   name: string,
-  type: Exp,
+  type: E,
   location: SourceLocation,
-): ClaimStmt {
+): ClaimStmt<E> {
   return {
     kind: "ClaimStmt",
     name,
@@ -358,18 +357,18 @@ export function ClaimTypeStmt(
   }
 }
 
-export type AdmitStmt = {
+export type AdmitStmt<E> = {
   kind: "AdmitStmt"
   name: string
-  type: Exp
+  type: E
   location: SourceLocation
 }
 
-export function AdmitStmt(
+export function AdmitStmt<E>(
   name: string,
-  type: Exp,
+  type: E,
   location: SourceLocation,
-): AdmitStmt {
+): AdmitStmt<E> {
   return {
     kind: "AdmitStmt",
     name,

@@ -16,7 +16,7 @@ import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
 import { desugarSet } from "./desugarSet.ts"
 
-export function desugar(exp: M.Exp): M.Exp {
+export function desugar(exp: M.Exp): M.Term {
   switch (exp.kind) {
     case "BeginExp": {
       return desugar(desugarBegin(exp.sequence, exp.location))
@@ -35,25 +35,25 @@ export function desugar(exp: M.Exp): M.Exp {
     }
 
     case "WhenExp": {
-      return M.IfExp(
+      return M.IfTerm(
         desugar(exp.condition),
-        M.Begin1Exp(
+        M.Begin1Term(
           desugar(exp.consequent),
-          M.QualifiedVarExp("builtin", "void", exp.location),
+          M.QualifiedVarTerm("builtin", "void", exp.location),
           exp.location,
         ),
-        M.QualifiedVarExp("builtin", "void", exp.location),
+        M.QualifiedVarTerm("builtin", "void", exp.location),
         exp.location,
       )
     }
 
     case "UnlessExp": {
-      return M.IfExp(
+      return M.IfTerm(
         desugar(exp.condition),
-        M.QualifiedVarExp("builtin", "void", exp.location),
-        M.Begin1Exp(
+        M.QualifiedVarTerm("builtin", "void", exp.location),
+        M.Begin1Term(
           desugar(exp.alternative),
-          M.QualifiedVarExp("builtin", "void", exp.location),
+          M.QualifiedVarTerm("builtin", "void", exp.location),
           exp.location,
         ),
         exp.location,
@@ -101,7 +101,7 @@ export function desugar(exp: M.Exp): M.Exp {
     }
 
     case "Begin1Exp": {
-      return M.Begin1Exp(desugar(exp.head), desugar(exp.body), exp.location)
+      return M.Begin1Term(desugar(exp.head), desugar(exp.body), exp.location)
     }
 
     case "LetStarExp": {
@@ -121,15 +121,84 @@ export function desugar(exp: M.Exp): M.Exp {
     }
 
     case "LambdaExp": {
-      return M.LambdaExp(exp.parameters, desugar(exp.body), exp.location)
+      return M.LambdaTerm(exp.parameters, desugar(exp.body), exp.location)
     }
 
     case "PolymorphicExp": {
-      return M.PolymorphicExp(exp.parameters, desugar(exp.body), exp.location)
+      return M.PolymorphicTerm(exp.parameters, desugar(exp.body), exp.location)
     }
 
-    default: {
-      return M.expTraverse((child) => desugar(child), exp)
+    // Core forms — bridge to Term
+    case "SymbolExp": {
+      return M.SymbolTerm(exp.content, exp.location)
+    }
+
+    case "KeywordExp": {
+      return M.KeywordTerm(exp.content, exp.location)
+    }
+
+    case "StringExp": {
+      return M.StringTerm(exp.content, exp.location)
+    }
+
+    case "IntExp": {
+      return M.IntTerm(exp.content, exp.location)
+    }
+
+    case "FloatExp": {
+      return M.FloatTerm(exp.content, exp.location)
+    }
+
+    case "VarExp": {
+      return M.VarTerm(exp.name, exp.location)
+    }
+
+    case "QualifiedVarExp": {
+      return M.QualifiedVarTerm(exp.modName, exp.name, exp.location)
+    }
+
+    case "ApplyExp": {
+      return M.ApplyTerm(
+        desugar(exp.target),
+        exp.args.map(desugar),
+        exp.location,
+      )
+    }
+
+    case "Let1Exp": {
+      return M.Let1Term(
+        exp.name,
+        desugar(exp.rhs),
+        desugar(exp.body),
+        exp.location,
+      )
+    }
+
+    case "IfExp": {
+      return M.IfTerm(
+        desugar(exp.condition),
+        desugar(exp.consequent),
+        desugar(exp.alternative),
+        exp.location,
+      )
+    }
+
+    case "ArrowExp": {
+      return M.ArrowTerm(
+        exp.argTypes.map(desugar),
+        desugar(exp.retType),
+        exp.location,
+      )
+    }
+
+    case "TheExp": {
+      return M.TheTerm(desugar(exp.type), desugar(exp.exp), exp.location)
+    }
+
+    // Should not appear after LowerMatchPass
+    case "MatchExp": {
+      let message = `[desugar] unexpected MatchExp`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }

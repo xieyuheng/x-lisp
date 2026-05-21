@@ -1,6 +1,9 @@
 import * as M from "../index.ts"
 
-export function formatStmt(stmt: M.Stmt): string {
+export function formatStmt<E>(
+  stmt: M.Stmt<E>,
+  formatBody: (body: E) => string,
+): string {
   switch (stmt.kind) {
     case "ImportStmt": {
       return `(import ${stmt.modName} ${stmt.names.join(" ")})`
@@ -16,22 +19,22 @@ export function formatStmt(stmt: M.Stmt): string {
 
     case "DefineFunctionStmt": {
       const parameters = stmt.parameters.join(" ")
-      const body = M.formatBody(stmt.body)
+      const body = formatBody(stmt.body)
       return `(define (${stmt.name} ${parameters}) ${body})`
     }
 
     case "DefineVariableStmt": {
-      const body = M.formatBody(stmt.body)
+      const body = formatBody(stmt.body)
       return `(define ${stmt.name} ${body})`
     }
 
     case "DefineTestStmt": {
-      const body = M.formatBody(stmt.body)
+      const body = formatBody(stmt.body)
       return `(define-test ${stmt.name} ${body})`
     }
 
     case "DefineTypeStmt": {
-      const body = M.formatBody(stmt.body)
+      const body = formatBody(stmt.body)
       return `(define-type ${stmt.name} ${body})`
     }
 
@@ -57,7 +60,7 @@ export function formatStmt(stmt: M.Stmt): string {
 
     case "DefineRecordTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
-      return `(define-record-type ${type} ${formatAlgebraicTypeConstructor(stmt.dataConstructor)})`
+      return `(define-record-type ${type} ${formatAlgebraicTypeConstructor(stmt.dataConstructor, formatBody)})`
     }
 
     case "DefineOpaqueTypeStmt": {
@@ -65,9 +68,9 @@ export function formatStmt(stmt: M.Stmt): string {
         stmt.parameters.length > 0
           ? `(${stmt.name} ${stmt.parameters.join(" ")})`
           : stmt.name
-      const repr = M.formatExp(stmt.representationType)
+      const repr = formatBody(stmt.representationType)
       const ifaces = stmt.interfaceFunctions
-        .map(({ name, type }) => `(${name} ${M.formatExp(type)})`)
+        .map(({ name, type }) => `(${name} ${formatBody(type)})`)
         .join(" ")
       return `(define-opaque-type ${params} ${repr} ${ifaces})`
     }
@@ -75,13 +78,13 @@ export function formatStmt(stmt: M.Stmt): string {
     case "DefineAlgebraicTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors
-        .map(formatAlgebraicTypeConstructor)
+        .map((ctor) => formatAlgebraicTypeConstructor(ctor, formatBody))
         .join(" ")
       return `(define-algebraic-type ${type} ${constructors})`
     }
 
     case "ClaimStmt": {
-      return `(claim ${stmt.name} ${M.formatExp(stmt.type)})`
+      return `(claim ${stmt.name} ${formatBody(stmt.type)})`
     }
 
     case "ClaimTypeStmt": {
@@ -89,7 +92,7 @@ export function formatStmt(stmt: M.Stmt): string {
     }
 
     case "AdmitStmt": {
-      return `(admit ${stmt.name} ${M.formatExp(stmt.type)})`
+      return `(admit ${stmt.name} ${formatBody(stmt.type)})`
     }
 
     case "ExemptStmt": {
@@ -135,10 +138,11 @@ function formatDataField(field: M.DataField): string {
   return `(${field.name} ${M.formatExp(field.type)})`
 }
 
-function formatAlgebraicTypeConstructor(
-  ctor: M.AlgebraicTypeConstructor,
+function formatAlgebraicTypeConstructor<E>(
+  ctor: M.AlgebraicTypeConstructor<E>,
+  formatBody: (body: E) => string,
 ): string {
-  const group = `(${ctor.name} ${ctor.fields.map(formatAlgebraicTypeField).join(" ")})`
+  const group = `(${ctor.name} ${ctor.fields.map((f) => formatAlgebraicTypeField(f, formatBody)).join(" ")})`
   const accessors = ctor.fields
     .map((field) => {
       if (field.modifierName !== undefined) {
@@ -151,6 +155,9 @@ function formatAlgebraicTypeConstructor(
   return `(${group} ${ctor.predicate} ${accessors})`
 }
 
-function formatAlgebraicTypeField(field: M.AlgebraicTypeField): string {
-  return `(${field.name} ${M.formatExp(field.type)})`
+function formatAlgebraicTypeField<E>(
+  field: M.AlgebraicTypeField<E>,
+  formatBody: (body: E) => string,
+): string {
+  return `(${field.name} ${formatBody(field.type)})`
 }

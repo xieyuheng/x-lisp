@@ -50,7 +50,7 @@ function executeImport(
   privateNames: Map<string, Set<string>>,
   currentModName: string,
   scope: FragmentScope,
-  stmt: M.Stmt,
+  stmt: M.Stmt<M.Exp>,
 ): void {
   if (stmt.kind === "ImportStmt") {
     if (!ensureModExists(project, stmt.modName, stmt.location)) return
