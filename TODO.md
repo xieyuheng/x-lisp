@@ -1,8 +1,9 @@
-[meta-lisp.js] 把 DesugarPass 中所有具体的对 variant 的辅助函数 比如 desugarPipe desugarSet 等等，全部都放在 meta/desugar/ 中。
+[meta-lisp.js] [refactor] DesugarPass 避免使用 State
 
-- 一个 desugar 辅助函数一个文件。
-- 通过 index.ts export 出来。
-- LowerMatchPass 中的 simplifyMatch 改名为 desugarMatch 也放在 meta/desugar/ 中。
+DesugarPass 的 State 中带有 `nameCounts: Map<string, number>`，
+这种 generateFreshName 对 State 的用法并不安全。
+可否改为使用 expOccurredNames + generateRelativeFreshName，
+从而完全比避免多一个 State 参数？
 
 [meta-lisp.js] 我计划区分 Exp（desugar 之前表达式） 与 Term（desugar 之后表达式）。
 
