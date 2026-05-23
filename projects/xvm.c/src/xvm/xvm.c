@@ -182,7 +182,6 @@ void call_primitive(xvm_t *xvm, value_t *locals,
                                    locals[args[4]], locals[args[5]]);
     return;
   }
-  case X_FN_N: { unreachable(); }
   }
 }
 
