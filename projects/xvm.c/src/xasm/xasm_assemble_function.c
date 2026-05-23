@@ -172,7 +172,7 @@ static void compile_instr(mod_t *mod, function_t *function, value_t sexp) {
   who_printf("unhandled instr: "); print_value(sexp); newline();
 }
 
-void xasm_compile_function(mod_t *mod, function_t *function, value_t body) {
+void xasm_assemble_function(mod_t *mod, function_t *function, value_t body) {
   for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
     value_t sexp = x_list_get(x_int(i), body);
     compile_instr(mod, function, sexp);

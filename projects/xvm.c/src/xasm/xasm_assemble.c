@@ -16,7 +16,7 @@ static void handle_define_function(mod_t *mod, value_t sexp) {
   definition_t *definition = mod_lookup_or_fail(mod, name);
   assert(definition->kind == FUNCTION_DEFINITION);
   function_t *function = definition->function_definition.function;
-  xasm_compile_function(mod, function, x_function_body(sexp));
+  xasm_assemble_function(mod, function, x_function_body(sexp));
 }
 
 static value_t x_variable_name(value_t sexp) { return x_car(sexp); }
@@ -33,7 +33,7 @@ static void handle_define_variable(mod_t *mod, value_t sexp) {
   definition_t *definition = mod_lookup_or_fail(mod, name);
   assert(definition->kind == VARIABLE_DEFINITION);
   function_t *function = definition->variable_definition.function;
-  xasm_compile_function(mod, function, x_variable_body(sexp));
+  xasm_assemble_function(mod, function, x_variable_body(sexp));
 }
 
 static value_t x_test_name(value_t sexp) { return x_car(sexp); }
@@ -51,7 +51,7 @@ static void handle_define_test(mod_t *mod, value_t sexp) {
   definition_t *definition = mod_lookup_or_fail(mod, name);
   assert(definition->kind == FUNCTION_DEFINITION);
   function_t *function = definition->function_definition.function;
-  xasm_compile_function(mod, function, x_test_body(sexp));
+  xasm_assemble_function(mod, function, x_test_body(sexp));
 }
 
 
@@ -91,7 +91,7 @@ void xasm_prepare(mod_t *mod, value_t sexps) {
   }
 }
 
-void xasm_compile(mod_t *mod, value_t sexps) {
+void xasm_assemble(mod_t *mod, value_t sexps) {
   for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
     value_t sexp = x_list_get(x_int(i), sexps);
     if (sexp_has_tag(sexp, "define-function")) {

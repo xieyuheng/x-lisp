@@ -17,7 +17,7 @@ mod_t *xasm_load(path_t *path, bool profile) {
   import_builtin(mod);
   xasm_declare(mod, sexps);
   xasm_prepare(mod, sexps);
-  xasm_compile(mod, sexps);
+  xasm_assemble(mod, sexps);
   xasm_setup(mod);
   double loading_time = time_millisecond_passed(loading_start);
   if (profile) {
