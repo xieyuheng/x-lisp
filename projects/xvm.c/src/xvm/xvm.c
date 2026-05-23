@@ -122,6 +122,7 @@ static void xvm_tail_call_replace(xvm_t *xvm, const function_t *fn,
   size_t old_local_count = current->local_count;
   size_t current_start = (uint8_t *)current - buffer_raw_bytes(xvm->frame_buffer);
 
+  // VLA[0] is UB in C, so ensure at least 1 element
   value_t saved[fn->local_count > 0 ? fn->local_count : 1];
   if (args) {
     value_t *current_locals = frame_locals(current);
@@ -295,7 +296,8 @@ static inline void exec_tail_apply(xvm_t *xvm, frame_t *frame, value_t *locals) 
 
   xvm_pop_frame(xvm);
 
-  uint16_t apply_args[argc];
+  // VLA[0] is UB in C, so ensure at least 1 element
+  uint16_t apply_args[argc > 0 ? argc : 1];
   for (size_t i = 0; i < argc; i++) {
     apply_args[i] = (uint16_t)(i + 1);
   }

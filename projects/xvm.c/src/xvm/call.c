@@ -83,7 +83,8 @@ void call_function_now(xvm_t *xvm, const function_t *function) {
 
 void call_function_now_with_args(xvm_t *xvm, const function_t *function,
                                   uint8_t argc, const uint16_t *args,
-                                  value_t *caller_locals) {
+                                   value_t *caller_locals) {
+  // VLA[0] is UB in C, so ensure at least 1 element
   value_t saved[argc > 0 ? argc : 1];
   for (size_t i = 0; i < argc; i++) {
     saved[i] = caller_locals[args[i]];

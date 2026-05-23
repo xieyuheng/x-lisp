@@ -65,7 +65,8 @@ void apply_definition(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *loca
 void apply_curry(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *locals,
                   curry_t *curry) {
   if (n == curry->arity) {
-    value_t temp_locals[n + curry->size];
+    // VLA[0] is UB in C, so ensure at least 1 element
+    value_t temp_locals[(n + curry->size) > 0 ? (n + curry->size) : 1];
     for (size_t i = 0; i < curry->size; i++) {
       temp_locals[i] = curry->args[i];
     }
@@ -73,7 +74,8 @@ void apply_curry(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *locals,
       temp_locals[curry->size + i] = locals[args[i]];
     }
 
-    uint16_t combined_args[n + curry->size];
+    // VLA[0] is UB in C, so ensure at least 1 element
+    uint16_t combined_args[(n + curry->size) > 0 ? (n + curry->size) : 1];
     for (size_t i = 0; i < n + curry->size; i++) {
       combined_args[i] = i;
     }
