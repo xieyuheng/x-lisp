@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(x_lisp)
+project(meta_lisp)
 add_subdirectory(projects/helpers.c)
 add_subdirectory(projects/cmd.c)
-add_subdirectory(projects/stack-lisp.c)
+add_subdirectory(projects/xvm.c)
