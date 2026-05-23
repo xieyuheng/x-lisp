@@ -11,7 +11,7 @@ static bool is_quote(value_t sexp) {
   return sexp_has_tag(sexp, "@quote");
 }
 
-static void compile_instr(mod_t *mod, function_t *function, value_t sexp) {
+static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
   if (symbol_p(sexp)) {
     function_add_label(function, symbol_string(to_symbol(sexp)));
     return;
@@ -175,7 +175,7 @@ static void compile_instr(mod_t *mod, function_t *function, value_t sexp) {
 void xasm_assemble_function(mod_t *mod, function_t *function, value_t body) {
   for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
     value_t sexp = x_list_get(x_int(i), body);
-    compile_instr(mod, function, sexp);
+    assemble_instr(mod, function, sexp);
   }
 
   function_patch_label_references(function);
