@@ -5,7 +5,7 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import * as B from "../../basic/index.ts"
 import { textWidth } from "../../config.ts"
-import * as Stk from "../../stack/index.ts"
+import * as Xasm from "../../xasm/index.ts"
 import * as M from "../index.ts"
 
 // - no CheckPass during BuildPipeline.
@@ -51,11 +51,11 @@ function BasicBundle(project: M.Project, basicMod: B.Mod): void {
   })
 }
 
-function StackBundle(project: M.Project, stackMod: Stk.Mod): void {
+function StackBundle(project: M.Project, stackMod: Xasm.Mod): void {
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) => {
     const definitions = Array.from(stackMod.definitions.values())
-    const code = definitions.map(Stk.formatDefinition).join("\n")
+    const code = definitions.map(Xasm.formatDefinition).join("\n")
     fileWriteln(file, code)
   })
 }

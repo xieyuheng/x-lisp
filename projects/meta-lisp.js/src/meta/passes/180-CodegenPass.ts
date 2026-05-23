@@ -1,10 +1,10 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
-import * as Stk from "../../stack/index.ts"
+import * as Xasm from "../../xasm/index.ts"
 
-export function CodegenPass(project: M.Project, basicMod: B.Mod): Stk.Mod {
-  const stackMod = Stk.createMod()
+export function CodegenPass(project: M.Project, basicMod: B.Mod): Xasm.Mod {
+  const stackMod = Xasm.createMod()
   for (const definition of basicMod.definitions.values()) {
     for (const stackDefinition of codegenDefinition(basicMod, definition)) {
       stackMod.definitions.set(stackDefinition.name, stackDefinition)
@@ -98,11 +98,11 @@ function lookupLocalIndex(state: State, name: string): number {
 function codegenDefinition(
   mod: B.Mod,
   definition: B.Definition,
-): Array<Stk.Definition> {
+): Array<Xasm.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
       return [
-        Stk.PrimitiveFunctionDeclaration(
+        Xasm.PrimitiveFunctionDeclaration(
           definition.name,
           definition.arity,
           definition.location,
@@ -112,7 +112,7 @@ function codegenDefinition(
 
     case "PrimitiveVariableDeclaration": {
       return [
-        Stk.PrimitiveVariableDeclaration(definition.name, definition.location),
+        Xasm.PrimitiveVariableDeclaration(definition.name, definition.location),
       ]
     }
 
@@ -124,14 +124,14 @@ function codegenDefinition(
         ...definition.parameters
           .toReversed()
           .map((parameter) =>
-            Stk.Instr(
+            Xasm.Instr(
               "local-store",
               [
-                Stk.IntOperand(
+                Xasm.IntOperand(
                   BigInt(lookupLocalIndex(state, parameter)),
                   state.location,
                 ),
-                Stk.VarOperand(parameter, state.location),
+                Xasm.VarOperand(parameter, state.location),
               ],
               state.location,
             ),
@@ -141,7 +141,7 @@ function codegenDefinition(
         ),
       ]
       return [
-        Stk.FunctionDefinition(
+        Xasm.FunctionDefinition(
           definition.name,
           definition.parameters.length,
           instrs,
@@ -160,7 +160,7 @@ function codegenDefinition(
         ),
       ]
       return [
-        Stk.VariableDefinition(definition.name, instrs, definition.location),
+        Xasm.VariableDefinition(definition.name, instrs, definition.location),
       ]
     }
 
@@ -173,7 +173,7 @@ function codegenDefinition(
           codegenBlock(state, definition.name, block),
         ),
       ]
-      return [Stk.TestDefinition(definition.name, instrs, definition.location)]
+      return [Xasm.TestDefinition(definition.name, instrs, definition.location)]
     }
   }
 }
@@ -182,11 +182,11 @@ function codegenBlock(
   state: State,
   name: string,
   block: B.Block,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   return [
-    Stk.Instr(
+    Xasm.Instr(
       "label",
-      [Stk.VarOperand(block.label, state.location)],
+      [Xasm.VarOperand(block.label, state.location)],
       state.location,
     ),
     ...block.instrs.flatMap((instr) => codegenInstr(state, name, instr)),
@@ -197,19 +197,19 @@ function codegenInstr(
   state: State,
   name: string,
   instr: B.Instr,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   switch (instr.kind) {
     case "AssignInstr": {
       return [
         ...codegenExp(state, name, instr.exp),
-        Stk.Instr(
+        Xasm.Instr(
           "local-store",
           [
-            Stk.IntOperand(
+            Xasm.IntOperand(
               BigInt(lookupLocalIndex(state, instr.dest)),
               state.location,
             ),
-            Stk.VarOperand(instr.dest, state.location),
+            Xasm.VarOperand(instr.dest, state.location),
           ],
           state.location,
         ),
@@ -219,7 +219,7 @@ function codegenInstr(
     case "PerformInstr": {
       return [
         ...codegenExp(state, name, instr.exp),
-        Stk.Instr("drop", [], state.location),
+        Xasm.Instr("drop", [], state.location),
       ]
     }
 
@@ -229,14 +229,14 @@ function codegenInstr(
 
     case "BranchInstr": {
       return [
-        Stk.Instr(
+        Xasm.Instr(
           "jump-if-not",
-          [Stk.VarOperand(instr.elseLabel, state.location)],
+          [Xasm.VarOperand(instr.elseLabel, state.location)],
           state.location,
         ),
-        Stk.Instr(
+        Xasm.Instr(
           "jump",
-          [Stk.VarOperand(instr.thenLabel, state.location)],
+          [Xasm.VarOperand(instr.thenLabel, state.location)],
           state.location,
         ),
       ]
@@ -244,9 +244,9 @@ function codegenInstr(
 
     case "GotoInstr": {
       return [
-        Stk.Instr(
+        Xasm.Instr(
           "jump",
-          [Stk.VarOperand(instr.label, state.location)],
+          [Xasm.VarOperand(instr.label, state.location)],
           state.location,
         ),
       ]
@@ -258,20 +258,20 @@ function codegenInstr(
   }
 }
 
-function basicAtomToOperand(exp: B.Exp): Stk.Operand {
+function basicAtomToOperand(exp: B.Exp): Xasm.Operand {
   switch (exp.kind) {
     case "SymbolExp":
-      return Stk.SymbolOperand(exp.content, exp.location)
+      return Xasm.SymbolOperand(exp.content, exp.location)
     case "KeywordExp":
-      return Stk.KeywordOperand(exp.content, exp.location)
+      return Xasm.KeywordOperand(exp.content, exp.location)
     case "StringExp":
-      return Stk.StringOperand(exp.content, exp.location)
+      return Xasm.StringOperand(exp.content, exp.location)
     case "IntExp":
-      return Stk.IntOperand(exp.content, exp.location)
+      return Xasm.IntOperand(exp.content, exp.location)
     case "FloatExp":
-      return Stk.FloatOperand(exp.content, exp.location)
+      return Xasm.FloatOperand(exp.content, exp.location)
     case "VarExp":
-      return Stk.VarOperand(exp.name, exp.location)
+      return Xasm.VarOperand(exp.name, exp.location)
     case "ApplyExp": {
       let message = `[basicAtomToOperand] unhandled exp`
       message += `\n  exp: ${B.formatExp(exp)}`
@@ -280,14 +280,14 @@ function basicAtomToOperand(exp: B.Exp): Stk.Operand {
   }
 }
 
-function codegenExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
+function codegenExp(state: State, name: string, exp: B.Exp): Array<Xasm.Instr> {
   switch (exp.kind) {
     case "SymbolExp":
     case "KeywordExp":
     case "StringExp":
     case "IntExp":
     case "FloatExp": {
-      return [Stk.Instr("literal", [basicAtomToOperand(exp)], state.location)]
+      return [Xasm.Instr("literal", [basicAtomToOperand(exp)], state.location)]
     }
 
     case "VarExp": {
@@ -304,7 +304,7 @@ function codegenTailExp(
   state: State,
   name: string,
   exp: B.Exp,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   switch (exp.kind) {
     case "SymbolExp":
     case "KeywordExp":
@@ -312,15 +312,15 @@ function codegenTailExp(
     case "IntExp":
     case "FloatExp": {
       return [
-        Stk.Instr("literal", [basicAtomToOperand(exp)], state.location),
-        Stk.Instr("return", [], state.location),
+        Xasm.Instr("literal", [basicAtomToOperand(exp)], state.location),
+        Xasm.Instr("return", [], state.location),
       ]
     }
 
     case "VarExp": {
       return [
         ...codegenVar(state, name, exp),
-        Stk.Instr("return", [], state.location),
+        Xasm.Instr("return", [], state.location),
       ]
     }
 
@@ -334,18 +334,18 @@ function codegenVar(
   state: State,
   name: string,
   exp: B.VarExp,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   const definition = B.modLookupDefinition(state.mod, exp.name)
   if (definition === undefined) {
     return [
-      Stk.Instr(
+      Xasm.Instr(
         "local-load",
         [
-          Stk.IntOperand(
+          Xasm.IntOperand(
             BigInt(lookupLocalIndex(state, exp.name)),
             state.location,
           ),
-          Stk.VarOperand(exp.name, state.location),
+          Xasm.VarOperand(exp.name, state.location),
         ],
         state.location,
       ),
@@ -361,9 +361,9 @@ function codegenVar(
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
       return [
-        Stk.Instr(
+        Xasm.Instr(
           "ref",
-          [Stk.VarOperand(exp.name, state.location)],
+          [Xasm.VarOperand(exp.name, state.location)],
           state.location,
         ),
       ]
@@ -372,9 +372,9 @@ function codegenVar(
     case "PrimitiveVariableDeclaration":
     case "VariableDefinition": {
       return [
-        Stk.Instr(
+        Xasm.Instr(
           "global-load",
-          [Stk.VarOperand(exp.name, state.location)],
+          [Xasm.VarOperand(exp.name, state.location)],
           state.location,
         ),
       ]
@@ -386,7 +386,7 @@ function codegenApply(
   state: State,
   name: string,
   exp: B.ApplyExp,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   return codegenGeneralApply(state, name, exp, false)
 }
 
@@ -394,7 +394,7 @@ function codegenTailApply(
   state: State,
   name: string,
   exp: B.ApplyExp,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   return codegenGeneralApply(state, name, exp, true)
 }
 
@@ -403,7 +403,7 @@ function codegenGeneralApply(
   name: string,
   exp: B.ApplyExp,
   isTail: boolean,
-): Array<Stk.Instr> {
+): Array<Xasm.Instr> {
   const applyMode = isTail ? "tail-apply" : "apply"
   const callMode = isTail ? "tail-call" : "call"
   const definition = B.modLookupDefinition(
@@ -413,20 +413,20 @@ function codegenGeneralApply(
   if (definition === undefined) {
     return [
       ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
-      Stk.Instr(
+      Xasm.Instr(
         "local-load",
         [
-          Stk.IntOperand(
+          Xasm.IntOperand(
             BigInt(lookupLocalIndex(state, B.asVarExp(exp.target).name)),
             state.location,
           ),
-          Stk.VarOperand(B.asVarExp(exp.target).name, state.location),
+          Xasm.VarOperand(B.asVarExp(exp.target).name, state.location),
         ],
         state.location,
       ),
-      Stk.Instr(
+      Xasm.Instr(
         applyMode,
-        [Stk.IntOperand(BigInt(exp.args.length), state.location)],
+        [Xasm.IntOperand(BigInt(exp.args.length), state.location)],
         state.location,
       ),
     ]
@@ -444,23 +444,23 @@ function codegenGeneralApply(
       if (exp.args.length < arity) {
         return [
           ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
-          Stk.Instr(
+          Xasm.Instr(
             "ref",
-            [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
+            [Xasm.VarOperand(B.asVarExp(exp.target).name, state.location)],
             state.location,
           ),
-          Stk.Instr(
+          Xasm.Instr(
             applyMode,
-            [Stk.IntOperand(BigInt(exp.args.length), state.location)],
+            [Xasm.IntOperand(BigInt(exp.args.length), state.location)],
             state.location,
           ),
         ]
       } else if (exp.args.length === arity) {
         return [
           ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
-          Stk.Instr(
+          Xasm.Instr(
             callMode,
-            [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
+            [Xasm.VarOperand(B.asVarExp(exp.target).name, state.location)],
             state.location,
           ),
         ]
@@ -469,17 +469,17 @@ function codegenGeneralApply(
           ...exp.args
             .slice(0, arity)
             .flatMap((arg) => codegenExp(state, name, arg)),
-          Stk.Instr(
+          Xasm.Instr(
             "call",
-            [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
+            [Xasm.VarOperand(B.asVarExp(exp.target).name, state.location)],
             state.location,
           ),
           ...exp.args
             .slice(arity)
             .flatMap((arg) => codegenExp(state, name, arg)),
-          Stk.Instr(
+          Xasm.Instr(
             applyMode,
-            [Stk.IntOperand(BigInt(exp.args.length - arity), state.location)],
+            [Xasm.IntOperand(BigInt(exp.args.length - arity), state.location)],
             state.location,
           ),
         ]
@@ -490,14 +490,14 @@ function codegenGeneralApply(
     case "VariableDefinition": {
       return [
         ...exp.args.flatMap((arg) => codegenExp(state, name, arg)),
-        Stk.Instr(
+        Xasm.Instr(
           "global-load",
-          [Stk.VarOperand(B.asVarExp(exp.target).name, state.location)],
+          [Xasm.VarOperand(B.asVarExp(exp.target).name, state.location)],
           state.location,
         ),
-        Stk.Instr(
+        Xasm.Instr(
           applyMode,
-          [Stk.IntOperand(BigInt(exp.args.length), state.location)],
+          [Xasm.IntOperand(BigInt(exp.args.length), state.location)],
           state.location,
         ),
       ]
