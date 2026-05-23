@@ -102,6 +102,4 @@ void instr_encode(uint8_t *code, struct instr_t instr) {
     return;
   }
   }
-
-  unreachable();
 }
