@@ -103,10 +103,10 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     definition_t *definition = mod_lookup_or_fail(mod, name);
     struct instr_t instr;
     instr.op = OP_TAIL_CALL;
-    instr.tail_call.definition = definition;
+    instr.call.definition = definition;
     assemble_call_args(&instr, x_cdr(args));
     function_append_instr(function, instr);
-    free(instr.tail_call.args);
+    free(instr.call.args);
     return;
   }
 
@@ -155,10 +155,10 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     value_t args = x_cdr(sexp);
     struct instr_t instr;
     instr.op = OP_TAIL_APPLY;
-    instr.tail_apply.target = to_int64(x_car(args));
+    instr.apply.target = to_int64(x_car(args));
     assemble_apply_args(&instr, x_cdr(args));
     function_append_instr(function, instr);
-    free(instr.tail_apply.args);
+    free(instr.apply.args);
     return;
   }
 

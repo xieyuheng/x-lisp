@@ -1,9 +1,5 @@
 #pragma once
 
-// - instruction should be used as a struct value.
-// - there should be no compound value in instruction,
-//   so that GC root scaning no need to scan instructions.
-
 typedef enum {
   OP_MOVE,
   OP_LOAD,
@@ -28,9 +24,7 @@ struct instr_t {
     struct { uint16_t dst; } load_result;
     struct { uint16_t src; } ret;
     struct { definition_t *definition; uint8_t argc; uint16_t *args; } call;
-    struct { definition_t *definition; uint8_t argc; uint16_t *args; } tail_call;
     struct { uint16_t target; uint8_t argc; uint16_t *args; } apply;
-    struct { uint16_t target; uint8_t argc; uint16_t *args; } tail_apply;
     struct { uint16_t dst; definition_t *definition; } ref;
     struct { uint16_t dst; definition_t *definition; } global_load;
     struct { uint16_t src; definition_t *definition; } global_store;
