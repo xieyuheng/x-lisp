@@ -1,13 +1,17 @@
 #pragma once
 
+struct xvm_t {
+  mod_t *mod;
+  value_t result;
+  stack_t *frame_stack;
+  stack_t *root_stack;
+};
+
 xvm_t *make_xvm(mod_t *mod);
 void xvm_free(xvm_t *self);
 
 mod_t *xvm_mod(const xvm_t *self);
-
-value_t xvm_pop(xvm_t *xvm);
-void xvm_push(xvm_t *xvm, value_t value);
-void xvm_swap_many(xvm_t *xvm, size_t m, size_t n);
+value_t xvm_result(const xvm_t *self);
 
 frame_t *xvm_top_frame(const xvm_t *xvm);
 void xvm_drop_frame(xvm_t *xvm);

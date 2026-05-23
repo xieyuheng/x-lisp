@@ -2,8 +2,9 @@
 
 struct function_t {
   const char *name;
-  record_t *label_offsets; // record of int32_t
-  record_t *label_references; // record of list of int32_t
+  size_t local_count;
+  record_t *label_offsets;
+  record_t *label_references;
   size_t arity;
   buffer_t *buffer;
 };

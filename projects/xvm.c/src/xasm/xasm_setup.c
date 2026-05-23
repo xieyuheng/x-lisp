@@ -12,11 +12,11 @@ void xasm_setup(mod_t *mod) {
                definition->variable_definition.primitive));
 
       if (definition->variable_definition.primitive) {
-        call_primitive_now(xvm, definition->variable_definition.primitive);
-        definition->variable_definition.value = xvm_pop(xvm);
+        call_definition_now(xvm, definition);
+        definition->variable_definition.value = xvm->result;
       } else if (definition->variable_definition.function) {
         call_function_now(xvm, definition_function(definition));
-        definition->variable_definition.value = xvm_pop(xvm);
+        definition->variable_definition.value = xvm->result;
       }
     }
 

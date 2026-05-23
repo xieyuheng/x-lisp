@@ -1,38 +1,38 @@
 #include "index.h"
 
-static void apply_definition(xvm_t *xvm, size_t n, definition_t *definition);
-static void apply_curry(xvm_t *xvm, size_t n, curry_t *curry);
+static void supply(xvm_t *xvm, value_t target, size_t arity,
+                   uint8_t argc, const uint16_t *args, value_t *locals) {
+  assert(argc < arity);
 
-void apply(xvm_t *xvm, size_t n, value_t target) {
-  xvm_push_root(xvm, target);
+  curry_t *curry = make_curry(target, arity - argc, argc);
+  for (size_t i = 0; i < argc; i++) {
+    curry->args[i] = locals[args[i]];
+  }
 
+  xvm->result = x_object(curry);
+}
+
+static void apply_definition(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *locals,
+                              definition_t *definition);
+static void apply_curry(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *locals,
+                         curry_t *curry);
+
+void apply(xvm_t *xvm, value_t target, uint8_t argc, const uint16_t *args, value_t *locals) {
   if (definition_p(target)) {
-    apply_definition(xvm, n, to_definition(target));
+    apply_definition(xvm, argc, args, locals, to_definition(target));
   } else if (curry_p(target)) {
-    apply_curry(xvm, n, to_curry(target));
+    apply_curry(xvm, argc, args, locals, to_curry(target));
   } else {
     who_printf("unhandled value\n");
     who_printf("  value: "); print_value(target); newline();
-    who_printf("  n: %ld\n", n);
+    who_printf("  n: %d\n", argc);
     xvm_inspect(xvm);
     exit(1);
   }
-
-  xvm_drop_root(xvm);
 }
 
-static void supply(xvm_t *xvm, size_t n, value_t target, size_t arity) {
-  assert(n < arity);
-
-  curry_t *curry = make_curry(target, arity - n, n);
-  for (size_t i = 0; i < n; i++) {
-    curry->args[n - i - 1] = xvm_pop(xvm);
-  }
-
-  xvm_push(xvm, x_object(curry));
-}
-
-void apply_definition(xvm_t *xvm, size_t n, definition_t *definition) {
+void apply_definition(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *locals,
+                       definition_t *definition) {
   if (!definition_has_arity(definition)) {
     who_printf("definition has no arity: %s\n", definition->name);
     exit(1);
@@ -40,36 +40,42 @@ void apply_definition(xvm_t *xvm, size_t n, definition_t *definition) {
 
   size_t arity = definition_arity(definition);
   if (n == arity) {
-    call_definition_now(xvm, definition);
+    call_definition_now_with_args(xvm, definition, n, args, locals);
     return;
   } else if (n < arity) {
-    supply(xvm, n, x_object(definition), arity);
+    supply(xvm, x_object(definition), arity, n, args, locals);
     return;
   } else {
-    // args rest-args -- rest-args args
-    xvm_swap_many(xvm, arity, n - arity);
-    call_definition_now(xvm, definition);
-    apply(xvm, n - arity, xvm_pop(xvm));
+    call_definition_now_with_args(xvm, definition, (uint8_t)arity, args, locals);
+    apply(xvm, xvm->result, n - arity, args + arity, locals);
     return;
   }
 }
 
-void apply_curry(xvm_t *xvm, size_t n, curry_t *curry) {
+void apply_curry(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *locals,
+                  curry_t *curry) {
   if (n == curry->arity) {
+    value_t temp_locals[n + curry->size];
     for (size_t i = 0; i < curry->size; i++) {
-      xvm_push(xvm, curry->args[i]);
+      temp_locals[i] = curry->args[i];
+    }
+    for (size_t i = 0; i < n; i++) {
+      temp_locals[curry->size + i] = locals[args[i]];
     }
 
-    // args curried-args -- curried-args args
-    xvm_swap_many(xvm, n, curry->size);
-    apply(xvm, n + curry->size, curry->target);
+    uint16_t combined_args[n + curry->size];
+    for (size_t i = 0; i < n + curry->size; i++) {
+      combined_args[i] = i;
+    }
+
+    apply(xvm, curry->target, n + curry->size, combined_args, temp_locals);
     return;
   } else if (n < curry->arity) {
-    supply(xvm, n, x_object(curry), curry->arity);
+    supply(xvm, x_object(curry), curry->arity, n, args, locals);
     return;
   } else {
-    apply_curry(xvm, curry->arity, curry);
-    apply(xvm, n - curry->arity, xvm_pop(xvm));
+    apply_curry(xvm, curry->arity, args, locals, curry);
+    apply(xvm, xvm->result, n - curry->arity, args + curry->arity, locals);
     return;
   }
 }

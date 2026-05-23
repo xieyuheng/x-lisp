@@ -16,7 +16,9 @@ static void handle_define_function(mod_t *mod, value_t sexp) {
   definition_t *definition = mod_lookup_or_fail(mod, name);
   assert(definition->kind == FUNCTION_DEFINITION);
   function_t *function = definition->function_definition.function;
-  xasm_assemble_function(mod, function, x_function_body(sexp));
+  value_t body = x_function_body(sexp);
+  xasm_assemble_function(mod, function, body);
+  function->local_count = compute_function_local_count(function->arity, body);
 }
 
 static value_t x_variable_name(value_t sexp) { return x_car(sexp); }
@@ -33,7 +35,9 @@ static void handle_define_variable(mod_t *mod, value_t sexp) {
   definition_t *definition = mod_lookup_or_fail(mod, name);
   assert(definition->kind == VARIABLE_DEFINITION);
   function_t *function = definition->variable_definition.function;
-  xasm_assemble_function(mod, function, x_variable_body(sexp));
+  value_t body = x_variable_body(sexp);
+  xasm_assemble_function(mod, function, body);
+  function->local_count = compute_function_local_count(0, body);
 }
 
 static value_t x_test_name(value_t sexp) { return x_car(sexp); }
@@ -51,7 +55,9 @@ static void handle_define_test(mod_t *mod, value_t sexp) {
   definition_t *definition = mod_lookup_or_fail(mod, name);
   assert(definition->kind == FUNCTION_DEFINITION);
   function_t *function = definition->function_definition.function;
-  xasm_assemble_function(mod, function, x_test_body(sexp));
+  value_t body = x_test_body(sexp);
+  xasm_assemble_function(mod, function, body);
+  function->local_count = compute_function_local_count(0, body);
 }
 
 

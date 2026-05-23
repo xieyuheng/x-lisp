@@ -3,6 +3,7 @@
 function_t *make_function(const char *name) {
   function_t *self = new(function_t);
   self->name = name;
+  self->local_count = 0;
   self->label_offsets = make_record();
   self->label_references = make_record_with((free_fn_t *) list_free);
   self->arity = 0;
@@ -55,10 +56,8 @@ char *function_get_label_name_from_offset(const function_t *self, int32_t offset
     if ((int32_t) (int64_t) entry->value == offset) {
       return name;
     }
-
     entry = record_iter_next_entry(&iter);
   }
-
   return NULL;
 }
 
@@ -66,7 +65,6 @@ void function_add_label_reference(function_t *self, const char *name, int32_t of
   if (!record_has(self->label_references, name)) {
     record_insert(self->label_references, name, make_list());
   }
-
   list_t *reference_list = record_get(self->label_references, name);
   list_push(reference_list, (void *) (int64_t) offset);
 }
@@ -88,7 +86,6 @@ void function_patch_label_references(function_t *self) {
       int32_t offset = label_offset - (code_offset + sizeof(int32_t));
       buffer_put_bytes(self->buffer, code_offset, (const uint8_t *)&offset, sizeof(int32_t));
     }
-
     entry = record_iter_next_entry(&iter);
   }
 }
