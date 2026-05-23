@@ -40,13 +40,23 @@ void apply_definition(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *loca
 
   size_t arity = definition_arity(definition);
   if (n == arity) {
-    call_definition_now_with_args(xvm, definition, n, args, locals);
+    if (definition->kind == PRIMITIVE_DEFINITION) {
+      call_primitive(xvm, locals, definition->primitive_definition.primitive, n, args);
+    } else {
+      call_function_now_values(xvm, definition->function_definition.function, n, args, locals);
+    }
     return;
   } else if (n < arity) {
     supply(xvm, x_object(definition), arity, n, args, locals);
     return;
   } else {
-    call_definition_now_with_args(xvm, definition, (uint8_t)arity, args, locals);
+    if (definition->kind == PRIMITIVE_DEFINITION) {
+      call_primitive(xvm, locals, definition->primitive_definition.primitive,
+                     (uint8_t)arity, args);
+    } else {
+      call_function_now_values(xvm, definition->function_definition.function,
+                               (uint8_t)arity, args, locals);
+    }
     apply(xvm, xvm->result, n - arity, args + arity, locals);
     return;
   }
