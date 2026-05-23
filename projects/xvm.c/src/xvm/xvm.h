@@ -4,7 +4,7 @@ struct xvm_t {
   mod_t *mod;
   value_t result;
   buffer_t *frame_buffer;
-  size_t frame_sp;
+  size_t frame_offset;
   size_t frame_count;
   size_t break_depth;
   stack_t *root_stack;
@@ -32,7 +32,4 @@ void xvm_drop_root(xvm_t *xvm);
 
 void xvm_inspect(xvm_t *xvm);
 
-static inline frame_t *xvm_current_frame(xvm_t *xvm) {
-  if (xvm->frame_count == 0) return NULL;
-  return (frame_t *)(buffer_raw_bytes(xvm->frame_buffer) + xvm->frame_sp);
-}
+frame_t *xvm_current_frame(xvm_t *xvm);
