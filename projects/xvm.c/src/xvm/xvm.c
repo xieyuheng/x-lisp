@@ -38,7 +38,6 @@ inline size_t xvm_frame_count(const xvm_t *xvm) {
   return xvm->frame_count;
 }
 
-#define LOCAL(index) (locals[(index)])
 
 void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,
                              uint8_t argc, const uint16_t *args) {
@@ -196,7 +195,7 @@ void xvm_execute(xvm_t *xvm) {
     case OP_MOVE: {
       uint16_t dst; memory_load(frame->pc + 1, dst);
       uint16_t src; memory_load(frame->pc + 1 + sizeof(uint16_t), src);
-      LOCAL(dst) = LOCAL(src);
+      locals[dst] = locals[src];
       frame->pc += 1 + sizeof(uint16_t) + sizeof(uint16_t);
       break;
     }
@@ -204,21 +203,21 @@ void xvm_execute(xvm_t *xvm) {
     case OP_LOAD: {
       uint16_t dst; memory_load(frame->pc + 1, dst);
       value_t value; memory_load(frame->pc + 1 + sizeof(uint16_t), value);
-      LOCAL(dst) = value;
+      locals[dst] = value;
       frame->pc += 1 + sizeof(uint16_t) + sizeof(value_t);
       break;
     }
 
     case OP_LOAD_RESULT: {
       uint16_t dst; memory_load(frame->pc + 1, dst);
-      LOCAL(dst) = xvm->result;
+      locals[dst] = xvm->result;
       frame->pc += 1 + sizeof(uint16_t);
       break;
     }
 
     case OP_RETURN: {
       uint16_t src; memory_load(frame->pc + 1, src);
-      xvm->result = LOCAL(src);
+      xvm->result = locals[src];
       xvm_push_root(xvm, xvm->result);
       xvm_pop_frame(xvm);
       xvm_drop_root(xvm);
@@ -264,7 +263,7 @@ void xvm_execute(xvm_t *xvm) {
       uint16_t dst; memory_load(frame->pc + 1, dst);
       definition_t *def;
       memory_load(frame->pc + 1 + sizeof(uint16_t), def);
-      LOCAL(dst) = x_object(def);
+      locals[dst] = x_object(def);
       frame->pc += 1 + sizeof(uint16_t) + sizeof(definition_t *);
       break;
     }
@@ -279,7 +278,7 @@ void xvm_execute(xvm_t *xvm) {
         xvm_inspect(xvm);
         exit(1);
       }
-      LOCAL(dst) = def->variable_definition.value;
+      locals[dst] = def->variable_definition.value;
       frame->pc += 1 + sizeof(uint16_t) + sizeof(definition_t *);
       break;
     }
@@ -294,7 +293,7 @@ void xvm_execute(xvm_t *xvm) {
         xvm_inspect(xvm);
         exit(1);
       }
-      def->variable_definition.value = LOCAL(src);
+      def->variable_definition.value = locals[src];
       frame->pc += 1 + sizeof(uint16_t) + sizeof(definition_t *);
       break;
     }
@@ -306,7 +305,7 @@ void xvm_execute(xvm_t *xvm) {
         (uint16_t *) (frame->pc + 1 + sizeof(uint16_t) + sizeof(uint8_t));
 
       frame->pc += 1 + sizeof(uint16_t) + sizeof(uint8_t) + argc * sizeof(uint16_t);
-      apply(xvm, LOCAL(target_reg), argc, args, locals);
+      apply(xvm, locals[target_reg], argc, args, locals);
       break;
     }
 
@@ -316,12 +315,12 @@ void xvm_execute(xvm_t *xvm) {
       uint16_t *args =
         (uint16_t *) (frame->pc + 1 + sizeof(uint16_t) + sizeof(uint8_t));
 
-      value_t target = LOCAL(target_reg);
+      value_t target = locals[target_reg];
       size_t count = (size_t)argc + 1;
       value_t *tmp = allocate(sizeof(value_t) * count);
       tmp[0] = target;
       for (size_t i = 0; i < argc; i++) {
-        tmp[i + 1] = LOCAL(args[i]);
+        tmp[i + 1] = locals[args[i]];
       }
 
       for (size_t i = 0; i < count; i++) {
@@ -354,7 +353,7 @@ void xvm_execute(xvm_t *xvm) {
       uint16_t src; memory_load(frame->pc + 1, src);
       int32_t offset; memory_load(frame->pc + 1 + sizeof(uint16_t), offset);
       frame->pc += 1 + sizeof(uint16_t) + sizeof(int32_t);
-      if (LOCAL(src) == x_false) {
+      if (locals[src] == x_false) {
         frame->pc += offset;
       }
       break;
@@ -363,7 +362,6 @@ void xvm_execute(xvm_t *xvm) {
   }
 }
 
-#undef LOCAL
 
 static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {
   uint8_t *raw = buffer_raw_bytes(xvm->frame_buffer);
