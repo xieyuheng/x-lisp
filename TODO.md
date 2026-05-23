@@ -1,3 +1,5 @@
+[xvm.c] improve `xvm_execute`
+
 [meta-lisp.meta] term vs exp
 
 [meta-lisp.meta] [review] exp-free-names.meta

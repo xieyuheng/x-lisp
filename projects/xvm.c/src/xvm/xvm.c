@@ -92,108 +92,6 @@ inline size_t xvm_frame_count(const xvm_t *xvm) {
   return stack_length(xvm->frame_stack);
 }
 
-static inline void xvm_execute_instr(xvm_t *xvm, frame_t *frame, struct instr_t instr) {
-  switch (instr.op) {
-  case OP_LITERAL: {
-    xvm_push(xvm, instr.literal.value);
-    return;
-  }
-
-  case OP_RETURN: {
-    xvm_drop_frame(xvm);
-    return;
-  }
-
-  case OP_CALL: {
-    call_definition(xvm, instr.ref.definition);
-    return;
-  }
-
-  case OP_TAIL_CALL: {
-    xvm_drop_frame(xvm);
-    call_definition(xvm, instr.ref.definition);
-    return;
-  }
-
-  case OP_REF: {
-    xvm_push(xvm, x_object(instr.ref.definition));
-    return;
-  }
-
-  case OP_GLOBAL_LOAD: {
-    definition_t *definition = instr.ref.definition;
-    if (definition->kind != VARIABLE_DEFINITION) {
-      who_printf("OP_GLOBAL_LOAD expect VARIABLE_DEFINITION\n");
-      who_printf("  definition->name: %s\n", definition->name);
-      xvm_inspect(xvm);
-      exit(1);
-    }
-
-    xvm_push(xvm, definition->variable_definition.value);
-    return;
-  }
-
-  case OP_GLOBAL_STORE: {
-    value_t value = xvm_pop(xvm);
-    definition_t *definition = instr.ref.definition;
-    if (definition->kind != VARIABLE_DEFINITION) {
-      who_printf("OP_GLOBAL_LOAD expect VARIABLE_DEFINITION\n");
-      who_printf("  definition->name: %s\n", definition->name);
-      xvm_inspect(xvm);
-      exit(1);
-    }
-
-    definition->variable_definition.value = value;
-    return;
-  }
-
-  case OP_APPLY: {
-    value_t target = xvm_pop(xvm);
-    apply(xvm, instr.apply.argc, target);
-    return;
-  }
-
-  case OP_TAIL_APPLY: {
-    value_t target = xvm_pop(xvm);
-    xvm_push_root(xvm, target);
-    xvm_drop_frame(xvm);
-    xvm_drop_root(xvm);
-    apply(xvm, instr.apply.argc, target);
-    return;
-  }
-
-  case OP_LOCAL_LOAD: {
-    value_t value = frame_get_local(frame, instr.local.index);
-    xvm_push(xvm, value);
-    return;
-  }
-
-  case OP_LOCAL_STORE: {
-    value_t value = xvm_pop(xvm);
-    frame_put_local(frame, instr.local.index, value);
-    return;
-  }
-
-  case OP_JUMP: {
-    frame->pc += instr.jump.offset;
-    return;
-  }
-
-  case OP_JUMP_IF_NOT: {
-    value_t value = xvm_pop(xvm);
-    if (value == x_false) {
-      frame->pc += instr.jump.offset;
-    }
-    return;
-  }
-
-  case OP_DROP: {
-    xvm_pop(xvm);
-    return;
-  }
-  }
-}
-
 void xvm_execute(xvm_t *xvm) {
   while (xvm_frame_count(xvm) > 0) {
     frame_t *frame = stack_top(xvm->frame_stack);
@@ -202,14 +100,136 @@ void xvm_execute(xvm_t *xvm) {
       return;
     }
 
-    struct instr_t instr = instr_decode(frame->pc);
-    frame->pc += instr_length(instr);
-    xvm_execute_instr(xvm, frame, instr);
+    switch (*frame->pc) {
+    case OP_LITERAL: {
+      value_t value;
+      memory_load(frame->pc + 1, value);
+      xvm_push(xvm, value);
+      frame->pc += 1 + sizeof(value_t);
+      break;
+    }
 
-    // debug
+    case OP_RETURN: {
+      xvm_drop_frame(xvm);
+      continue;
+    }
 
-    {
-      // xvm_inspect(xvm);
+    case OP_CALL: {
+      definition_t *definition;
+      memory_load(frame->pc + 1, definition);
+      call_definition(xvm, definition);
+      frame->pc += 1 + sizeof(definition_t *);
+      break;
+    }
+
+    case OP_TAIL_CALL: {
+      definition_t *definition;
+      memory_load(frame->pc + 1, definition);
+      xvm_drop_frame(xvm);
+      call_definition(xvm, definition);
+      continue;
+    }
+
+    case OP_REF: {
+      definition_t *definition;
+      memory_load(frame->pc + 1, definition);
+      xvm_push(xvm, x_object(definition));
+      frame->pc += 1 + sizeof(definition_t *);
+      break;
+    }
+
+    case OP_GLOBAL_LOAD: {
+      definition_t *definition;
+      memory_load(frame->pc + 1, definition);
+      if (definition->kind != VARIABLE_DEFINITION) {
+        who_printf("OP_GLOBAL_LOAD expect VARIABLE_DEFINITION\n");
+        who_printf("  definition->name: %s\n", definition->name);
+        xvm_inspect(xvm);
+        exit(1);
+      }
+
+      xvm_push(xvm, definition->variable_definition.value);
+      frame->pc += 1 + sizeof(definition_t *);
+      break;
+    }
+
+    case OP_GLOBAL_STORE: {
+      value_t value = xvm_pop(xvm);
+      definition_t *definition;
+      memory_load(frame->pc + 1, definition);
+      if (definition->kind != VARIABLE_DEFINITION) {
+        who_printf("OP_GLOBAL_LOAD expect VARIABLE_DEFINITION\n");
+        who_printf("  definition->name: %s\n", definition->name);
+        xvm_inspect(xvm);
+        exit(1);
+      }
+
+      definition->variable_definition.value = value;
+      frame->pc += 1 + sizeof(definition_t *);
+      break;
+    }
+
+    case OP_APPLY: {
+      value_t target = xvm_pop(xvm);
+      uint8_t argc;
+      memory_load(frame->pc + 1, argc);
+      apply(xvm, argc, target);
+      frame->pc += 1 + sizeof(uint8_t);
+      break;
+    }
+
+    case OP_TAIL_APPLY: {
+      uint8_t argc;
+      memory_load(frame->pc + 1, argc);
+      value_t target = xvm_pop(xvm);
+      xvm_push_root(xvm, target);
+      xvm_drop_frame(xvm);
+      xvm_drop_root(xvm);
+      apply(xvm, argc, target);
+      continue;
+    }
+
+    case OP_LOCAL_LOAD: {
+      uint32_t index;
+      memory_load(frame->pc + 1, index);
+      value_t value = frame_get_local(frame, index);
+      xvm_push(xvm, value);
+      frame->pc += 1 + sizeof(uint32_t);
+      break;
+    }
+
+    case OP_LOCAL_STORE: {
+      value_t value = xvm_pop(xvm);
+      uint32_t index;
+      memory_load(frame->pc + 1, index);
+      frame_put_local(frame, index, value);
+      frame->pc += 1 + sizeof(uint32_t);
+      break;
+    }
+
+    case OP_JUMP: {
+      int32_t offset;
+      memory_load(frame->pc + 1, offset);
+      frame->pc += 1 + sizeof(int32_t) + offset;
+      break;
+    }
+
+    case OP_JUMP_IF_NOT: {
+      value_t value = xvm_pop(xvm);
+      int32_t offset;
+      memory_load(frame->pc + 1, offset);
+      frame->pc += 1 + sizeof(int32_t);
+      if (value == x_false) {
+        frame->pc += offset;
+      }
+      break;
+    }
+
+    case OP_DROP: {
+      xvm_pop(xvm);
+      frame->pc += 1;
+      break;
+    }
     }
   }
 }
