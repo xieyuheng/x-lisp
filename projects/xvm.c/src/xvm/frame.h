@@ -1,29 +1,16 @@
 #pragma once
 
-typedef enum {
-  FUNCTION_FRAME,
-  CODE_FRAME,
-  BREAK_FRAME,
-} frame_kind_t;
-
 struct frame_t {
-  frame_kind_t kind;
-  uint8_t *code;
+  const function_t *function;
   uint8_t *pc;
   uint16_t local_count;
-  value_t *locals;
-  union {
-    struct { const function_t *function; } function_frame;
-  };
+  size_t prev_sp;
 };
 
-frame_t *make_function_frame(const function_t *function,
-                             uint8_t argc,
-                             const uint16_t *args,
-                             value_t *caller_locals);
-frame_t *make_code_frame(uint8_t *code);
-frame_t *make_break_frame();
-void frame_free(frame_t *self);
+static inline value_t *frame_locals(frame_t *self) {
+  return (value_t *)(self + 1);
+}
 
-value_t frame_get_local(frame_t *self, size_t index);
-void frame_put_local(frame_t *self, size_t index, value_t value);
+static inline size_t frame_byte_size(uint16_t local_count) {
+  return sizeof(frame_t) + local_count * sizeof(value_t);
+}

@@ -4,13 +4,16 @@ xvm_t *make_xvm(mod_t *mod) {
   xvm_t *self = new(xvm_t);
   self->mod = mod;
   self->result = x_void;
-  self->frame_stack = make_stack_with((free_fn_t *) frame_free);
+  self->frame_buffer = make_buffer();
+  self->frame_sp = 0;
+  self->frame_count = 0;
+  self->break_depth = 0;
   self->root_stack = make_stack();
   return self;
 }
 
 void xvm_free(xvm_t *self) {
-  stack_free(self->frame_stack);
+  buffer_free(self->frame_buffer);
   stack_free(self->root_stack);
   free(self);
 }
@@ -31,99 +34,170 @@ inline void xvm_drop_root(xvm_t *xvm) {
   stack_pop(xvm->root_stack);
 }
 
-inline frame_t *xvm_top_frame(const xvm_t *xvm) {
-  return stack_top(xvm->frame_stack);
+inline size_t xvm_frame_count(const xvm_t *xvm) {
+  return xvm->frame_count;
 }
 
-inline void xvm_drop_frame(xvm_t *xvm) {
-  frame_t *frame = stack_pop(xvm->frame_stack);
-  frame_free(frame);
+#define LOCAL(index) (locals[(index)])
+
+void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,
+                             uint8_t argc, const uint16_t *args) {
+  frame_t *caller = xvm_current_frame(xvm);
+
+  value_t saved[fn->local_count > 0 ? fn->local_count : 1];
+  if (args && caller) {
+    value_t *caller_locals = frame_locals(caller);
+    for (size_t i = 0; i < argc; i++) {
+      saved[i] = caller_locals[args[i]];
+    }
+  }
+
+  size_t new_sp = 0;
+  if (caller) {
+    new_sp = xvm->frame_sp + frame_byte_size(caller->local_count);
+  }
+
+  size_t new_size = frame_byte_size(fn->local_count);
+  buffer_ensure_capacity(xvm->frame_buffer, new_sp + new_size);
+
+  uint8_t *raw = buffer_raw_bytes(xvm->frame_buffer);
+  frame_t *frame = (frame_t *)(raw + new_sp);
+  frame->function = fn;
+  frame->pc = buffer_raw_bytes(fn->buffer);
+  frame->local_count = fn->local_count;
+  frame->prev_sp = xvm->frame_sp;
+
+  value_t *locals = frame_locals(frame);
+  if (args && caller) {
+    for (size_t i = 0; i < argc; i++) {
+      locals[i] = saved[i];
+    }
+  }
+
+  buffer_seek(xvm->frame_buffer, new_sp + new_size);
+  xvm->frame_sp = new_sp;
+  xvm->frame_count++;
+}
+
+void xvm_push_function_frame_with_values(xvm_t *xvm, const function_t *fn,
+                                          size_t argc, value_t *values) {
+  frame_t *caller = xvm_current_frame(xvm);
+
+  size_t new_sp = 0;
+  if (caller) {
+    new_sp = xvm->frame_sp + frame_byte_size(caller->local_count);
+  }
+
+  size_t new_size = frame_byte_size(fn->local_count);
+  buffer_ensure_capacity(xvm->frame_buffer, new_sp + new_size);
+
+  uint8_t *raw = buffer_raw_bytes(xvm->frame_buffer);
+  frame_t *frame = (frame_t *)(raw + new_sp);
+  frame->function = fn;
+  frame->pc = buffer_raw_bytes(fn->buffer);
+  frame->local_count = fn->local_count;
+  frame->prev_sp = xvm->frame_sp;
+
+  value_t *locals = frame_locals(frame);
+  for (size_t i = 0; i < argc && i < fn->local_count; i++) {
+    locals[i] = values[i];
+  }
+
+  buffer_seek(xvm->frame_buffer, new_sp + new_size);
+  xvm->frame_sp = new_sp;
+  xvm->frame_count++;
+}
+
+void xvm_pop_frame(xvm_t *xvm) {
+  frame_t *current = xvm_current_frame(xvm);
+  xvm->frame_sp = current->prev_sp;
+  xvm->frame_count--;
+  // Truncate buffer to the start of the popped frame
+  size_t current_start = (uint8_t *)current - buffer_raw_bytes(xvm->frame_buffer);
+  buffer_seek(xvm->frame_buffer, current_start);
   xvm_gc_maybe_collect(xvm);
 }
 
-inline void xvm_push_frame(xvm_t *xvm, frame_t *frame) {
-  stack_push(xvm->frame_stack, frame);
-}
+static void xvm_tail_call_replace(xvm_t *xvm, const function_t *fn,
+                                   uint8_t argc, const uint16_t *args) {
+  frame_t *current = xvm_current_frame(xvm);
+  size_t prev_sp = current->prev_sp;
+  size_t old_local_count = current->local_count;
+  size_t current_start = (uint8_t *)current - buffer_raw_bytes(xvm->frame_buffer);
 
-inline size_t xvm_frame_count(const xvm_t *xvm) {
-  return stack_length(xvm->frame_stack);
+  value_t saved[fn->local_count > 0 ? fn->local_count : 1];
+  if (args) {
+    value_t *current_locals = frame_locals(current);
+    for (size_t i = 0; i < argc; i++) {
+      saved[i] = current_locals[args[i]];
+    }
+  }
+
+  size_t old_size = frame_byte_size(old_local_count);
+  size_t new_size = frame_byte_size(fn->local_count);
+  size_t new_end = current_start + new_size;
+
+  if (new_size > old_size) {
+    buffer_ensure_capacity(xvm->frame_buffer, new_end);
+  }
+
+  uint8_t *raw = buffer_raw_bytes(xvm->frame_buffer);
+  frame_t *frame = (frame_t *)(raw + current_start);
+  frame->function = fn;
+  frame->pc = buffer_raw_bytes(fn->buffer);
+  frame->local_count = fn->local_count;
+  frame->prev_sp = prev_sp;
+
+  value_t *locals = frame_locals(frame);
+  if (args) {
+    for (size_t i = 0; i < argc; i++) {
+      locals[i] = saved[i];
+    }
+  }
+
+  buffer_seek(xvm->frame_buffer, new_end);
 }
 
 void call_primitive(xvm_t *xvm, value_t *locals,
                     const primitive_t *primitive, uint8_t argc, const uint16_t *args) {
   (void) argc;
   switch (primitive->fn_kind) {
-  case X_FN_0: {
-    xvm->result = primitive->fn_0();
-    return;
-  }
-
-  case X_FN_1: {
-    xvm->result = primitive->fn_1(locals[args[0]]);
-    return;
-  }
-
+  case X_FN_0: { xvm->result = primitive->fn_0(); return; }
+  case X_FN_1: { xvm->result = primitive->fn_1(locals[args[0]]); return; }
   case X_FN_2: {
-    value_t x1 = locals[args[0]];
-    value_t x2 = locals[args[1]];
-    xvm->result = primitive->fn_2(x1, x2);
-    return;
+    xvm->result = primitive->fn_2(locals[args[0]], locals[args[1]]); return;
   }
-
   case X_FN_3: {
-    value_t x1 = locals[args[0]];
-    value_t x2 = locals[args[1]];
-    value_t x3 = locals[args[2]];
-    xvm->result = primitive->fn_3(x1, x2, x3);
+    xvm->result = primitive->fn_3(locals[args[0]], locals[args[1]], locals[args[2]]);
     return;
   }
-
   case X_FN_4: {
-    value_t x1 = locals[args[0]];
-    value_t x2 = locals[args[1]];
-    value_t x3 = locals[args[2]];
-    value_t x4 = locals[args[3]];
-    xvm->result = primitive->fn_4(x1, x2, x3, x4);
+    xvm->result = primitive->fn_4(locals[args[0]], locals[args[1]],
+                                   locals[args[2]], locals[args[3]]);
     return;
   }
-
   case X_FN_5: {
-    value_t x1 = locals[args[0]];
-    value_t x2 = locals[args[1]];
-    value_t x3 = locals[args[2]];
-    value_t x4 = locals[args[3]];
-    value_t x5 = locals[args[4]];
-    xvm->result = primitive->fn_5(x1, x2, x3, x4, x5);
+    xvm->result = primitive->fn_5(locals[args[0]], locals[args[1]],
+                                   locals[args[2]], locals[args[3]],
+                                   locals[args[4]]);
     return;
   }
-
   case X_FN_6: {
-    value_t x1 = locals[args[0]];
-    value_t x2 = locals[args[1]];
-    value_t x3 = locals[args[2]];
-    value_t x4 = locals[args[3]];
-    value_t x5 = locals[args[4]];
-    value_t x6 = locals[args[5]];
-    xvm->result = primitive->fn_6(x1, x2, x3, x4, x5, x6);
+    xvm->result = primitive->fn_6(locals[args[0]], locals[args[1]],
+                                   locals[args[2]], locals[args[3]],
+                                   locals[args[4]], locals[args[5]]);
     return;
   }
-
-  case X_FN_N: {
-    unreachable();
-  }
+  case X_FN_N: { unreachable(); }
   }
 }
 
-#define LOCAL(index) (frame->locals[(index)])
-
 void xvm_execute(xvm_t *xvm) {
-  while (xvm_frame_count(xvm) > 0) {
-    frame_t *frame = stack_top(xvm->frame_stack);
-    if (frame->kind == BREAK_FRAME) {
-      stack_pop(xvm->frame_stack);
-      frame_free(frame);
-      return;
-    }
+  assert(xvm->break_depth <= xvm->frame_count);
+
+  while (xvm->frame_count > xvm->break_depth) {
+    frame_t *frame = xvm_current_frame(xvm);
+    value_t *locals = frame_locals(frame);
 
     switch (*frame->pc) {
     case OP_MOVE: {
@@ -153,7 +227,7 @@ void xvm_execute(xvm_t *xvm) {
       uint16_t src; memory_load(frame->pc + 1, src);
       xvm->result = LOCAL(src);
       xvm_push_root(xvm, xvm->result);
-      xvm_drop_frame(xvm);
+      xvm_pop_frame(xvm);
       xvm_drop_root(xvm);
       continue;
     }
@@ -164,16 +238,15 @@ void xvm_execute(xvm_t *xvm) {
       uint16_t *args =
         (uint16_t *) (frame->pc + 1 + sizeof(definition_t *) + sizeof(uint8_t));
 
+      frame->pc += 1 + sizeof(definition_t *) + sizeof(uint8_t) + argc * sizeof(uint16_t);
+
       if (def->kind == PRIMITIVE_DEFINITION) {
-        call_primitive(xvm, frame->locals, def->primitive_definition.primitive,
-                       argc, args);
+        call_primitive(xvm, locals, def->primitive_definition.primitive, argc, args);
       } else if (def->kind == FUNCTION_DEFINITION) {
-        call_function(xvm, definition_function(def), argc, args, frame->locals);
+        xvm_push_function_frame(xvm, definition_function(def), argc, args);
       } else {
         unreachable();
       }
-
-      frame->pc += 1 + sizeof(definition_t *) + sizeof(uint8_t) + argc * sizeof(uint16_t);
       break;
     }
 
@@ -184,26 +257,12 @@ void xvm_execute(xvm_t *xvm) {
         (uint16_t *) (frame->pc + 1 + sizeof(definition_t *) + sizeof(uint8_t));
 
       if (def->kind == PRIMITIVE_DEFINITION) {
-        call_primitive(xvm, frame->locals, def->primitive_definition.primitive,
-                       argc, args);
-        stack_pop(xvm->frame_stack);
-        frame_free(frame);
+        call_primitive(xvm, locals, def->primitive_definition.primitive, argc, args);
+        xvm_push_root(xvm, xvm->result);
+        xvm_pop_frame(xvm);
+        xvm_drop_root(xvm);
       } else {
-        const function_t *fn = definition_function(def);
-        value_t saved[argc];
-        for (size_t i = 0; i < argc; i++) {
-          saved[i] = LOCAL(args[i]);
-        }
-        free(frame->locals);
-
-        frame->code = buffer_raw_bytes(fn->buffer);
-        frame->pc = frame->code;
-        frame->local_count = fn->local_count;
-        frame->locals = allocate(sizeof(value_t) * fn->local_count);
-        frame->function_frame.function = fn;
-        for (size_t i = 0; i < argc; i++) {
-          frame->locals[i] = saved[i];
-        }
+        xvm_tail_call_replace(xvm, definition_function(def), argc, args);
       }
       continue;
     }
@@ -253,8 +312,8 @@ void xvm_execute(xvm_t *xvm) {
       uint16_t *args =
         (uint16_t *) (frame->pc + 1 + sizeof(uint16_t) + sizeof(uint8_t));
 
-      apply(xvm, LOCAL(target_reg), argc, args, frame->locals);
       frame->pc += 1 + sizeof(uint16_t) + sizeof(uint8_t) + argc * sizeof(uint16_t);
+      apply(xvm, LOCAL(target_reg), argc, args, locals);
       break;
     }
 
@@ -276,8 +335,7 @@ void xvm_execute(xvm_t *xvm) {
         xvm_push_root(xvm, tmp[i]);
       }
 
-      stack_pop(xvm->frame_stack);
-      frame_free(frame);
+      xvm_pop_frame(xvm);
 
       uint16_t apply_args[argc];
       for (size_t i = 0; i < argc; i++) {
@@ -314,15 +372,19 @@ void xvm_execute(xvm_t *xvm) {
 
 #undef LOCAL
 
-static void xvm_gc_roots_in_frame_stack(xvm_t *xvm, array_t *roots) {
-  for (size_t i = 0; i < stack_length(xvm->frame_stack); i++) {
-    frame_t *frame = stack_get(xvm->frame_stack, i);
+static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {
+  uint8_t *raw = buffer_raw_bytes(xvm->frame_buffer);
+  size_t sp = xvm->frame_sp;
+
+  for (size_t i = 0; i < xvm->frame_count; i++) {
+    frame_t *frame = (frame_t *)(raw + sp);
+    value_t *locals = frame_locals(frame);
     for (size_t j = 0; j < frame->local_count; j++) {
-      value_t value = frame->locals[j];
-      if (object_p(value)) {
-        array_push(roots, to_object(value));
+      if (object_p(locals[j])) {
+        array_push(roots, to_object(locals[j]));
       }
     }
+    sp = frame->prev_sp;
   }
 }
 
@@ -343,7 +405,7 @@ static void xvm_gc_roots_in_mod(xvm_t *xvm, array_t *roots) {
 
 static array_t *xvm_gc_roots(xvm_t *xvm) {
   array_t *roots = make_array();
-  xvm_gc_roots_in_frame_stack(xvm, roots);
+  xvm_gc_roots_in_frame_buffer(xvm, roots);
   xvm_gc_roots_in_mod(xvm, roots);
 
   for (size_t i = 0; i < stack_length(xvm->root_stack); i++) {
@@ -387,14 +449,19 @@ void xvm_gc_maybe_collect(xvm_t *xvm) {
 void xvm_inspect(xvm_t *xvm) {
   print_string("-- ");
 
-  for (size_t i = 0; i < xvm_frame_count(xvm); i++) {
-    frame_t *frame = stack_get(xvm->frame_stack, i);
+  uint8_t *raw = buffer_raw_bytes(xvm->frame_buffer);
+  size_t sp = xvm->frame_sp;
+
+  for (size_t i = 0; i < xvm->frame_count; i++) {
+    frame_t *frame = (frame_t *)(raw + sp);
+    value_t *locals = frame_locals(frame);
     print_string("[");
     for (size_t j = 0; j < frame->local_count; j++) {
-      print_value(frame->locals[j]);
+      print_value(locals[j]);
       print_string(" ");
     }
     print_string("] ");
+    sp = frame->prev_sp;
   }
 
   print_string("\n");
