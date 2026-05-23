@@ -5,4 +5,4 @@
 #include "../lexer/index.h"
 #include "../sexp/index.h"
 #include "../gc/index.h"
-#include "../vm/index.h"
+#include "../xvm/index.h"

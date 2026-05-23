@@ -24,16 +24,16 @@ void xasm_call(mod_t *mod, const char *name, const array_t *args) {
     exit(1);
   }
 
-  vm_t *vm = make_vm(mod);
+  xvm_t *xvm = make_xvm(mod);
 
   if (args) {
     for (size_t i = 0; i < array_length(args); i++) {
       value_t arg = (value_t) array_get(args, i);
-      vm_push(vm, arg);
+      xvm_push(xvm, arg);
     }
   }
 
-  call_definition_now(vm, definition);
+  call_definition_now(xvm, definition);
 
-  vm_free(vm);
+  xvm_free(xvm);
 }

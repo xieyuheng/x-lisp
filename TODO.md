@@ -1,5 +1,3 @@
-[xvm.c] refactor
-
 [meta-lisp.meta] term vs exp
 
 [meta-lisp.meta] [review] exp-free-names.meta

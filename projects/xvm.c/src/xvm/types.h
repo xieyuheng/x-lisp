@@ -5,4 +5,4 @@ typedef struct primitive_t primitive_t;
 typedef struct function_t function_t;
 typedef struct definition_t definition_t;
 typedef struct frame_t frame_t;
-typedef struct vm_t vm_t;
+typedef struct xvm_t xvm_t;

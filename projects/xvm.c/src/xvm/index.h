@@ -7,7 +7,7 @@
 #include "function.h"
 #include "definition.h"
 #include "mod.h"
-#include "vm.h"
+#include "xvm.h"
 #include "frame.h"
 #include "define.h"
 #include "call.h"
