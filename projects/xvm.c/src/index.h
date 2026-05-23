@@ -7,4 +7,4 @@
 #include "gc/index.h"
 #include "vm/index.h"
 #include "builtin/index.h"
-#include "stk/index.h"
+#include "xasm/index.h"

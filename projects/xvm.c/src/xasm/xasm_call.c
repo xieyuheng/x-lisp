@@ -1,6 +1,6 @@
 #include "index.h"
 
-void stk_call(mod_t *mod, const char *name, const array_t *args) {
+void xasm_call(mod_t *mod, const char *name, const array_t *args) {
   definition_t *definition = mod_lookup(mod, name);
   if (!definition) {
     who_printf("undefined function\n");

@@ -1,6 +1,6 @@
 #include "index.h"
 
-void stk_setup(mod_t *mod) {
+void xasm_setup(mod_t *mod) {
   vm_t *vm = make_vm(mod);
 
   record_iter_t iter;

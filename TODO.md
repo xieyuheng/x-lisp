@@ -1,4 +1,4 @@
-[xvm.c] renane stk to xasm
+[xvm.c] refactor
 
 [meta-lisp.meta] term vs exp
 
