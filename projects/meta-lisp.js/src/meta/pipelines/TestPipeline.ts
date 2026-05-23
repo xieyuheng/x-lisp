@@ -7,7 +7,7 @@ const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
 export const StackLispInterpreterPath = Path.join(
   currentDir,
-  "../../../../stack-lisp.c/src/stack-lisp.exe",
+  "../../../../xvm.c/src/xvm.exe",
 )
 
 export function TestPipeline(

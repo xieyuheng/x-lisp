@@ -1,3 +1,5 @@
+[meta-lisp.js] rename stack/ to xasm/
+
 [meta-lisp.meta] term vs exp
 
 [meta-lisp.meta] [review] exp-free-names.meta

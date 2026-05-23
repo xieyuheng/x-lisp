@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   setbuf(stderr, NULL);
   init_global_gc();
 
-  cmd_router_t *router = cmd_make_router("stack-lisp", "0.1.0");
+  cmd_router_t *router = cmd_make_router("xvm", "0.1.0");
 
   cmd_define_route(router, "call file function --profile");
   cmd_define_route(router, "test file --profile --snapshot --builtin");

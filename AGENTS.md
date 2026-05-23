@@ -14,7 +14,7 @@ title: AI Agent Instructions
 - c.make -- 专门用来构建 c 子项目的可被引用的通用 makefile。
 - cmd.c -- 用来实现命令行程序的 c library。
 - helpers.c -- 通用的 c modules，用 scalable-c 风格写成。
-- stack-lisp.c -- stack VM 解释器。
+- xvm.c -- VM。
 - meta-builtin.meta -- meta-lisp 中 builtin 函数的声明，与简单 builtin 函数的实现。
 - meta-example.meta -- 测试用的 meta-lisp 项目。
 - meta-error.meta -- 错误模块测试项目。

@@ -3,6 +3,6 @@
 set -e
 
 parallel="parallel -v --halt now,fail=1"
-bin="./src/stack-lisp.exe test"
+bin="./src/xvm.exe test"
 
 find lib/tests -name "*.stack" | $parallel $bin {}
