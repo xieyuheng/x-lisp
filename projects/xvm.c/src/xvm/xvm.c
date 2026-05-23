@@ -317,7 +317,7 @@ void xvm_execute(xvm_t *xvm) {
 
       value_t target = locals[target_reg];
       size_t count = (size_t)argc + 1;
-      value_t *tmp = allocate(sizeof(value_t) * count);
+      value_t tmp[count];
       tmp[0] = target;
       for (size_t i = 0; i < argc; i++) {
         tmp[i + 1] = locals[args[i]];
@@ -336,7 +336,6 @@ void xvm_execute(xvm_t *xvm) {
 
       apply(xvm, target, argc, apply_args, tmp);
 
-      free(tmp);
       for (size_t i = 0; i < count; i++) {
         xvm_drop_root(xvm);
       }
