@@ -5,11 +5,6 @@ import * as M from "../index.ts"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
-export const StackLispInterpreterPath = Path.join(
-  currentDir,
-  "../../../../xvm.c/src/xvm.exe",
-)
-
 export function TestPipeline(
   project: M.Project,
   options: {
@@ -17,9 +12,9 @@ export function TestPipeline(
     builtin: boolean
   },
 ): void {
-  systemShellRun(StackLispInterpreterPath, [
+  systemShellRun(Path.join(currentDir, "../../../../xvm.c/src/xvm.exe"), [
     "test",
-    Path.join(M.projectOutputDirectory(project), "bundle.stack"),
+    Path.join(M.projectOutputDirectory(project), "bundle.xasm"),
     "--snapshot",
     M.projectSnapshotDirectory(project),
     options.profile ? "--profile" : "",

@@ -53,7 +53,7 @@ function BasicBundle(project: M.Project, basicMod: B.Mod): void {
 
 function StackBundle(project: M.Project, stackMod: Xasm.Mod): void {
   const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) => {
+  callWithFile(openOutputFile(`${directory}/bundle.xasm`), (file) => {
     const definitions = Array.from(stackMod.definitions.values())
     const code = definitions.map(Xasm.formatDefinition).join("\n")
     fileWriteln(file, code)
