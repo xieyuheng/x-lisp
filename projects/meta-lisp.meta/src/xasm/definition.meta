@@ -1,4 +1,4 @@
-(module stack)
+(module xasm)
 
 (define-enum definition-t
   (primitive-function-declaration

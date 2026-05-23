@@ -1,4 +1,4 @@
-(module stack)
+(module xasm)
 
 (define-struct instr-t
   (op symbol-t)

@@ -1,4 +1,4 @@
-(module stack)
+(module xasm)
 
 (claim sexp-config (-> ppml/sexp-config-t))
 (define (sexp-config)

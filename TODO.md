@@ -1,4 +1,3 @@
-[meta-lisp.meta] rename stack/ to xasm/
 [xvm.c] renane stk to xasm
 
 [meta-lisp.meta] term vs exp
