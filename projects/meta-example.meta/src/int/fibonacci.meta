@@ -19,5 +19,5 @@
   (assert-equal 13 (fibonacci 7))
   (assert-equal 21 (fibonacci 8))
   (assert-equal 34 (fibonacci 9))
-  (println (fibonacci 35)) ;; 1600ms
+  (println (fibonacci 35)) ;; 1032.877ms
   void)

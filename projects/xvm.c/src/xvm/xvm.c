@@ -44,14 +44,6 @@ void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,
                              uint8_t argc, const uint16_t *args) {
   frame_t *caller = xvm_current_frame(xvm);
 
-  value_t saved[fn->local_count > 0 ? fn->local_count : 1];
-  if (args && caller) {
-    value_t *caller_locals = frame_locals(caller);
-    for (size_t i = 0; i < argc; i++) {
-      saved[i] = caller_locals[args[i]];
-    }
-  }
-
   size_t new_sp = 0;
   if (caller) {
     new_sp = xvm->frame_sp + frame_byte_size(caller->local_count);
@@ -69,8 +61,10 @@ void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,
 
   value_t *locals = frame_locals(frame);
   if (args && caller) {
+    frame_t *caller_fresh = (frame_t *)(raw + xvm->frame_sp);
+    value_t *caller_locals = frame_locals(caller_fresh);
     for (size_t i = 0; i < argc; i++) {
-      locals[i] = saved[i];
+      locals[i] = caller_locals[args[i]];
     }
   }
 
