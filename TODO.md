@@ -1,5 +1,8 @@
 [meta-lisp.meta] term vs exp
 
+[xvm.c] json parser
+[meta-lisp.meta] json-t
+
 [meta-lisp.meta] term-free-names.meta
 [meta-lisp.meta] term-traverse.meta
 
