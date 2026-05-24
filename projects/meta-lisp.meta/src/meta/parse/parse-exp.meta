@@ -8,8 +8,8 @@
   (match sexp
     ((symbol-sexp content location)
      (let ((str (symbol-to-string content)))
-       (if (string-contains? str "/")
-         (let ((parts (string-split str "/")))
+       (if (string-contains? "/" str)
+         (let ((parts (string-split "/" str)))
            (qualified-var-exp
             (string-to-symbol (list-get 0 parts))
             (string-to-symbol (list-get 1 parts))

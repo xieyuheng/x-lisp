@@ -61,7 +61,15 @@ bool xstring_p(value_t value) {
 }
 
 xstring_t *to_xstring(value_t value) {
-  assert(xstring_p(value));
+  if (!xstring_p(value)) {
+    if (object_p(value)) {
+      object_t *object = to_object(value);
+      who_printf("expected string, got object class: %s\n", object->header.class->name);
+    } else {
+      who_printf("expected string, tag: %ld\n", (int64_t) value_tag(value));
+    }
+    exit(1);
+  }
   return (xstring_t *) to_object(value);
 }
 

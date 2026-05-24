@@ -7,7 +7,7 @@
        (mod-fragment-put-stmts!
         (expand-stmts (mod-fragment-stmts fragment))
         fragment))))
-  (when (hash-has? 'dump options)
+  (when (hash-has? "dump" options)
     (project-dump-fragments project "010-expand")))
 
 (define (expand-stmts stmts)

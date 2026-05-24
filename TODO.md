@@ -1,3 +1,5 @@
+[xvm.c] 修复 xexe 格式问题
+
 [meta-lisp.meta] term vs exp
 
 [xvm.c] json parser

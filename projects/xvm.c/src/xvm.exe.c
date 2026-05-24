@@ -75,6 +75,39 @@ static void handle_test(cli_ctx_t *ctx) {
   mod_test(mod, snapshot, profile);
 }
 
+static void handle_run_xasm(cli_ctx_t *ctx) {
+  setup_current_command_line(ctx->passthrough);
+
+  const char *pathname = cli_arg_get(ctx, 0);
+  const char *entry = cli_option_get(ctx, "--entry");
+  bool profile = cli_option_has(ctx, "--profile");
+  mod_t *mod = xasm_load_mod(make_path(pathname), profile);
+
+  if (!entry) {
+    entry = mod->entry_name;
+  }
+
+  if (!entry) {
+    who_printf("no entry function specified\n");
+    who_printf("  use --entry or add (default-entry ...) to xasm source\n");
+    exit(1);
+  }
+
+  mod_call_entry(mod, entry);
+  mod_free(mod);
+}
+
+static void handle_test_xasm(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  const char *snapshot = cli_option_get(ctx, "--snapshot");
+  bool profile = cli_option_has(ctx, "--profile");
+  bool builtin = cli_option_has(ctx, "--builtin");
+  mod_t *mod = xasm_load_mod(make_path(pathname), profile);
+  if (builtin) mod_builtin_test(mod, snapshot, profile);
+  mod_test(mod, snapshot, profile);
+  mod_free(mod);
+}
+
 int main(int argc, char *argv[]) {
   sanity_check();
   setbuf(stdout, NULL);
@@ -88,10 +121,14 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "assemble file.xasm --output --profile");
   cli_define_route(router, "run file.xexe --entry");
   cli_define_route(router, "test file.xexe --profile --snapshot --builtin");
+  cli_define_route(router, "run-xasm file.xasm --entry --profile");
+  cli_define_route(router, "test-xasm file.xasm --profile --snapshot --builtin");
 
   cli_define_handler(router, "assemble", handle_assemble);
   cli_define_handler(router, "run", handle_run);
   cli_define_handler(router, "test", handle_test);
+  cli_define_handler(router, "run-xasm", handle_run_xasm);
+  cli_define_handler(router, "test-xasm", handle_test_xasm);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);
