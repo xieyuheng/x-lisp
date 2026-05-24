@@ -34,26 +34,26 @@
 |--------|------|-------------------|-------------------------|
 | 0      | 4    | magic             | `0x58455845` ("XEXE")   |
 | 4      | 4    | version           | `1`                     |
-| 8      | 4    | def_count         | definition 数量         |
-| 12     | 4    | strtab_size       | string table 字节数     |
+| 8      | 4    | definition_count         | definition 数量         |
+| 12     | 4    | string_table_size       | string table 字节数     |
 | 16     | 4    | value_count       | value table 条目数      |
-| 20     | 4    | def_reloc_count   | definition 重定位条目数 |
-| 24     | 4    | value_reloc_count | value 重定位条目数      |
+| 20     | 4    | definition_relocation_count   | definition 重定位条目数 |
+| 24     | 4    | value_relocation_count | value 重定位条目数      |
 
-### Definition Table (def_count 条)
+### Definition Table (definition_count 条)
 
 每条连续存储：
 
 | size | field | description |
 |---|---|---|
 | 1 | kind | 0=function, 1=primitive, 2=variable |
-| 4 | name_off | 指向 string table |
+| 4 | name_offset | 指向 string table |
 | 2 | arity | 参数数量（variable 始终为 0） |
 | 1 | flags | bit0: is_test |
 | *(仅 kind==0 或 kind==2)* | | |
 | 2 | local_count | 局部变量数 |
-| 4 | code_len | 字节码长度（kind==1 时不存储，code_len=0） |
-| code_len | code | 原始字节码 |
+| 4 | code_length | 字节码长度（kind==1 时不存储，code_length=0） |
+| code_length | code | 原始字节码 |
 
 注意：kind==1 (primitive) 不序列化（文件中不会出现）。
 kind==2 (variable) 存储 function body 的 bytecode，
@@ -66,32 +66,32 @@ kind==2 (variable) 存储 function body 的 bytecode，
 | size | field | description |
 |---|---|---|
 | 1 | kind | 1=keyword, 2=string, 3=symbol |
-| 4 | data_off | 指向 string table（字符串内容） |
+| 4 | data_offset | 指向 string table（字符串内容） |
 
-### Definition Relocation Table (def_reloc_count 条)
+### Definition Relocation Table (definition_relocation_count 条)
 
 每条对应 bytecode 中的一个 `definition_t *` 指针位置。
 
 | size | field | description |
 |---|---|---|
-| 4 | def_index | definition table 中的索引（所属 function） |
+| 4 | definition_index | definition table 中的索引（所属 function） |
 | 4 | offset | code 内的字节偏移，指向 8 字节指针 |
-| 4 | target_off | 指向 string table（被引用定义的名字） |
+| 4 | target_offset | 指向 string table（被引用定义的名字） |
 
-### Value Relocation Table (value_reloc_count 条)
+### Value Relocation Table (value_relocation_count 条)
 
 每条对应 bytecode 中的一个 value_t（X_OBJECT）位置。
 
 | size | field | description |
 |---|---|---|
-| 4 | def_index | definition table 中的索引（所属 function） |
+| 4 | definition_index | definition table 中的索引（所属 function） |
 | 4 | offset | code 内的字节偏移，指向 value_t |
 | 4 | value_index | value table 中的索引 |
 
 ### String Table
 
 ```
-strtab: char[strtab_size]
+string_table: char[string_table_size]
 ```
 
 所有名字和字符串内容统一存放，NUL 字符分隔。
@@ -104,7 +104,7 @@ strtab: char[strtab_size]
 
 ```c
 // 枚举定义
-enum def_kind {
+enum definition_kind {
   DEF_FUNCTION   = 0,
   DEF_PRIMITIVE  = 1,
   DEF_VARIABLE   = 2,
@@ -123,47 +123,47 @@ struct xexe_file {
     // ---- header (28 bytes) ----
     uint32_t magic;               // 0x58455845 ("XEXE")
     uint32_t version;             // 1
-    uint32_t def_count;
-    uint32_t strtab_size;
+    uint32_t definition_count;
+    uint32_t string_table_size;
     uint32_t value_count;
-    uint32_t def_reloc_count;
-    uint32_t value_reloc_count;
+    uint32_t definition_relocation_count;
+    uint32_t value_relocation_count;
 
-    // ---- definition table (def_count 条) ----
+    // ---- definition table (definition_count 条) ----
     struct {
-        uint8_t  kind;            // enum def_kind
-        uint32_t name_off;
+        uint8_t  kind;            // enum definition_kind
+        uint32_t name_offset;
         uint16_t arity;
         uint8_t  flags;           // bit0: FLAG_IS_TEST
         // 当 kind == DEF_FUNCTION 或 DEF_VARIABLE 时，附加以下字段
         // (DEF_PRIMITIVE 不序列化，文件中不会出现)
         uint16_t local_count;     // 仅 kind == 0 或 2
-        uint32_t code_len;        // 仅 kind == 0 或 2
-        uint8_t  code[code_len];  // 仅 kind == 0 或 2，变长
-    } definitions[def_count];     // 每条实际大小不固定
+        uint32_t code_length;        // 仅 kind == 0 或 2
+        uint8_t  code[code_length];  // 仅 kind == 0 或 2，变长
+    } definitions[definition_count];     // 每条实际大小不固定
 
     // ---- value table (value_count 条) ----
     struct {
         uint8_t  kind;            // enum value_kind
-        uint32_t data_off;
+        uint32_t data_offset;
     } values[value_count];
 
-    // ---- definition relocation table (def_reloc_count 条) ----
+    // ---- definition relocation table (definition_relocation_count 条) ----
     struct {
-        uint32_t def_index;       // 所属 definition 索引
+        uint32_t definition_index;       // 所属 definition 索引
         uint32_t offset;          // code 内字节偏移
-        uint32_t target_off;      // 指向 strtab（被引用定义的名字）
-    } def_relocs[def_reloc_count];
+        uint32_t target_offset;      // 指向 string_table（被引用定义的名字）
+    } definition_relocations[definition_relocation_count];
 
-    // ---- value relocation table (value_reloc_count 条) ----
+    // ---- value relocation table (value_relocation_count 条) ----
     struct {
-        uint32_t def_index;       // 所属 definition 索引
+        uint32_t definition_index;       // 所属 definition 索引
         uint32_t offset;          // code 内字节偏移
         uint32_t value_index;     // value table 中的索引
-    } value_relocs[value_reloc_count];
+    } value_relocations[value_relocation_count];
 
     // ---- string table ----
-    char strtab[strtab_size];     // NUL 分隔的字符串池
+    char string_table[string_table_size];     // NUL 分隔的字符串池
 };
 ```
 
@@ -179,10 +179,10 @@ struct xexe_file {
    - 去重，合并为一个 NUL-separated 的 buffer
 
 2. 遍历 mod->definitions，写 definition table：
-   - function:  kind + name_off + arity + flags + local_count +
-                code_len + raw bytecode
-   - primitive: kind + name_off + arity + flags
-   - variable:  kind + name_off + arity + flags
+   - function:  kind + name_offset + arity + flags + local_count +
+                code_length + raw bytecode
+   - primitive: kind + name_offset + arity + flags
+   - variable:  kind + name_offset + arity + flags
                 （value 不存，在 setup 阶段动态初始化）
 
 3. 扫描每个 function 的 bytecode：
@@ -190,17 +190,17 @@ struct xexe_file {
 
    - CALL / TAIL_CALL：
        定位到 pc + 1 处的 definition_t *
-       → 写 def reloc entry
-       指令长度 = 1 + 8 + 1 + argc * 2
+        → 写 definition relocation entry
+        指令长度 = 1 + 8 + 1 + argc * 2
 
-   - REF / GLOBAL_LOAD / GLOBAL_STORE：
-       定位到 pc + 3 处的 definition_t *
-       → 写 def reloc entry
+    - REF / GLOBAL_LOAD / GLOBAL_STORE：
+        定位到 pc + 3 处的 definition_t *
+        → 写 definition relocation entry
 
    - OP_LOAD：
        读取 pc + 3 处的 value_t
-       → 若为 keyword_p / string_p / symbol_p：
-         写 value table + value reloc entry
+        → 若为 keyword_p / string_p / symbol_p：
+          写 value table + value relocation entry
        → 若为 immediate (int/float/bool/void)：
          无需重定位，直接保留原值
 
@@ -216,15 +216,15 @@ struct xexe_file {
 1. 读 header，验证 magic == "XEXE"，version == 1
 2. 读 definition table → 解析每条 definition 的 header 与 bytecode
 3. 读 value table → 解析每条 value entry
-4. 读 def reloc table + value reloc table
-5. strtab = 剩余 strtab_size 字节（文件末尾）
+4. 读 definition relocation table + value relocation table
+5. string_table = 剩余 string_table_size 字节（文件末尾）
 6. 创建 mod = make_mod(path)
 7. import_builtin(mod) → 注册所有 C primitive function
    （此时 mod 中已有所有 builtin 的 definition）
 
 8. 重建 value 对象：
    for each value entry:
-     kind × data_off → 获取字符串
+     kind × data_offset → 获取字符串
      keyword → x_object(intern_keyword(str))
      string  → x_object(make_xstring(str))
      symbol  → x_object(intern_symbol(str))
@@ -241,15 +241,15 @@ struct xexe_file {
      is_test:   若 flags bit0=1，set_add(mod->test_names, name)
 
 10. Patch definition relocations：
-    for each def reloc entry:
-      def = mod->definitions[def_index] 的 function_t
-      target_name = strtab[target_off]
+    for each definition relocation entry:
+      def = mod->definitions[definition_index] 的 function_t
+      target_name = string_table[target_offset]
       target_def = mod_lookup_or_fail(mod, target_name)
       将 &target_def (8 字节) 写入 def->code[offset]
 
 11. Patch value relocations：
-    for each value reloc entry:
-      def = mod->definitions[def_index] 的 function_t
+    for each value relocation entry:
+      def = mod->definitions[definition_index] 的 function_t
       value = value_objects[value_index]
       将 value (8 字节) 写入 def->code[offset]
 
