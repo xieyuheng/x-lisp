@@ -12,13 +12,13 @@ typedef struct {
 
 typedef struct {
   uint32_t definition_index;
-  uint32_t offset;
-  uint32_t target_offset;
+  uint32_t code_offset;
+  uint32_t string_table_offset;
 } parsed_definition_relocation_t;
 
 typedef struct {
   uint32_t definition_index;
-  uint32_t offset;
+  uint32_t code_offset;
   uint32_t value_index;
 } parsed_value_relocation_t;
 
@@ -114,8 +114,8 @@ static parsed_definition_relocation_t *parse_definition_relocations(uint8_t *byt
   parsed_definition_relocation_t *relocations = allocate(sizeof(parsed_definition_relocation_t) * count);
   for (uint32_t i = 0; i < count; i++) {
     read_u32(bytes, offset, &relocations[i].definition_index);
-    read_u32(bytes, offset, &relocations[i].offset);
-    read_u32(bytes, offset, &relocations[i].target_offset);
+    read_u32(bytes, offset, &relocations[i].code_offset);
+    read_u32(bytes, offset, &relocations[i].string_table_offset);
   }
   return relocations;
 }
@@ -125,7 +125,7 @@ static parsed_value_relocation_t *parse_value_relocations(uint8_t *bytes, size_t
   parsed_value_relocation_t *relocations = allocate(sizeof(parsed_value_relocation_t) * count);
   for (uint32_t i = 0; i < count; i++) {
     read_u32(bytes, offset, &relocations[i].definition_index);
-    read_u32(bytes, offset, &relocations[i].offset);
+    read_u32(bytes, offset, &relocations[i].code_offset);
     read_u32(bytes, offset, &relocations[i].value_index);
   }
   return relocations;
@@ -206,10 +206,10 @@ static void patch_definition_relocations(definition_t **definitions, uint32_t de
     }
 
     function_t *fn = definition_function(definitions[definition_index]);
-    const char *target_name = (const char *)(string_table + relocations[i].target_offset);
+    const char *target_name = (const char *)(string_table + relocations[i].string_table_offset);
     definition_t *target_def = mod_lookup_or_fail(mod, target_name);
 
-    size_t offset = relocations[i].offset;
+    size_t offset = relocations[i].code_offset;
     if (offset + sizeof(definition_t *) > buffer_length(fn->buffer)) {
       who_printf("definition relocation offset out of range: %zu\n", offset);
       exit(1);
@@ -235,7 +235,7 @@ static void patch_value_relocations(definition_t **definitions, uint32_t definit
       exit(1);
     }
 
-    size_t offset = relocations[i].offset;
+    size_t offset = relocations[i].code_offset;
     if (offset + sizeof(value_t) > buffer_length(fn->buffer)) {
       who_printf("value relocation offset out of range: %zu\n", offset);
       exit(1);

@@ -75,8 +75,8 @@ kind==2 (variable) 存储 function body 的 bytecode，
 | size | field | description |
 |---|---|---|
 | 4 | definition_index | definition table 中的索引（所属 function） |
-| 4 | offset | code 内的字节偏移，指向 8 字节指针 |
-| 4 | target_offset | 指向 string table（被引用定义的名字） |
+| 4 | code_offset | code 内的字节偏移，指向 8 字节指针 |
+| 4 | string_table_offset | 指向 string table（被引用定义的名字） |
 
 ### Value Relocation Table (value_relocation_count 条)
 
@@ -85,7 +85,7 @@ kind==2 (variable) 存储 function body 的 bytecode，
 | size | field | description |
 |---|---|---|
 | 4 | definition_index | definition table 中的索引（所属 function） |
-| 4 | offset | code 内的字节偏移，指向 value_t |
+| 4 | code_offset | code 内的字节偏移，指向 value_t |
 | 4 | value_index | value table 中的索引 |
 
 ### String Table
@@ -151,14 +151,14 @@ struct xexe_file {
     // ---- definition relocation table (definition_relocation_count 条) ----
     struct {
         uint32_t definition_index;       // 所属 definition 索引
-        uint32_t offset;          // code 内字节偏移
-        uint32_t target_offset;      // 指向 string_table（被引用定义的名字）
+        uint32_t code_offset;          // code 内字节偏移
+        uint32_t string_table_offset;      // 指向 string_table（被引用定义的名字）
     } definition_relocations[definition_relocation_count];
 
     // ---- value relocation table (value_relocation_count 条) ----
     struct {
         uint32_t definition_index;       // 所属 definition 索引
-        uint32_t offset;          // code 内字节偏移
+        uint32_t code_offset;          // code 内字节偏移
         uint32_t value_index;     // value table 中的索引
     } value_relocations[value_relocation_count];
 
@@ -243,15 +243,15 @@ struct xexe_file {
 10. Patch definition relocations：
     for each definition relocation entry:
       def = mod->definitions[definition_index] 的 function_t
-      target_name = string_table[target_offset]
+      target_name = string_table[string_table_offset]
       target_def = mod_lookup_or_fail(mod, target_name)
-      将 &target_def (8 字节) 写入 def->code[offset]
+      将 &target_def (8 字节) 写入 def->code[code_offset]
 
 11. Patch value relocations：
     for each value relocation entry:
       def = mod->definitions[definition_index] 的 function_t
-      value = value_objects[value_index]
-      将 value (8 字节) 写入 def->code[offset]
+       value = value_objects[value_index]
+       将 value (8 字节) 写入 def->code[code_offset]
 
 12. xasm_setup(mod) → 执行所有 variable 的初始化 body
 13. return mod
