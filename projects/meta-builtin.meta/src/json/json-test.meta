@@ -1,0 +1,30 @@
+(module builtin)
+
+(define-test parse-json-null-test
+  (assert-equal (json-null) (parse-json "null")))
+
+(define-test parse-json-bool-test
+  (assert-equal (json-bool true) (parse-json "true"))
+  (assert-equal (json-bool false) (parse-json "false")))
+
+(define-test parse-json-number-test
+  (assert-equal (json-number 0.0) (parse-json "0"))
+  (assert-equal (json-number 42.0) (parse-json "42"))
+  (assert-equal (json-number -17.0) (parse-json "-17"))
+  (assert-equal (json-number 3.14) (parse-json "3.14")))
+
+(define-test parse-json-string-test
+  (assert-equal (json-string "hello") (parse-json "\"hello\"")))
+
+(define-test parse-json-array-test
+  (assert-equal (json-array [(json-number 1.0) (json-number 2.0) (json-number 3.0)])
+                (parse-json "[1, 2, 3]")))
+
+(define-test parse-json-object-test
+  (assert-equal (json-object (@hash "x" (json-number 1.0)))
+                (parse-json "{\"x\": 1}")))
+
+(define-test format-json-test
+  (assert-equal "null" (format-json (json-null)))
+  (assert-equal "true" (format-json (json-bool true)))
+  (assert-equal "false" (format-json (json-bool false))))

@@ -1,0 +1,15 @@
+(module builtin)
+
+(define-enum json-t
+  (json-null)
+  (json-bool (value bool-t))
+  (json-number (value float-t))
+  (json-string (value string-t))
+  (json-array (elements (list-t json-t)))
+  (json-object (entries (hash-t string-t json-t))))
+
+(declare-primitive-function parse-json 1)
+(declare-primitive-function format-json 1)
+
+(claim parse-json (-> string-t json-t))
+(claim format-json (-> json-t string-t))

@@ -16,6 +16,7 @@
 #include "assert.h"
 #include "error.h"
 #include "sexp.h"
+#include "json.h"
 #include "fs.h"
 #include "process.h"
 #include "import_builtin.h"

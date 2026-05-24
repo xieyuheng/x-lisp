@@ -251,6 +251,11 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/format-sexp", x_format_sexp);
   define_primitive_2(mod, "builtin/format-message-with-source-location", x_format_message_with_source_location);
 
+  // json
+
+  define_primitive_1(mod, "builtin/parse-json", x_parse_json);
+  define_primitive_1(mod, "builtin/format-json", x_format_json);
+
   // fs
 
   define_primitive_1(mod, "builtin/fs-exists?", x_fs_exists_p);
