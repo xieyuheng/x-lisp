@@ -7,6 +7,7 @@ struct cli_ctx_t {
   char **argv;
   array_t *args;
   record_t *options;
+  array_t *passthrough;
 };
 
 cli_ctx_t *cli_make_ctx(

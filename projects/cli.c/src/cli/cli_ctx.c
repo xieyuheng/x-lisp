@@ -13,11 +13,13 @@ cli_ctx_t *cli_make_ctx(
   self->argv = argv;
   self->args = make_string_array();
   self->options = make_string_record();
+  self->passthrough = make_string_array();
   return self;
 }
 
 void cli_ctx_free(cli_ctx_t *self) {
   array_free(self->args);
   record_free(self->options);
+  array_free(self->passthrough);
   free(self);
 }

@@ -72,10 +72,19 @@ void cli_route_match(cli_route_t *self, cli_ctx_t *ctx) {
   size_t cursor = 2;
   while (cursor < ctx->argc) {
     const char *token = ctx->argv[cursor];
-    if (string_starts_with(token, "-")) {
+    if (string_equal(token, "--")) {
+      cursor++;
+      break;
+    } else if (string_starts_with(token, "-")) {
       match_option(ctx, &cursor);
     } else {
       match_arg(ctx, &cursor);
     }
+  }
+
+  while (cursor < ctx->argc) {
+    const char *token = ctx->argv[cursor];
+    array_push(ctx->passthrough, string_copy(token));
+    cursor++;
   }
 }

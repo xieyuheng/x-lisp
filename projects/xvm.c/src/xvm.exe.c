@@ -22,9 +22,9 @@ static char *build_output_pathname(const char *input) {
 }
 
 static void handle_assemble(cli_ctx_t *ctx) {
-  const char *pathname = cli_get_arg(ctx, 0);
-  const char *output = cli_get_option(ctx, "--output");
-  bool profile = cli_has_option(ctx, "--profile");
+  const char *pathname = cli_arg_get(ctx, 0);
+  const char *output = cli_option_get(ctx, "--output");
+  bool profile = cli_option_has(ctx, "--profile");
   mod_t *mod = xasm_load_mod(make_path(pathname), profile);
   xexe_t *xexe = make_xexe();
   xexe_from_mod(xexe, mod);
@@ -40,13 +40,13 @@ static void handle_assemble(cli_ctx_t *ctx) {
 }
 
 static void handle_run(cli_ctx_t *ctx) {
-  const char *pathname = cli_get_arg(ctx, 0);
+  const char *pathname = cli_arg_get(ctx, 0);
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
   mod_t *mod = xexe_to_mod(xexe);
   xexe_free(xexe);
 
-  const char *entry = cli_get_option(ctx, "--entry");
+  const char *entry = cli_option_get(ctx, "--entry");
   if (!entry) {
     entry = mod->entry_name;
   }
@@ -61,10 +61,10 @@ static void handle_run(cli_ctx_t *ctx) {
 }
 
 static void handle_test(cli_ctx_t *ctx) {
-  const char *pathname = cli_get_arg(ctx, 0);
-  const char *snapshot = cli_get_option(ctx, "--snapshot");
-  bool profile = cli_has_option(ctx, "--profile");
-  bool builtin = cli_has_option(ctx, "--builtin");
+  const char *pathname = cli_arg_get(ctx, 0);
+  const char *snapshot = cli_option_get(ctx, "--snapshot");
+  bool profile = cli_option_has(ctx, "--profile");
+  bool builtin = cli_option_has(ctx, "--builtin");
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
   mod_t *mod = xexe_to_mod(xexe);
