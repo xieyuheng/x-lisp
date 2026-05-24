@@ -40,6 +40,8 @@ static void handle_assemble(cli_ctx_t *ctx) {
 }
 
 static void handle_run(cli_ctx_t *ctx) {
+  setup_current_command_line(ctx->passthrough);
+
   const char *pathname = cli_arg_get(ctx, 0);
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
@@ -78,6 +80,8 @@ int main(int argc, char *argv[]) {
   setbuf(stdout, NULL);
   setbuf(stderr, NULL);
   init_global_gc();
+
+  setup_full_command_line((size_t) argc, argv);
 
   cli_router_t *router = cli_make_router("xvm", "0.1.0");
 

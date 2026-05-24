@@ -553,6 +553,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 - [`exit`](process/exit.md) — 以退出码退出
 - [`current-directory`](process/current-directory.md) — 获取当前目录
+- [`current-command-line`](process/current-command-line.md) — 获取 `--` 之后的命令行
+- [`current-full-command-line`](process/current-full-command-line.md) — 获取完整命令行
 
 ## 随机数
 

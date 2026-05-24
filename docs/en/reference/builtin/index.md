@@ -553,6 +553,8 @@ Assertion functions for testing.
 
 - [`exit`](process/exit.md) — Exit with a code
 - [`current-directory`](process/current-directory.md) — Get current directory
+- [`current-command-line`](process/current-command-line.md) — Get command line after `--`
+- [`current-full-command-line`](process/current-full-command-line.md) — Get full command line
 
 ## Random
 

@@ -271,4 +271,6 @@ void import_builtin(mod_t *mod) {
 
   define_primitive_1(mod, "builtin/exit", x_exit);
   define_primitive_0(mod, "builtin/current-directory", x_current_directory);
+  define_primitive_0(mod, "builtin/current-command-line", x_current_command_line);
+  define_primitive_0(mod, "builtin/current-full-command-line", x_current_full_command_line);
 }
