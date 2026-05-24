@@ -56,6 +56,9 @@ function BasicBundle(project: M.Project, basicMod: B.Mod): void {
 function XasmBundle(project: M.Project, xasmMod: Xasm.Mod): void {
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.xasm`), (file) => {
+    if (project.config.entry) {
+      fileWriteln(file, `(default-entry ${project.config.entry})`)
+    }
     const definitions = Array.from(xasmMod.definitions.values())
     const code = definitions.map(Xasm.formatDefinition).join("\n")
     fileWriteln(file, code)

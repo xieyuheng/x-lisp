@@ -1,5 +1,9 @@
 (module meta)
 
+(define (main)
+  (println 'hello-world)
+  void)
+
 (define (check-command config-path dump)
   (= project (load-project config-path))
   (= options (make-hash))
