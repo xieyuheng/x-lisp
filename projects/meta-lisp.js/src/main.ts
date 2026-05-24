@@ -20,25 +20,25 @@ router.defineRoutes([
 router.defineHandlers({
   check: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.CheckPipeline(project, {
-      dump: options["--dump"] !== undefined,
-    })
+    const compilerOptions = new Map()
+    if ("--dump" in options) compilerOptions.set("dump", "true")
+    M.CheckPipeline(project, compilerOptions)
   },
 
   build: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.BuildPipeline(project, {
-      dump: options["--dump"] !== undefined,
-      basic: options["--basic"] !== undefined,
-    })
+    const compilerOptions = new Map()
+    if ("--dump" in options) compilerOptions.set("dump", "true")
+    if ("--basic" in options) compilerOptions.set("basic", "true")
+    M.BuildPipeline(project, compilerOptions)
   },
 
   test: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.TestPipeline(project, {
-      profile: options["--profile"] !== undefined,
-      builtin: options["--builtin"] !== undefined,
-    })
+    const compilerOptions = new Map()
+    if ("--profile" in options) compilerOptions.set("profile", "true")
+    if ("--builtin" in options) compilerOptions.set("builtin", "true")
+    M.TestPipeline(project, compilerOptions)
   },
 })
 

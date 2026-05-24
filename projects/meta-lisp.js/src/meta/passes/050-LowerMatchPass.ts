@@ -4,7 +4,7 @@ export function LowerMatchPass(
   project: M.Project,
   modInfo: M.ModInfo,
   algebraicInfo: M.AlgebraicInfo,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const [path, fragment] of project.fragments) {
     const scope = modInfo.fragmentScopes.get(path)
@@ -16,7 +16,7 @@ export function LowerMatchPass(
     }
   }
 
-  if (options.dump) M.projectDumpFragments(project, "050-lower-match")
+  if (options.has("dump")) M.projectDumpFragments(project, "050-lower-match")
 }
 
 function lowerMatchStmt(

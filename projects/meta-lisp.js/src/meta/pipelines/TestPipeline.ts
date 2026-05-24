@@ -5,20 +5,14 @@ import * as M from "../index.ts"
 
 export function TestPipeline(
   project: M.Project,
-  options: {
-    profile: boolean
-    builtin: boolean
-  },
+  options: Map<string, string>,
 ): void {
   xvmText(project, options)
 }
 
 function xvmText(
   project: M.Project,
-  options: {
-    profile: boolean
-    builtin: boolean
-  },
+  options: Map<string, string>,
 ): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
   const xvmPath = Path.join(currentDir, "../../../../xvm.c/src/xvm.exe")
@@ -28,7 +22,7 @@ function xvmText(
     xexePath,
     "--snapshot",
     M.projectSnapshotDirectory(project),
-    options.profile ? "--profile" : "",
-    options.builtin ? "--builtin" : "",
+    options.has("profile") ? "--profile" : "",
+    options.has("builtin") ? "--builtin" : "",
   ])
 }

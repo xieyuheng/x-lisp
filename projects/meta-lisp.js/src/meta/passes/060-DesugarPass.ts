@@ -2,13 +2,13 @@ import * as M from "../index.ts"
 
 export function DesugarPass(
   project: M.Project,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const fragment of project.fragments.values()) {
     fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
   }
 
-  if (options.dump) M.projectDumpFragments(project, "060-desugar")
+  if (options.has("dump")) M.projectDumpFragments(project, "060-desugar")
 }
 
 function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {

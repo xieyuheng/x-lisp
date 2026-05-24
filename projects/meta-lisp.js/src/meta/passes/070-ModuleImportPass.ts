@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 export function ModuleImportPass(
   project: M.Project,
   info: M.ModInfo,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const [path, fragment] of project.fragments) {
     const scope = info.fragmentScopes.get(path)
@@ -17,7 +17,7 @@ export function ModuleImportPass(
     }
   }
 
-  if (options.dump) M.projectDumpFragments(project, "070-module-import")
+  if (options.has("dump")) M.projectDumpFragments(project, "070-module-import")
 }
 
 function moduleImportStmt(

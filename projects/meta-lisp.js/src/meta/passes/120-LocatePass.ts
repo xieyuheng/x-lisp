@@ -4,7 +4,7 @@ import * as M from "../index.ts"
 
 export function LocatePass(
   project: M.Project,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
@@ -12,7 +12,7 @@ export function LocatePass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "120-locate")
+  if (options.has("dump")) M.projectDumpMods(project, "120-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {

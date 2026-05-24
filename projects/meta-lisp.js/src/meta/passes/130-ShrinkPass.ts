@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export function ShrinkPass(
   project: M.Project,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
@@ -10,7 +10,7 @@ export function ShrinkPass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "130-shrink")
+  if (options.has("dump")) M.projectDumpMods(project, "130-shrink")
 }
 
 function shrinkDefinition(definition: M.Definition): null {

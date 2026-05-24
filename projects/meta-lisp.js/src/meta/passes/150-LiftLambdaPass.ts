@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export function LiftLambdaPass(
   project: M.Project,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const mod of project.mods.values()) {
     mod.definitions = new Map(
@@ -13,7 +13,7 @@ export function LiftLambdaPass(
     )
   }
 
-  if (options.dump) M.projectDumpMods(project, "150-lift-lambda")
+  if (options.has("dump")) M.projectDumpMods(project, "150-lift-lambda")
 }
 
 type State = {

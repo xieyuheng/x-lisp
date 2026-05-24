@@ -3,13 +3,13 @@ import * as M from "../index.ts"
 
 export function ExpandPass(
   project: M.Project,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const fragment of project.fragments.values()) {
     fragment.stmts = fragment.stmts.flatMap(expandStmt)
   }
 
-  if (options.dump) M.projectDumpFragments(project, "010-expand")
+  if (options.has("dump")) M.projectDumpFragments(project, "010-expand")
 }
 
 function getDataType(stmt: M.DefineAlgebraicTypeStmt<M.Exp>): M.Exp {

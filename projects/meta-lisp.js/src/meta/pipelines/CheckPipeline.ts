@@ -2,20 +2,18 @@ import * as M from "../index.ts"
 
 export function CheckPipeline(
   project: M.Project,
-  options: {
-    dump: boolean
-  },
+  options: Map<string, string>,
 ): void {
-  M.ExpandPass(project, { dump: options.dump })
+  M.ExpandPass(project, options)
   M.ModuleInjectBuiltinPass(project)
   const modInfo = M.ModuleAnalysisPass(project)
   const algebraicInfo = M.AlgebraicAnalysisPass(project)
-  M.LowerMatchPass(project, modInfo, algebraicInfo, { dump: options.dump })
-  M.DesugarPass(project, { dump: options.dump })
-  M.ModuleImportPass(project, modInfo, { dump: options.dump })
-  M.ExecutePass(project, { dump: options.dump })
+  M.LowerMatchPass(project, modInfo, algebraicInfo, options)
+  M.DesugarPass(project, options)
+  M.ModuleImportPass(project, modInfo, options)
+  M.ExecutePass(project, options)
   M.ClaimPass(project)
-  M.QualifyPass(project, { dump: options.dump })
-  M.CheckPass(project, { dump: options.dump })
-  M.LocatePass(project, { dump: options.dump })
+  M.QualifyPass(project, options)
+  M.CheckPass(project, options)
+  M.LocatePass(project, options)
 }

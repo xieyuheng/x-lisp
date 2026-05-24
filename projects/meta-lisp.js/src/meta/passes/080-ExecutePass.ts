@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 
 export function ExecutePass(
   project: M.Project,
-  options: { dump: boolean },
+  options: Map<string, string>,
 ): void {
   for (const [path, fragment] of project.fragments) {
     let mod =
@@ -17,7 +17,7 @@ export function ExecutePass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "080-execute")
+  if (options.has("dump")) M.projectDumpMods(project, "080-execute")
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {

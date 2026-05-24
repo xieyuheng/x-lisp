@@ -5,9 +5,7 @@ import * as M from "../index.ts"
 
 export function CheckPass(
   project: M.Project,
-  options: {
-    dump: boolean
-  },
+  options: Map<string, string>,
 ): void {
   for (const mod of project.mods.values()) {
     for (const definition of mod.definitions.values()) {
@@ -15,5 +13,5 @@ export function CheckPass(
     }
   }
 
-  if (options.dump) M.projectDumpMods(project, "110-check")
+  if (options.has("dump")) M.projectDumpMods(project, "110-check")
 }

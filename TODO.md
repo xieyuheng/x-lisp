@@ -1,10 +1,4 @@
-[xvm.c] [refactor] profile option -- should use simple type
-[meta-lisp.js] [refactor] profile option -- should use simple type
-
-现在 [meta-lisp.js] 的命令行有很多 options，我想把这些 options 统一，并且定义成一个简单的类型。
-之后方便迁移到 [meta-lisp.meta]
-
-[xvm.c] [refactor] xexe -- review ai generated code
+[xvm.c] [refactor] xexe -- extract `xexe_t`
 
 [meta-lisp.meta] term vs exp
 

@@ -15,29 +15,26 @@ import * as M from "../index.ts"
 
 export function BuildPipeline(
   project: M.Project,
-  options: {
-    dump: boolean
-    basic: boolean
-  },
+  options: Map<string, string>,
 ): void {
-  M.ExpandPass(project, { dump: options.dump })
+  M.ExpandPass(project, options)
   M.ModuleInjectBuiltinPass(project)
   const modInfo = M.ModuleAnalysisPass(project)
   const algebraicInfo = M.AlgebraicAnalysisPass(project)
-  M.LowerMatchPass(project, modInfo, algebraicInfo, { dump: options.dump })
-  M.DesugarPass(project, { dump: options.dump })
-  M.ModuleImportPass(project, modInfo, { dump: options.dump })
-  M.ExecutePass(project, { dump: options.dump })
+  M.LowerMatchPass(project, modInfo, algebraicInfo, options)
+  M.DesugarPass(project, options)
+  M.ModuleImportPass(project, modInfo, options)
+  M.ExecutePass(project, options)
   M.ClaimPass(project)
-  M.QualifyPass(project, { dump: options.dump })
-  M.LocatePass(project, { dump: options.dump })
-  M.ShrinkPass(project, { dump: options.dump })
-  M.UniquifyPass(project, { dump: options.dump })
-  M.LiftLambdaPass(project, { dump: options.dump })
-  M.UnnestOperandPass(project, { dump: options.dump })
+  M.QualifyPass(project, options)
+  M.LocatePass(project, options)
+  M.ShrinkPass(project, options)
+  M.UniquifyPass(project, options)
+  M.LiftLambdaPass(project, options)
+  M.UnnestOperandPass(project, options)
 
   const basicMod = M.ExplicateControlPass(project)
-  if (options.basic) BasicBundle(project, basicMod)
+  if (options.has("basic")) BasicBundle(project, basicMod)
 
   const xasmMod = M.CodegenPass(project, basicMod)
   XasmBundle(project, xasmMod)
