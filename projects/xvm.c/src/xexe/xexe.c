@@ -612,7 +612,7 @@ static value_t *build_value_table(xexe_t *self, uint32_t *out_count) {
     case XEXE_VALUE_STRING: {
       xstring_t *xstr = record_get(xstring_pool, entry->data);
       if (!xstr) {
-        xstr = make_xstring(entry->data);
+        xstr = make_static_xstring(entry->data);
         record_put(xstring_pool, entry->data, xstr);
       }
       value_objects[i] = x_object(xstr);
