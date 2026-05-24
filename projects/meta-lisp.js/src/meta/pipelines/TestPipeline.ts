@@ -12,9 +12,17 @@ export function TestPipeline(
     builtin: boolean
   },
 ): void {
+  const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.xasm")
+  const xexePath = Path.join(M.projectOutputDirectory(project), "bundle.xexe")
+
+  systemShellRun(Path.join(currentDir, "../../../../xvm.c/src/xvm.exe"), [
+    "assemble",
+    bundlePath,
+  ])
+
   systemShellRun(Path.join(currentDir, "../../../../xvm.c/src/xvm.exe"), [
     "test",
-    Path.join(M.projectOutputDirectory(project), "bundle.xasm"),
+    xexePath,
     "--snapshot",
     M.projectSnapshotDirectory(project),
     options.profile ? "--profile" : "",

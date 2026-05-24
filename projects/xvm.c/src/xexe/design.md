@@ -28,7 +28,7 @@
 
 所有整数均为 little-endian。
 
-### File Header (20 bytes)
+### File Header (28 bytes)
 
 | offset | size | field | description |
 |---|---|---|---|
@@ -36,22 +36,9 @@
 | 4 | 4 | version | `1` |
 | 8 | 4 | def_count | definition 数量 |
 | 12 | 4 | strtab_size | string table 字节数 |
-| 16 | 2 | value_count | value table 条目数 |
-| 18 | 1 | def_reloc_count | definition 重定位条目数 |
-| 19 | 1 | value_reloc_count | value 重定位条目数 |
-
-注意：def_reloc_count 和 value_reloc_count 均为 uint8_t。
-意味着当前版本每个 .xexe 最多 255 条重定位。
-需要时可在 v2 扩展为 uint32。
-
-### String Table
-
-```
-strtab: char[strtab_size]
-```
-
-所有名字和字符串内容统一存放，NUL 字符分隔。
-各条目通过 offset 引用。
+| 16 | 4 | value_count | value table 条目数 |
+| 20 | 4 | def_reloc_count | definition 重定位条目数 |
+| 24 | 4 | value_reloc_count | value 重定位条目数 |
 
 ### Definition Table (def_count 条)
 
@@ -61,12 +48,16 @@ strtab: char[strtab_size]
 |---|---|---|
 | 1 | kind | 0=function, 1=primitive, 2=variable |
 | 4 | name_off | 指向 string table |
-| 2 | arity | 参数数量 |
+| 2 | arity | 参数数量（variable 始终为 0） |
 | 1 | flags | bit0: is_test |
-| *(仅 kind==0)* | | |
+| *(仅 kind==0 或 kind==2)* | | |
 | 2 | local_count | 局部变量数 |
-| 4 | code_len | 字节码长度 |
+| 4 | code_len | 字节码长度（kind==1 时不存储，code_len=0） |
 | code_len | code | 原始字节码 |
+
+注意：kind==1 (primitive) 不序列化（文件中不会出现）。
+kind==2 (variable) 存储 function body 的 bytecode，
+用于在加载时通过 xasm_setup 执行初始化。
 
 ### Value Table (value_count 条)
 
@@ -97,6 +88,15 @@ strtab: char[strtab_size]
 | 4 | offset | code 内的字节偏移，指向 value_t |
 | 4 | value_index | value table 中的索引 |
 
+### String Table
+
+```
+strtab: char[strtab_size]
+```
+
+所有名字和字符串内容统一存放，NUL 字符分隔。
+各条目通过 offset 引用。
+
 ## Schema 描述（补充）
 
 以下用两种格式描述语言从不同角度描述 `.xexe` 的二进制布局。
@@ -115,12 +115,9 @@ strtab: char[strtab_size]
     (field version           :u32 :const 1)
     (field def-count         :u32)
     (field strtab-size       :u32)
-    (field value-count       :u16)
-    (field def-reloc-count   :u8)
-    (field value-reloc-count :u8))
-
-  (def string-table
-    (field strtab :bytes :size strtab-size))
+    (field value-count       :u32)
+    (field def-reloc-count   :u32)
+    (field value-reloc-count :u32))
 
   (def definition
     (field kind      :u8  :enum (function 0 primitive 1 variable 2))
@@ -128,7 +125,7 @@ strtab: char[strtab_size]
     (field arity     :u16)
     (field flags     :u8)
 
-    (when (= kind 0)
+    (when (or (= kind 0) (= kind 2))
       (field local-count :u16)
       (field code-len    :u32)
       (field code        :bytes :size code-len)))
@@ -161,7 +158,10 @@ strtab: char[strtab_size]
 
   (def value-reloc-table
     (repeat value-reloc-count
-      (field entry value-reloc))))
+      (field entry value-reloc))
+
+  (def string-table
+    (field strtab :bytes :size strtab-size))))
 ```
 
 语义说明：
@@ -171,150 +171,90 @@ strtab: char[strtab_size]
 | `:const <v>` | 字段必须为此值 | `:const #x58455845` |
 | `:enum (<sym> <val> ...)` | 枚举值约束 | `:enum (function 0 primitive 1 ...)` |
 | `:size <expr>` | 可变长字段，长度引用于其他字段 | `:bytes :size code-len` |
-| `(when <cond> <body>...)` | 仅当条件满足时该段存在 | `(when (= kind 0) ...)` |
+| `(when <cond> <body>...)` | 仅当条件满足时该段存在 | `(when (or (= kind 0) (= kind 2)) ...)` |
 | `(repeat <expr> <body>...)` | 根据计数字段的值重复结构 | `(repeat def-count ...)` |
 | `(field entry <def>)` | 嵌入已定义的子结构 | `(field entry definition)` |
 
-### Kaitai Struct
+### C Struct 伪代码
 
-Kaitai Struct 是描述任意二进制格式的最成熟 DSL，可编译生成 10+ 语言的解析器。
-以下用 Kaitai Struct 重新描述 `.xexe` 格式作为对照。
+以下用 C struct 伪代码描述 `.xexe` 的二进制布局，
+单个顶层 struct 展示文件整体轮廓，嵌套匿名 struct 描述各表。
 
-```yaml
-# xexe.ksy
-#
-# 安装: pip install kaitai-struct-compiler
-# 编译: kaitai-struct-compiler xexe.ksy -t cpp_stl --outdir .
+```c
+// 枚举定义
+enum def_kind {
+  DEF_FUNCTION   = 0,
+  DEF_PRIMITIVE  = 1,
+  DEF_VARIABLE   = 2,
+};
 
-meta:
-  id: xexe
-  title: xvm executable format
-  endian: le
-  license: CC0-1.0
+enum value_kind {
+  VALUE_KEYWORD  = 1,
+  VALUE_STRING   = 2,
+  VALUE_SYMBOL   = 3,
+};
 
-seq:
-  - id: magic
-    contents: [0x58, 0x45, 0x58, 0x45]
-  - id: version
-    type: u4
-  - id: def_count
-    type: u4
-  - id: strtab_size
-    type: u4
-  - id: value_count
-    type: u2
-  - id: def_reloc_count
-    type: u1
-  - id: value_reloc_count
-    type: u1
-  - id: definitions
-    type: definition
-    repeat: expr
-    repeat-expr: def_count
-  - id: values
-    type: value_entry
-    repeat: expr
-    repeat-expr: value_count
-  - id: def_relocs
-    type: def_reloc
-    repeat: expr
-    repeat-expr: def_reloc_count
-  - id: value_relocs
-    type: value_reloc
-    repeat: expr
-    repeat-expr: value_reloc_count
+#define FLAG_IS_TEST 0x01
 
-types:
-  definition:
-    seq:
-      - id: kind
-        type: u1
-        enum: def_kind
-      - id: name_off
-        type: u4
-      - id: arity
-        type: u2
-      - id: flags
-        type: u1
-      - id: body
-        type:
-          switch-on: kind
-          cases:
-            "def_kind::function": definition_function_body
-    instances:
-      name:
-        value: _root.strtab[name_off]
-      is_test:
-        value: flags & 1 != 0
+// 文件整体布局（顺序排列）
+struct xexe_file {
+    // ---- header (28 bytes) ----
+    uint32_t magic;               // 0x58455845 ("XEXE")
+    uint32_t version;             // 1
+    uint32_t def_count;
+    uint32_t strtab_size;
+    uint32_t value_count;
+    uint32_t def_reloc_count;
+    uint32_t value_reloc_count;
 
-  definition_function_body:
-    seq:
-      - id: local_count
-        type: u2
-      - id: code_len
-        type: u4
-      - id: code
-        size: code_len
+    // ---- definition table (def_count 条) ----
+    struct {
+        uint8_t  kind;            // enum def_kind
+        uint32_t name_off;
+        uint16_t arity;
+        uint8_t  flags;           // bit0: FLAG_IS_TEST
+        // 当 kind == DEF_FUNCTION 或 DEF_VARIABLE 时，附加以下字段
+        // (DEF_PRIMITIVE 不序列化，文件中不会出现)
+        uint16_t local_count;     // 仅 kind == 0 或 2
+        uint32_t code_len;        // 仅 kind == 0 或 2
+        uint8_t  code[code_len];  // 仅 kind == 0 或 2，变长
+    } definitions[def_count];     // 每条实际大小不固定
 
-  value_entry:
-    seq:
-      - id: kind
-        type: u1
-        enum: value_kind
-      - id: data_off
-        type: u4
-    instances:
-      data:
-        value: _root.strtab[data_off]
+    // ---- value table (value_count 条) ----
+    struct {
+        uint8_t  kind;            // enum value_kind
+        uint32_t data_off;
+    } values[value_count];
 
-  def_reloc:
-    seq:
-      - id: def_index
-        type: u4
-      - id: offset
-        type: u4
-      - id: target_off
-        type: u4
-    instances:
-      target_name:
-        value: _root.strtab[target_off]
+    // ---- definition relocation table (def_reloc_count 条) ----
+    struct {
+        uint32_t def_index;       // 所属 definition 索引
+        uint32_t offset;          // code 内字节偏移
+        uint32_t target_off;      // 指向 strtab（被引用定义的名字）
+    } def_relocs[def_reloc_count];
 
-  value_reloc:
-    seq:
-      - id: def_index
-        type: u4
-      - id: offset
-        type: u4
-      - id: value_index
-        type: u4
+    // ---- value relocation table (value_reloc_count 条) ----
+    struct {
+        uint32_t def_index;       // 所属 definition 索引
+        uint32_t offset;          // code 内字节偏移
+        uint32_t value_index;     // value table 中的索引
+    } value_relocs[value_reloc_count];
 
-enums:
-  def_kind:
-    0: function
-    1: primitive
-    2: variable
-  value_kind:
-    1: keyword
-    2: string
-    3: symbol
-
-instances:
-  strtab:
-    pos: _io.pos
-    size: strtab_size
+    // ---- string table ----
+    char strtab[strtab_size];     // NUL 分隔的字符串池
+};
 ```
 
 与 Lisp DSL 的对比：
 
-| 维度 | Lisp DSL | Kaitai Struct |
+| 维度 | Lisp DSL | C Struct 伪代码 |
 |---|---|---|
-| **范式** | 声明式 + sexp | 声明式 + YAML |
-| **重复** | `(repeat <expr> ...)` | `repeat: expr` + `repeat-expr: <field>` |
-| **条件字段** | `(when <cond> ...)` | `switch-on` + `cases` |
-| **字段引用** | `:size <field>` | `size: field` + `instances` 计算属性 |
-| **枚举** | 内联 `:enum` | 顶层 `enums:` 声明后引用 |
-| **访问上层** | 隐式作用域 | 显式 `_root.field` |
-| **工具链** | 无（文档用途） | 生成 12 种语言的解析器 |
+| **范式** | 声明式 + sexp | 嵌套 struct |
+| **重复** | `(repeat ...)` | 匿名数组字段 |
+| **条件字段** | `(when ...)` | 注释说明 |
+| **变长字段** | `:bytes :size <expr>` | `type name[...]` + 注释 |
+| **枚举** | 内联 `:enum` | `enum` 定义 |
+| **工具链** | 无（文档用途） | 非编译（伪代码） |
 
 ## 编译流程 (`xexe_assemble`)
 
@@ -363,12 +303,15 @@ instances:
 
 ```
 1. 读 header，验证 magic == "XEXE"，version == 1
-2. 读 strtab_size 字节到内存
-3. 创建 mod = make_mod(path)
-4. import_builtin(mod) → 注册所有 C primitive function
+2. 读 definition table → 解析每条 definition 的 header 与 bytecode
+3. 读 value table → 解析每条 value entry
+4. 读 def reloc table + value reloc table
+5. strtab = 剩余 strtab_size 字节（文件末尾）
+6. 创建 mod = make_mod(path)
+7. import_builtin(mod) → 注册所有 C primitive function
    （此时 mod 中已有所有 builtin 的 definition）
-   
-5. 读 value table → 重建对象：
+    
+8. 重建 value 对象：
    for each value entry:
      kind × data_off → 获取字符串
      keyword → x_object(intern_keyword(str))
@@ -376,31 +319,31 @@ instances:
      symbol  → x_object(intern_symbol(str))
    结果存入 value_objects[] 数组
 
-6. 读 definition table → 创建 definition_t：
+9. 创建 definition_t：
    for each definition entry:
      function:  创建 function_t + buffer_t，拷贝 bytecode
                 mod_define(mod, name, def)
-     primitive: 从 mod 中按 name 查找（已在步骤4注册）
+     primitive: 从 mod 中按 name 查找（已在步骤7注册）
                 找不到则报错（未知的 primitive 引用）
      variable:  创建 variable definition 占位
                 mod_define(mod, name, def)
      is_test:   若 flags bit0=1，set_add(mod->test_names, name)
 
-7. Patch definition relocations：
-   for each def reloc entry:
-     def = mod->definitions[def_index] 的 function_t
-     target_name = strtab[target_off]
-     target_def = mod_lookup_or_fail(mod, target_name)
-     将 &target_def (8 字节) 写入 def->code[offset]
+10. Patch definition relocations：
+    for each def reloc entry:
+      def = mod->definitions[def_index] 的 function_t
+      target_name = strtab[target_off]
+      target_def = mod_lookup_or_fail(mod, target_name)
+      将 &target_def (8 字节) 写入 def->code[offset]
 
-8. Patch value relocations：
-   for each value reloc entry:
-     def = mod->definitions[def_index] 的 function_t
-     value = value_objects[value_index]
-     将 value (8 字节) 写入 def->code[offset]
+11. Patch value relocations：
+    for each value reloc entry:
+      def = mod->definitions[def_index] 的 function_t
+      value = value_objects[value_index]
+      将 value (8 字节) 写入 def->code[offset]
 
-9. xasm_setup(mod) → 执行所有 variable 的初始化 body
-10. return mod
+12. xasm_setup(mod) → 执行所有 variable 的初始化 body
+13. return mod
 ```
 
 ## 命令入口
@@ -453,10 +396,8 @@ callback 的参数包括 opcode、位置和需要处理的 pointer/value。
   不支持 list/hash/set 等复合对象值。
 - Variable definition 的 value 不序列化，通过 setup 阶段执行 body 来初始化。
 - Primitive definition 不序列化（C 函数指针不可移植），加载时通过 `import_builtin` 注册后按名字查找。
-- 重定位条目数限制为每类型 255 条（uint8_t 字段），超过时报错。
 
 ### v2 扩展方向
-- 扩大重定位条目数字段
 - 对 variable 的 value 支持序列化
 - 对 OP_LOAD 中的 list 等复合对象值支持序列化
 - 支持跨文件引用（类似 .so/.dll 的动态链接）

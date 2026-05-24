@@ -13,7 +13,7 @@ mod_t *xasm_load(path_t *path, bool profile) {
   }
 
   double loading_start = time_millisecond();
-  mod_t *mod = make_mod(path);
+  mod_t *mod = make_mod();
   import_builtin(mod);
   xasm_declare(mod, sexps);
   xasm_prepare(mod, sexps);

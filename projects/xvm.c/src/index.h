@@ -8,3 +8,4 @@
 #include "xvm/index.h"
 #include "builtin/index.h"
 #include "xasm/index.h"
+#include "xexe/index.h"

@@ -42,6 +42,24 @@ size_t instr_length(struct instr_t instr) {
   return n;
 }
 
+struct instr_t instr_decode_header(uint8_t *code) {
+  struct instr_t instr = {0};
+  instr.op = code[0];
+  switch (instr.op) {
+  case OP_CALL:
+  case OP_TAIL_CALL:
+    instr.call.argc = code[1 + SZPTR];
+    break;
+  case OP_APPLY:
+  case OP_TAIL_APPLY:
+    instr.apply.argc = code[1 + SZU16];
+    break;
+  default:
+    break;
+  }
+  return instr;
+}
+
 void instr_encode(uint8_t *code, struct instr_t instr) {
   code[0] = instr.op;
 

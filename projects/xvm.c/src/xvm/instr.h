@@ -34,4 +34,5 @@ struct instr_t {
 };
 
 size_t instr_length(struct instr_t instr);
+struct instr_t instr_decode_header(uint8_t *code);
 void instr_encode(uint8_t *code, struct instr_t instr);
