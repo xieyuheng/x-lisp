@@ -6,30 +6,29 @@ const object_class_t definition_class = {
   .format_fn = (object_format_fn_t *) definition_format,
 };
 
-static definition_t *make_definition(mod_t *mod, char *name) {
+static definition_t *make_definition(char *name) {
   definition_t *self = new(definition_t);
   self->header.class = &definition_class;
-  self->mod = mod;
   self->name = name;
   return self;
 }
 
-definition_t *make_function_definition(mod_t *mod, char *name, function_t *function) {
-  definition_t *self = make_definition(mod, name);
+definition_t *make_function_definition(char *name, function_t *function) {
+  definition_t *self = make_definition(name);
   self->kind = FUNCTION_DEFINITION;
   self->function_definition.function = function;
   return self;
 }
 
-definition_t *make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive) {
-  definition_t *self = make_definition(mod, name);
+definition_t *make_primitive_definition(char *name, primitive_t *primitive) {
+  definition_t *self = make_definition(name);
   self->kind = PRIMITIVE_DEFINITION;
   self->primitive_definition.primitive = primitive;
   return self;
 }
 
-definition_t *make_variable_definition(mod_t *mod, char *name, value_t value) {
-  definition_t *self = make_definition(mod, name);
+definition_t *make_variable_definition(char *name, value_t value) {
+  definition_t *self = make_definition(name);
   self->kind = VARIABLE_DEFINITION;
   self->variable_definition.value = value;
   self->variable_definition.function = NULL;

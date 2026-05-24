@@ -179,9 +179,9 @@ static definition_t **create_definitions(mod_t *mod, parsed_definition_t *parsed
     }
 
     if (parsed_definitions[i].kind == XEXE_DEF_FUNCTION) {
-      definitions[i] = make_function_definition(mod, string_copy(name), fn);
+      definitions[i] = make_function_definition(string_copy(name), fn);
     } else {
-      definitions[i] = make_variable_definition(mod, string_copy(name), x_void);
+      definitions[i] = make_variable_definition(string_copy(name), x_void);
       definitions[i]->variable_definition.function = fn;
     }
 

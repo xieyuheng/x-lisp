@@ -11,7 +11,6 @@ extern const object_class_t definition_class;
 struct definition_t {
   struct object_header_t header;
   definition_kind_t kind;
-  mod_t *mod;
   char *name;
   union {
     struct { function_t *function; } function_definition;
@@ -20,9 +19,9 @@ struct definition_t {
   };
 };
 
-definition_t *make_function_definition(mod_t *mod, char *name, function_t *function);
-definition_t *make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive);
-definition_t *make_variable_definition(mod_t *mod, char *name, value_t value);
+definition_t *make_function_definition(char *name, function_t *function);
+definition_t *make_primitive_definition(char *name, primitive_t *primitive);
+definition_t *make_variable_definition(char *name, value_t value);
 
 void definition_free(definition_t *self);
 
