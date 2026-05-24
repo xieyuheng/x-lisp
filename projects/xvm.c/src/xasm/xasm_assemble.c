@@ -94,6 +94,11 @@ void xasm_prepare(mod_t *mod, value_t sexps) {
     if (sexp_has_tag(sexp, "define-test")) {
       prepare_define_test(mod, x_cdr(sexp));
     }
+
+    if (sexp_has_tag(sexp, "default-entry")) {
+      const char *name = symbol_string(to_symbol(x_car(x_cdr(sexp))));
+      mod->entry_name = string_copy(name);
+    }
   }
 }
 

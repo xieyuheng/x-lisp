@@ -1,0 +1,4 @@
+(module meta)
+
+(define (main)
+  void)

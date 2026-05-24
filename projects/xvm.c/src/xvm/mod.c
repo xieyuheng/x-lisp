@@ -4,12 +4,14 @@ mod_t *make_mod(void) {
   mod_t *self = new(mod_t);
   self->definitions = make_record_with((free_fn_t *) definition_free);
   self->test_names = make_string_set();
+  self->entry_name = NULL;
   return self;
 }
 
 void mod_free(mod_t *self) {
   record_free(self->definitions);
   set_free(self->test_names);
+  free(self->entry_name);
   free(self);
 }
 

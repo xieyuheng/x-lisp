@@ -1,21 +1,11 @@
 #!/usr/bin/env bash
 
-function call {
-    ../xvm.c/src/xvm.exe call build/bundle.xexe "$@"
+function run {
+    ../xvm.c/src/xvm.exe run build/bundle.xexe
 }
 
 function main {
-    local command=$1; shift
-    case $command in
-        (check)
-            # call meta/check-command $(realpath project.sexp) "true"
-            call meta/check-command $(realpath project.sexp) "false"
-            ;;
-        (*)
-            echo "unknown command: $command"
-            exit 1
-            ;;
-    esac
+    run
 }
 
 main $@

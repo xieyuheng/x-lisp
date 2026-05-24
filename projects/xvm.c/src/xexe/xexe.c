@@ -32,6 +32,7 @@ struct xexe_t {
   array_t *values;
   array_t *definition_relocations;
   array_t *value_relocations;
+  char *entry_name;
 };
 
 xexe_t *make_xexe(void) {
@@ -40,6 +41,7 @@ xexe_t *make_xexe(void) {
   self->values = make_array();
   self->definition_relocations = make_array();
   self->value_relocations = make_array();
+  self->entry_name = NULL;
   return self;
 }
 
@@ -71,6 +73,8 @@ void xexe_free(xexe_t *self) {
     free(reloc);
   }
   array_free(self->value_relocations);
+
+  free(self->entry_name);
 
   free(self);
 }
@@ -202,6 +206,9 @@ static void collect_relocations_from_bytecode(xexe_t *self) {
 void xexe_from_mod(xexe_t *self, mod_t *mod) {
   collect_definitions_from_mod(self, mod);
   collect_relocations_from_bytecode(self);
+  if (mod->entry_name) {
+    self->entry_name = string_copy(mod->entry_name);
+  }
 }
 
 // ── string table builder ──
@@ -215,6 +222,8 @@ static string_table_builder_t *string_table_builder_create(void) {
   string_table_builder_t *st = new(string_table_builder_t);
   st->offsets = make_record();
   st->buffer = make_buffer();
+  // prepend a null byte so that offset 0 can be used as a sentinel for "no entry"
+  buffer_append_byte(st->buffer, '\0');
   return st;
 }
 
@@ -250,13 +259,17 @@ static void collect_strings(string_table_builder_t *st, xexe_t *self) {
     definition_relocation_t *reloc = array_get(self->definition_relocations, i);
     string_table_builder_add(st, reloc->target_name);
   }
+  if (self->entry_name) {
+    string_table_builder_add(st, self->entry_name);
+  }
 }
 
 static void write_header(buffer_t *out, uint32_t definition_count, uint32_t value_count,
                          uint32_t definition_relocation_count,
                          uint32_t value_relocation_count,
-                         uint32_t string_table_size) {
-  uint8_t header[28];
+                         uint32_t string_table_size,
+                         uint32_t entry_offset) {
+  uint8_t header[32];
   uint32_t header_magic = XEXE_MAGIC;
   uint32_t header_version = XEXE_VERSION;
   memory_store(header,      header_magic);
@@ -266,7 +279,8 @@ static void write_header(buffer_t *out, uint32_t definition_count, uint32_t valu
   memory_store(header + 16, value_count);
   memory_store(header + 20, definition_relocation_count);
   memory_store(header + 24, value_relocation_count);
-  buffer_append_bytes(out, header, 28);
+  memory_store(header + 28, entry_offset);
+  buffer_append_bytes(out, header, 32);
 }
 
 static void write_definitions_section(buffer_t *out, xexe_t *self,
@@ -330,12 +344,15 @@ void xexe_dump(xexe_t *self, const char *pathname) {
   uint32_t definition_relocation_count = (uint32_t)array_length(self->definition_relocations);
   uint32_t value_relocation_count = (uint32_t)array_length(self->value_relocations);
   uint32_t string_table_size = (uint32_t)buffer_length(st->buffer);
+  uint32_t entry_offset = self->entry_name
+    ? string_table_builder_add(st, self->entry_name)
+    : 0;
 
   buffer_t *out = make_buffer();
 
   write_header(out, definition_count, value_count,
                definition_relocation_count, value_relocation_count,
-               string_table_size);
+               string_table_size, entry_offset);
   write_definitions_section(out, self, st);
   write_values_section(out, self, st);
   write_definition_relocations_section(out, self, st);
@@ -400,6 +417,7 @@ typedef struct {
   uint32_t value_count;
   uint32_t definition_relocation_count;
   uint32_t value_relocation_count;
+  uint32_t entry_offset;
 } file_header_t;
 
 static void parse_and_validate_header(uint8_t *bytes, size_t *offset, file_header_t *header) {
@@ -410,6 +428,7 @@ static void parse_and_validate_header(uint8_t *bytes, size_t *offset, file_heade
   read_u32(bytes, offset, &header->value_count);
   read_u32(bytes, offset, &header->definition_relocation_count);
   read_u32(bytes, offset, &header->value_relocation_count);
+  read_u32(bytes, offset, &header->entry_offset);
 
   if (header->magic != XEXE_MAGIC) {
     who_printf("invalid xexe magic: %08x\n", header->magic);
@@ -564,6 +583,10 @@ void xexe_load(xexe_t *self, const char *pathname) {
 
   uint8_t *string_table = bytes + offset;
 
+  if (header.entry_offset != 0) {
+    self->entry_name = string_copy((const char *)(string_table + header.entry_offset));
+  }
+
   resolve_definitions(self, raw_defs, header.definition_count, string_table);
   resolve_values(self, raw_vals, header.value_count, string_table);
   resolve_definition_relocations(self, raw_def_relocs, header.definition_relocation_count, string_table);
@@ -693,6 +716,10 @@ static void patch_value_relocations(definition_t **definitions,
 mod_t *xexe_to_mod(xexe_t *self) {
   mod_t *mod = make_mod();
   import_builtin(mod);
+
+  if (self->entry_name) {
+    mod->entry_name = string_copy(self->entry_name);
+  }
 
   uint32_t value_count;
   value_t *value_objects = build_value_table(self, &value_count);

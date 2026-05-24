@@ -32,7 +32,7 @@ void mod_test_definition(mod_t *mod, const char *snapshot, bool profile, definit
   assert(definition->kind == FUNCTION_DEFINITION);
   double testing_start = time_millisecond();
   if (snapshot == NULL) {
-    mod_call(mod, definition->name, NULL);
+    mod_call_entry(mod, definition->name);
   } else {
     path_t *path = make_path(snapshot);
     path_join(path, "modules");
@@ -43,7 +43,7 @@ void mod_test_definition(mod_t *mod, const char *snapshot, bool profile, definit
     path_push_segment(path, segment);
 
     stdout_push(path_raw_string(path));
-    mod_call(mod, definition->name, NULL);
+    mod_call_entry(mod, definition->name);
     stdout_drop();
 
     char *output = fs_read(path_raw_string(path));

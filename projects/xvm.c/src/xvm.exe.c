@@ -39,20 +39,25 @@ static void handle_assemble(cmd_ctx_t *ctx) {
   xexe_free(xexe);
 }
 
-static void handle_call(cmd_ctx_t *ctx){
+static void handle_run(cmd_ctx_t *ctx) {
   const char *pathname = cmd_get_arg(ctx, 0);
-  const char *name = cmd_get_arg(ctx, 1);
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
   mod_t *mod = xexe_to_mod(xexe);
   xexe_free(xexe);
-  array_t *args = make_array();
-  for (size_t i = 2; i < cmd_count_args(ctx); i ++) {
-    value_t arg = x_object(make_xstring(cmd_get_arg(ctx, i)));
-    array_push(args, (void *) arg);
+
+  const char *entry = cmd_get_option(ctx, "--entry");
+  if (!entry) {
+    entry = mod->entry_name;
   }
 
-  mod_call(mod, name, args);
+  if (!entry) {
+    who_printf("no entry function specified\n");
+    who_printf("  use --entry or add (default-entry ...) to xasm source\n");
+    exit(1);
+  }
+
+  mod_call_entry(mod, entry);
 }
 
 static void handle_test(cmd_ctx_t *ctx) {
@@ -77,11 +82,11 @@ int main(int argc, char *argv[]) {
   cmd_router_t *router = cmd_make_router("xvm", "0.1.0");
 
   cmd_define_route(router, "assemble file.xasm --output --profile");
-  cmd_define_route(router, "call file.xexe function");
+  cmd_define_route(router, "run file.xexe --entry");
   cmd_define_route(router, "test file.xexe --profile --snapshot --builtin");
 
   cmd_define_handler(router, "assemble", handle_assemble);
-  cmd_define_handler(router, "call", handle_call);
+  cmd_define_handler(router, "run", handle_run);
   cmd_define_handler(router, "test", handle_test);
 
   cmd_router_run(router, argc, argv);

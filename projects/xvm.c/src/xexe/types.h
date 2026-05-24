@@ -20,4 +20,4 @@ enum {
 
 #define XEXE_FLAG_IS_TEST 0x01
 
-#define XEXE_HEADER_SIZE 28
+#define XEXE_HEADER_SIZE 32
