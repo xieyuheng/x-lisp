@@ -1,5 +1,3 @@
-模仿 [cli.c] 和 [cli.js] 中的 calculator，在 [meta-example.meta] 的 cli 写一个 calculator 例子
-
 [meta-lisp.meta] term vs exp
 
 [xvm.c] json parser

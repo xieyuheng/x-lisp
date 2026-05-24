@@ -1,0 +1,27 @@
+=== hello ===
+"hello world"
+=== add 1 2 ===
+3
+=== mul --x 3 --y 4 ===
+12
+=== bye ===
+"bye bye"
+=== passthrough -- foo bar baz ===
+foo bar baz
+=== no command ===
+calculator 0.1.0
+commands:
+  hello -- say hello
+  add x y -- add two numbers
+  mul --x --y -- multiply two numbers
+  bye -- say bye bye
+  passthrough -- print passthrough args
+=== unknown command ===
+unknown command: badcmd
+calculator 0.1.0
+commands:
+  hello -- say hello
+  add x y -- add two numbers
+  mul --x --y -- multiply two numbers
+  bye -- say bye bye
+  passthrough -- print passthrough args
