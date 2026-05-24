@@ -1,0 +1,4 @@
+(module example)
+
+(define-test current-command-line-test
+  (println (current-command-line)))

@@ -1,5 +1,6 @@
-我们下面要模仿 [cli.c] 和 [cli.js] 在 [meta-builtin.meta] 中实现一个 cli 的 library，
-你对我们的语言 meta-lisp 有没有信心？
+写一个测试证明 cond 的 question 位置不能接受裸变量，如果这是最真的，那这是很严重的 bug。
+
+模仿 [cli.c] 和 [cli.js] 中的 calculator，在 [meta-example.meta] 的 cli 写一个 calculator 例子
 
 [meta-lisp.meta] term vs exp
 
