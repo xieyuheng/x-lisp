@@ -20,3 +20,24 @@
   (cond
    ((equal? 1 2) (assert false))
    (else (assert true))))
+
+(define-test cond-bare-true-test
+  (= flag true)
+  (cond (flag
+         (assert true))
+        (else
+         (assert false))))
+
+(define-test cond-bare-false-test
+  (= flag false)
+  (cond (flag
+         (assert false))
+        (else
+         (assert true))))
+
+(define-test cond-explicit-equal-false-test
+  (= flag false)
+  (cond ((equal? flag true)
+         (assert false))
+        (else
+         (assert true))))

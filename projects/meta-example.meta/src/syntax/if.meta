@@ -9,3 +9,11 @@
 
   (assert (or false false true))
   (assert (not (or false false false))))
+
+(define-test if-bare-true-test
+  (= flag true)
+  (assert-equal (if flag 1 2) 1))
+
+(define-test if-bare-false-test
+  (= flag false)
+  (assert-equal (if flag 1 2) 2))

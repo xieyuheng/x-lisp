@@ -322,10 +322,10 @@ function explicateControlInIf(
       return [
         B.TestInstr(
           B.ApplyExp(
-            B.VarExp("builtin/equal?", condition.location),
+            B.VarExp("builtin/same?", condition.location),
             [
               B.VarExp(condition.name, condition.location),
-              B.KeywordExp("t", condition.location),
+              B.VarExp("builtin/true", condition.location),
             ],
             condition.location,
           ),
