@@ -1,12 +1,13 @@
-[meta-lisp.js] move `generateRelativeFreshName` to  `desugar/`
-
 [xvm.c] [refactor] xexe -- review ai generated code
+
 [xvm.c] [refactor] profile option -- should use simple type
 [meta-lisp.js] [refactor] profile option -- should use simple type
 
 [meta-lisp.meta] term vs exp
 
-[meta-lisp.meta] [review] exp-free-names.meta
+[meta-lisp.meta] term-free-names.meta
+[meta-lisp.meta] term-traverse.meta
+
 [meta-lisp.meta] [review] exp-location.meta
 [meta-lisp.meta] [review] exp-naive-subst.meta
 [meta-lisp.meta] [review] exp-occurred-names.meta

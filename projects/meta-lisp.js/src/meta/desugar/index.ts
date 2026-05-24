@@ -1,3 +1,4 @@
+export * from "./generateRelativeFreshName.ts"
 export * from "./desugar.ts"
 export * from "./desugarAnd.ts"
 export * from "./desugarBegin.ts"
