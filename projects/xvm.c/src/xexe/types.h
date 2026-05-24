@@ -9,7 +9,7 @@ typedef struct xexe_t xexe_t;
 
 enum {
   XEXE_DEF_FUNCTION = 0,
-  XEXE_DEF_VARIABLE = 2,
+  XEXE_DEF_VARIABLE = 1,
 };
 
 enum {

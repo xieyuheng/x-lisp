@@ -75,6 +75,8 @@ void xexe_free(xexe_t *self) {
   free(self);
 }
 
+// ── helpers for xexe_from_mod ──
+
 static uint8_t compute_flags(mod_t *mod, const char *name) {
   return set_member(mod->test_names, (void *)name) ? XEXE_FLAG_IS_TEST : 0;
 }
@@ -88,8 +90,45 @@ static bool should_serialize(definition_t *definition) {
   unreachable();
 }
 
-static void collect_relocs(xexe_t *self, size_t definition_index,
-                           uint8_t *code, size_t length) {
+static void collect_definitions_from_mod(xexe_t *self, mod_t *mod) {
+  record_iter_t iter;
+  record_iter_init(&iter, mod->definitions);
+  const hash_entry_t *entry = record_iter_next_entry(&iter);
+  while (entry) {
+    definition_t *definition = entry->value;
+    if (!should_serialize(definition)) {
+      entry = record_iter_next_entry(&iter);
+      continue;
+    }
+
+    definition_entry_t *def_entry = new(definition_entry_t);
+    def_entry->name = string_copy(definition->name);
+    def_entry->flags = compute_flags(mod, definition->name);
+
+    function_t *fn;
+    if (definition->kind == FUNCTION_DEFINITION) {
+      def_entry->kind = XEXE_DEF_FUNCTION;
+      fn = definition_function(definition);
+      def_entry->arity = (uint16_t)definition_arity(definition);
+    } else {
+      def_entry->kind = XEXE_DEF_VARIABLE;
+      fn = definition->variable_definition.function;
+      def_entry->arity = 0;
+    }
+
+    def_entry->local_count = (uint16_t)fn->local_count;
+    def_entry->code_length = (uint32_t)buffer_length(fn->buffer);
+    def_entry->code = allocate(def_entry->code_length);
+    memory_copy(def_entry->code, buffer_raw_bytes(fn->buffer), def_entry->code_length);
+
+    array_push(self->definitions, def_entry);
+
+    entry = record_iter_next_entry(&iter);
+  }
+}
+
+static void scan_bytecode_for_relocations(xexe_t *self, size_t definition_index,
+                                          uint8_t *code, size_t length) {
   size_t pc = 0;
 
   while (pc < length) {
@@ -153,47 +192,19 @@ static void collect_relocs(xexe_t *self, size_t definition_index,
   }
 }
 
-void xexe_from_mod(xexe_t *self, mod_t *mod) {
-  record_iter_t iter;
-  record_iter_init(&iter, mod->definitions);
-  const hash_entry_t *entry = record_iter_next_entry(&iter);
-  while (entry) {
-    definition_t *definition = entry->value;
-    if (!should_serialize(definition)) {
-      entry = record_iter_next_entry(&iter);
-      continue;
-    }
-
-    definition_entry_t *def_entry = new(definition_entry_t);
-    def_entry->name = string_copy(definition->name);
-    def_entry->flags = compute_flags(mod, definition->name);
-
-    function_t *fn;
-    if (definition->kind == FUNCTION_DEFINITION) {
-      def_entry->kind = XEXE_DEF_FUNCTION;
-      fn = definition_function(definition);
-      def_entry->arity = (uint16_t)definition_arity(definition);
-    } else {
-      def_entry->kind = XEXE_DEF_VARIABLE;
-      fn = definition->variable_definition.function;
-      def_entry->arity = 0;
-    }
-
-    def_entry->local_count = (uint16_t)fn->local_count;
-    def_entry->code_length = (uint32_t)buffer_length(fn->buffer);
-    def_entry->code = allocate(def_entry->code_length);
-    memory_copy(def_entry->code, buffer_raw_bytes(fn->buffer), def_entry->code_length);
-
-    array_push(self->definitions, def_entry);
-
-    entry = record_iter_next_entry(&iter);
-  }
-
+static void collect_relocations_from_bytecode(xexe_t *self) {
   for (size_t i = 0; i < array_length(self->definitions); i++) {
     definition_entry_t *def_entry = array_get(self->definitions, i);
-    collect_relocs(self, i, def_entry->code, def_entry->code_length);
+    scan_bytecode_for_relocations(self, i, def_entry->code, def_entry->code_length);
   }
 }
+
+void xexe_from_mod(xexe_t *self, mod_t *mod) {
+  collect_definitions_from_mod(self, mod);
+  collect_relocations_from_bytecode(self);
+}
+
+// ── string table builder ──
 
 typedef struct {
   record_t *offsets;
@@ -224,9 +235,9 @@ static void string_table_builder_free(string_table_builder_t *st) {
   free(st);
 }
 
-void xexe_dump(xexe_t *self, const char *pathname) {
-  string_table_builder_t *st = string_table_builder_create();
+// ── helpers for xexe_dump ──
 
+static void collect_strings(string_table_builder_t *st, xexe_t *self) {
   for (size_t i = 0; i < array_length(self->definitions); i++) {
     definition_entry_t *def_entry = array_get(self->definitions, i);
     string_table_builder_add(st, def_entry->name);
@@ -239,30 +250,28 @@ void xexe_dump(xexe_t *self, const char *pathname) {
     definition_relocation_t *reloc = array_get(self->definition_relocations, i);
     string_table_builder_add(st, reloc->target_name);
   }
+}
 
-  uint32_t definition_count = (uint32_t)array_length(self->definitions);
-  uint32_t value_count = (uint32_t)array_length(self->values);
-  uint32_t definition_relocation_count = (uint32_t)array_length(self->definition_relocations);
-  uint32_t value_relocation_count = (uint32_t)array_length(self->value_relocations);
-  uint32_t string_table_size = (uint32_t)buffer_length(st->buffer);
+static void write_header(buffer_t *out, uint32_t definition_count, uint32_t value_count,
+                         uint32_t definition_relocation_count,
+                         uint32_t value_relocation_count,
+                         uint32_t string_table_size) {
+  uint8_t header[28];
+  uint32_t header_magic = XEXE_MAGIC;
+  uint32_t header_version = XEXE_VERSION;
+  memory_store(header,      header_magic);
+  memory_store(header + 4,  header_version);
+  memory_store(header + 8,  definition_count);
+  memory_store(header + 12, string_table_size);
+  memory_store(header + 16, value_count);
+  memory_store(header + 20, definition_relocation_count);
+  memory_store(header + 24, value_relocation_count);
+  buffer_append_bytes(out, header, 28);
+}
 
-  buffer_t *out = make_buffer();
-
-  {
-    uint8_t header[28];
-    uint32_t header_magic = XEXE_MAGIC;
-    uint32_t header_version = XEXE_VERSION;
-    memory_store(header,      header_magic);
-    memory_store(header + 4,  header_version);
-    memory_store(header + 8,  definition_count);
-    memory_store(header + 12, string_table_size);
-    memory_store(header + 16, value_count);
-    memory_store(header + 20, definition_relocation_count);
-    memory_store(header + 24, value_relocation_count);
-    buffer_append_bytes(out, header, 28);
-  }
-
-  for (size_t i = 0; i < definition_count; i++) {
+static void write_definitions_section(buffer_t *out, xexe_t *self,
+                                      string_table_builder_t *st) {
+  for (size_t i = 0; i < array_length(self->definitions); i++) {
     definition_entry_t *def_entry = array_get(self->definitions, i);
     uint32_t name_offset = string_table_builder_add(st, def_entry->name);
 
@@ -277,16 +286,22 @@ void xexe_dump(xexe_t *self, const char *pathname) {
       buffer_append_bytes(out, def_entry->code, def_entry->code_length);
     }
   }
+}
 
-  for (size_t i = 0; i < value_count; i++) {
+static void write_values_section(buffer_t *out, xexe_t *self,
+                                 string_table_builder_t *st) {
+  for (size_t i = 0; i < array_length(self->values); i++) {
     value_entry_t *val_entry = array_get(self->values, i);
     uint32_t data_offset = string_table_builder_add(st, val_entry->data);
 
     buffer_append_byte(out, val_entry->kind);
     buffer_append_bytes(out, (uint8_t *)&data_offset, 4);
   }
+}
 
-  for (size_t i = 0; i < definition_relocation_count; i++) {
+static void write_definition_relocations_section(buffer_t *out, xexe_t *self,
+                                                 string_table_builder_t *st) {
+  for (size_t i = 0; i < array_length(self->definition_relocations); i++) {
     definition_relocation_t *reloc = array_get(self->definition_relocations, i);
     uint32_t target_offset = string_table_builder_add(st, reloc->target_name);
 
@@ -294,15 +309,37 @@ void xexe_dump(xexe_t *self, const char *pathname) {
     buffer_append_bytes(out, (uint8_t *)&reloc->code_offset, 4);
     buffer_append_bytes(out, (uint8_t *)&target_offset, 4);
   }
+}
 
-  for (size_t i = 0; i < value_relocation_count; i++) {
+static void write_value_relocations_section(buffer_t *out, xexe_t *self) {
+  for (size_t i = 0; i < array_length(self->value_relocations); i++) {
     value_relocation_t *reloc = array_get(self->value_relocations, i);
 
     buffer_append_bytes(out, (uint8_t *)&reloc->definition_index, 4);
     buffer_append_bytes(out, (uint8_t *)&reloc->code_offset, 4);
     buffer_append_bytes(out, (uint8_t *)&reloc->value_index, 4);
   }
+}
 
+void xexe_dump(xexe_t *self, const char *pathname) {
+  string_table_builder_t *st = string_table_builder_create();
+  collect_strings(st, self);
+
+  uint32_t definition_count = (uint32_t)array_length(self->definitions);
+  uint32_t value_count = (uint32_t)array_length(self->values);
+  uint32_t definition_relocation_count = (uint32_t)array_length(self->definition_relocations);
+  uint32_t value_relocation_count = (uint32_t)array_length(self->value_relocations);
+  uint32_t string_table_size = (uint32_t)buffer_length(st->buffer);
+
+  buffer_t *out = make_buffer();
+
+  write_header(out, definition_count, value_count,
+               definition_relocation_count, value_relocation_count,
+               string_table_size);
+  write_definitions_section(out, self, st);
+  write_values_section(out, self, st);
+  write_definition_relocations_section(out, self, st);
+  write_value_relocations_section(out, self);
   buffer_append_bytes(out, buffer_raw_bytes(st->buffer), buffer_length(st->buffer));
 
   file_t *file = open_file_or_fail(pathname, "w");
@@ -312,6 +349,8 @@ void xexe_dump(xexe_t *self, const char *pathname) {
   buffer_free(out);
   string_table_builder_free(st);
 }
+
+// ── binary reading utilities ──
 
 static inline void read_u32(uint8_t *bytes, size_t *offset, uint32_t *dst) {
   memory_load(bytes + *offset, *dst);
@@ -328,59 +367,79 @@ static inline void read_byte(uint8_t *bytes, size_t *offset, uint8_t *dst) {
   *offset += 1;
 }
 
-void xexe_load(xexe_t *self, const char *pathname) {
-  file_t *file = open_file_or_fail(pathname, "r");
-  uint8_t *bytes = file_read_bytes(file);
-  file_close(file);
+// ── raw parsing types for xexe_load ──
 
-  size_t offset = 0;
+typedef struct {
+  uint8_t  kind;
+  uint32_t name_offset;
+  uint16_t arity;
+  uint8_t  flags;
+  uint16_t local_count;
+  uint32_t code_length;
+  uint8_t *code_ptr;
+} raw_definition_t;
 
-  uint32_t magic, version, definition_count, string_table_size,
-           value_count, definition_relocation_count, value_relocation_count;
-  read_u32(bytes, &offset, &magic);
-  read_u32(bytes, &offset, &version);
-  read_u32(bytes, &offset, &definition_count);
-  read_u32(bytes, &offset, &string_table_size);
-  read_u32(bytes, &offset, &value_count);
-  read_u32(bytes, &offset, &definition_relocation_count);
-  read_u32(bytes, &offset, &value_relocation_count);
+typedef struct {
+  uint8_t  kind;
+  uint32_t data_offset;
+} raw_value_t;
 
-  if (magic != XEXE_MAGIC) {
-    who_printf("invalid xexe magic: %08x\n", magic);
+typedef struct {
+  uint32_t definition_index;
+  uint32_t code_offset;
+  uint32_t target_offset;
+} raw_definition_relocation_t;
+
+// ── helpers for xexe_load ──
+
+typedef struct {
+  uint32_t magic;
+  uint32_t version;
+  uint32_t definition_count;
+  uint32_t string_table_size;
+  uint32_t value_count;
+  uint32_t definition_relocation_count;
+  uint32_t value_relocation_count;
+} file_header_t;
+
+static void parse_and_validate_header(uint8_t *bytes, size_t *offset, file_header_t *header) {
+  read_u32(bytes, offset, &header->magic);
+  read_u32(bytes, offset, &header->version);
+  read_u32(bytes, offset, &header->definition_count);
+  read_u32(bytes, offset, &header->string_table_size);
+  read_u32(bytes, offset, &header->value_count);
+  read_u32(bytes, offset, &header->definition_relocation_count);
+  read_u32(bytes, offset, &header->value_relocation_count);
+
+  if (header->magic != XEXE_MAGIC) {
+    who_printf("invalid xexe magic: %08x\n", header->magic);
     exit(1);
   }
-  if (version != XEXE_VERSION) {
-    who_printf("unsupported xexe version: %d\n", version);
+  if (header->version != XEXE_VERSION) {
+    who_printf("unsupported xexe version: %d\n", header->version);
     exit(1);
   }
+}
 
-  typedef struct {
-    uint8_t  kind;
-    uint32_t name_offset;
-    uint16_t arity;
-    uint8_t  flags;
-    uint16_t local_count;
-    uint32_t code_length;
-    uint8_t *code_ptr;
-  } raw_def_t;
-
-  raw_def_t *raw_defs = NULL;
-  if (definition_count > 0) {
-    raw_defs = allocate(sizeof(raw_def_t) * definition_count);
+static raw_definition_t *parse_raw_definitions(uint8_t *bytes, size_t *offset,
+                                               uint32_t count) {
+  raw_definition_t *raw_defs = NULL;
+  if (count > 0) {
+    raw_defs = allocate(sizeof(raw_definition_t) * count);
   }
 
-  for (uint32_t i = 0; i < definition_count; i++) {
-    read_byte(bytes, &offset, &raw_defs[i].kind);
-    read_u32(bytes, &offset, &raw_defs[i].name_offset);
-    read_u16(bytes, &offset, &raw_defs[i].arity);
-    read_byte(bytes, &offset, &raw_defs[i].flags);
+  for (uint32_t i = 0; i < count; i++) {
+    read_byte(bytes, offset, &raw_defs[i].kind);
+    read_u32(bytes, offset, &raw_defs[i].name_offset);
+    read_u16(bytes, offset, &raw_defs[i].arity);
+    read_byte(bytes, offset, &raw_defs[i].flags);
 
     if (raw_defs[i].kind == XEXE_DEF_FUNCTION ||
         raw_defs[i].kind == XEXE_DEF_VARIABLE) {
-      read_u16(bytes, &offset, &raw_defs[i].local_count);
-      read_u32(bytes, &offset, &raw_defs[i].code_length);
-      raw_defs[i].code_ptr = bytes + offset;
-      offset += raw_defs[i].code_length;
+      read_u16(bytes, offset, &raw_defs[i].local_count);
+      read_u32(bytes, offset, &raw_defs[i].code_length);
+      raw_defs[i].code_ptr = bytes + *offset;
+      *offset += raw_defs[i].code_length;
     } else {
       raw_defs[i].local_count = 0;
       raw_defs[i].code_length = 0;
@@ -388,51 +447,56 @@ void xexe_load(xexe_t *self, const char *pathname) {
     }
   }
 
-  typedef struct {
-    uint8_t  kind;
-    uint32_t data_offset;
-  } raw_val_t;
+  return raw_defs;
+}
 
-  raw_val_t *raw_vals = NULL;
-  if (value_count > 0) {
-    raw_vals = allocate(sizeof(raw_val_t) * value_count);
+static raw_value_t *parse_raw_values(uint8_t *bytes, size_t *offset,
+                                     uint32_t count) {
+  raw_value_t *raw_vals = NULL;
+  if (count > 0) {
+    raw_vals = allocate(sizeof(raw_value_t) * count);
   }
 
-  for (uint32_t i = 0; i < value_count; i++) {
-    read_byte(bytes, &offset, &raw_vals[i].kind);
-    read_u32(bytes, &offset, &raw_vals[i].data_offset);
+  for (uint32_t i = 0; i < count; i++) {
+    read_byte(bytes, offset, &raw_vals[i].kind);
+    read_u32(bytes, offset, &raw_vals[i].data_offset);
   }
 
-  typedef struct {
-    uint32_t definition_index;
-    uint32_t code_offset;
-    uint32_t target_offset;
-  } raw_def_reloc_t;
+  return raw_vals;
+}
 
-  raw_def_reloc_t *raw_def_relocs = NULL;
-  if (definition_relocation_count > 0) {
-    raw_def_relocs = allocate(sizeof(raw_def_reloc_t) * definition_relocation_count);
+static raw_definition_relocation_t *parse_raw_definition_relocations(uint8_t *bytes, size_t *offset,
+                                                                     uint32_t count) {
+  raw_definition_relocation_t *raw_relocs = NULL;
+  if (count > 0) {
+    raw_relocs = allocate(sizeof(raw_definition_relocation_t) * count);
   }
 
-  for (uint32_t i = 0; i < definition_relocation_count; i++) {
-    read_u32(bytes, &offset, &raw_def_relocs[i].definition_index);
-    read_u32(bytes, &offset, &raw_def_relocs[i].code_offset);
-    read_u32(bytes, &offset, &raw_def_relocs[i].target_offset);
+  for (uint32_t i = 0; i < count; i++) {
+    read_u32(bytes, offset, &raw_relocs[i].definition_index);
+    read_u32(bytes, offset, &raw_relocs[i].code_offset);
+    read_u32(bytes, offset, &raw_relocs[i].target_offset);
   }
 
-  for (uint32_t i = 0; i < value_relocation_count; i++) {
+  return raw_relocs;
+}
+
+static void parse_value_relocations(xexe_t *self, uint8_t *bytes, size_t *offset,
+                                    uint32_t count) {
+  for (uint32_t i = 0; i < count; i++) {
     value_relocation_t *reloc = new(value_relocation_t);
 
-    read_u32(bytes, &offset, &reloc->definition_index);
-    read_u32(bytes, &offset, &reloc->code_offset);
-    read_u32(bytes, &offset, &reloc->value_index);
+    read_u32(bytes, offset, &reloc->definition_index);
+    read_u32(bytes, offset, &reloc->code_offset);
+    read_u32(bytes, offset, &reloc->value_index);
 
     array_push(self->value_relocations, reloc);
   }
+}
 
-  uint8_t *string_table = bytes + offset;
-
-  for (uint32_t i = 0; i < definition_count; i++) {
+static void resolve_definitions(xexe_t *self, raw_definition_t *raw_defs,
+                                uint32_t count, uint8_t *string_table) {
+  for (uint32_t i = 0; i < count; i++) {
     definition_entry_t *def_entry = new(definition_entry_t);
 
     def_entry->kind = raw_defs[i].kind;
@@ -454,8 +518,11 @@ void xexe_load(xexe_t *self, const char *pathname) {
 
     array_push(self->definitions, def_entry);
   }
+}
 
-  for (uint32_t i = 0; i < value_count; i++) {
+static void resolve_values(xexe_t *self, raw_value_t *raw_vals,
+                           uint32_t count, uint8_t *string_table) {
+  for (uint32_t i = 0; i < count; i++) {
     value_entry_t *val_entry = new(value_entry_t);
 
     val_entry->kind = raw_vals[i].kind;
@@ -463,16 +530,43 @@ void xexe_load(xexe_t *self, const char *pathname) {
 
     array_push(self->values, val_entry);
   }
+}
 
-  for (uint32_t i = 0; i < definition_relocation_count; i++) {
+static void resolve_definition_relocations(xexe_t *self,
+                                           raw_definition_relocation_t *raw_relocs,
+                                           uint32_t count, uint8_t *string_table) {
+  for (uint32_t i = 0; i < count; i++) {
     definition_relocation_t *reloc = new(definition_relocation_t);
 
-    reloc->definition_index = raw_def_relocs[i].definition_index;
-    reloc->code_offset = raw_def_relocs[i].code_offset;
-    reloc->target_name = string_copy((const char *)(string_table + raw_def_relocs[i].target_offset));
+    reloc->definition_index = raw_relocs[i].definition_index;
+    reloc->code_offset = raw_relocs[i].code_offset;
+    reloc->target_name = string_copy((const char *)(string_table + raw_relocs[i].target_offset));
 
     array_push(self->definition_relocations, reloc);
   }
+}
+
+void xexe_load(xexe_t *self, const char *pathname) {
+  file_t *file = open_file_or_fail(pathname, "r");
+  uint8_t *bytes = file_read_bytes(file);
+  file_close(file);
+
+  size_t offset = 0;
+
+  file_header_t header;
+  parse_and_validate_header(bytes, &offset, &header);
+
+  raw_definition_t *raw_defs = parse_raw_definitions(bytes, &offset, header.definition_count);
+  raw_value_t *raw_vals = parse_raw_values(bytes, &offset, header.value_count);
+  raw_definition_relocation_t *raw_def_relocs =
+    parse_raw_definition_relocations(bytes, &offset, header.definition_relocation_count);
+  parse_value_relocations(self, bytes, &offset, header.value_relocation_count);
+
+  uint8_t *string_table = bytes + offset;
+
+  resolve_definitions(self, raw_defs, header.definition_count, string_table);
+  resolve_values(self, raw_vals, header.value_count, string_table);
+  resolve_definition_relocations(self, raw_def_relocs, header.definition_relocation_count, string_table);
 
   free(raw_defs);
   free(raw_vals);
@@ -480,10 +574,9 @@ void xexe_load(xexe_t *self, const char *pathname) {
   free(bytes);
 }
 
-mod_t *xexe_to_mod(xexe_t *self) {
-  mod_t *mod = make_mod();
-  import_builtin(mod);
+// ── helpers for xexe_to_mod ──
 
+static value_t *build_value_table(xexe_t *self, uint32_t *out_count) {
   uint32_t value_count = (uint32_t)array_length(self->values);
   value_t *value_objects = allocate(sizeof(value_t) * (value_count > 0 ? value_count : 1));
   record_t *xstring_pool = make_record();
@@ -511,7 +604,12 @@ mod_t *xexe_to_mod(xexe_t *self) {
     }
   }
   record_free(xstring_pool);
+  *out_count = value_count;
+  return value_objects;
+}
 
+static definition_t **build_definitions_and_register(xexe_t *self, mod_t *mod,
+                                                     uint32_t *out_count) {
   uint32_t definition_count = (uint32_t)array_length(self->definitions);
   definition_t **definitions = allocate(sizeof(definition_t *) * (definition_count > 0 ? definition_count : 1));
 
@@ -539,11 +637,17 @@ mod_t *xexe_to_mod(xexe_t *self) {
     }
   }
 
+  *out_count = definition_count;
+  return definitions;
+}
+
+static void patch_definition_relocations(definition_t **definitions,
+                                         xexe_t *self, mod_t *mod) {
   for (uint32_t i = 0; i < array_length(self->definition_relocations); i++) {
     definition_relocation_t *reloc = array_get(self->definition_relocations, i);
     size_t def_index = reloc->definition_index;
-    if (def_index >= definition_count) {
-      who_printf("definition relocation definition_index out of range: %zu >= %d\n", def_index, definition_count);
+    if (def_index >= array_length(self->definitions)) {
+      who_printf("definition relocation definition_index out of range: %zu\n", def_index);
       exit(1);
     }
 
@@ -557,19 +661,23 @@ mod_t *xexe_to_mod(xexe_t *self) {
     }
     memory_store(buffer_raw_bytes(fn->buffer) + code_offset, target_def);
   }
+}
 
+static void patch_value_relocations(definition_t **definitions,
+                                    value_t *value_objects,
+                                    uint32_t value_count, xexe_t *self) {
   for (uint32_t i = 0; i < array_length(self->value_relocations); i++) {
     value_relocation_t *reloc = array_get(self->value_relocations, i);
     size_t def_index = reloc->definition_index;
-    if (def_index >= definition_count) {
-      who_printf("value relocation definition_index out of range: %zu >= %d\n", def_index, definition_count);
+    if (def_index >= array_length(self->definitions)) {
+      who_printf("value relocation definition_index out of range: %zu\n", def_index);
       exit(1);
     }
 
     function_t *fn = definition_function(definitions[def_index]);
     size_t value_index = reloc->value_index;
     if (value_index >= value_count) {
-      who_printf("value relocation value_index out of range: %zu >= %d\n", value_index, value_count);
+      who_printf("value relocation value_index out of range: %zu\n", value_index);
       exit(1);
     }
 
@@ -580,6 +688,20 @@ mod_t *xexe_to_mod(xexe_t *self) {
     }
     memory_store(buffer_raw_bytes(fn->buffer) + code_offset, value_objects[value_index]);
   }
+}
+
+mod_t *xexe_to_mod(xexe_t *self) {
+  mod_t *mod = make_mod();
+  import_builtin(mod);
+
+  uint32_t value_count;
+  value_t *value_objects = build_value_table(self, &value_count);
+
+  uint32_t definition_count;
+  definition_t **definitions = build_definitions_and_register(self, mod, &definition_count);
+
+  patch_definition_relocations(definitions, self, mod);
+  patch_value_relocations(definitions, value_objects, value_count, self);
 
   mod_setup(mod);
 
