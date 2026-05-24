@@ -1,4 +1,4 @@
-[xvm.c] [refactor] xexe -- extract `xexe_t`
+[xvm.c] [refactor] xexe
 
 [meta-lisp.meta] term vs exp
 

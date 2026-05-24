@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+typedef struct xexe_t xexe_t;
+
 #define XEXE_MAGIC   ((uint32_t) 0x58455845)
 #define XEXE_VERSION ((uint32_t) 1)
 

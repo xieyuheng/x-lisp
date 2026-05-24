@@ -282,15 +282,13 @@ xvm test <file> [--snapshot] [--profile] [--builtin]
 | `types.h`         | 魔数、版本常量、kind enum、struct 定义 |
 | `deps.h`          | 模块依赖                               |
 | `index.h`         | include 所有头文件                     |
-| `xexe_assemble.c` | mod → .xexe 序列化                    |
-| `xexe_load.c`     | .xexe → mod 反序列化 + 重定位         |
-
+| `xexe.c`          | xexe_t: mod ↔ .xexe 序列化/反序列化   |
 ### 修改文件
 
 | 文件          | 改动                                                                 |
 |---------------|----------------------------------------------------------------------|
 | `xvm.exe.c`   | 增加 `assemble` 路由；`call`/`test` 根据扩展名选择加载方式           |
-| `xasm/xasm.h` | 无改动，但 `xexe_load` 返回的 mod 与 `xasm_load` 返回的 mod 完全兼容 |
+| `xasm/xasm.h` | 无改动，但 `xexe_to_mod` 返回的 mod 与 `xasm_load` 返回的 mod 完全兼容 |
 
 ## 设计约束与后续扩展
 

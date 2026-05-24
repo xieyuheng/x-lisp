@@ -26,21 +26,27 @@ static void handle_assemble(cmd_ctx_t *ctx) {
   const char *output = cmd_get_option(ctx, "--output");
   bool profile = cmd_has_option(ctx, "--profile");
   mod_t *mod = xasm_load(make_path(pathname), profile);
+  xexe_t *xexe = make_xexe();
+  xexe_assemble(xexe, mod);
+  mod_free(mod);
   if (output) {
-    xexe_assemble(mod, output);
+    xexe_write(xexe, output);
   } else {
     char *default_output = build_output_pathname(pathname);
-    xexe_assemble(mod, default_output);
+    xexe_write(xexe, default_output);
     free(default_output);
   }
-  mod_free(mod);
+  xexe_free(xexe);
 }
 
 static void handle_call(cmd_ctx_t *ctx){
   const char *pathname = cmd_get_arg(ctx, 0);
   const char *name = cmd_get_arg(ctx, 1);
   bool profile = cmd_has_option(ctx, "--profile");
-  mod_t *mod = xexe_load(make_path(pathname), profile);
+  xexe_t *xexe = make_xexe();
+  xexe_load(xexe, pathname);
+  mod_t *mod = xexe_to_mod(xexe, profile);
+  xexe_free(xexe);
   array_t *args = make_array();
   for (size_t i = 2; i < cmd_count_args(ctx); i ++) {
     value_t arg = x_object(make_xstring(cmd_get_arg(ctx, i)));
@@ -55,7 +61,10 @@ static void handle_test(cmd_ctx_t *ctx) {
   const char *snapshot = cmd_get_option(ctx, "--snapshot");
   bool profile = cmd_has_option(ctx, "--profile");
   bool builtin = cmd_has_option(ctx, "--builtin");
-  mod_t *mod = xexe_load(make_path(pathname), profile);
+  xexe_t *xexe = make_xexe();
+  xexe_load(xexe, pathname);
+  mod_t *mod = xexe_to_mod(xexe, profile);
+  xexe_free(xexe);
   if (builtin) xasm_builtin_test(mod, snapshot, profile);
   xasm_test(mod, snapshot, profile);
 }

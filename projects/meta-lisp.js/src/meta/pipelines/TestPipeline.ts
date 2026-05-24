@@ -10,10 +10,7 @@ export function TestPipeline(
   xvmText(project, options)
 }
 
-function xvmText(
-  project: M.Project,
-  options: Map<string, string>,
-): void {
+function xvmText(project: M.Project, options: Map<string, string>): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
   const xvmPath = Path.join(currentDir, "../../../../xvm.c/src/xvm.exe")
   const xexePath = Path.join(M.projectOutputDirectory(project), "bundle.xexe")
