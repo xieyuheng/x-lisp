@@ -3,6 +3,9 @@ import {
   fileWriteln,
   openOutputFile,
 } from "@xieyuheng/helpers.js/file"
+import { systemShellRun } from "@xieyuheng/helpers.js/system"
+import Path from "node:path"
+import { fileURLToPath } from "node:url"
 import * as B from "../../basic/index.ts"
 import { textWidth } from "../../config.ts"
 import * as Xasm from "../../xasm/index.ts"
@@ -36,8 +39,10 @@ export function BuildPipeline(
   const basicMod = M.ExplicateControlPass(project)
   if (options.basic) BasicBundle(project, basicMod)
 
-  const stackMod = M.CodegenPass(project, basicMod)
-  StackBundle(project, stackMod)
+  const xasmMod = M.CodegenPass(project, basicMod)
+  XasmBundle(project, xasmMod)
+
+  xvmAssemble(project)
 }
 
 function BasicBundle(project: M.Project, basicMod: B.Mod): void {
@@ -51,11 +56,18 @@ function BasicBundle(project: M.Project, basicMod: B.Mod): void {
   })
 }
 
-function StackBundle(project: M.Project, stackMod: Xasm.Mod): void {
+function XasmBundle(project: M.Project, xasmMod: Xasm.Mod): void {
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.xasm`), (file) => {
-    const definitions = Array.from(stackMod.definitions.values())
+    const definitions = Array.from(xasmMod.definitions.values())
     const code = definitions.map(Xasm.formatDefinition).join("\n")
     fileWriteln(file, code)
   })
+}
+
+function xvmAssemble(project: M.Project): void {
+  const currentDir = Path.dirname(fileURLToPath(import.meta.url))
+  const xvmPath = Path.join(currentDir, "../../../../xvm.c/src/xvm.exe")
+  const xasmPath = Path.join(M.projectOutputDirectory(project), "bundle.xasm")
+  systemShellRun(xvmPath, ["assemble", xasmPath])
 }

@@ -1,6 +1,7 @@
 # x-lisp
 *.o
 *.exe
+*.xexe
 
 # cmake
 build/

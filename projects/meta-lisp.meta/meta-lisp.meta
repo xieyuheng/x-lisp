@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function call {
-    ../xvm.c/src/xvm.exe call build/bundle.xasm "$@"
+    ../xvm.c/src/xvm.exe call build/bundle.xexe "$@"
 }
 
 function main {

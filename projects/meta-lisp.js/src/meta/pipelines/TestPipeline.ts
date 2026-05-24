@@ -3,8 +3,6 @@ import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as M from "../index.ts"
 
-const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-
 export function TestPipeline(
   project: M.Project,
   options: {
@@ -12,15 +10,20 @@ export function TestPipeline(
     builtin: boolean
   },
 ): void {
-  const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.xasm")
+  xvmText(project, options)
+}
+
+function xvmText(
+  project: M.Project,
+  options: {
+    profile: boolean
+    builtin: boolean
+  },
+): void {
+  const currentDir = Path.dirname(fileURLToPath(import.meta.url))
+  const xvmPath = Path.join(currentDir, "../../../../xvm.c/src/xvm.exe")
   const xexePath = Path.join(M.projectOutputDirectory(project), "bundle.xexe")
-
-  systemShellRun(Path.join(currentDir, "../../../../xvm.c/src/xvm.exe"), [
-    "assemble",
-    bundlePath,
-  ])
-
-  systemShellRun(Path.join(currentDir, "../../../../xvm.c/src/xvm.exe"), [
+  systemShellRun(xvmPath, [
     "test",
     xexePath,
     "--snapshot",

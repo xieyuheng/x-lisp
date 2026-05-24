@@ -4,14 +4,14 @@ import * as M from "../../meta/index.ts"
 import * as Xasm from "../../xasm/index.ts"
 
 export function CodegenPass(project: M.Project, basicMod: B.Mod): Xasm.Mod {
-  const stackMod = Xasm.createMod()
+  const xasmMod = Xasm.createMod()
   for (const definition of basicMod.definitions.values()) {
     for (const stackDefinition of codegenDefinition(basicMod, definition)) {
-      stackMod.definitions.set(stackDefinition.name, stackDefinition)
+      xasmMod.definitions.set(stackDefinition.name, stackDefinition)
     }
   }
 
-  return stackMod
+  return xasmMod
 }
 
 type State = {
