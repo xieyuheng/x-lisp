@@ -31,8 +31,8 @@
 (define-test cli-route-match-options-test
   (= route (cli-parse-route "cmd --verbose --name"))
   (= ctx (cli-route-match route ["--verbose" "--name" "hello"]))
-  (assert (cli-option-has "--verbose" ctx))
-  (assert (cli-option-has "--name" ctx))
+  (assert (cli-option-has? "--verbose" ctx))
+  (assert (cli-option-has? "--name" ctx))
   (assert-equal "" (cli-option-get "--verbose" ctx))
   (assert-equal "hello" (cli-option-get "--name" ctx)))
 
@@ -49,7 +49,7 @@
   (= ctx (cli-route-match route ["prog.xexe" "--entry" "main" "--" "--verbose"]))
   (assert-equal 1 (cli-arg-count ctx))
   (assert-equal "prog.xexe" (cli-arg-get 0 ctx))
-  (assert (cli-option-has "--entry" ctx))
+  (assert (cli-option-has? "--entry" ctx))
   (assert-equal "main" (cli-option-get "--entry" ctx))
   (assert-equal 1 (cli-passthrough-count ctx))
   (assert-equal "--verbose" (cli-passthrough-get 0 ctx)))

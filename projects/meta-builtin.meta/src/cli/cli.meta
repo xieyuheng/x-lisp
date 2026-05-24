@@ -113,8 +113,8 @@
 (define (cli-arg-get i ctx)
   (list-get i (cli-ctx-args ctx)))
 
-(claim cli-option-has (-> string-t cli-ctx-t bool-t))
-(define (cli-option-has name ctx)
+(claim cli-option-has? (-> string-t cli-ctx-t bool-t))
+(define (cli-option-has? name ctx)
   (hash-has? name (cli-ctx-options ctx)))
 
 (claim cli-option-get (-> string-t cli-ctx-t string-t))
