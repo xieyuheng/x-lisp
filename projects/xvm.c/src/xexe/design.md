@@ -30,15 +30,15 @@
 
 ### File Header (28 bytes)
 
-| offset | size | field | description |
-|---|---|---|---|
-| 0 | 4 | magic | `0x58455845` ("XEXE") |
-| 4 | 4 | version | `1` |
-| 8 | 4 | def_count | definition 数量 |
-| 12 | 4 | strtab_size | string table 字节数 |
-| 16 | 4 | value_count | value table 条目数 |
-| 20 | 4 | def_reloc_count | definition 重定位条目数 |
-| 24 | 4 | value_reloc_count | value 重定位条目数 |
+| offset | size | field             | description             |
+|--------|------|-------------------|-------------------------|
+| 0      | 4    | magic             | `0x58455845` ("XEXE")   |
+| 4      | 4    | version           | `1`                     |
+| 8      | 4    | def_count         | definition 数量         |
+| 12     | 4    | strtab_size       | string table 字节数     |
+| 16     | 4    | value_count       | value table 条目数      |
+| 20     | 4    | def_reloc_count   | definition 重定位条目数 |
+| 24     | 4    | value_reloc_count | value 重定位条目数      |
 
 ### Definition Table (def_count 条)
 
@@ -97,85 +97,7 @@ strtab: char[strtab_size]
 所有名字和字符串内容统一存放，NUL 字符分隔。
 各条目通过 offset 引用。
 
-## Schema 描述（补充）
-
-以下用两种格式描述语言从不同角度描述 `.xexe` 的二进制布局。
-均为文档用途，供人与 AI 阅读。
-
-### Lisp DSL
-
-自定义的二进制格式描述 DSL，以 meta-lisp 的 sexp 语法书写。
-
-```lisp
-(format xexe
-  :endian le
-
-  (def header
-    (field magic             :u32 :const #x58455845)
-    (field version           :u32 :const 1)
-    (field def-count         :u32)
-    (field strtab-size       :u32)
-    (field value-count       :u32)
-    (field def-reloc-count   :u32)
-    (field value-reloc-count :u32))
-
-  (def definition
-    (field kind      :u8  :enum (function 0 primitive 1 variable 2))
-    (field name-off  :u32)
-    (field arity     :u16)
-    (field flags     :u8)
-
-    (when (or (= kind 0) (= kind 2))
-      (field local-count :u16)
-      (field code-len    :u32)
-      (field code        :bytes :size code-len)))
-
-  (def definition-table
-    (repeat def-count
-      (field entry definition)))
-
-  (def value
-    (field kind     :u8  :enum (keyword 1 string 2 symbol 3))
-    (field data-off :u32))
-
-  (def value-table
-    (repeat value-count
-      (field entry value)))
-
-  (def def-reloc
-    (field def-index  :u32)
-    (field offset     :u32)
-    (field target-off :u32))
-
-  (def def-reloc-table
-    (repeat def-reloc-count
-      (field entry def-reloc)))
-
-  (def value-reloc
-    (field def-index   :u32)
-    (field offset      :u32)
-    (field value-index :u32))
-
-  (def value-reloc-table
-    (repeat value-reloc-count
-      (field entry value-reloc))
-
-  (def string-table
-    (field strtab :bytes :size strtab-size))))
-```
-
-语义说明：
-
-| 构造 | 含义 | 示例 |
-|---|---|---|
-| `:const <v>` | 字段必须为此值 | `:const #x58455845` |
-| `:enum (<sym> <val> ...)` | 枚举值约束 | `:enum (function 0 primitive 1 ...)` |
-| `:size <expr>` | 可变长字段，长度引用于其他字段 | `:bytes :size code-len` |
-| `(when <cond> <body>...)` | 仅当条件满足时该段存在 | `(when (or (= kind 0) (= kind 2)) ...)` |
-| `(repeat <expr> <body>...)` | 根据计数字段的值重复结构 | `(repeat def-count ...)` |
-| `(field entry <def>)` | 嵌入已定义的子结构 | `(field entry definition)` |
-
-### C Struct 伪代码
+## Schema 描述
 
 以下用 C struct 伪代码描述 `.xexe` 的二进制布局，
 单个顶层 struct 展示文件整体轮廓，嵌套匿名 struct 描述各表。
@@ -245,17 +167,6 @@ struct xexe_file {
 };
 ```
 
-与 Lisp DSL 的对比：
-
-| 维度 | Lisp DSL | C Struct 伪代码 |
-|---|---|---|
-| **范式** | 声明式 + sexp | 嵌套 struct |
-| **重复** | `(repeat ...)` | 匿名数组字段 |
-| **条件字段** | `(when ...)` | 注释说明 |
-| **变长字段** | `:bytes :size <expr>` | `type name[...]` + 注释 |
-| **枚举** | 内联 `:enum` | `enum` 定义 |
-| **工具链** | 无（文档用途） | 非编译（伪代码） |
-
 ## 编译流程 (`xexe_assemble`)
 
 输入：已组装好的 `mod_t *`（即 `xasm_load` 的产物）。
@@ -266,7 +177,7 @@ struct xexe_file {
    - 收集所有 definition 的名字、relocation target 名字
    - 收集所有 value（keyword/string/symbol）的内容字符串
    - 去重，合并为一个 NUL-separated 的 buffer
-   
+
 2. 遍历 mod->definitions，写 definition table：
    - function:  kind + name_off + arity + flags + local_count +
                 code_len + raw bytecode
@@ -276,23 +187,23 @@ struct xexe_file {
 
 3. 扫描每个 function 的 bytecode：
    解码每条指令，定位到需要重定位的位置：
-   
+
    - CALL / TAIL_CALL：
        定位到 pc + 1 处的 definition_t *
        → 写 def reloc entry
        指令长度 = 1 + 8 + 1 + argc * 2
-       
+
    - REF / GLOBAL_LOAD / GLOBAL_STORE：
        定位到 pc + 3 处的 definition_t *
        → 写 def reloc entry
-       
+
    - OP_LOAD：
        读取 pc + 3 处的 value_t
        → 若为 keyword_p / string_p / symbol_p：
          写 value table + value reloc entry
        → 若为 immediate (int/float/bool/void)：
          无需重定位，直接保留原值
-         
+
 4. 写入文件 header + 五张表 + string table
 ```
 
@@ -310,7 +221,7 @@ struct xexe_file {
 6. 创建 mod = make_mod(path)
 7. import_builtin(mod) → 注册所有 C primitive function
    （此时 mod 中已有所有 builtin 的 definition）
-    
+
 8. 重建 value 对象：
    for each value entry:
      kind × data_off → 获取字符串
@@ -366,38 +277,30 @@ xvm test <file> [--snapshot] [--profile] [--builtin]
 
 ### 新文件（`src/xexe/`）
 
-| 文件 | 内容 |
-|---|---|
-| `types.h` | 魔数、版本常量、kind enum、struct 定义 |
-| `deps.h` | 模块依赖 |
-| `index.h` | include 所有头文件 |
-| `xexe_assemble.c` | mod → .xexe 序列化 |
-| `xexe_load.c` | .xexe → mod 反序列化 + 重定位 |
+| 文件              | 内容                                   |
+|-------------------|----------------------------------------|
+| `types.h`         | 魔数、版本常量、kind enum、struct 定义 |
+| `deps.h`          | 模块依赖                               |
+| `index.h`         | include 所有头文件                     |
+| `xexe_assemble.c` | mod → .xexe 序列化                    |
+| `xexe_load.c`     | .xexe → mod 反序列化 + 重定位         |
 
 ### 修改文件
 
-| 文件 | 改动 |
-|---|---|
-| `xvm.exe.c` | 增加 `assemble` 路由；`call`/`test` 根据扩展名选择加载方式 |
+| 文件          | 改动                                                                 |
+|---------------|----------------------------------------------------------------------|
+| `xvm.exe.c`   | 增加 `assemble` 路由；`call`/`test` 根据扩展名选择加载方式           |
 | `xasm/xasm.h` | 无改动，但 `xexe_load` 返回的 mod 与 `xasm_load` 返回的 mod 完全兼容 |
-
-## bytecode 扫描器
-
-`xexe_assemble` 和 `xexe_load` 都需要解码每条指令以定位指针/value 位置。
-需要写一个扫描器，输入 bytecode buffer，对每条指令调用 callback，
-callback 的参数包括 opcode、位置和需要处理的 pointer/value。
-
-该扫描器可抽取为 `xexe_code_walk()` 或在两个文件中各自 inline 实现。
 
 ## 设计约束与后续扩展
 
-### v1 约束
+### 约束
+
 - OP_LOAD 的值仅支持 immediate（int/float/bool/void）和 keyword/string/symbol 对象。
   不支持 list/hash/set 等复合对象值。
 - Variable definition 的 value 不序列化，通过 setup 阶段执行 body 来初始化。
 - Primitive definition 不序列化（C 函数指针不可移植），加载时通过 `import_builtin` 注册后按名字查找。
 
-### v2 扩展方向
-- 对 variable 的 value 支持序列化
-- 对 OP_LOAD 中的 list 等复合对象值支持序列化
+### 扩展方向
+
 - 支持跨文件引用（类似 .so/.dll 的动态链接）
