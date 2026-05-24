@@ -36,6 +36,15 @@ static void handle_bye(cli_ctx_t *ctx) {
   printf("bye bye\n");
 }
 
+static void handle_passthrough(cli_ctx_t *ctx) {
+  size_t count = cli_passthrough_count(ctx);
+  for (size_t i = 0; i < count; i++) {
+    if (i > 0) printf(" ");
+    printf("%s", cli_passthrough_get(ctx, i));
+  }
+  printf("\n");
+}
+
 int main(int argc, char *argv[]) {
   cli_router_t *router = cli_make_router("calculator", "0.0.0");
 
@@ -43,11 +52,13 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "add x y -- add two numbers");
   cli_define_route(router, "mul --x --y -- mul two numbers");
   cli_define_route(router, "bye -- say bye bye");
+  cli_define_route(router, "passthrough -- print passthrough args");
 
   cli_define_handler(router, "hello", handle_hello);
   cli_define_handler(router, "add", handle_add);
   cli_define_handler(router, "mul", handle_mul);
   cli_define_handler(router, "bye", handle_bye);
+  cli_define_handler(router, "passthrough", handle_passthrough);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);
