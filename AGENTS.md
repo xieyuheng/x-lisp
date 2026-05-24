@@ -7,12 +7,12 @@ title: AI Agent Instructions
 目前 meta-lisp 的子项目：
 
 - helpers.js -- 通用的 js/ts modules。
-- cmd.js -- 用来实现命令行程序的 js/ts modules。
+- cli.js -- 用来实现命令行程序的 js/ts modules。
 - ppml.js -- pretty print mark language，用来实现代码的 pretty print。
 - sexp.js -- sexp parser。
 - meta-lisp.js -- meta-lisp 的 bootstrap 编译器。
 - c.make -- 专门用来构建 c 子项目的可被引用的通用 makefile。
-- cmd.c -- 用来实现命令行程序的 c library。
+- cli.c -- 用来实现命令行程序的 c library。
 - helpers.c -- 通用的 c modules，用 scalable-c 风格写成。
 - xvm.c -- VM。
 - meta-builtin.meta -- meta-lisp 中 builtin 函数的声明，与简单 builtin 函数的实现。

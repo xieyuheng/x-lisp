@@ -120,10 +120,10 @@ endfunction()
 include(../c.make/c.cmake)
 build_lib(helpers_c)
 
-# cmd.c/CMakeLists.txt
+# cli.c/CMakeLists.txt
 include(../c.make/c.cmake)
-build_lib(cmd_c)
-target_link_libraries(cmd_c helpers_c)
+build_lib(cli_c)
+target_link_libraries(cli_c helpers_c)
 ```
 
 **简洁原则：**
@@ -241,7 +241,7 @@ x-lisp/
 │   │   └── c.cmake                  # 通用模块
 │   ├── helpers.c/
 │   │   └── CMakeLists.txt           # 2 行
-│   ├── cmd.c/
+│   ├── cli.c/
 │   │   └── CMakeLists.txt           # 2 行
 │   └── stack-lisp.c/
 │       └── CMakeLists.txt           # 2 行
@@ -254,7 +254,7 @@ x-lisp/
 cmake_minimum_required(VERSION 3.16)
 project(meta_lisp)
 add_subdirectory(projects/helpers.c)
-add_subdirectory(projects/cmd.c)
+add_subdirectory(projects/cli.c)
 add_subdirectory(projects/stack-lisp.c)
 ```
 
@@ -289,18 +289,18 @@ include(../c.make/c.cmake)
 build_lib(helpers_c)
 ```
 
-**`projects/cmd.c/CMakeLists.txt`:**
+**`projects/cli.c/CMakeLists.txt`:**
 ```cmake
 include(../c.make/c.cmake)
-build_lib(cmd_c)
-target_link_libraries(cmd_c helpers_c)
+build_lib(cli_c)
+target_link_libraries(cli_c helpers_c)
 ```
 
 **`projects/stack-lisp.c/CMakeLists.txt`:**
 ```cmake
 include(../c.make/c.cmake)
 build_lib(stack_lisp_c)
-target_link_libraries(stack_lisp_c helpers_c cmd_c)
+target_link_libraries(stack_lisp_c helpers_c cli_c)
 ```
 
 ## 总结

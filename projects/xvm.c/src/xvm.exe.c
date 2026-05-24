@@ -21,10 +21,10 @@ static char *build_output_pathname(const char *input) {
   return output;
 }
 
-static void handle_assemble(cmd_ctx_t *ctx) {
-  const char *pathname = cmd_get_arg(ctx, 0);
-  const char *output = cmd_get_option(ctx, "--output");
-  bool profile = cmd_has_option(ctx, "--profile");
+static void handle_assemble(cli_ctx_t *ctx) {
+  const char *pathname = cli_get_arg(ctx, 0);
+  const char *output = cli_get_option(ctx, "--output");
+  bool profile = cli_has_option(ctx, "--profile");
   mod_t *mod = xasm_load_mod(make_path(pathname), profile);
   xexe_t *xexe = make_xexe();
   xexe_from_mod(xexe, mod);
@@ -39,14 +39,14 @@ static void handle_assemble(cmd_ctx_t *ctx) {
   xexe_free(xexe);
 }
 
-static void handle_run(cmd_ctx_t *ctx) {
-  const char *pathname = cmd_get_arg(ctx, 0);
+static void handle_run(cli_ctx_t *ctx) {
+  const char *pathname = cli_get_arg(ctx, 0);
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
   mod_t *mod = xexe_to_mod(xexe);
   xexe_free(xexe);
 
-  const char *entry = cmd_get_option(ctx, "--entry");
+  const char *entry = cli_get_option(ctx, "--entry");
   if (!entry) {
     entry = mod->entry_name;
   }
@@ -60,11 +60,11 @@ static void handle_run(cmd_ctx_t *ctx) {
   mod_call_entry(mod, entry);
 }
 
-static void handle_test(cmd_ctx_t *ctx) {
-  const char *pathname = cmd_get_arg(ctx, 0);
-  const char *snapshot = cmd_get_option(ctx, "--snapshot");
-  bool profile = cmd_has_option(ctx, "--profile");
-  bool builtin = cmd_has_option(ctx, "--builtin");
+static void handle_test(cli_ctx_t *ctx) {
+  const char *pathname = cli_get_arg(ctx, 0);
+  const char *snapshot = cli_get_option(ctx, "--snapshot");
+  bool profile = cli_has_option(ctx, "--profile");
+  bool builtin = cli_has_option(ctx, "--builtin");
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
   mod_t *mod = xexe_to_mod(xexe);
@@ -79,17 +79,17 @@ int main(int argc, char *argv[]) {
   setbuf(stderr, NULL);
   init_global_gc();
 
-  cmd_router_t *router = cmd_make_router("xvm", "0.1.0");
+  cli_router_t *router = cli_make_router("xvm", "0.1.0");
 
-  cmd_define_route(router, "assemble file.xasm --output --profile");
-  cmd_define_route(router, "run file.xexe --entry");
-  cmd_define_route(router, "test file.xexe --profile --snapshot --builtin");
+  cli_define_route(router, "assemble file.xasm --output --profile");
+  cli_define_route(router, "run file.xexe --entry");
+  cli_define_route(router, "test file.xexe --profile --snapshot --builtin");
 
-  cmd_define_handler(router, "assemble", handle_assemble);
-  cmd_define_handler(router, "run", handle_run);
-  cmd_define_handler(router, "test", handle_test);
+  cli_define_handler(router, "assemble", handle_assemble);
+  cli_define_handler(router, "run", handle_run);
+  cli_define_handler(router, "test", handle_test);
 
-  cmd_router_run(router, argc, argv);
-  cmd_router_free(router);
+  cli_router_run(router, argc, argv);
+  cli_router_free(router);
   return 0;
 }

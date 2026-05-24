@@ -6,7 +6,7 @@ settings:
 
 importers:
 
-  projects/cmd.js:
+  projects/cli.js:
     dependencies:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
@@ -42,9 +42,9 @@ importers:
 
   projects/meta-lisp.js:
     dependencies:
-      '@xieyuheng/cmd.js':
+      '@xieyuheng/cli.js':
         specifier: workspace:*
-        version: link:../cmd.js
+        version: link:../cli.js
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js

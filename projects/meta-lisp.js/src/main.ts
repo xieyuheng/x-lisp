@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node
 
-import * as cmd from "@xieyuheng/cmd.js"
+import * as cli from "@xieyuheng/cli.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
@@ -9,7 +9,7 @@ import * as M from "./meta/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cmd.createRouter("meta-lisp-compile.js", version)
+const router = cli.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
   "check --config --dump",

@@ -29,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "@xieyuheng/cmd.js": "workspace:*",
+    "@xieyuheng/cli.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",

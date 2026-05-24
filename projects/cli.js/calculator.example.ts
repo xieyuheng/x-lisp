@@ -1,13 +1,13 @@
-import * as Cmd from "./src/index.ts"
+import * as Cli from "./src/index.ts"
 
-function logger(): Cmd.Middleware {
+function logger(): Cli.Middleware {
   return (ctx, next) => {
     console.log(ctx)
     return next(ctx)
   }
 }
 
-const router = Cmd.createRouter("calculator", "0.1.0", {
+const router = Cli.createRouter("calculator", "0.1.0", {
   middleware: [logger()],
 })
 
@@ -16,7 +16,7 @@ router.defineRoutes([
   "mul --x --y",
 ])
 
-function doubleArgs(): Cmd.Middleware {
+function doubleArgs(): Cli.Middleware {
   return (ctx, next) => {
     ctx.args = ctx.args.map((arg) => String(Number(arg) * 2))
     return next(ctx)

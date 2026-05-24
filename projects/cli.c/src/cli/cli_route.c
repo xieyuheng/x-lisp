@@ -1,7 +1,7 @@
 #include "index.h"
 
-cmd_route_t *cmd_parse_route(const char *command) {
-  cmd_route_t *self = new(cmd_route_t);
+cli_route_t *cli_parse_route(const char *command) {
+  cli_route_t *self = new(cli_route_t);
   self->command = command;
 
   size_t cursor = 0;
@@ -34,21 +34,21 @@ cmd_route_t *cmd_parse_route(const char *command) {
   return self;
 }
 
-void cmd_route_free(cmd_route_t *self) {
+void cli_route_free(cli_route_t *self) {
   string_free(self->name);
   array_free(self->arg_names);
   array_free(self->option_names);
   free(self);
 }
 
-static void match_arg(cmd_ctx_t *ctx, size_t *cursor_pointer) {
+static void match_arg(cli_ctx_t *ctx, size_t *cursor_pointer) {
   size_t cursor = *cursor_pointer;
   const char *token = ctx->argv[cursor];
   array_push(ctx->args, string_copy(token));
   *cursor_pointer = cursor + 1;
 }
 
-static void match_option(cmd_ctx_t *ctx, size_t *cursor_pointer) {
+static void match_option(cli_ctx_t *ctx, size_t *cursor_pointer) {
   size_t cursor = *cursor_pointer;
   const char *token = ctx->argv[cursor];
   if (cursor + 1 >= ctx->argc) {
@@ -67,7 +67,7 @@ static void match_option(cmd_ctx_t *ctx, size_t *cursor_pointer) {
   }
 }
 
-void cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
+void cli_route_match(cli_route_t *self, cli_ctx_t *ctx) {
   (void) self;
   size_t cursor = 2;
   while (cursor < ctx->argc) {

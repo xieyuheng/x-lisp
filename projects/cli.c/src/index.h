@@ -2,4 +2,4 @@
 
 #include "deps.h"
 
-#include "cmd/index.h"
+#include "cli/index.h"
