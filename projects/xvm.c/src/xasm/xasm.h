@@ -1,16 +1,9 @@
 #pragma once
 
-mod_t *xasm_load(path_t *path, bool profile);
+mod_t *xasm_load_mod(path_t *path, bool profile);
 
 void xasm_declare(mod_t *mod, value_t sexps);
 void xasm_prepare(mod_t *mod, value_t sexps);
 void xasm_assemble(mod_t *mod, value_t sexps);
-void xasm_setup(mod_t *mod);
-
 void xasm_assemble_function(mod_t *mod, function_t *function, value_t sexp);
 size_t compute_function_local_count(size_t arity, value_t body);
-
-void xasm_call(mod_t *mod, const char *name, const array_t *args);
-void xasm_test(mod_t *mod, const char *snapshot, bool profile);
-void xasm_builtin_test(mod_t *mod, const char *snapshot, bool profile);
-void xasm_test_definition(mod_t *mod, const char *snapshot, bool profile, definition_t *definition);

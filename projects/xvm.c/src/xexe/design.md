@@ -8,7 +8,7 @@
 
 ## 当前架构回顾
 
-### xasm 加载流程 (`xasm_load`)
+### xasm 加载流程 (`xasm_load_mod`)
 
 ```
 .xasm → parse sexps → import_builtin → declare → prepare → assemble → setup → mod_t*
@@ -57,7 +57,7 @@
 
 注意：kind==1 (primitive) 不序列化（文件中不会出现）。
 kind==2 (variable) 存储 function body 的 bytecode，
-用于在加载时通过 xasm_setup 执行初始化。
+ 用于在加载时通过 mod_setup 执行初始化。
 
 ### Value Table (value_count 条)
 
@@ -167,9 +167,9 @@ struct xexe_file {
 };
 ```
 
-## 编译流程 (`xexe_assemble`)
+## 编译流程 (`xexe_from_mod`)
 
-输入：已组装好的 `mod_t *`（即 `xasm_load` 的产物）。
+输入：已组装好的 `mod_t *`（即 `xasm_load_mod` 的产物）。
 输出：`.xexe` 文件。
 
 ```
@@ -253,7 +253,7 @@ struct xexe_file {
        value = value_objects[value_index]
        将 value (8 字节) 写入 def->code[code_offset]
 
-12. xasm_setup(mod) → 执行所有 variable 的初始化 body
+12. mod_setup(mod) → 执行所有 variable 的初始化 body
 13. return mod
 ```
 
@@ -264,13 +264,11 @@ xvm assemble <file.xasm> [-o <output.xexe>]
   将 .xasm 编译为 .xexe
   若未指定 -o，默认输出为 file.xexe
 
-xvm call <file> <function> [args...]
-  若 file 以 .xexe 结尾 → xexe_load + xasm_call
-  否则                → xasm_load + xasm_call
+xvm call <file.xexe> <function> [args...]
+  xexe_load → xexe_to_mod → mod_call
 
-xvm test <file> [--snapshot] [--profile] [--builtin]
-  若 file 以 .xexe 结尾 → xexe_load + xasm_test
-  否则                → xasm_load + xasm_test
+xvm test <file.xexe> [--snapshot] [--profile] [--builtin]
+  xexe_load → xexe_to_mod → mod_test
 ```
 
 ## 所需修改的文件
@@ -288,7 +286,7 @@ xvm test <file> [--snapshot] [--profile] [--builtin]
 | 文件          | 改动                                                                 |
 |---------------|----------------------------------------------------------------------|
 | `xvm.exe.c`   | 增加 `assemble` 路由；`call`/`test` 根据扩展名选择加载方式           |
-| `xasm/xasm.h` | 无改动，但 `xexe_to_mod` 返回的 mod 与 `xasm_load` 返回的 mod 完全兼容 |
+| `xasm/xasm.h` | 无改动，但 `xexe_to_mod` 返回的 mod 与 `xasm_load_mod` 返回的 mod 完全兼容 |
 
 ## 设计约束与后续扩展
 

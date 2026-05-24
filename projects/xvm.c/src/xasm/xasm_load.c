@@ -1,6 +1,6 @@
 #include "index.h"
 
-mod_t *xasm_load(path_t *path, bool profile) {
+mod_t *xasm_load_mod(path_t *path, bool profile) {
   file_t *file = open_file_or_fail(path_raw_string(path), "r");
   char *string = file_read_string(file);
 
@@ -18,7 +18,7 @@ mod_t *xasm_load(path_t *path, bool profile) {
   xasm_declare(mod, sexps);
   xasm_prepare(mod, sexps);
   xasm_assemble(mod, sexps);
-  xasm_setup(mod);
+  mod_setup(mod);
   double loading_time = time_millisecond_passed(loading_start);
   if (profile) {
     who_printf("loading time: %.3fms\n", loading_time);

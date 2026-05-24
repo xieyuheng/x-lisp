@@ -1,6 +1,6 @@
 #include "index.h"
 
-void xasm_setup(mod_t *mod) {
+void mod_setup(mod_t *mod) {
   xvm_t *xvm = make_xvm(mod);
 
   record_iter_t iter;

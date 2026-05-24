@@ -1,38 +1,38 @@
 #include "index.h"
 
-void xasm_test(mod_t *mod, const char *snapshot, bool profile) {
+void mod_test(mod_t *mod, const char *snapshot, bool profile) {
   set_iter_t iter;
   set_iter_init(&iter, mod->test_names);
   char *name = set_iter_next(&iter);
   while (name) {
     if (!string_starts_with(name, "builtin/")) {
       definition_t *definition = mod_lookup_or_fail(mod, name);
-      xasm_test_definition(mod, snapshot, profile, definition);
+      mod_test_definition(mod, snapshot, profile, definition);
     }
 
     name = set_iter_next(&iter);
   }
 }
 
-void xasm_builtin_test(mod_t *mod, const char *snapshot, bool profile) {
+void mod_builtin_test(mod_t *mod, const char *snapshot, bool profile) {
   set_iter_t iter;
   set_iter_init(&iter, mod->test_names);
   char *name = set_iter_next(&iter);
   while (name) {
     if (string_starts_with(name, "builtin/")) {
       definition_t *definition = mod_lookup_or_fail(mod, name);
-      xasm_test_definition(mod, snapshot, profile, definition);
+      mod_test_definition(mod, snapshot, profile, definition);
     }
 
     name = set_iter_next(&iter);
   }
 }
 
-void xasm_test_definition(mod_t *mod, const char *snapshot, bool profile, definition_t *definition) {
+void mod_test_definition(mod_t *mod, const char *snapshot, bool profile, definition_t *definition) {
   assert(definition->kind == FUNCTION_DEFINITION);
   double testing_start = time_millisecond();
   if (snapshot == NULL) {
-    xasm_call(mod, definition->name, NULL);
+    mod_call(mod, definition->name, NULL);
   } else {
     path_t *path = make_path(snapshot);
     path_join(path, "modules");
@@ -43,7 +43,7 @@ void xasm_test_definition(mod_t *mod, const char *snapshot, bool profile, defini
     path_push_segment(path, segment);
 
     stdout_push(path_raw_string(path));
-    xasm_call(mod, definition->name, NULL);
+    mod_call(mod, definition->name, NULL);
     stdout_drop();
 
     char *output = fs_read(path_raw_string(path));

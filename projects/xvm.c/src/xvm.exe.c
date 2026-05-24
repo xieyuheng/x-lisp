@@ -25,15 +25,15 @@ static void handle_assemble(cmd_ctx_t *ctx) {
   const char *pathname = cmd_get_arg(ctx, 0);
   const char *output = cmd_get_option(ctx, "--output");
   bool profile = cmd_has_option(ctx, "--profile");
-  mod_t *mod = xasm_load(make_path(pathname), profile);
+  mod_t *mod = xasm_load_mod(make_path(pathname), profile);
   xexe_t *xexe = make_xexe();
-  xexe_assemble(xexe, mod);
+  xexe_from_mod(xexe, mod);
   mod_free(mod);
   if (output) {
-    xexe_write(xexe, output);
+    xexe_dump(xexe, output);
   } else {
     char *default_output = build_output_pathname(pathname);
-    xexe_write(xexe, default_output);
+    xexe_dump(xexe, default_output);
     free(default_output);
   }
   xexe_free(xexe);
@@ -42,10 +42,9 @@ static void handle_assemble(cmd_ctx_t *ctx) {
 static void handle_call(cmd_ctx_t *ctx){
   const char *pathname = cmd_get_arg(ctx, 0);
   const char *name = cmd_get_arg(ctx, 1);
-  bool profile = cmd_has_option(ctx, "--profile");
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
-  mod_t *mod = xexe_to_mod(xexe, profile);
+  mod_t *mod = xexe_to_mod(xexe);
   xexe_free(xexe);
   array_t *args = make_array();
   for (size_t i = 2; i < cmd_count_args(ctx); i ++) {
@@ -53,7 +52,7 @@ static void handle_call(cmd_ctx_t *ctx){
     array_push(args, (void *) arg);
   }
 
-  xasm_call(mod, name, args);
+  mod_call(mod, name, args);
 }
 
 static void handle_test(cmd_ctx_t *ctx) {
@@ -63,10 +62,10 @@ static void handle_test(cmd_ctx_t *ctx) {
   bool builtin = cmd_has_option(ctx, "--builtin");
   xexe_t *xexe = make_xexe();
   xexe_load(xexe, pathname);
-  mod_t *mod = xexe_to_mod(xexe, profile);
+  mod_t *mod = xexe_to_mod(xexe);
   xexe_free(xexe);
-  if (builtin) xasm_builtin_test(mod, snapshot, profile);
-  xasm_test(mod, snapshot, profile);
+  if (builtin) mod_builtin_test(mod, snapshot, profile);
+  mod_test(mod, snapshot, profile);
 }
 
 int main(int argc, char *argv[]) {
@@ -77,9 +76,9 @@ int main(int argc, char *argv[]) {
 
   cmd_router_t *router = cmd_make_router("xvm", "0.1.0");
 
-  cmd_define_route(router, "assemble file --output --profile");
-  cmd_define_route(router, "call file function --profile");
-  cmd_define_route(router, "test file --profile --snapshot --builtin");
+  cmd_define_route(router, "assemble file.xasm --output --profile");
+  cmd_define_route(router, "call file.xexe function");
+  cmd_define_route(router, "test file.xexe --profile --snapshot --builtin");
 
   cmd_define_handler(router, "assemble", handle_assemble);
   cmd_define_handler(router, "call", handle_call);

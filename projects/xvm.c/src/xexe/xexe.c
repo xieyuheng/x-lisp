@@ -153,7 +153,7 @@ static void collect_relocs(xexe_t *self, size_t definition_index,
   }
 }
 
-void xexe_assemble(xexe_t *self, mod_t *mod) {
+void xexe_from_mod(xexe_t *self, mod_t *mod) {
   record_iter_t iter;
   record_iter_init(&iter, mod->definitions);
   const hash_entry_t *entry = record_iter_next_entry(&iter);
@@ -224,7 +224,7 @@ static void string_table_builder_free(string_table_builder_t *st) {
   free(st);
 }
 
-void xexe_write(xexe_t *self, const char *pathname) {
+void xexe_dump(xexe_t *self, const char *pathname) {
   string_table_builder_t *st = string_table_builder_create();
 
   for (size_t i = 0; i < array_length(self->definitions); i++) {
@@ -480,9 +480,7 @@ void xexe_load(xexe_t *self, const char *pathname) {
   free(bytes);
 }
 
-mod_t *xexe_to_mod(xexe_t *self, bool profile) {
-  double loading_start = time_millisecond();
-
+mod_t *xexe_to_mod(xexe_t *self) {
   mod_t *mod = make_mod();
   import_builtin(mod);
 
@@ -583,12 +581,7 @@ mod_t *xexe_to_mod(xexe_t *self, bool profile) {
     memory_store(buffer_raw_bytes(fn->buffer) + code_offset, value_objects[value_index]);
   }
 
-  double loading_time = time_millisecond_passed(loading_start);
-  if (profile) {
-    who_printf("xexe loading time: %.3fms\n", loading_time);
-  }
-
-  xasm_setup(mod);
+  mod_setup(mod);
 
   free(value_objects);
   free(definitions);
