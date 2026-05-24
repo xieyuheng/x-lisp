@@ -1,11 +1,3 @@
 #!/usr/bin/env bash
 
-function run {
-    ../xvm.c/src/xvm.exe run build/bundle.xexe
-}
-
-function main {
-    run
-}
-
-main $@
+../xvm.c/src/xvm.exe run build/bundle.xexe
