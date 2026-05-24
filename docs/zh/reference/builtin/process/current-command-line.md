@@ -19,10 +19,10 @@ title: current-command-line
 xvm run program.xexe -- check --profile
 ```
 
-`(current-command-line)` 返回 `("check" "--profile")`。
+`(current-command-line)` 返回 `["check" "--profile"]`。
 
 # 示例
 
 ```scheme
-(current-command-line)  ;; => ("check" "--profile")
+(current-command-line)  ;; => ["check" "--profile"]
 ```

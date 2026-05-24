@@ -20,11 +20,11 @@ xvm run program.xexe -- check --profile
 ```
 
 `(current-full-command-line)` returns
-`("xvm" "run" "program.xexe" "--" "check" "--profile")`.
+`["xvm" "run" "program.xexe" "--" "check" "--profile"]`.
 
 # Examples
 
 ```scheme
 (current-full-command-line)
-;; => ("xvm" "run" "program.xexe" "--" "check" "--profile")
+;; => ["xvm" "run" "program.xexe" "--" "check" "--profile"]
 ```

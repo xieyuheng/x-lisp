@@ -19,10 +19,10 @@ as the current command line. For example:
 xvm run program.xexe -- check --profile
 ```
 
-`(current-command-line)` returns `("check" "--profile")`.
+`(current-command-line)` returns `["check" "--profile"]`.
 
 # Examples
 
 ```scheme
-(current-command-line)  ;; => ("check" "--profile")
+(current-command-line)  ;; => ["check" "--profile"]
 ```
