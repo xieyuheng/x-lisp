@@ -7,6 +7,6 @@
   (parse-project-config path string))
 
 (define-test load-project-config-test
-  (= path "project.sexp")
+  (= path "project.json")
   (= config (load-project-config path))
   (assert-equal "meta-lisp" (project-config-name config)))

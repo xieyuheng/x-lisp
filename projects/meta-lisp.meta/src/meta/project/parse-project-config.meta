@@ -1,21 +1,16 @@
 (module meta)
 
 (define (parse-project-config path string)
-  (= sexps (parse-sexps path string))
-  (parse-project-config-from-sexp (car sexps)))
-
-(define (parse-build-config sexp)
-  (= elements (list-sexp-elements sexp))
-  (= hash (sexp-collect-key-value-hash elements))
-  (make-build-config
-    (string-sexp-content (hash-get :source-directory hash))
-    (string-sexp-content (hash-get :output-directory hash))
-    (string-sexp-content (hash-get :snapshot-directory hash))))
-
-(define (parse-project-config-from-sexp sexp)
-  (= elements (list-sexp-elements sexp))
-  (= hash (sexp-collect-key-value-hash elements))
+  (= json (parse-json string))
+  (= entries (json-object-entries json))
   (make-project-config
-    (string-sexp-content (hash-get :name hash))
-    (string-sexp-content (hash-get :version hash))
-    (parse-build-config (hash-get :build hash))))
+    (json-string-value (hash-get "name" entries))
+    (json-string-value (hash-get "version" entries))
+    (parse-build-config (hash-get "build" entries))))
+
+(define (parse-build-config json-value)
+  (= entries (json-object-entries json-value))
+  (make-build-config
+    (json-string-value (hash-get "source-directory" entries))
+    (json-string-value (hash-get "output-directory" entries))
+    (json-string-value (hash-get "snapshot-directory" entries))))

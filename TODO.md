@@ -1,5 +1,3 @@
-[meta-lisp.meta] 删除 project.sexp，和 [meta-lisp.js] 一样，使用 project.json
-
 [meta-lisp.meta] term vs exp
 [meta-lisp.meta] term-free-names.meta
 [meta-lisp.meta] term-traverse.meta

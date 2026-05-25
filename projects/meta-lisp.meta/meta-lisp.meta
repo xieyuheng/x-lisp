@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-../xvm.c/src/xvm.exe run build/bundle.xexe
+../xvm.c/src/xvm.exe run build/bundle.xexe -- $@

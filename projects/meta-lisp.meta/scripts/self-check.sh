@@ -2,4 +2,4 @@
 
 set -e
 
-./meta-lisp.meta check
+./meta-lisp.meta check --config self-project.json
