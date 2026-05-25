@@ -75,9 +75,9 @@ void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,
     }
   }
 
-  for (size_t i = argc; i < fn->local_count; i++) {
-    locals[i] = x_void;
-  }
+  // Clear trailing locals to prevent GC from scanning stale object
+  // pointers left in buffer memory by previously-popped frames.
+  memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
 
   buffer_seek(xvm->frame_buffer, new_offset + new_size);
   xvm->frame_offset = new_offset;
@@ -105,9 +105,9 @@ void xvm_push_function_frame_with_values(xvm_t *xvm, const function_t *fn,
     locals[i] = values[i];
   }
 
-  for (size_t i = argc; i < fn->local_count; i++) {
-    locals[i] = x_void;
-  }
+  // Clear trailing locals to prevent GC from scanning stale object
+  // pointers left in buffer memory by previously-popped frames.
+  memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
 
   buffer_seek(xvm->frame_buffer, new_offset + new_size);
   xvm->frame_offset = new_offset;
@@ -158,9 +158,9 @@ static void xvm_tail_call_replace(xvm_t *xvm, const function_t *fn,
     }
   }
 
-  for (size_t i = argc; i < fn->local_count; i++) {
-    locals[i] = x_void;
-  }
+  // Clear trailing locals to prevent GC from scanning stale object
+  // pointers left in buffer memory by previously-popped frames.
+  memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
 
   buffer_seek(xvm->frame_buffer, new_end);
 }

@@ -12,3 +12,7 @@
 [meta-lisp.meta] [review] type.meta
 [meta-lisp.meta] [review] env.meta -- use (define-opaque-type)
 [meta-lisp.meta] [refactor] parse-exp
+
+[skill] how to solve it
+[skill] sandi metz oop
+[skill] scalable-c
