@@ -183,6 +183,20 @@ ELEMENT-INDEX is 0-based, where 1 is the first argument after keyword."
             (and (>= pos start) (< pos end))))
       (error nil))))
 
+;;; Bracket indent computation
+
+(defun meta-lisp--compute-bracket-indent (containing-pos)
+  "Compute indentation for bracket containers [ ... ] and { ... }.
+
+All elements align with the first element."
+  (save-excursion
+    (goto-char containing-pos)
+    (forward-char 1)                     ; skip [ or {
+    (skip-chars-forward " \t")           ; skip to first element
+    (if (eobp)
+        (+ (current-column) 2)           ; empty bracket
+      (current-column))))                ; align with first element
+
 ;;; Body indent computation
 
 (defun meta-lisp--compute-body-indent (containing-pos body-start-pos)
@@ -266,12 +280,9 @@ Returns the column number, or nil (meaning don't change indentation)."
     (t
      (let* ((containing (meta-lisp--enclosing-sexp-opening state)))
        (cond
-        ;; Brackets [] and {} -- always simple body indent
-        ((meta-lisp--bracket-p containing)
-         (+ (save-excursion
-              (goto-char containing)
-              (current-column))
-            2))
+         ;; Brackets [] and {} -- align with first element
+         ((meta-lisp--bracket-p containing)
+          (meta-lisp--compute-bracket-indent containing))
 
         (t
          (let* ((keyword (meta-lisp--read-keyword-at-sexp-head containing))

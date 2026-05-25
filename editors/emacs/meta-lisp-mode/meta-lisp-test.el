@@ -157,23 +157,23 @@ face at that position is returned."
     (should (equal result "(list-get-element\n  [1 2 3]\n  0)"))))
 
 (ert-deftest meta-lisp-indent-brackets-multiline ()
-  "Multi-line bracket literal: all elements body-indented 2 from [."
+  "Multi-line bracket literal: all elements align with first."
   (let ((result (meta-lisp-test--indent
                  "[1\n2\n3]")))
-    (should (equal result "[1\n  2\n  3]"))))
+    (should (equal result "[1\n 2\n 3]"))))
 
 (ert-deftest meta-lisp-indent-braces ()
-  "Curly braces: same as brackets, elements body-indented 2."
+  "Curly braces: all elements align with first."
   (let ((result (meta-lisp-test--indent
                  "{:a 1\n:b 2\n:c 3}")))
-    (should (equal result "{:a 1\n  :b 2\n  :c 3}"))))
+    (should (equal result "{:a 1\n :b 2\n :c 3}"))))
 
 (ert-deftest meta-lisp-indent-brackets-nested ()
   "Brackets nested in paren forms."
   (let ((result (meta-lisp-test--indent
                  "(let ((xs [1\n2\n3]))\n(car xs))")))
     (should (equal result
-                   "(let ((xs [1\n            2\n            3]))\n  (car xs))"))))
+                   "(let ((xs [1\n           2\n           3]))\n  (car xs))"))))
 
 ;;; Indentation -- nested
 
