@@ -234,6 +234,13 @@ face at that position is returned."
   (should (eq (meta-lisp-test--font-lock-at "(§-> int-t int-t)")
               'font-lock-keyword-face)))
 
+(ert-deftest meta-lisp-font-lock-function-name ()
+  "define's name should use font-lock-function-name-face."
+  (should (eq (meta-lisp-test--font-lock-at "(define (§f x) x)")
+              'font-lock-function-name-face))
+  (should (eq (meta-lisp-test--font-lock-at "(define §answer 42)")
+              'font-lock-function-name-face)))
+
 (ert-deftest meta-lisp-font-lock-at-form ()
   "@-prefixed forms should use meta-lisp-at-form-face."
   (let ((face (meta-lisp-test--font-lock-at "(§@list 1 2 3)")))

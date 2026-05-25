@@ -49,6 +49,10 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
   "Return a regexp matching builtin constant names."
   (regexp-opt meta-lisp--builtin-constants))
 
+(defconst meta-lisp--name-re
+  "[a-zA-Z][-a-zA-Z0-9?!+*/=<>_]*"
+  "Regexp matching a meta-lisp name.")
+
 ;;; Non-symbolic faces that are not provided by font-lock
 
 (defface meta-lisp-module-name-face
@@ -68,6 +72,14 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
    ;; Special forms at head position: (define ...)  (lambda ...)  etc.
    (,(meta-lisp--re-special-forms)
     1 font-lock-keyword-face)
+
+   ;; Function name: (define (name args ...) body ...)
+   (,(concat "(define\\_>\\s-*(\\(" meta-lisp--name-re "\\)")
+    1 font-lock-function-name-face)
+
+   ;; Variable / function name: (define name body ...)
+   (,(concat "(define\\_>\\s-*\\(" meta-lisp--name-re "\\)\\_>")
+    1 font-lock-function-name-face)
 
    ;; @-prefixed forms at head position: (@list ...)  (@set ...)  etc.
    (,(meta-lisp--re-at-forms)
