@@ -1,0 +1,155 @@
+;;; sample.meta --- Visual test for meta-lisp-mode
+;;; Open this file in Emacs with meta-lisp-mode to verify syntax
+;;; highlighting and indentation.
+
+(module sample)
+
+;; === Variables ===
+
+(claim answer int-t)
+(define answer 42)
+
+(claim greeting string-t)
+(define greeting "hello world")
+
+;; === Functions ===
+
+(define (square x)
+  (imul x x))
+
+(define (add1 x)
+  (iadd 1 x))
+
+(claim compose (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;; === Conditionals ===
+
+(define (abs x)
+  (if (int-less? x 0)
+    (ineg x)
+    x))
+
+(define (classify x)
+  (cond
+    ((int-positive? x) "positive")
+    ((int-negative? x) "negative")
+    (else "zero")))
+
+(when true
+  (println "always runs")
+  (newline))
+
+(unless false
+  (println "also always runs"))
+
+;; === Local bindings ===
+
+(define (compute x)
+  (let ((a 1)
+        (b 2))
+    (let* ((c (iadd a b))
+           (d (iadd c x)))
+      (imul d 2))))
+
+(define (compute2 x)
+  (= y (iadd x 1))
+  (println y)
+  (= z (iadd y 1))
+  (iadd y z))
+
+;; === Recursion ===
+
+(letrec ((even?
+          (lambda (n)
+            (if (equal? n 0)
+              true
+              (odd? (isub n 1)))))
+         (odd?
+          (lambda (n)
+            (if (equal? n 0)
+              false
+              (even? (isub n 1))))))
+  (assert (even? 4)))
+
+;; === Pattern matching ===
+
+(define-enum exp-t
+  (var-exp (name symbol-t))
+  (apply-exp (target exp-t) (arg exp-t))
+  (lambda-exp (parameter symbol-t) (body exp-t)))
+
+(define (evaluate exp env)
+  (match exp
+    ((var-exp name)
+     (match (env-lookup name env)
+       ((just value) value)
+       ((nothing) (error "undefined name"))))
+    ((apply-exp target arg)
+     (apply (evaluate target env)
+            (evaluate arg env)))
+    ((lambda-exp parameter body)
+     (closure-value env parameter body))))
+
+;; === Structs ===
+
+(define-struct point-t
+  (x float-t) (y float-t))
+
+(define (point-distance-squared point)
+  (fadd (fmul (point-x point) (point-x point))
+        (fmul (point-y point) (point-y point))))
+
+;; === Keywords and Symbols ===
+
+(define config (@hash :host "localhost" :port 8080))
+(define sym 'hello)
+
+;; === Lists ===
+
+(define xs [1 2 3 4 5])
+(define ys (@list 1 2 3 4 5))
+
+(define long-list
+  [1
+   2
+   3
+   4
+   5])
+
+;; === Curly braces / hash ===
+
+(define point
+  {:x 1.0
+   :y 2.0
+   :label "origin"})
+
+;; === Pipes ===
+
+(define result
+  (pipe 5 add1 square))
+
+;; === Module imports ===
+
+(import math pi circumference)
+(import-as meta m)
+(import-all builtin)
+
+;; === Tests ===
+
+(define-test square-test
+  (assert-equal 4 (square 2))
+  (assert-equal 9 (square 3)))
+
+(define-test abs-test
+  (assert-equal 5 (abs -5))
+  (assert-equal 5 (abs 5))
+  (assert-equal 0 (abs 0)))
+
+;; @-prefixed forms
+
+(@list 1 2 3)
+(@set "a" "b" "c")
+(@hash :x 1 :y 2)
