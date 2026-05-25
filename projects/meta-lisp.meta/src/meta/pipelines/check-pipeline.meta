@@ -1,5 +1,4 @@
 (module meta)
 
 (define (check-pipeline project options)
-  (expand-pass project options)
-  )
+  (expand-pass project options))

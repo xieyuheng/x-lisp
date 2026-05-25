@@ -1,4 +1,3 @@
-[meta-lisp.meta] term vs exp
 [meta-lisp.meta] term-free-names.meta
 [meta-lisp.meta] term-traverse.meta
 

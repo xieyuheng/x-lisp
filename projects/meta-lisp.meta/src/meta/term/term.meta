@@ -1,0 +1,18 @@
+(module meta)
+
+(define-enum term-t
+  (symbol-term (content symbol-t) (location source-location-t))
+  (keyword-term (content keyword-t) (location source-location-t))
+  (string-term (content string-t) (location source-location-t))
+  (int-term (content int-t) (location source-location-t))
+  (float-term (content float-t) (location source-location-t))
+  (var-term (name symbol-t) (location source-location-t))
+  (qualified-var-term (mod-name symbol-t) (name symbol-t) (location source-location-t))
+  (lambda-term (parameters (list-t symbol-t)) (body term-t) (location source-location-t))
+  (apply-term (target term-t) (args (list-t term-t)) (location source-location-t))
+  (let1-term (name symbol-t) (rhs term-t) (body term-t) (location source-location-t))
+  (begin1-term (head term-t) (body term-t) (location source-location-t))
+  (if-term (condition term-t) (consequent term-t) (alternative term-t) (location source-location-t))
+  (arrow-term (arg-types (list-t term-t)) (ret-type term-t) (location source-location-t))
+  (the-term (type term-t) (term term-t) (location source-location-t))
+  (polymorphic-term (parameters (list-t symbol-t)) (body term-t) (location source-location-t)))
