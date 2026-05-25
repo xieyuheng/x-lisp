@@ -131,7 +131,7 @@ static void xvm_tail_call_replace(xvm_t *xvm, const function_t *fn,
   size_t current_start = (uint8_t *)current - buffer_raw_bytes(xvm->frame_buffer);
 
   // VLA[0] is UB in C, so ensure at least 1 element
-  value_t saved[fn->local_count > 0 ? fn->local_count : 1];
+  value_t saved[argc > 0 ? argc : 1];
   if (args) {
     value_t *current_locals = frame_locals(current);
     for (size_t i = 0; i < argc; i++) {
