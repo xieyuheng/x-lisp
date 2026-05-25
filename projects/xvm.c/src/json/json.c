@@ -235,8 +235,7 @@ static value_t parse_object(list_t *tokens) {
 
 static void format_json_value(buffer_t *buffer, value_t json);
 
-static void format_json_string_escaped(buffer_t *buffer, const char *s) {
-  format_string(buffer, "\"");
+void format_string_escaped(buffer_t *buffer, const char *s) {
   size_t i = 0;
   while (s[i]) {
     switch (s[i]) {
@@ -249,6 +248,11 @@ static void format_json_string_escaped(buffer_t *buffer, const char *s) {
     }
     i++;
   }
+}
+
+static void format_json_string_escaped(buffer_t *buffer, const char *s) {
+  format_string(buffer, "\"");
+  format_string_escaped(buffer, s);
   format_string(buffer, "\"");
 }
 
@@ -273,7 +277,7 @@ static void format_json_value(buffer_t *buffer, value_t json) {
   } else if (string_equal(tag, "json-number")) {
     value_t n = xlist_get(xs, 1);
     if (float_p(n)) {
-      format_template(buffer, "%f", to_double(n));
+      format_atom(buffer, n);
     } else {
       format_template(buffer, "%ld", to_int64(n));
     }

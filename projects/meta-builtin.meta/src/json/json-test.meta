@@ -27,4 +27,14 @@
 (define-test format-json-test
   (assert-equal "null" (format-json (json-null)))
   (assert-equal "true" (format-json (json-bool true)))
-  (assert-equal "false" (format-json (json-bool false))))
+  (assert-equal "false" (format-json (json-bool false)))
+  (assert-equal "0.0" (format-json (json-number 0.0)))
+  (assert-equal "42.0" (format-json (json-number 42.0)))
+  (println (format-json (json-number 3.14))))
+
+(define-test format-json-string-escape-test
+  (println (format-json (json-string "hello")))
+  (println (format-json (json-string "a\"b")))
+  (println (format-json (json-string "a\\b")))
+  (println (format-json (json-string "a\nb")))
+  (println (format-json (json-string "a\tb"))))

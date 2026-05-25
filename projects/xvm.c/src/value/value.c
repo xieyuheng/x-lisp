@@ -1,5 +1,7 @@
 #include "index.h"
 
+extern void format_string_escaped(buffer_t *buffer, const char *s);
+
 inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
@@ -125,7 +127,7 @@ void format_atom(buffer_t *buffer, value_t value) {
 
   if (xstring_p(value)) {
     format_string(buffer, "\"");
-    format_string(buffer, xstring_string(to_xstring(value)));
+    format_string_escaped(buffer, xstring_string(to_xstring(value)));
     format_string(buffer, "\"");
     return;
   }

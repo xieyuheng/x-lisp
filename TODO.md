@@ -1,7 +1,4 @@
-[xvm.c] 修复 json format number 时的结尾 0
-
-[meta-builtin.meta] json-t
-[meta-lisp.meta] remove project.sexp
+[meta-lisp.meta] 删除 project.sexp，和 [meta-lisp.js] 一样，使用 project.json
 
 [meta-lisp.meta] term vs exp
 [meta-lisp.meta] term-free-names.meta
