@@ -4,4 +4,5 @@ set -e
 
 ./meta-lisp.js check
 ./meta-lisp.js build
-./meta-lisp.meta check
+
+sh scripts/self-check.sh
