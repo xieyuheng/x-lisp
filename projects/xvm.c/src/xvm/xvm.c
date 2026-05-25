@@ -390,6 +390,10 @@ static array_t *xvm_gc_roots(xvm_t *xvm) {
     }
   }
 
+  if (object_p(xvm->result)) {
+    array_push(roots, to_object(xvm->result));
+  }
+
   return roots;
 }
 
