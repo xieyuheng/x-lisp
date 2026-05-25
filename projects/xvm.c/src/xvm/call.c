@@ -18,7 +18,9 @@ void call_primitive(
       return;
   }
   case X_FN_2: {
-    xvm->result = primitive->fn_2(locals[args[0]], locals[args[1]]);
+    xvm->result = primitive->fn_2(
+      locals[args[0]],
+      locals[args[1]]);
     return;
   }
   case X_FN_3: {
@@ -60,7 +62,6 @@ void call_primitive(
 
 void call_function_now_values(xvm_t *xvm, const function_t *fn,
                               uint8_t argc, const uint16_t *args, value_t *locals) {
-  // VLA[0] is UB in C, so ensure at least 1 element
   value_t saved[argc > 0 ? argc : 1];
   for (size_t i = 0; i < argc; i++) {
     saved[i] = locals[args[i]];
@@ -68,8 +69,7 @@ void call_function_now_values(xvm_t *xvm, const function_t *fn,
 
   size_t old_break = xvm->break_depth;
   xvm->break_depth = xvm_frame_count(xvm);
-  frame_t *callee = make_function_frame_with_values(fn, argc, saved);
-  xvm_push_frame(xvm, callee);
+  xvm_push_function_frame_with_values(xvm, fn, argc, saved);
   xvm_execute(xvm);
   xvm->break_depth = old_break;
 }
@@ -77,8 +77,7 @@ void call_function_now_values(xvm_t *xvm, const function_t *fn,
 void call_function_now(xvm_t *xvm, const function_t *function) {
   size_t old_break = xvm->break_depth;
   xvm->break_depth = xvm_frame_count(xvm);
-  frame_t *callee = make_function_frame(function, 0, NULL, NULL);
-  xvm_push_frame(xvm, callee);
+  xvm_push_function_frame(xvm, function, 0, NULL);
   xvm_execute(xvm);
   xvm->break_depth = old_break;
 }

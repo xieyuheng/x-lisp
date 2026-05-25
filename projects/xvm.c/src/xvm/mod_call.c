@@ -18,16 +18,9 @@ void mod_call_entry(mod_t *mod, const char *name) {
   xvm_t *xvm = make_xvm(mod);
 
   if (definition->kind == PRIMITIVE_DEFINITION) {
-    value_t *locals = allocate(sizeof(value_t) * 1);
-    uint16_t *arg_indices = allocate(sizeof(uint16_t) * 1);
-    arg_indices[0] = 0;
-    call_primitive(xvm, locals, definition->primitive_definition.primitive, 0, arg_indices);
-    free(arg_indices);
-    free(locals);
+    call_primitive(xvm, NULL, definition->primitive_definition.primitive, 0, NULL);
   } else if (definition->kind == FUNCTION_DEFINITION) {
-    frame_t *entry = make_function_frame(
-      definition_function(definition), 0, NULL, NULL);
-    xvm_push_frame(xvm, entry);
+    xvm_push_function_frame(xvm, definition_function(definition), 0, NULL);
     xvm->break_depth = xvm_frame_count(xvm) - 1;
     xvm_execute(xvm);
   } else {
