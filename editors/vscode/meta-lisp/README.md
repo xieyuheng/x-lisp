@@ -15,23 +15,22 @@ meta-lisp 语言的 VSCode 编辑器支持。
 
 ```bash
 cd editors/vscode/meta-lisp
-npm install
-npm run compile
+pnpm install
+pnpm run compile
 ```
 
 然后将 `editors/vscode/meta-lisp/` 目录链接到 VSCode 扩展目录：
 
 ```bash
-# Linux / macOS
+ln -s $(pwd) ~/.vscode-oss/extensions/meta-lisp
 ln -s $(pwd) ~/.vscode/extensions/meta-lisp
-
-# 或者在 VSCode 中按 F5 启动 Extension Development Host
+ln -s $(pwd) ~/.cursor/extensions/meta-lisp
 ```
 
 ### 打包发布
 
 ```bash
-npm install -g @vscode/vsce
+pnpm add -g @vscode/vsce
 vsce package
 # 生成 meta-lisp-0.1.0.vsix
 code --install-extension meta-lisp-0.1.0.vsix
