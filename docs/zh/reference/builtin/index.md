@@ -29,6 +29,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [进程](#进程)
 - [随机数](#随机数)
 - [S 表达式](#s-表达式)
+- [JSON](#json)
 - [类型](#类型)
 
 ## 通用函数
@@ -578,5 +579,18 @@ S 表达式的解析、格式化和相关类型。
 - [`format-sexp`](sexp/format-sexp.md) — 格式化 S 表达式
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — 收集键值对列表
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — 收集键值对哈希表
+
+## JSON
+
+JSON 值及其操作。
+
+### 类型
+
+- [`json-t`](json/json-t.md) — JSON 值类型
+
+### 解析与格式化
+
+- [`parse-json`](json/parse-json.md) — 解析 JSON 字符串
+- [`format-json`](json/format-json.md) — 格式化为 JSON 字符串
 
 

@@ -29,6 +29,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Process](#process)
 - [Random](#random)
 - [S-expressions](#s-expressions)
+- [JSON](#json)
 - [Type](#type)
 
 ## Generic
@@ -578,5 +579,18 @@ S-expression parsing, formatting, and related types.
 - [`format-sexp`](sexp/format-sexp.md) — Format an S-expression
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — Collect key-value pairs as a list
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — Collect key-value pairs as a hash
+
+## JSON
+
+JSON values and operations.
+
+### Type
+
+- [`json-t`](json/json-t.md) — JSON value type
+
+### Parse and format
+
+- [`parse-json`](json/parse-json.md) — Parse a JSON string
+- [`format-json`](json/format-json.md) — Format as a JSON string
 
 
