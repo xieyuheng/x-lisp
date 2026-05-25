@@ -230,6 +230,8 @@ face at that position is returned."
   (should (eq (meta-lisp-test--font-lock-at "(§let ((x 1)) x)")
               'font-lock-keyword-face))
   (should (eq (meta-lisp-test--font-lock-at "(§if true 1 2)")
+              'font-lock-keyword-face))
+  (should (eq (meta-lisp-test--font-lock-at "(§-> int-t int-t)")
               'font-lock-keyword-face)))
 
 (ert-deftest meta-lisp-font-lock-at-form ()
@@ -247,14 +249,35 @@ face at that position is returned."
     (should (eq face 'font-lock-builtin-face))))
 
 (ert-deftest meta-lisp-font-lock-type ()
-  "Builtin type names should use font-lock-type-face."
-  (let ((face (meta-lisp-test--font-lock-at "(claim x §int-t)")))
+  "Type names (symbols ending in -t) should use font-lock-type-face."
+  (let ((face (meta-lisp-test--font-lock-at "(claim x §point-t)")))
     (should (eq face 'font-lock-type-face))))
+
+(ert-deftest meta-lisp-font-lock-keyword-no-partial ()
+  "Keywords inside larger symbols should NOT trigger keyword face."
+  (should-not (eq (meta-lisp-test--font-lock-at "(§lambda-term ...)")
+                  'font-lock-keyword-face))
+  (should-not (eq (meta-lisp-test--font-lock-at "(§let1-term ...)")
+                  'font-lock-keyword-face))
+  (should-not (eq (meta-lisp-test--font-lock-at "(§if-term ...)")
+                  'font-lock-keyword-face))
+  (should-not (eq (meta-lisp-test--font-lock-at "(§polymorphic-term ...)")
+                  'font-lock-keyword-face)))
 
 (ert-deftest meta-lisp-font-lock-keyword-constant ()
   "Keyword symbols (:xxx) should use font-lock-constant-face."
   (let ((face (meta-lisp-test--font-lock-at "(@hash §:a 1 :b 2)")))
     (should (eq face 'font-lock-constant-face))))
+
+(ert-deftest meta-lisp-font-lock-module-prefix ()
+  "Module prefix in qualified names should use module-name-face."
+  (let ((face (meta-lisp-test--font-lock-at "(§sigma/pi 3.14)")))
+    (should (eq face 'meta-lisp-module-name-face))))
+
+(ert-deftest meta-lisp-font-lock-type-qualified ()
+  "Qualified type: suffix gets type face, prefix gets module face."
+  (let ((face (meta-lisp-test--font-lock-at "(math/§point-t x y)")))
+    (should (eq face 'font-lock-type-face))))
 
 ;;; Comment tests
 

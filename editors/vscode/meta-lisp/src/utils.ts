@@ -155,7 +155,7 @@ export function findEnclosingSexpStart(
   pos: vscode.Position,
 ): SexpInfo | null {
   const stack: string[] = []
-  let current: vscode.Position | null = new vscode.Position(pos.line, pos.character)
+  let current: vscode.Position | null = moveBackward(document, pos)
   let depth = 0
 
   while (current) {
@@ -178,11 +178,6 @@ export function findEnclosingSexpStart(
     }
 
     current = moveBackward(document, current)
-
-    // stop at start of line to avoid infinite loops
-    if (current && current.character === 0 && current.line === 0 && current.character === 0) {
-      break
-    }
   }
 
   return null
@@ -388,13 +383,23 @@ export function computeFunctionIndent(
     return openPos.character + INDENT_SIZE
   }
 
-  const result = readSymbolForward(document, afterOpen)
-  if (!result) {
+  const fnResult = readSymbolForward(document, afterOpen)
+  if (!fnResult) {
     return openPos.character + INDENT_SIZE
   }
 
-  if (openPos.line === result.endPos.line) {
-    return result.endPos.character
+  const fnEnd = fnResult.endPos
+  const line = document.lineAt(fnEnd.line)
+  let col = fnEnd.character
+
+  while (col < line.text.length && (line.text[col] === ' ' || line.text[col] === '\t')) {
+    col++
+  }
+
+  if (col < line.text.length && line.text[col] !== ';') {
+    if (openPos.line === fnEnd.line) {
+      return col
+    }
   }
 
   return openPos.character + INDENT_SIZE

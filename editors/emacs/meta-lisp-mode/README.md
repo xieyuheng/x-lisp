@@ -17,7 +17,7 @@ Emacs major mode for editing [meta-lisp](https://github.com/xieyuheng/meta-lisp)
 Clone or copy the `meta-lisp-mode` directory into your Emacs load path, then add to `init.el`:
 
 ```elisp
-(add-to-list 'load-path "~/.emacs.d/lisp/meta-lisp-mode")
+(add-to-list 'load-path "~/.emacs.d/meta-lisp-mode")
 (require 'meta-lisp-mode)
 ```
 
@@ -25,7 +25,7 @@ Clone or copy the `meta-lisp-mode` directory into your Emacs load path, then add
 
 ```elisp
 (use-package meta-lisp-mode
-  :load-path "~/.emacs.d/lisp/meta-lisp-mode"
+  :load-path "~/.emacs.d/meta-lisp-mode"
   :mode "\\.meta\\'")
 ```
 

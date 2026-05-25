@@ -1,6 +1,29 @@
 import * as vscode from 'vscode'
 import { computeIndentation } from './indent'
 
+function indentLine(
+  document: vscode.TextDocument,
+  line: number,
+): vscode.TextEdit[] {
+  const pos = new vscode.Position(line, 0)
+  const indent = computeIndentation(document, pos)
+  if (indent === null) {
+    return []
+  }
+
+  const currentLineText = document.lineAt(line).text
+  const leadingWhitespace = currentLineText.match(/^\s*/)?.[0] || ''
+  if (leadingWhitespace.length === indent) {
+    return []
+  }
+
+  const edit = new vscode.TextEdit(
+    new vscode.Range(line, 0, line, leadingWhitespace.length),
+    ' '.repeat(indent),
+  )
+  return [edit]
+}
+
 export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.languages.registerOnTypeFormattingEditProvider(
@@ -12,29 +35,17 @@ export function activate(context: vscode.ExtensionContext): void {
           ch: string,
           _options: vscode.FormattingOptions,
         ): vscode.TextEdit[] {
-          if (ch !== '\n') {
-            return []
+          if (ch === '\n') {
+            return indentLine(document, position.line)
           }
-
-          const indent = computeIndentation(document, position)
-          if (indent === null) {
-            return []
+          if (ch === '\t') {
+            return indentLine(document, position.line)
           }
-
-          const currentLineText = document.lineAt(position.line).text
-          const leadingWhitespace = currentLineText.match(/^\s*/)?.[0] || ''
-          if (leadingWhitespace.length === indent) {
-            return []
-          }
-
-          const edit = new vscode.TextEdit(
-            new vscode.Range(position.line, 0, position.line, leadingWhitespace.length),
-            ' '.repeat(indent),
-          )
-          return [edit]
+          return []
         },
       },
       '\n',
+      '\t',
     ),
   )
 }

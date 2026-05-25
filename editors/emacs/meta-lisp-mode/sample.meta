@@ -25,6 +25,11 @@
   (lambda (x)
     (f (g x))))
 
+;; === Qualified name ===
+
+example/my-list-t
+example/abc
+
 ;; === Conditionals ===
 
 (define (abs x)

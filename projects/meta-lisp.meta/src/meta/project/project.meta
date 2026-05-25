@@ -2,10 +2,10 @@
 
 (define-struct* project-t
   (cons-project
-   (root-directory string-t)
-   (config project-config-t)
-   (fragments (hash-t string-t mod-fragment-t))
-   (mods (hash-t symbol-t mod-t))))
+    (root-directory string-t)
+    (config project-config-t)
+    (fragments (hash-t string-t mod-fragment-t))
+    (mods (hash-t symbol-t mod-t))))
 
 (define (make-project root-directory config)
   (cons-project root-directory config (make-hash) (make-hash)))

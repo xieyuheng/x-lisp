@@ -10,6 +10,7 @@
     "="
     "module" "import" "import-as" "import-all" "private"
     "claim" "claim-type" "admit" "the" "polymorphic"
+    "->"
     "interface" "extend-interface" "define-interface"
     "define-algebraic-type" "define-record-type"
     "define-struct" "define-struct*" "define-enum"
@@ -32,27 +33,17 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
   '("true" "false" "void")
   "Builtin constant names in meta-lisp.")
 
-(defconst meta-lisp--builtin-types
-  '("int-t" "float-t" "string-t" "symbol-t" "keyword-t"
-    "bool-t" "void-t" "file-t" "list-t" "set-t" "hash-t"
-    "maybe-t" "box-t")
-  "Builtin type names in meta-lisp.")
-
 ;;; Helpers
 
 (defun meta-lisp--re-special-forms ()
   "Return a regexp matching any special form at the head of a list."
   (let ((syms meta-lisp--special-forms))
-    (concat "(\\(" (regexp-opt syms) "\\)")))
+    (concat "(\\(" (regexp-opt syms) "\\)\\_>")))
 
 (defun meta-lisp--re-at-forms ()
   "Return a regexp matching any @-prefixed form at the head of a list."
   (let ((syms meta-lisp--at-forms))
     (concat "(\\(" (regexp-opt syms) "\\)")))
-
-(defun meta-lisp--re-builtin-types ()
-  "Return a regexp matching builtin type names."
-  (regexp-opt meta-lisp--builtin-types))
 
 (defun meta-lisp--re-builtin-constants ()
   "Return a regexp matching builtin constant names."
@@ -60,9 +51,9 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
 
 ;;; Non-symbolic faces that are not provided by font-lock
 
-(defface meta-lisp-qualified-name-face
-  '((t :inherit font-lock-type-face))
-  "Face for qualified names like `module/name' in meta-lisp."
+(defface meta-lisp-module-name-face
+  '((t :inherit font-lock-preprocessor-face))
+  "Face for module name prefixes like `module/' in qualified names."
   :group 'meta-lisp)
 
 (defface meta-lisp-at-form-face
@@ -86,17 +77,18 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
    (,(concat "\\_<" (meta-lisp--re-builtin-constants) "\\_>")
     0 font-lock-builtin-face)
 
-   ;; Builtin type names: int-t  float-t  string-t  etc.
-   (,(concat "\\_<" (meta-lisp--re-builtin-types) "\\_>")
+   ;; Type names: any symbol ending in -t  (int-t  point-t  exp-t  ...)
+   (,(concat "\\_<[a-zA-Z][-a-zA-Z0-9?!+*/=<>_]*-t\\_>")
     0 font-lock-type-face)
+
+   ;; Module prefix: module/ in qualified names like module/name
+   ;; OVERRIDE=t so it overrides the type face on e.g. builtin/string-t
+   (,(concat "\\_<\\([a-zA-Z][-a-zA-Z0-9?!+*/=<>_]*/\\)")
+    1 'meta-lisp-module-name-face t)
 
    ;; Keywords: :key :name :etc
    (,(concat "\\_<:[-a-zA-Z0-9?!+*/=<>_]+\\_>")
     0 font-lock-constant-face)
-
-   ;; Qualified names: module-name/symbol
-   (,(concat "\\_<[a-zA-Z][-a-zA-Z0-9?!+*/=<>_]*/[a-zA-Z][-a-zA-Z0-9?!+*/=<>_]*\\_>")
-    0 'meta-lisp-qualified-name-face)
 
    ;; Numbers: integers and floats
    (,(concat "\\_<-?[0-9]+\\(\\.[0-9]+\\)?\\_>")
