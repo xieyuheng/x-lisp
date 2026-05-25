@@ -343,19 +343,19 @@ void xvm_execute(xvm_t *xvm) {
     value_t *locals = frame_locals(frame);
 
     switch (*frame->pc) {
-    case OP_MOVE:   exec_move(frame, locals);               break;
-    case OP_LOAD:   exec_load(frame, locals);               break;
-    case OP_LOAD_RESULT: exec_load_result(xvm, frame, locals);       break;
-    case OP_RETURN: exec_return(xvm, frame, locals);        continue;
-    case OP_CALL:   exec_call(xvm, frame, locals);          break;
-    case OP_TAIL_CALL: exec_tail_call(xvm, frame, locals);  continue;
-    case OP_REF:    exec_ref(frame, locals);                break;
-    case OP_GLOBAL_LOAD: exec_global_load(xvm, frame, locals);   break;
-    case OP_GLOBAL_STORE: exec_global_store(xvm, frame, locals); break;
-    case OP_APPLY:  exec_apply(xvm, frame, locals);         break;
-    case OP_TAIL_APPLY: exec_tail_apply(xvm, frame, locals); continue;
-    case OP_JUMP:   exec_jump(frame);                       break;
-    case OP_JUMP_IF_NOT: exec_jump_if_not(frame, locals);   break;
+    case OP_MOVE:          exec_move(frame, locals);                 break;
+    case OP_LOAD:          exec_load(frame, locals);                 break;
+    case OP_LOAD_RESULT:   exec_load_result(xvm, frame, locals);     break;
+    case OP_RETURN:        exec_return(xvm, frame, locals);          continue;
+    case OP_CALL:          exec_call(xvm, frame, locals);            break;
+    case OP_TAIL_CALL:     exec_tail_call(xvm, frame, locals);       continue;
+    case OP_REF:           exec_ref(frame, locals);                  break;
+    case OP_GLOBAL_LOAD:   exec_global_load(xvm, frame, locals);     break;
+    case OP_GLOBAL_STORE:  exec_global_store(xvm, frame, locals);    break;
+    case OP_APPLY:         exec_apply(xvm, frame, locals);           break;
+    case OP_TAIL_APPLY:    exec_tail_apply(xvm, frame, locals);      continue;
+    case OP_JUMP:          exec_jump(frame);                         break;
+    case OP_JUMP_IF_NOT:   exec_jump_if_not(frame, locals);          break;
     }
   }
 }
