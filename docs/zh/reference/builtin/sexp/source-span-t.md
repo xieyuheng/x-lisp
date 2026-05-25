@@ -12,7 +12,7 @@ type-t
 
 源码区间类型。包含起始和结束位置。
 
-# 结构体
+# 定义
 
 ```scheme
 (define-struct source-span-t

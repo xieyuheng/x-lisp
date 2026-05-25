@@ -12,7 +12,7 @@ type-t
 
 源码位置类型。包含索引、行号和列号。
 
-# 结构体
+# 定义
 
 ```scheme
 (define-struct source-position-t

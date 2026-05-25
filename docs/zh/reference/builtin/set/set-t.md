@@ -5,7 +5,7 @@ title: set-t
 # 类型
 
 ```scheme
-(-> type-t type-t)
+type-t
 ```
 
 # 描述

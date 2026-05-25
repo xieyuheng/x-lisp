@@ -5,7 +5,7 @@ title: list-t
 # Type
 
 ```scheme
-(-> type-t type-t)
+type-t
 ```
 
 # Description

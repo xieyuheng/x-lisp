@@ -12,7 +12,7 @@ type-t
 
 Source location type. Contains file path and source span.
 
-# Struct
+# Definition
 
 ```scheme
 (define-struct source-location-t

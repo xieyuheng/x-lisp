@@ -5,37 +5,24 @@ title: pair-t
 # Type
 
 ```scheme
-(-> type-t type-t type-t)
+type-t
 ```
 
-# Description
+# Definition
 
-Pair type constructor. `(pair-t A B)` represents a pair containing values of types `A` and `B`.
+```scheme
+(define-struct (pair-t A B)
+  (first A)
+  (second B))
+```
 
 # Generated
 
-## Constructor
-
 ```scheme
 (claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
-```
-
-## Predicate
-
-```scheme
 (claim pair? (polymorphic (A) (-> A bool-t)))
-```
-
-## Accessor
-
-```scheme
 (claim pair-first  (polymorphic (A B) (-> (pair-t A B) A)))
 (claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
-```
-
-## Modifier
-
-```scheme
 (claim pair-put-first!  (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
 (claim pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
 ```

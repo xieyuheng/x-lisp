@@ -5,38 +5,27 @@ title: box-t
 # 类型
 
 ```scheme
-(polymorphic (E) (-> type-t type-t))
+type-t
 ```
 
-# 描述
+# 定义
 
-不透明类型 `(box-t E)` 的类型构造器。内部表示为 `(list-t E)`。
+```scheme
+(define-opaque-type (box-t E) (list-t E)
+  (make-box (-> (box-t E)))
+  (box-empty? (-> (box-t E) bool-t))
+  (box-put! (-> E (box-t E) (box-t E)))
+  (box-get-maybe (-> (box-t E) (maybe-t E))))
+```
 
-# 接口函数
-
-## 构造器
+# 自动生成
 
 ```scheme
 (claim make-box (polymorphic (E) (-> (box-t E))))
-```
-
-## 谓词
-
-```scheme
 (claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
-```
-
-## 修改器
-
-```scheme
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
-```
-
-## 访问器
-
-```scheme
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
-(claim box-get      (polymorphic (E) (-> (box-t E) E)))
+(claim box-get (polymorphic (E) (-> (box-t E) E)))
 ```
 
 # 例子

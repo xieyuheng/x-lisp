@@ -5,38 +5,27 @@ title: box-t
 # Type
 
 ```scheme
-(polymorphic (E) (-> type-t type-t))
+type-t
 ```
 
-# Description
+# Definition
 
-Type constructor for the opaque type `(box-t E)`. Internally represented as `(list-t E)`.
+```scheme
+(define-opaque-type (box-t E) (list-t E)
+  (make-box (-> (box-t E)))
+  (box-empty? (-> (box-t E) bool-t))
+  (box-put! (-> E (box-t E) (box-t E)))
+  (box-get-maybe (-> (box-t E) (maybe-t E))))
+```
 
-# Interface functions
-
-## Constructor
+# Generated
 
 ```scheme
 (claim make-box (polymorphic (E) (-> (box-t E))))
-```
-
-## Predicate
-
-```scheme
 (claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
-```
-
-## Modifier
-
-```scheme
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
-```
-
-## Accessors
-
-```scheme
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
-(claim box-get      (polymorphic (E) (-> (box-t E) E)))
+(claim box-get (polymorphic (E) (-> (box-t E) E)))
 ```
 
 # Examples

@@ -12,7 +12,7 @@ type-t
 
 Source span type. Contains start and end positions.
 
-# Struct
+# Definition
 
 ```scheme
 (define-struct source-span-t

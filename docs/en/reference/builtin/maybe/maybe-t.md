@@ -5,39 +5,27 @@ title: maybe-t
 # Type
 
 ```scheme
-(-> type-t type-t)
+type-t
 ```
 
-# Description
+# Definition
 
-Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or may not exist. Use `(just value)` to construct a present value and `nothing` to represent absence.
+```scheme
+(define-enum (maybe-t A)
+  (just (value A))
+  (nothing))
+```
 
 # Generated
 
-## Constructor
-
 ```scheme
 (claim just  (polymorphic (A) (-> A (maybe-t A))))
-(claim nothing (polymorphic (A) (-> (maybe-t A))))
-```
-
-## Predicate
-
-```scheme
-(claim just?    (polymorphic (A) (-> (maybe-t A) bool-t)))
-(claim nothing? (polymorphic (A) (-> (maybe-t A) bool-t)))
-```
-
-## Accessor
-
-```scheme
+(claim just? (polymorphic (A) (-> (maybe-t A) bool-t)))
 (claim just-value (polymorphic (A) (-> (maybe-t A) A)))
-```
-
-## Modifier
-
-```scheme
 (claim just-put-value! (polymorphic (A) (-> A (maybe-t A) (maybe-t A))))
+
+(claim nothing (polymorphic (A) (-> (maybe-t A))))
+(claim nothing? (polymorphic (A) (-> (maybe-t A) bool-t)))
 ```
 
 # Examples

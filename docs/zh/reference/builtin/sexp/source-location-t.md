@@ -12,7 +12,7 @@ type-t
 
 源码位置类型。包含文件路径和源码区间。
 
-# 结构体
+# 定义
 
 ```scheme
 (define-struct source-location-t

@@ -12,7 +12,7 @@ type-t
 
 Source position type. Contains index, row, and column.
 
-# Struct
+# Definition
 
 ```scheme
 (define-struct source-position-t
