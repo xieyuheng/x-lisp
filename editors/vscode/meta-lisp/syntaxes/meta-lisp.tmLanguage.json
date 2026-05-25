@@ -4,36 +4,16 @@
   "scopeName": "source.meta",
   "fileTypes": [".meta"],
   "patterns": [
-    {
-      "include": "#comments"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#numbers"
-    },
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#at-forms"
-    },
-    {
-      "include": "#special-forms"
-    },
-    {
-      "include": "#builtin-types"
-    },
-    {
-      "include": "#builtin-constants"
-    },
-    {
-      "include": "#qualified-names"
-    },
-    {
-      "include": "#operators"
-    }
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#at-forms" },
+    { "include": "#special-forms" },
+    { "include": "#builtin-types" },
+    { "include": "#builtin-constants" },
+    { "include": "#qualified-names" },
+    { "include": "#operators" }
   ],
   "repository": {
     "comments": {
@@ -52,31 +32,31 @@
       ]
     },
     "numbers": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_@:#$%.])-?[0-9]+(\\.[0-9]+)?(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.])-?[0-9]+(\\.[0-9]+)?(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
       "name": "constant.numeric.meta"
     },
     "keywords": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_@:#$%.]):[a-zA-Z][-a-zA-Z0-9?!+*/=<>_%$#]*",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.]):[-a-zA-Z0-9?!+*/=<>_%$#]+",
       "name": "constant.keyword.meta"
     },
     "at-forms": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_@:#$%.])@(list|set|hash|quote|record)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.])@(list|set|hash|quote|record)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
       "name": "keyword.control.at.meta"
     },
     "special-forms": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_@:#$%.])(module|import|import-as|import-all|exempt|private|claim|claim-type|admit|define|define-test|define-type|define-enum|define-algebraic-type|define-struct\\*|define-struct|define-record-type|define-opaque-type|let\\*|letrec\\*|letrec|let|lambda|if|when|unless|cond|and|or|match|match-many|begin|pipe|chain|compose|the|polymorphic|interface|extend-interface|define-interface|assert|assert-not|assert-the|assert-equal|assert-not-equal|=)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.])(module|import-as|import-all|import|exempt|private|claim-type|claim|admit|define-algebraic-type|define-record-type|define-opaque-type|define-interface|define-struct\\*|define-struct|define-enum|define-test|define-type|define|interface|extend-interface|let\\*|letrec\\*|letrec|let|the|assert-not-equal|assert-equal|assert-the|assert-not|assert|begin|lambda|match-many|match|pipe|chain|compose|if|when|unless|cond|and|or|polymorphic|=)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
       "name": "keyword.control.meta"
     },
     "builtin-types": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_@:#$%.])(int-t|float-t|string-t|symbol-t|keyword-t|bool-t|void-t|file-t|list-t|set-t|hash-t|maybe-t|box-t)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.])(int-t|float-t|string-t|symbol-t|keyword-t|bool-t|void-t|file-t|list-t|set-t|hash-t|maybe-t|box-t)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
       "name": "support.type.meta"
     },
     "builtin-constants": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_@:#$%.])(true|false|void)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.])(true|false|void)(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
       "name": "constant.language.meta"
     },
     "qualified-names": {
-      "match": "(?<![a-zA-Z0-9?!+*/=<>_:#$%.])[a-zA-Z][-a-zA-Z0-9?!+*/=<>_%$#]*/[a-zA-Z][-a-zA-Z0-9?!+*/=<>_%$#]*(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
+      "match": "(?<![-a-zA-Z0-9?!+*/=<>_@:#$%.])[-a-zA-Z0-9?!+*/=<>_%$#]*/[-a-zA-Z0-9?!+*/=<>_%$#]+(?![a-zA-Z0-9?!+*/=<>_@:#$%.])",
       "name": "entity.name.qualified.meta"
     },
     "operators": {
