@@ -1,0 +1,59 @@
+{
+  "name": "meta-lisp",
+  "displayName": "meta-lisp",
+  "description": "VSCode language support for meta-lisp — syntax highlighting and indentation",
+  "version": "0.1.0",
+  "publisher": "meta-lisp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xieyuheng/meta-lisp"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:meta-lisp"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "meta-lisp",
+        "extensions": [
+          ".meta"
+        ],
+        "aliases": [
+          "MetaLisp",
+          "meta-lisp"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "meta-lisp",
+        "scopeName": "source.meta",
+        "path": "./syntaxes/meta-lisp.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[meta-lisp]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.9.3"
+  }
+}
