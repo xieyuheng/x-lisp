@@ -489,8 +489,6 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`write`](file/write.md) — 写入字符串
 - [`writeln`](file/writeln.md) — 写入字符串并换行
 - [`newline`](file/newline.md) — 打印换行符
-- [`current-stdout-file`](file/current-stdout-file.md) — 获取当前标准输出文件句柄
-- [`current-stderr-file`](file/current-stderr-file.md) — 获取当前标准错误文件句柄
 
 ## 文件系统
 
@@ -556,6 +554,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`current-directory`](process/current-directory.md) — 获取当前目录
 - [`current-command-line`](process/current-command-line.md) — 获取 `--` 之后的命令行
 - [`current-full-command-line`](process/current-full-command-line.md) — 获取完整命令行
+- [`current-stdout-file`](process/current-stdout-file.md) — 获取当前标准输出文件句柄
+- [`current-stderr-file`](process/current-stderr-file.md) — 获取当前标准错误文件句柄
 
 ## 随机数
 

@@ -1,8 +1,6 @@
 (module builtin)
 
 (declare-primitive-variable file-t)
-(declare-primitive-function current-stdout-file 0)
-(declare-primitive-function current-stderr-file 0)
 (declare-primitive-function open-input-file 1)
 (declare-primitive-function open-output-file 1)
 (declare-primitive-function file-close 1)
@@ -16,8 +14,6 @@
 (declare-primitive-function newline 0)
 
 (claim file-t type-t)
-(claim current-stdout-file (-> file-t))
-(claim current-stderr-file (-> file-t))
 (claim open-input-file (-> string-t file-t))
 (claim open-output-file (-> string-t file-t))
 (claim file-close (-> file-t void-t))

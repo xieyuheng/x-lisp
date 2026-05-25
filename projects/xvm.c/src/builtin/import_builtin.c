@@ -84,8 +84,6 @@ void import_builtin(mod_t *mod) {
 
   // file
 
-  define_primitive_0(mod, "builtin/current-stdout-file", x_current_stdout_file);
-  define_primitive_0(mod, "builtin/current-stderr-file", x_current_stderr_file);
   define_primitive_1(mod, "builtin/open-input-file", x_open_input_file);
   define_primitive_1(mod, "builtin/open-output-file", x_open_output_file);
   define_primitive_1(mod, "builtin/file-close", x_file_close);
@@ -278,4 +276,6 @@ void import_builtin(mod_t *mod) {
   define_primitive_0(mod, "builtin/current-directory", x_current_directory);
   define_primitive_0(mod, "builtin/current-command-line", x_current_command_line);
   define_primitive_0(mod, "builtin/current-full-command-line", x_current_full_command_line);
+  define_primitive_0(mod, "builtin/current-stdout-file", x_current_stdout_file);
+  define_primitive_0(mod, "builtin/current-stderr-file", x_current_stderr_file);
 }

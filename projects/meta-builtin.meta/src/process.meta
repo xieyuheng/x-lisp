@@ -4,8 +4,12 @@
 (declare-primitive-function current-directory 0)
 (declare-primitive-function current-command-line 0)
 (declare-primitive-function current-full-command-line 0)
+(declare-primitive-function current-stdout-file 0)
+(declare-primitive-function current-stderr-file 0)
 
 (claim exit (-> int-t void-t))
 (claim current-directory (-> string-t))
 (claim current-command-line (-> (list-t string-t)))
 (claim current-full-command-line (-> (list-t string-t)))
+(claim current-stdout-file (-> file-t))
+(claim current-stderr-file (-> file-t))

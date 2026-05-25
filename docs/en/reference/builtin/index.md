@@ -489,8 +489,6 @@ File handle read/write operations.
 - [`write`](file/write.md) — Write a string
 - [`writeln`](file/writeln.md) — Write a string with newline
 - [`newline`](file/newline.md) — Print a newline
-- [`current-stdout-file`](file/current-stdout-file.md) — Get current stdout file handle
-- [`current-stderr-file`](file/current-stderr-file.md) — Get current stderr file handle
 
 ## File system
 
@@ -556,6 +554,8 @@ Assertion functions for testing.
 - [`current-directory`](process/current-directory.md) — Get current directory
 - [`current-command-line`](process/current-command-line.md) — Get command line after `--`
 - [`current-full-command-line`](process/current-full-command-line.md) — Get full command line
+- [`current-stdout-file`](process/current-stdout-file.md) — Get current stdout file handle
+- [`current-stderr-file`](process/current-stderr-file.md) — Get current stderr file handle
 
 ## Random
 

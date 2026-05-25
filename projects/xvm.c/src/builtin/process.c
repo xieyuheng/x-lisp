@@ -59,3 +59,25 @@ value_t x_current_directory(void) {
   char *cwd = getcwd(NULL, 0);
   return x_object(make_xstring_take(cwd));
 }
+
+static value_t stdout_file_value;
+static value_t stderr_file_value;
+static bool standard_files_initialized_p = false;
+
+static void ensure_standard_files(void) {
+  if (!standard_files_initialized_p) {
+    stdout_file_value = x_object(make_static_xfile(stdout));
+    stderr_file_value = x_object(make_static_xfile(stderr));
+    standard_files_initialized_p = true;
+  }
+}
+
+value_t x_current_stdout_file(void) {
+  ensure_standard_files();
+  return stdout_file_value;
+}
+
+value_t x_current_stderr_file(void) {
+  ensure_standard_files();
+  return stderr_file_value;
+}
