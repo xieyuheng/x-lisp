@@ -232,6 +232,8 @@ face at that position is returned."
   (should (eq (meta-lisp-test--font-lock-at "(§if true 1 2)")
               'font-lock-keyword-face))
   (should (eq (meta-lisp-test--font-lock-at "(§-> int-t int-t)")
+              'font-lock-keyword-face))
+  (should (eq (meta-lisp-test--font-lock-at "(§else 42)")
               'font-lock-keyword-face)))
 
 (ert-deftest meta-lisp-font-lock-function-name ()

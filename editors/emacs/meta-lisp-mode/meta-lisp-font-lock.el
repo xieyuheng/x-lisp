@@ -4,7 +4,7 @@
 
 (defconst meta-lisp--special-forms
   '("define" "lambda" "let" "let*" "letrec" "letrec*"
-    "if" "cond" "when" "unless" "and" "or"
+    "if" "cond" "when" "unless" "and" "or" "else"
     "begin" "match" "match-many"
     "pipe" "chain" "compose"
     "="

@@ -51,6 +51,7 @@
     ("unless" . 1)
     ("and" . 0)
     ("or" . 0)
+    ("else" . 0)
     ("cond" . 0)
     ("@list" . 0)
     ("@record" . 0)
