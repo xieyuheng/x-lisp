@@ -62,7 +62,7 @@ Plug '~/projects/meta-lisp', { 'rtp': 'editors/vim' }
 
 Two distinct indentation behaviors:
 
-- **`[]` brackets** — literal list syntax. All elements indent uniformly from `[` (like Clojure vectors).
+- **`[]` brackets** — literal list syntax (like Clojure vectors).
 
 - **`()` parentheses** — keyword-driven. 43 special forms have indent specs (0 = all children body, 1 = first child special). Non-keyword forms use function-call alignment.
 
