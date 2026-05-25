@@ -7,16 +7,16 @@ title: Builtin Functions Index
 All builtin functions in meta-lisp, categorized by functionality.
 
 - [Generic](#generic)
-- [Booleans](#booleans)
-- [Integers](#integers)
-- [Floats](#floats)
-- [Strings](#strings)
-- [Symbols](#symbols)
-- [Keywords](#keywords)
+- [Boolean](#boolean)
+- [Integer](#integer)
+- [Float](#float)
+- [String](#string)
+- [Symbol](#symbol)
+- [Keyword](#keyword)
 - [Void](#void)
-- [Lists](#lists)
-- [Sets](#sets)
-- [Hash tables](#hash-tables)
+- [List](#list)
+- [Set](#set)
+- [Hash table](#hash-table)
 - [Pair](#pair)
 - [Maybe](#maybe)
 - [Box](#box)
@@ -28,7 +28,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Error handling](#error-handling)
 - [Process](#process)
 - [Random](#random)
-- [S-expressions](#s-expressions)
+- [S-expression](#s-expression)
 - [JSON](#json)
 
 ## Generic
@@ -42,14 +42,14 @@ Operations applicable to all types.
 - [`hash-code`](value/hash-code.md) — Compute hash code
 - [`total-compare`](value/total-compare.md) — Total order comparison
 
-## Booleans
+## Boolean
 
 Operations on `bool-t`.
 
 - [`bool?`](bool/bool-p.md) — Check if a value is a boolean
 - [`not`](bool/not.md) — Logical not
 
-## Integers
+## Integer
 
 Operations on `int-t`.
 
@@ -92,7 +92,7 @@ Operations on `int-t`.
 - [`int-product`](int/int-product.md) — Product of a list
 - [`int-align`](int/int-align.md) — Align to a multiple
 
-## Floats
+## Float
 
 Operations on `float-t`.
 
@@ -134,7 +134,7 @@ Operations on `float-t`.
 - [`float-sum`](float/float-sum.md) — Sum of a list
 - [`float-product`](float/float-product.md) — Product of a list
 
-## Strings
+## String
 
 Operations on `string-t`.
 
@@ -196,7 +196,7 @@ Operations on `string-t`.
 - [`string-repeat`](string/string-repeat.md) — Repeat a string
 - [`string-compare-lexical`](string/string-compare-lexical.md) — Lexicographic comparison
 
-## Symbols
+## Symbol
 
 Operations on `symbol-t`.
 
@@ -206,7 +206,7 @@ Operations on `symbol-t`.
 - [`symbol-concat`](symbol/symbol-concat.md) — Concatenate a list of symbols
 - [`symbol-to-string`](symbol/symbol-to-string.md) — Convert to string
 
-## Keywords
+## Keyword
 
 Operations on `keyword-t`.
 
@@ -220,7 +220,7 @@ Operations on `keyword-t`.
 
 - [`void?`](void/void-p.md) — Check if a value is void
 
-## Lists
+## List
 
 Operations on `(list-t E)`.
 
@@ -300,7 +300,7 @@ Operations on `(list-t E)`.
 - [`list-find`](list/list-find.md) — Find first matching element
 - [`list-find-index`](list/list-find-index.md) — Find first matching index
 
-## Sets
+## Set
 
 Operations on `(set-t E)`.
 
@@ -342,7 +342,7 @@ Operations on `(set-t E)`.
 - [`set-reject`](set/set-reject.md) — Opposite of filter
 - [`set-to-list`](set/set-to-list.md) — Convert to list
 
-## Hash tables
+## Hash table
 
 Operations on `(hash-t K V)`.
 
@@ -561,7 +561,7 @@ Assertion functions for testing.
 - [`random-int`](random/random-int.md) — Random integer
 - [`random-float`](random/random-float.md) — Random float
 
-## S-expressions
+## S-expression
 
 S-expression parsing, formatting, and related types.
 
