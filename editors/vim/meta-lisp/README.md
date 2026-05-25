@@ -30,13 +30,13 @@ ln -s "$(pwd)" ~/.vim/bundle/meta-lisp
 ### vim-plug
 
 ```vim
-Plug '~/projects/meta-lisp', { 'rtp': 'editors/vim' }
+Plug '~/projects/meta-lisp', { 'rtp': 'editors/vim/meta-lisp' }
 ```
 
 ### lazy.nvim
 
 ```lua
-{ dir = '~/projects/meta-lisp', dir = 'editors/vim' }
+{ dir = '~/projects/meta-lisp', dir = 'editors/vim/meta-lisp' }
 ```
 
 ## Features
