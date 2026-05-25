@@ -25,8 +25,10 @@ void mod_call_entry(mod_t *mod, const char *name) {
     free(arg_indices);
     free(locals);
   } else if (definition->kind == FUNCTION_DEFINITION) {
-    xvm_push_function_frame_with_values(xvm, definition_function(definition), 0, NULL);
-    xvm->break_depth = xvm->frame_count - 1;
+    frame_t *entry = make_function_frame(
+      definition_function(definition), 0, NULL, NULL);
+    xvm_push_frame(xvm, entry);
+    xvm->break_depth = xvm_frame_count(xvm) - 1;
     xvm_execute(xvm);
   } else {
     unreachable();

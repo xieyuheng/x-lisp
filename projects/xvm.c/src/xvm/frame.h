@@ -4,15 +4,21 @@ struct frame_t {
   const function_t *function;
   uint8_t *pc;
   uint16_t local_count;
-  size_t prev_frame_offset;
+  value_t *locals;
 };
 
-value_t *frame_locals(frame_t *self);
-size_t frame_byte_size(uint16_t local_count);
+frame_t *make_function_frame(const function_t *function,
+                             uint8_t argc,
+                             const uint16_t *args,
+                             value_t *caller_locals);
+frame_t *make_function_frame_with_values(const function_t *function,
+                                          size_t argc,
+                                          value_t *values);
+void frame_free(frame_t *self);
 
 typedef struct frame_iter_t {
   const xvm_t *xvm;
-  size_t offset;
+  size_t index;
   size_t count;
 } frame_iter_t;
 
