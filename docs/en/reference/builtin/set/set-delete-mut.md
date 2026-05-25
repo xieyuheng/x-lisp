@@ -10,7 +10,7 @@ title: set-delete!
 
 # Description
 
-Delete an element from the set, same as `set-delete`.
+Delete an element from the set. Mutates the set in place.
 
 # Examples
 

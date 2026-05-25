@@ -10,7 +10,7 @@ title: hash-delete!
 
 # Description
 
-Delete a key-value pair, returning a new hash table.
+Delete a key-value pair. Mutates the hash table in place.
 
 # Examples
 

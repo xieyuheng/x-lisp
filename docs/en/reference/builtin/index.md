@@ -13,7 +13,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Strings](#strings)
 - [Symbols](#symbols)
 - [Keywords](#keywords)
-- [void](#void)
+- [Void](#void)
 - [Lists](#lists)
 - [Sets](#sets)
 - [Hash tables](#hash-tables)
@@ -30,7 +30,6 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Random](#random)
 - [S-expressions](#s-expressions)
 - [JSON](#json)
-- [Type](#type)
 
 ## Generic
 
@@ -217,7 +216,7 @@ Operations on `keyword-t`.
 - [`keyword-concat`](keyword/keyword-concat.md) — Concatenate a list of keywords
 - [`keyword-to-string`](keyword/keyword-to-string.md) — Convert to string
 
-## void
+## Void
 
 - [`void?`](void/void-p.md) — Check if a value is void
 
