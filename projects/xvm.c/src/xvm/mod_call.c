@@ -18,10 +18,15 @@ void mod_call_entry(mod_t *mod, const char *name) {
   xvm_t *xvm = make_xvm(mod);
 
   if (definition->kind == PRIMITIVE_DEFINITION) {
-    call_primitive(xvm, NULL, definition->primitive_definition.primitive, 0, NULL);
+    value_t *locals = allocate(sizeof(value_t) * 1);
+    uint16_t *arg_indices = allocate(sizeof(uint16_t) * 1);
+    arg_indices[0] = 0;
+    call_primitive(xvm, locals, definition->primitive_definition.primitive, 0, arg_indices);
+    free(arg_indices);
+    free(locals);
   } else if (definition->kind == FUNCTION_DEFINITION) {
-    xvm_push_function_frame(xvm, definition_function(definition), 0, NULL);
-    xvm->break_depth = xvm_frame_count(xvm) - 1;
+    xvm_push_function_frame_with_values(xvm, definition_function(definition), 0, NULL);
+    xvm->break_depth = xvm->frame_count - 1;
     xvm_execute(xvm);
   } else {
     unreachable();

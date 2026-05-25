@@ -16,12 +16,11 @@ void xvm_free(xvm_t *self);
 mod_t *xvm_mod(const xvm_t *self);
 value_t xvm_result(const xvm_t *self);
 
-frame_t *xvm_current_frame(const xvm_t *xvm);
-void xvm_pop_frame(xvm_t *xvm);
 void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,
                              uint8_t argc, const uint16_t *args);
 void xvm_push_function_frame_with_values(xvm_t *xvm, const function_t *fn,
-                                          uint8_t argc, value_t *values);
+                                          size_t argc, value_t *values);
+void xvm_pop_frame(xvm_t *xvm);
 size_t xvm_frame_count(const xvm_t *xvm);
 
 void xvm_execute(xvm_t *xvm);
@@ -32,3 +31,5 @@ void xvm_push_root(xvm_t *xvm, value_t value);
 void xvm_drop_root(xvm_t *xvm);
 
 void xvm_inspect(xvm_t *xvm);
+
+frame_t *xvm_current_frame(xvm_t *xvm);
