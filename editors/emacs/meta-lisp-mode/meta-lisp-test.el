@@ -241,6 +241,8 @@ face at that position is returned."
   (should (eq (meta-lisp-test--font-lock-at "(define (§f x) x)")
               'font-lock-function-name-face))
   (should (eq (meta-lisp-test--font-lock-at "(define §answer 42)")
+              'font-lock-function-name-face))
+  (should (eq (meta-lisp-test--font-lock-at "(claim §add1 (-> int-t int-t))")
               'font-lock-function-name-face)))
 
 (ert-deftest meta-lisp-font-lock-at-form ()

@@ -77,8 +77,8 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
    (,(concat "(define\\_>\\s-*(\\(" meta-lisp--name-re "\\)")
     1 font-lock-function-name-face)
 
-   ;; Variable / function name: (define name body ...)
-   (,(concat "(define\\_>\\s-*\\(" meta-lisp--name-re "\\)\\_>")
+   ;; Variable / function name: (define name body ...)  (claim name type ...)
+   (,(concat "(\\(?:define\\|claim\\)\\_>\\s-*\\(" meta-lisp--name-re "\\)\\_>")
     1 font-lock-function-name-face)
 
    ;; @-prefixed forms at head position: (@list ...)  (@set ...)  etc.
