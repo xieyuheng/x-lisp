@@ -8,6 +8,10 @@ title: maybe-t
 type-t
 ```
 
+# Description
+
+Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or may not exist.
+
 # Definition
 
 ```scheme

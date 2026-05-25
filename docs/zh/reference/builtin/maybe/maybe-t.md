@@ -8,6 +8,10 @@ title: maybe-t
 type-t
 ```
 
+# 描述
+
+可选值类型构造器。`(maybe-t A)` 表示可能存在也可能不存在类型为 `A` 的值。
+
 # 定义
 
 ```scheme

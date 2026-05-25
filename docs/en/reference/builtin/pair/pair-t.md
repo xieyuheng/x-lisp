@@ -8,6 +8,10 @@ title: pair-t
 type-t
 ```
 
+# Description
+
+Pair type constructor. `(pair-t A B)` represents a pair containing values of types `A` and `B`.
+
 # Definition
 
 ```scheme

@@ -8,6 +8,10 @@ title: box-t
 type-t
 ```
 
+# Description
+
+Box type constructor. Internally represented as `(list-t E)`.
+
 # Definition
 
 ```scheme

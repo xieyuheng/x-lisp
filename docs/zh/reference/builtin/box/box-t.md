@@ -8,6 +8,10 @@ title: box-t
 type-t
 ```
 
+# 描述
+
+Box 类型构造器。内部表示为 `(list-t E)`。
+
 # 定义
 
 ```scheme

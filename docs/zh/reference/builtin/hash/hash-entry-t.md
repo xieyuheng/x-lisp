@@ -8,6 +8,10 @@ title: hash-entry-t
 type-t
 ```
 
+# 描述
+
+哈希表条目类型构造器。`(hash-entry-t K V)` 表示一个键类型为 `K`、值类型为 `V` 的键值对条目。
+
 # 定义
 
 ```scheme

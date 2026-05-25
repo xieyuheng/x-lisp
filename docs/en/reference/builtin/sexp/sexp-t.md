@@ -8,6 +8,10 @@ title: sexp-t
 type-t
 ```
 
+# Description
+
+Located S-expression type. Represents a parsed S-expression with source location.
+
 # Definition
 
 ```scheme

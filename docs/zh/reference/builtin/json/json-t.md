@@ -8,6 +8,10 @@ title: json-t
 type-t
 ```
 
+# 描述
+
+JSON 值类型。表示解析后的 JSON 值。
+
 # 定义
 
 ```scheme

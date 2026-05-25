@@ -8,6 +8,10 @@ title: pair-t
 type-t
 ```
 
+# 描述
+
+二元组类型构造器。`(pair-t A B)` 表示一个包含类型 `A` 和 `B` 两个值的对。
+
 # 定义
 
 ```scheme

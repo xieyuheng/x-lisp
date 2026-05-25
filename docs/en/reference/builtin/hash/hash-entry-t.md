@@ -8,6 +8,10 @@ title: hash-entry-t
 type-t
 ```
 
+# Description
+
+Hash table entry type constructor. `(hash-entry-t K V)` represents a key-value entry with key type `K` and value type `V`.
+
 # Definition
 
 ```scheme

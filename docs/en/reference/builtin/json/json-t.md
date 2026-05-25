@@ -8,6 +8,10 @@ title: json-t
 type-t
 ```
 
+# Description
+
+JSON value type. Represents a parsed JSON value.
+
 # Definition
 
 ```scheme
