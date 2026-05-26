@@ -227,10 +227,6 @@ export function DefineStructStmt<E>(
   }
 }
 
-
-
-
-
 export type PreTypeConstructor = {
   name: string
   parameters: Array<string>

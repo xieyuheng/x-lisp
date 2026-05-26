@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
@@ -94,7 +93,7 @@ function locateSpecialApply(exp: M.Term): M.Term {
           targetWithLocation(exp.target),
           [
             ...exp.args.map((e) => locateSpecialApply(e)),
-            expFromSourceLocation(exp.location),
+            M.desugar(M.desugarLocation(exp.location)),
           ],
           exp.location,
         )
@@ -159,43 +158,4 @@ function targetWithLocation(exp: M.Term): M.Term {
   assert(exp.kind === "QualifiedVarTerm")
   const entry = findLocateEntry(exp.name)
   return M.QualifiedVarTerm(exp.modName, entry.target, exp.location)
-}
-
-function expFromSourceLocation(location: S.SourceLocation): M.Term {
-  return M.desugar(
-    M.desugarList(
-      [
-        M.SymbolExp("make-source-location", location),
-        M.StringExp(location.path, location),
-        expFromSpan(location.span, location),
-      ],
-      location,
-    ),
-  )
-}
-
-function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
-  return M.desugarList(
-    [
-      M.SymbolExp("make-source-span", location),
-      expFromPosition(span.start, location),
-      expFromPosition(span.end, location),
-    ],
-    location,
-  )
-}
-
-function expFromPosition(
-  position: S.Position,
-  location: S.SourceLocation,
-): M.Exp {
-  return M.desugarList(
-    [
-      M.SymbolExp("make-source-position", location),
-      M.IntExp(BigInt(position.index), location),
-      M.IntExp(BigInt(position.row), location),
-      M.IntExp(BigInt(position.column), location),
-    ],
-    location,
-  )
 }
