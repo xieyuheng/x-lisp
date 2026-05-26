@@ -34,7 +34,7 @@
      (if (list-empty? elements)
        "[]"
        (string-concat ["[" (format-exps elements) "]"])))
-    ((concat-exp elements location)
+    ((string-concat-exp elements location)
      (if (list-empty? elements)
        "(@string)"
        (string-concat ["(@string " (format-exps elements) ")"])))

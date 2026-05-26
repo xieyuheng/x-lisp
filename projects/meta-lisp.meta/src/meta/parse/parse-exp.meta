@@ -128,7 +128,7 @@
         ((equal? tag '@square-bracket)
          (list-exp (list-map parse-exp (list-drop 1 sexps)) location))
         ((equal? tag '@string)
-         (concat-exp (list-map parse-exp (list-drop 1 sexps)) location))
+         (string-concat-exp (list-map parse-exp (list-drop 1 sexps)) location))
         ((equal? tag '@set)
          (set-exp (list-map parse-exp (list-drop 1 sexps)) location))
         ((equal? tag '@hash)

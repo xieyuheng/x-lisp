@@ -81,7 +81,7 @@ export function desugar(exp: M.Exp): M.Term {
       return desugar(desugarSet(exp.elements, exp.location))
     }
 
-    case "ConcatExp": {
+    case "StringConcatExp": {
       return desugar(
         M.ApplyExp(
           M.QualifiedVarExp("builtin", "string-concat", exp.location),

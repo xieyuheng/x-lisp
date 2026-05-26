@@ -1,3 +1,5 @@
+[meta-lisp.meta] support (@sexp)
+
 ---
 
 [meta-lisp.js] 关于 (@list) 语法

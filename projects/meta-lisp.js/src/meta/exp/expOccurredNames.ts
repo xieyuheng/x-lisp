@@ -157,7 +157,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       return setUnionMany(exp.elements.map((e) => expOccurredNames(e)))
     }
 
-    case "ConcatExp": {
+    case "StringConcatExp": {
       return setUnionMany(exp.elements.map((e) => expOccurredNames(e)))
     }
 
