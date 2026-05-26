@@ -198,6 +198,15 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
+    case "ConcatExp": {
+      const elements = formatExps(exp.elements)
+      if (elements === "") {
+        return `(@string)`
+      } else {
+        return `(@string ${elements})`
+      }
+    }
+
     case "SetExp": {
       const elements = formatExps(exp.elements)
       return `(@set ${elements})`

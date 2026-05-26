@@ -256,11 +256,12 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
+    case "ConcatExp": {
+      return M.ConcatExp(exp.elements.map((e) => expNaiveSubst(e, name, rhs)), exp.location)
+    }
+
     case "SetExp": {
-      return M.SetExp(
-        exp.elements.map((e) => expNaiveSubst(e, name, rhs)),
-        exp.location,
-      )
+      return M.SetExp(exp.elements.map((e) => expNaiveSubst(e, name, rhs)), exp.location)
     }
 
     case "HashExp": {

@@ -80,6 +80,16 @@ export function desugar(exp: M.Exp): M.Term {
       return desugar(desugarSet(exp.elements, exp.location))
     }
 
+    case "ConcatExp": {
+      return desugar(
+        M.ApplyExp(
+          M.QualifiedVarExp("builtin", "string-concat", exp.location),
+          [M.ListExp(exp.elements, exp.location)],
+          exp.location,
+        ),
+      )
+    }
+
     case "HashExp": {
       return desugar(desugarHash(exp.entries, exp.location))
     }

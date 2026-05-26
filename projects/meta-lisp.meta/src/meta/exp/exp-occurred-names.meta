@@ -87,6 +87,8 @@
                      (make-set) clauses))
     ((list-exp elements location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) elements))
+    ((concat-exp elements location)
+     (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) elements))
     ((set-exp elements location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) elements))
     ((hash-exp entries location)

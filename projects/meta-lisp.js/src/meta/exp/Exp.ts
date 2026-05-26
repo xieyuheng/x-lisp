@@ -29,6 +29,7 @@ export type Exp =
   | OrExp
   | CondExp
   | ListExp
+  | ConcatExp
   | SetExp
   | HashExp
   | QuoteExp
@@ -583,6 +584,23 @@ export function ListExp(
 ): ListExp {
   return {
     kind: "ListExp",
+    elements,
+    location,
+  }
+}
+
+export type ConcatExp = {
+  kind: "ConcatExp"
+  elements: Array<Exp>
+  location: SourceLocation
+}
+
+export function ConcatExp(
+  elements: Array<Exp>,
+  location: SourceLocation,
+): ConcatExp {
+  return {
+    kind: "ConcatExp",
     elements,
     location,
   }

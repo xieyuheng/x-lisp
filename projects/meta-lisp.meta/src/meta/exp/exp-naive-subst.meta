@@ -109,6 +109,8 @@
                location))
     ((list-exp elements location)
      (list-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
+    ((concat-exp elements location)
+     (concat-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
     ((set-exp elements location)
      (set-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
     ((hash-exp entries location)
