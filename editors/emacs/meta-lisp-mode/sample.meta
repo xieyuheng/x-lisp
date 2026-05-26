@@ -68,15 +68,15 @@ example/abc
 ;; === Recursion ===
 
 (letrec ((even?
-          (lambda (n)
-            (if (equal? n 0)
-              true
-              (odd? (isub n 1)))))
+           (lambda (n)
+             (if (equal? n 0)
+               true
+               (odd? (isub n 1)))))
          (odd?
-          (lambda (n)
-            (if (equal? n 0)
-              false
-              (even? (isub n 1))))))
+           (lambda (n)
+             (if (equal? n 0)
+               false
+               (even? (isub n 1))))))
   (assert (even? 4)))
 
 ;; === Pattern matching ===
