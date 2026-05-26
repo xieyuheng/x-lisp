@@ -2,15 +2,12 @@
 
 (define (main)
   (define router (cli-make-router "meta-lisp" "0.1.0"))
-
   (cli-define-route router "check --config --dump")
   (cli-define-route router "build --config --dump --basic")
   (cli-define-route router "test --config --profile --builtin")
-
   (cli-define-handler router "check" handle-check)
   (cli-define-handler router "build" handle-build)
   (cli-define-handler router "test" handle-test)
-
   (cli-router-run router (current-command-line)))
 
 (define (handle-check ctx)

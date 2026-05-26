@@ -7,9 +7,9 @@
      (let ((claim-str (format-definition-claim mod name)))
        (string-concat [claim-str
                        "(declare-primitive-function "
-                       (symbol-to-string name) " " (int-to-string arity) ")"])))
+                       (symbol-to-string name) " " (format-sexp arity) ")"])))
     ((primitive-function-declaration mod name arity is-checked location)
-     (string-concat ["(declare-primitive-function " (symbol-to-string name) " " (int-to-string arity) ")"]))
+     (string-concat ["(declare-primitive-function " (symbol-to-string name) " " (format-sexp arity) ")"]))
     ((primitive-variable-definition mod name value is-checked location)
      (let ((claim-str (format-definition-claim mod name)))
        (string-concat [claim-str

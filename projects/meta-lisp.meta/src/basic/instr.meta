@@ -12,14 +12,16 @@
 (define (format-instr instr)
   (match instr
     ((assign dest exp location)
-     (string-concat ["(= " (symbol-to-string dest) " " (format-exp exp) ")"]))
+     (@string "(= " (symbol-to-string dest) " " (format-exp exp) ")"))
     ((perform exp location)
-     (string-concat ["(perform " (format-exp exp) ")"]))
+     (@string "(perform " (format-exp exp) ")"))
     ((test exp location)
-     (string-concat ["(test " (format-exp exp) ")"]))
+     (@string "(test " (format-exp exp) ")"))
     ((branch then-label else-label location)
-     (string-concat ["(branch " (symbol-to-string then-label) " " (symbol-to-string else-label) ")"]))
+     (@string "(branch "
+              (symbol-to-string then-label) " "
+              (symbol-to-string else-label) ")"))
     ((goto label location)
-     (string-concat ["(goto " (symbol-to-string label) ")"]))
+     (@string "(goto " (symbol-to-string label) ")"))
     ((return exp location)
-     (string-concat ["(return " (format-exp exp) ")"]))))
+     (@string "(return " (format-exp exp) ")"))))

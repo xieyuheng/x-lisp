@@ -1,51 +1,42 @@
 (module xasm)
 
-(define (string-join separator strings)
-  (if (list-empty? strings)
-    ""
-    (if (list-empty? (list-tail strings))
-      (list-head strings)
-      (string-append (list-head strings)
-                     (string-append separator
-                                    (string-join separator (list-tail strings)))))))
-
 (claim format-definition (-> definition-t string-t))
 (define (format-definition definition)
   (match definition
     ((primitive-function-declaration name arity location)
-     (string-concat ["(declare-primitive-function "
-                     (symbol-to-string name) " "
-                     (format-sexp arity) ")"]))
+     (@string "(declare-primitive-function "
+              (symbol-to-string name) " "
+              (format-sexp arity) ")"))
     ((primitive-variable-declaration name location)
-     (string-concat ["(declare-primitive-variable "
-                     (symbol-to-string name) ")"]))
+     (@string "(declare-primitive-variable "
+              (symbol-to-string name) ")"))
     ((function-definition name arity instrs location)
-     (let ((instrs-str (string-join " " (list-map format-instr instrs))))
-       (string-concat ["(define-function "
-                       (symbol-to-string name) " "
-                       (format-sexp arity) " "
-                       instrs-str ")"])))
+     (= instrs-str (string-join " " (list-map format-instr instrs)))
+     (@string "(define-function "
+              (symbol-to-string name) " "
+              (format-sexp arity) " "
+              instrs-str ")"))
     ((variable-definition name instrs location)
-     (let ((instrs-str (string-join " " (list-map format-instr instrs))))
-       (string-concat ["(define-variable "
-                       (symbol-to-string name) " "
-                       instrs-str ")"])))
+     (= instrs-str (string-join " " (list-map format-instr instrs)))
+     (@string "(define-variable "
+              (symbol-to-string name) " "
+              instrs-str ")"))
     ((test-definition name instrs location)
-     (let ((instrs-str (string-join " " (list-map format-instr instrs))))
-       (string-concat ["(define-test "
-                       (symbol-to-string name) " "
-                       instrs-str ")"])))))
+     (= instrs-str (string-join " " (list-map format-instr instrs)))
+     (@string "(define-test "
+              (symbol-to-string name) " "
+              instrs-str ")"))))
 
 (claim format-instr (-> instr-t string-t))
 (define (format-instr instr)
-  (let ((op (instr-op instr))
-        (operands (instr-operands instr)))
-    (if (equal? (symbol-to-string op) "label")
-      (string-join " " (list-map format-operand operands))
-      (if (list-empty? operands)
-        (string-concat ["(" (symbol-to-string op) ")"])
-        (let ((operands-str (string-join " " (list-map format-operand operands))))
-          (string-concat ["(" (symbol-to-string op) " " operands-str ")"]))))))
+  (= op (instr-op instr))
+  (= operands (instr-operands instr))
+  (if (equal? (symbol-to-string op) "label")
+    (string-join " " (list-map format-operand operands))
+    (if (list-empty? operands)
+      (@string "(" (symbol-to-string op) ")")
+      (let ((operands-str (string-join " " (list-map format-operand operands))))
+        (@string "(" (symbol-to-string op) " " operands-str ")")))))
 
 (claim format-operand (-> operand-t string-t))
 (define (format-operand operand)

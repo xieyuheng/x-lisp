@@ -1,9 +1,9 @@
 (module basic)
 
 (define (format-block block)
-  (let ((label-str (symbol-to-string (block-label block)))
-        (instrs-str (string-join " " (list-map format-instr (block-instrs block)))))
-    (string-concat ["(block " label-str " " instrs-str ")"])))
+  (= label-str (symbol-to-string (block-label block)))
+  (= instrs-str (string-join " " (list-map format-instr (block-instrs block))))
+  (@string "(block " label-str " " instrs-str ")"))
 
 (define (format-blocks blocks)
   (string-join " " (list-map format-block (hash-values blocks))))
@@ -12,21 +12,21 @@
 (define (format-definition definition)
   (match definition
     ((primitive-function-declaration mod name arity location)
-     (string-concat ["(declare-primitive-function " (symbol-to-string name) " " (int-to-string arity) ")"]))
+     (@string "(declare-primitive-function "
+              (symbol-to-string name) " "
+              (format-sexp arity) ")"))
     ((primitive-variable-declaration mod name location)
-     (string-concat ["(declare-primitive-variable " (symbol-to-string name) ")"]))
+     (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
     ((function-definition mod name parameters blocks location)
-     (let ((name-str (symbol-to-string name))
-           (params-str (string-join " " (list-map symbol-to-string parameters)))
-           (blocks-str (format-blocks blocks)))
-       (string-concat ["(define-function (" name-str " " params-str ") " blocks-str ")"])))
+     (= name-str (symbol-to-string name))
+     (= params-str (string-join " " (list-map symbol-to-string parameters)))
+     (= blocks-str (format-blocks blocks))
+     (@string "(define-function (" name-str " " params-str ") " blocks-str ")"))
     ((variable-definition mod name blocks location)
-     (let ((name-str (symbol-to-string name))
-           (blocks-str (format-blocks blocks)))
-       (string-concat ["(define-variable " name-str " " blocks-str ")"])))
+     (= name-str (symbol-to-string name))
+     (= blocks-str (format-blocks blocks))
+     (@string "(define-variable " name-str " " blocks-str ")"))
     ((test-definition mod name blocks location)
-     (let ((name-str (symbol-to-string name))
-           (blocks-str (format-blocks blocks)))
-       (string-concat ["(define-test " name-str " " blocks-str ")"])))))
-
-
+     (= name-str (symbol-to-string name))
+     (= blocks-str (format-blocks blocks))
+     (@string "(define-test " name-str " " blocks-str ")"))))
