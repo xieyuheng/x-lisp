@@ -1,5 +1,3 @@
-[meta-lisp.meta] term-traverse.meta
-
 [meta-lisp.meta] [review] exp-location.meta
 [meta-lisp.meta] [review] exp-naive-subst.meta
 [meta-lisp.meta] [review] exp-occurred-names.meta
