@@ -1,14 +1,3 @@
-[meta-lisp.js] add (@string) syntax
-
-我觉得模仿 (@list) 增加一个 类似 (@string) 的语法 比价好，可以 desugar 到 string-append。
-你觉得 (@string <exp> <exp> ...) 怎么样？
-一个 (@string) 内可以有多个 string 表达式，会不会让人误解？
-
-执行。
-
-- Desugar 成 (string-concat [<exp> ...])
-- 先不管 symbol 的拼接，先把这个功能做好。
-
 [meta-lisp.js] add (@sexp) syntax
 
 - 下面我计划增加 (@sexp <exp>) 语法，类似 (@quote <exp>)
@@ -32,9 +21,6 @@
   你可以注意到，想要生成这样的数据，
   就必须要 desugarLocation 这样的辅助函数。
 
-执行。
-注意：
-- 
 [meta-lisp.js] 关于 (@list) 语法
 
 我们现在的 desugar 会不会有 bug？
