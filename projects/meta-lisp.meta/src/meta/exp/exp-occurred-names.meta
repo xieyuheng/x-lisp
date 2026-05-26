@@ -10,129 +10,101 @@
     ((float-exp content location) (make-set))
     ((qualified-var-exp mod-name name location) (make-set))
     ((quote-exp sexp location) (make-set))
-
     ((var-exp name location)
      (set-add name (make-set)))
-
     ((lambda-exp parameters body location)
      (set-union (list-fold-left (lambda (s e) (set-add e s)) (make-set) parameters)
                 (exp-occurred-names body)))
-
     ((polymorphic-exp parameters body location)
      (set-union (list-fold-left (lambda (s e) (set-add e s)) (make-set) parameters)
                 (exp-occurred-names body)))
-
     ((let1-exp name rhs body location)
      (set-union (set-add name (make-set))
                 (set-union (exp-occurred-names rhs)
                            (exp-occurred-names body))))
-
     ((let-exp bindings body location)
      (list-fold-left (lambda (s b)
                        (set-union s (set-union (set-add (binding-name b) (make-set))
                                                (exp-occurred-names (binding-rhs b)))))
                      (exp-occurred-names body)
                      bindings))
-
     ((let-star-exp bindings body location)
      (list-fold-left (lambda (s b)
                        (set-union s (set-union (set-add (binding-name b) (make-set))
                                                (exp-occurred-names (binding-rhs b)))))
                      (exp-occurred-names body)
                      bindings))
-
     ((letrec-exp bindings body location)
      (list-fold-left (lambda (s b)
                        (set-union s (set-union (set-add (binding-name b) (make-set))
                                                (exp-occurred-names (binding-rhs b)))))
                      (exp-occurred-names body)
                      bindings))
-
     ((letrec-star-exp bindings body location)
      (list-fold-left (lambda (s b)
                        (set-union s (set-union (set-add (binding-name b) (make-set))
                                                (exp-occurred-names (binding-rhs b)))))
                      (exp-occurred-names body)
                      bindings))
-
     ((local-define-exp name parameters body location)
      (set-union (list-fold-left (lambda (s e) (set-add e s)) (set-add name (make-set)) parameters)
                 (exp-occurred-names body)))
-
     ((apply-exp target args location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
                      (exp-occurred-names target) args))
-
     ((pipe-exp target steps location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
                      (exp-occurred-names target) steps))
-
     ((chain-exp steps location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
                      (make-set) steps))
-
     ((compose-exp steps location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
                      (make-set) steps))
-
     ((begin1-exp head body location)
      (set-union (exp-occurred-names head) (exp-occurred-names body)))
-
     ((begin-exp sequence location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
                      (make-set) sequence))
-
     ((assign-exp name rhs location)
      (set-union (set-add name (make-set)) (exp-occurred-names rhs)))
-
     ((if-exp condition consequent alternative location)
      (set-union (exp-occurred-names condition)
                 (set-union (exp-occurred-names consequent)
                            (exp-occurred-names alternative))))
-
     ((when-exp condition consequent location)
      (set-union (exp-occurred-names condition) (exp-occurred-names consequent)))
-
     ((unless-exp condition alternative location)
      (set-union (exp-occurred-names condition) (exp-occurred-names alternative)))
-
     ((and-exp exps location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) exps))
-
     ((or-exp exps location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) exps))
-
     ((cond-exp clauses location)
      (list-fold-left (lambda (s clause)
                        (set-union (exp-occurred-names (cond-clause-question clause))
                                   (set-union s (exp-occurred-names (cond-clause-answer clause)))))
                      (make-set) clauses))
-
     ((list-exp elements location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) elements))
-
     ((set-exp elements location)
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) elements))
-
     ((hash-exp entries location)
      (list-fold-left (lambda (s entry)
                        (set-union (exp-occurred-names (hash-entry-key entry))
                                   (set-union s (exp-occurred-names (hash-entry-value entry)))))
                      (make-set) entries))
-
     ((arrow-exp arg-types ret-type location)
      (set-union (exp-occurred-names ret-type)
                 (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) arg-types)))
-
     ((the-exp type exp2 location)
      (set-union (exp-occurred-names type) (exp-occurred-names exp2)))
-
     ((match-exp targets clauses location)
      (set-union (list-fold-left (lambda (s t) (set-union s (exp-occurred-names t))) (make-set) targets)
                 (list-fold-left (lambda (s clause)
                                   (set-union (list-fold-left (lambda (s2 p)
-                                                                (set-union s2 (exp-occurred-names p)))
-                                                              (make-set)
-                                                              (match-clause-patterns clause))
+                                                               (set-union s2 (exp-occurred-names p)))
+                                                             (make-set)
+                                                             (match-clause-patterns clause))
                                              (set-union s (exp-occurred-names (match-clause-body clause)))))
                                 (make-set) clauses)))))
