@@ -53,14 +53,14 @@ export function formatType(type: M.Type): string {
       return `(hash-t ${keyType} ${valueType})`
     }
 
-    case "AlgebraicType":
-    case "OpaqueType": {
-      const definition = type.definition
+    case "DataType": {
+      const modName = type.typeConstructor.mod.name
+      const name = type.typeConstructor.name
       const argTypes = formatTypes(type.argTypes)
       if (argTypes.length === 0) {
-        return `${definition.mod.name}/${definition.name}`
+        return `${modName}/${name}`
       } else {
-        return `(${definition.mod.name}/${definition.name} ${argTypes})`
+        return `(${modName}/${name} ${argTypes})`
       }
     }
 

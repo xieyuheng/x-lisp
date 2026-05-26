@@ -122,7 +122,7 @@ function definitionToValue(
 
     case "AlgebraicTypeDefinition": {
       if (definition.typeConstructor.parameters.length === 0) {
-        return M.TypeValue(M.AlgebraicType(definition, []))
+        return M.TypeValue(M.DataType(definition.typeConstructor, []))
       } else {
         return M.DefinitionValue(definition)
       }
@@ -140,12 +140,12 @@ function definitionToValue(
         } else {
           return M.DefinitionValue(definition)
         }
+      }
+
+      if (definition.typeConstructor.parameters.length === 0) {
+        return M.TypeValue(M.DataType(definition.typeConstructor, []))
       } else {
-        if (definition.typeConstructor.parameters.length === 0) {
-          return M.TypeValue(M.OpaqueType(definition, []))
-        } else {
-          return M.DefinitionValue(definition)
-        }
+        return M.DefinitionValue(definition)
       }
     }
   }

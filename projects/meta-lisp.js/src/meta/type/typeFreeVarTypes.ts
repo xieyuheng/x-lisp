@@ -36,8 +36,7 @@ export function typeFreeVarTypes(
         typeFreeVarTypes(boundIds, t),
       )
 
-    case "AlgebraicType":
-    case "OpaqueType":
+    case "DataType":
       return type.argTypes.flatMap((t) => typeFreeVarTypes(boundIds, t))
 
     case "PolymorphicType":

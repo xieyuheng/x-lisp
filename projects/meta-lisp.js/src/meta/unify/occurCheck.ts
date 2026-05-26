@@ -28,37 +28,43 @@ function occurCheckWithBoundIds(
 
     case "CanonicalLabelType":
     case "TypeType":
-    case "AtomType":
+    case "AtomType": {
       return false
+    }
 
-    case "ArrowType":
+    case "ArrowType": {
       return [...type.argTypes, type.retType].some((t) =>
         occurCheckWithBoundIds(boundIds, subst, varType, t),
       )
+    }
 
-    case "ListType":
+    case "ListType": {
       return occurCheckWithBoundIds(boundIds, subst, varType, type.elementType)
+    }
 
-    case "SetType":
+    case "SetType": {
       return occurCheckWithBoundIds(boundIds, subst, varType, type.elementType)
+    }
 
-    case "HashType":
+    case "HashType": {
       return [type.keyType, type.valueType].some((t) =>
         occurCheckWithBoundIds(boundIds, subst, varType, t),
       )
+    }
 
-    case "AlgebraicType":
-    case "OpaqueType":
+    case "DataType": {
       return type.argTypes.some((t) =>
         occurCheckWithBoundIds(boundIds, subst, varType, t),
       )
+    }
 
-    case "PolymorphicType":
+    case "PolymorphicType": {
       return occurCheckWithBoundIds(
         new Set([...boundIds, ...type.varTypes.map(M.varTypeId)]),
         subst,
         varType,
         type.bodyType,
       )
+    }
   }
 }

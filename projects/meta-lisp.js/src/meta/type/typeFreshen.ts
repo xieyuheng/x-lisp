@@ -23,15 +23,9 @@ export function typeFreshen(type: M.Type): M.Type {
     case "HashType":
       return M.HashType(typeFreshen(type.keyType), typeFreshen(type.valueType))
 
-    case "AlgebraicType":
-      return M.AlgebraicType(
-        type.definition,
-        type.argTypes.map((t) => typeFreshen(t)),
-      )
-
-    case "OpaqueType":
-      return M.OpaqueType(
-        type.definition,
+    case "DataType":
+      return M.DataType(
+        type.typeConstructor,
         type.argTypes.map((t) => typeFreshen(t)),
       )
 

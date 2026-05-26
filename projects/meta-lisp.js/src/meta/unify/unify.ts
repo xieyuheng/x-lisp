@@ -78,16 +78,8 @@ export function unify(
     return subst
   }
 
-  if (M.isAlgebraicType(lhs) && M.isAlgebraicType(rhs)) {
-    if (lhs.definition !== rhs.definition) {
-      return undefined
-    }
-
-    return unifyMany(subst, lhs.argTypes, rhs.argTypes)
-  }
-
-  if (M.isOpaqueType(lhs) && M.isOpaqueType(rhs)) {
-    if (lhs.definition !== rhs.definition) {
+  if (M.isDataType(lhs) && M.isDataType(rhs)) {
+    if (!M.typeConstructorEqual(lhs.typeConstructor, rhs.typeConstructor)) {
       return undefined
     }
 

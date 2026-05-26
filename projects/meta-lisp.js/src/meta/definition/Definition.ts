@@ -246,6 +246,13 @@ export function dataConstructorEqual(
   return x.mod === y.mod && x.typeName === y.typeName && x.name === y.name
 }
 
+export function typeConstructorEqual(
+  x: TypeConstructor,
+  y: TypeConstructor,
+): boolean {
+  return x.mod === y.mod && x.name === y.name
+}
+
 export type InterfaceEntry = {
   name: string
   type: M.Term

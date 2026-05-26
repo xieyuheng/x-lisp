@@ -10,8 +10,7 @@ export type Type =
   | ListType
   | SetType
   | HashType
-  | AlgebraicType
-  | OpaqueType
+  | DataType
   | PolymorphicType
 
 // VarType
@@ -176,52 +175,28 @@ export function asHashType(type: Type): HashType {
   throw new Error(`[asHashType] fail on: ${type.kind}`)
 }
 
-// AlgebraicType
+// DataType
 
-export type AlgebraicType = {
-  kind: "AlgebraicType"
-  definition: M.AlgebraicTypeDefinition
+export type DataType = {
+  kind: "DataType"
+  typeConstructor: M.TypeConstructor
   argTypes: Array<Type>
 }
 
-export function AlgebraicType(
-  definition: M.AlgebraicTypeDefinition,
+export function DataType(
+  typeConstructor: M.TypeConstructor,
   argTypes: Array<Type>,
-): AlgebraicType {
-  return { kind: "AlgebraicType", definition, argTypes }
+): DataType {
+  return { kind: "DataType", typeConstructor, argTypes }
 }
 
-export function isAlgebraicType(type: Type): type is AlgebraicType {
-  return type.kind === "AlgebraicType"
+export function isDataType(type: Type): type is DataType {
+  return type.kind === "DataType"
 }
 
-export function asAlgebraicType(type: Type): AlgebraicType {
-  if (isAlgebraicType(type)) return type
-  throw new Error(`[asAlgebraicType] fail on: ${type.kind}`)
-}
-
-// OpaqueType
-
-export type OpaqueType = {
-  kind: "OpaqueType"
-  definition: M.OpaqueTypeDefinition
-  argTypes: Array<Type>
-}
-
-export function OpaqueType(
-  definition: M.OpaqueTypeDefinition,
-  argTypes: Array<Type>,
-): OpaqueType {
-  return { kind: "OpaqueType", definition, argTypes }
-}
-
-export function isOpaqueType(type: Type): type is OpaqueType {
-  return type.kind === "OpaqueType"
-}
-
-export function asOpaqueType(type: Type): OpaqueType {
-  if (isOpaqueType(type)) return type
-  throw new Error(`[asOpaqueType] fail on: ${type.kind}`)
+export function asDataType(type: Type): DataType {
+  if (isDataType(type)) return type
+  throw new Error(`[asDataType] fail on: ${type.kind}`)
 }
 
 // PolymorphicType
@@ -392,16 +367,9 @@ function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
     )
   }
 
-  if (type.kind === "AlgebraicType") {
-    return AlgebraicType(
-      type.definition,
-      type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
-    )
-  }
-
-  if (type.kind === "OpaqueType") {
-    return OpaqueType(
-      type.definition,
+  if (type.kind === "DataType") {
+    return DataType(
+      type.typeConstructor,
       type.argTypes.map((t) => replaceVarTypesInType(t, subst)),
     )
   }

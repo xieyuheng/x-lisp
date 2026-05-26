@@ -56,8 +56,8 @@ function applyDefinition(
 
     case "AlgebraicTypeDefinition": {
       return M.TypeValue(
-        M.AlgebraicType(
-          definition,
+        M.DataType(
+          definition.typeConstructor,
           args.map((arg) => {
             if (!M.isTypeValue(arg)) {
               let message = `[applyDefinition] expected type argument`
@@ -82,22 +82,23 @@ function applyDefinition(
             )
           }
         }
+
         return M.evaluate(definition.mod, env, definition.representationType)
-      } else {
-        return M.TypeValue(
-          M.OpaqueType(
-            definition,
-            args.map((arg) => {
-              if (!M.isTypeValue(arg)) {
-                let message = `[applyDefinition] expected type argument`
-                message += `\n  kind: ${arg.kind}`
-                throw new Error(message)
-              }
-              return arg.type
-            }),
-          ),
-        )
       }
+
+      return M.TypeValue(
+        M.DataType(
+          definition.typeConstructor,
+          args.map((arg) => {
+            if (!M.isTypeValue(arg)) {
+              let message = `[applyDefinition] expected type argument`
+              message += `\n  kind: ${arg.kind}`
+              throw new Error(message)
+            }
+            return arg.type
+          }),
+        ),
+      )
     }
 
     default: {
