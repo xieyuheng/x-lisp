@@ -10,6 +10,7 @@
     ((float-exp content location) (make-set))
     ((qualified-var-exp mod-name name location) (make-set))
     ((quote-exp sexp location) (make-set))
+    ((sexp-exp sexp location) (make-set))
     ((var-exp name location)
      (set-add name (make-set)))
     ((lambda-exp parameters body location)

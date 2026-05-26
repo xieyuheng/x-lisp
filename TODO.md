@@ -1,6 +1,5 @@
-[meta-lisp.meta] support (@sexp)
-
 ---
+
 
 [meta-lisp.js] 关于 (@list) 语法
 
@@ -16,6 +15,14 @@
   list)
 
 desugar 时用到了 list 变量，如果 list 变量就是 a b c 中的某一个怎么办？
+
+你这个方案不安全。
+调查一下 generateRelativeFreshName 和 expOccurredNames 可以用来解决这个问题吗？
+
+执行。
+注意：
+- 修复之后，在 [meta-example.meta] 中写一些测试，
+  来证明这个 bug 已经被修复了。
 
 ---
 

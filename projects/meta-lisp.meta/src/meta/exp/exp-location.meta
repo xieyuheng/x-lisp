@@ -35,6 +35,7 @@
     ((set-exp elements location) location)
     ((hash-exp entries location) location)
     ((quote-exp sexp location) location)
+    ((sexp-exp sexp location) location)
     ((arrow-exp arg-types ret-type location) location)
     ((the-exp type exp location) location)
     ((polymorphic-exp parameters body location) location)

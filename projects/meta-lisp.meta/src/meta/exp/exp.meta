@@ -33,6 +33,7 @@
   (set-exp (elements (list-t exp-t)) (location source-location-t))
   (hash-exp (entries (list-t (hash-entry-t exp-t exp-t))) (location source-location-t))
   (quote-exp (sexp sexp-t) (location source-location-t))
+  (sexp-exp (sexp sexp-t) (location source-location-t))
   (arrow-exp (arg-types (list-t exp-t)) (ret-type exp-t) (location source-location-t))
   (the-exp (type exp-t) (instance exp-t) (location source-location-t))
   (polymorphic-exp (parameters (list-t symbol-t)) (body exp-t) (location source-location-t))

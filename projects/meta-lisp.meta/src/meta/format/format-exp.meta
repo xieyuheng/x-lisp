@@ -57,6 +57,8 @@
      (string-concat ["(begin " (format-exps sequence) ")"]))
     ((quote-exp sexp location)
      (string-concat ["'" (format-sexp sexp)]))
+    ((sexp-exp sexp location)
+     (string-concat ["(@sexp " (format-sexp sexp) ")"]))
     (else
      (format-sexp exp))))
 
