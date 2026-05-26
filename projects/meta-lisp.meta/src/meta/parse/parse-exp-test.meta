@@ -128,12 +128,7 @@
     (format-exp (parse-exp (@sexp (match-many (x y) ((a b) c)))))))
 
 (define-test parse-comment-test
-  (let ((exp (parse-exp (@sexp (@comment foo)))))
-    (assert (comment-exp? exp))
-    (assert (symbol-sexp? (comment-exp-content exp)))
-    (assert-equal 'foo (symbol-sexp-content (comment-exp-content exp))))
-  (let ((exp (parse-exp (@sexp (@comment (a b c))))))
-    (assert (comment-exp? exp))
-    (assert (list-sexp? (comment-exp-content exp)))
-    (let ((elements (list-sexp-elements (comment-exp-content exp))))
-      (assert-equal 3 (list-length elements)))))
+  (assert-equal "(@comment foo)"
+    (format-exp (parse-exp (@sexp (@comment foo)))))
+  (assert-equal "(@comment (a b c))"
+    (format-exp (parse-exp (@sexp (@comment (a b c)))))))
