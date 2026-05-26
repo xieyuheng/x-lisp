@@ -21,6 +21,12 @@
   你可以注意到，想要生成这样的数据，
   就必须要 desugarLocation 这样的辅助函数。
 
+执行。
+注意：
+- 写完之后加一些测试在 [meta-example.meta] 项目中，
+  测试要相对完整。
+- 同步更新 emacs meta-lisp-mode 的语法支持。
+
 [meta-lisp.js] 关于 (@list) 语法
 
 我们现在的 desugar 会不会有 bug？
