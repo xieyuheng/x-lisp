@@ -16,6 +16,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(@set)](#set)
   - [(@hash)](#hash)
   - [(@quote)](#quote)
+  - [(@sexp)](#sexp)
 - [变量](#变量)
   - [(define)](#define)
   - [变量](#变量-1)
@@ -193,6 +194,35 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 ```scheme
 (@quote (a b c))  ;; => ['a 'b 'c]
 (@quote (1 2 3))  ;; => [1 2 3]
+```
+
+## (@sexp)
+
+```scheme
+(@sexp <sexp>)
+```
+
+将 s-expression 转化为 `sexp-t` 类型的值，保留每个子节点的源代码位置信息。
+
+`sexp-t` 类型的定义：
+
+```scheme
+(define-enum sexp-t
+  (symbol-sexp (content symbol-t) (location source-location-t))
+  (keyword-sexp (content keyword-t) (location source-location-t))
+  (string-sexp (content string-t) (location source-location-t))
+  (int-sexp (content int-t) (location source-location-t))
+  (float-sexp (content float-t) (location source-location-t))
+  (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
+```
+
+使用示例：
+
+```scheme
+(@sexp foo)           ;; => (symbol-sexp 'foo <location>)
+(@sexp (a b c))       ;; => (list-sexp
+                      ;;      (list (symbol-sexp 'a) (symbol-sexp 'b) (symbol-sexp 'c))
+                      ;;      <location>)
 ```
 
 # 变量

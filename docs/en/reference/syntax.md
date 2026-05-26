@@ -16,6 +16,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(@set)](#set)
   - [(@hash)](#hash)
   - [(@quote)](#quote)
+  - [(@sexp)](#sexp)
 - [Variables](#variables)
   - [(define)](#define)
   - [Variables](#variables-1)
@@ -193,6 +194,35 @@ Equivalent to:
 ```scheme
 (@quote (a b c))  ;; => ['a 'b 'c]
 (@quote (1 2 3))  ;; => [1 2 3]
+```
+
+## (@sexp)
+
+```scheme
+(@sexp <sexp>)
+```
+
+Converts an s-expression into a `sexp-t` value, preserving source location information for each sub-node.
+
+The `sexp-t` type is defined as:
+
+```scheme
+(define-enum sexp-t
+  (symbol-sexp (content symbol-t) (location source-location-t))
+  (keyword-sexp (content keyword-t) (location source-location-t))
+  (string-sexp (content string-t) (location source-location-t))
+  (int-sexp (content int-t) (location source-location-t))
+  (float-sexp (content float-t) (location source-location-t))
+  (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
+```
+
+Usage examples:
+
+```scheme
+(@sexp foo)           ;; => (symbol-sexp 'foo <location>)
+(@sexp (a b c))       ;; => (list-sexp
+                      ;;      (list (symbol-sexp 'a) (symbol-sexp 'b) (symbol-sexp 'c))
+                      ;;      <location>)
 ```
 
 # Variables
