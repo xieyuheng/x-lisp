@@ -155,7 +155,10 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "(cons* '@string elements)": ({ elements }, { location }) => {
-    return M.StringConcatExp(S.asListSexp(elements).elements.map(parseExp), location)
+    return M.StringConcatExp(
+      S.asListSexp(elements).elements.map(parseExp),
+      location,
+    )
   },
 
   "(cons* '@set elements)": ({ elements }, { location }) => {

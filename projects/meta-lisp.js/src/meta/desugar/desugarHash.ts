@@ -1,7 +1,7 @@
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
-import * as M from "../index.ts"
 import { expOccurredNames } from "../exp/expOccurredNames.ts"
+import * as M from "../index.ts"
 import { desugarBegin } from "./desugarBegin.ts"
 import { generateRelativeFreshName } from "./generateRelativeFreshName.ts"
 

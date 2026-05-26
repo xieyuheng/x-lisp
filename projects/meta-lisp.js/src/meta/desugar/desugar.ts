@@ -14,8 +14,8 @@ import { desugarList } from "./desugarList.ts"
 import { desugarOr } from "./desugarOr.ts"
 import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
-import { desugarSexp } from "./desugarSexp.ts"
 import { desugarSet } from "./desugarSet.ts"
+import { desugarSexp } from "./desugarSexp.ts"
 import { desugarStringConcat } from "./desugarStringConcat.ts"
 
 export function desugar(exp: M.Exp): M.Term {

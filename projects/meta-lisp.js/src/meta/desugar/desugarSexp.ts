@@ -29,10 +29,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
     case "IntSexp": {
       return M.ApplyExp(
         M.QualifiedVarExp("builtin", "int-sexp", sexp.location),
-        [
-          M.IntExp(sexp.content, sexp.location),
-          desugarLocation(sexp.location),
-        ],
+        [M.IntExp(sexp.content, sexp.location), desugarLocation(sexp.location)],
         sexp.location,
       )
     }
