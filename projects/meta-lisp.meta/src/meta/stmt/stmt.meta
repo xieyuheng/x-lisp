@@ -83,3 +83,12 @@
   (declare-primitive-variable-stmt
    (name symbol-t)
    (location source-location-t)))
+
+(define-struct pre-type-constructor-t
+  (name symbol-t)
+  (parameters (list-t symbol-t)))
+
+(define-struct pre-data-constructor-t
+  (name symbol-t)
+  (fields (list-t data-field-t))
+  (location source-location-t))

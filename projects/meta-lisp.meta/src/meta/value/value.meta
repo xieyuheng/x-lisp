@@ -1,11 +1,6 @@
 (module meta)
 
 (define-enum value-t
-  (type-value
-   (type type-t))
-  (curry-value
-   (target value-t)
-   (arity int-t)
-   (args (list-t value-t)))
-  (definition-value
-    (definition definition-t)))
+  (type-value (type type-t))
+  (curry-value (target value-t) (arity int-t) (args (list-t value-t)))
+  (definition-value (definition definition-t)))

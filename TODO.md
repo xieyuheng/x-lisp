@@ -1,4 +1,4 @@
-[meta-lisp.js] 中的 PreDataConstructor 和 PreTypeConstructor 和 DataConstructor 和 TypeConstructor 放在附近
+[meta-lisp.meta] exp.meta 中的 define-enum 改为类似 term.meta 的一行风格
 
 [meta-lisp.meta] term-traverse.meta
 

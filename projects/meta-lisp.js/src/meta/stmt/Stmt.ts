@@ -227,21 +227,25 @@ export function DefineStructStmt<E>(
   }
 }
 
+
+
+
+
 export type PreTypeConstructor = {
   name: string
   parameters: Array<string>
   location: SourceLocation
 }
 
-export type PreDataConstructor = {
-  name: string
-  fields: Array<PreDataField>
-  location: SourceLocation
-}
-
 export type PreDataField = {
   name: string
   type: M.Exp
+  location: SourceLocation
+}
+
+export type PreDataConstructor = {
+  name: string
+  fields: Array<PreDataField>
   location: SourceLocation
 }
 
