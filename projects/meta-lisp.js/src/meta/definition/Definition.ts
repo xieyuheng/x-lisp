@@ -219,6 +219,7 @@ export type AlgebraicTypeDefinition = {
 } & DefinitionState
 
 export type TypeConstructor = {
+  mod: M.Mod
   name: string
   parameters: Array<string>
   location: SourceLocation

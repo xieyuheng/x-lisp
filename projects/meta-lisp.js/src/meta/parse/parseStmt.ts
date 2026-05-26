@@ -241,10 +241,9 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   },
 })
 
-const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
+const parseTypeConstructor = S.createRouter<M.PreTypeConstructor>({
   "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {
-      definition: undefined,
       name: S.asSymbolSexp(name).content,
       parameters: S.asListSexp(parameters).elements.map(
         (x) => S.asSymbolSexp(x).content,
@@ -255,7 +254,6 @@ const parseTypeConstructor = S.createRouter<M.TypeConstructor>({
 
   name: ({ name }, { location }) => {
     return {
-      definition: undefined,
       name: S.asSymbolSexp(name).content,
       parameters: [],
       location,

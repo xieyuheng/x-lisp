@@ -146,7 +146,12 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
   if (stmt.kind === "DefineAlgebraicTypeStmt") {
     const name = stmt.typeConstructor.name
-    const typeConstructor = stmt.typeConstructor
+    const typeConstructor: M.TypeConstructor = {
+      mod,
+      name: stmt.typeConstructor.name,
+      parameters: stmt.typeConstructor.parameters,
+      location: stmt.typeConstructor.location,
+    }
 
     const dataConstructors = stmt.dataConstructors.map(
       (ctor): M.DataConstructor => ({
@@ -199,6 +204,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   if (stmt.kind === "DefineOpaqueTypeStmt") {
     const name = stmt.name
     const typeConstructor: M.TypeConstructor = {
+      mod,
       name: stmt.name,
       parameters: stmt.parameters,
       location: stmt.location,

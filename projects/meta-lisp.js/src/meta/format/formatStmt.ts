@@ -117,7 +117,7 @@ export function formatStmt<E>(
   }
 }
 
-function formatTypeConstructor(typeConstructor: M.TypeConstructor): string {
+function formatTypeConstructor(typeConstructor: M.PreTypeConstructor): string {
   if (typeConstructor.parameters.length === 0) {
     return typeConstructor.name
   } else {

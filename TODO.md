@@ -1,3 +1,8 @@
+[meta-lisp.js] [refactor]
+
+Type.ts 中的 AlgebraicType 和 OpaqueType 可否合并为 DataType？
+其中的字段可否从 definition 换为 typeConstructor: TypeConstructor？
+
 [meta-lisp.meta] term-traverse.meta
 
 [meta-lisp.meta] [review] exp-location.meta
