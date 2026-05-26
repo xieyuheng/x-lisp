@@ -58,9 +58,46 @@
     ((quote-exp sexp location)
      (@string "'" (format-sexp sexp)))
     ((sexp-exp sexp location)
-     (@string "(@sexp " (format-sexp sexp) ")"))
+      (@string "(@sexp " (format-sexp sexp) ")"))
+    ((letrec-exp bindings body location)
+     (@string "(letrec (" (format-bindings bindings) ") " (format-exp body) ")"))
+    ((letrec-star-exp bindings body location)
+     (@string "(letrec* (" (format-bindings bindings) ") " (format-exp body) ")"))
+    ((local-define-exp name parameters body location)
+     (if (list-empty? parameters)
+       (@string "(define " (symbol-to-string name) " " (format-exp body) ")")
+       (@string "(define (" (symbol-to-string name) " "
+                (string-join " " (list-map symbol-to-string parameters)) ") "
+                (format-exp body) ")")))
+    ((assign-exp name rhs location)
+     (@string "(= " (symbol-to-string name) " " (format-exp rhs) ")"))
+    ((if-exp condition consequent alternative location)
+     (@string "(if " (format-exp condition) " "
+              (format-exp consequent) " "
+              (format-exp alternative) ")"))
+    ((when-exp condition consequent location)
+     (@string "(when " (format-exp condition) " " (format-exp consequent) ")"))
+    ((unless-exp condition alternative location)
+     (@string "(unless " (format-exp condition) " " (format-exp alternative) ")"))
+    ((or-exp exps location)
+     (@string "(or " (format-exps exps) ")"))
+    ((cond-exp clauses location)
+     (@string "(cond " (string-join " " (list-map format-cond-clause clauses)) ")"))
+    ((pipe-exp target steps location)
+     (@string "(pipe " (format-exp target) " " (format-exps steps) ")"))
+    ((chain-exp steps location)
+     (@string "(chain " (format-exps steps) ")"))
+    ((compose-exp steps location)
+     (@string "(compose " (format-exps steps) ")"))
+    ((the-exp type instance location)
+     (@string "(the " (format-exp type) " " (format-exp instance) ")"))
+    ((match-exp targets clauses location)
+     (let ((clauses-str (string-join " " (list-map format-match-clause clauses))))
+       (if (equal? (list-length targets) 1)
+         (@string "(match " (format-exp (car targets)) " " clauses-str ")")
+         (@string "(match-many (" (format-exps targets) ") " clauses-str ")"))))
     (else
-     (format-sexp exp))))
+      (format-sexp exp))))
 
 (define (format-exps exps)
   (string-join " " (list-map format-exp exps)))
@@ -72,6 +109,17 @@
   (@string "(" (symbol-to-string (binding-name binding)) " "
            (format-exp (binding-rhs binding)) ")"))
 
+(define (format-cond-clause clause)
+  (@string "(" (format-exp (cond-clause-question clause)) " "
+           (format-exp (cond-clause-answer clause)) ")"))
+
+(define (format-match-clause clause)
+  (let ((patterns (match-clause-patterns clause))
+        (body (match-clause-body clause)))
+    (if (equal? (list-length patterns) 1)
+      (@string "(" (format-exp (car patterns)) " " (format-exp body) ")")
+      (@string "((" (format-exps patterns) ") " (format-exp body) ")"))))
+
 (define (format-hash-entry entry)
-  (@string "(" (format-exp (hash-entry-key entry)) " "
-           (format-exp (hash-entry-value entry)) ")"))
+  (@string (format-exp (hash-entry-key entry)) " "
+           (format-exp (hash-entry-value entry))))

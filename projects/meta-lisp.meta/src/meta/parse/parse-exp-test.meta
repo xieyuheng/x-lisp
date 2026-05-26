@@ -1,0 +1,128 @@
+(module meta)
+
+(define-test parse-var-test
+  (assert-equal "foo" (format-exp (parse-exp (@sexp foo))))
+  (assert-equal "foo/bar" (format-exp (parse-exp (@sexp foo/bar)))))
+
+(define-test parse-apply-test
+  (assert-equal "(f x)" (format-exp (parse-exp (@sexp (f x)))))
+  (assert-equal "(f x y)" (format-exp (parse-exp (@sexp (f x y)))))
+  (assert-equal "(f (g x))" (format-exp (parse-exp (@sexp (f (g x)))))))
+
+(define-test parse-lambda-test
+  (assert-equal "(lambda (x) x)"
+    (format-exp (parse-exp (@sexp (lambda (x) x)))))
+  (assert-equal "(lambda (x y) (f x y))"
+    (format-exp (parse-exp (@sexp (lambda (x y) (f x y)))))))
+
+(define-test parse-let-test
+  (assert-equal "(let ((x 1)) x)"
+    (format-exp (parse-exp (@sexp (let ((x 1)) x)))))
+  (assert-equal "(let ((x 1) (y 2)) (f x y))"
+    (format-exp (parse-exp (@sexp (let ((x 1) (y 2)) (f x y)))))))
+
+(define-test parse-let-star-test
+  (assert-equal "(let* ((x 1) (y x)) y)"
+    (format-exp (parse-exp (@sexp (let* ((x 1) (y x)) y))))))
+
+(define-test parse-letrec-test
+  (assert-equal "(letrec ((f (lambda (x) x))) (f 1))"
+    (format-exp (parse-exp (@sexp (letrec ((f (lambda (x) x))) (f 1)))))))
+
+(define-test parse-letrec-star-test
+  (assert-equal "(letrec* ((x 1) (y x)) y)"
+    (format-exp (parse-exp (@sexp (letrec* ((x 1) (y x)) y))))))
+
+(define-test parse-local-define-test
+  (assert-equal "(define x 1)"
+    (format-exp (parse-exp (@sexp (define x 1)))))
+  (assert-equal "(define (f x) x)"
+    (format-exp (parse-exp (@sexp (define (f x) x))))))
+
+(define-test parse-if-test
+  (assert-equal "(if a b c)"
+    (format-exp (parse-exp (@sexp (if a b c))))))
+
+(define-test parse-when-test
+  (assert-equal "(when a b)"
+    (format-exp (parse-exp (@sexp (when a b))))))
+
+(define-test parse-unless-test
+  (assert-equal "(unless a b)"
+    (format-exp (parse-exp (@sexp (unless a b))))))
+
+(define-test parse-and-test
+  (assert-equal "(and a b)"
+    (format-exp (parse-exp (@sexp (and a b)))))
+  (assert-equal "(and a b c)"
+    (format-exp (parse-exp (@sexp (and a b c))))))
+
+(define-test parse-or-test
+  (assert-equal "(or a b)"
+    (format-exp (parse-exp (@sexp (or a b))))))
+
+(define-test parse-cond-test
+  (assert-equal "(cond (a b) (c d))"
+    (format-exp (parse-exp (@sexp (cond (a b) (c d)))))))
+
+(define-test parse-begin-test
+  (assert-equal "(begin a b c)"
+    (format-exp (parse-exp (@sexp (begin a b c))))))
+
+(define-test parse-assign-test
+  (assert-equal "(= x 1)"
+    (format-exp (parse-exp (@sexp (= x 1))))))
+
+(define-test parse-list-test
+  (assert-equal "[1 2]"
+    (format-exp (parse-exp (@sexp (@list 1 2)))))
+  (assert-equal "[]"
+    (format-exp (parse-exp (@sexp (@list)))))
+  (assert-equal "[1 2]"
+    (format-exp (parse-exp (@sexp [1 2])))))
+
+(define-test parse-set-test
+  (assert-equal "(@set 1 2)"
+    (format-exp (parse-exp (@sexp (@set 1 2)))))
+  (assert-equal "(@set)"
+    (format-exp (parse-exp (@sexp (@set))))))
+
+(define-test parse-hash-test
+  (assert-equal "(@hash :a 1 :b 2)"
+    (format-exp (parse-exp (@sexp (@hash :a 1 :b 2))))))
+
+(define-test parse-arrow-test
+  (assert-equal "(-> int-t int-t)"
+    (format-exp (parse-exp (@sexp (-> int-t int-t)))))
+  (assert-equal "(-> int-t int-t int-t)"
+    (format-exp (parse-exp (@sexp (-> int-t int-t int-t))))))
+
+(define-test parse-the-test
+  (assert-equal "(the int-t 42)"
+    (format-exp (parse-exp (@sexp (the int-t 42))))))
+
+(define-test parse-polymorphic-test
+  (assert-equal "(polymorphic (A) (-> A A))"
+    (format-exp (parse-exp (@sexp (polymorphic (A) (-> A A)))))))
+
+(define-test parse-pipe-test
+  (assert-equal "(pipe x f g)"
+    (format-exp (parse-exp (@sexp (pipe x f g))))))
+
+(define-test parse-chain-test
+  (assert-equal "(chain f g)"
+    (format-exp (parse-exp (@sexp (chain f g))))))
+
+(define-test parse-compose-test
+  (assert-equal "(compose f g)"
+    (format-exp (parse-exp (@sexp (compose f g))))))
+
+(define-test parse-match-test
+  (assert-equal "(match x (a b))"
+    (format-exp (parse-exp (@sexp (match x (a b))))))
+  (assert-equal "(match x ((var-exp name) name))"
+    (format-exp (parse-exp (@sexp (match x ((var-exp name) name)))))))
+
+(define-test parse-match-many-test
+  (assert-equal "(match-many (x y) ((a b) c))"
+    (format-exp (parse-exp (@sexp (match-many (x y) ((a b) c)))))))
