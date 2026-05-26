@@ -16,6 +16,7 @@ import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
 import { desugarSexp } from "./desugarSexp.ts"
 import { desugarSet } from "./desugarSet.ts"
+import { desugarStringConcat } from "./desugarStringConcat.ts"
 
 export function desugar(exp: M.Exp): M.Term {
   switch (exp.kind) {
@@ -82,13 +83,7 @@ export function desugar(exp: M.Exp): M.Term {
     }
 
     case "StringConcatExp": {
-      return desugar(
-        M.ApplyExp(
-          M.QualifiedVarExp("builtin", "string-concat", exp.location),
-          [M.ListExp(exp.elements, exp.location)],
-          exp.location,
-        ),
-      )
+      return desugar(desugarStringConcat(exp.elements, exp.location))
     }
 
     case "HashExp": {
