@@ -87,7 +87,8 @@ function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
     case "PrivateStmt":
     case "DeclareModuleStmt":
     case "DeclarePrimitiveFunctionStmt":
-    case "DeclarePrimitiveVariableStmt": {
+    case "DeclarePrimitiveVariableStmt":
+    case "CommentStmt": {
       return stmt
     }
 

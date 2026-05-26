@@ -82,6 +82,9 @@
     (location source-location-t))
   (declare-primitive-variable-stmt
     (name symbol-t)
+    (location source-location-t))
+  (comment-stmt
+    (content sexp-t)
     (location source-location-t)))
 
 (define-struct pre-type-constructor-t

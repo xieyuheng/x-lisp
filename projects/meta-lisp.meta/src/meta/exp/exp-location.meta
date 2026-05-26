@@ -39,4 +39,5 @@
     ((arrow-exp arg-types ret-type location) location)
     ((the-exp type exp location) location)
     ((polymorphic-exp parameters body location) location)
-    ((match-exp targets clauses location) location)))
+    ((match-exp targets clauses location) location)
+    ((comment-exp content location) location)))

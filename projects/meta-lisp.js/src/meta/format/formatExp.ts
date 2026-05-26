@@ -241,6 +241,10 @@ export function formatExp(exp: M.Exp): string {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.instance)})`
     }
 
+    case "CommentExp": {
+      return `(@comment ${S.formatSexp(exp.content)})`
+    }
+
     case "MatchExp": {
       if (exp.targets.length === 1) {
         const target = formatExp(exp.targets[0])

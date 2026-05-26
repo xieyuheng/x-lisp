@@ -59,7 +59,9 @@
      (@string "(declare-primitive-function " (symbol-to-string name) " "
               (format-sexp arity) ")"))
     ((declare-primitive-variable-stmt name location)
-     (@string "(declare-primitive-variable " (symbol-to-string name) ")"))))
+     (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
+    ((comment-stmt content location)
+     (@string "(@comment " (format-sexp content) ")"))))
 
 (define (format-type-constructor tc)
   (= name-str (symbol-to-string (pre-type-constructor-name tc)))

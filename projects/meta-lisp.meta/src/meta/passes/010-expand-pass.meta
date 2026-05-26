@@ -33,6 +33,7 @@
      (expand-define-algebraic-type algebraic-type))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (expand-define-algebraic-type stmt))
+    ((comment-stmt content location) [])
     (else [stmt])))
 
 ;; Symbol and string utilities

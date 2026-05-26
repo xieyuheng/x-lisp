@@ -84,6 +84,10 @@
         ((equal? tag 'declare-primitive-variable)
          (declare-primitive-variable-stmt
            (symbol-sexp-content (list-get 1 elements))
+           location))
+        ((equal? tag '@comment)
+         (comment-stmt
+           (list-get 1 elements)
            location))))
 
 (claim parse-define-stmt

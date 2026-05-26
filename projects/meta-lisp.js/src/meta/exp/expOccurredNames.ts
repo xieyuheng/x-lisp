@@ -10,7 +10,8 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     case "FloatExp":
     case "QualifiedVarExp":
     case "QuoteExp":
-    case "SexpExp": {
+    case "SexpExp":
+    case "CommentExp": {
       return new Set()
     }
 

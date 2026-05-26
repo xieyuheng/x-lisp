@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function formatStmt<E>(
@@ -113,6 +114,10 @@ export function formatStmt<E>(
 
     case "DeclarePrimitiveVariableStmt": {
       return `(declare-primitive-variable ${stmt.name})`
+    }
+
+    case "CommentStmt": {
+      return `(@comment ${S.formatSexp(stmt.content)})`
     }
   }
 }

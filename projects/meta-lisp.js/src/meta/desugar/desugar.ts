@@ -98,6 +98,10 @@ export function desugar(exp: M.Exp): M.Term {
       return desugar(desugarSexp(exp.sexp))
     }
 
+    case "CommentExp": {
+      return M.QualifiedVarTerm("builtin", "void", exp.location)
+    }
+
     case "PipeExp": {
       return desugar(desugarPipe(exp.target, exp.steps, exp.location))
     }

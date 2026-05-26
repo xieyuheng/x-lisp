@@ -12,6 +12,7 @@
     ((qualified-var-exp mod-name name location) exp)
     ((quote-exp sexp location) exp)
     ((sexp-exp sexp location) exp)
+    ((comment-exp content location) exp)
     ((lambda-exp parameters body location)
      (lambda-exp parameters (f body) location))
     ((polymorphic-exp parameters body location)

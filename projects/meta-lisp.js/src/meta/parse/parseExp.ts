@@ -29,6 +29,10 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.SexpExp(sexp, location)
   },
 
+  "`(@comment ,sexp)": ({ sexp }, { location }) => {
+    return M.CommentExp(sexp, location)
+  },
+
   "`(if ,condition ,consequent ,alternative)": (
     { condition, consequent, alternative },
     { location },

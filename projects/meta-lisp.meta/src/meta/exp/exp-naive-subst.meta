@@ -11,6 +11,7 @@
     ((qualified-var-exp mod-name var-name location) exp)
     ((quote-exp sexp location) exp)
     ((sexp-exp sexp location) exp)
+    ((comment-exp content location) exp)
     ((var-exp var-name location)
      (if (equal? var-name name) rhs exp))
     ((lambda-exp parameters body location)

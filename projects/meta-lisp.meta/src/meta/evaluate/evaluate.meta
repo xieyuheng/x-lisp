@@ -29,6 +29,8 @@
      (let ((target (evaluate mode mod env target))
            (args (list-map (lambda (arg) (evaluate mode mod env arg)) args)))
        (apply-value mode target args)))
+    ((comment-exp content location)
+     (evaluate mode mod env (qualified-var-exp 'builtin 'void location)))
     (else (error "(evaluate) unhandled exp"))))
 
 (claim value-from-mod (-> symbol-t mod-t symbol-t value-t))

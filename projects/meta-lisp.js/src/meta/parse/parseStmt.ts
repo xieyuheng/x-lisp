@@ -239,6 +239,10 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
       location,
     )
   },
+
+  "`(@comment ,sexp)": ({ sexp }, { location }) => {
+    return M.CommentStmt(sexp, location)
+  },
 })
 
 const parseTypeConstructor = S.createRouter<M.PreTypeConstructor>({

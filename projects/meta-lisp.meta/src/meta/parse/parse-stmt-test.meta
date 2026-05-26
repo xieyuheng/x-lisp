@@ -1,0 +1,12 @@
+(module meta)
+
+(define-test parse-comment-stmt-test
+  (let ((stmt (parse-stmt (@sexp (@comment foo)))))
+    (assert (comment-stmt? stmt))
+    (assert (symbol-sexp? (comment-stmt-content stmt)))
+    (assert-equal 'foo (symbol-sexp-content (comment-stmt-content stmt))))
+  (let ((stmt (parse-stmt (@sexp (@comment (this is a structured comment))))))
+    (assert (comment-stmt? stmt))
+    (assert (list-sexp? (comment-stmt-content stmt)))
+    (let ((elements (list-sexp-elements (comment-stmt-content stmt))))
+      (assert-equal 5 (list-length elements)))))

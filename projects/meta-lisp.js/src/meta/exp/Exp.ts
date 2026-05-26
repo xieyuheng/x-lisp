@@ -38,6 +38,24 @@ export type Exp =
   | TheExp
   | PolymorphicExp
   | MatchExp
+  | CommentExp
+
+export type CommentExp = {
+  kind: "CommentExp"
+  content: Sexp
+  location: SourceLocation
+}
+
+export function CommentExp(
+  content: Sexp,
+  location: SourceLocation,
+): CommentExp {
+  return {
+    kind: "CommentExp",
+    content,
+    location,
+  }
+}
 
 export type SymbolExp = {
   kind: "SymbolExp"

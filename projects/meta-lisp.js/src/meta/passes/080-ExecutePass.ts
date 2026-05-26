@@ -21,6 +21,10 @@ export function ExecutePass(
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
+  if (stmt.kind === "CommentStmt") {
+    return
+  }
+
   if (stmt.kind === "ExemptStmt") {
     for (const name of stmt.names) {
       mod.admitted.add(name)

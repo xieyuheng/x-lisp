@@ -1,4 +1,4 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
+import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export type Stmt<E> =
@@ -23,6 +23,7 @@ export type Stmt<E> =
   | DeclareModuleStmt
   | DeclarePrimitiveFunctionStmt
   | DeclarePrimitiveVariableStmt
+  | CommentStmt
 
 export type ImportStmt = {
   kind: "ImportStmt"
@@ -475,6 +476,23 @@ export function DeclarePrimitiveVariableStmt(
   return {
     kind: "DeclarePrimitiveVariableStmt",
     name,
+    location,
+  }
+}
+
+export type CommentStmt = {
+  kind: "CommentStmt"
+  content: Sexp
+  location: SourceLocation
+}
+
+export function CommentStmt(
+  content: Sexp,
+  location: SourceLocation,
+): CommentStmt {
+  return {
+    kind: "CommentStmt",
+    content,
     location,
   }
 }

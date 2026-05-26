@@ -28,7 +28,7 @@
 (define syntax-keywords
   ['lambda 'quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
    'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
-   '-> 'the 'polymorphic 'pipe 'chain 'compose 'define])
+    '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
 
 (define (parse-compound-exp elements location)
   (if (symbol-sexp? (list-head elements))
@@ -155,7 +155,9 @@
         ((equal? tag 'chain)
          (chain-exp (list-map parse-exp (list-drop 1 sexps)) location))
         ((equal? tag 'compose)
-         (compose-exp (list-map parse-exp (list-drop 1 sexps)) location))))
+         (compose-exp (list-map parse-exp (list-drop 1 sexps)) location))
+        ((equal? tag '@comment)
+         (comment-exp (list-get 1 sexps) location))))
 
 (claim parse-parameters
   (-> sexp-t

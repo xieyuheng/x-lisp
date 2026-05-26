@@ -59,6 +59,8 @@
      (@string "'" (format-sexp sexp)))
     ((sexp-exp sexp location)
       (@string "(@sexp " (format-sexp sexp) ")"))
+    ((comment-exp content location)
+      (@string "(@comment " (format-sexp content) ")"))
     ((letrec-exp bindings body location)
      (@string "(letrec (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((letrec-star-exp bindings body location)
