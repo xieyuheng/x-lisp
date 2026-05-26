@@ -118,7 +118,7 @@
    (location source-location-t))
   (the-exp
    (type exp-t)
-   (exp exp-t)
+   (instance exp-t)
    (location source-location-t))
   (polymorphic-exp
    (parameters (list-t symbol-t))
