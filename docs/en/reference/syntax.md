@@ -15,6 +15,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(@list)](#list)
   - [(@set)](#set)
   - [(@hash)](#hash)
+  - [(@string)](#string)
   - [(@quote)](#quote)
   - [(@sexp)](#sexp)
 - [Variables](#variables)
@@ -173,6 +174,28 @@ Creates a hash table.
 ```scheme
 (@hash :a 1 :b 2)
 (@hash "a" 1 "b" 2)
+```
+
+## (@string)
+
+```scheme
+(@string <exp> ...)
+```
+
+Concatenates string expressions into a single string.
+
+```scheme
+(@string "hello" " " "world")
+(@string "(" x ")")
+(@string)
+```
+
+The example above is equivalent to:
+
+```scheme
+(string-concat ["hello" " " "world"])
+(string-concat ["(" x ")"])
+(string-concat [])
 ```
 
 ## (@quote)

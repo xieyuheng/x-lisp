@@ -1,10 +1,6 @@
----
+[meta-lisp.meta] 既然我们实现了 (@string) 来做 string-concat 和 string-append，那么我们就要用上
 
-下面我们要在 [docs] 的 reference/syntax.md 中为我们新设计的 (@string) 语法写文档。
-
-- en 和 zh 都要写。
-
----
+下面在 [meta-lisp.meta] 项目中，尽量使用 (@string)
 
 [meta-lisp.meta] [refactor] parse-exp
 

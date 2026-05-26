@@ -15,6 +15,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(@list)](#list)
   - [(@set)](#set)
   - [(@hash)](#hash)
+  - [(@string)](#string)
   - [(@quote)](#quote)
   - [(@sexp)](#sexp)
 - [变量](#变量)
@@ -173,6 +174,28 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 ```scheme
 (@hash :a 1 :b 2)
 (@hash "a" 1 "b" 2)
+```
+
+## (@string)
+
+```scheme
+(@string <exp> ...)
+```
+
+将多个字符串表达式拼接成一个字符串。
+
+```scheme
+(@string "hello" " " "world")
+(@string "(" x ")")
+(@string)
+```
+
+上面的例子等价于：
+
+```scheme
+(string-concat ["hello" " " "world"])
+(string-concat ["(" x ")"])
+(string-concat [])
 ```
 
 ## (@quote)
