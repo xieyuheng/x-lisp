@@ -62,6 +62,20 @@ Inherits standard `prog-mode` bindings plus:
 | `C-M-u` | Backward up list |
 | `M-;` | Comment / uncomment (defaults to `;;`) |
 
+## CLI formatting
+
+Format `.meta` files from the command line using `meta-lisp-format.sh`:
+
+```sh
+# Format a single file (in-place)
+./meta-lisp-format.sh file.meta
+
+# Format multiple files
+./meta-lisp-format.sh file1.meta file2.meta file3.meta
+```
+
+This invokes `emacs --batch` with `meta-lisp-mode` and runs `indent-region` on each file, producing the same result as pressing `TAB` in the editor.
+
 ## Running tests
 
 ```sh
