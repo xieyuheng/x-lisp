@@ -66,7 +66,7 @@
        (type-value type)))
     ((algebraic-type-definition mod name type-constructor data-constructors is-checked location)
      (if (list-empty? (type-constructor-parameters type-constructor))
-       (type-value (algebraic-type definition []))
+       (type-value (data-type type-constructor []))
        (definition-value definition)))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries is-checked location)
      (if (equal? mode 'transparent)
@@ -75,7 +75,7 @@
            (type-value type))
          (definition-value definition))
        (if (list-empty? (type-constructor-parameters type-constructor))
-         (type-value (opaque-type definition []))
+         (type-value (data-type type-constructor []))
          (definition-value definition))))))
 
 (claim evaluate-type (-> symbol-t mod-t env-t exp-t type-t))

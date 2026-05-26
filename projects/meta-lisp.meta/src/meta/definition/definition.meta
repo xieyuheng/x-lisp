@@ -68,8 +68,18 @@
    (location source-location-t)))
 
 (define-struct type-constructor-t
+  (mod mod-t)
   (name symbol-t)
   (parameters (list-t symbol-t)))
+
+(define-struct pre-type-constructor-t
+  (name symbol-t)
+  (parameters (list-t symbol-t)))
+
+(claim type-constructor-equal? (-> type-constructor-t type-constructor-t bool-t))
+(define (type-constructor-equal? a b)
+  (and (same? (type-constructor-mod a) (type-constructor-mod b))
+       (equal? (type-constructor-name a) (type-constructor-name b))))
 
 (define-struct pre-data-constructor-t
   (name symbol-t)

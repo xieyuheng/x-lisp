@@ -57,11 +57,11 @@
 
 (define (get-data-type stmt location)
   (let* ((type-constructor (define-algebraic-type-stmt-type-constructor stmt))
-         (parameters (type-constructor-parameters type-constructor)))
+          (parameters (pre-type-constructor-parameters type-constructor)))
     (if (list-empty? parameters)
-      (var-exp (type-constructor-name type-constructor) location)
+      (var-exp (pre-type-constructor-name type-constructor) location)
       (apply-exp
-        (var-exp (type-constructor-name type-constructor) location)
+        (var-exp (pre-type-constructor-name type-constructor) location)
         (list-map (lambda (parameter) (var-exp parameter location)) parameters)
         location))))
 
@@ -104,7 +104,7 @@
 
 (define (desugar-define-struct-star stmt)
   (let* ((type-constructor (define-struct-star-stmt-type-constructor stmt))
-         (type-name (type-constructor-name type-constructor))
+         (type-name (pre-type-constructor-name type-constructor))
          (data-constructor (define-struct-star-stmt-data-constructor stmt))
          (location (define-struct-star-stmt-location stmt))
          (type-name-str (symbol-to-string type-name)))
@@ -138,7 +138,7 @@
 
 (define (desugar-define-struct stmt)
   (let* ((type-constructor (define-struct-stmt-type-constructor stmt))
-         (type-name (type-constructor-name type-constructor))
+          (type-name (pre-type-constructor-name type-constructor))
          (fields (define-struct-stmt-fields stmt))
          (location (define-struct-stmt-location stmt))
          (type-name-str (symbol-to-string type-name)))
@@ -206,7 +206,7 @@
                            (var-exp (algebraic-type-field-name f)
                                     (algebraic-type-field-location f)))
                          fields))
-         (type-params (type-constructor-parameters
+         (type-params (pre-type-constructor-parameters
                         (define-algebraic-type-stmt-type-constructor stmt))))
     [(admit-with-parameters
        ctor-name
@@ -231,7 +231,7 @@
          (ctor-name (algebraic-type-constructor-name ctor))
          (ctor-location (algebraic-type-constructor-location ctor))
          (nfields (iadd (list-length (algebraic-type-constructor-fields ctor)) 1))
-         (type-params (type-constructor-parameters
+         (type-params (pre-type-constructor-parameters
                         (define-algebraic-type-stmt-type-constructor stmt))))
     [(admit-with-parameters
        predicate
@@ -275,7 +275,7 @@
          (field-type (algebraic-type-field-type field))
          (field-location (algebraic-type-field-location field))
          (position (iadd index 1))
-         (type-params (type-constructor-parameters
+         (type-params (pre-type-constructor-parameters
                         (define-algebraic-type-stmt-type-constructor stmt))))
     [(admit-with-parameters
        accessor-name
@@ -302,7 +302,7 @@
          (field-type (algebraic-type-field-type field))
          (field-location (algebraic-type-field-location field))
          (position (iadd index 1))
-         (type-params (type-constructor-parameters
+         (type-params (pre-type-constructor-parameters
                         (define-algebraic-type-stmt-type-constructor stmt))))
     [(admit-with-parameters
        modifier-name

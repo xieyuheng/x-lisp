@@ -224,8 +224,8 @@
         (ifaces (list-drop 3 elements)))
     (let ((type-constructor (parse-type-constructor head)))
       (define-opaque-type-stmt
-        (type-constructor-name type-constructor)
-        (type-constructor-parameters type-constructor)
+        (pre-type-constructor-name type-constructor)
+        (pre-type-constructor-parameters type-constructor)
         (parse-exp representation)
         (list-map (lambda (iface)
                     (let ((parts (list-sexp-elements iface)))
@@ -238,16 +238,16 @@
 
 (claim parse-type-constructor
   (-> sexp-t
-      type-constructor-t))
+      pre-type-constructor-t))
 
 (define (parse-type-constructor sexp)
   (match sexp
     ((list-sexp elements location)
-     (make-type-constructor
+     (make-pre-type-constructor
        (symbol-sexp-content (list-head elements))
        (list-map symbol-sexp-content (list-drop 1 elements))))
     ((symbol-sexp content location)
-     (make-type-constructor content []))))
+     (make-pre-type-constructor content []))))
 
 (claim parse-pre-data-constructor
   (-> sexp-t

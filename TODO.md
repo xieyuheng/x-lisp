@@ -1,6 +1,4 @@
-[meta-lisp.meta] 我们对 [meta-lisp.js] 做了上述更新之后 [meta-lisp.meta] 的相关代码与 [meta-lisp.js] 不一致了。
-
-帮我审查一下不一致的地方，我们要同步修改。
+[meta-lisp.js] 中的 PreDataConstructor 和 PreTypeConstructor 和 DataConstructor 和 TypeConstructor 放在附近
 
 [meta-lisp.meta] term-traverse.meta
 

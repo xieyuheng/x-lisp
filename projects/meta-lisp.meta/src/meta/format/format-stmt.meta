@@ -62,8 +62,8 @@
      (string-concat ["(declare-primitive-variable " (symbol-to-string name) ")"]))))
 
 (define (format-type-constructor tc)
-  (let ((name-str (symbol-to-string (type-constructor-name tc)))
-        (params (type-constructor-parameters tc)))
+  (let ((name-str (symbol-to-string (pre-type-constructor-name tc)))
+        (params (pre-type-constructor-parameters tc)))
     (if (list-empty? params)
       name-str
       (string-concat ["(" name-str " " (string-join " " (list-map symbol-to-string params)) ")"]))))
