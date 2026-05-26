@@ -12,7 +12,8 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
     case "IntExp":
     case "FloatExp":
     case "QualifiedVarExp":
-    case "QuoteExp": {
+    case "QuoteExp":
+    case "SexpExp": {
       return exp
     }
 

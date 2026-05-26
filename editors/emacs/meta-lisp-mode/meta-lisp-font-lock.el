@@ -24,7 +24,7 @@ These are keywords that appear as the first element of a list
 and have special evaluation semantics.")
 
 (defconst meta-lisp--at-forms
-  '("@list" "@set" "@hash" "@quote" "@record" "@string")
+  '("@list" "@set" "@hash" "@quote" "@record" "@sexp" "@string")
   "@-prefixed forms that are built-in syntax sugar.
 
 For example: (@list 1 2 3) is sugar for [1 2 3].")

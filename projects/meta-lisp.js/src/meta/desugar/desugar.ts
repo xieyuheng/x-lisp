@@ -14,6 +14,7 @@ import { desugarList } from "./desugarList.ts"
 import { desugarOr } from "./desugarOr.ts"
 import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
+import { desugarSexp } from "./desugarSexp.ts"
 import { desugarSet } from "./desugarSet.ts"
 
 export function desugar(exp: M.Exp): M.Term {
@@ -96,6 +97,10 @@ export function desugar(exp: M.Exp): M.Term {
 
     case "QuoteExp": {
       return desugar(desugarQuote(exp.sexp, exp.location))
+    }
+
+    case "SexpExp": {
+      return desugar(desugarSexp(exp.sexp))
     }
 
     case "PipeExp": {

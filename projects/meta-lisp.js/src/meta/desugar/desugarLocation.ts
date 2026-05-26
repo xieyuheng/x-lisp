@@ -2,9 +2,9 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function desugarLocation(location: S.SourceLocation): M.Exp {
-  return M.desugarList(
+  return M.ApplyExp(
+    M.QualifiedVarExp("builtin", "make-source-location", location),
     [
-      M.SymbolExp("make-source-location", location),
       M.StringExp(location.path, location),
       expFromSpan(location.span, location),
     ],
@@ -13,9 +13,9 @@ export function desugarLocation(location: S.SourceLocation): M.Exp {
 }
 
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
-  return M.desugarList(
+  return M.ApplyExp(
+    M.QualifiedVarExp("builtin", "make-source-span", location),
     [
-      M.SymbolExp("make-source-span", location),
       expFromPosition(span.start, location),
       expFromPosition(span.end, location),
     ],
@@ -27,9 +27,9 @@ function expFromPosition(
   position: S.Position,
   location: S.SourceLocation,
 ): M.Exp {
-  return M.desugarList(
+  return M.ApplyExp(
+    M.QualifiedVarExp("builtin", "make-source-position", location),
     [
-      M.SymbolExp("make-source-position", location),
       M.IntExp(BigInt(position.index), location),
       M.IntExp(BigInt(position.row), location),
       M.IntExp(BigInt(position.column), location),

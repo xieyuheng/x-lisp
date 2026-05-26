@@ -13,7 +13,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return exp
     }
 
-    case "QuoteExp": {
+    case "QuoteExp":
+    case "SexpExp": {
       return exp
     }
 

@@ -227,6 +227,10 @@ export function formatExp(exp: M.Exp): string {
       return `(@quote ${S.formatSexp(exp.sexp)})`
     }
 
+    case "SexpExp": {
+      return `(@sexp ${S.formatSexp(exp.sexp)})`
+    }
+
     case "ArrowExp": {
       const argTypes = exp.argTypes.map(formatExp).join(" ")
       const retType = formatExp(exp.retType)

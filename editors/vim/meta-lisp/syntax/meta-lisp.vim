@@ -22,7 +22,7 @@ syn keyword metaLispSpecialForm define-test
 syn keyword metaLispSpecialForm assert assert-not assert-the
 syn keyword metaLispSpecialForm assert-equal assert-not-equal
 
-syn keyword metaLispAtForm @list @set @hash @quote @record
+syn keyword metaLispAtForm @list @set @hash @quote @record @sexp
 
 syn keyword metaLispConstant true false void
 

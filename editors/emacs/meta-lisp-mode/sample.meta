@@ -158,3 +158,5 @@ example/abc
 (@list 1 2 3)
 (@set "a" "b" "c")
 (@hash :x 1 :y 2)
+(@sexp (a b c))
+(@sexp foo)

@@ -33,6 +33,7 @@ export type Exp =
   | SetExp
   | HashExp
   | QuoteExp
+  | SexpExp
   | ArrowExp
   | TheExp
   | PolymorphicExp
@@ -646,6 +647,20 @@ export type QuoteExp = {
 export function QuoteExp(sexp: Sexp, location: SourceLocation): QuoteExp {
   return {
     kind: "QuoteExp",
+    sexp,
+    location,
+  }
+}
+
+export type SexpExp = {
+  kind: "SexpExp"
+  sexp: Sexp
+  location: SourceLocation
+}
+
+export function SexpExp(sexp: Sexp, location: SourceLocation): SexpExp {
+  return {
+    kind: "SexpExp",
     sexp,
     location,
   }
