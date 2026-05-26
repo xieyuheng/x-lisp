@@ -20,10 +20,10 @@
 
 (claim project-lookup-mod (-> project-t symbol-t (maybe-t mod-t)))
 (define (project-lookup-mod project name)
-  (let ((mods (project-mods project)))
-    (if (hash-has? name mods)
-      (just (hash-get name mods))
-      (nothing))))
+  (= mods (project-mods project))
+  (if (hash-has? name mods)
+    (just (hash-get name mods))
+    (nothing)))
 
 (define (project-put-mod! name mod project)
   (hash-put! name mod (project-mods project)))

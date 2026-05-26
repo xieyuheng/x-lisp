@@ -14,112 +14,112 @@
       stmt-t))
 
 (define (parse-stmt-from-elements elements location)
-  (let ((tag (symbol-sexp-content (list-head elements))))
-    (cond ((equal? tag 'define)
-           (parse-define-stmt elements location))
-          ((equal? tag 'define-test)
-           (define-test-stmt
-             (symbol-sexp-content (list-get 1 elements))
-             (parse-body (list-drop 2 elements) location)
-             location))
-          ((equal? tag 'define-type)
-           (parse-define-type-stmt elements location))
-          ((equal? tag 'exempt)
-           (exempt-stmt
-            (list-map symbol-sexp-content (list-drop 1 elements))
-            location))
-          ((equal? tag 'private)
-           (private-stmt
-            (list-map symbol-sexp-content (list-drop 1 elements))
-            location))
-          ((equal? tag 'module)
-           (declare-module-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            location))
-          ((equal? tag 'import)
-           (import-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            (list-map symbol-sexp-content (list-drop 2 elements))
-            location))
-          ((equal? tag 'import-as)
-           (import-as-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            (symbol-sexp-content (list-get 2 elements))
-            location))
-          ((equal? tag 'import-all)
-           (import-all-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            location))
-          ((equal? tag 'define-enum)
-            (parse-define-enum-stmt elements location))
-          ((equal? tag 'define-algebraic-type)
-            (parse-define-algebraic-type-stmt elements location))
-          ((equal? tag 'define-struct)
-            (parse-define-struct-stmt elements location))
-          ((equal? tag 'define-struct*)
-            (parse-define-struct-star-stmt elements location))
-          ((equal? tag 'define-record-type)
-            (parse-define-record-type-stmt elements location))
-          ((equal? tag 'define-opaque-type)
-            (parse-define-opaque-type-stmt elements location))
-          ((equal? tag 'claim)
-           (claim-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            (parse-exp (list-get 2 elements))
-            location))
-          ((equal? tag 'claim-type)
-           (claim-type-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            location))
-          ((equal? tag 'admit)
-           (admit-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            (parse-exp (list-get 2 elements))
-            location))
-          ((equal? tag 'declare-primitive-function)
-           (declare-primitive-function-stmt
-            (symbol-sexp-content (list-get 1 elements))
-            (int-sexp-content (list-get 2 elements))
-            location))
-          ((equal? tag 'declare-primitive-variable)
-           (declare-primitive-variable-stmt
-            (symbol-sexp-content (list-get 1 elements))
-          location)))))
+  (= tag (symbol-sexp-content (list-head elements)))
+  (cond ((equal? tag 'define)
+         (parse-define-stmt elements location))
+        ((equal? tag 'define-test)
+         (define-test-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           (parse-body (list-drop 2 elements) location)
+           location))
+        ((equal? tag 'define-type)
+         (parse-define-type-stmt elements location))
+        ((equal? tag 'exempt)
+         (exempt-stmt
+           (list-map symbol-sexp-content (list-drop 1 elements))
+           location))
+        ((equal? tag 'private)
+         (private-stmt
+           (list-map symbol-sexp-content (list-drop 1 elements))
+           location))
+        ((equal? tag 'module)
+         (declare-module-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           location))
+        ((equal? tag 'import)
+         (import-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           (list-map symbol-sexp-content (list-drop 2 elements))
+           location))
+        ((equal? tag 'import-as)
+         (import-as-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           (symbol-sexp-content (list-get 2 elements))
+           location))
+        ((equal? tag 'import-all)
+         (import-all-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           location))
+        ((equal? tag 'define-enum)
+         (parse-define-enum-stmt elements location))
+        ((equal? tag 'define-algebraic-type)
+         (parse-define-algebraic-type-stmt elements location))
+        ((equal? tag 'define-struct)
+         (parse-define-struct-stmt elements location))
+        ((equal? tag 'define-struct*)
+         (parse-define-struct-star-stmt elements location))
+        ((equal? tag 'define-record-type)
+         (parse-define-record-type-stmt elements location))
+        ((equal? tag 'define-opaque-type)
+         (parse-define-opaque-type-stmt elements location))
+        ((equal? tag 'claim)
+         (claim-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           (parse-exp (list-get 2 elements))
+           location))
+        ((equal? tag 'claim-type)
+         (claim-type-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           location))
+        ((equal? tag 'admit)
+         (admit-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           (parse-exp (list-get 2 elements))
+           location))
+        ((equal? tag 'declare-primitive-function)
+         (declare-primitive-function-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           (int-sexp-content (list-get 2 elements))
+           location))
+        ((equal? tag 'declare-primitive-variable)
+         (declare-primitive-variable-stmt
+           (symbol-sexp-content (list-get 1 elements))
+           location))))
 
 (claim parse-define-stmt
   (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-stmt elements location)
-  (let ((second (list-get 1 elements)))
-    (if (list-sexp? second)
-      (define-function-stmt
-        (symbol-sexp-content (list-head (list-sexp-elements second)))
-        (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
-        (parse-body (list-drop 2 elements) location)
-        location)
-      (define-variable-stmt
-        (symbol-sexp-content second)
-        (parse-body (list-drop 2 elements) location)
-        location))))
+  (= second (list-get 1 elements))
+  (if (list-sexp? second)
+    (define-function-stmt
+      (symbol-sexp-content (list-head (list-sexp-elements second)))
+      (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
+      (parse-body (list-drop 2 elements) location)
+      location)
+    (define-variable-stmt
+      (symbol-sexp-content second)
+      (parse-body (list-drop 2 elements) location)
+      location)))
 
 (claim parse-define-type-stmt
   (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-type-stmt elements location)
-  (let ((second (list-get 1 elements)))
-    (if (list-sexp? second)
-      (define-type-stmt
-        (symbol-sexp-content (list-head (list-sexp-elements second)))
-        (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
-        (parse-body (list-drop 2 elements) location)
-        location)
-      (define-type-stmt
-        (symbol-sexp-content second)
-        []
-        (parse-body (list-drop 2 elements) location)
-        location))))
+  (= second (list-get 1 elements))
+  (if (list-sexp? second)
+    (define-type-stmt
+      (symbol-sexp-content (list-head (list-sexp-elements second)))
+      (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
+      (parse-body (list-drop 2 elements) location)
+      location)
+    (define-type-stmt
+      (symbol-sexp-content second)
+      []
+      (parse-body (list-drop 2 elements) location)
+      location)))
 
 (claim parse-define-enum-stmt
   (-> (list-t sexp-t) source-location-t
@@ -166,36 +166,39 @@
       stmt-t))
 
 (define (parse-define-record-type-stmt elements location)
-  (let ((head (list-get 1 elements))
-        (ctor-clause (list-get 2 elements))
-        (predicate (list-get 3 elements))
-        (accessors (list-get 4 elements)))
-    (let* ((ctor-list (list-sexp-elements ctor-clause))
-           (constructor-name (symbol-sexp-content (list-head ctor-list)))
-           (fields-raw (list-drop 1 ctor-list))
-           (accessor-list (list-sexp-elements accessors))
-           (accessor-map (build-accessor-map accessor-list location)))
-      (let ((fields (list-map (lambda (field)
-                                (let* ((field-list (list-sexp-elements field))
-                                       (name (symbol-sexp-content (list-head field-list)))
-                                       (type (parse-exp (list-head (list-drop 1 field-list)))))
-                                  (make-algebraic-type-field
-                                    name type
-                                    (if (hash-has? name accessor-map)
-                                      (pair-first (hash-get name accessor-map))
-                                      (string-to-symbol (@string (symbol-to-string constructor-name) "-" (symbol-to-string name))))
-                                    (if (hash-has? name accessor-map)
-                                      (pair-second (hash-get name accessor-map))
-                                      (nothing))
-                                    location)))
-                              fields-raw)))
-        (define-record-type-stmt
-          (parse-type-constructor head)
-          (make-algebraic-type-constructor
-            constructor-name fields
-            (symbol-sexp-content predicate)
-            location)
-          location)))))
+  (= head (list-get 1 elements))
+  (= ctor-clause (list-get 2 elements))
+  (= predicate (list-get 3 elements))
+  (= accessors (list-get 4 elements))
+  (= ctor-list (list-sexp-elements ctor-clause))
+  (= constructor-name (symbol-sexp-content (list-head ctor-list)))
+  (= fields-raw (list-drop 1 ctor-list))
+  (= accessor-list (list-sexp-elements accessors))
+  (= accessor-map (build-accessor-map accessor-list location))
+  (= fields
+     (pipe fields-raw
+       (list-map
+         (lambda (field)
+           (= field-list (list-sexp-elements field))
+           (= name (symbol-sexp-content (list-head field-list)))
+           (= type (parse-exp (list-head (list-drop 1 field-list))))
+           (make-algebraic-type-field
+             name type
+             (if (hash-has? name accessor-map)
+               (pair-first (hash-get name accessor-map))
+               (string-to-symbol
+                 (@string (symbol-to-string constructor-name) "-" (symbol-to-string name))))
+             (if (hash-has? name accessor-map)
+               (pair-second (hash-get name accessor-map))
+               (nothing))
+             location)))))
+  (define-record-type-stmt
+    (parse-type-constructor head)
+    (make-algebraic-type-constructor
+      constructor-name fields
+      (symbol-sexp-content predicate)
+      location)
+    location))
 
 (claim build-accessor-map
   (-> (list-t sexp-t) source-location-t
@@ -203,38 +206,40 @@
 (define (build-accessor-map accessors location)
   (if (list-empty? accessors)
     (@hash)
-    (let ((entry (list-sexp-elements (list-head accessors)))
-          (rest (list-drop 1 accessors)))
-      (let ((field-name (symbol-sexp-content (list-head entry)))
-            (accessor-name (symbol-sexp-content (list-head (list-drop 1 entry)))))
-        (let ((modifier-name (if (int-greater? (list-length entry) 2)
-                               (just (symbol-sexp-content (list-head (list-drop 2 entry))))
-                               (nothing))))
-          (hash-put field-name
-            (make-pair accessor-name modifier-name)
-            (build-accessor-map rest location)))))))
+    (begin
+      (= entry (list-sexp-elements (list-head accessors)))
+      (= rest (list-drop 1 accessors))
+      (= field-name (symbol-sexp-content (list-head entry)))
+      (= accessor-name (symbol-sexp-content (list-head (list-drop 1 entry))))
+      (= modifier-name (if (int-greater? (list-length entry) 2)
+                         (just (symbol-sexp-content (list-head (list-drop 2 entry))))
+                         (nothing)))
+      (hash-put field-name
+                (make-pair accessor-name modifier-name)
+                (build-accessor-map rest location)))))
 
 (claim parse-define-opaque-type-stmt
   (-> (list-t sexp-t) source-location-t
       stmt-t))
 
 (define (parse-define-opaque-type-stmt elements location)
-  (let ((head (list-get 1 elements))
-        (representation (list-get 2 elements))
-        (ifaces (list-drop 3 elements)))
-    (let ((type-constructor (parse-type-constructor head)))
-      (define-opaque-type-stmt
-        (pre-type-constructor-name type-constructor)
-        (pre-type-constructor-parameters type-constructor)
-        (parse-exp representation)
-        (list-map (lambda (iface)
-                    (let ((parts (list-sexp-elements iface)))
-                      (make-interface-entry
-                        (symbol-sexp-content (list-head parts))
-                        (parse-exp (list-head (list-drop 1 parts)))
-                        location)))
-                  ifaces)
-        location))))
+  (= head (list-get 1 elements))
+  (= representation (list-get 2 elements))
+  (= ifaces (list-drop 3 elements))
+  (= type-constructor (parse-type-constructor head))
+  (define-opaque-type-stmt
+    (pre-type-constructor-name type-constructor)
+    (pre-type-constructor-parameters type-constructor)
+    (parse-exp representation)
+    (list-map
+      (lambda (iface)
+        (= parts (list-sexp-elements iface))
+        (make-interface-entry
+          (symbol-sexp-content (list-head parts))
+          (parse-exp (list-head (list-drop 1 parts)))
+          location))
+      ifaces)
+    location))
 
 (claim parse-type-constructor
   (-> sexp-t
@@ -280,29 +285,32 @@
 (define (parse-algebraic-type-constructor sexp)
   (match sexp
     ((list-sexp elements location)
-     (let* ((group (list-get 0 elements))
-            (predicate-sexp (list-get 1 elements))
-            (accessors (list-get 2 elements))
-            (group-list (list-sexp-elements group))
-            (accessor-list (list-sexp-elements accessors))
-            (accessor-map (build-accessor-map accessor-list location)))
-       (let ((name (symbol-sexp-content (list-head group-list)))
-             (fields-raw (list-drop 1 group-list)))
-         (let ((fields (list-map (lambda (field)
-                                   (let* ((field-list (list-sexp-elements field))
-                                          (name (symbol-sexp-content (list-head field-list)))
-                                          (type (parse-exp (list-head (list-drop 1 field-list)))))
-                                     (make-algebraic-type-field
-                                       name type
-                                       (if (hash-has? name accessor-map)
-                                         (pair-first (hash-get name accessor-map))
-                                         (string-to-symbol (@string (symbol-to-string name) "-" (symbol-to-string name))))
-                                       (if (hash-has? name accessor-map)
-                                         (pair-second (hash-get name accessor-map))
-                                         (nothing))
-                                       location)))
-                             fields-raw)))
-(make-algebraic-type-constructor
-            name fields
-            (symbol-sexp-content predicate-sexp)
-            location)))))))
+     (= group (list-get 0 elements))
+     (= predicate-sexp (list-get 1 elements))
+     (= accessors (list-get 2 elements))
+     (= group-list (list-sexp-elements group))
+     (= accessor-list (list-sexp-elements accessors))
+     (= accessor-map (build-accessor-map accessor-list location))
+     (= name (symbol-sexp-content (list-head group-list)))
+     (= fields-raw (list-drop 1 group-list))
+     (= fields
+        (pipe fields-raw
+          (list-map
+            (lambda (field)
+              (= field-list (list-sexp-elements field))
+              (= name (symbol-sexp-content (list-head field-list)))
+              (= type (parse-exp (list-head (list-drop 1 field-list))))
+              (make-algebraic-type-field
+                name type
+                (if (hash-has? name accessor-map)
+                  (pair-first (hash-get name accessor-map))
+                  (string-to-symbol
+                    (@string (symbol-to-string name) "-" (symbol-to-string name))))
+                (if (hash-has? name accessor-map)
+                  (pair-second (hash-get name accessor-map))
+                  (nothing))
+                location)))))
+     (make-algebraic-type-constructor
+       name fields
+       (symbol-sexp-content predicate-sexp)
+       location))))

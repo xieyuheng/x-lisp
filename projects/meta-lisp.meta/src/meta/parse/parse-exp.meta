@@ -7,14 +7,14 @@
 (define (parse-exp sexp)
   (match sexp
     ((symbol-sexp content location)
-     (let ((str (symbol-to-string content)))
-       (if (string-contains? "/" str)
-         (let ((parts (string-split "/" str)))
-           (qualified-var-exp
-            (string-to-symbol (list-get 0 parts))
-            (string-to-symbol (list-get 1 parts))
-            location))
-         (var-exp content location))))
+     (= str (symbol-to-string content))
+     (if (string-contains? "/" str)
+       (let ((parts (string-split "/" str)))
+         (qualified-var-exp
+           (string-to-symbol (list-get 0 parts))
+           (string-to-symbol (list-get 1 parts))
+           location))
+       (var-exp content location)))
     ((keyword-sexp content location) (keyword-exp content location))
     ((string-sexp content location) (string-exp content location))
     ((int-sexp content location) (int-exp content location))
@@ -27,8 +27,8 @@
 
 (define syntax-keywords
   ['lambda 'quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
-            'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
-           '-> 'the 'polymorphic 'pipe 'chain 'compose 'define])
+   'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
+   '-> 'the 'polymorphic 'pipe 'chain 'compose 'define])
 
 (define (parse-compound-exp elements location)
   (if (symbol-sexp? (list-head elements))
@@ -53,11 +53,11 @@
 
 (define (parse-special-form-exp tag sexps location)
   (cond ((equal? tag 'lambda)
-         (let ((parameters (list-get 1 sexps))
-               (body (list-drop 2 sexps)))
-           (lambda-exp (parse-parameters parameters)
-                       (parse-body body location)
-                       location)))
+         (= parameters (list-get 1 sexps))
+         (= body (list-drop 2 sexps))
+         (lambda-exp (parse-parameters parameters)
+                     (parse-body body location)
+                     location))
         ((equal? tag 'quote)
          (quote-exp (list-get 1 sexps) location))
         ((equal? tag '@sexp)
@@ -112,19 +112,19 @@
                           (parse-body (list-drop 2 sexps) location)
                           location))
         ((equal? tag 'define)
-         (let ((second (list-get 1 sexps))
-               (body (list-drop 2 sexps)))
-           (if (list-sexp? second)
-             (local-define-exp
-               (symbol-sexp-content (list-head (list-sexp-elements second)))
-               (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
-               (parse-body body location)
-               location)
-             (local-define-exp
-               (symbol-sexp-content second)
-               []
-               (parse-body body location)
-               location))))
+         (= second (list-get 1 sexps))
+         (= body (list-drop 2 sexps))
+         (if (list-sexp? second)
+           (local-define-exp
+             (symbol-sexp-content (list-head (list-sexp-elements second)))
+             (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
+             (parse-body body location)
+             location)
+           (local-define-exp
+             (symbol-sexp-content second)
+             []
+             (parse-body body location)
+             location)))
         ((equal? tag '@list)
          (list-exp (list-map parse-exp (list-drop 1 sexps)) location))
         ((equal? tag '@square-bracket)
@@ -136,10 +136,10 @@
         ((equal? tag '@hash)
          (hash-exp (parse-hash-entries (list-drop 1 sexps)) location))
         ((equal? tag '->)
-         (let ((exps (list-map parse-exp (list-drop 1 sexps))))
-           (arrow-exp (list-init exps)
-                      (list-last exps)
-                      location)))
+         (= exps (list-map parse-exp (list-drop 1 sexps)))
+         (arrow-exp (list-init exps)
+                    (list-last exps)
+                    location))
         ((equal? tag 'the)
          (the-exp (parse-exp (list-get 1 sexps))
                   (parse-exp (list-get 2 sexps))
