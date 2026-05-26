@@ -64,7 +64,7 @@ export function termTraverse(onTerm: (term: Term) => Term, term: Term): Term {
     }
 
     case "TheTerm": {
-      return M.TheTerm(onTerm(term.type), onTerm(term.exp), term.location)
+      return M.TheTerm(onTerm(term.type), onTerm(term.instance), term.location)
     }
   }
 }

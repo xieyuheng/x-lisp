@@ -192,7 +192,7 @@ export function desugar(exp: M.Exp): M.Term {
     }
 
     case "TheExp": {
-      return M.TheTerm(desugar(exp.type), desugar(exp.exp), exp.location)
+      return M.TheTerm(desugar(exp.type), desugar(exp.instance), exp.location)
     }
 
     // Should not appear after LowerMatchPass

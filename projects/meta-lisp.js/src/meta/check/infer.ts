@@ -94,7 +94,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
       case "TheTerm": {
         const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), exp.type)
         return M.checkThenInfer(
-          M.checkAssignable(mod, ctx, exp.exp, type),
+          M.checkAssignable(mod, ctx, exp.instance, type),
           M.okInferEffect(type),
         )(subst)
       }

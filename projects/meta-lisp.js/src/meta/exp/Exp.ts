@@ -656,15 +656,19 @@ export function ArrowExp(
 export type TheExp = {
   kind: "TheExp"
   type: Exp
-  exp: Exp
+  instance: Exp
   location: SourceLocation
 }
 
-export function TheExp(type: Exp, exp: Exp, location: SourceLocation): TheExp {
+export function TheExp(
+  type: Exp,
+  instance: Exp,
+  location: SourceLocation,
+): TheExp {
   return {
     kind: "TheExp",
     type,
-    exp,
+    instance,
     location,
   }
 }

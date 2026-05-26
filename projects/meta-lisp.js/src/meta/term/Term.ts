@@ -262,19 +262,19 @@ export function ArrowTerm(
 export type TheTerm = {
   kind: "TheTerm"
   type: Term
-  exp: Term
+  instance: Term
   location: SourceLocation
 }
 
 export function TheTerm(
   type: Term,
-  exp: Term,
+  instance: Term,
   location: SourceLocation,
 ): TheTerm {
   return {
     kind: "TheTerm",
     type,
-    exp,
+    instance,
     location,
   }
 }

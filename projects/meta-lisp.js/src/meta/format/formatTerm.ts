@@ -45,7 +45,7 @@ export function formatTerm(term: M.Term): string {
       return `(-> (${term.argTypes.map(formatTerm).join(" ")}) ${formatTerm(term.retType)})`
 
     case "TheTerm":
-      return `(the ${formatTerm(term.type)} ${formatTerm(term.exp)})`
+      return `(the ${formatTerm(term.type)} ${formatTerm(term.instance)})`
 
     case "PolymorphicTerm":
       return `(polymorphic (${term.parameters.join(" ")}) ${formatTerm(term.body)})`

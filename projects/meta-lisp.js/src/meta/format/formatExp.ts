@@ -225,7 +225,7 @@ export function formatExp(exp: M.Exp): string {
     }
 
     case "TheExp": {
-      return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
+      return `(the ${formatExp(exp.type)} ${formatExp(exp.instance)})`
     }
 
     case "MatchExp": {

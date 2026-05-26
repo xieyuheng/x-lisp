@@ -75,7 +75,7 @@ export function termFreeNames(
     case "TheTerm": {
       return setUnionMany([
         termFreeNames(boundNames, term.type),
-        termFreeNames(boundNames, term.exp),
+        termFreeNames(boundNames, term.instance),
       ])
     }
   }

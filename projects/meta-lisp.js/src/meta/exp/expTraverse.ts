@@ -191,7 +191,7 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     }
 
     case "TheExp": {
-      return M.TheExp(onExp(exp.type), onExp(exp.exp), exp.location)
+      return M.TheExp(onExp(exp.type), onExp(exp.instance), exp.location)
     }
 
     case "MatchExp": {

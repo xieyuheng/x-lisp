@@ -284,7 +284,7 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
     case "TheExp": {
       return M.TheExp(
         expNaiveSubst(exp.type, name, rhs),
-        expNaiveSubst(exp.exp, name, rhs),
+        expNaiveSubst(exp.instance, name, rhs),
         exp.location,
       )
     }

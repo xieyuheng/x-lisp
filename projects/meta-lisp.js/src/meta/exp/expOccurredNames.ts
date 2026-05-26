@@ -179,7 +179,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     case "TheExp": {
       return setUnionMany([
         expOccurredNames(exp.type),
-        expOccurredNames(exp.exp),
+        expOccurredNames(exp.instance),
       ])
     }
 
