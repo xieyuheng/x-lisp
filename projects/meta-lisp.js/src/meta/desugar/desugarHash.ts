@@ -1,15 +1,26 @@
+import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
+import { expOccurredNames } from "../exp/expOccurredNames.ts"
 import { desugarBegin } from "./desugarBegin.ts"
+import { generateRelativeFreshName } from "./generateRelativeFreshName.ts"
 
 export function desugarHash(
   entries: Array<{ key: M.Exp; value: M.Exp }>,
   location: SourceLocation,
 ): M.Exp {
+  const usedNames = setUnionMany(
+    entries.flatMap((entry) => [
+      expOccurredNames(entry.key),
+      expOccurredNames(entry.value),
+    ]),
+  )
+  const name = generateRelativeFreshName("hash", usedNames)
+
   return desugarBegin(
     [
       M.AssignExp(
-        "hash",
+        name,
         M.ApplyExp(
           M.QualifiedVarExp("builtin", "make-hash", location),
           [],
@@ -20,11 +31,11 @@ export function desugarHash(
       ...entries.map((entry) =>
         M.ApplyExp(
           M.QualifiedVarExp("builtin", "hash-put!", location),
-          [entry.key, entry.value, M.VarExp("hash", location)],
+          [entry.key, entry.value, M.VarExp(name, location)],
           location,
         ),
       ),
-      M.VarExp("hash", location),
+      M.VarExp(name, location),
     ],
     location,
   )

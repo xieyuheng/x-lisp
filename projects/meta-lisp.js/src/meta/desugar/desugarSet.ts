@@ -1,15 +1,21 @@
+import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
+import { expOccurredNames } from "../exp/expOccurredNames.ts"
 import { desugarBegin } from "./desugarBegin.ts"
+import { generateRelativeFreshName } from "./generateRelativeFreshName.ts"
 
 export function desugarSet(
   elements: Array<M.Exp>,
   location: SourceLocation,
 ): M.Exp {
+  const usedNames = setUnionMany(elements.map(expOccurredNames))
+  const name = generateRelativeFreshName("set", usedNames)
+
   return desugarBegin(
     [
       M.AssignExp(
-        "set",
+        name,
         M.ApplyExp(
           M.QualifiedVarExp("builtin", "make-set", location),
           [],
@@ -20,11 +26,11 @@ export function desugarSet(
       ...elements.map((e) =>
         M.ApplyExp(
           M.QualifiedVarExp("builtin", "set-add!", location),
-          [e, M.VarExp("set", location)],
+          [e, M.VarExp(name, location)],
           location,
         ),
       ),
-      M.VarExp("set", location),
+      M.VarExp(name, location),
     ],
     location,
   )

@@ -1,0 +1,26 @@
+(module example)
+
+(define-test list-name-collision-test
+  (= list 42)
+  (= list.1 "wrong")
+  (assert-equal [42] (@list list))
+  (assert-equal [42 42] (@list list list))
+  (assert-equal [1 2 3] (@list 1 2 3)))
+
+(define-test set-name-collision-test
+  (= set "hello")
+  (= set.1 "wrong")
+  (assert-equal (@set set) (@set "hello")))
+
+(define-test hash-name-collision-test
+  (= hash "value")
+  (= hash.1 "wrong")
+  (assert-equal (@hash "key" hash) (@hash "key" "value")))
+
+(define-test string-name-collision-test
+  (= list "hello")
+  (assert-equal "hello" (@string list)))
+
+(define-test nested-list-name-collision-test
+  (= list 42)
+  (assert-equal [[42]] (@list (@list list))))
