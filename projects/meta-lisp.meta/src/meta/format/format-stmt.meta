@@ -4,98 +4,101 @@
 (define (format-stmt stmt)
   (match stmt
     ((import-stmt mod-name names location)
-     (string-concat ["(import " (symbol-to-string mod-name) " "
-                     (string-join " " (list-map symbol-to-string names)) ")"]))
+     (@string "(import " (symbol-to-string mod-name) " "
+              (string-join " " (list-map symbol-to-string names)) ")"))
     ((import-as-stmt mod-name prefix location)
-     (string-concat ["(import-as " (symbol-to-string mod-name) " "
-                     (symbol-to-string prefix) ")"]))
+     (@string "(import-as " (symbol-to-string mod-name) " "
+              (symbol-to-string prefix) ")"))
     ((import-all-stmt mod-name location)
-     (string-concat ["(import-all " (symbol-to-string mod-name) ")"]))
+     (@string "(import-all " (symbol-to-string mod-name) ")"))
     ((define-function-stmt name parameters body location)
-     (string-concat ["(define (" (symbol-to-string name) " "
-                     (string-join " " (list-map symbol-to-string parameters)) ") "
-                     (format-exp body) ")"]))
+     (@string "(define (" (symbol-to-string name) " "
+              (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-exp body) ")"))
     ((define-variable-stmt name body location)
-     (string-concat ["(define " (symbol-to-string name) " " (format-exp body) ")"]))
+     (@string "(define " (symbol-to-string name) " " (format-exp body) ")"))
     ((define-test-stmt name body location)
-     (string-concat ["(define-test " (symbol-to-string name) " " (format-exp body) ")"]))
+     (@string "(define-test " (symbol-to-string name) " " (format-exp body) ")"))
     ((define-type-stmt name parameters body location)
-     (string-concat ["(define-type (" (symbol-to-string name) " "
-                     (string-join " " (list-map symbol-to-string parameters)) ") "
-                     (format-exp body) ")"]))
+     (@string "(define-type (" (symbol-to-string name) " "
+              (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-exp body) ")"))
     ((define-enum-stmt type-constructor data-constructors location)
-     (string-concat ["(define-enum " (format-type-constructor type-constructor) " "
-                     (string-join " " (list-map format-pre-data-constructor data-constructors)) ")"]))
+     (@string "(define-enum " (format-type-constructor type-constructor) " "
+              (string-join " " (list-map format-pre-data-constructor data-constructors)) ")"))
     ((define-struct-star-stmt type-constructor data-constructor location)
-     (string-concat ["(define-struct* " (format-type-constructor type-constructor) " "
-                     (format-pre-data-constructor data-constructor) ")"]))
+     (@string "(define-struct* " (format-type-constructor type-constructor) " "
+              (format-pre-data-constructor data-constructor) ")"))
     ((define-struct-stmt type-constructor fields location)
-     (string-concat ["(define-struct " (format-type-constructor type-constructor) " "
-                     (string-join " " (list-map format-data-field fields)) ")"]))
+     (@string "(define-struct " (format-type-constructor type-constructor) " "
+              (string-join " " (list-map format-data-field fields)) ")"))
     ((define-record-type-stmt type-constructor data-constructor location)
-     (string-concat ["(define-record-type " (format-type-constructor type-constructor) " "
-                     (format-algebraic-type-constructor data-constructor) ")"]))
+     (@string "(define-record-type " (format-type-constructor type-constructor) " "
+              (format-algebraic-type-constructor data-constructor) ")"))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (string-concat ["(define-algebraic-type " (format-type-constructor type-constructor) " "
-                     (string-join " " (list-map format-algebraic-type-constructor data-constructors)) ")"]))
+     (@string "(define-algebraic-type " (format-type-constructor type-constructor) " "
+              (string-join " " (list-map format-algebraic-type-constructor data-constructors)) ")"))
     ((define-opaque-type-stmt name parameters representation-type interface-entries location)
-     (string-concat ["(define-opaque-type (" (symbol-to-string name) " "
-                     (string-join " " (list-map symbol-to-string parameters)) ") "
-                     (format-exp representation-type) " "
-                     (string-join " " (list-map format-interface-entry interface-entries)) ")"]))
+     (@string "(define-opaque-type (" (symbol-to-string name) " "
+              (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-exp representation-type) " "
+              (string-join " " (list-map format-interface-entry interface-entries)) ")"))
     ((claim-stmt name type location)
-     (string-concat ["(claim " (symbol-to-string name) " " (format-exp type) ")"]))
+     (@string "(claim " (symbol-to-string name) " " (format-exp type) ")"))
     ((claim-type-stmt name location)
-     (string-concat ["(claim-type " (symbol-to-string name) ")"]))
+     (@string "(claim-type " (symbol-to-string name) ")"))
     ((admit-stmt name type location)
-     (string-concat ["(admit " (symbol-to-string name) " " (format-exp type) ")"]))
+     (@string "(admit " (symbol-to-string name) " " (format-exp type) ")"))
     ((private-stmt names location)
-     (string-concat ["(private " (string-join " " (list-map symbol-to-string names)) ")"]))
+     (@string "(private " (string-join " " (list-map symbol-to-string names)) ")"))
     ((exempt-stmt names location)
-     (string-concat ["(exempt " (string-join " " (list-map symbol-to-string names)) ")"]))
+     (@string "(exempt " (string-join " " (list-map symbol-to-string names)) ")"))
     ((declare-module-stmt name location)
-     (string-concat ["(module " (symbol-to-string name) ")"]))
+     (@string "(module " (symbol-to-string name) ")"))
     ((declare-primitive-function-stmt name arity location)
-     (string-concat ["(declare-primitive-function " (symbol-to-string name) " "
-                     (format-sexp arity) ")"]))
+     (@string "(declare-primitive-function " (symbol-to-string name) " "
+              (format-sexp arity) ")"))
     ((declare-primitive-variable-stmt name location)
-     (string-concat ["(declare-primitive-variable " (symbol-to-string name) ")"]))))
+     (@string "(declare-primitive-variable " (symbol-to-string name) ")"))))
 
 (define (format-type-constructor tc)
-  (let ((name-str (symbol-to-string (pre-type-constructor-name tc)))
-        (params (pre-type-constructor-parameters tc)))
-    (if (list-empty? params)
-      name-str
-      (string-concat ["(" name-str " " (string-join " " (list-map symbol-to-string params)) ")"]))))
+  (= name-str (symbol-to-string (pre-type-constructor-name tc)))
+  (= params (pre-type-constructor-parameters tc))
+  (if (list-empty? params)
+    name-str
+    (@string "(" name-str " "
+             (string-join " " (list-map symbol-to-string params)) ")")))
 
 (define (format-pre-data-constructor ctor)
-  (let ((name-str (symbol-to-string (pre-data-constructor-name ctor)))
-        (fields (pre-data-constructor-fields ctor)))
-    (if (list-empty? fields)
-      name-str
-      (string-concat ["(" name-str " " (string-join " " (list-map format-data-field fields)) ")"]))))
+  (= name-str (symbol-to-string (pre-data-constructor-name ctor)))
+  (= fields (pre-data-constructor-fields ctor))
+  (if (list-empty? fields)
+    name-str
+    (@string "(" name-str " "
+             (string-join " " (list-map format-data-field fields)) ")")))
 
 (define (format-data-field field)
-  (let ((name-str (symbol-to-string (data-field-name field)))
-        (type-str (format-exp (data-field-type field))))
-    (if (equal? type-str "")
-      name-str
-      (string-concat ["(" name-str " " type-str ")"]))))
+  (= name-str (symbol-to-string (data-field-name field)))
+  (= type-str (format-exp (data-field-type field)))
+  (if (equal? type-str "")
+    name-str
+    (@string "(" name-str " " type-str ")")))
 
 (define (format-algebraic-type-constructor ctor)
-  (let ((name-str (symbol-to-string (algebraic-type-constructor-name ctor)))
-        (fields (algebraic-type-constructor-fields ctor)))
-    (if (list-empty? fields)
-      name-str
-      (string-concat ["(" name-str " " (string-join " " (list-map format-algebraic-type-field fields)) ")"]))))
+  (= name-str (symbol-to-string (algebraic-type-constructor-name ctor)))
+  (= fields (algebraic-type-constructor-fields ctor))
+  (if (list-empty? fields)
+    name-str
+    (@string "(" name-str " "
+             (string-join " " (list-map format-algebraic-type-field fields)) ")")))
 
 (define (format-algebraic-type-field field)
-  (let ((name-str (symbol-to-string (algebraic-type-field-name field)))
-        (type-str (format-exp (algebraic-type-field-type field))))
-    (if (equal? type-str "")
-      name-str
-      (string-concat ["(" name-str " " type-str ")"]))))
+  (= name-str (symbol-to-string (algebraic-type-field-name field)))
+  (= type-str (format-exp (algebraic-type-field-type field)))
+  (if (equal? type-str "")
+    name-str
+    (@string "(" name-str " " type-str ")")))
 
 (define (format-interface-entry entry)
-  (string-concat ["(" (symbol-to-string (interface-entry-name entry)) " "
-                  (format-exp (interface-entry-type entry)) ")"]))
+  (@string "(" (symbol-to-string (interface-entry-name entry)) " "
+           (format-exp (interface-entry-type entry)) ")"))

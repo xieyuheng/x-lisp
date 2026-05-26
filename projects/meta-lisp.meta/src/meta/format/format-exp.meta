@@ -16,53 +16,52 @@
     ((var-exp name location)
      (symbol-to-string name))
     ((qualified-var-exp mod-name name location)
-     (string-concat [(symbol-to-string mod-name) "/" (symbol-to-string name)]))
+     (@string (symbol-to-string mod-name) "/" (symbol-to-string name)))
     ((apply-exp target args location)
-     (string-concat ["(" (format-exp target) " " (format-exps args) ")"]))
+     (@string "(" (format-exp target) " " (format-exps args) ")"))
     ((arrow-exp arg-types ret-type location)
-     (let ((args-str (format-exps arg-types)))
-       (if (list-empty? arg-types)
-         (string-concat ["(-> " args-str " " (format-exp ret-type) ")"])
-         (string-concat ["(-> " args-str " " (format-exp ret-type) ")"]))))
+     (= args-str (format-exps arg-types))
+     (if (list-empty? arg-types)
+       (@string "(-> " args-str " " (format-exp ret-type) ")")
+       (@string "(-> " args-str " " (format-exp ret-type) ")")))
     ((polymorphic-exp parameters body location)
-     (string-concat ["(polymorphic (" (string-join " " (list-map symbol-to-string parameters)) ") "
-                     (format-exp body) ")"]))
+     (@string "(polymorphic (" (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-exp body) ")"))
     ((lambda-exp parameters body location)
-     (string-concat ["(lambda (" (string-join " " (list-map symbol-to-string parameters)) ") "
-                     (format-exp body) ")"]))
+     (@string "(lambda (" (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-exp body) ")"))
     ((list-exp elements location)
      (if (list-empty? elements)
        "[]"
-       (string-concat ["[" (format-exps elements) "]"])))
+       (@string "[" (format-exps elements) "]")))
     ((string-concat-exp elements location)
      (if (list-empty? elements)
        "(@string)"
-       (string-concat ["(@string " (format-exps elements) ")"])))
+       (@string "(@string " (format-exps elements) ")")))
     ((set-exp elements location)
      (if (list-empty? elements)
        "(@set)"
-       (string-concat ["(@set " (format-exps elements) ")"])))
+       (@string "(@set " (format-exps elements) ")")))
     ((hash-exp entries location)
-     (string-concat ["(@hash " (string-join " " (list-map format-hash-entry entries)) ")"]))
+     (@string "(@hash " (string-join " " (list-map format-hash-entry entries)) ")"))
     ((and-exp exps location)
-     (string-concat ["(and " (format-exps exps) ")"]))
+     (@string "(and " (format-exps exps) ")"))
     ((let1-exp name rhs body location)
-     (string-concat ["(let ((" (symbol-to-string name) " " (format-exp rhs) ")) "
-                     (format-exp body) ")"]))
+     (@string "(let ((" (symbol-to-string name) " " (format-exp rhs) ")) "
+              (format-exp body) ")"))
     ((let-exp bindings body location)
-     (string-concat ["(let (" (format-bindings bindings) ") " (format-exp body) ")"]))
+     (@string "(let (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((let-star-exp bindings body location)
-     (string-concat ["(let* (" (format-bindings bindings) ") " (format-exp body) ")"]))
+     (@string "(let* (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((begin-exp sequence location)
-     (string-concat ["(begin " (format-exps sequence) ")"]))
+     (@string "(begin " (format-exps sequence) ")"))
     ((quote-exp sexp location)
-     (string-concat ["'" (format-sexp sexp)]))
+     (@string "'" (format-sexp sexp)))
     ((sexp-exp sexp location)
-     (string-concat ["(@sexp " (format-sexp sexp) ")"]))
+     (@string "(@sexp " (format-sexp sexp) ")"))
     (else
      (format-sexp exp))))
 
-(claim format-exps (-> (list-t exp-t) string-t))
 (define (format-exps exps)
   (string-join " " (list-map format-exp exps)))
 
@@ -70,9 +69,9 @@
   (string-join " " (list-map format-binding bindings)))
 
 (define (format-binding binding)
-  (string-concat ["(" (symbol-to-string (binding-name binding)) " "
-                  (format-exp (binding-rhs binding)) ")"]))
+  (@string "(" (symbol-to-string (binding-name binding)) " "
+           (format-exp (binding-rhs binding)) ")"))
 
 (define (format-hash-entry entry)
-  (string-concat ["(" (format-exp (hash-entry-key entry)) " "
-                  (format-exp (hash-entry-value entry)) ")"]))
+  (@string "(" (format-exp (hash-entry-key entry)) " "
+           (format-exp (hash-entry-value entry)) ")"))
