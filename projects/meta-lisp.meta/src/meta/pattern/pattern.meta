@@ -44,19 +44,19 @@
          (let ((dcs (mod-data-constructors mod)))
            (if (hash-has? name dcs)
              (hash-get name dcs)
-             (error (string-concat
-                      ["[data-pattern-data-constructor] undefined target name"
-                       "\n  name: " (symbol-to-string name)])))))
+             (error (@string
+                      "[data-pattern-data-constructor] undefined target name"
+                      "\n  name: " (symbol-to-string name))))))
         ((qualified-var-exp mod-name name location)
          (match (project-lookup-mod (mod-project mod) mod-name)
            ((just found-mod)
             (let ((dcs (mod-data-constructors found-mod)))
               (if (hash-has? name dcs)
                 (hash-get name dcs)
-                (error (string-concat
-                         ["[data-pattern-data-constructor] undefined target name"
-                          "\n  name: " (symbol-to-string name)])))))
+                (error (@string
+                         "[data-pattern-data-constructor] undefined target name"
+                         "\n  name: " (symbol-to-string name))))))
            ((nothing)
-            (error (string-concat
-                     ["[data-pattern-data-constructor] undefined mod"
-                      "\n  mod: " (symbol-to-string mod-name)])))))))))
+            (error (@string
+                     "[data-pattern-data-constructor] undefined mod"
+                     "\n  mod: " (symbol-to-string mod-name))))))))))

@@ -2,18 +2,10 @@
 
 (claim pretty-sexp-by-format
   (polymorphic (A)
-    (-> (-> A string-t) sexp-config-t int-t A string-t)))
+    (-> (-> A string-t) sexp-config-t int-t A
+        string-t)))
 
 (define (pretty-sexp-by-format format config width data)
-  (let ((code (format data)))
-    (let ((sexps (parse-sexps "[prettySexpByFormat]" code)))
-      (string-join "\n\n" (list-map (lambda (sexp) (pretty-sexp width sexp config)) sexps)))))
-
-(define (string-join separator strings)
-  (if (list-empty? strings)
-    ""
-    (if (list-empty? (list-tail strings))
-      (list-head strings)
-      (string-append (list-head strings)
-                     (string-append separator
-                                    (string-join separator (list-tail strings)))))))
+  (= code (format data))
+  (= sexps (parse-sexps "[prettySexpByFormat]" code))
+  (string-join "\n\n" (list-map (lambda (sexp) (pretty-sexp width sexp config)) sexps)))

@@ -57,9 +57,9 @@
 (define (mod-claim mod name exp)
   (let ((claimed (mod-claimed mod)))
     (if (hash-has? name claimed)
-      (error (string-concat
-               ["[mod-claim] name already claimed"
-                "\n  name: " (symbol-to-string name)]))
+      (error (@string
+               "[mod-claim] name already claimed"
+               "\n  name: " (symbol-to-string name)))
       (hash-put! name (make-claim-entry exp (nothing)) claimed)))
   void)
 
@@ -67,9 +67,9 @@
 (define (mod-define mod name definition)
   (let ((definitions (mod-definitions mod)))
     (if (hash-has? name definitions)
-      (error (string-concat
-               ["[mod-define] name already defined"
-                "\n  name: " (symbol-to-string name)]))
+      (error (@string
+               "[mod-define] name already defined"
+               "\n  name: " (symbol-to-string name)))
       (hash-put! name definition definitions)))
   void)
 

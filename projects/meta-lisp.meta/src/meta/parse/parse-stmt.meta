@@ -183,7 +183,7 @@
                                     name type
                                     (if (hash-has? name accessor-map)
                                       (pair-first (hash-get name accessor-map))
-                                      (string-to-symbol (string-append (symbol-to-string constructor-name) (string-append "-" (symbol-to-string name)))))
+                                      (string-to-symbol (@string (symbol-to-string constructor-name) "-" (symbol-to-string name))))
                                     (if (hash-has? name accessor-map)
                                       (pair-second (hash-get name accessor-map))
                                       (nothing))
@@ -296,7 +296,7 @@
                                        name type
                                        (if (hash-has? name accessor-map)
                                          (pair-first (hash-get name accessor-map))
-                                         (string-to-symbol (string-append (symbol-to-string name) (string-append "-" (symbol-to-string name)))))
+                                         (string-to-symbol (@string (symbol-to-string name) "-" (symbol-to-string name))))
                                        (if (hash-has? name accessor-map)
                                          (pair-second (hash-get name accessor-map))
                                          (nothing))

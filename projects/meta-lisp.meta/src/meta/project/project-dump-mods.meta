@@ -15,6 +15,6 @@
                                 "dump")))
          (= mods-dir (path-join out-dir "modules"))
          (= mod-name-str (symbol-to-string (mod-name mod)))
-         (= dump-path (string-concat [mods-dir "/" mod-name-str "." tag ".dump"]))
+         (= dump-path (@string mods-dir "/" mod-name-str "." tag ".dump"))
          (fs-ensure-directory mods-dir)
          (fs-write dump-path code))))))

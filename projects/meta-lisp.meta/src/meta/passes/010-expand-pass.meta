@@ -36,17 +36,17 @@
 
 ;; Symbol and string utilities
 
-(define (symbol-append a b)
+(define (symbol-append-by-dash a b)
   (string-to-symbol
-    (string-concat [(symbol-to-string a) "-" (symbol-to-string b)])))
+    (@string (symbol-to-string a) "-" (symbol-to-string b))))
 
-(define (symbol-append-put a b)
+(define (symbol-append-by-put a b)
   (string-to-symbol
-    (string-concat [(symbol-to-string a) "-put-" (symbol-to-string b) "!"])))
+    (@string (symbol-to-string a) "-put-" (symbol-to-string b) "!")))
 
 (define (symbol-make-question a)
   (string-to-symbol
-    (string-concat [(symbol-to-string a) "?"])))
+    (@string (symbol-to-string a) "?")))
 
 (define (drop-t-suffix name)
   (let ((name-str (symbol-to-string name)))
@@ -93,8 +93,8 @@
                                     (make-algebraic-type-field
                                       field-name
                                       field-type
-                                      (symbol-append ctor-name field-name)
-                                      (just (symbol-append-put ctor-name field-name))
+                                      (symbol-append-by-dash ctor-name field-name)
+                                      (just (symbol-append-by-put ctor-name field-name))
                                       field-location)))
                                 fields)
                       (symbol-make-question ctor-name)
@@ -109,9 +109,9 @@
          (location (define-struct-star-stmt-location stmt))
          (type-name-str (symbol-to-string type-name)))
     (if (not (string-ends-with? "-t" type-name-str))
-      (error (string-concat
-              ["[desugarDefineStructStar] type name must end with -t\n"
-               "  type name: " type-name-str "\n"]))
+      (error (@string
+               "[desugarDefineStructStar] type name must end with -t\n"
+               "  type name: " type-name-str "\n"))
       void)
     (let* ((base (drop-t-suffix type-name))
            (ctor-name (pre-data-constructor-name data-constructor))
@@ -128,8 +128,8 @@
                          (make-algebraic-type-field
                            field-name
                            field-type
-                           (symbol-append base field-name)
-                           (just (symbol-append-put base field-name))
+                           (symbol-append-by-dash base field-name)
+                           (just (symbol-append-by-put base field-name))
                            field-location)))
                      fields)
            (symbol-make-question base)
@@ -143,15 +143,15 @@
          (location (define-struct-stmt-location stmt))
          (type-name-str (symbol-to-string type-name)))
     (if (not (string-ends-with? "-t" type-name-str))
-      (error (string-concat
-              ["[desugarDefineStruct] type name must end with -t\n"
-               "  type name: " type-name-str "\n"]))
+      (error (@string
+               "[desugarDefineStruct] type name must end with -t\n"
+               "  type name: " type-name-str "\n"))
       void)
     (let ((base (drop-t-suffix type-name)))
       (define-algebraic-type-stmt
         type-constructor
         [(make-algebraic-type-constructor
-           (symbol-append 'make base)
+           (symbol-append-by-dash 'make base)
            (list-map (lambda (field)
                        (let ((field-name (data-field-name field))
                              (field-type (data-field-type field))
@@ -159,8 +159,8 @@
                          (make-algebraic-type-field
                            field-name
                            field-type
-                           (symbol-append base field-name)
-                           (just (symbol-append-put base field-name))
+                           (symbol-append-by-dash base field-name)
+                           (just (symbol-append-by-put base field-name))
                            field-location)))
                      fields)
            (symbol-make-question base)
