@@ -10,26 +10,21 @@
     ((float-exp content location) exp)
     ((qualified-var-exp mod-name var-name location) exp)
     ((quote-exp sexp location) exp)
-
     ((var-exp var-name location)
      (if (equal? var-name name) rhs exp))
-
     ((lambda-exp parameters body location)
      (if (list-member? name parameters)
        exp
        (lambda-exp parameters (exp-naive-subst body name rhs) location)))
-
     ((polymorphic-exp parameters body location)
      (if (list-member? name parameters)
        exp
        (polymorphic-exp parameters (exp-naive-subst body name rhs) location)))
-
     ((let1-exp binding-name let-rhs body location)
      (let1-exp binding-name
                (exp-naive-subst let-rhs name rhs)
                (if (equal? binding-name name) body (exp-naive-subst body name rhs))
                location))
-
     ((let-exp bindings body location)
      (let* ((all-names (list-map binding-name bindings))
             (shadowed (list-member? name all-names)))
@@ -40,7 +35,6 @@
                           bindings)
                 (if shadowed body (exp-naive-subst body name rhs))
                 location)))
-
     ((let-star-exp bindings body location)
      (let* ((result (naive-subst-let-star bindings name rhs false))
             (new-bindings (list-head result))
@@ -48,7 +42,6 @@
        (let-star-exp new-bindings
                      (if shadowed body (exp-naive-subst body name rhs))
                      location)))
-
     ((letrec-exp bindings body location)
      (let* ((all-names (list-map binding-name bindings))
             (shadowed (list-member? name all-names)))
@@ -60,7 +53,6 @@
                                bindings))
                    (if shadowed body (exp-naive-subst body name rhs))
                    location)))
-
     ((letrec-star-exp bindings body location)
      (let* ((all-names (list-map binding-name bindings))
             (shadowed (list-member? name all-names)))
@@ -72,53 +64,41 @@
                                     bindings))
                         (if shadowed body (exp-naive-subst body name rhs))
                         location)))
-
     ((begin-exp sequence location)
      (naive-subst-begin sequence name rhs location))
-
     ((begin1-exp head body location)
      (begin1-exp (exp-naive-subst head name rhs)
                  (exp-naive-subst body name rhs)
                  location))
-
     ((apply-exp target args location)
      (apply-exp (exp-naive-subst target name rhs)
                 (list-map (lambda (a) (exp-naive-subst a name rhs)) args)
                 location))
-
     ((pipe-exp target steps location)
      (pipe-exp (exp-naive-subst target name rhs)
                (list-map (lambda (s) (exp-naive-subst s name rhs)) steps)
                location))
-
     ((chain-exp steps location)
      (chain-exp (list-map (lambda (s) (exp-naive-subst s name rhs)) steps) location))
-
     ((compose-exp steps location)
      (compose-exp (list-map (lambda (s) (exp-naive-subst s name rhs)) steps) location))
-
     ((if-exp condition consequent alternative location)
      (if-exp (exp-naive-subst condition name rhs)
              (exp-naive-subst consequent name rhs)
              (exp-naive-subst alternative name rhs)
              location))
-
     ((when-exp condition consequent location)
      (when-exp (exp-naive-subst condition name rhs)
                (exp-naive-subst consequent name rhs)
                location))
-
     ((unless-exp condition alternative location)
      (unless-exp (exp-naive-subst condition name rhs)
                  (exp-naive-subst alternative name rhs)
                  location))
-
     ((and-exp exps location)
      (and-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) exps) location))
-
     ((or-exp exps location)
      (or-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) exps) location))
-
     ((cond-exp clauses location)
      (cond-exp (list-map (lambda (clause)
                            (make-cond-clause
@@ -127,13 +107,10 @@
                              (cond-clause-location clause)))
                          clauses)
                location))
-
     ((list-exp elements location)
      (list-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
-
     ((set-exp elements location)
      (set-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
-
     ((hash-exp entries location)
      (hash-exp (list-map (lambda (entry)
                                    (make-hash-entry
@@ -141,17 +118,14 @@
                                      (exp-naive-subst (hash-entry-value entry) name rhs)))
                                  entries)
                        location))
-
     ((arrow-exp arg-types ret-type location)
      (arrow-exp (list-map (lambda (t) (exp-naive-subst t name rhs)) arg-types)
                 (exp-naive-subst ret-type name rhs)
                 location))
-
     ((the-exp type exp2 location)
      (the-exp (exp-naive-subst type name rhs)
               (exp-naive-subst exp2 name rhs)
               location))
-
     ((match-exp targets clauses location)
      (let* ((new-targets (list-map (lambda (t) (exp-naive-subst t name rhs)) targets))
             (new-clauses (list-map (lambda (clause)
@@ -169,7 +143,6 @@
                                            (match-clause-location clause)))))
                                    clauses)))
        (match-exp new-targets new-clauses location)))
-
     (else exp)))
 
 (define (naive-subst-let-star bindings name rhs shadowed)
