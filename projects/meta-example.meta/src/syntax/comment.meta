@@ -1,0 +1,25 @@
+(module example)
+
+(define-test comment-evaluates-to-void-test
+  (assert (void? (@comment foo)))
+  (assert (void? (@comment (this is a structured comment)))))
+
+(define-test comment-in-expression-test
+  (assert-equal 42
+    (begin
+      (@comment (step one))
+      42))
+  (assert-equal 3
+    (let ((x 1)
+          (y 2))
+      (@comment (add x and y))
+      (iadd x y))))
+
+(@comment (statement-level comment between tests))
+
+(define-test comment-arbitrary-content-test
+  (@comment symbol)
+  (@comment "string")
+  (@comment 42)
+  (@comment (nested (list a b c)))
+  (assert true))
