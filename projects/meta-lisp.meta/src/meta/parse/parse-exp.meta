@@ -26,7 +26,7 @@
       exp-t))
 
 (define syntax-keywords
-  ['lambda 'quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
+  ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
    'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
     '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
 
@@ -58,7 +58,7 @@
          (lambda-exp (parse-parameters parameters)
                      (parse-body body location)
                      location))
-        ((equal? tag 'quote)
+        ((equal? tag '@quote)
          (quote-exp (list-get 1 sexps) location))
         ((equal? tag '@sexp)
          (sexp-exp (list-get 1 sexps) location))
