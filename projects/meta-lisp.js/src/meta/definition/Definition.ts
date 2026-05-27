@@ -13,10 +13,6 @@ export type Definition =
   | AlgebraicTypeDefinition
   | OpaqueTypeDefinition
 
-export type DefinitionState = {
-  isChecked?: boolean
-}
-
 export type TypeFunction = (...args: Array<M.Value>) => M.Value
 
 export type PrimitiveFunctionDefinition = {
@@ -26,7 +22,7 @@ export type PrimitiveFunctionDefinition = {
   arity: number
   fn: TypeFunction
   location: SourceLocation
-} & DefinitionState
+}
 
 export function PrimitiveFunctionDefinition(
   mod: M.Mod,
@@ -51,7 +47,7 @@ export type PrimitiveVariableDefinition = {
   name: string
   value: M.Value
   location: SourceLocation
-} & DefinitionState
+}
 
 export function PrimitiveVariableDefinition(
   mod: M.Mod,
@@ -74,7 +70,7 @@ export type PrimitiveFunctionDeclaration = {
   name: string
   arity: number
   location: SourceLocation
-} & DefinitionState
+}
 
 export function PrimitiveFunctionDeclaration(
   mod: M.Mod,
@@ -96,7 +92,7 @@ export type PrimitiveVariableDeclaration = {
   mod: M.Mod
   name: string
   location: SourceLocation
-} & DefinitionState
+}
 
 export function PrimitiveVariableDeclaration(
   mod: M.Mod,
@@ -118,7 +114,7 @@ export type FunctionDefinition = {
   parameters: Array<string>
   body: M.Term
   location: SourceLocation
-} & DefinitionState
+}
 
 export function FunctionDefinition(
   mod: M.Mod,
@@ -143,7 +139,7 @@ export type VariableDefinition = {
   name: string
   body: M.Term
   location: SourceLocation
-} & DefinitionState
+}
 
 export function VariableDefinition(
   mod: M.Mod,
@@ -166,7 +162,7 @@ export type TestDefinition = {
   name: string
   body: M.Term
   location: SourceLocation
-} & DefinitionState
+}
 
 export function TestDefinition(
   mod: M.Mod,
@@ -190,7 +186,7 @@ export type TypeDefinition = {
   parameters: Array<string>
   body: M.Term
   location: SourceLocation
-} & DefinitionState
+}
 
 export function TypeDefinition(
   mod: M.Mod,
@@ -216,7 +212,7 @@ export type AlgebraicTypeDefinition = {
   typeConstructor: TypeConstructor
   dataConstructors: Array<DataConstructor>
   location: SourceLocation
-} & DefinitionState
+}
 
 export type TypeConstructor = {
   mod: M.Mod
@@ -267,7 +263,7 @@ export type OpaqueTypeDefinition = {
   representationType: M.Term
   interfaceEntries: Array<InterfaceEntry>
   location: SourceLocation
-} & DefinitionState
+}
 
 export function OpaqueTypeDefinition(
   mod: M.Mod,

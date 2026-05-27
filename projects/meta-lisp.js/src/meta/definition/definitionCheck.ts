@@ -20,15 +20,15 @@ import * as M from "../index.ts"
 // subsequent calls return immediately.
 
 export function definitionCheck(definition: M.Definition): null {
-  if (definition.isChecked) {
-    return null
-  }
-
   const mod = definition.mod
   const name = definition.name
 
+  if (M.modIsChecked(mod, name)) {
+    return null
+  }
+
   if (mod.admitted.has(name)) {
-    definition.isChecked = true
+    M.modSetChecked(mod, name)
     return null
   }
 
@@ -44,7 +44,7 @@ export function definitionCheck(definition: M.Definition): null {
         }
       }
 
-      definition.isChecked = true
+      M.modSetChecked(mod, name)
       return null
     }
 
@@ -59,7 +59,7 @@ export function definitionCheck(definition: M.Definition): null {
         return null
       }
 
-      definition.isChecked = true
+      M.modSetChecked(mod, name)
       return null
     }
 
@@ -68,7 +68,7 @@ export function definitionCheck(definition: M.Definition): null {
       if (!tryCheckDefinitionBody(mod, name, definition.body)) {
         tryInferDefinitionBody(mod, name, definition.body)
       }
-      definition.isChecked = true
+      M.modSetChecked(mod, name)
       return null
     }
 
@@ -84,7 +84,7 @@ export function definitionCheck(definition: M.Definition): null {
       if (!tryCheckDefinitionBody(mod, name, body)) {
         tryInferDefinitionBody(mod, name, body)
       }
-      definition.isChecked = true
+      M.modSetChecked(mod, name)
       return null
     }
 
@@ -97,7 +97,7 @@ export function definitionCheck(definition: M.Definition): null {
       if (!tryCheckDefinitionBody(mod, name, body)) {
         tryInferDefinitionBody(mod, name, body)
       }
-      definition.isChecked = true
+      M.modSetChecked(mod, name)
       return null
     }
 
@@ -112,7 +112,7 @@ export function definitionCheck(definition: M.Definition): null {
         definition.typeConstructor.parameters,
       )
 
-      definition.isChecked = true
+      M.modSetChecked(mod, name)
       return null
     }
   }

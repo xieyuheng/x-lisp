@@ -6,18 +6,22 @@
     (stmts (list-t (stmt-t exp-t)))
    (admitted (set-t symbol-t))
    (definitions (hash-t symbol-t definition-t))
+   (definition-states (hash-t symbol-t definition-state-t))
    (claimed (hash-t symbol-t claim-entry-t))
    (opaque-claimed (hash-t symbol-t term-t))
    (inferred-types (hash-t symbol-t type-t))
    (data-constructors (hash-t symbol-t data-constructor-t))
    (project project-t)))
 
+(define-struct definition-state-t
+  (is-checked bool-t))
+
 (define-struct claim-entry-t
   (exp term-t)
   (type (maybe-t type-t)))
 
 (define (make-mod name project)
-  (cons-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) project))
+  (cons-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) project))
 
 (claim mod-put-definition! (-> symbol-t definition-t mod-t void-t))
 (define (mod-put-definition! name definition mod)
@@ -76,4 +80,16 @@
 (claim mod-put-inferred-type! (-> mod-t symbol-t type-t void-t))
 (define (mod-put-inferred-type! mod name type)
   (hash-put! name type (mod-inferred-types mod))
+  void)
+
+(claim mod-is-checked (-> mod-t symbol-t bool-t))
+(define (mod-is-checked mod name)
+  (let ((states (mod-definition-states mod)))
+    (if (hash-has? name states)
+      (definition-state-is-checked (hash-get name states))
+      false)))
+
+(claim mod-set-checked! (-> mod-t symbol-t void-t))
+(define (mod-set-checked! mod name)
+  (hash-put! name (make-definition-state true) (mod-definition-states mod))
   void)
