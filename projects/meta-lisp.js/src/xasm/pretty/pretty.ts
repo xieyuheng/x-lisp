@@ -1,8 +1,10 @@
-import * as S from "@xieyuheng/sexp.js"
-import { formatDefinition } from "../format/index.ts"
-import { sexpConfig } from "./sexpConfig.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
+import type { Definition } from "../definition/index.ts"
+import { prettyDefinition } from "./prettyDefinition.ts"
 
-export const formatPrettyDefinition = S.formatPrettySexpByFormat(
-  formatDefinition,
-  sexpConfig,
-)
+export function formatPrettyDefinition(
+  width: number,
+  definition: Definition,
+): string {
+  return Ppml.format(prettyDefinition(definition), { width })
+}
