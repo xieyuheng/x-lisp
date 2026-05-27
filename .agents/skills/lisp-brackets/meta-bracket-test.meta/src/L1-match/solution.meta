@@ -1,0 +1,10 @@
+(module l1-match)
+
+(define-enum (option-t E)
+  (some (value E))
+  (none))
+
+(define (unwrap-option x)
+  (match x
+    ((some v) v)
+    ((none) 0)))
