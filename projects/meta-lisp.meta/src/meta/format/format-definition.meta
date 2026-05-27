@@ -7,11 +7,11 @@
      (= claim-str (format-definition-claim mod name))
      (@string claim-str
               "(declare-primitive-function "
-              (symbol-to-string name) " " (format-sexp arity) ")"))
+               (symbol-to-string name) " " (format-as-sexp arity) ")"))
     ((primitive-function-declaration mod name arity is-checked location)
      (@string "(declare-primitive-function "
-              (symbol-to-string name) " "
-              (format-sexp arity) ")"))
+               (symbol-to-string name) " "
+               (format-as-sexp arity) ")"))
     ((primitive-variable-definition mod name value is-checked location)
      (= claim-str (format-definition-claim mod name))
      (@string claim-str

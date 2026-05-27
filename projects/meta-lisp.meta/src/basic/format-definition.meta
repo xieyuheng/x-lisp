@@ -14,7 +14,7 @@
     ((primitive-function-declaration mod name arity location)
      (@string "(declare-primitive-function "
               (symbol-to-string name) " "
-              (format-sexp arity) ")"))
+               (format-as-sexp arity) ")"))
     ((primitive-variable-declaration mod name location)
      (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
     ((function-definition mod name parameters blocks location)

@@ -6,7 +6,7 @@
     ((var-type name serial-number)
      (symbol-to-string name))
     ((canonical-label-type serial-number)
-     (@string "%" (format-sexp serial-number)))
+     (@string "%" (format-as-sexp serial-number)))
     ((type-type)
      "type-t")
     ((atom-type name)

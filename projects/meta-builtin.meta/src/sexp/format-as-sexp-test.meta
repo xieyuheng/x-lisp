@@ -1,0 +1,13 @@
+(module builtin)
+
+(define-test format-as-sexp-test
+  (assert-equal "(a b c)" (format-as-sexp '(a b c)))
+  (assert-equal "0.0" (format-as-sexp 0.0))
+  (assert-equal "42.0" (format-as-sexp 42.0)))
+
+(define-test format-as-sexp-string-escape-test
+  (println (format-as-sexp "hello"))
+  (println (format-as-sexp "a\"b"))
+  (println (format-as-sexp "a\\b"))
+  (println (format-as-sexp "a\nb"))
+  (println (format-as-sexp "a\tb")))

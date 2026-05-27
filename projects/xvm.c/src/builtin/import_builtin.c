@@ -246,7 +246,7 @@ void import_builtin(mod_t *mod) {
   // sexp
 
   define_primitive_2(mod, "builtin/parse-sexps", x_parse_sexps);
-  define_primitive_1(mod, "builtin/format-sexp", x_format_sexp);
+  define_primitive_1(mod, "builtin/format-as-sexp", x_format_as_sexp);
   define_primitive_2(mod, "builtin/format-message-with-source-location", x_format_message_with_source_location);
 
   // json

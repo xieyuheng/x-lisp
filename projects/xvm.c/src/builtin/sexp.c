@@ -6,9 +6,9 @@ value_t x_parse_sexps(value_t path, value_t string) {
     xstring_string(to_xstring(string)));
 }
 
-value_t x_format_sexp(value_t sexp) {
+value_t x_format_as_sexp(value_t sexp) {
   buffer_t *buffer = make_buffer();
-  format_sexp(buffer, sexp);
+  format_as_sexp(buffer, sexp);
   value_t result = x_object(make_xstring_take(buffer_to_string(buffer)));
   buffer_free(buffer);
   return result;

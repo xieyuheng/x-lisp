@@ -127,6 +127,14 @@
   (assert-equal "(match-many (x y) ((a b) c))"
     (format-exp (parse-exp (@sexp (match-many (x y) ((a b) c)))))))
 
+(define-test parse-quote-test
+  (assert-equal "(@quote foo)"
+    (format-exp (parse-exp (@sexp (@quote foo)))))
+  (assert-equal "(@quote (a b c))"
+    (format-exp (parse-exp (@sexp (@quote (a b c))))))
+  (assert-equal "(@quote (a 1 \"b\" 3 c))"
+    (format-exp (parse-exp (@sexp (@quote (a 1 "b" 3 c)))))))
+
 (define-test parse-comment-test
   (assert-equal "(@comment foo)"
     (format-exp (parse-exp (@sexp (@comment foo)))))

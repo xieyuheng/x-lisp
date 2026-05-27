@@ -2,7 +2,7 @@
 
 static void echo(const char *string) {
   buffer_t *buffer = make_buffer();
-  format_sexp(buffer, parse_sexps(string));
+  format_as_sexp(buffer, parse_sexps(string));
   format_newline(buffer);
   buffer_write_and_free(buffer, stdout);
 }

@@ -57,7 +57,7 @@
      (@string "(module " (symbol-to-string name) ")"))
     ((declare-primitive-function-stmt name arity location)
      (@string "(declare-primitive-function " (symbol-to-string name) " "
-              (format-sexp arity) ")"))
+               (format-as-sexp arity) ")"))
     ((declare-primitive-variable-stmt name location)
      (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
     ((comment-stmt content location)
