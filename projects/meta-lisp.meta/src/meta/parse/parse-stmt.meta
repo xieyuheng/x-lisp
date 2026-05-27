@@ -2,7 +2,7 @@
 
 (claim parse-stmt
   (-> sexp-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-stmt sexp)
   (match sexp
@@ -11,7 +11,7 @@
 
 (claim parse-stmt-from-elements
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-stmt-from-elements elements location)
   (= tag (symbol-sexp-content (list-head elements)))
@@ -92,7 +92,7 @@
 
 (claim parse-define-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-stmt elements location)
   (= second (list-get 1 elements))
@@ -109,7 +109,7 @@
 
 (claim parse-define-type-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-type-stmt elements location)
   (= second (list-get 1 elements))
@@ -127,7 +127,7 @@
 
 (claim parse-define-enum-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-enum-stmt elements location)
   (define-enum-stmt
@@ -137,7 +137,7 @@
 
 (claim parse-define-struct-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-struct-stmt elements location)
   (define-struct-stmt
@@ -147,7 +147,7 @@
 
 (claim parse-define-struct-star-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-struct-star-stmt elements location)
   (define-struct-star-stmt
@@ -157,7 +157,7 @@
 
 (claim parse-define-algebraic-type-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-algebraic-type-stmt elements location)
   (define-algebraic-type-stmt
@@ -167,7 +167,7 @@
 
 (claim parse-define-record-type-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-record-type-stmt elements location)
   (= head (list-get 1 elements))
@@ -224,7 +224,7 @@
 
 (claim parse-define-opaque-type-stmt
   (-> (list-t sexp-t) source-location-t
-      stmt-t))
+      (stmt-t exp-t)))
 
 (define (parse-define-opaque-type-stmt elements location)
   (= head (list-get 1 elements))
