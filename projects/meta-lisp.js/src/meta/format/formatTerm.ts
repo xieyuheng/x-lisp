@@ -33,10 +33,10 @@ export function formatTerm(term: M.Term): string {
       return `(${formatTerm(term.target)} ${term.args.map(formatTerm).join(" ")})`
 
     case "Let1Term":
-      return `(let1 ${term.name} ${formatTerm(term.rhs)} ${formatTerm(term.body)})`
+      return `(let ((${term.name} ${formatTerm(term.rhs)})) ${formatTerm(term.body)})`
 
     case "Begin1Term":
-      return `(begin1 ${formatTerm(term.head)} ${formatTerm(term.body)})`
+      return `(begin ${formatTerm(term.head)} ${formatTerm(term.body)})`
 
     case "IfTerm":
       return `(if ${formatTerm(term.condition)} ${formatTerm(term.consequent)} ${formatTerm(term.alternative)})`
