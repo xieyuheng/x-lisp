@@ -22,12 +22,6 @@
 [meta-lisp.meta] 170-explicate-control-pass.meta
 [meta-lisp.meta] 180-codegen-pass.meta
 
-# skills
-
-[skill] how to solve it
-[skill] sandi metz oop
-[skill] editing lisp code
-
 # compile to native
 # socket api and network programming
 # http library
