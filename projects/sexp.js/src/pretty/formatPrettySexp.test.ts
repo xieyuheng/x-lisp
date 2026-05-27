@@ -13,13 +13,13 @@ function testWidths(widths: Array<number>, code: string): string {
   for (const sexp of sexps) {
     for (const width of widths) {
       lines.push(`${"-".repeat(width)}|${width}`)
-      lines.push(S.prettySexp(width, sexp))
+      lines.push(S.formatPrettySexp(width, sexp))
     }
   }
   return lines.join("\n") + "\n"
 }
 
-test("prettySexp.lambda", () => {
+test("formatPrettySexp.lambda", () => {
   const output =
     testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (f y x))`) +
     testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (begin (f y x)))`) +
@@ -39,20 +39,20 @@ test("prettySexp.lambda", () => {
   new-hash)
 `,
     )
-  snapshot(snapshotDir, "pretty/prettySexp.lambda.test.out", output)
+  snapshot(snapshotDir, "pretty/formatPrettySexp.lambda.test.out", output)
 })
 
-test("prettySexp.set", () => {
+test("formatPrettySexp.set", () => {
   const output = testWidths([30, 20, 10], `{{1 2 3} {4 5 6} {7 8 9}}`)
-  snapshot(snapshotDir, "pretty/prettySexp.set.test.out", output)
+  snapshot(snapshotDir, "pretty/formatPrettySexp.set.test.out", output)
 })
 
-test("prettySexp.list", () => {
+test("formatPrettySexp.list", () => {
   const output = testWidths([30, 20, 10], `[[1 2 3] [4 5 6] [7 8 9]]`)
-  snapshot(snapshotDir, "pretty/prettySexp.list.test.out", output)
+  snapshot(snapshotDir, "pretty/formatPrettySexp.list.test.out", output)
 })
 
-test("prettySexp.hash", () => {
+test("formatPrettySexp.hash", () => {
   const output = testWidths(
     [60, 30, 10, 5],
     `
@@ -62,5 +62,5 @@ test("prettySexp.hash", () => {
   "z" (@hash "x" 7 "y" 8 "z" 9))
 `,
   )
-  snapshot(snapshotDir, "pretty/prettySexp.hash.test.out", output)
+  snapshot(snapshotDir, "pretty/formatPrettySexp.hash.test.out", output)
 })

@@ -7,7 +7,7 @@
     (hash-each
       (lambda (_name mod)
         (= definitions-code (format-mod-definitions mod))
-        (= code (ppml/pretty-sexp-by-format (lambda (s) s) config width definitions-code))
+        (= code (ppml/format-pretty-sexp-by-format (lambda (s) s) config width definitions-code))
         (= out-dir (path-join
                      (project-root-directory project)
                      (path-join (build-config-output-directory

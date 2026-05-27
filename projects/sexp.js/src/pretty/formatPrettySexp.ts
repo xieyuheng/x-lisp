@@ -9,17 +9,17 @@ export type Config = {
 
 type KeywordConfig = [name: string, headerLength: number]
 
-export function prettySexp(
+export function formatPrettySexp(
   width: number,
   sexp: S.Sexp,
   config: Config = defaultConfig,
 ): string {
-  return Ppml.format(renderSexp(sexp)(config), { width })
+  return Ppml.format(prettySexp(sexp)(config), { width })
 }
 
-type Render = (config: Config) => Ppml.Node
+type Prettier = (config: Config) => Ppml.Node
 
-export function renderSexp(sexp: S.Sexp): Render {
+export function prettySexp(sexp: S.Sexp): Prettier {
   return (config) => {
     if (
       S.isSymbolSexp(sexp) ||
@@ -40,43 +40,43 @@ export function renderSexp(sexp: S.Sexp): Render {
     if (first.kind === "SymbolSexp" && rest.length === 1) {
       switch (first.content) {
         case "@quote":
-          return Ppml.concat(Ppml.text("'"), renderSexp(rest[0])(config))
+          return Ppml.concat(Ppml.text("'"), prettySexp(rest[0])(config))
         case "@unquote":
-          return Ppml.concat(Ppml.text(","), renderSexp(rest[0])(config))
+          return Ppml.concat(Ppml.text(","), prettySexp(rest[0])(config))
         case "@quasiquote":
-          return Ppml.concat(Ppml.text("`"), renderSexp(rest[0])(config))
+          return Ppml.concat(Ppml.text("`"), prettySexp(rest[0])(config))
       }
     }
 
     if (first.kind === "SymbolSexp") {
       switch (first.content) {
         case "@set":
-          return renderSet(rest)(config)
+          return prettySet(rest)(config)
         case "@square-bracket":
-          return renderList(rest)(config)
+          return prettyList(rest)(config)
       }
     }
 
     const keywordConfig = findKeywordConfig(config, first)
     if (keywordConfig !== undefined) {
       const [name, headerLength] = keywordConfig
-      return renderSyntax(
+      return prettySyntax(
         name,
         rest.slice(0, headerLength),
         rest.slice(headerLength),
       )(config)
     }
 
-    return renderApplication(sexp.elements)(config)
+    return prettyApplication(sexp.elements)(config)
   }
 }
 
-function renderSet(elements: Array<S.Sexp>): Render {
+function prettySet(elements: Array<S.Sexp>): Prettier {
   return (config) => {
     const bodyNode = Ppml.group(
       Ppml.indent(
         1,
-        Ppml.flex(elements.map((element) => renderSexp(element)(config))),
+        Ppml.flex(elements.map((element) => prettySexp(element)(config))),
       ),
     )
 
@@ -84,7 +84,7 @@ function renderSet(elements: Array<S.Sexp>): Render {
   }
 }
 
-function renderList(elements: Array<S.Sexp>): Render {
+function prettyList(elements: Array<S.Sexp>): Prettier {
   return (config) => {
     if (elements.length === 0) {
       return Ppml.group(Ppml.text("["), Ppml.text("]"))
@@ -92,7 +92,7 @@ function renderList(elements: Array<S.Sexp>): Render {
       const bodyNode = Ppml.group(
         Ppml.indent(
           1,
-          Ppml.flex(elements.map((element) => renderSexp(element)(config))),
+          Ppml.flex(elements.map((element) => prettySexp(element)(config))),
         ),
       )
 
@@ -110,17 +110,17 @@ function findKeywordConfig(
   }
 }
 
-function renderSyntax(
+function prettySyntax(
   name: string,
   header: Array<S.Sexp>,
   body: Array<S.Sexp>,
-): Render {
+): Prettier {
   return (config) => {
     const headNode = Ppml.indent(
       4,
       Ppml.wrap([
         Ppml.text(name),
-        ...header.map((sexp) => renderSexp(sexp)(config)),
+        ...header.map((sexp) => prettySexp(sexp)(config)),
       ]),
     )
 
@@ -130,14 +130,14 @@ function renderSyntax(
         : Ppml.indent(
             2,
             Ppml.br(),
-            Ppml.flex(body.map((sexp) => renderSexp(sexp)(config))),
+            Ppml.flex(body.map((sexp) => prettySexp(sexp)(config))),
           )
 
     return Ppml.group(Ppml.text("("), headNode, bodyNode, Ppml.text(")"))
   }
 }
 
-function renderApplication(elements: Array<S.Sexp>): Render {
+function prettyApplication(elements: Array<S.Sexp>): Prettier {
   return (config) => {
     // "short target" heuristic -- for `and` `or` `->` `*->`
     const shortLength = 3
@@ -154,7 +154,7 @@ function renderApplication(elements: Array<S.Sexp>): Render {
                 indentation,
                 Ppml.text(head.content),
                 Ppml.text(" "),
-                Ppml.flex(rest.map((element) => renderSexp(element)(config))),
+                Ppml.flex(rest.map((element) => prettySexp(element)(config))),
               ),
             )
       return Ppml.group(Ppml.text("("), bodyNode, Ppml.text(")"))
@@ -163,7 +163,7 @@ function renderApplication(elements: Array<S.Sexp>): Render {
     const bodyNode = Ppml.group(
       Ppml.indent(
         1,
-        Ppml.flex(elements.map((element) => renderSexp(element)(config))),
+        Ppml.flex(elements.map((element) => prettySexp(element)(config))),
       ),
     )
 
@@ -171,16 +171,16 @@ function renderApplication(elements: Array<S.Sexp>): Render {
   }
 }
 
-function renderAttribute([key, sexp]: [string, S.Sexp]): Render {
+function prettyAttribute([key, sexp]: [string, S.Sexp]): Prettier {
   return (config) => {
-    return Ppml.group(Ppml.text(`:${key}`), Ppml.br(), renderSexp(sexp)(config))
+    return Ppml.group(Ppml.text(`:${key}`), Ppml.br(), prettySexp(sexp)(config))
   }
 }
 
-function renderAttributes(attributes: Record<string, S.Sexp>): Render {
+function prettyAttributes(attributes: Record<string, S.Sexp>): Prettier {
   return (config) => {
     return Ppml.flex(
-      Object.entries(attributes).map((entry) => renderAttribute(entry)(config)),
+      Object.entries(attributes).map((entry) => prettyAttribute(entry)(config)),
     )
   }
 }

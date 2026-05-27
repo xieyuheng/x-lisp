@@ -1,4 +1,4 @@
-import type { Config } from "./prettySexp.ts"
+import type { Config } from "./formatPrettySexp.ts"
 
 export const defaultConfig: Config = {
   keywords: [

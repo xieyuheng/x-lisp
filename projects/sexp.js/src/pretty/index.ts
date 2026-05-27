@@ -1,2 +1,2 @@
-export * from "./prettySexp.ts"
-export * from "./prettySexpByFormat.ts"
+export * from "./formatPrettySexp.ts"
+export * from "./formatPrettySexpByFormat.ts"

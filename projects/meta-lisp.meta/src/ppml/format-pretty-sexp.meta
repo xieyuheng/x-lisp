@@ -1,11 +1,11 @@
 (module ppml)
 
-(claim pretty-sexp (-> int-t sexp-t sexp-config-t string-t))
-(define (pretty-sexp width sexp config)
-  (format width (render-sexp sexp config)))
+(claim format-pretty-sexp (-> int-t sexp-t sexp-config-t string-t))
+(define (format-pretty-sexp width sexp config)
+  (format width (pretty-sexp sexp config)))
 
-(claim render-sexp (-> sexp-t sexp-config-t node-t))
-(define (render-sexp sexp config)
+(claim pretty-sexp (-> sexp-t sexp-config-t node-t))
+(define (pretty-sexp sexp config)
   (match sexp
     ((symbol-sexp content location)
      (text-node (format-as-sexp content)))
@@ -27,60 +27,60 @@
            (let ((name (symbol-sexp-content first)))
              (cond
                ((equal? name '@quote)
-                (concat-node [(text "'") (render-sexp (list-head rest) config)]))
+                (concat-node [(text "'") (pretty-sexp (list-head rest) config)]))
                ((equal? name '@unquote)
-                (concat-node [(text ",") (render-sexp (list-head rest) config)]))
+                (concat-node [(text ",") (pretty-sexp (list-head rest) config)]))
                ((equal? name '@quasiquote)
-                (concat-node [(text "`") (render-sexp (list-head rest) config)]))
-               (else (render-sexp-elements elements config))))
-           (render-sexp-elements elements config)))))))
+                (concat-node [(text "`") (pretty-sexp (list-head rest) config)]))
+               (else (pretty-sexp-elements elements config))))
+           (pretty-sexp-elements elements config)))))))
 
-(define (render-sexp-elements elements config)
+(define (pretty-sexp-elements elements config)
   (let ((first (list-head elements))
         (rest (list-tail elements)))
     (if (symbol-sexp? first)
       (let ((name (symbol-sexp-content first)))
         (cond
           ((equal? name '@set)
-           (render-set rest config))
+           (pretty-set rest config))
           ((equal? name '@square-bracket)
-           (render-list rest config))
+           (pretty-list rest config))
           (else
             (let ((header-length (sexp-config-keyword-header-length config name)))
               (if (int-greater-or-equal? header-length 0)
-                (render-syntax name
+                (pretty-syntax name
                   (list-take header-length rest)
                   (list-drop header-length rest)
                   config)
-                (render-application elements config))))))
-      (render-application elements config))))
+                (pretty-application elements config))))))
+      (pretty-application elements config))))
 
-(define (render-set elements config)
+(define (pretty-set elements config)
   (let ((body-node (group
                      [(indent 1
-                        [(flex (list-map (lambda (e) (render-sexp e config)) elements))])])))
+                        [(flex (list-map (lambda (e) (pretty-sexp e config)) elements))])])))
     (group [(text "(@set") body-node (text ")")])))
 
-(define (render-list elements config)
+(define (pretty-list elements config)
   (if (list-empty? elements)
     (group [(text "[") (text "]")])
     (let ((body-node (group
                        [(indent 1
-                          [(flex (list-map (lambda (e) (render-sexp e config)) elements))])])))
+                          [(flex (list-map (lambda (e) (pretty-sexp e config)) elements))])])))
       (group [(text "[") body-node (text "]")]))))
 
-(define (render-syntax name header body config)
+(define (pretty-syntax name header body config)
   (let ((head-node (indent 4
                      [(wrap (cons (text (symbol-to-string name))
-                                  (list-map (lambda (e) (render-sexp e config)) header)))]))
+                                  (list-map (lambda (e) (pretty-sexp e config)) header)))]))
         (body-node (if (list-empty? body)
                      (null-node)
                      (indent 2
                        [(br)
-                        (flex (list-map (lambda (e) (render-sexp e config)) body))]))))
+                        (flex (list-map (lambda (e) (pretty-sexp e config)) body))]))))
     (group [(text "(") head-node body-node (text ")")])))
 
-(define (render-application elements config)
+(define (pretty-application elements config)
   (let* ((head (list-head elements))
          (rest (list-tail elements))
          (head-str (format-as-sexp head)))
@@ -93,11 +93,11 @@
                             [(indent indentation
                                [(text head-str)
                                 (text " ")
-                                (flex (list-map (lambda (e) (render-sexp e config)) rest))])]))))
+                                (flex (list-map (lambda (e) (pretty-sexp e config)) rest))])]))))
         (group [(text "(") body-node (text ")")]))
       (let ((body-node (group
                          [(indent 1
-                            [(flex (list-map (lambda (e) (render-sexp e config)) elements))])])))
+                            [(flex (list-map (lambda (e) (pretty-sexp e config)) elements))])])))
         (group [(text "(") body-node (text ")")])))))
 
 (define (list-take n xs)

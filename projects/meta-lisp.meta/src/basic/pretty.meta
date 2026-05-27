@@ -9,4 +9,4 @@
 
 (claim pretty-definition (-> int-t definition-t string-t))
 (define (pretty-definition width definition)
-  (ppml/pretty-sexp-by-format format-definition (basic-sexp-config) width definition))
+  (ppml/format-pretty-sexp-by-format format-definition (basic-sexp-config) width definition))

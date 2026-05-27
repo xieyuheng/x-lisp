@@ -9,7 +9,7 @@
         (= source-dir (project-source-directory project))
         (= name (path-relative source-dir path))
         (= stmts-code (format-fragment-stmts (mod-fragment-stmts fragment)))
-        (= code (ppml/pretty-sexp-by-format (lambda (s) s) config width stmts-code))
+        (= code (ppml/format-pretty-sexp-by-format (lambda (s) s) config width stmts-code))
         (= out-dir (path-join
                      (project-root-directory project)
                      (path-join (build-config-output-directory

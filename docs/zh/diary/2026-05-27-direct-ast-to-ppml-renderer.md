@@ -9,7 +9,7 @@ date: 2026-05-27
 ## 背景
 
 `meta-lisp.js` 的 `check --dump` 耗时约 25s。
-性能分析显示其中 **98.6% 的时间花在 `prettySexpByFormat` 内部的 `parseSexps()`** 上。
+性能分析显示其中 **98.6% 的时间花在 `formatPrettySexpByFormat` 内部的 `parseSexps()`** 上。
 
 当前 dump 的格式化流程：
 
@@ -56,8 +56,8 @@ AST (Exp/Stmt/Definition)
 - `../../ppml.js/src/ppml/format.ts` — `Ppml.format(node, { width })`
 
 ### 参考实现（sexp 渲染器，需模仿其布局策略）
-- `../../sexp.js/src/pretty/prettySexp.ts` — `renderSexp` 将 `S.Sexp` 映射为 `Ppml.Node`
-- `../../sexp.js/src/pretty/prettySexpByFormat.ts` — **待替换的入口**
+- `../../sexp.js/src/pretty/formatPrettySexp.ts` — `renderSexp` 将 `S.Sexp` 映射为 `Ppml.Node`
+- `../../sexp.js/src/pretty/formatPrettySexpByFormat.ts` — **待替换的入口**
 
 ### AST 相关
 - `src/meta/pretty/sexpConfig.ts` — 49 个关键字的 header length 映射
@@ -77,7 +77,7 @@ AST (Exp/Stmt/Definition)
 2. `Ppml.format()` 已优化完毕，直接使用即可。
 3. 使用 `Ppml.concat` / `Ppml.group` / `Ppml.indent` / `Ppml.br` / `Ppml.text` 等构造文档树。
 4. 布局决策完全保留：
-   - keyword header length（`renderSyntax`，参见 `prettySexp.ts` 和 `sexpConfig.ts`）
+   - keyword header length（`renderSyntax`，参见 `formatPrettySexp.ts` 和 `sexpConfig.ts`）
    - short-operator 启发式（名字 <=3 字符的符号用不同缩进）
    - quote/unquote/quasiquote 前缀渲染
    - `@set` / `@square-bracket` 特殊处理
