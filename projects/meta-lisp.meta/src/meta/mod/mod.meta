@@ -7,13 +7,13 @@
    (admitted (set-t symbol-t))
    (definitions (hash-t symbol-t definition-t))
    (claimed (hash-t symbol-t claim-entry-t))
-   (opaque-claimed (hash-t symbol-t exp-t))
+   (opaque-claimed (hash-t symbol-t term-t))
    (inferred-types (hash-t symbol-t type-t))
    (data-constructors (hash-t symbol-t data-constructor-t))
    (project project-t)))
 
 (define-struct claim-entry-t
-  (exp exp-t)
+  (exp term-t)
   (type (maybe-t type-t)))
 
 (define (make-mod name project)
@@ -53,7 +53,7 @@
       (just (hash-get name inferred))
       (nothing))))
 
-(claim mod-claim (-> mod-t symbol-t exp-t void-t))
+(claim mod-claim (-> mod-t symbol-t term-t void-t))
 (define (mod-claim mod name exp)
   (let ((claimed (mod-claimed mod)))
     (if (hash-has? name claimed)

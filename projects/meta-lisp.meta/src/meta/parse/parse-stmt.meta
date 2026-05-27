@@ -142,7 +142,7 @@
 (define (parse-define-struct-stmt elements location)
   (define-struct-stmt
     (parse-type-constructor (list-get 1 elements))
-    (list-map parse-data-field-old (list-drop 2 elements))
+    (list-map parse-pre-data-field (list-drop 2 elements))
     location))
 
 (claim parse-define-struct-star-stmt
@@ -238,7 +238,7 @@
     (list-map
       (lambda (iface)
         (= parts (list-sexp-elements iface))
-        (make-interface-entry
+        (make-pre-interface-entry
           (symbol-sexp-content (list-head parts))
           (parse-exp (list-head (list-drop 1 parts)))
           location))
@@ -267,24 +267,24 @@
     ((list-sexp elements location)
      (make-pre-data-constructor
        (symbol-sexp-content (list-head elements))
-       (list-map parse-data-field-old (list-drop 1 elements))
-       location))))
+        (list-map parse-pre-data-field (list-drop 1 elements))
+        location))))
 
-(claim parse-data-field-old
+(claim parse-pre-data-field
   (-> sexp-t
-      data-field-t))
+      pre-data-field-t))
 
-(define (parse-data-field-old sexp)
+(define (parse-pre-data-field sexp)
   (match sexp
     ((list-sexp elements location)
-     (make-data-field
+     (make-pre-data-field
        (symbol-sexp-content (list-head elements))
        (parse-exp (list-head (list-drop 1 elements)))
        location))))
 
 (claim parse-algebraic-type-constructor
   (-> sexp-t
-      algebraic-type-constructor-t))
+      (algebraic-type-constructor-t exp-t)))
 
 (define (parse-algebraic-type-constructor sexp)
   (match sexp

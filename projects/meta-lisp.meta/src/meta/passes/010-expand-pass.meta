@@ -93,9 +93,9 @@
             (pipe fields
               (list-map
                 (lambda (field)
-                  (= field-name (data-field-name field))
-                  (= field-type (data-field-type field))
-                  (= field-location (data-field-location field))
+                  (= field-name (pre-data-field-name field))
+                  (= field-type (pre-data-field-type field))
+                  (= field-location (pre-data-field-location field))
                   (make-algebraic-type-field
                     field-name
                     field-type
@@ -127,18 +127,18 @@
        (pipe fields
          (list-map
            (lambda (field)
-             (= field-name (data-field-name field))
-             (= field-type (data-field-type field))
-             (= field-location (data-field-location field))
-             (make-algebraic-type-field
-               field-name
-               field-type
-               (symbol-append-by-dash base field-name)
-               (just (symbol-append-by-put base field-name))
-               field-location))))
-       (symbol-make-question base)
-       ctor-location)]
-    location))
+             (= field-name (pre-data-field-name field))
+              (= field-type (pre-data-field-type field))
+              (= field-location (pre-data-field-location field))
+              (make-algebraic-type-field
+                field-name
+                field-type
+                (symbol-append-by-dash base field-name)
+                (just (symbol-append-by-put base field-name))
+                field-location))))
+        (symbol-make-question base)
+        ctor-location)]
+     location))
 
 (define (desugar-define-struct stmt)
   (= type-constructor (define-struct-stmt-type-constructor stmt))
@@ -158,17 +158,17 @@
        (pipe fields
          (list-map
            (lambda (field)
-             (= field-name (data-field-name field))
-             (= field-type (data-field-type field))
-             (= field-location (data-field-location field))
-             (make-algebraic-type-field
-               field-name
-               field-type
-               (symbol-append-by-dash base field-name)
-               (just (symbol-append-by-put base field-name))
-               field-location))))
-       (symbol-make-question base)
-       location)]
+              (= field-name (pre-data-field-name field))
+              (= field-type (pre-data-field-type field))
+              (= field-location (pre-data-field-location field))
+              (make-algebraic-type-field
+                field-name
+                field-type
+                (symbol-append-by-dash base field-name)
+                (just (symbol-append-by-put base field-name))
+                field-location))))
+        (symbol-make-question base)
+        location)]
     location))
 
 ;; expand-define-algebraic-type

@@ -29,26 +29,26 @@
     (mod mod-t)
     (name symbol-t)
     (parameters (list-t symbol-t))
-    (body exp-t)
+    (body term-t)
     (is-checked bool-t)
     (location source-location-t))
   (variable-definition
     (mod mod-t)
     (name symbol-t)
-    (body exp-t)
+    (body term-t)
     (is-checked bool-t)
     (location source-location-t))
   (test-definition
     (mod mod-t)
     (name symbol-t)
-    (body exp-t)
+    (body term-t)
     (is-checked bool-t)
     (location source-location-t))
   (type-definition
     (mod mod-t)
     (name symbol-t)
     (parameters (list-t symbol-t))
-    (body exp-t)
+    (body term-t)
     (is-checked bool-t)
     (location source-location-t))
   (algebraic-type-definition
@@ -62,7 +62,7 @@
     (mod mod-t)
     (name symbol-t)
     (type-constructor type-constructor-t)
-    (representation-type exp-t)
+    (representation-type term-t)
     (interface-entries (list-t interface-entry-t))
     (is-checked bool-t)
     (location source-location-t)))
@@ -92,23 +92,10 @@
 
 (define-struct data-field-t
   (name symbol-t)
-  (type exp-t)
+  (type term-t)
   (location source-location-t))
 
 (define-struct interface-entry-t
   (name symbol-t)
-  (type exp-t)
-  (location source-location-t))
-
-(define-struct algebraic-type-field-t
-  (name symbol-t)
-  (type exp-t)
-  (accessor-name symbol-t)
-  (modifier-name (maybe-t symbol-t))
-  (location source-location-t))
-
-(define-struct algebraic-type-constructor-t
-  (name symbol-t)
-  (fields (list-t algebraic-type-field-t))
-  (predicate symbol-t)
+  (type term-t)
   (location source-location-t))

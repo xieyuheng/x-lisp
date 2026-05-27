@@ -29,9 +29,9 @@
     ((define-struct-star-stmt type-constructor data-constructor location)
      (@string "(define-struct* " (format-type-constructor type-constructor) " "
               (format-pre-data-constructor data-constructor) ")"))
-    ((define-struct-stmt type-constructor fields location)
-     (@string "(define-struct " (format-type-constructor type-constructor) " "
-              (string-join " " (list-map format-data-field fields)) ")"))
+     ((define-struct-stmt type-constructor fields location)
+      (@string "(define-struct " (format-type-constructor type-constructor) " "
+               (string-join " " (list-map format-pre-data-field fields)) ")"))
     ((define-record-type-stmt type-constructor data-constructor location)
      (@string "(define-record-type " (format-type-constructor type-constructor) " "
               (format-algebraic-type-constructor data-constructor) ")"))
@@ -42,7 +42,7 @@
      (@string "(define-opaque-type (" (symbol-to-string name) " "
               (string-join " " (list-map symbol-to-string parameters)) ") "
               (format-exp representation-type) " "
-              (string-join " " (list-map format-interface-entry interface-entries)) ")"))
+               (string-join " " (list-map format-pre-interface-entry interface-entries)) ")"))
     ((claim-stmt name type location)
      (@string "(claim " (symbol-to-string name) " " (format-exp type) ")"))
     ((claim-type-stmt name location)
@@ -77,11 +77,11 @@
   (if (list-empty? fields)
     name-str
     (@string "(" name-str " "
-             (string-join " " (list-map format-data-field fields)) ")")))
+             (string-join " " (list-map format-pre-data-field fields)) ")")))
 
-(define (format-data-field field)
-  (= name-str (symbol-to-string (data-field-name field)))
-  (= type-str (format-exp (data-field-type field)))
+(define (format-pre-data-field field)
+  (= name-str (symbol-to-string (pre-data-field-name field)))
+  (= type-str (format-exp (pre-data-field-type field)))
   (if (equal? type-str "")
     name-str
     (@string "(" name-str " " type-str ")")))
@@ -101,6 +101,6 @@
     name-str
     (@string "(" name-str " " type-str ")")))
 
-(define (format-interface-entry entry)
-  (@string "(" (symbol-to-string (interface-entry-name entry)) " "
-           (format-exp (interface-entry-type entry)) ")"))
+(define (format-pre-interface-entry entry)
+  (@string "(" (symbol-to-string (pre-interface-entry-name entry)) " "
+           (format-exp (pre-interface-entry-type entry)) ")"))

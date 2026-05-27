@@ -36,11 +36,11 @@
     (location source-location-t))
   (define-algebraic-type-stmt
     (type-constructor pre-type-constructor-t)
-    (data-constructors (list-t algebraic-type-constructor-t))
+    (data-constructors (list-t (algebraic-type-constructor-t E)))
     (location source-location-t))
   (define-struct-stmt
     (type-constructor pre-type-constructor-t)
-    (fields (list-t data-field-t))
+    (fields (list-t pre-data-field-t))
     (location source-location-t))
   (define-struct-star-stmt
     (type-constructor pre-type-constructor-t)
@@ -48,13 +48,13 @@
     (location source-location-t))
   (define-record-type-stmt
     (type-constructor pre-type-constructor-t)
-    (data-constructor algebraic-type-constructor-t)
+    (data-constructor (algebraic-type-constructor-t E))
     (location source-location-t))
   (define-opaque-type-stmt
     (name symbol-t)
     (parameters (list-t symbol-t))
     (representation-type E)
-    (interface-entries (list-t interface-entry-t))
+    (interface-entries (list-t (pre-interface-entry-t E)))
     (location source-location-t))
   (claim-stmt
     (name symbol-t)
@@ -93,5 +93,28 @@
 
 (define-struct pre-data-constructor-t
   (name symbol-t)
-  (fields (list-t data-field-t))
+  (fields (list-t pre-data-field-t))
+  (location source-location-t))
+
+(define-struct pre-data-field-t
+  (name symbol-t)
+  (type exp-t)
+  (location source-location-t))
+
+(define-struct (pre-interface-entry-t E)
+  (name symbol-t)
+  (type E)
+  (location source-location-t))
+
+(define-struct (algebraic-type-field-t E)
+  (name symbol-t)
+  (type E)
+  (accessor-name symbol-t)
+  (modifier-name (maybe-t symbol-t))
+  (location source-location-t))
+
+(define-struct (algebraic-type-constructor-t E)
+  (name symbol-t)
+  (fields (list-t (algebraic-type-field-t E)))
+  (predicate symbol-t)
   (location source-location-t))

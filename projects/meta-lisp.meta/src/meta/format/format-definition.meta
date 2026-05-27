@@ -18,28 +18,28 @@
               "(declare-primitive-variable " (symbol-to-string name) ")"))
     ((primitive-variable-declaration mod name is-checked location)
      (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
-    ((function-definition mod name parameters body is-checked location)
-     (= claim-str (format-definition-claim mod name))
-     (= params-str (string-join " " (list-map symbol-to-string parameters)))
-     (= body-str (format-exp body))
-     (@string claim-str
-              "(define (" (symbol-to-string name) " "
-              params-str ") " body-str ")"))
-    ((variable-definition mod name body is-checked location)
-     (= claim-str (format-definition-claim mod name))
-     (= body-str (format-exp body))
-     (@string claim-str
-              "(define " (symbol-to-string name)
-              " " body-str ")"))
-    ((test-definition mod name body is-checked location)
-     (= claim-str (format-definition-claim mod name))
-     (= body-str (format-exp body))
-     (@string claim-str "(define-test " (symbol-to-string name) " " body-str ")"))
-    ((type-definition mod name parameters body is-checked location)
-     (= claim-str (format-definition-claim mod name))
-     (= body-str (format-exp body))
-     (@string claim-str "(define-type " (symbol-to-string name) " " body-str ")"))
-    ((algebraic-type-definition mod name type-constructor data-constructors is-checked location)
+     ((function-definition mod name parameters body is-checked location)
+      (= claim-str (format-definition-claim mod name))
+      (= params-str (string-join " " (list-map symbol-to-string parameters)))
+      (= body-str (format-term body))
+      (@string claim-str
+               "(define (" (symbol-to-string name) " "
+               params-str ") " body-str ")"))
+     ((variable-definition mod name body is-checked location)
+      (= claim-str (format-definition-claim mod name))
+      (= body-str (format-term body))
+      (@string claim-str
+               "(define " (symbol-to-string name)
+               " " body-str ")"))
+     ((test-definition mod name body is-checked location)
+      (= claim-str (format-definition-claim mod name))
+      (= body-str (format-term body))
+      (@string claim-str "(define-test " (symbol-to-string name) " " body-str ")"))
+     ((type-definition mod name parameters body is-checked location)
+      (= claim-str (format-definition-claim mod name))
+      (= body-str (format-term body))
+      (@string claim-str "(define-type " (symbol-to-string name) " " body-str ")"))
+     ((algebraic-type-definition mod name type-constructor data-constructors is-checked location)
      (= tc-name (type-constructor-name type-constructor))
      (= tc-params (type-constructor-parameters type-constructor))
      (= ctors-str (string-join " " (list-map format-data-constructor data-constructors)))
@@ -48,16 +48,19 @@
        (@string "(define-enum (" (symbol-to-string tc-name) " "
                 (string-join " " (list-map symbol-to-string tc-params)) ") "
                 ctors-str ")")))
-    ((opaque-type-definition mod name type-constructor representation-type interface-entries is-checked location)
-     (= tc-name (symbol-to-string name))
-     (= tc-params (type-constructor-parameters type-constructor))
-     (= repr-str (format-exp representation-type))
-     (= ifaces-str (string-join " " (list-map format-interface-entry interface-entries)))
-     (if (list-empty? tc-params)
-       (@string "(define-opaque-type " tc-name " " repr-str " " ifaces-str ")")
-       (@string "(define-opaque-type (" tc-name " "
-                (string-join " " (list-map symbol-to-string tc-params)) ") "
-                repr-str " " ifaces-str ")")))))
+     ((opaque-type-definition mod name type-constructor representation-type interface-entries is-checked location)
+      (= tc-name (symbol-to-string name))
+      (= tc-params (type-constructor-parameters type-constructor))
+      (= repr-str (format-term representation-type))
+      (= ifaces-str (string-join " " (list-map (lambda (entry)
+          (@string "(" (symbol-to-string (interface-entry-name entry)) " "
+                   (format-term (interface-entry-type entry)) ")"))
+        interface-entries)))
+      (if (list-empty? tc-params)
+        (@string "(define-opaque-type " tc-name " " repr-str " " ifaces-str ")")
+        (@string "(define-opaque-type (" tc-name " "
+                 (string-join " " (list-map symbol-to-string tc-params)) ") "
+                 repr-str " " ifaces-str ")")))))
 
 (define (format-data-constructor data-constructor)
   (= name-str (symbol-to-string (data-constructor-name data-constructor)))
@@ -65,13 +68,19 @@
   (if (list-empty? fields)
     name-str
     (@string "(" name-str " "
-             (string-join " " (list-map format-data-field fields)) ")")))
+             (string-join " " (list-map (lambda (field)
+                 (= fn (symbol-to-string (data-field-name field)))
+                 (= ft (format-term (data-field-type field)))
+                 (if (equal? ft "")
+                   fn
+                   (@string "(" fn " " ft ")")))
+               fields)) ")")))
 
 (define (format-definition-claim mod name)
   (= claimed-entry (mod-lookup-claimed-entry mod name))
   (if (not (nothing? claimed-entry))
     (let ((exp (claim-entry-exp (just-value claimed-entry))))
-      (@string "(claim " (symbol-to-string name) " " (format-exp exp) ") "))
+      (@string "(claim " (symbol-to-string name) " " (format-term exp) ") "))
     (let ((inferred-type (mod-lookup-inferred-type mod name)))
       (if (not (nothing? inferred-type))
         (@string "(claim " (symbol-to-string name) " "

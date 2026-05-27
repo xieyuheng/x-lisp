@@ -1,0 +1,48 @@
+(module meta)
+
+(claim format-term (-> term-t string-t))
+(define (format-term term)
+  (match term
+    ((symbol-term content location)
+     (format-as-sexp content))
+    ((keyword-term content location)
+     (format-as-sexp content))
+    ((string-term content location)
+     (format-as-sexp content))
+    ((int-term content location)
+     (format-as-sexp content))
+    ((float-term content location)
+     (format-as-sexp content))
+    ((var-term name location)
+     (symbol-to-string name))
+    ((qualified-var-term mod-name name location)
+     (@string (symbol-to-string mod-name) "/" (symbol-to-string name)))
+    ((apply-term target args location)
+     (= target-str (format-term target))
+     (= args-str (format-terms args))
+     (if (equal? args-str "")
+       (@string "(" target-str ")")
+       (@string "(" target-str " " args-str ")")))
+    ((arrow-term arg-types ret-type location)
+     (= args-str (format-terms arg-types))
+     (@string "(-> " args-str " " (format-term ret-type) ")"))
+    ((polymorphic-term parameters body location)
+     (@string "(polymorphic (" (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-term body) ")"))
+    ((lambda-term parameters body location)
+     (@string "(lambda (" (string-join " " (list-map symbol-to-string parameters)) ") "
+              (format-term body) ")"))
+    ((let1-term name rhs body location)
+     (@string "(let ((" (symbol-to-string name) " " (format-term rhs) ")) "
+              (format-term body) ")"))
+    ((begin1-term head body location)
+     (@string "(begin " (format-term head) " " (format-term body) ")"))
+    ((if-term condition consequent alternative location)
+     (@string "(if " (format-term condition) " "
+              (format-term consequent) " "
+              (format-term alternative) ")"))
+    ((the-term type instance location)
+     (@string "(the " (format-term type) " " (format-term instance) ")"))))
+
+(define (format-terms terms)
+  (string-join " " (list-map format-term terms)))
