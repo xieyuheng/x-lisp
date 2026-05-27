@@ -1,6 +1,6 @@
 (module meta)
 
-(define-enum stmt-t
+(define-enum (stmt-t E)
   (import-stmt
     (mod-name symbol-t)
     (names (list-t symbol-t))
@@ -15,20 +15,20 @@
   (define-function-stmt
     (name symbol-t)
     (parameters (list-t symbol-t))
-    (body exp-t)
+    (body E)
     (location source-location-t))
   (define-variable-stmt
     (name symbol-t)
-    (body exp-t)
+    (body E)
     (location source-location-t))
   (define-test-stmt
     (name symbol-t)
-    (body exp-t)
+    (body E)
     (location source-location-t))
   (define-type-stmt
     (name symbol-t)
     (parameters (list-t symbol-t))
-    (body exp-t)
+    (body E)
     (location source-location-t))
   (define-enum-stmt
     (type-constructor pre-type-constructor-t)
@@ -53,19 +53,19 @@
   (define-opaque-type-stmt
     (name symbol-t)
     (parameters (list-t symbol-t))
-    (representation-type exp-t)
+    (representation-type E)
     (interface-entries (list-t interface-entry-t))
     (location source-location-t))
   (claim-stmt
     (name symbol-t)
-    (type exp-t)
+    (type E)
     (location source-location-t))
   (claim-type-stmt
     (name symbol-t)
     (location source-location-t))
   (admit-stmt
     (name symbol-t)
-    (type exp-t)
+    (type E)
     (location source-location-t))
   (private-stmt
     (names (list-t symbol-t))

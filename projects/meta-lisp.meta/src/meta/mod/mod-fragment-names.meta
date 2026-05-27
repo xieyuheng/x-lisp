@@ -4,7 +4,7 @@
 (define (mod-fragment-names fragment)
   (collect-names-from-stmts (mod-fragment-stmts fragment) (make-set)))
 
-(claim collect-names-from-stmts (-> (list-t stmt-t) (set-t symbol-t) (set-t symbol-t)))
+(claim collect-names-from-stmts (-> (list-t (stmt-t exp-t)) (set-t symbol-t) (set-t symbol-t)))
 (define (collect-names-from-stmts stmts names)
   (if (list-empty? stmts)
     names
@@ -13,7 +13,7 @@
       (let ((new-names (collect-name-from-stmt head names)))
         (collect-names-from-stmts tail new-names)))))
 
-(claim collect-name-from-stmt (-> stmt-t (set-t symbol-t) (set-t symbol-t)))
+(claim collect-name-from-stmt (-> (stmt-t exp-t) (set-t symbol-t) (set-t symbol-t)))
 (define (collect-name-from-stmt stmt names)
   (match stmt
     ((define-function-stmt name parameters body location)

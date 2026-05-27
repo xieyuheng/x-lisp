@@ -3,5 +3,5 @@
 (define-struct mod-fragment-t
   (mod-name symbol-t)
   (path string-t)
-  (stmts (list-t stmt-t))
-  (desugared-stmts (list-t stmt-t)))
+  (stmts (list-t (stmt-t exp-t)))
+  (desugared-stmts (list-t (stmt-t term-t))))

@@ -1,6 +1,6 @@
 (module meta)
 
-(claim format-stmt (-> stmt-t string-t))
+(claim format-stmt (-> (stmt-t exp-t) string-t))
 (define (format-stmt stmt)
   (match stmt
     ((import-stmt mod-name names location)

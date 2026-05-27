@@ -3,7 +3,7 @@
 (define-struct* mod-t
   (cons-mod
    (name symbol-t)
-   (stmts (list-t stmt-t))
+    (stmts (list-t (stmt-t exp-t)))
    (admitted (set-t symbol-t))
    (definitions (hash-t symbol-t definition-t))
    (claimed (hash-t symbol-t claim-entry-t))
