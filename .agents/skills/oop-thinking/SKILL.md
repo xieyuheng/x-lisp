@@ -1,6 +1,6 @@
 ---
 name: oop-thinking
-description: 用面向对象思想思考代码设计——提炼自 Sandi Metz 的 POOD 与 99 Bottles of OOP
+description: OOP 思考框架——用自然语言的名词/动词组织代码，与点语法无关。提炼自 Sandi Metz 的 POOD 与 99 Bottles of OOP
 ---
 
 # OOP 思考框架
@@ -42,6 +42,23 @@ description: 用面向对象思想思考代码设计——提炼自 Sandi Metz �
 
 好的设计让消息流动自然——调用方不需要知道接收方的实现细节，只需要知道它能
 响应什么消息。
+
+### OOP 思维的语法无关性
+
+OOP 思考不依赖 `object.method()` 的点语法。它的本质是用自然语言中的**名词**和
+**动词**来组织代码——"mechanic 准备 bike"这个关系，不同语法只是不同写法：
+
+| 关系 | OO 语言 | Lisp / Scheme | C |
+|------|----------|---------------|---|
+| mechanic 准备 bike | `mechanic.prepare_bicycle(bike)` | `(mechanic-prepare-bicycle mechanic bike)` | `mechanic_prepare_bicycle(mechanic, bike)` |
+| trip 知道自己的 bikes | `trip.bicycles()` | `(trip-bicycles trip)` | `trip_bicycles(trip)` |
+| wheel 计算直径 | `wheel.diameter()` | `(wheel-diameter wheel)` | `wheel_diameter(wheel)` |
+
+三种语法形式不同，但表述的**概念结构相同**——"谁"对"什么东西"做"什么动作"。
+
+**判断标准：当一段代码可以用"主语-动词-宾语"大声朗读、非程序员也能大致听懂时，
+它就是好的 OOP 设计。** 如果你需要念完一整段操作步骤才能说清发生了什么，
+说明职责划分有问题。
 
 ---
 
@@ -138,11 +155,33 @@ description: 用面向对象思想思考代码设计——提炼自 Sandi Metz �
 > *"Ask for 'what' instead of telling 'how'."*
 > — POOD Ch.4
 
-**坏消息：** `trip.clean_bicycle(bike)` → `trip.pump_tires(bike)` → `trip.check_brakes(bike)`
-发送方知道接收方的所有实现细节，接收方的任何变化都会破坏发送方。
+**坏消息：** 发送方知道接收方的所有实现细节，接收方的任何变化都会破坏发送方。
 
-**好消息：** `mechanic.prepare_bicycle(bike)`
-发送方只信任接收方知道怎么做。接收方的实现可以随意变化。
+```
+# OO 语法
+trip.clean_bicycle(bike)
+trip.pump_tires(bike)
+trip.check_brakes(bike)
+
+# Lisp 语法
+(trip-clean-bicycle trip bike)
+(trip-pump-tires trip bike)
+(trip-check-brakes trip bike)
+```
+
+**好消息：** 发送方只信任接收方知道怎么做。接收方的实现可以随意变化。
+
+```
+# OO 语法
+mechanic.prepare_bicycle(bike)
+
+# Lisp 语法
+(mechanic-prepare-bicycle mechanic bike)
+```
+
+在好消息版本中，命名本身承载了"主语-动词-宾语"结构——`mechanic` + `prepare_bicycle` + `bike`。
+代码就是可读的领域文档。在坏消息版本中，读起来像操作手册步骤列表——
+发送方在指挥接收方"做这个、做那个"，而不是委托一个任务。
 
 **判断标准：** 看消息链——如果发送方需要序列化地告诉接收方每一步做什么，就说明
 职责放错了地方。**行为应该和数据放在一起。**
@@ -409,23 +448,26 @@ end
 
 4. **确保 TRUE**：写完代码后自检——透明吗？合理吗？可复用吗？是好的范例吗？
 
+5. **用自然语言朗读检查设计**：写完关键调用后，试着用"主语-动词-宾语"句式朗读。
+   如果读起来像操作流程图而非自然语句（"先做这个、再做那个"），说明职责划分有问题。
+
 ### 修改已有代码时
 
-5. **用 Flocking Rules 重构**：面对重复代码或 switch 语句，不要试图一步到位写出
+6. **用 Flocking Rules 重构**：面对重复代码或 switch 语句，不要试图一步到位写出
    抽象。遵循：找最相似 → 找最小差异 → 消除差异 → 测试通过 → 重复。
 
-6. **一次只修一个 smell**：不要同时重构多个问题。选一个最小的 smell，
+7. **一次只修一个 smell**：不要同时重构多个问题。选一个最小的 smell，
    用 Flocking Rules 消除，测试通过后再看下一个。
 
-7. **依赖注入是默认选择**：不要在方法内部创建依赖对象。通过构造器或参数传入。
+8. **依赖注入是默认选择**：不要在方法内部创建依赖对象。通过构造器或参数传入。
 
 ### 设计决策时
 
-8. **推迟决策**：当信息不足以做出正确判断时，先不做。等变更到来时，
+9. **推迟决策**：当信息不足以做出正确判断时，先不做。等变更到来时，
    新信息自然会告诉你该怎么设计。
 
-9. **默认组合，谨慎继承**：用"has-a"而非"is-a"。只有当你确信子类是父类的
-   特殊化 + 结构足够稳定时，才使用继承。
+10. **默认组合，谨慎继承**：用"has-a"而非"is-a"。只有当你确信子类是父类的
+    特殊化 + 结构足够稳定时，才使用继承。
 
-10. **测试痛苦 = 设计问题**：如果写测试时需要创建大量 mock 或大量 setup，
+11. **测试痛苦 = 设计问题**：如果写测试时需要创建大量 mock 或大量 setup，
      停下来反思——是不是类之间的耦合太紧？是不是类做了太多事？
