@@ -26,7 +26,6 @@
 
 [skill] how to solve it
 [skill] sandi metz oop
-[skill] scalable-c
 [skill] editing lisp code
 
 # compile to native
