@@ -1,6 +1,8 @@
 (module meta)
 
-(claim parse-exp (-> sexp-t exp-t))
+(claim parse-exp
+  (-> sexp-t
+      exp-t))
 
 (define (parse-exp sexp)
   (match sexp
