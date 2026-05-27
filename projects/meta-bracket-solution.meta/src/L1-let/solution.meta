@@ -1,7 +1,0 @@
-(module l1-let)
-
-(define (double-positive n)
-  (let* ((pos? (int-positive? n)))
-    (if pos?
-      (imul n 2)
-      0)))
