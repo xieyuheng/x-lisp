@@ -50,58 +50,6 @@
 
 ## 3. 关键不一致之处
 
-### 3.1 `ModFragment` 缺少 `path` 和 `desugaredStmts` 字段
-
-- JS `ModFragment`: **有** `path: string` 和 `desugaredStmts: Array<M.Stmt<M.Term>>`
-- .meta `mod-fragment-t`: **无** `path`，**无** `desugared-stmts`
-
-后果：片段不知道原始路径（dump 时用 hash key 代替），且无法存储脱糖后的语句。
-
-### 3.2 `Stmt` 缺少类型参数化
-
-- JS: `Stmt<E>` 是泛型，body 可以是 `Exp` 或 `Term`
-- .meta: `stmt-t` **硬编码** `exp-t` 作为 body 类型
-
-后果：语句无法重用于 term IR 阶段。
-
-### 3.3 定义 body 类型不匹配（`exp-t` vs `term-t`）
-
-JS 中所有定义体都使用 `M.Term`（脱糖后的核心项），但 .meta 用 `exp-t`：
-
-| `Definition` 变体 | JS body 类型 | .meta body 类型 |
-|---|---|---|
-| `FunctionDefinition` | `body: M.Term` | `body exp-t` |
-| `VariableDefinition` | `body: M.Term` | `body exp-t` |
-| `TestDefinition` | `body: M.Term` | `body exp-t` |
-| `TypeDefinition` | `body: M.Term` | `body exp-t` |
-| `OpaqueTypeDefinition` | `representationType: M.Term` | `representation-type exp-t` |
-
-JS 还有 `definitionCheck.ts` 和 `definitionToDataConstructor.ts` 辅助函数，.meta 没有。
-
-### 3.4 `ClaimedEntry.exp` 类型不匹配
-
-- JS: `exp: M.Term`
-- .meta: `exp exp-t`
-
-### 3.5 Env 缺少 `mode` 字段
-
-- JS `Env` 有 `mode: EvaluationMode`（`"OpaqueMode"` \| `"TransparentMode"`）
-- .meta `env-t` 只是普通 hash，mode 单独传参
-
-后果：Opaque 类型在透明模式下的展开求值可能受影响。
-
-### 3.6 `evaluate()` 操作错误的 IR 层级
-
-- JS: `evaluate(mod, env, exp)` 参数 `exp: M.Term` — 核心项 IR
-- .meta: `evaluate(mode mod env exp)` 参数 `exp: exp-t` — 源码 IR
-
-后果：求值器操作在含语法糖的完整 AST 上，而非简洁的核心项。
-
-### 3.7 `formatDefinition.ts` 使用 `formatTerm` vs `format-exp`
-
-- JS `formatDefinition.ts` 对定义体使用 `M.formatTermBody()` / `M.formatTerm()`（操作 `Term`）
-- .meta `format-definition.meta` 使用 `(format-exp body)`（操作 `Exp`）
-
 ### 3.8 `format-exp.meta` 不完整
 
 JS `formatExp.ts` 完整处理 30+ 种变体。.meta `format-exp.meta` 有一个兜底 `(else (format-sexp exp))` 对以下类型不做特定格式化：
