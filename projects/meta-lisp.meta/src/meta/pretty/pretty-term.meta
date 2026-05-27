@@ -1,0 +1,72 @@
+(module meta)
+
+(claim pretty-term (-> term-t ppml/node-t))
+(define (pretty-term term)
+  (match term
+    ((symbol-term content location)
+     (ppml/text (format-as-sexp content)))
+    ((keyword-term content location)
+     (ppml/text (format-as-sexp content)))
+    ((string-term content location)
+     (ppml/text (format-as-sexp content)))
+    ((int-term content location)
+     (ppml/text (format-as-sexp content)))
+    ((float-term content location)
+     (ppml/text (format-as-sexp content)))
+    ((var-term name location)
+     (ppml/text (symbol-to-string name)))
+    ((qualified-var-term mod-name name location)
+     (ppml/text (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
+    ((lambda-term parameters body location)
+     (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
+       (pretty-syntax "lambda"
+         [(ppml/text (@string "(" params-str ")"))]
+         [(pretty-term body)])))
+    ((apply-term target args location)
+     (let ((target-op (term-op-string target))
+           (all-elements (cons (pretty-term target) (list-map pretty-term args))))
+       (pretty-application target-op all-elements)))
+    ((let1-term name rhs body location)
+     (pretty-syntax "let"
+       []
+       [(ppml/group
+          [(ppml/text "(")
+           (ppml/text (symbol-to-string name))
+           (ppml/text " ")
+           (pretty-term rhs)
+           (ppml/text ")")])
+        (pretty-term body)]))
+    ((begin1-term head body location)
+     (pretty-syntax "begin"
+       []
+       [(pretty-term head)
+        (pretty-term body)]))
+    ((if-term condition consequent alternative location)
+     (pretty-syntax "if"
+       []
+       [(pretty-term condition)
+        (pretty-term consequent)
+        (pretty-term alternative)]))
+    ((arrow-term arg-types ret-type location)
+     (pretty-application (just "->")
+       (list-append (list-map pretty-term arg-types)
+                    [(pretty-term ret-type)])))
+    ((the-term type instance location)
+     (pretty-syntax "the"
+       [(pretty-term type)]
+       [(pretty-term instance)]))
+    ((polymorphic-term parameters body location)
+     (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
+       (pretty-syntax "polymorphic"
+         [(ppml/text (@string "(" params-str ")"))]
+         [(pretty-term body)])))))
+
+(claim term-op-string (-> term-t (maybe-t string-t)))
+(define (term-op-string term)
+  (match term
+    ((symbol-term content location) (just (format-as-sexp content)))
+    ((keyword-term content location) (just (format-as-sexp content)))
+    ((var-term name location) (just (symbol-to-string name)))
+    ((qualified-var-term mod-name name location)
+     (just (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
+    (else (nothing))))

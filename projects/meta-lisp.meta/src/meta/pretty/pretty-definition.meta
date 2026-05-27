@@ -1,0 +1,130 @@
+(module meta)
+
+(claim pretty-definition (-> definition-t (list-t ppml/node-t)))
+(define (pretty-definition definition)
+  (match definition
+    ((primitive-function-definition mod name arity fn location)
+     (let ((claim-node (pretty-definition-claim mod name))
+           (body (pretty-syntax "declare-primitive-function"
+                   [(ppml/text (symbol-to-string name))
+                    (ppml/text (format-as-sexp arity))] [])))
+       (if (not (equal? claim-node ""))
+         [(ppml/text claim-node) body]
+         [body])))
+    ((primitive-function-declaration mod name arity location)
+     [(pretty-syntax "declare-primitive-function"
+        [(ppml/text (symbol-to-string name))
+         (ppml/text (format-as-sexp arity))] [])])
+    ((primitive-variable-definition mod name value location)
+     (let ((claim-node (pretty-definition-claim mod name))
+           (body (pretty-syntax "declare-primitive-variable"
+                   [(ppml/text (symbol-to-string name))] [])))
+       (if (not (equal? claim-node ""))
+         [(ppml/text claim-node) body]
+         [body])))
+    ((primitive-variable-declaration mod name location)
+     [(pretty-syntax "declare-primitive-variable"
+        [(ppml/text (symbol-to-string name))] [])])
+     ((function-definition mod name parameters body location)
+      (let* ((claim-node (pretty-definition-claim mod name))
+            (name-str (symbol-to-string name))
+            (params-str (string-join " " (list-map symbol-to-string parameters)))
+            (define-node (pretty-syntax "define"
+                   [(if (list-empty? parameters)
+                      (ppml/text name-str)
+                      (ppml/text (@string "(" name-str " " params-str ")")))]
+                   [(pretty-term body)])))
+        (if (not (equal? claim-node ""))
+          [(ppml/text claim-node) define-node]
+          [define-node])))
+     ((variable-definition mod name body location)
+      (let ((claim-node (pretty-definition-claim mod name))
+            (define-node (pretty-syntax "define"
+                           [(ppml/text (symbol-to-string name))]
+                           [(pretty-term body)])))
+        (if (not (equal? claim-node ""))
+          [(ppml/text claim-node) define-node]
+          [define-node])))
+     ((test-definition mod name body location)
+      (let ((claim-node (pretty-definition-claim mod name))
+            (define-node (pretty-syntax "define-test"
+                           [(ppml/text (symbol-to-string name))]
+                           [(pretty-term body)])))
+        (if (not (equal? claim-node ""))
+          [(ppml/text claim-node) define-node]
+          [define-node])))
+     ((type-definition mod name parameters body location)
+      (let* ((claim-node (pretty-definition-claim mod name))
+           (name-str (symbol-to-string name))
+           (params-str (string-join " " (list-map symbol-to-string parameters)))
+           (body-node (pretty-syntax "define-type"
+                        [(if (list-empty? parameters)
+                           (ppml/text name-str)
+                           (ppml/text (@string "(" name-str " " params-str ")")))]
+                        [(pretty-term body)])))
+       (if (not (equal? claim-node ""))
+         [(ppml/text claim-node) body-node]
+         [body-node])))
+     ((algebraic-type-definition mod name type-constructor data-constructors location)
+      (let* ((tc-params (type-constructor-parameters type-constructor))
+           (name-str (symbol-to-string (type-constructor-name type-constructor)))
+           (params-str (string-join " " (list-map symbol-to-string tc-params))))
+       [(pretty-syntax "define-enum"
+          [(if (list-empty? tc-params)
+             (ppml/text name-str)
+             (ppml/text (@string "(" name-str " " params-str ")")))]
+          (list-map pretty-data-constructor data-constructors))]))
+     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
+      (let* ((tc-params (type-constructor-parameters type-constructor))
+           (name-str (symbol-to-string name))
+           (params-str (string-join " " (list-map symbol-to-string tc-params))))
+       [(pretty-syntax "define-opaque-type"
+          [(if (list-empty? tc-params)
+             (ppml/text name-str)
+             (ppml/text (@string "(" name-str " " params-str ")")))]
+          (cons (pretty-term representation-type)
+                (list-map pretty-interface-entry interface-entries)))]))))
+
+(claim pretty-definition-claim (-> mod-t symbol-t string-t))
+(define (pretty-definition-claim mod name)
+  (= claimed-entry (mod-lookup-claimed-entry mod name))
+  (if (not (nothing? claimed-entry))
+    (let ((exp (claim-entry-exp (just-value claimed-entry))))
+      (@string "(claim " (symbol-to-string name) " " (format-term exp) ") "))
+    (let ((inferred-type (mod-lookup-inferred-type mod name)))
+      (if (not (nothing? inferred-type))
+        (@string "(claim " (symbol-to-string name) " "
+                 (format-type (just-value inferred-type)) ") ")
+        ""))))
+
+(define (pretty-data-constructor data-constructor)
+  (let ((name (ppml/text (symbol-to-string (data-constructor-name data-constructor))))
+        (fields (data-constructor-fields data-constructor)))
+    (if (list-empty? fields)
+      name
+      (ppml/group
+        [(ppml/text "(")
+         name
+         (ppml/text " ")
+         (ppml/flex (list-map pretty-data-field fields))
+         (ppml/text ")")]))))
+
+(define (pretty-data-field field)
+  (= name (ppml/text (symbol-to-string (data-field-name field))))
+  (= type-node (pretty-term (data-field-type field)))
+  (ppml/group
+    [(ppml/text "(")
+     name
+     (ppml/text " ")
+     type-node
+     (ppml/text ")")]))
+
+(define (pretty-interface-entry entry)
+  (let ((name (ppml/text (symbol-to-string (interface-entry-name entry))))
+        (type-node (pretty-term (interface-entry-type entry))))
+    (ppml/group
+      [(ppml/text "(")
+       name
+       (ppml/text " ")
+       type-node
+       (ppml/text ")")])))

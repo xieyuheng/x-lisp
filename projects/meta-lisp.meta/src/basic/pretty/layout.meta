@@ -1,0 +1,64 @@
+(module basic)
+
+(claim pretty-syntax
+  (-> string-t (list-t ppml/node-t) (list-t ppml/node-t) ppml/node-t))
+(define (pretty-syntax name header body)
+  (let ((head-node (ppml/indent 4
+                                [(ppml/wrap (cons (ppml/text name) header))]))
+        (body-node (if (list-empty? body)
+                     (ppml/nil)
+                     (ppml/indent 2
+                                  [(ppml/br)
+                                   (ppml/flex body)]))))
+    (ppml/group [(ppml/text "(")
+                 head-node body-node
+                 (ppml/text ")")])))
+
+(claim pretty-application
+  (-> (maybe-t string-t) (list-t ppml/node-t) ppml/node-t))
+(define (pretty-application op-maybe elements)
+  (if (list-empty? elements)
+    (ppml/group [(ppml/text "(") (ppml/text ")")])
+    (match op-maybe
+      ((just op)
+       (let* ((head (list-head elements))
+              (rest (list-tail elements)))
+         (if (int-less-or-equal? (string-length op) 3)
+           (let* ((indentation (iadd (string-length op) 2))
+                  (body-node (if (list-empty? rest)
+                               head
+                               (ppml/group
+                                 [(ppml/indent indentation
+                                    [head
+                                     (ppml/text " ")
+                                     (ppml/flex rest)])]))))
+             (ppml/group [(ppml/text "(") body-node (ppml/text ")")]))
+           (let ((body-node (ppml/group
+                              [(ppml/indent 1
+                                 [(ppml/flex elements)])])))
+             (ppml/group [(ppml/text "(") body-node (ppml/text ")")])))))
+      ((nothing)
+       (let ((body-node (ppml/group
+                          [(ppml/indent 1
+                             [(ppml/flex elements)])])))
+         (ppml/group [(ppml/text "(") body-node (ppml/text ")")]))))))
+
+(claim pretty-set
+  (-> (list-t ppml/node-t) ppml/node-t))
+(define (pretty-set elements)
+  (if (list-empty? elements)
+    (ppml/group [(ppml/text "(@set") (ppml/text ")")])
+    (let ((body-node (ppml/group
+                       [(ppml/indent 1
+                          [(ppml/flex elements)])])))
+      (ppml/group [(ppml/text "(@set") body-node (ppml/text ")")]))))
+
+(claim pretty-list
+  (-> (list-t ppml/node-t) ppml/node-t))
+(define (pretty-list elements)
+  (if (list-empty? elements)
+    (ppml/group [(ppml/text "[") (ppml/text "]")])
+    (let ((body-node (ppml/group
+                       [(ppml/indent 1
+                                     [(ppml/flex elements)])])))
+      (ppml/group [(ppml/text "[") body-node (ppml/text "]")]))))

@@ -1,13 +1,11 @@
 (module meta)
 
 (define (project-dump-mods project tag)
-  (= config (meta-sexp-config))
   (= width 80)
   (pipe (project-mods project)
     (hash-each
       (lambda (_name mod)
-        (= definitions-code (format-mod-definitions mod))
-        (= code (ppml/format-pretty-sexp-by-format (lambda (s) s) config width definitions-code))
+        (= code (pretty-mod-definitions width mod))
         (= out-dir (path-join
                      (project-root-directory project)
                      (path-join (build-config-output-directory
@@ -16,5 +14,6 @@
         (= mods-dir (path-join out-dir "modules"))
         (= mod-name-str (symbol-to-string (mod-name mod)))
         (= dump-path (@string mods-dir "/" mod-name-str "." tag ".dump"))
-        (fs-ensure-directory mods-dir)
+        (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
+        (fs-ensure-file dump-path)
         (fs-write dump-path code)))))

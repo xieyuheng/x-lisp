@@ -1,15 +1,13 @@
 (module meta)
 
 (define (project-dump-fragments project tag)
-  (= config (meta-sexp-config))
   (= width 80)
   (pipe (project-fragments project)
     (hash-each
       (lambda (path fragment)
         (= source-dir (project-source-directory project))
         (= name (path-relative source-dir path))
-        (= stmts-code (format-fragment-stmts (mod-fragment-stmts fragment)))
-        (= code (ppml/format-pretty-sexp-by-format (lambda (s) s) config width stmts-code))
+        (= code (pretty-fragment-stmts width (mod-fragment-stmts fragment)))
         (= out-dir (path-join
                      (project-root-directory project)
                      (path-join (build-config-output-directory
@@ -17,5 +15,6 @@
                                 "dump")))
         (= frag-dir (path-join out-dir "fragments"))
         (= dump-path (@string frag-dir "/" name "." tag ".dump"))
-        (fs-ensure-directory frag-dir)
+        (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
+        (fs-ensure-file dump-path)
         (fs-write dump-path code)))))
