@@ -6,57 +6,48 @@
     (name symbol-t)
     (arity int-t)
     (fn (-> (list-t value-t) value-t))
-    (is-checked bool-t)
     (location source-location-t))
   (primitive-variable-definition
     (mod mod-t)
     (name symbol-t)
     (value value-t)
-    (is-checked bool-t)
     (location source-location-t))
   (primitive-function-declaration
     (mod mod-t)
     (name symbol-t)
     (arity int-t)
-    (is-checked bool-t)
     (location source-location-t))
   (primitive-variable-declaration
     (mod mod-t)
     (name symbol-t)
-    (is-checked bool-t)
     (location source-location-t))
   (function-definition
     (mod mod-t)
     (name symbol-t)
     (parameters (list-t symbol-t))
     (body term-t)
-    (is-checked bool-t)
     (location source-location-t))
   (variable-definition
     (mod mod-t)
     (name symbol-t)
     (body term-t)
-    (is-checked bool-t)
     (location source-location-t))
   (test-definition
     (mod mod-t)
     (name symbol-t)
     (body term-t)
-    (is-checked bool-t)
     (location source-location-t))
   (type-definition
     (mod mod-t)
     (name symbol-t)
     (parameters (list-t symbol-t))
     (body term-t)
-    (is-checked bool-t)
     (location source-location-t))
   (algebraic-type-definition
     (mod mod-t)
     (name symbol-t)
     (type-constructor type-constructor-t)
     (data-constructors (list-t data-constructor-t))
-    (is-checked bool-t)
     (location source-location-t))
   (opaque-type-definition
     (mod mod-t)
@@ -64,7 +55,6 @@
     (type-constructor type-constructor-t)
     (representation-type term-t)
     (interface-entries (list-t interface-entry-t))
-    (is-checked bool-t)
     (location source-location-t)))
 
 (define-struct type-constructor-t

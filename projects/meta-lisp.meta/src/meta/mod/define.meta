@@ -2,10 +2,10 @@
 
 (define (define-primitive-function mod name arity fn location)
   (mod-put-definition! name
-    (primitive-function-definition mod name arity fn false location)
+    (primitive-function-definition mod name arity fn location)
     mod))
 
 (define (define-primitive-variable mod name value location)
   (mod-put-definition! name
-    (primitive-variable-definition mod name value false location)
+    (primitive-variable-definition mod name value location)
     mod))
