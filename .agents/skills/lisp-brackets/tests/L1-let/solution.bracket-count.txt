@@ -1,1 +1,0 @@
-.agents/skills/lisp-brackets/meta-bracket-test.meta/src/L1-let/solution.meta: OK (9 open, 9 close, depth 0)
