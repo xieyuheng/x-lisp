@@ -1,0 +1,43 @@
+(module l4-kitchen-sink)
+
+(define-enum (option-t E)
+  (some (value E))
+  (none))
+
+(define-enum (pipeline-result-t E)
+  (done (value E))
+  (failed (reason string-t))
+  (pending (stage symbol-t)))
+
+(define (run-pipeline n limit)
+  (let* ((a (imul n 2))
+         (b (imul n 3))
+         (c (int-compare-ascending a b))
+         (stage2
+           (match (if (int-greater? a limit)
+                    (some n)
+                    (none))
+             ((some v)
+              (cond
+                ((int-greater? v 100)
+                 (begin (println "big") (done v)))
+                ((int-greater? v 50)
+                 (begin (println "mid") (done (imul v 2))))
+                ((int-positive? v) (done v))
+                (else (failed "non-positive"))))
+             ((none)
+              (cond
+                ((int-greater? limit 1000) (pending 'huge))
+                ((int-less? limit 10)
+                 (begin (println "tiny") (failed "too small limit")))
+                (else (failed "within range")))))))
+    (if (done? stage2)
+      (begin
+        (println "success")
+        (let* ((x (done-value stage2))
+               (y (imul x x)))
+          (cond
+            ((int-greater? y 10000)
+             (begin (println "overflow") (done y)))
+            (else (done y)))))
+      stage2)))

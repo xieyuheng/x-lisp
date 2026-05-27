@@ -1,0 +1,9 @@
+(module l2-let-cond)
+
+(define (classify-number n)
+  (let* ((pos? (int-positive? n))
+         (big? (int-greater? n 100)))
+    (cond
+      ((not pos?) "negative")
+      (big? "large")
+      (else "small"))))
