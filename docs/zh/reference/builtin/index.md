@@ -575,6 +575,7 @@ S 表达式的解析、格式化和相关类型。
 ### 操作
 
 - [`parse-sexps`](sexp/parse-sexps.md) — 解析为带位置的 S 表达式
+- [`format-as-sexp`](sexp/format-as-sexp.md) — 格式化任意值为 S 表达式
 - [`format-sexp`](sexp/format-sexp.md) — 格式化 S 表达式
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — 收集键值对列表
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — 收集键值对哈希表
