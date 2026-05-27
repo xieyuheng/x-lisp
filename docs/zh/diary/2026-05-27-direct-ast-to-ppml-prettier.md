@@ -24,6 +24,11 @@ AST (Exp/Stmt/Definition)
 不带 `--dump` 时整个 pipeline 只需 **0.15s**。
 瓶颈完全在「格式化为 sexp 字符串 → 重新解析回 Sexp[]」的往返浪费上。
 
+注意：
+
+- 返回 string 的函数通常叫做 `format*`
+- 返回 Ppml.Node 的函数通常叫做 `pretty*`
+
 ## 任务
 
 为以下 AST 类型实现直接到 `Ppml.Node` 的渲染函数，
@@ -41,10 +46,10 @@ AST (Exp/Stmt/Definition)
 
 | 类型 | 使用方 | 参考实现 |
 |------|--------|---------|
-| `M.Stmt<M.Exp>` | `prettyFragmentStmts` | `formatStmt(stmt, formatExp)` |
-| `M.Mod` | `prettyModDefinitions` | `formatModDefinitions(mod)` |
-| `B.Definition` | `B.prettyDefinition` | `formatDefinition(def)` |
-| `Xasm.Definition` | `Xasm.prettyDefinition` | `Xasm.formatDefinition(def)` |
+| `M.Stmt<M.Exp>` | `formatPrettyFragmentStmts` | `formatStmt(stmt, formatExp)` |
+| `M.Mod` | `formatPrettyModDefinitions` | `formatModDefinitions(mod)` |
+| `B.Definition` | `B.formatPrettyDefinition` | `formatDefinition(def)` |
+| `Xasm.Definition` | `Xasm.formatPrettyDefinition` | `Xasm.formatDefinition(def)` |
 
 ## 关键文件
 
@@ -65,11 +70,11 @@ AST (Exp/Stmt/Definition)
 - `src/meta/exp/`、`src/meta/stmt/`、`src/meta/definition/`、`src/meta/mod/` — AST 类型定义
 
 ### 调用点（需要替换）
-- `src/meta/project/projectDumpFragments.ts` — 改 `prettyFragmentStmts` → 新渲染函数
-- `src/meta/project/projectDumpMods.ts` — 改 `prettyModDefinitions` → 新渲染函数
-- `src/meta/pretty/pretty.ts` — 入口定义（`prettyExp`、`prettyFragmentStmts`、`prettyModDefinitions`、`prettyModStmts`）
-- `src/basic/pretty/pretty.ts` — `B.prettyDefinition`
-- `src/xasm/pretty/pretty.ts` — `Xasm.prettyDefinition`
+- `src/meta/project/projectDumpFragments.ts` — 改 `formatPrettyFragmentStmts` → 新渲染函数
+- `src/meta/project/projectDumpMods.ts` — 改 `formatPrettyModDefinitions` → 新渲染函数
+- `src/meta/pretty/pretty.ts` — 入口定义（`formatPrettyExp`、`formatPrettyFragmentStmts`、`formatPrettyModDefinitions`、`formatPrettyModStmts`）
+- `src/basic/pretty/pretty.ts` — `B.formatPrettyDefinition`
+- `src/xasm/pretty/pretty.ts` — `Xasm.formatPrettyDefinition`
 
 ## 约束
 
@@ -77,7 +82,7 @@ AST (Exp/Stmt/Definition)
 2. `Ppml.format()` 已优化完毕，直接使用即可。
 3. 使用 `Ppml.concat` / `Ppml.group` / `Ppml.indent` / `Ppml.br` / `Ppml.text` 等构造文档树。
 4. 布局决策完全保留：
-   - keyword header length（`prettySyntax`，参见 `formatPrettySexp.ts` 和 `sexpConfig.ts`）
+   - keyword header length（`prettySyntax`，参见 `prettySexp.ts` 和 `sexpConfig.ts`）
    - short-operator 启发式（名字 <=3 字符的符号用不同缩进）
    - quote/unquote/quasiquote 前缀渲染
    - `@set` / `@square-bracket` 特殊处理
