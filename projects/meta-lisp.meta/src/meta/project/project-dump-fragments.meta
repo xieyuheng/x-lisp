@@ -15,5 +15,6 @@
                                 "dump")))
         (= frag-dir (path-join out-dir "fragments"))
         (= dump-path (@string frag-dir "/" name "." tag ".dump"))
+        (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
         (fs-ensure-file dump-path)
         (fs-write dump-path code)))))
