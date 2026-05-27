@@ -2,4 +2,6 @@
 
 (define-struct mod-fragment-t
   (mod-name symbol-t)
-  (stmts (list-t stmt-t)))
+  (path string-t)
+  (stmts (list-t stmt-t))
+  (desugared-stmts (list-t stmt-t)))
