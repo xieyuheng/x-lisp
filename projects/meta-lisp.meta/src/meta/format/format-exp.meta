@@ -57,6 +57,8 @@
      (@string "(let (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((let-star-exp bindings body location)
      (@string "(let* (" (format-bindings bindings) ") " (format-exp body) ")"))
+    ((begin1-exp head body location)
+     (@string "(begin " (format-exp head) " " (format-exp body) ")"))
     ((begin-exp sequence location)
      (@string "(begin " (format-exps sequence) ")"))
     ((quote-exp sexp location)
@@ -102,8 +104,7 @@
        (if (equal? (list-length targets) 1)
          (@string "(match " (format-exp (car targets)) " " clauses-str ")")
          (@string "(match-many (" (format-exps targets) ") " clauses-str ")"))))
-    (else
-      (format-as-sexp exp))))
+    ))
 
 (define (format-exps exps)
   (string-join " " (list-map format-exp exps)))
