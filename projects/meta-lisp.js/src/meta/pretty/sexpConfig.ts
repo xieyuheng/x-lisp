@@ -1,6 +1,6 @@
-import * as S from "@xieyuheng/sexp.js"
-
-export const sexpConfig: S.Config = {
+export const sexpConfig: {
+  keywords: Array<[string, number]>
+} = {
   keywords: [
     ["import", 1],
     ["import-as", 0],

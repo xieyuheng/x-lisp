@@ -1,6 +1,6 @@
-import * as S from "@xieyuheng/sexp.js"
-
-export const sexpConfig: S.Config = {
+export const sexpConfig: {
+  keywords: Array<[string, number]>
+} = {
   keywords: [
     ["define-function", 1],
     ["define-variable", 1],
