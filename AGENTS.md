@@ -31,11 +31,12 @@ title: AI Agent Instructions
 项目顶层的 `scripts/` 中包含工具脚本：
 
 ```bash
-sh scripts/clean.sh  # 清理
-sh scripts/format.sh # 格式化
-sh scripts/build.sh  # 构建
-sh scripts/test.sh   # 测试
-sh scripts/all.sh    # 完整流程
+sh scripts/prepare.sh  # 准备（下载并安装依赖）
+sh scripts/clean.sh    # 清理
+sh scripts/format.sh   # 格式化
+sh scripts/build.sh    # 构建
+sh scripts/test.sh     # 测试
+sh scripts/all.sh      # 完整流程
 ```
 
 `projects/` 中的每个 project

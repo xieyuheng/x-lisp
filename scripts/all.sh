@@ -2,6 +2,7 @@
 
 set -e
 
+sh scripts/prepare.sh
 sh scripts/clean.sh
 sh scripts/format.sh
 sh scripts/build.sh
