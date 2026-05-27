@@ -70,7 +70,7 @@ function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
         stmt.name,
         stmt.parameters,
         M.desugar(stmt.representationType),
-        stmt.interfaceFunctions.map((f) => ({
+        stmt.interfaceEntries.map((f) => ({
           ...f,
           type: M.desugar(f.type),
         })),

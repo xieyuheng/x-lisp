@@ -240,6 +240,12 @@ export type PreDataField = {
   location: SourceLocation
 }
 
+export type PreInterfaceEntry<E> = {
+  name: string
+  type: E
+  location: SourceLocation
+}
+
 export type PreDataConstructor = {
   name: string
   fields: Array<PreDataField>
@@ -271,11 +277,7 @@ export type DefineOpaqueTypeStmt<E> = {
   name: string
   parameters: Array<string>
   representationType: E
-  interfaceFunctions: Array<{
-    name: string
-    type: E
-    location: SourceLocation
-  }>
+  interfaceEntries: Array<PreInterfaceEntry<E>>
   location: SourceLocation
 }
 
@@ -283,11 +285,7 @@ export function DefineOpaqueTypeStmt<E>(
   name: string,
   parameters: Array<string>,
   representationType: E,
-  interfaceFunctions: Array<{
-    name: string
-    type: E
-    location: SourceLocation
-  }>,
+  interfaceEntries: Array<PreInterfaceEntry<E>>,
   location: SourceLocation,
 ): DefineOpaqueTypeStmt<E> {
   return {
@@ -295,7 +293,7 @@ export function DefineOpaqueTypeStmt<E>(
     name,
     parameters,
     representationType,
-    interfaceFunctions,
+    interfaceEntries,
     location,
   }
 }

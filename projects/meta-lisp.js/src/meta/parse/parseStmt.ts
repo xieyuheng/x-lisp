@@ -111,7 +111,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     { location },
   ) => {
     const typeConstructor = parseTypeConstructor(head)
-    const interfaceFunctions = S.asListSexp(ifaces).elements.map((iface) => {
+    const interfaceEntries = S.asListSexp(ifaces).elements.map((iface) => {
       const parts = S.asListSexp(iface).elements
       return {
         name: S.asSymbolSexp(parts[0]).content,
@@ -123,7 +123,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
       typeConstructor.name,
       typeConstructor.parameters,
       parseExp(representation),
-      interfaceFunctions,
+      interfaceEntries,
       location,
     )
   },

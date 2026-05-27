@@ -70,7 +70,7 @@ export function formatStmt<E>(
           ? `(${stmt.name} ${stmt.parameters.join(" ")})`
           : stmt.name
       const repr = formatBody(stmt.representationType)
-      const ifaces = stmt.interfaceFunctions
+      const ifaces = stmt.interfaceEntries
         .map(({ name, type }) => `(${name} ${formatBody(type)})`)
         .join(" ")
       return `(define-opaque-type ${params} ${repr} ${ifaces})`
