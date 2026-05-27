@@ -219,7 +219,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       name,
       typeConstructor,
       stmt.representationType,
-      stmt.interfaceFunctions.map((f) => ({
+      stmt.interfaceEntries.map((f) => ({
         name: f.name,
         type: f.type,
         location: f.location,
@@ -249,7 +249,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       )
     }
 
-    for (const iface of stmt.interfaceFunctions) {
+    for (const iface of stmt.interfaceEntries) {
       const wrappedType = M.PolymorphicTerm(
         stmt.parameters,
         iface.type,

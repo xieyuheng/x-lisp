@@ -98,7 +98,7 @@ function moduleImportStmt(
         stmt.name,
         stmt.parameters,
         moduleImportTerm(newScope, stmt.representationType),
-        stmt.interfaceFunctions.map((f) => ({
+        stmt.interfaceEntries.map((f) => ({
           ...f,
           type: moduleImportTerm(newScope, f.type),
         })),
