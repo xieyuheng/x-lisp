@@ -9,6 +9,6 @@
      (make-pair 'declare-primitive-function 2)
      (make-pair 'declare-primitive-variable 1)]))
 
-(claim pretty-definition (-> int-t definition-t string-t))
-(define (pretty-definition width definition)
+(claim format-pretty-definition (-> int-t definition-t string-t))
+(define (format-pretty-definition width definition)
   (ppml/format-pretty-sexp-by-format format-definition (sexp-config) width definition))

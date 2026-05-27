@@ -14,7 +14,7 @@ export function projectDumpFragments(project: M.Project, tag: string): void {
 
   for (const fragment of project.fragments.values()) {
     const name = Path.relative(sourceDirectory, fragment.path)
-    const stmtsCode = M.prettyFragmentStmts(textWidth, fragment.stmts)
+    const stmtsCode = M.formatPrettyFragmentStmts(textWidth, fragment.stmts)
     const code = `${stmtsCode}`
     const directory = Path.join(
       M.projectOutputDirectory(project),

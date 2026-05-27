@@ -7,6 +7,6 @@
      (make-pair 'define-test 1)
      (make-pair 'block 1)]))
 
-(claim pretty-definition (-> int-t definition-t string-t))
-(define (pretty-definition width definition)
+(claim format-pretty-definition (-> int-t definition-t string-t))
+(define (format-pretty-definition width definition)
   (ppml/format-pretty-sexp-by-format format-definition (basic-sexp-config) width definition))

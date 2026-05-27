@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import { formatDefinition } from "../format/index.ts"
 import { sexpConfig } from "./sexpConfig.ts"
 
-export const prettyDefinition = S.formatPrettySexpByFormat(
+export const formatPrettyDefinition = S.formatPrettySexpByFormat(
   formatDefinition,
   sexpConfig,
 )

@@ -11,7 +11,7 @@ import * as M from "../index.ts"
 
 export function projectDumpMods(project: M.Project, tag: string): void {
   for (const mod of project.mods.values()) {
-    const code = M.prettyModDefinitions(textWidth, mod)
+    const code = M.formatPrettyModDefinitions(textWidth, mod)
     projectDumpCode(project, mod, tag, code)
   }
 }

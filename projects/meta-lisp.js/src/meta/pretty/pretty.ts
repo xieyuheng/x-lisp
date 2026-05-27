@@ -2,16 +2,19 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { sexpConfig } from "./sexpConfig.ts"
 
-export const prettyExp = S.formatPrettySexpByFormat(M.formatExp, sexpConfig)
-export const prettyModStmts = S.formatPrettySexpByFormat(
+export const formatPrettyExp = S.formatPrettySexpByFormat(
+  M.formatExp,
+  sexpConfig,
+)
+export const formatPrettyModStmts = S.formatPrettySexpByFormat(
   M.formatModStmts,
   sexpConfig,
 )
-export const prettyFragmentStmts = S.formatPrettySexpByFormat(
+export const formatPrettyFragmentStmts = S.formatPrettySexpByFormat(
   M.formatFragmentStmts,
   sexpConfig,
 )
-export const prettyModDefinitions = S.formatPrettySexpByFormat(
+export const formatPrettyModDefinitions = S.formatPrettySexpByFormat(
   M.formatModDefinitions,
   sexpConfig,
 )

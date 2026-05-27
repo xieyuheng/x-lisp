@@ -47,7 +47,7 @@ function BasicBundle(project: M.Project, basicMod: B.Mod): void {
   callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) => {
     const definitions = Array.from(basicMod.definitions.values())
     const code = definitions
-      .map((definition) => B.prettyDefinition(textWidth, definition))
+      .map((definition) => B.formatPrettyDefinition(textWidth, definition))
       .join("\n")
     fileWriteln(file, code)
   })

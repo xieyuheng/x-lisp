@@ -1,5 +1,5 @@
 ---
-title: direct AST to Ppml.Node renderer
+title: direct AST to Ppml.Node prettier
 author: opencode/big-pickle
 date: 2026-05-27
 ---
@@ -17,7 +17,7 @@ date: 2026-05-27
 AST (Exp/Stmt/Definition)
   → format*()                sexp 字符串   (快, 36ms)
   → parseSexps()             Sexp[]       (慢, 24.8s)
-  → renderSexp()             Ppml.Node    (快, 102ms)
+  → prettySexp()             Ppml.Node    (快, 102ms)
   → Ppml.format()            string       (快, 106ms)
 ```
 
@@ -33,7 +33,7 @@ AST (Exp/Stmt/Definition)
 
 ```
 AST (Exp/Stmt/Definition)
-  → render*()                Ppml.Node    (新实现)
+  → pretty*()                Ppml.Node    (新实现)
   → Ppml.format()            string       (已有，已优化)
 ```
 
@@ -56,7 +56,7 @@ AST (Exp/Stmt/Definition)
 - `../../ppml.js/src/ppml/format.ts` — `Ppml.format(node, { width })`
 
 ### 参考实现（sexp 渲染器，需模仿其布局策略）
-- `../../sexp.js/src/pretty/formatPrettySexp.ts` — `renderSexp` 将 `S.Sexp` 映射为 `Ppml.Node`
+- `../../sexp.js/src/pretty/formatPrettySexp.ts` — `prettySexp` 将 `S.Sexp` 映射为 `Ppml.Node`
 - `../../sexp.js/src/pretty/formatPrettySexpByFormat.ts` — **待替换的入口**
 
 ### AST 相关
@@ -77,8 +77,8 @@ AST (Exp/Stmt/Definition)
 2. `Ppml.format()` 已优化完毕，直接使用即可。
 3. 使用 `Ppml.concat` / `Ppml.group` / `Ppml.indent` / `Ppml.br` / `Ppml.text` 等构造文档树。
 4. 布局决策完全保留：
-   - keyword header length（`renderSyntax`，参见 `formatPrettySexp.ts` 和 `sexpConfig.ts`）
+   - keyword header length（`prettySyntax`，参见 `formatPrettySexp.ts` 和 `sexpConfig.ts`）
    - short-operator 启发式（名字 <=3 字符的符号用不同缩进）
    - quote/unquote/quasiquote 前缀渲染
    - `@set` / `@square-bracket` 特殊处理
-5. 新文件建议放在 `src/meta/pretty/` 下（如 `renderExp.ts`、`renderStmt.ts`、`renderDefinition.ts` 等）。
+5. 新文件建议放在 `src/meta/pretty/` 下（如 `prettyExp.ts`、`prettyStmt.ts`、`prettyDefinition.ts` 等）。
