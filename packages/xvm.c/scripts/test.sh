@@ -2,5 +2,5 @@
 
 set -e
 
-bash scripts/run-tests.sh
+./scripts/run-tests.sh
 

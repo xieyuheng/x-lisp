@@ -26,6 +26,6 @@ BASE_REAL="$(cd "$HERE/$BASE" && pwd -P)"
 
 cd "$HERE/$SUFFIXED"
 
-[ -f scripts/prepare.sh ] && bash scripts/prepare.sh
+[ -f scripts/prepare.sh ] && ./scripts/prepare.sh
 
 exec "$SHELL"

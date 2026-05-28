@@ -6,4 +6,4 @@ set -e
 ./meta-lisp.js build
 ./meta-lisp.js test --profile
 
-bash scripts/test-cli.sh > scripts/test-cli.sh.out
+./scripts/test-cli.sh > scripts/test-cli.sh.out
