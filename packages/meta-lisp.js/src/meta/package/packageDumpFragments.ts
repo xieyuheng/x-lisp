@@ -6,7 +6,6 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
-import { textWidth } from "../../config.ts"
 import * as M from "../index.ts"
 
 export function packageDumpFragments(pkg: M.Package, tag: string): void {
@@ -14,6 +13,7 @@ export function packageDumpFragments(pkg: M.Package, tag: string): void {
 
   for (const fragment of pkg.fragments.values()) {
     const name = Path.relative(sourceDirectory, fragment.path)
+    const textWidth = 64
     const stmtsCode = M.formatPrettyFragmentStmts(textWidth, fragment.stmts)
     const code = `${stmtsCode}`
     const directory = Path.join(

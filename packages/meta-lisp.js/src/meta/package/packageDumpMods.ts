@@ -6,11 +6,11 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
-import { textWidth } from "../../config.ts"
 import * as M from "../index.ts"
 
 export function packageDumpMods(pkg: M.Package, tag: string): void {
   for (const mod of pkg.mods.values()) {
+    const textWidth = 64
     const code = M.formatPrettyModDefinitions(textWidth, mod)
     packageDumpCode(pkg, mod, tag, code)
   }

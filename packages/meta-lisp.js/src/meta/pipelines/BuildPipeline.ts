@@ -7,7 +7,6 @@ import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B from "../../basic/index.ts"
-import { textWidth } from "../../config.ts"
 import * as Xasm from "../../xasm/index.ts"
 import * as M from "../index.ts"
 
@@ -46,6 +45,7 @@ function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) => {
     const definitions = Array.from(basicMod.definitions.values())
+    const textWidth = 64
     const code = definitions
       .map((definition) => B.formatPrettyDefinition(textWidth, definition))
       .join("\n")
