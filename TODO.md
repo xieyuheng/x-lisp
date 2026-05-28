@@ -1,3 +1,4 @@
+root scripts/ should call packages scripts/
 setup clean.sh for meta packages
 
 # package
