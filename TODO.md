@@ -1,3 +1,5 @@
+ensure complete scripts/ for js packages
+ensure complete scripts/ for meta packages
 root scripts/ should call packages scripts/
 setup clean.sh for meta packages
 

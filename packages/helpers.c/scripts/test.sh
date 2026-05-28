@@ -3,5 +3,3 @@
 set -e
 
 make test
-
-./scripts/run-tests.sh
