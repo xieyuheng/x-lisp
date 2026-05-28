@@ -21,5 +21,5 @@ export function isBuiltinMod(mod: M.Mod): boolean {
 }
 
 export function isBuiltinPackage(pkg: M.Package): boolean {
-  return pkg.config.name === "meta-builtin.meta"
+  return pkg.config.name === "meta-builtin"
 }
