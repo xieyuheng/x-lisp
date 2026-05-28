@@ -6,65 +6,65 @@
 (define (pretty-stmt pretty-body stmt)
   (match stmt
     ((import-stmt mod-name names location)
-     (pretty-syntax "import"
+     (ppml/pretty-syntax "import"
        [(ppml/text (symbol-to-string mod-name))]
        (list-map (lambda (n) (ppml/text (symbol-to-string n))) names)))
     ((import-as-stmt mod-name prefix location)
-     (pretty-syntax "import-as"
+     (ppml/pretty-syntax "import-as"
        [(ppml/text (symbol-to-string mod-name))
         (ppml/text (symbol-to-string prefix))] []))
     ((import-all-stmt mod-name location)
-     (pretty-syntax "import-all"
+     (ppml/pretty-syntax "import-all"
        [(ppml/text (symbol-to-string mod-name))] []))
     ((define-function-stmt name parameters body location)
      (let ((name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters))))
-       (pretty-syntax "define"
+       (ppml/pretty-syntax "define"
          [(if (list-empty? parameters)
             (ppml/text name-str)
             (ppml/text (@string "(" name-str " " params-str ")")))]
          [(pretty-body body)])))
     ((define-variable-stmt name body location)
-     (pretty-syntax "define"
+     (ppml/pretty-syntax "define"
        [(ppml/text (symbol-to-string name))]
        [(pretty-body body)]))
     ((define-test-stmt name body location)
-     (pretty-syntax "define-test"
+     (ppml/pretty-syntax "define-test"
        [(ppml/text (symbol-to-string name))]
        [(pretty-body body)]))
     ((define-type-stmt name parameters body location)
      (let ((name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters))))
-       (pretty-syntax "define-type"
+       (ppml/pretty-syntax "define-type"
          [(if (list-empty? parameters)
             (ppml/text name-str)
             (ppml/text (@string "(" name-str " " params-str ")")))]
          [(pretty-body body)])))
     ((define-enum-stmt type-constructor data-constructors location)
-     (pretty-syntax "define-enum"
+     (ppml/pretty-syntax "define-enum"
        [(pretty-pre-type-constructor type-constructor)]
        (list-map pretty-pre-data-constructor data-constructors)))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (pretty-syntax "define-algebraic-type"
+     (ppml/pretty-syntax "define-algebraic-type"
        [(pretty-pre-type-constructor type-constructor)]
        (list-map (lambda (ctor) (pretty-algebraic-type-constructor pretty-body ctor))
                  data-constructors)))
     ((define-struct-stmt type-constructor fields location)
-     (pretty-syntax "define-struct"
+     (ppml/pretty-syntax "define-struct"
        [(pretty-pre-type-constructor type-constructor)]
        (list-map pretty-pre-data-field fields)))
     ((define-struct-star-stmt type-constructor data-constructor location)
-     (pretty-syntax "define-struct*"
+     (ppml/pretty-syntax "define-struct*"
        [(pretty-pre-type-constructor type-constructor)]
        [(pretty-pre-data-constructor data-constructor)]))
     ((define-record-type-stmt type-constructor data-constructor location)
-     (pretty-syntax "define-record-type"
+     (ppml/pretty-syntax "define-record-type"
        [(pretty-pre-type-constructor type-constructor)]
        [(pretty-algebraic-type-constructor pretty-body data-constructor)]))
     ((define-opaque-type-stmt name parameters representation-type interface-entries location)
      (let ((name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters))))
-       (pretty-syntax "define-opaque-type"
+       (ppml/pretty-syntax "define-opaque-type"
          [(if (list-empty? parameters)
             (ppml/text name-str)
             (ppml/text (@string "(" name-str " " params-str ")")))]
@@ -72,34 +72,34 @@
                (list-map (lambda (e) (pretty-pre-interface-entry pretty-body e))
                          interface-entries)))))
     ((claim-stmt name type location)
-     (pretty-syntax "claim"
+     (ppml/pretty-syntax "claim"
        [(ppml/text (symbol-to-string name))]
        [(pretty-body type)]))
     ((claim-type-stmt name location)
-     (pretty-syntax "claim-type"
+     (ppml/pretty-syntax "claim-type"
        [(ppml/text (symbol-to-string name))] []))
     ((admit-stmt name type location)
-     (pretty-syntax "admit"
+     (ppml/pretty-syntax "admit"
        [(ppml/text (symbol-to-string name))]
        [(pretty-body type)]))
     ((private-stmt names location)
-     (pretty-syntax "private" []
+     (ppml/pretty-syntax "private" []
        (list-map (lambda (n) (ppml/text (symbol-to-string n))) names)))
     ((exempt-stmt names location)
-     (pretty-syntax "exempt" []
+     (ppml/pretty-syntax "exempt" []
        (list-map (lambda (n) (ppml/text (symbol-to-string n))) names)))
     ((declare-module-stmt name location)
-     (pretty-syntax "module"
+     (ppml/pretty-syntax "module"
        [(ppml/text (symbol-to-string name))] []))
     ((declare-primitive-function-stmt name arity location)
-     (pretty-syntax "declare-primitive-function"
+     (ppml/pretty-syntax "declare-primitive-function"
        [(ppml/text (symbol-to-string name))
         (ppml/text (format-as-sexp arity))] []))
     ((declare-primitive-variable-stmt name location)
-     (pretty-syntax "declare-primitive-variable"
+     (ppml/pretty-syntax "declare-primitive-variable"
        [(ppml/text (symbol-to-string name))] []))
     ((comment-stmt content location)
-     (pretty-application (just "@comment")
+     (ppml/pretty-application (just "@comment")
        [(ppml/text (format-sexp content))]))))
 
 ;; Helpers

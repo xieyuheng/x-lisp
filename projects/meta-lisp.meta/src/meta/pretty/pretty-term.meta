@@ -19,15 +19,15 @@
      (ppml/text (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
     ((lambda-term parameters body location)
      (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
-       (pretty-syntax "lambda"
+       (ppml/pretty-syntax "lambda"
          [(ppml/text (@string "(" params-str ")"))]
          [(pretty-term body)])))
     ((apply-term target args location)
      (let ((target-op (term-op-string target))
            (all-elements (cons (pretty-term target) (list-map pretty-term args))))
-       (pretty-application target-op all-elements)))
+       (ppml/pretty-application target-op all-elements)))
     ((let1-term name rhs body location)
-     (pretty-syntax "let"
+     (ppml/pretty-syntax "let"
        []
        [(ppml/group
           [(ppml/text "(")
@@ -37,27 +37,27 @@
            (ppml/text ")")])
         (pretty-term body)]))
     ((begin1-term head body location)
-     (pretty-syntax "begin"
+     (ppml/pretty-syntax "begin"
        []
        [(pretty-term head)
         (pretty-term body)]))
     ((if-term condition consequent alternative location)
-     (pretty-syntax "if"
+     (ppml/pretty-syntax "if"
        []
        [(pretty-term condition)
         (pretty-term consequent)
         (pretty-term alternative)]))
     ((arrow-term arg-types ret-type location)
-     (pretty-application (just "->")
+     (ppml/pretty-application (just "->")
        (list-append (list-map pretty-term arg-types)
                     [(pretty-term ret-type)])))
     ((the-term type instance location)
-     (pretty-syntax "the"
+     (ppml/pretty-syntax "the"
        [(pretty-term type)]
        [(pretty-term instance)]))
     ((polymorphic-term parameters body location)
      (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
-       (pretty-syntax "polymorphic"
+       (ppml/pretty-syntax "polymorphic"
          [(ppml/text (@string "(" params-str ")"))]
          [(pretty-term body)])))))
 

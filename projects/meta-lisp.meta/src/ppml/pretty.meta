@@ -1,16 +1,18 @@
-(module meta)
+(module ppml)
 
 (claim pretty-syntax
   (-> string-t (list-t ppml/node-t) (list-t ppml/node-t) ppml/node-t))
 (define (pretty-syntax name header body)
   (let ((head-node (ppml/indent 4
-                     [(ppml/wrap (cons (ppml/text name) header))]))
+                                [(ppml/wrap (cons (ppml/text name) header))]))
         (body-node (if (list-empty? body)
                      (ppml/nil)
                      (ppml/indent 2
-                       [(ppml/br)
-                        (ppml/flex body)]))))
-    (ppml/group [(ppml/text "(") head-node body-node (ppml/text ")")])))
+                                  [(ppml/br)
+                                   (ppml/flex body)]))))
+    (ppml/group [(ppml/text "(")
+                 head-node body-node
+                 (ppml/text ")")])))
 
 (claim pretty-application
   (-> (maybe-t string-t) (list-t ppml/node-t) ppml/node-t))
@@ -27,18 +29,18 @@
                                head
                                (ppml/group
                                  [(ppml/indent indentation
-                                               [head
-                                                (ppml/text " ")
-                                                (ppml/flex rest)])]))))
+                                    [head
+                                     (ppml/text " ")
+                                     (ppml/flex rest)])]))))
              (ppml/group [(ppml/text "(") body-node (ppml/text ")")]))
            (let ((body-node (ppml/group
                               [(ppml/indent 1
-                                            [(ppml/flex elements)])])))
+                                 [(ppml/flex elements)])])))
              (ppml/group [(ppml/text "(") body-node (ppml/text ")")])))))
       ((nothing)
        (let ((body-node (ppml/group
                           [(ppml/indent 1
-                                        [(ppml/flex elements)])])))
+                             [(ppml/flex elements)])])))
          (ppml/group [(ppml/text "(") body-node (ppml/text ")")]))))))
 
 (claim pretty-set
@@ -58,5 +60,5 @@
     (ppml/group [(ppml/text "[") (ppml/text "]")])
     (let ((body-node (ppml/group
                        [(ppml/indent 1
-                          [(ppml/flex elements)])])))
+                                     [(ppml/flex elements)])])))
       (ppml/group [(ppml/text "[") body-node (ppml/text "]")]))))

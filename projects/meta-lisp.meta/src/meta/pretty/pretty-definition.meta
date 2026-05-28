@@ -5,41 +5,41 @@
   (match definition
     ((primitive-function-definition mod name arity fn location)
      (let ((claim-node (pretty-definition-claim mod name))
-           (body (pretty-syntax "declare-primitive-function"
+           (body (ppml/pretty-syntax "declare-primitive-function"
                    [(ppml/text (symbol-to-string name))
                     (ppml/text (format-as-sexp arity))] [])))
        (if (not (equal? claim-node ""))
          [(ppml/text claim-node) body]
          [body])))
     ((primitive-function-declaration mod name arity location)
-     [(pretty-syntax "declare-primitive-function"
+     [(ppml/pretty-syntax "declare-primitive-function"
         [(ppml/text (symbol-to-string name))
          (ppml/text (format-as-sexp arity))] [])])
     ((primitive-variable-definition mod name value location)
      (let ((claim-node (pretty-definition-claim mod name))
-           (body (pretty-syntax "declare-primitive-variable"
+           (body (ppml/pretty-syntax "declare-primitive-variable"
                    [(ppml/text (symbol-to-string name))] [])))
        (if (not (equal? claim-node ""))
          [(ppml/text claim-node) body]
          [body])))
     ((primitive-variable-declaration mod name location)
-     [(pretty-syntax "declare-primitive-variable"
+     [(ppml/pretty-syntax "declare-primitive-variable"
         [(ppml/text (symbol-to-string name))] [])])
      ((function-definition mod name parameters body location)
       (let* ((claim-node (pretty-definition-claim mod name))
-            (name-str (symbol-to-string name))
-            (params-str (string-join " " (list-map symbol-to-string parameters)))
-            (define-node (pretty-syntax "define"
-                   [(if (list-empty? parameters)
-                      (ppml/text name-str)
-                      (ppml/text (@string "(" name-str " " params-str ")")))]
-                   [(pretty-term body)])))
+             (name-str (symbol-to-string name))
+             (params-str (string-join " " (list-map symbol-to-string parameters)))
+             (define-node (ppml/pretty-syntax "define"
+                                              [(if (list-empty? parameters)
+                                                 (ppml/text name-str)
+                                                 (ppml/text (@string "(" name-str " " params-str ")")))]
+                                              [(pretty-term body)])))
         (if (not (equal? claim-node ""))
           [(ppml/text claim-node) define-node]
           [define-node])))
      ((variable-definition mod name body location)
       (let ((claim-node (pretty-definition-claim mod name))
-            (define-node (pretty-syntax "define"
+            (define-node (ppml/pretty-syntax "define"
                            [(ppml/text (symbol-to-string name))]
                            [(pretty-term body)])))
         (if (not (equal? claim-node ""))
@@ -47,7 +47,7 @@
           [define-node])))
      ((test-definition mod name body location)
       (let ((claim-node (pretty-definition-claim mod name))
-            (define-node (pretty-syntax "define-test"
+            (define-node (ppml/pretty-syntax "define-test"
                            [(ppml/text (symbol-to-string name))]
                            [(pretty-term body)])))
         (if (not (equal? claim-node ""))
@@ -57,7 +57,7 @@
       (let* ((claim-node (pretty-definition-claim mod name))
            (name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters)))
-           (body-node (pretty-syntax "define-type"
+           (body-node (ppml/pretty-syntax "define-type"
                         [(if (list-empty? parameters)
                            (ppml/text name-str)
                            (ppml/text (@string "(" name-str " " params-str ")")))]
@@ -69,7 +69,7 @@
       (let* ((tc-params (type-constructor-parameters type-constructor))
            (name-str (symbol-to-string (type-constructor-name type-constructor)))
            (params-str (string-join " " (list-map symbol-to-string tc-params))))
-       [(pretty-syntax "define-enum"
+       [(ppml/pretty-syntax "define-enum"
           [(if (list-empty? tc-params)
              (ppml/text name-str)
              (ppml/text (@string "(" name-str " " params-str ")")))]
@@ -78,7 +78,7 @@
       (let* ((tc-params (type-constructor-parameters type-constructor))
            (name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string tc-params))))
-       [(pretty-syntax "define-opaque-type"
+       [(ppml/pretty-syntax "define-opaque-type"
           [(if (list-empty? tc-params)
              (ppml/text name-str)
              (ppml/text (@string "(" name-str " " params-str ")")))]

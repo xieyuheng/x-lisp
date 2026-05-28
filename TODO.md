@@ -1,5 +1,8 @@
 # self-hosting
 
+[meta-lisp.meta] remove pretty-set -- use pretty-syntax
+[meta-lisp.meta] fix the use of ./meta-lisp.meta --dump
+
 [meta-lisp.meta] [review] parse-exp.meta
 [meta-lisp.meta] [review] parse-stmt.meta
 [meta-lisp.meta] [review] 010-expand-pass.meta

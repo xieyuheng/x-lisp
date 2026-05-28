@@ -4,29 +4,29 @@
 (define (pretty-definition definition)
   (match definition
     ((primitive-function-declaration mod name arity location)
-     [(pretty-syntax "declare-primitive-function"
+     [(ppml/pretty-syntax "declare-primitive-function"
         [(ppml/text (symbol-to-string name))
          (ppml/text (format-as-sexp arity))] [])])
     ((primitive-variable-declaration mod name location)
-     [(pretty-syntax "declare-primitive-variable"
+     [(ppml/pretty-syntax "declare-primitive-variable"
         [(ppml/text (symbol-to-string name))] [])])
     ((function-definition mod name parameters blocks location)
-     [(pretty-syntax "define-function"
+     [(ppml/pretty-syntax "define-function"
         [(ppml/text (@string "(" (symbol-to-string name) " "
                       (string-join " " (list-map symbol-to-string parameters)) ")"))]
         (list-map pretty-block (hash-values blocks)))])
     ((variable-definition mod name blocks location)
-     [(pretty-syntax "define-variable"
+     [(ppml/pretty-syntax "define-variable"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-block (hash-values blocks)))])
     ((test-definition mod name blocks location)
-     [(pretty-syntax "define-test"
+     [(ppml/pretty-syntax "define-test"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-block (hash-values blocks)))])))
 
 (define (pretty-block block)
   (= label-str (symbol-to-string (block-label block)))
   (= instrs (block-instrs block))
-  (pretty-syntax "block"
+  (ppml/pretty-syntax "block"
     [(ppml/text label-str)]
     (list-map pretty-instr instrs)))

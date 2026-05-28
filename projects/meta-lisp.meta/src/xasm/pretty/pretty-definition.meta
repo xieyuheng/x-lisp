@@ -4,22 +4,22 @@
 (define (pretty-definition definition)
   (match definition
     ((primitive-function-declaration name arity location)
-     [(pretty-syntax "declare-primitive-function"
+     [(ppml/pretty-syntax "declare-primitive-function"
         [(ppml/text (symbol-to-string name))
          (ppml/text (format-as-sexp arity))] [])])
     ((primitive-variable-declaration name location)
-     [(pretty-syntax "declare-primitive-variable"
+     [(ppml/pretty-syntax "declare-primitive-variable"
         [(ppml/text (symbol-to-string name))] [])])
     ((function-definition name arity instrs location)
-     [(pretty-syntax "define-function"
+     [(ppml/pretty-syntax "define-function"
         [(ppml/text (symbol-to-string name))
          (ppml/text (format-as-sexp arity))]
         (list-map pretty-instr instrs))])
     ((variable-definition name instrs location)
-     [(pretty-syntax "define-variable"
+     [(ppml/pretty-syntax "define-variable"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-instr instrs))])
     ((test-definition name instrs location)
-     [(pretty-syntax "define-test"
+     [(ppml/pretty-syntax "define-test"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-instr instrs))])))

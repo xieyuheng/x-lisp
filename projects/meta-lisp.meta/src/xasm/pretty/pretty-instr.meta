@@ -11,4 +11,4 @@
       (ppml/group [(ppml/text "(") (ppml/text (symbol-to-string op)) (ppml/text ")")])
       (let ((all-elements (cons (ppml/text (symbol-to-string op))
                                (list-map pretty-operand operands))))
-        (pretty-application (just (symbol-to-string op)) all-elements)))))
+        (ppml/pretty-application (just (symbol-to-string op)) all-elements)))))
