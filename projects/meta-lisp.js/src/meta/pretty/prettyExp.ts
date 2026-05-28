@@ -225,7 +225,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "QuoteExp": {
-      return Ppml.concat(Ppml.text("'"), (Ppml.text(S.formatSexp(exp.sexp))))
+      return Ppml.concat(Ppml.text("'"), Ppml.text(S.formatSexp(exp.sexp)))
     }
 
     case "SexpExp": {
