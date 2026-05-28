@@ -1,37 +1,8 @@
 (module ppml)
 
-(define (make-spaces n)
-  (if (int-less-or-equal? n 0)
-    ""
-    (string-append " " (make-spaces (isub n 1)))))
-
-(define (fit-inline width nodes)
-  (fit-inline-step width 0 nodes))
-
-(define (fit-inline-step width cursor nodes)
-  (if (list-empty? nodes)
-    true
-    (let* ((node (list-head nodes))
-           (rest (list-tail nodes)))
-      (match node
-        ((null-node)
-         (fit-inline-step width cursor rest))
-        ((text-node content)
-         (let ((new-cursor (iadd cursor (string-length content))))
-           (if (int-greater? new-cursor width)
-             false
-             (fit-inline-step width new-cursor rest))))
-        ((append-node left right)
-         (fit-inline-step width cursor (cons left (cons right rest))))
-        ((indent-node length child)
-         (fit-inline-step width cursor (cons child rest)))
-        ((break-node space)
-         (let ((new-cursor (iadd cursor (string-length space))))
-           (if (int-greater? new-cursor width)
-             false
-             (fit-inline-step width new-cursor rest))))
-        ((group-node child)
-         (fit-inline-step width cursor (cons child rest)))))))
+(claim format-node (-> int-t node-t string-t))
+(define (format-node width node)
+  (layout width 0 [(make-entry 0 'inline node)] ""))
 
 (define (layout width cursor targets result)
   (if (list-empty? targets)
@@ -60,7 +31,7 @@
          (if (equal? mode 'inline)
            (layout width (iadd cursor (string-length space)) rest
                    (string-append result space))
-           (let ((new-line (string-append "\n" (make-spaces indentation))))
+           (let ((new-line (string-append "\n" (string-repeat indentation " "))))
              (layout width indentation rest
                      (string-append result new-line)))))
         ((group-node child)
@@ -72,6 +43,30 @@
                    (cons (make-entry indentation 'block child) rest)
                    result)))))))
 
-(claim format (-> int-t node-t string-t))
-(define (format width node)
-  (layout width 0 [(make-entry 0 'inline node)] ""))
+(define (fit-inline width nodes)
+  (fit-inline-step width 0 nodes))
+
+(define (fit-inline-step width cursor nodes)
+  (if (list-empty? nodes)
+    true
+    (let* ((node (list-head nodes))
+           (rest (list-tail nodes)))
+      (match node
+        ((null-node)
+         (fit-inline-step width cursor rest))
+        ((text-node content)
+         (let ((new-cursor (iadd cursor (string-length content))))
+           (if (int-greater? new-cursor width)
+             false
+             (fit-inline-step width new-cursor rest))))
+        ((append-node left right)
+         (fit-inline-step width cursor (cons left (cons right rest))))
+        ((indent-node length child)
+         (fit-inline-step width cursor (cons child rest)))
+        ((break-node space)
+         (let ((new-cursor (iadd cursor (string-length space))))
+           (if (int-greater? new-cursor width)
+             false
+             (fit-inline-step width new-cursor rest))))
+        ((group-node child)
+         (fit-inline-step width cursor (cons child rest)))))))

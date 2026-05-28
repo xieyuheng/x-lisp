@@ -1,7 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [ppml] rename format to formatNode
-
 [meta-lisp.meta] reorg xasm/ and basic/
 [meta-lisp.meta] fix the use of ./meta-lisp.meta --dump
 

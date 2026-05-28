@@ -4,4 +4,4 @@
 (define (format-pretty-definition width definition)
   (let ((nodes (pretty-definition definition)))
     (string-join "\n\n"
-      (list-map (lambda (node) (ppml/format width node)) nodes))))
+      (list-map (lambda (node) (ppml/format-node width node)) nodes))))
