@@ -1,17 +1,6 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import { prettyQuote, prettySet } from "./layout.ts"
-import { sexpConfig } from "./sexpConfig.ts"
-
-const keywordHeaderLength: Record<string, number> = {}
-for (const [name, len] of sexpConfig.keywords) {
-  keywordHeaderLength[name] = len
-}
-
-function getHeaderLength(name: string): number {
-  return keywordHeaderLength[name] ?? 0
-}
 
 export function prettyExp(exp: M.Exp): Ppml.Node {
   switch (exp.kind) {
@@ -224,7 +213,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "SetExp": {
-      return prettySet(exp.elements.map(prettyExp))
+      return Ppml.prettySyntax("@set", [], exp.elements.map(prettyExp))
     }
 
     case "HashExp": {
@@ -236,7 +225,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "QuoteExp": {
-      return prettyQuote(Ppml.text(S.formatSexp(exp.sexp)))
+      return Ppml.concat(Ppml.text("'"), (Ppml.text(S.formatSexp(exp.sexp))))
     }
 
     case "SexpExp": {

@@ -1,7 +1,6 @@
 # self-hosting
 
-[meta-lisp.js] inline helper functions in projects/meta-lisp.js/src/meta/pretty/layout.ts
-
+[meta-lisp.js] reorg format functions
 [meta-lisp.meta] reorg basic/
 [meta-lisp.meta] reorg xasm/
 [meta-lisp.meta] [refactor] ppml
