@@ -1,1 +1,4 @@
-export * from "./pretty.ts"
+export * from "./prettyDefinition.ts"
+export * from "./prettyExp.ts"
+export * from "./prettyMod.ts"
+export * from "./prettyStmt.ts"

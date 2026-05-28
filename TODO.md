@@ -1,7 +1,5 @@
 # self-hosting
 
-[meta-lisp.js] [meta] reorg `formatPrettyDefinition`
-
 [meta-lisp.meta] reorg basic/
 [meta-lisp.meta] reorg xasm/
 [meta-lisp.meta] [refactor] ppml
