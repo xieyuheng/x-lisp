@@ -1,6 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as M from "../index.ts"
-import { prettyApplication, prettySyntax, prettyText } from "./layout.ts"
 import { prettyTerm, prettyTermBody } from "./prettyExp.ts"
 
 export function prettyDefinition(definition: M.Definition): Array<Ppml.Node> {
@@ -17,78 +16,78 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
     case "PrimitiveFunctionDeclaration": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "declare-primitive-function",
         [],
-        [prettyText(definition.name), prettyText(definition.arity.toString())],
+        [Ppml.text(definition.name), Ppml.text(definition.arity.toString())],
       )
     }
 
     case "PrimitiveVariableDefinition":
     case "PrimitiveVariableDeclaration": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "declare-primitive-variable",
         [],
-        [prettyText(definition.name)],
+        [Ppml.text(definition.name)],
       )
     }
 
     case "FunctionDefinition": {
       const name = definition.name
       const paramNodes = definition.parameters.map(Ppml.text)
-      const defNode = prettyApplication([Ppml.text(name), ...paramNodes])
+      const defNode = Ppml.prettyApplication([Ppml.text(name), ...paramNodes])
       const body = prettyTermBody(definition.body)
-      return prettySyntax("define", [defNode], body)
+      return Ppml.prettySyntax("define", [defNode], body)
     }
 
     case "VariableDefinition": {
       const name = definition.name
       const body = prettyTermBody(definition.body)
-      return prettySyntax("define", [prettyText(name)], body)
+      return Ppml.prettySyntax("define", [Ppml.text(name)], body)
     }
 
     case "TestDefinition": {
       const name = definition.name
       const body = prettyTermBody(definition.body)
-      return prettySyntax("define-test", [prettyText(name)], body)
+      return Ppml.prettySyntax("define-test", [Ppml.text(name)], body)
     }
 
     case "TypeDefinition": {
       const name = definition.name
       const body = prettyTermBody(definition.body)
-      return prettySyntax("define-type", [prettyText(name)], body)
+      return Ppml.prettySyntax("define-type", [Ppml.text(name)], body)
     }
 
     case "AlgebraicTypeDefinition": {
       const ctorNodes = definition.dataConstructors.map(prettyDataConstructor)
       if (definition.typeConstructor.parameters.length === 0) {
-        return prettySyntax(
+        return Ppml.prettySyntax(
           "define-enum",
-          [prettyText(definition.name)],
+          [Ppml.text(definition.name)],
           ctorNodes,
         )
       } else {
-        const paramsNode = prettyApplication([
+        const paramsNode = Ppml.prettyApplication([
           Ppml.text(definition.name),
           ...definition.typeConstructor.parameters.map(Ppml.text),
         ])
-        return prettySyntax("define-enum", [paramsNode], ctorNodes)
+        return Ppml.prettySyntax("define-enum", [paramsNode], ctorNodes)
       }
     }
 
     case "OpaqueTypeDefinition": {
       const paramsNode =
         definition.typeConstructor.parameters.length > 0
-          ? prettyApplication([
+          ? Ppml.prettyApplication([
               Ppml.text(definition.name),
               ...definition.typeConstructor.parameters.map(Ppml.text),
             ])
-          : prettyText(definition.name)
+          : Ppml.text(definition.name)
       const reprNode = prettyTerm(definition.representationType)
       const ifaceNodes = definition.interfaceEntries.map((entry) =>
-        prettyApplication([Ppml.text(entry.name), prettyTerm(entry.type)]),
+        Ppml.prettyApplication([Ppml.text(entry.name), prettyTerm(entry.type)]),
       )
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define-opaque-type",
         [],
         [paramsNode, reprNode, ...ifaceNodes],
@@ -99,28 +98,35 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
 
 function prettyDataConstructor(dataConstructor: M.DataConstructor): Ppml.Node {
   if (dataConstructor.fields.length === 0) {
-    return prettyText(dataConstructor.name)
+    return Ppml.text(dataConstructor.name)
   } else {
     const fieldNodes = dataConstructor.fields.map((field) =>
-      prettyApplication([Ppml.text(field.name), prettyTerm(field.type)]),
+      Ppml.prettyApplication([Ppml.text(field.name), prettyTerm(field.type)]),
     )
-    return prettyApplication([prettyText(dataConstructor.name), ...fieldNodes])
+    return Ppml.prettyApplication([
+      Ppml.text(dataConstructor.name),
+      ...fieldNodes,
+    ])
   }
 }
 
 function prettyDefinitionType(mod: M.Mod, name: string): Ppml.Node | undefined {
   const claimedEntry = M.modLookupClaimedEntry(mod, name)
   if (claimedEntry) {
-    return prettySyntax(
+    return Ppml.prettySyntax(
       "claim",
-      [prettyText(name)],
+      [Ppml.text(name)],
       [prettyTerm(claimedEntry.exp)],
     )
   }
 
   const inferredType = M.modLookupInferredType(mod, name)
   if (inferredType) {
-    return prettySyntax("claim", [prettyText(name)], [prettyType(inferredType)])
+    return Ppml.prettySyntax(
+      "claim",
+      [Ppml.text(name)],
+      [prettyType(inferredType)],
+    )
   }
 
   return undefined
@@ -130,22 +136,22 @@ function prettyType(type: M.Type): Ppml.Node {
   switch (type.kind) {
     case "VarType": {
       if (type.serialNumber === 0n) {
-        return prettyText(type.name)
+        return Ppml.text(type.name)
       } else {
-        return prettyText(M.varTypeId(type))
+        return Ppml.text(M.varTypeId(type))
       }
     }
 
     case "CanonicalLabelType": {
-      return prettyText(`_.${type.serialNumber}`)
+      return Ppml.text(`_.${type.serialNumber}`)
     }
 
     case "TypeType": {
-      return prettyText("type-t")
+      return Ppml.text("type-t")
     }
 
     case "AtomType": {
-      return prettyText(`${type.name}-t`)
+      return Ppml.text(`${type.name}-t`)
     }
 
     case "ArrowType": {
@@ -153,29 +159,29 @@ function prettyType(type: M.Type): Ppml.Node {
       const argTypes = uncurried.argTypes.map(prettyType)
       const retType = prettyType(uncurried.retType)
       if (argTypes.length === 0) {
-        return prettyApplication([prettyText("->"), retType])
+        return Ppml.prettyApplication([Ppml.text("->"), retType])
       } else {
-        return prettyApplication([prettyText("->"), ...argTypes, retType])
+        return Ppml.prettyApplication([Ppml.text("->"), ...argTypes, retType])
       }
     }
 
     case "ListType": {
-      return prettyApplication([
-        prettyText("list-t"),
+      return Ppml.prettyApplication([
+        Ppml.text("list-t"),
         prettyType(type.elementType),
       ])
     }
 
     case "SetType": {
-      return prettyApplication([
-        prettyText("set-t"),
+      return Ppml.prettyApplication([
+        Ppml.text("set-t"),
         prettyType(type.elementType),
       ])
     }
 
     case "HashType": {
-      return prettyApplication([
-        prettyText("hash-t"),
+      return Ppml.prettyApplication([
+        Ppml.text("hash-t"),
         prettyType(type.keyType),
         prettyType(type.valueType),
       ])
@@ -186,10 +192,10 @@ function prettyType(type: M.Type): Ppml.Node {
       const name = type.typeConstructor.name
       const argTypes = type.argTypes.map(prettyType)
       if (argTypes.length === 0) {
-        return prettyText(`${modName}/${name}`)
+        return Ppml.text(`${modName}/${name}`)
       } else {
-        return prettyApplication([
-          prettyText(`${modName}/${name}`),
+        return Ppml.prettyApplication([
+          Ppml.text(`${modName}/${name}`),
           ...argTypes,
         ])
       }
@@ -198,7 +204,7 @@ function prettyType(type: M.Type): Ppml.Node {
     case "PolymorphicType": {
       const varTypes = type.varTypes.map(prettyType)
       const bodyType = prettyType(type.bodyType)
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "polymorphic",
         [],
         [

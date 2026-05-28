@@ -1,7 +1,6 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import { prettyApplication, prettySyntax, prettyText } from "./layout.ts"
 import { prettyExp } from "./prettyExp.ts"
 
 export function prettyStmt<E>(
@@ -10,51 +9,54 @@ export function prettyStmt<E>(
 ): Ppml.Node {
   switch (stmt.kind) {
     case "ImportStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "import",
-        [prettyText(stmt.modName)],
-        stmt.names.map(prettyText),
+        [Ppml.text(stmt.modName)],
+        stmt.names.map(Ppml.text),
       )
     }
 
     case "ImportAsStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "import-as",
         [],
-        [prettyText(stmt.modName), prettyText(stmt.prefix)],
+        [Ppml.text(stmt.modName), Ppml.text(stmt.prefix)],
       )
     }
 
     case "ImportAllStmt": {
-      return prettySyntax("import-all", [], [prettyText(stmt.modName)])
+      return Ppml.prettySyntax("import-all", [], [Ppml.text(stmt.modName)])
     }
 
     case "DefineFunctionStmt": {
       const paramNodes = stmt.parameters.map(Ppml.text)
-      const defNode = prettyApplication([Ppml.text(stmt.name), ...paramNodes])
-      return prettySyntax("define", [defNode], [prettyBody(stmt.body)])
+      const defNode = Ppml.prettyApplication([
+        Ppml.text(stmt.name),
+        ...paramNodes,
+      ])
+      return Ppml.prettySyntax("define", [defNode], [prettyBody(stmt.body)])
     }
 
     case "DefineVariableStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define",
-        [prettyText(stmt.name)],
+        [Ppml.text(stmt.name)],
         [prettyBody(stmt.body)],
       )
     }
 
     case "DefineTestStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define-test",
-        [prettyText(stmt.name)],
+        [Ppml.text(stmt.name)],
         [prettyBody(stmt.body)],
       )
     }
 
     case "DefineTypeStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define-type",
-        [prettyText(stmt.name)],
+        [Ppml.text(stmt.name)],
         [prettyBody(stmt.body)],
       )
     }
@@ -62,24 +64,24 @@ export function prettyStmt<E>(
     case "DefineEnumStmt": {
       const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
       const ctorNodes = stmt.dataConstructors.map(prettyPreDataConstructor)
-      return prettySyntax("define-enum", [typeNode], ctorNodes)
+      return Ppml.prettySyntax("define-enum", [typeNode], ctorNodes)
     }
 
     case "DefineStructStarStmt": {
       const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
       const ctorNode = prettyPreDataConstructor(stmt.dataConstructor)
-      return prettySyntax("define-struct*", [typeNode], [ctorNode])
+      return Ppml.prettySyntax("define-struct*", [typeNode], [ctorNode])
     }
 
     case "DefineStructStmt": {
       const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
       const fieldNodes = stmt.fields.map(prettyPreDataField)
-      return prettySyntax("define-struct", [typeNode], fieldNodes)
+      return Ppml.prettySyntax("define-struct", [typeNode], fieldNodes)
     }
 
     case "DefineRecordTypeStmt": {
       const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define-record-type",
         [typeNode],
         [prettyAlgebraicTypeConstructor(stmt.dataConstructor, prettyBody)],
@@ -91,22 +93,22 @@ export function prettyStmt<E>(
       const ctorNodes = stmt.dataConstructors.map((ctor) =>
         prettyAlgebraicTypeConstructor(ctor, prettyBody),
       )
-      return prettySyntax("define-algebraic-type", [typeNode], ctorNodes)
+      return Ppml.prettySyntax("define-algebraic-type", [typeNode], ctorNodes)
     }
 
     case "DefineOpaqueTypeStmt": {
       const paramsNode =
         stmt.parameters.length > 0
-          ? prettyApplication([
+          ? Ppml.prettyApplication([
               Ppml.text(stmt.name),
               ...stmt.parameters.map(Ppml.text),
             ])
-          : prettyText(stmt.name)
+          : Ppml.text(stmt.name)
       const reprNode = prettyBody(stmt.representationType)
       const ifaceNodes = stmt.interfaceEntries.map(({ name, type }) =>
-        prettyApplication([Ppml.text(name), prettyBody(type)]),
+        Ppml.prettyApplication([Ppml.text(name), prettyBody(type)]),
       )
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define-opaque-type",
         [],
         [paramsNode, reprNode, ...ifaceNodes],
@@ -114,58 +116,58 @@ export function prettyStmt<E>(
     }
 
     case "ClaimStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "claim",
-        [prettyText(stmt.name)],
+        [Ppml.text(stmt.name)],
         [prettyBody(stmt.type)],
       )
     }
 
     case "ClaimTypeStmt": {
-      return prettySyntax("claim-type", [prettyText(stmt.name)], [])
+      return Ppml.prettySyntax("claim-type", [Ppml.text(stmt.name)], [])
     }
 
     case "AdmitStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "admit",
-        [prettyText(stmt.name)],
+        [Ppml.text(stmt.name)],
         [prettyBody(stmt.type)],
       )
     }
 
     case "ExemptStmt": {
-      return prettySyntax("exempt", [], stmt.names.map(prettyText))
+      return Ppml.prettySyntax("exempt", [], stmt.names.map(Ppml.text))
     }
 
     case "PrivateStmt": {
-      return prettySyntax("private", [], stmt.names.map(prettyText))
+      return Ppml.prettySyntax("private", [], stmt.names.map(Ppml.text))
     }
 
     case "DeclareModuleStmt": {
-      return prettySyntax("module", [], [prettyText(stmt.name)])
+      return Ppml.prettySyntax("module", [], [Ppml.text(stmt.name)])
     }
 
     case "DeclarePrimitiveFunctionStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "declare-primitive-function",
         [],
-        [prettyText(stmt.name), prettyText(stmt.arity.toString())],
+        [Ppml.text(stmt.name), Ppml.text(stmt.arity.toString())],
       )
     }
 
     case "DeclarePrimitiveVariableStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "declare-primitive-variable",
         [],
-        [prettyText(stmt.name)],
+        [Ppml.text(stmt.name)],
       )
     }
 
     case "CommentStmt": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "@comment",
         [],
-        [prettyText(S.formatSexp(stmt.content))],
+        [Ppml.text(S.formatSexp(stmt.content))],
       )
     }
   }
@@ -173,9 +175,9 @@ export function prettyStmt<E>(
 
 function prettyPreTypeConstructor(tc: M.PreTypeConstructor): Ppml.Node {
   if (tc.parameters.length === 0) {
-    return prettyText(tc.name)
+    return Ppml.text(tc.name)
   } else {
-    return prettyApplication([
+    return Ppml.prettyApplication([
       Ppml.text(tc.name),
       ...tc.parameters.map(Ppml.text),
     ])
@@ -184,42 +186,42 @@ function prettyPreTypeConstructor(tc: M.PreTypeConstructor): Ppml.Node {
 
 function prettyPreDataConstructor(ctor: M.PreDataConstructor): Ppml.Node {
   if (ctor.fields.length === 0) {
-    return prettyText(ctor.name)
+    return Ppml.text(ctor.name)
   } else {
     const fieldNodes = ctor.fields.map(prettyPreDataField)
-    return prettyApplication([prettyText(ctor.name), ...fieldNodes])
+    return Ppml.prettyApplication([Ppml.text(ctor.name), ...fieldNodes])
   }
 }
 
 function prettyPreDataField(field: M.PreDataField): Ppml.Node {
-  return prettyApplication([Ppml.text(field.name), prettyExp(field.type)])
+  return Ppml.prettyApplication([Ppml.text(field.name), prettyExp(field.type)])
 }
 
 function prettyAlgebraicTypeConstructor<E>(
   ctor: M.AlgebraicTypeConstructor<E>,
   prettyBody: (body: E) => Ppml.Node,
 ): Ppml.Node {
-  const fieldGroup = prettyApplication([
-    prettyText(ctor.name),
+  const fieldGroup = Ppml.prettyApplication([
+    Ppml.text(ctor.name),
     ...ctor.fields.map((f) => prettyAlgebraicTypeField(f, prettyBody)),
   ])
   const accessorNodes = ctor.fields.map((field) => {
     if (field.modifierName !== undefined) {
-      return prettyApplication([
+      return Ppml.prettyApplication([
         Ppml.text(field.name),
         Ppml.text(field.accessorName),
         Ppml.text(field.modifierName),
       ])
     } else {
-      return prettyApplication([
+      return Ppml.prettyApplication([
         Ppml.text(field.name),
         Ppml.text(field.accessorName),
       ])
     }
   })
-  return prettyApplication([
+  return Ppml.prettyApplication([
     fieldGroup,
-    prettyText(ctor.predicate),
+    Ppml.text(ctor.predicate),
     ...accessorNodes,
   ])
 }
@@ -228,5 +230,5 @@ function prettyAlgebraicTypeField<E>(
   field: M.AlgebraicTypeField<E>,
   prettyBody: (body: E) => Ppml.Node,
 ): Ppml.Node {
-  return prettyApplication([Ppml.text(field.name), prettyBody(field.type)])
+  return Ppml.prettyApplication([Ppml.text(field.name), prettyBody(field.type)])
 }

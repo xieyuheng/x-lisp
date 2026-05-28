@@ -1,13 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import {
-  prettyApplication,
-  prettyQuote,
-  prettySet,
-  prettySyntax,
-  prettyText,
-} from "./layout.ts"
+import { prettyQuote, prettySet } from "./layout.ts"
 import { sexpConfig } from "./sexpConfig.ts"
 
 const keywordHeaderLength: Record<string, number> = {}
@@ -22,67 +16,71 @@ function getHeaderLength(name: string): number {
 export function prettyExp(exp: M.Exp): Ppml.Node {
   switch (exp.kind) {
     case "KeywordExp": {
-      return prettyText(`:${exp.content}`)
+      return Ppml.text(`:${exp.content}`)
     }
 
     case "SymbolExp": {
-      return prettyText(`'${exp.content}`)
+      return Ppml.text(`'${exp.content}`)
     }
 
     case "StringExp": {
-      return prettyText(JSON.stringify(exp.content))
+      return Ppml.text(JSON.stringify(exp.content))
     }
 
     case "IntExp": {
-      return prettyText(exp.content.toString())
+      return Ppml.text(exp.content.toString())
     }
 
     case "FloatExp": {
       if (Number.isInteger(exp.content)) {
-        return prettyText(`${exp.content.toString()}.0`)
+        return Ppml.text(`${exp.content.toString()}.0`)
       } else {
-        return prettyText(exp.content.toString())
+        return Ppml.text(exp.content.toString())
       }
     }
 
     case "VarExp": {
-      return prettyText(exp.name)
+      return Ppml.text(exp.name)
     }
 
     case "QualifiedVarExp": {
-      return prettyText(`${exp.modName}/${exp.name}`)
+      return Ppml.text(`${exp.modName}/${exp.name}`)
     }
 
     case "LambdaExp": {
-      const paramsNode = prettyApplication(exp.parameters.map(Ppml.text))
-      return prettySyntax("lambda", [paramsNode], prettyBody(exp.body))
+      const paramsNode = Ppml.prettyApplication(exp.parameters.map(Ppml.text))
+      return Ppml.prettySyntax("lambda", [paramsNode], prettyBody(exp.body))
     }
 
     case "PolymorphicExp": {
-      const paramsNode = prettyApplication(exp.parameters.map(Ppml.text))
-      return prettySyntax("polymorphic", [paramsNode], [prettyExp(exp.body)])
+      const paramsNode = Ppml.prettyApplication(exp.parameters.map(Ppml.text))
+      return Ppml.prettySyntax(
+        "polymorphic",
+        [paramsNode],
+        [prettyExp(exp.body)],
+      )
     }
 
     case "ApplyExp": {
       const target = prettyExp(exp.target)
       const args = exp.args.map(prettyExp)
-      return prettyApplication([target, ...args])
+      return Ppml.prettyApplication([target, ...args])
     }
 
     case "PipeExp": {
       const target = prettyExp(exp.target)
       const steps = exp.steps.map(prettyExp)
-      return prettySyntax("pipe", [target], steps)
+      return Ppml.prettySyntax("pipe", [target], steps)
     }
 
     case "ChainExp": {
       const steps = exp.steps.map(prettyExp)
-      return prettySyntax("chain", [], steps)
+      return Ppml.prettySyntax("chain", [], steps)
     }
 
     case "ComposeExp": {
       const steps = exp.steps.map(prettyExp)
-      return prettySyntax("compose", [], steps)
+      return Ppml.prettySyntax("compose", [], steps)
     }
 
     case "Let1Exp": {
@@ -95,11 +93,15 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
         prettyExp(exp.rhs),
         Ppml.text(")"),
       )
-      return prettySyntax("begin", [], [assignNode, ...prettyBody(exp.body)])
+      return Ppml.prettySyntax(
+        "begin",
+        [],
+        [assignNode, ...prettyBody(exp.body)],
+      )
     }
 
     case "LetExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "let",
         [prettyBindings(exp.bindings)],
         prettyBody(exp.body),
@@ -107,7 +109,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "LetStarExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "let*",
         [prettyBindings(exp.bindings)],
         prettyBody(exp.body),
@@ -115,7 +117,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "LetrecExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "letrec",
         [prettyBindings(exp.bindings)],
         prettyBody(exp.body),
@@ -123,7 +125,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "LetrecStarExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "letrec*",
         [prettyBindings(exp.bindings)],
         prettyBody(exp.body),
@@ -133,19 +135,22 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     case "LocalDefineExp": {
       if (exp.parameters.length > 0) {
         const paramNodes = exp.parameters.map(Ppml.text)
-        const defNode = prettyApplication([Ppml.text(exp.name), ...paramNodes])
-        return prettySyntax("define", [defNode], prettyBody(exp.body))
+        const defNode = Ppml.prettyApplication([
+          Ppml.text(exp.name),
+          ...paramNodes,
+        ])
+        return Ppml.prettySyntax("define", [defNode], prettyBody(exp.body))
       } else {
-        return prettySyntax(
+        return Ppml.prettySyntax(
           "define",
-          [prettyText(exp.name)],
+          [Ppml.text(exp.name)],
           prettyBody(exp.body),
         )
       }
     }
 
     case "Begin1Exp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "begin",
         [],
         [prettyExp(exp.head), ...prettyBody(exp.body)],
@@ -153,15 +158,19 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "BeginExp": {
-      return prettySyntax("begin", [], exp.sequence.map(prettyExp))
+      return Ppml.prettySyntax("begin", [], exp.sequence.map(prettyExp))
     }
 
     case "AssignExp": {
-      return prettySyntax("=", [], [prettyText(exp.name), prettyExp(exp.rhs)])
+      return Ppml.prettySyntax(
+        "=",
+        [],
+        [Ppml.text(exp.name), prettyExp(exp.rhs)],
+      )
     }
 
     case "IfExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "if",
         [
           prettyExp(exp.condition),
@@ -173,7 +182,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "WhenExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "when",
         [prettyExp(exp.condition), prettyExp(exp.consequent)],
         [],
@@ -181,7 +190,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "UnlessExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "unless",
         [prettyExp(exp.condition), prettyExp(exp.alternative)],
         [],
@@ -189,23 +198,29 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "AndExp": {
-      return prettyApplication([prettyText("and"), ...exp.exps.map(prettyExp)])
+      return Ppml.prettyApplication([
+        Ppml.text("and"),
+        ...exp.exps.map(prettyExp),
+      ])
     }
 
     case "OrExp": {
-      return prettyApplication([prettyText("or"), ...exp.exps.map(prettyExp)])
+      return Ppml.prettyApplication([
+        Ppml.text("or"),
+        ...exp.exps.map(prettyExp),
+      ])
     }
 
     case "CondExp": {
-      return prettySyntax("cond", [], exp.clauses.map(prettyCondClause))
+      return Ppml.prettySyntax("cond", [], exp.clauses.map(prettyCondClause))
     }
 
     case "ListExp": {
-      return prettySyntax("@list", [], exp.elements.map(prettyExp))
+      return Ppml.prettySyntax("@list", [], exp.elements.map(prettyExp))
     }
 
     case "StringConcatExp": {
-      return prettySyntax("@string", [], exp.elements.map(prettyExp))
+      return Ppml.prettySyntax("@string", [], exp.elements.map(prettyExp))
     }
 
     case "SetExp": {
@@ -217,27 +232,27 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       for (const { key, value } of exp.entries) {
         entryNodes.push(prettyExp(key), prettyExp(value))
       }
-      return prettySyntax("@hash", [], entryNodes)
+      return Ppml.prettySyntax("@hash", [], entryNodes)
     }
 
     case "QuoteExp": {
-      return prettyQuote(prettyText(S.formatSexp(exp.sexp)))
+      return prettyQuote(Ppml.text(S.formatSexp(exp.sexp)))
     }
 
     case "SexpExp": {
-      return prettySyntax("@sexp", [], [prettyText(S.formatSexp(exp.sexp))])
+      return Ppml.prettySyntax("@sexp", [], [Ppml.text(S.formatSexp(exp.sexp))])
     }
 
     case "ArrowExp": {
-      return prettyApplication([
-        prettyText("->"),
+      return Ppml.prettyApplication([
+        Ppml.text("->"),
         ...exp.argTypes.map(prettyExp),
         prettyExp(exp.retType),
       ])
     }
 
     case "TheExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "the",
         [prettyExp(exp.type), prettyExp(exp.instance)],
         [],
@@ -245,20 +260,20 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "CommentExp": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "@comment",
         [],
-        [prettyText(S.formatSexp(exp.content))],
+        [Ppml.text(S.formatSexp(exp.content))],
       )
     }
 
     case "MatchExp": {
       const clauses = exp.clauses.map(prettyMatchClause)
       if (exp.targets.length === 1) {
-        return prettySyntax("match", [prettyExp(exp.targets[0])], clauses)
+        return Ppml.prettySyntax("match", [prettyExp(exp.targets[0])], clauses)
       } else {
-        const targetsNode = prettyApplication(exp.targets.map(prettyExp))
-        return prettySyntax("match-many", [targetsNode], clauses)
+        const targetsNode = Ppml.prettyApplication(exp.targets.map(prettyExp))
+        return Ppml.prettySyntax("match-many", [targetsNode], clauses)
       }
     }
   }
@@ -273,15 +288,18 @@ export function prettyParameters(parameters: Array<string>): Array<Ppml.Node> {
 }
 
 export function prettyBinding(binding: M.Binding): Ppml.Node {
-  return prettyApplication([Ppml.text(binding.name), prettyExp(binding.rhs)])
+  return Ppml.prettyApplication([
+    Ppml.text(binding.name),
+    prettyExp(binding.rhs),
+  ])
 }
 
 function prettyBindings(bindings: Array<M.Binding>): Ppml.Node {
-  return prettyApplication(bindings.map(prettyBinding))
+  return Ppml.prettyApplication(bindings.map(prettyBinding))
 }
 
 export function prettyCondClause(clause: M.CondClause): Ppml.Node {
-  return prettyApplication([
+  return Ppml.prettyApplication([
     prettyExp(clause.question),
     prettyExp(clause.answer),
   ])
@@ -296,10 +314,10 @@ export function prettyMatchClauses(
 export function prettyMatchClause(clause: M.MatchClause): Ppml.Node {
   const body = prettyBody(clause.body)
   if (clause.patterns.length === 1) {
-    return prettyApplication([prettyExp(clause.patterns[0]), ...body])
+    return Ppml.prettyApplication([prettyExp(clause.patterns[0]), ...body])
   } else {
-    const patternsNode = prettyApplication(clause.patterns.map(prettyExp))
-    return prettyApplication([patternsNode, ...body])
+    const patternsNode = Ppml.prettyApplication(clause.patterns.map(prettyExp))
+    return Ppml.prettyApplication([patternsNode, ...body])
   }
 }
 
@@ -327,42 +345,46 @@ export function prettyBody(body: M.Exp): Array<Ppml.Node> {
 export function prettyTerm(term: M.Term): Ppml.Node {
   switch (term.kind) {
     case "SymbolTerm": {
-      return prettyText(term.content)
+      return Ppml.text(term.content)
     }
 
     case "KeywordTerm": {
-      return prettyText(`:${term.content}`)
+      return Ppml.text(`:${term.content}`)
     }
 
     case "StringTerm": {
-      return prettyText(JSON.stringify(term.content))
+      return Ppml.text(JSON.stringify(term.content))
     }
 
     case "IntTerm": {
-      return prettyText(`${term.content}`)
+      return Ppml.text(`${term.content}`)
     }
 
     case "FloatTerm": {
-      return prettyText(`${term.content}`)
+      return Ppml.text(`${term.content}`)
     }
 
     case "VarTerm": {
-      return prettyText(term.name)
+      return Ppml.text(term.name)
     }
 
     case "QualifiedVarTerm": {
-      return prettyText(`${term.modName}.${term.name}`)
+      return Ppml.text(`${term.modName}.${term.name}`)
     }
 
     case "LambdaTerm": {
-      const paramsNode = prettyApplication(term.parameters.map(Ppml.text))
-      return prettySyntax("lambda", [paramsNode], prettyTermBody(term.body))
+      const paramsNode = Ppml.prettyApplication(term.parameters.map(Ppml.text))
+      return Ppml.prettySyntax(
+        "lambda",
+        [paramsNode],
+        prettyTermBody(term.body),
+      )
     }
 
     case "ApplyTerm": {
       const target = prettyTerm(term.target)
       const args = term.args.map(prettyTerm)
-      return prettyApplication([target, ...args])
+      return Ppml.prettyApplication([target, ...args])
     }
 
     case "Let1Term": {
@@ -375,7 +397,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
         prettyTerm(term.rhs),
         Ppml.text(")"),
       )
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "begin",
         [],
         [assignNode, ...prettyTermBody(term.body)],
@@ -383,7 +405,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     }
 
     case "Begin1Term": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "begin",
         [],
         [prettyTerm(term.head), ...prettyTermBody(term.body)],
@@ -391,7 +413,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     }
 
     case "IfTerm": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "if",
         [
           prettyTerm(term.condition),
@@ -403,15 +425,15 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     }
 
     case "ArrowTerm": {
-      return prettyApplication([
-        prettyText("->"),
+      return Ppml.prettyApplication([
+        Ppml.text("->"),
         ...term.argTypes.map(prettyTerm),
         prettyTerm(term.retType),
       ])
     }
 
     case "TheTerm": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "the",
         [prettyTerm(term.type), prettyTerm(term.instance)],
         [],
@@ -419,8 +441,12 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     }
 
     case "PolymorphicTerm": {
-      const paramsNode = prettyApplication(term.parameters.map(Ppml.text))
-      return prettySyntax("polymorphic", [paramsNode], [prettyTerm(term.body)])
+      const paramsNode = Ppml.prettyApplication(term.parameters.map(Ppml.text))
+      return Ppml.prettySyntax(
+        "polymorphic",
+        [paramsNode],
+        [prettyTerm(term.body)],
+      )
     }
   }
 }

@@ -1,40 +1,39 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import { type Instr } from "../instr/index.ts"
-import { prettySyntax, prettyText } from "./layout.ts"
 import { prettyExp } from "./prettyExp.ts"
 
 export function prettyInstr(instr: Instr): Ppml.Node {
   switch (instr.kind) {
     case "AssignInstr": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "=",
         [],
-        [prettyText(instr.dest), prettyExp(instr.exp)],
+        [Ppml.text(instr.dest), prettyExp(instr.exp)],
       )
     }
 
     case "PerformInstr": {
-      return prettySyntax("perform", [], [prettyExp(instr.exp)])
+      return Ppml.prettySyntax("perform", [], [prettyExp(instr.exp)])
     }
 
     case "TestInstr": {
-      return prettySyntax("test", [], [prettyExp(instr.exp)])
+      return Ppml.prettySyntax("test", [], [prettyExp(instr.exp)])
     }
 
     case "BranchInstr": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "branch",
         [],
-        [prettyText(instr.thenLabel), prettyText(instr.elseLabel)],
+        [Ppml.text(instr.thenLabel), Ppml.text(instr.elseLabel)],
       )
     }
 
     case "GotoInstr": {
-      return prettySyntax("goto", [], [prettyText(instr.label)])
+      return Ppml.prettySyntax("goto", [], [Ppml.text(instr.label)])
     }
 
     case "ReturnInstr": {
-      return prettySyntax("return", [], [prettyExp(instr.exp)])
+      return Ppml.prettySyntax("return", [], [prettyExp(instr.exp)])
     }
   }
 }

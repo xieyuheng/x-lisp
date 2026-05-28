@@ -1,6 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import { type Instr } from "../instr/index.ts"
-import { prettySyntax } from "./layout.ts"
 import { prettyOperand } from "./prettyOperand.ts"
 
 export function prettyInstr(instr: Instr): Ppml.Node {
@@ -15,5 +14,5 @@ export function prettyInstr(instr: Instr): Ppml.Node {
   }
 
   const operandNodes = instr.operands.map(prettyOperand)
-  return prettySyntax(instr.op, [], operandNodes)
+  return Ppml.prettySyntax(instr.op, [], operandNodes)
 }

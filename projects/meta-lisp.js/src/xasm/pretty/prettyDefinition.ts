@@ -1,32 +1,31 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import { type Definition } from "../definition/index.ts"
-import { prettySyntax, prettyText } from "./layout.ts"
 import { prettyInstr } from "./prettyInstr.ts"
 
 export function prettyDefinition(definition: Definition): Ppml.Node {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "declare-primitive-function",
         [],
-        [prettyText(definition.name), prettyText(definition.arity.toString())],
+        [Ppml.text(definition.name), Ppml.text(definition.arity.toString())],
       )
     }
 
     case "PrimitiveVariableDeclaration": {
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "declare-primitive-variable",
         [],
-        [prettyText(definition.name)],
+        [Ppml.text(definition.name)],
       )
     }
 
     case "FunctionDefinition": {
       const name = definition.name
       const instrNodes = definition.instrs.map(prettyInstr)
-      return prettySyntax(
+      return Ppml.prettySyntax(
         "define-function",
-        [prettyText(name), prettyText(definition.arity.toString())],
+        [Ppml.text(name), Ppml.text(definition.arity.toString())],
         instrNodes,
       )
     }
@@ -34,13 +33,13 @@ export function prettyDefinition(definition: Definition): Ppml.Node {
     case "VariableDefinition": {
       const name = definition.name
       const instrNodes = definition.instrs.map(prettyInstr)
-      return prettySyntax("define-variable", [prettyText(name)], instrNodes)
+      return Ppml.prettySyntax("define-variable", [Ppml.text(name)], instrNodes)
     }
 
     case "TestDefinition": {
       const name = definition.name
       const instrNodes = definition.instrs.map(prettyInstr)
-      return prettySyntax("define-test", [prettyText(name)], instrNodes)
+      return Ppml.prettySyntax("define-test", [Ppml.text(name)], instrNodes)
     }
   }
 }
