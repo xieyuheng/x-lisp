@@ -37,12 +37,12 @@ The top-level `scripts/build.sh` runs C then JS in correct order via `make --dir
 
 All from repo root:
 ```bash
-sh scripts/prepare.sh  # install deps (pnpm install)
-sh scripts/clean.sh    # clean all
-sh scripts/format.sh   # format all (prettier)
-sh scripts/build.sh    # build all C + JS
-sh scripts/test.sh     # test all C + JS + .meta
-sh scripts/all.sh      # prepare → clean → format → build → test
+./scripts/prepare.sh  # install deps (pnpm install)
+./scripts/clean.sh    # clean all
+./scripts/format.sh   # format all (prettier)
+./scripts/build.sh    # build all C + JS
+./scripts/test.sh     # test all C + JS + .meta
+./scripts/all.sh      # prepare → clean → format → build → test
 ```
 
 Build single C package:
