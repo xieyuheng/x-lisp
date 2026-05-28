@@ -2,7 +2,7 @@
 
 (define-struct* mod-t
   (cons-mod
-   (definitions (hash-t symbol-t definition-t))))
+    (definitions (hash-t symbol-t definition-t))))
 
 (claim make-mod (-> mod-t))
 (define (make-mod)

@@ -1,6 +1,6 @@
 import * as Ppml from "./index.ts"
 
-export function format(
+export function formatNode(
   node: Ppml.Node,
   options: {
     width: number
