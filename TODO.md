@@ -1,9 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] reorg basic/
-[meta-lisp.meta] reorg xasm/
-[meta-lisp.meta] [refactor] ppml
-
 [meta-lisp.meta] fix the use of ./meta-lisp.meta --dump
 
 [meta-lisp.meta] [review] parse-exp.meta

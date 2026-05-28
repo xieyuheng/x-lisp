@@ -5,16 +5,9 @@
       node-t))
 
 (define (pretty-syntax name header body)
-  (let ((head-node (indent 4
-                                [(wrap (cons (text name) header))]))
-        (body-node (if (list-empty? body)
-                     (nil)
-                     (indent 2
-                                  [(br)
-                                   (flex body)]))))
-    (group [(text "(")
-                 head-node body-node
-                 (text ")")])))
+  (= head-node (indent 4 [(wrap (cons (text name) header))]))
+  (= body-node (if (list-empty? body) (nil) (indent 2 [(br) (flex body)])))
+  (group [(text "(") head-node body-node (text ")")]))
 
 (claim pretty-application
   (-> (maybe-t string-t) (list-t node-t)
@@ -25,27 +18,22 @@
     (group [(text "(") (text ")")])
     (match op-maybe
       ((just op)
-       (let* ((head (list-head elements))
-              (rest (list-tail elements)))
-         (if (int-less-or-equal? (string-length op) 3)
-           (let* ((indentation (iadd (string-length op) 2))
-                  (body-node (if (list-empty? rest)
-                               head
-                               (group
-                                 [(indent indentation
-                                    [head
-                                     (text " ")
-                                     (flex rest)])]))))
-             (group [(text "(") body-node (text ")")]))
-           (let ((body-node (group
-                              [(indent 1
-                                 [(flex elements)])])))
-             (group [(text "(") body-node (text ")")])))))
+       (= head (list-head elements))
+       (= rest (list-tail elements))
+       (if (int-less-or-equal? (string-length op) 3)
+         (begin
+           (= indentation (iadd (string-length op) 2))
+           (= body-node
+              (if (list-empty? rest)
+                head
+                (group [(indent indentation [head (text " ") (flex rest)])])))
+           (group [(text "(") body-node (text ")")]))
+         (begin
+           (= body-node (group [(indent 1 [(flex elements)])]))
+           (group [(text "(") body-node (text ")")]))))
       ((nothing)
-       (let ((body-node (group
-                          [(indent 1
-                             [(flex elements)])])))
-         (group [(text "(") body-node (text ")")]))))))
+       (= body-node (group [(indent 1 [(flex elements)])]))
+       (group [(text "(") body-node (text ")")])))))
 
 (claim pretty-list
   (-> (list-t node-t)
@@ -54,7 +42,5 @@
 (define (pretty-list elements)
   (if (list-empty? elements)
     (group [(text "[") (text "]")])
-    (let ((body-node (group
-                       [(indent 1
-                                     [(flex elements)])])))
+    (let ((body-node (group [(indent 1 [(flex elements)])])))
       (group [(text "[") body-node (text "]")]))))
