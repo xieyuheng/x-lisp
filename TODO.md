@@ -1,6 +1,8 @@
 # package
 
-[meta-lisp.js] fix the use of --dump -- should not includes builtin
+[meta-lisp.js] `loadPackage` should not take optional `configPath`
+[meta-lisp.meta] `load-package-config` rename arg name to `config-path`
+
 [meta-lisp.js] fix the use of --dump -- should not includes builtin
 [meta-lisp.meta] fix the use of --dump -- should not includes builtin
 
