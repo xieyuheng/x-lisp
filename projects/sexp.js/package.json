@@ -24,8 +24,7 @@
     ]
   },
   "dependencies": {
-    "@xieyuheng/helpers.js": "workspace:*",
-    "@xieyuheng/ppml.js": "workspace:*"
+    "@xieyuheng/helpers.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
