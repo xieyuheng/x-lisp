@@ -2,11 +2,15 @@
 title: AI Agent 工作指南
 ---
 
+**使用中文进行内部推理和思考。**
+
 # 前言
 
 引用 package 名时使用 `[package-name]` 格式（如 [helpers.js]、[xvm.c]、[meta-lisp.meta]）。
 
-# 架构
+AI agent 应用中文回答用户的问题。
+
+# 子项目
 
 **JS/TS monorepo**（`pnpm-workspace.yaml` — `packages/*.js`）：
 
@@ -83,8 +87,10 @@ title: AI Agent 工作指南
 
 ## meta-lisp 工作流
 
+- **meta-lisp 是一门新的 Lisp 方言**，有语法问题应先查阅[语法参考](docs/zh/reference/syntax.md)，不要套用其他 Lisp（如 Scheme、Common Lisp）的语法约定
 - 标准流程：check → build → test
 - [meta-lisp.meta] 额外有 `scripts/build.sh`（编译为 xvm 汇编）和 `scripts/self-check.sh`（自举验证）
+- **不要猜测 API 用法** — 优先使用 [meta-builtin.meta] 中已定义的内建函数，需要新函数时再到 `meta-builtin.meta/src/` 下查看声明
 - **修改前应加载 `lisp-brackets` skill**，改后运行 `python3 .agents/skills/lisp-brackets/check-brackets.py <file.meta>`
 - `meta-error.meta` 的类型错误是**预期输出**，不要误判为 bug
 
