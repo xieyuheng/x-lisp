@@ -15,3 +15,11 @@ export function loadBuiltinMod(pkg: M.Package): M.Mod {
   M.packageLoadFragments(pkg, builtinPath)
   return mod
 }
+
+export function isBuiltinMod(mod: M.Mod): boolean {
+  return mod === loadBuiltinMod(mod.pkg)
+}
+
+export function isBuiltinPackage(pkg: M.Package): boolean {
+  return pkg.config.name === "meta-builtin.meta"
+}

@@ -1,7 +1,9 @@
 # package
 
-[meta-lisp.js] fix the use of --dump -- should not includes builtin
-[meta-lisp.meta] fix the use of --dump -- should not includes builtin
+[meta-lisp.js] `packageDumpFragments` fix the use of --dump -- should not include builtin
+[meta-lisp.meta] [refactor] `package-dump-code`
+[meta-lisp.meta] `package-dump-fragments` fix the use of --dump -- should not include builtin
+[meta-lisp.meta] `package-dump-mods` fix the use of --dump -- should not include builtin
 
 # review
 
