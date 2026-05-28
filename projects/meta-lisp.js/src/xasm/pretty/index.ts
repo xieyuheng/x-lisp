@@ -1,1 +1,1 @@
-export * from "./pretty.ts"
+export * from "./prettyDefinition.ts"

@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.js] [xasm] reorg `formatPrettyDefinition`
 [meta-lisp.js] [meta] reorg `formatPrettyDefinition`
 
 [meta-lisp.meta] reorg basic/
