@@ -22,11 +22,11 @@ date: 2025-11-08
 
 这就需要引入「项目」的概念。
 
-# project.json
+# meta-package.json
 
 以项目为对象完成编译。
 
-用 project.json 配置文件作为项目标识。
+用 meta-package.json 配置文件作为项目标识。
 
 ```json
 {
@@ -69,11 +69,11 @@ date: 2025-11-08
 # 行动
 
 下面要实现 x-lisp 的模块系统。
-然后解析 project.json，并且实现 project 的概念。
+然后解析 meta-package.json，并且实现 project 的概念。
 
 注意：
 
-- compile 一类的命令可以不依赖 project.json 就运行。
-- build 和 test 一类的命令，需要依赖 project.json 才能运行。
+- compile 一类的命令可以不依赖 meta-package.json 就运行。
+- build 和 test 一类的命令，需要依赖 meta-package.json 才能运行。
 
-因此，依然使用不依赖 project.json 的 url 作为 module 的 id。
+因此，依然使用不依赖 meta-package.json 的 url 作为 module 的 id。

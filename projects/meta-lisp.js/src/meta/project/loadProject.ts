@@ -2,7 +2,7 @@ import Path from "node:path"
 import * as M from "../index.ts"
 
 export function loadProject(configPath?: string): M.Project {
-  configPath = configPath || Path.join(process.cwd(), "project.json")
+  configPath = configPath || Path.join(process.cwd(), "meta-package.json")
   const config = M.loadProjectConfig(configPath)
   const rootDirectory = Path.resolve(Path.dirname(configPath))
   const project = M.createProject(rootDirectory, config)
