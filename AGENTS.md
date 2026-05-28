@@ -7,31 +7,34 @@ title: AI Agent Instructions
 Two language ecosystems, plus `.meta` self-hosting:
 
 **JS/TS monorepo** (`pnpm-workspace.yaml` — `packages/*.js`):
+
 - `helpers.js` — base library (no deps).
 - `cli.js` — CLI framework, depends on `helpers.js`.
 - `ppml.js` — pretty print, depends on `helpers.js`.
-- `sexp.js` — S-expression parser, depends on `helpers.js` + `ppml.js`.
-- `meta-lisp.js` — **bootstrap compiler**, depends on all above + `zod`. Provides the `meta-lisp.js` binary used by `.meta` packages.
+- `sexp.js` — S-expression parser, depends on `helpers.js`.
+- `meta-lisp.js` — **bootstrap compiler**. Provides the `meta-lisp.js` binary used by `.meta` packages.
 
 **C packages** (each uses shared `c.make/c.mk`):
+
 - `helpers.c` — base library.
 - `cli.c` — CLI library, depends on `helpers.c`.
 - `xvm.c` — VM, depends on `helpers.c` + `cli.c`.
 
-**`.meta` packages** — Meta-lisp source. Build/run via the `meta-lisp.js` binary from `meta-lisp.js`:
+**`.meta` packages** — Meta-lisp source. Build/run via the `meta-lisp.js`:
+
 - `meta-builtin.meta` — builtin function declarations.
 - `meta-example.meta` — test/demo package.
 - `meta-error.meta` — error module tests (type errors are expected output).
-- `meta-lisp.meta` — **self-hosting compiler (WIP)**. Has its own `AGENTS.md` with additional workflow (check → test → self-check).
+- `meta-lisp.meta` — **self-hosting compiler (WIP)**.
 
 # Build order (dependency chain)
 
 1. `pnpm install` (or `scripts/prepare.sh`)
 2. C builds: `helpers.c` → `cli.c` → `xvm.c`
-3. JS builds: `helpers.js` → `cli.js`/`ppml.js` → `sexp.js` → `meta-lisp.js`
+3. JS builds: `helpers.js` → `cli.js`/`ppml.js`/`sexp.js` → `meta-lisp.js`
 4. `.meta` tests depend on `meta-lisp.js` binary being built
 
-The top-level `scripts/build.sh` runs C then JS in correct order via `make --directory` and `pnpm run -r build`.
+The top-level `scripts/build.sh` build JS and C in correct order `scripts/` in each package.
 
 # Developer commands
 
@@ -43,21 +46,6 @@ All from repo root:
 ./scripts/build.sh    # build all C + JS
 ./scripts/test.sh     # test all C + JS + .meta
 ./scripts/all.sh      # prepare → clean → format → build → test
-```
-
-Build single C package:
-```bash
-make --directory packages/<package> build -j
-```
-
-Test single C package:
-```bash
-make --directory packages/<package> test -j
-```
-
-Build/test single JS package:
-```bash
-cd packages/<package> && pnpm build && pnpm test
 ```
 
 # C conventions (critical — not Makefile, not cmake in dev workflow)
@@ -77,12 +65,12 @@ cd packages/<package> && pnpm build && pnpm test
 - Tests: **Node's built-in test runner** (`node --test`), not jest/mocha/vitest.
 - Test files: `src/**/*.test.ts` (pattern in package.json scripts).
 - Formatting: **Prettier** with `prettier-plugin-organize-imports`, `"semi": false`, `"trailingComma": "all"`.
-- Build: `tsc` (TypeScript compiled to `dist/`).
 - All JS packages are `"type": "module"` (ESM).
 
 # `.meta` package workflow
 
 Every `.meta` package has `scripts/` with `check.sh`, `test.sh`, etc. The standard test flow:
+
 ```
 check (type-check) → build → test
 ```

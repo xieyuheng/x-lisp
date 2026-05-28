@@ -1,5 +1,3 @@
-setup clean.sh for meta packages
-
 # package
 
 [meta-lisp.js] `loadBuiltinPackage`
