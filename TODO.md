@@ -1,10 +1,16 @@
-# self-hosting
+# project
 
-[meta-lisp.meta] fix the use of ./meta-lisp.meta --dump
+[meta-lisp.js] fix the use of --dump -- should not includes builtin
+[meta-lisp.js] fix the use of --dump -- should not includes builtin
+[meta-lisp.meta] fix the use of --dump -- should not includes builtin
+
+# review
 
 [meta-lisp.meta] [review] parse-exp.meta
 [meta-lisp.meta] [review] parse-stmt.meta
 [meta-lisp.meta] [review] 010-expand-pass.meta
+
+# self-hosting
 
 [meta-lisp.meta] 020-module-inject-builtin-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta
