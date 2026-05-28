@@ -5,19 +5,12 @@
   "license": "GPL-3.0-or-later",
   "type": "module",
   "exports": {
-    "./*": "./dist/*/index.js"
+    "./*": "./src/*/index.ts"
   },
   "files": [
     "src",
-    "dist"
+    "lib"
   ],
-  "scripts": {
-    "clean": "rm -rf dist",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "test": "node --test src/**/*.test.ts",
-    "format": "prettier src --write"
-  },
   "prettier": {
     "semi": false,
     "trailingComma": "all",

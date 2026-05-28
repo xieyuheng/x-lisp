@@ -2,8 +2,11 @@
 
 set -e
 
-make --directory packages/helpers.c build -j
-make --directory packages/cli.c build -j
-make --directory packages/xvm.c build -j
+cd packages/helpers.js; ./scripts/check.sh; cd ../..
+cd packages/cli.js; ./scripts/check.sh; cd ../..
+cd packages/sexp.js; ./scripts/check.sh; cd ../..
+cd packages/ppml.js; ./scripts/check.sh; cd ../..
 
-pnpm run -r build
+cd packages/helpers.c; ./scripts/build.sh; cd ../..
+cd packages/cli.c; ./scripts/build.sh; cd ../..
+cd packages/xvm.c; ./scripts/build.sh; cd ../..

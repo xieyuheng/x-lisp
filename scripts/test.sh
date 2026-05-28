@@ -2,11 +2,14 @@
 
 set -e
 
-make --directory packages/helpers.c test -j
-make --directory packages/cli.c test -j
-make --directory packages/xvm.c test -j
+cd packages/helpers.js; ./scripts/test.sh; cd ../..
+cd packages/cli.js; ./scripts/test.sh; cd ../..
+cd packages/sexp.js; ./scripts/test.sh; cd ../..
+cd packages/ppml.js; ./scripts/test.sh; cd ../..
 
-pnpm run -r --parallel test
+cd packages/helpers.c; ./scripts/test.sh; cd ../..
+cd packages/cli.c; ./scripts/test.sh; cd ../..
+cd packages/xvm.c; ./scripts/test.sh; cd ../..
 
 cd packages/meta-builtin.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-example.meta; ./scripts/test.sh; cd ../..

@@ -2,8 +2,11 @@
 
 set -e
 
-make --directory packages/helpers.c clean
-make --directory packages/cli.c clean
-make --directory packages/xvm.c clean
+cd packages/helpers.js; ./scripts/clean.sh; cd ../..
+cd packages/cli.js; ./scripts/clean.sh; cd ../..
+cd packages/sexp.js; ./scripts/clean.sh; cd ../..
+cd packages/ppml.js; ./scripts/clean.sh; cd ../..
 
-pnpm run -r --parallel clean
+cd packages/helpers.c; ./scripts/clean.sh; cd ../..
+cd packages/cli.c; ./scripts/clean.sh; cd ../..
+cd packages/xvm.c; ./scripts/clean.sh; cd ../..
