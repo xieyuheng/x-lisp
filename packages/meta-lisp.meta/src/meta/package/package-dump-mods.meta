@@ -1,0 +1,19 @@
+(module meta)
+
+(define (package-dump-mods package tag)
+  (= width 80)
+  (pipe (package-mods package)
+    (hash-each
+      (lambda (_name mod)
+        (= code (pretty-mod-definitions width mod))
+        (= out-dir (path-join
+                     (package-root-directory package)
+                     (path-join (build-config-output-directory
+                                  (package-config-build (package-config package)))
+                                "dump")))
+        (= mods-dir (path-join out-dir "modules"))
+        (= mod-name-str (symbol-to-string (mod-name mod)))
+        (= dump-path (@string mods-dir "/" mod-name-str "." tag ".dump"))
+        (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
+        (fs-ensure-file dump-path)
+        (fs-write dump-path code)))))

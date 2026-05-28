@@ -1,4 +1,4 @@
-# project
+# package
 
 [meta-lisp.js] fix the use of --dump -- should not includes builtin
 [meta-lisp.js] fix the use of --dump -- should not includes builtin

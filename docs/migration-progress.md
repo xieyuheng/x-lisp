@@ -41,7 +41,7 @@
 | `meta/mod/mod-fragment-names` | 片段中的名字 |
 | `meta/mod/define` | 注册原语 |
 | `meta/mod/zero-location` | 零位置 |
-| `meta/project/` | 项目管理（config, load, fragments） |
+| `meta/package/` | 项目管理（config, load, fragments） |
 | `meta/evaluate/env` | 环境 |
 | `meta/evaluate/evaluate` | 求值器 |
 | `meta/evaluate/apply` | 应用函数 |
@@ -128,7 +128,7 @@ JS `formatExp.ts` 完整处理 30+ 种变体。.meta `format-exp.meta` 有一个
 | 展开 pass | ~100% | 010-expand-pass 与 JS 基本一致 |
 | 求值器 | ~100% | evaluate, apply, env 均迁移但操作 IR 层级不同 |
 | 格式化 | ~70% | format-exp.meta 缺失 15+ 变体格式化 |
-| 项目加载 | ~100% | load-project 等完整 |
+| 项目加载 | ~100% | load-package 等完整 |
 | 漂亮打印 | ~100% | ppml 整套完整 |
 | **脱糖子系统** | **0%** | 15 个文件未迁移 |
 | **类型检查** | **0%** | 6 个文件未迁移 |

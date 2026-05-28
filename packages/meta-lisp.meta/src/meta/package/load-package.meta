@@ -1,0 +1,10 @@
+(module meta)
+
+(define (load-package config-path)
+  (= config (load-package-config config-path))
+  (= root-directory (path-directory-name config-path))
+  (= package (make-package root-directory config))
+  (load-builtin-mod package)
+  (= source-directory (package-source-directory package))
+  (package-load-fragments package source-directory)
+  package)

@@ -2,7 +2,7 @@
 
 """Lisp bracket checker for .meta files.
 
-Independent of any project build tools. Validates that every file
+Independent of any package build tools. Validates that every file
 has balanced brackets, ignoring content inside strings and
 semicolon comments.
 

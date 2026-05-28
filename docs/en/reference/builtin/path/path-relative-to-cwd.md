@@ -18,6 +18,6 @@ Passing a relative path will trigger an assertion error.
 # Examples
 
 ```scheme
-(path-relative-to-cwd "/home/user/project/src")  ;; e.g. => "src"
+(path-relative-to-cwd "/home/user/package/src")  ;; e.g. => "src"
 (path-relative-to-cwd "/home/user")               ;; e.g. => ".."
 ```

@@ -2,25 +2,25 @@
 title: AI Agent Instructions
 ---
 
-# Project architecture
+# Package architecture
 
 Two language ecosystems, plus `.meta` self-hosting:
 
-**JS/TS monorepo** (`pnpm-workspace.yaml` — `projects/*.js`):
+**JS/TS monorepo** (`pnpm-workspace.yaml` — `packages/*.js`):
 - `helpers.js` — base library (no deps).
 - `cli.js` — CLI framework, depends on `helpers.js`.
 - `ppml.js` — pretty print, depends on `helpers.js`.
 - `sexp.js` — S-expression parser, depends on `helpers.js` + `ppml.js`.
-- `meta-lisp.js` — **bootstrap compiler**, depends on all above + `zod`. Provides the `meta-lisp.js` binary used by `.meta` projects.
+- `meta-lisp.js` — **bootstrap compiler**, depends on all above + `zod`. Provides the `meta-lisp.js` binary used by `.meta` packages.
 
-**C projects** (each uses shared `c.make/c.mk`):
+**C packages** (each uses shared `c.make/c.mk`):
 - `helpers.c` — base library.
 - `cli.c` — CLI library, depends on `helpers.c`.
 - `xvm.c` — VM, depends on `helpers.c` + `cli.c`.
 
-**`.meta` projects** — Meta-lisp source. Build/run via the `meta-lisp.js` binary from `meta-lisp.js`:
+**`.meta` packages** — Meta-lisp source. Build/run via the `meta-lisp.js` binary from `meta-lisp.js`:
 - `meta-builtin.meta` — builtin function declarations.
-- `meta-example.meta` — test/demo project.
+- `meta-example.meta` — test/demo package.
 - `meta-error.meta` — error module tests (type errors are expected output).
 - `meta-lisp.meta` — **self-hosting compiler (WIP)**. Has its own `AGENTS.md` with additional workflow (check → test → self-check).
 
@@ -45,24 +45,24 @@ sh scripts/test.sh     # test all C + JS + .meta
 sh scripts/all.sh      # prepare → clean → format → build → test
 ```
 
-Build single C project:
+Build single C package:
 ```bash
-make --directory projects/<project> build -j
+make --directory packages/<package> build -j
 ```
 
-Test single C project:
+Test single C package:
 ```bash
-make --directory projects/<project> test -j
+make --directory packages/<package> test -j
 ```
 
-Build/test single JS project:
+Build/test single JS package:
 ```bash
-cd projects/<project> && pnpm build && pnpm test
+cd packages/<package> && pnpm build && pnpm test
 ```
 
 # C conventions (critical — not Makefile, not cmake in dev workflow)
 
-- Every C project has a **lowercase `makefile`** (not `Makefile`), including `c.make/c.mk`.
+- Every C package has a **lowercase `makefile`** (not `Makefile`), including `c.make/c.mk`.
 - The shared `c.make/c.mk` requires **GNU parallel** to run tests in parallel.
 - Three test file suffixes (convention, all under `src/`):
   - `*.test.c` — compiled and run as tests.
@@ -78,11 +78,11 @@ cd projects/<project> && pnpm build && pnpm test
 - Test files: `src/**/*.test.ts` (pattern in package.json scripts).
 - Formatting: **Prettier** with `prettier-plugin-organize-imports`, `"semi": false`, `"trailingComma": "all"`.
 - Build: `tsc` (TypeScript compiled to `dist/`).
-- All JS projects are `"type": "module"` (ESM).
+- All JS packages are `"type": "module"` (ESM).
 
-# `.meta` project workflow
+# `.meta` package workflow
 
-Every `.meta` project has `scripts/` with `check.sh`, `test.sh`, etc. The standard test flow:
+Every `.meta` package has `scripts/` with `check.sh`, `test.sh`, etc. The standard test flow:
 ```
 check (type-check) → build → test
 ```

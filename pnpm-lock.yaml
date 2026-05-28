@@ -6,7 +6,7 @@ settings:
 
 importers:
 
-  projects/cli.js:
+  packages/cli.js:
     dependencies:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
@@ -25,7 +25,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/helpers.js:
+  packages/helpers.js:
     devDependencies:
       '@types/node':
         specifier: ^25.9.1
@@ -40,7 +40,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/meta-lisp.js:
+  packages/meta-lisp.js:
     dependencies:
       '@xieyuheng/cli.js':
         specifier: workspace:*
@@ -71,7 +71,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/ppml.js:
+  packages/ppml.js:
     dependencies:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
@@ -90,7 +90,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/sexp.js:
+  packages/sexp.js:
     dependencies:
       '@xieyuheng/helpers.js':
         specifier: workspace:*

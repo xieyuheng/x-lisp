@@ -1244,14 +1244,14 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 是因为有时需要把 `make-<base-name>` 保留给更简单的构造器。
 
 ```scheme
-(define-struct* project-t
-  (cons-project
+(define-struct* package-t
+  (cons-package
    (root-directory string-t)
-   (config project-config-t)
+   (config package-config-t)
    (fragments (hash-t string-t mod-fragment-t))))
 
-(define (make-project root-directory config)
-  (cons-project root-directory config (make-hash)))
+(define (make-package root-directory config)
+  (cons-package root-directory config (make-hash)))
 ```
 
 ## (match)
@@ -1343,7 +1343,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 # 模块
 
-一个文件夹可以被视为一个**项目**（project），
+一个文件夹可以被视为一个**项目**（package），
 项目中的所有 `.meta` 文件，都被视为属于这个项目。
 
 一个项目中可以有多个**模块**（module）。

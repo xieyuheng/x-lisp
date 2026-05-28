@@ -1236,14 +1236,14 @@ Equivalent to:
 This variant of `(define-struct)` exists because sometimes `make-<base-name>` needs to be reserved for a simpler constructor.
 
 ```scheme
-(define-struct* project-t
-  (cons-project
+(define-struct* package-t
+  (cons-package
    (root-directory string-t)
-   (config project-config-t)
+   (config package-config-t)
    (fragments (hash-t string-t mod-fragment-t))))
 
-(define (make-project root-directory config)
-  (cons-project root-directory config (make-hash)))
+(define (make-package root-directory config)
+  (cons-package root-directory config (make-hash)))
 ```
 
 ## (match)
@@ -1335,10 +1335,10 @@ External code can only operate on `box-t` through interface functions:
 
 # Modules
 
-A folder can be treated as a **project**.
-All `.meta` files within the project are considered part of it.
+A folder can be treated as a **package**.
+All `.meta` files within the package are considered part of it.
 
-A project can have multiple **modules**.
+A package can have multiple **modules**.
 
 The module system is decoupled from the file system — the path and filename of a module file do not matter.
 Code for the same module can be split across different files.
@@ -1353,7 +1353,7 @@ Declares the current module.
 
 Every `.meta` file must have a module declaration, typically at the top.
 
-Within the same project, names from other modules can be referenced via `<module-name>/<name>`.
+Within the same package, names from other modules can be referenced via `<module-name>/<name>`.
 
 Functions in the same module, even if written in different files, can be mutually recursive.
 

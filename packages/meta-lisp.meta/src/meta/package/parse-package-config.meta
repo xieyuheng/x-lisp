@@ -1,0 +1,16 @@
+(module meta)
+
+(define (parse-package-config path string)
+  (= json (parse-json string))
+  (= entries (json-object-entries json))
+  (make-package-config
+    (json-string-value (hash-get "name" entries))
+    (json-string-value (hash-get "version" entries))
+    (parse-build-config (hash-get "build" entries))))
+
+(define (parse-build-config json-value)
+  (= entries (json-object-entries json-value))
+  (make-build-config
+    (json-string-value (hash-get "source-directory" entries))
+    (json-string-value (hash-get "output-directory" entries))
+    (json-string-value (hash-get "snapshot-directory" entries))))

@@ -1,0 +1,406 @@
+import * as S from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
+import * as B from "../../basic/index.ts"
+import * as M from "../index.ts"
+
+export function ExplicateControlPass(pkg: M.Package): B.Mod {
+  const basicMod = B.createMod()
+
+  for (const mod of pkg.mods.values()) {
+    for (const definition of mod.definitions.values()) {
+      for (const basicDefinition of explicateControlDefinition(
+        basicMod,
+        definition,
+      )) {
+        basicMod.definitions.set(basicDefinition.name, basicDefinition)
+      }
+    }
+  }
+
+  return basicMod
+}
+
+function definitionQualifiedName(definition: M.Definition): string {
+  return `${definition.mod.name}/${definition.name}`
+}
+
+function explicateControlDefinition(
+  basicMod: B.Mod,
+  definition: M.Definition,
+): Array<B.Definition> {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveFunctionDefinition": {
+      return [
+        B.PrimitiveFunctionDeclaration(
+          basicMod,
+          definitionQualifiedName(definition),
+          definition.arity,
+          definition.location,
+        ),
+      ]
+    }
+
+    case "PrimitiveVariableDeclaration":
+    case "PrimitiveVariableDefinition": {
+      return [
+        B.PrimitiveVariableDeclaration(
+          basicMod,
+          definitionQualifiedName(definition),
+          definition.location,
+        ),
+      ]
+    }
+
+    // - do not generate code for type.
+    case "AlgebraicTypeDefinition":
+    case "OpaqueTypeDefinition":
+    case "TypeDefinition": {
+      return []
+    }
+
+    case "FunctionDefinition": {
+      const state = createState()
+      const block = B.Block("body", [], definition.location)
+      addBlock(state, block)
+      block.instrs = explicateControlInTail(state, definition.body)
+      return [
+        B.FunctionDefinition(
+          basicMod,
+          definitionQualifiedName(definition),
+          definition.parameters,
+          state.blocks,
+          definition.location,
+        ),
+      ]
+    }
+
+    case "TestDefinition": {
+      const state = createState()
+      const block = B.Block("body", [], definition.location)
+      addBlock(state, block)
+      block.instrs = explicateControlInTail(state, definition.body)
+      return [
+        B.TestDefinition(
+          basicMod,
+          definitionQualifiedName(definition),
+          state.blocks,
+          definition.location,
+        ),
+      ]
+    }
+
+    case "VariableDefinition": {
+      const state = createState()
+      const block = B.Block("body", [], definition.location)
+      addBlock(state, block)
+      block.instrs = explicateControlInTail(state, definition.body)
+      return [
+        B.VariableDefinition(
+          basicMod,
+          definitionQualifiedName(definition),
+          state.blocks,
+          definition.location,
+        ),
+      ]
+    }
+  }
+}
+
+type State = {
+  blocks: Map<string, B.Block>
+}
+
+function createState(): State {
+  return { blocks: new Map() }
+}
+
+function addBlock(state: State, block: B.Block): void {
+  state.blocks.set(block.label, block)
+}
+
+function generateLabel(
+  state: State,
+  name: string,
+  instrs: Array<B.Instr>,
+  location: SourceLocation,
+): string {
+  const label = `${name}.${state.blocks.size}`
+  const block = B.Block(label, instrs, location)
+  addBlock(state, block)
+  return label
+}
+
+function toBasicExp(exp: M.Term): B.Exp {
+  switch (exp.kind) {
+    case "SymbolTerm": {
+      return B.SymbolExp(exp.content, exp.location)
+    }
+    case "KeywordTerm": {
+      return B.KeywordExp(exp.content, exp.location)
+    }
+    case "StringTerm": {
+      return B.StringExp(exp.content, exp.location)
+    }
+    case "IntTerm": {
+      return B.IntExp(exp.content, exp.location)
+    }
+    case "FloatTerm": {
+      return B.FloatExp(exp.content, exp.location)
+    }
+
+    case "VarTerm": {
+      return B.VarExp(exp.name, exp.location)
+    }
+
+    case "QualifiedVarTerm": {
+      return B.VarExp(`${exp.modName}/${exp.name}`, exp.location)
+    }
+
+    case "ApplyTerm": {
+      return B.ApplyExp(
+        toBasicExp(exp.target),
+        exp.args.map(toBasicExp),
+        exp.location,
+      )
+    }
+
+    default: {
+      let message = `[ExplicateControlPass] [toBasicExp] unhandled exp`
+      message += `\n  exp kind: ${exp.kind}`
+      message += `\n  exp: ${M.formatTerm(exp)}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
+    }
+  }
+}
+
+function explicateControlInTail(state: State, exp: M.Term): Array<B.Instr> {
+  switch (exp.kind) {
+    case "Let1Term": {
+      return explicateControlInLet1(
+        state,
+        exp.name,
+        exp.rhs,
+        explicateControlInTail(state, exp.body),
+      )
+    }
+
+    case "Begin1Term": {
+      return explicateControlInBegin1(
+        state,
+        exp.head,
+        explicateControlInTail(state, exp.body),
+      )
+    }
+
+    case "IfTerm": {
+      return explicateControlInIf(
+        state,
+        exp.condition,
+        explicateControlInTail(state, exp.consequent),
+        explicateControlInTail(state, exp.alternative),
+      )
+    }
+
+    default: {
+      return [B.ReturnInstr(toBasicExp(exp), exp.location)]
+    }
+  }
+}
+
+function explicateControlInLet1(
+  state: State,
+  name: string,
+  rhs: M.Term,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  switch (rhs.kind) {
+    case "Let1Term": {
+      return explicateControlInLet1(
+        state,
+        rhs.name,
+        rhs.rhs,
+        explicateControlInLet1(state, name, rhs.body, cont),
+      )
+    }
+
+    case "Begin1Term": {
+      return explicateControlInBegin1(
+        state,
+        rhs.head,
+        explicateControlInLet1(state, name, rhs.body, cont),
+      )
+    }
+
+    case "IfTerm": {
+      const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
+      return explicateControlInIf(
+        state,
+        rhs.condition,
+        explicateControlInLet1(state, name, rhs.consequent, [
+          B.GotoInstr(letBodyLabel, rhs.location),
+        ]),
+        explicateControlInLet1(state, name, rhs.alternative, [
+          B.GotoInstr(letBodyLabel, rhs.location),
+        ]),
+      )
+    }
+
+    default: {
+      return [B.AssignInstr(name, toBasicExp(rhs), rhs.location), ...cont]
+    }
+  }
+}
+
+function explicateControlInBegin1(
+  state: State,
+  head: M.Term,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  switch (head.kind) {
+    case "Let1Term": {
+      return explicateControlInLet1(
+        state,
+        head.name,
+        head.rhs,
+        explicateControlInBegin1(state, head.body, cont),
+      )
+    }
+
+    case "Begin1Term": {
+      return explicateControlInBegin1(
+        state,
+        head.head,
+        explicateControlInBegin1(state, head.body, cont),
+      )
+    }
+
+    case "IfTerm": {
+      const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
+      return explicateControlInIf(
+        state,
+        head.condition,
+        explicateControlInBegin1(state, head.consequent, [
+          B.GotoInstr(letBodyLabel, head.location),
+        ]),
+        explicateControlInBegin1(state, head.alternative, [
+          B.GotoInstr(letBodyLabel, head.location),
+        ]),
+      )
+    }
+
+    default: {
+      return [B.PerformInstr(toBasicExp(head), head.location), ...cont]
+    }
+  }
+}
+
+function explicateControlInIf(
+  state: State,
+  condition: M.Term,
+  thenCont: Array<B.Instr>,
+  elseCont: Array<B.Instr>,
+): Array<B.Instr> {
+  if (
+    condition.kind === "QualifiedVarTerm" &&
+    condition.modName === "builtin" &&
+    condition.name === "true"
+  ) {
+    return thenCont
+  }
+
+  if (
+    condition.kind === "QualifiedVarTerm" &&
+    condition.modName === "builtin" &&
+    condition.name === "false"
+  ) {
+    return elseCont
+  }
+
+  switch (condition.kind) {
+    case "VarTerm": {
+      return [
+        B.TestInstr(
+          B.ApplyExp(
+            B.VarExp("builtin/same?", condition.location),
+            [
+              B.VarExp(condition.name, condition.location),
+              B.VarExp("builtin/true", condition.location),
+            ],
+            condition.location,
+          ),
+          condition.location,
+        ),
+        B.BranchInstr(
+          generateLabel(state, "then", thenCont, condition.location),
+          generateLabel(state, "else", elseCont, condition.location),
+          condition.location,
+        ),
+      ]
+    }
+
+    case "ApplyTerm": {
+      if (
+        condition.target.kind === "VarTerm" &&
+        condition.target.name === "not" &&
+        condition.args.length === 1
+      ) {
+        const [negatedCondition] = condition.args
+        return explicateControlInIf(state, negatedCondition, elseCont, thenCont)
+      }
+
+      return [
+        B.TestInstr(toBasicExp(condition), condition.location),
+        B.BranchInstr(
+          generateLabel(state, "then", thenCont, condition.location),
+          generateLabel(state, "else", elseCont, condition.location),
+          condition.location,
+        ),
+      ]
+    }
+
+    case "Let1Term": {
+      return explicateControlInLet1(
+        state,
+        condition.name,
+        condition.rhs,
+        explicateControlInIf(state, condition.body, thenCont, elseCont),
+      )
+    }
+
+    case "Begin1Term": {
+      return explicateControlInBegin1(
+        state,
+        condition.head,
+        explicateControlInIf(state, condition.body, thenCont, elseCont),
+      )
+    }
+
+    case "IfTerm": {
+      thenCont = [
+        B.GotoInstr(
+          generateLabel(state, "then", thenCont, condition.location),
+          condition.location,
+        ),
+      ]
+      elseCont = [
+        B.GotoInstr(
+          generateLabel(state, "else", elseCont, condition.location),
+          condition.location,
+        ),
+      ]
+      return explicateControlInIf(
+        state,
+        condition.condition,
+        explicateControlInIf(state, condition.consequent, thenCont, elseCont),
+        explicateControlInIf(state, condition.alternative, thenCont, elseCont),
+      )
+    }
+
+    default: {
+      let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition exp`
+      message += `\n  exp: ${M.formatTerm(condition)}`
+      throw new S.ErrorWithSourceLocation(message, condition.location)
+    }
+  }
+}

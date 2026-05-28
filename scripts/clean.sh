@@ -2,8 +2,8 @@
 
 set -e
 
-make --directory projects/helpers.c clean
-make --directory projects/cli.c clean
-make --directory projects/xvm.c clean
+make --directory packages/helpers.c clean
+make --directory packages/cli.c clean
+make --directory packages/xvm.c clean
 
 pnpm run -r --parallel clean

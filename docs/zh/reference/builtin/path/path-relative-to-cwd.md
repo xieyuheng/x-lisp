@@ -18,6 +18,6 @@ title: path-relative-to-cwd
 # 例子
 
 ```scheme
-(path-relative-to-cwd "/home/user/project/src")  ;; e.g. => "src"
+(path-relative-to-cwd "/home/user/package/src")  ;; e.g. => "src"
 (path-relative-to-cwd "/home/user")               ;; e.g. => ".."
 ```

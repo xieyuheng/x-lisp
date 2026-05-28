@@ -15,5 +15,5 @@ title: current-directory
 # 例子
 
 ```scheme
-(current-directory)  ;; => "/home/user/project"
+(current-directory)  ;; => "/home/user/package"
 ```

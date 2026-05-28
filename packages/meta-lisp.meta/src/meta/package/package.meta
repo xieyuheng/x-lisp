@@ -1,0 +1,29 @@
+(module meta)
+
+(define-struct* package-t
+  (cons-package
+    (root-directory string-t)
+    (config package-config-t)
+    (fragments (hash-t string-t mod-fragment-t))
+    (mods (hash-t symbol-t mod-t))))
+
+(define (make-package root-directory config)
+  (cons-package root-directory config (make-hash) (make-hash)))
+
+(define (package-put-fragment! path fragment package)
+  (hash-put! path fragment (package-fragments package)))
+
+(define (package-source-directory package)
+  (path-join
+    (package-root-directory package)
+    (build-config-source-directory (package-config-build (package-config package)))))
+
+(claim package-lookup-mod (-> package-t symbol-t (maybe-t mod-t)))
+(define (package-lookup-mod package name)
+  (= mods (package-mods package))
+  (if (hash-has? name mods)
+    (just (hash-get name mods))
+    (nothing)))
+
+(define (package-put-mod! name mod package)
+  (hash-put! name mod (package-mods package)))
