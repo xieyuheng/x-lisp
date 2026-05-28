@@ -1,12 +1,9 @@
 (module meta)
 
-(define (load-package-config path)
-  (= file (open-input-file path))
-  (= string (file-read file))
-  (file-close file)
-  (parse-package-config path string))
+(define (load-package-config config-path)
+  (parse-package-config config-path (fs-read config-path)))
 
 (define-test load-package-config-test
-  (= path "meta-package.json")
-  (= config (load-package-config path))
+  (= config-path "meta-package.json")
+  (= config (load-package-config config-path))
   (assert-equal "meta-lisp" (package-config-name config)))

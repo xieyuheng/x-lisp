@@ -4,6 +4,7 @@ import * as cli from "@xieyuheng/cli.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
+import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as M from "./meta/index.ts"
 
@@ -19,14 +20,18 @@ router.defineRoutes([
 
 router.defineHandlers({
   check: ({ options }) => {
-    const pkg = M.loadPackage(options["--config"])
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage(configPath)
     const compilerOptions = new Map()
     if ("--dump" in options) compilerOptions.set("dump", "true")
     M.CheckPipeline(pkg, compilerOptions)
   },
 
   build: ({ options }) => {
-    const pkg = M.loadPackage(options["--config"])
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage(configPath)
     const compilerOptions = new Map()
     if ("--dump" in options) compilerOptions.set("dump", "true")
     if ("--basic" in options) compilerOptions.set("basic", "true")
@@ -34,7 +39,9 @@ router.defineHandlers({
   },
 
   test: ({ options }) => {
-    const pkg = M.loadPackage(options["--config"])
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage(configPath)
     const compilerOptions = new Map()
     if ("--profile" in options) compilerOptions.set("profile", "true")
     if ("--builtin" in options) compilerOptions.set("builtin", "true")
