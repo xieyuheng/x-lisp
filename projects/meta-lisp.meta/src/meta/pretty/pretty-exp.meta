@@ -121,7 +121,7 @@
        (ppml/group [(ppml/text "(@string") (ppml/text ")")])
        (ppml/pretty-syntax "@string" [] (list-map pretty-exp elements))))
     ((set-exp elements location)
-     (ppml/pretty-set (list-map pretty-exp elements)))
+     (ppml/pretty-syntax "@set" [] (list-map pretty-exp elements)))
     ((hash-exp entries location)
      (ppml/pretty-syntax "@hash" [] (list-map pretty-hash-entry entries)))
     ((quote-exp sexp location)
