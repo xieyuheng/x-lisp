@@ -10,22 +10,20 @@ import * as M from "../index.ts"
 
 export function packageDumpFragments(pkg: M.Package, tag: string): void {
   for (const fragment of pkg.fragments.values()) {
-    if (fragment.modName !== "builtin" || M.isBuiltinPackage(pkg)) {
-      const sourceDirectory = M.packageSourceDirectory(pkg)
-      const name = Path.relative(sourceDirectory, fragment.path)
-      const textWidth = 64
-      const stmtsCode = M.formatPrettyFragmentStmts(textWidth, fragment.stmts)
-      const code = `${stmtsCode}`
-      const directory = Path.join(
-        M.packageOutputDirectory(pkg),
-        "dump",
-        "fragments",
-      )
-      const dumpPath = `${directory}/${name}.${tag}.dump`
-      writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
-      callWithFile(openOutputFile(dumpPath), (file) => {
-        fileWrite(file, code)
-      })
-    }
+    const sourceDirectory = M.packageSourceDirectory(pkg)
+    const name = Path.relative(sourceDirectory, fragment.path)
+    const textWidth = 64
+    const stmtsCode = M.formatPrettyFragmentStmts(textWidth, fragment.stmts)
+    const code = `${stmtsCode}`
+    const directory = Path.join(
+      M.packageOutputDirectory(pkg),
+      "dump",
+      "fragments",
+    )
+    const dumpPath = `${directory}/${name}.${tag}.dump`
+    writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
+    callWithFile(openOutputFile(dumpPath), (file) => {
+      fileWrite(file, code)
+    })
   }
 }

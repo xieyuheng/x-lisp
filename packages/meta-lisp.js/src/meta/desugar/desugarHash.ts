@@ -22,7 +22,7 @@ export function desugarHash(
       M.AssignExp(
         name,
         M.ApplyExp(
-          M.QualifiedVarExp("self", "builtin", "make-hash", location),
+          M.QualifiedVarExp("meta-builtin", "builtin", "make-hash", location),
           [],
           location,
         ),
@@ -30,7 +30,7 @@ export function desugarHash(
       ),
       ...entries.map((entry) =>
         M.ApplyExp(
-          M.QualifiedVarExp("self", "builtin", "hash-put!", location),
+          M.QualifiedVarExp("meta-builtin", "builtin", "hash-put!", location),
           [entry.key, entry.value, M.VarExp(name, location)],
           location,
         ),

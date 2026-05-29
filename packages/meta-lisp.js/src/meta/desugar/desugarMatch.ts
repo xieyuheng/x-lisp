@@ -361,10 +361,10 @@ export function makeDefaultExp(
   location: S.SourceLocation,
 ): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("self", "builtin", "error", location),
+    M.QualifiedVarExp("meta-builtin", "builtin", "error", location),
     [
       M.ApplyExp(
-        M.QualifiedVarExp("self", "builtin", "format", location),
+        M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
         [
           M.ListExp(
             [

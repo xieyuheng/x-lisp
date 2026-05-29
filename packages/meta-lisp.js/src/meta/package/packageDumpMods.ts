@@ -10,11 +10,9 @@ import * as M from "../index.ts"
 
 export function packageDumpMods(pkg: M.Package, tag: string): void {
   for (const mod of pkg.mods.values()) {
-    if (!M.isBuiltinMod(mod) || M.isBuiltinPackage(pkg)) {
-      const textWidth = 64
-      const code = M.formatPrettyModDefinitions(textWidth, mod)
-      packageDumpCode(pkg, mod, tag, code)
-    }
+    const textWidth = 64
+    const code = M.formatPrettyModDefinitions(textWidth, mod)
+    packageDumpCode(pkg, mod, tag, code)
   }
 }
 

@@ -17,7 +17,7 @@ export function BuildPipeline(
   options: Map<string, string>,
 ): void {
   M.ExpandPass(pkg, options)
-  M.ModuleInjectBuiltinPass(pkg)
+  M.ModulePreludePass(pkg)
   const modInfo = M.ModuleAnalysisPass(pkg)
   const algebraicInfo = M.AlgebraicAnalysisPass(pkg)
   M.LowerMatchPass(pkg, modInfo, algebraicInfo, options)

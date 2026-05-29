@@ -17,7 +17,7 @@ export function desugarList(
       M.AssignExp(
         name,
         M.ApplyExp(
-          M.QualifiedVarExp("self", "builtin", "make-list", location),
+          M.QualifiedVarExp("meta-builtin", "builtin", "make-list", location),
           [],
           location,
         ),
@@ -25,7 +25,7 @@ export function desugarList(
       ),
       ...elements.map((e) =>
         M.ApplyExp(
-          M.QualifiedVarExp("self", "builtin", "list-push!", location),
+          M.QualifiedVarExp("meta-builtin", "builtin", "list-push!", location),
           [e, M.VarExp(name, location)],
           location,
         ),

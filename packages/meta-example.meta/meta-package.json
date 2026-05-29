@@ -1,6 +1,12 @@
 {
   "name": "meta-example",
   "version": "0.1.0",
+  "dependencies": {
+    "meta-builtin": "../meta-builtin.meta"
+  },
+  "prelude": {
+    "meta-builtin": ["builtin"]
+  },
   "build": {
     "source-directory": "src",
     "output-directory": "build",

@@ -53,7 +53,7 @@ function executeImport(
   stmt: M.Stmt<M.Exp>,
 ): void {
   if (stmt.kind === "ImportStmt") {
-    if (!ensureModExists(pkg, stmt.modName, stmt.location)) return
+    if (!ensureModExists(pkg, "self", stmt.modName, stmt.location)) return
 
     const privates = privateNames.get(stmt.modName)
     for (const name of stmt.names) {
@@ -63,47 +63,92 @@ function executeImport(
   }
 
   if (stmt.kind === "ImportAsStmt") {
-    if (!ensureModExists(pkg, stmt.modName, stmt.location)) return
+    if (!ensureModExists(pkg, "self", stmt.modName, stmt.location)) return
 
     scope.importedPrefixes.set(stmt.prefix, { pkgName: "self", modName: stmt.modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
-    if (!ensureModExists(pkg, stmt.modName, stmt.location)) return
+    const { pkgName, modName } = parseImportModName(stmt.modName)
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
 
-    const names = definedNames.get(stmt.modName)
-    const privates = privateNames.get(stmt.modName)
+    const { names, privates } = lookupImportNames(
+      pkg,
+      definedNames,
+      privateNames,
+      pkgName,
+      modName,
+    )
 
-    if (names) {
-      for (const name of names) {
-        if (privates?.has(name)) continue
+    for (const name of names) {
+      if (privates.has(name)) continue
+      // Skip names already defined in the current module,
+      // so that local definitions can override imported ones.
+      if (definedNames.get(currentModName)?.has(name)) continue
 
-        // Skip names already defined in the current module,
-        // so that local definitions can override imported ones.
-        // This is especially important for the auto-injected
-        // ImportAll("builtin") — if a module defines its own
-        // version of a builtin name, the builtin import should
-        // not shadow it.
-        if (definedNames.get(currentModName)?.has(name)) continue
-
-        scope.importedNames.set(name, { pkgName: "self", modName: stmt.modName, name })
-      }
+      scope.importedNames.set(name, { pkgName, modName, name })
     }
+  }
+}
+
+function parseImportModName(
+  rawModName: string,
+): { pkgName: string; modName: string } {
+  const slashIndex = rawModName.indexOf("/")
+  if (slashIndex === -1) {
+    return { pkgName: "self", modName: rawModName }
+  }
+  return {
+    pkgName: rawModName.slice(0, slashIndex),
+    modName: rawModName.slice(slashIndex + 1),
+  }
+}
+
+function lookupImportNames(
+  pkg: M.Package,
+  definedNames: Map<string, Set<string>>,
+  privateNames: Map<string, Set<string>>,
+  pkgName: string,
+  modName: string,
+): { names: Set<string>; privates: Set<string> } {
+  if (pkgName !== "self") {
+    const target = pkg.dependencies.get(pkgName)!
+    return {
+      names: collectDefinedNames(target).get(modName) ?? new Set(),
+      privates: collectPrivateNames(target).get(modName) ?? new Set(),
+    }
+  }
+  return {
+    names: definedNames.get(modName) ?? new Set(),
+    privates: privateNames.get(modName) ?? new Set(),
   }
 }
 
 function ensureModExists(
   pkg: M.Package,
+  pkgName: string,
   modName: string,
   location: S.SourceLocation,
 ): boolean {
-  for (const fragment of pkg.fragments.values()) {
+  const target = pkgName === "self" ? pkg : pkg.dependencies.get(pkgName)
+  if (!target) {
+    const errorMessage = `undefined package: ${pkgName}`
+    if (location) {
+      writeln(S.sourceLocationReport(location, errorMessage))
+    } else {
+      writeln(`${pkgName}/${modName} -- ${errorMessage}`)
+    }
+    return false
+  }
+
+  for (const fragment of target.fragments.values()) {
     if (fragment.modName === modName) {
       return true
     }
   }
 
-  const errorMessage = `undefined module: ${modName}`
+  const fullModName = pkgName === "self" ? modName : `${pkgName}/${modName}`
+  const errorMessage = `undefined module: ${fullModName}`
   if (location) {
     writeln(S.sourceLocationReport(location, errorMessage))
   } else {
