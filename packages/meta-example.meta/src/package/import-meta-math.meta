@@ -1,0 +1,17 @@
+(module import-meta-math)
+
+(import meta-math/math even? odd?)
+
+(define-test even-test
+  (assert (even? 0))
+  (assert-not (even? 1))
+  (assert (even? 2))
+  (assert-not (even? 3))
+  (assert (even? 4)))
+
+(define-test odd-test
+  (assert-not (odd? 0))
+  (assert (odd? 1))
+  (assert-not (odd? 2))
+  (assert (odd? 3))
+  (assert-not (odd? 4)))
