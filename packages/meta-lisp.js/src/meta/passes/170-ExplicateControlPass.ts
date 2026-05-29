@@ -62,7 +62,7 @@ function explicateControlDefinition(
     }
 
     case "FunctionDefinition": {
-      const state = createState()
+      const state = createState(definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -78,7 +78,7 @@ function explicateControlDefinition(
     }
 
     case "TestDefinition": {
-      const state = createState()
+      const state = createState(definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -93,7 +93,7 @@ function explicateControlDefinition(
     }
 
     case "VariableDefinition": {
-      const state = createState()
+      const state = createState(definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -110,11 +110,12 @@ function explicateControlDefinition(
 }
 
 type State = {
+  pkg: M.Package
   blocks: Map<string, B.Block>
 }
 
-function createState(): State {
-  return { blocks: new Map() }
+function createState(pkg: M.Package): State {
+  return { pkg, blocks: new Map() }
 }
 
 function addBlock(state: State, block: B.Block): void {
@@ -133,7 +134,7 @@ function generateLabel(
   return label
 }
 
-function toBasicExp(exp: M.Term): B.Exp {
+function toBasicExp(exp: M.Term, pkg: M.Package): B.Exp {
   switch (exp.kind) {
     case "SymbolTerm": {
       return B.SymbolExp(exp.content, exp.location)
@@ -156,13 +157,14 @@ function toBasicExp(exp: M.Term): B.Exp {
     }
 
     case "QualifiedVarTerm": {
-      return B.VarExp(`${exp.pkgName}/${exp.modName}/${exp.name}`, exp.location)
+      const prefix = resolveXasmPrefix(pkg, exp.pkgName)
+      return B.VarExp(`${prefix}/${exp.modName}/${exp.name}`, exp.location)
     }
 
     case "ApplyTerm": {
       return B.ApplyExp(
-        toBasicExp(exp.target),
-        exp.args.map(toBasicExp),
+        toBasicExp(exp.target, pkg),
+        exp.args.map((arg) => toBasicExp(arg, pkg)),
         exp.location,
       )
     }
@@ -205,7 +207,7 @@ function explicateControlInTail(state: State, exp: M.Term): Array<B.Instr> {
     }
 
     default: {
-      return [B.ReturnInstr(toBasicExp(exp), exp.location)]
+      return [B.ReturnInstr(toBasicExp(exp, state.pkg), exp.location)]
     }
   }
 }
@@ -249,7 +251,7 @@ function explicateControlInLet1(
     }
 
     default: {
-      return [B.AssignInstr(name, toBasicExp(rhs), rhs.location), ...cont]
+      return [B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location), ...cont]
     }
   }
 }
@@ -292,7 +294,7 @@ function explicateControlInBegin1(
     }
 
     default: {
-      return [B.PerformInstr(toBasicExp(head), head.location), ...cont]
+      return [B.PerformInstr(toBasicExp(head, state.pkg), head.location), ...cont]
     }
   }
 }
@@ -352,7 +354,7 @@ function explicateControlInIf(
       }
 
       return [
-        B.TestInstr(toBasicExp(condition), condition.location),
+        B.TestInstr(toBasicExp(condition, state.pkg), condition.location),
         B.BranchInstr(
           generateLabel(state, "then", thenCont, condition.location),
           generateLabel(state, "else", elseCont, condition.location),
@@ -405,4 +407,16 @@ function explicateControlInIf(
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }
+}
+
+function resolveXasmPrefix(pkg: M.Package, pkgName: string): string {
+  if (pkgName === pkg.id) return pkg.id
+
+  const dep = pkg.dependencies.get(pkgName)
+  if (!dep) {
+    throw new Error(
+      `[resolveXasmPrefix] unknown package: "${pkgName}"`,
+    )
+  }
+  return dep.id
 }

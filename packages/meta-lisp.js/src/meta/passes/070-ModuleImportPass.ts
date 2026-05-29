@@ -128,7 +128,7 @@ function moduleImportTerm(scope: M.FragmentScope, term: M.Term): M.Term {
     case "QualifiedVarTerm": {
       const entry = scope.importedPrefixes.get(term.modName)
       if (entry) {
-        return M.QualifiedVarTerm(term.pkgName, entry.modName, term.name, term.location)
+        return M.QualifiedVarTerm(entry.pkgName, entry.modName, term.name, term.location)
       } else {
         return term
       }

@@ -67,19 +67,27 @@ function executeImport(
   stmt: M.Stmt<M.Exp>,
 ): void {
   if (stmt.kind === "ImportStmt") {
-    if (!ensureModExists(pkg, pkg.id, stmt.modName, stmt.location)) return
+    const { pkgName, modName } = parseImportModName(stmt.modName)
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
 
-    const privates = privateNames.get(stmt.modName)
+    const { privates } = lookupImportNames(
+      pkg,
+      definedNames,
+      privateNames,
+      pkgName,
+      modName,
+    )
     for (const name of stmt.names) {
-      if (privates?.has(name)) continue
-      scope.importedNames.set(name, { pkgName: pkg.id, modName: stmt.modName, name })
+      if (privates.has(name)) continue
+      scope.importedNames.set(name, { pkgName, modName, name })
     }
   }
 
   if (stmt.kind === "ImportAsStmt") {
-    if (!ensureModExists(pkg, pkg.id, stmt.modName, stmt.location)) return
+    const { pkgName, modName } = parseImportModName(stmt.modName)
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
 
-    scope.importedPrefixes.set(stmt.prefix, { pkgName: pkg.id, modName: stmt.modName })
+    scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {

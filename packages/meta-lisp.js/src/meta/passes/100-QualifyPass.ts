@@ -115,19 +115,6 @@ export function qualifyFreeVar(
       return M.QualifiedVarTerm(mod.pkg.id, mod.name, exp.name, exp.location)
     }
 
-    case "QualifiedVarTerm": {
-      const targetMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
-      if (targetMod && targetMod.pkg.id !== exp.pkgName) {
-        return M.QualifiedVarTerm(
-          targetMod.pkg.id,
-          exp.modName,
-          exp.name,
-          exp.location,
-        )
-      }
-      return exp
-    }
-
     case "LambdaTerm": {
       return M.LambdaTerm(
         exp.parameters,
