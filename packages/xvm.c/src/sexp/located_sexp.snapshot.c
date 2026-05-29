@@ -11,8 +11,9 @@ int main(void) {
 
   echo("abc");
   echo("-sphere");
-  // TODO can not handle symbol starts with number
-  // echo("3-sphere");
+  echo("3-sphere");
+  echo("3f2c1");
+  echo("3f2c1a8d/builtin/int-add");
 
   // keyword
 

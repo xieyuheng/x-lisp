@@ -29,6 +29,12 @@ test("lexer -- symbol", () => {
   assertTokens("abc", [{ kind: "Symbol", value: "abc" }])
 
   assertTokens("3-sphere", [{ kind: "Symbol", value: "3-sphere" }])
+
+  assertTokens("3f2c1", [{ kind: "Symbol", value: "3f2c1" }])
+
+  assertTokens("3f2c1a8d/builtin/int-add", [
+    { kind: "Symbol", value: "3f2c1a8d/builtin/int-add" },
+  ])
 })
 
 test("lexer -- quotes", () => {

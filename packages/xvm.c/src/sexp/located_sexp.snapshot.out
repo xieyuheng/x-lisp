@@ -1,5 +1,8 @@
 [['symbol-sexp 'abc ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 3 0 3]]]]]
 [['symbol-sexp '-sphere ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 7 0 7]]]]]
+[['symbol-sexp '3-sphere ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 8 0 8]]]]]
+[['symbol-sexp '3f2c1 ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 5 0 5]]]]]
+[['symbol-sexp '3f2c1a8d/builtin/int-add ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 24 0 24]]]]]
 [['keyword-sexp :abc ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 4 0 4]]]]]
 [['int-sexp 1 ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 1 0 1]]]]]
 [['int-sexp 0 ['make-source-location "*" ['make-source-span ['make-source-position 0 0 0] ['make-source-position 1 0 1]]]]]

@@ -15,6 +15,11 @@ function assertParse(text: string, expected: S.Sexp): void {
 test("parse -- symbol", () => {
   assertParse("abc", S.SymbolSexp("abc", S.zeroLocation("[test]")))
   assertParse("3-sphere", S.SymbolSexp("3-sphere", S.zeroLocation("[test]")))
+  assertParse("3f2c1", S.SymbolSexp("3f2c1", S.zeroLocation("[test]")))
+  assertParse(
+    "3f2c1a8d/builtin/int-add",
+    S.SymbolSexp("3f2c1a8d/builtin/int-add", S.zeroLocation("[test]")),
+  )
 })
 
 test("parse -- string", () => {

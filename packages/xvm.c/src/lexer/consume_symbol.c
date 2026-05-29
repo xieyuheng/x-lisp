@@ -1,7 +1,7 @@
 #include "index.h"
 
 bool can_consume_symbol(lexer_t *lexer) {
-  if (char_is_digit(lexer_next_char(lexer))) return false;
+  (void)lexer;
   return true;
 }
 
