@@ -1,4 +1,4 @@
-(module example)
+(module math)
 
 ;; can infer type of mutual recursive function
 

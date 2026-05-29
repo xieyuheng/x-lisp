@@ -1,4 +1,4 @@
-(module example)
+(module math)
 
 (claim factorial (-> int-t int-t))
 

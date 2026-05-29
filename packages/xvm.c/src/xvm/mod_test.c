@@ -1,25 +1,14 @@
 #include "index.h"
 
-void mod_test(mod_t *mod, const char *snapshot, bool profile) {
+void mod_test(mod_t *mod, const char *snapshot, bool profile, bool builtin) {
   set_iter_t iter;
   set_iter_init(&iter, mod->test_names);
   char *name = set_iter_next(&iter);
   while (name) {
-    if (!string_starts_with(name, "builtin/")) {
+    if (string_starts_with(name, "self/")) {
       definition_t *definition = mod_lookup_or_fail(mod, name);
       mod_test_definition(mod, snapshot, profile, definition);
-    }
-
-    name = set_iter_next(&iter);
-  }
-}
-
-void mod_builtin_test(mod_t *mod, const char *snapshot, bool profile) {
-  set_iter_t iter;
-  set_iter_init(&iter, mod->test_names);
-  char *name = set_iter_next(&iter);
-  while (name) {
-    if (string_starts_with(name, "builtin/")) {
+    } else if (builtin && string_starts_with(name, "meta-builtin/")) {
       definition_t *definition = mod_lookup_or_fail(mod, name);
       mod_test_definition(mod, snapshot, profile, definition);
     }

@@ -1,2 +1,0 @@
-#(definition meta-builtin/builtin/iadd)
-(@curry #(definition meta-builtin/builtin/iadd) 1 [1])

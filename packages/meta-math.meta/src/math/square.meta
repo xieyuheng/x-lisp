@@ -1,4 +1,4 @@
-(module example)
+(module math)
 
 (claim square (-> int-t int-t))
 

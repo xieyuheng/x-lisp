@@ -12,6 +12,7 @@ cd packages/cli.c; ./scripts/test.sh; cd ../..
 cd packages/xvm.c; ./scripts/test.sh; cd ../..
 
 cd packages/meta-builtin.meta; ./scripts/test.sh; cd ../..
+cd packages/meta-math.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-example.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-error.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-lisp.meta; ./scripts/test.sh; cd ../..

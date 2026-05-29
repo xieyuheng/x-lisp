@@ -71,8 +71,7 @@ static void handle_test(cli_ctx_t *ctx) {
   xexe_load(xexe, pathname);
   mod_t *mod = xexe_to_mod(xexe);
   xexe_free(xexe);
-  if (builtin) mod_builtin_test(mod, snapshot, profile);
-  mod_test(mod, snapshot, profile);
+  mod_test(mod, snapshot, profile, builtin);
 }
 
 static void handle_run_xasm(cli_ctx_t *ctx) {
@@ -103,8 +102,7 @@ static void handle_test_xasm(cli_ctx_t *ctx) {
   bool profile = cli_option_has(ctx, "--profile");
   bool builtin = cli_option_has(ctx, "--builtin");
   mod_t *mod = xasm_load_mod(make_path(pathname), profile);
-  if (builtin) mod_builtin_test(mod, snapshot, profile);
-  mod_test(mod, snapshot, profile);
+  mod_test(mod, snapshot, profile, builtin);
   mod_free(mod);
 }
 
