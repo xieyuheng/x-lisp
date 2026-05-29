@@ -5,7 +5,7 @@ export function ModuleImportPass(
   info: M.ModInfo,
   options: Map<string, string>,
 ): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
       const scope = info.fragmentScopes.get(path)
       if (scope) {

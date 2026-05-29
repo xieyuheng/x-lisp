@@ -6,7 +6,7 @@ import * as M from "../index.ts"
 export function ExplicateControlPass(rootPkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         for (const basicDefinition of explicateControlDefinition(

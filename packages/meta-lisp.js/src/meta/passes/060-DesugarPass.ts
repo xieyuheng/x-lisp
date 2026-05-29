@@ -4,7 +4,7 @@ export function DesugarPass(
   rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const fragment of pkg.fragments.values()) {
       fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
     }

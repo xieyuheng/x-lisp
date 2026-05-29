@@ -3,7 +3,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function ClaimPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const [name, entry] of mod.claimed) {
         if (!mod.admitted.has(name) && mod.definitions.get(name) === undefined) {

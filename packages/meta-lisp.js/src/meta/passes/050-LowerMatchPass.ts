@@ -6,7 +6,7 @@ export function LowerMatchPass(
   algebraicInfo: M.AlgebraicInfo,
   options: Map<string, string>,
 ): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
       const scope = modInfo.fragmentScopes.get(path)
       if (!scope) {

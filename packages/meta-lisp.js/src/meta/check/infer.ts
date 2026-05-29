@@ -39,10 +39,13 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
         const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
         if (qualifiedMod === undefined) {
           let message = `undefined module prefix`
-          message += `\n  module: ${exp.modName}`
+          message += `\n  package name: ${exp.pkgName}`
+          message += `\n  package id: ${mod.pkg.id}`
+          message += `\n  module name: ${exp.modName}`
           message += `\n  name: ${exp.name}`
           throw new S.ErrorWithSourceLocation(message, exp.location)
         }
+
         return inferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
       }
 
@@ -184,7 +187,8 @@ function inferLookup(
     const definition = M.modLookupDefinition(mod, name)
     if (definition === undefined) {
       let message = `undefined variable`
-      message += `\n  module: ${mod.name}`
+      message += `\n  package id: ${mod.pkg.id}`
+      message += `\n  module name: ${mod.name}`
       message += `\n  name: ${name}`
       return M.errorInferEffect(exp, message)(subst)
     }

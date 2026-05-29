@@ -5,10 +5,10 @@ export function ExecutePass(
   rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
       let mod =
-        M.packageLookupMod(pkg, "self", fragment.modName) ||
+        M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
         M.createMod(fragment.modName, pkg)
 
       M.packageAddMod(pkg, mod)

@@ -36,7 +36,8 @@ src/function/identity-type-error-2.meta:11:37 -- expected type is not a substitu
  12 | 
 
 src/module/nat-private-type-error.meta:8:17 -- undefined variable
-  module: nat-private-type-error
+  package id: self
+  module name: nat-private-type-error
   name: two
  6 |   (assert-equal zero 0)
  7 |   (assert-equal one 1)

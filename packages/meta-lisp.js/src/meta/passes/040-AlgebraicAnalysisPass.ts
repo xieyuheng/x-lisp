@@ -26,7 +26,7 @@ export function AlgebraicAnalysisPass(rootPkg: M.Package): AlgebraicInfo {
   const dataConstructorInfos = new Map<string, DataConstructorInfo>()
   const algebraicTypeInfos = new Map<string, AlgebraicTypeInfo>()
 
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const fragment of pkg.fragments.values()) {
       for (const stmt of fragment.stmts) {
         if (stmt.kind === "DefineAlgebraicTypeStmt") {

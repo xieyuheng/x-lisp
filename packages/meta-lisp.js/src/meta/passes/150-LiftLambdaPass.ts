@@ -4,7 +4,7 @@ export function LiftLambdaPass(
   rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       mod.definitions = new Map(
         mod.definitions

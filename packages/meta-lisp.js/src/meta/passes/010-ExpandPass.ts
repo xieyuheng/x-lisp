@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function ExpandPass(rootPkg: M.Package, options: Map<string, string>): void {
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const fragment of pkg.fragments.values()) {
       fragment.stmts = fragment.stmts.flatMap(expandStmt)
     }

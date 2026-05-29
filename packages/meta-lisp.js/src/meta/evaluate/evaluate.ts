@@ -12,6 +12,8 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
       if (definition) return definitionToValue(M.envMode(env), definition)
 
       let message = `[evaluate] undefined variable`
+      message += `\n  package name: ${mod.pkg.config.name}`
+      message += `\n  package id: ${mod.pkg.id}`
       message += `\n  module name: ${mod.name}`
       message += `\n  name: ${exp.name}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
@@ -21,7 +23,9 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
       const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
       if (qualifiedMod === undefined) {
         let message = `[evaluate] undefined module prefix`
-        message += `\n  module: ${exp.modName}`
+        message += `\n  package name: ${exp.pkgName}`
+        message += `\n  package id: ${mod.pkg.id}`
+        message += `\n  module name: ${exp.modName}`
         message += `\n  name: ${exp.name}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
@@ -30,7 +34,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
       if (definition) return definitionToValue(M.envMode(env), definition)
 
       let message = `[evaluate] undefined qualified variable`
-      message += `\n  module: ${qualifiedMod.name}`
+      message += `\n  module name: ${qualifiedMod.name}`
       message += `\n  name: ${exp.name}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }

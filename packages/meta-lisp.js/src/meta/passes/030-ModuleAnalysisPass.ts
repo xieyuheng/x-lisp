@@ -16,7 +16,7 @@ export type FragmentScope = {
 export function ModuleAnalysisPass(rootPkg: M.Package): ModInfo {
   const definedNames = new Map<string, Set<string>>()
   const privateNames = new Map<string, Set<string>>()
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [modName, names] of collectDefinedNames(pkg)) {
       let existing = definedNames.get(modName)
       if (!existing) { existing = new Set(); definedNames.set(modName, existing) }
@@ -30,14 +30,14 @@ export function ModuleAnalysisPass(rootPkg: M.Package): ModInfo {
   }
   const fragmentScopes = new Map<string, FragmentScope>()
 
-  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
       const scope = createFragmentScope()
       fragmentScopes.set(path, scope)
 
       for (const stmt of fragment.stmts) {
         executeImport(
-          rootPkg,
+          pkg,
           definedNames,
           privateNames,
           fragment.modName,
@@ -59,7 +59,7 @@ function createFragmentScope(): FragmentScope {
 }
 
 function executeImport(
-  rootPkg: M.Package,
+  pkg: M.Package,
   definedNames: Map<string, Set<string>>,
   privateNames: Map<string, Set<string>>,
   currentModName: string,
@@ -67,27 +67,27 @@ function executeImport(
   stmt: M.Stmt<M.Exp>,
 ): void {
   if (stmt.kind === "ImportStmt") {
-    if (!ensureModExists(rootPkg, "self", stmt.modName, stmt.location)) return
+    if (!ensureModExists(pkg, pkg.id, stmt.modName, stmt.location)) return
 
     const privates = privateNames.get(stmt.modName)
     for (const name of stmt.names) {
       if (privates?.has(name)) continue
-      scope.importedNames.set(name, { pkgName: "self", modName: stmt.modName, name })
+      scope.importedNames.set(name, { pkgName: pkg.id, modName: stmt.modName, name })
     }
   }
 
   if (stmt.kind === "ImportAsStmt") {
-    if (!ensureModExists(rootPkg, "self", stmt.modName, stmt.location)) return
+    if (!ensureModExists(pkg, pkg.id, stmt.modName, stmt.location)) return
 
-    scope.importedPrefixes.set(stmt.prefix, { pkgName: "self", modName: stmt.modName })
+    scope.importedPrefixes.set(stmt.prefix, { pkgName: pkg.id, modName: stmt.modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
     const { pkgName, modName } = parseImportModName(stmt.modName)
-    if (!ensureModExists(rootPkg, pkgName, modName, stmt.location)) return
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
 
     const { names, privates } = lookupImportNames(
-      rootPkg,
+      pkg,
       definedNames,
       privateNames,
       pkgName,
@@ -125,7 +125,7 @@ function lookupImportNames(
   pkgName: string,
   modName: string,
 ): { names: Set<string>; privates: Set<string> } {
-  if (pkgName !== "self") {
+  if (pkgName !== "self" && pkgName !== pkg.id) {
     const target = pkg.dependencies.get(pkgName)!
     return {
       names: collectDefinedNames(target).get(modName) ?? new Set(),
@@ -144,7 +144,7 @@ function ensureModExists(
   modName: string,
   location: S.SourceLocation,
 ): boolean {
-  const target = pkgName === "self" ? pkg : pkg.dependencies.get(pkgName)
+  const target = pkgName === "self" || pkgName === pkg.id ? pkg : pkg.dependencies.get(pkgName)
   if (!target) {
     const errorMessage = `undefined package: ${pkgName}`
     if (location) {
@@ -161,7 +161,7 @@ function ensureModExists(
     }
   }
 
-  const fullModName = pkgName === "self" ? modName : `${pkgName}/${modName}`
+  const fullModName = pkgName === "self" || pkgName === pkg.id ? modName : `${pkgName}/${modName}`
   const errorMessage = `undefined module: ${fullModName}`
   if (location) {
     writeln(S.sourceLocationReport(location, errorMessage))

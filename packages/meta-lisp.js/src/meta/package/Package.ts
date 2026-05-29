@@ -27,15 +27,18 @@ export function createPackage(
 
 export function packageLookupMod(
   pkg: Package,
-  pkgName: string,
+  pkgId: string,
   modName: string,
 ): M.Mod | undefined {
-  if (pkgName === "self" || pkgName === pkg.config.name) {
+  if (pkgId === pkg.id) {
     return pkg.mods.get(modName)
   }
-  const target = pkg.dependencies.get(pkgName)
-  if (!target) return undefined
-  return target.mods.get(modName)
+  for (const dep of pkg.dependencies.values()) {
+    if (dep.config.name === pkgId) {
+      return dep.mods.get(modName)
+    }
+  }
+  return undefined
 }
 
 export function packageAddMod(pkg: Package, mod: M.Mod): void {
@@ -78,7 +81,7 @@ export function packageSnapshotDirectory(pkg: M.Package): string {
     : packageSourceDirectory(pkg)
 }
 
-export function packageAndAllDependencies(
+export function packageClosureInTopologicalOrder(
   pkg: Package,
 ): Array<Package> {
   const result: Array<Package> = []
