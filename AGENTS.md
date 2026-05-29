@@ -85,6 +85,32 @@ AI agent 应用中文回答用户的问题。
 - `scripts/test.sh`   — 运行测试（Node 原生 test runner）
 - `scripts/clean.sh`  — 清理 snapshot 输出
 
+### 编码规范
+
+- **禁止未初始化变量**。不用 `let x: Type` 声明后再在下文赋初值。
+  有分支逻辑时，抽出小函数封装——始终用返回值给出初始化的结果：
+
+  ```typescript
+  // 不好 — let 先声明，分支里再赋值
+  let pkgName: string
+  let modName: string
+  if (slashIndex !== -1) {
+    pkgName = raw.slice(0, slashIndex)
+    modName = raw.slice(slashIndex + 1)
+  } else {
+    pkgName = "self"
+    modName = raw
+  }
+
+  // 好 — 抽纯函数，调用方拿到已初始化的结果
+  function parse(raw: string): { pkgName: string; modName: string } {
+    const i = raw.indexOf("/")
+    if (i === -1) return { pkgName: "self", modName: raw }
+    return { pkgName: raw.slice(0, i), modName: raw.slice(i + 1) }
+  }
+  const { pkgName, modName } = parse(stmt.modName)
+  ```
+
 ## meta-lisp 工作流
 
 - **meta-lisp 是一门新的 Lisp 方言**，有语法问题应先查阅[语法参考](docs/zh/reference/syntax.md)，不要套用其他 Lisp（如 Scheme、Common Lisp）的语法约定
