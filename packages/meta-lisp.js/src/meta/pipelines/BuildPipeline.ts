@@ -10,8 +10,6 @@ import * as B from "../../basic/index.ts"
 import * as Xasm from "../../xasm/index.ts"
 import * as M from "../index.ts"
 
-// - no CheckPass during BuildPipeline.
-
 export function BuildPipeline(
   rootPkg: M.Package,
   options: Map<string, string>,
@@ -26,6 +24,7 @@ export function BuildPipeline(
   M.ExecutePass(rootPkg, options)
   M.ClaimPass(rootPkg)
   M.QualifyPass(rootPkg, options)
+  M.CheckPass(rootPkg, options)
   M.LocatePass(rootPkg, options)
   M.ShrinkPass(rootPkg, options)
   M.UniquifyPass(rootPkg, options)
