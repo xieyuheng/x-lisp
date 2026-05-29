@@ -7,7 +7,7 @@ export function ExecutePass(
 ): void {
   for (const [path, fragment] of pkg.fragments) {
     let mod =
-      M.packageLookupMod(pkg, fragment.modName) ||
+      M.packageLookupMod(pkg, "self", fragment.modName) ||
       M.createMod(fragment.modName, pkg)
 
     M.packageAddMod(pkg, mod)
@@ -37,7 +37,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
   if (stmt.kind === "ClaimTypeStmt") {
     mod.claimed.set(stmt.name, {
-      exp: M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+      exp: M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
       type: M.TypeType(),
     })
   }
@@ -119,7 +119,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       M.modClaim(
         mod,
         stmt.name,
-        M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+        M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
@@ -127,9 +127,9 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         stmt.name,
         M.ArrowTerm(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
@@ -188,7 +188,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       M.modClaim(
         mod,
         name,
-        M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+        M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
@@ -196,9 +196,9 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         name,
         M.ArrowTerm(
           range(typeConstructor.parameters.length).map((_) =>
-            M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )
@@ -233,7 +233,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       M.modClaim(
         mod,
         name,
-        M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+        M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
       )
     } else {
       M.modClaim(
@@ -241,9 +241,9 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         name,
         M.ArrowTerm(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
           ),
-          M.QualifiedVarTerm("builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm("self", "builtin", "type-t", stmt.location),
           stmt.location,
         ),
       )

@@ -154,5 +154,5 @@ function matchLocateEntry(exp: M.Term, args: M.Term[]): boolean {
 function targetWithLocation(exp: M.Term): M.Term {
   assert(exp.kind === "QualifiedVarTerm")
   const entry = findLocateEntry(exp.name)
-  return M.QualifiedVarTerm(exp.modName, entry.target, exp.location)
+  return M.QualifiedVarTerm(exp.pkgName, exp.modName, entry.target, exp.location)
 }

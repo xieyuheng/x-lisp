@@ -115,18 +115,21 @@ export function VarTerm(name: string, location: SourceLocation): VarTerm {
 
 export type QualifiedVarTerm = {
   kind: "QualifiedVarTerm"
+  pkgName: string
   modName: string
   name: string
   location: SourceLocation
 }
 
 export function QualifiedVarTerm(
+  pkgName: string,
   modName: string,
   name: string,
   location: SourceLocation,
 ): QualifiedVarTerm {
   return {
     kind: "QualifiedVarTerm",
+    pkgName,
     modName,
     name,
     location,

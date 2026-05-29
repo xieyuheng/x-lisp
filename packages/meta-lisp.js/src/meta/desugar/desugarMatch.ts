@@ -195,6 +195,7 @@ function desugarDataConstructorClauseGroup(
   const [target, ...restTargets] = targets
 
   const predicate = M.QualifiedVarExp(
+    "self",
     group.dataConstructorInfo.modName,
     group.dataConstructorInfo.predicateName,
     location,
@@ -206,6 +207,7 @@ function desugarDataConstructorClauseGroup(
     (accessorName) =>
       M.ApplyExp(
         M.QualifiedVarExp(
+          "self",
           group.dataConstructorInfo.modName,
           accessorName,
           location,
@@ -359,10 +361,10 @@ export function makeDefaultExp(
   location: S.SourceLocation,
 ): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("builtin", "error", location),
+    M.QualifiedVarExp("self", "builtin", "error", location),
     [
       M.ApplyExp(
-        M.QualifiedVarExp("builtin", "format", location),
+        M.QualifiedVarExp("self", "builtin", "format", location),
         [
           M.ListExp(
             [

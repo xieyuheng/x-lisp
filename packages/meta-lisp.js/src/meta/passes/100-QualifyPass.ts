@@ -110,7 +110,7 @@ export function qualifyFreeVar(
         return exp
       }
 
-      return M.QualifiedVarTerm(mod.name, exp.name, exp.location)
+      return M.QualifiedVarTerm("self", mod.name, exp.name, exp.location)
     }
 
     case "LambdaTerm": {

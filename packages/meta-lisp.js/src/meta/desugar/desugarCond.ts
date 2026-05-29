@@ -7,7 +7,7 @@ export function desugarCond(
 ): M.Exp {
   if (clauses.length === 0)
     return M.ApplyExp(
-      M.QualifiedVarExp("builtin", "error", location),
+      M.QualifiedVarExp("self", "builtin", "error", location),
       [M.StringExp("cond mismatch", location)],
       location,
     )

@@ -6,7 +6,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
   switch (sexp.kind) {
     case "SymbolSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("builtin", "symbol-sexp", sexp.location),
+        M.QualifiedVarExp("self", "builtin", "symbol-sexp", sexp.location),
         [
           M.SymbolExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -17,7 +17,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "StringSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("builtin", "string-sexp", sexp.location),
+        M.QualifiedVarExp("self", "builtin", "string-sexp", sexp.location),
         [
           M.StringExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -28,7 +28,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "IntSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("builtin", "int-sexp", sexp.location),
+        M.QualifiedVarExp("self", "builtin", "int-sexp", sexp.location),
         [M.IntExp(sexp.content, sexp.location), desugarLocation(sexp.location)],
         sexp.location,
       )
@@ -36,7 +36,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "FloatSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("builtin", "float-sexp", sexp.location),
+        M.QualifiedVarExp("self", "builtin", "float-sexp", sexp.location),
         [
           M.FloatExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -47,7 +47,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "KeywordSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("builtin", "keyword-sexp", sexp.location),
+        M.QualifiedVarExp("self", "builtin", "keyword-sexp", sexp.location),
         [
           M.KeywordExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -58,7 +58,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "ListSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("builtin", "list-sexp", sexp.location),
+        M.QualifiedVarExp("self", "builtin", "list-sexp", sexp.location),
         [
           M.ListExp(
             sexp.elements.map((e) => desugarSexp(e)),

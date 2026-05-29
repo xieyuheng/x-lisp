@@ -2,6 +2,9 @@
   "name": "meta-lisp",
   "version": "0.1.0",
   "entry": "meta/main",
+  "dependencies": {
+    "meta-builtin": "../meta-builtin.meta"
+  },
   "build": {
     "source-directory": "src",
     "output-directory": "build",

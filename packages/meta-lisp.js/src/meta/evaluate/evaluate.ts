@@ -18,7 +18,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
     }
 
     case "QualifiedVarTerm": {
-      const qualifiedMod = M.packageLookupMod(mod.pkg, exp.modName)
+      const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
       if (qualifiedMod === undefined) {
         let message = `[evaluate] undefined module prefix`
         message += `\n  module: ${exp.modName}`

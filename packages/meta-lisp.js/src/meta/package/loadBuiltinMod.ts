@@ -7,7 +7,7 @@ const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 export function loadBuiltinMod(pkg: M.Package): M.Mod {
   const builtinPath = Path.join(currentDir, "../../../../meta-builtin.meta/src")
   const modName = "builtin"
-  const found = M.packageLookupMod(pkg, modName)
+  const found = M.packageLookupMod(pkg, "self", modName)
   if (found !== undefined) return found
   const mod = M.createMod(modName, pkg)
   M.packageAddMod(pkg, mod)

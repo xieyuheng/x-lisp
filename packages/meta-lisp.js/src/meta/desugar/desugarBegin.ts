@@ -29,7 +29,7 @@ export function desugarBegin(
     return M.LetrecStarExp(
       bindings,
       remaining.length === 0
-        ? M.QualifiedVarExp("builtin", "void", location)
+        ? M.QualifiedVarExp("self", "builtin", "void", location)
         : desugarBegin(remaining, location),
       location,
     )

@@ -49,7 +49,7 @@ export function desugarLetrec(
   for (const b of bindings) {
     const loc = b.location ?? location
     const boxGetExp = M.ApplyExp(
-      M.QualifiedVarExp("builtin", "box-get", loc),
+      M.QualifiedVarExp("self", "builtin", "box-get", loc),
       [M.VarExp(b.name, loc)],
       loc,
     )
@@ -63,7 +63,7 @@ export function desugarLetrec(
     const loc = b.location ?? location
     return M.Binding(
       b.name,
-      M.ApplyExp(M.QualifiedVarExp("builtin", "make-box", loc), [], loc),
+      M.ApplyExp(M.QualifiedVarExp("self", "builtin", "make-box", loc), [], loc),
       loc,
     )
   })
@@ -81,7 +81,7 @@ export function desugarLetrec(
     const loc = bindings[i].location ?? location
     result = M.Begin1Exp(
       M.ApplyExp(
-        M.QualifiedVarExp("builtin", "box-put!", loc),
+        M.QualifiedVarExp("self", "builtin", "box-put!", loc),
         [M.VarExp(freshNames[i], loc), M.VarExp(bindings[i].name, loc)],
         loc,
       ),

@@ -9,8 +9,8 @@ export type ModInfo = {
 }
 
 export type FragmentScope = {
-  importedNames: Map<string, { modName: string; name: string }>
-  importedPrefixes: Map<string, { modName: string }>
+  importedNames: Map<string, { pkgName: string; modName: string; name: string }>
+  importedPrefixes: Map<string, { pkgName: string; modName: string }>
 }
 
 export function ModuleAnalysisPass(pkg: M.Package): ModInfo {
@@ -58,14 +58,14 @@ function executeImport(
     const privates = privateNames.get(stmt.modName)
     for (const name of stmt.names) {
       if (privates?.has(name)) continue
-      scope.importedNames.set(name, { modName: stmt.modName, name })
+      scope.importedNames.set(name, { pkgName: "self", modName: stmt.modName, name })
     }
   }
 
   if (stmt.kind === "ImportAsStmt") {
     if (!ensureModExists(pkg, stmt.modName, stmt.location)) return
 
-    scope.importedPrefixes.set(stmt.prefix, { modName: stmt.modName })
+    scope.importedPrefixes.set(stmt.prefix, { pkgName: "self", modName: stmt.modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
@@ -86,7 +86,7 @@ function executeImport(
         // not shadow it.
         if (definedNames.get(currentModName)?.has(name)) continue
 
-        scope.importedNames.set(name, { modName: stmt.modName, name })
+        scope.importedNames.set(name, { pkgName: "self", modName: stmt.modName, name })
       }
     }
   }

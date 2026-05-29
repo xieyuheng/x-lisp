@@ -71,13 +71,18 @@ function liftLambdaExp(state: State, exp: M.Term): M.Term {
         ),
       )
 
-      const qualifiedFunctionName = `${state.mod.name}/${newFunctionName}`
+      const liftedRef = M.QualifiedVarTerm(
+        "self",
+        state.mod.name,
+        newFunctionName,
+        exp.location,
+      )
 
       if (freeNames.length == 0) {
-        return M.VarTerm(qualifiedFunctionName, exp.location)
+        return liftedRef
       } else {
         return M.ApplyTerm(
-          M.VarTerm(qualifiedFunctionName, exp.location),
+          liftedRef,
           freeNames.map((name) => M.VarTerm(name, exp.location)),
           exp.location,
         )

@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 
 export function desugarLocation(location: S.SourceLocation): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("builtin", "make-source-location", location),
+    M.QualifiedVarExp("self", "builtin", "make-source-location", location),
     [
       M.StringExp(location.path, location),
       expFromSpan(location.span, location),
@@ -14,7 +14,7 @@ export function desugarLocation(location: S.SourceLocation): M.Exp {
 
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("builtin", "make-source-span", location),
+    M.QualifiedVarExp("self", "builtin", "make-source-span", location),
     [
       expFromPosition(span.start, location),
       expFromPosition(span.end, location),
@@ -28,7 +28,7 @@ function expFromPosition(
   location: S.SourceLocation,
 ): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("builtin", "make-source-position", location),
+    M.QualifiedVarExp("self", "builtin", "make-source-position", location),
     [
       M.IntExp(BigInt(position.index), location),
       M.IntExp(BigInt(position.row), location),

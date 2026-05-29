@@ -152,18 +152,21 @@ export function VarExp(name: string, location: SourceLocation): VarExp {
 
 export type QualifiedVarExp = {
   kind: "QualifiedVarExp"
+  pkgName: string
   modName: string
   name: string
   location: SourceLocation
 }
 
 export function QualifiedVarExp(
+  pkgName: string,
   modName: string,
   name: string,
   location: SourceLocation,
 ): QualifiedVarExp {
   return {
     kind: "QualifiedVarExp",
+    pkgName,
     modName,
     name,
     location,

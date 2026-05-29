@@ -6,7 +6,7 @@ export function desugarStringConcat(
   location: SourceLocation,
 ): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("builtin", "string-concat", location),
+    M.QualifiedVarExp("self", "builtin", "string-concat", location),
     [M.ListExp(elements, location)],
     location,
   )

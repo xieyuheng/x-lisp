@@ -33,7 +33,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "QualifiedVarExp": {
-      return Ppml.text(`${exp.modName}/${exp.name}`)
+      return Ppml.text(`${exp.pkgName}/${exp.modName}/${exp.name}`)
     }
 
     case "LambdaExp": {
@@ -358,7 +358,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     }
 
     case "QualifiedVarTerm": {
-      return Ppml.text(`${term.modName}.${term.name}`)
+      return Ppml.text(`${term.pkgName}/${term.modName}/${term.name}`)
     }
 
     case "LambdaTerm": {

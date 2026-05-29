@@ -60,7 +60,7 @@ export function dataPatternDataConstructor(
   }
 
   if (exp.target.kind === "QualifiedVarExp") {
-    const qualifiedMod = M.packageLookupMod(mod.pkg, exp.target.modName)
+    const qualifiedMod = M.packageLookupMod(mod.pkg, exp.target.pkgName, exp.target.modName)
     assert(qualifiedMod)
     const dataConstructor = M.modLookupDataConstructor(
       qualifiedMod,

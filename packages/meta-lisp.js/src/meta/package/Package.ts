@@ -6,6 +6,8 @@ export type Package = {
   mods: Map<string, M.Mod>
   rootDirectory: string
   config: M.PackageConfig
+  hash: string
+  dependencies: Map<string, M.Package>
 }
 
 export function createPackage(
@@ -17,14 +19,19 @@ export function createPackage(
     mods: new Map(),
     rootDirectory,
     config,
+    hash: "self",
+    dependencies: new Map(),
   }
 }
 
 export function packageLookupMod(
   pkg: Package,
-  name: string,
+  pkgName: string,
+  modName: string,
 ): M.Mod | undefined {
-  return pkg.mods.get(name)
+  const target = pkgName === "self" ? pkg : pkg.dependencies.get(pkgName)
+  if (!target) return undefined
+  return target.mods.get(modName)
 }
 
 export function packageAddMod(pkg: Package, mod: M.Mod): void {

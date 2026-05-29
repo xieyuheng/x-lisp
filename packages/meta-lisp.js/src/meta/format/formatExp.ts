@@ -46,7 +46,7 @@ export function formatExp(exp: M.Exp): string {
     }
 
     case "QualifiedVarExp": {
-      return `${exp.modName}/${exp.name}`
+      return `${exp.pkgName}/${exp.modName}/${exp.name}`
     }
 
     case "LambdaExp": {

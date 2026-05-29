@@ -21,7 +21,7 @@ export function formatTerm(term: M.Term): string {
       return term.name
 
     case "QualifiedVarTerm":
-      return `${term.modName}.${term.name}`
+      return `${term.pkgName}/${term.modName}/${term.name}`
 
     case "LambdaTerm":
       return `(lambda (${term.parameters.join(" ")}) ${formatTerm(term.body)})`

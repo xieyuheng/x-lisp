@@ -41,10 +41,10 @@ export function desugar(exp: M.Exp): M.Term {
         desugar(exp.condition),
         M.Begin1Term(
           desugar(exp.consequent),
-          M.QualifiedVarTerm("builtin", "void", exp.location),
+          M.QualifiedVarTerm("self", "builtin", "void", exp.location),
           exp.location,
         ),
-        M.QualifiedVarTerm("builtin", "void", exp.location),
+        M.QualifiedVarTerm("self", "builtin", "void", exp.location),
         exp.location,
       )
     }
@@ -52,10 +52,10 @@ export function desugar(exp: M.Exp): M.Term {
     case "UnlessExp": {
       return M.IfTerm(
         desugar(exp.condition),
-        M.QualifiedVarTerm("builtin", "void", exp.location),
+        M.QualifiedVarTerm("self", "builtin", "void", exp.location),
         M.Begin1Term(
           desugar(exp.alternative),
-          M.QualifiedVarTerm("builtin", "void", exp.location),
+          M.QualifiedVarTerm("self", "builtin", "void", exp.location),
           exp.location,
         ),
         exp.location,
@@ -99,7 +99,7 @@ export function desugar(exp: M.Exp): M.Term {
     }
 
     case "CommentExp": {
-      return M.QualifiedVarTerm("builtin", "void", exp.location)
+      return M.QualifiedVarTerm("self", "builtin", "void", exp.location)
     }
 
     case "PipeExp": {
@@ -168,7 +168,7 @@ export function desugar(exp: M.Exp): M.Term {
     }
 
     case "QualifiedVarExp": {
-      return M.QualifiedVarTerm(exp.modName, exp.name, exp.location)
+      return M.QualifiedVarTerm(exp.pkgName, exp.modName, exp.name, exp.location)
     }
 
     case "ApplyExp": {

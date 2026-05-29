@@ -17,7 +17,7 @@ export function desugarSet(
       M.AssignExp(
         name,
         M.ApplyExp(
-          M.QualifiedVarExp("builtin", "make-set", location),
+          M.QualifiedVarExp("self", "builtin", "make-set", location),
           [],
           location,
         ),
@@ -25,7 +25,7 @@ export function desugarSet(
       ),
       ...elements.map((e) =>
         M.ApplyExp(
-          M.QualifiedVarExp("builtin", "set-add!", location),
+          M.QualifiedVarExp("self", "builtin", "set-add!", location),
           [e, M.VarExp(name, location)],
           location,
         ),
