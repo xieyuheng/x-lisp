@@ -24,7 +24,6 @@ void mod_test_definition(mod_t *mod, const char *snapshot, bool profile, definit
     mod_call_entry(mod, definition->name);
   } else {
     path_t *path = make_path(snapshot);
-    path_join(path, "modules");
     path_join(path, definition->name);
     path_join_extension(path, ".out");
     char *segment = path_pop_segment(path);
