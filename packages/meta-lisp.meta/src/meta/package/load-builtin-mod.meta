@@ -12,3 +12,22 @@
      (type-builtin mod)
      (package-load-fragments package builtin-path)
      mod)))
+
+(define builtin-package-cache (make-box))
+
+(define (load-builtin-package)
+  (match (box-get-maybe builtin-package-cache)
+    ((just pkg) pkg)
+    ((nothing)
+     (= builtin-config-path "packages/meta-builtin.meta/meta-package.json")
+     (= config (load-package-config builtin-config-path))
+     (= root-directory
+        (path-resolve (path-directory-name builtin-config-path)))
+     (= pkg (make-package "meta-builtin" root-directory config))
+     (= mod (make-mod 'builtin pkg))
+     (package-put-mod! 'builtin mod pkg)
+     (type-builtin mod)
+     (= source-directory (package-source-directory pkg))
+     (package-load-fragments pkg source-directory)
+     (box-put! pkg builtin-package-cache)
+     pkg)))

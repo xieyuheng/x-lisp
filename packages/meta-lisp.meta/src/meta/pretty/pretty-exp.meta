@@ -15,8 +15,8 @@
      (ppml/text (format-as-sexp content)))
     ((var-exp name location)
      (ppml/text (symbol-to-string name)))
-    ((qualified-var-exp mod-name name location)
-     (ppml/text (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
+    ((qualified-var-exp pkg-name mod-name name location)
+      (ppml/text (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
     ((lambda-exp parameters body location)
      (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
        (ppml/pretty-syntax "lambda"
@@ -165,8 +165,8 @@
     ((symbol-exp content location) (just (format-as-sexp content)))
     ((keyword-exp content location) (just (format-as-sexp content)))
     ((var-exp name location) (just (symbol-to-string name)))
-    ((qualified-var-exp mod-name name location)
-     (just (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
+    ((qualified-var-exp pkg-name mod-name name location)
+      (just (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
     (else (nothing))))
 
 (define (pretty-bindings bindings)

@@ -56,7 +56,7 @@ function XasmBundle(pkg: M.Package, xasmMod: Xasm.Mod): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xasm`), (file) => {
     if (pkg.config.entry) {
-      fileWriteln(file, `(default-entry ${pkg.config.entry})`)
+      fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
     }
     const definitions = Array.from(xasmMod.definitions.values())
     const code = definitions.map(Xasm.formatDefinition).join("\n")

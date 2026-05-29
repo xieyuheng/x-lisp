@@ -8,7 +8,7 @@
     ((string-exp content location) (make-set))
     ((int-exp content location) (make-set))
     ((float-exp content location) (make-set))
-    ((qualified-var-exp mod-name name location) (make-set))
+    ((qualified-var-exp pkg-name mod-name name location) (make-set))
     ((quote-exp sexp location) (make-set))
     ((sexp-exp sexp location) (make-set))
     ((comment-exp content location) (make-set))

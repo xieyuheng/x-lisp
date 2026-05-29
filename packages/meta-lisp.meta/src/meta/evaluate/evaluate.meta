@@ -11,7 +11,7 @@
          (if (not (nothing? definition))
            (definition-to-value (env-mode env) (just-value definition))
            (error "(evaluate) undefined variable")))))
-    ((qualified-var-term mod-name name location)
+    ((qualified-var-term pkg-name mod-name name location)
      (let ((qualified-mod (package-lookup-mod (mod-package mod) mod-name)))
        (if (nothing? qualified-mod)
          (error "(evaluate) undefined module prefix")

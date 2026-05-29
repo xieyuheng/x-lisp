@@ -11,7 +11,7 @@
     ((string-term content location) (make-set))
     ((int-term content location) (make-set))
     ((float-term content location) (make-set))
-    ((qualified-var-term mod-name name location) (make-set))
+    ((qualified-var-term pkg-name mod-name name location) (make-set))
     ((var-term name location)
      (if (set-member? name bound-names)
        (make-set)

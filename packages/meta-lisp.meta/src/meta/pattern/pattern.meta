@@ -47,7 +47,7 @@
              (error (@string
                       "[data-pattern-data-constructor] undefined target name"
                       "\n  name: " (symbol-to-string name))))))
-        ((qualified-var-exp mod-name name location)
+        ((qualified-var-exp pkg-name mod-name name location)
          (match (package-lookup-mod (mod-package mod) mod-name)
            ((just found-mod)
             (let ((dcs (mod-data-constructors found-mod)))

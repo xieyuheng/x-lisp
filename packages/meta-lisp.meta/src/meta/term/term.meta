@@ -7,7 +7,7 @@
   (int-term (content int-t) (location source-location-t))
   (float-term (content float-t) (location source-location-t))
   (var-term (name symbol-t) (location source-location-t))
-  (qualified-var-term (mod-name symbol-t) (name symbol-t) (location source-location-t))
+  (qualified-var-term (pkg-name symbol-t) (mod-name symbol-t) (name symbol-t) (location source-location-t))
   (lambda-term (parameters (list-t symbol-t)) (body term-t) (location source-location-t))
   (apply-term (target term-t) (args (list-t term-t)) (location source-location-t))
   (let1-term (name symbol-t) (rhs term-t) (body term-t) (location source-location-t))

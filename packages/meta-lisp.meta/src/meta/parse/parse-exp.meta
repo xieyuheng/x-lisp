@@ -9,11 +9,18 @@
     ((symbol-sexp content location)
      (= str (symbol-to-string content))
      (if (string-contains? "/" str)
-       (let ((parts (string-split "/" str)))
-         (qualified-var-exp
-           (string-to-symbol (list-get 0 parts))
-           (string-to-symbol (list-get 1 parts))
-           location))
+        (let ((parts (string-split "/" str)))
+          (if (equal? (list-length parts) 3)
+            (qualified-var-exp
+              (string-to-symbol (list-get 0 parts))
+              (string-to-symbol (list-get 1 parts))
+              (string-to-symbol (list-get 2 parts))
+              location)
+            (qualified-var-exp
+              'meta-builtin
+              (string-to-symbol (list-get 0 parts))
+              (string-to-symbol (list-get 1 parts))
+              location)))
        (var-exp content location)))
     ((keyword-sexp content location) (keyword-exp content location))
     ((string-sexp content location) (string-exp content location))
@@ -187,7 +194,7 @@
      (if (symbol-sexp? (list-head elements))
        (let ((first-content (symbol-sexp-content (list-head elements))))
           (if (equal? first-content 'else)
-            (make-cond-clause (qualified-var-exp 'builtin 'true location)
+            (make-cond-clause (qualified-var-exp 'meta-builtin 'builtin 'true location)
                               (parse-body (list-drop 1 elements) location)
                               location)
             (make-cond-clause (parse-exp (list-head elements))

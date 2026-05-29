@@ -15,7 +15,7 @@
      (format-as-sexp content))
     ((var-term name location)
      (symbol-to-string name))
-    ((qualified-var-term mod-name name location)
+    ((qualified-var-term pkg-name mod-name name location)
      (@string (symbol-to-string mod-name) "/" (symbol-to-string name)))
     ((apply-term target args location)
      (= target-str (format-term target))

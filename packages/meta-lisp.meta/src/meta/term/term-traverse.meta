@@ -9,7 +9,7 @@
     ((int-term content location) term)
     ((float-term content location) term)
     ((var-term name location) term)
-    ((qualified-var-term mod-name name location) term)
+    ((qualified-var-term pkg-name mod-name name location) term)
     ((lambda-term parameters body location)
      (lambda-term parameters (f body) location))
     ((polymorphic-term parameters body location)

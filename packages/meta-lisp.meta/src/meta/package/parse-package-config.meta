@@ -6,7 +6,31 @@
   (make-package-config
     (json-string-value (hash-get "name" entries))
     (json-string-value (hash-get "version" entries))
-    (parse-build-config (hash-get "build" entries))))
+    (parse-dependencies entries)
+    (parse-prelude entries)
+    (parse-build-config (hash-get "build" entries))
+    (parse-entry entries)))
+
+(define (parse-dependencies entries)
+  (if (hash-has? "dependencies" entries)
+    (let ((dep-entries (json-object-entries (hash-get "dependencies" entries))))
+      (hash-map-value json-string-value dep-entries))
+    (make-hash)))
+
+(define (parse-prelude entries)
+  (if (hash-has? "prelude" entries)
+    (let ((prelude-entries (json-object-entries (hash-get "prelude" entries))))
+      (hash-map-value
+        (lambda (v)
+          (= arr (json-array-elements v))
+          (list-map json-string-value arr))
+        prelude-entries))
+    (make-hash)))
+
+(define (parse-entry entries)
+  (if (hash-has? "entry" entries)
+    (just (json-string-value (hash-get "entry" entries)))
+    (nothing)))
 
 (define (parse-build-config json-value)
   (= entries (json-object-entries json-value))

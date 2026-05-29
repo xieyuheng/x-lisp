@@ -8,4 +8,7 @@
 (define-struct package-config-t
   (name string-t)
   (version string-t)
-  (build build-config-t))
+  (dependencies (hash-t string-t string-t))
+  (prelude (hash-t string-t (list-t string-t)))
+  (build build-config-t)
+  (entry (maybe-t string-t)))

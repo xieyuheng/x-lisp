@@ -9,7 +9,7 @@
     ((int-exp content location) exp)
     ((float-exp content location) exp)
     ((var-exp name location) exp)
-    ((qualified-var-exp mod-name name location) exp)
+    ((qualified-var-exp pkg-name mod-name name location) exp)
     ((quote-exp sexp location) exp)
     ((sexp-exp sexp location) exp)
     ((comment-exp content location) exp)

@@ -2,13 +2,15 @@
 
 (define-struct* package-t
   (cons-package
+    (id string-t)
     (root-directory string-t)
     (config package-config-t)
     (fragments (hash-t string-t mod-fragment-t))
-    (mods (hash-t symbol-t mod-t))))
+    (mods (hash-t symbol-t mod-t))
+    (dependencies (hash-t string-t package-t))))
 
-(define (make-package root-directory config)
-  (cons-package root-directory config (make-hash) (make-hash)))
+(define (make-package id root-directory config)
+  (cons-package id root-directory config (make-hash) (make-hash) (make-hash)))
 
 (define (package-put-fragment! path fragment package)
   (hash-put! path fragment (package-fragments package)))

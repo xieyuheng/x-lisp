@@ -9,7 +9,7 @@
     ((int-exp content location) location)
     ((float-exp content location) location)
     ((var-exp name location) location)
-    ((qualified-var-exp mod-name name location) location)
+    ((qualified-var-exp pkg-name mod-name name location) location)
     ((apply-exp target args location) location)
     ((pipe-exp target steps location) location)
     ((chain-exp steps location) location)

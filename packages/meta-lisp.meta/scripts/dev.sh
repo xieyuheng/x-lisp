@@ -2,7 +2,5 @@
 
 set -e
 
-./meta-lisp.js check
-./meta-lisp.js build
-
+./scripts/test.sh
 ./scripts/self-check.sh
