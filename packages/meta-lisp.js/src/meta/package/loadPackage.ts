@@ -1,7 +1,7 @@
 import Path from "node:path"
 import * as M from "../index.ts"
 
-export function loadPackage(configPath: string): M.Package {
+export function loadPackage(id: string, configPath: string): M.Package {
   const config = M.loadPackageConfig(configPath)
   const rootDirectory = Path.resolve(Path.dirname(configPath))
 
@@ -9,13 +9,9 @@ export function loadPackage(configPath: string): M.Package {
     return M.loadBuiltinPackage()
   }
 
-  const pkg = M.createPackage(rootDirectory, config)
+  const pkg = M.createPackage(id, rootDirectory, config)
   const builtinPkg = M.loadBuiltinPackage()
   pkg.dependencies.set("meta-builtin", builtinPkg)
-  pkg.mods.set("builtin", builtinPkg.mods.get("builtin")!)
-  for (const [path, fragment] of builtinPkg.fragments) {
-    pkg.fragments.set(path, fragment)
-  }
 
   for (const [alias, depPath] of Object.entries(config.dependencies)) {
     if (alias === "meta-builtin") continue
@@ -24,7 +20,8 @@ export function loadPackage(configPath: string): M.Package {
       depPath,
       "meta-package.json",
     )
-    pkg.dependencies.set(alias, loadPackage(resolvedPath))
+    const depId = M.computePackageHashFromConfig(resolvedPath)
+    pkg.dependencies.set(alias, loadPackage(depId, resolvedPath))
   }
 
   for (const pkgName of Object.keys(config.prelude)) {

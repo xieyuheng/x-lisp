@@ -1,19 +1,21 @@
 import * as M from "../index.ts"
 
 export function LiftLambdaPass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const mod of pkg.mods.values()) {
-    mod.definitions = new Map(
-      mod.definitions
-        .values()
-        .flatMap((definition) => liftLambdaDefinition(mod, definition))
-        .map((definition) => [definition.name, definition]),
-    )
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const mod of pkg.mods.values()) {
+      mod.definitions = new Map(
+        mod.definitions
+          .values()
+          .flatMap((definition) => liftLambdaDefinition(mod, definition))
+          .map((definition) => [definition.name, definition]),
+      )
+    }
   }
 
-  if (options.has("dump")) M.packageDumpMods(pkg, "150-lift-lambda")
+  if (options.has("dump")) M.packageDumpMods(rootPkg, "150-lift-lambda")
 }
 
 type State = {

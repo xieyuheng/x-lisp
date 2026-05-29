@@ -2,24 +2,25 @@ import Path from "node:path"
 import * as M from "../index.ts"
 
 export type Package = {
-  fragments: Map<string, M.ModFragment>
-  mods: Map<string, M.Mod>
+  id: string
   rootDirectory: string
   config: M.PackageConfig
-  id: string
+  fragments: Map<string, M.ModFragment>
+  mods: Map<string, M.Mod>
   dependencies: Map<string, M.Package>
 }
 
 export function createPackage(
+  id: string,
   rootDirectory: string,
   config: M.PackageConfig,
 ): Package {
   return {
-    fragments: new Map(),
-    mods: new Map(),
+    id,
     rootDirectory,
     config,
-    id: "self",
+    fragments: new Map(),
+    mods: new Map(),
     dependencies: new Map(),
   }
 }
@@ -75,4 +76,19 @@ export function packageSnapshotDirectory(pkg: M.Package): string {
   return pkg.config["build"]["snapshot-directory"]
     ? Path.resolve(pkg.rootDirectory, pkg.config["build"]["snapshot-directory"])
     : packageSourceDirectory(pkg)
+}
+
+export function packageAndAllDependencies(
+  pkg: Package,
+): Array<Package> {
+  const result: Array<Package> = []
+  const seen = new Set<string>()
+  function collect(pkg: Package): void {
+    if (seen.has(pkg.id)) return
+    seen.add(pkg.id)
+    for (const dep of pkg.dependencies.values()) collect(dep)
+    result.push(pkg)
+  }
+  collect(pkg)
+  return result
 }

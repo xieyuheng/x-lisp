@@ -4,7 +4,7 @@ set -e
 
 xvm=../xvm.c/src/xvm.exe
 xexe=build/bundle.xexe
-entry=calculator/main
+entry=self/calculator/main
 
 echo "=== hello ==="
 $xvm run $xexe --entry $entry -- hello

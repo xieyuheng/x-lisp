@@ -1,23 +1,25 @@
 import * as M from "../index.ts"
 
 export function LowerMatchPass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   modInfo: M.ModInfo,
   algebraicInfo: M.AlgebraicInfo,
   options: Map<string, string>,
 ): void {
-  for (const [path, fragment] of pkg.fragments) {
-    const scope = modInfo.fragmentScopes.get(path)
-    if (!scope) {
-      throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
-    }
-    for (const stmt of fragment.stmts) {
-      const fragPkgId = pkg.mods.get(fragment.modName)?.pkg.id ?? pkg.id
-      lowerMatchStmt(scope, fragment.modName, algebraicInfo, fragPkgId, stmt)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const [path, fragment] of pkg.fragments) {
+      const scope = modInfo.fragmentScopes.get(path)
+      if (!scope) {
+        throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
+      }
+      for (const stmt of fragment.stmts) {
+        const fragPkgId = pkg.id
+        lowerMatchStmt(scope, fragment.modName, algebraicInfo, fragPkgId, stmt)
+      }
     }
   }
 
-  if (options.has("dump")) M.packageDumpFragments(pkg, "050-lower-match")
+  if (options.has("dump")) M.packageDumpFragments(rootPkg, "050-lower-match")
 }
 
 function lowerMatchStmt(

@@ -2,16 +2,18 @@ import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
 export function QualifyPass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const mod of pkg.mods.values()) {
-    for (const definition of mod.definitions.values()) {
-      qualifyDefinition(definition)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const mod of pkg.mods.values()) {
+      for (const definition of mod.definitions.values()) {
+        qualifyDefinition(definition)
+      }
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(pkg, "100-qualify")
+  if (options.has("dump")) M.packageDumpMods(rootPkg, "100-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {
@@ -111,19 +113,6 @@ export function qualifyFreeVar(
       }
 
       return M.QualifiedVarTerm(mod.pkg.id, mod.name, exp.name, exp.location)
-    }
-
-    case "QualifiedVarTerm": {
-      const targetMod = mod.pkg.mods.get(exp.modName)
-      if (targetMod && targetMod.pkg.id !== exp.pkgName) {
-        return M.QualifiedVarTerm(
-          targetMod.pkg.id,
-          exp.modName,
-          exp.name,
-          exp.location,
-        )
-      }
-      return exp
     }
 
     case "LambdaTerm": {

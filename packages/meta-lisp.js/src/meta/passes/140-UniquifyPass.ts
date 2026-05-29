@@ -2,16 +2,18 @@ import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
 export function UniquifyPass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const mod of pkg.mods.values()) {
-    for (const definition of mod.definitions.values()) {
-      uniquifyDefinition(definition)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const mod of pkg.mods.values()) {
+      for (const definition of mod.definitions.values()) {
+        uniquifyDefinition(definition)
+      }
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(pkg, "140-uniquify")
+  if (options.has("dump")) M.packageDumpMods(rootPkg, "140-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {

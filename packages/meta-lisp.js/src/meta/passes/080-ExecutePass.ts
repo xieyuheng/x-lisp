@@ -2,22 +2,24 @@ import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
 
 export function ExecutePass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const [path, fragment] of pkg.fragments) {
-    let mod =
-      M.packageLookupMod(pkg, "self", fragment.modName) ||
-      M.createMod(fragment.modName, pkg)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const [path, fragment] of pkg.fragments) {
+      let mod =
+        M.packageLookupMod(pkg, "self", fragment.modName) ||
+        M.createMod(fragment.modName, pkg)
 
-    M.packageAddMod(pkg, mod)
+      M.packageAddMod(pkg, mod)
 
-    for (const stmt of fragment.desugaredStmts) {
-      executeStmt(mod, stmt)
+      for (const stmt of fragment.desugaredStmts) {
+        executeStmt(mod, stmt)
+      }
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(pkg, "080-execute")
+  if (options.has("dump")) M.packageDumpMods(rootPkg, "080-execute")
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {

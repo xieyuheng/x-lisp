@@ -1,19 +1,19 @@
 import * as M from "../index.ts"
 
 export function CheckPipeline(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  M.ExpandPass(pkg, options)
-  M.ModulePreludePass(pkg)
-  const modInfo = M.ModuleAnalysisPass(pkg)
-  const algebraicInfo = M.AlgebraicAnalysisPass(pkg)
-  M.LowerMatchPass(pkg, modInfo, algebraicInfo, options)
-  M.DesugarPass(pkg, options)
-  M.ModuleImportPass(pkg, modInfo, options)
-  M.ExecutePass(pkg, options)
-  M.ClaimPass(pkg)
-  M.QualifyPass(pkg, options)
-  M.CheckPass(pkg, options)
-  M.LocatePass(pkg, options)
+  M.ExpandPass(rootPkg, options)
+  M.ModulePreludePass(rootPkg)
+  const modInfo = M.ModuleAnalysisPass(rootPkg)
+  const algebraicInfo = M.AlgebraicAnalysisPass(rootPkg)
+  M.LowerMatchPass(rootPkg, modInfo, algebraicInfo, options)
+  M.DesugarPass(rootPkg, options)
+  M.ModuleImportPass(rootPkg, modInfo, options)
+  M.ExecutePass(rootPkg, options)
+  M.ClaimPass(rootPkg)
+  M.QualifyPass(rootPkg, options)
+  M.CheckPass(rootPkg, options)
+  M.LocatePass(rootPkg, options)
 }

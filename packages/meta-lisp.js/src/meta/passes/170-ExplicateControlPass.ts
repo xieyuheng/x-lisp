@@ -3,16 +3,18 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
 
-export function ExplicateControlPass(pkg: M.Package): B.Mod {
+export function ExplicateControlPass(rootPkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
-  for (const mod of pkg.mods.values()) {
-    for (const definition of mod.definitions.values()) {
-      for (const basicDefinition of explicateControlDefinition(
-        basicMod,
-        definition,
-      )) {
-        basicMod.definitions.set(basicDefinition.name, basicDefinition)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const mod of pkg.mods.values()) {
+      for (const definition of mod.definitions.values()) {
+        for (const basicDefinition of explicateControlDefinition(
+          basicMod,
+          definition,
+        )) {
+          basicMod.definitions.set(basicDefinition.name, basicDefinition)
+        }
       }
     }
   }
@@ -60,7 +62,7 @@ function explicateControlDefinition(
     }
 
     case "FunctionDefinition": {
-      const state = createState(definition.mod.pkg.id, definition.mod.pkg)
+      const state = createState()
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -76,7 +78,7 @@ function explicateControlDefinition(
     }
 
     case "TestDefinition": {
-      const state = createState(definition.mod.pkg.id, definition.mod.pkg)
+      const state = createState()
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -91,7 +93,7 @@ function explicateControlDefinition(
     }
 
     case "VariableDefinition": {
-      const state = createState(definition.mod.pkg.id, definition.mod.pkg)
+      const state = createState()
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -108,13 +110,11 @@ function explicateControlDefinition(
 }
 
 type State = {
-  pkgId: string
-  pkg: M.Package
   blocks: Map<string, B.Block>
 }
 
-function createState(pkgId: string, pkg: M.Package): State {
-  return { pkgId, pkg, blocks: new Map() }
+function createState(): State {
+  return { blocks: new Map() }
 }
 
 function addBlock(state: State, block: B.Block): void {
@@ -321,15 +321,13 @@ function explicateControlInIf(
 
   switch (condition.kind) {
     case "VarTerm": {
-      const builtinMod = state.pkg.mods.get("builtin")
-      const builtinPrefix = builtinMod?.pkg.id ?? state.pkgId
       return [
         B.TestInstr(
           B.ApplyExp(
-            B.VarExp(`${builtinPrefix}/builtin/same?`, condition.location),
+            B.VarExp("meta-builtin/builtin/same?", condition.location),
             [
               B.VarExp(condition.name, condition.location),
-              B.VarExp(`${builtinPrefix}/builtin/true`, condition.location),
+              B.VarExp("meta-builtin/builtin/true", condition.location),
             ],
             condition.location,
           ),

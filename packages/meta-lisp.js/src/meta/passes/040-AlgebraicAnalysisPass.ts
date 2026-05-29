@@ -22,41 +22,43 @@ export type AlgebraicInfo = {
   algebraicTypeInfos: Map<string, AlgebraicTypeInfo>
 }
 
-export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicInfo {
+export function AlgebraicAnalysisPass(rootPkg: M.Package): AlgebraicInfo {
   const dataConstructorInfos = new Map<string, DataConstructorInfo>()
   const algebraicTypeInfos = new Map<string, AlgebraicTypeInfo>()
 
-  for (const fragment of pkg.fragments.values()) {
-    for (const stmt of fragment.stmts) {
-      if (stmt.kind === "DefineAlgebraicTypeStmt") {
-        const typeName = stmt.typeConstructor.name
-        const modName = fragment.modName
-        const pkgName = pkg.mods.get(modName)?.pkg.id ?? pkg.id
-        const constructorNames: Array<string> = []
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const fragment of pkg.fragments.values()) {
+      for (const stmt of fragment.stmts) {
+        if (stmt.kind === "DefineAlgebraicTypeStmt") {
+          const typeName = stmt.typeConstructor.name
+          const modName = fragment.modName
+          const pkgName = pkg.id
+          const constructorNames: Array<string> = []
 
-        for (const ctor of stmt.dataConstructors) {
-          constructorNames.push(ctor.name)
-          const fieldNames = ctor.fields.map((f) => f.name)
-          const accessorNames = ctor.fields.map((f) => f.accessorName)
-          const key = `${pkgName}/${modName}/${ctor.name}`
-          dataConstructorInfos.set(key, {
-            name: ctor.name,
+          for (const ctor of stmt.dataConstructors) {
+            constructorNames.push(ctor.name)
+            const fieldNames = ctor.fields.map((f) => f.name)
+            const accessorNames = ctor.fields.map((f) => f.accessorName)
+            const key = `${pkgName}/${modName}/${ctor.name}`
+            dataConstructorInfos.set(key, {
+              name: ctor.name,
+              pkgName,
+              modName,
+              typeName,
+              fieldNames,
+              predicateName: ctor.predicate,
+              accessorNames,
+            })
+          }
+
+          const typeKey = `${pkgName}/${modName}/${typeName}`
+          algebraicTypeInfos.set(typeKey, {
+            name: typeName,
             pkgName,
             modName,
-            typeName,
-            fieldNames,
-            predicateName: ctor.predicate,
-            accessorNames,
+            constructorNames,
           })
         }
-
-        const typeKey = `${pkgName}/${modName}/${typeName}`
-        algebraicTypeInfos.set(typeKey, {
-          name: typeName,
-          pkgName,
-          modName,
-          constructorNames,
-        })
       }
     }
   }

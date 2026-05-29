@@ -13,24 +13,38 @@ export type FragmentScope = {
   importedPrefixes: Map<string, { pkgName: string; modName: string }>
 }
 
-export function ModuleAnalysisPass(pkg: M.Package): ModInfo {
-  const definedNames = collectDefinedNames(pkg)
-  const privateNames = collectPrivateNames(pkg)
+export function ModuleAnalysisPass(rootPkg: M.Package): ModInfo {
+  const definedNames = new Map<string, Set<string>>()
+  const privateNames = new Map<string, Set<string>>()
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const [modName, names] of collectDefinedNames(pkg)) {
+      let existing = definedNames.get(modName)
+      if (!existing) { existing = new Set(); definedNames.set(modName, existing) }
+      for (const n of names) existing.add(n)
+    }
+    for (const [modName, names] of collectPrivateNames(pkg)) {
+      let existing = privateNames.get(modName)
+      if (!existing) { existing = new Set(); privateNames.set(modName, existing) }
+      for (const n of names) existing.add(n)
+    }
+  }
   const fragmentScopes = new Map<string, FragmentScope>()
 
-  for (const [path, fragment] of pkg.fragments) {
-    const scope = createFragmentScope()
-    fragmentScopes.set(path, scope)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const [path, fragment] of pkg.fragments) {
+      const scope = createFragmentScope()
+      fragmentScopes.set(path, scope)
 
-    for (const stmt of fragment.stmts) {
-      executeImport(
-        pkg,
-        definedNames,
-        privateNames,
-        fragment.modName,
-        scope,
-        stmt,
-      )
+      for (const stmt of fragment.stmts) {
+        executeImport(
+          rootPkg,
+          definedNames,
+          privateNames,
+          fragment.modName,
+          scope,
+          stmt,
+        )
+      }
     }
   }
 
@@ -45,7 +59,7 @@ function createFragmentScope(): FragmentScope {
 }
 
 function executeImport(
-  pkg: M.Package,
+  rootPkg: M.Package,
   definedNames: Map<string, Set<string>>,
   privateNames: Map<string, Set<string>>,
   currentModName: string,
@@ -53,7 +67,7 @@ function executeImport(
   stmt: M.Stmt<M.Exp>,
 ): void {
   if (stmt.kind === "ImportStmt") {
-    if (!ensureModExists(pkg, "self", stmt.modName, stmt.location)) return
+    if (!ensureModExists(rootPkg, "self", stmt.modName, stmt.location)) return
 
     const privates = privateNames.get(stmt.modName)
     for (const name of stmt.names) {
@@ -63,17 +77,17 @@ function executeImport(
   }
 
   if (stmt.kind === "ImportAsStmt") {
-    if (!ensureModExists(pkg, "self", stmt.modName, stmt.location)) return
+    if (!ensureModExists(rootPkg, "self", stmt.modName, stmt.location)) return
 
     scope.importedPrefixes.set(stmt.prefix, { pkgName: "self", modName: stmt.modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
     const { pkgName, modName } = parseImportModName(stmt.modName)
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
+    if (!ensureModExists(rootPkg, pkgName, modName, stmt.location)) return
 
     const { names, privates } = lookupImportNames(
-      pkg,
+      rootPkg,
       definedNames,
       privateNames,
       pkgName,

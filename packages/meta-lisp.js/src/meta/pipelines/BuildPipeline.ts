@@ -13,32 +13,32 @@ import * as M from "../index.ts"
 // - no CheckPass during BuildPipeline.
 
 export function BuildPipeline(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  M.ExpandPass(pkg, options)
-  M.ModulePreludePass(pkg)
-  const modInfo = M.ModuleAnalysisPass(pkg)
-  const algebraicInfo = M.AlgebraicAnalysisPass(pkg)
-  M.LowerMatchPass(pkg, modInfo, algebraicInfo, options)
-  M.DesugarPass(pkg, options)
-  M.ModuleImportPass(pkg, modInfo, options)
-  M.ExecutePass(pkg, options)
-  M.ClaimPass(pkg)
-  M.QualifyPass(pkg, options)
-  M.LocatePass(pkg, options)
-  M.ShrinkPass(pkg, options)
-  M.UniquifyPass(pkg, options)
-  M.LiftLambdaPass(pkg, options)
-  M.UnnestOperandPass(pkg, options)
+  M.ExpandPass(rootPkg, options)
+  M.ModulePreludePass(rootPkg)
+  const modInfo = M.ModuleAnalysisPass(rootPkg)
+  const algebraicInfo = M.AlgebraicAnalysisPass(rootPkg)
+  M.LowerMatchPass(rootPkg, modInfo, algebraicInfo, options)
+  M.DesugarPass(rootPkg, options)
+  M.ModuleImportPass(rootPkg, modInfo, options)
+  M.ExecutePass(rootPkg, options)
+  M.ClaimPass(rootPkg)
+  M.QualifyPass(rootPkg, options)
+  M.LocatePass(rootPkg, options)
+  M.ShrinkPass(rootPkg, options)
+  M.UniquifyPass(rootPkg, options)
+  M.LiftLambdaPass(rootPkg, options)
+  M.UnnestOperandPass(rootPkg, options)
 
-  const basicMod = M.ExplicateControlPass(pkg)
-  if (options.has("basic")) BasicBundle(pkg, basicMod)
+  const basicMod = M.ExplicateControlPass(rootPkg)
+  if (options.has("basic")) BasicBundle(rootPkg, basicMod)
 
-  const xasmMod = M.CodegenPass(pkg, basicMod)
-  XasmBundle(pkg, xasmMod)
+  const xasmMod = M.CodegenPass(rootPkg, basicMod)
+  XasmBundle(rootPkg, xasmMod)
 
-  xvmAssemble(pkg)
+  xvmAssemble(rootPkg)
 }
 
 function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {

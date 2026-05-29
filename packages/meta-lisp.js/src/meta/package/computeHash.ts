@@ -3,14 +3,16 @@ import fs from "node:fs"
 import Path from "node:path"
 import * as M from "../index.ts"
 
-export function computePackageHash(pkg: M.Package): string {
-  const sourceDirectory = M.packageSourceDirectory(pkg)
-  const parts: Array<string> = []
+export function computePackageHashFromConfig(configPath: string): string {
+  const config = M.loadPackageConfig(configPath)
+  const rootDirectory = Path.resolve(Path.dirname(configPath))
+  const rawJSON = fs.readFileSync(configPath, "utf-8")
+  const parts: Array<string> = [rawJSON]
 
-  const configPath = Path.join(pkg.rootDirectory, "meta-package.json")
-  const rawConfig = fs.readFileSync(configPath, "utf-8")
-  parts.push(rawConfig)
-
+  const sourceDirectory = Path.resolve(
+    rootDirectory,
+    config.build["source-directory"],
+  )
   const metaFiles: Array<string> = []
   if (fs.existsSync(sourceDirectory)) {
     for (const name of fs.readdirSync(sourceDirectory, {

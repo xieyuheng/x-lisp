@@ -1,23 +1,25 @@
 import * as M from "../index.ts"
 
 export function ModuleImportPass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   info: M.ModInfo,
   options: Map<string, string>,
 ): void {
-  for (const [path, fragment] of pkg.fragments) {
-    const scope = info.fragmentScopes.get(path)
-    if (scope) {
-      fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
-        moduleImportStmt(scope, stmt),
-      )
-    } else {
-      let message = `[ModuleImportPass] missing scope for: ${path}`
-      throw new Error(message)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const [path, fragment] of pkg.fragments) {
+      const scope = info.fragmentScopes.get(path)
+      if (scope) {
+        fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
+          moduleImportStmt(scope, stmt),
+        )
+      } else {
+        let message = `[ModuleImportPass] missing scope for: ${path}`
+        throw new Error(message)
+      }
     }
   }
 
-  if (options.has("dump")) M.packageDumpFragments(pkg, "070-module-import")
+  if (options.has("dump")) M.packageDumpFragments(rootPkg, "070-module-import")
 }
 
 function moduleImportStmt(

@@ -15,8 +15,7 @@ export function loadBuiltinPackage(): M.Package {
   )
   const config = M.loadPackageConfig(builtinConfigPath)
   const rootDirectory = Path.resolve(Path.dirname(builtinConfigPath))
-  const pkg = M.createPackage(rootDirectory, config)
-  pkg.id = "meta-builtin"
+  const pkg = M.createPackage("meta-builtin", rootDirectory, config)
 
   const mod = M.createMod("builtin", pkg)
   M.packageAddMod(pkg, mod)

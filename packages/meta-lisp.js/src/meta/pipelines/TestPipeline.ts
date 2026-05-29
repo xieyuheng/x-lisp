@@ -4,21 +4,21 @@ import { fileURLToPath } from "node:url"
 import * as M from "../index.ts"
 
 export function TestPipeline(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  xvmText(pkg, options)
+  xvmText(rootPkg, options)
 }
 
-function xvmText(pkg: M.Package, options: Map<string, string>): void {
+function xvmText(rootPkg: M.Package, options: Map<string, string>): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
   const xvmPath = Path.join(currentDir, "../../../../xvm.c/src/xvm.exe")
-  const xexePath = Path.join(M.packageOutputDirectory(pkg), "bundle.xexe")
+  const xexePath = Path.join(M.packageOutputDirectory(rootPkg), "bundle.xexe")
   systemShellRun(xvmPath, [
     "test",
     xexePath,
     "--snapshot",
-    M.packageSnapshotDirectory(pkg),
+    M.packageSnapshotDirectory(rootPkg),
     options.has("profile") ? "--profile" : "",
     options.has("builtin") ? "--builtin" : "",
   ])

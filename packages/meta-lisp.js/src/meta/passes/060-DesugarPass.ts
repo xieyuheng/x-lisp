@@ -1,14 +1,16 @@
 import * as M from "../index.ts"
 
 export function DesugarPass(
-  pkg: M.Package,
+  rootPkg: M.Package,
   options: Map<string, string>,
 ): void {
-  for (const fragment of pkg.fragments.values()) {
-    fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
+  for (const pkg of M.packageAndAllDependencies(rootPkg)) {
+    for (const fragment of pkg.fragments.values()) {
+      fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
+    }
   }
 
-  if (options.has("dump")) M.packageDumpFragments(pkg, "060-desugar")
+  if (options.has("dump")) M.packageDumpFragments(rootPkg, "060-desugar")
 }
 
 function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
