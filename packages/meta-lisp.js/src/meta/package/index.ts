@@ -1,5 +1,4 @@
 export * from "./computeHash.ts"
-export * from "./loadBuiltinPackage.ts"
 export * from "./loadPackage.ts"
 export * from "./loadPackageConfig.ts"
 export * from "./lockFile.ts"

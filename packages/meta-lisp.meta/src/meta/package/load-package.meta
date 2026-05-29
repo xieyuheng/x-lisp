@@ -1,26 +1,61 @@
 (module meta)
 
+(define package-cache (make-hash))
+
 (define (load-package id config-path)
-  (= config (load-package-config config-path))
-  (= root-directory (path-directory-name config-path))
-  (if (equal? (package-config-name config) "meta-builtin")
-    (load-builtin-package)
-    (let ((package (make-package id root-directory config)))
-      (= builtin (load-builtin-package))
-      (hash-put! "meta-builtin" builtin (package-dependencies package))
-      (hash-each
-        (lambda (alias dep-path)
-          (unless (equal? alias "meta-builtin")
-            (= resolved (path-join (path-join root-directory dep-path) "meta-package.json"))
-            (= dep-pkg (load-package alias resolved))
-            (hash-put! alias dep-pkg (package-dependencies package))))
-        (package-config-dependencies config))
-      (hash-each-key
-        (lambda (pkg-name)
-          (unless (hash-has? pkg-name (package-dependencies package))
-            (error
-              (string-append "[loadPackage] prelude references unknown package: " pkg-name))))
-        (package-config-prelude config))
+  (= resolved-path (path-resolve config-path))
+  (match (hash-get-maybe resolved-path package-cache)
+    ((just pkg) pkg)
+    ((nothing)
+      (= config (load-package-config config-path))
+      (= root-directory (path-directory-name resolved-path))
+      (= package (make-package (actual-id config id) root-directory config))
+      (if (equal? (package-config-name config) "meta-builtin")
+        (setup-builtin-package package)
+        (validate-builtin config))
+      (load-dependencies package root-directory config)
+      (validate-prelude package config)
       (= source-directory (package-source-directory package))
       (package-load-fragments package source-directory)
+      (hash-put! resolved-path package package-cache)
       package)))
+
+(define (actual-id config id)
+  (if (equal? (package-config-name config) "meta-builtin")
+    "meta-builtin"
+    id))
+
+(define (setup-builtin-package package)
+  (= mod (make-mod 'builtin package))
+  (package-put-mod! 'builtin mod package)
+  (type-builtin mod))
+
+(define (validate-builtin config)
+  (unless (hash-has? "meta-builtin" (package-config-dependencies config))
+    (error "[loadPackage] missing required dependency \"meta-builtin\"")))
+
+(define (compute-hash string)
+  (format (hash-code string)))
+
+(define (load-dependencies package root-directory config)
+  (hash-each
+    (lambda (alias dep-path)
+      (= dep-resolved
+        (path-resolve
+          (path-join (path-join root-directory dep-path) "meta-package.json")))
+      (if (equal? alias "meta-builtin")
+        (hash-put! alias
+          (load-package "meta-builtin" dep-resolved)
+          (package-dependencies package))
+        (hash-put! alias
+          (load-package (compute-hash dep-resolved) dep-resolved)
+          (package-dependencies package))))
+    (package-config-dependencies config)))
+
+(define (validate-prelude package config)
+  (hash-each-key
+    (lambda (pkg-name)
+      (unless (hash-has? pkg-name (package-dependencies package))
+        (error
+          (string-append "[loadPackage] prelude references unknown package: " pkg-name))))
+    (package-config-prelude config)))
