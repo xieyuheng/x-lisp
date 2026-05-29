@@ -89,14 +89,16 @@ export type DesugarMatchCtx = {
   scope: M.FragmentScope
   currentModName: string
   algebraicInfo: M.AlgebraicInfo
+  pkgId: string
 }
 
 export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicInfo: M.AlgebraicInfo,
+  pkgId: string,
 ): DesugarMatchCtx {
-  return { scope, currentModName, algebraicInfo }
+  return { scope, currentModName, algebraicInfo, pkgId }
 }
 
 export function desugarMatch(
@@ -195,7 +197,7 @@ function desugarDataConstructorClauseGroup(
   const [target, ...restTargets] = targets
 
   const predicate = M.QualifiedVarExp(
-    "self",
+    group.dataConstructorInfo.pkgName,
     group.dataConstructorInfo.modName,
     group.dataConstructorInfo.predicateName,
     location,
@@ -207,7 +209,7 @@ function desugarDataConstructorClauseGroup(
     (accessorName) =>
       M.ApplyExp(
         M.QualifiedVarExp(
-          "self",
+          group.dataConstructorInfo.pkgName,
           group.dataConstructorInfo.modName,
           accessorName,
           location,
@@ -239,16 +241,18 @@ function lookupAlgebraicTypeInfo(
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
   const ctor = pattern.target
-  const { modName, name } = resolveCtorQualifiedName(ctx, ctor)
-  const info = ctx.algebraicInfo.dataConstructorInfos.get(`${modName}/${name}`)
+  const { pkgName, modName, name } = resolveCtorQualifiedName(ctx, ctor)
+  const info = ctx.algebraicInfo.dataConstructorInfos.get(`${pkgName}/${modName}/${name}`)
   if (!info) {
     let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
+    message += `\n  pkgName: ${pkgName}`
     message += `\n  modName: ${modName}`
     message += `\n  name: ${name}`
+    message += `\n  key: ${pkgName}/${modName}/${name}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
   const algebraicTypeInfo = ctx.algebraicInfo.algebraicTypeInfos.get(
-    `${info.modName}/${info.typeName}`,
+    `${info.pkgName}/${info.modName}/${info.typeName}`,
   )
   if (!algebraicTypeInfo) {
     let message = `[lookupAlgebraicTypeInfo] cannot find algebraic type info`
@@ -307,7 +311,7 @@ function groupClausesByHeadDataConstructor(
   const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
-    const key = `${algebraicTypeInfo.modName}/${ctorName}`
+    const key = `${algebraicTypeInfo.pkgName}/${algebraicTypeInfo.modName}/${ctorName}`
     const info = ctx.algebraicInfo.dataConstructorInfos.get(key)!
     const grouped = clauses
       .filter((c) => matchesConstructor(ctx, c, info))
@@ -319,17 +323,17 @@ function groupClausesByHeadDataConstructor(
 function resolveCtorQualifiedName(
   ctx: DesugarMatchCtx,
   ctor: M.Exp,
-): { modName: string; name: string } {
+): { pkgName: string; modName: string; name: string } {
   if (ctor.kind === "QualifiedVarExp") {
-    return { modName: ctor.modName, name: ctor.name }
+    return { pkgName: ctor.pkgName, modName: ctor.modName, name: ctor.name }
   }
 
   if (ctor.kind === "VarExp") {
     const entry = ctx.scope.importedNames.get(ctor.name)
     if (entry) {
-      return { modName: entry.modName, name: entry.name }
+      return { pkgName: entry.pkgName, modName: entry.modName, name: entry.name }
     } else {
-      return { modName: ctx.currentModName, name: ctor.name }
+      return { pkgName: ctx.pkgId, modName: ctx.currentModName, name: ctor.name }
     }
   }
 

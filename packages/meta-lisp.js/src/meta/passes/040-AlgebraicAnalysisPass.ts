@@ -2,6 +2,7 @@ import * as M from "../index.ts"
 
 export type DataConstructorInfo = {
   name: string
+  pkgName: string
   modName: string
   typeName: string
   fieldNames: Array<string>
@@ -11,6 +12,7 @@ export type DataConstructorInfo = {
 
 export type AlgebraicTypeInfo = {
   name: string
+  pkgName: string
   modName: string
   constructorNames: Array<string>
 }
@@ -29,15 +31,17 @@ export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicInfo {
       if (stmt.kind === "DefineAlgebraicTypeStmt") {
         const typeName = stmt.typeConstructor.name
         const modName = fragment.modName
+        const pkgName = pkg.mods.get(modName)?.pkg.id ?? pkg.id
         const constructorNames: Array<string> = []
 
         for (const ctor of stmt.dataConstructors) {
           constructorNames.push(ctor.name)
           const fieldNames = ctor.fields.map((f) => f.name)
           const accessorNames = ctor.fields.map((f) => f.accessorName)
-          const key = `${modName}/${ctor.name}`
+          const key = `${pkgName}/${modName}/${ctor.name}`
           dataConstructorInfos.set(key, {
             name: ctor.name,
+            pkgName,
             modName,
             typeName,
             fieldNames,
@@ -46,9 +50,10 @@ export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicInfo {
           })
         }
 
-        const typeKey = `${modName}/${typeName}`
+        const typeKey = `${pkgName}/${modName}/${typeName}`
         algebraicTypeInfos.set(typeKey, {
           name: typeName,
+          pkgName,
           modName,
           constructorNames,
         })

@@ -1,6 +1,6 @@
 (define-function add 2
-  (call builtin/println 0)
-  (call builtin/println 1)
+  (call meta-builtin/builtin/println 0)
+  (call meta-builtin/builtin/println 1)
   (return 0))
 
 (define-test add-test

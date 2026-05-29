@@ -12,7 +12,8 @@ export function LowerMatchPass(
       throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
     }
     for (const stmt of fragment.stmts) {
-      lowerMatchStmt(scope, fragment.modName, algebraicInfo, stmt)
+      const fragPkgId = pkg.mods.get(fragment.modName)?.pkg.id ?? pkg.id
+      lowerMatchStmt(scope, fragment.modName, algebraicInfo, fragPkgId, stmt)
     }
   }
 
@@ -23,6 +24,7 @@ function lowerMatchStmt(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicInfo: M.AlgebraicInfo,
+  pkgId: string,
   stmt: M.Stmt<M.Exp>,
 ): void {
   switch (stmt.kind) {
@@ -30,7 +32,7 @@ function lowerMatchStmt(
     case "DefineVariableStmt":
     case "DefineTestStmt":
     case "DefineTypeStmt": {
-      stmt.body = lowerMatch(scope, currentModName, algebraicInfo, stmt.body)
+      stmt.body = lowerMatch(scope, currentModName, algebraicInfo, pkgId, stmt.body)
       return
     }
 
@@ -44,21 +46,22 @@ function lowerMatch(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicInfo: M.AlgebraicInfo,
+  pkgId: string,
   exp: M.Exp,
 ): M.Exp {
   switch (exp.kind) {
     case "MatchExp": {
-      const ctx = M.makeDesugarMatchCtx(scope, currentModName, algebraicInfo)
+      const ctx = M.makeDesugarMatchCtx(scope, currentModName, algebraicInfo, pkgId)
       const defaultExp = M.makeDefaultExp(exp.targets, exp.location)
 
       return M.desugarMatch(
         ctx,
         exp.targets.map((t) =>
-          lowerMatch(scope, currentModName, algebraicInfo, t),
+          lowerMatch(scope, currentModName, algebraicInfo, pkgId, t),
         ),
         exp.clauses.map((clause) => ({
           ...clause,
-          body: lowerMatch(scope, currentModName, algebraicInfo, clause.body),
+          body: lowerMatch(scope, currentModName, algebraicInfo, pkgId, clause.body),
         })),
         defaultExp,
         exp.location,
@@ -67,7 +70,7 @@ function lowerMatch(
 
     default: {
       return M.expTraverse(
-        (child) => lowerMatch(scope, currentModName, algebraicInfo, child),
+        (child) => lowerMatch(scope, currentModName, algebraicInfo, pkgId, child),
         exp,
       )
     }

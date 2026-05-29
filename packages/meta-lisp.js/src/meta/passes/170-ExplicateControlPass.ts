@@ -21,7 +21,7 @@ export function ExplicateControlPass(pkg: M.Package): B.Mod {
 }
 
 function definitionQualifiedName(definition: M.Definition): string {
-  return `${definition.mod.name}/${definition.name}`
+  return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
 function explicateControlDefinition(
@@ -60,7 +60,7 @@ function explicateControlDefinition(
     }
 
     case "FunctionDefinition": {
-      const state = createState()
+      const state = createState(definition.mod.pkg.id, definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -76,7 +76,7 @@ function explicateControlDefinition(
     }
 
     case "TestDefinition": {
-      const state = createState()
+      const state = createState(definition.mod.pkg.id, definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -91,7 +91,7 @@ function explicateControlDefinition(
     }
 
     case "VariableDefinition": {
-      const state = createState()
+      const state = createState(definition.mod.pkg.id, definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
       block.instrs = explicateControlInTail(state, definition.body)
@@ -108,11 +108,13 @@ function explicateControlDefinition(
 }
 
 type State = {
+  pkgId: string
+  pkg: M.Package
   blocks: Map<string, B.Block>
 }
 
-function createState(): State {
-  return { blocks: new Map() }
+function createState(pkgId: string, pkg: M.Package): State {
+  return { pkgId, pkg, blocks: new Map() }
 }
 
 function addBlock(state: State, block: B.Block): void {
@@ -154,7 +156,7 @@ function toBasicExp(exp: M.Term): B.Exp {
     }
 
     case "QualifiedVarTerm": {
-      return B.VarExp(`${exp.modName}/${exp.name}`, exp.location)
+      return B.VarExp(`${exp.pkgName}/${exp.modName}/${exp.name}`, exp.location)
     }
 
     case "ApplyTerm": {
@@ -319,13 +321,15 @@ function explicateControlInIf(
 
   switch (condition.kind) {
     case "VarTerm": {
+      const builtinMod = state.pkg.mods.get("builtin")
+      const builtinPrefix = builtinMod?.pkg.id ?? state.pkgId
       return [
         B.TestInstr(
           B.ApplyExp(
-            B.VarExp("builtin/same?", condition.location),
+            B.VarExp(`${builtinPrefix}/builtin/same?`, condition.location),
             [
               B.VarExp(condition.name, condition.location),
-              B.VarExp("builtin/true", condition.location),
+              B.VarExp(`${builtinPrefix}/builtin/true`, condition.location),
             ],
             condition.location,
           ),

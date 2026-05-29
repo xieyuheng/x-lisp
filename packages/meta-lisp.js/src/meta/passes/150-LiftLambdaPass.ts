@@ -72,7 +72,7 @@ function liftLambdaExp(state: State, exp: M.Term): M.Term {
       )
 
       const liftedRef = M.QualifiedVarTerm(
-        "self",
+        state.mod.pkg.id,
         state.mod.name,
         newFunctionName,
         exp.location,

@@ -1,5 +1,5 @@
 export * from "./010-ExpandPass.ts"
-export * from "./ModulePreludePass.ts"
+export * from "./020-ModulePreludePass.ts"
 export * from "./030-ModuleAnalysisPass.ts"
 export * from "./040-AlgebraicAnalysisPass.ts"
 export * from "./050-LowerMatchPass.ts"
