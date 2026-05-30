@@ -2,10 +2,11 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export type ModInfo = {
+export type ModuleAnalysisResult = {
   definedNames: Map<string, Set<string>>
   privateNames: Map<string, Set<string>>
   fragmentScopes: Map<string, FragmentScope>
+  errorOccurred: boolean
 }
 
 export type FragmentScope = {
@@ -13,7 +14,7 @@ export type FragmentScope = {
   importedPrefixes: Map<string, { pkgName: string; modName: string }>
 }
 
-export function ModuleAnalysisPass(rootPkg: M.Package): ModInfo {
+export function ModuleAnalysisPass(rootPkg: M.Package): ModuleAnalysisResult {
   const definedNames = new Map<string, Set<string>>()
   const privateNames = new Map<string, Set<string>>()
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
@@ -36,25 +37,30 @@ export function ModuleAnalysisPass(rootPkg: M.Package): ModInfo {
   }
   const fragmentScopes = new Map<string, FragmentScope>()
 
+  let errorOccurred = false
+
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
       const scope = createFragmentScope()
       fragmentScopes.set(path, scope)
 
       for (const stmt of fragment.stmts) {
-        executeImport(
-          pkg,
-          definedNames,
-          privateNames,
-          fragment.modName,
-          scope,
-          stmt,
+        if (
+          executeImport(
+            pkg,
+            definedNames,
+            privateNames,
+            fragment.modName,
+            scope,
+            stmt,
+          )
         )
+          errorOccurred = true
       }
     }
   }
 
-  return { definedNames, privateNames, fragmentScopes }
+  return { definedNames, privateNames, fragmentScopes, errorOccurred }
 }
 
 function createFragmentScope(): FragmentScope {
@@ -71,10 +77,10 @@ function executeImport(
   currentModName: string,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
-): void {
+): boolean {
   if (stmt.kind === "ImportStmt") {
     const { pkgName, modName } = parseImportModName(stmt.modName)
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
 
     const { privates } = lookupImportNames(
       pkg,
@@ -91,14 +97,14 @@ function executeImport(
 
   if (stmt.kind === "ImportAsStmt") {
     const { pkgName, modName } = parseImportModName(stmt.modName)
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
 
     scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
     const { pkgName, modName } = parseImportModName(stmt.modName)
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
 
     const { names, privates } = lookupImportNames(
       pkg,
@@ -117,6 +123,8 @@ function executeImport(
       scope.importedNames.set(name, { pkgName, modName, name })
     }
   }
+
+  return false
 }
 
 function parseImportModName(rawModName: string): {

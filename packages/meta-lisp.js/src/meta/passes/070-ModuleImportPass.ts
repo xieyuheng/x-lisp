@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export function ModuleImportPass(
   rootPkg: M.Package,
-  info: M.ModInfo,
+  info: M.ModuleAnalysisResult,
   options: Map<string, string>,
 ): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {

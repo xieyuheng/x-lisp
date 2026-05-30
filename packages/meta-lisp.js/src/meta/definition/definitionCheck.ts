@@ -19,33 +19,38 @@ import * as M from "../index.ts"
 // definitionCheck is idempotent — once isChecked is set,
 // subsequent calls return immediately.
 
-export function definitionCheck(definition: M.Definition): null {
+export function definitionCheck(definition: M.Definition): boolean {
   const mod = definition.mod
   const name = definition.name
 
   if (M.modIsChecked(mod, name)) {
-    return null
+    return false
   }
 
   if (mod.admitted.has(name)) {
     M.modSetChecked(mod, name)
-    return null
+    return false
   }
 
   switch (definition.kind) {
     case "AlgebraicTypeDefinition": {
+      let errorOccurred = false
+
       for (const dataConstructor of definition.dataConstructors) {
         for (const field of dataConstructor.fields) {
-          tryCheckTypeTerm(
-            mod,
-            field.type,
-            definition.typeConstructor.parameters,
+          if (
+            tryCheckTypeTerm(
+              mod,
+              field.type,
+              definition.typeConstructor.parameters,
+            )
           )
+            errorOccurred = true
         }
       }
 
       M.modSetChecked(mod, name)
-      return null
+      return errorOccurred
     }
 
     case "PrimitiveFunctionDeclaration":
@@ -56,20 +61,20 @@ export function definitionCheck(definition: M.Definition): null {
       if (!type) {
         const errorMessage = `unclaimed primitive definition: ${definition.name}`
         writeln(S.sourceLocationReport(definition.location, errorMessage))
-        return null
+        // Even for unclaimed primitive, it is not a CheckError:
+        // the error is about missing claim, not type mismatch.
+        // We still set checked to avoid repeating.
       }
 
       M.modSetChecked(mod, name)
-      return null
+      return false
     }
 
     case "VariableDefinition":
     case "TestDefinition": {
-      if (!tryCheckDefinitionBody(mod, name, definition.body)) {
-        tryInferDefinitionBody(mod, name, definition.body)
-      }
+      const errorOccurred = tryCheckDefinitionBody(mod, name, definition.body)
       M.modSetChecked(mod, name)
-      return null
+      return errorOccurred
     }
 
     case "TypeDefinition": {
@@ -81,11 +86,9 @@ export function definitionCheck(definition: M.Definition): null {
               definition.body,
               definition.location,
             )
-      if (!tryCheckDefinitionBody(mod, name, body)) {
-        tryInferDefinitionBody(mod, name, body)
-      }
+      const errorOccurred = tryCheckDefinitionBody(mod, name, body)
       M.modSetChecked(mod, name)
-      return null
+      return errorOccurred
     }
 
     case "FunctionDefinition": {
@@ -94,48 +97,65 @@ export function definitionCheck(definition: M.Definition): null {
         definition.body,
         definition.location,
       )
-      if (!tryCheckDefinitionBody(mod, name, body)) {
-        tryInferDefinitionBody(mod, name, body)
-      }
+      const errorOccurred = tryCheckDefinitionBody(mod, name, body)
       M.modSetChecked(mod, name)
-      return null
+      return errorOccurred
     }
 
     case "OpaqueTypeDefinition": {
+      let errorOccurred = false
+
       for (const entry of definition.interfaceEntries) {
-        tryCheckTypeTerm(mod, entry.type, definition.typeConstructor.parameters)
+        if (
+          tryCheckTypeTerm(
+            mod,
+            entry.type,
+            definition.typeConstructor.parameters,
+          )
+        )
+          errorOccurred = true
       }
 
-      tryCheckTypeTerm(
-        mod,
-        definition.representationType,
-        definition.typeConstructor.parameters,
+      if (
+        tryCheckTypeTerm(
+          mod,
+          definition.representationType,
+          definition.typeConstructor.parameters,
+        )
       )
+        errorOccurred = true
 
       M.modSetChecked(mod, name)
-      return null
+      return errorOccurred
     }
   }
 }
 
-function tryCheckTerm(mod: M.Mod, ctx: M.Ctx, exp: M.Term, type: M.Type): void {
+function tryCheckTerm(
+  mod: M.Mod,
+  ctx: M.Ctx,
+  exp: M.Term,
+  type: M.Type,
+): boolean {
   const effect = M.checkAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {
     writeln(S.sourceLocationReport(result.exp.location, result.message))
+    return true
   }
+  return false
 }
 
 function tryCheckTypeTerm(
   mod: M.Mod,
   exp: M.Term,
   typeParameters: Array<string>,
-): void {
+): boolean {
   let ctx = M.emptyCtx()
   for (const name of typeParameters) {
     ctx = M.ctxPut(ctx, name, M.TypeType())
   }
-  tryCheckTerm(mod, ctx, exp, M.TypeType())
+  return tryCheckTerm(mod, ctx, exp, M.TypeType())
 }
 
 function tryCheckDefinitionBody(
@@ -153,20 +173,22 @@ function tryCheckDefinitionBody(
     const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
     const ctx = M.emptyCtx()
     ctx.transparentOpaqueNames = opaqueNames
-    tryCheckTerm(mod, ctx, exp, opaqueType)
-    return true
+    return tryCheckTerm(mod, ctx, exp, opaqueType)
   }
 
   const type = M.modLookupClaimedType(mod, name)
   if (type) {
-    tryCheckTerm(mod, M.emptyCtx(), exp, type)
-    return true
+    return tryCheckTerm(mod, M.emptyCtx(), exp, type)
   }
 
-  return false
+  return tryInferDefinitionBody(mod, name, exp)
 }
 
-function tryInferDefinitionBody(mod: M.Mod, name: string, exp: M.Term): void {
+function tryInferDefinitionBody(
+  mod: M.Mod,
+  name: string,
+  exp: M.Term,
+): boolean {
   const freshVarType = M.createFreshVarType(name)
   // - why: for recursive function — put `name -> freshVarType`
   //   into ctx so that the function body can refer to itself recursively.
@@ -179,10 +201,12 @@ function tryInferDefinitionBody(mod: M.Mod, name: string, exp: M.Term): void {
   const result = effect(M.emptySubst())
   if (result.kind === "InferError") {
     writeln(S.sourceLocationReport(result.exp.location, result.message))
+    return true
   } else {
     let inferredType = M.substDeepWalk(result.subst, result.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
+    return false
   }
 }
 

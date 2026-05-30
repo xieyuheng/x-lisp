@@ -2,7 +2,9 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ClaimPass(rootPkg: M.Package): void {
+export function ClaimPass(rootPkg: M.Package): boolean {
+  let errorOccurred = false
+
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const [name, entry] of mod.claimed) {
@@ -20,8 +22,12 @@ export function ClaimPass(rootPkg: M.Package): void {
             message += `\n  exp: ${M.formatTerm(entry.exp)}`
             writeln(message)
           }
+
+          errorOccurred = true
         }
       }
     }
   }
+
+  return errorOccurred
 }

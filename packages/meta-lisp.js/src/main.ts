@@ -25,7 +25,8 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     const compilerOptions = new Map()
     if ("--dump" in options) compilerOptions.set("dump", "true")
-    M.CheckPipeline(pkg, compilerOptions)
+    const errorOccurred = M.CheckPipeline(pkg, compilerOptions)
+    if (errorOccurred) process.exit(2)
   },
 
   build: ({ options }) => {
@@ -55,6 +56,8 @@ try {
   if (error instanceof S.ErrorWithSourceLocation) {
     console.log(errorReport(error))
   } else {
-    throw error
+    console.error(error)
   }
+
+  process.exit(1)
 }
