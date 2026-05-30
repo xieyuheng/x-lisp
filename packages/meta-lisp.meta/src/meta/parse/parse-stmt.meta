@@ -267,8 +267,8 @@
     ((list-sexp elements location)
      (make-pre-data-constructor
        (symbol-sexp-content (list-head elements))
-        (list-map parse-pre-data-field (list-drop 1 elements))
-        location))))
+       (list-map parse-pre-data-field (list-drop 1 elements))
+       location))))
 
 (claim parse-pre-data-field
   (-> sexp-t

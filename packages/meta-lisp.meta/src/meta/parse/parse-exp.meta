@@ -9,18 +9,18 @@
     ((symbol-sexp content location)
      (= str (symbol-to-string content))
      (if (string-contains? "/" str)
-        (let ((parts (string-split "/" str)))
-          (if (equal? (list-length parts) 3)
-            (qualified-var-exp
-              (string-to-symbol (list-get 0 parts))
-              (string-to-symbol (list-get 1 parts))
-              (string-to-symbol (list-get 2 parts))
-              location)
-            (qualified-var-exp
-              'meta-builtin
-              (string-to-symbol (list-get 0 parts))
-              (string-to-symbol (list-get 1 parts))
-              location)))
+       (let ((parts (string-split "/" str)))
+         (if (equal? (list-length parts) 3)
+           (qualified-var-exp
+             (string-to-symbol (list-get 0 parts))
+             (string-to-symbol (list-get 1 parts))
+             (string-to-symbol (list-get 2 parts))
+             location)
+           (qualified-var-exp
+             'meta-builtin
+             (string-to-symbol (list-get 0 parts))
+             (string-to-symbol (list-get 1 parts))
+             location)))
        (var-exp content location)))
     ((keyword-sexp content location) (keyword-exp content location))
     ((string-sexp content location) (string-exp content location))
@@ -35,7 +35,7 @@
 (define syntax-keywords
   ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
    'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
-    '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
+   '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
 
 (define (parse-compound-exp elements location)
   (if (symbol-sexp? (list-head elements))
@@ -193,16 +193,16 @@
     ((list-sexp elements location)
      (if (symbol-sexp? (list-head elements))
        (let ((first-content (symbol-sexp-content (list-head elements))))
-          (if (equal? first-content 'else)
-            (make-cond-clause (qualified-var-exp 'meta-builtin 'builtin 'true location)
-                              (parse-body (list-drop 1 elements) location)
-                              location)
-            (make-cond-clause (parse-exp (list-head elements))
-                              (parse-body (list-drop 1 elements) location)
-                              location)))
-        (make-cond-clause (parse-exp (list-head elements))
-                          (parse-body (list-drop 1 elements) location)
-                          location)))))
+         (if (equal? first-content 'else)
+           (make-cond-clause (qualified-var-exp 'meta-builtin 'builtin 'true location)
+                             (parse-body (list-drop 1 elements) location)
+                             location)
+           (make-cond-clause (parse-exp (list-head elements))
+                             (parse-body (list-drop 1 elements) location)
+                             location)))
+       (make-cond-clause (parse-exp (list-head elements))
+                         (parse-body (list-drop 1 elements) location)
+                         location)))))
 
 (claim parse-match-clause
   (-> sexp-t
@@ -212,8 +212,8 @@
   (match sexp
     ((list-sexp elements location)
      (make-match-clause [(parse-exp (list-head elements))]
-                         (parse-body (list-drop 1 elements) location)
-                         location))))
+                        (parse-body (list-drop 1 elements) location)
+                        location))))
 
 (claim parse-match-many-clause
   (-> sexp-t
@@ -223,8 +223,8 @@
   (match sexp
     ((list-sexp elements location)
      (make-match-clause (list-map parse-exp (list-sexp-elements (list-head elements)))
-                         (parse-body (list-drop 1 elements) location)
-                         location))))
+                        (parse-body (list-drop 1 elements) location)
+                        location))))
 
 (claim parse-binding
   (-> sexp-t
