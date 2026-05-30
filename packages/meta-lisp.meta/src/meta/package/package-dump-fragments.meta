@@ -1,20 +1,17 @@
 (module meta)
 
 (define (package-dump-fragments package tag)
+  (hash-each
+    (package-dump-fragment package tag)
+    (package-fragments package)))
+
+(define (package-dump-fragment package tag path fragment)
   (= width 80)
-  (pipe (package-fragments package)
-    (hash-each
-      (lambda (path fragment)
-        (= source-dir (package-source-directory package))
-        (= name (path-relative source-dir path))
-        (= code (pretty-fragment-stmts width (mod-fragment-stmts fragment)))
-        (= out-dir (path-join
-                     (package-root-directory package)
-                     (path-join (build-config-output-directory
-                                  (package-config-build (package-config package)))
-                                "dump")))
-        (= frag-dir (path-join out-dir "fragments"))
-        (= dump-path (@string frag-dir "/" name "." tag ".dump"))
-        (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
-        (fs-ensure-file dump-path)
-        (fs-write dump-path code)))))
+  (= code (pretty-fragment-stmts width (mod-fragment-stmts fragment)))
+  (= source-directory (package-source-directory package))
+  (= name (path-relative source-directory path))
+  (= dump-directory (path-join (package-output-directory package) "dump"))
+  (= dump-path (@string dump-directory "/fragments/" name "." tag ".dump"))
+  (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
+  (fs-ensure-file dump-path)
+  (fs-write dump-path code))

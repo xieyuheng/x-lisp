@@ -7,18 +7,18 @@
   (match (hash-get-maybe resolved-path package-cache)
     ((just pkg) pkg)
     ((nothing)
-      (= config (load-package-config config-path))
-      (= root-directory (path-directory-name resolved-path))
-      (= package (make-package (actual-id config id) root-directory config))
-      (if (equal? (package-config-name config) "meta-builtin")
-        (setup-builtin-package package)
-        (validate-builtin config))
-      (load-dependencies package root-directory config)
-      (validate-prelude package config)
-      (= source-directory (package-source-directory package))
-      (package-load-fragments package source-directory)
-      (hash-put! resolved-path package package-cache)
-      package)))
+     (= config (load-package-config config-path))
+     (= root-directory (path-directory-name resolved-path))
+     (= package (make-package (actual-id config id) root-directory config))
+     (if (equal? (package-config-name config) "meta-builtin")
+       (setup-builtin-package package)
+       (validate-builtin config))
+     (load-dependencies package root-directory config)
+     (validate-prelude package config)
+     (= source-directory (package-source-directory package))
+     (package-load-fragments package source-directory)
+     (hash-put! resolved-path package package-cache)
+     package)))
 
 (define (actual-id config id)
   (if (equal? (package-config-name config) "meta-builtin")
@@ -41,15 +41,15 @@
   (hash-each
     (lambda (alias dep-path)
       (= dep-resolved
-        (path-resolve
-          (path-join (path-join root-directory dep-path) "meta-package.json")))
+         (path-resolve
+           (path-join (path-join root-directory dep-path) "meta-package.json")))
       (if (equal? alias "meta-builtin")
         (hash-put! alias
-          (load-package "meta-builtin" dep-resolved)
-          (package-dependencies package))
+                   (load-package "meta-builtin" dep-resolved)
+                   (package-dependencies package))
         (hash-put! alias
-          (load-package (compute-hash dep-resolved) dep-resolved)
-          (package-dependencies package))))
+                   (load-package (compute-hash dep-resolved) dep-resolved)
+                   (package-dependencies package))))
     (package-config-dependencies config)))
 
 (define (validate-prelude package config)
