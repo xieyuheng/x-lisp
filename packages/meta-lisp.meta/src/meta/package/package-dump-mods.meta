@@ -10,7 +10,7 @@
   (= code (pretty-mod-definitions width mod))
   (= name (symbol-to-string (mod-name mod)))
   (= dump-directory (path-join (package-output-directory package) "dump"))
-  (= dump-path (@string directory "/modules/" name "." tag ".dump"))
+  (= dump-path (@string dump-directory "/modules/" name "." tag ".dump"))
   (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
   (fs-ensure-file dump-path)
   (fs-write dump-path code))
