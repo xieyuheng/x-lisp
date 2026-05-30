@@ -12,20 +12,11 @@ export function packageDumpMods(pkg: M.Package, tag: string): void {
   for (const mod of pkg.mods.values()) {
     const textWidth = 64
     const code = M.formatPrettyModDefinitions(textWidth, mod)
-    packageDumpCode(pkg, mod, tag, code)
+    const directory = Path.join(M.packageOutputDirectory(pkg), "dump/modules")
+    const dumpPath = `${directory}/${mod.name}.${tag}.dump`
+    writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
+    callWithFile(openOutputFile(dumpPath), (file) => {
+      fileWrite(file, code)
+    })
   }
-}
-
-function packageDumpCode(
-  pkg: M.Package,
-  mod: M.Mod,
-  tag: string,
-  code: string,
-): void {
-  const directory = Path.join(M.packageOutputDirectory(pkg), "dump/modules")
-  const dumpPath = `${directory}/${mod.name}.${tag}.dump`
-  writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
-  callWithFile(openOutputFile(dumpPath), (file) => {
-    fileWrite(file, code)
-  })
 }

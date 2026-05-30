@@ -1,8 +1,3 @@
-# package
-
-[meta-lisp.js] inline `packageDumpCode`
-
-
 # review
 
 [meta-lisp.meta] [review] parse-exp.meta
