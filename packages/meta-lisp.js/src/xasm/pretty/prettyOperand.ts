@@ -1,4 +1,4 @@
-import * as Ppml from "@xieyuheng/ppml.js"
+import * as Ppml from "../../ppml/index.ts"
 import { type Operand } from "../operand/index.ts"
 
 export function prettyOperand(operand: Operand): Ppml.Node {

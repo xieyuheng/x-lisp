@@ -22,7 +22,6 @@
   "dependencies": {
     "@xieyuheng/cli.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
-    "@xieyuheng/ppml.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
     "zod": "^4.4.3"
   },

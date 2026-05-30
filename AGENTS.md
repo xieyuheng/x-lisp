@@ -16,7 +16,6 @@ AI agent 应用中文回答用户的问题。
 
 - [helpers.js] — 基础库（无依赖）
 - [cli.js] — CLI 框架，依赖 [helpers.js]
-- [ppml.js] — 格式化打印，依赖 [helpers.js]
 - [sexp.js] — S 表达式解析器，依赖 [helpers.js]
 - [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供 `./meta-lisp.js` 编译器
 
@@ -37,7 +36,7 @@ AI agent 应用中文回答用户的问题。
 
 1. `pnpm install`（或 `scripts/prepare.sh`）
 2. C：[helpers.c] → [cli.c] → [xvm.c]
-3. JS：[helpers.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
+3. JS：[helpers.js] → [cli.js]/[sexp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 二进制
 
 顶层 `scripts/build.sh` 按正确顺序构建。
