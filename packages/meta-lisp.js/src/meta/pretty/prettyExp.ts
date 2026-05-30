@@ -1,4 +1,4 @@
-import * as Ppml from "../../ppml/index.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 

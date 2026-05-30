@@ -1,4 +1,4 @@
-import * as Ppml from "../../ppml/index.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
 
 export function formatPrettyDefinition(

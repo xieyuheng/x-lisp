@@ -1,4 +1,4 @@
-import * as Ppml from "../../ppml/index.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
 import * as M from "../index.ts"
 import { prettyDefinition } from "./prettyDefinition.ts"
 import { prettyExp } from "./prettyExp.ts"

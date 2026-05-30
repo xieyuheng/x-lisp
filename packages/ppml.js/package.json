@@ -1,17 +1,13 @@
 {
-  "name": "@xieyuheng/meta-lisp.js",
-  "version": "0.1.4",
+  "name": "@xieyuheng/ppml.js",
+  "version": "0.1.1",
   "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./src/index.ts",
   "files": [
-    "src",
-    "lisp"
+    "src"
   ],
-  "bin": {
-    "meta-lisp.js": "src/main.ts"
-  },
   "prettier": {
     "semi": false,
     "trailingComma": "all",
@@ -20,11 +16,7 @@
     ]
   },
   "dependencies": {
-    "@xieyuheng/cli.js": "workspace:*",
-    "@xieyuheng/helpers.js": "workspace:*",
-    "@xieyuheng/ppml.js": "workspace:*",
-    "@xieyuheng/sexp.js": "workspace:*",
-    "zod": "^4.4.3"
+    "@xieyuheng/helpers.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",

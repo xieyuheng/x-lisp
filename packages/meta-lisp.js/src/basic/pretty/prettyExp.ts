@@ -1,4 +1,4 @@
-import * as Ppml from "../../ppml/index.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
 import { type Exp } from "../exp/index.ts"
 
 export function prettyExp(exp: Exp): Ppml.Node {
