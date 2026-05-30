@@ -242,7 +242,9 @@ function lookupAlgebraicTypeInfo(
   }
   const ctor = pattern.target
   const { pkgName, modName, name } = resolveCtorQualifiedName(ctx, ctor)
-  const info = ctx.algebraicInfo.dataConstructorInfos.get(`${pkgName}/${modName}/${name}`)
+  const info = ctx.algebraicInfo.dataConstructorInfos.get(
+    `${pkgName}/${modName}/${name}`,
+  )
   if (!info) {
     let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
     message += `\n  pkgName: ${pkgName}`
@@ -331,9 +333,17 @@ function resolveCtorQualifiedName(
   if (ctor.kind === "VarExp") {
     const entry = ctx.scope.importedNames.get(ctor.name)
     if (entry) {
-      return { pkgName: entry.pkgName, modName: entry.modName, name: entry.name }
+      return {
+        pkgName: entry.pkgName,
+        modName: entry.modName,
+        name: entry.name,
+      }
     } else {
-      return { pkgName: ctx.pkgId, modName: ctx.currentModName, name: ctor.name }
+      return {
+        pkgName: ctx.pkgId,
+        modName: ctx.currentModName,
+        name: ctor.name,
+      }
     }
   }
 

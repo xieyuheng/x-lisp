@@ -6,7 +6,12 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
   switch (sexp.kind) {
     case "SymbolSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "symbol-sexp", sexp.location),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "symbol-sexp",
+          sexp.location,
+        ),
         [
           M.SymbolExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -17,7 +22,12 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "StringSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "string-sexp", sexp.location),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "string-sexp",
+          sexp.location,
+        ),
         [
           M.StringExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -36,7 +46,12 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "FloatSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "float-sexp", sexp.location),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "float-sexp",
+          sexp.location,
+        ),
         [
           M.FloatExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -47,7 +62,12 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "KeywordSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "keyword-sexp", sexp.location),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "keyword-sexp",
+          sexp.location,
+        ),
         [
           M.KeywordExp(sexp.content, sexp.location),
           desugarLocation(sexp.location),
@@ -58,7 +78,12 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
 
     case "ListSexp": {
       return M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "list-sexp", sexp.location),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "list-sexp",
+          sexp.location,
+        ),
         [
           M.ListExp(
             sexp.elements.map((e) => desugarSexp(e)),

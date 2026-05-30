@@ -51,17 +51,12 @@ function loadDependencies(
   }
 }
 
-function validateDependencies(
-  pkg: M.Package,
-  config: M.PackageConfig,
-): void {
+function validateDependencies(pkg: M.Package, config: M.PackageConfig): void {
   if (
     config.name !== "meta-builtin" &&
     !("meta-builtin" in config.dependencies)
   ) {
-    throw new Error(
-      `[loadPackage] missing required dependency "meta-builtin"`,
-    )
+    throw new Error(`[loadPackage] missing required dependency "meta-builtin"`)
   }
 
   for (const pkgName of Object.keys(config.prelude)) {

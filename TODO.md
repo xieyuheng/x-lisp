@@ -1,6 +1,5 @@
 # package
 
-[meta-lisp.meta] [refactor] `package-dump-code`
 [meta-lisp.meta] `load-builtin-package`
 [meta-lisp.meta] `package-dump-fragments` fix the use of --dump -- should not include builtin
 [meta-lisp.meta] `package-dump-mods` fix the use of --dump -- should not include builtin

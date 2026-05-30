@@ -13,19 +13,14 @@ export type PackageLock = {
   dependencies: Record<string, PackageLockEntry>
 }
 
-export function readLockFile(
-  rootDirectory: string,
-): PackageLock | undefined {
+export function readLockFile(rootDirectory: string): PackageLock | undefined {
   const lockPath = Path.join(rootDirectory, "meta-package-lock.json")
   if (!fs.existsSync(lockPath)) return undefined
   const raw = fs.readFileSync(lockPath, "utf-8")
   return JSON.parse(raw) as PackageLock
 }
 
-export function writeLockFile(
-  rootDirectory: string,
-  lock: PackageLock,
-): void {
+export function writeLockFile(rootDirectory: string, lock: PackageLock): void {
   const lockPath = Path.join(rootDirectory, "meta-package-lock.json")
   const content = JSON.stringify(lock, null, 2) + "\n"
   fs.writeFileSync(lockPath, content)

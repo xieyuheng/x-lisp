@@ -22,7 +22,7 @@ function packageDumpCode(
   tag: string,
   code: string,
 ): void {
-  const directory = Path.join(M.packageOutputDirectory(pkg), "dump", "modules")
+  const directory = Path.join(M.packageOutputDirectory(pkg), "dump/modules")
   const dumpPath = `${directory}/${mod.name}.${tag}.dump`
   writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
   callWithFile(openOutputFile(dumpPath), (file) => {

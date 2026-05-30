@@ -3,7 +3,12 @@ import * as M from "../index.ts"
 
 export function desugarLocation(location: S.SourceLocation): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("meta-builtin", "builtin", "make-source-location", location),
+    M.QualifiedVarExp(
+      "meta-builtin",
+      "builtin",
+      "make-source-location",
+      location,
+    ),
     [
       M.StringExp(location.path, location),
       expFromSpan(location.span, location),
@@ -28,7 +33,12 @@ function expFromPosition(
   location: S.SourceLocation,
 ): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("meta-builtin", "builtin", "make-source-position", location),
+    M.QualifiedVarExp(
+      "meta-builtin",
+      "builtin",
+      "make-source-position",
+      location,
+    ),
     [
       M.IntExp(BigInt(position.index), location),
       M.IntExp(BigInt(position.row), location),

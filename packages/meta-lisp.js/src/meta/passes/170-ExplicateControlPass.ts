@@ -251,7 +251,10 @@ function explicateControlInLet1(
     }
 
     default: {
-      return [B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location), ...cont]
+      return [
+        B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location),
+        ...cont,
+      ]
     }
   }
 }
@@ -294,7 +297,10 @@ function explicateControlInBegin1(
     }
 
     default: {
-      return [B.PerformInstr(toBasicExp(head, state.pkg), head.location), ...cont]
+      return [
+        B.PerformInstr(toBasicExp(head, state.pkg), head.location),
+        ...cont,
+      ]
     }
   }
 }
@@ -414,9 +420,7 @@ function resolveXasmPrefix(pkg: M.Package, pkgName: string): string {
 
   const dep = pkg.dependencies.get(pkgName)
   if (!dep) {
-    throw new Error(
-      `[resolveXasmPrefix] unknown package: "${pkgName}"`,
-    )
+    throw new Error(`[resolveXasmPrefix] unknown package: "${pkgName}"`)
   }
   return dep.id
 }

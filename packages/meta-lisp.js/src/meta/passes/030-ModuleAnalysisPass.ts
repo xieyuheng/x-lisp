@@ -19,12 +19,18 @@ export function ModuleAnalysisPass(rootPkg: M.Package): ModInfo {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [modName, names] of collectDefinedNames(pkg)) {
       let existing = definedNames.get(modName)
-      if (!existing) { existing = new Set(); definedNames.set(modName, existing) }
+      if (!existing) {
+        existing = new Set()
+        definedNames.set(modName, existing)
+      }
       for (const n of names) existing.add(n)
     }
     for (const [modName, names] of collectPrivateNames(pkg)) {
       let existing = privateNames.get(modName)
-      if (!existing) { existing = new Set(); privateNames.set(modName, existing) }
+      if (!existing) {
+        existing = new Set()
+        privateNames.set(modName, existing)
+      }
       for (const n of names) existing.add(n)
     }
   }
@@ -113,9 +119,10 @@ function executeImport(
   }
 }
 
-function parseImportModName(
-  rawModName: string,
-): { pkgName: string; modName: string } {
+function parseImportModName(rawModName: string): {
+  pkgName: string
+  modName: string
+} {
   const slashIndex = rawModName.indexOf("/")
   if (slashIndex === -1) {
     return { pkgName: "self", modName: rawModName }
@@ -152,7 +159,10 @@ function ensureModExists(
   modName: string,
   location: S.SourceLocation,
 ): boolean {
-  const target = pkgName === "self" || pkgName === pkg.id ? pkg : pkg.dependencies.get(pkgName)
+  const target =
+    pkgName === "self" || pkgName === pkg.id
+      ? pkg
+      : pkg.dependencies.get(pkgName)
   if (!target) {
     const errorMessage = `undefined package: ${pkgName}`
     if (location) {
@@ -169,7 +179,8 @@ function ensureModExists(
     }
   }
 
-  const fullModName = pkgName === "self" || pkgName === pkg.id ? modName : `${pkgName}/${modName}`
+  const fullModName =
+    pkgName === "self" || pkgName === pkg.id ? modName : `${pkgName}/${modName}`
   const errorMessage = `undefined module: ${fullModName}`
   if (location) {
     writeln(S.sourceLocationReport(location, errorMessage))

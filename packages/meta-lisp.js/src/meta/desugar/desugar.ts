@@ -168,7 +168,12 @@ export function desugar(exp: M.Exp): M.Term {
     }
 
     case "QualifiedVarExp": {
-      return M.QualifiedVarTerm(exp.pkgName, exp.modName, exp.name, exp.location)
+      return M.QualifiedVarTerm(
+        exp.pkgName,
+        exp.modName,
+        exp.name,
+        exp.location,
+      )
     }
 
     case "ApplyExp": {

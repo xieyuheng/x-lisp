@@ -39,7 +39,12 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
   if (stmt.kind === "ClaimTypeStmt") {
     mod.claimed.set(stmt.name, {
-      exp: M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+      exp: M.QualifiedVarTerm(
+        "meta-builtin",
+        "builtin",
+        "type-t",
+        stmt.location,
+      ),
       type: M.TypeType(),
     })
   }
@@ -129,9 +134,19 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         stmt.name,
         M.ArrowTerm(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm(
+              "meta-builtin",
+              "builtin",
+              "type-t",
+              stmt.location,
+            ),
           ),
-          M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm(
+            "meta-builtin",
+            "builtin",
+            "type-t",
+            stmt.location,
+          ),
           stmt.location,
         ),
       )
@@ -198,9 +213,19 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         name,
         M.ArrowTerm(
           range(typeConstructor.parameters.length).map((_) =>
-            M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm(
+              "meta-builtin",
+              "builtin",
+              "type-t",
+              stmt.location,
+            ),
           ),
-          M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm(
+            "meta-builtin",
+            "builtin",
+            "type-t",
+            stmt.location,
+          ),
           stmt.location,
         ),
       )
@@ -243,9 +268,19 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         name,
         M.ArrowTerm(
           range(stmt.parameters.length).map((_) =>
-            M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+            M.QualifiedVarTerm(
+              "meta-builtin",
+              "builtin",
+              "type-t",
+              stmt.location,
+            ),
           ),
-          M.QualifiedVarTerm("meta-builtin", "builtin", "type-t", stmt.location),
+          M.QualifiedVarTerm(
+            "meta-builtin",
+            "builtin",
+            "type-t",
+            stmt.location,
+          ),
           stmt.location,
         ),
       )

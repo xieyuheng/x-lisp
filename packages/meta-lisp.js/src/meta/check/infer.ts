@@ -36,7 +36,11 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
       }
 
       case "QualifiedVarTerm": {
-        const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
+        const qualifiedMod = M.packageLookupMod(
+          mod.pkg,
+          exp.pkgName,
+          exp.modName,
+        )
         if (qualifiedMod === undefined) {
           let message = `undefined module prefix`
           message += `\n  package name: ${exp.pkgName}`

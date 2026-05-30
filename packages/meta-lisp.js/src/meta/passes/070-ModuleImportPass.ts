@@ -119,7 +119,12 @@ function moduleImportTerm(scope: M.FragmentScope, term: M.Term): M.Term {
     case "VarTerm": {
       const entry = scope.importedNames.get(term.name)
       if (entry) {
-        return M.QualifiedVarTerm(entry.pkgName, entry.modName, entry.name, term.location)
+        return M.QualifiedVarTerm(
+          entry.pkgName,
+          entry.modName,
+          entry.name,
+          term.location,
+        )
       } else {
         return term
       }
@@ -128,7 +133,12 @@ function moduleImportTerm(scope: M.FragmentScope, term: M.Term): M.Term {
     case "QualifiedVarTerm": {
       const entry = scope.importedPrefixes.get(term.modName)
       if (entry) {
-        return M.QualifiedVarTerm(entry.pkgName, entry.modName, term.name, term.location)
+        return M.QualifiedVarTerm(
+          entry.pkgName,
+          entry.modName,
+          term.name,
+          term.location,
+        )
       } else {
         return term
       }
@@ -175,8 +185,10 @@ function scopeFilterBoundNames(
   scope: M.FragmentScope,
   boundNames: Set<string>,
 ): M.FragmentScope {
-  const importedNames: Map<string, { pkgName: string; modName: string; name: string }> =
-    new Map()
+  const importedNames: Map<
+    string,
+    { pkgName: string; modName: string; name: string }
+  > = new Map()
   for (const [key, entry] of scope.importedNames) {
     if (!boundNames.has(key)) {
       importedNames.set(key, entry)

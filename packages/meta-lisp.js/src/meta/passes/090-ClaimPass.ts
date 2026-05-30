@@ -6,7 +6,10 @@ export function ClaimPass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const [name, entry] of mod.claimed) {
-        if (!mod.admitted.has(name) && mod.definitions.get(name) === undefined) {
+        if (
+          !mod.admitted.has(name) &&
+          mod.definitions.get(name) === undefined
+        ) {
           let message = `undefined claimed name`
           message += `\n  module: ${mod.name}`
           message += `\n  name: ${name}`

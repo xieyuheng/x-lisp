@@ -63,7 +63,11 @@ export function desugarLetrec(
     const loc = b.location ?? location
     return M.Binding(
       b.name,
-      M.ApplyExp(M.QualifiedVarExp("meta-builtin", "builtin", "make-box", loc), [], loc),
+      M.ApplyExp(
+        M.QualifiedVarExp("meta-builtin", "builtin", "make-box", loc),
+        [],
+        loc,
+      ),
       loc,
     )
   })

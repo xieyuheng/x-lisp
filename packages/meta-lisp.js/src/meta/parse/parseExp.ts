@@ -244,12 +244,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
         if (name.includes("/")) {
           const parts = name.split("/")
           if (parts.length === 3) {
-            return M.QualifiedVarExp(
-              parts[0],
-              parts[1],
-              parts[2],
-              location,
-            )
+            return M.QualifiedVarExp(parts[0], parts[1], parts[2], location)
           }
 
           if (parts.length !== 2) {
@@ -257,12 +252,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
             throw new S.ErrorWithSourceLocation(message, location)
           }
 
-          return M.QualifiedVarExp(
-            "self",
-            parts[0],
-            parts[1],
-            location,
-          )
+          return M.QualifiedVarExp("self", parts[0], parts[1], location)
         } else {
           return M.VarExp(name, location)
         }

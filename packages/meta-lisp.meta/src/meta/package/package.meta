@@ -18,7 +18,23 @@
 (define (package-source-directory package)
   (path-join
     (package-root-directory package)
-    (build-config-source-directory (package-config-build (package-config package)))))
+    (build-config-source-directory
+      (package-config-build
+        (package-config package)))))
+
+(define (package-output-directory package)
+  (path-join
+    (package-root-directory package)
+    (build-config-output-directory
+      (package-config-build
+        (package-config package)))))
+
+(define (package-snapshot-directory package)
+  (path-join
+    (package-root-directory package)
+    (build-config-snapshot-directory
+      (package-config-build
+        (package-config package)))))
 
 (claim package-lookup-mod (-> package-t symbol-t (maybe-t mod-t)))
 (define (package-lookup-mod package name)

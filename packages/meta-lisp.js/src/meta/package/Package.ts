@@ -70,20 +70,20 @@ export function packageSourceDirectory(pkg: M.Package): string {
 }
 
 export function packageOutputDirectory(pkg: M.Package): string {
-  return pkg.config["build"]["output-directory"]
-    ? Path.resolve(pkg.rootDirectory, pkg.config["build"]["output-directory"])
-    : packageSourceDirectory(pkg)
+  return Path.resolve(
+    pkg.rootDirectory,
+    pkg.config["build"]["output-directory"],
+  )
 }
 
 export function packageSnapshotDirectory(pkg: M.Package): string {
-  return pkg.config["build"]["snapshot-directory"]
-    ? Path.resolve(pkg.rootDirectory, pkg.config["build"]["snapshot-directory"])
-    : packageSourceDirectory(pkg)
+  return Path.resolve(
+    pkg.rootDirectory,
+    pkg.config["build"]["snapshot-directory"],
+  )
 }
 
-export function packageClosureInTopologicalOrder(
-  pkg: Package,
-): Array<Package> {
+export function packageClosureInTopologicalOrder(pkg: Package): Array<Package> {
   const result: Array<Package> = []
   const seen = new Set<string>()
   function collect(pkg: Package): void {

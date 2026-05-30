@@ -34,7 +34,13 @@ function lowerMatchStmt(
     case "DefineVariableStmt":
     case "DefineTestStmt":
     case "DefineTypeStmt": {
-      stmt.body = lowerMatch(scope, currentModName, algebraicInfo, pkgId, stmt.body)
+      stmt.body = lowerMatch(
+        scope,
+        currentModName,
+        algebraicInfo,
+        pkgId,
+        stmt.body,
+      )
       return
     }
 
@@ -53,7 +59,12 @@ function lowerMatch(
 ): M.Exp {
   switch (exp.kind) {
     case "MatchExp": {
-      const ctx = M.makeDesugarMatchCtx(scope, currentModName, algebraicInfo, pkgId)
+      const ctx = M.makeDesugarMatchCtx(
+        scope,
+        currentModName,
+        algebraicInfo,
+        pkgId,
+      )
       const defaultExp = M.makeDefaultExp(exp.targets, exp.location)
 
       return M.desugarMatch(
@@ -63,7 +74,13 @@ function lowerMatch(
         ),
         exp.clauses.map((clause) => ({
           ...clause,
-          body: lowerMatch(scope, currentModName, algebraicInfo, pkgId, clause.body),
+          body: lowerMatch(
+            scope,
+            currentModName,
+            algebraicInfo,
+            pkgId,
+            clause.body,
+          ),
         })),
         defaultExp,
         exp.location,
@@ -72,7 +89,8 @@ function lowerMatch(
 
     default: {
       return M.expTraverse(
-        (child) => lowerMatch(scope, currentModName, algebraicInfo, pkgId, child),
+        (child) =>
+          lowerMatch(scope, currentModName, algebraicInfo, pkgId, child),
         exp,
       )
     }
