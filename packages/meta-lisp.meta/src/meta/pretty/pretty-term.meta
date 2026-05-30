@@ -1,5 +1,7 @@
 (module meta)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-term (-> term-t ppml/node-t))
 (define (pretty-term term)
   (match term

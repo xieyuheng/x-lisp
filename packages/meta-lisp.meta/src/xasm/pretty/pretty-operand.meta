@@ -1,5 +1,7 @@
 (module xasm)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-operand (-> xasm/operand-t ppml/node-t))
 (define (pretty-operand operand)
   (match operand

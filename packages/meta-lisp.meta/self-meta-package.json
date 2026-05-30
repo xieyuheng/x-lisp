@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "entry": "meta/main",
   "dependencies": {
-    "meta-builtin": "../meta-builtin.meta"
+    "meta-builtin": "../meta-builtin.meta",
+    "ppml": "../ppml.meta"
   },
   "prelude": {
     "meta-builtin": ["builtin"]

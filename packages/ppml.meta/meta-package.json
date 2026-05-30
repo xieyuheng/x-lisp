@@ -1,10 +1,8 @@
 {
-  "name": "meta-lisp",
+  "name": "ppml",
   "version": "0.1.0",
-  "entry": "meta/main",
   "dependencies": {
-    "meta-builtin": "../meta-builtin.meta",
-    "ppml": "../ppml.meta"
+    "meta-builtin": "../meta-builtin.meta"
   },
   "prelude": {
     "meta-builtin": ["builtin"]

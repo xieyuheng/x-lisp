@@ -1,5 +1,7 @@
 (module meta)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-mod-definitions (-> int-t mod-t string-t))
 (define (pretty-mod-definitions width mod)
   (string-join "\n\n"

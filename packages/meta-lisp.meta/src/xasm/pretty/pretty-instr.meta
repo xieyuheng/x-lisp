@@ -1,5 +1,7 @@
 (module xasm)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-instr (-> xasm/instr-t ppml/node-t))
 (define (pretty-instr instr)
   (= op (instr-op instr))

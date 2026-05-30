@@ -1,5 +1,7 @@
 (module basic)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-definition (-> basic/definition-t (list-t ppml/node-t)))
 (define (pretty-definition definition)
   (match definition

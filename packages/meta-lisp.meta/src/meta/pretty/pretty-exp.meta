@@ -1,5 +1,7 @@
 (module meta)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-exp (-> exp-t ppml/node-t))
 (define (pretty-exp exp)
   (match exp

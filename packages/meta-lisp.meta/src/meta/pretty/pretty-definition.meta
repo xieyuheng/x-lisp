@@ -1,5 +1,7 @@
 (module meta)
 
+(import-as ppml/ppml ppml)
+
 (claim pretty-definition (-> definition-t (list-t ppml/node-t)))
 (define (pretty-definition definition)
   (match definition
