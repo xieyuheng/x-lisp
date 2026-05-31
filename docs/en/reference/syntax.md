@@ -2,6 +2,8 @@
 title: Syntax
 ---
 
+# Introduction
+
 meta-lisp uses **S-expression** syntax.
 
 - The module top level consists of **statements**.
@@ -9,8 +11,8 @@ meta-lisp uses **S-expression** syntax.
 
 All meta-Lisp syntax is presented below in groups.
 
+- [Introduction](#introduction)
 - [Comments](#comments)
-  - [Introduction](#introduction)
   - [Line comments](#line-comments)
   - [(@comment)](#comment)
 - [Literals](#literals)
@@ -75,10 +77,6 @@ All meta-Lisp syntax is presented below in groups.
   - [(define-test)](#define-test)
 
 # Comments
-
-## Introduction
-
-meta-lisp has two kinds of comments: line comments and `(@comment)` block comments.
 
 ## Line comments
 

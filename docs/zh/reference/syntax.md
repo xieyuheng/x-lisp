@@ -2,6 +2,8 @@
 title: 语法
 ---
 
+# 前言
+
 meta-lisp 使用**符号表达式**（S-expression）语法。
 
 - 模块顶层由**语句**（statement）组成。
@@ -9,8 +11,8 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 下面分组介绍 meta-lisp 的所有语法。
 
+- [前言](#前言)
 - [注释](#注释)
-  - [前言](#前言)
   - [行注释](#行注释)
   - [(@comment)](#comment)
 - [字面量](#字面量)
@@ -75,10 +77,6 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(define-test)](#define-test)
 
 # 注释
-
-## 前言
-
-meta-lisp 的注释分为两种：行注释和 `(@comment)` 块注释。
 
 ## 行注释
 
