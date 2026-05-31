@@ -1,0 +1,7 @@
+(module 010-pair)
+
+(define-struct (pair-t A B) (first A) (second B))
+
+(define (pair-swap p)
+  (match p
+    ((make-pair a b) (make-pair b a))))

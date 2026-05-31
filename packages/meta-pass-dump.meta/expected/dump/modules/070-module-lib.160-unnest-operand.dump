@@ -1,0 +1,13 @@
+(claim greeting string-t)
+
+(define greeting "Hello")
+
+(claim greet (-> string-t string-t))
+
+(define (greet name)
+  (=
+  _.1
+  (meta-builtin/builtin/string-append
+   self/070-module-lib/greeting
+   ", "))
+  (meta-builtin/builtin/string-append _.1 name))

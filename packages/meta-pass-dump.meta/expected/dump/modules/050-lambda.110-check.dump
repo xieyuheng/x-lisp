@@ -1,0 +1,361 @@
+(claim exp-t meta-builtin/builtin/type-t)
+
+(define-enum exp-t
+  (var-exp (name meta-builtin/builtin/symbol-t))
+  (apply-exp
+   (target self/050-lambda/exp-t)
+   (arg self/050-lambda/exp-t))
+  (lambda-exp
+   (parameter meta-builtin/builtin/symbol-t)
+   (body self/050-lambda/exp-t))
+  (let-exp
+   (name meta-builtin/builtin/symbol-t)
+   (rhs self/050-lambda/exp-t)
+   (body self/050-lambda/exp-t)))
+
+(claim var-exp (-> meta-builtin/builtin/symbol-t exp-t))
+
+(define (var-exp name)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! var-exp list)
+  (meta-builtin/builtin/list-push! name list)
+  list)
+
+(claim var-exp? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (var-exp? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           2)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           var-exp)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim var-exp-name (-> exp-t meta-builtin/builtin/symbol-t))
+
+(define (var-exp-name target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim var-exp-put-name!
+  (-> meta-builtin/builtin/symbol-t exp-t exp-t))
+
+(define (var-exp-put-name! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim apply-exp (-> exp-t exp-t exp-t))
+
+(define (apply-exp target arg)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! apply-exp list)
+  (meta-builtin/builtin/list-push! target list)
+  (meta-builtin/builtin/list-push! arg list)
+  list)
+
+(claim apply-exp? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (apply-exp? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           3)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           apply-exp)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim apply-exp-target (-> exp-t exp-t))
+
+(define (apply-exp-target target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim apply-exp-put-target! (-> exp-t exp-t exp-t))
+
+(define (apply-exp-put-target! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim apply-exp-arg (-> exp-t exp-t))
+
+(define (apply-exp-arg target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim apply-exp-put-arg! (-> exp-t exp-t exp-t))
+
+(define (apply-exp-put-arg! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(claim lambda-exp
+  (-> meta-builtin/builtin/symbol-t exp-t exp-t))
+
+(define (lambda-exp parameter body)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! lambda-exp list)
+  (meta-builtin/builtin/list-push! parameter list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
+
+(claim lambda-exp? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (lambda-exp? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           3)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           lambda-exp)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim lambda-exp-parameter
+  (-> exp-t meta-builtin/builtin/symbol-t))
+
+(define (lambda-exp-parameter target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim lambda-exp-put-parameter!
+  (-> meta-builtin/builtin/symbol-t exp-t exp-t))
+
+(define (lambda-exp-put-parameter! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim lambda-exp-body (-> exp-t exp-t))
+
+(define (lambda-exp-body target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim lambda-exp-put-body! (-> exp-t exp-t exp-t))
+
+(define (lambda-exp-put-body! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(claim let-exp
+  (-> meta-builtin/builtin/symbol-t exp-t exp-t exp-t))
+
+(define (let-exp name rhs body)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! let-exp list)
+  (meta-builtin/builtin/list-push! name list)
+  (meta-builtin/builtin/list-push! rhs list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
+
+(claim let-exp? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (let-exp? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           4)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           let-exp)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim let-exp-name (-> exp-t meta-builtin/builtin/symbol-t))
+
+(define (let-exp-name target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim let-exp-put-name!
+  (-> meta-builtin/builtin/symbol-t exp-t exp-t))
+
+(define (let-exp-put-name! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim let-exp-rhs (-> exp-t exp-t))
+
+(define (let-exp-rhs target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim let-exp-put-rhs! (-> exp-t exp-t exp-t))
+
+(define (let-exp-put-rhs! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(claim let-exp-body (-> exp-t exp-t))
+
+(define (let-exp-body target)
+  (meta-builtin/builtin/list-get 3 target))
+
+(claim let-exp-put-body! (-> exp-t exp-t exp-t))
+
+(define (let-exp-put-body! value target)
+  (meta-builtin/builtin/list-put! 3 value target))
+
+(claim env-t meta-builtin/builtin/type-t)
+
+(define-opaque-type
+  env-t
+  (meta-builtin/builtin/hash-t
+   meta-builtin/builtin/symbol-t
+   self/050-lambda/value-t)
+  (empty-env (-> self/050-lambda/env-t))
+  (extend-env
+   (-> meta-builtin/builtin/symbol-t
+       self/050-lambda/value-t
+       self/050-lambda/env-t
+       self/050-lambda/env-t))
+  (env-lookup
+   (-> meta-builtin/builtin/symbol-t
+       self/050-lambda/env-t
+       (meta-builtin/builtin/maybe-t self/050-lambda/value-t))))
+
+(claim empty-env (polymorphic () (-> env-t)))
+
+(define empty-env meta-builtin/builtin/make-hash)
+
+(claim extend-env
+  (polymorphic ()
+    (-> meta-builtin/builtin/symbol-t value-t env-t env-t)))
+
+(define extend-env meta-builtin/builtin/hash-put)
+
+(claim env-lookup
+  (polymorphic ()
+    (-> meta-builtin/builtin/symbol-t
+        env-t
+        (meta-builtin/builtin/maybe-t value-t))))
+
+(define env-lookup meta-builtin/builtin/hash-get-maybe)
+
+(claim value-t meta-builtin/builtin/type-t)
+
+(define-enum value-t
+  (closure-value
+   (env self/050-lambda/env-t)
+   (parameter meta-builtin/builtin/symbol-t)
+   (body self/050-lambda/exp-t)))
+
+(claim closure-value
+  (-> env-t meta-builtin/builtin/symbol-t exp-t value-t))
+
+(define (closure-value env parameter body)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! closure-value list)
+  (meta-builtin/builtin/list-push! env list)
+  (meta-builtin/builtin/list-push! parameter list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
+
+(claim closure-value? (-> value-t meta-builtin/builtin/bool-t))
+
+(define (closure-value? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           4)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           closure-value)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim closure-value-env (-> value-t env-t))
+
+(define (closure-value-env target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim closure-value-put-env! (-> env-t value-t value-t))
+
+(define (closure-value-put-env! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim closure-value-parameter
+  (-> value-t meta-builtin/builtin/symbol-t))
+
+(define (closure-value-parameter target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim closure-value-put-parameter!
+  (-> meta-builtin/builtin/symbol-t value-t value-t))
+
+(define (closure-value-put-parameter! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(claim closure-value-body (-> value-t exp-t))
+
+(define (closure-value-body target)
+  (meta-builtin/builtin/list-get 3 target))
+
+(claim closure-value-put-body! (-> exp-t value-t value-t))
+
+(define (closure-value-put-body! value target)
+  (meta-builtin/builtin/list-put! 3 value target))
+
+(claim evaluate
+  (-> 050-lambda/exp-t 050-lambda/env-t 050-lambda/value-t))
+
+(define (evaluate exp env)
+  (if (self/050-lambda/var-exp? exp)
+      (begin
+        (= name (self/050-lambda/var-exp-name exp))
+        (if
+            (meta-builtin/builtin/just?
+             (self/050-lambda/env-lookup name env))
+            (begin
+              (=
+              value
+              (meta-builtin/builtin/just-value
+               (self/050-lambda/env-lookup name env)))
+              value)
+            (if
+                (meta-builtin/builtin/nothing?
+                 (self/050-lambda/env-lookup name env))
+                (meta-builtin/builtin/error "undefined name")
+                (meta-builtin/builtin/error "cond mismatch"))))
+      (if (self/050-lambda/apply-exp? exp)
+          (begin
+            (= arg (self/050-lambda/apply-exp-arg exp))
+            (= target (self/050-lambda/apply-exp-target exp))
+            (self/050-lambda/apply
+             (self/050-lambda/evaluate target env)
+             (self/050-lambda/evaluate arg env)))
+          (if (self/050-lambda/lambda-exp? exp)
+              (begin
+                (= body (self/050-lambda/lambda-exp-body exp))
+                (=
+                parameter
+                (self/050-lambda/lambda-exp-parameter exp))
+                (self/050-lambda/closure-value
+                 env
+                 parameter
+                 body))
+              (if (self/050-lambda/let-exp? exp)
+                  (begin
+                    (= body (self/050-lambda/let-exp-body exp))
+                    (= rhs (self/050-lambda/let-exp-rhs exp))
+                    (= name (self/050-lambda/let-exp-name exp))
+                    (=
+                    env
+                    (self/050-lambda/extend-env
+                     name
+                     (self/050-lambda/evaluate rhs env)
+                     env))
+                    (self/050-lambda/evaluate body env))
+                  (meta-builtin/builtin/error "cond mismatch"))))))
+
+(claim apply
+  (polymorphic (A) (-> 050-lambda/value-t 050-lambda/value-t A)))
+
+(define (apply target arg)
+  (if (self/050-lambda/closure-value? target)
+      (begin
+        (= body (self/050-lambda/closure-value-body target))
+        (=
+        parameter
+        (self/050-lambda/closure-value-parameter target))
+        (= env (self/050-lambda/closure-value-env target))
+        (self/050-lambda/evaluate
+         body
+         (self/050-lambda/extend-env parameter arg env)))
+      (meta-builtin/builtin/error "cond mismatch")))

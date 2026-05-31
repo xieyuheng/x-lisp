@@ -1,0 +1,61 @@
+(claim pair-t
+  (-> meta-builtin/builtin/type-t
+      meta-builtin/builtin/type-t
+      meta-builtin/builtin/type-t))
+
+(define-enum (pair-t A B) (make-pair (first A) (second B)))
+
+(claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
+
+(define (make-pair first second)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! make-pair list)
+  (meta-builtin/builtin/list-push! first list)
+  (meta-builtin/builtin/list-push! second list)
+  list)
+
+(claim pair?
+  (polymorphic (A B)
+    (-> (pair-t A B) meta-builtin/builtin/bool-t)))
+
+(define (pair? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           3)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           make-pair)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim pair-first (polymorphic (A B) (-> (pair-t A B) A)))
+
+(define (pair-first target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim pair-put-first!
+  (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+
+(define (pair-put-first! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
+
+(define (pair-second target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim pair-put-second!
+  (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+
+(define (pair-put-second! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(define (pair-swap p)
+  (if (self/010-pair/pair? p)
+      (begin
+        (= b (self/010-pair/pair-second p))
+        (= a (self/010-pair/pair-first p))
+        (self/010-pair/make-pair b a))
+      (meta-builtin/builtin/error "cond mismatch")))

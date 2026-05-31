@@ -1,0 +1,71 @@
+(claim add1 (-> int-t int-t))
+
+(define (add1 x) (meta-builtin/builtin/iadd 1 x))
+
+(claim double (-> int-t int-t))
+
+(define (double x) (meta-builtin/builtin/iadd x x))
+
+(claim demo-let-star (-> int-t))
+
+(define (demo-let-star)
+  (= x.1 1)
+  (= y.1 (meta-builtin/builtin/iadd x.1 1))
+  (meta-builtin/builtin/iadd x.1 y.1))
+
+(claim demo-cond (-> int-t))
+
+(define (demo-cond)
+  (if (meta-builtin/builtin/equal? 1 1) 1
+      (if meta-builtin/builtin/true 2
+          (meta-builtin/builtin/error-with-location
+           "cond mismatch"
+           (meta-builtin/builtin/make-source-location
+            "src/060-desugar.meta"
+            (meta-builtin/builtin/make-source-span
+             (meta-builtin/builtin/make-source-position 171 7 21)
+             (meta-builtin/builtin/make-source-position 175 7 25)))))))
+
+(claim demo-begin (-> int-t))
+
+(define (demo-begin) 1 2 3)
+
+(claim demo-when (-> void-t))
+
+(define (demo-when)
+  (if meta-builtin/builtin/true
+      (begin 1 meta-builtin/builtin/void)
+      meta-builtin/builtin/void))
+
+(claim demo-unless (-> void-t))
+
+(define (demo-unless)
+  (if meta-builtin/builtin/false meta-builtin/builtin/void
+      (begin 2 meta-builtin/builtin/void)))
+
+(claim demo-and (-> bool-t bool-t bool-t))
+
+(define (demo-and a b) (if a b meta-builtin/builtin/false))
+
+(claim demo-or (-> bool-t bool-t bool-t))
+
+(define (demo-or a b) (if a meta-builtin/builtin/true b))
+
+(claim demo-pipe (-> int-t))
+
+(define (demo-pipe)
+  (self/060-desugar/double (self/060-desugar/add1 5)))
+
+(claim demo-chain (-> int-t))
+
+(define (demo-chain) (self/060-desugar/demo-chain©λ1 5))
+
+(define (demo-chain©λ1 target.1)
+  (self/060-desugar/double (self/060-desugar/add1 target.1)))
+
+(claim demo-compose (-> int-t))
+
+(define (demo-compose) (self/060-desugar/demo-compose©λ1 5))
+
+(define (demo-compose©λ1 target.1)
+  (self/060-desugar/add1 (self/060-desugar/double target.1)))

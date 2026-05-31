@@ -1,0 +1,42 @@
+(module 010-pair)
+
+(define-algebraic-type (pair-t A B)
+  ((make-pair (first A) (second B))
+   pair?
+   (first pair-first pair-put-first!)
+   (second pair-second pair-put-second!)))
+
+(admit make-pair (polymorphic (A B) (-> A B (pair-t A B))))
+
+(define (make-pair first second)
+  (@list 'make-pair first second))
+
+(admit pair? (polymorphic (A B) (-> (pair-t A B) bool-t)))
+
+(define (pair? value)
+  (and (list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) 'make-pair)))
+
+(admit pair-first (polymorphic (A B) (-> (pair-t A B) A)))
+
+(define (pair-first target) (list-get 1 target))
+
+(admit pair-put-first!
+  (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+
+(define (pair-put-first! value target)
+  (list-put! 1 value target))
+
+(admit pair-second (polymorphic (A B) (-> (pair-t A B) B)))
+
+(define (pair-second target) (list-get 2 target))
+
+(admit pair-put-second!
+  (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+
+(define (pair-put-second! value target)
+  (list-put! 2 value target))
+
+(define (pair-swap p)
+  (match p ((make-pair a b) (make-pair b a))))
