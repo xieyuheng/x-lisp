@@ -10,6 +10,9 @@ meta-lisp uses **S-expression** syntax.
 All meta-Lisp syntax is presented below in groups.
 
 - [Comments](#comments)
+  - [Introduction](#introduction)
+  - [Line comments](#line-comments)
+  - [(@comment)](#comment)
 - [Literals](#literals)
   - [Atoms](#atoms)
   - [(@list)](#list)
@@ -73,6 +76,12 @@ All meta-Lisp syntax is presented below in groups.
 
 # Comments
 
+## Introduction
+
+meta-lisp has two kinds of comments: line comments and `(@comment)` block comments.
+
+## Line comments
+
 Comments start with `;` and extend to the end of the line.
 
 Lisp programmers typically write two `;;` for line comments.
@@ -81,6 +90,23 @@ Lisp programmers typically write two `;;` for line comments.
 ;; This is a comment
 (define x 42) ;; end-of-line comment
 ```
+
+## (@comment)
+
+```scheme
+(@comment <sexp> ...)
+```
+
+`(@comment)` is ignored at compile time and evaluates to `void`.
+
+```scheme
+(@comment (lambda (<parameter> ...)
+            <body>))
+(@comment (if <condition> <consequent> <alternative>))
+(@comment foo bar)
+```
+
+`@comment` is recognized as a syntactic keyword by the parser. Its content is a literal S-expression that is not evaluated.
 
 # Literals
 

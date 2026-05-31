@@ -10,6 +10,9 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 下面分组介绍 meta-lisp 的所有语法。
 
 - [注释](#注释)
+  - [前言](#前言)
+  - [行注释](#行注释)
+  - [(@comment)](#comment)
 - [字面量](#字面量)
   - [原子](#原子)
   - [(@list)](#list)
@@ -73,6 +76,12 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 # 注释
 
+## 前言
+
+meta-lisp 的注释分为两种：行注释和 `(@comment)` 块注释。
+
+## 行注释
+
 注释以 `;` 开头，直到行尾。
 
 在写行注释的时候 lisp 程序员通常写两个 `;;`。
@@ -81,6 +90,23 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 ;; 这是一条注释
 (define x 42) ;; 行尾注释
 ```
+
+## (@comment)
+
+```scheme
+(@comment <sexp> ...)
+```
+
+`(@comment)` 在编译时被忽略，其表达式求值为 `void`。
+
+```scheme
+(@comment (lambda (<parameter> ...)
+            <body>))
+(@comment (if <condition> <consequent> <alternative>))
+(@comment foo bar)
+```
+
+`@comment` 被解析器识别为语法关键字，其内容是字面 S 表达式，不会被求值。
 
 # 字面量
 
