@@ -23,8 +23,8 @@
            (meta-builtin/builtin/make-source-location
             "src/060-desugar.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 171 7 21)
-             (meta-builtin/builtin/make-source-position 175 7 25)))))))
+             (meta-builtin/builtin/make-source-position 170 6 21)
+             (meta-builtin/builtin/make-source-position 174 6 25)))))))
 
 (claim demo-begin (-> int-t))
 
