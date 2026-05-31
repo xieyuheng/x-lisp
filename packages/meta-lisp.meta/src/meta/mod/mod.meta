@@ -14,7 +14,8 @@
    (package package-t)))
 
 (define-struct definition-state-t
-  (is-checked bool-t))
+  (is-checked bool-t)
+  (error-occurred bool-t))
 
 (define-struct claim-entry-t
   (exp term-t)
@@ -89,7 +90,26 @@
       (definition-state-is-checked (hash-get name states))
       false)))
 
-(claim mod-set-checked! (-> mod-t symbol-t void-t))
-(define (mod-set-checked! mod name)
-  (hash-put! name (make-definition-state true) (mod-definition-states mod))
+(claim mod-mark-checked! (-> mod-t symbol-t void-t))
+(define (mod-mark-checked! mod name)
+  (hash-put! name (make-definition-state true false) (mod-definition-states mod))
+  void)
+
+(claim mod-error-occurred (-> mod-t symbol-t bool-t))
+(define (mod-error-occurred mod name)
+  (let ((states (mod-definition-states mod)))
+    (if (hash-has? name states)
+      (definition-state-error-occurred (hash-get name states))
+      false)))
+
+(claim mod-mark-error-occurred! (-> mod-t symbol-t void-t))
+(define (mod-mark-error-occurred! mod name)
+  (let ((states (mod-definition-states mod)))
+    (if (hash-has? name states)
+      (let ((state (hash-get name states)))
+        (hash-put! name (make-definition-state
+                          (definition-state-is-checked state)
+                          true)
+                    states))
+      (hash-put! name (make-definition-state false true) states)))
   void)

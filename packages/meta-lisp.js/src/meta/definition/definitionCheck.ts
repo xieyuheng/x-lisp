@@ -34,7 +34,7 @@ export function definitionCheck(definition: M.Definition): boolean {
   }
 
   if (mod.admitted.has(name)) {
-    M.modSetChecked(mod, name)
+    M.modMarkChecked(mod, name)
     return false
   }
 
@@ -55,8 +55,8 @@ export function definitionCheck(definition: M.Definition): boolean {
         }
       }
 
-      M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetErrorOccurred(mod, name)
+      M.modMarkChecked(mod, name)
+      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -73,15 +73,15 @@ export function definitionCheck(definition: M.Definition): boolean {
         // We still set checked to avoid repeating.
       }
 
-      M.modSetChecked(mod, name)
+      M.modMarkChecked(mod, name)
       return false
     }
 
     case "VariableDefinition":
     case "TestDefinition": {
       const errorOccurred = tryCheckDefinitionBody(mod, name, definition.body)
-      M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetErrorOccurred(mod, name)
+      M.modMarkChecked(mod, name)
+      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -95,8 +95,8 @@ export function definitionCheck(definition: M.Definition): boolean {
               definition.location,
             )
       const errorOccurred = tryCheckDefinitionBody(mod, name, body)
-      M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetErrorOccurred(mod, name)
+      M.modMarkChecked(mod, name)
+      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -107,8 +107,8 @@ export function definitionCheck(definition: M.Definition): boolean {
         definition.location,
       )
       const errorOccurred = tryCheckDefinitionBody(mod, name, body)
-      M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetErrorOccurred(mod, name)
+      M.modMarkChecked(mod, name)
+      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -135,8 +135,8 @@ export function definitionCheck(definition: M.Definition): boolean {
       )
         errorOccurred = true
 
-      M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetErrorOccurred(mod, name)
+      M.modMarkChecked(mod, name)
+      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
       return errorOccurred
     }
   }

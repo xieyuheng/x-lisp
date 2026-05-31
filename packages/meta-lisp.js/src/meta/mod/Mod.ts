@@ -64,24 +64,22 @@ export function modLookupDefinition(
 
 // DefinitionState
 
+function initialDefinitionState(): DefinitionState {
+  return { isChecked: false, errorOccurred: false }
+}
+
 export function modIsChecked(mod: Mod, name: string): boolean {
   return mod.definitionStates.get(name)?.isChecked ?? false
 }
 
-export function modSetChecked(mod: Mod, name: string): void {
-  const state = mod.definitionStates.get(name) ?? {
-    isChecked: false,
-    errorOccurred: false,
-  }
+export function modMarkChecked(mod: Mod, name: string): void {
+  const state = mod.definitionStates.get(name) ?? initialDefinitionState()
   state.isChecked = true
   mod.definitionStates.set(name, state)
 }
 
-export function modSetErrorOccurred(mod: Mod, name: string): void {
-  const state = mod.definitionStates.get(name) ?? {
-    isChecked: false,
-    errorOccurred: true,
-  }
+export function modMarkErrorOccurred(mod: Mod, name: string): void {
+  const state = mod.definitionStates.get(name) ?? initialDefinitionState()
   state.errorOccurred = true
   mod.definitionStates.set(name, state)
 }
