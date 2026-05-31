@@ -1,0 +1,8 @@
+(claim make-adder (-> int-t int-t int-t))
+
+(define (make-adder x)
+  (lambda (y) (meta-builtin/builtin/iadd x y)))
+
+(claim f (-> (-> int-t int-t)))
+
+(define (f) (self/150-lift-lambda/make-adder 1))

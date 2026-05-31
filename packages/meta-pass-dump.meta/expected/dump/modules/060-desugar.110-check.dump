@@ -1,0 +1,17 @@
+(claim f (-> int-t))
+
+(define (f)
+  (= x 1)
+  (= y (meta-builtin/builtin/iadd x 1))
+  (meta-builtin/builtin/iadd x y))
+
+(claim g (-> int-t))
+
+(define (g)
+  (if (meta-builtin/builtin/equal? 1 1) 1
+      (if meta-builtin/builtin/true 2
+          (meta-builtin/builtin/error "cond mismatch"))))
+
+(claim h (-> int-t))
+
+(define (h) 1 2 3)

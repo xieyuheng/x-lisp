@@ -1,0 +1,8 @@
+(module 060-desugar)
+
+(define (f) (let* ((x 1) (y (iadd x 1))) (iadd x y)))
+
+(define (g)
+  (cond ((equal? 1 1) 1) (meta-builtin/builtin/true 2)))
+
+(define (h) (begin 1 2 3))

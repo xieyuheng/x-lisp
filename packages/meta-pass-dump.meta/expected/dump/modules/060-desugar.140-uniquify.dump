@@ -1,0 +1,23 @@
+(claim f (-> int-t))
+
+(define (f)
+  (= x.1 1)
+  (= y.1 (meta-builtin/builtin/iadd x.1 1))
+  (meta-builtin/builtin/iadd x.1 y.1))
+
+(claim g (-> int-t))
+
+(define (g)
+  (if (meta-builtin/builtin/equal? 1 1) 1
+      (if meta-builtin/builtin/true 2
+          (meta-builtin/builtin/error-with-location
+           "cond mismatch"
+           (meta-builtin/builtin/make-source-location
+            "src/060-desugar.meta"
+            (meta-builtin/builtin/make-source-span
+             (meta-builtin/builtin/make-source-position 89 3 13)
+             (meta-builtin/builtin/make-source-position 93 3 17)))))))
+
+(claim h (-> int-t))
+
+(define (h) 1 2 3)
