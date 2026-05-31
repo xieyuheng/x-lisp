@@ -2,7 +2,7 @@
 title: Syntax
 ---
 
-# Introduction
+# Preface
 
 meta-lisp uses **S-expression** syntax.
 
@@ -13,7 +13,7 @@ All meta-Lisp syntax is presented below in groups.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
+- [Preface](#preface)
 - [Table of Contents](#table-of-contents)
 - [Comments](#comments)
   - [Line comments](#line-comments)
