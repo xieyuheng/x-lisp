@@ -1,0 +1,12 @@
+(module 050-lambda)
+
+(define-enum (exp-t)
+  (num (value int-t))
+  (add (left exp-t) (right exp-t))
+  (mul (left exp-t) (right exp-t)))
+
+(define (evaluate e)
+  (match e
+    ((num value) value)
+    ((add left right) (iadd (evaluate left) (evaluate right)))
+    ((mul left right) (imul (evaluate left) (evaluate right)))))

@@ -1,3 +1,7 @@
+(define (add1 x) (meta-builtin/builtin/iadd 1 x))
+
+(define (double x) (meta-builtin/builtin/iadd x x))
+
 (define (f)
   (= x 1)
   (= y (meta-builtin/builtin/iadd x 1))
@@ -9,3 +13,28 @@
           (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (h) 1 2 3)
+
+(define (i)
+  (if meta-builtin/builtin/true
+      (begin 1 meta-builtin/builtin/void)
+      meta-builtin/builtin/void))
+
+(define (j)
+  (if meta-builtin/builtin/false meta-builtin/builtin/void
+      (begin 2 meta-builtin/builtin/void)))
+
+(define (k a b) (if a b meta-builtin/builtin/false))
+
+(define (l a b) (if a meta-builtin/builtin/true b))
+
+(define (m) (self/060-desugar/double (self/060-desugar/add1 5)))
+
+(define (n)
+  ((lambda (target)
+     (self/060-desugar/double (self/060-desugar/add1 target)))
+   5))
+
+(define (o)
+  ((lambda (target)
+     (self/060-desugar/add1 (self/060-desugar/double target)))
+   5))

@@ -1,8 +1,26 @@
 (module 060-desugar)
 
+(define (add1 x) (iadd 1 x))
+
+(define (double x) (iadd x x))
+
 (define (f) (let* ((x 1) (y (iadd x 1))) (iadd x y)))
 
 (define (g)
   (cond ((equal? 1 1) 1) (meta-builtin/builtin/true 2)))
 
 (define (h) (begin 1 2 3))
+
+(define (i) (when true 1))
+
+(define (j) (unless false 2))
+
+(define (k a b) (and a b))
+
+(define (l a b) (or a b))
+
+(define (m) (pipe 5 add1 double))
+
+(define (n) ((chain add1 double) 5))
+
+(define (o) ((compose add1 double) 5))

@@ -1,0 +1,8 @@
+(define greeting "Hello")
+
+(define (greet name)
+  (meta-builtin/builtin/string-append
+   (meta-builtin/builtin/string-append
+    self/070-module-lib/greeting
+    ", ")
+   name))

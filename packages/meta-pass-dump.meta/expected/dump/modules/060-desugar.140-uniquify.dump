@@ -1,3 +1,11 @@
+(claim add1 (-> int-t int-t))
+
+(define (add1 x) (meta-builtin/builtin/iadd 1 x))
+
+(claim double (-> int-t int-t))
+
+(define (double x) (meta-builtin/builtin/iadd x x))
+
 (claim f (-> int-t))
 
 (define (f)
@@ -15,9 +23,48 @@
            (meta-builtin/builtin/make-source-location
             "src/060-desugar.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 89 3 13)
-             (meta-builtin/builtin/make-source-position 93 3 17)))))))
+             (meta-builtin/builtin/make-source-position 151 7 13)
+             (meta-builtin/builtin/make-source-position 155 7 17)))))))
 
 (claim h (-> int-t))
 
 (define (h) 1 2 3)
+
+(claim i (-> void-t))
+
+(define (i)
+  (if meta-builtin/builtin/true
+      (begin 1 meta-builtin/builtin/void)
+      meta-builtin/builtin/void))
+
+(claim j (-> void-t))
+
+(define (j)
+  (if meta-builtin/builtin/false meta-builtin/builtin/void
+      (begin 2 meta-builtin/builtin/void)))
+
+(claim k (-> bool-t bool-t bool-t))
+
+(define (k a b) (if a b meta-builtin/builtin/false))
+
+(claim l (-> bool-t bool-t bool-t))
+
+(define (l a b) (if a meta-builtin/builtin/true b))
+
+(claim m (-> int-t))
+
+(define (m) (self/060-desugar/double (self/060-desugar/add1 5)))
+
+(claim n (-> int-t))
+
+(define (n)
+  ((lambda (target.1)
+     (self/060-desugar/double (self/060-desugar/add1 target.1)))
+   5))
+
+(claim o (-> int-t))
+
+(define (o)
+  ((lambda (target.1)
+     (self/060-desugar/add1 (self/060-desugar/double target.1)))
+   5))

@@ -1,0 +1,144 @@
+(claim exp-t meta-builtin/builtin/type-t)
+
+(define-enum exp-t
+  (num (value meta-builtin/builtin/int-t))
+  (add (left exp-t) (right exp-t))
+  (mul (left exp-t) (right exp-t)))
+
+(claim num (-> meta-builtin/builtin/int-t exp-t))
+
+(define (num value)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! num list)
+  (meta-builtin/builtin/list-push! value list)
+  list)
+
+(claim num? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (num? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           2)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           num)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim num-value (-> exp-t meta-builtin/builtin/int-t))
+
+(define (num-value target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim num-put-value!
+  (-> meta-builtin/builtin/int-t exp-t exp-t))
+
+(define (num-put-value! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim add (-> exp-t exp-t exp-t))
+
+(define (add left right)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! add list)
+  (meta-builtin/builtin/list-push! left list)
+  (meta-builtin/builtin/list-push! right list)
+  list)
+
+(claim add? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (add? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           3)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           add)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim add-left (-> exp-t exp-t))
+
+(define (add-left target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim add-put-left! (-> exp-t exp-t exp-t))
+
+(define (add-put-left! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim add-right (-> exp-t exp-t))
+
+(define (add-right target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim add-put-right! (-> exp-t exp-t exp-t))
+
+(define (add-put-right! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(claim mul (-> exp-t exp-t exp-t))
+
+(define (mul left right)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! mul list)
+  (meta-builtin/builtin/list-push! left list)
+  (meta-builtin/builtin/list-push! right list)
+  list)
+
+(claim mul? (-> exp-t meta-builtin/builtin/bool-t))
+
+(define (mul? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           3)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           mul)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim mul-left (-> exp-t exp-t))
+
+(define (mul-left target)
+  (meta-builtin/builtin/list-get 1 target))
+
+(claim mul-put-left! (-> exp-t exp-t exp-t))
+
+(define (mul-put-left! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim mul-right (-> exp-t exp-t))
+
+(define (mul-right target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(claim mul-put-right! (-> exp-t exp-t exp-t))
+
+(define (mul-put-right! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(define (evaluate e)
+  (if (self/050-lambda/num? e)
+      (begin (= value (self/050-lambda/num-value e)) value)
+      (if (self/050-lambda/add? e)
+          (begin
+            (= right (self/050-lambda/add-right e))
+            (= left (self/050-lambda/add-left e))
+            (meta-builtin/builtin/iadd
+             (evaluate left)
+             (evaluate right)))
+          (if (self/050-lambda/mul? e)
+              (begin
+                (= right (self/050-lambda/mul-right e))
+                (= left (self/050-lambda/mul-left e))
+                (meta-builtin/builtin/imul
+                 (evaluate left)
+                 (evaluate right)))
+              (meta-builtin/builtin/error "cond mismatch")))))

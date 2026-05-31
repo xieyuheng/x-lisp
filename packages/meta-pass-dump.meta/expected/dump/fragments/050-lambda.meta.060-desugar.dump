@@ -1,0 +1,105 @@
+(import-all meta-builtin/builtin)
+
+(module 050-lambda)
+
+(define-algebraic-type exp-t
+  ((num (value int-t)) num? (value num-value num-put-value!))
+  ((add (left exp-t) (right exp-t))
+   add?
+   (left add-left add-put-left!)
+   (right add-right add-put-right!))
+  ((mul (left exp-t) (right exp-t))
+   mul?
+   (left mul-left mul-put-left!)
+   (right mul-right mul-put-right!)))
+
+(admit num (-> int-t exp-t))
+
+(define (num value) (@list 'num value))
+
+(admit num? (-> exp-t bool-t))
+
+(define (num? value)
+  (and (list? value)
+       (equal? (list-length value) 2)
+       (equal? (list-head value) 'num)))
+
+(admit num-value (-> exp-t int-t))
+
+(define (num-value target) (list-get 1 target))
+
+(admit num-put-value! (-> int-t exp-t exp-t))
+
+(define (num-put-value! value target)
+  (list-put! 1 value target))
+
+(admit add (-> exp-t exp-t exp-t))
+
+(define (add left right) (@list 'add left right))
+
+(admit add? (-> exp-t bool-t))
+
+(define (add? value)
+  (and (list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) 'add)))
+
+(admit add-left (-> exp-t exp-t))
+
+(define (add-left target) (list-get 1 target))
+
+(admit add-put-left! (-> exp-t exp-t exp-t))
+
+(define (add-put-left! value target) (list-put! 1 value target))
+
+(admit add-right (-> exp-t exp-t))
+
+(define (add-right target) (list-get 2 target))
+
+(admit add-put-right! (-> exp-t exp-t exp-t))
+
+(define (add-put-right! value target)
+  (list-put! 2 value target))
+
+(admit mul (-> exp-t exp-t exp-t))
+
+(define (mul left right) (@list 'mul left right))
+
+(admit mul? (-> exp-t bool-t))
+
+(define (mul? value)
+  (and (list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) 'mul)))
+
+(admit mul-left (-> exp-t exp-t))
+
+(define (mul-left target) (list-get 1 target))
+
+(admit mul-put-left! (-> exp-t exp-t exp-t))
+
+(define (mul-put-left! value target) (list-put! 1 value target))
+
+(admit mul-right (-> exp-t exp-t))
+
+(define (mul-right target) (list-get 2 target))
+
+(admit mul-put-right! (-> exp-t exp-t exp-t))
+
+(define (mul-put-right! value target)
+  (list-put! 2 value target))
+
+(define (evaluate e)
+  (cond
+    ((self/050-lambda/num? e)
+     (begin (= value (self/050-lambda/num-value e)) value))
+    ((self/050-lambda/add? e)
+     (begin
+       (= right (self/050-lambda/add-right e))
+       (= left (self/050-lambda/add-left e))
+       (iadd (evaluate left) (evaluate right))))
+    ((self/050-lambda/mul? e)
+     (begin
+       (= right (self/050-lambda/mul-right e))
+       (= left (self/050-lambda/mul-left e))
+       (imul (evaluate left) (evaluate right))))))
