@@ -1,12 +1,8 @@
-# review
+# self-hosting
 
 [meta-lisp.meta] [refactor] parse-stmt.meta -- add @comment to syntax of stmt
 [meta-lisp.meta] [refactor] parse-stmt.meta
-
 [meta-lisp.meta] [review] 010-expand-pass.meta
-
-# self-hosting
-
 [meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta
 [meta-lisp.meta] 040-algebraic-analysis-pass.meta
