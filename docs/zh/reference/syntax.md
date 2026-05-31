@@ -2,7 +2,7 @@
 title: 语法
 ---
 
-# Preface
+# 前言
 
 meta-lisp 使用**符号表达式**（S-expression）语法。
 
@@ -13,7 +13,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 ## 目录
 
-- [Preface](#preface)
+- [前言](#前言)
 - [目录](#目录)
 - [注释](#注释)
   - [行注释](#行注释)
