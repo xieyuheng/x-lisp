@@ -6,25 +6,25 @@
 
 (define (double x) (meta-builtin/builtin/iadd x x))
 
-(claim f (-> int-t))
+(claim demo-let-star (-> int-t))
 
-(define (f)
+(define (demo-let-star)
   (= x.1 1)
   (= y.1 (meta-builtin/builtin/iadd x.1 1))
   (meta-builtin/builtin/iadd x.1 y.1))
 
-(claim g (-> int-t))
+(claim demo-cond (-> int-t))
 
-(define (g)
+(define (demo-cond)
   (if (meta-builtin/builtin/equal? 1 1) 1
       (if meta-builtin/builtin/true 2
           (begin
             (=
             _.1
-            (meta-builtin/builtin/make-source-position 151 7 13))
+            (meta-builtin/builtin/make-source-position 171 7 21))
             (=
             _.2
-            (meta-builtin/builtin/make-source-position 155 7 17))
+            (meta-builtin/builtin/make-source-position 175 7 25))
             (=
             _.3
             (meta-builtin/builtin/make-source-span _.1 _.2))
@@ -37,49 +37,49 @@
              "cond mismatch"
              _.4)))))
 
-(claim h (-> int-t))
+(claim demo-begin (-> int-t))
 
-(define (h) 1 2 3)
+(define (demo-begin) 1 2 3)
 
-(claim i (-> void-t))
+(claim demo-when (-> void-t))
 
-(define (i)
+(define (demo-when)
   (if meta-builtin/builtin/true
       (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
-(claim j (-> void-t))
+(claim demo-unless (-> void-t))
 
-(define (j)
+(define (demo-unless)
   (if meta-builtin/builtin/false meta-builtin/builtin/void
       (begin 2 meta-builtin/builtin/void)))
 
-(claim k (-> bool-t bool-t bool-t))
+(claim demo-and (-> bool-t bool-t bool-t))
 
-(define (k a b) (if a b meta-builtin/builtin/false))
+(define (demo-and a b) (if a b meta-builtin/builtin/false))
 
-(claim l (-> bool-t bool-t bool-t))
+(claim demo-or (-> bool-t bool-t bool-t))
 
-(define (l a b) (if a meta-builtin/builtin/true b))
+(define (demo-or a b) (if a meta-builtin/builtin/true b))
 
-(claim m (-> int-t))
+(claim demo-pipe (-> int-t))
 
-(define (m)
+(define (demo-pipe)
   (= _.1 (self/060-desugar/add1 5))
   (self/060-desugar/double _.1))
 
-(claim n (-> int-t))
+(claim demo-chain (-> int-t))
 
-(define (n) (self/060-desugar/n©λ1 5))
+(define (demo-chain) (self/060-desugar/demo-chain©λ1 5))
 
-(define (n©λ1 target.1)
+(define (demo-chain©λ1 target.1)
   (= _.1 (self/060-desugar/add1 target.1))
   (self/060-desugar/double _.1))
 
-(claim o (-> int-t))
+(claim demo-compose (-> int-t))
 
-(define (o) (self/060-desugar/o©λ1 5))
+(define (demo-compose) (self/060-desugar/demo-compose©λ1 5))
 
-(define (o©λ1 target.1)
+(define (demo-compose©λ1 target.1)
   (= _.1 (self/060-desugar/double target.1))
   (self/060-desugar/add1 _.1))

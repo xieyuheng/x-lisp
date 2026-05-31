@@ -39,3 +39,11 @@
 
 (define (pair-put-second! value target)
   (list-put! 2 value target))
+
+(define (pair-swap p)
+  (cond
+    ((self/010-pair/pair? p)
+     (begin
+       (= b (self/010-pair/pair-second p))
+       (= a (self/010-pair/pair-first p))
+       (make-pair b a)))))

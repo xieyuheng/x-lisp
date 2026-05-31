@@ -51,3 +51,22 @@
 
 (define (pair-put-second! value target)
   (meta-builtin/builtin/list-put! 2 value target))
+
+(claim pair-swap
+  (polymorphic
+    (A B)
+    (-> (010-pair/pair-t A B) (010-pair/pair-t B A))))
+
+(define (pair-swap p)
+  (if (self/010-pair/pair? p)
+      (begin
+        (= b (self/010-pair/pair-second p))
+        (= a (self/010-pair/pair-first p))
+        (self/010-pair/make-pair b a))
+      (meta-builtin/builtin/error-with-location
+       "cond mismatch"
+       (meta-builtin/builtin/make-source-location
+        "src/010-pair.meta"
+        (meta-builtin/builtin/make-source-span
+         (meta-builtin/builtin/make-source-position 95 5 3)
+         (meta-builtin/builtin/make-source-position 100 5 8))))))

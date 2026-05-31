@@ -4,23 +4,24 @@
 
 (define (double x) (iadd x x))
 
-(define (f) (let* ((x 1) (y (iadd x 1))) (iadd x y)))
+(define (demo-let-star)
+  (let* ((x 1) (y (iadd x 1))) (iadd x y)))
 
-(define (g)
+(define (demo-cond)
   (cond ((equal? 1 1) 1) (meta-builtin/builtin/true 2)))
 
-(define (h) (begin 1 2 3))
+(define (demo-begin) (begin 1 2 3))
 
-(define (i) (when true 1))
+(define (demo-when) (when true 1))
 
-(define (j) (unless false 2))
+(define (demo-unless) (unless false 2))
 
-(define (k a b) (and a b))
+(define (demo-and a b) (and a b))
 
-(define (l a b) (or a b))
+(define (demo-or a b) (or a b))
 
-(define (m) (pipe 5 add1 double))
+(define (demo-pipe) (pipe 5 add1 double))
 
-(define (n) ((chain add1 double) 5))
+(define (demo-chain) ((chain add1 double) 5))
 
-(define (o) ((compose add1 double) 5))
+(define (demo-compose) ((compose add1 double) 5))
