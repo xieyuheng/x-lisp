@@ -11,12 +11,12 @@
     "module" "import" "import-as" "import-all" "private"
     "claim" "claim-type" "admit" "the" "polymorphic"
     "->"
-    "interface" "extend-interface" "define-interface"
     "define-algebraic-type" "define-record-type"
     "define-struct" "define-struct*" "define-enum"
     "define-type" "define-opaque-type"
     "define-test"
-    "assert" "assert-not" "assert-the"
+    "declare-primitive-function" "declare-primitive-variable"
+    "assert" "assert-not"
     "assert-equal" "assert-not-equal")
   "Special forms in meta-lisp.
 
@@ -24,7 +24,7 @@ These are keywords that appear as the first element of a list
 and have special evaluation semantics.")
 
 (defconst meta-lisp--at-forms
-  '("@list" "@set" "@hash" "@quote" "@record" "@sexp" "@string")
+  '("@list" "@set" "@hash" "@quote" "@sexp" "@string")
   "@-prefixed forms that are built-in syntax sugar.
 
 For example: (@list 1 2 3) is sugar for [1 2 3].")
@@ -84,6 +84,10 @@ For example: (@list 1 2 3) is sugar for [1 2 3].")
    ;; @-prefixed forms at head position: (@list ...)  (@set ...)  etc.
    (,(meta-lisp--re-at-forms)
     1 'meta-lisp-at-form-face)
+
+   ;; @comment form: structured comment that evaluates to void
+   (,(concat "(\\(@comment\\)\\_>")
+    1 'font-lock-comment-face)
 
    ;; Builtin constants as standalone symbols: true  false  void
    (,(concat "\\_<" (meta-lisp--re-builtin-constants) "\\_>")

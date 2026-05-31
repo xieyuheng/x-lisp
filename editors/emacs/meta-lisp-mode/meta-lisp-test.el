@@ -250,6 +250,18 @@ face at that position is returned."
   (let ((face (meta-lisp-test--font-lock-at "(§@list 1 2 3)")))
     (should (eq face 'meta-lisp-at-form-face))))
 
+(ert-deftest meta-lisp-font-lock-at-comment ()
+  "@comment should use font-lock-comment-face."
+  (let ((face (meta-lisp-test--font-lock-at "(§@comment (lambda (x) x))")))
+    (should (eq face 'font-lock-comment-face))))
+
+(ert-deftest meta-lisp-font-lock-declare-primitive ()
+  "declare-primitive forms should use font-lock-keyword-face."
+  (should (eq (meta-lisp-test--font-lock-at "(§declare-primitive-function add1 1)")
+              'font-lock-keyword-face))
+  (should (eq (meta-lisp-test--font-lock-at "(§declare-primitive-variable pi)")
+              'font-lock-keyword-face)))
+
 (ert-deftest meta-lisp-font-lock-builtin-constant ()
   "Builtin constants should use font-lock-builtin-face."
   (let ((face (meta-lisp-test--font-lock-at "(if §true 1 2)")))
