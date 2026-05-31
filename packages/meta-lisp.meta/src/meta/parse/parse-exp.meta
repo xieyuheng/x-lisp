@@ -193,7 +193,7 @@
 
 (define (parse-body sexps location)
   (let ((exps (list-map parse-exp sexps)))
-    (if (equal? (list-length sexps) 1)
+    (if (equal? (list-length exps) 1)
       (car exps)
       (begin-exp exps location))))
 
