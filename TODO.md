@@ -1,7 +1,5 @@
 # review
 
-[meta-lisp.meta] [refactor] parse-exp.meta
-
 [meta-lisp.meta] [refactor] parse-stmt.meta -- add @comment to syntax of stmt
 [meta-lisp.meta] [refactor] parse-stmt.meta
 

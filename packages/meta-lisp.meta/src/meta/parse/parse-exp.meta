@@ -307,10 +307,10 @@
       (list-t (hash-entry-t exp-t exp-t))))
 
 (define (parse-hash-entries sexps)
-  (if (list-empty? sexps)
-    []
-    (let ((key (list-head sexps))
-          (value (list-head (list-drop 1 sexps)))
-          (rest (list-drop 2 sexps)))
-      (cons (make-hash-entry (parse-exp key) (parse-exp value))
-            (parse-hash-entries rest)))))
+  (cond ((list-empty? sexps) [])
+        (else
+          (= key (list-head sexps))
+          (= value (list-head (list-drop 1 sexps)))
+          (= rest (list-drop 2 sexps))
+          (cons (make-hash-entry (parse-exp key) (parse-exp value))
+                (parse-hash-entries rest)))))
