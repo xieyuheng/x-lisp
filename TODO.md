@@ -1,7 +1,12 @@
 # review
 
+[meta-lisp.meta] [refactor] parse-exp.meta -- add @comment to parse-special-form-exp
+
 [meta-lisp.meta] [review] parse-exp.meta
+
 [meta-lisp.meta] [review] parse-stmt.meta
+[meta-lisp.meta] [refactor] parse-stmt.meta -- add @comment to syntax of stmt
+
 [meta-lisp.meta] [review] 010-expand-pass.meta
 
 # self-hosting

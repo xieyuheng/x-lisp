@@ -9,7 +9,7 @@
     ((symbol-sexp content location)
      (= string (symbol-to-string content))
      (if (string-contains? "/" string)
-       (parse-qualified-var string location)
+       (parse-qualified-var-exp string location)
        (var-exp content location)))
     ((keyword-sexp content location) (keyword-exp content location))
     ((string-sexp content location) (string-exp content location))
@@ -17,7 +17,11 @@
     ((float-sexp content location) (float-exp content location))
     ((list-sexp elements location) (parse-compound-exp elements location))))
 
-(define (parse-qualified-var string location)
+(claim parse-qualified-var-exp
+  (-> string-t source-location-t
+      exp-t))
+
+(define (parse-qualified-var-exp string location)
   (= parts (string-split "/" string))
   (cond ((equal? (list-length parts) 3)
          (qualified-var-exp
@@ -35,22 +39,22 @@
           (= message "(parse-qualified-var) qualified variable must have one or two /")
           (error-with-location message location))))
 
-(claim parse-compound-exp
-  (-> (list-t sexp-t) source-location-t
-      exp-t))
-
 (define syntax-keywords
   ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
    'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
    '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
 
+(claim parse-compound-exp
+  (-> (list-t sexp-t) source-location-t
+      exp-t))
+
 (define (parse-compound-exp elements location)
-  (if (symbol-sexp? (list-head elements))
-    (let ((tag (symbol-sexp-content (list-head elements))))
-      (if (list-some? (lambda (kw) (equal? kw tag)) syntax-keywords)
-        (parse-special-form-exp tag elements location)
-        (parse-apply-exp elements location)))
-    (parse-apply-exp elements location)))
+  (cond ((symbol-sexp? (list-head elements))
+         (= tag (symbol-sexp-content (list-head elements)))
+         (if (list-some? (equal? tag) syntax-keywords)
+           (parse-special-form-exp tag elements location)
+           (parse-apply-exp elements location)))
+        (else (parse-apply-exp elements location))))
 
 (claim parse-apply-exp
   (-> (list-t sexp-t) source-location-t
@@ -67,6 +71,8 @@
 
 (define (parse-special-form-exp tag sexps location)
   (cond ((equal? tag 'lambda)
+         (@comment (lambda (<parameter> ...)
+                     <body>))
          (= parameters (list-get 1 sexps))
          (= body (list-drop 2 sexps))
          (lambda-exp (parse-parameters parameters)
