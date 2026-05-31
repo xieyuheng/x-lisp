@@ -2,5 +2,5 @@
 
 set -e
 
-rm -f type-check-error-report.txt
 rm -rf build snapshot
+rm -f type-check-error-report.txt
