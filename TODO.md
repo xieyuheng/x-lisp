@@ -1,11 +1,9 @@
 # review
 
-[meta-lisp.meta] [refactor] parse-binding 使用 (list-head (list-drop 1 elements)) 等价于 (list-get 1 elements)
+[meta-lisp.meta] [refactor] parse-exp.meta
 
-[meta-lisp.meta] [review] parse-exp.meta
-
-[meta-lisp.meta] [review] parse-stmt.meta
 [meta-lisp.meta] [refactor] parse-stmt.meta -- add @comment to syntax of stmt
+[meta-lisp.meta] [refactor] parse-stmt.meta
 
 [meta-lisp.meta] [review] 010-expand-pass.meta
 
