@@ -34,8 +34,15 @@
   (unless (hash-has? "meta-builtin" (package-config-dependencies config))
     (error "[loadPackage] missing required dependency \"meta-builtin\"")))
 
-(define (compute-hash string)
-  (format (hash-code string)))
+(define package-serial-numbers (make-hash))
+
+(define (dependency-id dep-resolved)
+  (match (hash-get-maybe dep-resolved package-serial-numbers)
+    ((just id) id)
+    ((nothing)
+     (= id (string-append "pkg-" (format (hash-length package-serial-numbers))))
+     (hash-put! dep-resolved id package-serial-numbers)
+     id)))
 
 (define (load-dependencies package root-directory config)
   (hash-each
@@ -48,7 +55,7 @@
                    (load-package "meta-builtin" dep-resolved)
                    (package-dependencies package))
         (hash-put! alias
-                   (load-package (compute-hash dep-resolved) dep-resolved)
+                   (load-package (dependency-id dep-resolved) dep-resolved)
                    (package-dependencies package))))
     (package-config-dependencies config)))
 

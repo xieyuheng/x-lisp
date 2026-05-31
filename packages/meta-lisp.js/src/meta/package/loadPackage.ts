@@ -2,6 +2,16 @@ import Path from "node:path"
 import * as M from "../index.ts"
 
 const packageCache = new Map<string, M.Package>()
+const packageSerialNumbers = new Map<string, string>()
+
+function dependencyId(depConfigPath: string): string {
+  const resolvedPath = Path.resolve(depConfigPath)
+  const existing = packageSerialNumbers.get(resolvedPath)
+  if (existing !== undefined) return existing
+  const id = `pkg-${packageSerialNumbers.size}`
+  packageSerialNumbers.set(resolvedPath, id)
+  return id
+}
 
 export function loadPackage(id: string, configPath: string): M.Package {
   const resolvedPath = Path.resolve(configPath)
@@ -44,9 +54,7 @@ function loadDependencies(
       "meta-package.json",
     )
     const depId =
-      alias === "meta-builtin"
-        ? "meta-builtin"
-        : M.computePackageHashFromConfig(depConfigPath)
+      alias === "meta-builtin" ? "meta-builtin" : dependencyId(depConfigPath)
     pkg.dependencies.set(alias, loadPackage(depId, depConfigPath))
   }
 }
