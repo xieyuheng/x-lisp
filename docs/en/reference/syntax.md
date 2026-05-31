@@ -11,7 +11,7 @@ meta-lisp uses **S-expression** syntax.
 
 All meta-Lisp syntax is presented below in groups.
 
-## Table of Contents
+# Table of Contents
 
 - [Preface](#preface)
 - [Table of Contents](#table-of-contents)
