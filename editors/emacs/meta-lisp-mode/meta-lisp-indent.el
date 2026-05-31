@@ -27,7 +27,7 @@
     ("define-record-type" . 1)
     ("define-test" . 1)
     ("define-type" . 1)
-    ("define-opaque-type" . 1)
+    ("define-opaque-type" . 2)
     ("let" . 1)
     ("let*" . 1)
     ("letrec" . 1)
