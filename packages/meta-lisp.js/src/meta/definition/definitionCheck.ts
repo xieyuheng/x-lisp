@@ -27,10 +27,10 @@ export function definitionCheck(definition: M.Definition): boolean {
   //   so a subsequent call finds isChecked and returns early.
   //   But if the earlier call was from inferLookup (infer.ts), its return
   //   value was discarded — the error would be lost.
-  //   By checking hasError here, CheckPass still learns about any error
-  //   discovered during on-demand checking.
+  //   By checking errorOccurred here, CheckPass still learns about any
+  //   error discovered during on-demand checking.
   if (M.modIsChecked(mod, name)) {
-    return M.modHasError(mod, name)
+    return M.modErrorOccurred(mod, name)
   }
 
   if (mod.admitted.has(name)) {
@@ -56,7 +56,7 @@ export function definitionCheck(definition: M.Definition): boolean {
       }
 
       M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetError(mod, name)
+      if (errorOccurred) M.modSetErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -81,7 +81,7 @@ export function definitionCheck(definition: M.Definition): boolean {
     case "TestDefinition": {
       const errorOccurred = tryCheckDefinitionBody(mod, name, definition.body)
       M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetError(mod, name)
+      if (errorOccurred) M.modSetErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -96,7 +96,7 @@ export function definitionCheck(definition: M.Definition): boolean {
             )
       const errorOccurred = tryCheckDefinitionBody(mod, name, body)
       M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetError(mod, name)
+      if (errorOccurred) M.modSetErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -108,7 +108,7 @@ export function definitionCheck(definition: M.Definition): boolean {
       )
       const errorOccurred = tryCheckDefinitionBody(mod, name, body)
       M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetError(mod, name)
+      if (errorOccurred) M.modSetErrorOccurred(mod, name)
       return errorOccurred
     }
 
@@ -136,7 +136,7 @@ export function definitionCheck(definition: M.Definition): boolean {
         errorOccurred = true
 
       M.modSetChecked(mod, name)
-      if (errorOccurred) M.modSetError(mod, name)
+      if (errorOccurred) M.modSetErrorOccurred(mod, name)
       return errorOccurred
     }
   }

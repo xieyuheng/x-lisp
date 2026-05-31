@@ -1,4 +1,3 @@
-src/meta/pipelines/build-pipeline.meta:4:24
 # self-hosting
 
 [meta-lisp.meta] [refactor] parse-stmt.meta -- add @comment to syntax of stmt

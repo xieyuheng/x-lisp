@@ -213,7 +213,8 @@ function inferLookup(
     //   otherwise checking a mutual-recursive group would loop infinitely.
     //
     // - We do NOT propagate the return value here,
-    //   because the error message is already printed by definitionCheck.
+    //   because the error message is already printed by definitionCheck,
+    //   and errorOccurred is tracked in DefinitionState for CheckPass.
     M.definitionCheck(definition)
 
     {
