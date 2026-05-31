@@ -1,18 +1,5 @@
 # review
 
-[meta-lisp.js] 和 [meta-lisp.meta] 中目前 @comment 语法都只带有一个 sexp，应该带有 body 中的所有 sexp
-在 [docs] 的 syntax.md 中补充我们新设计的 @comment 语法的文档
-
-[meta-lisp.meta] [refactor] parse-exp.meta -- parse-cond-clause 逻辑冗余
-
-else 分支之后的两个分支（else 为假 和 symbol-sexp? 为假）代码完全一样。可简化成：
-
-(if (and (symbol-sexp? (list-head elements))
-         (equal? (symbol-sexp-content (list-head elements)) 'else))
-  (make-cond-clause (qualified-var-exp 'meta-builtin 'builtin 'true location) ...)
-  (make-cond-clause (parse-exp (list-head elements)) ...))
-
-
 [meta-lisp.meta] [refactor] parse-binding 使用 (list-head (list-drop 1 elements)) 等价于 (list-get 1 elements)
 
 [meta-lisp.meta] [review] parse-exp.meta
