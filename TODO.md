@@ -1,6 +1,7 @@
 # review
 
-[meta-lisp.meta] [refactor] parse-exp.meta -- add @comment to parse-special-form-exp
+[meta-lisp.js] 和 [meta-lisp.meta] 中目前 @comment 语法都只带有一个 sexp，应该带有 body 中的所有 sexp
+在 [docs] 的 syntax.md 中补充我们新设计的 @comment 语法的文档
 
 [meta-lisp.meta] [refactor] parse-exp.meta -- parse-cond-clause 逻辑冗余
 

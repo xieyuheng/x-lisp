@@ -201,8 +201,8 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 ## (@quote)
 
 ```scheme
-'<exp>
-(@quote <exp>)
+'<sexp>
+(@quote <sexp>)
 ```
 
 创建符号或原子列表。

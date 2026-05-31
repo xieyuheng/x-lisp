@@ -201,8 +201,8 @@ The example above is equivalent to:
 ## (@quote)
 
 ```scheme
-'<exp>
-(@quote <exp>)
+'<sexp>
+(@quote <sexp>)
 ```
 
 Create list of symbols or literal atoms.
