@@ -59,7 +59,10 @@ function XasmBundle(pkg: M.Package, xasmMod: Xasm.Mod): void {
       fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
     }
     const definitions = Array.from(xasmMod.definitions.values())
-    const code = definitions.map(Xasm.formatDefinition).join("\n")
+    const textWidth = 64
+    const code = definitions
+      .map((definition) => Xasm.formatPrettyDefinition(textWidth, definition))
+      .join("\n")
     fileWriteln(file, code)
   })
 }
