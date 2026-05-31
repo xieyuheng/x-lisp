@@ -211,6 +211,9 @@ function inferLookup(
     //   Check B on demand to obtain its type.
     //   This branch must come AFTER the mutual-recursion check above,
     //   otherwise checking a mutual-recursive group would loop infinitely.
+    //
+    // - We do NOT propagate the return value here,
+    //   because the error message is already printed by definitionCheck.
     M.definitionCheck(definition)
 
     {

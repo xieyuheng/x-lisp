@@ -8,6 +8,7 @@ export type ClaimedEntry = {
 
 export type DefinitionState = {
   isChecked?: boolean
+  hasError?: boolean
 }
 
 export type Mod = {
@@ -68,7 +69,19 @@ export function modIsChecked(mod: Mod, name: string): boolean {
 }
 
 export function modSetChecked(mod: Mod, name: string): void {
-  mod.definitionStates.set(name, { isChecked: true })
+  const state = mod.definitionStates.get(name) ?? {}
+  state.isChecked = true
+  mod.definitionStates.set(name, state)
+}
+
+export function modSetError(mod: Mod, name: string): void {
+  const state = mod.definitionStates.get(name) ?? {}
+  state.hasError = true
+  mod.definitionStates.set(name, state)
+}
+
+export function modHasError(mod: Mod, name: string): boolean {
+  return mod.definitionStates.get(name)?.hasError ?? false
 }
 
 // Claimed

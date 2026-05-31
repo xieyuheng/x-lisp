@@ -19,7 +19,7 @@
   (= config-path (get-config-path ctx))
   (= package (load-package "self" config-path))
   (= options (make-hash))
-  (when (cli-option-has? "--dump" ctx) (hash-put! "dump" "true" options))  
+  (when (cli-option-has? "--dump" ctx) (hash-put! "dump" "true" options))
   (check-pipeline package options))
 
 (define (handle-build ctx)
