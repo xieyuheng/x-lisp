@@ -20,7 +20,7 @@ AI agent 应用中文回答用户的问题。
 - [sexp.js] — S 表达式解析器，依赖 [helpers.js]
 - [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供 `./meta-lisp.js` 编译器
 
-**C packages**（共享 [c.make]/c.mk）：
+**C packages**（共享 `builders/make/c.mk`）：
 
 - [helpers.c] — 基础库
 - [cli.c] — CLI 库，依赖 [helpers.c]
@@ -59,7 +59,7 @@ AI agent 应用中文回答用户的问题。
 
 ## C 工作流
 
-- 小写 `makefile`（不是 `Makefile`），包含 [c.make]/c.mk
+- 小写 `makefile`（不是 `Makefile`），包含 `builders/make/c.mk`
 - 需要 **GNU parallel**（缺它 `make test` 会失败）
 - 三种测试后缀：`*.test.c`（运行）、`*.snapshot.c`（stdout → `*.out`）、`*.exe.c`（只编译不运行）
 - 测试通过 `find src -name '*.test.c'` 自动发现
