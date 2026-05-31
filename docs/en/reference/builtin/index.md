@@ -266,6 +266,11 @@ Operations on `(list-t E)`.
 - [`list-reverse`](list/list-reverse.md) — Reverse
 - [`list-to-set`](list/list-to-set.md) — Convert to set
 
+### Sort
+
+- [`list-sort!`](list/list-sort-mut.md) — Sort in-place with comparator
+- [`list-sort`](list/list-sort.md) — Sort with comparator (immutable)
+
 ### Iteration and mapping
 
 - [`list-each`](list/list-each.md) — Iterate with side effects

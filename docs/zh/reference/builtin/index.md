@@ -266,6 +266,11 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`list-reverse`](list/list-reverse.md) — 反转
 - [`list-to-set`](list/list-to-set.md) — 转集合
 
+### 排序
+
+- [`list-sort!`](list/list-sort-mut.md) — 原地排序
+- [`list-sort`](list/list-sort.md) — 排序（不可变）
+
 ### 遍历与映射
 
 - [`list-each`](list/list-each.md) — 遍历执行副作用
