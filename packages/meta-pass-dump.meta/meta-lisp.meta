@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+../xvm.c/src/xvm.exe run ../meta-lisp.meta/build/bundle.xexe -- $@
