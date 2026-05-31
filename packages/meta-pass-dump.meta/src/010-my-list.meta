@@ -1,10 +1,8 @@
-(module 010-type-definitions)
+(module 010-my-list)
 
 (define-enum (my-list-t E)
   (nil)
   (li (head E) (tail (my-list-t E))))
-
-(define-struct (pair-t A B) (first A) (second B))
 
 (define (my-list-length list)
   (match list

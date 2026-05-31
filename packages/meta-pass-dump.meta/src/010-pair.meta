@@ -1,0 +1,3 @@
+(module 010-pair)
+
+(define-struct (pair-t A B) (first A) (second B))
