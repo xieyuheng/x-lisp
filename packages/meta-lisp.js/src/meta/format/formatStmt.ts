@@ -117,7 +117,9 @@ export function formatStmt<E>(
     }
 
     case "CommentStmt": {
-      return `(@comment ${S.formatSexp(stmt.content)})`
+      if (stmt.sexps.length === 0) return `(@comment)`
+      const content = stmt.sexps.map(S.formatSexp).join(" ")
+      return `(@comment ${content})`
     }
   }
 }

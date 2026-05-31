@@ -167,7 +167,7 @@ export function prettyStmt<E>(
       return Ppml.prettySyntax(
         "@comment",
         [],
-        [Ppml.text(S.formatSexp(stmt.content))],
+        stmt.sexps.map((s) => Ppml.text(S.formatSexp(s))),
       )
     }
   }

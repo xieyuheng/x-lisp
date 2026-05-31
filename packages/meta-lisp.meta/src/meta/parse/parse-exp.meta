@@ -224,9 +224,9 @@
         ((equal? tag 'compose)
          (@comment (compose <step> ...))
          (compose-exp (list-map parse-exp (list-drop 1 sexps)) location))
-        ((equal? tag '@comment)
-         (@comment (@comment <sexp> ...))
-         (comment-exp (list-get 1 sexps) location))))
+         ((equal? tag '@comment)
+          (@comment (@comment <sexp> ...))
+          (comment-exp (list-drop 1 sexps) location))))
 
 (claim parse-parameters
   (-> sexp-t

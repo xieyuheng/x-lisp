@@ -242,7 +242,9 @@ export function formatExp(exp: M.Exp): string {
     }
 
     case "CommentExp": {
-      return `(@comment ${S.formatSexp(exp.content)})`
+      if (exp.sexps.length === 0) return `(@comment)`
+      const content = exp.sexps.map(S.formatSexp).join(" ")
+      return `(@comment ${content})`
     }
 
     case "MatchExp": {

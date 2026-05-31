@@ -146,6 +146,8 @@
     (format-exp (parse-exp (@sexp (@quote (a 1 "b" 3 c)))))))
 
 (define-test parse-comment-test
+  (assert-equal "(@comment)"
+    (format-exp (parse-exp (@sexp (@comment)))))
   (assert-equal "(@comment foo)"
     (format-exp (parse-exp (@sexp (@comment foo)))))
   (assert-equal "(@comment (a b c))"
@@ -153,4 +155,10 @@
   (assert-equal "(@comment (a (b) c))"
     (format-exp (parse-exp (@sexp (@comment (a (b) c))))))
   (assert-equal "(@comment (a 1 \"b\" 3 c))"
-    (format-exp (parse-exp (@sexp (@comment (a 1 "b" 3 c)))))))
+    (format-exp (parse-exp (@sexp (@comment (a 1 "b" 3 c))))))
+  (assert-equal "(@comment foo bar)"
+    (format-exp (parse-exp (@sexp (@comment foo bar)))))
+  (assert-equal "(@comment foo bar baz)"
+    (format-exp (parse-exp (@sexp (@comment foo bar baz)))))
+  (assert-equal "(@comment one two three)"
+    (format-exp (parse-exp (@sexp (@comment one two three))))))

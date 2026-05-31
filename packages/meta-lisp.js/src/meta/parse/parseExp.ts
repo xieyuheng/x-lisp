@@ -29,8 +29,8 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.SexpExp(sexp, location)
   },
 
-  "`(@comment ,sexp)": ({ sexp }, { location }) => {
-    return M.CommentExp(sexp, location)
+  "(cons* '@comment sexps)": ({ sexps }, { location }) => {
+    return M.CommentExp(S.asListSexp(sexps).elements, location)
   },
 
   "`(if ,condition ,consequent ,alternative)": (

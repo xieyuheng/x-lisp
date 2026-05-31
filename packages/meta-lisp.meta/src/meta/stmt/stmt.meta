@@ -84,7 +84,7 @@
     (name symbol-t)
     (location source-location-t))
   (comment-stmt
-    (content sexp-t)
+    (sexps (list-t sexp-t))
     (location source-location-t)))
 
 (define-struct pre-type-constructor-t

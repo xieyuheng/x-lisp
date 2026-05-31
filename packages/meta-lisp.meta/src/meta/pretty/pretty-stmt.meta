@@ -100,9 +100,9 @@
     ((declare-primitive-variable-stmt name location)
      (ppml/pretty-syntax "declare-primitive-variable"
        [(ppml/text (symbol-to-string name))] []))
-    ((comment-stmt content location)
+    ((comment-stmt sexps location)
      (ppml/pretty-application (just "@comment")
-       [(ppml/text (format-sexp content))]))))
+       (list-map (lambda (sexp) (ppml/text (format-sexp sexp))) sexps)))))
 
 ;; Helpers
 

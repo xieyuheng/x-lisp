@@ -252,7 +252,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       return Ppml.prettySyntax(
         "@comment",
         [],
-        [Ppml.text(S.formatSexp(exp.content))],
+        exp.sexps.map((s) => Ppml.text(S.formatSexp(s))),
       )
     }
 

@@ -480,17 +480,17 @@ export function DeclarePrimitiveVariableStmt(
 
 export type CommentStmt = {
   kind: "CommentStmt"
-  content: Sexp
+  sexps: Array<Sexp>
   location: SourceLocation
 }
 
 export function CommentStmt(
-  content: Sexp,
+  sexps: Array<Sexp>,
   location: SourceLocation,
 ): CommentStmt {
   return {
     kind: "CommentStmt",
-    content,
+    sexps,
     location,
   }
 }

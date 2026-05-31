@@ -42,17 +42,17 @@ export type Exp =
 
 export type CommentExp = {
   kind: "CommentExp"
-  content: Sexp
+  sexps: Array<Sexp>
   location: SourceLocation
 }
 
 export function CommentExp(
-  content: Sexp,
+  sexps: Array<Sexp>,
   location: SourceLocation,
 ): CommentExp {
   return {
     kind: "CommentExp",
-    content,
+    sexps,
     location,
   }
 }

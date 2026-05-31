@@ -240,8 +240,8 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "`(@comment ,sexp)": ({ sexp }, { location }) => {
-    return M.CommentStmt(sexp, location)
+  "(cons* '@comment sexps)": ({ sexps }, { location }) => {
+    return M.CommentStmt(S.asListSexp(sexps).elements, location)
   },
 })
 

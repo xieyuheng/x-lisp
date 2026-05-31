@@ -155,9 +155,9 @@
              (ppml/flex (list-map pretty-exp targets))
              (ppml/text ")")])]
          (list-map pretty-match-clause clauses))))
-    ((comment-exp content location)
+    ((comment-exp sexps location)
      (ppml/pretty-application (just "@comment")
-       [(ppml/text (format-sexp content))]))))
+       (list-map (lambda (sexp) (ppml/text (format-sexp sexp))) sexps)))))
 
 ;; Helpers
 
