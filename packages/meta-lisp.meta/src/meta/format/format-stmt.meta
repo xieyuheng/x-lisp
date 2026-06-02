@@ -91,10 +91,16 @@
 (define (format-algebraic-type-constructor ctor)
   (= name-str (symbol-to-string (algebraic-type-constructor-name ctor)))
   (= fields (algebraic-type-constructor-fields ctor))
-  (if (list-empty? fields)
-    name-str
-    (@string "(" name-str " "
-             (string-join " " (list-map format-algebraic-type-field fields)) ")")))
+  (= pred-str (symbol-to-string (algebraic-type-constructor-predicate ctor)))
+  (= group (if (list-empty? fields)
+             (@string "(" name-str ")")
+             (@string "(" name-str " "
+                      (string-join " " (list-map format-algebraic-type-field fields)) ")")))
+  (= accessor-entries (list-map format-algebraic-type-accessor fields))
+  (if (list-empty? accessor-entries)
+    (@string "(" group " " pred-str " ())")
+    (@string "(" group " " pred-str " "
+             (string-join " " accessor-entries) ")")))
 
 (define (format-algebraic-type-field field)
   (= name-str (symbol-to-string (algebraic-type-field-name field)))
@@ -102,6 +108,16 @@
   (if (equal? type-str "")
     name-str
     (@string "(" name-str " " type-str ")")))
+
+(define (format-algebraic-type-accessor field)
+  (= name-str (symbol-to-string (algebraic-type-field-name field)))
+  (= accessor-str (symbol-to-string (algebraic-type-field-accessor-name field)))
+  (= modifier (algebraic-type-field-modifier-name field))
+  (match modifier
+    ((just modifier-name)
+     (@string "(" name-str " " accessor-str " " (symbol-to-string modifier-name) ")"))
+    ((nothing)
+     (@string "(" name-str " " accessor-str ")"))))
 
 (define (format-pre-interface-entry entry)
   (@string "(" (symbol-to-string (pre-interface-entry-name entry)) " "

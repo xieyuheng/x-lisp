@@ -35,8 +35,12 @@ export function formatStmt<E>(
     }
 
     case "DefineTypeStmt": {
+      const params =
+        stmt.parameters.length > 0
+          ? `(${stmt.name} ${stmt.parameters.join(" ")})`
+          : `(${stmt.name} )`
       const body = formatBody(stmt.body)
-      return `(define-type ${stmt.name} ${body})`
+      return `(define-type ${params} ${body})`
     }
 
     case "DefineEnumStmt": {

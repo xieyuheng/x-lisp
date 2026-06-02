@@ -234,7 +234,11 @@ export function formatExp(exp: M.Exp): string {
     case "ArrowExp": {
       const argTypes = exp.argTypes.map(formatExp).join(" ")
       const retType = formatExp(exp.retType)
-      return `(-> ${argTypes} ${retType})`
+      if (exp.argTypes.length === 0) {
+        return `(-> ${retType})`
+      } else {
+        return `(-> ${argTypes} ${retType})`
+      }
     }
 
     case "TheExp": {
