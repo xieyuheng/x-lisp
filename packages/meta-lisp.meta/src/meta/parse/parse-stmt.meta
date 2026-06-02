@@ -271,13 +271,25 @@
        (parse-exp (car (cdr elements)))
        location))))
 
+(claim parse-import-source
+  (-> sexp-t
+      (pair-t symbol-t symbol-t)))
+
+(define (parse-import-source sexp)
+  (= raw (symbol-sexp-content sexp))
+  (= raw-string (symbol-to-string raw))
+  (= parts (string-split "/" raw-string))
+  (if (equal? (list-length parts) 1)
+    (make-pair 'self raw)
+    (make-pair (string-to-symbol (list-get 0 parts))
+               (string-to-symbol (list-get 1 parts)))))
+
 (claim parse-explicit-data-constructor
   (-> (list-t sexp-t) source-location-t
       (explicit-data-constructor-t exp-t)))
 
 (define (parse-explicit-data-constructor sexps location)
   (= group (list-get 0 sexps))
-  (= predicate-sexp (list-get 1 sexps))
   (= accessors (list-get 2 sexps))
   (= group-list (list-sexp-elements group))
   (= accessor-list (list-sexp-elements accessors))
@@ -303,18 +315,5 @@
             location)))))
   (make-explicit-data-constructor
     name fields
-    (symbol-sexp-content predicate-sexp)
+    (symbol-sexp-content (car (cdr sexps)))
     location))
-
-(claim parse-import-source
-  (-> sexp-t
-      (pair-t symbol-t symbol-t)))
-
-(define (parse-import-source sexp)
-  (= raw (symbol-sexp-content sexp))
-  (= raw-string (symbol-to-string raw))
-  (= parts (string-split "/" raw-string))
-  (if (equal? (list-length parts) 1)
-    (make-pair 'self raw)
-    (make-pair (string-to-symbol (list-get 0 parts))
-               (string-to-symbol (list-get 1 parts)))))
