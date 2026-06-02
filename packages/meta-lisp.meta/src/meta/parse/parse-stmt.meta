@@ -117,7 +117,11 @@
                      ...))
          (define-algebraic-type-stmt
            (parse-pre-type-constructor (car sexps))
-           (list-map parse-explicit-data-constructor (cdr sexps))
+           (list-map (lambda (sexp)
+                       (match sexp
+                         ((list-sexp elements location)
+                          (parse-explicit-data-constructor elements location))))
+                     (cdr sexps))
            location))
         ((equal? tag 'define-struct)
          (@comment (define-struct <type-name>
@@ -154,37 +158,9 @@
                      <predicate-name>
                      (<field-name> <accessor-name> <modifier-name>)
                      ...))
-         (= ctor-clause (list-get 1 sexps))
-         (= predicate (list-get 2 sexps))
-         (= accessors (list-get 3 sexps))
-         (= ctor-list (list-sexp-elements ctor-clause))
-         (= constructor-name (symbol-sexp-content (car ctor-list)))
-         (= fields-raw (cdr ctor-list))
-         (= accessor-list (list-sexp-elements accessors))
-         (= accessor-map (build-accessor-map accessor-list location))
-         (= fields
-           (pipe fields-raw
-             (list-map
-               (lambda (field)
-                 (= field-list (list-sexp-elements field))
-                 (= name (symbol-sexp-content (car field-list)))
-                 (= type (parse-exp (car (cdr field-list))))
-                 (make-explicit-data-field
-                   name type
-                   (if (hash-has? name accessor-map)
-                     (pair-first (hash-get name accessor-map))
-                     (string-to-symbol
-                       (@string (symbol-to-string constructor-name) "-" (symbol-to-string name))))
-                   (if (hash-has? name accessor-map)
-                     (pair-second (hash-get name accessor-map))
-                     (nothing))
-                   location)))))
          (define-record-type-stmt
            (parse-pre-type-constructor (car sexps))
-           (make-explicit-data-constructor
-             constructor-name fields
-             (symbol-sexp-content predicate)
-             location)
+           (parse-explicit-data-constructor (cdr sexps) location)
            location))
         ((equal? tag 'define-opaque-type)
          (@comment (define-opaque-type <type-name> <representation-type>
@@ -296,41 +272,39 @@
        location))))
 
 (claim parse-explicit-data-constructor
-  (-> sexp-t
+  (-> (list-t sexp-t) source-location-t
       (explicit-data-constructor-t exp-t)))
 
-(define (parse-explicit-data-constructor sexp)
-  (match sexp
-    ((list-sexp sexps location)
-     (= group (list-get 0 sexps))
-     (= predicate-sexp (list-get 1 sexps))
-     (= accessors (list-get 2 sexps))
-     (= group-list (list-sexp-elements group))
-     (= accessor-list (list-sexp-elements accessors))
-     (= accessor-map (build-accessor-map accessor-list location))
-     (= name (symbol-sexp-content (car group-list)))
-     (= fields-raw (cdr group-list))
-     (= fields
-       (pipe fields-raw
-         (list-map
-           (lambda (field)
-             (= field-list (list-sexp-elements field))
-             (= name (symbol-sexp-content (car field-list)))
-             (= type (parse-exp (car (cdr field-list))))
-             (make-explicit-data-field
-               name type
-               (if (hash-has? name accessor-map)
-                 (pair-first (hash-get name accessor-map))
-                 (string-to-symbol
-                   (@string (symbol-to-string name) "-" (symbol-to-string name))))
-               (if (hash-has? name accessor-map)
-                 (pair-second (hash-get name accessor-map))
-                 (nothing))
-               location)))))
-      (make-explicit-data-constructor
-        name fields
-        (symbol-sexp-content predicate-sexp)
-        location))))
+(define (parse-explicit-data-constructor sexps location)
+  (= group (list-get 0 sexps))
+  (= predicate-sexp (list-get 1 sexps))
+  (= accessors (list-get 2 sexps))
+  (= group-list (list-sexp-elements group))
+  (= accessor-list (list-sexp-elements accessors))
+  (= accessor-map (build-accessor-map accessor-list location))
+  (= name (symbol-sexp-content (car group-list)))
+  (= fields-raw (cdr group-list))
+  (= fields
+    (pipe fields-raw
+      (list-map
+        (lambda (field)
+          (= field-list (list-sexp-elements field))
+          (= name (symbol-sexp-content (car field-list)))
+          (= type (parse-exp (car (cdr field-list))))
+          (make-explicit-data-field
+            name type
+            (if (hash-has? name accessor-map)
+              (pair-first (hash-get name accessor-map))
+              (string-to-symbol
+                (@string (symbol-to-string name) "-" (symbol-to-string name))))
+            (if (hash-has? name accessor-map)
+              (pair-second (hash-get name accessor-map))
+              (nothing))
+            location)))))
+  (make-explicit-data-constructor
+    name fields
+    (symbol-sexp-content predicate-sexp)
+    location))
 
 (claim parse-import-source
   (-> sexp-t

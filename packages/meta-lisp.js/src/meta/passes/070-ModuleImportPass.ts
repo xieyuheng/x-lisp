@@ -83,12 +83,10 @@ function moduleImportStmt(
       const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
       for (const ctor of stmt.dataConstructors) {
-        ctor.fields = ctor.fields.map(
-          (field: M.ExplicitDataField<M.Term>) => ({
-            ...field,
-            type: moduleImportTerm(newScope, field.type),
-          }),
-        )
+        ctor.fields = ctor.fields.map((field: M.ExplicitDataField<M.Term>) => ({
+          ...field,
+          type: moduleImportTerm(newScope, field.type),
+        }))
       }
       return stmt
     }
