@@ -1,0 +1,95 @@
+(module meta)
+
+(define-test parse-stmt-module-test
+  (assert-equal "(module meta)"
+    (format-stmt (parse-stmt (@sexp (module meta))))))
+
+(define-test parse-stmt-import-test
+  (assert-equal "(import foo a b c)"
+    (format-stmt (parse-stmt (@sexp (import foo a b c)))))
+  (assert-equal "(import meta-math/math even? odd?)"
+    (format-stmt (parse-stmt (@sexp (import meta-math/math even? odd?))))))
+
+(define-test parse-stmt-import-as-test
+  (assert-equal "(import-as foo prefix)"
+    (format-stmt (parse-stmt (@sexp (import-as foo prefix)))))
+  (assert-equal "(import-as meta-math/math mm)"
+    (format-stmt (parse-stmt (@sexp (import-as meta-math/math mm))))))
+
+(define-test parse-stmt-import-all-test
+  (assert-equal "(import-all foo)"
+    (format-stmt (parse-stmt (@sexp (import-all foo)))))
+  (assert-equal "(import-all meta-math/math)"
+    (format-stmt (parse-stmt (@sexp (import-all meta-math/math))))))
+
+(define-test parse-stmt-private-test
+  (assert-equal "(private foo bar)"
+    (format-stmt (parse-stmt (@sexp (private foo bar))))))
+
+(define-test parse-stmt-exempt-test
+  (assert-equal "(exempt foo bar)"
+    (format-stmt (parse-stmt (@sexp (exempt foo bar))))))
+
+(define-test parse-stmt-define-var-test
+  (assert-equal "(define x 42)"
+    (format-stmt (parse-stmt (@sexp (define x 42))))))
+
+(define-test parse-stmt-define-function-test
+  (assert-equal "(define (f x) x)"
+    (format-stmt (parse-stmt (@sexp (define (f x) x)))))
+  (assert-equal "(define (f x y) (f y x))"
+    (format-stmt (parse-stmt (@sexp (define (f x y) (f y x))))))
+  (assert-equal "(define (f ) 1)"
+    (format-stmt (parse-stmt (@sexp (define (f) 1))))))
+
+(define-test parse-stmt-define-test-test
+  (assert-equal "(define-test my-test (assert-equal 1 1))"
+    (format-stmt (parse-stmt (@sexp (define-test my-test (assert-equal 1 1)))))))
+
+(define-test parse-stmt-define-type-test
+  (assert-equal "(define-type (my-int-t ) int-t)"
+    (format-stmt (parse-stmt (@sexp (define-type my-int-t int-t)))))
+  (assert-equal "(define-type (pair-t A B) (-> A B (pair-t A B)))"
+    (format-stmt (parse-stmt (@sexp (define-type (pair-t A B) (-> A B (pair-t A B))))))))
+
+(define-test parse-stmt-claim-test
+  (assert-equal "(claim foo (-> int-t int-t))"
+    (format-stmt (parse-stmt (@sexp (claim foo (-> int-t int-t)))))))
+
+(define-test parse-stmt-claim-type-test
+  (assert-equal "(claim-type foo-t)"
+    (format-stmt (parse-stmt (@sexp (claim-type foo-t))))))
+
+(define-test parse-stmt-admit-test
+  (assert-equal "(admit foo (-> int-t int-t))"
+    (format-stmt (parse-stmt (@sexp (admit foo (-> int-t int-t)))))))
+
+(define-test parse-stmt-declare-primitive-function-test
+  (assert-equal "(declare-primitive-function add 2)"
+    (format-stmt (parse-stmt (@sexp (declare-primitive-function add 2))))))
+
+(define-test parse-stmt-declare-primitive-variable-test
+  (assert-equal "(declare-primitive-variable void)"
+    (format-stmt (parse-stmt (@sexp (declare-primitive-variable void))))))
+
+(define-test parse-stmt-comment-test
+  (assert-equal "(@comment)"
+    (format-stmt (parse-stmt (@sexp (@comment)))))
+  (assert-equal "(@comment foo bar)"
+    (format-stmt (parse-stmt (@sexp (@comment foo bar))))))
+
+(define-test parse-stmt-define-enum-test
+  (assert-equal "(define-enum color-t red green blue)"
+    (format-stmt (parse-stmt (@sexp (define-enum color-t (red) (green) (blue))))))
+  (assert-equal "(define-enum (maybe-t A) (just (value A)) nothing)"
+    (format-stmt (parse-stmt (@sexp (define-enum (maybe-t A) (just (value A)) (nothing)))))))
+
+(define-test parse-stmt-define-struct-test
+  (assert-equal "(define-struct point-t (x int-t) (y int-t))"
+    (format-stmt (parse-stmt (@sexp (define-struct point-t (x int-t) (y int-t))))))
+  (assert-equal "(define-struct (box-t A) (value A))"
+    (format-stmt (parse-stmt (@sexp (define-struct (box-t A) (value A)))))))
+
+(define-test parse-stmt-define-struct-star-test
+  (assert-equal "(define-struct* point-t (make-point (x int-t) (y int-t)))"
+    (format-stmt (parse-stmt (@sexp (define-struct* point-t (make-point (x int-t) (y int-t))))))))
