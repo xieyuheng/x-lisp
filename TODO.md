@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] parse-stmt -- parse-explicit-data-constructor
 [meta-lisp.meta] parse-stmt -- more error report on invalid stmt
 
 [meta-lisp.meta] [review] 010-expand-pass.meta
