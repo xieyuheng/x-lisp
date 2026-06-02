@@ -93,7 +93,7 @@
                      (<constructor-name> (<field-name> <type>) ...)
                      ...))
          (define-enum-stmt
-           (parse-type-constructor (car sexps))
+           (parse-pre-type-constructor (car sexps))
            (list-map parse-pre-data-constructor (cdr sexps))
            location))
         ((equal? tag 'define-algebraic-type)
@@ -110,7 +110,7 @@
                       ...)
                      ...))
          (define-algebraic-type-stmt
-           (parse-type-constructor (car sexps))
+           (parse-pre-type-constructor (car sexps))
            (list-map parse-algebraic-type-constructor (cdr sexps))
            location))
         ((equal? tag 'define-struct)
@@ -121,7 +121,7 @@
                      (<field-name> <type>)
                      ...))
          (define-struct-stmt
-           (parse-type-constructor (car sexps))
+           (parse-pre-type-constructor (car sexps))
            (list-map parse-pre-data-field (cdr sexps))
            location))
         ((equal? tag 'define-struct*)
@@ -134,7 +134,7 @@
                        (<field-name> <type>)
                        ...)))
          (define-struct-star-stmt
-           (parse-type-constructor (car sexps))
+           (parse-pre-type-constructor (car sexps))
            (parse-pre-data-constructor (car (cdr sexps)))
            location))
         ((equal? tag 'define-record-type)
@@ -175,7 +175,7 @@
                      (nothing))
                    location)))))
          (define-record-type-stmt
-           (parse-type-constructor head)
+           (parse-pre-type-constructor head)
            (make-algebraic-type-constructor
              constructor-name fields
              (symbol-sexp-content predicate)
@@ -188,22 +188,12 @@
                    (define-opaque-type (<type-name> <type-parameter> ...) <representation-type>
                      (<interface-name> <interface-type>)
                      ...))
-         (= head (list-get 0 sexps))
-         (= representation (list-get 1 sexps))
-         (= ifaces (list-drop 2 sexps))
-         (= type-constructor (parse-type-constructor head))
+         (= type-constructor (parse-pre-type-constructor (car sexps)))
          (define-opaque-type-stmt
            (pre-type-constructor-name type-constructor)
            (pre-type-constructor-parameters type-constructor)
-           (parse-exp representation)
-           (list-map
-             (lambda (iface)
-               (= parts (list-sexp-elements iface))
-               (make-pre-interface-entry
-                 (symbol-sexp-content (car parts))
-                 (parse-exp (car (cdr parts)))
-                 location))
-             ifaces)
+           (parse-exp (car (cdr sexps)))
+           (list-map parse-pre-interface-entry (cdr (cdr sexps)))
            location))
         ((equal? tag 'claim)
          (@comment (claim <name> <type>))
@@ -256,11 +246,11 @@
                 (make-pair accessor-name modifier-name)
                 (build-accessor-map rest location)))))
 
-(claim parse-type-constructor
+(claim parse-pre-type-constructor
   (-> sexp-t
       pre-type-constructor-t))
 
-(define (parse-type-constructor sexp)
+(define (parse-pre-type-constructor sexp)
   (match sexp
     ((list-sexp sexps location)
      (make-pre-type-constructor
@@ -291,6 +281,14 @@
      (make-pre-data-field
        (symbol-sexp-content (car sexps))
        (parse-exp (car (cdr sexps)))
+       location))))
+
+(define (parse-pre-interface-entry sexp)
+  (match sexp
+    ((list-sexp elements location)
+     (make-pre-interface-entry
+       (symbol-sexp-content (car elements))
+       (parse-exp (car (cdr elements)))
        location))))
 
 (claim parse-algebraic-type-constructor
