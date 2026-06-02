@@ -207,25 +207,6 @@
          (@comment (@comment <sexp> ...))
          (comment-stmt sexps location))))
 
-(claim build-accessor-map
-  (-> (list-t sexp-t) source-location-t
-      (hash-t symbol-t (pair-t symbol-t (maybe-t symbol-t)))))
-
-(define (build-accessor-map accessors location)
-  (if (list-empty? accessors)
-    (make-hash)
-    (begin
-      (= entry (list-sexp-elements (car accessors)))
-      (= rest (cdr accessors))
-      (= field-name (symbol-sexp-content (car entry)))
-      (= accessor-name (symbol-sexp-content (car (cdr entry))))
-      (= modifier-name (if (int-greater? (list-length entry) 2)
-                         (just (symbol-sexp-content (car (list-drop 2 entry))))
-                         (nothing)))
-      (hash-put field-name
-                (make-pair accessor-name modifier-name)
-                (build-accessor-map rest location)))))
-
 (claim parse-pre-type-constructor
   (-> sexp-t
       pre-type-constructor-t))
@@ -289,12 +270,15 @@
       (explicit-data-constructor-t exp-t)))
 
 (define (parse-explicit-data-constructor sexps location)
-  (= group (list-get 0 sexps))
+  (@comment ((<constructor-name> (<field-name> <type>) ...)
+             <predicate-name>
+             (<field-name> <accessor-name> <modifier-name>)
+             ...))
+  (= data-constructor (parse-pre-data-constructor (car sexps)))
   (= accessors (list-get 2 sexps))
-  (= group-list (list-sexp-elements group))
+  (= group-list (list-sexp-elements (car sexps)))
   (= accessor-list (list-sexp-elements accessors))
   (= accessor-map (build-accessor-map accessor-list location))
-  (= name (symbol-sexp-content (car group-list)))
   (= fields-raw (cdr group-list))
   (= fields
     (pipe fields-raw
@@ -314,6 +298,26 @@
               (nothing))
             location)))))
   (make-explicit-data-constructor
-    name fields
+    (pre-data-constructor-name data-constructor)
+    fields
     (symbol-sexp-content (car (cdr sexps)))
     location))
+
+(claim build-accessor-map
+  (-> (list-t sexp-t) source-location-t
+      (hash-t symbol-t (pair-t symbol-t (maybe-t symbol-t)))))
+
+(define (build-accessor-map accessors location)
+  (if (list-empty? accessors)
+    (make-hash)
+    (begin
+      (= entry (list-sexp-elements (car accessors)))
+      (= rest (cdr accessors))
+      (= field-name (symbol-sexp-content (car entry)))
+      (= accessor-name (symbol-sexp-content (car (cdr entry))))
+      (= modifier-name (if (int-greater? (list-length entry) 2)
+                         (just (symbol-sexp-content (car (list-drop 2 entry))))
+                         (nothing)))
+      (hash-put field-name
+                (make-pair accessor-name modifier-name)
+                (build-accessor-map rest location)))))
