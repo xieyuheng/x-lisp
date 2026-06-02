@@ -154,7 +154,6 @@
                      <predicate-name>
                      (<field-name> <accessor-name> <modifier-name>)
                      ...))
-         (= head (list-get 0 sexps))
          (= ctor-clause (list-get 1 sexps))
          (= predicate (list-get 2 sexps))
          (= accessors (list-get 3 sexps))
@@ -181,7 +180,7 @@
                      (nothing))
                    location)))))
          (define-record-type-stmt
-           (parse-pre-type-constructor head)
+           (parse-pre-type-constructor (car sexps))
            (make-algebraic-type-constructor
              constructor-name fields
              (symbol-sexp-content predicate)
