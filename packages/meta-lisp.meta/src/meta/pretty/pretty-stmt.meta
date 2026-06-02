@@ -149,16 +149,42 @@
      (ppml/text ")")]))
 
 (define (pretty-explicit-data-constructor pretty-body ctor)
-  (let ((name (ppml/text (symbol-to-string (explicit-data-constructor-name ctor))))
-        (fields (explicit-data-constructor-fields ctor)))
-    (if (list-empty? fields)
-      name
-      (ppml/group
-        [(ppml/text "(")
-         name
-         (ppml/text " ")
-         (ppml/flex (list-map (lambda (f) (pretty-explicit-data-field pretty-body f)) fields))
-         (ppml/text ")")]))))
+  (let ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
+        (fields (explicit-data-constructor-fields ctor))
+        (pred-str (symbol-to-string (explicit-data-constructor-predicate ctor))))
+    (let ((field-group (if (list-empty? fields)
+                         (ppml/text name-str)
+                         (ppml/group
+                           [(ppml/text "(")
+                            (ppml/text name-str)
+                            (ppml/text " ")
+                            (ppml/flex (list-map (lambda (f) (pretty-explicit-data-field pretty-body f)) fields))
+                            (ppml/text ")")])))
+          (accessor-nodes (list-map (lambda (f) (pretty-explicit-data-accessor pretty-body f)) fields)))
+      (ppml/pretty-application (nothing)
+        (list-concat [[field-group (ppml/text pred-str)] accessor-nodes])))))
+
+(define (pretty-explicit-data-accessor pretty-body field)
+  (let ((name-str (symbol-to-string (explicit-data-field-name field)))
+        (accessor-str (symbol-to-string (explicit-data-field-accessor-name field)))
+        (modifier (explicit-data-field-modifier-name field)))
+    (match modifier
+      ((just modifier-name)
+       (ppml/group
+         [(ppml/text "(")
+          (ppml/text name-str)
+          (ppml/text " ")
+          (ppml/text accessor-str)
+          (ppml/text " ")
+          (ppml/text (symbol-to-string modifier-name))
+          (ppml/text ")")]))
+      ((nothing)
+       (ppml/group
+         [(ppml/text "(")
+          (ppml/text name-str)
+          (ppml/text " ")
+          (ppml/text accessor-str)
+          (ppml/text ")")])))))
 
 (define (pretty-explicit-data-field pretty-body field)
   (let ((name (ppml/text (symbol-to-string (explicit-data-field-name field))))

@@ -1,6 +1,11 @@
 (module 010-my-list)
 
-(define-algebraic-type (my-list-t E) nil (li (head E) (tail (my-list-t E))))
+(define-algebraic-type (my-list-t E)
+  (nil nil?)
+  ((li (head E) (tail (my-list-t E)))
+   li?
+   (head li-head li-put-head!)
+   (tail li-tail li-put-tail!)))
 
 (admit nil (polymorphic (E) ((my-list-t E))))
 

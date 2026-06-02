@@ -1,6 +1,10 @@
 (module 010-pair)
 
-(define-algebraic-type (pair-t A B) (make-pair (first A) (second B)))
+(define-algebraic-type (pair-t A B)
+  ((make-pair (first A) (second B))
+   pair?
+   (first pair-first pair-put-first!)
+   (second pair-second pair-put-second!)))
 
 (admit make-pair (polymorphic (A B) (A B (pair-t A B))))
 
