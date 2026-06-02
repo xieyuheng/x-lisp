@@ -33,8 +33,19 @@
       (@string "(define-struct " (format-type-constructor type-constructor) " "
                (string-join " " (list-map format-pre-data-field fields)) ")"))
     ((define-record-type-stmt type-constructor data-constructor location)
+     (= ctor (algebraic-type-constructor-name data-constructor))
+     (= fields (algebraic-type-constructor-fields data-constructor))
+     (= pred (algebraic-type-constructor-predicate data-constructor))
+     (= field-strs (list-map format-algebraic-type-field fields))
+     (= ctor-clause (if (list-empty? field-strs)
+                      (@string "(" (symbol-to-string ctor) ")")
+                      (@string "(" (symbol-to-string ctor) " "
+                               (string-join " " field-strs) ")")))
+     (= accessor-strs (list-map format-algebraic-type-accessor fields))
      (@string "(define-record-type " (format-type-constructor type-constructor) " "
-              (format-algebraic-type-constructor data-constructor) ")"))
+              ctor-clause " "
+              (symbol-to-string pred) " ("
+               (string-join " " accessor-strs) "))"))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (@string "(define-algebraic-type " (format-type-constructor type-constructor) " "
               (string-join " " (list-map format-algebraic-type-constructor data-constructors)) ")"))
@@ -99,8 +110,8 @@
   (= accessor-entries (list-map format-algebraic-type-accessor fields))
   (if (list-empty? accessor-entries)
     (@string "(" group " " pred-str " ())")
-    (@string "(" group " " pred-str " "
-             (string-join " " accessor-entries) ")")))
+    (@string "(" group " " pred-str " ("
+             (string-join " " accessor-entries) "))")))
 
 (define (format-algebraic-type-field field)
   (= name-str (symbol-to-string (algebraic-type-field-name field)))
