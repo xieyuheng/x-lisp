@@ -274,6 +274,7 @@
              <predicate-name>
              (<field-name> <accessor-name> <modifier-name>)
              ...))
+  (= data-constructor (parse-pre-data-constructor (car sexps)))
   (= group (list-get 0 sexps))
   (= accessor-list (list-drop 2 sexps))
   (= group-list (list-sexp-elements group))
