@@ -1,0 +1,6 @@
+(module builtin)
+
+(define-struct (triple-t A B C)
+  (first A)
+  (second B)
+  (third C))
