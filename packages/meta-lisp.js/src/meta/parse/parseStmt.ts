@@ -76,7 +76,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   },
 
   "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
-    const { pkgName, modName: moduleName } = parseImportModName(
+    const { pkgName, modName: moduleName } = parseImportSource(
       S.asSymbolSexp(modName).content,
     )
     return M.ImportStmt(
@@ -88,7 +88,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   },
 
   "`(import-as ,modName ,prefix)": ({ modName, prefix }, { location }) => {
-    const { pkgName, modName: moduleName } = parseImportModName(
+    const { pkgName, modName: moduleName } = parseImportSource(
       S.asSymbolSexp(modName).content,
     )
     return M.ImportAsStmt(
@@ -100,7 +100,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   },
 
   "`(import-all ,modName)": ({ modName, prefix }, { location }) => {
-    const { pkgName, modName: moduleName } = parseImportModName(
+    const { pkgName, modName: moduleName } = parseImportSource(
       S.asSymbolSexp(modName).content,
     )
     return M.ImportAllStmt(pkgName, moduleName, location)
@@ -256,7 +256,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   },
 })
 
-function parseImportModName(rawModName: string): {
+function parseImportSource(rawModName: string): {
   pkgName: string
   modName: string
 } {

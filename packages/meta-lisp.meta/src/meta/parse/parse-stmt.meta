@@ -70,45 +70,27 @@
            location))
         ((equal? tag 'import)
          (@comment (import <module-name> <name> ...))
-         (= raw (symbol-sexp-content (car sexps)))
-         (= raw-string (symbol-to-string raw))
-         (= parts (string-split "/" raw-string))
-         (if (equal? (list-length parts) 1)
-           (import-stmt
-             'self raw
-             (list-map symbol-sexp-content (cdr sexps))
-             location)
-           (import-stmt
-             (string-to-symbol (list-get 0 parts))
-             (string-to-symbol (list-get 1 parts))
-             (list-map symbol-sexp-content (cdr sexps))
-             location)))
+         (= source (parse-import-source (car sexps)))
+         (import-stmt
+           (pair-first source)
+           (pair-second source)
+           (list-map symbol-sexp-content (cdr sexps))
+           location))
         ((equal? tag 'import-as)
          (@comment (import-as <module-name> <prefix>))
-         (= raw (symbol-sexp-content (car sexps)))
-         (= raw-string (symbol-to-string raw))
-         (= parts (string-split "/" raw-string))
-         (if (equal? (list-length parts) 1)
-           (import-as-stmt
-             'self raw
-             (symbol-sexp-content (car (cdr sexps)))
-             location)
-           (import-as-stmt
-             (string-to-symbol (list-get 0 parts))
-             (string-to-symbol (list-get 1 parts))
-             (symbol-sexp-content (car (cdr sexps)))
-             location)))
+         (= source (parse-import-source (car sexps)))
+         (import-as-stmt
+           (pair-first source)
+           (pair-second source)
+           (symbol-sexp-content (car (cdr sexps)))
+           location))
         ((equal? tag 'import-all)
          (@comment (import-all <module-name>))
-         (= raw (symbol-sexp-content (car sexps)))
-         (= raw-string (symbol-to-string raw))
-         (= parts (string-split "/" raw-string))
-         (if (equal? (list-length parts) 1)
-           (import-all-stmt 'self raw location)
-           (import-all-stmt
-             (string-to-symbol (list-get 0 parts))
-             (string-to-symbol (list-get 1 parts))
-             location)))
+         (= source (parse-import-source (car sexps)))
+         (import-all-stmt
+           (pair-first source)
+           (pair-second source)
+           location))
         ((equal? tag 'define-enum)
          (@comment (define-enum <type-name>
                      (<constructor-name> (<field-name> <type>) ...)
@@ -347,7 +329,20 @@
                  (pair-second (hash-get name accessor-map))
                  (nothing))
                location)))))
-     (make-algebraic-type-constructor
-       name fields
-       (symbol-sexp-content predicate-sexp)
-       location))))
+      (make-algebraic-type-constructor
+        name fields
+        (symbol-sexp-content predicate-sexp)
+        location))))
+
+(claim parse-import-source
+  (-> sexp-t
+      (pair-t symbol-t symbol-t)))
+
+(define (parse-import-source sexp)
+  (= raw (symbol-sexp-content sexp))
+  (= raw-string (symbol-to-string raw))
+  (= parts (string-split "/" raw-string))
+  (if (equal? (list-length parts) 1)
+    (make-pair 'self raw)
+    (make-pair (string-to-symbol (list-get 0 parts))
+               (string-to-symbol (list-get 1 parts)))))
