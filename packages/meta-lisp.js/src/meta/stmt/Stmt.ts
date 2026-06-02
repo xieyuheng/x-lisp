@@ -264,13 +264,13 @@ export type PreDataConstructor = {
 export type DefineRecordTypeStmt<E> = {
   kind: "DefineRecordTypeStmt"
   typeConstructor: PreTypeConstructor
-  dataConstructor: AlgebraicTypeConstructor<E>
+  dataConstructor: ExplicitDataConstructor<E>
   location: SourceLocation
 }
 
 export function DefineRecordTypeStmt<E>(
   typeConstructor: PreTypeConstructor,
-  dataConstructor: AlgebraicTypeConstructor<E>,
+  dataConstructor: ExplicitDataConstructor<E>,
   location: SourceLocation,
 ): DefineRecordTypeStmt<E> {
   return {
@@ -304,7 +304,7 @@ export function DefineOpaqueTypeStmt<E>(
   }
 }
 
-export type AlgebraicTypeField<E> = {
+export type ExplicitDataField<E> = {
   name: string
   type: E
   accessorName: string
@@ -312,9 +312,9 @@ export type AlgebraicTypeField<E> = {
   location: SourceLocation
 }
 
-export type AlgebraicTypeConstructor<E> = {
+export type ExplicitDataConstructor<E> = {
   name: string
-  fields: Array<AlgebraicTypeField<E>>
+  fields: Array<ExplicitDataField<E>>
   predicate: string
   location: SourceLocation
 }
@@ -322,13 +322,13 @@ export type AlgebraicTypeConstructor<E> = {
 export type DefineAlgebraicTypeStmt<E> = {
   kind: "DefineAlgebraicTypeStmt"
   typeConstructor: PreTypeConstructor
-  dataConstructors: Array<AlgebraicTypeConstructor<E>>
+  dataConstructors: Array<ExplicitDataConstructor<E>>
   location: SourceLocation
 }
 
 export function DefineAlgebraicTypeStmt<E>(
   typeConstructor: PreTypeConstructor,
-  dataConstructors: Array<AlgebraicTypeConstructor<E>>,
+  dataConstructors: Array<ExplicitDataConstructor<E>>,
   location: SourceLocation,
 ): DefineAlgebraicTypeStmt<E> {
   return {

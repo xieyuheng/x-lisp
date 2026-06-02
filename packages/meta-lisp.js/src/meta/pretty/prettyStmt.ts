@@ -96,14 +96,14 @@ export function prettyStmt<E>(
       return Ppml.prettySyntax(
         "define-record-type",
         [typeNode],
-        [prettyAlgebraicTypeConstructor(stmt.dataConstructor, prettyBody)],
+        [prettyExplicitDataConstructor(stmt.dataConstructor, prettyBody)],
       )
     }
 
     case "DefineAlgebraicTypeStmt": {
       const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
       const ctorNodes = stmt.dataConstructors.map((ctor) =>
-        prettyAlgebraicTypeConstructor(ctor, prettyBody),
+        prettyExplicitDataConstructor(ctor, prettyBody),
       )
       return Ppml.prettySyntax("define-algebraic-type", [typeNode], ctorNodes)
     }
@@ -210,13 +210,13 @@ function prettyPreDataField(field: M.PreDataField): Ppml.Node {
   return Ppml.prettyApplication([Ppml.text(field.name), prettyExp(field.type)])
 }
 
-function prettyAlgebraicTypeConstructor<E>(
-  ctor: M.AlgebraicTypeConstructor<E>,
+function prettyExplicitDataConstructor<E>(
+  ctor: M.ExplicitDataConstructor<E>,
   prettyBody: (body: E) => Ppml.Node,
 ): Ppml.Node {
   const fieldGroup = Ppml.prettyApplication([
     Ppml.text(ctor.name),
-    ...ctor.fields.map((f) => prettyAlgebraicTypeField(f, prettyBody)),
+    ...ctor.fields.map((f) => prettyExplicitDataField(f, prettyBody)),
   ])
   const accessorNodes = ctor.fields.map((field) => {
     if (field.modifierName !== undefined) {
@@ -239,8 +239,8 @@ function prettyAlgebraicTypeConstructor<E>(
   ])
 }
 
-function prettyAlgebraicTypeField<E>(
-  field: M.AlgebraicTypeField<E>,
+function prettyExplicitDataField<E>(
+  field: M.ExplicitDataField<E>,
   prettyBody: (body: E) => Ppml.Node,
 ): Ppml.Node {
   return Ppml.prettyApplication([Ppml.text(field.name), prettyBody(field.type)])

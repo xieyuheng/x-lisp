@@ -44,10 +44,10 @@
       (@string "(define-struct " (format-type-constructor type-constructor) " "
                (string-join " " (list-map format-pre-data-field fields)) ")"))
     ((define-record-type-stmt type-constructor data-constructor location)
-     (= ctor (algebraic-type-constructor-name data-constructor))
-     (= fields (algebraic-type-constructor-fields data-constructor))
-     (= pred (algebraic-type-constructor-predicate data-constructor))
-     (= field-strs (list-map format-algebraic-type-field fields))
+     (= ctor (explicit-data-constructor-name data-constructor))
+     (= fields (explicit-data-constructor-fields data-constructor))
+     (= pred (explicit-data-constructor-predicate data-constructor))
+     (= field-strs (list-map format-explicit-data-field fields))
      (= ctor-clause (if (list-empty? field-strs)
                       (@string "(" (symbol-to-string ctor) ")")
                       (@string "(" (symbol-to-string ctor) " "
@@ -59,7 +59,7 @@
                (string-join " " accessor-strs) "))"))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (@string "(define-algebraic-type " (format-type-constructor type-constructor) " "
-              (string-join " " (list-map format-algebraic-type-constructor data-constructors)) ")"))
+              (string-join " " (list-map format-explicit-data-constructor data-constructors)) ")"))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (@string "(define-opaque-type " (format-type-constructor type-constructor) " "
               (format-exp representation-type) " "
@@ -109,31 +109,31 @@
     name-str
     (@string "(" name-str " " type-str ")")))
 
-(define (format-algebraic-type-constructor ctor)
-  (= name-str (symbol-to-string (algebraic-type-constructor-name ctor)))
-  (= fields (algebraic-type-constructor-fields ctor))
-  (= pred-str (symbol-to-string (algebraic-type-constructor-predicate ctor)))
+(define (format-explicit-data-constructor ctor)
+  (= name-str (symbol-to-string (explicit-data-constructor-name ctor)))
+  (= fields (explicit-data-constructor-fields ctor))
+  (= pred-str (symbol-to-string (explicit-data-constructor-predicate ctor)))
   (= group (if (list-empty? fields)
              (@string "(" name-str ")")
              (@string "(" name-str " "
-                      (string-join " " (list-map format-algebraic-type-field fields)) ")")))
+                      (string-join " " (list-map format-explicit-data-field fields)) ")")))
   (= accessor-entries (list-map format-algebraic-type-accessor fields))
   (if (list-empty? accessor-entries)
     (@string "(" group " " pred-str " ())")
     (@string "(" group " " pred-str " ("
              (string-join " " accessor-entries) "))")))
 
-(define (format-algebraic-type-field field)
-  (= name-str (symbol-to-string (algebraic-type-field-name field)))
-  (= type-str (format-exp (algebraic-type-field-type field)))
+(define (format-explicit-data-field field)
+  (= name-str (symbol-to-string (explicit-data-field-name field)))
+  (= type-str (format-exp (explicit-data-field-type field)))
   (if (equal? type-str "")
     name-str
     (@string "(" name-str " " type-str ")")))
 
 (define (format-algebraic-type-accessor field)
-  (= name-str (symbol-to-string (algebraic-type-field-name field)))
-  (= accessor-str (symbol-to-string (algebraic-type-field-accessor-name field)))
-  (= modifier (algebraic-type-field-modifier-name field))
+  (= name-str (symbol-to-string (explicit-data-field-name field)))
+  (= accessor-str (symbol-to-string (explicit-data-field-accessor-name field)))
+  (= modifier (explicit-data-field-modifier-name field))
   (match modifier
     ((just modifier-name)
      (@string "(" name-str " " accessor-str " " (symbol-to-string modifier-name) ")"))

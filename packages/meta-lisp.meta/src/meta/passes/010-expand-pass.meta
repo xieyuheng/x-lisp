@@ -88,7 +88,7 @@
           (= ctor-name (pre-data-constructor-name ctor))
           (= fields (pre-data-constructor-fields ctor))
           (= ctor-location (pre-data-constructor-location ctor))
-          (make-algebraic-type-constructor
+          (make-explicit-data-constructor
             ctor-name
             (pipe fields
               (list-map
@@ -96,7 +96,7 @@
                   (= field-name (pre-data-field-name field))
                   (= field-type (pre-data-field-type field))
                   (= field-location (pre-data-field-location field))
-                  (make-algebraic-type-field
+                  (make-explicit-data-field
                     field-name
                     field-type
                     (symbol-append-by-dash ctor-name field-name)
@@ -122,7 +122,7 @@
   (= ctor-location (pre-data-constructor-location data-constructor))
   (define-algebraic-type-stmt
     type-constructor
-    [(make-algebraic-type-constructor
+    [(make-explicit-data-constructor
        ctor-name
        (pipe fields
          (list-map
@@ -130,7 +130,7 @@
              (= field-name (pre-data-field-name field))
               (= field-type (pre-data-field-type field))
               (= field-location (pre-data-field-location field))
-              (make-algebraic-type-field
+              (make-explicit-data-field
                 field-name
                 field-type
                 (symbol-append-by-dash base field-name)
@@ -153,7 +153,7 @@
   (= base (drop-t-suffix type-name))
   (define-algebraic-type-stmt
     type-constructor
-    [(make-algebraic-type-constructor
+    [(make-explicit-data-constructor
        (symbol-append-by-dash 'make base)
        (pipe fields
          (list-map
@@ -161,7 +161,7 @@
               (= field-name (pre-data-field-name field))
               (= field-type (pre-data-field-type field))
               (= field-location (pre-data-field-location field))
-              (make-algebraic-type-field
+              (make-explicit-data-field
                 field-name
                 field-type
                 (symbol-append-by-dash base field-name)
@@ -182,7 +182,7 @@
      (list-flat-map (lambda (ctor)
                       (expand-accessors-and-modifiers
                         stmt ctor 0
-                        (algebraic-type-constructor-fields ctor)))
+                        (explicit-data-constructor-fields ctor)))
                     data-constructors)]))
 
 (define (expand-accessors-and-modifiers stmt ctor index fields)
@@ -191,7 +191,7 @@
     (begin
       (= field (list-head fields))
       (= rest (list-tail fields))
-      (= modifier-name (algebraic-type-field-modifier-name field))
+      (= modifier-name (explicit-data-field-modifier-name field))
       (= accessor-stmts (expand-accessor stmt ctor index field))
       (= modifier-stmts (if (nothing? modifier-name)
                           []
@@ -204,13 +204,13 @@
 ;; expand-constructor
 
 (define (expand-constructor stmt ctor)
-  (= ctor-name (algebraic-type-constructor-name ctor))
-  (= fields (algebraic-type-constructor-fields ctor))
-  (= ctor-location (algebraic-type-constructor-location ctor))
-  (= parameters (list-map (lambda (f) (algebraic-type-field-name f)) fields))
+  (= ctor-name (explicit-data-constructor-name ctor))
+  (= fields (explicit-data-constructor-fields ctor))
+  (= ctor-location (explicit-data-constructor-location ctor))
+  (= parameters (list-map (lambda (f) (explicit-data-field-name f)) fields))
   (= args (list-map (lambda (f)
-                      (var-exp (algebraic-type-field-name f)
-                               (algebraic-type-field-location f)))
+                      (var-exp (explicit-data-field-name f)
+                               (explicit-data-field-location f)))
                     fields))
   (= type-params (pre-type-constructor-parameters
                    (define-algebraic-type-stmt-type-constructor stmt)))
@@ -218,7 +218,7 @@
      ctor-name
      type-params
      (arrow-exp
-       (list-map (lambda (f) (algebraic-type-field-type f)) fields)
+       (list-map (lambda (f) (explicit-data-field-type f)) fields)
        (get-data-type stmt ctor-location)
        ctor-location)
      ctor-location)
@@ -233,10 +233,10 @@
 ;; expand-predicate
 
 (define (expand-predicate stmt ctor)
-  (= predicate (algebraic-type-constructor-predicate ctor))
-  (= ctor-name (algebraic-type-constructor-name ctor))
-  (= ctor-location (algebraic-type-constructor-location ctor))
-  (= nfields (iadd (list-length (algebraic-type-constructor-fields ctor)) 1))
+  (= predicate (explicit-data-constructor-predicate ctor))
+  (= ctor-name (explicit-data-constructor-name ctor))
+  (= ctor-location (explicit-data-constructor-location ctor))
+  (= nfields (iadd (list-length (explicit-data-constructor-fields ctor)) 1))
   (= type-params (pre-type-constructor-parameters
                    (define-algebraic-type-stmt-type-constructor stmt)))
   [(admit-with-parameters
@@ -277,9 +277,9 @@
 ;; expand-accessor
 
 (define (expand-accessor stmt ctor index field)
-  (= accessor-name (algebraic-type-field-accessor-name field))
-  (= field-type (algebraic-type-field-type field))
-  (= field-location (algebraic-type-field-location field))
+  (= accessor-name (explicit-data-field-accessor-name field))
+  (= field-type (explicit-data-field-type field))
+  (= field-location (explicit-data-field-location field))
   (= position (iadd index 1))
   (= type-params (pre-type-constructor-parameters
                    (define-algebraic-type-stmt-type-constructor stmt)))
@@ -304,9 +304,9 @@
 ;; expand-modifier
 
 (define (expand-modifier stmt ctor index field)
-  (= modifier-name (just-value (algebraic-type-field-modifier-name field)))
-  (= field-type (algebraic-type-field-type field))
-  (= field-location (algebraic-type-field-location field))
+  (= modifier-name (just-value (explicit-data-field-modifier-name field)))
+  (= field-type (explicit-data-field-type field))
+  (= field-location (explicit-data-field-location field))
   (= position (iadd index 1))
   (= type-params (pre-type-constructor-parameters
                    (define-algebraic-type-stmt-type-constructor stmt)))

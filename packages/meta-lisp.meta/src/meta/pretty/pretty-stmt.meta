@@ -61,7 +61,7 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (ppml/pretty-syntax "define-algebraic-type"
        [(pretty-pre-type-constructor type-constructor)]
-       (list-map (lambda (ctor) (pretty-algebraic-type-constructor pretty-body ctor))
+       (list-map (lambda (ctor) (pretty-explicit-data-constructor pretty-body ctor))
                  data-constructors)))
     ((define-struct-stmt type-constructor fields location)
      (ppml/pretty-syntax "define-struct"
@@ -74,7 +74,7 @@
     ((define-record-type-stmt type-constructor data-constructor location)
      (ppml/pretty-syntax "define-record-type"
        [(pretty-pre-type-constructor type-constructor)]
-       [(pretty-algebraic-type-constructor pretty-body data-constructor)]))
+       [(pretty-explicit-data-constructor pretty-body data-constructor)]))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (ppml/pretty-syntax "define-opaque-type"
        [(pretty-pre-type-constructor type-constructor)]
@@ -148,21 +148,21 @@
      type-node
      (ppml/text ")")]))
 
-(define (pretty-algebraic-type-constructor pretty-body ctor)
-  (let ((name (ppml/text (symbol-to-string (algebraic-type-constructor-name ctor))))
-        (fields (algebraic-type-constructor-fields ctor)))
+(define (pretty-explicit-data-constructor pretty-body ctor)
+  (let ((name (ppml/text (symbol-to-string (explicit-data-constructor-name ctor))))
+        (fields (explicit-data-constructor-fields ctor)))
     (if (list-empty? fields)
       name
       (ppml/group
         [(ppml/text "(")
          name
          (ppml/text " ")
-         (ppml/flex (list-map (lambda (f) (pretty-algebraic-type-field pretty-body f)) fields))
+         (ppml/flex (list-map (lambda (f) (pretty-explicit-data-field pretty-body f)) fields))
          (ppml/text ")")]))))
 
-(define (pretty-algebraic-type-field pretty-body field)
-  (let ((name (ppml/text (symbol-to-string (algebraic-type-field-name field))))
-        (type-node (pretty-body (algebraic-type-field-type field))))
+(define (pretty-explicit-data-field pretty-body field)
+  (let ((name (ppml/text (symbol-to-string (explicit-data-field-name field))))
+        (type-node (pretty-body (explicit-data-field-type field))))
     (ppml/group
       [(ppml/text "(")
        name

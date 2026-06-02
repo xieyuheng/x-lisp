@@ -207,7 +207,7 @@ function expandDefineAlgebraicType(
 
 function expandConstructor(
   stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
-  ctor: M.AlgebraicTypeConstructor<M.Exp>,
+  ctor: M.ExplicitDataConstructor<M.Exp>,
 ): Array<M.Stmt<M.Exp>> {
   const stmts: Array<M.Stmt<M.Exp>> = []
 
@@ -244,7 +244,7 @@ function expandConstructor(
 
 function expandPredicate(
   stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
-  ctor: M.AlgebraicTypeConstructor<M.Exp>,
+  ctor: M.ExplicitDataConstructor<M.Exp>,
 ): Array<M.Stmt<M.Exp>> {
   const stmts: Array<M.Stmt<M.Exp>> = []
 
@@ -308,9 +308,9 @@ function expandPredicate(
 
 function expandAccessor(
   stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
-  ctor: M.AlgebraicTypeConstructor<M.Exp>,
+  ctor: M.ExplicitDataConstructor<M.Exp>,
   index: number,
-  field: M.AlgebraicTypeField<M.Exp>,
+  field: M.ExplicitDataField<M.Exp>,
 ): Array<M.Stmt<M.Exp>> {
   const stmts: Array<M.Stmt<M.Exp>> = []
 
@@ -344,9 +344,9 @@ function expandAccessor(
 
 function expandModifier(
   stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
-  ctor: M.AlgebraicTypeConstructor<M.Exp>,
+  ctor: M.ExplicitDataConstructor<M.Exp>,
   index: number,
-  field: M.AlgebraicTypeField<M.Exp>,
+  field: M.ExplicitDataField<M.Exp>,
 ): Array<M.Stmt<M.Exp>> {
   const stmts: Array<M.Stmt<M.Exp>> = []
 

@@ -77,7 +77,7 @@ export function formatStmt<E>(
 
     case "DefineRecordTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
-      return `(define-record-type ${type} ${formatAlgebraicTypeConstructor(stmt.dataConstructor, formatBody)})`
+      return `(define-record-type ${type} ${formatExplicitDataConstructor(stmt.dataConstructor, formatBody)})`
     }
 
     case "DefineOpaqueTypeStmt": {
@@ -94,7 +94,7 @@ export function formatStmt<E>(
     case "DefineAlgebraicTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const constructors = stmt.dataConstructors
-        .map((ctor) => formatAlgebraicTypeConstructor(ctor, formatBody))
+        .map((ctor) => formatExplicitDataConstructor(ctor, formatBody))
         .join(" ")
       return `(define-algebraic-type ${type} ${constructors})`
     }
@@ -160,11 +160,11 @@ function formatDataField(field: M.PreDataField): string {
   return `(${field.name} ${M.formatExp(field.type)})`
 }
 
-function formatAlgebraicTypeConstructor<E>(
-  ctor: M.AlgebraicTypeConstructor<E>,
+function formatExplicitDataConstructor<E>(
+  ctor: M.ExplicitDataConstructor<E>,
   formatBody: (body: E) => string,
 ): string {
-  const group = `(${ctor.name} ${ctor.fields.map((f) => formatAlgebraicTypeField(f, formatBody)).join(" ")})`
+  const group = `(${ctor.name} ${ctor.fields.map((f) => formatExplicitDataField(f, formatBody)).join(" ")})`
   const accessors = ctor.fields
     .map((field) => {
       if (field.modifierName !== undefined) {
@@ -177,8 +177,8 @@ function formatAlgebraicTypeConstructor<E>(
   return `(${group} ${ctor.predicate} ${accessors})`
 }
 
-function formatAlgebraicTypeField<E>(
-  field: M.AlgebraicTypeField<E>,
+function formatExplicitDataField<E>(
+  field: M.ExplicitDataField<E>,
   formatBody: (body: E) => string,
 ): string {
   return `(${field.name} ${formatBody(field.type)})`

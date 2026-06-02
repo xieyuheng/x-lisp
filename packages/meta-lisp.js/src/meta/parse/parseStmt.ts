@@ -144,7 +144,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   ) => {
     return M.DefineAlgebraicTypeStmt(
       parseTypeConstructor(head),
-      S.asListSexp(constructors).elements.map(parseAlgebraicTypeConstructor),
+      S.asListSexp(constructors).elements.map(parseExplicitDataConstructor),
       location,
     )
   },
@@ -309,8 +309,8 @@ const parseDataField = S.createRouter<M.PreDataField>({
   },
 })
 
-const parseAlgebraicTypeConstructor = S.createRouter<
-  M.AlgebraicTypeConstructor<M.Exp>
+const parseExplicitDataConstructor = S.createRouter<
+  M.ExplicitDataConstructor<M.Exp>
 >({
   "(cons* group predicate accessors)": (
     { group, predicate, accessors },
