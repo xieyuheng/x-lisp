@@ -54,8 +54,7 @@
     (data-constructor (algebraic-type-constructor-t E))
     (location source-location-t))
   (define-opaque-type-stmt
-    (name symbol-t)
-    (parameters (list-t symbol-t))
+    (type-constructor pre-type-constructor-t)
     (representation-type E)
     (interface-entries (list-t (pre-interface-entry-t E)))
     (location source-location-t))

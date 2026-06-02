@@ -75,16 +75,12 @@
      (ppml/pretty-syntax "define-record-type"
        [(pretty-pre-type-constructor type-constructor)]
        [(pretty-algebraic-type-constructor pretty-body data-constructor)]))
-    ((define-opaque-type-stmt name parameters representation-type interface-entries location)
-     (let ((name-str (symbol-to-string name))
-           (params-str (string-join " " (list-map symbol-to-string parameters))))
-       (ppml/pretty-syntax "define-opaque-type"
-         [(if (list-empty? parameters)
-            (ppml/text name-str)
-            (ppml/text (@string "(" name-str " " params-str ")")))]
-         (cons (pretty-body representation-type)
-               (list-map (lambda (e) (pretty-pre-interface-entry pretty-body e))
-                         interface-entries)))))
+    ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
+     (ppml/pretty-syntax "define-opaque-type"
+       [(pretty-pre-type-constructor type-constructor)]
+       (cons (pretty-body representation-type)
+             (list-map (lambda (e) (pretty-pre-interface-entry pretty-body e))
+                       interface-entries))))
     ((claim-stmt name type location)
      (ppml/pretty-syntax "claim"
        [(ppml/text (symbol-to-string name))]

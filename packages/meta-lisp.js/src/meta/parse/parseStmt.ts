@@ -131,8 +131,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
       }
     })
     return M.DefineOpaqueTypeStmt(
-      typeConstructor.name,
-      typeConstructor.parameters,
+      typeConstructor,
       parseExp(representation),
       interfaceEntries,
       location,

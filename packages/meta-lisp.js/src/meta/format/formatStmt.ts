@@ -81,10 +81,11 @@ export function formatStmt<E>(
     }
 
     case "DefineOpaqueTypeStmt": {
+      const { name, parameters } = stmt.typeConstructor
       const params =
-        stmt.parameters.length > 0
-          ? `(${stmt.name} ${stmt.parameters.join(" ")})`
-          : stmt.name
+        parameters.length > 0
+          ? `(${name} ${parameters.join(" ")})`
+          : name
       const repr = formatBody(stmt.representationType)
       const ifaces = stmt.interfaceEntries
         .map(({ name, type }) => `(${name} ${formatBody(type)})`)

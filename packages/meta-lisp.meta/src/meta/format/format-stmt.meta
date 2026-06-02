@@ -60,11 +60,10 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (@string "(define-algebraic-type " (format-type-constructor type-constructor) " "
               (string-join " " (list-map format-algebraic-type-constructor data-constructors)) ")"))
-    ((define-opaque-type-stmt name parameters representation-type interface-entries location)
-     (@string "(define-opaque-type (" (symbol-to-string name) " "
-              (string-join " " (list-map symbol-to-string parameters)) ") "
+    ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
+     (@string "(define-opaque-type " (format-type-constructor type-constructor) " "
               (format-exp representation-type) " "
-               (string-join " " (list-map format-pre-interface-entry interface-entries)) ")"))
+              (string-join " " (list-map format-pre-interface-entry interface-entries)) ")"))
     ((claim-stmt name type location)
      (@string "(claim " (symbol-to-string name) " " (format-exp type) ")"))
     ((claim-type-stmt name location)

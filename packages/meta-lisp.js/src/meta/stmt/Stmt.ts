@@ -283,24 +283,21 @@ export function DefineRecordTypeStmt<E>(
 
 export type DefineOpaqueTypeStmt<E> = {
   kind: "DefineOpaqueTypeStmt"
-  name: string
-  parameters: Array<string>
+  typeConstructor: PreTypeConstructor
   representationType: E
   interfaceEntries: Array<PreInterfaceEntry<E>>
   location: SourceLocation
 }
 
 export function DefineOpaqueTypeStmt<E>(
-  name: string,
-  parameters: Array<string>,
+  typeConstructor: PreTypeConstructor,
   representationType: E,
   interfaceEntries: Array<PreInterfaceEntry<E>>,
   location: SourceLocation,
 ): DefineOpaqueTypeStmt<E> {
   return {
     kind: "DefineOpaqueTypeStmt",
-    name,
-    parameters,
+    typeConstructor,
     representationType,
     interfaceEntries,
     location,

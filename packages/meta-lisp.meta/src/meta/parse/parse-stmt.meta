@@ -196,8 +196,7 @@
                      ...))
          (= type-constructor (parse-pre-type-constructor (car sexps)))
          (define-opaque-type-stmt
-           (pre-type-constructor-name type-constructor)
-           (pre-type-constructor-parameters type-constructor)
+           type-constructor
            (parse-exp (car (cdr sexps)))
            (list-map parse-pre-interface-entry (cdr (cdr sexps)))
            location))

@@ -94,11 +94,10 @@ function moduleImportStmt(
     }
 
     case "DefineOpaqueTypeStmt": {
-      const boundNames = new Set(stmt.parameters)
+      const boundNames = new Set(stmt.typeConstructor.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
       return M.DefineOpaqueTypeStmt(
-        stmt.name,
-        stmt.parameters,
+        stmt.typeConstructor,
         moduleImportTerm(newScope, stmt.representationType),
         stmt.interfaceEntries.map((f) => ({
           ...f,

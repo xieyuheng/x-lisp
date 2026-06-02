@@ -69,8 +69,7 @@ function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
 
     case "DefineOpaqueTypeStmt": {
       return M.DefineOpaqueTypeStmt(
-        stmt.name,
-        stmt.parameters,
+        stmt.typeConstructor,
         M.desugar(stmt.representationType),
         stmt.interfaceEntries.map((f) => ({
           ...f,

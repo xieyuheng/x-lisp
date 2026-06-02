@@ -233,11 +233,11 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   }
 
   if (stmt.kind === "DefineOpaqueTypeStmt") {
-    const name = stmt.name
+    const { name, parameters } = stmt.typeConstructor
     const typeConstructor: M.TypeConstructor = {
       mod,
-      name: stmt.name,
-      parameters: stmt.parameters,
+      name,
+      parameters,
       location: stmt.location,
     }
 
@@ -256,7 +256,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     M.modDefine(mod, name, definition)
 
-    if (stmt.parameters.length === 0) {
+    if (parameters.length === 0) {
       M.modClaim(
         mod,
         name,
@@ -267,7 +267,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         mod,
         name,
         M.ArrowTerm(
-          range(stmt.parameters.length).map((_) =>
+          range(parameters.length).map((_) =>
             M.QualifiedVarTerm(
               "meta-builtin",
               "builtin",
@@ -288,7 +288,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     for (const iface of stmt.interfaceEntries) {
       const wrappedType = M.PolymorphicTerm(
-        stmt.parameters,
+        parameters,
         iface.type,
         iface.location,
       )

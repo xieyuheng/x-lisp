@@ -109,13 +109,14 @@ export function prettyStmt<E>(
     }
 
     case "DefineOpaqueTypeStmt": {
+      const { name, parameters } = stmt.typeConstructor
       const paramsNode =
-        stmt.parameters.length > 0
+        parameters.length > 0
           ? Ppml.prettyApplication([
-              Ppml.text(stmt.name),
-              ...stmt.parameters.map(Ppml.text),
+              Ppml.text(name),
+              ...parameters.map(Ppml.text),
             ])
-          : Ppml.text(stmt.name)
+          : Ppml.text(name)
       const reprNode = prettyBody(stmt.representationType)
       const ifaceNodes = stmt.interfaceEntries.map(({ name, type }) =>
         Ppml.prettyApplication([Ppml.text(name), prettyBody(type)]),
