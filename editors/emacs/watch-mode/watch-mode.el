@@ -276,7 +276,7 @@ WATCH-DIR is relative to `default-directory' (or absolute).
 COMMAND is run with `default-directory' as the working directory."
   (interactive
    (list
-    (read-directory-name "Watch directory: " default-directory "src")
+    (read-directory-name "Watch directory: " "src")
     (read-shell-command "Command: " "./scripts/check.sh" 'watch-command-history)))
   (let* ((work-dir (expand-file-name default-directory))
          (watch-dir (expand-file-name watch-dir))
