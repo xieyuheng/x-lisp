@@ -275,39 +275,32 @@
              (<field-name> <accessor-name> <modifier-name>)
              ...))
   (= data-constructor (parse-pre-data-constructor (car sexps)))
-  (= group (list-get 0 sexps))
-  (= accessor-list (list-drop 2 sexps))
-  (= group-list (list-sexp-elements group))
-  (= accessor-map (build-accessor-map accessor-list location))
-  (= fields-raw (cdr group-list))
-  (= fields
-    (pipe fields-raw
-      (list-map
-        (lambda (field)
-          (= field-list (list-sexp-elements field))
-          (= name (symbol-sexp-content (car field-list)))
-          (= type (parse-exp (car (cdr field-list))))
-          (make-explicit-data-field
-            name type
-            (if (hash-has? name accessor-map)
-              (pair-first (hash-get name accessor-map))
-              (string-to-symbol
-                (@string (symbol-to-string name) "-" (symbol-to-string name))))
-            (if (hash-has? name accessor-map)
-              (pair-second (hash-get name accessor-map))
-              (nothing))
-            location)))))
+  (= accessor-map (parse-explicit-data-info (cdr (cdr sexps)) location))
   (make-explicit-data-constructor
     (pre-data-constructor-name data-constructor)
-    fields
+    (pipe (pre-data-constructor-fields data-constructor)
+      (list-map
+        (lambda (data-field)
+          (= info (match (hash-get-maybe (pre-data-field-name data-field) accessor-map)
+                    ((just info) info)
+                    ((nothing)
+                     (error-with-location
+                       "(parse-explicit-data-constructor) missing accessor-name"
+                       (pre-data-field-location data-field)))))
+          (make-explicit-data-field
+            (pre-data-field-name data-field)
+            (pre-data-field-type data-field)
+            (pair-first info)
+            (pair-second info)
+            location))))
     (symbol-sexp-content (car (cdr sexps)))
     location))
 
-(claim build-accessor-map
+(claim parse-explicit-data-info
   (-> (list-t sexp-t) source-location-t
       (hash-t symbol-t (pair-t symbol-t (maybe-t symbol-t)))))
 
-(define (build-accessor-map accessors location)
+(define (parse-explicit-data-info accessors location)
   (if (list-empty? accessors)
     (make-hash)
     (begin
@@ -320,4 +313,4 @@
                          (nothing)))
       (hash-put field-name
                 (make-pair accessor-name modifier-name)
-                (build-accessor-map rest location)))))
+                (parse-explicit-data-info rest location)))))
