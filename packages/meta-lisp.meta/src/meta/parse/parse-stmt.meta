@@ -290,9 +290,8 @@
 
 (define (parse-explicit-data-constructor sexps location)
   (= group (list-get 0 sexps))
-  (= accessors (list-get 2 sexps))
+  (= accessor-list (list-drop 2 sexps))
   (= group-list (list-sexp-elements group))
-  (= accessor-list (list-sexp-elements accessors))
   (= accessor-map (build-accessor-map accessor-list location))
   (= name (symbol-sexp-content (car group-list)))
   (= fields-raw (cdr group-list))
