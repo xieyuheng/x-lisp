@@ -274,10 +274,9 @@
              <predicate-name>
              (<field-name> <accessor-name> <modifier-name>)
              ...))
-  (= data-constructor (parse-pre-data-constructor (car sexps)))
-  (= accessors (list-get 2 sexps))
-  (= group-list (list-sexp-elements (car sexps)))
-  (= accessor-list (list-sexp-elements accessors))
+  (= group (list-get 0 sexps))
+  (= accessor-list (list-drop 2 sexps))
+  (= group-list (list-sexp-elements group))
   (= accessor-map (build-accessor-map accessor-list location))
   (= fields-raw (cdr group-list))
   (= fields

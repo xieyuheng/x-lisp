@@ -53,10 +53,10 @@
                       (@string "(" (symbol-to-string ctor) " "
                                (string-join " " field-strs) ")")))
      (= accessor-strs (list-map format-algebraic-type-accessor fields))
-     (@string "(define-record-type " (format-type-constructor type-constructor) " "
-              ctor-clause " "
-              (symbol-to-string pred) " ("
-               (string-join " " accessor-strs) "))"))
+      (@string "(define-record-type " (format-type-constructor type-constructor) " "
+               ctor-clause " "
+               (symbol-to-string pred) " "
+               (string-join " " accessor-strs) ")"))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (@string "(define-algebraic-type " (format-type-constructor type-constructor) " "
               (string-join " " (list-map format-explicit-data-constructor data-constructors)) ")"))
@@ -119,9 +119,9 @@
                       (string-join " " (list-map format-explicit-data-field fields)) ")")))
   (= accessor-entries (list-map format-algebraic-type-accessor fields))
   (if (list-empty? accessor-entries)
-    (@string "(" group " " pred-str " ())")
-    (@string "(" group " " pred-str " ("
-             (string-join " " accessor-entries) "))")))
+    (@string "(" group " " pred-str ")")
+    (@string "(" group " " pred-str " "
+             (string-join " " accessor-entries) ")")))
 
 (define (format-explicit-data-field field)
   (= name-str (symbol-to-string (explicit-data-field-name field)))

@@ -103,39 +103,39 @@
 
 (define-test parse-stmt-define-algebraic-type-test
   (assert-equal
-    "(define-algebraic-type bool-t ((true) true? ()) ((false) false? ()))"
+    "(define-algebraic-type bool-t ((true) true?) ((false) false?))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type bool-t
-                 ((true) true? ())
-                 ((false) false? ()))))))
+                 ((true) true?)
+                 ((false) false?))))))
   (assert-equal
-    "(define-algebraic-type point-t ((make-point (x float-t) (y float-t)) point? ((x point-x point-put-x!) (y point-y))))"
+    "(define-algebraic-type point-t ((make-point (x float-t) (y float-t)) point? (x point-x point-put-x!) (y point-y)))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type point-t
                  ((make-point (x float-t) (y float-t))
                   point?
-                  ((x point-x point-put-x!)
-                   (y point-y))))))))
+                  (x point-x point-put-x!)
+                  (y point-y)))))))
   (assert-equal
-    "(define-algebraic-type (my-list-t E) ((nil) nil? ()) ((li (head E) (tail (my-list-t E))) li? ((head li-head) (tail li-tail))))"
+    "(define-algebraic-type (my-list-t E) ((nil) nil?) ((li (head E) (tail (my-list-t E))) li? (head li-head) (tail li-tail)))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type (my-list-t E)
-                 ((nil) nil? ())
+                 ((nil) nil?)
                  ((li (head E) (tail (my-list-t E)))
                   li?
-                  ((head li-head)
-                   (tail li-tail)))))))))
+                  (head li-head)
+                  (tail li-tail))))))))
 
 (define-test parse-stmt-define-record-type-test
   (assert-equal
-    "(define-record-type (pair-t A B) (pair (first A) (second B)) pair? ((first pair-first pair-put-first!) (second pair-second pair-put-second!)))"
+    "(define-record-type (pair-t A B) (pair (first A) (second B)) pair? (first pair-first pair-put-first!) (second pair-second pair-put-second!))"
     (format-stmt
       (parse-stmt
         (@sexp (define-record-type (pair-t A B)
                  (pair (first A) (second B))
                  pair?
-                 ((first pair-first pair-put-first!)
-                  (second pair-second pair-put-second!))))))))
+                 (first pair-first pair-put-first!)
+                 (second pair-second pair-put-second!)))))))
