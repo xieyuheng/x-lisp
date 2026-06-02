@@ -3,14 +3,25 @@
 (claim format-stmt (-> (stmt-t exp-t) string-t))
 (define (format-stmt stmt)
   (match stmt
-    ((import-stmt mod-name names location)
-     (@string "(import " (symbol-to-string mod-name) " "
+    ((import-stmt pkg-name mod-name names location)
+     (= mod-name-str (symbol-to-string mod-name))
+     (= pkg-name-str (symbol-to-string pkg-name))
+     (= full (if (equal? pkg-name-str "self") mod-name-str
+               (@string pkg-name-str "/" mod-name-str)))
+     (@string "(import " full " "
               (string-join " " (list-map symbol-to-string names)) ")"))
-    ((import-as-stmt mod-name prefix location)
-     (@string "(import-as " (symbol-to-string mod-name) " "
-              (symbol-to-string prefix) ")"))
-    ((import-all-stmt mod-name location)
-     (@string "(import-all " (symbol-to-string mod-name) ")"))
+    ((import-as-stmt pkg-name mod-name prefix location)
+     (= mod-name-str (symbol-to-string mod-name))
+     (= pkg-name-str (symbol-to-string pkg-name))
+     (= full (if (equal? pkg-name-str "self") mod-name-str
+               (@string pkg-name-str "/" mod-name-str)))
+     (@string "(import-as " full " " (symbol-to-string prefix) ")"))
+    ((import-all-stmt pkg-name mod-name location)
+     (= mod-name-str (symbol-to-string mod-name))
+     (= pkg-name-str (symbol-to-string pkg-name))
+     (= full (if (equal? pkg-name-str "self") mod-name-str
+               (@string pkg-name-str "/" mod-name-str)))
+     (@string "(import-all " full ")"))
     ((define-function-stmt name parameters body location)
      (@string "(define (" (symbol-to-string name) " "
               (string-join " " (list-map symbol-to-string parameters)) ") "

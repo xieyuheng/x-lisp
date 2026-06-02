@@ -7,15 +7,27 @@ export function formatStmt<E>(
 ): string {
   switch (stmt.kind) {
     case "ImportStmt": {
-      return `(import ${stmt.modName} ${stmt.names.join(" ")})`
+      const modName =
+        stmt.pkgName === "self"
+          ? stmt.modName
+          : `${stmt.pkgName}/${stmt.modName}`
+      return `(import ${modName} ${stmt.names.join(" ")})`
     }
 
     case "ImportAsStmt": {
-      return `(import-as ${stmt.modName} ${stmt.prefix})`
+      const modName =
+        stmt.pkgName === "self"
+          ? stmt.modName
+          : `${stmt.pkgName}/${stmt.modName}`
+      return `(import-as ${modName} ${stmt.prefix})`
     }
 
     case "ImportAllStmt": {
-      return `(import-all ${stmt.modName})`
+      const modName =
+        stmt.pkgName === "self"
+          ? stmt.modName
+          : `${stmt.pkgName}/${stmt.modName}`
+      return `(import-all ${modName})`
     }
 
     case "DefineFunctionStmt": {

@@ -79,7 +79,7 @@ function executeImport(
   stmt: M.Stmt<M.Exp>,
 ): boolean {
   if (stmt.kind === "ImportStmt") {
-    const { pkgName, modName } = parseImportModName(stmt.modName)
+    const { pkgName, modName } = stmt
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
 
     const { privates } = lookupImportNames(
@@ -96,14 +96,14 @@ function executeImport(
   }
 
   if (stmt.kind === "ImportAsStmt") {
-    const { pkgName, modName } = parseImportModName(stmt.modName)
+    const { pkgName, modName } = stmt
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
 
     scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
-    const { pkgName, modName } = parseImportModName(stmt.modName)
+    const { pkgName, modName } = stmt
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
 
     const { names, privates } = lookupImportNames(
@@ -125,20 +125,6 @@ function executeImport(
   }
 
   return false
-}
-
-function parseImportModName(rawModName: string): {
-  pkgName: string
-  modName: string
-} {
-  const slashIndex = rawModName.indexOf("/")
-  if (slashIndex === -1) {
-    return { pkgName: "self", modName: rawModName }
-  }
-  return {
-    pkgName: rawModName.slice(0, slashIndex),
-    modName: rawModName.slice(slashIndex + 1),
-  }
 }
 
 function lookupImportNames(

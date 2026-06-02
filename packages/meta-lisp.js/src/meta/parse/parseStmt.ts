@@ -76,23 +76,34 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
   },
 
   "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
-    return M.ImportStmt(
+    const { pkgName, modName: moduleName } = parseImportModName(
       S.asSymbolSexp(modName).content,
+    )
+    return M.ImportStmt(
+      pkgName,
+      moduleName,
       S.asListSexp(entries).elements.map((x) => S.asSymbolSexp(x).content),
       location,
     )
   },
 
   "`(import-as ,modName ,prefix)": ({ modName, prefix }, { location }) => {
-    return M.ImportAsStmt(
+    const { pkgName, modName: moduleName } = parseImportModName(
       S.asSymbolSexp(modName).content,
+    )
+    return M.ImportAsStmt(
+      pkgName,
+      moduleName,
       S.asSymbolSexp(prefix).content,
       location,
     )
   },
 
   "`(import-all ,modName)": ({ modName, prefix }, { location }) => {
-    return M.ImportAllStmt(S.asSymbolSexp(modName).content, location)
+    const { pkgName, modName: moduleName } = parseImportModName(
+      S.asSymbolSexp(modName).content,
+    )
+    return M.ImportAllStmt(pkgName, moduleName, location)
   },
 
   "(cons* 'define-enum head constructors)": (
@@ -244,6 +255,20 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.CommentStmt(S.asListSexp(sexps).elements, location)
   },
 })
+
+function parseImportModName(rawModName: string): {
+  pkgName: string
+  modName: string
+} {
+  const slashIndex = rawModName.indexOf("/")
+  if (slashIndex === -1) {
+    return { pkgName: "self", modName: rawModName }
+  }
+  return {
+    pkgName: rawModName.slice(0, slashIndex),
+    modName: rawModName.slice(slashIndex + 1),
+  }
+}
 
 const parseTypeConstructor = S.createRouter<M.PreTypeConstructor>({
   "(cons* name parameters)": ({ name, parameters }, { location }) => {

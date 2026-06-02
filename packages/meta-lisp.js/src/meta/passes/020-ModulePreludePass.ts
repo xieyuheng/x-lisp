@@ -7,10 +7,7 @@ export function ModulePreludePass(rootPkg: M.Package): void {
       for (const [pkgName, modules] of Object.entries(pkg.config.prelude)) {
         for (const modName of modules) {
           fragment.stmts.unshift(
-            M.ImportAllStmt(
-              `${pkgName}/${modName}`,
-              zeroLocation(fragment.path),
-            ),
+            M.ImportAllStmt(pkgName, modName, zeroLocation(fragment.path)),
           )
         }
       }

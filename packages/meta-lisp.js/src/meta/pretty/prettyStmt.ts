@@ -9,23 +9,35 @@ export function prettyStmt<E>(
 ): Ppml.Node {
   switch (stmt.kind) {
     case "ImportStmt": {
+      const modName =
+        stmt.pkgName === "self"
+          ? stmt.modName
+          : `${stmt.pkgName}/${stmt.modName}`
       return Ppml.prettySyntax(
         "import",
-        [Ppml.text(stmt.modName)],
+        [Ppml.text(modName)],
         stmt.names.map(Ppml.text),
       )
     }
 
     case "ImportAsStmt": {
+      const modName =
+        stmt.pkgName === "self"
+          ? stmt.modName
+          : `${stmt.pkgName}/${stmt.modName}`
       return Ppml.prettySyntax(
         "import-as",
         [],
-        [Ppml.text(stmt.modName), Ppml.text(stmt.prefix)],
+        [Ppml.text(modName), Ppml.text(stmt.prefix)],
       )
     }
 
     case "ImportAllStmt": {
-      return Ppml.prettySyntax("import-all", [], [Ppml.text(stmt.modName)])
+      const modName =
+        stmt.pkgName === "self"
+          ? stmt.modName
+          : `${stmt.pkgName}/${stmt.modName}`
+      return Ppml.prettySyntax("import-all", [], [Ppml.text(modName)])
     }
 
     case "DefineFunctionStmt": {

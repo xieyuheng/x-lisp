@@ -1,10 +1,12 @@
 (module meta)
 
 (define-struct qualified-name-entry-t
+  (pkg-name symbol-t)
   (mod-name symbol-t)
   (name symbol-t))
 
 (define-struct prefix-entry-t
+  (pkg-name symbol-t)
   (mod-name symbol-t))
 
 (define-struct fragment-scope-t

@@ -27,18 +27,21 @@ export type Stmt<E> =
 
 export type ImportStmt = {
   kind: "ImportStmt"
+  pkgName: string
   modName: string
   names: Array<string>
   location: SourceLocation
 }
 
 export function ImportStmt(
+  pkgName: string,
   modName: string,
   names: Array<string>,
   location: SourceLocation,
 ): ImportStmt {
   return {
     kind: "ImportStmt",
+    pkgName,
     modName,
     names,
     location,
@@ -47,18 +50,21 @@ export function ImportStmt(
 
 export type ImportAsStmt = {
   kind: "ImportAsStmt"
+  pkgName: string
   modName: string
   prefix: string
   location: SourceLocation
 }
 
 export function ImportAsStmt(
+  pkgName: string,
   modName: string,
   prefix: string,
   location: SourceLocation,
 ): ImportAsStmt {
   return {
     kind: "ImportAsStmt",
+    pkgName,
     modName,
     prefix,
     location,
@@ -67,16 +73,19 @@ export function ImportAsStmt(
 
 export type ImportAllStmt = {
   kind: "ImportAllStmt"
+  pkgName: string
   modName: string
   location: SourceLocation
 }
 
 export function ImportAllStmt(
+  pkgName: string,
   modName: string,
   location: SourceLocation,
 ): ImportAllStmt {
   return {
     kind: "ImportAllStmt",
+    pkgName,
     modName,
     location,
   }

@@ -2,14 +2,17 @@
 
 (define-enum (stmt-t E)
   (import-stmt
+    (pkg-name symbol-t)
     (mod-name symbol-t)
     (names (list-t symbol-t))
     (location source-location-t))
   (import-as-stmt
+    (pkg-name symbol-t)
     (mod-name symbol-t)
     (prefix symbol-t)
     (location source-location-t))
   (import-all-stmt
+    (pkg-name symbol-t)
     (mod-name symbol-t)
     (location source-location-t))
   (define-function-stmt

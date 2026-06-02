@@ -70,21 +70,45 @@
            location))
         ((equal? tag 'import)
          (@comment (import <module-name> <name> ...))
-         (import-stmt
-           (symbol-sexp-content (car sexps))
-           (list-map symbol-sexp-content (cdr sexps))
-           location))
+         (= raw (symbol-sexp-content (car sexps)))
+         (= raw-string (symbol-to-string raw))
+         (= parts (string-split "/" raw-string))
+         (if (equal? (list-length parts) 1)
+           (import-stmt
+             'self raw
+             (list-map symbol-sexp-content (cdr sexps))
+             location)
+           (import-stmt
+             (string-to-symbol (list-get 0 parts))
+             (string-to-symbol (list-get 1 parts))
+             (list-map symbol-sexp-content (cdr sexps))
+             location)))
         ((equal? tag 'import-as)
          (@comment (import-as <module-name> <prefix>))
-         (import-as-stmt
-           (symbol-sexp-content (car sexps))
-           (symbol-sexp-content (car (cdr sexps)))
-           location))
+         (= raw (symbol-sexp-content (car sexps)))
+         (= raw-string (symbol-to-string raw))
+         (= parts (string-split "/" raw-string))
+         (if (equal? (list-length parts) 1)
+           (import-as-stmt
+             'self raw
+             (symbol-sexp-content (car (cdr sexps)))
+             location)
+           (import-as-stmt
+             (string-to-symbol (list-get 0 parts))
+             (string-to-symbol (list-get 1 parts))
+             (symbol-sexp-content (car (cdr sexps)))
+             location)))
         ((equal? tag 'import-all)
          (@comment (import-all <module-name>))
-         (import-all-stmt
-           (symbol-sexp-content (car sexps))
-           location))
+         (= raw (symbol-sexp-content (car sexps)))
+         (= raw-string (symbol-to-string raw))
+         (= parts (string-split "/" raw-string))
+         (if (equal? (list-length parts) 1)
+           (import-all-stmt 'self raw location)
+           (import-all-stmt
+             (string-to-symbol (list-get 0 parts))
+             (string-to-symbol (list-get 1 parts))
+             location)))
         ((equal? tag 'define-enum)
          (@comment (define-enum <type-name>
                      (<constructor-name> (<field-name> <type>) ...)
