@@ -275,42 +275,50 @@
              (<field-name> <accessor-name> <modifier-name>)
              ...))
   (= data-constructor (parse-pre-data-constructor (car sexps)))
-  (= accessor-map (parse-explicit-data-info (cdr (cdr sexps)) location))
+  (= field-interface-table (cdr (cdr sexps)))
   (make-explicit-data-constructor
     (pre-data-constructor-name data-constructor)
-    (pipe (pre-data-constructor-fields data-constructor)
-      (list-map
-        (lambda (data-field)
-          (= info (match (hash-get-maybe (pre-data-field-name data-field) accessor-map)
-                    ((just info) info)
-                    ((nothing)
-                     (error-with-location
-                       "(parse-explicit-data-constructor) missing accessor-name"
-                       (pre-data-field-location data-field)))))
-          (make-explicit-data-field
-            (pre-data-field-name data-field)
-            (pre-data-field-type data-field)
-            (pair-first info)
-            (pair-second info)
-            location))))
+    (list-map
+      (resolve-explicit-data-field field-interface-table)
+      (pre-data-constructor-fields data-constructor))
     (symbol-sexp-content (car (cdr sexps)))
     location))
 
-(claim parse-explicit-data-info
-  (-> (list-t sexp-t) source-location-t
-      (hash-t symbol-t (pair-t symbol-t (maybe-t symbol-t)))))
+(claim resolve-explicit-data-field
+  (-> (list-t sexp-t) pre-data-field-t
+      (explicit-data-field-t exp-t)))
 
-(define (parse-explicit-data-info accessors location)
-  (if (list-empty? accessors)
-    (make-hash)
-    (begin
-      (= entry (list-sexp-elements (car accessors)))
-      (= rest (cdr accessors))
-      (= field-name (symbol-sexp-content (car entry)))
-      (= accessor-name (symbol-sexp-content (car (cdr entry))))
-      (= modifier-name (if (int-greater? (list-length entry) 2)
-                         (just (symbol-sexp-content (car (list-drop 2 entry))))
-                         (nothing)))
-      (hash-put field-name
-                (make-pair accessor-name modifier-name)
-                (parse-explicit-data-info rest location)))))
+(define (resolve-explicit-data-field table data-field)
+  (match data-field
+    ((make-pre-data-field name type location)
+     (make-explicit-data-field
+       name type
+       (find-field-accessor-name name table location)
+       (find-field-modifier-name name table location)
+       location))))
+
+(claim find-field-accessor-name
+  (-> symbol-t (list-t sexp-t) source-location-t
+      symbol-t))
+
+(define (find-field-accessor-name name table location)
+  (if (list-empty? table)
+    (error-with-location "(find-field-accessor-name) missing field interface" location)
+    (let ((entry (list-sexp-elements (car table))))
+      (if (equal? (symbol-sexp-content (car entry)) name)
+        (symbol-sexp-content (car (cdr entry)))
+        (find-field-accessor-name name (cdr table) location)))))
+
+(claim find-field-modifier-name
+  (-> symbol-t (list-t sexp-t) source-location-t
+      (maybe-t symbol-t)))
+
+(define (find-field-modifier-name name table location)
+  (if (list-empty? table)
+    (error-with-location "(find-field-modifier-name) missing field interface" location)
+    (let ((entry (list-sexp-elements (car table))))
+      (if (equal? (symbol-sexp-content (car entry)) name)
+        (if (int-greater? (list-length entry) 2)
+          (just (symbol-sexp-content (car (list-drop 2 entry))))
+          (nothing))
+        (find-field-modifier-name name (cdr table) location)))))
