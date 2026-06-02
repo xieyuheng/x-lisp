@@ -93,3 +93,10 @@
 (define-test parse-stmt-define-struct-star-test
   (assert-equal "(define-struct* point-t (make-point (x int-t) (y int-t)))"
     (format-stmt (parse-stmt (@sexp (define-struct* point-t (make-point (x int-t) (y int-t))))))))
+
+(define-test parse-stmt-define-opaque-type-test
+  (assert-equal
+    "(define-opaque-type (box-t E) (list-t E) (make-box (-> (box-t E))) (box-empty? (-> (box-t E) bool-t)))"
+    (format-stmt (parse-stmt (@sexp (define-opaque-type (box-t E) (list-t E)
+                                       (make-box (-> (box-t E)))
+                                       (box-empty? (-> (box-t E) bool-t))))))))

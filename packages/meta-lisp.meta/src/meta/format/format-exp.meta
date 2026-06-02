@@ -26,7 +26,7 @@
     ((arrow-exp arg-types ret-type location)
      (= args-str (format-exps arg-types))
      (if (list-empty? arg-types)
-       (@string "(-> " args-str " " (format-exp ret-type) ")")
+       (@string "(-> " (format-exp ret-type) ")")
        (@string "(-> " args-str " " (format-exp ret-type) ")")))
     ((polymorphic-exp parameters body location)
      (@string "(polymorphic (" (string-join " " (list-map symbol-to-string parameters)) ") "
