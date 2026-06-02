@@ -1,7 +1,8 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] parse-stmt.meta -- add @comment to syntax of stmt
-[meta-lisp.meta] [refactor] parse-stmt.meta
+[meta-lisp.meta] [refactor] parse-exp -- parse-special-form-exp -- should use car and cdr
+[meta-lisp.meta] [refactor] parse-stmt -- add @comment to syntax of stmt
+[meta-lisp.meta] [refactor] parse-stmt
 [meta-lisp.meta] [review] 010-expand-pass.meta
 [meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta
