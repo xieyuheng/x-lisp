@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] parse-stmt -- inline simple parse case
 [meta-lisp.meta] [refactor] parse-stmt -- parse-special-form-stmt should take tag and rest sexps
 [meta-lisp.meta] [refactor] parse-stmt -- add @comment to syntax of stmt
 
