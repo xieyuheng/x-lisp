@@ -15,7 +15,7 @@
 ;;   ;; Prompts for directory to watch and shell command to run.
 ;;
 ;;   ;; From Lisp:
-;;   (watch "src/" "./scripts/check-with-date.sh")
+;;   (watch "src" "./scripts/check.sh")
 
 ;;; Code:
 
@@ -41,6 +41,9 @@
 
 (defvar-local watch--process nil
   "Current running process.")
+
+(defvar-local watch--dir nil
+  "Directory being watched.")
 
 (defvar-local watch--work-dir nil
   "Working directory for the command.")
@@ -71,8 +74,14 @@
         (setq watch--process nil))
       (let ((inhibit-read-only t))
         (erase-buffer)
-        (insert (format "=== %s ===\n" (format-time-string "%Y-%m-%d %H:%M:%S")))
-        (insert (format "$ %s\n\n" watch--command)))
+        (insert (propertize "---\n" 'face 'font-lock-comment-face))
+        (watch--insert-fm-line "directory" (abbreviate-file-name watch--dir))
+        (watch--insert-fm-line "command" watch--command)
+        (watch--insert-fm-line "date" (format-time-string "%Y-%m-%d %H:%M:%S"))
+        (insert (propertize "status:" 'face 'font-lock-keyword-face) " ")
+        (insert (propertize "running..." 'watch-fm-status t 'face 'font-lock-doc-face) "\n")
+        (insert (propertize "---\n" 'face 'font-lock-comment-face))
+        (insert "\n"))
       (let ((default-directory watch--work-dir)
             (proc-buf (generate-new-buffer " *watch-output*")))
         (setq watch--process
@@ -82,17 +91,40 @@
                :command (list shell-file-name shell-command-switch watch--command)
                :sentinel
                (lambda (proc _event)
-                 (let ((output (with-current-buffer (process-buffer proc)
-                                 (buffer-string))))
+                 (let* ((exit-code (process-exit-status proc))
+                        (output (with-current-buffer (process-buffer proc)
+                                  (buffer-string)))
+                        (status-str (if (zerop exit-code)
+                                        (format "ok (%d)" exit-code)
+                                      (format "error (%d)" exit-code)))
+                        (status-face (if (zerop exit-code) 'success 'error)))
                    (kill-buffer (process-buffer proc))
                    (when (buffer-live-p buf)
                      (with-current-buffer buf
                        (setq watch--process nil)
                        (let ((inhibit-read-only t))
+                         (save-excursion
+                           (goto-char (point-min))
+                           (let ((pos (text-property-any (point-min) (point-max)
+                                                         'watch-fm-status t)))
+                             (when pos
+                               (goto-char pos)
+                               (let ((end (next-single-property-change
+                                           pos 'watch-fm-status)))
+                                 (delete-region pos end)
+                                 (goto-char pos)
+                                 (insert (propertize status-str
+                                                     'watch-fm-status t
+                                                     'face status-face))))))
                          (goto-char (point-max))
                          (insert output)
                          (goto-char (point-max)))))))
                :file-handler t))))))
+
+(defun watch--insert-fm-line (key value)
+  "Insert KEY: VALUE line in the front matter."
+  (insert (propertize (format "%s:" key) 'face 'font-lock-keyword-face))
+  (insert (format " %s\n" value)))
 
 (defun watch--on-change (event buf)
   "Handle file-notify EVENT for watch buffer BUF."
@@ -150,8 +182,8 @@ WATCH-DIR is relative to `default-directory' (or absolute).
 COMMAND is run with `default-directory' as the working directory."
   (interactive
    (list
-    (read-directory-name "Watch directory: " default-directory nil t)
-    (read-shell-command "Command: " nil 'watch-command-history)))
+    (read-directory-name "Watch directory: " default-directory "src")
+    (read-shell-command "Command: " "./scripts/check.sh" 'watch-command-history)))
   (let* ((work-dir (expand-file-name default-directory))
          (watch-dir (expand-file-name watch-dir))
          (buf-name (format "*watch: %s*" (abbreviate-file-name watch-dir))))
@@ -159,6 +191,7 @@ COMMAND is run with `default-directory' as the working directory."
       (error "Not a directory: %s" watch-dir))
     (with-current-buffer (get-buffer-create buf-name)
       (watch-mode)
+      (setq watch--dir watch-dir)
       (setq watch--work-dir work-dir)
       (setq watch--command command)
       (watch--cleanup)
