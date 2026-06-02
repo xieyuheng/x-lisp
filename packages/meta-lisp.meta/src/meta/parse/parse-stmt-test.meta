@@ -49,8 +49,8 @@
 (define-test parse-stmt-define-type-test
   (assert-equal "(define-type (my-int-t ) int-t)"
     (format-stmt (parse-stmt (@sexp (define-type my-int-t int-t)))))
-  (assert-equal "(define-type (pair-t A B) (-> A B (pair-t A B)))"
-    (format-stmt (parse-stmt (@sexp (define-type (pair-t A B) (-> A B (pair-t A B))))))))
+  (assert-equal "(define-type (box-t A) (list-t A))"
+    (format-stmt (parse-stmt (@sexp (define-type (box-t A) (list-t A)))))))
 
 (define-test parse-stmt-claim-test
   (assert-equal "(claim foo (-> int-t int-t))"
