@@ -1000,11 +1000,7 @@ The most commonly used are `(define-enum)` and `(define-struct)`.
    (<field-name> <accessor-name> <modifier-name>)
    ...)
   ...)
-```
 
-Or with type parameters:
-
-```scheme
 (define-algebraic-type (<type-name> <type-parameter> ...)
   ((<constructor-name> (<field-name> <type>) ...)
    <predicate-name>
@@ -1090,11 +1086,7 @@ This generates functions with the following types:
   <predicate-name>
   (<field-name> <accessor-name> <modifier-name>)
   ...)
-```
 
-Or with type parameters:
-
-```scheme
 (define-record-type (<type-name> <type-parameter> ...)
   (<constructor-name> (<field-name> <type>) ...)
   <predicate-name>
@@ -1137,11 +1129,7 @@ extended to support multiple constructors.
 (define-enum <type-name>
   (<constructor-name> (<field-name> <type>) ...)
   ...)
-```
 
-Or with type parameters:
-
-```scheme
 (define-enum (<type-name> <type-parameter> ...)
   (<constructor-name> (<field-name> <type>) ...)
   ...)
@@ -1186,11 +1174,7 @@ For a given `<constructor-name>`, the naming rules are:
 (define-struct <type-name>
   (<field-name> <type>)
   ...)
-```
 
-Or with type parameters:
-
-```scheme
 (define-struct (<type-name> <type-parameter> ...)
   (<field-name> <type>)
   ...)
@@ -1232,11 +1216,7 @@ For a given `<type-name>`, the naming rules are:
   (<constructor-name>
    (<field-name> <type>)
    ...))
-```
 
-Or with type parameters:
-
-```scheme
 (define-struct* (<type-name> <type-parameter> ...)
   (<constructor-name>
    (<field-name> <type>)
@@ -1304,7 +1284,11 @@ Destructures algebraic data types using pattern matching.
 ## (define-opaque-type)
 
 ```scheme
-(define-opaque-type (<name> <type-parameter> ...) <representation-type>
+(define-opaque-type <type-name> <representation-type>
+  (<interface-name> <interface-type>)
+  ...)
+
+(define-opaque-type (<type-name> <type-parameter> ...) <representation-type>
   (<interface-name> <interface-type>)
   ...)
 ```

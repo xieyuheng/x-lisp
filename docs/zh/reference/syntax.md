@@ -1004,11 +1004,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
    (<field-name> <accessor-name> <modifier-name>)
    ...)
   ...)
-```
 
-或带有类型参数：
-
-```scheme
 (define-algebraic-type (<type-name> <type-parameter> ...)
   ((<constructor-name> (<field-name> <type>) ...)
    <predicate-name>
@@ -1095,11 +1091,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
   <predicate-name>
   (<field-name> <accessor-name> <modifier-name>)
   ...)
-```
 
-或带有类型参数：
-
-```scheme
 (define-record-type (<type-name> <type-parameter> ...)
   (<constructor-name> (<field-name> <type>) ...)
   <predicate-name>
@@ -1142,11 +1134,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-enum <type-name>
   (<constructor-name> (<field-name> <type>) ...)
   ...)
-```
 
-或带有类型参数：
-
-```scheme
 (define-enum (<type-name> <type-parameter> ...)
   (<constructor-name> (<field-name> <type>) ...)
   ...)
@@ -1191,11 +1179,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-struct <type-name>
   (<field-name> <type>)
   ...)
-```
 
-或带有类型参数：
-
-```scheme
 (define-struct (<type-name> <type-parameter> ...)
   (<field-name> <type>)
   ...)
@@ -1238,11 +1222,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
   (<constructor-name>
    (<field-name> <type>)
    ...))
-```
 
-或带有类型参数：
-
-```scheme
 (define-struct* (<type-name> <type-parameter> ...)
   (<constructor-name>
    (<field-name> <type>)
@@ -1312,7 +1292,11 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ## (define-opaque-type)
 
 ```scheme
-(define-opaque-type (<name> <type-parameter> ...) <representation-type>
+(define-opaque-type <type-name> <representation-type>
+  (<interface-name> <interface-type>)
+  ...)
+
+(define-opaque-type (<type-name> <type-parameter> ...) <representation-type>
   (<interface-name> <interface-type>)
   ...)
 ```

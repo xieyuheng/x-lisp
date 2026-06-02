@@ -1,7 +1,7 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] parse-stmt -- add @comment to syntax of stmt
-[meta-lisp.meta] [refactor] parse-stmt -- extract helper functions
+[meta-lisp.meta] [refactor] parse-stmt -- define-record-type
+[meta-lisp.meta] [refactor] parse-stmt -- define-opaque-type
 [meta-lisp.meta] parse-stmt -- more error report on invalid stmt
 
 [meta-lisp.meta] [review] 010-expand-pass.meta

@@ -31,69 +31,123 @@
                    (parse-body (cdr sexps) location)
                    location))))
         ((equal? tag 'define-test)
+         (@comment (define-test <test-name> <body>))
          (define-test-stmt
            (symbol-sexp-content (car sexps))
            (parse-body (cdr sexps) location)
            location))
         ((equal? tag 'define-type)
-         (if (list-sexp? (car sexps))
-           (define-type-stmt
-             (symbol-sexp-content (car (list-sexp-elements (car sexps))))
-             (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
-             (parse-body (cdr sexps) location)
-             location)
-           (define-type-stmt
-             (symbol-sexp-content (car sexps))
-             []
-             (parse-body (cdr sexps) location)
-             location)))
+         (cond ((list-sexp? (car sexps))
+                (@comment (define-type (<type-name> <type-parameter> ...)
+                            <body>))
+                (define-type-stmt
+                  (symbol-sexp-content (car (list-sexp-elements (car sexps))))
+                  (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
+                  (parse-body (cdr sexps) location)
+                  location))
+               (else
+                 (@comment (define-type <type-name>
+                             <body>))
+                 (define-type-stmt
+                   (symbol-sexp-content (car sexps))
+                   []
+                   (parse-body (cdr sexps) location)
+                   location))))
         ((equal? tag 'exempt)
+         (@comment (exempt <name> ...))
          (exempt-stmt
            (list-map symbol-sexp-content sexps)
            location))
         ((equal? tag 'private)
+         (@comment (private <name> ...))
          (private-stmt
            (list-map symbol-sexp-content sexps)
            location))
         ((equal? tag 'module)
+         (@comment (module <module-name>))
          (declare-module-stmt
            (symbol-sexp-content (car sexps))
            location))
         ((equal? tag 'import)
+         (@comment (import <module-name> <name> ...))
          (import-stmt
            (symbol-sexp-content (car sexps))
            (list-map symbol-sexp-content (cdr sexps))
            location))
         ((equal? tag 'import-as)
+         (@comment (import-as <module-name> <prefix>))
          (import-as-stmt
            (symbol-sexp-content (car sexps))
            (symbol-sexp-content (car (cdr sexps)))
            location))
         ((equal? tag 'import-all)
+         (@comment (import-all <module-name>))
          (import-all-stmt
            (symbol-sexp-content (car sexps))
            location))
         ((equal? tag 'define-enum)
+         (@comment (define-enum <type-name>
+                     (<constructor-name> (<field-name> <type>) ...)
+                     ...)
+                   (define-enum (<type-name> <type-parameter> ...)
+                     (<constructor-name> (<field-name> <type>) ...)
+                     ...))
          (define-enum-stmt
            (parse-type-constructor (car sexps))
            (list-map parse-pre-data-constructor (cdr sexps))
            location))
         ((equal? tag 'define-algebraic-type)
+         (@comment (define-algebraic-type <type-name>
+                     ((<constructor-name> (<field-name> <type>) ...)
+                      <predicate-name>
+                      (<field-name> <accessor-name> <modifier-name>)
+                      ...)
+                     ...)
+                   (define-algebraic-type (<type-name> <type-parameter> ...)
+                     ((<constructor-name> (<field-name> <type>) ...)
+                      <predicate-name>
+                      (<field-name> <accessor-name> <modifier-name>)
+                      ...)
+                     ...))
          (define-algebraic-type-stmt
            (parse-type-constructor (car sexps))
            (list-map parse-algebraic-type-constructor (cdr sexps))
            location))
         ((equal? tag 'define-struct)
+         (@comment (define-struct <type-name>
+                     (<field-name> <type>)
+                     ...)
+                   (define-struct (<type-name> <type-parameter> ...)
+                     (<field-name> <type>)
+                     ...))
          (define-struct-stmt
            (parse-type-constructor (car sexps))
            (list-map parse-pre-data-field (cdr sexps))
            location))
         ((equal? tag 'define-struct*)
+         (@comment (define-struct* <type-name>
+                     (<constructor-name>
+                       (<field-name> <type>)
+                       ...))
+                   (define-struct* (<type-name> <type-parameter> ...)
+                     (<constructor-name>
+                       (<field-name> <type>)
+                       ...)))
          (define-struct-star-stmt
            (parse-type-constructor (car sexps))
            (parse-pre-data-constructor (car (cdr sexps)))
            location))
         ((equal? tag 'define-record-type)
+         (@comment (define-record-type <type-name>
+                     (<constructor-name> (<field-name> <type>) ...)
+                     <predicate-name>
+                     (<field-name> <accessor-name> <modifier-name>)
+                     ...)
+                   (define-record-type (<type-name> <type-parameter> ...)
+                     (<constructor-name> (<field-name> <type>) ...)
+                     <predicate-name>
+                     (<field-name> <accessor-name> <modifier-name>)
+                     ...))
          (= head (list-get 0 sexps))
          (= ctor-clause (list-get 1 sexps))
          (= predicate (list-get 2 sexps))
@@ -128,6 +182,12 @@
              location)
            location))
         ((equal? tag 'define-opaque-type)
+         (@comment (define-opaque-type <type-name> <representation-type>
+                     (<interface-name> <interface-type>)
+                     ...)
+                   (define-opaque-type (<type-name> <type-parameter> ...) <representation-type>
+                     (<interface-name> <interface-type>)
+                     ...))
          (= head (list-get 0 sexps))
          (= representation (list-get 1 sexps))
          (= ifaces (list-drop 2 sexps))
@@ -146,29 +206,35 @@
              ifaces)
            location))
         ((equal? tag 'claim)
+         (@comment (claim <name> <type>))
          (claim-stmt
            (symbol-sexp-content (car sexps))
            (parse-exp (car (cdr sexps)))
            location))
         ((equal? tag 'claim-type)
+         (@comment (claim-type <type-name>))
          (claim-type-stmt
            (symbol-sexp-content (car sexps))
            location))
         ((equal? tag 'admit)
+         (@comment (admit <name> <type>))
          (admit-stmt
            (symbol-sexp-content (car sexps))
            (parse-exp (car (cdr sexps)))
            location))
         ((equal? tag 'declare-primitive-function)
+         (@comment (declare-primitive-function <name> <arity>))
          (declare-primitive-function-stmt
            (symbol-sexp-content (car sexps))
            (int-sexp-content (car (cdr sexps)))
            location))
         ((equal? tag 'declare-primitive-variable)
+         (@comment (declare-primitive-variable <name>))
          (declare-primitive-variable-stmt
            (symbol-sexp-content (car sexps))
            location))
         ((equal? tag '@comment)
+         (@comment (@comment <sexp> ...))
          (comment-stmt sexps location))))
 
 (claim build-accessor-map
