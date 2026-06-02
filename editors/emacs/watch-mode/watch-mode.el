@@ -57,6 +57,7 @@
 
 (defun watch--cleanup ()
   "Remove all file watches and kill running process."
+  (watch--unfold-all-blocks)
   (when watch--timer
     (cancel-timer watch--timer)
     (setq watch--timer nil))
@@ -77,14 +78,15 @@
         (kill-process watch--process)
         (setq watch--process nil))
       (let ((inhibit-read-only t))
+        (watch--unfold-all-blocks)
         (erase-buffer)
-        (insert (propertize "---\n" 'face 'font-lock-comment-face))
+        (insert "---\n")
         (watch--insert-fm-line "directory" (abbreviate-file-name watch--dir))
         (watch--insert-fm-line "command" watch--command)
         (watch--insert-fm-line "date" (format-time-string "%Y-%m-%d %H:%M:%S"))
         (insert (propertize "status:" 'face 'font-lock-keyword-face) " ")
         (insert (propertize "running..." 'watch-fm-status t 'face 'font-lock-doc-face) "\n")
-        (insert (propertize "---\n" 'face 'font-lock-comment-face))
+        (insert "---\n")
         (insert "\n"))
       (let ((default-directory watch--work-dir)
             (proc-buf (generate-new-buffer " *watch-output*")))
@@ -123,9 +125,15 @@
                          (goto-char (point-max))
                          (let ((start (point)))
                            (insert output)
-                           (watch--highlight-locations start (point)))
-                         (goto-char (point-max)))))))
-               :file-handler t))))))
+                           (watch--highlight-locations start (point))
+                           (let ((first (text-property-any
+                                         start (point) 'watch-loc t)))
+                             (if first
+                                 (progn
+                                   (goto-char first)
+                                   (recenter))
+                               (goto-char (point-max)))))))))
+                 :file-handler t)))))))
 
 (defun watch--insert-fm-line (key value)
   "Insert KEY: VALUE line in the front matter."
@@ -149,11 +157,8 @@
            help-echo ,(format "RET: jump to %s:%s:%s" file line col)
            watch-loc t))
         (when (match-string 4)
-          (let ((sep-beg (match-beginning 4)))
-            (add-text-properties sep-beg (+ sep-beg 4)
-                                 '(face font-lock-comment-face))
-            (add-text-properties (+ sep-beg 4) (match-end 4)
-                                 '(face error))))))))
+          (add-text-properties (+ (match-beginning 4) 4) (match-end 4)
+                               '(face error)))))))
 
 (defun watch--collect-locs ()
   "Return sorted list of all watch-loc start positions in buffer."
@@ -216,6 +221,89 @@
       (goto-char prev)
       (recenter))))
 
+(defun watch--loc-at-line ()
+  "Return the watch-loc position on the current line, or nil."
+  (save-excursion
+    (beginning-of-line)
+    (text-property-any (point) (line-end-position) 'watch-loc t)))
+
+(defun watch--block-body-region (loc-pos)
+  "Return cons (BODY-START . BODY-END) for block at LOC-POS."
+  (save-excursion
+    (goto-char loc-pos)
+    (end-of-line)
+    (let* ((body-start (1+ (point)))
+           (locs (watch--collect-locs))
+           (next (cl-find-if (lambda (p) (> p loc-pos)) locs))
+           (body-end (if next
+                         (save-excursion
+                           (goto-char next)
+                           (line-beginning-position))
+                       (point-max))))
+      (when (< body-start body-end)
+        (cons body-start body-end)))))
+
+(defun watch--block-folded-p (loc-pos)
+  "Return non-nil if the block at LOC-POS is folded."
+  (let ((region (watch--block-body-region loc-pos)))
+    (when region
+      (cl-some (lambda (ov) (overlay-get ov 'watch-fold))
+               (overlays-at (car region))))))
+
+(defun watch--fold-block (loc-pos)
+  "Fold the body of the block at LOC-POS."
+  (let ((region (watch--block-body-region loc-pos)))
+    (when region
+      (let ((ov (make-overlay (car region) (cdr region))))
+        (overlay-put ov 'invisible t)
+        (overlay-put ov 'watch-fold t)))))
+
+(defun watch--unfold-block (loc-pos)
+  "Unfold the body of the block at LOC-POS."
+  (let ((region (watch--block-body-region loc-pos)))
+    (when region
+      (dolist (ov (overlays-at (car region)))
+        (when (overlay-get ov 'watch-fold)
+          (delete-overlay ov))))))
+
+(defun watch--unfold-all-blocks ()
+  "Unfold all error blocks in the buffer."
+  (dolist (ov (overlays-in (point-min) (point-max)))
+    (when (overlay-get ov 'watch-fold)
+      (delete-overlay ov))))
+
+(defun watch--any-block-folded-p ()
+  "Return non-nil if any block in the buffer is folded."
+  (let ((result nil)
+        (pos (point-min)))
+    (while (and (not result) (< pos (point-max)))
+      (let ((next (text-property-any pos (point-max) 'watch-loc t)))
+        (if next
+            (progn
+              (when (watch--block-folded-p next)
+                (setq result t))
+              (setq pos (or (next-single-property-change next 'watch-loc)
+                            (point-max))))
+          (setq pos (point-max)))))
+    result))
+
+(defun watch-toggle-block ()
+  "Toggle folding of the error block at point."
+  (interactive)
+  (let ((pos (watch--loc-at-line)))
+    (when pos
+      (if (watch--block-folded-p pos)
+          (watch--unfold-block pos)
+        (watch--fold-block pos)))))
+
+(defun watch-toggle-all-blocks ()
+  "Toggle folding of all error blocks."
+  (interactive)
+  (if (watch--any-block-folded-p)
+      (watch--unfold-all-blocks)
+    (dolist (pos (watch--collect-locs))
+      (watch--fold-block pos))))
+
 (defun watch--on-change (event buf)
   "Handle file-notify EVENT for watch buffer BUF."
   (let ((action (nth 1 event)))
@@ -262,6 +350,8 @@
 (define-key watch-mode-map (kbd "RET") #'watch-jump-to-loc)
 (define-key watch-mode-map (kbd "M-n") #'watch-next-loc)
 (define-key watch-mode-map (kbd "M-p") #'watch-prev-loc)
+(define-key watch-mode-map (kbd "TAB") #'watch-toggle-block)
+(define-key watch-mode-map (kbd "<backtab>") #'watch-toggle-all-blocks)
 (define-key watch-mode-map (kbd "q") #'undefined)
 
 ;;;###autoload
@@ -291,7 +381,8 @@ COMMAND is run with `default-directory' as the working directory."
       (watch--cleanup)
       (setq watch--watchers (watch--setup-watches watch-dir (current-buffer)))
       (watch--run-command (current-buffer))
-      (pop-to-buffer (current-buffer)))))
+      (pop-to-buffer (current-buffer))
+      (delete-other-windows))))
 
 (provide 'watch-mode)
 ;;; watch-mode.el ends here
