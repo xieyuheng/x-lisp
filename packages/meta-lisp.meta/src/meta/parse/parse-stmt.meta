@@ -7,7 +7,7 @@
 (define (parse-stmt sexp)
   (match sexp
     ((list-sexp elements location)
-     (= tag (symbol-sexp-content (list-head elements)))
+     (= tag (symbol-sexp-content (car elements)))
      (parse-special-form-stmt tag (cdr elements) location))))
 
 (claim parse-special-form-stmt
@@ -16,34 +16,34 @@
 
 (define (parse-special-form-stmt tag sexps location)
   (cond ((equal? tag 'define)
-         (= second (list-get 0 sexps))
+         (= second (car sexps))
          (if (list-sexp? second)
            (define-function-stmt
-             (symbol-sexp-content (list-head (list-sexp-elements second)))
-             (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
-             (parse-body (list-drop 1 sexps) location)
+             (symbol-sexp-content (car (list-sexp-elements second)))
+             (list-map symbol-sexp-content (cdr (list-sexp-elements second)))
+             (parse-body (cdr sexps) location)
              location)
            (define-variable-stmt
              (symbol-sexp-content second)
-             (parse-body (list-drop 1 sexps) location)
+             (parse-body (cdr sexps) location)
              location)))
         ((equal? tag 'define-test)
          (define-test-stmt
-           (symbol-sexp-content (list-get 0 sexps))
-           (parse-body (list-drop 1 sexps) location)
+           (symbol-sexp-content (car sexps))
+           (parse-body (cdr sexps) location)
            location))
         ((equal? tag 'define-type)
-         (= second (list-get 0 sexps))
+         (= second (car sexps))
          (if (list-sexp? second)
            (define-type-stmt
-             (symbol-sexp-content (list-head (list-sexp-elements second)))
-             (list-map symbol-sexp-content (list-drop 1 (list-sexp-elements second)))
-             (parse-body (list-drop 1 sexps) location)
+             (symbol-sexp-content (car (list-sexp-elements second)))
+             (list-map symbol-sexp-content (cdr (list-sexp-elements second)))
+             (parse-body (cdr sexps) location)
              location)
            (define-type-stmt
              (symbol-sexp-content second)
              []
-             (parse-body (list-drop 1 sexps) location)
+             (parse-body (cdr sexps) location)
              location)))
         ((equal? tag 'exempt)
          (exempt-stmt
@@ -55,41 +55,41 @@
            location))
         ((equal? tag 'module)
          (declare-module-stmt
-           (symbol-sexp-content (list-get 0 sexps))
+           (symbol-sexp-content (car sexps))
            location))
         ((equal? tag 'import)
          (import-stmt
-           (symbol-sexp-content (list-get 0 sexps))
-           (list-map symbol-sexp-content (list-drop 1 sexps))
+           (symbol-sexp-content (car sexps))
+           (list-map symbol-sexp-content (cdr sexps))
            location))
         ((equal? tag 'import-as)
          (import-as-stmt
-           (symbol-sexp-content (list-get 0 sexps))
-           (symbol-sexp-content (list-get 1 sexps))
+           (symbol-sexp-content (car sexps))
+           (symbol-sexp-content (car (cdr sexps)))
            location))
         ((equal? tag 'import-all)
          (import-all-stmt
-           (symbol-sexp-content (list-get 0 sexps))
+           (symbol-sexp-content (car sexps))
            location))
         ((equal? tag 'define-enum)
          (define-enum-stmt
-           (parse-type-constructor (list-get 0 sexps))
-           (list-map parse-pre-data-constructor (list-drop 1 sexps))
+           (parse-type-constructor (car sexps))
+           (list-map parse-pre-data-constructor (cdr sexps))
            location))
         ((equal? tag 'define-algebraic-type)
          (define-algebraic-type-stmt
-           (parse-type-constructor (list-get 0 sexps))
-           (list-map parse-algebraic-type-constructor (list-drop 1 sexps))
+           (parse-type-constructor (car sexps))
+           (list-map parse-algebraic-type-constructor (cdr sexps))
            location))
         ((equal? tag 'define-struct)
          (define-struct-stmt
-           (parse-type-constructor (list-get 0 sexps))
-           (list-map parse-pre-data-field (list-drop 1 sexps))
+           (parse-type-constructor (car sexps))
+           (list-map parse-pre-data-field (cdr sexps))
            location))
         ((equal? tag 'define-struct*)
          (define-struct-star-stmt
-           (parse-type-constructor (list-get 0 sexps))
-           (parse-pre-data-constructor (list-get 1 sexps))
+           (parse-type-constructor (car sexps))
+           (parse-pre-data-constructor (car (cdr sexps)))
            location))
         ((equal? tag 'define-record-type)
          (= head (list-get 0 sexps))
@@ -97,8 +97,8 @@
          (= predicate (list-get 2 sexps))
          (= accessors (list-get 3 sexps))
          (= ctor-list (list-sexp-elements ctor-clause))
-         (= constructor-name (symbol-sexp-content (list-head ctor-list)))
-         (= fields-raw (list-drop 1 ctor-list))
+         (= constructor-name (symbol-sexp-content (car ctor-list)))
+         (= fields-raw (cdr ctor-list))
          (= accessor-list (list-sexp-elements accessors))
          (= accessor-map (build-accessor-map accessor-list location))
          (= fields
@@ -106,8 +106,8 @@
              (list-map
                (lambda (field)
                  (= field-list (list-sexp-elements field))
-                 (= name (symbol-sexp-content (list-head field-list)))
-                 (= type (parse-exp (list-head (list-drop 1 field-list))))
+                 (= name (symbol-sexp-content (car field-list)))
+                 (= type (parse-exp (car (cdr field-list))))
                  (make-algebraic-type-field
                    name type
                    (if (hash-has? name accessor-map)
@@ -138,38 +138,36 @@
              (lambda (iface)
                (= parts (list-sexp-elements iface))
                (make-pre-interface-entry
-                 (symbol-sexp-content (list-head parts))
-                 (parse-exp (list-head (list-drop 1 parts)))
+                 (symbol-sexp-content (car parts))
+                 (parse-exp (car (cdr parts)))
                  location))
              ifaces)
            location))
         ((equal? tag 'claim)
          (claim-stmt
-           (symbol-sexp-content (list-get 0 sexps))
-           (parse-exp (list-get 1 sexps))
+           (symbol-sexp-content (car sexps))
+           (parse-exp (car (cdr sexps)))
            location))
         ((equal? tag 'claim-type)
          (claim-type-stmt
-           (symbol-sexp-content (list-get 0 sexps))
+           (symbol-sexp-content (car sexps))
            location))
         ((equal? tag 'admit)
          (admit-stmt
-           (symbol-sexp-content (list-get 0 sexps))
-           (parse-exp (list-get 1 sexps))
+           (symbol-sexp-content (car sexps))
+           (parse-exp (car (cdr sexps)))
            location))
         ((equal? tag 'declare-primitive-function)
          (declare-primitive-function-stmt
-           (symbol-sexp-content (list-get 0 sexps))
-           (int-sexp-content (list-get 1 sexps))
+           (symbol-sexp-content (car sexps))
+           (int-sexp-content (car (cdr sexps)))
            location))
         ((equal? tag 'declare-primitive-variable)
          (declare-primitive-variable-stmt
-           (symbol-sexp-content (list-get 0 sexps))
+           (symbol-sexp-content (car sexps))
            location))
         ((equal? tag '@comment)
-         (comment-stmt
-           (list-drop 0 sexps)
-           location))))
+         (comment-stmt sexps location))))
 
 (claim build-accessor-map
   (-> (list-t sexp-t) source-location-t
@@ -179,12 +177,12 @@
   (if (list-empty? accessors)
     (@hash)
     (begin
-      (= entry (list-sexp-elements (list-head accessors)))
-      (= rest (list-drop 1 accessors))
-      (= field-name (symbol-sexp-content (list-head entry)))
-      (= accessor-name (symbol-sexp-content (list-head (list-drop 1 entry))))
+      (= entry (list-sexp-elements (car accessors)))
+      (= rest (cdr accessors))
+      (= field-name (symbol-sexp-content (car entry)))
+      (= accessor-name (symbol-sexp-content (car (cdr entry))))
       (= modifier-name (if (int-greater? (list-length entry) 2)
-                         (just (symbol-sexp-content (list-head (list-drop 2 entry))))
+                         (just (symbol-sexp-content (car (list-drop 2 entry))))
                          (nothing)))
       (hash-put field-name
                 (make-pair accessor-name modifier-name)
@@ -198,8 +196,8 @@
   (match sexp
     ((list-sexp sexps location)
      (make-pre-type-constructor
-       (symbol-sexp-content (list-head sexps))
-       (list-map symbol-sexp-content (list-drop 1 sexps))))
+       (symbol-sexp-content (car sexps))
+       (list-map symbol-sexp-content (cdr sexps))))
     ((symbol-sexp content location)
      (make-pre-type-constructor content []))))
 
@@ -211,8 +209,8 @@
   (match sexp
     ((list-sexp sexps location)
      (make-pre-data-constructor
-       (symbol-sexp-content (list-head sexps))
-       (list-map parse-pre-data-field (list-drop 1 sexps))
+       (symbol-sexp-content (car sexps))
+       (list-map parse-pre-data-field (cdr sexps))
        location))))
 
 (claim parse-pre-data-field
@@ -223,8 +221,8 @@
   (match sexp
     ((list-sexp sexps location)
      (make-pre-data-field
-       (symbol-sexp-content (list-head sexps))
-       (parse-exp (list-head (list-drop 1 sexps)))
+       (symbol-sexp-content (car sexps))
+       (parse-exp (car (cdr sexps)))
        location))))
 
 (claim parse-algebraic-type-constructor
@@ -240,15 +238,15 @@
      (= group-list (list-sexp-elements group))
      (= accessor-list (list-sexp-elements accessors))
      (= accessor-map (build-accessor-map accessor-list location))
-     (= name (symbol-sexp-content (list-head group-list)))
-     (= fields-raw (list-drop 1 group-list))
+     (= name (symbol-sexp-content (car group-list)))
+     (= fields-raw (cdr group-list))
      (= fields
        (pipe fields-raw
          (list-map
            (lambda (field)
              (= field-list (list-sexp-elements field))
-             (= name (symbol-sexp-content (list-head field-list)))
-             (= type (parse-exp (list-head (list-drop 1 field-list))))
+             (= name (symbol-sexp-content (car field-list)))
+             (= type (parse-exp (car (cdr field-list))))
              (make-algebraic-type-field
                name type
                (if (hash-has? name accessor-map)
