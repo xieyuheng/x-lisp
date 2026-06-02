@@ -7,14 +7,14 @@
 (define (parse-stmt sexp)
   (match sexp
     ((list-sexp elements location)
-     (parse-stmt-from-elements elements location))))
+     (= tag (symbol-sexp-content (list-head elements)))
+     (parse-special-form-stmt tag elements location))))
 
-(claim parse-stmt-from-elements
-  (-> (list-t sexp-t) source-location-t
+(claim parse-special-form-stmt
+  (-> symbol-t (list-t sexp-t) source-location-t
       (stmt-t exp-t)))
 
-(define (parse-stmt-from-elements elements location)
-  (= tag (symbol-sexp-content (list-head elements)))
+(define (parse-special-form-stmt tag elements location)
   (cond ((equal? tag 'define)
          (parse-define-stmt elements location))
         ((equal? tag 'define-test)
