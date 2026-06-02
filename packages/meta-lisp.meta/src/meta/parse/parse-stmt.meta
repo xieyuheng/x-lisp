@@ -16,16 +16,20 @@
 
 (define (parse-special-form-stmt tag sexps location)
   (cond ((equal? tag 'define)
-         (if (list-sexp? (car sexps))
-           (define-function-stmt
-             (symbol-sexp-content (car (list-sexp-elements (car sexps))))
-             (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
-             (parse-body (cdr sexps) location)
-             location)
-           (define-variable-stmt
-             (symbol-sexp-content (car sexps))
-             (parse-body (cdr sexps) location)
-             location)))
+         (cond ((list-sexp? (car sexps))
+                (@comment (define (<name> <parameter> ...)
+                            <body>))
+                (define-function-stmt
+                  (symbol-sexp-content (car (list-sexp-elements (car sexps))))
+                  (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
+                  (parse-body (cdr sexps) location)
+                  location))
+               (else
+                 (@comment (define <name> <exp>))
+                 (define-variable-stmt
+                   (symbol-sexp-content (car sexps))
+                   (parse-body (cdr sexps) location)
+                   location))))
         ((equal? tag 'define-test)
          (define-test-stmt
            (symbol-sexp-content (car sexps))
