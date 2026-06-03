@@ -6,8 +6,7 @@
   (string-sexp (content string-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))
-  (list-sexp (elements (list-t sexp-t))
-             (location source-location-t)))
+  (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
 
 (declare-primitive-function parse-sexps 2)
 (declare-primitive-function format-as-sexp 1)

@@ -7,8 +7,12 @@
 (define (parse-stmt sexp)
   (match sexp
     ((list-sexp elements location)
+     (unless (symbol-sexp? (car elements))
+       (error-with-location "(parse-stmt) head of stmt should be a symbol" (sexp-location sexp)))
      (= tag (symbol-sexp-content (car elements)))
-     (parse-special-form-stmt tag (cdr elements) location))))
+     (parse-special-form-stmt tag (cdr elements) location))
+    (else
+      (error-with-location "(parse-stmt) unhandled sexp" (sexp-location sexp)))))
 
 (claim parse-special-form-stmt
   (-> symbol-t (list-t sexp-t) source-location-t

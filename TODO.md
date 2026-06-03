@@ -1,7 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] parse-stmt -- more error report on invalid stmt
-
 [meta-lisp.meta] [review] 010-expand-pass.meta
 [meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta

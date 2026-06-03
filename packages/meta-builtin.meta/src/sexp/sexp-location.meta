@@ -1,0 +1,10 @@
+(module builtin)
+
+(define (sexp-location sexp)
+  (match sexp
+    ((symbol-sexp content location) location)
+    ((keyword-sexp content location) location)
+    ((string-sexp content location) location)
+    ((int-sexp content location) location)
+    ((float-sexp content location) location)
+    ((list-sexp elements location) location)))
