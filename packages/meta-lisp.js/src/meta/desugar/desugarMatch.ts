@@ -374,21 +374,22 @@ export function makeDefaultExp(
   targets: Array<M.Exp>,
   location: S.SourceLocation,
 ): M.Exp {
-  return M.ApplyExp(
-    M.QualifiedVarExp("meta-builtin", "builtin", "error", location),
-    [
-      M.StringConcatExp(
-        [
-          M.StringExp("match mismatch: ", location),
-          M.ApplyExp(
-            M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
-            [M.ListExp(targets, location)],
-            location,
-          ),
-        ],
+  const parts: Array<M.Exp> = [
+    M.StringExp("pattern mismatch, no match-clause for targets:", location),
+  ]
+  for (const target of targets) {
+    parts.push(M.StringExp(" ", location))
+    parts.push(
+      M.ApplyExp(
+        M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
+        [target],
         location,
       ),
-    ],
+    )
+  }
+  return M.ApplyExp(
+    M.QualifiedVarExp("meta-builtin", "builtin", "error", location),
+    [M.StringConcatExp(parts, location)],
     location,
   )
 }
