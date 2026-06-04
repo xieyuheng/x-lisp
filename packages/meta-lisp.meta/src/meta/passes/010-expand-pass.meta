@@ -74,8 +74,11 @@
   (string-to-symbol
     (@string (symbol-to-string base) "?")))
 
-(define (get-data-type stmt location)
-  (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
+(claim make-type-exp
+  (-> pre-type-constructor-t source-location-t
+      exp-t))
+
+(define (make-type-exp type-constructor location)
   (= parameters (pre-type-constructor-parameters type-constructor))
   (if (list-empty? parameters)
     (var-exp (pre-type-constructor-name type-constructor) location)
@@ -84,7 +87,7 @@
       (list-map (lambda (parameter) (var-exp parameter location)) parameters)
       location)))
 
-(define (admit-with-parameters name parameters type location)
+(define (admit-with-type-parameters name parameters type location)
   (if (list-empty? parameters)
     (admit-stmt name type location)
     (admit-stmt name (polymorphic-exp parameters type location) location)))
@@ -117,16 +120,78 @@
     (pre-data-field-location field)))
 
 (define (expand-define-algebraic-type stmt)
-  (= data-constructors (define-algebraic-type-stmt-data-constructors stmt))
-  (list-concat
-    [[stmt]
-     (list-flat-map (expand-constructor stmt) data-constructors)
-     (list-flat-map (expand-predicate stmt) data-constructors)
-     (list-flat-map (lambda (ctor)
-                      (expand-accessors-and-modifiers
-                        stmt ctor 0
-                        (explicit-data-constructor-fields ctor)))
-                    data-constructors)]))
+  (match stmt
+    ((define-algebraic-type-stmt type-constructor data-constructors location)
+     (list-concat
+       [[stmt]
+        (list-flat-map (expand-constructor type-constructor) data-constructors)
+        (list-flat-map (expand-predicate type-constructor) data-constructors)
+        (list-flat-map (lambda (ctor)
+                         (expand-accessors-and-modifiers
+                           stmt ctor 0
+                           (explicit-data-constructor-fields ctor)))
+                       data-constructors)]))))
+
+(claim expand-constructor
+  (-> pre-type-constructor-t (explicit-data-constructor-t exp-t)
+      (list-t (stmt-t exp-t))))
+
+(define (expand-constructor type-constructor ctor)
+  (match ctor
+    ((make-explicit-data-constructor name fields predicate-name location)
+     [(admit-with-type-parameters
+        name
+        (pre-type-constructor-parameters type-constructor)
+        (arrow-exp
+          (list-map explicit-data-field-type fields)
+          (make-type-exp type-constructor location)
+          location)
+        location)
+      (define-function-stmt
+        name
+        (list-map explicit-data-field-name fields)
+        (list-exp
+          (cons (symbol-exp name location)
+                (list-map
+                  (lambda (field)
+                    (var-exp (explicit-data-field-name field)
+                             (explicit-data-field-location field)))
+                  fields))
+          location)
+        location)])))
+
+(claim expand-predicate
+  (-> pre-type-constructor-t (explicit-data-constructor-t exp-t)
+      (list-t (stmt-t exp-t))))
+
+(define (expand-predicate type-constructor ctor)
+  (match ctor
+    ((make-explicit-data-constructor name fields predicate-name location)
+     [(admit-with-type-parameters
+        predicate-name
+        (pre-type-constructor-parameters type-constructor)
+        (arrow-exp
+          [(make-type-exp type-constructor location)]
+          (var-exp 'bool-t location)
+          location)
+        location)
+      (define-function-stmt
+        predicate-name
+        ['value]
+        (and-exp          
+          [(apply-exp (var-exp 'list? location) [(var-exp 'value location)] location)
+           (apply-exp 
+             (var-exp 'equal? location)
+             [(apply-exp (var-exp 'list-length location) [(var-exp 'value location)] location)
+              (int-exp (iadd (list-length fields) 1) location)]
+             location)
+           (apply-exp
+             (var-exp 'equal? location)
+             [(apply-exp (var-exp 'list-head location) [(var-exp 'value location)] location)
+              (symbol-exp name location)]
+             location)]
+          location)
+        location)])))
 
 (define (expand-accessors-and-modifiers stmt ctor index fields)
   (if (list-empty? fields)
@@ -144,93 +209,19 @@
       (list-append accessor-stmts
                    (list-append modifier-stmts rest-stmts)))))
 
-;; expand-constructor
-
-(define (expand-constructor stmt ctor)
-  (= ctor-name (explicit-data-constructor-name ctor))
-  (= fields (explicit-data-constructor-fields ctor))
-  (= ctor-location (explicit-data-constructor-location ctor))
-  (= parameters (list-map (lambda (f) (explicit-data-field-name f)) fields))
-  (= args (list-map (lambda (f)
-                      (var-exp (explicit-data-field-name f)
-                               (explicit-data-field-location f)))
-                    fields))
-  (= type-params (pre-type-constructor-parameters
-                   (define-algebraic-type-stmt-type-constructor stmt)))
-  [(admit-with-parameters
-     ctor-name
-     type-params
-     (arrow-exp
-       (list-map (lambda (f) (explicit-data-field-type f)) fields)
-       (get-data-type stmt ctor-location)
-       ctor-location)
-     ctor-location)
-   (define-function-stmt
-     ctor-name
-     parameters
-     (list-exp
-       (cons (symbol-exp ctor-name ctor-location) args)
-       ctor-location)
-     ctor-location)])
-
-;; expand-predicate
-
-(define (expand-predicate stmt ctor)
-  (= predicate (explicit-data-constructor-predicate ctor))
-  (= ctor-name (explicit-data-constructor-name ctor))
-  (= ctor-location (explicit-data-constructor-location ctor))
-  (= nfields (iadd (list-length (explicit-data-constructor-fields ctor)) 1))
-  (= type-params (pre-type-constructor-parameters
-                   (define-algebraic-type-stmt-type-constructor stmt)))
-  [(admit-with-parameters
-     predicate
-     type-params
-     (arrow-exp
-       [(get-data-type stmt ctor-location)]
-       (var-exp 'bool-t ctor-location)
-       ctor-location)
-     ctor-location)
-   (define-function-stmt
-     predicate
-     ['value]
-     (and-exp
-       [(apply-exp
-          (var-exp 'list? ctor-location)
-          [(var-exp 'value ctor-location)]
-          ctor-location)
-        (apply-exp
-          (var-exp 'equal? ctor-location)
-          [(apply-exp
-             (var-exp 'list-length ctor-location)
-             [(var-exp 'value ctor-location)]
-             ctor-location)
-           (int-exp nfields ctor-location)]
-          ctor-location)
-        (apply-exp
-          (var-exp 'equal? ctor-location)
-          [(apply-exp
-             (var-exp 'list-head ctor-location)
-             [(var-exp 'value ctor-location)]
-             ctor-location)
-           (symbol-exp ctor-name ctor-location)]
-          ctor-location)]
-       ctor-location)
-     ctor-location)])
-
-;; expand-accessor
-
 (define (expand-accessor stmt ctor index field)
   (= accessor-name (explicit-data-field-accessor-name field))
   (= field-type (explicit-data-field-type field))
   (= field-location (explicit-data-field-location field))
   (= position (iadd index 1))
-  (= type-params (pre-type-constructor-parameters
-                   (define-algebraic-type-stmt-type-constructor stmt)))
-  [(admit-with-parameters
+  (= type-parameters (pre-type-constructor-parameters
+                       (define-algebraic-type-stmt-type-constructor stmt)))
+  (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
+  [(admit-with-type-parameters
      accessor-name
-     type-params
+     type-parameters
      (arrow-exp
-       [(get-data-type stmt field-location)]
+       [(make-type-exp type-constructor field-location)]
        field-type
        field-location)
      field-location)
@@ -244,22 +235,19 @@
        field-location)
      field-location)])
 
-;; expand-modifier
-
 (define (expand-modifier stmt ctor index field)
   (= modifier-name (just-value (explicit-data-field-modifier-name field)))
   (= field-type (explicit-data-field-type field))
   (= field-location (explicit-data-field-location field))
   (= position (iadd index 1))
-  (= type-params (pre-type-constructor-parameters
-                   (define-algebraic-type-stmt-type-constructor stmt)))
-  [(admit-with-parameters
+  (= type-parameters (pre-type-constructor-parameters
+                       (define-algebraic-type-stmt-type-constructor stmt)))
+  (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
+  (= type-exp (make-type-exp type-constructor field-location))
+  [(admit-with-type-parameters
      modifier-name
-     type-params
-     (arrow-exp
-       [field-type (get-data-type stmt field-location)]
-       (get-data-type stmt field-location)
-       field-location)
+     type-parameters
+     (arrow-exp [field-type type-exp] type-exp field-location)
      field-location)
    (define-function-stmt
      modifier-name

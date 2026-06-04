@@ -1,6 +1,8 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] 010-expand-pass.meta
+[meta-lisp.meta] 010-expand-pass.meta -- refactor `expand-define-algebraic-type`
+[meta-lisp.meta] 010-expand-pass.meta -- refactor `expand-accessor`
+[meta-lisp.meta] 010-expand-pass.meta -- refactor `expand-modifier`
 
 [meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta

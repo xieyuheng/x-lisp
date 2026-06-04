@@ -151,7 +151,7 @@
 (define (pretty-explicit-data-constructor pretty-body ctor)
   (let ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
         (fields (explicit-data-constructor-fields ctor))
-        (pred-str (symbol-to-string (explicit-data-constructor-predicate ctor))))
+        (pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor))))
     (let ((field-group (if (list-empty? fields)
                          (ppml/text name-str)
                          (ppml/group

@@ -118,5 +118,5 @@
 (define-struct (explicit-data-constructor-t E)
   (name symbol-t)
   (fields (list-t (explicit-data-field-t E)))
-  (predicate symbol-t)
+  (predicate-name symbol-t)
   (location source-location-t))

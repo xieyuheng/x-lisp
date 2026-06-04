@@ -46,7 +46,7 @@
     ((define-record-type-stmt type-constructor data-constructor location)
      (= ctor (explicit-data-constructor-name data-constructor))
      (= fields (explicit-data-constructor-fields data-constructor))
-     (= pred (explicit-data-constructor-predicate data-constructor))
+     (= pred (explicit-data-constructor-predicate-name data-constructor))
      (= field-strs (list-map format-explicit-data-field fields))
      (= ctor-clause (if (list-empty? field-strs)
                       (@string "(" (symbol-to-string ctor) ")")
@@ -112,7 +112,7 @@
 (define (format-explicit-data-constructor ctor)
   (= name-str (symbol-to-string (explicit-data-constructor-name ctor)))
   (= fields (explicit-data-constructor-fields ctor))
-  (= pred-str (symbol-to-string (explicit-data-constructor-predicate ctor)))
+  (= pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor)))
   (= group (if (list-empty? fields)
              (@string "(" name-str ")")
              (@string "(" name-str " "
