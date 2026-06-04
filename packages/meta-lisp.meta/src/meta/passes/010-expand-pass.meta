@@ -13,16 +13,48 @@
 (define (expand-stmt stmt)
   (match stmt
     ((define-enum-stmt type-constructor data-constructors location)
-     (expand-define-algebraic-type (desugar-define-enum stmt)))
+     (expand-define-algebraic-type
+       (define-algebraic-type-stmt
+         type-constructor
+         (list-map desugar-data-constructor data-constructors)
+         location)))
     ((define-struct-star-stmt type-constructor data-constructor location)
-     (expand-define-algebraic-type (desugar-define-struct-star stmt)))
+     (expand-define-algebraic-type
+       (define-algebraic-type-stmt
+         type-constructor
+         [(desugar-data-constructor data-constructor)]
+         location)))
     ((define-struct-stmt type-constructor fields location)
-     (expand-define-algebraic-type (desugar-define-struct stmt)))
+     (= type-name (pre-type-constructor-name type-constructor))
+     (= base-name (make-base-name type-name location))
+     (= ctor-name (make-data-constructor-name base-name))
+     (= data-constructor (make-pre-data-constructor ctor-name fields location))
+     (expand-define-algebraic-type
+       (define-algebraic-type-stmt
+         type-constructor
+         [(desugar-data-constructor data-constructor)]
+         location)))
     ((define-record-type-stmt type-constructor data-constructor location)
-     (expand-define-algebraic-type (define-algebraic-type-stmt type-constructor [data-constructor] location)))
+     (expand-define-algebraic-type
+       (define-algebraic-type-stmt
+         type-constructor
+         [data-constructor]
+         location)))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (expand-define-algebraic-type stmt))
     (else [stmt])))
+
+(define (make-base-name type-name location)
+  (= type-name-string (symbol-to-string type-name))
+  (unless (string-ends-with? "-t" type-name-string)
+    (error-with-location
+      (@string "(make-base-name) type-name must end with -t"
+               "\n  type-name: " type-name-string)
+      location))
+  (string-to-symbol
+    (string-substring
+      0 (isub (string-length type-name-string) 2)
+      type-name-string)))
 
 (define (make-data-constructor-name base)
   (string-to-symbol
@@ -39,11 +71,6 @@
 (define (make-data-predicate-name base)
   (string-to-symbol
     (@string (symbol-to-string base) "?")))
-
-(define (make-base-name name)
-  (= name-str (symbol-to-string name))
-  (string-to-symbol
-    (string-substring 0 (isub (string-length name-str) 2) name-str)))
 
 (define (get-data-type stmt location)
   (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
@@ -74,90 +101,18 @@
     (make-data-predicate-name ctor-name)
     (pre-data-constructor-location ctor)))
 
+(claim desugar-data-field
+  (-> symbol-t pre-data-field-t
+      (explicit-data-field-t exp-t)))
+
 (define (desugar-data-field ctor-name field)
   (= field-name (pre-data-field-name field))
-  (= field-type (pre-data-field-type field))
-  (= field-location (pre-data-field-location field))
   (make-explicit-data-field
     field-name
-    field-type
+    (pre-data-field-type field)
     (make-data-accessor-name ctor-name field-name)
     (just (make-data-modifier-name ctor-name field-name))
-    field-location))
-
-(define (desugar-define-enum stmt)
-  (= type-constructor (define-enum-stmt-type-constructor stmt))
-  (= data-constructors (define-enum-stmt-data-constructors stmt))
-  (= location (define-enum-stmt-location stmt))
-  (define-algebraic-type-stmt
-    type-constructor
-    (list-map desugar-data-constructor data-constructors)
-    location))
-
-(define (desugar-define-struct-star stmt)
-  (= type-constructor (define-struct-star-stmt-type-constructor stmt))
-  (= type-name (pre-type-constructor-name type-constructor))
-  (= data-constructor (define-struct-star-stmt-data-constructor stmt))
-  (= location (define-struct-star-stmt-location stmt))
-  (= type-name-str (symbol-to-string type-name))
-  (unless (string-ends-with? "-t" type-name-str)
-    (error (@string
-             "[desugarDefineStructStar] type name must end with -t\n"
-             "  type name: " type-name-str "\n")))
-  (= base (make-base-name type-name))
-  (= ctor-name (pre-data-constructor-name data-constructor))
-  (= fields (pre-data-constructor-fields data-constructor))
-  (= ctor-location (pre-data-constructor-location data-constructor))
-  (define-algebraic-type-stmt
-    type-constructor
-    [(make-explicit-data-constructor
-       ctor-name
-       (pipe fields
-         (list-map
-           (lambda (field)
-             (= field-name (pre-data-field-name field))
-              (= field-type (pre-data-field-type field))
-              (= field-location (pre-data-field-location field))
-              (make-explicit-data-field
-                field-name
-                field-type
-                (make-data-accessor-name base field-name)
-                (just (make-data-modifier-name base field-name))
-                field-location))))
-        (make-data-predicate-name base)
-        ctor-location)]
-     location))
-
-(define (desugar-define-struct stmt)
-  (= type-constructor (define-struct-stmt-type-constructor stmt))
-  (= type-name (pre-type-constructor-name type-constructor))
-  (= fields (define-struct-stmt-fields stmt))
-  (= location (define-struct-stmt-location stmt))
-  (= type-name-str (symbol-to-string type-name))
-  (unless (string-ends-with? "-t" type-name-str)
-    (error (@string
-             "[desugarDefineStruct] type name must end with -t\n"
-             "  type name: " type-name-str "\n")))
-  (= base (make-base-name type-name))
-  (define-algebraic-type-stmt
-    type-constructor
-    [(make-explicit-data-constructor
-       (make-data-constructor-name base)
-       (pipe fields
-         (list-map
-           (lambda (field)
-              (= field-name (pre-data-field-name field))
-              (= field-type (pre-data-field-type field))
-              (= field-location (pre-data-field-location field))
-              (make-explicit-data-field
-                field-name
-                field-type
-                (make-data-accessor-name base field-name)
-                (just (make-data-modifier-name base field-name))
-                field-location))))
-        (make-data-predicate-name base)
-        location)]
-    location))
+    (pre-data-field-location field)))
 
 ;; expand-define-algebraic-type
 

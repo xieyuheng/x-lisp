@@ -1,6 +1,7 @@
 # self-hosting
 
-[meta-lisp.meta] [review] 010-expand-pass.meta
+[meta-lisp.meta] [refactor] 010-expand-pass.meta
+
 [meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta
 [meta-lisp.meta] 040-algebraic-analysis-pass.meta
