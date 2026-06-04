@@ -27,12 +27,14 @@
     ((define-struct-stmt type-constructor fields location)
      (= type-name (pre-type-constructor-name type-constructor))
      (= base-name (make-base-name type-name location))
-     (= ctor-name (make-data-constructor-name base-name))
-     (= data-constructor (make-pre-data-constructor ctor-name fields location))
      (expand-define-algebraic-type
        (define-algebraic-type-stmt
          type-constructor
-         [(desugar-data-constructor data-constructor)]
+         [(make-explicit-data-constructor
+            (make-data-constructor-name base-name)
+            (list-map (desugar-data-field base-name) fields)
+            (make-data-predicate-name base-name)
+            location)]
          location)))
     ((define-record-type-stmt type-constructor data-constructor location)
      (expand-define-algebraic-type
@@ -105,23 +107,21 @@
   (-> symbol-t pre-data-field-t
       (explicit-data-field-t exp-t)))
 
-(define (desugar-data-field ctor-name field)
+(define (desugar-data-field base field)
   (= field-name (pre-data-field-name field))
   (make-explicit-data-field
     field-name
     (pre-data-field-type field)
-    (make-data-accessor-name ctor-name field-name)
-    (just (make-data-modifier-name ctor-name field-name))
+    (make-data-accessor-name base field-name)
+    (just (make-data-modifier-name base field-name))
     (pre-data-field-location field)))
-
-;; expand-define-algebraic-type
 
 (define (expand-define-algebraic-type stmt)
   (= data-constructors (define-algebraic-type-stmt-data-constructors stmt))
   (list-concat
     [[stmt]
-     (list-flat-map (lambda (ctor) (expand-constructor stmt ctor)) data-constructors)
-     (list-flat-map (lambda (ctor) (expand-predicate stmt ctor)) data-constructors)
+     (list-flat-map (expand-constructor stmt) data-constructors)
+     (list-flat-map (expand-predicate stmt) data-constructors)
      (list-flat-map (lambda (ctor)
                       (expand-accessors-and-modifiers
                         stmt ctor 0
