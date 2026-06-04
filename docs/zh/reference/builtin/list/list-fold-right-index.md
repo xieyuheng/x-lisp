@@ -10,14 +10,14 @@ title: list-fold-right-index
 
 # 描述
 
-带索引的右折叠。回调依次接收 index、当前元素和累加器。
+带索引的右折叠。回调依次接收 index、当前元素和已折叠值。
 
 # 例子
 
 ```scheme
-(list-fold-right-index (lambda (i x acc) (cons (make-pair i x) acc)) [] ['a 'b 'c])
+(list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) [] ['a 'b 'c])
 ;; => [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]
 
-(list-fold-right-index (lambda (i x acc) (iadd (imul i x) acc)) 0 [10 20 30])
+(list-fold-right-index (lambda (i x folded) (iadd (imul i x) folded)) 0 [10 20 30])
 ;; => 80
 ```

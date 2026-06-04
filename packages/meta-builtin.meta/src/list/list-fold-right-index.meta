@@ -4,28 +4,28 @@
   (polymorphic (E R)
     (-> (-> int-t E R R) R (list-t E) R)))
 
-(define (list-fold-right-index op e list)
-  (list-fold-right-index-aux op e list (isub (list-length list) 1)))
+(define (list-fold-right-index op folded list)
+  (list-fold-right-index-aux op folded list (isub (list-length list) 1)))
 
 (claim list-fold-right-index-aux
   (polymorphic (E R)
     (-> (-> int-t E R R) R (list-t E) int-t R)))
 
-(define (list-fold-right-index-aux op e list i)
+(define (list-fold-right-index-aux op folded list i)
   (if (list-empty? list)
-    e
+    folded
     (list-fold-right-index-aux
-     op (op i (list-last list) e)
+     op (op i (list-last list) folded)
      (list-init list)
      (isub i 1))))
 
 (define-test list-fold-right-index-test
   (assert-equal
-    (list-fold-right-index (lambda (i x acc) (cons (make-pair i x) acc)) [] ['a 'b 'c])
+    (list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) [] ['a 'b 'c])
     [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)])
   (assert-equal
-    (list-fold-right-index (lambda (i x acc) (iadd (imul i x) acc)) 0 [10 20 30])
+    (list-fold-right-index (lambda (i x folded) (iadd (imul i x) folded)) 0 [10 20 30])
     80)
   (assert-equal
-    (list-fold-right-index (lambda (i x acc) (iadd x acc)) 0 [])
+    (list-fold-right-index (lambda (i x folded) (iadd x folded)) 0 [])
     0))

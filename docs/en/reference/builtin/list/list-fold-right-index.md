@@ -10,14 +10,14 @@ title: list-fold-right-index
 
 # Description
 
-Right fold with index. The callback receives the index, the current element, and the accumulator, in that order.
+Right fold with index. The callback receives the index, the current element, and the folded value, in that order.
 
 # Examples
 
 ```scheme
-(list-fold-right-index (lambda (i x acc) (cons (make-pair i x) acc)) [] ['a 'b 'c])
+(list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) [] ['a 'b 'c])
 ;; => [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]
 
-(list-fold-right-index (lambda (i x acc) (iadd (imul i x) acc)) 0 [10 20 30])
+(list-fold-right-index (lambda (i x folded) (iadd (imul i x) folded)) 0 [10 20 30])
 ;; => 80
 ```

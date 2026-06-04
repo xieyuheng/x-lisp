@@ -10,14 +10,14 @@ title: list-fold-left-index
 
 # Description
 
-Left fold with index. The callback receives the index, the accumulator, and the current element, in that order.
+Left fold with index. The callback receives the index, the folded value, and the current element, in that order.
 
 # Examples
 
 ```scheme
-(list-fold-left-index (lambda (i acc x) (iadd acc (imul i x))) 0 [10 20 30])
+(list-fold-left-index (lambda (i folded x) (iadd folded (imul i x))) 0 [10 20 30])
 ;; => 80
 
-(list-fold-left-index (lambda (i acc _) (cons i acc)) [] ['a 'b 'c])
+(list-fold-left-index (lambda (i folded _) (cons i folded)) [] ['a 'b 'c])
 ;; => [2 1 0]
 ```

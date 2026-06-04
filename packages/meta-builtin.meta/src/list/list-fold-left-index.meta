@@ -4,28 +4,28 @@
   (polymorphic (E R)
     (-> (-> int-t R E R) R (list-t E) R)))
 
-(define (list-fold-left-index op e list)
-  (list-fold-left-index-aux op e list 0))
+(define (list-fold-left-index op folded list)
+  (list-fold-left-index-aux op folded list 0))
 
 (claim list-fold-left-index-aux
   (polymorphic (E R)
     (-> (-> int-t R E R) R (list-t E) int-t R)))
 
-(define (list-fold-left-index-aux op e list i)
+(define (list-fold-left-index-aux op folded list i)
   (if (list-empty? list)
-    e
+    folded
     (list-fold-left-index-aux
-     op (op i e (car list))
+     op (op i folded (car list))
      (cdr list)
      (iadd i 1))))
 
 (define-test list-fold-left-index-test
   (assert-equal
-    (list-fold-left-index (lambda (i acc x) (iadd acc (imul i x))) 0 [10 20 30])
+    (list-fold-left-index (lambda (i folded x) (iadd folded (imul i x))) 0 [10 20 30])
     80)
   (assert-equal
-    (list-fold-left-index (lambda (i acc _) (cons i acc)) [] ['a 'b 'c])
+    (list-fold-left-index (lambda (i folded _) (cons i folded)) [] ['a 'b 'c])
     [2 1 0])
   (assert-equal
-    (list-fold-left-index (lambda (i acc x) (iadd acc x)) 0 [])
+    (list-fold-left-index (lambda (i folded x) (iadd folded x)) 0 [])
     0))

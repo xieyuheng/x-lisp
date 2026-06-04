@@ -6,11 +6,11 @@
         R (list-t E)
         R)))
 
-(define (list-fold-left op e list)
+(define (list-fold-left op folded list)
   (if (list-empty? list)
-    e
+    folded
     (list-fold-left
-     op (op e (list-head list))
+     op (op folded (list-head list))
      (list-tail list))))
 
 (define-test list-fold-left-test
@@ -23,11 +23,11 @@
         R (list-t E)
         R)))
 
-(define (list-fold-right op e list)
+(define (list-fold-right op folded list)
   (if (list-empty? list)
-    e
+    folded
     (list-fold-right
-     op (op (list-last list) e)
+     op (op (list-last list) folded)
      (list-init list))))
 
 (define-test list-fold-right-test
