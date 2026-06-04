@@ -266,6 +266,11 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`list-reverse`](list/list-reverse.md) — 反转
 - [`list-to-set`](list/list-to-set.md) — 转集合
 
+### 生成
+
+- [`list-range`](list/list-range.md) — 生成 0 到 n - 1 的整数列表
+- [`list-enumerate`](list/list-enumerate.md) — 为元素配对索引
+
 ### 排序
 
 - [`list-sort!`](list/list-sort-mut.md) — 原地排序
@@ -274,8 +279,10 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 遍历与映射
 
 - [`list-each`](list/list-each.md) — 遍历执行副作用
+- [`list-each-index`](list/list-each-index.md) — 带索引的遍历
 - [`list-flat-map`](list/list-flat-map.md) — 映射并扁平化
 - [`list-map`](list/list-map.md) — 映射
+- [`list-map-index`](list/list-map-index.md) — 带索引的映射
 - [`list-map-zip`](list/list-map-zip.md) — 同时映射两个列表
 - [`list-zip`](list/list-zip.md) — 按位置配对
 - [`list-unzip`](list/list-unzip.md) — 解配对
@@ -285,7 +292,9 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 折叠
 
 - [`list-fold-left`](list/list-fold-left.md) — 左折叠
+- [`list-fold-left-index`](list/list-fold-left-index.md) — 带索引的左折叠
 - [`list-fold-right`](list/list-fold-right.md) — 右折叠
+- [`list-fold-right-index`](list/list-fold-right-index.md) — 带索引的右折叠
 
 ### 量化
 

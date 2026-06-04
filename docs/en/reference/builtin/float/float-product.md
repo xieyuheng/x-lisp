@@ -10,7 +10,7 @@ title: float-product
 
 # Description
 
-Product of a list of floats. The product of an empty list is 1.0. Derived function.
+Product of a list of floats. The product of an empty list is 1.0.
 
 # Examples
 

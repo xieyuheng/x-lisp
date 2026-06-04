@@ -10,7 +10,7 @@ title: list-map
 
 # Description
 
-Apply a function to each element of the list, returning a new list. Derived function.
+Apply a function to each element of the list, returning a new list.
 
 # Examples
 

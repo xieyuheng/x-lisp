@@ -10,7 +10,7 @@ title: string-repeat
 
 # Description
 
-Repeat a string `n` times. Derived function.
+Repeat a string `n` times.
 
 # Examples
 

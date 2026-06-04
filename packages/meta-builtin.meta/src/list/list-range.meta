@@ -1,0 +1,20 @@
+(module builtin)
+
+(claim list-range
+  (-> int-t (list-t int-t)))
+
+(define (list-range length)
+  (list-range-aux length 0))
+
+(claim list-range-aux
+  (-> int-t int-t (list-t int-t)))
+
+(define (list-range-aux length current)
+  (if (int-greater-or-equal? current length)
+    []
+    (cons current (list-range-aux length (iadd current 1)))))
+
+(define-test list-range-test
+  (assert-equal (list-range 0) [])
+  (assert-equal (list-range 1) [0])
+  (assert-equal (list-range 5) [0 1 2 3 4]))

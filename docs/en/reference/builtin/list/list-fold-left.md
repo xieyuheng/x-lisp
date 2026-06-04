@@ -10,7 +10,7 @@ title: list-fold-left
 
 # Description
 
-Left fold over the list. Derived function.
+Left fold over the list.
 
 # Examples
 

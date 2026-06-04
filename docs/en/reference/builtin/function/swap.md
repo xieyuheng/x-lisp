@@ -12,7 +12,7 @@ title: swap
 
 # Description
 
-Swap the two arguments of a function. Derived function.
+Swap the two arguments of a function.
 
 # Examples
 

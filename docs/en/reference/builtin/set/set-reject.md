@@ -10,7 +10,7 @@ title: set-reject
 
 # Description
 
-Remove elements that satisfy the predicate. Derived function.
+Remove elements that satisfy the predicate.
 
 # Examples
 

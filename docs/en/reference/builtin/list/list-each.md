@@ -10,7 +10,7 @@ title: list-each
 
 # Description
 
-Apply a side-effecting function to each element. Derived function.
+Apply a side-effecting function to each element.
 
 # Examples
 

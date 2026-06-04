@@ -10,7 +10,7 @@ title: list-every?
 
 # Description
 
-Check if all elements satisfy the predicate. Returns `true` for an empty list. Derived function.
+Check if all elements satisfy the predicate. Returns `true` for an empty list.
 
 # Examples
 

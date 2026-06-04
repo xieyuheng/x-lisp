@@ -10,7 +10,7 @@ title: list-drop
 
 # Description
 
-Drop the first `n` elements of the list. Returns an empty list if `n` exceeds the list length. Derived function.
+Drop the first `n` elements of the list. Returns an empty list if `n` exceeds the list length.
 
 # Examples
 

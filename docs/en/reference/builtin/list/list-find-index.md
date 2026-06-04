@@ -10,7 +10,7 @@ title: list-find-index
 
 # Description
 
-Find the index of the first element satisfying the predicate. Returns `-1` if not found. Derived function.
+Find the index of the first element satisfying the predicate. Returns `-1` if not found.
 
 # Examples
 

@@ -10,7 +10,7 @@ title: list-member?
 
 # Description
 
-Check if the list contains the given element. Derived function.
+Check if the list contains the given element.
 
 # Examples
 

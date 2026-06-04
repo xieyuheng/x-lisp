@@ -10,7 +10,7 @@ title: list-first
 
 # Description
 
-First element, same as `car`. Derived function.
+First element, same as `car`.
 
 # Examples
 

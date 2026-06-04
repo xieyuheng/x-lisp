@@ -1,0 +1,24 @@
+(module builtin)
+
+(claim list-enumerate
+  (polymorphic (A)
+    (-> (list-t A) (list-t (pair-t int-t A)))))
+
+(define (list-enumerate list)
+  (list-enumerate-aux list 0))
+
+(claim list-enumerate-aux
+  (polymorphic (A)
+    (-> (list-t A) int-t (list-t (pair-t int-t A)))))
+
+(define (list-enumerate-aux list i)
+  (if (list-empty? list)
+    []
+    (cons (make-pair i (car list))
+          (list-enumerate-aux (cdr list) (iadd i 1)))))
+
+(define-test list-enumerate-test
+  (assert-equal (list-enumerate []) [])
+  (assert-equal (list-enumerate ['a]) [(make-pair 0 'a)])
+  (assert-equal (list-enumerate ['a 'b 'c])
+    [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]))

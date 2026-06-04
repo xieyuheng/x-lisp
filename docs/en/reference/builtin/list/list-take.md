@@ -10,7 +10,7 @@ title: list-take
 
 # Description
 
-Take the first `n` elements of the list. Returns the whole list if `n` exceeds the list length. Derived function.
+Take the first `n` elements of the list. Returns the whole list if `n` exceeds the list length.
 
 # Examples
 

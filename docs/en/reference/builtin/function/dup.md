@@ -12,7 +12,7 @@ title: dup
 
 # Description
 
-Create a new function that passes the argument twice to the original function. Derived function.
+Create a new function that passes the argument twice to the original function.
 
 # Examples
 

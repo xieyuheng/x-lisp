@@ -10,7 +10,7 @@ title: list-concat
 
 # Description
 
-Flatten a list of lists by one level. Derived function.
+Flatten a list of lists by one level.
 
 # Examples
 

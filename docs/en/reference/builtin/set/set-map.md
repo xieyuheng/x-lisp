@@ -10,7 +10,7 @@ title: set-map
 
 # Description
 
-Apply a function to each element of the set, returning a new set. Derived function.
+Apply a function to each element of the set, returning a new set.
 
 # Examples
 

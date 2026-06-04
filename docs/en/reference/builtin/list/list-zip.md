@@ -10,7 +10,7 @@ title: list-zip
 
 # Description
 
-Pair elements of two lists by position. Derived function.
+Pair elements of two lists by position.
 
 # Examples
 

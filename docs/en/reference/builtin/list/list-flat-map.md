@@ -10,7 +10,7 @@ title: list-flat-map
 
 # Description
 
-Applies function `f` to each element in the list, then flattens the results by one level. This is equivalent to `(list-concat (list-map f xs))`. Derived function.
+Applies function `f` to each element in the list, then flattens the results by one level. This is equivalent to `(list-concat (list-map f xs))`.
 
 # Examples
 

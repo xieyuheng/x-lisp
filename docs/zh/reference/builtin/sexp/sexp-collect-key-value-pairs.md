@@ -10,7 +10,7 @@ title: sexp-collect-key-value-pairs
 
 # 描述
 
-从带位置的 S 表达式列表中收集键值对。遇到 keyword 开头的 sexp 时，将 keyword 作为键、下一个 sexp 作为值。派生函数。
+从带位置的 S 表达式列表中收集键值对。遇到 keyword 开头的 sexp 时，将 keyword 作为键、下一个 sexp 作为值。
 
 # 例子
 

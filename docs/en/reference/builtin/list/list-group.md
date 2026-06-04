@@ -10,7 +10,7 @@ title: list-group
 
 # Description
 
-Group list elements by a key function, returning a hash table. Derived function.
+Group list elements by a key function, returning a hash table.
 
 # Examples
 

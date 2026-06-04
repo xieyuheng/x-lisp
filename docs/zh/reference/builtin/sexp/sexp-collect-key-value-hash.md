@@ -10,7 +10,7 @@ title: sexp-collect-key-value-hash
 
 # 描述
 
-从带位置的 S 表达式列表中收集键值对为哈希表。与 `sexp-collect-key-value-pairs` 类似，但返回哈希表。派生函数。
+从带位置的 S 表达式列表中收集键值对为哈希表。与 `sexp-collect-key-value-pairs` 类似，但返回哈希表。
 
 # 例子
 

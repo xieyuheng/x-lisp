@@ -1,0 +1,26 @@
+(module builtin)
+
+(claim list-map-index
+  (polymorphic (A B)
+    (-> (-> int-t A B) (list-t A) (list-t B))))
+
+(define (list-map-index f list)
+  (list-map-index-aux f list 0))
+
+(claim list-map-index-aux
+  (polymorphic (A B)
+    (-> (-> int-t A B) (list-t A) int-t (list-t B))))
+
+(define (list-map-index-aux f list i)
+  (if (list-empty? list)
+    []
+    (cons (f i (car list))
+          (list-map-index-aux f (cdr list) (iadd i 1)))))
+
+(define-test list-map-index-test
+  (assert-equal (list-map-index (lambda (i x) (iadd i x)) [10 20 30])
+    [10 21 32])
+  (assert-equal (list-map-index (lambda (i _) i) ['a 'b 'c])
+    [0 1 2])
+  (assert-equal (list-map-index (lambda (i x) (iadd i x)) [])
+    []))

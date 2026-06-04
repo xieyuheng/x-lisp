@@ -10,7 +10,7 @@ title: int-sum
 
 # Description
 
-Sum of a list of integers. The sum of an empty list is 0. Derived function.
+Sum of a list of integers. The sum of an empty list is 0.
 
 # Examples
 

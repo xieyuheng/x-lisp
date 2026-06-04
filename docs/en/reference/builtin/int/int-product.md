@@ -10,7 +10,7 @@ title: int-product
 
 # Description
 
-Product of a list of integers. The product of an empty list is 1. Derived function.
+Product of a list of integers. The product of an empty list is 1.
 
 # Examples
 

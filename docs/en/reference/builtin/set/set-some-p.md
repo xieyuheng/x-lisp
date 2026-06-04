@@ -10,7 +10,7 @@ title: set-some?
 
 # Description
 
-Check if some element satisfies the predicate. Derived function.
+Check if some element satisfies the predicate.
 
 # Examples
 

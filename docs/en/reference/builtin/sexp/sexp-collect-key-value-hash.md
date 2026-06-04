@@ -10,7 +10,7 @@ title: sexp-collect-key-value-hash
 
 # Description
 
-Collect key-value pairs from a list of located S-expressions into a hash. Similar to `sexp-collect-key-value-pairs` but returns a hash. Derived function.
+Collect key-value pairs from a list of located S-expressions into a hash. Similar to `sexp-collect-key-value-pairs` but returns a hash.
 
 # Examples
 

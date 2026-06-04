@@ -10,7 +10,7 @@ title: set-select
 
 # Description
 
-Filter elements that satisfy the predicate. Derived function.
+Filter elements that satisfy the predicate.
 
 # Examples
 

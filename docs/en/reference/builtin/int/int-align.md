@@ -10,7 +10,7 @@ title: int-align
 
 # Description
 
-Align integer `n` upward to a multiple of `alignment`. Derived function.
+Align integer `n` upward to a multiple of `alignment`.
 
 # Examples
 

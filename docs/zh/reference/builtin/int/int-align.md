@@ -10,7 +10,7 @@ title: int-align
 
 # 描述
 
-将整数 `n` 对齐到 `alignment` 的整数倍，向上取整。派生函数。
+将整数 `n` 对齐到 `alignment` 的整数倍，向上取整。
 
 # 例子
 

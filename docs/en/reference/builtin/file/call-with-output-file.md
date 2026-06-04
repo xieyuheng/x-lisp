@@ -11,7 +11,7 @@ title: call-with-output-file
 
 # Description
 
-Open file for writing, pass the file handle to a function, and automatically close the file when done. Derived function.
+Open file for writing, pass the file handle to a function, and automatically close the file when done.
 
 # Examples
 

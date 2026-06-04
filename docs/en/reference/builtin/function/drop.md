@@ -12,7 +12,7 @@ title: drop
 
 # Description
 
-Create a new function that ignores the first argument. Derived function.
+Create a new function that ignores the first argument.
 
 # Examples
 

@@ -10,7 +10,7 @@ title: list-append
 
 # Description
 
-Concatenate two lists. Derived function.
+Concatenate two lists.
 
 # Examples
 

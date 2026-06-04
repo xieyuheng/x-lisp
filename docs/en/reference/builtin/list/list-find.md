@@ -10,7 +10,7 @@ title: list-find
 
 # Description
 
-Find the first element satisfying the predicate, returning `(just value)` or `(nothing)`. Derived function.
+Find the first element satisfying the predicate, returning `(just value)` or `(nothing)`.
 
 # Examples
 

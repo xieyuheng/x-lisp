@@ -10,7 +10,7 @@ title: list-flat-map
 
 # 描述
 
-对列表中的每个元素应用函数 `f`，将结果列表扁平化一层。等价于 `(list-concat (list-map f xs))`。派生函数。
+对列表中的每个元素应用函数 `f`，将结果列表扁平化一层。等价于 `(list-concat (list-map f xs))`。
 
 # 例子
 

@@ -10,7 +10,7 @@ title: float-sum
 
 # Description
 
-Sum of a list of floats. The sum of an empty list is 0.0. Derived function.
+Sum of a list of floats. The sum of an empty list is 0.0.
 
 # Examples
 

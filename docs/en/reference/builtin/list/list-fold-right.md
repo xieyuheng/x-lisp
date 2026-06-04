@@ -10,7 +10,7 @@ title: list-fold-right
 
 # Description
 
-Right fold over the list. Derived function.
+Right fold over the list.
 
 # Examples
 

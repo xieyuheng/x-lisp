@@ -10,7 +10,7 @@ title: list-second
 
 # Description
 
-Second element. Derived function.
+Second element.
 
 # Examples
 

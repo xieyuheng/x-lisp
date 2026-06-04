@@ -10,7 +10,7 @@ title: list-some?
 
 # Description
 
-Check if some element satisfies the predicate. Returns `false` for an empty list. Derived function.
+Check if some element satisfies the predicate. Returns `false` for an empty list.
 
 # Examples
 

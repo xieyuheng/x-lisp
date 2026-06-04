@@ -10,7 +10,7 @@ title: set-every?
 
 # Description
 
-Check if all elements satisfy the predicate. Derived function.
+Check if all elements satisfy the predicate.
 
 # Examples
 

@@ -10,7 +10,7 @@ title: list-map-zip
 
 # Description
 
-Combine two lists element-wise using a function. Derived function.
+Combine two lists element-wise using a function.
 
 # Examples
 

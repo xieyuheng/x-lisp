@@ -10,7 +10,7 @@ title: list-unzip
 
 # Description
 
-Split a list of pairs into two lists. Derived function.
+Split a list of pairs into two lists.
 
 # Examples
 

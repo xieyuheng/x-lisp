@@ -266,6 +266,11 @@ Operations on `(list-t E)`.
 - [`list-reverse`](list/list-reverse.md) — Reverse
 - [`list-to-set`](list/list-to-set.md) — Convert to set
 
+### Generation
+
+- [`list-range`](list/list-range.md) — Generate integers from 0 to n - 1
+- [`list-enumerate`](list/list-enumerate.md) — Pair elements with indices
+
 ### Sort
 
 - [`list-sort!`](list/list-sort-mut.md) — Sort in-place with comparator
@@ -274,8 +279,10 @@ Operations on `(list-t E)`.
 ### Iteration and mapping
 
 - [`list-each`](list/list-each.md) — Iterate with side effects
+- [`list-each-index`](list/list-each-index.md) — Iterate with index
 - [`list-flat-map`](list/list-flat-map.md) — Map and flatten
 - [`list-map`](list/list-map.md) — Map over elements
+- [`list-map-index`](list/list-map-index.md) — Map with index
 - [`list-map-zip`](list/list-map-zip.md) — Map over two lists in parallel
 - [`list-zip`](list/list-zip.md) — Pair elements by position
 - [`list-unzip`](list/list-unzip.md) — Unzip pairs
@@ -285,7 +292,9 @@ Operations on `(list-t E)`.
 ### Folding
 
 - [`list-fold-left`](list/list-fold-left.md) — Left fold
+- [`list-fold-left-index`](list/list-fold-left-index.md) — Left fold with index
 - [`list-fold-right`](list/list-fold-right.md) — Right fold
+- [`list-fold-right-index`](list/list-fold-right-index.md) — Right fold with index
 
 ### Quantification
 

@@ -10,7 +10,7 @@ title: list-find
 
 # 描述
 
-查找列表中第一个满足条件的元素，返回 `(just value)` 或 `(nothing)`。派生函数。
+查找列表中第一个满足条件的元素，返回 `(just value)` 或 `(nothing)`。
 
 # 例子
 

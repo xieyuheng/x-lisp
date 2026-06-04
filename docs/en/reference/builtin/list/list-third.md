@@ -10,7 +10,7 @@ title: list-third
 
 # Description
 
-Third element. Derived function.
+Third element.
 
 # Examples
 
