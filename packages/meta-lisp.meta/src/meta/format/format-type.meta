@@ -25,9 +25,9 @@
      (= mod-name (mod-name (type-constructor-mod type-constructor)))
      (= name (type-constructor-name type-constructor))
      (if (list-empty? arg-types)
-       (@string mod-name "/" (symbol-to-string name))
-       (@string "(" mod-name "/" (symbol-to-string name) " "
-                (format-types arg-types) ")")))
+        (@string (symbol-to-string mod-name) "/" (symbol-to-string name))
+        (@string "(" (symbol-to-string mod-name) "/" (symbol-to-string name) " "
+                 (format-types arg-types) ")")))
     ((polymorphic-type var-types body-type)
      (@string "(polymorphic (" (format-types var-types) ") "
               (format-type body-type) ")"))))

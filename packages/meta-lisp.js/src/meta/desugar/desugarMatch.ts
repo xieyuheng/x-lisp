@@ -377,14 +377,12 @@ export function makeDefaultExp(
   return M.ApplyExp(
     M.QualifiedVarExp("meta-builtin", "builtin", "error", location),
     [
-      M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
+      M.StringConcatExp(
         [
-          M.ListExp(
-            [
-              M.StringExp("match mismatch", location),
-              M.ListExp(targets, location),
-            ],
+          M.StringExp("match mismatch: ", location),
+          M.ApplyExp(
+            M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
+            [M.ListExp(targets, location)],
             location,
           ),
         ],

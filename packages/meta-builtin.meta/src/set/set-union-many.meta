@@ -1,8 +1,9 @@
 (module builtin)
 
 (claim set-union-many
-  (-> (list-t (set-t symbol-t))
-      (set-t symbol-t)))
+  (polymorphic (E)
+    (-> (list-t (set-t E))
+        (set-t E))))
 
 (define (set-union-many sets)
   (list-fold-left set-union (make-set) sets))
