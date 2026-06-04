@@ -1,3 +1,3 @@
 # helpers.js
 
-My helper modules for JavaScript.
+JS helper modules.
