@@ -1,0 +1,4 @@
+(module heterogeneous-list-error)
+
+(define-test heterogeneous-list-test
+  (the (list-t int-t) ['a 1]))
