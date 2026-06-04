@@ -124,13 +124,16 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (list-concat
        [[stmt]
-        (list-flat-map (expand-constructor type-constructor) data-constructors)
-        (list-flat-map (expand-predicate type-constructor) data-constructors)
-        (list-flat-map (lambda (ctor)
-                         (expand-accessors-and-modifiers
-                           stmt ctor 0
-                           (explicit-data-constructor-fields ctor)))
-                       data-constructors)]))))
+        (pipe data-constructors (list-flat-map (expand-constructor type-constructor)))
+        (pipe data-constructors (list-flat-map (expand-predicate type-constructor)))
+        (pipe data-constructors
+          (list-flat-map
+            (lambda (ctor)
+              (list-append
+                (pipe (explicit-data-constructor-fields ctor)
+                  (list-flat-map-index (expand-accessor stmt ctor)))
+                (pipe (explicit-data-constructor-fields ctor)
+                  (list-flat-map-index (expand-modifier stmt ctor)))))))]))))
 
 (claim expand-constructor
   (-> pre-type-constructor-t (explicit-data-constructor-t exp-t)
@@ -178,9 +181,9 @@
       (define-function-stmt
         predicate-name
         ['value]
-        (and-exp          
+        (and-exp
           [(apply-exp (var-exp 'list? location) [(var-exp 'value location)] location)
-           (apply-exp 
+           (apply-exp
              (var-exp 'equal? location)
              [(apply-exp (var-exp 'list-length location) [(var-exp 'value location)] location)
               (int-exp (iadd (list-length fields) 1) location)]
@@ -192,22 +195,6 @@
              location)]
           location)
         location)])))
-
-(define (expand-accessors-and-modifiers stmt ctor index fields)
-  (if (list-empty? fields)
-    []
-    (begin
-      (= field (list-head fields))
-      (= rest (list-tail fields))
-      (= modifier-name (explicit-data-field-modifier-name field))
-      (= accessor-stmts (expand-accessor stmt ctor index field))
-      (= modifier-stmts (if (nothing? modifier-name)
-                          []
-                          (expand-modifier stmt ctor index field)))
-      (= rest-stmts (expand-accessors-and-modifiers stmt ctor
-                                                    (iadd index 1) rest))
-      (list-append accessor-stmts
-                   (list-append modifier-stmts rest-stmts)))))
 
 (define (expand-accessor stmt ctor index field)
   (= accessor-name (explicit-data-field-accessor-name field))
@@ -236,26 +223,28 @@
      field-location)])
 
 (define (expand-modifier stmt ctor index field)
-  (= modifier-name (just-value (explicit-data-field-modifier-name field)))
-  (= field-type (explicit-data-field-type field))
-  (= field-location (explicit-data-field-location field))
-  (= position (iadd index 1))
-  (= type-parameters (pre-type-constructor-parameters
-                       (define-algebraic-type-stmt-type-constructor stmt)))
-  (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
-  (= type-exp (make-type-exp type-constructor field-location))
-  [(admit-with-type-parameters
-     modifier-name
-     type-parameters
-     (arrow-exp [field-type type-exp] type-exp field-location)
-     field-location)
-   (define-function-stmt
-     modifier-name
-     ['value 'target]
-     (apply-exp
-       (var-exp 'list-put! field-location)
-       [(int-exp position field-location)
-        (var-exp 'value field-location)
-        (var-exp 'target field-location)]
-       field-location)
-     field-location)])
+  (match (explicit-data-field-modifier-name field)
+    ((nothing) [])
+    ((just modifier-name)
+     (= field-type (explicit-data-field-type field))
+     (= field-location (explicit-data-field-location field))
+     (= position (iadd index 1))
+     (= type-parameters (pre-type-constructor-parameters
+                          (define-algebraic-type-stmt-type-constructor stmt)))
+     (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
+     (= type-exp (make-type-exp type-constructor field-location))
+     [(admit-with-type-parameters
+        modifier-name
+        type-parameters
+        (arrow-exp [field-type type-exp] type-exp field-location)
+        field-location)
+      (define-function-stmt
+        modifier-name
+        ['value 'target]
+        (apply-exp
+          (var-exp 'list-put! field-location)
+          [(int-exp position field-location)
+           (var-exp 'value field-location)
+           (var-exp 'target field-location)]
+          field-location)
+        field-location)])))
