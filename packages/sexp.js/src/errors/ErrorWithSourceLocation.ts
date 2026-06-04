@@ -14,9 +14,7 @@ export function reportWithSourceLocation(
   location?: S.SourceLocation,
 ): string {
   if (location) {
-    message += "\n"
-    message += S.sourceLocationReport(location)
-    return message
+    return S.sourceLocationReport(location, message)
   } else {
     return message
   }

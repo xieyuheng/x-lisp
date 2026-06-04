@@ -13,46 +13,37 @@
 (define (expand-stmt stmt)
   (match stmt
     ((define-enum-stmt type-constructor data-constructors location)
-     (= algebraic-type (desugar-define-enum stmt))
-     (expand-define-algebraic-type algebraic-type))
+     (expand-define-algebraic-type (desugar-define-enum stmt)))
     ((define-struct-star-stmt type-constructor data-constructor location)
-     (= algebraic-type (desugar-define-struct-star stmt))
-     (expand-define-algebraic-type algebraic-type))
+     (expand-define-algebraic-type (desugar-define-struct-star stmt)))
     ((define-struct-stmt type-constructor fields location)
-     (= algebraic-type (desugar-define-struct stmt))
-     (expand-define-algebraic-type algebraic-type))
+     (expand-define-algebraic-type (desugar-define-struct stmt)))
     ((define-record-type-stmt type-constructor data-constructor location)
-     (= algebraic-type
-        (define-algebraic-type-stmt
-          type-constructor
-          [data-constructor]
-          location))
-     (expand-define-algebraic-type algebraic-type))
+     (expand-define-algebraic-type (define-algebraic-type-stmt type-constructor [data-constructor] location)))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (expand-define-algebraic-type stmt))
-    ((comment-stmt content location) [])
     (else [stmt])))
 
-;; Symbol and string utilities
-
-(define (symbol-append-by-dash a b)
+(define (make-data-constructor-name base)
   (string-to-symbol
-    (@string (symbol-to-string a) "-" (symbol-to-string b))))
+    (@string "make-" (symbol-to-string base))))
 
-(define (symbol-append-by-put a b)
+(define (make-data-accessor-name base field-name)
   (string-to-symbol
-    (@string (symbol-to-string a) "-put-" (symbol-to-string b) "!")))
+    (@string (symbol-to-string base) "-" (symbol-to-string field-name))))
 
-(define (symbol-make-question a)
+(define (make-data-modifier-name base field-name)
   (string-to-symbol
-    (@string (symbol-to-string a) "?")))
+    (@string (symbol-to-string base) "-put-" (symbol-to-string field-name) "!")))
 
-(define (drop-t-suffix name)
+(define (make-data-predicate-name base)
+  (string-to-symbol
+    (@string (symbol-to-string base) "?")))
+
+(define (make-base-name name)
   (= name-str (symbol-to-string name))
   (string-to-symbol
     (string-substring 0 (isub (string-length name-str) 2) name-str)))
-
-;; getDataType
 
 (define (get-data-type stmt location)
   (= type-constructor (define-algebraic-type-stmt-type-constructor stmt))
@@ -64,14 +55,35 @@
       (list-map (lambda (parameter) (var-exp parameter location)) parameters)
       location)))
 
-;; admit-with-parameters
-
 (define (admit-with-parameters name parameters type location)
   (if (list-empty? parameters)
     (admit-stmt name type location)
     (admit-stmt name (polymorphic-exp parameters type location) location)))
 
-;; desugar
+(claim desugar-data-constructor
+  (-> pre-data-constructor-t
+      (explicit-data-constructor-t exp-t)))
+
+(define (desugar-data-constructor ctor)
+  (= ctor-name (pre-data-constructor-name ctor))
+  (make-explicit-data-constructor
+    ctor-name
+    (list-map
+      (desugar-data-field ctor-name)
+      (pre-data-constructor-fields ctor))
+    (make-data-predicate-name ctor-name)
+    (pre-data-constructor-location ctor)))
+
+(define (desugar-data-field ctor-name field)
+  (= field-name (pre-data-field-name field))
+  (= field-type (pre-data-field-type field))
+  (= field-location (pre-data-field-location field))
+  (make-explicit-data-field
+    field-name
+    field-type
+    (make-data-accessor-name ctor-name field-name)
+    (just (make-data-modifier-name ctor-name field-name))
+    field-location))
 
 (define (desugar-define-enum stmt)
   (= type-constructor (define-enum-stmt-type-constructor stmt))
@@ -79,28 +91,7 @@
   (= location (define-enum-stmt-location stmt))
   (define-algebraic-type-stmt
     type-constructor
-    (pipe data-constructors
-      (list-map
-        (lambda (ctor)
-          (= ctor-name (pre-data-constructor-name ctor))
-          (= fields (pre-data-constructor-fields ctor))
-          (= ctor-location (pre-data-constructor-location ctor))
-          (make-explicit-data-constructor
-            ctor-name
-            (pipe fields
-              (list-map
-                (lambda (field)
-                  (= field-name (pre-data-field-name field))
-                  (= field-type (pre-data-field-type field))
-                  (= field-location (pre-data-field-location field))
-                  (make-explicit-data-field
-                    field-name
-                    field-type
-                    (symbol-append-by-dash ctor-name field-name)
-                    (just (symbol-append-by-put ctor-name field-name))
-                    field-location))))
-            (symbol-make-question ctor-name)
-            ctor-location))))
+    (list-map desugar-data-constructor data-constructors)
     location))
 
 (define (desugar-define-struct-star stmt)
@@ -113,7 +104,7 @@
     (error (@string
              "[desugarDefineStructStar] type name must end with -t\n"
              "  type name: " type-name-str "\n")))
-  (= base (drop-t-suffix type-name))
+  (= base (make-base-name type-name))
   (= ctor-name (pre-data-constructor-name data-constructor))
   (= fields (pre-data-constructor-fields data-constructor))
   (= ctor-location (pre-data-constructor-location data-constructor))
@@ -130,10 +121,10 @@
               (make-explicit-data-field
                 field-name
                 field-type
-                (symbol-append-by-dash base field-name)
-                (just (symbol-append-by-put base field-name))
+                (make-data-accessor-name base field-name)
+                (just (make-data-modifier-name base field-name))
                 field-location))))
-        (symbol-make-question base)
+        (make-data-predicate-name base)
         ctor-location)]
      location))
 
@@ -147,11 +138,11 @@
     (error (@string
              "[desugarDefineStruct] type name must end with -t\n"
              "  type name: " type-name-str "\n")))
-  (= base (drop-t-suffix type-name))
+  (= base (make-base-name type-name))
   (define-algebraic-type-stmt
     type-constructor
     [(make-explicit-data-constructor
-       (symbol-append-by-dash 'make base)
+       (make-data-constructor-name base)
        (pipe fields
          (list-map
            (lambda (field)
@@ -161,10 +152,10 @@
               (make-explicit-data-field
                 field-name
                 field-type
-                (symbol-append-by-dash base field-name)
-                (just (symbol-append-by-put base field-name))
+                (make-data-accessor-name base field-name)
+                (just (make-data-modifier-name base field-name))
                 field-location))))
-        (symbol-make-question base)
+        (make-data-predicate-name base)
         location)]
     location))
 
