@@ -112,7 +112,7 @@
   (name symbol-t)
   (type E)
   (accessor-name symbol-t)
-  (modifier-name (maybe-t symbol-t))
+  (modifier-name-maybe (maybe-t symbol-t))
   (location source-location-t))
 
 (define-struct (explicit-data-constructor-t E)

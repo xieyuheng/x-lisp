@@ -1,9 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] 010-expand-pass.meta -- refactor `expand-define-algebraic-type`
-[meta-lisp.meta] 010-expand-pass.meta -- refactor `expand-accessor`
-[meta-lisp.meta] 010-expand-pass.meta -- refactor `expand-modifier`
-
 [meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta
 [meta-lisp.meta] 040-algebraic-analysis-pass.meta
@@ -25,3 +21,4 @@
 # compile to native
 # socket api and network programming
 # http library
+# write agent in meta-lisp

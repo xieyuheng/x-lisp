@@ -167,7 +167,7 @@
 (define (pretty-explicit-data-accessor pretty-body field)
   (let ((name-str (symbol-to-string (explicit-data-field-name field)))
         (accessor-str (symbol-to-string (explicit-data-field-accessor-name field)))
-        (modifier (explicit-data-field-modifier-name field)))
+        (modifier (explicit-data-field-modifier-name-maybe field)))
     (match modifier
       ((just modifier-name)
        (ppml/group

@@ -133,7 +133,7 @@
 (define (format-algebraic-type-accessor field)
   (= name-str (symbol-to-string (explicit-data-field-name field)))
   (= accessor-str (symbol-to-string (explicit-data-field-accessor-name field)))
-  (= modifier (explicit-data-field-modifier-name field))
+  (= modifier (explicit-data-field-modifier-name-maybe field))
   (match modifier
     ((just modifier-name)
      (@string "(" name-str " " accessor-str " " (symbol-to-string modifier-name) ")"))
