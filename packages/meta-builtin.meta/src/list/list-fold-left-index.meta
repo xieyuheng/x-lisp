@@ -4,18 +4,18 @@
   (polymorphic (E R)
     (-> (-> int-t R E R) R (list-t E) R)))
 
-(define (list-fold-left-index op folded list)
-  (list-fold-left-index-aux op folded list 0))
+(define (list-fold-left-index f folded list)
+  (list-fold-left-index-aux f folded list 0))
 
 (claim list-fold-left-index-aux
   (polymorphic (E R)
     (-> (-> int-t R E R) R (list-t E) int-t R)))
 
-(define (list-fold-left-index-aux op folded list i)
+(define (list-fold-left-index-aux f folded list i)
   (if (list-empty? list)
     folded
     (list-fold-left-index-aux
-     op (op i folded (car list))
+     f (f i folded (car list))
      (cdr list)
      (iadd i 1))))
 
