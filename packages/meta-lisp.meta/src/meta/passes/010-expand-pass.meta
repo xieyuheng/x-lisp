@@ -129,11 +129,12 @@
         (pipe data-constructors
           (list-flat-map
             (lambda (ctor)
-              (list-append
-                (pipe (explicit-data-constructor-fields ctor)
-                  (list-flat-map-index (expand-accessor stmt ctor)))
-                (pipe (explicit-data-constructor-fields ctor)
-                  (list-flat-map-index (expand-modifier stmt ctor)))))))]))))
+              (pipe (explicit-data-constructor-fields ctor)
+                (list-flat-map-index
+                  (lambda (index field)
+                    (list-append
+                      (expand-accessor stmt ctor index field)
+                      (expand-modifier stmt ctor index field))))))))]))))
 
 (claim expand-constructor
   (-> pre-type-constructor-t (explicit-data-constructor-t exp-t)
