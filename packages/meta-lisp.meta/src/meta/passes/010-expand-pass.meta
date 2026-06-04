@@ -5,13 +5,10 @@
     (hash-each
       (lambda (path fragment)
         (mod-fragment-put-stmts!
-          (expand-stmts (mod-fragment-stmts fragment))
+          (list-flat-map expand-stmt (mod-fragment-stmts fragment))
           fragment))))
   (when (hash-has? "dump" options)
     (package-dump-fragments package "010-expand")))
-
-(define (expand-stmts stmts)
-  (list-flat-map expand-stmt stmts))
 
 (define (expand-stmt stmt)
   (match stmt
