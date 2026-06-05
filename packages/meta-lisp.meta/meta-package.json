@@ -2,16 +2,16 @@
   "name": "meta-lisp",
   "version": "0.1.0",
   "entry": "meta/main",
+  "build": {
+    "source-directory": "src",
+    "output-directory": "build",
+    "snapshot-directory": "snapshot"
+  },
   "dependencies": {
     "meta-builtin": "../meta-builtin.meta",
     "ppml": "../ppml.meta"
   },
   "prelude": {
     "meta-builtin": ["builtin"]
-  },
-  "build": {
-    "source-directory": "src",
-    "output-directory": "build",
-    "snapshot-directory": "snapshot"
   }
 }

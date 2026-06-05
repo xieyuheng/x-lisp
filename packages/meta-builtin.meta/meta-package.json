@@ -1,11 +1,11 @@
 {
   "name": "meta-builtin",
   "version": "0.1.0",
-  "dependencies": {},
-  "prelude": {},
   "build": {
     "source-directory": "src",
     "output-directory": "build",
     "snapshot-directory": "snapshot"
-  }
+  },
+  "dependencies": {},
+  "prelude": {}
 }
