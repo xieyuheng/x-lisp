@@ -24,6 +24,13 @@
       (lambda (stmt) (ppml/format-node width (pretty-stmt pretty-exp stmt)))
       stmts)))
 
+(claim pretty-fragment-desugared-stmts (-> int-t (list-t (stmt-t term-t)) string-t))
+(define (pretty-fragment-desugared-stmts width stmts)
+  (string-join "\n\n"
+    (list-map
+      (lambda (stmt) (ppml/format-node width (pretty-stmt pretty-term stmt)))
+      stmts)))
+
 (claim pretty-definitions (-> int-t (list-t definition-t) string-t))
 (define (pretty-definitions width definitions)
   (string-join "\n\n"

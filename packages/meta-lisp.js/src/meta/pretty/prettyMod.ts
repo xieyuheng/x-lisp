@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as M from "../index.ts"
 import { prettyDefinition } from "./prettyDefinition.ts"
-import { prettyExp } from "./prettyExp.ts"
+import { prettyExp, prettyTerm } from "./prettyExp.ts"
 import { prettyStmt } from "./prettyStmt.ts"
 
 export function prettyModStmts(mod: M.Mod): Ppml.Node {
@@ -22,6 +22,12 @@ export function prettyFragmentStmts(
   stmts: Array<M.Stmt<M.Exp>>,
 ): Array<Ppml.Node> {
   return stmts.map((stmt) => prettyStmt(stmt, prettyExp))
+}
+
+export function prettyFragmentDesugaredStmts(
+  stmts: Array<M.Stmt<M.Term>>,
+): Array<Ppml.Node> {
+  return stmts.map((stmt) => prettyStmt(stmt, prettyTerm))
 }
 
 export function prettyModDefinitions(mod: M.Mod): Array<Ppml.Node> {

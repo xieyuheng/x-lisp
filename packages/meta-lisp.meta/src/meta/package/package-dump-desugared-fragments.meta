@@ -1,0 +1,17 @@
+(module meta)
+
+(define (package-dump-desugared-fragments package tag)
+  (hash-each
+    (package-dump-desugared-fragment package tag)
+    (package-fragments package)))
+
+(define (package-dump-desugared-fragment package tag path fragment)
+  (= width 80)
+  (= code (pretty-fragment-desugared-stmts width (mod-fragment-desugared-stmts fragment)))
+  (= source-directory (package-source-directory package))
+  (= name (path-relative source-directory path))
+  (= dump-directory (path-join (package-output-directory package) "dump"))
+  (= dump-path (@string dump-directory "/fragments/" name "." tag ".dump"))
+  (writeln (@string "[" tag "] " (path-relative-to-cwd dump-path)))
+  (fs-ensure-file dump-path)
+  (fs-write dump-path code))
