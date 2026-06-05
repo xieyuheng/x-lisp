@@ -1,0 +1,12 @@
+(module builtin)
+
+(claim for-set
+  (polymorphic (A Any)
+    (-> (set-t A) (-> A Any)
+        void-t)))
+
+(define (for-set data fn)
+  (set-each fn data))
+
+(define-test for-set-test
+  (for-set (@set 1 2 3) println))

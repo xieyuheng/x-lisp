@@ -119,6 +119,7 @@ AI agent 应用中文回答用户的问题。
 - **不要猜测 API 用法** — 优先使用 [meta-builtin.meta] 中已定义的内建函数，需要新函数时再到 `meta-builtin.meta/src/` 下查看声明
 - **修改前应加载 `lisp-brackets` skill**，改后运行 `python3 .agents/skills/lisp-brackets/check-brackets.py <file.meta>`
 - `meta-error.meta` 的类型错误是**预期输出**，不要误判为 bug
+- **变量名可以用完整单词如 `list`/`hash`/`set`** — meta-lisp 与 Scheme 一样是单一命名空间（Lisp-1），但容器通过 `(@list ...)` / `[...]`、`(@set ...)`、`(@hash ...)` 等 `@` 前缀特殊语法构造，而非函数作用（如 Scheme 的 `(list ...)`），因此这些名字作变量不会遮蔽任何内建构造器。禁止 `lst`/`acc` 等无意义缩写
 
 每个 `.meta` package 提供：
 - `scripts/check.sh` — type-check

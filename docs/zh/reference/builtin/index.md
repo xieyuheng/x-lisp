@@ -21,6 +21,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [maybe](#maybe)
 - [box](#box)
 - [函数操作](#函数操作)
+- [for- 迭代](#for-迭代)
 - [文件 I/O](#文件-io)
 - [文件系统](#文件系统)
 - [路径操作](#路径操作)
@@ -470,6 +471,19 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`swap`](function/swap.md) — 交换函数参数顺序
 - [`drop`](function/drop.md) — 忽略第一个参数
 - [`dup`](function/dup.md) — 重复传入参数
+
+## for- 迭代
+
+`list-each` / `set-each` / `hash-each` 的 data-first 版本。
+参数顺序为 `(data fn)`，语义与对应的 `-each` 函数一致。
+
+- [`for-list`](for/for-list.md)
+- [`for-list-index`](for/for-list-index.md)
+- [`for-set`](for/for-set.md)
+- [`for-hash`](for/for-hash.md)
+- [`for-hash-value`](for/for-hash-value.md)
+- [`for-hash-key`](for/for-hash-key.md)
+- [`for-hash-entry`](for/for-hash-entry.md)
 
 ## 文件 I/O
 

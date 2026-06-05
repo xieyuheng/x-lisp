@@ -15,8 +15,7 @@ Iterate over each value with side effects.
 # Examples
 
 ```scheme
-(let ((h (@hash 1 2 3 4))
-      (acc []))
-  (hash-each-value (lambda (v) (list-push! v acc)) h)
-  acc)
+(hash-each-value
+  (lambda (value) (println value))
+  (@hash 1 2 3 4))
 ```

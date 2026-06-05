@@ -10,13 +10,12 @@ title: hash-each-entry
 
 # 描述
 
-遍历每个 entry 并执行副作用。
+遍历每个条目并执行副作用。
 
 # 例子
 
 ```scheme
-(let ((h (@hash 1 2 3 4))
-      (acc []))
-  (hash-each-entry (lambda (e) (list-push! e acc)) h)
-  acc)
+(hash-each-entry
+  (lambda (entry) (println entry))
+  (@hash 1 2 3 4))
 ```

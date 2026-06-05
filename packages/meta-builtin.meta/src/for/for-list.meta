@@ -1,0 +1,12 @@
+(module builtin)
+
+(claim for-list
+  (polymorphic (A Any)
+    (-> (list-t A) (-> A Any)
+        void-t)))
+
+(define (for-list data fn)
+  (list-each fn data))
+
+(define-test for-list-test
+  (for-list [1 2 3] println))

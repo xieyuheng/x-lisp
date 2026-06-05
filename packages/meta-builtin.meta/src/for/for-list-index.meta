@@ -1,0 +1,15 @@
+(module builtin)
+
+(claim for-list-index
+  (polymorphic (A Any)
+    (-> (list-t A) (-> int-t A Any)
+        void-t)))
+
+(define (for-list-index data fn)
+  (list-each-index fn data))
+
+(define-test for-list-index-test
+  (for-list-index ['a 'b 'c]
+    (lambda (i x)
+      (println i)
+      (println x))))

@@ -15,8 +15,7 @@ title: hash-each-key
 # 例子
 
 ```scheme
-(let ((h (@hash 1 2 3 4))
-      (acc []))
-  (hash-each-key (lambda (k) (list-push! k acc)) h)
-  acc)
+(hash-each-key
+  (lambda (key) (println key))
+  (@hash 1 2 3 4))
 ```

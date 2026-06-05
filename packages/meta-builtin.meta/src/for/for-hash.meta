@@ -1,0 +1,48 @@
+(module builtin)
+
+(claim for-hash-value
+  (polymorphic (K V Any)
+    (-> (hash-t K V) (-> V Any)
+        void-t)))
+
+(define (for-hash-value data fn)
+  (hash-each-value fn data))
+
+(claim for-hash-key
+  (polymorphic (K V Any)
+    (-> (hash-t K V) (-> K Any)
+        void-t)))
+
+(define (for-hash-key data fn)
+  (hash-each-key fn data))
+
+(claim for-hash-entry
+  (polymorphic (K V Any)
+    (-> (hash-t K V) (-> (hash-entry-t K V) Any)
+        void-t)))
+
+(define (for-hash-entry data fn)
+  (hash-each-entry fn data))
+
+(claim for-hash
+  (polymorphic (K V Any)
+    (-> (hash-t K V) (-> K V Any)
+        void-t)))
+
+(define (for-hash data fn)
+  (hash-each fn data))
+
+(define-test for-hash-value-test
+  (for-hash-value (@hash 1 2 3 4) println))
+
+(define-test for-hash-key-test
+  (for-hash-key (@hash 1 2 3 4) println))
+
+(define-test for-hash-entry-test
+  (for-hash-entry (@hash 1 2 3 4) println))
+
+(define-test for-hash-test
+  (for-hash (@hash 1 2 3 4)
+    (lambda (key value)
+      (println key)
+      (println value))))

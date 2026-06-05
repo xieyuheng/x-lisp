@@ -21,6 +21,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Maybe](#maybe)
 - [Box](#box)
 - [Function operations](#function-operations)
+- [for- Iteration](#for-iteration)
 - [File I/O](#file-io)
 - [File system](#file-system)
 - [Path operations](#path-operations)
@@ -470,6 +471,19 @@ Higher-order function manipulation.
 - [`swap`](function/swap.md) — Swap function arguments
 - [`drop`](function/drop.md) — Ignore first argument
 - [`dup`](function/dup.md) — Duplicate argument
+
+## for- Iteration
+
+Data-first versions of `list-each` / `set-each` / `hash-each`.
+Parameter order is `(data fn)`, semantically identical to the corresponding `-each` function.
+
+- [`for-list`](for/for-list.md)
+- [`for-list-index`](for/for-list-index.md)
+- [`for-set`](for/for-set.md)
+- [`for-hash`](for/for-hash.md)
+- [`for-hash-value`](for/for-hash-value.md)
+- [`for-hash-key`](for/for-hash-key.md)
+- [`for-hash-entry`](for/for-hash-entry.md)
 
 ## File I/O
 

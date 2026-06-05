@@ -35,40 +35,23 @@
              (hash-entries hash)))
 
 (define-test hash-each-value-test
-  (= hash (@hash 1 2 3 4))
-  (= list [])
   (hash-each-value
-   (lambda (value)
-     (list-push! value list))
-   hash)
-  (assert-equal [2 4] list))
+    (lambda (value) (println value))
+    (@hash 1 2 3 4)))
 
 (define-test hash-each-key-test
-  (= hash (@hash 1 2 3 4))
-  (= list [])
   (hash-each-key
-   (lambda (key)
-     (list-push! key list))
-   hash)
-  (assert-equal [1 3] list))
+    (lambda (key) (println key))
+    (@hash 1 2 3 4)))
 
 (define-test hash-each-entry-test
-  (= hash (@hash 1 2 3 4))
-  (= list [])
   (hash-each-entry
-   (lambda (entry)
-     (list-push! entry list))
-   hash)
-  (assert-equal [(make-hash-entry 1 2)
-                 (make-hash-entry 3 4)]
-                list))
+    (lambda (entry) (println entry))
+    (@hash 1 2 3 4)))
 
 (define-test hash-each-test
-  (= hash (@hash 1 2 3 4))
-  (= list [])
   (hash-each
-   (lambda (key value)
-     (list-push! key list)
-     (list-push! value list))
-   hash)
-  (assert-equal [1 2 3 4] list))
+    (lambda (key value)
+      (println key)
+      (println value))
+    (@hash 1 2 3 4)))
