@@ -1,10 +1,7 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-export function UniquifyPass(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
+export function UniquifyPass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
@@ -13,7 +10,7 @@ export function UniquifyPass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(rootPkg, "140-uniquify")
+  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "140-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {

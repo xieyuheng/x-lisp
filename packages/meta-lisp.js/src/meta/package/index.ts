@@ -1,3 +1,4 @@
+export * from "../CompilerOptions.ts"
 export * from "./loadPackage.ts"
 export * from "./loadPackageConfig.ts"
 export * from "./Package.ts"

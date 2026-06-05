@@ -1,10 +1,7 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-export function UnnestOperandPass(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
+export function UnnestOperandPass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
@@ -13,7 +10,8 @@ export function UnnestOperandPass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(rootPkg, "160-unnest-operand")
+  if (rootPkg.config.compiler.dump)
+    M.packageDumpMods(rootPkg, "160-unnest-operand")
 }
 
 type State = {

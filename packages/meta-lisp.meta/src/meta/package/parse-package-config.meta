@@ -9,7 +9,8 @@
     (parse-dependencies entries)
     (parse-prelude entries)
     (parse-build-config (hash-get "build" entries))
-    (parse-entry entries)))
+    (parse-entry entries)
+    (parse-compiler entries)))
 
 (define (parse-dependencies entries)
   (if (hash-has? "dependencies" entries)
@@ -31,6 +32,12 @@
   (if (hash-has? "entry" entries)
     (just (json-string-value (hash-get "entry" entries)))
     (nothing)))
+
+(define (parse-compiler entries)
+  (if (hash-has? "compiler" entries)
+    (let ((compiler-entries (json-object-entries (hash-get "compiler" entries))))
+      (hash-map-value json-string-value compiler-entries))
+    (make-hash)))
 
 (define (parse-build-config json-value)
   (= entries (json-object-entries json-value))

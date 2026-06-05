@@ -10,29 +10,26 @@ import * as B from "../../basic/index.ts"
 import * as Xasm from "../../xasm/index.ts"
 import * as M from "../index.ts"
 
-export function BuildPipeline(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
-  M.ExpandPass(rootPkg, options)
+export function BuildPipeline(rootPkg: M.Package): void {
+  M.ExpandPass(rootPkg)
   M.ModulePreludePass(rootPkg)
   const analysisResult = M.ModuleAnalysisPass(rootPkg)
   const algebraicInfo = M.AlgebraicAnalysisPass(rootPkg)
-  M.LowerMatchPass(rootPkg, analysisResult, algebraicInfo, options)
-  M.DesugarPass(rootPkg, options)
-  M.ModuleImportPass(rootPkg, analysisResult, options)
-  M.ExecutePass(rootPkg, options)
+  M.LowerMatchPass(rootPkg, analysisResult, algebraicInfo)
+  M.DesugarPass(rootPkg)
+  M.ModuleImportPass(rootPkg, analysisResult)
+  M.ExecutePass(rootPkg)
   M.ClaimPass(rootPkg)
-  M.QualifyPass(rootPkg, options)
-  M.CheckPass(rootPkg, options)
-  M.LocatePass(rootPkg, options)
-  M.ShrinkPass(rootPkg, options)
-  M.UniquifyPass(rootPkg, options)
-  M.LiftLambdaPass(rootPkg, options)
-  M.UnnestOperandPass(rootPkg, options)
+  M.QualifyPass(rootPkg)
+  M.CheckPass(rootPkg)
+  M.LocatePass(rootPkg)
+  M.ShrinkPass(rootPkg)
+  M.UniquifyPass(rootPkg)
+  M.LiftLambdaPass(rootPkg)
+  M.UnnestOperandPass(rootPkg)
 
   const basicMod = M.ExplicateControlPass(rootPkg)
-  if (options.has("basic")) BasicBundle(rootPkg, basicMod)
+  if (rootPkg.config.compiler.basic) BasicBundle(rootPkg, basicMod)
 
   const xasmMod = M.CodegenPass(rootPkg, basicMod)
   XasmBundle(rootPkg, xasmMod)

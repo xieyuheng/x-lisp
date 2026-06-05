@@ -23,9 +23,9 @@ router.defineHandlers({
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
-    const compilerOptions = new Map()
-    if ("--dump" in options) compilerOptions.set("dump", "true")
-    const errorOccurred = M.CheckPipeline(pkg, compilerOptions)
+    if ("--dump" in options) pkg.config.compiler.dump = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    const errorOccurred = M.CheckPipeline(pkg)
     if (errorOccurred) process.exit(2)
   },
 
@@ -33,20 +33,20 @@ router.defineHandlers({
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
-    const compilerOptions = new Map()
-    if ("--dump" in options) compilerOptions.set("dump", "true")
-    if ("--basic" in options) compilerOptions.set("basic", "true")
-    M.BuildPipeline(pkg, compilerOptions)
+    if ("--dump" in options) pkg.config.compiler.dump = "true"
+    if ("--basic" in options) pkg.config.compiler.basic = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    M.BuildPipeline(pkg)
   },
 
   test: ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
-    const compilerOptions = new Map()
-    if ("--profile" in options) compilerOptions.set("profile", "true")
-    if ("--builtin" in options) compilerOptions.set("builtin", "true")
-    M.TestPipeline(pkg, compilerOptions)
+    if ("--profile" in options) pkg.config.compiler.profile = "true"
+    if ("--builtin" in options) pkg.config.compiler.builtin = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    M.TestPipeline(pkg)
   },
 })
 

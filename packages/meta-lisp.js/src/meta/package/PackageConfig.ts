@@ -1,5 +1,7 @@
 import * as z from "zod"
 
+import type { CompilerOptions } from "../CompilerOptions.ts"
+
 export type PackageConfig = {
   name: string
   version: string
@@ -11,6 +13,7 @@ export type PackageConfig = {
     "output-directory": string
     "snapshot-directory": string
   }
+  compiler: CompilerOptions
 }
 
 export const PackageConfigSchema = z.object({
@@ -24,4 +27,5 @@ export const PackageConfigSchema = z.object({
     "output-directory": z.string(),
     "snapshot-directory": z.string(),
   }),
+  compiler: z.record(z.string(), z.string()).default({}),
 })

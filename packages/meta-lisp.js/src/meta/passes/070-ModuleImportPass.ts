@@ -3,7 +3,6 @@ import * as M from "../index.ts"
 export function ModuleImportPass(
   rootPkg: M.Package,
   info: M.ModuleAnalysisResult,
-  options: Map<string, string>,
 ): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
@@ -19,7 +18,8 @@ export function ModuleImportPass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpFragments(rootPkg, "070-module-import")
+  if (rootPkg.config.compiler.dump)
+    M.packageDumpFragments(rootPkg, "070-module-import")
 }
 
 function moduleImportStmt(

@@ -4,7 +4,6 @@ export function LowerMatchPass(
   rootPkg: M.Package,
   analysisResult: M.ModuleAnalysisResult,
   algebraicInfo: M.AlgebraicInfo,
-  options: Map<string, string>,
 ): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
@@ -19,7 +18,8 @@ export function LowerMatchPass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpFragments(rootPkg, "050-lower-match")
+  if (rootPkg.config.compiler.dump)
+    M.packageDumpFragments(rootPkg, "050-lower-match")
 }
 
 function lowerMatchStmt(

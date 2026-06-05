@@ -1,10 +1,7 @@
 import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
-export function QualifyPass(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
+export function QualifyPass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
@@ -13,7 +10,7 @@ export function QualifyPass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(rootPkg, "100-qualify")
+  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "100-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {

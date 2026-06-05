@@ -1,10 +1,7 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
 
-export function ExecutePass(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
+export function ExecutePass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const [path, fragment] of pkg.fragments) {
       let mod =
@@ -19,7 +16,7 @@ export function ExecutePass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(rootPkg, "080-execute")
+  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "080-execute")
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {

@@ -1,10 +1,7 @@
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function LocatePass(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
+export function LocatePass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
@@ -13,7 +10,7 @@ export function LocatePass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(rootPkg, "120-locate")
+  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "120-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {

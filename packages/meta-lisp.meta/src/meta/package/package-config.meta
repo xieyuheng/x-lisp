@@ -11,4 +11,5 @@
   (dependencies (hash-t string-t string-t))
   (prelude (hash-t string-t (list-t string-t)))
   (build build-config-t)
-  (entry (maybe-t string-t)))
+  (entry (maybe-t string-t))
+  (compiler (hash-t string-t string-t)))

@@ -1,4 +1,4 @@
 (module meta)
 
-(define (check-pipeline package options)
-  (expand-pass package options))
+(define (check-pipeline package)
+  (expand-pass package))

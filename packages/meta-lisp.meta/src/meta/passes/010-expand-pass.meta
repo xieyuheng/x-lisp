@@ -1,13 +1,13 @@
 (module meta)
 
-(define (expand-pass package options)
+(define (expand-pass package)
   (pipe (package-fragments package)
     (hash-each
       (lambda (path fragment)
         (mod-fragment-put-stmts!
           (list-flat-map expand-stmt (mod-fragment-stmts fragment))
           fragment))))
-  (when (hash-has? "dump" options)
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "010-expand")))
 
 (define (expand-stmt stmt)

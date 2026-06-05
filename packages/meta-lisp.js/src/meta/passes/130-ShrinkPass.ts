@@ -1,9 +1,6 @@
 import * as M from "../index.ts"
 
-export function ShrinkPass(
-  rootPkg: M.Package,
-  options: Map<string, string>,
-): void {
+export function ShrinkPass(rootPkg: M.Package): void {
   for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
     for (const mod of pkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
@@ -12,7 +9,7 @@ export function ShrinkPass(
     }
   }
 
-  if (options.has("dump")) M.packageDumpMods(rootPkg, "130-shrink")
+  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "130-shrink")
 }
 
 function shrinkDefinition(definition: M.Definition): null {
