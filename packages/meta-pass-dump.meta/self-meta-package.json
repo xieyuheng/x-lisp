@@ -7,7 +7,8 @@
     "snapshot-directory": "self-snapshot"
   },
   "dependencies": {
-    "meta-builtin": "../meta-builtin.meta"
+    "meta-builtin": "../meta-builtin.meta",
+    "meta-math": "../meta-math.meta"
   },
   "prelude": {
     "meta-builtin": ["builtin"]
