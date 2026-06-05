@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-import type { CompilerOptions } from "../CompilerOptions.ts"
+import type { CompilerOptions } from "./CompilerOptions.ts"
 
 export type PackageConfig = {
   name: string
