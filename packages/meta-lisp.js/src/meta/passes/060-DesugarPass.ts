@@ -7,7 +7,8 @@ export function DesugarPass(pkg: M.Package): void {
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpDesugaredFragments(pkg, "060-desugar")
+  if (pkg.config.compiler.dump)
+    M.packageDumpDesugaredFragments(pkg, "060-desugar")
 }
 
 function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {

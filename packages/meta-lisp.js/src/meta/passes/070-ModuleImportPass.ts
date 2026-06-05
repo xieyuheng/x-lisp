@@ -18,7 +18,8 @@ export function ModuleImportPass(
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpDesugaredFragments(pkg, "070-module-import")
+  if (pkg.config.compiler.dump)
+    M.packageDumpDesugaredFragments(pkg, "070-module-import")
 }
 
 function moduleImportStmt(
