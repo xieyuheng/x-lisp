@@ -6,7 +6,7 @@ export function LowerMatchPass(
   algebraicInfo: M.AlgebraicInfo,
 ): void {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-      for (const [path, fragment] of orderedPkg.fragments) {
+    for (const [path, fragment] of orderedPkg.fragments) {
       const scope = analysisResult.fragmentScopes.get(path)
       if (!scope) {
         throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
@@ -18,8 +18,7 @@ export function LowerMatchPass(
     }
   }
 
-  if (pkg.config.compiler.dump)
-    M.packageDumpFragments(pkg, "050-lower-match")
+  if (pkg.config.compiler.dump) M.packageDumpFragments(pkg, "050-lower-match")
 }
 
 function lowerMatchStmt(

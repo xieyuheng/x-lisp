@@ -8,8 +8,7 @@ export function ExpandPass(pkg: M.Package): void {
     }
   }
 
-  if (pkg.config.compiler.dump)
-    M.packageDumpFragments(pkg, "010-expand")
+  if (pkg.config.compiler.dump) M.packageDumpFragments(pkg, "010-expand")
 }
 
 function getDataType(stmt: M.DefineAlgebraicTypeStmt<M.Exp>): M.Exp {

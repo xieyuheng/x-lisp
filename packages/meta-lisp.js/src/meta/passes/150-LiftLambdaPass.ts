@@ -12,8 +12,7 @@ export function LiftLambdaPass(pkg: M.Package): void {
     }
   }
 
-  if (pkg.config.compiler.dump)
-    M.packageDumpMods(pkg, "150-lift-lambda")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "150-lift-lambda")
 }
 
 type State = {

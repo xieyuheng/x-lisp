@@ -10,8 +10,7 @@ export function UnnestOperandPass(pkg: M.Package): void {
     }
   }
 
-  if (pkg.config.compiler.dump)
-    M.packageDumpMods(pkg, "160-unnest-operand")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "160-unnest-operand")
 }
 
 type State = {
