@@ -1,12 +1,12 @@
 (module meta)
 
 (define (module-prelude-pass package)
-  (pipe (package-closure-in-topological-order package)
-    (list-each module-prelude-package)))
+  (swap list-each (package-closure-in-topological-order package)
+    module-prelude-package))
 
 (define (module-prelude-package package)
-  (pipe (package-fragments package)
-    (hash-each-value (module-prelude-fragment package))))
+  (swap hash-each-value (package-fragments package)
+    (module-prelude-fragment package)))
 
 (define (module-prelude-fragment package fragment)
   (swap hash-each (package-config-prelude (package-config package))
