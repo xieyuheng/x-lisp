@@ -22,17 +22,17 @@ export type AlgebraicInfo = {
   algebraicTypeInfos: Map<string, AlgebraicTypeInfo>
 }
 
-export function AlgebraicAnalysisPass(rootPkg: M.Package): AlgebraicInfo {
+export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicInfo {
   const dataConstructorInfos = new Map<string, DataConstructorInfo>()
   const algebraicTypeInfos = new Map<string, AlgebraicTypeInfo>()
 
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const fragment of pkg.fragments.values()) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const fragment of orderedPkg.fragments.values()) {
       for (const stmt of fragment.stmts) {
         if (stmt.kind === "DefineAlgebraicTypeStmt") {
           const typeName = stmt.typeConstructor.name
           const modName = fragment.modName
-          const pkgName = pkg.id
+          const pkgName = orderedPkg.id
           const constructorNames: Array<string> = []
 
           for (const ctor of stmt.dataConstructors) {

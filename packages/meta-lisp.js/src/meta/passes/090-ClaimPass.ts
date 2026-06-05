@@ -2,11 +2,11 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ClaimPass(rootPkg: M.Package): boolean {
+export function ClaimPass(pkg: M.Package): boolean {
   let errorOccurred = false
 
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const [name, entry] of mod.claimed) {
         if (
           !mod.admitted.has(name) &&

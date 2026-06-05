@@ -14,11 +14,11 @@ export type FragmentScope = {
   importedPrefixes: Map<string, { pkgName: string; modName: string }>
 }
 
-export function ModuleAnalysisPass(rootPkg: M.Package): ModuleAnalysisResult {
+export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   const definedNames = new Map<string, Set<string>>()
   const privateNames = new Map<string, Set<string>>()
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const [modName, names] of collectDefinedNames(pkg)) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const [modName, names] of collectDefinedNames(orderedPkg)) {
       let existing = definedNames.get(modName)
       if (!existing) {
         existing = new Set()
@@ -26,7 +26,7 @@ export function ModuleAnalysisPass(rootPkg: M.Package): ModuleAnalysisResult {
       }
       for (const n of names) existing.add(n)
     }
-    for (const [modName, names] of collectPrivateNames(pkg)) {
+    for (const [modName, names] of collectPrivateNames(orderedPkg)) {
       let existing = privateNames.get(modName)
       if (!existing) {
         existing = new Set()
@@ -39,15 +39,15 @@ export function ModuleAnalysisPass(rootPkg: M.Package): ModuleAnalysisResult {
 
   let errorOccurred = false
 
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const [path, fragment] of pkg.fragments) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const [path, fragment] of orderedPkg.fragments) {
       const scope = createFragmentScope()
       fragmentScopes.set(path, scope)
 
       for (const stmt of fragment.stmts) {
         if (
           executeImport(
-            pkg,
+            orderedPkg,
             definedNames,
             privateNames,
             fragment.modName,

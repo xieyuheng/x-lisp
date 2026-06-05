@@ -3,11 +3,11 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
 
-export function ExplicateControlPass(rootPkg: M.Package): B.Mod {
+export function ExplicateControlPass(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         for (const basicDefinition of explicateControlDefinition(
           basicMod,
