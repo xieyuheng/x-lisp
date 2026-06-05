@@ -1,14 +1,14 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
 
-export function ExecutePass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const [path, fragment] of pkg.fragments) {
+export function ExecutePass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const [path, fragment] of orderedPkg.fragments) {
       let mod =
-        M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
-        M.createMod(fragment.modName, pkg)
+        M.packageLookupMod(orderedPkg, orderedPkg.id, fragment.modName) ||
+        M.createMod(fragment.modName, orderedPkg)
 
-      M.packageAddMod(pkg, mod)
+      M.packageAddMod(orderedPkg, mod)
 
       for (const stmt of fragment.desugaredStmts) {
         executeStmt(mod, stmt)
@@ -16,7 +16,7 @@ export function ExecutePass(rootPkg: M.Package): void {
     }
   }
 
-  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "080-execute")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "080-execute")
 }
 
 function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {

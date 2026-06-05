@@ -1,17 +1,17 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-export function UnnestOperandPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+export function UnnestOperandPass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         unnestOperandDefinition(definition)
       }
     }
   }
 
-  if (rootPkg.config.compiler.dump)
-    M.packageDumpMods(rootPkg, "160-unnest-operand")
+  if (pkg.config.compiler.dump)
+    M.packageDumpMods(pkg, "160-unnest-operand")
 }
 
 type State = {

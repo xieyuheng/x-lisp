@@ -1,25 +1,25 @@
 import * as M from "../index.ts"
 
 export function LowerMatchPass(
-  rootPkg: M.Package,
+  pkg: M.Package,
   analysisResult: M.ModuleAnalysisResult,
   algebraicInfo: M.AlgebraicInfo,
 ): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const [path, fragment] of pkg.fragments) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+      for (const [path, fragment] of orderedPkg.fragments) {
       const scope = analysisResult.fragmentScopes.get(path)
       if (!scope) {
         throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
       }
       for (const stmt of fragment.stmts) {
-        const fragPkgId = pkg.id
+        const fragPkgId = orderedPkg.id
         lowerMatchStmt(scope, fragment.modName, algebraicInfo, fragPkgId, stmt)
       }
     }
   }
 
-  if (rootPkg.config.compiler.dump)
-    M.packageDumpFragments(rootPkg, "050-lower-match")
+  if (pkg.config.compiler.dump)
+    M.packageDumpFragments(pkg, "050-lower-match")
 }
 
 function lowerMatchStmt(

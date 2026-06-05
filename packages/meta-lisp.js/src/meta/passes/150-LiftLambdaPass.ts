@@ -1,8 +1,8 @@
 import * as M from "../index.ts"
 
-export function LiftLambdaPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+export function LiftLambdaPass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       mod.definitions = new Map(
         mod.definitions
           .values()
@@ -12,8 +12,8 @@ export function LiftLambdaPass(rootPkg: M.Package): void {
     }
   }
 
-  if (rootPkg.config.compiler.dump)
-    M.packageDumpMods(rootPkg, "150-lift-lambda")
+  if (pkg.config.compiler.dump)
+    M.packageDumpMods(pkg, "150-lift-lambda")
 }
 
 type State = {

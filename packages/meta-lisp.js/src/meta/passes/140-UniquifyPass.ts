@@ -1,16 +1,16 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 
-export function UniquifyPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+export function UniquifyPass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         uniquifyDefinition(definition)
       }
     }
   }
 
-  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "140-uniquify")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "140-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {

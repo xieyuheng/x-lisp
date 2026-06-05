@@ -1,15 +1,15 @@
 import * as M from "../index.ts"
 
-export function ShrinkPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+export function ShrinkPass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         shrinkDefinition(definition)
       }
     }
   }
 
-  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "130-shrink")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "130-shrink")
 }
 
 function shrinkDefinition(definition: M.Definition): null {

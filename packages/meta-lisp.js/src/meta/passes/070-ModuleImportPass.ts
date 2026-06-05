@@ -1,11 +1,11 @@
 import * as M from "../index.ts"
 
 export function ModuleImportPass(
-  rootPkg: M.Package,
+  pkg: M.Package,
   info: M.ModuleAnalysisResult,
 ): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const [path, fragment] of pkg.fragments) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const [path, fragment] of orderedPkg.fragments) {
       const scope = info.fragmentScopes.get(path)
       if (scope) {
         fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
@@ -18,8 +18,8 @@ export function ModuleImportPass(
     }
   }
 
-  if (rootPkg.config.compiler.dump)
-    M.packageDumpFragments(rootPkg, "070-module-import")
+  if (pkg.config.compiler.dump)
+    M.packageDumpFragments(pkg, "070-module-import")
 }
 
 function moduleImportStmt(
