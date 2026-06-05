@@ -1,3 +1,3 @@
 # meta-math
 
-math function examples.
+math package for testing package dependencies.
