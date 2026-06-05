@@ -1,15 +1,15 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ExpandPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const fragment of pkg.fragments.values()) {
+export function ExpandPass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const fragment of orderedPkg.fragments.values()) {
       fragment.stmts = fragment.stmts.flatMap(expandStmt)
     }
   }
 
-  if (rootPkg.config.compiler.dump)
-    M.packageDumpFragments(rootPkg, "010-expand")
+  if (pkg.config.compiler.dump)
+    M.packageDumpFragments(pkg, "010-expand")
 }
 
 function getDataType(stmt: M.DefineAlgebraicTypeStmt<M.Exp>): M.Exp {

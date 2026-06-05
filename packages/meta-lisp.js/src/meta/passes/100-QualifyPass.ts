@@ -1,16 +1,16 @@
 import { setUnion } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
-export function QualifyPass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+export function QualifyPass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         qualifyDefinition(definition)
       }
     }
   }
 
-  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "100-qualify")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "100-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {

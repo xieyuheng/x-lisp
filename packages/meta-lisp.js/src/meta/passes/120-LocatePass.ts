@@ -1,16 +1,16 @@
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export function LocatePass(rootPkg: M.Package): void {
-  for (const pkg of M.packageClosureInTopologicalOrder(rootPkg)) {
-    for (const mod of pkg.mods.values()) {
+export function LocatePass(pkg: M.Package): void {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         locateDefinition(definition)
       }
     }
   }
 
-  if (rootPkg.config.compiler.dump) M.packageDumpMods(rootPkg, "120-locate")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "120-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {
