@@ -6,25 +6,25 @@
 
 (define (double x) (meta-builtin/builtin/iadd x x))
 
-(claim demo-let-star (-> int-t))
+(claim example-let-star (-> int-t))
 
-(define (demo-let-star)
+(define (example-let-star)
   (= x.1 1)
   (= y.1 (meta-builtin/builtin/iadd x.1 1))
   (meta-builtin/builtin/iadd x.1 y.1))
 
-(claim demo-cond (-> int-t))
+(claim example-cond (-> int-t))
 
-(define (demo-cond)
+(define (example-cond)
   (if (meta-builtin/builtin/equal? 1 1) 1
       (if meta-builtin/builtin/true 2
           (begin
             (=
             _.1
-            (meta-builtin/builtin/make-source-position 170 6 21))
+            (meta-builtin/builtin/make-source-position 176 6 24))
             (=
             _.2
-            (meta-builtin/builtin/make-source-position 174 6 25))
+            (meta-builtin/builtin/make-source-position 180 6 28))
             (=
             _.3
             (meta-builtin/builtin/make-source-span _.1 _.2))
@@ -37,49 +37,50 @@
              "cond mismatch"
              _.4)))))
 
-(claim demo-begin (-> int-t))
+(claim example-begin (-> int-t))
 
-(define (demo-begin) 1 2 3)
+(define (example-begin) 1 2 3)
 
-(claim demo-when (-> void-t))
+(claim example-when (-> void-t))
 
-(define (demo-when)
+(define (example-when)
   (if meta-builtin/builtin/true
       (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
-(claim demo-unless (-> void-t))
+(claim example-unless (-> void-t))
 
-(define (demo-unless)
+(define (example-unless)
   (if meta-builtin/builtin/false meta-builtin/builtin/void
       (begin 2 meta-builtin/builtin/void)))
 
-(claim demo-and (-> bool-t bool-t bool-t))
+(claim example-and (-> bool-t bool-t bool-t))
 
-(define (demo-and a b) (if a b meta-builtin/builtin/false))
+(define (example-and a b) (if a b meta-builtin/builtin/false))
 
-(claim demo-or (-> bool-t bool-t bool-t))
+(claim example-or (-> bool-t bool-t bool-t))
 
-(define (demo-or a b) (if a meta-builtin/builtin/true b))
+(define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(claim demo-pipe (-> int-t))
+(claim example-pipe (-> int-t))
 
-(define (demo-pipe)
+(define (example-pipe)
   (= _.1 (self/060-desugar/add1 5))
   (self/060-desugar/double _.1))
 
-(claim demo-chain (-> int-t))
+(claim example-chain (-> int-t))
 
-(define (demo-chain) (self/060-desugar/demo-chain©λ1 5))
+(define (example-chain) (self/060-desugar/example-chain©λ1 5))
 
-(define (demo-chain©λ1 target.1)
+(define (example-chain©λ1 target.1)
   (= _.1 (self/060-desugar/add1 target.1))
   (self/060-desugar/double _.1))
 
-(claim demo-compose (-> int-t))
+(claim example-compose (-> int-t))
 
-(define (demo-compose) (self/060-desugar/demo-compose©λ1 5))
+(define (example-compose)
+  (self/060-desugar/example-compose©λ1 5))
 
-(define (demo-compose©λ1 target.1)
+(define (example-compose©λ1 target.1)
   (= _.1 (self/060-desugar/double target.1))
   (self/060-desugar/add1 _.1))

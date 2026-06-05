@@ -1,0 +1,1 @@
+(define (example-square x) (meta-math/math/square x))
