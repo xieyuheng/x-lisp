@@ -1,30 +1,27 @@
 #!/usr/bin/env bash
 
-# setup the following directory to use new-worktree
-#
-#     meta-lisp/
-#     - master/
-#     - new-worktree
+# create a new worktree based on master branch
+#     - scripts/new-worktree.sh
+#     - worktrees/<name>
 
 set -euo pipefail
 
-if [ $# -ne 2 ]; then
-  echo "Usage: $0 <base-worktree> <branch-name>"
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <branch-name>"
   exit 1
 fi
 
-BASE="${1%/}"
-NAME="$2"
+NAME="$1"
 TS=$(date +%Y-%m-%d-%H-%M)
 SUFFIXED="${NAME}--${TS}"
 
 HERE="$(cd "$(dirname "$0")" && pwd -P)"
-BASE_REAL="$(cd "$HERE/$BASE" && pwd -P)"
+REPO_ROOT="$(cd "$HERE/.." && pwd -P)"
 
-(cd "$BASE_REAL" && git branch "$SUFFIXED")
-(cd "$BASE_REAL" && git worktree add "$HERE/$SUFFIXED" "$SUFFIXED")
+(cd "$REPO_ROOT" && git branch "$SUFFIXED")
+(cd "$REPO_ROOT" && git worktree add "worktrees/$SUFFIXED" "$SUFFIXED")
 
-cd "$HERE/$SUFFIXED"
+cd "$REPO_ROOT/worktrees/$SUFFIXED"
 
 [ -f scripts/prepare.sh ] && ./scripts/prepare.sh
 
