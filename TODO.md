@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] 020-module-prelude-pass.meta
 [meta-lisp.meta] 030-module-analysis-pass.meta
 [meta-lisp.meta] 040-algebraic-analysis-pass.meta
 [meta-lisp.meta] 050-lower-match-pass.meta
