@@ -4,4 +4,4 @@
 
 (import-all meta-math/math)
 
-(define (example-square x) (square x))
+(define (example-square x) (meta-math/math/square x))
