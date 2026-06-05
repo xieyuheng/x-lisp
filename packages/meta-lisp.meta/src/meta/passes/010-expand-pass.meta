@@ -1,12 +1,12 @@
 (module meta)
 
 (define (expand-pass package)
-  (swap list-each (package-closure-in-topological-order package) expand-package)
+  (for-list (package-closure-in-topological-order package) expand-package)
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "010-expand")))
 
 (define (expand-package package)
-  (swap hash-each-value (package-fragments package) expand-fragment))
+  (for-hash-value (package-fragments package) expand-fragment))
 
 (define (expand-fragment fragment)
   (mod-fragment-put-stmts!

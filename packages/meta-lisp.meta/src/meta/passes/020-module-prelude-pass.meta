@@ -1,17 +1,17 @@
 (module meta)
 
 (define (module-prelude-pass package)
-  (swap list-each (package-closure-in-topological-order package)
+  (for-list (package-closure-in-topological-order package)
     module-prelude-package))
 
 (define (module-prelude-package package)
-  (swap hash-each-value (package-fragments package)
+  (for-hash-value (package-fragments package)
     (module-prelude-fragment package)))
 
 (define (module-prelude-fragment package fragment)
-  (swap hash-each (package-config-prelude (package-config package))
+  (for-hash (package-config-prelude (package-config package))
     (lambda (package-name module-names)
-      (swap list-each module-names
+      (for-list module-names
         (lambda (module-name)
           (list-push-front!
             (import-all-stmt
