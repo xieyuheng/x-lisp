@@ -6,10 +6,10 @@
   (make-package-config
     (json-string-value (hash-get "name" entries))
     (json-string-value (hash-get "version" entries))
+    (parse-entry entries)
+    (parse-build-config (hash-get "build" entries))
     (parse-dependencies entries)
     (parse-prelude entries)
-    (parse-build-config (hash-get "build" entries))
-    (parse-entry entries)
     (parse-compiler entries)))
 
 (define (parse-dependencies entries)
