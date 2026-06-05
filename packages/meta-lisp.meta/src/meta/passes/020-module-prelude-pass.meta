@@ -1,0 +1,4 @@
+(module meta)
+
+(define (module-prelude-pass package)
+  void)

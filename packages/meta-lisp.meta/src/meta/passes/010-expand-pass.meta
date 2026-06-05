@@ -1,14 +1,19 @@
 (module meta)
 
 (define (expand-pass package)
-  (pipe (package-fragments package)
-    (hash-each
-      (lambda (path fragment)
-        (mod-fragment-put-stmts!
-          (list-flat-map expand-stmt (mod-fragment-stmts fragment))
-          fragment))))
+  (pipe (package-closure-in-topological-order package)
+    (list-each expand-package))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "010-expand")))
+
+(define (expand-package package)
+  (pipe (package-fragments package)
+    (hash-each-value expand-fragment)))
+
+(define (expand-fragment fragment)
+  (mod-fragment-put-stmts!
+    (list-flat-map expand-stmt (mod-fragment-stmts fragment))
+    fragment))
 
 (define (expand-stmt stmt)
   (match stmt
