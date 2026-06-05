@@ -1,4 +1,3 @@
-for-list 的高亮错了，只高亮了 for- 部分，没有高亮整个 list
 # self-hosting
 
 [meta-lisp.meta] 030-module-analysis-pass.meta
