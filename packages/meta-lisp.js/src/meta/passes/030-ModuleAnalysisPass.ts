@@ -1,6 +1,15 @@
 import { writeln } from "@xieyuheng/helpers.js/file"
+import { setDifference } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
+import assert from "node:assert"
 import * as M from "../index.ts"
+
+export type ModuleAnalysisResult = {
+  definedNames: NameGroupByMod
+  privateNames: NameGroupByMod
+  fragmentScopes: Map<FilePath, FragmentScope>
+  errorOccurred: boolean
+}
 
 type ModName = string
 type Name = string
@@ -9,13 +18,6 @@ type Prefix = string
 type FilePath = string
 
 type NameGroupByMod = Map<ModName, Set<Name>>
-
-export type ModuleAnalysisResult = {
-  definedNames: NameGroupByMod
-  privateNames: NameGroupByMod
-  fragmentScopes: Map<FilePath, FragmentScope>
-  errorOccurred: boolean
-}
 
 export type FragmentScope = {
   importedNames: Map<Name, { pkgName: PkgName; modName: ModName; name: Name }>
@@ -94,16 +96,9 @@ function executeImport(
   if (stmt.kind === "ImportStmt") {
     const { pkgName, modName } = stmt
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
-
-    const { privates } = lookupImportNames(
-      pkg,
-      definedNames,
-      privateNames,
-      pkgName,
-      modName,
-    )
+    const importedModPrivateNames = lookupModPrivateNames(pkg, pkgName, modName)
     for (const name of stmt.names) {
-      if (privates.has(name)) continue
+      if (importedModPrivateNames.has(name)) continue
       scope.importedNames.set(name, { pkgName, modName, name })
     }
   }
@@ -111,28 +106,17 @@ function executeImport(
   if (stmt.kind === "ImportAsStmt") {
     const { pkgName, modName } = stmt
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
-
     scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
     const { pkgName, modName } = stmt
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
-
-    const { names, privates } = lookupImportNames(
-      pkg,
-      definedNames,
-      privateNames,
-      pkgName,
-      modName,
-    )
-
-    for (const name of names) {
-      if (privates.has(name)) continue
+    const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
+    for (const name of importedModPublicNames) {
       // Skip names already defined in the current module,
       // so that local definitions can override imported ones.
       if (definedNames.get(currentModName)?.has(name)) continue
-
       scope.importedNames.set(name, { pkgName, modName, name })
     }
   }
@@ -140,24 +124,45 @@ function executeImport(
   return false
 }
 
-function lookupImportNames(
+function lookupPackage(pkg: M.Package, pkgName: PkgName): M.Package {
+  if (pkgName === "self") {
+    return pkg
+  } else {
+    const dependency = pkg.dependencies.get(pkgName)
+    assert(dependency)
+    return dependency
+  }
+}
+
+function lookupModDefinedNames(
   pkg: M.Package,
-  definedNames: NameGroupByMod,
-  privateNames: NameGroupByMod,
   pkgName: PkgName,
   modName: ModName,
-): { names: Set<Name>; privates: Set<Name> } {
-  if (pkgName !== "self" && pkgName !== pkg.id) {
-    const target = pkg.dependencies.get(pkgName)!
-    return {
-      names: collectDefinedNames(target).get(modName) ?? new Set(),
-      privates: collectPrivateNames(target).get(modName) ?? new Set(),
-    }
-  }
-  return {
-    names: definedNames.get(modName) ?? new Set(),
-    privates: privateNames.get(modName) ?? new Set(),
-  }
+): Set<Name> {
+  return (
+    collectDefinedNames(lookupPackage(pkg, pkgName)).get(modName) ?? new Set()
+  )
+}
+
+function lookupModPrivateNames(
+  pkg: M.Package,
+  pkgName: PkgName,
+  modName: ModName,
+): Set<Name> {
+  return (
+    collectPrivateNames(lookupPackage(pkg, pkgName)).get(modName) ?? new Set()
+  )
+}
+
+function lookupModPublicNames(
+  pkg: M.Package,
+  pkgName: PkgName,
+  modName: ModName,
+): Set<Name> {
+  return setDifference(
+    lookupModDefinedNames(pkg, pkgName, modName),
+    lookupModPrivateNames(pkg, pkgName, modName),
+  )
 }
 
 function ensureModExists(
@@ -166,36 +171,32 @@ function ensureModExists(
   modName: ModName,
   location: S.SourceLocation,
 ): boolean {
-  const target =
-    pkgName === "self" || pkgName === pkg.id
-      ? pkg
-      : pkg.dependencies.get(pkgName)
-  if (!target) {
-    const errorMessage = `undefined package: ${pkgName}`
-    if (location) {
-      writeln(S.sourceLocationReport(location, errorMessage))
-    } else {
-      writeln(`${pkgName}/${modName} -- ${errorMessage}`)
+  if (pkgName === "self") {
+    for (const fragment of pkg.fragments.values()) {
+      if (fragment.modName === modName) return true
     }
+
+    writeln(S.sourceLocationReport(location, `undefined module: ${modName}`))
+    return false
+  } else {
+    const dependency = pkg.dependencies.get(pkgName)
+    if (!dependency) {
+      writeln(S.sourceLocationReport(location, `undefined package: ${pkgName}`))
+      return false
+    }
+
+    for (const fragment of dependency.fragments.values()) {
+      if (fragment.modName === modName) return true
+    }
+
+    writeln(
+      S.sourceLocationReport(
+        location,
+        `undefined module: ${pkgName}/${modName}`,
+      ),
+    )
     return false
   }
-
-  for (const fragment of target.fragments.values()) {
-    if (fragment.modName === modName) {
-      return true
-    }
-  }
-
-  const fullModName =
-    pkgName === "self" || pkgName === pkg.id ? modName : `${pkgName}/${modName}`
-  const errorMessage = `undefined module: ${fullModName}`
-  if (location) {
-    writeln(S.sourceLocationReport(location, errorMessage))
-  } else {
-    writeln(`${modName} -- ${errorMessage}`)
-  }
-
-  return false
 }
 
 function collectNamesByMod(
