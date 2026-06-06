@@ -2,33 +2,27 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-// ModuleAnalysisResult = {
-//   definedNames:    Map<modName, Set<name>>     // 每个模块定义了哪些名字
-//   privateNames:    Map<modName, Set<name>>     // 每个模块的私有名字
-//   fragmentScopes:  Map<path, FragmentScope>    // 每个源文件的解析后 import 信息
-//   errorOccurred:   boolean                     // 是否有 import 错误
-// }
+type ModName = string
+type Name = string
+type PkgName = string
+type Prefix = string
+type FilePath = string
 
 export type ModuleAnalysisResult = {
-  definedNames: Map<string, Set<string>>
-  privateNames: Map<string, Set<string>>
-  fragmentScopes: Map<string, FragmentScope>
+  definedNames: Map<ModName, Set<Name>>
+  privateNames: Map<ModName, Set<Name>>
+  fragmentScopes: Map<FilePath, FragmentScope>
   errorOccurred: boolean
 }
 
-// FragmentScope = {
-//   importedNames:   Map<name, {pkgName, modName, name}>   // 直接按名 import
-//   importedPrefixes: Map<prefix, {pkgName, modName}>      // prefix import (as)
-// }
-
 export type FragmentScope = {
-  importedNames: Map<string, { pkgName: string; modName: string; name: string }>
-  importedPrefixes: Map<string, { pkgName: string; modName: string }>
+  importedNames: Map<Name, { pkgName: PkgName; modName: ModName; name: Name }>
+  importedPrefixes: Map<Prefix, { pkgName: PkgName; modName: ModName }>
 }
 
 export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
-  const definedNames = new Map<string, Set<string>>()
-  const privateNames = new Map<string, Set<string>>()
+  const definedNames = new Map<ModName, Set<Name>>()
+  const privateNames = new Map<ModName, Set<Name>>()
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [modName, names] of collectDefinedNames(orderedPkg)) {
       let existing = definedNames.get(modName)
@@ -47,7 +41,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
       for (const n of names) existing.add(n)
     }
   }
-  const fragmentScopes = new Map<string, FragmentScope>()
+  const fragmentScopes = new Map<FilePath, FragmentScope>()
 
   let errorOccurred = false
 
@@ -84,9 +78,9 @@ function createFragmentScope(): FragmentScope {
 
 function executeImport(
   pkg: M.Package,
-  definedNames: Map<string, Set<string>>,
-  privateNames: Map<string, Set<string>>,
-  currentModName: string,
+  definedNames: Map<ModName, Set<Name>>,
+  privateNames: Map<ModName, Set<Name>>,
+  currentModName: ModName,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
 ): boolean {
@@ -141,11 +135,11 @@ function executeImport(
 
 function lookupImportNames(
   pkg: M.Package,
-  definedNames: Map<string, Set<string>>,
-  privateNames: Map<string, Set<string>>,
-  pkgName: string,
-  modName: string,
-): { names: Set<string>; privates: Set<string> } {
+  definedNames: Map<ModName, Set<Name>>,
+  privateNames: Map<ModName, Set<Name>>,
+  pkgName: PkgName,
+  modName: ModName,
+): { names: Set<Name>; privates: Set<Name> } {
   if (pkgName !== "self" && pkgName !== pkg.id) {
     const target = pkg.dependencies.get(pkgName)!
     return {
@@ -161,8 +155,8 @@ function lookupImportNames(
 
 function ensureModExists(
   pkg: M.Package,
-  pkgName: string,
-  modName: string,
+  pkgName: PkgName,
+  modName: ModName,
   location: S.SourceLocation,
 ): boolean {
   const target =
@@ -197,8 +191,8 @@ function ensureModExists(
   return false
 }
 
-function collectDefinedNames(pkg: M.Package): Map<string, Set<string>> {
-  const definedNames = new Map<string, Set<string>>()
+function collectDefinedNames(pkg: M.Package): Map<ModName, Set<Name>> {
+  const definedNames = new Map<ModName, Set<Name>>()
 
   for (const fragment of pkg.fragments.values()) {
     let names = definedNames.get(fragment.modName)
@@ -215,8 +209,8 @@ function collectDefinedNames(pkg: M.Package): Map<string, Set<string>> {
   return definedNames
 }
 
-function collectPrivateNames(pkg: M.Package): Map<string, Set<string>> {
-  const privateNames = new Map<string, Set<string>>()
+function collectPrivateNames(pkg: M.Package): Map<ModName, Set<Name>> {
+  const privateNames = new Map<ModName, Set<Name>>()
 
   for (const fragment of pkg.fragments.values()) {
     let names = privateNames.get(fragment.modName)

@@ -3,7 +3,7 @@
 ;; (define-struct module-analysis-result
 ;;   (defined-names (hash-t symbol-t (set-t symbol-t)))
 ;;   (private-names (hash-t symbol-t (set-t symbol-t)))
-;;   (fragment-scopes (hash-t symbol-t fragment-scope-t))
+;;   (fragment-scopes (hash-t string-t fragment-scope-t))
 ;;   (error-occurred? bool-t))
 
 ;; (define-struct fragment-scope-t
