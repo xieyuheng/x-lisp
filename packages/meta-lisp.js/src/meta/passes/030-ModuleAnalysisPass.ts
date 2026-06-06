@@ -55,7 +55,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
         )
 
         if (errorOccurred) {
-          analysisResult.errorOccurred = errorOccurred
+          analysisResult.errorOccurred = true
         }
       }
     }
@@ -114,8 +114,8 @@ function executeImport(
     if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
     const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
     for (const name of importedModPublicNames) {
-      // Skip names already defined in the current module,
-      // so that local definitions can override imported ones.
+      // - why: skip names already defined in the current module,
+      //   so that local definitions can override imported ones.
       if (definedNames.get(currentModName)?.has(name)) continue
       scope.importedNames.set(name, { pkgName, modName, name })
     }

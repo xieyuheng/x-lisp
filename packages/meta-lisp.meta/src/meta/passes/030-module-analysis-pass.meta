@@ -6,7 +6,7 @@
   (fragment-scopes (hash-t file-path-t fragment-scope-t))
   (error-occurred? bool-t))
 
-;; type alias help us to understand the key type of hash-t.
+;; - why: type aliases help us to understand the key type of hash-t.
 
 (define-type mod-name-t symbol-t)
 (define-type name-t symbol-t)
