@@ -3,22 +3,24 @@
 (define-struct module-analysis-result-t
   (defined-names name-group-by-mod-t)
   (private-names name-group-by-mod-t)
-  (fragment-scopes (hash-t file-path-t fragment-scope-t))
+  (fragment-scopes (hash-t string-t fragment-scope-t))
   (outcome outcome-t))
 
 ;; - why: type aliases help us to understand the key type of hash-t.
 
 (define-type mod-name-t symbol-t)
 (define-type name-t symbol-t)
-(define-type pkg-name-t symbol-t)
 (define-type prefix-t symbol-t)
-(define-type file-path-t string-t)
 
 (define-type name-group-by-mod-t (hash-t mod-name-t (set-t name-t)))
 
-(define-struct fragment-scope-t
-  (imported-names (hash-t name-t qualified-name-entry-t))
-  (imported-prefixes (hash-t prefix-t prefix-entry-t)))
+(define-struct* fragment-scope-t
+  (cons-fragment-scope
+    (imported-names (hash-t name-t qualified-name-entry-t))
+    (imported-prefixes (hash-t prefix-t prefix-entry-t))))
+
+(define (make-fragment-scope)
+  (cons-fragment-scope (make-hash) (make-hash)))
 
 (define-struct qualified-name-entry-t
   (pkg-name symbol-t)
@@ -29,14 +31,9 @@
   (pkg-name symbol-t)
   (mod-name symbol-t))
 
-(@comment
-  (claim module-analysis-pass
-    (-> package-t
-        module-analysis-result-t)))
-
 (claim module-analysis-pass
   (-> package-t
-      void-t))
+      module-analysis-result-t))
 
 (define (module-analysis-pass package)
   (= defined-names (make-hash))
@@ -44,7 +41,21 @@
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
       (merge-set-hash! defined-names (collect-defined-names package))
-      (merge-set-hash! private-names (collect-private-names package)))))
+      (merge-set-hash! private-names (collect-private-names package))))
+  (= fragment-scopes (make-hash))
+  (= analysis-result
+    (make-module-analysis-result defined-names private-names fragment-scopes (outcome-ok)))
+  (for-list (package-closure-in-topological-order package)
+    (lambda (ordered-package)
+      (for-hash (package-fragments ordered-package)
+        (lambda (path fragment)
+          (= scope (make-fragment-scope))
+          (hash-put! path scope fragment-scopes)
+          (for-list (mod-fragment-stmts fragment)
+            (lambda (stmt)
+              ;; todo
+              void))))))
+  analysis-result)
 
 (define (collect-defined-names package)
   (collect-names-by-mod

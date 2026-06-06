@@ -8,7 +8,7 @@ import type { Outcome } from "../mod/Mod.ts"
 export type ModuleAnalysisResult = {
   definedNames: NameGroupByMod
   privateNames: NameGroupByMod
-  fragmentScopes: Map<FilePath, FragmentScope>
+  fragmentScopes: Map<string, FragmentScope>
   outcome: Outcome
 }
 
@@ -16,7 +16,6 @@ type ModName = string
 type Name = string
 type PkgName = string
 type Prefix = string
-type FilePath = string
 
 type NameGroupByMod = Map<ModName, Set<Name>>
 
@@ -33,7 +32,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
     mergeSetMap(privateNames, collectPrivateNames(orderedPkg))
   }
 
-  const fragmentScopes = new Map<FilePath, FragmentScope>()
+  const fragmentScopes = new Map<string, FragmentScope>()
   const analysisResult: ModuleAnalysisResult = {
     definedNames,
     privateNames,
