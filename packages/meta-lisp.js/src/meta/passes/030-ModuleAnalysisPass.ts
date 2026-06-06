@@ -8,6 +8,8 @@ type PkgName = string
 type Prefix = string
 type FilePath = string
 
+type NameGroupByMod = Map<ModName, Set<Name>>
+
 function mergeSetMap<K, V>(
   target: Map<K, Set<V>>,
   source: Map<K, Set<V>>,
@@ -23,8 +25,8 @@ function mergeSetMap<K, V>(
 }
 
 export type ModuleAnalysisResult = {
-  definedNames: Map<ModName, Set<Name>>
-  privateNames: Map<ModName, Set<Name>>
+  definedNames: NameGroupByMod
+  privateNames: NameGroupByMod
   fragmentScopes: Map<FilePath, FragmentScope>
   errorOccurred: boolean
 }
@@ -41,15 +43,13 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
     mergeSetMap(definedNames, collectDefinedNames(orderedPkg))
     mergeSetMap(privateNames, collectPrivateNames(orderedPkg))
   }
+
   const fragmentScopes = new Map<FilePath, FragmentScope>()
-
   let errorOccurred = false
-
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {
       const scope = createFragmentScope()
       fragmentScopes.set(path, scope)
-
       for (const stmt of fragment.stmts) {
         if (
           executeImport(
@@ -60,8 +60,9 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
             scope,
             stmt,
           )
-        )
+        ) {
           errorOccurred = true
+        }
       }
     }
   }
@@ -78,8 +79,8 @@ function createFragmentScope(): FragmentScope {
 
 function executeImport(
   pkg: M.Package,
-  definedNames: Map<ModName, Set<Name>>,
-  privateNames: Map<ModName, Set<Name>>,
+  definedNames: NameGroupByMod,
+  privateNames: NameGroupByMod,
   currentModName: ModName,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
@@ -135,8 +136,8 @@ function executeImport(
 
 function lookupImportNames(
   pkg: M.Package,
-  definedNames: Map<ModName, Set<Name>>,
-  privateNames: Map<ModName, Set<Name>>,
+  definedNames: NameGroupByMod,
+  privateNames: NameGroupByMod,
   pkgName: PkgName,
   modName: ModName,
 ): { names: Set<Name>; privates: Set<Name> } {
@@ -191,42 +192,32 @@ function ensureModExists(
   return false
 }
 
-function collectDefinedNames(pkg: M.Package): Map<ModName, Set<Name>> {
-  const definedNames = new Map<ModName, Set<Name>>()
-
+function collectNamesByMod(
+  pkg: M.Package,
+  extract: (fragment: M.ModFragment) => Array<Name>,
+): NameGroupByMod {
+  const result = new Map<ModName, Set<Name>>()
   for (const fragment of pkg.fragments.values()) {
-    let names = definedNames.get(fragment.modName)
+    let names = result.get(fragment.modName)
     if (!names) {
       names = new Set()
-      definedNames.set(fragment.modName, names)
+      result.set(fragment.modName, names)
     }
-
-    for (const name of M.modFragmentNames(fragment)) {
+    for (const name of extract(fragment)) {
       names.add(name)
     }
   }
-
-  return definedNames
+  return result
 }
 
-function collectPrivateNames(pkg: M.Package): Map<ModName, Set<Name>> {
-  const privateNames = new Map<ModName, Set<Name>>()
+function collectDefinedNames(pkg: M.Package): NameGroupByMod {
+  return collectNamesByMod(pkg, (fragment) => [...M.modFragmentNames(fragment)])
+}
 
-  for (const fragment of pkg.fragments.values()) {
-    let names = privateNames.get(fragment.modName)
-    if (!names) {
-      names = new Set()
-      privateNames.set(fragment.modName, names)
-    }
-
-    for (const stmt of fragment.stmts) {
-      if (stmt.kind === "PrivateStmt") {
-        for (const name of stmt.names) {
-          names.add(name)
-        }
-      }
-    }
-  }
-
-  return privateNames
+function collectPrivateNames(pkg: M.Package): NameGroupByMod {
+  return collectNamesByMod(pkg, (fragment) =>
+    fragment.stmts
+      .filter((stmt): stmt is M.PrivateStmt => stmt.kind === "PrivateStmt")
+      .flatMap((stmt) => stmt.names),
+  )
 }
