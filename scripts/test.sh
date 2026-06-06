@@ -17,3 +17,5 @@ cd packages/meta-example.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-error.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-lisp.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-pass-dump.meta; ./scripts/test.sh; cd ../..
+
+cd packages/meta-lisp.meta; ./scripts/self-test.sh; cd ../..

@@ -3,4 +3,4 @@
 set -e
 
 ./scripts/test.sh
-./scripts/self-check.sh
+./scripts/self-test.sh
