@@ -1,6 +1,0 @@
-(module meta)
-
-(define-struct mod-info-t
-  (defined-names (hash-t symbol-t (set-t symbol-t)))
-  (private-names (hash-t symbol-t (set-t symbol-t)))
-  (fragment-scopes (hash-t string-t fragment-scope-t)))

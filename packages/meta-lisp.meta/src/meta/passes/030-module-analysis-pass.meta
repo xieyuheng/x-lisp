@@ -1,14 +1,81 @@
 (module meta)
 
-;; (define-struct module-analysis-result
-;;   (defined-names (hash-t symbol-t (set-t symbol-t)))
-;;   (private-names (hash-t symbol-t (set-t symbol-t)))
-;;   (fragment-scopes (hash-t string-t fragment-scope-t))
-;;   (error-occurred? bool-t))
+(define-type mod-name-t symbol-t)
+(define-type name-t symbol-t)
+(define-type pkg-name-t symbol-t)
+(define-type prefix-t symbol-t)
+(define-type file-path-t string-t)
 
-;; (define-struct fragment-scope-t
-;;   )
+(define-type name-group-by-mod-t (hash-t mod-name-t (set-t name-t)))
 
-;; (define (module-analysis-pass package)
-;;   (for-list (package-closure-in-topological-order package)
-;;     ...))
+(define-struct module-analysis-result-t
+  (defined-names name-group-by-mod-t)
+  (private-names name-group-by-mod-t)
+  (fragment-scopes (hash-t file-path-t fragment-scope-t))
+  (error-occurred? bool-t))
+
+(define-struct fragment-scope-t
+  (imported-names (hash-t name-t qualified-name-entry-t))
+  (imported-prefixes (hash-t prefix-t prefix-entry-t)))
+
+(define-struct qualified-name-entry-t
+  (pkg-name symbol-t)
+  (mod-name symbol-t)
+  (name symbol-t))
+
+(define-struct prefix-entry-t
+  (pkg-name symbol-t)
+  (mod-name symbol-t))
+
+(define (module-analysis-pass package)
+  (= defined-names (make-hash))
+  (= private-names (make-hash))
+  (for-list (package-closure-in-topological-order package)
+    (lambda (ordered-package)
+      (merge-set-hash! defined-names (collect-defined-names package))
+      (merge-set-hash! private-names (collect-private-names package)))))
+
+(define (collect-defined-names package)
+  (collect-names-by-mod
+    package
+    (compose set-to-list mod-fragment-names)))
+
+(define (collect-private-names package)
+  (collect-names-by-mod
+    package
+    (lambda (fragment)
+      (list-flat-map
+        (lambda (stmt)
+          (match stmt
+            ((private-stmt names location) names)
+            (else [])))
+        (mod-fragment-stmts fragment)))))
+
+(claim merge-set-hash!
+  (polymorphic (K V)
+    (-> (hash-t K (set-t V))
+        (hash-t K (set-t V))
+        void-t)))
+
+(define (merge-set-hash! target source)
+  (for-hash source
+    (lambda (key values)
+      (if (hash-has? key target)
+        (let ((existing (hash-get key target)))
+          (for-set values (lambda (v) (set-add! v existing))))
+        (begin
+          (hash-put! key values target)
+          void)))))
+
+(define (collect-names-by-mod package extract)
+  (= result (make-hash))
+  (for-hash-value (package-fragments package)
+    (lambda (fragment)
+      (= mod-name (mod-fragment-mod-name fragment))
+      (if (hash-has? mod-name result)
+        (let ((existing (hash-get mod-name result)))
+          (for-list (extract fragment) (lambda (name) (set-add! name existing))))
+        (begin
+          (hash-put! mod-name (list-to-set (extract fragment)) result)
+          void))))
+  result)
