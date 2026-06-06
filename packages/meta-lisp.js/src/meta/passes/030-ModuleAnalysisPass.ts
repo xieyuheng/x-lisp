@@ -31,29 +31,35 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   }
 
   const fragmentScopes = new Map<FilePath, FragmentScope>()
-  let errorOccurred = false
+  const analysisResult = {
+    definedNames,
+    privateNames,
+    fragmentScopes,
+    errorOccurred: false,
+  }
+
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {
       const scope = createFragmentScope()
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
-        if (
-          executeImport(
-            orderedPkg,
-            definedNames,
-            privateNames,
-            fragment.modName,
-            scope,
-            stmt,
-          )
-        ) {
-          errorOccurred = true
+        const errorOccurred = executeImport(
+          orderedPkg,
+          definedNames,
+          privateNames,
+          fragment.modName,
+          scope,
+          stmt,
+        )
+
+        if (errorOccurred) {
+          analysisResult.errorOccurred = errorOccurred
         }
       }
     }
   }
 
-  return { definedNames, privateNames, fragmentScopes, errorOccurred }
+  return analysisResult
 }
 
 function mergeSetMap<K, V>(
