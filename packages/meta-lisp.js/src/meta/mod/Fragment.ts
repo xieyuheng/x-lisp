@@ -7,7 +7,7 @@ export type Fragment = {
   desugaredStmts: Array<M.Stmt<M.Term>>
 }
 
-export function modFragmentNames(fragment: Fragment): Set<string> {
+export function fragmentNames(fragment: Fragment): Set<string> {
   const names = new Set<string>()
   for (const stmt of fragment.stmts) {
     collectNameFromStmt(names, stmt)

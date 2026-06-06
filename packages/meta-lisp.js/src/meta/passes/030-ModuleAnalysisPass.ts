@@ -221,7 +221,7 @@ function collectNamesByMod(
 }
 
 function collectDefinedNames(pkg: M.Package): NameGroupByMod {
-  return collectNamesByMod(pkg, (fragment) => [...M.modFragmentNames(fragment)])
+  return collectNamesByMod(pkg, (fragment) => [...M.fragmentNames(fragment)])
 }
 
 function collectPrivateNames(pkg: M.Package): NameGroupByMod {
