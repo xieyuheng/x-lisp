@@ -10,20 +10,6 @@ type FilePath = string
 
 type NameGroupByMod = Map<ModName, Set<Name>>
 
-function mergeSetMap<K, V>(
-  target: Map<K, Set<V>>,
-  source: Map<K, Set<V>>,
-): void {
-  for (const [key, values] of source) {
-    let existing = target.get(key)
-    if (!existing) {
-      existing = new Set<V>()
-      target.set(key, existing)
-    }
-    for (const v of values) existing.add(v)
-  }
-}
-
 export type ModuleAnalysisResult = {
   definedNames: NameGroupByMod
   privateNames: NameGroupByMod
@@ -68,6 +54,20 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   }
 
   return { definedNames, privateNames, fragmentScopes, errorOccurred }
+}
+
+function mergeSetMap<K, V>(
+  target: Map<K, Set<V>>,
+  source: Map<K, Set<V>>,
+): void {
+  for (const [key, values] of source) {
+    let existing = target.get(key)
+    if (!existing) {
+      existing = new Set<V>()
+      target.set(key, existing)
+    }
+    for (const v of values) existing.add(v)
+  }
 }
 
 function createFragmentScope(): FragmentScope {
