@@ -2,12 +2,24 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
+// ModuleAnalysisResult = {
+//   definedNames:    Map<modName, Set<name>>     // 每个模块定义了哪些名字
+//   privateNames:    Map<modName, Set<name>>     // 每个模块的私有名字
+//   fragmentScopes:  Map<path, FragmentScope>    // 每个源文件的解析后 import 信息
+//   errorOccurred:   boolean                     // 是否有 import 错误
+// }
+
 export type ModuleAnalysisResult = {
   definedNames: Map<string, Set<string>>
   privateNames: Map<string, Set<string>>
   fragmentScopes: Map<string, FragmentScope>
   errorOccurred: boolean
 }
+
+// FragmentScope = {
+//   importedNames:   Map<name, {pkgName, modName, name}>   // 直接按名 import
+//   importedPrefixes: Map<prefix, {pkgName, modName}>      // prefix import (as)
+// }
 
 export type FragmentScope = {
   importedNames: Map<string, { pkgName: string; modName: string; name: string }>

@@ -1,0 +1,14 @@
+(module meta)
+
+;; (define-struct module-analysis-result
+;;   (defined-names (hash-t symbol-t (set-t symbol-t)))
+;;   (private-names (hash-t symbol-t (set-t symbol-t)))
+;;   (fragment-scopes (hash-t symbol-t fragment-scope-t))
+;;   (error-occurred? bool-t))
+
+;; (define-struct fragment-scope-t
+;;   )
+
+;; (define (module-analysis-pass package)
+;;   (for-list (package-closure-in-topological-order package)
+;;     module-analysis-package))
