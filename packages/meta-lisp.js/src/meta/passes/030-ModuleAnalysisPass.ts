@@ -8,6 +8,20 @@ type PkgName = string
 type Prefix = string
 type FilePath = string
 
+function mergeSetMap<K, V>(
+  target: Map<K, Set<V>>,
+  source: Map<K, Set<V>>,
+): void {
+  for (const [key, values] of source) {
+    let existing = target.get(key)
+    if (!existing) {
+      existing = new Set<V>()
+      target.set(key, existing)
+    }
+    for (const v of values) existing.add(v)
+  }
+}
+
 export type ModuleAnalysisResult = {
   definedNames: Map<ModName, Set<Name>>
   privateNames: Map<ModName, Set<Name>>
@@ -24,22 +38,8 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   const definedNames = new Map<ModName, Set<Name>>()
   const privateNames = new Map<ModName, Set<Name>>()
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const [modName, names] of collectDefinedNames(orderedPkg)) {
-      let existing = definedNames.get(modName)
-      if (!existing) {
-        existing = new Set()
-        definedNames.set(modName, existing)
-      }
-      for (const n of names) existing.add(n)
-    }
-    for (const [modName, names] of collectPrivateNames(orderedPkg)) {
-      let existing = privateNames.get(modName)
-      if (!existing) {
-        existing = new Set()
-        privateNames.set(modName, existing)
-      }
-      for (const n of names) existing.add(n)
-    }
+    mergeSetMap(definedNames, collectDefinedNames(orderedPkg))
+    mergeSetMap(privateNames, collectPrivateNames(orderedPkg))
   }
   const fragmentScopes = new Map<FilePath, FragmentScope>()
 
