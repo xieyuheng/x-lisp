@@ -4,7 +4,7 @@
   (defined-names name-group-by-mod-t)
   (private-names name-group-by-mod-t)
   (fragment-scopes (hash-t file-path-t fragment-scope-t))
-  (error-occurred? bool-t))
+  (outcome outcome-t))
 
 ;; - why: type aliases help us to understand the key type of hash-t.
 

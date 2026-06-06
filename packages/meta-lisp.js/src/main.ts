@@ -25,8 +25,8 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    const errorOccurred = M.CheckPipeline(pkg)
-    if (errorOccurred) process.exit(2)
+    const outcome = M.CheckPipeline(pkg)
+    if (outcome === "OutcomeError") process.exit(2)
   },
 
   build: ({ options }) => {

@@ -3,12 +3,13 @@ import { setDifference } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as M from "../index.ts"
+import type { Outcome } from "../mod/Mod.ts"
 
 export type ModuleAnalysisResult = {
   definedNames: NameGroupByMod
   privateNames: NameGroupByMod
   fragmentScopes: Map<FilePath, FragmentScope>
-  errorOccurred: boolean
+  outcome: Outcome
 }
 
 type ModName = string
@@ -33,11 +34,11 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   }
 
   const fragmentScopes = new Map<FilePath, FragmentScope>()
-  const analysisResult = {
+  const analysisResult: ModuleAnalysisResult = {
     definedNames,
     privateNames,
     fragmentScopes,
-    errorOccurred: false,
+    outcome: "OutcomeOk",
   }
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
@@ -45,7 +46,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
       const scope = createFragmentScope()
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
-        const errorOccurred = executeImport(
+        const outcome = executeImport(
           orderedPkg,
           definedNames,
           privateNames,
@@ -54,8 +55,8 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
           stmt,
         )
 
-        if (errorOccurred) {
-          analysisResult.errorOccurred = true
+        if (outcome === "OutcomeError") {
+          analysisResult.outcome = "OutcomeError"
         }
       }
     }
@@ -92,10 +93,11 @@ function executeImport(
   currentModName: ModName,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
-): boolean {
+): Outcome {
   if (stmt.kind === "ImportStmt") {
     const { pkgName, modName } = stmt
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location))
+      return "OutcomeError"
     const importedModPrivateNames = lookupModPrivateNames(pkg, pkgName, modName)
     for (const name of stmt.names) {
       if (importedModPrivateNames.has(name)) continue
@@ -105,13 +107,15 @@ function executeImport(
 
   if (stmt.kind === "ImportAsStmt") {
     const { pkgName, modName } = stmt
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location))
+      return "OutcomeError"
     scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
     const { pkgName, modName } = stmt
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location)) return true
+    if (!ensureModExists(pkg, pkgName, modName, stmt.location))
+      return "OutcomeError"
     const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
     for (const name of importedModPublicNames) {
       // - why: skip names already defined in the current module,
@@ -121,7 +125,7 @@ function executeImport(
     }
   }
 
-  return false
+  return "OutcomeOk"
 }
 
 function lookupPackage(pkg: M.Package, pkgName: PkgName): M.Package {

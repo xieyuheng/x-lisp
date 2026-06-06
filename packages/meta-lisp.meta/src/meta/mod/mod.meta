@@ -1,5 +1,9 @@
 (module meta)
 
+(define-enum outcome-t
+  (outcome-ok)
+  (outcome-error))
+
 (define-struct* mod-t
   (cons-mod
    (name symbol-t)
@@ -15,7 +19,7 @@
 
 (define-struct definition-state-t
   (is-checked bool-t)
-  (error-occurred bool-t))
+  (outcome outcome-t))
 
 (define-struct claim-entry-t
   (exp term-t)
@@ -92,24 +96,24 @@
 
 (claim mod-mark-checked! (-> mod-t symbol-t void-t))
 (define (mod-mark-checked! mod name)
-  (hash-put! name (make-definition-state true false) (mod-definition-states mod))
+  (hash-put! name (make-definition-state true (outcome-ok)) (mod-definition-states mod))
   void)
 
-(claim mod-error-occurred (-> mod-t symbol-t bool-t))
-(define (mod-error-occurred mod name)
+(claim mod-outcome (-> mod-t symbol-t outcome-t))
+(define (mod-outcome mod name)
   (let ((states (mod-definition-states mod)))
     (if (hash-has? name states)
-      (definition-state-error-occurred (hash-get name states))
-      false)))
+      (definition-state-outcome (hash-get name states))
+      (outcome-ok))))
 
-(claim mod-mark-error-occurred! (-> mod-t symbol-t void-t))
-(define (mod-mark-error-occurred! mod name)
+(claim mod-mark-outcome! (-> mod-t symbol-t outcome-t void-t))
+(define (mod-mark-outcome! mod name value)
   (let ((states (mod-definition-states mod)))
     (if (hash-has? name states)
       (let ((state (hash-get name states)))
         (hash-put! name (make-definition-state
                           (definition-state-is-checked state)
-                          true)
+                          value)
                     states))
-      (hash-put! name (make-definition-state false true) states)))
+      (hash-put! name (make-definition-state false value) states)))
   void)

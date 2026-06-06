@@ -19,28 +19,28 @@ import * as M from "../index.ts"
 // definitionCheck is idempotent — once isChecked is set,
 // subsequent calls return immediately.
 
-export function definitionCheck(definition: M.Definition): boolean {
+export function definitionCheck(definition: M.Definition): M.Outcome {
   const mod = definition.mod
   const name = definition.name
 
-  // - When definitionCheck returns true, modSetChecked is still called,
+  // - When definitionCheck returns "OutcomeError", modMarkChecked is still called,
   //   so a subsequent call finds isChecked and returns early.
   //   But if the earlier call was from inferLookup (infer.ts), its return
   //   value was discarded — the error would be lost.
-  //   By checking errorOccurred here, CheckPass still learns about any
+  //   By checking outcome here, CheckPass still learns about any
   //   error discovered during on-demand checking.
   if (M.modIsChecked(mod, name)) {
-    return M.modErrorOccurred(mod, name)
+    return M.modOutcome(mod, name)
   }
 
   if (mod.admitted.has(name)) {
     M.modMarkChecked(mod, name)
-    return false
+    return "OutcomeOk"
   }
 
   switch (definition.kind) {
     case "AlgebraicTypeDefinition": {
-      let errorOccurred = false
+      let outcome: M.Outcome = "OutcomeOk"
 
       for (const dataConstructor of definition.dataConstructors) {
         for (const field of dataConstructor.fields) {
@@ -49,15 +49,16 @@ export function definitionCheck(definition: M.Definition): boolean {
               mod,
               field.type,
               definition.typeConstructor.parameters,
-            )
+            ) === "OutcomeError"
           )
-            errorOccurred = true
+            outcome = "OutcomeError"
         }
       }
 
       M.modMarkChecked(mod, name)
-      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
-      return errorOccurred
+      if (outcome === "OutcomeError")
+        M.modMarkOutcome(mod, name, "OutcomeError")
+      return outcome
     }
 
     case "PrimitiveFunctionDeclaration":
@@ -74,15 +75,16 @@ export function definitionCheck(definition: M.Definition): boolean {
       }
 
       M.modMarkChecked(mod, name)
-      return false
+      return "OutcomeOk"
     }
 
     case "VariableDefinition":
     case "TestDefinition": {
-      const errorOccurred = tryCheckDefinitionBody(mod, name, definition.body)
+      const outcome = tryCheckDefinitionBody(mod, name, definition.body)
       M.modMarkChecked(mod, name)
-      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
-      return errorOccurred
+      if (outcome === "OutcomeError")
+        M.modMarkOutcome(mod, name, "OutcomeError")
+      return outcome
     }
 
     case "TypeDefinition": {
@@ -94,10 +96,11 @@ export function definitionCheck(definition: M.Definition): boolean {
               definition.body,
               definition.location,
             )
-      const errorOccurred = tryCheckDefinitionBody(mod, name, body)
+      const outcome = tryCheckDefinitionBody(mod, name, body)
       M.modMarkChecked(mod, name)
-      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
-      return errorOccurred
+      if (outcome === "OutcomeError")
+        M.modMarkOutcome(mod, name, "OutcomeError")
+      return outcome
     }
 
     case "FunctionDefinition": {
@@ -106,14 +109,15 @@ export function definitionCheck(definition: M.Definition): boolean {
         definition.body,
         definition.location,
       )
-      const errorOccurred = tryCheckDefinitionBody(mod, name, body)
+      const outcome = tryCheckDefinitionBody(mod, name, body)
       M.modMarkChecked(mod, name)
-      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
-      return errorOccurred
+      if (outcome === "OutcomeError")
+        M.modMarkOutcome(mod, name, "OutcomeError")
+      return outcome
     }
 
     case "OpaqueTypeDefinition": {
-      let errorOccurred = false
+      let outcome: M.Outcome = "OutcomeOk"
 
       for (const entry of definition.interfaceEntries) {
         if (
@@ -121,9 +125,9 @@ export function definitionCheck(definition: M.Definition): boolean {
             mod,
             entry.type,
             definition.typeConstructor.parameters,
-          )
+          ) === "OutcomeError"
         )
-          errorOccurred = true
+          outcome = "OutcomeError"
       }
 
       if (
@@ -131,13 +135,14 @@ export function definitionCheck(definition: M.Definition): boolean {
           mod,
           definition.representationType,
           definition.typeConstructor.parameters,
-        )
+        ) === "OutcomeError"
       )
-        errorOccurred = true
+        outcome = "OutcomeError"
 
       M.modMarkChecked(mod, name)
-      if (errorOccurred) M.modMarkErrorOccurred(mod, name)
-      return errorOccurred
+      if (outcome === "OutcomeError")
+        M.modMarkOutcome(mod, name, "OutcomeError")
+      return outcome
     }
   }
 }
@@ -147,21 +152,21 @@ function tryCheckTerm(
   ctx: M.Ctx,
   exp: M.Term,
   type: M.Type,
-): boolean {
+): M.Outcome {
   const effect = M.checkAssignable(mod, ctx, exp, type)
   const result = effect(M.emptySubst())
   if (result.kind === "CheckError") {
     writeln(S.sourceLocationReport(result.exp.location, result.message))
-    return true
+    return "OutcomeError"
   }
-  return false
+  return "OutcomeOk"
 }
 
 function tryCheckTypeTerm(
   mod: M.Mod,
   exp: M.Term,
   typeParameters: Array<string>,
-): boolean {
+): M.Outcome {
   let ctx = M.emptyCtx()
   for (const name of typeParameters) {
     ctx = M.ctxPut(ctx, name, M.TypeType())
@@ -173,7 +178,7 @@ function tryCheckDefinitionBody(
   mod: M.Mod,
   name: string,
   exp: M.Term,
-): boolean {
+): M.Outcome {
   const opaqueTypeExp = mod.opaqueClaimed.get(name)
   if (opaqueTypeExp) {
     const opaqueType = M.evaluateType(
@@ -199,7 +204,7 @@ function tryInferDefinitionBody(
   mod: M.Mod,
   name: string,
   exp: M.Term,
-): boolean {
+): M.Outcome {
   const freshVarType = M.createFreshVarType(name)
   // - why: for recursive function — put `name -> freshVarType`
   //   into ctx so that the function body can refer to itself recursively.
@@ -212,12 +217,12 @@ function tryInferDefinitionBody(
   const result = effect(M.emptySubst())
   if (result.kind === "InferError") {
     writeln(S.sourceLocationReport(result.exp.location, result.message))
-    return true
+    return "OutcomeError"
   } else {
     let inferredType = M.substDeepWalk(result.subst, result.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
-    return false
+    return "OutcomeOk"
   }
 }
 

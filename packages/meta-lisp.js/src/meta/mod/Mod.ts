@@ -1,6 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
+export type Outcome = "OutcomeOk" | "OutcomeError"
+
 export type ClaimedEntry = {
   exp: M.Term
   type?: M.Type
@@ -8,7 +10,7 @@ export type ClaimedEntry = {
 
 export type DefinitionState = {
   isChecked: boolean
-  errorOccurred: boolean
+  outcome: Outcome
 }
 
 export type Mod = {
@@ -65,7 +67,7 @@ export function modLookupDefinition(
 // DefinitionState
 
 function initialDefinitionState(): DefinitionState {
-  return { isChecked: false, errorOccurred: false }
+  return { isChecked: false, outcome: "OutcomeOk" }
 }
 
 export function modIsChecked(mod: Mod, name: string): boolean {
@@ -78,14 +80,14 @@ export function modMarkChecked(mod: Mod, name: string): void {
   mod.definitionStates.set(name, state)
 }
 
-export function modMarkErrorOccurred(mod: Mod, name: string): void {
+export function modMarkOutcome(mod: Mod, name: string, value: Outcome): void {
   const state = mod.definitionStates.get(name) ?? initialDefinitionState()
-  state.errorOccurred = true
+  state.outcome = value
   mod.definitionStates.set(name, state)
 }
 
-export function modErrorOccurred(mod: Mod, name: string): boolean {
-  return mod.definitionStates.get(name)?.errorOccurred ?? false
+export function modOutcome(mod: Mod, name: string): Outcome {
+  return mod.definitionStates.get(name)?.outcome ?? "OutcomeOk"
 }
 
 // Claimed

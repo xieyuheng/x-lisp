@@ -216,7 +216,7 @@ function inferLookup(
     //
     // - We do NOT propagate the return value here,
     //   because the error message is already printed by definitionCheck,
-    //   and errorOccurred is tracked in DefinitionState for CheckPass.
+    //   and outcome is tracked in DefinitionState for CheckPass.
     M.definitionCheck(definition)
 
     {

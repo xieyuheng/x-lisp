@@ -2,8 +2,8 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function ClaimPass(pkg: M.Package): boolean {
-  let errorOccurred = false
+export function ClaimPass(pkg: M.Package): M.Outcome {
+  let outcome: M.Outcome = "OutcomeOk"
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.mods.values()) {
@@ -23,11 +23,11 @@ export function ClaimPass(pkg: M.Package): boolean {
             writeln(message)
           }
 
-          errorOccurred = true
+          outcome = "OutcomeError"
         }
       }
     }
   }
 
-  return errorOccurred
+  return outcome
 }
