@@ -1,5 +1,11 @@
 (module meta)
 
+(define-struct module-analysis-result-t
+  (defined-names name-group-by-mod-t)
+  (private-names name-group-by-mod-t)
+  (fragment-scopes (hash-t file-path-t fragment-scope-t))
+  (error-occurred? bool-t))
+
 (define-type mod-name-t symbol-t)
 (define-type name-t symbol-t)
 (define-type pkg-name-t symbol-t)
@@ -7,12 +13,6 @@
 (define-type file-path-t string-t)
 
 (define-type name-group-by-mod-t (hash-t mod-name-t (set-t name-t)))
-
-(define-struct module-analysis-result-t
-  (defined-names name-group-by-mod-t)
-  (private-names name-group-by-mod-t)
-  (fragment-scopes (hash-t file-path-t fragment-scope-t))
-  (error-occurred? bool-t))
 
 (define-struct fragment-scope-t
   (imported-names (hash-t name-t qualified-name-entry-t))
@@ -26,6 +26,15 @@
 (define-struct prefix-entry-t
   (pkg-name symbol-t)
   (mod-name symbol-t))
+
+(@comment
+  (claim module-analysis-pass
+    (-> package-t
+        module-analysis-result-t)))
+
+(claim module-analysis-pass
+  (-> package-t
+      void-t))
 
 (define (module-analysis-pass package)
   (= defined-names (make-hash))
@@ -63,9 +72,12 @@
       (if (hash-has? key target)
         (let ((existing (hash-get key target)))
           (for-set values (lambda (v) (set-add! v existing))))
-        (begin
-          (hash-put! key values target)
-          void)))))
+        (ignore (hash-put! key values target))))))
+
+(claim collect-names-by-mod
+  (-> package-t
+      (-> mod-fragment-t (list-t name-t))
+      name-group-by-mod-t))
 
 (define (collect-names-by-mod package extract)
   (= result (make-hash))
@@ -75,7 +87,5 @@
       (if (hash-has? mod-name result)
         (let ((existing (hash-get mod-name result)))
           (for-list (extract fragment) (lambda (name) (set-add! name existing))))
-        (begin
-          (hash-put! mod-name (list-to-set (extract fragment)) result)
-          void))))
+        (ignore (hash-put! mod-name (list-to-set (extract fragment)) result)))))
   result)

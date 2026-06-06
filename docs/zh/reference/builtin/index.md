@@ -468,6 +468,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 - [`constant`](function/constant.md) — 返回第一个参数
 - [`identity`](function/identity.md) — 返回参数本身
+- [`ignore`](function/ignore.md) — 丢弃返回值
 - [`swap`](function/swap.md) — 交换函数参数顺序
 - [`drop`](function/drop.md) — 忽略第一个参数
 - [`dup`](function/dup.md) — 重复传入参数
