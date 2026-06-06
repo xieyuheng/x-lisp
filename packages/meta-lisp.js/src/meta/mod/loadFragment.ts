@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import fs from "node:fs"
 import * as M from "../index.ts"
 
-export function loadModFragment(path: string): M.ModFragment {
+export function loadFragment(path: string): M.Fragment {
   const code = fs.readFileSync(path, "utf-8")
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
@@ -23,7 +23,7 @@ function findModName(path: string, stmts: Array<M.Stmt<M.Exp>>): string {
     }
   }
 
-  let message = `[loadModFragment] expect (module) statement in module fragment`
+  let message = `[loadFragment] expect (module) statement in module fragment`
   message += `\n  path: ${path}`
   throw new Error(message)
 }

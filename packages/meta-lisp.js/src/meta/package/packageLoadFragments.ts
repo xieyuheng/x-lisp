@@ -9,7 +9,7 @@ export function packageLoadFragments(pkg: M.Package, directory: string): void {
   })) {
     if (name.endsWith(".meta")) {
       const path = Path.join(directory, name)
-      const fragment = M.loadModFragment(path)
+      const fragment = M.loadFragment(path)
       M.packagePutFragment(pkg, path, fragment)
     }
   }

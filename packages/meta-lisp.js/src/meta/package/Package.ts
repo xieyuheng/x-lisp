@@ -5,7 +5,7 @@ export type Package = {
   id: string
   rootDirectory: string
   config: M.PackageConfig
-  fragments: Map<string, M.ModFragment>
+  fragments: Map<string, M.Fragment>
   mods: Map<string, M.Mod>
   dependencies: Map<string, M.Package>
 }
@@ -48,7 +48,7 @@ export function packageAddMod(pkg: Package, mod: M.Mod): void {
 export function packagePutFragment(
   pkg: Package,
   path: string,
-  fragment: M.ModFragment,
+  fragment: M.Fragment,
 ): void {
   pkg.fragments.set(path, fragment)
 }

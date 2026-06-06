@@ -1,13 +1,13 @@
 import * as M from "../index.ts"
 
-export type ModFragment = {
+export type Fragment = {
   modName: string
   path: string
   stmts: Array<M.Stmt<M.Exp>>
   desugaredStmts: Array<M.Stmt<M.Term>>
 }
 
-export function modFragmentNames(fragment: ModFragment): Set<string> {
+export function modFragmentNames(fragment: Fragment): Set<string> {
   const names = new Set<string>()
   for (const stmt of fragment.stmts) {
     collectNameFromStmt(names, stmt)

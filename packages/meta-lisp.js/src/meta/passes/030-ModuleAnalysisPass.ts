@@ -204,7 +204,7 @@ function ensureModExists(
 
 function collectNamesByMod(
   pkg: M.Package,
-  extract: (fragment: M.ModFragment) => Array<Name>,
+  extract: (fragment: M.Fragment) => Array<Name>,
 ): NameGroupByMod {
   const result = new Map<ModName, Set<Name>>()
   for (const fragment of pkg.fragments.values()) {

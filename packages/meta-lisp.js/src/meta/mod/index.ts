@@ -1,4 +1,4 @@
 export * from "./define.ts"
-export * from "./loadModFragment.ts"
+export * from "./Fragment.ts"
+export * from "./loadFragment.ts"
 export * from "./Mod.ts"
-export * from "./ModFragment.ts"
