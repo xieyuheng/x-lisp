@@ -1247,7 +1247,7 @@ This variant of `(define-struct)` exists because sometimes `make-<base-name>` ne
   (cons-package
    (root-directory string-t)
    (config package-config-t)
-   (fragments (hash-t string-t mod-fragment-t))))
+   (fragments (hash-t string-t fragment-t))))
 
 (define (make-package root-directory config)
   (cons-package root-directory config (make-hash)))

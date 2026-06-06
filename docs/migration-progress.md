@@ -34,11 +34,11 @@
 | `meta/format/format-mod` | 模块格式化 |
 | `meta/format/format-value` | 值格式化 |
 | `meta/mod/mod` | 模块数据结构 |
-| `meta/mod/mod-fragment` | 片段数据结构 |
+| `meta/mod/fragment` | 片段数据结构 |
 | `meta/mod/fragment-scope` | 作用域 |
 | `meta/mod/mod-info` | 模块信息 |
-| `meta/mod/load-mod-fragment` | 加载片段 |
-| `meta/mod/mod-fragment-names` | 片段中的名字 |
+| `meta/mod/load-fragment` | 加载片段 |
+| `meta/mod/fragment-names` | 片段中的名字 |
 | `meta/mod/define` | 注册原语 |
 | `meta/mod/zero-location` | 零位置 |
 | `meta/package/` | 项目管理（config, load, fragments） |

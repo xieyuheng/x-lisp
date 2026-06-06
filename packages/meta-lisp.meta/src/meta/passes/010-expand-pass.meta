@@ -9,8 +9,8 @@
   (for-hash-value (package-fragments package) expand-fragment))
 
 (define (expand-fragment fragment)
-  (mod-fragment-put-stmts!
-    (list-flat-map expand-stmt (mod-fragment-stmts fragment))
+  (fragment-put-stmts!
+    (list-flat-map expand-stmt (fragment-stmts fragment))
     fragment))
 
 (define (expand-stmt stmt)

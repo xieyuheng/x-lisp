@@ -51,7 +51,7 @@
         (lambda (path fragment)
           (= scope (make-fragment-scope))
           (hash-put! path scope fragment-scopes)
-          (for-list (mod-fragment-stmts fragment)
+          (for-list (fragment-stmts fragment)
             (lambda (stmt)
               ;; todo
               void))))))
@@ -60,7 +60,7 @@
 (define (collect-defined-names package)
   (collect-names-by-mod
     package
-    (compose set-to-list mod-fragment-names)))
+    (compose set-to-list fragment-names)))
 
 (define (collect-private-names package)
   (collect-names-by-mod
@@ -71,7 +71,7 @@
           (match stmt
             ((private-stmt names location) names)
             (else [])))
-        (mod-fragment-stmts fragment)))))
+        (fragment-stmts fragment)))))
 
 (claim merge-set-hash!
   (polymorphic (K V)
@@ -89,14 +89,14 @@
 
 (claim collect-names-by-mod
   (-> package-t
-      (-> mod-fragment-t (list-t name-t))
+      (-> fragment-t (list-t name-t))
       name-group-by-mod-t))
 
 (define (collect-names-by-mod package extract)
   (= result (make-hash))
   (for-hash-value (package-fragments package)
     (lambda (fragment)
-      (= mod-name (mod-fragment-mod-name fragment))
+      (= mod-name (fragment-mod-name fragment))
       (if (hash-has? mod-name result)
         (let ((existing (hash-get mod-name result)))
           (for-list (extract fragment) (lambda (name) (set-add! name existing))))

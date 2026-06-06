@@ -17,5 +17,5 @@
             (import-all-stmt
               (string-to-symbol package-name)
               (string-to-symbol module-name)
-              (zero-location (mod-fragment-path fragment)))
-            (mod-fragment-stmts fragment)))))))
+              (zero-location (fragment-path fragment)))
+            (fragment-stmts fragment)))))))

@@ -1,6 +1,6 @@
 (module meta)
 
-(define-struct mod-fragment-t
+(define-struct fragment-t
   (mod-name symbol-t)
   (path string-t)
   (stmts (list-t (stmt-t exp-t)))

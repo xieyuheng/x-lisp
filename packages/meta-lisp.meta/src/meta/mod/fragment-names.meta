@@ -1,8 +1,8 @@
 (module meta)
 
-(claim mod-fragment-names (-> mod-fragment-t (set-t symbol-t)))
-(define (mod-fragment-names fragment)
-  (collect-names-from-stmts (mod-fragment-stmts fragment) (make-set)))
+(claim fragment-names (-> fragment-t (set-t symbol-t)))
+(define (fragment-names fragment)
+  (collect-names-from-stmts (fragment-stmts fragment) (make-set)))
 
 (claim collect-names-from-stmts (-> (list-t (stmt-t exp-t)) (set-t symbol-t) (set-t symbol-t)))
 (define (collect-names-from-stmts stmts names)
