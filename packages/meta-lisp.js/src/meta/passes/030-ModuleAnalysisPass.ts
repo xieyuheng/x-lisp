@@ -46,9 +46,10 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
       const scope = createFragmentScope(fragment.modName)
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
-        const outcome = executeImport(orderedPkg, scope, stmt)
-        if (outcome === "OutcomeError") {
+        if (ensureImportedModExists(orderedPkg, stmt) === "OutcomeError") {
           analysisResult.outcome = "OutcomeError"
+        } else {
+          executeImport(orderedPkg, scope, stmt)
         }
       }
     }
@@ -83,50 +84,92 @@ function executeImport(
   pkg: M.Package,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
+): void {
+  switch (stmt.kind) {
+    case "ImportStmt": {
+      const { pkgName, modName } = stmt
+      const importedModPrivateNames = lookupModPrivateNames(
+        pkg,
+        pkgName,
+        modName,
+      )
+      for (const name of stmt.names) {
+        if (importedModPrivateNames.has(name)) continue
+        scope.importedNames.set(name, { pkgName, modName, name })
+      }
+      return
+    }
+
+    case "ImportAsStmt": {
+      const { pkgName, modName } = stmt
+      scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
+      return
+    }
+
+    case "ImportAllStmt": {
+      const { pkgName, modName } = stmt
+      const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
+      const currentModDefinedNames = lookupModDefinedNames(
+        pkg,
+        "self",
+        scope.modName,
+      )
+      for (const name of importedModPublicNames) {
+        // - why: skip names already defined in the current module,
+        //   so that local definitions can override imported ones.
+        if (currentModDefinedNames.has(name)) continue
+        scope.importedNames.set(name, { pkgName, modName, name })
+      }
+      return
+    }
+  }
+}
+
+function ensureImportedModExists(pkg: M.Package, stmt: M.Stmt<M.Exp>): Outcome {
+  switch (stmt.kind) {
+    case "ImportStmt":
+    case "ImportAsStmt":
+    case "ImportAllStmt": {
+      return ensureModExists(pkg, stmt.pkgName, stmt.modName, stmt.location)
+    }
+    default: {
+      return "OutcomeOk"
+    }
+  }
+}
+
+function ensureModExists(
+  pkg: M.Package,
+  pkgName: PkgName,
+  modName: ModName,
+  location: S.SourceLocation,
 ): Outcome {
-  if (stmt.kind === "ImportStmt") {
-    const { pkgName, modName } = stmt
-    if (
-      ensureModExists(pkg, pkgName, modName, stmt.location) === "OutcomeError"
-    )
-      return "OutcomeError"
-    const importedModPrivateNames = lookupModPrivateNames(pkg, pkgName, modName)
-    for (const name of stmt.names) {
-      if (importedModPrivateNames.has(name)) continue
-      scope.importedNames.set(name, { pkgName, modName, name })
+  if (pkgName === "self") {
+    for (const fragment of pkg.fragments.values()) {
+      if (fragment.modName === modName) return "OutcomeOk"
     }
-  }
 
-  if (stmt.kind === "ImportAsStmt") {
-    const { pkgName, modName } = stmt
-    if (
-      ensureModExists(pkg, pkgName, modName, stmt.location) === "OutcomeError"
-    )
+    writeln(S.sourceLocationReport(location, `undefined module: ${modName}`))
+    return "OutcomeError"
+  } else {
+    const dependency = pkg.dependencies.get(pkgName)
+    if (!dependency) {
+      writeln(S.sourceLocationReport(location, `undefined package: ${pkgName}`))
       return "OutcomeError"
-    scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
-  }
-
-  if (stmt.kind === "ImportAllStmt") {
-    const { pkgName, modName } = stmt
-    if (
-      ensureModExists(pkg, pkgName, modName, stmt.location) === "OutcomeError"
-    )
-      return "OutcomeError"
-    const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
-    const currentModDefinedNames = lookupModDefinedNames(
-      pkg,
-      "self",
-      scope.modName,
-    )
-    for (const name of importedModPublicNames) {
-      // - why: skip names already defined in the current module,
-      //   so that local definitions can override imported ones.
-      if (currentModDefinedNames.has(name)) continue
-      scope.importedNames.set(name, { pkgName, modName, name })
     }
-  }
 
-  return "OutcomeOk"
+    for (const fragment of dependency.fragments.values()) {
+      if (fragment.modName === modName) return "OutcomeOk"
+    }
+
+    writeln(
+      S.sourceLocationReport(
+        location,
+        `undefined module: ${pkgName}/${modName}`,
+      ),
+    )
+    return "OutcomeError"
+  }
 }
 
 function lookupPackage(pkg: M.Package, pkgName: PkgName): M.Package {
@@ -168,40 +211,6 @@ function lookupModPublicNames(
     lookupModDefinedNames(pkg, pkgName, modName),
     lookupModPrivateNames(pkg, pkgName, modName),
   )
-}
-
-function ensureModExists(
-  pkg: M.Package,
-  pkgName: PkgName,
-  modName: ModName,
-  location: S.SourceLocation,
-): Outcome {
-  if (pkgName === "self") {
-    for (const fragment of pkg.fragments.values()) {
-      if (fragment.modName === modName) return "OutcomeOk"
-    }
-
-    writeln(S.sourceLocationReport(location, `undefined module: ${modName}`))
-    return "OutcomeError"
-  } else {
-    const dependency = pkg.dependencies.get(pkgName)
-    if (!dependency) {
-      writeln(S.sourceLocationReport(location, `undefined package: ${pkgName}`))
-      return "OutcomeError"
-    }
-
-    for (const fragment of dependency.fragments.values()) {
-      if (fragment.modName === modName) return "OutcomeOk"
-    }
-
-    writeln(
-      S.sourceLocationReport(
-        location,
-        `undefined module: ${pkgName}/${modName}`,
-      ),
-    )
-    return "OutcomeError"
-  }
 }
 
 function collectNamesByMod(
