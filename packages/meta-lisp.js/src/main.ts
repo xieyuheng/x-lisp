@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bun
+#!/usr/bin/env -S node
 
 import * as cli from "@xieyuheng/cli.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"

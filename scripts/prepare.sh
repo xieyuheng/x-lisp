@@ -2,4 +2,4 @@
 
 set -e
 
-bun install
+pnpm install

@@ -16,9 +16,8 @@ build/
 *.test
 *.snapshot
 
-# npm / bun
+# npm
 node_modules
-bun.lockb
 
 # 0x
 *.0x/

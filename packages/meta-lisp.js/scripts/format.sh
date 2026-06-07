@@ -2,4 +2,4 @@
 
 set -e
 
-bunx prettier src --write
+npx prettier src --write
