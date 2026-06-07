@@ -197,7 +197,7 @@ function desugarDataConstructorClauseGroup(
   const [target, ...restTargets] = targets
 
   const predicate = M.QualifiedVarExp(
-    group.dataConstructorInfo.pkgName,
+    group.dataConstructorInfo.pkgId,
     group.dataConstructorInfo.modName,
     group.dataConstructorInfo.predicateName,
     location,
@@ -209,7 +209,7 @@ function desugarDataConstructorClauseGroup(
     (accessorName) =>
       M.ApplyExp(
         M.QualifiedVarExp(
-          group.dataConstructorInfo.pkgName,
+          group.dataConstructorInfo.pkgId,
           group.dataConstructorInfo.modName,
           accessorName,
           location,
@@ -243,7 +243,7 @@ function lookupAlgebraicTypeInfo(
   const ctor = pattern.target
   const { pkgName, modName, name } = resolveCtorQualifiedName(ctx, ctor)
   const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(
-    M.qualifiedId(pkgName, modName, name),
+    M.algebraicKey(pkgName, modName, name),
   )
   if (!info) {
     let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
@@ -254,7 +254,7 @@ function lookupAlgebraicTypeInfo(
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
   const algebraicTypeInfo = ctx.algebraicAnalysisReport.algebraicTypeInfos.get(
-    M.qualifiedId(info.pkgName, info.modName, info.typeName),
+    M.algebraicKey(info.pkgId, info.modName, info.typeName),
   )
   if (!algebraicTypeInfo) {
     let message = `[lookupAlgebraicTypeInfo] cannot find algebraic type info`
@@ -313,8 +313,8 @@ function groupClausesByHeadDataConstructor(
   const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
-    const key = M.qualifiedId(
-      algebraicTypeInfo.pkgName,
+    const key = M.algebraicKey(
+      algebraicTypeInfo.pkgId,
       algebraicTypeInfo.modName,
       ctorName,
     )
