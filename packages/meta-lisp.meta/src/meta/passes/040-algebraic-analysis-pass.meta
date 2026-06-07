@@ -41,25 +41,22 @@
                  (= type-name (pre-type-constructor-name type-constructor))
                  (= mod-name (fragment-mod-name fragment))
                  (= pkg-id (package-id ordered-package))
-                 (= constructor-names [])
+                 (= constructor-names (list-map explicit-data-constructor-name data-constructors))
                  (for-list data-constructors
                    (lambda (ctor)
-                     (list-push! (explicit-data-constructor-name ctor) constructor-names)
                      (= key (algebraic-key pkg-id mod-name (explicit-data-constructor-name ctor)))
-                     (hash-put!
-                       key
-                       (make-data-constructor-info
-                         pkg-id mod-name type-name
-                         (explicit-data-constructor-name ctor)
-                         (list-map explicit-data-field-accessor-name
-                                   (explicit-data-constructor-fields ctor))
-                         (explicit-data-constructor-predicate-name ctor))
-                       data-constructor-infos)))
+                     (= fields (explicit-data-constructor-fields ctor))
+                     (= data-constructor-info
+                        (make-data-constructor-info
+                          pkg-id mod-name type-name
+                          (explicit-data-constructor-name ctor)
+                          (list-map explicit-data-field-accessor-name fields)
+                          (explicit-data-constructor-predicate-name ctor)))
+                     (hash-put! key data-constructor-info data-constructor-infos)))
                  (= type-key (algebraic-key pkg-id mod-name type-name))
-                 (hash-put!
-                   type-key
-                   (make-algebraic-type-info pkg-id mod-name type-name constructor-names)
-                   algebraic-type-infos)
+                 (= algebraic-type-info
+                    (make-algebraic-type-info pkg-id mod-name type-name constructor-names))
+                 (hash-put! type-key algebraic-type-info algebraic-type-infos)
                  void)
                 (else void))))))))
 
