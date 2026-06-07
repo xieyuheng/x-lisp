@@ -88,17 +88,17 @@ import * as M from "../index.ts"
 export type DesugarMatchCtx = {
   scope: M.FragmentScope
   currentModName: string
-  algebraicInfo: M.AlgebraicInfo
+  algebraicReport: M.AlgebraicAnalysisReport
   pkgId: string
 }
 
 export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
   currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
+  algebraicReport: M.AlgebraicAnalysisReport,
   pkgId: string,
 ): DesugarMatchCtx {
-  return { scope, currentModName, algebraicInfo, pkgId }
+  return { scope, currentModName, algebraicReport, pkgId }
 }
 
 export function desugarMatch(
@@ -214,9 +214,9 @@ function desugarDataConstructorClauseGroup(
           accessorName,
           location,
         ),
-        [target],
-        target.location,
-      ),
+      [target],
+      target.location,
+    ),
   )
 
   const answer = desugarMatch(
@@ -242,8 +242,8 @@ function lookupAlgebraicTypeInfo(
   }
   const ctor = pattern.target
   const { pkgName, modName, name } = resolveCtorQualifiedName(ctx, ctor)
-  const info = ctx.algebraicInfo.dataConstructorInfos.get(
-    `${pkgName}/${modName}/${name}`,
+  const info = ctx.algebraicReport.dataConstructorInfos.get(
+    M.qualifiedId(pkgName, modName, name),
   )
   if (!info) {
     let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
@@ -253,8 +253,8 @@ function lookupAlgebraicTypeInfo(
     message += `\n  key: ${pkgName}/${modName}/${name}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
-  const algebraicTypeInfo = ctx.algebraicInfo.algebraicTypeInfos.get(
-    `${info.pkgName}/${info.modName}/${info.typeName}`,
+  const algebraicTypeInfo = ctx.algebraicReport.algebraicTypeInfos.get(
+    M.qualifiedId(info.pkgName, info.modName, info.typeName),
   )
   if (!algebraicTypeInfo) {
     let message = `[lookupAlgebraicTypeInfo] cannot find algebraic type info`
@@ -313,8 +313,12 @@ function groupClausesByHeadDataConstructor(
   const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
-    const key = `${algebraicTypeInfo.pkgName}/${algebraicTypeInfo.modName}/${ctorName}`
-    const info = ctx.algebraicInfo.dataConstructorInfos.get(key)!
+    const key = M.qualifiedId(
+      algebraicTypeInfo.pkgName,
+      algebraicTypeInfo.modName,
+      ctorName,
+    )
+    const info = ctx.algebraicReport.dataConstructorInfos.get(key)!
     const grouped = clauses
       .filter((c) => matchesConstructor(ctx, c, info))
       .map(stripConstructorWrapper)

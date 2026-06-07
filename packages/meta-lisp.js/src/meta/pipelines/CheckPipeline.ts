@@ -5,8 +5,8 @@ export function CheckPipeline(pkg: M.Package): M.Outcome {
   M.ModulePreludePass(pkg)
   const analysisReport = M.ModuleAnalysisPass(pkg)
   let outcome = analysisReport.outcome
-  const algebraicInfo = M.AlgebraicAnalysisPass(pkg)
-  M.LowerMatchPass(pkg, analysisReport, algebraicInfo)
+  const algebraicReport = M.AlgebraicAnalysisPass(pkg)
+  M.LowerMatchPass(pkg, analysisReport, algebraicReport)
   M.DesugarPass(pkg)
   M.ModuleImportPass(pkg, analysisReport)
   M.ExecutePass(pkg)

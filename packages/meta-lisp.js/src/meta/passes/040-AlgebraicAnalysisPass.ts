@@ -5,9 +5,8 @@ export type DataConstructorInfo = {
   pkgName: string
   modName: string
   typeName: string
-  fieldNames: Array<string>
-  predicateName: string
   accessorNames: Array<string>
+  predicateName: string
 }
 
 export type AlgebraicTypeInfo = {
@@ -17,12 +16,20 @@ export type AlgebraicTypeInfo = {
   constructorNames: Array<string>
 }
 
-export type AlgebraicInfo = {
+export type AlgebraicAnalysisReport = {
   dataConstructorInfos: Map<string, DataConstructorInfo>
   algebraicTypeInfos: Map<string, AlgebraicTypeInfo>
 }
 
-export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicInfo {
+export function qualifiedId(
+  pkgName: string,
+  modName: string,
+  name: string,
+): string {
+  return `${pkgName}/${modName}/${name}`
+}
+
+export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicAnalysisReport {
   const dataConstructorInfos = new Map<string, DataConstructorInfo>()
   const algebraicTypeInfos = new Map<string, AlgebraicTypeInfo>()
 
@@ -37,21 +44,18 @@ export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicInfo {
 
           for (const ctor of stmt.dataConstructors) {
             constructorNames.push(ctor.name)
-            const fieldNames = ctor.fields.map((f) => f.name)
-            const accessorNames = ctor.fields.map((f) => f.accessorName)
-            const key = `${pkgName}/${modName}/${ctor.name}`
+            const key = qualifiedId(pkgName, modName, ctor.name)
             dataConstructorInfos.set(key, {
               name: ctor.name,
               pkgName,
               modName,
               typeName,
-              fieldNames,
+              accessorNames: ctor.fields.map((f) => f.accessorName),
               predicateName: ctor.predicate,
-              accessorNames,
             })
           }
 
-          const typeKey = `${pkgName}/${modName}/${typeName}`
+          const typeKey = qualifiedId(pkgName, modName, typeName)
           algebraicTypeInfos.set(typeKey, {
             name: typeName,
             pkgName,

@@ -312,9 +312,7 @@ function formatNames(names: Set<Name>, debug: boolean): string {
   return debug ? [...names].sort(cmp).join(" ") : String(names.size)
 }
 
-function sortedEntries<K extends string, V>(
-  map: Map<K, V>,
-): Array<[K, V]> {
+function sortedEntries<K extends string, V>(map: Map<K, V>): Array<[K, V]> {
   return [...map].sort((a, b) => cmp(a[0], b[0]))
 }
 

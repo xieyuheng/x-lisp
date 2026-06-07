@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 export function LowerMatchPass(
   pkg: M.Package,
   analysisReport: M.ModuleAnalysisReport,
-  algebraicInfo: M.AlgebraicInfo,
+  algebraicReport: M.AlgebraicAnalysisReport,
 ): void {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {
@@ -13,7 +13,7 @@ export function LowerMatchPass(
       }
       for (const stmt of fragment.stmts) {
         const fragPkgId = orderedPkg.id
-        lowerMatchStmt(scope, fragment.modName, algebraicInfo, fragPkgId, stmt)
+        lowerMatchStmt(scope, fragment.modName, algebraicReport, fragPkgId, stmt)
       }
     }
   }
@@ -24,7 +24,7 @@ export function LowerMatchPass(
 function lowerMatchStmt(
   scope: M.FragmentScope,
   currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
+  algebraicReport: M.AlgebraicAnalysisReport,
   pkgId: string,
   stmt: M.Stmt<M.Exp>,
 ): void {
@@ -36,7 +36,7 @@ function lowerMatchStmt(
       stmt.body = lowerMatch(
         scope,
         currentModName,
-        algebraicInfo,
+        algebraicReport,
         pkgId,
         stmt.body,
       )
@@ -52,7 +52,7 @@ function lowerMatchStmt(
 function lowerMatch(
   scope: M.FragmentScope,
   currentModName: string,
-  algebraicInfo: M.AlgebraicInfo,
+  algebraicReport: M.AlgebraicAnalysisReport,
   pkgId: string,
   exp: M.Exp,
 ): M.Exp {
@@ -61,7 +61,7 @@ function lowerMatch(
       const ctx = M.makeDesugarMatchCtx(
         scope,
         currentModName,
-        algebraicInfo,
+        algebraicReport,
         pkgId,
       )
       const defaultExp = M.makeDefaultExp(exp.targets, exp.location)
@@ -69,14 +69,14 @@ function lowerMatch(
       return M.desugarMatch(
         ctx,
         exp.targets.map((t) =>
-          lowerMatch(scope, currentModName, algebraicInfo, pkgId, t),
+          lowerMatch(scope, currentModName, algebraicReport, pkgId, t),
         ),
         exp.clauses.map((clause) => ({
           ...clause,
           body: lowerMatch(
             scope,
             currentModName,
-            algebraicInfo,
+            algebraicReport,
             pkgId,
             clause.body,
           ),
@@ -89,7 +89,7 @@ function lowerMatch(
     default: {
       return M.expTraverse(
         (child) =>
-          lowerMatch(scope, currentModName, algebraicInfo, pkgId, child),
+          lowerMatch(scope, currentModName, algebraicReport, pkgId, child),
         exp,
       )
     }
