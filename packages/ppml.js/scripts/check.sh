@@ -2,4 +2,4 @@
 
 set -e
 
-npx tsc --noEmit
+bunx tsc --noEmit

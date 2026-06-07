@@ -12,7 +12,7 @@ AI agent 应用中文回答用户的问题。
 
 # 子项目
 
-**JS/TS monorepo**（`pnpm-workspace.yaml` — `packages/*.js`）：
+**JS/TS monorepo**（`package.json` `workspaces` — `packages/*.js`）：
 
 - [helpers.js] — 基础库（无依赖）
 - [cli.js] — CLI 框架，依赖 [helpers.js]
@@ -35,7 +35,7 @@ AI agent 应用中文回答用户的问题。
 
 # 依赖链
 
-1. `pnpm install`（或 `scripts/prepare.sh`）
+1. `bun install`（或 `scripts/prepare.sh`）
 2. C：[helpers.c] → [cli.c] → [xvm.c]
 3. JS：[helpers.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 二进制
@@ -75,8 +75,8 @@ AI agent 应用中文回答用户的问题。
 
 ## JS/TS 工作流
 
-- Node 原生 test runner（`node --test`），测试与源码同目录（`src/**/*.test.ts`）
-- ESM only，相对 import 必须带 `.ts` 扩展名，Node 内置模块用 `node:` 前缀
+- Bun test runner（`bun test`），测试与源码同目录（`src/**/*.test.ts`）
+- ESM only，相对 import 必须带 `.ts` 扩展名，bun 兼容 `node:` 前缀的内置模块
 - Prettier 格式化（配置内联在 `package.json`），无 ESLint
 
 每个 JS/TS package 提供：

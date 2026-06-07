@@ -2,4 +2,6 @@
 
 set -e
 
-node --test src/**/*.test.ts
+if ls src/**/*.test.ts >/dev/null 2>&1; then
+  bun test
+fi
