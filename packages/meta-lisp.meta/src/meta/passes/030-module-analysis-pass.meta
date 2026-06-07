@@ -16,11 +16,12 @@
 
 (define-struct* fragment-scope-t
   (cons-fragment-scope
+    (mod-name mod-name-t)
     (imported-names (hash-t name-t qualified-name-entry-t))
     (imported-prefixes (hash-t prefix-t prefix-entry-t))))
 
-(define (make-fragment-scope)
-  (cons-fragment-scope (make-hash) (make-hash)))
+(define (make-fragment-scope mod-name)
+  (cons-fragment-scope mod-name (make-hash) (make-hash)))
 
 (define-struct qualified-name-entry-t
   (pkg-name symbol-t)
@@ -49,7 +50,7 @@
     (lambda (ordered-package)
       (for-hash (package-fragments ordered-package)
         (lambda (path fragment)
-          (= scope (make-fragment-scope))
+          (= scope (make-fragment-scope (fragment-mod-name fragment)))
           (hash-put! path scope fragment-scopes)
           (for-list (fragment-stmts fragment)
             (lambda (stmt)

@@ -193,6 +193,7 @@ function scopeFilterBoundNames(
   }
 
   return {
+    modName: scope.modName,
     importedNames,
     importedPrefixes: scope.importedPrefixes,
   }

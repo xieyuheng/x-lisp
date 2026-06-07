@@ -20,6 +20,7 @@ type Prefix = string
 type NameGroupByMod = Map<ModName, Set<Name>>
 
 export type FragmentScope = {
+  modName: ModName
   importedNames: Map<Name, { pkgName: PkgName; modName: ModName; name: Name }>
   importedPrefixes: Map<Prefix, { pkgName: PkgName; modName: ModName }>
 }
@@ -42,17 +43,10 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {
-      const scope = createFragmentScope()
+      const scope = createFragmentScope(fragment.modName)
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
-        const outcome = executeImport(
-          orderedPkg,
-          definedNames,
-          privateNames,
-          fragment.modName,
-          scope,
-          stmt,
-        )
+        const outcome = executeImport(orderedPkg, scope, stmt)
 
         if (outcome === "OutcomeError") {
           analysisResult.outcome = "OutcomeError"
@@ -78,8 +72,9 @@ function mergeSetMap<K, V>(
   }
 }
 
-function createFragmentScope(): FragmentScope {
+function createFragmentScope(modName: ModName): FragmentScope {
   return {
+    modName,
     importedNames: new Map(),
     importedPrefixes: new Map(),
   }
@@ -87,9 +82,6 @@ function createFragmentScope(): FragmentScope {
 
 function executeImport(
   pkg: M.Package,
-  definedNames: NameGroupByMod,
-  privateNames: NameGroupByMod,
-  currentModName: ModName,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
 ): Outcome {
@@ -116,10 +108,15 @@ function executeImport(
     if (!ensureModExists(pkg, pkgName, modName, stmt.location))
       return "OutcomeError"
     const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
+    const currentModDefinedNames = lookupModDefinedNames(
+      pkg,
+      "self",
+      scope.modName,
+    )
     for (const name of importedModPublicNames) {
       // - why: skip names already defined in the current module,
       //   so that local definitions can override imported ones.
-      if (definedNames.get(currentModName)?.has(name)) continue
+      if (currentModDefinedNames.has(name)) continue
       scope.importedNames.set(name, { pkgName, modName, name })
     }
   }
