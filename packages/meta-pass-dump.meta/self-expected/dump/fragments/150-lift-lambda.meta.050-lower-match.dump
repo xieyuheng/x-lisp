@@ -1,0 +1,7 @@
+(import-all meta-builtin/builtin)
+
+(module 150-lift-lambda)
+
+(define (make-adder x) (lambda (y) (iadd x y)))
+
+(define f (make-adder 1))

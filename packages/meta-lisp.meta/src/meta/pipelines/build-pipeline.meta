@@ -5,4 +5,5 @@
   (module-prelude-pass package)
   (= module-analysis-report (module-analysis-pass package))
   (= algebraic-analysis-report (algebraic-analysis-pass package))
+  (lower-match-pass package module-analysis-report algebraic-analysis-report)
   void)

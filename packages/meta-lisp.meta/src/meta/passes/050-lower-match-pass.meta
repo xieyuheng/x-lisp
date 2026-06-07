@@ -1,0 +1,70 @@
+(module meta)
+
+(claim lower-match-pass
+  (-> package-t module-analysis-report-t algebraic-analysis-report-t
+      void-t))
+
+(define (lower-match-pass package module-analysis-report algebraic-analysis-report)
+  (for-list (package-closure-in-topological-order package)
+    (lambda (ordered-package)
+      (for-hash (package-fragments ordered-package)
+        (lambda (path fragment)
+          (= scope-maybe (hash-get-maybe path (module-analysis-report-fragment-scopes module-analysis-report)))
+          (match scope-maybe
+            ((nothing)
+             (error-with-location
+               (@string "[lower-match-pass] missing scope for: " path)
+               (zero-location path)))
+            ((just scope)
+             (= ctx (make-desugar-match-ctx
+                      scope
+                      (fragment-mod-name fragment)
+                      algebraic-analysis-report
+                      (package-id ordered-package)))
+             (for-list (fragment-stmts fragment)
+               (lambda (stmt)
+                 (lower-match-stmt ctx stmt)))))))))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-fragments package "050-lower-match")))
+
+(define (lower-match-stmt ctx stmt)
+  (cond
+    ((define-function-stmt? stmt)
+     (define-function-stmt-put-body!
+       (lower-match ctx (define-function-stmt-body stmt)) stmt)
+     void)
+    ((define-variable-stmt? stmt)
+     (define-variable-stmt-put-body!
+       (lower-match ctx (define-variable-stmt-body stmt)) stmt)
+     void)
+    ((define-test-stmt? stmt)
+     (define-test-stmt-put-body!
+       (lower-match ctx (define-test-stmt-body stmt)) stmt)
+     void)
+    ((define-type-stmt? stmt)
+     (define-type-stmt-put-body!
+       (lower-match ctx (define-type-stmt-body stmt)) stmt)
+     void)
+    (else void)))
+
+(claim lower-match
+  (-> desugar-match-ctx-t exp-t
+      exp-t))
+
+(define (lower-match ctx exp)
+  (cond
+    ((match-exp? exp)
+     (desugar-match
+       ctx
+       (list-map (lambda (t) (lower-match ctx t)) (match-exp-targets exp))
+       (list-map
+         (lambda (clause)
+           (make-match-clause
+             (list-map (lambda (p) (lower-match ctx p)) (match-clause-patterns clause))
+             (lower-match ctx (match-clause-body clause))
+             (match-clause-location clause)))
+         (match-exp-clauses exp))
+       (make-default-exp (match-exp-targets exp) (match-exp-location exp))
+       (match-exp-location exp)))
+    (else
+     (exp-traverse (lambda (child) (lower-match ctx child)) exp))))
