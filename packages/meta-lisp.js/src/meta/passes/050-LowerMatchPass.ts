@@ -11,15 +11,14 @@ export function LowerMatchPass(
       if (!scope) {
         throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
       }
+      const ctx = M.makeDesugarMatchCtx(
+        scope,
+        fragment.modName,
+        algebraicAnalysisReport,
+        orderedPkg.id,
+      )
       for (const stmt of fragment.stmts) {
-        const fragPkgId = orderedPkg.id
-        lowerMatchStmt(
-          scope,
-          fragment.modName,
-          algebraicAnalysisReport,
-          fragPkgId,
-          stmt,
-        )
+        lowerMatchStmt(ctx, stmt)
       }
     }
   }
@@ -27,25 +26,13 @@ export function LowerMatchPass(
   if (pkg.config.compiler.dump) M.packageDumpFragments(pkg, "050-lower-match")
 }
 
-function lowerMatchStmt(
-  scope: M.FragmentScope,
-  currentModName: string,
-  algebraicAnalysisReport: M.AlgebraicAnalysisReport,
-  pkgId: string,
-  stmt: M.Stmt<M.Exp>,
-): void {
+function lowerMatchStmt(ctx: M.DesugarMatchCtx, stmt: M.Stmt<M.Exp>): void {
   switch (stmt.kind) {
     case "DefineFunctionStmt":
     case "DefineVariableStmt":
     case "DefineTestStmt":
     case "DefineTypeStmt": {
-      stmt.body = lowerMatch(
-        scope,
-        currentModName,
-        algebraicAnalysisReport,
-        pkgId,
-        stmt.body,
-      )
+      stmt.body = lowerMatch(ctx, stmt.body)
       return
     }
 
@@ -55,37 +42,17 @@ function lowerMatchStmt(
   }
 }
 
-function lowerMatch(
-  scope: M.FragmentScope,
-  currentModName: string,
-  algebraicAnalysisReport: M.AlgebraicAnalysisReport,
-  pkgId: string,
-  exp: M.Exp,
-): M.Exp {
+function lowerMatch(ctx: M.DesugarMatchCtx, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "MatchExp": {
-      const ctx = M.makeDesugarMatchCtx(
-        scope,
-        currentModName,
-        algebraicAnalysisReport,
-        pkgId,
-      )
       const defaultExp = M.makeDefaultExp(exp.targets, exp.location)
 
       return M.desugarMatch(
         ctx,
-        exp.targets.map((t) =>
-          lowerMatch(scope, currentModName, algebraicAnalysisReport, pkgId, t),
-        ),
+        exp.targets.map((t) => lowerMatch(ctx, t)),
         exp.clauses.map((clause) => ({
           ...clause,
-          body: lowerMatch(
-            scope,
-            currentModName,
-            algebraicAnalysisReport,
-            pkgId,
-            clause.body,
-          ),
+          body: lowerMatch(ctx, clause.body),
         })),
         defaultExp,
         exp.location,
@@ -93,17 +60,7 @@ function lowerMatch(
     }
 
     default: {
-      return M.expTraverse(
-        (child) =>
-          lowerMatch(
-            scope,
-            currentModName,
-            algebraicAnalysisReport,
-            pkgId,
-            child,
-          ),
-        exp,
-      )
+      return M.expTraverse((child) => lowerMatch(ctx, child), exp)
     }
   }
 }
