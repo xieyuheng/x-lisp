@@ -214,9 +214,9 @@ function desugarDataConstructorClauseGroup(
           accessorName,
           location,
         ),
-      [target],
-      target.location,
-    ),
+        [target],
+        target.location,
+      ),
   )
 
   const answer = desugarMatch(

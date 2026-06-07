@@ -36,26 +36,33 @@
         (lambda (fragment)
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
-              (when (define-algebraic-type-stmt? stmt)
-                (= type-name (pre-type-constructor-name (define-algebraic-type-stmt-type-constructor stmt)))
-                (= mod-name (fragment-mod-name fragment))
-                (= pkg-id (package-id ordered-package))
-                (= constructor-names [])
-                (for-list (define-algebraic-type-stmt-data-constructors stmt)
-                  (lambda (ctor)
-                    (list-push! (explicit-data-constructor-name ctor) constructor-names)
-                    (= key (algebraic-key pkg-id mod-name (explicit-data-constructor-name ctor)))
-                    (hash-put! key
-                      (make-data-constructor-info
-                        pkg-id mod-name type-name
-                        (explicit-data-constructor-name ctor)
-                        (list-map explicit-data-field-accessor-name (explicit-data-constructor-fields ctor))
-                        (explicit-data-constructor-predicate-name ctor))
-                      data-constructor-infos)))
-                (= type-key (algebraic-key pkg-id mod-name type-name))
-                (hash-put! type-key
-                  (make-algebraic-type-info pkg-id mod-name type-name constructor-names)
-                  algebraic-type-infos))))))))
+              (match stmt
+                ((define-algebraic-type-stmt type-constructor data-constructors location)
+                 (= type-name (pre-type-constructor-name type-constructor))
+                 (= mod-name (fragment-mod-name fragment))
+                 (= pkg-id (package-id ordered-package))
+                 (= constructor-names [])
+                 (for-list data-constructors
+                   (lambda (ctor)
+                     (list-push! (explicit-data-constructor-name ctor) constructor-names)
+                     (= key (algebraic-key pkg-id mod-name (explicit-data-constructor-name ctor)))
+                     (hash-put!
+                       key
+                       (make-data-constructor-info
+                         pkg-id mod-name type-name
+                         (explicit-data-constructor-name ctor)
+                         (list-map explicit-data-field-accessor-name
+                                   (explicit-data-constructor-fields ctor))
+                         (explicit-data-constructor-predicate-name ctor))
+                       data-constructor-infos)))
+                 (= type-key (algebraic-key pkg-id mod-name type-name))
+                 (hash-put!
+                   type-key
+                   (make-algebraic-type-info pkg-id mod-name type-name constructor-names)
+                   algebraic-type-infos)
+                 void)
+                (else void))))))))
+
   (= report (make-algebraic-analysis-report data-constructor-infos algebraic-type-infos))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (dump-algebraic-analysis-report report package))

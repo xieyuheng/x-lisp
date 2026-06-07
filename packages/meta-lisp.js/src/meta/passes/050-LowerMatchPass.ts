@@ -13,7 +13,13 @@ export function LowerMatchPass(
       }
       for (const stmt of fragment.stmts) {
         const fragPkgId = orderedPkg.id
-        lowerMatchStmt(scope, fragment.modName, algebraicAnalysisReport, fragPkgId, stmt)
+        lowerMatchStmt(
+          scope,
+          fragment.modName,
+          algebraicAnalysisReport,
+          fragPkgId,
+          stmt,
+        )
       }
     }
   }
@@ -89,7 +95,13 @@ function lowerMatch(
     default: {
       return M.expTraverse(
         (child) =>
-          lowerMatch(scope, currentModName, algebraicAnalysisReport, pkgId, child),
+          lowerMatch(
+            scope,
+            currentModName,
+            algebraicAnalysisReport,
+            pkgId,
+            child,
+          ),
         exp,
       )
     }
