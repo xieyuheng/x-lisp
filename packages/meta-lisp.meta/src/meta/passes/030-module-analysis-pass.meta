@@ -188,8 +188,7 @@
      void)
     ((import-all-stmt pkg-name mod-name location)
      (= imported-public-names (lookup-mod-public-names package pkg-name mod-name))
-     (= current-defined-names
-        (lookup-mod-defined-names package 'self (fragment-scope-mod-name scope)))
+     (= current-defined-names (lookup-mod-defined-names package 'self (fragment-scope-mod-name scope)))
      (for-set imported-public-names
        (lambda (name)
          ;; - why: skip names already defined in the current module,
