@@ -47,7 +47,6 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
         const outcome = executeImport(orderedPkg, scope, stmt)
-
         if (outcome === "OutcomeError") {
           analysisResult.outcome = "OutcomeError"
         }
@@ -87,7 +86,9 @@ function executeImport(
 ): Outcome {
   if (stmt.kind === "ImportStmt") {
     const { pkgName, modName } = stmt
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location))
+    if (
+      ensureModExists(pkg, pkgName, modName, stmt.location) === "OutcomeError"
+    )
       return "OutcomeError"
     const importedModPrivateNames = lookupModPrivateNames(pkg, pkgName, modName)
     for (const name of stmt.names) {
@@ -98,14 +99,18 @@ function executeImport(
 
   if (stmt.kind === "ImportAsStmt") {
     const { pkgName, modName } = stmt
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location))
+    if (
+      ensureModExists(pkg, pkgName, modName, stmt.location) === "OutcomeError"
+    )
       return "OutcomeError"
     scope.importedPrefixes.set(stmt.prefix, { pkgName, modName })
   }
 
   if (stmt.kind === "ImportAllStmt") {
     const { pkgName, modName } = stmt
-    if (!ensureModExists(pkg, pkgName, modName, stmt.location))
+    if (
+      ensureModExists(pkg, pkgName, modName, stmt.location) === "OutcomeError"
+    )
       return "OutcomeError"
     const importedModPublicNames = lookupModPublicNames(pkg, pkgName, modName)
     const currentModDefinedNames = lookupModDefinedNames(
@@ -170,23 +175,23 @@ function ensureModExists(
   pkgName: PkgName,
   modName: ModName,
   location: S.SourceLocation,
-): boolean {
+): Outcome {
   if (pkgName === "self") {
     for (const fragment of pkg.fragments.values()) {
-      if (fragment.modName === modName) return true
+      if (fragment.modName === modName) return "OutcomeOk"
     }
 
     writeln(S.sourceLocationReport(location, `undefined module: ${modName}`))
-    return false
+    return "OutcomeError"
   } else {
     const dependency = pkg.dependencies.get(pkgName)
     if (!dependency) {
       writeln(S.sourceLocationReport(location, `undefined package: ${pkgName}`))
-      return false
+      return "OutcomeError"
     }
 
     for (const fragment of dependency.fragments.values()) {
-      if (fragment.modName === modName) return true
+      if (fragment.modName === modName) return "OutcomeOk"
     }
 
     writeln(
@@ -195,7 +200,7 @@ function ensureModExists(
         `undefined module: ${pkgName}/${modName}`,
       ),
     )
-    return false
+    return "OutcomeError"
   }
 }
 

@@ -54,14 +54,22 @@
           (hash-put! path scope fragment-scopes)
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
-              ;; todo
-              void))))))
+              (when (outcome-error? (execute-import ordered-package scope stmt))
+                (module-analysis-result-put-outcome! (outcome-error) analysis-result))))))))
   analysis-result)
+
+(claim collect-defined-names
+  (-> package-t
+      name-group-by-mod-t))
 
 (define (collect-defined-names package)
   (collect-names-by-mod
     package
     (compose set-to-list fragment-names)))
+
+(claim collect-private-names
+  (-> package-t
+      name-group-by-mod-t))
 
 (define (collect-private-names package)
   (collect-names-by-mod
@@ -103,3 +111,121 @@
           (for-list (extract fragment) (lambda (name) (set-add! name existing))))
         (ignore (hash-put! mod-name (list-to-set (extract fragment)) result)))))
   result)
+
+(claim lookup-package
+  (-> package-t symbol-t
+      package-t))
+
+(define (lookup-package package pkg-name)
+  (if (equal? pkg-name 'self)
+    package
+    (hash-get pkg-name (package-dependencies package))))
+
+(claim lookup-mod-defined-names
+  (-> package-t symbol-t symbol-t
+      (set-t name-t)))
+
+(define (lookup-mod-defined-names package pkg-name mod-name)
+  (= target (lookup-package package pkg-name))
+  (= defined (collect-defined-names target))
+  (if (hash-has? mod-name defined)
+    (hash-get mod-name defined)
+    (make-set)))
+
+(claim lookup-mod-private-names
+  (-> package-t symbol-t symbol-t
+      (set-t name-t)))
+
+(define (lookup-mod-private-names package pkg-name mod-name)
+  (= target (lookup-package package pkg-name))
+  (= private (collect-private-names target))
+  (if (hash-has? mod-name private)
+    (hash-get mod-name private)
+    (make-set)))
+
+(claim lookup-mod-public-names
+  (-> package-t symbol-t symbol-t
+      (set-t name-t)))
+
+(define (lookup-mod-public-names package pkg-name mod-name)
+  (set-difference
+    (lookup-mod-defined-names package pkg-name mod-name)
+    (lookup-mod-private-names package pkg-name mod-name)))
+
+(claim execute-import
+  (-> package-t fragment-scope-t (stmt-t exp-t)
+      outcome-t))
+
+(define (execute-import package scope stmt)
+  (match stmt
+    ((import-stmt pkg-name mod-name names location)
+     (if (outcome-error? (ensure-mod-exists package pkg-name mod-name location))
+       (outcome-error)
+       (begin
+         (= imported-private-names (lookup-mod-private-names package pkg-name mod-name))
+         (for-list names
+           (lambda (name)
+             (unless (set-member? name imported-private-names)
+               (hash-put!
+                 name
+                 (make-qualified-name-entry pkg-name mod-name name)
+                 (fragment-scope-imported-names scope)))))
+         (outcome-ok))))
+    ((import-as-stmt pkg-name mod-name prefix location)
+     (if (outcome-error? (ensure-mod-exists package pkg-name mod-name location))
+       (outcome-error)
+       (begin
+         (hash-put!
+           prefix
+           (make-prefix-entry pkg-name mod-name)
+           (fragment-scope-imported-prefixes scope))
+         (outcome-ok))))
+    ((import-all-stmt pkg-name mod-name location)
+     (if (outcome-error? (ensure-mod-exists package pkg-name mod-name location))
+       (outcome-error)
+       (begin
+         (= imported-public-names (lookup-mod-public-names package pkg-name mod-name))
+         (= current-defined-names (lookup-mod-defined-names package 'self (fragment-scope-mod-name scope)))
+         (for-set imported-public-names
+           (lambda (name)
+             ;; - why: skip names already defined in the current module,
+             ;;   so that local definitions can override imported ones.
+             (unless (set-member? name current-defined-names)
+               (hash-put!
+                 name
+                 (make-qualified-name-entry pkg-name mod-name name)
+                 (fragment-scope-imported-names scope)))))
+         (outcome-ok))))
+    (else (outcome-ok))))
+
+(claim ensure-mod-exists
+  (-> package-t symbol-t symbol-t source-location-t
+      outcome-t))
+
+(define (ensure-mod-exists package pkg-name mod-name location)
+  (if (equal? pkg-name 'self)
+    (if (not (has-fragment-of-mod-name? (hash-values (package-fragments package)) mod-name))
+      (let ((message (@string "undefined module: " (symbol-to-string mod-name))))
+        (writeln (format-message-with-source-location message location))
+        (outcome-error))
+      (outcome-ok))
+    (if (not (hash-has? pkg-name (package-dependencies package)))
+      (let ((message (@string "undefined package: " (symbol-to-string pkg-name))))
+        (writeln (format-message-with-source-location message location))
+        (outcome-error))
+      (let ((dependency (hash-get pkg-name (package-dependencies package))))
+        (if (not (has-fragment-of-mod-name? (hash-values (package-fragments dependency)) mod-name))
+          (let ((message (@string "undefined module: " (symbol-to-string pkg-name) "/" (symbol-to-string mod-name))))
+            (writeln (format-message-with-source-location message location))
+            (outcome-error))
+          (outcome-ok))))))
+
+(claim has-fragment-of-mod-name?
+  (-> (list-t fragment-t) symbol-t
+      bool-t))
+
+(define (has-fragment-of-mod-name? fragments mod-name)
+  (list-some?
+    (lambda (fragment)
+      (equal? (fragment-mod-name fragment) mod-name))
+    fragments))

@@ -17,14 +17,14 @@
 
 (define (handle-check ctx)
   (= config-path (get-config-path ctx))
-  (= package (load-package "self" config-path))
+  (= package (load-package 'self config-path))
   (= compiler (package-config-compiler (package-config package)))
   (when (cli-option-has? "--dump" ctx) (hash-put! "dump" "true" compiler))
   (check-pipeline package))
 
 (define (handle-build ctx)
   (= config-path (get-config-path ctx))
-  (= package (load-package "self" config-path))
+  (= package (load-package 'self config-path))
   (= compiler (package-config-compiler (package-config package)))
   (when (cli-option-has? "--dump" ctx) (hash-put! "dump" "true" compiler))
   (when (cli-option-has? "--basic" ctx) (hash-put! "basic" "true" compiler))
@@ -32,7 +32,7 @@
 
 (define (handle-test ctx)
   (= config-path (get-config-path ctx))
-  (= package (load-package "self" config-path))
+  (= package (load-package 'self config-path))
   (= compiler (package-config-compiler (package-config package)))
   (when (cli-option-has? "--profile" ctx) (hash-put! "profile" "true" compiler))
   (when (cli-option-has? "--builtin" ctx) (hash-put! "builtin" "true" compiler))

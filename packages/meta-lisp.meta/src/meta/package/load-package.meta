@@ -22,7 +22,7 @@
 
 (define (actual-id config id)
   (if (equal? (package-config-name config) "meta-builtin")
-    "meta-builtin"
+    'meta-builtin
     id))
 
 (define (setup-builtin-package package)
@@ -40,7 +40,7 @@
   (match (hash-get-maybe dep-resolved package-serial-numbers)
     ((just id) id)
     ((nothing)
-     (= id (string-append "pkg-" (format (hash-length package-serial-numbers))))
+     (= id (string-to-symbol (string-append "pkg-" (format (hash-length package-serial-numbers)))))
      (hash-put! dep-resolved id package-serial-numbers)
      id)))
 
@@ -51,10 +51,10 @@
          (path-resolve
            (path-join (path-join root-directory dep-path) "meta-package.json")))
       (if (equal? alias "meta-builtin")
-        (hash-put! alias
-                   (load-package "meta-builtin" dep-resolved)
+        (hash-put! 'meta-builtin
+                   (load-package 'meta-builtin dep-resolved)
                    (package-dependencies package))
-        (hash-put! alias
+        (hash-put! (dependency-id dep-resolved)
                    (load-package (dependency-id dep-resolved) dep-resolved)
                    (package-dependencies package))))
     (package-config-dependencies config)))
@@ -62,7 +62,7 @@
 (define (validate-prelude package config)
   (hash-each-key
     (lambda (pkg-name)
-      (unless (hash-has? pkg-name (package-dependencies package))
+      (unless (hash-has? (string-to-symbol pkg-name) (package-dependencies package))
         (error
           (string-append "[loadPackage] prelude references unknown package: " pkg-name))))
     (package-config-prelude config)))

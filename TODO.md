@@ -1,6 +1,6 @@
 # self-hosting
 
-[meta-lisp.meta] 030-module-analysis-pass.meta
+[meta-lisp.meta] 030-module-analysis-pass.meta -- collect-private-names use chain
 [meta-lisp.meta] 040-algebraic-analysis-pass.meta
 [meta-lisp.meta] 050-lower-match-pass.meta
 [meta-lisp.meta] 060-desugar-pass.meta
