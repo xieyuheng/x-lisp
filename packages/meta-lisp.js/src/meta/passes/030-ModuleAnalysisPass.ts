@@ -2,6 +2,8 @@ import { writeln } from "@xieyuheng/helpers.js/file"
 import { setDifference } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
+import fs from "node:fs"
+import Path from "node:path"
 import * as M from "../index.ts"
 import type { Outcome } from "../mod/Mod.ts"
 
@@ -53,6 +55,10 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
         }
       }
     }
+  }
+
+  if (pkg.config.compiler.dump) {
+    dumpModuleAnalysisResult(analysisResult, pkg)
   }
 
   return analysisResult
@@ -241,4 +247,50 @@ function collectPrivateNames(pkg: M.Package): NameGroupByMod {
       .filter((stmt): stmt is M.PrivateStmt => stmt.kind === "PrivateStmt")
       .flatMap((stmt) => stmt.names),
   )
+}
+
+function dumpModuleAnalysisResult(
+  result: ModuleAnalysisResult,
+  pkg: M.Package,
+): void {
+  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
+  fs.mkdirSync(dir, { recursive: true })
+  const file = Path.join(dir, "030-module-analysis-result.dump")
+  const content = formatModuleAnalysisResult(result)
+  fs.writeFileSync(file, content + "\n", "utf-8")
+}
+
+function formatModuleAnalysisResult(result: ModuleAnalysisResult): string {
+  const lines: Array<string> = []
+  lines.push("(module-analysis-result")
+
+  lines.push("  (defined-names")
+  for (const [modName, names] of result.definedNames) {
+    lines.push(`    (${modName} ${names.size})`)
+  }
+  closeTop(lines)
+
+  lines.push("  (private-names")
+  for (const [modName, names] of result.privateNames) {
+    lines.push(`    (${modName} ${names.size})`)
+  }
+  closeTop(lines)
+
+  lines.push("  (fragment-scopes")
+  for (const [path, scope] of result.fragmentScopes) {
+    lines.push(`    ("${path}"`)
+    lines.push(`      (mod-name ${scope.modName})`)
+    lines.push(`      (imported-names ${scope.importedNames.size})`)
+    lines.push(`      (imported-prefixes ${scope.importedPrefixes.size})`)
+    closeTop(lines)
+  }
+  closeTop(lines)
+
+  closeTop(lines)
+  return lines.join("\n")
+}
+
+function closeTop(lines: Array<string>): void {
+  const i = lines.length - 1
+  lines[i] = lines[i] + ")"
 }

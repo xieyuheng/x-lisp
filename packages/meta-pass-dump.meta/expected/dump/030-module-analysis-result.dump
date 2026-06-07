@@ -1,0 +1,560 @@
+(module-analysis-result
+  (defined-names
+    (builtin 607)
+    (math 12)
+    (010-my-list 11)
+    (010-pair 8)
+    (050-lambda 39)
+    (060-desugar 12)
+    (070-cross-module 2)
+    (070-cross-package-import-all 1)
+    (070-cross-package-import-as 1)
+    (070-cross-package-import 1)
+    (070-module-lib 2)
+    (110-function 4)
+    (110-type-annotations 4)
+    (140-uniquify 1)
+    (150-lift-lambda 2)
+    (160-unnest 4)
+    (170-explicate-control 1)
+    (180-codegen 2))
+  (private-names
+    (builtin 0)
+    (math 0)
+    (010-my-list 0)
+    (010-pair 0)
+    (050-lambda 0)
+    (060-desugar 0)
+    (070-cross-module 0)
+    (070-cross-package-import-all 0)
+    (070-cross-package-import-as 0)
+    (070-cross-package-import 0)
+    (070-module-lib 0)
+    (110-function 0)
+    (110-type-annotations 0)
+    (140-uniquify 0)
+    (150-lift-lambda 0)
+    (160-unnest 0)
+    (170-explicate-control 0)
+    (180-codegen 0))
+  (fragment-scopes
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/assert.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/error.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/process.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/random.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/type.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/bool/bool-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/bool/bool.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/bool/negation.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/box/box.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/cli/cli-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/cli/cli.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/file/call-with.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/file/file.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/float/float-product.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/float/float-sum.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/float/float.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/for/for-hash.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/for/for-list-index.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/for/for-list.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/for/for-set.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/fs/fs.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/function/constant.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/function/forth.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/function/function-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/function/identity.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/function/ignore.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-append.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-each.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-entry.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-from-entries.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-get-maybe.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-invert.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-map.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-put-entries.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-put-entry.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-select.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/hash/hash.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/int/int-align.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/int/int-product.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/int/int-sum.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/int/int.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/json/json-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/json/json.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/keyword/keyword-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/keyword/keyword.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-append.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-concat.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-each-index.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-each.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-enumerate.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-every.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-find.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-flat-map-index.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-flat-map.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-fold-left-index.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-fold-left.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-fold-right-index.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-fold-right.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-getters.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-group.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-map-index.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-map-zip.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-map.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-member.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-product.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-range.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-select.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-sort-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-sort.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-take.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list-zip.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/list/list.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/maybe/maybe.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/pair/pair.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/path/path-relative-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/path/path-relative-to-cwd-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/path/path-resolve-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/path/path-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/path/path.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set-each.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set-every.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set-map.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set-select.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set-union-many.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/set/set.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/format-as-sexp-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/format-sexp.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/sexp-collect-key-value-hash.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/sexp-collect-key-value-pairs-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/sexp-collect-key-value-pairs.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/sexp-location.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/sexp.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/sexp/source-location.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/string/string-concat.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/string/string-repeat.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/string/string-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/string/string.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/symbol/symbol-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/symbol/symbol.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/triple/triple.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/value/atom-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/value/format-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/value/same-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/value/value.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/void/void-test.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-builtin.meta/src/void/void.meta"
+      (mod-name builtin)
+      (imported-names 0)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-math.meta/src/even-odd.meta"
+      (mod-name math)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-math.meta/src/factorial.meta"
+      (mod-name math)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-math.meta/src/fibonacci.meta"
+      (mod-name math)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-math.meta/src/gcd.meta"
+      (mod-name math)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("/home/xyh/projects/xieyuheng/meta-lisp/packages/meta-math.meta/src/square.meta"
+      (mod-name math)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/010-my-list.meta"
+      (mod-name 010-my-list)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/010-pair.meta"
+      (mod-name 010-pair)
+      (imported-names 600)
+      (imported-prefixes 0))
+    ("src/050-lambda.meta"
+      (mod-name 050-lambda)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/060-desugar.meta"
+      (mod-name 060-desugar)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/070-cross-module.meta"
+      (mod-name 070-cross-module)
+      (imported-names 608)
+      (imported-prefixes 0))
+    ("src/070-cross-package-import-all.meta"
+      (mod-name 070-cross-package-import-all)
+      (imported-names 619)
+      (imported-prefixes 0))
+    ("src/070-cross-package-import-as.meta"
+      (mod-name 070-cross-package-import-as)
+      (imported-names 607)
+      (imported-prefixes 1))
+    ("src/070-cross-package-import.meta"
+      (mod-name 070-cross-package-import)
+      (imported-names 608)
+      (imported-prefixes 0))
+    ("src/070-module-lib.meta"
+      (mod-name 070-module-lib)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/110-function.meta"
+      (mod-name 110-function)
+      (imported-names 606)
+      (imported-prefixes 0))
+    ("src/110-type-annotations.meta"
+      (mod-name 110-type-annotations)
+      (imported-names 606)
+      (imported-prefixes 0))
+    ("src/140-uniquify.meta"
+      (mod-name 140-uniquify)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/150-lift-lambda.meta"
+      (mod-name 150-lift-lambda)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/160-unnest.meta"
+      (mod-name 160-unnest)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/170-explicate-control.meta"
+      (mod-name 170-explicate-control)
+      (imported-names 607)
+      (imported-prefixes 0))
+    ("src/180-codegen.meta"
+      (mod-name 180-codegen)
+      (imported-names 607)
+      (imported-prefixes 0))))

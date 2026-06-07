@@ -2,4 +2,6 @@
 
 (define (build-pipeline package)
   (expand-pass package)
-  (module-prelude-pass package))
+  (module-prelude-pass package)
+  (= analysis-result (module-analysis-pass package))
+  void)

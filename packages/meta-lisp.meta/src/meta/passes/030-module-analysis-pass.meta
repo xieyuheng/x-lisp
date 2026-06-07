@@ -41,8 +41,8 @@
   (= private-names (make-hash))
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
-      (merge-set-hash! defined-names (collect-defined-names package))
-      (merge-set-hash! private-names (collect-private-names package))))
+      (merge-set-hash! defined-names (collect-defined-names ordered-package))
+      (merge-set-hash! private-names (collect-private-names ordered-package))))
   (= fragment-scopes (make-hash))
   (= analysis-result
     (make-module-analysis-result defined-names private-names fragment-scopes (outcome-ok)))
@@ -57,6 +57,8 @@
               (if (outcome-error? (ensure-imported-mod-exists ordered-package stmt))
                 (ignore (module-analysis-result-put-outcome! (outcome-error) analysis-result))
                 (execute-import ordered-package scope stmt))))))))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (dump-module-analysis-result analysis-result package))
   analysis-result)
 
 (claim collect-defined-names
@@ -230,3 +232,53 @@
     (lambda (fragment)
       (equal? (fragment-mod-name fragment) mod-name))
     fragments))
+
+(define (close-top lines)
+  (= i (isub (list-length lines) 1))
+  (list-put! i (@string (list-get i lines) ")") lines))
+
+(define (format-module-analysis-result result)
+  (= lines [])
+  (list-push! "(module-analysis-result" lines)
+
+  (list-push! "  (defined-names" lines)
+  (for-hash (module-analysis-result-defined-names result)
+    (lambda (mod-name names)
+      (list-push!
+        (@string "    (" (symbol-to-string mod-name) " " (format (set-size names)) ")")
+        lines)))
+  (close-top lines)
+
+  (list-push! "  (private-names" lines)
+  (for-hash (module-analysis-result-private-names result)
+    (lambda (mod-name names)
+      (list-push!
+        (@string "    (" (symbol-to-string mod-name) " " (format (set-size names)) ")")
+        lines)))
+  (close-top lines)
+
+  (list-push! "  (fragment-scopes" lines)
+  (for-hash (module-analysis-result-fragment-scopes result)
+    (lambda (path scope)
+      (list-push! (@string "    (\"" path "\")") lines)
+      (list-push!
+        (@string "      (mod-name " (symbol-to-string (fragment-scope-mod-name scope)) ")")
+        lines)
+      (list-push!
+        (@string "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")")
+        lines)
+      (list-push!
+        (@string "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")")
+        lines)
+      (close-top lines)))
+  (close-top lines)
+
+  (close-top lines)
+  (string-join "\n" lines))
+
+(define (dump-module-analysis-result result package)
+  (= dump-directory (path-join (package-output-directory package) "dump"))
+  (fs-ensure-directory dump-directory)
+  (= dump-path (@string dump-directory "/030-module-analysis-result.dump"))
+  (fs-ensure-file dump-path)
+  (fs-write dump-path (@string (format-module-analysis-result result) "\n")))

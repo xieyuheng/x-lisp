@@ -54,7 +54,7 @@
         (hash-put! 'meta-builtin
                    (load-package 'meta-builtin dep-resolved)
                    (package-dependencies package))
-        (hash-put! (dependency-id dep-resolved)
+        (hash-put! (string-to-symbol alias)
                    (load-package (dependency-id dep-resolved) dep-resolved)
                    (package-dependencies package))))
     (package-config-dependencies config)))
