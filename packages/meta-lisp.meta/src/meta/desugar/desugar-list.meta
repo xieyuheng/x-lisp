@@ -1,0 +1,24 @@
+(module meta)
+
+(claim desugar-list (-> (list-t exp-t) source-location-t exp-t))
+(define (desugar-list elements location)
+  (= used-names
+     (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
+       (make-set) elements))
+  (= name (generate-relative-fresh-name 'list used-names))
+  (desugar-begin
+    (cons
+      (assign-exp name
+        (apply-exp
+          (qualified-var-exp 'meta-builtin 'builtin 'make-list location)
+          [] location)
+        location)
+      (list-append
+        (list-map (lambda (e)
+                    (apply-exp
+                      (qualified-var-exp 'meta-builtin 'builtin 'list-push! location)
+                      [e (var-exp name location)]
+                      location))
+          elements)
+        [(var-exp name location)]))
+    location))

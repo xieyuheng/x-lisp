@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-node ../meta-lisp.js/src/main.ts $@
+node --stack-size=65536 ../meta-lisp.js/src/main.ts $@

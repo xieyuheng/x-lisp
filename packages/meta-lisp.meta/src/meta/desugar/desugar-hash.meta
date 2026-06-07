@@ -1,0 +1,27 @@
+(module meta)
+
+(claim desugar-hash (-> (list-t (hash-entry-t exp-t exp-t)) source-location-t exp-t))
+(define (desugar-hash entries location)
+  (= used-names
+     (list-fold-left (lambda (s entry)
+                       (set-union s
+                         (set-union (exp-occurred-names (hash-entry-key entry))
+                           (exp-occurred-names (hash-entry-value entry)))))
+       (make-set) entries))
+  (= name (generate-relative-fresh-name 'hash used-names))
+  (desugar-begin
+    (cons
+      (assign-exp name
+        (apply-exp
+          (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)
+          [] location)
+        location)
+      (list-append
+        (list-map (lambda (entry)
+                    (apply-exp
+                      (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
+                      [(hash-entry-key entry) (hash-entry-value entry) (var-exp name location)]
+                      location))
+          entries)
+        [(var-exp name location)]))
+    location))

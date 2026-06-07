@@ -1,7 +1,0 @@
-(claim add (-> int-t int-t int-t))
-
-(define (add x y) (meta-builtin/builtin/iadd x y))
-
-(claim f (-> int-t))
-
-(define (f) (self/180-codegen/add 1 2))

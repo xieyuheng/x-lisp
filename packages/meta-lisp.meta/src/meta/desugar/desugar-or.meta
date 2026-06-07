@@ -1,0 +1,16 @@
+(module meta)
+
+(claim desugar-or (-> (list-t exp-t) source-location-t exp-t))
+(define (desugar-or exps location)
+  (cond
+    ((list-empty? exps)
+     (qualified-var-exp 'meta-builtin 'builtin 'false location))
+    ((list-empty? (list-tail exps))
+     (list-first exps))
+    (else
+     (let ((head (list-first exps))
+           (rest (list-tail exps)))
+       (if-exp head
+         (qualified-var-exp 'meta-builtin 'builtin 'true location)
+         (desugar-or rest location)
+         location)))))

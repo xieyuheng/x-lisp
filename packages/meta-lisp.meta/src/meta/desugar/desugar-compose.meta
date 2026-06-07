@@ -1,0 +1,5 @@
+(module meta)
+
+(claim desugar-compose (-> (list-t exp-t) source-location-t exp-t))
+(define (desugar-compose steps location)
+  (desugar-chain (list-reverse steps) location))

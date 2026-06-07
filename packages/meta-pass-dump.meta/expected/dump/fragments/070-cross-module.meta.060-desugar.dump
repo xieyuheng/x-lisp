@@ -1,9 +1,0 @@
-(import-all meta-builtin/builtin)
-
-(module 070-cross-module)
-
-(import 070-module-lib greet)
-
-(define (say-hello) (greet "world"))
-
-(define (get-greeting) self/070-module-lib/greeting)

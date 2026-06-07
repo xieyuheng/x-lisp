@@ -1,0 +1,54 @@
+(module meta)
+
+(claim desugar-begin (-> (list-t exp-t) source-location-t exp-t))
+(define (desugar-begin sequence location)
+  (if (list-empty? sequence)
+    (error-with-location "[desugar-begin] (begin) must not be empty" location)
+    (let ((head (list-first sequence)))
+      (match head
+        ((local-define-exp name parameters body loc)
+         (= defines (collect-adjacent-local-defines sequence []))
+         (= n (list-length defines))
+         (= remaining (drop-n n sequence))
+         (= bindings
+            (list-map (lambda (d)
+                        (make-binding (local-define-exp-name d)
+                          (if (list-empty? (local-define-exp-parameters d))
+                            (local-define-exp-body d)
+                            (lambda-exp (local-define-exp-parameters d)
+                              (local-define-exp-body d)
+                              (local-define-exp-location d)))
+                          (local-define-exp-location d)))
+              defines))
+         (letrec-star-exp bindings
+           (if (list-empty? remaining)
+             (qualified-var-exp 'meta-builtin 'builtin 'void location)
+             (desugar-begin remaining location))
+           location))
+        (_
+         (= rest (list-tail sequence))
+         (if (list-empty? rest)
+           head
+           (match head
+             ((assign-exp name rhs loc)
+              (let1-exp name rhs (desugar-begin rest location) location))
+             (_
+              (begin1-exp head (desugar-begin rest location) location)))))))))
+
+(claim collect-adjacent-local-defines (-> (list-t exp-t) (list-t exp-t) (list-t exp-t)))
+(define (collect-adjacent-local-defines sequence acc)
+  (if (list-empty? sequence)
+    (list-reverse acc)
+    (let ((head (list-first sequence)))
+      (match head
+        ((local-define-exp name parameters body loc)
+         (collect-adjacent-local-defines (list-tail sequence)
+           (cons head acc)))
+        (_
+         (list-reverse acc))))))
+
+(claim drop-n (polymorphic (A) (-> int-t (list-t A) (list-t A))))
+(define (drop-n n xs)
+  (if (or (equal? n 0) (list-empty? xs))
+    xs
+    (drop-n (isub n 1) (list-tail xs))))

@@ -1,0 +1,36 @@
+(module meta)
+
+(claim desugar-sexp (-> sexp-t exp-t))
+(define (desugar-sexp sexp)
+  (match sexp
+    ((symbol-sexp content loc)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'symbol-sexp loc)
+       [(symbol-exp content loc) (desugar-location loc)]
+       loc))
+    ((string-sexp content loc)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'string-sexp loc)
+       [(string-exp content loc) (desugar-location loc)]
+       loc))
+    ((int-sexp content loc)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'int-sexp loc)
+       [(int-exp content loc) (desugar-location loc)]
+       loc))
+    ((float-sexp content loc)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'float-sexp loc)
+       [(float-exp content loc) (desugar-location loc)]
+       loc))
+    ((keyword-sexp content loc)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'keyword-sexp loc)
+       [(keyword-exp content loc) (desugar-location loc)]
+       loc))
+    ((list-sexp elements loc)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'list-sexp loc)
+       [(list-exp (list-map (lambda (e) (desugar-sexp e)) elements) loc)
+        (desugar-location loc)]
+       loc))))

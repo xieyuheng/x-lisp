@@ -1,0 +1,18 @@
+(module meta)
+
+(claim desugar-quote (-> sexp-t source-location-t exp-t))
+(define (desugar-quote sexp location)
+  (match sexp
+    ((symbol-sexp content loc)
+     (symbol-exp content location))
+    ((string-sexp content loc)
+     (string-exp content location))
+    ((int-sexp content loc)
+     (int-exp content location))
+    ((float-sexp content loc)
+     (float-exp content location))
+    ((keyword-sexp content loc)
+     (keyword-exp content location))
+    ((list-sexp elements loc)
+     (list-exp (list-map (lambda (e) (desugar-quote e location)) elements)
+       location))))
