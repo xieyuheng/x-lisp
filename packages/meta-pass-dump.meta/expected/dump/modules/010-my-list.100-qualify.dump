@@ -1,5 +1,4 @@
-(claim my-list-t
-  (-> meta-builtin/builtin/type-t meta-builtin/builtin/type-t))
+(claim my-list-t (-> meta-builtin/builtin/type-t meta-builtin/builtin/type-t))
 
 (define-enum (my-list-t E)
   nil
@@ -12,9 +11,7 @@
   (meta-builtin/builtin/list-push! nil list)
   list)
 
-(claim nil?
-  (polymorphic (E)
-    (-> (my-list-t E) meta-builtin/builtin/bool-t)))
+(claim nil? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
 (define (nil? value)
   (if (meta-builtin/builtin/list? value)
@@ -37,9 +34,7 @@
   (meta-builtin/builtin/list-push! tail list)
   list)
 
-(claim li?
-  (polymorphic (E)
-    (-> (my-list-t E) meta-builtin/builtin/bool-t)))
+(claim li? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
 (define (li? value)
   (if (meta-builtin/builtin/list? value)
@@ -47,32 +42,25 @@
           (meta-builtin/builtin/equal?
            (meta-builtin/builtin/list-length value)
            3)
-          (meta-builtin/builtin/equal?
-           (meta-builtin/builtin/list-head value)
-           li)
+          (meta-builtin/builtin/equal? (meta-builtin/builtin/list-head value) li)
           meta-builtin/builtin/false)
       meta-builtin/builtin/false))
 
 (claim li-head (polymorphic (E) (-> (my-list-t E) E)))
 
-(define (li-head target)
-  (meta-builtin/builtin/list-get 1 target))
+(define (li-head target) (meta-builtin/builtin/list-get 1 target))
 
-(claim li-put-head!
-  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li-put-head! value target)
   (meta-builtin/builtin/list-put! 1 value target))
 
-(claim li-tail
-  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+(claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 
-(define (li-tail target)
-  (meta-builtin/builtin/list-get 2 target))
+(define (li-tail target) (meta-builtin/builtin/list-get 2 target))
 
 (claim li-put-tail!
-  (polymorphic (E)
-    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
 (define (li-put-tail! value target)
   (meta-builtin/builtin/list-put! 2 value target))
@@ -83,9 +71,7 @@
           (begin
             (= tail (self/010-my-list/li-tail list))
             (= head (self/010-my-list/li-head list))
-            (meta-builtin/builtin/iadd
-             1
-             (self/010-my-list/my-list-length tail)))
+            (meta-builtin/builtin/iadd 1 (self/010-my-list/my-list-length tail)))
           (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-map f list)
@@ -94,7 +80,5 @@
           (begin
             (= tail (self/010-my-list/li-tail list))
             (= head (self/010-my-list/li-head list))
-            (self/010-my-list/li
-             (f head)
-             (self/010-my-list/my-list-map f tail)))
+            (self/010-my-list/li (f head) (self/010-my-list/my-list-map f tail)))
           (meta-builtin/builtin/error "cond mismatch"))))

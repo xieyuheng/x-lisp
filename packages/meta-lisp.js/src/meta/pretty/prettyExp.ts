@@ -76,7 +76,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       const assignNode = Ppml.group(
         Ppml.text("("),
         Ppml.text("="),
-        Ppml.br(),
+        Ppml.text(" "),
         Ppml.text(exp.name),
         Ppml.br(),
         prettyExp(exp.rhs),
@@ -147,6 +147,9 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "BeginExp": {
+      if (exp.sequence.length === 1) {
+        return prettyExp(exp.sequence[0])
+      }
       return Ppml.prettySyntax("begin", [], exp.sequence.map(prettyExp))
     }
 
@@ -317,7 +320,7 @@ export function prettyBody(body: M.Exp): Array<Ppml.Node> {
     const assignNode = Ppml.group(
       Ppml.text("("),
       Ppml.text("="),
-      Ppml.br(),
+      Ppml.text(" "),
       Ppml.text(body.name),
       Ppml.br(),
       prettyExp(body.rhs),
@@ -380,7 +383,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
       const assignNode = Ppml.group(
         Ppml.text("("),
         Ppml.text("="),
-        Ppml.br(),
+        Ppml.text(" "),
         Ppml.text(term.name),
         Ppml.br(),
         prettyTerm(term.rhs),
@@ -447,7 +450,7 @@ export function prettyTermBody(body: M.Term): Array<Ppml.Node> {
     const assignNode = Ppml.group(
       Ppml.text("("),
       Ppml.text("="),
-      Ppml.br(),
+      Ppml.text(" "),
       Ppml.text(body.name),
       Ppml.br(),
       prettyTerm(body.rhs),

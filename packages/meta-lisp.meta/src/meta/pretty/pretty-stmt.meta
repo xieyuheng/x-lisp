@@ -78,10 +78,10 @@
        [(pretty-explicit-data-constructor pretty-body data-constructor)]))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (ppml/pretty-syntax "define-opaque-type"
-       [(pretty-pre-type-constructor type-constructor)]
-       (cons (pretty-body representation-type)
-             (list-map (lambda (e) (pretty-pre-interface-entry pretty-body e))
-                       interface-entries))))
+       [(pretty-pre-type-constructor type-constructor)
+        (pretty-body representation-type)]
+       (list-map (lambda (e) (pretty-pre-interface-entry pretty-body e))
+                 interface-entries)))
     ((claim-stmt name type location)
      (ppml/pretty-syntax "claim"
        [(ppml/text (symbol-to-string name))]

@@ -10,7 +10,7 @@ import * as M from "../index.ts"
 
 export function packageDumpMods(pkg: M.Package, tag: string): void {
   for (const mod of pkg.mods.values()) {
-    const textWidth = 64
+    const textWidth = 80
     const code = M.formatPrettyModDefinitions(textWidth, mod)
     const directory = Path.join(M.packageOutputDirectory(pkg), "dump/modules")
     const dumpPath = `${directory}/${mod.name}.${tag}.dump`

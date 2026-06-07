@@ -19,23 +19,14 @@
   (if (meta-builtin/builtin/equal? 1 1) 1
       (if meta-builtin/builtin/true 2
           (begin
-            (=
-            _.1
-            (meta-builtin/builtin/make-source-position 176 6 24))
-            (=
-            _.2
-            (meta-builtin/builtin/make-source-position 180 6 28))
-            (=
-            _.3
-            (meta-builtin/builtin/make-source-span _.1 _.2))
-            (=
-            _.4
+            (= _.1 (meta-builtin/builtin/make-source-position 176 6 24))
+            (= _.2 (meta-builtin/builtin/make-source-position 180 6 28))
+            (= _.3 (meta-builtin/builtin/make-source-span _.1 _.2))
+            (= _.4
             (meta-builtin/builtin/make-source-location
              "src/060-desugar.meta"
              _.3))
-            (meta-builtin/builtin/error-with-location
-             "cond mismatch"
-             _.4)))))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.4)))))
 
 (claim example-begin (-> int-t))
 
@@ -44,8 +35,7 @@
 (claim example-when (-> void-t))
 
 (define (example-when)
-  (if meta-builtin/builtin/true
-      (begin 1 meta-builtin/builtin/void)
+  (if meta-builtin/builtin/true (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
 (claim example-unless (-> void-t))
@@ -78,8 +68,7 @@
 
 (claim example-compose (-> int-t))
 
-(define (example-compose)
-  (self/060-desugar/example-compose©λ1 5))
+(define (example-compose) (self/060-desugar/example-compose©λ1 5))
 
 (define (example-compose©λ1 target.1)
   (= _.1 (self/060-desugar/double target.1))

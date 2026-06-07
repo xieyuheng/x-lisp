@@ -51,14 +51,14 @@
     ((and-exp exps location)
      (@string "(and " (format-exps exps) ")"))
     ((let1-exp name rhs body location)
-     (@string "(let ((" (symbol-to-string name) " " (format-exp rhs) ")) "
-              (format-exp body) ")"))
+     (@string "(begin (= " (symbol-to-string name) " " (format-exp rhs) ") "
+              (format-exp-body body) ")"))
     ((let-exp bindings body location)
      (@string "(let (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((let-star-exp bindings body location)
      (@string "(let* (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((begin1-exp head body location)
-     (@string "(begin " (format-exp head) " " (format-exp body) ")"))
+     (@string "(begin " (format-exp head) " " (format-exp-body body) ")"))
     ((begin-exp sequence location)
      (@string "(begin " (format-exps sequence) ")"))
     ((quote-exp sexp location)
@@ -110,6 +110,19 @@
 
 (define (format-exps exps)
   (string-join " " (list-map format-exp exps)))
+
+(claim format-exp-body (-> exp-t string-t))
+
+(define (format-exp-body exp)
+  (match exp
+    ((begin1-exp head body location)
+     (@string (format-exp head) " " (format-exp-body body)))
+    ((let1-exp name rhs body location)
+     (@string "(= " (symbol-to-string name) " " (format-exp rhs) ") "
+              (format-exp-body body)))
+    ((begin-exp sequence location)
+     (format-exps sequence))
+    (else (format-exp exp))))
 
 (define (format-bindings bindings)
   (string-join " " (list-map format-binding bindings)))

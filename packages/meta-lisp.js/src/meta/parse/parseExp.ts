@@ -283,18 +283,14 @@ const parseCondClause = S.createRouter<M.CondClause>({
 
 const parseMatchClause = S.createRouter<M.MatchClause>({
   "(cons* pattern body)": ({ pattern, body }, { location }) =>
-    M.MatchClause(
-      [parseExp(pattern)],
-      M.BeginExp(S.asListSexp(body).elements.map(parseExp), location),
-      location,
-    ),
+    M.MatchClause([parseExp(pattern)], parseBody(body), location),
 })
 
 const parseMatchManyClause = S.createRouter<M.MatchClause>({
   "(cons* patterns body)": ({ patterns, body }, { location }) =>
     M.MatchClause(
       S.asListSexp(patterns).elements.map(parseExp),
-      M.BeginExp(S.asListSexp(body).elements.map(parseExp), location),
+      parseBody(body),
       location,
     ),
 })

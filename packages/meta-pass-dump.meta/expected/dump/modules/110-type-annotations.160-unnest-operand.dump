@@ -2,8 +2,7 @@
 
 (define (identity x) x)
 
-(claim compose2
-  (polymorphic (A B C) (-> (-> A B) (-> C A) (-> C B))))
+(claim compose2 (polymorphic (A B C) (-> (-> A B) (-> C A) (-> C B))))
 
 (define (compose2 f g x) (= _.1 (g x)) (f _.1))
 

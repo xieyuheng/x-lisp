@@ -27,8 +27,8 @@ export function prettyStmt<E>(
           : `${stmt.pkgName}/${stmt.modName}`
       return Ppml.prettySyntax(
         "import-as",
-        [],
         [Ppml.text(modName), Ppml.text(stmt.prefix)],
+        [],
       )
     }
 
@@ -37,7 +37,7 @@ export function prettyStmt<E>(
         stmt.pkgName === "self"
           ? stmt.modName
           : `${stmt.pkgName}/${stmt.modName}`
-      return Ppml.prettySyntax("import-all", [], [Ppml.text(modName)])
+      return Ppml.prettySyntax("import-all", [Ppml.text(modName)], [])
     }
 
     case "DefineFunctionStmt": {
@@ -123,8 +123,8 @@ export function prettyStmt<E>(
       )
       return Ppml.prettySyntax(
         "define-opaque-type",
-        [],
-        [paramsNode, reprNode, ...ifaceNodes],
+        [paramsNode, reprNode],
+        ifaceNodes,
       )
     }
 
@@ -220,16 +220,23 @@ function prettyExplicitDataConstructor<E>(
   ])
   const accessorNodes = ctor.fields.map((field) => {
     if (field.modifierName !== undefined) {
-      return Ppml.prettyApplication([
+      return Ppml.group(
+        Ppml.text("("),
         Ppml.text(field.name),
+        Ppml.text(" "),
         Ppml.text(field.accessorName),
+        Ppml.text(" "),
         Ppml.text(field.modifierName),
-      ])
+        Ppml.text(")"),
+      )
     } else {
-      return Ppml.prettyApplication([
+      return Ppml.group(
+        Ppml.text("("),
         Ppml.text(field.name),
+        Ppml.text(" "),
         Ppml.text(field.accessorName),
-      ])
+        Ppml.text(")"),
+      )
     }
   })
   return Ppml.prettyApplication([

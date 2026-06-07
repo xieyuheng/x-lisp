@@ -12,5 +12,4 @@
 
 (claim test (-> int-t))
 
-(define (test)
-  (self/160-unnest/f (self/160-unnest/g 1) (self/160-unnest/h 2)))
+(define (test) (self/160-unnest/f (self/160-unnest/g 1) (self/160-unnest/h 2)))

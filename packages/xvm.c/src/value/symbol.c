@@ -51,7 +51,18 @@ bool symbol_p(value_t value) {
 }
 
 symbol_t *to_symbol(value_t value) {
-  assert(symbol_p(value));
+  if (!symbol_p(value)) {
+    if (object_p(value)) {
+      object_t *object = to_object(value);
+      who_printf("expected symbol, got object class: %s\n", object->header.class->name);
+    } else {
+      who_printf("expected symbol, tag: %ld\n", (int64_t) value_tag(value));
+    }
+    who_printf("  value: ");
+    print_value(value);
+    newline();
+    exit(1);
+  }
   return (symbol_t *) to_object(value);
 }
 

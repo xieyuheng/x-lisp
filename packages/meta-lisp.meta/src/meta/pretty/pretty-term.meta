@@ -23,26 +23,27 @@
      (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
        (ppml/pretty-syntax "lambda"
          [(ppml/text (@string "(" params-str ")"))]
-         [(pretty-term body)])))
+         (pretty-term-body body))))
     ((apply-term target args location)
      (let ((target-op (term-op-string target))
            (all-elements (cons (pretty-term target) (list-map pretty-term args))))
        (ppml/pretty-application target-op all-elements)))
     ((let1-term name rhs body location)
-     (ppml/pretty-syntax "let"
+     (ppml/pretty-syntax "begin"
        []
-       [(ppml/group
-          [(ppml/text "(")
-           (ppml/text (symbol-to-string name))
-           (ppml/text " ")
-           (pretty-term rhs)
-           (ppml/text ")")])
-        (pretty-term body)]))
+       (cons (ppml/group
+                    [(ppml/text "(")
+                     (ppml/text "=")
+                     (ppml/text " ")
+                     (ppml/text (symbol-to-string name))
+                     (ppml/text " ")
+                     (pretty-term rhs)
+                     (ppml/text ")")])
+                  (pretty-term-body body))))
     ((begin1-term head body location)
      (ppml/pretty-syntax "begin"
        []
-       [(pretty-term head)
-        (pretty-term body)]))
+       (cons (pretty-term head) (pretty-term-body body))))
     ((if-term condition consequent alternative location)
      (ppml/pretty-syntax "if"
        []
@@ -72,3 +73,22 @@
     ((qualified-var-term pkg-name mod-name name location)
       (just (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
     (else (nothing))))
+
+(claim pretty-term-body (-> term-t (list-t ppml/node-t)))
+
+(define (pretty-term-body term)
+  (match term
+    ((begin1-term head body location)
+     (cons (pretty-term head) (pretty-term-body body)))
+    ((let1-term name rhs body location)
+     (cons (ppml/group
+              [(ppml/text "(")
+               (ppml/text "=")
+               (ppml/text " ")
+               (ppml/text (symbol-to-string name))
+               (ppml/br)
+               (pretty-term rhs)
+               (ppml/text ")")])
+           (pretty-term-body body)))
+    (else
+      [(pretty-term term)])))

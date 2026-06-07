@@ -89,8 +89,8 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
       )
       return Ppml.prettySyntax(
         "define-opaque-type",
-        [],
-        [paramsNode, reprNode, ...ifaceNodes],
+        [paramsNode, reprNode],
+        ifaceNodes,
       )
     }
   }

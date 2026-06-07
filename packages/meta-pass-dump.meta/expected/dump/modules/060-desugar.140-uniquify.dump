@@ -33,8 +33,7 @@
 (claim example-when (-> void-t))
 
 (define (example-when)
-  (if meta-builtin/builtin/true
-      (begin 1 meta-builtin/builtin/void)
+  (if meta-builtin/builtin/true (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
 (claim example-unless (-> void-t))
@@ -53,8 +52,7 @@
 
 (claim example-pipe (-> int-t))
 
-(define (example-pipe)
-  (self/060-desugar/double (self/060-desugar/add1 5)))
+(define (example-pipe) (self/060-desugar/double (self/060-desugar/add1 5)))
 
 (claim example-chain (-> int-t))
 

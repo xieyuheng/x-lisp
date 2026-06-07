@@ -83,9 +83,9 @@
        [(ppml/pretty-syntax "define-opaque-type"
           [(if (list-empty? tc-params)
              (ppml/text name-str)
-             (ppml/text (@string "(" name-str " " params-str ")")))]
-          (cons (pretty-term representation-type)
-                (list-map pretty-interface-entry interface-entries)))]))))
+             (ppml/text (@string "(" name-str " " params-str ")")))
+           (pretty-term representation-type)]
+          (list-map pretty-interface-entry interface-entries))]))))
 
 (claim pretty-definition-claim (-> mod-t symbol-t string-t))
 (define (pretty-definition-claim mod name)

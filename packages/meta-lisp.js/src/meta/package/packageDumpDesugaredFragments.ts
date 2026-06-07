@@ -15,7 +15,7 @@ export function packageDumpDesugaredFragments(
   for (const fragment of pkg.fragments.values()) {
     const sourceDirectory = M.packageSourceDirectory(pkg)
     const name = Path.relative(sourceDirectory, fragment.path)
-    const textWidth = 64
+    const textWidth = 80
     const stmtsCode = M.formatPrettyFragmentDesugaredStmts(
       textWidth,
       fragment.desugaredStmts,

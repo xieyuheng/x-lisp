@@ -23,7 +23,7 @@
      (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
        (ppml/pretty-syntax "lambda"
          [(ppml/text (@string "(" params-str ")"))]
-         [(pretty-exp body)])))
+         (pretty-exp-body body))))
     ((apply-exp target args location)
      (let ((target-op (exp-op-string target))
            (all-elements (cons (pretty-exp target) (list-map pretty-exp args))))
@@ -41,52 +41,51 @@
        []
        (list-map pretty-exp steps)))
     ((let1-exp name rhs body location)
-     (ppml/pretty-syntax "let"
+     (ppml/pretty-syntax "begin"
        []
-       [(ppml/group
-          [(ppml/text "(")
-           (ppml/text (symbol-to-string name))
-           (ppml/text " ")
-           (pretty-exp rhs)
-           (ppml/text ")")])
-        (pretty-exp body)]))
+       (cons (ppml/group
+                    [(ppml/text "(")
+                     (ppml/text "=")
+                     (ppml/text " ")
+                     (ppml/text (symbol-to-string name))
+                     (ppml/text " ")
+                     (pretty-exp rhs)
+                     (ppml/text ")")])
+                  (pretty-exp-body body))))
     ((let-exp bindings body location)
      (ppml/pretty-syntax "let"
-       []
-       [(pretty-bindings bindings)
-        (pretty-exp body)]))
+       [(pretty-bindings bindings)]
+       (pretty-exp-body body)))
     ((let-star-exp bindings body location)
      (ppml/pretty-syntax "let*"
-       []
-       [(pretty-bindings bindings)
-        (pretty-exp body)]))
+       [(pretty-bindings bindings)]
+       (pretty-exp-body body)))
     ((letrec-exp bindings body location)
      (ppml/pretty-syntax "letrec"
-       []
-       [(pretty-bindings bindings)
-        (pretty-exp body)]))
+       [(pretty-bindings bindings)]
+       (pretty-exp-body body)))
     ((letrec-star-exp bindings body location)
      (ppml/pretty-syntax "letrec*"
-       []
-       [(pretty-bindings bindings)
-        (pretty-exp body)]))
+       [(pretty-bindings bindings)]
+       (pretty-exp-body body)))
     ((local-define-exp name parameters body location)
      (let ((name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters))))
        (if (list-empty? parameters)
-         (ppml/pretty-syntax "define" [(ppml/text name-str)] [(pretty-exp body)])
+         (ppml/pretty-syntax "define" [(ppml/text name-str)] (pretty-exp-body body))
          (ppml/pretty-syntax "define"
            [(ppml/text (@string "(" name-str " " params-str ")"))]
-           [(pretty-exp body)]))))
+           (pretty-exp-body body)))))
     ((begin1-exp head body location)
      (ppml/pretty-syntax "begin"
        []
-       [(pretty-exp head)
-        (pretty-exp body)]))
+       (cons (pretty-exp head) (pretty-exp-body body))))
     ((begin-exp sequence location)
-     (ppml/pretty-syntax "begin"
-       []
-       (list-map pretty-exp sequence)))
+     (if (equal? (list-length sequence) 1)
+       (pretty-exp (car sequence))
+       (ppml/pretty-syntax "begin"
+         []
+         (list-map pretty-exp sequence))))
     ((assign-exp name rhs location)
      (ppml/pretty-syntax "="
        [(ppml/text (symbol-to-string name))]
@@ -174,6 +173,27 @@
       (just (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
     (else (nothing))))
 
+(claim pretty-exp-body (-> exp-t (list-t ppml/node-t)))
+
+(define (pretty-exp-body exp)
+  (match exp
+    ((begin1-exp head body location)
+     (cons (pretty-exp head) (pretty-exp-body body)))
+    ((let1-exp name rhs body location)
+     (cons (ppml/group
+              [(ppml/text "(")
+               (ppml/text "=")
+               (ppml/text " ")
+               (ppml/text (symbol-to-string name))
+               (ppml/br)
+               (pretty-exp rhs)
+               (ppml/text ")")])
+           (pretty-exp-body body)))
+    ((begin-exp sequence location)
+     (list-map pretty-exp sequence))
+    (else
+      [(pretty-exp exp)])))
+
 (define (pretty-bindings bindings)
   (ppml/group
     [(ppml/text "(")
@@ -189,29 +209,20 @@
      (ppml/text ")")]))
 
 (define (pretty-cond-clause clause)
-  (ppml/group
-    [(ppml/text "(")
-     (pretty-exp (cond-clause-question clause))
-     (ppml/text " ")
-     (pretty-exp (cond-clause-answer clause))
-     (ppml/text ")")]))
+  (ppml/pretty-application (nothing)
+    [(pretty-exp (cond-clause-question clause))
+     (pretty-exp (cond-clause-answer clause))]))
 
 (define (pretty-match-clause clause)
   (let ((patterns (match-clause-patterns clause))
-        (body (match-clause-body clause)))
+        (body (pretty-exp-body (match-clause-body clause))))
     (if (equal? (list-length patterns) 1)
-      (ppml/group
-        [(ppml/text "(")
-         (pretty-exp (list-head patterns))
-         (ppml/text " ")
-         (pretty-exp body)
-         (ppml/text ")")])
-      (ppml/group
-        [(ppml/text "((")
-         (ppml/flex (list-map pretty-exp patterns))
-         (ppml/text ") ")
-         (pretty-exp body)
-         (ppml/text ")")]))))
+      (ppml/pretty-application (nothing)
+        (cons (pretty-exp (list-head patterns)) body))
+      (let ((patterns-node (ppml/pretty-application (nothing)
+                             (list-map pretty-exp patterns))))
+        (ppml/pretty-application (nothing)
+          (cons patterns-node body))))))
 
 (define (pretty-hash-entry entry)
   (ppml/group

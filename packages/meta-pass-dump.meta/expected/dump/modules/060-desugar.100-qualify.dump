@@ -15,8 +15,7 @@
 (define (example-begin) 1 2 3)
 
 (define (example-when)
-  (if meta-builtin/builtin/true
-      (begin 1 meta-builtin/builtin/void)
+  (if meta-builtin/builtin/true (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
 (define (example-unless)
@@ -27,15 +26,10 @@
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(define (example-pipe)
-  (self/060-desugar/double (self/060-desugar/add1 5)))
+(define (example-pipe) (self/060-desugar/double (self/060-desugar/add1 5)))
 
 (define (example-chain)
-  ((lambda (target)
-     (self/060-desugar/double (self/060-desugar/add1 target)))
-   5))
+  ((lambda (target) (self/060-desugar/double (self/060-desugar/add1 target))) 5))
 
 (define (example-compose)
-  ((lambda (target)
-     (self/060-desugar/add1 (self/060-desugar/double target)))
-   5))
+  ((lambda (target) (self/060-desugar/add1 (self/060-desugar/double target))) 5))

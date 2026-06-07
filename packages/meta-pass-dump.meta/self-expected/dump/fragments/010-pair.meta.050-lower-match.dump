@@ -23,24 +23,22 @@
 
 (define (pair-first target) (list-get 1 target))
 
-(admit pair-put-first!
-  (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+(admit pair-put-first! (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
 
-(define (pair-put-first! value target)
-  (list-put! 1 value target))
+(define (pair-put-first! value target) (list-put! 1 value target))
 
 (admit pair-second (polymorphic (A B) (-> (pair-t A B) B)))
 
 (define (pair-second target) (list-get 2 target))
 
-(admit pair-put-second!
-  (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+(admit pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
 
-(define (pair-put-second! value target)
-  (list-put! 2 value target))
+(define (pair-put-second! value target) (list-put! 2 value target))
 
 (define (pair-swap p)
   (cond
-    ((self/010-pair/pair? p) (let
-      (b (self/010-pair/pair-second p))
-      (let (a (self/010-pair/pair-first p)) (make-pair b a))))))
+    ((self/010-pair/pair? p)
+     (begin
+       (= b (self/010-pair/pair-second p))
+       (= a (self/010-pair/pair-first p))
+       (make-pair b a)))))

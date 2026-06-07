@@ -12,7 +12,7 @@ export function packageDumpFragments(pkg: M.Package, tag: string): void {
   for (const fragment of pkg.fragments.values()) {
     const sourceDirectory = M.packageSourceDirectory(pkg)
     const name = Path.relative(sourceDirectory, fragment.path)
-    const textWidth = 64
+    const textWidth = 80
     const stmtsCode = M.formatPrettyFragmentStmts(textWidth, fragment.stmts)
     const code = `${stmtsCode}`
     const directory = Path.join(

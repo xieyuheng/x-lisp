@@ -20,8 +20,7 @@
 (define (example-begin) (begin 1 2 3))
 
 (define (example-when)
-  (if meta-builtin/builtin/true
-      (begin 1 meta-builtin/builtin/void)
+  (if meta-builtin/builtin/true (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
 (define (example-unless)
@@ -34,8 +33,6 @@
 
 (define (example-pipe) (double (add1 5)))
 
-(define (example-chain)
-  ((lambda (target) (double (add1 target))) 5))
+(define (example-chain) ((lambda (target) (double (add1 target))) 5))
 
-(define (example-compose)
-  ((lambda (target) (add1 (double target))) 5))
+(define (example-compose) ((lambda (target) (add1 (double target))) 5))
