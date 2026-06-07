@@ -1,4 +1,6 @@
 import * as M from "../index.ts"
+import fs from "node:fs"
+import Path from "node:path"
 
 export type DataConstructorInfo = {
   name: string
@@ -67,5 +69,72 @@ export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicAnalysisReport {
     }
   }
 
-  return { dataConstructorInfos, algebraicTypeInfos }
+  const report: AlgebraicAnalysisReport = {
+    dataConstructorInfos,
+    algebraicTypeInfos,
+  }
+
+  if (pkg.config.compiler.dump) {
+    dumpAlgebraicAnalysisReport(report, pkg)
+  }
+
+  return report
+}
+
+function dumpAlgebraicAnalysisReport(
+  report: AlgebraicAnalysisReport,
+  pkg: M.Package,
+): void {
+  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
+  fs.mkdirSync(dir, { recursive: true })
+  const file = Path.join(dir, "040-algebraic-analysis-report.dump")
+  const content = formatAlgebraicAnalysisReport(report)
+  fs.writeFileSync(file, content + "\n", "utf-8")
+}
+
+function formatAlgebraicAnalysisReport(
+  report: AlgebraicAnalysisReport,
+): string {
+  const lines: Array<string> = []
+  lines.push("(algebraic-analysis-report")
+
+  lines.push("  (data-constructor-infos")
+  for (const [key, info] of [...report.dataConstructorInfos].sort((a, b) =>
+    cmp(a[0], b[0]),
+  )) {
+    lines.push(`    ("${key}"`)
+    lines.push(`      (pkg-id ${info.pkgId})`)
+    lines.push(`      (mod-name ${info.modName})`)
+    lines.push(`      (type-name ${info.typeName})`)
+    lines.push(`      (name ${info.name})`)
+    lines.push(`      (accessor-names ${info.accessorNames.join(" ")})`)
+    lines.push(`      (predicate-name ${info.predicateName})`)
+    closeTop(lines)
+  }
+  closeTop(lines)
+
+  lines.push("  (algebraic-type-infos")
+  for (const [key, info] of [...report.algebraicTypeInfos].sort((a, b) =>
+    cmp(a[0], b[0]),
+  )) {
+    lines.push(`    ("${key}"`)
+    lines.push(`      (pkg-id ${info.pkgId})`)
+    lines.push(`      (mod-name ${info.modName})`)
+    lines.push(`      (name ${info.name})`)
+    lines.push(`      (constructor-names ${info.constructorNames.join(" ")})`)
+    closeTop(lines)
+  }
+  closeTop(lines)
+
+  closeTop(lines)
+  return lines.join("\n")
+}
+
+function closeTop(lines: Array<string>): void {
+  const i = lines.length - 1
+  lines[i] = lines[i] + ")"
+}
+
+function cmp(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0
 }

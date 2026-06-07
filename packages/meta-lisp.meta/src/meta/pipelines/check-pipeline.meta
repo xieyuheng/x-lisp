@@ -4,4 +4,5 @@
   (expand-pass package)
   (module-prelude-pass package)
   (= module-analysis-report (module-analysis-pass package))
+  (= algebraic-analysis-report (algebraic-analysis-pass package))
   void)
