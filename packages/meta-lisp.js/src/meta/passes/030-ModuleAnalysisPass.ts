@@ -36,7 +36,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   }
 
   const fragmentScopes = new Map<string, FragmentScope>()
-  const analysisReport: ModuleAnalysisReport = {
+  const moduleAnalysisReport: ModuleAnalysisReport = {
     definedNames,
     privateNames,
     fragmentScopes,
@@ -49,7 +49,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
         if (ensureImportedModExists(orderedPkg, stmt) === "OutcomeError") {
-          analysisReport.outcome = "OutcomeError"
+          moduleAnalysisReport.outcome = "OutcomeError"
         } else {
           executeImport(orderedPkg, scope, stmt)
         }
@@ -58,10 +58,10 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   }
 
   if (pkg.config.compiler.dump) {
-    dumpModuleAnalysisReport(analysisReport, pkg)
+    dumpModuleAnalysisReport(moduleAnalysisReport, pkg)
   }
 
-  return analysisReport
+  return moduleAnalysisReport
 }
 
 function mergeSetMap<K, V>(

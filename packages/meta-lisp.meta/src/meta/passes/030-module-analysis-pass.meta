@@ -44,7 +44,7 @@
       (merge-set-hash! defined-names (collect-defined-names ordered-package))
       (merge-set-hash! private-names (collect-private-names ordered-package))))
   (= fragment-scopes (make-hash))
-  (= analysis-report
+  (= module-analysis-report
     (make-module-analysis-report defined-names private-names fragment-scopes (outcome-ok)))
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
@@ -55,11 +55,11 @@
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
               (if (outcome-error? (ensure-imported-mod-exists ordered-package stmt))
-                (ignore (module-analysis-report-put-outcome! (outcome-error) analysis-report))
+                (ignore (module-analysis-report-put-outcome! (outcome-error) module-analysis-report))
                 (execute-import ordered-package scope stmt))))))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (dump-module-analysis-report analysis-report package))
-  analysis-report)
+    (dump-module-analysis-report module-analysis-report package))
+  module-analysis-report)
 
 (claim collect-defined-names
   (-> package-t

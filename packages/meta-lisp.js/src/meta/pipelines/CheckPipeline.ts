@@ -3,12 +3,12 @@ import * as M from "../index.ts"
 export function CheckPipeline(pkg: M.Package): M.Outcome {
   M.ExpandPass(pkg)
   M.ModulePreludePass(pkg)
-  const analysisReport = M.ModuleAnalysisPass(pkg)
-  let outcome = analysisReport.outcome
-  const algebraicReport = M.AlgebraicAnalysisPass(pkg)
-  M.LowerMatchPass(pkg, analysisReport, algebraicReport)
+  const moduleAnalysisReport = M.ModuleAnalysisPass(pkg)
+  let outcome = moduleAnalysisReport.outcome
+  const algebraicAnalysisReport = M.AlgebraicAnalysisPass(pkg)
+  M.LowerMatchPass(pkg, moduleAnalysisReport, algebraicAnalysisReport)
   M.DesugarPass(pkg)
-  M.ModuleImportPass(pkg, analysisReport)
+  M.ModuleImportPass(pkg, moduleAnalysisReport)
   M.ExecutePass(pkg)
   if (M.ClaimPass(pkg) === "OutcomeError") outcome = "OutcomeError"
   M.QualifyPass(pkg)

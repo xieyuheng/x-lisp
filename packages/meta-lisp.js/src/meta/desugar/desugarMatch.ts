@@ -88,17 +88,17 @@ import * as M from "../index.ts"
 export type DesugarMatchCtx = {
   scope: M.FragmentScope
   currentModName: string
-  algebraicReport: M.AlgebraicAnalysisReport
+  algebraicAnalysisReport: M.AlgebraicAnalysisReport
   pkgId: string
 }
 
 export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
   currentModName: string,
-  algebraicReport: M.AlgebraicAnalysisReport,
+  algebraicAnalysisReport: M.AlgebraicAnalysisReport,
   pkgId: string,
 ): DesugarMatchCtx {
-  return { scope, currentModName, algebraicReport, pkgId }
+  return { scope, currentModName, algebraicAnalysisReport, pkgId }
 }
 
 export function desugarMatch(
@@ -242,7 +242,7 @@ function lookupAlgebraicTypeInfo(
   }
   const ctor = pattern.target
   const { pkgName, modName, name } = resolveCtorQualifiedName(ctx, ctor)
-  const info = ctx.algebraicReport.dataConstructorInfos.get(
+  const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(
     M.qualifiedId(pkgName, modName, name),
   )
   if (!info) {
@@ -253,7 +253,7 @@ function lookupAlgebraicTypeInfo(
     message += `\n  key: ${pkgName}/${modName}/${name}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
-  const algebraicTypeInfo = ctx.algebraicReport.algebraicTypeInfos.get(
+  const algebraicTypeInfo = ctx.algebraicAnalysisReport.algebraicTypeInfos.get(
     M.qualifiedId(info.pkgName, info.modName, info.typeName),
   )
   if (!algebraicTypeInfo) {
@@ -318,7 +318,7 @@ function groupClausesByHeadDataConstructor(
       algebraicTypeInfo.modName,
       ctorName,
     )
-    const info = ctx.algebraicReport.dataConstructorInfos.get(key)!
+    const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(key)!
     const grouped = clauses
       .filter((c) => matchesConstructor(ctx, c, info))
       .map(stripConstructorWrapper)

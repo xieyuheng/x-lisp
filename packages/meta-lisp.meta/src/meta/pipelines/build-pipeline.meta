@@ -3,5 +3,5 @@
 (define (build-pipeline package)
   (expand-pass package)
   (module-prelude-pass package)
-  (= analysis-report (module-analysis-pass package))
+  (= module-analysis-report (module-analysis-pass package))
   void)
