@@ -165,6 +165,7 @@ Agent 应在对应场景主动加载 skill：
 - **不要直接调用 `make`** — 用各 package 的 `scripts/`
 - **不要跳过 `scripts/check.sh`** — type-check 是修改的必备步骤
 - **改 [meta-lisp.js] 后不能只跑 JS 测试** — 必须完成自举循环验证
+- **不要主动提交代码** — 只有用户明确要求提交时才执行 `git commit`
 - **C 代码不要直接 `#include "foo.h"`** — 始终 `#include "index.h"`
 
 # 参考
