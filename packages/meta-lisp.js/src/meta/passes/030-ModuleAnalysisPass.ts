@@ -256,38 +256,50 @@ function dumpModuleAnalysisResult(
   const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
   fs.mkdirSync(dir, { recursive: true })
   const file = Path.join(dir, "030-module-analysis-result.dump")
-  const content = formatModuleAnalysisResult(result)
+  const content = formatModuleAnalysisResult(result, false)
   fs.writeFileSync(file, content + "\n", "utf-8")
 }
 
-function formatModuleAnalysisResult(result: ModuleAnalysisResult): string {
+function formatModuleAnalysisResult(
+  result: ModuleAnalysisResult,
+  debug: boolean,
+): string {
   const lines: Array<string> = []
   lines.push("(module-analysis-result")
 
   lines.push("  (defined-names")
-  for (const [modName, names] of [...result.definedNames].sort((a, b) =>
-    a[0].localeCompare(b[0]),
-  )) {
-    lines.push(`    (${modName} ${names.size})`)
+  for (const [modName, names] of sortedEntries(result.definedNames)) {
+    lines.push(`    (${modName} ${formatNames(names, debug)})`)
   }
   closeTop(lines)
 
   lines.push("  (private-names")
-  for (const [modName, names] of [...result.privateNames].sort((a, b) =>
-    a[0].localeCompare(b[0]),
-  )) {
-    lines.push(`    (${modName} ${names.size})`)
+  for (const [modName, names] of sortedEntries(result.privateNames)) {
+    lines.push(`    (${modName} ${formatNames(names, debug)})`)
   }
   closeTop(lines)
 
   lines.push("  (fragment-scopes")
-  for (const [path, scope] of [...result.fragmentScopes].sort((a, b) =>
-    a[0].localeCompare(b[0]),
-  )) {
+  for (const [path, scope] of sortedEntries(result.fragmentScopes)) {
     lines.push(`    ("${path}"`)
     lines.push(`      (mod-name ${scope.modName})`)
-    lines.push(`      (imported-names ${scope.importedNames.size})`)
-    lines.push(`      (imported-prefixes ${scope.importedPrefixes.size})`)
+    if (debug) {
+      lines.push("      (imported-names")
+      for (const [name, entry] of sortedEntries(scope.importedNames)) {
+        lines.push(
+          `        (${name} ${entry.pkgName}/${entry.modName}/${entry.name})`,
+        )
+      }
+      closeTop(lines)
+      lines.push("      (imported-prefixes")
+      for (const [prefix, entry] of sortedEntries(scope.importedPrefixes)) {
+        lines.push(`        (${prefix} ${entry.pkgName}/${entry.modName})`)
+      }
+      closeTop(lines)
+    } else {
+      lines.push(`      (imported-names ${scope.importedNames.size})`)
+      lines.push(`      (imported-prefixes ${scope.importedPrefixes.size})`)
+    }
     closeTop(lines)
   }
   closeTop(lines)
@@ -296,7 +308,21 @@ function formatModuleAnalysisResult(result: ModuleAnalysisResult): string {
   return lines.join("\n")
 }
 
+function formatNames(names: Set<Name>, debug: boolean): string {
+  return debug ? [...names].sort(cmp).join(" ") : String(names.size)
+}
+
+function sortedEntries<K extends string, V>(
+  map: Map<K, V>,
+): Array<[K, V]> {
+  return [...map].sort((a, b) => cmp(a[0], b[0]))
+}
+
 function closeTop(lines: Array<string>): void {
   const i = lines.length - 1
   lines[i] = lines[i] + ")"
+}
+
+function cmp(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0
 }

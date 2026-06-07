@@ -251,7 +251,20 @@
       (string-compare-lexical (hash-entry-key a) (hash-entry-key b)))
     (hash-entries entries)))
 
-(define (format-module-analysis-result result)
+(define (format-name-value entry debug?)
+  (@string
+    (symbol-to-string (hash-entry-key entry)) " "
+    (if debug?
+      (let ((names (hash-entry-value entry)))
+        (string-join " "
+          (list-map symbol-to-string
+            (list-sort
+              (lambda (a b)
+                (string-compare-lexical (symbol-to-string a) (symbol-to-string b)))
+              (set-to-list names)))))
+      (format (set-size (hash-entry-value entry))))))
+
+(define (format-module-analysis-result result debug?)
   (= lines [])
   (list-push! "(module-analysis-result" lines)
 
@@ -259,9 +272,7 @@
   (for-list (sort-entries-by-symbol-key (module-analysis-result-defined-names result))
     (lambda (entry)
       (list-push!
-        (@string "    ("
-          (symbol-to-string (hash-entry-key entry)) " "
-          (format (set-size (hash-entry-value entry))) ")")
+        (@string "    (" (format-name-value entry debug?) ")")
         lines)))
   (close-top lines)
 
@@ -269,9 +280,7 @@
   (for-list (sort-entries-by-symbol-key (module-analysis-result-private-names result))
     (lambda (entry)
       (list-push!
-        (@string "    ("
-          (symbol-to-string (hash-entry-key entry)) " "
-          (format (set-size (hash-entry-value entry))) ")")
+        (@string "    (" (format-name-value entry debug?) ")")
         lines)))
   (close-top lines)
 
@@ -284,12 +293,38 @@
       (list-push!
         (@string "      (mod-name " (symbol-to-string (fragment-scope-mod-name scope)) ")")
         lines)
-      (list-push!
-        (@string "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")")
-        lines)
-      (list-push!
-        (@string "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")")
-        lines)
+      (if debug?
+        (begin
+          (list-push! "      (imported-names" lines)
+          (for-list (sort-entries-by-symbol-key (fragment-scope-imported-names scope))
+            (lambda (entry)
+              (= name (hash-entry-key entry))
+              (= qualified-entry (hash-entry-value entry))
+              (list-push!
+                (@string "        (" (symbol-to-string name) " "
+                  (symbol-to-string (qualified-name-entry-pkg-name qualified-entry)) "/"
+                  (symbol-to-string (qualified-name-entry-mod-name qualified-entry)) "/"
+                  (symbol-to-string (qualified-name-entry-name qualified-entry)) ")")
+                lines)))
+          (close-top lines)
+          (list-push! "      (imported-prefixes" lines)
+          (for-list (sort-entries-by-symbol-key (fragment-scope-imported-prefixes scope))
+            (lambda (entry)
+              (= prefix (hash-entry-key entry))
+              (= prefix-entry (hash-entry-value entry))
+              (list-push!
+                (@string "        (" (symbol-to-string prefix) " "
+                  (symbol-to-string (prefix-entry-pkg-name prefix-entry)) "/"
+                  (symbol-to-string (prefix-entry-mod-name prefix-entry)) ")")
+                lines)))
+          (close-top lines))
+        (begin
+          (list-push!
+            (@string "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")")
+            lines)
+          (list-push!
+            (@string "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")")
+            lines)))
       (close-top lines)))
   (close-top lines)
 
@@ -301,4 +336,4 @@
   (fs-ensure-directory dump-directory)
   (= dump-path (@string dump-directory "/030-module-analysis-result.dump"))
   (fs-ensure-file dump-path)
-  (fs-write dump-path (@string (format-module-analysis-result result) "\n")))
+  (fs-write dump-path (@string (format-module-analysis-result result false) "\n")))
