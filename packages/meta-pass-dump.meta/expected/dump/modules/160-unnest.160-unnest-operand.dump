@@ -1,0 +1,18 @@
+(claim g (polymorphic (A) (-> A A)))
+
+(define (g x) x)
+
+(claim h (polymorphic (A) (-> A A)))
+
+(define (h x) x)
+
+(claim f (-> int-t int-t int-t))
+
+(define (f x y) (meta-builtin/builtin/iadd x y))
+
+(claim test (-> int-t))
+
+(define (test)
+  (= _.1 (self/160-unnest/g 1))
+  (= _.2 (self/160-unnest/h 2))
+  (self/160-unnest/f _.1 _.2))

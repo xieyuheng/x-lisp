@@ -1,0 +1,51 @@
+(import-all meta-builtin/builtin)
+
+(module 010-pair)
+
+(define-algebraic-type (pair-t A B)
+  ((make-pair (first A) (second B))
+   pair?
+   (first pair-first pair-put-first!)
+   (second pair-second pair-put-second!)))
+
+(admit make-pair (polymorphic (A B) (-> A B (pair-t A B))))
+
+(define (make-pair first second)
+  (begin
+    (= list (meta-builtin/builtin/make-list))
+    (meta-builtin/builtin/list-push! make-pair list)
+    (meta-builtin/builtin/list-push! first list)
+    (meta-builtin/builtin/list-push! second list)
+    list))
+
+(admit pair? (polymorphic (A B) (-> (pair-t A B) bool-t)))
+
+(define (pair? value)
+  (if (list? value)
+      (if (equal? (list-length value) 3) (equal? (list-head value) make-pair)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(admit pair-first (polymorphic (A B) (-> (pair-t A B) A)))
+
+(define (pair-first target) (list-get 1 target))
+
+(admit pair-put-first! (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+
+(define (pair-put-first! value target) (list-put! 1 value target))
+
+(admit pair-second (polymorphic (A B) (-> (pair-t A B) B)))
+
+(define (pair-second target) (list-get 2 target))
+
+(admit pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+
+(define (pair-put-second! value target) (list-put! 2 value target))
+
+(define (pair-swap p)
+  (if (self/010-pair/pair? p)
+      (begin
+        (= b (self/010-pair/pair-second p))
+        (= a (self/010-pair/pair-first p))
+        (make-pair b a))
+      (meta-builtin/builtin/error "cond mismatch")))

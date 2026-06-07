@@ -1,0 +1,3 @@
+(define (make-adder x) (lambda (y) (meta-builtin/builtin/iadd x y)))
+
+(define (f) (make-adder 1))

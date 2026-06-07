@@ -1,0 +1,3 @@
+(claim f (-> int-t))
+
+(define (f) ((lambda (x) ((lambda (x) x) x)) 1))

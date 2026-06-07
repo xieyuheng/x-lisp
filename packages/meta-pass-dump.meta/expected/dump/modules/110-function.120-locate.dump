@@ -1,0 +1,15 @@
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim compose2 (polymorphic (A B C) (-> (-> A B) (-> C A) (-> C B))))
+
+(define (compose2 f g x) (f (g x)))
+
+(claim double (-> int-t int-t))
+
+(define (double x) (meta-builtin/builtin/iadd x x))
+
+(claim answer int-t)
+
+(define answer (the meta-builtin/builtin/int-t 42))

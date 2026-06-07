@@ -1,0 +1,7 @@
+(import-all meta-builtin/builtin)
+
+(module 070-cross-package-import-as)
+
+(import-as meta-math/math math)
+
+(define (example-square x) (meta-math/math/square x))

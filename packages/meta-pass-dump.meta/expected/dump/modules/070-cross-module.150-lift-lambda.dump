@@ -1,0 +1,7 @@
+(claim say-hello (-> string-t))
+
+(define (say-hello) (self/070-module-lib/greet "world"))
+
+(claim get-greeting (-> string-t))
+
+(define (get-greeting) self/070-module-lib/greeting)

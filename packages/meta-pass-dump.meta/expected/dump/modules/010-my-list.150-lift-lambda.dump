@@ -1,0 +1,107 @@
+(claim my-list-t (-> meta-builtin/builtin/type-t meta-builtin/builtin/type-t))
+
+(define-enum (my-list-t E)
+  nil
+  (li (head E) (tail (self/010-my-list/my-list-t E))))
+
+(claim nil (polymorphic (E) (-> (my-list-t E))))
+
+(define (nil)
+  (= list.1 (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! nil list.1)
+  list.1)
+
+(claim nil? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
+
+(define (nil? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           1)
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-head value)
+           nil)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail)
+  (= list.1 (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! li list.1)
+  (meta-builtin/builtin/list-push! head list.1)
+  (meta-builtin/builtin/list-push! tail list.1)
+  list.1)
+
+(claim li? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
+
+(define (li? value)
+  (if (meta-builtin/builtin/list? value)
+      (if
+          (meta-builtin/builtin/equal?
+           (meta-builtin/builtin/list-length value)
+           3)
+          (meta-builtin/builtin/equal? (meta-builtin/builtin/list-head value) li)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (meta-builtin/builtin/list-get 1 target))
+
+(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (meta-builtin/builtin/list-get 2 target))
+
+(claim li-put-tail!
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(claim my-list-length (polymorphic (A) (-> (010-my-list/my-list-t A) int-t)))
+
+(define (my-list-length list)
+  (if (self/010-my-list/nil? list) 0
+      (if (self/010-my-list/li? list)
+          (begin
+            (= tail.1 (self/010-my-list/li-tail list))
+            (= head.1 (self/010-my-list/li-head list))
+            (meta-builtin/builtin/iadd
+             1
+             (self/010-my-list/my-list-length tail.1)))
+          (meta-builtin/builtin/error-with-location
+           "cond mismatch"
+           (meta-builtin/builtin/make-source-location
+            "src/010-my-list.meta"
+            (meta-builtin/builtin/make-source-span
+             (meta-builtin/builtin/make-source-position 129 7 3)
+             (meta-builtin/builtin/make-source-position 134 7 8)))))))
+
+(claim my-list-map
+  (polymorphic
+    (A B)
+    (-> (-> A B) (010-my-list/my-list-t A) (010-my-list/my-list-t B))))
+
+(define (my-list-map f list)
+  (if (self/010-my-list/nil? list) (self/010-my-list/nil)
+      (if (self/010-my-list/li? list)
+          (begin
+            (= tail.1 (self/010-my-list/li-tail list))
+            (= head.1 (self/010-my-list/li-head list))
+            (self/010-my-list/li
+             (f head.1)
+             (self/010-my-list/my-list-map f tail.1)))
+          (meta-builtin/builtin/error-with-location
+           "cond mismatch"
+           (meta-builtin/builtin/make-source-location
+            "src/010-my-list.meta"
+            (meta-builtin/builtin/make-source-span
+             (meta-builtin/builtin/make-source-position 241 12 3)
+             (meta-builtin/builtin/make-source-position 246 12 8)))))))
