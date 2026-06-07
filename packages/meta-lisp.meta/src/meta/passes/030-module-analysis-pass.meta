@@ -54,8 +54,9 @@
           (hash-put! path scope fragment-scopes)
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
-              (when (outcome-error? (execute-import ordered-package scope stmt))
-                (module-analysis-result-put-outcome! (outcome-error) analysis-result))))))))
+              (if (outcome-error? (ensure-imported-mod-exists ordered-package stmt))
+                (ignore (module-analysis-result-put-outcome! (outcome-error) analysis-result))
+                (execute-import ordered-package scope stmt))))))))
   analysis-result)
 
 (claim collect-defined-names
@@ -152,51 +153,52 @@
     (lookup-mod-defined-names package pkg-name mod-name)
     (lookup-mod-private-names package pkg-name mod-name)))
 
+(claim ensure-imported-mod-exists
+  (-> package-t (stmt-t exp-t)
+      outcome-t))
+
+(define (ensure-imported-mod-exists package stmt)
+  (match stmt
+    ((import-stmt pkg-name mod-name _ location)
+     (ensure-mod-exists package pkg-name mod-name location))
+    ((import-as-stmt pkg-name mod-name _ location)
+     (ensure-mod-exists package pkg-name mod-name location))
+    ((import-all-stmt pkg-name mod-name location)
+     (ensure-mod-exists package pkg-name mod-name location))
+    (else (outcome-ok))))
+
 (claim execute-import
   (-> package-t fragment-scope-t (stmt-t exp-t)
-      outcome-t))
+      void-t))
 
 (define (execute-import package scope stmt)
   (match stmt
     ((import-stmt pkg-name mod-name names location)
-     (if (outcome-error? (ensure-mod-exists package pkg-name mod-name location))
-       (outcome-error)
-       (begin
-         (= imported-private-names (lookup-mod-private-names package pkg-name mod-name))
-         (for-list names
-           (lambda (name)
-             (unless (set-member? name imported-private-names)
-               (hash-put!
-                 name
-                 (make-qualified-name-entry pkg-name mod-name name)
-                 (fragment-scope-imported-names scope)))))
-         (outcome-ok))))
+     (= imported-private-names (lookup-mod-private-names package pkg-name mod-name))
+     (for-list names
+       (lambda (name)
+         (unless (set-member? name imported-private-names)
+           (hash-put! name
+             (make-qualified-name-entry pkg-name mod-name name)
+             (fragment-scope-imported-names scope))))))
     ((import-as-stmt pkg-name mod-name prefix location)
-     (if (outcome-error? (ensure-mod-exists package pkg-name mod-name location))
-       (outcome-error)
-       (begin
-         (hash-put!
-           prefix
-           (make-prefix-entry pkg-name mod-name)
-           (fragment-scope-imported-prefixes scope))
-         (outcome-ok))))
+     (hash-put! prefix
+       (make-prefix-entry pkg-name mod-name)
+       (fragment-scope-imported-prefixes scope))
+     void)
     ((import-all-stmt pkg-name mod-name location)
-     (if (outcome-error? (ensure-mod-exists package pkg-name mod-name location))
-       (outcome-error)
-       (begin
-         (= imported-public-names (lookup-mod-public-names package pkg-name mod-name))
-         (= current-defined-names (lookup-mod-defined-names package 'self (fragment-scope-mod-name scope)))
-         (for-set imported-public-names
-           (lambda (name)
-             ;; - why: skip names already defined in the current module,
-             ;;   so that local definitions can override imported ones.
-             (unless (set-member? name current-defined-names)
-               (hash-put!
-                 name
-                 (make-qualified-name-entry pkg-name mod-name name)
-                 (fragment-scope-imported-names scope)))))
-         (outcome-ok))))
-    (else (outcome-ok))))
+     (= imported-public-names (lookup-mod-public-names package pkg-name mod-name))
+     (= current-defined-names
+        (lookup-mod-defined-names package 'self (fragment-scope-mod-name scope)))
+     (for-set imported-public-names
+       (lambda (name)
+         ;; - why: skip names already defined in the current module,
+         ;;   so that local definitions can override imported ones.
+         (unless (set-member? name current-defined-names)
+           (hash-put! name
+             (make-qualified-name-entry pkg-name mod-name name)
+             (fragment-scope-imported-names scope))))))
+    (else void)))
 
 (claim ensure-mod-exists
   (-> package-t symbol-t symbol-t source-location-t
