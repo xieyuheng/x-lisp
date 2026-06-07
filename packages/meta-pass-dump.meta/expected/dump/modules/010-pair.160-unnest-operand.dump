@@ -60,7 +60,7 @@
         (= _.2 (meta-builtin/builtin/make-source-position 100 5 8))
         (= _.3 (meta-builtin/builtin/make-source-span _.1 _.2))
         (= _.4
-        (meta-builtin/builtin/make-source-location
-         "src/010-pair.meta"
-         _.3))
+           (meta-builtin/builtin/make-source-location
+            "src/010-pair.meta"
+            _.3))
         (meta-builtin/builtin/error-with-location "cond mismatch" _.4))))

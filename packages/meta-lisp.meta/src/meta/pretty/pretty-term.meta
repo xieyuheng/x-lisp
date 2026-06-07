@@ -31,15 +31,14 @@
     ((let1-term name rhs body location)
      (ppml/pretty-syntax "begin"
        []
-       (cons (ppml/group
-                    [(ppml/text "(")
-                     (ppml/text "=")
-                     (ppml/text " ")
-                     (ppml/text (symbol-to-string name))
-                     (ppml/text " ")
-                     (pretty-term rhs)
-                     (ppml/text ")")])
-                  (pretty-term-body body))))
+        (cons (ppml/group
+               [(ppml/text "(")
+                (ppml/text "=")
+                (ppml/text " ")
+                (ppml/text (symbol-to-string name))
+                (ppml/indent 3 [(ppml/br) (pretty-term rhs)])
+                (ppml/text ")")])
+              (pretty-term-body body))))
     ((begin1-term head body location)
      (ppml/pretty-syntax "begin"
        []
@@ -81,14 +80,13 @@
     ((begin1-term head body location)
      (cons (pretty-term head) (pretty-term-body body)))
     ((let1-term name rhs body location)
-     (cons (ppml/group
+      (cons (ppml/group
               [(ppml/text "(")
                (ppml/text "=")
                (ppml/text " ")
                (ppml/text (symbol-to-string name))
-               (ppml/br)
-               (pretty-term rhs)
+               (ppml/indent 3 [(ppml/br) (pretty-term rhs)])
                (ppml/text ")")])
-           (pretty-term-body body)))
+            (pretty-term-body body)))
     (else
       [(pretty-term term)])))

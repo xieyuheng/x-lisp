@@ -279,8 +279,8 @@
         (if (meta-builtin/builtin/just? (self/050-lambda/env-lookup name env))
             (begin
               (= value
-              (meta-builtin/builtin/just-value
-               (self/050-lambda/env-lookup name env)))
+                 (meta-builtin/builtin/just-value
+                  (self/050-lambda/env-lookup name env)))
               value)
             (if
                 (meta-builtin/builtin/nothing?
@@ -317,10 +317,10 @@
                     (= rhs (self/050-lambda/let-exp-rhs exp))
                     (= name (self/050-lambda/let-exp-name exp))
                     (= env
-                    (self/050-lambda/extend-env
-                     name
-                     (self/050-lambda/evaluate rhs env)
-                     env))
+                       (self/050-lambda/extend-env
+                        name
+                        (self/050-lambda/evaluate rhs env)
+                        env))
                     (self/050-lambda/evaluate body env))
                   (meta-builtin/builtin/error-with-location
                    "cond mismatch"

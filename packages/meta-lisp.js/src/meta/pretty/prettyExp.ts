@@ -78,8 +78,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
         Ppml.text("="),
         Ppml.text(" "),
         Ppml.text(exp.name),
-        Ppml.br(),
-        prettyExp(exp.rhs),
+        Ppml.indent(3, Ppml.br(), prettyExp(exp.rhs)),
         Ppml.text(")"),
       )
       return Ppml.prettySyntax(
@@ -322,8 +321,7 @@ export function prettyBody(body: M.Exp): Array<Ppml.Node> {
       Ppml.text("="),
       Ppml.text(" "),
       Ppml.text(body.name),
-      Ppml.br(),
-      prettyExp(body.rhs),
+      Ppml.indent(3, Ppml.br(), prettyExp(body.rhs)),
       Ppml.text(")"),
     )
     return [assignNode, ...prettyBody(body.body)]
@@ -385,8 +383,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
         Ppml.text("="),
         Ppml.text(" "),
         Ppml.text(term.name),
-        Ppml.br(),
-        prettyTerm(term.rhs),
+        Ppml.indent(3, Ppml.br(), prettyTerm(term.rhs)),
         Ppml.text(")"),
       )
       return Ppml.prettySyntax(
@@ -452,8 +449,7 @@ export function prettyTermBody(body: M.Term): Array<Ppml.Node> {
       Ppml.text("="),
       Ppml.text(" "),
       Ppml.text(body.name),
-      Ppml.br(),
-      prettyTerm(body.rhs),
+      Ppml.indent(3, Ppml.br(), prettyTerm(body.rhs)),
       Ppml.text(")"),
     )
     return [assignNode, ...prettyTermBody(body.body)]

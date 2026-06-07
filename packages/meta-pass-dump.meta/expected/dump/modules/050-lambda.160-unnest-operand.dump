@@ -282,9 +282,9 @@
               (meta-builtin/builtin/just? _.1))
             (begin
               (= value.1
-              (begin
-                (= _.2 (self/050-lambda/env-lookup name.1 env))
-                (meta-builtin/builtin/just-value _.2)))
+                 (begin
+                   (= _.2 (self/050-lambda/env-lookup name.1 env))
+                   (meta-builtin/builtin/just-value _.2)))
               value.1)
             (if
                 (begin
@@ -295,18 +295,18 @@
                   (= _.5 (meta-builtin/builtin/make-source-position 743 25 42))
                   (= _.6 (meta-builtin/builtin/make-source-span _.4 _.5))
                   (= _.7
-                  (meta-builtin/builtin/make-source-location
-                   "src/050-lambda.meta"
-                   _.6))
+                     (meta-builtin/builtin/make-source-location
+                      "src/050-lambda.meta"
+                      _.6))
                   (meta-builtin/builtin/error-with-location "undefined name" _.7))
                 (begin
                   (= _.8 (meta-builtin/builtin/make-source-position 645 23 6))
                   (= _.9 (meta-builtin/builtin/make-source-position 650 23 11))
                   (= _.10 (meta-builtin/builtin/make-source-span _.8 _.9))
                   (= _.11
-                  (meta-builtin/builtin/make-source-location
-                   "src/050-lambda.meta"
-                   _.10))
+                     (meta-builtin/builtin/make-source-location
+                      "src/050-lambda.meta"
+                      _.10))
                   (meta-builtin/builtin/error-with-location "cond mismatch" _.11)))))
       (if (self/050-lambda/apply-exp? exp)
           (begin
@@ -326,20 +326,20 @@
                     (= rhs.1 (self/050-lambda/let-exp-rhs exp))
                     (= name.2 (self/050-lambda/let-exp-name exp))
                     (= env.1
-                    (begin
-                      (= _.14 (self/050-lambda/evaluate rhs.1 env))
-                      (self/050-lambda/extend-env name.2 _.14 env)))
+                       (begin
+                         (= _.14 (self/050-lambda/evaluate rhs.1 env))
+                         (self/050-lambda/extend-env name.2 _.14 env)))
                     (self/050-lambda/evaluate body.2 env.1))
                   (begin
                     (= _.15
-                    (meta-builtin/builtin/make-source-position 609 21 3))
+                       (meta-builtin/builtin/make-source-position 609 21 3))
                     (= _.16
-                    (meta-builtin/builtin/make-source-position 614 21 8))
+                       (meta-builtin/builtin/make-source-position 614 21 8))
                     (= _.17 (meta-builtin/builtin/make-source-span _.15 _.16))
                     (= _.18
-                    (meta-builtin/builtin/make-source-location
-                     "src/050-lambda.meta"
-                     _.17))
+                       (meta-builtin/builtin/make-source-location
+                        "src/050-lambda.meta"
+                        _.17))
                     (meta-builtin/builtin/error-with-location
                      "cond mismatch"
                      _.18)))))))
@@ -359,7 +359,7 @@
         (= _.3 (meta-builtin/builtin/make-source-position 1051 35 8))
         (= _.4 (meta-builtin/builtin/make-source-span _.2 _.3))
         (= _.5
-        (meta-builtin/builtin/make-source-location
-         "src/050-lambda.meta"
-         _.4))
+           (meta-builtin/builtin/make-source-location
+            "src/050-lambda.meta"
+            _.4))
         (meta-builtin/builtin/error-with-location "cond mismatch" _.5))))

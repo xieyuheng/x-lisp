@@ -43,15 +43,14 @@
     ((let1-exp name rhs body location)
      (ppml/pretty-syntax "begin"
        []
-       (cons (ppml/group
-                    [(ppml/text "(")
-                     (ppml/text "=")
-                     (ppml/text " ")
-                     (ppml/text (symbol-to-string name))
-                     (ppml/text " ")
-                     (pretty-exp rhs)
-                     (ppml/text ")")])
-                  (pretty-exp-body body))))
+        (cons (ppml/group
+               [(ppml/text "(")
+                (ppml/text "=")
+                (ppml/text " ")
+                (ppml/text (symbol-to-string name))
+                (ppml/indent 3 [(ppml/br) (pretty-exp rhs)])
+                (ppml/text ")")])
+              (pretty-exp-body body))))
     ((let-exp bindings body location)
      (ppml/pretty-syntax "let"
        [(pretty-bindings bindings)]
@@ -180,15 +179,14 @@
     ((begin1-exp head body location)
      (cons (pretty-exp head) (pretty-exp-body body)))
     ((let1-exp name rhs body location)
-     (cons (ppml/group
+      (cons (ppml/group
               [(ppml/text "(")
                (ppml/text "=")
                (ppml/text " ")
                (ppml/text (symbol-to-string name))
-               (ppml/br)
-               (pretty-exp rhs)
+               (ppml/indent 3 [(ppml/br) (pretty-exp rhs)])
                (ppml/text ")")])
-           (pretty-exp-body body)))
+            (pretty-exp-body body)))
     ((begin-exp sequence location)
      (list-map pretty-exp sequence))
     (else

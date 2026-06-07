@@ -23,9 +23,9 @@
             (= _.2 (meta-builtin/builtin/make-source-position 180 6 28))
             (= _.3 (meta-builtin/builtin/make-source-span _.1 _.2))
             (= _.4
-            (meta-builtin/builtin/make-source-location
-             "src/060-desugar.meta"
-             _.3))
+               (meta-builtin/builtin/make-source-location
+                "src/060-desugar.meta"
+                _.3))
             (meta-builtin/builtin/error-with-location "cond mismatch" _.4)))))
 
 (claim example-begin (-> int-t))

@@ -82,9 +82,9 @@
             (= _.3 (meta-builtin/builtin/make-source-position 134 7 8))
             (= _.4 (meta-builtin/builtin/make-source-span _.2 _.3))
             (= _.5
-            (meta-builtin/builtin/make-source-location
-             "src/010-my-list.meta"
-             _.4))
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.4))
             (meta-builtin/builtin/error-with-location "cond mismatch" _.5)))))
 
 (claim my-list-map
@@ -106,7 +106,7 @@
             (= _.4 (meta-builtin/builtin/make-source-position 246 12 8))
             (= _.5 (meta-builtin/builtin/make-source-span _.3 _.4))
             (= _.6
-            (meta-builtin/builtin/make-source-location
-             "src/010-my-list.meta"
-             _.5))
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.5))
             (meta-builtin/builtin/error-with-location "cond mismatch" _.6)))))
