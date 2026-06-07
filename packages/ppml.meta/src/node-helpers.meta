@@ -40,10 +40,11 @@
 
 (claim wrap (-> (list-t node-t) node-t))
 (define (wrap nodes)
-  (if (list-empty? nodes)
-    (null-node)
-    (if (list-empty? (list-tail nodes))
-      (list-head nodes)
-      (group [(list-head nodes)
-              (br)
-              (wrap (list-tail nodes))]))))
+  (letrec ((wrap-acc (lambda (acc rest)
+                       (if (list-empty? rest)
+                         acc
+                         (wrap-acc (group [acc (br) (list-head rest)])
+                                   (list-tail rest))))))
+    (if (list-empty? nodes)
+      (null-node)
+      (wrap-acc (list-head nodes) (list-tail nodes)))))

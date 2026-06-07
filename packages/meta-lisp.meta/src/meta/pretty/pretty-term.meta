@@ -20,10 +20,14 @@
     ((qualified-var-term pkg-name mod-name name location)
       (ppml/text (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
     ((lambda-term parameters body location)
-     (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
-       (ppml/pretty-syntax "lambda"
-         [(ppml/text (@string "(" params-str ")"))]
-         (pretty-term-body body))))
+     (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+       (let ((params-node
+               (if (list-empty? parameters)
+                 (ppml/pretty-application (nothing) param-nodes)
+                 (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
+         (ppml/pretty-syntax "lambda"
+           [params-node]
+           (pretty-term-body body)))))
     ((apply-term target args location)
      (let ((target-op (term-op-string target))
            (all-elements (cons (pretty-term target) (list-map pretty-term args))))
@@ -45,23 +49,28 @@
        (cons (pretty-term head) (pretty-term-body body))))
     ((if-term condition consequent alternative location)
      (ppml/pretty-syntax "if"
-       []
        [(pretty-term condition)
         (pretty-term consequent)
-        (pretty-term alternative)]))
+        (pretty-term alternative)]
+       []))
     ((arrow-term arg-types ret-type location)
-     (ppml/pretty-syntax "->"
-       (list-map pretty-term arg-types)
-       [(pretty-term ret-type)]))
+     (let ((all-elements (cons (ppml/text "->")
+                               (list-append (list-map pretty-term arg-types)
+                                            [(pretty-term ret-type)]))))
+       (ppml/pretty-application (just "->") all-elements)))
     ((the-term type instance location)
      (ppml/pretty-syntax "the"
-       [(pretty-term type)]
-       [(pretty-term instance)]))
+       [(pretty-term type) (pretty-term instance)]
+       []))
     ((polymorphic-term parameters body location)
-     (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
-       (ppml/pretty-syntax "polymorphic"
-         [(ppml/text (@string "(" params-str ")"))]
-         [(pretty-term body)])))))
+     (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+       (let ((params-node
+               (if (list-empty? parameters)
+                 (ppml/pretty-application (nothing) param-nodes)
+                 (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
+         (ppml/pretty-syntax "polymorphic"
+           [params-node]
+           [(pretty-term body)]))))))
 
 (claim term-op-string (-> term-t (maybe-t string-t)))
 (define (term-op-string term)
