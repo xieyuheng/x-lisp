@@ -237,30 +237,50 @@
   (= i (isub (list-length lines) 1))
   (list-put! i (@string (list-get i lines) ")") lines))
 
+(define (sort-entries-by-symbol-key entries)
+  (list-sort
+    (lambda (a b)
+      (string-compare-lexical
+        (symbol-to-string (hash-entry-key a))
+        (symbol-to-string (hash-entry-key b))))
+    (hash-entries entries)))
+
+(define (sort-entries-by-string-key entries)
+  (list-sort
+    (lambda (a b)
+      (string-compare-lexical (hash-entry-key a) (hash-entry-key b)))
+    (hash-entries entries)))
+
 (define (format-module-analysis-result result)
   (= lines [])
   (list-push! "(module-analysis-result" lines)
 
   (list-push! "  (defined-names" lines)
-  (for-hash (module-analysis-result-defined-names result)
-    (lambda (mod-name names)
+  (for-list (sort-entries-by-symbol-key (module-analysis-result-defined-names result))
+    (lambda (entry)
       (list-push!
-        (@string "    (" (symbol-to-string mod-name) " " (format (set-size names)) ")")
+        (@string "    ("
+          (symbol-to-string (hash-entry-key entry)) " "
+          (format (set-size (hash-entry-value entry))) ")")
         lines)))
   (close-top lines)
 
   (list-push! "  (private-names" lines)
-  (for-hash (module-analysis-result-private-names result)
-    (lambda (mod-name names)
+  (for-list (sort-entries-by-symbol-key (module-analysis-result-private-names result))
+    (lambda (entry)
       (list-push!
-        (@string "    (" (symbol-to-string mod-name) " " (format (set-size names)) ")")
+        (@string "    ("
+          (symbol-to-string (hash-entry-key entry)) " "
+          (format (set-size (hash-entry-value entry))) ")")
         lines)))
   (close-top lines)
 
   (list-push! "  (fragment-scopes" lines)
-  (for-hash (module-analysis-result-fragment-scopes result)
-    (lambda (path scope)
-      (list-push! (@string "    (\"" path "\")") lines)
+  (for-list (sort-entries-by-string-key (module-analysis-result-fragment-scopes result))
+    (lambda (entry)
+      (= path (hash-entry-key entry))
+      (= scope (hash-entry-value entry))
+      (list-push! (@string "    (\"" path "\"") lines)
       (list-push!
         (@string "      (mod-name " (symbol-to-string (fragment-scope-mod-name scope)) ")")
         lines)

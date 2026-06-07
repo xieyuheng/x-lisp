@@ -265,19 +265,25 @@ function formatModuleAnalysisResult(result: ModuleAnalysisResult): string {
   lines.push("(module-analysis-result")
 
   lines.push("  (defined-names")
-  for (const [modName, names] of result.definedNames) {
+  for (const [modName, names] of [...result.definedNames].sort((a, b) =>
+    a[0].localeCompare(b[0]),
+  )) {
     lines.push(`    (${modName} ${names.size})`)
   }
   closeTop(lines)
 
   lines.push("  (private-names")
-  for (const [modName, names] of result.privateNames) {
+  for (const [modName, names] of [...result.privateNames].sort((a, b) =>
+    a[0].localeCompare(b[0]),
+  )) {
     lines.push(`    (${modName} ${names.size})`)
   }
   closeTop(lines)
 
   lines.push("  (fragment-scopes")
-  for (const [path, scope] of result.fragmentScopes) {
+  for (const [path, scope] of [...result.fragmentScopes].sort((a, b) =>
+    a[0].localeCompare(b[0]),
+  )) {
     lines.push(`    ("${path}"`)
     lines.push(`      (mod-name ${scope.modName})`)
     lines.push(`      (imported-names ${scope.importedNames.size})`)
