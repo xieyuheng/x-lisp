@@ -2,4 +2,4 @@
 
 (define (add x y) (iadd x y))
 
-(define f (add 1 2))
+(define (f) (add 1 2))

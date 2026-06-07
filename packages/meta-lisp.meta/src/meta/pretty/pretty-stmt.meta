@@ -34,9 +34,10 @@
      (let ((name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters))))
        (ppml/pretty-syntax "define"
-         [(if (list-empty? parameters)
-            (ppml/text name-str)
-            (ppml/text (@string "(" name-str " " params-str ")")))]
+         [(ppml/text
+            (if (list-empty? parameters)
+              (@string "(" name-str ")")
+              (@string "(" name-str " " params-str ")")))]
          [(pretty-body body)])))
     ((define-variable-stmt name body location)
      (ppml/pretty-syntax "define"
@@ -153,8 +154,11 @@
         (fields (explicit-data-constructor-fields ctor))
         (pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor))))
     (let ((field-group (if (list-empty? fields)
-                         (ppml/text name-str)
-                         (ppml/group
+                          (ppml/group
+                            [(ppml/text "(")
+                             (ppml/text name-str)
+                             (ppml/text ")")])
+                          (ppml/group
                            [(ppml/text "(")
                             (ppml/text name-str)
                             (ppml/text " ")

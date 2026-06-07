@@ -10,8 +10,7 @@
 
 (admit make-pair (polymorphic (A B) (-> A B (pair-t A B))))
 
-(define (make-pair first second)
-  (@list 'make-pair first second))
+(define (make-pair first second) ['make-pair first second])
 
 (admit pair? (polymorphic (A B) (-> (pair-t A B) bool-t)))
 

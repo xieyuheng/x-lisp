@@ -9,7 +9,7 @@
 
 (admit nil (polymorphic (E) (-> (my-list-t E))))
 
-(define (nil) (@list 'nil))
+(define (nil) ['nil])
 
 (admit nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
 
@@ -20,7 +20,7 @@
 
 (admit li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
-(define (li head tail) (@list 'li head tail))
+(define (li head tail) ['li head tail])
 
 (admit li? (polymorphic (E) (-> (my-list-t E) bool-t)))
 

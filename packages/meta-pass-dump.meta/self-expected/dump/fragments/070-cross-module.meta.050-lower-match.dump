@@ -4,6 +4,6 @@
 
 (import 070-module-lib greet)
 
-(define say-hello (greet "world"))
+(define (say-hello) (greet "world"))
 
-(define get-greeting 070-module-lib/greeting)
+(define (get-greeting) self/070-module-lib/greeting)

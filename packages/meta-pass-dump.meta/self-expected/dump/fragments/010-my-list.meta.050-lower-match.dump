@@ -3,63 +3,68 @@
 (module 010-my-list)
 
 (define-algebraic-type (my-list-t E)
-  (nil nil?)
+  ((nil) nil?)
   ((li (head E) (tail (my-list-t E)))
    li?
    (head li-head li-put-head!)
    (tail li-tail li-put-tail!)))
 
-(admit nil (polymorphic (E) ((my-list-t E))))
+(admit nil (polymorphic (E) (-> (my-list-t E))))
 
-(define nil [nil])
+(define (nil) ['nil])
 
-(admit li (polymorphic (E) (E (my-list-t E) (my-list-t E))))
-
-(define (li head tail) [li head tail])
-
-(admit nil? (polymorphic (E) ((my-list-t E) bool-t)))
+(admit nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
 
 (define (nil? value)
-  (and
-    (list? value)
-    (equal? (list-length value) 1)
-    (equal? (list-head value) nil)))
+  (and (list? value)
+       (equal? (list-length value) 1)
+       (equal? (list-head value) 'nil)))
 
-(admit li? (polymorphic (E) ((my-list-t E) bool-t)))
+(admit li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail) ['li head tail])
+
+(admit li? (polymorphic (E) (-> (my-list-t E) bool-t)))
 
 (define (li? value)
-  (and
-    (list? value)
-    (equal? (list-length value) 3)
-    (equal? (list-head value) li)))
+  (and (list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) 'li)))
 
-(admit li-head (polymorphic (E) ((my-list-t E) E)))
+(admit li-head (polymorphic (E) (-> (my-list-t E) E)))
 
 (define (li-head target) (list-get 1 target))
 
-(admit li-put-head! (polymorphic (E) (E (my-list-t E) (my-list-t E))))
+(admit li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li-put-head! value target) (list-put! 1 value target))
 
-(admit li-tail (polymorphic (E) ((my-list-t E) (my-list-t E))))
+(admit li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 
 (define (li-tail target) (list-get 2 target))
 
 (admit li-put-tail!
-  (polymorphic (E) ((my-list-t E) (my-list-t E) (my-list-t E))))
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
 (define (li-put-tail! value target) (list-put! 2 value target))
 
 (define (my-list-length list)
   (cond
-    ((010-my-list/nil? list) 0)
-    ((010-my-list/li? list) (let
-      (tail (010-my-list/li-tail list))
-      (let (head (010-my-list/li-head list)) (iadd 1 (my-list-length tail)))))))
+    ((self/010-my-list/nil? list) 0)
+    ((self/010-my-list/li? list) (let
+      (tail (self/010-my-list/li-tail list))
+      (let
+        (head (self/010-my-list/li-head list))
+        (iadd 1 (my-list-length tail)))))))
 
 (define (my-list-map f list)
   (cond
-    ((010-my-list/nil? list) (nil))
-    ((010-my-list/li? list) (let
-      (tail (010-my-list/li-tail list))
-      (let (head (010-my-list/li-head list)) (li (f head) (my-list-map f tail)))))))
+    ((self/010-my-list/nil? list) (nil))
+    ((self/010-my-list/li? list) (let
+      (tail (self/010-my-list/li-tail list))
+      (let
+        (head (self/010-my-list/li-head list))
+        (li (f head) (my-list-map f tail)))))))

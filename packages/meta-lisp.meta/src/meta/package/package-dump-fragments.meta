@@ -6,7 +6,7 @@
     (package-fragments package)))
 
 (define (package-dump-fragment package tag path fragment)
-  (= width 80)
+  (= width 64)
   (= code (pretty-fragment-stmts width (fragment-stmts fragment)))
   (= source-directory (package-source-directory package))
   (= name (path-relative source-directory path))

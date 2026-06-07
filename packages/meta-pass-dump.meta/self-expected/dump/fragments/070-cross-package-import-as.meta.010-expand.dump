@@ -2,4 +2,4 @@
 
 (import-as meta-math/math math)
 
-(define (example-square x) (math/square x))
+(define (example-square x) (self/math/square x))

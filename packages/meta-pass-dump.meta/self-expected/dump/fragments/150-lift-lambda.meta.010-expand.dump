@@ -2,4 +2,4 @@
 
 (define (make-adder x) (lambda (y) (iadd x y)))
 
-(define f (make-adder 1))
+(define (f) (make-adder 1))

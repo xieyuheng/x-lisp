@@ -4,4 +4,5 @@
 
 (define greeting "Hello")
 
-(define (greet name) (string-append (string-append greeting ", ") name))
+(define (greet name)
+  (string-append (string-append greeting ", ") name))

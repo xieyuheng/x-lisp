@@ -20,7 +20,7 @@
 
 (admit var-exp (-> symbol-t exp-t))
 
-(define (var-exp name) (@list 'var-exp name))
+(define (var-exp name) ['var-exp name])
 
 (admit var-exp? (-> exp-t bool-t))
 
@@ -40,7 +40,7 @@
 
 (admit apply-exp (-> exp-t exp-t exp-t))
 
-(define (apply-exp target arg) (@list 'apply-exp target arg))
+(define (apply-exp target arg) ['apply-exp target arg])
 
 (admit apply-exp? (-> exp-t bool-t))
 
@@ -70,7 +70,7 @@
 (admit lambda-exp (-> symbol-t exp-t exp-t))
 
 (define (lambda-exp parameter body)
-  (@list 'lambda-exp parameter body))
+  ['lambda-exp parameter body])
 
 (admit lambda-exp? (-> exp-t bool-t))
 
@@ -99,7 +99,7 @@
 
 (admit let-exp (-> symbol-t exp-t exp-t exp-t))
 
-(define (let-exp name rhs body) (@list 'let-exp name rhs body))
+(define (let-exp name rhs body) ['let-exp name rhs body])
 
 (admit let-exp? (-> exp-t bool-t))
 
@@ -160,7 +160,7 @@
 (admit closure-value (-> env-t symbol-t exp-t value-t))
 
 (define (closure-value env parameter body)
-  (@list 'closure-value env parameter body))
+  ['closure-value env parameter body])
 
 (admit closure-value? (-> value-t bool-t))
 

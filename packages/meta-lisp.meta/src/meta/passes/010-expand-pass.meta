@@ -127,15 +127,18 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (list-concat
        [[stmt]
-        (swap list-flat-map data-constructors (expand-constructor type-constructor))
-        (swap list-flat-map data-constructors (expand-predicate type-constructor))
-        (swap list-flat-map data-constructors
+        (list-flat-map
           (lambda (ctor)
-            (swap list-flat-map-index (explicit-data-constructor-fields ctor)
-              (lambda (index field)
-                (list-append
-                  (expand-accessor type-constructor ctor index field)
-                  (expand-modifier type-constructor ctor index field))))))]))))
+            (list-concat
+              [(expand-constructor type-constructor ctor)
+               (expand-predicate type-constructor ctor)
+               (list-flat-map-index
+                 (lambda (index field)
+                   (list-append
+                     (expand-accessor type-constructor ctor index field)
+                     (expand-modifier type-constructor ctor index field)))
+                 (explicit-data-constructor-fields ctor))]))
+          data-constructors)]))))
 
 (claim expand-constructor
   (-> pre-type-constructor-t (explicit-data-constructor-t exp-t)
