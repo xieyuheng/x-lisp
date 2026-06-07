@@ -1,0 +1,16 @@
+(module meta)
+
+(claim generate-relative-fresh-name (-> symbol-t (set-t symbol-t) symbol-t))
+(define (generate-relative-fresh-name name used-names)
+  (if (set-member? name used-names)
+    (begin
+      (define (loop n)
+        (let ((candidate
+                (string-to-symbol
+                  (string-concat
+                    [(symbol-to-string name) "." (format-as-sexp n)]))))
+          (if (set-member? candidate used-names)
+            (loop (iadd 1 n))
+            candidate)))
+      (loop 1))
+    name))

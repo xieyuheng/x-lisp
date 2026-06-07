@@ -1,0 +1,16 @@
+(module meta)
+
+(claim desugar-let-star (-> (list-t binding-t) exp-t source-location-t exp-t))
+(define (desugar-let-star bindings body location)
+  (cond
+    ((list-empty? bindings) body)
+    ((list-empty? (list-tail bindings))
+     (let ((binding (list-first bindings)))
+       (let1-exp (binding-name binding) (binding-rhs binding) body location)))
+    (else
+     (let ((binding (list-first bindings))
+           (rest (list-tail bindings)))
+       (let1-exp (binding-name binding)
+         (binding-rhs binding)
+         (desugar-let-star rest body location)
+         location)))))

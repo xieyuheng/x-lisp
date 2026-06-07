@@ -1,0 +1,30 @@
+(module meta)
+
+(claim desugar-let (-> (list-t binding-t) exp-t source-location-t exp-t))
+(define (desugar-let bindings body location)
+  (cond
+    ((list-empty? bindings) body)
+    ((list-empty? (list-tail bindings))
+     (let ((binding (list-first bindings)))
+       (let1-exp (binding-name binding) (binding-rhs binding) body location)))
+    (else
+     (begin
+       (= used-names (exp-occurred-names body))
+       (= used-names
+          (list-fold-left (lambda (s b) (set-union s (exp-occurred-names (binding-rhs b))))
+            used-names bindings))
+       (define (loop bs tmp-bindings new-bindings)
+         (if (list-empty? bs)
+           (let-star-exp (list-append (list-reverse tmp-bindings) (list-reverse new-bindings)) body location)
+           (let ((binding (list-first bs))
+                 (rest (list-tail bs)))
+             (= tmp-name (generate-relative-fresh-name (binding-name binding) used-names))
+             (= used-names (set-add tmp-name used-names))
+             (loop rest
+               (cons (make-binding tmp-name (binding-rhs binding) (binding-location binding))
+                 tmp-bindings)
+               (cons (make-binding (binding-name binding)
+                       (var-exp tmp-name (binding-location binding))
+                       (binding-location binding))
+                 new-bindings)))))
+       (loop bindings [] [])))))

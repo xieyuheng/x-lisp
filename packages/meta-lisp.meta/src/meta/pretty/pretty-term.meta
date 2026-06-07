@@ -18,7 +18,7 @@
     ((var-term name location)
      (ppml/text (symbol-to-string name)))
     ((qualified-var-term pkg-name mod-name name location)
-      (ppml/text (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
+      (ppml/text (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
     ((lambda-term parameters body location)
      (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
        (ppml/pretty-syntax "lambda"
@@ -50,9 +50,9 @@
         (pretty-term consequent)
         (pretty-term alternative)]))
     ((arrow-term arg-types ret-type location)
-     (ppml/pretty-application (just "->")
-       (list-append (list-map pretty-term arg-types)
-                    [(pretty-term ret-type)])))
+     (ppml/pretty-syntax "->"
+       (list-map pretty-term arg-types)
+       [(pretty-term ret-type)]))
     ((the-term type instance location)
      (ppml/pretty-syntax "the"
        [(pretty-term type)]
@@ -70,7 +70,7 @@
     ((keyword-term content location) (just (format-as-sexp content)))
     ((var-term name location) (just (symbol-to-string name)))
     ((qualified-var-term pkg-name mod-name name location)
-      (just (@string (symbol-to-string mod-name) "/" (symbol-to-string name))))
+      (just (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
     (else (nothing))))
 
 (claim pretty-term-body (-> term-t (list-t ppml/node-t)))

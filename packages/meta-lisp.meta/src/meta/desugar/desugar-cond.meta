@@ -1,0 +1,15 @@
+(module meta)
+
+(claim desugar-cond (-> (list-t cond-clause-t) source-location-t exp-t))
+(define (desugar-cond clauses location)
+  (if (list-empty? clauses)
+    (apply-exp
+      (qualified-var-exp 'meta-builtin 'builtin 'error location)
+      [(string-exp "cond mismatch" location)]
+      location)
+    (let ((head (list-first clauses))
+          (rest (list-tail clauses)))
+      (if-exp (cond-clause-question head)
+        (cond-clause-answer head)
+        (desugar-cond rest location)
+        location))))

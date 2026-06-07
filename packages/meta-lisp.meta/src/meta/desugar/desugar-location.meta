@@ -1,0 +1,24 @@
+(module meta)
+
+(claim desugar-location (-> source-location-t exp-t))
+(define (desugar-location location)
+  (apply-exp
+    (qualified-var-exp 'meta-builtin 'builtin 'make-source-location location)
+    [(string-exp (source-location-path location) location)
+     (exp-from-span (source-location-span location) location)]
+    location))
+
+(define (exp-from-span span location)
+  (apply-exp
+    (qualified-var-exp 'meta-builtin 'builtin 'make-source-span location)
+    [(exp-from-position (source-span-start span) location)
+     (exp-from-position (source-span-end span) location)]
+    location))
+
+(define (exp-from-position position location)
+  (apply-exp
+    (qualified-var-exp 'meta-builtin 'builtin 'make-source-position location)
+    [(int-exp (source-position-index position) location)
+     (int-exp (source-position-row position) location)
+     (int-exp (source-position-column position) location)]
+    location))
