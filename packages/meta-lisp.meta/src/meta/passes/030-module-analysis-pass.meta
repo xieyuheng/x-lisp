@@ -74,13 +74,13 @@
 (define (collect-private-names package)
   (collect-names-by-mod
     package
-    (lambda (fragment)
+    (chain
+      fragment-stmts
       (list-flat-map
         (lambda (stmt)
-          (match stmt
-            ((private-stmt names location) names)
-            (else [])))
-        (fragment-stmts fragment)))))
+          (if (private-stmt? stmt)
+            (private-stmt-names stmt)
+            []))))))
 
 (claim merge-set-hash!
   (polymorphic (K V)
