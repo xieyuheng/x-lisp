@@ -20,13 +20,10 @@
 (admit nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
 
 (define (nil? value)
-  (if
-    (list? value)
-    (if
-      (equal? (list-length value) 1)
-      (equal? (list-head value) nil)
-      meta-builtin/builtin/false)
-    meta-builtin/builtin/false))
+  (if (list? value)
+      (if (equal? (list-length value) 1) (equal? (list-head value) nil)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
 
 (admit li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
@@ -41,13 +38,10 @@
 (admit li? (polymorphic (E) (-> (my-list-t E) bool-t)))
 
 (define (li? value)
-  (if
-    (list? value)
-    (if
-      (equal? (list-length value) 3)
-      (equal? (list-head value) li)
-      meta-builtin/builtin/false)
-    meta-builtin/builtin/false))
+  (if (list? value)
+      (if (equal? (list-length value) 3) (equal? (list-head value) li)
+          meta-builtin/builtin/false)
+      meta-builtin/builtin/false))
 
 (admit li-head (polymorphic (E) (-> (my-list-t E) E)))
 
@@ -67,25 +61,19 @@
 (define (li-put-tail! value target) (list-put! 2 value target))
 
 (define (my-list-length list)
-  (if
-    (self/010-my-list/nil? list)
-    0
-    (if
-      (self/010-my-list/li? list)
-      (begin
-        (= tail (self/010-my-list/li-tail list))
-        (= head (self/010-my-list/li-head list))
-        (iadd 1 (my-list-length tail)))
-      (meta-builtin/builtin/error "cond mismatch"))))
+  (if (self/010-my-list/nil? list) 0
+      (if (self/010-my-list/li? list)
+          (begin
+            (= tail (self/010-my-list/li-tail list))
+            (= head (self/010-my-list/li-head list))
+            (iadd 1 (my-list-length tail)))
+          (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-map f list)
-  (if
-    (self/010-my-list/nil? list)
-    (nil)
-    (if
-      (self/010-my-list/li? list)
-      (begin
-        (= tail (self/010-my-list/li-tail list))
-        (= head (self/010-my-list/li-head list))
-        (li (f head) (my-list-map f tail)))
-      (meta-builtin/builtin/error "cond mismatch"))))
+  (if (self/010-my-list/nil? list) (nil)
+      (if (self/010-my-list/li? list)
+          (begin
+            (= tail (self/010-my-list/li-tail list))
+            (= head (self/010-my-list/li-head list))
+            (li (f head) (my-list-map f tail)))
+          (meta-builtin/builtin/error "cond mismatch"))))
