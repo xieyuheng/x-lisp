@@ -1,4 +1,4 @@
-(module-analysis-result
+(module-analysis-report
   (defined-names
     (010-my-list 11)
     (010-pair 8)

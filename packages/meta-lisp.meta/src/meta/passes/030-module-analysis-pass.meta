@@ -1,6 +1,6 @@
 (module meta)
 
-(define-struct module-analysis-result-t
+(define-struct module-analysis-report-t
   (defined-names name-group-by-mod-t)
   (private-names name-group-by-mod-t)
   (fragment-scopes (hash-t string-t fragment-scope-t))
@@ -34,7 +34,7 @@
 
 (claim module-analysis-pass
   (-> package-t
-      module-analysis-result-t))
+      module-analysis-report-t))
 
 (define (module-analysis-pass package)
   (= defined-names (make-hash))
@@ -44,8 +44,8 @@
       (merge-set-hash! defined-names (collect-defined-names ordered-package))
       (merge-set-hash! private-names (collect-private-names ordered-package))))
   (= fragment-scopes (make-hash))
-  (= analysis-result
-    (make-module-analysis-result defined-names private-names fragment-scopes (outcome-ok)))
+  (= analysis-report
+    (make-module-analysis-report defined-names private-names fragment-scopes (outcome-ok)))
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
       (for-hash (package-fragments ordered-package)
@@ -55,11 +55,11 @@
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
               (if (outcome-error? (ensure-imported-mod-exists ordered-package stmt))
-                (ignore (module-analysis-result-put-outcome! (outcome-error) analysis-result))
+                (ignore (module-analysis-report-put-outcome! (outcome-error) analysis-report))
                 (execute-import ordered-package scope stmt))))))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (dump-module-analysis-result analysis-result package))
-  analysis-result)
+    (dump-module-analysis-report analysis-report package))
+  analysis-report)
 
 (claim collect-defined-names
   (-> package-t
@@ -264,12 +264,12 @@
               (set-to-list names)))))
       (format (set-size (hash-entry-value entry))))))
 
-(define (format-module-analysis-result result debug?)
+(define (format-module-analysis-report result debug?)
   (= lines [])
-  (list-push! "(module-analysis-result" lines)
+  (list-push! "(module-analysis-report" lines)
 
   (list-push! "  (defined-names" lines)
-  (for-list (sort-entries-by-symbol-key (module-analysis-result-defined-names result))
+  (for-list (sort-entries-by-symbol-key (module-analysis-report-defined-names result))
     (lambda (entry)
       (list-push!
         (@string "    (" (format-name-value entry debug?) ")")
@@ -277,7 +277,7 @@
   (close-top lines)
 
   (list-push! "  (private-names" lines)
-  (for-list (sort-entries-by-symbol-key (module-analysis-result-private-names result))
+  (for-list (sort-entries-by-symbol-key (module-analysis-report-private-names result))
     (lambda (entry)
       (list-push!
         (@string "    (" (format-name-value entry debug?) ")")
@@ -285,7 +285,7 @@
   (close-top lines)
 
   (list-push! "  (fragment-scopes" lines)
-  (for-list (sort-entries-by-string-key (module-analysis-result-fragment-scopes result))
+  (for-list (sort-entries-by-string-key (module-analysis-report-fragment-scopes result))
     (lambda (entry)
       (= path (hash-entry-key entry))
       (= scope (hash-entry-value entry))
@@ -331,9 +331,9 @@
   (close-top lines)
   (string-join "\n" lines))
 
-(define (dump-module-analysis-result result package)
+(define (dump-module-analysis-report result package)
   (= dump-directory (path-join (package-output-directory package) "dump"))
   (fs-ensure-directory dump-directory)
-  (= dump-path (@string dump-directory "/030-module-analysis-result.dump"))
+  (= dump-path (@string dump-directory "/030-module-analysis-report.dump"))
   (fs-ensure-file dump-path)
-  (fs-write dump-path (@string (format-module-analysis-result result false) "\n")))
+  (fs-write dump-path (@string (format-module-analysis-report result false) "\n")))

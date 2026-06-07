@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export function ModuleImportPass(
   pkg: M.Package,
-  info: M.ModuleAnalysisResult,
+  info: M.ModuleAnalysisReport,
 ): void {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {

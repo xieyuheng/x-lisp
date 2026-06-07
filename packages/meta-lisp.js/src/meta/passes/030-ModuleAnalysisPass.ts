@@ -7,7 +7,7 @@ import Path from "node:path"
 import * as M from "../index.ts"
 import type { Outcome } from "../mod/Mod.ts"
 
-export type ModuleAnalysisResult = {
+export type ModuleAnalysisReport = {
   definedNames: NameGroupByMod
   privateNames: NameGroupByMod
   fragmentScopes: Map<string, FragmentScope>
@@ -27,7 +27,7 @@ export type FragmentScope = {
   importedPrefixes: Map<Prefix, { pkgName: PkgName; modName: ModName }>
 }
 
-export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
+export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   const definedNames = new Map<ModName, Set<Name>>()
   const privateNames = new Map<ModName, Set<Name>>()
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
@@ -36,7 +36,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   }
 
   const fragmentScopes = new Map<string, FragmentScope>()
-  const analysisResult: ModuleAnalysisResult = {
+  const analysisReport: ModuleAnalysisReport = {
     definedNames,
     privateNames,
     fragmentScopes,
@@ -49,7 +49,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
       fragmentScopes.set(path, scope)
       for (const stmt of fragment.stmts) {
         if (ensureImportedModExists(orderedPkg, stmt) === "OutcomeError") {
-          analysisResult.outcome = "OutcomeError"
+          analysisReport.outcome = "OutcomeError"
         } else {
           executeImport(orderedPkg, scope, stmt)
         }
@@ -58,10 +58,10 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisResult {
   }
 
   if (pkg.config.compiler.dump) {
-    dumpModuleAnalysisResult(analysisResult, pkg)
+    dumpModuleAnalysisReport(analysisReport, pkg)
   }
 
-  return analysisResult
+  return analysisReport
 }
 
 function mergeSetMap<K, V>(
@@ -249,23 +249,23 @@ function collectPrivateNames(pkg: M.Package): NameGroupByMod {
   )
 }
 
-function dumpModuleAnalysisResult(
-  result: ModuleAnalysisResult,
+function dumpModuleAnalysisReport(
+  result: ModuleAnalysisReport,
   pkg: M.Package,
 ): void {
   const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
   fs.mkdirSync(dir, { recursive: true })
-  const file = Path.join(dir, "030-module-analysis-result.dump")
-  const content = formatModuleAnalysisResult(result, false)
+  const file = Path.join(dir, "030-module-analysis-report.dump")
+  const content = formatModuleAnalysisReport(result, false)
   fs.writeFileSync(file, content + "\n", "utf-8")
 }
 
-function formatModuleAnalysisResult(
-  result: ModuleAnalysisResult,
+function formatModuleAnalysisReport(
+  result: ModuleAnalysisReport,
   debug: boolean,
 ): string {
   const lines: Array<string> = []
-  lines.push("(module-analysis-result")
+  lines.push("(module-analysis-report")
 
   lines.push("  (defined-names")
   for (const [modName, names] of sortedEntries(result.definedNames)) {

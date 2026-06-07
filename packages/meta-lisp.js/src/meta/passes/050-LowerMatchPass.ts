@@ -2,12 +2,12 @@ import * as M from "../index.ts"
 
 export function LowerMatchPass(
   pkg: M.Package,
-  analysisResult: M.ModuleAnalysisResult,
+  analysisReport: M.ModuleAnalysisReport,
   algebraicInfo: M.AlgebraicInfo,
 ): void {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {
-      const scope = analysisResult.fragmentScopes.get(path)
+      const scope = analysisReport.fragmentScopes.get(path)
       if (!scope) {
         throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
       }
