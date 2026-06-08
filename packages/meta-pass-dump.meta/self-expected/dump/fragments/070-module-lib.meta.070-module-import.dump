@@ -1,0 +1,10 @@
+(import-all meta-builtin/builtin)
+
+(module 070-module-lib)
+
+(define greeting "Hello")
+
+(define (greet name)
+  (meta-builtin/builtin/string-append
+   (meta-builtin/builtin/string-append greeting ", ")
+   name))

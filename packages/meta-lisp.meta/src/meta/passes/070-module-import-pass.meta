@@ -1,0 +1,141 @@
+(module meta)
+
+(claim module-import-pass
+  (-> package-t
+      module-analysis-report-t
+      void-t))
+
+(define (module-import-pass package report)
+  (for-list (package-closure-in-topological-order package)
+    (lambda (ordered-package)
+      (for-hash (package-fragments ordered-package)
+        (lambda (path fragment)
+          (= scopes (module-analysis-report-fragment-scopes report))
+          (if (hash-has? path scopes)
+            (let ((scope (hash-get path scopes)))
+              (= new-fragment
+                 (make-fragment
+                   (fragment-mod-name fragment)
+                   (fragment-path fragment)
+                   (fragment-stmts fragment)
+                   (list-map
+                     (lambda (stmt) (module-import-stmt scope stmt))
+                     (fragment-desugared-stmts fragment))))
+              (hash-put! path new-fragment (package-fragments ordered-package)))
+            (error-with-location
+              (@string "[module-import-pass] missing scope for: " path)
+              (zero-location "070-module-import-pass")))))))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-desugared-fragments package "070-module-import")))
+
+(claim module-import-stmt
+  (-> fragment-scope-t (stmt-t term-t) (stmt-t term-t)))
+
+(define (module-import-stmt scope stmt)
+  (match stmt
+    ((claim-stmt name type location)
+     (claim-stmt name (module-import-term scope type) location))
+    ((admit-stmt name type location)
+     (admit-stmt name (module-import-term scope type) location))
+    ((define-function-stmt name parameters body location)
+     (= bound-names (list-to-set parameters))
+     (= new-scope (scope-filter-bound-names scope bound-names))
+     (define-function-stmt name parameters (module-import-term new-scope body) location))
+    ((define-variable-stmt name body location)
+     (define-variable-stmt name (module-import-term scope body) location))
+    ((define-test-stmt name body location)
+     (define-test-stmt name (module-import-term scope body) location))
+    ((define-type-stmt name parameters body location)
+     (define-type-stmt name parameters (module-import-term scope body) location))
+    ((define-algebraic-type-stmt type-constructor data-constructors location)
+     (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
+     (= new-scope (scope-filter-bound-names scope bound-names))
+     (define-algebraic-type-stmt type-constructor
+       (list-map
+         (lambda (ctor)
+           (make-explicit-data-constructor
+             (explicit-data-constructor-name ctor)
+             (list-map
+               (lambda (field)
+                 (make-explicit-data-field
+                   (explicit-data-field-name field)
+                   (module-import-term new-scope (explicit-data-field-type field))
+                   (explicit-data-field-accessor-name field)
+                   (explicit-data-field-modifier-name-maybe field)
+                   (explicit-data-field-location field)))
+               (explicit-data-constructor-fields ctor))
+             (explicit-data-constructor-predicate-name ctor)
+             (explicit-data-constructor-location ctor)))
+         data-constructors)
+       location))
+    ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
+     (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
+     (= new-scope (scope-filter-bound-names scope bound-names))
+     (define-opaque-type-stmt type-constructor
+       (module-import-term new-scope representation-type)
+       (list-map
+         (lambda (entry)
+           (make-pre-interface-entry
+             (pre-interface-entry-name entry)
+             (module-import-term new-scope (pre-interface-entry-type entry))
+             (pre-interface-entry-location entry)))
+         interface-entries)
+       location))
+    (else stmt)))
+
+(claim module-import-term
+  (-> fragment-scope-t term-t term-t))
+
+(define (module-import-term scope term)
+  (match term
+    ((var-term name location)
+     (= imported-names (fragment-scope-imported-names scope))
+     (if (hash-has? name imported-names)
+       (let ((entry (hash-get name imported-names)))
+         (qualified-var-term
+           (qualified-name-entry-pkg-name entry)
+           (qualified-name-entry-mod-name entry)
+           (qualified-name-entry-name entry)
+           location))
+       term))
+    ((qualified-var-term pkg-name mod-name name location)
+     (= imported-prefixes (fragment-scope-imported-prefixes scope))
+     (if (hash-has? mod-name imported-prefixes)
+       (let ((entry (hash-get mod-name imported-prefixes)))
+         (qualified-var-term
+           (prefix-entry-pkg-name entry)
+           (prefix-entry-mod-name entry)
+           name
+           location))
+       term))
+    ((lambda-term parameters body location)
+     (= bound-names (list-to-set parameters))
+     (= new-scope (scope-filter-bound-names scope bound-names))
+     (lambda-term parameters (module-import-term new-scope body) location))
+    ((polymorphic-term parameters body location)
+     (= bound-names (list-to-set parameters))
+     (= new-scope (scope-filter-bound-names scope bound-names))
+     (polymorphic-term parameters (module-import-term new-scope body) location))
+    ((let1-term name rhs body location)
+     (= bound-names (make-set))
+     (set-add! name bound-names)
+     (= new-scope (scope-filter-bound-names scope bound-names))
+     (let1-term name
+       (module-import-term scope rhs)
+       (module-import-term new-scope body)
+       location))
+    (else (term-traverse (lambda (child) (module-import-term scope child)) term))))
+
+(claim scope-filter-bound-names
+  (-> fragment-scope-t (set-t symbol-t) fragment-scope-t))
+
+(define (scope-filter-bound-names scope bound-names)
+  (= new-imported-names (make-hash))
+  (for-hash (fragment-scope-imported-names scope)
+    (lambda (name entry)
+      (unless (set-member? name bound-names)
+        (hash-put! name entry new-imported-names))))
+  (cons-fragment-scope
+    (fragment-scope-mod-name scope)
+    new-imported-names
+    (fragment-scope-imported-prefixes scope)))
