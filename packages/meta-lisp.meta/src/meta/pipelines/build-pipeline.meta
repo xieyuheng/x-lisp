@@ -9,4 +9,5 @@
   (desugar-pass package)
   (module-import-pass package module-analysis-report)
   (execute-pass package)
+  (claim-pass package)
   void)
