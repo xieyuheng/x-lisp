@@ -2,24 +2,23 @@
 
 (define (double x) (meta-builtin/builtin/iadd x x))
 
-(define example-let-star
-  (begin
-    (= x 1)
-    (= y (meta-builtin/builtin/iadd x 1))
-    (meta-builtin/builtin/iadd x y)))
+(define (example-let-star)
+  (= x 1)
+  (= y (meta-builtin/builtin/iadd x 1))
+  (meta-builtin/builtin/iadd x y))
 
-(define example-cond
+(define (example-cond)
   (if (meta-builtin/builtin/equal? 1 1) 1
       (if meta-builtin/builtin/true 2
           (meta-builtin/builtin/error "cond mismatch"))))
 
-(define example-begin (begin 1 2 3))
+(define (example-begin) 1 2 3)
 
-(define example-when
+(define (example-when)
   (if meta-builtin/builtin/true (begin 1 meta-builtin/builtin/void)
       meta-builtin/builtin/void))
 
-(define example-unless
+(define (example-unless)
   (if meta-builtin/builtin/false meta-builtin/builtin/void
       (begin 2 meta-builtin/builtin/void)))
 
@@ -27,8 +26,8 @@
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(define example-pipe (double (add1 5)))
+(define (example-pipe) (double (add1 5)))
 
-(define example-chain ((lambda (target) (double (add1 target))) 5))
+(define (example-chain) ((lambda (target) (double (add1 target))) 5))
 
-(define example-compose ((lambda (target) (add1 (double target))) 5))
+(define (example-compose) ((lambda (target) (add1 (double target))) 5))

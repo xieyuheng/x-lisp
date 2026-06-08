@@ -4,4 +4,4 @@
 
 (define (f x y) (meta-builtin/builtin/iadd x y))
 
-(define test (f (g 1) (h 2)))
+(define (test) (f (g 1) (h 2)))

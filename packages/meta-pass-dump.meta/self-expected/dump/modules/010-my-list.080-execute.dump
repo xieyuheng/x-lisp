@@ -1,14 +1,15 @@
+(claim my-list-t (-> meta-builtin/builtin/type-t meta-builtin/builtin/type-t))
+
 (define-enum (my-list-t E) nil (li (head E) (tail (my-list-t E))))
 
-(claim nil (polymorphic (E) (->  (my-list-t E)))) 
+(claim nil (polymorphic (E) (-> (my-list-t E))))
 
-(define nil
-  (begin
-    (= list (meta-builtin/builtin/make-list))
-    (meta-builtin/builtin/list-push! nil list)
-    list))
+(define (nil)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! nil list)
+  list)
 
-(claim nil? (polymorphic (E) (-> (my-list-t E) builtin/bool-t))) 
+(claim nil? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
 (define (nil? value)
   (if (meta-builtin/builtin/list? value)
@@ -22,17 +23,16 @@
           meta-builtin/builtin/false)
       meta-builtin/builtin/false))
 
-(claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E)))) 
+(claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li head tail)
-  (begin
-    (= list (meta-builtin/builtin/make-list))
-    (meta-builtin/builtin/list-push! li list)
-    (meta-builtin/builtin/list-push! head list)
-    (meta-builtin/builtin/list-push! tail list)
-    list))
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! li list)
+  (meta-builtin/builtin/list-push! head list)
+  (meta-builtin/builtin/list-push! tail list)
+  list)
 
-(claim li? (polymorphic (E) (-> (my-list-t E) builtin/bool-t))) 
+(claim li? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
 (define (li? value)
   (if (meta-builtin/builtin/list? value)
@@ -44,20 +44,21 @@
           meta-builtin/builtin/false)
       meta-builtin/builtin/false))
 
-(claim li-head (polymorphic (E) (-> (my-list-t E) E))) 
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
 
 (define (li-head target) (meta-builtin/builtin/list-get 1 target))
 
-(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E)))) 
+(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li-put-head! value target)
   (meta-builtin/builtin/list-put! 1 value target))
 
-(claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E)))) 
+(claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 
 (define (li-tail target) (meta-builtin/builtin/list-get 2 target))
 
-(claim li-put-tail! (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E)))) 
+(claim li-put-tail!
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
 (define (li-put-tail! value target)
   (meta-builtin/builtin/list-put! 2 value target))

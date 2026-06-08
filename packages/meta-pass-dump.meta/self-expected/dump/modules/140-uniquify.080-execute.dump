@@ -1,1 +1,1 @@
-(define f ((lambda (x) ((lambda (x) x) x)) 1))
+(define (f) ((lambda (x) ((lambda (x) x) x)) 1))
