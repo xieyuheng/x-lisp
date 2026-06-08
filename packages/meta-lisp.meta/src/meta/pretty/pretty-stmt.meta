@@ -32,13 +32,12 @@
        [(ppml/text full)] []))
     ((define-function-stmt name parameters body location)
      (let ((name-str (symbol-to-string name))
-           (params-str (string-join " " (list-map symbol-to-string parameters))))
-       (ppml/pretty-syntax "define"
-         [(ppml/text
-            (if (list-empty? parameters)
-              (@string "(" name-str ")")
-              (@string "(" name-str " " params-str ")")))]
-         [(pretty-body body)])))
+           (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+       (let ((def-node (ppml/pretty-application (just name-str)
+                         (cons (ppml/text name-str) param-nodes))))
+         (ppml/pretty-syntax "define"
+           [def-node]
+           [(pretty-body body)]))))
     ((define-variable-stmt name body location)
      (ppml/pretty-syntax "define"
        [(ppml/text (symbol-to-string name))]
@@ -120,50 +119,30 @@
         (params (pre-type-constructor-parameters tc)))
     (if (list-empty? params)
       name
-      (ppml/group
-        [(ppml/text "(")
-         name
-         (ppml/text " ")
-         (ppml/flex (list-map (lambda (p) (ppml/text (symbol-to-string p))) params))
-         (ppml/text ")")]))))
+      (ppml/pretty-application (just (symbol-to-string (pre-type-constructor-name tc)))
+        (cons name (list-map (lambda (p) (ppml/text (symbol-to-string p))) params))))))
 
 (define (pretty-pre-data-constructor ctor)
   (let ((name (ppml/text (symbol-to-string (pre-data-constructor-name ctor))))
         (fields (pre-data-constructor-fields ctor)))
     (if (list-empty? fields)
       name
-      (ppml/group
-        [(ppml/text "(")
-         name
-         (ppml/text " ")
-         (ppml/flex (list-map pretty-pre-data-field fields))
-         (ppml/text ")")]))))
+      (ppml/pretty-application (just (symbol-to-string (pre-data-constructor-name ctor)))
+        (cons name (list-map pretty-pre-data-field fields))))))
 
 (define (pretty-pre-data-field field)
-  (= name (ppml/text (symbol-to-string (pre-data-field-name field))))
-  (= type-node (pretty-exp (pre-data-field-type field)))
-  (ppml/group
-    [(ppml/text "(")
-     name
-     (ppml/text " ")
-     type-node
-     (ppml/text ")")]))
+  (let ((name (ppml/text (symbol-to-string (pre-data-field-name field))))
+        (type-node (pretty-exp (pre-data-field-type field))))
+    (ppml/pretty-application (just (symbol-to-string (pre-data-field-name field)))
+      [name type-node])))
 
 (define (pretty-explicit-data-constructor pretty-body ctor)
   (let ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
         (fields (explicit-data-constructor-fields ctor))
         (pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor))))
-    (let ((field-group (if (list-empty? fields)
-                          (ppml/group
-                            [(ppml/text "(")
-                             (ppml/text name-str)
-                             (ppml/text ")")])
-                          (ppml/group
-                           [(ppml/text "(")
-                            (ppml/text name-str)
-                            (ppml/text " ")
-                            (ppml/flex (list-map (lambda (f) (pretty-explicit-data-field pretty-body f)) fields))
-                            (ppml/text ")")])))
+    (let ((field-group (ppml/pretty-application (just name-str)
+                          (cons (ppml/text name-str)
+                                (list-map (lambda (f) (pretty-explicit-data-field pretty-body f)) fields))))
           (accessor-nodes (list-map (lambda (f) (pretty-explicit-data-accessor pretty-body f)) fields)))
       (ppml/pretty-application (nothing)
         (list-concat [[field-group (ppml/text pred-str)] accessor-nodes])))))
@@ -193,19 +172,11 @@
 (define (pretty-explicit-data-field pretty-body field)
   (let ((name (ppml/text (symbol-to-string (explicit-data-field-name field))))
         (type-node (pretty-body (explicit-data-field-type field))))
-    (ppml/group
-      [(ppml/text "(")
-       name
-       (ppml/text " ")
-       type-node
-       (ppml/text ")")])))
+    (ppml/pretty-application (just (symbol-to-string (explicit-data-field-name field)))
+      [name type-node])))
 
 (define (pretty-pre-interface-entry pretty-body entry)
   (let ((name (ppml/text (symbol-to-string (pre-interface-entry-name entry))))
         (type-node (pretty-body (pre-interface-entry-type entry))))
-    (ppml/group
-      [(ppml/text "(")
-       name
-       (ppml/text " ")
-       type-node
-       (ppml/text ")")])))
+    (ppml/pretty-application (just (symbol-to-string (pre-interface-entry-name entry)))
+      [name type-node])))

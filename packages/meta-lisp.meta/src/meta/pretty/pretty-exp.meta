@@ -69,11 +69,11 @@
        (pretty-exp-body body)))
     ((local-define-exp name parameters body location)
      (let ((name-str (symbol-to-string name))
-           (params-str (string-join " " (list-map symbol-to-string parameters))))
-       (if (list-empty? parameters)
-         (ppml/pretty-syntax "define" [(ppml/text name-str)] (pretty-exp-body body))
+           (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+       (let ((def-node (ppml/pretty-application (just name-str)
+                         (cons (ppml/text name-str) param-nodes))))
          (ppml/pretty-syntax "define"
-           [(ppml/text (@string "(" name-str " " params-str ")"))]
+           [def-node]
            (pretty-exp-body body)))))
     ((begin1-exp head body location)
      (ppml/pretty-syntax "begin"
@@ -133,9 +133,10 @@
      (ppml/pretty-application (just "@sexp")
        [(ppml/text (format-sexp sexp))]))
     ((arrow-exp arg-types ret-type location)
-     (ppml/pretty-syntax "->"
-       (list-map pretty-exp arg-types)
-       [(pretty-exp ret-type)]))
+     (let ((all-elements (cons (ppml/text "->")
+                               (list-append (list-map pretty-exp arg-types)
+                                            [(pretty-exp ret-type)]))))
+       (ppml/pretty-application (just "->") all-elements)))
     ((the-exp type instance location)
      (ppml/pretty-syntax "the"
        [(pretty-exp type)]
@@ -193,18 +194,14 @@
       [(pretty-exp exp)])))
 
 (define (pretty-bindings bindings)
-  (ppml/group
-    [(ppml/text "(")
-     (ppml/flex (list-map pretty-binding bindings))
-     (ppml/text ")")]))
+  (ppml/pretty-application (nothing)
+    (list-map pretty-binding bindings)))
 
 (define (pretty-binding binding)
-  (ppml/group
-    [(ppml/text "(")
-     (ppml/text (symbol-to-string (binding-name binding)))
-     (ppml/text " ")
-     (pretty-exp (binding-rhs binding))
-     (ppml/text ")")]))
+  (let ((name-str (symbol-to-string (binding-name binding)))
+        (rhs-node (pretty-exp (binding-rhs binding))))
+    (ppml/pretty-application (just name-str)
+      [(ppml/text name-str) rhs-node])))
 
 (define (pretty-cond-clause clause)
   (ppml/pretty-application (nothing)

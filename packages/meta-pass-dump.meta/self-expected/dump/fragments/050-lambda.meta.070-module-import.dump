@@ -192,9 +192,10 @@
     (meta-builtin/builtin/hash-t meta-builtin/builtin/symbol-t value-t)
   (empty-env (-> env-t))
   (extend-env (-> meta-builtin/builtin/symbol-t value-t env-t env-t))
-  (env-lookup (-> meta-builtin/builtin/symbol-t
-      env-t
-      (meta-builtin/builtin/maybe-t value-t))))
+  (env-lookup
+   (-> meta-builtin/builtin/symbol-t
+       env-t
+       (meta-builtin/builtin/maybe-t value-t))))
 
 (define empty-env meta-builtin/builtin/make-hash)
 
@@ -203,9 +204,10 @@
 (define env-lookup meta-builtin/builtin/hash-get-maybe)
 
 (define-algebraic-type value-t
-  ((closure-value (env env-t)
-   (parameter meta-builtin/builtin/symbol-t)
-   (body exp-t))
+  ((closure-value
+    (env env-t)
+    (parameter meta-builtin/builtin/symbol-t)
+    (body exp-t))
    closure-value?
    (env closure-value-env closure-value-put-env!)
    (parameter closure-value-parameter closure-value-put-parameter!)
