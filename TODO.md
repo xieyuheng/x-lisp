@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] 080-execute-pass.meta
 [meta-lisp.meta] 090-claim-pass.meta
 [meta-lisp.meta] 100-qualify-pass.meta
 [meta-lisp.meta] 110-check-pass.meta
