@@ -1,6 +1,12 @@
 # self-hosting
 
-[meta-lisp.meta] 100-qualify-pass.meta
+[meta-lisp.meta] [review] 050-lower-match-pass.meta
+[meta-lisp.meta] [review] 060-desugar-pass.meta
+[meta-lisp.meta] [review] 070-module-import-pass.meta
+[meta-lisp.meta] [review] 080-execute-pass.meta
+[meta-lisp.meta] [review] 090-claim-pass.meta
+[meta-lisp.meta] [review] 100-qualify-pass.meta
+
 [meta-lisp.meta] 110-check-pass.meta
 [meta-lisp.meta] 120-locate-pass.meta
 [meta-lisp.meta] 130-shrink-pass.meta
