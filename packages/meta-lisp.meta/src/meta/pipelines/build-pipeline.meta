@@ -8,4 +8,5 @@
   (lower-match-pass package module-analysis-report algebraic-analysis-report)
   (desugar-pass package)
   (module-import-pass package module-analysis-report)
+  (execute-pass package)
   void)
