@@ -1,5 +1,30 @@
 (module meta)
 
+;; Desugar `(letrec)` using box:
+;;
+;;     (letrec ((x1 e1)
+;;              (x2 e2)
+;;              ...
+;;              (xn en))
+;;       body)
+;;
+;; where e1, e2, en, and body have their
+;; x1, x2, xn replaced with (box-get x1), (box-get x2), (box-get xn)
+;;
+;;     (let ((x1 (make-box))
+;;           (x2 (make-box))
+;;           ...
+;;           (xn (make-box)))
+;;       (let ((v1 e1)
+;;             (v2 e2)
+;;             ...
+;;             (vn en))
+;;         (box-put! x1 v1)
+;;         (box-put! x2 v2)
+;;         ...
+;;         (box-put! xn vn)
+;;         body))
+
 (claim desugar-letrec (-> (list-t binding-t) exp-t source-location-t exp-t))
 (define (desugar-letrec bindings body location)
   (= used-names (exp-occurred-names body))
@@ -14,6 +39,10 @@
                     [(var-exp (binding-name b) loc)]
                     loc)))
       bindings))
+  ;; Using expNaiveSubst is safe here: we replace b.name with
+  ;; (builtin.box-get b.name), whose only free variable is b.name itself.
+  ;; When a binding inside the RHS or body shadows b.name, that occurrence
+  ;; was never a recursive reference — stopping at the shadow is correct.
   (define (subst-all exp bindings-box-get)
     (if (list-empty? bindings-box-get)
       exp

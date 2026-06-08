@@ -71,6 +71,7 @@
      (lambda-term parameters (desugar body) location))
     ((polymorphic-exp parameters body location)
      (polymorphic-term parameters (desugar body) location))
+    ;; Core forms — bridge to Term
     ((symbol-exp content location)
      (symbol-term content location))
     ((keyword-exp content location)
@@ -102,6 +103,7 @@
        location))
     ((the-exp type instance location)
      (the-term (desugar type) (desugar instance) location))
+    ;; Should not appear after LowerMatchPass
     ((match-exp targets clauses location)
      (error-with-location
        "[desugar] unexpected MatchExp"

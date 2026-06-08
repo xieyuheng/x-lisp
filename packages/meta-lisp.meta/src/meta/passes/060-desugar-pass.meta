@@ -57,6 +57,7 @@
                      (pre-interface-entry-location entry)))
          interface-entries)
        location))
+    ;; Stmts with no Exp/Term type parameter — pass through
     ((import-stmt pkg-name mod-name names location)
      (import-stmt pkg-name mod-name names location))
     ((import-as-stmt pkg-name mod-name prefix location)
