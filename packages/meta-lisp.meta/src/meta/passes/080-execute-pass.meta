@@ -1,0 +1,151 @@
+(module meta)
+
+(claim execute-pass (-> package-t void-t))
+
+(define (execute-pass package)
+  (for-list (package-closure-in-topological-order package)
+    (lambda (ordered-package)
+      (for-hash (package-fragments ordered-package)
+        (lambda (path fragment)
+          (= mod-name (fragment-mod-name fragment))
+          (= maybe-mod (package-lookup-mod ordered-package mod-name))
+          (= mod (match maybe-mod
+                   ((just m) m)
+                   ((nothing) (make-mod mod-name ordered-package))))
+          (package-put-mod! mod-name mod ordered-package)
+          (for-list (fragment-desugared-stmts fragment)
+            (lambda (stmt)
+              (execute-stmt mod stmt)))))))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-mods package "080-execute")))
+
+(claim execute-stmt (-> mod-t (stmt-t term-t) void-t))
+
+(define (execute-stmt mod stmt)
+  (match stmt
+    ((comment-stmt _ _)
+     void)
+    ((exempt-stmt names _)
+     (ignore
+       (for-list names
+         (lambda (name)
+           (set-add! name (mod-admitted mod))))))
+    ((claim-stmt name type _)
+     (mod-claim mod name type))
+    ((claim-type-stmt name location)
+     (= claimed (mod-claimed mod))
+     (ignore
+       (hash-put! name
+                  (make-claim-entry
+                    (qualified-var-term 'meta-builtin 'builtin 'type-t location)
+                    (just (type-type)))
+                  claimed)))
+    ((admit-stmt name type _)
+     (mod-claim mod name type)
+     (ignore (set-add! name (mod-admitted mod))))
+    ((declare-primitive-function-stmt name arity location)
+     (= maybe-def (mod-lookup-definition mod name))
+     (match maybe-def
+       ((just (primitive-function-definition _ defined-name declared-arity _ _))
+        (unless (equal? declared-arity arity)
+          (error-with-location
+            (@string "[execute-stmt] arity mismatch"
+                     "\n  definition name: " (symbol-to-string defined-name)
+                     "\n  definition arity: " (format declared-arity)
+                     "\n  declared arity: " (format arity))
+            location)))
+       (else
+        (mod-define mod name
+                    (primitive-function-declaration mod name arity location)))))
+    ((declare-primitive-variable-stmt name location)
+     (= maybe-def (mod-lookup-definition mod name))
+     (match maybe-def
+       ((just (primitive-variable-definition _ _ _ _))
+        void)
+       (else
+        (mod-define mod name
+                    (primitive-variable-declaration mod name location)))))
+    ((define-function-stmt name parameters body location)
+     (mod-define mod name
+                 (function-definition mod name parameters body location)))
+    ((define-variable-stmt name body location)
+     (mod-define mod name
+                 (variable-definition mod name body location)))
+    ((define-test-stmt name body location)
+     (mod-define mod name
+                 (test-definition mod name body location)))
+    ((define-type-stmt name parameters body location)
+     (= type-t-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
+     (if (list-empty? parameters)
+       (mod-claim mod name type-t-term)
+       (mod-claim mod name
+                  (arrow-term
+                    (list-map (lambda (_) type-t-term) (list-range (list-length parameters)))
+                    type-t-term
+                    location)))
+     (mod-define mod name
+                 (type-definition mod name parameters body location)))
+    ((define-algebraic-type-stmt type-constructor data-constructors location)
+     (= tc-name (pre-type-constructor-name type-constructor))
+     (= tc-params (pre-type-constructor-parameters type-constructor))
+     (= tc (make-type-constructor mod tc-name tc-params))
+     (= dc-list
+        (list-map
+          (lambda (ctor)
+            (make-data-constructor mod tc-name
+                                   (explicit-data-constructor-name ctor)
+                                   (list-map
+                                     (lambda (field)
+                                       (make-data-field
+                                         (explicit-data-field-name field)
+                                         (explicit-data-field-type field)
+                                         (explicit-data-field-location field)))
+                                     (explicit-data-constructor-fields ctor))
+                                   (explicit-data-constructor-location ctor)))
+          data-constructors))
+     (mod-define mod tc-name
+                 (algebraic-type-definition mod tc-name tc dc-list location))
+     (ignore
+       (for-list dc-list
+         (lambda (dc)
+           (hash-put! (data-constructor-name dc) dc (mod-data-constructors mod)))))
+     (= type-t-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
+     (if (list-empty? tc-params)
+       (mod-claim mod tc-name type-t-term)
+       (mod-claim mod tc-name
+                  (arrow-term
+                    (list-map (lambda (_) type-t-term) (list-range (list-length tc-params)))
+                    type-t-term
+                    location))))
+    ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
+     (= tc-name (pre-type-constructor-name type-constructor))
+     (= tc-params (pre-type-constructor-parameters type-constructor))
+     (= tc (make-type-constructor mod tc-name tc-params))
+     (mod-define mod tc-name
+                 (opaque-type-definition mod tc-name tc representation-type
+                                         (list-map
+                                           (lambda (entry)
+                                             (make-interface-entry
+                                               (pre-interface-entry-name entry)
+                                               (pre-interface-entry-type entry)
+                                               (pre-interface-entry-location entry)))
+                                           interface-entries)
+                                         location))
+     (= type-t-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
+     (if (list-empty? tc-params)
+       (mod-claim mod tc-name type-t-term)
+       (mod-claim mod tc-name
+                  (arrow-term
+                    (list-map (lambda (_) type-t-term) (list-range (list-length tc-params)))
+                    type-t-term
+                    location)))
+     (ignore
+       (for-list interface-entries
+         (lambda (entry)
+           (= iface-name (pre-interface-entry-name entry))
+           (= iface-type (pre-interface-entry-type entry))
+           (= iface-location (pre-interface-entry-location entry))
+           (= wrapped-type (polymorphic-term tc-params iface-type iface-location))
+           (mod-claim mod iface-name wrapped-type)
+           (hash-put! iface-name wrapped-type (mod-opaque-claimed mod))))))
+    (else void)))
