@@ -371,7 +371,10 @@ function groupClausesByHeadPatternKind(
 }
 
 function samePatternKind(a: M.MatchClause, b: M.MatchClause): boolean {
-  return clauseHeadIsVarPattern(a) === clauseHeadIsVarPattern(b)
+  return (
+    clauseHeadIsVarPattern(a) === clauseHeadIsVarPattern(b) ||
+    clauseHeadIsDataPattern(a) === clauseHeadIsDataPattern(b)
+  )
 }
 
 export function makeDefaultExp(
