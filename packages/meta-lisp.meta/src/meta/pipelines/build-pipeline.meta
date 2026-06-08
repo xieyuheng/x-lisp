@@ -10,4 +10,5 @@
   (module-import-pass package module-analysis-report)
   (execute-pass package)
   (claim-pass package)
+  (qualify-pass package)
   void)

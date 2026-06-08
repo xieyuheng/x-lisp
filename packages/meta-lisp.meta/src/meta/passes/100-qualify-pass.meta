@@ -1,0 +1,107 @@
+(module meta)
+
+(claim qualify-pass (-> package-t void-t))
+(define (qualify-pass package)
+  (for-list (package-closure-in-topological-order package)
+    (lambda (ordered-package)
+      (for-hash (package-mods ordered-package)
+        (lambda (mod-name mod)
+          (for-hash (mod-definitions mod)
+            (lambda (name definition)
+              (qualify-definition mod name definition)))))))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-mods package "100-qualify")))
+
+(claim qualify-definition (-> mod-t symbol-t definition-t void-t))
+(define (qualify-definition mod name definition)
+  (match definition
+    ((primitive-function-declaration mod-def name-def arity location) void)
+    ((primitive-variable-declaration mod-def name-def location) void)
+    ((primitive-function-definition mod-def name-def arity fn location) void)
+    ((primitive-variable-definition mod-def name-def value location) void)
+    ((function-definition mod-def name-def parameters body location)
+     (mod-put-definition! name-def
+       (function-definition mod-def name-def parameters
+         (qualify-free-var mod-def (list-to-set parameters) body)
+         location)
+       mod-def))
+    ((variable-definition mod-def name-def body location)
+     (mod-put-definition! name-def
+       (variable-definition mod-def name-def
+         (qualify-free-var mod-def (make-set) body)
+         location)
+       mod-def))
+    ((test-definition mod-def name-def body location)
+     (mod-put-definition! name-def
+       (test-definition mod-def name-def
+         (qualify-free-var mod-def (make-set) body)
+         location)
+       mod-def))
+    ((type-definition mod-def name-def parameters body location)
+     (mod-put-definition! name-def
+       (type-definition mod-def name-def parameters
+         (qualify-free-var mod-def (list-to-set parameters) body)
+         location)
+       mod-def))
+    ((algebraic-type-definition mod-def name-def type-constructor data-constructors location)
+     (= bound-names (list-to-set (type-constructor-parameters type-constructor)))
+     (mod-put-definition! name-def
+       (algebraic-type-definition mod-def name-def type-constructor
+         (list-map
+           (lambda (ctor)
+             (make-data-constructor
+               (data-constructor-mod ctor)
+               (data-constructor-type-name ctor)
+               (data-constructor-name ctor)
+               (list-map
+                 (lambda (field)
+                   (make-data-field
+                     (data-field-name field)
+                     (qualify-free-var mod-def bound-names (data-field-type field))
+                     (data-field-location field)))
+                 (data-constructor-fields ctor))
+               (data-constructor-location ctor)))
+           data-constructors)
+         location)
+       mod-def))
+    ((opaque-type-definition mod-def name-def type-constructor representation-type interface-entries location)
+     (= bound-names (list-to-set (type-constructor-parameters type-constructor)))
+     (mod-put-definition! name-def
+       (opaque-type-definition mod-def name-def type-constructor
+         (qualify-free-var mod-def bound-names representation-type)
+         (list-map
+           (lambda (entry)
+             (make-interface-entry
+               (interface-entry-name entry)
+               (qualify-free-var mod-def bound-names (interface-entry-type entry))
+               (interface-entry-location entry)))
+           interface-entries)
+         location)
+       mod-def))))
+
+(claim qualify-free-var (-> mod-t (set-t symbol-t) term-t term-t))
+(define (qualify-free-var mod bound-names term)
+  (match term
+    ((var-term name location)
+     (if (set-member? name bound-names)
+       term
+       (qualified-var-term
+         (package-id (mod-package mod))
+         (mod-name mod)
+         name
+         location)))
+    ((lambda-term parameters body location)
+     (lambda-term parameters
+       (qualify-free-var mod (set-union bound-names (list-to-set parameters)) body)
+       location))
+    ((polymorphic-term parameters body location)
+     (polymorphic-term parameters
+       (qualify-free-var mod (set-union bound-names (list-to-set parameters)) body)
+       location))
+    ((let1-term name rhs body location)
+     (let1-term name
+       (qualify-free-var mod bound-names rhs)
+       (qualify-free-var mod (set-add name bound-names) body)
+       location))
+    (else
+     (term-traverse (lambda (child) (qualify-free-var mod bound-names child)) term))))

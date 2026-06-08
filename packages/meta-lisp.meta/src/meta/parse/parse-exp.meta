@@ -46,7 +46,7 @@
 
 (define syntax-keywords
   ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
-   'begin 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
+   'begin '= 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
    '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
 
 (claim parse-compound-exp
