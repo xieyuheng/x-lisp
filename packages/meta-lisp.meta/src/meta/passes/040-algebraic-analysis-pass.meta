@@ -28,42 +28,45 @@
       algebraic-analysis-report-t))
 
 (define (algebraic-analysis-pass package)
-  (= data-constructor-infos (make-hash))
-  (= algebraic-type-infos (make-hash))
+  (= report (make-algebraic-analysis-report (make-hash) (make-hash)))
   (for-list (package-closure-in-topological-order package)
-    (lambda (ordered-package)
-      (for-hash-value (package-fragments ordered-package)
-        (lambda (fragment)
-          (for-list (fragment-stmts fragment)
-            (lambda (stmt)
-              (match stmt
-                ((define-algebraic-type-stmt type-constructor data-constructors location)
-                 (= type-name (pre-type-constructor-name type-constructor))
-                 (= mod-name (fragment-mod-name fragment))
-                 (= pkg-id (package-id ordered-package))
-                 (= constructor-names (list-map explicit-data-constructor-name data-constructors))
-                 (for-list data-constructors
-                   (lambda (ctor)
-                     (= key (algebraic-key pkg-id mod-name (explicit-data-constructor-name ctor)))
-                     (= fields (explicit-data-constructor-fields ctor))
-                     (= data-constructor-info
-                        (make-data-constructor-info
-                          pkg-id mod-name type-name
-                          (explicit-data-constructor-name ctor)
-                          (list-map explicit-data-field-accessor-name fields)
-                          (explicit-data-constructor-predicate-name ctor)))
-                     (hash-put! key data-constructor-info data-constructor-infos)))
-                 (= type-key (algebraic-key pkg-id mod-name type-name))
-                 (= algebraic-type-info
-                    (make-algebraic-type-info pkg-id mod-name type-name constructor-names))
-                 (hash-put! type-key algebraic-type-info algebraic-type-infos)
-                 void)
-                (else void))))))))
-
-  (= report (make-algebraic-analysis-report data-constructor-infos algebraic-type-infos))
+    (algebraic-analysis-package report))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (dump-algebraic-analysis-report report package))
   report)
+
+(define (algebraic-analysis-package report package)
+  (for-hash-value (package-fragments package)
+    (lambda (fragment)
+      (for-list (fragment-stmts fragment)
+        (algebraic-analysis-stmt report package fragment)))))
+
+(define (algebraic-analysis-stmt report package fragment stmt)
+  (match stmt
+    ((define-algebraic-type-stmt type-constructor data-constructors location)
+     (= type-name (pre-type-constructor-name type-constructor))
+     (= mod-name (fragment-mod-name fragment))
+     (= pkg-id (package-id package))
+     (for-list data-constructors
+       (lambda (ctor)
+         (= key (algebraic-key pkg-id mod-name (explicit-data-constructor-name ctor)))
+         (= fields (explicit-data-constructor-fields ctor))
+         (= data-constructor-info
+            (make-data-constructor-info
+              pkg-id mod-name type-name
+              (explicit-data-constructor-name ctor)
+              (list-map explicit-data-field-accessor-name fields)
+              (explicit-data-constructor-predicate-name ctor)))
+         (hash-put! key data-constructor-info
+                    (algebraic-analysis-report-data-constructor-infos report))))
+     (= constructor-names (list-map explicit-data-constructor-name data-constructors))
+     (= type-key (algebraic-key pkg-id mod-name type-name))
+     (= algebraic-type-info
+        (make-algebraic-type-info pkg-id mod-name type-name constructor-names))
+     (hash-put! type-key algebraic-type-info
+                (algebraic-analysis-report-algebraic-type-infos report))
+     void)
+    (else void)))
 
 (define (dump-algebraic-analysis-report report package)
   (= dump-directory (path-join (package-output-directory package) "dump"))
