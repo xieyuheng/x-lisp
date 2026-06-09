@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] extract `lower-match-package`
 [meta-lisp.meta] extract `lower-match-fragment`
 
 [meta-lisp.meta] [review] 050-lower-match-pass.meta
