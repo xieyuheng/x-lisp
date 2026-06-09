@@ -1,6 +1,6 @@
 # self-hosting
 
-[meta-lisp.meta] extract `desugar-explicit-data-constructor`
+[meta-lisp.meta] extract `desugar-pre-interface-entry`
 [meta-lisp.meta] [review] 060-desugar-pass.meta
 
 [meta-lisp.meta] [review] 070-module-import-pass.meta

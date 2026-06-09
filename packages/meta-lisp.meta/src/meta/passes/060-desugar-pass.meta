@@ -40,31 +40,20 @@
     ((admit-stmt name type location)
      (admit-stmt name (desugar type) location))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (define-algebraic-type-stmt type-constructor
-       (list-map (lambda (ctor)
-                   (make-explicit-data-constructor
-                     (explicit-data-constructor-name ctor)
-                     (list-map (lambda (field)
-                                 (make-explicit-data-field
-                                   (explicit-data-field-name field)
-                                   (desugar (explicit-data-field-type field))
-                                   (explicit-data-field-accessor-name field)
-                                   (explicit-data-field-modifier-name-maybe field)
-                                   (explicit-data-field-location field)))
-                       (explicit-data-constructor-fields ctor))
-                     (explicit-data-constructor-predicate-name ctor)
-                     (explicit-data-constructor-location ctor)))
-         data-constructors)
+     (define-algebraic-type-stmt
+       type-constructor
+       (list-map desugar-explicit-data-constructor data-constructors)
        location))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
-     (define-opaque-type-stmt type-constructor
+     (define-opaque-type-stmt
+       type-constructor
        (desugar representation-type)
        (list-map (lambda (entry)
                    (make-pre-interface-entry
                      (pre-interface-entry-name entry)
                      (desugar (pre-interface-entry-type entry))
                      (pre-interface-entry-location entry)))
-         interface-entries)
+                 interface-entries)
        location))
     ;; stmts contain no exp or term — pass through
     ((import-stmt pkg-name mod-name names location)
@@ -91,3 +80,22 @@
      (error-with-location
        (@string "(desugar-stmt) unhandled stmt kind: " (format-stmt stmt))
        (stmt-location stmt)))))
+
+(define (desugar-explicit-data-constructor ctor)
+  (match ctor
+    ((make-explicit-data-constructor name fields predicate-name location)
+     (make-explicit-data-constructor
+       name
+       (list-map desugar-explicit-data-field fields)
+       predicate-name
+       location))))
+
+(define (desugar-explicit-data-field field)
+  (match field
+    ((make-explicit-data-field name type accessor-name modifier-name-maybe location)
+     (make-explicit-data-field
+       name
+       (desugar type)
+       accessor-name
+       modifier-name-maybe
+       location))))
