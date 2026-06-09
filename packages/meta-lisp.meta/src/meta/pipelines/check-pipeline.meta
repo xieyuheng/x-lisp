@@ -5,7 +5,7 @@
   (module-prelude-pass package)
   (= module-analysis-report (module-analysis-pass package))
   (= algebraic-analysis-report (algebraic-analysis-pass package))
-  (lower-match-pass package module-analysis-report algebraic-analysis-report)
+  (lower-match-pass module-analysis-report algebraic-analysis-report package)
   (desugar-pass package)
   (module-import-pass module-analysis-report package)
   (execute-pass package)

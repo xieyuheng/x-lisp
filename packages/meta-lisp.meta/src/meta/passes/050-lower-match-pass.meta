@@ -1,10 +1,12 @@
 (module meta)
 
 (claim lower-match-pass
-  (-> package-t module-analysis-report-t algebraic-analysis-report-t
+  (-> module-analysis-report-t
+      algebraic-analysis-report-t
+      package-t
       void-t))
 
-(define (lower-match-pass package module-analysis-report algebraic-analysis-report)
+(define (lower-match-pass module-analysis-report algebraic-analysis-report package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
       (for-hash (package-fragments ordered-package)
