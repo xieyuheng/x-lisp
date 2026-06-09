@@ -11,14 +11,15 @@
     (package-dump-desugared-fragments package "060-desugar")))
 
 (define (desugar-package package)
-  (for-hash (package-fragments package)
-    (lambda (path fragment)
-      (= new-fragment
-         (make-fragment (fragment-mod-name fragment)
-                        (fragment-path fragment)
-                        (fragment-stmts fragment)
-                        (list-map desugar-stmt (fragment-stmts fragment))))
-      (hash-put! path new-fragment (package-fragments package)))))
+  (package-put-fragments!
+    (hash-map-value desugar-fragment (package-fragments package))
+    package))
+
+(define (desugar-fragment fragment)
+  (match fragment
+    ((make-fragment mod-name path stmts _)
+     (= desugared-stmts (list-map desugar-stmt stmts))
+     (make-fragment mod-name path stmts desugared-stmts))))
 
 (claim desugar-stmt
   (-> (stmt-t exp-t)

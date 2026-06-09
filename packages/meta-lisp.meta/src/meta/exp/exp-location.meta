@@ -1,6 +1,9 @@
 (module meta)
 
-(claim exp-location (-> exp-t source-location-t))
+(claim exp-location
+  (-> exp-t
+      source-location-t))
+
 (define (exp-location exp)
   (match exp
     ((symbol-exp content location) location)

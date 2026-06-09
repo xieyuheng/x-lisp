@@ -1,6 +1,9 @@
 (module meta)
 
-(claim exp-naive-subst (-> exp-t symbol-t exp-t exp-t))
+(claim exp-naive-subst
+  (-> exp-t symbol-t exp-t
+      exp-t))
+
 (define (exp-naive-subst exp name rhs)
   (match exp
     ((symbol-exp content location) exp)

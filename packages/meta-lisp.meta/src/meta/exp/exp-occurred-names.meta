@@ -1,6 +1,9 @@
 (module meta)
 
-(claim exp-occurred-names (-> exp-t (set-t symbol-t)))
+(claim exp-occurred-names
+  (-> exp-t
+      (set-t symbol-t)))
+
 (define (exp-occurred-names exp)
   (match exp
     ((symbol-exp content location) (make-set))

@@ -1,6 +1,9 @@
 (module meta)
 
-(claim exp-traverse (-> (-> exp-t exp-t) exp-t exp-t))
+(claim exp-traverse
+  (-> (-> exp-t exp-t) exp-t
+      exp-t))
+
 (define (exp-traverse f exp)
   (match exp
     ((symbol-exp content location) exp)
