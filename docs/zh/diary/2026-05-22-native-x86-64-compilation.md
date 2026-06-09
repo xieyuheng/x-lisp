@@ -6,7 +6,7 @@ date: 2026-05-22
 
 # 目标
 
-在 stack-lisp.c 的 value encoding 与 GC 基础上，
+在 xvm.c 的 value encoding 与 GC 基础上，
 设计 meta-lisp 到 native x86-64 的编译方案。
 必须 precise GC，不能走编译到 C 的捷径。
 
@@ -422,7 +422,7 @@ meta-lisp 编译器输出：
 - `relocations[]`：需要 link 时 fixup 的外部符号
 
 这些数据可以被 loader 直接 mmap 并执行（`mmap + mprotect + 解析 relocations`），
-保留对 stack-lisp 一样的开发体验：修改 .meta 源、重新编译、直接加载——无需传统 link 步骤。
+保留对 xvm 一样的开发体验：修改 .meta 源、重新编译、直接加载——无需传统 link 步骤。
 
 ## 5. 尾调用的精确 GC
 
