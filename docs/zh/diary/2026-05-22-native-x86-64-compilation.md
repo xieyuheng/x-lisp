@@ -272,12 +272,12 @@ value_t apply(vm_t *vm, size_t n, value_t target) {
 
 ## 与 shadow stack 的对比
 
-| | shadow stack | root pinning |
-|---|---|---|
-| meta-lisp 代码开销 | 每次写 local 都要 shadow | 只在 safepoint spill（批量） |
-| primitive 回调 meta-lisp | 不可能 | 可以，只需显式 pin |
-| GC 精确性 | 精确 | 精确 |
-| mental model | 隐式 | 显式（类似 Lua C API） |
+|                          | shadow stack             | root pinning                 |
+|--------------------------|--------------------------|------------------------------|
+| meta-lisp 代码开销       | 每次写 local 都要 shadow | 只在 safepoint spill（批量） |
+| primitive 回调 meta-lisp | 不可能                   | 可以，只需显式 pin           |
+| GC 精确性                | 精确                     | 精确                         |
+| mental model             | 隐式                     | 显式（类似 Lua C API）       |
 
 root pinning 消除了 shadow stack 的两个关键缺陷：
 - meta-lisp 代码没有 per-variable 惩罚
@@ -386,12 +386,12 @@ gc_map_t factorial_gc_map = {
 
 以阶乘的 `(call 1 factorial 1)` 这一个 safepoint 为例：
 
-| | shadow stack | stack map + spill |
-|---|---|---|
-| 每次写 local | `mov [ss+X], value`（额外 1 store） | 无 |
-| safepoint | 可能不需要（栈上已有） | spill live regs，此处只有 rdi |
-| code size overhead | 所有 store 指令增加 1 条 | 仅在 safepoint 前增加少量 mov |
-| primitive 回调 | 不允许 | 允许（root pinning API） |
+|                    | shadow stack                        | stack map + spill             |
+|--------------------|-------------------------------------|-------------------------------|
+| 每次写 local       | `mov [ss+X], value`（额外 1 store） | 无                            |
+| safepoint          | 可能不需要（栈上已有）              | spill live regs，此处只有 rdi |
+| code size overhead | 所有 store 指令增加 1 条            | 仅在 safepoint 前增加少量 mov |
+| primitive 回调     | 不允许                              | 允许（root pinning API）      |
 
 # 实现难点
 
@@ -446,10 +446,10 @@ meta-lisp native code 和 C primitive 之间必须 ABi 兼容：
 
 # 总结
 
-| 维度 | 评价 |
-|------|------|
-| GC 精确性 | ✓ 精确——基于 GC maps + safepoint spill |
-| meta-lisp 代码开销 | ✓ 仅在 safepoint 处 spill，非 per-variable |
-| primitive 回调 meta-lisp | ✓ 允许——通过显式 root pinning API |
-| 实现复杂度 | 高——需要 assembler、liveness、GC map 逻辑 |
-| 未来扩展性 | 好——后续可做 per-safepoint liveness 优化 |
+| 维度                     | 评价                                        |
+|--------------------------|---------------------------------------------|
+| GC 精确性                | 精确——基于 GC maps + safepoint spill      |
+| meta-lisp 代码开销       | 仅在 safepoint 处 spill，非 per-variable    |
+| primitive 回调 meta-lisp | 允许——通过显式 root pinning API           |
+| 实现复杂度               | 高——需要 assembler、liveness、GC map 逻辑 |
+| 未来扩展性               | 好——后续可做 per-safepoint liveness 优化  |
