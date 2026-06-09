@@ -1,17 +1,28 @@
 (module meta)
 
+(claim expand-pass
+  (-> package-t
+      void-t))
+
 (define (expand-pass package)
   (for-list (package-closure-in-topological-order package) expand-package)
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "010-expand")))
 
-(define (expand-package package)
-  (for-hash-value (package-fragments package) expand-fragment))
+(claim expand-package
+  (-> package-t
+      void-t))
 
-(define (expand-fragment fragment)
-  (fragment-put-stmts!
-    (list-flat-map expand-stmt (fragment-stmts fragment))
-    fragment))
+(define (expand-package package)
+  (for-hash-value (package-fragments package)
+    (lambda (fragment)
+      (fragment-put-stmts!
+        (list-flat-map expand-stmt (fragment-stmts fragment))
+        fragment))))
+
+(claim expand-stmt
+  (-> (stmt-t exp-t)
+      (list-t (stmt-t exp-t))))
 
 (define (expand-stmt stmt)
   (match stmt
@@ -49,6 +60,10 @@
      (expand-define-algebraic-type stmt))
     (else [stmt])))
 
+(claim make-base-name
+  (-> symbol-t source-location-t
+      symbol-t))
+
 (define (make-base-name type-name location)
   (= type-name-string (symbol-to-string type-name))
   (unless (string-ends-with? "-t" type-name-string)
@@ -61,17 +76,33 @@
       0 (isub (string-length type-name-string) 2)
       type-name-string)))
 
+(claim make-data-constructor-name
+  (-> symbol-t
+      symbol-t))
+
 (define (make-data-constructor-name base)
   (string-to-symbol
     (@string "make-" (symbol-to-string base))))
+
+(claim make-data-accessor-name
+  (-> symbol-t symbol-t
+      symbol-t))
 
 (define (make-data-accessor-name base field-name)
   (string-to-symbol
     (@string (symbol-to-string base) "-" (symbol-to-string field-name))))
 
+(claim make-data-modifier-name
+  (-> symbol-t symbol-t
+      symbol-t))
+
 (define (make-data-modifier-name base field-name)
   (string-to-symbol
     (@string (symbol-to-string base) "-put-" (symbol-to-string field-name) "!")))
+
+(claim make-data-predicate-name
+  (-> symbol-t
+      symbol-t))
 
 (define (make-data-predicate-name base)
   (string-to-symbol
@@ -89,6 +120,10 @@
       (var-exp (pre-type-constructor-name type-constructor) location)
       (list-map (lambda (parameter) (var-exp parameter location)) parameters)
       location)))
+
+(claim admit-with-type-parameters
+  (-> symbol-t (list-t symbol-t) exp-t source-location-t
+      (stmt-t exp-t)))
 
 (define (admit-with-type-parameters name parameters type location)
   (if (list-empty? parameters)
@@ -121,6 +156,10 @@
     (make-data-accessor-name base field-name)
     (just (make-data-modifier-name base field-name))
     (pre-data-field-location field)))
+
+(claim expand-define-algebraic-type
+  (-> (stmt-t exp-t)
+      (list-t (stmt-t exp-t))))
 
 (define (expand-define-algebraic-type stmt)
   (match stmt
@@ -201,6 +240,13 @@
           location)
         location)])))
 
+(claim expand-accessor
+  (-> pre-type-constructor-t
+      (explicit-data-constructor-t exp-t)
+      int-t
+      (explicit-data-field-t exp-t)
+      (list-t (stmt-t exp-t))))
+
 (define (expand-accessor type-constructor ctor index field)
   (match field
     ((make-explicit-data-field name type accessor-name _ location)
@@ -219,6 +265,13 @@
            (var-exp 'target location)]
           location)
         location)])))
+
+(claim expand-modifier
+  (-> pre-type-constructor-t
+      (explicit-data-constructor-t exp-t)
+      int-t
+      (explicit-data-field-t exp-t)
+      (list-t (stmt-t exp-t))))
 
 (define (expand-modifier type-constructor ctor index field)
   (match field
