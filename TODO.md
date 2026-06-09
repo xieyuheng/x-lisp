@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] else clause for `desugar-stmt`
 [meta-lisp.meta] [review] 050-lower-match-pass.meta
 [meta-lisp.meta] [review] 060-desugar-pass.meta
 [meta-lisp.meta] [review] 070-module-import-pass.meta

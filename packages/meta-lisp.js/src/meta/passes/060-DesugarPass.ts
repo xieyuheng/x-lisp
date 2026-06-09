@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function DesugarPass(pkg: M.Package): void {
@@ -93,7 +94,7 @@ function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
 
     default: {
       let message = `[desugarStmt] unhandled stmt kind: ${stmt.kind}`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, stmt.location)
     }
   }
 }

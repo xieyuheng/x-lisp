@@ -80,5 +80,5 @@
      (comment-stmt sexps location))
     (else
      (error-with-location
-       (@string "[desugar-stmt] unhandled stmt kind: " (format-stmt stmt))
-       (zero-location "060-desugar-pass")))))
+       (@string "(desugar-stmt) unhandled stmt kind: " (format-stmt stmt))
+       (stmt-location stmt)))))
