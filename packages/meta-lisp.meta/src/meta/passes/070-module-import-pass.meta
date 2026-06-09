@@ -1,11 +1,11 @@
 (module meta)
 
 (claim module-import-pass
-  (-> package-t
-      module-analysis-report-t
+  (-> module-analysis-report-t
+      package-t
       void-t))
 
-(define (module-import-pass package report)
+(define (module-import-pass report package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
       (for-hash (package-fragments ordered-package)

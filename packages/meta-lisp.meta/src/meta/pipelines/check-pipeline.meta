@@ -7,7 +7,7 @@
   (= algebraic-analysis-report (algebraic-analysis-pass package))
   (lower-match-pass package module-analysis-report algebraic-analysis-report)
   (desugar-pass package)
-  (module-import-pass package module-analysis-report)
+  (module-import-pass module-analysis-report package)
   (execute-pass package)
   (claim-pass package)
   (qualify-pass package)

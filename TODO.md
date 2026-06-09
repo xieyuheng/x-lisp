@@ -1,5 +1,9 @@
 # self-hosting
 
+[meta-lisp.meta] `lower-match-pass` change arg order
+[meta-lisp.meta] extract `lower-match-package`
+[meta-lisp.meta] extract `lower-match-fragment`
+
 [meta-lisp.meta] [review] 050-lower-match-pass.meta
 [meta-lisp.meta] [review] 060-desugar-pass.meta
 [meta-lisp.meta] [review] 070-module-import-pass.meta
