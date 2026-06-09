@@ -9,6 +9,10 @@ type EmptySubst = {
   length: 0
 }
 
+export function EmptySubst(): EmptySubst {
+  return { kind: "EmptySubst", length: 0 }
+}
+
 type ConsSubst = {
   kind: "ConsSubst"
   id: string
@@ -17,15 +21,7 @@ type ConsSubst = {
   length: number
 }
 
-export function EmptySubst(): EmptySubst {
-  return { kind: "EmptySubst", length: 0 }
-}
-
-export function ConsSubst(
-  id: string,
-  type: M.Type,
-  rest: Subst,
-): ConsSubst {
+export function ConsSubst(id: string, type: M.Type, rest: Subst): ConsSubst {
   return { kind: "ConsSubst", id, type, rest, length: rest.length + 1 }
 }
 
