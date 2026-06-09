@@ -1,8 +1,8 @@
 # self-hosting
 
-[meta-lisp.meta] extract `desugar-pre-interface-entry`
 [meta-lisp.meta] [review] 060-desugar-pass.meta
 
+[meta-lisp.meta] [review] desugar/*
 [meta-lisp.meta] [review] 070-module-import-pass.meta
 [meta-lisp.meta] [review] 080-execute-pass.meta
 [meta-lisp.meta] [review] 090-claim-pass.meta

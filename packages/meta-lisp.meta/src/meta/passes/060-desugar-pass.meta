@@ -48,12 +48,7 @@
      (define-opaque-type-stmt
        type-constructor
        (desugar representation-type)
-       (list-map (lambda (entry)
-                   (make-pre-interface-entry
-                     (pre-interface-entry-name entry)
-                     (desugar (pre-interface-entry-type entry))
-                     (pre-interface-entry-location entry)))
-                 interface-entries)
+       (list-map desugar-pre-interface-entry interface-entries)
        location))
     ;; stmts contain no exp or term — pass through
     ((import-stmt pkg-name mod-name names location)
@@ -99,3 +94,8 @@
        accessor-name
        modifier-name-maybe
        location))))
+
+(define (desugar-pre-interface-entry entry)
+  (match entry
+    ((make-pre-interface-entry name type location)
+     (make-pre-interface-entry name (desugar type) location))))
