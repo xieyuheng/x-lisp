@@ -37,29 +37,31 @@
       module-analysis-report-t))
 
 (define (module-analysis-pass package)
-  (= defined-names (make-hash))
-  (= private-names (make-hash))
+  (= report (make-module-analysis-report (make-hash) (make-hash) (make-hash) (outcome-ok)))
+  (for-list (package-closure-in-topological-order package)
+    (module-analysis-package report))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (dump-module-analysis-report report package))
+  report)
+
+(define (module-analysis-package report package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
-      (merge-set-hash! defined-names (collect-defined-names ordered-package))
-      (merge-set-hash! private-names (collect-private-names ordered-package))))
-  (= fragment-scopes (make-hash))
-  (= module-analysis-report
-    (make-module-analysis-report defined-names private-names fragment-scopes (outcome-ok)))
-  (for-list (package-closure-in-topological-order package)
-    (lambda (ordered-package)
+      (merge-set-hash!
+        (module-analysis-report-defined-names report)
+        (collect-defined-names ordered-package))
+      (merge-set-hash!
+        (module-analysis-report-private-names report)
+        (collect-private-names ordered-package))
       (for-hash (package-fragments ordered-package)
         (lambda (path fragment)
           (= scope (make-fragment-scope (fragment-mod-name fragment)))
-          (hash-put! path scope fragment-scopes)
+          (hash-put! path scope (module-analysis-report-fragment-scopes report))
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
               (if (outcome-error? (ensure-imported-mod-exists ordered-package stmt))
-                (ignore (module-analysis-report-put-outcome! (outcome-error) module-analysis-report))
-                (execute-import ordered-package scope stmt))))))))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (dump-module-analysis-report module-analysis-report package))
-  module-analysis-report)
+                (ignore (module-analysis-report-put-outcome! (outcome-error) report))
+                (execute-import ordered-package scope stmt)))))))))
 
 (claim collect-defined-names
   (-> package-t
