@@ -1,6 +1,15 @@
 # self-hosting
 
-[meta-lisp.meta] [review] 060-desugar-pass.meta
+[meta-lisp.meta] add claim -- 010-expand-pass.meta
+[meta-lisp.meta] add claim -- 020-module-prelude-pass.meta
+[meta-lisp.meta] add claim -- 030-module-analysis-pass.meta
+[meta-lisp.meta] add claim -- 040-algebraic-analysis-pass.meta
+[meta-lisp.meta] add claim -- 050-lower-match-pass.meta
+[meta-lisp.meta] add claim -- 060-desugar-pass.meta
+[meta-lisp.meta] add claim -- 070-module-import-pass.meta
+[meta-lisp.meta] add claim -- 080-execute-pass.meta
+[meta-lisp.meta] add claim -- 090-claim-pass.meta
+[meta-lisp.meta] add claim -- 100-qualify-pass.meta
 
 [meta-lisp.meta] [review] desugar/*
 [meta-lisp.meta] [review] 070-module-import-pass.meta
