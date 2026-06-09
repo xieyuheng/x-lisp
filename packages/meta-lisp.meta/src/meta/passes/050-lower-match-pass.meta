@@ -15,11 +15,11 @@
 (define (lower-match-package module-analysis-report algebraic-analysis-report package)
   (for-hash (package-fragments package)
     (lambda (path fragment)
-      (= scope-maybe (hash-get-maybe path (module-analysis-report-fragment-scopes module-analysis-report)))
-      (match scope-maybe
+      (= fragment-scopes (module-analysis-report-fragment-scopes module-analysis-report))
+      (match (hash-get-maybe path fragment-scopes)
         ((nothing)
          (error-with-location
-           (@string "[lower-match-pass] missing scope for: " path)
+           (@string "(lower-match-package) missing scope for: " path)
            (zero-location path)))
         ((just scope)
          (= ctx (make-desugar-match-ctx
@@ -27,29 +27,25 @@
                   (fragment-mod-name fragment)
                   algebraic-analysis-report
                   (package-id package)))
-         (for-list (fragment-stmts fragment)
-           (lambda (stmt)
-             (lower-match-stmt ctx stmt))))))))
+         (fragment-put-stmts!
+           (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
+           fragment))))))
+
+(claim lower-match-stmt
+  (-> desugar-match-ctx-t (stmt-t exp-t)
+      (stmt-t exp-t)))
 
 (define (lower-match-stmt ctx stmt)
-  (cond
-    ((define-function-stmt? stmt)
-     (define-function-stmt-put-body!
-       (lower-match ctx (define-function-stmt-body stmt)) stmt)
-     void)
-    ((define-variable-stmt? stmt)
-     (define-variable-stmt-put-body!
-       (lower-match ctx (define-variable-stmt-body stmt)) stmt)
-     void)
-    ((define-test-stmt? stmt)
-     (define-test-stmt-put-body!
-       (lower-match ctx (define-test-stmt-body stmt)) stmt)
-     void)
-    ((define-type-stmt? stmt)
-     (define-type-stmt-put-body!
-       (lower-match ctx (define-type-stmt-body stmt)) stmt)
-     void)
-    (else void)))
+  (match stmt
+    ((define-function-stmt name parameters body location)
+     (define-function-stmt name parameters (lower-match ctx body) location))
+    ((define-variable-stmt name body location)
+     (define-variable-stmt name (lower-match ctx body) location))
+    ((define-test-stmt name body location)
+     (define-test-stmt name (lower-match ctx body) location))
+    ((define-type-stmt name parameters body location)
+     (define-type-stmt name parameters (lower-match ctx body) location))
+    (else stmt)))
 
 (claim lower-match
   (-> desugar-match-ctx-t exp-t
