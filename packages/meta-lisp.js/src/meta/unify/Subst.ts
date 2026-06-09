@@ -2,35 +2,65 @@ import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
 
-export type Subst = Map<string, M.Type>
+export type Subst = EmptySubst | ConsSubst
 
-export function emptySubst(): Subst {
-  return new Map()
+type EmptySubst = {
+  kind: "EmptySubst"
+  length: 0
+}
+
+type ConsSubst = {
+  kind: "ConsSubst"
+  id: string
+  type: M.Type
+  rest: Subst
+  length: number
+}
+
+export function EmptySubst(): EmptySubst {
+  return { kind: "EmptySubst", length: 0 }
+}
+
+export function ConsSubst(
+  id: string,
+  type: M.Type,
+  rest: Subst,
+): ConsSubst {
+  return { kind: "ConsSubst", id, type, rest, length: rest.length + 1 }
+}
+
+export function emptySubst(): EmptySubst {
+  return EmptySubst()
 }
 
 export function unitSubst(varType: M.VarType, type: M.Type): Subst {
-  return new Map([[M.varTypeId(varType), type]])
+  return ConsSubst(M.varTypeId(varType), type, EmptySubst())
 }
 
 export function substExtend(
   subst: Subst,
   varType: M.VarType,
   type: M.Type,
-): M.Subst {
-  if (subst.has(M.varTypeId(varType))) {
-    let message = `[substExtend] type variable already in subst`
-    message += `\n  type variable: ${M.formatType(varType)}`
-    throw new Error(message)
+): Subst {
+  const id = M.varTypeId(varType)
+  let cursor: Subst = subst
+  while (cursor.kind === "ConsSubst") {
+    if (cursor.id === id) {
+      let message = `[substExtend] type variable already in subst`
+      message += `\n  type variable: ${M.formatType(varType)}`
+      throw new Error(message)
+    }
+    cursor = cursor.rest
   }
 
-  return new Map([...subst, [M.varTypeId(varType), type]])
+  return ConsSubst(id, type, subst)
 }
 
 export function substExtendMany(
   subst: Subst,
   varTypes: Array<M.VarType>,
   types: Array<M.Type>,
-): M.Subst {
+): Subst {
   assert(varTypes.length === types.length)
   for (const i of range(varTypes.length)) {
     subst = substExtend(subst, varTypes[i], types[i])
@@ -40,9 +70,13 @@ export function substExtendMany(
 }
 
 export function substLookup(subst: Subst, id: string): M.Type | undefined {
-  return subst.get(id)
+  while (subst.kind === "ConsSubst") {
+    if (subst.id === id) return subst.type
+    subst = subst.rest
+  }
+  return undefined
 }
 
 export function substLength(subst: Subst): number {
-  return subst.size
+  return subst.length
 }

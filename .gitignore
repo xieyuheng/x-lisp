@@ -1,6 +1,9 @@
 # git
 worktrees
 
+# node
+*.cpuprofile
+
 # x-lisp
 *.o
 *.exe

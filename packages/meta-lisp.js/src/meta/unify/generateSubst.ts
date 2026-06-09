@@ -9,7 +9,7 @@ export function generateCanonicalLabelSubst(types: Array<M.Type>): M.Subst {
     M.varTypeEqual,
   )
 
-  let subst = M.emptySubst()
+  let subst: M.Subst = M.emptySubst()
   for (const freeVarType of freeVarTypes) {
     const serialNumber = BigInt(M.substLength(subst)) + 1n
     const canonicalLabelType = M.CanonicalLabelType(serialNumber)
@@ -27,7 +27,7 @@ export function generatePrettyUnknownSubst(types: Array<M.Type>): M.Subst {
     M.varTypeEqual,
   )
 
-  let subst = M.emptySubst()
+  let subst: M.Subst = M.emptySubst()
   for (const freeVarType of freeVarTypes) {
     const prettyName = M.generatePrettyTypeVariableName(M.substLength(subst))
     const prettyUnknown = M.VarType(prettyName, BigInt(0))

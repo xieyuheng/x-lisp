@@ -9,6 +9,9 @@ self-build
 # vitest
 coverage
 
+# node
+*.cpuprofile
+
 # npm
 node_modules
 
