@@ -1,8 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] `lower-match` use `match`
-
-[meta-lisp.meta] [review] 050-lower-match-pass.meta
 [meta-lisp.meta] [review] 060-desugar-pass.meta
 [meta-lisp.meta] [review] 070-module-import-pass.meta
 [meta-lisp.meta] [review] 080-execute-pass.meta

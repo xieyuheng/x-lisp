@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-pass (-> package-t void-t))
+(claim desugar-pass
+  (-> package-t
+      void-t))
+
 (define (desugar-pass package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
@@ -15,7 +18,10 @@
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-desugared-fragments package "060-desugar")))
 
-(claim desugar-stmt (-> (stmt-t exp-t) (stmt-t term-t)))
+(claim desugar-stmt
+  (-> (stmt-t exp-t)
+      (stmt-t term-t)))
+
 (define (desugar-stmt stmt)
   (match stmt
     ((define-function-stmt name parameters body location)
@@ -57,7 +63,7 @@
                      (pre-interface-entry-location entry)))
          interface-entries)
        location))
-    ;; Stmts with no Exp/Term type parameter — pass through
+    ;; stmts contain no exp or term — pass through
     ((import-stmt pkg-name mod-name names location)
      (import-stmt pkg-name mod-name names location))
     ((import-as-stmt pkg-name mod-name prefix location)

@@ -52,19 +52,23 @@
       exp-t))
 
 (define (lower-match ctx exp)
-  (cond
-    ((match-exp? exp)
+  (match exp
+    ((match-exp targets clauses location)
      (desugar-match
        ctx
-       (list-map (lambda (t) (lower-match ctx t)) (match-exp-targets exp))
-       (list-map
-         (lambda (clause)
-           (make-match-clause
-             (list-map (lambda (p) (lower-match ctx p)) (match-clause-patterns clause))
-             (lower-match ctx (match-clause-body clause))
-             (match-clause-location clause)))
-         (match-exp-clauses exp))
-       (make-default-exp (match-exp-targets exp) (match-exp-location exp))
-       (match-exp-location exp)))
+       (list-map (lower-match ctx) targets)
+       (list-map (lower-match-clause ctx) clauses)
+       (make-default-exp targets location)
+       location))
     (else
-     (exp-traverse (lambda (child) (lower-match ctx child)) exp))))
+     (exp-traverse (lower-match ctx) exp))))
+
+(claim lower-match-clause
+  (-> desugar-match-ctx-t match-clause-t
+      match-clause-t))
+
+(define (lower-match-clause ctx clause)
+  (make-match-clause
+    (list-map (lower-match ctx) (match-clause-patterns clause))
+    (lower-match ctx (match-clause-body clause))
+    (match-clause-location clause)))
