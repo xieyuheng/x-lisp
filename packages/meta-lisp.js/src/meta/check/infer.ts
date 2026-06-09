@@ -122,9 +122,9 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
         return M.inferThenInfer(
           M.infer(mod, ctx, exp.rhs),
           (inferredType) => (subst) => {
-            ctx = M.substDeepWalkCtx(subst, ctx)
-            inferredType = M.substDeepWalk(subst, inferredType)
             if (M.termIsSyntacticValue(exp.rhs)) {
+              ctx = M.substDeepWalkCtx(subst, ctx)
+              inferredType = M.substDeepWalk(subst, inferredType)
               inferredType = M.generalizeInCtx(ctx, inferredType)
             }
             ctx = M.ctxPut(ctx, exp.name, inferredType)
