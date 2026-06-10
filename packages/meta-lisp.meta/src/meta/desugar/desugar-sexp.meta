@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-sexp (-> sexp-t exp-t))
+(claim desugar-sexp
+  (-> sexp-t
+      exp-t))
+
 (define (desugar-sexp sexp)
   (match sexp
     ((symbol-sexp content loc)

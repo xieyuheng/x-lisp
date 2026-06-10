@@ -1,6 +1,9 @@
 (module meta)
 
-(claim generate-relative-fresh-name (-> symbol-t (set-t symbol-t) symbol-t))
+(claim generate-relative-fresh-name
+  (-> symbol-t (set-t symbol-t)
+      symbol-t))
+
 (define (generate-relative-fresh-name name used-names)
   (if (set-member? name used-names)
     (begin

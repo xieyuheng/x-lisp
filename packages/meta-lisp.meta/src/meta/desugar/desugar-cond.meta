@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-cond (-> (list-t cond-clause-t) source-location-t exp-t))
+(claim desugar-cond
+  (-> (list-t cond-clause-t) source-location-t
+      exp-t))
+
 (define (desugar-cond clauses location)
   (if (list-empty? clauses)
     (apply-exp

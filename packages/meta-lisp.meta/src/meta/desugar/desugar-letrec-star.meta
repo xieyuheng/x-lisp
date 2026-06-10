@@ -21,7 +21,10 @@
 ;;       (box-put! en xn)
 ;;       body)
 
-(claim desugar-letrec-star (-> (list-t binding-t) exp-t source-location-t exp-t))
+(claim desugar-letrec-star
+  (-> (list-t binding-t) exp-t source-location-t
+      exp-t))
+
 (define (desugar-letrec-star bindings body location)
   (define box-get-exps
     (list-map (lambda (b)

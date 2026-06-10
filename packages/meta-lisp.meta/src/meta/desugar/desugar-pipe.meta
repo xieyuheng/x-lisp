@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-pipe (-> exp-t (list-t exp-t) source-location-t exp-t))
+(claim desugar-pipe
+  (-> exp-t (list-t exp-t) source-location-t
+      exp-t))
+
 (define (desugar-pipe target steps location)
   (if (list-empty? steps)
     target

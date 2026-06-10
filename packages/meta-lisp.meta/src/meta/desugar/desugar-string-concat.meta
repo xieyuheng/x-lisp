@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-string-concat (-> (list-t exp-t) source-location-t exp-t))
+(claim desugar-string-concat
+  (-> (list-t exp-t) source-location-t
+      exp-t))
+
 (define (desugar-string-concat elements location)
   (apply-exp
     (qualified-var-exp 'meta-builtin 'builtin 'string-concat location)

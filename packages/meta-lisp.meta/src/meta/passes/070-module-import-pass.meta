@@ -29,7 +29,8 @@
     (package-dump-desugared-fragments package "070-module-import")))
 
 (claim module-import-stmt
-  (-> fragment-scope-t (stmt-t term-t) (stmt-t term-t)))
+  (-> fragment-scope-t (stmt-t term-t)
+      (stmt-t term-t)))
 
 (define (module-import-stmt scope stmt)
   (match stmt
@@ -84,7 +85,8 @@
     (else stmt)))
 
 (claim module-import-term
-  (-> fragment-scope-t term-t term-t))
+  (-> fragment-scope-t term-t
+      term-t))
 
 (define (module-import-term scope term)
   (match term
@@ -124,10 +126,11 @@
        (module-import-term scope rhs)
        (module-import-term new-scope body)
        location))
-    (else (term-traverse (lambda (child) (module-import-term scope child)) term))))
+    (else (term-traverse (module-import-term scope) term))))
 
 (claim scope-filter-bound-names
-  (-> fragment-scope-t (set-t symbol-t) fragment-scope-t))
+  (-> fragment-scope-t (set-t symbol-t)
+      fragment-scope-t))
 
 (define (scope-filter-bound-names scope bound-names)
   (= new-imported-names (make-hash))

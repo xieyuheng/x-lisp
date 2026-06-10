@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-let (-> (list-t binding-t) exp-t source-location-t exp-t))
+(claim desugar-let
+  (-> (list-t binding-t) exp-t source-location-t
+      exp-t))
+
 (define (desugar-let bindings body location)
   (cond
     ((list-empty? bindings) body)

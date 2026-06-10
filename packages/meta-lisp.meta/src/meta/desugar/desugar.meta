@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar (-> exp-t term-t))
+(claim desugar
+  (-> exp-t
+      term-t))
+
 (define (desugar exp)
   (match exp
     ((begin-exp sequence location)

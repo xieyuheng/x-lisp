@@ -25,7 +25,10 @@
 ;;         (box-put! xn vn)
 ;;         body))
 
-(claim desugar-letrec (-> (list-t binding-t) exp-t source-location-t exp-t))
+(claim desugar-letrec
+  (-> (list-t binding-t) exp-t source-location-t
+      exp-t))
+
 (define (desugar-letrec bindings body location)
   (= used-names (exp-occurred-names body))
   (= used-names

@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-or (-> (list-t exp-t) source-location-t exp-t))
+(claim desugar-or
+  (-> (list-t exp-t) source-location-t
+      exp-t))
+
 (define (desugar-or exps location)
   (cond
     ((list-empty? exps)

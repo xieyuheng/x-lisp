@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-hash (-> (list-t (hash-entry-t exp-t exp-t)) source-location-t exp-t))
+(claim desugar-hash
+  (-> (list-t (hash-entry-t exp-t exp-t)) source-location-t
+      exp-t))
+
 (define (desugar-hash entries location)
   (= used-names
      (list-fold-left (lambda (s entry)

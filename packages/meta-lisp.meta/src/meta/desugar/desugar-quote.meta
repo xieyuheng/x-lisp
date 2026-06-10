@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-quote (-> sexp-t source-location-t exp-t))
+(claim desugar-quote
+  (-> sexp-t source-location-t
+      exp-t))
+
 (define (desugar-quote sexp location)
   (match sexp
     ((symbol-sexp content loc)

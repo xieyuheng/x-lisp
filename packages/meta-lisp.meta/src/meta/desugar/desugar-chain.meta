@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-chain (-> (list-t exp-t) source-location-t exp-t))
+(claim desugar-chain
+  (-> (list-t exp-t) source-location-t
+      exp-t))
+
 (define (desugar-chain steps location)
   (= used-names
      (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))

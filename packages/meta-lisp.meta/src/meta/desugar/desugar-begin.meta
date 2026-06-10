@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-begin (-> (list-t exp-t) source-location-t exp-t))
+(claim desugar-begin
+  (-> (list-t exp-t) source-location-t
+      exp-t))
+
 (define (desugar-begin sequence location)
   (if (list-empty? sequence)
     (error-with-location "[desugar-begin] (begin) must not be empty" location)
@@ -35,7 +38,10 @@
              (_
               (begin1-exp head (desugar-begin rest location) location)))))))))
 
-(claim collect-adjacent-local-defines (-> (list-t exp-t) (list-t exp-t) (list-t exp-t)))
+(claim collect-adjacent-local-defines
+  (-> (list-t exp-t) (list-t exp-t)
+      (list-t exp-t)))
+
 (define (collect-adjacent-local-defines sequence acc)
   (if (list-empty? sequence)
     (list-reverse acc)
@@ -47,7 +53,11 @@
         (_
          (list-reverse acc))))))
 
-(claim drop-n (polymorphic (A) (-> int-t (list-t A) (list-t A))))
+(claim drop-n
+  (polymorphic (A)
+    (-> int-t (list-t A)
+        (list-t A))))
+
 (define (drop-n n xs)
   (if (or (equal? n 0) (list-empty? xs))
     xs

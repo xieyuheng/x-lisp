@@ -1,6 +1,9 @@
 (module meta)
 
-(claim desugar-location (-> source-location-t exp-t))
+(claim desugar-location
+  (-> source-location-t
+      exp-t))
+
 (define (desugar-location location)
   (apply-exp
     (qualified-var-exp 'meta-builtin 'builtin 'make-source-location location)
