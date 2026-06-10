@@ -4,6 +4,7 @@ set -e
 
 cd packages/helpers.js; ./scripts/test.sh; cd ../..
 cd packages/cli.js; ./scripts/test.sh; cd ../..
+cd packages/bin.js; ./scripts/test.sh; cd ../..
 cd packages/sexp.js; ./scripts/test.sh; cd ../..
 cd packages/ppml.js; ./scripts/test.sh; cd ../..
 
