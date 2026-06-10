@@ -10,10 +10,18 @@
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-desugared-fragments package "060-desugar")))
 
+(claim desugar-package
+  (-> package-t
+      void-t))
+
 (define (desugar-package package)
   (package-put-fragments!
     (hash-map-value desugar-fragment (package-fragments package))
     package))
+
+(claim desugar-fragment
+  (-> fragment-t
+      fragment-t))
 
 (define (desugar-fragment fragment)
   (match fragment
@@ -76,6 +84,10 @@
        (@string "(desugar-stmt) unhandled stmt kind: " (format-stmt stmt))
        (stmt-location stmt)))))
 
+(claim desugar-explicit-data-constructor
+  (-> (explicit-data-constructor-t exp-t)
+      (explicit-data-constructor-t term-t)))
+
 (define (desugar-explicit-data-constructor ctor)
   (match ctor
     ((make-explicit-data-constructor name fields predicate-name location)
@@ -84,6 +96,10 @@
        (list-map desugar-explicit-data-field fields)
        predicate-name
        location))))
+
+(claim desugar-explicit-data-field
+  (-> (explicit-data-field-t exp-t)
+      (explicit-data-field-t term-t)))
 
 (define (desugar-explicit-data-field field)
   (match field
@@ -94,6 +110,10 @@
        accessor-name
        modifier-name-maybe
        location))))
+
+(claim desugar-pre-interface-entry
+  (-> (pre-interface-entry-t exp-t)
+      (pre-interface-entry-t term-t)))
 
 (define (desugar-pre-interface-entry entry)
   (match entry
