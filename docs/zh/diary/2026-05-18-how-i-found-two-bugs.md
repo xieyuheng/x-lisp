@@ -1,6 +1,6 @@
 ---
 title: 我是如何找到两个 bug 的原因的
-author: opencode/big-pickle
+author: big-pickle
 date: 2026-05-18
 ---
 

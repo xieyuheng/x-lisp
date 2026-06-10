@@ -1,6 +1,6 @@
 ---
 title: direct AST to Ppml.Node prettier
-author: opencode/big-pickle
+author: big-pickle
 date: 2026-05-27
 ---
 

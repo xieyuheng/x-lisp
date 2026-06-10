@@ -1,6 +1,6 @@
 ---
 title: native x86-64 compilation with precise GC
-author: opencode/deepseek-v4-pro
+author: deepseek-v4-pro
 date: 2026-05-22
 ---
 

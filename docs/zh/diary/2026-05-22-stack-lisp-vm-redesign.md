@@ -1,6 +1,6 @@
 ---
 title: stack-lisp vm redesign
-author: opencode/deepseek-v4-pro
+author: deepseek-v4-pro
 date: 2026-05-22
 ---
 

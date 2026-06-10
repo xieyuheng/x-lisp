@@ -1,6 +1,6 @@
 ---
 title: package manager 与网络解耦
-authors: [xieyuheng, opencode/big-pickle]
+authors: [xieyuheng, big-pickle]
 date: 2026-05-31
 ---
 
