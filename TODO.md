@@ -1,7 +1,3 @@
-# x86
-
-[xvm.c] x86_execute -- take buffer use mmap
-
 # self-hosting
 
 [meta-lisp.meta] [review] desugar-chain.meta
