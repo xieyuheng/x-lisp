@@ -44,6 +44,10 @@
     (dump-module-analysis-report report package))
   report)
 
+(claim module-analysis-package
+  (-> module-analysis-report-t package-t
+      void-t))
+
 (define (module-analysis-package report package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
@@ -266,6 +270,10 @@
               (set-to-list names)))))
       (format (set-size (hash-entry-value entry))))))
 
+(claim format-module-analysis-report
+  (-> module-analysis-report-t bool-t
+      string-t))
+
 (define (format-module-analysis-report result debug?)
   (= lines [])
   (list-push! "(module-analysis-report" lines)
@@ -332,6 +340,10 @@
 
   (close-top lines)
   (string-join "\n" lines))
+
+(claim dump-module-analysis-report
+  (-> module-analysis-report-t package-t
+      void-t))
 
 (define (dump-module-analysis-report result package)
   (= dump-directory (path-join (package-output-directory package) "dump"))
