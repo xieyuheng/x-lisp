@@ -20,6 +20,10 @@
   (data-constructor-infos (hash-t string-t data-constructor-info-t))
   (algebraic-type-infos (hash-t string-t algebraic-type-info-t)))
 
+(claim algebraic-key
+  (-> symbol-t symbol-t symbol-t
+      string-t))
+
 (define (algebraic-key pkg-id mod-name name)
   (@string (symbol-to-string pkg-id) "/" (symbol-to-string mod-name) "/" (symbol-to-string name)))
 
@@ -35,11 +39,19 @@
     (dump-algebraic-analysis-report report package))
   report)
 
+(claim algebraic-analysis-package
+  (-> algebraic-analysis-report-t package-t
+      void-t))
+
 (define (algebraic-analysis-package report package)
   (for-hash-value (package-fragments package)
     (lambda (fragment)
       (for-list (fragment-stmts fragment)
         (algebraic-analysis-stmt report package fragment)))))
+
+(claim algebraic-analysis-stmt
+  (-> algebraic-analysis-report-t package-t fragment-t (stmt-t exp-t)
+      void-t))
 
 (define (algebraic-analysis-stmt report package fragment stmt)
   (match stmt
