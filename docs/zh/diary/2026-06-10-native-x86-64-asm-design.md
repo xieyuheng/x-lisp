@@ -47,20 +47,33 @@ date: 2026-06-10
 - `define-data` 按 struct 字段顺序填入值。
 - 字段值可以是字面量、`(struct ...)`（嵌入子 struct）、`(pointer (struct ...))`（匿名数据 slot + 指针）、`(pointer "..." )`（匿名字符串 + 指针）。
 
+## `(claim-code-metadata)`
+
+声明所有 `define-code` 的 metadata 类型。
+
+```lisp
+(claim-code-metadata <type>)
+```
+
+- 无 `<name>` 参数——全局生效。
+- `<type>` 必须是一个 `define-struct` 所定义的类型。
+- 在 Mod 中记录，用于后续验证和布局计算。
+
 ## `(define-metadata)`
 
 为指定 label 的 `-8` slot 填充元数据。
 
+语法与 `define-data` 一致：
+
 ```lisp
 (define-metadata <name>
-  (struct <type>-t
-    (<field> <value>)
-    ...))
+  (<field-name> <value>)
+  ...)
 ```
 
 - `<name>` 对应一个 `define-code` 或其他顶层 label。
+- 元数据类型由 `claim-code-metadata` 全局声明。
 - 汇编器在 `<name>` 的 `-8` 位置填入指向该 struct 实例的指针。
-- 内联 struct `(pointer (struct ...))` 和 static string `"..."` 自动创建匿名 data slot，无需手动命名。
 
 ## `(define-struct)`
 
@@ -210,13 +223,13 @@ Pre-register-allocation 阶段的虚拟变量。有 `var` 的汇编语言是中�
 
 ```lisp
 ;; 匿名 struct slot
-(pointer (struct gc-map-t
+(pointer (struct
            (frame-size 24)
            (callee-saved-count 0)
            ...))
 
 ;; 匿名字符串 slot
-"hello"
+(pointer "hello")
 ```
 
 # 指令（instruction）
@@ -338,17 +351,18 @@ uint16_t arity = meta->arity;
 ## 阶乘函数
 
 ```lisp
+(claim-code-metadata function-metadata-t)
+
 (define-metadata factorial
-  (struct function-metadata-t
-    (arity 1)
-    (flags 0)
-    (gc-map (struct
-              (frame-size 24)
-              (callee-saved-count 0)
-              (callee-saved-live 0)
-              (local-count 3)
-              (local-live 7)))
-    (name "factorial")))
+  (arity 1)
+  (flags 0)
+  (gc-map (struct
+            (frame-size 24)
+            (callee-saved-count 0)
+            (callee-saved-live 0)
+            (local-count 3)
+            (local-live 7)))
+  (name "factorial"))
 
 (define-code factorial
   (block prolog
