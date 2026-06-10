@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] add claim -- 020-module-prelude-pass.meta
 [meta-lisp.meta] add claim -- 030-module-analysis-pass.meta
 [meta-lisp.meta] add claim -- 040-algebraic-analysis-pass.meta
 [meta-lisp.meta] add claim -- 050-lower-match-pass.meta

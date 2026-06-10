@@ -1,12 +1,24 @@
 (module meta)
 
+(claim module-prelude-pass
+  (-> package-t
+      void-t))
+
 (define (module-prelude-pass package)
   (for-list (package-closure-in-topological-order package)
     module-prelude-package))
 
+(claim module-prelude-package
+  (-> package-t
+      void-t))
+
 (define (module-prelude-package package)
   (for-hash-value (package-fragments package)
     (module-prelude-fragment package)))
+
+(claim module-prelude-fragment
+  (-> package-t fragment-t
+      void-t))
 
 (define (module-prelude-fragment package fragment)
   (for-hash (package-config-prelude (package-config package))
