@@ -106,29 +106,6 @@ static void handle_test_xasm(cli_ctx_t *ctx) {
   mod_free(mod);
 }
 
-static void handle_run_xexe_next(cli_ctx_t *ctx) {
-  const char *pathname = cli_arg_get(ctx, 0);
-  xexe_next_t *xexe_next = make_xexe_next();
-  xexe_next_load(xexe_next, pathname);
-
-  // For testing: find a native function and call it with value_t args.
-  // The function must return a value_t in rax.
-  void *func = xexe_next_lookup_function(xexe_next, "test-native");
-  if (func) {
-    typedef uint64_t (*native_fn_t)(uint64_t);
-    native_fn_t fn;
-    memcpy(&fn, &func, sizeof(func));
-    uint64_t result = fn(0);
-    printf("result: ");
-    print_value(result);
-    printf("\n");
-  } else {
-    who_printf("no 'test-native' function found in blob\n");
-  }
-
-  xexe_next_free(xexe_next);
-}
-
 int main(int argc, char *argv[]) {
   sanity_check();
   setbuf(stdout, NULL);
@@ -144,14 +121,12 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "test file.xexe --profile --snapshot --builtin");
   cli_define_route(router, "run-xasm file.xasm --entry --profile");
   cli_define_route(router, "test-xasm file.xasm --profile --snapshot --builtin");
-  cli_define_route(router, "run-xexe-next file.xexe-next");
 
   cli_define_handler(router, "assemble", handle_assemble);
   cli_define_handler(router, "run", handle_run);
   cli_define_handler(router, "test", handle_test);
   cli_define_handler(router, "run-xasm", handle_run_xasm);
   cli_define_handler(router, "test-xasm", handle_test_xasm);
-  cli_define_handler(router, "run-xexe-next", handle_run_xexe_next);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);
