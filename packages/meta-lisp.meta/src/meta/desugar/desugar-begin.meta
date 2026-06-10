@@ -5,50 +5,52 @@
       exp-t))
 
 (define (desugar-begin sequence location)
-  (if (list-empty? sequence)
-    (error-with-location "[desugar-begin] (begin) must not be empty" location)
-    (let ((head (list-first sequence)))
-      (match head
-        ((local-define-exp name parameters body loc)
-         (= defines (collect-adjacent-local-defines sequence []))
-         (= n (list-length defines))
-         (= remaining (list-drop n sequence))
-         (= bindings
-            (list-map (lambda (d)
-                        (make-binding (local-define-exp-name d)
-                          (if (list-empty? (local-define-exp-parameters d))
-                            (local-define-exp-body d)
-                            (lambda-exp (local-define-exp-parameters d)
-                              (local-define-exp-body d)
-                              (local-define-exp-location d)))
-                          (local-define-exp-location d)))
-              defines))
-         (letrec-star-exp bindings
-           (if (list-empty? remaining)
-             (qualified-var-exp 'meta-builtin 'builtin 'void location)
-             (desugar-begin remaining location))
-           location))
-        (_
-         (= rest (list-tail sequence))
-         (if (list-empty? rest)
-           head
-           (match head
-             ((assign-exp name rhs loc)
-              (let1-exp name rhs (desugar-begin rest location) location))
-             (_
-              (begin1-exp head (desugar-begin rest location) location)))))))))
+  (cond
+    ((list-empty? sequence)
+     (error-with-location "(desugar-begin) (begin) must not be empty" location))
+    ((equal? 1 (list-length sequence))
+     (car sequence))
+    (else
+     (match (car sequence)
+       ((local-define-exp name parameters body head-location)
+        (= local-defines (collect-adjacent-local-defines sequence []))
+        (= remaining (list-drop (list-length local-defines) sequence))
+        (letrec-star-exp
+          (list-map desugar-local-define local-defines)
+          (if (list-empty? remaining)
+            (qualified-var-exp 'meta-builtin 'builtin 'void location)
+            (desugar-begin remaining location))
+          location))
+       ((assign-exp name rhs head-location)
+        (let1-exp name rhs (desugar-begin (cdr sequence) location) head-location))
+       (else
+        (begin1-exp
+          (car sequence)
+          (desugar-begin (cdr sequence) location)
+          (exp-location (car sequence))))))))
+
+(claim desugar-local-define
+  (-> exp-t
+      binding-t))
+
+(define (desugar-local-define local-define)
+  (match local-define
+    ((local-define-exp name parameters body location)
+     (make-binding
+       name
+       (if (list-empty? parameters)
+         body
+         (lambda-exp parameters body location))
+       location))))
 
 (claim collect-adjacent-local-defines
   (-> (list-t exp-t) (list-t exp-t)
       (list-t exp-t)))
 
-(define (collect-adjacent-local-defines sequence acc)
-  (if (list-empty? sequence)
-    (list-reverse acc)
-    (let ((head (list-first sequence)))
-      (match head
-        ((local-define-exp name parameters body loc)
-         (collect-adjacent-local-defines (list-tail sequence)
-           (cons head acc)))
-        (_
-         (list-reverse acc))))))
+(define (collect-adjacent-local-defines sequence local-defines)
+  (if (or (list-empty? sequence)
+          (not (local-define-exp? (car sequence))))
+    local-defines
+    (collect-adjacent-local-defines
+      (cdr sequence)
+      (list-push (car sequence) local-defines))))
