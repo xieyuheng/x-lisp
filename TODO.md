@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] add claim -- 050-lower-match-pass.meta
 [meta-lisp.meta] add claim -- 060-desugar-pass.meta
 [meta-lisp.meta] add claim -- 070-module-import-pass.meta
 [meta-lisp.meta] add claim -- 080-execute-pass.meta

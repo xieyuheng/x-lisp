@@ -12,6 +12,12 @@
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "050-lower-match")))
 
+(claim lower-match-package
+  (-> module-analysis-report-t
+      algebraic-analysis-report-t
+      package-t
+      void-t))
+
 (define (lower-match-package module-analysis-report algebraic-analysis-report package)
   (for-hash (package-fragments package)
     (lambda (path fragment)
