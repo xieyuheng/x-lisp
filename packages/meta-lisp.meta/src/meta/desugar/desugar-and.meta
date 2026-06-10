@@ -5,13 +5,14 @@
       exp-t))
 
 (define (desugar-and exps location)
-  (cond ((equal? 0 (list-length exps))
-         (qualified-var-exp 'meta-builtin 'builtin 'true location))
-        ((equal? 1 (list-length exps))
-         (car exps))
-        (else
-         (if-exp
-           (car exps)
-           (desugar-and (cdr exps) location)
-           (qualified-var-exp 'meta-builtin 'builtin 'false location)
-           location))))
+  (cond
+    ((equal? 0 (list-length exps))
+     (qualified-var-exp 'meta-builtin 'builtin 'true location))
+    ((equal? 1 (list-length exps))
+     (car exps))
+    (else
+     (if-exp
+       (car exps)
+       (desugar-and (cdr exps) location)
+       (qualified-var-exp 'meta-builtin 'builtin 'false location)
+       location))))

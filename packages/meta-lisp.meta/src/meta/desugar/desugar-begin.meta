@@ -12,7 +12,7 @@
         ((local-define-exp name parameters body loc)
          (= defines (collect-adjacent-local-defines sequence []))
          (= n (list-length defines))
-         (= remaining (drop-n n sequence))
+         (= remaining (list-drop n sequence))
          (= bindings
             (list-map (lambda (d)
                         (make-binding (local-define-exp-name d)
@@ -52,13 +52,3 @@
            (cons head acc)))
         (_
          (list-reverse acc))))))
-
-(claim drop-n
-  (polymorphic (A)
-    (-> int-t (list-t A)
-        (list-t A))))
-
-(define (drop-n n xs)
-  (if (or (equal? n 0) (list-empty? xs))
-    xs
-    (drop-n (isub n 1) (list-tail xs))))
