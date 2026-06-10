@@ -19,7 +19,7 @@ date: 2026-06-10
 
 # 顶层形式
 
-## `define-code`
+## `(define-code)`
 
 定义一个可执行函数。
 
@@ -32,7 +32,7 @@ date: 2026-06-10
 - 函数的第一个 block 是 entry block。
 - 每个 `define-code` 的 label 自动保留 `-8` slot——`name - 8` 处存放指向 `define-metadata` 的指针。
 
-## `define-data`
+## `(define-data)`
 
 定义一个具名数据块。
 
@@ -47,7 +47,7 @@ date: 2026-06-10
 - `define-data` 按 struct 字段顺序填入值。
 - 字段值可以是字面量、`(struct ...)`（嵌入子 struct）、`(pointer (struct ...))`（匿名数据 slot + 指针）、`(pointer "..." )`（匿名字符串 + 指针）。
 
-## `define-metadata`
+## `(define-metadata)`
 
 为指定 label 的 `-8` slot 填充元数据。
 
@@ -60,9 +60,9 @@ date: 2026-06-10
 
 - `<name>` 对应一个 `define-code` 或其他顶层 label。
 - 汇编器在 `<name>` 的 `-8` 位置填入指向该 struct 实例的指针。
-- 内联 `(pointer (struct ...))` 和 `(string "...")` 自动创建匿名 data slot，无需手动命名。
+- 内联 struct `(pointer (struct ...))` 和 static string `"..."` 自动创建匿名 data slot，无需手动命名。
 
-## `define-struct`
+## `(define-struct)`
 
 声明结构体类型，定义字段偏移量。
 
@@ -76,7 +76,7 @@ date: 2026-06-10
 - `<type>` 可以是原始类型（`int64-t` 等）、`string-t`、`(pointer-t <T>)` 或另一个 `define-struct` 类型名。
 - 汇编器据此计算每个字段的偏移量和 struct 总大小。
 
-## `define-space`
+## `(define-space)`
 
 分配未初始化的内存空间（BSS 语义）。
 
@@ -88,24 +88,25 @@ date: 2026-06-10
 
 ## 原始类型
 
-| 类型 | 大小 |
-|---|---|
-| `uint8-t` | 1 byte |
+| 类型       | 大小    |
+|------------|---------|
+| `char-t`   | 1 byte  |
+| `uint8-t`  | 1 byte  |
 | `uint16-t` | 2 bytes |
 | `uint32-t` | 4 bytes |
 | `uint64-t` | 8 bytes |
-| `int8-t` | 1 byte |
-| `int16-t` | 2 bytes |
-| `int32-t` | 4 bytes |
-| `int64-t` | 8 bytes |
+| `int8-t`   | 1 byte  |
+| `int16-t`  | 2 bytes |
+| `int32-t`  | 4 bytes |
+| `int64-t`  | 8 bytes |
 
 ## 特殊类型
 
-| 类型 | 大小 | 语义 |
-|---|---|---|
-| `string-t` | 8 bytes | 等价于 `(pointer-t uint8-t)`；C 意义上的 `const char *`（null-terminated） |
-| `(pointer-t <T>)` | 8 bytes | 指向 `<T>` 类型数据的指针（uint64） |
-| `<struct>-t` | 按定义 | 嵌入的 struct 类型 |
+| 类型              | 大小    | 语义                                                   |
+|-------------------|---------|--------------------------------------------------------|
+| `string-t`        | 8 bytes | 等价于 `(pointer-t char-t)`；C 意义上的 `const char *` |
+| `(pointer-t <T>)` | 8 bytes | 指向 `<T>` 类型数据的指针（uint64）                    |
+| `<struct>-t`      | 按定义  | 嵌入的 struct 类型                                     |
 
 `string-t` 不是 flexible array member——它可以出现在 struct 的任意位置，语义是指针。
 
@@ -128,8 +129,6 @@ date: 2026-06-10
 
 ```lisp
 (imm 42)
-(imm 9)       ;; x_int(1) = (1 << 3) | X_INT
-(imm 6)       ;; x_false
 ```
 
 ## `(label <name> [<subfield> ...])`
@@ -169,7 +168,7 @@ date: 2026-06-10
 (reg-deref (reg rbp) -8)                        ;; [rbp - 8]
 (reg-deref (reg rbp) (reg rax) 8)               ;; [rbp + rax*8]
 (reg-deref (reg rbp) (reg rax) 8 -16)           ;; [rbp + rax*8 - 16]
-(reg-deref (reg rax))                            ;; [rax]
+(reg-deref (reg rax))                           ;; [rax]
 ```
 
 汇编器按参数个数/类型判断模式：
@@ -185,10 +184,6 @@ date: 2026-06-10
 (cc e) (cc ne) (cc l) (cc le) (cc g) (cc ge)
 (cc b) (cc be) (cc a) (cc ae)
 ```
-
-## `(arity <int>)`
-
-函数 arity 元数据。用于 `define-metadata` 内的 function metadata struct 字段。
 
 ## `(var <name>)`
 
@@ -221,7 +216,7 @@ Pre-register-allocation 阶段的虚拟变量。有 `var` 的汇编语言是中�
            ...))
 
 ;; 匿名字符串 slot
-(pointer "hello")
+"hello"
 ```
 
 # 指令（instruction）
@@ -413,7 +408,7 @@ uint16_t arity = meta->arity;
 (define-data my-rect
   (top-left (struct (x 0) (y 0)))
   (bottom-right (struct (x 100) (y 100)))
-  (color #xFF0000))
+  (color 0xFF0000))
 ```
 
 引用嵌套字段：
