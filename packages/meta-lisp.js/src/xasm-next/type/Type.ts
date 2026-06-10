@@ -1,7 +1,4 @@
-export type Type =
-  | AtomType
-  | PointerType
-  | NamedType
+export type Type = AtomType | PointerType | NamedType
 
 export type AtomType = {
   kind: "AtomType"

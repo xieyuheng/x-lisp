@@ -35,10 +35,7 @@ export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
     )
   },
 
-  "(cons* 'define-struct name . fields)": (
-    { name, fields },
-    { location },
-  ) => {
+  "(cons* 'define-struct name . fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseFields(fields)
     return N.DefineStructStmt(
       S.asSymbolSexp(name).content,
@@ -56,11 +53,7 @@ export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
   },
 
   "`(claim ,name ,type)": ({ name, type }, { location }) => {
-    return N.ClaimStmt(
-      S.asSymbolSexp(name).content,
-      parseExp(type),
-      location,
-    )
+    return N.ClaimStmt(S.asSymbolSexp(name).content, parseExp(type), location)
   },
 
   "`(claim-code-metadata ,type)": ({ type }, { location }) => {
@@ -82,10 +75,7 @@ function parseBlock(sexp: S.Sexp): N.Block {
       sexp.location,
     )
   }
-  if (
-    elements[0].kind !== "SymbolSexp" ||
-    elements[0].content !== "block"
-  ) {
+  if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "block") {
     throw new S.ErrorWithSourceLocation(
       `expected (block name ...), got: ${S.formatSexp(sexp)}`,
       sexp.location,

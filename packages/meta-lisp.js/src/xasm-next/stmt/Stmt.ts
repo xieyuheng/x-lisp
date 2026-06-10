@@ -1,6 +1,6 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import type { Exp, StructField } from "../exp/index.ts"
 import type { Block } from "../block/index.ts"
+import type { Exp, StructField } from "../exp/index.ts"
 
 export type Stmt =
   | DefineCodeStmt

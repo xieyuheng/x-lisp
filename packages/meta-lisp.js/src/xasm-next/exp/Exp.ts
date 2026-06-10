@@ -112,10 +112,7 @@ export type PointerExp = {
   location: SourceLocation
 }
 
-export function PointerExp(
-  target: Exp,
-  location: SourceLocation,
-): PointerExp {
+export function PointerExp(target: Exp, location: SourceLocation): PointerExp {
   return {
     kind: "PointerExp",
     target,

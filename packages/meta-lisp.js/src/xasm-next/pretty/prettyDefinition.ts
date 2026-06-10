@@ -46,9 +46,11 @@ export function prettyDefinition(definition: N.Definition): Ppml.Node {
       )
     }
     case "SpaceDefinition":
-      return Ppml.prettySyntax("define-space", [Ppml.text(definition.name)], [
-        Ppml.text(definition.size.toString()),
-      ])
+      return Ppml.prettySyntax(
+        "define-space",
+        [Ppml.text(definition.name)],
+        [Ppml.text(definition.size.toString())],
+      )
   }
 }
 
@@ -59,13 +61,14 @@ function prettyValue(value: N.Value): Ppml.Node {
     case "StringValue":
       return Ppml.text(JSON.stringify(value.content))
     case "LabelValue":
-      return Ppml.prettySyntax("label", [], [
-        Ppml.text([value.name, ...value.path].join(" ")),
-      ])
+      return Ppml.prettySyntax(
+        "label",
+        [],
+        [Ppml.text([value.name, ...value.path].join(" "))],
+      )
     case "StructValue": {
-      const fieldNodes = Array.from(value.fields.entries()).map(
-        ([name, v]) =>
-          Ppml.prettySyntax("", [], [Ppml.text(name), prettyValue(v)]),
+      const fieldNodes = Array.from(value.fields.entries()).map(([name, v]) =>
+        Ppml.prettySyntax("", [], [Ppml.text(name), prettyValue(v)]),
       )
       const body = value.name
         ? [Ppml.text(value.name), ...fieldNodes]

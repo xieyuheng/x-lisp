@@ -15,22 +15,22 @@ export function prettyExp(exp: N.Exp): Ppml.Node {
     }
     case "StructExp": {
       const fieldNodes = exp.fields.map((f) =>
-        Ppml.prettySyntax("", [], [
-          Ppml.text(f.name),
-          Ppml.text(" "),
-          prettyExp(f.exp),
-        ]),
+        Ppml.prettySyntax(
+          "",
+          [],
+          [Ppml.text(f.name), Ppml.text(" "), prettyExp(f.exp)],
+        ),
       )
-      const body = exp.name
-        ? [Ppml.text(exp.name), ...fieldNodes]
-        : fieldNodes
+      const body = exp.name ? [Ppml.text(exp.name), ...fieldNodes] : fieldNodes
       return Ppml.prettySyntax("struct", [], body)
     }
     case "PointerExp":
       return Ppml.prettySyntax("pointer", [], [prettyExp(exp.target)])
     case "LabelExp":
-      return Ppml.prettySyntax("label", [], [
-        Ppml.text([exp.name, ...exp.path].join(" ")),
-      ])
+      return Ppml.prettySyntax(
+        "label",
+        [],
+        [Ppml.text([exp.name, ...exp.path].join(" "))],
+      )
   }
 }

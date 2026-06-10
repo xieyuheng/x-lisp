@@ -11,7 +11,11 @@ export const parseInstr: S.Router<N.Instr> = S.createRouter<N.Instr>({
 
   data: ({ data }, { location }) => {
     if (data.kind === "SymbolSexp") {
-      return N.Instr("label", [N.LabelOperand(data.content, [], location)], location)
+      return N.Instr(
+        "label",
+        [N.LabelOperand(data.content, [], location)],
+        location,
+      )
     }
     throw new S.ErrorWithSourceLocation(
       `unexpected instr: ${S.formatSexp(data)}`,

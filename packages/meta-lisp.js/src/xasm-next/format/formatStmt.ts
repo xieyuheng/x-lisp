@@ -1,6 +1,6 @@
 import * as N from "../index.ts"
-import { formatExp } from "./formatExp.ts"
 import { formatBlock } from "./formatBlock.ts"
+import { formatExp } from "./formatExp.ts"
 
 export function formatStmt(stmt: N.Stmt): string {
   switch (stmt.kind) {

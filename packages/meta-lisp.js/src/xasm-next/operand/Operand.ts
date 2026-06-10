@@ -16,10 +16,7 @@ export type RegOperand = {
   location: SourceLocation
 }
 
-export function RegOperand(
-  name: string,
-  location: SourceLocation,
-): RegOperand {
+export function RegOperand(name: string, location: SourceLocation): RegOperand {
   return {
     kind: "RegOperand",
     name,
@@ -130,10 +127,7 @@ export type CcOperand = {
   location: SourceLocation
 }
 
-export function CcOperand(
-  code: string,
-  location: SourceLocation,
-): CcOperand {
+export function CcOperand(code: string, location: SourceLocation): CcOperand {
   return {
     kind: "CcOperand",
     code,
@@ -147,10 +141,7 @@ export type VarOperand = {
   location: SourceLocation
 }
 
-export function VarOperand(
-  name: string,
-  location: SourceLocation,
-): VarOperand {
+export function VarOperand(name: string, location: SourceLocation): VarOperand {
   return {
     kind: "VarOperand",
     name,

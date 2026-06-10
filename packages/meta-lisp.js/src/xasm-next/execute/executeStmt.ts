@@ -4,10 +4,7 @@ import * as N from "../index.ts"
 export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      N.modDefine(
-        mod,
-        N.CodeDefinition(stmt.name, stmt.blocks, stmt.location),
-      )
+      N.modDefine(mod, N.CodeDefinition(stmt.name, stmt.blocks, stmt.location))
       return
     }
 
@@ -16,10 +13,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
       for (const field of stmt.fields) {
         fields.set(field.name, N.evaluateExp(mod, field.exp))
       }
-      N.modDefine(
-        mod,
-        N.DataDefinition(stmt.name, fields, stmt.location),
-      )
+      N.modDefine(mod, N.DataDefinition(stmt.name, fields, stmt.location))
       return
     }
 
@@ -28,10 +22,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
       for (const field of stmt.fields) {
         fields.set(field.name, N.evaluateExp(mod, field.exp))
       }
-      N.modDefine(
-        mod,
-        N.MetadataDefinition(stmt.name, fields, stmt.location),
-      )
+      N.modDefine(mod, N.MetadataDefinition(stmt.name, fields, stmt.location))
       return
     }
 
@@ -41,10 +32,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
         const fieldType = N.evaluateType(mod, field.exp)
         fields.set(field.name, fieldType)
       }
-      N.modDefine(
-        mod,
-        N.StructDefinition(stmt.name, fields, stmt.location),
-      )
+      N.modDefine(mod, N.StructDefinition(stmt.name, fields, stmt.location))
       return
     }
 
@@ -56,10 +44,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
           stmt.size.location,
         )
       }
-      N.modDefine(
-        mod,
-        N.SpaceDefinition(stmt.name, value.value, stmt.location),
-      )
+      N.modDefine(mod, N.SpaceDefinition(stmt.name, value.value, stmt.location))
       return
     }
 

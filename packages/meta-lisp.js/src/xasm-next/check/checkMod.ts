@@ -10,7 +10,9 @@ export function checkMod(mod: N.Mod): void {
 
 function checkDuplicateNames(mod: N.Mod): void {
   for (const name of mod.definitions.keys()) {
-    if (Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1) {
+    if (
+      Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1
+    ) {
       throw new S.ErrorWithSourceLocation(
         `[check] duplicate definition: ${name}`,
         S.zeroLocation("xasm-next"),
@@ -57,7 +59,10 @@ function checkFieldTypes(mod: N.Mod): void {
       for (const [fieldName, fieldType] of def.fields) {
         if (fieldType.kind === "NamedType") {
           const structDef = N.modLookupDefinition(mod, fieldType.name)
-          if (structDef === undefined || structDef.kind !== "StructDefinition") {
+          if (
+            structDef === undefined ||
+            structDef.kind !== "StructDefinition"
+          ) {
             throw new S.ErrorWithSourceLocation(
               `[check] struct field type "${fieldType.name}" is not a defined struct`,
               def.location,

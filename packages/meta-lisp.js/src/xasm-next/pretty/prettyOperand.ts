@@ -11,23 +11,25 @@ export function prettyOperand(operand: N.Operand): Ppml.Node {
       if (operand.path.length === 0) {
         return Ppml.prettySyntax("label", [], [Ppml.text(operand.name)])
       }
-      return Ppml.prettySyntax("label", [], [
-        Ppml.text([operand.name, ...operand.path].join(" ")),
-      ])
+      return Ppml.prettySyntax(
+        "label",
+        [],
+        [Ppml.text([operand.name, ...operand.path].join(" "))],
+      )
     case "LabelImmOperand":
       return Ppml.prettySyntax("label-imm", [], [prettyOperand(operand.label)])
     case "LabelDerefOperand":
-      return Ppml.prettySyntax("label-deref", [], [
-        prettyOperand(operand.label),
-      ])
+      return Ppml.prettySyntax(
+        "label-deref",
+        [],
+        [prettyOperand(operand.label)],
+      )
     case "RegDerefOperand": {
       const parts: Array<Ppml.Node> = [
         Ppml.prettySyntax("reg", [], [Ppml.text(operand.base)]),
       ]
       if (operand.index !== undefined) {
-        parts.push(
-          Ppml.prettySyntax("reg", [], [Ppml.text(operand.index)]),
-        )
+        parts.push(Ppml.prettySyntax("reg", [], [Ppml.text(operand.index)]))
         parts.push(Ppml.text(operand.scale?.toString() || "1"))
       }
       if (operand.disp !== undefined) {

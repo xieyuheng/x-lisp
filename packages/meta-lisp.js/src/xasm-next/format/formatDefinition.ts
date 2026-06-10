@@ -1,6 +1,5 @@
 import * as N from "../index.ts"
 import { formatBlock } from "./formatBlock.ts"
-import { formatExp } from "./formatExp.ts"
 
 export function formatDefinition(definition: N.Definition): string {
   switch (definition.kind) {
