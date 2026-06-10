@@ -1,10 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] add claim -- 070-module-import-pass.meta
-[meta-lisp.meta] add claim -- 080-execute-pass.meta
-[meta-lisp.meta] add claim -- 090-claim-pass.meta
-[meta-lisp.meta] add claim -- 100-qualify-pass.meta
-
 [meta-lisp.meta] [review] desugar/*
 [meta-lisp.meta] [review] 070-module-import-pass.meta
 [meta-lisp.meta] [review] 080-execute-pass.meta

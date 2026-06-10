@@ -15,9 +15,10 @@
       void-t))
 
 (define (desugar-package package)
-  (package-put-fragments!
-    (hash-map-value desugar-fragment (package-fragments package))
-    package))
+  (ignore
+    (package-put-fragments!
+      (hash-map-value desugar-fragment (package-fragments package))
+      package)))
 
 (claim desugar-fragment
   (-> fragment-t

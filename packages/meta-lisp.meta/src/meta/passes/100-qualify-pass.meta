@@ -1,6 +1,9 @@
 (module meta)
 
-(claim qualify-pass (-> package-t void-t))
+(claim qualify-pass
+  (-> package-t
+      void-t))
+
 (define (qualify-pass package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
@@ -12,7 +15,10 @@
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "100-qualify")))
 
-(claim qualify-definition (-> mod-t symbol-t definition-t void-t))
+(claim qualify-definition
+  (-> mod-t symbol-t definition-t
+      void-t))
+
 (define (qualify-definition mod name definition)
   (match definition
     ((primitive-function-declaration mod-def name-def arity location) void)
@@ -79,7 +85,10 @@
          location)
        mod-def))))
 
-(claim qualify-free-var (-> mod-t (set-t symbol-t) term-t term-t))
+(claim qualify-free-var
+  (-> mod-t (set-t symbol-t) term-t
+      term-t))
+
 (define (qualify-free-var mod bound-names term)
   (match term
     ((var-term name location)
@@ -104,4 +113,4 @@
        (qualify-free-var mod (set-add name bound-names) body)
        location))
     (else
-     (term-traverse (lambda (child) (qualify-free-var mod bound-names child)) term))))
+     (term-traverse (qualify-free-var mod bound-names) term))))

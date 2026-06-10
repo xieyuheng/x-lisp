@@ -1,0 +1,23 @@
+(module meta)
+
+(claim term-location
+  (-> term-t
+      source-location-t))
+
+(define (term-location term)
+  (match term
+    ((symbol-term content location) location)
+    ((keyword-term content location) location)
+    ((string-term content location) location)
+    ((int-term content location) location)
+    ((float-term content location) location)
+    ((var-term name location) location)
+    ((qualified-var-term pkg-name mod-name name location) location)
+    ((lambda-term parameters body location) location)
+    ((polymorphic-term parameters body location) location)
+    ((apply-term target args location) location)
+    ((let1-term name rhs body location) location)
+    ((begin1-term head body location) location)
+    ((if-term condition consequent alternative location) location)
+    ((arrow-term arg-types ret-type location) location)
+    ((the-term type instance location) location)))
