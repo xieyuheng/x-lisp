@@ -4,4 +4,6 @@ set -e
 
 make test
 
-./scripts/run-tests.sh
+./scripts/test-xasm.sh
+./scripts/test-xexe.sh
+./scripts/test-x86.sh

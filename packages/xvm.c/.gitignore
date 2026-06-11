@@ -2,6 +2,8 @@
 *.o
 *.a
 *.exe
+*.x86
+*.bin
 *.xexe
 *.test
 *.snapshot

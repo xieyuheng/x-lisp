@@ -143,6 +143,7 @@ void buffer_read(buffer_t *self, file_t *file) {
   uint8_t *bytes = buffer_raw_bytes(self);
   size_t nbytes = fread(bytes, 1, size, file);
   assert(nbytes == (size_t) size);
+  self->cursor = size;
 }
 
 void buffer_write(const buffer_t *self, file_t *file) {

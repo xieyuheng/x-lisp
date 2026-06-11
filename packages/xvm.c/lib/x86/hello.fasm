@@ -1,0 +1,15 @@
+;; fasm hello.fasm hello.fasm.x86
+
+format binary
+use64
+
+print_message:
+    lea rsi, [message]
+    mov edx, message_length
+    mov edi, 1
+    mov eax, 1
+    syscall
+    ret
+
+message: db "hello fasm", 10
+message_length = $ - message

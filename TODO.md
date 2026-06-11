@@ -1,6 +1,6 @@
 # x86
 
-[xvm.c] test `run-x86` command
+
 
 # self-hosting
 
