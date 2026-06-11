@@ -23,10 +23,7 @@ export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
     )
   },
 
-  "(cons* 'define-metadata name fields)": (
-    { name, fields },
-    { location },
-  ) => {
+  "(cons* 'define-metadata name fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseFields(fields)
     return N.DefineMetadataStmt(
       S.asSymbolSexp(name).content,
