@@ -1,4 +1,4 @@
-;; fasm shellcode.fasm shellcode.fasm.x86
+;; fasm shellcode.fasm shellcode.fasm.x86.exe
 
 format binary
 use64

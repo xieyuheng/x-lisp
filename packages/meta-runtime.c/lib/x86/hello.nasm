@@ -1,4 +1,4 @@
-;; nasm -f bin hello.nasm -o hello.nasm.x86
+;; nasm -f bin hello.nasm -o hello.nasm.x86.exe
 
 bits 64
 

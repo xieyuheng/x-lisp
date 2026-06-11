@@ -1,4 +1,4 @@
-;; fasm hello.fasm hello.fasm.x86
+;; fasm hello.fasm hello.fasm.x86.exe
 
 format binary
 use64
