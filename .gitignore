@@ -7,7 +7,7 @@ worktrees
 # x-lisp
 *.o
 *.exe
-*.xexe
+*.xvm.exe
 
 # cmake
 build/

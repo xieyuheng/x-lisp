@@ -1,6 +1,0 @@
-(module xasm)
-
-(define-struct instr-t
-  (op symbol-t)
-  (operands (list-t operand-t))
-  (location source-location-t))

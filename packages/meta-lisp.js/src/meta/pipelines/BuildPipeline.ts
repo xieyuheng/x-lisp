@@ -7,7 +7,7 @@ import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B from "../../basic/index.ts"
-import * as Xasm from "../../xasm/index.ts"
+import * as Xvm from "../../xvm/index.ts"
 import * as M from "../index.ts"
 
 export function BuildPipeline(pkg: M.Package): void {
@@ -31,8 +31,8 @@ export function BuildPipeline(pkg: M.Package): void {
   const basicMod = M.ExplicateControlPass(pkg)
   if (pkg.config.compiler.basic) BasicBundle(pkg, basicMod)
 
-  const xasmMod = M.CodegenPass(pkg, basicMod)
-  XasmBundle(pkg, xasmMod)
+  const xvmMod = M.CodegenPass(pkg, basicMod)
+  XvmBundle(pkg, xvmMod)
 
   xvmAssemble(pkg)
 }
@@ -49,16 +49,16 @@ function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
   })
 }
 
-function XasmBundle(pkg: M.Package, xasmMod: Xasm.Mod): void {
+function XvmBundle(pkg: M.Package, xvmMod: Xvm.Mod): void {
   const directory = M.packageOutputDirectory(pkg)
-  callWithFile(openOutputFile(`${directory}/bundle.xasm`), (file) => {
+  callWithFile(openOutputFile(`${directory}/bundle.xvm.asm`), (file) => {
     if (pkg.config.entry) {
       fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
     }
-    const definitions = Array.from(xasmMod.definitions.values())
+    const definitions = Array.from(xvmMod.definitions.values())
     const textWidth = 64
     const code = definitions
-      .map((definition) => Xasm.formatPrettyDefinition(textWidth, definition))
+      .map((definition) => Xvm.formatPrettyDefinition(textWidth, definition))
       .join("\n")
     fileWriteln(file, code)
   })
@@ -66,7 +66,10 @@ function XasmBundle(pkg: M.Package, xasmMod: Xasm.Mod): void {
 
 function xvmAssemble(pkg: M.Package): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-  const xvmPath = Path.join(currentDir, "../../../../xvm.c/src/xvm.exe")
-  const xasmPath = Path.join(M.packageOutputDirectory(pkg), "bundle.xasm")
-  systemShellRun(xvmPath, ["assemble", xasmPath])
+  const metaPath = Path.join(
+    currentDir,
+    "../../../../meta-runtime.c/src/meta.exe",
+  )
+  const xvmAsmPath = Path.join(M.packageOutputDirectory(pkg), "bundle.xvm.asm")
+  systemShellRun(metaPath, ["assemble-xvm", xvmAsmPath])
 }

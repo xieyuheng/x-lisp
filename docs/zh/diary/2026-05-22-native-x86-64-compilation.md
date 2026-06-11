@@ -6,7 +6,7 @@ date: 2026-05-22
 
 # 目标
 
-在 xvm.c 的 value encoding 与 GC 基础上，
+在 meta-runtime.c 的 value encoding 与 GC 基础上，
 设计 meta-lisp 到 native x86-64 的编译方案。
 必须 precise GC，不能走编译到 C 的捷径。
 

@@ -1,17 +1,17 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
-import * as Xasm from "../../xasm/index.ts"
+import * as Xvm from "../../xvm/index.ts"
 
-export function CodegenPass(pkg: M.Package, basicMod: B.Mod): Xasm.Mod {
-  const xasmMod = Xasm.createMod()
+export function CodegenPass(pkg: M.Package, basicMod: B.Mod): Xvm.Mod {
+  const xvmMod = Xvm.createMod()
   for (const definition of basicMod.definitions.values()) {
     for (const stackDefinition of codegenDefinition(basicMod, definition)) {
-      xasmMod.definitions.set(stackDefinition.name, stackDefinition)
+      xvmMod.definitions.set(stackDefinition.name, stackDefinition)
     }
   }
 
-  return xasmMod
+  return xvmMod
 }
 
 type State = {
@@ -22,7 +22,7 @@ type State = {
 }
 
 type CodegenResult = {
-  instrs: Array<Xasm.Instr>
+  instrs: Array<Xvm.Instr>
   result: number
 }
 
@@ -111,11 +111,11 @@ function collectLocalIndexesFromInstr(state: State, instr: B.Instr): void {
 function codegenDefinition(
   mod: B.Mod,
   definition: B.Definition,
-): Array<Xasm.Definition> {
+): Array<Xvm.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
       return [
-        Xasm.PrimitiveFunctionDeclaration(
+        Xvm.PrimitiveFunctionDeclaration(
           definition.name,
           definition.arity,
           definition.location,
@@ -125,7 +125,7 @@ function codegenDefinition(
 
     case "PrimitiveVariableDeclaration": {
       return [
-        Xasm.PrimitiveVariableDeclaration(definition.name, definition.location),
+        Xvm.PrimitiveVariableDeclaration(definition.name, definition.location),
       ]
     }
 
@@ -140,7 +140,7 @@ function codegenDefinition(
         ),
       ]
       return [
-        Xasm.FunctionDefinition(
+        Xvm.FunctionDefinition(
           definition.name,
           definition.parameters.length,
           instrs,
@@ -160,7 +160,7 @@ function codegenDefinition(
         ),
       ]
       return [
-        Xasm.VariableDefinition(definition.name, instrs, definition.location),
+        Xvm.VariableDefinition(definition.name, instrs, definition.location),
       ]
     }
 
@@ -174,7 +174,7 @@ function codegenDefinition(
           codegenBlock(state, definition.name, block),
         ),
       ]
-      return [Xasm.TestDefinition(definition.name, instrs, definition.location)]
+      return [Xvm.TestDefinition(definition.name, instrs, definition.location)]
     }
   }
 }
@@ -183,11 +183,11 @@ function codegenBlock(
   state: State,
   name: string,
   block: B.Block,
-): Array<Xasm.Instr> {
-  const instrs: Array<Xasm.Instr> = [
-    Xasm.Instr(
+): Array<Xvm.Instr> {
+  const instrs: Array<Xvm.Instr> = [
+    Xvm.Instr(
       "label",
-      [Xasm.VarOperand(block.label, state.location)],
+      [Xvm.VarOperand(block.label, state.location)],
       state.location,
     ),
   ]
@@ -205,17 +205,17 @@ function codegenBlock(
       }
 
       instrs.push(
-        Xasm.Instr(
+        Xvm.Instr(
           "jump-if-not",
           [
-            Xasm.IntOperand(BigInt(pendingCondition), state.location),
-            Xasm.VarOperand(instr.elseLabel, state.location),
+            Xvm.IntOperand(BigInt(pendingCondition), state.location),
+            Xvm.VarOperand(instr.elseLabel, state.location),
           ],
           state.location,
         ),
-        Xasm.Instr(
+        Xvm.Instr(
           "jump",
-          [Xasm.VarOperand(instr.thenLabel, state.location)],
+          [Xvm.VarOperand(instr.thenLabel, state.location)],
           state.location,
         ),
       )
@@ -228,27 +228,27 @@ function codegenBlock(
   return instrs
 }
 
-function toIntOp(n: number, loc: SourceLocation): Xasm.IntOperand {
-  return Xasm.IntOperand(BigInt(n), loc)
+function toIntOp(n: number, loc: SourceLocation): Xvm.IntOperand {
+  return Xvm.IntOperand(BigInt(n), loc)
 }
 
 function codegenInstr(
   state: State,
   name: string,
   instr: B.Instr,
-): Array<Xasm.Instr> {
+): Array<Xvm.Instr> {
   switch (instr.kind) {
     case "AssignInstr": {
       const { instrs, result } = codegenExp(state, name, instr.exp)
       const destIndex = lookupLocalIndex(state, instr.dest)
       if (result !== destIndex) {
         instrs.push(
-          Xasm.Instr(
+          Xvm.Instr(
             "move",
             [
               toIntOp(destIndex, state.location),
               toIntOp(result, state.location),
-              Xasm.VarOperand(instr.dest, state.location),
+              Xvm.VarOperand(instr.dest, state.location),
             ],
             state.location,
           ),
@@ -272,9 +272,9 @@ function codegenInstr(
 
     case "GotoInstr": {
       return [
-        Xasm.Instr(
+        Xvm.Instr(
           "jump",
-          [Xasm.VarOperand(instr.label, state.location)],
+          [Xvm.VarOperand(instr.label, state.location)],
           state.location,
         ),
       ]
@@ -286,20 +286,20 @@ function codegenInstr(
   }
 }
 
-function basicAtomToOperand(exp: B.Exp): Xasm.Operand {
+function basicAtomToOperand(exp: B.Exp): Xvm.Operand {
   switch (exp.kind) {
     case "SymbolExp":
-      return Xasm.SymbolOperand(exp.content, exp.location)
+      return Xvm.SymbolOperand(exp.content, exp.location)
     case "KeywordExp":
-      return Xasm.KeywordOperand(exp.content, exp.location)
+      return Xvm.KeywordOperand(exp.content, exp.location)
     case "StringExp":
-      return Xasm.StringOperand(exp.content, exp.location)
+      return Xvm.StringOperand(exp.content, exp.location)
     case "IntExp":
-      return Xasm.IntOperand(exp.content, exp.location)
+      return Xvm.IntOperand(exp.content, exp.location)
     case "FloatExp":
-      return Xasm.FloatOperand(exp.content, exp.location)
+      return Xvm.FloatOperand(exp.content, exp.location)
     case "VarExp":
-      return Xasm.VarOperand(exp.name, exp.location)
+      return Xvm.VarOperand(exp.name, exp.location)
     case "ApplyExp": {
       let message = `[basicAtomToOperand] unhandled exp`
       message += `\n  exp: ${B.formatExp(exp)}`
@@ -318,7 +318,7 @@ function codegenExp(state: State, name: string, exp: B.Exp): CodegenResult {
       const dst = allocateTemp(state)
       return {
         instrs: [
-          Xasm.Instr(
+          Xvm.Instr(
             "load",
             [toIntOp(dst, state.location), basicAtomToOperand(exp)],
             state.location,
@@ -342,7 +342,7 @@ function codegenTailExp(
   state: State,
   name: string,
   exp: B.Exp,
-): Array<Xasm.Instr> {
+): Array<Xvm.Instr> {
   switch (exp.kind) {
     case "SymbolExp":
     case "KeywordExp":
@@ -351,19 +351,19 @@ function codegenTailExp(
     case "FloatExp": {
       const dst = allocateTemp(state)
       return [
-        Xasm.Instr(
+        Xvm.Instr(
           "load",
           [toIntOp(dst, state.location), basicAtomToOperand(exp)],
           state.location,
         ),
-        Xasm.Instr("return", [toIntOp(dst, state.location)], state.location),
+        Xvm.Instr("return", [toIntOp(dst, state.location)], state.location),
       ]
     }
 
     case "VarExp": {
       const { instrs, result } = codegenVar(state, name, exp)
       instrs.push(
-        Xasm.Instr("return", [toIntOp(result, state.location)], state.location),
+        Xvm.Instr("return", [toIntOp(result, state.location)], state.location),
       )
       return instrs
     }
@@ -394,11 +394,11 @@ function codegenVar(state: State, name: string, exp: B.VarExp): CodegenResult {
       const dst = allocateTemp(state)
       return {
         instrs: [
-          Xasm.Instr(
+          Xvm.Instr(
             "ref",
             [
               toIntOp(dst, state.location),
-              Xasm.VarOperand(exp.name, state.location),
+              Xvm.VarOperand(exp.name, state.location),
             ],
             state.location,
           ),
@@ -412,11 +412,11 @@ function codegenVar(state: State, name: string, exp: B.VarExp): CodegenResult {
       const dst = allocateTemp(state)
       return {
         instrs: [
-          Xasm.Instr(
+          Xvm.Instr(
             "global-load",
             [
               toIntOp(dst, state.location),
-              Xasm.VarOperand(exp.name, state.location),
+              Xvm.VarOperand(exp.name, state.location),
             ],
             state.location,
           ),
@@ -439,8 +439,8 @@ function codegenTailApply(
   state: State,
   name: string,
   exp: B.ApplyExp,
-): Array<Xasm.Instr> {
-  return codegenGeneralApply(state, name, exp, true) as Array<Xasm.Instr>
+): Array<Xvm.Instr> {
+  return codegenGeneralApply(state, name, exp, true) as Array<Xvm.Instr>
 }
 
 function codegenGeneralApply(
@@ -448,7 +448,7 @@ function codegenGeneralApply(
   name: string,
   exp: B.ApplyExp,
   isTail: boolean,
-): CodegenResult | Array<Xasm.Instr> {
+): CodegenResult | Array<Xvm.Instr> {
   const applyMode = isTail ? "tail-apply" : "apply"
   const callMode = isTail ? "tail-call" : "call"
   const loc = state.location
@@ -461,10 +461,10 @@ function codegenGeneralApply(
   if (definition === undefined) {
     const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
     const targetResult = codegenExp(state, name, exp.target)
-    const instrs: Array<Xasm.Instr> = [
+    const instrs: Array<Xvm.Instr> = [
       ...argResults.flatMap((r) => r.instrs),
       ...targetResult.instrs,
-      Xasm.Instr(
+      Xvm.Instr(
         applyMode,
         [
           toIntOp(targetResult.result, loc),
@@ -475,7 +475,7 @@ function codegenGeneralApply(
     ]
     if (isTail) return instrs
     const dst = allocateTemp(state)
-    instrs.push(Xasm.Instr("load-result", [toIntOp(dst, loc)], loc))
+    instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
     return { instrs, result: dst }
   }
 
@@ -491,17 +491,17 @@ function codegenGeneralApply(
       if (exp.args.length < arity) {
         const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
         const refDst = allocateTemp(state)
-        const instrs: Array<Xasm.Instr> = [
+        const instrs: Array<Xvm.Instr> = [
           ...argResults.flatMap((r) => r.instrs),
-          Xasm.Instr(
+          Xvm.Instr(
             "ref",
             [
               toIntOp(refDst, loc),
-              Xasm.VarOperand(B.asVarExp(exp.target).name, loc),
+              Xvm.VarOperand(B.asVarExp(exp.target).name, loc),
             ],
             loc,
           ),
-          Xasm.Instr(
+          Xvm.Instr(
             applyMode,
             [
               toIntOp(refDst, loc),
@@ -512,16 +512,16 @@ function codegenGeneralApply(
         ]
         if (isTail) return instrs
         const dst = allocateTemp(state)
-        instrs.push(Xasm.Instr("load-result", [toIntOp(dst, loc)], loc))
+        instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
         return { instrs, result: dst }
       } else if (exp.args.length === arity) {
         const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
-        const instrs: Array<Xasm.Instr> = [
+        const instrs: Array<Xvm.Instr> = [
           ...argResults.flatMap((r) => r.instrs),
-          Xasm.Instr(
+          Xvm.Instr(
             callMode,
             [
-              Xasm.VarOperand(B.asVarExp(exp.target).name, loc),
+              Xvm.VarOperand(B.asVarExp(exp.target).name, loc),
               ...argResults.map((r) => toIntOp(r.result, loc)),
             ],
             loc,
@@ -529,7 +529,7 @@ function codegenGeneralApply(
         ]
         if (isTail) return instrs
         const dst = allocateTemp(state)
-        instrs.push(Xasm.Instr("load-result", [toIntOp(dst, loc)], loc))
+        instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
         return { instrs, result: dst }
       } else {
         const firstArgs = exp.args.slice(0, arity)
@@ -541,12 +541,12 @@ function codegenGeneralApply(
           codegenExp(state, name, arg),
         )
 
-        const instrs: Array<Xasm.Instr> = [
+        const instrs: Array<Xvm.Instr> = [
           ...firstArgResults.flatMap((r) => r.instrs),
-          Xasm.Instr(
+          Xvm.Instr(
             "call",
             [
-              Xasm.VarOperand(B.asVarExp(exp.target).name, loc),
+              Xvm.VarOperand(B.asVarExp(exp.target).name, loc),
               ...firstArgResults.map((r) => toIntOp(r.result, loc)),
             ],
             loc,
@@ -555,12 +555,10 @@ function codegenGeneralApply(
 
         if (isTail) {
           const tempResult = allocateTemp(state)
-          instrs.push(
-            Xasm.Instr("load-result", [toIntOp(tempResult, loc)], loc),
-          )
+          instrs.push(Xvm.Instr("load-result", [toIntOp(tempResult, loc)], loc))
           instrs.push(...restArgResults.flatMap((r) => r.instrs))
           instrs.push(
-            Xasm.Instr(
+            Xvm.Instr(
               "tail-apply",
               [
                 toIntOp(tempResult, loc),
@@ -572,12 +570,10 @@ function codegenGeneralApply(
           return instrs
         } else {
           const tempResult = allocateTemp(state)
-          instrs.push(
-            Xasm.Instr("load-result", [toIntOp(tempResult, loc)], loc),
-          )
+          instrs.push(Xvm.Instr("load-result", [toIntOp(tempResult, loc)], loc))
           instrs.push(...restArgResults.flatMap((r) => r.instrs))
           instrs.push(
-            Xasm.Instr(
+            Xvm.Instr(
               "apply",
               [
                 toIntOp(tempResult, loc),
@@ -587,7 +583,7 @@ function codegenGeneralApply(
             ),
           )
           const dst = allocateTemp(state)
-          instrs.push(Xasm.Instr("load-result", [toIntOp(dst, loc)], loc))
+          instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
           return { instrs, result: dst }
         }
       }
@@ -597,17 +593,14 @@ function codegenGeneralApply(
     case "VariableDefinition": {
       const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
       const dst = allocateTemp(state)
-      const instrs: Array<Xasm.Instr> = [
+      const instrs: Array<Xvm.Instr> = [
         ...argResults.flatMap((r) => r.instrs),
-        Xasm.Instr(
+        Xvm.Instr(
           "global-load",
-          [
-            toIntOp(dst, loc),
-            Xasm.VarOperand(B.asVarExp(exp.target).name, loc),
-          ],
+          [toIntOp(dst, loc), Xvm.VarOperand(B.asVarExp(exp.target).name, loc)],
           loc,
         ),
-        Xasm.Instr(
+        Xvm.Instr(
           applyMode,
           [toIntOp(dst, loc), ...argResults.map((r) => toIntOp(r.result, loc))],
           loc,
@@ -615,7 +608,7 @@ function codegenGeneralApply(
       ]
       if (isTail) return instrs
       const resultDst = allocateTemp(state)
-      instrs.push(Xasm.Instr("load-result", [toIntOp(resultDst, loc)], loc))
+      instrs.push(Xvm.Instr("load-result", [toIntOp(resultDst, loc)], loc))
       return { instrs, result: resultDst }
     }
   }

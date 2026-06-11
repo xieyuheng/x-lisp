@@ -6,7 +6,7 @@ title: AI Agent 工作指南
 
 # 前言
 
-引用 package 名时使用 `[package-name]` 格式（如 [helpers.js]、[xvm.c]、[meta-lisp.meta]）。
+引用 package 名时使用 `[package-name]` 格式（如 [helpers.js]、[meta-runtime.c]、[meta-lisp.meta]）。
 
 AI agent 应用中文回答用户的问题。
 
@@ -24,7 +24,7 @@ AI agent 应用中文回答用户的问题。
 
 - [helpers.c] — 基础库
 - [cli.c] — CLI 库，依赖 [helpers.c]
-- [xvm.c] — VM，依赖 [helpers.c] + [cli.c]
+- [meta-runtime.c] — 多后端运行时，依赖 [helpers.c] + [cli.c]
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
 
@@ -36,7 +36,7 @@ AI agent 应用中文回答用户的问题。
 # 依赖链
 
 1. `pnpm install`（或 `scripts/prepare.sh`）
-2. C：[helpers.c] → [cli.c] → [xvm.c]
+2. C：[helpers.c] → [cli.c] → [meta-runtime.c]
 3. JS：[helpers.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 二进制
 

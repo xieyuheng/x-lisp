@@ -157,7 +157,7 @@ function toBasicExp(exp: M.Term, pkg: M.Package): B.Exp {
     }
 
     case "QualifiedVarTerm": {
-      const prefix = resolveXasmPrefix(pkg, exp.pkgName)
+      const prefix = resolveXvmPrefix(pkg, exp.pkgName)
       return B.VarExp(`${prefix}/${exp.modName}/${exp.name}`, exp.location)
     }
 
@@ -415,12 +415,12 @@ function explicateControlInIf(
   }
 }
 
-function resolveXasmPrefix(pkg: M.Package, pkgName: string): string {
+function resolveXvmPrefix(pkg: M.Package, pkgName: string): string {
   if (pkgName === pkg.id) return pkg.id
 
   const dep = pkg.dependencies.get(pkgName)
   if (!dep) {
-    throw new Error(`[resolveXasmPrefix] unknown package: "${pkgName}"`)
+    throw new Error(`[resolveXvmPrefix] unknown package: "${pkgName}"`)
   }
   return dep.id
 }

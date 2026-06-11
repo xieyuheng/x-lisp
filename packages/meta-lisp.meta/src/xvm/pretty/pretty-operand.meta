@@ -1,0 +1,19 @@
+(module xvm)
+
+(import-as ppml/ppml ppml)
+
+(claim pretty-operand (-> xvm/operand-t ppml/node-t))
+(define (pretty-operand operand)
+  (match operand
+    ((symbol-operand content location)
+     (ppml/text (format-as-sexp content)))
+    ((keyword-operand content location)
+     (ppml/text (format-as-sexp content)))
+    ((string-operand content location)
+     (ppml/text (format-as-sexp content)))
+    ((int-operand content location)
+     (ppml/text (format-as-sexp content)))
+    ((float-operand content location)
+     (ppml/text (format-as-sexp content)))
+    ((var-operand name location)
+     (ppml/text (symbol-to-string name)))))

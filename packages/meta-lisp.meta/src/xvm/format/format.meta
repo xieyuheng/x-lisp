@@ -1,0 +1,55 @@
+(module xvm)
+
+(claim format-definition (-> definition-t string-t))
+(define (format-definition definition)
+  (match definition
+    ((primitive-function-declaration name arity location)
+     (@string "(declare-primitive-function "
+               (symbol-to-string name) " "
+               (format-as-sexp arity) ")"))
+    ((primitive-variable-declaration name location)
+     (@string "(declare-primitive-variable "
+               (symbol-to-string name) ")"))
+    ((function-definition name arity instrs location)
+     (= instrs-str (string-join " " (list-map format-instr instrs)))
+     (@string "(define-function "
+               (symbol-to-string name) " "
+               (format-as-sexp arity) " "
+              instrs-str ")"))
+    ((variable-definition name instrs location)
+     (= instrs-str (string-join " " (list-map format-instr instrs)))
+     (@string "(define-variable "
+              (symbol-to-string name) " "
+              instrs-str ")"))
+    ((test-definition name instrs location)
+     (= instrs-str (string-join " " (list-map format-instr instrs)))
+     (@string "(define-test "
+              (symbol-to-string name) " "
+              instrs-str ")"))))
+
+(claim format-instr (-> instr-t string-t))
+(define (format-instr instr)
+  (= op (instr-op instr))
+  (= operands (instr-operands instr))
+  (if (equal? (symbol-to-string op) "label")
+    (string-join " " (list-map format-operand operands))
+    (if (list-empty? operands)
+      (@string "(" (symbol-to-string op) ")")
+      (let ((operands-str (string-join " " (list-map format-operand operands))))
+        (@string "(" (symbol-to-string op) " " operands-str ")")))))
+
+(claim format-operand (-> operand-t string-t))
+(define (format-operand operand)
+  (match operand
+    ((symbol-operand content location)
+     (format-as-sexp content))
+    ((keyword-operand content location)
+     (format-as-sexp content))
+    ((string-operand content location)
+     (format-as-sexp content))
+    ((int-operand content location)
+     (format-as-sexp content))
+    ((float-operand content location)
+     (format-as-sexp content))
+    ((var-operand name location)
+     (symbol-to-string name))))

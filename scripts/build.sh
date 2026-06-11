@@ -10,4 +10,4 @@ cd packages/ppml.js; ./scripts/check.sh; cd ../..
 
 cd packages/helpers.c; ./scripts/build.sh; cd ../..
 cd packages/cli.c; ./scripts/build.sh; cd ../..
-cd packages/xvm.c; ./scripts/build.sh; cd ../..
+cd packages/meta-runtime.c; ./scripts/build.sh; cd ../..

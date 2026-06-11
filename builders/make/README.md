@@ -12,7 +12,7 @@ include ../../builders/make/c.mk
 include ../../builders/make/c.mk
 deps = ../helpers.c/src/index.o
 
-# xvm.c/makefile — 链式依赖
+# meta-runtime.c/makefile — 链式依赖
 include ../../builders/make/c.mk
 deps = ../helpers.c/src/index.o
 deps += ../cli.c/src/index.o

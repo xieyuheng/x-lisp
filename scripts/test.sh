@@ -10,7 +10,7 @@ cd packages/ppml.js; ./scripts/test.sh; cd ../..
 
 cd packages/helpers.c; ./scripts/test.sh; cd ../..
 cd packages/cli.c; ./scripts/test.sh; cd ../..
-cd packages/xvm.c; ./scripts/test.sh; cd ../..
+cd packages/meta-runtime.c; ./scripts/test.sh; cd ../..
 
 cd packages/meta-builtin.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-math.meta; ./scripts/test.sh; cd ../..

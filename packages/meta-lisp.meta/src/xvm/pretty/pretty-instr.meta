@@ -1,0 +1,16 @@
+(module xvm)
+
+(import-as ppml/ppml ppml)
+
+(claim pretty-instr (-> xvm/instr-t ppml/node-t))
+(define (pretty-instr instr)
+  (= op (instr-op instr))
+  (= operands (instr-operands instr))
+  (if (equal? (symbol-to-string op) "label")
+    (let ((elements (list-map pretty-operand operands)))
+      (ppml/group [(ppml/flex elements)]))
+    (if (list-empty? operands)
+      (ppml/group [(ppml/text "(") (ppml/text (symbol-to-string op)) (ppml/text ")")])
+      (let ((all-elements (cons (ppml/text (symbol-to-string op))
+                               (list-map pretty-operand operands))))
+        (ppml/pretty-application (just (symbol-to-string op)) all-elements)))))

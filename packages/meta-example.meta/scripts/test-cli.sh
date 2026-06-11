@@ -2,27 +2,27 @@
 
 set -e
 
-xvm=../xvm.c/src/xvm.exe
-xexe=build/bundle.xexe
+meta=../meta-runtime.c/src/meta.exe
+xexe=build/bundle.xvm.exe
 entry=self/calculator/main
 
 echo "=== hello ==="
-$xvm run $xexe --entry $entry -- hello
+$meta run-xvm $xexe --entry $entry -- hello
 
 echo "=== add 1 2 ==="
-$xvm run $xexe --entry $entry -- add 1 2
+$meta run-xvm $xexe --entry $entry -- add 1 2
 
 echo "=== mul --x 3 --y 4 ==="
-$xvm run $xexe --entry $entry -- mul --x 3 --y 4
+$meta run-xvm $xexe --entry $entry -- mul --x 3 --y 4
 
 echo "=== bye ==="
-$xvm run $xexe --entry $entry -- bye
+$meta run-xvm $xexe --entry $entry -- bye
 
 echo "=== passthrough -- foo bar baz ==="
-$xvm run $xexe --entry $entry -- passthrough -- foo bar baz
+$meta run-xvm $xexe --entry $entry -- passthrough -- foo bar baz
 
 echo "=== no command ==="
-$xvm run $xexe --entry $entry
+$meta run-xvm $xexe --entry $entry
 
 echo "=== unknown command ==="
-$xvm run $xexe --entry $entry -- badcmd
+$meta run-xvm $xexe --entry $entry -- badcmd

@@ -10,7 +10,7 @@ cd packages/ppml.js; ./scripts/clean.sh; cd ../..
 
 cd packages/helpers.c; ./scripts/clean.sh; cd ../..
 cd packages/cli.c; ./scripts/clean.sh; cd ../..
-cd packages/xvm.c; ./scripts/clean.sh; cd ../..
+cd packages/meta-runtime.c; ./scripts/clean.sh; cd ../..
 
 cd packages/meta-builtin.meta; ./scripts/clean.sh; cd ../..
 cd packages/meta-math.meta; ./scripts/clean.sh; cd ../..
