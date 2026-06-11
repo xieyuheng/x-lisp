@@ -1,6 +1,7 @@
 # x86
 
-
+[meta-lisp.js] [review] x86/
+[meta-lisp.js] x86 -- can be used as fasm and nasm -- flat mode
 
 # self-hosting
 

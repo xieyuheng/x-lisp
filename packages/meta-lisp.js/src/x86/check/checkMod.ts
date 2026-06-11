@@ -13,10 +13,8 @@ function checkDuplicateNames(mod: N.Mod): void {
     if (
       Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1
     ) {
-      throw new S.ErrorWithSourceLocation(
-        `[check] duplicate definition: ${name}`,
-        S.zeroLocation("xasm-next"),
-      )
+      let message = `[check] duplicate definition: ${name}`
+      throw new Error(message)
     }
   }
 }

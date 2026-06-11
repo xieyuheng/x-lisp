@@ -13,7 +13,6 @@ void *x86_execute(const buffer_t *buffer) {
     -1, 0);
   if (memory == MAP_FAILED) {
     where_printf("[mmap]: %s\n", strerror(errno));
-    where_printf("[mmap]: length: %ld\n", length);
     exit(1);
   }
 
