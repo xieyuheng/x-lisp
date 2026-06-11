@@ -106,6 +106,17 @@ static void handle_test_xasm(cli_ctx_t *ctx) {
   mod_free(mod);
 }
 
+
+static void handle_run_x86(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  file_t *file = open_file_or_fail(pathname, "rb");
+  buffer_t *buffer = make_buffer();
+  buffer_read(buffer, file);
+  file_close(file);
+  x86_execute(buffer);
+  buffer_free(buffer);
+}
+
 int main(int argc, char *argv[]) {
   sanity_check();
   setbuf(stdout, NULL);
@@ -121,12 +132,14 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "test file.xexe --profile --snapshot --builtin");
   cli_define_route(router, "run-xasm file.xasm --entry --profile");
   cli_define_route(router, "test-xasm file.xasm --profile --snapshot --builtin");
+  cli_define_route(router, "run-x86 file.x86");
 
   cli_define_handler(router, "assemble", handle_assemble);
   cli_define_handler(router, "run", handle_run);
   cli_define_handler(router, "test", handle_test);
   cli_define_handler(router, "run-xasm", handle_run_xasm);
   cli_define_handler(router, "test-xasm", handle_test_xasm);
+  cli_define_handler(router, "run-x86", handle_run_x86);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);
