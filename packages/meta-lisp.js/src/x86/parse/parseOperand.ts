@@ -16,7 +16,7 @@ export const parseOperand: S.Router<N.Operand> = S.createRouter<N.Operand>({
     return N.ImmOperand(S.asIntSexp(value).content, location)
   },
 
-  "(cons* 'label . path)": ({ path }, { location }) => {
+  "(cons* 'label path)": ({ path }, { location }) => {
     const elements = S.asListSexp(path).elements.map(
       (x) => S.asSymbolSexp(x).content,
     )
@@ -33,7 +33,7 @@ export const parseOperand: S.Router<N.Operand> = S.createRouter<N.Operand>({
     return N.LabelDerefOperand(inner, location)
   },
 
-  "(cons* 'reg-deref base . rest)": ({ base, rest }, { location }) => {
+  "(cons* 'reg-deref base rest)": ({ base, rest }, { location }) => {
     const baseName = parseRegName(base)
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {

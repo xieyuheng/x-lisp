@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as N from "../index.ts"
 
 export const parseExp: S.Router<N.Exp> = S.createRouter<N.Exp>({
-  "(cons* 'struct . rest)": ({ rest }, { location }) => {
+  "(cons* 'struct rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {
       throw new S.ErrorWithSourceLocation(
@@ -39,7 +39,7 @@ export const parseExp: S.Router<N.Exp> = S.createRouter<N.Exp>({
     return N.PointerExp(parseExp(target), location)
   },
 
-  "(cons* 'label . path)": ({ path }, { location }) => {
+  "(cons* 'label path)": ({ path }, { location }) => {
     const elements = S.asListSexp(path).elements.map(
       (x) => S.asSymbolSexp(x).content,
     )

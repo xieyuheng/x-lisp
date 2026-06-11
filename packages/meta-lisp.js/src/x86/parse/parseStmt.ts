@@ -4,7 +4,7 @@ import { parseExp } from "./parseExp.ts"
 import { parseInstr } from "./parseInstr.ts"
 
 export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
-  "(cons* 'define-code name . blocks)": ({ name, blocks }, { location }) => {
+  "(cons* 'define-code name blocks)": ({ name, blocks }, { location }) => {
     const blockSexps = S.asListSexp(blocks).elements
     const parsedBlocks = blockSexps.map((bs) => parseBlock(bs))
     return N.DefineCodeStmt(
@@ -14,7 +14,7 @@ export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
     )
   },
 
-  "(cons* 'define-data name . fields)": ({ name, fields }, { location }) => {
+  "(cons* 'define-data name fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseFields(fields)
     return N.DefineDataStmt(
       S.asSymbolSexp(name).content,
@@ -23,7 +23,7 @@ export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
     )
   },
 
-  "(cons* 'define-metadata name . fields)": (
+  "(cons* 'define-metadata name fields)": (
     { name, fields },
     { location },
   ) => {
@@ -35,7 +35,7 @@ export const parseStmt: S.Router<N.Stmt> = S.createRouter<N.Stmt>({
     )
   },
 
-  "(cons* 'define-struct name . fields)": ({ name, fields }, { location }) => {
+  "(cons* 'define-struct name fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseFields(fields)
     return N.DefineStructStmt(
       S.asSymbolSexp(name).content,
