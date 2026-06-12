@@ -1,7 +1,11 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
-export function check(mod: X86.Mod, exp: X86.Exp, expectedType: X86.Type): void {
+export function check(
+  mod: X86.Mod,
+  exp: X86.Exp,
+  expectedType: X86.Type,
+): void {
   if (expectedType.kind !== "DataType") {
     let message = `[check] expected a DataType, got: ${expectedType.kind}`
     throw new S.ErrorWithSourceLocation(message, exp.location)

@@ -41,7 +41,7 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
           const structDefinition = mod.definitions.get(stmt.name)
           if (
             structDefinition === undefined ||
-              structDefinition.kind !== "StructDefinition"
+            structDefinition.kind !== "StructDefinition"
           ) {
             let message = `[SubmitPass] unknown struct: ${stmt.name}`
             throw new Error(message)
