@@ -9,29 +9,19 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     }
 
     case "DefineDataStmt": {
-      const fields = new Map<string, X86.Value>()
-      for (const field of stmt.fields) {
-        fields.set(field.name, X86.evaluate(mod, field.exp))
-      }
+      const fields = X86.evaluateFields(mod, stmt.fields)
       X86.modDefine(mod, X86.DataDefinition(stmt.name, fields, stmt.location))
       return
     }
 
     case "DefineMetadataStmt": {
-      const fields = new Map<string, X86.Value>()
-      for (const field of stmt.fields) {
-        fields.set(field.name, X86.evaluate(mod, field.exp))
-      }
+      const fields = X86.evaluateFields(mod, stmt.fields)
       X86.modDefine(mod, X86.MetadataDefinition(stmt.name, fields, stmt.location))
       return
     }
 
     case "DefineStructStmt": {
-      const fields = new Map<string, X86.Type>()
-      for (const field of stmt.fields) {
-        const fieldType = X86.evaluateType(mod, field.exp)
-        fields.set(field.name, fieldType)
-      }
+      const fields = X86.evaluateTypeFields(mod, stmt.fields)
       X86.modDefine(mod, X86.StructDefinition(stmt.name, fields, stmt.location))
       return
     }

@@ -13,10 +13,7 @@ export function evaluate(mod: X86.Mod, exp: X86.Exp): X86.Value {
       return X86.LabelValue(exp.name, exp.path)
 
     case "StructExp": {
-      const fields = new Map<string, X86.Value>()
-      for (const field of exp.fields) {
-        fields.set(field.name, evaluate(mod, field.exp))
-      }
+      const fields = evaluateFields(mod, exp.fields)
       return X86.StructValue(exp.name, fields)
     }
 
@@ -35,4 +32,15 @@ export function evaluate(mod: X86.Mod, exp: X86.Exp): X86.Value {
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
+}
+
+export function evaluateFields(
+  mod: X86.Mod,
+  fields: Array<X86.StructField>,
+): Map<string, X86.Value> {
+  const result = new Map<string, X86.Value>()
+  for (const field of fields) {
+    result.set(field.name, evaluate(mod, field.exp))
+  }
+  return result
 }
