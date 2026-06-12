@@ -1,9 +1,14 @@
+import type { Type } from "../type/index.ts"
+import type { TypeConstructor } from "../type/index.ts"
+
 export type Value =
   | IntValue
   | StringValue
   | LabelValue
   | StructValue
   | PointerValue
+  | TypeValue
+  | TypeConstructorValue
 
 export type IntValue = {
   kind: "IntValue"
@@ -70,4 +75,48 @@ export function PointerValue(target: Value): PointerValue {
     kind: "PointerValue",
     target,
   }
+}
+
+export type TypeValue = {
+  kind: "TypeValue"
+  type: Type
+}
+
+export function TypeValue(type: Type): TypeValue {
+  return {
+    kind: "TypeValue",
+    type,
+  }
+}
+
+export function isTypeValue(value: Value): value is TypeValue {
+  return value.kind === "TypeValue"
+}
+
+export function asTypeValue(value: Value): TypeValue {
+  if (value.kind !== "TypeValue") {
+    let message = `expected TypeValue, got: ${value.kind}`
+    throw new Error(message)
+  }
+  return value
+}
+
+export type TypeConstructorValue = {
+  kind: "TypeConstructorValue"
+  typeConstructor: TypeConstructor
+}
+
+export function TypeConstructorValue(
+  typeConstructor: TypeConstructor,
+): TypeConstructorValue {
+  return {
+    kind: "TypeConstructorValue",
+    typeConstructor,
+  }
+}
+
+export function isTypeConstructorValue(
+  value: Value,
+): value is TypeConstructorValue {
+  return value.kind === "TypeConstructorValue"
 }

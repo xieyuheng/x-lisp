@@ -66,6 +66,10 @@ function prettyValue(value: X86.Value): Ppml.Node {
     }
     case "PointerValue":
       return Ppml.prettySyntax("pointer", [], [prettyValue(value.target)])
+    case "TypeValue":
+      return prettyType(value.type)
+    case "TypeConstructorValue":
+      return Ppml.text(value.typeConstructor.name)
   }
 }
 
@@ -73,10 +77,14 @@ function prettyType(type: X86.Type): Ppml.Node {
   switch (type.kind) {
     case "AtomType":
       return Ppml.text(type.name)
-    case "PointerType":
-      return Ppml.prettySyntax("pointer-t", [], [prettyType(type.target)])
-    case "NamedType":
+    case "VarType":
       return Ppml.text(type.name)
+    case "DataType": {
+      const typeCtorName = type.typeConstructor.name
+      if (type.argTypes.length === 0) return Ppml.text(typeCtorName)
+      const argNodes = type.argTypes.map(prettyType)
+      return Ppml.prettySyntax(typeCtorName, [], argNodes)
+    }
   }
 }
 

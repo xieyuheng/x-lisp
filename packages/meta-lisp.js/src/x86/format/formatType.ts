@@ -4,10 +4,14 @@ export function formatType(type: X86.Type): string {
   switch (type.kind) {
     case "AtomType":
       return type.name
-    case "PointerType":
-      return `(pointer-t ${formatType(type.target)})`
-    case "NamedType":
+    case "VarType":
       return type.name
+    case "DataType": {
+      const typeCtorName = type.typeConstructor.name
+      if (type.argTypes.length === 0) return typeCtorName
+      const argStrings = type.argTypes.map(formatType).join(" ")
+      return `(${typeCtorName} ${argStrings})`
+    }
   }
 }
 

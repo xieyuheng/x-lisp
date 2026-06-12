@@ -74,18 +74,21 @@ export function DefineMetadataStmt(
 export type DefineStructStmt = {
   kind: "DefineStructStmt"
   name: string
+  parameters: string[]
   fields: Array<StructField>
   location: SourceLocation
 }
 
 export function DefineStructStmt(
   name: string,
+  parameters: string[],
   fields: Array<StructField>,
   location: SourceLocation,
 ): DefineStructStmt {
   return {
     kind: "DefineStructStmt",
     name,
+    parameters,
     fields,
     location,
   }

@@ -1,21 +1,27 @@
 import type { MetadataDefinition } from "../definition/Definition.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Type } from "../type/index.ts"
+import type { TypeConstructor } from "../type/index.ts"
+import { registerBuiltinTypeConstructors } from "../type/typeBuiltin.ts"
 
 export type Mod = {
   definitions: Map<string, Definition>
   claimedTypes: Map<string, Type>
   codeMetadataType: Type | undefined
   metadataDefinitions: Map<string, MetadataDefinition>
+  typeConstructors: Map<string, TypeConstructor>
 }
 
 export function createMod(): Mod {
-  return {
+  const mod: Mod = {
     definitions: new Map(),
     claimedTypes: new Map(),
     codeMetadataType: undefined,
     metadataDefinitions: new Map(),
+    typeConstructors: new Map(),
   }
+  registerBuiltinTypeConstructors(mod)
+  return mod
 }
 
 export function modDefine(mod: Mod, definition: Definition): void {

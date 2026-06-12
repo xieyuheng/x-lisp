@@ -34,11 +34,8 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
 
   "(cons* 'define-struct name fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseFields(fields)
-    return X86.DefineStructStmt(
-      S.asSymbolSexp(name).content,
-      parsedFields,
-      location,
-    )
+    const { structName, parameters } = parseStructName(name, location)
+    return X86.DefineStructStmt(structName, parameters, parsedFields, location)
   },
 
   "`(define-space ,name ,size)": ({ name, size }, { location }) => {
@@ -88,4 +85,30 @@ function parseFields(rest: S.Sexp): Array<X86.StructField> {
     const fieldExp = parseExp(elem.elements[1])
     return X86.StructField(fieldName, fieldExp)
   })
+}
+
+function parseStructName(
+  name: S.Sexp,
+  location: S.SourceLocation,
+): {
+  structName: string
+  parameters: string[]
+} {
+  if (name.kind === "ListSexp") {
+    const elements = name.elements
+    if (elements.length < 1) {
+      let message = `expected (define-struct (name ...) ...)`
+      throw new S.ErrorWithSourceLocation(message, location)
+    }
+    return {
+      structName: S.asSymbolSexp(elements[0]).content,
+      parameters: elements
+        .slice(1)
+        .map((p) => S.asSymbolSexp(p).content),
+    }
+  }
+  return {
+    structName: S.asSymbolSexp(name).content,
+    parameters: [],
+  }
 }

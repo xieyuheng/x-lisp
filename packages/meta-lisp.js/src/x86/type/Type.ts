@@ -1,6 +1,6 @@
-import type { Mod } from "../mod/index.ts"
+import type { TypeConstructor } from "./TypeConstructor.ts"
 
-export type Type = AtomType | PointerType | NamedType
+export type Type = AtomType | VarType | DataType
 
 export type AtomType = {
   kind: "AtomType"
@@ -14,28 +14,31 @@ export function AtomType(name: string): AtomType {
   }
 }
 
-export type PointerType = {
-  kind: "PointerType"
-  target: Type
-}
-
-export function PointerType(target: Type): PointerType {
-  return {
-    kind: "PointerType",
-    target,
-  }
-}
-
-export type NamedType = {
-  kind: "NamedType"
-  mod: Mod
+export type VarType = {
+  kind: "VarType"
   name: string
 }
 
-export function NamedType(mod: Mod, name: string): NamedType {
+export function VarType(name: string): VarType {
   return {
-    kind: "NamedType",
-    mod,
+    kind: "VarType",
     name,
+  }
+}
+
+export type DataType = {
+  kind: "DataType"
+  typeConstructor: TypeConstructor
+  argTypes: Type[]
+}
+
+export function DataType(
+  typeConstructor: TypeConstructor,
+  argTypes: Type[],
+): DataType {
+  return {
+    kind: "DataType",
+    typeConstructor,
+    argTypes,
   }
 }
