@@ -25,6 +25,13 @@ export function ClaimPass(pkg: M.Package): M.Outcome {
 
           outcome = "OutcomeError"
         }
+
+        const type = M.evaluateType(
+          mod,
+          M.emptyEnv("OpaqueMode"),
+          entry.exp,
+        )
+        entry.type = type
       }
     }
   }

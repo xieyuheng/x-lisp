@@ -116,11 +116,11 @@ export function modLookupClaimedType(
 ): M.Type | undefined {
   const claimedEntry = mod.claimed.get(name)
   if (!claimedEntry) return undefined
-  if (claimedEntry.type) return claimedEntry.type
-
-  const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), claimedEntry.exp)
-  claimedEntry.type = type
-  return type
+  if (claimedEntry.type === undefined) {
+    let message = `[modLookupClaimedType] claimed type not evaluated: ${name}`
+    throw new S.ErrorWithSourceLocation(message, claimedEntry.exp.location)
+  }
+  return claimedEntry.type
 }
 
 export function modLookupClaimedEntry(
