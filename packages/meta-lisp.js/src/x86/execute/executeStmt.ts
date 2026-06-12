@@ -4,7 +4,10 @@ import * as X86 from "../index.ts"
 export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      X86.modDefine(mod, X86.CodeDefinition(stmt.name, stmt.blocks, stmt.location))
+      X86.modDefine(
+        mod,
+        X86.CodeDefinition(stmt.name, stmt.blocks, stmt.location),
+      )
       return
     }
 
@@ -22,7 +25,10 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
       for (const field of stmt.fields) {
         fields.set(field.name, X86.evaluate(mod, field.exp))
       }
-      X86.modDefine(mod, X86.MetadataDefinition(stmt.name, fields, stmt.location))
+      X86.modDefine(
+        mod,
+        X86.MetadataDefinition(stmt.name, fields, stmt.location),
+      )
       return
     }
 
@@ -44,7 +50,10 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
           stmt.size.location,
         )
       }
-      X86.modDefine(mod, X86.SpaceDefinition(stmt.name, value.value, stmt.location))
+      X86.modDefine(
+        mod,
+        X86.SpaceDefinition(stmt.name, value.value, stmt.location),
+      )
       return
     }
 
