@@ -1,7 +1,7 @@
 import type { RegDerefOperand } from "../operand/index.ts"
 import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
-import { sibByte, SIB_NO_INDEX } from "./sib.ts"
+import { SIB_NO_INDEX, sibByte } from "./sib.ts"
 
 export type RegDerefEncoding = {
   modrm: {
