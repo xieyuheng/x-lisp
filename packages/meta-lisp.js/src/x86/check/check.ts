@@ -57,16 +57,8 @@ export function check(
         let message = `[check] expected struct type for StructExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
-      const typeCtorName = expectedType.typeConstructor.name
-      const unfoldedFields = dataTypeUnfold(mod, expectedType, exp.location)
-      for (const field of exp.fields) {
-        const expectedFieldType = unfoldedFields.get(field.name)
-        if (expectedFieldType === undefined) {
-          let message = `[check] unknown field "${field.name}" for struct type "${typeCtorName}"`
-          throw new S.ErrorWithSourceLocation(message, field.exp.location)
-        }
-        check(mod, field.exp, expectedFieldType)
-      }
+      const typeFields = dataTypeUnfold(mod, expectedType, exp.location)
+      checkFields(mod, exp.fields, typeFields)
       return
     }
 
@@ -74,6 +66,35 @@ export function check(
       let message = `[check] unexpected expression kind in data: ${exp.kind}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
+  }
+}
+
+export function checkFields(
+  mod: X86.Mod,
+  structFields: Array<X86.StructField>,
+  typeFields: Map<string, X86.Type>,
+): void {
+  if (structFields.length !== typeFields.size) {
+    let message = `[checkFields] field count mismatch: expected ${typeFields.size}, got ${structFields.length}`
+    throw new S.ErrorWithSourceLocation(
+      message,
+      structFields.length > 0
+        ? structFields.length > typeFields.size
+          ? structFields[typeFields.size].exp.location
+          : structFields[structFields.length - 1].exp.location
+        : S.zeroLocation("<checkFields>"),
+    )
+  }
+
+  let i = 0
+  for (const [expectedName, expectedType] of typeFields) {
+    const field = structFields[i]
+    if (field.name !== expectedName) {
+      let message = `[checkFields] field name mismatch at position ${i}: expected "${expectedName}", got "${field.name}"`
+      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+    }
+    check(mod, field.exp, expectedType)
+    i++
   }
 }
 
