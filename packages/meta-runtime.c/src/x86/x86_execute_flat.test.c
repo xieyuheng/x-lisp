@@ -10,7 +10,7 @@ int main(void) {
       0xC3,                            // ret
     };
     buffer_append_bytes(buffer, code, sizeof(code));
-    void *result = x86_execute(buffer);
+    void *result = x86_execute_flat(buffer);
     assert(42 == (uint64_t) result);
     buffer_free(buffer);
   }

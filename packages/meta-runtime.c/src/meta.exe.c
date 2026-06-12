@@ -81,7 +81,7 @@ static void handle_run_x86_flat(cli_ctx_t *ctx) {
   buffer_t *buffer = make_buffer();
   buffer_read(buffer, file);
   file_close(file);
-  x86_execute(buffer);
+  x86_execute_flat(buffer);
   buffer_free(buffer);
 }
 
@@ -91,7 +91,7 @@ static void handle_run_x86_flat_and_print(cli_ctx_t *ctx) {
   buffer_t *buffer = make_buffer();
   buffer_read(buffer, file);
   file_close(file);
-  void *result = x86_execute(buffer);
+  void *result = x86_execute_flat(buffer);
   buffer_free(buffer);
   printf("%ld\n", (int64_t) result);
 }
