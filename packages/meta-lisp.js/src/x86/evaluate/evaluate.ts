@@ -23,7 +23,16 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
     }
 
     case "VarExp": {
-      return evaluateVar(mod, env, exp.name, exp.location)
+      const value = X86.envLookup(env, exp.name)
+      if (value) return value
+
+      const definition = X86.modLookupDefinition(mod, exp.name)
+      if (definition) {
+        return definitionToValue(definition)
+      }
+
+      let message = `[evaluate] unknown name: ${exp.name}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "ApplyExp": {
@@ -32,27 +41,6 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
       return X86.apply(mod, env, target, args, exp.location)
     }
   }
-}
-
-function evaluateVar(
-  mod: X86.Mod,
-  env: X86.Env,
-  name: string,
-  location: S.SourceLocation,
-): X86.Value {
-  const value = X86.envLookup(env, name)
-  if (value) return value
-
-  const typeCtor = mod.typeConstructors.get(name)
-  if (typeCtor) {
-    if (typeCtor.parameters.length !== 0) {
-      return X86.TypeConstructorValue(typeCtor)
-    }
-    return X86.TypeValue(X86.DataType(typeCtor, []))
-  }
-
-  let message = `[evaluate] unknown name: ${name}`
-  throw new S.ErrorWithSourceLocation(message, location)
 }
 
 export function evaluateFields(
@@ -65,4 +53,25 @@ export function evaluateFields(
     result.set(field.name, evaluate(mod, env, field.exp))
   }
   return result
+}
+
+function definitionToValue(definition: X86.Definition): X86.Value {
+  if (definition.kind === "StructDefinition") {
+    const typeCtor = definition.typeConstructor
+    if (typeCtor.parameters.length !== 0) {
+      return X86.TypeConstructorValue(typeCtor)
+    }
+    return X86.TypeValue(X86.DataType(typeCtor, []))
+  }
+
+  if (definition.kind === "PrimitiveTypeDefinition") {
+    const typeCtor = definition.typeConstructor
+    if (typeCtor.parameters.length !== 0) {
+      return X86.TypeConstructorValue(typeCtor)
+    }
+    return X86.TypeValue(X86.DataType(typeCtor, []))
+  }
+
+  let message = `[definitionToValue] unexpected definition kind: ${definition.kind}`
+  throw new Error(message)
 }

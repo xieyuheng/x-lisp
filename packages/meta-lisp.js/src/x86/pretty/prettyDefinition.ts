@@ -49,5 +49,13 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
         [Ppml.text(definition.name)],
         [prettyExp(definition.size)],
       )
+    case "PrimitiveTypeDefinition": {
+      const arity = definition.typeConstructor.parameters.length
+      return Ppml.prettySyntax(
+        "declare-primitive-type",
+        [Ppml.text(definition.name), Ppml.text(arity.toString())],
+        [],
+      )
+    }
   }
 }

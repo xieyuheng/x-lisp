@@ -1,14 +1,21 @@
+import * as S from "@xieyuheng/sexp.js"
+import { PrimitiveTypeDefinition } from "../definition/Definition.ts"
 import type { Mod } from "../mod/index.ts"
 import type { TypeConstructor } from "./TypeConstructor.ts"
 
 export function registerBuiltinTypeConstructors(mod: Mod): void {
+  const builtinLocation = S.zeroLocation("<builtin>")
+
   const pointerTC: TypeConstructor = {
     mod,
     name: "pointer-t",
     parameters: ["T"],
     size: () => 8,
   }
-  mod.typeConstructors.set("pointer-t", pointerTC)
+  mod.definitions.set(
+    "pointer-t",
+    PrimitiveTypeDefinition("pointer-t", pointerTC, builtinLocation),
+  )
 
   const atomTypeConstructors: Array<{
     name: string
@@ -26,11 +33,15 @@ export function registerBuiltinTypeConstructors(mod: Mod): void {
   ]
 
   for (const atom of atomTypeConstructors) {
-    mod.typeConstructors.set(atom.name, {
+    const tc: TypeConstructor = {
       mod,
       name: atom.name,
       parameters: [],
       size: () => atom.size,
-    })
+    }
+    mod.definitions.set(
+      atom.name,
+      PrimitiveTypeDefinition(atom.name, tc, builtinLocation),
+    )
   }
 }

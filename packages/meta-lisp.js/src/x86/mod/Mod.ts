@@ -1,7 +1,7 @@
 import type { MetadataDefinition } from "../definition/Definition.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
-import type { Type, TypeConstructor } from "../type/index.ts"
+import type { Type } from "../type/index.ts"
 import { registerBuiltinTypeConstructors } from "../type/typeBuiltin.ts"
 
 export type Mod = {
@@ -11,7 +11,6 @@ export type Mod = {
   codeMetadataTypeExp: Exp | undefined
   codeMetadataType: Type | undefined
   metadataDefinitions: Map<string, MetadataDefinition>
-  typeConstructors: Map<string, TypeConstructor>
 }
 
 export function createMod(): Mod {
@@ -22,7 +21,6 @@ export function createMod(): Mod {
     codeMetadataTypeExp: undefined,
     codeMetadataType: undefined,
     metadataDefinitions: new Map(),
-    typeConstructors: new Map(),
   }
   registerBuiltinTypeConstructors(mod)
   return mod
