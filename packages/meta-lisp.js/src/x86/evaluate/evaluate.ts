@@ -26,17 +26,13 @@ export function evaluate(mod: N.Mod, exp: N.Exp): N.Value {
     }
 
     case "ApplyExp": {
-      throw new S.ErrorWithSourceLocation(
-        `[evaluate] ApplyExp is not supported in value position`,
-        exp.location,
-      )
+      let message = `[evaluate] ApplyExp is not supported in value position`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "VarExp": {
-      throw new S.ErrorWithSourceLocation(
-        `[evaluate] VarExp is not supported in value position`,
-        exp.location,
-      )
+      let message = `[evaluate] VarExp is not supported in value position`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }
