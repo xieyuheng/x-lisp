@@ -8,21 +8,15 @@ export function formatDefinition(definition: X86.Definition): string {
       return `(define-code ${definition.name} ${blocks})`
     }
     case "DataDefinition": {
-      const fields = Array.from(definition.fields.entries())
-        .map(([name, value]) => `(${name} ${X86.formatValue(value)})`)
-        .join(" ")
+      const fields = X86.formatFields(definition.fields)
       return `(define-data ${definition.name} ${fields})`
     }
     case "MetadataDefinition": {
-      const fields = Array.from(definition.fields.entries())
-        .map(([name, value]) => `(${name} ${X86.formatValue(value)})`)
-        .join(" ")
+      const fields = X86.formatFields(definition.fields)
       return `(define-metadata ${definition.target} ${fields})`
     }
     case "StructDefinition": {
-      const fields = Array.from(definition.fields.entries())
-        .map(([name, type]) => `(${name} ${X86.formatType(type)})`)
-        .join(" ")
+      const fields = X86.formatTypeFields(definition.fields)
       return `(define-struct ${definition.name} ${fields})`
     }
     case "SpaceDefinition":

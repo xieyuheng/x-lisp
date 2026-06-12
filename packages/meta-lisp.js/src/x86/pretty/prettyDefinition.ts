@@ -13,10 +13,7 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
       )
     }
     case "DataDefinition": {
-      const fieldNodes = Array.from(definition.fields.entries()).map(
-        ([name, value]) =>
-          Ppml.prettySyntax("", [], [Ppml.text(name), prettyValue(value)]),
-      )
+      const fieldNodes = prettyFields(definition.fields, prettyValue)
       return Ppml.prettySyntax(
         "define-data",
         [Ppml.text(definition.name)],
@@ -24,10 +21,7 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
       )
     }
     case "MetadataDefinition": {
-      const fieldNodes = Array.from(definition.fields.entries()).map(
-        ([name, value]) =>
-          Ppml.prettySyntax("", [], [Ppml.text(name), prettyValue(value)]),
-      )
+      const fieldNodes = prettyFields(definition.fields, prettyValue)
       return Ppml.prettySyntax(
         "define-metadata",
         [Ppml.text(definition.target)],
@@ -35,10 +29,7 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
       )
     }
     case "StructDefinition": {
-      const fieldNodes = Array.from(definition.fields.entries()).map(
-        ([name, type]) =>
-          Ppml.prettySyntax("", [], [Ppml.text(name), prettyType(type)]),
-      )
+      const fieldNodes = prettyTypeFields(definition.fields, prettyType)
       return Ppml.prettySyntax(
         "define-struct",
         [Ppml.text(definition.name)],
@@ -67,9 +58,7 @@ function prettyValue(value: X86.Value): Ppml.Node {
         [Ppml.text([value.name, ...value.path].join(" "))],
       )
     case "StructValue": {
-      const fieldNodes = Array.from(value.fields.entries()).map(([name, v]) =>
-        Ppml.prettySyntax("", [], [Ppml.text(name), prettyValue(v)]),
-      )
+      const fieldNodes = prettyFields(value.fields, prettyValue)
       const body = value.name
         ? [Ppml.text(value.name), ...fieldNodes]
         : fieldNodes
@@ -89,4 +78,22 @@ function prettyType(type: X86.Type): Ppml.Node {
     case "NamedType":
       return Ppml.text(type.name)
   }
+}
+
+export function prettyFields(
+  fields: Map<string, X86.Value>,
+  fmt: (value: X86.Value) => Ppml.Node,
+): Array<Ppml.Node> {
+  return Array.from(fields.entries()).map(([name, value]) =>
+    Ppml.prettySyntax("", [], [Ppml.text(name), fmt(value)]),
+  )
+}
+
+export function prettyTypeFields(
+  fields: Map<string, X86.Type>,
+  fmt: (type: X86.Type) => Ppml.Node,
+): Array<Ppml.Node> {
+  return Array.from(fields.entries()).map(([name, type]) =>
+    Ppml.prettySyntax("", [], [Ppml.text(name), fmt(type)]),
+  )
 }

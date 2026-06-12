@@ -11,12 +11,16 @@ export function formatValue(value: X86.Value): string {
       return `(label ${[value.name, ...value.path].join(" ")})`
     case "StructValue": {
       const prefix = value.name ? `${value.name} ` : ""
-      const fields = Array.from(value.fields.entries())
-        .map(([name, v]) => `(${name} ${formatValue(v)})`)
-        .join(" ")
+      const fields = formatFields(value.fields)
       return `(struct ${prefix}${fields})`
     }
     case "PointerValue":
       return `(pointer ${formatValue(value.target)})`
   }
+}
+
+export function formatFields(fields: Map<string, X86.Value>): string {
+  return Array.from(fields.entries())
+    .map(([name, value]) => `(${name} ${formatValue(value)})`)
+    .join(" ")
 }
