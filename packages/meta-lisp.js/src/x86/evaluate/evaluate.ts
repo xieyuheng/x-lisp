@@ -43,9 +43,6 @@ function evaluateVar(
   const binding = X86.envLookup(env, name)
   if (binding) return binding
 
-  const atomName = resolveAtomTypeName(name)
-  if (atomName) return X86.TypeValue(X86.AtomType(atomName))
-
   const typeCtor = mod.typeConstructors.get(name)
   if (typeCtor) {
     if (typeCtor.parameters.length !== 0) {
@@ -68,22 +65,4 @@ export function evaluateFields(
     result.set(field.name, evaluate(mod, env, field.exp))
   }
   return result
-}
-
-function resolveAtomTypeName(name: string): string | undefined {
-  if (!name.endsWith("-t")) return undefined
-  const base = name.slice(0, -2)
-  const known = [
-    "int8",
-    "int16",
-    "int32",
-    "int64",
-    "uint8",
-    "uint16",
-    "uint32",
-    "uint64",
-    "string",
-  ]
-  if (known.includes(base)) return base
-  return undefined
 }

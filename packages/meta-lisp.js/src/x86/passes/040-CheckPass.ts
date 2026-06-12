@@ -127,6 +127,20 @@ function checkFieldValue(
         let message = `[CheckPass] expected pointer or label value for pointer type, got: ${value.kind}`
         throw new S.ErrorWithSourceLocation(message, location)
       }
+      if (isIntegerAtomTypeCtor(typeConstructorName)) {
+        if (value.kind !== "IntValue") {
+          let message = `[CheckPass] expected integer value for type ${typeConstructorName}, got: ${value.kind}`
+          throw new S.ErrorWithSourceLocation(message, location)
+        }
+        return
+      }
+      if (typeConstructorName === "string-t") {
+        if (value.kind !== "StringValue") {
+          let message = `[CheckPass] expected string value for type string-t, got: ${value.kind}`
+          throw new S.ErrorWithSourceLocation(message, location)
+        }
+        return
+      }
       if (value.kind !== "StructValue") {
         let message = `[CheckPass] expected struct value for type ${typeConstructorName}, got: ${value.kind}`
         throw new S.ErrorWithSourceLocation(message, location)
@@ -178,4 +192,17 @@ function lookupStructDefinition(
     throw new S.ErrorWithSourceLocation(message, location)
   }
   return definition
+}
+
+function isIntegerAtomTypeCtor(name: string): boolean {
+  return (
+    name === "int8-t" ||
+    name === "int16-t" ||
+    name === "int32-t" ||
+    name === "int64-t" ||
+    name === "uint8-t" ||
+    name === "uint16-t" ||
+    name === "uint32-t" ||
+    name === "uint64-t"
+  )
 }
