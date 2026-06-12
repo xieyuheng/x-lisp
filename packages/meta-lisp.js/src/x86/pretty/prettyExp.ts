@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function prettyExp(exp: N.Exp): Ppml.Node {
+export function prettyExp(exp: X86.Exp): Ppml.Node {
   switch (exp.kind) {
     case "VarExp":
       return Ppml.text(exp.name)

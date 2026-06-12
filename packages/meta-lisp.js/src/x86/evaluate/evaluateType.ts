@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function evaluateType(mod: N.Mod, exp: N.Exp): N.Type {
+export function evaluateType(mod: X86.Mod, exp: X86.Exp): X86.Type {
   switch (exp.kind) {
     case "VarExp": {
       return evaluateVarType(mod, exp.name, exp.location)
@@ -16,7 +16,7 @@ export function evaluateType(mod: N.Mod, exp: N.Exp): N.Type {
           )
         }
         const targetType = evaluateType(mod, exp.args[0])
-        return N.PointerType(targetType)
+        return X86.PointerType(targetType)
       }
       throw new S.ErrorWithSourceLocation(
         `[evaluateType] unknown type expression: ${exp.target.kind}`,
@@ -38,19 +38,19 @@ export function evaluateType(mod: N.Mod, exp: N.Exp): N.Type {
 }
 
 function evaluateVarType(
-  mod: N.Mod,
+  mod: X86.Mod,
   name: string,
   location: S.SourceLocation,
-): N.Type {
+): X86.Type {
   const atomName = resolveAtomTypeName(name)
-  if (atomName) return N.AtomType(atomName)
+  if (atomName) return X86.AtomType(atomName)
 
-  const definition = N.modLookupDefinition(mod, name)
+  const definition = X86.modLookupDefinition(mod, name)
   if (definition && definition.kind === "StructDefinition") {
-    return N.NamedType(mod, name)
+    return X86.NamedType(mod, name)
   }
 
-  const claimedType = N.modLookupClaimedType(mod, name)
+  const claimedType = X86.modLookupClaimedType(mod, name)
   if (claimedType) return claimedType
 
   throw new S.ErrorWithSourceLocation(

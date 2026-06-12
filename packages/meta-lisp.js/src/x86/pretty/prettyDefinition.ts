@@ -1,8 +1,8 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 import { prettyBlock } from "./prettyBlock.ts"
 
-export function prettyDefinition(definition: N.Definition): Ppml.Node {
+export function prettyDefinition(definition: X86.Definition): Ppml.Node {
   switch (definition.kind) {
     case "CodeDefinition": {
       const blockNodes = definition.blocks.map(prettyBlock)
@@ -54,7 +54,7 @@ export function prettyDefinition(definition: N.Definition): Ppml.Node {
   }
 }
 
-function prettyValue(value: N.Value): Ppml.Node {
+function prettyValue(value: X86.Value): Ppml.Node {
   switch (value.kind) {
     case "IntValue":
       return Ppml.text(value.value.toString())
@@ -80,7 +80,7 @@ function prettyValue(value: N.Value): Ppml.Node {
   }
 }
 
-function prettyType(type: N.Type): Ppml.Node {
+function prettyType(type: X86.Type): Ppml.Node {
   switch (type.kind) {
     case "AtomType":
       return Ppml.text(type.name)

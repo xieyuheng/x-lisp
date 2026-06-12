@@ -1,6 +1,6 @@
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function formatOperand(operand: N.Operand): string {
+export function formatOperand(operand: X86.Operand): string {
   switch (operand.kind) {
     case "RegOperand":
       return `(reg ${operand.name})`

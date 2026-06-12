@@ -1,6 +1,6 @@
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function formatExp(exp: N.Exp): string {
+export function formatExp(exp: X86.Exp): string {
   switch (exp.kind) {
     case "VarExp":
       return exp.name

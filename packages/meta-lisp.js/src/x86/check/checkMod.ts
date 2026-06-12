@@ -1,14 +1,14 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function checkMod(mod: N.Mod): void {
+export function checkMod(mod: X86.Mod): void {
   checkDuplicateNames(mod)
   checkClaimedTypes(mod)
   checkMetadataTargets(mod)
   checkFieldTypes(mod)
 }
 
-function checkDuplicateNames(mod: N.Mod): void {
+function checkDuplicateNames(mod: X86.Mod): void {
   for (const name of mod.definitions.keys()) {
     if (
       Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1
@@ -19,10 +19,10 @@ function checkDuplicateNames(mod: N.Mod): void {
   }
 }
 
-function checkClaimedTypes(mod: N.Mod): void {
+function checkClaimedTypes(mod: X86.Mod): void {
   for (const [name, def] of mod.definitions) {
     if (def.kind === "DataDefinition") {
-      const claimedType = N.modLookupClaimedType(mod, name)
+      const claimedType = X86.modLookupClaimedType(mod, name)
       if (claimedType === undefined) {
         throw new S.ErrorWithSourceLocation(
           `[check] define-data "${name}" is missing a corresponding claim`,
@@ -34,9 +34,9 @@ function checkClaimedTypes(mod: N.Mod): void {
   }
 }
 
-function checkMetadataTargets(mod: N.Mod): void {
+function checkMetadataTargets(mod: X86.Mod): void {
   for (const [target, meta] of mod.metadataDefinitions) {
-    const targetDef = N.modLookupDefinition(mod, target)
+    const targetDef = X86.modLookupDefinition(mod, target)
     if (targetDef === undefined || targetDef.kind !== "CodeDefinition") {
       throw new S.ErrorWithSourceLocation(
         `[check] define-metadata target "${target}" is not a define-code`,
@@ -51,12 +51,12 @@ function checkMetadataTargets(mod: N.Mod): void {
   }
 }
 
-function checkFieldTypes(mod: N.Mod): void {
+function checkFieldTypes(mod: X86.Mod): void {
   for (const [, def] of mod.definitions) {
     if (def.kind === "StructDefinition") {
       for (const [fieldName, fieldType] of def.fields) {
         if (fieldType.kind === "NamedType") {
-          const structDef = N.modLookupDefinition(mod, fieldType.name)
+          const structDef = X86.modLookupDefinition(mod, fieldType.name)
           if (
             structDef === undefined ||
             structDef.kind !== "StructDefinition"
@@ -73,9 +73,9 @@ function checkFieldTypes(mod: N.Mod): void {
 }
 
 function checkStructFields(
-  mod: N.Mod,
-  fields: Map<string, N.Value>,
-  type: N.Type,
+  mod: X86.Mod,
+  fields: Map<string, X86.Value>,
+  type: X86.Type,
   location: S.SourceLocation,
 ): void {
   if (type.kind !== "NamedType") {
@@ -84,7 +84,7 @@ function checkStructFields(
       location,
     )
   }
-  const structDef = N.modLookupDefinition(mod, type.name)
+  const structDef = X86.modLookupDefinition(mod, type.name)
   if (structDef === undefined || structDef.kind !== "StructDefinition") {
     throw new S.ErrorWithSourceLocation(
       `[check] unknown struct type: ${type.name}`,
@@ -104,9 +104,9 @@ function checkStructFields(
 }
 
 function checkFieldValue(
-  mod: N.Mod,
-  value: N.Value,
-  type: N.Type,
+  mod: X86.Mod,
+  value: X86.Value,
+  type: X86.Type,
   location: S.SourceLocation,
 ): void {
   switch (type.kind) {
@@ -158,7 +158,7 @@ function checkFieldValue(
           location,
         )
       }
-      const innerDef = N.modLookupDefinition(mod, type.name)
+      const innerDef = X86.modLookupDefinition(mod, type.name)
       if (innerDef === undefined || innerDef.kind !== "StructDefinition") {
         throw new S.ErrorWithSourceLocation(
           `[check] unknown struct type in check: ${type.name}`,

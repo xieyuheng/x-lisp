@@ -1,8 +1,8 @@
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 import { formatBlock } from "./formatBlock.ts"
 import { formatExp } from "./formatExp.ts"
 
-export function formatStmt(stmt: N.Stmt): string {
+export function formatStmt(stmt: X86.Stmt): string {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
       const blocks = stmt.blocks.map(formatBlock).join(" ")

@@ -1,19 +1,19 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 import { parseOperand } from "./parseOperand.ts"
 
-export const parseInstr: S.Router<N.Instr> = S.createRouter<N.Instr>({
+export const parseInstr: S.Router<X86.Instr> = S.createRouter<X86.Instr>({
   "(cons* op operands)": ({ op, operands }, { location }) => {
     const opName = S.asSymbolSexp(op).content
     const ops = S.asListSexp(operands).elements.map((o) => parseOperand(o))
-    return N.Instr(opName, ops, location)
+    return X86.Instr(opName, ops, location)
   },
 
   data: ({ data }, { location }) => {
     if (data.kind === "SymbolSexp") {
-      return N.Instr(
+      return X86.Instr(
         "label",
-        [N.LabelOperand(data.content, [], location)],
+        [X86.LabelOperand(data.content, [], location)],
         location,
       )
     }

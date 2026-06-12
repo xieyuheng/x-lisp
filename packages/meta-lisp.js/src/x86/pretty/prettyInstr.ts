@@ -1,8 +1,8 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 import { prettyOperand } from "./prettyOperand.ts"
 
-export function prettyInstr(instr: N.Instr): Ppml.Node {
+export function prettyInstr(instr: X86.Instr): Ppml.Node {
   if (instr.op === "label") {
     const operands = instr.operands.map(prettyOperand)
     if (operands.length === 0) return Ppml.nil()

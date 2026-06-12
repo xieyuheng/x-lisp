@@ -1,9 +1,9 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 import { prettyBlock } from "./prettyBlock.ts"
 import { prettyExp } from "./prettyExp.ts"
 
-export function prettyStmt(stmt: N.Stmt): Ppml.Node {
+export function prettyStmt(stmt: X86.Stmt): Ppml.Node {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
       const blockNodes = stmt.blocks.map(prettyBlock)

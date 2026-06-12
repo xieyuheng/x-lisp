@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export const parseExp: S.Router<N.Exp> = S.createRouter<N.Exp>({
+export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
   "(cons* 'struct rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {
@@ -18,7 +18,7 @@ export const parseExp: S.Router<N.Exp> = S.createRouter<N.Exp>({
     } else {
       fieldStart = 0
     }
-    const fields: Array<N.StructField> = []
+    const fields: Array<X86.StructField> = []
     for (let i = fieldStart; i < elements.length; i++) {
       const field = S.asListSexp(elements[i])
       const fieldElements = field.elements
@@ -30,24 +30,24 @@ export const parseExp: S.Router<N.Exp> = S.createRouter<N.Exp>({
       }
       const fieldName = S.asSymbolSexp(fieldElements[0]).content
       const fieldExp = parseExp(fieldElements[1])
-      fields.push(N.StructField(fieldName, fieldExp))
+      fields.push(X86.StructField(fieldName, fieldExp))
     }
-    return N.StructExp(name, fields, location)
+    return X86.StructExp(name, fields, location)
   },
 
   "`(pointer ,target)": ({ target }, { location }) => {
-    return N.PointerExp(parseExp(target), location)
+    return X86.PointerExp(parseExp(target), location)
   },
 
   "(cons* 'label path)": ({ path }, { location }) => {
     const elements = S.asListSexp(path).elements.map(
       (x) => S.asSymbolSexp(x).content,
     )
-    return N.LabelExp(elements[0], elements.slice(1), location)
+    return X86.LabelExp(elements[0], elements.slice(1), location)
   },
 
   "(cons* target args)": ({ target, args }, { location }) => {
-    return N.ApplyExp(
+    return X86.ApplyExp(
       parseExp(target),
       S.asListSexp(args).elements.map(parseExp),
       location,
@@ -57,11 +57,11 @@ export const parseExp: S.Router<N.Exp> = S.createRouter<N.Exp>({
   data: ({ data }, { location }) => {
     switch (data.kind) {
       case "SymbolSexp":
-        return N.VarExp(S.asSymbolSexp(data).content, location)
+        return X86.VarExp(S.asSymbolSexp(data).content, location)
       case "IntSexp":
-        return N.IntExp(S.asIntSexp(data).content, location)
+        return X86.IntExp(S.asIntSexp(data).content, location)
       case "StringSexp":
-        return N.StringExp(S.asStringSexp(data).content, location)
+        return X86.StringExp(S.asStringSexp(data).content, location)
       default: {
         throw new S.ErrorWithSourceLocation(
           `unexpected exp: ${S.formatSexp(data)}`,

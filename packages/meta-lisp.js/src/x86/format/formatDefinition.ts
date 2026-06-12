@@ -1,7 +1,7 @@
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 import { formatBlock } from "./formatBlock.ts"
 
-export function formatDefinition(definition: N.Definition): string {
+export function formatDefinition(definition: X86.Definition): string {
   switch (definition.kind) {
     case "CodeDefinition": {
       const blocks = definition.blocks.map(formatBlock).join(" ")
@@ -30,7 +30,7 @@ export function formatDefinition(definition: N.Definition): string {
   }
 }
 
-function formatValue(value: N.Value): string {
+function formatValue(value: X86.Value): string {
   switch (value.kind) {
     case "IntValue":
       return value.value.toString()
@@ -51,7 +51,7 @@ function formatValue(value: N.Value): string {
   }
 }
 
-function formatType(type: N.Type): string {
+function formatType(type: X86.Type): string {
   switch (type.kind) {
     case "AtomType":
       return type.name

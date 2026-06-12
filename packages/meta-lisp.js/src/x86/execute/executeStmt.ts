@@ -1,62 +1,62 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
+export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      N.modDefine(mod, N.CodeDefinition(stmt.name, stmt.blocks, stmt.location))
+      X86.modDefine(mod, X86.CodeDefinition(stmt.name, stmt.blocks, stmt.location))
       return
     }
 
     case "DefineDataStmt": {
-      const fields = new Map<string, N.Value>()
+      const fields = new Map<string, X86.Value>()
       for (const field of stmt.fields) {
-        fields.set(field.name, N.evaluate(mod, field.exp))
+        fields.set(field.name, X86.evaluate(mod, field.exp))
       }
-      N.modDefine(mod, N.DataDefinition(stmt.name, fields, stmt.location))
+      X86.modDefine(mod, X86.DataDefinition(stmt.name, fields, stmt.location))
       return
     }
 
     case "DefineMetadataStmt": {
-      const fields = new Map<string, N.Value>()
+      const fields = new Map<string, X86.Value>()
       for (const field of stmt.fields) {
-        fields.set(field.name, N.evaluate(mod, field.exp))
+        fields.set(field.name, X86.evaluate(mod, field.exp))
       }
-      N.modDefine(mod, N.MetadataDefinition(stmt.name, fields, stmt.location))
+      X86.modDefine(mod, X86.MetadataDefinition(stmt.name, fields, stmt.location))
       return
     }
 
     case "DefineStructStmt": {
-      const fields = new Map<string, N.Type>()
+      const fields = new Map<string, X86.Type>()
       for (const field of stmt.fields) {
-        const fieldType = N.evaluateType(mod, field.exp)
+        const fieldType = X86.evaluateType(mod, field.exp)
         fields.set(field.name, fieldType)
       }
-      N.modDefine(mod, N.StructDefinition(stmt.name, fields, stmt.location))
+      X86.modDefine(mod, X86.StructDefinition(stmt.name, fields, stmt.location))
       return
     }
 
     case "DefineSpaceStmt": {
-      const value = N.evaluate(mod, stmt.size)
+      const value = X86.evaluate(mod, stmt.size)
       if (value.kind !== "IntValue") {
         throw new S.ErrorWithSourceLocation(
           `define-space size must be an integer`,
           stmt.size.location,
         )
       }
-      N.modDefine(mod, N.SpaceDefinition(stmt.name, value.value, stmt.location))
+      X86.modDefine(mod, X86.SpaceDefinition(stmt.name, value.value, stmt.location))
       return
     }
 
     case "ClaimStmt": {
-      const type = N.evaluateType(mod, stmt.type)
-      N.modSetClaimedType(mod, stmt.name, type)
+      const type = X86.evaluateType(mod, stmt.type)
+      X86.modSetClaimedType(mod, stmt.name, type)
       return
     }
 
     case "ClaimCodeMetadataStmt": {
-      const type = N.evaluateType(mod, stmt.type)
-      N.modSetCodeMetadataType(mod, type)
+      const type = X86.evaluateType(mod, stmt.type)
+      X86.modSetCodeMetadataType(mod, type)
       return
     }
   }

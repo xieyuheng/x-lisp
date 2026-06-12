@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as N from "../index.ts"
+import * as X86 from "../index.ts"
 
-export function prettyOperand(operand: N.Operand): Ppml.Node {
+export function prettyOperand(operand: X86.Operand): Ppml.Node {
   switch (operand.kind) {
     case "RegOperand":
       return Ppml.prettySyntax("reg", [], [Ppml.text(operand.name)])
