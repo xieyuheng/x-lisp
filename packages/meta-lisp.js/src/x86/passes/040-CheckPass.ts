@@ -19,8 +19,6 @@ function checkDuplicateNames(mod: X86.Mod): void {
 }
 
 function checkDataFields(mod: X86.Mod): void {
-  const env = X86.emptyEnv()
-
   for (const [, definition] of mod.definitions) {
     if (definition.kind === "DataDefinition") {
       const claimedType = X86.modLookupClaimedType(mod, definition.name)
@@ -28,20 +26,28 @@ function checkDataFields(mod: X86.Mod): void {
         let message = `[CheckPass] define-data "${definition.name}" is missing a corresponding claim`
         throw new S.ErrorWithSourceLocation(message, definition.location)
       }
-      const evaluatedFields = X86.evaluateFields(mod, env, definition.fields)
-      X86.checkStructFields(
+      if (claimedType.kind !== "DataType") {
+        let message = `[CheckPass] claim type for "${definition.name}" is not a struct type`
+        throw new S.ErrorWithSourceLocation(message, definition.location)
+      }
+      const unfoldedFields = X86.dataTypeUnfold(
         mod,
-        evaluatedFields,
         claimedType,
         definition.location,
       )
+      for (const field of definition.fields) {
+        const expectedType = unfoldedFields.get(field.name)
+        if (expectedType === undefined) {
+          let message = `[CheckPass] unexpected field "${field.name}" for type "${claimedType.typeConstructor.name}"`
+          throw new S.ErrorWithSourceLocation(message, field.exp.location)
+        }
+        X86.check(mod, field.exp, expectedType)
+      }
     }
   }
 }
 
 function checkMetadataTargets(mod: X86.Mod): void {
-  const env = X86.emptyEnv()
-
   for (const [target, meta] of mod.metadataDefinitions) {
     const targetDefinition = X86.modLookupDefinition(mod, target)
     if (
@@ -55,13 +61,23 @@ function checkMetadataTargets(mod: X86.Mod): void {
 
   if (mod.codeMetadataType !== undefined) {
     for (const [target, meta] of mod.metadataDefinitions) {
-      const evaluatedFields = X86.evaluateFields(mod, env, meta.fields)
-      X86.checkStructFields(
+      if (mod.codeMetadataType.kind !== "DataType") {
+        let message = `[CheckPass] code-metadata type is not a struct type`
+        throw new S.ErrorWithSourceLocation(message, meta.location)
+      }
+      const unfoldedFields = X86.dataTypeUnfold(
         mod,
-        evaluatedFields,
         mod.codeMetadataType,
         meta.location,
       )
+      for (const field of meta.fields) {
+        const expectedType = unfoldedFields.get(field.name)
+        if (expectedType === undefined) {
+          let message = `[CheckPass] unexpected metadata field "${field.name}"`
+          throw new S.ErrorWithSourceLocation(message, field.exp.location)
+        }
+        X86.check(mod, field.exp, expectedType)
+      }
     }
   }
 }

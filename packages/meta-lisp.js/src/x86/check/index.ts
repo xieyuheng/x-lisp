@@ -1,1 +1,1 @@
-export * from "./checkMod.ts"
+export * from "./check.ts"
