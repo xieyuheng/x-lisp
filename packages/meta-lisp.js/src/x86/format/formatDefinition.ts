@@ -1,5 +1,6 @@
 import * as X86 from "../index.ts"
 import { formatBlock } from "./formatBlock.ts"
+import { formatExp } from "./formatExp.ts"
 
 export function formatDefinition(definition: X86.Definition): string {
   switch (definition.kind) {
@@ -8,18 +9,24 @@ export function formatDefinition(definition: X86.Definition): string {
       return `(define-code ${definition.name} ${blocks})`
     }
     case "DataDefinition": {
-      const fields = X86.formatFields(definition.fields)
+      const fields = definition.fields
+        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
+        .join(" ")
       return `(define-data ${definition.name} ${fields})`
     }
     case "MetadataDefinition": {
-      const fields = X86.formatFields(definition.fields)
+      const fields = definition.fields
+        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
+        .join(" ")
       return `(define-metadata ${definition.target} ${fields})`
     }
     case "StructDefinition": {
-      const fields = X86.formatTypeFields(definition.fields)
+      const fields = definition.fields
+        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
+        .join(" ")
       return `(define-struct ${definition.name} ${fields})`
     }
     case "SpaceDefinition":
-      return `(define-space ${definition.name} ${definition.size})`
+      return `(define-space ${definition.name} ${formatExp(definition.size)})`
   }
 }

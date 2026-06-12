@@ -1,7 +1,6 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Block } from "../block/index.ts"
-import type { Type } from "../type/index.ts"
-import type { Value } from "../value/index.ts"
+import type { Exp, StructField } from "../exp/index.ts"
 
 export type Definition =
   | CodeDefinition
@@ -33,13 +32,13 @@ export function CodeDefinition(
 export type DataDefinition = {
   kind: "DataDefinition"
   name: string
-  fields: Map<string, Value>
+  fields: Array<StructField>
   location: SourceLocation
 }
 
 export function DataDefinition(
   name: string,
-  fields: Map<string, Value>,
+  fields: Array<StructField>,
   location: SourceLocation,
 ): DataDefinition {
   return {
@@ -53,13 +52,13 @@ export function DataDefinition(
 export type MetadataDefinition = {
   kind: "MetadataDefinition"
   target: string
-  fields: Map<string, Value>
+  fields: Array<StructField>
   location: SourceLocation
 }
 
 export function MetadataDefinition(
   target: string,
-  fields: Map<string, Value>,
+  fields: Array<StructField>,
   location: SourceLocation,
 ): MetadataDefinition {
   return {
@@ -73,13 +72,13 @@ export function MetadataDefinition(
 export type StructDefinition = {
   kind: "StructDefinition"
   name: string
-  fields: Map<string, Type>
+  fields: Array<StructField>
   location: SourceLocation
 }
 
 export function StructDefinition(
   name: string,
-  fields: Map<string, Type>,
+  fields: Array<StructField>,
   location: SourceLocation,
 ): StructDefinition {
   return {
@@ -93,13 +92,13 @@ export function StructDefinition(
 export type SpaceDefinition = {
   kind: "SpaceDefinition"
   name: string
-  size: bigint
+  size: Exp
   location: SourceLocation
 }
 
 export function SpaceDefinition(
   name: string,
-  size: bigint,
+  size: Exp,
   location: SourceLocation,
 ): SpaceDefinition {
   return {
