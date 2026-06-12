@@ -32,8 +32,9 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineSpaceStmt": {
       const value = X86.evaluate(mod, stmt.size)
       if (value.kind !== "IntValue") {
+        let message = `define-space size must be an integer`
         throw new S.ErrorWithSourceLocation(
-          `define-space size must be an integer`,
+          message,
           stmt.size.location,
         )
       }

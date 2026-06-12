@@ -60,23 +60,17 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
 
 function parseBlock(sexp: S.Sexp): X86.Block {
   if (sexp.kind !== "ListSexp") {
-    throw new S.ErrorWithSourceLocation(
-      `expected (block name ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const elements = sexp.elements
   if (elements.length < 2) {
-    throw new S.ErrorWithSourceLocation(
-      `expected (block name ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "block") {
-    throw new S.ErrorWithSourceLocation(
-      `expected (block name ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const blockName = S.asSymbolSexp(elements[1]).content
   const instrs = elements.slice(2).map((i) => parseInstr(i))
@@ -87,10 +81,8 @@ function parseFields(rest: S.Sexp): Array<X86.StructField> {
   const elements = S.asListSexp(rest).elements
   return elements.map((elem) => {
     if (elem.kind !== "ListSexp" || elem.elements.length !== 2) {
-      throw new S.ErrorWithSourceLocation(
-        `expected (field-name value), got: ${S.formatSexp(elem)}`,
-        elem.location,
-      )
+      let message = `expected (field-name value), got: ${S.formatSexp(elem)}`
+      throw new S.ErrorWithSourceLocation(message, elem.location)
     }
     const fieldName = S.asSymbolSexp(elem.elements[0]).content
     const fieldExp = parseExp(elem.elements[1])

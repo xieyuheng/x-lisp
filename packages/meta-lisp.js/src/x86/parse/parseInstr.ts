@@ -17,9 +17,7 @@ export const parseInstr: S.Router<X86.Instr> = S.createRouter<X86.Instr>({
         location,
       )
     }
-    throw new S.ErrorWithSourceLocation(
-      `unexpected instr: ${S.formatSexp(data)}`,
-      location,
-    )
+    let message = `unexpected instr: ${S.formatSexp(data)}`
+    throw new S.ErrorWithSourceLocation(message, location)
   },
 })

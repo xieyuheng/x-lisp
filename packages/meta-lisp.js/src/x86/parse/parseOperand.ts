@@ -8,10 +8,8 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
 
   "`(imm ,value)": ({ value }, { location }) => {
     if (value.kind !== "IntSexp") {
-      throw new S.ErrorWithSourceLocation(
-        "imm operand requires an integer value",
-        location,
-      )
+      let message = "imm operand requires an integer value"
+      throw new S.ErrorWithSourceLocation(message, location)
     }
     return X86.ImmOperand(S.asIntSexp(value).content, location)
   },
@@ -37,10 +35,8 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     const baseName = parseRegName(base)
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {
-      throw new S.ErrorWithSourceLocation(
-        "reg-deref requires at least a displacement",
-        location,
-      )
+      let message = "reg-deref requires at least a displacement"
+      throw new S.ErrorWithSourceLocation(message, location)
     }
     if (elements.length === 1) {
       const disp = parseImmValue(elements[0])
@@ -68,22 +64,18 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
 
 function parseRegName(sexp: S.Sexp): string {
   if (sexp.kind !== "ListSexp") {
-    throw new S.ErrorWithSourceLocation(
-      `expected (reg ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (reg ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const elements = sexp.elements
-  if (elements.length !== 2)
-    throw new S.ErrorWithSourceLocation(
-      `expected (reg name), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
-  if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "reg")
-    throw new S.ErrorWithSourceLocation(
-      `expected (reg name), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+  if (elements.length !== 2) {
+    let message = `expected (reg name), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
+  }
+  if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "reg") {
+    let message = `expected (reg name), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
+  }
   return S.asSymbolSexp(elements[1]).content
 }
 
@@ -94,31 +86,23 @@ function parseImmValue(sexp: S.Sexp): bigint {
   if (sexp.kind === "SymbolSexp" && sexp.content.startsWith("-")) {
     return BigInt(sexp.content)
   }
-  throw new S.ErrorWithSourceLocation(
-    `expected integer, got: ${S.formatSexp(sexp)}`,
-    sexp.location,
-  )
+  let message = `expected integer, got: ${S.formatSexp(sexp)}`
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
 function parseLabelOperand(sexp: S.Sexp): X86.LabelOperand {
   if (sexp.kind !== "ListSexp") {
-    throw new S.ErrorWithSourceLocation(
-      `expected (label ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (label ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const elements = sexp.elements
   if (elements.length < 2) {
-    throw new S.ErrorWithSourceLocation(
-      `expected (label name ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (label name ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "label") {
-    throw new S.ErrorWithSourceLocation(
-      `expected (label ...), got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+    let message = `expected (label ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const path = elements.slice(1).map((x) => S.asSymbolSexp(x).content)
   return X86.LabelOperand(path[0], path.slice(1), sexp.location)

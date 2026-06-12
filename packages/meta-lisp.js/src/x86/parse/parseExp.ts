@@ -5,10 +5,8 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
   "(cons* 'struct rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {
-      throw new S.ErrorWithSourceLocation(
-        "struct requires at least one field",
-        location,
-      )
+      let message = "struct requires at least one field"
+      throw new S.ErrorWithSourceLocation(message, location)
     }
     let name: string | undefined
     let fieldStart: number
@@ -23,10 +21,8 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
       const field = S.asListSexp(elements[i])
       const fieldElements = field.elements
       if (fieldElements.length !== 2) {
-        throw new S.ErrorWithSourceLocation(
-          "struct field must have two elements: name and value",
-          field.location,
-        )
+        let message = "struct field must have two elements: name and value"
+        throw new S.ErrorWithSourceLocation(message, field.location)
       }
       const fieldName = S.asSymbolSexp(fieldElements[0]).content
       const fieldExp = parseExp(fieldElements[1])
@@ -63,10 +59,8 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
       case "StringSexp":
         return X86.StringExp(S.asStringSexp(data).content, location)
       default: {
-        throw new S.ErrorWithSourceLocation(
-          `unexpected exp: ${S.formatSexp(data)}`,
-          location,
-        )
+        let message = `unexpected exp: ${S.formatSexp(data)}`
+        throw new S.ErrorWithSourceLocation(message, location)
       }
     }
   },

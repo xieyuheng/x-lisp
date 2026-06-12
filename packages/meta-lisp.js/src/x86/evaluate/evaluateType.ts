@@ -10,18 +10,14 @@ export function evaluateType(mod: X86.Mod, exp: X86.Exp): X86.Type {
     case "ApplyExp": {
       if (exp.target.kind === "VarExp" && exp.target.name === "pointer-t") {
         if (exp.args.length !== 1) {
-          throw new S.ErrorWithSourceLocation(
-            `(pointer-t <type>) requires exactly one argument`,
-            exp.location,
-          )
+          let message = `(pointer-t <type>) requires exactly one argument`
+          throw new S.ErrorWithSourceLocation(message, exp.location)
         }
         const targetType = evaluateType(mod, exp.args[0])
         return X86.PointerType(targetType)
       }
-      throw new S.ErrorWithSourceLocation(
-        `[evaluateType] unknown type expression: ${exp.target.kind}`,
-        exp.location,
-      )
+      let message = `[evaluateType] unknown type expression: ${exp.target.kind}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 
     case "StringExp":
@@ -29,10 +25,8 @@ export function evaluateType(mod: X86.Mod, exp: X86.Exp): X86.Type {
     case "StructExp":
     case "PointerExp":
     case "LabelExp": {
-      throw new S.ErrorWithSourceLocation(
-        `[evaluateType] unexpected exp kind: ${exp.kind}`,
-        exp.location,
-      )
+      let message = `[evaluateType] unexpected exp kind: ${exp.kind}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
 }
@@ -53,10 +47,8 @@ function evaluateVarType(
   const claimedType = X86.modLookupClaimedType(mod, name)
   if (claimedType) return claimedType
 
-  throw new S.ErrorWithSourceLocation(
-    `[evaluateType] unknown type name: ${name}`,
-    location,
-  )
+  let message = `[evaluateType] unknown type name: ${name}`
+  throw new S.ErrorWithSourceLocation(message, location)
 }
 
 export function evaluateTypeFields(
