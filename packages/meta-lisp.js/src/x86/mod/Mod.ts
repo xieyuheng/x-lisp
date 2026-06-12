@@ -1,7 +1,6 @@
 import type { MetadataDefinition } from "../definition/Definition.ts"
 import type { Definition } from "../definition/index.ts"
-import type { Type } from "../type/index.ts"
-import type { TypeConstructor } from "../type/index.ts"
+import type { Type, TypeConstructor } from "../type/index.ts"
 import { registerBuiltinTypeConstructors } from "../type/typeBuiltin.ts"
 
 export type Mod = {

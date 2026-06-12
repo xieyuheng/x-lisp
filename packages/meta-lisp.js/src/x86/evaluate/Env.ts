@@ -18,11 +18,7 @@ export function envPut(env: Env, name: string, value: Value): Env {
   return { bindings: newBindings }
 }
 
-export function envPutMany(
-  env: Env,
-  names: string[],
-  values: Value[],
-): Env {
+export function envPutMany(env: Env, names: string[], values: Value[]): Env {
   const newBindings = new Map(env.bindings)
   for (let i = 0; i < names.length; i++) {
     newBindings.set(names[i], values[i])

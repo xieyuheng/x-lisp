@@ -102,9 +102,7 @@ function parseStructName(
     }
     return {
       structName: S.asSymbolSexp(elements[0]).content,
-      parameters: elements
-        .slice(1)
-        .map((p) => S.asSymbolSexp(p).content),
+      parameters: elements.slice(1).map((p) => S.asSymbolSexp(p).content),
     }
   }
   return {

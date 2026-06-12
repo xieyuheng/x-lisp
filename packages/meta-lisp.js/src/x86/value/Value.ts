@@ -1,5 +1,4 @@
-import type { Type } from "../type/index.ts"
-import type { TypeConstructor } from "../type/index.ts"
+import type { Type, TypeConstructor } from "../type/index.ts"
 
 export type Value =
   | IntValue

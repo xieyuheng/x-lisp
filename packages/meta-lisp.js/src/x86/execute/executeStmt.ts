@@ -32,16 +32,9 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
       const paramValues = stmt.parameters.map((p) =>
         X86.TypeValue(X86.VarType(p)),
       )
-      const env = X86.envPutMany(
-        X86.emptyEnv(),
-        stmt.parameters,
-        paramValues,
-      )
+      const env = X86.envPutMany(X86.emptyEnv(), stmt.parameters, paramValues)
       const fields = X86.evaluateTypeFields(mod, env, stmt.fields)
-      X86.modDefine(
-        mod,
-        X86.StructDefinition(stmt.name, fields, stmt.location),
-      )
+      X86.modDefine(mod, X86.StructDefinition(stmt.name, fields, stmt.location))
       const typeCtor: X86.TypeConstructor = {
         mod,
         name: stmt.name,

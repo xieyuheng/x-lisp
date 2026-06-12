@@ -11,8 +11,7 @@ export function apply(
   if (X86.isTypeConstructorValue(target)) {
     const typeCtor = target.typeConstructor
     if (args.length !== typeCtor.parameters.length) {
-      let message =
-        `[apply] type constructor ${typeCtor.name} expects ${typeCtor.parameters.length} arguments, got ${args.length}`
+      let message = `[apply] type constructor ${typeCtor.name} expects ${typeCtor.parameters.length} arguments, got ${args.length}`
       throw new S.ErrorWithSourceLocation(message, location)
     }
     const argTypes = args.map((arg) => X86.asTypeValue(arg).type)

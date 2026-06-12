@@ -1,11 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
-export function evaluate(
-  mod: X86.Mod,
-  env: X86.Env,
-  exp: X86.Exp,
-): X86.Value {
+export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
   switch (exp.kind) {
     case "IntExp":
       return X86.IntValue(exp.value)
