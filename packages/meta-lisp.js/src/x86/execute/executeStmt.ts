@@ -11,7 +11,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
     case "DefineDataStmt": {
       const fields = new Map<string, N.Value>()
       for (const field of stmt.fields) {
-        fields.set(field.name, N.evaluateExp(mod, field.exp))
+        fields.set(field.name, N.evaluate(mod, field.exp))
       }
       N.modDefine(mod, N.DataDefinition(stmt.name, fields, stmt.location))
       return
@@ -20,7 +20,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
     case "DefineMetadataStmt": {
       const fields = new Map<string, N.Value>()
       for (const field of stmt.fields) {
-        fields.set(field.name, N.evaluateExp(mod, field.exp))
+        fields.set(field.name, N.evaluate(mod, field.exp))
       }
       N.modDefine(mod, N.MetadataDefinition(stmt.name, fields, stmt.location))
       return
@@ -37,7 +37,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
     }
 
     case "DefineSpaceStmt": {
-      const value = N.evaluateExp(mod, stmt.size)
+      const value = N.evaluate(mod, stmt.size)
       if (value.kind !== "IntValue") {
         throw new S.ErrorWithSourceLocation(
           `define-space size must be an integer`,

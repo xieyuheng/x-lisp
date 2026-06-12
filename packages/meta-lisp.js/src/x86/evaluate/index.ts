@@ -1,2 +1,2 @@
-export * from "./evaluateExp.ts"
+export * from "./evaluate.ts"
 export * from "./evaluateType.ts"

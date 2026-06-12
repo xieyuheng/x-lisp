@@ -18,7 +18,7 @@ export function typeBytes(type: Type): number {
       }
 
       let total = 0
-      for (const [, fieldType] of definition.fields) {
+      for (const fieldType of definition.fields.values()) {
         total += typeBytes(fieldType)
       }
       return total
@@ -42,7 +42,9 @@ function atomTypeBytes(name: string): number {
       return 8
     case "string":
       return 8
-    default:
-      throw new Error(`Unknown atom type: ${name}`)
+    default: {
+      let message = `Unknown atom type: ${name}`
+      throw new Error(message)
+    }
   }
 }
