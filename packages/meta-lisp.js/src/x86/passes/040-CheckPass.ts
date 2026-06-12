@@ -25,21 +25,11 @@ function checkDataFields(mod: X86.Mod): void {
     if (definition.kind === "DataDefinition") {
       const claimedType = X86.modLookupClaimedType(mod, definition.name)
       if (claimedType === undefined) {
-        let message =
-          `[CheckPass] define-data "${definition.name}" is missing a corresponding claim`
+        let message = `[CheckPass] define-data "${definition.name}" is missing a corresponding claim`
         throw new S.ErrorWithSourceLocation(message, definition.location)
       }
-      const evaluatedFields = X86.evaluateFields(
-        mod,
-        env,
-        definition.fields,
-      )
-      checkStructFields(
-        mod,
-        evaluatedFields,
-        claimedType,
-        definition.location,
-      )
+      const evaluatedFields = X86.evaluateFields(mod, env, definition.fields)
+      checkStructFields(mod, evaluatedFields, claimedType, definition.location)
     }
   }
 }
@@ -53,19 +43,14 @@ function checkMetadataTargets(mod: X86.Mod): void {
       targetDefinition === undefined ||
       targetDefinition.kind !== "CodeDefinition"
     ) {
-      let message =
-        `[CheckPass] define-metadata target "${target}" is not a define-code`
+      let message = `[CheckPass] define-metadata target "${target}" is not a define-code`
       throw new S.ErrorWithSourceLocation(message, meta.location)
     }
   }
 
   if (mod.codeMetadataType !== undefined) {
     for (const [target, meta] of mod.metadataDefinitions) {
-      const evaluatedFields = X86.evaluateFields(
-        mod,
-        env,
-        meta.fields,
-      )
+      const evaluatedFields = X86.evaluateFields(mod, env, meta.fields)
       checkStructFields(
         mod,
         evaluatedFields,
@@ -91,8 +76,7 @@ function checkStructFields(
   for (const [fieldName, fieldType] of unfoldedFields) {
     const fieldValue = fields.get(fieldName)
     if (fieldValue === undefined) {
-      let message =
-        `[CheckPass] missing field "${fieldName}" for struct type "${name}"`
+      let message = `[CheckPass] missing field "${fieldName}" for struct type "${name}"`
       throw new S.ErrorWithSourceLocation(message, location)
     }
     checkFieldValue(mod, fieldValue, fieldType, location)
@@ -117,16 +101,14 @@ function checkFieldValue(
         case "uint32":
         case "uint64": {
           if (value.kind !== "IntValue") {
-            let message =
-              `[CheckPass] expected integer value for type ${type.name}, got: ${value.kind}`
+            let message = `[CheckPass] expected integer value for type ${type.name}, got: ${value.kind}`
             throw new S.ErrorWithSourceLocation(message, location)
           }
           return
         }
         case "string": {
           if (value.kind !== "StringValue") {
-            let message =
-              `[CheckPass] expected string value for type string, got: ${value.kind}`
+            let message = `[CheckPass] expected string value for type string, got: ${value.kind}`
             throw new S.ErrorWithSourceLocation(message, location)
           }
           return
@@ -142,21 +124,18 @@ function checkFieldValue(
           checkFieldValue(mod, value.target, type.argTypes[0], location)
           return
         }
-        let message =
-          `[CheckPass] expected pointer or label value for pointer type, got: ${value.kind}`
+        let message = `[CheckPass] expected pointer or label value for pointer type, got: ${value.kind}`
         throw new S.ErrorWithSourceLocation(message, location)
       }
       if (value.kind !== "StructValue") {
-        let message =
-          `[CheckPass] expected struct value for type ${typeConstructorName}, got: ${value.kind}`
+        let message = `[CheckPass] expected struct value for type ${typeConstructorName}, got: ${value.kind}`
         throw new S.ErrorWithSourceLocation(message, location)
       }
       const unfoldedFields = dataTypeUnfold(mod, type, location)
       for (const [fieldName, fieldType] of unfoldedFields) {
         const fieldValue = value.fields.get(fieldName)
         if (fieldValue === undefined) {
-          let message =
-            `[CheckPass] missing field "${fieldName}" for struct type "${typeConstructorName}"`
+          let message = `[CheckPass] missing field "${fieldName}" for struct type "${typeConstructorName}"`
           throw new S.ErrorWithSourceLocation(message, location)
         }
         checkFieldValue(mod, fieldValue, fieldType, location)

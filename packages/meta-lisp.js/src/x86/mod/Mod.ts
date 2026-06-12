@@ -1,6 +1,6 @@
-import type { Exp } from "../exp/index.ts"
 import type { MetadataDefinition } from "../definition/Definition.ts"
 import type { Definition } from "../definition/index.ts"
+import type { Exp } from "../exp/index.ts"
 import type { Type, TypeConstructor } from "../type/index.ts"
 import { registerBuiltinTypeConstructors } from "../type/typeBuiltin.ts"
 
