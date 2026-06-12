@@ -9,55 +9,23 @@ export function formatDefinition(definition: X86.Definition): string {
     }
     case "DataDefinition": {
       const fields = Array.from(definition.fields.entries())
-        .map(([name, value]) => `(${name} ${formatValue(value)})`)
+        .map(([name, value]) => `(${name} ${X86.formatValue(value)})`)
         .join(" ")
       return `(define-data ${definition.name} ${fields})`
     }
     case "MetadataDefinition": {
       const fields = Array.from(definition.fields.entries())
-        .map(([name, value]) => `(${name} ${formatValue(value)})`)
+        .map(([name, value]) => `(${name} ${X86.formatValue(value)})`)
         .join(" ")
       return `(define-metadata ${definition.target} ${fields})`
     }
     case "StructDefinition": {
       const fields = Array.from(definition.fields.entries())
-        .map(([name, type]) => `(${name} ${formatType(type)})`)
+        .map(([name, type]) => `(${name} ${X86.formatType(type)})`)
         .join(" ")
       return `(define-struct ${definition.name} ${fields})`
     }
     case "SpaceDefinition":
       return `(define-space ${definition.name} ${definition.size})`
-  }
-}
-
-function formatValue(value: X86.Value): string {
-  switch (value.kind) {
-    case "IntValue":
-      return value.value.toString()
-    case "StringValue":
-      return JSON.stringify(value.content)
-    case "LabelValue":
-      if (value.path.length === 0) return `(label ${value.name})`
-      return `(label ${[value.name, ...value.path].join(" ")})`
-    case "StructValue": {
-      const prefix = value.name ? `${value.name} ` : ""
-      const fields = Array.from(value.fields.entries())
-        .map(([name, v]) => `(${name} ${formatValue(v)})`)
-        .join(" ")
-      return `(struct ${prefix}${fields})`
-    }
-    case "PointerValue":
-      return `(pointer ${formatValue(value.target)})`
-  }
-}
-
-function formatType(type: X86.Type): string {
-  switch (type.kind) {
-    case "AtomType":
-      return type.name
-    case "PointerType":
-      return `(pointer-t ${formatType(type.target)})`
-    case "NamedType":
-      return type.name
   }
 }
