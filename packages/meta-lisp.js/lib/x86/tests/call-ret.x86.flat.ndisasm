@@ -1,0 +1,5 @@
+00000000  48C7C001000000    mov rax,0x1
+00000007  C3                ret
+00000008  E8F3FFFFFF        call 0x0
+0000000D  4883C028          add rax,byte +0x28
+00000011  C3                ret

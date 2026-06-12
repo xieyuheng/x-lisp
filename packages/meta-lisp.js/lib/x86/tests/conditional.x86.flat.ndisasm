@@ -1,0 +1,8 @@
+00000000  48C7C00A000000    mov rax,0xa
+00000007  48C7C103000000    mov rcx,0x3
+0000000E  483BC1            cmp rax,rcx
+00000011  0F8F08000000      jg near 0x1f
+00000017  48C7C000000000    mov rax,0x0
+0000001E  C3                ret
+0000001F  48C7C001000000    mov rax,0x1
+00000026  C3                ret

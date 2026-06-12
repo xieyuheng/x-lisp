@@ -1,0 +1,4 @@
+00000000  48C7C00A000000    mov rax,0xa
+00000007  4883C014          add rax,byte +0x14
+0000000B  4883C005          add rax,byte +0x5
+0000000F  C3                ret

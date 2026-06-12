@@ -1,0 +1,5 @@
+00000000  4833C0            xor rax,rax
+00000003  48C7C007000000    mov rax,0x7
+0000000A  4833C0            xor rax,rax
+0000000D  48C7C003000000    mov rax,0x3
+00000014  C3                ret
