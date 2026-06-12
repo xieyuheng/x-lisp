@@ -1,7 +1,7 @@
 import type { Instr } from "../instr/index.ts"
-import { computeRex } from "./rex.ts"
-import { modRM, MOD_REG } from "./modrm.ts"
+import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
+import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 const EXT: Record<string, number> = {
@@ -27,9 +27,7 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
     return [encodeShiftImm(dst.name, src.value, ext)]
   }
 
-  throw new Error(
-    `[${instr.op}] unsupported src operand: ${src.kind}`,
-  )
+  throw new Error(`[${instr.op}] unsupported src operand: ${src.kind}`)
 }
 
 function encodeShiftCl(dstReg: string, ext: number): EncodedInstruction {

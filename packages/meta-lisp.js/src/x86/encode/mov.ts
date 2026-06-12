@@ -4,10 +4,10 @@ import type {
   LabelImmOperand,
   RegDerefOperand,
 } from "../operand/index.ts"
-import { computeRex } from "./rex.ts"
-import { modRM, MOD_DISP0, MOD_DISP32, MOD_REG } from "./modrm.ts"
+import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { encodeRegDeref } from "./regderef.ts"
+import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 export function encodeMov(instr: Instr): Array<EncodedInstruction> {
@@ -57,10 +57,7 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
   )
 }
 
-function encodeMovRegReg(
-  dstReg: string,
-  srcReg: string,
-): EncodedInstruction {
+function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {
   const rex = computeRex(true, dstReg, null, srcReg)
   return {
     prefixes: [],
@@ -73,10 +70,7 @@ function encodeMovRegReg(
   }
 }
 
-function encodeMovRegImm(
-  dstReg: string,
-  value: bigint,
-): EncodedInstruction {
+function encodeMovRegImm(dstReg: string, value: bigint): EncodedInstruction {
   const rex = computeRex(true, null, null, dstReg)
   return {
     prefixes: [],

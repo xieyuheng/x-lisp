@@ -1,7 +1,7 @@
 import type { Instr } from "../instr/index.ts"
-import { computeRex } from "./rex.ts"
-import { modRM, MOD_REG } from "./modrm.ts"
+import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
+import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 const CC_CODES: Record<string, number> = {
@@ -42,7 +42,17 @@ export function encodeControl(instr: Instr): Array<EncodedInstruction> {
     case "call":
       return encodeCall(instr)
     case "ret":
-      return [{ prefixes: [], rex: null, opcode: [0xc3], modRM: null, sib: null, displacement: null, immediate: null }]
+      return [
+        {
+          prefixes: [],
+          rex: null,
+          opcode: [0xc3],
+          modRM: null,
+          sib: null,
+          displacement: null,
+          immediate: null,
+        },
+      ]
     case "jmp":
       return encodeJmp(instr)
     case "j":
@@ -57,30 +67,34 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
 
   if (target.kind === "RegDerefOperand") {
     const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(target)
-    return [{
-      prefixes: [],
-      rex: computeRex(false, null, rexIndex, rexRm),
-      opcode: [0xff],
-      modRM: modrm.codeForOpExt(2),
-      sib: null,
-      displacement: null,
-      immediate: null,
-    }]
+    return [
+      {
+        prefixes: [],
+        rex: computeRex(false, null, rexIndex, rexRm),
+        opcode: [0xff],
+        modRM: modrm.codeForOpExt(2),
+        sib: null,
+        displacement: null,
+        immediate: null,
+      },
+    ]
   }
 
   if (target.kind !== "LabelOperand") {
     throw new Error(`[call] expected label or reg-deref, got: ${target.kind}`)
   }
 
-  return [{
-    prefixes: [],
-    rex: null,
-    opcode: [0xe8],
-    modRM: null,
-    sib: null,
-    displacement: { size: 4, value: 0 },
-    immediate: null,
-  }]
+  return [
+    {
+      prefixes: [],
+      rex: null,
+      opcode: [0xe8],
+      modRM: null,
+      sib: null,
+      displacement: { size: 4, value: 0 },
+      immediate: null,
+    },
+  ]
 }
 
 function encodeJmp(instr: Instr): Array<EncodedInstruction> {
@@ -89,15 +103,17 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
     throw new Error(`[jmp] expected label, got: ${target.kind}`)
   }
 
-  return [{
-    prefixes: [],
-    rex: null,
-    opcode: [0xe9],
-    modRM: null,
-    sib: null,
-    displacement: { size: 4, value: 0 },
-    immediate: null,
-  }]
+  return [
+    {
+      prefixes: [],
+      rex: null,
+      opcode: [0xe9],
+      modRM: null,
+      sib: null,
+      displacement: { size: 4, value: 0 },
+      immediate: null,
+    },
+  ]
 }
 
 function encodeJcc(instr: Instr): Array<EncodedInstruction> {
@@ -106,27 +122,34 @@ function encodeJcc(instr: Instr): Array<EncodedInstruction> {
     throw new Error(`[j] first operand must be cc, got: ${cc.kind}`)
   }
   const ccCode = CC_CODES[cc.code]
-  if (ccCode === undefined) throw new Error(`unknown condition code: ${cc.code}`)
+  if (ccCode === undefined)
+    throw new Error(`unknown condition code: ${cc.code}`)
 
   const target = instr.operands[1]
   if (target.kind !== "LabelOperand") {
     throw new Error(`[j] second operand must be label, got: ${target.kind}`)
   }
 
-  return [{
-    prefixes: [],
-    rex: null,
-    opcode: [0x0f, 0x80 + ccCode],
-    modRM: null,
-    sib: null,
-    displacement: { size: 4, value: 0 },
-    immediate: null,
-  }]
+  return [
+    {
+      prefixes: [],
+      rex: null,
+      opcode: [0x0f, 0x80 + ccCode],
+      modRM: null,
+      sib: null,
+      displacement: { size: 4, value: 0 },
+      immediate: null,
+    },
+  ]
 }
 
 function encodeRegDerefForCall(
   op: import("../operand/index.ts").RegDerefOperand,
-): { modrm: { codeForOpExt: (ext: number) => number }; rexRm: string; rexIndex: string | null } {
+): {
+  modrm: { codeForOpExt: (ext: number) => number }
+  rexRm: string
+  rexIndex: string | null
+} {
   if (op.index === undefined && op.disp === undefined) {
     return {
       modrm: {

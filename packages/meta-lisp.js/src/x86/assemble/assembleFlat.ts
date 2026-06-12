@@ -1,9 +1,8 @@
-import type { Mod } from "../mod/index.ts"
 import type { CodeDefinition } from "../definition/index.ts"
-import type { Instr } from "../instr/index.ts"
-import type { Block } from "../block/index.ts"
-import { encode, encodedSize, emitTo } from "../encode/index.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
+import { emitTo, encode, encodedSize } from "../encode/index.ts"
+import type { Instr } from "../instr/index.ts"
+import type { Mod } from "../mod/index.ts"
 
 type Relocation = {
   labelName: string

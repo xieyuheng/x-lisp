@@ -1,8 +1,8 @@
 import type { Instr } from "../instr/index.ts"
-import { computeRex } from "./rex.ts"
-import { modRM, MOD_DISP0 } from "./modrm.ts"
+import { MOD_DISP0, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { encodeRegDeref } from "./regderef.ts"
+import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 export function encodeLea(instr: Instr): Array<EncodedInstruction> {

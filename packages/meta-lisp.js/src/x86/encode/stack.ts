@@ -1,6 +1,6 @@
 import type { Instr } from "../instr/index.ts"
-import { computeRex } from "./rex.ts"
 import { regCode } from "./reg.ts"
+import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 export function encodeStack(instr: Instr): Array<EncodedInstruction> {

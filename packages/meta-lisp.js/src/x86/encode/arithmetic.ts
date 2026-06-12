@@ -1,8 +1,8 @@
 import type { Instr } from "../instr/index.ts"
-import { computeRex } from "./rex.ts"
-import { modRM, MOD_REG } from "./modrm.ts"
+import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { encodeRegDeref } from "./regderef.ts"
+import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 const OPCODE_MAP: Record<string, { mr: number; rm: number; immExt: number }> = {

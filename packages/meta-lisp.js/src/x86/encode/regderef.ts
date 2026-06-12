@@ -1,10 +1,13 @@
 import type { RegDerefOperand } from "../operand/index.ts"
-import { regCode, isExtendedReg } from "./reg.ts"
-import { modRM, MOD_DISP0, MOD_DISP8, MOD_DISP32 } from "./modrm.ts"
-import { sibByte, SIB_NO_INDEX } from "./sib.ts"
+import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
+import { regCode } from "./reg.ts"
+import { sibByte } from "./sib.ts"
 
 export type RegDerefEncoding = {
-  modrm: { codeForReg: (reg: number) => number; codeForOpExt: (ext: number) => number }
+  modrm: {
+    codeForReg: (reg: number) => number
+    codeForOpExt: (ext: number) => number
+  }
   sib: number | null
   disp: { size: 1 | 2 | 4; value: number } | null
   rexRm: string
@@ -38,10 +41,7 @@ function encodeWithIndex(
   return makeResult(mod, base, index, scale, dispEnc)
 }
 
-function encodeWithoutIndex(
-  base: string,
-  disp: number,
-): RegDerefEncoding {
+function encodeWithoutIndex(base: string, disp: number): RegDerefEncoding {
   const { mod, dispEnc } = computeDisp(disp)
 
   if (mod === MOD_DISP0) {

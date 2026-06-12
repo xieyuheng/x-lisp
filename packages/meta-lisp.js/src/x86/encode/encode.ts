@@ -1,15 +1,15 @@
 import type { Instr } from "../instr/index.ts"
-import type { EncodedInstruction } from "./types.ts"
-import { encodeMov } from "./mov.ts"
 import { encodeArithmetic } from "./arithmetic.ts"
+import { encodeControl } from "./control.ts"
+import { encodeImul } from "./imul.ts"
+import { encodeLea } from "./lea.ts"
 import { encodeLogic } from "./logic.ts"
+import { encodeMov } from "./mov.ts"
 import { encodeShift } from "./shift.ts"
 import { encodeStack } from "./stack.ts"
-import { encodeControl } from "./control.ts"
-import { encodeLea } from "./lea.ts"
-import { encodeTest } from "./test.ts"
-import { encodeImul } from "./imul.ts"
 import { encodeSyscall } from "./syscall.ts"
+import { encodeTest } from "./test.ts"
+import type { EncodedInstruction } from "./types.ts"
 
 export function encode(instr: Instr): Array<EncodedInstruction> {
   switch (instr.op) {
