@@ -1,0 +1,22 @@
+00000000  488B0511000000    mov rax,[rel 0x18]
+00000007  C3                ret
+00000008  0000              add [rax],al
+0000000A  0000              add [rax],al
+0000000C  0000              add [rax],al
+0000000E  0000              add [rax],al
+00000010  0000              add [rax],al
+00000012  0000              add [rax],al
+00000014  0000              add [rax],al
+00000016  0000              add [rax],al
+00000018  640000            add [fs:rax],al
+0000001B  0000              add [rax],al
+0000001D  0000              add [rax],al
+0000001F  00C8              add al,cl
+00000021  0000              add [rax],al
+00000023  0000              add [rax],al
+00000025  0000              add [rax],al
+00000027  00FF              add bh,bh
+00000029  0000              add [rax],al
+0000002B  0000              add [rax],al
+0000002D  0000              add [rax],al
+0000002F  00                db 0x00
