@@ -51,7 +51,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
         if (ensureImportedModExists(orderedPkg, stmt) === "OutcomeError") {
           moduleAnalysisReport.outcome = "OutcomeError"
         } else {
-          executeImport(orderedPkg, scope, stmt)
+          submitImport(orderedPkg, scope, stmt)
         }
       }
     }
@@ -86,7 +86,7 @@ function createFragmentScope(modName: ModName): FragmentScope {
   }
 }
 
-function executeImport(
+function submitImport(
   pkg: M.Package,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,

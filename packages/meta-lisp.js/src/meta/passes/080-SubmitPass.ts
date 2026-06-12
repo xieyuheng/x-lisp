@@ -1,7 +1,7 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
 
-export function ExecutePass(pkg: M.Package): void {
+export function SubmitPass(pkg: M.Package): void {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const [path, fragment] of orderedPkg.fragments) {
       let mod =
@@ -11,15 +11,15 @@ export function ExecutePass(pkg: M.Package): void {
       M.packageAddMod(orderedPkg, mod)
 
       for (const stmt of fragment.desugaredStmts) {
-        executeStmt(mod, stmt)
+        submitStmt(mod, stmt)
       }
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "080-execute")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "080-submit")
 }
 
-function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
+function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   if (stmt.kind === "CommentStmt") {
     return
   }
@@ -55,7 +55,7 @@ function executeStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
       if (definition.arity !== stmt.arity) {
-        let message = `[executeDefine] arity mismatch`
+        let message = `[submitDefine] arity mismatch`
         message += `\n  definition name: ${definition.name}`
         message += `\n  definition arity: ${definition.arity}`
         message += `\n  declared arity: ${stmt.arity}`

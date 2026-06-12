@@ -18,7 +18,7 @@ export function BuildPipeline(pkg: M.Package): void {
   M.LowerMatchPass(pkg, moduleAnalysisReport, algebraicAnalysisReport)
   M.DesugarPass(pkg)
   M.ModuleImportPass(pkg, moduleAnalysisReport)
-  M.ExecutePass(pkg)
+  M.SubmitPass(pkg)
   M.ClaimPass(pkg)
   M.QualifyPass(pkg)
   M.CheckPass(pkg)

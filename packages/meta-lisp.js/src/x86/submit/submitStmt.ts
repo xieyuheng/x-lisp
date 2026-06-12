@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
-export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
+export function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
       X86.modDefine(
@@ -45,7 +45,7 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
             structDefinition === undefined ||
             structDefinition.kind !== "StructDefinition"
           ) {
-            let message = `[executeStmt] unknown struct: ${stmt.name}`
+            let message = `[submitStmt] unknown struct: ${stmt.name}`
             throw new Error(message)
           }
           const subst = new Map<string, X86.Type>()

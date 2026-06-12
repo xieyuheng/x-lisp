@@ -9,7 +9,7 @@ export function CheckPipeline(pkg: M.Package): M.Outcome {
   M.LowerMatchPass(pkg, moduleAnalysisReport, algebraicAnalysisReport)
   M.DesugarPass(pkg)
   M.ModuleImportPass(pkg, moduleAnalysisReport)
-  M.ExecutePass(pkg)
+  M.SubmitPass(pkg)
   if (M.ClaimPass(pkg) === "OutcomeError") outcome = "OutcomeError"
   M.QualifyPass(pkg)
   if (M.CheckPass(pkg) === "OutcomeError") outcome = "OutcomeError"
