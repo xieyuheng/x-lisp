@@ -52,7 +52,11 @@ function checkMetadataTargets(mod: X86.Mod): void {
       let message = `[CheckPass] code-metadata type is not a struct type`
       throw new Error(message)
     }
-    const typeFields = X86.dataTypeUnfold(mod, mod.codeMetadataType, S.zeroLocation("<code-metadata-type>"))
+    const typeFields = X86.dataTypeUnfold(
+      mod,
+      mod.codeMetadataType,
+      S.zeroLocation("<code-metadata-type>"),
+    )
     for (const [target, meta] of mod.metadataDefinitions) {
       X86.checkFields(mod, meta.fields, typeFields)
     }
