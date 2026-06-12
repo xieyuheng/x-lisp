@@ -40,8 +40,8 @@ function evaluateVar(
   name: string,
   location: S.SourceLocation,
 ): X86.Value {
-  const binding = X86.envLookup(env, name)
-  if (binding) return binding
+  const value = X86.envLookup(env, name)
+  if (value) return value
 
   const atomName = resolveAtomTypeName(name)
   if (atomName) return X86.TypeValue(X86.AtomType(atomName))
