@@ -99,8 +99,24 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
 
 function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   const target = instr.operands[0]
+
+  if (target.kind === "RegDerefOperand") {
+    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(target)
+    return [
+      {
+        prefixes: [],
+        rex: computeRex(false, null, rexIndex, rexRm),
+        opcode: [0xff],
+        modRM: modrm.codeForOpExt(4),
+        sib: null,
+        displacement: null,
+        immediate: null,
+      },
+    ]
+  }
+
   if (target.kind !== "LabelOperand") {
-    throw new Error(`[jmp] expected label, got: ${target.kind}`)
+    throw new Error(`[jmp] expected label or reg-deref, got: ${target.kind}`)
   }
 
   return [

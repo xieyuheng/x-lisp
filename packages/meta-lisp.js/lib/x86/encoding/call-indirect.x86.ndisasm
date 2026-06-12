@@ -1,0 +1,4 @@
+00000000  FFD0              call rax
+00000002  C3                ret
+00000003  41FFD0            call r8
+00000006  C3                ret

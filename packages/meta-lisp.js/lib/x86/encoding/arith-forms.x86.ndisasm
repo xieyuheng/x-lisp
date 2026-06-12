@@ -1,0 +1,24 @@
+00000000  4803C1            add rax,rcx
+00000003  480345F8          add rax,[rbp-0x8]
+00000007  480145F8          add [rbp-0x8],rax
+0000000B  4883C005          add rax,byte +0x5
+0000000F  4881C0E8030000    add rax,0x3e8
+00000016  488345F805        add qword [rbp-0x8],byte +0x5
+0000001B  488145F8E8030000  add qword [rbp-0x8],0x3e8
+00000023  C3                ret
+00000024  482BC1            sub rax,rcx
+00000027  482B45F8          sub rax,[rbp-0x8]
+0000002B  482945F8          sub [rbp-0x8],rax
+0000002F  4883E805          sub rax,byte +0x5
+00000033  4881E8E8030000    sub rax,0x3e8
+0000003A  48836DF805        sub qword [rbp-0x8],byte +0x5
+0000003F  48816DF8E8030000  sub qword [rbp-0x8],0x3e8
+00000047  C3                ret
+00000048  483BC1            cmp rax,rcx
+0000004B  483B45F8          cmp rax,[rbp-0x8]
+0000004F  483945F8          cmp [rbp-0x8],rax
+00000053  4883F805          cmp rax,byte +0x5
+00000057  4881F8E8030000    cmp rax,0x3e8
+0000005E  48837DF805        cmp qword [rbp-0x8],byte +0x5
+00000063  48817DF8E8030000  cmp qword [rbp-0x8],0x3e8
+0000006B  C3                ret

@@ -1,0 +1,11 @@
+00000000  488D01            lea rax,[rcx]
+00000003  C3                ret
+00000004  488D45F8          lea rax,[rbp-0x8]
+00000008  488D4510          lea rax,[rbp+0x10]
+0000000C  C3                ret
+0000000D  488D8538FFFFFF    lea rax,[rbp-0xc8]
+00000014  488D85C8000000    lea rax,[rbp+0xc8]
+0000001B  C3                ret
+0000001C  488D44CD00        lea rax,[rbp+rcx*8+0x0]
+00000021  488D44CDF0        lea rax,[rbp+rcx*8-0x10]
+00000026  C3                ret

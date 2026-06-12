@@ -1,0 +1,16 @@
+00000000  488BC1            mov rax,rcx
+00000003  488BC8            mov rcx,rax
+00000006  4D8BC1            mov r8,r9
+00000009  C3                ret
+0000000A  48C7C02A000000    mov rax,0x2a
+00000011  48C7C1FFFFFFFF    mov rcx,0xffffffffffffffff
+00000018  49C7C007000000    mov r8,0x7
+0000001F  C3                ret
+00000020  488945F8          mov [rbp-0x8],rax
+00000024  48894DF8          mov [rbp-0x8],rcx
+00000028  C3                ret
+00000029  488B45F8          mov rax,[rbp-0x8]
+0000002D  488B4DF8          mov rcx,[rbp-0x8]
+00000031  C3                ret
+00000032  48C745F82A000000  mov qword [rbp-0x8],0x2a
+0000003A  C3                ret

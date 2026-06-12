@@ -1,0 +1,12 @@
+00000000  4823C1            and rax,rcx
+00000003  4883E007          and rax,byte +0x7
+00000007  4881E0FF000000    and rax,0xff
+0000000E  C3                ret
+0000000F  480BC1            or rax,rcx
+00000012  4883C807          or rax,byte +0x7
+00000016  4881C8FF000000    or rax,0xff
+0000001D  C3                ret
+0000001E  4833C1            xor rax,rcx
+00000021  4883F007          xor rax,byte +0x7
+00000025  4881F0FF000000    xor rax,0xff
+0000002C  C3                ret

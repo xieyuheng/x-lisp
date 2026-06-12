@@ -7,6 +7,8 @@ export const SIB_NO_INDEX = 4
 
 function scaleToField(scale: number): number {
   switch (scale) {
+    case 0:
+      return 0
     case 1:
       return 0
     case 2:

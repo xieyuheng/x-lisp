@@ -1,7 +1,7 @@
 import type { RegDerefOperand } from "../operand/index.ts"
 import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
-import { sibByte } from "./sib.ts"
+import { sibByte, SIB_NO_INDEX } from "./sib.ts"
 
 export type RegDerefEncoding = {
   modrm: {
@@ -43,15 +43,42 @@ function encodeWithIndex(
 
 function encodeWithoutIndex(base: string, disp: number): RegDerefEncoding {
   const { mod, dispEnc } = computeDisp(disp)
+  const needsSib = regCode(base) === 4
 
   if (mod === MOD_DISP0) {
     if (base === "rbp" || base === "r13") {
-      return makeResultNoIndex(MOD_DISP8, base, { size: 1, value: 0 })
+      return needsSib
+        ? makeResultForSibBase(MOD_DISP8, base, { size: 1, value: 0 })
+        : makeResultNoIndex(MOD_DISP8, base, { size: 1, value: 0 })
+    }
+    if (needsSib) {
+      return makeResultForSibBase(MOD_DISP0, base, null)
     }
     return makeResultNoIndex(MOD_DISP0, base, null)
   }
 
+  if (needsSib) {
+    return makeResultForSibBase(mod, base, dispEnc)
+  }
   return makeResultNoIndex(mod, base, dispEnc)
+}
+
+function makeResultForSibBase(
+  mod: number,
+  base: string,
+  dispEnc: { size: 1 | 2 | 4; value: number } | null,
+): RegDerefEncoding {
+  const sib = sibByte(0, SIB_NO_INDEX, regCode(base))
+  return {
+    modrm: {
+      codeForReg: (reg: number) => modRM(mod, reg, 4),
+      codeForOpExt: (ext: number) => modRM(mod, ext, 4),
+    },
+    sib,
+    disp: dispEnc,
+    rexRm: base,
+    rexIndex: null,
+  }
 }
 
 function computeDisp(disp: number): {

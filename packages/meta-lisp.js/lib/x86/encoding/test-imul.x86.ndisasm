@@ -1,0 +1,6 @@
+00000000  4885C0            test rax,rax
+00000003  4885CA            test rdx,rcx
+00000006  C3                ret
+00000007  480FAFC1          imul rax,rcx
+0000000B  480FAF45F8        imul rax,[rbp-0x8]
+00000010  C3                ret

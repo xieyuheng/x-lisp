@@ -1,3 +1,0 @@
-00000000  48C7C03C000000    mov rax,0x3c
-00000007  48C7C72A000000    mov rdi,0x2a
-0000000E  0F05              syscall

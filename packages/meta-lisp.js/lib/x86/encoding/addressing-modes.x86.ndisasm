@@ -1,0 +1,10 @@
+00000000  488B4500          mov rax,[rbp+0x0]
+00000004  488B45F8          mov rax,[rbp-0x8]
+00000008  488B4580          mov rax,[rbp-0x80]
+0000000C  C3                ret
+0000000D  488B0424          mov rax,[rsp]
+00000011  488B442408        mov rax,[rsp+0x8]
+00000016  C3                ret
+00000017  488B44CD00        mov rax,[rbp+rcx*8+0x0]
+0000001C  488B44CDF0        mov rax,[rbp+rcx*8-0x10]
+00000021  C3                ret

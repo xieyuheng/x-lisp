@@ -35,8 +35,7 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     const baseName = parseRegName(base)
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {
-      let message = "reg-deref requires at least a displacement"
-      throw new S.ErrorWithSourceLocation(message, location)
+      return X86.RegDerefOperand(baseName, undefined, undefined, undefined, location)
     }
     if (elements.length === 1) {
       const disp = parseImmValue(elements[0])
