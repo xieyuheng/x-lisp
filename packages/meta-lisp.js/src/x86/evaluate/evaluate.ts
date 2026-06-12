@@ -40,8 +40,8 @@ function evaluateVar(
   name: string,
   location: S.SourceLocation,
 ): X86.Value {
-  const binding = X86.envLookup(env, name)
-  if (binding) return binding
+  const value = X86.envLookup(env, name)
+  if (value) return value
 
   const typeCtor = mod.typeConstructors.get(name)
   if (typeCtor) {
