@@ -63,6 +63,8 @@ export function evaluateTypeFields(
 }
 
 function resolveAtomTypeName(name: string): string | undefined {
+  if (!name.endsWith("-t")) return undefined
+  const base = name.slice(0, -2)
   const known = [
     "int8",
     "int16",
@@ -74,9 +76,6 @@ function resolveAtomTypeName(name: string): string | undefined {
     "uint64",
     "string",
   ]
-  for (const suffix of ["-t", ""]) {
-    const base = suffix ? name.slice(0, -suffix.length) : name
-    if (known.includes(base)) return base
-  }
+  if (known.includes(base)) return base
   return undefined
 }
