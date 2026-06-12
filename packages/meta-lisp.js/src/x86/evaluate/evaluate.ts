@@ -54,9 +54,6 @@ function evaluateVar(
     return X86.TypeValue(X86.DataType(typeCtor, []))
   }
 
-  const claimedType = X86.modLookupClaimedType(mod, name)
-  if (claimedType) return X86.TypeValue(claimedType)
-
   let message = `[evaluate] unknown name: ${name}`
   throw new S.ErrorWithSourceLocation(message, location)
 }
