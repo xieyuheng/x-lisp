@@ -4,9 +4,11 @@ import * as cli from "@xieyuheng/cli.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
+import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as M from "./meta/index.ts"
+import * as X86 from "./x86/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -16,6 +18,7 @@ router.defineRoutes([
   "check --config --dump",
   "build --config --dump --basic",
   "test  --config --profile --builtin",
+  "assemble-x86-flat <input> <output>",
 ])
 
 router.defineHandlers({
@@ -47,6 +50,16 @@ router.defineHandlers({
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     M.TestPipeline(pkg)
+  },
+
+  "assemble-x86-flat": ({ args: [input, output] }) => {
+    const code = fs.readFileSync(input, "utf-8")
+    const sexps = S.parseSexps(code, { path: input })
+    const stmts = sexps.map((s) => X86.parseStmt(s))
+    const mod = X86.createMod()
+    X86.BuildPipeline(mod, stmts)
+    const flat = X86.assembleFlat(mod)
+    fs.writeFileSync(output, flat)
   },
 })
 

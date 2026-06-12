@@ -8,6 +8,7 @@ dist
 # meta-lisp
 *.o
 *.x86
+*.x86.flat
 
 # vitest
 coverage
