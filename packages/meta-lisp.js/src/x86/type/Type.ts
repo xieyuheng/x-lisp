@@ -1,3 +1,5 @@
+import type { Mod } from "../mod/index.ts"
+
 export type Type = AtomType | PointerType | NamedType
 
 export type AtomType = {
@@ -26,12 +28,14 @@ export function PointerType(target: Type): PointerType {
 
 export type NamedType = {
   kind: "NamedType"
+  mod: Mod
   name: string
 }
 
-export function NamedType(name: string): NamedType {
+export function NamedType(mod: Mod, name: string): NamedType {
   return {
     kind: "NamedType",
+    mod,
     name,
   }
 }

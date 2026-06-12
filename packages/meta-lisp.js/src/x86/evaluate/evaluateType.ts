@@ -47,11 +47,11 @@ function evaluateVarType(
 
   const definition = N.modLookupDefinition(mod, name)
   if (definition && definition.kind === "StructDefinition") {
-    return N.NamedType(name)
+    return N.NamedType(mod, name)
   }
 
-  const dataType = N.modLookupDataType(mod, name)
-  if (dataType) return dataType
+  const claimedType = N.modLookupClaimedType(mod, name)
+  if (claimedType) return claimedType
 
   throw new S.ErrorWithSourceLocation(
     `[evaluateType] unknown type name: ${name}`,

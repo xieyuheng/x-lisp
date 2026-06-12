@@ -1,9 +1,6 @@
 import { type Type } from "./Type.ts"
 
-export function typeBytes(
-  type: Type,
-  structSizes?: Map<string, number>,
-): number {
+export function typeBytes(type: Type): number {
   switch (type.kind) {
     case "AtomType": {
       return atomTypeBytes(type.name)
@@ -14,17 +11,17 @@ export function typeBytes(
     }
 
     case "NamedType": {
-      if (!structSizes) {
-        let message = `Cannot compute bytes for named type without structSizes: ${type.name}`
-        throw new Error(message)
-      }
-
-      const size = structSizes.get(type.name)
-      if (size === undefined) {
+      const definition = type.mod.definitions.get(type.name)
+      if (definition === undefined || definition.kind !== "StructDefinition") {
         let message = `Unknown struct type: ${type.name}`
         throw new Error(message)
       }
-      return size
+
+      let total = 0
+      for (const [, fieldType] of definition.fields) {
+        total += typeBytes(fieldType)
+      }
+      return total
     }
   }
 }

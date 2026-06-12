@@ -50,7 +50,7 @@ export function executeStmt(mod: N.Mod, stmt: N.Stmt): void {
 
     case "ClaimStmt": {
       const type = N.evaluateType(mod, stmt.type)
-      N.modSetDataType(mod, stmt.name, type)
+      N.modSetClaimedType(mod, stmt.name, type)
       return
     }
 

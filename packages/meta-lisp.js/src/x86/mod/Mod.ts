@@ -4,24 +4,24 @@ import type { Type } from "../type/index.ts"
 
 export type Mod = {
   definitions: Map<string, Definition>
-  dataTypes: Map<string, Type>
+  claimedTypes: Map<string, Type>
   codeMetadataType: Type | undefined
-  metadataOf: Map<string, MetadataDefinition>
+  metadataDefinitions: Map<string, MetadataDefinition>
 }
 
 export function createMod(): Mod {
   return {
     definitions: new Map(),
-    dataTypes: new Map(),
+    claimedTypes: new Map(),
     codeMetadataType: undefined,
-    metadataOf: new Map(),
+    metadataDefinitions: new Map(),
   }
 }
 
 export function modDefine(mod: Mod, definition: Definition): void {
   switch (definition.kind) {
     case "MetadataDefinition": {
-      mod.metadataOf.set(definition.target, definition)
+      mod.metadataDefinitions.set(definition.target, definition)
       return
     }
     default: {
@@ -42,15 +42,15 @@ export function modLookupMetadata(
   mod: Mod,
   target: string,
 ): MetadataDefinition | undefined {
-  return mod.metadataOf.get(target)
+  return mod.metadataDefinitions.get(target)
 }
 
-export function modSetDataType(mod: Mod, name: string, type: Type): void {
-  mod.dataTypes.set(name, type)
+export function modSetClaimedType(mod: Mod, name: string, type: Type): void {
+  mod.claimedTypes.set(name, type)
 }
 
-export function modLookupDataType(mod: Mod, name: string): Type | undefined {
-  return mod.dataTypes.get(name)
+export function modLookupClaimedType(mod: Mod, name: string): Type | undefined {
+  return mod.claimedTypes.get(name)
 }
 
 export function modSetCodeMetadataType(mod: Mod, type: Type): void {

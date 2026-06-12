@@ -3,7 +3,7 @@ import * as N from "../index.ts"
 
 export function checkMod(mod: N.Mod): void {
   checkDuplicateNames(mod)
-  checkDataTypes(mod)
+  checkClaimedTypes(mod)
   checkMetadataTargets(mod)
   checkFieldTypes(mod)
 }
@@ -19,10 +19,10 @@ function checkDuplicateNames(mod: N.Mod): void {
   }
 }
 
-function checkDataTypes(mod: N.Mod): void {
+function checkClaimedTypes(mod: N.Mod): void {
   for (const [name, def] of mod.definitions) {
     if (def.kind === "DataDefinition") {
-      const claimedType = N.modLookupDataType(mod, name)
+      const claimedType = N.modLookupClaimedType(mod, name)
       if (claimedType === undefined) {
         throw new S.ErrorWithSourceLocation(
           `[check] define-data "${name}" is missing a corresponding claim`,
@@ -35,7 +35,7 @@ function checkDataTypes(mod: N.Mod): void {
 }
 
 function checkMetadataTargets(mod: N.Mod): void {
-  for (const [target, meta] of mod.metadataOf) {
+  for (const [target, meta] of mod.metadataDefinitions) {
     const targetDef = N.modLookupDefinition(mod, target)
     if (targetDef === undefined || targetDef.kind !== "CodeDefinition") {
       throw new S.ErrorWithSourceLocation(
@@ -45,7 +45,7 @@ function checkMetadataTargets(mod: N.Mod): void {
     }
   }
   if (mod.codeMetadataType !== undefined) {
-    for (const [target, meta] of mod.metadataOf) {
+    for (const [target, meta] of mod.metadataDefinitions) {
       checkStructFields(mod, meta.fields, mod.codeMetadataType, meta.location)
     }
   }
