@@ -6,51 +6,74 @@ export function check(
   exp: X86.Exp,
   expectedType: X86.Type,
 ): void {
-  if (expectedType.kind !== "DataType") {
-    let message = `[check] expected a DataType, got: ${expectedType.kind}`
-    throw new S.ErrorWithSourceLocation(message, exp.location)
-  }
-  const typeCtorName = expectedType.typeConstructor.name
-
-  if (isIntegerAtomTypeCtor(typeCtorName)) {
-    if (exp.kind !== "IntExp") {
-      let message = `[check] expected integer for type ${typeCtorName}, got: ${exp.kind}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
+  switch (exp.kind) {
+    case "IntExp": {
+      if (
+        expectedType.kind !== "DataType" ||
+        !isIntegerAtomTypeCtor(expectedType.typeConstructor.name)
+      ) {
+        let message = `[check] expected integer type for IntExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      return
     }
-    return
-  }
 
-  if (typeCtorName === "string-t") {
-    if (exp.kind !== "StringExp") {
-      let message = `[check] expected string for type string-t, got: ${exp.kind}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
+    case "StringExp": {
+      if (
+        expectedType.kind !== "DataType" ||
+        expectedType.typeConstructor.name !== "string-t"
+      ) {
+        let message = `[check] expected string-t for StringExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      return
     }
-    return
-  }
 
-  if (typeCtorName === "pointer-t") {
-    if (exp.kind === "LabelExp") return
-    if (exp.kind === "PointerExp") {
+    case "LabelExp": {
+      if (
+        expectedType.kind !== "DataType" ||
+        expectedType.typeConstructor.name !== "pointer-t"
+      ) {
+        let message = `[check] expected pointer-t for LabelExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      return
+    }
+
+    case "PointerExp": {
+      if (
+        expectedType.kind !== "DataType" ||
+        expectedType.typeConstructor.name !== "pointer-t"
+      ) {
+        let message = `[check] expected pointer-t for PointerExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
       check(mod, exp.target, expectedType.argTypes[0])
       return
     }
-    let message = `[check] expected pointer or label for type pointer-t, got: ${exp.kind}`
-    throw new S.ErrorWithSourceLocation(message, exp.location)
-  }
 
-  if (exp.kind !== "StructExp") {
-    let message = `[check] expected struct for type ${typeCtorName}, got: ${exp.kind}`
-    throw new S.ErrorWithSourceLocation(message, exp.location)
-  }
-
-  const unfoldedFields = dataTypeUnfold(mod, expectedType, exp.location)
-  for (const field of exp.fields) {
-    const expectedFieldType = unfoldedFields.get(field.name)
-    if (expectedFieldType === undefined) {
-      let message = `[check] unknown field "${field.name}" for struct type "${typeCtorName}"`
-      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+    case "StructExp": {
+      if (expectedType.kind !== "DataType") {
+        let message = `[check] expected struct type for StructExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      const typeCtorName = expectedType.typeConstructor.name
+      const unfoldedFields = dataTypeUnfold(mod, expectedType, exp.location)
+      for (const field of exp.fields) {
+        const expectedFieldType = unfoldedFields.get(field.name)
+        if (expectedFieldType === undefined) {
+          let message = `[check] unknown field "${field.name}" for struct type "${typeCtorName}"`
+          throw new S.ErrorWithSourceLocation(message, field.exp.location)
+        }
+        check(mod, field.exp, expectedFieldType)
+      }
+      return
     }
-    check(mod, field.exp, expectedFieldType)
+
+    default: {
+      let message = `[check] unexpected expression kind in data: ${exp.kind}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
+    }
   }
 }
 

@@ -2,8 +2,6 @@ import * as X86 from "../index.ts"
 
 export function formatType(type: X86.Type): string {
   switch (type.kind) {
-    case "AtomType":
-      return type.name
     case "VarType":
       return type.name
     case "DataType": {
