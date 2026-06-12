@@ -1,4 +1,4 @@
-;; nasm -f bin shellcode.nasm -o shellcode.nasm.x86.exe
+;; nasm -f bin shellcode.nasm -o shellcode.nasm.x86.flat
 
 bits 64
 

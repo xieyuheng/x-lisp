@@ -1,4 +1,4 @@
-;; nasm -f bin hello.nasm -o hello.nasm.x86.exe
+;; nasm -f bin hello.nasm -o hello.nasm.x86.flat
 
 bits 64
 
@@ -10,5 +10,5 @@ print_message:
     syscall
     ret
 
-message: db 'hello nams', 10
+message: db 'hello world', 10
 message_length equ $ - message

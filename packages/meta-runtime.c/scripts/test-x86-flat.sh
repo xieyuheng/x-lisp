@@ -4,4 +4,4 @@ set -e
 
 parallel="parallel -v --halt now,fail=1"
 
-find lib -name "*.x86.exe" | $parallel ./src/meta.exe run-x86 {}
+find lib -name "*.x86.flat" | $parallel ./meta run-x86-flat {}

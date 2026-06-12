@@ -12,7 +12,7 @@ import * as X86 from "./x86/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cli.createRouter("meta-lisp-compile.js", version)
+const router = cli.createRouter("meta-lisp.js", version)
 
 router.defineRoutes([
   "check --config --dump",

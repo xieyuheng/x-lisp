@@ -3,6 +3,7 @@
 *.a
 *.exe
 *.x86.exe
+*.x86.flat
 *.xvm.exe
 *.bin
 *.test
