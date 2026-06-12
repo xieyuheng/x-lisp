@@ -19,7 +19,10 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
 
     case "DefineMetadataStmt": {
       const fields = X86.evaluateFields(mod, stmt.fields)
-      X86.modDefine(mod, X86.MetadataDefinition(stmt.name, fields, stmt.location))
+      X86.modDefine(
+        mod,
+        X86.MetadataDefinition(stmt.name, fields, stmt.location),
+      )
       return
     }
 
@@ -33,10 +36,7 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
       const value = X86.evaluate(mod, stmt.size)
       if (value.kind !== "IntValue") {
         let message = `define-space size must be an integer`
-        throw new S.ErrorWithSourceLocation(
-          message,
-          stmt.size.location,
-        )
+        throw new S.ErrorWithSourceLocation(message, stmt.size.location)
       }
       X86.modDefine(
         mod,
