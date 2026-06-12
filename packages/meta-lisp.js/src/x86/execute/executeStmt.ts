@@ -53,7 +53,7 @@ export function executeStmt(mod: X86.Mod, stmt: X86.Stmt): void {
             subst.set(stmt.parameters[i], argTypes[i])
           }
           let total = 0
-          for (const [, fieldType] of structDefinition.fields) {
+          for (const fieldType of structDefinition.fields.values()) {
             total += X86.typeSize(X86.typeSubst(subst, fieldType))
           }
           return total

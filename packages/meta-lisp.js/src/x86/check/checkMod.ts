@@ -5,7 +5,6 @@ export function checkMod(mod: X86.Mod): void {
   checkDuplicateNames(mod)
   checkClaimedTypes(mod)
   checkMetadataTargets(mod)
-  checkFieldTypes(mod)
 }
 
 function checkDuplicateNames(mod: X86.Mod): void {
@@ -55,28 +54,6 @@ function checkMetadataTargets(mod: X86.Mod): void {
   }
 }
 
-function checkFieldTypes(mod: X86.Mod): void {
-  for (const [, definition] of mod.definitions) {
-    if (definition.kind === "StructDefinition") {
-      for (const [, fieldType] of definition.fields) {
-        if (fieldType.kind === "DataType") {
-          const structDefinition = X86.modLookupDefinition(
-            mod,
-            fieldType.typeConstructor.name,
-          )
-          if (
-            structDefinition === undefined ||
-            structDefinition.kind !== "StructDefinition"
-          ) {
-            let message = `[check] struct field type "${fieldType.typeConstructor.name}" is not a defined struct`
-            throw new S.ErrorWithSourceLocation(message, definition.location)
-          }
-        }
-      }
-    }
-  }
-}
-
 function checkStructFields(
   mod: X86.Mod,
   fields: Map<string, X86.Value>,
@@ -87,21 +64,12 @@ function checkStructFields(
     let message = `[check] expected a struct type, got: ${type.kind}`
     throw new S.ErrorWithSourceLocation(message, location)
   }
-  const structDefinition = X86.modLookupDefinition(
-    mod,
-    type.typeConstructor.name,
-  )
-  if (
-    structDefinition === undefined ||
-    structDefinition.kind !== "StructDefinition"
-  ) {
-    let message = `[check] unknown struct type: ${type.typeConstructor.name}`
-    throw new S.ErrorWithSourceLocation(message, location)
-  }
-  for (const [fieldName, fieldType] of structDefinition.fields) {
+  const name = type.typeConstructor.name
+  const unfoldedFields = dataTypeUnfold(mod, type, location)
+  for (const [fieldName, fieldType] of unfoldedFields) {
     const fieldValue = fields.get(fieldName)
     if (fieldValue === undefined) {
-      let message = `[check] missing field "${fieldName}" for struct type "${type.typeConstructor.name}"`
+      let message = `[check] missing field "${fieldName}" for struct type "${name}"`
       throw new S.ErrorWithSourceLocation(message, location)
     }
     checkFieldValue(mod, fieldValue, fieldType, location)
@@ -156,15 +124,8 @@ function checkFieldValue(
         let message = `[check] expected struct value for type ${typeConstructorName}, got: ${value.kind}`
         throw new S.ErrorWithSourceLocation(message, location)
       }
-      const innerDefinition = X86.modLookupDefinition(mod, typeConstructorName)
-      if (
-        innerDefinition === undefined ||
-        innerDefinition.kind !== "StructDefinition"
-      ) {
-        let message = `[check] unknown struct type in check: ${typeConstructorName}`
-        throw new S.ErrorWithSourceLocation(message, location)
-      }
-      for (const [fieldName, fieldType] of innerDefinition.fields) {
+      const unfoldedFields = dataTypeUnfold(mod, type, location)
+      for (const [fieldName, fieldType] of unfoldedFields) {
         const fieldValue = value.fields.get(fieldName)
         if (fieldValue === undefined) {
           let message = `[check] missing field "${fieldName}" for struct type "${typeConstructorName}"`
@@ -175,4 +136,39 @@ function checkFieldValue(
       return
     }
   }
+}
+
+function dataTypeUnfold(
+  mod: X86.Mod,
+  dataType: X86.DataType,
+  location: S.SourceLocation,
+): Map<string, X86.Type> {
+  const structDefinition = lookupStructDefinition(
+    mod,
+    dataType.typeConstructor.name,
+    location,
+  )
+  const subst = new Map<string, X86.Type>()
+  const parameters = dataType.typeConstructor.parameters
+  for (let i = 0; i < parameters.length; i++) {
+    subst.set(parameters[i], dataType.argTypes[i])
+  }
+  const result = new Map<string, X86.Type>()
+  for (const [fieldName, fieldType] of structDefinition.fields) {
+    result.set(fieldName, X86.typeSubst(subst, fieldType))
+  }
+  return result
+}
+
+function lookupStructDefinition(
+  mod: X86.Mod,
+  name: string,
+  location: S.SourceLocation,
+): X86.StructDefinition {
+  const definition = X86.modLookupDefinition(mod, name)
+  if (definition === undefined || definition.kind !== "StructDefinition") {
+    let message = `[check] unknown struct type: ${name}`
+    throw new S.ErrorWithSourceLocation(message, location)
+  }
+  return definition
 }
