@@ -56,6 +56,12 @@ mmap 加载之后，得到对应：
 <data-section-address> + <data-section-offset>
 ```
 
+具体实现的时候可以更简单，
+因为可以先假设所有 section 的起始 address 都是 0，
+引用另一个 section 地址的时候，就直接引用 offset。
+然后记录 relocation table 的时候，就可以不用记录 offset 了，
+loader 只需要根据 section 的真实起始地址，修正引用位置的地址。
+
 当然，具体如何处理地址之间的引用关系，
 要看汇编代码所使用的具体寻址方式。
 
