@@ -1,7 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [review] desugar-list.meta
-
 [meta-lisp.meta] [review] desugar-let-star.meta
 [meta-lisp.meta] [review] desugar-let.meta
 [meta-lisp.meta] [review] desugar-letrec-star.meta
