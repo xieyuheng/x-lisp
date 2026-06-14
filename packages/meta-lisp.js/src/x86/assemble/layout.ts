@@ -24,6 +24,11 @@ export type InternalReloc = {
   targetOffset: number
 }
 
+export type ExternalReloc = {
+  patchOffset: number
+  symbolName: string
+}
+
 type DataCtx = {
   mod: Mod
   buf: Uint8Array
@@ -37,6 +42,7 @@ export function collectCodeLayout(
   labels: Map<string, number>,
   relocations: Array<Relocation>,
   align: boolean = false,
+  externalRelocs?: Array<ExternalReloc>,
 ): number {
   let pos = 0
   for (const def of mod.definitions.values()) {
@@ -79,6 +85,20 @@ export function collectCodeLayout(
                 fieldOffset: pos + dispOffset,
               })
             }
+          }
+        }
+
+        if (externalRelocs) {
+          let instrPos = pos
+          for (const enc of encodings) {
+            if (enc.externalReloc) {
+              const immOffset = encodedImmOffset(enc)
+              externalRelocs.push({
+                patchOffset: instrPos + immOffset,
+                symbolName: enc.externalReloc.symbolName,
+              })
+            }
+            instrPos += encodedSize(enc)
           }
         }
 
@@ -585,6 +605,12 @@ function encodedDispOffset(enc: EncodedInstruction): number {
   offset += enc.opcode.length
   if (enc.modRM !== null) offset += 1
   if (enc.sib !== null) offset += 1
+  return offset
+}
+
+function encodedImmOffset(enc: EncodedInstruction): number {
+  let offset = encodedDispOffset(enc)
+  if (enc.displacement !== null) offset += enc.displacement.size
   return offset
 }
 

@@ -1,3 +1,5 @@
+export type ExternalReloc = { symbolName: string }
+
 export type EncodedInstruction = {
   prefixes: Array<number>
   rex: number | null
@@ -6,4 +8,5 @@ export type EncodedInstruction = {
   sib: number | null
   displacement: null | { size: 1 | 2 | 4; value: number }
   immediate: null | { size: 1 | 2 | 4 | 8; value: bigint }
+  externalReloc?: ExternalReloc | undefined
 }

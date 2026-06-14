@@ -32,7 +32,8 @@ Offset  Size   Field                  Description
 0x14    4B     internal_reloc_count   internal relocation 条目数
 0x18    4B     external_reloc_count   external relocation 条目数
 0x1c    4B     entry_offset           入口相对 code 段首的偏移 (当前 0)
-0x20   32B     reserved               预留，必须为 0
+0x20    4B     value_reloc_count      value relocation 条目数
+0x24   28B     reserved               预留，必须为 0
 ────────────────────────────────────────────────────────────
                                      → 64B total
 ```
@@ -43,16 +44,16 @@ Offset  Size   Field                  Description
 
 **entry_offset**：`define-code` 可能有多个，入口默认为 code 段首 (`entry_offset=0`)。若编译器需要从非首函数入口，设置此字段。
 
-**reserved**：48B，必须全零。未来可重新定义为新字段。loader 检查 reserved 全零，否则拒绝执行。
+**reserved**：28B，必须全零。未来可重新定义为新字段。loader 检查 reserved 全零，否则拒绝执行。
 
 **向后兼容规则**：
 - magic 不匹配 → 拒绝，报 `bad magic`
 - flags 非零 → 拒绝，报 `unsupported flags`
-- reserved 非全零 → 拒绝，报 `unsupported version`
+- reserved（0x24..0x3F）非全零 → 拒绝，报 `unsupported version`
 
 # 二进制布局
 
-文件内容 = header + code + data + internal_relocs + external_relocs：
+文件内容 = header + code + data + internal_relocs + external_relocs + value_relocs：
 
 ```
 ┌──────────┬─────────────────────────────────────────────────┐
@@ -66,6 +67,10 @@ Offset  Size   Field                  Description
 │          │ external_relocs[count] × 8B                    │
 │          │   uint32 offset                                │
 │          │   uint32 symbol_index                           │
+│          │ value_relocs[count] × 12B                      │
+│          │   uint32 patch_offset                          │
+│          │   uint32 class_name_off                        │
+│          │   uint32 arg_off                               │
 └──────────┴─────────────────────────────────────────────────┘
 ```
 
@@ -107,22 +112,52 @@ Offset  Size   Field                  Description
 target = code_region + data_size + 0   ← buf1 的绝对偏移
 ```
 
-# 两类重定位
+# 三类重定位
 
-| | internal | external |
-|---|---|---|
-| 条目大小 | 8B (offset + target) | 8B (offset + index) |
-| target 含义 | image 内偏移 | C 符号表索引 |
-| 汇编时解析 | 能（所有 symbol 位置已知） | 不能（C 函数地址未知） |
-| 产生场景 | pointer-t / string-t 字段 / -8 slot | primitive function / variable 引用 |
-| loader 操作 | `base + target` | `symtab[index].addr` |
+| | internal | external | value |
+|---|---|---|---|
+| 条目大小 | 8B (offset + target) | 8B (offset + index) | **12B (patch + class + arg)** |
+| target 含义 | image 内偏移 | C 符号表索引 | **class name + 构造参数** |
+| 汇编时解析 | 能（所有 symbol 位置已知） | 不能（C 函数地址未知） | 能（class name 和 arg 在汇编时已知） |
+| 产生场景 | pointer-t / string-t 字段 / -8 slot | C 函数地址引用 | **symbol / keyword / string / definition 的 value_t** |
+| loader 操作 | `base + target` | `symtab[index].addr` | **`make_value(class, arg)`** |
 
-**两张独立 table，各自类型天然分离** — 不需要 kind 字段区分。
+**三张独立 table，各自类型天然分离** — 不需要 kind 字段区分。
+
+# Value Relocation Table
+
+运行时才存在的 object value —— 如 `xstring`、`symbol`、`keyword`、`definition` ——
+其 `value_t` 在编译时未知。value relocation table 让 loader 在加载阶段
+根据 class name 和字符串参数创建这些 object，patch 到 data 段的 8 字节 slot 中。
+
+**Entry 结构**（每条 12 字节）：
+
+```
+uint32 patch_offset      — 写入 value_t 的位置（image 内偏移）
+uint32 class_name_off    — class 名字符串在 string table 中的偏移
+uint32 arg_off           — 构造参数字符串在 string table 中的偏移
+```
+
+**支持的 class**：
+
+| class name | loader 构造方式 |
+|---|---|
+| `"symbol"` | `x_object(intern_symbol(arg))` |
+| `"keyword"` | `x_object(intern_keyword(arg))` |
+| `"string"` | `x_object(make_static_xstring(arg))` |
+| `"definition"` | `mod_lookup(arg)` → `x_object(def)`，若为 variable 则取 `def→variable.value` |
+
+**Codegen 侧使用方式**：汇编器为每个 value reloc 在 data 段分配一个 8 字节 slot（初始为 0）。
+代码中通过 `label-deref`（RIP-relative load）从 slot 中加载 `value_t`。
+
+与 external reloc 的区别：
+- `external-label` → 引用**已知地址的 C 符号**（函数指针、全局变量地址）→ external reloc
+- `value reloc` → 需要**运行时创建的 tagged value_t** → value reloc
 
 # 加载流程
 
 ```c
-read_header() → code_size, data_size, space_size, internal_n, external_n
+read_header() → code_size, data_size, space_size, internal_n, external_n, value_n
 
 code_region = PAGE_ALIGN(code_size);
 image_size  = code_region + data_size + space_size;
@@ -134,6 +169,15 @@ memcpy(base + code_region,  data, data_size);
 
 for internal_n:
     *(uint64*)(base + offset) = (uint64)(base + target);
+
+for value_n:
+    class = strtab[class_name_off]
+    arg   = strtab[arg_off]
+    if (string_equal(class, "symbol")) v = x_object(intern_symbol(arg))
+    else if (string_equal(class, "keyword")) v = x_object(intern_keyword(arg))
+    else if (string_equal(class, "string")) v = x_object(make_static_xstring(arg))
+    else if (string_equal(class, "definition")) v = lookup_definition(mod, arg)
+    *(uint64*)(base + patch_offset) = (uint64)v
 
 for external_n:
     *(uint64*)(base + offset) = (uint64)symtab[index].addr;
@@ -216,11 +260,12 @@ assembleFlat(mod):
 
 assembleExe(mod):
     → x86.exe 格式
-    → 收集 internal 和 external 重定位
+    → 收集 internal、external、value 重定位
     → metadata -8 slot 用 internal reloc
     → pointer-t / string-t 字段值初始化为 0，loader 填充
     → space_size 来自所有 define-space 的总和
     → code 段 label-deref 仍用 RIP-relative
+    → 产生 value reloc 对应 symbol/keyword/string/definition 引用
 ```
 
 # 需新增/改动的文件
@@ -271,6 +316,5 @@ lib/x86/exe/
 
 # 暂不实现
 
-- 外部符号的编译器侧完整支持 — 待 compiler backend 阶段
 - gdb 兼容
 - define-code 对齐到特定偏移 — 当前对齐到 4K 页边界已满足需求

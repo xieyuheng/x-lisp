@@ -17,6 +17,7 @@ const router = cli.createRouter("meta-lisp.js", version)
 router.defineRoutes([
   "check --config --dump",
   "build --config --dump --basic",
+  "build-native --config --dump --basic",
   "test  --config --profile --builtin",
   "assemble-x86-flat <input> <output>",
   "assemble-x86-exe <input> <output>",
@@ -41,6 +42,16 @@ router.defineHandlers({
     if ("--basic" in options) pkg.config.compiler.basic = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     M.BuildPipeline(pkg)
+  },
+
+  "build-native": ({ options }) => {
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage("self", configPath)
+    if ("--dump" in options) pkg.config.compiler.dump = "true"
+    if ("--basic" in options) pkg.config.compiler.basic = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    M.NativeBuildPipeline(pkg)
   },
 
   test: ({ options }) => {

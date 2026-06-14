@@ -41,5 +41,7 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       return Ppml.prettySyntax("cc", [], [Ppml.text(operand.code)])
     case "VarOperand":
       return Ppml.prettySyntax("var", [], [Ppml.text(operand.name)])
+    case "ExternalLabelOperand":
+      return Ppml.prettySyntax("external-label", [], [Ppml.text(operand.name)])
   }
 }

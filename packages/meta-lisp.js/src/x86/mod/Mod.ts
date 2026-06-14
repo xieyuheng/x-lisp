@@ -4,6 +4,12 @@ import type { Exp } from "../exp/index.ts"
 import type { Type } from "../type/index.ts"
 import { registerBuiltinTypeConstructors } from "../type/typeBuiltin.ts"
 
+export type ValueReloc = {
+  name: string
+  className: string
+  arg: string
+}
+
 export type Mod = {
   definitions: Map<string, Definition>
   claimedTypeExps: Map<string, Exp>
@@ -11,6 +17,7 @@ export type Mod = {
   codeMetadataTypeExp: Exp | undefined
   codeMetadataType: Type | undefined
   metadataDefinitions: Map<string, MetadataDefinition>
+  valueRelocs: Map<string, ValueReloc>
 }
 
 export function createMod(): Mod {
@@ -21,6 +28,7 @@ export function createMod(): Mod {
     codeMetadataTypeExp: undefined,
     codeMetadataType: undefined,
     metadataDefinitions: new Map(),
+    valueRelocs: new Map(),
   }
   registerBuiltinTypeConstructors(mod)
   return mod

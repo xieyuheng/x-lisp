@@ -15,4 +15,16 @@
 00000027  1000              adc [rax],al
 00000029  0010              add [rax],dl
 0000002B  1000              adc [rax],al
-0000002D  00                db 0x00
+0000002D  000F              add [rdi],cl
+0000002F  0000              add [rax],al
+00000031  0001              add [rcx],al
+00000033  0000              add [rax],al
+00000035  007265            add [rdx+0x65],dh
+00000038  61                db 0x61
+00000039  642D6E756C6C      fs sub eax,0x6c6c756e
+0000003F  2D63686172        sub eax,0x72616863
+00000044  0000              add [rax],al
+00000046  0000              add [rax],al
+00000048  0000              add [rax],al
+0000004A  0000              add [rax],al
+0000004C  00                db 0x00

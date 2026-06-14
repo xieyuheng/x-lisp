@@ -25,3 +25,16 @@
 00000043  0000              add [rax],al
 00000045  0010              add [rax],dl
 00000047  0000              add [rax],al
+00000049  0800              or [rax],al
+0000004B  0000              add [rax],al
+0000004D  0100              add [rax],eax
+0000004F  0000              add [rax],al
+00000051  6D                insd
+00000052  792D              jns 0x81
+00000054  66756E            o16 jnz 0xc5
+00000057  63                db 0x63
+00000058  0000              add [rax],al
+0000005A  0000              add [rax],al
+0000005C  0008              add [rax],cl
+0000005E  0000              add [rax],al
+00000060  00                db 0x00

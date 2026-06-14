@@ -24,3 +24,16 @@
 00000046  0000              add [rax],al
 00000048  0000              add [rax],al
 0000004A  0000              add [rax],al
+0000004C  1200              adc al,[rax]
+0000004E  0000              add [rax],al
+00000050  0100              add [rax],eax
+00000052  0000              add [rax],al
+00000054  7465              jz 0xbb
+00000056  7374              jnc 0xcc
+00000058  2D77726974        sub eax,0x74697277
+0000005D  652D6E657374      gs sub eax,0x7473656e
+00000063  65640000          add [fs:rax],al
+00000067  0000              add [rax],al
+00000069  0000              add [rax],al
+0000006B  0000              add [rax],al
+0000006D  00                db 0x00

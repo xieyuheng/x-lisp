@@ -9,6 +9,7 @@ export type Operand =
   | RegDerefOperand
   | CcOperand
   | VarOperand
+  | ExternalLabelOperand
 
 export type RegOperand = {
   kind: "RegOperand"
@@ -144,6 +145,23 @@ export type VarOperand = {
 export function VarOperand(name: string, location: SourceLocation): VarOperand {
   return {
     kind: "VarOperand",
+    name,
+    location,
+  }
+}
+
+export type ExternalLabelOperand = {
+  kind: "ExternalLabelOperand"
+  name: string
+  location: SourceLocation
+}
+
+export function ExternalLabelOperand(
+  name: string,
+  location: SourceLocation,
+): ExternalLabelOperand {
+  return {
+    kind: "ExternalLabelOperand",
     name,
     location,
   }

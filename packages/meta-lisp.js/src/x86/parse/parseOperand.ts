@@ -65,6 +65,10 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
   "`(var ,name)": ({ name }, { location }) => {
     return X86.VarOperand(S.asSymbolSexp(name).content, location)
   },
+
+  "`(external-label ,name)": ({ name }, { location }) => {
+    return X86.ExternalLabelOperand(S.asSymbolSexp(name).content, location)
+  },
 })
 
 function parseRegName(sexp: S.Sexp): string {

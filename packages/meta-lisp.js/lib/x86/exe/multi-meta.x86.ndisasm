@@ -27,4 +27,22 @@
 00000041  0000              add [rax],al
 00000043  0008              add [rax],cl
 00000045  1000              adc [rax],al
-00000047  00                db 0x00
+00000047  000E              add [rsi],cl
+00000049  0000              add [rax],al
+0000004B  0002              add [rdx],al
+0000004D  0000              add [rax],al
+0000004F  006675            add [rsi+0x75],ah
+00000052  6E                outsb
+00000053  63                db 0x63
+00000054  2D62006675        sub eax,0x75660062
+00000059  6E                outsb
+0000005A  63                db 0x63
+0000005B  2D61000000        sub eax,0x61
+00000060  0000              add [rax],al
+00000062  0800              or [rax],al
+00000064  0000              add [rax],al
+00000066  07                db 0x07
+00000067  0000              add [rax],al
+00000069  0020              add [rax],ah
+0000006B  0000              add [rax],al
+0000006D  00                db 0x00

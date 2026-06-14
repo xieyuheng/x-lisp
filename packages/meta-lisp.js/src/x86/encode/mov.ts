@@ -1,12 +1,13 @@
 import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import type {
+  ExternalLabelOperand,
   LabelDerefOperand,
   LabelImmOperand,
   RegDerefOperand,
 } from "../operand/index.ts"
 import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
-import { regCode } from "./reg.ts"
+import { isExtendedReg, regCode } from "./reg.ts"
 import { encodeRegDeref } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
@@ -37,6 +38,10 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     if (src.kind === "RegDerefOperand") {
       return [encodeMovRegRegDeref(dstReg, src)]
     }
+
+    if (src.kind === "ExternalLabelOperand") {
+      return [encodeMovRegExternalLabel(dstReg, src)]
+    }
   }
 
   if (dst.kind === "RegDerefOperand") {
@@ -45,7 +50,8 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeMovRegDerefImm(dst, src.value)]
+      const result = encodeMovRegDerefImm(dst, src.value)
+      return Array.isArray(result) ? result : [result]
     }
 
     if (src.kind === "LabelImmOperand") {
@@ -71,6 +77,19 @@ function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {
 }
 
 function encodeMovRegImm(dstReg: string, value: bigint): EncodedInstruction {
+  if (value < -(1n << 31n) || value > 0xffffffffn) {
+    const code = regCode(dstReg)
+    const ext = isExtendedReg(dstReg)
+    return {
+      prefixes: [],
+      rex: ext ? 0x49 : 0x48,
+      opcode: [0xb8 + (ext ? code - 8 : code)],
+      modRM: null,
+      sib: null,
+      displacement: null,
+      immediate: { size: 8, value },
+    }
+  }
   const rex = computeRex(true, null, null, dstReg)
   return {
     prefixes: [],
@@ -152,7 +171,21 @@ function encodeMovRegDerefReg(
 function encodeMovRegDerefImm(
   dst: RegDerefOperand,
   value: bigint,
-): EncodedInstruction {
+): EncodedInstruction | Array<EncodedInstruction> {
+  if (value < -(1n << 31n) || value > 0xffffffffn) {
+    const raxMov = encodeMovRegImm("rax", value)
+    const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
+    const mov: EncodedInstruction = {
+      prefixes: [],
+      rex: computeRex(true, null, rexIndex, rexRm),
+      opcode: [0x89],
+      modRM: modrm.codeForReg(regCode("rax")),
+      sib: sib,
+      displacement: disp,
+      immediate: null,
+    }
+    return [raxMov, mov]
+  }
   const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
   const rex = computeRex(true, null, rexIndex, rexRm)
   return {
@@ -190,4 +223,22 @@ function encodeMovRegDerefLabelImm(
     immediate: null,
   }
   return [lea, mov]
+}
+
+function encodeMovRegExternalLabel(
+  dstReg: string,
+  src: ExternalLabelOperand,
+): EncodedInstruction {
+  const code = regCode(dstReg)
+  const ext = isExtendedReg(dstReg)
+  return {
+    prefixes: [],
+    rex: ext ? 0x49 : 0x48,
+    opcode: [0xb8 + (ext ? code - 8 : code)],
+    modRM: null,
+    sib: null,
+    displacement: null,
+    immediate: { size: 8, value: 0n },
+    externalReloc: { symbolName: src.name },
+  }
 }

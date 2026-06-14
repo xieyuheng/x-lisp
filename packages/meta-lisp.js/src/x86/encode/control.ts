@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
-import { regCode } from "./reg.ts"
+import { isExtendedReg, regCode } from "./reg.ts"
 import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
@@ -85,6 +85,10 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
+  if (target.kind === "ExternalLabelOperand") {
+    return encodeIndirectExternal("call", target.name)
+  }
+
   if (target.kind !== "LabelOperand") {
     let message = `[call] expected label or reg-deref, got: ${target.kind}`
     throw new S.ErrorWithSourceLocation(message, instr.location)
@@ -124,6 +128,10 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
+  if (target.kind === "ExternalLabelOperand") {
+    return encodeIndirectExternal("jmp", target.name)
+  }
+
   if (target.kind !== "LabelOperand") {
     let message = `[jmp] expected label or reg-deref, got: ${target.kind}`
     throw new S.ErrorWithSourceLocation(message, instr.location)
@@ -140,6 +148,34 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
       immediate: null,
     },
   ]
+}
+
+function encodeIndirectExternal(
+  op: "call" | "jmp",
+  symbolName: string,
+): Array<EncodedInstruction> {
+  const opExt = op === "call" ? 2 : 4
+  const raxCode = regCode("rax")
+  const movabs: EncodedInstruction = {
+    prefixes: [],
+    rex: 0x48,
+    opcode: [0xb8 + raxCode],
+    modRM: null,
+    sib: null,
+    displacement: null,
+    immediate: { size: 8, value: 0n },
+    externalReloc: { symbolName },
+  }
+  const indirect: EncodedInstruction = {
+    prefixes: [],
+    rex: null,
+    opcode: [0xff],
+    modRM: modRM(MOD_REG, opExt, raxCode),
+    sib: null,
+    displacement: null,
+    immediate: null,
+  }
+  return [movabs, indirect]
 }
 
 function encodeJcc(instr: Instr): Array<EncodedInstruction> {
