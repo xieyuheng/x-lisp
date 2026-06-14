@@ -45,7 +45,11 @@ export function collectCodeLayout(
     if (align) {
       let targetEntry = (pos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
       if (targetEntry < 16) targetEntry = 16
-      const placeholderPos = targetEntry - 8
+      let placeholderPos = targetEntry - 8
+      if (placeholderPos < pos) {
+        targetEntry += ALIGN_16
+        placeholderPos = targetEntry - 8
+      }
       if (placeholderPos > pos) {
         pos = placeholderPos
       }
@@ -479,7 +483,11 @@ export function collectMetadataSlots(
 
     let targetEntry = (pos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
     if (targetEntry < 16) targetEntry = 16
-    const placeholderOffset = targetEntry - 8
+    let placeholderOffset = targetEntry - 8
+    if (placeholderOffset < pos) {
+      targetEntry += ALIGN_16
+      placeholderOffset = targetEntry - 8
+    }
 
     slots.push({ codeName: def.name, placeholderOffset })
 

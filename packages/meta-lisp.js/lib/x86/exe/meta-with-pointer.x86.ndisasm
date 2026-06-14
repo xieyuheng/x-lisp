@@ -1,0 +1,31 @@
+00000000  0000              add [rax],al
+00000002  0000              add [rax],al
+00000004  0000              add [rax],al
+00000006  0000              add [rax],al
+00000008  0000              add [rax],al
+0000000A  0000              add [rax],al
+0000000C  0000              add [rax],al
+0000000E  0000              add [rax],al
+00000010  488D05F9FFFFFF    lea rax,[rel 0x10]
+00000017  488B40F8          mov rax,[rax-0x8]
+0000001B  488B4008          mov rax,[rax+0x8]
+0000001F  488B00            mov rax,[rax]
+00000022  4881E0FF000000    and rax,0xff
+00000029  C3                ret
+0000002A  0300              add eax,[rax]
+0000002C  0000              add [rax],al
+0000002E  0000              add [rax],al
+00000030  0000              add [rax],al
+00000032  0000              add [rax],al
+00000034  0000              add [rax],al
+00000036  0000              add [rax],al
+00000038  0000              add [rax],al
+0000003A  7472              jz 0xae
+0000003C  69706C65000810    imul esi,[rax+0x6c],dword 0x10080065
+00000043  0000              add [rax],al
+00000045  1010              adc [rax],dl
+00000047  0000              add [rax],al
+00000049  0800              or [rax],al
+0000004B  0000              add [rax],al
+0000004D  0010              add [rax],dl
+0000004F  0000              add [rax],al

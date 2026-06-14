@@ -101,7 +101,12 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
     let targetEntry = (codePos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
     if (targetEntry < 16) targetEntry = 16
 
-    const placeholderPos = targetEntry - 8
+    let placeholderPos = targetEntry - 8
+    if (placeholderPos < codePos) {
+      targetEntry += ALIGN_16
+      placeholderPos = targetEntry - 8
+    }
+
     while (codePos < placeholderPos) {
       buf[start + codePos] = 0
       codePos++
