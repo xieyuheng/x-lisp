@@ -1,0 +1,8 @@
+00000000  488D05F90F0000    lea rax,[rel 0x1000]
+00000007  48C7002A000000    mov qword [rax],0x2a
+0000000E  488B05EB0F0000    mov rax,[rel 0x1000]
+00000015  C3                ret
+00000016  0000              add [rax],al
+00000018  0000              add [rax],al
+0000001A  0000              add [rax],al
+0000001C  0000              add [rax],al
