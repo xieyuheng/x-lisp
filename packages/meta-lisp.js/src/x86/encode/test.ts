@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -22,7 +23,6 @@ export function encodeTest(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
-  throw new Error(
-    `[test] unsupported operands: dst=${dst.kind} src=${src.kind}`,
-  )
+  let message = `[test] unsupported operands: dst=${dst.kind} src=${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }

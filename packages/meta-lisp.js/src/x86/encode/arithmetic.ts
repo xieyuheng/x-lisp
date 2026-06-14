@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -15,7 +16,10 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
   const dst = instr.operands[0]
   const src = instr.operands[1]
   const map = OPCODE_MAP[instr.op]
-  if (!map) throw new Error(`unknown arithmetic op: ${instr.op}`)
+  if (!map) {
+    let message = `unknown arithmetic op: ${instr.op}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
+  }
 
   if (dst.kind === "RegOperand") {
     const dstReg = dst.name
@@ -43,9 +47,8 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
     return [encodeArithRegMem(dst.name, src, map.rm)]
   }
 
-  throw new Error(
-    `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`,
-  )
+  let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }
 
 function encodeArithRegReg(

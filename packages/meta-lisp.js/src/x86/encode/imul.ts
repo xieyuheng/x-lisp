@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -38,7 +39,6 @@ export function encodeImul(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
-  throw new Error(
-    `[imul] unsupported operands: dst=${dst.kind} src=${src.kind}`,
-  )
+  let message = `[imul] unsupported operands: dst=${dst.kind} src=${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }

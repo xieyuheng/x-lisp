@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import type {
   LabelDerefOperand,
@@ -52,9 +53,8 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     }
   }
 
-  throw new Error(
-    `[mov] unsupported operand combination: dst=${dst.kind} src=${src.kind}`,
-  )
+  let message = `[mov] unsupported operand combination: dst=${dst.kind} src=${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }
 
 function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {

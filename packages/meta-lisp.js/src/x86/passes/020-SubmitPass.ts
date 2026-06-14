@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 export function SubmitPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
@@ -44,7 +45,7 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
             structDefinition.kind !== "StructDefinition"
           ) {
             let message = `[SubmitPass] unknown struct: ${stmt.name}`
-            throw new Error(message)
+            throw new S.ErrorWithSourceLocation(message, stmt.location)
           }
           const env = X86.envPutMany(
             X86.emptyEnv(),

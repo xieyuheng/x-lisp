@@ -73,5 +73,5 @@ function definitionToValue(definition: X86.Definition): X86.Value {
   }
 
   let message = `[definitionToValue] unexpected definition kind: ${definition.kind}`
-  throw new Error(message)
+  throw new S.ErrorWithSourceLocation(message, definition.location)
 }

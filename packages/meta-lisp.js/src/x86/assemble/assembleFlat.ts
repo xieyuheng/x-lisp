@@ -16,9 +16,9 @@ export function assembleFlat(mod: Mod): Uint8Array {
   const dataResult = emitDataSection(mod, labels, codeSize)
 
   if (dataResult.relocs.length > 0) {
-    throw new Error(
-      "flat mode does not support pointer-t / string-t fields (use assemble-x86-exe)",
-    )
+    let message =
+      "flat mode does not support pointer-t / string-t fields (use assemble-x86-exe)"
+    throw new Error(message)
   }
 
   const totalSize = codeSize + dataResult.bytes.length
@@ -32,7 +32,8 @@ export function assembleFlat(mod: Mod): Uint8Array {
   for (const reloc of relocations) {
     let target = labels.get(reloc.labelName)
     if (target === undefined) {
-      throw new Error(`undefined label: ${reloc.labelName}`)
+      let message = `undefined label: ${reloc.labelName}`
+      throw new Error(message)
     }
     target += computePathOffset(mod, reloc.labelName, reloc.labelPath)
     const disp = target - reloc.instrEndPos

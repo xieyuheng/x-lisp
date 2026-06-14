@@ -8,12 +8,12 @@ export function CheckPass(mod: X86.Mod): void {
 }
 
 function checkDuplicateNames(mod: X86.Mod): void {
-  for (const name of mod.definitions.keys()) {
+  for (const [name, definition] of mod.definitions) {
     if (
       Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1
     ) {
       let message = `[CheckPass] duplicate definition: ${name}`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(message, definition.location)
     }
   }
 }
@@ -50,7 +50,10 @@ function checkMetadataTargets(mod: X86.Mod): void {
   if (mod.codeMetadataType !== undefined) {
     if (mod.codeMetadataType.kind !== "DataType") {
       let message = `[CheckPass] code-metadata type is not a struct type`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(
+        message,
+        mod.codeMetadataTypeExp!.location,
+      )
     }
     const typeFields = X86.dataTypeUnfold(
       mod,

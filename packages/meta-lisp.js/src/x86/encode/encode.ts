@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { encodeArithmetic } from "./arithmetic.ts"
 import { encodeControl } from "./control.ts"
@@ -45,6 +46,7 @@ export function encode(instr: Instr): Array<EncodedInstruction> {
     case "label":
       return []
     default:
-      throw new Error(`unknown instruction: ${instr.op}`)
+      let message = `unknown instruction: ${instr.op}`
+      throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 }

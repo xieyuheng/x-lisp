@@ -1,5 +1,6 @@
 import { emitTo, encode } from "../encode/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
+import * as S from "@xieyuheng/sexp.js"
 import type { Mod } from "../mod/index.ts"
 import {
   collectCodeLayout,
@@ -52,7 +53,8 @@ export function assembleExe(mod: Mod): Uint8Array {
     if (def.kind === "SpaceDefinition") {
       const value = evaluate(mod, emptyEnv(), def.size)
       if (value.kind !== "IntValue") {
-        throw new Error(`define-space size must be integer, got: ${value.kind}`)
+      let message = `define-space size must be integer, got: ${value.kind}`
+        throw new S.ErrorWithSourceLocation(message, def.location)
       }
       spaceSize += Number(value.value)
     }
@@ -86,7 +88,8 @@ export function assembleExe(mod: Mod): Uint8Array {
   for (const reloc of codeRelocs) {
     let target = labels.get(reloc.labelName)
     if (target === undefined) {
-      throw new Error(`undefined label: ${reloc.labelName}`)
+      let message = `undefined label: ${reloc.labelName}`
+      throw new Error(message)
     }
     target += computePathOffset(mod, reloc.labelName, reloc.labelPath)
     const disp = target - reloc.instrEndPos

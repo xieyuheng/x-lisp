@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_DISP0, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -10,7 +11,8 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
   const src = instr.operands[1]
 
   if (dst.kind !== "RegOperand") {
-    throw new Error(`[lea] dst must be register, got: ${dst.kind}`)
+    let message = `[lea] dst must be register, got: ${dst.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 
   if (src.kind === "RegDerefOperand") {
@@ -21,7 +23,8 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
     return [encodeLeaLabel(dst.name)]
   }
 
-  throw new Error(`[lea] unsupported src operand: ${src.kind}`)
+  let message = `[lea] unsupported src operand: ${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }
 
 function encodeLeaRegDeref(

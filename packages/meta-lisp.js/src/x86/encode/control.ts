@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -58,7 +59,8 @@ export function encodeControl(instr: Instr): Array<EncodedInstruction> {
     case "j":
       return encodeJcc(instr)
     default:
-      throw new Error(`unknown control op: ${instr.op}`)
+      let message = `unknown control op: ${instr.op}`
+      throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 }
 
@@ -66,7 +68,10 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
   const target = instr.operands[0]
 
   if (target.kind === "RegDerefOperand") {
-    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(target)
+    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(
+      target,
+      instr.location,
+    )
     return [
       {
         prefixes: [],
@@ -81,7 +86,8 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (target.kind !== "LabelOperand") {
-    throw new Error(`[call] expected label or reg-deref, got: ${target.kind}`)
+    let message = `[call] expected label or reg-deref, got: ${target.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 
   return [
@@ -101,7 +107,10 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   const target = instr.operands[0]
 
   if (target.kind === "RegDerefOperand") {
-    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(target)
+    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(
+      target,
+      instr.location,
+    )
     return [
       {
         prefixes: [],
@@ -116,7 +125,8 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (target.kind !== "LabelOperand") {
-    throw new Error(`[jmp] expected label or reg-deref, got: ${target.kind}`)
+    let message = `[jmp] expected label or reg-deref, got: ${target.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 
   return [
@@ -135,15 +145,19 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
 function encodeJcc(instr: Instr): Array<EncodedInstruction> {
   const cc = instr.operands[0]
   if (cc.kind !== "CcOperand") {
-    throw new Error(`[j] first operand must be cc, got: ${cc.kind}`)
+    let message = `[j] first operand must be cc, got: ${cc.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
   const ccCode = CC_CODES[cc.code]
-  if (ccCode === undefined)
-    throw new Error(`unknown condition code: ${cc.code}`)
+  if (ccCode === undefined) {
+    let message = `unknown condition code: ${cc.code}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
+  }
 
   const target = instr.operands[1]
   if (target.kind !== "LabelOperand") {
-    throw new Error(`[j] second operand must be label, got: ${target.kind}`)
+    let message = `[j] second operand must be label, got: ${target.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 
   return [
@@ -161,6 +175,7 @@ function encodeJcc(instr: Instr): Array<EncodedInstruction> {
 
 function encodeRegDerefForCall(
   op: import("../operand/index.ts").RegDerefOperand,
+  location: import("@xieyuheng/sexp.js").SourceLocation,
 ): {
   modrm: { codeForOpExt: (ext: number) => number }
   rexRm: string
@@ -175,5 +190,6 @@ function encodeRegDerefForCall(
       rexIndex: null,
     }
   }
-  throw new Error("[call] indirect only supports simple register operand")
+  let message = "[call] indirect only supports simple register operand"
+  throw new S.ErrorWithSourceLocation(message, location)
 }

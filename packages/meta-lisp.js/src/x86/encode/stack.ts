@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { regCode } from "./reg.ts"
 import { computeRex } from "./rex.ts"
@@ -6,7 +7,8 @@ import type { EncodedInstruction } from "./types.ts"
 export function encodeStack(instr: Instr): Array<EncodedInstruction> {
   const op = instr.operands[0]
   if (op.kind !== "RegOperand") {
-    throw new Error(`[${instr.op}] operand must be register, got: ${op.kind}`)
+    let message = `[${instr.op}] operand must be register, got: ${op.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 
   if (instr.op === "push") {
@@ -17,7 +19,8 @@ export function encodeStack(instr: Instr): Array<EncodedInstruction> {
     return [encodePopReg(op.name)]
   }
 
-  throw new Error(`unknown stack op: ${instr.op}`)
+  let message = `unknown stack op: ${instr.op}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }
 
 function encodePushReg(reg: string): EncodedInstruction {

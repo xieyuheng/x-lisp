@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -14,7 +15,10 @@ export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
   const dst = instr.operands[0]
   const src = instr.operands[1]
   const map = OPCODE_MAP[instr.op]
-  if (!map) throw new Error(`unknown logic op: ${instr.op}`)
+  if (!map) {
+    let message = `unknown logic op: ${instr.op}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
+  }
 
   if (dst.kind === "RegOperand" && src.kind === "RegOperand") {
     return [encodeLogicRegReg(dst.name, src.name, map.rm)]
@@ -24,9 +28,8 @@ export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
     return [encodeLogicRegImm(dst.name, src.value, map)]
   }
 
-  throw new Error(
-    `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`,
-  )
+  let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }
 
 function encodeLogicRegReg(

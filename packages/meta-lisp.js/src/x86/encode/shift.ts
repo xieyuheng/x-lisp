@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -13,10 +14,14 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
   const dst = instr.operands[0]
   const src = instr.operands[1]
   const ext = EXT[instr.op]
-  if (ext === undefined) throw new Error(`unknown shift op: ${instr.op}`)
+  if (ext === undefined) {
+    let message = `unknown shift op: ${instr.op}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
+  }
 
   if (dst.kind !== "RegOperand") {
-    throw new Error(`[${instr.op}] dst must be register, got: ${dst.kind}`)
+    let message = `[${instr.op}] dst must be register, got: ${dst.kind}`
+    throw new S.ErrorWithSourceLocation(message, instr.location)
   }
 
   if (src.kind === "RegOperand" && src.name === "rcx") {
@@ -27,7 +32,8 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
     return [encodeShiftImm(dst.name, src.value, ext)]
   }
 
-  throw new Error(`[${instr.op}] unsupported src operand: ${src.kind}`)
+  let message = `[${instr.op}] unsupported src operand: ${src.kind}`
+  throw new S.ErrorWithSourceLocation(message, instr.location)
 }
 
 function encodeShiftCl(dstReg: string, ext: number): EncodedInstruction {

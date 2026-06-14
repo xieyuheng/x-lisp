@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 export function ClaimPass(mod: X86.Mod): void {
@@ -20,7 +21,10 @@ export function ClaimPass(mod: X86.Mod): void {
     const definition = X86.modLookupDefinition(mod, name)
     if (definition === undefined || definition.kind !== "DataDefinition") {
       let message = `[ClaimPass] claimed name "${name}" has no corresponding define-data`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(
+        message,
+        mod.claimedTypeExps.get(name)!.location,
+      )
     }
   }
 
@@ -28,7 +32,10 @@ export function ClaimPass(mod: X86.Mod): void {
   for (const [name, type] of mod.claimedTypes) {
     if (type.kind !== "DataType") {
       let message = `[ClaimPass] claimed type for "${name}" must be a struct type, got: ${type.kind}`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(
+        message,
+        mod.claimedTypeExps.get(name)!.location,
+      )
     }
   }
 
@@ -36,7 +43,10 @@ export function ClaimPass(mod: X86.Mod): void {
   if (mod.codeMetadataType) {
     if (mod.codeMetadataType.kind !== "DataType") {
       let message = `[ClaimPass] code-metadata type must be a struct type, got: ${mod.codeMetadataType.kind}`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(
+        message,
+        mod.codeMetadataTypeExp!.location,
+      )
     }
     const structDefinition = X86.modLookupDefinition(
       mod,
@@ -47,7 +57,10 @@ export function ClaimPass(mod: X86.Mod): void {
       structDefinition.kind !== "StructDefinition"
     ) {
       let message = `[ClaimPass] code-metadata type "${mod.codeMetadataType.typeConstructor.name}" is not a defined struct`
-      throw new Error(message)
+      throw new S.ErrorWithSourceLocation(
+        message,
+        mod.codeMetadataTypeExp!.location,
+      )
     }
   }
 }

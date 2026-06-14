@@ -108,7 +108,8 @@ export function emitDataSection(
     if (def.kind !== "DataDefinition") continue
     const claimedType = mod.claimedTypes.get(def.name)
     if (!claimedType || claimedType.kind !== "DataType") {
-      throw new Error(`unclaimed or non-struct data: ${def.name}`)
+      let message = `unclaimed or non-struct data: ${def.name}`
+      throw new S.ErrorWithSourceLocation(message, def.location)
     }
 
     labels.set(def.name, startImageOffset + pos)
@@ -134,7 +135,9 @@ export function emitDataSection(
 
   for (const [targetName, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) {
-      throw new Error("claim-code-metadata required when using define-metadata")
+      let message =
+        "claim-code-metadata required when using define-metadata"
+      throw new S.ErrorWithSourceLocation(message, metaDef.location)
     }
     labels.set(`.meta.${targetName}`, startImageOffset + pos)
     pos = emitFieldsTree(
@@ -156,7 +159,8 @@ function computeDataSectionSize(mod: Mod): number {
     if (def.kind !== "DataDefinition") continue
     const claimedType = mod.claimedTypes.get(def.name)
     if (!claimedType || claimedType.kind !== "DataType") {
-      throw new Error(`unclaimed data: ${def.name}`)
+      let message = `unclaimed data: ${def.name}`
+      throw new S.ErrorWithSourceLocation(message, def.location)
     }
     total += computeFieldsTreeSize(mod, claimedType, def.fields)
   }
@@ -185,7 +189,10 @@ function emitFieldsTree(
 
   for (const field of fields) {
     const fieldType = fieldTypes.get(field.name)
-    if (!fieldType) throw new Error(`unknown field: ${field.name}`)
+    if (!fieldType) {
+      let message = `unknown field: ${field.name}`
+      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+    }
     pos = emitFieldTree(mod, fieldType, field.exp, buf, pos, relocs, deferred)
   }
 
@@ -280,7 +287,8 @@ function emitFieldTree(
     return offset + value.content.length + 1
   }
 
-  throw new Error(`unsupported data value: ${value.kind}`)
+  let message = `unsupported data value: ${value.kind}`
+  throw new S.ErrorWithSourceLocation(message, fieldExp.location)
 }
 
 function emitPointerTarget(
@@ -315,7 +323,8 @@ function emitPointerTarget(
     return offset + targetValue.content.length + 1
   }
 
-  throw new Error(`unsupported pointer target: ${targetValue.kind}`)
+  let message = `unsupported pointer target: ${targetValue.kind}`
+  throw new S.ErrorWithSourceLocation(message, originalExp.location)
 }
 
 function computeFieldsTreeSize(
@@ -328,7 +337,10 @@ function computeFieldsTreeSize(
   let deferred = 0
   for (const field of fields) {
     const fieldType = fieldTypes.get(field.name)
-    if (!fieldType) throw new Error(`unknown field: ${field.name}`)
+    if (!fieldType) {
+      let message = `unknown field: ${field.name}`
+      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+    }
     const r = computeFieldTreeSize(mod, fieldType, field.exp)
     total += r.fixed
     deferred += r.deferred
@@ -377,7 +389,8 @@ function computeFieldTreeSize(
     return { fixed: value.content.length + 1, deferred: 0 }
   }
 
-  throw new Error(`unsupported data value: ${value.kind}`)
+  let message = `unsupported data value: ${value.kind}`
+  throw new S.ErrorWithSourceLocation(message, fieldExp.location)
 }
 
 function computePointerTargetSize(
@@ -402,7 +415,8 @@ function computePointerTargetSize(
     return targetValue.content.length + 1
   }
 
-  throw new Error(`unsupported pointer target: ${targetValue.kind}`)
+  let message = `unsupported pointer target: ${targetValue.kind}`
+  throw new S.ErrorWithSourceLocation(message, originalExp.location)
 }
 
 export function recordSubfieldLabels(
@@ -480,9 +494,8 @@ export function computePathOffset(
     }
 
     if (!found) {
-      throw new Error(
-        `field "${step}" not found in struct ${currentType.typeConstructor.name}`,
-      )
+      let message = `field "${step}" not found in struct ${currentType.typeConstructor.name}`
+      throw new Error(message)
     }
   }
 
@@ -551,7 +564,8 @@ function evaluateTypeFromExp(mod: Mod, env: Env, exp: Exp): Type {
       argTypes: [],
     }
   }
-  throw new Error(`expected type expression, got: ${value.kind}`)
+  let message = `expected type expression, got: ${value.kind}`
+  throw new S.ErrorWithSourceLocation(message, exp.location)
 }
 
 function makeParamEnv(dataType: DataType, _structDef: StructDefinition): Env {
