@@ -1,0 +1,10 @@
+00000000  488B0501000000    mov rax,[rel 0x8]
+00000007  C3                ret
+00000008  2A00              sub al,[rax]
+0000000A  0000              add [rax],al
+0000000C  0000              add [rax],al
+0000000E  0000              add [rax],al
+00000010  640000            add [fs:rax],al
+00000013  0000              add [rax],al
+00000015  0000              add [rax],al
+00000017  00                db 0x00

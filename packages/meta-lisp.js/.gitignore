@@ -9,6 +9,7 @@ dist
 *.o
 *.x86
 *.x86.flat
+*.x86.exe
 
 # vitest
 coverage

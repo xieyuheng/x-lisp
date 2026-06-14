@@ -1,79 +1,38 @@
-import type { CodeDefinition } from "../definition/index.ts"
-import type { EncodedInstruction } from "../encode/index.ts"
-import { emitTo, encode, encodedSize } from "../encode/index.ts"
-import type { Instr } from "../instr/index.ts"
+import { emitTo, encode } from "../encode/index.ts"
 import type { Mod } from "../mod/index.ts"
-
-type Relocation = {
-  labelName: string
-  instrEndPos: number
-  fieldOffset: number
-}
-
-type FlatInstr = {
-  instr: Instr
-  encodings: Array<EncodedInstruction>
-  size: number
-}
+import {
+  collectCodeLayout,
+  collectDataLayout,
+  computePathOffset,
+  type Relocation,
+  writeInt32LE,
+} from "./layout.ts"
 
 export function assembleFlat(mod: Mod): Uint8Array {
-  const codeDefs = collectCodeDefinitions(mod)
-
-  const flatInstrs: Array<FlatInstr> = []
   const labels = new Map<string, number>()
   const relocations: Array<Relocation> = []
 
+  const codeSize = collectCodeLayout(mod, labels, relocations)
+  const dataLayouts = collectDataLayout(mod, labels, codeSize)
+
+  const totalSize =
+    codeSize + dataLayouts.reduce((s, d) => s + d.bytes.length, 0)
+  const buf = new Uint8Array(totalSize)
+
   let pos = 0
-  for (const def of codeDefs) {
-    labels.set(def.name, pos)
-    for (const block of def.blocks) {
-      labels.set(block.name, pos)
-      for (const instr of block.instrs) {
-        if (instr.op === "label") {
-          const labelOp = instr.operands[0]
-          if (labelOp.kind === "LabelOperand") {
-            labels.set(labelOp.name, pos)
-          }
-          continue
-        }
+  pos = emitCodeSection(mod, buf, pos)
 
-        const encodings = encode(instr)
-        const size = encodings.reduce((s, e) => s + encodedSize(e), 0)
-
-        flatInstrs.push({ instr, encodings, size })
-
-        const labelName = extractLabelName(instr)
-        if (labelName) {
-          for (const enc of encodings) {
-            if (enc.displacement !== null && enc.displacement.value === 0) {
-              const dispOffset = encodedDispOffset(enc)
-              relocations.push({
-                labelName,
-                instrEndPos: pos + size,
-                fieldOffset: pos + dispOffset,
-              })
-            }
-          }
-        }
-
-        pos += size
-      }
-    }
-  }
-
-  const buf = new Uint8Array(pos)
-  pos = 0
-  for (const fi of flatInstrs) {
-    for (const enc of fi.encodings) {
-      pos = emitTo(enc, buf, pos)
-    }
+  for (const dl of dataLayouts) {
+    buf.set(dl.bytes, pos)
+    pos += dl.bytes.length
   }
 
   for (const reloc of relocations) {
-    const target = labels.get(reloc.labelName)
+    let target = labels.get(reloc.labelName)
     if (target === undefined) {
       throw new Error(`undefined label: ${reloc.labelName}`)
     }
+    target += computePathOffset(mod, reloc.labelName, reloc.labelPath)
     const disp = target - reloc.instrEndPos
     writeInt32LE(buf, reloc.fieldOffset, disp)
   }
@@ -81,43 +40,19 @@ export function assembleFlat(mod: Mod): Uint8Array {
   return buf
 }
 
-function collectCodeDefinitions(mod: Mod): Array<CodeDefinition> {
-  const result: Array<CodeDefinition> = []
+function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
+  let pos = start
   for (const def of mod.definitions.values()) {
-    if (def.kind === "CodeDefinition") {
-      result.push(def)
+    if (def.kind !== "CodeDefinition") continue
+    for (const block of def.blocks) {
+      for (const instr of block.instrs) {
+        if (instr.op === "label") continue
+        const encodings = encode(instr)
+        for (const enc of encodings) {
+          pos = emitTo(enc, buf, pos)
+        }
+      }
     }
   }
-  return result
-}
-
-function extractLabelName(instr: Instr): string | null {
-  for (const op of instr.operands) {
-    if (op.kind === "LabelOperand") {
-      return op.name
-    }
-    if (op.kind === "LabelImmOperand") {
-      return op.label.name
-    }
-    if (op.kind === "LabelDerefOperand") {
-      return op.label.name
-    }
-  }
-  return null
-}
-
-function encodedDispOffset(enc: EncodedInstruction): number {
-  let offset = enc.prefixes.length
-  if (enc.rex !== null) offset += 1
-  offset += enc.opcode.length
-  if (enc.modRM !== null) offset += 1
-  if (enc.sib !== null) offset += 1
-  return offset
-}
-
-function writeInt32LE(buf: Uint8Array, offset: number, value: number): void {
-  buf[offset] = value & 0xff
-  buf[offset + 1] = (value >> 8) & 0xff
-  buf[offset + 2] = (value >> 16) & 0xff
-  buf[offset + 3] = (value >> 24) & 0xff
+  return pos
 }
