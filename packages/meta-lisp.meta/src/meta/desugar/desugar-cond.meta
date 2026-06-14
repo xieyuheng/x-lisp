@@ -10,9 +10,10 @@
       (qualified-var-exp 'meta-builtin 'builtin 'error location)
       [(string-exp "cond mismatch" location)]
       location)
-    (let ((head (list-first clauses))
-          (rest (list-tail clauses)))
-      (if-exp (cond-clause-question head)
-        (cond-clause-answer head)
-        (desugar-cond rest location)
+    (let ((head-clause (car clauses))
+          (rest-clauses (cdr clauses)))
+      (if-exp
+        (cond-clause-question head-clause)
+        (cond-clause-answer head-clause)
+        (desugar-cond rest-clauses location)
         location))))

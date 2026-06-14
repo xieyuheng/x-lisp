@@ -1,7 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [review] desugar-compose.meta
-[meta-lisp.meta] [review] desugar-cond.meta
 [meta-lisp.meta] [review] desugar-hash.meta
 [meta-lisp.meta] [review] desugar-let-star.meta
 [meta-lisp.meta] [review] desugar-let.meta
