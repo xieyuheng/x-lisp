@@ -5,11 +5,10 @@
       exp-t))
 
 (define (desugar-chain steps location)
-  (= used-names
-     (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e)))
-       (make-set) steps))
+  (= used-names (set-union-many (list-map exp-occurred-names steps)))
   (= target-name (generate-relative-fresh-name 'target used-names))
   (= target (var-exp target-name location))
-  (lambda-exp [target-name]
+  (lambda-exp
+    [target-name]
     (pipe-exp target steps location)
     location))

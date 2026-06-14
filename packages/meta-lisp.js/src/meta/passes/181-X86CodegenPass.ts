@@ -43,11 +43,7 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
       case "PrimitiveVariableDeclaration":
         break
       case "FunctionDefinition": {
-        for (const generated of codegenFunction(
-          x86Mod,
-          basicMod,
-          definition,
-        )) {
+        for (const generated of codegenFunction(x86Mod, basicMod, definition)) {
           X86.modDefine(x86Mod, generated)
         }
         break
@@ -95,11 +91,7 @@ type State = {
   nextLocal: number
 }
 
-function makeState(
-  basicMod: B.Mod,
-  x86Mod: X86.Mod,
-  argCount: number,
-): State {
+function makeState(basicMod: B.Mod, x86Mod: X86.Mod, argCount: number): State {
   return {
     basicMod,
     x86Mod,
