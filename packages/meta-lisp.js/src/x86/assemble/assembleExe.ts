@@ -1,18 +1,18 @@
-import { emitTo, encode, encodedSize } from "../encode/index.ts"
+import { emitTo, encode } from "../encode/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
 import type { Mod } from "../mod/index.ts"
 import {
   collectCodeLayout,
+  collectMetadataSlots,
   computePathOffset,
   emitDataSection,
-  type Relocation,
-  type InternalReloc,
-  type MetadataSlots,
-  type EmittedData,
-  collectMetadataSlots,
   writeInt32LE,
   writeInt64,
   writeU32LE,
+  type EmittedData,
+  type InternalReloc,
+  type MetadataSlots,
+  type Relocation,
 } from "./layout.ts"
 
 const MAGIC: Uint8Array = new Uint8Array([0x58, 0x38, 0x36, 0x00])
@@ -41,7 +41,10 @@ export function assembleExe(mod: Mod): Uint8Array {
   const metadataSlots: MetadataSlots = collectMetadataSlots(mod)
 
   const internalRelocs: Array<InternalReloc> = buildInternalRelocs(
-    mod, labels, dataResult.relocs, metadataSlots,
+    mod,
+    labels,
+    dataResult.relocs,
+    metadataSlots,
   )
 
   let spaceSize = 0

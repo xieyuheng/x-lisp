@@ -125,26 +125,30 @@ export function emitDataSection(
     )
     const env = makeParamEnv(claimedType, structDef)
     recordSubfieldLabels(
-      mod, labels, def.name, structDef.fields, env,
-      startImageOffset + pos, 0,
+      mod,
+      labels,
+      def.name,
+      structDef.fields,
+      env,
+      startImageOffset + pos,
+      0,
     )
 
-    pos = emitFieldsTree(
-      mod, claimedType, def.fields, buf, pos, relocs,
-    )
+    pos = emitFieldsTree(mod, claimedType, def.fields, buf, pos, relocs)
   }
 
   for (const [targetName, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) {
       throw new Error("claim-code-metadata required when using define-metadata")
     }
-    labels.set(
-      `.meta.${targetName}`,
-      startImageOffset + pos,
-    )
+    labels.set(`.meta.${targetName}`, startImageOffset + pos)
     pos = emitFieldsTree(
-      mod, mod.codeMetadataType as DataType, metaDef.fields,
-      buf, pos, relocs,
+      mod,
+      mod.codeMetadataType as DataType,
+      metaDef.fields,
+      buf,
+      pos,
+      relocs,
     )
   }
 
@@ -163,7 +167,11 @@ function computeDataSectionSize(mod: Mod): number {
   }
   for (const [, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) continue
-    total += computeFieldsTreeSize(mod, mod.codeMetadataType as DataType, metaDef.fields)
+    total += computeFieldsTreeSize(
+      mod,
+      mod.codeMetadataType as DataType,
+      metaDef.fields,
+    )
   }
   return total
 }
@@ -211,9 +219,12 @@ function emitFieldTree(
 
   if (value.kind === "StructValue") {
     return emitFieldsTree(
-      mod, fieldType as DataType,
+      mod,
+      fieldType as DataType,
       (fieldExp as { kind: string; fields: Array<StructField> }).fields,
-      buf, offset, relocs,
+      buf,
+      offset,
+      relocs,
     )
   }
 
@@ -226,7 +237,13 @@ function emitFieldTree(
       fn: (pos: number) => {
         const targetOff = pos
         const newPos = emitPointerTarget(
-          mod, fieldType as DataType, value.target, fieldExp, buf, pos, relocs,
+          mod,
+          fieldType as DataType,
+          value.target,
+          fieldExp,
+          buf,
+          pos,
+          relocs,
         )
         relocs.push({
           patchOffset: placeholder,
@@ -281,11 +298,17 @@ function emitPointerTarget(
   relocs: Array<InternalReloc>,
 ): number {
   if (targetValue.kind === "StructValue") {
-    const structExp = originalExp as { kind: string; target: { kind: string; fields: Array<StructField> } }
+    const structExp = originalExp as {
+      kind: string
+      target: { kind: string; fields: Array<StructField> }
+    }
     return emitFieldsTree(
-      mod, pointerType.argTypes[0] as DataType,
+      mod,
+      pointerType.argTypes[0] as DataType,
       structExp.target.fields,
-      buf, offset, relocs,
+      buf,
+      offset,
+      relocs,
     )
   }
 
@@ -332,11 +355,23 @@ function computeFieldTreeSize(
   }
 
   if (value.kind === "StructValue") {
-    return { fixed: computeFieldsTreeSize(mod, fieldType as DataType, (fieldExp as { kind: string; fields: Array<StructField> }).fields), deferred: 0 }
+    return {
+      fixed: computeFieldsTreeSize(
+        mod,
+        fieldType as DataType,
+        (fieldExp as { kind: string; fields: Array<StructField> }).fields,
+      ),
+      deferred: 0,
+    }
   }
 
   if (value.kind === "PointerValue") {
-    const inner = computePointerTargetSize(mod, fieldType as DataType, value.target, fieldExp)
+    const inner = computePointerTargetSize(
+      mod,
+      fieldType as DataType,
+      value.target,
+      fieldExp,
+    )
     return { fixed: 8, deferred: inner }
   }
 
@@ -357,9 +392,13 @@ function computePointerTargetSize(
   originalExp: Exp,
 ): number {
   if (targetValue.kind === "StructValue") {
-    const structExp = originalExp as { kind: string; target: { kind: string; fields: Array<StructField> } }
+    const structExp = originalExp as {
+      kind: string
+      target: { kind: string; fields: Array<StructField> }
+    }
     return computeFieldsTreeSize(
-      mod, pointerType.argTypes[0] as DataType,
+      mod,
+      pointerType.argTypes[0] as DataType,
       structExp.target.fields,
     )
   }
@@ -394,8 +433,13 @@ export function recordSubfieldLabels(
         subDef.fields.length > 0
       ) {
         recordSubfieldLabels(
-          mod, labels, key, subDef.fields, env,
-          baseOffset + offset, 0,
+          mod,
+          labels,
+          key,
+          subDef.fields,
+          env,
+          baseOffset + offset,
+          0,
         )
       }
     }
@@ -473,9 +517,7 @@ export type MetadataSlots = Array<{
   placeholderOffset: number
 }>
 
-export function collectMetadataSlots(
-  mod: Mod,
-): MetadataSlots {
+export function collectMetadataSlots(mod: Mod): MetadataSlots {
   const slots: MetadataSlots = []
   let pos = 0
   for (const def of mod.definitions.values()) {
@@ -563,11 +605,19 @@ export function writeIntLE(
   return offset + size
 }
 
-export function writeInt64(buf: Uint8Array, offset: number, value: bigint): void {
+export function writeInt64(
+  buf: Uint8Array,
+  offset: number,
+  value: bigint,
+): void {
   writeIntLE(buf, offset, 8, value)
 }
 
-export function writeU32LE(buf: Uint8Array, offset: number, value: number): void {
+export function writeU32LE(
+  buf: Uint8Array,
+  offset: number,
+  value: number,
+): void {
   buf[offset] = value & 0xff
   buf[offset + 1] = (value >> 8) & 0xff
   buf[offset + 2] = (value >> 16) & 0xff
