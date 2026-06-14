@@ -8,21 +8,20 @@
   (= used-names (set-union-many (list-map exp-occurred-names elements)))
   (= fresh-name (generate-relative-fresh-name 'list used-names))
   (desugar-begin
-    (cons
-      (assign-exp
-        fresh-name
-        (apply-exp
-          (qualified-var-exp 'meta-builtin 'builtin 'make-list location)
-          []
-          location)
-        location)
-      (list-append
-        (list-map
-          (lambda (element)
-            (apply-exp
-              (qualified-var-exp 'meta-builtin 'builtin 'list-push! location)
-              [element (var-exp fresh-name location)]
-              location))
-          elements)
-        [(var-exp fresh-name location)]))
+    (list-concat
+      [[(assign-exp
+          fresh-name
+          (apply-exp
+            (qualified-var-exp 'meta-builtin 'builtin 'make-list location)
+            []
+            location)
+          location)]
+       (list-map
+         (lambda (element)
+           (apply-exp
+             (qualified-var-exp 'meta-builtin 'builtin 'list-push! location)
+             [element (var-exp fresh-name location)]
+             location))
+         elements)
+       [(var-exp fresh-name location)]])
     location))

@@ -12,23 +12,22 @@
   (= used-names (set-union-many (list-map entry-used-names entries)))
   (= fresh-name (generate-relative-fresh-name 'hash used-names))
   (desugar-begin
-    (cons
-      (assign-exp
-        fresh-name
-        (apply-exp
-          (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)
-          []
-          location)
-        location)
-      (list-append
-        (list-map
-          (lambda (entry)
-            (apply-exp
-              (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
-              [(hash-entry-key entry)
-               (hash-entry-value entry)
-               (var-exp fresh-name location)]
-              location))
-          entries)
-        [(var-exp fresh-name location)]))
+    (list-concat
+      [[(assign-exp
+          fresh-name
+          (apply-exp
+            (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)
+            []
+            location)
+          location)]
+       (list-map
+         (lambda (entry)
+           (apply-exp
+             (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
+             [(hash-entry-key entry)
+              (hash-entry-value entry)
+              (var-exp fresh-name location)]
+             location))
+         entries)
+       [(var-exp fresh-name location)]])
     location))
