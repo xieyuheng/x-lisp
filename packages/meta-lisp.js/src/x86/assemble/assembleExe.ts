@@ -1,6 +1,6 @@
+import * as S from "@xieyuheng/sexp.js"
 import { emitTo, encode } from "../encode/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
-import * as S from "@xieyuheng/sexp.js"
 import type { Mod } from "../mod/index.ts"
 import {
   collectCodeLayout,
@@ -53,7 +53,7 @@ export function assembleExe(mod: Mod): Uint8Array {
     if (def.kind === "SpaceDefinition") {
       const value = evaluate(mod, emptyEnv(), def.size)
       if (value.kind !== "IntValue") {
-      let message = `define-space size must be integer, got: ${value.kind}`
+        let message = `define-space size must be integer, got: ${value.kind}`
         throw new S.ErrorWithSourceLocation(message, def.location)
       }
       spaceSize += Number(value.value)

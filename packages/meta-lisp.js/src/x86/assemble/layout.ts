@@ -135,8 +135,7 @@ export function emitDataSection(
 
   for (const [targetName, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) {
-      let message =
-        "claim-code-metadata required when using define-metadata"
+      let message = "claim-code-metadata required when using define-metadata"
       throw new S.ErrorWithSourceLocation(message, metaDef.location)
     }
     labels.set(`.meta.${targetName}`, startImageOffset + pos)
