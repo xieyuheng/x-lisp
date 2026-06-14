@@ -21,13 +21,14 @@
           location)
         location)
       (list-append
-        (swap list-map entries
+        (list-map
           (lambda (entry)
             (apply-exp
               (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
               [(hash-entry-key entry)
                (hash-entry-value entry)
                (var-exp fresh-name location)]
-              location)))
+              location))
+          entries)
         [(var-exp fresh-name location)]))
     location))
