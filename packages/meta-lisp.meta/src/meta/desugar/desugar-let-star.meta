@@ -7,13 +7,18 @@
 (define (desugar-let-star bindings body location)
   (cond
     ((list-empty? bindings) body)
-    ((list-empty? (list-tail bindings))
-     (let ((binding (list-first bindings)))
-       (let1-exp (binding-name binding) (binding-rhs binding) body location)))
+    ((list-empty? (cdr bindings))
+     (= binding (car bindings))
+     (let1-exp
+       (binding-name binding)
+       (binding-rhs binding)
+       body
+       location))
     (else
-     (let ((binding (list-first bindings))
-           (rest (list-tail bindings)))
-       (let1-exp (binding-name binding)
-         (binding-rhs binding)
-         (desugar-let-star rest body location)
-         location)))))
+     (= binding (car bindings))
+     (= rest-bindings (cdr bindings))
+     (let1-exp
+       (binding-name binding)
+       (binding-rhs binding)
+       (desugar-let-star rest-bindings body location)
+       location))))
