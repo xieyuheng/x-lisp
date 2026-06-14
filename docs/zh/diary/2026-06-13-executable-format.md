@@ -1,7 +1,7 @@
 ---
 title: executable format
 author: xieyuheng
-date:  2026-06-13
+date: 2026-06-13
 ---
 
 # flat machine code
