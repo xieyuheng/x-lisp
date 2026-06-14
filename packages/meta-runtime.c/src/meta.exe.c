@@ -134,13 +134,13 @@ static void handle_run_x86_native(cli_ctx_t *ctx) {
   x86_image_t *image = x86_load_image(xvm, buffer);
   if (!image) exit(1);
 
-  x86_call_entry(image);
-
   if (entry_name) {
     x86_call_native_entry(image, entry_name, 0, NULL);
+  } else {
+    x86_call_entry(image);
   }
 
-  x86_unload_image(image);
+  x86_unload_image(image, xvm);
   xvm_free(xvm);
   buffer_free(buffer);
   mod_free(mod);
@@ -164,11 +164,12 @@ static void handle_test_x86(cli_ctx_t *ctx) {
   x86_image_t *image = x86_load_image(xvm, buffer);
   if (!image) exit(1);
 
+  array_t *tests = x86_collect_tests(image);
+  const size_t testCount = array_length(tests);
+
   x86_call_entry(image);
 
-  array_t *tests = x86_collect_tests(image);
-
-  for (size_t i = 0; i < array_length(tests); i++) {
+  for (size_t i = 0; i < testCount; i++) {
     const char *name = (const char *) array_get(tests, i);
     double test_start = time_millisecond();
 
@@ -203,7 +204,7 @@ static void handle_test_x86(cli_ctx_t *ctx) {
   }
 
   array_free(tests);
-  x86_unload_image(image);
+  x86_unload_image(image, xvm);
   xvm_free(xvm);
   buffer_free(buffer);
   mod_free(mod);
@@ -226,7 +227,7 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "run-x86-flat-and-print file.x86.flat");
   cli_define_route(router, "run-x86-exe file.x86.exe");
   cli_define_route(router, "run-x86-exe-and-print file.x86.exe");
-  cli_define_route(router, "run-x86-native file.x86.exe --entry");
+  cli_define_route(router, "run-x86 file.x86.exe --entry");
   cli_define_route(router, "test-x86 file.x86.exe --profile --snapshot");
 
   cli_define_handler(router, "assemble-xvm", handle_assemble_xvm);
@@ -236,7 +237,7 @@ int main(int argc, char *argv[]) {
   cli_define_handler(router, "run-x86-flat-and-print", handle_run_x86_flat_and_print);
   cli_define_handler(router, "run-x86-exe", handle_run_x86_exe);
   cli_define_handler(router, "run-x86-exe-and-print", handle_run_x86_exe_and_print);
-  cli_define_handler(router, "run-x86-native", handle_run_x86_native);
+  cli_define_handler(router, "run-x86", handle_run_x86_native);
   cli_define_handler(router, "test-x86", handle_test_x86);
 
   cli_router_run(router, argc, argv);

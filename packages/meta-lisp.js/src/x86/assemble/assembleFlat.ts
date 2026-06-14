@@ -45,9 +45,9 @@ export function assembleFlat(mod: Mod): Uint8Array {
 
 function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
   let pos = start
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
-    for (const block of def.blocks) {
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
+    for (const block of definition.blocks) {
       for (const instr of block.instrs) {
         if (instr.op === "label") continue
         const encodings = encode(instr)

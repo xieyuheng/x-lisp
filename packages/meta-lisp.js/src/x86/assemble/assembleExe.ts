@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import { emitTo, encode } from "../encode/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
-import type { Mod, ValueReloc } from "../mod/index.ts"
+import type { Mod, ValueRelocation } from "../mod/index.ts"
 import {
   collectCodeLayout,
   collectMetadataSlots,
@@ -48,9 +48,11 @@ export function assembleExe(mod: Mod): Uint8Array {
   }
 
   // Add value reloc 8-byte slots to data section
-  const vrelocEntries: Array<ValueReloc> = [...mod.valueRelocs.values()]
-  const vrelocDataStart = dataSize
-  dataSize += vrelocEntries.length * 8
+  const valueRelocationEntries: Array<ValueRelocation> = [
+    ...mod.valueRelocations.values(),
+  ]
+  const valueRelocationDataStart = dataSize
+  dataSize += valueRelocationEntries.length * 8
 
   const metadataSlots: MetadataSlots = collectMetadataSlots(mod)
 
@@ -62,12 +64,12 @@ export function assembleExe(mod: Mod): Uint8Array {
   )
 
   let spaceSize = 0
-  for (const def of mod.definitions.values()) {
-    if (def.kind === "SpaceDefinition") {
-      const value = evaluate(mod, emptyEnv(), def.size)
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind === "SpaceDefinition") {
+      const value = evaluate(mod, emptyEnv(), definition.size)
       if (value.kind !== "IntValue") {
         let message = `define-space size must be integer, got: ${value.kind}`
-        throw new S.ErrorWithSourceLocation(message, def.location)
+        throw new S.ErrorWithSourceLocation(message, definition.location)
       }
       spaceSize += Number(value.value)
     }
@@ -76,19 +78,19 @@ export function assembleExe(mod: Mod): Uint8Array {
   const { strtab, strtabOffsets } = buildStringTable(
     externalRelocs,
     mod,
-    vrelocEntries,
+    valueRelocationEntries,
   )
 
   const externalRelocCount = externalRelocs.length
   const externalRelocTableSize = externalRelocCount * 8
-  const vrelocCount = vrelocEntries.length
-  const vrelocTableSize = vrelocCount * 12
+  const valueRelocationCount = valueRelocationEntries.length
+  const valueRelocationTableSize = valueRelocationCount * 12
   const stringTableSize = strtab.byteLength
   const nativeFnTableSize = 8 + countCodeDefs(mod) * 8
   const relocTableSize =
     internalRelocs.length * 8 +
     externalRelocTableSize +
-    vrelocTableSize +
+    valueRelocationTableSize +
     stringTableSize +
     nativeFnTableSize
   const fileSize = 64 + codeSize + dataSize + relocTableSize
@@ -102,21 +104,24 @@ export function assembleExe(mod: Mod): Uint8Array {
   writeU32LE(buf, 0x14, internalRelocs.length)
   writeU32LE(buf, 0x18, externalRelocCount)
   writeU32LE(buf, 0x1c, computeEntryOffset(mod))
-  writeU32LE(buf, 0x20, vrelocCount)
+  writeU32LE(buf, 0x20, valueRelocationCount)
 
   let pos = 64
   pos = emitCodeSection(mod, buf, pos)
 
-  // Write data section (original + value reloc zero slots)
+  // Write data section (original + value relocation zero slots)
   const dataBuf = new Uint8Array(dataSize)
   dataBuf.set(dataResult.bytes)
   buf.set(dataBuf, pos)
   pos += dataSize
 
-  // Record value reloc labels
-  for (let i = 0; i < vrelocEntries.length; i++) {
-    const vreloc = vrelocEntries[i]
-    labels.set(vreloc.name, codeRegion + vrelocDataStart + i * 8)
+  // Record value relocation labels
+  for (let i = 0; i < valueRelocationEntries.length; i++) {
+    const valueRelocation = valueRelocationEntries[i]
+    labels.set(
+      valueRelocation.name,
+      codeRegion + valueRelocationDataStart + i * 8,
+    )
   }
 
   for (const reloc of internalRelocs) {
@@ -132,15 +137,19 @@ export function assembleExe(mod: Mod): Uint8Array {
     pos += 8
   }
 
-  let vrelocIdx = 0
-  for (const vreloc of vrelocEntries) {
-    const classOff = strtabOffsets.get(vreloc.className) ?? 0
-    const argOff = strtabOffsets.get(vreloc.arg) ?? 0
-    writeU32LE(buf, pos, codeRegion + vrelocDataStart + vrelocIdx * 8)
+  let valueRelocationIndex = 0
+  for (const valueRelocation of valueRelocationEntries) {
+    const classOff = strtabOffsets.get(valueRelocation.className) ?? 0
+    const argOff = strtabOffsets.get(valueRelocation.arg) ?? 0
+    writeU32LE(
+      buf,
+      pos,
+      codeRegion + valueRelocationDataStart + valueRelocationIndex * 8,
+    )
     writeU32LE(buf, pos + 4, classOff)
     writeU32LE(buf, pos + 8, argOff)
     pos += 12
-    vrelocIdx++
+    valueRelocationIndex++
   }
 
   pos = emitNativeFnHeader(
@@ -174,13 +183,13 @@ export function assembleExe(mod: Mod): Uint8Array {
 function buildStringTable(
   relocs: Array<ExternalReloc>,
   mod: Mod,
-  vrelocs: Array<ValueReloc>,
+  valueRelocations: Array<ValueRelocation>,
 ): { strtab: Uint8Array; strtabOffsets: Map<string, number> } {
   const names: string[] = relocs.map((r) => r.symbolName)
-  for (const def of mod.definitions.values()) {
-    if (def.kind === "CodeDefinition") names.push(def.name)
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind === "CodeDefinition") names.push(definition.name)
   }
-  for (const vr of vrelocs) {
+  for (const vr of valueRelocations) {
     names.push(vr.className)
     names.push(vr.arg)
   }
@@ -205,8 +214,8 @@ function buildStringTable(
 
 function countCodeDefs(mod: Mod): number {
   let count = 0
-  for (const def of mod.definitions.values()) {
-    if (def.kind === "CodeDefinition") count++
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind === "CodeDefinition") count++
   }
   return count
 }
@@ -233,11 +242,11 @@ function emitNativeFnEntries(
   start: number,
 ): number {
   const entries: Array<{ name: string; codeOffset: number }> = []
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
-    const codeOffset = labels.get(def.name)
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
+    const codeOffset = labels.get(definition.name)
     if (codeOffset === undefined) continue
-    entries.push({ name: def.name, codeOffset })
+    entries.push({ name: definition.name, codeOffset })
   }
 
   let pos = start
@@ -252,10 +261,10 @@ function emitNativeFnEntries(
 
 function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
   let codePos = 0
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
 
-    if (mod.metadataDefinitions.has(def.name)) {
+    if (mod.metadataDefinitions.has(definition.name)) {
       const placeholderPos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
       while (codePos < placeholderPos) {
         buf[start + codePos] = 0
@@ -267,7 +276,7 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
       codePos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
     }
 
-    for (const block of def.blocks) {
+    for (const block of definition.blocks) {
       for (const instr of block.instrs) {
         if (instr.op === "label") continue
         const encodings = encode(instr)
@@ -281,9 +290,9 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
 }
 
 function computeEntryOffset(mod: Mod): number {
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
-    return mod.metadataDefinitions.has(def.name) ? 8 : 0
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
+    return mod.metadataDefinitions.has(definition.name) ? 8 : 0
   }
   return 0
 }

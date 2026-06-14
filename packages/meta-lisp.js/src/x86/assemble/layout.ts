@@ -39,11 +39,11 @@ const ALIGN_8 = 8
 
 function collectLocalLabels(mod: Mod): Map<string, Set<string>> {
   const map = new Map<string, Set<string>>()
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
     const local = new Set<string>()
-    map.set(def.name, local)
-    for (const block of def.blocks) {
+    map.set(definition.name, local)
+    for (const block of definition.blocks) {
       local.add(block.name)
       for (const instr of block.instrs) {
         if (instr.op === "label") {
@@ -71,11 +71,11 @@ export function collectCodeLayout(
 ): number {
   const localLabels = collectLocalLabels(mod)
   let pos = 0
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
 
     if (align) {
-      if (mod.metadataDefinitions.has(def.name)) {
+      if (mod.metadataDefinitions.has(definition.name)) {
         const placeholderPos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
         if (placeholderPos > pos) pos = placeholderPos
         pos += 8
@@ -84,16 +84,16 @@ export function collectCodeLayout(
       }
     }
 
-    const fnLocalLabels = localLabels.get(def.name)!
+    const fnLocalLabels = localLabels.get(definition.name)!
 
-    labels.set(def.name, pos)
-    for (const block of def.blocks) {
-      labels.set(scopedName(def.name, block.name), pos)
+    labels.set(definition.name, pos)
+    for (const block of definition.blocks) {
+      labels.set(scopedName(definition.name, block.name), pos)
       for (const instr of block.instrs) {
         if (instr.op === "label") {
           const labelOp = instr.operands[0]
           if (labelOp.kind === "LabelOperand") {
-            labels.set(scopedName(def.name, labelOp.name), pos)
+            labels.set(scopedName(definition.name, labelOp.name), pos)
           }
           continue
         }
@@ -104,7 +104,7 @@ export function collectCodeLayout(
         const labelInfo = extractLabelInfo(instr)
         if (labelInfo) {
           const resolveName = fnLocalLabels.has(labelInfo.name)
-            ? scopedName(def.name, labelInfo.name)
+            ? scopedName(definition.name, labelInfo.name)
             : labelInfo.name
           for (const enc of encodings) {
             if (enc.displacement !== null && enc.displacement.value === 0) {
@@ -155,33 +155,33 @@ export function emitDataSection(
   const buf = new Uint8Array(totalSize)
   let pos = 0
 
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "DataDefinition") continue
-    const claimedType = mod.claimedTypes.get(def.name)
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "DataDefinition") continue
+    const claimedType = mod.claimedTypes.get(definition.name)
     if (!claimedType || claimedType.kind !== "DataType") {
-      let message = `unclaimed or non-struct data: ${def.name}`
-      throw new S.ErrorWithSourceLocation(message, def.location)
+      let message = `unclaimed or non-struct data: ${definition.name}`
+      throw new S.ErrorWithSourceLocation(message, definition.location)
     }
 
-    labels.set(def.name, startImageOffset + pos)
+    labels.set(definition.name, startImageOffset + pos)
 
     const structDef = lookupStructDefinition(
       mod,
       claimedType.typeConstructor.name,
-      def.location,
+      definition.location,
     )
     const env = makeParamEnv(claimedType, structDef)
     recordSubfieldLabels(
       mod,
       labels,
-      def.name,
+      definition.name,
       structDef.fields,
       env,
       startImageOffset + pos,
       0,
     )
 
-    pos = emitFieldsTree(mod, claimedType, def.fields, buf, pos, relocs)
+    pos = emitFieldsTree(mod, claimedType, definition.fields, buf, pos, relocs)
   }
 
   for (const [targetName, metaDef] of mod.metadataDefinitions) {
@@ -205,14 +205,14 @@ export function emitDataSection(
 
 function computeDataSectionSize(mod: Mod): number {
   let total = 0
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "DataDefinition") continue
-    const claimedType = mod.claimedTypes.get(def.name)
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "DataDefinition") continue
+    const claimedType = mod.claimedTypes.get(definition.name)
     if (!claimedType || claimedType.kind !== "DataType") {
-      let message = `unclaimed data: ${def.name}`
-      throw new S.ErrorWithSourceLocation(message, def.location)
+      let message = `unclaimed data: ${definition.name}`
+      throw new S.ErrorWithSourceLocation(message, definition.location)
     }
-    total += computeFieldsTreeSize(mod, claimedType, def.fields)
+    total += computeFieldsTreeSize(mod, claimedType, definition.fields)
   }
   for (const [, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) continue
@@ -578,19 +578,19 @@ export type MetadataSlots = Array<{
 export function collectMetadataSlots(mod: Mod): MetadataSlots {
   const slots: MetadataSlots = []
   let pos = 0
-  for (const def of mod.definitions.values()) {
-    if (def.kind !== "CodeDefinition") continue
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
 
-    if (mod.metadataDefinitions.has(def.name)) {
+    if (mod.metadataDefinitions.has(definition.name)) {
       const placeholderPos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
       if (placeholderPos > pos) pos = placeholderPos
-      slots.push({ codeName: def.name, placeholderOffset: pos })
+      slots.push({ codeName: definition.name, placeholderOffset: pos })
       pos += 8
     } else {
       pos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
     }
 
-    for (const block of def.blocks) {
+    for (const block of definition.blocks) {
       for (const instr of block.instrs) {
         if (instr.op === "label") continue
         const encodings = encode(instr)

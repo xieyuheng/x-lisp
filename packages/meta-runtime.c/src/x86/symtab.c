@@ -23,17 +23,17 @@ static const char *short_name(const char *full_name) {
 void x86_symtab_populate_from_mod(mod_t *mod) {
   record_iter_t iter;
   record_iter_init(&iter, mod->definitions);
-  definition_t *def = record_iter_next_value(&iter);
-  while (def) {
-    const char *sn = short_name(def->name);
-    if (def->kind == PRIMITIVE_DEFINITION) {
-      x86_symtab_register(def->name, (void *)(uint64_t)x_object(def));
-      x86_symtab_register(sn, (void *)(uint64_t)x_object(def));
-    } else if (def->kind == VARIABLE_DEFINITION) {
-      x86_symtab_register(def->name, (void *)(uint64_t)def->variable_definition.value);
-      x86_symtab_register(sn, (void *)(uint64_t)def->variable_definition.value);
+  definition_t *definition = record_iter_next_value(&iter);
+  while (definition) {
+    const char *name_short = short_name(definition->name);
+    if (definition->kind == PRIMITIVE_DEFINITION) {
+      x86_symtab_register(definition->name, (void *)(uint64_t)x_object(definition));
+      x86_symtab_register(name_short, (void *)(uint64_t)x_object(definition));
+    } else if (definition->kind == VARIABLE_DEFINITION) {
+      x86_symtab_register(definition->name, (void *)(uint64_t)definition->variable_definition.value);
+      x86_symtab_register(name_short, (void *)(uint64_t)definition->variable_definition.value);
     }
-    def = record_iter_next_value(&iter);
+    definition = record_iter_next_value(&iter);
   }
 }
 

@@ -54,7 +54,7 @@ void *x86_execute_exe_with_xvm(xvm_t *xvm, const buffer_t *buffer) {
   x86_image_t *image = x86_load_image(xvm, buffer);
   if (!image) return NULL;
   void *result = x86_call_entry(image);
-  x86_unload_image(image);
+  x86_unload_image(image, xvm);
   return result;
 }
 
@@ -121,9 +121,9 @@ x86_image_t *x86_load_image(xvm_t *xvm, const buffer_t *buffer) {
 
   if (external_reloc_count > 0) {
     x86_symtab_init();
-    union { value_t (*fn)(value_t, uint8_t, value_t *); void *ptr; } na;
-    na.fn = native_apply;
-    x86_symtab_register("native-apply", na.ptr);
+    union { value_t (*fn)(value_t, uint8_t, value_t *); void *ptr; } native_apply_union;
+    native_apply_union.fn = native_apply;
+    x86_symtab_register("native-apply", native_apply_union.ptr);
     if (xvm) {
       native_apply_set_xvm(xvm);
       x86_symtab_populate_from_mod(xvm_mod(xvm));
@@ -131,14 +131,14 @@ x86_image_t *x86_load_image(xvm_t *xvm, const buffer_t *buffer) {
 
     size_t internal_table_size = (size_t) internal_reloc_count * 8;
     size_t external_table_size = (size_t) external_reloc_count * 8;
-    size_t vreloc_table_size = (size_t) value_reloc_count * 12;
+    size_t value_reloc_table_size = (size_t) value_reloc_count * 12;
     const uint8_t *ext_table = bytes + 64 + code_size + data_size + internal_table_size;
-    const uint8_t *vreloc_table = ext_table + external_table_size;
+    const uint8_t *value_reloc_table = ext_table + external_table_size;
 
-    uint32_t strtab_size = read_u32_le(vreloc_table + vreloc_table_size);
-    uint32_t native_fn_count = read_u32_le(vreloc_table + vreloc_table_size + 4);
+    uint32_t strtab_size = read_u32_le(value_reloc_table + value_reloc_table_size);
+    uint32_t native_fn_count = read_u32_le(value_reloc_table + value_reloc_table_size + 4);
 
-    const uint8_t *strtab = vreloc_table + vreloc_table_size + 8;
+    const uint8_t *strtab = value_reloc_table + value_reloc_table_size + 8;
     const uint8_t *fn_table = strtab + strtab_size;
 
     for (uint32_t i = 0; i < native_fn_count; i++) {
@@ -167,9 +167,9 @@ x86_image_t *x86_load_image(xvm_t *xvm, const buffer_t *buffer) {
     }
 
     for (uint32_t i = 0; i < value_reloc_count; i++) {
-      uint32_t patch_offset = read_u32_le(vreloc_table + i * 12);
-      uint32_t class_off = read_u32_le(vreloc_table + i * 12 + 4);
-      uint32_t arg_off = read_u32_le(vreloc_table + i * 12 + 8);
+      uint32_t patch_offset = read_u32_le(value_reloc_table + i * 12);
+      uint32_t class_off = read_u32_le(value_reloc_table + i * 12 + 4);
+      uint32_t arg_off = read_u32_le(value_reloc_table + i * 12 + 8);
       const char *class_name = (const char *)(strtab + class_off);
       const char *arg = (const char *)(strtab + arg_off);
 
@@ -264,9 +264,9 @@ void *x86_call_entry(x86_image_t *image) {
   }
 }
 
-void x86_unload_image(x86_image_t *image) {
-  if (image->xvm) {
-    xvm_drop_root(image->xvm);
+void x86_unload_image(x86_image_t *image, xvm_t *xvm) {
+  if (xvm) {
+    xvm_drop_root(xvm);
     x86_symtab_free();
   }
   array_free(image->native_names);
