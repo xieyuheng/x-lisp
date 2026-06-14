@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
-import { isExtendedReg, regCode } from "./reg.ts"
+import { regCode } from "./reg.ts"
 import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 

@@ -2,5 +2,5 @@
 
 set -e
 
-./meta-lisp.js build
-./meta-lisp.js test --profile
+./meta-lisp.js build-xvm
+./meta-lisp.js test-xvm --profile

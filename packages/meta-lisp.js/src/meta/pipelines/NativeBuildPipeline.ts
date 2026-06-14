@@ -8,7 +8,7 @@ import * as X86 from "../../x86/index.ts"
 import * as M from "../index.ts"
 import { X86CodegenPass } from "../passes/181-X86CodegenPass.ts"
 
-export function NativeBuildPipeline(pkg: M.Package): void {
+export function BuildX86Pipeline(pkg: M.Package): void {
   M.ExpandPass(pkg)
   M.ModulePreludePass(pkg)
   const moduleAnalysisReport = M.ModuleAnalysisPass(pkg)

@@ -2,4 +2,4 @@
 
 set -e
 
-./meta-lisp.meta build --config self-meta-package.json --dump
+./meta-lisp.meta build-xvm --config self-meta-package.json --dump

@@ -73,7 +73,11 @@ export function assembleExe(mod: Mod): Uint8Array {
     }
   }
 
-  const { strtab, strtabOffsets } = buildStringTable(externalRelocs, mod, vrelocEntries)
+  const { strtab, strtabOffsets } = buildStringTable(
+    externalRelocs,
+    mod,
+    vrelocEntries,
+  )
 
   const externalRelocCount = externalRelocs.length
   const externalRelocTableSize = externalRelocCount * 8
@@ -82,7 +86,11 @@ export function assembleExe(mod: Mod): Uint8Array {
   const stringTableSize = strtab.byteLength
   const nativeFnTableSize = 8 + countCodeDefs(mod) * 8
   const relocTableSize =
-    internalRelocs.length * 8 + externalRelocTableSize + vrelocTableSize + stringTableSize + nativeFnTableSize
+    internalRelocs.length * 8 +
+    externalRelocTableSize +
+    vrelocTableSize +
+    stringTableSize +
+    nativeFnTableSize
   const fileSize = 64 + codeSize + dataSize + relocTableSize
   const buf = new Uint8Array(fileSize)
   buf.set(MAGIC, 0)
@@ -135,7 +143,14 @@ export function assembleExe(mod: Mod): Uint8Array {
     vrelocIdx++
   }
 
-  pos = emitNativeFnHeader(stringTableSize, mod, labels, strtabOffsets, buf, pos)
+  pos = emitNativeFnHeader(
+    stringTableSize,
+    mod,
+    labels,
+    strtabOffsets,
+    buf,
+    pos,
+  )
 
   buf.set(strtab, pos)
   pos += stringTableSize

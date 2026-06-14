@@ -16,9 +16,10 @@ const router = cli.createRouter("meta-lisp.js", version)
 
 router.defineRoutes([
   "check --config --dump",
-  "build --config --dump --basic",
-  "build-native --config --dump --basic",
-  "test  --config --profile --builtin",
+  "build-xvm --config --dump --basic",
+  "build-x86 --config --dump --basic",
+  "test-xvm  --config --profile --builtin",
+  "test-x86  --config --profile",
   "assemble-x86-flat <input> <output>",
   "assemble-x86-exe <input> <output>",
 ])
@@ -34,34 +35,43 @@ router.defineHandlers({
     if (outcome === "OutcomeError") process.exit(2)
   },
 
-  build: ({ options }) => {
+  "build-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     if ("--basic" in options) pkg.config.compiler.basic = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    M.BuildPipeline(pkg)
+    M.BuildXvmPipeline(pkg)
   },
 
-  "build-native": ({ options }) => {
+  "build-x86": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     if ("--basic" in options) pkg.config.compiler.basic = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    M.NativeBuildPipeline(pkg)
+    M.BuildX86Pipeline(pkg)
   },
 
-  test: ({ options }) => {
+  "test-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
     if ("--profile" in options) pkg.config.compiler.profile = "true"
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    M.TestPipeline(pkg)
+    M.TestXvmPipeline(pkg)
+  },
+
+  "test-x86": ({ options }) => {
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage("self", configPath)
+    if ("--profile" in options) pkg.config.compiler.profile = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    M.TestX86Pipeline(pkg)
   },
 
   "assemble-x86-flat": ({ args: [input, output] }) => {

@@ -2,5 +2,5 @@
 
 set -e
 
-./meta-lisp.js build
+./meta-lisp.js build-xvm
 ./scripts/sanitize-dump.sh expected

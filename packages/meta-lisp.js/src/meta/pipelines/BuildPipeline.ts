@@ -10,7 +10,7 @@ import * as B from "../../basic/index.ts"
 import * as Xvm from "../../xvm/index.ts"
 import * as M from "../index.ts"
 
-export function BuildPipeline(pkg: M.Package): void {
+export function BuildXvmPipeline(pkg: M.Package): void {
   M.ExpandPass(pkg)
   M.ModulePreludePass(pkg)
   const moduleAnalysisReport = M.ModuleAnalysisPass(pkg)

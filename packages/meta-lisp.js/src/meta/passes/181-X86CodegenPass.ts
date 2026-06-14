@@ -9,17 +9,27 @@ export function X86CodegenPass(_pkg: M.Package, basicMod: B.Mod): X86.Mod {
   const x86Mod = X86.createMod()
 
   X86.SubmitPass(x86Mod, [
-    X86.DefineStructStmt("gc-map-t", [], [
-      { name: "local-count", exp: X86.VarExp("uint16-t", ZERO) },
-      { name: "callee-saved-count", exp: X86.VarExp("uint8-t", ZERO) },
-      { name: "reserved", exp: X86.VarExp("uint8-t", ZERO) },
-    ], ZERO),
-    X86.DefineStructStmt("function-metadata-t", [], [
-      { name: "arity", exp: X86.VarExp("uint16-t", ZERO) },
-      { name: "flags", exp: X86.VarExp("uint16-t", ZERO) },
-      { name: "gc-map", exp: X86.VarExp("gc-map-t", ZERO) },
-      { name: "name", exp: X86.VarExp("string-t", ZERO) },
-    ], ZERO),
+    X86.DefineStructStmt(
+      "gc-map-t",
+      [],
+      [
+        { name: "local-count", exp: X86.VarExp("uint16-t", ZERO) },
+        { name: "callee-saved-count", exp: X86.VarExp("uint8-t", ZERO) },
+        { name: "reserved", exp: X86.VarExp("uint8-t", ZERO) },
+      ],
+      ZERO,
+    ),
+    X86.DefineStructStmt(
+      "function-metadata-t",
+      [],
+      [
+        { name: "arity", exp: X86.VarExp("uint16-t", ZERO) },
+        { name: "flags", exp: X86.VarExp("uint16-t", ZERO) },
+        { name: "gc-map", exp: X86.VarExp("gc-map-t", ZERO) },
+        { name: "name", exp: X86.VarExp("string-t", ZERO) },
+      ],
+      ZERO,
+    ),
   ])
 
   X86.SubmitPass(x86Mod, [
@@ -71,11 +81,7 @@ type State = {
   nextLocal: number
 }
 
-function makeState(
-  basicMod: B.Mod,
-  x86Mod: X86.Mod,
-  argCount: number,
-): State {
+function makeState(basicMod: B.Mod, x86Mod: X86.Mod, argCount: number): State {
   return { basicMod, x86Mod, argCount, localOffsets: new Map(), nextLocal: 2 }
 }
 
@@ -109,12 +115,24 @@ function argDisp(index: number): number {
 function rd(reg: string, disp: number): X86.RegDerefOperand {
   return X86.RegDerefOperand(reg, undefined, undefined, BigInt(disp), ZERO)
 }
-function ro(name: string): X86.RegOperand { return X86.RegOperand(name, ZERO) }
-function im(value: number | bigint): X86.ImmOperand { return X86.ImmOperand(BigInt(value), ZERO) }
-function lb(name: string): X86.LabelOperand { return X86.LabelOperand(name, [], ZERO) }
-function ex(name: string): X86.ExternalLabelOperand { return X86.ExternalLabelOperand(name, ZERO) }
-function cc(code: string): X86.CcOperand { return X86.CcOperand(code, ZERO) }
-function ii(op: string, ops: Array<X86.Operand>): X86.Instr { return X86.Instr(op, ops, ZERO) }
+function ro(name: string): X86.RegOperand {
+  return X86.RegOperand(name, ZERO)
+}
+function im(value: number | bigint): X86.ImmOperand {
+  return X86.ImmOperand(BigInt(value), ZERO)
+}
+function lb(name: string): X86.LabelOperand {
+  return X86.LabelOperand(name, [], ZERO)
+}
+function ex(name: string): X86.ExternalLabelOperand {
+  return X86.ExternalLabelOperand(name, ZERO)
+}
+function cc(code: string): X86.CcOperand {
+  return X86.CcOperand(code, ZERO)
+}
+function ii(op: string, ops: Array<X86.Operand>): X86.Instr {
+  return X86.Instr(op, ops, ZERO)
+}
 
 function codegenFn(
   x86Mod: X86.Mod,
@@ -179,11 +197,18 @@ function codegenFn(
       { name: "flags", exp: X86.IntExp(0n, ZERO) },
       {
         name: "gc-map",
-        exp: X86.StructExp(undefined, [
-          { name: "local-count", exp: X86.IntExp(BigInt(state.nextLocal), ZERO) },
-          { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
-          { name: "reserved", exp: X86.IntExp(0n, ZERO) },
-        ], ZERO),
+        exp: X86.StructExp(
+          undefined,
+          [
+            {
+              name: "local-count",
+              exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
+            },
+            { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
+            { name: "reserved", exp: X86.IntExp(0n, ZERO) },
+          ],
+          ZERO,
+        ),
       },
       { name: "name", exp: X86.StringExp(def.name, ZERO) },
     ],
@@ -246,11 +271,18 @@ function codegenVD(
       { name: "flags", exp: X86.IntExp(isTest ? 1n : 0n, ZERO) },
       {
         name: "gc-map",
-        exp: X86.StructExp(undefined, [
-          { name: "local-count", exp: X86.IntExp(BigInt(state.nextLocal), ZERO) },
-          { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
-          { name: "reserved", exp: X86.IntExp(0n, ZERO) },
-        ], ZERO),
+        exp: X86.StructExp(
+          undefined,
+          [
+            {
+              name: "local-count",
+              exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
+            },
+            { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
+            { name: "reserved", exp: X86.IntExp(0n, ZERO) },
+          ],
+          ZERO,
+        ),
       },
       { name: "name", exp: X86.StringExp(def.name, ZERO) },
     ],
@@ -261,9 +293,7 @@ function codegenVD(
 }
 
 function compileBlock(state: State, block: B.Block): Array<X86.Block> {
-  const instrs: Array<X86.Instr> = [
-    ii("label", [lb(block.label)]),
-  ]
+  const instrs: Array<X86.Instr> = [ii("label", [lb(block.label)])]
 
   let pendingTest: number | null = null
 
@@ -301,11 +331,16 @@ function compileInstr(state: State, instr: B.Instr): Array<X86.Instr> {
       }
       return r.instrs
     }
-    case "PerformInstr": return compileExp(state, instr.exp).instrs
-    case "TestInstr": return compileExp(state, instr.exp).instrs
-    case "GotoInstr": return [ii("jmp", [lb(instr.label)])]
-    case "ReturnInstr": return compileTail(state, instr.exp)
-    case "BranchInstr": throw new Error("[X86CodegenPass] BranchInstr handled in compileBlock")
+    case "PerformInstr":
+      return compileExp(state, instr.exp).instrs
+    case "TestInstr":
+      return compileExp(state, instr.exp).instrs
+    case "GotoInstr":
+      return [ii("jmp", [lb(instr.label)])]
+    case "ReturnInstr":
+      return compileTail(state, instr.exp)
+    case "BranchInstr":
+      throw new Error("[X86CodegenPass] BranchInstr handled in compileBlock")
   }
 }
 
@@ -315,11 +350,17 @@ function compileExp(state: State, exp: B.Exp): ExpR {
   switch (exp.kind) {
     case "IntExp": {
       const s = allocTemp(state)
-      return { instrs: [ii("mov", [rd("rbp", locDisp(s)), im(encInt(exp.content))])], slot: s }
+      return {
+        instrs: [ii("mov", [rd("rbp", locDisp(s)), im(encInt(exp.content))])],
+        slot: s,
+      }
     }
     case "FloatExp": {
       const s = allocTemp(state)
-      return { instrs: [ii("mov", [rd("rbp", locDisp(s)), im(encFloat(exp.content))])], slot: s }
+      return {
+        instrs: [ii("mov", [rd("rbp", locDisp(s)), im(encFloat(exp.content))])],
+        slot: s,
+      }
     }
     case "StringExp": {
       const label = emitVreloc(state, "string", exp.content)
@@ -332,8 +373,10 @@ function compileExp(state: State, exp: B.Exp): ExpR {
         slot: s,
       }
     }
-    case "VarExp": return compileVar(state, exp)
-    case "ApplyExp": return compileApply(state, exp)
+    case "VarExp":
+      return compileVar(state, exp)
+    case "ApplyExp":
+      return compileApply(state, exp)
     case "SymbolExp": {
       const label = emitVreloc(state, "symbol", exp.content)
       const s = allocTemp(state)
@@ -402,23 +445,32 @@ function compileGeneralApply(
   isTail: boolean,
 ): ExpR | Array<X86.Instr> {
   const targetName = exp.target.kind === "VarExp" ? exp.target.name : undefined
-  const def = targetName ? B.modLookupDefinition(state.basicMod, targetName) : undefined
+  const def = targetName
+    ? B.modLookupDefinition(state.basicMod, targetName)
+    : undefined
 
   const isStaticCall =
     def !== undefined &&
     targetName !== undefined &&
-    (def.kind === "PrimitiveFunctionDeclaration" || def.kind === "FunctionDefinition") &&
+    (def.kind === "PrimitiveFunctionDeclaration" ||
+      def.kind === "FunctionDefinition") &&
     exp.args.length === B.definitionArity(def)
 
   if (isStaticCall) {
-    return compileStaticCall(state, targetName, exp.args, isTail,
-      def.kind === "PrimitiveFunctionDeclaration")
+    return compileStaticCall(
+      state,
+      targetName,
+      exp.args,
+      isTail,
+      def.kind === "PrimitiveFunctionDeclaration",
+    )
   }
 
   if (
     def !== undefined &&
     targetName !== undefined &&
-    (def.kind === "PrimitiveFunctionDeclaration" || def.kind === "FunctionDefinition") &&
+    (def.kind === "PrimitiveFunctionDeclaration" ||
+      def.kind === "FunctionDefinition") &&
     exp.args.length < B.definitionArity(def)
   ) {
     const argResults = exp.args.map((a) => compileExp(state, a))
@@ -429,7 +481,13 @@ function compileGeneralApply(
       ii("mov", [ro("rax"), X86.LabelDerefOperand(lb(vrelocLabel), ZERO)]),
       ii("mov", [rd("rbp", locDisp(refSlot)), ro("rax")]),
     ]
-    instrs.push(...emitDynApply(refSlot, argResults.map((r) => r.slot), isTail))
+    instrs.push(
+      ...emitDynApply(
+        refSlot,
+        argResults.map((r) => r.slot),
+        isTail,
+      ),
+    )
     if (isTail) return instrs
     const dst = allocTemp(state)
     instrs.push(ii("mov", [rd("rbp", locDisp(dst)), ro("rax")]))
@@ -439,7 +497,8 @@ function compileGeneralApply(
   if (
     def !== undefined &&
     targetName !== undefined &&
-    (def.kind === "PrimitiveFunctionDeclaration" || def.kind === "FunctionDefinition") &&
+    (def.kind === "PrimitiveFunctionDeclaration" ||
+      def.kind === "FunctionDefinition") &&
     exp.args.length > B.definitionArity(def)
   ) {
     const arity = B.definitionArity(def)
@@ -456,7 +515,13 @@ function compileGeneralApply(
         ii("mov", [ro("rax"), X86.LabelDerefOperand(lb(vrelocLabel), ZERO)]),
         ii("mov", [rd("rbp", locDisp(refSlot)), ro("rax")]),
       )
-      instrs.push(...emitDynApply(refSlot, firstResults.map((r) => r.slot), false))
+      instrs.push(
+        ...emitDynApply(
+          refSlot,
+          firstResults.map((r) => r.slot),
+          false,
+        ),
+      )
     } else {
       for (let i = arity - 1; i >= 0; i--) {
         instrs.push(ii("push", [rd("rbp", locDisp(firstResults[i].slot))]))
@@ -471,7 +536,13 @@ function compileGeneralApply(
     const restResults = restArgs.map((a) => compileExp(state, a))
     instrs.push(...restResults.flatMap((r) => r.instrs))
 
-    instrs.push(...emitDynApply(tmp, restResults.map((r) => r.slot), isTail))
+    instrs.push(
+      ...emitDynApply(
+        tmp,
+        restResults.map((r) => r.slot),
+        isTail,
+      ),
+    )
     if (isTail) return instrs
     const dst = allocTemp(state)
     instrs.push(ii("mov", [rd("rbp", locDisp(dst)), ro("rax")]))
@@ -484,7 +555,13 @@ function compileGeneralApply(
     ...argResults.flatMap((r) => r.instrs),
     ...targetResult.instrs,
   ]
-  instrs.push(...emitDynApply(targetResult.slot, argResults.map((r) => r.slot), isTail))
+  instrs.push(
+    ...emitDynApply(
+      targetResult.slot,
+      argResults.map((r) => r.slot),
+      isTail,
+    ),
+  )
   if (isTail) return instrs
   const dst = allocTemp(state)
   instrs.push(ii("mov", [rd("rbp", locDisp(dst)), ro("rax")]))
@@ -507,7 +584,13 @@ function compileStaticCall(
       ii("mov", [ro("rax"), X86.LabelDerefOperand(lb(vrelocLabel), ZERO)]),
       ii("mov", [rd("rbp", locDisp(refSlot)), ro("rax")]),
     )
-    instrs.push(...emitDynApply(refSlot, argResults.map((r) => r.slot), isTail))
+    instrs.push(
+      ...emitDynApply(
+        refSlot,
+        argResults.map((r) => r.slot),
+        isTail,
+      ),
+    )
     if (isTail) return instrs
     const dst = allocTemp(state)
     instrs.push(ii("mov", [rd("rbp", locDisp(dst)), ro("rax")]))
@@ -552,9 +635,7 @@ function emitDynApply(
 ): Array<X86.Instr> {
   const argc = argSlots.length
   const arrSize = argc * 8
-  const instrs: Array<X86.Instr> = [
-    ii("sub", [ro("rsp"), im(arrSize)]),
-  ]
+  const instrs: Array<X86.Instr> = [ii("sub", [ro("rsp"), im(arrSize)])]
   for (let i = 0; i < argc; i++) {
     instrs.push(
       ii("mov", [ro("rax"), rd("rbp", locDisp(argSlots[i]))]),

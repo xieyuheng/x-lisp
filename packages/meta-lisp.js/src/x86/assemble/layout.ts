@@ -37,6 +37,31 @@ type DataCtx = {
 
 const ALIGN_8 = 8
 
+function collectLocalLabels(mod: Mod): Map<string, Set<string>> {
+  const map = new Map<string, Set<string>>()
+  for (const def of mod.definitions.values()) {
+    if (def.kind !== "CodeDefinition") continue
+    const local = new Set<string>()
+    map.set(def.name, local)
+    for (const block of def.blocks) {
+      local.add(block.name)
+      for (const instr of block.instrs) {
+        if (instr.op === "label") {
+          const labelOp = instr.operands[0]
+          if (labelOp.kind === "LabelOperand") {
+            local.add(labelOp.name)
+          }
+        }
+      }
+    }
+  }
+  return map
+}
+
+function scopedName(fnName: string, labelName: string): string {
+  return fnName + "/" + labelName
+}
+
 export function collectCodeLayout(
   mod: Mod,
   labels: Map<string, number>,
@@ -44,6 +69,7 @@ export function collectCodeLayout(
   align: boolean = false,
   externalRelocs?: Array<ExternalReloc>,
 ): number {
+  const localLabels = collectLocalLabels(mod)
   let pos = 0
   for (const def of mod.definitions.values()) {
     if (def.kind !== "CodeDefinition") continue
@@ -58,14 +84,16 @@ export function collectCodeLayout(
       }
     }
 
+    const fnLocalLabels = localLabels.get(def.name)!
+
     labels.set(def.name, pos)
     for (const block of def.blocks) {
-      labels.set(block.name, pos)
+      labels.set(scopedName(def.name, block.name), pos)
       for (const instr of block.instrs) {
         if (instr.op === "label") {
           const labelOp = instr.operands[0]
           if (labelOp.kind === "LabelOperand") {
-            labels.set(labelOp.name, pos)
+            labels.set(scopedName(def.name, labelOp.name), pos)
           }
           continue
         }
@@ -75,11 +103,14 @@ export function collectCodeLayout(
 
         const labelInfo = extractLabelInfo(instr)
         if (labelInfo) {
+          const resolveName = fnLocalLabels.has(labelInfo.name)
+            ? scopedName(def.name, labelInfo.name)
+            : labelInfo.name
           for (const enc of encodings) {
             if (enc.displacement !== null && enc.displacement.value === 0) {
               const dispOffset = encodedDispOffset(enc)
               relocations.push({
-                labelName: labelInfo.name,
+                labelName: resolveName,
                 labelPath: labelInfo.path,
                 instrEndPos: pos + size,
                 fieldOffset: pos + dispOffset,
