@@ -2,8 +2,8 @@ import { emitTo, encode } from "../encode/index.ts"
 import type { Mod } from "../mod/index.ts"
 import {
   collectCodeLayout,
-  collectDataLayout,
   computePathOffset,
+  emitDataSection,
   type Relocation,
   writeInt32LE,
 } from "./layout.ts"
@@ -13,19 +13,21 @@ export function assembleFlat(mod: Mod): Uint8Array {
   const relocations: Array<Relocation> = []
 
   const codeSize = collectCodeLayout(mod, labels, relocations)
-  const dataLayouts = collectDataLayout(mod, labels, codeSize)
+  const dataResult = emitDataSection(mod, labels, codeSize)
 
-  const totalSize =
-    codeSize + dataLayouts.reduce((s, d) => s + d.bytes.length, 0)
+  if (dataResult.relocs.length > 0) {
+    throw new Error(
+      "flat mode does not support pointer-t / string-t fields (use assemble-x86-exe)",
+    )
+  }
+
+  const totalSize = codeSize + dataResult.bytes.length
   const buf = new Uint8Array(totalSize)
 
   let pos = 0
   pos = emitCodeSection(mod, buf, pos)
 
-  for (const dl of dataLayouts) {
-    buf.set(dl.bytes, pos)
-    pos += dl.bytes.length
-  }
+  buf.set(dataResult.bytes, pos)
 
   for (const reloc of relocations) {
     let target = labels.get(reloc.labelName)

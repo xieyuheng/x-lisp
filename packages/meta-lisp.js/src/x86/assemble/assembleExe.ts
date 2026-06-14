@@ -1,16 +1,23 @@
-import { emitTo, encode } from "../encode/index.ts"
+import { emitTo, encode, encodedSize } from "../encode/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
 import type { Mod } from "../mod/index.ts"
 import {
   collectCodeLayout,
-  collectDataLayout,
   computePathOffset,
+  emitDataSection,
   type Relocation,
+  type InternalReloc,
+  type MetadataSlots,
+  type EmittedData,
+  collectMetadataSlots,
   writeInt32LE,
+  writeInt64,
+  writeU32LE,
 } from "./layout.ts"
 
 const MAGIC: Uint8Array = new Uint8Array([0x58, 0x38, 0x36, 0x00])
 const PAGE_SIZE = 4096
+const ALIGN_16 = 16
 
 function pageAlign(size: number): number {
   return (size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1)
@@ -18,13 +25,24 @@ function pageAlign(size: number): number {
 
 export function assembleExe(mod: Mod): Uint8Array {
   const labels = new Map<string, number>()
-  const relocations: Array<Relocation> = []
+  const codeRelocs: Array<Relocation> = []
 
-  const codeSize = collectCodeLayout(mod, labels, relocations)
+  const codeSize = collectCodeLayout(mod, labels, codeRelocs, true)
   const codeRegion = pageAlign(codeSize)
 
-  const dataLayouts = collectDataLayout(mod, labels, codeRegion)
-  const dataSize = dataLayouts.reduce((s, d) => s + d.bytes.length, 0)
+  const dataResult: EmittedData = emitDataSection(mod, labels, codeRegion)
+  const dataSize = dataResult.bytes.length
+
+  for (const reloc of dataResult.relocs) {
+    reloc.patchOffset += codeRegion
+    reloc.targetOffset += codeRegion
+  }
+
+  const metadataSlots: MetadataSlots = collectMetadataSlots(mod)
+
+  const internalRelocs: Array<InternalReloc> = buildInternalRelocs(
+    mod, labels, dataResult.relocs, metadataSlots,
+  )
 
   let spaceSize = 0
   for (const def of mod.definitions.values()) {
@@ -37,7 +55,8 @@ export function assembleExe(mod: Mod): Uint8Array {
     }
   }
 
-  const fileSize = 64 + codeSize + dataSize
+  const relocTableSize = internalRelocs.length * 8
+  const fileSize = 64 + codeSize + dataSize + relocTableSize
   const buf = new Uint8Array(fileSize)
   buf.set(MAGIC, 0)
 
@@ -45,19 +64,23 @@ export function assembleExe(mod: Mod): Uint8Array {
   writeU32LE(buf, 0x08, codeSize)
   writeU32LE(buf, 0x0c, dataSize)
   writeU32LE(buf, 0x10, spaceSize)
-  writeU32LE(buf, 0x14, 0)
+  writeU32LE(buf, 0x14, internalRelocs.length)
   writeU32LE(buf, 0x18, 0)
-  writeU32LE(buf, 0x1c, 0)
+  writeU32LE(buf, 0x1c, computeEntryOffset(mod))
 
   let pos = 64
   pos = emitCodeSection(mod, buf, pos)
 
-  for (const dl of dataLayouts) {
-    buf.set(dl.bytes, pos)
-    pos += dl.bytes.length
+  buf.set(dataResult.bytes, pos)
+  pos += dataSize
+
+  for (const reloc of internalRelocs) {
+    writeU32LE(buf, pos, reloc.patchOffset)
+    writeU32LE(buf, pos + 4, reloc.targetOffset)
+    pos += 8
   }
 
-  for (const reloc of relocations) {
+  for (const reloc of codeRelocs) {
     let target = labels.get(reloc.labelName)
     if (target === undefined) {
       throw new Error(`undefined label: ${reloc.labelName}`)
@@ -71,25 +94,65 @@ export function assembleExe(mod: Mod): Uint8Array {
 }
 
 function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
-  let pos = start
+  let codePos = 0
   for (const def of mod.definitions.values()) {
     if (def.kind !== "CodeDefinition") continue
+
+    let targetEntry = (codePos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
+    if (targetEntry < 16) targetEntry = 16
+
+    const placeholderPos = targetEntry - 8
+    while (codePos < placeholderPos) {
+      buf[start + codePos] = 0
+      codePos++
+    }
+
+    writeInt64(buf, start + codePos, 0n)
+    codePos += 8
+
+    while (codePos < targetEntry) {
+      buf[start + codePos] = 0
+      codePos++
+    }
+
     for (const block of def.blocks) {
       for (const instr of block.instrs) {
         if (instr.op === "label") continue
         const encodings = encode(instr)
         for (const enc of encodings) {
-          pos = emitTo(enc, buf, pos)
+          codePos = emitTo(enc, buf, start + codePos) - start
         }
       }
     }
   }
-  return pos
+  return start + codePos
 }
 
-function writeU32LE(buf: Uint8Array, offset: number, value: number): void {
-  buf[offset] = value & 0xff
-  buf[offset + 1] = (value >> 8) & 0xff
-  buf[offset + 2] = (value >> 16) & 0xff
-  buf[offset + 3] = (value >> 24) & 0xff
+function computeEntryOffset(mod: Mod): number {
+  for (const def of mod.definitions.values()) {
+    if (def.kind !== "CodeDefinition") continue
+    return 16
+  }
+  return 0
+}
+
+function buildInternalRelocs(
+  mod: Mod,
+  labels: Map<string, number>,
+  dataRelocs: Array<InternalReloc>,
+  metadataSlots: MetadataSlots,
+): Array<InternalReloc> {
+  const result: Array<InternalReloc> = [...dataRelocs]
+
+  for (const slot of metadataSlots) {
+    const metaLabel = `.meta.${slot.codeName}`
+    const target = labels.get(metaLabel)
+    if (target === undefined) continue
+    result.push({
+      patchOffset: slot.placeholderOffset,
+      targetOffset: target,
+    })
+  }
+
+  return result
 }

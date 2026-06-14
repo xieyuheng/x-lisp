@@ -19,19 +19,40 @@ export type Relocation = {
   fieldOffset: number
 }
 
-export type DataLayout = {
-  offset: number
-  bytes: Uint8Array
+export type InternalReloc = {
+  patchOffset: number
+  targetOffset: number
 }
+
+type DataCtx = {
+  mod: Mod
+  buf: Uint8Array
+  relocs: Array<InternalReloc>
+}
+
+const ALIGN_16 = 16
 
 export function collectCodeLayout(
   mod: Mod,
   labels: Map<string, number>,
   relocations: Array<Relocation>,
+  align: boolean = false,
 ): number {
   let pos = 0
   for (const def of mod.definitions.values()) {
     if (def.kind !== "CodeDefinition") continue
+
+    if (align) {
+      let targetEntry = (pos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
+      if (targetEntry < 16) targetEntry = 16
+      const placeholderPos = targetEntry - 8
+      if (placeholderPos > pos) {
+        pos = placeholderPos
+      }
+      pos += 8
+      if (targetEntry !== pos) pos = targetEntry
+    }
+
     labels.set(def.name, pos)
     for (const block of def.blocks) {
       labels.set(block.name, pos)
@@ -69,13 +90,20 @@ export function collectCodeLayout(
   return pos
 }
 
-export function collectDataLayout(
+export type EmittedData = {
+  bytes: Uint8Array
+  relocs: Array<InternalReloc>
+}
+
+export function emitDataSection(
   mod: Mod,
   labels: Map<string, number>,
-  startOffset: number,
-): Array<DataLayout> {
-  const result: Array<DataLayout> = []
-  let pos = startOffset
+  startImageOffset: number,
+): EmittedData {
+  const relocs: Array<InternalReloc> = []
+  const totalSize = computeDataSectionSize(mod)
+  const buf = new Uint8Array(totalSize)
+  let pos = 0
 
   for (const def of mod.definitions.values()) {
     if (def.kind !== "DataDefinition") continue
@@ -83,104 +111,260 @@ export function collectDataLayout(
     if (!claimedType || claimedType.kind !== "DataType") {
       throw new Error(`unclaimed or non-struct data: ${def.name}`)
     }
-    const dataType = claimedType
 
-    const dataBytes = emitDataBytes(mod, dataType, def.fields)
-    result.push({ offset: pos, bytes: dataBytes })
-
-    labels.set(def.name, pos)
+    labels.set(def.name, startImageOffset + pos)
 
     const structDef = lookupStructDefinition(
       mod,
-      dataType.typeConstructor.name,
+      claimedType.typeConstructor.name,
       def.location,
     )
-    const env = makeParamEnv(dataType, structDef)
-    recordSubfieldLabels(mod, labels, def.name, structDef.fields, env, pos, 0)
+    const env = makeParamEnv(claimedType, structDef)
+    recordSubfieldLabels(
+      mod, labels, def.name, structDef.fields, env,
+      startImageOffset + pos, 0,
+    )
 
-    pos += dataBytes.length
+    pos = emitFieldsTree(
+      mod, claimedType, def.fields, buf, pos, relocs,
+    )
   }
 
-  return result
+  for (const [targetName, metaDef] of mod.metadataDefinitions) {
+    if (!mod.codeMetadataType) {
+      throw new Error("claim-code-metadata required when using define-metadata")
+    }
+    labels.set(
+      `.meta.${targetName}`,
+      startImageOffset + pos,
+    )
+    pos = emitFieldsTree(
+      mod, mod.codeMetadataType as DataType, metaDef.fields,
+      buf, pos, relocs,
+    )
+  }
+
+  return { bytes: buf, relocs }
 }
 
-export function emitDataBytes(
+function computeDataSectionSize(mod: Mod): number {
+  let total = 0
+  for (const def of mod.definitions.values()) {
+    if (def.kind !== "DataDefinition") continue
+    const claimedType = mod.claimedTypes.get(def.name)
+    if (!claimedType || claimedType.kind !== "DataType") {
+      throw new Error(`unclaimed data: ${def.name}`)
+    }
+    total += computeFieldsTreeSize(mod, claimedType, def.fields)
+  }
+  for (const [, metaDef] of mod.metadataDefinitions) {
+    if (!mod.codeMetadataType) continue
+    total += computeFieldsTreeSize(mod, mod.codeMetadataType as DataType, metaDef.fields)
+  }
+  return total
+}
+
+function emitFieldsTree(
   mod: Mod,
   dataType: DataType,
   fields: Array<StructField>,
-): Uint8Array {
+  buf: Uint8Array,
+  offset: number,
+  relocs: Array<InternalReloc>,
+): number {
   const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
-  let totalSize = 0
-  for (const [, type] of fieldTypes) {
-    totalSize += typeSize(type)
-  }
-
-  const buf = new Uint8Array(totalSize)
-  let offset = 0
+  const deferred: Array<{ off: number; fn: (pos: number) => number }> = []
+  let pos = offset
 
   for (const field of fields) {
     const fieldType = fieldTypes.get(field.name)
     if (!fieldType) throw new Error(`unknown field: ${field.name}`)
-    offset = emitValue(buf, offset, mod, fieldType, field.exp)
+    pos = emitFieldTree(mod, fieldType, field.exp, buf, pos, relocs, deferred)
   }
 
-  return buf
+  for (const d of deferred) {
+    d.off = pos
+    pos = d.fn(pos)
+  }
+
+  return pos
 }
 
-function emitValue(
+function emitFieldTree(
+  mod: Mod,
+  fieldType: Type,
+  fieldExp: Exp,
   buf: Uint8Array,
   offset: number,
-  mod: Mod,
-  type: Type,
-  exp: Exp,
+  relocs: Array<InternalReloc>,
+  deferred: Array<{ off: number; fn: (pos: number) => number }>,
 ): number {
-  const value = evaluate(mod, emptyEnv(), exp)
+  const value = evaluate(mod, emptyEnv(), fieldExp)
 
   if (value.kind === "IntValue") {
-    return writeIntLE(buf, offset, typeSize(type), value.value)
+    return writeIntLE(buf, offset, typeSize(fieldType), value.value)
   }
 
   if (value.kind === "StructValue") {
-    const fieldTypes = dataTypeUnfold(mod, type as DataType, exp.location)
-    let pos = offset
-    for (const [fieldName, fieldType] of fieldTypes) {
-      const fieldValue = value.fields.get(fieldName)
-      if (!fieldValue) throw new Error(`missing struct field: ${fieldName}`)
-      pos = emitFlatValue(buf, pos, mod, fieldType, fieldValue)
+    return emitFieldsTree(
+      mod, fieldType as DataType,
+      (fieldExp as { kind: string; fields: Array<StructField> }).fields,
+      buf, offset, relocs,
+    )
+  }
+
+  if (value.kind === "PointerValue") {
+    writeInt64(buf, offset, 0n)
+    const placeholder = offset
+    offset += 8
+    deferred.push({
+      off: 0,
+      fn: (pos: number) => {
+        const targetOff = pos
+        const newPos = emitPointerTarget(
+          mod, fieldType as DataType, value.target, fieldExp, buf, pos, relocs,
+        )
+        relocs.push({
+          patchOffset: placeholder,
+          targetOffset: targetOff,
+        })
+        return newPos
+      },
+    })
+    return offset
+  }
+
+  if (value.kind === "StringValue") {
+    if (typeSize(fieldType) === 8) {
+      writeInt64(buf, offset, 0n)
+      const placeholder = offset
+      offset += 8
+      deferred.push({
+        off: 0,
+        fn: (pos: number) => {
+          const targetOff = pos
+          for (let i = 0; i < value.content.length; i++) {
+            buf[pos + i] = value.content.charCodeAt(i)
+          }
+          buf[pos + value.content.length] = 0
+          const newPos = pos + value.content.length + 1
+          relocs.push({
+            patchOffset: placeholder,
+            targetOffset: targetOff,
+          })
+          return newPos
+        },
+      })
+      return offset
     }
-    return pos
+    for (let i = 0; i < value.content.length; i++) {
+      buf[offset + i] = value.content.charCodeAt(i)
+    }
+    buf[offset + value.content.length] = 0
+    return offset + value.content.length + 1
   }
 
   throw new Error(`unsupported data value: ${value.kind}`)
 }
 
-function emitFlatValue(
+function emitPointerTarget(
+  mod: Mod,
+  pointerType: DataType,
+  targetValue: Value,
+  originalExp: Exp,
   buf: Uint8Array,
   offset: number,
-  mod: Mod,
-  type: Type,
-  value: Value,
+  relocs: Array<InternalReloc>,
 ): number {
+  if (targetValue.kind === "StructValue") {
+    const structExp = originalExp as { kind: string; target: { kind: string; fields: Array<StructField> } }
+    return emitFieldsTree(
+      mod, pointerType.argTypes[0] as DataType,
+      structExp.target.fields,
+      buf, offset, relocs,
+    )
+  }
+
+  if (targetValue.kind === "StringValue") {
+    for (let i = 0; i < targetValue.content.length; i++) {
+      buf[offset + i] = targetValue.content.charCodeAt(i)
+    }
+    buf[offset + targetValue.content.length] = 0
+    return offset + targetValue.content.length + 1
+  }
+
+  throw new Error(`unsupported pointer target: ${targetValue.kind}`)
+}
+
+function computeFieldsTreeSize(
+  mod: Mod,
+  dataType: DataType,
+  fields: Array<StructField>,
+): number {
+  const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
+  let total = 0
+  let deferred = 0
+  for (const field of fields) {
+    const fieldType = fieldTypes.get(field.name)
+    if (!fieldType) throw new Error(`unknown field: ${field.name}`)
+    const r = computeFieldTreeSize(mod, fieldType, field.exp)
+    total += r.fixed
+    deferred += r.deferred
+  }
+  return total + deferred
+}
+
+type SizeResult = { fixed: number; deferred: number }
+
+function computeFieldTreeSize(
+  mod: Mod,
+  fieldType: Type,
+  fieldExp: Exp,
+): SizeResult {
+  const value = evaluate(mod, emptyEnv(), fieldExp)
+
   if (value.kind === "IntValue") {
-    return writeIntLE(buf, offset, typeSize(type), value.value)
+    return { fixed: typeSize(fieldType), deferred: 0 }
   }
 
   if (value.kind === "StructValue") {
-    const fieldTypes = dataTypeUnfold(
-      mod,
-      type as DataType,
-      S.zeroLocation("data"),
-    )
-    let pos = offset
-    for (const [fieldName, fieldType] of fieldTypes) {
-      const fieldValue = value.fields.get(fieldName)
-      if (!fieldValue) throw new Error(`missing struct field: ${fieldName}`)
-      pos = emitFlatValue(buf, pos, mod, fieldType, fieldValue)
-    }
-    return pos
+    return { fixed: computeFieldsTreeSize(mod, fieldType as DataType, (fieldExp as { kind: string; fields: Array<StructField> }).fields), deferred: 0 }
   }
 
-  throw new Error(`unsupported flat value: ${value.kind}`)
+  if (value.kind === "PointerValue") {
+    const inner = computePointerTargetSize(mod, fieldType as DataType, value.target, fieldExp)
+    return { fixed: 8, deferred: inner }
+  }
+
+  if (value.kind === "StringValue") {
+    if (typeSize(fieldType) === 8) {
+      return { fixed: 8, deferred: value.content.length + 1 }
+    }
+    return { fixed: value.content.length + 1, deferred: 0 }
+  }
+
+  throw new Error(`unsupported data value: ${value.kind}`)
+}
+
+function computePointerTargetSize(
+  mod: Mod,
+  pointerType: DataType,
+  targetValue: Value,
+  originalExp: Exp,
+): number {
+  if (targetValue.kind === "StructValue") {
+    const structExp = originalExp as { kind: string; target: { kind: string; fields: Array<StructField> } }
+    return computeFieldsTreeSize(
+      mod, pointerType.argTypes[0] as DataType,
+      structExp.target.fields,
+    )
+  }
+
+  if (targetValue.kind === "StringValue") {
+    return targetValue.content.length + 1
+  }
+
+  throw new Error(`unsupported pointer target: ${targetValue.kind}`)
 }
 
 export function recordSubfieldLabels(
@@ -206,13 +390,8 @@ export function recordSubfieldLabels(
         subDef.fields.length > 0
       ) {
         recordSubfieldLabels(
-          mod,
-          labels,
-          key,
-          subDef.fields,
-          env,
-          baseOffset + offset,
-          0,
+          mod, labels, key, subDef.fields, env,
+          baseOffset + offset, 0,
         )
       }
     }
@@ -285,6 +464,37 @@ export function extractLabelInfo(instr: Instr): {
   return null
 }
 
+export type MetadataSlots = Array<{
+  codeName: string
+  placeholderOffset: number
+}>
+
+export function collectMetadataSlots(
+  mod: Mod,
+): MetadataSlots {
+  const slots: MetadataSlots = []
+  let pos = 0
+  for (const def of mod.definitions.values()) {
+    if (def.kind !== "CodeDefinition") continue
+
+    let targetEntry = (pos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
+    if (targetEntry < 16) targetEntry = 16
+    const placeholderOffset = targetEntry - 8
+
+    slots.push({ codeName: def.name, placeholderOffset })
+
+    pos = targetEntry
+    for (const block of def.blocks) {
+      for (const instr of block.instrs) {
+        if (instr.op === "label") continue
+        const encodings = encode(instr)
+        pos += encodings.reduce((s, e) => s + encodedSize(e), 0)
+      }
+    }
+  }
+  return slots
+}
+
 function evaluateTypeFromExp(mod: Mod, env: Env, exp: Exp): Type {
   const value = evaluate(mod, env, exp)
   if (value.kind === "TypeValue") return value.type
@@ -292,12 +502,11 @@ function evaluateTypeFromExp(mod: Mod, env: Env, exp: Exp): Type {
     value.kind === "TypeConstructorValue" &&
     value.typeConstructor.parameters.length === 0
   ) {
-    const dt: DataType = {
+    return {
       kind: "DataType",
       typeConstructor: value.typeConstructor,
       argTypes: [],
     }
-    return dt
   }
   throw new Error(`expected type expression, got: ${value.kind}`)
 }
@@ -344,4 +553,15 @@ export function writeIntLE(
     buf[offset + i] = Number((value >> BigInt(i * 8)) & 0xffn)
   }
   return offset + size
+}
+
+export function writeInt64(buf: Uint8Array, offset: number, value: bigint): void {
+  writeIntLE(buf, offset, 8, value)
+}
+
+export function writeU32LE(buf: Uint8Array, offset: number, value: number): void {
+  buf[offset] = value & 0xff
+  buf[offset + 1] = (value >> 8) & 0xff
+  buf[offset + 2] = (value >> 16) & 0xff
+  buf[offset + 3] = (value >> 24) & 0xff
 }
