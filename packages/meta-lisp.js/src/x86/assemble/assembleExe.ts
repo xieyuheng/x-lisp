@@ -17,7 +17,7 @@ import {
 
 const MAGIC: Uint8Array = new Uint8Array([0x58, 0x38, 0x36, 0x00])
 const PAGE_SIZE = 4096
-const ALIGN_16 = 16
+const ALIGN_8 = 8
 
 function pageAlign(size: number): number {
   return (size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1)
@@ -101,26 +101,16 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
   for (const def of mod.definitions.values()) {
     if (def.kind !== "CodeDefinition") continue
 
-    let targetEntry = (codePos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
-    if (targetEntry < 16) targetEntry = 16
-
-    let placeholderPos = targetEntry - 8
-    if (placeholderPos < codePos) {
-      targetEntry += ALIGN_16
-      placeholderPos = targetEntry - 8
-    }
-
-    while (codePos < placeholderPos) {
-      buf[start + codePos] = 0
-      codePos++
-    }
-
-    writeInt64(buf, start + codePos, 0n)
-    codePos += 8
-
-    while (codePos < targetEntry) {
-      buf[start + codePos] = 0
-      codePos++
+    if (mod.metadataDefinitions.has(def.name)) {
+      const placeholderPos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
+      while (codePos < placeholderPos) {
+        buf[start + codePos] = 0
+        codePos++
+      }
+      writeInt64(buf, start + codePos, 0n)
+      codePos += 8
+    } else {
+      codePos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
     }
 
     for (const block of def.blocks) {
@@ -139,7 +129,7 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
 function computeEntryOffset(mod: Mod): number {
   for (const def of mod.definitions.values()) {
     if (def.kind !== "CodeDefinition") continue
-    return 16
+    return mod.metadataDefinitions.has(def.name) ? 8 : 0
   }
   return 0
 }

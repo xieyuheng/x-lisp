@@ -30,7 +30,7 @@ type DataCtx = {
   relocs: Array<InternalReloc>
 }
 
-const ALIGN_16 = 16
+const ALIGN_8 = 8
 
 export function collectCodeLayout(
   mod: Mod,
@@ -43,18 +43,13 @@ export function collectCodeLayout(
     if (def.kind !== "CodeDefinition") continue
 
     if (align) {
-      let targetEntry = (pos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
-      if (targetEntry < 16) targetEntry = 16
-      let placeholderPos = targetEntry - 8
-      if (placeholderPos < pos) {
-        targetEntry += ALIGN_16
-        placeholderPos = targetEntry - 8
+      if (mod.metadataDefinitions.has(def.name)) {
+        const placeholderPos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
+        if (placeholderPos > pos) pos = placeholderPos
+        pos += 8
+      } else {
+        pos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
       }
-      if (placeholderPos > pos) {
-        pos = placeholderPos
-      }
-      pos += 8
-      if (targetEntry !== pos) pos = targetEntry
     }
 
     labels.set(def.name, pos)
@@ -523,17 +518,15 @@ export function collectMetadataSlots(mod: Mod): MetadataSlots {
   for (const def of mod.definitions.values()) {
     if (def.kind !== "CodeDefinition") continue
 
-    let targetEntry = (pos + ALIGN_16 - 1) & ~(ALIGN_16 - 1)
-    if (targetEntry < 16) targetEntry = 16
-    let placeholderOffset = targetEntry - 8
-    if (placeholderOffset < pos) {
-      targetEntry += ALIGN_16
-      placeholderOffset = targetEntry - 8
+    if (mod.metadataDefinitions.has(def.name)) {
+      const placeholderPos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
+      if (placeholderPos > pos) pos = placeholderPos
+      slots.push({ codeName: def.name, placeholderOffset: pos })
+      pos += 8
+    } else {
+      pos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
     }
 
-    slots.push({ codeName: def.name, placeholderOffset })
-
-    pos = targetEntry
     for (const block of def.blocks) {
       for (const instr of block.instrs) {
         if (instr.op === "label") continue

@@ -1,17 +1,17 @@
-00000000  0000              add [rax],al
-00000002  0000              add [rax],al
-00000004  0000              add [rax],al
-00000006  0000              add [rax],al
-00000008  0000              add [rax],al
-0000000A  0000              add [rax],al
-0000000C  0000              add [rax],al
-0000000E  0000              add [rax],al
-00000010  488D05F90F0000    lea rax,[rel 0x1010]
-00000017  48C70063000000    mov qword [rax],0x63
-0000001E  488D05E30F0000    lea rax,[rel 0x1008]
-00000025  48C7004D000000    mov qword [rax],0x4d
-0000002C  488B05DD0F0000    mov rax,[rel 0x1010]
-00000033  C3                ret
+00000000  488D0509100000    lea rax,[rel 0x1010]
+00000007  48C70063000000    mov qword [rax],0x63
+0000000E  488D05F30F0000    lea rax,[rel 0x1008]
+00000015  48C7004D000000    mov qword [rax],0x4d
+0000001C  488B05ED0F0000    mov rax,[rel 0x1010]
+00000023  C3                ret
+00000024  0000              add [rax],al
+00000026  0000              add [rax],al
+00000028  0000              add [rax],al
+0000002A  0000              add [rax],al
+0000002C  0000              add [rax],al
+0000002E  0000              add [rax],al
+00000030  0000              add [rax],al
+00000032  0000              add [rax],al
 00000034  0000              add [rax],al
 00000036  0000              add [rax],al
 00000038  0000              add [rax],al
@@ -24,11 +24,3 @@
 00000046  0000              add [rax],al
 00000048  0000              add [rax],al
 0000004A  0000              add [rax],al
-0000004C  0000              add [rax],al
-0000004E  0000              add [rax],al
-00000050  0000              add [rax],al
-00000052  0000              add [rax],al
-00000054  0000              add [rax],al
-00000056  0000              add [rax],al
-00000058  0000              add [rax],al
-0000005A  0000              add [rax],al
