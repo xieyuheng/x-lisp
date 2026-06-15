@@ -44,7 +44,7 @@
 
 (define (make-box-binding binding)
   (match binding
-    ((make-binding name rhs location)
+    ((make-binding name _ location)
      (make-binding
        name
        (apply-exp
