@@ -1,8 +1,12 @@
 # self-hosting
 
-[meta-lisp.meta] [review] desugar-let.meta
+[meta-builtin.meta] `pair-to-list`
+[meta-lisp.meta] [refactor] desugar-let.meta -- use  `pair-to-list`
+
 [meta-lisp.meta] [review] desugar-letrec-star.meta
 [meta-lisp.meta] [review] desugar-letrec.meta
+
+[meta-lisp.meta] [review] exp-occurred-names
 
 [meta-lisp.meta] [review] desugar-location.meta
 [meta-lisp.meta] [review] desugar-match.meta

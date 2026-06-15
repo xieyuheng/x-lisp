@@ -1,5 +1,24 @@
 (module meta)
 
+(@comment
+  (let ((x1 e1)
+        (x2 e2)
+        ...
+        (xn en))
+    body)
+
+  => let [t1 t2 ... tn] be fresh names
+
+  (let* ((t1 e1)
+         (t2 e2)
+         ...
+         (tn en)
+         (x1 t1)
+         (x2 t2)
+         ...
+         (xn tn))
+    body))
+
 (claim desugar-let
   (-> (list-t binding-t) exp-t source-location-t
       exp-t))
@@ -7,27 +26,35 @@
 (define (desugar-let bindings body location)
   (cond
     ((list-empty? bindings) body)
-    ((list-empty? (list-tail bindings))
-     (let ((binding (list-first bindings)))
-       (let1-exp (binding-name binding) (binding-rhs binding) body location)))
+    ((list-empty? (cdr bindings))
+     (= binding (car bindings))
+     (let1-exp (binding-name binding) (binding-rhs binding) body location))
     (else
-     (begin
-       (= used-names (exp-occurred-names body))
-       (= used-names
-          (list-fold-left (lambda (s b) (set-union s (exp-occurred-names (binding-rhs b))))
-            used-names bindings))
-       (define (loop bs tmp-bindings new-bindings)
-         (if (list-empty? bs)
-           (let-star-exp (list-append (list-reverse tmp-bindings) (list-reverse new-bindings)) body location)
-           (let ((binding (list-first bs))
-                 (rest (list-tail bs)))
-             (= tmp-name (generate-relative-fresh-name (binding-name binding) used-names))
-             (= used-names (set-add tmp-name used-names))
-             (loop rest
-               (cons (make-binding tmp-name (binding-rhs binding) (binding-location binding))
-                 tmp-bindings)
-               (cons (make-binding (binding-name binding)
-                       (var-exp tmp-name (binding-location binding))
-                       (binding-location binding))
-                 new-bindings)))))
-       (loop bindings [] [])))))
+     (= used-names
+        (set-union
+          (exp-occurred-names body)
+          (set-union-many
+            (list-map (compose exp-occurred-names binding-rhs) bindings))))
+     (let-star-exp (desugar-let-bindings used-names bindings) body location))))
+
+(claim desugar-let-bindings
+  (-> (set-t symbol-t) (list-t binding-t)
+      (list-t binding-t)))
+
+(define (desugar-let-bindings used-names bindings)
+  (match (list-unzip (list-map (desugar-let-binding used-names) bindings))
+    ((make-pair first second)
+     (list-append first second))))
+
+(claim desugar-let-binding
+  (-> (set-t symbol-t) binding-t
+      (pair-t binding-t binding-t)))
+
+(define (desugar-let-binding used-names binding)
+  (match binding
+    ((make-binding name rhs location)
+     (= fresh-name (generate-relative-fresh-name name used-names))
+     (set-add! fresh-name used-names)
+     (make-pair
+       (make-binding fresh-name rhs location)
+       (make-binding name (var-exp fresh-name location) location)))))

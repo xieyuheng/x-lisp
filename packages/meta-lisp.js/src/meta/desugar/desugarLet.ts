@@ -12,8 +12,7 @@ export function desugarLet(
     return M.Let1Exp(binding.name, binding.rhs, body, location)
   }
 
-  const usedNames = new Set<string>()
-  for (const name of M.expOccurredNames(body)) usedNames.add(name)
+  const usedNames = M.expOccurredNames(body)
   for (const b of bindings) {
     for (const name of M.expOccurredNames(b.rhs)) usedNames.add(name)
   }
