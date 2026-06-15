@@ -1,13 +1,15 @@
 (module meta)
 
 (@comment
+  desugar (let) to (let*)
+
   (let ((x1 e1)
         (x2 e2)
         ...
         (xn en))
     body)
 
-  => let [t1 t2 ... tn] be fresh names
+  let [t1 t2 ... tn] be fresh names
 
   (let* ((t1 e1)
          (t2 e2)
