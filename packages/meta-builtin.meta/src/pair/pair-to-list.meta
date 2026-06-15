@@ -1,0 +1,4 @@
+(module builtin)
+
+(define (pair-to-list pair)
+  (@list (pair-first pair) (pair-second pair)))

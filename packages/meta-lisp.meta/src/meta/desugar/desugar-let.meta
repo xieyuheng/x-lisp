@@ -42,9 +42,11 @@
       (list-t binding-t)))
 
 (define (desugar-let-bindings used-names bindings)
-  (match (list-unzip (list-map (desugar-let-binding used-names) bindings))
-    ((make-pair first second)
-     (list-append first second))))
+  (pipe bindings
+    (list-map (desugar-let-binding used-names))
+    list-unzip
+    pair-to-list
+    list-concat))
 
 (claim desugar-let-binding
   (-> (set-t symbol-t) binding-t
