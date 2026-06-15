@@ -1,3 +1,4 @@
+export * from "./arrayAppend.ts"
 export * from "./arrayConcat.ts"
 export * from "./arrayDedup.ts"
 export * from "./arrayGroup2.ts"

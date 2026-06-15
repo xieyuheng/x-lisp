@@ -1,3 +1,5 @@
+import { arrayAppend, arrayUnzip } from "@xieyuheng/helpers.js/array"
+import { setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
@@ -12,25 +14,37 @@ export function desugarLet(
     return M.Let1Exp(binding.name, binding.rhs, body, location)
   }
 
-  const usedNames = M.expOccurredNames(body)
-  for (const b of bindings) {
-    for (const name of M.expOccurredNames(b.rhs)) usedNames.add(name)
-  }
+  const usedNames = setUnion(
+    M.expOccurredNames(body),
+    setUnionMany(bindings.map((binding) => M.expOccurredNames(binding.rhs))),
+  )
 
-  const tmpBindings: Array<M.Binding> = []
-  const newBindings: Array<M.Binding> = []
-  for (const binding of bindings) {
-    const tmpName = M.generateRelativeFreshName(binding.name, usedNames)
-    usedNames.add(tmpName)
-    tmpBindings.push(M.Binding(tmpName, binding.rhs, binding.location))
-    newBindings.push(
-      M.Binding(
-        binding.name,
-        M.VarExp(tmpName, binding.location),
-        binding.location,
-      ),
-    )
-  }
+  return M.LetStarExp(desugarLetBindings(usedNames, bindings), body, location)
+}
 
-  return M.LetStarExp([...tmpBindings, ...newBindings], body, location)
+function desugarLetBindings(
+  usedNames: Set<string>,
+  bindings: Array<M.Binding>,
+): Array<M.Binding> {
+  return arrayAppend(
+    ...arrayUnzip(
+      bindings.map((binding) => desugarLetBinding(usedNames, binding)),
+    ),
+  )
+}
+
+function desugarLetBinding(
+  usedNames: Set<string>,
+  binding: M.Binding,
+): [M.Binding, M.Binding] {
+  const freshName = M.generateRelativeFreshName(binding.name, usedNames)
+  usedNames.add(freshName)
+  return [
+    M.Binding(freshName, binding.rhs, binding.location),
+    M.Binding(
+      binding.name,
+      M.VarExp(freshName, binding.location),
+      binding.location,
+    ),
+  ]
 }

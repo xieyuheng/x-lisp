@@ -28,7 +28,7 @@
 (define (desugar-let bindings body location)
   (cond
     ((list-empty? bindings) body)
-    ((list-empty? (cdr bindings))
+    ((equal? 1 (list-length bindings))
      (= binding (car bindings))
      (let1-exp (binding-name binding) (binding-rhs binding) body location))
     (else

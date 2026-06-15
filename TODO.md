@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.js] [refactor] desugarLet.ts
 [meta-lisp.js] [refactor] desugarLetrecStar.ts
 
 [meta-lisp.meta] [review] desugar-letrec.meta
