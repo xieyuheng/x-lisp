@@ -1,12 +1,11 @@
 # self-hosting
 
-[meta-lisp.js] [refactor] desugarLetrecStar.ts -- again
 [meta-lisp.js] [refactor] desugarLetrec.ts
 
-[meta-lisp.meta] [review] exp-occurred-names
+[meta-lisp.meta] [review] `exp-occurred-names` -- extract helper functions
 
-[meta-lisp.meta] [refactor] desugar-let.meta
-[meta-lisp.meta] [refactor] desugar-letrec.meta
+[meta-lisp.meta] [refactor] desugar-let.meta -- using helper functions of `exp-occurred-names`
+[meta-lisp.meta] [refactor] desugar-letrec.meta -- using helper functions of `exp-occurred-names`
 
 [meta-lisp.meta] [review] desugar-location.meta
 [meta-lisp.meta] [review] desugar-match.meta

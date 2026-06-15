@@ -34,20 +34,21 @@
       exp-t))
 
 (define (desugar-letrec bindings body location)
+  (= box-bindings (list-map make-box-binding bindings))
+  (= box-get-exps (list-map make-box-get-exp bindings))
+  (= names (list-map binding-name bindings))
+  (= exp-unbox (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
+  (= new-rhs-exps (list-map (compose exp-unbox binding-rhs) bindings))
   (= used-names
      (set-union
        (exp-occurred-names body)
        (set-union-many
          (list-map (compose exp-occurred-names binding-rhs) bindings))))
-  (= names (list-map binding-name bindings))
-  (= box-get-exps (make-box-get-exps bindings))
-  (= exp-unbox (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
-  (= new-rhs-exps (list-map (compose exp-unbox binding-rhs) bindings))
   (= tmp-bindings (make-tmp-bindings used-names bindings new-rhs-exps))
   (= tmp-var-exps (list-map make-binding-var-exp tmp-bindings))
-  (= box-put-exps (make-box-put-exps tmp-var-exps bindings))
+  (= box-put-exps (list-map-zip make-box-put-exp tmp-var-exps bindings))
   (let-exp
-    (list-map make-box-binding bindings)
+    box-bindings
     (let-exp
       tmp-bindings
       (begin-exp (list-append box-put-exps [(exp-unbox body)]) location)

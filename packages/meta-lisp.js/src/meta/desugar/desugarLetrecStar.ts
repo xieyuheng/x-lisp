@@ -1,3 +1,4 @@
+import { arrayMapZip, arrayZip } from "@xieyuheng/helpers.js/array"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
@@ -27,21 +28,20 @@ export function desugarLetrecStar(
   body: M.Exp,
   location: SourceLocation,
 ): M.Exp {
-  const substPairs = bindings.map(makeSubstPair)
+  const boxBindings = bindings.map(makeBoxBinding)
+  const boxGetExps = bindings.map(makeBoxGetExp)
+  const names = bindings.map((binding) => binding.name)
+  const expUnbox = (exp: M.Exp) => expNaiveSubstMany(exp, names, boxGetExps)
+  const newRhsExps = bindings.map((binding) => expUnbox(binding.rhs))
+  const boxPutExps = arrayMapZip(makeBoxPutExp, newRhsExps, bindings)
   return M.LetExp(
-    bindings.map(makeBoxBinding),
-    M.BeginExp(
-      [
-        ...bindings.map((binding) => makeBoxPutExp(substPairs, binding)),
-        expNaiveSubstMany(body, substPairs),
-      ],
-      location,
-    ),
+    boxBindings,
+    M.BeginExp([...boxPutExps, expUnbox(body)], location),
     location,
   )
 }
 
-function makeBoxBinding(binding: M.Binding): M.Binding {
+export function makeBoxBinding(binding: M.Binding): M.Binding {
   return M.Binding(
     binding.name,
     M.ApplyExp(
@@ -58,25 +58,7 @@ function makeBoxBinding(binding: M.Binding): M.Binding {
   )
 }
 
-function makeBoxPutExp(
-  substPairs: Array<[string, M.Exp]>,
-  binding: M.Binding,
-): M.Exp {
-  return M.ApplyExp(
-    M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", binding.location),
-    [
-      expNaiveSubstMany(binding.rhs, substPairs),
-      M.VarExp(binding.name, binding.location),
-    ],
-    binding.location,
-  )
-}
-
-function makeSubstPair(binding: M.Binding): [string, M.Exp] {
-  return [binding.name, makeBoxGetExp(binding)]
-}
-
-function makeBoxGetExp(binding: M.Binding): M.Exp {
+export function makeBoxGetExp(binding: M.Binding): M.Exp {
   return M.ApplyExp(
     M.QualifiedVarExp("meta-builtin", "builtin", "box-get", binding.location),
     [M.VarExp(binding.name, binding.location)],
@@ -84,8 +66,20 @@ function makeBoxGetExp(binding: M.Binding): M.Exp {
   )
 }
 
-function expNaiveSubstMany(exp: M.Exp, pairs: Array<[string, M.Exp]>): M.Exp {
-  return pairs.reduce(expNaiveSubstPair, exp)
+export function makeBoxPutExp(valueExp: M.Exp, binding: M.Binding): M.Exp {
+  return M.ApplyExp(
+    M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", binding.location),
+    [valueExp, M.VarExp(binding.name, binding.location)],
+    binding.location,
+  )
+}
+
+export function expNaiveSubstMany(
+  exp: M.Exp,
+  names: Array<string>,
+  rhsExps: Array<M.Exp>,
+): M.Exp {
+  return arrayZip(names, rhsExps).reduce(expNaiveSubstPair, exp)
 }
 
 function expNaiveSubstPair(exp: M.Exp, pair: [string, M.Exp]): M.Exp {
