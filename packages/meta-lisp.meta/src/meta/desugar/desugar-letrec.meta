@@ -1,105 +1,70 @@
 (module meta)
 
-;; Desugar `(letrec)` using box:
-;;
-;;     (letrec ((x1 e1)
-;;              (x2 e2)
-;;              ...
-;;              (xn en))
-;;       body)
-;;
-;; where e1, e2, en, and body have their
-;; x1, x2, xn replaced with (box-get x1), (box-get x2), (box-get xn)
-;;
-;;     (let ((x1 (make-box))
-;;           (x2 (make-box))
-;;           ...
-;;           (xn (make-box)))
-;;       (let ((v1 e1)
-;;             (v2 e2)
-;;             ...
-;;             (vn en))
-;;         (box-put! x1 v1)
-;;         (box-put! x2 v2)
-;;         ...
-;;         (box-put! xn vn)
-;;         body))
+(@comment
+  desugar (letrec) to (let) using box
+
+  (letrec ((x1 e1)
+           (x2 e2)
+           ...
+           (xn en))
+    body)
+
+  let [e1 e2 ... en] and body
+  have their [x1 x2 ... xn]
+  replaced with [(box-get x1) (box-get x2) ... (box-get xn)]
+  and let [t1 t2 ... tn] be fresh names
+
+  (let ((x1 (make-box))
+        (x2 (make-box))
+        ...
+        (xn (make-box)))
+    (let ((t1 e1)
+          (t2 e2)
+          ...
+          (tn en))
+      (box-put! t1 x1)
+      (box-put! t2 x2)
+      ...
+      (box-put! tn xn)
+      body)))
+
 
 (claim desugar-letrec
   (-> (list-t binding-t) exp-t source-location-t
       exp-t))
 
 (define (desugar-letrec bindings body location)
-  (= used-names (exp-occurred-names body))
   (= used-names
-     (list-fold-left (lambda (s b) (set-union s (exp-occurred-names (binding-rhs b))))
-       used-names bindings))
-  (define box-get-exps
-    (list-map (lambda (b)
-                (let ((loc (binding-location b)))
-                  (apply-exp
-                    (qualified-var-exp 'meta-builtin 'builtin 'box-get loc)
-                    [(var-exp (binding-name b) loc)]
-                    loc)))
-      bindings))
-  ;; Using expNaiveSubst is safe here: we replace b.name with
-  ;; (builtin.box-get b.name), whose only free variable is b.name itself.
-  ;; When a binding inside the RHS or body shadows b.name, that occurrence
-  ;; was never a recursive reference — stopping at the shadow is correct.
-  (define (subst-all exp bindings-box-get)
-    (if (list-empty? bindings-box-get)
-      exp
-      (let ((pair (list-first bindings-box-get))
-            (rest (list-tail bindings-box-get)))
-        (subst-all
-          (exp-naive-subst exp (pair-first pair) (pair-second pair))
-          rest))))
-  (define pairs
-    (list-map-zip (lambda (b box-get)
-                    (make-pair (binding-name b) box-get))
-      bindings box-get-exps))
-  (define new-rhses (list-map (lambda (rhs) (subst-all rhs pairs))
-                     (list-map binding-rhs bindings)))
-  (define new-body (subst-all body pairs))
-  (define let-bindings
-    (list-map (lambda (b)
-                (let ((loc (binding-location b)))
-                  (make-binding (binding-name b)
-                    (apply-exp
-                      (qualified-var-exp 'meta-builtin 'builtin 'make-box loc)
-                      [] loc)
-                    loc)))
-      bindings))
-  (define fresh-names
-    (list-map (lambda (b)
-                (generate-relative-fresh-name
-                  (string-to-symbol
-                    (@string (symbol-to-string (binding-name b)) ".value"))
-                  used-names))
-      bindings))
-  (define inner-bindings
-    (list-map-index (lambda (index b)
-                      (make-binding (list-get index fresh-names)
-                        (list-get index new-rhses)
-                        (binding-location b)))
-      bindings))
-  (define result new-body)
-  (define n (list-length bindings))
-  (define (build-result i)
-    (if (int-less? i 0)
-      result
-      (begin
-        (define b (list-get i bindings))
-        (= result
-           (begin1-exp
-             (apply-exp
-               (qualified-var-exp 'meta-builtin 'builtin 'box-put! (binding-location b))
-               [(var-exp (list-get i fresh-names) (binding-location b))
-                (var-exp (binding-name b) (binding-location b))]
-               (binding-location b))
-             result
-             (binding-location b)))
-        (build-result (isub i 1)))))
-  (build-result (isub n 1))
-  (= result (let-exp inner-bindings result location))
-  (let-exp let-bindings result location))
+     (set-union
+       (exp-occurred-names body)
+       (set-union-many
+         (list-map (compose exp-occurred-names binding-rhs) bindings))))
+  (= names (list-map binding-name bindings))
+  (= box-get-exps (make-box-get-exps bindings))
+  (= exp-unbox (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
+  (= new-rhs-exps (list-map (compose exp-unbox binding-rhs) bindings))
+  (= tmp-bindings (make-tmp-bindings used-names bindings new-rhs-exps))
+  (= tmp-var-exps (list-map make-binding-var-exp tmp-bindings))
+  (= box-put-exps (make-box-put-exps tmp-var-exps bindings))
+  (let-exp
+    (list-map make-box-binding bindings)
+    (let-exp
+      tmp-bindings
+      (begin-exp (list-append box-put-exps [(exp-unbox body)]) location)
+      location)
+    location))
+
+(define (make-tmp-bindings used-names bindings rhs-exps)
+  (swap list-map (list-zip bindings rhs-exps)
+    (lambda (pair)
+      (match pair
+        ((make-pair (make-binding name _ location) rhs-exp)
+         (make-binding
+           (generate-relative-fresh-name (symbol-append name '.value) used-names)
+           rhs-exp
+           location))))))
+
+(define (make-binding-var-exp binding)
+  (match binding
+    ((make-binding name _ location)
+     (var-exp name location))))

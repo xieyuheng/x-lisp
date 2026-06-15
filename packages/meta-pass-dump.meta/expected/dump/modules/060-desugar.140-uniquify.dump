@@ -68,6 +68,29 @@
      (self/060-desugar/add1 (self/060-desugar/double target.1)))
    5))
 
+(claim example-letrec (-> void-t))
+
+(define (example-letrec)
+  (= even?.1.1 (meta-builtin/builtin/make-box))
+  (= odd?.1.1 (meta-builtin/builtin/make-box))
+  (= even?.1 even?.1.1)
+  (= odd?.1 odd?.1.1)
+  (= even?.value.1.1
+     (lambda (n.1)
+       (if (meta-builtin/builtin/equal? n.1 0) meta-builtin/builtin/true
+           ((meta-builtin/builtin/box-get odd?.1)
+            (meta-builtin/builtin/isub n.1 1)))))
+  (= odd?.value.1.1
+     (lambda (n.2)
+       (if (meta-builtin/builtin/equal? n.2 0) meta-builtin/builtin/false
+           ((meta-builtin/builtin/box-get even?.1)
+            (meta-builtin/builtin/isub n.2 1)))))
+  (= even?.value.1 even?.value.1.1)
+  (= odd?.value.1 odd?.value.1.1)
+  (meta-builtin/builtin/box-put! even?.value.1 even?.1)
+  (meta-builtin/builtin/box-put! odd?.value.1 odd?.1)
+  meta-builtin/builtin/void)
+
 (claim example-letrec-star (-> void-t))
 
 (define (example-letrec-star)

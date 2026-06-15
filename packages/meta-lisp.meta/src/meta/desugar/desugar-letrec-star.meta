@@ -28,19 +28,25 @@
       exp-t))
 
 (define (desugar-letrec-star bindings body location)
-  (= subst-pairs (list-map make-subst-pair bindings))
+  (= names (list-map binding-name bindings))
+  (= box-get-exps (make-box-get-exps bindings))
+  (= exp-unbox (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
+  (= new-rhs-exps (list-map (compose exp-unbox binding-rhs) bindings))
+  (= box-put-exps (make-box-put-exps new-rhs-exps bindings))
   (let-exp
     (list-map make-box-binding bindings)
-    (begin-exp
-      (list-append
-        (list-map (make-box-put-exp subst-pairs) bindings)
-        [(exp-naive-subst-many body subst-pairs)])
-      location)
+    (begin-exp (list-append box-put-exps [(exp-unbox body)]) location)
     location))
 
-(claim make-box-binding
-  (-> binding-t
-      binding-t))
+(define (make-box-put-exps value-exps bindings)
+  (swap list-map (list-zip value-exps bindings)
+    (lambda (pair)
+      (match pair
+        ((make-pair value-exp (make-binding name _ location))
+         (apply-exp
+           (qualified-var-exp 'meta-builtin 'builtin 'box-put! location)
+           [value-exp (var-exp name location)]
+           location))))))
 
 (define (make-box-binding binding)
   (match binding
@@ -53,46 +59,25 @@
          location)
        location))))
 
-(claim make-box-put-exp
-  (-> (list-t (pair-t symbol-t exp-t)) binding-t
-      exp-t))
-
-(define (make-box-put-exp subst-pairs binding)
-  (match binding
-    ((make-binding name rhs location)
-     (apply-exp
-       (qualified-var-exp 'meta-builtin 'builtin 'box-put! location)
-       [(exp-naive-subst-many rhs subst-pairs)
-        (var-exp name location)]
-       location))))
-
-(claim make-subst-pair
-  (-> binding-t
-      (pair-t symbol-t exp-t)))
-
-(define (make-subst-pair binding)
-  (match binding
-    ((make-binding name rhs location)
-     (make-pair name (make-box-get-exp binding)))))
-
-(claim make-box-get-exp
-  (-> binding-t
-      exp-t))
+(define (make-box-get-exps bindings)
+  (list-map make-box-get-exp bindings))
 
 (define (make-box-get-exp binding)
   (match binding
-    ((make-binding name _ location)
+    ((make-binding name rhs location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'box-get location)
        [(var-exp name location)]
        location))))
 
 (claim exp-naive-subst-many
-  (-> exp-t (list-t (pair-t symbol-t exp-t))
+  (-> exp-t (list-t symbol-t) (list-t exp-t)
       exp-t))
 
-(define (exp-naive-subst-many exp pairs)
-  (list-fold-left exp-naive-subst-pair exp pairs))
+(define (exp-naive-subst-many exp names rhs-exps)
+  (list-fold-left
+    exp-naive-subst-pair exp
+    (list-zip names rhs-exps)))
 
 (claim exp-naive-subst-pair
   (-> exp-t (pair-t symbol-t exp-t)

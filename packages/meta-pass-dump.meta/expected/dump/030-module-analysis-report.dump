@@ -3,7 +3,7 @@
     (010-my-list 11)
     (010-pair 8)
     (050-lambda 40)
-    (060-desugar 14)
+    (060-desugar 15)
     (070-cross-module 2)
     (070-cross-package-import 1)
     (070-cross-package-import-all 1)

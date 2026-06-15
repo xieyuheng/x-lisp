@@ -31,6 +31,25 @@
 
 (define (example-compose) ((lambda (target) (add1 (double target))) 5))
 
+(define (example-letrec)
+  (begin
+    (= even?.1 (meta-builtin/builtin/make-box))
+    (= odd?.1 (meta-builtin/builtin/make-box))
+    (= even? even?.1)
+    (= odd? odd?.1)
+    (= even?.value.1
+       (lambda (n)
+         (if (equal? n 0) true ((meta-builtin/builtin/box-get odd?) (isub n 1)))))
+    (= odd?.value.1
+       (lambda (n)
+         (if (equal? n 0) false
+             ((meta-builtin/builtin/box-get even?) (isub n 1)))))
+    (= even?.value even?.value.1)
+    (= odd?.value odd?.value.1)
+    (meta-builtin/builtin/box-put! even?.value even?)
+    (meta-builtin/builtin/box-put! odd?.value odd?)
+    void))
+
 (define (example-letrec-star)
   (begin
     (= even?.1 (meta-builtin/builtin/make-box))

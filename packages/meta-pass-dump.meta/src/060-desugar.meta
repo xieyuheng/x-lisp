@@ -13,11 +13,11 @@
 (define (example-pipe) (pipe 5 add1 double))
 (define (example-chain) ((chain add1 double) 5))
 (define (example-compose) ((compose add1 double) 5))
-;; (define (example-letrec)
-;;   (letrec
-;;     ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
-;;      (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
-;;     void))
+(define (example-letrec)
+  (letrec
+    ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
+     (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
+    void))
 (define (example-letrec-star)
   (letrec*
     ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
