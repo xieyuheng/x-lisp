@@ -47,7 +47,7 @@ export function desugarLetrec(
   // When a binding inside the RHS or body shadows b.name, that occurrence
   // was never a recursive reference — stopping at the shadow is correct.
   for (const b of bindings) {
-    const loc = b.location ?? location
+    const loc = b.location
     const boxGetExp = M.ApplyExp(
       M.QualifiedVarExp("meta-builtin", "builtin", "box-get", loc),
       [M.VarExp(b.name, loc)],
@@ -60,7 +60,7 @@ export function desugarLetrec(
   }
 
   const letBindings = bindings.map((b) => {
-    const loc = b.location ?? location
+    const loc = b.location
     return M.Binding(
       b.name,
       M.ApplyExp(
@@ -77,12 +77,12 @@ export function desugarLetrec(
   )
 
   const innerBindings = bindings.map((b, i) =>
-    M.Binding(freshNames[i], newRHSes[i], b.location ?? location),
+    M.Binding(freshNames[i], newRHSes[i], b.location),
   )
 
   let result: M.Exp = newBody
   for (let i = bindings.length - 1; i >= 0; i--) {
-    const loc = bindings[i].location ?? location
+    const loc = bindings[i].location
     result = M.Begin1Exp(
       M.ApplyExp(
         M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", loc),

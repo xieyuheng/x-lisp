@@ -34,7 +34,7 @@ export function desugarLetrecStar(
   // carExp only refers to b.name, and any inner shadowing means
   // that occurrence was never a recursive reference.
   for (const b of bindings) {
-    const loc = b.location ?? location
+    const loc = b.location
     const carExp = M.ApplyExp(
       M.QualifiedVarExp("meta-builtin", "builtin", "box-get", loc),
       [M.VarExp(b.name, loc)],
@@ -47,7 +47,7 @@ export function desugarLetrecStar(
   }
 
   const letBindings = bindings.map((b) => {
-    const loc = b.location ?? location
+    const loc = b.location
     return M.Binding(
       b.name,
       M.ApplyExp(
@@ -61,7 +61,7 @@ export function desugarLetrecStar(
 
   let result: M.Exp = newBody
   for (let i = bindings.length - 1; i >= 0; i--) {
-    const loc = bindings[i].location ?? location
+    const loc = bindings[i].location
     result = M.Begin1Exp(
       M.ApplyExp(
         M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", loc),

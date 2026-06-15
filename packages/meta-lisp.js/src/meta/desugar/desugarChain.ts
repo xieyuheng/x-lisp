@@ -7,7 +7,10 @@ export function desugarChain(
   location: SourceLocation,
 ): M.Exp {
   const usedNames = setUnionMany(steps.map(M.expOccurredNames))
-  const targetName = M.generateRelativeFreshName("target", usedNames)
-  const target = M.VarExp(targetName, location)
-  return M.LambdaExp([targetName], M.PipeExp(target, steps, location), location)
+  const freshName = M.generateRelativeFreshName("target", usedNames)
+  return M.LambdaExp(
+    [freshName],
+    M.PipeExp(M.VarExp(freshName, location), steps, location),
+    location,
+  )
 }

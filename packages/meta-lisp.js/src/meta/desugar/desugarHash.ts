@@ -14,12 +14,12 @@ export function desugarHash(
       setUnion(expOccurredNames(entry.key), expOccurredNames(entry.value)),
     ),
   )
-  const name = generateRelativeFreshName("hash", usedNames)
+  const freshName = generateRelativeFreshName("hash", usedNames)
 
   return desugarBegin(
     [
       M.AssignExp(
-        name,
+        freshName,
         M.ApplyExp(
           M.QualifiedVarExp("meta-builtin", "builtin", "make-hash", location),
           [],
@@ -30,11 +30,11 @@ export function desugarHash(
       ...entries.map((entry) =>
         M.ApplyExp(
           M.QualifiedVarExp("meta-builtin", "builtin", "hash-put!", location),
-          [entry.key, entry.value, M.VarExp(name, location)],
+          [entry.key, entry.value, M.VarExp(freshName, location)],
           location,
         ),
       ),
-      M.VarExp(name, location),
+      M.VarExp(freshName, location),
     ],
     location,
   )

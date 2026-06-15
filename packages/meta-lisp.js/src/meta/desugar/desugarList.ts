@@ -10,12 +10,12 @@ export function desugarList(
   location: SourceLocation,
 ): M.Exp {
   const usedNames = setUnionMany(elements.map(expOccurredNames))
-  const name = generateRelativeFreshName("list", usedNames)
+  const freshName = generateRelativeFreshName("list", usedNames)
 
   return desugarBegin(
     [
       M.AssignExp(
-        name,
+        freshName,
         M.ApplyExp(
           M.QualifiedVarExp("meta-builtin", "builtin", "make-list", location),
           [],
@@ -26,11 +26,11 @@ export function desugarList(
       ...elements.map((e) =>
         M.ApplyExp(
           M.QualifiedVarExp("meta-builtin", "builtin", "list-push!", location),
-          [e, M.VarExp(name, location)],
+          [e, M.VarExp(freshName, location)],
           location,
         ),
       ),
-      M.VarExp(name, location),
+      M.VarExp(freshName, location),
     ],
     location,
   )
