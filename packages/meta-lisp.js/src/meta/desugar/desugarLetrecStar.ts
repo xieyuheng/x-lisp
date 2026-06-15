@@ -27,51 +27,61 @@ export function desugarLetrecStar(
   body: M.Exp,
   location: SourceLocation,
 ): M.Exp {
-  const newRHSes = bindings.map((b) => b.rhs)
+  const newRHSes = bindings.map((binding) => binding.rhs)
   let newBody = body
 
   // Same reasoning as desugarLetrec — expNaiveSubst is safe here:
-  // carExp only refers to b.name, and any inner shadowing means
+  // unboxExp only refers to b.name, and any inner shadowing means
   // that occurrence was never a recursive reference.
-  for (const b of bindings) {
-    const loc = b.location
-    const carExp = M.ApplyExp(
-      M.QualifiedVarExp("meta-builtin", "builtin", "box-get", loc),
-      [M.VarExp(b.name, loc)],
-      loc,
+  for (const binding of bindings) {
+    const unboxExp = M.ApplyExp(
+      M.QualifiedVarExp("meta-builtin", "builtin", "box-get", binding.location),
+      [M.VarExp(binding.name, binding.location)],
+      binding.location,
     )
     for (let i = 0; i < newRHSes.length; i++) {
-      newRHSes[i] = M.expNaiveSubst(newRHSes[i], b.name, carExp)
+      newRHSes[i] = M.expNaiveSubst(newRHSes[i], binding.name, unboxExp)
     }
-    newBody = M.expNaiveSubst(newBody, b.name, carExp)
+    newBody = M.expNaiveSubst(newBody, binding.name, unboxExp)
   }
 
-  const letBindings = bindings.map((b) => {
-    const loc = b.location
-    return M.Binding(
-      b.name,
+  const letBindings = bindings.map((binding) =>
+    M.Binding(
+      binding.name,
       M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "make-box", loc),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "make-box",
+          binding.location,
+        ),
         [],
-        loc,
+        binding.location,
       ),
-      loc,
-    )
-  })
+      binding.location,
+    ),
+  )
 
-  let result: M.Exp = newBody
-  for (let i = bindings.length - 1; i >= 0; i--) {
-    const loc = bindings[i].location
-    result = M.Begin1Exp(
-      M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", loc),
-        [newRHSes[i], M.VarExp(bindings[i].name, loc)],
-        loc,
-      ),
-      result,
-      loc,
-    )
-  }
-
-  return M.LetExp(letBindings, result, location)
+  return M.LetExp(
+    letBindings,
+    M.BeginExp(
+      [
+        ...bindings.map((binding, index) =>
+          M.ApplyExp(
+            M.QualifiedVarExp(
+              "meta-builtin",
+              "builtin",
+              "box-put!",
+              binding.location,
+            ),
+            [newRHSes[index], M.VarExp(bindings[index].name, binding.location)],
+            binding.location,
+          ),
+        ),
+        newBody,
+      ],
+      location,
+    ),
+    location,
+  )
 }

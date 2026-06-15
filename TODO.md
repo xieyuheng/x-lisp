@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [review] desugar-letrec-star.meta
 [meta-lisp.meta] [review] desugar-letrec.meta
 
 [meta-lisp.meta] [review] exp-occurred-names

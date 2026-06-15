@@ -2,16 +2,8 @@
 
 (define-test even-odd-test
   (letrec*
-      ((even?
-        (lambda (n)
-          (if (equal? n 0)
-            true
-            (odd? (isub n 1)))))
-       (odd?
-        (lambda (n)
-          (if (equal? n 0)
-            false
-            (even? (isub n 1))))))
+    ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
+     (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
 
     (assert (even? 0))
     (assert-not (even? 1))

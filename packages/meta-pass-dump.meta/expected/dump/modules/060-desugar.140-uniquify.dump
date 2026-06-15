@@ -67,3 +67,45 @@
   ((lambda (target.1)
      (self/060-desugar/add1 (self/060-desugar/double target.1)))
    5))
+
+(claim example-letrec-star (-> void-t))
+
+(define (example-letrec-star)
+  (= even?.1.1 (meta-builtin/builtin/make-box))
+  (= odd?.1.1 (meta-builtin/builtin/make-box))
+  (= even?.1 even?.1.1)
+  (= odd?.1 odd?.1.1)
+  (meta-builtin/builtin/box-put!
+   (lambda (n.1)
+     (if (meta-builtin/builtin/equal? n.1 0) meta-builtin/builtin/true
+         ((meta-builtin/builtin/box-get odd?.1)
+          (meta-builtin/builtin/isub n.1 1))))
+   even?.1)
+  (meta-builtin/builtin/box-put!
+   (lambda (n.2)
+     (if (meta-builtin/builtin/equal? n.2 0) meta-builtin/builtin/false
+         ((meta-builtin/builtin/box-get even?.1)
+          (meta-builtin/builtin/isub n.2 1))))
+   odd?.1)
+  meta-builtin/builtin/void)
+
+(claim example-local-define (-> void-t))
+
+(define (example-local-define)
+  (= even?.1.1 (meta-builtin/builtin/make-box))
+  (= odd?.1.1 (meta-builtin/builtin/make-box))
+  (= even?.1 even?.1.1)
+  (= odd?.1 odd?.1.1)
+  (meta-builtin/builtin/box-put!
+   (lambda (n.1)
+     (if (meta-builtin/builtin/equal? n.1 0) meta-builtin/builtin/true
+         ((meta-builtin/builtin/box-get odd?.1)
+          (meta-builtin/builtin/isub n.1 1))))
+   even?.1)
+  (meta-builtin/builtin/box-put!
+   (lambda (n.2)
+     (if (meta-builtin/builtin/equal? n.2 0) meta-builtin/builtin/false
+         ((meta-builtin/builtin/box-get even?.1)
+          (meta-builtin/builtin/isub n.2 1))))
+   odd?.1)
+  meta-builtin/builtin/void)

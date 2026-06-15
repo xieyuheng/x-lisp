@@ -23,3 +23,15 @@
 (define (example-chain) ((chain add1 double) 5))
 
 (define (example-compose) ((compose add1 double) 5))
+
+(define (example-letrec-star)
+  (letrec*
+      ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
+       (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
+    void))
+
+(define (example-local-define)
+  (begin
+    (define (even? n) (if (equal? n 0) true (odd? (isub n 1))))
+    (define (odd? n) (if (equal? n 0) false (even? (isub n 1))))
+    void))
