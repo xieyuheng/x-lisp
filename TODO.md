@@ -1,6 +1,11 @@
 # self-hosting
 
+[meta-lisp.js] [refactor] desugarLet.ts
+[meta-lisp.js] [refactor] desugarLetrecStar.ts
+
 [meta-lisp.meta] [review] desugar-letrec.meta
+
+[meta-lisp.js] [refactor] desugarLetrec.ts
 
 [meta-lisp.meta] [review] exp-occurred-names
 
