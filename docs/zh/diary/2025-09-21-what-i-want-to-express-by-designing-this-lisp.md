@@ -24,6 +24,11 @@ date: 2025-09-21
   以及目前所带有的 built function 的命名方式
   -- `<topic>-<name>`。
 
+  - [2026-06-15] 其实命名的结构不是 `<topic>-<name>`，而是汉语的偏正结构。
+    偏正结构中，偏在前，正在后，正为中心，偏为修饰。
+    - list-length list-map list-push -- list 前缀为修饰，中心为后面的名词（领属）或动词（对象）。
+    - null-list cons-list sorted-list -- list 后缀为中心，前缀代表不同种类的 list（属性）。
+
 - 实用的模块系统，要支持 circular dependence。
   因为如果一个语言支持 mutual recursive function，
   就也应该支持模块之间的 circular dependence。
