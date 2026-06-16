@@ -600,6 +600,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`format-symbol`](format/format-symbol.md) — 格式化符号
 - [`format-bool`](format/format-bool.md) — 格式化布尔值
 - [`format-string`](format/format-string.md) — 格式化字符串
+- [`format-void`](format/format-void.md) — 格式化 void
 
 ## S 表达式
 

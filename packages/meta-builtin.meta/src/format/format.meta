@@ -21,3 +21,6 @@
 
 (claim format-string (-> string-t string-t))
 (define (format-string x) (format-as-sexp x))
+
+(claim format-void (-> void-t string-t))
+(define (format-void x) (format-as-sexp x))

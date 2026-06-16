@@ -600,6 +600,7 @@ Type-specific S-expression formatting functions.
 - [`format-symbol`](format/format-symbol.md) — Format a symbol
 - [`format-bool`](format/format-bool.md) — Format a bool
 - [`format-string`](format/format-string.md) — Format a string
+- [`format-void`](format/format-void.md) — Format void
 
 ## S-expression
 
