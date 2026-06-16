@@ -41,8 +41,7 @@
   (= used-names
      (set-union
        (exp-occurred-names body)
-       (set-union-many
-         (list-map (compose exp-occurred-names binding-rhs) bindings))))
+       (set-union-many (list-map binding-occurred-names bindings))))
   (= tmp-bindings (list-map-zip (make-tmp-binding used-names) bindings new-rhs-exps))
   (= tmp-var-exps (list-map make-binding-var-exp tmp-bindings))
   (= box-put-exps (list-map-zip make-box-put-exp tmp-var-exps bindings))

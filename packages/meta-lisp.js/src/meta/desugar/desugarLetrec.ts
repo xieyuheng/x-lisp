@@ -40,7 +40,7 @@ export function desugarLetrec(
   const newRhsExps = bindings.map((binding) => expUnbox(binding.rhs))
   const usedNames = setUnion(
     M.expOccurredNames(body),
-    setUnionMany(bindings.map((binding) => M.expOccurredNames(binding.rhs))),
+    setUnionMany(bindings.map(M.bindingOccurredNames)),
   )
   const tmpBindings = arrayMapZip(
     makeTmpBinding(usedNames),

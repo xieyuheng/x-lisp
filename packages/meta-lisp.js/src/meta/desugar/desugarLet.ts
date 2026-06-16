@@ -16,7 +16,7 @@ export function desugarLet(
 
   const usedNames = setUnion(
     M.expOccurredNames(body),
-    setUnionMany(bindings.map((binding) => M.expOccurredNames(binding.rhs))),
+    setUnionMany(bindings.map(M.bindingOccurredNames)),
   )
 
   return M.LetStarExp(desugarLetBindings(usedNames, bindings), body, location)

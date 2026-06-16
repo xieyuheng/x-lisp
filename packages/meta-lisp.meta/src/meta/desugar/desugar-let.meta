@@ -35,8 +35,7 @@
      (= used-names
         (set-union
           (exp-occurred-names body)
-          (set-union-many
-            (list-map (compose exp-occurred-names binding-rhs) bindings))))
+          (set-union-many (list-map binding-occurred-names bindings))))
      (let-star-exp (desugar-let-bindings used-names bindings) body location))))
 
 (claim desugar-let-bindings

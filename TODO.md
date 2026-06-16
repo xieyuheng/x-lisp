@@ -1,8 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] desugar-let.meta -- using `binding-occurred-names`
-[meta-lisp.meta] [refactor] desugar-letrec.meta -- using `binding-occurred-names`
-
 [meta-lisp.meta] [review] desugar-location.meta
 [meta-lisp.meta] [review] desugar-match.meta
 [meta-lisp.meta] [review] desugar-or.meta
