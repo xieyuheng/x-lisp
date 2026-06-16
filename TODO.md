@@ -1,6 +1,7 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] `exp-occurred-names` -- extract helper functions
+[meta-lisp.meta] [refactor] `exp-occurred-names` -- extract `binding-occurred-names`
+
 [meta-lisp.meta] [refactor] desugar-let.meta -- using helper functions of `exp-occurred-names`
 [meta-lisp.meta] [refactor] desugar-letrec.meta -- using helper functions of `exp-occurred-names`
 

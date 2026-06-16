@@ -1,4 +1,4 @@
-import { setUnionMany } from "@xieyuheng/helpers.js/set"
+import { setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as M from "../index.ts"
 
 export function expOccurredNames(exp: M.Exp): Set<string> {
@@ -36,60 +36,52 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     }
 
     case "LetExp": {
-      const allNames = exp.bindings.map((b) => b.name)
-      return setUnionMany([
-        new Set(allNames),
-        ...exp.bindings.map((b) => expOccurredNames(b.rhs)),
+      return setUnion(
+        setUnionMany(exp.bindings.map(bindingOccurredNames)),
         expOccurredNames(exp.body),
-      ])
+      )
     }
 
     case "LetStarExp": {
-      const allNames = exp.bindings.map((b) => b.name)
-      return setUnionMany([
-        new Set(allNames),
-        ...exp.bindings.map((b) => expOccurredNames(b.rhs)),
+      return setUnion(
+        setUnionMany(exp.bindings.map(bindingOccurredNames)),
         expOccurredNames(exp.body),
-      ])
+      )
     }
 
     case "LetrecExp": {
-      const allNames = exp.bindings.map((b) => b.name)
-      return setUnionMany([
-        new Set(allNames),
-        ...exp.bindings.map((b) => expOccurredNames(b.rhs)),
+      return setUnion(
+        setUnionMany(exp.bindings.map(bindingOccurredNames)),
         expOccurredNames(exp.body),
-      ])
+      )
     }
 
     case "LocalDefineExp": {
-      return setUnionMany([
+      return setUnion(
         new Set([exp.name, ...exp.parameters]),
         expOccurredNames(exp.body),
-      ])
+      )
     }
 
     case "LetrecStarExp": {
-      const allNames = exp.bindings.map((b) => b.name)
-      return setUnionMany([
-        new Set(allNames),
-        ...exp.bindings.map((b) => expOccurredNames(b.rhs)),
+      return setUnion(
+        setUnionMany(exp.bindings.map(bindingOccurredNames)),
         expOccurredNames(exp.body),
-      ])
+      )
     }
 
     case "ApplyExp": {
-      return setUnionMany([
+      return setUnion(
         expOccurredNames(exp.target),
-        ...exp.args.map((a) => expOccurredNames(a)),
-      ])
+        setUnionMany(exp.args.map(expOccurredNames)),
+      )
     }
 
     case "PipeExp": {
-      return setUnionMany([
+      return setUnion(
         expOccurredNames(exp.target),
-        ...exp.steps.map((s) => expOccurredNames(s)),
-      ])
+        setUnionMany(exp.steps.map(expOccurredNames)),
+      )
     }
 
     case "ChainExp": {
@@ -101,10 +93,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     }
 
     case "Begin1Exp": {
-      return setUnionMany([
-        expOccurredNames(exp.head),
-        expOccurredNames(exp.body),
-      ])
+      return setUnion(expOccurredNames(exp.head), expOccurredNames(exp.body))
     }
 
     case "BeginExp": {
@@ -112,7 +101,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     }
 
     case "AssignExp": {
-      return setUnionMany([new Set([exp.name]), expOccurredNames(exp.rhs)])
+      return setUnion(new Set([exp.name]), expOccurredNames(exp.rhs))
     }
 
     case "IfExp": {
@@ -124,17 +113,17 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     }
 
     case "WhenExp": {
-      return setUnionMany([
+      return setUnion(
         expOccurredNames(exp.condition),
         expOccurredNames(exp.consequent),
-      ])
+      )
     }
 
     case "UnlessExp": {
-      return setUnionMany([
+      return setUnion(
         expOccurredNames(exp.condition),
         expOccurredNames(exp.alternative),
-      ])
+      )
     }
 
     case "AndExp": {
@@ -183,10 +172,10 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     }
 
     case "TheExp": {
-      return setUnionMany([
+      return setUnion(
         expOccurredNames(exp.type),
         expOccurredNames(exp.instance),
-      ])
+      )
     }
 
     case "MatchExp": {
@@ -199,4 +188,8 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       ])
     }
   }
+}
+
+export function bindingOccurredNames(binding: M.Binding): Set<string> {
+  return setUnion(new Set(binding.name), expOccurredNames(binding.rhs))
 }
