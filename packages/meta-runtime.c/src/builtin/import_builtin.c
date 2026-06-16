@@ -90,7 +90,6 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/file-read", x_file_read);
   define_primitive_2(mod, "meta-builtin/builtin/file-write", x_file_write);
   define_primitive_2(mod, "meta-builtin/builtin/file-writeln", x_file_writeln);
-  define_primitive_0(mod, "meta-builtin/builtin/newline", x_newline);
   define_primitive_1(mod, "meta-builtin/builtin/print", x_print);
   define_primitive_1(mod, "meta-builtin/builtin/println", x_println);
 

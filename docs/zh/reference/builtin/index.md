@@ -515,9 +515,6 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 - [`print`](file/print.md) — 打印任意值
 - [`println`](file/println.md) — 打印任意值并换行
-- [`write`](file/write.md) — 写入字符串
-- [`writeln`](file/writeln.md) — 写入字符串并换行
-- [`newline`](file/newline.md) — 打印换行符
 
 ## 文件系统
 

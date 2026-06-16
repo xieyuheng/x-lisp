@@ -1,4 +1,4 @@
-[meta-builtin.meta] remove `newline`
+[helpers.c] remove `newline`
 
 [helpers.c] & [meta-runtime.c] use `write_` instead of `format_` to write to `buffer_t`
 

@@ -515,9 +515,6 @@ File handle read/write operations.
 
 - [`print`](file/print.md) — Print any value
 - [`println`](file/println.md) — Print any value with newline
-- [`write`](file/write.md) — Write a string
-- [`writeln`](file/writeln.md) — Write a string with newline
-- [`newline`](file/newline.md) — Print a newline
 
 ## File system
 

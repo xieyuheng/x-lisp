@@ -33,11 +33,6 @@ value_t x_file_writeln(value_t file, value_t string) {
   return x_void;
 }
 
-value_t x_newline(void) {
-  newline();
-  return x_void;
-}
-
 value_t x_print(value_t x) {
   if (xstring_p(x)) {
     print_string(xstring_string(to_xstring(x)));
