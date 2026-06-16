@@ -14,7 +14,7 @@ export function desugarHash(
       setUnion(expOccurredNames(entry.key), expOccurredNames(entry.value)),
     ),
   )
-  const freshName = generateRelativeFreshName("hash", usedNames)
+  const freshName = generateRelativeFreshName(usedNames, "hash")
 
   return desugarBegin(
     [

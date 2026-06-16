@@ -10,7 +10,7 @@ export function desugarList(
   location: SourceLocation,
 ): M.Exp {
   const usedNames = setUnionMany(elements.map(expOccurredNames))
-  const freshName = generateRelativeFreshName("list", usedNames)
+  const freshName = generateRelativeFreshName(usedNames, "list")
 
   return desugarBegin(
     [
