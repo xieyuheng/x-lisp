@@ -1,3 +1,5 @@
+import { arrayMapZip } from "@xieyuheng/helpers.js/array"
+import { setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
@@ -31,69 +33,44 @@ export function desugarLetrec(
   body: M.Exp,
   location: SourceLocation,
 ): M.Exp {
-  const usedNames = M.expOccurredNames(body)
-  for (const binding of bindings) {
-    const rhsFreeNames = M.expOccurredNames(binding.rhs)
-    for (const name of rhsFreeNames) {
-      usedNames.add(name)
-    }
-  }
-
-  let newRHSes = bindings.map((b) => b.rhs)
-  let newBody = body
-
-  // Using expNaiveSubst is safe here: we replace b.name with
-  // (builtin.box-get b.name), whose only free variable is b.name itself.
-  // When a binding inside the RHS or body shadows b.name, that occurrence
-  // was never a recursive reference — stopping at the shadow is correct.
-  for (const b of bindings) {
-    const loc = b.location
-    const boxGetExp = M.ApplyExp(
-      M.QualifiedVarExp("meta-builtin", "builtin", "box-get", loc),
-      [M.VarExp(b.name, loc)],
-      loc,
-    )
-    for (let i = 0; i < newRHSes.length; i++) {
-      newRHSes[i] = M.expNaiveSubst(newRHSes[i], b.name, boxGetExp)
-    }
-    newBody = M.expNaiveSubst(newBody, b.name, boxGetExp)
-  }
-
-  const letBindings = bindings.map((b) => {
-    const loc = b.location
-    return M.Binding(
-      b.name,
-      M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "make-box", loc),
-        [],
-        loc,
-      ),
-      loc,
-    )
-  })
-
-  const freshNames = bindings.map((b) =>
-    M.generateRelativeFreshName(`${b.name}.value`, usedNames),
+  const boxBindings = bindings.map(M.makeBoxBinding)
+  const boxGetExps = bindings.map(M.makeBoxGetExp)
+  const names = bindings.map((binding) => binding.name)
+  const expUnbox = (exp: M.Exp) => M.expNaiveSubstMany(exp, names, boxGetExps)
+  const newRhsExps = bindings.map((binding) => expUnbox(binding.rhs))
+  const usedNames = setUnion(
+    M.expOccurredNames(body),
+    setUnionMany(bindings.map((binding) => M.expOccurredNames(binding.rhs))),
   )
-
-  const innerBindings = bindings.map((b, i) =>
-    M.Binding(freshNames[i], newRHSes[i], b.location),
+  const tmpBindings = arrayMapZip(
+    makeTmpBinding(usedNames),
+    bindings,
+    newRhsExps,
   )
+  const tmpVarExps = tmpBindings.map(makeBindingVarExp)
+  const boxPutExps = arrayMapZip(M.makeBoxPutExp, tmpVarExps, bindings)
+  return M.LetExp(
+    boxBindings,
+    M.LetExp(
+      tmpBindings,
+      M.BeginExp([...boxPutExps, expUnbox(body)], location),
+      location,
+    ),
+    location,
+  )
+}
 
-  let result: M.Exp = newBody
-  for (let i = bindings.length - 1; i >= 0; i--) {
-    const loc = bindings[i].location
-    result = M.Begin1Exp(
-      M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", loc),
-        [M.VarExp(freshNames[i], loc), M.VarExp(bindings[i].name, loc)],
-        loc,
-      ),
-      result,
-      loc,
+function makeTmpBinding(
+  usedNames: Set<string>,
+): (binding: M.Binding, rhs: M.Exp) => M.Binding {
+  return (binding, rhs) =>
+    M.Binding(
+      M.generateRelativeFreshName(`${binding.name}.value`, usedNames),
+      rhs,
+      binding.location,
     )
-  }
+}
 
-  result = M.LetExp(innerBindings, result, location)
-  return M.LetExp(letBindings, result, location)
+function makeBindingVarExp(binding: M.Binding): M.Exp {
+  return M.VarExp(binding.name, binding.location)
 }

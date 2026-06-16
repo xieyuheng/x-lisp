@@ -28,7 +28,6 @@
       (box-put! tn xn)
       body)))
 
-
 (claim desugar-letrec
   (-> (list-t binding-t) exp-t source-location-t
       exp-t))
@@ -44,7 +43,7 @@
        (exp-occurred-names body)
        (set-union-many
          (list-map (compose exp-occurred-names binding-rhs) bindings))))
-  (= tmp-bindings (make-tmp-bindings used-names bindings new-rhs-exps))
+  (= tmp-bindings (list-map-zip (make-tmp-binding used-names) bindings new-rhs-exps))
   (= tmp-var-exps (list-map make-binding-var-exp tmp-bindings))
   (= box-put-exps (list-map-zip make-box-put-exp tmp-var-exps bindings))
   (let-exp
@@ -55,15 +54,13 @@
       location)
     location))
 
-(define (make-tmp-bindings used-names bindings rhs-exps)
-  (swap list-map (list-zip bindings rhs-exps)
-    (lambda (pair)
-      (match pair
-        ((make-pair (make-binding name _ location) rhs-exp)
-         (make-binding
-           (generate-relative-fresh-name (symbol-append name '.value) used-names)
-           rhs-exp
-           location))))))
+(define (make-tmp-binding used-names binding rhs)
+  (match binding
+    ((make-binding name _ location)
+     (make-binding
+       (generate-relative-fresh-name (symbol-append name '.value) used-names)
+       rhs
+       location))))
 
 (define (make-binding-var-exp binding)
   (match binding
