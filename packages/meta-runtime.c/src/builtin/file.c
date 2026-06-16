@@ -45,6 +45,6 @@ value_t x_print(value_t x) {
 
 value_t x_println(value_t x) {
   x_print(x);
-  newline();
+  printf("\n");
   return x_void;
 }

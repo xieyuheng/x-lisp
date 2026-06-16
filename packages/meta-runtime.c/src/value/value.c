@@ -47,7 +47,7 @@ hash_code_t value_hash_code(value_t value) {
     if (object->header.class->hash_code_fn) {
       return object->header.class->hash_code_fn(object);
     } else {
-      who_printf("unhandled object: "); print_value(value); newline();
+      who_printf("unhandled object: "); print_value(value); printf("\n");
       exit(1);
     }
   }
@@ -56,7 +56,7 @@ hash_code_t value_hash_code(value_t value) {
     return value;
   }
 
-  who_printf("unhandled value: "); print_value(value); newline();
+  who_printf("unhandled value: "); print_value(value); printf("\n");
   exit(1);
 }
 
@@ -88,8 +88,8 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
       return compare_fn(to_object(lhs), to_object(rhs));
     } else {
       who_printf("unhandled objects\n");
-      printf("  lhs: "); print_value(lhs); newline();
-      printf("  rhs: "); print_value(rhs); newline();
+      printf("  lhs: "); print_value(lhs); printf("\n");
+      printf("  rhs: "); print_value(rhs); printf("\n");
     }
   }
 
@@ -98,8 +98,8 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
   }
 
   who_printf("unhandled values\n");
-  printf("  lhs: "); print_value(lhs); newline();
-  printf("  rhs: "); print_value(rhs); newline();
+  printf("  lhs: "); print_value(lhs); printf("\n");
+  printf("  rhs: "); print_value(rhs); printf("\n");
   exit(1);
 }
 

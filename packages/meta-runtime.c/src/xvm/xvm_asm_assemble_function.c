@@ -194,7 +194,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     return;
   }
 
-  who_printf("unhandled instr: "); print_value(sexp); newline();
+  who_printf("unhandled instr: "); print_value(sexp); printf("\n");
 }
 
 void xvm_asm_assemble_function(mod_t *mod, function_t *function, value_t body) {

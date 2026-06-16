@@ -62,7 +62,7 @@ inline value_t xhash_get(const xhash_t *self, value_t key) {
   if (!entry) {
     who_printf("undefined key: ");
     print_value(key);
-    newline();
+    printf("\n");
     exit(1);
   }
 

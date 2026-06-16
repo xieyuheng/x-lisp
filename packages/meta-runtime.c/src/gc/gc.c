@@ -85,7 +85,7 @@ void gc_report(gc_t *self) {
   for (size_t i = 0; i < array_length(self->objects); i++) {
     object_t *object = array_get(self->objects, i);
     object_circle_ctx_t *ctx = make_object_circle_ctx();
-    printf("  %ld: ", i); object_print(ctx, object); newline();
+    printf("  %ld: ", i); object_print(ctx, object); printf("\n");
     object_circle_ctx_free(ctx);
   }
 }

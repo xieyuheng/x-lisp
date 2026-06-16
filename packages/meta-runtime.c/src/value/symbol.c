@@ -60,7 +60,7 @@ symbol_t *to_symbol(value_t value) {
     }
     who_printf("  value: ");
     print_value(value);
-    newline();
+    printf("\n");
     exit(1);
   }
   return (symbol_t *) to_object(value);

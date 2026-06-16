@@ -24,7 +24,7 @@ void apply(xvm_t *xvm, value_t target, uint8_t argc, const uint16_t *args, value
     apply_curry(xvm, argc, args, locals, to_curry(target));
   } else {
     who_printf("unhandled value\n");
-    who_printf("  value: "); print_value(target); newline();
+    who_printf("  value: "); print_value(target); printf("\n");
     who_printf("  n: %d\n", argc);
     xvm_inspect(xvm);
     exit(1);

@@ -231,6 +231,6 @@ void format_as_sexp(buffer_t *buffer, value_t sexp) {
     return;
   }
 
-  who_printf("non sexp value: "); print_value(sexp); newline();
+  who_printf("non sexp value: "); print_value(sexp); printf("\n");
   exit(1);
 }

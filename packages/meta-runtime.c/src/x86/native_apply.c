@@ -117,6 +117,6 @@ value_t native_apply(value_t target, uint8_t argc, value_t *args) {
   }
 
   who_printf("unhandled value in native_apply\n");
-  who_printf("  value: "); print_value(target); newline();
+  who_printf("  value: "); print_value(target); printf("\n");
   exit(1);
 }
