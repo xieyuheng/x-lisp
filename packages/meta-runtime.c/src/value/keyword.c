@@ -7,7 +7,7 @@ struct keyword_t {
 
 const object_class_t keyword_class = {
   .name = "keyword",
-  .format_fn = (object_format_fn_t *) keyword_format,
+  .write_fn = (object_write_fn_t *) keyword_format,
   .hash_code_fn = (object_hash_code_fn_t *) keyword_hash_code,
   .compare_fn = (object_compare_fn_t *) keyword_compare,
 };

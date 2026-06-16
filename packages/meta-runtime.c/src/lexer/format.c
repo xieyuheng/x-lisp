@@ -74,7 +74,7 @@ static size_t get_prefix_margin(array_t *lines) {
   return digit_count + 1;
 }
 
-static void format_line_report(buffer_t *buffer, line_t *line, size_t prefix_margin) {
+static void write_line_report(buffer_t *buffer, line_t *line, size_t prefix_margin) {
   size_t line_count = line->index + 1;
   write_template(buffer, "%*ld | %s\n", (int) prefix_margin, line_count, line->content);
   if (line->underline) {
@@ -82,7 +82,7 @@ static void format_line_report(buffer_t *buffer, line_t *line, size_t prefix_mar
   }
 }
 
-void format_span_in_context(buffer_t *buffer, struct span_t span, const char *context) {
+void write_span_in_context(buffer_t *buffer, struct span_t span, const char *context) {
   size_t cursor = 0;
   size_t index = 0;
   char *content = string_next_line(context, &cursor);
@@ -99,25 +99,25 @@ void format_span_in_context(buffer_t *buffer, struct span_t span, const char *co
   for (size_t i = 0; i < array_length(lines); i++) {
     line_t *line = array_get(lines, i);
     if (line_is_close_to_span(line, span)) {
-      format_line_report(buffer, line, prefix_margin);
+      write_line_report(buffer, line, prefix_margin);
     }
   }
 
   array_free(lines);
 }
 
-static void format_position(buffer_t *buffer, struct position_t position) {
+static void write_position(buffer_t *buffer, struct position_t position) {
   write_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
 }
 
-void format_message_with_source_location(buffer_t *buffer, const char *message, struct source_location_t location) {
+void write_message_with_source_location(buffer_t *buffer, const char *message, struct source_location_t location) {
   assert(location.pathname);
 
   path_t *path = make_path(location.pathname);
   write_path_relative_to_cwd(buffer, path);
   path_free(path);
   write_string(buffer, ":");
-  format_position(buffer, location.span.start);
+  write_position(buffer, location.span.start);
   if (message) {
     write_string(buffer, " -- ");
     write_string(buffer, message);
@@ -127,7 +127,7 @@ void format_message_with_source_location(buffer_t *buffer, const char *message, 
 
   if (fs_is_file(location.pathname)) {
     char *context = fs_read(location.pathname);
-    format_span_in_context(buffer, location.span, context);
+    write_span_in_context(buffer, location.span, context);
     string_free(context);
   }
 }

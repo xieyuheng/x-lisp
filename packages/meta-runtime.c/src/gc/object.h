@@ -1,7 +1,7 @@
 #pragma once
 
 typedef bool (object_equal_fn_t)(object_t *lhs, object_t *rhs);
-typedef void (object_format_fn_t)(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self);
+typedef void (object_write_fn_t)(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self);
 typedef hash_code_t (object_hash_code_fn_t)(object_t *self);
 typedef ordering_t (object_compare_fn_t)(object_t *lhs, object_t *rhs);
 
@@ -11,7 +11,7 @@ typedef object_t *(object_child_iter_next_fn_t)(void *iter);
 struct object_class_t {
   const char *name;
   object_equal_fn_t *equal_fn;
-  object_format_fn_t *format_fn;
+  object_write_fn_t *write_fn;
   object_hash_code_fn_t *hash_code_fn;
   object_compare_fn_t *compare_fn;
 

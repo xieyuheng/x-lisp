@@ -2,7 +2,7 @@
 
 static void echo(const char *string) {
   buffer_t *buffer = make_buffer();
-  format_json(buffer, parse_json(string));
+  write_json(buffer, parse_json(string));
   write_newline(buffer);
   buffer_write_and_free(buffer, stdout);
 }

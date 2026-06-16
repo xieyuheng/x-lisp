@@ -18,7 +18,7 @@ value_t x_error_with_location(value_t info, value_t location) {
   buffer_free(message_buffer);
 
   buffer_t *output_buffer = make_buffer();
-  format_message_with_source_location(
+  write_message_with_source_location(
     output_buffer,
     message,
     value_to_source_location(location));

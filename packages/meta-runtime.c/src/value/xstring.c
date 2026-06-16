@@ -8,7 +8,7 @@ struct xstring_t {
 const object_class_t xstring_class = {
   .name = "string",
   .equal_fn = (object_equal_fn_t *) xstring_equal,
-  .format_fn = (object_format_fn_t *) xstring_format,
+  .write_fn = (object_write_fn_t *) xstring_format,
   .hash_code_fn = (object_hash_code_fn_t *) xstring_hash_code,
   .compare_fn = (object_compare_fn_t *) xstring_compare,
   .free_fn = (free_fn_t *) xstring_free,

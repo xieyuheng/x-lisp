@@ -103,7 +103,7 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
   exit(1);
 }
 
-void format_atom(buffer_t *buffer, value_t value) {
+void write_atom(buffer_t *buffer, value_t value) {
   assert(atom_p(value));
 
   if (int_p(value)) {
@@ -162,7 +162,7 @@ void format_atom(buffer_t *buffer, value_t value) {
 
 void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   if (atom_p(value)) {
-    format_atom(buffer, value);
+    write_atom(buffer, value);
     return;
   }
 
@@ -186,7 +186,7 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   return;
 }
 
-void format_value(buffer_t *buffer, value_t value) {
+void write_value(buffer_t *buffer, value_t value) {
   object_circle_ctx_t *ctx = make_object_circle_ctx();
   if (object_p(value)) {
     object_circle_collect(ctx, to_object(value));
@@ -199,7 +199,7 @@ void format_value(buffer_t *buffer, value_t value) {
 
 void print_value(value_t value) {
   buffer_t *buffer = make_buffer();
-  format_value(buffer, value);
+  write_value(buffer, value);
   buffer_write(buffer, stdout);
   buffer_free(buffer);
 }

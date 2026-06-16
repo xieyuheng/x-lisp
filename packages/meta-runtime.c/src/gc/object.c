@@ -18,8 +18,8 @@ void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
     return;
   }
 
-  if (self->header.class->format_fn) {
-    self->header.class->format_fn(buffer, ctx, self);
+  if (self->header.class->write_fn) {
+    self->header.class->write_fn(buffer, ctx, self);
     return;
   }
 

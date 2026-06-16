@@ -3,7 +3,7 @@
 const object_class_t definition_class = {
   .name = "definition",
   .equal_fn = (object_equal_fn_t *) definition_equal,
-  .format_fn = (object_format_fn_t *) definition_format,
+  .write_fn = (object_write_fn_t *) definition_format,
 };
 
 static definition_t *make_definition(char *name) {

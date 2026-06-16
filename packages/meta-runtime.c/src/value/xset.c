@@ -3,7 +3,7 @@
 const object_class_t xset_class = {
   .name = "set",
   .equal_fn = (object_equal_fn_t *) xset_equal,
-  .format_fn = (object_format_fn_t *) xset_format,
+  .write_fn = (object_write_fn_t *) xset_format,
   .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
   .compare_fn = (object_compare_fn_t *) xset_compare,
   .free_fn = (free_fn_t *) xset_free,

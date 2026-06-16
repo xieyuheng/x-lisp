@@ -3,7 +3,7 @@
 const object_class_t xlist_class = {
   .name = "list",
   .equal_fn = (object_equal_fn_t *) xlist_equal,
-  .format_fn = (object_format_fn_t *) xlist_format,
+  .write_fn = (object_write_fn_t *) xlist_format,
   .hash_code_fn = (object_hash_code_fn_t *) xlist_hash_code,
   .compare_fn = (object_compare_fn_t *) xlist_compare,
   .free_fn = (free_fn_t *) xlist_free,
@@ -83,7 +83,7 @@ bool xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
   return true;
 }
 
-static void xlist_format_elements(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *self) {
+static void xlist_write_elements(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *self) {
   for (size_t i = 0; i < array_length(self->elements); i++) {
     value_format(buffer, ctx, xlist_get(self, i));
     if (i < array_length(self->elements) - 1) {
@@ -98,7 +98,7 @@ void xlist_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *sel
     write_template(buffer, "]");
   } else {
     write_template(buffer, "[");
-    xlist_format_elements(buffer, ctx, self);
+    xlist_write_elements(buffer, ctx, self);
     write_template(buffer, "]");
   }
 }

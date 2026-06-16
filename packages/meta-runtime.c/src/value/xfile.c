@@ -3,7 +3,7 @@
 const object_class_t xfile_class = {
   .name = "file",
   .equal_fn = (object_equal_fn_t *) xfile_equal,
-  .format_fn = (object_format_fn_t *) xfile_format,
+  .write_fn = (object_write_fn_t *) xfile_format,
   .hash_code_fn = (object_hash_code_fn_t *) xfile_hash_code,
   .compare_fn = (object_compare_fn_t *) xfile_compare,
   .free_fn = (free_fn_t *) xfile_free,

@@ -233,7 +233,7 @@ static value_t parse_object(list_t *tokens) {
 
 // ── JSON formatter ──
 
-static void format_json_value(buffer_t *buffer, value_t json);
+static void write_json_value(buffer_t *buffer, value_t json);
 
 void write_string_escaped(buffer_t *buffer, const char *s) {
   size_t i = 0;
@@ -250,17 +250,17 @@ void write_string_escaped(buffer_t *buffer, const char *s) {
   }
 }
 
-static void format_json_string_escaped(buffer_t *buffer, const char *s) {
+static void write_json_string_escaped(buffer_t *buffer, const char *s) {
   write_string(buffer, "\"");
   write_string_escaped(buffer, s);
   write_string(buffer, "\"");
 }
 
-void format_json(buffer_t *buffer, value_t json) {
-  format_json_value(buffer, json);
+void write_json(buffer_t *buffer, value_t json) {
+  write_json_value(buffer, json);
 }
 
-static void format_json_value(buffer_t *buffer, value_t json) {
+static void write_json_value(buffer_t *buffer, value_t json) {
   assert(xlist_p(json));
   xlist_t *xs = to_xlist(json);
   assert(!array_is_empty(xs->elements));
@@ -277,20 +277,20 @@ static void format_json_value(buffer_t *buffer, value_t json) {
   } else if (string_equal(tag, "json-number")) {
     value_t n = xlist_get(xs, 1);
     if (float_p(n)) {
-      format_atom(buffer, n);
+      write_atom(buffer, n);
     } else {
       write_template(buffer, "%ld", to_int64(n));
     }
   } else if (string_equal(tag, "json-string")) {
     value_t s = xlist_get(xs, 1);
-    format_json_string_escaped(buffer, xstring_string(to_xstring(s)));
+    write_json_string_escaped(buffer, xstring_string(to_xstring(s)));
   } else if (string_equal(tag, "json-array")) {
     write_string(buffer, "[");
     value_t elements = xlist_get(xs, 1);
     xlist_t *elems = to_xlist(elements);
     for (size_t i = 0; i < array_length(elems->elements); i++) {
       if (i > 0) write_string(buffer, ", ");
-      format_json_value(buffer, xlist_get(elems, i));
+      write_json_value(buffer, xlist_get(elems, i));
     }
     write_string(buffer, "]");
   } else if (string_equal(tag, "json-object")) {
@@ -304,14 +304,14 @@ static void format_json_value(buffer_t *buffer, value_t json) {
     while (entry) {
       if (!first) write_string(buffer, ", ");
       first = false;
-      format_json_string_escaped(buffer, xstring_string(to_xstring((value_t)(uint64_t)entry->key)));
+      write_json_string_escaped(buffer, xstring_string(to_xstring((value_t)(uint64_t)entry->key)));
       write_string(buffer, ": ");
-      format_json_value(buffer, (value_t)(uint64_t)entry->value);
+      write_json_value(buffer, (value_t)(uint64_t)entry->value);
       entry = hash_iter_next_entry(&iter);
     }
     write_string(buffer, "}");
   } else {
-    who_printf("format_json_value: unknown tag: %s\n", tag);
+    who_printf("write_json_value: unknown tag: %s\n", tag);
     exit(1);
   }
 }

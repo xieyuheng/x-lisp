@@ -7,7 +7,7 @@ struct symbol_t {
 
 const object_class_t symbol_class = {
   .name = "symbol",
-  .format_fn = (object_format_fn_t *) symbol_format,
+  .write_fn = (object_write_fn_t *) symbol_format,
   .hash_code_fn = (object_hash_code_fn_t *) symbol_hash_code,
   .compare_fn = (object_compare_fn_t *) symbol_compare,
 };

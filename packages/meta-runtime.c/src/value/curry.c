@@ -3,7 +3,7 @@
 const object_class_t curry_class = {
   .name = "curry",
   .equal_fn = (object_equal_fn_t *) curry_equal,
-  .format_fn = (object_format_fn_t *) curry_format,
+  .write_fn = (object_write_fn_t *) curry_format,
   .free_fn = (free_fn_t *) curry_free,
   .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
   .child_iter_next_fn = (object_child_iter_next_fn_t *) curry_child_iter_next,
