@@ -20,3 +20,6 @@
 
 (define-test format-string-test
   (assert-equal "\"abc\"" (format-string "abc")))
+
+(define-test format-void-test
+  (assert-equal "#void" (format-void void)))
