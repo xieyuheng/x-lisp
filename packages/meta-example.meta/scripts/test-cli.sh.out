@@ -1,11 +1,11 @@
 === hello ===
-"hello world"
+hello world
 === add 1 2 ===
 3
 === mul --x 3 --y 4 ===
 12
 === bye ===
-"bye bye"
+bye bye
 === passthrough -- foo bar baz ===
 foo bar baz
 === no command ===

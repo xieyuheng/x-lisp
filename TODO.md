@@ -1,6 +1,8 @@
-[meta-builtin.meta] remove `write` and `writeln` -- `print` and `println` should only take string
+[meta-builtin.meta] remove `write` and `writeln` -- use `print` and `println`
 
-[meta-builtin.meta] `format-int` `format-float` `format-keyword` `format-symbol`
+[helpers.c] & [meta-runtime.c] use `write_` instead of `format_` to write to `buffer_t`
+
+[builtin.meta] `format-int` `format-float` `format-keyword` `format-symbol`
 [meta-builtin.meta] `format-bool` `format-string`
 
 [meta-lisp.js] `generateRelativeFreshName` -- swap args

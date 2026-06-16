@@ -50,12 +50,17 @@ value_t x_writeln(value_t x) {
 }
 
 value_t x_print(value_t x) {
-  print_value(x);
+  if (xstring_p(x)) {
+    print_string(xstring_string(to_xstring(x)));
+  } else {
+    print_value(x);
+  }
+
   return x_void;
 }
 
 value_t x_println(value_t x) {
-  print_value(x);
+  x_print(x);
   newline();
   return x_void;
 }
