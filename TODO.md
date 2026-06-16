@@ -1,5 +1,3 @@
-[helpers.c] remove `newline`
-
 [helpers.c] & [meta-runtime.c] use `write_` instead of `format_` to write to `buffer_t`
 
 [builtin.meta] `format-int` `format-float` `format-keyword` `format-symbol`
