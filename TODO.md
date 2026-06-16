@@ -1,14 +1,15 @@
-# self-hosting
-
-[meta-lisp.meta] [review] desugar-location.meta
-[meta-lisp.meta] [review] desugar-match.meta
-[meta-lisp.meta] [review] desugar-or.meta
 [meta-lisp.meta] [review] desugar-pipe.meta
 [meta-lisp.meta] [review] desugar-quote.meta
-[meta-lisp.meta] [review] desugar-sexp.meta
 [meta-lisp.meta] [review] desugar-string-concat.meta
-[meta-lisp.meta] [review] desugar.meta
+
 [meta-lisp.meta] [review] generate-relative-fresh-name.meta
+
+[meta-lisp.meta] [review] desugar-sexp.meta
+[meta-lisp.meta] [review] desugar.meta
+
+[meta-lisp.meta] [review] desugar-match.meta
+
+# self-hosting
 
 [meta-lisp.meta] [review] 070-module-import-pass.meta
 [meta-lisp.meta] [review] 080-execute-pass.meta

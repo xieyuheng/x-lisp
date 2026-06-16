@@ -8,12 +8,11 @@
   (cond
     ((list-empty? exps)
      (qualified-var-exp 'meta-builtin 'builtin 'false location))
-    ((list-empty? (list-tail exps))
-     (list-first exps))
+    ((equal? 1 (list-length exps))
+     (car exps))
     (else
-     (let ((head (list-first exps))
-           (rest (list-tail exps)))
-       (if-exp head
-         (qualified-var-exp 'meta-builtin 'builtin 'true location)
-         (desugar-or rest location)
-         location)))))
+     (if-exp
+       (car exps)
+       (qualified-var-exp 'meta-builtin 'builtin 'true location)
+       (desugar-or (cdr exps) location)
+       location))))
