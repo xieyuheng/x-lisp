@@ -36,8 +36,9 @@ export function desugarLetrec(
   const boxBindings = bindings.map(M.makeBoxBinding)
   const boxGetExps = bindings.map(M.makeBoxGetExp)
   const names = bindings.map((binding) => binding.name)
-  const expUnbox = (exp: M.Exp) => M.expNaiveSubstMany(exp, names, boxGetExps)
-  const newRhsExps = bindings.map((binding) => expUnbox(binding.rhs))
+  const expBoxGetSubst = (exp: M.Exp) =>
+    M.expNaiveSubstMany(exp, names, boxGetExps)
+  const newRhsExps = bindings.map((binding) => expBoxGetSubst(binding.rhs))
   const usedNames = setUnion(
     M.expOccurredNames(body),
     setUnionMany(bindings.map(M.bindingOccurredNames)),
@@ -53,7 +54,7 @@ export function desugarLetrec(
     boxBindings,
     M.LetExp(
       tmpBindings,
-      M.BeginExp([...boxPutExps, expUnbox(body)], location),
+      M.BeginExp([...boxPutExps, expBoxGetSubst(body)], location),
       location,
     ),
     location,

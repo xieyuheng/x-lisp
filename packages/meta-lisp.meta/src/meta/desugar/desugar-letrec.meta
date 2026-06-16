@@ -36,8 +36,8 @@
   (= box-bindings (list-map make-box-binding bindings))
   (= box-get-exps (list-map make-box-get-exp bindings))
   (= names (list-map binding-name bindings))
-  (= exp-unbox (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
-  (= new-rhs-exps (list-map (compose exp-unbox binding-rhs) bindings))
+  (= exp-box-get-subst (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
+  (= new-rhs-exps (list-map (compose exp-box-get-subst binding-rhs) bindings))
   (= used-names
      (set-union
        (exp-occurred-names body)
@@ -49,7 +49,7 @@
     box-bindings
     (let-exp
       tmp-bindings
-      (begin-exp (list-append box-put-exps [(exp-unbox body)]) location)
+      (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)
       location)
     location))
 

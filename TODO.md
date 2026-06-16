@@ -1,5 +1,7 @@
-[meta-builtin.meta] `int-to-string` `float-to-string` `keyword-to-string` `symbol-to-string`
-[meta-builtin.meta] `bool-to-string`
+[meta-builtin.meta] remove `write` and `writeln` -- `print` and `println` should only take string
+
+[meta-builtin.meta] `format-int` `format-float` `format-keyword` `format-symbol`
+[meta-builtin.meta] `format-bool` `format-string`
 
 [meta-lisp.js] `generateRelativeFreshName` -- swap args
 [meta-lisp.meta] `generate-relative-fresh-name` -- swap args
