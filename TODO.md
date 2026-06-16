@@ -1,6 +1,3 @@
-[builtin.meta] `format-int` `format-float` `format-keyword` `format-symbol`
-[meta-builtin.meta] `format-bool` `format-string`
-
 [meta-lisp.js] `generateRelativeFreshName` -- swap args
 [meta-lisp.meta] `generate-relative-fresh-name` -- swap args
 
