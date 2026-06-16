@@ -162,7 +162,7 @@ bool sexp_has_tag(value_t sexp, const char *tag) {
 
 void format_as_sexp(buffer_t *buffer, value_t sexp) {
   if (symbol_p(sexp)) {
-    format_string(buffer, symbol_string(to_symbol(sexp)));
+    write_string(buffer, symbol_string(to_symbol(sexp)));
     return;
   }
 
@@ -174,13 +174,13 @@ void format_as_sexp(buffer_t *buffer, value_t sexp) {
   if (xlist_p(sexp)) {
     xlist_t *xlist = to_xlist(sexp);
     size_t length = array_length(xlist->elements);
-    format_string(buffer, "(");
+    write_string(buffer, "(");
     for (size_t i = 0; i < length; i++) {
-      if (i > 0) format_string(buffer, " ");
+      if (i > 0) write_string(buffer, " ");
       format_as_sexp(buffer, xlist_get(xlist, i));
     }
 
-    format_string(buffer, ")");
+    write_string(buffer, ")");
     return;
   }
 
@@ -189,7 +189,7 @@ void format_as_sexp(buffer_t *buffer, value_t sexp) {
     xset_t *xset = to_xset(sexp);
     set_iter_t iter;
     set_iter_init(&iter, xset->set);
-    format_string(buffer, "(@set");
+    write_string(buffer, "(@set");
     const hash_entry_t *entry = set_iter_next_entry(&iter);
     if (entry) {
       format_as_sexp(buffer, (value_t) entry->value);
@@ -197,37 +197,37 @@ void format_as_sexp(buffer_t *buffer, value_t sexp) {
     }
 
     while (entry) {
-      format_string(buffer, " ");
+      write_string(buffer, " ");
       format_as_sexp(buffer, (value_t) entry->value);
       entry = set_iter_next_entry(&iter);
     }
 
-    format_string(buffer, ")");
+    write_string(buffer, ")");
     return;
   }
 
   if (xhash_p(sexp)) {
     xhash_t *xhash = to_xhash(sexp);
-    format_string(buffer, "(@hash");
+    write_string(buffer, "(@hash");
     hash_iter_t iter;
     hash_iter_init(&iter, xhash->hash);
     const hash_entry_t *entry = hash_iter_next_entry(&iter);
     if (entry) {
       format_as_sexp(buffer, (value_t) entry->key);
-      format_string(buffer, " ");
+      write_string(buffer, " ");
       format_as_sexp(buffer, (value_t) entry->value);
       entry = hash_iter_next_entry(&iter);
     }
 
     while (entry) {
-      format_string(buffer, " ");
+      write_string(buffer, " ");
       format_as_sexp(buffer, (value_t) entry->key);
-      format_string(buffer, " ");
+      write_string(buffer, " ");
       format_as_sexp(buffer, (value_t) entry->value);
       entry = hash_iter_next_entry(&iter);
     }
 
-    format_string(buffer, ")");
+    write_string(buffer, ")");
     return;
   }
 

@@ -9,12 +9,12 @@ void object_free(object_t *self) {
 
 void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
   if (self == NULL) {
-    format_template(buffer, "#(<null-object>)");
+    write_template(buffer, "#(<null-object>)");
     return;
   }
 
   if (self->header.class == NULL) {
-    format_template(buffer, "#(<classless> 0x%p)", (void *) self);
+    write_template(buffer, "#(<classless> 0x%p)", (void *) self);
     return;
   }
 
@@ -24,9 +24,9 @@ void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
   }
 
   if (self->header.class->name) {
-    format_template(buffer, "#(%s 0x%p)", self->header.class->name, (void *) self);
+    write_template(buffer, "#(%s 0x%p)", self->header.class->name, (void *) self);
   } else {
-    format_template(buffer, "#(<unnamed> 0x%p)", (void *) self);
+    write_template(buffer, "#(<unnamed> 0x%p)", (void *) self);
   }
 }
 

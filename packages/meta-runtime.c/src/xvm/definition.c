@@ -76,7 +76,7 @@ bool definition_equal(definition_t *lhs, definition_t *rhs) {
 
 void definition_format(buffer_t *buffer, object_circle_ctx_t *ctx, definition_t *self) {
   (void) ctx;
-  format_template(buffer, "#(definition %s)", self->name);
+  write_template(buffer, "#(definition %s)", self->name);
 }
 
 bool definition_has_arity(const definition_t *self) {

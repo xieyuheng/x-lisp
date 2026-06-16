@@ -157,8 +157,8 @@ const char *path_raw_string(const path_t *self) {
   return self->string;
 }
 
-void format_path(buffer_t *buffer, const path_t *self) {
-  format_string(buffer, path_raw_string(self));
+void write_path(buffer_t *buffer, const path_t *self) {
+  write_string(buffer, path_raw_string(self));
 }
 
 size_t path_segment_length(const path_t *self) {
@@ -231,14 +231,14 @@ path_t *path_relative(const path_t *from, const path_t *to) {
   return relative_path;
 }
 
-void format_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to) {
+void write_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to) {
   path_t *relative_path = path_relative(from, to);
-  format_template(buffer, "%s", path_raw_string(relative_path));
+  write_template(buffer, "%s", path_raw_string(relative_path));
   path_free(relative_path);
 }
 
-void format_path_relative_to_cwd(buffer_t *buffer, const path_t *to) {
+void write_path_relative_to_cwd(buffer_t *buffer, const path_t *to) {
   path_t *cwd_path = make_cwd_path();
-  format_path_relative_to(buffer, cwd_path, to);
+  write_path_relative_to(buffer, cwd_path, to);
   path_free(cwd_path);
 }

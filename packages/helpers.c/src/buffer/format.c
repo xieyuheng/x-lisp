@@ -1,6 +1,6 @@
 #include "index.h"
 
-void format_template(buffer_t *buffer, const char *template, ...) {
+void write_template(buffer_t *buffer, const char *template, ...) {
   va_list args;
   va_start(args, template);
 
@@ -20,30 +20,30 @@ void format_template(buffer_t *buffer, const char *template, ...) {
   va_end(args);
 }
 
-void format_int(buffer_t *buffer, int64_t n) {
-  format_template(buffer, "%" PRId64, n);
+void write_int(buffer_t *buffer, int64_t n) {
+  write_template(buffer, "%" PRId64, n);
 }
 
-void format_uint(buffer_t *buffer, uint64_t n) {
-  format_template(buffer, "%" PRIu64, n);
+void write_uint(buffer_t *buffer, uint64_t n) {
+  write_template(buffer, "%" PRIu64, n);
 }
 
-void format_char(buffer_t *self, char c) {
+void write_char(buffer_t *self, char c) {
   buffer_put_byte(self, buffer_length(self), c);
 }
 
-void format_newline(buffer_t *self) {
-  format_char(self, '\n');
+void write_newline(buffer_t *self) {
+  write_char(self, '\n');
 }
 
-void format_string(buffer_t *self, const char *string) {
+void write_string(buffer_t *self, const char *string) {
   for (size_t i = 0; i < string_length(string); i++) {
-    format_char(self, string[i]);
+    write_char(self, string[i]);
   }
 }
 
-void format_substring(buffer_t *self, const char *string, size_t start, size_t end) {
+void write_substring(buffer_t *self, const char *string, size_t start, size_t end) {
   for (size_t i = start; i < end; i++) {
-    format_char(self, string[i]);
+    write_char(self, string[i]);
   }
 }

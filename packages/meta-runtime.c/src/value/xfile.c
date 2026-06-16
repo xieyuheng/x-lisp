@@ -81,14 +81,14 @@ bool xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
 
 void xfile_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xfile_t *self) {
   (void) ctx;
-  format_string(buffer, "#(file ");
-  format_int(buffer, file_raw_fd(self->file));
+  write_string(buffer, "#(file ");
+  write_int(buffer, file_raw_fd(self->file));
   if (self->pathname) {
-    format_string(buffer, " ");
-    format_string(buffer, self->pathname);
+    write_string(buffer, " ");
+    write_string(buffer, self->pathname);
   }
 
-  format_string(buffer, ")");
+  write_string(buffer, ")");
 }
 
 hash_code_t xfile_hash_code(const xfile_t *self) {

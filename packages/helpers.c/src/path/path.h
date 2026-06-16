@@ -16,7 +16,7 @@ void path_join(path_t *self, const char *string);
 void path_join_extension(path_t *self, const char *extension);
 
 const char *path_raw_string(const path_t *self);
-void format_path(buffer_t *buffer, const path_t *self);
+void write_path(buffer_t *buffer, const path_t *self);
 
 size_t path_segment_length(const path_t *self);
 const char *path_top_segment(const path_t *self);
@@ -25,5 +25,5 @@ char *path_pop_segment(path_t *self);
 void path_push_segment(path_t *self, char *segment);
 
 path_t *path_relative(const path_t *from, const path_t *to);
-void format_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to);
-void format_path_relative_to_cwd(buffer_t *buffer, const path_t *to);
+void write_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to);
+void write_path_relative_to_cwd(buffer_t *buffer, const path_t *to);

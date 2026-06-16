@@ -69,8 +69,8 @@ symbol_t *to_symbol(value_t value) {
 
 void symbol_format(buffer_t *buffer, object_circle_ctx_t *ctx, const symbol_t *self) {
   (void) ctx;
-  format_string(buffer, "'");
-  format_string(buffer, symbol_string(self));
+  write_string(buffer, "'");
+  write_string(buffer, symbol_string(self));
 }
 
 hash_code_t symbol_hash_code(const symbol_t *self) {

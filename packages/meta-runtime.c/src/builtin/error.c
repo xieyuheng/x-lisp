@@ -3,17 +3,17 @@
 value_t x_error(value_t info) {
   assert(xstring_p(info));
   buffer_t *buffer = make_buffer();
-  format_string(buffer, "(error) ");
-  format_string(buffer, xstring_string(to_xstring(info)));
-  format_newline(buffer);
+  write_string(buffer, "(error) ");
+  write_string(buffer, xstring_string(to_xstring(info)));
+  write_newline(buffer);
   buffer_write_and_exit(buffer, stderr, 1);
 }
 
 value_t x_error_with_location(value_t info, value_t location) {
   assert(xstring_p(info));
   buffer_t *message_buffer = make_buffer();
-  format_string(message_buffer, "(error) ");
-  format_string(message_buffer, xstring_string(to_xstring(info)));
+  write_string(message_buffer, "(error) ");
+  write_string(message_buffer, xstring_string(to_xstring(info)));
   char *message = buffer_to_string(message_buffer);
   buffer_free(message_buffer);
 

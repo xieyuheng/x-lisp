@@ -116,18 +116,18 @@ static void xhash_format_entries(buffer_t *buffer, object_circle_ctx_t *ctx, con
   value_t key = (value_t) hash_iter_next_key(&iter);
   while (key) {
     value_t value = xhash_get(self, key);
-    format_template(buffer, " ");
+    write_template(buffer, " ");
     value_format(buffer, ctx, key);
-    format_template(buffer, " ");
+    write_template(buffer, " ");
     value_format(buffer, ctx, value);
     key = (value_t) hash_iter_next_key(&iter);
   }
 }
 
 void xhash_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self) {
-  format_template(buffer, "(@hash");
+  write_template(buffer, "(@hash");
   xhash_format_entries(buffer, ctx, self);
-  format_template(buffer, ")");
+  write_template(buffer, ")");
 }
 
 static ordering_t compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {

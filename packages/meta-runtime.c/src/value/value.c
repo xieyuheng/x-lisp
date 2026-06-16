@@ -1,6 +1,6 @@
 #include "index.h"
 
-extern void format_string_escaped(buffer_t *buffer, const char *s);
+extern void write_string_escaped(buffer_t *buffer, const char *s);
 
 inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
@@ -107,7 +107,7 @@ void format_atom(buffer_t *buffer, value_t value) {
   assert(atom_p(value));
 
   if (int_p(value)) {
-    format_template(buffer, "%ld", to_int64(value));
+    write_template(buffer, "%ld", to_int64(value));
     return;
   }
 
@@ -121,41 +121,41 @@ void format_atom(buffer_t *buffer, value_t value) {
       string[end + 2] = '\0';
     }
 
-    format_string(buffer, string);
+    write_string(buffer, string);
     return;
   }
 
   if (xstring_p(value)) {
-    format_string(buffer, "\"");
-    format_string_escaped(buffer, xstring_string(to_xstring(value)));
-    format_string(buffer, "\"");
+    write_string(buffer, "\"");
+    write_string_escaped(buffer, xstring_string(to_xstring(value)));
+    write_string(buffer, "\"");
     return;
   }
 
   if (symbol_p(value)) {
-    format_string(buffer, "'");
-    format_string(buffer, symbol_string(to_symbol(value)));
+    write_string(buffer, "'");
+    write_string(buffer, symbol_string(to_symbol(value)));
     return;
   }
 
   if (keyword_p(value)) {
-    format_string(buffer, ":");
-    format_string(buffer, keyword_string(to_keyword(value)));
+    write_string(buffer, ":");
+    write_string(buffer, keyword_string(to_keyword(value)));
     return;
   }
 
   if (true_p(value)) {
-    format_string(buffer, "#t");
+    write_string(buffer, "#t");
     return;
   }
 
   if (false_p(value)) {
-    format_string(buffer, "#f");
+    write_string(buffer, "#f");
     return;
   }
 
   if (void_p(value)) {
-    format_string(buffer, "#void");
+    write_string(buffer, "#void");
     return;
   }
 }
@@ -169,12 +169,12 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   if (object_p(value)) {
     object_t *object = to_object(value);
     if (object_circle_start_p(ctx, object)) {
-      format_template(buffer, "#%ld=", object_circle_index(ctx, object));
+      write_template(buffer, "#%ld=", object_circle_index(ctx, object));
       object_circle_meet(ctx, object);
       object_format(buffer, ctx, object);
       return;
     } else if (object_circle_end_p(ctx, object)) {
-      format_template(buffer, "#%ld#", object_circle_index(ctx, object));
+      write_template(buffer, "#%ld#", object_circle_index(ctx, object));
       return;
     } else {
       object_format(buffer, ctx, object);
@@ -182,7 +182,7 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
     }
   }
 
-  format_template(buffer, "#(unknown-value 0x%lx)", value);
+  write_template(buffer, "#(unknown-value 0x%lx)", value);
   return;
 }
 

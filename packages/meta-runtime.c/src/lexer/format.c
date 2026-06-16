@@ -29,9 +29,9 @@ static char *make_underline(struct span_t span, size_t start, size_t end) {
   buffer_t *buffer = make_buffer();
   for (size_t i = start; i < end; i++) {
     if (span.start.index <= i && i < span.end.index) {
-      format_char(buffer, '~');
+      write_char(buffer, '~');
     } else {
-      format_char(buffer, ' ');
+      write_char(buffer, ' ');
     }
   }
 
@@ -76,9 +76,9 @@ static size_t get_prefix_margin(array_t *lines) {
 
 static void format_line_report(buffer_t *buffer, line_t *line, size_t prefix_margin) {
   size_t line_count = line->index + 1;
-  format_template(buffer, "%*ld | %s\n", (int) prefix_margin, line_count, line->content);
+  write_template(buffer, "%*ld | %s\n", (int) prefix_margin, line_count, line->content);
   if (line->underline) {
-    format_template(buffer, "%*s | %s\n", (int) prefix_margin, "", line->underline);
+    write_template(buffer, "%*s | %s\n", (int) prefix_margin, "", line->underline);
   }
 }
 
@@ -107,23 +107,23 @@ void format_span_in_context(buffer_t *buffer, struct span_t span, const char *co
 }
 
 static void format_position(buffer_t *buffer, struct position_t position) {
-  format_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
+  write_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
 }
 
 void format_message_with_source_location(buffer_t *buffer, const char *message, struct source_location_t location) {
   assert(location.pathname);
 
   path_t *path = make_path(location.pathname);
-  format_path_relative_to_cwd(buffer, path);
+  write_path_relative_to_cwd(buffer, path);
   path_free(path);
-  format_string(buffer, ":");
+  write_string(buffer, ":");
   format_position(buffer, location.span.start);
   if (message) {
-    format_string(buffer, " -- ");
-    format_string(buffer, message);
+    write_string(buffer, " -- ");
+    write_string(buffer, message);
   }
 
-  format_newline(buffer);
+  write_newline(buffer);
 
   if (fs_is_file(location.pathname)) {
     char *context = fs_read(location.pathname);
