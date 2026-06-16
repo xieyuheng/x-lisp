@@ -1,0 +1,22 @@
+(module builtin)
+
+(define-test format-int-test
+  (assert-equal "42" (format-int 42))
+  (assert-equal "-1" (format-int -1)))
+
+(define-test format-float-test
+  (assert-equal "42.0" (format-float 42.0))
+  (assert-equal "0.0" (format-float 0.0)))
+
+(define-test format-keyword-test
+  (assert-equal ":foo" (format-keyword :foo)))
+
+(define-test format-symbol-test
+  (assert-equal "'hello" (format-symbol 'hello)))
+
+(define-test format-bool-test
+  (assert-equal "#t" (format-bool true))
+  (assert-equal "#f" (format-bool false)))
+
+(define-test format-string-test
+  (assert-equal "\"abc\"" (format-string "abc")))

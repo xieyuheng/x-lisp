@@ -29,6 +29,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [错误处理](#错误处理)
 - [进程](#进程)
 - [随机数](#随机数)
+- [格式化](#格式化)
 - [S 表达式](#s-表达式)
 - [JSON](#json)
 
@@ -588,6 +589,18 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`random-int`](random/random-int.md) — 随机整数
 - [`random-float`](random/random-float.md) — 随机浮点数
 
+## 格式化
+
+针对具体类型的 S 表达式格式化函数。
+
+- [`format-as-sexp`](format/format-as-sexp.md) — 格式化任意值为 S 表达式
+- [`format-int`](format/format-int.md) — 格式化整数
+- [`format-float`](format/format-float.md) — 格式化浮点数
+- [`format-keyword`](format/format-keyword.md) — 格式化关键字
+- [`format-symbol`](format/format-symbol.md) — 格式化符号
+- [`format-bool`](format/format-bool.md) — 格式化布尔值
+- [`format-string`](format/format-string.md) — 格式化字符串
+
 ## S 表达式
 
 S 表达式的解析、格式化和相关类型。
@@ -602,7 +615,6 @@ S 表达式的解析、格式化和相关类型。
 ### 操作
 
 - [`parse-sexps`](sexp/parse-sexps.md) — 解析为带位置的 S 表达式
-- [`format-as-sexp`](sexp/format-as-sexp.md) — 格式化任意值为 S 表达式
 - [`format-sexp`](sexp/format-sexp.md) — 格式化 S 表达式
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — 收集键值对列表
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — 收集键值对哈希表

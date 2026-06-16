@@ -29,6 +29,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Error handling](#error-handling)
 - [Process](#process)
 - [Random](#random)
+- [Format](#format)
 - [S-expression](#s-expression)
 - [JSON](#json)
 
@@ -588,6 +589,18 @@ Assertion functions for testing.
 - [`random-int`](random/random-int.md) — Random integer
 - [`random-float`](random/random-float.md) — Random float
 
+## Format
+
+Type-specific S-expression formatting functions.
+
+- [`format-as-sexp`](format/format-as-sexp.md) — Format an arbitrary value as an S-expression
+- [`format-int`](format/format-int.md) — Format an integer
+- [`format-float`](format/format-float.md) — Format a float
+- [`format-keyword`](format/format-keyword.md) — Format a keyword
+- [`format-symbol`](format/format-symbol.md) — Format a symbol
+- [`format-bool`](format/format-bool.md) — Format a bool
+- [`format-string`](format/format-string.md) — Format a string
+
 ## S-expression
 
 S-expression parsing, formatting, and related types.
@@ -602,7 +615,6 @@ S-expression parsing, formatting, and related types.
 ### Operations
 
 - [`parse-sexps`](sexp/parse-sexps.md) — Parse to located S-expressions
-- [`format-as-sexp`](sexp/format-as-sexp.md) — Format an arbitrary value as an S-expression
 - [`format-sexp`](sexp/format-sexp.md) — Format an S-expression
 - [`sexp-collect-key-value-pairs`](sexp/sexp-collect-key-value-pairs.md) — Collect key-value pairs as a list
 - [`sexp-collect-key-value-hash`](sexp/sexp-collect-key-value-hash.md) — Collect key-value pairs as a hash
