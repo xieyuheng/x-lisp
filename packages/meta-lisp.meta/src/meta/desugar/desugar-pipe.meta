@@ -7,9 +7,7 @@
 (define (desugar-pipe target steps location)
   (if (list-empty? steps)
     target
-    (let ((step (list-first steps))
-          (rest (list-tail steps)))
-      (desugar-pipe
-        (apply-exp step [target] location)
-        rest
-        location))))
+    (desugar-pipe
+      (apply-exp (car steps) [target] location)
+      (cdr steps)
+      location)))

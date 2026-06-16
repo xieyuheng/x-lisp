@@ -1,7 +1,3 @@
-[meta-lisp.meta] [review] desugar-pipe.meta
-[meta-lisp.meta] [review] desugar-quote.meta
-[meta-lisp.meta] [review] desugar-string-concat.meta
-
 [meta-lisp.meta] [review] generate-relative-fresh-name.meta
 
 [meta-lisp.meta] [review] desugar-sexp.meta
