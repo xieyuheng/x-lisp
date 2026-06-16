@@ -16,5 +16,5 @@
   (list-each
    (lambda (x)
      (print x)
-     (write "\n"))
+     (print "\n"))
    [1 2 3]))

@@ -75,13 +75,13 @@
 
 (claim cli-print-name-and-version (-> cli-router-t void-t))
 (define (cli-print-name-and-version router)
-  (writeln (string-join " " [(cli-router-name router) (cli-router-version router)])))
+  (println (string-join " " [(cli-router-name router) (cli-router-version router)])))
 
 (claim cli-print-commands (-> cli-router-t void-t))
 (define (cli-print-commands router)
-  (writeln "commands:")
+  (println "commands:")
   (list-each (lambda (route)
-               (writeln (string-append "  " (cli-route-command route))))
+               (println (string-append "  " (cli-route-command route))))
              (cli-router-routes router)))
 
 (claim cli-router-run (-> cli-router-t (list-t string-t) void-t))
@@ -98,10 +98,10 @@
          (match (hash-get-maybe name (cli-router-handlers router))
            ((just handler) (handler (cli-route-match route tokens)))
            ((nothing)
-            (writeln (string-join " " ["[cli] undefined handler:" name]))
+            (println (string-join " " ["[cli] undefined handler:" name]))
             (exit 1))))
         ((nothing)
-         (writeln (string-join " " ["unknown command:" name]))
+         (println (string-join " " ["unknown command:" name]))
          (cli-print-name-and-version router)
          (cli-print-commands router))))))
 

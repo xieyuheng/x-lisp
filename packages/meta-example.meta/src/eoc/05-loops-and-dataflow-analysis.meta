@@ -1,46 +1,31 @@
 (module example)
 
 (define-test eoc-05-01
-  (print 1)
-  (newline)
-  (print 2)
-  (newline)
-  (print 3)
-  (newline)
+  (println 1)
+  (println 2)
+  (println 3)
   void)
 
 (define-test eoc-05-02
   (= x (begin
-         (print 1)
-         (newline)
-         (print 2)
-         (newline)
-         (print 3)
-         (newline)
+         (println 1)
+         (println 2)
+         (println 3)
          6))
   (begin
-    (print 4)
-    (newline)
-    (print 5)
-    (newline)
-    (print 6)
-    (newline)
-    (print (iadd x x))
-    (newline)
+    (println 4)
+    (println 5)
+    (println 6)
+    (println (iadd x x))
     void))
 
 (define-test eoc-05-03
   (if (begin
-        (print 1)
-        (newline)
-        (print 2)
-        (newline)
-        (print 3)
-        (newline)
+        (println 1)
+        (println 2)
+        (println 3)
         (equal? 1 2))
     (begin
-      (print 111)
-      (newline))
+      (println 111))
     (begin
-      (print 222)
-      (newline))))
+      (println 222))))

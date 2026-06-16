@@ -9,9 +9,6 @@
 (declare-primitive-function file-writeln 2)
 (declare-primitive-function print 1)
 (declare-primitive-function println 1)
-(declare-primitive-function write 1)
-(declare-primitive-function writeln 1)
-(declare-primitive-function newline 0)
 
 (claim file-t type-t)
 (claim open-input-file (-> string-t file-t))
@@ -22,6 +19,3 @@
 (claim file-writeln (-> file-t string-t void-t))
 (claim print (polymorphic (A) (-> A void-t)))
 (claim println (polymorphic (A) (-> A void-t)))
-(claim write (-> string-t void-t))
-(claim writeln (-> string-t void-t))
-(claim newline (-> void-t))

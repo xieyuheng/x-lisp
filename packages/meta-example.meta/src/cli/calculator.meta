@@ -34,4 +34,4 @@
   (println "bye bye"))
 
 (define (handle-passthrough ctx)
-  (writeln (string-join " " (cli-ctx-passthrough ctx))))
+  (println (string-join " " (cli-ctx-passthrough ctx))))

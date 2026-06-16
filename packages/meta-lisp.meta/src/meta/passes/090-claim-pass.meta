@@ -20,7 +20,7 @@
                      "\n  module: " (symbol-to-string (mod-name mod))
                      "\n  name: " (symbol-to-string claimed-name)
                      "\n  exp: " (format-term (claim-entry-exp entry))))
-                (writeln
+                (println
                   (format-message-with-source-location
                     message
                     (term-location (claim-entry-exp entry))))
