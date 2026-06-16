@@ -1,5 +1,5 @@
-import { jsonParseNumber } from "@xieyuheng/helpers.js/json"
-import { stringIsBlank } from "@xieyuheng/helpers.js/string"
+import { jsonParseNumber } from "@xieyuheng/std.js/json"
+import { stringIsBlank } from "@xieyuheng/std.js/string"
 import * as S from "../index.ts"
 
 export class NumberConsumer implements S.Consumer {

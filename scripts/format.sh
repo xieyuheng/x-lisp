@@ -2,7 +2,7 @@
 
 set -e
 
-cd packages/helpers.js; ./scripts/format.sh; cd ../..
+cd packages/std.js; ./scripts/format.sh; cd ../..
 cd packages/cli.js; ./scripts/format.sh; cd ../..
 cd packages/bin.js; ./scripts/format.sh; cd ../..
 cd packages/sexp.js; ./scripts/format.sh; cd ../..

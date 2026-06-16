@@ -1,5 +1,5 @@
-import { errorReport } from "@xieyuheng/helpers.js/error"
-import { snapshot } from "@xieyuheng/helpers.js/snapshot"
+import { errorReport } from "@xieyuheng/std.js/error"
+import { snapshot } from "@xieyuheng/std.js/snapshot"
 import assert from "node:assert"
 import Path from "node:path"
 import { test } from "node:test"

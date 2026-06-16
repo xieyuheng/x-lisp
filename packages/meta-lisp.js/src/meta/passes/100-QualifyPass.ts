@@ -1,4 +1,4 @@
-import { setUnion } from "@xieyuheng/helpers.js/set"
+import { setUnion } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
 export function QualifyPass(pkg: M.Package): void {

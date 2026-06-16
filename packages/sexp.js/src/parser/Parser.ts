@@ -1,4 +1,4 @@
-import { stringIsBigInt, stringIsNumber } from "@xieyuheng/helpers.js/string"
+import { stringIsBigInt, stringIsNumber } from "@xieyuheng/std.js/string"
 import * as S from "../index.ts"
 
 type Result = { sexp: S.Sexp; remain: Array<S.Token> }

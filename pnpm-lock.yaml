@@ -11,9 +11,9 @@ importers:
       '@xieyuheng/cli.js':
         specifier: workspace:*
         version: link:../cli.js
-      '@xieyuheng/helpers.js':
+      '@xieyuheng/std.js':
         specifier: workspace:*
-        version: link:../helpers.js
+        version: link:../std.js
     devDependencies:
       '@types/node':
         specifier: ^25.9.3
@@ -30,24 +30,9 @@ importers:
 
   packages/cli.js:
     dependencies:
-      '@xieyuheng/helpers.js':
+      '@xieyuheng/std.js':
         specifier: workspace:*
-        version: link:../helpers.js
-    devDependencies:
-      '@types/node':
-        specifier: ^25.9.3
-        version: 25.9.3
-      prettier:
-        specifier: ^3.8.4
-        version: 3.8.4
-      prettier-plugin-organize-imports:
-        specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.4)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  packages/helpers.js:
+        version: link:../std.js
     devDependencies:
       '@types/node':
         specifier: ^25.9.3
@@ -67,15 +52,15 @@ importers:
       '@xieyuheng/cli.js':
         specifier: workspace:*
         version: link:../cli.js
-      '@xieyuheng/helpers.js':
-        specifier: workspace:*
-        version: link:../helpers.js
       '@xieyuheng/ppml.js':
         specifier: workspace:*
         version: link:../ppml.js
       '@xieyuheng/sexp.js':
         specifier: workspace:*
         version: link:../sexp.js
+      '@xieyuheng/std.js':
+        specifier: workspace:*
+        version: link:../std.js
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -95,9 +80,9 @@ importers:
 
   packages/ppml.js:
     dependencies:
-      '@xieyuheng/helpers.js':
+      '@xieyuheng/std.js':
         specifier: workspace:*
-        version: link:../helpers.js
+        version: link:../std.js
     devDependencies:
       '@types/node':
         specifier: ^25.9.3
@@ -114,9 +99,24 @@ importers:
 
   packages/sexp.js:
     dependencies:
-      '@xieyuheng/helpers.js':
+      '@xieyuheng/std.js':
         specifier: workspace:*
-        version: link:../helpers.js
+        version: link:../std.js
+    devDependencies:
+      '@types/node':
+        specifier: ^25.9.3
+        version: 25.9.3
+      prettier:
+        specifier: ^3.8.4
+        version: 3.8.4
+      prettier-plugin-organize-imports:
+        specifier: ^4.3.0
+        version: 4.3.0(prettier@3.8.4)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/std.js:
     devDependencies:
       '@types/node':
         specifier: ^25.9.3

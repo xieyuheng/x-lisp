@@ -1,8 +1,4 @@
-import {
-  callWithFile,
-  fileRead,
-  openInputFile,
-} from "@xieyuheng/helpers.js/file"
+import { callWithFile, fileRead, openInputFile } from "@xieyuheng/std.js/file"
 import * as M from "../index.ts"
 
 export function loadPackageConfig(configPath: string): M.PackageConfig {

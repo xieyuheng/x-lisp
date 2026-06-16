@@ -1,6 +1,6 @@
 import * as Cli from "@xieyuheng/cli.js"
-import { errorReport } from "@xieyuheng/helpers.js/error"
-import { bufferToArrayBuffer, getPackageJson } from "@xieyuheng/helpers.js/node"
+import { errorReport } from "@xieyuheng/std.js/error"
+import { bufferToArrayBuffer, getPackageJson } from "@xieyuheng/std.js/node"
 import fs from "node:fs"
 import { fileURLToPath } from "node:url"
 import { decodeElf } from "./elf/index.ts"

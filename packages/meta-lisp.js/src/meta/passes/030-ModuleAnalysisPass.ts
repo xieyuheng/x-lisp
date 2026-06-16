@@ -1,6 +1,6 @@
-import { writeln } from "@xieyuheng/helpers.js/file"
-import { setDifference } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
+import { writeln } from "@xieyuheng/std.js/file"
+import { setDifference } from "@xieyuheng/std.js/set"
 import assert from "node:assert"
 import fs from "node:fs"
 import Path from "node:path"

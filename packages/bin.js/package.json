@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@xieyuheng/cli.js": "workspace:*",
-    "@xieyuheng/helpers.js": "workspace:*"
+    "@xieyuheng/std.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.9.3",

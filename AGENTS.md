@@ -6,7 +6,7 @@ title: AI Agent 工作指南
 
 # 前言
 
-引用 package 名时使用 `[package-name]` 格式（如 [helpers.js]、[meta-runtime.c]、[meta-lisp.meta]）。
+引用 package 名时使用 `[package-name]` 格式（如 [std.js]、[meta-runtime.c]、[meta-lisp.meta]）。
 
 AI agent 应用中文回答用户的问题。
 
@@ -14,17 +14,17 @@ AI agent 应用中文回答用户的问题。
 
 **JS/TS monorepo**（`pnpm-workspace.yaml` — `packages/*.js`）：
 
-- [helpers.js] — 基础库（无依赖）
-- [cli.js] — CLI 框架，依赖 [helpers.js]
-- [ppml.js] — 格式化打印，依赖 [helpers.js]
-- [sexp.js] — S 表达式解析器，依赖 [helpers.js]
+- [std.js] — 基础库（无依赖）
+- [cli.js] — CLI 框架，依赖 [std.js]
+- [ppml.js] — 格式化打印，依赖 [std.js]
+- [sexp.js] — S 表达式解析器，依赖 [std.js]
 - [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供 `./meta-lisp.js` 编译器
 
 **C packages**（共享 `builders/make/c.mk`）：
 
-- [helpers.c] — 基础库
-- [cli.c] — CLI 库，依赖 [helpers.c]
-- [meta-runtime.c] — 多后端运行时，依赖 [helpers.c] + [cli.c]
+- [std.c] — 基础库
+- [cli.c] — CLI 库，依赖 [std.c]
+- [meta-runtime.c] — 多后端运行时，依赖 [std.c] + [cli.c]
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
 
@@ -36,8 +36,8 @@ AI agent 应用中文回答用户的问题。
 # 依赖链
 
 1. `pnpm install`（或 `scripts/prepare.sh`）
-2. C：[helpers.c] → [cli.c] → [meta-runtime.c]
-3. JS：[helpers.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
+2. C：[std.c] → [cli.c] → [meta-runtime.c]
+3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 二进制
 
 顶层 `scripts/build.sh` 按正确顺序构建。

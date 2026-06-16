@@ -2,8 +2,8 @@ import {
   callWithFile,
   fileWriteln,
   openOutputFile,
-} from "@xieyuheng/helpers.js/file"
-import { systemShellRun } from "@xieyuheng/helpers.js/system"
+} from "@xieyuheng/std.js/file"
+import { systemShellRun } from "@xieyuheng/std.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B from "../../basic/index.ts"

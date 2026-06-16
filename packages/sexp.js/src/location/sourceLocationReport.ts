@@ -1,4 +1,4 @@
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
+import { pathRelativeToCwd } from "@xieyuheng/std.js/path"
 import fs from "node:fs"
 import * as S from "../index.ts"
 

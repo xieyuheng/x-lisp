@@ -1,6 +1,6 @@
-import { arrayMapZip } from "@xieyuheng/helpers.js/array"
-import { setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
+import { arrayMapZip } from "@xieyuheng/std.js/array"
+import { setUnion, setUnionMany } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
 // Desugar `(letrec)` using box:

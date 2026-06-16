@@ -1,3 +1,3 @@
 include ../../builders/make/c.mk
 
-deps = ../helpers.c/src/index.o
+deps = ../std.c/src/index.o

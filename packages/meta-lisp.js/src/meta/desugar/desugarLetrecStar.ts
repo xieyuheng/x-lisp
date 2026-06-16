@@ -1,5 +1,5 @@
-import { arrayMapZip, arrayZip } from "@xieyuheng/helpers.js/array"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
+import { arrayMapZip, arrayZip } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 // Desugar `(letrec*)` using box:

@@ -5,16 +5,16 @@
 ## 用法
 
 ```makefile
-# helpers.c/makefile — 无依赖
+# std.c/makefile — 无依赖
 include ../../builders/make/c.mk
 
-# cli.c/makefile — 依赖 helpers.c
+# cli.c/makefile — 依赖 std.c
 include ../../builders/make/c.mk
-deps = ../helpers.c/src/index.o
+deps = ../std.c/src/index.o
 
 # meta-runtime.c/makefile — 链式依赖
 include ../../builders/make/c.mk
-deps = ../helpers.c/src/index.o
+deps = ../std.c/src/index.o
 deps += ../cli.c/src/index.o
 ```
 

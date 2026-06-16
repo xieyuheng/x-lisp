@@ -3,8 +3,8 @@ import {
   fileWrite,
   openOutputFile,
   writeln,
-} from "@xieyuheng/helpers.js/file"
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
+} from "@xieyuheng/std.js/file"
+import { pathRelativeToCwd } from "@xieyuheng/std.js/path"
 import Path from "node:path"
 import * as M from "../index.ts"
 

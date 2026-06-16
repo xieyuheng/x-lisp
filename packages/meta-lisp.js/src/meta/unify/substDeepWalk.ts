@@ -1,4 +1,4 @@
-import { mapMapValue } from "@xieyuheng/helpers.js/map"
+import { mapMapValue } from "@xieyuheng/std.js/map"
 import * as M from "../index.ts"
 
 export function substDeepWalk(subst: M.Subst, type: M.Type): M.Type {

@@ -1,4 +1,4 @@
-import { arrayUnzip } from "@xieyuheng/helpers.js/array"
+import { arrayUnzip } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 export function UnnestOperandPass(pkg: M.Package): void {

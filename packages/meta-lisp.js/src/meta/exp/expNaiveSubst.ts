@@ -1,5 +1,5 @@
-import { setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
+import { setUnionMany } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
 // Exp substitution with shadowing but **without** capture avoidance.

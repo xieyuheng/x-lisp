@@ -280,12 +280,12 @@ list_iter_free(iter);
 ```c
 // xvm.c/src/deps.h
 #pragma once
-#include "../../helpers.c/src/index.h"  // 上游项目
+#include "../../std.c/src/index.h"  // 上游项目
 #include "../../cli.c/src/index.h"      // 上游项目
 #include "config.h"                     // 项目级配置
 ```
 
-**根项目**（如 helpers.c）没有项目级 `deps.h`——它的 `src/index.h` 直接聚合所有模块。
+**根项目**（如 std.c）没有项目级 `deps.h`——它的 `src/index.h` 直接聚合所有模块。
 
 原则：每个模块只声明自己**直接**需要的依赖，不传递。调用某模块时，include 该模块的 `index.h` 即可，不需要手动 include 其上游。
 

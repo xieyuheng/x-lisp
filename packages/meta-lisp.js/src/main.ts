@@ -1,9 +1,9 @@
 #!/usr/bin/env -S node
 
 import * as cli from "@xieyuheng/cli.js"
-import { errorReport } from "@xieyuheng/helpers.js/error"
-import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
+import { errorReport } from "@xieyuheng/std.js/error"
+import { getPackageJson } from "@xieyuheng/std.js/node"
 import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"

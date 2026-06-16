@@ -1,5 +1,5 @@
-import { setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import type { SourceLocation } from "@xieyuheng/sexp.js"
+import { setUnion, setUnionMany } from "@xieyuheng/std.js/set"
 import { expOccurredNames } from "../exp/expOccurredNames.ts"
 import * as M from "../index.ts"
 import { desugarBegin } from "./desugarBegin.ts"

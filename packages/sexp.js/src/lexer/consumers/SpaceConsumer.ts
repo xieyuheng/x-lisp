@@ -1,4 +1,4 @@
-import { stringIsBlank } from "@xieyuheng/helpers.js/string"
+import { stringIsBlank } from "@xieyuheng/std.js/string"
 import * as S from "../index.ts"
 
 export class SpaceConsumer implements S.Consumer {

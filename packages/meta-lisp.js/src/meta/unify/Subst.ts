@@ -1,4 +1,4 @@
-import { range } from "@xieyuheng/helpers.js/range"
+import { range } from "@xieyuheng/std.js/range"
 import assert from "node:assert"
 import * as M from "../index.ts"
 

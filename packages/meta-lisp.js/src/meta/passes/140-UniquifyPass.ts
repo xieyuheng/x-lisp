@@ -1,4 +1,4 @@
-import { arrayZip } from "@xieyuheng/helpers.js/array"
+import { arrayZip } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 export function UniquifyPass(pkg: M.Package): void {

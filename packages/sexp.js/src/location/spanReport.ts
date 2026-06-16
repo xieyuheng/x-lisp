@@ -1,5 +1,5 @@
-import { leftPad } from "@xieyuheng/helpers.js/format"
-import { stringIsBlank } from "@xieyuheng/helpers.js/string"
+import { leftPad } from "@xieyuheng/std.js/format"
+import { stringIsBlank } from "@xieyuheng/std.js/string"
 import { type Span } from "./Span.ts"
 
 type Line = {

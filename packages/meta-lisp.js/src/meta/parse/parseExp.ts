@@ -1,5 +1,5 @@
-import { arrayGroup2, arrayPickLast } from "@xieyuheng/helpers.js/array"
 import * as S from "@xieyuheng/sexp.js"
+import { arrayGroup2, arrayPickLast } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 export function parseBody(body: S.Sexp): M.Exp {

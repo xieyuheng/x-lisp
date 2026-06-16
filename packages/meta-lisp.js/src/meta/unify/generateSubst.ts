@@ -1,4 +1,4 @@
-import { arrayDedup } from "@xieyuheng/helpers.js/array"
+import { arrayDedup } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 // - To implement `reify`.

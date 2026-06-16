@@ -1,4 +1,4 @@
-import { arrayZip } from "@xieyuheng/helpers.js/array"
+import { arrayZip } from "@xieyuheng/std.js/array"
 import * as S from "../index.ts"
 
 export function sexpEqual(x: S.Sexp, y: S.Sexp): boolean {

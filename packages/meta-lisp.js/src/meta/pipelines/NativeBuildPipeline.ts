@@ -2,7 +2,7 @@ import {
   callWithFile,
   fileWriteln,
   openOutputFile,
-} from "@xieyuheng/helpers.js/file"
+} from "@xieyuheng/std.js/file"
 import * as fs from "node:fs"
 import * as X86 from "../../x86/index.ts"
 import * as M from "../index.ts"

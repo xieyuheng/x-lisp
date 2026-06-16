@@ -1,4 +1,4 @@
-import { setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
+import { setUnion, setUnionMany } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
 export function expOccurredNames(exp: M.Exp): Set<string> {

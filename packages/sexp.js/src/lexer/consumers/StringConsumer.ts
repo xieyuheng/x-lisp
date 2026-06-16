@@ -1,4 +1,4 @@
-import { jsonParseString } from "@xieyuheng/helpers.js/json"
+import { jsonParseString } from "@xieyuheng/std.js/json"
 import { ErrorWithSourceLocation } from "../../errors/ErrorWithSourceLocation.ts"
 import { positionForwardChar } from "../../location/Position.ts"
 import * as S from "../index.ts"

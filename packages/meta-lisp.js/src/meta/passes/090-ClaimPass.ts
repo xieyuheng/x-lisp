@@ -1,5 +1,5 @@
-import { writeln } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
+import { writeln } from "@xieyuheng/std.js/file"
 import * as M from "../index.ts"
 
 export function ClaimPass(pkg: M.Package): M.Outcome {

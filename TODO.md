@@ -1,6 +1,3 @@
-[meta-lisp.js] `generateRelativeFreshName` -- swap args
-[meta-lisp.meta] `generate-relative-fresh-name` -- swap args
-
 [meta-lisp.meta] [review] generate-relative-fresh-name.meta
 
 [meta-lisp.meta] [review] desugar-sexp.meta

@@ -1,4 +1,4 @@
-import { setUnionMany } from "@xieyuheng/helpers.js/set"
+import { setUnionMany } from "@xieyuheng/std.js/set"
 import type { Term } from "./Term.ts"
 
 export function termFreeNames(
