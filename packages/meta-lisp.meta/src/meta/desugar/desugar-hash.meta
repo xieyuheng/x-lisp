@@ -10,7 +10,7 @@
       (exp-occurred-names (hash-entry-key entry))
       (exp-occurred-names (hash-entry-value entry))))
   (= used-names (set-union-many (list-map entry-used-names entries)))
-  (= fresh-name (generate-relative-fresh-name 'hash used-names))
+  (= fresh-name (generate-relative-fresh-name used-names 'hash))
   (desugar-begin
     (list-concat
       [[(assign-exp

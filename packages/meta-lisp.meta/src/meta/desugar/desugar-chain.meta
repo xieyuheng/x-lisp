@@ -6,7 +6,7 @@
 
 (define (desugar-chain steps location)
   (= used-names (set-union-many (list-map exp-occurred-names steps)))
-  (= fresh-name (generate-relative-fresh-name 'target used-names))
+  (= fresh-name (generate-relative-fresh-name used-names 'target))
   (lambda-exp
     [fresh-name]
     (pipe-exp (var-exp fresh-name location) steps location)

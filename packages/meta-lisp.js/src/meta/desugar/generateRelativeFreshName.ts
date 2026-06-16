@@ -1,6 +1,6 @@
 export function generateRelativeFreshName(
-  name: string,
   usedNames: Set<string>,
+  name: string,
 ): string {
   if (!usedNames.has(name)) return name
 

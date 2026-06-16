@@ -66,7 +66,7 @@ function makeTmpBinding(
 ): (binding: M.Binding, rhs: M.Exp) => M.Binding {
   return (binding, rhs) =>
     M.Binding(
-      M.generateRelativeFreshName(`${binding.name}.value`, usedNames),
+      M.generateRelativeFreshName(usedNames, `${binding.name}.value`),
       rhs,
       binding.location,
     )

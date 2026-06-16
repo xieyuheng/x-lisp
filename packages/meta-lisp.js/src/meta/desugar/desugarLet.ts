@@ -37,7 +37,7 @@ function desugarLetBinding(
   usedNames: Set<string>,
   binding: M.Binding,
 ): [M.Binding, M.Binding] {
-  const freshName = M.generateRelativeFreshName(binding.name, usedNames)
+  const freshName = M.generateRelativeFreshName(usedNames, binding.name)
   usedNames.add(freshName)
   return [
     M.Binding(freshName, binding.rhs, binding.location),

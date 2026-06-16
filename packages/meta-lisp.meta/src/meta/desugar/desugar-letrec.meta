@@ -57,7 +57,7 @@
   (match binding
     ((make-binding name _ location)
      (make-binding
-       (generate-relative-fresh-name (symbol-append name '.value) used-names)
+       (generate-relative-fresh-name used-names (symbol-append name '.value))
        rhs
        location))))
 

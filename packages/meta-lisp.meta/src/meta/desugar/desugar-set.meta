@@ -6,7 +6,7 @@
 
 (define (desugar-set elements location)
   (= used-names (set-union-many (list-map exp-occurred-names elements)))
-  (= fresh-name (generate-relative-fresh-name 'set used-names))
+  (= fresh-name (generate-relative-fresh-name used-names 'set))
   (desugar-begin
     (list-concat
       [[(assign-exp
