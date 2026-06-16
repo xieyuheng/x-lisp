@@ -76,35 +76,43 @@
     ((or-exp exps location)
      (set-union-many (list-map exp-occurred-names exps)))
     ((cond-exp clauses location)
-     (list-fold-left (lambda (s clause)
-                       (set-union (exp-occurred-names (cond-clause-question clause))
-                                  (set-union s (exp-occurred-names (cond-clause-answer clause)))))
-                     (make-set) clauses))
+     (set-union-many
+       (list-map
+         (lambda (clause)
+           (set-union
+             (exp-occurred-names (cond-clause-question clause))
+             (exp-occurred-names (cond-clause-answer clause))))
+         clauses)))
     ((list-exp elements location)
      (set-union-many (list-map exp-occurred-names elements)))
     ((string-concat-exp elements location)
-     (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) elements))
+     (set-union-many (list-map exp-occurred-names elements)))
     ((set-exp elements location)
      (set-union-many (list-map exp-occurred-names elements)))
     ((hash-exp entries location)
-     (list-fold-left (lambda (s entry)
-                       (set-union (exp-occurred-names (hash-entry-key entry))
-                                  (set-union s (exp-occurred-names (hash-entry-value entry)))))
-                     (make-set) entries))
+     (set-union-many
+       (list-map
+         (lambda (entry)
+           (set-union
+             (exp-occurred-names (hash-entry-key entry))
+             (exp-occurred-names (hash-entry-value entry))))
+         entries)))
     ((arrow-exp arg-types ret-type location)
-     (set-union (exp-occurred-names ret-type)
-                (list-fold-left (lambda (s e) (set-union s (exp-occurred-names e))) (make-set) arg-types)))
-    ((the-exp type exp2 location)
-     (set-union (exp-occurred-names type) (exp-occurred-names exp2)))
+     (set-union
+       (set-union-many (list-map exp-occurred-names arg-types))
+       (exp-occurred-names ret-type)))
+    ((the-exp type instance location)
+     (set-union (exp-occurred-names type) (exp-occurred-names instance)))
     ((match-exp targets clauses location)
-     (set-union (list-fold-left (lambda (s t) (set-union s (exp-occurred-names t))) (make-set) targets)
-                (list-fold-left (lambda (s clause)
-                                  (set-union (list-fold-left (lambda (s2 p)
-                                                               (set-union s2 (exp-occurred-names p)))
-                                                             (make-set)
-                                                             (match-clause-patterns clause))
-                                             (set-union s (exp-occurred-names (match-clause-body clause)))))
-                                (make-set) clauses)))))
+     (set-union
+       (set-union-many (list-map exp-occurred-names targets))
+       (set-union-many
+         (list-map
+           (lambda (clause)
+             (set-union
+               (set-union-many (list-map exp-occurred-names (match-clause-patterns clause)))
+               (exp-occurred-names (match-clause-body clause))))
+           clauses))))))
 
 (define (binding-occurred-names binding)
   (match binding
