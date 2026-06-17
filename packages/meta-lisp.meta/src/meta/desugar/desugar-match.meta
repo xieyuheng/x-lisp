@@ -87,7 +87,7 @@
 
 (define-struct desugar-match-ctx-t
   (scope fragment-scope-t)
-  (mod-name symbol-t)
+  (current-mod-name symbol-t)
   (algebraic-analysis-report algebraic-analysis-report-t)
   (pkg-id symbol-t))
 
@@ -118,7 +118,7 @@
          (lambda (group)
            (desugar-data-pattern-clause-group
              ctx group targets default-exp location))
-         (group-clauses-by-data-pattern ctx clauses))
+         (group-clauses-by-head-data-constructor ctx clauses))
        location))
     (else
      (list-fold-right
@@ -189,65 +189,60 @@
        (desugar-match
          ctx
          (list-append (spread-target (car targets)) (cdr targets))
-         (list-map clause-spread-first-data-pattern clauses)
+         (list-map clause-drop-first-pattern clauses)
          default-exp location)
        location))))
 
-(define (clause-spread-first-data-pattern clause)
-  (match clause
-    ((make-match-clause patterns body location)
-     (define (spread-data-pattern pattern)
-       (unless (data-pattern? pattern)
-         (error-with-location
-           (@string
-             "(spread-data-pattern) epxect data-pattern"
-             "\n  target: " (format-exp pattern))
-           location))
-       (apply-exp-args pattern))
-     (make-match-clause
-       (list-append (spread-data-pattern (car patterns)) (cdr patterns))
-       body
-       location))))
+(define (clause-drop-first-pattern clause)
+  (= pattern (list-first (match-clause-patterns clause)))
+  (= rest-patterns (list-tail (match-clause-patterns clause)))
+  (= arg-patterns
+     (if (data-pattern? pattern)
+       (apply-exp-args pattern)
+       []))
+  (make-match-clause
+    (list-append arg-patterns rest-patterns)
+    (match-clause-body clause)
+    (match-clause-location clause)))
 
-(define (group-clauses-by-data-pattern ctx clauses)
+(define (group-clauses-by-head-data-constructor ctx clauses)
   (= algebraic-type-info (lookup-same-algebraic-type ctx clauses))
   (match (lookup-same-algebraic-type ctx clauses)
     ((make-algebraic-type-info pkg-id mod-name name constructor-names)
      (swap list-map constructor-names
        (lambda (ctor-name)
          (= key (algebraic-key pkg-id mod-name ctor-name))
-         (= data-constructor-info
+         (= info
             (pipe ctx
               desugar-match-ctx-algebraic-analysis-report
               algebraic-analysis-report-data-constructor-infos
               (hash-get key)))
-         (make-data-pattern-clause-group
-           data-constructor-info
-           (list-select
-             (clause-starts-with-data-constructor? ctx data-constructor-info)
-             clauses)))))))
+         (= group
+            (list-select
+              (lambda (clause) (matches-constructor? ctx clause info))
+              clauses))
+         (make-data-pattern-clause-group info group))))))
 
-(define (clause-starts-with-data-constructor? ctx info clause)
+(define (matches-constructor? ctx clause info)
   (= pattern (car (match-clause-patterns clause)))
   (if (not (data-pattern? pattern))
     false
-    (match (resolve-data-pattern-qualified-name ctx pattern)
-      ((make-qualified-name pkg-id mod-name name)
-       (and ;; (equal? (data-constructor-info-pkg-id info) pkg-id)
-            (equal? (data-constructor-info-mod-name info) mod-name)
-            (equal? (data-constructor-info-name info) name))))))
+    (begin
+      (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
+      (and (equal? (ctor-qualified-name-mod-name qn) (data-constructor-info-mod-name info))
+           (equal? (ctor-qualified-name-name qn) (data-constructor-info-name info))))))
 
 (define (lookup-algebraic-type-info ctx clause)
   (= pattern (list-first (match-clause-patterns clause)))
   (unless (data-pattern? pattern)
     (error-with-location
       (@string "[lookup-algebraic-type-info] expected data pattern"
-               "\n  pattern: " (format-exp pattern))
+        "\n  pattern: " (format-exp pattern))
       (match-clause-location clause)))
-  (= qn (resolve-data-pattern-qualified-name ctx pattern))
-  (= pkg-name (qualified-name-pkg-name qn))
-  (= mod-name (qualified-name-mod-name qn))
-  (= name (qualified-name-name qn))
+  (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
+  (= pkg-name (ctor-qualified-name-pkg-name qn))
+  (= mod-name (ctor-qualified-name-mod-name qn))
+  (= name (ctor-qualified-name-name qn))
   (= info (hash-get-maybe (algebraic-key pkg-name mod-name name)
            (algebraic-analysis-report-data-constructor-infos
              (desugar-match-ctx-algebraic-analysis-report ctx))))
@@ -261,13 +256,12 @@
          "\n  key: " (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))
        (match-clause-location clause)))
     ((just i)
-     (= algebraic-type-info
-        (hash-get-maybe
-          (algebraic-key (data-constructor-info-pkg-id i)
-            (data-constructor-info-mod-name i)
-            (data-constructor-info-type-name i))
-          (algebraic-analysis-report-algebraic-type-infos
-            (desugar-match-ctx-algebraic-analysis-report ctx))))
+     (= algebraic-type-info (hash-get-maybe
+                              (algebraic-key (data-constructor-info-pkg-id i)
+                                (data-constructor-info-mod-name i)
+                                (data-constructor-info-type-name i))
+                              (algebraic-analysis-report-algebraic-type-infos
+                                (desugar-match-ctx-algebraic-analysis-report ctx))))
      (match algebraic-type-info
        ((nothing)
         (error-with-location
@@ -294,29 +288,36 @@
           (match-clause-location clause)))))
   first)
 
-(define (resolve-data-pattern-qualified-name ctx pattern)
-  (unless (data-pattern? pattern)
-    (error-with-location
-      "(resolve-data-pattern-qualified-name) expect data-pattern"
-      (exp-location pattern)))
-  (= target (apply-exp-target pattern))
-  (match target
-    ((qualified-var-exp pkg-name mod-name name location)
-     (make-qualified-name pkg-name mod-name name))
-    ((var-exp name location)
-     (= scope (desugar-match-ctx-scope ctx))
-     (= imported-names (fragment-scope-imported-names scope))
-     (match (hash-get-maybe name imported-names)
-       ((just qualified-name) qualified-name)
+(define-struct ctor-qualified-name-t
+  (pkg-name symbol-t)
+  (mod-name symbol-t)
+  (name symbol-t))
+
+(define (resolve-ctor-qualified-name ctx ctor)
+  (cond
+    ((qualified-var-exp? ctor)
+     (make-ctor-qualified-name
+       (qualified-var-exp-pkg-name ctor)
+       (qualified-var-exp-mod-name ctor)
+       (qualified-var-exp-name ctor)))
+    ((var-exp? ctor)
+     (= name (var-exp-name ctor))
+     (= entry (hash-get-maybe name (fragment-scope-imported-names (desugar-match-ctx-scope ctx))))
+     (match entry
+       ((just e)
+        (make-ctor-qualified-name
+          (qualified-name-entry-pkg-name e)
+          (qualified-name-entry-mod-name e)
+          (qualified-name-entry-name e)))
        ((nothing)
-        (make-qualified-name
+        (make-ctor-qualified-name
           (desugar-match-ctx-pkg-id ctx)
-          (desugar-match-ctx-mod-name ctx)
+          (desugar-match-ctx-current-mod-name ctx)
           name))))
     (else
      (error-with-location
-       "(resolve-data-pattern-qualified-name) unhandled target"
-       (exp-location target)))))
+       "(resolve-ctor-qualified-name) unhandled ctor kind"
+       (exp-location ctor)))))
 
 (claim group-clauses-by-head-pattern-kind
   (-> (list-t match-clause-t) (list-t (list-t match-clause-t))))

@@ -87,18 +87,18 @@ import * as M from "../index.ts"
 
 export type DesugarMatchCtx = {
   scope: M.FragmentScope
-  modName: string
+  currentModName: string
   algebraicAnalysisReport: M.AlgebraicAnalysisReport
   pkgId: string
 }
 
 export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
-  modName: string,
+  currentModName: string,
   algebraicAnalysisReport: M.AlgebraicAnalysisReport,
   pkgId: string,
 ): DesugarMatchCtx {
-  return { scope, modName, algebraicAnalysisReport, pkgId }
+  return { scope, currentModName, algebraicAnalysisReport, pkgId }
 }
 
 export function desugarMatch(
@@ -135,10 +135,10 @@ export function desugarMatch(
       location,
     )
   } else if (clauses.every(isDataPatternClause)) {
-    const groups = groupClausesByDataPattern(ctx, clauses)
+    const groups = groupClausesByHeadDataConstructor(ctx, clauses)
     return M.CondExp(
       groups.map((group) =>
-        desugarDataPatternClauseGroup(
+        desugarDataConstructorClauseGroup(
           ctx,
           group,
           targets,
@@ -182,14 +182,14 @@ function isDataPatternClause(clause: M.MatchClause): boolean {
   return clause.patterns.length > 0 && M.isDataPattern(clause.patterns[0])
 }
 
-type DataPatternClauseGroup = {
+type DataConstructorClauseGroup = {
   dataConstructorInfo: M.DataConstructorInfo
   clauses: Array<M.MatchClause>
 }
 
-function desugarDataPatternClauseGroup(
+function desugarDataConstructorClauseGroup(
   ctx: DesugarMatchCtx,
-  group: DataPatternClauseGroup,
+  group: DataConstructorClauseGroup,
   targets: Array<M.Exp>,
   defaultExp: M.Exp,
   location: S.SourceLocation,
@@ -222,7 +222,7 @@ function desugarDataPatternClauseGroup(
   const answer = desugarMatch(
     ctx,
     [...newTargets, ...restTargets],
-    group.clauses.map(clauseSpreadFirstDataPattern),
+    group.clauses.map(clauseDropFirstPattern),
     defaultExp,
     location,
   )
@@ -240,7 +240,7 @@ function lookupAlgebraicTypeInfo(
     message += `\n  pattern: ${M.formatExp(pattern)}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
-  const { pkgName, modName, name } = resolveDataPatternQualifiedName(
+  const { pkgName, modName, name } = resolveCtorQualifiedName(
     ctx,
     pattern.target,
   )
@@ -285,22 +285,18 @@ function lookupSameAlgebraicType(
   return first
 }
 
-function clauseStartsWithDataConstructor(
+function matchesConstructor(
   ctx: DesugarMatchCtx,
-  info: M.DataConstructorInfo,
   clause: M.MatchClause,
+  info: M.DataConstructorInfo,
 ): boolean {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) return false
-  const { pkgId, modName, name } = resolveDataPatternQualifiedName(
-    ctx,
-    pattern.target,
-  )
-  // return pkgId === info.pkgId && modName === info.modName && name === info.name
+  const { modName, name } = resolveCtorQualifiedName(ctx, pattern.target)
   return modName === info.modName && name === info.name
 }
 
-function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
+function clauseDropFirstPattern(clause: M.MatchClause): M.MatchClause {
   const [pattern, ...restPatterns] = clause.patterns
   const argPatterns = M.isDataPattern(pattern)
     ? M.dataPatternArgPatterns(pattern)
@@ -312,10 +308,10 @@ function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
   )
 }
 
-function groupClausesByDataPattern(
+function groupClausesByHeadDataConstructor(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
-): Array<DataPatternClauseGroup> {
+): Array<DataConstructorClauseGroup> {
   const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
@@ -325,14 +321,12 @@ function groupClausesByDataPattern(
       ctorName,
     )
     const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(key)!
-    const grouped = clauses.filter((c) =>
-      clauseStartsWithDataConstructor(ctx, info, c),
-    )
+    const grouped = clauses.filter((c) => matchesConstructor(ctx, c, info))
     return { dataConstructorInfo: info, clauses: grouped }
   })
 }
 
-function resolveDataPatternQualifiedName(
+function resolveCtorQualifiedName(
   ctx: DesugarMatchCtx,
   ctor: M.Exp,
 ): { pkgName: string; modName: string; name: string } {
@@ -351,13 +345,13 @@ function resolveDataPatternQualifiedName(
     } else {
       return {
         pkgName: ctx.pkgId,
-        modName: ctx.modName,
+        modName: ctx.currentModName,
         name: ctor.name,
       }
     }
   }
 
-  let message = "[resolveDataPatternQualifiedName] unhandled ctor kind"
+  let message = "[resolveCtorQualifiedName] unhandled ctor kind"
   throw new S.ErrorWithSourceLocation(message, ctor.location)
 }
 
