@@ -1,4 +1,4 @@
-[meta-lisp.meta] [review] desugar-match.meta
+[meta-lisp.meta] [refactor] desugar-match.meta
 
 # self-hosting
 

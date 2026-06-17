@@ -130,18 +130,7 @@ export function desugarMatch(
     return desugarMatch(
       ctx,
       restTargets,
-      clauses.map((clause) => {
-        const [pattern, ...restPatterns] = clause.patterns
-        if (pattern.kind !== "VarExp") {
-          let message = `[desugarMatch] expected VarExp pattern`
-          throw new S.ErrorWithSourceLocation(message, pattern.location)
-        }
-        return M.MatchClause(
-          restPatterns,
-          M.Let1Exp(pattern.name, target, clause.body, clause.location),
-          clause.location,
-        )
-      }),
+      clauses.map((clause) => desugarVarPatternClause(target, clause)),
       defaultExp,
       location,
     )
@@ -167,6 +156,22 @@ export function desugarMatch(
       defaultExp,
     )
   }
+}
+
+function desugarVarPatternClause(
+  target: M.Exp,
+  clause: M.MatchClause,
+): M.MatchClause {
+  const [pattern, ...restPatterns] = clause.patterns
+  if (pattern.kind !== "VarExp") {
+    let message = `[desugarVarPatternClause] expect var pattern`
+    throw new S.ErrorWithSourceLocation(message, pattern.location)
+  }
+  return M.MatchClause(
+    restPatterns,
+    M.Let1Exp(pattern.name, target, clause.body, clause.location),
+    clause.location,
+  )
 }
 
 function clauseHeadIsVarPattern(clause: M.MatchClause): boolean {

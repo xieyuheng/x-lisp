@@ -2,7 +2,7 @@
 
 (define-type constructor-key-t string-t)
 
-(define-struct data-constructor-info-t
+(define-struct data-constructor-info-t 
   (pkg-id symbol-t)
   (mod-name symbol-t)
   (type-name symbol-t)

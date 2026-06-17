@@ -101,89 +101,96 @@
       (unless (equal? (list-length (match-clause-patterns clause)) (list-length targets))
         (error-with-location
           (@string "(desugar-match) targets length mismatch"
-            "\n  targets: " (format-exps targets)
-            "\n  patterns: " (format-exps (match-clause-patterns clause)))
+                   "\n  targets: " (format-exps targets)
+                   "\n  patterns: " (format-exps (match-clause-patterns clause)))
           location))))
   (cond
     ((list-empty? clauses) default-exp)
     ((list-empty? targets) (match-clause-body (car clauses)))
     ((list-every? clause-head-is-var-pattern? clauses)
-     (= target (list-first targets))
-     (= rest-targets (list-tail targets))
-     (desugar-match ctx rest-targets
-       (list-map
-         (lambda (clause)
-           (= patterns (match-clause-patterns clause))
-           (= pattern (list-first patterns))
-           (= rest-patterns (list-tail patterns))
-           (unless (var-exp? pattern)
-             (error-with-location "(desugar-match) expected var-exp pattern"
-               (exp-location pattern)))
-           (make-match-clause rest-patterns
-             (let1-exp (var-exp-name pattern) target (match-clause-body clause)
-               (match-clause-location clause))
-             (match-clause-location clause)))
-         clauses)
+     (desugar-match
+       ctx (cdr targets)
+       (list-map (desugar-var-pattern-clause (car targets)) clauses)
        default-exp location))
     ((list-every? clause-head-is-data-pattern? clauses)
-     (= groups (group-clauses-by-head-data-constructor ctx clauses))
      (cond-exp
        (list-map
          (lambda (group)
-           (desugar-data-constructor-clause-group ctx group targets default-exp location))
-         groups)
+           (desugar-data-constructor-clause-group
+             ctx group targets default-exp location))
+         (group-clauses-by-head-data-constructor ctx clauses))
        location))
     (else
-     (= groups (group-clauses-by-head-pattern-kind clauses))
      (list-fold-right
        (lambda (group accumulated-exp)
          (desugar-match ctx targets group accumulated-exp location))
-       default-exp groups))))
+       default-exp
+       (group-clauses-by-head-pattern-kind clauses)))))
+
+(define (desugar-var-pattern-clause target clause)
+  (@comment
+    target ((v1 <pattern> ...) <body>)
+    =>
+    ((<pattern> ...) (let ((v1 target)) <body>)))
+  (match clause
+    ((make-match-clause patterns body location)
+     (= pattern (car patterns))
+     (unless (var-exp? pattern)
+       (error-with-location
+         "(desugar-var-pattern-clause) expect var-pattern"
+         (exp-location pattern)))
+     (make-match-clause
+       (cdr patterns)
+       (let1-exp (var-exp-name pattern) target body location)
+       location))))
 
 (define (clause-head-is-var-pattern? clause)
   (and (not (list-empty? (match-clause-patterns clause)))
-       (var-pattern? (list-first (match-clause-patterns clause)))))
+       (var-pattern? (car (match-clause-patterns clause)))))
 
 (define (clause-head-is-data-pattern? clause)
   (and (not (list-empty? (match-clause-patterns clause)))
-       (data-pattern? (list-first (match-clause-patterns clause)))))
-
-(define (desugar-data-constructor-clause-group ctx group targets default-exp location)
-  (= info (data-constructor-clause-group-info group))
-  (= clauses (data-constructor-clause-group-clauses group))
-  (= target (list-first targets))
-  (= rest-targets (list-tail targets))
-
-  (= predicate
-     (qualified-var-exp
-       (data-constructor-info-pkg-id info)
-       (data-constructor-info-mod-name info)
-       (data-constructor-info-predicate-name info)
-       location))
-
-  (= question (apply-exp predicate [target] (exp-location target)))
-
-  (= new-targets
-     (list-map
-       (lambda (accessor-name)
-         (apply-exp
-           (qualified-var-exp
-             (data-constructor-info-pkg-id info)
-             (data-constructor-info-mod-name info)
-             accessor-name location)
-           [target]
-           (exp-location target)))
-       (data-constructor-info-accessor-names info)))
-
-  (= answer (desugar-match ctx
-              (list-append new-targets rest-targets)
-              clauses default-exp location))
-
-  (make-cond-clause question answer location))
+       (data-pattern? (car (match-clause-patterns clause)))))
 
 (define-struct data-constructor-clause-group-t
   (info data-constructor-info-t)
   (clauses (list-t match-clause-t)))
+
+(define (desugar-data-constructor-clause-group ctx group targets default-exp location)
+  (@comment
+    (match-many (target <target> ...)
+      (((ctor1 x1 ...) <pattern> ...) <body>)
+      (((ctor1 y1 ...) <pattern> ...) <body>)
+      ...)
+    then spread the pattern vars in the data patterns:
+    (match-many ((ctor1-accessor1 target) ... <target> ...)
+      ((x1 ... <pattern> ...) <body>)
+      ((y1 ... <pattern> ...) <body>)
+      ...))
+  (match group
+    ((make-data-constructor-clause-group
+       (make-data-constructor-info
+         pkg-id mod-name type-name name
+         accessor-names predicate-name)
+       clauses)
+     (define (spread-target target)
+       (list-map
+         (lambda (accessor-name)
+           (apply-exp
+             (qualified-var-exp pkg-id mod-name accessor-name location)
+             [target]
+             (exp-location target)))
+         accessor-names))
+     (make-cond-clause
+       (apply-exp
+         (qualified-var-exp pkg-id mod-name predicate-name location)
+         [(car targets)]
+         (exp-location (car targets)))
+       (desugar-match
+         ctx
+         (list-append (spread-target (car targets)) (cdr targets))
+         clauses default-exp location)
+       location))))
 
 (define (group-clauses-by-head-data-constructor ctx clauses)
   (= algebraic-type-info (lookup-same-algebraic-type ctx clauses))
