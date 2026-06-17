@@ -8,19 +8,23 @@
   (meta-builtin/builtin/iadd x y))
 
 (define (example-cond)
-  (if (meta-builtin/builtin/equal? 1 1) 1
-      (if meta-builtin/builtin/true 2
-          (meta-builtin/builtin/error "cond mismatch"))))
+  (if (meta-builtin/builtin/equal? 1 1)
+    1
+    (if meta-builtin/builtin/true
+      2
+      (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (example-begin) 1 2 3)
 
 (define (example-when)
-  (if meta-builtin/builtin/true (begin 1 meta-builtin/builtin/void)
-      meta-builtin/builtin/void))
+  (if meta-builtin/builtin/true
+    (begin 1 meta-builtin/builtin/void)
+    meta-builtin/builtin/void))
 
 (define (example-unless)
-  (if meta-builtin/builtin/false meta-builtin/builtin/void
-      (begin 2 meta-builtin/builtin/void)))
+  (if meta-builtin/builtin/false
+    meta-builtin/builtin/void
+    (begin 2 meta-builtin/builtin/void)))
 
 (define (example-and a b) (if a b meta-builtin/builtin/false))
 
@@ -41,12 +45,14 @@
   (= odd? odd?.1)
   (= even?.value.1
      (lambda (n)
-       (if (meta-builtin/builtin/equal? n 0) meta-builtin/builtin/true
-           ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1)))))
+       (if (meta-builtin/builtin/equal? n 0)
+         meta-builtin/builtin/true
+         ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1)))))
   (= odd?.value.1
      (lambda (n)
-       (if (meta-builtin/builtin/equal? n 0) meta-builtin/builtin/false
-           ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1)))))
+       (if (meta-builtin/builtin/equal? n 0)
+         meta-builtin/builtin/false
+         ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1)))))
   (= even?.value even?.value.1)
   (= odd?.value odd?.value.1)
   (meta-builtin/builtin/box-put! even?.value even?)
@@ -60,13 +66,15 @@
   (= odd? odd?.1)
   (meta-builtin/builtin/box-put!
    (lambda (n)
-     (if (meta-builtin/builtin/equal? n 0) meta-builtin/builtin/true
-         ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
+     (if (meta-builtin/builtin/equal? n 0)
+       meta-builtin/builtin/true
+       ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
    even?)
   (meta-builtin/builtin/box-put!
    (lambda (n)
-     (if (meta-builtin/builtin/equal? n 0) meta-builtin/builtin/false
-         ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1))))
+     (if (meta-builtin/builtin/equal? n 0)
+       meta-builtin/builtin/false
+       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1))))
    odd?)
   meta-builtin/builtin/void)
 
@@ -77,12 +85,14 @@
   (= odd? odd?.1)
   (meta-builtin/builtin/box-put!
    (lambda (n)
-     (if (meta-builtin/builtin/equal? n 0) meta-builtin/builtin/true
-         ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
+     (if (meta-builtin/builtin/equal? n 0)
+       meta-builtin/builtin/true
+       ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
    even?)
   (meta-builtin/builtin/box-put!
    (lambda (n)
-     (if (meta-builtin/builtin/equal? n 0) meta-builtin/builtin/false
-         ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1))))
+     (if (meta-builtin/builtin/equal? n 0)
+       meta-builtin/builtin/false
+       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1))))
    odd?)
   meta-builtin/builtin/void)

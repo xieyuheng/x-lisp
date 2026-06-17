@@ -3,7 +3,8 @@
 static void ignore_line_comments(list_t *tokens);
 
 static value_t for_sexp(value_t path, list_t *tokens);
-static value_t for_elements(value_t path, const char *end, list_t *tokens);
+static value_t for_elements(value_t path, const char *end, list_t *tokens,
+                            struct span_t *out_end_span);
 
 value_t parse_located_sexps(const char *pathname, const char *string) {
   lexer_t *lexer = make_lexer(string);
@@ -175,24 +176,30 @@ static value_t for_sexp(value_t path, list_t *tokens) {
 
   case BRACKET_START_TOKEN: {
     if (string_equal(token->content, "(")) {
-      value_t span = value_from_span(token->span);
-      value_t location = make_source_location_sexp(path, span);
-      value_t elements = for_elements(path, ")", tokens);
+      struct span_t start_span = token->span;
+      struct span_t end_span;
+      value_t elements = for_elements(path, ")", tokens, &end_span);
+      struct span_t span = span_union(start_span, end_span);
+      value_t location = make_source_location_sexp(path, value_from_span(span));
       token_free(token);
       return list_sexp(elements, location);
     } else if (string_equal(token->content, "[")) {
-      value_t span = value_from_span(token->span);
-      value_t location = make_source_location_sexp(path, span);
-      value_t elements = for_elements(path, "]", tokens);
+      struct span_t start_span = token->span;
+      struct span_t end_span;
+      value_t elements = for_elements(path, "]", tokens, &end_span);
+      struct span_t span = span_union(start_span, end_span);
+      value_t location = make_source_location_sexp(path, value_from_span(span));
       value_t content = x_object(intern_symbol("@square-bracket"));
       value_t head = symbol_sexp(content, location);
       x_list_push_front_mut(head, elements);
       token_free(token);
       return list_sexp(elements, location);
     } else if (string_equal(token->content, "{")) {
-      value_t span = value_from_span(token->span);
-      value_t location = make_source_location_sexp(path, span);
-      value_t elements = for_elements(path, "}", tokens);
+      struct span_t start_span = token->span;
+      struct span_t end_span;
+      value_t elements = for_elements(path, "}", tokens, &end_span);
+      struct span_t span = span_union(start_span, end_span);
+      value_t location = make_source_location_sexp(path, value_from_span(span));
       value_t content = x_object(intern_symbol("@curly-bracket"));
       value_t head = symbol_sexp(content, location);
       x_list_push_front_mut(head, elements);
@@ -218,7 +225,8 @@ static value_t for_sexp(value_t path, list_t *tokens) {
   unreachable();
 }
 
-static value_t for_elements(value_t path, const char *end, list_t *tokens) {
+static value_t for_elements(value_t path, const char *end, list_t *tokens,
+                            struct span_t *out_end_span) {
   value_t sexp = x_make_list();
   while (true) {
     ignore_line_comments(tokens);
@@ -230,6 +238,7 @@ static value_t for_elements(value_t path, const char *end, list_t *tokens) {
     token_t *token = list_first(tokens);
     if (token->kind == BRACKET_END_TOKEN) {
       if (string_equal(token->content, end)) {
+        *out_end_span = token->span;
         token = list_pop_front(tokens);
         token_free(token);
         return sexp;

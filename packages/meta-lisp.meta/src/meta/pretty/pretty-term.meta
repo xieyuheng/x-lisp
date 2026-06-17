@@ -49,10 +49,9 @@
        (cons (pretty-term head) (pretty-term-body body))))
     ((if-term condition consequent alternative location)
      (ppml/pretty-syntax "if"
-       [(pretty-term condition)
-        (pretty-term consequent)
-        (pretty-term alternative)]
-       []))
+       [(pretty-term condition)]
+       [(pretty-term consequent)
+        (pretty-term alternative)]))
     ((arrow-term arg-types ret-type location)
      (let ((all-elements (cons (ppml/text "->")
                                (list-append (list-map pretty-term arg-types)

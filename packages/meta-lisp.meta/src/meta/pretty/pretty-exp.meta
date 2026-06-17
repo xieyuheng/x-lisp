@@ -91,20 +91,17 @@
        [(pretty-exp rhs)]))
     ((if-exp condition consequent alternative location)
      (ppml/pretty-syntax "if"
-       []
-       [(pretty-exp condition)
-        (pretty-exp consequent)
+       [(pretty-exp condition)]
+       [(pretty-exp consequent)
         (pretty-exp alternative)]))
     ((when-exp condition consequent location)
      (ppml/pretty-syntax "when"
-       []
-       [(pretty-exp condition)
-        (pretty-exp consequent)]))
+       [(pretty-exp condition)]
+       [(pretty-exp consequent)]))
     ((unless-exp condition alternative location)
      (ppml/pretty-syntax "unless"
-       []
-       [(pretty-exp condition)
-        (pretty-exp alternative)]))
+       [(pretty-exp condition)]
+       [(pretty-exp alternative)]))
     ((and-exp exps location)
      (ppml/pretty-application (just "and")
        (cons (ppml/text "and")

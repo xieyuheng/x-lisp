@@ -18,15 +18,15 @@
 
 (define (pair? value)
   (if (meta-builtin/builtin/list? value)
-      (if
-          (begin
-            (= _.1 (meta-builtin/builtin/list-length value))
-            (meta-builtin/builtin/equal? _.1 3))
-          (begin
-            (= _.2 (meta-builtin/builtin/list-head value))
-            (meta-builtin/builtin/equal? _.2 make-pair))
-          meta-builtin/builtin/false)
-      meta-builtin/builtin/false))
+    (if
+        (begin
+          (= _.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? _.1 3))
+      (begin
+        (= _.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? _.2 make-pair))
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
 
 (claim pair-first (polymorphic (A B) (-> (pair-t A B) A)))
 
@@ -51,16 +51,16 @@
 
 (define (pair-swap p)
   (if (self/010-pair/pair? p)
-      (begin
-        (= b.1 (self/010-pair/pair-second p))
-        (= a.1 (self/010-pair/pair-first p))
-        (self/010-pair/make-pair b.1 a.1))
-      (begin
-        (= _.1 (meta-builtin/builtin/make-source-position 95 5 3))
-        (= _.2 (meta-builtin/builtin/make-source-position 100 5 8))
-        (= _.3 (meta-builtin/builtin/make-source-span _.1 _.2))
-        (= _.4
-           (meta-builtin/builtin/make-source-location
-            "src/010-pair.meta"
-            _.3))
-        (meta-builtin/builtin/error-with-location "cond mismatch" _.4))))
+    (begin
+      (= b.1 (self/010-pair/pair-second p))
+      (= a.1 (self/010-pair/pair-first p))
+      (self/010-pair/make-pair b.1 a.1))
+    (begin
+      (= _.1 (meta-builtin/builtin/make-source-position 95 5 3))
+      (= _.2 (meta-builtin/builtin/make-source-position 100 5 8))
+      (= _.3 (meta-builtin/builtin/make-source-span _.1 _.2))
+      (= _.4
+         (meta-builtin/builtin/make-source-location
+          "src/010-pair.meta"
+          _.3))
+      (meta-builtin/builtin/error-with-location "cond mismatch" _.4))))

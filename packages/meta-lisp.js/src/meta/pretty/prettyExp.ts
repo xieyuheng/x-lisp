@@ -163,28 +163,24 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     case "IfExp": {
       return Ppml.prettySyntax(
         "if",
-        [
-          prettyExp(exp.condition),
-          prettyExp(exp.consequent),
-          prettyExp(exp.alternative),
-        ],
-        [],
+        [prettyExp(exp.condition)],
+        [prettyExp(exp.consequent), prettyExp(exp.alternative)],
       )
     }
 
     case "WhenExp": {
       return Ppml.prettySyntax(
         "when",
-        [prettyExp(exp.condition), prettyExp(exp.consequent)],
-        [],
+        [prettyExp(exp.condition)],
+        [prettyExp(exp.consequent)],
       )
     }
 
     case "UnlessExp": {
       return Ppml.prettySyntax(
         "unless",
-        [prettyExp(exp.condition), prettyExp(exp.alternative)],
-        [],
+        [prettyExp(exp.condition)],
+        [prettyExp(exp.alternative)],
       )
     }
 
@@ -404,12 +400,8 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     case "IfTerm": {
       return Ppml.prettySyntax(
         "if",
-        [
-          prettyTerm(term.condition),
-          prettyTerm(term.consequent),
-          prettyTerm(term.alternative),
-        ],
-        [],
+        [prettyTerm(term.condition)],
+        [prettyTerm(term.consequent), prettyTerm(term.alternative)],
       )
     }
 

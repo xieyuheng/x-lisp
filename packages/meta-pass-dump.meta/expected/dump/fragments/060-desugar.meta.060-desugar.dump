@@ -9,9 +9,11 @@
 (define (example-let-star) (begin (= x 1) (= y (iadd x 1)) (iadd x y)))
 
 (define (example-cond)
-  (if (equal? 1 1) 1
-      (if meta-builtin/builtin/true 2
-          (meta-builtin/builtin/error "cond mismatch"))))
+  (if (equal? 1 1)
+    1
+    (if meta-builtin/builtin/true
+      2
+      (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (example-begin) (begin 1 2 3))
 
@@ -42,8 +44,9 @@
          (if (equal? n 0) true ((meta-builtin/builtin/box-get odd?) (isub n 1)))))
     (= odd?.value.1
        (lambda (n)
-         (if (equal? n 0) false
-             ((meta-builtin/builtin/box-get even?) (isub n 1)))))
+         (if (equal? n 0)
+           false
+           ((meta-builtin/builtin/box-get even?) (isub n 1)))))
     (= even?.value even?.value.1)
     (= odd?.value odd?.value.1)
     (meta-builtin/builtin/box-put! even?.value even?)

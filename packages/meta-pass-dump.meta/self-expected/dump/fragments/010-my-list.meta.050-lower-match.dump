@@ -56,8 +56,8 @@
       (meta-builtin/builtin/make-source-location
        "src/010-my-list.meta"
        (meta-builtin/builtin/make-source-span
-        (meta-builtin/builtin/make-source-position 126 7 2)
-        (meta-builtin/builtin/make-source-position 127 7 3)))))
+        (meta-builtin/builtin/make-source-position 127 7 3)
+        (meta-builtin/builtin/make-source-position 132 7 8)))))
     ((self/010-my-list/li? list)
      (begin
        (= tail (self/010-my-list/li-tail list))
@@ -72,8 +72,8 @@
       (meta-builtin/builtin/make-source-location
        "src/010-my-list.meta"
        (meta-builtin/builtin/make-source-span
-        (meta-builtin/builtin/make-source-position 197 11 2)
-        (meta-builtin/builtin/make-source-position 198 11 3)))))
+        (meta-builtin/builtin/make-source-position 198 11 3)
+        (meta-builtin/builtin/make-source-position 203 11 8)))))
     ((self/010-my-list/li? list)
      (begin
        (= tail (self/010-my-list/li-tail list))
@@ -144,8 +144,8 @@
             (meta-builtin/builtin/make-source-location
              "src/010-my-list.meta"
              (meta-builtin/builtin/make-source-span
-              (meta-builtin/builtin/make-source-position 875 37 2)
-              (meta-builtin/builtin/make-source-position 876 37 3)))))
+              (meta-builtin/builtin/make-source-position 876 37 3)
+              (meta-builtin/builtin/make-source-position 886 37 13)))))
           ((self/010-my-list/li? list1)
            (cond
              ((self/010-my-list/nil? list2)
@@ -159,8 +159,8 @@
                (meta-builtin/builtin/make-source-location
                 "src/010-my-list.meta"
                 (meta-builtin/builtin/make-source-span
-                 (meta-builtin/builtin/make-source-position 875 37 2)
-                 (meta-builtin/builtin/make-source-position 876 37 3)))))
+                 (meta-builtin/builtin/make-source-position 876 37 3)
+                 (meta-builtin/builtin/make-source-position 886 37 13)))))
              ((self/010-my-list/li? list2)
               (begin
                 (= tail2 (self/010-my-list/li-tail list2))
@@ -181,7 +181,6 @@
           (= rest (self/010-my-list/li-tail (self/010-my-list/li-tail list)))
           (= second (self/010-my-list/li-head (self/010-my-list/li-tail list)))
           (= first (self/010-my-list/li-head list))
-          (if
-            (equal? first second)
+          (if (equal? first second)
             (my-list-adjacent-dedup (li second rest))
             (li first (my-list-adjacent-dedup (li second rest))))))))))

@@ -181,5 +181,6 @@
           (= rest (self/010-my-list/li-tail (self/010-my-list/li-tail list)))
           (= second (self/010-my-list/li-head (self/010-my-list/li-tail list)))
           (= first (self/010-my-list/li-head list))
-          (if (equal? first second) (my-list-adjacent-dedup (li second rest))
-              (li first (my-list-adjacent-dedup (li second rest))))))))))
+          (if (equal? first second)
+            (my-list-adjacent-dedup (li second rest))
+            (li first (my-list-adjacent-dedup (li second rest))))))))))

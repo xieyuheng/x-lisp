@@ -57,7 +57,8 @@
   (cond ((symbol-sexp? (car sexps))
          (= tag (symbol-sexp-content (car sexps)))
          (if (list-some? (equal? tag) syntax-keywords)
-           (parse-special-form-exp tag (cdr sexps) location)
+           (let ((keyword-location (symbol-sexp-location (car sexps))))
+             (parse-special-form-exp tag (cdr sexps) location keyword-location))
            (parse-apply-exp (car sexps) (cdr sexps) location)))
         (else (parse-apply-exp (car sexps) (cdr sexps) location))))
 
@@ -71,10 +72,10 @@
              location))
 
 (claim parse-special-form-exp
-  (-> symbol-t (list-t sexp-t) source-location-t
+  (-> symbol-t (list-t sexp-t) source-location-t source-location-t
       exp-t))
 
-(define (parse-special-form-exp tag sexps location)
+(define (parse-special-form-exp tag sexps location keyword-location)
   (cond
     ((equal? tag 'lambda)
      (@comment
@@ -82,7 +83,7 @@
          <body>))
      (lambda-exp (parse-parameters (car sexps))
                  (parse-body (cdr sexps) location)
-                 location))
+                 keyword-location))
     ((equal? tag '@quote)
      (@comment
        (@quote <sexp>))
@@ -127,7 +128,7 @@
        (cond
          (<question> <answer>)
          ...))
-     (cond-exp (list-map parse-cond-clause sexps) location))
+     (cond-exp (list-map parse-cond-clause sexps) keyword-location))
     ((equal? tag 'match)
      (@comment
        (match <target>
@@ -135,7 +136,7 @@
          ...))
      (match-exp [(parse-exp (car sexps))]
                 (list-map parse-match-clause (cdr sexps))
-                location))
+                keyword-location))
     ((equal? tag 'match-many)
      (@comment
        (match-many (<target> ...)
@@ -143,7 +144,7 @@
          ...))
      (match-exp (list-map parse-exp (list-sexp-elements (car sexps)))
                 (list-map parse-match-many-clause (cdr sexps))
-                location))
+                keyword-location))
     ((equal? tag '=)
      (@comment
        (= <name> <exp>))
@@ -194,7 +195,7 @@
               (symbol-sexp-content (car (list-sexp-elements (car sexps))))
               (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
               (parse-body (cdr sexps) location)
-              location))
+              keyword-location))
            (else
              (@comment
                (define <name> <exp>))
@@ -202,7 +203,7 @@
                (symbol-sexp-content (car sexps))
                []
                (parse-body (cdr sexps) location)
-               location))))
+               keyword-location))))
     ((equal? tag '@list)
      (@comment
        (@list <exp> ...))

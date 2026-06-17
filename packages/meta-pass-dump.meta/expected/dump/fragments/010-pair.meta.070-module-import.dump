@@ -22,15 +22,12 @@
 
 (define (pair? value)
   (if (meta-builtin/builtin/list? value)
-      (if
-          (meta-builtin/builtin/equal?
-           (meta-builtin/builtin/list-length value)
-           3)
-          (meta-builtin/builtin/equal?
-           (meta-builtin/builtin/list-head value)
-           make-pair)
-          meta-builtin/builtin/false)
-      meta-builtin/builtin/false))
+    (if (meta-builtin/builtin/equal? (meta-builtin/builtin/list-length value) 3)
+      (meta-builtin/builtin/equal?
+       (meta-builtin/builtin/list-head value)
+       make-pair)
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
 
 (admit pair-first (polymorphic (A B) (-> (pair-t A B) A)))
 
@@ -52,8 +49,8 @@
 
 (define (pair-swap p)
   (if (self/010-pair/pair? p)
-      (begin
-        (= b (self/010-pair/pair-second p))
-        (= a (self/010-pair/pair-first p))
-        (make-pair b a))
-      (meta-builtin/builtin/error "cond mismatch")))
+    (begin
+      (= b (self/010-pair/pair-second p))
+      (= a (self/010-pair/pair-first p))
+      (make-pair b a))
+    (meta-builtin/builtin/error "cond mismatch")))
