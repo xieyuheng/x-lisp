@@ -135,10 +135,10 @@ export function desugarMatch(
       location,
     )
   } else if (clauses.every(isDataPatternClause)) {
-    const groups = groupClausesByHeadDataConstructor(ctx, clauses)
+    const groups = groupClausesByDataPattern(ctx, clauses)
     return M.CondExp(
       groups.map((group) =>
-        desugarDataConstructorClauseGroup(
+        desugarDataPatternClauseGroup(
           ctx,
           group,
           targets,
@@ -182,14 +182,14 @@ function isDataPatternClause(clause: M.MatchClause): boolean {
   return clause.patterns.length > 0 && M.isDataPattern(clause.patterns[0])
 }
 
-type DataConstructorClauseGroup = {
+type DataPatternClauseGroup = {
   dataConstructorInfo: M.DataConstructorInfo
   clauses: Array<M.MatchClause>
 }
 
-function desugarDataConstructorClauseGroup(
+function desugarDataPatternClauseGroup(
   ctx: DesugarMatchCtx,
-  group: DataConstructorClauseGroup,
+  group: DataPatternClauseGroup,
   targets: Array<M.Exp>,
   defaultExp: M.Exp,
   location: S.SourceLocation,
@@ -285,14 +285,18 @@ function lookupSameAlgebraicType(
   return first
 }
 
-function matchesConstructor(
+function clauseStartsWithDataConstructor(
   ctx: DesugarMatchCtx,
-  clause: M.MatchClause,
   info: M.DataConstructorInfo,
+  clause: M.MatchClause,
 ): boolean {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) return false
-  const { modName, name } = resolveDataPatternQualifiedName(ctx, pattern.target)
+  const { pkgId, modName, name } = resolveDataPatternQualifiedName(
+    ctx,
+    pattern.target,
+  )
+  // return pkgId === info.pkgId && modName === info.modName && name === info.name
   return modName === info.modName && name === info.name
 }
 
@@ -308,10 +312,10 @@ function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
   )
 }
 
-function groupClausesByHeadDataConstructor(
+function groupClausesByDataPattern(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
-): Array<DataConstructorClauseGroup> {
+): Array<DataPatternClauseGroup> {
   const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
@@ -321,7 +325,9 @@ function groupClausesByHeadDataConstructor(
       ctorName,
     )
     const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(key)!
-    const grouped = clauses.filter((c) => matchesConstructor(ctx, c, info))
+    const grouped = clauses.filter((c) =>
+      clauseStartsWithDataConstructor(ctx, info, c),
+    )
     return { dataConstructorInfo: info, clauses: grouped }
   })
 }

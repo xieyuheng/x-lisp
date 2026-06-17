@@ -1,8 +1,10 @@
 (module meta)
 
-(define-type constructor-key-t string-t)
+(define-struct algebraic-analysis-report-t
+  (data-constructor-infos (hash-t string-t data-constructor-info-t))
+  (algebraic-type-infos (hash-t string-t algebraic-type-info-t)))
 
-(define-struct data-constructor-info-t 
+(define-struct data-constructor-info-t
   (pkg-id symbol-t)
   (mod-name symbol-t)
   (type-name symbol-t)
@@ -15,10 +17,6 @@
   (mod-name symbol-t)
   (name symbol-t)
   (constructor-names (list-t symbol-t)))
-
-(define-struct algebraic-analysis-report-t
-  (data-constructor-infos (hash-t string-t data-constructor-info-t))
-  (algebraic-type-infos (hash-t string-t algebraic-type-info-t)))
 
 (claim algebraic-key
   (-> symbol-t symbol-t symbol-t
