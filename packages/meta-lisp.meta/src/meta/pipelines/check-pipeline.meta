@@ -8,26 +8,26 @@
 
   (= module-reports (make-hash))
   (for-list closure
-    (lambda (pkg)
-      (hash-put! (package-id pkg) (module-analysis-pass pkg) module-reports)))
+    (lambda (package)
+      (hash-put! (package-id package) (module-analysis-pass package) module-reports)))
 
   (= algebraic-reports (make-hash))
   (for-list closure
-    (lambda (pkg)
-      (hash-put! (package-id pkg) (algebraic-analysis-pass pkg) algebraic-reports)))
+    (lambda (package)
+      (hash-put! (package-id package) (algebraic-analysis-pass package) algebraic-reports)))
 
   (for-list closure
-    (lambda (pkg)
+    (lambda (package)
       (lower-match-pass
-        (hash-get (package-id pkg) module-reports)
-        (hash-get (package-id pkg) algebraic-reports)
-        pkg)))
+        (hash-get (package-id package) module-reports)
+        (hash-get (package-id package) algebraic-reports)
+        package)))
 
   (for-list closure desugar-pass)
 
   (for-list closure
-    (lambda (pkg)
-      (module-import-pass (hash-get (package-id pkg) module-reports) pkg)))
+    (lambda (package)
+      (module-import-pass (hash-get (package-id package) module-reports) package)))
 
   (for-list closure execute-pass)
   (for-list closure claim-pass)
