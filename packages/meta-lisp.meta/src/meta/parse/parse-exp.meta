@@ -100,29 +100,29 @@
      (if-exp (parse-exp (car sexps))
              (parse-exp (list-get 1 sexps))
              (parse-exp (list-get 2 sexps))
-             location))
+             keyword-location))
     ((equal? tag 'when)
      (@comment
        (when <condition>
          <body>))
      (when-exp (parse-exp (car sexps))
                (parse-body (cdr sexps) location)
-               location))
+               keyword-location))
     ((equal? tag 'unless)
      (@comment
        (unless <condition>
          <body>))
      (unless-exp (parse-exp (car sexps))
                  (parse-body (cdr sexps) location)
-                 location))
+                 keyword-location))
     ((equal? tag 'and)
      (@comment
        (and <exp> ...))
-     (and-exp (list-map parse-exp sexps) location))
+     (and-exp (list-map parse-exp sexps) keyword-location))
     ((equal? tag 'or)
      (@comment
        (or <exp> ...))
-     (or-exp (list-map parse-exp sexps) location))
+     (or-exp (list-map parse-exp sexps) keyword-location))
     ((equal? tag 'cond)
      (@comment
        (cond
@@ -162,7 +162,7 @@
          <body>))
      (let-exp (parse-bindings (car sexps))
               (parse-body (cdr sexps) location)
-              location))
+              keyword-location))
     ((equal? tag 'let*)
      (@comment
        (let* ((<name> <exp>)
@@ -170,7 +170,7 @@
          <body>))
      (let-star-exp (parse-bindings (car sexps))
                    (parse-body (cdr sexps) location)
-                   location))
+                   keyword-location))
     ((equal? tag 'letrec)
      (@comment
        (letrec ((<name> <exp>)
@@ -178,7 +178,7 @@
          <body>))
      (letrec-exp (parse-bindings (car sexps))
                  (parse-body (cdr sexps) location)
-                 location))
+                 keyword-location))
     ((equal? tag 'letrec*)
      (@comment
        (letrec* ((<name> <exp>)
@@ -186,7 +186,7 @@
          <body>))
      (letrec-star-exp (parse-bindings (car sexps))
                       (parse-body (cdr sexps) location)
-                      location))
+                      keyword-location))
     ((equal? tag 'define)
      (cond ((list-sexp? (car sexps))
             (@comment

@@ -35,30 +35,35 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
 
   "`(if ,condition ,consequent ,alternative)": (
     { condition, consequent, alternative },
-    { location },
+    { sexp },
   ) => {
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.IfExp(
       parseExp(condition),
       parseExp(consequent),
       parseExp(alternative),
-      location,
+      keyword.location,
     )
   },
 
-  "(cons* 'when condition body)": ({ condition, body }, { location }) => {
-    return M.WhenExp(parseExp(condition), parseBody(body), location)
+  "(cons* 'when condition body)": ({ condition, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.WhenExp(parseExp(condition), parseBody(body), keyword.location)
   },
 
-  "(cons* 'unless condition body)": ({ condition, body }, { location }) => {
-    return M.UnlessExp(parseExp(condition), parseBody(body), location)
+  "(cons* 'unless condition body)": ({ condition, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.UnlessExp(parseExp(condition), parseBody(body), keyword.location)
   },
 
-  "(cons* 'and exps)": ({ exps }, { location }) => {
-    return M.AndExp(S.asListSexp(exps).elements.map(parseExp), location)
+  "(cons* 'and exps)": ({ exps }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.AndExp(S.asListSexp(exps).elements.map(parseExp), keyword.location)
   },
 
-  "(cons* 'or exps)": ({ exps }, { location }) => {
-    return M.OrExp(S.asListSexp(exps).elements.map(parseExp), location)
+  "(cons* 'or exps)": ({ exps }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.OrExp(S.asListSexp(exps).elements.map(parseExp), keyword.location)
   },
 
   "(cons* 'cond clauses)": ({ clauses }, { sexp }) => {
@@ -118,35 +123,39 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return parseBody(body)
   },
 
-  "(cons* 'let bindings body)": ({ bindings, body }, { location }) => {
+  "(cons* 'let bindings body)": ({ bindings, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.LetExp(
       S.asListSexp(bindings).elements.map(parseBinding),
       parseBody(body),
-      location,
+      keyword.location,
     )
   },
 
-  "(cons* 'let* bindings body)": ({ bindings, body }, { location }) => {
+  "(cons* 'let* bindings body)": ({ bindings, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.LetStarExp(
       S.asListSexp(bindings).elements.map(parseBinding),
       parseBody(body),
-      location,
+      keyword.location,
     )
   },
 
-  "(cons* 'letrec bindings body)": ({ bindings, body }, { location }) => {
+  "(cons* 'letrec bindings body)": ({ bindings, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.LetrecExp(
       S.asListSexp(bindings).elements.map(parseBinding),
       parseBody(body),
-      location,
+      keyword.location,
     )
   },
 
-  "(cons* 'letrec* bindings body)": ({ bindings, body }, { location }) => {
+  "(cons* 'letrec* bindings body)": ({ bindings, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
     return M.LetrecStarExp(
       S.asListSexp(bindings).elements.map(parseBinding),
       parseBody(body),
-      location,
+      keyword.location,
     )
   },
 
