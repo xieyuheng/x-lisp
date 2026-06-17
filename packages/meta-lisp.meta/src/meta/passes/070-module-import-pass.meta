@@ -93,9 +93,9 @@
      (if (hash-has? name imported-names)
        (let ((entry (hash-get name imported-names)))
          (qualified-var-term
-           (qualified-name-entry-pkg-name entry)
-           (qualified-name-entry-mod-name entry)
-           (qualified-name-entry-name entry)
+           (qualified-name-pkg-name entry)
+           (qualified-name-mod-name entry)
+           (qualified-name-name entry)
            location))
        term))
     ((qualified-var-term pkg-name mod-name name location)
@@ -103,8 +103,8 @@
      (if (hash-has? mod-name imported-prefixes)
        (let ((entry (hash-get mod-name imported-prefixes)))
          (qualified-var-term
-           (prefix-entry-pkg-name entry)
-           (prefix-entry-mod-name entry)
+           (qualified-prefix-pkg-name entry)
+           (qualified-prefix-mod-name entry)
            name
            location))
        term))

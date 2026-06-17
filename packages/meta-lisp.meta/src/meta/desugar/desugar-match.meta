@@ -199,7 +199,7 @@
      (define (spread-data-pattern pattern)
        (unless (data-pattern? pattern)
          (error-with-location
-           (@string "{spread-data-pattern} expect data pattern"
+           (@string "(spread-data-pattern) expect data pattern"
                     "\n  pattern: " (format-exp pattern))
            (exp-location pattern)))
        (apply-exp-args pattern))
@@ -295,44 +295,37 @@
           (match-clause-location clause)))))
   first)
 
-(define-struct qualified-name-t
-  (pkg-name symbol-t)
-  (mod-name symbol-t)
-  (name symbol-t))
-
 (define (resolve-data-pattern-qualified-name ctx pattern)
   (unless (data-pattern? pattern)
     (error-with-location
       "(resolve-data-pattern-qualified-name) expect data-pattern"
       (exp-location pattern)))
   (= target (apply-exp-target pattern))
-  (cond
-    ((qualified-var-exp? target)
-     (make-qualified-name
-       (qualified-var-exp-pkg-name target)
-       (qualified-var-exp-mod-name target)
-       (qualified-var-exp-name target)))
-    ((var-exp? target)
-     (= name (var-exp-name target))
-     (= entry (hash-get-maybe name (fragment-scope-imported-names (desugar-match-ctx-scope ctx))))
-     (match entry
+  (match target
+    ((qualified-var-exp pkg-name mod-name name location)
+     (make-qualified-name pkg-name mod-name name))
+    ((var-exp name location)
+     (= scope (desugar-match-ctx-scope ctx))
+     (= imported-names (fragment-scope-imported-names scope))
+     (match (hash-get-maybe name imported-names)
        ((just e)
         (make-qualified-name
-          (qualified-name-entry-pkg-name e)
-          (qualified-name-entry-mod-name e)
-          (qualified-name-entry-name e)))
+          (qualified-name-pkg-name e)
+          (qualified-name-mod-name e)
+          (qualified-name-name e)))
        ((nothing)
-         (make-qualified-name
-           (desugar-match-ctx-pkg-name ctx)
-           (desugar-match-ctx-current-mod-name ctx)
-           name))))
+        (make-qualified-name
+          (desugar-match-ctx-pkg-name ctx)
+          (desugar-match-ctx-current-mod-name ctx)
+          name))))
     (else
      (error-with-location
        "(resolve-data-pattern-qualified-name) unhandled target"
        (exp-location target)))))
 
 (claim group-clauses-by-head-pattern-kind
-  (-> (list-t match-clause-t) (list-t (list-t match-clause-t))))
+  (-> (list-t match-clause-t)
+      (list-t (list-t match-clause-t))))
 
 (define (group-clauses-by-head-pattern-kind clauses)
   (= groups [])
