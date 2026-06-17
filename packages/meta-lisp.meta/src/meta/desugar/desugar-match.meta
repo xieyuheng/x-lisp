@@ -1,88 +1,89 @@
 (module meta)
 
-;; Desugar `(match)`, the basic idea is:
-;;
-;;     (match target
-;;       ((ctor1 v11 v12 ...) body1)
-;;       ((ctor2 v21 v22 ...) body2)
-;;       ...)
-;;
-;; =>
-;;
-;;     (cond
-;;       ((ctor1? target)
-;;        (let* ((v11 (ctor1-accessor1 target))
-;;               (v12 (ctor1-accessor2 target))
-;;               ...)
-;;          body1))
-;;       ((ctor2? target)
-;;        (let* ((v21 (ctor2-accessor1 target))
-;;               (v22 (ctor2-accessor2 target))
-;;               ...)
-;;          body2))
-;;       ...)
-;;
-;; We first need to generalize
-;;
-;;     (match target
-;;       (pattern body)
-;;       ...)
-;;
-;; to
-;;
-;;     (match-many (target ...)
-;;       ((pattern ...) body)
-;;       ...)
-;;
-;; When all clause heads are var patterns:
-;;
-;;     (match-many (target <target> ...)
-;;       ((v1 <pattern> ...) <body>)
-;;       ((v2 <pattern> ...) <body>)
-;;       ...)
-;;
-;; =>
-;;
-;;     (match-many (<target> ...)
-;;       ((<pattern> ...) (let ((v1 target)) <body>))
-;;       ((<pattern> ...) (let ((v2 target)) <body>))
-;;       ...)
-;;
-;; When all clause heads are data patterns:
-;;
-;;     (match-many (target <target> ...)
-;;       (((ctor1 x1 ...) <pattern> ...) <body>)
-;;       (((ctor1 y1 ...) <pattern> ...) <body>)
-;;       (((ctor2 x2 ...) <pattern> ...) <body>)
-;;       (((ctor2 y2 ...) <pattern> ...) <body>)
-;;       ...)
-;;
-;; first group by head constructors:
-;;
-;;     (match-many (target <target> ...)
-;;       (((ctor1 x1 ...) <pattern> ...) <body>)
-;;       (((ctor1 y1 ...) <pattern> ...) <body>)
-;;       ...)
-;;
-;;     (match-many (target <target> ...)
-;;       (((ctor2 x2 ...) <pattern> ...) <body>)
-;;       (((ctor2 y2 ...) <pattern> ...) <body>)
-;;       ...)
-;;
-;; then spread the pattern vars in the data patterns:
-;;
-;;     (match-many ((ctor1-accessor1 target) ... <target> ...)
-;;       ((x1 ... <pattern> ...) <body>)
-;;       ((y1 ... <pattern> ...) <body>)
-;;       ...)
-;;
-;;     (match-many ((ctor2-accessor1 target) ... <target> ...)
-;;       ((x2 ... <pattern> ...) <body>)
-;;       ((y2 ... <pattern> ...) <body>)
-;;       ...)
-;;
-;; To handled mixed head patterns,
-;; we first group clauses by head pattern kind.
+(@comment
+  desugar (match), the basic idea is:
+
+  (match target
+    ((ctor1 v11 v12 ...) body1)
+    ((ctor2 v21 v22 ...) body2)
+    ...)
+
+  =>
+
+  (cond
+    ((ctor1? target)
+     (let* ((v11 (ctor1-accessor1 target))
+            (v12 (ctor1-accessor2 target))
+            ...)
+       body1))
+    ((ctor2? target)
+     (let* ((v21 (ctor2-accessor1 target))
+            (v22 (ctor2-accessor2 target))
+            ...)
+       body2))
+    ...)
+
+  we first need to generalize
+
+  (match target
+    (pattern body)
+    ...)
+
+  to
+
+  (match-many (target ...)
+    ((pattern ...) body)
+    ...)
+
+  when all clause heads are var patterns:
+
+  (match-many (target <target> ...)
+    ((v1 <pattern> ...) <body>)
+    ((v2 <pattern> ...) <body>)
+    ...)
+
+  =>
+
+  (match-many (<target> ...)
+    ((<pattern> ...) (let ((v1 target)) <body>))
+    ((<pattern> ...) (let ((v2 target)) <body>))
+    ...)
+
+  when all clause heads are data patterns:
+
+  (match-many (target <target> ...)
+    (((ctor1 x1 ...) <pattern> ...) <body>)
+    (((ctor1 y1 ...) <pattern> ...) <body>)
+    (((ctor2 x2 ...) <pattern> ...) <body>)
+    (((ctor2 y2 ...) <pattern> ...) <body>)
+    ...)
+
+  first group by head constructors:
+
+  (match-many (target <target> ...)
+    (((ctor1 x1 ...) <pattern> ...) <body>)
+    (((ctor1 y1 ...) <pattern> ...) <body>)
+    ...)
+
+  (match-many (target <target> ...)
+    (((ctor2 x2 ...) <pattern> ...) <body>)
+    (((ctor2 y2 ...) <pattern> ...) <body>)
+    ...)
+
+  then spread the pattern vars in the data patterns:
+
+  (match-many ((ctor1-accessor1 target) ... <target> ...)
+    ((x1 ... <pattern> ...) <body>)
+    ((y1 ... <pattern> ...) <body>)
+    ...)
+
+  (match-many ((ctor2-accessor1 target) ... <target> ...)
+    ((x2 ... <pattern> ...) <body>)
+    ((y2 ... <pattern> ...) <body>)
+    ...)
+
+  to handled mixed head patterns,
+  we first group clauses by head pattern kind.)
 
 (define-struct desugar-match-ctx-t
   (scope fragment-scope-t)
@@ -99,22 +100,13 @@
     (lambda (clause)
       (unless (equal? (list-length (match-clause-patterns clause)) (list-length targets))
         (error-with-location
-          (@string "[desugar-match] targets length mismatch"
+          (@string "(desugar-match) targets length mismatch"
             "\n  targets: " (format-exps targets)
             "\n  patterns: " (format-exps (match-clause-patterns clause)))
           location))))
-
   (cond
     ((list-empty? clauses) default-exp)
-
-    ((list-empty? targets)
-     (= clause (list-first clauses))
-     (unless (list-empty? (match-clause-patterns clause))
-       (error-with-location
-         "[desugar-match] expected zero patterns when zero targets"
-         location))
-     (match-clause-body clause))
-
+    ((list-empty? targets) (match-clause-body (car clauses)))
     ((list-every? clause-head-is-var-pattern? clauses)
      (= target (list-first targets))
      (= rest-targets (list-tail targets))
@@ -125,7 +117,7 @@
            (= pattern (list-first patterns))
            (= rest-patterns (list-tail patterns))
            (unless (var-exp? pattern)
-             (error-with-location "[desugar-match] expected var-exp pattern"
+             (error-with-location "(desugar-match) expected var-exp pattern"
                (exp-location pattern)))
            (make-match-clause rest-patterns
              (let1-exp (var-exp-name pattern) target (match-clause-body clause)
@@ -133,7 +125,6 @@
              (match-clause-location clause)))
          clauses)
        default-exp location))
-
     ((list-every? clause-head-is-data-pattern? clauses)
      (= groups (group-clauses-by-head-data-constructor ctx clauses))
      (cond-exp
@@ -142,7 +133,6 @@
            (desugar-data-constructor-clause-group ctx group targets default-exp location))
          groups)
        location))
-
     (else
      (= groups (group-clauses-by-head-pattern-kind clauses))
      (list-fold-right

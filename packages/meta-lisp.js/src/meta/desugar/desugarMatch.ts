@@ -122,12 +122,7 @@ export function desugarMatch(
   }
 
   if (targets.length === 0) {
-    const [clause] = clauses
-    if (clause.patterns.length !== 0) {
-      let message = `[desugarMatch] expected zero patterns when zero targets`
-      throw new S.ErrorWithSourceLocation(message, location)
-    }
-    return clause.body
+    return clauses[0].body
   }
 
   if (clauses.every(clauseHeadIsVarPattern)) {
