@@ -135,10 +135,9 @@ export function desugarMatch(
       location,
     )
   } else if (clauses.every(isDataPatternClause)) {
-    const groups = groupClausesByHeadDataConstructor(ctx, clauses)
     return M.CondExp(
-      groups.map((group) =>
-        desugarDataConstructorClauseGroup(
+      groupClausesByDataPattern(ctx, clauses).map((group) =>
+        desugarDataPatternClauseGroup(
           ctx,
           group,
           targets,
@@ -149,8 +148,7 @@ export function desugarMatch(
       location,
     )
   } else {
-    const groups = groupClausesByHeadPatternKind(clauses)
-    return groups.reduceRight(
+    return groupClausesByPatternKind(clauses).reduceRight(
       (accumulatedExp, group) =>
         desugarMatch(ctx, targets, group, accumulatedExp, location),
       defaultExp,
@@ -182,14 +180,14 @@ function isDataPatternClause(clause: M.MatchClause): boolean {
   return clause.patterns.length > 0 && M.isDataPattern(clause.patterns[0])
 }
 
-type DataConstructorClauseGroup = {
+type DataPatternClauseGroup = {
   dataConstructorInfo: M.DataConstructorInfo
   clauses: Array<M.MatchClause>
 }
 
-function desugarDataConstructorClauseGroup(
+function desugarDataPatternClauseGroup(
   ctx: DesugarMatchCtx,
-  group: DataConstructorClauseGroup,
+  group: DataPatternClauseGroup,
   targets: Array<M.Exp>,
   defaultExp: M.Exp,
   location: S.SourceLocation,
@@ -236,7 +234,7 @@ function lookupAlgebraicTypeInfo(
 ): M.AlgebraicTypeInfo {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) {
-    let message = `[lookupAlgebraicTypeInfo] expected data pattern`
+    let message = `[lookupAlgebraicTypeInfo] expect data pattern`
     message += `\n  pattern: ${M.formatExp(pattern)}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
@@ -268,7 +266,7 @@ function lookupAlgebraicTypeInfo(
   return algebraicTypeInfo
 }
 
-function lookupSameAlgebraicType(
+function lookupSameAlgebraicTypeInfo(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
 ): M.AlgebraicTypeInfo {
@@ -280,7 +278,7 @@ function lookupSameAlgebraicType(
       current.modName !== first.modName ||
       current.name !== first.name
     ) {
-      let message = `[lookupSameAlgebraicType] algebraic data type mismatch`
+      let message = `[lookupSameAlgebraicTypeInfo] algebraic data type mismatch`
       message += `\n  first: ${first.pkgName}/${first.modName}/${first.name}`
       message += `\n  current: ${current.pkgName}/${current.modName}/${current.name}`
       throw new S.ErrorWithSourceLocation(message, clause.location)
@@ -317,11 +315,11 @@ function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
   )
 }
 
-function groupClausesByHeadDataConstructor(
+function groupClausesByDataPattern(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
-): Array<DataConstructorClauseGroup> {
-  const algebraicTypeInfo = lookupSameAlgebraicType(ctx, clauses)
+): Array<DataPatternClauseGroup> {
+  const algebraicTypeInfo = lookupSameAlgebraicTypeInfo(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
     const key = M.algebraicKey(
@@ -373,7 +371,7 @@ function resolveDataPatternQualifiedName(
   throw new S.ErrorWithSourceLocation(message, target.location)
 }
 
-function groupClausesByHeadPatternKind(
+function groupClausesByPatternKind(
   clauses: Array<M.MatchClause>,
 ): Array<Array<M.MatchClause>> {
   const groups: Array<Array<M.MatchClause>> = []
@@ -388,10 +386,10 @@ function groupClausesByHeadPatternKind(
   return groups
 }
 
-function samePatternKind(a: M.MatchClause, b: M.MatchClause): boolean {
+function samePatternKind(x: M.MatchClause, y: M.MatchClause): boolean {
   return (
-    isVarPatternClause(a) === isVarPatternClause(b) ||
-    isDataPatternClause(a) === isDataPatternClause(b)
+    isVarPatternClause(x) === isVarPatternClause(y) ||
+    isDataPatternClause(x) === isDataPatternClause(y)
   )
 }
 
@@ -399,22 +397,30 @@ export function makeDefaultExp(
   targets: Array<M.Exp>,
   location: S.SourceLocation,
 ): M.Exp {
-  const parts: Array<M.Exp> = [
-    M.StringExp("pattern mismatch, no match-clause for targets:", location),
-  ]
-  for (const target of targets) {
-    parts.push(M.StringExp(" ", location))
-    parts.push(
-      M.ApplyExp(
-        M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
-        [target],
+  return M.ApplyExp(
+    M.QualifiedVarExp(
+      "meta-builtin",
+      "builtin",
+      "error-with-location",
+      location,
+    ),
+    [
+      M.StringConcatExp(
+        [
+          M.StringExp("pattern mismatch on:", location),
+          ...targets.flatMap((target) => [
+            M.StringExp(" ", location),
+            M.ApplyExp(
+              M.QualifiedVarExp("meta-builtin", "builtin", "format", location),
+              [target],
+              location,
+            ),
+          ]),
+        ],
         location,
       ),
-    )
-  }
-  return M.ApplyExp(
-    M.QualifiedVarExp("meta-builtin", "builtin", "error", location),
-    [M.StringConcatExp(parts, location)],
+      M.desugarLocation(location),
+    ],
     location,
   )
 }

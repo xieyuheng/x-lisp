@@ -43,8 +43,6 @@ function lowerMatchStmt(ctx: M.DesugarMatchCtx, stmt: M.Stmt<M.Exp>): void {
 function lowerMatch(ctx: M.DesugarMatchCtx, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "MatchExp": {
-      const defaultExp = M.makeDefaultExp(exp.targets, exp.location)
-
       return M.desugarMatch(
         ctx,
         exp.targets.map((t) => lowerMatch(ctx, t)),
@@ -52,7 +50,7 @@ function lowerMatch(ctx: M.DesugarMatchCtx, exp: M.Exp): M.Exp {
           ...clause,
           body: lowerMatch(ctx, clause.body),
         })),
-        defaultExp,
+        M.makeDefaultExp(exp.targets, exp.location),
         exp.location,
       )
     }

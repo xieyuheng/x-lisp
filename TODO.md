@@ -1,5 +1,3 @@
-[meta-lisp.meta] [refactor] desugar-match.meta
-
 # self-hosting
 
 [meta-lisp.meta] [review] 070-module-import-pass.meta
