@@ -87,18 +87,18 @@ import * as M from "../index.ts"
 
 export type DesugarMatchCtx = {
   scope: M.FragmentScope
-  currentModName: string
+  modName: string
   algebraicAnalysisReport: M.AlgebraicAnalysisReport
   pkgId: string
 }
 
 export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
-  currentModName: string,
+  modName: string,
   algebraicAnalysisReport: M.AlgebraicAnalysisReport,
   pkgId: string,
 ): DesugarMatchCtx {
-  return { scope, currentModName, algebraicAnalysisReport, pkgId }
+  return { scope, modName, algebraicAnalysisReport, pkgId }
 }
 
 export function desugarMatch(
@@ -222,7 +222,7 @@ function desugarDataConstructorClauseGroup(
   const answer = desugarMatch(
     ctx,
     [...newTargets, ...restTargets],
-    group.clauses.map(clauseDropFirstPattern),
+    group.clauses.map(clauseSpreadFirstDataPattern),
     defaultExp,
     location,
   )
@@ -240,7 +240,7 @@ function lookupAlgebraicTypeInfo(
     message += `\n  pattern: ${M.formatExp(pattern)}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
-  const { pkgName, modName, name } = resolveCtorQualifiedName(
+  const { pkgName, modName, name } = resolveDataPatternQualifiedName(
     ctx,
     pattern.target,
   )
@@ -292,11 +292,11 @@ function matchesConstructor(
 ): boolean {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) return false
-  const { modName, name } = resolveCtorQualifiedName(ctx, pattern.target)
+  const { modName, name } = resolveDataPatternQualifiedName(ctx, pattern.target)
   return modName === info.modName && name === info.name
 }
 
-function clauseDropFirstPattern(clause: M.MatchClause): M.MatchClause {
+function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
   const [pattern, ...restPatterns] = clause.patterns
   const argPatterns = M.isDataPattern(pattern)
     ? M.dataPatternArgPatterns(pattern)
@@ -326,7 +326,7 @@ function groupClausesByHeadDataConstructor(
   })
 }
 
-function resolveCtorQualifiedName(
+function resolveDataPatternQualifiedName(
   ctx: DesugarMatchCtx,
   ctor: M.Exp,
 ): { pkgName: string; modName: string; name: string } {
@@ -345,13 +345,13 @@ function resolveCtorQualifiedName(
     } else {
       return {
         pkgName: ctx.pkgId,
-        modName: ctx.currentModName,
+        modName: ctx.modName,
         name: ctor.name,
       }
     }
   }
 
-  let message = "[resolveCtorQualifiedName] unhandled ctor kind"
+  let message = "[resolveDataPatternQualifiedName] unhandled ctor kind"
   throw new S.ErrorWithSourceLocation(message, ctor.location)
 }
 

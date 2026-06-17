@@ -17,18 +17,18 @@
 (define-struct* fragment-scope-t
   (cons-fragment-scope
     (mod-name mod-name-t)
-    (imported-names (hash-t name-t qualified-name-entry-t))
-    (imported-prefixes (hash-t prefix-t prefix-entry-t))))
+    (imported-names (hash-t name-t qualified-name-t))
+    (imported-prefixes (hash-t prefix-t qualified-prefix-t))))
 
 (define (make-fragment-scope mod-name)
   (cons-fragment-scope mod-name (make-hash) (make-hash)))
 
-(define-struct qualified-name-entry-t
+(define-struct qualified-name-t
   (pkg-name symbol-t)
   (mod-name symbol-t)
   (name symbol-t))
 
-(define-struct prefix-entry-t
+(define-struct qualified-prefix-t
   (pkg-name symbol-t)
   (mod-name symbol-t))
 
@@ -187,11 +187,11 @@
        (lambda (name)
          (unless (set-member? name imported-private-names)
            (hash-put! name
-             (make-qualified-name-entry pkg-name mod-name name)
+             (make-qualified-name pkg-name mod-name name)
              (fragment-scope-imported-names scope))))))
     ((import-as-stmt pkg-name mod-name prefix location)
      (hash-put! prefix
-       (make-prefix-entry pkg-name mod-name)
+       (make-qualified-prefix pkg-name mod-name)
        (fragment-scope-imported-prefixes scope))
      void)
     ((import-all-stmt pkg-name mod-name location)
@@ -203,7 +203,7 @@
          ;;   so that local definitions can override imported ones.
          (unless (set-member? name current-defined-names)
            (hash-put! name
-             (make-qualified-name-entry pkg-name mod-name name)
+             (make-qualified-name pkg-name mod-name name)
              (fragment-scope-imported-names scope))))))
     (else void)))
 
@@ -312,20 +312,20 @@
               (= qualified-entry (hash-entry-value entry))
               (list-push!
                 (@string "        (" (symbol-to-string name) " "
-                  (symbol-to-string (qualified-name-entry-pkg-name qualified-entry)) "/"
-                  (symbol-to-string (qualified-name-entry-mod-name qualified-entry)) "/"
-                  (symbol-to-string (qualified-name-entry-name qualified-entry)) ")")
+                  (symbol-to-string (qualified-name-pkg-name qualified-entry)) "/"
+                  (symbol-to-string (qualified-name-mod-name qualified-entry)) "/"
+                  (symbol-to-string (qualified-name-name qualified-entry)) ")")
                 lines)))
           (close-top lines)
           (list-push! "      (imported-prefixes" lines)
           (for-list (sort-entries-by-symbol-key (fragment-scope-imported-prefixes scope))
             (lambda (entry)
               (= prefix (hash-entry-key entry))
-              (= prefix-entry (hash-entry-value entry))
+              (= qualified-prefix (hash-entry-value entry))
               (list-push!
                 (@string "        (" (symbol-to-string prefix) " "
-                  (symbol-to-string (prefix-entry-pkg-name prefix-entry)) "/"
-                  (symbol-to-string (prefix-entry-mod-name prefix-entry)) ")")
+                  (symbol-to-string (qualified-prefix-pkg-name qualified-prefix)) "/"
+                  (symbol-to-string (qualified-prefix-mod-name qualified-prefix)) ")")
                 lines)))
           (close-top lines))
         (begin
