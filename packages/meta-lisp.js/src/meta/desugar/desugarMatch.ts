@@ -222,7 +222,7 @@ function desugarDataConstructorClauseGroup(
   const answer = desugarMatch(
     ctx,
     [...newTargets, ...restTargets],
-    group.clauses.map(clauseDropFirstPattern),
+    group.clauses.map(clauseSpreadFirstDataPattern),
     defaultExp,
     location,
   )
@@ -296,7 +296,7 @@ function matchesConstructor(
   return modName === info.modName && name === info.name
 }
 
-function clauseDropFirstPattern(clause: M.MatchClause): M.MatchClause {
+function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
   const [pattern, ...restPatterns] = clause.patterns
   const argPatterns = M.isDataPattern(pattern)
     ? M.dataPatternArgPatterns(pattern)

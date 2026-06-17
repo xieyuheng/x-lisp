@@ -1,3 +1,9 @@
+[meta-lisp.meta] [refactor] desugar-match.meta -- `clause-starts-with-data-constructor?`
+
+[meta-lisp.meta] [refactor] desugar-match.meta -- `resolve-data-pattern-qualified-name`
+
+- rename `ctor-qualified-name` to `qualified-name`
+
 [meta-lisp.meta] [refactor] desugar-match.meta
 
 # self-hosting

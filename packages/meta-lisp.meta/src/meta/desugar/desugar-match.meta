@@ -189,21 +189,24 @@
        (desugar-match
          ctx
          (list-append (spread-target (car targets)) (cdr targets))
-         (list-map clause-drop-first-pattern clauses)
+         (list-map clause-spread-first-data-pattern clauses)
          default-exp location)
        location))))
 
-(define (clause-drop-first-pattern clause)
-  (= pattern (list-first (match-clause-patterns clause)))
-  (= rest-patterns (list-tail (match-clause-patterns clause)))
-  (= arg-patterns
-     (if (data-pattern? pattern)
-       (apply-exp-args pattern)
-       []))
-  (make-match-clause
-    (list-append arg-patterns rest-patterns)
-    (match-clause-body clause)
-    (match-clause-location clause)))
+(define (clause-spread-first-data-pattern clause)
+  (match clause
+    ((make-match-clause patterns body location)
+     (define (spread-data-pattern pattern)
+       (unless (data-pattern? pattern)
+         (error-with-location
+           (@string "{spread-data-pattern} expect data pattern"
+                    "\n  pattern: " (format-exp pattern))
+           (exp-location pattern)))
+       (apply-exp-args pattern))
+     (make-match-clause
+       (list-append (spread-data-pattern (car patterns)) (cdr patterns))
+       body
+       location))))
 
 (define (group-clauses-by-head-data-constructor ctx clauses)
   (= algebraic-type-info (lookup-same-algebraic-type ctx clauses))
@@ -212,18 +215,18 @@
      (swap list-map constructor-names
        (lambda (ctor-name)
          (= key (algebraic-key pkg-id mod-name ctor-name))
-         (= info
+         (= data-constructor-info
             (pipe ctx
               desugar-match-ctx-algebraic-analysis-report
               algebraic-analysis-report-data-constructor-infos
               (hash-get key)))
-         (= group
-            (list-select
-              (lambda (clause) (matches-constructor? ctx clause info))
-              clauses))
-         (make-data-pattern-clause-group info group))))))
+         (make-data-pattern-clause-group
+           data-constructor-info
+           (list-select
+             (matches-constructor? ctx data-constructor-info)
+             clauses)))))))
 
-(define (matches-constructor? ctx clause info)
+(define (matches-constructor? ctx info clause)
   (= pattern (car (match-clause-patterns clause)))
   (if (not (data-pattern? pattern))
     false
