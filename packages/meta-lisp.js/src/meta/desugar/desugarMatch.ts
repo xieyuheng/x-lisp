@@ -125,7 +125,7 @@ export function desugarMatch(
     return clauses[0].body
   }
 
-  if (clauses.every(clauseHeadIsVarPattern)) {
+  if (clauses.every(isVarPatternClause)) {
     const [target, ...restTargets] = targets
     return desugarMatch(
       ctx,
@@ -134,7 +134,7 @@ export function desugarMatch(
       defaultExp,
       location,
     )
-  } else if (clauses.every(clauseHeadIsDataPattern)) {
+  } else if (clauses.every(isDataPatternClause)) {
     const groups = groupClausesByHeadDataConstructor(ctx, clauses)
     return M.CondExp(
       groups.map((group) =>
@@ -174,11 +174,11 @@ function desugarVarPatternClause(
   )
 }
 
-function clauseHeadIsVarPattern(clause: M.MatchClause): boolean {
+function isVarPatternClause(clause: M.MatchClause): boolean {
   return clause.patterns.length > 0 && M.isVarPattern(clause.patterns[0])
 }
 
-function clauseHeadIsDataPattern(clause: M.MatchClause): boolean {
+function isDataPatternClause(clause: M.MatchClause): boolean {
   return clause.patterns.length > 0 && M.isDataPattern(clause.patterns[0])
 }
 
@@ -222,7 +222,7 @@ function desugarDataConstructorClauseGroup(
   const answer = desugarMatch(
     ctx,
     [...newTargets, ...restTargets],
-    group.clauses,
+    group.clauses.map(clauseDropFirstPattern),
     defaultExp,
     location,
   )
@@ -240,8 +240,10 @@ function lookupAlgebraicTypeInfo(
     message += `\n  pattern: ${M.formatExp(pattern)}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
-  const ctor = pattern.target
-  const { pkgName, modName, name } = resolveCtorQualifiedName(ctx, ctor)
+  const { pkgName, modName, name } = resolveCtorQualifiedName(
+    ctx,
+    pattern.target,
+  )
   const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(
     M.algebraicKey(pkgName, modName, name),
   )
@@ -294,7 +296,7 @@ function matchesConstructor(
   return modName === info.modName && name === info.name
 }
 
-function stripConstructorWrapper(clause: M.MatchClause): M.MatchClause {
+function clauseDropFirstPattern(clause: M.MatchClause): M.MatchClause {
   const [pattern, ...restPatterns] = clause.patterns
   const argPatterns = M.isDataPattern(pattern)
     ? M.dataPatternArgPatterns(pattern)
@@ -319,9 +321,7 @@ function groupClausesByHeadDataConstructor(
       ctorName,
     )
     const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(key)!
-    const grouped = clauses
-      .filter((c) => matchesConstructor(ctx, c, info))
-      .map(stripConstructorWrapper)
+    const grouped = clauses.filter((c) => matchesConstructor(ctx, c, info))
     return { dataConstructorInfo: info, clauses: grouped }
   })
 }
@@ -372,8 +372,8 @@ function groupClausesByHeadPatternKind(
 
 function samePatternKind(a: M.MatchClause, b: M.MatchClause): boolean {
   return (
-    clauseHeadIsVarPattern(a) === clauseHeadIsVarPattern(b) ||
-    clauseHeadIsDataPattern(a) === clauseHeadIsDataPattern(b)
+    isVarPatternClause(a) === isVarPatternClause(b) ||
+    isDataPatternClause(a) === isDataPatternClause(b)
   )
 }
 

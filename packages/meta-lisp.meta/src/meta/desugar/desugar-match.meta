@@ -107,23 +107,23 @@
   (cond
     ((list-empty? clauses) default-exp)
     ((list-empty? targets) (match-clause-body (car clauses)))
-    ((list-every? clause-head-is-var-pattern? clauses)
+    ((list-every? var-pattern-clause? clauses)
      (desugar-match
        ctx (cdr targets)
        (list-map (desugar-var-pattern-clause (car targets)) clauses)
        default-exp location))
-    ((list-every? clause-head-is-data-pattern? clauses)
+    ((list-every? data-pattern-clause? clauses)
      (cond-exp
        (list-map
          (lambda (group)
-           (desugar-data-constructor-clause-group
+           (desugar-data-pattern-clause-group
              ctx group targets default-exp location))
          (group-clauses-by-head-data-constructor ctx clauses))
        location))
     (else
      (list-fold-right
-       (lambda (group accumulated-exp)
-         (desugar-match ctx targets group accumulated-exp location))
+       (lambda (group folded)
+         (desugar-match ctx targets group folded location))
        default-exp
        (group-clauses-by-head-pattern-kind clauses)))))
 
@@ -144,19 +144,19 @@
        (let1-exp (var-exp-name pattern) target body location)
        location))))
 
-(define (clause-head-is-var-pattern? clause)
+(define (var-pattern-clause? clause)
   (and (not (list-empty? (match-clause-patterns clause)))
        (var-pattern? (car (match-clause-patterns clause)))))
 
-(define (clause-head-is-data-pattern? clause)
+(define (data-pattern-clause? clause)
   (and (not (list-empty? (match-clause-patterns clause)))
        (data-pattern? (car (match-clause-patterns clause)))))
 
-(define-struct data-constructor-clause-group-t
+(define-struct data-pattern-clause-group-t
   (info data-constructor-info-t)
   (clauses (list-t match-clause-t)))
 
-(define (desugar-data-constructor-clause-group ctx group targets default-exp location)
+(define (desugar-data-pattern-clause-group ctx group targets default-exp location)
   (@comment
     (match-many (target <target> ...)
       (((ctor1 x1 ...) <pattern> ...) <body>)
@@ -168,7 +168,7 @@
       ((y1 ... <pattern> ...) <body>)
       ...))
   (match group
-    ((make-data-constructor-clause-group
+    ((make-data-pattern-clause-group
        (make-data-constructor-info
          pkg-id mod-name type-name name
          accessor-names predicate-name)
@@ -189,25 +189,48 @@
        (desugar-match
          ctx
          (list-append (spread-target (car targets)) (cdr targets))
-         clauses default-exp location)
+         (list-map clause-drop-first-pattern clauses)
+         default-exp location)
        location))))
+
+(define (clause-drop-first-pattern clause)
+  (= pattern (list-first (match-clause-patterns clause)))
+  (= rest-patterns (list-tail (match-clause-patterns clause)))
+  (= arg-patterns
+     (if (data-pattern? pattern)
+       (apply-exp-args pattern)
+       []))
+  (make-match-clause
+    (list-append arg-patterns rest-patterns)
+    (match-clause-body clause)
+    (match-clause-location clause)))
 
 (define (group-clauses-by-head-data-constructor ctx clauses)
   (= algebraic-type-info (lookup-same-algebraic-type ctx clauses))
-  (list-map
-    (lambda (ctor-name)
-      (= key (algebraic-key
-               (algebraic-type-info-pkg-id algebraic-type-info)
-               (algebraic-type-info-mod-name algebraic-type-info)
-               ctor-name))
-      (= info (hash-get key (algebraic-analysis-report-data-constructor-infos
-                              (desugar-match-ctx-algebraic-analysis-report ctx))))
-      (= grouped (list-map strip-constructor-wrapper
-                   (list-select
-                     (lambda (c) (matches-constructor? ctx c info))
-                     clauses)))
-      (make-data-constructor-clause-group info grouped))
-    (algebraic-type-info-constructor-names algebraic-type-info)))
+  (match (lookup-same-algebraic-type ctx clauses)
+    ((make-algebraic-type-info pkg-id mod-name name constructor-names)
+     (swap list-map constructor-names
+       (lambda (ctor-name)
+         (= key (algebraic-key pkg-id mod-name ctor-name))
+         (= info
+            (pipe ctx
+              desugar-match-ctx-algebraic-analysis-report
+              algebraic-analysis-report-data-constructor-infos
+              (hash-get key)))
+         (= group
+            (list-select
+              (lambda (clause) (matches-constructor? ctx clause info))
+              clauses))
+         (make-data-pattern-clause-group info group))))))
+
+(define (matches-constructor? ctx clause info)
+  (= pattern (car (match-clause-patterns clause)))
+  (if (not (data-pattern? pattern))
+    false
+    (begin
+      (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
+      (and (equal? (ctor-qualified-name-mod-name qn) (data-constructor-info-mod-name info))
+           (equal? (ctor-qualified-name-name qn) (data-constructor-info-name info))))))
 
 (define (lookup-algebraic-type-info ctx clause)
   (= pattern (list-first (match-clause-patterns clause)))
@@ -216,8 +239,7 @@
       (@string "[lookup-algebraic-type-info] expected data pattern"
         "\n  pattern: " (format-exp pattern))
       (match-clause-location clause)))
-  (= ctor (apply-exp-target pattern))
-  (= qn (resolve-ctor-qualified-name ctx ctor))
+  (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
   (= pkg-name (ctor-qualified-name-pkg-name qn))
   (= mod-name (ctor-qualified-name-mod-name qn))
   (= name (ctor-qualified-name-name qn))
@@ -266,26 +288,6 @@
           (match-clause-location clause)))))
   first)
 
-(define (matches-constructor? ctx clause info)
-  (= pattern (list-first (match-clause-patterns clause)))
-  (if (not (data-pattern? pattern))
-    false
-    (begin
-      (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
-      (and (equal? (ctor-qualified-name-mod-name qn) (data-constructor-info-mod-name info))
-           (equal? (ctor-qualified-name-name qn) (data-constructor-info-name info))))))
-
-(define (strip-constructor-wrapper clause)
-  (= pattern (list-first (match-clause-patterns clause)))
-  (= rest-patterns (list-tail (match-clause-patterns clause)))
-  (= arg-patterns
-     (if (data-pattern? pattern)
-       (apply-exp-args pattern)
-       []))
-  (make-match-clause (list-append arg-patterns rest-patterns)
-    (match-clause-body clause)
-    (match-clause-location clause)))
-
 (define-struct ctor-qualified-name-t
   (pkg-name symbol-t)
   (mod-name symbol-t)
@@ -314,7 +316,7 @@
           name))))
     (else
      (error-with-location
-       "[resolve-ctor-qualified-name] unhandled ctor kind"
+       "(resolve-ctor-qualified-name) unhandled ctor kind"
        (exp-location ctor)))))
 
 (claim group-clauses-by-head-pattern-kind
@@ -333,7 +335,7 @@
   groups)
 
 (define (same-pattern-kind? a b)
-  (equal? (clause-head-is-var-pattern? a) (clause-head-is-var-pattern? b)))
+  (equal? (var-pattern-clause? a) (var-pattern-clause? b)))
 
 (define (make-default-exp targets location)
   (= parts [(string-exp "pattern mismatch, no match-clause for targets:" location)])
