@@ -1,8 +1,6 @@
 (module meta)
 
 (define-struct module-analysis-report-t
-  (defined-names name-group-by-mod-t)
-  (private-names name-group-by-mod-t)
   (fragment-scopes (hash-t string-t fragment-scope-t))
   (outcome outcome-t))
 
@@ -37,7 +35,7 @@
       module-analysis-report-t))
 
 (define (module-analysis-pass package)
-  (= report (make-module-analysis-report (make-hash) (make-hash) (make-hash) (outcome-ok)))
+  (= report (make-module-analysis-report (make-hash) (outcome-ok)))
   (for-list (package-closure-in-topological-order package)
     (module-analysis-package report))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
@@ -51,12 +49,6 @@
 (define (module-analysis-package report package)
   (for-list (package-closure-in-topological-order package)
     (lambda (ordered-package)
-      (merge-set-hash!
-        (module-analysis-report-defined-names report)
-        (collect-defined-names ordered-package))
-      (merge-set-hash!
-        (module-analysis-report-private-names report)
-        (collect-private-names ordered-package))
       (for-hash (package-fragments ordered-package)
         (lambda (path fragment)
           (= scope (make-fragment-scope (fragment-mod-name fragment)))
@@ -90,20 +82,6 @@
           (if (private-stmt? stmt)
             (private-stmt-names stmt)
             []))))))
-
-(claim merge-set-hash!
-  (polymorphic (K V)
-    (-> (hash-t K (set-t V))
-        (hash-t K (set-t V))
-        void-t)))
-
-(define (merge-set-hash! target source)
-  (for-hash source
-    (lambda (key values)
-      (if (hash-has? key target)
-        (let ((existing (hash-get key target)))
-          (for-set values (lambda (v) (set-add! v existing))))
-        (ignore (hash-put! key values target))))))
 
 (claim collect-names-by-mod
   (-> package-t
@@ -277,22 +255,6 @@
 (define (format-module-analysis-report result debug?)
   (= lines [])
   (list-push! "(module-analysis-report" lines)
-
-  (list-push! "  (defined-names" lines)
-  (for-list (sort-entries-by-symbol-key (module-analysis-report-defined-names result))
-    (lambda (entry)
-      (list-push!
-        (@string "    (" (format-name-value entry debug?) ")")
-        lines)))
-  (close-top lines)
-
-  (list-push! "  (private-names" lines)
-  (for-list (sort-entries-by-symbol-key (module-analysis-report-private-names result))
-    (lambda (entry)
-      (list-push!
-        (@string "    (" (format-name-value entry debug?) ")")
-        lines)))
-  (close-top lines)
 
   (list-push! "  (fragment-scopes" lines)
   (for-list (sort-entries-by-string-key (module-analysis-report-fragment-scopes result))
