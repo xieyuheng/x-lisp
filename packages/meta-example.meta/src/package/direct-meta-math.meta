@@ -1,0 +1,15 @@
+(module direct-meta-math)
+
+(define-test even-test
+  (assert (meta-math/math/even? 0))
+  (assert-not (meta-math/math/even? 1))
+  (assert (meta-math/math/even? 2))
+  (assert-not (meta-math/math/even? 3))
+  (assert (meta-math/math/even? 4)))
+
+(define-test odd-test
+  (assert-not (meta-math/math/odd? 0))
+  (assert (meta-math/math/odd? 1))
+  (assert-not (meta-math/math/odd? 2))
+  (assert (meta-math/math/odd? 3))
+  (assert-not (meta-math/math/odd? 4)))
