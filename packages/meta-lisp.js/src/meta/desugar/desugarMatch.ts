@@ -359,11 +359,7 @@ function resolveDataPatternQualifiedName(
   if (target.kind === "VarExp") {
     const entry = ctx.scope.importedNames.get(target.name)
     if (entry) {
-      return {
-        pkgName: entry.pkgName,
-        modName: entry.modName,
-        name: entry.name,
-      }
+      return entry
     } else {
       return {
         pkgName: ctx.pkgName,

@@ -214,7 +214,7 @@
     ((make-algebraic-type-info pkg-name mod-name name constructor-names)
      (swap list-map constructor-names
        (lambda (ctor-name)
-          (= key (algebraic-key pkg-name mod-name ctor-name))
+         (= key (algebraic-key pkg-name mod-name ctor-name))
          (= data-constructor-info
             (pipe ctx
               desugar-match-ctx-algebraic-analysis-report
@@ -308,11 +308,7 @@
      (= scope (desugar-match-ctx-scope ctx))
      (= imported-names (fragment-scope-imported-names scope))
      (match (hash-get-maybe name imported-names)
-       ((just e)
-        (make-qualified-name
-          (qualified-name-pkg-name e)
-          (qualified-name-mod-name e)
-          (qualified-name-name e)))
+       ((just qualified-name) qualified-name)
        ((nothing)
         (make-qualified-name
           (desugar-match-ctx-pkg-name ctx)
