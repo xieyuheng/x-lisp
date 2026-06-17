@@ -231,7 +231,7 @@
   (if (not (data-pattern? pattern))
     false
     (match (resolve-data-pattern-qualified-name ctx pattern)
-      ((make-ctor-qualified-name pkg-name mod-name name)
+      ((make-qualified-name pkg-name mod-name name)
        (and (equal? (data-constructor-info-mod-name info) mod-name)
             (equal? (data-constructor-info-name info) name))))))
 
@@ -243,9 +243,9 @@
         "\n  pattern: " (format-exp pattern))
       (match-clause-location clause)))
   (= qn (resolve-data-pattern-qualified-name ctx pattern))
-  (= pkg-name (ctor-qualified-name-pkg-name qn))
-  (= mod-name (ctor-qualified-name-mod-name qn))
-  (= name (ctor-qualified-name-name qn))
+  (= pkg-name (qualified-name-pkg-name qn))
+  (= mod-name (qualified-name-mod-name qn))
+  (= name (qualified-name-name qn))
   (= info (hash-get-maybe (algebraic-key pkg-name mod-name name)
            (algebraic-analysis-report-data-constructor-infos
              (desugar-match-ctx-algebraic-analysis-report ctx))))
@@ -291,7 +291,7 @@
           (match-clause-location clause)))))
   first)
 
-(define-struct ctor-qualified-name-t
+(define-struct qualified-name-t
   (pkg-name symbol-t)
   (mod-name symbol-t)
   (name symbol-t))
@@ -304,7 +304,7 @@
   (= target (apply-exp-target pattern))
   (cond
     ((qualified-var-exp? target)
-     (make-ctor-qualified-name
+     (make-qualified-name
        (qualified-var-exp-pkg-name target)
        (qualified-var-exp-mod-name target)
        (qualified-var-exp-name target)))
@@ -313,12 +313,12 @@
      (= entry (hash-get-maybe name (fragment-scope-imported-names (desugar-match-ctx-scope ctx))))
      (match entry
        ((just e)
-        (make-ctor-qualified-name
+        (make-qualified-name
           (qualified-name-entry-pkg-name e)
           (qualified-name-entry-mod-name e)
           (qualified-name-entry-name e)))
        ((nothing)
-        (make-ctor-qualified-name
+        (make-qualified-name
           (desugar-match-ctx-pkg-id ctx)
           (desugar-match-ctx-current-mod-name ctx)
           name))))

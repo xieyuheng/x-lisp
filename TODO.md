@@ -1,5 +1,3 @@
-[meta-lisp.meta] [refactor] desugar-match.meta -- rename `ctor-qualified-name` to `qualified-name`
-
 [meta-lisp.meta] [refactor] desugar-match.meta
 
 # self-hosting
