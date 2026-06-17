@@ -5,14 +5,15 @@
       symbol-t))
 
 (define (generate-relative-fresh-name used-names name)
-  (cond ((not (set-member? name used-names)) name)
-        (else
-         (define (loop n)
-           (let ((candidate
-                   (string-to-symbol
-                     (string-concat
-                       [(symbol-to-string name) "." (format-as-sexp n)]))))
-             (if (set-member? candidate used-names)
-               (loop (iadd 1 n))
-               candidate)))
-         (loop 1))))
+  (if (set-member? name used-names)
+    (generate-relative-fresh-name-loop used-names name 1)
+    name))
+
+(define (generate-relative-fresh-name-loop used-names name n)
+  (= candidate (symbol-append name (int-to-suffix-symbol n)))
+  (if (set-member? candidate used-names)
+    (generate-relative-fresh-name-loop used-names name (iadd 1 n))
+    candidate))
+
+(define (int-to-suffix-symbol n)
+  (string-to-symbol (string-append "." (format-int n))))

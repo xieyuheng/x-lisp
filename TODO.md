@@ -1,5 +1,3 @@
-[meta-lisp.meta] [review] generate-relative-fresh-name.meta
-
 [meta-lisp.meta] [review] desugar-sexp.meta
 [meta-lisp.meta] [review] desugar.meta
 
