@@ -230,7 +230,7 @@
   (= pattern (car (match-clause-patterns clause)))
   (if (not (data-pattern? pattern))
     false
-    (match (resolve-ctor-qualified-name ctx (apply-exp-target pattern))
+    (match (resolve-data-pattern-qualified-name ctx pattern)
       ((make-ctor-qualified-name pkg-name mod-name name)
        (and (equal? (data-constructor-info-mod-name info) mod-name)
             (equal? (data-constructor-info-name info) name))))))
@@ -242,7 +242,7 @@
       (@string "[lookup-algebraic-type-info] expected data pattern"
         "\n  pattern: " (format-exp pattern))
       (match-clause-location clause)))
-  (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
+  (= qn (resolve-data-pattern-qualified-name ctx pattern))
   (= pkg-name (ctor-qualified-name-pkg-name qn))
   (= mod-name (ctor-qualified-name-mod-name qn))
   (= name (ctor-qualified-name-name qn))
@@ -296,15 +296,20 @@
   (mod-name symbol-t)
   (name symbol-t))
 
-(define (resolve-ctor-qualified-name ctx ctor)
+(define (resolve-data-pattern-qualified-name ctx pattern)
+  (unless (data-pattern? pattern)
+    (error-with-location
+      "(resolve-data-pattern-qualified-name) expect data-pattern"
+      (exp-location pattern)))
+  (= target (apply-exp-target pattern))
   (cond
-    ((qualified-var-exp? ctor)
+    ((qualified-var-exp? target)
      (make-ctor-qualified-name
-       (qualified-var-exp-pkg-name ctor)
-       (qualified-var-exp-mod-name ctor)
-       (qualified-var-exp-name ctor)))
-    ((var-exp? ctor)
-     (= name (var-exp-name ctor))
+       (qualified-var-exp-pkg-name target)
+       (qualified-var-exp-mod-name target)
+       (qualified-var-exp-name target)))
+    ((var-exp? target)
+     (= name (var-exp-name target))
      (= entry (hash-get-maybe name (fragment-scope-imported-names (desugar-match-ctx-scope ctx))))
      (match entry
        ((just e)
@@ -319,8 +324,8 @@
           name))))
     (else
      (error-with-location
-       "(resolve-ctor-qualified-name) unhandled ctor kind"
-       (exp-location ctor)))))
+       "(resolve-data-pattern-qualified-name) unhandled target"
+       (exp-location target)))))
 
 (claim group-clauses-by-head-pattern-kind
   (-> (list-t match-clause-t) (list-t (list-t match-clause-t))))

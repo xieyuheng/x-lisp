@@ -1,6 +1,4 @@
-[meta-lisp.meta] [refactor] desugar-match.meta -- `resolve-data-pattern-qualified-name`
-
-- rename `ctor-qualified-name` to `qualified-name`
+[meta-lisp.meta] [refactor] desugar-match.meta -- rename `ctor-qualified-name` to `qualified-name`
 
 [meta-lisp.meta] [refactor] desugar-match.meta
 

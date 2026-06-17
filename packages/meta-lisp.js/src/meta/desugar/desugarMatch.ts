@@ -240,9 +240,9 @@ function lookupAlgebraicTypeInfo(
     message += `\n  pattern: ${M.formatExp(pattern)}`
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
-  const { pkgName, modName, name } = resolveCtorQualifiedName(
+  const { pkgName, modName, name } = resolveDataPatternQualifiedName(
     ctx,
-    pattern.target,
+    pattern,
   )
   const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(
     M.algebraicKey(pkgName, modName, name),
@@ -292,7 +292,7 @@ function clauseStartsWithDataConstructor(
 ): boolean {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) return false
-  const { modName, name } = resolveCtorQualifiedName(ctx, pattern.target)
+  const { modName, name } = resolveDataPatternQualifiedName(ctx, pattern)
   return modName === info.modName && name === info.name
 }
 
@@ -328,16 +328,23 @@ function groupClausesByHeadDataConstructor(
   })
 }
 
-function resolveCtorQualifiedName(
+function resolveDataPatternQualifiedName(
   ctx: DesugarMatchCtx,
-  ctor: M.Exp,
+  pattern: M.Exp,
 ): { pkgName: string; modName: string; name: string } {
-  if (ctor.kind === "QualifiedVarExp") {
-    return { pkgName: ctor.pkgName, modName: ctor.modName, name: ctor.name }
+  if (!M.isDataPattern(pattern)) {
+    let message = "[resolveDataPatternQualifiedName] expect data-pattern"
+    throw new S.ErrorWithSourceLocation(message, pattern.location)
   }
 
-  if (ctor.kind === "VarExp") {
-    const entry = ctx.scope.importedNames.get(ctor.name)
+  const target = pattern.target
+
+  if (target.kind === "QualifiedVarExp") {
+    return { pkgName: target.pkgName, modName: target.modName, name: target.name }
+  }
+
+  if (target.kind === "VarExp") {
+    const entry = ctx.scope.importedNames.get(target.name)
     if (entry) {
       return {
         pkgName: entry.pkgName,
@@ -348,13 +355,13 @@ function resolveCtorQualifiedName(
       return {
         pkgName: ctx.pkgId,
         modName: ctx.currentModName,
-        name: ctor.name,
+        name: target.name,
       }
     }
   }
 
-  let message = "[resolveCtorQualifiedName] unhandled ctor kind"
-  throw new S.ErrorWithSourceLocation(message, ctor.location)
+  let message = "[resolveDataPatternQualifiedName] unhandled target"
+  throw new S.ErrorWithSourceLocation(message, target.location)
 }
 
 function groupClausesByHeadPatternKind(
