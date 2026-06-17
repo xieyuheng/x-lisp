@@ -46,8 +46,39 @@
 
 (define (li-put-tail! value target) (list-put! 2 value target))
 
+(define (my-list-head list) (match list ((li head tail) head)))
+
+(define (my-list-tail list) (match list ((li head tail) tail)))
+
 (define (my-list-length list)
   (match list ((nil) 0) ((li head tail) (iadd 1 (my-list-length tail)))))
 
 (define (my-list-map f list)
   (match list ((nil) (nil)) ((li head tail) (li (f head) (my-list-map f tail)))))
+
+(define (my-list-append left right)
+  (match left
+    ((nil) right)
+    ((li head tail) (li head (my-list-append tail right)))))
+
+(define (my-list-map-zip f list1 list2)
+  (match-many (list1 list2)
+    (((nil) _) (nil))
+    (((li head1 tail1) (nil)) (nil))
+    (((li head1 tail1) (li head2 tail2))
+     (li (f head1 head2) (my-list-map-zip f tail1 tail2)))))
+
+(define (my-list-map-zip-2 f list1 list2)
+  (match-many (list1 list2)
+    (((nil) _) (nil))
+    ((_ (nil)) (nil))
+    (((li head1 tail1) (li head2 tail2))
+     (li (f head1 head2) (my-list-map-zip-2 f tail1 tail2)))))
+
+(define (my-list-adjacent-dedup list)
+  (match list
+    ((nil) (nil))
+    ((li head (nil)) (li head (nil)))
+    ((li first (li second rest))
+     (if (equal? first second) (my-list-adjacent-dedup (li second rest))
+         (li first (my-list-adjacent-dedup (li second rest)))))))

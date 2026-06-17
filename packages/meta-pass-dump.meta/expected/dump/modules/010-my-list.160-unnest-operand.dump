@@ -67,6 +67,77 @@
 (define (li-put-tail! value target)
   (meta-builtin/builtin/list-put! 2 value target))
 
+(claim my-list-head (polymorphic (A) (-> (010-my-list/my-list-t A) A)))
+
+(define (my-list-head list)
+  (if (self/010-my-list/nil? list)
+      (begin
+        (= list.1.1 (meta-builtin/builtin/make-list))
+        (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1.1)
+        (meta-builtin/builtin/list-push! " " list.1.1)
+        (begin
+          (= _.1 (meta-builtin/builtin/format list))
+          (meta-builtin/builtin/list-push! _.1 list.1.1))
+        (= _.2 (meta-builtin/builtin/string-concat list.1.1))
+        (= _.3 (meta-builtin/builtin/make-source-position 127 7 3))
+        (= _.4 (meta-builtin/builtin/make-source-position 132 7 8))
+        (= _.5 (meta-builtin/builtin/make-source-span _.3 _.4))
+        (= _.6
+           (meta-builtin/builtin/make-source-location
+            "src/010-my-list.meta"
+            _.5))
+        (meta-builtin/builtin/error-with-location _.2 _.6))
+      (if (self/010-my-list/li? list)
+          (begin
+            (= tail.1 (self/010-my-list/li-tail list))
+            (= head.1 (self/010-my-list/li-head list))
+            head.1)
+          (begin
+            (= _.7 (meta-builtin/builtin/make-source-position 127 7 3))
+            (= _.8 (meta-builtin/builtin/make-source-position 132 7 8))
+            (= _.9 (meta-builtin/builtin/make-source-span _.7 _.8))
+            (= _.10
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.9))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.10)))))
+
+(claim my-list-tail
+  (polymorphic (A) (-> (010-my-list/my-list-t A) (010-my-list/my-list-t A))))
+
+(define (my-list-tail list)
+  (if (self/010-my-list/nil? list)
+      (begin
+        (= list.1.1 (meta-builtin/builtin/make-list))
+        (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1.1)
+        (meta-builtin/builtin/list-push! " " list.1.1)
+        (begin
+          (= _.1 (meta-builtin/builtin/format list))
+          (meta-builtin/builtin/list-push! _.1 list.1.1))
+        (= _.2 (meta-builtin/builtin/string-concat list.1.1))
+        (= _.3 (meta-builtin/builtin/make-source-position 198 11 3))
+        (= _.4 (meta-builtin/builtin/make-source-position 203 11 8))
+        (= _.5 (meta-builtin/builtin/make-source-span _.3 _.4))
+        (= _.6
+           (meta-builtin/builtin/make-source-location
+            "src/010-my-list.meta"
+            _.5))
+        (meta-builtin/builtin/error-with-location _.2 _.6))
+      (if (self/010-my-list/li? list)
+          (begin
+            (= tail.1 (self/010-my-list/li-tail list))
+            (= head.1 (self/010-my-list/li-head list))
+            tail.1)
+          (begin
+            (= _.7 (meta-builtin/builtin/make-source-position 198 11 3))
+            (= _.8 (meta-builtin/builtin/make-source-position 203 11 8))
+            (= _.9 (meta-builtin/builtin/make-source-span _.7 _.8))
+            (= _.10
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.9))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.10)))))
+
 (claim my-list-length (polymorphic (A) (-> (010-my-list/my-list-t A) int-t)))
 
 (define (my-list-length list)
@@ -78,8 +149,8 @@
             (= _.1 (self/010-my-list/my-list-length tail.1))
             (meta-builtin/builtin/iadd 1 _.1))
           (begin
-            (= _.2 (meta-builtin/builtin/make-source-position 129 7 3))
-            (= _.3 (meta-builtin/builtin/make-source-position 134 7 8))
+            (= _.2 (meta-builtin/builtin/make-source-position 271 15 3))
+            (= _.3 (meta-builtin/builtin/make-source-position 276 15 8))
             (= _.4 (meta-builtin/builtin/make-source-span _.2 _.3))
             (= _.5
                (meta-builtin/builtin/make-source-location
@@ -102,11 +173,295 @@
             (= _.2 (self/010-my-list/my-list-map f tail.1))
             (self/010-my-list/li _.1 _.2))
           (begin
-            (= _.3 (meta-builtin/builtin/make-source-position 241 12 3))
-            (= _.4 (meta-builtin/builtin/make-source-position 246 12 8))
+            (= _.3 (meta-builtin/builtin/make-source-position 383 20 3))
+            (= _.4 (meta-builtin/builtin/make-source-position 388 20 8))
             (= _.5 (meta-builtin/builtin/make-source-span _.3 _.4))
             (= _.6
                (meta-builtin/builtin/make-source-location
                 "src/010-my-list.meta"
                 _.5))
             (meta-builtin/builtin/error-with-location "cond mismatch" _.6)))))
+
+(claim my-list-append
+  (polymorphic
+    (A)
+    (-> (010-my-list/my-list-t A)
+        (010-my-list/my-list-t A)
+        (010-my-list/my-list-t A))))
+
+(define (my-list-append left right)
+  (if (self/010-my-list/nil? left) right
+      (if (self/010-my-list/li? left)
+          (begin
+            (= tail.1 (self/010-my-list/li-tail left))
+            (= head.1 (self/010-my-list/li-head left))
+            (= _.1 (self/010-my-list/my-list-append tail.1 right))
+            (self/010-my-list/li head.1 _.1))
+          (begin
+            (= _.2 (meta-builtin/builtin/make-source-position 510 25 3))
+            (= _.3 (meta-builtin/builtin/make-source-position 515 25 8))
+            (= _.4 (meta-builtin/builtin/make-source-span _.2 _.3))
+            (= _.5
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.4))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.5)))))
+
+(claim my-list-map-zip
+  (polymorphic
+    (A B C)
+    (-> (-> A B C)
+        (010-my-list/my-list-t A)
+        (-> (010-my-list/my-list-t B) (010-my-list/my-list-t C)))))
+
+(define (my-list-map-zip f list1 list2)
+  (if (self/010-my-list/nil? list1) (begin (= _.1 list2) (self/010-my-list/nil))
+      (if (self/010-my-list/li? list1)
+          (if (self/010-my-list/nil? list2)
+              (begin
+                (= tail1.1 (self/010-my-list/li-tail list1))
+                (= head1.1 (self/010-my-list/li-head list1))
+                (self/010-my-list/nil))
+              (if (self/010-my-list/li? list2)
+                  (begin
+                    (= tail2.1 (self/010-my-list/li-tail list2))
+                    (= head2.1 (self/010-my-list/li-head list2))
+                    (= tail1.2 (self/010-my-list/li-tail list1))
+                    (= head1.2 (self/010-my-list/li-head list1))
+                    (= _.1 (f head1.2 head2.1))
+                    (= _.2 (self/010-my-list/my-list-map-zip f tail1.2 tail2.1))
+                    (self/010-my-list/li _.1 _.2))
+                  (begin
+                    (= _.3 (meta-builtin/builtin/make-source-position 644 30 3))
+                    (= _.4
+                       (meta-builtin/builtin/make-source-position 654 30 13))
+                    (= _.5 (meta-builtin/builtin/make-source-span _.3 _.4))
+                    (= _.6
+                       (meta-builtin/builtin/make-source-location
+                        "src/010-my-list.meta"
+                        _.5))
+                    (meta-builtin/builtin/error-with-location
+                     "cond mismatch"
+                     _.6))))
+          (begin
+            (= _.7 (meta-builtin/builtin/make-source-position 644 30 3))
+            (= _.8 (meta-builtin/builtin/make-source-position 654 30 13))
+            (= _.9 (meta-builtin/builtin/make-source-span _.7 _.8))
+            (= _.10
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.9))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.10)))))
+
+(claim my-list-map-zip-2
+  (polymorphic
+    (A B C)
+    (-> (-> A B C)
+        (010-my-list/my-list-t A)
+        (-> (010-my-list/my-list-t B) (010-my-list/my-list-t C)))))
+
+(define (my-list-map-zip-2 f list1 list2)
+  (if (self/010-my-list/nil? list1) (begin (= _.1 list2) (self/010-my-list/nil))
+      (if (self/010-my-list/li? list1)
+          (if (self/010-my-list/nil? list2)
+              (begin (= _.2 list1) (self/010-my-list/nil))
+              (if (self/010-my-list/li? list2)
+                  (if (self/010-my-list/nil? list1)
+                      (begin
+                        (= list.1 (meta-builtin/builtin/make-list))
+                        (meta-builtin/builtin/list-push!
+                         "pattern mismatch on:"
+                         list.1)
+                        (meta-builtin/builtin/list-push! " " list.1)
+                        (begin
+                          (= _.1 (meta-builtin/builtin/format list1))
+                          (meta-builtin/builtin/list-push! _.1 list.1))
+                        (meta-builtin/builtin/list-push! " " list.1)
+                        (begin
+                          (= _.2 (meta-builtin/builtin/format list2))
+                          (meta-builtin/builtin/list-push! _.2 list.1))
+                        (= _.3 (meta-builtin/builtin/string-concat list.1))
+                        (= _.4
+                           (meta-builtin/builtin/make-source-position 876 37 3))
+                        (= _.5
+                           (meta-builtin/builtin/make-source-position 886 37 13))
+                        (= _.6 (meta-builtin/builtin/make-source-span _.4 _.5))
+                        (= _.7
+                           (meta-builtin/builtin/make-source-location
+                            "src/010-my-list.meta"
+                            _.6))
+                        (meta-builtin/builtin/error-with-location _.3 _.7))
+                      (if (self/010-my-list/li? list1)
+                          (if (self/010-my-list/nil? list2)
+                              (begin
+                                (= list.2 (meta-builtin/builtin/make-list))
+                                (meta-builtin/builtin/list-push!
+                                 "pattern mismatch on:"
+                                 list.2)
+                                (meta-builtin/builtin/list-push! " " list.2)
+                                (begin
+                                  (= _.8 (meta-builtin/builtin/format list1))
+                                  (meta-builtin/builtin/list-push! _.8 list.2))
+                                (meta-builtin/builtin/list-push! " " list.2)
+                                (begin
+                                  (= _.9 (meta-builtin/builtin/format list2))
+                                  (meta-builtin/builtin/list-push! _.9 list.2))
+                                (= _.10
+                                   (meta-builtin/builtin/string-concat list.2))
+                                (= _.11
+                                   (meta-builtin/builtin/make-source-position
+                                    876
+                                    37
+                                    3))
+                                (= _.12
+                                   (meta-builtin/builtin/make-source-position
+                                    886
+                                    37
+                                    13))
+                                (= _.13
+                                   (meta-builtin/builtin/make-source-span
+                                    _.11
+                                    _.12))
+                                (= _.14
+                                   (meta-builtin/builtin/make-source-location
+                                    "src/010-my-list.meta"
+                                    _.13))
+                                (meta-builtin/builtin/error-with-location
+                                 _.10
+                                 _.14))
+                              (if (self/010-my-list/li? list2)
+                                  (begin
+                                    (= tail2.1 (self/010-my-list/li-tail list2))
+                                    (= head2.1 (self/010-my-list/li-head list2))
+                                    (= tail1.1 (self/010-my-list/li-tail list1))
+                                    (= head1.1 (self/010-my-list/li-head list1))
+                                    (= _.15 (f head1.1 head2.1))
+                                    (= _.16
+                                       (self/010-my-list/my-list-map-zip-2
+                                        f
+                                        tail1.1
+                                        tail2.1))
+                                    (self/010-my-list/li _.15 _.16))
+                                  (begin
+                                    (= _.17
+                                       (meta-builtin/builtin/make-source-position
+                                        876
+                                        37
+                                        3))
+                                    (= _.18
+                                       (meta-builtin/builtin/make-source-position
+                                        886
+                                        37
+                                        13))
+                                    (= _.19
+                                       (meta-builtin/builtin/make-source-span
+                                        _.17
+                                        _.18))
+                                    (= _.20
+                                       (meta-builtin/builtin/make-source-location
+                                        "src/010-my-list.meta"
+                                        _.19))
+                                    (meta-builtin/builtin/error-with-location
+                                     "cond mismatch"
+                                     _.20))))
+                          (begin
+                            (= _.21
+                               (meta-builtin/builtin/make-source-position
+                                876
+                                37
+                                3))
+                            (= _.22
+                               (meta-builtin/builtin/make-source-position
+                                886
+                                37
+                                13))
+                            (= _.23
+                               (meta-builtin/builtin/make-source-span _.21 _.22))
+                            (= _.24
+                               (meta-builtin/builtin/make-source-location
+                                "src/010-my-list.meta"
+                                _.23))
+                            (meta-builtin/builtin/error-with-location
+                             "cond mismatch"
+                             _.24))))
+                  (begin
+                    (= _.25
+                       (meta-builtin/builtin/make-source-position 876 37 3))
+                    (= _.26
+                       (meta-builtin/builtin/make-source-position 886 37 13))
+                    (= _.27 (meta-builtin/builtin/make-source-span _.25 _.26))
+                    (= _.28
+                       (meta-builtin/builtin/make-source-location
+                        "src/010-my-list.meta"
+                        _.27))
+                    (meta-builtin/builtin/error-with-location
+                     "cond mismatch"
+                     _.28))))
+          (begin
+            (= _.29 (meta-builtin/builtin/make-source-position 876 37 3))
+            (= _.30 (meta-builtin/builtin/make-source-position 886 37 13))
+            (= _.31 (meta-builtin/builtin/make-source-span _.29 _.30))
+            (= _.32
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.31))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.32)))))
+
+(claim my-list-adjacent-dedup
+  (polymorphic (A) (-> (010-my-list/my-list-t A) (010-my-list/my-list-t A))))
+
+(define (my-list-adjacent-dedup list)
+  (if (self/010-my-list/nil? list) (self/010-my-list/nil)
+      (if (self/010-my-list/li? list)
+          (if
+              (begin
+                (= _.1 (self/010-my-list/li-tail list))
+                (self/010-my-list/nil? _.1))
+              (begin
+                (= head.1 (self/010-my-list/li-head list))
+                (= _.2 (self/010-my-list/nil))
+                (self/010-my-list/li head.1 _.2))
+              (if
+                  (begin
+                    (= _.3 (self/010-my-list/li-tail list))
+                    (self/010-my-list/li? _.3))
+                  (begin
+                    (= rest.1
+                       (begin
+                         (= _.4 (self/010-my-list/li-tail list))
+                         (self/010-my-list/li-tail _.4)))
+                    (= second.1
+                       (begin
+                         (= _.5 (self/010-my-list/li-tail list))
+                         (self/010-my-list/li-head _.5)))
+                    (= first.1 (self/010-my-list/li-head list))
+                    (if (meta-builtin/builtin/equal? first.1 second.1)
+                        (begin
+                          (= _.6 (self/010-my-list/li second.1 rest.1))
+                          (self/010-my-list/my-list-adjacent-dedup _.6))
+                        (begin
+                          (= _.7 (self/010-my-list/li second.1 rest.1))
+                          (= _.8 (self/010-my-list/my-list-adjacent-dedup _.7))
+                          (self/010-my-list/li first.1 _.8))))
+                  (begin
+                    (= _.9
+                       (meta-builtin/builtin/make-source-position 1091 44 3))
+                    (= _.10
+                       (meta-builtin/builtin/make-source-position 1096 44 8))
+                    (= _.11 (meta-builtin/builtin/make-source-span _.9 _.10))
+                    (= _.12
+                       (meta-builtin/builtin/make-source-location
+                        "src/010-my-list.meta"
+                        _.11))
+                    (meta-builtin/builtin/error-with-location
+                     "cond mismatch"
+                     _.12))))
+          (begin
+            (= _.13 (meta-builtin/builtin/make-source-position 1091 44 3))
+            (= _.14 (meta-builtin/builtin/make-source-position 1096 44 8))
+            (= _.15 (meta-builtin/builtin/make-source-span _.13 _.14))
+            (= _.16
+               (meta-builtin/builtin/make-source-location
+                "src/010-my-list.meta"
+                _.15))
+            (meta-builtin/builtin/error-with-location "cond mismatch" _.16)))))
