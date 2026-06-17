@@ -285,7 +285,7 @@ function lookupSameAlgebraicType(
   return first
 }
 
-function matchesConstructor(
+function clauseStartsWithDataConstructor(
   ctx: DesugarMatchCtx,
   clause: M.MatchClause,
   info: M.DataConstructorInfo,
@@ -321,7 +321,9 @@ function groupClausesByHeadDataConstructor(
       ctorName,
     )
     const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(key)!
-    const grouped = clauses.filter((c) => matchesConstructor(ctx, c, info))
+    const grouped = clauses.filter((c) =>
+      clauseStartsWithDataConstructor(ctx, c, info),
+    )
     return { dataConstructorInfo: info, clauses: grouped }
   })
 }

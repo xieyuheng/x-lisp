@@ -223,17 +223,17 @@
          (make-data-pattern-clause-group
            data-constructor-info
            (list-select
-             (matches-constructor? ctx data-constructor-info)
+             (clause-starts-with-data-constructor? ctx data-constructor-info)
              clauses)))))))
 
-(define (matches-constructor? ctx info clause)
+(define (clause-starts-with-data-constructor? ctx info clause)
   (= pattern (car (match-clause-patterns clause)))
   (if (not (data-pattern? pattern))
     false
-    (begin
-      (= qn (resolve-ctor-qualified-name ctx (apply-exp-target pattern)))
-      (and (equal? (ctor-qualified-name-mod-name qn) (data-constructor-info-mod-name info))
-           (equal? (ctor-qualified-name-name qn) (data-constructor-info-name info))))))
+    (match (resolve-ctor-qualified-name ctx (apply-exp-target pattern))
+      ((make-ctor-qualified-name pkg-name mod-name name)
+       (and (equal? (data-constructor-info-mod-name info) mod-name)
+            (equal? (data-constructor-info-name info) name))))))
 
 (define (lookup-algebraic-type-info ctx clause)
   (= pattern (list-first (match-clause-patterns clause)))
