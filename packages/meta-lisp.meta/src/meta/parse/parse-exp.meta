@@ -154,7 +154,7 @@
     ((equal? tag 'begin)
      (@comment
        (begin <body>))
-     (parse-body sexps location))
+     (parse-body sexps keyword-location))
     ((equal? tag 'let)
      (@comment
        (let ((<name> <exp>)

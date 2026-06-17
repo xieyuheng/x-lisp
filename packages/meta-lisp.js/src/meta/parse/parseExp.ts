@@ -2,12 +2,12 @@ import * as S from "@xieyuheng/sexp.js"
 import { arrayGroup2, arrayPickLast } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
-export function parseBody(body: S.Sexp): M.Exp {
+export function parseBody(body: S.Sexp, location: S.SourceLocation): M.Exp {
   const elements = S.asListSexp(body).elements.map(parseExp)
   if (elements.length === 1) {
     return elements[0]
   } else {
-    return M.BeginExp(elements, body.location)
+    return M.BeginExp(elements, location)
   }
 }
 
@@ -16,7 +16,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LambdaExp(
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -48,12 +48,12 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
 
   "(cons* 'when condition body)": ({ condition, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
-    return M.WhenExp(parseExp(condition), parseBody(body), keyword.location)
+    return M.WhenExp(parseExp(condition), parseBody(body, body.location), keyword.location)
   },
 
   "(cons* 'unless condition body)": ({ condition, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
-    return M.UnlessExp(parseExp(condition), parseBody(body), keyword.location)
+    return M.UnlessExp(parseExp(condition), parseBody(body, body.location), keyword.location)
   },
 
   "(cons* 'and exps)": ({ exps }, { sexp }) => {
@@ -104,7 +104,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.LocalDefineExp(
       S.asSymbolSexp(name).content,
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -114,20 +114,21 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.LocalDefineExp(
       S.asSymbolSexp(name).content,
       [],
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
 
-  "(cons* 'begin body)": ({ body }, { location }) => {
-    return parseBody(body)
+  "(cons* 'begin body)": ({ body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return parseBody(body, keyword.location)
   },
 
   "(cons* 'let bindings body)": ({ bindings, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LetExp(
       S.asListSexp(bindings).elements.map(parseBinding),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -136,7 +137,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LetStarExp(
       S.asListSexp(bindings).elements.map(parseBinding),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -145,7 +146,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LetrecExp(
       S.asListSexp(bindings).elements.map(parseBinding),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -154,7 +155,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LetrecStarExp(
       S.asListSexp(bindings).elements.map(parseBinding),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -281,25 +282,25 @@ const parseCondClause = S.createRouter<M.CondClause>({
     if (question.kind === "SymbolSexp" && question.content === "else") {
       return M.CondClause(
         M.QualifiedVarExp("meta-builtin", "builtin", "true", location),
-        parseBody(body),
+        parseBody(body, body.location),
         location,
       )
     } else {
-      return M.CondClause(parseExp(question), parseBody(body), location)
+      return M.CondClause(parseExp(question), parseBody(body, body.location), location)
     }
   },
 })
 
 const parseMatchClause = S.createRouter<M.MatchClause>({
   "(cons* pattern body)": ({ pattern, body }, { location }) =>
-    M.MatchClause([parseExp(pattern)], parseBody(body), location),
+    M.MatchClause([parseExp(pattern)], parseBody(body, body.location), location),
 })
 
 const parseMatchManyClause = S.createRouter<M.MatchClause>({
   "(cons* patterns body)": ({ patterns, body }, { location }) =>
     M.MatchClause(
       S.asListSexp(patterns).elements.map(parseExp),
-      parseBody(body),
+      parseBody(body, body.location),
       location,
     ),
 })

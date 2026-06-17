@@ -11,7 +11,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.DefineFunctionStmt(
       S.asSymbolSexp(name).content,
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -20,7 +20,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineVariableStmt(
       S.asSymbolSexp(name).content,
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -29,7 +29,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineTestStmt(
       S.asSymbolSexp(name).content,
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -42,7 +42,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.DefineTypeStmt(
       S.asSymbolSexp(name).content,
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
@@ -52,7 +52,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.DefineTypeStmt(
       S.asSymbolSexp(name).content,
       [],
-      parseBody(body),
+      parseBody(body, body.location),
       keyword.location,
     )
   },
