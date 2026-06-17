@@ -85,10 +85,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
           sexp.location,
         ),
         [
-          M.ListExp(
-            sexp.elements.map((e) => desugarSexp(e)),
-            sexp.location,
-          ),
+          M.ListExp(sexp.elements.map(desugarSexp), sexp.location),
           desugarLocation(sexp.location),
         ],
         sexp.location,

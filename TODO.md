@@ -1,4 +1,3 @@
-[meta-lisp.meta] [review] desugar-sexp.meta
 [meta-lisp.meta] [review] desugar.meta
 
 [meta-lisp.meta] [review] desugar-match.meta
