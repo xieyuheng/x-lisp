@@ -8,8 +8,6 @@ import * as M from "../index.ts"
 import type { Outcome } from "../mod/Mod.ts"
 
 export type ModuleAnalysisReport = {
-  definedNames: NameGroupByMod
-  privateNames: NameGroupByMod
   fragmentScopes: Map<string, FragmentScope>
   outcome: Outcome
 }
@@ -28,17 +26,8 @@ export type FragmentScope = {
 }
 
 export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
-  const definedNames = new Map<ModName, Set<Name>>()
-  const privateNames = new Map<ModName, Set<Name>>()
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    mergeSetMap(definedNames, collectDefinedNames(orderedPkg))
-    mergeSetMap(privateNames, collectPrivateNames(orderedPkg))
-  }
-
   const fragmentScopes = new Map<string, FragmentScope>()
   const moduleAnalysisReport: ModuleAnalysisReport = {
-    definedNames,
-    privateNames,
     fragmentScopes,
     outcome: "OutcomeOk",
   }
@@ -62,20 +51,6 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   }
 
   return moduleAnalysisReport
-}
-
-function mergeSetMap<K, V>(
-  target: Map<K, Set<V>>,
-  source: Map<K, Set<V>>,
-): void {
-  for (const [key, values] of source) {
-    let existing = target.get(key)
-    if (!existing) {
-      existing = new Set<V>()
-      target.set(key, existing)
-    }
-    for (const v of values) existing.add(v)
-  }
 }
 
 function createFragmentScope(modName: ModName): FragmentScope {
@@ -267,18 +242,6 @@ function formatModuleAnalysisReport(
   const lines: Array<string> = []
   lines.push("(module-analysis-report")
 
-  lines.push("  (defined-names")
-  for (const [modName, names] of sortedEntries(result.definedNames)) {
-    lines.push(`    (${modName} ${formatNames(names, debug)})`)
-  }
-  closeTop(lines)
-
-  lines.push("  (private-names")
-  for (const [modName, names] of sortedEntries(result.privateNames)) {
-    lines.push(`    (${modName} ${formatNames(names, debug)})`)
-  }
-  closeTop(lines)
-
   lines.push("  (fragment-scopes")
   for (const [path, scope] of sortedEntries(result.fragmentScopes)) {
     lines.push(`    ("${path}"`)
@@ -306,10 +269,6 @@ function formatModuleAnalysisReport(
 
   closeTop(lines)
   return lines.join("\n")
-}
-
-function formatNames(names: Set<Name>, debug: boolean): string {
-  return debug ? [...names].sort(cmp).join(" ") : String(names.size)
 }
 
 function sortedEntries<K extends string, V>(map: Map<K, V>): Array<[K, V]> {
