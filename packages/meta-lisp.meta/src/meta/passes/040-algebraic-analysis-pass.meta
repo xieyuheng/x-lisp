@@ -3,7 +3,7 @@
 (define-type constructor-key-t string-t)
 
 (define-struct data-constructor-info-t 
-  (pkg-id symbol-t)
+  (pkg-name symbol-t)
   (mod-name symbol-t)
   (type-name symbol-t)
   (name symbol-t)
@@ -11,7 +11,7 @@
   (predicate-name symbol-t))
 
 (define-struct algebraic-type-info-t
-  (pkg-id symbol-t)
+  (pkg-name symbol-t)
   (mod-name symbol-t)
   (name symbol-t)
   (constructor-names (list-t symbol-t)))
@@ -24,8 +24,8 @@
   (-> symbol-t symbol-t symbol-t
       string-t))
 
-(define (algebraic-key pkg-id mod-name name)
-  (@string (symbol-to-string pkg-id) "/" (symbol-to-string mod-name) "/" (symbol-to-string name)))
+(define (algebraic-key pkg-name mod-name name)
+  (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name)))
 
 (claim algebraic-analysis-pass
   (-> package-t
@@ -33,48 +33,45 @@
 
 (define (algebraic-analysis-pass package)
   (= report (make-algebraic-analysis-report (make-hash) (make-hash)))
-  (for-list (package-closure-in-topological-order package)
-    (algebraic-analysis-package report))
+  (for-hash-value (package-fragments package)
+    (lambda (fragment)
+      (for-list (fragment-stmts fragment)
+        (algebraic-analysis-stmt report (package-id package) fragment))))
+  (for-hash (package-dependencies package)
+    (lambda (alias dep)
+      (for-hash-value (package-fragments dep)
+        (lambda (fragment)
+          (for-list (fragment-stmts fragment)
+            (algebraic-analysis-stmt report alias fragment))))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (dump-algebraic-analysis-report report package))
   report)
 
-(claim algebraic-analysis-package
-  (-> algebraic-analysis-report-t package-t
-      void-t))
-
-(define (algebraic-analysis-package report package)
-  (for-hash-value (package-fragments package)
-    (lambda (fragment)
-      (for-list (fragment-stmts fragment)
-        (algebraic-analysis-stmt report package fragment)))))
-
 (claim algebraic-analysis-stmt
-  (-> algebraic-analysis-report-t package-t fragment-t (stmt-t exp-t)
+  (-> algebraic-analysis-report-t symbol-t fragment-t (stmt-t exp-t)
       void-t))
 
-(define (algebraic-analysis-stmt report package fragment stmt)
+(define (algebraic-analysis-stmt report pkg-name fragment stmt)
   (match stmt
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (= type-name (pre-type-constructor-name type-constructor))
      (= mod-name (fragment-mod-name fragment))
-     (= pkg-id (package-id package))
      (for-list data-constructors
        (lambda (ctor)
-         (= key (algebraic-key pkg-id mod-name (explicit-data-constructor-name ctor)))
+         (= key (algebraic-key pkg-name mod-name (explicit-data-constructor-name ctor)))
          (= fields (explicit-data-constructor-fields ctor))
          (= data-constructor-info
             (make-data-constructor-info
-              pkg-id mod-name type-name
+              pkg-name mod-name type-name
               (explicit-data-constructor-name ctor)
               (list-map explicit-data-field-accessor-name fields)
               (explicit-data-constructor-predicate-name ctor)))
          (hash-put! key data-constructor-info
                     (algebraic-analysis-report-data-constructor-infos report))))
      (= constructor-names (list-map explicit-data-constructor-name data-constructors))
-     (= type-key (algebraic-key pkg-id mod-name type-name))
+     (= type-key (algebraic-key pkg-name mod-name type-name))
      (= algebraic-type-info
-        (make-algebraic-type-info pkg-id mod-name type-name constructor-names))
+        (make-algebraic-type-info pkg-name mod-name type-name constructor-names))
      (hash-put! type-key algebraic-type-info
                 (algebraic-analysis-report-algebraic-type-infos report))
      void)
@@ -97,7 +94,7 @@
       (= key (hash-entry-key entry))
       (= info (hash-entry-value entry))
       (list-push! (@string "    (\"" key "\"") lines)
-      (list-push! (@string "      (pkg-id " (symbol-to-string (data-constructor-info-pkg-id info)) ")") lines)
+      (list-push! (@string "      (pkg-name " (symbol-to-string (data-constructor-info-pkg-name info)) ")") lines)
       (list-push! (@string "      (mod-name " (symbol-to-string (data-constructor-info-mod-name info)) ")") lines)
       (list-push! (@string "      (type-name " (symbol-to-string (data-constructor-info-type-name info)) ")") lines)
       (list-push! (@string "      (name " (symbol-to-string (data-constructor-info-name info)) ")") lines)
@@ -112,7 +109,7 @@
       (= key (hash-entry-key entry))
       (= info (hash-entry-value entry))
       (list-push! (@string "    (\"" key "\"") lines)
-      (list-push! (@string "      (pkg-id " (symbol-to-string (algebraic-type-info-pkg-id info)) ")") lines)
+      (list-push! (@string "      (pkg-name " (symbol-to-string (algebraic-type-info-pkg-name info)) ")") lines)
       (list-push! (@string "      (mod-name " (symbol-to-string (algebraic-type-info-mod-name info)) ")") lines)
       (list-push! (@string "      (name " (symbol-to-string (algebraic-type-info-name info)) ")") lines)
       (list-push! (@string "      (constructor-names " (string-join " " (list-map symbol-to-string (algebraic-type-info-constructor-names info))) ")") lines)

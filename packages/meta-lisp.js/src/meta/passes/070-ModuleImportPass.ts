@@ -4,17 +4,15 @@ export function ModuleImportPass(
   pkg: M.Package,
   info: M.ModuleAnalysisReport,
 ): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const [path, fragment] of orderedPkg.fragments) {
-      const scope = info.fragmentScopes.get(path)
-      if (scope) {
-        fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
-          moduleImportStmt(scope, stmt),
-        )
-      } else {
-        let message = `[ModuleImportPass] missing scope for: ${path}`
-        throw new Error(message)
-      }
+  for (const [path, fragment] of pkg.fragments) {
+    const scope = info.fragmentScopes.get(path)
+    if (scope) {
+      fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
+        moduleImportStmt(scope, stmt),
+      )
+    } else {
+      let message = `[ModuleImportPass] missing scope for: ${path}`
+      throw new Error(message)
     }
   }
 

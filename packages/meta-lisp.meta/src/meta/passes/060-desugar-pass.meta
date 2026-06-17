@@ -5,20 +5,12 @@
       void-t))
 
 (define (desugar-pass package)
-  (for-list (package-closure-in-topological-order package)
-    desugar-package)
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (package-dump-desugared-fragments package "060-desugar")))
-
-(claim desugar-package
-  (-> package-t
-      void-t))
-
-(define (desugar-package package)
   (ignore
     (package-put-fragments!
       (hash-map-value desugar-fragment (package-fragments package))
-      package)))
+      package))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-desugared-fragments package "060-desugar")))
 
 (claim desugar-fragment
   (-> fragment-t

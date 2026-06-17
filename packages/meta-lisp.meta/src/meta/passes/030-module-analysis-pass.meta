@@ -8,6 +8,7 @@
 
 (define-type mod-name-t symbol-t)
 (define-type name-t symbol-t)
+(define-type pkg-name-t symbol-t)
 (define-type prefix-t symbol-t)
 
 (define-type name-group-by-mod-t (hash-t mod-name-t (set-t name-t)))
@@ -36,28 +37,18 @@
 
 (define (module-analysis-pass package)
   (= report (make-module-analysis-report (make-hash) (outcome-ok)))
-  (for-list (package-closure-in-topological-order package)
-    (module-analysis-package report))
+  (for-hash (package-fragments package)
+    (lambda (path fragment)
+      (= scope (make-fragment-scope (fragment-mod-name fragment)))
+      (hash-put! path scope (module-analysis-report-fragment-scopes report))
+      (for-list (fragment-stmts fragment)
+        (lambda (stmt)
+          (if (outcome-error? (ensure-imported-mod-exists package stmt))
+            (ignore (module-analysis-report-put-outcome! (outcome-error) report))
+            (execute-import package scope stmt))))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (dump-module-analysis-report report package))
   report)
-
-(claim module-analysis-package
-  (-> module-analysis-report-t package-t
-      void-t))
-
-(define (module-analysis-package report package)
-  (for-list (package-closure-in-topological-order package)
-    (lambda (ordered-package)
-      (for-hash (package-fragments ordered-package)
-        (lambda (path fragment)
-          (= scope (make-fragment-scope (fragment-mod-name fragment)))
-          (hash-put! path scope (module-analysis-report-fragment-scopes report))
-          (for-list (fragment-stmts fragment)
-            (lambda (stmt)
-              (if (outcome-error? (ensure-imported-mod-exists ordered-package stmt))
-                (ignore (module-analysis-report-put-outcome! (outcome-error) report))
-                (execute-import ordered-package scope stmt)))))))))
 
 (claim collect-defined-names
   (-> package-t

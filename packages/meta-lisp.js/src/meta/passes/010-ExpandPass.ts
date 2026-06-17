@@ -2,10 +2,8 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function ExpandPass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const fragment of orderedPkg.fragments.values()) {
-      fragment.stmts = fragment.stmts.flatMap(expandStmt)
-    }
+  for (const fragment of pkg.fragments.values()) {
+    fragment.stmts = fragment.stmts.flatMap(expandStmt)
   }
 
   if (pkg.config.compiler.dump) M.packageDumpFragments(pkg, "010-expand")

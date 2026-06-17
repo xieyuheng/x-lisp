@@ -2,11 +2,9 @@ import assert from "node:assert"
 import * as M from "../index.ts"
 
 export function LocatePass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
-      for (const definition of mod.definitions.values()) {
-        locateDefinition(definition)
-      }
+  for (const mod of pkg.mods.values()) {
+    for (const definition of mod.definitions.values()) {
+      locateDefinition(definition)
     }
   }
 

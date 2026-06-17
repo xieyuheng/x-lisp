@@ -5,20 +5,13 @@
       void-t))
 
 (define (expand-pass package)
-  (for-list (package-closure-in-topological-order package) expand-package)
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (package-dump-fragments package "010-expand")))
-
-(claim expand-package
-  (-> package-t
-      void-t))
-
-(define (expand-package package)
   (for-hash-value (package-fragments package)
     (lambda (fragment)
       (fragment-put-stmts!
         (list-flat-map expand-stmt (fragment-stmts fragment))
-        fragment))))
+        fragment)))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-fragments package "010-expand")))
 
 (claim expand-stmt
   (-> (stmt-t exp-t)

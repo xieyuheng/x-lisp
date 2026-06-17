@@ -7,25 +7,13 @@
       void-t))
 
 (define (lower-match-pass module-analysis-report algebraic-analysis-report package)
-  (for-list (package-closure-in-topological-order package)
-    (lower-match-package module-analysis-report algebraic-analysis-report))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (package-dump-fragments package "050-lower-match")))
-
-(claim lower-match-package
-  (-> module-analysis-report-t
-      algebraic-analysis-report-t
-      package-t
-      void-t))
-
-(define (lower-match-package module-analysis-report algebraic-analysis-report package)
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (= fragment-scopes (module-analysis-report-fragment-scopes module-analysis-report))
       (match (hash-get-maybe path fragment-scopes)
         ((nothing)
          (error-with-location
-           (@string "(lower-match-package) missing scope for: " path)
+           (@string "(lower-match-pass) missing scope for: " path)
            (zero-location path)))
         ((just scope)
          (= ctx (make-desugar-match-ctx
@@ -35,7 +23,9 @@
                   (package-id package)))
          (fragment-put-stmts!
            (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
-           fragment))))))
+           fragment)))))
+  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (package-dump-fragments package "050-lower-match")))
 
 (claim lower-match-stmt
   (-> desugar-match-ctx-t (stmt-t exp-t)

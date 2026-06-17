@@ -5,13 +5,11 @@
       void-t))
 
 (define (qualify-pass package)
-  (for-list (package-closure-in-topological-order package)
-    (lambda (ordered-package)
-      (for-hash (package-mods ordered-package)
-        (lambda (mod-name mod)
-          (for-hash (mod-definitions mod)
-            (lambda (name definition)
-              (qualify-definition mod name definition)))))))
+  (for-hash (package-mods package)
+    (lambda (mod-name mod)
+      (for-hash (mod-definitions mod)
+        (lambda (name definition)
+          (qualify-definition mod name definition)))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "100-qualify")))
 

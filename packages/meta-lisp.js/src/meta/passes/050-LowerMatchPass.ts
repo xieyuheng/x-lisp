@@ -2,24 +2,22 @@ import * as M from "../index.ts"
 
 export function LowerMatchPass(
   pkg: M.Package,
-  moduleAnalysisReport: M.ModuleAnalysisReport,
-  algebraicAnalysisReport: M.AlgebraicAnalysisReport,
+  moduleReport: M.ModuleAnalysisReport,
+  algebraicReport: M.AlgebraicAnalysisReport,
 ): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const [path, fragment] of orderedPkg.fragments) {
-      const scope = moduleAnalysisReport.fragmentScopes.get(path)
-      if (!scope) {
-        throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
-      }
-      const ctx = M.makeDesugarMatchCtx(
-        scope,
-        fragment.modName,
-        algebraicAnalysisReport,
-        orderedPkg.id,
-      )
-      for (const stmt of fragment.stmts) {
-        lowerMatchStmt(ctx, stmt)
-      }
+  for (const [path, fragment] of pkg.fragments) {
+    const scope = moduleReport.fragmentScopes.get(path)
+    if (!scope) {
+      throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
+    }
+    const ctx = M.makeDesugarMatchCtx(
+      scope,
+      fragment.modName,
+      algebraicReport,
+      pkg.id,
+    )
+    for (const stmt of fragment.stmts) {
+      lowerMatchStmt(ctx, stmt)
     }
   }
 

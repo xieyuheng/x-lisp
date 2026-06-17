@@ -4,7 +4,7 @@ import * as M from "../index.ts"
 
 export type DataConstructorInfo = {
   name: string
-  pkgId: string
+  pkgName: string
   modName: string
   typeName: string
   accessorNames: Array<string>
@@ -13,7 +13,7 @@ export type DataConstructorInfo = {
 
 export type AlgebraicTypeInfo = {
   name: string
-  pkgId: string
+  pkgName: string
   modName: string
   constructorNames: Array<string>
 }
@@ -24,46 +24,42 @@ export type AlgebraicAnalysisReport = {
 }
 
 export function algebraicKey(
-  pkgId: string,
+  pkgName: string,
   modName: string,
   name: string,
 ): string {
-  return `${pkgId}/${modName}/${name}`
+  return `${pkgName}/${modName}/${name}`
 }
 
 export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicAnalysisReport {
   const dataConstructorInfos = new Map<string, DataConstructorInfo>()
   const algebraicTypeInfos = new Map<string, AlgebraicTypeInfo>()
 
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const fragment of orderedPkg.fragments.values()) {
+  for (const fragment of pkg.fragments.values()) {
+    for (const stmt of fragment.stmts) {
+      if (stmt.kind === "DefineAlgebraicTypeStmt") {
+        collectAlgebraicType(
+          dataConstructorInfos,
+          algebraicTypeInfos,
+          fragment.modName,
+          stmt,
+          pkg.id,
+        )
+      }
+    }
+  }
+
+  for (const [alias, dep] of pkg.dependencies) {
+    for (const fragment of dep.fragments.values()) {
       for (const stmt of fragment.stmts) {
         if (stmt.kind === "DefineAlgebraicTypeStmt") {
-          const typeName = stmt.typeConstructor.name
-          const modName = fragment.modName
-          const pkgId = orderedPkg.id
-          const constructorNames: Array<string> = []
-
-          for (const ctor of stmt.dataConstructors) {
-            constructorNames.push(ctor.name)
-            const key = algebraicKey(pkgId, modName, ctor.name)
-            dataConstructorInfos.set(key, {
-              name: ctor.name,
-              pkgId,
-              modName,
-              typeName,
-              accessorNames: ctor.fields.map((f) => f.accessorName),
-              predicateName: ctor.predicate,
-            })
-          }
-
-          const typeKey = algebraicKey(pkgId, modName, typeName)
-          algebraicTypeInfos.set(typeKey, {
-            name: typeName,
-            pkgId,
-            modName,
-            constructorNames,
-          })
+          collectAlgebraicType(
+            dataConstructorInfos,
+            algebraicTypeInfos,
+            fragment.modName,
+            stmt,
+            alias,
+          )
         }
       }
     }
@@ -79,6 +75,38 @@ export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicAnalysisReport {
   }
 
   return report
+}
+
+function collectAlgebraicType(
+  dataConstructorInfos: Map<string, DataConstructorInfo>,
+  algebraicTypeInfos: Map<string, AlgebraicTypeInfo>,
+  modName: string,
+  stmt: M.DefineAlgebraicTypeStmt<M.Exp>,
+  pkgName: string,
+): void {
+  const typeName = stmt.typeConstructor.name
+  const constructorNames: Array<string> = []
+
+  for (const ctor of stmt.dataConstructors) {
+    constructorNames.push(ctor.name)
+    const key = algebraicKey(pkgName, modName, ctor.name)
+    dataConstructorInfos.set(key, {
+      name: ctor.name,
+      pkgName,
+      modName,
+      typeName,
+      accessorNames: ctor.fields.map((f) => f.accessorName),
+      predicateName: ctor.predicate,
+    })
+  }
+
+  const typeKey = algebraicKey(pkgName, modName, typeName)
+  algebraicTypeInfos.set(typeKey, {
+    name: typeName,
+    pkgName,
+    modName,
+    constructorNames,
+  })
 }
 
 function dumpAlgebraicAnalysisReport(
@@ -103,7 +131,7 @@ function formatAlgebraicAnalysisReport(
     cmp(a[0], b[0]),
   )) {
     lines.push(`    ("${key}"`)
-    lines.push(`      (pkg-id ${info.pkgId})`)
+    lines.push(`      (pkg-name ${info.pkgName})`)
     lines.push(`      (mod-name ${info.modName})`)
     lines.push(`      (type-name ${info.typeName})`)
     lines.push(`      (name ${info.name})`)
@@ -118,7 +146,7 @@ function formatAlgebraicAnalysisReport(
     cmp(a[0], b[0]),
   )) {
     lines.push(`    ("${key}"`)
-    lines.push(`      (pkg-id ${info.pkgId})`)
+    lines.push(`      (pkg-name ${info.pkgName})`)
     lines.push(`      (mod-name ${info.modName})`)
     lines.push(`      (name ${info.name})`)
     lines.push(`      (constructor-names ${info.constructorNames.join(" ")})`)

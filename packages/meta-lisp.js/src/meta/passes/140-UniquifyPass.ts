@@ -2,11 +2,9 @@ import { arrayZip } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 export function UniquifyPass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
-      for (const definition of mod.definitions.values()) {
-        uniquifyDefinition(definition)
-      }
+  for (const mod of pkg.mods.values()) {
+    for (const definition of mod.definitions.values()) {
+      uniquifyDefinition(definition)
     }
   }
 

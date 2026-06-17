@@ -32,16 +32,14 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
     outcome: "OutcomeOk",
   }
 
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const [path, fragment] of orderedPkg.fragments) {
-      const scope = createFragmentScope(fragment.modName)
-      fragmentScopes.set(path, scope)
-      for (const stmt of fragment.stmts) {
-        if (ensureImportedModExists(orderedPkg, stmt) === "OutcomeError") {
-          moduleAnalysisReport.outcome = "OutcomeError"
-        } else {
-          submitImport(orderedPkg, scope, stmt)
-        }
+  for (const [path, fragment] of pkg.fragments) {
+    const scope = createFragmentScope(fragment.modName)
+    fragmentScopes.set(path, scope)
+    for (const stmt of fragment.stmts) {
+      if (ensureImportedModExists(pkg, stmt) === "OutcomeError") {
+        moduleAnalysisReport.outcome = "OutcomeError"
+      } else {
+        submitImport(pkg, scope, stmt)
       }
     }
   }

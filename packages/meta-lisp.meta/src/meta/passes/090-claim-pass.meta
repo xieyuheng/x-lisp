@@ -6,25 +6,23 @@
 
 (define (claim-pass package)
   (= errors (make-list))
-  (for-list (package-closure-in-topological-order package)
-    (lambda (ordered-package)
-      (for-hash (package-mods ordered-package)
-        (lambda (name mod)
-          (for-hash (mod-claimed mod)
-            (lambda (claimed-name entry)
-              (unless (or (set-member? claimed-name (mod-admitted mod))
-                          (hash-has? claimed-name (mod-definitions mod)))
-                (= message
-                   (@string
-                     "undefined claimed name"
-                     "\n  module: " (symbol-to-string (mod-name mod))
-                     "\n  name: " (symbol-to-string claimed-name)
-                     "\n  exp: " (format-term (claim-entry-exp entry))))
-                (println
-                  (format-message-with-source-location
-                    message
-                    (term-location (claim-entry-exp entry))))
-                (list-push! claimed-name errors))))))))
+  (for-hash (package-mods package)
+    (lambda (name mod)
+      (for-hash (mod-claimed mod)
+        (lambda (claimed-name entry)
+          (unless (or (set-member? claimed-name (mod-admitted mod))
+                      (hash-has? claimed-name (mod-definitions mod)))
+            (= message
+               (@string
+                 "undefined claimed name"
+                 "\n  module: " (symbol-to-string (mod-name mod))
+                 "\n  name: " (symbol-to-string claimed-name)
+                 "\n  exp: " (format-term (claim-entry-exp entry))))
+            (println
+              (format-message-with-source-location
+                message
+                (term-location (claim-entry-exp entry))))
+            (list-push! claimed-name errors))))))
   (if (list-empty? errors)
     (outcome-ok)
     (outcome-error)))

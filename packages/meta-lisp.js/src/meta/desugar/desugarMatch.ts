@@ -89,16 +89,16 @@ export type DesugarMatchCtx = {
   scope: M.FragmentScope
   currentModName: string
   algebraicAnalysisReport: M.AlgebraicAnalysisReport
-  pkgId: string
+  pkgName: string
 }
 
 export function makeDesugarMatchCtx(
   scope: M.FragmentScope,
   currentModName: string,
   algebraicAnalysisReport: M.AlgebraicAnalysisReport,
-  pkgId: string,
+  pkgName: string,
 ): DesugarMatchCtx {
-  return { scope, currentModName, algebraicAnalysisReport, pkgId }
+  return { scope, currentModName, algebraicAnalysisReport, pkgName }
 }
 
 export function desugarMatch(
@@ -197,7 +197,7 @@ function desugarDataConstructorClauseGroup(
   const [target, ...restTargets] = targets
 
   const predicate = M.QualifiedVarExp(
-    group.dataConstructorInfo.pkgId,
+    group.dataConstructorInfo.pkgName,
     group.dataConstructorInfo.modName,
     group.dataConstructorInfo.predicateName,
     location,
@@ -209,7 +209,7 @@ function desugarDataConstructorClauseGroup(
     (accessorName) =>
       M.ApplyExp(
         M.QualifiedVarExp(
-          group.dataConstructorInfo.pkgId,
+          group.dataConstructorInfo.pkgName,
           group.dataConstructorInfo.modName,
           accessorName,
           location,
@@ -256,7 +256,7 @@ function lookupAlgebraicTypeInfo(
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
   const algebraicTypeInfo = ctx.algebraicAnalysisReport.algebraicTypeInfos.get(
-    M.algebraicKey(info.pkgId, info.modName, info.typeName),
+    M.algebraicKey(info.pkgName, info.modName, info.typeName),
   )
   if (!algebraicTypeInfo) {
     let message = `[lookupAlgebraicTypeInfo] cannot find algebraic type info`
@@ -275,10 +275,14 @@ function lookupSameAlgebraicType(
   const first = lookupAlgebraicTypeInfo(ctx, clauses[0])
   for (const clause of clauses) {
     const current = lookupAlgebraicTypeInfo(ctx, clause)
-    if (current.modName !== first.modName || current.name !== first.name) {
+    if (
+      current.pkgName !== first.pkgName ||
+      current.modName !== first.modName ||
+      current.name !== first.name
+    ) {
       let message = `[lookupSameAlgebraicType] algebraic data type mismatch`
-      message += `\n  first: ${first.modName}/${first.name}`
-      message += `\n  current: ${current.modName}/${current.name}`
+      message += `\n  first: ${first.pkgName}/${first.modName}/${first.name}`
+      message += `\n  current: ${current.pkgName}/${current.modName}/${current.name}`
       throw new S.ErrorWithSourceLocation(message, clause.location)
     }
   }
@@ -292,8 +296,13 @@ function clauseStartsWithDataConstructor(
 ): boolean {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) return false
-  const { modName, name } = resolveDataPatternQualifiedName(ctx, pattern)
-  return modName === info.modName && name === info.name
+  const { pkgName, modName, name } = resolveDataPatternQualifiedName(
+    ctx,
+    pattern,
+  )
+  return (
+    pkgName === info.pkgName && modName === info.modName && name === info.name
+  )
 }
 
 function clauseSpreadFirstDataPattern(clause: M.MatchClause): M.MatchClause {
@@ -316,7 +325,7 @@ function groupClausesByHeadDataConstructor(
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
     const key = M.algebraicKey(
-      algebraicTypeInfo.pkgId,
+      algebraicTypeInfo.pkgName,
       algebraicTypeInfo.modName,
       ctorName,
     )
@@ -357,7 +366,7 @@ function resolveDataPatternQualifiedName(
       }
     } else {
       return {
-        pkgName: ctx.pkgId,
+        pkgName: ctx.pkgName,
         modName: ctx.currentModName,
         name: target.name,
       }

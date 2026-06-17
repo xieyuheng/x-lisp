@@ -1,14 +1,35 @@
 (module meta)
 
-(define (check-pipeline package)
-  (expand-pass package)
-  (module-prelude-pass package)
-  (= module-analysis-report (module-analysis-pass package))
-  (= algebraic-analysis-report (algebraic-analysis-pass package))
-  (lower-match-pass module-analysis-report algebraic-analysis-report package)
-  (desugar-pass package)
-  (module-import-pass module-analysis-report package)
-  (execute-pass package)
-  (claim-pass package)
-  (qualify-pass package)
+(define (check-pipeline root-package)
+  (= closure (package-closure-in-topological-order root-package))
+
+  (for-list closure expand-pass)
+  (for-list closure module-prelude-pass)
+
+  (= module-reports (make-hash))
+  (for-list closure
+    (lambda (pkg)
+      (hash-put! (package-id pkg) (module-analysis-pass pkg) module-reports)))
+
+  (= algebraic-reports (make-hash))
+  (for-list closure
+    (lambda (pkg)
+      (hash-put! (package-id pkg) (algebraic-analysis-pass pkg) algebraic-reports)))
+
+  (for-list closure
+    (lambda (pkg)
+      (lower-match-pass
+        (hash-get (package-id pkg) module-reports)
+        (hash-get (package-id pkg) algebraic-reports)
+        pkg)))
+
+  (for-list closure desugar-pass)
+
+  (for-list closure
+    (lambda (pkg)
+      (module-import-pass (hash-get (package-id pkg) module-reports) pkg)))
+
+  (for-list closure execute-pass)
+  (for-list closure claim-pass)
+  (for-list closure qualify-pass)
   void)

@@ -2,17 +2,15 @@ import { range } from "@xieyuheng/std.js/range"
 import * as M from "../index.ts"
 
 export function SubmitPass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const [path, fragment] of orderedPkg.fragments) {
-      let mod =
-        M.packageLookupMod(orderedPkg, orderedPkg.id, fragment.modName) ||
-        M.createMod(fragment.modName, orderedPkg)
+  for (const [path, fragment] of pkg.fragments) {
+    let mod =
+      M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
+      M.createMod(fragment.modName, pkg)
 
-      M.packageAddMod(orderedPkg, mod)
+    M.packageAddMod(pkg, mod)
 
-      for (const stmt of fragment.desugaredStmts) {
-        submitStmt(mod, stmt)
-      }
+    for (const stmt of fragment.desugaredStmts) {
+      submitStmt(mod, stmt)
     }
   }
 

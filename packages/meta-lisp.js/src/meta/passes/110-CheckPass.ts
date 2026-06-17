@@ -6,12 +6,10 @@ import * as M from "../index.ts"
 export function CheckPass(pkg: M.Package): M.Outcome {
   let outcome: M.Outcome = "OutcomeOk"
 
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
-      for (const definition of mod.definitions.values()) {
-        if (M.definitionCheck(definition) === "OutcomeError")
-          outcome = "OutcomeError"
-      }
+  for (const mod of pkg.mods.values()) {
+    for (const definition of mod.definitions.values()) {
+      if (M.definitionCheck(definition) === "OutcomeError")
+        outcome = "OutcomeError"
     }
   }
 

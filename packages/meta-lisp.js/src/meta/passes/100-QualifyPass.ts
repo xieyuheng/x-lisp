@@ -2,11 +2,9 @@ import { setUnion } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
 export function QualifyPass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
-      for (const definition of mod.definitions.values()) {
-        qualifyDefinition(definition)
-      }
+  for (const mod of pkg.mods.values()) {
+    for (const definition of mod.definitions.values()) {
+      qualifyDefinition(definition)
     }
   }
 

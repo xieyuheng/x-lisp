@@ -1,15 +1,13 @@
 import * as M from "../index.ts"
 
 export function LiftLambdaPass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
-      mod.definitions = new Map(
-        mod.definitions
-          .values()
-          .flatMap((definition) => liftLambdaDefinition(mod, definition))
-          .map((definition) => [definition.name, definition]),
-      )
-    }
+  for (const mod of pkg.mods.values()) {
+    mod.definitions = new Map(
+      mod.definitions
+        .values()
+        .flatMap((definition) => liftLambdaDefinition(mod, definition))
+        .map((definition) => [definition.name, definition]),
+    )
   }
 
   if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "150-lift-lambda")

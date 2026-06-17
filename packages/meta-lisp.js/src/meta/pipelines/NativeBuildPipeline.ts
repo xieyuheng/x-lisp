@@ -8,30 +8,56 @@ import * as X86 from "../../x86/index.ts"
 import * as M from "../index.ts"
 import { X86CodegenPass } from "../passes/181-X86CodegenPass.ts"
 
-export function BuildX86Pipeline(pkg: M.Package): void {
-  M.ExpandPass(pkg)
-  M.ModulePreludePass(pkg)
-  const moduleAnalysisReport = M.ModuleAnalysisPass(pkg)
-  const algebraicAnalysisReport = M.AlgebraicAnalysisPass(pkg)
-  M.LowerMatchPass(pkg, moduleAnalysisReport, algebraicAnalysisReport)
-  M.DesugarPass(pkg)
-  M.ModuleImportPass(pkg, moduleAnalysisReport)
-  M.SubmitPass(pkg)
-  M.ClaimPass(pkg)
-  M.QualifyPass(pkg)
-  M.CheckPass(pkg)
-  M.LocatePass(pkg)
-  M.ShrinkPass(pkg)
-  M.UniquifyPass(pkg)
-  M.LiftLambdaPass(pkg)
-  M.UnnestOperandPass(pkg)
+export function BuildX86Pipeline(rootPkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
-  const basicMod = M.ExplicateControlPass(pkg)
-  const x86Mod = X86CodegenPass(pkg, basicMod)
-  X86Bundle(pkg, x86Mod)
+  for (const pkg of closure) M.ExpandPass(pkg)
+
+  for (const pkg of closure) M.ModulePreludePass(pkg)
+
+  const moduleReports = new Map<string, M.ModuleAnalysisReport>()
+  for (const pkg of closure)
+    moduleReports.set(pkg.id, M.ModuleAnalysisPass(pkg))
+
+  const algebraicReports = new Map<string, M.AlgebraicAnalysisReport>()
+  for (const pkg of closure)
+    algebraicReports.set(pkg.id, M.AlgebraicAnalysisPass(pkg))
+
+  for (const pkg of closure)
+    M.LowerMatchPass(
+      pkg,
+      moduleReports.get(pkg.id)!,
+      algebraicReports.get(pkg.id)!,
+    )
+
+  for (const pkg of closure) M.DesugarPass(pkg)
+
+  for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
+
+  for (const pkg of closure) M.SubmitPass(pkg)
+
+  for (const pkg of closure) M.ClaimPass(pkg)
+
+  for (const pkg of closure) M.QualifyPass(pkg)
+
+  for (const pkg of closure) M.CheckPass(pkg)
+
+  for (const pkg of closure) M.LocatePass(pkg)
+
+  for (const pkg of closure) M.ShrinkPass(pkg)
+
+  for (const pkg of closure) M.UniquifyPass(pkg)
+
+  for (const pkg of closure) M.LiftLambdaPass(pkg)
+
+  for (const pkg of closure) M.UnnestOperandPass(pkg)
+
+  const basicMod = M.ExplicateControlPass(rootPkg)
+  const x86Mod = X86CodegenPass(rootPkg, basicMod)
+  X86Bundle(rootPkg, x86Mod)
 
   const exe = X86.assembleExe(x86Mod)
-  const directory = M.packageOutputDirectory(pkg)
+  const directory = M.packageOutputDirectory(rootPkg)
   const exePath = `${directory}/bundle.x86.exe`
   fs.writeFileSync(exePath, exe)
 }

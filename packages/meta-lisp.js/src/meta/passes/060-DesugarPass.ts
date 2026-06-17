@@ -2,10 +2,8 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function DesugarPass(pkg: M.Package): void {
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const fragment of orderedPkg.fragments.values()) {
-      fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
-    }
+  for (const fragment of pkg.fragments.values()) {
+    fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
   }
 
   if (pkg.config.compiler.dump)

@@ -10,31 +10,57 @@ import * as B from "../../basic/index.ts"
 import * as Xvm from "../../xvm/index.ts"
 import * as M from "../index.ts"
 
-export function BuildXvmPipeline(pkg: M.Package): void {
-  M.ExpandPass(pkg)
-  M.ModulePreludePass(pkg)
-  const moduleAnalysisReport = M.ModuleAnalysisPass(pkg)
-  const algebraicAnalysisReport = M.AlgebraicAnalysisPass(pkg)
-  M.LowerMatchPass(pkg, moduleAnalysisReport, algebraicAnalysisReport)
-  M.DesugarPass(pkg)
-  M.ModuleImportPass(pkg, moduleAnalysisReport)
-  M.SubmitPass(pkg)
-  M.ClaimPass(pkg)
-  M.QualifyPass(pkg)
-  M.CheckPass(pkg)
-  M.LocatePass(pkg)
-  M.ShrinkPass(pkg)
-  M.UniquifyPass(pkg)
-  M.LiftLambdaPass(pkg)
-  M.UnnestOperandPass(pkg)
+export function BuildXvmPipeline(rootPkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
-  const basicMod = M.ExplicateControlPass(pkg)
-  if (pkg.config.compiler.basic) BasicBundle(pkg, basicMod)
+  for (const pkg of closure) M.ExpandPass(pkg)
 
-  const xvmMod = M.CodegenPass(pkg, basicMod)
-  XvmBundle(pkg, xvmMod)
+  for (const pkg of closure) M.ModulePreludePass(pkg)
 
-  xvmAssemble(pkg)
+  const moduleReports = new Map<string, M.ModuleAnalysisReport>()
+  for (const pkg of closure)
+    moduleReports.set(pkg.id, M.ModuleAnalysisPass(pkg))
+
+  const algebraicReports = new Map<string, M.AlgebraicAnalysisReport>()
+  for (const pkg of closure)
+    algebraicReports.set(pkg.id, M.AlgebraicAnalysisPass(pkg))
+
+  for (const pkg of closure)
+    M.LowerMatchPass(
+      pkg,
+      moduleReports.get(pkg.id)!,
+      algebraicReports.get(pkg.id)!,
+    )
+
+  for (const pkg of closure) M.DesugarPass(pkg)
+
+  for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
+
+  for (const pkg of closure) M.SubmitPass(pkg)
+
+  for (const pkg of closure) M.ClaimPass(pkg)
+
+  for (const pkg of closure) M.QualifyPass(pkg)
+
+  for (const pkg of closure) M.CheckPass(pkg)
+
+  for (const pkg of closure) M.LocatePass(pkg)
+
+  for (const pkg of closure) M.ShrinkPass(pkg)
+
+  for (const pkg of closure) M.UniquifyPass(pkg)
+
+  for (const pkg of closure) M.LiftLambdaPass(pkg)
+
+  for (const pkg of closure) M.UnnestOperandPass(pkg)
+
+  const basicMod = M.ExplicateControlPass(rootPkg)
+  if (rootPkg.config.compiler.basic) BasicBundle(rootPkg, basicMod)
+
+  const xvmMod = M.CodegenPass(rootPkg, basicMod)
+  XvmBundle(rootPkg, xvmMod)
+
+  xvmAssemble(rootPkg)
 }
 
 function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
