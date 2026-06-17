@@ -10,13 +10,15 @@
      (desugar (desugar-begin sequence location)))
     ((assign-exp name rhs location)
      (error-with-location
-       (string-concat ["[desugar] (=) must occur in the head of (begin)"
-                       "\n  exp: " (format-exp exp)])
+       (@string
+         "(desugar) (=) must occur in the head of (begin)"
+         "\n  exp: " (format-exp exp))
        location))
     ((local-define-exp name parameters body location)
      (error-with-location
-       (string-concat ["[desugar] local (define) must occur in the body of (begin)"
-                       "\n  exp: " (format-exp exp)])
+       (@string
+         "(desugar) local (define) must occur in the body of (begin)"
+         "\n  exp: " (format-exp exp))
        location))
     ((when-exp condition consequent location)
      (if-term (desugar condition)
@@ -74,7 +76,6 @@
      (lambda-term parameters (desugar body) location))
     ((polymorphic-exp parameters body location)
      (polymorphic-term parameters (desugar body) location))
-    ;; Core forms — bridge to Term
     ((symbol-exp content location)
      (symbol-term content location))
     ((keyword-exp content location)
@@ -90,24 +91,17 @@
     ((qualified-var-exp pkg-name mod-name name location)
      (qualified-var-term pkg-name mod-name name location))
     ((apply-exp target args location)
-     (apply-term (desugar target)
-       (list-map desugar args)
-       location))
+     (apply-term (desugar target) (list-map desugar args) location))
     ((let1-exp name rhs body location)
      (let1-term name (desugar rhs) (desugar body) location))
     ((if-exp condition consequent alternative location)
-     (if-term (desugar condition)
-       (desugar consequent)
-       (desugar alternative)
-       location))
+     (if-term (desugar condition) (desugar consequent) (desugar alternative) location))
     ((arrow-exp arg-types ret-type location)
-     (arrow-term (list-map desugar arg-types)
-       (desugar ret-type)
-       location))
+     (arrow-term (list-map desugar arg-types) (desugar ret-type) location))
     ((the-exp type instance location)
      (the-term (desugar type) (desugar instance) location))
-    ;; Should not appear after LowerMatchPass
+    ;; should not appear after lower-match-pass
     ((match-exp targets clauses location)
      (error-with-location
-       "[desugar] unexpected MatchExp"
+       "(desugar) unexpected (match)"
        location))))

@@ -142,7 +142,6 @@ export function desugar(exp: M.Exp): M.Term {
       return M.PolymorphicTerm(exp.parameters, desugar(exp.body), exp.location)
     }
 
-    // Core forms — bridge to Term
     case "SymbolExp": {
       return M.SymbolTerm(exp.content, exp.location)
     }

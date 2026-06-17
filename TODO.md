@@ -1,5 +1,3 @@
-[meta-lisp.meta] [review] desugar.meta
-
 [meta-lisp.meta] [review] desugar-match.meta
 
 # self-hosting
