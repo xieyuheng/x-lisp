@@ -340,7 +340,11 @@ function resolveDataPatternQualifiedName(
   const target = pattern.target
 
   if (target.kind === "QualifiedVarExp") {
-    return { pkgName: target.pkgName, modName: target.modName, name: target.name }
+    return {
+      pkgName: target.pkgName,
+      modName: target.modName,
+      name: target.name,
+    }
   }
 
   if (target.kind === "VarExp") {
