@@ -41,47 +41,6 @@ export function createDataPattern(
   return M.ApplyExp(M.VarExp(dataConstructor.name, location), args, location)
 }
 
-export function dataPatternDataConstructor(
-  mod: M.Mod,
-  exp: M.Exp,
-): M.DataConstructor {
-  assert(isDataPattern(exp))
-  assert(exp.kind === "ApplyExp")
-
-  if (exp.target.kind === "VarExp") {
-    const dataConstructor = M.modLookupDataConstructor(mod, exp.target.name)
-    if (!dataConstructor) {
-      let message = `[dataPatternDataConstructor] undefined target name`
-      message += `\n  exp: ${M.formatExp(exp)}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
-    }
-
-    return dataConstructor
-  }
-
-  if (exp.target.kind === "QualifiedVarExp") {
-    const qualifiedMod = M.packageLookupMod(
-      mod.pkg,
-      exp.target.pkgName,
-      exp.target.modName,
-    )
-    assert(qualifiedMod)
-    const dataConstructor = M.modLookupDataConstructor(
-      qualifiedMod,
-      exp.target.name,
-    )
-    if (!dataConstructor) {
-      let message = `[dataPatternDataConstructor] undefined target name`
-      message += `\n  exp: ${M.formatExp(exp)}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
-    }
-
-    return dataConstructor
-  }
-
-  throw new Error("[dataPatternDataConstructor] unhandled exp")
-}
-
 export function dataPatternArgPatterns(exp: M.Exp): Array<M.Exp> {
   assert(isDataPattern(exp))
   assert(exp.kind === "ApplyExp")

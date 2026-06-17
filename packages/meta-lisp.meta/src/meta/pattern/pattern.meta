@@ -33,30 +33,3 @@
 (claim is-pattern? (-> exp-t bool-t))
 (define (is-pattern? exp)
   (or (var-pattern? exp) (data-pattern? exp)))
-
-(claim data-pattern-data-constructor (-> mod-t exp-t data-constructor-t))
-(define (data-pattern-data-constructor mod exp)
-  (if (not (data-pattern? exp))
-    (error "[data-pattern-data-constructor] not a data pattern")
-    (let ((target (apply-exp-target exp)))
-      (match target
-        ((var-exp name location)
-         (let ((dcs (mod-data-constructors mod)))
-           (if (hash-has? name dcs)
-             (hash-get name dcs)
-             (error (@string
-                      "[data-pattern-data-constructor] undefined target name"
-                      "\n  name: " (symbol-to-string name))))))
-        ((qualified-var-exp pkg-name mod-name name location)
-         (match (package-lookup-mod (mod-package mod) mod-name)
-           ((just found-mod)
-            (let ((dcs (mod-data-constructors found-mod)))
-              (if (hash-has? name dcs)
-                (hash-get name dcs)
-                (error (@string
-                         "[data-pattern-data-constructor] undefined target name"
-                         "\n  name: " (symbol-to-string name))))))
-           ((nothing)
-            (error (@string
-                     "[data-pattern-data-constructor] undefined mod"
-                     "\n  mod: " (symbol-to-string mod-name))))))))))
