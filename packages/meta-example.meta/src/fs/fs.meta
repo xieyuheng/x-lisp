@@ -9,5 +9,8 @@
   (fs-write "src/fs/file-2.txt" "abc\n")
   (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
 
-  (println (list-sort string-compare-lexical (fs-list "src")))
-  (println (list-sort string-compare-lexical (fs-list-recursive "src"))))
+  (list-each println (list-sort string-compare-lexical (fs-list "src")))
+  (print "\n")
+
+  (list-each println (list-sort string-compare-lexical (fs-list-recursive "src")))
+  (print "\n"))
