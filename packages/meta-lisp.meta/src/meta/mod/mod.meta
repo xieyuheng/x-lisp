@@ -1,21 +1,21 @@
 (module meta)
 
+(define-struct* mod-t
+  (cons-mod
+    (name symbol-t)
+    (stmts (list-t (stmt-t exp-t)))
+    (admitted (set-t symbol-t))
+    (definitions (hash-t symbol-t definition-t))
+    (definition-states (hash-t symbol-t definition-state-t))
+    (claimed (hash-t symbol-t claim-entry-t))
+    (opaque-claimed (hash-t symbol-t term-t))
+    (inferred-types (hash-t symbol-t type-t))
+    (data-constructors (hash-t symbol-t data-constructor-t))
+    (package package-t)))
+
 (define-enum outcome-t
   (outcome-ok)
   (outcome-error))
-
-(define-struct* mod-t
-  (cons-mod
-   (name symbol-t)
-    (stmts (list-t (stmt-t exp-t)))
-   (admitted (set-t symbol-t))
-   (definitions (hash-t symbol-t definition-t))
-   (definition-states (hash-t symbol-t definition-state-t))
-   (claimed (hash-t symbol-t claim-entry-t))
-   (opaque-claimed (hash-t symbol-t term-t))
-   (inferred-types (hash-t symbol-t type-t))
-   (data-constructors (hash-t symbol-t data-constructor-t))
-   (package package-t)))
 
 (define-struct definition-state-t
   (is-checked bool-t)
@@ -111,9 +111,10 @@
   (let ((states (mod-definition-states mod)))
     (if (hash-has? name states)
       (let ((state (hash-get name states)))
-        (hash-put! name (make-definition-state
-                          (definition-state-is-checked state)
-                          value)
-                    states))
+        (hash-put! name
+          (make-definition-state
+            (definition-state-is-checked state)
+            value)
+          states))
       (hash-put! name (make-definition-state false value) states)))
   void)
