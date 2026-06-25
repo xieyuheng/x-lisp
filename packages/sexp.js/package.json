@@ -19,7 +19,7 @@
     "@xieyuheng/std.js": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^25.9.3",
+    "@types/node": "^25.9.4",
     "prettier": "^3.8.4",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^5.9.3"
