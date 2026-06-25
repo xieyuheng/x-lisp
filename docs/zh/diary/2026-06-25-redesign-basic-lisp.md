@@ -25,6 +25,8 @@ date: 2026-06-25
   (void-type)
   (pointer-type)
   (value-type)
+  (named-type
+    (name symbol-t))
   (struct-type
     (fields (list-t (pair-t symbol-t type-t))))
   (function-type
@@ -35,10 +37,11 @@ date: 2026-06-25
 - `int64-type` / `float64-type` / `bool-type` / `void-type`：原始标量类型。
 - `pointer-type`：opaque pointer，不带元素类型。类型信息由 `load`/`store` 指令的 dest/value 字段携带。
 - `value-type`：tagged dynamic value。所有 meta-lisp 值统一用此类型。
-- `struct-type`：通过 `define-struct` 定义的命名结构体。字段列表为 `((field-name . type) ...)`。
+- `named-type`：通过名称引用已定义的 struct 类型。仅用于使用位置（参数类型等），不用于定义位置。
+- `struct-type`：在 `struct-definition` 中定义的结构体字段布局。字段列表为 `((field-name . type) ...)`。名称由 `struct-definition` 层面的 `name` 字段承载。
 - `function-type`：仅用于 `function-declaration` 描述函数签名，不出现在值的类型标注中。
 
-parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`void-t`、`pointer-t`、`value-t`。
+parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`void-t`、`pointer-t`、`value-t`；struct 类型的引用直接用其名称（如 `point-t`）。
 
 # Operand
 
@@ -370,7 +373,7 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 
 - **类型系统**
   - 旧：无。
-  - 新：`type-t` ADT（8 个 variant）。
+  - 新：`type-t` ADT（9 个 variant）。
 
 - **Operand**
   - 旧：嵌套 `exp-t`（含 `ApplyExp`）。
