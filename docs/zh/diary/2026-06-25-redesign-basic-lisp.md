@@ -17,7 +17,7 @@ date: 2026-06-25
 
 # 类型
 
-```lisp
+```meta-lisp
 (define-enum type-t
   (int64-type)
   (float64-type)
@@ -42,7 +42,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 # Operand
 
-```lisp
+```meta-lisp
 (define-enum operand-t
   (var-operand
     (name symbol-t))
@@ -69,7 +69,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 # Instruction
 
-```lisp
+```meta-lisp
 (define-enum instr-t
   (value-instr
     (dest symbol-t)
@@ -126,7 +126,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 每个 block 恰好以一个 terminator 结尾。
 
-```lisp
+```meta-lisp
 (define-enum terminator-t
   (return-terminator
     (value operand-t))
@@ -157,7 +157,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 # Block
 
-```lisp
+```meta-lisp
 (define-struct block-t
   (label symbol-t)
   (parameters (list-t (pair-t symbol-t type-t)))
@@ -172,7 +172,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 # Definition
 
-```lisp
+```meta-lisp
 (define-enum definition-t
   (struct-definition
     (name symbol-t)
@@ -207,7 +207,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 # Module
 
-```lisp
+```meta-lisp
 (define-struct mod-t
   (definitions (hash-t symbol-t definition-t)))
 ```
@@ -218,14 +218,14 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 源程序：
 
-```lisp
+```meta-lisp
 (define (add-or-sub flag a b)
   (if flag (+ a b) (- a b)))
 ```
 
 basic-lisp IR 文本形式：
 
-```lisp
+```meta-lisp
 (define-function add-or-sub value-t
   (block (body (flag value-t) (a value-t) (b value-t))
     (= raw-a int64-t (to-int64 a))
@@ -260,7 +260,7 @@ long add_or_sub(int flag, long a, long b) {
 
 IR 文本形式：
 
-```lisp
+```meta-lisp
 (define-function add-or-sub int64-t
   (block (body (flag bool-t) (a int64-t) (b int64-t))
     (branch flag (label then a b) (label else a b)))
@@ -276,7 +276,7 @@ IR 文本形式：
 
 ## 示例 3：全局变量与结构体
 
-```lisp
+```meta-lisp
 (define-struct point-t
   (x int64-t)
   (y int64-t))
