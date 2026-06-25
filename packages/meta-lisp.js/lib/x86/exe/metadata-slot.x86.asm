@@ -3,11 +3,11 @@
 (define-struct func-meta-t
   (arity int64-t))
 
-(claim-code-metadata (pointer-t func-meta-t))
+(claim-code-metadata pointer-t)
 
 (define-metadata my-func
   (pointer
-    (struct
+    (struct func-meta-t
       (arity 7))))
 
 (define-code my-func

@@ -33,14 +33,7 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
   ])
 
   X86.SubmitPass(x86Mod, [
-    X86.ClaimCodeMetadataStmt(
-      X86.ApplyExp(
-        X86.VarExp("pointer-t", ZERO),
-        [X86.VarExp("function-metadata-t", ZERO)],
-        ZERO,
-      ),
-      ZERO,
-    ),
+    X86.ClaimCodeMetadataStmt(X86.VarExp("pointer-t", ZERO), ZERO),
   ])
   X86.ClaimPass(x86Mod)
 
@@ -136,7 +129,13 @@ function argumentDisplacement(index: number): number {
 }
 
 function regDeref(reg: string, disp: number): X86.RegDerefOperand {
-  return X86.RegDerefOperand(reg, undefined, undefined, BigInt(disp), ZERO)
+  return X86.RegDerefOperand(
+    reg,
+    undefined,
+    undefined,
+    X86.IntDisplacement(BigInt(disp), ZERO),
+    ZERO,
+  )
 }
 function regOperand(name: string): X86.RegOperand {
   return X86.RegOperand(name, ZERO)
@@ -148,7 +147,7 @@ function labelOperand(name: string): X86.LabelOperand {
   return X86.LabelOperand(name, ZERO)
 }
 function addressOperand(name: string): X86.AddressOperand {
-  return X86.AddressOperand(name, [], ZERO)
+  return X86.AddressOperand(name, ZERO)
 }
 function derefOperand(name: string): X86.DerefOperand {
   return X86.DerefOperand(addressOperand(name), ZERO)
@@ -234,7 +233,7 @@ function codegenFunction(
     target: definition.name,
     value: X86.PointerExp(
       X86.StructExp(
-        undefined,
+        "function-metadata-t",
         [
           {
             name: "arity",
@@ -320,7 +319,7 @@ function codegenVariableDefinition(
     target: definition.name,
     value: X86.PointerExp(
       X86.StructExp(
-        undefined,
+        "function-metadata-t",
         [
           { name: "arity", exp: X86.IntExp(0n, ZERO) },
           { name: "flags", exp: X86.IntExp(isTest ? 1n : 0n, ZERO) },

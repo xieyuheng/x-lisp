@@ -9,7 +9,7 @@ export function registerBuiltinTypeConstructors(mod: Mod): void {
   const pointerTC: TypeConstructor = {
     mod,
     name: "pointer-t",
-    parameters: ["T"],
+    parameters: [],
     size: () => 8,
   }
   mod.definitions.set(

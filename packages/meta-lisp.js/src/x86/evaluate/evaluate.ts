@@ -10,7 +10,7 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
       return X86.StringValue(exp.content)
 
     case "AddressExp":
-      return X86.AddressValue(exp.name, exp.path)
+      return X86.AddressValue(exp.name)
 
     case "StructExp": {
       const fields = evaluateFields(mod, env, exp.fields)

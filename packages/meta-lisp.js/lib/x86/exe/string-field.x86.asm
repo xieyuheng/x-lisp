@@ -18,8 +18,8 @@
 
 (define-code read-first-char
   (block entry
-    (lea (reg rax) (address my-config description))
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (address my-config))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of config-t description)))
     (mov (reg rax) (reg-deref (reg rax)))
     (and (reg rax) (imm 255))
     (ret)))

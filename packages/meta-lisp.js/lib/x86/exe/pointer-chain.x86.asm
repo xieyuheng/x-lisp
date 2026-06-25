@@ -9,11 +9,11 @@
   (value int64-t))
 
 (define-struct node-b-t
-  (next (pointer-t node-c-t))
+  (next pointer-t)
   (value int64-t))
 
 (define-struct node-a-t
-  (next (pointer-t node-b-t))
+  (next pointer-t)
   (value int64-t))
 
 (claim chain node-a-t)
@@ -29,8 +29,8 @@
 
 (define-code read-chain
   (block entry
-    (lea (reg rax) (address chain next))
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (address chain))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of node-a-t next)))
     (mov (reg rax) (reg-deref (reg rax)))
     (mov (reg rax) (reg-deref (reg rax)))
     (ret)))

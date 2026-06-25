@@ -2,13 +2,15 @@ import { emitTo, encode } from "../encode/index.ts"
 import type { Mod } from "../mod/index.ts"
 import {
   collectCodeLayout,
-  computePathOffset,
   emitDataSection,
   type Relocation,
+  resolveDisplacements,
   writeInt32LE,
 } from "./layout.ts"
 
 export function assembleFlat(mod: Mod): Uint8Array {
+  resolveDisplacements(mod)
+
   const labels = new Map<string, number>()
   const relocations: Array<Relocation> = []
 
@@ -30,12 +32,11 @@ export function assembleFlat(mod: Mod): Uint8Array {
   buf.set(dataResult.bytes, pos)
 
   for (const reloc of relocations) {
-    let target = labels.get(reloc.labelName)
+    const target = labels.get(reloc.labelName)
     if (target === undefined) {
       let message = `undefined label: ${reloc.labelName}`
       throw new Error(message)
     }
-    target += computePathOffset(mod, reloc.labelName, reloc.labelPath)
     const disp = target - reloc.instrEndPos
     writeInt32LE(buf, reloc.fieldOffset, disp)
   }

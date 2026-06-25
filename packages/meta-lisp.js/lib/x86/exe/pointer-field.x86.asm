@@ -6,9 +6,9 @@
 ;   "foo\0"
 ;
 ; define-code: load config.table pointer, deref to entry.value, return 42
-;   step 1: lea rax,[rel config/table] — load address of the pointer field
-;   step 2: mov rax,[rax]              — load the pointer value (entry addr)
-;   step 3: mov rax,[rax+8]            — load entry.value (at offset 8)
+;   step 1: mov rax,(address my-config)                       — &my-config
+;   step 2: mov rax,[rax + offset-of(config-t table)]         — table pointer (entry addr)
+;   step 3: mov rax,[rax + offset-of(entry-t value)]          — entry.value
 ;   step 4: ret
 
 (define-struct entry-t
@@ -17,7 +17,7 @@
 
 (define-struct config-t
   (version int64-t)
-  (table (pointer-t entry-t)))
+  (table pointer-t))
 
 (claim my-config config-t)
 (define-data my-config
@@ -30,7 +30,7 @@
 
 (define-code read-entry-value
   (block entry
-    (lea (reg rax) (address my-config table))
-    (mov (reg rax) (reg-deref (reg rax)))
-    (mov (reg rax) (reg-deref (reg rax) 8))
+    (mov (reg rax) (address my-config))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of config-t table)))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of entry-t value)))
     (ret)))

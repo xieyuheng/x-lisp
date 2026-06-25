@@ -8,11 +8,11 @@
   (arity int64-t)
   (name string-t))
 
-(claim-code-metadata (pointer-t func-meta-t))
+(claim-code-metadata pointer-t)
 
 (define-metadata my-func
   (pointer
-    (struct
+    (struct func-meta-t
       (arity 3)
       (name "triple"))))
 

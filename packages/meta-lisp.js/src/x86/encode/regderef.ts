@@ -1,4 +1,4 @@
-import type { RegDerefOperand } from "../operand/index.ts"
+import type { Displacement, RegDerefOperand } from "../operand/index.ts"
 import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { SIB_NO_INDEX, sibByte } from "./sib.ts"
@@ -14,11 +14,21 @@ export type RegDerefEncoding = {
   rexIndex: string | null
 }
 
+function dispValue(disp: Displacement | undefined): number {
+  if (disp === undefined) return 0
+  if (disp.kind === "OffsetOfDisplacement") {
+    let message =
+      "[encodeRegDeref] unresolved offset-of displacement; resolveDisplacements must run before encoding"
+    throw new Error(message)
+  }
+  return Number(disp.value)
+}
+
 export function encodeRegDeref(op: RegDerefOperand): RegDerefEncoding {
   const base = op.base
   const index = op.index
   const scale = op.scale ? Number(op.scale) : 0
-  const disp = op.disp ? Number(op.disp) : 0
+  const disp = dispValue(op.disp)
 
   if (index) {
     return encodeWithIndex(base, index, scale, disp)

@@ -1,12 +1,13 @@
-; Semantic: read field from nested struct via (deref (address ...)) with multi-step path
+; Semantic: read field from nested struct via (address ...) + offset-of
 ;
-;   (deref (address my-rect bottom-right x))
-;     → RIP-relative MOV
-;     → offset = base + offsetof(rect-t, bottom-right) + offsetof(point-t, x)
-;     → offset = base + 16 + 0 = base + 16
+;   (mov rax (address my-rect))
+;   (mov rax (reg-deref rax (offset-of rect-t bottom-right x)))
+;     → offset-of(rect-t bottom-right x)
+;     → offsetof(rect-t, bottom-right) + offsetof(point-t, x) = 16 + 0 = 16
 ;
 ; Encodings exercised:
-;   mov reg, (deref (address ...)) — 8B /r with RIP-relative
+;   mov reg, (address ...)            — RIP-relative LEA-style load of label addr
+;   mov reg, (reg-deref reg offset)   — 8B /r with disp from offset-of
 ;
 ; Data: nested struct — rect-t embeds two point-t structs
 
@@ -28,5 +29,6 @@
 
 (define-code read-rect
   (block entry
-    (mov (reg rax) (deref (address my-rect bottom-right x)))
+    (mov (reg rax) (address my-rect))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of rect-t bottom-right x)))
     (ret)))

@@ -1,5 +1,10 @@
 import * as X86 from "../index.ts"
 
+function formatDisplacement(disp: X86.Displacement): string {
+  if (disp.kind === "IntDisplacement") return disp.value.toString()
+  return `(offset-of ${[disp.structType, ...disp.fields].join(" ")})`
+}
+
 export function formatOperand(operand: X86.Operand): string {
   switch (operand.kind) {
     case "RegOperand":
@@ -9,7 +14,7 @@ export function formatOperand(operand: X86.Operand): string {
     case "LabelOperand":
       return `(label ${operand.name})`
     case "AddressOperand":
-      return `(address ${[operand.name, ...operand.path].join(" ")})`
+      return `(address ${operand.name})`
     case "DerefOperand":
       return `(deref ${formatOperand(operand.address)})`
     case "RegDerefOperand": {
@@ -19,7 +24,7 @@ export function formatOperand(operand: X86.Operand): string {
         parts.push(operand.scale?.toString() || "1")
       }
       if (operand.disp !== undefined) {
-        parts.push(operand.disp.toString())
+        parts.push(formatDisplacement(operand.disp))
       }
       return `(reg-deref ${parts.join(" ")})`
     }
