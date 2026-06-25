@@ -56,7 +56,6 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
   (bool-operand
     (value bool-t))
   (void-operand)
-  (undefined-operand)
   (function-operand
     (name symbol-t))
   (global-operand
@@ -67,8 +66,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `int64-operand` / `float64-operand` / `bool-operand`：字面量常量。
   - `int64-operand` / `float64-operand` 当前暂用 meta-lisp 的 `int-t` / `float-t` 承载字面量。但 meta-lisp 的 value 是 3-bit tag + 61-bit payload 的 tagged value：`int-t` 只有 61-bit 有符号范围，`float-t` 会截断 double 的低 3 个尾数位。自举编译 meta-lisp 时无额外精度损失（end-to-end 同受 tag 限制），但无法表达完整 64-bit 整数与精确 double。
   - 未来扩展为 opaque 任意精度表示（类似 JS 的 BigInt），以支持完整 64-bit 整数与精确 double（编译 C-like 静态类型语言所需）。
-- `void-operand` / `undefined-operand`：void 常量和未定义值。
-  - `undefined-operand` 仅用于 `variable-definition` 的 `init` 字段，表达 BSS 语义。
+- `void-operand`：void 常量。
 - `function-operand`：顶层函数符号引用。出现在 `call` / `tail-call-terminator` 的 target 位置。
 - `global-operand`：顶层全局变量符号引用。语义上等价于该变量的地址（`pointer-type`）。
 
@@ -105,25 +103,16 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
     (type type-t)
     (target operand-t)
     (operands (list-t operand-t)))
-  (field-address-instr
+  (size-of-instr
+    (dest symbol-t)
+    (type type-t))
+  (offset-of-instr
     (dest symbol-t)
     (struct-type type-t)
-    (base operand-t)
-    (field symbol-t))
-  (element-address-instr
-    (dest symbol-t)
-    (element-type type-t)
-    (base operand-t)
-    (index operand-t))
-  (stack-allocate-instr
-    (dest symbol-t)
-    (struct-type type-t))
-  (heap-allocate-instr
-    (dest symbol-t)
-    (struct-type type-t)))
+    (field symbol-t)))
 ```
 
-指令按 **shape（字段形状）** 分组：形状相同的二元 / 一元运算分别归入 `binary-instr` / `unary-instr`，用 `op` 区分具体运算，避免 variant 爆炸；形状不同的（load / store / call / apply / 地址 / 分配）各自独立成 variant。
+指令按 **shape（字段形状）** 分组：形状相同的二元 / 一元运算分别归入 `binary-instr` / `unary-instr`，用 `op` 区分具体运算，避免 variant 爆炸；形状不同的（load / store / call / apply / size-of / offset-of）各自独立成 variant。
 
 `binary-instr` 的 `op`：
 
@@ -132,6 +121,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 | 算术           | int64   | `iadd` `isub` `imul` `idiv`                                |
 | 算术           | float64 | `fadd` `fsub` `fmul` `fdiv`                                |
 | 位运算         | int64   | `shl` `shr` `bitand` `bitor` `bitxor`                      |
+| 指针运算       | pointer | `padd`                                                     |
 | 逻辑           | bool    | `and` `or` `xor`                                           |
 | 比较（可排序） | int64   | `icmp-eq` `icmp-ne` `icmp-lt` `icmp-le` `icmp-gt` `icmp-ge` |
 | 比较（可排序） | float64 | `fcmp-eq` `fcmp-ne` `fcmp-lt` `fcmp-le` `fcmp-gt` `fcmp-ge` |
@@ -165,7 +155,9 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `call-instr`：静态调用，`target` 为 `(function-operand f)` 或 SSA var（间接调用）。
 - `apply-instr`：动态调用 `value-type` 中的函数 / 闭包，`target` 为 SSA var。
 
-`field-address-instr` / `element-address-instr` / `stack-allocate-instr` / `heap-allocate-instr` 为独立 variant——它们的 type 参数（`struct-type`、`element-type`）是类型名（编译时 immediate），不属于 operand 的运行时值范畴。`field` 符号同理。
+- `padd`：指针的字节偏移加法——`(= p pointer-t (padd base offset))`。`base` 为 `pointer-type`，`offset` 为 `int64-t`，结果为 `pointer-type`。等价于 `base + offset` 字节。
+- `size-of-instr`：计算 `type` 的字节大小，结果为 `int64-t`。编译时常量，codegen 不产生运行时指令。
+- `offset-of-instr`：计算 `struct-type` 中 `field` 的字节偏移，结果为 `int64-t`。编译时常量，codegen 不产生运行时指令。
 
 # Terminator
 
@@ -326,13 +318,15 @@ IR 文本形式：
   (x int64-t)
   (y int64-t))
 
-(define-variable origin point-t (undefined))
+(define-variable origin point-t)
 
 (define-function set-origin void-t
   (block (body)
-    (= x-pointer pointer-t (field-address point-t (global origin) x))
+    (= x-offset int64-t (offset-of point-t x))
+    (= x-pointer pointer-t (padd (global origin) x-offset))
     (store int64-t x-pointer (int64 0))
-    (= y-pointer pointer-t (field-address point-t (global origin) y))
+    (= y-offset int64-t (offset-of point-t y))
+    (= y-pointer pointer-t (padd (global origin) y-offset))
     (store int64-t y-pointer (int64 0))
     (return (void))))
 
@@ -381,7 +375,7 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 
 - **指令结构**
   - 旧：6 个 variant，含 Test+Branch 隐式配对。
-  - 新：按 shape 分组的 10 个 instr variant（`binary-instr` / `unary-instr` / `load-instr` / `store-instr` / `call-instr` / `apply-instr` + `field-address-instr` / `element-address-instr` / `stack-allocate-instr` / `heap-allocate-instr`），terminator 独立。
+  - 新：按 shape 分组的 8 个 instr variant（`binary-instr` / `unary-instr` / `load-instr` / `store-instr` / `call-instr` / `apply-instr` + `size-of-instr` / `offset-of-instr`），terminator 独立。
 
 - **比较**
   - 旧：隐含在指令中，未类型化。
@@ -409,11 +403,11 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 
 - **Struct**
   - 旧：无。
-  - 新：`define-struct` + `field-address-instr` / `element-address-instr`。
+  - 新：`define-struct` + `size-of-instr` / `offset-of-instr` / `padd`。
 
 - **内存操作**
   - 旧：无。
-  - 新：`stack-allocate-instr` / `heap-allocate-instr` / `load-instr` / `store-instr`（`store-instr` 不产生值，无 dest）。
+  - 新：`load-instr` / `store-instr`（`store-instr` 不产生值，无 dest）。
 
 - **函数声明**
   - 旧：`PrimitiveFunctionDeclaration`（仅 arity）。
