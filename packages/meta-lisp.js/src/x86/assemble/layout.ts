@@ -322,10 +322,14 @@ function emitFieldTree(
   }
 
   if (value.kind === "StructValue") {
+    if (fieldExp.kind !== "StructExp") {
+      let message = `[emitFieldTree] expected struct expression for struct value`
+      throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+    }
     return emitFieldsTree(
       mod,
-      fieldType as Type,
-      (fieldExp as { kind: string; fields: Array<StructField> }).fields,
+      fieldType,
+      fieldExp.fields,
       buf,
       offset,
       relocs,
@@ -417,14 +421,17 @@ function emitPointerTarget(
       let message = `pointer target struct must be named`
       throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
-    const structExp = originalExp as {
-      kind: string
-      target: { kind: string; fields: Array<StructField> }
+    if (
+      originalExp.kind !== "PointerExp" ||
+      originalExp.target.kind !== "StructExp"
+    ) {
+      let message = `[emitPointerTarget] expected (pointer (struct ...)) expression`
+      throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
     return emitFieldsTree(
       mod,
       structDataTypeByName(mod, targetValue.name, originalExp.location),
-      structExp.target.fields,
+      originalExp.target.fields,
       buf,
       offset,
       relocs,
@@ -479,12 +486,12 @@ function computeFieldTreeSize(
   }
 
   if (value.kind === "StructValue") {
+    if (fieldExp.kind !== "StructExp") {
+      let message = `[computeFieldTreeSize] expected struct expression for struct value`
+      throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+    }
     return {
-      fixed: computeFieldsTreeSize(
-        mod,
-        fieldType as Type,
-        (fieldExp as { kind: string; fields: Array<StructField> }).fields,
-      ),
+      fixed: computeFieldsTreeSize(mod, fieldType, fieldExp.fields),
       deferred: 0,
     }
   }
@@ -519,14 +526,17 @@ function computePointerTargetSize(
       let message = `pointer target struct must be named`
       throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
-    const structExp = originalExp as {
-      kind: string
-      target: { kind: string; fields: Array<StructField> }
+    if (
+      originalExp.kind !== "PointerExp" ||
+      originalExp.target.kind !== "StructExp"
+    ) {
+      let message = `[computePointerTargetSize] expected (pointer (struct ...)) expression`
+      throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
     return computeFieldsTreeSize(
       mod,
       structDataTypeByName(mod, targetValue.name, originalExp.location),
-      structExp.target.fields,
+      originalExp.target.fields,
     )
   }
 
