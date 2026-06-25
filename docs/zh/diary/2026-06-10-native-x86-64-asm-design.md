@@ -7,11 +7,11 @@ date: 2026-06-10
 # 前言
 
 本文在 2026-05-22 的设计文档（native x86-64 compilation with precise GC）基础上，
-设计一套嵌入在 Lisp 语法中的 x86-64 汇编语言与汇编器。
+设计一套使用 Lisp 语法框架的 x86-64 汇编语言。
 
 目标：
 
-- 零外部依赖——不依赖 GNU as、NASM、asmjit 等
+- 零外部依赖——不依赖 GNU as、NASM 等
 - 生成「native code blob + metadata」数据结构
 - 汇编器用 TypeScript 实现（[meta-lisp.js] 内）
 - 汇编语言是 meta-lisp 编译器后端（代码生成 + 寄存器分配）的 target IR

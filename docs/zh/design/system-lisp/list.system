@@ -1,37 +1,50 @@
-(define-struct (node-t A)
-  (prev (node-t A))
-  (next (node-t A))
-  (value A))
+(define-struct (node-t E)
+  (prev (pointer-t (node-t E)))
+  (next (pointer-t (node-t E)))
+  (value E))
 
-(define-struct (list-t A)
-  (first (node-t A))
-  (last (node-t A))
-  (cursor (node-t A))
+(define-struct (list-t E)
+  (first (pointer-t (node-t E)))
+  (last (pointer-t (node-t E)))
+  (cursor (pointer-t (node-t E)))
   (length int-t)
-  (free-fn (-> A void-t))
-  (equal-fn (-> A A bool-t))
-  (copy-fn (-> A A)))
+  (free-fn (-> E void-t))
+  (equal-fn (-> E E bool-t))
+  (copy-fn (-> E E)))
+
+(admit list-first
+  (polymorphic (E)
+    (-> (pointer-t (list-t E))
+        (pointer-t (node-t E)))))
+
+(admit list-put-first
+  (polymorphic (E)
+    (-> (pointer-t (list-t E)) (pointer-t (node-t E))
+        void-t)))
 
 (claim make-list
-  (polymorphic (A)
-    (-> (list-t A))))
+  (polymorphic (E)
+    (-> (pointer-t (list-t E)))))
+
+;; - how about the size-of polymorphic E?
+;;   in scalable-c E can only be a pointer-t or a 64-bit value.
 
 (define (make-list)
   (= self (allocate (size-of list-t)))
-  (list-put-length! self 0)
+  (list-put-length self 0)
   self)
 
 (claim list-free
-  (polymorphic (A)
-    (-> (list-t A) void-t)))
+  (polymorphic (E)
+    (-> (pointer-t (list-t E)) void-t)))
 
 (define (list-destroy self)
   (list-purge self)
   (free self))
 
 (claim list-purge
-  (polymorphic (A)
-    (-> (list-t A) void-t)))
+  (polymorphic (E)
+    (-> (pointer-t (list-t E)) void-t)))
 
 (define (list-purge self)
   (= node (list-first self))
