@@ -6,14 +6,12 @@
 (define-struct cell-t
   (x int64-t))
 
-(claim my-first cell-t)
 (define-data my-first
-  (struct
+  (struct cell-t
     (x 10)))
 
-(claim my-second cell-t)
 (define-data my-second
-  (struct
+  (struct cell-t
     (x 20)))
 
 (define-code sum-two-cells

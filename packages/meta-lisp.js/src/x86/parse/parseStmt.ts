@@ -43,14 +43,6 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
       location,
     )
   },
-
-  "`(claim ,name ,type)": ({ name, type }, { location }) => {
-    return X86.ClaimStmt(S.asSymbolSexp(name).content, parseExp(type), location)
-  },
-
-  "`(claim-code-metadata ,type)": ({ type }, { location }) => {
-    return X86.ClaimCodeMetadataStmt(parseExp(type), location)
-  },
 })
 
 function parseBlock(sexp: S.Sexp): X86.Block {

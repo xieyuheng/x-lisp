@@ -181,3 +181,24 @@ function namedDataType(
   }
   return X86.DataType(definition.typeConstructor, [])
 }
+
+export function inferDataType(mod: X86.Mod, value: X86.Exp): X86.Type {
+  switch (value.kind) {
+    case "StructExp": {
+      if (value.name === undefined) {
+        let message = `[inferDataType] struct literal must be named (define-data value must be self-describing)`
+        throw new S.ErrorWithSourceLocation(message, value.location)
+      }
+      return namedDataType(mod, value.name, value.location)
+    }
+    case "PointerExp":
+    case "AddressExp":
+      return namedDataType(mod, "pointer-t", value.location)
+    case "StringExp":
+      return namedDataType(mod, "string-t", value.location)
+    default: {
+      let message = `[inferDataType] define-data value must be self-describing (named struct, pointer, address, or string), got: ${value.kind}`
+      throw new S.ErrorWithSourceLocation(message, value.location)
+    }
+  }
+}

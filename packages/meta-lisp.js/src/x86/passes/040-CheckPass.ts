@@ -21,12 +21,7 @@ function checkDuplicateNames(mod: X86.Mod): void {
 function checkDataFields(mod: X86.Mod): void {
   for (const [, definition] of mod.definitions) {
     if (definition.kind !== "DataDefinition") continue
-    const claimedType = X86.modLookupClaimedType(mod, definition.name)
-    if (claimedType === undefined) {
-      let message = `[CheckPass] define-data "${definition.name}" is missing a corresponding claim`
-      throw new S.ErrorWithSourceLocation(message, definition.location)
-    }
-    X86.check(mod, definition.value, claimedType)
+    X86.check(mod, definition.value, X86.inferDataType(mod, definition.value))
   }
 }
 
@@ -41,8 +36,6 @@ function checkMetadataTargets(mod: X86.Mod): void {
       throw new S.ErrorWithSourceLocation(message, meta.location)
     }
 
-    if (mod.codeMetadataType !== undefined) {
-      X86.check(mod, meta.value, mod.codeMetadataType)
-    }
+    X86.check(mod, meta.value, X86.inferDataType(mod, meta.value))
   }
 }

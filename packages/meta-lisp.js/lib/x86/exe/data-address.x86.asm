@@ -12,13 +12,11 @@
   (x int64-t)
   (y int64-t))
 
-(claim origin point-t)
 (define-data origin
-  (struct
+  (struct point-t
     (x 11)
     (y 22)))
 
-(claim origin-ptr pointer-t)
 (define-data origin-ptr (address origin))
 
 (define-code read-via-address

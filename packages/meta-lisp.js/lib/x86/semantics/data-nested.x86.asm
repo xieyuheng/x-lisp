@@ -20,9 +20,8 @@
   (bottom-right point-t)
   (color int64-t))
 
-(claim my-rect rect-t)
 (define-data my-rect
-  (struct
+  (struct rect-t
     (top-left (struct (x 0) (y 0)))
     (bottom-right (struct (x 100) (y 200)))
     (color 255)))

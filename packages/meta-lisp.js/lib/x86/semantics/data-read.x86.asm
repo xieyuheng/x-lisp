@@ -11,9 +11,8 @@
   (x int64-t)
   (y int64-t))
 
-(claim my-point point-t)
 (define-data my-point
-  (struct
+  (struct point-t
     (x 42)
     (y 100)))
 

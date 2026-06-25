@@ -73,15 +73,5 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
       )
       break
     }
-
-    case "ClaimStmt": {
-      mod.claimedTypeExps.set(stmt.name, stmt.type)
-      break
-    }
-
-    case "ClaimCodeMetadataStmt": {
-      mod.codeMetadataTypeExp = stmt.type
-      break
-    }
   }
 }

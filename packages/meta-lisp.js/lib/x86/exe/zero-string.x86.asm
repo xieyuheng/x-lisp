@@ -10,9 +10,8 @@
   (version int64-t)
   (text string-t))
 
-(claim my-msg msg-t)
 (define-data my-msg
-  (struct
+  (struct msg-t
     (version 1)
     (text "")))
 

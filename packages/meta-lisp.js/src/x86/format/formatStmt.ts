@@ -20,9 +20,5 @@ export function formatStmt(stmt: X86.Stmt): string {
     }
     case "DefineSpaceStmt":
       return `(define-space ${stmt.name} ${formatExp(stmt.size)})`
-    case "ClaimStmt":
-      return `(claim ${stmt.name} ${formatExp(stmt.type)})`
-    case "ClaimCodeMetadataStmt":
-      return `(claim-code-metadata ${formatExp(stmt.type)})`
   }
 }

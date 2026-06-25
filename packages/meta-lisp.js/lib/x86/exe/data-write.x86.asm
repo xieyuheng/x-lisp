@@ -8,9 +8,8 @@
 (define-struct counter-t
   (value int64-t))
 
-(claim my-counter counter-t)
 (define-data my-counter
-  (struct
+  (struct counter-t
     (value 0)))
 
 (define-code test-write-read

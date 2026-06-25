@@ -1,5 +1,9 @@
 import * as S from "@xieyuheng/sexp.js"
-import { dataTypeUnfold, lookupStructDefinition } from "../check/check.ts"
+import {
+  dataTypeUnfold,
+  inferDataType,
+  lookupStructDefinition,
+} from "../check/check.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { encode, encodedSize } from "../encode/index.ts"
 import type { Env } from "../evaluate/index.ts"
@@ -151,17 +155,13 @@ export function emitDataSection(
 
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "DataDefinition") continue
-    const claimedType = mod.claimedTypes.get(definition.name)
-    if (!claimedType) {
-      let message = `unclaimed data: ${definition.name}`
-      throw new S.ErrorWithSourceLocation(message, definition.location)
-    }
+    const dataType = inferDataType(mod, definition.value)
 
     labels.set(definition.name, startImageOffset + pos)
 
     pos = emitTopValue(
       mod,
-      claimedType,
+      dataType,
       definition.value,
       buf,
       pos,
@@ -171,10 +171,6 @@ export function emitDataSection(
   }
 
   for (const [targetName, metaDef] of mod.metadataDefinitions) {
-    if (!mod.codeMetadataType) {
-      let message = "claim-code-metadata required when using define-metadata"
-      throw new S.ErrorWithSourceLocation(message, metaDef.location)
-    }
     labels.set(`.meta.${targetName}`, startImageOffset + pos)
     const { structType, structExp } = unpackMetadataStruct(
       mod,
@@ -259,16 +255,11 @@ function computeDataSectionSize(mod: Mod): number {
   let total = 0
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "DataDefinition") continue
-    const claimedType = mod.claimedTypes.get(definition.name)
-    if (!claimedType) {
-      let message = `unclaimed data: ${definition.name}`
-      throw new S.ErrorWithSourceLocation(message, definition.location)
-    }
-    const r = computeFieldTreeSize(mod, claimedType, definition.value)
+    const dataType = inferDataType(mod, definition.value)
+    const r = computeFieldTreeSize(mod, dataType, definition.value)
     total += r.fixed + r.deferred
   }
   for (const [, metaDef] of mod.metadataDefinitions) {
-    if (!mod.codeMetadataType) continue
     const { structType, structExp } = unpackMetadataStruct(
       mod,
       metaDef.value,

@@ -8,8 +8,6 @@ export type Stmt =
   | DefineMetadataStmt
   | DefineStructStmt
   | DefineSpaceStmt
-  | ClaimStmt
-  | ClaimCodeMetadataStmt
 
 export type DefineCodeStmt = {
   kind: "DefineCodeStmt"
@@ -110,43 +108,6 @@ export function DefineSpaceStmt(
     kind: "DefineSpaceStmt",
     name,
     size,
-    location,
-  }
-}
-
-export type ClaimStmt = {
-  kind: "ClaimStmt"
-  name: string
-  type: Exp
-  location: SourceLocation
-}
-
-export function ClaimStmt(
-  name: string,
-  type: Exp,
-  location: SourceLocation,
-): ClaimStmt {
-  return {
-    kind: "ClaimStmt",
-    name,
-    type,
-    location,
-  }
-}
-
-export type ClaimCodeMetadataStmt = {
-  kind: "ClaimCodeMetadataStmt"
-  type: Exp
-  location: SourceLocation
-}
-
-export function ClaimCodeMetadataStmt(
-  type: Exp,
-  location: SourceLocation,
-): ClaimCodeMetadataStmt {
-  return {
-    kind: "ClaimCodeMetadataStmt",
-    type,
     location,
   }
 }

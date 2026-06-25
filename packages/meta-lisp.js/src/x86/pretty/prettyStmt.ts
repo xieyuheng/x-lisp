@@ -41,17 +41,5 @@ export function prettyStmt(stmt: X86.Stmt): Ppml.Node {
         [Ppml.text(stmt.name)],
         [prettyExp(stmt.size)],
       )
-    case "ClaimStmt":
-      return Ppml.prettySyntax(
-        "claim",
-        [Ppml.text(stmt.name)],
-        [prettyExp(stmt.type)],
-      )
-    case "ClaimCodeMetadataStmt":
-      return Ppml.prettySyntax(
-        "claim-code-metadata",
-        [],
-        [prettyExp(stmt.type)],
-      )
   }
 }

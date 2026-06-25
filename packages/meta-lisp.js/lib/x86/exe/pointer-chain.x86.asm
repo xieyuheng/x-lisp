@@ -16,9 +16,8 @@
   (next pointer-t)
   (value int64-t))
 
-(claim chain node-a-t)
 (define-data chain
-  (struct
+  (struct node-a-t
     (next (pointer
             (struct node-b-t
               (next (pointer

@@ -10,9 +10,8 @@
   (version int64-t)
   (description string-t))
 
-(claim my-config config-t)
 (define-data my-config
-  (struct
+  (struct config-t
     (version 1)
     (description "abc")))
 

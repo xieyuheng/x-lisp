@@ -19,9 +19,8 @@
   (version int64-t)
   (table pointer-t))
 
-(claim my-config config-t)
 (define-data my-config
-  (struct
+  (struct config-t
     (version 1)
     (table (pointer
              (struct entry-t

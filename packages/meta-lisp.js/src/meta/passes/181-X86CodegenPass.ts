@@ -32,11 +32,6 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
     ),
   ])
 
-  X86.SubmitPass(x86Mod, [
-    X86.ClaimCodeMetadataStmt(X86.VarExp("pointer-t", ZERO), ZERO),
-  ])
-  X86.ClaimPass(x86Mod)
-
   for (const definition of basicMod.definitions.values()) {
     switch (definition.kind) {
       case "PrimitiveFunctionDeclaration":
