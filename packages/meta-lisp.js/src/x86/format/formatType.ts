@@ -1,7 +1,7 @@
 import * as X86 from "../index.ts"
 
 export function formatType(type: X86.Type): string {
-  return type.typeConstructor.name
+  return type.name
 }
 
 export function formatTypeFields(fields: Map<string, X86.Type>): string {

@@ -1,7 +1,6 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Block } from "../block/index.ts"
 import type { Exp, StructField } from "../exp/index.ts"
-import type { TypeConstructor } from "../type/index.ts"
 
 export type Definition =
   | CodeDefinition
@@ -74,21 +73,18 @@ export function MetadataDefinition(
 export type StructDefinition = {
   kind: "StructDefinition"
   name: string
-  typeConstructor: TypeConstructor
   fields: Array<StructField>
   location: SourceLocation
 }
 
 export function StructDefinition(
   name: string,
-  typeConstructor: TypeConstructor,
   fields: Array<StructField>,
   location: SourceLocation,
 ): StructDefinition {
   return {
     kind: "StructDefinition",
     name,
-    typeConstructor,
     fields,
     location,
   }
@@ -117,19 +113,19 @@ export function SpaceDefinition(
 export type PrimitiveTypeDefinition = {
   kind: "PrimitiveTypeDefinition"
   name: string
-  typeConstructor: TypeConstructor
+  size: number
   location: SourceLocation
 }
 
 export function PrimitiveTypeDefinition(
   name: string,
-  typeConstructor: TypeConstructor,
+  size: number,
   location: SourceLocation,
 ): PrimitiveTypeDefinition {
   return {
     kind: "PrimitiveTypeDefinition",
     name,
-    typeConstructor,
+    size,
     location,
   }
 }

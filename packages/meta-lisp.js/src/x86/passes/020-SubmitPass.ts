@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 export function SubmitPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
@@ -34,30 +33,9 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     }
 
     case "DefineStructStmt": {
-      const typeCtor: X86.TypeConstructor = {
-        mod,
-        name: stmt.name,
-        size: () => {
-          const structDefinition = mod.definitions.get(stmt.name)
-          if (
-            structDefinition === undefined ||
-            structDefinition.kind !== "StructDefinition"
-          ) {
-            let message = `[SubmitPass] unknown struct: ${stmt.name}`
-            throw new S.ErrorWithSourceLocation(message, stmt.location)
-          }
-          let total = 0
-          for (const field of structDefinition.fields) {
-            total += X86.typeSize(
-              X86.evaluateType(mod, X86.emptyEnv(), field.exp),
-            )
-          }
-          return total
-        },
-      }
       mod.definitions.set(
         stmt.name,
-        X86.StructDefinition(stmt.name, typeCtor, stmt.fields, stmt.location),
+        X86.StructDefinition(stmt.name, stmt.fields, stmt.location),
       )
       break
     }

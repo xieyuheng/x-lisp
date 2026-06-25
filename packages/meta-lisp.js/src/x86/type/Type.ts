@@ -1,15 +1,9 @@
-import type { TypeConstructor } from "./TypeConstructor.ts"
-
-export type Type = DataType
-
-export type DataType = {
-  kind: "DataType"
-  typeConstructor: TypeConstructor
+export type Type = {
+  name: string
 }
 
-export function DataType(typeConstructor: TypeConstructor): DataType {
+export function Type(name: string): Type {
   return {
-    kind: "DataType",
-    typeConstructor,
+    name,
   }
 }

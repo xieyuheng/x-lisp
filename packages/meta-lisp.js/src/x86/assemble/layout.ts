@@ -11,7 +11,7 @@ import { emptyEnv, evaluate } from "../evaluate/index.ts"
 import type { Exp, StructField } from "../exp/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Mod } from "../mod/index.ts"
-import type { DataType, Type } from "../type/index.ts"
+import type { Type } from "../type/index.ts"
 import { typeSize } from "../type/typeSize.ts"
 import type { Value } from "../value/index.ts"
 
@@ -195,7 +195,7 @@ function unpackMetadataStruct(
   mod: Mod,
   value: Exp,
   location: S.SourceLocation,
-): { structType: DataType; structExp: { fields: Array<StructField> } } {
+): { structType: Type; structExp: { fields: Array<StructField> } } {
   if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
     let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
     throw new S.ErrorWithSourceLocation(message, location)
@@ -215,12 +215,9 @@ function structDataTypeByName(
   mod: Mod,
   name: string,
   location: S.SourceLocation,
-): DataType {
-  const structDef = lookupStructDefinition(mod, name, location)
-  return {
-    kind: "DataType",
-    typeConstructor: structDef.typeConstructor,
-  }
+): Type {
+  lookupStructDefinition(mod, name, location)
+  return { name }
 }
 
 function emitTopValue(
@@ -271,7 +268,7 @@ function computeDataSectionSize(mod: Mod): number {
 
 function emitFieldsTree(
   mod: Mod,
-  dataType: DataType,
+  dataType: Type,
   fields: Array<StructField>,
   buf: Uint8Array,
   offset: number,
@@ -321,13 +318,13 @@ function emitFieldTree(
   const value = evaluate(mod, emptyEnv(), fieldExp)
 
   if (value.kind === "IntValue") {
-    return writeIntLE(buf, offset, typeSize(fieldType), value.value)
+    return writeIntLE(buf, offset, typeSize(mod, fieldType), value.value)
   }
 
   if (value.kind === "StructValue") {
     return emitFieldsTree(
       mod,
-      fieldType as DataType,
+      fieldType as Type,
       (fieldExp as { kind: string; fields: Array<StructField> }).fields,
       buf,
       offset,
@@ -373,7 +370,7 @@ function emitFieldTree(
   }
 
   if (value.kind === "StringValue") {
-    if (typeSize(fieldType) === 8) {
+    if (typeSize(mod, fieldType) === 8) {
       writeInt64(buf, offset, 0n)
       const placeholder = offset
       offset += 8
@@ -449,7 +446,7 @@ function emitPointerTarget(
 
 function computeFieldsTreeSize(
   mod: Mod,
-  dataType: DataType,
+  dataType: Type,
   fields: Array<StructField>,
 ): number {
   const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
@@ -478,14 +475,14 @@ function computeFieldTreeSize(
   const value = evaluate(mod, emptyEnv(), fieldExp)
 
   if (value.kind === "IntValue") {
-    return { fixed: typeSize(fieldType), deferred: 0 }
+    return { fixed: typeSize(mod, fieldType), deferred: 0 }
   }
 
   if (value.kind === "StructValue") {
     return {
       fixed: computeFieldsTreeSize(
         mod,
-        fieldType as DataType,
+        fieldType as Type,
         (fieldExp as { kind: string; fields: Array<StructField> }).fields,
       ),
       deferred: 0,
@@ -502,7 +499,7 @@ function computeFieldTreeSize(
   }
 
   if (value.kind === "StringValue") {
-    if (typeSize(fieldType) === 8) {
+    if (typeSize(mod, fieldType) === 8) {
       return { fixed: 8, deferred: value.content.length + 1 }
     }
     return { fixed: value.content.length + 1, deferred: 0 }
@@ -562,13 +559,11 @@ export function offsetOf(
       const fieldType = evaluateTypeFromExp(mod, emptyEnv(), field.exp)
       if (field.name === step) {
         totalOffset += fieldOffset
-        if (fieldType.kind === "DataType") {
-          currentTypeName = fieldType.typeConstructor.name
-        }
+        currentTypeName = fieldType.name
         found = true
         break
       }
-      fieldOffset += typeSize(fieldType)
+      fieldOffset += typeSize(mod, fieldType)
     }
 
     if (!found) {

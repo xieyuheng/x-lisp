@@ -54,7 +54,7 @@ function definitionToValue(definition: X86.Definition): X86.Value {
     definition.kind === "StructDefinition" ||
     definition.kind === "PrimitiveTypeDefinition"
   ) {
-    return X86.TypeValue(X86.DataType(definition.typeConstructor))
+    return X86.TypeValue(X86.Type(definition.name))
   }
 
   let message = `[definitionToValue] unexpected definition kind: ${definition.kind}`

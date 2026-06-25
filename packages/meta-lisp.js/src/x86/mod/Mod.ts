@@ -1,6 +1,6 @@
 import type { MetadataDefinition } from "../definition/Definition.ts"
 import type { Definition } from "../definition/index.ts"
-import { registerBuiltinTypeConstructors } from "../type/typeBuiltin.ts"
+import { registerBuiltinTypes } from "../type/typeBuiltin.ts"
 
 export type ValueRelocation = {
   name: string
@@ -20,7 +20,7 @@ export function createMod(): Mod {
     metadataDefinitions: new Map(),
     valueRelocations: new Map(),
   }
-  registerBuiltinTypeConstructors(mod)
+  registerBuiltinTypes(mod)
   return mod
 }
 
