@@ -8,15 +8,17 @@
   (arity int64-t)
   (name string-t))
 
-(claim-code-metadata func-meta-t)
+(claim-code-metadata (pointer-t func-meta-t))
 
 (define-metadata my-func
-  (arity 3)
-  (name "triple"))
+  (pointer
+    (struct
+      (arity 3)
+      (name "triple"))))
 
 (define-code my-func
   (block entry
-    (mov (reg rax) (label-imm (label my-func)))
+    (mov (reg rax) (address my-func))
     (mov (reg rax) (reg-deref (reg rax) -8))
     (mov (reg rax) (reg-deref (reg rax) 8))
     (mov (reg rax) (reg-deref (reg rax)))

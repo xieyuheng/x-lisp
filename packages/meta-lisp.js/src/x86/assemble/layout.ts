@@ -24,6 +24,12 @@ export type InternalReloc = {
   targetOffset: number
 }
 
+export type DataAddressReloc = {
+  patchOffset: number
+  labelName: string
+  path: Array<string>
+}
+
 export type ExternalReloc = {
   patchOffset: number
   symbolName: string
@@ -45,14 +51,6 @@ function collectLocalLabels(mod: Mod): Map<string, Set<string>> {
     map.set(definition.name, local)
     for (const block of definition.blocks) {
       local.add(block.name)
-      for (const instr of block.instrs) {
-        if (instr.op === "label") {
-          const labelOp = instr.operands[0]
-          if (labelOp.kind === "LabelOperand") {
-            local.add(labelOp.name)
-          }
-        }
-      }
     }
   }
   return map
@@ -91,11 +89,9 @@ export function collectCodeLayout(
       labels.set(scopedName(definition.name, block.name), pos)
       for (const instr of block.instrs) {
         if (instr.op === "label") {
-          const labelOp = instr.operands[0]
-          if (labelOp.kind === "LabelOperand") {
-            labels.set(scopedName(definition.name, labelOp.name), pos)
-          }
-          continue
+          let message =
+            "(label ...) cannot be an instruction; labels are defined by blocks"
+          throw new S.ErrorWithSourceLocation(message, instr.location)
         }
 
         const encodings = encode(instr)
@@ -143,6 +139,7 @@ export function collectCodeLayout(
 export type EmittedData = {
   bytes: Uint8Array
   relocs: Array<InternalReloc>
+  addressRelocs: Array<DataAddressReloc>
 }
 
 export function emitDataSection(
@@ -151,6 +148,7 @@ export function emitDataSection(
   startImageOffset: number,
 ): EmittedData {
   const relocs: Array<InternalReloc> = []
+  const addressRelocs: Array<DataAddressReloc> = []
   const totalSize = computeDataSectionSize(mod)
   const buf = new Uint8Array(totalSize)
   let pos = 0
@@ -158,30 +156,36 @@ export function emitDataSection(
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "DataDefinition") continue
     const claimedType = mod.claimedTypes.get(definition.name)
-    if (!claimedType || claimedType.kind !== "DataType") {
-      let message = `unclaimed or non-struct data: ${definition.name}`
+    if (!claimedType) {
+      let message = `unclaimed data: ${definition.name}`
       throw new S.ErrorWithSourceLocation(message, definition.location)
     }
 
     labels.set(definition.name, startImageOffset + pos)
 
-    const structDef = lookupStructDefinition(
-      mod,
-      claimedType.typeConstructor.name,
-      definition.location,
-    )
-    const env = makeParamEnv(claimedType, structDef)
-    recordSubfieldLabels(
-      mod,
-      labels,
-      definition.name,
-      structDef.fields,
-      env,
-      startImageOffset + pos,
-      0,
-    )
+    const structDef = structDefinitionOf(mod, claimedType)
+    if (structDef) {
+      const env = makeParamEnv(claimedType as DataType, structDef)
+      recordSubfieldLabels(
+        mod,
+        labels,
+        definition.name,
+        structDef.fields,
+        env,
+        startImageOffset + pos,
+        0,
+      )
+    }
 
-    pos = emitFieldsTree(mod, claimedType, definition.fields, buf, pos, relocs)
+    pos = emitTopValue(
+      mod,
+      claimedType,
+      definition.value,
+      buf,
+      pos,
+      relocs,
+      addressRelocs,
+    )
   }
 
   for (const [targetName, metaDef] of mod.metadataDefinitions) {
@@ -190,17 +194,84 @@ export function emitDataSection(
       throw new S.ErrorWithSourceLocation(message, metaDef.location)
     }
     labels.set(`.meta.${targetName}`, startImageOffset + pos)
+    const { structType, structExp } = unpackMetadataStruct(
+      mod.codeMetadataType,
+      metaDef.value,
+      metaDef.location,
+    )
     pos = emitFieldsTree(
       mod,
-      mod.codeMetadataType as DataType,
-      metaDef.fields,
+      structType,
+      structExp.fields,
       buf,
       pos,
       relocs,
+      addressRelocs,
     )
   }
 
-  return { bytes: buf, relocs }
+  return { bytes: buf, relocs, addressRelocs }
+}
+
+function structDefinitionOf(
+  mod: Mod,
+  type: Type,
+): StructDefinition | undefined {
+  if (type.kind !== "DataType") return undefined
+  const definition = mod.definitions.get(type.typeConstructor.name)
+  if (definition === undefined || definition.kind !== "StructDefinition") {
+    return undefined
+  }
+  return definition
+}
+
+function unpackMetadataStruct(
+  metadataType: Type,
+  value: Exp,
+  location: S.SourceLocation,
+): { structType: DataType; structExp: { fields: Array<StructField> } } {
+  if (
+    metadataType.kind !== "DataType" ||
+    metadataType.typeConstructor.name !== "pointer-t"
+  ) {
+    let message = `[emitDataSection] code-metadata type must be (pointer-t <struct>)`
+    throw new S.ErrorWithSourceLocation(message, location)
+  }
+  if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
+    let message = `[emitDataSection] define-metadata value must be (pointer (struct ...))`
+    throw new S.ErrorWithSourceLocation(message, location)
+  }
+  return {
+    structType: metadataType.argTypes[0] as DataType,
+    structExp: value.target,
+  }
+}
+
+function emitTopValue(
+  mod: Mod,
+  fieldType: Type,
+  fieldExp: Exp,
+  buf: Uint8Array,
+  offset: number,
+  relocs: Array<InternalReloc>,
+  addressRelocs: Array<DataAddressReloc>,
+): number {
+  const deferred: Array<{ off: number; fn: (pos: number) => number }> = []
+  let pos = emitFieldTree(
+    mod,
+    fieldType,
+    fieldExp,
+    buf,
+    offset,
+    relocs,
+    addressRelocs,
+    deferred,
+  )
+  for (const d of deferred) {
+    d.off = pos
+    pos = d.fn(pos)
+  }
+  return pos
 }
 
 function computeDataSectionSize(mod: Mod): number {
@@ -208,19 +279,21 @@ function computeDataSectionSize(mod: Mod): number {
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "DataDefinition") continue
     const claimedType = mod.claimedTypes.get(definition.name)
-    if (!claimedType || claimedType.kind !== "DataType") {
+    if (!claimedType) {
       let message = `unclaimed data: ${definition.name}`
       throw new S.ErrorWithSourceLocation(message, definition.location)
     }
-    total += computeFieldsTreeSize(mod, claimedType, definition.fields)
+    const r = computeFieldTreeSize(mod, claimedType, definition.value)
+    total += r.fixed + r.deferred
   }
   for (const [, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) continue
-    total += computeFieldsTreeSize(
-      mod,
-      mod.codeMetadataType as DataType,
-      metaDef.fields,
+    const { structType, structExp } = unpackMetadataStruct(
+      mod.codeMetadataType,
+      metaDef.value,
+      metaDef.location,
     )
+    total += computeFieldsTreeSize(mod, structType, structExp.fields)
   }
   return total
 }
@@ -232,6 +305,7 @@ function emitFieldsTree(
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
+  addressRelocs: Array<DataAddressReloc>,
 ): number {
   const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
   const deferred: Array<{ off: number; fn: (pos: number) => number }> = []
@@ -243,7 +317,16 @@ function emitFieldsTree(
       let message = `unknown field: ${field.name}`
       throw new S.ErrorWithSourceLocation(message, field.exp.location)
     }
-    pos = emitFieldTree(mod, fieldType, field.exp, buf, pos, relocs, deferred)
+    pos = emitFieldTree(
+      mod,
+      fieldType,
+      field.exp,
+      buf,
+      pos,
+      relocs,
+      addressRelocs,
+      deferred,
+    )
   }
 
   for (const d of deferred) {
@@ -261,6 +344,7 @@ function emitFieldTree(
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
+  addressRelocs: Array<DataAddressReloc>,
   deferred: Array<{ off: number; fn: (pos: number) => number }>,
 ): number {
   const value = evaluate(mod, emptyEnv(), fieldExp)
@@ -277,7 +361,18 @@ function emitFieldTree(
       buf,
       offset,
       relocs,
+      addressRelocs,
     )
+  }
+
+  if (value.kind === "AddressValue") {
+    writeInt64(buf, offset, 0n)
+    addressRelocs.push({
+      patchOffset: offset,
+      labelName: value.name,
+      path: value.path,
+    })
+    return offset + 8
   }
 
   if (value.kind === "PointerValue") {
@@ -296,6 +391,7 @@ function emitFieldTree(
           buf,
           pos,
           relocs,
+          addressRelocs,
         )
         relocs.push({
           patchOffset: placeholder,
@@ -349,6 +445,7 @@ function emitPointerTarget(
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
+  addressRelocs: Array<DataAddressReloc>,
 ): number {
   if (targetValue.kind === "StructValue") {
     const structExp = originalExp as {
@@ -362,6 +459,7 @@ function emitPointerTarget(
       buf,
       offset,
       relocs,
+      addressRelocs,
     )
   }
 
@@ -420,6 +518,10 @@ function computeFieldTreeSize(
       ),
       deferred: 0,
     }
+  }
+
+  if (value.kind === "AddressValue") {
+    return { fixed: 8, deferred: 0 }
   }
 
   if (value.kind === "PointerValue") {
@@ -558,13 +660,13 @@ export function extractLabelInfo(instr: Instr): {
 } | null {
   for (const op of instr.operands) {
     if (op.kind === "LabelOperand") {
+      return { name: op.name, path: [] }
+    }
+    if (op.kind === "AddressOperand") {
       return { name: op.name, path: op.path }
     }
-    if (op.kind === "LabelImmOperand") {
-      return { name: op.label.name, path: op.label.path }
-    }
-    if (op.kind === "LabelDerefOperand") {
-      return { name: op.label.name, path: op.label.path }
+    if (op.kind === "DerefOperand") {
+      return { name: op.address.name, path: op.address.path }
     }
   }
   return null
@@ -592,7 +694,6 @@ export function collectMetadataSlots(mod: Mod): MetadataSlots {
 
     for (const block of definition.blocks) {
       for (const instr of block.instrs) {
-        if (instr.op === "label") continue
         const encodings = encode(instr)
         pos += encodings.reduce((s, e) => s + encodedSize(e), 0)
       }

@@ -47,12 +47,25 @@ export function assembleExe(mod: Mod): Uint8Array {
     reloc.targetOffset += codeRegion
   }
 
+  for (const addressReloc of dataResult.addressRelocs) {
+    addressReloc.patchOffset += codeRegion
+  }
+
   // Add value reloc 8-byte slots to data section
   const valueRelocationEntries: Array<ValueRelocation> = [
     ...mod.valueRelocations.values(),
   ]
   const valueRelocationDataStart = dataSize
   dataSize += valueRelocationEntries.length * 8
+
+  // Record value relocation labels (must precede address reloc resolution)
+  for (let i = 0; i < valueRelocationEntries.length; i++) {
+    const valueRelocation = valueRelocationEntries[i]
+    labels.set(
+      valueRelocation.name,
+      codeRegion + valueRelocationDataStart + i * 8,
+    )
+  }
 
   const metadataSlots: MetadataSlots = collectMetadataSlots(mod)
 
@@ -62,6 +75,20 @@ export function assembleExe(mod: Mod): Uint8Array {
     dataResult.relocs,
     metadataSlots,
   )
+
+  for (const addressReloc of dataResult.addressRelocs) {
+    const base = labels.get(addressReloc.labelName)
+    if (base === undefined) {
+      let message = `undefined address label: ${addressReloc.labelName}`
+      throw new Error(message)
+    }
+    const targetOffset =
+      base + computePathOffset(mod, addressReloc.labelName, addressReloc.path)
+    internalRelocs.push({
+      patchOffset: addressReloc.patchOffset,
+      targetOffset,
+    })
+  }
 
   let spaceSize = 0
   for (const definition of mod.definitions.values()) {
@@ -114,15 +141,6 @@ export function assembleExe(mod: Mod): Uint8Array {
   dataBuf.set(dataResult.bytes)
   buf.set(dataBuf, pos)
   pos += dataSize
-
-  // Record value relocation labels
-  for (let i = 0; i < valueRelocationEntries.length; i++) {
-    const valueRelocation = valueRelocationEntries[i]
-    labels.set(
-      valueRelocation.name,
-      codeRegion + valueRelocationDataStart + i * 8,
-    )
-  }
 
   for (const reloc of internalRelocs) {
     writeU32LE(buf, pos, reloc.patchOffset)
@@ -278,7 +296,6 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
 
     for (const block of definition.blocks) {
       for (const instr of block.instrs) {
-        if (instr.op === "label") continue
         const encodings = encode(instr)
         for (const enc of encodings) {
           codePos = emitTo(enc, buf, start + codePos) - start

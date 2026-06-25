@@ -21,15 +21,16 @@
 
 (claim my-config config-t)
 (define-data my-config
-  (version 1)
-  (table (pointer
-           (struct entry-t
-             (key "foo")
-             (value 42)))))
+  (struct
+    (version 1)
+    (table (pointer
+             (struct entry-t
+               (key "foo")
+               (value 42))))))
 
 (define-code read-entry-value
   (block entry
-    (lea (reg rax) (label-deref (label my-config table)))
+    (lea (reg rax) (address my-config table))
     (mov (reg rax) (reg-deref (reg rax)))
     (mov (reg rax) (reg-deref (reg rax) 8))
     (ret)))

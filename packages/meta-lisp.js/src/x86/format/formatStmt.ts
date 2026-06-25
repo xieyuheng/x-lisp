@@ -8,18 +8,10 @@ export function formatStmt(stmt: X86.Stmt): string {
       const blocks = stmt.blocks.map(formatBlock).join(" ")
       return `(define-code ${stmt.name} ${blocks})`
     }
-    case "DefineDataStmt": {
-      const fields = stmt.fields
-        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
-        .join(" ")
-      return `(define-data ${stmt.name} ${fields})`
-    }
-    case "DefineMetadataStmt": {
-      const fields = stmt.fields
-        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
-        .join(" ")
-      return `(define-metadata ${stmt.name} ${fields})`
-    }
+    case "DefineDataStmt":
+      return `(define-data ${stmt.name} ${formatExp(stmt.value)})`
+    case "DefineMetadataStmt":
+      return `(define-metadata ${stmt.name} ${formatExp(stmt.value)})`
     case "DefineStructStmt": {
       const fields = stmt.fields
         .map((f) => `(${f.name} ${formatExp(f.exp)})`)

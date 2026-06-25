@@ -3,7 +3,7 @@
 ;  8B /r — mov r64, r/m64  (reg ← reg or mem)
 ;  89 /r — mov r/m64, r64  (mem ← reg)
 ;  C7 /0 — mov r/m64, imm32
-;  8D /r — LEA (label-imm in flat mode uses LEA with rip-relative)
+;  8D /r — LEA (address in flat mode uses LEA with rip-relative)
 
 (define-code mov-reg-reg
   (block entry

@@ -6,20 +6,24 @@
 (define-struct func-meta-t
   (arity int64-t))
 
-(claim-code-metadata func-meta-t)
+(claim-code-metadata (pointer-t func-meta-t))
 
 (define-metadata func-b
-  (arity 3))
+  (pointer
+    (struct
+      (arity 3))))
 
 (define-code func-b
   (block entry
-    (mov (reg rax) (label-imm (label func-b)))
+    (mov (reg rax) (address func-b))
     (mov (reg rax) (reg-deref (reg rax) -8))
     (mov (reg rax) (reg-deref (reg rax)))
     (ret)))
 
 (define-metadata func-a
-  (arity 5))
+  (pointer
+    (struct
+      (arity 5))))
 
 (define-code func-a
   (block entry

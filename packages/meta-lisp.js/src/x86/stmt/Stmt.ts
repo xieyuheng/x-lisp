@@ -34,19 +34,19 @@ export function DefineCodeStmt(
 export type DefineDataStmt = {
   kind: "DefineDataStmt"
   name: string
-  fields: Array<StructField>
+  value: Exp
   location: SourceLocation
 }
 
 export function DefineDataStmt(
   name: string,
-  fields: Array<StructField>,
+  value: Exp,
   location: SourceLocation,
 ): DefineDataStmt {
   return {
     kind: "DefineDataStmt",
     name,
-    fields,
+    value,
     location,
   }
 }
@@ -54,19 +54,19 @@ export function DefineDataStmt(
 export type DefineMetadataStmt = {
   kind: "DefineMetadataStmt"
   name: string
-  fields: Array<StructField>
+  value: Exp
   location: SourceLocation
 }
 
 export function DefineMetadataStmt(
   name: string,
-  fields: Array<StructField>,
+  value: Exp,
   location: SourceLocation,
 ): DefineMetadataStmt {
   return {
     kind: "DefineMetadataStmt",
     name,
-    fields,
+    value,
     location,
   }
 }

@@ -18,17 +18,18 @@
 
 (claim chain node-a-t)
 (define-data chain
-  (next (pointer
-          (struct node-b-t
-            (next (pointer
-                    (struct node-c-t
-                      (value 77))))
-            (value 0))))
-  (value 0))
+  (struct
+    (next (pointer
+            (struct node-b-t
+              (next (pointer
+                      (struct node-c-t
+                        (value 77))))
+              (value 0))))
+    (value 0)))
 
 (define-code read-chain
   (block entry
-    (lea (reg rax) (label-deref (label chain next)))
+    (lea (reg rax) (address chain next))
     (mov (reg rax) (reg-deref (reg rax)))
     (mov (reg rax) (reg-deref (reg rax)))
     (mov (reg rax) (reg-deref (reg rax)))

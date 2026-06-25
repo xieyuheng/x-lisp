@@ -7,7 +7,7 @@ export type Exp =
   | ApplyExp
   | StructExp
   | PointerExp
-  | LabelExp
+  | AddressExp
 
 export type StructField = {
   name: string
@@ -120,20 +120,20 @@ export function PointerExp(target: Exp, location: SourceLocation): PointerExp {
   }
 }
 
-export type LabelExp = {
-  kind: "LabelExp"
+export type AddressExp = {
+  kind: "AddressExp"
   name: string
   path: Array<string>
   location: SourceLocation
 }
 
-export function LabelExp(
+export function AddressExp(
   name: string,
   path: Array<string>,
   location: SourceLocation,
-): LabelExp {
+): AddressExp {
   return {
-    kind: "LabelExp",
+    kind: "AddressExp",
     name,
     path,
     location,

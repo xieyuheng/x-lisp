@@ -33,7 +33,14 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
   ])
 
   X86.SubmitPass(x86Mod, [
-    X86.ClaimCodeMetadataStmt(X86.VarExp("function-metadata-t", ZERO), ZERO),
+    X86.ClaimCodeMetadataStmt(
+      X86.ApplyExp(
+        X86.VarExp("pointer-t", ZERO),
+        [X86.VarExp("function-metadata-t", ZERO)],
+        ZERO,
+      ),
+      ZERO,
+    ),
   ])
   X86.ClaimPass(x86Mod)
 
@@ -138,7 +145,13 @@ function immOperand(value: number | bigint): X86.ImmOperand {
   return X86.ImmOperand(BigInt(value), ZERO)
 }
 function labelOperand(name: string): X86.LabelOperand {
-  return X86.LabelOperand(name, [], ZERO)
+  return X86.LabelOperand(name, ZERO)
+}
+function addressOperand(name: string): X86.AddressOperand {
+  return X86.AddressOperand(name, [], ZERO)
+}
+function derefOperand(name: string): X86.DerefOperand {
+  return X86.DerefOperand(addressOperand(name), ZERO)
 }
 function externalLabel(name: string): X86.ExternalLabelOperand {
   return X86.ExternalLabelOperand(name, ZERO)
@@ -173,7 +186,7 @@ function codegenFunction(
     makeInstr("sub", [regOperand("rsp"), immOperand(frameBytes)]),
     makeInstr("mov", [
       regOperand("rax"),
-      X86.LabelImmOperand(labelOperand(`.meta.${definition.name}`), ZERO),
+      addressOperand(`.meta.${definition.name}`),
     ]),
     makeInstr("mov", [regDeref("rbp", -8), regOperand("rax")]),
   ]
@@ -219,29 +232,36 @@ function codegenFunction(
   const metaDef: X86.MetadataDefinition = {
     kind: "MetadataDefinition",
     target: definition.name,
-    fields: [
-      {
-        name: "arity",
-        exp: X86.IntExp(BigInt(definition.parameters.length), ZERO),
-      },
-      { name: "flags", exp: X86.IntExp(0n, ZERO) },
-      {
-        name: "gc-map",
-        exp: X86.StructExp(
-          undefined,
-          [
-            {
-              name: "local-count",
-              exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
-            },
-            { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
-            { name: "reserved", exp: X86.IntExp(0n, ZERO) },
-          ],
-          ZERO,
-        ),
-      },
-      { name: "name", exp: X86.StringExp(definition.name, ZERO) },
-    ],
+    value: X86.PointerExp(
+      X86.StructExp(
+        undefined,
+        [
+          {
+            name: "arity",
+            exp: X86.IntExp(BigInt(definition.parameters.length), ZERO),
+          },
+          { name: "flags", exp: X86.IntExp(0n, ZERO) },
+          {
+            name: "gc-map",
+            exp: X86.StructExp(
+              undefined,
+              [
+                {
+                  name: "local-count",
+                  exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
+                },
+                { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
+                { name: "reserved", exp: X86.IntExp(0n, ZERO) },
+              ],
+              ZERO,
+            ),
+          },
+          { name: "name", exp: X86.StringExp(definition.name, ZERO) },
+        ],
+        ZERO,
+      ),
+      ZERO,
+    ),
     location: definition.location,
   }
 
@@ -298,26 +318,33 @@ function codegenVariableDefinition(
   const metaDef: X86.MetadataDefinition = {
     kind: "MetadataDefinition",
     target: definition.name,
-    fields: [
-      { name: "arity", exp: X86.IntExp(0n, ZERO) },
-      { name: "flags", exp: X86.IntExp(isTest ? 1n : 0n, ZERO) },
-      {
-        name: "gc-map",
-        exp: X86.StructExp(
-          undefined,
-          [
-            {
-              name: "local-count",
-              exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
-            },
-            { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
-            { name: "reserved", exp: X86.IntExp(0n, ZERO) },
-          ],
-          ZERO,
-        ),
-      },
-      { name: "name", exp: X86.StringExp(definition.name, ZERO) },
-    ],
+    value: X86.PointerExp(
+      X86.StructExp(
+        undefined,
+        [
+          { name: "arity", exp: X86.IntExp(0n, ZERO) },
+          { name: "flags", exp: X86.IntExp(isTest ? 1n : 0n, ZERO) },
+          {
+            name: "gc-map",
+            exp: X86.StructExp(
+              undefined,
+              [
+                {
+                  name: "local-count",
+                  exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
+                },
+                { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
+                { name: "reserved", exp: X86.IntExp(0n, ZERO) },
+              ],
+              ZERO,
+            ),
+          },
+          { name: "name", exp: X86.StringExp(definition.name, ZERO) },
+        ],
+        ZERO,
+      ),
+      ZERO,
+    ),
     location: definition.location,
   }
 
@@ -325,9 +352,7 @@ function codegenVariableDefinition(
 }
 
 function compileBlock(state: State, block: B.Block): Array<X86.Block> {
-  const instrs: Array<X86.Instr> = [
-    makeInstr("label", [labelOperand(block.label)]),
-  ]
+  const instrs: Array<X86.Instr> = []
 
   let pendingTest: number | null = null
 
@@ -420,10 +445,7 @@ function compileExp(state: State, exp: B.Exp): ExpR {
       const s = allocateTemporary(state)
       return {
         instrs: [
-          makeInstr("mov", [
-            regOperand("rax"),
-            X86.LabelDerefOperand(labelOperand(label), ZERO),
-          ]),
+          makeInstr("mov", [regOperand("rax"), derefOperand(label)]),
           makeInstr("mov", [
             regDeref("rbp", localDisplacement(s)),
             regOperand("rax"),
@@ -441,10 +463,7 @@ function compileExp(state: State, exp: B.Exp): ExpR {
       const s = allocateTemporary(state)
       return {
         instrs: [
-          makeInstr("mov", [
-            regOperand("rax"),
-            X86.LabelDerefOperand(labelOperand(label), ZERO),
-          ]),
+          makeInstr("mov", [regOperand("rax"), derefOperand(label)]),
           makeInstr("mov", [
             regDeref("rbp", localDisplacement(s)),
             regOperand("rax"),
@@ -458,10 +477,7 @@ function compileExp(state: State, exp: B.Exp): ExpR {
       const s = allocateTemporary(state)
       return {
         instrs: [
-          makeInstr("mov", [
-            regOperand("rax"),
-            X86.LabelDerefOperand(labelOperand(label), ZERO),
-          ]),
+          makeInstr("mov", [regOperand("rax"), derefOperand(label)]),
           makeInstr("mov", [
             regDeref("rbp", localDisplacement(s)),
             regOperand("rax"),
@@ -499,10 +515,7 @@ function compileVar(state: State, exp: B.VarExp): ExpR {
   const s = allocateTemporary(state)
   return {
     instrs: [
-      makeInstr("mov", [
-        regOperand("rax"),
-        X86.LabelDerefOperand(labelOperand(label), ZERO),
-      ]),
+      makeInstr("mov", [regOperand("rax"), derefOperand(label)]),
       makeInstr("mov", [
         regDeref("rbp", localDisplacement(s)),
         regOperand("rax"),
@@ -562,10 +575,7 @@ function compileGeneralApply(
     )
     const instrs: Array<X86.Instr> = [
       ...argResults.flatMap((r) => r.instrs),
-      makeInstr("mov", [
-        regOperand("rax"),
-        X86.LabelDerefOperand(labelOperand(valueRelocationLabel), ZERO),
-      ]),
+      makeInstr("mov", [regOperand("rax"), derefOperand(valueRelocationLabel)]),
       makeInstr("mov", [
         regDeref("rbp", localDisplacement(refSlot)),
         regOperand("rax"),
@@ -613,7 +623,7 @@ function compileGeneralApply(
       instrs.push(
         makeInstr("mov", [
           regOperand("rax"),
-          X86.LabelDerefOperand(labelOperand(valueRelocationLabel), ZERO),
+          derefOperand(valueRelocationLabel),
         ]),
         makeInstr("mov", [
           regDeref("rbp", localDisplacement(refSlot)),
@@ -709,10 +719,7 @@ function compileStaticCall(
       targetName,
     )
     instrs.push(
-      makeInstr("mov", [
-        regOperand("rax"),
-        X86.LabelDerefOperand(labelOperand(valueRelocationLabel), ZERO),
-      ]),
+      makeInstr("mov", [regOperand("rax"), derefOperand(valueRelocationLabel)]),
       makeInstr("mov", [
         regDeref("rbp", localDisplacement(refSlot)),
         regOperand("rax"),

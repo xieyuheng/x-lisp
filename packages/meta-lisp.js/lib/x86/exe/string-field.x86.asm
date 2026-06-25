@@ -12,12 +12,13 @@
 
 (claim my-config config-t)
 (define-data my-config
-  (version 1)
-  (description "abc"))
+  (struct
+    (version 1)
+    (description "abc")))
 
 (define-code read-first-char
   (block entry
-    (lea (reg rax) (label-deref (label my-config description)))
+    (lea (reg rax) (address my-config description))
     (mov (reg rax) (reg-deref (reg rax)))
     (mov (reg rax) (reg-deref (reg rax)))
     (and (reg rax) (imm 255))

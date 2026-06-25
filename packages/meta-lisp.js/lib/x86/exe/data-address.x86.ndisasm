@@ -1,0 +1,34 @@
+00000000  488B0509100000    mov rax,[rel 0x1010]
+00000007  488B00            mov rax,[rax]
+0000000A  C3                ret
+0000000B  0B00              or eax,[rax]
+0000000D  0000              add [rax],al
+0000000F  0000              add [rax],al
+00000011  0000              add [rax],al
+00000013  16                db 0x16
+00000014  0000              add [rax],al
+00000016  0000              add [rax],al
+00000018  0000              add [rax],al
+0000001A  0000              add [rax],al
+0000001C  0000              add [rax],al
+0000001E  0000              add [rax],al
+00000020  0000              add [rax],al
+00000022  0010              add [rax],dl
+00000024  1000              adc [rax],al
+00000026  0000              add [rax],al
+00000028  1000              adc [rax],al
+0000002A  0011              add [rcx],dl
+0000002C  0000              add [rax],al
+0000002E  0001              add [rcx],al
+00000030  0000              add [rax],al
+00000032  007265            add [rdx+0x65],dh
+00000035  61                db 0x61
+00000036  642D7669612D      fs sub eax,0x2d616976
+0000003C  61                db 0x61
+0000003D  64647265          fs jc 0xa6
+00000041  7373              jnc 0xb6
+00000043  0000              add [rax],al
+00000045  0000              add [rax],al
+00000047  0000              add [rax],al
+00000049  0000              add [rax],al
+0000004B  00                db 0x00

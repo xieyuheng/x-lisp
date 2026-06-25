@@ -13,26 +13,18 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
         blockNodes,
       )
     }
-    case "DataDefinition": {
-      const fieldNodes = definition.fields.map((f) =>
-        Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),
-      )
+    case "DataDefinition":
       return Ppml.prettySyntax(
         "define-data",
         [Ppml.text(definition.name)],
-        fieldNodes,
+        [prettyExp(definition.value)],
       )
-    }
-    case "MetadataDefinition": {
-      const fieldNodes = definition.fields.map((f) =>
-        Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),
-      )
+    case "MetadataDefinition":
       return Ppml.prettySyntax(
         "define-metadata",
         [Ppml.text(definition.target)],
-        fieldNodes,
+        [prettyExp(definition.value)],
       )
-    }
     case "StructDefinition": {
       const fieldNodes = definition.fields.map((f) =>
         Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),

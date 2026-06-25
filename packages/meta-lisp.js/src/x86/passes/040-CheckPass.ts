@@ -26,12 +26,7 @@ function checkDataFields(mod: X86.Mod): void {
       let message = `[CheckPass] define-data "${definition.name}" is missing a corresponding claim`
       throw new S.ErrorWithSourceLocation(message, definition.location)
     }
-    if (claimedType.kind !== "DataType") {
-      let message = `[CheckPass] claim type for "${definition.name}" is not a struct type`
-      throw new S.ErrorWithSourceLocation(message, definition.location)
-    }
-    const typeFields = X86.dataTypeUnfold(mod, claimedType, definition.location)
-    X86.checkFields(mod, definition.fields, typeFields)
+    X86.check(mod, definition.value, claimedType)
   }
 }
 
@@ -45,23 +40,9 @@ function checkMetadataTargets(mod: X86.Mod): void {
       let message = `[CheckPass] define-metadata target "${target}" is not a define-code`
       throw new S.ErrorWithSourceLocation(message, meta.location)
     }
-  }
 
-  if (mod.codeMetadataType !== undefined) {
-    if (mod.codeMetadataType.kind !== "DataType") {
-      let message = `[CheckPass] code-metadata type is not a struct type`
-      throw new S.ErrorWithSourceLocation(
-        message,
-        mod.codeMetadataTypeExp!.location,
-      )
-    }
-    const typeFields = X86.dataTypeUnfold(
-      mod,
-      mod.codeMetadataType,
-      S.zeroLocation("<code-metadata-type>"),
-    )
-    for (const [target, meta] of mod.metadataDefinitions) {
-      X86.checkFields(mod, meta.fields, typeFields)
+    if (mod.codeMetadataType !== undefined) {
+      X86.check(mod, meta.value, mod.codeMetadataType)
     }
   }
 }

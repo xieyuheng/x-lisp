@@ -34,19 +34,19 @@ export function CodeDefinition(
 export type DataDefinition = {
   kind: "DataDefinition"
   name: string
-  fields: Array<StructField>
+  value: Exp
   location: SourceLocation
 }
 
 export function DataDefinition(
   name: string,
-  fields: Array<StructField>,
+  value: Exp,
   location: SourceLocation,
 ): DataDefinition {
   return {
     kind: "DataDefinition",
     name,
-    fields,
+    value,
     location,
   }
 }
@@ -54,19 +54,19 @@ export function DataDefinition(
 export type MetadataDefinition = {
   kind: "MetadataDefinition"
   target: string
-  fields: Array<StructField>
+  value: Exp
   location: SourceLocation
 }
 
 export function MetadataDefinition(
   target: string,
-  fields: Array<StructField>,
+  value: Exp,
   location: SourceLocation,
 ): MetadataDefinition {
   return {
     kind: "MetadataDefinition",
     target,
-    fields,
+    value,
     location,
   }
 }

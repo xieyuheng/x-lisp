@@ -19,6 +19,19 @@ date: 2026-06-10
 
 # 顶层形式
 
+## 数据定义的正交模型
+
+`define-data` 与 `define-metadata` 统一为「**claim 类型 + 单个 value**」：
+
+```lisp
+(claim <name> <type>)            ;; 或 (claim-code-metadata <type>)
+(define-data <name> <value>)     ;; 或 (define-metadata <name> <value>)
+```
+
+- `<value>` 只有一种统一语法（见「操作数」一节）：字面量、字符串、`(struct ...)`、`(pointer ...)`。
+- struct 不是顶层语法的特例——顶层和嵌套都用同一个 `(struct ...)`，因此「顶层字段列表」与「嵌套 struct 字面量」不再是两套写法。
+- `define-metadata` 只是对 `<name> - 8` slot 做 `define-data` 的语法糖，无独立 emit 路径。
+
 ## `(define-code)`
 
 定义一个可执行函数。
@@ -38,14 +51,38 @@ date: 2026-06-10
 
 ```lisp
 (claim <name> <type>)
-(define-data <name>
-  (<field-name> <value>)
-  ...)
+(define-data <name> <value>)
 ```
 
-- `claim` 声明 `<name>` 的类型——必定是一个 `define-struct` 所定义的类型。
-- `define-data` 按 struct 字段顺序填入值。
-- 字段值可以是字面量、`(struct ...)`（嵌入子 struct）、`(pointer (struct ...))`（匿名数据 slot + 指针）、`(pointer "..." )`（匿名字符串 + 指针）。
+- `claim` 声明 `<name>` 的类型——可以是任意 sized 类型（原始类型、`string-t`、`(pointer-t <T>)` 或 `define-struct` 类型）。
+- `define-data` 给出**单个** value，其类型由 `claim` 决定。
+- `<value>` 使用统一的 value 语法（见「操作数」一节）：字面量、字符串、`(struct ...)`、`(pointer ...)`。
+- struct 不再是顶层语法的特例——需要 struct 时显式写 `(struct ...)`：
+
+```lisp
+;; 标量常量
+(claim answer int64-t)
+(define-data answer 42)
+
+;; 字符串常量
+(claim greeting string-t)
+(define-data greeting "hello")
+
+;; struct 常量
+(claim origin point-t)
+(define-data origin
+  (struct
+    (x 0)
+    (y 0)))
+
+;; 指针常量（匿名 slot + 指针）
+(claim head (pointer-t node-t))
+(define-data head
+  (pointer
+    (struct
+      (value 1)
+      (next 0))))
+```
 
 ## `(claim-code-metadata)`
 
@@ -56,24 +93,24 @@ date: 2026-06-10
 ```
 
 - 无 `<name>` 参数——全局生效。
-- `<type>` 必须是一个 `define-struct` 所定义的类型。
+- `<type>` 可以是任意类型，但 `-8` slot 固定为 8 bytes——汇编器在 check 阶段校验 `typeSize(<type>) == 8`。因此实际只有 `(pointer-t <T>)`、`string-t` 或 8-byte 标量合法，典型写法是 `(pointer-t <struct>-t)`。
 - 在 Mod 中记录，用于后续验证和布局计算。
 
 ## `(define-metadata)`
 
 为指定 label 的 `-8` slot 填充元数据。
 
-语法与 `define-data` 一致：
+语法与 `define-data` 一致——claim 类型（由 `claim-code-metadata` 全局声明）+ 单个 value：
 
 ```lisp
-(define-metadata <name>
-  (<field-name> <value>)
-  ...)
+(define-metadata <name> <value>)
 ```
 
 - `<name>` 对应一个 `define-code` 或其他顶层 label。
 - 元数据类型由 `claim-code-metadata` 全局声明。
-- 汇编器在 `<name>` 的 `-8` 位置填入指向该 struct 实例的指针。
+- 由于 `-8` slot 是 8-byte 指针，`<value>` 典型写法是 `(pointer (struct ...))`——汇编器创建匿名 struct slot 并在 `-8` 处填入指向它的指针。
+- 语义上 `define-metadata` 等价于对 `<name> - 8` 这个 slot 做一次 `define-data`，因此走与 `(pointer ...)` 相同的「匿名 slot + 重定位」机制，无需独立的 emit 路径。
+- **C 侧 ABI 不变**：`-8` 处仍是指针、目标仍是 struct 实例，loader 无需改动。
 
 ## `(define-struct)`
 
@@ -144,33 +181,48 @@ date: 2026-06-10
 (imm 42)
 ```
 
-## `(label <name> [<subfield> ...])`
+## `(label <name>)`
 
-标签引用，可选带字段路径。
+代码控制流标号的**引用**，按机器语义专用于 **rel32** 域。
+
+标号**只由 block 定义**——每个 `(block <name> ...)` 的名字就是一个标号。`(label <name>)` 本身不定义标号，只在 `jmp` / `call` / `j` 的操作数位置**引用**一个标号，汇编器编码为相对位移：
 
 ```lisp
-(label factorial)
-(label my-rect bottom-right x)
+(jmp (label loop))
+(call (label helper))
+(j (cc e) (label else))
 ```
 
-`(label ...)` 本身只标识一个符号位置。在生成 x86-64 指令时，需要包裹 `label-imm` 或 `label-deref`。
+- `<name>` 必须是某个 `block` 的名字（本地标号），或一个 `define-code` 函数名。
+- **不存在「`(label …)` 作为指令」的写法**——要新增一个跳转目标，就新建一个 `block`（汇编器对 `(label …)` 作指令会报错）。
+- `label` 不带字段路径、也不用于取地址；那是 `address` 的职责。
 
-## `(label-imm <label>)`
+### fall-through
 
-将 label 的地址作为 64-bit 立即数。汇编器生成 `movabs` 编码 + 重定位项。
+block 之间忠实 x86 地 **fall-through**：一个 block 执行到末尾若没有 `ret` / `jmp`，控制流顺序流入紧邻的下一个 block。`j cc` 是 x86 的单目标条件跳转——条件成立跳到目标，**不成立则 fall-through** 到下一条指令 / 下一个 block。因此 `j cc` 不是完整的 terminator，不必（也不应）强行配一个 `jmp` 把它伪装成双目标分支。
+
+## `(address <name> [<subfield> ...])`
+
+数据地址值——某符号（及可选嵌套字段路径）的地址，按机器语义属于**绝对地址 / RIP 相对**域。`address` 本身即「地址作为 64-bit 立即数」：汇编器生成 `movabs` 编码 + 重定位项。
 
 ```lisp
-(label-imm (label factorial))
-(label-imm (label my-rect bottom-right x))
+(address factorial)                       ;; 函数地址作立即数
+(address my-rect bottom-right x)          ;; 嵌套字段地址作立即数
 ```
 
-## `(label-deref <label>)`
-
-对 label 的 RIP 相对寻址。汇编器编码为 `[rip + disp32]`。
+要读取该地址指向的内容，用 `deref` 包裹——汇编器编码为 `[rip + disp32]`：
 
 ```lisp
-(label-deref (label some-constant))
-(label-deref (label my-rect bottom-right x))
+(deref (address some-constant))
+(deref (address my-rect bottom-right x))
+```
+
+同一符号在两个域的用法对比（如函数 `factorial`）：
+
+```lisp
+(call (label factorial))                  ;; 控制流，rel32
+(mov (reg rax) (address factorial))       ;; 取其地址作立即数，movabs
+(mov (reg rax) (deref (address k)))        ;; 读 k 的内容，[rip + disp32]
 ```
 
 ## `(reg-deref <reg> <disp>)` / `(reg-deref <reg> <index> <scale> [<disp>])`
@@ -206,7 +258,7 @@ Pre-register-allocation 阶段的虚拟变量。有 `var` 的汇编语言是中�
 
 ## `(struct <type>-t (<field> <value>) ...)` / `(struct (<field> <value>) ...)`
 
-在 `define-data` 字段值位置表示嵌入的 struct 字面量。
+struct 字面量。可出现在 `define-data` / `define-metadata` 的**顶层 value**位置，也可作为另一个 struct 的字段值（嵌套）。
 
 ```lisp
 ;; 带类型名
@@ -218,7 +270,7 @@ Pre-register-allocation 阶段的虚拟变量。有 `var` 的汇编语言是中�
 
 ## `(pointer <value>)`
 
-在 `define-data` 或 `define-metadata` 的 `(pointer-t <T>)` 字段值位置，
+在 `(pointer-t <T>)` 类型位置（`define-data` / `define-metadata` 的顶层 value，或某个 struct 的指针字段），
 创建匿名 data slot 并填入指向它的指针。
 
 ```lisp
@@ -241,12 +293,12 @@ Pre-register-allocation 阶段的虚拟变量。有 `var` 的汇编语言是中�
 ```lisp
 (mov (reg rax) (reg rdi))
 (mov (reg rax) (imm 42))
-(mov (reg rax) (label-imm (label factorial)))
-(mov (reg rax) (label-deref (label constant)))
+(mov (reg rax) (address factorial))
+(mov (reg rax) (deref (address constant)))
 (mov (reg rax) (reg-deref (reg rbp) -8))
 (mov (reg-deref (reg rbp) -8) (reg rax))
 (mov (reg-deref (reg rbp) -8) (imm 42))
-(mov (reg-deref (reg rbp) -8) (label-imm (label factorial)))
+(mov (reg-deref (reg rbp) -8) (address factorial))
 ```
 
 ## 算术
@@ -351,18 +403,20 @@ uint16_t arity = meta->arity;
 ## 阶乘函数
 
 ```lisp
-(claim-code-metadata function-metadata-t)
+(claim-code-metadata (pointer-t function-metadata-t))
 
 (define-metadata factorial
-  (arity 1)
-  (flags 0)
-  (gc-map (struct
-            (frame-size 24)
-            (callee-saved-count 0)
-            (callee-saved-live 0)
-            (local-count 3)
-            (local-live 7)))
-  (name "factorial"))
+  (pointer
+    (struct
+      (arity 1)
+      (flags 0)
+      (gc-map (struct
+                (frame-size 24)
+                (callee-saved-count 0)
+                (callee-saved-live 0)
+                (local-count 3)
+                (local-live 7)))
+      (name "factorial"))))
 
 (define-code factorial
   (block prolog
@@ -385,8 +439,8 @@ uint16_t arity = meta->arity;
     (j (cc e) (label else))
     ;; then: return 1
     (mov (reg-deref (reg rbp) -8) (imm 9))
-    (jmp (label epilog))
-    else
+    (jmp (label epilog)))
+  (block else
     ;; else: r1 = isub(r0, r1)
     (mov (reg rdi) (reg-deref (reg rbp) -8))
     (mov (reg rsi) (reg-deref (reg rbp) -16))
@@ -420,16 +474,17 @@ uint16_t arity = meta->arity;
 
 (claim my-rect rect-t)
 (define-data my-rect
-  (top-left (struct (x 0) (y 0)))
-  (bottom-right (struct (x 100) (y 100)))
-  (color 0xFF0000))
+  (struct
+    (top-left (struct (x 0) (y 0)))
+    (bottom-right (struct (x 100) (y 100)))
+    (color 0xFF0000)))
 ```
 
 引用嵌套字段：
 
 ```lisp
-(label-imm (label my-rect bottom-right x))
-(label-deref (label my-rect bottom-right x))
+(address my-rect bottom-right x)            ;; 字段地址作立即数
+(deref (address my-rect bottom-right x))    ;; 读字段内容
 ```
 
 ## 指针字段
@@ -442,12 +497,13 @@ uint16_t arity = meta->arity;
 
 (claim my-config config-t)
 (define-data my-config
-  (version 1)
-  (table (pointer
-          (struct entry-t
-            (key "foo")
-            (value 42))))
-  (description "a config example"))
+  (struct
+    (version 1)
+    (table (pointer
+            (struct entry-t
+              (key "foo")
+              (value 42))))
+    (description "a config example")))
 ```
 
 - `(pointer (struct entry-t ...))`：汇编器创建匿名 data slot 存放 `entry-t` 实例，`table` 字段填入指向它的指针（地址 + relocation）。

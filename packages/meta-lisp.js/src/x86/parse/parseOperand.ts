@@ -14,21 +14,19 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.ImmOperand(S.asIntSexp(value).content, location)
   },
 
-  "(cons* 'label path)": ({ path }, { location }) => {
+  "`(label ,name)": ({ name }, { location }) => {
+    return X86.LabelOperand(S.asSymbolSexp(name).content, location)
+  },
+
+  "(cons* 'address path)": ({ path }, { location }) => {
     const elements = S.asListSexp(path).elements.map(
       (x) => S.asSymbolSexp(x).content,
     )
-    return X86.LabelOperand(elements[0], elements.slice(1), location)
+    return X86.AddressOperand(elements[0], elements.slice(1), location)
   },
 
-  "`(label-imm ,label)": ({ label }, { location }) => {
-    const inner = parseLabelOperand(label)
-    return X86.LabelImmOperand(inner, location)
-  },
-
-  "`(label-deref ,label)": ({ label }, { location }) => {
-    const inner = parseLabelOperand(label)
-    return X86.LabelDerefOperand(inner, location)
+  "`(deref ,address)": ({ address }, { location }) => {
+    return X86.DerefOperand(parseAddressOperand(address), location)
   },
 
   "(cons* 'reg-deref base rest)": ({ base, rest }, { location }) => {
@@ -99,20 +97,20 @@ function parseImmValue(sexp: S.Sexp): bigint {
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
-function parseLabelOperand(sexp: S.Sexp): X86.LabelOperand {
+function parseAddressOperand(sexp: S.Sexp): X86.AddressOperand {
   if (sexp.kind !== "ListSexp") {
-    let message = `expected (label ...), got: ${S.formatSexp(sexp)}`
+    let message = `expected (address ...), got: ${S.formatSexp(sexp)}`
     throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const elements = sexp.elements
   if (elements.length < 2) {
-    let message = `expected (label name ...), got: ${S.formatSexp(sexp)}`
+    let message = `expected (address name ...), got: ${S.formatSexp(sexp)}`
     throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
-  if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "label") {
-    let message = `expected (label ...), got: ${S.formatSexp(sexp)}`
+  if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "address") {
+    let message = `expected (address ...), got: ${S.formatSexp(sexp)}`
     throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const path = elements.slice(1).map((x) => S.asSymbolSexp(x).content)
-  return X86.LabelOperand(path[0], path.slice(1), sexp.location)
+  return X86.AddressOperand(path[0], path.slice(1), sexp.location)
 }

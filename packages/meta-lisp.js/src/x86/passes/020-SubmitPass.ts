@@ -20,7 +20,7 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineDataStmt": {
       X86.modDefine(
         mod,
-        X86.DataDefinition(stmt.name, stmt.fields, stmt.location),
+        X86.DataDefinition(stmt.name, stmt.value, stmt.location),
       )
       break
     }
@@ -28,7 +28,7 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineMetadataStmt": {
       X86.modDefine(
         mod,
-        X86.MetadataDefinition(stmt.name, stmt.fields, stmt.location),
+        X86.MetadataDefinition(stmt.name, stmt.value, stmt.location),
       )
       break
     }

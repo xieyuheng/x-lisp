@@ -8,18 +8,10 @@ export function formatDefinition(definition: X86.Definition): string {
       const blocks = definition.blocks.map(formatBlock).join(" ")
       return `(define-code ${definition.name} ${blocks})`
     }
-    case "DataDefinition": {
-      const fields = definition.fields
-        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
-        .join(" ")
-      return `(define-data ${definition.name} ${fields})`
-    }
-    case "MetadataDefinition": {
-      const fields = definition.fields
-        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
-        .join(" ")
-      return `(define-metadata ${definition.target} ${fields})`
-    }
+    case "DataDefinition":
+      return `(define-data ${definition.name} ${formatExp(definition.value)})`
+    case "MetadataDefinition":
+      return `(define-metadata ${definition.target} ${formatExp(definition.value)})`
     case "StructDefinition": {
       const fields = definition.fields
         .map((f) => `(${f.name} ${formatExp(f.exp)})`)

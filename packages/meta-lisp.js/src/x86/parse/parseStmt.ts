@@ -14,20 +14,18 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
     )
   },
 
-  "(cons* 'define-data name fields)": ({ name, fields }, { location }) => {
-    const parsedFields = parseFields(fields)
+  "`(define-data ,name ,value)": ({ name, value }, { location }) => {
     return X86.DefineDataStmt(
       S.asSymbolSexp(name).content,
-      parsedFields,
+      parseExp(value),
       location,
     )
   },
 
-  "(cons* 'define-metadata name fields)": ({ name, fields }, { location }) => {
-    const parsedFields = parseFields(fields)
+  "`(define-metadata ,name ,value)": ({ name, value }, { location }) => {
     return X86.DefineMetadataStmt(
       S.asSymbolSexp(name).content,
-      parsedFields,
+      parseExp(value),
       location,
     )
   },

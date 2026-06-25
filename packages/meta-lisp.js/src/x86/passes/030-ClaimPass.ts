@@ -28,35 +28,11 @@ export function ClaimPass(mod: X86.Mod): void {
     }
   }
 
-  // Validate: claimed type is a DataType
-  for (const [name, type] of mod.claimedTypes) {
-    if (type.kind !== "DataType") {
-      let message = `[ClaimPass] claimed type for "${name}" must be a struct type, got: ${type.kind}`
-      throw new S.ErrorWithSourceLocation(
-        message,
-        mod.claimedTypeExps.get(name)!.location,
-      )
-    }
-  }
-
-  // Validate: codeMetadataType is a known struct
+  // Validate: code-metadata type occupies exactly the 8-byte -8 slot
   if (mod.codeMetadataType) {
-    if (mod.codeMetadataType.kind !== "DataType") {
-      let message = `[ClaimPass] code-metadata type must be a struct type, got: ${mod.codeMetadataType.kind}`
-      throw new S.ErrorWithSourceLocation(
-        message,
-        mod.codeMetadataTypeExp!.location,
-      )
-    }
-    const structDefinition = X86.modLookupDefinition(
-      mod,
-      mod.codeMetadataType.typeConstructor.name,
-    )
-    if (
-      structDefinition === undefined ||
-      structDefinition.kind !== "StructDefinition"
-    ) {
-      let message = `[ClaimPass] code-metadata type "${mod.codeMetadataType.typeConstructor.name}" is not a defined struct`
+    const size = X86.typeSize(mod.codeMetadataType)
+    if (size !== 8) {
+      let message = `[ClaimPass] code-metadata type must have size 8 (the -8 slot holds a pointer), got size ${size}`
       throw new S.ErrorWithSourceLocation(
         message,
         mod.codeMetadataTypeExp!.location,

@@ -7,14 +7,11 @@ export function formatOperand(operand: X86.Operand): string {
     case "ImmOperand":
       return `(imm ${operand.value})`
     case "LabelOperand":
-      if (operand.path.length === 0) {
-        return `(label ${operand.name})`
-      }
-      return `(label ${[operand.name, ...operand.path].join(" ")})`
-    case "LabelImmOperand":
-      return `(label-imm ${formatOperand(operand.label)})`
-    case "LabelDerefOperand":
-      return `(label-deref ${formatOperand(operand.label)})`
+      return `(label ${operand.name})`
+    case "AddressOperand":
+      return `(address ${[operand.name, ...operand.path].join(" ")})`
+    case "DerefOperand":
+      return `(deref ${formatOperand(operand.address)})`
     case "RegDerefOperand": {
       const parts = [`(reg ${operand.base})`]
       if (operand.index !== undefined) {

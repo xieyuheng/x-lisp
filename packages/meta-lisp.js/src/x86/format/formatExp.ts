@@ -21,7 +21,7 @@ export function formatExp(exp: X86.Exp): string {
     }
     case "PointerExp":
       return `(pointer ${formatExp(exp.target)})`
-    case "LabelExp":
-      return `(label ${[exp.name, ...exp.path].join(" ")})`
+    case "AddressExp":
+      return `(address ${[exp.name, ...exp.path].join(" ")})`
   }
 }

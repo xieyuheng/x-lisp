@@ -13,26 +13,18 @@ export function prettyStmt(stmt: X86.Stmt): Ppml.Node {
         blockNodes,
       )
     }
-    case "DefineDataStmt": {
-      const fieldNodes = stmt.fields.map((f) =>
-        Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),
-      )
+    case "DefineDataStmt":
       return Ppml.prettySyntax(
         "define-data",
         [Ppml.text(stmt.name)],
-        fieldNodes,
+        [prettyExp(stmt.value)],
       )
-    }
-    case "DefineMetadataStmt": {
-      const fieldNodes = stmt.fields.map((f) =>
-        Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),
-      )
+    case "DefineMetadataStmt":
       return Ppml.prettySyntax(
         "define-metadata",
         [Ppml.text(stmt.name)],
-        fieldNodes,
+        [prettyExp(stmt.value)],
       )
-    }
     case "DefineStructStmt": {
       const fieldNodes = stmt.fields.map((f) =>
         Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),

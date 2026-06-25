@@ -4,8 +4,8 @@ export type Operand =
   | RegOperand
   | ImmOperand
   | LabelOperand
-  | LabelImmOperand
-  | LabelDerefOperand
+  | AddressOperand
+  | DerefOperand
   | RegDerefOperand
   | CcOperand
   | VarOperand
@@ -45,53 +45,53 @@ export function ImmOperand(
 export type LabelOperand = {
   kind: "LabelOperand"
   name: string
-  path: Array<string>
   location: SourceLocation
 }
 
 export function LabelOperand(
   name: string,
-  path: Array<string>,
   location: SourceLocation,
 ): LabelOperand {
   return {
     kind: "LabelOperand",
+    name,
+    location,
+  }
+}
+
+export type AddressOperand = {
+  kind: "AddressOperand"
+  name: string
+  path: Array<string>
+  location: SourceLocation
+}
+
+export function AddressOperand(
+  name: string,
+  path: Array<string>,
+  location: SourceLocation,
+): AddressOperand {
+  return {
+    kind: "AddressOperand",
     name,
     path,
     location,
   }
 }
 
-export type LabelImmOperand = {
-  kind: "LabelImmOperand"
-  label: LabelOperand
+export type DerefOperand = {
+  kind: "DerefOperand"
+  address: AddressOperand
   location: SourceLocation
 }
 
-export function LabelImmOperand(
-  label: LabelOperand,
+export function DerefOperand(
+  address: AddressOperand,
   location: SourceLocation,
-): LabelImmOperand {
+): DerefOperand {
   return {
-    kind: "LabelImmOperand",
-    label,
-    location,
-  }
-}
-
-export type LabelDerefOperand = {
-  kind: "LabelDerefOperand"
-  label: LabelOperand
-  location: SourceLocation
-}
-
-export function LabelDerefOperand(
-  label: LabelOperand,
-  location: SourceLocation,
-): LabelDerefOperand {
-  return {
-    kind: "LabelDerefOperand",
-    label,
+    kind: "DerefOperand",
+    address,
     location,
   }
 }

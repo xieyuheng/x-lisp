@@ -26,9 +26,9 @@ export function prettyExp(exp: X86.Exp): Ppml.Node {
     }
     case "PointerExp":
       return Ppml.prettySyntax("pointer", [], [prettyExp(exp.target)])
-    case "LabelExp":
+    case "AddressExp":
       return Ppml.prettySyntax(
-        "label",
+        "address",
         [],
         [Ppml.text([exp.name, ...exp.path].join(" "))],
       )

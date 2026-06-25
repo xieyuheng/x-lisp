@@ -19,8 +19,8 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
     return [encodeLeaRegDeref(dst.name, src)]
   }
 
-  if (src.kind === "LabelDerefOperand") {
-    return [encodeLeaLabel(dst.name)]
+  if (src.kind === "AddressOperand") {
+    return [encodeLeaAddress(dst.name)]
   }
 
   let message = `[lea] unsupported src operand: ${src.kind}`
@@ -43,7 +43,7 @@ function encodeLeaRegDeref(
   }
 }
 
-function encodeLeaLabel(dstReg: string): EncodedInstruction {
+function encodeLeaAddress(dstReg: string): EncodedInstruction {
   return {
     prefixes: [],
     rex: computeRex(true, dstReg, null, null),

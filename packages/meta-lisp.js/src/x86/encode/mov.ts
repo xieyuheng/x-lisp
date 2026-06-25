@@ -1,9 +1,9 @@
 import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import type {
+  AddressOperand,
+  DerefOperand,
   ExternalLabelOperand,
-  LabelDerefOperand,
-  LabelImmOperand,
   RegDerefOperand,
 } from "../operand/index.ts"
 import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
@@ -27,12 +27,12 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return [encodeMovRegImm(dstReg, src.value)]
     }
 
-    if (src.kind === "LabelImmOperand") {
-      return [encodeMovRegLabelImm(dstReg, src)]
+    if (src.kind === "AddressOperand") {
+      return [encodeMovRegAddress(dstReg, src)]
     }
 
-    if (src.kind === "LabelDerefOperand") {
-      return [encodeMovRegLabelDeref(dstReg, src)]
+    if (src.kind === "DerefOperand") {
+      return [encodeMovRegDeref(dstReg, src)]
     }
 
     if (src.kind === "RegDerefOperand") {
@@ -54,8 +54,8 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return Array.isArray(result) ? result : [result]
     }
 
-    if (src.kind === "LabelImmOperand") {
-      return encodeMovRegDerefLabelImm(dst, src)
+    if (src.kind === "AddressOperand") {
+      return encodeMovRegDerefAddress(dst, src)
     }
   }
 
@@ -102,9 +102,9 @@ function encodeMovRegImm(dstReg: string, value: bigint): EncodedInstruction {
   }
 }
 
-function encodeMovRegLabelImm(
+function encodeMovRegAddress(
   dstReg: string,
-  _src: LabelImmOperand,
+  _src: AddressOperand,
 ): EncodedInstruction {
   const rex = computeRex(true, dstReg, null, null)
   return {
@@ -118,9 +118,9 @@ function encodeMovRegLabelImm(
   }
 }
 
-function encodeMovRegLabelDeref(
+function encodeMovRegDeref(
   dstReg: string,
-  _src: LabelDerefOperand,
+  _src: DerefOperand,
 ): EncodedInstruction {
   const rex = computeRex(true, dstReg, null, null)
   return {
@@ -199,9 +199,9 @@ function encodeMovRegDerefImm(
   }
 }
 
-function encodeMovRegDerefLabelImm(
+function encodeMovRegDerefAddress(
   dst: RegDerefOperand,
-  _src: LabelImmOperand,
+  _src: AddressOperand,
 ): Array<EncodedInstruction> {
   const lea: EncodedInstruction = {
     prefixes: [],

@@ -8,15 +8,17 @@
 
 (claim my-first cell-t)
 (define-data my-first
-  (x 10))
+  (struct
+    (x 10)))
 
 (claim my-second cell-t)
 (define-data my-second
-  (x 20))
+  (struct
+    (x 20)))
 
 (define-code sum-two-cells
   (block entry
-    (mov (reg rax) (label-deref (label my-first x)))
-    (mov (reg rcx) (label-deref (label my-second x)))
+    (mov (reg rax) (deref (address my-first x)))
+    (mov (reg rcx) (deref (address my-second x)))
     (add (reg rax) (reg rcx))
     (ret)))

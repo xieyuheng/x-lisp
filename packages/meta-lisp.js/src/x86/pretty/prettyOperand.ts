@@ -8,22 +8,15 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
     case "ImmOperand":
       return Ppml.prettySyntax("imm", [], [Ppml.text(operand.value.toString())])
     case "LabelOperand":
-      if (operand.path.length === 0) {
-        return Ppml.prettySyntax("label", [], [Ppml.text(operand.name)])
-      }
+      return Ppml.prettySyntax("label", [], [Ppml.text(operand.name)])
+    case "AddressOperand":
       return Ppml.prettySyntax(
-        "label",
+        "address",
         [],
         [Ppml.text([operand.name, ...operand.path].join(" "))],
       )
-    case "LabelImmOperand":
-      return Ppml.prettySyntax("label-imm", [], [prettyOperand(operand.label)])
-    case "LabelDerefOperand":
-      return Ppml.prettySyntax(
-        "label-deref",
-        [],
-        [prettyOperand(operand.label)],
-      )
+    case "DerefOperand":
+      return Ppml.prettySyntax("deref", [], [prettyOperand(operand.address)])
     case "RegDerefOperand": {
       const parts: Array<Ppml.Node> = [
         Ppml.prettySyntax("reg", [], [Ppml.text(operand.base)]),

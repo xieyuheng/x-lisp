@@ -15,9 +15,9 @@ export function assembleFlat(mod: Mod): Uint8Array {
   const codeSize = collectCodeLayout(mod, labels, relocations)
   const dataResult = emitDataSection(mod, labels, codeSize)
 
-  if (dataResult.relocs.length > 0) {
+  if (dataResult.relocs.length > 0 || dataResult.addressRelocs.length > 0) {
     let message =
-      "flat mode does not support pointer-t / string-t fields (use assemble-x86-exe)"
+      "flat mode does not support pointer-t / string-t / address fields (use assemble-x86-exe)"
     throw new Error(message)
   }
 
@@ -49,7 +49,6 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
     if (definition.kind !== "CodeDefinition") continue
     for (const block of definition.blocks) {
       for (const instr of block.instrs) {
-        if (instr.op === "label") continue
         const encodings = encode(instr)
         for (const enc of encodings) {
           pos = emitTo(enc, buf, pos)

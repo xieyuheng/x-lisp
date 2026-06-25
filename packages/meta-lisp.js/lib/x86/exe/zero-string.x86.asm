@@ -12,12 +12,13 @@
 
 (claim my-msg msg-t)
 (define-data my-msg
-  (version 1)
-  (text ""))
+  (struct
+    (version 1)
+    (text "")))
 
 (define-code read-null-char
   (block entry
-    (lea (reg rax) (label-deref (label my-msg text)))
+    (lea (reg rax) (address my-msg text))
     (mov (reg rax) (reg-deref (reg rax)))
     (mov (reg rax) (reg-deref (reg rax)))
     (and (reg rax) (imm 255))

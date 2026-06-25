@@ -35,11 +35,11 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
     return X86.PointerExp(parseExp(target), location)
   },
 
-  "(cons* 'label path)": ({ path }, { location }) => {
+  "(cons* 'address path)": ({ path }, { location }) => {
     const elements = S.asListSexp(path).elements.map(
       (x) => S.asSymbolSexp(x).content,
     )
-    return X86.LabelExp(elements[0], elements.slice(1), location)
+    return X86.AddressExp(elements[0], elements.slice(1), location)
   },
 
   "(cons* target args)": ({ target, args }, { location }) => {

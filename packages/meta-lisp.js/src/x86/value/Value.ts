@@ -3,7 +3,7 @@ import type { Type, TypeConstructor } from "../type/index.ts"
 export type Value =
   | IntValue
   | StringValue
-  | LabelValue
+  | AddressValue
   | StructValue
   | PointerValue
   | TypeValue
@@ -33,15 +33,15 @@ export function StringValue(content: string): StringValue {
   }
 }
 
-export type LabelValue = {
-  kind: "LabelValue"
+export type AddressValue = {
+  kind: "AddressValue"
   name: string
   path: Array<string>
 }
 
-export function LabelValue(name: string, path: Array<string>): LabelValue {
+export function AddressValue(name: string, path: Array<string>): AddressValue {
   return {
-    kind: "LabelValue",
+    kind: "AddressValue",
     name,
     path,
   }

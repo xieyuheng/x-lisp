@@ -29,12 +29,12 @@ export function check(
       return
     }
 
-    case "LabelExp": {
+    case "AddressExp": {
       if (
         expectedType.kind !== "DataType" ||
         expectedType.typeConstructor.name !== "pointer-t"
       ) {
-        let message = `[check] expected pointer-t for LabelExp, got: ${X86.formatType(expectedType)}`
+        let message = `[check] expected pointer-t for AddressExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
       return
