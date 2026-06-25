@@ -123,19 +123,13 @@ export function PointerExp(target: Exp, location: SourceLocation): PointerExp {
 export type AddressExp = {
   kind: "AddressExp"
   name: string
-  path: Array<string>
   location: SourceLocation
 }
 
-export function AddressExp(
-  name: string,
-  path: Array<string>,
-  location: SourceLocation,
-): AddressExp {
+export function AddressExp(name: string, location: SourceLocation): AddressExp {
   return {
     kind: "AddressExp",
     name,
-    path,
     location,
   }
 }

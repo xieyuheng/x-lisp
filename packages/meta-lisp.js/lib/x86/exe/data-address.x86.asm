@@ -1,7 +1,7 @@
 ; x86.exe: data-section pointer to a named label via (address ...)
 ;
 ; origin     = point-t{ x=11, y=22 }
-; origin-ptr = (pointer-t point-t) whose value is (address origin) = &origin
+; origin-ptr = pointer-t whose value is (address origin) = &origin
 ;
 ; The (address origin) value in a data slot emits an 8-byte pointer plus a
 ; deferred internal relocation resolving to the `origin` label.
@@ -18,7 +18,7 @@
     (x 11)
     (y 22)))
 
-(claim origin-ptr (pointer-t point-t))
+(claim origin-ptr pointer-t)
 (define-data origin-ptr (address origin))
 
 (define-code read-via-address

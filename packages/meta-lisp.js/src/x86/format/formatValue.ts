@@ -7,7 +7,7 @@ export function formatValue(value: X86.Value): string {
     case "StringValue":
       return JSON.stringify(value.content)
     case "AddressValue":
-      return `(address ${[value.name, ...value.path].join(" ")})`
+      return `(address ${value.name})`
     case "StructValue": {
       const prefix = value.name ? `${value.name} ` : ""
       const fields = formatFields(value.fields)

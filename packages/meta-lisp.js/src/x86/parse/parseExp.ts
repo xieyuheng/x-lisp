@@ -35,11 +35,13 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
     return X86.PointerExp(parseExp(target), location)
   },
 
-  "(cons* 'address path)": ({ path }, { location }) => {
-    const elements = S.asListSexp(path).elements.map(
-      (x) => S.asSymbolSexp(x).content,
-    )
-    return X86.AddressExp(elements[0], elements.slice(1), location)
+  "(cons* 'address rest)": ({ rest }, { location }) => {
+    const elements = S.asListSexp(rest).elements
+    if (elements.length !== 1) {
+      let message = `(address name) takes exactly one symbol`
+      throw new S.ErrorWithSourceLocation(message, location)
+    }
+    return X86.AddressExp(S.asSymbolSexp(elements[0]).content, location)
   },
 
   "(cons* target args)": ({ target, args }, { location }) => {

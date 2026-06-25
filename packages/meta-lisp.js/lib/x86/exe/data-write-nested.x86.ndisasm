@@ -1,9 +1,12 @@
-00000000  488D0509100000    lea rax,[rel 0x1010]
-00000007  48C70063000000    mov qword [rax],0x63
-0000000E  488D05F30F0000    lea rax,[rel 0x1008]
-00000015  48C7004D000000    mov qword [rax],0x4d
-0000001C  488B05ED0F0000    mov rax,[rel 0x1010]
-00000023  C3                ret
+00000000  488D05F90F0000    lea rax,[rel 0x1000]
+00000007  48C7401063000000  mov qword [rax+0x10],0x63
+0000000F  48C740084D000000  mov qword [rax+0x8],0x4d
+00000017  488B4010          mov rax,[rax+0x10]
+0000001B  C3                ret
+0000001C  0000              add [rax],al
+0000001E  0000              add [rax],al
+00000020  0000              add [rax],al
+00000022  0000              add [rax],al
 00000024  0000              add [rax],al
 00000026  0000              add [rax],al
 00000028  0000              add [rax],al
@@ -20,20 +23,16 @@
 0000003E  0000              add [rax],al
 00000040  0000              add [rax],al
 00000042  0000              add [rax],al
-00000044  0000              add [rax],al
+00000044  1200              adc al,[rax]
 00000046  0000              add [rax],al
-00000048  0000              add [rax],al
+00000048  0100              add [rax],eax
 0000004A  0000              add [rax],al
-0000004C  1200              adc al,[rax]
-0000004E  0000              add [rax],al
-00000050  0100              add [rax],eax
-00000052  0000              add [rax],al
-00000054  7465              jz 0xbb
-00000056  7374              jnc 0xcc
-00000058  2D77726974        sub eax,0x74697277
-0000005D  652D6E657374      gs sub eax,0x7473656e
-00000063  65640000          add [fs:rax],al
-00000067  0000              add [rax],al
-00000069  0000              add [rax],al
-0000006B  0000              add [rax],al
-0000006D  00                db 0x00
+0000004C  7465              jz 0xb3
+0000004E  7374              jnc 0xc4
+00000050  2D77726974        sub eax,0x74697277
+00000055  652D6E657374      gs sub eax,0x7473656e
+0000005B  65640000          add [fs:rax],al
+0000005F  0000              add [rax],al
+00000061  0000              add [rax],al
+00000063  0000              add [rax],al
+00000065  00                db 0x00

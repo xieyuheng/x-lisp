@@ -1,34 +1,34 @@
-00000000  488D0501100000    lea rax,[rel 0x1008]
-00000007  488B00            mov rax,[rax]
-0000000A  488B00            mov rax,[rax]
-0000000D  4881E0FF000000    and rax,0xff
-00000014  C3                ret
-00000015  0100              add [rax],eax
-00000017  0000              add [rax],al
-00000019  0000              add [rax],al
-0000001B  0000              add [rax],al
-0000001D  0000              add [rax],al
-0000001F  0000              add [rax],al
-00000021  0000              add [rax],al
-00000023  0000              add [rax],al
-00000025  61                db 0x61
-00000026  62                db 0x62
-00000027  63                db 0x63
-00000028  0008              add [rax],cl
-0000002A  1000              adc [rax],al
-0000002C  0010              add [rax],dl
-0000002E  1000              adc [rax],al
-00000030  0010              add [rax],dl
-00000032  0000              add [rax],al
-00000034  0001              add [rcx],al
-00000036  0000              add [rax],al
-00000038  007265            add [rdx+0x65],dh
-0000003B  61                db 0x61
-0000003C  642D66697273      fs sub eax,0x73726966
-00000042  742D              jz 0x71
-00000044  63                db 0x63
-00000045  6861720000        push qword 0x7261
-0000004A  0000              add [rax],al
-0000004C  0000              add [rax],al
-0000004E  0000              add [rax],al
-00000050  00                db 0x00
+00000000  488D05F90F0000    lea rax,[rel 0x1000]
+00000007  488B4008          mov rax,[rax+0x8]
+0000000B  488B00            mov rax,[rax]
+0000000E  4881E0FF000000    and rax,0xff
+00000015  C3                ret
+00000016  0100              add [rax],eax
+00000018  0000              add [rax],al
+0000001A  0000              add [rax],al
+0000001C  0000              add [rax],al
+0000001E  0000              add [rax],al
+00000020  0000              add [rax],al
+00000022  0000              add [rax],al
+00000024  0000              add [rax],al
+00000026  61                db 0x61
+00000027  62                db 0x62
+00000028  63                db 0x63
+00000029  0008              add [rax],cl
+0000002B  1000              adc [rax],al
+0000002D  0010              add [rax],dl
+0000002F  1000              adc [rax],al
+00000031  0010              add [rax],dl
+00000033  0000              add [rax],al
+00000035  0001              add [rcx],al
+00000037  0000              add [rax],al
+00000039  007265            add [rdx+0x65],dh
+0000003C  61                db 0x61
+0000003D  642D66697273      fs sub eax,0x73726966
+00000043  742D              jz 0x72
+00000045  63                db 0x63
+00000046  6861720000        push qword 0x7261
+0000004B  0000              add [rax],al
+0000004D  0000              add [rax],al
+0000004F  0000              add [rax],al
+00000051  00                db 0x00

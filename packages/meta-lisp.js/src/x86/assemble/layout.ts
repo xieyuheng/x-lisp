@@ -1,10 +1,9 @@
 import * as S from "@xieyuheng/sexp.js"
 import { dataTypeUnfold, lookupStructDefinition } from "../check/check.ts"
-import type { StructDefinition } from "../definition/index.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { encode, encodedSize } from "../encode/index.ts"
 import type { Env } from "../evaluate/index.ts"
-import { emptyEnv, envPutMany, evaluate } from "../evaluate/index.ts"
+import { emptyEnv, evaluate } from "../evaluate/index.ts"
 import type { Exp, StructField } from "../exp/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Mod } from "../mod/index.ts"
@@ -14,7 +13,6 @@ import type { Value } from "../value/index.ts"
 
 export type Relocation = {
   labelName: string
-  labelPath: Array<string>
   instrEndPos: number
   fieldOffset: number
 }
@@ -27,7 +25,6 @@ export type InternalReloc = {
 export type DataAddressReloc = {
   patchOffset: number
   labelName: string
-  path: Array<string>
 }
 
 export type ExternalReloc = {
@@ -107,7 +104,6 @@ export function collectCodeLayout(
               const dispOffset = encodedDispOffset(enc)
               relocations.push({
                 labelName: resolveName,
-                labelPath: labelInfo.path,
                 instrEndPos: pos + size,
                 fieldOffset: pos + dispOffset,
               })
@@ -163,20 +159,6 @@ export function emitDataSection(
 
     labels.set(definition.name, startImageOffset + pos)
 
-    const structDef = structDefinitionOf(mod, claimedType)
-    if (structDef) {
-      const env = makeParamEnv(claimedType as DataType, structDef)
-      recordSubfieldLabels(
-        mod,
-        labels,
-        definition.name,
-        structDef.fields,
-        env,
-        startImageOffset + pos,
-        0,
-      )
-    }
-
     pos = emitTopValue(
       mod,
       claimedType,
@@ -195,7 +177,7 @@ export function emitDataSection(
     }
     labels.set(`.meta.${targetName}`, startImageOffset + pos)
     const { structType, structExp } = unpackMetadataStruct(
-      mod.codeMetadataType,
+      mod,
       metaDef.value,
       metaDef.location,
     )
@@ -213,37 +195,36 @@ export function emitDataSection(
   return { bytes: buf, relocs, addressRelocs }
 }
 
-function structDefinitionOf(
-  mod: Mod,
-  type: Type,
-): StructDefinition | undefined {
-  if (type.kind !== "DataType") return undefined
-  const definition = mod.definitions.get(type.typeConstructor.name)
-  if (definition === undefined || definition.kind !== "StructDefinition") {
-    return undefined
-  }
-  return definition
-}
-
 function unpackMetadataStruct(
-  metadataType: Type,
+  mod: Mod,
   value: Exp,
   location: S.SourceLocation,
 ): { structType: DataType; structExp: { fields: Array<StructField> } } {
-  if (
-    metadataType.kind !== "DataType" ||
-    metadataType.typeConstructor.name !== "pointer-t"
-  ) {
-    let message = `[emitDataSection] code-metadata type must be (pointer-t <struct>)`
+  if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
+    let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
     throw new S.ErrorWithSourceLocation(message, location)
   }
-  if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
-    let message = `[emitDataSection] define-metadata value must be (pointer (struct ...))`
+  const structExp = value.target
+  if (structExp.name === undefined) {
+    let message = `[emitDataSection] metadata struct must be named (opaque pointer requires an explicit struct type)`
     throw new S.ErrorWithSourceLocation(message, location)
   }
   return {
-    structType: metadataType.argTypes[0] as DataType,
-    structExp: value.target,
+    structType: structDataTypeByName(mod, structExp.name, location),
+    structExp,
+  }
+}
+
+function structDataTypeByName(
+  mod: Mod,
+  name: string,
+  location: S.SourceLocation,
+): DataType {
+  const structDef = lookupStructDefinition(mod, name, location)
+  return {
+    kind: "DataType",
+    typeConstructor: structDef.typeConstructor,
+    argTypes: [],
   }
 }
 
@@ -289,7 +270,7 @@ function computeDataSectionSize(mod: Mod): number {
   for (const [, metaDef] of mod.metadataDefinitions) {
     if (!mod.codeMetadataType) continue
     const { structType, structExp } = unpackMetadataStruct(
-      mod.codeMetadataType,
+      mod,
       metaDef.value,
       metaDef.location,
     )
@@ -370,7 +351,6 @@ function emitFieldTree(
     addressRelocs.push({
       patchOffset: offset,
       labelName: value.name,
-      path: value.path,
     })
     return offset + 8
   }
@@ -385,7 +365,6 @@ function emitFieldTree(
         const targetOff = pos
         const newPos = emitPointerTarget(
           mod,
-          fieldType as DataType,
           value.target,
           fieldExp,
           buf,
@@ -439,7 +418,6 @@ function emitFieldTree(
 
 function emitPointerTarget(
   mod: Mod,
-  pointerType: DataType,
   targetValue: Value,
   originalExp: Exp,
   buf: Uint8Array,
@@ -448,13 +426,17 @@ function emitPointerTarget(
   addressRelocs: Array<DataAddressReloc>,
 ): number {
   if (targetValue.kind === "StructValue") {
+    if (targetValue.name === undefined) {
+      let message = `pointer target struct must be named`
+      throw new S.ErrorWithSourceLocation(message, originalExp.location)
+    }
     const structExp = originalExp as {
       kind: string
       target: { kind: string; fields: Array<StructField> }
     }
     return emitFieldsTree(
       mod,
-      pointerType.argTypes[0] as DataType,
+      structDataTypeByName(mod, targetValue.name, originalExp.location),
       structExp.target.fields,
       buf,
       offset,
@@ -525,12 +507,7 @@ function computeFieldTreeSize(
   }
 
   if (value.kind === "PointerValue") {
-    const inner = computePointerTargetSize(
-      mod,
-      fieldType as DataType,
-      value.target,
-      fieldExp,
-    )
+    const inner = computePointerTargetSize(mod, value.target, fieldExp)
     return { fixed: 8, deferred: inner }
   }
 
@@ -547,18 +524,21 @@ function computeFieldTreeSize(
 
 function computePointerTargetSize(
   mod: Mod,
-  pointerType: DataType,
   targetValue: Value,
   originalExp: Exp,
 ): number {
   if (targetValue.kind === "StructValue") {
+    if (targetValue.name === undefined) {
+      let message = `pointer target struct must be named`
+      throw new S.ErrorWithSourceLocation(message, originalExp.location)
+    }
     const structExp = originalExp as {
       kind: string
       target: { kind: string; fields: Array<StructField> }
     }
     return computeFieldsTreeSize(
       mod,
-      pointerType.argTypes[0] as DataType,
+      structDataTypeByName(mod, targetValue.name, originalExp.location),
       structExp.target.fields,
     )
   }
@@ -571,73 +551,29 @@ function computePointerTargetSize(
   throw new S.ErrorWithSourceLocation(message, originalExp.location)
 }
 
-export function recordSubfieldLabels(
+export function offsetOf(
   mod: Mod,
-  labels: Map<string, number>,
-  baseName: string,
-  structFields: Array<StructField>,
-  env: Env,
-  baseOffset: number,
-  currentOffset: number,
-): void {
-  let offset = currentOffset
-  for (const field of structFields) {
-    const fieldType = evaluateTypeFromExp(mod, env, field.exp)
-    const key = `${baseName}/${field.name}`
-    labels.set(key, baseOffset + offset)
-
-    if (fieldType.kind === "DataType") {
-      const subDef = mod.definitions.get(fieldType.typeConstructor.name)
-      if (
-        subDef &&
-        subDef.kind === "StructDefinition" &&
-        subDef.fields.length > 0
-      ) {
-        recordSubfieldLabels(
-          mod,
-          labels,
-          key,
-          subDef.fields,
-          env,
-          baseOffset + offset,
-          0,
-        )
-      }
-    }
-
-    offset += typeSize(fieldType)
-  }
-}
-
-export function computePathOffset(
-  mod: Mod,
-  baseName: string,
-  path: Array<string>,
+  structTypeName: string,
+  fields: Array<string>,
 ): number {
-  if (path.length === 0) return 0
-
-  const claimType = mod.claimedTypes.get(baseName)
-  if (!claimType || claimType.kind !== "DataType") return 0
-
-  let currentType = claimType
+  let currentTypeName = structTypeName
   let totalOffset = 0
 
-  for (const step of path) {
+  for (const step of fields) {
     const structDef = lookupStructDefinition(
       mod,
-      currentType.typeConstructor.name,
-      S.zeroLocation("path-resolution"),
+      currentTypeName,
+      S.zeroLocation("offset-of"),
     )
-    const env = makeParamEnv(currentType, structDef)
     let fieldOffset = 0
     let found = false
 
     for (const field of structDef.fields) {
-      const fieldType = evaluateTypeFromExp(mod, env, field.exp)
+      const fieldType = evaluateTypeFromExp(mod, emptyEnv(), field.exp)
       if (field.name === step) {
         totalOffset += fieldOffset
         if (fieldType.kind === "DataType") {
-          currentType = fieldType
+          currentTypeName = fieldType.typeConstructor.name
         }
         found = true
         break
@@ -646,7 +582,7 @@ export function computePathOffset(
     }
 
     if (!found) {
-      let message = `field "${step}" not found in struct ${currentType.typeConstructor.name}`
+      let message = `field "${step}" not found in struct ${currentTypeName}`
       throw new Error(message)
     }
   }
@@ -654,19 +590,42 @@ export function computePathOffset(
   return totalOffset
 }
 
-export function extractLabelInfo(instr: Instr): {
-  name: string
-  path: Array<string>
-} | null {
+export function resolveDisplacements(mod: Mod): void {
+  for (const definition of mod.definitions.values()) {
+    if (definition.kind !== "CodeDefinition") continue
+    for (const block of definition.blocks) {
+      for (const instr of block.instrs) {
+        for (const op of instr.operands) {
+          if (
+            op.kind === "RegDerefOperand" &&
+            op.disp !== undefined &&
+            op.disp.kind === "OffsetOfDisplacement"
+          ) {
+            const value = BigInt(
+              offsetOf(mod, op.disp.structType, op.disp.fields),
+            )
+            op.disp = {
+              kind: "IntDisplacement",
+              value,
+              location: op.disp.location,
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+export function extractLabelInfo(instr: Instr): { name: string } | null {
   for (const op of instr.operands) {
     if (op.kind === "LabelOperand") {
-      return { name: op.name, path: [] }
+      return { name: op.name }
     }
     if (op.kind === "AddressOperand") {
-      return { name: op.name, path: op.path }
+      return { name: op.name }
     }
     if (op.kind === "DerefOperand") {
-      return { name: op.address.name, path: op.address.path }
+      return { name: op.address.name }
     }
   }
   return null
@@ -717,18 +676,6 @@ function evaluateTypeFromExp(mod: Mod, env: Env, exp: Exp): Type {
   }
   let message = `expected type expression, got: ${value.kind}`
   throw new S.ErrorWithSourceLocation(message, exp.location)
-}
-
-function makeParamEnv(dataType: DataType, _structDef: StructDefinition): Env {
-  const typeCtor = dataType.typeConstructor
-  if (typeCtor.parameters.length > 0) {
-    return envPutMany(
-      emptyEnv(),
-      typeCtor.parameters,
-      dataType.argTypes.map((t) => ({ kind: "TypeValue" as const, type: t })),
-    )
-  }
-  return emptyEnv()
 }
 
 function encodedDispOffset(enc: EncodedInstruction): number {

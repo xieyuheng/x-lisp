@@ -62,19 +62,55 @@ export function LabelOperand(
 export type AddressOperand = {
   kind: "AddressOperand"
   name: string
-  path: Array<string>
   location: SourceLocation
 }
 
 export function AddressOperand(
   name: string,
-  path: Array<string>,
   location: SourceLocation,
 ): AddressOperand {
   return {
     kind: "AddressOperand",
     name,
-    path,
+    location,
+  }
+}
+
+export type Displacement = IntDisplacement | OffsetOfDisplacement
+
+export type IntDisplacement = {
+  kind: "IntDisplacement"
+  value: bigint
+  location: SourceLocation
+}
+
+export function IntDisplacement(
+  value: bigint,
+  location: SourceLocation,
+): IntDisplacement {
+  return {
+    kind: "IntDisplacement",
+    value,
+    location,
+  }
+}
+
+export type OffsetOfDisplacement = {
+  kind: "OffsetOfDisplacement"
+  structType: string
+  fields: Array<string>
+  location: SourceLocation
+}
+
+export function OffsetOfDisplacement(
+  structType: string,
+  fields: Array<string>,
+  location: SourceLocation,
+): OffsetOfDisplacement {
+  return {
+    kind: "OffsetOfDisplacement",
+    structType,
+    fields,
     location,
   }
 }
@@ -101,7 +137,7 @@ export type RegDerefOperand = {
   base: string
   index: string | undefined
   scale: bigint | undefined
-  disp: bigint | undefined
+  disp: Displacement | undefined
   location: SourceLocation
 }
 
@@ -109,7 +145,7 @@ export function RegDerefOperand(
   base: string,
   index: string | undefined,
   scale: bigint | undefined,
-  disp: bigint | undefined,
+  disp: Displacement | undefined,
   location: SourceLocation,
 ): RegDerefOperand {
   return {

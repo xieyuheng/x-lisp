@@ -18,11 +18,13 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.LabelOperand(S.asSymbolSexp(name).content, location)
   },
 
-  "(cons* 'address path)": ({ path }, { location }) => {
-    const elements = S.asListSexp(path).elements.map(
-      (x) => S.asSymbolSexp(x).content,
-    )
-    return X86.AddressOperand(elements[0], elements.slice(1), location)
+  "(cons* 'address rest)": ({ rest }, { location }) => {
+    const elements = S.asListSexp(rest).elements
+    if (elements.length !== 1) {
+      let message = `(address name) takes exactly one symbol`
+      throw new S.ErrorWithSourceLocation(message, location)
+    }
+    return X86.AddressOperand(S.asSymbolSexp(elements[0]).content, location)
   },
 
   "`(deref ,address)": ({ address }, { location }) => {
@@ -42,7 +44,7 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
       )
     }
     if (elements.length === 1) {
-      const disp = parseImmValue(elements[0])
+      const disp = parseDisplacement(elements[0])
       return X86.RegDerefOperand(baseName, undefined, undefined, disp, location)
     }
     if (elements.length === 2) {
@@ -52,7 +54,7 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     }
     const index = parseRegName(elements[0])
     const scale = parseImmValue(elements[1])
-    const disp = parseImmValue(elements[2])
+    const disp = parseDisplacement(elements[2])
     return X86.RegDerefOperand(baseName, index, scale, disp, location)
   },
 
@@ -97,20 +99,37 @@ function parseImmValue(sexp: S.Sexp): bigint {
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 
+function parseDisplacement(sexp: S.Sexp): X86.Displacement {
+  if (sexp.kind === "ListSexp") {
+    const elements = sexp.elements
+    if (
+      elements.length >= 2 &&
+      elements[0].kind === "SymbolSexp" &&
+      elements[0].content === "offset-of"
+    ) {
+      const structType = S.asSymbolSexp(elements[1]).content
+      const fields = elements.slice(2).map((x) => S.asSymbolSexp(x).content)
+      return X86.OffsetOfDisplacement(structType, fields, sexp.location)
+    }
+    let message = `expected integer or (offset-of ...), got: ${S.formatSexp(sexp)}`
+    throw new S.ErrorWithSourceLocation(message, sexp.location)
+  }
+  return X86.IntDisplacement(parseImmValue(sexp), sexp.location)
+}
+
 function parseAddressOperand(sexp: S.Sexp): X86.AddressOperand {
   if (sexp.kind !== "ListSexp") {
-    let message = `expected (address ...), got: ${S.formatSexp(sexp)}`
+    let message = `expected (address name), got: ${S.formatSexp(sexp)}`
     throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   const elements = sexp.elements
-  if (elements.length < 2) {
-    let message = `expected (address name ...), got: ${S.formatSexp(sexp)}`
+  if (elements.length !== 2) {
+    let message = `expected (address name), got: ${S.formatSexp(sexp)}`
     throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
   if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "address") {
-    let message = `expected (address ...), got: ${S.formatSexp(sexp)}`
+    let message = `expected (address name), got: ${S.formatSexp(sexp)}`
     throw new S.ErrorWithSourceLocation(message, sexp.location)
   }
-  const path = elements.slice(1).map((x) => S.asSymbolSexp(x).content)
-  return X86.AddressOperand(path[0], path.slice(1), sexp.location)
+  return X86.AddressOperand(S.asSymbolSexp(elements[1]).content, sexp.location)
 }

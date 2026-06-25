@@ -48,7 +48,7 @@ export function check(
         let message = `[check] expected pointer-t for PointerExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
-      check(mod, exp.target, expectedType.argTypes[0])
+      checkPointerTarget(mod, exp.target)
       return
     }
 
@@ -144,4 +144,40 @@ export function isIntegerAtomTypeCtor(name: string): boolean {
     name === "uint32-t" ||
     name === "uint64-t"
   )
+}
+
+function checkPointerTarget(mod: X86.Mod, target: X86.Exp): void {
+  if (target.kind === "StructExp") {
+    if (target.name === undefined) {
+      let message = `[check] pointer target struct must be named (opaque pointer requires an explicit struct type)`
+      throw new S.ErrorWithSourceLocation(message, target.location)
+    }
+    check(mod, target, namedDataType(mod, target.name, target.location))
+    return
+  }
+
+  if (target.kind === "StringExp") {
+    check(mod, target, namedDataType(mod, "string-t", target.location))
+    return
+  }
+
+  let message = `[check] pointer target must be (struct <name> ...) or a string literal, got: ${target.kind}`
+  throw new S.ErrorWithSourceLocation(message, target.location)
+}
+
+function namedDataType(
+  mod: X86.Mod,
+  name: string,
+  location: S.SourceLocation,
+): X86.DataType {
+  const definition = X86.modLookupDefinition(mod, name)
+  if (
+    definition === undefined ||
+    (definition.kind !== "StructDefinition" &&
+      definition.kind !== "PrimitiveTypeDefinition")
+  ) {
+    let message = `[check] unknown type: ${name}`
+    throw new S.ErrorWithSourceLocation(message, location)
+  }
+  return X86.DataType(definition.typeConstructor, [])
 }

@@ -5,8 +5,8 @@ import type { Mod, ValueRelocation } from "../mod/index.ts"
 import {
   collectCodeLayout,
   collectMetadataSlots,
-  computePathOffset,
   emitDataSection,
+  resolveDisplacements,
   writeInt32LE,
   writeInt64,
   writeU32LE,
@@ -26,6 +26,8 @@ function pageAlign(size: number): number {
 }
 
 export function assembleExe(mod: Mod): Uint8Array {
+  resolveDisplacements(mod)
+
   const labels = new Map<string, number>()
   const codeRelocs: Array<Relocation> = []
   const externalRelocs: Array<ExternalReloc> = []
@@ -82,8 +84,7 @@ export function assembleExe(mod: Mod): Uint8Array {
       let message = `undefined address label: ${addressReloc.labelName}`
       throw new Error(message)
     }
-    const targetOffset =
-      base + computePathOffset(mod, addressReloc.labelName, addressReloc.path)
+    const targetOffset = base
     internalRelocs.push({
       patchOffset: addressReloc.patchOffset,
       targetOffset,
@@ -185,12 +186,11 @@ export function assembleExe(mod: Mod): Uint8Array {
   pos = emitNativeFnEntries(mod, labels, strtabOffsets, buf, pos)
 
   for (const reloc of codeRelocs) {
-    let target = labels.get(reloc.labelName)
+    const target = labels.get(reloc.labelName)
     if (target === undefined) {
       let message = `undefined label: ${reloc.labelName}`
       throw new Error(message)
     }
-    target += computePathOffset(mod, reloc.labelName, reloc.labelPath)
     const disp = target - reloc.instrEndPos
     writeInt32LE(buf, 64 + reloc.fieldOffset, disp)
   }

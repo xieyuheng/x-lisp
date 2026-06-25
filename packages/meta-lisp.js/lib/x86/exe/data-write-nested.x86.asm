@@ -1,13 +1,14 @@
 ; Semantic: write to nested struct sub-field, read back to verify
 ;
-;   (address my-rect bottom-right x)
-;     → offset = base + offsetof(rect-t, bottom-right) + offsetof(point-t, x)
-;     → offset = base + 16 + 0
+;   offset-of(rect-t bottom-right x)
+;     → offsetof(rect-t, bottom-right) + offsetof(point-t, x) = 16 + 0 = 16
+;   offset-of(rect-t top-left y)
+;     → offsetof(rect-t, top-left) + offsetof(point-t, y) = 0 + 8 = 8
 ;
 ; Encodings exercised:
-;   lea reg, (address ...)         — 8D /r with RIP-relative  (load sub-field address)
-;   mov [reg], imm                 — C7 /0                       (write to sub-field)
-;   mov reg, (deref (address ...)) — 8B /r with RIP-relative  (read from sub-field)
+;   mov reg, (address ...)                       — RIP-relative LEA-style load of label addr
+;   mov [reg + offset-of(...)], imm              — C7 /0 with disp   (write to sub-field)
+;   mov reg, (reg-deref reg (offset-of ...))     — 8B /r with disp   (read from sub-field)
 
 (define-struct point-t
   (x int64-t)
@@ -27,9 +28,8 @@
 
 (define-code test-write-nested
   (block entry
-    (lea (reg rax) (address my-rect bottom-right x))
-    (mov (reg-deref (reg rax)) (imm 99))
-    (lea (reg rax) (address my-rect top-left y))
-    (mov (reg-deref (reg rax)) (imm 77))
-    (mov (reg rax) (deref (address my-rect bottom-right x)))
+    (mov (reg rax) (address my-rect))
+    (mov (reg-deref (reg rax) (offset-of rect-t bottom-right x)) (imm 99))
+    (mov (reg-deref (reg rax) (offset-of rect-t top-left y)) (imm 77))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of rect-t bottom-right x)))
     (ret)))

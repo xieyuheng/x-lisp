@@ -36,14 +36,12 @@ export function StringValue(content: string): StringValue {
 export type AddressValue = {
   kind: "AddressValue"
   name: string
-  path: Array<string>
 }
 
-export function AddressValue(name: string, path: Array<string>): AddressValue {
+export function AddressValue(name: string): AddressValue {
   return {
     kind: "AddressValue",
     name,
-    path,
   }
 }
 

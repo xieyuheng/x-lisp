@@ -1,9 +1,9 @@
-; Semantic: write to data field via LEA + MOV [reg], imm, then read back
+; Semantic: write to data field via (address ...) base + offset-of disp, then read back
 ;
 ; Encodings exercised:
-;   lea reg, (address ...)         — 8D /r with RIP-relative  (load field address)
-;   mov [reg], imm                 — C7 /0 with mod=00 rm=reg   (write to field)
-;   mov reg, (deref (address ...)) — 8B /r with RIP-relative  (read from field)
+;   mov reg, (address ...)                       — RIP-relative LEA-style load of label addr
+;   mov [reg + offset-of(...)], imm              — C7 /0 with disp   (write to field)
+;   mov reg, (reg-deref reg (offset-of ...))     — 8B /r with disp   (read from field)
 
 (define-struct counter-t
   (value int64-t))
@@ -15,7 +15,7 @@
 
 (define-code test-write-read
   (block entry
-    (lea (reg rax) (address my-counter value))
-    (mov (reg-deref (reg rax)) (imm 42))
-    (mov (reg rax) (deref (address my-counter value)))
+    (mov (reg rax) (address my-counter))
+    (mov (reg-deref (reg rax) (offset-of counter-t value)) (imm 42))
+    (mov (reg rax) (reg-deref (reg rax) (offset-of counter-t value)))
     (ret)))
