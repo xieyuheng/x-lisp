@@ -96,19 +96,19 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 `value-instr` 覆盖所有 `(op operand ...)` 形式的指令。`op` 包括：
 
-| 类别 | op name |
-|---|---|
-| 算术 | `iadd` `isub` `imul` `idiv` |
-| | `fadd` `fsub` `fmul` `fdiv` |
-| 比较 | `icmp-eq` `icmp-lt` `icmp-le` `icmp-gt` `icmp-ge` |
-| | `fcmp-eq` `fcmp-lt` `fcmp-le` `fcmp-gt` `fcmp-ge` |
-| 位运算 | `shl` `shr` `bitand` `bitor` `bitxor` |
-| 逻辑 | `and` `or` `not` |
-| Tag 操作 | `tag-int` `tag-float` `tag-bool` |
-| | `to-int64` `to-float64` `to-bool` |
-| 调用 | `call` `apply` |
-| 内存 | `load` `store` |
-| 其他 | `const` |
+| 类别     | op name                                           |
+|----------|---------------------------------------------------|
+| 算术     | `iadd` `isub` `imul` `idiv`                       |
+|          | `fadd` `fsub` `fmul` `fdiv`                       |
+| 比较     | `icmp-eq` `icmp-lt` `icmp-le` `icmp-gt` `icmp-ge` |
+|          | `fcmp-eq` `fcmp-lt` `fcmp-le` `fcmp-gt` `fcmp-ge` |
+| 位运算   | `shl` `shr` `bitand` `bitor` `bitxor`             |
+| 逻辑     | `and` `or` `not`                                  |
+| Tag 操作 | `tag-int` `tag-float` `tag-bool`                  |
+|          | `to-int64` `to-float64` `to-bool`                 |
+| 调用     | `call` `apply`                                    |
+| 内存     | `load` `store`                                    |
+| 其他     | `const`                                           |
 
 说明：
 
@@ -118,7 +118,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `to-int64` / `to-float64` / `to-bool`：从 `value-type` 中解构原始类型值（运行时类型检查）。
 - `call`：静态调用，target 为 `(function-operand f)` 或 SSA var（间接调用）。
 - `apply`：动态调用 `value-type` 中的函数/闭包，target 为 SSA var。
-- `const`：将 operand 绑定到 SSA 名字。`(= p pointer-type (const (global origin)))`。codegen 不为 `const` 生成代码。
+- `const`：将 operand 绑定到 SSA 名字。`(= p pointer-type (const (global origin)))`。
 
 `field-address-instr` / `element-address-instr` / `stack-allocate-instr` / `heap-allocate-instr` 为独立 variant——它们的 type 参数（`struct-type`、`element-type`）是类型名（编译时 immediate），不属于 operand 的运行时值范畴。`field` 符号同理。
 
@@ -161,13 +161,13 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 (define-struct block-t
   (label symbol-t)
   (parameters (list-t (pair-t symbol-t type-t)))
-  (instructions (list-t instr-t))
+  (instrs (list-t instr-t))
   (terminator terminator-t))
 ```
 
 - `label`：block 名称，跳转目标。
-- `parameters`：入口参数列表 `((name . type) ...)`。entry block 的 parameters 即函数签名。无参数时为空列表。
-- `instructions`：非终止指令序列。可以为空。
+- `parameters`：入口参数列表 `((name type) ...)`。entry block 的 parameters 即函数签名。无参数时为空列表。
+- `instrs`：非终止指令序列。可以为空。
 - `terminator`：恰好一个终止指令。
 
 # Definition
@@ -193,14 +193,14 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
     (type type-t)))
 ```
 
-- `struct-definition`：声明结构体类型及字段布局。例：`(define-struct point-t (x int64-type) (y float64-type))`。
+- `struct-definition`：声明结构体类型及字段布局。
 - `function-definition`：
   - `ret-type` 声明返回类型。
   - `blocks` 的第一个 block 是 entry block。entry block 的 `parameters` 即函数参数。
-- `function-declaration`：无体的外部函数（如 builtin）。`type` 字段为 `(function-type arg-types ret-type)`。
+- `function-declaration`：无体的外部函数（如 builtin）。
 - `variable-definition`：
-  - `init` 为 `(some operand)` 时，静态初始化为该 operand 的值。
-  - `init` 为 `none` 时，等价于 BSS 段的未初始化变量。
+  - `init` 为 `(just operand)` 时，静态初始化为该 operand 的值。
+  - `init` 为 `nothing` 时，等价于 BSS 段的未初始化变量。
 - `variable-declaration`：external 变量，定义在其他模块。
 
 不再有 `define-test`——test 信息由 meta-lisp 前端编码为 `function-definition`（零参数，返回 `bool-type`）。
@@ -220,7 +220,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 ```meta-lisp
 (define (add-or-sub flag a b)
-  (if flag (+ a b) (- a b)))
+  (if flag (iadd a b) (isub a b)))
 ```
 
 basic-lisp IR 文本形式：
@@ -285,16 +285,13 @@ IR 文本形式：
 
 (define-function set-origin void-t
   (block (body)
-    (= x-ptr pointer-t
-       (field-address point-t (const (global origin)) x))
+    (= x-ptr pointer-t (field-address point-t (global origin) x))
     (store x-ptr (int64 0))
-    (= y-ptr pointer-t
-       (field-address point-t (const (global origin)) y))
+    (= y-ptr pointer-t (field-address point-t (global origin) y))
     (store y-ptr (int64 0))
     (return (void))))
 
-(declare-function printf
-  (function-type ((pointer-type)) int64-type))
+(declare-function printf (-> pointer-t int64-t))
 ```
 
 # 与旧设计的对比
