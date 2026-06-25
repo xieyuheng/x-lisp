@@ -56,9 +56,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
   (bool-operand
     (value bool-t))
   (void-operand)
-  (function-operand
-    (name symbol-t))
-  (global-operand
+  (address-operand
     (name symbol-t)))
 ```
 
@@ -67,8 +65,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
   - `int64-operand` / `float64-operand` 当前暂用 meta-lisp 的 `int-t` / `float-t` 承载字面量。但 meta-lisp 的 value 是 3-bit tag + 61-bit payload 的 tagged value：`int-t` 只有 61-bit 有符号范围，`float-t` 会截断 double 的低 3 个尾数位。自举编译 meta-lisp 时无额外精度损失（end-to-end 同受 tag 限制），但无法表达完整 64-bit 整数与精确 double。
   - 未来扩展为 opaque 任意精度表示（类似 JS 的 BigInt），以支持完整 64-bit 整数与精确 double（编译 C-like 静态类型语言所需）。
 - `void-operand`：void 常量。
-- `function-operand`：顶层函数符号引用。出现在 `call` / `tail-call-terminator` 的 target 位置。
-- `global-operand`：顶层全局变量符号引用。语义上等价于该变量的地址（`pointer-type`）。
+- `address-operand`：顶层符号的地址，类型为 `pointer-type`。查符号表确定语义——若是 `function-definition` / `function-declaration` 则可用于 `call` / `tail-call`；若是 `variable-definition` / `variable-declaration` 则可用于 `load` / `store` / `padd`。
 
 # Instruction
 
@@ -109,7 +106,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
   (offset-of-instr
     (dest symbol-t)
     (struct-type type-t)
-    (field symbol-t)))
+    (path (list-t symbol-t)))
 ```
 
 指令按 **shape（字段形状）** 分组：形状相同的二元 / 一元运算分别归入 `binary-instr` / `unary-instr`，用 `op` 区分具体运算，避免 variant 爆炸；形状不同的（load / store / call / apply / size-of / offset-of）各自独立成 variant。
@@ -149,15 +146,15 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - **`type` 字段表示 dest（SSA 变量）的类型**。算术 / 位运算 / 逻辑 op 的 dest 类型等于 operand 类型；比较 op 的 dest 类型恒为 bool。该字段虽与 op 名编码的类型冗余，但使每个 SSA 变量的类型可直接读取，并能与 op 前缀交叉校验。
 - `tag-int` / `tag-float` / `tag-bool`：将原始类型值包装为 `value-type`。
 - `to-int64` / `to-float64` / `to-bool`：从 `value-type` 中解构原始类型值（运行时类型检查）。
-- `const`：将 operand 绑定到 SSA 名字。`(= p pointer-t (const (global origin)))`。codegen 不为 `const` 生成代码。
+- `const`：将 operand 绑定到 SSA 名字。`(= p pointer-t (const (address origin)))`。codegen 不为 `const` 生成代码。
 - `load-instr`：从 `pointer` 指向的地址加载 `type` 类型的值。opaque pointer 不带元素类型，故 `type` 不可省。
 - `store-instr`：将 `value` 写入 `pointer` 指向的地址，`type` 为被存储值的类型。**`store-instr` 不产生值，故无 dest**。
-- `call-instr`：静态调用，`target` 为 `(function-operand f)` 或 SSA var（间接调用）。
+- `call-instr`：静态调用，`target` 为 `(address f)` 或 SSA var（间接调用）。`address` 的目标由查符号表确认是函数定义，获取签名做类型检查。
 - `apply-instr`：动态调用 `value-type` 中的函数 / 闭包，`target` 为 SSA var。
 
 - `padd`：指针的字节偏移加法——`(= p pointer-t (padd base offset))`。`base` 为 `pointer-type`，`offset` 为 `int64-t`，结果为 `pointer-type`。等价于 `base + offset` 字节。
 - `size-of-instr`：计算 `type` 的字节大小，结果为 `int64-t`。编译时常量，codegen 不产生运行时指令。
-- `offset-of-instr`：计算 `struct-type` 中 `field` 的字节偏移，结果为 `int64-t`。编译时常量，codegen 不产生运行时指令。
+- `offset-of-instr`：沿 `struct-type` 的字段路径 `path` 逐级计算累积字节偏移，结果为 `int64-t`。编译时常量。每级在当前 struct 中查找字段，累加前面字段的 size 得偏移，再下钻到该字段的类型（必须可解析为 struct）。不穿透 `pointer-type` 字段。
 
 # Terminator
 
@@ -188,7 +185,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `return-terminator`：函数返回。`value` 类型必须与函数的 `ret-type` 一致。
 - `goto-terminator`：无条件跳转。`args` 传给目标 block 的 `parameters`。
 - `branch-terminator`：条件跳转。`condition` 必须为 `bool-type` 的 operand。`then-args` / `else-args` 分别传给 `then-label` / `else-label` block 的 `parameters`。
-- `tail-call-terminator`：尾调用，`target` 为 `(function-operand ...)` 或 SSA var。
+- `tail-call-terminator`：尾调用，`target` 为 `(address ...)` 或 SSA var。
 - `tail-apply-terminator`：尾动态调用，`target` 为 `value-type` 的 SSA var。
 - `unreachable-terminator`：不可达路径标记。
 
@@ -322,11 +319,11 @@ IR 文本形式：
 
 (define-function set-origin void-t
   (block (body)
-    (= x-offset int64-t (offset-of point-t x))
-    (= x-pointer pointer-t (padd (global origin) x-offset))
+    (= x-offset int64-t (offset-of point-t (x)))
+    (= x-pointer pointer-t (padd (address origin) x-offset))
     (store int64-t x-pointer (int64 0))
-    (= y-offset int64-t (offset-of point-t y))
-    (= y-pointer pointer-t (padd (global origin) y-offset))
+    (= y-offset int64-t (offset-of point-t (y)))
+    (= y-pointer pointer-t (padd (address origin) y-offset))
     (store int64-t y-pointer (int64 0))
     (return (void))))
 
@@ -371,7 +368,7 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 
 - **Operand**
   - 旧：嵌套 `exp-t`（含 `ApplyExp`）。
-  - 新：`operand-t` 平面枚举（var / literal / function / global）。
+  - 新：`operand-t` 平面枚举（var / literal / address）。
 
 - **指令结构**
   - 旧：6 个 variant，含 Test+Branch 隐式配对。
