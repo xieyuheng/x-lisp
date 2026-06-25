@@ -9,10 +9,6 @@ export function prettyExp(exp: X86.Exp): Ppml.Node {
       return Ppml.text(exp.value.toString())
     case "StringExp":
       return Ppml.text(JSON.stringify(exp.content))
-    case "ApplyExp": {
-      const nodes = [prettyExp(exp.target), ...exp.args.map(prettyExp)]
-      return Ppml.prettyApplication(nodes)
-    }
     case "StructExp": {
       const fieldNodes = exp.fields.map((f) =>
         Ppml.prettySyntax(

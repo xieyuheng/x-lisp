@@ -44,12 +44,9 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
     return X86.AddressExp(S.asSymbolSexp(elements[0]).content, location)
   },
 
-  "(cons* target args)": ({ target, args }, { location }) => {
-    return X86.ApplyExp(
-      parseExp(target),
-      S.asListSexp(args).elements.map(parseExp),
-      location,
-    )
+  "(cons* target args)": ({ target }, { location }) => {
+    let message = `[parseExp] unexpected expression form starting with: ${S.formatSexp(target)}`
+    throw new S.ErrorWithSourceLocation(message, location)
   },
 
   data: ({ data }, { location }) => {

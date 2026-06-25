@@ -4,7 +4,6 @@ export type Exp =
   | VarExp
   | IntExp
   | StringExp
-  | ApplyExp
   | StructExp
   | PointerExp
   | AddressExp
@@ -62,26 +61,6 @@ export function StringExp(
   return {
     kind: "StringExp",
     content,
-    location,
-  }
-}
-
-export type ApplyExp = {
-  kind: "ApplyExp"
-  target: Exp
-  args: Array<Exp>
-  location: SourceLocation
-}
-
-export function ApplyExp(
-  target: Exp,
-  args: Array<Exp>,
-  location: SourceLocation,
-): ApplyExp {
-  return {
-    kind: "ApplyExp",
-    target,
-    args,
     location,
   }
 }

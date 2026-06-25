@@ -20,9 +20,7 @@ export function formatDefinition(definition: X86.Definition): string {
     }
     case "SpaceDefinition":
       return `(define-space ${definition.name} ${formatExp(definition.size)})`
-    case "PrimitiveTypeDefinition": {
-      const arity = definition.typeConstructor.parameters.length
-      return `(declare-primitive-type ${definition.name} ${arity})`
-    }
+    case "PrimitiveTypeDefinition":
+      return `(declare-primitive-type ${definition.name})`
   }
 }

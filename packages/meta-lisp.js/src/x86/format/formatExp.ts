@@ -8,10 +8,6 @@ export function formatExp(exp: X86.Exp): string {
       return exp.value.toString()
     case "StringExp":
       return JSON.stringify(exp.content)
-    case "ApplyExp": {
-      const args = exp.args.map(formatExp).join(" ")
-      return `(${formatExp(exp.target)} ${args})`
-    }
     case "StructExp": {
       const prefix = exp.name ? `${exp.name} ` : ""
       const fields = exp.fields

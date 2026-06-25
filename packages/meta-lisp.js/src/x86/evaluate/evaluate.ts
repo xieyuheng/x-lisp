@@ -34,12 +34,6 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
       let message = `[evaluate] unknown name: ${exp.name}`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
-
-    case "ApplyExp": {
-      const target = evaluate(mod, env, exp.target)
-      const args = exp.args.map((arg) => evaluate(mod, env, arg))
-      return X86.apply(mod, env, target, args, exp.location)
-    }
   }
 }
 
@@ -56,20 +50,11 @@ export function evaluateFields(
 }
 
 function definitionToValue(definition: X86.Definition): X86.Value {
-  if (definition.kind === "StructDefinition") {
-    const typeCtor = definition.typeConstructor
-    if (typeCtor.parameters.length !== 0) {
-      return X86.TypeConstructorValue(typeCtor)
-    }
-    return X86.TypeValue(X86.DataType(typeCtor, []))
-  }
-
-  if (definition.kind === "PrimitiveTypeDefinition") {
-    const typeCtor = definition.typeConstructor
-    if (typeCtor.parameters.length !== 0) {
-      return X86.TypeConstructorValue(typeCtor)
-    }
-    return X86.TypeValue(X86.DataType(typeCtor, []))
+  if (
+    definition.kind === "StructDefinition" ||
+    definition.kind === "PrimitiveTypeDefinition"
+  ) {
+    return X86.TypeValue(X86.DataType(definition.typeConstructor))
   }
 
   let message = `[definitionToValue] unexpected definition kind: ${definition.kind}`

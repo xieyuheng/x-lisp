@@ -220,7 +220,6 @@ function structDataTypeByName(
   return {
     kind: "DataType",
     typeConstructor: structDef.typeConstructor,
-    argTypes: [],
   }
 }
 
@@ -655,16 +654,6 @@ export function collectMetadataSlots(mod: Mod): MetadataSlots {
 function evaluateTypeFromExp(mod: Mod, env: Env, exp: Exp): Type {
   const value = evaluate(mod, env, exp)
   if (value.kind === "TypeValue") return value.type
-  if (
-    value.kind === "TypeConstructorValue" &&
-    value.typeConstructor.parameters.length === 0
-  ) {
-    return {
-      kind: "DataType",
-      typeConstructor: value.typeConstructor,
-      argTypes: [],
-    }
-  }
   let message = `expected type expression, got: ${value.kind}`
   throw new S.ErrorWithSourceLocation(message, exp.location)
 }

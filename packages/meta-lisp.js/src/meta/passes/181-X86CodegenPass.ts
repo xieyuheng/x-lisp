@@ -11,7 +11,6 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
   X86.SubmitPass(x86Mod, [
     X86.DefineStructStmt(
       "gc-map-t",
-      [],
       [
         { name: "local-count", exp: X86.VarExp("uint16-t", ZERO) },
         { name: "callee-saved-count", exp: X86.VarExp("uint8-t", ZERO) },
@@ -21,7 +20,6 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
     ),
     X86.DefineStructStmt(
       "function-metadata-t",
-      [],
       [
         { name: "arity", exp: X86.VarExp("uint16-t", ZERO) },
         { name: "flags", exp: X86.VarExp("uint16-t", ZERO) },

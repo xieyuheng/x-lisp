@@ -108,14 +108,9 @@ export function dataTypeUnfold(
     dataType.typeConstructor.name,
     location,
   )
-  const env = X86.envPutMany(
-    X86.emptyEnv(),
-    dataType.typeConstructor.parameters,
-    dataType.argTypes.map((t) => X86.TypeValue(t)),
-  )
   const result = new Map<string, X86.Type>()
   for (const field of structDefinition.fields) {
-    result.set(field.name, X86.evaluateType(mod, env, field.exp))
+    result.set(field.name, X86.evaluateType(mod, X86.emptyEnv(), field.exp))
   }
   return result
 }
@@ -179,7 +174,7 @@ function namedDataType(
     let message = `[check] unknown type: ${name}`
     throw new S.ErrorWithSourceLocation(message, location)
   }
-  return X86.DataType(definition.typeConstructor, [])
+  return X86.DataType(definition.typeConstructor)
 }
 
 export function inferDataType(mod: X86.Mod, value: X86.Exp): X86.Type {

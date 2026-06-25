@@ -37,8 +37,7 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
       const typeCtor: X86.TypeConstructor = {
         mod,
         name: stmt.name,
-        parameters: stmt.parameters,
-        size: (argTypes) => {
+        size: () => {
           const structDefinition = mod.definitions.get(stmt.name)
           if (
             structDefinition === undefined ||
@@ -47,14 +46,11 @@ function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
             let message = `[SubmitPass] unknown struct: ${stmt.name}`
             throw new S.ErrorWithSourceLocation(message, stmt.location)
           }
-          const env = X86.envPutMany(
-            X86.emptyEnv(),
-            stmt.parameters,
-            argTypes.map((t) => X86.TypeValue(t)),
-          )
           let total = 0
           for (const field of structDefinition.fields) {
-            total += X86.typeSize(X86.evaluateType(mod, env, field.exp))
+            total += X86.typeSize(
+              X86.evaluateType(mod, X86.emptyEnv(), field.exp),
+            )
           }
           return total
         },

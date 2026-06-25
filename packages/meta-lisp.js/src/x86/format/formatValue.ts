@@ -17,8 +17,6 @@ export function formatValue(value: X86.Value): string {
       return `(pointer ${formatValue(value.target)})`
     case "TypeValue":
       return X86.formatType(value.type)
-    case "TypeConstructorValue":
-      return value.typeConstructor.name
   }
 }
 
