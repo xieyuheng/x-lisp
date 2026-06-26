@@ -1,8 +1,8 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
-import { prettyType } from "./prettyType.ts"
 import { prettyInstr } from "./prettyInstr.ts"
 import { prettyTerminator } from "./prettyTerminator.ts"
+import { prettyType } from "./prettyType.ts"
 
 export function prettyBlock(block: B.Block): Ppml.Node {
   const bodyNodes: Array<Ppml.Node> = [

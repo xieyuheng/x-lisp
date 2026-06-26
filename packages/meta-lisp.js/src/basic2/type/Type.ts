@@ -81,9 +81,6 @@ export type ArrowType = {
   retType: Type
 }
 
-export function ArrowType(
-  argTypes: Array<Type>,
-  retType: Type,
-): ArrowType {
+export function ArrowType(argTypes: Array<Type>, retType: Type): ArrowType {
   return { kind: "ArrowType", argTypes, retType }
 }

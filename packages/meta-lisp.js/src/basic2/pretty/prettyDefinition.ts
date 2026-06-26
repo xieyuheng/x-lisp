@@ -1,15 +1,14 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
-import { prettyType } from "./prettyType.ts"
-import { prettyOperand } from "./prettyOperand.ts"
 import { prettyBlock } from "./prettyBlock.ts"
+import { prettyOperand } from "./prettyOperand.ts"
+import { prettyType } from "./prettyType.ts"
 
 export function prettyDefinition(definition: B.Definition): Ppml.Node {
   switch (definition.kind) {
     case "StructDefinition": {
-      const fieldNodes = Object.entries(definition.fields).map(
-        ([name, type]) =>
-          Ppml.prettySyntax("", [], [Ppml.text(name), prettyType(type)]),
+      const fieldNodes = Object.entries(definition.fields).map(([name, type]) =>
+        Ppml.prettySyntax("", [], [Ppml.text(name), prettyType(type)]),
       )
       return Ppml.prettySyntax(
         "define-struct",
@@ -28,10 +27,11 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     }
 
     case "FunctionDeclaration": {
-      return Ppml.prettySyntax("declare-function", [], [
-        Ppml.text(definition.name),
-        prettyType(definition.type),
-      ])
+      return Ppml.prettySyntax(
+        "declare-function",
+        [],
+        [Ppml.text(definition.name), prettyType(definition.type)],
+      )
     }
 
     case "VariableDefinition": {
@@ -46,10 +46,11 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     }
 
     case "VariableDeclaration": {
-      return Ppml.prettySyntax("declare-variable", [], [
-        Ppml.text(definition.name),
-        prettyType(definition.type),
-      ])
+      return Ppml.prettySyntax(
+        "declare-variable",
+        [],
+        [Ppml.text(definition.name), prettyType(definition.type)],
+      )
     }
   }
 }

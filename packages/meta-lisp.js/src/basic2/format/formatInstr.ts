@@ -1,6 +1,6 @@
 import * as B from "../index.ts"
-import { formatType } from "./formatType.ts"
 import { formatOperand } from "./formatOperand.ts"
+import { formatType } from "./formatType.ts"
 
 export function formatInstr(instr: B.Instr): string {
   switch (instr.kind) {

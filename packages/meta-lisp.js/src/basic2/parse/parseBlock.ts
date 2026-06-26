@@ -1,8 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
-import { parseType } from "./parseType.ts"
 import { parseInstr } from "./parseInstr.ts"
 import { parseTerminator } from "./parseTerminator.ts"
+import { parseType } from "./parseType.ts"
 
 export function parseBlock(sexp: S.Sexp): B.Block {
   const list = S.asListSexp(sexp)

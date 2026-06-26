@@ -1,7 +1,7 @@
 import * as B from "../index.ts"
-import { formatType } from "./formatType.ts"
 import { formatInstr } from "./formatInstr.ts"
 import { formatTerminator } from "./formatTerminator.ts"
+import { formatType } from "./formatType.ts"
 
 export function formatBlock(block: B.Block): string {
   const instrTexts = block.instrs.map(formatInstr)

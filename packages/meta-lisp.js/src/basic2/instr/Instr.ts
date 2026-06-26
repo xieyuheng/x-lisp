@@ -1,3 +1,4 @@
+import { type Operand } from "../operand/index.ts"
 import {
   type Type,
   ArrowType,
@@ -8,7 +9,6 @@ import {
   ValueType,
   VoidType,
 } from "../type/index.ts"
-import { type Operand } from "../operand/index.ts"
 
 export type Instr =
   | BinaryInstr
@@ -126,10 +126,7 @@ export type SizeOfInstr = {
   targetType: Type
 }
 
-export function SizeOfInstr(
-  dest: string,
-  targetType: Type,
-): SizeOfInstr {
+export function SizeOfInstr(dest: string, targetType: Type): SizeOfInstr {
   return { kind: "SizeOfInstr", dest, targetType }
 }
 
