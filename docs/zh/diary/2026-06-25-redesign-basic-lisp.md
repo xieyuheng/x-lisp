@@ -29,7 +29,7 @@ date: 2026-06-25
     (name symbol-t))
   (struct-type
     (fields (list-t (pair-t symbol-t type-t))))
-  (function-type
+  (arrow-type
     (arg-types (list-t type-t))
     (ret-type type-t)))
 ```
@@ -39,7 +39,7 @@ date: 2026-06-25
 - `value-type`：tagged dynamic value。所有 meta-lisp 值统一用此类型。
 - `named-type`：通过名称引用已定义的 struct 类型。仅用于使用位置（参数类型等），不用于定义位置。
 - `struct-type`：在 `struct-definition` 中定义的结构体字段布局。字段列表为 `((field-name . type) ...)`。名称由 `struct-definition` 层面的 `name` 字段承载。
-- `function-type`：仅用于 `function-declaration` 描述函数签名，不出现在值的类型标注中。
+- `arrow-type`：仅用于 `function-declaration` 描述函数签名，不出现在值的类型标注中。文本语法为 `(-> <arg-type> ... <ret-type>)`——最后一个为 `ret-type`，之前所有为 `arg-types`，无需额外括号包裹参数列表。例如 `(-> int64-t)` 为零参、`(-> pointer-t int64-t)` 为一参、`(-> float64-t float64-t float64-t)` 为二参。
 
 parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`void-t`、`pointer-t`、`value-t`；struct 类型的引用直接用其名称（如 `point-t`）。
 
@@ -102,7 +102,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
     (operands (list-t operand-t)))
   (size-of-instr
     (dest symbol-t)
-    (type type-t))
+    (target-type type-t))
   (offset-of-instr
     (dest symbol-t)
     (struct-type type-t)
@@ -153,7 +153,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `apply-instr`：动态调用 `value-type` 中的函数 / 闭包，`target` 为 SSA var。
 
 - `padd`：指针的字节偏移加法——`(= p pointer-t (padd base offset))`。`base` 为 `pointer-type`，`offset` 为 `int64-t`，结果为 `pointer-type`。等价于 `base + offset` 字节。
-- `size-of-instr`：计算 `type` 的字节大小，结果为 `int64-t`。编译时常量，codegen 不产生运行时指令。
+- `size-of-instr`：计算 `target-type` 的字节大小，结果为 `int64-t`。编译时常量，codegen 不产生运行时指令。
 - `offset-of-instr`：沿 `struct-type` 的字段路径 `path` 逐级计算累积字节偏移，结果为 `int64-t`。编译时常量。每级在当前 struct 中查找字段，累加前面字段的 size 得偏移，再下钻到该字段的类型（必须可解析为 struct）。不穿透 `pointer-type` 字段。
 
 # Terminator
@@ -408,7 +408,7 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 
 - **函数声明**
   - 旧：`PrimitiveFunctionDeclaration`（仅 arity）。
-  - 新：`function-declaration`（完整类型签名 `function-type`）。
+  - 新：`function-declaration`（完整类型签名 `arrow-type`）。
 
 - **变量声明**
   - 旧：`PrimitiveVariableDeclaration`。
