@@ -1,0 +1,17 @@
+(define-function sign int64-t
+  (block (body (n int64-t))
+    (= neg bool-t (icmp-lt n (int64 0)))
+    (branch neg (label negative) (label non-negative)))
+
+  (block negative
+    (return (int64 -1)))
+
+  (block non-negative
+    (= pos bool-t (icmp-gt n (int64 0)))
+    (branch pos (label positive) (label zero)))
+
+  (block positive
+    (return (int64 1)))
+
+  (block zero
+    (return (int64 0))))

@@ -1,0 +1,4 @@
+(define-function check-eq bool-t
+  (block (body (x value-t) (y value-t))
+    (= same bool-t (value-eq x y))
+    (return same)))

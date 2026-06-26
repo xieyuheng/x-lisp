@@ -7,6 +7,7 @@ import { getPackageJson } from "@xieyuheng/std.js/node"
 import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
+import * as B2 from "./basic2/index.ts"
 import * as M from "./meta/index.ts"
 import * as X86 from "./x86/index.ts"
 
@@ -20,6 +21,7 @@ router.defineRoutes([
   "build-x86 --config --dump --basic",
   "test-xvm  --config --profile --builtin",
   "test-x86  --config --profile",
+  "format-basic2 <input>",
   "assemble-x86-flat <input> <output>",
   "assemble-x86-exe <input> <output>",
 ])
@@ -72,6 +74,17 @@ router.defineHandlers({
     if ("--profile" in options) pkg.config.compiler.profile = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     M.TestX86Pipeline(pkg)
+  },
+
+  "format-basic2": ({ args: [input] }) => {
+    if (input === "-") {
+      input = "/dev/stdin"
+    }
+    const code = fs.readFileSync(input, "utf-8")
+    const sexps = S.parseSexps(code, { path: input })
+    const mod = B2.parseMod(sexps)
+    const text = B2.formatMod(mod)
+    process.stdout.write(text)
   },
 
   "assemble-x86-flat": ({ args: [input, output] }) => {

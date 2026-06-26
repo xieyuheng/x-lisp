@@ -1,0 +1,19 @@
+(define-function add-or-sub value-t
+  (block (body (flag value-t) (a value-t) (b value-t))
+    (= raw-a int64-t (to-int64 a))
+    (= raw-b int64-t (to-int64 b))
+    (= cond bool-t (to-bool flag))
+    (branch cond (label then) (label else)))
+
+  (block then
+    (= sum int64-t (iadd raw-a raw-b))
+    (= result value-t (tag-int sum))
+    (goto (label merge result)))
+
+  (block else
+    (= diff int64-t (isub raw-a raw-b))
+    (= result value-t (tag-int diff))
+    (goto (label merge result)))
+
+  (block (merge (x value-t))
+    (return x)))

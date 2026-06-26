@@ -1,0 +1,15 @@
+(define-struct point-t (x int64-t) (y int64-t))
+
+(define-variable origin point-t)
+
+(define-function set-origin void-t
+  (block (body)
+    (= x-offset int64-t (offset-of point-t (x)))
+    (= x-pointer pointer-t (padd (address origin) x-offset))
+    (store int64-t x-pointer (int64 0))
+    (= y-offset int64-t (offset-of point-t (y)))
+    (= y-pointer pointer-t (padd (address origin) y-offset))
+    (store int64-t y-pointer (int64 0))
+    (return (void))))
+
+(declare-function printf (-> pointer-t int64-t))

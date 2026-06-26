@@ -28,7 +28,7 @@ date: 2026-06-25
   (named-type
     (name symbol-t))
   (struct-type
-    (fields (list-t (pair-t symbol-t type-t))))
+    (fields (hash-t symbol-t type-t)))
   (arrow-type
     (arg-types (list-t type-t))
     (ret-type type-t)))
@@ -210,7 +210,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 (define-enum definition-t
   (struct-definition
     (name symbol-t)
-    (fields (list-t (pair-t symbol-t type-t))))
+    (fields (hash-t symbol-t type-t)))
   (function-definition
     (name symbol-t)
     (ret-type type-t)
