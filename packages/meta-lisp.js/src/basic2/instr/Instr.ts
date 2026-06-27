@@ -1,4 +1,3 @@
-import { type Operand } from "../operand/index.ts"
 import {
   type Type,
   ArrowType,
@@ -9,140 +8,25 @@ import {
   ValueType,
   VoidType,
 } from "../type/index.ts"
+import { type Operand } from "../operand/index.ts"
+import { type Attribute } from "../attribute/index.ts"
 
-export type Instr =
-  | BinaryInstr
-  | UnaryInstr
-  | LoadInstr
-  | StoreInstr
-  | CallInstr
-  | ApplyInstr
-  | SizeOfInstr
-  | OffsetOfInstr
-
-export type BinaryInstr = {
-  kind: "BinaryInstr"
-  dest: string
+export type Instr = {
+  id: string
   type: Type
   op: string
-  left: Operand
-  right: Operand
+  operands: Array<Operand>
+  attributes: Record<string, Attribute>
 }
 
-export function BinaryInstr(
-  dest: string,
+export function Instr(
+  id: string,
   type: Type,
   op: string,
-  left: Operand,
-  right: Operand,
-): BinaryInstr {
-  return { kind: "BinaryInstr", dest, type, op, left, right }
-}
-
-export type UnaryInstr = {
-  kind: "UnaryInstr"
-  dest: string
-  type: Type
-  op: string
-  operand: Operand
-}
-
-export function UnaryInstr(
-  dest: string,
-  type: Type,
-  op: string,
-  operand: Operand,
-): UnaryInstr {
-  return { kind: "UnaryInstr", dest, type, op, operand }
-}
-
-export type LoadInstr = {
-  kind: "LoadInstr"
-  dest: string
-  type: Type
-  pointer: Operand
-}
-
-export function LoadInstr(
-  dest: string,
-  type: Type,
-  pointer: Operand,
-): LoadInstr {
-  return { kind: "LoadInstr", dest, type, pointer }
-}
-
-export type StoreInstr = {
-  kind: "StoreInstr"
-  type: Type
-  pointer: Operand
-  value: Operand
-}
-
-export function StoreInstr(
-  type: Type,
-  pointer: Operand,
-  value: Operand,
-): StoreInstr {
-  return { kind: "StoreInstr", type, pointer, value }
-}
-
-export type CallInstr = {
-  kind: "CallInstr"
-  dest: string
-  type: Type
-  target: Operand
-  operands: Array<Operand>
-}
-
-export function CallInstr(
-  dest: string,
-  type: Type,
-  target: Operand,
   operands: Array<Operand>,
-): CallInstr {
-  return { kind: "CallInstr", dest, type, target, operands }
-}
-
-export type ApplyInstr = {
-  kind: "ApplyInstr"
-  dest: string
-  type: Type
-  target: Operand
-  operands: Array<Operand>
-}
-
-export function ApplyInstr(
-  dest: string,
-  type: Type,
-  target: Operand,
-  operands: Array<Operand>,
-): ApplyInstr {
-  return { kind: "ApplyInstr", dest, type, target, operands }
-}
-
-export type SizeOfInstr = {
-  kind: "SizeOfInstr"
-  dest: string
-  targetType: Type
-}
-
-export function SizeOfInstr(dest: string, targetType: Type): SizeOfInstr {
-  return { kind: "SizeOfInstr", dest, targetType }
-}
-
-export type OffsetOfInstr = {
-  kind: "OffsetOfInstr"
-  dest: string
-  structType: Type
-  path: Array<string>
-}
-
-export function OffsetOfInstr(
-  dest: string,
-  structType: Type,
-  path: Array<string>,
-): OffsetOfInstr {
-  return { kind: "OffsetOfInstr", dest, structType, path }
+  attributes: Record<string, Attribute>,
+): Instr {
+  return { id, type, op, operands, attributes }
 }
 
 export const binaryOpNames: Set<string> = new Set([

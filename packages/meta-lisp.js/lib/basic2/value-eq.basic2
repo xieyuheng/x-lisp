@@ -1,4 +1,8 @@
-(define-function check-eq bool-t
-  (block (body (x value-t) (y value-t))
+(claim check-eq (-> value-t value-t bool-t))
+
+(define-function check-eq
+  (block body
+    (= x value-t (argument) :index 0)
+    (= y value-t (argument) :index 1)
     (= same bool-t (value-eq x y))
-    (return same)))
+    (= %1 void-t (return same))))

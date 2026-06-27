@@ -1,17 +1,20 @@
-(define-function sign int64-t
-  (block (body (n int64-t))
+(claim sign (-> int64-t int64-t))
+
+(define-function sign
+  (block body
+    (= n int64-t (argument) :index 0)
     (= neg bool-t (icmp-lt n (int64 0)))
-    (branch neg (label negative) (label non-negative)))
+    (= %1 void-t (branch neg) :then-label negative :else-label non-negative))
 
   (block negative
-    (return (int64 -1)))
+    (= %2 void-t (return (int64 -1))))
 
   (block non-negative
     (= pos bool-t (icmp-gt n (int64 0)))
-    (branch pos (label positive) (label zero)))
+    (= %3 void-t (branch pos) :then-label positive :else-label zero))
 
   (block positive
-    (return (int64 1)))
+    (= %4 void-t (return (int64 1))))
 
   (block zero
-    (return (int64 0))))
+    (= %5 void-t (return (int64 0)))))

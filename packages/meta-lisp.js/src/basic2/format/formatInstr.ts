@@ -1,31 +1,39 @@
 import * as B from "../index.ts"
-import { formatOperand } from "./formatOperand.ts"
 import { formatType } from "./formatType.ts"
+import { formatOperand } from "./formatOperand.ts"
 
 export function formatInstr(instr: B.Instr): string {
-  switch (instr.kind) {
-    case "BinaryInstr":
-      return `(= ${instr.dest} ${formatType(instr.type)} (${instr.op} ${formatOperand(instr.left)} ${formatOperand(instr.right)}))`
+  const operandTexts = instr.operands.map(formatOperand).join(" ")
+  const inner =
+    operandTexts.length > 0
+      ? `(${instr.op} ${operandTexts})`
+      : `(${instr.op})`
 
-    case "UnaryInstr":
-      return `(= ${instr.dest} ${formatType(instr.type)} (${instr.op} ${formatOperand(instr.operand)}))`
+  const attrEntries = Object.entries(instr.attributes)
+  const attrTexts = attrEntries
+    .map(([key, attr]) => `:${key} ${formatAttribute(attr)}`)
+    .join(" ")
 
-    case "LoadInstr":
-      return `(= ${instr.dest} ${formatType(instr.type)} (load ${formatOperand(instr.pointer)}))`
+  const parts = [
+    "=",
+    instr.id,
+    formatType(instr.type),
+    inner,
+    ...(attrTexts.length > 0 ? [attrTexts] : []),
+  ]
 
-    case "StoreInstr":
-      return `(store ${formatType(instr.type)} ${formatOperand(instr.pointer)} ${formatOperand(instr.value)})`
+  return `(${parts.join(" ")})`
+}
 
-    case "CallInstr":
-      return `(= ${instr.dest} ${formatType(instr.type)} (call ${formatOperand(instr.target)} ${instr.operands.map(formatOperand).join(" ")}))`
-
-    case "ApplyInstr":
-      return `(= ${instr.dest} ${formatType(instr.type)} (apply ${formatOperand(instr.target)} ${instr.operands.map(formatOperand).join(" ")}))`
-
-    case "SizeOfInstr":
-      return `(= ${instr.dest} int64-t (size-of ${formatType(instr.targetType)}))`
-
-    case "OffsetOfInstr":
-      return `(= ${instr.dest} int64-t (offset-of ${formatType(instr.structType)} (${instr.path.join(" ")})))`
+function formatAttribute(attribute: B.Attribute): string {
+  switch (attribute.kind) {
+    case "TypeAttribute":
+      return formatType(attribute.value)
+    case "SymbolAttribute":
+      return attribute.value
+    case "IntAttribute":
+      return attribute.value.toString()
+    case "ListAttribute":
+      return `(${attribute.elements.map(formatAttribute).join(" ")})`
   }
 }

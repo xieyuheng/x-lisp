@@ -1,115 +1,38 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
-import { prettyOperand } from "./prettyOperand.ts"
 import { prettyType } from "./prettyType.ts"
+import { prettyOperand } from "./prettyOperand.ts"
 
 export function prettyInstr(instr: B.Instr): Ppml.Node {
-  switch (instr.kind) {
-    case "BinaryInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          prettyType(instr.type),
-          Ppml.prettySyntax(
-            instr.op,
-            [],
-            [prettyOperand(instr.left), prettyOperand(instr.right)],
-          ),
-        ],
-      )
+  const operandNodes = instr.operands.map(prettyOperand)
+  const inner = Ppml.prettySyntax(instr.op, [], operandNodes)
 
-    case "UnaryInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          prettyType(instr.type),
-          Ppml.prettySyntax(instr.op, [], [prettyOperand(instr.operand)]),
-        ],
-      )
+  const attrEntries = Object.entries(instr.attributes)
+  const attrNodes = attrEntries.flatMap(([key, attr]) => [
+    Ppml.text(`:${key}`),
+    prettyAttribute(attr),
+  ])
 
-    case "LoadInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          prettyType(instr.type),
-          Ppml.prettySyntax("load", [], [prettyOperand(instr.pointer)]),
-        ],
-      )
+  return Ppml.prettySyntax(
+    "=",
+    [],
+    [Ppml.text(instr.id), prettyType(instr.type), inner, ...attrNodes],
+  )
+}
 
-    case "StoreInstr":
+function prettyAttribute(attribute: B.Attribute): Ppml.Node {
+  switch (attribute.kind) {
+    case "TypeAttribute":
+      return prettyType(attribute.value)
+    case "SymbolAttribute":
+      return Ppml.text(attribute.value)
+    case "IntAttribute":
+      return Ppml.text(attribute.value.toString())
+    case "ListAttribute":
       return Ppml.prettySyntax(
-        "store",
+        "",
         [],
-        [
-          prettyType(instr.type),
-          prettyOperand(instr.pointer),
-          prettyOperand(instr.value),
-        ],
-      )
-
-    case "CallInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          prettyType(instr.type),
-          Ppml.prettySyntax(
-            "call",
-            [],
-            [prettyOperand(instr.target), ...instr.operands.map(prettyOperand)],
-          ),
-        ],
-      )
-
-    case "ApplyInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          prettyType(instr.type),
-          Ppml.prettySyntax(
-            "apply",
-            [],
-            [prettyOperand(instr.target), ...instr.operands.map(prettyOperand)],
-          ),
-        ],
-      )
-
-    case "SizeOfInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          Ppml.text("int64-t"),
-          Ppml.prettySyntax("size-of", [], [prettyType(instr.targetType)]),
-        ],
-      )
-
-    case "OffsetOfInstr":
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [
-          Ppml.text(instr.dest),
-          Ppml.text("int64-t"),
-          Ppml.prettySyntax(
-            "offset-of",
-            [],
-            [
-              prettyType(instr.structType),
-              Ppml.prettySyntax("", [], instr.path.map(Ppml.text)),
-            ],
-          ),
-        ],
+        attribute.elements.map(prettyAttribute),
       )
   }
 }

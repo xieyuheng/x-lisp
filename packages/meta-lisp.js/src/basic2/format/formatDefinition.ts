@@ -1,7 +1,7 @@
 import * as B from "../index.ts"
-import { formatBlock } from "./formatBlock.ts"
-import { formatOperand } from "./formatOperand.ts"
 import { formatType } from "./formatType.ts"
+import { formatOperand } from "./formatOperand.ts"
+import { formatBlock } from "./formatBlock.ts"
 
 export function formatDefinition(definition: B.Definition): string {
   switch (definition.kind) {
@@ -14,22 +14,14 @@ export function formatDefinition(definition: B.Definition): string {
 
     case "FunctionDefinition": {
       const blockTexts = definition.blocks.map(formatBlock).join(" ")
-      return `(define-function ${definition.name} ${formatType(definition.retType)} ${blockTexts})`
-    }
-
-    case "FunctionDeclaration": {
-      return `(declare-function ${definition.name} ${formatType(definition.type)})`
+      return `(define-function ${definition.name} ${blockTexts})`
     }
 
     case "VariableDefinition": {
       if (definition.init === null) {
-        return `(define-variable ${definition.name} ${formatType(definition.type)})`
+        return `(define-variable ${definition.name})`
       }
-      return `(define-variable ${definition.name} ${formatType(definition.type)} ${formatOperand(definition.init)})`
-    }
-
-    case "VariableDeclaration": {
-      return `(declare-variable ${definition.name} ${formatType(definition.type)})`
+      return `(define-variable ${definition.name} ${formatOperand(definition.init)})`
     }
   }
 }

@@ -1,83 +1,76 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
-import { parseOperand } from "./parseOperand.ts"
 import { parseType } from "./parseType.ts"
+import { parseOperand } from "./parseOperand.ts"
 
 export function parseInstr(sexp: S.Sexp): B.Instr {
   const list = S.asListSexp(sexp)
-  const head = S.asSymbolSexp(list.elements[0])
-
-  if (head.content === "=") {
-    return parseAssignForm(list)
-  }
-
-  if (head.content === "store") {
-    return parseStoreForm(list)
-  }
-
-  throw new S.ErrorWithSourceLocation(
-    `[parseInstr] unknown instr form: ${S.formatSexp(sexp)}`,
-    sexp.location,
-  )
-}
-
-function parseAssignForm(list: S.ListSexp): B.Instr {
   const elements = list.elements
-  const dest = S.asSymbolSexp(elements[1]).content
+  const head = S.asSymbolSexp(elements[0])
+
+  if (head.content !== "=") {
+    throw new S.ErrorWithSourceLocation(
+      `[parseInstr] expected '=', got: ${S.formatSexp(sexp)}`,
+      sexp.location,
+    )
+  }
+
+  const id = S.asSymbolSexp(elements[1]).content
   const type = parseType(elements[2])
   const innerList = S.asListSexp(elements[3])
-  const op = S.asSymbolSexp(innerList.elements[0]).content
+  const innerElements = innerList.elements
+  const op = S.asSymbolSexp(innerElements[0]).content
+  const operands = innerElements.slice(1).map(parseOperand)
 
-  if (B.binaryOpNames.has(op)) {
-    const left = parseOperand(innerList.elements[1])
-    const right = parseOperand(innerList.elements[2])
-    return B.BinaryInstr(dest, type, op, left, right)
+  const attributes: Record<string, B.Attribute> = {}
+  let i = 4
+  while (i < elements.length) {
+    const keySexp = elements[i]
+    if (S.isKeywordSexp(keySexp)) {
+      const attributeKey = keySexp.content
+      i++
+      const valueSexp = elements[i]
+      i++
+      attributes[attributeKey] = parseAttribute(valueSexp)
+    } else if (S.isSymbolSexp(keySexp)) {
+      const key = keySexp.content
+      if (!key.startsWith(":")) {
+        throw new S.ErrorWithSourceLocation(
+          `[parseInstr] attribute key must start with ':', got: ${key}`,
+          keySexp.location,
+        )
+      }
+      const attributeKey = key.slice(1)
+      i++
+      const valueSexp = elements[i]
+      i++
+      attributes[attributeKey] = parseAttribute(valueSexp)
+    } else {
+      throw new S.ErrorWithSourceLocation(
+        `[parseInstr] expected attribute key, got: ${S.formatSexp(keySexp)}`,
+        keySexp.location,
+      )
+    }
   }
 
-  if (B.unaryOpNames.has(op)) {
-    const operand = parseOperand(innerList.elements[1])
-    return B.UnaryInstr(dest, type, op, operand)
+  return B.Instr(id, type, op, operands, attributes)
+}
+
+function parseAttribute(sexp: S.Sexp): B.Attribute {
+  if (S.isSymbolSexp(sexp)) {
+    return B.SymbolAttribute(sexp.content)
   }
 
-  if (op === "load") {
-    const pointer = parseOperand(innerList.elements[1])
-    return B.LoadInstr(dest, type, pointer)
+  if (S.isIntSexp(sexp)) {
+    return B.IntAttribute(Number(sexp.content))
   }
 
-  if (op === "call") {
-    const target = parseOperand(innerList.elements[1])
-    const operands = innerList.elements.slice(2).map(parseOperand)
-    return B.CallInstr(dest, type, target, operands)
-  }
-
-  if (op === "apply") {
-    const target = parseOperand(innerList.elements[1])
-    const operands = innerList.elements.slice(2).map(parseOperand)
-    return B.ApplyInstr(dest, type, target, operands)
-  }
-
-  if (op === "size-of") {
-    const targetType = parseType(innerList.elements[1])
-    return B.SizeOfInstr(dest, targetType)
-  }
-
-  if (op === "offset-of") {
-    const structType = parseType(innerList.elements[1])
-    const pathList = S.asListSexp(innerList.elements[2])
-    const path = pathList.elements.map((e) => S.asSymbolSexp(e).content)
-    return B.OffsetOfInstr(dest, structType, path)
+  if (S.isListSexp(sexp)) {
+    return B.ListAttribute(sexp.elements.map(parseAttribute))
   }
 
   throw new S.ErrorWithSourceLocation(
-    `[parseInstr] unknown op: ${op}`,
-    list.location,
+    `[parseAttribute] unknown attribute value: ${S.formatSexp(sexp)}`,
+    sexp.location,
   )
-}
-
-function parseStoreForm(list: S.ListSexp): B.StoreInstr {
-  const elements = list.elements
-  const type = parseType(elements[1])
-  const pointer = parseOperand(elements[2])
-  const value = parseOperand(elements[3])
-  return B.StoreInstr(type, pointer, value)
 }

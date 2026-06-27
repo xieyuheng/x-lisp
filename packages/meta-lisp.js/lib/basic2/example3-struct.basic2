@@ -1,15 +1,18 @@
 (define-struct point-t (x int64-t) (y int64-t))
 
-(define-variable origin point-t)
+(claim origin point-t)
+(define-variable origin)
 
-(define-function set-origin void-t
-  (block (body)
-    (= x-offset int64-t (offset-of point-t (x)))
+(claim set-origin (-> void-t))
+
+(define-function set-origin
+  (block body
+    (= x-offset int64-t (offset-of) :struct-type point-t :path (x))
     (= x-pointer pointer-t (padd (address origin) x-offset))
-    (store int64-t x-pointer (int64 0))
-    (= y-offset int64-t (offset-of point-t (y)))
+    (= %1 void-t (store x-pointer (int64 0)) :content-type int64-t)
+    (= y-offset int64-t (offset-of) :struct-type point-t :path (y))
     (= y-pointer pointer-t (padd (address origin) y-offset))
-    (store int64-t y-pointer (int64 0))
-    (return (void))))
+    (= %2 void-t (store y-pointer (int64 0)) :content-type int64-t)
+    (= %3 void-t (return (void)))))
 
-(declare-function printf (-> pointer-t int64-t))
+(claim printf (-> pointer-t int64-t))

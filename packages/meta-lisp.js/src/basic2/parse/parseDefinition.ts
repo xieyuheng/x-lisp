@@ -1,8 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
-import { parseBlock } from "./parseBlock.ts"
-import { parseOperand } from "./parseOperand.ts"
 import { parseType } from "./parseType.ts"
+import { parseOperand } from "./parseOperand.ts"
+import { parseBlock } from "./parseBlock.ts"
 
 export function parseDefinition(sexp: S.Sexp): B.Definition {
   const list = S.asListSexp(sexp)
@@ -24,28 +24,14 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
 
     case "define-function": {
       const name = S.asSymbolSexp(elements[1]).content
-      const retType = parseType(elements[2])
-      const blocks = elements.slice(3).map(parseBlock)
-      return B.FunctionDefinition(name, retType, blocks)
-    }
-
-    case "declare-function": {
-      const name = S.asSymbolSexp(elements[1]).content
-      const type = parseType(elements[2])
-      return B.FunctionDeclaration(name, type)
+      const blocks = elements.slice(2).map(parseBlock)
+      return B.FunctionDefinition(name, blocks)
     }
 
     case "define-variable": {
       const name = S.asSymbolSexp(elements[1]).content
-      const type = parseType(elements[2])
-      const init = elements.length >= 4 ? parseOperand(elements[3]) : null
-      return B.VariableDefinition(name, type, init)
-    }
-
-    case "declare-variable": {
-      const name = S.asSymbolSexp(elements[1]).content
-      const type = parseType(elements[2])
-      return B.VariableDeclaration(name, type)
+      const init = elements.length >= 3 ? parseOperand(elements[2]) : null
+      return B.VariableDefinition(name, init)
     }
 
     default: {

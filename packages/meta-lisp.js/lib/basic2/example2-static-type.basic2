@@ -1,11 +1,16 @@
-(define-function add-or-sub int64-t
-  (block (body (flag bool-t) (a int64-t) (b int64-t))
-    (branch flag (label then a b) (label else a b)))
+(claim add-or-sub (-> bool-t int64-t int64-t int64-t))
 
-  (block (then (x int64-t) (y int64-t))
-    (= sum int64-t (iadd x y))
-    (return sum))
+(define-function add-or-sub
+  (block body
+    (= flag bool-t (argument) :index 0)
+    (= a int64-t (argument) :index 1)
+    (= b int64-t (argument) :index 2)
+    (= %1 void-t (branch flag) :then-label then :else-label else))
 
-  (block (else (x int64-t) (y int64-t))
-    (= diff int64-t (isub x y))
-    (return diff)))
+  (block then
+    (= sum int64-t (iadd a b))
+    (= %2 void-t (return sum)))
+
+  (block else
+    (= diff int64-t (isub a b))
+    (= %3 void-t (return diff))))

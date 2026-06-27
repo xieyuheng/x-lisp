@@ -1,13 +1,11 @@
-import { type Block } from "../block/index.ts"
-import { type Operand } from "../operand/index.ts"
 import { type Type } from "../type/index.ts"
+import { type Operand } from "../operand/index.ts"
+import { type Block } from "../block/index.ts"
 
 export type Definition =
   | StructDefinition
   | FunctionDefinition
-  | FunctionDeclaration
   | VariableDefinition
-  | VariableDeclaration
 
 export type StructDefinition = {
   kind: "StructDefinition"
@@ -25,55 +23,25 @@ export function StructDefinition(
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
   name: string
-  retType: Type
   blocks: Array<Block>
 }
 
 export function FunctionDefinition(
   name: string,
-  retType: Type,
   blocks: Array<Block>,
 ): FunctionDefinition {
-  return { kind: "FunctionDefinition", name, retType, blocks }
-}
-
-export type FunctionDeclaration = {
-  kind: "FunctionDeclaration"
-  name: string
-  type: Type
-}
-
-export function FunctionDeclaration(
-  name: string,
-  type: Type,
-): FunctionDeclaration {
-  return { kind: "FunctionDeclaration", name, type }
+  return { kind: "FunctionDefinition", name, blocks }
 }
 
 export type VariableDefinition = {
   kind: "VariableDefinition"
   name: string
-  type: Type
   init: Operand | null
 }
 
 export function VariableDefinition(
   name: string,
-  type: Type,
   init: Operand | null,
 ): VariableDefinition {
-  return { kind: "VariableDefinition", name, type, init }
-}
-
-export type VariableDeclaration = {
-  kind: "VariableDeclaration"
-  name: string
-  type: Type
-}
-
-export function VariableDeclaration(
-  name: string,
-  type: Type,
-): VariableDeclaration {
-  return { kind: "VariableDeclaration", name, type }
+  return { kind: "VariableDefinition", name, init }
 }
