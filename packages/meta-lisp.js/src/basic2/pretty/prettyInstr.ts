@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
-import { prettyType } from "./prettyType.ts"
 import { prettyOperand } from "./prettyOperand.ts"
+import { prettyType } from "./prettyType.ts"
 
 export function prettyInstr(instr: B.Instr): Ppml.Node {
   const operandNodes = instr.operands.map(prettyOperand)
@@ -29,10 +29,6 @@ function prettyAttribute(attribute: B.Attribute): Ppml.Node {
     case "IntAttribute":
       return Ppml.text(attribute.value.toString())
     case "ListAttribute":
-      return Ppml.prettySyntax(
-        "",
-        [],
-        attribute.elements.map(prettyAttribute),
-      )
+      return Ppml.prettySyntax("", [], attribute.elements.map(prettyAttribute))
   }
 }

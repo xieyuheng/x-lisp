@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
-import { parseType } from "./parseType.ts"
 import { parseDefinition } from "./parseDefinition.ts"
+import { parseType } from "./parseType.ts"
 
 export function parseMod(sexps: Array<S.Sexp>): B.Mod {
   const mod = B.createMod()

@@ -1,3 +1,5 @@
+import { type Attribute } from "../attribute/index.ts"
+import { type Operand } from "../operand/index.ts"
 import {
   type Type,
   ArrowType,
@@ -8,8 +10,6 @@ import {
   ValueType,
   VoidType,
 } from "../type/index.ts"
-import { type Operand } from "../operand/index.ts"
-import { type Attribute } from "../attribute/index.ts"
 
 export type Instr = {
   id: string

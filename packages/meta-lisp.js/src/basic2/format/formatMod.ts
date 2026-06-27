@@ -1,6 +1,6 @@
 import * as B from "../index.ts"
-import { formatType } from "./formatType.ts"
 import { formatDefinition } from "./formatDefinition.ts"
+import { formatType } from "./formatType.ts"
 
 export function formatMod(mod: B.Mod): string {
   const texts: Array<string> = []

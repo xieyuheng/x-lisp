@@ -1,13 +1,11 @@
 import * as B from "../index.ts"
-import { formatType } from "./formatType.ts"
 import { formatOperand } from "./formatOperand.ts"
+import { formatType } from "./formatType.ts"
 
 export function formatInstr(instr: B.Instr): string {
   const operandTexts = instr.operands.map(formatOperand).join(" ")
   const inner =
-    operandTexts.length > 0
-      ? `(${instr.op} ${operandTexts})`
-      : `(${instr.op})`
+    operandTexts.length > 0 ? `(${instr.op} ${operandTexts})` : `(${instr.op})`
 
   const attrEntries = Object.entries(instr.attributes)
   const attrTexts = attrEntries

@@ -1,5 +1,5 @@
-import { type Type } from "../type/index.ts"
 import { type Definition } from "../definition/index.ts"
+import { type Type } from "../type/index.ts"
 
 export type Mod = {
   definitions: Map<string, Definition>

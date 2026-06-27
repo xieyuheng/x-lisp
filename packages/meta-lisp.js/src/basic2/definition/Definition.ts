@@ -1,6 +1,6 @@
-import { type Type } from "../type/index.ts"
-import { type Operand } from "../operand/index.ts"
 import { type Block } from "../block/index.ts"
+import { type Operand } from "../operand/index.ts"
+import { type Type } from "../type/index.ts"
 
 export type Definition =
   | StructDefinition

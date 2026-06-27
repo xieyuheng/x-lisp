@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
-import { prettyType } from "./prettyType.ts"
 import { prettyDefinition } from "./prettyDefinition.ts"
+import { prettyType } from "./prettyType.ts"
 
 export function prettyMod(mod: B.Mod): Ppml.Node {
   const children: Array<Ppml.Node> = []

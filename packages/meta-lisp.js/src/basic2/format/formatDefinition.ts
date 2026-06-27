@@ -1,7 +1,7 @@
 import * as B from "../index.ts"
-import { formatType } from "./formatType.ts"
-import { formatOperand } from "./formatOperand.ts"
 import { formatBlock } from "./formatBlock.ts"
+import { formatOperand } from "./formatOperand.ts"
+import { formatType } from "./formatType.ts"
 
 export function formatDefinition(definition: B.Definition): string {
   switch (definition.kind) {

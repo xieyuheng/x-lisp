@@ -1,8 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
-import { parseType } from "./parseType.ts"
-import { parseOperand } from "./parseOperand.ts"
 import { parseBlock } from "./parseBlock.ts"
+import { parseOperand } from "./parseOperand.ts"
+import { parseType } from "./parseType.ts"
 
 export function parseDefinition(sexp: S.Sexp): B.Definition {
   const list = S.asListSexp(sexp)

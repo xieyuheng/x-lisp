@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
-import { parseType } from "./parseType.ts"
 import { parseOperand } from "./parseOperand.ts"
+import { parseType } from "./parseType.ts"
 
 export function parseInstr(sexp: S.Sexp): B.Instr {
   const list = S.asListSexp(sexp)
