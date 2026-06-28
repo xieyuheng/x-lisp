@@ -24,7 +24,7 @@ date: 2026-06-10
 `define-data` 与 `define-metadata` 统一为「**claim 类型 + 单个 value**」：
 
 ```lisp
-(claim <name> <type>)            ;; 或 (claim-code-metadata <type>)
+(claim <name> <type>)
 (define-data <name> <value>)     ;; 或 (define-metadata <name> <value>)
 ```
 
@@ -84,30 +84,17 @@ date: 2026-06-10
       (next 0))))
 ```
 
-## `(claim-code-metadata)`
-
-声明所有 `define-code` 的 metadata 类型。
-
-```lisp
-(claim-code-metadata <type>)
-```
-
-- 无 `<name>` 参数——全局生效。
-- `<type>` 可以是任意类型，但 `-8` slot 固定为 8 bytes——汇编器在 check 阶段校验 `typeSize(<type>) == 8`。因此实际只有 `(pointer-t <T>)`、`string-t` 或 8-byte 标量合法，典型写法是 `(pointer-t <struct>-t)`。
-- 在 Mod 中记录，用于后续验证和布局计算。
-
 ## `(define-metadata)`
 
 为指定 label 的 `-8` slot 填充元数据。
 
-语法与 `define-data` 一致——claim 类型（由 `claim-code-metadata` 全局声明）+ 单个 value：
+语法与 `define-data` 一致：
 
 ```lisp
 (define-metadata <name> <value>)
 ```
 
 - `<name>` 对应一个 `define-code` 或其他顶层 label。
-- 元数据类型由 `claim-code-metadata` 全局声明。
 - 由于 `-8` slot 是 8-byte 指针，`<value>` 典型写法是 `(pointer (struct ...))`——汇编器创建匿名 struct slot 并在 `-8` 处填入指向它的指针。
 - 语义上 `define-metadata` 等价于对 `<name> - 8` 这个 slot 做一次 `define-data`，因此走与 `(pointer ...)` 相同的「匿名 slot + 重定位」机制，无需独立的 emit 路径。
 - **C 侧 ABI 不变**：`-8` 处仍是指针、目标仍是 struct 实例，loader 无需改动。
@@ -403,8 +390,6 @@ uint16_t arity = meta->arity;
 ## 阶乘函数
 
 ```lisp
-(claim-code-metadata (pointer-t function-metadata-t))
-
 (define-metadata factorial
   (pointer
     (struct
