@@ -8,10 +8,10 @@
   (value int64-t))
 
 (define-data cell
-  (@struct int-cell-t (value 99)))
+  (struct int-cell-t (value 99)))
 
 (define-data ptr
-  (@address cell))
+  cell)
 
 (define-code test-at-address
   (block entry

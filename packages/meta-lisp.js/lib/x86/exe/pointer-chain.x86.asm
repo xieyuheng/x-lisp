@@ -17,11 +17,11 @@
   (value int64-t))
 
 (define-data chain
-  (@struct node-a-t
-    (next (@pointer
-            (@struct node-b-t
-              (next (@pointer
-                      (@struct node-c-t
+  (struct node-a-t
+    (next (pointer
+            (struct node-b-t
+              (next (pointer
+                      (struct node-c-t
                         (value 77))))
               (value 0))))
     (value 0)))

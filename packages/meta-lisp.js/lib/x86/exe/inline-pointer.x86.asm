@@ -12,6 +12,6 @@
 
 (define-code test-inline-pointer
   (block entry
-    (mov (reg rax) (@pointer (@struct point-t (x 77) (y 88))))
+    (mov (reg rax) (pointer (struct point-t (x 77) (y 88))))
     (mov (reg rax) (reg-deref (reg rax)))
     (ret)))

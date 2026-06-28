@@ -58,17 +58,17 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
       op.location,
     )
   }
-
   if (value.kind === "StructValue") {
-    let message = `bare struct in operand is not supported; use (@pointer (@struct ...)) or (@address name)`
+    let message =
+      `bare struct in operand is not supported; use (pointer (struct ...)) or (address name)`
     throw new S.ErrorWithSourceLocation(message, op.location)
   }
 
   if (value.kind === "ArrayValue") {
-    let message = `bare array in operand is not supported; use (@pointer (@array ...)) or (@address name)`
+    let message =
+      `bare array in operand is not supported; use (pointer (array ...)) or (address name)`
     throw new S.ErrorWithSourceLocation(message, op.location)
   }
-
   if (value.kind === "TypeValue") {
     let message = `type values are not allowed in operand position`
     throw new S.ErrorWithSourceLocation(message, op.location)

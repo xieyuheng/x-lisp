@@ -9,7 +9,7 @@
   (value int64-t))
 
 (define-data answer
-  (@struct int-cell-t (value 99)))
+  (struct int-cell-t (value 99)))
 
 (define-code test-var-operand
   (block entry

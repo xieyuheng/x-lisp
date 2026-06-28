@@ -11,7 +11,7 @@
   (text string-t))
 
 (define-data my-msg
-  (@struct msg-t
+  (struct msg-t
     (version 1)
     (text "")))
 

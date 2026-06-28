@@ -13,15 +13,3 @@ export function evaluateType(
   }
   return value.type
 }
-
-export function evaluateTypeFields(
-  mod: X86.Mod,
-  env: X86.Env,
-  fields: Array<X86.StructField>,
-): Map<string, X86.Type> {
-  const result = new Map<string, X86.Type>()
-  for (const field of fields) {
-    result.set(field.name, evaluateType(mod, env, field.exp))
-  }
-  return result
-}

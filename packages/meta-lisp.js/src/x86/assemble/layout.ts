@@ -198,7 +198,7 @@ function unpackMetadataStruct(
   location: S.SourceLocation,
 ): { structType: Type; structExp: { fields: Array<StructField> } } {
   if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
-    let message = `[emitDataSection] define-metadata value must be (@pointer (@struct <name> ...))`
+      let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
     throw new S.ErrorWithSourceLocation(message, location)
   }
   const structExp = value.target
@@ -443,7 +443,7 @@ function emitPointerTarget(
       originalExp.kind !== "PointerExp" ||
       originalExp.target.kind !== "StructExp"
     ) {
-      let message = `[emitPointerTarget] expected (@pointer (@struct ...)) expression`
+      let message = `[emitPointerTarget] expected (pointer (struct ...)) expression`
       throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
     return emitFieldsTree(
@@ -552,7 +552,7 @@ function computePointerTargetSize(
       originalExp.kind !== "PointerExp" ||
       originalExp.target.kind !== "StructExp"
     ) {
-      let message = `[computePointerTargetSize] expected (@pointer (@struct ...)) expression`
+      let message = `[computePointerTargetSize] expected (pointer (struct ...)) expression`
       throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
     return computeFieldsTreeSize(

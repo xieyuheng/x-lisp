@@ -9,9 +9,6 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
     case "StringExp":
       return X86.StringValue(exp.content)
 
-    case "AddressExp":
-      return X86.AddressValue(exp.name)
-
     case "StructExp": {
       const fields = evaluateFields(mod, env, exp.fields)
       return X86.StructValue(exp.name, fields)
@@ -27,7 +24,7 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
       return X86.ArrayValue(elements)
     }
 
-    case "VarExp": {
+    case "AddressExp": {
       const value = X86.envLookup(env, exp.name)
       if (value) return value
 

@@ -20,10 +20,10 @@
   (table pointer-t))
 
 (define-data my-config
-  (@struct config-t
+  (struct config-t
     (version 1)
-    (table (@pointer
-             (@struct entry-t
+    (table (pointer
+             (struct entry-t
                (key "foo")
                (value 42))))))
 

@@ -8,8 +8,8 @@
   (data (array-t uint8-t 5)))
 
 (define-data buf
-  (@struct buffer-t
-    (data (@array 10 20 30 40 50))))
+  (struct buffer-t
+    (data (array 10 20 30 40 50))))
 
 (define-code test-array
   (block entry

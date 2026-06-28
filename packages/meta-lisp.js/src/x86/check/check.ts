@@ -37,6 +37,18 @@ export function check(
         let message = `[check] expected pointer-t for AddressExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
+      const def = X86.modLookupDefinition(mod, exp.name)
+      if (def === undefined) {
+        let message = `[check] unknown name: ${exp.name}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      if (
+        def.kind === "StructDefinition" ||
+        def.kind === "PrimitiveTypeDefinition"
+      ) {
+        let message = `[check] type name cannot be used as data address: ${exp.name}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
       return
     }
 
@@ -78,8 +90,10 @@ export function check(
     }
 
     default: {
-      let message = `[check] unexpected expression kind in data: ${exp.kind}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
+      throw new S.ErrorWithSourceLocation(
+        `[check] unexpected expression kind in data`,
+        S.zeroLocation("check"),
+      )
     }
   }
 }
@@ -171,7 +185,7 @@ function checkPointerTarget(mod: X86.Mod, target: X86.Exp): void {
     return
   }
 
-  let message = `[check] pointer target must be (@struct <name> ...) or a string literal, got: ${target.kind}`
+  let message = `[check] pointer target must be (struct <name> ...) or a string literal, got: ${target.kind}`
   throw new S.ErrorWithSourceLocation(message, target.location)
 }
 

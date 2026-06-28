@@ -1,12 +1,11 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Exp =
-  | VarExp
+  | AddressExp
   | IntExp
   | StringExp
   | StructExp
   | PointerExp
-  | AddressExp
   | ArrayExp
 
 export type StructField = {
@@ -21,15 +20,15 @@ export function StructField(name: string, exp: Exp): StructField {
   }
 }
 
-export type VarExp = {
-  kind: "VarExp"
+export type AddressExp = {
+  kind: "AddressExp"
   name: string
   location: SourceLocation
 }
 
-export function VarExp(name: string, location: SourceLocation): VarExp {
+export function AddressExp(name: string, location: SourceLocation): AddressExp {
   return {
-    kind: "VarExp",
+    kind: "AddressExp",
     name,
     location,
   }
@@ -96,20 +95,6 @@ export function PointerExp(target: Exp, location: SourceLocation): PointerExp {
   return {
     kind: "PointerExp",
     target,
-    location,
-  }
-}
-
-export type AddressExp = {
-  kind: "AddressExp"
-  name: string
-  location: SourceLocation
-}
-
-export function AddressExp(name: string, location: SourceLocation): AddressExp {
-  return {
-    kind: "AddressExp",
-    name,
     location,
   }
 }
