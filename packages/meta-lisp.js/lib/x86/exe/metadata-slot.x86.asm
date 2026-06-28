@@ -4,8 +4,8 @@
   (arity int64-t))
 
 (define-metadata my-func
-  (pointer
-    (struct func-meta-t
+  (@pointer
+    (@struct func-meta-t
       (arity 7))))
 
 (define-code my-func

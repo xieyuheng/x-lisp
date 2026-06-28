@@ -11,7 +11,7 @@
   (description string-t))
 
 (define-data my-config
-  (struct config-t
+  (@struct config-t
     (version 1)
     (description "abc")))
 

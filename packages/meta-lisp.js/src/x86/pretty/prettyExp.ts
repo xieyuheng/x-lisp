@@ -18,11 +18,13 @@ export function prettyExp(exp: X86.Exp): Ppml.Node {
         ),
       )
       const body = exp.name ? [Ppml.text(exp.name), ...fieldNodes] : fieldNodes
-      return Ppml.prettySyntax("struct", [], body)
+      return Ppml.prettySyntax("@struct", [], body)
     }
     case "PointerExp":
-      return Ppml.prettySyntax("pointer", [], [prettyExp(exp.target)])
+      return Ppml.prettySyntax("@pointer", [], [prettyExp(exp.target)])
     case "AddressExp":
-      return Ppml.prettySyntax("address", [], [Ppml.text(exp.name)])
+      return Ppml.prettySyntax("@address", [], [Ppml.text(exp.name)])
+    case "ArrayExp":
+      return Ppml.prettySyntax("@array", [], exp.elements.map(prettyExp))
   }
 }

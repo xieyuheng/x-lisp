@@ -12,7 +12,7 @@
   (y int64-t))
 
 (define-data my-point
-  (struct point-t
+  (@struct point-t
     (x 42)
     (y 100)))
 

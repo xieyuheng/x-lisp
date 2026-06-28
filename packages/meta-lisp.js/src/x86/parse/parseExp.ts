@@ -2,10 +2,10 @@ import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
-  "(cons* 'struct rest)": ({ rest }, { location }) => {
+  "(cons* '@struct rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
     if (elements.length === 0) {
-      let message = "struct requires at least one field"
+      let message = "@struct requires at least one field"
       throw new S.ErrorWithSourceLocation(message, location)
     }
     let name: string | undefined
@@ -21,7 +21,7 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
       const field = S.asListSexp(elements[i])
       const fieldElements = field.elements
       if (fieldElements.length !== 2) {
-        let message = "struct field must have two elements: name and value"
+        let message = "@struct field must have two elements: name and value"
         throw new S.ErrorWithSourceLocation(message, field.location)
       }
       const fieldName = S.asSymbolSexp(fieldElements[0]).content
@@ -31,14 +31,19 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
     return X86.StructExp(name, fields, location)
   },
 
-  "`(pointer ,target)": ({ target }, { location }) => {
+  "`(@pointer ,target)": ({ target }, { location }) => {
     return X86.PointerExp(parseExp(target), location)
   },
 
-  "(cons* 'address rest)": ({ rest }, { location }) => {
+  "`(@array . elements)": ({ elements }, { location }) => {
+    const items = S.asListSexp(elements).elements
+    return X86.ArrayExp(items.map(parseExp), location)
+  },
+
+  "(cons* '@address rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
     if (elements.length !== 1) {
-      let message = `(address name) takes exactly one symbol`
+      let message = `(@address name) takes exactly one symbol`
       throw new S.ErrorWithSourceLocation(message, location)
     }
     return X86.AddressExp(S.asSymbolSexp(elements[0]).content, location)

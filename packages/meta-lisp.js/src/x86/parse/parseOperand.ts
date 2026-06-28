@@ -1,7 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
+import { parseExp } from "./parseExp.ts"
 
-export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
+const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
   "`(reg ,name)": ({ name }, { location }) => {
     return X86.RegOperand(S.asSymbolSexp(name).content, location)
   },
@@ -70,6 +71,14 @@ export const parseOperand: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.ExternalLabelOperand(S.asSymbolSexp(name).content, location)
   },
 })
+
+export function parseOperand(sexp: S.Sexp): X86.Operand {
+  try {
+    return parseOperandRouter(sexp)
+  } catch {
+    return X86.DataOperand(parseExp(sexp), sexp.location)
+  }
+}
 
 function parseRegName(sexp: S.Sexp): string {
   if (sexp.kind !== "ListSexp") {

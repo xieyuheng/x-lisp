@@ -26,8 +26,12 @@ export function prettyStmt(stmt: X86.Stmt): Ppml.Node {
         [prettyExp(stmt.value)],
       )
     case "DefineStructStmt": {
-      const fieldNodes = stmt.fields.map((f) =>
-        Ppml.prettySyntax("", [], [Ppml.text(f.name), prettyExp(f.exp)]),
+      const fieldNodes = Object.keys(stmt.fields).map((name) =>
+        Ppml.prettySyntax(
+          "",
+          [],
+          [Ppml.text(name), Ppml.text(X86.formatType(stmt.fields[name]))],
+        ),
       )
       return Ppml.prettySyntax(
         "define-struct",

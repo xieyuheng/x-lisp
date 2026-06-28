@@ -9,8 +9,8 @@
   (name string-t))
 
 (define-metadata my-func
-  (pointer
-    (struct func-meta-t
+  (@pointer
+    (@struct func-meta-t
       (arity 3)
       (name "triple"))))
 

@@ -22,6 +22,11 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
       return X86.PointerValue(target)
     }
 
+    case "ArrayExp": {
+      const elements = exp.elements.map((e) => evaluate(mod, env, e))
+      return X86.ArrayValue(elements)
+    }
+
     case "VarExp": {
       const value = X86.envLookup(env, exp.name)
       if (value) return value
@@ -54,7 +59,7 @@ function definitionToValue(definition: X86.Definition): X86.Value {
     definition.kind === "StructDefinition" ||
     definition.kind === "PrimitiveTypeDefinition"
   ) {
-    return X86.TypeValue(X86.Type(definition.name))
+    return X86.TypeValue(X86.NamedType(definition.name))
   }
 
   let message = `[definitionToValue] unexpected definition kind: ${definition.kind}`

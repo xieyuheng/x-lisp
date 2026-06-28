@@ -31,7 +31,7 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
   },
 
   "(cons* 'define-struct name fields)": ({ name, fields }, { location }) => {
-    const parsedFields = parseFields(fields)
+    const parsedFields = parseTypeFields(fields)
     return X86.DefineStructStmt(
       S.asSymbolSexp(name).content,
       parsedFields,
@@ -67,15 +67,37 @@ function parseBlock(sexp: S.Sexp): X86.Block {
   return X86.Block(blockName, instrs, sexp.location)
 }
 
-function parseFields(rest: S.Sexp): Array<X86.StructField> {
+function parseTypeFields(rest: S.Sexp): Record<string, X86.Type> {
   const elements = S.asListSexp(rest).elements
-  return elements.map((elem) => {
+  const result: Record<string, X86.Type> = {}
+  for (const elem of elements) {
     if (elem.kind !== "ListSexp" || elem.elements.length !== 2) {
-      let message = `expected (field-name value), got: ${S.formatSexp(elem)}`
+      let message = `expected (field-name type), got: ${S.formatSexp(elem)}`
       throw new S.ErrorWithSourceLocation(message, elem.location)
     }
     const fieldName = S.asSymbolSexp(elem.elements[0]).content
-    const fieldExp = parseExp(elem.elements[1])
-    return X86.StructField(fieldName, fieldExp)
-  })
+    const type = parseType(elem.elements[1])
+    result[fieldName] = type
+  }
+  return result
+}
+
+function parseType(sexp: S.Sexp): X86.Type {
+  if (sexp.kind === "SymbolSexp") {
+    return X86.NamedType(sexp.content)
+  }
+  if (sexp.kind === "ListSexp") {
+    const elements = sexp.elements
+    if (
+      elements.length === 3 &&
+      elements[0].kind === "SymbolSexp" &&
+      elements[0].content === "array-t"
+    ) {
+      const element = parseType(elements[1])
+      const length = Number(S.asIntSexp(elements[2]).content)
+      return X86.ArrayType(element, length)
+    }
+  }
+  let message = `expected type name or (array-t element-type length), got: ${S.formatSexp(sexp)}`
+  throw new S.ErrorWithSourceLocation(message, sexp.location)
 }

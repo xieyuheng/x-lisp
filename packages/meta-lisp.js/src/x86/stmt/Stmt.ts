@@ -1,6 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Block } from "../block/index.ts"
-import type { Exp, StructField } from "../exp/index.ts"
+import type { Exp } from "../exp/index.ts"
+import type { Type } from "../type/index.ts"
 
 export type Stmt =
   | DefineCodeStmt
@@ -72,13 +73,13 @@ export function DefineMetadataStmt(
 export type DefineStructStmt = {
   kind: "DefineStructStmt"
   name: string
-  fields: Array<StructField>
+  fields: Record<string, Type>
   location: SourceLocation
 }
 
 export function DefineStructStmt(
   name: string,
-  fields: Array<StructField>,
+  fields: Record<string, Type>,
   location: SourceLocation,
 ): DefineStructStmt {
   return {

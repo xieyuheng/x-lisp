@@ -34,5 +34,7 @@ export function formatOperand(operand: X86.Operand): string {
       return `(var ${operand.name})`
     case "ExternalLabelOperand":
       return `(external-label ${operand.name})`
+    case "DataOperand":
+      return X86.formatExp(operand.exp)
   }
 }

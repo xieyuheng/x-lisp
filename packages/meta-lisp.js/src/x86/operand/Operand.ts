@@ -1,4 +1,5 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
+import type { Exp } from "../exp/index.ts"
 
 export type Operand =
   | RegOperand
@@ -10,6 +11,7 @@ export type Operand =
   | CcOperand
   | VarOperand
   | ExternalLabelOperand
+  | DataOperand
 
 export type RegOperand = {
   kind: "RegOperand"
@@ -199,6 +201,20 @@ export function ExternalLabelOperand(
   return {
     kind: "ExternalLabelOperand",
     name,
+    location,
+  }
+}
+
+export type DataOperand = {
+  kind: "DataOperand"
+  exp: Exp
+  location: SourceLocation
+}
+
+export function DataOperand(exp: Exp, location: SourceLocation): DataOperand {
+  return {
+    kind: "DataOperand",
+    exp,
     location,
   }
 }

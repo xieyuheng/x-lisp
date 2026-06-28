@@ -1,6 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Block } from "../block/index.ts"
-import type { Exp, StructField } from "../exp/index.ts"
+import type { Exp } from "../exp/index.ts"
+import type { Type } from "../type/index.ts"
 
 export type Definition =
   | CodeDefinition
@@ -73,13 +74,13 @@ export function MetadataDefinition(
 export type StructDefinition = {
   kind: "StructDefinition"
   name: string
-  fields: Array<StructField>
+  fields: Record<string, Type>
   location: SourceLocation
 }
 
 export function StructDefinition(
   name: string,
-  fields: Array<StructField>,
+  fields: Record<string, Type>,
   location: SourceLocation,
 ): StructDefinition {
   return {

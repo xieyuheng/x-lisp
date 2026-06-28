@@ -8,7 +8,10 @@ export function check(
 ): void {
   switch (exp.kind) {
     case "IntExp": {
-      if (!isIntegerAtomTypeCtor(expectedType.name)) {
+      if (
+        expectedType.kind !== "NamedType" ||
+        !isIntegerAtomTypeCtor(expectedType.name)
+      ) {
         let message = `[check] expected integer type for IntExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
@@ -16,7 +19,10 @@ export function check(
     }
 
     case "StringExp": {
-      if (expectedType.name !== "string-t") {
+      if (
+        expectedType.kind !== "NamedType" ||
+        expectedType.name !== "string-t"
+      ) {
         let message = `[check] expected string-t for StringExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
@@ -24,7 +30,10 @@ export function check(
     }
 
     case "AddressExp": {
-      if (expectedType.name !== "pointer-t") {
+      if (
+        expectedType.kind !== "NamedType" ||
+        expectedType.name !== "pointer-t"
+      ) {
         let message = `[check] expected pointer-t for AddressExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
@@ -32,7 +41,10 @@ export function check(
     }
 
     case "PointerExp": {
-      if (expectedType.name !== "pointer-t") {
+      if (
+        expectedType.kind !== "NamedType" ||
+        expectedType.name !== "pointer-t"
+      ) {
         let message = `[check] expected pointer-t for PointerExp, got: ${X86.formatType(expectedType)}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }
@@ -41,8 +53,27 @@ export function check(
     }
 
     case "StructExp": {
+      if (expectedType.kind !== "NamedType") {
+        let message = `[check] expected struct type for StructExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
       const typeFields = dataTypeUnfold(mod, expectedType, exp.location)
       checkFields(mod, exp.fields, typeFields)
+      return
+    }
+
+    case "ArrayExp": {
+      if (expectedType.kind !== "ArrayType") {
+        let message = `[check] expected array type for ArrayExp, got: ${X86.formatType(expectedType)}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      if (exp.elements.length !== expectedType.length) {
+        let message = `[check] array length mismatch: expected ${expectedType.length}, got ${exp.elements.length}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      }
+      for (const elem of exp.elements) {
+        check(mod, elem, expectedType.element)
+      }
       return
     }
 
@@ -87,10 +118,14 @@ export function dataTypeUnfold(
   dataType: X86.Type,
   location: S.SourceLocation,
 ): Map<string, X86.Type> {
+  if (dataType.kind !== "NamedType") {
+    let message = `[dataTypeUnfold] expected named type for struct unfolding`
+    throw new S.ErrorWithSourceLocation(message, location)
+  }
   const structDefinition = lookupStructDefinition(mod, dataType.name, location)
   const result = new Map<string, X86.Type>()
-  for (const field of structDefinition.fields) {
-    result.set(field.name, X86.evaluateType(mod, X86.emptyEnv(), field.exp))
+  for (const fieldName of Object.keys(structDefinition.fields)) {
+    result.set(fieldName, structDefinition.fields[fieldName])
   }
   return result
 }
@@ -136,7 +171,7 @@ function checkPointerTarget(mod: X86.Mod, target: X86.Exp): void {
     return
   }
 
-  let message = `[check] pointer target must be (struct <name> ...) or a string literal, got: ${target.kind}`
+  let message = `[check] pointer target must be (@struct <name> ...) or a string literal, got: ${target.kind}`
   throw new S.ErrorWithSourceLocation(message, target.location)
 }
 
@@ -154,7 +189,7 @@ function namedDataType(
     let message = `[check] unknown type: ${name}`
     throw new S.ErrorWithSourceLocation(message, location)
   }
-  return X86.Type(definition.name)
+  return X86.NamedType(definition.name)
 }
 
 export function inferDataType(mod: X86.Mod, value: X86.Exp): X86.Type {

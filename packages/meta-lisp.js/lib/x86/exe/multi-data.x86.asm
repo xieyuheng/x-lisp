@@ -7,11 +7,11 @@
   (x int64-t))
 
 (define-data my-first
-  (struct cell-t
+  (@struct cell-t
     (x 10)))
 
 (define-data my-second
-  (struct cell-t
+  (@struct cell-t
     (x 20)))
 
 (define-code sum-two-cells

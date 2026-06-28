@@ -19,7 +19,7 @@ export function assembleFlat(mod: Mod): Uint8Array {
 
   if (dataResult.relocs.length > 0 || dataResult.addressRelocs.length > 0) {
     let message =
-      "flat mode does not support pointer-t / string-t / address fields (use assemble-x86-exe)"
+      "flat mode does not support pointer-t / string-t / address fields / data-operand (use assemble-x86-exe)"
     throw new Error(message)
   }
 

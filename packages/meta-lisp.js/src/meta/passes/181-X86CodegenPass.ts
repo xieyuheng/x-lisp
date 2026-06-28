@@ -11,21 +11,21 @@ export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
   X86.SubmitPass(x86Mod, [
     X86.DefineStructStmt(
       "gc-map-t",
-      [
-        { name: "local-count", exp: X86.VarExp("uint16-t", ZERO) },
-        { name: "callee-saved-count", exp: X86.VarExp("uint8-t", ZERO) },
-        { name: "reserved", exp: X86.VarExp("uint8-t", ZERO) },
-      ],
+      {
+        "local-count": X86.NamedType("uint16-t"),
+        "callee-saved-count": X86.NamedType("uint8-t"),
+        reserved: X86.NamedType("uint8-t"),
+      },
       ZERO,
     ),
     X86.DefineStructStmt(
       "function-metadata-t",
-      [
-        { name: "arity", exp: X86.VarExp("uint16-t", ZERO) },
-        { name: "flags", exp: X86.VarExp("uint16-t", ZERO) },
-        { name: "gc-map", exp: X86.VarExp("gc-map-t", ZERO) },
-        { name: "name", exp: X86.VarExp("string-t", ZERO) },
-      ],
+      {
+        arity: X86.NamedType("uint16-t"),
+        flags: X86.NamedType("uint16-t"),
+        "gc-map": X86.NamedType("gc-map-t"),
+        name: X86.NamedType("string-t"),
+      },
       ZERO,
     ),
   ])

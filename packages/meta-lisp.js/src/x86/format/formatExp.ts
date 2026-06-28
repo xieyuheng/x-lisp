@@ -13,11 +13,15 @@ export function formatExp(exp: X86.Exp): string {
       const fields = exp.fields
         .map((f) => `(${f.name} ${formatExp(f.exp)})`)
         .join(" ")
-      return `(struct ${prefix}${fields})`
+      return `(@struct ${prefix}${fields})`
     }
     case "PointerExp":
-      return `(pointer ${formatExp(exp.target)})`
+      return `(@pointer ${formatExp(exp.target)})`
     case "AddressExp":
-      return `(address ${exp.name})`
+      return `(@address ${exp.name})`
+    case "ArrayExp": {
+      const elements = exp.elements.map(formatExp).join(" ")
+      return `(@array ${elements})`
+    }
   }
 }

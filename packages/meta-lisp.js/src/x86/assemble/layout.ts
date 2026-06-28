@@ -6,12 +6,13 @@ import {
 } from "../check/check.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { encode, encodedSize } from "../encode/index.ts"
-import type { Env } from "../evaluate/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
 import type { Exp, StructField } from "../exp/index.ts"
+import { formatType } from "../format/formatType.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Type } from "../type/index.ts"
+import { NamedType } from "../type/Type.ts"
 import { typeSize } from "../type/typeSize.ts"
 import type { Value } from "../value/index.ts"
 
@@ -197,7 +198,7 @@ function unpackMetadataStruct(
   location: S.SourceLocation,
 ): { structType: Type; structExp: { fields: Array<StructField> } } {
   if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
-    let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
+    let message = `[emitDataSection] define-metadata value must be (@pointer (@struct <name> ...))`
     throw new S.ErrorWithSourceLocation(message, location)
   }
   const structExp = value.target
@@ -217,7 +218,7 @@ function structDataTypeByName(
   location: S.SourceLocation,
 ): Type {
   lookupStructDefinition(mod, name, location)
-  return { name }
+  return NamedType(name)
 }
 
 function emitTopValue(
@@ -403,6 +404,23 @@ function emitFieldTree(
     return offset + value.content.length + 1
   }
 
+  if (value.kind === "ArrayValue") {
+    if (fieldType.kind !== "ArrayType") {
+      let message = `[emitFieldTree] expected array type for array value`
+      throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+    }
+    let pos = offset
+    const elemSize = typeSize(mod, fieldType.element)
+    for (const elem of value.elements) {
+      if (elem.kind !== "IntValue") {
+        let message = `[emitFieldTree] array element must be integer, got: ${elem.kind}`
+        throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+      }
+      pos = writeIntLE(buf, pos, elemSize, elem.value)
+    }
+    return pos
+  }
+
   let message = `unsupported data value: ${value.kind}`
   throw new S.ErrorWithSourceLocation(message, fieldExp.location)
 }
@@ -425,7 +443,7 @@ function emitPointerTarget(
       originalExp.kind !== "PointerExp" ||
       originalExp.target.kind !== "StructExp"
     ) {
-      let message = `[emitPointerTarget] expected (pointer (struct ...)) expression`
+      let message = `[emitPointerTarget] expected (@pointer (@struct ...)) expression`
       throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
     return emitFieldsTree(
@@ -512,6 +530,10 @@ function computeFieldTreeSize(
     return { fixed: value.content.length + 1, deferred: 0 }
   }
 
+  if (value.kind === "ArrayValue") {
+    return { fixed: typeSize(mod, fieldType), deferred: 0 }
+  }
+
   let message = `unsupported data value: ${value.kind}`
   throw new S.ErrorWithSourceLocation(message, fieldExp.location)
 }
@@ -530,7 +552,7 @@ function computePointerTargetSize(
       originalExp.kind !== "PointerExp" ||
       originalExp.target.kind !== "StructExp"
     ) {
-      let message = `[computePointerTargetSize] expected (pointer (struct ...)) expression`
+      let message = `[computePointerTargetSize] expected (@pointer (@struct ...)) expression`
       throw new S.ErrorWithSourceLocation(message, originalExp.location)
     }
     return computeFieldsTreeSize(
@@ -565,9 +587,12 @@ export function offsetOf(
     let fieldOffset = 0
     let found = false
 
-    for (const field of structDef.fields) {
-      const fieldType = evaluateTypeFromExp(mod, emptyEnv(), field.exp)
-      if (field.name === step) {
+    for (const [fieldName, fieldType] of Object.entries(structDef.fields)) {
+      if (fieldName === step) {
+        if (fieldType.kind !== "NamedType") {
+          let message = `offset-of cannot traverse non-named type: ${formatType(fieldType)}`
+          throw new Error(message)
+        }
         totalOffset += fieldOffset
         currentTypeName = fieldType.name
         found = true
@@ -654,13 +679,6 @@ export function collectMetadataSlots(mod: Mod): MetadataSlots {
     }
   }
   return slots
-}
-
-function evaluateTypeFromExp(mod: Mod, env: Env, exp: Exp): Type {
-  const value = evaluate(mod, env, exp)
-  if (value.kind === "TypeValue") return value.type
-  let message = `expected type expression, got: ${value.kind}`
-  throw new S.ErrorWithSourceLocation(message, exp.location)
 }
 
 function encodedDispOffset(enc: EncodedInstruction): number {

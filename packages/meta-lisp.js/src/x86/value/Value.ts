@@ -7,6 +7,7 @@ export type Value =
   | StructValue
   | PointerValue
   | TypeValue
+  | ArrayValue
 
 export type IntValue = {
   kind: "IntValue"
@@ -87,4 +88,16 @@ export function TypeValue(type: Type): TypeValue {
 
 export function isTypeValue(value: Value): value is TypeValue {
   return value.kind === "TypeValue"
+}
+
+export type ArrayValue = {
+  kind: "ArrayValue"
+  elements: Array<Value>
+}
+
+export function ArrayValue(elements: Array<Value>): ArrayValue {
+  return {
+    kind: "ArrayValue",
+    elements,
+  }
 }

@@ -13,8 +13,8 @@ export function formatStmt(stmt: X86.Stmt): string {
     case "DefineMetadataStmt":
       return `(define-metadata ${stmt.name} ${formatExp(stmt.value)})`
     case "DefineStructStmt": {
-      const fields = stmt.fields
-        .map((f) => `(${f.name} ${formatExp(f.exp)})`)
+      const fields = Object.keys(stmt.fields)
+        .map((name) => `(${name} ${X86.formatType(stmt.fields[name])})`)
         .join(" ")
       return `(define-struct ${stmt.name} ${fields})`
     }

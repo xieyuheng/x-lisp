@@ -7,8 +7,8 @@
   (arity int64-t))
 
 (define-metadata func-b
-  (pointer
-    (struct func-meta-t
+  (@pointer
+    (@struct func-meta-t
       (arity 3))))
 
 (define-code func-b
@@ -19,8 +19,8 @@
     (ret)))
 
 (define-metadata func-a
-  (pointer
-    (struct func-meta-t
+  (@pointer
+    (@struct func-meta-t
       (arity 5))))
 
 (define-code func-a

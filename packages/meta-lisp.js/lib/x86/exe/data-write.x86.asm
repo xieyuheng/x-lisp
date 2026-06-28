@@ -9,7 +9,7 @@
   (value int64-t))
 
 (define-data my-counter
-  (struct counter-t
+  (@struct counter-t
     (value 0)))
 
 (define-code test-write-read

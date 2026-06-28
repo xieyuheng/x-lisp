@@ -1,6 +1,9 @@
 import * as X86 from "../index.ts"
 
 export function formatType(type: X86.Type): string {
+  if (type.kind === "ArrayType") {
+    return `(array-t ${formatType(type.element)} ${type.length})`
+  }
   return type.name
 }
 
