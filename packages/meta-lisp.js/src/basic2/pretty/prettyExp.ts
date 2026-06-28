@@ -1,14 +1,20 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as X86 from "../index.ts"
+import * as B from "../index.ts"
 
-export function prettyExp(exp: X86.Exp): Ppml.Node {
+export function prettyExp(exp: B.Exp): Ppml.Node {
   switch (exp.kind) {
     case "AddressExp":
-      return Ppml.text(exp.name)
+      return Ppml.prettySyntax("address", [], [Ppml.text(exp.name)])
     case "IntExp":
-      return Ppml.text(exp.value.toString())
+      return Ppml.prettySyntax("int", [], [Ppml.text(exp.value.toString())])
+    case "FloatExp":
+      return Ppml.prettySyntax("float", [], [Ppml.text(exp.value.toString())])
     case "StringExp":
-      return Ppml.text(JSON.stringify(exp.content))
+      return Ppml.prettySyntax(
+        "string",
+        [],
+        [Ppml.text(JSON.stringify(exp.content))],
+      )
     case "StructExp": {
       const fieldNodes = Object.entries(exp.fields).map(([fname, fexp]) =>
         Ppml.prettySyntax(
@@ -17,11 +23,7 @@ export function prettyExp(exp: X86.Exp): Ppml.Node {
           [Ppml.text(fname), Ppml.text(" "), prettyExp(fexp)],
         ),
       )
-      return Ppml.prettySyntax(
-        "struct",
-        [],
-        [Ppml.text(exp.name), ...fieldNodes],
-      )
+      return Ppml.prettySyntax("struct", [Ppml.text(exp.name)], fieldNodes)
     }
     case "PointerExp":
       return Ppml.prettySyntax("pointer", [], [prettyExp(exp.target)])

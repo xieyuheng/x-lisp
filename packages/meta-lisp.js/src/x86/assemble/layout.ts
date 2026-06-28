@@ -7,7 +7,7 @@ import {
 import type { EncodedInstruction } from "../encode/index.ts"
 import { encode, encodedSize } from "../encode/index.ts"
 import { emptyEnv, evaluate } from "../evaluate/index.ts"
-import type { Exp, StructField } from "../exp/index.ts"
+import type { Exp } from "../exp/index.ts"
 import { formatType } from "../format/formatType.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Mod } from "../mod/index.ts"
@@ -196,16 +196,12 @@ function unpackMetadataStruct(
   mod: Mod,
   value: Exp,
   location: S.SourceLocation,
-): { structType: Type; structExp: { fields: Array<StructField> } } {
+): { structType: Type; structExp: { fields: Record<string, Exp> } } {
   if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
     let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
     throw new S.ErrorWithSourceLocation(message, location)
   }
   const structExp = value.target
-  if (structExp.name === undefined) {
-    let message = `[emitDataSection] metadata struct must be named (opaque pointer requires an explicit struct type)`
-    throw new S.ErrorWithSourceLocation(message, location)
-  }
   return {
     structType: structDataTypeByName(mod, structExp.name, location),
     structExp,
@@ -270,7 +266,7 @@ function computeDataSectionSize(mod: Mod): number {
 function emitFieldsTree(
   mod: Mod,
   dataType: Type,
-  fields: Array<StructField>,
+  fields: Record<string, Exp>,
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
@@ -280,16 +276,16 @@ function emitFieldsTree(
   const deferred: Array<{ off: number; fn: (pos: number) => number }> = []
   let pos = offset
 
-  for (const field of fields) {
-    const fieldType = fieldTypes.get(field.name)
+  for (const [name, exp] of Object.entries(fields)) {
+    const fieldType = fieldTypes.get(name)
     if (!fieldType) {
-      let message = `unknown field: ${field.name}`
-      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+      let message = `unknown field: ${name}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
     pos = emitFieldTree(
       mod,
       fieldType,
-      field.exp,
+      exp,
       buf,
       pos,
       relocs,
@@ -435,10 +431,6 @@ function emitPointerTarget(
   addressRelocs: Array<DataAddressReloc>,
 ): number {
   if (targetValue.kind === "StructValue") {
-    if (targetValue.name === undefined) {
-      let message = `pointer target struct must be named`
-      throw new S.ErrorWithSourceLocation(message, originalExp.location)
-    }
     if (
       originalExp.kind !== "PointerExp" ||
       originalExp.target.kind !== "StructExp"
@@ -472,18 +464,18 @@ function emitPointerTarget(
 function computeFieldsTreeSize(
   mod: Mod,
   dataType: Type,
-  fields: Array<StructField>,
+  fields: Record<string, Exp>,
 ): number {
   const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
   let total = 0
   let deferred = 0
-  for (const field of fields) {
-    const fieldType = fieldTypes.get(field.name)
+  for (const [name, exp] of Object.entries(fields)) {
+    const fieldType = fieldTypes.get(name)
     if (!fieldType) {
-      let message = `unknown field: ${field.name}`
-      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+      let message = `unknown field: ${name}`
+      throw new S.ErrorWithSourceLocation(message, exp.location)
     }
-    const r = computeFieldTreeSize(mod, fieldType, field.exp)
+    const r = computeFieldTreeSize(mod, fieldType, exp)
     total += r.fixed
     deferred += r.deferred
   }
@@ -544,10 +536,6 @@ function computePointerTargetSize(
   originalExp: Exp,
 ): number {
   if (targetValue.kind === "StructValue") {
-    if (targetValue.name === undefined) {
-      let message = `pointer target struct must be named`
-      throw new S.ErrorWithSourceLocation(message, originalExp.location)
-    }
     if (
       originalExp.kind !== "PointerExp" ||
       originalExp.target.kind !== "StructExp"

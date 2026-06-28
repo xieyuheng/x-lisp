@@ -21,8 +21,8 @@
 
 (define-data my-rect
   (struct rect-t
-    (top-left (struct (x 0) (y 0)))
-    (bottom-right (struct (x 0) (y 0)))
+    (top-left (struct point-t (x 0) (y 0)))
+    (bottom-right (struct point-t (x 0) (y 0)))
     (color 0)))
 
 (define-code test-write-nested

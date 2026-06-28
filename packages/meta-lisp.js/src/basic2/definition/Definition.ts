@@ -1,5 +1,5 @@
 import { type Block } from "../block/index.ts"
-import { type Operand } from "../operand/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { type Type } from "../type/index.ts"
 
 export type Definition =
@@ -36,12 +36,12 @@ export function FunctionDefinition(
 export type VariableDefinition = {
   kind: "VariableDefinition"
   name: string
-  init: Operand | null
+  init: Exp | null
 }
 
 export function VariableDefinition(
   name: string,
-  init: Operand | null,
+  init: Exp | null,
 ): VariableDefinition {
   return { kind: "VariableDefinition", name, init }
 }

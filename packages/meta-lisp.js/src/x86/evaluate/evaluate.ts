@@ -42,11 +42,11 @@ export function evaluate(mod: X86.Mod, env: X86.Env, exp: X86.Exp): X86.Value {
 export function evaluateFields(
   mod: X86.Mod,
   env: X86.Env,
-  fields: Array<X86.StructField>,
+  fields: Record<string, X86.Exp>,
 ): Map<string, X86.Value> {
   const result = new Map<string, X86.Value>()
-  for (const field of fields) {
-    result.set(field.name, evaluate(mod, env, field.exp))
+  for (const [name, exp] of Object.entries(fields)) {
+    result.set(name, evaluate(mod, env, exp))
   }
   return result
 }

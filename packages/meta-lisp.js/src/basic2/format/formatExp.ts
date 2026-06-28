@@ -1,13 +1,15 @@
-import * as X86 from "../index.ts"
+import * as B from "../index.ts"
 
-export function formatExp(exp: X86.Exp): string {
+export function formatExp(exp: B.Exp): string {
   switch (exp.kind) {
     case "AddressExp":
-      return exp.name
+      return `(address ${exp.name})`
     case "IntExp":
-      return exp.value.toString()
+      return `(int ${exp.value.toString()})`
+    case "FloatExp":
+      return `(float ${exp.value.toString()})`
     case "StringExp":
-      return JSON.stringify(exp.content)
+      return `(string ${JSON.stringify(exp.content)})`
     case "StructExp": {
       const fields = Object.entries(exp.fields)
         .map(([fname, fexp]) => `(${fname} ${formatExp(fexp)})`)
@@ -21,4 +23,8 @@ export function formatExp(exp: X86.Exp): string {
       return `(array ${elements})`
     }
   }
+}
+
+export function formatExps(exps: Array<B.Exp>): string {
+  return exps.map(formatExp).join(" ")
 }

@@ -100,30 +100,28 @@ export function check(
 
 export function checkFields(
   mod: X86.Mod,
-  structFields: Array<X86.StructField>,
+  fields: Record<string, X86.Exp>,
   typeFields: Map<string, X86.Type>,
 ): void {
-  if (structFields.length !== typeFields.size) {
-    let message = `[checkFields] field count mismatch: expected ${typeFields.size}, got ${structFields.length}`
+  const fieldEntries = Object.entries(fields)
+  if (fieldEntries.length !== typeFields.size) {
+    let message = `[checkFields] field count mismatch: expected ${typeFields.size}, got ${fieldEntries.length}`
     throw new S.ErrorWithSourceLocation(
       message,
-      structFields.length > 0
-        ? structFields.length > typeFields.size
-          ? structFields[typeFields.size].exp.location
-          : structFields[structFields.length - 1].exp.location
-        : S.zeroLocation("<checkFields>"),
+      S.zeroLocation("<checkFields>"),
     )
   }
 
-  let i = 0
   for (const [expectedName, expectedType] of typeFields) {
-    const field = structFields[i]
-    if (field.name !== expectedName) {
-      let message = `[checkFields] field name mismatch at position ${i}: expected "${expectedName}", got "${field.name}"`
-      throw new S.ErrorWithSourceLocation(message, field.exp.location)
+    const fieldExp = fields[expectedName]
+    if (fieldExp === undefined) {
+      let message = `[checkFields] missing field: "${expectedName}"`
+      throw new S.ErrorWithSourceLocation(
+        message,
+        S.zeroLocation("<checkFields>"),
+      )
     }
-    check(mod, field.exp, expectedType)
-    i++
+    check(mod, fieldExp, expectedType)
   }
 }
 
@@ -172,10 +170,6 @@ export function isIntegerAtomTypeCtor(name: string): boolean {
 
 function checkPointerTarget(mod: X86.Mod, target: X86.Exp): void {
   if (target.kind === "StructExp") {
-    if (target.name === undefined) {
-      let message = `[check] pointer target struct must be named (opaque pointer requires an explicit struct type)`
-      throw new S.ErrorWithSourceLocation(message, target.location)
-    }
     check(mod, target, namedDataType(mod, target.name, target.location))
     return
   }
@@ -209,10 +203,6 @@ function namedDataType(
 export function inferDataType(mod: X86.Mod, value: X86.Exp): X86.Type {
   switch (value.kind) {
     case "StructExp": {
-      if (value.name === undefined) {
-        let message = `[inferDataType] struct literal must be named (define-data value must be self-describing)`
-        throw new S.ErrorWithSourceLocation(message, value.location)
-      }
       return namedDataType(mod, value.name, value.location)
     }
     case "PointerExp":

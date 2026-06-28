@@ -22,8 +22,8 @@
 
 (define-data my-rect
   (struct rect-t
-    (top-left (struct (x 0) (y 0)))
-    (bottom-right (struct (x 100) (y 200)))
+    (top-left (struct point-t (x 0) (y 0)))
+    (bottom-right (struct point-t (x 100) (y 200)))
     (color 255)))
 
 (define-code read-rect

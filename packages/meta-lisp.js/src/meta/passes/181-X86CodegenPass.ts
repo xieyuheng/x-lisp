@@ -227,29 +227,20 @@ function codegenFunction(
     value: X86.PointerExp(
       X86.StructExp(
         "function-metadata-t",
-        [
-          {
-            name: "arity",
-            exp: X86.IntExp(BigInt(definition.parameters.length), ZERO),
-          },
-          { name: "flags", exp: X86.IntExp(0n, ZERO) },
-          {
-            name: "gc-map",
-            exp: X86.StructExp(
-              undefined,
-              [
-                {
-                  name: "local-count",
-                  exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
-                },
-                { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
-                { name: "reserved", exp: X86.IntExp(0n, ZERO) },
-              ],
-              ZERO,
-            ),
-          },
-          { name: "name", exp: X86.StringExp(definition.name, ZERO) },
-        ],
+        {
+          arity: X86.IntExp(BigInt(definition.parameters.length), ZERO),
+          flags: X86.IntExp(0n, ZERO),
+          "gc-map": X86.StructExp(
+            "gc-map-t",
+            {
+              "local-count": X86.IntExp(BigInt(state.nextLocal), ZERO),
+              "callee-saved-count": X86.IntExp(0n, ZERO),
+              reserved: X86.IntExp(0n, ZERO),
+            },
+            ZERO,
+          ),
+          name: X86.StringExp(definition.name, ZERO),
+        },
         ZERO,
       ),
       ZERO,
@@ -313,26 +304,20 @@ function codegenVariableDefinition(
     value: X86.PointerExp(
       X86.StructExp(
         "function-metadata-t",
-        [
-          { name: "arity", exp: X86.IntExp(0n, ZERO) },
-          { name: "flags", exp: X86.IntExp(isTest ? 1n : 0n, ZERO) },
-          {
-            name: "gc-map",
-            exp: X86.StructExp(
-              undefined,
-              [
-                {
-                  name: "local-count",
-                  exp: X86.IntExp(BigInt(state.nextLocal), ZERO),
-                },
-                { name: "callee-saved-count", exp: X86.IntExp(0n, ZERO) },
-                { name: "reserved", exp: X86.IntExp(0n, ZERO) },
-              ],
-              ZERO,
-            ),
-          },
-          { name: "name", exp: X86.StringExp(definition.name, ZERO) },
-        ],
+        {
+          arity: X86.IntExp(0n, ZERO),
+          flags: X86.IntExp(isTest ? 1n : 0n, ZERO),
+          "gc-map": X86.StructExp(
+            "gc-map-t",
+            {
+              "local-count": X86.IntExp(BigInt(state.nextLocal), ZERO),
+              "callee-saved-count": X86.IntExp(0n, ZERO),
+              reserved: X86.IntExp(0n, ZERO),
+            },
+            ZERO,
+          ),
+          name: X86.StringExp(definition.name, ZERO),
+        },
         ZERO,
       ),
       ZERO,

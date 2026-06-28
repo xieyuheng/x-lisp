@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
 import { prettyBlock } from "./prettyBlock.ts"
-import { prettyOperand } from "./prettyOperand.ts"
+import { prettyExp } from "./prettyExp.ts"
 import { prettyType } from "./prettyType.ts"
 
 export function prettyDefinition(definition: B.Definition): Ppml.Node {
@@ -29,7 +29,7 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     case "VariableDefinition": {
       const body: Array<Ppml.Node> = [Ppml.text(definition.name)]
       if (definition.init !== null) {
-        body.push(prettyOperand(definition.init))
+        body.push(prettyExp(definition.init))
       }
       return Ppml.prettySyntax("define-variable", [], body)
     }

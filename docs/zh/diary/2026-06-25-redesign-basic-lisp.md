@@ -211,7 +211,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
     (blocks (list-t block-t)))
   (variable-definition
     (name symbol-t)
-    (init (maybe-t operand-t))))
+    (init (maybe-t exp-t))))
 ```
 
 - `struct-definition`：声明结构体类型及字段布局。
@@ -220,10 +220,56 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
   - `blocks` 的第一个 block 是 entry block。参数通过 `(argument :index N)` 获取。
 - `variable-definition`：
   - 完整类型由同名 `claim` 提供。
-  - `init` 为 `(just operand)` 时，静态初始化为该 operand 的值。
+  - `init` 为 `(just exp)` 时，静态初始化为该 `exp` 描述的数据段内容。
   - `init` 为 `nothing` 时，等价于 BSS 段的未初始化变量。
 
 不再有 `define-test`——test 信息由 meta-lisp 前端编码为 `function-definition`（零参数，返回 `bool-t`）。
+
+# 数据表达式 (Exp)
+
+`define-variable` 的 `init` 使用 `exp-t` 描述数据段内存布局，
+对标 x86 汇编的 `define-data`。它不是指令中的运行时值（`operand-t`），
+而是独立的数据类型：
+
+```meta-lisp
+(define-enum exp-t
+  (address-exp (name symbol-t))
+  (int-exp (value int-t))
+  (float-exp (value float-t))
+  (string-exp (content string-t))
+  (struct-exp (name symbol-t) (fields (hash-t symbol-t exp-t)))
+  (pointer-exp (target exp-t))
+  (array-exp (elements (list-t exp-t))))
+```
+
+- `address-exp`：对已定义符号的地址引用。文本语法 `(address <name>)`，
+  与指令 `operand` 中的 `AddressOperand` 写法一致。
+- `int-exp` / `float-exp`：原始整数/浮点数字面量。宽度由所在 struct 字段类型决定。
+- `string-exp`：以 null-terminated bytes 存储的字符串。文本语法 `(string "...")`。
+- `struct-exp`：引用已声明 struct 类型的字段布局，字段值递归为 `exp-t`。
+  文本语法 `(struct <name> (<field> <exp>) ...)`，`name` 必选。
+  字段名使用 `hash-t`（有序 Record），与 `StructType.fields` 保持一致。
+- `pointer-exp`：指向内联数据的指针，数据序列化在指针之后。
+  文本语法 `(pointer <exp>)`。
+- `array-exp`：定长有序数组。文本语法 `(array <exp> ...)`。
+
+## String Table 示例
+
+```meta-lisp
+(define-struct string-table-t (count int64-t) (entries pointer-t))
+
+(define-variable %.str.0 (string "hello"))
+(define-variable %.str.1 (string "world"))
+
+(define-variable string-table
+  (struct string-table-t
+    (count (int 2))
+    (entries
+      (pointer
+        (array
+          (address %.str.0)
+          (address %.str.1))))))
+```
 
 # Module
 
@@ -314,7 +360,7 @@ IR 文本形式：
 (define-struct point-t (x int64-t) (y int64-t))
 
 (claim origin point-t)
-(define-variable origin)
+(define-variable origin (struct point-t (x (int 0)) (y (int 0))))
 
 (claim set-origin (-> void-t))
 

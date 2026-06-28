@@ -8,18 +8,6 @@ export type Exp =
   | PointerExp
   | ArrayExp
 
-export type StructField = {
-  name: string
-  exp: Exp
-}
-
-export function StructField(name: string, exp: Exp): StructField {
-  return {
-    name,
-    exp,
-  }
-}
-
 export type AddressExp = {
   kind: "AddressExp"
   name: string
@@ -67,14 +55,14 @@ export function StringExp(
 
 export type StructExp = {
   kind: "StructExp"
-  name: string | undefined
-  fields: Array<StructField>
+  name: string
+  fields: Record<string, Exp>
   location: SourceLocation
 }
 
 export function StructExp(
-  name: string | undefined,
-  fields: Array<StructField>,
+  name: string,
+  fields: Record<string, Exp>,
   location: SourceLocation,
 ): StructExp {
   return {

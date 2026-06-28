@@ -1,6 +1,7 @@
 export * from "./attribute/index.ts"
 export * from "./block/index.ts"
 export * from "./definition/index.ts"
+export * from "./exp/index.ts"
 export * from "./format/index.ts"
 export * from "./instr/index.ts"
 export * from "./mod/index.ts"

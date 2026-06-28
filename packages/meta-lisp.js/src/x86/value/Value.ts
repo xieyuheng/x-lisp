@@ -47,12 +47,12 @@ export function AddressValue(name: string): AddressValue {
 
 export type StructValue = {
   kind: "StructValue"
-  name: string | undefined
+  name: string
   fields: Map<string, Value>
 }
 
 export function StructValue(
-  name: string | undefined,
+  name: string,
   fields: Map<string, Value>,
 ): StructValue {
   return {

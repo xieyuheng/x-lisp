@@ -1,6 +1,6 @@
 import * as B from "../index.ts"
 import { formatBlock } from "./formatBlock.ts"
-import { formatOperand } from "./formatOperand.ts"
+import { formatExp } from "./formatExp.ts"
 import { formatType } from "./formatType.ts"
 
 export function formatDefinition(definition: B.Definition): string {
@@ -21,7 +21,7 @@ export function formatDefinition(definition: B.Definition): string {
       if (definition.init === null) {
         return `(define-variable ${definition.name})`
       }
-      return `(define-variable ${definition.name} ${formatOperand(definition.init)})`
+      return `(define-variable ${definition.name} ${formatExp(definition.init)})`
     }
   }
 }

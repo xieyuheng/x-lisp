@@ -4,20 +4,17 @@ import * as X86 from "../index.ts"
 export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
   "(cons* 'struct rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
-    if (elements.length === 0) {
-      let message = "struct requires at least one field"
+    if (elements.length < 2) {
+      let message = "struct requires a name and at least one field"
       throw new S.ErrorWithSourceLocation(message, location)
     }
-    let name: string | undefined
-    let fieldStart: number
-    if (elements[0].kind === "SymbolSexp") {
-      name = S.asSymbolSexp(elements[0]).content
-      fieldStart = 1
-    } else {
-      fieldStart = 0
+    if (elements[0].kind !== "SymbolSexp") {
+      let message = "struct name must be a symbol"
+      throw new S.ErrorWithSourceLocation(message, location)
     }
-    const fields: Array<X86.StructField> = []
-    for (let i = fieldStart; i < elements.length; i++) {
+    const name = S.asSymbolSexp(elements[0]).content
+    const fields: Record<string, X86.Exp> = {}
+    for (let i = 1; i < elements.length; i++) {
       const field = S.asListSexp(elements[i])
       const fieldElements = field.elements
       if (fieldElements.length !== 2) {
@@ -25,8 +22,11 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
         throw new S.ErrorWithSourceLocation(message, field.location)
       }
       const fieldName = S.asSymbolSexp(fieldElements[0]).content
-      const fieldExp = parseExp(fieldElements[1])
-      fields.push(X86.StructField(fieldName, fieldExp))
+      if (fields[fieldName] !== undefined) {
+        let message = `duplicate struct field: ${fieldName}`
+        throw new S.ErrorWithSourceLocation(message, field.location)
+      }
+      fields[fieldName] = parseExp(fieldElements[1])
     }
     return X86.StructExp(name, fields, location)
   },
