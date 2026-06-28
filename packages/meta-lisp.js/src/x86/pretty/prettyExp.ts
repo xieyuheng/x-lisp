@@ -23,10 +23,6 @@ export function prettyExp(exp: X86.Exp): Ppml.Node {
     case "PointerExp":
       return Ppml.prettySyntax("pointer", [], [prettyExp(exp.target)])
     case "ArrayExp":
-      return Ppml.prettySyntax(
-        "array",
-        [],
-        exp.elements.map(prettyExp),
-      )
+      return Ppml.prettySyntax("array", [], exp.elements.map(prettyExp))
   }
 }

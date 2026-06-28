@@ -198,7 +198,7 @@ function unpackMetadataStruct(
   location: S.SourceLocation,
 ): { structType: Type; structExp: { fields: Array<StructField> } } {
   if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
-      let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
+    let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
     throw new S.ErrorWithSourceLocation(message, location)
   }
   const structExp = value.target
