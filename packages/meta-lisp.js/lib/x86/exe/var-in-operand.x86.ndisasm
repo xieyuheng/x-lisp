@@ -1,0 +1,24 @@
+00000000  488D05F90F0000    lea rax,[rel 0x1000]
+00000007  488B00            mov rax,[rax]
+0000000A  C3                ret
+0000000B  63                db 0x63
+0000000C  0000              add [rax],al
+0000000E  0000              add [rax],al
+00000010  0000              add [rax],al
+00000012  0011              add [rcx],dl
+00000014  0000              add [rax],al
+00000016  0001              add [rcx],al
+00000018  0000              add [rax],al
+0000001A  00746573          add [rbp+0x73],dh
+0000001E  742D              jz 0x4d
+00000020  7661              jna 0x83
+00000022  722D              jc 0x51
+00000024  6F                outsd
+00000025  7065              jo 0x8c
+00000027  7261              jc 0x8a
+00000029  6E                outsb
+0000002A  640000            add [fs:rax],al
+0000002D  0000              add [rax],al
+0000002F  0000              add [rax],al
+00000031  0000              add [rax],al
+00000033  00                db 0x00

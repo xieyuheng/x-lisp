@@ -62,6 +62,14 @@ function definitionToValue(definition: X86.Definition): X86.Value {
     return X86.TypeValue(X86.NamedType(definition.name))
   }
 
+  if (
+    definition.kind === "DataDefinition" ||
+    definition.kind === "CodeDefinition" ||
+    definition.kind === "SpaceDefinition"
+  ) {
+    return X86.AddressValue(definition.name)
+  }
+
   let message = `[definitionToValue] unexpected definition kind: ${definition.kind}`
   throw new S.ErrorWithSourceLocation(message, definition.location)
 }

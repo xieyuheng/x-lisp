@@ -35,9 +35,9 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
     return X86.PointerExp(parseExp(target), location)
   },
 
-  "`(@array . elements)": ({ elements }, { location }) => {
-    const items = S.asListSexp(elements).elements
-    return X86.ArrayExp(items.map(parseExp), location)
+  "(cons* '@array rest)": ({ rest }, { location }) => {
+    const elements = S.asListSexp(rest).elements
+    return X86.ArrayExp(elements.map(parseExp), location)
   },
 
   "(cons* '@address rest)": ({ rest }, { location }) => {
