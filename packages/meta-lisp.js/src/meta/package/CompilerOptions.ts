@@ -3,7 +3,6 @@ type CompilerOptions = Record<string, string>
 const knownCompilerOptions: Record<string, string[]> = {
   dump: ["true", "false"],
   basic: ["true", "false"],
-  basic2: ["true", "false"],
   profile: ["true", "false"],
   builtin: ["true", "false"],
 }
