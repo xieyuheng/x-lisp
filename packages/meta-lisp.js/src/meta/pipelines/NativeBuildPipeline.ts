@@ -12,7 +12,6 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
   for (const pkg of closure) M.ExpandPass(pkg)
-
   for (const pkg of closure) M.ModulePreludePass(pkg)
 
   const moduleReports = new Map<string, M.ModuleAnalysisReport>()
@@ -31,25 +30,15 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
     )
 
   for (const pkg of closure) M.DesugarPass(pkg)
-
   for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
-
   for (const pkg of closure) M.SubmitPass(pkg)
-
   for (const pkg of closure) M.ClaimPass(pkg)
-
   for (const pkg of closure) M.QualifyPass(pkg)
-
-  for (const pkg of closure) M.CheckPass(pkg)
-
   for (const pkg of closure) M.LocatePass(pkg)
-
+  for (const pkg of closure) M.CheckPass(pkg)
   for (const pkg of closure) M.ShrinkPass(pkg)
-
   for (const pkg of closure) M.UniquifyPass(pkg)
-
   for (const pkg of closure) M.LiftLambdaPass(pkg)
-
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
   const basicMod = M.ExplicateControlPass(rootPkg)

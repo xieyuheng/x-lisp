@@ -13,7 +13,7 @@ export function CheckPass(pkg: M.Package): M.Outcome {
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "110-check")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "120-check")
 
   return outcome
 }

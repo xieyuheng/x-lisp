@@ -1,15 +1,13 @@
 [meta-lisp.js] [refactor] `submitStmt`
 
-[meta-lisp.js] `LocatePass` before `CheckPass`
-
 # self-hosting
 
 [meta-lisp.meta] [review] 080-submit-pass.meta
 [meta-lisp.meta] [review] 090-claim-pass.meta
 [meta-lisp.meta] [review] 100-qualify-pass.meta
 
-[meta-lisp.meta] 110-check-pass.meta
-[meta-lisp.meta] 120-locate-pass.meta
+[meta-lisp.meta] 110-locate-pass.meta
+[meta-lisp.meta] 120-check-pass.meta
 [meta-lisp.meta] 130-shrink-pass.meta
 [meta-lisp.meta] 140-uniquify-pass.meta
 [meta-lisp.meta] 150-lift-lambda-pass.meta

@@ -4,7 +4,6 @@ export function CheckPipeline(rootPkg: M.Package): M.Outcome {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
   for (const pkg of closure) M.ExpandPass(pkg)
-
   for (const pkg of closure) M.ModulePreludePass(pkg)
 
   const moduleReports = new Map<string, M.ModuleAnalysisReport>()
@@ -27,22 +26,18 @@ export function CheckPipeline(rootPkg: M.Package): M.Outcome {
     )
 
   for (const pkg of closure) M.DesugarPass(pkg)
-
   for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
-
   for (const pkg of closure) M.SubmitPass(pkg)
-
   for (const pkg of closure) {
     if (M.ClaimPass(pkg) === "OutcomeError") outcome = "OutcomeError"
   }
 
   for (const pkg of closure) M.QualifyPass(pkg)
+  for (const pkg of closure) M.LocatePass(pkg)
 
   for (const pkg of closure) {
     if (M.CheckPass(pkg) === "OutcomeError") outcome = "OutcomeError"
   }
-
-  for (const pkg of closure) M.LocatePass(pkg)
 
   return outcome
 }

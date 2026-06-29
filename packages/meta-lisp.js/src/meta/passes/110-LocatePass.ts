@@ -8,7 +8,7 @@ export function LocatePass(pkg: M.Package): void {
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "120-locate")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "110-locate")
 }
 
 function locateDefinition(definition: M.Definition): null {
