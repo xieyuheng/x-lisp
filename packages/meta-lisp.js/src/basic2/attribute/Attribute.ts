@@ -1,10 +1,7 @@
 import { type Type } from "../type/index.ts"
 
 export type Attribute =
-  | TypeAttribute
-  | SymbolAttribute
-  | IntAttribute
-  | ListAttribute
+  TypeAttribute | SymbolAttribute | IntAttribute | ListAttribute
 
 export type TypeAttribute = {
   kind: "TypeAttribute"

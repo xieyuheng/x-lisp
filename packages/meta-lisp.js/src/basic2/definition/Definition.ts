@@ -3,9 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Type } from "../type/index.ts"
 
 export type Definition =
-  | StructDefinition
-  | FunctionDefinition
-  | VariableDefinition
+  StructDefinition | FunctionDefinition | VariableDefinition
 
 export type StructDefinition = {
   kind: "StructDefinition"

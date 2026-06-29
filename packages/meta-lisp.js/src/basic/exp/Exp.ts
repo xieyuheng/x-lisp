@@ -1,12 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Atom =
-  | SymbolExp
-  | KeywordExp
-  | StringExp
-  | IntExp
-  | FloatExp
-  | VarExp
+  SymbolExp | KeywordExp | StringExp | IntExp | FloatExp | VarExp
 
 export type Exp = Atom | ApplyExp
 

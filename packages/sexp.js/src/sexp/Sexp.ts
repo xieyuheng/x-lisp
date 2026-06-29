@@ -3,11 +3,7 @@ import * as S from "../index.ts"
 export type Sexp = AtomSexp | ListSexp
 
 export type AtomSexp =
-  | SymbolSexp
-  | StringSexp
-  | IntSexp
-  | FloatSexp
-  | KeywordSexp
+  SymbolSexp | StringSexp | IntSexp | FloatSexp | KeywordSexp
 
 export type SymbolSexp = {
   kind: "SymbolSexp"

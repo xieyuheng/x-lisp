@@ -1,12 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Exp =
-  | AddressExp
-  | IntExp
-  | StringExp
-  | StructExp
-  | PointerExp
-  | ArrayExp
+  AddressExp | IntExp | StringExp | StructExp | PointerExp | ArrayExp
 
 export type AddressExp = {
   kind: "AddressExp"

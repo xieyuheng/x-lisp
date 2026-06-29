@@ -1,12 +1,7 @@
 // learned from: christian-lindig/2000-stricty-pretty
 
 export type Node =
-  | NullNode
-  | TextNode
-  | AppendNode
-  | IndentNode
-  | BreakNode
-  | GroupNode
+  NullNode | TextNode | AppendNode | IndentNode | BreakNode | GroupNode
 
 export type NullNode = {
   kind: "NullNode"

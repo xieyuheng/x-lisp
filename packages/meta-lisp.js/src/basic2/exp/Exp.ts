@@ -1,11 +1,5 @@
 export type Exp =
-  | AddressExp
-  | IntExp
-  | FloatExp
-  | StringExp
-  | StructExp
-  | PointerExp
-  | ArrayExp
+  AddressExp | IntExp | FloatExp | StringExp | StructExp | PointerExp | ArrayExp
 
 export type AddressExp = {
   kind: "AddressExp"

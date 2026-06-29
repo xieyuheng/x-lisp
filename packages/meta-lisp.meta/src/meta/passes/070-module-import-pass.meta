@@ -65,12 +65,14 @@
        location))))
 
 (define (module-import-explicit-data-field scope field)
-  (make-explicit-data-field
-    (explicit-data-field-name field)
-    (module-import-term scope (explicit-data-field-type field))
-    (explicit-data-field-accessor-name field)
-    (explicit-data-field-modifier-name-maybe field)
-    (explicit-data-field-location field)))
+  (match field
+    ((make-explicit-data-field name type accessor-name modifier-name-maybe location)
+     (make-explicit-data-field
+      (explicit-data-field-name field)
+      (module-import-term scope (explicit-data-field-type field))
+      (explicit-data-field-accessor-name field)
+      (explicit-data-field-modifier-name-maybe field)
+      (explicit-data-field-location field)))))
 
 (define (module-import-pre-interface-entry scope entry)
   (make-pre-interface-entry

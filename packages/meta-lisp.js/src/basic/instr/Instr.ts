@@ -2,12 +2,7 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
 
 export type Instr =
-  | AssignInstr
-  | PerformInstr
-  | TestInstr
-  | BranchInstr
-  | GotoInstr
-  | ReturnInstr
+  AssignInstr | PerformInstr | TestInstr | BranchInstr | GotoInstr | ReturnInstr
 
 export type AssignInstr = {
   kind: "AssignInstr"
