@@ -42,38 +42,41 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
      (= new-scope (scope-filter-bound-names scope bound-names))
-     (define-algebraic-type-stmt type-constructor
-       (list-map
-         (lambda (ctor)
-           (make-explicit-data-constructor
-             (explicit-data-constructor-name ctor)
-             (list-map
-               (lambda (field)
-                 (make-explicit-data-field
-                   (explicit-data-field-name field)
-                   (module-import-term new-scope (explicit-data-field-type field))
-                   (explicit-data-field-accessor-name field)
-                   (explicit-data-field-modifier-name-maybe field)
-                   (explicit-data-field-location field)))
-               (explicit-data-constructor-fields ctor))
-             (explicit-data-constructor-predicate-name ctor)
-             (explicit-data-constructor-location ctor)))
-         data-constructors)
+     (define-algebraic-type-stmt
+       type-constructor
+       (list-map (module-import-explicit-data-constructor scope) data-constructors)
        location))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
      (= new-scope (scope-filter-bound-names scope bound-names))
      (define-opaque-type-stmt type-constructor
        (module-import-term new-scope representation-type)
-       (list-map
-         (lambda (entry)
-           (make-pre-interface-entry
-             (pre-interface-entry-name entry)
-             (module-import-term new-scope (pre-interface-entry-type entry))
-             (pre-interface-entry-location entry)))
-         interface-entries)
+       (list-map (module-import-pre-interface-entry scope) interface-entries)
        location))
     (else stmt)))
+
+(define (module-import-explicit-data-constructor scope ctor)
+  (match ctor
+    ((make-explicit-data-constructor name fields predicate-name location)
+     (make-explicit-data-constructor
+       name
+       (list-map (module-import-explicit-data-field scope) fields)
+       predicate-name
+       location))))
+
+(define (module-import-explicit-data-field scope field)
+  (make-explicit-data-field
+    (explicit-data-field-name field)
+    (module-import-term scope (explicit-data-field-type field))
+    (explicit-data-field-accessor-name field)
+    (explicit-data-field-modifier-name-maybe field)
+    (explicit-data-field-location field)))
+
+(define (module-import-pre-interface-entry scope entry)
+  (make-pre-interface-entry
+    (pre-interface-entry-name entry)
+    (module-import-term scope (pre-interface-entry-type entry))
+    (pre-interface-entry-location entry)))
 
 (claim module-import-term
   (-> fragment-scope-t term-t
