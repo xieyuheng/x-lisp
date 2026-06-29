@@ -2,65 +2,65 @@
   (fragment-scopes
     ("src/010-my-list.meta"
       (mod-name 010-my-list)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/010-pair.meta"
       (mod-name 010-pair)
-      (imported-names 613)
+      (imported-names 614)
       (imported-prefixes 0))
     ("src/050-lambda.meta"
       (mod-name 050-lambda)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/060-desugar.meta"
       (mod-name 060-desugar)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/070-cross-module.meta"
       (mod-name 070-cross-module)
-      (imported-names 621)
+      (imported-names 622)
       (imported-prefixes 0))
     ("src/070-cross-package-import-all.meta"
       (mod-name 070-cross-package-import-all)
-      (imported-names 632)
+      (imported-names 633)
       (imported-prefixes 0))
     ("src/070-cross-package-import-as.meta"
       (mod-name 070-cross-package-import-as)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 1))
     ("src/070-cross-package-import.meta"
       (mod-name 070-cross-package-import)
-      (imported-names 621)
+      (imported-names 622)
       (imported-prefixes 0))
     ("src/070-module-lib.meta"
       (mod-name 070-module-lib)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/110-function.meta"
       (mod-name 110-function)
-      (imported-names 619)
+      (imported-names 620)
       (imported-prefixes 0))
     ("src/110-type-annotations.meta"
       (mod-name 110-type-annotations)
-      (imported-names 619)
+      (imported-names 620)
       (imported-prefixes 0))
     ("src/140-uniquify.meta"
       (mod-name 140-uniquify)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/150-lift-lambda.meta"
       (mod-name 150-lift-lambda)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/160-unnest.meta"
       (mod-name 160-unnest)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/170-explicate-control.meta"
       (mod-name 170-explicate-control)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))
     ("src/180-codegen.meta"
       (mod-name 180-codegen)
-      (imported-names 620)
+      (imported-names 621)
       (imported-prefixes 0))))

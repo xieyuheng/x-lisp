@@ -1,3 +1,7 @@
+[meta-lisp.js] [refactor] `submitStmt`
+
+[meta-lisp.js] `LocatePass` before `CheckPass`
+
 # self-hosting
 
 [meta-lisp.meta] [review] 080-submit-pass.meta

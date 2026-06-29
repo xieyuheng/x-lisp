@@ -8,12 +8,10 @@
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (= mod-name (fragment-mod-name fragment))
-      (= mod (maybe-else (make-mod mod-name package)
-               (package-lookup-mod package mod-name)))
+      (= mod (maybe-else (make-mod mod-name package) (package-lookup-mod package mod-name)))
       (package-put-mod! mod-name mod package)
       (for-list (fragment-desugared-stmts fragment)
-        (lambda (stmt)
-          (submit-stmt mod stmt)))))
+        (submit-stmt mod))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "080-execute")))
 
@@ -23,8 +21,6 @@
 
 (define (submit-stmt mod stmt)
   (match stmt
-    ((comment-stmt _ _)
-     void)
     ((exempt-stmt names _)
      (ignore
        (for-list names
