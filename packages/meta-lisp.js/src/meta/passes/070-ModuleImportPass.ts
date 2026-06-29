@@ -2,10 +2,10 @@ import * as M from "../index.ts"
 
 export function ModuleImportPass(
   pkg: M.Package,
-  info: M.ModuleAnalysisReport,
+  report: M.ModuleAnalysisReport,
 ): void {
   for (const [path, fragment] of pkg.fragments) {
-    const scope = info.fragmentScopes.get(path)
+    const scope = report.fragmentScopes.get(path)
     if (scope) {
       fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
         moduleImportStmt(scope, stmt),

@@ -6,23 +6,16 @@
       void-t))
 
 (define (module-import-pass report package)
+  (= scopes (module-analysis-report-fragment-scopes report))
   (for-hash (package-fragments package)
     (lambda (path fragment)
-      (= scopes (module-analysis-report-fragment-scopes report))
-      (if (hash-has? path scopes)
-        (let ((scope (hash-get path scopes)))
-          (= new-fragment
-             (make-fragment
-               (fragment-mod-name fragment)
-               (fragment-path fragment)
-               (fragment-stmts fragment)
-               (list-map
-                 (lambda (stmt) (module-import-stmt scope stmt))
-                 (fragment-desugared-stmts fragment))))
-          (hash-put! path new-fragment (package-fragments package)))
-        (error-with-location
-          (@string "[module-import-pass] missing scope for: " path)
-          (zero-location "070-module-import-pass")))))
+      (match (hash-get-maybe path scopes)
+        ((just scope)
+         (fragment-put-desugared-stmts!
+           (list-map (module-import-stmt scope) (fragment-desugared-stmts fragment))
+           fragment))
+        ((nothing)
+         (error (@string "(module-import-pass) missing scope for: " path))))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-desugared-fragments package "070-module-import")))
 
