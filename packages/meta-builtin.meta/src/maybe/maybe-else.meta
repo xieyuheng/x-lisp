@@ -1,0 +1,6 @@
+(module builtin)
+
+(define (maybe-else default maybe)
+  (match maybe
+    ((just value) value)
+    ((nothing) default)))

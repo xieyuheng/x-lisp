@@ -3,7 +3,7 @@ import * as M from "../index.ts"
 
 export function SubmitPass(pkg: M.Package): void {
   for (const [path, fragment] of pkg.fragments) {
-    let mod =
+    const mod =
       M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
       M.createMod(fragment.modName, pkg)
 

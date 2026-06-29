@@ -8,10 +8,8 @@
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (= mod-name (fragment-mod-name fragment))
-      (= maybe-mod (package-lookup-mod package mod-name))
-      (= mod (match maybe-mod
-               ((just m) m)
-               ((nothing) (make-mod mod-name package))))
+      (= mod (maybe-else (make-mod mod-name package)
+               (package-lookup-mod package mod-name)))
       (package-put-mod! mod-name mod package)
       (for-list (fragment-desugared-stmts fragment)
         (lambda (stmt)
