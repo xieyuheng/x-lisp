@@ -91,6 +91,7 @@ function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {
     }
 
     default: {
+      // - why: no need to handle stmts that are removed during ExpandPass.
       let message = `[desugarStmt] unhandled stmt kind: ${stmt.kind}`
       throw new S.ErrorWithSourceLocation(message, stmt.location)
     }
