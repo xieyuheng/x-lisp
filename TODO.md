@@ -1,6 +1,5 @@
 # self-hosting
 
-[meta-lisp.meta] [refactor] extract `module-import-pre-interface-entry`
 [meta-lisp.meta] [review] 070-module-import-pass.meta
 [meta-lisp.meta] [review] 080-execute-pass.meta
 [meta-lisp.meta] [review] 090-claim-pass.meta

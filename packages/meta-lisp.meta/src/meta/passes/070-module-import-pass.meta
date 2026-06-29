@@ -68,17 +68,19 @@
   (match field
     ((make-explicit-data-field name type accessor-name modifier-name-maybe location)
      (make-explicit-data-field
-      (explicit-data-field-name field)
-      (module-import-term scope (explicit-data-field-type field))
-      (explicit-data-field-accessor-name field)
-      (explicit-data-field-modifier-name-maybe field)
-      (explicit-data-field-location field)))))
+       name
+       (module-import-term scope type)
+       accessor-name
+       modifier-name-maybe
+       location))))
 
 (define (module-import-pre-interface-entry scope entry)
-  (make-pre-interface-entry
-    (pre-interface-entry-name entry)
-    (module-import-term scope (pre-interface-entry-type entry))
-    (pre-interface-entry-location entry)))
+  (match entry
+    ((make-pre-interface-entry name type location)
+     (make-pre-interface-entry
+       name
+       (module-import-term scope type)
+       location))))
 
 (claim module-import-term
   (-> fragment-scope-t term-t
