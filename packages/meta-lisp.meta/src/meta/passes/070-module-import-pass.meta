@@ -44,14 +44,14 @@
      (= new-scope (scope-filter-bound-names scope bound-names))
      (define-algebraic-type-stmt
        type-constructor
-       (list-map (module-import-explicit-data-constructor scope) data-constructors)
+       (list-map (module-import-explicit-data-constructor new-scope) data-constructors)
        location))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
      (= new-scope (scope-filter-bound-names scope bound-names))
      (define-opaque-type-stmt type-constructor
        (module-import-term new-scope representation-type)
-       (list-map (module-import-pre-interface-entry scope) interface-entries)
+       (list-map (module-import-pre-interface-entry new-scope) interface-entries)
        location))
     (else stmt)))
 
@@ -90,37 +90,43 @@
   (match term
     ((var-term name location)
      (= imported-names (fragment-scope-imported-names scope))
-     (if (hash-has? name imported-names)
-       (let ((entry (hash-get name imported-names)))
-         (qualified-var-term
-           (qualified-name-pkg-name entry)
-           (qualified-name-mod-name entry)
-           (qualified-name-name entry)
-           location))
-       term))
+     (match (hash-get-maybe name imported-names)
+       ((just entry)
+        (qualified-var-term
+          (qualified-name-pkg-name entry)
+          (qualified-name-mod-name entry)
+          (qualified-name-name entry)
+          location))
+       ((nothing) term)))
     ((qualified-var-term pkg-name mod-name name location)
      (= imported-prefixes (fragment-scope-imported-prefixes scope))
-     (if (hash-has? mod-name imported-prefixes)
-       (let ((entry (hash-get mod-name imported-prefixes)))
-         (qualified-var-term
-           (qualified-prefix-pkg-name entry)
-           (qualified-prefix-mod-name entry)
-           name
-           location))
-       term))
+     (match (hash-get-maybe mod-name imported-prefixes)
+       ((just entry)
+        (qualified-var-term
+          (qualified-prefix-pkg-name entry)
+          (qualified-prefix-mod-name entry)
+          name
+          location))
+       ((nothing) term)))
     ((lambda-term parameters body location)
      (= bound-names (list-to-set parameters))
      (= new-scope (scope-filter-bound-names scope bound-names))
-     (lambda-term parameters (module-import-term new-scope body) location))
+     (lambda-term
+       parameters
+       (module-import-term new-scope body)
+       location))
     ((polymorphic-term parameters body location)
      (= bound-names (list-to-set parameters))
      (= new-scope (scope-filter-bound-names scope bound-names))
-     (polymorphic-term parameters (module-import-term new-scope body) location))
+     (polymorphic-term
+       parameters
+       (module-import-term new-scope body)
+       location))
     ((let1-term name rhs body location)
-     (= bound-names (make-set))
-     (set-add! name bound-names)
+     (= bound-names (@set name))
      (= new-scope (scope-filter-bound-names scope bound-names))
-     (let1-term name
+     (let1-term
+       name
        (module-import-term scope rhs)
        (module-import-term new-scope body)
        location))
@@ -131,12 +137,9 @@
       fragment-scope-t))
 
 (define (scope-filter-bound-names scope bound-names)
-  (= new-imported-names (make-hash))
-  (for-hash (fragment-scope-imported-names scope)
-    (lambda (name entry)
-      (unless (set-member? name bound-names)
-        (hash-put! name entry new-imported-names))))
-  (cons-fragment-scope
-    (fragment-scope-mod-name scope)
-    new-imported-names
-    (fragment-scope-imported-prefixes scope)))
+  (match scope
+    ((cons-fragment-scope mod-name imported-names imported-prefixes)
+     (cons-fragment-scope
+       mod-name
+       (hash-reject-key (swap set-member? bound-names) imported-names)
+       imported-prefixes))))
