@@ -1,6 +1,8 @@
+[meta-lisp.js] 090-ClaimPass.meta -- `outcomeConj` & `outcomeDisj`
+[meta-lisp.meta] 090-claim-pass.meta -- extract `setup-claimed-type`
+
 # self-hosting
 
-[meta-lisp.meta] [review] 090-claim-pass.meta
 [meta-lisp.meta] [review] 100-qualify-pass.meta
 
 [meta-lisp.meta] 110-locate-pass.meta

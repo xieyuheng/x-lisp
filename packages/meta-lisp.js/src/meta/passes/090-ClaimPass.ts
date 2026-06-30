@@ -3,29 +3,33 @@ import { writeln } from "@xieyuheng/std.js/file"
 import * as M from "../index.ts"
 
 export function ClaimPass(pkg: M.Package): M.Outcome {
-  let outcome: M.Outcome = "OutcomeOk"
+  const outcomes: Array<M.Outcome> = []
 
   for (const mod of pkg.mods.values()) {
     for (const [name, entry] of mod.claimed) {
-      if (!mod.admitted.has(name) && mod.definitions.get(name) === undefined) {
-        let message = `undefined claimed name`
-        message += `\n  module: ${mod.name}`
-        message += `\n  name: ${name}`
-
-        if (entry.term.location) {
-          writeln(S.sourceLocationReport(entry.term.location, message))
-        } else {
-          message += `\n  exp: ${M.formatTerm(entry.term)}`
-          writeln(message)
-        }
-
-        outcome = "OutcomeError"
-      }
-
-      const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), entry.term)
-      entry.type = type
+      outcomes.push(setupClaimedType(mod, name, entry))
     }
   }
 
-  return outcome
+  return outcomes.some((outcome) => outcome === "OutcomeError")
+    ? "OutcomeError"
+    : "OutcomeOk"
+}
+
+function setupClaimedType(
+  mod: M.Mod,
+  name: string,
+  entry: M.ClaimedEntry,
+): M.Outcome {
+  if (mod.admitted.has(name) || mod.definitions.get(name)) {
+    const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), entry.term)
+    entry.type = type
+    return "OutcomeOk"
+  } else {
+    let message = `undefined claimed name`
+    message += `\n  module: ${mod.name}`
+    message += `\n  name: ${name}`
+    writeln(S.sourceLocationReport(entry.term.location, message))
+    return "OutcomeError"
+  }
 }
