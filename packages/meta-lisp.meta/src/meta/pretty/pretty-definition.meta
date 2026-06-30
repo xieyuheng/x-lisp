@@ -97,7 +97,7 @@
 (define (pretty-definition-claim mod name)
   (= claimed-entry (mod-lookup-claimed-entry mod name))
   (if (not (nothing? claimed-entry))
-    (let ((term (claim-entry-term (just-value claimed-entry))))
+    (let ((term (claimed-entry-term (just-value claimed-entry))))
       (just (ppml/pretty-syntax "claim"
               [(ppml/text (symbol-to-string name))]
               [(pretty-term term)])))

@@ -7,7 +7,7 @@
     (admitted (set-t symbol-t))
     (definitions (hash-t symbol-t definition-t))
     (definition-states (hash-t symbol-t definition-state-t))
-    (claimed (hash-t symbol-t claim-entry-t))
+    (claimed (hash-t symbol-t claimed-entry-t))
     (opaque (set-t symbol-t))
     (inferred-types (hash-t symbol-t type-t))
     (data-constructors (hash-t symbol-t data-constructor-t))
@@ -31,7 +31,7 @@
   (is-checked bool-t)
   (outcome outcome-t))
 
-(define-struct claim-entry-t
+(define-struct claimed-entry-t
   (term term-t)
   (type (maybe-t type-t)))
 
@@ -72,12 +72,12 @@
   (let ((claimed (mod-claimed mod)))
     (if (hash-has? name claimed)
       (let ((entry (hash-get name claimed)))
-        (claim-entry-type entry))
+        (claimed-entry-type entry))
       (nothing))))
 
 (claim mod-lookup-claimed-entry
   (-> mod-t symbol-t
-      (maybe-t claim-entry-t)))
+      (maybe-t claimed-entry-t)))
 
 (define (mod-lookup-claimed-entry mod name)
   (let ((claimed (mod-claimed mod)))
@@ -108,10 +108,10 @@
          "\n  name: " (symbol-to-string name)
          "\n"
          (format-message-with-source-location "previous claim"
-           (term-location (claim-entry-term previous))))
+           (term-location (claimed-entry-term previous))))
        (term-location term)))
     ((nothing)
-     (hash-put! name (make-claim-entry term (nothing)) (mod-claimed mod))
+     (hash-put! name (make-claimed-entry term (nothing)) (mod-claimed mod))
      void)))
 
 (claim mod-admit

@@ -4,11 +4,15 @@ import * as M from "../index.ts"
 export type Outcome = "OutcomeOk" | "OutcomeError"
 
 export function outcomeConj(outcomes: Outcome[]): Outcome {
-  return outcomes.every(outcome => outcome === "OutcomeOk") ? "OutcomeOk" : "OutcomeError";
+  return outcomes.every((outcome) => outcome === "OutcomeOk")
+    ? "OutcomeOk"
+    : "OutcomeError"
 }
 
 export function outcomeDisj(outcomes: Outcome[]): Outcome {
-  return outcomes.some(outcome => outcome === "OutcomeOk") ? "OutcomeOk" : "OutcomeError";
+  return outcomes.some((outcome) => outcome === "OutcomeOk")
+    ? "OutcomeOk"
+    : "OutcomeError"
 }
 
 export type ClaimedEntry = {

@@ -27,7 +27,7 @@
      (mod-claim mod name type))
     ((claim-type-stmt name location)
      (= type-term (make-type-term-from-parameters [] location))
-     (hash-put! name (make-claim-entry type-term (just (type-type))) (mod-claimed mod))
+     (hash-put! name (make-claimed-entry type-term (just (type-type))) (mod-claimed mod))
      void)
     ((admit-stmt name type location)
      (mod-claim mod name type)

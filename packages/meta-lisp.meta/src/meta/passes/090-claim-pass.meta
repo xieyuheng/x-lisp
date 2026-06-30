@@ -16,8 +16,8 @@
 (define (setup-claimed-type mod name entry)
   (cond ((or (set-member? name (mod-admitted mod))
              (hash-has? name (mod-definitions mod)))
-         (= type (evaluate-type mod (empty-env (opaque-mode)) (claim-entry-term entry)))
-         (claim-entry-put-type! (just type) entry)
+         ;; (= type (evaluate-type mod (empty-env (opaque-mode)) (claimed-entry-term entry)))
+         ;; (claimed-entry-put-type! (just type) entry)
          (outcome-ok))
         (else
          (println
@@ -26,5 +26,5 @@
                "undefined claimed name"
                "\n  module: " (symbol-to-string (mod-name mod))
                "\n  name: " (symbol-to-string name))
-             (term-location (claim-entry-term entry))))
+             (term-location (claimed-entry-term entry))))
          (outcome-error))))
