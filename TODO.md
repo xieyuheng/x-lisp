@@ -1,5 +1,3 @@
-[meta-lisp.meta] 090-claim-pass.meta -- `setup-claimed-type` -- `evaluate-type`
-
 # self-hosting
 
 [meta-lisp.meta] [review] 100-qualify-pass.meta
