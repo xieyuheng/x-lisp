@@ -12,17 +12,17 @@ export function ClaimPass(pkg: M.Package): M.Outcome {
         message += `\n  module: ${mod.name}`
         message += `\n  name: ${name}`
 
-        if (entry.exp.location) {
-          writeln(S.sourceLocationReport(entry.exp.location, message))
+        if (entry.term.location) {
+          writeln(S.sourceLocationReport(entry.term.location, message))
         } else {
-          message += `\n  exp: ${M.formatTerm(entry.exp)}`
+          message += `\n  exp: ${M.formatTerm(entry.term)}`
           writeln(message)
         }
 
         outcome = "OutcomeError"
       }
 
-      const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), entry.exp)
+      const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), entry.term)
       entry.type = type
     }
   }

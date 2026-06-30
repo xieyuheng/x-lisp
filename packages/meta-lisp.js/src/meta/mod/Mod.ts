@@ -4,7 +4,7 @@ import * as M from "../index.ts"
 export type Outcome = "OutcomeOk" | "OutcomeError"
 
 export type ClaimedEntry = {
-  exp: M.Term
+  term: M.Term
   type?: M.Type
 }
 
@@ -98,22 +98,20 @@ export function modAdmit(mod: Mod, name: string): void {
 
 // Claimed
 
-export function modClaim(mod: Mod, name: string, exp: M.Term): void {
+export function modClaim(mod: Mod, name: string, term: M.Term): void {
   const previous = mod.claimed.get(name)
   if (previous) {
     let message = `[modClaim] name already claimed`
     message += `\n  name: ${name}`
-    if (previous.exp.location) {
-      message += `\n`
-      message += S.sourceLocationReport(
-        previous.exp.location,
-        `revious claim`,
-      ).trim()
-    }
-    throw new S.ErrorWithSourceLocation(message, exp.location)
+    message += `\n`
+    message += S.sourceLocationReport(
+      previous.term.location,
+      `previous claim`,
+    ).trim()
+    throw new S.ErrorWithSourceLocation(message, term.location)
   }
 
-  mod.claimed.set(name, { exp })
+  mod.claimed.set(name, { term })
 }
 
 export function modLookupClaimedType(
@@ -124,7 +122,7 @@ export function modLookupClaimedType(
   if (!claimedEntry) return undefined
   if (claimedEntry.type === undefined) {
     let message = `[modLookupClaimedType] claimed type not evaluated: ${name}`
-    throw new S.ErrorWithSourceLocation(message, claimedEntry.exp.location)
+    throw new S.ErrorWithSourceLocation(message, claimedEntry.term.location)
   }
   return claimedEntry.type
 }

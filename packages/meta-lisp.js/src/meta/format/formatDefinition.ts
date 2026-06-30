@@ -98,7 +98,7 @@ function formatDataConstructor(dataConstructor: M.DataConstructor): string {
 function formatDefinitionType(mod: M.Mod, name: string): string | undefined {
   const claimedEntry = M.modLookupClaimedEntry(mod, name)
   if (claimedEntry) {
-    return `(claim ${name} ${M.formatTerm(claimedEntry.exp)})`
+    return `(claim ${name} ${M.formatTerm(claimedEntry.term)})`
   }
 
   const inferredType = M.modLookupInferredType(mod, name)

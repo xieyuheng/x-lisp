@@ -34,7 +34,7 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     case "ClaimTypeStmt": {
       mod.claimed.set(stmt.name, {
-        exp: M.QualifiedVarTerm(
+        term: M.QualifiedVarTerm(
           "meta-builtin",
           "builtin",
           "type-t",

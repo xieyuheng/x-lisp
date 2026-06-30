@@ -22,11 +22,19 @@
   (outcome outcome-t))
 
 (define-struct claim-entry-t
-  (exp term-t)
+  (term term-t)
   (type (maybe-t type-t)))
 
 (define (make-mod name package)
-  (cons-mod name [] (make-set) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) (make-hash) package))
+  (cons-mod name []
+    (make-set)
+    (make-hash)
+    (make-hash)
+    (make-hash)
+    (make-hash)
+    (make-hash)
+    (make-hash)
+    package))
 
 (claim mod-put-definition! (-> symbol-t definition-t mod-t void-t))
 (define (mod-put-definition! name definition mod)
@@ -62,15 +70,23 @@
       (just (hash-get name inferred))
       (nothing))))
 
-(claim mod-claim (-> mod-t symbol-t term-t void-t))
-(define (mod-claim mod name exp)
-  (let ((claimed (mod-claimed mod)))
-    (if (hash-has? name claimed)
-      (error (@string
-               "[mod-claim] name already claimed"
-               "\n  name: " (symbol-to-string name)))
-      (hash-put! name (make-claim-entry exp (nothing)) claimed)))
-  void)
+(claim mod-claim
+  (-> mod-t symbol-t term-t
+      void-t))
+
+(define (mod-claim mod name term)
+  (match (hash-get-maybe name (mod-claimed mod))
+    ((just previous)
+     (error-with-location
+       (@string
+         "(mod-claim) name already claimed"
+         "\n  name: " (symbol-to-string name)
+         "\n"
+         (format-message-with-source-location "previous claim"
+           (term-location (claim-entry-term previous))))
+       (term-location term)))
+    ((nothing)
+     (ignore (hash-put! name (make-claim-entry term (nothing)) (mod-claimed mod))))))
 
 (claim mod-define (-> mod-t symbol-t definition-t void-t))
 (define (mod-define mod name definition)

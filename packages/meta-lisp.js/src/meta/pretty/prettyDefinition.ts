@@ -79,9 +79,9 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
       const paramsNode =
         definition.typeConstructor.parameters.length > 0
           ? Ppml.prettyApplication([
-              Ppml.text(definition.name),
-              ...definition.typeConstructor.parameters.map(Ppml.text),
-            ])
+            Ppml.text(definition.name),
+            ...definition.typeConstructor.parameters.map(Ppml.text),
+          ])
           : Ppml.text(definition.name)
       const reprNode = prettyTerm(definition.representationType)
       const ifaceNodes = definition.interfaceEntries.map((entry) =>
@@ -116,7 +116,7 @@ function prettyDefinitionType(mod: M.Mod, name: string): Ppml.Node | undefined {
     return Ppml.prettySyntax(
       "claim",
       [Ppml.text(name)],
-      [prettyTerm(claimedEntry.exp)],
+      [prettyTerm(claimedEntry.term)],
     )
   }
 

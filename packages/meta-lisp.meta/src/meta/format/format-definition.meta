@@ -79,8 +79,8 @@
 (define (format-definition-claim mod name)
   (= claimed-entry (mod-lookup-claimed-entry mod name))
   (if (not (nothing? claimed-entry))
-    (let ((exp (claim-entry-exp (just-value claimed-entry))))
-      (@string "(claim " (symbol-to-string name) " " (format-term exp) ") "))
+    (let ((term (claim-entry-term (just-value claimed-entry))))
+      (@string "(claim " (symbol-to-string name) " " (format-term term) ") "))
     (let ((inferred-type (mod-lookup-inferred-type mod name)))
       (if (not (nothing? inferred-type))
         (@string "(claim " (symbol-to-string name) " "

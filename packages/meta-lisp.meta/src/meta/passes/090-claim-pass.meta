@@ -17,11 +17,11 @@
                  "undefined claimed name"
                  "\n  module: " (symbol-to-string (mod-name mod))
                  "\n  name: " (symbol-to-string claimed-name)
-                 "\n  exp: " (format-term (claim-entry-exp entry))))
+                 "\n  term: " (format-term (claim-entry-term entry))))
             (println
               (format-message-with-source-location
                 message
-                (term-location (claim-entry-exp entry))))
+                (term-location (claim-entry-term entry))))
             (list-push! claimed-name errors))))))
   (if (list-empty? errors)
     (outcome-ok)
