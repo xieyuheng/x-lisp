@@ -17,6 +17,16 @@
   (outcome-ok)
   (outcome-error))
 
+(define (outcome-conj outcomes)
+  (if (list-every? (equal? (outcome-ok)) outcomes)
+    (outcome-ok)
+    (outcome-error)))
+
+(define (outcome-disj outcomes)
+  (if (list-some? (equal? (outcome-ok)) outcomes)
+    (outcome-ok)
+    (outcome-error)))
+
 (define-struct definition-state-t
   (is-checked bool-t)
   (outcome outcome-t))
@@ -105,7 +115,7 @@
      void)))
 
 (claim mod-admit
-  (-> mod-t symbol-t 
+  (-> mod-t symbol-t
       void-t))
 
 (define (mod-admit mod name)

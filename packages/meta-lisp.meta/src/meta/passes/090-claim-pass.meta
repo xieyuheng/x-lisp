@@ -11,9 +11,7 @@
       (for-hash (mod-claimed mod)
         (lambda (name entry)
           (list-push! (setup-claimed-type mod name entry) outcomes)))))
-  (if (list-some? (equal? (outcome-error)) outcomes)
-    (outcome-error)
-    (outcome-ok)))
+  (outcome-conj outcomes))
 
 (define (setup-claimed-type mod name entry)
   (cond ((or (set-member? name (mod-admitted mod))

@@ -1,5 +1,3 @@
-[meta-lisp.meta] 090-claim-pass.meta -- `outcome-conj` & `outcome-disj`
-
 [meta-lisp.meta] 090-claim-pass.meta -- `setup-claimed-type` -- `evaluate-type`
 
 # self-hosting
