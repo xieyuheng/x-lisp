@@ -1,4 +1,3 @@
-[meta-lisp.meta] extract `mod-admit`
 [meta-lisp.js] [refactor] `submitStmt`
 
 # self-hosting

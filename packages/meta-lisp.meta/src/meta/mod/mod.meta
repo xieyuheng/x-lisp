@@ -36,19 +36,28 @@
     (make-hash)
     package))
 
-(claim mod-put-definition! (-> symbol-t definition-t mod-t void-t))
+(claim mod-put-definition!
+  (-> symbol-t definition-t mod-t
+      void-t))
+
 (define (mod-put-definition! name definition mod)
   (hash-put! name definition (mod-definitions mod))
   void)
 
-(claim mod-lookup-definition (-> mod-t symbol-t (maybe-t definition-t)))
+(claim mod-lookup-definition
+  (-> mod-t symbol-t
+      (maybe-t definition-t)))
+
 (define (mod-lookup-definition mod name)
   (let ((definitions (mod-definitions mod)))
     (if (hash-has? name definitions)
       (just (hash-get name definitions))
       (nothing))))
 
-(claim mod-lookup-claimed-type (-> mod-t symbol-t (maybe-t type-t)))
+(claim mod-lookup-claimed-type
+  (-> mod-t symbol-t
+      (maybe-t type-t)))
+
 (define (mod-lookup-claimed-type mod name)
   (let ((claimed (mod-claimed mod)))
     (if (hash-has? name claimed)
@@ -56,14 +65,20 @@
         (claim-entry-type entry))
       (nothing))))
 
-(claim mod-lookup-claimed-entry (-> mod-t symbol-t (maybe-t claim-entry-t)))
+(claim mod-lookup-claimed-entry
+  (-> mod-t symbol-t
+      (maybe-t claim-entry-t)))
+
 (define (mod-lookup-claimed-entry mod name)
   (let ((claimed (mod-claimed mod)))
     (if (hash-has? name claimed)
       (just (hash-get name claimed))
       (nothing))))
 
-(claim mod-lookup-inferred-type (-> mod-t symbol-t (maybe-t type-t)))
+(claim mod-lookup-inferred-type
+  (-> mod-t symbol-t
+      (maybe-t type-t)))
+
 (define (mod-lookup-inferred-type mod name)
   (let ((inferred (mod-inferred-types mod)))
     (if (hash-has? name inferred)
@@ -86,9 +101,21 @@
            (term-location (claim-entry-term previous))))
        (term-location term)))
     ((nothing)
-     (ignore (hash-put! name (make-claim-entry term (nothing)) (mod-claimed mod))))))
+     (hash-put! name (make-claim-entry term (nothing)) (mod-claimed mod))
+     void)))
 
-(claim mod-define (-> mod-t symbol-t definition-t void-t))
+(claim mod-admit
+  (-> mod-t symbol-t 
+      void-t))
+
+(define (mod-admit mod name)
+  (set-add! name (mod-admitted mod))
+  void)
+
+(claim mod-define
+  (-> mod-t symbol-t definition-t
+      void-t))
+
 (define (mod-define mod name definition)
   (let ((definitions (mod-definitions mod)))
     (if (hash-has? name definitions)
@@ -98,31 +125,46 @@
       (hash-put! name definition definitions)))
   void)
 
-(claim mod-put-inferred-type! (-> mod-t symbol-t type-t void-t))
+(claim mod-put-inferred-type!
+  (-> mod-t symbol-t type-t
+      void-t))
+
 (define (mod-put-inferred-type! mod name type)
   (hash-put! name type (mod-inferred-types mod))
   void)
 
-(claim mod-is-checked (-> mod-t symbol-t bool-t))
+(claim mod-is-checked
+  (-> mod-t symbol-t
+      bool-t))
+
 (define (mod-is-checked mod name)
   (let ((states (mod-definition-states mod)))
     (if (hash-has? name states)
       (definition-state-is-checked (hash-get name states))
       false)))
 
-(claim mod-mark-checked! (-> mod-t symbol-t void-t))
+(claim mod-mark-checked!
+  (-> mod-t symbol-t
+      void-t))
+
 (define (mod-mark-checked! mod name)
   (hash-put! name (make-definition-state true (outcome-ok)) (mod-definition-states mod))
   void)
 
-(claim mod-outcome (-> mod-t symbol-t outcome-t))
+(claim mod-outcome
+  (-> mod-t symbol-t
+      outcome-t))
+
 (define (mod-outcome mod name)
   (let ((states (mod-definition-states mod)))
     (if (hash-has? name states)
       (definition-state-outcome (hash-get name states))
       (outcome-ok))))
 
-(claim mod-mark-outcome! (-> mod-t symbol-t outcome-t void-t))
+(claim mod-mark-outcome!
+  (-> mod-t symbol-t outcome-t
+      void-t))
+
 (define (mod-mark-outcome! mod name value)
   (let ((states (mod-definition-states mod)))
     (if (hash-has? name states)

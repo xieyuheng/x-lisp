@@ -22,7 +22,7 @@
 (define (submit-stmt mod stmt)
   (match stmt
     ((exempt-stmt names location)
-     (for-list names (swap set-add! (mod-admitted mod))))
+     (for-list names (mod-admit mod)))
     ((claim-stmt name type location)
      (mod-claim mod name type))
     ((claim-type-stmt name location)
@@ -33,9 +33,9 @@
            (qualified-var-term 'meta-builtin 'builtin 'type-t location)
            (just (type-type)))
          claimed)))
-    ((admit-stmt name type _)
+    ((admit-stmt name type location)
      (mod-claim mod name type)
-     (ignore (set-add! name (mod-admitted mod))))
+     (mod-admit mod name))
     ((declare-primitive-function-stmt name arity location)
      (= maybe-def (mod-lookup-definition mod name))
      (match maybe-def

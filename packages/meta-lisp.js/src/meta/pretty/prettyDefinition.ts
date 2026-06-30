@@ -79,9 +79,9 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
       const paramsNode =
         definition.typeConstructor.parameters.length > 0
           ? Ppml.prettyApplication([
-            Ppml.text(definition.name),
-            ...definition.typeConstructor.parameters.map(Ppml.text),
-          ])
+              Ppml.text(definition.name),
+              ...definition.typeConstructor.parameters.map(Ppml.text),
+            ])
           : Ppml.text(definition.name)
       const reprNode = prettyTerm(definition.representationType)
       const ifaceNodes = definition.interfaceEntries.map((entry) =>
