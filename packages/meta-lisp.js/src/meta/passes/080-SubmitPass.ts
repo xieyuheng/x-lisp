@@ -277,7 +277,9 @@ function makeDataConstructorFromExplicit(
   }
 }
 
-function makeDataFieldFromExplicit(field: M.ExplicitDataField<M.Term>): M.DataField {
+function makeDataFieldFromExplicit(
+  field: M.ExplicitDataField<M.Term>,
+): M.DataField {
   return {
     name: field.name,
     type: field.type,
