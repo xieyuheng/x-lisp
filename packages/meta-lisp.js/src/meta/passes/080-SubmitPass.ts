@@ -153,14 +153,9 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "DefineAlgebraicTypeStmt": {
-      const { name, parameters } = stmt.typeConstructor
-      const typeConstructor: M.TypeConstructor = {
-        mod,
-        name,
-        parameters,
-        location: stmt.typeConstructor.location,
-      }
-
+      const name = stmt.typeConstructor.name
+      const typeConstructor = makeTypeConstructorFromPre(mod, stmt.typeConstructor)
+      const parameters = typeConstructor.parameters
       const dataConstructors = stmt.dataConstructors.map(
         (ctor): M.DataConstructor => ({
           mod,
@@ -200,14 +195,9 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "DefineOpaqueTypeStmt": {
-      const { name, parameters } = stmt.typeConstructor
-      const typeConstructor: M.TypeConstructor = {
-        mod,
-        name,
-        parameters,
-        location: stmt.location,
-      }
-
+      const name = stmt.typeConstructor.name
+      const typeConstructor = makeTypeConstructorFromPre(mod, stmt.typeConstructor)
+      const parameters = typeConstructor.parameters
       M.modClaim(
         mod,
         name,
@@ -262,5 +252,14 @@ function makeTypeTermFromParameters(
       typeTerm,
       location,
     )
+  }
+}
+
+function makeTypeConstructorFromPre(mod: M.Mod, pre: M.PreTypeConstructor): M.TypeConstructor {
+  return {
+    mod,
+    name: pre.name,
+    parameters: pre.parameters,
+    location: pre.location,
   }
 }
