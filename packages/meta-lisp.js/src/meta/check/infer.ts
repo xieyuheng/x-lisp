@@ -176,12 +176,12 @@ function inferLookup(
 ): M.InferEffect {
   return (subst) => {
     if (ctx.transparentOpaqueNames.has(name)) {
-      const opaqueTypeExp = mod.opaqueClaimed.get(name)
-      if (opaqueTypeExp) {
+      const claimedEntry = M.modLookupClaimedEntry(mod, name)
+      if (claimedEntry) {
         const transparentType = M.evaluateType(
           mod,
           M.emptyEnv("TransparentMode"),
-          opaqueTypeExp,
+          claimedEntry.term,
         )
         return M.okInferEffect(transparentType)(subst)
       }
