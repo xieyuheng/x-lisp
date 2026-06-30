@@ -11,9 +11,7 @@ export function ClaimPass(pkg: M.Package): M.Outcome {
     }
   }
 
-  return outcomes.some((outcome) => outcome === "OutcomeError")
-    ? "OutcomeError"
-    : "OutcomeOk"
+  return M.outcomeConj(outcomes)
 }
 
 function setupClaimedType(
