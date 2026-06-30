@@ -272,11 +272,15 @@ function makeDataConstructorFromExplicit(
     mod,
     typeName,
     name: explicit.name,
-    fields: explicit.fields.map((field) => ({
-      name: field.name,
-      type: field.type,
-      location: field.location,
-    })),
+    fields: explicit.fields.map(makeDataFieldFromExplicit),
     location: explicit.location,
+  }
+}
+
+function makeDataFieldFromExplicit(field: M.ExplicitDataField<M.Term>): M.DataField {
+  return {
+    name: field.name,
+    type: field.type,
+    location: field.location,
   }
 }

@@ -128,10 +128,10 @@
   (match explicit-data-constructor
     ((make-explicit-data-constructor name fields predicate-name location)
      (make-data-constructor mod type-name name
-       (list-map (make-data-field-from-explicit mod) fields)
+       (list-map make-data-field-from-explicit fields)
        location))))
 
-(define (make-data-field-from-explicit mod field)
+(define (make-data-field-from-explicit field)
   (make-data-field
     (explicit-data-field-name field)
     (explicit-data-field-type field)
