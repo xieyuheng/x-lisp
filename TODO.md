@@ -1,5 +1,7 @@
 [meta-lisp.js] 090-ClaimPass.meta -- `outcomeConj` & `outcomeDisj`
-[meta-lisp.meta] 090-claim-pass.meta -- extract `setup-claimed-type`
+[meta-lisp.meta] 090-claim-pass.meta -- `outcome-conj` & `outcome-disj`
+
+[meta-lisp.meta] 090-claim-pass.meta -- `setup-claimed-type` -- `evaluate-type`
 
 # self-hosting
 
