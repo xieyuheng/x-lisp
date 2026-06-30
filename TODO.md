@@ -4,6 +4,10 @@
 
 [meta-lisp.meta] [review] 100-qualify-pass.meta
 
+[meta-lisp.meta] [review] env.meta
+[meta-lisp.meta] [review] apply.meta
+[meta-lisp.meta] [review] evaluate.meta
+
 [meta-lisp.meta] 110-locate-pass.meta
 [meta-lisp.meta] 120-check-pass.meta
 [meta-lisp.meta] 130-shrink-pass.meta

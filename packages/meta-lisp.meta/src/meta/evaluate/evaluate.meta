@@ -1,6 +1,8 @@
 (module meta)
 
-(claim evaluate (-> mod-t env-t term-t value-t))
+(claim evaluate
+  (-> mod-t env-t term-t
+      value-t))
 
 (define (evaluate mod env term)
   (match term
@@ -10,16 +12,19 @@
        (let ((definition (mod-lookup-definition mod name)))
          (if (not (nothing? definition))
            (definition-to-value (env-mode env) (just-value definition))
-           (error "(evaluate) undefined variable")))))
+           (error-with-location "(evaluate) undefined variable"
+             (term-location term))))))
     ((qualified-var-term pkg-name mod-name name location)
      (let ((qualified-mod (package-lookup-mod (mod-package mod) pkg-name mod-name)))
        (if (nothing? qualified-mod)
-         (error "(evaluate) undefined module prefix")
+         (error-with-location "(evaluate) undefined module prefix"
+           (term-location term))
          (let* ((found-mod (just-value qualified-mod))
                 (definition (mod-lookup-definition found-mod name)))
            (if (not (nothing? definition))
              (definition-to-value (env-mode env) (just-value definition))
-             (error "(evaluate) undefined qualified variable"))))))
+             (error-with-location "(evaluate) undefined qualified variable"
+               (term-location term)))))))
     ((arrow-term arg-types ret-type location)
      (let ((arg-types (list-map (lambda (arg-type) (evaluate-type mod env arg-type)) arg-types))
            (ret-type (evaluate-type mod env ret-type)))
@@ -37,9 +42,14 @@
        (apply-value (env-mode env) target args)))
     ((the-term type instance location)
      (evaluate mod env instance))
-    (else (error "(evaluate) unhandled term"))))
+    (else
+     (error-with-location "(evaluate) unhandled term"
+       (term-location term)))))
 
-(claim definition-to-value (-> evaluation-mode-t definition-t value-t))
+(claim definition-to-value
+  (-> evaluation-mode-t definition-t
+      value-t))
+
 (define (definition-to-value mode definition)
   (match definition
     ((primitive-function-declaration mod name arity location)
@@ -76,9 +86,13 @@
          (type-value (data-type type-constructor []))
          (definition-value definition))))))
 
-(claim evaluate-type (-> mod-t env-t term-t type-t))
+(claim evaluate-type
+  (-> mod-t env-t term-t
+      type-t))
+
 (define (evaluate-type mod env term)
   (let ((value (evaluate mod env term)))
     (if (type-value? value)
       (type-value-type value)
-      (error "(evaluate-type) expected a type value"))))
+      (error-with-location "(evaluate-type) expected a type value"
+        (term-location term)))))
