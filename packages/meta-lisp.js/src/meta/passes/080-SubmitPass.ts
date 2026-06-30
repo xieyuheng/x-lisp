@@ -213,7 +213,11 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       )
 
       for (const entry of stmt.interfaceEntries) {
-        const wrappedType = makePolymorphicTermFromParameters(parameters, entry.type, entry.location)
+        const wrappedType = makePolymorphicTermFromParameters(
+          parameters,
+          entry.type,
+          entry.location,
+        )
         M.modClaim(mod, entry.name, wrappedType)
         mod.opaqueClaimed.set(entry.name, wrappedType)
       }
@@ -222,15 +226,15 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   }
 }
 
-function makePolymorphicTermFromParameters (  parameters: Array<string>, type: M.Term, location: S.SourceLocation): M.Term {
-  if (parameters.length === 0 ) {
+function makePolymorphicTermFromParameters(
+  parameters: Array<string>,
+  type: M.Term,
+  location: S.SourceLocation,
+): M.Term {
+  if (parameters.length === 0) {
     return type
   } else {
-    return M.PolymorphicTerm(
-      parameters,
-      type,
-      location,
-    )
+    return M.PolymorphicTerm(parameters, type, location)
   }
 }
 

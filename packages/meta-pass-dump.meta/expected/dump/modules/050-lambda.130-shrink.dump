@@ -180,20 +180,16 @@
        self/050-lambda/env-t
        (meta-builtin/builtin/maybe-t self/050-lambda/value-t))))
 
-(claim empty-env (polymorphic () (-> env-t)))
+(claim empty-env (-> env-t))
 
 (define empty-env meta-builtin/builtin/make-hash)
 
-(claim extend-env
-  (polymorphic () (-> meta-builtin/builtin/symbol-t value-t env-t env-t)))
+(claim extend-env (-> meta-builtin/builtin/symbol-t value-t env-t env-t))
 
 (define extend-env meta-builtin/builtin/hash-put)
 
 (claim env-lookup
-  (polymorphic ()
-    (-> meta-builtin/builtin/symbol-t
-        env-t
-        (meta-builtin/builtin/maybe-t value-t))))
+  (-> meta-builtin/builtin/symbol-t env-t (meta-builtin/builtin/maybe-t value-t)))
 
 (define env-lookup meta-builtin/builtin/hash-get-maybe)
 
