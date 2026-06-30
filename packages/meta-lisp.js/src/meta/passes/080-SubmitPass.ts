@@ -34,13 +34,10 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "ClaimTypeStmt": {
-      const typeTerm = M.QualifiedVarTerm(
-        "meta-builtin",
-        "builtin",
-        "type-t",
-        stmt.location,
-      )
-      mod.claimed.set(stmt.name, { term: typeTerm, type: M.TypeType() })
+      mod.claimed.set(stmt.name, {
+        term: makeTypeTermFromParameters([], stmt.location),
+        type: M.TypeType(),
+      })
       return
     }
 
@@ -135,41 +132,11 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "DefineTypeStmt": {
-      if (stmt.parameters.length === 0) {
-        M.modClaim(
-          mod,
-          stmt.name,
-          M.QualifiedVarTerm(
-            "meta-builtin",
-            "builtin",
-            "type-t",
-            stmt.location,
-          ),
-        )
-      } else {
-        M.modClaim(
-          mod,
-          stmt.name,
-          M.ArrowTerm(
-            range(stmt.parameters.length).map((_) =>
-              M.QualifiedVarTerm(
-                "meta-builtin",
-                "builtin",
-                "type-t",
-                stmt.location,
-              ),
-            ),
-            M.QualifiedVarTerm(
-              "meta-builtin",
-              "builtin",
-              "type-t",
-              stmt.location,
-            ),
-            stmt.location,
-          ),
-        )
-      }
-
+      M.modClaim(
+        mod,
+        stmt.name,
+        makeTypeTermFromParameters(stmt.parameters, stmt.location),
+      )
       M.modDefine(
         mod,
         stmt.name,
@@ -186,11 +153,11 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "DefineAlgebraicTypeStmt": {
-      const name = stmt.typeConstructor.name
+      const { name, parameters } = stmt.typeConstructor
       const typeConstructor: M.TypeConstructor = {
         mod,
-        name: stmt.typeConstructor.name,
-        parameters: stmt.typeConstructor.parameters,
+        name,
+        parameters,
         location: stmt.typeConstructor.location,
       }
 
@@ -208,52 +175,25 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         }),
       )
 
-      const definition = M.AlgebraicTypeDefinition(
+      M.modClaim(
         mod,
         name,
-        typeConstructor,
-        dataConstructors,
-        stmt.location,
+        makeTypeTermFromParameters(parameters, stmt.location),
+      )
+      M.modDefine(
+        mod,
+        name,
+        M.AlgebraicTypeDefinition(
+          mod,
+          name,
+          typeConstructor,
+          dataConstructors,
+          stmt.location,
+        ),
       )
 
-      M.modDefine(mod, name, definition)
       for (const dataConstructor of dataConstructors) {
         mod.dataConstructors.set(dataConstructor.name, dataConstructor)
-      }
-
-      if (typeConstructor.parameters.length === 0) {
-        M.modClaim(
-          mod,
-          name,
-          M.QualifiedVarTerm(
-            "meta-builtin",
-            "builtin",
-            "type-t",
-            stmt.location,
-          ),
-        )
-      } else {
-        M.modClaim(
-          mod,
-          name,
-          M.ArrowTerm(
-            range(typeConstructor.parameters.length).map((_) =>
-              M.QualifiedVarTerm(
-                "meta-builtin",
-                "builtin",
-                "type-t",
-                stmt.location,
-              ),
-            ),
-            M.QualifiedVarTerm(
-              "meta-builtin",
-              "builtin",
-              "type-t",
-              stmt.location,
-            ),
-            stmt.location,
-          ),
-        )
       }
 
       return
@@ -268,55 +208,27 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
         location: stmt.location,
       }
 
-      const definition = M.OpaqueTypeDefinition(
+      M.modClaim(
         mod,
         name,
-        typeConstructor,
-        stmt.representationType,
-        stmt.interfaceEntries.map((f) => ({
-          name: f.name,
-          type: f.type,
-          location: f.location,
-        })),
-        stmt.location,
+        makeTypeTermFromParameters(parameters, stmt.location),
       )
-
-      M.modDefine(mod, name, definition)
-
-      if (parameters.length === 0) {
-        M.modClaim(
+      M.modDefine(
+        mod,
+        name,
+        M.OpaqueTypeDefinition(
           mod,
           name,
-          M.QualifiedVarTerm(
-            "meta-builtin",
-            "builtin",
-            "type-t",
-            stmt.location,
-          ),
-        )
-      } else {
-        M.modClaim(
-          mod,
-          name,
-          M.ArrowTerm(
-            range(parameters.length).map((_) =>
-              M.QualifiedVarTerm(
-                "meta-builtin",
-                "builtin",
-                "type-t",
-                stmt.location,
-              ),
-            ),
-            M.QualifiedVarTerm(
-              "meta-builtin",
-              "builtin",
-              "type-t",
-              stmt.location,
-            ),
-            stmt.location,
-          ),
-        )
-      }
+          typeConstructor,
+          stmt.representationType,
+          stmt.interfaceEntries.map((f) => ({
+            name: f.name,
+            type: f.type,
+            location: f.location,
+          })),
+          stmt.location,
+        ),
+      )
 
       for (const iface of stmt.interfaceEntries) {
         const wrappedType = M.PolymorphicTerm(
@@ -329,5 +241,26 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       }
       return
     }
+  }
+}
+
+function makeTypeTermFromParameters(
+  parameters: Array<string>,
+  location: S.SourceLocation,
+): M.Term {
+  const typeTerm = M.QualifiedVarTerm(
+    "meta-builtin",
+    "builtin",
+    "type-t",
+    location,
+  )
+  if (parameters.length === 0) {
+    return typeTerm
+  } else {
+    return M.ArrowTerm(
+      range(parameters.length).map((_) => typeTerm),
+      typeTerm,
+      location,
+    )
   }
 }

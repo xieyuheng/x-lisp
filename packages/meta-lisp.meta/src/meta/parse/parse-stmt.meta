@@ -244,9 +244,10 @@
     ((list-sexp sexps location)
      (make-pre-type-constructor
        (symbol-sexp-content (car sexps))
-       (list-map symbol-sexp-content (cdr sexps))))
+       (list-map symbol-sexp-content (cdr sexps))
+       location))
     ((symbol-sexp content location)
-     (make-pre-type-constructor content []))))
+     (make-pre-type-constructor content [] location))))
 
 (claim parse-pre-data-constructor
   (-> sexp-t

@@ -60,9 +60,13 @@
 (define-struct type-constructor-t
   (mod mod-t)
   (name symbol-t)
-  (parameters (list-t symbol-t)))
+  (parameters (list-t symbol-t))
+  (location source-location-t))
 
-(claim type-constructor-equal? (-> type-constructor-t type-constructor-t bool-t))
+(claim type-constructor-equal?
+  (-> type-constructor-t type-constructor-t
+      bool-t))
+
 (define (type-constructor-equal? a b)
   (and (same? (type-constructor-mod a) (type-constructor-mod b))
        (equal? (type-constructor-name a) (type-constructor-name b))))
@@ -74,7 +78,10 @@
   (fields (list-t data-field-t))
   (location source-location-t))
 
-(claim data-constructor-equal? (-> data-constructor-t data-constructor-t bool-t))
+(claim data-constructor-equal?
+  (-> data-constructor-t data-constructor-t
+      bool-t))
+
 (define (data-constructor-equal? a b)
   (and (same? (data-constructor-mod a) (data-constructor-mod b))
        (equal? (data-constructor-type-name a) (data-constructor-type-name b))

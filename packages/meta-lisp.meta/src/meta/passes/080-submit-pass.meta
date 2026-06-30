@@ -70,77 +70,69 @@
      (mod-define mod name
        (test-definition mod name body location)))
     ((define-type-stmt name parameters body location)
-     (= type-t-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
-     (if (list-empty? parameters)
-       (mod-claim mod name type-t-term)
-       (mod-claim mod name
-         (arrow-term
-           (list-map (lambda (_) type-t-term) (list-range (list-length parameters)))
-           type-t-term
-           location)))
+     (mod-claim mod name (make-type-term-from-parameters parameters location))
      (mod-define mod name
        (type-definition mod name parameters body location)))
-    ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (= tc-name (pre-type-constructor-name type-constructor))
-     (= tc-params (pre-type-constructor-parameters type-constructor))
-     (= tc (make-type-constructor mod tc-name tc-params))
-     (= dc-list
-        (list-map
-          (lambda (ctor)
-            (make-data-constructor mod tc-name
-              (explicit-data-constructor-name ctor)
-              (list-map
-                (lambda (field)
-                  (make-data-field
-                    (explicit-data-field-name field)
-                    (explicit-data-field-type field)
-                    (explicit-data-field-location field)))
-                (explicit-data-constructor-fields ctor))
-              (explicit-data-constructor-location ctor)))
-          data-constructors))
-     (mod-define mod tc-name
-       (algebraic-type-definition mod tc-name tc dc-list location))
-     (ignore
-       (for-list dc-list
-         (lambda (dc)
-           (hash-put! (data-constructor-name dc) dc (mod-data-constructors mod)))))
-     (= type-t-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
-     (if (list-empty? tc-params)
-       (mod-claim mod tc-name type-t-term)
-       (mod-claim mod tc-name
-         (arrow-term
-           (list-map (lambda (_) type-t-term) (list-range (list-length tc-params)))
-           type-t-term
-           location))))
-    ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
-     (= tc-name (pre-type-constructor-name type-constructor))
-     (= tc-params (pre-type-constructor-parameters type-constructor))
-     (= tc (make-type-constructor mod tc-name tc-params))
-     (mod-define mod tc-name
-       (opaque-type-definition mod tc-name tc representation-type
+    ((define-algebraic-type-stmt pre-type-constructor explicit-data-constructors location)
+     (= name (pre-type-constructor-name pre-type-constructor))
+     (= type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
+     (= data-constructors (list-map (make-data-constructor-from-explicit mod name) explicit-data-constructors))
+     (= parameters (type-constructor-parameters type-constructor))
+     (mod-claim mod name (make-type-term-from-parameters parameters location))
+     (mod-define mod name
+       (algebraic-type-definition mod name
+         type-constructor
+         data-constructors
+         location))
+     (for-list data-constructors
+       (lambda (data-constructor)
+         (hash-put! (data-constructor-name data-constructor) data-constructor
+           (mod-data-constructors mod)))))
+    ((define-opaque-type-stmt pre-type-constructor representation-type pre-interface-entries location)
+     (= name (pre-type-constructor-name pre-type-constructor))
+     (= type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
+     (mod-define mod name
+       (opaque-type-definition mod name type-constructor representation-type
          (list-map
            (lambda (entry)
              (make-interface-entry
                (pre-interface-entry-name entry)
                (pre-interface-entry-type entry)
                (pre-interface-entry-location entry)))
-           interface-entries)
+           pre-interface-entries)
          location))
-     (= type-t-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
-     (if (list-empty? tc-params)
-       (mod-claim mod tc-name type-t-term)
-       (mod-claim mod tc-name
-         (arrow-term
-           (list-map (lambda (_) type-t-term) (list-range (list-length tc-params)))
-           type-t-term
-           location)))
-     (ignore
-       (for-list interface-entries
-         (lambda (entry)
-           (= iface-name (pre-interface-entry-name entry))
-           (= iface-type (pre-interface-entry-type entry))
-           (= iface-location (pre-interface-entry-location entry))
-           (= wrapped-type (polymorphic-term tc-params iface-type iface-location))
-           (mod-claim mod iface-name wrapped-type)
-           (hash-put! iface-name wrapped-type (mod-opaque-claimed mod))))))
+     (= parameters (type-constructor-parameters type-constructor))
+     (mod-claim mod name (make-type-term-from-parameters parameters location))
+     (for-list pre-interface-entries
+       (lambda (entry)
+         (= iface-name (pre-interface-entry-name entry))
+         (= iface-type (pre-interface-entry-type entry))
+         (= iface-location (pre-interface-entry-location entry))
+         (= wrapped-type (polymorphic-term parameters iface-type iface-location))
+         (mod-claim mod iface-name wrapped-type)
+         (hash-put! iface-name wrapped-type (mod-opaque-claimed mod)))))
     (else void)))
+
+(define (make-type-term-from-parameters parameters location)
+  (= type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
+  (if (list-empty? parameters)
+    type-term
+    (arrow-term (list-map (constant type-term) parameters) type-term location)))
+
+(define (make-type-constructor-from-pre mod pre-type-constructor)
+  (match pre-type-constructor
+    ((make-pre-type-constructor name parameters location)
+     (make-type-constructor mod name parameters location))))
+
+(define (make-data-constructor-from-explicit mod type-name explicit-data-constructor)
+  (match explicit-data-constructor
+    ((make-explicit-data-constructor name fields predicate-name location)
+     (make-data-constructor mod type-name name
+       (list-map (make-data-field-from-explicit mod) fields)
+       location))))
+
+(define (make-data-field-from-explicit mod field)
+  (make-data-field
+    (explicit-data-field-name field)
+    (explicit-data-field-type field)
+    (explicit-data-field-location field)))
