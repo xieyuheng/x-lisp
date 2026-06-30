@@ -207,26 +207,30 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
           name,
           typeConstructor,
           stmt.representationType,
-          stmt.interfaceEntries.map((f) => ({
-            name: f.name,
-            type: f.type,
-            location: f.location,
-          })),
+          stmt.interfaceEntries.map(makeInterfaceEntryFromPre),
           stmt.location,
         ),
       )
 
-      for (const iface of stmt.interfaceEntries) {
-        const wrappedType = M.PolymorphicTerm(
-          parameters,
-          iface.type,
-          iface.location,
-        )
-        M.modClaim(mod, iface.name, wrappedType)
-        mod.opaqueClaimed.set(iface.name, wrappedType)
+      for (const entry of stmt.interfaceEntries) {
+        const wrappedType = makePolymorphicTermFromParameters(parameters, entry.type, entry.location)
+        M.modClaim(mod, entry.name, wrappedType)
+        mod.opaqueClaimed.set(entry.name, wrappedType)
       }
       return
     }
+  }
+}
+
+function makePolymorphicTermFromParameters (  parameters: Array<string>, type: M.Term, location: S.SourceLocation): M.Term {
+  if (parameters.length === 0 ) {
+    return type
+  } else {
+    return M.PolymorphicTerm(
+      parameters,
+      type,
+      location,
+    )
   }
 }
 
@@ -284,5 +288,15 @@ function makeDataFieldFromExplicit(
     name: field.name,
     type: field.type,
     location: field.location,
+  }
+}
+
+function makeInterfaceEntryFromPre(
+  entry: M.PreInterfaceEntry<M.Term>,
+): M.InterfaceEntry {
+  return {
+    name: entry.name,
+    type: entry.type,
+    location: entry.location,
   }
 }

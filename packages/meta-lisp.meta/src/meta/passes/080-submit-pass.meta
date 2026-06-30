@@ -26,7 +26,7 @@
     ((claim-stmt name type location)
      (mod-claim mod name type))
     ((claim-type-stmt name location)
-     (= type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
+     (= type-term (make-type-term-from-parameters [] location))
      (hash-put! name (make-claim-entry type-term (just (type-type))) (mod-claimed mod))
      void)
     ((admit-stmt name type location)
@@ -76,8 +76,8 @@
     ((define-algebraic-type-stmt pre-type-constructor explicit-data-constructors location)
      (= name (pre-type-constructor-name pre-type-constructor))
      (= type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
-     (= data-constructors (list-map (make-data-constructor-from-explicit mod name) explicit-data-constructors))
      (= parameters (type-constructor-parameters type-constructor))
+     (= data-constructors (list-map (make-data-constructor-from-explicit mod name) explicit-data-constructors))
      (mod-claim mod name (make-type-term-from-parameters parameters location))
      (mod-define mod name
        (algebraic-type-definition mod name
@@ -95,23 +95,21 @@
      (mod-claim mod name (make-type-term-from-parameters parameters location))
      (mod-define mod name
        (opaque-type-definition mod name type-constructor representation-type
-         (list-map
-           (lambda (entry)
-             (make-interface-entry
-               (pre-interface-entry-name entry)
-               (pre-interface-entry-type entry)
-               (pre-interface-entry-location entry)))
-           pre-interface-entries)
+         (list-map make-interface-entry-from-pre pre-interface-entries)
          location))
      (for-list pre-interface-entries
        (lambda (entry)
-         (= iface-name (pre-interface-entry-name entry))
-         (= iface-type (pre-interface-entry-type entry))
-         (= iface-location (pre-interface-entry-location entry))
-         (= wrapped-type (polymorphic-term parameters iface-type iface-location))
-         (mod-claim mod iface-name wrapped-type)
-         (hash-put! iface-name wrapped-type (mod-opaque-claimed mod)))))
+         (match entry
+           ((make-pre-interface-entry name type location)
+            (= wrapped-type (make-polymorphic-term-from-parameters parameters type location))
+            (mod-claim mod name wrapped-type)
+            (hash-put! name wrapped-type (mod-opaque-claimed mod)))))))
     (else void)))
+
+(define (make-polymorphic-term-from-parameters parameters type location)
+  (if (list-empty? parameters)
+    type
+    (polymorphic-term parameters type location)))
 
 (define (make-type-term-from-parameters parameters location)
   (= type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
@@ -136,3 +134,9 @@
     (explicit-data-field-name field)
     (explicit-data-field-type field)
     (explicit-data-field-location field)))
+
+(define (make-interface-entry-from-pre entry)
+  (make-interface-entry
+    (pre-interface-entry-name entry)
+    (pre-interface-entry-type entry)
+    (pre-interface-entry-location entry)))
