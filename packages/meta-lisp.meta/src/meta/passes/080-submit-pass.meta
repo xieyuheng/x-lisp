@@ -21,12 +21,9 @@
 
 (define (submit-stmt mod stmt)
   (match stmt
-    ((exempt-stmt names _)
-     (ignore
-       (for-list names
-         (lambda (name)
-           (set-add! name (mod-admitted mod))))))
-    ((claim-stmt name type _)
+    ((exempt-stmt names location)
+     (for-list names (swap set-add! (mod-admitted mod))))
+    ((claim-stmt name type location)
      (mod-claim mod name type))
     ((claim-type-stmt name location)
      (= claimed (mod-claimed mod))

@@ -90,6 +90,12 @@ export function modOutcome(mod: Mod, name: string): Outcome {
   return mod.definitionStates.get(name)?.outcome ?? "OutcomeOk"
 }
 
+// Admitted
+
+export function modAdmit(mod: Mod, name: string): void {
+  mod.admitted.add(name)
+}
+
 // Claimed
 
 export function modClaim(mod: Mod, name: string, exp: M.Term): void {

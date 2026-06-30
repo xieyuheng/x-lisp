@@ -21,7 +21,7 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   switch (stmt.kind) {
     case "ExemptStmt": {
       for (const name of stmt.names) {
-        mod.admitted.add(name)
+        M.modAdmit(mod, name)
       }
 
       return
@@ -48,7 +48,7 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     case "AdmitStmt": {
       M.modClaim(mod, stmt.name, stmt.type)
-      mod.admitted.add(stmt.name)
+      M.modAdmit(mod, stmt.name)
       return
     }
 
