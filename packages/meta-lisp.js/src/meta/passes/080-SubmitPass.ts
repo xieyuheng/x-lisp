@@ -154,20 +154,13 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     case "DefineAlgebraicTypeStmt": {
       const name = stmt.typeConstructor.name
-      const typeConstructor = makeTypeConstructorFromPre(mod, stmt.typeConstructor)
+      const typeConstructor = makeTypeConstructorFromPre(
+        mod,
+        stmt.typeConstructor,
+      )
       const parameters = typeConstructor.parameters
-      const dataConstructors = stmt.dataConstructors.map(
-        (ctor): M.DataConstructor => ({
-          mod,
-          typeName: name,
-          name: ctor.name,
-          fields: ctor.fields.map((field) => ({
-            name: field.name,
-            type: field.type,
-            location: field.location,
-          })),
-          location: ctor.location,
-        }),
+      const dataConstructors = stmt.dataConstructors.map((explicit) =>
+        makeDataConstructorFromExplicit(mod, name, explicit),
       )
 
       M.modClaim(
@@ -196,7 +189,10 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     case "DefineOpaqueTypeStmt": {
       const name = stmt.typeConstructor.name
-      const typeConstructor = makeTypeConstructorFromPre(mod, stmt.typeConstructor)
+      const typeConstructor = makeTypeConstructorFromPre(
+        mod,
+        stmt.typeConstructor,
+      )
       const parameters = typeConstructor.parameters
       M.modClaim(
         mod,
@@ -255,11 +251,32 @@ function makeTypeTermFromParameters(
   }
 }
 
-function makeTypeConstructorFromPre(mod: M.Mod, pre: M.PreTypeConstructor): M.TypeConstructor {
+function makeTypeConstructorFromPre(
+  mod: M.Mod,
+  pre: M.PreTypeConstructor,
+): M.TypeConstructor {
   return {
     mod,
     name: pre.name,
     parameters: pre.parameters,
     location: pre.location,
+  }
+}
+
+function makeDataConstructorFromExplicit(
+  mod: M.Mod,
+  typeName: string,
+  explicit: M.ExplicitDataConstructor<M.Term>,
+): M.DataConstructor {
+  return {
+    mod,
+    typeName,
+    name: explicit.name,
+    fields: explicit.fields.map((field) => ({
+      name: field.name,
+      type: field.type,
+      location: field.location,
+    })),
+    location: explicit.location,
   }
 }
