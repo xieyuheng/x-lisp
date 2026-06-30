@@ -36,12 +36,16 @@
       (package-config-build
         (package-config package)))))
 
-(claim package-lookup-mod (-> package-t symbol-t (maybe-t mod-t)))
-(define (package-lookup-mod package name)
-  (= mods (package-mods package))
-  (if (hash-has? name mods)
-    (just (hash-get name mods))
-    (nothing)))
+(claim package-lookup-mod (-> package-t symbol-t symbol-t (maybe-t mod-t)))
+(define (package-lookup-mod package pkg-name name)
+  (let ((mods (if (or (equal? pkg-name 'self)
+                      (equal? pkg-name (package-id package)))
+                (package-mods package)
+                (package-mods
+                  (hash-get pkg-name (package-dependencies package))))))
+    (if (hash-has? name mods)
+      (just (hash-get name mods))
+      (nothing))))
 
 (define (package-put-mod! name mod package)
   (hash-put! name mod (package-mods package)))
