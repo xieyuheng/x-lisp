@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import { range } from "@xieyuheng/std.js/range"
 import * as M from "../index.ts"
 
@@ -33,16 +34,13 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "ClaimTypeStmt": {
-      mod.claimed.set(stmt.name, {
-        term: M.QualifiedVarTerm(
-          "meta-builtin",
-          "builtin",
-          "type-t",
-          stmt.location,
-        ),
-        type: M.TypeType(),
-      })
-
+      const typeTerm = M.QualifiedVarTerm(
+        "meta-builtin",
+        "builtin",
+        "type-t",
+        stmt.location,
+      )
+      mod.claimed.set(stmt.name, { term: typeTerm, type: M.TypeType() })
       return
     }
 
@@ -54,13 +52,19 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     case "DeclarePrimitiveFunctionStmt": {
       const definition = M.modLookupDefinition(mod, stmt.name)
-      if (definition && definition.kind === "PrimitiveFunctionDefinition") {
+      if (definition) {
+        if (definition.kind !== "PrimitiveFunctionDefinition") {
+          let message = `[submitStmt] expect PrimitiveFunctionDefinition`
+          message += `\n  definition: ${M.formatDefinition(definition)}`
+          throw new S.ErrorWithSourceLocation(message, stmt.location)
+        }
+
         if (definition.arity !== stmt.arity) {
-          let message = `[submitDefine] arity mismatch`
+          let message = `[submitStmt] arity mismatch`
           message += `\n  definition name: ${definition.name}`
           message += `\n  definition arity: ${definition.arity}`
           message += `\n  declared arity: ${stmt.arity}`
-          throw new Error(message)
+          throw new S.ErrorWithSourceLocation(message, stmt.location)
         }
       } else {
         M.modDefine(
@@ -80,8 +84,12 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
 
     case "DeclarePrimitiveVariableStmt": {
       const definition = M.modLookupDefinition(mod, stmt.name)
-      if (definition && definition.kind === "PrimitiveVariableDefinition") {
-        return
+      if (definition) {
+        if (definition.kind !== "PrimitiveVariableDefinition") {
+          let message = `[submitStmt] expect PrimitiveVariableDefinition`
+          message += `\n  definition: ${M.formatDefinition(definition)}`
+          throw new S.ErrorWithSourceLocation(message, stmt.location)
+        }
       } else {
         M.modDefine(
           mod,

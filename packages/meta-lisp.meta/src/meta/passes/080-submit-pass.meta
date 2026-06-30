@@ -26,36 +26,38 @@
     ((claim-stmt name type location)
      (mod-claim mod name type))
     ((claim-type-stmt name location)
-     (= claimed (mod-claimed mod))
-     (ignore
-       (hash-put! name
-         (make-claim-entry
-           (qualified-var-term 'meta-builtin 'builtin 'type-t location)
-           (just (type-type)))
-         claimed)))
+     (= type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location))
+     (hash-put! name (make-claim-entry type-term (just (type-type))) (mod-claimed mod))
+     void)
     ((admit-stmt name type location)
      (mod-claim mod name type)
      (mod-admit mod name))
     ((declare-primitive-function-stmt name arity location)
-     (= maybe-def (mod-lookup-definition mod name))
-     (match maybe-def
-       ((just (primitive-function-definition _ defined-name declared-arity _ _))
-        (unless (equal? declared-arity arity)
+     (match (mod-lookup-definition mod name)
+       ((just definition)
+        (unless (primitive-function-definition? definition)
           (error-with-location
-            (@string "[submit-stmt] arity mismatch"
-                     "\n  definition name: " (symbol-to-string defined-name)
-                     "\n  definition arity: " (format declared-arity)
+            (@string "(submit-stmt) expect primitive-function-definition"
+                     "\n  definition: " (format-definition definition))
+            location))
+        (unless (equal? (primitive-function-definition-arity definition) arity)
+          (error-with-location
+            (@string "(submit-stmt) arity mismatch"
+                     "\n  definition arity: " (format (primitive-function-definition-arity definition))
                      "\n  declared arity: " (format arity))
             location)))
-       (else
+       ((nothing)
         (mod-define mod name
           (primitive-function-declaration mod name arity location)))))
     ((declare-primitive-variable-stmt name location)
-     (= maybe-def (mod-lookup-definition mod name))
-     (match maybe-def
-       ((just (primitive-variable-definition _ _ _ _))
-        void)
-       (else
+     (match (mod-lookup-definition mod name)
+       ((just definition)
+        (unless (primitive-variable-definition? definition)
+          (error-with-location
+            (@string "(submit-stmt) expect primitive-variable-definition"
+                     "\n  definition: " (format-definition definition))
+            location)))
+       ((nothing)
         (mod-define mod name
           (primitive-variable-declaration mod name location)))))
     ((define-function-stmt name parameters body location)
