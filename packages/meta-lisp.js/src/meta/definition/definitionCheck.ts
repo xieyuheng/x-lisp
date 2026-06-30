@@ -179,17 +179,24 @@ function tryCheckDefinitionBody(
   name: string,
   exp: M.Term,
 ): M.Outcome {
-  const opaqueTypeExp = mod.opaqueClaimed.get(name)
-  if (opaqueTypeExp) {
-    const opaqueType = M.evaluateType(
-      mod,
-      M.emptyEnv("TransparentMode"),
-      opaqueTypeExp,
-    )
-    const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
-    const ctx = M.emptyCtx()
-    ctx.transparentOpaqueNames = opaqueNames
-    return tryCheckTerm(mod, ctx, exp, opaqueType)
+  if (mod.opaque.has(name)) {
+    const claimedEntry = M.modLookupClaimedEntry(mod, name)
+    if (claimedEntry) {
+      // - why: to check the body of an opaque function,
+      //   we need to use the transparent type.
+      //   when lookup type of interface function
+      //   that belongs to the same opaque type definition,
+      //   transparent type need to be used.
+      const transparentType = M.evaluateType(
+        mod,
+        M.emptyEnv("TransparentMode"),
+        claimedEntry.term,
+      )
+      const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
+      const ctx = M.emptyCtx()
+      ctx.transparentOpaqueNames = opaqueNames
+      return tryCheckTerm(mod, ctx, exp, transparentType)
+    }
   }
 
   const type = M.modLookupClaimedType(mod, name)

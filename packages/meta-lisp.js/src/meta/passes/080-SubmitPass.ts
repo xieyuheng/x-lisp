@@ -219,7 +219,7 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
           entry.location,
         )
         M.modClaim(mod, entry.name, wrappedType)
-        mod.opaqueClaimed.set(entry.name, wrappedType)
+        mod.opaque.add(entry.name)
       }
       return
     }

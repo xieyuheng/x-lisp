@@ -20,7 +20,7 @@ export type Mod = {
   definitions: Map<string, M.Definition>
   definitionStates: Map<string, DefinitionState>
   claimed: Map<string, ClaimedEntry>
-  opaqueClaimed: Map<string, M.Term>
+  opaque: Set<string>
   inferredTypes: Map<string, M.Type>
   dataConstructors: Map<string, M.DataConstructor>
   pkg: M.Package
@@ -34,7 +34,7 @@ export function createMod(name: string, pkg: M.Package): Mod {
     definitions: new Map(),
     definitionStates: new Map(),
     claimed: new Map(),
-    opaqueClaimed: new Map(),
+    opaque: new Set(),
     inferredTypes: new Map(),
     dataConstructors: new Map(),
     pkg,

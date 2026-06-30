@@ -103,7 +103,7 @@
            ((make-pre-interface-entry name type location)
             (= wrapped-type (make-polymorphic-term-from-parameters parameters type location))
             (mod-claim mod name wrapped-type)
-            (hash-put! name wrapped-type (mod-opaque-claimed mod)))))))
+            (set-add! name (mod-opaque mod)))))))
     (else void)))
 
 (define (make-polymorphic-term-from-parameters parameters type location)
