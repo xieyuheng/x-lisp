@@ -1244,13 +1244,13 @@ This variant of `(define-struct)` exists because sometimes `make-<base-name>` ne
 
 ```scheme
 (define-struct* package-t
-  (cons-package
+  (make-package
    (root-directory string-t)
    (config package-config-t)
    (fragments (hash-t string-t fragment-t))))
 
-(define (make-package root-directory config)
-  (cons-package root-directory config (make-hash)))
+(define (empty-package root-directory config)
+  (make-package root-directory config (make-hash)))
 ```
 
 ## (match)

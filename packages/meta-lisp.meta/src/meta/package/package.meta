@@ -1,7 +1,7 @@
 (module meta)
 
 (define-struct* package-t
-  (cons-package
+  (make-package
     (id symbol-t)
     (root-directory string-t)
     (config package-config-t)
@@ -9,8 +9,8 @@
     (mods (hash-t symbol-t mod-t))
     (dependencies (hash-t symbol-t package-t))))
 
-(define (make-package id root-directory config)
-  (cons-package id root-directory config (make-hash) (make-hash) (make-hash)))
+(define (empty-package id root-directory config)
+  (make-package id root-directory config (make-hash) (make-hash) (make-hash)))
 
 (define (package-put-fragment! path fragment package)
   (hash-put! path fragment (package-fragments package)))

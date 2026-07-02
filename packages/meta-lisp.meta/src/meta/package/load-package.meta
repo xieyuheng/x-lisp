@@ -9,7 +9,7 @@
     ((nothing)
      (= config (load-package-config config-path))
      (= root-directory (path-directory-name resolved-path))
-     (= package (make-package (actual-id config id) root-directory config))
+     (= package (empty-package (actual-id config id) root-directory config))
      (if (equal? (package-config-name config) "meta-builtin")
        (setup-builtin-package package)
        (validate-builtin config))

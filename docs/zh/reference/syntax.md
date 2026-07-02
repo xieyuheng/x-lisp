@@ -1252,13 +1252,13 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ```scheme
 (define-struct* package-t
-  (cons-package
+  (make-package
    (root-directory string-t)
    (config package-config-t)
    (fragments (hash-t string-t fragment-t))))
 
-(define (make-package root-directory config)
-  (cons-package root-directory config (make-hash)))
+(define (empty-package root-directory config)
+  (make-package root-directory config (make-hash)))
 ```
 
 ## (match)
