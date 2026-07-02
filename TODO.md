@@ -1,5 +1,3 @@
-[meta-lisp.meta] 100-qualify-pass.meta
-
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta
