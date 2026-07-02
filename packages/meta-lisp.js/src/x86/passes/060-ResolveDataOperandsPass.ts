@@ -27,10 +27,6 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
     return X86.ImmOperand(value.value, op.location)
   }
 
-  if (value.kind === "AddressValue") {
-    return X86.AddressOperand(value.name, op.location)
-  }
-
   if (value.kind === "StringValue") {
     const anonName = `%data-${anonCounter++}`
     mod.definitions.set(

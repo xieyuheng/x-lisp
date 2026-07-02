@@ -17,7 +17,7 @@
     (x 11)
     (y 22)))
 
-(define-data origin-ptr origin)
+(define-data origin-ptr (address origin))
 
 (define-code read-via-address
   (block entry

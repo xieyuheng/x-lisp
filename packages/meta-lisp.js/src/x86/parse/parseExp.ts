@@ -40,6 +40,15 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
     return X86.ArrayExp(elements.map(parseExp), location)
   },
 
+  "(cons* 'address rest)": ({ rest }, { location }) => {
+    const elements = S.asListSexp(rest).elements
+    if (elements.length !== 1) {
+      let message = "(address name) takes exactly one symbol"
+      throw new S.ErrorWithSourceLocation(message, location)
+    }
+    return X86.AddressExp(S.asSymbolSexp(elements[0]).content, location)
+  },
+
   "(cons* target args)": ({ target }, { location }) => {
     let message = `[parseExp] unexpected expression form starting with: ${S.formatSexp(target)}`
     throw new S.ErrorWithSourceLocation(message, location)
@@ -47,8 +56,6 @@ export const parseExp: S.Router<X86.Exp> = S.createRouter<X86.Exp>({
 
   data: ({ data }, { location }) => {
     switch (data.kind) {
-      case "SymbolSexp":
-        return X86.AddressExp(S.asSymbolSexp(data).content, location)
       case "IntSexp":
         return X86.IntExp(S.asIntSexp(data).content, location)
       case "StringSexp":
