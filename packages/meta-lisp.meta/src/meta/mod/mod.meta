@@ -1,7 +1,7 @@
 (module meta)
 
 (define-struct* mod-t
-  (cons-mod
+  (make-mod
     (name symbol-t)
     (stmts (list-t (stmt-t exp-t)))
     (admitted (set-t symbol-t))
@@ -35,8 +35,8 @@
   (term term-t)
   (type (maybe-t type-t)))
 
-(define (make-mod name package)
-  (cons-mod name []
+(define (empty-mod name package)
+  (make-mod name []
     (make-set)
     (make-hash)
     (make-hash)

@@ -26,7 +26,7 @@
     id))
 
 (define (setup-builtin-package package)
-  (= mod (make-mod 'builtin package))
+  (= mod (empty-mod 'builtin package))
   (package-put-mod! 'builtin mod package)
   (type-builtin mod))
 

@@ -8,7 +8,7 @@
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (= mod-name (fragment-mod-name fragment))
-      (= mod (maybe-else (make-mod mod-name package) (package-lookup-mod package 'self mod-name)))
+      (= mod (maybe-else (empty-mod mod-name package) (package-lookup-mod package 'self mod-name)))
       (package-put-mod! mod-name mod package)
       (for-list (fragment-desugared-stmts fragment)
         (submit-stmt mod))))
