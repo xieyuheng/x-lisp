@@ -28,7 +28,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
   }
 
   if (value.kind === "StringValue") {
-    const anonName = `%data-${anonCounter++}`
+    const anonName = `©data.${anonCounter++}`
     mod.definitions.set(
       anonName,
       X86.DataDefinition(
@@ -44,7 +44,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
   }
 
   if (value.kind === "PointerValue") {
-    const anonName = `%data-${anonCounter++}`
+    const anonName = `©data.${anonCounter++}`
     mod.definitions.set(
       anonName,
       X86.DataDefinition(anonName, op.exp, op.location),

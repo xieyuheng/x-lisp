@@ -92,7 +92,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 
 所有指令统一为一种结构，按 `op` 区分操作：
 
-- **`id`**：每条指令的唯一标识。产生值的指令 `id` 即结果变量名；不产生值的指令 `id` 由编译器生成为 `%<N>`（`%1`、`%2`、...）。
+- **`id`**：每条指令的唯一标识。产生值的指令 `id` 即结果变量名；不产生值的指令 `id` 由编译器生成为 `∅.<N>`（`∅.1`、`∅.2`、...）。
 - **`type`**：本指令的结果类型。产生值的指令为具体类型（如 `int64-t`、`value-t`）；不产生值的指令为 `void-t`。
 - **`op`**：操作名。
 - **`operands`**：运行时值——所有 SSA 变量引用和字面量。统一遍历分析 use-def。
@@ -258,8 +258,8 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 ```meta-lisp
 (define-struct string-table-t (count int64-t) (entries pointer-t))
 
-(define-variable %.str.0 (string "hello"))
-(define-variable %.str.1 (string "world"))
+(define-variable ©str.0 (string "hello"))
+(define-variable ©str.1 (string "world"))
 
 (define-variable string-table
   (struct string-table-t
@@ -267,8 +267,8 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
     (entries
       (pointer
         (array
-          (address %.str.0)
-          (address %.str.1))))))
+          (address ©str.0)
+          (address ©str.1))))))
 ```
 
 # Module
@@ -303,23 +303,23 @@ basic-lisp IR 文本形式：
     (= raw-a int64-t (to-int64 a))
     (= raw-b int64-t (to-int64 b))
     (= cond bool-t (to-bool flag))
-    (= %1 void-t (branch cond) :then-label then :else-label else))
+    (= ∅.1 void-t (branch cond) :then-label then :else-label else))
 
   (block then
     (= sum int64-t (iadd raw-a raw-b))
     (= result value-t (tag-int sum))
-    (= %2 void-t (provide result) :content-type value-t :use-site result)
-    (= %3 void-t (goto) :label merge))
+    (= ∅.2 void-t (provide result) :content-type value-t :use-site result)
+    (= ∅.3 void-t (goto) :label merge))
 
   (block else
     (= diff int64-t (isub raw-a raw-b))
     (= result value-t (tag-int diff))
-    (= %4 void-t (provide result) :content-type value-t :use-site result)
-    (= %5 void-t (goto) :label merge))
+    (= ∅.4 void-t (provide result) :content-type value-t :use-site result)
+    (= ∅.5 void-t (goto) :label merge))
 
   (block merge
     (= result value-t (use))
-    (= %6 void-t (return result))))
+    (= ∅.6 void-t (return result))))
 ```
 
 ## 示例 2：编译 C-like 语言（静态类型）
@@ -343,15 +343,15 @@ IR 文本形式：
     (= flag bool-t (argument) :index 0)
     (= a int64-t (argument) :index 1)
     (= b int64-t (argument) :index 2)
-    (= %1 void-t (branch flag) :then-label then :else-label else))
+    (= ∅.1 void-t (branch flag) :then-label then :else-label else))
 
   (block then
     (= sum int64-t (iadd a b))
-    (= %2 void-t (return sum)))
+    (= ∅.2 void-t (return sum)))
 
   (block else
     (= diff int64-t (isub a b))
-    (= %3 void-t (return diff))))
+    (= ∅.3 void-t (return diff))))
 ```
 
 ## 示例 3：全局变量与结构体
@@ -368,11 +368,11 @@ IR 文本形式：
   (block body
     (= x-offset int64-t (offset-of) :struct-type point-t :path (x))
     (= x-pointer pointer-t (padd (address origin) x-offset))
-    (= %1 void-t (store x-pointer (int64 0)) :content-type int64-t)
+    (= ∅.1 void-t (store x-pointer (int64 0)) :content-type int64-t)
     (= y-offset int64-t (offset-of) :struct-type point-t :path (y))
     (= y-pointer pointer-t (padd (address origin) y-offset))
-    (= %2 void-t (store y-pointer (int64 0)) :content-type int64-t)
-    (= %3 void-t (return (void)))))
+    (= ∅.2 void-t (store y-pointer (int64 0)) :content-type int64-t)
+    (= ∅.3 void-t (return (void)))))
 
 (claim printf (-> pointer-t int64-t))
 ```
@@ -388,20 +388,20 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
   (block body
     (= n int64-t (argument) :index 0)
     (= neg bool-t (icmp-lt n (int64 0)))
-    (= %1 void-t (branch neg) :then-label negative :else-label non-negative))
+    (= ∅.1 void-t (branch neg) :then-label negative :else-label non-negative))
 
   (block negative
-    (= %2 void-t (return (int64 -1))))
+    (= ∅.2 void-t (return (int64 -1))))
 
   (block non-negative
     (= pos bool-t (icmp-gt n (int64 0)))
-    (= %3 void-t (branch pos) :then-label positive :else-label zero))
+    (= ∅.3 void-t (branch pos) :then-label positive :else-label zero))
 
   (block positive
-    (= %4 void-t (return (int64 1))))
+    (= ∅.4 void-t (return (int64 1))))
 
   (block zero
-    (= %5 void-t (return (int64 0)))))
+    (= ∅.5 void-t (return (int64 0)))))
 ```
 
 动态值的 identity 判等用 `value-eq` / `value-ne`（仅判等，无有序比较）：
