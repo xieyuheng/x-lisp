@@ -1,4 +1,3 @@
-
 import { setUnion } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
@@ -60,17 +59,8 @@ function qualifyDefinition(definition: M.Definition): null {
     case "AlgebraicTypeDefinition": {
       const boundNames = new Set(definition.typeConstructor.parameters)
       definition.dataConstructors = definition.dataConstructors.map(
-        ({ name, fields, location }) => ({
-          mod: definition.mod,
-          typeName: definition.name,
-          name,
-          fields: fields.map(({ name, type, location }) => ({
-            name,
-            type: qualifyFreeVar(definition.mod, boundNames, type),
-            location,
-          })),
-          location,
-        }),
+        (dataConstructor) =>
+          qualifyDataConstructor(boundNames, dataConstructor),
       )
 
       return null
@@ -97,7 +87,24 @@ function qualifyDefinition(definition: M.Definition): null {
   }
 }
 
-export function qualifyFreeVar(
+function qualifyDataConstructor(
+  boundNames: Set<string>,
+  dataConstructor: M.DataConstructor,
+): M.DataConstructor {
+  return {
+    mod: dataConstructor.mod,
+    typeName: dataConstructor.typeName,
+    name: dataConstructor.name,
+    fields: dataConstructor.fields.map(({ name, type, location }) => ({
+      name,
+      type: qualifyFreeVar(dataConstructor.mod, boundNames, type),
+      location: dataConstructor.location,
+    })),
+    location: dataConstructor.location,
+  }
+}
+
+function qualifyFreeVar(
   mod: M.Mod,
   boundNames: Set<string>,
   term: M.Term,

@@ -1,5 +1,5 @@
-[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyDataConstructor`
-[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyDataConstructor`
+[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyDataField`
+[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyInterfaceEntry`
 
 [meta-lisp.meta] 100-qualify-pass.meta
 
