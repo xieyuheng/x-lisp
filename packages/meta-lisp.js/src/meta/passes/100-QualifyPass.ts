@@ -74,12 +74,8 @@ function qualifyDefinition(definition: M.Definition): null {
         definition.representationType,
       )
 
-      definition.interfaceEntries = definition.interfaceEntries.map(
-        ({ name, type, location }) => ({
-          name,
-          type: qualifyFreeVar(definition.mod, boundNames, type),
-          location,
-        }),
+      definition.interfaceEntries = definition.interfaceEntries.map((entry) =>
+        qualifyInterfaceEntry(definition.mod, boundNames, entry),
       )
 
       return null
@@ -111,6 +107,18 @@ function qualifyDataField(
     name: field.name,
     type: qualifyFreeVar(mod, boundNames, field.type),
     location: field.location,
+  }
+}
+
+function qualifyInterfaceEntry(
+  mod: M.Mod,
+  boundNames: Set<string>,
+  entry: M.InterfaceEntry,
+): M.InterfaceEntry {
+  return {
+    name: entry.name,
+    type: qualifyFreeVar(mod, boundNames, entry.type),
+    location: entry.location,
   }
 }
 

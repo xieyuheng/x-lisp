@@ -1,5 +1,3 @@
-[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyInterfaceEntry`
-
 [meta-lisp.meta] 100-qualify-pass.meta
 
 # self-hosting
