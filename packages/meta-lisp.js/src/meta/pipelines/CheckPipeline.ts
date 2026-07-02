@@ -27,7 +27,7 @@ export function CheckPipeline(rootPkg: M.Package): M.Outcome {
 
   for (const pkg of closure) M.DesugarPass(pkg)
   for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
-  for (const pkg of closure) M.SubmitPass(pkg)
+  for (const pkg of closure) M.SetupPass(pkg)
   for (const pkg of closure) {
     if (M.ClaimPass(pkg) === "OutcomeError") outcome = "OutcomeError"
   }

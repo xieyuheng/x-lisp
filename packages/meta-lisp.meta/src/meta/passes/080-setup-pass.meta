@@ -1,25 +1,25 @@
 (module meta)
 
-(claim submit-pass
+(claim setup-pass
   (-> package-t
       void-t))
 
-(define (submit-pass package)
+(define (setup-pass package)
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (= mod-name (fragment-mod-name fragment))
       (= mod (maybe-else (empty-mod mod-name package) (package-lookup-mod package 'self mod-name)))
       (package-put-mod! mod-name mod package)
       (for-list (fragment-desugared-stmts fragment)
-        (submit-stmt mod))))
+        (setup-stmt mod))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (package-dump-mods package "080-execute")))
+    (package-dump-mods package "080-setup")))
 
-(claim submit-stmt
+(claim setup-stmt
   (-> mod-t (stmt-t term-t)
       void-t))
 
-(define (submit-stmt mod stmt)
+(define (setup-stmt mod stmt)
   (match stmt
     ((exempt-stmt names location)
      (for-list names (mod-admit mod)))
@@ -37,12 +37,12 @@
        ((just definition)
         (unless (primitive-function-definition? definition)
           (error-with-location
-            (@string "(submit-stmt) expect primitive-function-definition"
+            (@string "(setup-stmt) expect primitive-function-definition"
                      "\n  definition: " (format-definition definition))
             location))
         (unless (equal? (primitive-function-definition-arity definition) arity)
           (error-with-location
-            (@string "(submit-stmt) arity mismatch"
+            (@string "(setup-stmt) arity mismatch"
                      "\n  definition arity: " (format (primitive-function-definition-arity definition))
                      "\n  declared arity: " (format arity))
             location)))
@@ -54,7 +54,7 @@
        ((just definition)
         (unless (primitive-variable-definition? definition)
           (error-with-location
-            (@string "(submit-stmt) expect primitive-variable-definition"
+            (@string "(setup-stmt) expect primitive-variable-definition"
                      "\n  definition: " (format-definition definition))
             location)))
        ((nothing)

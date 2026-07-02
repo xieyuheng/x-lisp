@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import { range } from "@xieyuheng/std.js/range"
 import * as M from "../index.ts"
 
-export function SubmitPass(pkg: M.Package): void {
+export function SetupPass(pkg: M.Package): void {
   for (const [path, fragment] of pkg.fragments) {
     const mod =
       M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
@@ -11,14 +11,14 @@ export function SubmitPass(pkg: M.Package): void {
     M.packageAddMod(pkg, mod)
 
     for (const stmt of fragment.desugaredStmts) {
-      submitStmt(mod, stmt)
+      setupStmt(mod, stmt)
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "080-submit")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "080-setup")
 }
 
-function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
+function setupStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   switch (stmt.kind) {
     case "ExemptStmt": {
       for (const name of stmt.names) {
@@ -51,13 +51,13 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       const definition = M.modLookupDefinition(mod, stmt.name)
       if (definition) {
         if (definition.kind !== "PrimitiveFunctionDefinition") {
-          let message = `[submitStmt] expect PrimitiveFunctionDefinition`
+          let message = `[setupStmt] expect PrimitiveFunctionDefinition`
           message += `\n  definition: ${M.formatDefinition(definition)}`
           throw new S.ErrorWithSourceLocation(message, stmt.location)
         }
 
         if (definition.arity !== stmt.arity) {
-          let message = `[submitStmt] arity mismatch`
+          let message = `[setupStmt] arity mismatch`
           message += `\n  definition name: ${definition.name}`
           message += `\n  definition arity: ${definition.arity}`
           message += `\n  declared arity: ${stmt.arity}`
@@ -83,7 +83,7 @@ function submitStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       const definition = M.modLookupDefinition(mod, stmt.name)
       if (definition) {
         if (definition.kind !== "PrimitiveVariableDefinition") {
-          let message = `[submitStmt] expect PrimitiveVariableDefinition`
+          let message = `[setupStmt] expect PrimitiveVariableDefinition`
           message += `\n  definition: ${M.formatDefinition(definition)}`
           throw new S.ErrorWithSourceLocation(message, stmt.location)
         }

@@ -8,7 +8,7 @@ const ZERO = S.zeroLocation("")
 export function X86CodegenPass(pkg: M.Package, basicMod: B.Mod): X86.Mod {
   const x86Mod = X86.createMod()
 
-  X86.SubmitPass(x86Mod, [
+  X86.SetupPass(x86Mod, [
     X86.DefineStructStmt(
       "gc-map-t",
       {

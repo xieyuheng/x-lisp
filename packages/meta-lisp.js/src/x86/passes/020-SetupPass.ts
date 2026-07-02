@@ -1,12 +1,12 @@
 import * as X86 from "../index.ts"
 
-export function SubmitPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
+export function SetupPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
   for (const stmt of stmts) {
-    submitStmt(mod, stmt)
+    setupStmt(mod, stmt)
   }
 }
 
-function submitStmt(mod: X86.Mod, stmt: X86.Stmt): void {
+function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
       X86.modDefine(

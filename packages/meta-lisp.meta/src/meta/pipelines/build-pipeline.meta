@@ -29,7 +29,7 @@
     (lambda (package)
       (module-import-pass (hash-get (package-id package) module-reports) package)))
 
-  (for-list closure submit-pass)
+  (for-list closure setup-pass)
   (for-list closure claim-pass)
   (for-list closure qualify-pass)
   void)
