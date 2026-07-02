@@ -8,8 +8,7 @@
   (for-hash (package-mods package)
     (lambda (mod-name mod)
       (for-hash (mod-definitions mod)
-        (lambda (name definition)
-          (qualify-definition mod name definition)))))
+        (qualify-definition mod))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "100-qualify")))
 
