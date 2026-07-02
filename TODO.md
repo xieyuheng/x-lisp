@@ -1,6 +1,9 @@
-# self-hosting
+[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyDataConstructor`
+[meta-lisp.js] 100-QualifyPass.js -- extract `qualifyDataConstructor`
 
-[meta-lisp.meta] [review] 100-qualify-pass.meta
+[meta-lisp.meta] 100-qualify-pass.meta
+
+# self-hosting
 
 [meta-lisp.meta] [review] env.meta
 [meta-lisp.meta] [review] apply.meta

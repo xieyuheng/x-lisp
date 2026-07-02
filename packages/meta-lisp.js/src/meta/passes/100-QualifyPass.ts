@@ -1,3 +1,4 @@
+
 import { setUnion } from "@xieyuheng/std.js/set"
 import * as M from "../index.ts"
 
@@ -99,58 +100,58 @@ function qualifyDefinition(definition: M.Definition): null {
 export function qualifyFreeVar(
   mod: M.Mod,
   boundNames: Set<string>,
-  exp: M.Term,
+  term: M.Term,
 ): M.Term {
-  switch (exp.kind) {
+  switch (term.kind) {
     case "VarTerm": {
-      if (boundNames.has(exp.name)) {
-        return exp
+      if (boundNames.has(term.name)) {
+        return term
       }
 
-      return M.QualifiedVarTerm(mod.pkg.id, mod.name, exp.name, exp.location)
+      return M.QualifiedVarTerm(mod.pkg.id, mod.name, term.name, term.location)
     }
 
     case "LambdaTerm": {
       return M.LambdaTerm(
-        exp.parameters,
+        term.parameters,
         qualifyFreeVar(
           mod,
-          setUnion(boundNames, new Set(exp.parameters)),
-          exp.body,
+          setUnion(boundNames, new Set(term.parameters)),
+          term.body,
         ),
-        exp.location,
+        term.location,
       )
     }
 
     case "PolymorphicTerm": {
       return M.PolymorphicTerm(
-        exp.parameters,
+        term.parameters,
         qualifyFreeVar(
           mod,
-          setUnion(boundNames, new Set(exp.parameters)),
-          exp.body,
+          setUnion(boundNames, new Set(term.parameters)),
+          term.body,
         ),
-        exp.location,
+        term.location,
       )
     }
 
     case "Let1Term": {
       return M.Let1Term(
-        exp.name,
-        qualifyFreeVar(mod, boundNames, exp.rhs),
+        term.name,
+        qualifyFreeVar(mod, boundNames, term.rhs),
         qualifyFreeVar(
           mod,
-          setUnion(boundNames, new Set([exp.name])),
-          exp.body,
+          setUnion(boundNames, new Set([term.name])),
+          term.body,
         ),
-        exp.location,
+        term.location,
       )
     }
 
     default: {
       return M.termTraverse(
         (child) => qualifyFreeVar(mod, boundNames, child),
-        exp,
+        term,
       )
     }
   }

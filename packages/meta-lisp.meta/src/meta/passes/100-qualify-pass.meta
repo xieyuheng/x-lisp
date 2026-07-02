@@ -5,82 +5,70 @@
       void-t))
 
 (define (qualify-pass package)
-  (for-hash (package-mods package)
-    (lambda (mod-name mod)
+  (for-hash-value (package-mods package)
+    (lambda (mod)
       (for-hash (mod-definitions mod)
-        (qualify-definition mod))))
+        (lambda (name definition)
+          (mod-put-definition! name
+            (qualify-definition definition)
+            mod)))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "100-qualify")))
 
 (claim qualify-definition
-  (-> mod-t symbol-t definition-t
-      void-t))
+  (-> definition-t
+      definition-t))
 
-(define (qualify-definition mod name definition)
+(define (qualify-definition definition)
   (match definition
-    ((primitive-function-declaration mod-def name-def arity location) void)
-    ((primitive-variable-declaration mod-def name-def location) void)
-    ((primitive-function-definition mod-def name-def arity fn location) void)
-    ((primitive-variable-definition mod-def name-def value location) void)
-    ((function-definition mod-def name-def parameters body location)
-     (mod-put-definition! name-def
-       (function-definition mod-def name-def parameters
-         (qualify-free-var mod-def (list-to-set parameters) body)
-         location)
-       mod-def))
-    ((variable-definition mod-def name-def body location)
-     (mod-put-definition! name-def
-       (variable-definition mod-def name-def
-         (qualify-free-var mod-def (make-set) body)
-         location)
-       mod-def))
-    ((test-definition mod-def name-def body location)
-     (mod-put-definition! name-def
-       (test-definition mod-def name-def
-         (qualify-free-var mod-def (make-set) body)
-         location)
-       mod-def))
-    ((type-definition mod-def name-def parameters body location)
-     (mod-put-definition! name-def
-       (type-definition mod-def name-def parameters
-         (qualify-free-var mod-def (list-to-set parameters) body)
-         location)
-       mod-def))
-    ((algebraic-type-definition mod-def name-def type-constructor data-constructors location)
+    ((primitive-function-declaration mod name arity location) definition)
+    ((primitive-variable-declaration mod name location) definition)
+    ((primitive-function-definition mod name arity fn location) definition)
+    ((primitive-variable-definition mod name value location) definition)
+    ((function-definition mod name parameters body location)
+     (function-definition mod name parameters
+       (qualify-free-var mod (list-to-set parameters) body)
+       location))
+    ((variable-definition mod name body location)
+     (variable-definition mod name
+       (qualify-free-var mod (make-set) body)
+       location))
+    ((test-definition mod name body location)
+     (test-definition mod name
+       (qualify-free-var mod (make-set) body)
+       location))
+    ((type-definition mod name parameters body location)
+     (type-definition mod name parameters
+       (qualify-free-var mod (list-to-set parameters) body)
+       location))
+    ((algebraic-type-definition mod name type-constructor data-constructors location)
      (= bound-names (list-to-set (type-constructor-parameters type-constructor)))
-     (mod-put-definition! name-def
-       (algebraic-type-definition mod-def name-def type-constructor
-         (list-map
-           (lambda (ctor)
-             (make-data-constructor
-               (data-constructor-mod ctor)
-               (data-constructor-type-name ctor)
-               (data-constructor-name ctor)
-               (list-map
-                 (lambda (field)
-                   (make-data-field
-                     (data-field-name field)
-                     (qualify-free-var mod-def bound-names (data-field-type field))
-                     (data-field-location field)))
-                 (data-constructor-fields ctor))
-               (data-constructor-location ctor)))
-           data-constructors)
-         location)
-       mod-def))
-    ((opaque-type-definition mod-def name-def type-constructor representation-type interface-entries location)
+     (algebraic-type-definition mod name type-constructor
+       (list-map (qualify-data-constructor bound-names) data-constructors)
+       location))
+    ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
      (= bound-names (list-to-set (type-constructor-parameters type-constructor)))
-     (mod-put-definition! name-def
-       (opaque-type-definition mod-def name-def type-constructor
-         (qualify-free-var mod-def bound-names representation-type)
-         (list-map
-           (lambda (entry)
-             (make-interface-entry
-               (interface-entry-name entry)
-               (qualify-free-var mod-def bound-names (interface-entry-type entry))
-               (interface-entry-location entry)))
-           interface-entries)
-         location)
-       mod-def))))
+     (opaque-type-definition mod name type-constructor
+       (qualify-free-var mod bound-names representation-type)
+       (list-map (qualify-interface-entry mod bound-names) interface-entries)
+       location))))
+
+(define (qualify-data-constructor bound-names data-constructor)
+  (match data-constructor
+    ((make-data-constructor mod type-name name fields location)
+     (make-data-constructor mod type-name name
+       (list-map (qualify-data-field mod bound-names) fields)
+       location))))
+
+(define (qualify-data-field mod bound-names field)
+  (match field
+    ((make-data-field name type location)
+     (make-data-field name (qualify-free-var mod bound-names type) location))))
+
+(define (qualify-interface-entry mod bound-names entry)
+  (match entry
+    ((make-interface-entry name type location)
+     (make-interface-entry name (qualify-free-var mod bound-names type) location))))
 
 (claim qualify-free-var
   (-> mod-t (set-t symbol-t) term-t
