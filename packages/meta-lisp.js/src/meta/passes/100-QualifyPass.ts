@@ -95,12 +95,22 @@ function qualifyDataConstructor(
     mod: dataConstructor.mod,
     typeName: dataConstructor.typeName,
     name: dataConstructor.name,
-    fields: dataConstructor.fields.map(({ name, type, location }) => ({
-      name,
-      type: qualifyFreeVar(dataConstructor.mod, boundNames, type),
-      location: dataConstructor.location,
-    })),
+    fields: dataConstructor.fields.map((field) =>
+      qualifyDataField(dataConstructor.mod, boundNames, field),
+    ),
     location: dataConstructor.location,
+  }
+}
+
+function qualifyDataField(
+  mod: M.Mod,
+  boundNames: Set<string>,
+  field: M.DataField,
+): M.DataField {
+  return {
+    name: field.name,
+    type: qualifyFreeVar(mod, boundNames, field.type),
+    location: field.location,
   }
 }
 
