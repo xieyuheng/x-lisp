@@ -76,6 +76,12 @@ export function parseOperand(sexp: S.Sexp): X86.Operand {
   try {
     return parseOperandRouter(sexp)
   } catch {
+    if (sexp.kind === "SymbolSexp") {
+      let message =
+        `unexpected symbol "${sexp.content}" in operand position; ` +
+        `did you mean (address ${sexp.content}) or (var ${sexp.content})?`
+      throw new S.ErrorWithSourceLocation(message, sexp.location)
+    }
     return X86.DataOperand(parseExp(sexp), sexp.location)
   }
 }

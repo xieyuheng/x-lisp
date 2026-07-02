@@ -3,7 +3,7 @@ import * as X86 from "../index.ts"
 export function formatExp(exp: X86.Exp): string {
   switch (exp.kind) {
     case "AddressExp":
-      return exp.name
+      return `(address ${exp.name})`
     case "IntExp":
       return exp.value.toString()
     case "StringExp":

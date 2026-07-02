@@ -1,5 +1,5 @@
-;; test: (@address name) syntax in define-data
-;; path: (@address cell) → parseExp → AddressExp
+;; test: (address name) syntax in define-data
+;; path: (address cell) → parseExp → AddressExp
 ;;       → evaluate → AddressValue("cell")
 ;;       → layout: write 8-byte placeholder + DataAddressReloc to cell
 ;;       → read via (deref (address ptr)) → load address → deref
@@ -11,7 +11,7 @@
   (struct int-cell-t (value 99)))
 
 (define-data ptr
-  cell)
+  (address cell))
 
 (define-code test-at-address
   (block entry
