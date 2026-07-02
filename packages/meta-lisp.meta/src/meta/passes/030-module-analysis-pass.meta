@@ -13,14 +13,13 @@
 
 (define-type name-group-by-mod-t (hash-t mod-name-t (set-t name-t)))
 
-(define-struct* fragment-scope-t
-  (cons-fragment-scope
-    (mod-name mod-name-t)
-    (imported-names (hash-t name-t qualified-name-t))
-    (imported-prefixes (hash-t prefix-t qualified-prefix-t))))
+(define-struct fragment-scope-t
+  (mod-name mod-name-t)
+  (imported-names (hash-t name-t qualified-name-t))
+  (imported-prefixes (hash-t prefix-t qualified-prefix-t)))
 
-(define (make-fragment-scope mod-name)
-  (cons-fragment-scope mod-name (make-hash) (make-hash)))
+(define (empty-fragment-scope mod-name)
+  (make-fragment-scope mod-name (make-hash) (make-hash)))
 
 (define-struct qualified-name-t
   (pkg-name symbol-t)
@@ -39,7 +38,7 @@
   (= report (make-module-analysis-report (make-hash) (outcome-ok)))
   (for-hash (package-fragments package)
     (lambda (path fragment)
-      (= scope (make-fragment-scope (fragment-mod-name fragment)))
+      (= scope (empty-fragment-scope (fragment-mod-name fragment)))
       (hash-put! path scope (module-analysis-report-fragment-scopes report))
       (for-list (fragment-stmts fragment)
         (lambda (stmt)

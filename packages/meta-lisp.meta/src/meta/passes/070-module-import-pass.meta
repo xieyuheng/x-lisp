@@ -138,8 +138,8 @@
 
 (define (scope-filter-bound-names scope bound-names)
   (match scope
-    ((cons-fragment-scope mod-name imported-names imported-prefixes)
-     (cons-fragment-scope
+    ((make-fragment-scope mod-name imported-names imported-prefixes)
+     (make-fragment-scope
        mod-name
        (hash-reject-key (swap set-member? bound-names) imported-names)
        imported-prefixes))))

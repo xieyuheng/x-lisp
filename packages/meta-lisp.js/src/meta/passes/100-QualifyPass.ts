@@ -132,7 +132,12 @@ function qualifyFreeVar(
       if (boundNames.has(term.name)) {
         return term
       } else {
-        return M.QualifiedVarTerm(mod.pkg.id, mod.name, term.name, term.location)
+        return M.QualifiedVarTerm(
+          mod.pkg.id,
+          mod.name,
+          term.name,
+          term.location,
+        )
       }
     }
 
