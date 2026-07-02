@@ -1,13 +1,12 @@
 (module meta)
 
-(define-struct* package-t
-  (make-package
-    (id symbol-t)
-    (root-directory string-t)
-    (config package-config-t)
-    (fragments (hash-t string-t fragment-t))
-    (mods (hash-t symbol-t mod-t))
-    (dependencies (hash-t symbol-t package-t))))
+(define-struct package-t
+  (id symbol-t)
+  (root-directory string-t)
+  (config package-config-t)
+  (fragments (hash-t string-t fragment-t))
+  (mods (hash-t symbol-t mod-t))
+  (dependencies (hash-t symbol-t package-t)))
 
 (define (empty-package id root-directory config)
   (make-package id root-directory config (make-hash) (make-hash) (make-hash)))

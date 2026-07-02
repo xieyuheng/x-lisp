@@ -1,17 +1,16 @@
 (module meta)
 
-(define-struct* mod-t
-  (make-mod
-    (name symbol-t)
-    (stmts (list-t (stmt-t exp-t)))
-    (admitted (set-t symbol-t))
-    (definitions (hash-t symbol-t definition-t))
-    (definition-states (hash-t symbol-t definition-state-t))
-    (claimed (hash-t symbol-t claimed-entry-t))
-    (opaque (set-t symbol-t))
-    (inferred-types (hash-t symbol-t type-t))
-    (data-constructors (hash-t symbol-t data-constructor-t))
-    (package package-t)))
+(define-struct mod-t
+  (name symbol-t)
+  (stmts (list-t (stmt-t exp-t)))
+  (admitted (set-t symbol-t))
+  (definitions (hash-t symbol-t definition-t))
+  (definition-states (hash-t symbol-t definition-state-t))
+  (claimed (hash-t symbol-t claimed-entry-t))
+  (opaque (set-t symbol-t))
+  (inferred-types (hash-t symbol-t type-t))
+  (data-constructors (hash-t symbol-t data-constructor-t))
+  (package package-t))
 
 (define-enum outcome-t
   (outcome-ok)

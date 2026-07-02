@@ -1,8 +1,7 @@
 (module xvm)
 
-(define-struct* mod-t
-  (make-mod
-    (definitions (hash-t symbol-t definition-t))))
+(define-struct mod-t
+  (definitions (hash-t symbol-t definition-t)))
 
 (claim empty-mod (-> mod-t))
 (define (empty-mod)
