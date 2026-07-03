@@ -157,7 +157,7 @@ function toBasicExp(exp: M.Term, pkg: M.Package): B.Exp {
     }
 
     case "QualifiedVarTerm": {
-      const prefix = resolveXvmPrefix(pkg, exp.pkgName)
+      const prefix = resolvePackageId(pkg, exp.pkgName)
       return B.VarExp(`${prefix}/${exp.modName}/${exp.name}`, exp.location)
     }
 
@@ -176,6 +176,16 @@ function toBasicExp(exp: M.Term, pkg: M.Package): B.Exp {
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
   }
+}
+
+function resolvePackageId(pkg: M.Package, pkgName: string): string {
+  if (pkgName === pkg.id) return pkg.id
+
+  const dep = pkg.dependencies.get(pkgName)
+  if (!dep) {
+    throw new Error(`[resolvePackageId] unknown package: "${pkgName}"`)
+  }
+  return dep.id
 }
 
 function explicateControlInTail(state: State, exp: M.Term): Array<B.Instr> {
@@ -413,14 +423,4 @@ function explicateControlInIf(
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }
-}
-
-function resolveXvmPrefix(pkg: M.Package, pkgName: string): string {
-  if (pkgName === pkg.id) return pkg.id
-
-  const dep = pkg.dependencies.get(pkgName)
-  if (!dep) {
-    throw new Error(`[resolveXvmPrefix] unknown package: "${pkgName}"`)
-  }
-  return dep.id
 }
