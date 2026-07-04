@@ -17,7 +17,7 @@ export function isAtomOperandTerm(term: M.Term): boolean {
     }
 
     case "ApplyTerm": {
-      return isAtomOperandTerm(term.target) && term.args.every(M.isAtomTerm)
+      return M.isAtomTerm(term.target) && term.args.every(M.isAtomTerm)
     }
 
     case "Let1Term": {
