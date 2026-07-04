@@ -1,6 +1,5 @@
 # basic2
 
-[meta-lisp.js] `isAtomOperandTerm`
 [meta-lisp.meta] `atom-operand-term?`
 [meta-lisp.js] 170-ExplicateControlPass2 -- notes about passes from eoc
 [meta-lisp.js] 170-ExplicateControlPass2 -- setup snapshot testing

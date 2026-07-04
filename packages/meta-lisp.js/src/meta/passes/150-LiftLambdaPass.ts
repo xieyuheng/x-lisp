@@ -39,7 +39,7 @@ function liftLambdaDefinition(
     case "TypeDefinition": {
       const lifted: Array<M.Definition> = []
       const state = { mod, lifted, definition }
-      definition.body = liftLambdaExp(state, definition.body)
+      definition.body = liftLambdaTerm(state, definition.body)
       return [
         definition,
         ...lifted.flatMap((definition) =>
@@ -50,21 +50,21 @@ function liftLambdaDefinition(
   }
 }
 
-function liftLambdaExp(state: State, exp: M.Term): M.Term {
-  switch (exp.kind) {
+function liftLambdaTerm(state: State, term: M.Term): M.Term {
+  switch (term.kind) {
     case "LambdaTerm": {
-      const freeNames = Array.from(M.termFreeNames(new Set(), exp))
+      const freeNames = Array.from(M.termFreeNames(new Set(), term))
       const liftedCount = state.lifted.length + 1
       const newFunctionName = `${state.definition.name}©λ${liftedCount}`
-      const newParameters = [...freeNames, ...exp.parameters]
+      const newParameters = [...freeNames, ...term.parameters]
       const arity = newParameters.length
       state.lifted.push(
         M.FunctionDefinition(
           state.mod,
           newFunctionName,
           newParameters,
-          exp.body,
-          exp.location,
+          term.body,
+          term.location,
         ),
       )
 
@@ -72,7 +72,7 @@ function liftLambdaExp(state: State, exp: M.Term): M.Term {
         state.mod.pkg.id,
         state.mod.name,
         newFunctionName,
-        exp.location,
+        term.location,
       )
 
       if (freeNames.length == 0) {
@@ -80,14 +80,14 @@ function liftLambdaExp(state: State, exp: M.Term): M.Term {
       } else {
         return M.ApplyTerm(
           liftedRef,
-          freeNames.map((name) => M.VarTerm(name, exp.location)),
-          exp.location,
+          freeNames.map((name) => M.VarTerm(name, term.location)),
+          term.location,
         )
       }
     }
 
     default: {
-      return M.termTraverse((e) => liftLambdaExp(state, e), exp)
+      return M.termTraverse((e) => liftLambdaTerm(state, e), term)
     }
   }
 }

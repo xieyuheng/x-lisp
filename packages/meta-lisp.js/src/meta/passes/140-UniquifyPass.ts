@@ -26,53 +26,53 @@ function uniquifyDefinition(definition: M.Definition): null {
     case "VariableDefinition":
     case "TestDefinition":
     case "TypeDefinition": {
-      definition.body = uniquifyExp({}, {}, definition.body)
+      definition.body = uniquifyTerm({}, {}, definition.body)
       return null
     }
   }
 }
 
-function uniquifyExp(
+function uniquifyTerm(
   nameCounts: Record<string, number>,
   nameTable: Record<string, string>,
-  exp: M.Term,
+  term: M.Term,
 ): M.Term {
-  switch (exp.kind) {
+  switch (term.kind) {
     case "VarTerm": {
-      const foundName = nameTable[exp.name]
-      return foundName ? M.VarTerm(foundName, exp.location) : exp
+      const foundName = nameTable[term.name]
+      return foundName ? M.VarTerm(foundName, term.location) : term
     }
 
     case "LambdaTerm": {
-      countNames(nameCounts, exp.parameters)
-      const parameters = exp.parameters.map((name) =>
+      countNames(nameCounts, term.parameters)
+      const parameters = term.parameters.map((name) =>
         generateNameInCounts(nameCounts, name),
       )
       const newNameTable = {
         ...nameTable,
-        ...Object.fromEntries(arrayZip(exp.parameters, parameters)),
+        ...Object.fromEntries(arrayZip(term.parameters, parameters)),
       }
       return M.LambdaTerm(
         parameters,
-        uniquifyExp(nameCounts, newNameTable, exp.body),
-        exp.location,
+        uniquifyTerm(nameCounts, newNameTable, term.body),
+        term.location,
       )
     }
 
     case "Let1Term": {
-      countName(nameCounts, exp.name)
-      const newName = generateNameInCounts(nameCounts, exp.name)
-      const newNameTable = { ...nameTable, [exp.name]: newName }
+      countName(nameCounts, term.name)
+      const newName = generateNameInCounts(nameCounts, term.name)
+      const newNameTable = { ...nameTable, [term.name]: newName }
       return M.Let1Term(
         newName,
-        uniquifyExp(nameCounts, nameTable, exp.rhs),
-        uniquifyExp(nameCounts, newNameTable, exp.body),
-        exp.location,
+        uniquifyTerm(nameCounts, nameTable, term.rhs),
+        uniquifyTerm(nameCounts, newNameTable, term.body),
+        term.location,
       )
     }
 
     default: {
-      return M.termTraverse((e) => uniquifyExp(nameCounts, nameTable, e), exp)
+      return M.termTraverse((e) => uniquifyTerm(nameCounts, nameTable, e), term)
     }
   }
 }

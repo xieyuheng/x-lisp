@@ -76,35 +76,35 @@ function locateDefinition(definition: M.Definition): null {
   }
 }
 
-function locateSpecialApply(exp: M.Term): M.Term {
-  switch (exp.kind) {
+function locateSpecialApply(term: M.Term): M.Term {
+  switch (term.kind) {
     case "ApplyTerm": {
-      if (matchLocateEntry(exp.target, exp.args)) {
-        if (!exp.location) {
-          let message = `[locateSpecialApply] expect source location`
-          message += `\n  exp: ${M.formatTerm(exp)}`
+      if (matchLocateEntry(term.target, term.args)) {
+        if (!term.location) {
+          let message = `[locateSpecialApply] termect source location`
+          message += `\n  term: ${M.formatTerm(term)}`
           throw new Error(message)
         }
 
         return M.ApplyTerm(
-          targetWithLocation(exp.target),
+          targetWithLocation(term.target),
           [
-            ...exp.args.map((e) => locateSpecialApply(e)),
-            M.desugar(M.desugarLocation(exp.location)),
+            ...term.args.map((e) => locateSpecialApply(e)),
+            M.desugar(M.desugarLocation(term.location)),
           ],
-          exp.location,
+          term.location,
         )
       } else {
         return M.ApplyTerm(
-          exp.target,
-          exp.args.map((e) => locateSpecialApply(e)),
-          exp.location,
+          term.target,
+          term.args.map((e) => locateSpecialApply(e)),
+          term.location,
         )
       }
     }
 
     default: {
-      return M.termTraverse((child) => locateSpecialApply(child), exp)
+      return M.termTraverse((child) => locateSpecialApply(child), term)
     }
   }
 }
@@ -143,21 +143,21 @@ function findLocateEntry(name: string): {
   return entry
 }
 
-function matchLocateEntry(exp: M.Term, args: M.Term[]): boolean {
-  if (exp.kind !== "QualifiedVarTerm") return false
-  if (exp.modName !== "builtin") return false
-  const entry = locateTable.find((entry) => entry.source === exp.name)
+function matchLocateEntry(term: M.Term, args: M.Term[]): boolean {
+  if (term.kind !== "QualifiedVarTerm") return false
+  if (term.modName !== "builtin") return false
+  const entry = locateTable.find((entry) => entry.source === term.name)
   if (entry === undefined) return false
   return args.length === entry.sourceArity
 }
 
-function targetWithLocation(exp: M.Term): M.Term {
-  assert(exp.kind === "QualifiedVarTerm")
-  const entry = findLocateEntry(exp.name)
+function targetWithLocation(term: M.Term): M.Term {
+  assert(term.kind === "QualifiedVarTerm")
+  const entry = findLocateEntry(term.name)
   return M.QualifiedVarTerm(
-    exp.pkgName,
-    exp.modName,
+    term.pkgName,
+    term.modName,
     entry.target,
-    exp.location,
+    term.location,
   )
 }

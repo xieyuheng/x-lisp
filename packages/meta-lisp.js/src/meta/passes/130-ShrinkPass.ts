@@ -25,20 +25,20 @@ function shrinkDefinition(definition: M.Definition): null {
     case "VariableDefinition":
     case "TestDefinition":
     case "TypeDefinition": {
-      definition.body = shrinkExp(definition.body)
+      definition.body = shrinkTerm(definition.body)
       return null
     }
   }
 }
 
-function shrinkExp(exp: M.Term): M.Term {
-  switch (exp.kind) {
+function shrinkTerm(term: M.Term): M.Term {
+  switch (term.kind) {
     case "TheTerm": {
-      return shrinkExp(exp.instance)
+      return shrinkTerm(term.instance)
     }
 
     default: {
-      return M.termTraverse(shrinkExp, exp)
+      return M.termTraverse(shrinkTerm, term)
     }
   }
 }

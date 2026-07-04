@@ -134,46 +134,46 @@ function generateLabel(
   return label
 }
 
-function toBasicExp(exp: M.Term, pkg: M.Package): B.Exp {
-  switch (exp.kind) {
+function toBasicExp(term: M.Term, pkg: M.Package): B.Exp {
+  switch (term.kind) {
     case "SymbolTerm": {
-      return B.SymbolExp(exp.content, exp.location)
+      return B.SymbolExp(term.content, term.location)
     }
     case "KeywordTerm": {
-      return B.KeywordExp(exp.content, exp.location)
+      return B.KeywordExp(term.content, term.location)
     }
     case "StringTerm": {
-      return B.StringExp(exp.content, exp.location)
+      return B.StringExp(term.content, term.location)
     }
     case "IntTerm": {
-      return B.IntExp(exp.content, exp.location)
+      return B.IntExp(term.content, term.location)
     }
     case "FloatTerm": {
-      return B.FloatExp(exp.content, exp.location)
+      return B.FloatExp(term.content, term.location)
     }
 
     case "VarTerm": {
-      return B.VarExp(exp.name, exp.location)
+      return B.VarExp(term.name, term.location)
     }
 
     case "QualifiedVarTerm": {
-      const prefix = resolvePackageId(pkg, exp.pkgName)
-      return B.VarExp(`${prefix}/${exp.modName}/${exp.name}`, exp.location)
+      const prefix = resolvePackageId(pkg, term.pkgName)
+      return B.VarExp(`${prefix}/${term.modName}/${term.name}`, term.location)
     }
 
     case "ApplyTerm": {
       return B.ApplyExp(
-        toBasicExp(exp.target, pkg),
-        exp.args.map((arg) => toBasicExp(arg, pkg)),
-        exp.location,
+        toBasicExp(term.target, pkg),
+        term.args.map((arg) => toBasicExp(arg, pkg)),
+        term.location,
       )
     }
 
     default: {
-      let message = `[ExplicateControlPass] [toBasicExp] unhandled exp`
-      message += `\n  exp kind: ${exp.kind}`
-      message += `\n  exp: ${M.formatTerm(exp)}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
+      let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
+      message += `\n  term kind: ${term.kind}`
+      message += `\n  term: ${M.formatTerm(term)}`
+      throw new S.ErrorWithSourceLocation(message, term.location)
     }
   }
 }
@@ -188,36 +188,41 @@ function resolvePackageId(pkg: M.Package, pkgName: string): string {
   return dep.id
 }
 
-function explicateControlInTail(state: State, exp: M.Term): Array<B.Instr> {
-  switch (exp.kind) {
+function explicateControlInTail(state: State, term: M.Term): Array<B.Instr> {
+  if (!M.isAtomOperandTerm(term)) {
+    let message = `[explicateControlInTail] expect AtomOperandTerm`
+    throw new S.ErrorWithSourceLocation(message, term.location)
+  }
+
+  switch (term.kind) {
     case "Let1Term": {
       return explicateControlInLet1(
         state,
-        exp.name,
-        exp.rhs,
-        explicateControlInTail(state, exp.body),
+        term.name,
+        term.rhs,
+        explicateControlInTail(state, term.body),
       )
     }
 
     case "Begin1Term": {
       return explicateControlInBegin1(
         state,
-        exp.head,
-        explicateControlInTail(state, exp.body),
+        term.head,
+        explicateControlInTail(state, term.body),
       )
     }
 
     case "IfTerm": {
       return explicateControlInIf(
         state,
-        exp.condition,
-        explicateControlInTail(state, exp.consequent),
-        explicateControlInTail(state, exp.alternative),
+        term.condition,
+        explicateControlInTail(state, term.consequent),
+        explicateControlInTail(state, term.alternative),
       )
     }
 
     default: {
-      return [B.ReturnInstr(toBasicExp(exp, state.pkg), exp.location)]
+      return [B.ReturnInstr(toBasicExp(term, state.pkg), term.location)]
     }
   }
 }
@@ -418,8 +423,8 @@ function explicateControlInIf(
     }
 
     default: {
-      let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition exp`
-      message += `\n  exp: ${M.formatTerm(condition)}`
+      let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition`
+      message += `\n  condition: ${M.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }

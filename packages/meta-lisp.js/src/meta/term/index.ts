@@ -1,3 +1,4 @@
+export * from "./isAtomOperandTerm.ts"
 export * from "./isAtomTerm.ts"
 export * from "./Term.ts"
 export * from "./termFreeNames.ts"
