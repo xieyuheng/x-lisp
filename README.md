@@ -83,9 +83,9 @@ A simply typed lisp for implementing new lisp languages.
 
 ## Documentation
 
-- [Syntax Reference](docs/en/reference/syntax.md) ([中文](docs/zh/reference/syntax.md))
-- [Builtin Functions](docs/en/reference/builtin/index.md) ([中文](docs/zh/reference/builtin/index.md))
-- [FAQ](docs/en/faq/faq.md) ([中文](docs/zh/faq/faq.md))
+- [Syntax Reference](docs/en/meta-lisp/syntax.md) ([中文](docs/zh/meta-lisp/syntax.md))
+- [Builtin Functions](docs/en/meta-lisp/builtin/index.md) ([中文](docs/zh/meta-lisp/builtin/index.md))
+- [FAQ](docs/en/meta-lisp/faq.md) ([中文](docs/zh/meta-lisp/faq.md))
 
 ## License
 
