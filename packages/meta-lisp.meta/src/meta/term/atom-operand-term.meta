@@ -23,7 +23,7 @@
     ((if-term condition consequent alternative location)
      (and (atom-operand-term? condition)
           (atom-operand-term? consequent)
-          (atom-operand-term? alternativet)))
+          (atom-operand-term? alternative)))
     ((arrow-term arg-types ret-type location)
      (and (list-every? atom-operand-term? arg-types)
           (atom-operand-term? ret-type)))
