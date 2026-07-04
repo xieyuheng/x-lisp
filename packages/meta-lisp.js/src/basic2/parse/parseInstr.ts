@@ -22,15 +22,46 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
   const op = S.asSymbolSexp(innerElements[0]).content
 
   const rest = innerElements.slice(1)
-  const attributeStart = rest.findIndex(isAttributeKey)
-  const operandSexps =
-    attributeStart === -1 ? rest : rest.slice(0, attributeStart)
-  const attributeSexps = attributeStart === -1 ? [] : rest.slice(attributeStart)
-
-  const operands = operandSexps.map(parseOperand)
-  const attributes = parseAttributes(attributeSexps)
+  const operands = parseOperands(rest)
+  const attributes = parseAttributes(rest)
 
   return B.Instr(id, type, op, operands, attributes)
+}
+
+function parseOperands(sexps: Array<S.Sexp>): Array<B.Operand> {
+  const operands: Array<B.Operand> = []
+  let i = 0
+  while (i < sexps.length) {
+    if (isAttributeKey(sexps[i])) {
+      i += 2
+    } else {
+      operands.push(parseOperand(sexps[i]))
+      i += 1
+    }
+  }
+  return operands
+}
+
+function parseAttributes(sexps: Array<S.Sexp>): Record<string, B.Attribute> {
+  const attributes: Record<string, B.Attribute> = {}
+  let i = 0
+  while (i < sexps.length) {
+    if (!isAttributeKey(sexps[i])) {
+      i += 1
+      continue
+    }
+    const attributeKey = attributeKeyName(sexps[i])
+    const valueSexp = sexps[i + 1]
+    if (valueSexp === undefined) {
+      throw new S.ErrorWithSourceLocation(
+        `[parseInstr] missing value for attribute :${attributeKey}`,
+        sexps[i].location,
+      )
+    }
+    attributes[attributeKey] = parseAttribute(valueSexp)
+    i += 2
+  }
+  return attributes
 }
 
 function isAttributeKey(sexp: S.Sexp): boolean {
@@ -41,26 +72,6 @@ function isAttributeKey(sexp: S.Sexp): boolean {
 function attributeKeyName(sexp: S.Sexp): string {
   if (S.isKeywordSexp(sexp)) return sexp.content
   return S.asSymbolSexp(sexp).content.slice(1)
-}
-
-function parseAttributes(sexps: Array<S.Sexp>): Record<string, B.Attribute> {
-  const attributes: Record<string, B.Attribute> = {}
-  let i = 0
-  while (i < sexps.length) {
-    const keySexp = sexps[i]
-    if (!isAttributeKey(keySexp)) {
-      throw new S.ErrorWithSourceLocation(
-        `[parseInstr] expected attribute key, got: ${S.formatSexp(keySexp)}`,
-        keySexp.location,
-      )
-    }
-    const attributeKey = attributeKeyName(keySexp)
-    i++
-    const valueSexp = sexps[i]
-    i++
-    attributes[attributeKey] = parseAttribute(valueSexp)
-  }
-  return attributes
 }
 
 function parseAttribute(sexp: S.Sexp): B.Attribute {
