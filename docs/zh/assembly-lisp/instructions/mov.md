@@ -1,0 +1,29 @@
+---
+title: mov
+---
+
+# 语法
+
+```scheme
+(mov <dst> <src>)
+```
+
+# 操作数
+
+```
+<dst> := (reg) (reg-deref) (deref)
+<src> := (reg) (imm) (reg-deref) (deref) (address)
+```
+
+<dst> 与 <src> 不能同时为内存操作数
+
+# 描述
+
+数据传送
+
+# 例子
+
+```scheme
+(mov (reg rax) (imm 42))
+(mov (reg rcx) (reg rax))
+```
