@@ -1,0 +1,12 @@
+(module meta)
+
+(claim atom-term? (-> term-t bool-t))
+
+(define (atom-term? term)
+  (and (symbol-term? term)
+       (keyword-term? term)
+       (string-term? term)
+       (int-term? term)
+       (float-term? term)
+       (var-term? term)
+       (qualified-var-term? term)))

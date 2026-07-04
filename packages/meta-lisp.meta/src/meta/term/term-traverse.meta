@@ -1,6 +1,9 @@
 (module meta)
 
-(claim term-traverse (-> (-> term-t term-t) term-t term-t))
+(claim term-traverse
+  (-> (-> term-t term-t) term-t
+      term-t))
+
 (define (term-traverse f term)
   (match term
     ((symbol-term content location) term)
