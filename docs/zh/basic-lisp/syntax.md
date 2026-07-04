@@ -8,8 +8,8 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 它同时支持两种编译目标：
 
-- 编译 **meta-lisp** 这样的动态类型语言——通过 `value-type` 和 tag 指令
-- 编译类似 **C** 的静态类型语言——通过具体类型和内存指令
+- 编译 **meta-lisp** 这样的动态类型语言 -- 通过 `value-type` 和 tag 指令
+- 编译类似 **C** 的静态类型语言 -- 通过具体类型和内存指令
 
 模块顶层由**定义**（definition）和**声明**（claim）组成。
 函数由**基本块**（block）组成，基本块由**指令**（instr）组成。
@@ -22,8 +22,8 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 - [目录](#目录)
 - [类型](#类型)
   - [基本类型](#基本类型)
-  - [复合类型](#复合类型)
-  - [(->)](#-)
+  - [结构体类型](#结构体类型)
+  - [函数类型](#函数类型)
 - [操作数](#操作数)
 - [属性](#属性)
 - [指令](#指令)
@@ -54,32 +54,31 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 # 类型
 
-类型是一个代数数据类型，分为基本类型和复合类型。
+类型分为基本类型和复合类型，
+复合类型包含结构体类型和函数类型。
 
 ## 基本类型
 
-| 类型         | 说明     | 例子                    |
-|--------------|----------|-------------------------|
-| `int64-t`    | 64 位整数  | `42` `-1`              |
-| `float64-t`  | 64 位浮点数 | `3.14` `-2.5`         |
-| `bool-t`     | 布尔值    | `true` `false`         |
-| `void-t`     | 空值      | 用于不产生值的指令      |
-| `pointer-t`  | 不透明指针 | 无元素类型，8 字节地址 |
-| `value-t`    | 动态值    | tagged dynamic value    |
+| 类型        | 说明                     |
+|-------------|--------------------------|
+| `int64-t`   | 64 位整数                |
+| `float64-t` | 64 位浮点数              |
+| `bool-t`    | 布尔值                   |
+| `void-t`    | 空值，用于不产生值的指令 |
+| `pointer-t` | 不透明指针               |
+| `value-t`   | 带有 tag 的动态值        |
 
-- `pointer-t` 是 **opaque 指针**——不带元素类型。类型信息由 `load` / `store` 指令的 `content-type` 属性携带。
+- `pointer-t` 是 **opaque 指针** -- 不带元素类型。
+  类型信息由 `load` / `store` 指令的 `:content-type` 属性携带。
 - `value-t` 是 tagged dynamic value。所有 meta-lisp 值在 IR 中统一用此类型。
 
-## 复合类型
+## 结构体类型
 
-| 类型                  | 说明                    |
-|-----------------------|-------------------------|
-| `(struct-t <name> ...)` | 结构体类型，字段为有序 `(hash-t symbol-t type-t)` |
-| `(-> <arg-type> ... <ret-type>)` | 函数类型             |
+结构体类型由 `(define-struct <name> ...)` 引入，通过名称引用（如 `point-t`）。
 
-结构体类型由 `define-struct` 引入，通过名称引用（如 `point-t`）。
+只支持简单的结构体类型，不带类型参数。
 
-## (->)
+## 函数类型
 
 ```scheme
 (-> <arg-type> ... <ret-type>)
@@ -89,42 +88,55 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 最后一个为 `ret-type`，之前所有为 `arg-types`。
 
+例如：
+
 ```scheme
-(-> int64-t)                       ;; 零参函数
-(-> pointer-t int64-t)             ;; 一参函数
-(-> float64-t float64-t float64-t) ;; 二参函数
-(-> value-t value-t value-t value-t) ;; 三参函数
+(-> int64-t)
+(-> pointer-t int64-t)
+(-> float64-t float64-t float64-t)
+(-> value-t value-t value-t value-t)
 ```
 
-用于 `claim` 声明函数的类型签名。
+用于 `(claim)` 声明函数的类型签名。
 
 # 操作数
 
-操作数是指令的运行时值——SSA 变量引用或字面量常量。
+操作数是指令的运行时值。
 
-| 操作数             | 语法          | 说明              |
-|--------------------|---------------|-------------------|
-| `(var <name>)`     | `x`           | SSA 变量引用       |
-| `(int64 <value>)`  | `(int64 42)`  | 64 位整数字面量    |
-| `(float64 <value>)` | `(float64 3.14)` | 64 位浮点数字面量 |
-| `(bool <value>)`   | `(bool true)` | 布尔字面量        |
-| `(void)`           | `(void)`      | void 常量         |
-| `(address <name>)` | `(address origin)` | 顶层符号地址    |
+除了 SSA 变量之外，所有操作数的语法都是带有 tag 的 sexp。
 
-- `var` 通过定义点确定类型，操作数处不需要标记类型。
-- `address` 类型为 `pointer-t`。查符号表确定语义——若是函数定义则可用于 `call` / `tail-call`；若是变量定义则可用于 `load` / `store` / `padd`。
-- `void` 仅用于 `return` 指令返回 void。
+| 操作数       | 例子               |
+|--------------|--------------------|
+| SSA 变量     | `x` `x.1`          |
+| 64 位整数    | `(int64 42)`       |
+| 64 位浮点数  | `(float64 3.14)`   |
+| 布尔值       | `(bool true)`      |
+| 空值         | `(void)`           |
+| 顶层符号地址 | `(address origin)` |
+
+- SSA 变量通过定义点确定类型，操作数处不需要标记类型。
+- `address` 类型为 `pointer-t`。
+  查符号表确定语义 -- 若是函数定义则可用于 `call` / `tail-call`；
+  若是变量定义则可用于 `load` / `store` / `padd`。
+- `(void)` 仅用于 `return` 指令返回 void。
 
 # 属性
 
-属性是编译时常量参数，与 `operand`（运行时值）分离。
+每个指令可以通过 `:<key> <attribute>` 语法带有任意多个属性。
 
-| 属性                    | 语法       | 说明     |
-|-------------------------|------------|----------|
-| `:type <type>`          | `:type int64-t` | 类型引用 |
-| `:symbol <name>`        | `:symbol foo`   | 符号名   |
-| `:int <value>`          | `:int 42`       | 整数值   |
-| `:list (<attr> ...)`    | `:list (:int 1) (:int 2)` | 属性列表 |
+属性 `<attribute>` 是编译时信息，与 `operand`（运行时值）分离。
+
+| 属性 | 语法      | 说明     |
+|------|-----------|----------|
+| 类型 | `int64-t` | 类型引用 |
+| 符号 | `foo`     | 符号名   |
+| 整数 | `42`      | 整数值   |
+| 列表 | `(x y)`   | 属性列表 |
+
+注意：
+
+- 作为属性的整数直接使用 atom sexp 语法 -- `42`，
+  与作为操作数的整数不同 -- `(int64 42)`。
 
 # 指令
 
@@ -136,11 +148,15 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 (= <id> <type> (<op> <operand> ...) :<key> <attribute> ...)
 ```
 
-- `<id>`：指令的唯一标识。产生值的指令 `id` 即结果变量名；不产生值的指令 `id` 为 `∅.N`（如 `∅.1`、`∅.2`）。
-- `<type>`：本指令的结果类型。产生值的指令为具体类型（如 `int64-t`、`value-t`）；不产生值的指令为 `void-t`。
-- `<op>`：操作名。
-- `<operand>`：运行时值——所有 SSA 变量引用和字面量。统一遍历分析 use-def。
-- `:<key> <attribute>`：编译时常量，以 `:` 前缀的 key 区分。
+- `<id>`：指令的唯一标识。产生值的指令 `id` 即结果变量名；
+  不产生值的指令也有 `id`，例如 `∅.1`、`∅.2`。
+- `<type>`：本指令的结果类型。
+  产生值的指令为具体类型，例如 `int64-t`、`value-t`；
+  不产生值的指令为 `void-t`。
+- `<op>`：操作名 -- 代表了指令的种类。
+- `<operand>`：操作数 -- 运行时值，用于分析 def-use 关系。
+- `:<key> <attribute>`：属性常量，以 `:` 前缀的 key 区分。
+  不同操作名的指令，决定了所带有的属性的意义。
 
 ```scheme
 (= sum int64-t (iadd a b))
@@ -149,16 +165,17 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 二元运算
 
-| op name | 类型    | 说明   |
-|---------|---------|--------|
-| `iadd` `isub` `imul` `idiv` | int64 | 整数算术（加减乘除）     |
-| `fadd` `fsub` `fmul` `fdiv` | float64 | 浮点算术              |
-| `shl` `shr` `bitand` `bitor` `bitxor` | int64 | 位运算         |
-| `padd`   | pointer | 指针字节偏移加法 |
-| `and` `or` `xor` | bool | 逻辑运算          |
+| op                                    | 返回值类型 | 说明             |
+|---------------------------------------|------------|------------------|
+| `iadd` `isub` `imul` `idiv`           | int64      | 整数算术         |
+| `fadd` `fsub` `fmul` `fdiv`           | float64    | 浮点算术         |
+| `shl` `shr` `bitand` `bitor` `bitxor` | int64      | 位运算           |
+| `padd`                                | pointer    | 指针字节偏移加法 |
+| `and` `or` `xor`                      | bool       | 逻辑运算         |
 
 - 算术/位运算/逻辑运算的 `type` 字段等于 operand 类型。
-- `padd`：`base` 为 `pointer-t`，`offset` 为 `int64-t`，结果为 `pointer-t`。等价于 `base + offset` 字节。
+- 其中 `padd` 的 `base` 类型为 `pointer-t`，`offset` 类型为 `int64-t`，
+  结果为 `base + offset` 类型 `pointer-t`。
 
 ```scheme
 (= result int64-t (iadd x y))
@@ -170,13 +187,13 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 比较指令的 operand 类型由 op 名前缀唯一确定，结果 `type` 恒为 `bool-t`。
 
-| 类别       | op name                                                   | 说明         |
-|------------|-----------------------------------------------------------|--------------|
-| 可排序比较 | `icmp-eq` `icmp-ne` `icmp-lt` `icmp-le` `icmp-gt` `icmp-ge` | int64 有序比较 |
-| 可排序比较 | `fcmp-eq` `fcmp-ne` `fcmp-lt` `fcmp-le` `fcmp-gt` `fcmp-ge` | float64 有序比较 |
-| 仅判等     | `bool-eq` `bool-ne`                                        | bool 相等性   |
-| 仅判等     | `pointer-eq` `pointer-ne`                                  | pointer 相等性 |
-| 仅判等     | `value-eq` `value-ne`                                      | value identity 相等 |
+| op                                                          | 说明                |
+|-------------------------------------------------------------|---------------------|
+| `icmp-eq` `icmp-ne` `icmp-lt` `icmp-le` `icmp-gt` `icmp-ge` | int64 有序比较      |
+| `fcmp-eq` `fcmp-ne` `fcmp-lt` `fcmp-le` `fcmp-gt` `fcmp-ge` | float64 有序比较    |
+| `bool-eq` `bool-ne`                                         | bool 相等性         |
+| `pointer-eq` `pointer-ne`                                   | pointer 相等性      |
+| `value-eq` `value-ne`                                       | value identity 相等 |
 
 - `icmp-*` / `fcmp-*` 含有序比较（`lt` / `le` / `gt` / `ge`），只给可排序的 int64 / float64。
 - `bool-*` / `pointer-*` / `value-*` 无有序语义，只有相等性。
@@ -189,20 +206,19 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 一元运算
 
-| op name    | 说明              |
-|------------|-------------------|
-| `not`      | 逻辑取反          |
-| `tag-int`  | 将 int64 包装为 value |
-| `tag-float` | 将 float64 包装为 value |
-| `tag-bool` | 将 bool 包装为 value   |
-| `to-int64` | 从 value 解构 int64    |
-| `to-float64` | 从 value 解构 float64 |
-| `to-bool`  | 从 value 解构 bool     |
-| `const`    | 将 operand 绑定到 SSA 名 |
+| op name      | 说明                     |
+|--------------|--------------------------|
+| `not`        | 逻辑取反                 |
+| `tag-int`    | 将 int64 包装为 value    |
+| `tag-float`  | 将 float64 包装为 value  |
+| `tag-bool`   | 将 bool 包装为 value     |
+| `to-int64`   | 从 value 解构 int64      |
+| `to-float64` | 从 value 解构 float64    |
+| `to-bool`    | 从 value 解构 bool       |
+| `const`      | 将 operand 绑定到 SSA 名 |
 
 - `tag-*`：将原始类型值包装为 `value-t`。
 - `to-*`：从 `value-t` 中解构原始类型值（运行时类型检查）。
-- `const`：codegen 不为 `const` 生成代码。
 
 ```scheme
 (= tagged value-t (tag-int x))
@@ -212,12 +228,12 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 内存操作
 
-| op        | operands         | attributes                   | 说明               |
-|-----------|------------------|------------------------------|--------------------|
-| `load`    | `[pointer]`      | —                            | 从指针加载值        |
-| `store`   | `[pointer, value]` | `:content-type <type>`     | 将值写入指针        |
-| `size-of` | `[]`              | `:target-type <type>`        | 计算类型字节大小    |
-| `offset-of` | `[]`            | `:struct-type <type> :path (<field> ...)` | 计算字段偏移 |
+| op          | operands        | attributes                                | 说明             |
+|-------------|-----------------|-------------------------------------------|------------------|
+| `load`      | `pointer`       | 无                                        | 从指针加载值     |
+| `store`     | `pointer value` | `:content-type <type>`                    | 将值写入指针     |
+| `size-of`   | 无              | `:target-type <type>`                     | 计算类型字节大小 |
+| `offset-of` | 无              | `:struct-type <type> :path (<field> ...)` | 计算字段偏移     |
 
 - `load`：opaque pointer 不带元素类型，结果 `type` 即为值的类型。
 - `store`：`content-type` 为被存储值的类型。本指令 type 为 `void-t`。
@@ -235,10 +251,10 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 | op           | operands     | attributes                                 | 说明           |
 |--------------|--------------|--------------------------------------------|----------------|
-| `return`     | `[value]`    | —                                          | 函数返回       |
+| `return`     | `[value]`    | 无                                          | 函数返回       |
 | `goto`       | `[]`         | `:label <name>`                            | 无条件跳转     |
 | `branch`     | `[condition]` | `:then-label <name> :else-label <name>`   | 条件分支       |
-| `unreachable` | `[]`         | —                                          | 不可达路径标记 |
+| `unreachable` | `[]`         | 无                                          | 不可达路径标记 |
 
 - 所有控制流指令的 type 为 `void-t`。
 - `branch` 的 `condition` 必须为 `bool-t`。
@@ -252,13 +268,13 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 函数调用
 
-| op           | operands                | attributes | 说明         |
-|--------------|-------------------------|------------|--------------|
-| `call`       | `[target, ...args]`     | —          | 静态调用     |
-| `tail-call`  | `[target, ...args]`     | —          | 尾调用       |
-| `apply`      | `[target, ...args]`     | —          | 动态调用     |
-| `tail-apply`  | `[target, ...args]`     | —          | 尾动态调用   |
-| `argument`   | `[]`                    | `:index <int>` | 获取函数参数 |
+| op           | operands            | attributes     | 说明         |
+|--------------|---------------------|----------------|--------------|
+| `call`       | `[target, ...args]` | 无             | 静态调用     |
+| `tail-call`  | `[target, ...args]` | 无             | 尾调用       |
+| `apply`      | `[target, ...args]` | 无             | 动态调用     |
+| `tail-apply` | `[target, ...args]` | 无             | 尾动态调用   |
+| `argument`   | `[]`                | `:index <int>` | 获取函数参数 |
 
 - `call`：`target` 为 `(address f)` 或 SSA var。
 - `apply`：动态调用 `value-t` 中的函数/闭包，`target` 为 SSA var。
@@ -274,7 +290,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 | op        | operands     | attributes                                | 说明          |
 |-----------|--------------|-------------------------------------------|---------------|
-| `use`     | `[]`         | —                                         | 从合并点读取值 |
+| `use`     | `[]`         | 无                                         | 从合并点读取值 |
 | `provide` | `[value]`    | `:content-type <type> :use-site <name>`   | 向合并点写入值 |
 
 - `use`：type 为合并点的值类型，结果变量名即合并点名。
@@ -392,7 +408,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 
 - 类型名必须以 `-t` 结尾。
 - 字段列表是有序的，决定各字段偏移与总大小。
-- 布局为 packed——字段间无 padding。
+- 布局为 packed -- 字段间无 padding。
 
 ```scheme
 (define-struct point-t
