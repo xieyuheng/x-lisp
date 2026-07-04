@@ -249,12 +249,12 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 控制流
 
-| op           | operands     | attributes                                 | 说明           |
-|--------------|--------------|--------------------------------------------|----------------|
-| `return`     | `[value]`    | 无                                          | 函数返回       |
-| `goto`       | `[]`         | `:label <name>`                            | 无条件跳转     |
-| `branch`     | `[condition]` | `:then-label <name> :else-label <name>`   | 条件分支       |
-| `unreachable` | `[]`         | 无                                          | 不可达路径标记 |
+| op            | operands    | attributes                              | 说明           |
+|---------------|-------------|-----------------------------------------|----------------|
+| `return`      | `value`     | 无                                      | 函数返回       |
+| `goto`        | 无          | `:label <name>`                         | 无条件跳转     |
+| `branch`      | `condition` | `:then-label <name> :else-label <name>` | 条件分支       |
+| `unreachable` | 无          | 无                                      | 不可达路径标记 |
 
 - 所有控制流指令的 type 为 `void-t`。
 - `branch` 的 `condition` 必须为 `bool-t`。
@@ -268,13 +268,13 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 函数调用
 
-| op           | operands            | attributes     | 说明         |
-|--------------|---------------------|----------------|--------------|
-| `call`       | `[target, ...args]` | 无             | 静态调用     |
-| `tail-call`  | `[target, ...args]` | 无             | 尾调用       |
-| `apply`      | `[target, ...args]` | 无             | 动态调用     |
-| `tail-apply` | `[target, ...args]` | 无             | 尾动态调用   |
-| `argument`   | `[]`                | `:index <int>` | 获取函数参数 |
+| op           | operands          | attributes     | 说明         |
+|--------------|-------------------|----------------|--------------|
+| `call`       | `target, ...args` | 无             | 静态调用     |
+| `tail-call`  | `target, ...args` | 无             | 尾调用       |
+| `apply`      | `target, ...args` | 无             | 动态调用     |
+| `tail-apply` | `target, ...args` | 无             | 尾动态调用   |
+| `argument`   | 无                | `:index <int>` | 获取函数参数 |
 
 - `call`：`target` 为 `(address f)` 或 SSA var。
 - `apply`：动态调用 `value-t` 中的函数/闭包，`target` 为 SSA var。
@@ -288,10 +288,10 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ## 动态值操作
 
-| op        | operands     | attributes                                | 说明          |
-|-----------|--------------|-------------------------------------------|---------------|
-| `use`     | `[]`         | 无                                         | 从合并点读取值 |
-| `provide` | `[value]`    | `:content-type <type> :use-site <name>`   | 向合并点写入值 |
+| op        | operands  | attributes                              | 说明           |
+|-----------|-----------|-----------------------------------------|----------------|
+| `use`     | 无        | 无                                      | 从合并点读取值 |
+| `provide` | `[value]` | `:content-type <type> :use-site <name>` | 向合并点写入值 |
 
 - `use`：type 为合并点的值类型，结果变量名即合并点名。
 - `provide`：`content-type` 为被写入值的类型。本指令 type 为 `void-t`。
