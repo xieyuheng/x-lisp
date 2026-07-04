@@ -1,3 +1,4 @@
+export * from "./isAtomTerm.ts"
 export * from "./Term.ts"
 export * from "./termFreeNames.ts"
 export * from "./termIsSyntacticValue.ts"

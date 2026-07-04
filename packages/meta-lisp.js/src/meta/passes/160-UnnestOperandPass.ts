@@ -125,3 +125,33 @@ function unnestOperandAtom(state: State, exp: M.Term): [Array<Entry>, M.Term] {
     }
   }
 }
+
+// export function isAtomOperandTerm(term: M.Term): boolean {
+//   switch (term.kind) {
+//     case "SymbolTerm":
+//     case "KeywordTerm":
+//     case "StringTerm":
+//     case "IntTerm":
+//     case "FloatTerm":
+//     case "VarTerm":
+//     case "QualifiedVarTerm": {
+//       return true
+//     }
+
+//     case "LambdaTerm": {
+//       assertAtomOperandTerm(term.body)
+//       return
+//     }
+
+//     case "ApplyTerm": {
+
+//     }
+
+//     case "Let1Term": {}
+//     case "Begin1Term": {}
+//     case "IfTerm": {}
+//     case "ArrowTerm": {}
+//     case "TheTerm": {}
+//     case "PolymorphicTerm": {}
+//   }
+// }

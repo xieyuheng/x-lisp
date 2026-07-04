@@ -1,6 +1,6 @@
 # basic2
 
-[docs] notes about each language design
+[meta-lisp.js] `isAtomOperandTerm`
 [meta-lisp.js] 170-ExplicateControlPass2 -- notes about passes from eoc
 [meta-lisp.js] 170-ExplicateControlPass2 -- setup snapshot testing
 
