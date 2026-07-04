@@ -4,7 +4,7 @@ title: float-compare-descending
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-compare-descending
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-compare-descending 3.0 2.0)  ;; => -1
 (float-compare-descending 2.0 2.0)  ;; => 0
 (float-compare-descending 1.0 2.0)  ;; => 1

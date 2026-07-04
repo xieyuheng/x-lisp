@@ -4,7 +4,7 @@ title: set-size
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) int-t))
 ```
 
@@ -14,7 +14,7 @@ Number of elements in the set.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-size #{1 2 3})  ;; => 3
 (set-size #{})       ;; => 0
 ```

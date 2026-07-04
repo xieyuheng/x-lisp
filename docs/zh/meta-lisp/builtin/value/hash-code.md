@@ -4,7 +4,7 @@ title: hash-code
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A int-t))
 ```
 
@@ -14,7 +14,7 @@ title: hash-code
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-code 42)       ;; => 42
 (hash-code "hello")  ;; => 某个整数
 ```

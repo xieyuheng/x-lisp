@@ -4,7 +4,7 @@ title: hash-reject-key
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (-> K bool-t) (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-reject-key
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-reject-key
   int-non-negative?
   (@hash 1 'a 2 'b -1 'x -2 'y))

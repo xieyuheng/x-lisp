@@ -4,7 +4,7 @@ title: source-position-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-struct source-position-t
   (index int-t)
   (row int-t)
@@ -23,7 +23,7 @@ type-t
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim make-source-position (-> int-t int-t int-t source-position-t))
 (claim source-position?     (-> source-position-t bool-t))
 (claim source-position-index  (-> source-position-t int-t))

@@ -4,7 +4,7 @@ title: for-list-index
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (list-t A) (-> int-t A Any) void-t))
 ```
 
@@ -17,7 +17,7 @@ Apply a side-effecting function with index to each element.
 
 # Examples
 
-```scheme
+```meta-lisp
 (for-list-index ['a 'b 'c]
   (lambda (i x)
     (println i)

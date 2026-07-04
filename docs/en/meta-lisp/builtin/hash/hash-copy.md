@@ -4,7 +4,7 @@ title: hash-copy
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ Copy a hash table, returning a new hash table.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let* ((h1 (@hash "a" 1 "b" 2))
        (h2 (hash-copy h1)))
   (hash-put! "c" 3 h2)

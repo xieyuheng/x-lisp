@@ -4,7 +4,7 @@ title: make-list
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: make-list
 
 # 例子
 
-```scheme
+```meta-lisp
 (make-list)  ;; => []
 ```

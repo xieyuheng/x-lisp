@@ -4,7 +4,7 @@ title: for-list
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (list-t A) (-> A Any) void-t))
 ```
 
@@ -17,6 +17,6 @@ title: for-list
 
 # 例子
 
-```scheme
+```meta-lisp
 (for-list [1 2 3] println)
 ```

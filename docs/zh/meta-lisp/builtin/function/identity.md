@@ -4,7 +4,7 @@ title: identity
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A A))
 ```
 
@@ -14,7 +14,7 @@ title: identity
 
 # 例子
 
-```scheme
+```meta-lisp
 (identity 1)   ;; => 1
 (identity "a") ;; => "a"
 ```

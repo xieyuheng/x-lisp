@@ -3,7 +3,7 @@ title: format-int
 ---
 
 # Type
-```scheme
+```meta-lisp
 (-> int-t string-t)
 ```
 
@@ -11,7 +11,7 @@ title: format-int
 Format an integer as an S-expression string.
 
 # Examples
-```scheme
+```meta-lisp
 (format-int 42)  ;; => "42"
 (format-int -1)  ;; => "-1"
 ```

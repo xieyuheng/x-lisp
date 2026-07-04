@@ -4,7 +4,7 @@ title: hash-from-entries
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (list-t (hash-entry-t K V)) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-from-entries
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-from-entries
   [(make-hash-entry 'a 1)
    (make-hash-entry 'b 2)])

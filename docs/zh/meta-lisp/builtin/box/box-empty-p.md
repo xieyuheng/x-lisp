@@ -4,7 +4,7 @@ title: box-empty?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (box-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: box-empty?
 
 # 例子
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-empty? box) ;; => true
 (box-put! 42 box)

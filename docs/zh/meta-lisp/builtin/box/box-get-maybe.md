@@ -4,7 +4,7 @@ title: box-get-maybe
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (box-t E) (maybe-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: box-get-maybe
 
 # 例子
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-get-maybe box) ;; => (nothing)
 (box-put! 42 box)

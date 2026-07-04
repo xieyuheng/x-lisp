@@ -4,7 +4,7 @@ title: fs-ensure-file
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ Ensure a file exists. Creates an empty file if it doesn't exist.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-ensure-file "/tmp/foo.txt")
 ```

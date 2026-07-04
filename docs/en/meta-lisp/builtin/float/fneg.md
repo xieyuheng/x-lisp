@@ -4,7 +4,7 @@ title: fneg
 
 # Type
 
-```scheme
+```meta-lisp
 (-> float-t float-t)
 ```
 
@@ -14,7 +14,7 @@ Negation of a float.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fneg 3.14)    ;; => -3.14
 (fneg -1.0)    ;; => 1.0
 (fneg 0.0)     ;; => -0.0

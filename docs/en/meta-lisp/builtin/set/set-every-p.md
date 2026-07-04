@@ -4,7 +4,7 @@ title: set-every?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (set-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if all elements satisfy the predicate.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-every? int-non-negative? #{0 1 2})  ;; => true
 (set-every? int-non-negative? #{0 -1})   ;; => false
 ```

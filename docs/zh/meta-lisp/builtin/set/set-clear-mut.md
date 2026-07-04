@@ -4,7 +4,7 @@ title: set-clear!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: set-clear!
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-clear! #{1 2 3})  ;; => #{}
 ```

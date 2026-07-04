@@ -4,7 +4,7 @@ title: open-output-file
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t file-t)
 ```
 
@@ -14,7 +14,7 @@ title: open-output-file
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((file (open-output-file "output.txt")))
   (file-writeln "hello" file)
   (file-close file))

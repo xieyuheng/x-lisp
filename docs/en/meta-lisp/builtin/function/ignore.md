@@ -4,7 +4,7 @@ title: ignore
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A void-t))
 ```
 
@@ -14,7 +14,7 @@ Accepts any value and returns `void`. Used to discard the return value of a func
 
 # Examples
 
-```scheme
+```meta-lisp
 (ignore (hash-put! 'x 1 (make-hash)))  ;; => void
 (ignore 1)                             ;; => void
 ```

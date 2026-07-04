@@ -4,7 +4,7 @@ title: list-copy
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: list-copy
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-copy [1 2 3])  ;; => [1 2 3]
 ```

@@ -4,7 +4,7 @@ title: hash-length
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) int-t))
 ```
 
@@ -14,7 +14,7 @@ title: hash-length
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h (@hash "a" 1)))
   (hash-length h))  ;; => 1
 ```

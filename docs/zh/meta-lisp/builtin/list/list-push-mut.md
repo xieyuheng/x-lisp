@@ -4,7 +4,7 @@ title: list-push!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: list-push!
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-push! 4 [1 2 3])  ;; => [1 2 3 4]
 ```

@@ -4,7 +4,7 @@ title: string-trim-end
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Remove whitespace from the end of a string, same as `string-trim-right`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-trim-end "hello  ")  ;; => "hello"
 (string-trim-end "  hello")  ;; => "  hello"
 ```

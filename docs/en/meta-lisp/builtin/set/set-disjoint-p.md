@@ -4,7 +4,7 @@ title: set-disjoint?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if two sets are disjoint (no common elements).
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-disjoint? #{1 2} #{3 4})  ;; => true
 (set-disjoint? #{1 2} #{2 3})  ;; => false
 ```

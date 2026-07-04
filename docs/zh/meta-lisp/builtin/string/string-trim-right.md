@@ -4,7 +4,7 @@ title: string-trim-right
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-trim-right
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-trim-right "hello  ")  ;; => "hello"
 (string-trim-right "  hello")  ;; => "  hello"
 (string-trim-right "hello")    ;; => "hello"

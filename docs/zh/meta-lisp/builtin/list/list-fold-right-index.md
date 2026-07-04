@@ -4,7 +4,7 @@ title: list-fold-right-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E R) (-> (-> int-t E R R) R (list-t E) R))
 ```
 
@@ -14,7 +14,7 @@ title: list-fold-right-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) [] ['a 'b 'c])
 ;; => [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]
 

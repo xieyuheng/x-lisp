@@ -4,7 +4,7 @@ title: parse-json
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t json-t)
 ```
 
@@ -14,7 +14,7 @@ title: parse-json
 
 # 例子
 
-```scheme
+```meta-lisp
 (parse-json "null")            ;; => (json-null)
 (parse-json "true")            ;; => (json-bool true)
 (parse-json "42")              ;; => (json-number 42.0)

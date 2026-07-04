@@ -6,7 +6,7 @@ title: Frequently Asked Questions (FAQ)
 
 No. Use **tail-recursive functions** instead:
 
-```scheme
+```meta-lisp
 (define (list-sum xs)
   (list-sum-loop xs 0))
 
@@ -20,14 +20,14 @@ The compiler handles tail calls correctly — no stack growth.
 
 # How to compare two values?
 
-```scheme
+```meta-lisp
 (equal? a b)     ;; structural equality
 (same? a b)      ;; reference equality, or same for atomic data
 ```
 
 # How to print debug info?
 
-```scheme
+```meta-lisp
 (print x)        ;; print a value
 (println x)      ;; print a value and newline
 (write x)        ;; print a string
@@ -131,7 +131,7 @@ A very simple type system:
 
 `(define-struct)` generates the constructor name as `make-<base-name>`:
 
-```scheme
+```meta-lisp
 (define-struct point-t
   (x int-t)
   (y int-t))
@@ -139,7 +139,7 @@ A very simple type system:
 
 Use `(define-struct*)` to specify a custom constructor name:
 
-```scheme
+```meta-lisp
 (define-struct* point-t
   (cons-point
    (x int-t)

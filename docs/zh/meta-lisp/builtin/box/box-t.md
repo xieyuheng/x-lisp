@@ -4,7 +4,7 @@ title: box-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Box 类型构造器。内部表示为 `(list-t E)`。
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-empty? (-> (box-t E) bool-t))
@@ -24,7 +24,7 @@ Box 类型构造器。内部表示为 `(list-t E)`。
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
@@ -34,7 +34,7 @@ Box 类型构造器。内部表示为 `(list-t E)`。
 
 # 例子
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-empty? box)    ;; => true
 (box-put! 42 box)

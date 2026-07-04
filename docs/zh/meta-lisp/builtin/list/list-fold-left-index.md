@@ -4,7 +4,7 @@ title: list-fold-left-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E R) (-> (-> int-t R E R) R (list-t E) R))
 ```
 
@@ -14,7 +14,7 @@ title: list-fold-left-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-fold-left-index (lambda (i folded x) (iadd folded (imul i x))) 0 [10 20 30])
 ;; => 80
 

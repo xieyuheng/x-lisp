@@ -4,7 +4,7 @@ title: float-non-zero?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-non-zero?
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-non-zero? 1.0)    ;; => true
 (float-non-zero? -1.0)   ;; => true
 (float-non-zero? 0.0)    ;; => false

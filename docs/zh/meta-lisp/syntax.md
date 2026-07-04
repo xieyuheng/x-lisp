@@ -87,20 +87,20 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 在写行注释的时候 lisp 程序员通常写两个 `;;`。
 
-```scheme
+```meta-lisp
 ;; 这是一条注释
 (define x 42) ;; 行尾注释
 ```
 
 ## (@comment)
 
-```scheme
+```meta-lisp
 (@comment <sexp> ...)
 ```
 
 `(@comment)` 在编译时被忽略，其表达式求值为 `void`。
 
-```scheme
+```meta-lisp
 (@comment (lambda (<parameter> ...)
             <body>))
 (@comment (if <condition> <consequent> <alternative>))
@@ -115,7 +115,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 整数由数字组成，可选负号。
 
-```scheme
+```meta-lisp
 42
 -1
 0
@@ -123,28 +123,28 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 浮点数带小数点。
 
-```scheme
+```meta-lisp
 3.14
 -2.5
 ```
 
 字符串用双引号包裹。
 
-```scheme
+```meta-lisp
 "hello"
 ""
 ```
 
 符号用单引号开头，后面跟名字。
 
-```scheme
+```meta-lisp
 'foo
 'bar
 ```
 
 关键字用冒号开头。
 
-```scheme
+```meta-lisp
 :key
 :name
 ```
@@ -155,14 +155,14 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 ## (@list)
 
-```scheme
+```meta-lisp
 [<exp> ...]
 (@list <exp> ...)
 ```
 
 创建列表。
 
-```scheme
+```meta-lisp
 [1 2 3]
 ["a" "b" "c"]
 ```
@@ -171,7 +171,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 上面的例子等价于：
 
-```scheme
+```meta-lisp
 (@list 1 2 3)
 (@list "a" "b" "c")
 ```
@@ -180,38 +180,38 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 ## (@set)
 
-```scheme
+```meta-lisp
 (@set <exp> ...)
 ```
 
 创建集合。
 
-```scheme
+```meta-lisp
 (@set 1 2 3)
 ```
 
 ## (@hash)
 
-```scheme
+```meta-lisp
 (@hash <key> <value> ...)
 ```
 
 创建哈希表。
 
-```scheme
+```meta-lisp
 (@hash :a 1 :b 2)
 (@hash "a" 1 "b" 2)
 ```
 
 ## (@string)
 
-```scheme
+```meta-lisp
 (@string <exp> ...)
 ```
 
 将多个字符串表达式拼接成一个字符串。
 
-```scheme
+```meta-lisp
 (@string "hello" " " "world")
 (@string "(" x ")")
 (@string)
@@ -219,7 +219,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 上面的例子等价于：
 
-```scheme
+```meta-lisp
 (string-concat ["hello" " " "world"])
 (string-concat ["(" x ")"])
 (string-concat [])
@@ -227,28 +227,28 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 ## (@quote)
 
-```scheme
+```meta-lisp
 '<sexp>
 (@quote <sexp>)
 ```
 
 创建符号或原子列表。
 
-```scheme
+```meta-lisp
 '(a b c)         ;; => ['a 'b 'c]
 '(1 2 3)         ;; => [1 2 3]
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (@quote (a b c))  ;; => ['a 'b 'c]
 (@quote (1 2 3))  ;; => [1 2 3]
 ```
 
 ## (@sexp)
 
-```scheme
+```meta-lisp
 (@sexp <sexp>)
 ```
 
@@ -256,7 +256,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 `sexp-t` 类型的定义：
 
-```scheme
+```meta-lisp
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
   (keyword-sexp (content keyword-t) (location source-location-t))
@@ -268,7 +268,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 使用示例：
 
-```scheme
+```meta-lisp
 (@sexp foo)           ;; => (symbol-sexp 'foo <location>)
 (@sexp (a b c))       ;; => (list-sexp
                       ;;      (list (symbol-sexp 'a) (symbol-sexp 'b) (symbol-sexp 'c))
@@ -279,13 +279,13 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 ## (define)
 
-```scheme
+```meta-lisp
 (define <name> <exp>)
 ```
 
 定义模块级变量。
 
-```scheme
+```meta-lisp
 (define answer 42)
 (define greeting "hello")
 ```
@@ -296,7 +296,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 名字由字母、数字和 `-` `?` `!` 等字符组成。
 
-```scheme
+```meta-lisp
 x
 factorial
 list-length
@@ -307,7 +307,7 @@ list-empty?
 
 `<module-name>/<name>` 引用其他模块中的名字。
 
-```scheme
+```meta-lisp
 builtin/list-length
 builtin/list-empty?
 ```
@@ -320,7 +320,7 @@ builtin/list-empty?
 
 ## 函数作用
 
-```scheme
+```meta-lisp
 (<target> <arg> ...)
 ```
 
@@ -334,7 +334,7 @@ builtin/list-empty?
 然后求值所有参数位置的表达式，
 然后进行函数作用。
 
-```scheme
+```meta-lisp
 (iadd 1 2)
 (println "hello")
 ((lambda (x) x) 1)
@@ -342,33 +342,33 @@ builtin/list-empty?
 
 当函数作用的参数个数不足时，会形成部分作用（通过**柯里化**实现）。
 
-```scheme
+```meta-lisp
 ((iadd 1) 2)
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (iadd 1 2)
 ```
 
 并且 `(iadd 1)` 可以作为值传递给函数，或者作为结果返回。
 
-```scheme
+```meta-lisp
 (define add1
   (iadd 1))
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (define (add1 x)
   (iadd 1 x))
 ```
 
 ## (lambda)
 
-```scheme
+```meta-lisp
 (lambda (<parameter> ...)
   <body>)
 ```
@@ -379,21 +379,21 @@ builtin/list-empty?
 `<body>` 是一个或多个表达式。
 当函数被作用时，实际参数被绑定到形式参数，然后求值 `<body>`。
 
-```scheme
+```meta-lisp
 (lambda (x) (iadd x 1))
 ((lambda (x) (iadd x 1)) 2)  ;; => 3
 ```
 
 多个参数：
 
-```scheme
+```meta-lisp
 (lambda (x y)
   (iadd x y))
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (lambda (x)
   (lambda (y)
     (iadd x y)))
@@ -401,7 +401,7 @@ builtin/list-empty?
 
 ## (define)
 
-```scheme
+```meta-lisp
 (define (<name> <parameter> ...)
   <body>)
 ```
@@ -410,14 +410,14 @@ builtin/list-empty?
 
 定义函数等价于定义值为 lambda 的变量。
 
-```scheme
+```meta-lisp
 (define (add1 x)
   (iadd 1 x))
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (define add1
   (lambda (x)
     (iadd 1 x)))
@@ -425,7 +425,7 @@ builtin/list-empty?
 
 函数体 `<body>` 可以是多个表达式：
 
-```scheme
+```meta-lisp
 (define (f x)
   (= y (iadd x 1))
   (imul y 2))
@@ -456,7 +456,7 @@ builtin/list-empty?
 
 ## (->)
 
-```scheme
+```meta-lisp
 (-> <arg-type> ... <ret-type>)
 ```
 
@@ -466,7 +466,7 @@ builtin/list-empty?
 
 例如：
 
-```scheme
+```meta-lisp
 (-> int-t int-t)
 (-> int-t int-t int-t)
 (-> string-t bool-t)
@@ -474,7 +474,7 @@ builtin/list-empty?
 
 ## (claim)
 
-```scheme
+```meta-lisp
 (claim <name> <type>)
 ```
 
@@ -483,7 +483,7 @@ builtin/list-empty?
 编译器会从 `(define)` 的 `<body>` 推导出类型，
 然后检查是否与 `(claim)` 的类型一致。
 
-```scheme
+```meta-lisp
 (claim add1 (-> int-t int-t))
 (define (add1 x) (iadd x 1))
 
@@ -493,7 +493,7 @@ builtin/list-empty?
 
 ## (admit)
 
-```scheme
+```meta-lisp
 (admit <name> <type>)
 ```
 
@@ -501,7 +501,7 @@ builtin/list-empty?
 
 与 `(claim)` 类似，但是编译器不会检查 `(define)` 的 `<body>`。
 
-```scheme
+```meta-lisp
 (admit make-point (-> float-t float-t point-t))
 (define (make-point x y)
   (@list 'make-point x y))
@@ -509,7 +509,7 @@ builtin/list-empty?
 
 ## (the)
 
-```scheme
+```meta-lisp
 (the <type> <exp>)
 ```
 
@@ -517,7 +517,7 @@ builtin/list-empty?
 
 编译器会检查 `<exp>` 的实际类型是否匹配。可用于澄清代码意图或帮助类型推断。
 
-```scheme
+```meta-lisp
 (the int-t 42)
 (the (-> int-t int-t)
   (lambda (x)
@@ -526,7 +526,7 @@ builtin/list-empty?
 
 ## (polymorphic)
 
-```scheme
+```meta-lisp
 (polymorphic (<type-parameter> ...)
   <type>)
 ```
@@ -536,7 +536,7 @@ builtin/list-empty?
 类型变量通常用单个大写字母表示，在 `<type>` 中可以被引用。
 用于 `claim` 中声称多态函数。
 
-```scheme
+```meta-lisp
 (claim identity (polymorphic (A) (-> A A)))
 
 (claim car (polymorphic (E) (-> (list-t E) E)))
@@ -549,7 +549,7 @@ builtin/list-empty?
 
 ## (if)
 
-```scheme
+```meta-lisp
 (if <condition>
   <consequent>
   <alternative>)
@@ -561,7 +561,7 @@ builtin/list-empty?
 如果为真，求值 `<consequent>` 并返回。
 否则求值 `<alternative>` 并返回。
 
-```scheme
+```meta-lisp
 (define (abs x)
   (if (int-less? x 0)
     (ineg x)
@@ -570,7 +570,7 @@ builtin/list-empty?
 
 ## (when)
 
-```scheme
+```meta-lisp
 (when <condition>
   <body>)
 ```
@@ -581,7 +581,7 @@ builtin/list-empty?
 `<body>` 中可以写多个表达式。
 `(when)` 表达式的返回值总是 `void`。
 
-```scheme
+```meta-lisp
 (when debug?
   (print "debug mode")
   (newline))
@@ -589,7 +589,7 @@ builtin/list-empty?
 
 ## (unless)
 
-```scheme
+```meta-lisp
 (unless <condition>
   <body>)
 ```
@@ -600,7 +600,7 @@ builtin/list-empty?
 `<body>` 中可以写多个表达式。
 `(unless)` 表达式的返回值总是 `void`。
 
-```scheme
+```meta-lisp
 (unless (equal? x 0)
   (print (idiv 1 x))
   (newline))
@@ -608,7 +608,7 @@ builtin/list-empty?
 
 ## (cond)
 
-```scheme
+```meta-lisp
 (cond
   (<question> <answer>)
   ...)
@@ -620,7 +620,7 @@ builtin/list-empty?
 第一个为真的分支的 `<answer>` 被求值并返回。
 末尾的 `<question>` 可以写 `else` 作为默认分支。
 
-```scheme
+```meta-lisp
 (define (classify x)
   (cond
    ((int-positive? x) "positive")
@@ -630,7 +630,7 @@ builtin/list-empty?
 
 ## (and)
 
-```scheme
+```meta-lisp
 (and <exp> ...)
 ```
 
@@ -638,7 +638,7 @@ builtin/list-empty?
 
 从左到右求值。遇到第一个假值就停止并返回该值。全真时返回最后一个值。
 
-```scheme
+```meta-lisp
 (and (int? x) (int-positive? x))
 ```
 
@@ -646,7 +646,7 @@ builtin/list-empty?
 
 ## (or)
 
-```scheme
+```meta-lisp
 (or <exp> ...)
 ```
 
@@ -654,7 +654,7 @@ builtin/list-empty?
 
 从左到右求值。遇到第一个真值就停止并返回该值。全假时返回最后一个值。
 
-```scheme
+```meta-lisp
 (or (equal? x 0) (equal? x 1))
 ```
 
@@ -664,7 +664,7 @@ builtin/list-empty?
 
 ## (begin)
 
-```scheme
+```meta-lisp
 (begin <body>)
 ```
 
@@ -674,7 +674,7 @@ builtin/list-empty?
 依次求值，返回最后一个表达式的值。
 前面的表达式通常是为了副作用。
 
-```scheme
+```meta-lisp
 (begin
   (println "step 1")
   (println "step 2")
@@ -684,7 +684,7 @@ builtin/list-empty?
 `(lambda)` 和 `(define)` 中的 `<body>` 函数体，
 都类似于 `(begin)` 的 `<body>`。
 
-```scheme
+```meta-lisp
 (define (f x)
   (= y (iadd x 1))
   (imul y 2))
@@ -692,7 +692,7 @@ builtin/list-empty?
 
 ## (let)
 
-```scheme
+```meta-lisp
 (let ((<name> <exp>)
       ...)
   <body>)
@@ -703,7 +703,7 @@ builtin/list-empty?
 所有右侧 `<exp>` 在同一个外层作用域中求值，互相不可见。
 然后所有 `<name>` 同时绑定到求值结果，再求值 `<body>`。
 
-```scheme
+```meta-lisp
 (let ((x 1))
   (iadd x 1))  ;; => 2
 
@@ -714,7 +714,7 @@ builtin/list-empty?
 
 并行意味着后面的绑定不能引用前面的：
 
-```scheme
+```meta-lisp
 (let ((x 1)
       (y (iadd x 1)))  ;; 错误：x 在右侧不可见
   (iadd x y))
@@ -722,7 +722,7 @@ builtin/list-empty?
 
 ## (let*)
 
-```scheme
+```meta-lisp
 (let* ((<name> <exp>)
        ...)
   <body>)
@@ -732,7 +732,7 @@ builtin/list-empty?
 
 每个 `<exp>` 可以引用前面绑定的名字。
 
-```scheme
+```meta-lisp
 (let* ((x 1)
        (y (iadd x 1)))
   (iadd x y))  ;; => 3
@@ -740,7 +740,7 @@ builtin/list-empty?
 
 `(let*)` 等价于嵌套的 `(let)`：
 
-```scheme
+```meta-lisp
 (let ((x 1))
   (let ((y (iadd x 1)))
     (iadd x y)))
@@ -749,7 +749,7 @@ builtin/list-empty?
 <a name="assign"></a>
 ## (=)
 
-```scheme
+```meta-lisp
 (= <name> <exp>)
 ```
 
@@ -758,7 +758,7 @@ builtin/list-empty?
 只能在 `<body>` 中使用。
 用来代替嵌套的 `(let)`，以减少缩进。
 
-```scheme
+```meta-lisp
 (define (f x)
   (= y (iadd x 1))
   (println y)
@@ -769,7 +769,7 @@ builtin/list-empty?
 
 等价于：
 
-```scheme
+```meta-lisp
 (define (f x)
   (let ((y (iadd x 1)))
     (println y)
@@ -780,7 +780,7 @@ builtin/list-empty?
 
 ## (letrec)
 
-```scheme
+```meta-lisp
 (letrec ((<name> <exp>)
          ...)
   <body>)
@@ -793,7 +793,7 @@ builtin/list-empty?
 
 互相递归的例子：
 
-```scheme
+```meta-lisp
 (letrec ((even?
           (lambda (n)
             (if (equal? n 0)
@@ -809,7 +809,7 @@ builtin/list-empty?
 
 与 `(letrec*)`（见下文）的区别：
 
-```scheme
+```meta-lisp
 ;; (letrec*) 支持顺序依赖：
 (letrec* ((a 1)
           (b (iadd a 1)))
@@ -823,7 +823,7 @@ builtin/list-empty?
 
 ## (letrec*)
 
-```scheme
+```meta-lisp
 (letrec* ((<name> <exp>)
           ...)
   <body>)
@@ -835,7 +835,7 @@ builtin/list-empty?
 
 互相递归的例子：
 
-```scheme
+```meta-lisp
 (letrec* ((even?
            (lambda (n)
              (if (equal? n 0)
@@ -851,7 +851,7 @@ builtin/list-empty?
 
 顺序依赖的例子：
 
-```scheme
+```meta-lisp
 (letrec* ((a 1)
           (b (iadd a 1)))
   b)  ;; => 2
@@ -859,7 +859,7 @@ builtin/list-empty?
 
 ## local (define)
 
-```scheme
+```meta-lisp
 (define (<name> <parameter> ...) <body>)
 (define <name> <exp>)
 ```
@@ -871,7 +871,7 @@ builtin/list-empty?
 
 互相递归的例子（与 `(letrec*)` 的例子等价）：
 
-```scheme
+```meta-lisp
 (begin
   (define (even? n)
     (if (equal? n 0)
@@ -886,7 +886,7 @@ builtin/list-empty?
 
 顺序依赖的例子：
 
-```scheme
+```meta-lisp
 (begin
   (define a 1)
   (define b (iadd a 1))
@@ -895,7 +895,7 @@ builtin/list-empty?
 
 `(=)` 与 `(define)` 可以混合使用：
 
-```scheme
+```meta-lisp
 (begin
   (= one 1)
   (define a one)
@@ -907,7 +907,7 @@ builtin/list-empty?
 
 ## (pipe)
 
-```scheme
+```meta-lisp
 (pipe <init> <step> ...)
 ```
 
@@ -915,21 +915,21 @@ builtin/list-empty?
 
 将 `<init>` 传入第一个 `<step>`，结果传入第二个 `<step>`，以此类推。
 
-```scheme
+```meta-lisp
 (pipe 5 add1 double)        ;; => 12
 (pipe 2 add1 double square) ;; => 36
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (double (add1 5))           ;; => 12
 (square (double (add1 2)))  ;;  => 36
 ```
 
 ## (chain)
 
-```scheme
+```meta-lisp
 (chain <step> ...)
 ```
 
@@ -937,28 +937,28 @@ builtin/list-empty?
 
 与 `(pipe)` 的区别是 `(chain)` 不传入初始值，而是返回一个函数。
 
-```scheme
+```meta-lisp
 (chain add1 double)
 (chain add1 double square)
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (lambda (x) (pipe x add1 double))
 (lambda (x) (pipe x add1 double square))
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (lambda (x) (double (add1 x)))
 (lambda (x) (square (double (add1 x))))
 ```
 
 ## (compose)
 
-```scheme
+```meta-lisp
 (compose <step> ...)
 ```
 
@@ -966,14 +966,14 @@ builtin/list-empty?
 
 与 `(chain)` 的复合方向相反。
 
-```scheme
+```meta-lisp
 (compose add1 double)
 (compose add1 double square)
 ```
 
 等价于：
 
-```scheme
+```meta-lisp
 (lambda (x) (add1 (double x)))
 (lambda (x) (add1 (double (square x))))
 ```
@@ -997,7 +997,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (define-algebraic-type)
 
-```scheme
+```meta-lisp
 (define-algebraic-type <type-name>
   ((<constructor-name> (<field-name> <type>) ...)
    <predicate-name>
@@ -1022,7 +1022,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 例如：
 
-```scheme
+```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
@@ -1032,7 +1032,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 将会生成具有下列类型的函数：
 
-```scheme
+```meta-lisp
 (claim make-point (-> float-t float-t point-t))
 (claim point? (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
@@ -1043,7 +1043,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 使用举例：
 
-```scheme
+```meta-lisp
 (define p (make-point 1.0 2.0))
 (point? p)      ;; => true
 (point-x p)     ;; => 1.0
@@ -1060,7 +1060,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 例如：
 
-```scheme
+```meta-lisp
 (define-algebraic-type (my-list-t E)
   ((nil)
    nil?)
@@ -1072,7 +1072,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 将会生成具有下列类型的函数：
 
-```scheme
+```meta-lisp
 (claim nil (polymorphic (E) (-> (my-list-t E))))
 (claim nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
 (claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
@@ -1085,7 +1085,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (define-record-type)
 
-```scheme
+```meta-lisp
 (define-record-type <type-name>
   (<constructor-name> (<field-name> <type>) ...)
   <predicate-name>
@@ -1101,7 +1101,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 与 `(define-algebraic-type)` 类似，但是只有一个构造器。
 
-```scheme
+```meta-lisp
 (define-record-type point-t
   (make-point (x float-t) (y float-t))
   point?
@@ -1111,7 +1111,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 等价于：
 
-```scheme
+```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
@@ -1130,7 +1130,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (define-enum)
 
-```scheme
+```meta-lisp
 (define-enum <type-name>
   (<constructor-name> (<field-name> <type>) ...)
   ...)
@@ -1143,7 +1143,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 定义多个构造器的代数数据类型。
 每个构造器按照约定生成谓词、访问器和修改器的名字。
 
-```scheme
+```meta-lisp
 (define-enum exp-t
   (var-exp (name symbol-t))
   (apply-exp (target exp-t) (arg exp-t))
@@ -1152,7 +1152,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 等价于：
 
-```scheme
+```meta-lisp
 (define-algebraic-type exp-t
   ((var-exp (name symbol-t))
    var-exp?
@@ -1175,7 +1175,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (define-struct)
 
-```scheme
+```meta-lisp
 (define-struct <type-name>
   (<field-name> <type>)
   ...)
@@ -1190,7 +1190,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 格式为 `<base-name>-t`。
 其中 `<base-name>` 将被用于生成其他名字。
 
-```scheme
+```meta-lisp
 (define-struct point-t
   (x float-t)
   (y float-t))
@@ -1198,7 +1198,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 等价于：
 
-```scheme
+```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
@@ -1217,7 +1217,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 <a name="define-struct-star"></a>
 ## (define-struct*)
 
-```scheme
+```meta-lisp
 (define-struct* <type-name>
   (<constructor-name>
    (<field-name> <type>)
@@ -1232,7 +1232,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 与 `(define-struct)` 类似，但是 `<constructor-name>` 由用户给出。
 
-```scheme
+```meta-lisp
 (define-struct* point-t
   (make-point
    (x float-t)
@@ -1241,7 +1241,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 等价于：
 
-```scheme
+```meta-lisp
 (define-struct point-t
   (x float-t)
   (y float-t))
@@ -1250,7 +1250,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 之所以给 `(define-struct)` 增加这个变体，
 是因为有时需要把 `make-<base-name>` 保留给更简单的构造器。
 
-```scheme
+```meta-lisp
 (define-struct* package-t
   (make-package
    (root-directory string-t)
@@ -1263,7 +1263,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (match)
 
-```scheme
+```meta-lisp
 (match <target>
   (<pattern> <body>)
   ...)
@@ -1271,7 +1271,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 用模式匹配的方式解构代数数据类型。
 
-```scheme
+```meta-lisp
 (define-enum exp-t
   (var-exp (name symbol-t))
   (apply-exp (target exp-t) (arg exp-t))
@@ -1291,7 +1291,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (define-opaque-type)
 
-```scheme
+```meta-lisp
 (define-opaque-type <type-name> <representation-type>
   (<interface-name> <interface-type>)
   ...)
@@ -1305,7 +1305,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 例如 builtin 中的 `box-t`，内部表示为 `(list-t E)`：
 
-```scheme
+```meta-lisp
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-empty? (-> (box-t E) bool-t))
@@ -1315,7 +1315,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 在实现接口函数的时候，等价于声明了：
 
-```scheme
+```meta-lisp
 (claim make-box (polymorphic (E) (-> (list-t E))))
 (claim box-empty? (polymorphic (E) (-> (list-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
@@ -1324,7 +1324,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 因此接口函数内部可以使用 list API 来实现：
 
-```scheme
+```meta-lisp
 (define (make-box) (make-list))
 
 (define (box-put! value box)
@@ -1335,7 +1335,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 在使用接口函数的时候，等价于声明了：
 
-```scheme
+```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
@@ -1344,7 +1344,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 外部代码只能通过接口函数来操作 `box-t`：
 
-```scheme
+```meta-lisp
 (claim box-get (polymorphic (E) (-> (box-t E) E)))
 (define (box-get box)
   (match (box-get-maybe box)
@@ -1364,7 +1364,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (module)
 
-```scheme
+```meta-lisp
 (module <module-name>)
 ```
 
@@ -1378,7 +1378,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 `even.meta`:
 
-```scheme
+```meta-lisp
 (module example)
 
 (define (even? n)
@@ -1389,7 +1389,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 `odd.meta`:
 
-```scheme
+```meta-lisp
 (module example)
 
 (define (odd? n)
@@ -1400,7 +1400,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ## (import)
 
-```scheme
+```meta-lisp
 (import <module-name> <name> ...)
 ```
 
@@ -1408,27 +1408,27 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 导入后可以直接使用，不需要限定前缀。
 
-```scheme
+```meta-lisp
 (import math pi circumference)
 ```
 
 之后，
 
-```scheme
+```meta-lisp
 math/pi
 math/circumference
 ```
 
 可简写为：
 
-```scheme
+```meta-lisp
 pi
 circumference
 ```
 
 ## (import-as)
 
-```scheme
+```meta-lisp
 (import-as <module-name> <prefix>)
 ```
 
@@ -1436,25 +1436,25 @@ circumference
 
 `<module-name>/<name>` 改为 `<prefix>/<name>`。
 
-```scheme
+```meta-lisp
 (import-as meta m)
 ```
 
 之后，
 
-```scheme
+```meta-lisp
 meta/exp-t
 ```
 
 可简写为：
 
-```scheme
+```meta-lisp
 m/exp-t
 ```
 
 ## (import-all)
 
-```scheme
+```meta-lisp
 (import-all <module-name>)
 ```
 
@@ -1470,7 +1470,7 @@ m/exp-t
 
 ## (private)
 
-```scheme
+```meta-lisp
 (private <name> ...)
 ```
 
@@ -1478,7 +1478,7 @@ m/exp-t
 
 被标记为私有的名字不能被其他模块引用。
 
-```scheme
+```meta-lisp
 (module serial-number)
 
 (private serial-number-hash)
@@ -1489,7 +1489,7 @@ m/exp-t
 
 ## (define-test)
 
-```scheme
+```meta-lisp
 (define-test <test-name> <body>)
 ```
 
@@ -1497,7 +1497,7 @@ m/exp-t
 
 `<body>` 中可以包含多个断言。
 
-```scheme
+```meta-lisp
 (claim add1 (-> int-t int-t))
 (define (add1 x) (iadd x 1))
 

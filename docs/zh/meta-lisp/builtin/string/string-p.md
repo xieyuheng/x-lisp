@@ -4,7 +4,7 @@ title: string?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: string?
 
 # 例子
 
-```scheme
+```meta-lisp
 (string? "hello")  ;; => true
 (string? 42)       ;; => false
 (string? 'foo)     ;; => false

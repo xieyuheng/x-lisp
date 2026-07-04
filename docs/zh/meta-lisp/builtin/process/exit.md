@@ -4,7 +4,7 @@ title: exit
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t void-t)
 ```
 
@@ -14,7 +14,7 @@ title: exit
 
 # 例子
 
-```scheme
+```meta-lisp
 (exit 0)   ;; 正常退出
 (exit 1)   ;; 异常退出
 ```

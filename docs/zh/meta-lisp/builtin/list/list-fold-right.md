@@ -4,7 +4,7 @@ title: list-fold-right
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E R) (-> (-> E R R) R (list-t E) R))
 ```
 
@@ -14,7 +14,7 @@ title: list-fold-right
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-fold-right iadd 0 [1 2 3 4])     ;; => 10
 (list-fold-right cons [] [1 2 3 4])    ;; => [1 2 3 4]
 ```

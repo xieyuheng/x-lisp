@@ -4,7 +4,7 @@ title: hash-has?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K (hash-t K V) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: hash-has?
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-has? "a" (@hash "a" 1 "b" 2))  ;; => true
 (hash-has? "c" (@hash "a" 1 "b" 2))  ;; => false
 ```

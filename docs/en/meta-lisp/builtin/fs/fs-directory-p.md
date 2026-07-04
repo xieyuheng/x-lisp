@@ -4,7 +4,7 @@ title: fs-directory?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,6 +14,6 @@ Check if a path is a directory.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-directory? "/tmp")  ;; => true or false
 ```

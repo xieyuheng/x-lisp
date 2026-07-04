@@ -4,7 +4,7 @@ title: hash-reject
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (-> K V bool-t) (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ Remove entries for which the predicate returns true.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-reject
   (lambda (k v) (int-non-negative? v))
   (@hash 'a 1 'b 2 'x -1 'y -2))

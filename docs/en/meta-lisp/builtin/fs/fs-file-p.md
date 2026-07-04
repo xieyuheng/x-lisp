@@ -4,7 +4,7 @@ title: fs-file?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,6 +14,6 @@ Check if a path is a file.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-file? "/tmp/foo.txt")  ;; => true or false
 ```

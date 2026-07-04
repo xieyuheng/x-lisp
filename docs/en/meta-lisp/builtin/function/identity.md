@@ -4,7 +4,7 @@ title: identity
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A A))
 ```
 
@@ -14,7 +14,7 @@ Return the argument unchanged.
 
 # Examples
 
-```scheme
+```meta-lisp
 (identity 1)   ;; => 1
 (identity "a") ;; => "a"
 ```

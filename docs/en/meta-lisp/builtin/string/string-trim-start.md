@@ -4,7 +4,7 @@ title: string-trim-start
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Remove whitespace from the start of a string, same as `string-trim-left`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-trim-start "  hello")  ;; => "hello"
 (string-trim-start "hello  ")  ;; => "hello  "
 ```

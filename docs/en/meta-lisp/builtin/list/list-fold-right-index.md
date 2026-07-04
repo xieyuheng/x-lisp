@@ -4,7 +4,7 @@ title: list-fold-right-index
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E R) (-> (-> int-t E R R) R (list-t E) R))
 ```
 
@@ -14,7 +14,7 @@ Right fold with index. The callback receives the index, the current element, and
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) [] ['a 'b 'c])
 ;; => [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]
 

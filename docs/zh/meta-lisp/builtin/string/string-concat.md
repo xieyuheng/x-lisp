@@ -4,7 +4,7 @@ title: string-concat
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t string-t) string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-concat
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-concat ["a" "b" "c"])  ;; => "abc"
 (string-concat [])             ;; => ""
 (string-concat ["hello " "world"])  ;; => "hello world"

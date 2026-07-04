@@ -4,7 +4,7 @@ title: box-get
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (box-t E) E))
 ```
 
@@ -14,7 +14,7 @@ Get the value from a box. Throws an error if the box is empty.
 
 # Examples
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-put! 42 box)
 (box-get box) ;; => 42

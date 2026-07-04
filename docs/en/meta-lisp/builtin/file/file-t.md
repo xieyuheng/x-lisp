@@ -4,7 +4,7 @@ title: file-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,6 +14,6 @@ File handle type. Represents an open file that can be read or written.
 
 # Examples
 
-```scheme
+```meta-lisp
 (claim data-file file-t)
 ```

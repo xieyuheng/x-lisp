@@ -4,7 +4,7 @@ title: same?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: same?
 
 # 例子
 
-```scheme
+```meta-lisp
 (same? 1 1)              ;; => true
 (same? "a" "a")          ;; => true
 (same? [1 2 3] [1 2 3])  ;; => false

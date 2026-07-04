@@ -4,7 +4,7 @@ title: imul
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: imul
 
 # 例子
 
-```scheme
+```meta-lisp
 (imul 2 3)    ;; => 6
 (imul -2 3)   ;; => -6
 (imul 0 5)    ;; => 0

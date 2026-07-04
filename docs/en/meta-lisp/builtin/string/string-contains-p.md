@@ -4,7 +4,7 @@ title: string-contains?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string contains a specified substring.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-contains? "hello" "ell")  ;; => true
 (string-contains? "hello" "xyz")  ;; => false
 (string-contains? "hello" "")     ;; => true

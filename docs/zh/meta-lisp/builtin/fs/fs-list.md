@@ -4,7 +4,7 @@ title: fs-list
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t))
 ```
 
@@ -14,6 +14,6 @@ title: fs-list
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
 ```

@@ -4,7 +4,7 @@ title: string-split
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t (list-t string-t))
 ```
 
@@ -14,7 +14,7 @@ title: string-split
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-split "a,b,c" ",")     ;; => ["a" "b" "c"]
 (string-split "hello" ",")     ;; => ["hello"]
 (string-split "" ",")          ;; => [""]

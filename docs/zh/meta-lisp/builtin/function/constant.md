@@ -4,7 +4,7 @@ title: constant
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B A))
 ```
 
@@ -14,6 +14,6 @@ title: constant
 
 # 例子
 
-```scheme
+```meta-lisp
 (constant 1 "a")  ;; => 1
 ```

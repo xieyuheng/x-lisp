@@ -4,7 +4,7 @@ title: path-absolute?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a path is absolute.
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-absolute? "/tmp/foo")  ;; => true
 (path-absolute? "foo/bar")   ;; => false
 ```

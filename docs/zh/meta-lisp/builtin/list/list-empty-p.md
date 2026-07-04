@@ -4,7 +4,7 @@ title: list-empty?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-empty?
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-empty? [])       ;; => true
 (list-empty? [1 2 3])  ;; => false
 ```

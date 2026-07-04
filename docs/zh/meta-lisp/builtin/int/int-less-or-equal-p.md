@@ -4,7 +4,7 @@ title: int-less-or-equal?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-less-or-equal?
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-less-or-equal? 1 2)    ;; => true
 (int-less-or-equal? 1 1)    ;; => true
 (int-less-or-equal? 2 1)    ;; => false

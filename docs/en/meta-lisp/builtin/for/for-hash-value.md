@@ -4,7 +4,7 @@ title: for-hash-value
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V Any) (-> (hash-t K V) (-> V Any) void-t))
 ```
 
@@ -17,6 +17,6 @@ Iterate over each value with side effects.
 
 # Examples
 
-```scheme
+```meta-lisp
 (for-hash-value (@hash 1 2 3 4) println)
 ```

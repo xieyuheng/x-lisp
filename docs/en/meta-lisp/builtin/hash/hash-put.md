@@ -4,7 +4,7 @@ title: hash-put
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K V (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,6 +14,6 @@ Set a key-value pair, returning a new hash table.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-put "c" 3 (@hash "a" 1 "b" 2))  ;; => (@hash "a" 1 "b" 2 "c" 3)
 ```

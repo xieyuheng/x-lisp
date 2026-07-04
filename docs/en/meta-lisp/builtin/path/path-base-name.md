@@ -4,7 +4,7 @@ title: path-base-name
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ Get the file name component of a path.
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-base-name "/tmp/foo.txt")  ;; => "foo.txt"
 ```

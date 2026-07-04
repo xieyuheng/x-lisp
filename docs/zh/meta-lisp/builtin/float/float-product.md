@@ -4,7 +4,7 @@ title: float-product
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t float-t) float-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-product
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-product [1.0 2.0 3.0])  ;; => 6.0
 (float-product [])             ;; => 1.0
 (float-product [2.0 0.0 3.0]) ;; => 0.0

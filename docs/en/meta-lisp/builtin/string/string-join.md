@@ -4,7 +4,7 @@ title: string-join
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t) string-t)
 ```
 
@@ -14,7 +14,7 @@ Join a list of strings with a delimiter, the inverse of `string-split`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-join "," ["a" "b" "c"])  ;; => "a,b,c"
 (string-join " " ["a" "b"])      ;; => "a b"
 (string-join "" ["a" "b"])       ;; => "ab"

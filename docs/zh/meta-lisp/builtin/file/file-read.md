@@ -4,7 +4,7 @@ title: file-read
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> file-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: file-read
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((file (open-input-file "data.txt")))
   (file-read file)
   (file-close file))

@@ -4,7 +4,7 @@ title: list-reject
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) (list-t A)))
 ```
 
@@ -14,7 +14,7 @@ Remove elements that satisfy the predicate.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-reject int? ['a 1 'b 2])       ;; => ['a 'b]
 (list-reject int-non-negative? [0 1 -1 2])  ;; => [-1]
 ```

@@ -4,7 +4,7 @@ title: call-with-output-file
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A)
   (-> string-t (-> file-t A) A))
 ```
@@ -15,7 +15,7 @@ Open file for writing, pass the file handle to a function, and automatically clo
 
 # Examples
 
-```scheme
+```meta-lisp
 (call-with-output-file "output.txt"
   (lambda (file) (file-writeln file "hello")))
 ```

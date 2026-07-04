@@ -4,7 +4,7 @@ title: current-stdout-file
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> file-t)
 ```
 
@@ -14,7 +14,7 @@ title: current-stdout-file
 
 # 例子
 
-```scheme
+```meta-lisp
 (file-write "hello" (current-stdout-file))
 (file-writeln "done" (current-stdout-file))
 ```

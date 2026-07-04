@@ -4,7 +4,7 @@ title: symbol-length
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> symbol-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: symbol-length
 
 # 例子
 
-```scheme
+```meta-lisp
 (symbol-length 'foo)      ;; => 3
 (symbol-length 'hello)    ;; => 5
 (symbol-length '+)        ;; => 1

@@ -4,7 +4,7 @@ title: assert-not
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> bool-t void-t)
 ```
 
@@ -14,7 +14,7 @@ title: assert-not
 
 # 例子
 
-```scheme
+```meta-lisp
 (assert-not (= 1 2))
 (assert-not (< 2 1))
 ```

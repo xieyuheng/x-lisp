@@ -4,7 +4,7 @@ title: list-pop!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) E))
 ```
 
@@ -14,7 +14,7 @@ Pop the last element from the list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-pop! [1 2 3])  ;; => 3
 (list-pop! [1])      ;; => 1
 ```

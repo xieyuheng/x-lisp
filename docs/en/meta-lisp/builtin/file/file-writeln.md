@@ -4,7 +4,7 @@ title: file-writeln
 
 # Type
 
-```scheme
+```meta-lisp
 (-> file-t string-t void-t)
 ```
 
@@ -14,7 +14,7 @@ Write a string to a file followed by a newline.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((file (open-output-file "output.txt")))
   (file-writeln file "hello")
   (file-writeln file "world")

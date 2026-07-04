@@ -4,7 +4,7 @@ title: make-hash
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: make-hash
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h (make-hash)))
   (hash-empty? h))  ;; => true
 ```

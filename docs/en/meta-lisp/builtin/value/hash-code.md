@@ -4,7 +4,7 @@ title: hash-code
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A int-t))
 ```
 
@@ -14,7 +14,7 @@ Compute the hash code of any value.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-code 42)       ;; => 42
 (hash-code "hello")  ;; => some integer
 ```

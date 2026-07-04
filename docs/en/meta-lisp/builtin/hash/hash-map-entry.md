@@ -4,7 +4,7 @@ title: hash-map-entry
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K1 V1 K2 V2)
   (-> (-> (hash-entry-t K1 V1) (hash-entry-t K2 V2))
       (hash-t K1 V1)
@@ -17,7 +17,7 @@ Map a function over entries.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-map-entry
   (lambda (e)
     (make-hash-entry

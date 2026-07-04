@@ -4,7 +4,7 @@ title: float-sum
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t float-t) float-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-sum
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-sum [1.0 2.0 3.0])  ;; => 6.0
 (float-sum [])             ;; => 0.0
 (float-sum [-1.0 0.0 1.0]) ;; => 0.0

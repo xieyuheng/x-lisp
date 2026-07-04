@@ -4,7 +4,7 @@ title: triple-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Triple type constructor. `(triple-t A B C)` represents a triple containing value
 
 # Definition
 
-```scheme
+```meta-lisp
 (define-struct (triple-t A B C)
   (first A)
   (second B)
@@ -23,7 +23,7 @@ Triple type constructor. `(triple-t A B C)` represents a triple containing value
 
 # Generated
 
-```scheme
+```meta-lisp
 (claim make-triple (polymorphic (A B C) (-> A B C (triple-t A B C))))
 (claim triple? (polymorphic (A) (-> A bool-t)))
 (claim triple-first  (polymorphic (A B C) (-> (triple-t A B C) A)))
@@ -36,7 +36,7 @@ Triple type constructor. `(triple-t A B C)` represents a triple containing value
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
   (triple-first t))   ;; => 1
 ```

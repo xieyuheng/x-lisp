@@ -4,7 +4,7 @@ title: string-to-symbol
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t symbol-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-to-symbol
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-to-symbol "foo")  ;; => 'foo
 (string-to-symbol "42")   ;; => '42
 ```

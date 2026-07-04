@@ -4,7 +4,7 @@ title: fs-delete-file
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ Delete a file.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-delete-file "/tmp/foo.txt")
 ```

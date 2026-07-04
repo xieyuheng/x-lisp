@@ -4,7 +4,7 @@ title: hash-invert
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) (hash-t V K)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-invert
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-invert (@hash 1 2 3 4))        ;; => (@hash 2 1 4 3)
 (hash-invert (@hash 'x 1 'y 1 'z 2)) ;; => (@hash 1 'y 2 'z)
 ```

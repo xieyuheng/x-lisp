@@ -4,7 +4,7 @@ title: set-empty?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: set-empty?
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-empty? #{})       ;; => true
 (set-empty? #{1 2 3})  ;; => false
 ```

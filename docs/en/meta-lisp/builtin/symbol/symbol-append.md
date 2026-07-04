@@ -4,7 +4,7 @@ title: symbol-append
 
 # Type
 
-```scheme
+```meta-lisp
 (-> symbol-t symbol-t symbol-t)
 ```
 
@@ -14,7 +14,7 @@ Concatenate two symbols, creating a new symbol.
 
 # Examples
 
-```scheme
+```meta-lisp
 (symbol-append 'foo 'bar)  ;; => 'foobar
 (symbol-append 'a 'b)      ;; => 'ab
 ```

@@ -4,7 +4,7 @@ title: error
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (B) (-> string B))
 ```
 
@@ -14,6 +14,6 @@ Throw an error with a string as the error message. Does not return.
 
 # Examples
 
-```scheme
+```meta-lisp
 (error "something went wrong")
 ```

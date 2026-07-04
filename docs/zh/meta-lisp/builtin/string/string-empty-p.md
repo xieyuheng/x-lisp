@@ -4,7 +4,7 @@ title: string-empty?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-empty?
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-empty? "")       ;; => true
 (string-empty? "hello")  ;; => false
 ```

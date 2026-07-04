@@ -4,7 +4,7 @@ title: hash-get
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K (hash-t K V) V))
 ```
 
@@ -14,7 +14,7 @@ title: hash-get
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-get "a" (@hash "a" 1 "b" 2))  ;; => 1
 ;; (hash-get "c" (@hash "a" 1 "b" 2))  ;; 错误：键不存在
 ```

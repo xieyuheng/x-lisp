@@ -4,7 +4,7 @@ title: string-append
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-append
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-append "hello" " world")  ;; => "hello world"
 (string-append "a" "b")           ;; => "ab"
 (string-append "" "hello")        ;; => "hello"

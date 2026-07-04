@@ -4,7 +4,7 @@ title: float?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: float?
 
 # 例子
 
-```scheme
+```meta-lisp
 (float? 3.14)    ;; => true
 (float? 42)      ;; => false
 (float? "foo")   ;; => false

@@ -4,7 +4,7 @@ title: set-union
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E) (set-t E)))
 ```
 
@@ -14,7 +14,7 @@ Union of two sets.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-union #{1 2} #{2 3})  ;; => #{1 2 3}
 (set-union #{1} #{})       ;; => #{1}
 ```

@@ -4,7 +4,7 @@ title: string-to-lower-case
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Convert all letters in a string to lower case.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-to-lower-case "HELLO")  ;; => "hello"
 (string-to-lower-case "Hello")  ;; => "hello"
 (string-to-lower-case "123")    ;; => "123"

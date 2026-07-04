@@ -4,7 +4,7 @@ title: just-put-value!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A (maybe-t A) (maybe-t A)))
 ```
 
@@ -14,7 +14,7 @@ title: just-put-value!
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((m (just 42)))
   (just-put-value! 7 m)
   (just-value m))  ;; => 7

@@ -4,7 +4,7 @@ title: set-inter
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E) (set-t E)))
 ```
 
@@ -14,7 +14,7 @@ Intersection of two sets.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-inter #{1 2 3} #{2 3 4})  ;; => #{2 3}
 (set-inter #{1} #{2})          ;; => #{}
 ```

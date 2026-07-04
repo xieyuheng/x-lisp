@@ -4,7 +4,7 @@ title: pair-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Pair type constructor. `(pair-t A B)` represents a pair containing values of typ
 
 # Definition
 
-```scheme
+```meta-lisp
 (define-struct (pair-t A B)
   (first A)
   (second B))
@@ -22,7 +22,7 @@ Pair type constructor. `(pair-t A B)` represents a pair containing values of typ
 
 # Generated
 
-```scheme
+```meta-lisp
 (claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
 (claim pair? (polymorphic (A) (-> A bool-t)))
 (claim pair-first  (polymorphic (A B) (-> (pair-t A B) A)))
@@ -33,7 +33,7 @@ Pair type constructor. `(pair-t A B)` represents a pair containing values of typ
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((p (make-pair 1 "hello")))
   (pair-first p))   ;; => 1
 ```

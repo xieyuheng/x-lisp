@@ -4,7 +4,7 @@ title: hash-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((scores (@hash "alice" 95 "bob" 87)))
   (hash-get "alice" scores))  ;; => 95
 ```

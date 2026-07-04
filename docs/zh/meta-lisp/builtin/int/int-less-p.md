@@ -4,7 +4,7 @@ title: int-less?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-less?
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-less? 1 2)      ;; => true
 (int-less? 2 1)      ;; => false
 (int-less? 1 1)      ;; => false

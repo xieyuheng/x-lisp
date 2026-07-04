@@ -4,7 +4,7 @@ title: parse-json
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t json-t)
 ```
 
@@ -14,7 +14,7 @@ Parse a JSON string into a `json-t` value.
 
 # Examples
 
-```scheme
+```meta-lisp
 (parse-json "null")            ;; => (json-null)
 (parse-json "true")            ;; => (json-bool true)
 (parse-json "42")              ;; => (json-number 42.0)

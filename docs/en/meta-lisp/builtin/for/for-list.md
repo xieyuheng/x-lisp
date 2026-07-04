@@ -4,7 +4,7 @@ title: for-list
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (list-t A) (-> A Any) void-t))
 ```
 
@@ -17,6 +17,6 @@ Apply a side-effecting function to each element.
 
 # Examples
 
-```scheme
+```meta-lisp
 (for-list [1 2 3] println)
 ```

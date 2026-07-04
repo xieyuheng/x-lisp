@@ -4,7 +4,7 @@ title: triple-put-first!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B C) (-> A (triple-t A B C) (triple-t A B C)))
 ```
 
@@ -14,7 +14,7 @@ title: triple-put-first!
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
   (triple-put-first! 7 t)
   (triple-first t))  ;; => 7

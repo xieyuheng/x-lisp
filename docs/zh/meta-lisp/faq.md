@@ -6,7 +6,7 @@ title: 常见问题（FAQ）
 
 没有。用**尾递归函数**代替：
 
-```scheme
+```meta-lisp
 (define (list-sum xs)
   (list-sum-loop xs 0))
 
@@ -20,14 +20,14 @@ title: 常见问题（FAQ）
 
 # 如何比较两个值？
 
-```scheme
+```meta-lisp
 (equal? a b)     ;; 结构相等
 (same? a b)      ;; 引用相同，或原子数据相同
 ```
 
 # 如何输出调试信息？
 
-```scheme
+```meta-lisp
 (print x)        ;; 打印值
 (println x)      ;; 打印值并换行
 (write x)        ;; 打印字符串
@@ -133,14 +133,14 @@ meta-lisp 有类似 Haskell 和 ML 的 Hindley-Milner 类型系统。
 
 `(define-struct)` 默认的构造器名字为 `make-<base-name>`：
 
-```scheme
+```meta-lisp
 (define-struct point-t
   (x int-t)
   (y int-t))
 ```
 可以用 `(define-struct*)` 指定构造器名字：
 
-```scheme
+```meta-lisp
 (define-struct* point-t
   (cons-point
    (x int-t)

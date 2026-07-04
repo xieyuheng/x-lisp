@@ -4,7 +4,7 @@ title: fs-delete
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ Recursively delete a file or directory.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-delete "/tmp/foo")
 ```

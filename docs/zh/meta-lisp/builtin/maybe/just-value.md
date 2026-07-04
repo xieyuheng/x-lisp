@@ -4,7 +4,7 @@ title: just-value
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (maybe-t A) A))
 ```
 
@@ -14,6 +14,6 @@ title: just-value
 
 # 例子
 
-```scheme
+```meta-lisp
 (just-value (just 42))  ;; => 42
 ```

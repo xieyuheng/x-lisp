@@ -4,7 +4,7 @@ title: print
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A void-t))
 ```
 
@@ -14,7 +14,7 @@ title: print
 
 # 例子
 
-```scheme
+```meta-lisp
 (print "hello")  ;; 输出 hello
 (print 42)       ;; 输出 42
 ```

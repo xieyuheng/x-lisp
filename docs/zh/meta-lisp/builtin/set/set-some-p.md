@@ -4,7 +4,7 @@ title: set-some?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (set-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: set-some?
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-some? int-non-negative? #{-1 0 1})  ;; => true
 (set-some? int-non-negative? #{-1 -2})   ;; => false
 ```

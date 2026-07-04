@@ -4,7 +4,7 @@ title: total-compare
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B int-t))
 ```
 
@@ -14,7 +14,7 @@ Total order comparison. Returns a negative, zero, or positive number indicating 
 
 # Examples
 
-```scheme
+```meta-lisp
 (total-compare 1 2)   ;; => negative
 (total-compare 2 2)   ;; => 0
 (total-compare 3 2)   ;; => positive

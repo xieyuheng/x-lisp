@@ -4,7 +4,7 @@ title: list-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ List type constructor. `(list-t E)` represents a list with element type `E`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (claim numbers (list-t int-t))
 (claim names (list-t string-t))
 ```

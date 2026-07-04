@@ -4,7 +4,7 @@ title: format-sexp
 
 # Type
 
-```scheme
+```meta-lisp
 (-> sexp-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Format an S-expression as a string.
 
 # Examples
 
-```scheme
+```meta-lisp
 (format-sexp (@sexp (a b c)))  ;; => "(a b c)"
 (format-sexp (@sexp 42))       ;; => "42"
 ```

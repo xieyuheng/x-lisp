@@ -4,7 +4,7 @@ title: path-stem
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ title: path-stem
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-stem "/tmp/foo.txt")  ;; => "foo"
 ```

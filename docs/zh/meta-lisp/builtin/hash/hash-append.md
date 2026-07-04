@@ -4,7 +4,7 @@ title: hash-append
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-append
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-append (@hash 1 2) (@hash 3 4))
 ;; => (@hash 1 2 3 4)
 

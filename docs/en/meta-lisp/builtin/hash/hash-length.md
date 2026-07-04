@@ -4,7 +4,7 @@ title: hash-length
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) int-t))
 ```
 
@@ -14,7 +14,7 @@ Number of key-value entries in the hash table.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((h (@hash "a" 1)))
   (hash-length h))  ;; => 1
 

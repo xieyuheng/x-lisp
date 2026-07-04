@@ -4,7 +4,7 @@ title: hash-delete!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-delete!
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h (@hash "a" 1 "b" 2 "c" 3)))
   (hash-delete! "a" h))  ;; => (@hash "b" 2 "c" 3)
 ```

@@ -4,7 +4,7 @@ title: string-to-lower-case
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-to-lower-case
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-to-lower-case "HELLO")  ;; => "hello"
 (string-to-lower-case "Hello")  ;; => "hello"
 (string-to-lower-case "123")    ;; => "123"

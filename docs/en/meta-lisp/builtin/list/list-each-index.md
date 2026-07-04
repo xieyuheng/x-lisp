@@ -4,7 +4,7 @@ title: list-each-index
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (-> int-t A Any) (list-t A) void-t))
 ```
 
@@ -14,7 +14,7 @@ Iterate over each element with its index, for side effects.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-each-index
  (lambda (i x)
    (print i)

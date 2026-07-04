@@ -4,7 +4,7 @@ title: float?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a float.
 
 # Examples
 
-```scheme
+```meta-lisp
 (float? 3.14)    ;; => true
 (float? 42)      ;; => false
 (float? "foo")   ;; => false

@@ -4,7 +4,7 @@ title: hash-empty?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: hash-empty?
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-empty? (make-hash))     ;; => true
 (hash-empty? (@hash 'a 1))    ;; => false
 ```

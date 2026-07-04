@@ -4,7 +4,7 @@ title: sexp-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-enum sexp-t
   (symbol-sexp  (content symbol-t)            (location source-location-t))
   (keyword-sexp (content keyword-t)           (location source-location-t))
@@ -27,7 +27,7 @@ type-t
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim symbol-sexp  (-> symbol-t source-location-t sexp-t))
 (claim symbol-sexp? (-> sexp-t bool-t))
 (claim symbol-sexp-content  (-> sexp-t symbol-t))
@@ -73,7 +73,7 @@ type-t
 
 # 例子
 
-```scheme
+```meta-lisp
 (symbol-sexp 'foo (make-source-location "test" ...))
 (int-sexp 42 (make-source-location "test" ...))
 ```

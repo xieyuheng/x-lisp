@@ -4,7 +4,7 @@ title: fs-directory?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,6 +14,6 @@ title: fs-directory?
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-directory? "/tmp")  ;; => true 或 false
 ```

@@ -4,7 +4,7 @@ title: constant
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B A))
 ```
 
@@ -14,6 +14,6 @@ Accepts two arguments and returns the first argument.
 
 # Examples
 
-```scheme
+```meta-lisp
 (constant 1 "a")  ;; => 1
 ```

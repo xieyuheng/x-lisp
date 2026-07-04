@@ -4,7 +4,7 @@ title: triple?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a triple.
 
 # Examples
 
-```scheme
+```meta-lisp
 (triple? (make-triple 1 2 3))  ;; => true
 (triple? 42)                   ;; => false
 ```

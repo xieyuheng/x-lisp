@@ -4,7 +4,7 @@ title: iadd
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: iadd
 
 # 例子
 
-```scheme
+```meta-lisp
 (iadd 1 2)     ;; => 3
 (iadd -1 1)    ;; => 0
 (iadd 0 0)     ;; => 0

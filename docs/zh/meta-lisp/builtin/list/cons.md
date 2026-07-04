@@ -4,7 +4,7 @@ title: cons
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: cons
 
 # 例子
 
-```scheme
+```meta-lisp
 (cons 1 [2 3])    ;; => [1 2 3]
 (cons "a" [])     ;; => ["a"]
 ```

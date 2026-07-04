@@ -4,7 +4,7 @@ title: file-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 

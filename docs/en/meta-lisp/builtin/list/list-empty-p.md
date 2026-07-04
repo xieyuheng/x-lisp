@@ -4,7 +4,7 @@ title: list-empty?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if the list is empty.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-empty? [])       ;; => true
 (list-empty? [1 2 3])  ;; => false
 ```

@@ -4,7 +4,7 @@ title: box-get
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (box-t E) E))
 ```
 
@@ -14,7 +14,7 @@ title: box-get
 
 # 例子
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-put! 42 box)
 (box-get box) ;; => 42

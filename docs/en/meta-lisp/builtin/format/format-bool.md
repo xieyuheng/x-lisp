@@ -3,7 +3,7 @@ title: format-bool
 ---
 
 # Type
-```scheme
+```meta-lisp
 (-> bool-t string-t)
 ```
 
@@ -11,7 +11,7 @@ title: format-bool
 Format a boolean as an S-expression string.
 
 # Examples
-```scheme
+```meta-lisp
 (format-bool true)   ;; => "#t"
 (format-bool false)  ;; => "#f"
 ```

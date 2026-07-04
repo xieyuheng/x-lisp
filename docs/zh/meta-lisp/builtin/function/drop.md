@@ -4,7 +4,7 @@ title: drop
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B C)
   (-> (-> A B)
       (-> C A B)))
@@ -16,7 +16,7 @@ title: drop
 
 # 例子
 
-```scheme
+```meta-lisp
 (define (greet name) (println (string-append "Hello, " name)))
 ((drop greet) "ignored" "World")  ;; 输出 "Hello, World"
 ```

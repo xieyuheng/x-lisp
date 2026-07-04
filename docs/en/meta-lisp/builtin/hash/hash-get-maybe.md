@@ -4,7 +4,7 @@ title: hash-get-maybe
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K (hash-t K V) (maybe-t V)))
 ```
 
@@ -14,7 +14,7 @@ Look up a key, returning a `(just V)` if found or `nothing` if not found.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-get-maybe 2 (@hash 1 "a" 2 "b" 3 "c"))  ;; => (just "b")
 (hash-get-maybe 4 (@hash 1 "a" 2 "b" 3 "c"))  ;; => nothing
 ```

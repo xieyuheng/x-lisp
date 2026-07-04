@@ -4,7 +4,7 @@ title: file-write
 
 # Type
 
-```scheme
+```meta-lisp
 (-> file-t string-t void-t)
 ```
 
@@ -14,7 +14,7 @@ Write a string to a file.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((file (open-output-file "output.txt")))
   (file-write file "hello world")
   (file-close file))

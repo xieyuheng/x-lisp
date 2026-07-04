@@ -4,7 +4,7 @@ title: float-max
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t float-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-max
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-max 1.0 2.0)     ;; => 2.0
 (float-max -1.0 -5.0)   ;; => -1.0
 (float-max 0.0 0.0)     ;; => 0.0

@@ -4,7 +4,7 @@ title: dup
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B)
   (-> (-> A A B)
       (-> A B)))
@@ -16,6 +16,6 @@ title: dup
 
 # 例子
 
-```scheme
+```meta-lisp
 ((dup iadd) 3)  ;; => 6（等价于 (iadd 3 3)）
 ```

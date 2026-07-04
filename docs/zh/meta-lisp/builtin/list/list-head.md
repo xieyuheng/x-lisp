@@ -4,7 +4,7 @@ title: list-head
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) E))
 ```
 
@@ -14,6 +14,6 @@ title: list-head
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-head [1 2 3])  ;; => 1
 ```

@@ -4,7 +4,7 @@ title: hash-put!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K V (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-put!
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h (@hash "a" 1)))
   (hash-put! "b" 2 h))
 ```

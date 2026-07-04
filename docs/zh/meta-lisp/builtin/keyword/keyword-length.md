@@ -4,7 +4,7 @@ title: keyword-length
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> keyword-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: keyword-length
 
 # 例子
 
-```scheme
+```meta-lisp
 (keyword-length :key)      ;; => 3
 (keyword-length :name)     ;; => 4
 ```

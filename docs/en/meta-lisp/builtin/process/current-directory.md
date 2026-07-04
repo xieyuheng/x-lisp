@@ -4,7 +4,7 @@ title: current-directory
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t)
 ```
 
@@ -14,6 +14,6 @@ Get the current working directory.
 
 # Examples
 
-```scheme
+```meta-lisp
 (current-directory)  ;; => "/home/user/package"
 ```

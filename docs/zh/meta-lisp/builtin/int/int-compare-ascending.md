@@ -4,7 +4,7 @@ title: int-compare-ascending
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-compare-ascending
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-compare-ascending 1 2)   ;; => -1
 (int-compare-ascending 2 2)   ;; => 0
 (int-compare-ascending 3 2)   ;; => 1

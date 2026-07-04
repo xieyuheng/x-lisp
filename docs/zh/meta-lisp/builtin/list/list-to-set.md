@@ -4,7 +4,7 @@ title: list-to-set
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (set-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: list-to-set
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-to-set [1 2 2 3])  ;; => #{1 2 3}
 (list-to-set [])         ;; => #{}
 ```

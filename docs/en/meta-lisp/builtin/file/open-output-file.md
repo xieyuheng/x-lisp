@@ -4,7 +4,7 @@ title: open-output-file
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t file-t)
 ```
 
@@ -14,7 +14,7 @@ Open file for writing. Takes a file path, returns a file handle. Creates the fil
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((file (open-output-file "output.txt")))
   (file-writeln "hello" file)
   (file-close file))

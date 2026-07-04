@@ -4,7 +4,7 @@ title: nothing?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (maybe-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a `maybe-t` value is `nothing`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (nothing? nothing)    ;; => true
 (nothing? (just 42))  ;; => false
 ```

@@ -4,7 +4,7 @@ title: int-non-zero?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-non-zero?
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-non-zero? 1)   ;; => true
 (int-non-zero? -1)  ;; => true
 (int-non-zero? 0)   ;; => false

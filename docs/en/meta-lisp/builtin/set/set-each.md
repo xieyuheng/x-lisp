@@ -4,7 +4,7 @@ title: set-each
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (-> A Any) (set-t A) void-t))
 ```
 
@@ -14,6 +14,6 @@ Apply a side-effecting function to each element.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-each println #{1 2 3})
 ```

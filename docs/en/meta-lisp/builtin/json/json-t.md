@@ -4,7 +4,7 @@ title: json-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ JSON value type. Represents a parsed JSON value.
 
 # Definition
 
-```scheme
+```meta-lisp
 (define-enum json-t
   (json-null)
   (json-bool    (value bool-t))
@@ -26,7 +26,7 @@ JSON value type. Represents a parsed JSON value.
 
 # Generated
 
-```scheme
+```meta-lisp
 (claim json-null  (-> json-t))
 (claim json-null? (-> json-t bool-t))
 
@@ -58,7 +58,7 @@ JSON value type. Represents a parsed JSON value.
 
 # Examples
 
-```scheme
+```meta-lisp
 (json-null)
 (json-bool true)
 (json-number 42.0)

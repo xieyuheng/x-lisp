@@ -4,7 +4,7 @@ title: format-json
 
 # Type
 
-```scheme
+```meta-lisp
 (-> json-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Format a `json-t` value as a JSON string.
 
 # Examples
 
-```scheme
+```meta-lisp
 (format-json (json-null))             ;; => "null"
 (format-json (json-bool true))        ;; => "true"
 (format-json (json-number 42.0))      ;; => "42.0"

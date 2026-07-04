@@ -4,7 +4,7 @@ title: int-align
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-align
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-align 16 8)    ;; => 16
 (int-align 16 16)   ;; => 16
 (int-align 16 24)   ;; => 32

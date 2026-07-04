@@ -4,7 +4,7 @@ title: string-lines
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t))
 ```
 
@@ -14,7 +14,7 @@ Split a string into lines by newline characters.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-lines "a\nb\nc")  ;; => ["a" "b" "c"]
 (string-lines "abc")      ;; => ["abc"]
 (string-lines "")         ;; => [""]

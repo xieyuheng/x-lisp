@@ -4,7 +4,7 @@ title: path-join
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ Join two paths.
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-join "/tmp" "foo.txt")  ;; => "/tmp/foo.txt"
 ```

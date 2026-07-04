@@ -4,7 +4,7 @@ title: box-empty?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (box-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a box is empty.
 
 # Examples
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-empty? box) ;; => true
 (box-put! 42 box)

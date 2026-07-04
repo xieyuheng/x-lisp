@@ -4,7 +4,7 @@ title: path-directory-name
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ Get the directory component of a path.
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-directory-name "/tmp/foo.txt")  ;; => "/tmp"
 ```

@@ -4,7 +4,7 @@ title: parse-sexps
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t (list-t sexp-t))
 ```
 
@@ -14,7 +14,7 @@ Parse a string into a list of located S-expressions. The first argument is the f
 
 # Examples
 
-```scheme
+```meta-lisp
 (parse-sexps "test" "(a b c)")
 ;; => [(list-sexp [symbol-sexp a ...] ...)]
 ```

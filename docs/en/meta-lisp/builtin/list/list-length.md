@@ -4,7 +4,7 @@ title: list-length
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) int-t))
 ```
 
@@ -14,7 +14,7 @@ Number of elements in the list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-length [1 2 3])  ;; => 3
 (list-length [])       ;; => 0
 ```

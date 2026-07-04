@@ -4,7 +4,7 @@ title: string-get-code-point
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-get-code-point
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-get-code-point 0 "abc")  ;; => 97
 (string-get-code-point 1 "abc")  ;; => 98
 (string-get-code-point 0 "你")   ;; => 20320

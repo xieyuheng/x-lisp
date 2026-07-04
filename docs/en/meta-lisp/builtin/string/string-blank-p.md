@@ -4,7 +4,7 @@ title: string-blank?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string contains only whitespace characters.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-blank? "")     ;; => true
 (string-blank? "   ")  ;; => true
 (string-blank? " a ")  ;; => false

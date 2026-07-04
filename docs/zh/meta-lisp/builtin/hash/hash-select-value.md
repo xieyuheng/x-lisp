@@ -4,7 +4,7 @@ title: hash-select-value
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (-> V bool-t) (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-select-value
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-select-value
   int-non-negative?
   (@hash 'a 1 'b 2 'x -1 'y -2))

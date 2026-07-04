@@ -4,7 +4,7 @@ title: sexp-collect-key-value-hash
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t sexp-t) (hash-t keyword-t sexp-t))
 ```
 
@@ -14,7 +14,7 @@ title: sexp-collect-key-value-hash
 
 # 例子
 
-```scheme
+```meta-lisp
 (sexp-collect-key-value-hash
   [keyword-sexp :key ... int-sexp 42 ...])
 ;; => @{:key int-sexp-42}

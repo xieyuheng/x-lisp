@@ -4,7 +4,7 @@ title: list-some?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if some element satisfies the predicate. Returns `false` for an empty list
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-some? int-non-negative? [-1 0 1])  ;; => true
 (list-some? int-non-negative? [-1 -2])   ;; => false
 ```

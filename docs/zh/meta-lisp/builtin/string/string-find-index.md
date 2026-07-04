@@ -4,7 +4,7 @@ title: string-find-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-find-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-find-index "hello" "ll")  ;; => 2
 (string-find-index "hello" "x")   ;; => -1
 (string-find-index "hello" "")    ;; => 0

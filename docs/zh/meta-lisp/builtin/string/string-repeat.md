@@ -4,7 +4,7 @@ title: string-repeat
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-repeat
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-repeat 3 "ab")  ;; => "ababab"
 (string-repeat 0 "ab")  ;; => ""
 (string-repeat 1 "ab")  ;; => "ab"

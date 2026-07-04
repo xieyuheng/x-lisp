@@ -4,7 +4,7 @@ title: list-copy
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ Copy a list, returning a new list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-copy [1 2 3])  ;; => [1 2 3]
 ```

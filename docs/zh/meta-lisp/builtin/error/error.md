@@ -4,7 +4,7 @@ title: error
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (B) (-> string B))
 ```
 
@@ -14,6 +14,6 @@ title: error
 
 # 例子
 
-```scheme
+```meta-lisp
 (error "something went wrong")
 ```

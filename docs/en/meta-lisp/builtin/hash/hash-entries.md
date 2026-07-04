@@ -4,7 +4,7 @@ title: hash-entries
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) (list-t (hash-entry-t K V))))
 ```
 
@@ -14,7 +14,7 @@ Convert all entries of a hash table to a list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((entries (hash-entries (@hash 'a 1 'b 2))))
   (hash-from-entries entries))
 ;; => (@hash 'a 1 'b 2)

@@ -4,7 +4,7 @@ title: string-length
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-length
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-length "hello")  ;; => 5
 (string-length "")       ;; => 0
 (string-length "你好")   ;; => 2

@@ -4,7 +4,7 @@ title: set-difference
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E) (set-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: set-difference
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-difference #{1 2 3} #{2 3})  ;; => #{1}
 (set-difference #{1 2} #{1 2 3})  ;; => #{}
 ```

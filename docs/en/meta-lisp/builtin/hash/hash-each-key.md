@@ -4,7 +4,7 @@ title: hash-each-key
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V Any) (-> (-> K Any) (hash-t K V) void-t))
 ```
 
@@ -14,7 +14,7 @@ Iterate over each key with side effects.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-each-key
   (lambda (key) (println key))
   (@hash 1 2 3 4))

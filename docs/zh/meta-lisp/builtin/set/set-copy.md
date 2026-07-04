@@ -4,7 +4,7 @@ title: set-copy
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: set-copy
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-copy #{1 2 3})  ;; => #{1 2 3}
 ```

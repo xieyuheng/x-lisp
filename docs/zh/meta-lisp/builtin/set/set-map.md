@@ -4,7 +4,7 @@ title: set-map
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (-> A B) (set-t A) (set-t B)))
 ```
 
@@ -14,6 +14,6 @@ title: set-map
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-map (lambda (n) (iadd n n)) #{1 2 3})  ;; => #{2 4 6}
 ```

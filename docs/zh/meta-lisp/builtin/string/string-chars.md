@@ -4,7 +4,7 @@ title: string-chars
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t))
 ```
 
@@ -14,7 +14,7 @@ title: string-chars
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-chars "abc")   ;; => ["a" "b" "c"]
 (string-chars "")      ;; => []
 (string-chars "你好")  ;; => ["你" "好"]

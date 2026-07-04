@@ -4,7 +4,7 @@ title: assert-equal
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B void-t))
 ```
 
@@ -14,7 +14,7 @@ Assert two values are equal (compared using `equal?`). Raises an error if they a
 
 # Examples
 
-```scheme
+```meta-lisp
 (assert-equal 1 1)
 (assert-equal "hello" "hello")
 ```

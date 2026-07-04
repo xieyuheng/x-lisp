@@ -4,7 +4,7 @@ title: hash-entry-value
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-entry-t K V) V))
 ```
 
@@ -14,7 +14,7 @@ title: hash-entry-value
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h (@hash 'a 1 'b 2)))
   (list-map hash-entry-value (hash-entries h)))  ;; => [1 2]
 ```

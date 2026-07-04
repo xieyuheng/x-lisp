@@ -4,7 +4,7 @@ title: list-third
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) A))
 ```
 
@@ -14,6 +14,6 @@ Third element.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-third [1 2 3])  ;; => 3
 ```

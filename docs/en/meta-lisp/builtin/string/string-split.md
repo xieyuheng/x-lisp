@@ -4,7 +4,7 @@ title: string-split
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t (list-t string-t))
 ```
 
@@ -14,7 +14,7 @@ Split a string into a list by a delimiter.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-split "a,b,c" ",")     ;; => ["a" "b" "c"]
 (string-split "hello" ",")     ;; => ["hello"]
 (string-split "" ",")          ;; => [""]

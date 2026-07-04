@@ -4,7 +4,7 @@ title: float-greater?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> float-t float-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if the first float is greater than the second.
 
 # Examples
 
-```scheme
+```meta-lisp
 (float-greater? 2.0 1.0)    ;; => true
 (float-greater? 1.0 2.0)    ;; => false
 (float-greater? 1.0 1.0)    ;; => false

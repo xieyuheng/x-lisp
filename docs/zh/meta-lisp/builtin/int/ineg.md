@@ -4,7 +4,7 @@ title: ineg
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: ineg
 
 # 例子
 
-```scheme
+```meta-lisp
 (ineg 42)  ;; => -42
 (ineg -1)  ;; => 1
 (ineg 0)   ;; => 0

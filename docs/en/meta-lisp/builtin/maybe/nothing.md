@@ -4,7 +4,7 @@ title: nothing
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (maybe-t A)))
 ```
 
@@ -14,7 +14,7 @@ Constructor of `maybe-t`, representing a missing value.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((m nothing))
   (nothing? m))  ;; => true
 ```

@@ -4,7 +4,7 @@ title: for-set
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (set-t A) (-> A Any) void-t))
 ```
 
@@ -17,6 +17,6 @@ title: for-set
 
 # 例子
 
-```scheme
+```meta-lisp
 (for-set (@set 1 2 3) println)
 ```

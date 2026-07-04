@@ -4,7 +4,7 @@ title: list-sort
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ Sort a copy of the list using a comparator function. The original list is not mo
 
 # Examples
 
-```scheme
+```meta-lisp
 ;; int
 (list-sort int-compare-ascending [3 1 2])    ;; => [1 2 3]
 (list-sort int-compare-descending [3 1 2])   ;; => [3 2 1]

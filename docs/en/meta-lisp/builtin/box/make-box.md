@@ -4,7 +4,7 @@ title: make-box
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (box-t E)))
 ```
 
@@ -14,7 +14,7 @@ Create an empty box.
 
 # Examples
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-empty? box) ;; => true
 ```

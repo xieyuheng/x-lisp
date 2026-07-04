@@ -4,7 +4,7 @@ title: list-third
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) A))
 ```
 
@@ -14,6 +14,6 @@ title: list-third
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-third [1 2 3])  ;; => 3
 ```

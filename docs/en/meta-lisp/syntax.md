@@ -87,20 +87,20 @@ Comments start with `;` and extend to the end of the line.
 
 Lisp programmers typically write two `;;` for line comments.
 
-```scheme
+```meta-lisp
 ;; This is a comment
 (define x 42) ;; end-of-line comment
 ```
 
 ## (@comment)
 
-```scheme
+```meta-lisp
 (@comment <sexp> ...)
 ```
 
 `(@comment)` is ignored at compile time and evaluates to `void`.
 
-```scheme
+```meta-lisp
 (@comment (lambda (<parameter> ...)
             <body>))
 (@comment (if <condition> <consequent> <alternative>))
@@ -115,7 +115,7 @@ Lisp programmers typically write two `;;` for line comments.
 
 Integers consist of digits, with an optional negative sign.
 
-```scheme
+```meta-lisp
 42
 -1
 0
@@ -123,28 +123,28 @@ Integers consist of digits, with an optional negative sign.
 
 Floats have a decimal point.
 
-```scheme
+```meta-lisp
 3.14
 -2.5
 ```
 
 Strings are wrapped in double quotes.
 
-```scheme
+```meta-lisp
 "hello"
 ""
 ```
 
 Symbols start with a single quote followed by a name.
 
-```scheme
+```meta-lisp
 'foo
 'bar
 ```
 
 Keywords start with a colon.
 
-```scheme
+```meta-lisp
 :key
 :name
 ```
@@ -155,14 +155,14 @@ The void value is `void` — also not a literal, but a variable bound to the voi
 
 ## (@list)
 
-```scheme
+```meta-lisp
 [<exp> ...]
 (@list <exp> ...)
 ```
 
 Creates a list.
 
-```scheme
+```meta-lisp
 [1 2 3]
 ["a" "b" "c"]
 ```
@@ -171,7 +171,7 @@ Bracket notation `[...]` is syntactic sugar for `(@list ...)`.
 
 The example above is equivalent to:
 
-```scheme
+```meta-lisp
 (@list 1 2 3)
 (@list "a" "b" "c")
 ```
@@ -180,38 +180,38 @@ The `@` prefix avoids occupying the variable name `list`.
 
 ## (@set)
 
-```scheme
+```meta-lisp
 (@set <exp> ...)
 ```
 
 Creates a set.
 
-```scheme
+```meta-lisp
 (@set 1 2 3)
 ```
 
 ## (@hash)
 
-```scheme
+```meta-lisp
 (@hash <key> <value> ...)
 ```
 
 Creates a hash table.
 
-```scheme
+```meta-lisp
 (@hash :a 1 :b 2)
 (@hash "a" 1 "b" 2)
 ```
 
 ## (@string)
 
-```scheme
+```meta-lisp
 (@string <exp> ...)
 ```
 
 Concatenates string expressions into a single string.
 
-```scheme
+```meta-lisp
 (@string "hello" " " "world")
 (@string "(" x ")")
 (@string)
@@ -219,7 +219,7 @@ Concatenates string expressions into a single string.
 
 The example above is equivalent to:
 
-```scheme
+```meta-lisp
 (string-concat ["hello" " " "world"])
 (string-concat ["(" x ")"])
 (string-concat [])
@@ -227,28 +227,28 @@ The example above is equivalent to:
 
 ## (@quote)
 
-```scheme
+```meta-lisp
 '<sexp>
 (@quote <sexp>)
 ```
 
 Create list of symbols or literal atoms.
 
-```scheme
+```meta-lisp
 '(a b c)         ;; => ['a 'b 'c]
 '(1 2 3)         ;; => [1 2 3]
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (@quote (a b c))  ;; => ['a 'b 'c]
 (@quote (1 2 3))  ;; => [1 2 3]
 ```
 
 ## (@sexp)
 
-```scheme
+```meta-lisp
 (@sexp <sexp>)
 ```
 
@@ -256,7 +256,7 @@ Converts an s-expression into a `sexp-t` value, preserving source location infor
 
 The `sexp-t` type is defined as:
 
-```scheme
+```meta-lisp
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
   (keyword-sexp (content keyword-t) (location source-location-t))
@@ -268,7 +268,7 @@ The `sexp-t` type is defined as:
 
 Usage examples:
 
-```scheme
+```meta-lisp
 (@sexp foo)           ;; => (symbol-sexp 'foo <location>)
 (@sexp (a b c))       ;; => (list-sexp
                       ;;      (list (symbol-sexp 'a) (symbol-sexp 'b) (symbol-sexp 'c))
@@ -279,13 +279,13 @@ Usage examples:
 
 ## (define)
 
-```scheme
+```meta-lisp
 (define <name> <exp>)
 ```
 
 Defines a module-level variable.
 
-```scheme
+```meta-lisp
 (define answer 42)
 (define greeting "hello")
 ```
@@ -296,7 +296,7 @@ A variable references a bound name.
 
 Names consist of letters, digits, `-`, `?`, `!` and other characters.
 
-```scheme
+```meta-lisp
 x
 factorial
 list-length
@@ -307,7 +307,7 @@ list-empty?
 
 `<module-name>/<name>` references a name from another module.
 
-```scheme
+```meta-lisp
 builtin/list-length
 builtin/list-empty?
 ```
@@ -319,7 +319,7 @@ Qualified names can be used directly without `(import)`.
 
 ## Function application
 
-```scheme
+```meta-lisp
 (<target> <arg> ...)
 ```
 
@@ -333,7 +333,7 @@ The function expression is evaluated first,
 then all argument expressions are evaluated,
 then the function is applied.
 
-```scheme
+```meta-lisp
 (iadd 1 2)
 (println "hello")
 ((lambda (x) x) 1)
@@ -341,33 +341,33 @@ then the function is applied.
 
 When a function is applied with insufficient arguments, partial application occurs (via **currying**).
 
-```scheme
+```meta-lisp
 ((iadd 1) 2)
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (iadd 1 2)
 ```
 
 And `(iadd 1)` can be passed as a value to other functions or returned as a result.
 
-```scheme
+```meta-lisp
 (define add1
   (iadd 1))
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define (add1 x)
   (iadd 1 x))
 ```
 
 ## (lambda)
 
-```scheme
+```meta-lisp
 (lambda (<parameter> ...)
   <body>)
 ```
@@ -378,21 +378,21 @@ Creates an anonymous function.
 `<body>` is one or more expressions.
 When the function is applied, actual arguments are bound to the formal parameters, then `<body>` is evaluated.
 
-```scheme
+```meta-lisp
 (lambda (x) (iadd x 1))
 ((lambda (x) (iadd x 1)) 2)  ;; => 3
 ```
 
 Multiple parameters:
 
-```scheme
+```meta-lisp
 (lambda (x y)
   (iadd x y))
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (lambda (x)
   (lambda (y)
     (iadd x y)))
@@ -400,7 +400,7 @@ Equivalent to:
 
 ## (define)
 
-```scheme
+```meta-lisp
 (define (<name> <parameter> ...)
   <body>)
 ```
@@ -409,14 +409,14 @@ Defines a function.
 
 Defining a function is equivalent to defining a variable whose value is a lambda.
 
-```scheme
+```meta-lisp
 (define (add1 x)
   (iadd 1 x))
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define add1
   (lambda (x)
     (iadd 1 x)))
@@ -424,7 +424,7 @@ Equivalent to:
 
 The function body `<body>` can be multiple expressions:
 
-```scheme
+```meta-lisp
 (define (f x)
   (= y (iadd x 1))
   (imul y 2))
@@ -455,7 +455,7 @@ The function body `<body>` can be multiple expressions:
 
 ## (->)
 
-```scheme
+```meta-lisp
 (-> <arg-type> ... <ret-type>)
 ```
 
@@ -465,7 +465,7 @@ Takes `<arg-type>` parameters and returns `<ret-type>`.
 
 For example:
 
-```scheme
+```meta-lisp
 (-> int-t int-t)
 (-> int-t int-t int-t)
 (-> string-t bool-t)
@@ -473,7 +473,7 @@ For example:
 
 ## (claim)
 
-```scheme
+```meta-lisp
 (claim <name> <type>)
 ```
 
@@ -481,7 +481,7 @@ Declares the type of a name.
 
 The compiler infers the type from `(define)`'s `<body>` and checks it against the `(claim)`.
 
-```scheme
+```meta-lisp
 (claim add1 (-> int-t int-t))
 (define (add1 x) (iadd x 1))
 
@@ -491,7 +491,7 @@ The compiler infers the type from `(define)`'s `<body>` and checks it against th
 
 ## (admit)
 
-```scheme
+```meta-lisp
 (admit <name> <type>)
 ```
 
@@ -499,7 +499,7 @@ Admits the type of a name.
 
 Similar to `(claim)`, but the compiler does not check the `(define)`'s `<body>`.
 
-```scheme
+```meta-lisp
 (admit make-point (-> float-t float-t point-t))
 (define (make-point x y)
   (@list 'make-point x y))
@@ -507,7 +507,7 @@ Similar to `(claim)`, but the compiler does not check the `(define)`'s `<body>`.
 
 ## (the)
 
-```scheme
+```meta-lisp
 (the <type> <exp>)
 ```
 
@@ -515,7 +515,7 @@ Explicitly annotates `<exp>` with a type.
 
 The compiler checks whether `<exp>`'s actual type matches. Useful for clarifying intent or helping type inference.
 
-```scheme
+```meta-lisp
 (the int-t 42)
 (the (-> int-t int-t)
   (lambda (x)
@@ -524,7 +524,7 @@ The compiler checks whether `<exp>`'s actual type matches. Useful for clarifying
 
 ## (polymorphic)
 
-```scheme
+```meta-lisp
 (polymorphic (<type-parameter> ...)
   <type>)
 ```
@@ -534,7 +534,7 @@ A type containing type variables.
 Type variables are usually single uppercase letters, referenced within `<type>`.
 Used in `claim` for polymorphic function signatures.
 
-```scheme
+```meta-lisp
 (claim identity (polymorphic (A) (-> A A)))
 
 (claim car (polymorphic (E) (-> (list-t E) E)))
@@ -546,7 +546,7 @@ Used in `claim` for polymorphic function signatures.
 
 ## (if)
 
-```scheme
+```meta-lisp
 (if <condition>
   <consequent>
   <alternative>)
@@ -558,7 +558,7 @@ Conditional branch.
 If true, `<consequent>` is evaluated and returned.
 Otherwise, `<alternative>` is evaluated and returned.
 
-```scheme
+```meta-lisp
 (define (abs x)
   (if (int-less? x 0)
     (ineg x)
@@ -567,7 +567,7 @@ Otherwise, `<alternative>` is evaluated and returned.
 
 ## (when)
 
-```scheme
+```meta-lisp
 (when <condition>
   <body>)
 ```
@@ -578,7 +578,7 @@ When `<condition>` is true, `<body>` is evaluated; otherwise skipped.
 `<body>` can contain multiple expressions.
 A `(when)` expression always returns `void`.
 
-```scheme
+```meta-lisp
 (when debug?
   (print "debug mode")
   (newline))
@@ -586,7 +586,7 @@ A `(when)` expression always returns `void`.
 
 ## (unless)
 
-```scheme
+```meta-lisp
 (unless <condition>
   <body>)
 ```
@@ -597,7 +597,7 @@ When `<condition>` is false, `<body>` is evaluated; otherwise skipped.
 `<body>` can contain multiple expressions.
 An `(unless)` expression always returns `void`.
 
-```scheme
+```meta-lisp
 (unless (equal? x 0)
   (print (idiv 1 x))
   (newline))
@@ -605,7 +605,7 @@ An `(unless)` expression always returns `void`.
 
 ## (cond)
 
-```scheme
+```meta-lisp
 (cond
   (<question> <answer>)
   ...)
@@ -617,7 +617,7 @@ Each `<question>` is evaluated in order.
 The `<answer>` of the first true branch is evaluated and returned.
 The last `<question>` can be `else` as the default branch.
 
-```scheme
+```meta-lisp
 (define (classify x)
   (cond
    ((int-positive? x) "positive")
@@ -627,7 +627,7 @@ The last `<question>` can be `else` as the default branch.
 
 ## (and)
 
-```scheme
+```meta-lisp
 (and <exp> ...)
 ```
 
@@ -635,7 +635,7 @@ Short-circuit and.
 
 Evaluates left to right. Stops and returns the value at the first false. Returns the last value if all are true.
 
-```scheme
+```meta-lisp
 (and (int? x) (int-positive? x))
 ```
 
@@ -643,7 +643,7 @@ Returns `true` with zero arguments.
 
 ## (or)
 
-```scheme
+```meta-lisp
 (or <exp> ...)
 ```
 
@@ -651,7 +651,7 @@ Short-circuit or.
 
 Evaluates left to right. Stops and returns the value at the first true. Returns the last value if all are false.
 
-```scheme
+```meta-lisp
 (or (equal? x 0) (equal? x 1))
 ```
 
@@ -661,7 +661,7 @@ Returns `false` with zero arguments.
 
 ## (begin)
 
-```scheme
+```meta-lisp
 (begin <body>)
 ```
 
@@ -671,7 +671,7 @@ Sequential execution.
 evaluated in order. Returns the value of the last expression.
 Earlier expressions are typically for side effects.
 
-```scheme
+```meta-lisp
 (begin
   (println "step 1")
   (println "step 2")
@@ -680,7 +680,7 @@ Earlier expressions are typically for side effects.
 
 The `<body>` of `(lambda)` and `(define)` function bodies both work like `(begin)`'s `<body>`.
 
-```scheme
+```meta-lisp
 (define (f x)
   (= y (iadd x 1))
   (imul y 2))
@@ -688,7 +688,7 @@ The `<body>` of `(lambda)` and `(define)` function bodies both work like `(begin
 
 ## (let)
 
-```scheme
+```meta-lisp
 (let ((<name> <exp>)
       ...)
   <body>)
@@ -699,7 +699,7 @@ Parallel local variable bindings.
 All right-hand side `<exp>`s are evaluated in the same outer scope, invisible to each other.
 Then all `<name>`s are simultaneously bound to the results, and `<body>` is evaluated.
 
-```scheme
+```meta-lisp
 (let ((x 1))
   (iadd x 1))  ;; => 2
 
@@ -710,7 +710,7 @@ Then all `<name>`s are simultaneously bound to the results, and `<body>` is eval
 
 Parallel means later bindings cannot refer to earlier ones:
 
-```scheme
+```meta-lisp
 (let ((x 1)
       (y (iadd x 1)))  ;; Error: x not visible on the right side
   (iadd x y))
@@ -718,7 +718,7 @@ Parallel means later bindings cannot refer to earlier ones:
 
 ## (let*)
 
-```scheme
+```meta-lisp
 (let* ((<name> <exp>)
        ...)
   <body>)
@@ -728,7 +728,7 @@ Sequential local variable bindings.
 
 Each `<exp>` can reference previously bound names.
 
-```scheme
+```meta-lisp
 (let* ((x 1)
        (y (iadd x 1)))
   (iadd x y))  ;; => 3
@@ -736,7 +736,7 @@ Each `<exp>` can reference previously bound names.
 
 `(let*)` is equivalent to nested `(let)`:
 
-```scheme
+```meta-lisp
 (let ((x 1))
   (let ((y (iadd x 1)))
     (iadd x y)))
@@ -745,7 +745,7 @@ Each `<exp>` can reference previously bound names.
 <a name="assign"></a>
 ## (=)
 
-```scheme
+```meta-lisp
 (= <name> <exp>)
 ```
 
@@ -754,7 +754,7 @@ Local variable binding in `<body>`.
 Can only be used inside a `<body>`.
 Replaces nested `(let)` to reduce indentation.
 
-```scheme
+```meta-lisp
 (define (f x)
   (= y (iadd x 1))
   (println y)
@@ -765,7 +765,7 @@ Replaces nested `(let)` to reduce indentation.
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define (f x)
   (let ((y (iadd x 1)))
     (println y)
@@ -776,7 +776,7 @@ Equivalent to:
 
 ## (letrec)
 
-```scheme
+```meta-lisp
 (letrec ((<name> <exp>)
          ...)
   <body>)
@@ -789,7 +789,7 @@ All `<name>`s are simultaneously bound to the results, then `<body>` is evaluate
 
 Mutual recursion:
 
-```scheme
+```meta-lisp
 (letrec ((even?
           (lambda (n)
             (if (equal? n 0)
@@ -805,7 +805,7 @@ Mutual recursion:
 
 Difference from `(letrec*)` (see below):
 
-```scheme
+```meta-lisp
 ;; (letrec*) supports sequential dependency:
 (letrec* ((a 1)
           (b (iadd a 1)))
@@ -819,7 +819,7 @@ Difference from `(letrec*)` (see below):
 
 ## (letrec*)
 
-```scheme
+```meta-lisp
 (letrec* ((<name> <exp>)
           ...)
   <body>)
@@ -831,7 +831,7 @@ All `<exp>`s can reference all `<name>`s.
 
 Mutual recursion:
 
-```scheme
+```meta-lisp
 (letrec* ((even?
            (lambda (n)
              (if (equal? n 0)
@@ -847,7 +847,7 @@ Mutual recursion:
 
 Sequential dependency:
 
-```scheme
+```meta-lisp
 (letrec* ((a 1)
           (b (iadd a 1)))
   b)  ;; => 2
@@ -855,7 +855,7 @@ Sequential dependency:
 
 ## local (define)
 
-```scheme
+```meta-lisp
 (define (<name> <parameter> ...) <body>)
 (define <name> <exp>)
 ```
@@ -867,7 +867,7 @@ Replaces nested `(letrec*)` to reduce indentation.
 
 Mutual recursion (equivalent to the `(letrec*)` example above):
 
-```scheme
+```meta-lisp
 (begin
   (define (even? n)
     (if (equal? n 0)
@@ -882,7 +882,7 @@ Mutual recursion (equivalent to the `(letrec*)` example above):
 
 Sequential dependency:
 
-```scheme
+```meta-lisp
 (begin
   (define a 1)
   (define b (iadd a 1))
@@ -891,7 +891,7 @@ Sequential dependency:
 
 `(=)` and `(define)` can be mixed:
 
-```scheme
+```meta-lisp
 (begin
   (= one 1)
   (define a one)
@@ -903,7 +903,7 @@ Sequential dependency:
 
 ## (pipe)
 
-```scheme
+```meta-lisp
 (pipe <init> <step> ...)
 ```
 
@@ -911,21 +911,21 @@ Pipeline.
 
 Passes `<init>` to the first `<step>`, the result to the second `<step>`, and so on.
 
-```scheme
+```meta-lisp
 (pipe 5 add1 double)        ;; => 12
 (pipe 2 add1 double square) ;; => 36
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (double (add1 5))           ;; => 12
 (square (double (add1 2)))  ;; => 36
 ```
 
 ## (chain)
 
-```scheme
+```meta-lisp
 (chain <step> ...)
 ```
 
@@ -933,28 +933,28 @@ Pipeline-style function composition.
 
 Unlike `(pipe)`, `(chain)` does not take an initial value — it returns a function.
 
-```scheme
+```meta-lisp
 (chain add1 double)
 (chain add1 double square)
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (lambda (x) (pipe x add1 double))
 (lambda (x) (pipe x add1 double square))
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (lambda (x) (double (add1 x)))
 (lambda (x) (square (double (add1 x))))
 ```
 
 ## (compose)
 
-```scheme
+```meta-lisp
 (compose <step> ...)
 ```
 
@@ -962,14 +962,14 @@ Mathematical function composition.
 
 Composition direction is the reverse of `(chain)`.
 
-```scheme
+```meta-lisp
 (compose add1 double)
 (compose add1 double square)
 ```
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (lambda (x) (add1 (double x)))
 (lambda (x) (add1 (double (square x))))
 ```
@@ -993,7 +993,7 @@ The most commonly used are `(define-enum)` and `(define-struct)`.
 
 ## (define-algebraic-type)
 
-```scheme
+```meta-lisp
 (define-algebraic-type <type-name>
   ((<constructor-name> (<field-name> <type>) ...)
    <predicate-name>
@@ -1018,7 +1018,7 @@ If omitted, the field reference is immutable.
 
 For example:
 
-```scheme
+```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
@@ -1028,7 +1028,7 @@ For example:
 
 This generates functions with the following types:
 
-```scheme
+```meta-lisp
 (claim make-point (-> float-t float-t point-t))
 (claim point? (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
@@ -1039,7 +1039,7 @@ This generates functions with the following types:
 
 Usage example:
 
-```scheme
+```meta-lisp
 (define p (make-point 1.0 2.0))
 (point? p)      ;; => true
 (point-x p)     ;; => 1.0
@@ -1055,7 +1055,7 @@ Types defined with `(define-algebraic-type)` can have type parameters.
 
 For example:
 
-```scheme
+```meta-lisp
 (define-algebraic-type (my-list-t E)
   ((nil)
    nil?)
@@ -1067,7 +1067,7 @@ For example:
 
 This generates functions with the following types:
 
-```scheme
+```meta-lisp
 (claim nil (polymorphic (E) (-> (my-list-t E))))
 (claim nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
 (claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
@@ -1080,7 +1080,7 @@ This generates functions with the following types:
 
 ## (define-record-type)
 
-```scheme
+```meta-lisp
 (define-record-type <type-name>
   (<constructor-name> (<field-name> <type>) ...)
   <predicate-name>
@@ -1096,7 +1096,7 @@ This generates functions with the following types:
 
 Similar to `(define-algebraic-type)`, but with only one constructor.
 
-```scheme
+```meta-lisp
 (define-record-type point-t
   (make-point (x float-t) (y float-t))
   point?
@@ -1106,7 +1106,7 @@ Similar to `(define-algebraic-type)`, but with only one constructor.
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
@@ -1125,7 +1125,7 @@ extended to support multiple constructors.
 
 ## (define-enum)
 
-```scheme
+```meta-lisp
 (define-enum <type-name>
   (<constructor-name> (<field-name> <type>) ...)
   ...)
@@ -1138,7 +1138,7 @@ extended to support multiple constructors.
 Defines an algebraic data type with multiple constructors.
 Each constructor generates names for a predicate, accessor, and modifier by convention.
 
-```scheme
+```meta-lisp
 (define-enum exp-t
   (var-exp (name symbol-t))
   (apply-exp (target exp-t) (arg exp-t))
@@ -1147,7 +1147,7 @@ Each constructor generates names for a predicate, accessor, and modifier by conv
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define-algebraic-type exp-t
   ((var-exp (name symbol-t))
    var-exp?
@@ -1170,7 +1170,7 @@ For a given `<constructor-name>`, the naming rules are:
 
 ## (define-struct)
 
-```scheme
+```meta-lisp
 (define-struct <type-name>
   (<field-name> <type>)
   ...)
@@ -1184,7 +1184,7 @@ Defines a single-constructor struct.
 `<type-name>` must end with `-t`, in the form `<base-name>-t`.
 `<base-name>` is used to generate other names.
 
-```scheme
+```meta-lisp
 (define-struct point-t
   (x float-t)
   (y float-t))
@@ -1192,7 +1192,7 @@ Defines a single-constructor struct.
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
@@ -1211,7 +1211,7 @@ For a given `<type-name>`, the naming rules are:
 <a name="define-struct-star"></a>
 ## (define-struct*)
 
-```scheme
+```meta-lisp
 (define-struct* <type-name>
   (<constructor-name>
    (<field-name> <type>)
@@ -1225,7 +1225,7 @@ For a given `<type-name>`, the naming rules are:
 
 Similar to `(define-struct)`, but `<constructor-name>` is given by the user.
 
-```scheme
+```meta-lisp
 (define-struct* point-t
   (make-point
    (x float-t)
@@ -1234,7 +1234,7 @@ Similar to `(define-struct)`, but `<constructor-name>` is given by the user.
 
 Equivalent to:
 
-```scheme
+```meta-lisp
 (define-struct point-t
   (x float-t)
   (y float-t))
@@ -1242,7 +1242,7 @@ Equivalent to:
 
 This variant of `(define-struct)` exists because sometimes `make-<base-name>` needs to be reserved for a simpler constructor.
 
-```scheme
+```meta-lisp
 (define-struct* package-t
   (make-package
    (root-directory string-t)
@@ -1255,7 +1255,7 @@ This variant of `(define-struct)` exists because sometimes `make-<base-name>` ne
 
 ## (match)
 
-```scheme
+```meta-lisp
 (match <target>
   (<pattern> <body>)
   ...)
@@ -1263,7 +1263,7 @@ This variant of `(define-struct)` exists because sometimes `make-<base-name>` ne
 
 Destructures algebraic data types using pattern matching.
 
-```scheme
+```meta-lisp
 (define-enum exp-t
   (var-exp (name symbol-t))
   (apply-exp (target exp-t) (arg exp-t))
@@ -1283,7 +1283,7 @@ Destructures algebraic data types using pattern matching.
 
 ## (define-opaque-type)
 
-```scheme
+```meta-lisp
 (define-opaque-type <type-name> <representation-type>
   (<interface-name> <interface-type>)
   ...)
@@ -1297,7 +1297,7 @@ Defines an opaque type, hiding its internal representation.
 
 For example, the builtin `box-t` with internal representation `(list-t E)`:
 
-```scheme
+```meta-lisp
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-empty? (-> (box-t E) bool-t))
@@ -1307,7 +1307,7 @@ For example, the builtin `box-t` with internal representation `(list-t E)`:
 
 When implementing interface functions, it is equivalent to declaring:
 
-```scheme
+```meta-lisp
 (claim make-box (polymorphic (E) (-> (list-t E))))
 (claim box-empty? (polymorphic (E) (-> (list-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
@@ -1316,7 +1316,7 @@ When implementing interface functions, it is equivalent to declaring:
 
 Thus interface functions can use list APIs internally:
 
-```scheme
+```meta-lisp
 (define (make-box) (make-list))
 
 (define (box-put! value box)
@@ -1327,7 +1327,7 @@ Thus interface functions can use list APIs internally:
 
 When using interface functions, it is equivalent to declaring:
 
-```scheme
+```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
@@ -1336,7 +1336,7 @@ When using interface functions, it is equivalent to declaring:
 
 External code can only operate on `box-t` through interface functions:
 
-```scheme
+```meta-lisp
 (claim box-get (polymorphic (E) (-> (box-t E) E)))
 (define (box-get box)
   (match (box-get-maybe box)
@@ -1356,7 +1356,7 @@ Code for the same module can be split across different files.
 
 ## (module)
 
-```scheme
+```meta-lisp
 (module <module-name>)
 ```
 
@@ -1370,7 +1370,7 @@ Functions in the same module, even if written in different files, can be mutuall
 
 `even.meta`:
 
-```scheme
+```meta-lisp
 (module example)
 
 (define (even? n)
@@ -1381,7 +1381,7 @@ Functions in the same module, even if written in different files, can be mutuall
 
 `odd.meta`:
 
-```scheme
+```meta-lisp
 (module example)
 
 (define (odd? n)
@@ -1392,7 +1392,7 @@ Functions in the same module, even if written in different files, can be mutuall
 
 ## (import)
 
-```scheme
+```meta-lisp
 (import <module-name> <name> ...)
 ```
 
@@ -1400,27 +1400,27 @@ Imports specified names from another module.
 
 After importing, names can be used directly without the qualified prefix.
 
-```scheme
+```meta-lisp
 (import math pi circumference)
 ```
 
 After this,
 
-```scheme
+```meta-lisp
 math/pi
 math/circumference
 ```
 
 can be abbreviated to:
 
-```scheme
+```meta-lisp
 pi
 circumference
 ```
 
 ## (import-as)
 
-```scheme
+```meta-lisp
 (import-as <module-name> <prefix>)
 ```
 
@@ -1428,25 +1428,25 @@ Imports a module with a modified prefix.
 
 `<module-name>/<name>` becomes `<prefix>/<name>`.
 
-```scheme
+```meta-lisp
 (import-as meta m)
 ```
 
 After this,
 
-```scheme
+```meta-lisp
 meta/exp-t
 ```
 
 can be abbreviated to:
 
-```scheme
+```meta-lisp
 m/exp-t
 ```
 
 ## (import-all)
 
-```scheme
+```meta-lisp
 (import-all <module-name>)
 ```
 
@@ -1462,7 +1462,7 @@ In other words, local definitions can override names introduced by `(import-all)
 
 ## (private)
 
-```scheme
+```meta-lisp
 (private <name> ...)
 ```
 
@@ -1470,7 +1470,7 @@ Marks names as private.
 
 Private names cannot be referenced by other modules.
 
-```scheme
+```meta-lisp
 (module serial-number)
 
 (private serial-number-hash)
@@ -1481,7 +1481,7 @@ Private names cannot be referenced by other modules.
 
 ## (define-test)
 
-```scheme
+```meta-lisp
 (define-test <test-name> <body>)
 ```
 
@@ -1489,7 +1489,7 @@ Defines a test.
 
 `<body>` can contain multiple assertions.
 
-```scheme
+```meta-lisp
 (claim add1 (-> int-t int-t))
 (define (add1 x) (iadd x 1))
 

@@ -4,7 +4,7 @@ title: string-length
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Return the number of characters in a string (in Unicode scalar values).
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-length "hello")  ;; => 5
 (string-length "")       ;; => 0
 (string-length "你好")   ;; => 2

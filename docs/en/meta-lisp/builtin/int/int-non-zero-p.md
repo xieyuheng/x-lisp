@@ -4,7 +4,7 @@ title: int-non-zero?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if an integer is non-zero.
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-non-zero? 1)   ;; => true
 (int-non-zero? -1)  ;; => true
 (int-non-zero? 0)   ;; => false

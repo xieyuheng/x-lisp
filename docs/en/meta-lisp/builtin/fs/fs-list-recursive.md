@@ -4,7 +4,7 @@ title: fs-list-recursive
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t))
 ```
 
@@ -14,6 +14,6 @@ List directory contents recursively.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-list-recursive "/tmp")  ;; => ["/tmp/a.txt" "/tmp/subdir/b.txt"]
 ```

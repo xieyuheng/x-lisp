@@ -4,7 +4,7 @@ title: hash-each
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V Any) (-> (-> K V Any) (hash-t K V) void-t))
 ```
 
@@ -14,7 +14,7 @@ title: hash-each
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-each
   (lambda (key value)
     (println key)

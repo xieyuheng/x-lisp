@@ -4,7 +4,7 @@ title: int-sum
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t int-t) int-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-sum
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-sum [1 2 3])   ;; => 6
 (int-sum [])        ;; => 0
 (int-sum [-1 0 1])  ;; => 0

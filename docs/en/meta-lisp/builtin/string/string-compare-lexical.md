@@ -4,7 +4,7 @@ title: string-compare-lexical
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Lexicographic comparison. Returns `-1` if the first is less than the second, `0`
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-compare-lexical "a" "b")  ;; => -1
 (string-compare-lexical "a" "a")  ;; => 0
 (string-compare-lexical "b" "a")  ;; => 1

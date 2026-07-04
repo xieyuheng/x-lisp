@@ -4,7 +4,7 @@ title: just
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A (maybe-t A)))
 ```
 
@@ -14,7 +14,7 @@ Constructor of `maybe-t`, representing a present value.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((m (just 42)))
   (just? m))       ;; => true
 ```

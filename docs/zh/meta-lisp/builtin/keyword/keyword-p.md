@@ -4,7 +4,7 @@ title: keyword?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: keyword?
 
 # 例子
 
-```scheme
+```meta-lisp
 (keyword? :key)    ;; => true
 (keyword? 'key)    ;; => false
 (keyword? "key")   ;; => false

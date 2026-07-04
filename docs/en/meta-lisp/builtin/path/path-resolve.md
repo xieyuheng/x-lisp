@@ -4,7 +4,7 @@ title: path-resolve
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Resolves a path to an absolute path. If `path` is already absolute (starts with 
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-resolve "/etc")   ;; => "/etc"
 (path-resolve "foo")    ;; => "/home/user/foo"
 (path-resolve "./bar")  ;; => "/home/user/bar"

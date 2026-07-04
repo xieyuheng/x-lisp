@@ -4,7 +4,7 @@ title: list-second
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) A))
 ```
 
@@ -14,6 +14,6 @@ Second element.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-second [1 2 3])  ;; => 2
 ```

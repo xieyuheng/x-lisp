@@ -4,7 +4,7 @@ title: hash-entry-value
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-entry-t K V) V))
 ```
 
@@ -14,7 +14,7 @@ Get the value of an entry.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((entries (hash-entries (@hash 'a 1 'b 2))))
   (list-map hash-entry-value entries))  ;; => [1 2]
 ```

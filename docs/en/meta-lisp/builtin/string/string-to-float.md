@@ -4,7 +4,7 @@ title: string-to-float
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t float-t)
 ```
 
@@ -14,7 +14,7 @@ Parse a string to a float. Behavior is undefined if the string is not a valid fl
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-to-float "3.14")  ;; => 3.14
 (string-to-float "42")    ;; => 42.0
 (string-to-float "-1.5")  ;; => -1.5

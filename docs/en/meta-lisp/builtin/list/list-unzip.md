@@ -4,7 +4,7 @@ title: list-unzip
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (list-t (pair-t A B)) (pair-t (list-t A) (list-t B))))
 ```
 
@@ -14,6 +14,6 @@ Split a list of pairs into two lists.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-unzip [(make-pair 'a 1) (make-pair 'b 2)])  ;; => (make-pair ['a 'b] [1 2])
 ```

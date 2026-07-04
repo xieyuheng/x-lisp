@@ -4,7 +4,7 @@ title: set-copy
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ Copy a set, returning a new set.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-copy #{1 2 3})  ;; => #{1 2 3}
 ```

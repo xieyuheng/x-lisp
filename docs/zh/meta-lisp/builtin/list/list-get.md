@@ -4,7 +4,7 @@ title: list-get
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> int-t (list-t E) E))
 ```
 
@@ -14,7 +14,7 @@ title: list-get
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-get 0 [1 2 3])  ;; => 1
 (list-get 2 [1 2 3])  ;; => 3
 ```

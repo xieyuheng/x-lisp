@@ -4,7 +4,7 @@ title: fadd
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t float-t)
 ```
 
@@ -14,7 +14,7 @@ title: fadd
 
 # 例子
 
-```scheme
+```meta-lisp
 (fadd 1.0 2.0)    ;; => 3.0
 (fadd -1.0 1.0)   ;; => 0.0
 (fadd 0.0 0.0)    ;; => 0.0

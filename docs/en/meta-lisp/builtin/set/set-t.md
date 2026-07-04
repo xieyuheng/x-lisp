@@ -4,7 +4,7 @@ title: set-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,6 +14,6 @@ Set type constructor. `(set-t E)` represents a set with element type `E`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (claim numbers (set-t int-t))
 ```

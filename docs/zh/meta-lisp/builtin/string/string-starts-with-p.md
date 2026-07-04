@@ -4,7 +4,7 @@ title: string-starts-with?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-starts-with?
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-starts-with? "hello" "he")  ;; => true
 (string-starts-with? "hello" "hi")  ;; => false
 (string-starts-with? "hello" "")    ;; => true

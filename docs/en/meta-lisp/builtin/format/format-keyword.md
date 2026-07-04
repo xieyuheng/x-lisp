@@ -3,7 +3,7 @@ title: format-keyword
 ---
 
 # Type
-```scheme
+```meta-lisp
 (-> keyword-t string-t)
 ```
 
@@ -11,6 +11,6 @@ title: format-keyword
 Format a keyword as an S-expression string.
 
 # Examples
-```scheme
+```meta-lisp
 (format-keyword :foo)  ;; => ":foo"
 ```

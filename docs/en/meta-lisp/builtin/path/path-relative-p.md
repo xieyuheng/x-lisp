@@ -4,7 +4,7 @@ title: path-relative?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a path is relative.
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-relative? "/tmp/foo")  ;; => false
 (path-relative? "foo/bar")   ;; => true
 ```

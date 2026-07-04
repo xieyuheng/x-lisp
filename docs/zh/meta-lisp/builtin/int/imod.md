@@ -4,7 +4,7 @@ title: imod
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: imod
 
 # 例子
 
-```scheme
+```meta-lisp
 (imod 7 3)    ;; => 1
 (imod 6 3)    ;; => 0
 (imod -7 3)   ;; => -1

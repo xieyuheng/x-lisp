@@ -4,7 +4,7 @@ title: int-min
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Return the smaller of two integers.
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-min 1 2)      ;; => 1
 (int-min -1 -5)    ;; => -5
 (int-min 0 0)      ;; => 0

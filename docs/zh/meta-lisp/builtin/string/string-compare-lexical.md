@@ -4,7 +4,7 @@ title: string-compare-lexical
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-compare-lexical
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-compare-lexical "a" "b")  ;; => -1
 (string-compare-lexical "a" "a")  ;; => 0
 (string-compare-lexical "b" "a")  ;; => 1

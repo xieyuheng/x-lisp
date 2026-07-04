@@ -4,7 +4,7 @@ title: string-substring
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-substring
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-substring 0 3 "hello")  ;; => "hel"
 (string-substring 1 4 "hello")  ;; => "ell"
 (string-substring 0 0 "hello")  ;; => ""

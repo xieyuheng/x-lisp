@@ -4,7 +4,7 @@ title: call-with-input-file
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A)
   (-> string-t (-> file-t A) A))
 ```
@@ -15,7 +15,7 @@ title: call-with-input-file
 
 # 例子
 
-```scheme
+```meta-lisp
 (call-with-input-file "data.txt"
   (lambda (file) (file-read file)))
 ```

@@ -4,7 +4,7 @@ title: assert
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> bool-t void-t)
 ```
 
@@ -14,7 +14,7 @@ title: assert
 
 # 例子
 
-```scheme
+```meta-lisp
 (assert (equal? 1 1))
 (assert (int-greater? 2 1))
 ```

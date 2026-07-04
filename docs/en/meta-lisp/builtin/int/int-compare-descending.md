@@ -4,7 +4,7 @@ title: int-compare-descending
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Descending comparison. Returns `-1` if the first is greater than the second, `0`
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-compare-descending 3 2)  ;; => -1
 (int-compare-descending 2 2)  ;; => 0
 (int-compare-descending 1 2)  ;; => 1

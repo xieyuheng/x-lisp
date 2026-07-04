@@ -4,7 +4,7 @@ title: file-read
 
 # Type
 
-```scheme
+```meta-lisp
 (-> file-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Read entire content from a file.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((file (open-input-file "data.txt")))
   (file-read file)
   (file-close file))

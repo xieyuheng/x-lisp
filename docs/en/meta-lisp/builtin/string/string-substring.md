@@ -4,7 +4,7 @@ title: string-substring
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Extract a substring from `start` (inclusive) to `end` (exclusive). Indices are i
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-substring 0 3 "hello")  ;; => "hel"
 (string-substring 1 4 "hello")  ;; => "ell"
 (string-substring 0 0 "hello")  ;; => ""

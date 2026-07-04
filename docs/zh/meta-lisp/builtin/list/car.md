@@ -4,7 +4,7 @@ title: car
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) E))
 ```
 
@@ -14,7 +14,7 @@ title: car
 
 # 例子
 
-```scheme
+```meta-lisp
 (car [1 2 3])  ;; => 1
 (car ["a" "b"])  ;; => "a"
 ```

@@ -4,7 +4,7 @@ title: fs-write
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ title: fs-write
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-write "/tmp/foo.txt" "hello world")
 ```

@@ -4,7 +4,7 @@ title: nothing?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (maybe-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: nothing?
 
 # 例子
 
-```scheme
+```meta-lisp
 (nothing? nothing)    ;; => true
 (nothing? (just 42))  ;; => false
 ```

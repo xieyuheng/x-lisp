@@ -4,7 +4,7 @@ title: box-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Box type constructor. Internally represented as `(list-t E)`.
 
 # Definition
 
-```scheme
+```meta-lisp
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-empty? (-> (box-t E) bool-t))
@@ -24,7 +24,7 @@ Box type constructor. Internally represented as `(list-t E)`.
 
 # Generated
 
-```scheme
+```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
@@ -34,7 +34,7 @@ Box type constructor. Internally represented as `(list-t E)`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (define box (make-box))
 (box-empty? box)    ;; => true
 (box-put! 42 box)

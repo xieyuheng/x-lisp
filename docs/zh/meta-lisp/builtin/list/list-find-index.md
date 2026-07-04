@@ -4,7 +4,7 @@ title: list-find-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) int-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-find-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-find-index int? ['a 'b 3 'd])  ;; => 2
 (list-find-index int? ['a 'b 'c])    ;; => -1
 ```

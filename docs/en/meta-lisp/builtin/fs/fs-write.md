@@ -4,7 +4,7 @@ title: fs-write
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ Write a string to a file. Creates the file if it doesn't exist, overwrites if it
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-write "/tmp/foo.txt" "hello world")
 ```

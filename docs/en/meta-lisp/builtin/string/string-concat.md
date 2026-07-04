@@ -4,7 +4,7 @@ title: string-concat
 
 # Type
 
-```scheme
+```meta-lisp
 (-> (list-t string-t) string-t)
 ```
 
@@ -14,7 +14,7 @@ Concatenate a list of strings, equivalent to applying `string-append` sequential
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-concat ["a" "b" "c"])  ;; => "abc"
 (string-concat [])             ;; => ""
 (string-concat ["hello " "world"])  ;; => "hello world"

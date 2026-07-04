@@ -4,7 +4,7 @@ title: path-relative-to-cwd
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -17,7 +17,7 @@ title: path-relative-to-cwd
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-relative-to-cwd "/home/user/package/src")  ;; e.g. => "src"
 (path-relative-to-cwd "/home/user")               ;; e.g. => ".."
 ```

@@ -4,7 +4,7 @@ title: list-flat-map-index
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (-> int-t A (list-t B)) (list-t A) (list-t B)))
 ```
 
@@ -14,7 +14,7 @@ Map a function over each element together with its index, then flatten the resul
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-flat-map-index (lambda (i x) [i x]) [10 20 30])
 ;; => [0 10 1 20 2 30]
 

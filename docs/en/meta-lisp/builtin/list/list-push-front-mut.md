@@ -4,7 +4,7 @@ title: list-push-front!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ Prepend an element at the front of the list, same as `cons`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-push-front! 1 [2 3])  ;; => [1 2 3]
 ```

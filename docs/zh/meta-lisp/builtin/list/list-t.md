@@ -4,7 +4,7 @@ title: list-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 例子
 
-```scheme
+```meta-lisp
 (claim numbers (list-t int-t))
 (claim names (list-t string-t))
 ```

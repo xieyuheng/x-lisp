@@ -4,7 +4,7 @@ title: source-location-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Source location type. Contains file path and source span.
 
 # Definition
 
-```scheme
+```meta-lisp
 (define-struct source-location-t
   (path string-t)
   (span source-span-t))
@@ -22,7 +22,7 @@ Source location type. Contains file path and source span.
 
 # Generated
 
-```scheme
+```meta-lisp
 (claim make-source-location (-> string-t source-span-t source-location-t))
 (claim source-location?     (-> source-location-t bool-t))
 (claim source-location-path (-> source-location-t string-t))

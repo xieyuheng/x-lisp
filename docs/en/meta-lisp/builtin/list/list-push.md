@@ -4,7 +4,7 @@ title: list-push
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ Append an element at the end of the list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-push 4 [1 2 3])  ;; => [1 2 3 4]
 (list-push 1 [])       ;; => [1]
 ```

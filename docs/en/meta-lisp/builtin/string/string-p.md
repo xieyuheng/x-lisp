@@ -4,7 +4,7 @@ title: string?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a string.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string? "hello")  ;; => true
 (string? 42)       ;; => false
 (string? 'foo)     ;; => false

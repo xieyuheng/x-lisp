@@ -4,7 +4,7 @@ title: path-extension
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Get the file extension (including the dot).
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-extension "/tmp/foo.txt")  ;; => ".txt"
 (path-extension "/tmp/foo")      ;; => ""
 ```

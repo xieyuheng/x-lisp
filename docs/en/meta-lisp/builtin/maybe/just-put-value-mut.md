@@ -4,7 +4,7 @@ title: just-put-value!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A (maybe-t A) (maybe-t A)))
 ```
 
@@ -14,7 +14,7 @@ Replace the value in a `just`. Errors if called on `nothing`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((m (just 42)))
   (just-put-value! 7 m)
   (just-value m))  ;; => 7

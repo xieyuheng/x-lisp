@@ -4,7 +4,7 @@ title: list-enumerate
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) (list-t (pair-t int-t A))))
 ```
 
@@ -14,7 +14,7 @@ title: list-enumerate
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-enumerate [])            ;; => []
 (list-enumerate ['a])          ;; => [(make-pair 0 'a)]
 (list-enumerate ['a 'b 'c])    ;; => [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]

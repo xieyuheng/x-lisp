@@ -4,7 +4,7 @@ title: list-init
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: list-init
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-init [1 2 3])  ;; => [1 2]
 (list-init [1])      ;; => []
 ```

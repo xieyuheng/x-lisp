@@ -4,7 +4,7 @@ title: string-empty?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string is empty (length 0).
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-empty? "")       ;; => true
 (string-empty? "hello")  ;; => false
 ```

@@ -4,7 +4,7 @@ title: list-first
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) A))
 ```
 
@@ -14,6 +14,6 @@ title: list-first
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-first [1 2 3])  ;; => 1
 ```

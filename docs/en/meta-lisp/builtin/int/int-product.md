@@ -4,7 +4,7 @@ title: int-product
 
 # Type
 
-```scheme
+```meta-lisp
 (-> (list-t int-t) int-t)
 ```
 
@@ -14,7 +14,7 @@ Product of a list of integers. The product of an empty list is 1.
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-product [1 2 3])    ;; => 6
 (int-product [])         ;; => 1
 (int-product [2 0 3])    ;; => 0

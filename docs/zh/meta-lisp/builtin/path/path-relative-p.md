@@ -4,7 +4,7 @@ title: path-relative?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: path-relative?
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-relative? "/tmp/foo")  ;; => false
 (path-relative? "foo/bar")   ;; => true
 ```

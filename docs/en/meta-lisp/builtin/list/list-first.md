@@ -4,7 +4,7 @@ title: list-first
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) A))
 ```
 
@@ -14,6 +14,6 @@ First element, same as `car`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-first [1 2 3])  ;; => 1
 ```

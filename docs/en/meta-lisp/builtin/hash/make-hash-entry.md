@@ -4,7 +4,7 @@ title: make-hash-entry
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K V (hash-entry-t K V)))
 ```
 
@@ -14,7 +14,7 @@ Constructor of `hash-entry-t`, creates a key-value entry.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((e (make-hash-entry "a" 1)))
   (hash-entry-key e))   ;; => "a"
 ```

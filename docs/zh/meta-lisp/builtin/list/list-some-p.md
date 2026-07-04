@@ -4,7 +4,7 @@ title: list-some?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-some?
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-some? int-non-negative? [-1 0 1])  ;; => true
 (list-some? int-non-negative? [-1 -2])   ;; => false
 ```

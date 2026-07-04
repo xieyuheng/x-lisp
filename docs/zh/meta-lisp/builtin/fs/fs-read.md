@@ -4,7 +4,7 @@ title: fs-read
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ title: fs-read
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-read "/tmp/foo.txt")  ;; => 文件内容
 ```

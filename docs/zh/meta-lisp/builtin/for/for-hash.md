@@ -4,7 +4,7 @@ title: for-hash
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V Any) (-> (hash-t K V) (-> K V Any) void-t))
 ```
 
@@ -17,7 +17,7 @@ title: for-hash
 
 # 例子
 
-```scheme
+```meta-lisp
 (for-hash (@hash 1 2 3 4)
   (lambda (key value)
     (println key)

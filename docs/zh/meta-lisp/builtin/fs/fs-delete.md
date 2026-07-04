@@ -4,7 +4,7 @@ title: fs-delete
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ title: fs-delete
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-delete "/tmp/foo")
 ```

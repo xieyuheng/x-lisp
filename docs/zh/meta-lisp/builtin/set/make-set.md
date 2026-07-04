@@ -4,7 +4,7 @@ title: make-set
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: make-set
 
 # 例子
 
-```scheme
+```meta-lisp
 (make-set)  ;; => #{}
 ```

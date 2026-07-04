@@ -4,7 +4,7 @@ title: set-empty?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if the set is empty.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-empty? #{})       ;; => true
 (set-empty? #{1 2 3})  ;; => false
 ```

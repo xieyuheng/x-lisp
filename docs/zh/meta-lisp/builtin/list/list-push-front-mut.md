@@ -4,7 +4,7 @@ title: list-push-front!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: list-push-front!
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-push-front! 1 [2 3])  ;; => [1 2 3]
 ```

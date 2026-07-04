@@ -4,7 +4,7 @@ title: make-hash
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ Create an empty hash table.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((h (make-hash)))
   (hash-put! 'a 1 h)
   h)

@@ -4,7 +4,7 @@ title: float-positive?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> float-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a float is positive (greater than 0.0).
 
 # Examples
 
-```scheme
+```meta-lisp
 (float-positive? 1.0)    ;; => true
 (float-positive? 0.0)    ;; => false
 (float-positive? -1.0)   ;; => false

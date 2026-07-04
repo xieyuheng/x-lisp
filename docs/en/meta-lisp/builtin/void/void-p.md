@@ -4,7 +4,7 @@ title: void?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is `void`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (void? void)    ;; => true
 (void? 42)      ;; => false
 ```

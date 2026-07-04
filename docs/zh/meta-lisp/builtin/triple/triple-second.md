@@ -4,7 +4,7 @@ title: triple-second
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B C) (-> (triple-t A B C) B))
 ```
 
@@ -14,7 +14,7 @@ title: triple-second
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
   (triple-second t))  ;; => "hello"
 ```

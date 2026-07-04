@@ -4,7 +4,7 @@ title: make-hash-entry
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K V (hash-entry-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: make-hash-entry
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((e (make-hash-entry "a" 1)))
   (hash-entry-key e))   ;; => "a"
 ```

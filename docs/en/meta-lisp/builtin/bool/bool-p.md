@@ -4,7 +4,7 @@ title: bool?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a boolean.
 
 # Examples
 
-```scheme
+```meta-lisp
 (bool? true)   ;; => true
 (bool? false)  ;; => true
 (bool? 42)     ;; => false

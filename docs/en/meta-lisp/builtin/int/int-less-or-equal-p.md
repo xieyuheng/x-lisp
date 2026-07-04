@@ -4,7 +4,7 @@ title: int-less-or-equal?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if the first integer is less than or equal to the second.
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-less-or-equal? 1 2)    ;; => true
 (int-less-or-equal? 1 1)    ;; => true
 (int-less-or-equal? 2 1)    ;; => false

@@ -4,7 +4,7 @@ title: set-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,6 +14,6 @@ type-t
 
 # 例子
 
-```scheme
+```meta-lisp
 (claim numbers (set-t int-t))
 ```

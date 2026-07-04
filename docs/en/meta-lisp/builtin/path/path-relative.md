@@ -4,7 +4,7 @@ title: path-relative
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t)
 ```
 
@@ -18,7 +18,7 @@ Note: `from` and `to` must both be absolute paths or both be relative paths. Mix
 
 Absolute paths:
 
-```scheme
+```meta-lisp
 (path-relative "/a/b/c" "/a/b/d/e")    ;; => "../d/e"
 (path-relative "/a/b/c" "/a/b/c/d")    ;; => "d"
 (path-relative "/app/config" "/app")   ;; => ".."
@@ -26,7 +26,7 @@ Absolute paths:
 
 Relative paths:
 
-```scheme
+```meta-lisp
 (path-relative "a/b/c" "a/b/d/e")      ;; => "../d/e"
 (path-relative "a/b/c" "a/b/c/d")      ;; => "d"
 (path-relative "." "src")              ;; => "src"

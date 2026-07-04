@@ -4,7 +4,7 @@ title: list-length
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) int-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-length
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-length [1 2 3])  ;; => 3
 (list-length [])       ;; => 0
 ```

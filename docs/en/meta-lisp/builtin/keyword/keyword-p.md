@@ -4,7 +4,7 @@ title: keyword?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a keyword.
 
 # Examples
 
-```scheme
+```meta-lisp
 (keyword? :key)    ;; => true
 (keyword? 'key)    ;; => false
 (keyword? "key")   ;; => false

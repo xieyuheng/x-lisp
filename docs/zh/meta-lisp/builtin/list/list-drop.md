@@ -4,7 +4,7 @@ title: list-drop
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> int-t (list-t A) (list-t A)))
 ```
 
@@ -14,7 +14,7 @@ title: list-drop
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-drop 2 [1 2 3 4])  ;; => [3 4]
 (list-drop 0 [1 2 3])    ;; => [1 2 3]
 (list-drop 5 [1 2 3])    ;; => []

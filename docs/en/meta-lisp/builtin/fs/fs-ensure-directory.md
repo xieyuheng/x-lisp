@@ -4,7 +4,7 @@ title: fs-ensure-directory
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ Ensure a directory exists. Creates the directory (including parents) if it doesn
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-ensure-directory "/tmp/foo/bar")
 ```

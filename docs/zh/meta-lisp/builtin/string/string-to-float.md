@@ -4,7 +4,7 @@ title: string-to-float
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t float-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-to-float
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-to-float "3.14")  ;; => 3.14
 (string-to-float "42")    ;; => 42.0
 (string-to-float "-1.5")  ;; => -1.5

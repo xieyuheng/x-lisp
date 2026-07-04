@@ -4,7 +4,7 @@ title: symbol-append
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> symbol-t symbol-t symbol-t)
 ```
 
@@ -14,7 +14,7 @@ title: symbol-append
 
 # 例子
 
-```scheme
+```meta-lisp
 (symbol-append 'foo 'bar)  ;; => 'foobar
 (symbol-append 'a 'b)      ;; => 'ab
 ```

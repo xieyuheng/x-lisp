@@ -4,7 +4,7 @@ title: int-non-negative?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if an integer is non-negative (greater than or equal to 0).
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-non-negative? 0)   ;; => true
 (int-non-negative? 1)   ;; => true
 (int-non-negative? -1)  ;; => false

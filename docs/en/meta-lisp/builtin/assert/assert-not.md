@@ -4,7 +4,7 @@ title: assert-not
 
 # Type
 
-```scheme
+```meta-lisp
 (-> bool-t void-t)
 ```
 
@@ -14,7 +14,7 @@ Assert a condition is false. Raises an error if the condition is true.
 
 # Examples
 
-```scheme
+```meta-lisp
 (assert-not (= 1 2))
 (assert-not (< 2 1))
 ```

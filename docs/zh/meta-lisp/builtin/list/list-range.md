@@ -4,7 +4,7 @@ title: list-range
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t (list-t int-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-range
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-range 0)  ;; => []
 (list-range 3)  ;; => [0 1 2]
 (list-range 5)  ;; => [0 1 2 3 4]

@@ -3,7 +3,7 @@ title: format-symbol
 ---
 
 # Type
-```scheme
+```meta-lisp
 (-> symbol-t string-t)
 ```
 
@@ -11,6 +11,6 @@ title: format-symbol
 Format a symbol as an S-expression string.
 
 # Examples
-```scheme
+```meta-lisp
 (format-symbol 'hello)  ;; => "'hello"
 ```

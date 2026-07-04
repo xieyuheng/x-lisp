@@ -4,7 +4,7 @@ title: list-concat
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t (list-t A)) (list-t A)))
 ```
 
@@ -14,6 +14,6 @@ title: list-concat
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-concat [[1 2] [3 4] [5]])  ;; => [1 2 3 4 5]
 ```

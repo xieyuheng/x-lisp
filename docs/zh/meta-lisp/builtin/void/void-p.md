@@ -4,7 +4,7 @@ title: void?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: void?
 
 # 例子
 
-```scheme
+```meta-lisp
 (void? void)    ;; => true
 (void? 42)      ;; => false
 ```

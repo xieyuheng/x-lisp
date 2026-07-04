@@ -4,7 +4,7 @@ title: cons
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ Prepend an element at the front of the list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (cons 1 [2 3])    ;; => [1 2 3]
 (cons "a" [])     ;; => ["a"]
 ```

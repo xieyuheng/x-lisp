@@ -4,7 +4,7 @@ title: list-reverse
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: list-reverse
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-reverse [1 2 3])  ;; => [3 2 1]
 (list-reverse [])       ;; => []
 ```

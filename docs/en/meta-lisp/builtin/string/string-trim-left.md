@@ -4,7 +4,7 @@ title: string-trim-left
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Remove whitespace from the left side of a string.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-trim-left "  hello")  ;; => "hello"
 (string-trim-left "hello  ")  ;; => "hello  "
 (string-trim-left "hello")    ;; => "hello"

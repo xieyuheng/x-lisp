@@ -4,7 +4,7 @@ title: exit
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t void-t)
 ```
 
@@ -14,7 +14,7 @@ Exit the program with a given exit code.
 
 # Examples
 
-```scheme
+```meta-lisp
 (exit 0)   ;; exit normally
 (exit 1)   ;; exit with error
 ```

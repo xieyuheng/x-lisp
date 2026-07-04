@@ -4,7 +4,7 @@ title: drop
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B C)
   (-> (-> A B)
       (-> C A B)))
@@ -16,7 +16,7 @@ Create a new function that ignores the first argument.
 
 # Examples
 
-```scheme
+```meta-lisp
 (define (greet name) (println (string-append "Hello, " name)))
 ((drop greet) "ignored" "World")  ;; prints "Hello, World"
 ```

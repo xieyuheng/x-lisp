@@ -4,7 +4,7 @@ title: fs-delete-directory
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ Delete an empty directory.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-delete-directory "/tmp/foo")
 ```

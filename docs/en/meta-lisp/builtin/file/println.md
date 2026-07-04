@@ -4,7 +4,7 @@ title: println
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A void-t))
 ```
 
@@ -14,7 +14,7 @@ Print any value to standard output followed by a newline.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-each println [1 2 3])
 ;; outputs:
 ;; 1

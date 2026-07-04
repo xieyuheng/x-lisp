@@ -4,7 +4,7 @@ title: int-greater?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if the first integer is greater than the second.
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-greater? 2 1)     ;; => true
 (int-greater? 1 2)     ;; => false
 (int-greater? 1 1)     ;; => false

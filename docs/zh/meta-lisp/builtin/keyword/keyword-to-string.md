@@ -4,7 +4,7 @@ title: keyword-to-string
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> keyword-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: keyword-to-string
 
 # 例子
 
-```scheme
+```meta-lisp
 (keyword-to-string :key)   ;; => ":key"
 (keyword-to-string :name)  ;; => ":name"
 ```

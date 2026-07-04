@@ -4,7 +4,7 @@ title: random-float
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t float-t)
 ```
 
@@ -14,7 +14,7 @@ title: random-float
 
 # 例子
 
-```scheme
+```meta-lisp
 (random-float 0.0 1.0)   ;; => 0.0 到 1.0 之间的随机浮点数
 (random-float -1.0 1.0)  ;; => -1.0 到 1.0 之间的随机浮点数
 ```

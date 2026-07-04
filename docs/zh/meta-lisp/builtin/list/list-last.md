@@ -4,7 +4,7 @@ title: list-last
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) E))
 ```
 
@@ -14,7 +14,7 @@ title: list-last
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-last [1 2 3])  ;; => 3
 (list-last [1])      ;; => 1
 ```

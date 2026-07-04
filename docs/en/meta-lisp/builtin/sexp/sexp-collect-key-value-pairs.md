@@ -4,7 +4,7 @@ title: sexp-collect-key-value-pairs
 
 # Type
 
-```scheme
+```meta-lisp
 (-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t)))
 ```
 
@@ -14,7 +14,7 @@ Collect key-value pairs from a list of located S-expressions. When encountering 
 
 # Examples
 
-```scheme
+```meta-lisp
 (sexp-collect-key-value-pairs
   [keyword-sexp :key ... int-sexp 42 ...])
 ;; => [(make-pair :key int-sexp-42)]

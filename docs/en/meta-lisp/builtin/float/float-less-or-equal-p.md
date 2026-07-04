@@ -4,7 +4,7 @@ title: float-less-or-equal?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> float-t float-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if the first float is less than or equal to the second.
 
 # Examples
 
-```scheme
+```meta-lisp
 (float-less-or-equal? 1.0 2.0)   ;; => true
 (float-less-or-equal? 1.0 1.0)   ;; => true
 (float-less-or-equal? 2.0 1.0)   ;; => false

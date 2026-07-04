@@ -4,7 +4,7 @@ title: list-each
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (-> A Any) (list-t A) void-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-each
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-each println [1 2 3])
 ;; 输出：
 ;; 1

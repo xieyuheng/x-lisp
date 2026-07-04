@@ -4,7 +4,7 @@ title: float-sum
 
 # Type
 
-```scheme
+```meta-lisp
 (-> (list-t float-t) float-t)
 ```
 
@@ -14,7 +14,7 @@ Sum of a list of floats. The sum of an empty list is 0.0.
 
 # Examples
 
-```scheme
+```meta-lisp
 (float-sum [1.0 2.0 3.0])  ;; => 6.0
 (float-sum [])             ;; => 0.0
 (float-sum [-1.0 0.0 1.0]) ;; => 0.0

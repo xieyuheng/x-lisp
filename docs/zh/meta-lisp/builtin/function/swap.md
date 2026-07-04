@@ -4,7 +4,7 @@ title: swap
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B C)
   (-> (-> A B C)
       (-> B A C)))
@@ -16,7 +16,7 @@ title: swap
 
 # 例子
 
-```scheme
+```meta-lisp
 (define (divide a b) (/ a b))
 ((swap divide) 2 10)  ;; => 5（等价于 (divide 10 2)）
 ```

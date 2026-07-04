@@ -4,7 +4,7 @@ title: idiv
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: idiv
 
 # 例子
 
-```scheme
+```meta-lisp
 (idiv 7 3)    ;; => 2
 (idiv 6 3)    ;; => 2
 (idiv -7 3)   ;; => -2

@@ -4,7 +4,7 @@ title: current-full-command-line
 
 # Type
 
-```scheme
+```meta-lisp
 (-> (list-t string-t))
 ```
 
@@ -24,7 +24,7 @@ xvm run program.xexe -- check --profile
 
 # Examples
 
-```scheme
+```meta-lisp
 (current-full-command-line)
 ;; => ["xvm" "run" "program.xexe" "--" "check" "--profile"]
 ```

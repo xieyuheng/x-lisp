@@ -4,7 +4,7 @@ title: list-put!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> int-t E (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: list-put!
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-put! 0 10 [1 2 3])  ;; => [10 2 3]
 ```

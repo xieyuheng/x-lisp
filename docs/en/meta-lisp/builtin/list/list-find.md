@@ -4,7 +4,7 @@ title: list-find
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) (maybe-t A)))
 ```
 
@@ -14,7 +14,7 @@ Find the first element satisfying the predicate, returning `(just value)` or `(n
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-find int? ['a 'b 3 'd])  ;; => (just 3)
 (list-find int? ['a 'b 'c])    ;; => (nothing)
 ```

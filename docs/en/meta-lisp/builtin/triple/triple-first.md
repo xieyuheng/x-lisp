@@ -4,7 +4,7 @@ title: triple-first
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B C) (-> (triple-t A B C) A))
 ```
 
@@ -14,7 +14,7 @@ First element of a triple.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
   (triple-first t))  ;; => 1
 ```

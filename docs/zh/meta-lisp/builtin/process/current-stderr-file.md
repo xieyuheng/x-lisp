@@ -4,7 +4,7 @@ title: current-stderr-file
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> file-t)
 ```
 
@@ -14,6 +14,6 @@ title: current-stderr-file
 
 # 例子
 
-```scheme
+```meta-lisp
 (file-writeln "error: something went wrong" (current-stderr-file))
 ```

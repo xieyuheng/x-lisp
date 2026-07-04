@@ -4,7 +4,7 @@ title: fs-read
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ Read file content as a string.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-read "/tmp/foo.txt")  ;; => file content
 ```

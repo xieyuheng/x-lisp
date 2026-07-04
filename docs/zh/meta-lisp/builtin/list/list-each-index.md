@@ -4,7 +4,7 @@ title: list-each-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (-> int-t A Any) (list-t A) void-t))
 ```
 
@@ -14,7 +14,7 @@ title: list-each-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-each-index
  (lambda (i x)
    (print i)

@@ -4,7 +4,7 @@ title: atom?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: atom?
 
 # 例子
 
-```scheme
+```meta-lisp
 (atom? 42)       ;; => true
 (atom? "hello")  ;; => true
 (atom? [1 2 3])  ;; => false

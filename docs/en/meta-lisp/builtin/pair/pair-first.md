@@ -4,7 +4,7 @@ title: pair-first
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (pair-t A B) A))
 ```
 
@@ -14,7 +14,7 @@ First element of a pair.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((p (make-pair 1 "hello")))
   (pair-first p))  ;; => 1
 ```

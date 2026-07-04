@@ -4,7 +4,7 @@ title: total-compare
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B int-t))
 ```
 
@@ -14,7 +14,7 @@ title: total-compare
 
 # 例子
 
-```scheme
+```meta-lisp
 (total-compare 1 2)   ;; => 负数
 (total-compare 2 2)   ;; => 0
 (total-compare 3 2)   ;; => 正数

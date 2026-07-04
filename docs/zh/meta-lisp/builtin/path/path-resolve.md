@@ -4,7 +4,7 @@ title: path-resolve
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: path-resolve
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-resolve "/etc")   ;; => "/etc"
 (path-resolve "foo")    ;; => "/home/user/foo"
 (path-resolve "./bar")  ;; => "/home/user/bar"

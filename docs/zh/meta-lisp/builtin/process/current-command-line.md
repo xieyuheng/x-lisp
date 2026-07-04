@@ -4,7 +4,7 @@ title: current-command-line
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t string-t))
 ```
 
@@ -23,6 +23,6 @@ xvm run program.xexe -- check --profile
 
 # 示例
 
-```scheme
+```meta-lisp
 (current-command-line)  ;; => ["check" "--profile"]
 ```

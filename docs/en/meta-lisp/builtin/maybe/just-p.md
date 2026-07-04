@@ -4,7 +4,7 @@ title: just?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (maybe-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a `maybe-t` value is `just`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (just? (just 42))  ;; => true
 (just? nothing)    ;; => false
 ```

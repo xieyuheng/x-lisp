@@ -4,7 +4,7 @@ title: call-with-output-file
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A)
   (-> string-t (-> file-t A) A))
 ```
@@ -15,7 +15,7 @@ title: call-with-output-file
 
 # 例子
 
-```scheme
+```meta-lisp
 (call-with-output-file "output.txt"
   (lambda (file) (file-writeln file "hello")))
 ```

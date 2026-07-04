@@ -4,7 +4,7 @@ title: parse-sexps
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t (list-t sexp-t))
 ```
 
@@ -14,7 +14,7 @@ title: parse-sexps
 
 # 例子
 
-```scheme
+```meta-lisp
 (parse-sexps "test" "(a b c)")
 ;; => [(list-sexp [symbol-sexp a ...] ...)]
 ```

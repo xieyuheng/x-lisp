@@ -4,7 +4,7 @@ title: hash-entry-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-struct (hash-entry-t K V)
   (key K)
   (value V))
@@ -22,7 +22,7 @@ type-t
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim make-hash-entry (polymorphic (K V) (-> K V (hash-entry-t K V))))
 (claim hash-entry-key   (polymorphic (K V) (-> (hash-entry-t K V) K)))
 (claim hash-entry-value (polymorphic (K V) (-> (hash-entry-t K V) V)))
@@ -30,7 +30,7 @@ type-t
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((e (make-hash-entry "a" 1)))
   (hash-entry-key e))   ;; => "a"
 ```

@@ -4,7 +4,7 @@ title: list-pop-front!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) E))
 ```
 
@@ -14,6 +14,6 @@ Pop the first element from the list, same as `car`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-pop-front! [1 2 3])  ;; => 1
 ```

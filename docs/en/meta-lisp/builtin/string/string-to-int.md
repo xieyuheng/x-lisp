@@ -4,7 +4,7 @@ title: string-to-int
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Parse a string to an integer. Behavior is undefined if the string is not a valid
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-to-int "42")    ;; => 42
 (string-to-int "-1")    ;; => -1
 (string-to-int "0")     ;; => 0

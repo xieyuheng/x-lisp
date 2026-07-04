@@ -4,7 +4,7 @@ title: maybe-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or
 
 # Definition
 
-```scheme
+```meta-lisp
 (define-enum (maybe-t A)
   (just (value A))
   (nothing))
@@ -22,7 +22,7 @@ Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or
 
 # Generated
 
-```scheme
+```meta-lisp
 (claim just  (polymorphic (A) (-> A (maybe-t A))))
 (claim just? (polymorphic (A) (-> (maybe-t A) bool-t)))
 (claim just-value (polymorphic (A) (-> (maybe-t A) A)))
@@ -34,7 +34,7 @@ Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or
 
 # Examples
 
-```scheme
+```meta-lisp
 (define x (just 42))
 (just? x)          ;; => true
 (nothing? x)       ;; => false

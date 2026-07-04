@@ -4,7 +4,7 @@ title: current-stderr-file
 
 # Type
 
-```scheme
+```meta-lisp
 (-> file-t)
 ```
 
@@ -14,6 +14,6 @@ Get the current standard error file handle.
 
 # Examples
 
-```scheme
+```meta-lisp
 (file-writeln "error: something went wrong" (current-stderr-file))
 ```

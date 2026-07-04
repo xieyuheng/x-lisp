@@ -4,7 +4,7 @@ title: string-ends-with?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string ends with a specified suffix.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-ends-with? "hello" "lo")  ;; => true
 (string-ends-with? "hello" "hi")  ;; => false
 (string-ends-with? "hello" "")    ;; => true

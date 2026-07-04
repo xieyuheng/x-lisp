@@ -4,7 +4,7 @@ title: string-starts-with?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string starts with a specified prefix.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-starts-with? "hello" "he")  ;; => true
 (string-starts-with? "hello" "hi")  ;; => false
 (string-starts-with? "hello" "")    ;; => true

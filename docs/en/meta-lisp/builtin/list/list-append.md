@@ -4,7 +4,7 @@ title: list-append
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (list-t A) (list-t A) (list-t A)))
 ```
 
@@ -14,6 +14,6 @@ Concatenate two lists.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-append [1 2 3] [4 5 6])  ;; => [1 2 3 4 5 6]
 ```

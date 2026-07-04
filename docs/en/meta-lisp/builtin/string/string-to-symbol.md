@@ -4,7 +4,7 @@ title: string-to-symbol
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t symbol-t)
 ```
 
@@ -14,7 +14,7 @@ Convert a string to a symbol.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-to-symbol "foo")  ;; => 'foo
 (string-to-symbol "42")   ;; => '42
 ```

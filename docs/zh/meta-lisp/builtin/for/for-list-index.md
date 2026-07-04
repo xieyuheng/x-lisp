@@ -4,7 +4,7 @@ title: for-list-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (list-t A) (-> int-t A Any) void-t))
 ```
 
@@ -17,7 +17,7 @@ title: for-list-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (for-list-index ['a 'b 'c]
   (lambda (i x)
     (println i)

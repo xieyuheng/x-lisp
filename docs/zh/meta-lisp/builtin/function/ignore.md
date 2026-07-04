@@ -4,7 +4,7 @@ title: ignore
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A void-t))
 ```
 
@@ -14,7 +14,7 @@ title: ignore
 
 # 例子
 
-```scheme
+```meta-lisp
 (ignore (hash-put! 'x 1 (make-hash)))  ;; => void
 (ignore 1)                             ;; => void
 ```

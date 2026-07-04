@@ -4,7 +4,7 @@ title: random-int
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: random-int
 
 # 例子
 
-```scheme
+```meta-lisp
 (random-int 1 10)   ;; => 1 到 9 之间的随机整数
 (random-int 0 100)  ;; => 0 到 99 之间的随机整数
 ```

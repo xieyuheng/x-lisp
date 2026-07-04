@@ -4,7 +4,7 @@ title: string-to-upper-case
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-to-upper-case
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-to-upper-case "hello")  ;; => "HELLO"
 (string-to-upper-case "Hello")  ;; => "HELLO"
 (string-to-upper-case "123")    ;; => "123"

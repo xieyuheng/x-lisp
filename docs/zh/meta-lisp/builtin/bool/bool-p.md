@@ -4,7 +4,7 @@ title: bool?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: bool?
 
 # 例子
 
-```scheme
+```meta-lisp
 (bool? true)   ;; => true
 (bool? false)  ;; => true
 (bool? 42)     ;; => false

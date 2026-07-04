@@ -4,7 +4,7 @@ title: string-append
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Concatenate two strings.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-append "hello" " world")  ;; => "hello world"
 (string-append "a" "b")           ;; => "ab"
 (string-append "" "hello")        ;; => "hello"

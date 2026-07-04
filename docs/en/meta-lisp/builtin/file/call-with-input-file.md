@@ -4,7 +4,7 @@ title: call-with-input-file
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A)
   (-> string-t (-> file-t A) A))
 ```
@@ -15,7 +15,7 @@ Open file for reading, pass the file handle to a function, and automatically clo
 
 # Examples
 
-```scheme
+```meta-lisp
 (call-with-input-file "data.txt"
   (lambda (file) (file-read file)))
 ```

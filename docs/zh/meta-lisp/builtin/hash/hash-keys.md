@@ -4,7 +4,7 @@ title: hash-keys
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) (list-t K)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-keys
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h (@hash 1 2 3 4)))
   (list-map (iadd 1) (hash-keys h)))  ;; => [2 4]
 ```

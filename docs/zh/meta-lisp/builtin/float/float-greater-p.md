@@ -4,7 +4,7 @@ title: float-greater?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-greater?
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-greater? 2.0 1.0)    ;; => true
 (float-greater? 1.0 2.0)    ;; => false
 (float-greater? 1.0 1.0)    ;; => false

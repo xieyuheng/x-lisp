@@ -4,7 +4,7 @@ title: symbol-concat
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t symbol-t) symbol-t)
 ```
 
@@ -14,7 +14,7 @@ title: symbol-concat
 
 # 例子
 
-```scheme
+```meta-lisp
 (symbol-concat ['foo 'bar 'baz])  ;; => 'foobarbaz
 (symbol-concat [])                ;; => ''
 (symbol-concat ['a 'b])           ;; => 'ab

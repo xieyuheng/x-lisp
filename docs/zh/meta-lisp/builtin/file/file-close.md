@@ -4,7 +4,7 @@ title: file-close
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> file-t void-t)
 ```
 
@@ -14,7 +14,7 @@ title: file-close
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((file (open-input-file "data.txt")))
   (file-close file))
 ```

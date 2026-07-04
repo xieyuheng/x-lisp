@@ -4,7 +4,7 @@ title: make-set
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ Create an empty set.
 
 # Examples
 
-```scheme
+```meta-lisp
 (make-set)  ;; => #{}
 ```

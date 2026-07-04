@@ -4,7 +4,7 @@ title: source-location-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-struct source-location-t
   (path string-t)
   (span source-span-t))
@@ -22,7 +22,7 @@ type-t
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim make-source-location (-> string-t source-span-t source-location-t))
 (claim source-location?     (-> source-location-t bool-t))
 (claim source-location-path (-> source-location-t string-t))

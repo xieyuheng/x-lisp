@@ -4,7 +4,7 @@ title: list-tail
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ Rest of the list after removing the first element, same as `cdr`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-tail [1 2 3])  ;; => [2 3]
 ```

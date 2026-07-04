@@ -4,7 +4,7 @@ title: list-find
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) (maybe-t A)))
 ```
 
@@ -14,7 +14,7 @@ title: list-find
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-find int? ['a 'b 3 'd])  ;; => (just 3)
 (list-find int? ['a 'b 'c])    ;; => (nothing)
 ```

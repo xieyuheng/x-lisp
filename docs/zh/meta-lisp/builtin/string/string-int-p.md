@@ -4,7 +4,7 @@ title: string-int?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-int?
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-int? "42")    ;; => true
 (string-int? "-1")    ;; => true
 (string-int? "3.14")  ;; => false

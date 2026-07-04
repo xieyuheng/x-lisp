@@ -4,7 +4,7 @@ title: format
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A string-t))
 ```
 
@@ -14,7 +14,7 @@ title: format
 
 # 例子
 
-```scheme
+```meta-lisp
 (format 42)       ;; => "42"
 (format "hello")  ;; => "\"hello\""
 (format [1 2 3])  ;; => "[1 2 3]"

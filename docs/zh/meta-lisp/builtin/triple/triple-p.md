@@ -4,7 +4,7 @@ title: triple?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: triple?
 
 # 例子
 
-```scheme
+```meta-lisp
 (triple? (make-triple 1 2 3))  ;; => true
 (triple? 42)                   ;; => false
 ```

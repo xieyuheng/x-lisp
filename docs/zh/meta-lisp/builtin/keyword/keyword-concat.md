@@ -4,7 +4,7 @@ title: keyword-concat
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t keyword-t) keyword-t)
 ```
 
@@ -14,7 +14,7 @@ title: keyword-concat
 
 # 例子
 
-```scheme
+```meta-lisp
 (keyword-concat [:foo :bar :baz])  ;; => ':foobarbaz
 (keyword-concat [:a :b])           ;; => ':ab
 ```

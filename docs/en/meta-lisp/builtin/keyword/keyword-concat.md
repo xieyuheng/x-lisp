@@ -4,7 +4,7 @@ title: keyword-concat
 
 # Type
 
-```scheme
+```meta-lisp
 (-> (list-t keyword-t) keyword-t)
 ```
 
@@ -14,7 +14,7 @@ Concatenate a list of keywords, creating a new keyword.
 
 # Examples
 
-```scheme
+```meta-lisp
 (keyword-concat [:foo :bar :baz])  ;; => ':foobarbaz
 (keyword-concat [:a :b])           ;; => ':ab
 ```

@@ -4,7 +4,7 @@ title: hash-entry-key
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-entry-t K V) K))
 ```
 
@@ -14,7 +14,7 @@ Get the key of an entry.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((entries (hash-entries (@hash 'a 1 'b 2))))
   (list-map hash-entry-key entries))  ;; => ['a 'b]
 ```

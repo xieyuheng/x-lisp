@@ -4,7 +4,7 @@ title: list-every?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if all elements satisfy the predicate. Returns `true` for an empty list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-every? int-non-negative? [0 1 2 3])  ;; => true
 (list-every? int-non-negative? [0 1 -1])   ;; => false
 ```

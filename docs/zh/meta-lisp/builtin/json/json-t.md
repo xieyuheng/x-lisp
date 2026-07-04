@@ -4,7 +4,7 @@ title: json-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ JSON 值类型。表示解析后的 JSON 值。
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-enum json-t
   (json-null)
   (json-bool    (value bool-t))
@@ -26,7 +26,7 @@ JSON 值类型。表示解析后的 JSON 值。
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim json-null  (-> json-t))
 (claim json-null? (-> json-t bool-t))
 
@@ -58,7 +58,7 @@ JSON 值类型。表示解析后的 JSON 值。
 
 # 例子
 
-```scheme
+```meta-lisp
 (json-null)
 (json-bool true)
 (json-number 42.0)

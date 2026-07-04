@@ -4,7 +4,7 @@ title: list-tail
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ title: list-tail
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-tail [1 2 3])  ;; => [2 3]
 ```

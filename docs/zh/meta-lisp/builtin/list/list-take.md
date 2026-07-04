@@ -4,7 +4,7 @@ title: list-take
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> int-t (list-t A) (list-t A)))
 ```
 
@@ -14,7 +14,7 @@ title: list-take
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-take 2 [1 2 3 4])  ;; => [1 2]
 (list-take 0 [1 2 3])    ;; => []
 (list-take 5 [1 2 3])    ;; => [1 2 3]

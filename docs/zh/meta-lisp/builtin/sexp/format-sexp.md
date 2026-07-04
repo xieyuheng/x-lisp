@@ -4,7 +4,7 @@ title: format-sexp
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> sexp-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: format-sexp
 
 # 例子
 
-```scheme
+```meta-lisp
 (format-sexp (@sexp (a b c)))  ;; => "(a b c)"
 (format-sexp (@sexp 42))       ;; => "42"
 ```

@@ -4,7 +4,7 @@ title: path-join
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ title: path-join
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-join "/tmp" "foo.txt")  ;; => "/tmp/foo.txt"
 ```

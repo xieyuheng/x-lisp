@@ -4,7 +4,7 @@ title: string-float?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string is a valid float format.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-float? "3.14")   ;; => true
 (string-float? "42")     ;; => true
 (string-float? "abc")    ;; => false

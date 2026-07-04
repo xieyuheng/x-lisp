@@ -4,7 +4,7 @@ title: path-absolute?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: path-absolute?
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-absolute? "/tmp/foo")  ;; => true
 (path-absolute? "foo/bar")   ;; => false
 ```

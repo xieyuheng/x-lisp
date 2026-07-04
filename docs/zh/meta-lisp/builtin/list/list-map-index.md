@@ -4,7 +4,7 @@ title: list-map-index
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (-> int-t A B) (list-t A) (list-t B)))
 ```
 
@@ -14,7 +14,7 @@ title: list-map-index
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-map-index (lambda (i x) (iadd i x)) [10 20 30])  ;; => [10 21 32]
 (list-map-index (lambda (i _) i) ['a 'b 'c])            ;; => [0 1 2]
 ```

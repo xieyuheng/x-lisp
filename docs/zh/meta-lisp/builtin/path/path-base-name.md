@@ -4,7 +4,7 @@ title: path-base-name
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ title: path-base-name
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-base-name "/tmp/foo.txt")  ;; => "foo.txt"
 ```

@@ -4,7 +4,7 @@ title: hash-get-maybe
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> K (hash-t K V) (maybe-t V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-get-maybe
 
 # 例子
 
-```scheme
+```meta-lisp
 (hash-get-maybe 2 (@hash 1 "a" 2 "b" 3 "c"))  ;; => (just "b")
 (hash-get-maybe 4 (@hash 1 "a" 2 "b" 3 "c"))  ;; => nothing
 ```

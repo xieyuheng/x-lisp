@@ -4,7 +4,7 @@ title: string-join
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t) string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-join
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-join "," ["a" "b" "c"])  ;; => "a,b,c"
 (string-join " " ["a" "b"])      ;; => "a b"
 (string-join "" ["a" "b"])       ;; => "ab"

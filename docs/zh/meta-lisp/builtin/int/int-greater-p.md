@@ -4,7 +4,7 @@ title: int-greater?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> int-t int-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-greater?
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-greater? 2 1)     ;; => true
 (int-greater? 1 2)     ;; => false
 (int-greater? 1 1)     ;; => false

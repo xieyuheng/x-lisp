@@ -4,7 +4,7 @@ title: path-extension
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: path-extension
 
 # 例子
 
-```scheme
+```meta-lisp
 (path-extension "/tmp/foo.txt")  ;; => ".txt"
 (path-extension "/tmp/foo")      ;; => ""
 ```

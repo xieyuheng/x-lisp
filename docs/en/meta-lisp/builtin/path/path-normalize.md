@@ -4,7 +4,7 @@ title: path-normalize
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ Normalize a path (resolve `..` and `.` etc.).
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-normalize "/tmp/foo/../bar")  ;; => "/tmp/bar"
 ```

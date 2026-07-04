@@ -4,7 +4,7 @@ title: set-delete!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (set-t E) (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ Delete an element from the set. Mutates the set in place.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-delete! 2 #{1 2 3})  ;; => #{1 3}
 ```

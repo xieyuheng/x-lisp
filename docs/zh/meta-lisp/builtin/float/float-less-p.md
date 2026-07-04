@@ -4,7 +4,7 @@ title: float-less?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: float-less?
 
 # 例子
 
-```scheme
+```meta-lisp
 (float-less? 1.0 2.0)     ;; => true
 (float-less? 2.0 1.0)     ;; => false
 (float-less? 1.0 1.0)     ;; => false

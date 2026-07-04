@@ -4,7 +4,7 @@ title: hash-t
 
 # Type
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ Hash table type constructor. `(hash-t K V)` represents a hash table with key typ
 
 # Examples
 
-```scheme
+```meta-lisp
 (claim scores (hash-t string-t int-t))
 (hash-get "alice" (@hash "alice" 95 "bob" 87))  ;; => 95
 ```

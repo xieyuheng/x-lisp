@@ -4,7 +4,7 @@ title: sexp-collect-key-value-pairs
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t)))
 ```
 
@@ -14,7 +14,7 @@ title: sexp-collect-key-value-pairs
 
 # 例子
 
-```scheme
+```meta-lisp
 (sexp-collect-key-value-pairs
   [keyword-sexp :key ... int-sexp 42 ...])
 ;; => [(make-pair :key int-sexp-42)]

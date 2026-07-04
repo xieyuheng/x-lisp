@@ -4,7 +4,7 @@ title: pair?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a pair.
 
 # Examples
 
-```scheme
+```meta-lisp
 (pair? (make-pair 1 2))  ;; => true
 (pair? 42)               ;; => false
 ```

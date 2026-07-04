@@ -4,7 +4,7 @@ title: hash-copy
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) (hash-t K V)))
 ```
 
@@ -14,7 +14,7 @@ title: hash-copy
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((h1 (@hash "a" 1 "b" 2))
       (h2 (hash-copy h1)))
   h2)  ;; => (@hash "a" 1 "b" 2)

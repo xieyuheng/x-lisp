@@ -4,7 +4,7 @@ title: set-member?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (set-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if an element exists in the set.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-member? 2 #{1 2 3})  ;; => true
 (set-member? 0 #{1 2 3})  ;; => false
 ```

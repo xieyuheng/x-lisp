@@ -4,7 +4,7 @@ title: pair-put-first!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A (pair-t A B) (pair-t A B)))
 ```
 
@@ -14,7 +14,7 @@ Replace the first element of a pair.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((p (make-pair 1 "hello")))
   (pair-put-first! 7 p)
   (pair-first p))  ;; => 7

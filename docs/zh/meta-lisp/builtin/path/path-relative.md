@@ -4,7 +4,7 @@ title: path-relative
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t)
 ```
 
@@ -18,7 +18,7 @@ title: path-relative
 
 绝对路径：
 
-```scheme
+```meta-lisp
 (path-relative "/a/b/c" "/a/b/d/e")    ;; => "../d/e"
 (path-relative "/a/b/c" "/a/b/c/d")    ;; => "d"
 (path-relative "/app/config" "/app")   ;; => ".."
@@ -26,7 +26,7 @@ title: path-relative
 
 相对路径：
 
-```scheme
+```meta-lisp
 (path-relative "a/b/c" "a/b/d/e")      ;; => "../d/e"
 (path-relative "a/b/c" "a/b/c/d")      ;; => "d"
 (path-relative "." "src")              ;; => "src"

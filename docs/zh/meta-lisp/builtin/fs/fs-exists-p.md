@@ -4,7 +4,7 @@ title: fs-exists?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,6 +14,6 @@ title: fs-exists?
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-exists? "/tmp/foo")  ;; => true 或 false
 ```

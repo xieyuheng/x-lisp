@@ -4,7 +4,7 @@ title: not
 
 # Type
 
-```scheme
+```meta-lisp
 (-> bool-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Logical not. Turns `true` to `false` and `false` to `true`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (not true)   ;; => false
 (not false)  ;; => true
 (not (not true))  ;; => true

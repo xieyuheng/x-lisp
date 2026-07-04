@@ -4,7 +4,7 @@ title: hash-empty?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (K V) (-> (hash-t K V) bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if the hash table is empty.
 
 # Examples
 
-```scheme
+```meta-lisp
 (hash-empty? (make-hash))     ;; => true
 (hash-empty? (@hash 'a 1))    ;; => false
 ```

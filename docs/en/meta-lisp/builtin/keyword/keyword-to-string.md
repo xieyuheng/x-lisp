@@ -4,7 +4,7 @@ title: keyword-to-string
 
 # Type
 
-```scheme
+```meta-lisp
 (-> keyword-t string-t)
 ```
 
@@ -14,7 +14,7 @@ Convert a keyword to a string (including the `:` prefix).
 
 # Examples
 
-```scheme
+```meta-lisp
 (keyword-to-string :key)   ;; => ":key"
 (keyword-to-string :name)  ;; => ":name"
 ```

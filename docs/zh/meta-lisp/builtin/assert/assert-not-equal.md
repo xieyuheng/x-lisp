@@ -4,7 +4,7 @@ title: assert-not-equal
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> A B void-t))
 ```
 
@@ -14,7 +14,7 @@ title: assert-not-equal
 
 # 例子
 
-```scheme
+```meta-lisp
 (assert-not-equal 1 2)
 (assert-not-equal "a" "b")
 ```

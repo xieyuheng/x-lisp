@@ -4,7 +4,7 @@ title: symbol?
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ Check if a value is a symbol.
 
 # Examples
 
-```scheme
+```meta-lisp
 (symbol? 'foo)    ;; => true
 (symbol? "foo")   ;; => false
 (symbol? 42)      ;; => false

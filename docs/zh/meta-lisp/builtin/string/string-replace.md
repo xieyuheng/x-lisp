@@ -4,7 +4,7 @@ title: string-replace
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t string-t string-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-replace
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-replace "hello world" "world" "there")  ;; => "hello there"
 (string-replace "aaa" "a" "b")                  ;; => "bbb"
 (string-replace "abc" "x" "y")                  ;; => "abc"

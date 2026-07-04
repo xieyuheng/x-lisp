@@ -4,7 +4,7 @@ title: set-add!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (set-t E) (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ Add an element to the set, same as `set-add`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-add! 4 #{1 2 3})  ;; => #{1 2 3 4}
 ```

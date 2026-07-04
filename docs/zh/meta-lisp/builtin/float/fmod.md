@@ -4,7 +4,7 @@ title: fmod
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> float-t float-t float-t)
 ```
 
@@ -14,7 +14,7 @@ title: fmod
 
 # 例子
 
-```scheme
+```meta-lisp
 (fmod 7.0 3.0)     ;; => 1.0
 (fmod 6.0 3.0)     ;; => 0.0
 (fmod -7.0 3.0)    ;; => -1.0

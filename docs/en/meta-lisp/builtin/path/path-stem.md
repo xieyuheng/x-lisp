@@ -4,7 +4,7 @@ title: path-stem
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -14,6 +14,6 @@ Get the file stem (name without extension).
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-stem "/tmp/foo.txt")  ;; => "foo"
 ```

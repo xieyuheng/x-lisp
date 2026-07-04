@@ -4,7 +4,7 @@ title: path-relative-to-cwd
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t string-t)
 ```
 
@@ -17,7 +17,7 @@ Passing a relative path will trigger an assertion error.
 
 # Examples
 
-```scheme
+```meta-lisp
 (path-relative-to-cwd "/home/user/package/src")  ;; e.g. => "src"
 (path-relative-to-cwd "/home/user")               ;; e.g. => ".."
 ```

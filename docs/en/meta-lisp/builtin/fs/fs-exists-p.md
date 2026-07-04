@@ -4,7 +4,7 @@ title: fs-exists?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,6 +14,6 @@ Check if a path exists.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-exists? "/tmp/foo")  ;; => true or false
 ```

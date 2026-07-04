@@ -4,7 +4,7 @@ title: set-member?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> E (set-t E) bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: set-member?
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-member? 2 #{1 2 3})  ;; => true
 (set-member? 0 #{1 2 3})  ;; => false
 ```

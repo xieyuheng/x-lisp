@@ -4,7 +4,7 @@ title: for-set
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (set-t A) (-> A Any) void-t))
 ```
 
@@ -17,6 +17,6 @@ Apply a side-effecting function to each element of a set.
 
 # Examples
 
-```scheme
+```meta-lisp
 (for-set (@set 1 2 3) println)
 ```

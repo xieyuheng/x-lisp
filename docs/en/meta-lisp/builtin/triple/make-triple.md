@@ -4,7 +4,7 @@ title: make-triple
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B C) (-> A B C (triple-t A B C)))
 ```
 
@@ -14,7 +14,7 @@ Constructor of `triple-t`, constructs a triple with three values.
 
 # Examples
 
-```scheme
+```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
   (triple-first t))   ;; => 1
 ```

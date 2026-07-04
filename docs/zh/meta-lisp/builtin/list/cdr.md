@@ -4,7 +4,7 @@ title: cdr
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) (list-t E)))
 ```
 
@@ -14,7 +14,7 @@ title: cdr
 
 # 例子
 
-```scheme
+```meta-lisp
 (cdr [1 2 3])   ;; => [2 3]
 (cdr [1])       ;; => []
 ```

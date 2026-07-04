@@ -4,7 +4,7 @@ title: triple-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-struct (triple-t A B C)
   (first A)
   (second B)
@@ -23,7 +23,7 @@ type-t
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim make-triple (polymorphic (A B C) (-> A B C (triple-t A B C))))
 (claim triple? (polymorphic (A) (-> A bool-t)))
 (claim triple-first  (polymorphic (A B C) (-> (triple-t A B C) A)))
@@ -36,7 +36,7 @@ type-t
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
   (triple-first t))   ;; => 1
 ```

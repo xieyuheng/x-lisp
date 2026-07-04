@@ -4,7 +4,7 @@ title: pair-second
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (pair-t A B) B))
 ```
 
@@ -14,7 +14,7 @@ title: pair-second
 
 # 例子
 
-```scheme
+```meta-lisp
 (let ((p (make-pair 1 "hello")))
   (pair-second p))  ;; => "hello"
 ```

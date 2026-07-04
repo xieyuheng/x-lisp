@@ -4,7 +4,7 @@ title: string-int?
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ Check if a string is a valid integer format.
 
 # Examples
 
-```scheme
+```meta-lisp
 (string-int? "42")    ;; => true
 (string-int? "-1")    ;; => true
 (string-int? "3.14")  ;; => false

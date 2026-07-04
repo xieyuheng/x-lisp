@@ -4,7 +4,7 @@ title: set-each
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A Any) (-> (-> A Any) (set-t A) void-t))
 ```
 
@@ -14,6 +14,6 @@ title: set-each
 
 # 例子
 
-```scheme
+```meta-lisp
 (set-each println #{1 2 3})
 ```

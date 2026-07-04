@@ -4,7 +4,7 @@ title: make-list
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ Create an empty list.
 
 # Examples
 
-```scheme
+```meta-lisp
 (make-list)  ;; => []
 ```

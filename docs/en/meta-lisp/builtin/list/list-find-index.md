@@ -4,7 +4,7 @@ title: list-find-index
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> (-> A bool-t) (list-t A) int-t))
 ```
 
@@ -14,7 +14,7 @@ Find the index of the first element satisfying the predicate. Returns `-1` if no
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-find-index int? ['a 'b 3 'd])  ;; => 2
 (list-find-index int? ['a 'b 'c])    ;; => -1
 ```

@@ -4,7 +4,7 @@ title: keyword-length
 
 # Type
 
-```scheme
+```meta-lisp
 (-> keyword-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Return the length of the keyword name (excluding the `:` prefix).
 
 # Examples
 
-```scheme
+```meta-lisp
 (keyword-length :key)      ;; => 3
 (keyword-length :name)     ;; => 4
 ```

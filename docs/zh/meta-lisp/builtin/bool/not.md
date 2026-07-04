@@ -4,7 +4,7 @@ title: not
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> bool-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: not
 
 # 例子
 
-```scheme
+```meta-lisp
 (not true)   ;; => false
 (not false)  ;; => true
 (not (not true))  ;; => true

@@ -4,7 +4,7 @@ title: source-span-t
 
 # 类型
 
-```scheme
+```meta-lisp
 type-t
 ```
 
@@ -14,7 +14,7 @@ type-t
 
 # 定义
 
-```scheme
+```meta-lisp
 (define-struct source-span-t
   (start source-position-t)
   (end source-position-t))
@@ -22,7 +22,7 @@ type-t
 
 # 自动生成
 
-```scheme
+```meta-lisp
 (claim make-source-span (-> source-position-t source-position-t source-span-t))
 (claim source-span?     (-> source-span-t bool-t))
 (claim source-span-start (-> source-span-t source-position-t))

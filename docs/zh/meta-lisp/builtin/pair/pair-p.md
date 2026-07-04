@@ -4,7 +4,7 @@ title: pair?
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A bool-t))
 ```
 
@@ -14,7 +14,7 @@ title: pair?
 
 # 例子
 
-```scheme
+```meta-lisp
 (pair? (make-pair 1 2))  ;; => true
 (pair? 42)               ;; => false
 ```

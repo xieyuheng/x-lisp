@@ -4,7 +4,7 @@ title: list-zip
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (list-t A) (list-t B) (list-t (pair-t A B))))
 ```
 
@@ -14,6 +14,6 @@ Pair elements of two lists by position.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-zip ['a 'b 'c] [1 2 3])   ;; => [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)]
 ```

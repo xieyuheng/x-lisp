@@ -4,7 +4,7 @@ title: string-contains?
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t bool-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-contains?
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-contains? "hello" "ell")  ;; => true
 (string-contains? "hello" "xyz")  ;; => false
 (string-contains? "hello" "")     ;; => true

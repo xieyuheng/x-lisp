@@ -4,7 +4,7 @@ title: list-zip
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A B) (-> (list-t A) (list-t B) (list-t (pair-t A B))))
 ```
 
@@ -14,6 +14,6 @@ title: list-zip
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-zip ['a 'b 'c] [1 2 3])   ;; => [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)]
 ```

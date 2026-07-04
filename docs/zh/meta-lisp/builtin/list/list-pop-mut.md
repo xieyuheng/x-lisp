@@ -4,7 +4,7 @@ title: list-pop!
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (list-t E) E))
 ```
 
@@ -14,7 +14,7 @@ title: list-pop!
 
 # 例子
 
-```scheme
+```meta-lisp
 (list-pop! [1 2 3])  ;; => 3
 (list-pop! [1])      ;; => 1
 ```

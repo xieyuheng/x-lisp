@@ -4,7 +4,7 @@ title: current-directory
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t)
 ```
 
@@ -14,6 +14,6 @@ title: current-directory
 
 # 例子
 
-```scheme
+```meta-lisp
 (current-directory)  ;; => "/home/user/package"
 ```

@@ -4,7 +4,7 @@ title: fs-rename
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t string-t void-t)
 ```
 
@@ -14,6 +14,6 @@ title: fs-rename
 
 # 例子
 
-```scheme
+```meta-lisp
 (fs-rename "/tmp/old.txt" "/tmp/new.txt")
 ```

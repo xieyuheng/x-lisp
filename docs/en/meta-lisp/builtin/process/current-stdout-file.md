@@ -4,7 +4,7 @@ title: current-stdout-file
 
 # Type
 
-```scheme
+```meta-lisp
 (-> file-t)
 ```
 
@@ -14,7 +14,7 @@ Get the current standard output file handle.
 
 # Examples
 
-```scheme
+```meta-lisp
 (file-write "hello" (current-stdout-file))
 (file-writeln "done" (current-stdout-file))
 ```

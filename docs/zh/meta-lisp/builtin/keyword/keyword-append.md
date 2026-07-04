@@ -4,7 +4,7 @@ title: keyword-append
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> keyword-t keyword-t keyword-t)
 ```
 
@@ -14,7 +14,7 @@ title: keyword-append
 
 # 例子
 
-```scheme
+```meta-lisp
 (keyword-append :foo :bar)  ;; => :foobar
 (keyword-append :a :b)      ;; => :ab
 ```

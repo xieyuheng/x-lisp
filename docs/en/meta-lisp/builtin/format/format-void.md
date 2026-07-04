@@ -3,7 +3,7 @@ title: format-void
 ---
 
 # Type
-```scheme
+```meta-lisp
 (-> void-t string-t)
 ```
 
@@ -11,6 +11,6 @@ title: format-void
 Format void as an S-expression string.
 
 # Examples
-```scheme
+```meta-lisp
 (format-void void)  ;; => "#void"
 ```

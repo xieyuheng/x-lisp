@@ -4,7 +4,7 @@ title: set-clear!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> (set-t E) (set-t E)))
 ```
 
@@ -14,6 +14,6 @@ Clear the set, returning an empty set.
 
 # Examples
 
-```scheme
+```meta-lisp
 (set-clear! #{1 2 3})  ;; => #{}
 ```

@@ -4,7 +4,7 @@ title: fs-list
 
 # Type
 
-```scheme
+```meta-lisp
 (-> string-t (list-t string-t))
 ```
 
@@ -14,6 +14,6 @@ List directory contents.
 
 # Examples
 
-```scheme
+```meta-lisp
 (fs-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
 ```

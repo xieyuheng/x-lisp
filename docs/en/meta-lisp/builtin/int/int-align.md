@@ -4,7 +4,7 @@ title: int-align
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Align integer `n` upward to a multiple of `alignment`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (int-align 16 8)    ;; => 16
 (int-align 16 16)   ;; => 16
 (int-align 16 24)   ;; => 32

@@ -4,7 +4,7 @@ title: ineg
 
 # Type
 
-```scheme
+```meta-lisp
 (-> int-t int-t)
 ```
 
@@ -14,7 +14,7 @@ Negation of an integer.
 
 # Examples
 
-```scheme
+```meta-lisp
 (ineg 42)  ;; => -42
 (ineg -1)  ;; => 1
 (ineg 0)   ;; => 0

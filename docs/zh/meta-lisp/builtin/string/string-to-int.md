@@ -4,7 +4,7 @@ title: string-to-int
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> string-t int-t)
 ```
 
@@ -14,7 +14,7 @@ title: string-to-int
 
 # 例子
 
-```scheme
+```meta-lisp
 (string-to-int "42")    ;; => 42
 (string-to-int "-1")    ;; => -1
 (string-to-int "0")     ;; => 0

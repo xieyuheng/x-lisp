@@ -4,7 +4,7 @@ title: list-put!
 
 # Type
 
-```scheme
+```meta-lisp
 (polymorphic (E) (-> int-t E (list-t E) (list-t E)))
 ```
 
@@ -14,6 +14,6 @@ Set element by index, same behavior as `list-put`.
 
 # Examples
 
-```scheme
+```meta-lisp
 (list-put! 0 10 [1 2 3])  ;; => [10 2 3]
 ```

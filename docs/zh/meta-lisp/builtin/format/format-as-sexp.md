@@ -4,7 +4,7 @@ title: format-as-sexp
 
 # 类型
 
-```scheme
+```meta-lisp
 (polymorphic (A) (-> A string-t))
 ```
 
@@ -14,7 +14,7 @@ title: format-as-sexp
 
 # 例子
 
-```scheme
+```meta-lisp
 (format-as-sexp '(a b c))  ;; => "(a b c)"
 (format-as-sexp 42)        ;; => "42"
 (format-as-sexp "hello")   ;; => "\"hello\""

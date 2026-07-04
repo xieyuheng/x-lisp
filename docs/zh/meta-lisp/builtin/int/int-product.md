@@ -4,7 +4,7 @@ title: int-product
 
 # 类型
 
-```scheme
+```meta-lisp
 (-> (list-t int-t) int-t)
 ```
 
@@ -14,7 +14,7 @@ title: int-product
 
 # 例子
 
-```scheme
+```meta-lisp
 (int-product [1 2 3])    ;; => 6
 (int-product [])         ;; => 1
 (int-product [2 0 3])    ;; => 0
