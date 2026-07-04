@@ -27,6 +27,7 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
 
 - [前言](#前言)
 - [目录](#目录)
+- [注释](#注释)
 - [类型](#类型)
   - [具名类型](#具名类型)
   - [数组类型](#数组类型)
@@ -53,12 +54,7 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
   - [(external-label)](#external-label)
   - [data-operand](#data-operand)
 - [指令](#指令)
-  - [数据移动](#数据移动)
-  - [算术与逻辑](#算术与逻辑)
-  - [栈操作](#栈操作)
-  - [控制流](#控制流)
-  - [地址计算](#地址计算)
-  - [系统调用](#系统调用)
+  - [指令索引](instructions/index.md)
 - [基本块](#基本块)
 - [顶层定义](#顶层定义)
   - [(define-code)](#define-code)
@@ -71,6 +67,15 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
 - [约定](#约定)
   - [-8 slot 与元数据](#-8-slot-与元数据)
   - [序列化与重定位](#序列化与重定位)
+
+# 注释
+
+assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。
+
+```scheme
+; 这是一条注释
+(mov (reg rax) (imm 42))
+```
 
 # 类型
 
@@ -413,99 +418,13 @@ factorial     ;; 取 factorial 的地址
 
 # 指令
 
-所有指令统一为 op + operands，按 NASM 方向（dst, src）。
+所有指令统一为 op + operands。
 
 ```scheme
 (<op> <operand> ...)
 ```
 
-## 数据移动
-
-| op  | 语法               | 说明     |
-|-----|--------------------|----------|
-| `mov` | `(mov <dst> <src>)` | 数据传送 |
-
-```scheme
-(mov (reg rax) (imm 42))
-(mov (reg rcx) (reg rax))
-(mov (reg rax) (address chain))
-(mov (reg rax) (deref (address k)))
-(mov (reg rax) (reg-deref (reg rbp) -8))
-```
-
-## 算术与逻辑
-
-| op     | 语法                    | 说明     |
-|--------|-------------------------|----------|
-| `add`  | `(add <dst> <src>)`     | 加法     |
-| `sub`  | `(sub <dst> <src>)`     | 减法     |
-| `imul` | `(imul <dst> <src>)`    | 有符号乘法 |
-| `cmp`  | `(cmp <lhs> <rhs>)`     | 比较（设置标志位） |
-| `test` | `(test <lhs> <rhs>)`    | 按位测试 |
-| `and`  | `(and <dst> <src>)`     | 按位与   |
-| `or`   | `(or <dst> <src>)`      | 按位或   |
-| `xor`  | `(xor <dst> <src>)`     | 按位异或 |
-| `shl`  | `(shl <dst> <src>)`     | 左移     |
-| `shr`  | `(shr <dst> <src>)`     | 右移     |
-
-```scheme
-(add (reg rax) (reg rcx))
-(cmp (reg rax) (reg rcx))
-(xor (reg rax) (reg rax))
-```
-
-## 栈操作
-
-| op    | 语法       | 说明 |
-|-------|------------|------|
-| `push` | `(push <src>)` | 压栈 |
-| `pop`  | `(pop <dst>)`  | 弹栈 |
-
-```scheme
-(push (reg rbp))
-(pop (reg rbp))
-```
-
-## 控制流
-
-| op    | 语法                     | 说明         |
-|-------|--------------------------|--------------|
-| `call` | `(call <target>)`       | 函数调用     |
-| `ret`  | `(ret)`                  | 函数返回     |
-| `jmp`  | `(jmp <target>)`         | 无条件跳转   |
-| `j`    | `(j (cc <code>) (label <name>))` | 条件跳转 |
-
-- `call` 既可静态调用 `(call (label helper))`，也可间接调用 `(call (reg-deref (reg rax)))`。
-- `j` 是 x86 的单目标条件跳转：条件成立跳到目标，**不成立则 fall-through**。
-
-```scheme
-(call (label my-func))
-(call (reg-deref (reg rax)))
-(j (cc g) (label is-greater))
-(j (cc ne) (label loop))
-(ret)
-```
-
-## 地址计算
-
-| op   | 语法                          | 说明       |
-|------|-------------------------------|------------|
-| `lea` | `(lea <dst> (reg-deref ...))` | Load Effective Address |
-
-```scheme
-(lea (reg rax) (reg-deref (reg rbp) -8))
-(lea (reg rcx) (reg-deref (reg rbx) (reg rax) 8))
-```
-
-## 系统调用
-
-| op       | 语法        | 说明        |
-|----------|-------------|-------------|
-| `syscall` | `(syscall)` | 系统调用指令 |
-
-```scheme
-(syscall)
-```
+每条指令的语法和操作数约束详见[指令索引](instructions/index.md)。
 
 # 基本块
 

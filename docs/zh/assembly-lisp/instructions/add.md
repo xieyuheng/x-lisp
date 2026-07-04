@@ -1,0 +1,29 @@
+---
+title: add
+---
+
+# 语法
+
+```scheme
+(add <dst> <src>)
+```
+
+# 操作数
+
+```
+<dst> := (reg) (reg-deref)
+<src> := (reg) (imm) (reg-deref) (deref) (address)
+```
+
+<dst> 与 <src> 不能同时为内存操作数
+
+# 描述
+
+加法
+
+# 例子
+
+```scheme
+(add (reg rax) (reg rcx))
+(add (reg rax) (imm 1))
+```
