@@ -101,10 +101,10 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 ## 统一语法
 
 ```
-(= <id> <type> (<op> <operand> ...) :<key> <attribute> ...)
+(= <id> <type> (<op> <operand> ... :<key> <attribute> ...))
 ```
 
-`(<op> <operand> ...)` 只含运行时值。`:<key> <attribute> ...` 只含编译时常量，以 `:` 前缀的 key 区分。
+`(<op> <operand> ... :<key> <attribute> ...)` 是自包含的操作形式：`<operand> ...` 为运行时值，`:<key> <attribute> ...` 为编译时常量（以 `:` 前缀的 key 区分），二者同处操作形式之内。`(= <id> <type> ...)` 外层仅负责绑定 id 与结果类型。
 
 ## 各 op 的 operands 与 attributes 约定
 
@@ -297,25 +297,25 @@ basic-lisp IR 文本形式：
 
 (define-function add-or-sub
   (block body
-    (= flag value-t (argument) :index 0)
-    (= a value-t (argument) :index 1)
-    (= b value-t (argument) :index 2)
+    (= flag value-t (argument :index 0))
+    (= a value-t (argument :index 1))
+    (= b value-t (argument :index 2))
     (= raw-a int64-t (to-int64 a))
     (= raw-b int64-t (to-int64 b))
     (= cond bool-t (to-bool flag))
-    (= ∅.1 void-t (branch cond) :then-label then :else-label else))
+    (= ∅.1 void-t (branch cond :then-label then :else-label else)))
 
   (block then
     (= sum int64-t (iadd raw-a raw-b))
     (= result value-t (tag-int sum))
-    (= ∅.2 void-t (provide result) :content-type value-t :use-site result)
-    (= ∅.3 void-t (goto) :label merge))
+    (= ∅.2 void-t (provide result :content-type value-t :use-site result))
+    (= ∅.3 void-t (goto :label merge)))
 
   (block else
     (= diff int64-t (isub raw-a raw-b))
     (= result value-t (tag-int diff))
-    (= ∅.4 void-t (provide result) :content-type value-t :use-site result)
-    (= ∅.5 void-t (goto) :label merge))
+    (= ∅.4 void-t (provide result :content-type value-t :use-site result))
+    (= ∅.5 void-t (goto :label merge)))
 
   (block merge
     (= result value-t (use))
@@ -340,10 +340,10 @@ IR 文本形式：
 
 (define-function add-or-sub
   (block body
-    (= flag bool-t (argument) :index 0)
-    (= a int64-t (argument) :index 1)
-    (= b int64-t (argument) :index 2)
-    (= ∅.1 void-t (branch flag) :then-label then :else-label else))
+    (= flag bool-t (argument :index 0))
+    (= a int64-t (argument :index 1))
+    (= b int64-t (argument :index 2))
+    (= ∅.1 void-t (branch flag :then-label then :else-label else)))
 
   (block then
     (= sum int64-t (iadd a b))
@@ -366,12 +366,12 @@ IR 文本形式：
 
 (define-function set-origin
   (block body
-    (= x-offset int64-t (offset-of) :struct-type point-t :path (x))
+    (= x-offset int64-t (offset-of :struct-type point-t :path (x)))
     (= x-pointer pointer-t (padd (address origin) x-offset))
-    (= ∅.1 void-t (store x-pointer (int64 0)) :content-type int64-t)
-    (= y-offset int64-t (offset-of) :struct-type point-t :path (y))
+    (= ∅.1 void-t (store x-pointer (int64 0) :content-type int64-t))
+    (= y-offset int64-t (offset-of :struct-type point-t :path (y)))
     (= y-pointer pointer-t (padd (address origin) y-offset))
-    (= ∅.2 void-t (store y-pointer (int64 0)) :content-type int64-t)
+    (= ∅.2 void-t (store y-pointer (int64 0) :content-type int64-t))
     (= ∅.3 void-t (return (void)))))
 
 (claim printf (-> pointer-t int64-t))
@@ -386,16 +386,16 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 
 (define-function sign
   (block body
-    (= n int64-t (argument) :index 0)
+    (= n int64-t (argument :index 0))
     (= neg bool-t (icmp-lt n (int64 0)))
-    (= ∅.1 void-t (branch neg) :then-label negative :else-label non-negative))
+    (= ∅.1 void-t (branch neg :then-label negative :else-label non-negative)))
 
   (block negative
     (= ∅.2 void-t (return (int64 -1))))
 
   (block non-negative
     (= pos bool-t (icmp-gt n (int64 0)))
-    (= ∅.3 void-t (branch pos) :then-label positive :else-label zero))
+    (= ∅.3 void-t (branch pos :then-label positive :else-label zero)))
 
   (block positive
     (= ∅.4 void-t (return (int64 1))))

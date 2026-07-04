@@ -2,10 +2,10 @@
 
 (define-function add-or-sub
   (block body
-    (= flag bool-t (argument) :index 0)
-    (= a int64-t (argument) :index 1)
-    (= b int64-t (argument) :index 2)
-    (= %1 void-t (branch flag) :then-label then :else-label else))
+    (= flag bool-t (argument :index 0))
+    (= a int64-t (argument :index 1))
+    (= b int64-t (argument :index 2))
+    (= %1 void-t (branch flag :then-label then :else-label else)))
 
   (block then
     (= sum int64-t (iadd a b))

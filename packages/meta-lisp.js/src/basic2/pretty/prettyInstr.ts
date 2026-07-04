@@ -5,7 +5,6 @@ import { prettyType } from "./prettyType.ts"
 
 export function prettyInstr(instr: B.Instr): Ppml.Node {
   const operandNodes = instr.operands.map(prettyOperand)
-  const inner = Ppml.prettySyntax(instr.op, [], operandNodes)
 
   const attrEntries = Object.entries(instr.attributes)
   const attrNodes = attrEntries.flatMap(([key, attr]) => [
@@ -13,10 +12,12 @@ export function prettyInstr(instr: B.Instr): Ppml.Node {
     prettyAttribute(attr),
   ])
 
+  const inner = Ppml.prettySyntax(instr.op, [], [...operandNodes, ...attrNodes])
+
   return Ppml.prettySyntax(
     "=",
     [],
-    [Ppml.text(instr.id), prettyType(instr.type), inner, ...attrNodes],
+    [Ppml.text(instr.id), prettyType(instr.type), inner],
   )
 }
 

@@ -2,25 +2,25 @@
 
 (define-function add-or-sub
   (block body
-    (= flag value-t (argument) :index 0)
-    (= a value-t (argument) :index 1)
-    (= b value-t (argument) :index 2)
+    (= flag value-t (argument :index 0))
+    (= a value-t (argument :index 1))
+    (= b value-t (argument :index 2))
     (= raw-a int64-t (to-int64 a))
     (= raw-b int64-t (to-int64 b))
     (= cond bool-t (to-bool flag))
-    (= %1 void-t (branch cond) :then-label then :else-label else))
+    (= %1 void-t (branch cond :then-label then :else-label else)))
 
   (block then
     (= sum int64-t (iadd raw-a raw-b))
     (= result value-t (tag-int sum))
-    (= %2 void-t (provide result) :content-type value-t :use-site result)
-    (= %3 void-t (goto) :label merge))
+    (= %2 void-t (provide result :content-type value-t :use-site result))
+    (= %3 void-t (goto :label merge)))
 
   (block else
     (= diff int64-t (isub raw-a raw-b))
     (= result value-t (tag-int diff))
-    (= %4 void-t (provide result) :content-type value-t :use-site result)
-    (= %5 void-t (goto) :label merge))
+    (= %4 void-t (provide result :content-type value-t :use-site result))
+    (= %5 void-t (goto :label merge)))
 
   (block merge
     (= result value-t (use))

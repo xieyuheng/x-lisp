@@ -7,12 +7,12 @@
 
 (define-function set-origin
   (block body
-    (= x-offset int64-t (offset-of) :struct-type point-t :path (x))
+    (= x-offset int64-t (offset-of :struct-type point-t :path (x)))
     (= x-pointer pointer-t (padd (address origin) x-offset))
-    (= %1 void-t (store x-pointer (int64 0)) :content-type int64-t)
-    (= y-offset int64-t (offset-of) :struct-type point-t :path (y))
+    (= %1 void-t (store x-pointer (int64 0) :content-type int64-t))
+    (= y-offset int64-t (offset-of :struct-type point-t :path (y)))
     (= y-pointer pointer-t (padd (address origin) y-offset))
-    (= %2 void-t (store y-pointer (int64 0)) :content-type int64-t)
+    (= %2 void-t (store y-pointer (int64 0) :content-type int64-t))
     (= %3 void-t (return (void)))))
 
 (claim printf (-> pointer-t int64-t))

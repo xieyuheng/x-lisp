@@ -3,24 +3,15 @@ import { formatOperand } from "./formatOperand.ts"
 import { formatType } from "./formatType.ts"
 
 export function formatInstr(instr: B.Instr): string {
-  const operandTexts = instr.operands.map(formatOperand).join(" ")
-  const inner =
-    operandTexts.length > 0 ? `(${instr.op} ${operandTexts})` : `(${instr.op})`
+  const operandTexts = instr.operands.map(formatOperand)
+  const attrTexts = Object.entries(instr.attributes).map(
+    ([key, attr]) => `:${key} ${formatAttribute(attr)}`,
+  )
 
-  const attrEntries = Object.entries(instr.attributes)
-  const attrTexts = attrEntries
-    .map(([key, attr]) => `:${key} ${formatAttribute(attr)}`)
-    .join(" ")
+  const innerParts = [instr.op, ...operandTexts, ...attrTexts]
+  const inner = `(${innerParts.join(" ")})`
 
-  const parts = [
-    "=",
-    instr.id,
-    formatType(instr.type),
-    inner,
-    ...(attrTexts.length > 0 ? [attrTexts] : []),
-  ]
-
-  return `(${parts.join(" ")})`
+  return `(= ${instr.id} ${formatType(instr.type)} ${inner})`
 }
 
 function formatAttribute(attribute: B.Attribute): string {

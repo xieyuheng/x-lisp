@@ -122,9 +122,9 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 # 属性
 
-每个指令可以通过 `:<key> <attribute>` 语法带有任意多个属性。
+每个指令可以在操作形式内部通过 `:<key> <attribute>` 语法带有任意多个属性。
 
-属性 `<attribute>` 是编译时信息，与 `operand`（运行时值）分离。
+属性 `<attribute>` 是编译时信息，与 `operand`（运行时值）分离，但同处于 `(<op> ...)` 操作形式之内。
 
 | 属性 | 语法      | 说明     |
 |------|-----------|----------|
@@ -145,7 +145,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 所有指令统一为一种结构：
 
 ```
-(= <id> <type> (<op> <operand> ...) :<key> <attribute> ...)
+(= <id> <type> (<op> <operand> ... :<key> <attribute> ...))
 ```
 
 - `<id>`：指令的唯一标识。产生值的指令 `id` 即结果变量名；
@@ -155,12 +155,12 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
   不产生值的指令为 `void-t`。
 - `<op>`：操作名 -- 代表了指令的种类。
 - `<operand>`：操作数 -- 运行时值，用于分析 def-use 关系。
-- `:<key> <attribute>`：属性常量，以 `:` 前缀的 key 区分。
+- `:<key> <attribute>`：属性常量，位于操作形式内部、operand 之后，以 `:` 前缀的 key 区分。
   不同操作名的指令，决定了所带有的属性的意义。
 
 ```scheme
 (= sum int64-t (iadd a b))
-(= ∅.1 void-t (branch cond) :then-label then :else-label else)
+(= ∅.1 void-t (branch cond :then-label then :else-label else))
 ```
 
 ## 二元运算
@@ -242,9 +242,9 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ```scheme
 (= value int64-t (load ptr))
-(= ∅.1 void-t (store ptr value) :content-type int64-t)
-(= size int64-t (size-of) :target-type point-t)
-(= y-offset int64-t (offset-of) :struct-type point-t :path (y))
+(= ∅.1 void-t (store ptr value :content-type int64-t))
+(= size int64-t (size-of :target-type point-t))
+(= y-offset int64-t (offset-of :struct-type point-t :path (y)))
 ```
 
 ## 控制流
@@ -261,8 +261,8 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 - 基本块的最后一条指令必须为 terminator 类指令（`return` / `goto` / `branch` / `tail-call` / `tail-apply` / `unreachable`）。
 
 ```scheme
-(= ∅.1 void-t (branch cond) :then-label positive :else-label non-positive)
-(= ∅.2 void-t (goto) :label merge)
+(= ∅.1 void-t (branch cond :then-label positive :else-label non-positive))
+(= ∅.2 void-t (goto :label merge))
 (= ∅.3 void-t (return result))
 ```
 
@@ -283,7 +283,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 ```scheme
 (= result value-t (call (address add-or-sub) flag a b))
 (= ∅.1 void-t (tail-call (address aux) x y))
-(= a value-t (argument) :index 0)
+(= a value-t (argument :index 0))
 ```
 
 ## 动态值操作
@@ -297,7 +297,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 - `provide`：`content-type` 为被写入值的类型。本指令 type 为 `void-t`。
 
 ```scheme
-(= ∅.1 void-t (provide result) :content-type value-t :use-site result)
+(= ∅.1 void-t (provide result :content-type value-t :use-site result))
 ;; 在另一个基本块中：
 (= result value-t (use))
 ```
@@ -317,8 +317,8 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 
 ```scheme
 (block body
-  (= a value-t (argument) :index 0)
-  (= b value-t (argument) :index 1)
+  (= a value-t (argument :index 0))
+  (= b value-t (argument :index 1))
   (= sum value-t (call (address add) a b))
   (= ∅.1 void-t (return sum)))
 ```
@@ -371,7 +371,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 
 (define-function add1
   (block body
-    (= n int64-t (argument) :index 0)
+    (= n int64-t (argument :index 0))
     (= result int64-t (iadd n (int64 1)))
     (= ∅.1 void-t (return result))))
 ```
@@ -536,7 +536,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (claim add1 (-> int64-t int64-t))
 (define-function add1
   (block body
-    (= n int64-t (argument) :index 0)
+    (= n int64-t (argument :index 0))
     (= result int64-t (iadd n (int64 1)))
     (= ∅.1 void-t (return result))))
 

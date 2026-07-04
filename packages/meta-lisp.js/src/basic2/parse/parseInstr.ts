@@ -20,40 +20,47 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
   const innerList = S.asListSexp(elements[3])
   const innerElements = innerList.elements
   const op = S.asSymbolSexp(innerElements[0]).content
-  const operands = innerElements.slice(1).map(parseOperand)
 
+  const rest = innerElements.slice(1)
+  const attributeStart = rest.findIndex(isAttributeKey)
+  const operandSexps =
+    attributeStart === -1 ? rest : rest.slice(0, attributeStart)
+  const attributeSexps = attributeStart === -1 ? [] : rest.slice(attributeStart)
+
+  const operands = operandSexps.map(parseOperand)
+  const attributes = parseAttributes(attributeSexps)
+
+  return B.Instr(id, type, op, operands, attributes)
+}
+
+function isAttributeKey(sexp: S.Sexp): boolean {
+  if (S.isKeywordSexp(sexp)) return true
+  return S.isSymbolSexp(sexp) && sexp.content.startsWith(":")
+}
+
+function attributeKeyName(sexp: S.Sexp): string {
+  if (S.isKeywordSexp(sexp)) return sexp.content
+  return S.asSymbolSexp(sexp).content.slice(1)
+}
+
+function parseAttributes(sexps: Array<S.Sexp>): Record<string, B.Attribute> {
   const attributes: Record<string, B.Attribute> = {}
-  let i = 4
-  while (i < elements.length) {
-    const keySexp = elements[i]
-    if (S.isKeywordSexp(keySexp)) {
-      const attributeKey = keySexp.content
-      i++
-      const valueSexp = elements[i]
-      i++
-      attributes[attributeKey] = parseAttribute(valueSexp)
-    } else if (S.isSymbolSexp(keySexp)) {
-      const key = keySexp.content
-      if (!key.startsWith(":")) {
-        throw new S.ErrorWithSourceLocation(
-          `[parseInstr] attribute key must start with ':', got: ${key}`,
-          keySexp.location,
-        )
-      }
-      const attributeKey = key.slice(1)
-      i++
-      const valueSexp = elements[i]
-      i++
-      attributes[attributeKey] = parseAttribute(valueSexp)
-    } else {
+  let i = 0
+  while (i < sexps.length) {
+    const keySexp = sexps[i]
+    if (!isAttributeKey(keySexp)) {
       throw new S.ErrorWithSourceLocation(
         `[parseInstr] expected attribute key, got: ${S.formatSexp(keySexp)}`,
         keySexp.location,
       )
     }
+    const attributeKey = attributeKeyName(keySexp)
+    i++
+    const valueSexp = sexps[i]
+    i++
+    attributes[attributeKey] = parseAttribute(valueSexp)
   }
-
-  return B.Instr(id, type, op, operands, attributes)
+  return attributes
 }
 
 function parseAttribute(sexp: S.Sexp): B.Attribute {
