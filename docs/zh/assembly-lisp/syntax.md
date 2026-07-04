@@ -70,11 +70,11 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
 
 # 注释
 
-assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。
+assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写两个分号 `;;`。
 
 ```scheme
-; 这是一条注释
-(mov (reg rax) (imm 42))
+;; 这是一条注释
+(mov (reg rax) (imm 42))  ;; 行尾注释
 ```
 
 # 类型
