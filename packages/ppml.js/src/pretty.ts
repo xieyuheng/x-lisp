@@ -11,6 +11,19 @@ export function prettySyntax(
   return Ppml.group(Ppml.text("("), headNode, bodyNode, Ppml.text(")"))
 }
 
+export function prettyVertical(
+  name: string,
+  header: Array<Ppml.Node>,
+  body: Array<Ppml.Node>,
+): Ppml.Node {
+  const headNode = Ppml.indent(4, Ppml.wrap([Ppml.text(name), ...header]))
+  const bodyNode =
+    body.length === 0
+      ? Ppml.nil()
+      : Ppml.indent(2, Ppml.hardBr(), Ppml.hardFlex(body))
+  return Ppml.group(Ppml.text("("), headNode, bodyNode, Ppml.text(")"))
+}
+
 export function prettyApplication(elements: Array<Ppml.Node>): Ppml.Node {
   if (elements.length === 0) {
     return Ppml.group(Ppml.text("("), Ppml.text(")"))

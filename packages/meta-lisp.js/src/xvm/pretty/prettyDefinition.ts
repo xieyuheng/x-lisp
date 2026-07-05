@@ -23,7 +23,7 @@ export function prettyDefinition(definition: Definition): Ppml.Node {
     case "FunctionDefinition": {
       const name = definition.name
       const instrNodes = definition.instrs.map(prettyInstr)
-      return Ppml.prettySyntax(
+      return Ppml.prettyVertical(
         "define-function",
         [Ppml.text(name), Ppml.text(definition.arity.toString())],
         instrNodes,
@@ -33,13 +33,17 @@ export function prettyDefinition(definition: Definition): Ppml.Node {
     case "VariableDefinition": {
       const name = definition.name
       const instrNodes = definition.instrs.map(prettyInstr)
-      return Ppml.prettySyntax("define-variable", [Ppml.text(name)], instrNodes)
+      return Ppml.prettyVertical(
+        "define-variable",
+        [Ppml.text(name)],
+        instrNodes,
+      )
     }
 
     case "TestDefinition": {
       const name = definition.name
       const instrNodes = definition.instrs.map(prettyInstr)
-      return Ppml.prettySyntax("define-test", [Ppml.text(name)], instrNodes)
+      return Ppml.prettyVertical("define-test", [Ppml.text(name)], instrNodes)
     }
   }
 }

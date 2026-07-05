@@ -2,13 +2,12 @@ import * as Ppml from "@xieyuheng/ppml.js"
 import * as B from "../index.ts"
 import { prettyBlock } from "./prettyBlock.ts"
 import { prettyExp } from "./prettyExp.ts"
-import { prettyType } from "./prettyType.ts"
 
 export function prettyDefinition(definition: B.Definition): Ppml.Node {
   switch (definition.kind) {
     case "StructDefinition": {
       const fieldNodes = Object.entries(definition.fields).map(([name, type]) =>
-        Ppml.prettySyntax("", [], [Ppml.text(name), prettyType(type)]),
+        Ppml.text(`(${name} ${B.formatType(type)})`),
       )
       return Ppml.prettySyntax(
         "define-struct",
@@ -19,7 +18,7 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
 
     case "FunctionDefinition": {
       const blockNodes = definition.blocks.map(prettyBlock)
-      return Ppml.prettySyntax(
+      return Ppml.prettyVertical(
         "define-function",
         [Ppml.text(definition.name)],
         blockNodes,

@@ -1,2 +1,4 @@
 expected/bundle.xvm.asm
 expected/bundle.xvm.exe
+expected/bundle.x86.asm
+expected/bundle.x86.exe

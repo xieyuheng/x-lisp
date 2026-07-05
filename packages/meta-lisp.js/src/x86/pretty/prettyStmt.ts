@@ -7,7 +7,7 @@ export function prettyStmt(stmt: X86.Stmt): Ppml.Node {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
       const blockNodes = stmt.blocks.map(prettyBlock)
-      return Ppml.prettySyntax(
+      return Ppml.prettyVertical(
         "define-code",
         [Ppml.text(stmt.name)],
         blockNodes,

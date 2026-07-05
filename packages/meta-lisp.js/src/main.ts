@@ -1,6 +1,7 @@
 #!/usr/bin/env -S node
 
 import * as cli from "@xieyuheng/cli.js"
+import * as Ppml from "@xieyuheng/ppml.js"
 import * as S from "@xieyuheng/sexp.js"
 import { errorReport } from "@xieyuheng/std.js/error"
 import { getPackageJson } from "@xieyuheng/std.js/node"
@@ -83,7 +84,7 @@ router.defineHandlers({
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
     const mod = B2.parseMod(sexps)
-    const text = B2.formatMod(mod)
+    const text = Ppml.formatNode(B2.prettyMod(mod), { width: 80 }) + "\n"
     process.stdout.write(text)
   },
 

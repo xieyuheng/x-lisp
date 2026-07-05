@@ -1,7 +1,13 @@
 // learned from: christian-lindig/2000-stricty-pretty
 
 export type Node =
-  NullNode | TextNode | AppendNode | IndentNode | BreakNode | GroupNode
+  | NullNode
+  | TextNode
+  | AppendNode
+  | IndentNode
+  | BreakNode
+  | HardBreakNode
+  | GroupNode
 
 export type NullNode = {
   kind: "NullNode"
@@ -57,6 +63,16 @@ export function BreakNode(space: string): BreakNode {
   return {
     kind: "BreakNode",
     space,
+  }
+}
+
+export type HardBreakNode = {
+  kind: "HardBreakNode"
+}
+
+export function HardBreakNode(): HardBreakNode {
+  return {
+    kind: "HardBreakNode",
   }
 }
 

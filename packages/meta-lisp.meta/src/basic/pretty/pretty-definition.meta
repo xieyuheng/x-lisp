@@ -13,22 +13,22 @@
      [(ppml/pretty-syntax "declare-primitive-variable"
         [(ppml/text (symbol-to-string name))] [])])
     ((function-definition mod name parameters blocks location)
-     [(ppml/pretty-syntax "define-function"
+     [(ppml/pretty-vertical "define-function"
         [(ppml/text (@string "(" (symbol-to-string name) " "
                       (string-join " " (list-map symbol-to-string parameters)) ")"))]
         (list-map pretty-block (hash-values blocks)))])
     ((variable-definition mod name blocks location)
-     [(ppml/pretty-syntax "define-variable"
+     [(ppml/pretty-vertical "define-variable"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-block (hash-values blocks)))])
     ((test-definition mod name blocks location)
-     [(ppml/pretty-syntax "define-test"
+     [(ppml/pretty-vertical "define-test"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-block (hash-values blocks)))])))
 
 (define (pretty-block block)
   (= label-str (symbol-to-string (block-label block)))
   (= instrs (block-instrs block))
-  (ppml/pretty-syntax "block"
+  (ppml/pretty-vertical "block"
     [(ppml/text label-str)]
     (list-map pretty-instr instrs)))

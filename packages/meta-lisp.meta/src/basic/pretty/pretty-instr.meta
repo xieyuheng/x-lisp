@@ -4,21 +4,4 @@
 
 (claim pretty-instr (-> basic/instr-t ppml/node-t))
 (define (pretty-instr instr)
-  (match instr
-    ((assign-instr dest exp location)
-     (ppml/pretty-syntax "="
-       [(ppml/text (symbol-to-string dest))]
-       [(pretty-exp exp)]))
-    ((perform-instr exp location)
-     (ppml/pretty-syntax "perform" [] [(pretty-exp exp)]))
-    ((test-instr exp location)
-     (ppml/pretty-syntax "test" [] [(pretty-exp exp)]))
-    ((branch-instr then-label else-label location)
-     (ppml/pretty-syntax "branch"
-       [(ppml/text (symbol-to-string then-label))
-        (ppml/text (symbol-to-string else-label))] []))
-    ((goto-instr label location)
-     (ppml/pretty-syntax "goto"
-       [(ppml/text (symbol-to-string label))] []))
-    ((return-instr exp location)
-     (ppml/pretty-syntax "return" [] [(pretty-exp exp)]))))
+  (ppml/text (format-instr instr)))

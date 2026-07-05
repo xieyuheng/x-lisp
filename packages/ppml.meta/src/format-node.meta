@@ -34,6 +34,10 @@
            (let ((new-line (string-append "\n" (string-repeat indentation " "))))
              (layout width indentation rest
                      (string-append result new-line)))))
+        ((hard-break-node)
+         (let ((new-line (string-append "\n" (string-repeat indentation " "))))
+           (layout width indentation rest
+                   (string-append result new-line))))
         ((group-node child)
          (if (fit-inline (isub width cursor) [child])
            (layout width cursor
@@ -68,5 +72,7 @@
            (if (int-greater? new-cursor width)
              false
              (fit-inline-step width new-cursor rest))))
+        ((hard-break-node)
+         false)
         ((group-node child)
          (fit-inline-step width cursor (cons child rest)))))))

@@ -7,7 +7,7 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
   switch (definition.kind) {
     case "CodeDefinition": {
       const blockNodes = definition.blocks.map(prettyBlock)
-      return Ppml.prettySyntax(
+      return Ppml.prettyVertical(
         "define-code",
         [Ppml.text(definition.name)],
         blockNodes,

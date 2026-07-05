@@ -6,6 +6,7 @@
   (append-node (left node-t) (right node-t))
   (indent-node (length int-t) (child node-t))
   (break-node (space string-t))
+  (hard-break-node)
   (group-node (child node-t)))
 
 (define-struct entry-t

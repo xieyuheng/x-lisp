@@ -13,15 +13,15 @@
      [(ppml/pretty-syntax "declare-primitive-variable"
         [(ppml/text (symbol-to-string name))] [])])
     ((function-definition name arity instrs location)
-     [(ppml/pretty-syntax "define-function"
+     [(ppml/pretty-vertical "define-function"
         [(ppml/text (symbol-to-string name))
          (ppml/text (format-as-sexp arity))]
         (list-map pretty-instr instrs))])
     ((variable-definition name instrs location)
-     [(ppml/pretty-syntax "define-variable"
+     [(ppml/pretty-vertical "define-variable"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-instr instrs))])
     ((test-definition name instrs location)
-     [(ppml/pretty-syntax "define-test"
+     [(ppml/pretty-vertical "define-test"
         [(ppml/text (symbol-to-string name))]
         (list-map pretty-instr instrs))])))

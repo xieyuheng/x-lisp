@@ -16,5 +16,16 @@ export function prettyMod(mod: B.Mod): Ppml.Node {
     children.push(prettyDefinition(definition))
   }
 
-  return Ppml.prettySyntax("", [], children)
+  return joinBlankLines(children)
+}
+
+function joinBlankLines(nodes: Array<Ppml.Node>): Ppml.Node {
+  if (nodes.length === 0) return Ppml.nil()
+  if (nodes.length === 1) return nodes[0]
+  return Ppml.concat(
+    nodes[0],
+    Ppml.hardBr(),
+    Ppml.hardBr(),
+    joinBlankLines(nodes.slice(1)),
+  )
 }

@@ -12,6 +12,10 @@ export function br(): Ppml.Node {
   return Ppml.BreakNode(" ")
 }
 
+export function hardBr(): Ppml.Node {
+  return Ppml.HardBreakNode()
+}
+
 export function flex(nodes: Array<Ppml.Node>): Ppml.Node {
   if (nodes.length === 0) {
     return Ppml.nil()
@@ -19,6 +23,16 @@ export function flex(nodes: Array<Ppml.Node>): Ppml.Node {
     return nodes[0]
   } else {
     return Ppml.concat(nodes[0], Ppml.br(), flex(nodes.slice(1)))
+  }
+}
+
+export function hardFlex(nodes: Array<Ppml.Node>): Ppml.Node {
+  if (nodes.length === 0) {
+    return Ppml.nil()
+  } else if (nodes.length === 1) {
+    return nodes[0]
+  } else {
+    return Ppml.concat(nodes[0], Ppml.hardBr(), hardFlex(nodes.slice(1)))
   }
 }
 

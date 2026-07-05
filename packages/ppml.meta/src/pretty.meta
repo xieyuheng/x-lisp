@@ -9,6 +9,15 @@
   (= body-node (if (list-empty? body) (nil) (indent 2 [(br) (flex body)])))
   (group [(text "(") head-node body-node (text ")")]))
 
+(claim pretty-vertical
+  (-> string-t (list-t node-t) (list-t node-t)
+      node-t))
+
+(define (pretty-vertical name header body)
+  (= head-node (indent 4 [(wrap (cons (text name) header))]))
+  (= body-node (if (list-empty? body) (nil) (indent 2 [(hard-br) (hard-flex body)])))
+  (group [(text "(") head-node body-node (text ")")]))
+
 (claim pretty-application
   (-> (maybe-t string-t) (list-t node-t)
       node-t))

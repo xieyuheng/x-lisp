@@ -12,6 +12,10 @@
 (define (br)
   (break-node " "))
 
+(claim hard-br (-> node-t))
+(define (hard-br)
+  (hard-break-node))
+
 (claim concat-node (-> (list-t node-t) node-t))
 (define (concat-node nodes)
   (if (list-empty? nodes)
@@ -37,6 +41,16 @@
       (append-node (list-head nodes)
         (append-node (br)
           (flex (list-tail nodes)))))))
+
+(claim hard-flex (-> (list-t node-t) node-t))
+(define (hard-flex nodes)
+  (if (list-empty? nodes)
+    (null-node)
+    (if (list-empty? (list-tail nodes))
+      (list-head nodes)
+      (append-node (list-head nodes)
+        (append-node (hard-br)
+          (hard-flex (list-tail nodes)))))))
 
 (claim wrap (-> (list-t node-t) node-t))
 (define (wrap nodes)

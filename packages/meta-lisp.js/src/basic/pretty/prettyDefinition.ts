@@ -26,24 +26,28 @@ export function prettyDefinition(definition: Definition): Ppml.Node {
       const paramNodes = definition.parameters.map(Ppml.text)
       const defNode = Ppml.prettyApplication([Ppml.text(name), ...paramNodes])
       const blockNodes = Array.from(definition.blocks.values().map(prettyBlock))
-      return Ppml.prettySyntax("define-function", [defNode], blockNodes)
+      return Ppml.prettyVertical("define-function", [defNode], blockNodes)
     }
 
     case "VariableDefinition": {
       const name = definition.name
       const blockNodes = Array.from(definition.blocks.values().map(prettyBlock))
-      return Ppml.prettySyntax("define-variable", [Ppml.text(name)], blockNodes)
+      return Ppml.prettyVertical(
+        "define-variable",
+        [Ppml.text(name)],
+        blockNodes,
+      )
     }
 
     case "TestDefinition": {
       const name = definition.name
       const blockNodes = Array.from(definition.blocks.values().map(prettyBlock))
-      return Ppml.prettySyntax("define-test", [Ppml.text(name)], blockNodes)
+      return Ppml.prettyVertical("define-test", [Ppml.text(name)], blockNodes)
     }
   }
 }
 
 function prettyBlock(block: Block): Ppml.Node {
   const instrNodes = block.instrs.map(prettyInstr)
-  return Ppml.prettySyntax("block", [Ppml.text(block.label)], instrNodes)
+  return Ppml.prettyVertical("block", [Ppml.text(block.label)], instrNodes)
 }

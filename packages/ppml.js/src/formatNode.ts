@@ -74,6 +74,13 @@ function layout(
         }
       }
 
+      case "HardBreakNode": {
+        parts.push("\n" + " ".repeat(indentation))
+        cursor = indentation
+        targets = restTargets
+        continue
+      }
+
       case "GroupNode": {
         const groupingMode = fitInline(width - cursor, [node.child])
           ? "Inline"
@@ -118,6 +125,10 @@ function fitInline(width: number, nodes: Array<Ppml.Node>): boolean {
         width = width - node.space.length
         nodes = restNodes
         continue
+      }
+
+      case "HardBreakNode": {
+        return false
       }
 
       case "GroupNode": {
