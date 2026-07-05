@@ -42,7 +42,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
   - [(struct)](#struct)
   - [(pointer)](#pointer)
   - [(array)](#array)
-- [模块](#模块)
+- [例子](#例子)
 
 # 注释
 
@@ -286,24 +286,35 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 
 # 数据表达式
 
-数据表达式用于 `define-variable` 的 `init` 字段，描述数据段内存布局。
+数据表达式用于 `(define-variable)`，描述数据段内存布局。
 它不是指令中的运行时值（`operand-t`），而是独立的数据类型。
 
 ## 裸字面量
 
-整数、浮点数和字符串通过语法形式直接区分，不需要包装 tag：
+整数：
 
 ```scheme
-42           ;; int-exp（宽度由所在字段类型决定）
+42
 -1
 0
+```
 
-3.14         ;; float-exp
+浮点数：
+
+```scheme
+3.14
 -2.5
+```
 
-"hello"      ;; string-exp（null-terminated bytes）
+字符串：
+
+```scheme
+"hello"
 "world"
 ```
+
+字符串表达式会被翻译为指针，
+指向 string table 中 null 结尾的 C 风格的 string。
 
 ## (address)
 
@@ -365,11 +376,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
   (address ©str.1))
 ```
 
-# 模块
-
-模块是所有定义和声明的容器。
-
-模块中，`definitions` 存储所有定义（struct / function / variable），`claims` 存储所有类型声明。
+# 例子
 
 ```scheme
 (claim add1 (-> int64-t int64-t))
@@ -384,5 +391,8 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
   (y int64-t))
 
 (claim origin point-t)
-(define-variable origin (struct point-t (x 0) (y 0)))
+(define-variable origin
+  (struct point-t
+    (x 0)
+    (y 0)))
 ```
