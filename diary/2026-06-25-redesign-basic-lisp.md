@@ -121,7 +121,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 | `argument` | [] | `:index <int>` |
 | `use` | [] | — |
 | `store` | [pointer, value] | `:content-type <type>` |
-| `provide` | [value] | `:content-type <type> :use-site <name>` |
+| `provide` | [value] | `:use-site <name>` |
 | `return` | [value] | — |
 | `goto` | [] | `:label <name>` |
 | `branch` | [condition] | `:then-label <name> :else-label <name>` |
@@ -171,7 +171,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `offset-of`：沿 `struct-type` 的字段路径 `path` 逐级计算累积字节偏移。type 为 `int64-t`。编译时常量。
 - `argument`：获取函数的第 `index` 个参数（从 0 开始）。type 为参数类型。
 - `use`：从合并点读取值。type 为合并点的值类型。dest 名即合并点名。
-- `provide`：向合并点 `use-site` 写入 `value`。`content-type` 为被写入值的类型。本指令 type 为 `void-t`。
+- `provide`：向合并点 `use-site` 写入 `value`。合并点的类型由目标 `(use)` 指令的结果类型声明。本指令 type 为 `void-t`。
 - `return`：函数返回 `value`。type 为 `void-t`。
 - `goto`：无条件跳转到 label。type 为 `void-t`。
 - `branch`：若 `condition` 为真跳转到 `then-label`，否则跳转到 `else-label`。`condition` 必须为 `bool-t`。type 为 `void-t`。
@@ -307,14 +307,14 @@ basic-lisp IR 文本形式：
 
   (block then
     (= sum int64-t (iadd raw-a raw-b))
-    (= result value-t (tag-int sum))
-    (= ∅.2 void-t (provide result :content-type value-t :use-site result))
+    (= tagged-sum value-t (tag-int sum))
+    (= ∅.2 void-t (provide tagged-sum :use-site result))
     (= ∅.3 void-t (goto :label merge)))
 
   (block else
     (= diff int64-t (isub raw-a raw-b))
-    (= result value-t (tag-int diff))
-    (= ∅.4 void-t (provide result :content-type value-t :use-site result))
+    (= tagged-diff value-t (tag-int diff))
+    (= ∅.4 void-t (provide tagged-diff :use-site result))
     (= ∅.5 void-t (goto :label merge)))
 
   (block merge

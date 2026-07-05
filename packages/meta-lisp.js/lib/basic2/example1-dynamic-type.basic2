@@ -12,14 +12,14 @@
 
   (block then
     (= sum int64-t (iadd raw-a raw-b))
-    (= result value-t (tag-int sum))
-    (= %2 void-t (provide result :content-type value-t :use-site result))
+    (= tagged-sum value-t (tag-int sum))
+    (= %2 void-t (provide tagged-sum :use-site result))
     (= %3 void-t (goto :label merge)))
 
   (block else
     (= diff int64-t (isub raw-a raw-b))
-    (= result value-t (tag-int diff))
-    (= %4 void-t (provide result :content-type value-t :use-site result))
+    (= tagged-diff value-t (tag-int diff))
+    (= %4 void-t (provide tagged-diff :use-site result))
     (= %5 void-t (goto :label merge)))
 
   (block merge
