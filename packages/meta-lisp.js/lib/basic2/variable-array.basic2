@@ -1,0 +1,18 @@
+(define-struct string-table-t (count int64-t) (entries pointer-t))
+
+(claim ©str.0 pointer-t)
+(define-variable ©str.0 "hello")
+
+(claim ©str.1 pointer-t)
+(define-variable ©str.1 "world")
+
+(claim table string-table-t)
+
+(define-variable table
+  (struct string-table-t
+    (count 2)
+    (entries
+      (pointer
+        (array
+          (address ©str.0)
+          (address ©str.1))))))

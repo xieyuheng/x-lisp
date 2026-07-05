@@ -37,13 +37,11 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
   - [(define-variable)](#define-variable)
   - [(define-struct)](#define-struct)
 - [数据表达式](#数据表达式)
-  - [(int)](#int)
-  - [(float)](#float)
-  - [(string)](#string)
+  - [裸字面量](#裸字面量)
+  - [(address)](#address)
   - [(struct)](#struct)
   - [(pointer)](#pointer)
   - [(array)](#array)
-  - [(address)](#address)
 - [模块](#模块)
 
 # 注释
@@ -243,21 +241,22 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 ## (define-variable)
 
 ```scheme
-(define-variable <name> <init>)
+(define-variable <name>)            ;; BSS（无初始化）
+(define-variable <name> <exp>)      ;; 静态初始化
 ```
 
 定义全局变量。
 
 - 完整类型由同名 `claim` 提供。
-- `<init>` 为数据表达式 `(exp)` 时，静态初始化为该数据段内容。
-- `<init>` 为 `(nothing)` 时，等价于 BSS 段的未初始化变量。
+- 不带 `<exp>` 时等价于 BSS 段的未初始化变量。
+- 带 `<exp>` 时以数据表达式描述数据段内存布局，静态初始化。
 
 ```scheme
 (claim origin point-t)
-(define-variable origin (struct point-t (x (int 0)) (y (int 0))))
+(define-variable origin (struct point-t (x 0) (y 0)))
 
-(claim buffer (struct-t buffer-t))
-(define-variable buffer (nothing))
+(claim buffer buffer-t)
+(define-variable buffer)
 ```
 
 ## (define-struct)
@@ -290,44 +289,33 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 数据表达式用于 `define-variable` 的 `init` 字段，描述数据段内存布局。
 它不是指令中的运行时值（`operand-t`），而是独立的数据类型。
 
-## (int)
+## 裸字面量
+
+整数、浮点数和字符串通过语法形式直接区分，不需要包装 tag：
 
 ```scheme
-(int <value>)
+42           ;; int-exp（宽度由所在字段类型决定）
+-1
+0
+
+3.14         ;; float-exp
+-2.5
+
+"hello"      ;; string-exp（null-terminated bytes）
+"world"
 ```
 
-整数字面量。宽度由所在 struct 字段类型决定。
+## (address)
 
 ```scheme
-(int 42)
-(int 0)
-(int -1)
+(address <name>)
 ```
 
-## (float)
+对已定义符号的地址引用。
 
 ```scheme
-(float <value>)
-```
-
-浮点数字面量。
-
-```scheme
-(float 3.14)
-(float -2.5)
-```
-
-## (string)
-
-```scheme
-(string "<content>")
-```
-
-以 null-terminated bytes 存储的字符串。
-
-```scheme
-(string "hello")
-(string "world")
+(address origin)
+(address ©str.0)
 ```
 
 ## (struct)
@@ -343,8 +331,8 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 ```scheme
 (define-variable origin
   (struct point-t
-    (x (int 0))
-    (y (int 0))))
+    (x 0)
+    (y 0)))
 ```
 
 ## (pointer)
@@ -358,8 +346,8 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 ```scheme
 (pointer
   (struct node-t
-    (value (int 1))
-    (next (int 0))))
+    (value 1)
+    (next 0)))
 ```
 
 ## (array)
@@ -371,23 +359,10 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 定长有序数组。
 
 ```scheme
-(array (int 1) (int 2) (int 3))
+(array 1 2 3)
 (array
   (address ©str.0)
   (address ©str.1))
-```
-
-## (address)
-
-```scheme
-(address <name>)
-```
-
-对已定义符号的地址引用。
-
-```scheme
-(address origin)
-(address ©str.0)
 ```
 
 # 模块
@@ -409,5 +384,5 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
   (y int64-t))
 
 (claim origin point-t)
-(define-variable origin (struct point-t (x (int 0)) (y (int 0))))
+(define-variable origin (struct point-t (x 0) (y 0)))
 ```

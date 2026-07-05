@@ -6,15 +6,11 @@ export function prettyExp(exp: B.Exp): Ppml.Node {
     case "AddressExp":
       return Ppml.prettySyntax("address", [], [Ppml.text(exp.name)])
     case "IntExp":
-      return Ppml.prettySyntax("int", [], [Ppml.text(exp.value.toString())])
+      return Ppml.text(exp.value.toString())
     case "FloatExp":
-      return Ppml.prettySyntax("float", [], [Ppml.text(exp.value.toString())])
+      return Ppml.text(exp.value.toString())
     case "StringExp":
-      return Ppml.prettySyntax(
-        "string",
-        [],
-        [Ppml.text(JSON.stringify(exp.content))],
-      )
+      return Ppml.text(JSON.stringify(exp.content))
     case "StructExp": {
       const fieldNodes = Object.entries(exp.fields).map(([fname, fexp]) =>
         Ppml.prettySyntax(

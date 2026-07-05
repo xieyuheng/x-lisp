@@ -5,11 +5,11 @@ export function formatExp(exp: B.Exp): string {
     case "AddressExp":
       return `(address ${exp.name})`
     case "IntExp":
-      return `(int ${exp.value.toString()})`
+      return exp.value.toString()
     case "FloatExp":
-      return `(float ${exp.value.toString()})`
+      return exp.value.toString()
     case "StringExp":
-      return `(string ${JSON.stringify(exp.content)})`
+      return JSON.stringify(exp.content)
     case "StructExp": {
       const fields = Object.entries(exp.fields)
         .map(([fname, fexp]) => `(${fname} ${formatExp(fexp)})`)

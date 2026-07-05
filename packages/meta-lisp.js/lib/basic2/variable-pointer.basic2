@@ -1,0 +1,9 @@
+(define-struct node-t (value int64-t) (next pointer-t))
+
+(claim head pointer-t)
+
+(define-variable head
+  (pointer
+    (struct node-t
+      (value 1)
+      (next 0))))

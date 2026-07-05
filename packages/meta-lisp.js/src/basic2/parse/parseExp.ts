@@ -2,6 +2,10 @@ import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
 
 export function parseExp(sexp: S.Sexp): B.Exp {
+  if (S.isIntSexp(sexp)) return B.IntExp(sexp.content)
+  if (S.isFloatSexp(sexp)) return B.FloatExp(sexp.content)
+  if (S.isStringSexp(sexp)) return B.StringExp(sexp.content)
+
   const list = S.asListSexp(sexp)
   const head = S.asSymbolSexp(list.elements[0])
   const elements = list.elements
@@ -10,18 +14,6 @@ export function parseExp(sexp: S.Sexp): B.Exp {
     case "address": {
       const name = S.asSymbolSexp(elements[1]).content
       return B.AddressExp(name)
-    }
-    case "int": {
-      const value = S.asIntSexp(elements[1]).content
-      return B.IntExp(value)
-    }
-    case "float": {
-      const value = S.asFloatSexp(elements[1]).content
-      return B.FloatExp(value)
-    }
-    case "string": {
-      const content = S.asStringSexp(elements[1]).content
-      return B.StringExp(content)
     }
     case "struct": {
       if (elements.length < 3) {
