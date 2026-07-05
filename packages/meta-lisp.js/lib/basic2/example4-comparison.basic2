@@ -3,18 +3,21 @@
 (define-function sign
   (block body
     (= n int64-t (argument :index 0))
-    (= neg bool-t (icmp-lt n 0))
+    (= zero int64-t (const :value 0))
+    (= neg bool-t (icmp-lt n zero))
     (= %1 void-t (branch neg :then-label negative :else-label non-negative)))
 
   (block negative
-    (= %2 void-t (return -1)))
+    (= neg-one int64-t (const :value -1))
+    (= %2 void-t (return neg-one)))
 
   (block non-negative
-    (= pos bool-t (icmp-gt n 0))
+    (= pos bool-t (icmp-gt n zero))
     (= %3 void-t (branch pos :then-label positive :else-label zero)))
 
   (block positive
-    (= %4 void-t (return 1)))
+    (= one int64-t (const :value 1))
+    (= %4 void-t (return one)))
 
   (block zero
-    (= %5 void-t (return 0))))
+    (= %5 void-t (return zero))))

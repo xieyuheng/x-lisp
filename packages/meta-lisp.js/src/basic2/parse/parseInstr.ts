@@ -80,10 +80,19 @@ function parseAttribute(sexp: S.Sexp): B.Attribute {
   }
 
   if (S.isIntSexp(sexp)) {
-    return B.IntAttribute(Number(sexp.content))
+    return B.IntAttribute(sexp.content)
+  }
+
+  if (S.isFloatSexp(sexp)) {
+    return B.FloatAttribute(sexp.content)
   }
 
   if (S.isListSexp(sexp)) {
+    if (sexp.elements.length === 1 && S.isSymbolSexp(sexp.elements[0])) {
+      const name = sexp.elements[0].content
+      if (name === "true") return B.BoolAttribute(true)
+      if (name === "false") return B.BoolAttribute(false)
+    }
     return B.ListAttribute(sexp.elements.map(parseAttribute))
   }
 

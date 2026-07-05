@@ -22,6 +22,10 @@ function formatAttribute(attribute: B.Attribute): string {
       return attribute.value
     case "IntAttribute":
       return attribute.value.toString()
+    case "FloatAttribute":
+      return attribute.value.toString()
+    case "BoolAttribute":
+      return `(${attribute.value})`
     case "ListAttribute":
       return `(${attribute.elements.map(formatAttribute).join(" ")})`
   }

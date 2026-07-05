@@ -113,7 +113,6 @@ export const unaryOpNames: Set<string> = new Set([
   "to-int64",
   "to-float64",
   "to-bool",
-  "const",
 ])
 
 export const knownUnaryOps: Record<string, Type> = {
@@ -124,5 +123,13 @@ export const knownUnaryOps: Record<string, Type> = {
   "to-int64": ArrowType([ValueType()], Int64Type()),
   "to-float64": ArrowType([ValueType()], Float64Type()),
   "to-bool": ArrowType([ValueType()], BoolType()),
-  const: ArrowType([VoidType()], VoidType()),
+}
+
+export const nullaryOpNames: Set<string> = new Set([
+  "const",
+  "address",
+])
+
+export const knownNullaryOps: Record<string, Type> = {
+  address: ArrowType([], PointerType()),
 }

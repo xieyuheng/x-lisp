@@ -1,7 +1,12 @@
 import { type Type } from "../type/index.ts"
 
 export type Attribute =
-  TypeAttribute | SymbolAttribute | IntAttribute | ListAttribute
+  | TypeAttribute
+  | SymbolAttribute
+  | IntAttribute
+  | FloatAttribute
+  | BoolAttribute
+  | ListAttribute
 
 export type TypeAttribute = {
   kind: "TypeAttribute"
@@ -23,11 +28,29 @@ export function SymbolAttribute(value: string): SymbolAttribute {
 
 export type IntAttribute = {
   kind: "IntAttribute"
+  value: bigint
+}
+
+export function IntAttribute(value: bigint): IntAttribute {
+  return { kind: "IntAttribute", value }
+}
+
+export type FloatAttribute = {
+  kind: "FloatAttribute"
   value: number
 }
 
-export function IntAttribute(value: number): IntAttribute {
-  return { kind: "IntAttribute", value }
+export function FloatAttribute(value: number): FloatAttribute {
+  return { kind: "FloatAttribute", value }
+}
+
+export type BoolAttribute = {
+  kind: "BoolAttribute"
+  value: boolean
+}
+
+export function BoolAttribute(value: boolean): BoolAttribute {
+  return { kind: "BoolAttribute", value }
 }
 
 export type ListAttribute = {

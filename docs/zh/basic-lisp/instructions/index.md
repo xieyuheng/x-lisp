@@ -66,7 +66,11 @@ basic-lisp IR 的所有指令按功能分类。
 - [`to-int64`](to-int64.md) — 从 value 解构 int64
 - [`to-float64`](to-float64.md) — 从 value 解构 float64
 - [`to-bool`](to-bool.md) — 从 value 解构 bool
-- [`const`](const.md) — 将 operand 绑定到 SSA 名
+
+## 字面量
+
+- [`const`](const.md) — 字面量常量
+- [`address`](address.md) — 符号地址
 
 ## 内存操作
 

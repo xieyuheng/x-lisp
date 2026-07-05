@@ -19,19 +19,3 @@ export function TestXvmPipeline(pkg: M.Package): void {
     pkg.config.compiler.builtin ? "--builtin" : "",
   ])
 }
-
-export function TestX86Pipeline(pkg: M.Package): void {
-  const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-  const metaPath = Path.join(
-    currentDir,
-    "../../../../meta-runtime.c/src/meta.exe",
-  )
-  const x86ExePath = Path.join(M.packageOutputDirectory(pkg), "bundle.x86.exe")
-  systemShellRun(metaPath, [
-    "test-x86",
-    x86ExePath,
-    "--snapshot",
-    M.packageSnapshotDirectory(pkg),
-    pkg.config.compiler.profile ? "--profile" : "",
-  ])
-}
