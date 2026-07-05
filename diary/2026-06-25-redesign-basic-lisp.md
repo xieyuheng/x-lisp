@@ -368,10 +368,10 @@ IR 文本形式：
   (block body
     (= x-offset int64-t (offset-of :struct-type point-t :path (x)))
     (= x-pointer pointer-t (padd (address origin) x-offset))
-    (= ∅.1 void-t (store x-pointer (int64 0) :content-type int64-t))
+    (= ∅.1 void-t (store x-pointer 0 :content-type int64-t))
     (= y-offset int64-t (offset-of :struct-type point-t :path (y)))
     (= y-pointer pointer-t (padd (address origin) y-offset))
-    (= ∅.2 void-t (store y-pointer (int64 0) :content-type int64-t))
+    (= ∅.2 void-t (store y-pointer 0 :content-type int64-t))
     (= ∅.3 void-t (return (void)))))
 
 (claim printf (-> pointer-t int64-t))
@@ -387,21 +387,21 @@ int64 有序比较（`icmp-*`），结果为 `bool-t`：
 (define-function sign
   (block body
     (= n int64-t (argument :index 0))
-    (= neg bool-t (icmp-lt n (int64 0)))
+    (= neg bool-t (icmp-lt n 0))
     (= ∅.1 void-t (branch neg :then-label negative :else-label non-negative)))
 
   (block negative
-    (= ∅.2 void-t (return (int64 -1))))
+    (= ∅.2 void-t (return -1)))
 
   (block non-negative
-    (= pos bool-t (icmp-gt n (int64 0)))
+    (= pos bool-t (icmp-gt n 0))
     (= ∅.3 void-t (branch pos :then-label positive :else-label zero)))
 
   (block positive
-    (= ∅.4 void-t (return (int64 1))))
+    (= ∅.4 void-t (return 1)))
 
   (block zero
-    (= ∅.5 void-t (return (int64 0)))))
+    (= ∅.5 void-t (return 0))))
 ```
 
 动态值的 identity 判等用 `value-eq` / `value-ne`（仅判等，无有序比较）：

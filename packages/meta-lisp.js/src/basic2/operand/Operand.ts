@@ -1,7 +1,7 @@
 export type Operand =
   | VarOperand
-  | Int64Operand
-  | Float64Operand
+  | IntOperand
+  | FloatOperand
   | BoolOperand
   | VoidOperand
   | AddressOperand
@@ -15,22 +15,22 @@ export function VarOperand(name: string): VarOperand {
   return { kind: "VarOperand", name }
 }
 
-export type Int64Operand = {
-  kind: "Int64Operand"
+export type IntOperand = {
+  kind: "IntOperand"
   value: bigint
 }
 
-export function Int64Operand(value: bigint): Int64Operand {
-  return { kind: "Int64Operand", value }
+export function IntOperand(value: bigint): IntOperand {
+  return { kind: "IntOperand", value }
 }
 
-export type Float64Operand = {
-  kind: "Float64Operand"
+export type FloatOperand = {
+  kind: "FloatOperand"
   value: number
 }
 
-export function Float64Operand(value: number): Float64Operand {
-  return { kind: "Float64Operand", value }
+export function FloatOperand(value: number): FloatOperand {
+  return { kind: "FloatOperand", value }
 }
 
 export type BoolOperand = {

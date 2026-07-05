@@ -4,14 +4,14 @@ export function formatOperand(operand: B.Operand): string {
   switch (operand.kind) {
     case "VarOperand":
       return operand.name
-    case "Int64Operand":
-      return `(int64 ${operand.value.toString()})`
-    case "Float64Operand": {
+    case "IntOperand":
+      return operand.value.toString()
+    case "FloatOperand": {
       const n = operand.value
       if (Number.isInteger(n)) {
-        return `(float64 ${n.toString()}.0)`
+        return `${n.toString()}.0`
       }
-      return `(float64 ${n.toString()})`
+      return n.toString()
     }
     case "BoolOperand":
       return `(bool ${operand.value ? "true" : "false"})`

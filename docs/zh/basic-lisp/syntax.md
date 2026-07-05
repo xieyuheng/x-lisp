@@ -104,17 +104,18 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 
 操作数是指令的运行时值。
 
-除了 SSA 变量之外，所有操作数的语法都是带有 tag 的 sexp。
+操作数的语法由其种类决定：整数、浮点数和 SSA 变量直接使用 atom sexp 语法；布尔值、空值和符号地址使用带有 tag 的 sexp。
 
 | 操作数       | 例子               |
 |--------------|--------------------|
 | SSA 变量     | `x` `x.1`          |
-| 64 位整数    | `(int64 42)`       |
-| 64 位浮点数  | `(float64 3.14)`   |
+| 64 位整数    | `42`               |
+| 64 位浮点数  | `3.14`             |
 | 布尔值       | `(bool true)`      |
 | 空值         | `(void)`           |
 | 顶层符号地址 | `(address origin)` |
 
+- 整数与浮点数字面量通过 sexp atom 类型区分 -- `42` 为整数，`3.14` 为浮点数。
 - SSA 变量通过定义点确定类型，操作数处不需要标记类型。
 - `address` 类型为 `pointer-t`。
   查符号表确定语义 -- 若是函数定义则可用于 `call` / `tail-call`；
@@ -136,8 +137,8 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 
 注意：
 
-- 作为属性的整数直接使用 atom sexp 语法 -- `42`，
-  与作为操作数的整数不同 -- `(int64 42)`。
+- 属性中的整数与操作数中的整数使用相同的 atom sexp 语法 -- `42`。
+  区别在于语义角色：属性位于 `:key` 声明之后，属于编译期信息；操作数直接出现在指令参数位置，属于运行时值。
 
 # 指令
 
@@ -235,7 +236,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (define-function add1
   (block body
     (= n int64-t (argument :index 0))
-    (= result int64-t (iadd n (int64 1)))
+    (= result int64-t (iadd n 1))
     (= ∅.1 void-t (return result))))
 ```
 
@@ -400,7 +401,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (define-function add1
   (block body
     (= n int64-t (argument :index 0))
-    (= result int64-t (iadd n (int64 1)))
+    (= result int64-t (iadd n 1))
     (= ∅.1 void-t (return result))))
 
 (define-struct point-t

@@ -6,19 +6,19 @@ export function parseOperand(sexp: S.Sexp): B.Operand {
     return B.VarOperand(sexp.content)
   }
 
+  if (S.isIntSexp(sexp)) {
+    return B.IntOperand(sexp.content)
+  }
+
+  if (S.isFloatSexp(sexp)) {
+    return B.FloatOperand(sexp.content)
+  }
+
   const list = S.asListSexp(sexp)
   const head = S.asSymbolSexp(list.elements[0])
   const elements = list.elements
 
   switch (head.content) {
-    case "int64": {
-      const value = S.asIntSexp(elements[1]).content
-      return B.Int64Operand(value)
-    }
-    case "float64": {
-      const value = S.asFloatSexp(elements[1]).content
-      return B.Float64Operand(value)
-    }
     case "bool": {
       const value = S.asSymbolSexp(elements[1]).content
       if (value !== "true" && value !== "false") {

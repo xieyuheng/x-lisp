@@ -5,16 +5,12 @@ export function prettyOperand(operand: B.Operand): Ppml.Node {
   switch (operand.kind) {
     case "VarOperand":
       return Ppml.text(operand.name)
-    case "Int64Operand":
-      return Ppml.prettySyntax(
-        "int64",
-        [],
-        [Ppml.text(operand.value.toString())],
-      )
-    case "Float64Operand": {
+    case "IntOperand":
+      return Ppml.text(operand.value.toString())
+    case "FloatOperand": {
       const n = operand.value
       const text = Number.isInteger(n) ? `${n.toString()}.0` : n.toString()
-      return Ppml.prettySyntax("float64", [], [Ppml.text(text)])
+      return Ppml.text(text)
     }
     case "BoolOperand":
       return Ppml.prettySyntax(
