@@ -4,7 +4,8 @@ title: 语法
 
 # 前言
 
-basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**符号表达式**（S-expression）语法。
+basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
+使用**符号表达式**（S-expression）语法。
 
 它同时支持两种编译目标：
 
@@ -28,8 +29,6 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），使用**�
 - [操作数](#操作数)
 - [属性](#属性)
 - [指令](#指令)
-  - [统一语法](#统一语法)
-  - [指令索引](instructions/index.md)
 - [基本块](#基本块)
 - [声明](#声明)
   - [(claim)](#claim)
@@ -90,8 +89,6 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 
 函数类型。
 
-最后一个为 `ret-type`，之前所有为 `arg-types`。
-
 例如：
 
 ```scheme
@@ -101,7 +98,7 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 (-> value-t value-t value-t value-t)
 ```
 
-用于 `(claim)` 声明函数的类型签名。
+用于 `(claim)` 声明函数的类型。
 
 # 操作数
 
@@ -126,16 +123,16 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 
 # 属性
 
-每个指令可以在操作形式内部通过 `:<key> <attribute>` 语法带有任意多个属性。
+每个指令可以通过 `:<key> <attribute>` 语法带有任意多个属性。
 
 属性 `<attribute>` 是编译时信息，与 `operand`（运行时值）分离，但同处于 `(<op> ...)` 操作形式之内。
 
-| 种类 | 语法      | 说明     |
-|------|-----------|----------|
-| 类型引用 | `int64-t` | 引用一个 IR 类型 |
-| 符号 | `foo`     | 符号名   |
-| 整数 | `42`      | 整数值   |
-| 列表 | `(x y)`   | 属性列表 |
+| 种类     | 语法      | 说明         |
+|----------|-----------|--------------|
+| 类型引用 | `int64-t` | 引用一个类型 |
+| 符号     | `foo`     | 符号名       |
+| 整数     | `42`      | 整数值       |
+| 列表     | `(x y)`   | 属性列表     |
 
 注意：
 
@@ -143,8 +140,6 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
   与作为操作数的整数不同 -- `(int64 42)`。
 
 # 指令
-
-## 统一语法
 
 所有指令统一为一种结构：
 
@@ -167,20 +162,21 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 (= ∅.1 void-t (branch cond :then-label then :else-label else))
 ```
 
-每条指令的类型签名和用法详见[指令索引](instructions/index.md)。
+每条指令的类型和用法详见[指令索引](instructions/index.md)。
 
 # 基本块
 
 基本块由标号和指令序列组成：
 
-```
-(= <label> (block
-  <instr> ...))
+```scheme
+(block <label>
+  <instr>
+  ...)
 ```
 
 - 第一个 block 是 entry block。
 - `instrs` 的最后一条指令必须为 terminator 类指令。
-- 函数参数通过 entry block 中的 `(argument :index N)` 获取。
+- 用 `(argument :index N)` 获取函数参数。
 
 ```scheme
 (block body
@@ -198,7 +194,7 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 (claim <name> <type>)
 ```
 
-声明一个名字的类型签名。
+声明一个顶层定义的类型。
 
 函数用 `(-> ...)` arrow-type：
 
