@@ -27,11 +27,7 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
       )
     case "StructDefinition": {
       const fieldNodes = Object.keys(definition.fields).map((name) =>
-        Ppml.prettySyntax(
-          "",
-          [],
-          [Ppml.text(name), Ppml.text(X86.formatType(definition.fields[name]))],
-        ),
+        Ppml.text(`(${name} ${X86.formatType(definition.fields[name])})`),
       )
       return Ppml.prettySyntax(
         "define-struct",

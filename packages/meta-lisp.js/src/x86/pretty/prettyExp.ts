@@ -11,11 +11,7 @@ export function prettyExp(exp: X86.Exp): Ppml.Node {
       return Ppml.text(JSON.stringify(exp.content))
     case "StructExp": {
       const fieldNodes = Object.entries(exp.fields).map(([fname, fexp]) =>
-        Ppml.prettySyntax(
-          "",
-          [],
-          [Ppml.text(fname), Ppml.text(" "), prettyExp(fexp)],
-        ),
+        Ppml.prettyApplication([Ppml.text(fname), prettyExp(fexp)]),
       )
       return Ppml.prettySyntax(
         "struct",
