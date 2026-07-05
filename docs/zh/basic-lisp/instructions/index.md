@@ -6,7 +6,8 @@ title: 指令索引
 
 basic-lisp IR 的所有指令按功能分类。
 
-每条指令的类型签名遵从 `(-> <operand-type>... <result-type> :<key> <attr-kind>...)` 格式——`<result-type>` 后的 `:<key> <attr-kind>` 为属性声明。
+每条指令的类型签名遵从 `(-> <operand-type>... <result-type> :<key> <attribute-kind>...)` 格式，
+`<result-type>` 后的 `:<key> <attribute-kind>` 为属性声明。
 
 - [二元运算](#二元运算)
 - [比较指令](#比较指令)
