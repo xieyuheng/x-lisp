@@ -6,12 +6,9 @@
 (define (pretty-definition definition)
   (match definition
     ((primitive-function-declaration name arity location)
-     [(ppml/pretty-syntax "declare-primitive-function"
-        [(ppml/text (symbol-to-string name))
-         (ppml/text (format-as-sexp arity))] [])])
+     [(ppml/text (format-definition definition))])
     ((primitive-variable-declaration name location)
-     [(ppml/pretty-syntax "declare-primitive-variable"
-        [(ppml/text (symbol-to-string name))] [])])
+     [(ppml/text (format-definition definition))])
     ((function-definition name arity instrs location)
      [(ppml/pretty-vertical "define-function"
         [(ppml/text (symbol-to-string name))

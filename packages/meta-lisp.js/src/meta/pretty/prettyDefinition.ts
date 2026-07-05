@@ -16,20 +16,14 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
     case "PrimitiveFunctionDeclaration": {
-      return Ppml.prettySyntax(
-        "declare-primitive-function",
-        [],
-        [Ppml.text(definition.name), Ppml.text(definition.arity.toString())],
+      return Ppml.text(
+        `(declare-primitive-function ${definition.name} ${definition.arity.toString()})`,
       )
     }
 
     case "PrimitiveVariableDefinition":
     case "PrimitiveVariableDeclaration": {
-      return Ppml.prettySyntax(
-        "declare-primitive-variable",
-        [],
-        [Ppml.text(definition.name)],
-      )
+      return Ppml.text(`(declare-primitive-variable ${definition.name})`)
     }
 
     case "FunctionDefinition": {

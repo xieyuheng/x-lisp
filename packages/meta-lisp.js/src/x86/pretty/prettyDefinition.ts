@@ -42,10 +42,6 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
         [prettyExp(definition.size)],
       )
     case "PrimitiveTypeDefinition":
-      return Ppml.prettySyntax(
-        "declare-primitive-type",
-        [Ppml.text(definition.name)],
-        [],
-      )
+      return Ppml.text(X86.formatDefinition(definition))
   }
 }

@@ -1,24 +1,17 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import type { Block } from "../block/index.ts"
 import { type Definition } from "../definition/index.ts"
+import { formatDefinition } from "../format/formatDefinition.ts"
 import { prettyInstr } from "./prettyInstr.ts"
 
 export function prettyDefinition(definition: Definition): Ppml.Node {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
-      return Ppml.prettySyntax(
-        "declare-primitive-function",
-        [],
-        [Ppml.text(definition.name), Ppml.text(definition.arity.toString())],
-      )
+      return Ppml.text(formatDefinition(definition))
     }
 
     case "PrimitiveVariableDeclaration": {
-      return Ppml.prettySyntax(
-        "declare-primitive-variable",
-        [],
-        [Ppml.text(definition.name)],
-      )
+      return Ppml.text(formatDefinition(definition))
     }
 
     case "FunctionDefinition": {
