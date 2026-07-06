@@ -70,7 +70,9 @@ basic-lisp IR 的所有指令按功能分类。
 
 ## 字面量
 
-- [`const`](const.md) — 字面量常量
+- [`int64`](int64.md) — int64 常量
+- [`float64`](float64.md) — float64 常量
+- [`bool`](bool.md) — bool 常量
 - [`address`](address.md) — 符号地址
 
 ## 内存操作

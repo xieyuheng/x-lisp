@@ -242,7 +242,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (define-function add1
   (block body
     (= n (argument :index 0))
-    (= one (const :value 1))
+    (= one (int64 :value 1))
     (= result (iadd n one))
     (return result))))
 ```
@@ -392,7 +392,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (define-function add1
   (block body
     (= n (argument :index 0))
-    (= one (const :value 1))
+    (= one (int64 :value 1))
     (= result (iadd n one))
     (return result))))
 

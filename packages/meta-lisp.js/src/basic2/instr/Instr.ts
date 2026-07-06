@@ -68,5 +68,8 @@ export const knownOps: Record<string, ArrowType> = {
   "to-int64": ArrowType([ValueType()], Int64Type()),
   "to-float64": ArrowType([ValueType()], Float64Type()),
   "to-bool": ArrowType([ValueType()], BoolType()),
+  int64: ArrowType([], Int64Type()),
+  float64: ArrowType([], Float64Type()),
+  bool: ArrowType([], BoolType()),
   address: ArrowType([], PointerType()),
 }
