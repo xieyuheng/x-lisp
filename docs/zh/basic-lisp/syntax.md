@@ -102,23 +102,14 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 
 操作数是指令的运行时值。
 
-操作数的语法由其种类决定：整数、浮点数和 SSA 变量直接使用 atom sexp 语法；布尔值、空值和符号地址使用带有 tag 的 sexp。
+所有操作数都是 SSA 变量引用。
 
-| 操作数       | 例子               |
-|--------------|--------------------|
-| SSA 变量     | `x` `x.1`          |
-| 64 位整数    | `42`               |
-| 64 位浮点数  | `3.14`             |
-| 布尔值       | `(bool true)`      |
-| 空值         | `(void)`           |
-| 顶层符号地址 | `(address origin)` |
+| 操作数   | 例子       |
+|----------|------------|
+| SSA 变量 | `x` `x.1` |
 
-- 整数与浮点数字面量通过 sexp atom 类型区分 -- `42` 为整数，`3.14` 为浮点数。
+- 字面量常量（整数、浮点数、布尔值、符号地址等）通过 `const` 和 `address` 指令产生 SSA 变量，而非作为操作数。
 - SSA 变量通过定义点确定类型，操作数处不需要标记类型。
-- `address` 类型为 `pointer-t`。
-  查符号表确定语义 -- 若是函数定义则可用于 `call` / `tail-call`；
-  若是变量定义则可用于 `load` / `store` / `padd`。
-- `(void)` 仅用于 `return` 指令返回 void。
 
 # 属性
 
@@ -131,12 +122,15 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 | 类型引用 | `int64-t` | 引用一个类型 |
 | 符号     | `foo`     | 符号名       |
 | 整数     | `42`      | 整数值       |
+| 浮点数   | `3.14`    | 浮点数值     |
+| 布尔值   | `(true)` `(false)` | 布尔值 |
 | 列表     | `(x y)`   | 属性列表     |
 
 注意：
 
-- 属性中的整数与操作数中的整数使用相同的 atom sexp 语法 -- `42`。
-  区别在于语义角色：属性位于 `:key` 声明之后，属于编译期信息；操作数直接出现在指令参数位置，属于运行时值。
+- 属性中整数、浮点数与操作数使用相同的 atom sexp 语法 -- `42` 为整数、`3.14` 为浮点数。
+  区别在于语义角色：属性位于 `:key` 声明之后，属于编译期信息。
+- 布尔值使用 `(true)` 和 `(false)` 语法，以区别于 symbol。
 
 # 指令
 
@@ -181,7 +175,8 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 (block body
   (= a value-t (argument :index 0))
   (= b value-t (argument :index 1))
-  (= sum value-t (call (address add) a b))
+  (= add-addr pointer-t (address :name add))
+  (= sum value-t (call add-addr a b))
   (= ∅.1 void-t (return sum)))
 ```
 
@@ -234,7 +229,8 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (define-function add1
   (block body
     (= n int64-t (argument :index 0))
-    (= result int64-t (iadd n 1))
+    (= one int64-t (const :value 1))
+    (= result int64-t (iadd n one))
     (= ∅.1 void-t (return result))))
 ```
 
@@ -383,7 +379,8 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 (define-function add1
   (block body
     (= n int64-t (argument :index 0))
-    (= result int64-t (iadd n 1))
+    (= one int64-t (const :value 1))
+    (= result int64-t (iadd n one))
     (= ∅.1 void-t (return result))))
 
 (define-struct point-t

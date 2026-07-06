@@ -8,11 +8,13 @@
 (define-function set-origin
   (block body
     (= x-offset int64-t (offset-of :struct-type point-t :path (x)))
-    (= x-pointer pointer-t (padd (address origin) x-offset))
-    (= %1 void-t (store x-pointer 0 :content-type int64-t))
+    (= origin-addr pointer-t (address :name origin))
+    (= x-pointer pointer-t (padd origin-addr x-offset))
+    (= zero int64-t (const :value 0))
+    (= %1 void-t (store x-pointer zero :content-type int64-t))
     (= y-offset int64-t (offset-of :struct-type point-t :path (y)))
-    (= y-pointer pointer-t (padd (address origin) y-offset))
-    (= %2 void-t (store y-pointer 0 :content-type int64-t))
-    (= %3 void-t (return (void)))))
+    (= y-pointer pointer-t (padd origin-addr y-offset))
+    (= %2 void-t (store y-pointer zero :content-type int64-t))
+    (= %3 void-t (return))))
 
 (claim printf (-> pointer-t int64-t))

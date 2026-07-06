@@ -19,9 +19,7 @@ const router = cli.createRouter("meta-lisp.js", version)
 router.defineRoutes([
   "check --config --dump",
   "build-xvm --config --dump --basic",
-  "build-x86 --config --dump --basic",
   "test-xvm  --config --profile --builtin",
-  "test-x86  --config --profile",
   "format-basic2 <input>",
   "assemble-x86-flat <input> <output>",
   "assemble-x86-exe <input> <output>",
@@ -48,16 +46,6 @@ router.defineHandlers({
     M.BuildXvmPipeline(pkg)
   },
 
-  "build-x86": ({ options }) => {
-    const configPath =
-      options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
-    if ("--dump" in options) pkg.config.compiler.dump = "true"
-    if ("--basic" in options) pkg.config.compiler.basic = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    M.BuildX86Pipeline(pkg)
-  },
-
   "test-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
@@ -66,15 +54,6 @@ router.defineHandlers({
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     M.TestXvmPipeline(pkg)
-  },
-
-  "test-x86": ({ options }) => {
-    const configPath =
-      options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
-    if ("--profile" in options) pkg.config.compiler.profile = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    M.TestX86Pipeline(pkg)
   },
 
   "format-basic2": ({ args: [input] }) => {
