@@ -19,15 +19,15 @@ title: provide
 ```scheme
 (block then
   (= tagged-sum (tag-int sum))
-  (= ∅.1 (provide tagged-sum :use-site result))
-  (= ∅.2 (goto :label merge)))
+  (provide tagged-sum :use-site result)
+  (goto :label merge))
 
 (block else
   (= tagged-diff (tag-int diff))
-  (= ∅.3 (provide tagged-diff :use-site result))
-  (= ∅.4 (goto :label merge)))
+  (provide tagged-diff :use-site result)
+  (goto :label merge))
 
 (block merge
   (= result (use :type value-t))
-  (= ∅.5 (return result)))
+  (return result))
 ```

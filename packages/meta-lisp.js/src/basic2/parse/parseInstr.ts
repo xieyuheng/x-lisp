@@ -7,23 +7,37 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
   const elements = list.elements
   const head = S.asSymbolSexp(elements[0])
 
-  if (head.content !== "=") {
-    throw new S.ErrorWithSourceLocation(
-      `[parseInstr] expected '=', got: ${S.formatSexp(sexp)}`,
-      sexp.location,
-    )
+  if (head.content === "=") {
+    const innerListIndex = elements.findIndex((e) => S.isListSexp(e))
+    if (innerListIndex === -1) {
+      throw new S.ErrorWithSourceLocation(
+        `[parseInstr] expected inner list after '=', got: ${S.formatSexp(sexp)}`,
+        sexp.location,
+      )
+    }
+
+    const results: Array<B.Cell> = []
+    for (let i = 1; i < innerListIndex; i++) {
+      const id = S.asSymbolSexp(elements[i]).content
+      results.push(B.Cell(id))
+    }
+
+    const innerList = S.asListSexp(elements[innerListIndex])
+    const innerElements = innerList.elements
+    const op = S.asSymbolSexp(innerElements[0]).content
+
+    const rest = innerElements.slice(1)
+    const operands = parseOperands(rest)
+    const attributes = parseAttributes(rest)
+
+    return B.Instr(results, op, operands, attributes)
   }
 
-  const id = S.asSymbolSexp(elements[1]).content
-  const innerList = S.asListSexp(elements[2])
-  const innerElements = innerList.elements
-  const op = S.asSymbolSexp(innerElements[0]).content
-
-  const rest = innerElements.slice(1)
+  const op = S.asSymbolSexp(elements[0]).content
+  const rest = elements.slice(1)
   const operands = parseOperands(rest)
   const attributes = parseAttributes(rest)
-
-  return B.Instr(B.Cell(id), op, operands, attributes)
+  return B.Instr([], op, operands, attributes)
 }
 
 function parseOperands(sexps: Array<S.Sexp>): Array<B.Cell> {

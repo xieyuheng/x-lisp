@@ -15,5 +15,5 @@ title: branch
 # 例子
 
 ```scheme
-(= ∅.1 (branch cond :then-label positive :else-label non-positive))
+(branch cond :then-label positive :else-label non-positive)
 ```

@@ -15,5 +15,5 @@ title: store
 # 例子
 
 ```scheme
-(= ∅.1 (store ptr value :content-type int64-t))
+(store ptr value :content-type int64-t)
 ```
