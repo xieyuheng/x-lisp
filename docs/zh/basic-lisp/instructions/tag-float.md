@@ -15,5 +15,5 @@ title: tag-float
 # 例子
 
 ```scheme
-(= tagged value-t (tag-float x))
+(= tagged (tag-float x))
 ```

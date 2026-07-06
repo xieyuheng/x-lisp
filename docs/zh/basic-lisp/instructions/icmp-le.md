@@ -15,5 +15,5 @@ int64 小于等于比较。
 # 例子
 
 ```scheme
-(= less-or-equal bool-t (icmp-le a b))
+(= less-or-equal (icmp-le a b))
 ```

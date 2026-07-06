@@ -15,5 +15,5 @@ title: fdiv
 # 例子
 
 ```scheme
-(= result float64-t (fdiv a b))
+(= result (fdiv a b))
 ```

@@ -15,5 +15,5 @@ title: bitand
 # 例子
 
 ```scheme
-(= result int64-t (bitand a b))
+(= result (bitand a b))
 ```

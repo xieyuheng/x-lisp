@@ -19,7 +19,7 @@ title: const
 # 例子
 
 ```scheme
-(= zero int64-t (const :value 0))
-(= pi float64-t (const :value 3.14))
-(= yes bool-t (const :value (true)))
+(= zero (const :value 0))
+(= pi (const :value 3.14))
+(= yes (const :value (true)))
 ```

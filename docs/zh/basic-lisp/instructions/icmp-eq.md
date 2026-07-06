@@ -15,5 +15,5 @@ int64 相等比较。
 # 例子
 
 ```scheme
-(= same bool-t (icmp-eq a b))
+(= same (icmp-eq a b))
 ```

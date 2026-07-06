@@ -15,5 +15,5 @@ int64 大于等于比较。
 # 例子
 
 ```scheme
-(= greater-or-equal bool-t (icmp-ge a b))
+(= greater-or-equal (icmp-ge a b))
 ```

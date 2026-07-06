@@ -15,5 +15,5 @@ title: fmul
 # 例子
 
 ```scheme
-(= result float64-t (fmul a b))
+(= result (fmul a b))
 ```

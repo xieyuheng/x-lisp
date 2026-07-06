@@ -15,5 +15,5 @@ title: bitxor
 # 例子
 
 ```scheme
-(= result int64-t (bitxor a b))
+(= result (bitxor a b))
 ```

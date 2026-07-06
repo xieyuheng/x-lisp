@@ -15,5 +15,5 @@ float64 不等比较。
 # 例子
 
 ```scheme
-(= diff bool-t (fcmp-ne a b))
+(= diff (fcmp-ne a b))
 ```

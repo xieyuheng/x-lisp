@@ -15,5 +15,5 @@ value identity 相等，即 tagged 机器字相等（对应 meta-lisp 的 `eq?`�
 # 例子
 
 ```scheme
-(= same bool-t (value-eq x y))
+(= same (value-eq x y))
 ```

@@ -15,5 +15,5 @@ pointer 不等比较。
 # 例子
 
 ```scheme
-(= diff bool-t (pointer-ne a b))
+(= diff (pointer-ne a b))
 ```

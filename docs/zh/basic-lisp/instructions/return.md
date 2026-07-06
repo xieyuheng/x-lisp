@@ -15,6 +15,6 @@ title: return
 # 例子
 
 ```scheme
-(= ∅.1 void-t (return result))
-(= ∅.2 void-t (return (void)))
+(= ∅.1 (return result))
+(= ∅.2 (return (void)))
 ```

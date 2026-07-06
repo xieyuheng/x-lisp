@@ -15,5 +15,5 @@ title: call
 # 例子
 
 ```scheme
-(= result value-t (call (address add-or-sub) flag a b))
+(= result (call (address add-or-sub) flag a b))
 ```

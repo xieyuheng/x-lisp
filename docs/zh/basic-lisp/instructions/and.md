@@ -15,5 +15,5 @@ title: and
 # 例子
 
 ```scheme
-(= result bool-t (and a b))
+(= result (and a b))
 ```

@@ -15,5 +15,5 @@ title: iadd
 # 例子
 
 ```scheme
-(= result int64-t (iadd a b))
+(= result (iadd a b))
 ```

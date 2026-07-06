@@ -15,5 +15,5 @@ title: to-bool
 # 例子
 
 ```scheme
-(= raw bool-t (to-bool tagged))
+(= raw (to-bool tagged))
 ```

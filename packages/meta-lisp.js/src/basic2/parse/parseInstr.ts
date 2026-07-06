@@ -1,7 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
 import { parseOperand } from "./parseOperand.ts"
-import { parseType } from "./parseType.ts"
 
 export function parseInstr(sexp: S.Sexp): B.Instr {
   const list = S.asListSexp(sexp)
@@ -16,8 +15,7 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
   }
 
   const id = S.asSymbolSexp(elements[1]).content
-  const type = parseType(elements[2])
-  const innerList = S.asListSexp(elements[3])
+  const innerList = S.asListSexp(elements[2])
   const innerElements = innerList.elements
   const op = S.asSymbolSexp(innerElements[0]).content
 
@@ -25,7 +23,7 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
   const operands = parseOperands(rest)
   const attributes = parseAttributes(rest)
 
-  return B.Instr(B.Cell(id), type, op, operands, attributes)
+  return B.Instr(B.Cell(id), op, operands, attributes)
 }
 
 function parseOperands(sexps: Array<S.Sexp>): Array<B.Cell> {

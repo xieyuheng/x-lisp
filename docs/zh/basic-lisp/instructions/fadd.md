@@ -15,5 +15,5 @@ title: fadd
 # 例子
 
 ```scheme
-(= result float64-t (fadd a b))
+(= result (fadd a b))
 ```

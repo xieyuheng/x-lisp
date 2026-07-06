@@ -15,5 +15,5 @@ pointer 相等比较。
 # 例子
 
 ```scheme
-(= same bool-t (pointer-eq a b))
+(= same (pointer-eq a b))
 ```

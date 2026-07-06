@@ -18,16 +18,16 @@ title: provide
 
 ```scheme
 (block then
-  (= tagged-sum value-t (tag-int sum))
-  (= ∅.1 void-t (provide tagged-sum :use-site result))
-  (= ∅.2 void-t (goto :label merge)))
+  (= tagged-sum (tag-int sum))
+  (= ∅.1 (provide tagged-sum :use-site result))
+  (= ∅.2 (goto :label merge)))
 
 (block else
-  (= tagged-diff value-t (tag-int diff))
-  (= ∅.3 void-t (provide tagged-diff :use-site result))
-  (= ∅.4 void-t (goto :label merge)))
+  (= tagged-diff (tag-int diff))
+  (= ∅.3 (provide tagged-diff :use-site result))
+  (= ∅.4 (goto :label merge)))
 
 (block merge
-  (= result value-t (use))
-  (= ∅.5 void-t (return result)))
+  (= result (use))
+  (= ∅.5 (return result)))
 ```

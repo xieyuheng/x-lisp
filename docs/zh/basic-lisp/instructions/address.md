@@ -17,6 +17,6 @@ title: address
 # 例子
 
 ```scheme
-(= add-addr pointer-t (address :name add))
-(= origin-addr pointer-t (address :name origin))
+(= add-addr (address :name add))
+(= origin-addr (address :name origin))
 ```

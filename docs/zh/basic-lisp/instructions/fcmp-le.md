@@ -15,5 +15,5 @@ float64 小于等于比较。
 # 例子
 
 ```scheme
-(= less-or-equal bool-t (fcmp-le a b))
+(= less-or-equal (fcmp-le a b))
 ```

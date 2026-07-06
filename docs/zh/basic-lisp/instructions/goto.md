@@ -15,5 +15,5 @@ title: goto
 # 例子
 
 ```scheme
-(= ∅.1 void-t (goto :label merge))
+(= ∅.1 (goto :label merge))
 ```

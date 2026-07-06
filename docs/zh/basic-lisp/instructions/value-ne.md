@@ -15,5 +15,5 @@ value identity 不等。
 # 例子
 
 ```scheme
-(= diff bool-t (value-ne x y))
+(= diff (value-ne x y))
 ```

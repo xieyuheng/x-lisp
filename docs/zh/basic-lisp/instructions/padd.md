@@ -15,5 +15,5 @@ title: padd
 # 例子
 
 ```scheme
-(= new-ptr pointer-t (padd base offset))
+(= new-ptr (padd base offset))
 ```

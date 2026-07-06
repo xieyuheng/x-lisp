@@ -15,5 +15,5 @@ title: idiv
 # 例子
 
 ```scheme
-(= result int64-t (idiv a b))
+(= result (idiv a b))
 ```

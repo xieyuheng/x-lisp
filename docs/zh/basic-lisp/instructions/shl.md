@@ -15,5 +15,5 @@ title: shl
 # 例子
 
 ```scheme
-(= result int64-t (shl a b))
+(= result (shl a b))
 ```

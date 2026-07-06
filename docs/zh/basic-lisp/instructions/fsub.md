@@ -15,5 +15,5 @@ title: fsub
 # 例子
 
 ```scheme
-(= result float64-t (fsub a b))
+(= result (fsub a b))
 ```

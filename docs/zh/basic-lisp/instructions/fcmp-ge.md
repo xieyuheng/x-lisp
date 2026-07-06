@@ -15,5 +15,5 @@ float64 大于等于比较。
 # 例子
 
 ```scheme
-(= greater-or-equal bool-t (fcmp-ge a b))
+(= greater-or-equal (fcmp-ge a b))
 ```

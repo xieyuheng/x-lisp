@@ -15,5 +15,5 @@ float64 相等比较。
 # 例子
 
 ```scheme
-(= same bool-t (fcmp-eq a b))
+(= same (fcmp-eq a b))
 ```

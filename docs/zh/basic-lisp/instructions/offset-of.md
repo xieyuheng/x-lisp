@@ -15,5 +15,5 @@ title: offset-of
 # 例子
 
 ```scheme
-(= y-offset int64-t (offset-of :struct-type point-t :path (y)))
+(= y-offset (offset-of :struct-type point-t :path (y)))
 ```

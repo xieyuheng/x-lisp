@@ -15,5 +15,5 @@ title: not
 # 例子
 
 ```scheme
-(= result bool-t (not x))
+(= result (not x))
 ```

@@ -15,5 +15,5 @@ title: argument
 # 例子
 
 ```scheme
-(= a value-t (argument :index 0))
+(= a (argument :index 0))
 ```

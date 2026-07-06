@@ -15,5 +15,5 @@ title: to-int64
 # 例子
 
 ```scheme
-(= raw int64-t (to-int64 tagged))
+(= raw (to-int64 tagged))
 ```

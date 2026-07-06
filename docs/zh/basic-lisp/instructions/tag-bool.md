@@ -15,5 +15,5 @@ title: tag-bool
 # 例子
 
 ```scheme
-(= tagged value-t (tag-bool x))
+(= tagged (tag-bool x))
 ```

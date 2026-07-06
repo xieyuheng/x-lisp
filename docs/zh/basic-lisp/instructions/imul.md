@@ -15,5 +15,5 @@ title: imul
 # 例子
 
 ```scheme
-(= result int64-t (imul a b))
+(= result (imul a b))
 ```

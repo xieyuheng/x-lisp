@@ -15,5 +15,5 @@ title: load
 # 例子
 
 ```scheme
-(= value int64-t (load ptr))
+(= value (load ptr))
 ```

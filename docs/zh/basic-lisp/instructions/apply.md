@@ -15,5 +15,5 @@ title: apply
 # 例子
 
 ```scheme
-(= result value-t (apply fn arg1 arg2))
+(= result (apply fn arg1 arg2))
 ```

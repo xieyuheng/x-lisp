@@ -15,5 +15,5 @@ title: bitor
 # 例子
 
 ```scheme
-(= result int64-t (bitor a b))
+(= result (bitor a b))
 ```

@@ -11,7 +11,7 @@ export function formatInstr(instr: B.Instr): string {
   const innerParts = [instr.op, ...operandTexts, ...attrTexts]
   const inner = `(${innerParts.join(" ")})`
 
-  return `(= ${instr.result.id} ${formatType(instr.type)} ${inner})`
+  return `(= ${instr.result.id} ${inner})`
 }
 
 function formatAttribute(attribute: B.Attribute): string {

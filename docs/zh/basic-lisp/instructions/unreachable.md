@@ -15,5 +15,5 @@ title: unreachable
 # 例子
 
 ```scheme
-(= ∅.1 void-t (unreachable))
+(= ∅.1 (unreachable))
 ```

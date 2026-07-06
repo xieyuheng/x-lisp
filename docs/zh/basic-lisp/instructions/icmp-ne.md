@@ -15,5 +15,5 @@ int64 不等比较。
 # 例子
 
 ```scheme
-(= diff bool-t (icmp-ne a b))
+(= diff (icmp-ne a b))
 ```

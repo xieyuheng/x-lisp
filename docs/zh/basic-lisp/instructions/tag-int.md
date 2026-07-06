@@ -15,5 +15,5 @@ title: tag-int
 # 例子
 
 ```scheme
-(= tagged value-t (tag-int x))
+(= tagged (tag-int x))
 ```

@@ -15,5 +15,5 @@ title: to-float64
 # 例子
 
 ```scheme
-(= raw float64-t (to-float64 tagged))
+(= raw (to-float64 tagged))
 ```

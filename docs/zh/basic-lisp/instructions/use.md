@@ -15,5 +15,5 @@ title: use
 # 例子
 
 ```scheme
-(= result value-t (use))
+(= result (use))
 ```

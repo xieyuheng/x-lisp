@@ -15,5 +15,5 @@ title: size-of
 # 例子
 
 ```scheme
-(= size int64-t (size-of :target-type point-t))
+(= size (size-of :target-type point-t))
 ```

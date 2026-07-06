@@ -1,7 +1,6 @@
-import { type Attribute } from "../attribute/index.ts"
 import { type Cell } from "../cell/index.ts"
+import { type Attribute } from "../attribute/index.ts"
 import {
-  type Type,
   ArrowType,
   BoolType,
   Float64Type,
@@ -12,7 +11,6 @@ import {
 
 export type Instr = {
   result: Cell
-  type: Type
   op: string
   operands: Array<Cell>
   attributes: Record<string, Attribute>
@@ -20,53 +18,14 @@ export type Instr = {
 
 export function Instr(
   result: Cell,
-  type: Type,
   op: string,
   operands: Array<Cell>,
   attributes: Record<string, Attribute>,
 ): Instr {
-  return { result, type, op, operands, attributes }
+  return { result, op, operands, attributes }
 }
 
-export const binaryOpNames: Set<string> = new Set([
-  "iadd",
-  "isub",
-  "imul",
-  "idiv",
-  "fadd",
-  "fsub",
-  "fmul",
-  "fdiv",
-  "shl",
-  "shr",
-  "bitand",
-  "bitor",
-  "bitxor",
-  "padd",
-  "and",
-  "or",
-  "xor",
-  "icmp-eq",
-  "icmp-ne",
-  "icmp-lt",
-  "icmp-le",
-  "icmp-gt",
-  "icmp-ge",
-  "fcmp-eq",
-  "fcmp-ne",
-  "fcmp-lt",
-  "fcmp-le",
-  "fcmp-gt",
-  "fcmp-ge",
-  "bool-eq",
-  "bool-ne",
-  "pointer-eq",
-  "pointer-ne",
-  "value-eq",
-  "value-ne",
-])
-
-export const knownBinaryOps: Record<string, Type> = {
+export const knownOps: Record<string, ArrowType> = {
   iadd: ArrowType([Int64Type(), Int64Type()], Int64Type()),
   isub: ArrowType([Int64Type(), Int64Type()], Int64Type()),
   imul: ArrowType([Int64Type(), Int64Type()], Int64Type()),
@@ -102,19 +61,6 @@ export const knownBinaryOps: Record<string, Type> = {
   "pointer-ne": ArrowType([PointerType(), PointerType()], BoolType()),
   "value-eq": ArrowType([ValueType(), ValueType()], BoolType()),
   "value-ne": ArrowType([ValueType(), ValueType()], BoolType()),
-}
-
-export const unaryOpNames: Set<string> = new Set([
-  "not",
-  "tag-int",
-  "tag-float",
-  "tag-bool",
-  "to-int64",
-  "to-float64",
-  "to-bool",
-])
-
-export const knownUnaryOps: Record<string, Type> = {
   not: ArrowType([BoolType()], BoolType()),
   "tag-int": ArrowType([Int64Type()], ValueType()),
   "tag-float": ArrowType([Float64Type()], ValueType()),
@@ -122,10 +68,5 @@ export const knownUnaryOps: Record<string, Type> = {
   "to-int64": ArrowType([ValueType()], Int64Type()),
   "to-float64": ArrowType([ValueType()], Float64Type()),
   "to-bool": ArrowType([ValueType()], BoolType()),
-}
-
-export const nullaryOpNames: Set<string> = new Set(["const", "address"])
-
-export const knownNullaryOps: Record<string, Type> = {
   address: ArrowType([], PointerType()),
 }

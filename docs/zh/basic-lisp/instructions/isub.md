@@ -15,5 +15,5 @@ title: isub
 # 例子
 
 ```scheme
-(= result int64-t (isub a b))
+(= result (isub a b))
 ```

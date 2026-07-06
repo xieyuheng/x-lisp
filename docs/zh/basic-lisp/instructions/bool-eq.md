@@ -15,5 +15,5 @@ bool 相等比较。
 # 例子
 
 ```scheme
-(= same bool-t (bool-eq a b))
+(= same (bool-eq a b))
 ```

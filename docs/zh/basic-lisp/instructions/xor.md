@@ -15,5 +15,5 @@ title: xor
 # 例子
 
 ```scheme
-(= result bool-t (xor a b))
+(= result (xor a b))
 ```
