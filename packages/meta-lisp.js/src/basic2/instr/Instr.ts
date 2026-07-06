@@ -8,7 +8,6 @@ import {
   Int64Type,
   PointerType,
   ValueType,
-  VoidType,
 } from "../type/index.ts"
 
 export type Instr = {
@@ -125,10 +124,7 @@ export const knownUnaryOps: Record<string, Type> = {
   "to-bool": ArrowType([ValueType()], BoolType()),
 }
 
-export const nullaryOpNames: Set<string> = new Set([
-  "const",
-  "address",
-])
+export const nullaryOpNames: Set<string> = new Set(["const", "address"])
 
 export const knownNullaryOps: Record<string, Type> = {
   address: ArrowType([], PointerType()),
