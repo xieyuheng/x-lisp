@@ -1,5 +1,5 @@
-import { type Cell } from "../cell/index.ts"
 import { type Attribute } from "../attribute/index.ts"
+import { type Cell } from "../cell/index.ts"
 import {
   ArrowType,
   BoolType,
