@@ -12,6 +12,8 @@ basic-lisp IR 的所有指令按功能分类。
 - [二元运算](#二元运算)
 - [比较指令](#比较指令)
 - [一元运算](#一元运算)
+- [字面量](#字面量)
+- [常量](#常量)
 - [内存操作](#内存操作)
 - [控制流](#控制流)
 - [函数调用](#函数调用)
@@ -74,6 +76,15 @@ basic-lisp IR 的所有指令按功能分类。
 - [`float64`](float64.md) — float64 常量
 - [`bool`](bool.md) — bool 常量
 - [`address`](address.md) — 符号地址
+
+## 常量
+
+- [`symbol`](symbol.md) — symbol 裸指针
+- [`keyword`](keyword.md) — keyword 裸指针
+- [`string`](string.md) — C 风格字符串指针
+- [`symbol-value`](symbol-value.md) — 带 tag 的 symbol 值
+- [`keyword-value`](keyword-value.md) — 带 tag 的 keyword 值
+- [`string-value`](string-value.md) — 带 tag 的 string 值
 
 ## 内存操作
 
