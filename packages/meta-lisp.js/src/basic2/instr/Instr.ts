@@ -1,5 +1,5 @@
+import { type Cell } from "../cell/index.ts"
 import { type Attribute } from "../attribute/index.ts"
-import { type Operand } from "../operand/index.ts"
 import {
   type Type,
   ArrowType,
@@ -11,21 +11,21 @@ import {
 } from "../type/index.ts"
 
 export type Instr = {
-  id: string
+  result: Cell
   type: Type
   op: string
-  operands: Array<Operand>
+  operands: Array<Cell>
   attributes: Record<string, Attribute>
 }
 
 export function Instr(
-  id: string,
+  result: Cell,
   type: Type,
   op: string,
-  operands: Array<Operand>,
+  operands: Array<Cell>,
   attributes: Record<string, Attribute>,
 ): Instr {
-  return { id, type, op, operands, attributes }
+  return { result, type, op, operands, attributes }
 }
 
 export const binaryOpNames: Set<string> = new Set([

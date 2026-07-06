@@ -25,11 +25,11 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
   const operands = parseOperands(rest)
   const attributes = parseAttributes(rest)
 
-  return B.Instr(id, type, op, operands, attributes)
+  return B.Instr(B.Cell(id), type, op, operands, attributes)
 }
 
-function parseOperands(sexps: Array<S.Sexp>): Array<B.Operand> {
-  const operands: Array<B.Operand> = []
+function parseOperands(sexps: Array<S.Sexp>): Array<B.Cell> {
+  const operands: Array<B.Cell> = []
   let i = 0
   while (i < sexps.length) {
     if (isAttributeKey(sexps[i])) {

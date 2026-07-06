@@ -1,9 +1,9 @@
 import * as B from "../index.ts"
 
-export function formatOperand(operand: B.Operand): string {
-  return operand.name
+export function formatOperand(cell: B.Cell): string {
+  return cell.id
 }
 
-export function formatOperands(operands: Array<B.Operand>): string {
-  return operands.map(formatOperand).join(" ")
+export function formatOperands(cells: Array<B.Cell>): string {
+  return cells.map(formatOperand).join(" ")
 }
