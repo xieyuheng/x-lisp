@@ -10,19 +10,19 @@ import {
 } from "../type/index.ts"
 
 export type Instr = {
-  result: Cell
+  results: Array<Cell>
   op: string
   operands: Array<Cell>
   attributes: Record<string, Attribute>
 }
 
 export function Instr(
-  result: Cell,
+  results: Array<Cell>,
   op: string,
   operands: Array<Cell>,
   attributes: Record<string, Attribute>,
 ): Instr {
-  return { result, op, operands, attributes }
+  return { results, op, operands, attributes }
 }
 
 export const knownOps: Record<string, ArrowType> = {

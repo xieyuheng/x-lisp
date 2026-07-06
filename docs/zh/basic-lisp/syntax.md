@@ -134,24 +134,38 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
 
 # 指令
 
-所有指令统一为一种结构：
+指令分为两种形态：
+
+**产生值的指令**（有结果 cell）：
 
 ```
 (= <id> (<op> <operand> ... :<key> <attribute> ...))
 ```
 
-- `<id>`：指令的唯一标识。产生值的指令 `id` 即结果变量名；
-  不产生值的指令也有 `id`，例如 `∅.1`、`∅.2`。
-- `<op>`：操作名 -- 代表了指令的种类。
-- `<operand>`：操作数 -- 运行时值，用于分析 def-use 关系。
-- `:<key> <attribute>`：属性常量，位于操作形式内部、operand 之后，以 `:` 前缀的 key 区分。
-  不同操作名的指令，决定了所带有的属性的意义。
+- `<id>`：结果 cell 的标识，即变量名
+- `<op>`：操作名 -- 代表了指令的种类
+- `<operand>`：操作数 -- 运行时值，用于分析 def-use 关系
+- `:<key> <attribute>`：属性常量，位于操作形式内部、operand 之后，以 `:` 前缀的 key 区分
+
+**不产生值的指令**（无结果 cell，如 terminator 和副作用指令）：
+
+```
+(<op> <operand> ... :<key> <attribute> ...)
+```
+
+不带 `(= <id> ...)` 前缀，直接以 `(<op> ...)` 形式出现。
+
+多结果的指令未来支持：
+
+```
+(= <id1> <id2> ... (<op> ...))
+```
 
 结果变量的类型由后续的类型推导 pass 决定，不在语法中显式标注。
 
 ```scheme
 (= sum (iadd a b))
-(= ∅.1 (branch cond :then-label then :else-label else))
+(branch cond :then-label then :else-label else)
 ```
 
 每条指令的类型和用法详见[指令索引](instructions/index.md)。
@@ -176,7 +190,7 @@ basic-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常�
   (= b (argument :index 1))
   (= add-addr (address :name add))
   (= sum (call add-addr a b))
-  (= ∅.1 (return sum)))
+  (return sum))
 ```
 
 # 声明
@@ -230,7 +244,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
     (= n (argument :index 0))
     (= one (const :value 1))
     (= result (iadd n one))
-    (= ∅.1 (return result))))
+    (return result))))
 ```
 
 ## (define-variable)
@@ -380,7 +394,7 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
     (= n (argument :index 0))
     (= one (const :value 1))
     (= result (iadd n one))
-    (= ∅.1 (return result))))
+    (return result))))
 
 (define-struct point-t
   (x int64-t)
