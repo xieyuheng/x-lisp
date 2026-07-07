@@ -2,22 +2,22 @@
 
 (define-function sign
   (block body
-    (= n int64-t (argument :index 0))
-    (= zero int64-t (const :value 0))
-    (= neg bool-t (icmp-lt n zero))
-    (= %1 void-t (branch neg :then-label negative :else-label non-negative)))
+    (= n (argument :index 0))
+    (= zero (int64 :content 0))
+    (= neg (icmp-lt n zero))
+    (branch neg :then-label negative :else-label non-negative))
 
   (block negative
-    (= neg-one int64-t (const :value -1))
-    (= %2 void-t (return neg-one)))
+    (= neg-one (int64 :content -1))
+    (return neg-one))
 
   (block non-negative
-    (= pos bool-t (icmp-gt n zero))
-    (= %3 void-t (branch pos :then-label positive :else-label zero)))
+    (= pos (icmp-gt n zero))
+    (branch pos :then-label positive :else-label zero))
 
   (block positive
-    (= one int64-t (const :value 1))
-    (= %4 void-t (return one)))
+    (= one (int64 :content 1))
+    (return one))
 
   (block zero
-    (= %5 void-t (return zero))))
+    (return zero)))

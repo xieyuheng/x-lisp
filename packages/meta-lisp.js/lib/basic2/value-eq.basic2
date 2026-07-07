@@ -2,7 +2,7 @@
 
 (define-function check-eq
   (block body
-    (= x value-t (argument :index 0))
-    (= y value-t (argument :index 1))
-    (= same bool-t (value-eq x y))
-    (= %1 void-t (return same))))
+    (= x (argument :index 0))
+    (= y (argument :index 1))
+    (= same (value-eq x y))
+    (return same)))
