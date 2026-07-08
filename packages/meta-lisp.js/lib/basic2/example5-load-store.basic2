@@ -1,0 +1,18 @@
+(define-struct point-t (x int64-t) (y int64-t))
+
+(claim read-x (-> pointer-t int64-t))
+
+(define-function read-x
+  (block body
+    (= ptr (argument :index 0))
+    (= val (load ptr :type int64-t))
+    (return val)))
+
+(claim write-x (-> pointer-t int64-t void-t))
+
+(define-function write-x
+  (block body
+    (= ptr (argument :index 0))
+    (= val (argument :index 1))
+    (store ptr val)
+    (return)))
