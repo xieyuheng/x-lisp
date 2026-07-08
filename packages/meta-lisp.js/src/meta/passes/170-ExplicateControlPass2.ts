@@ -239,6 +239,19 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
       )
     }
 
+    case "ApplyTerm": {
+      // TODO handle direct call
+      const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
+      const [argInstrGroups, args] = arrayUnzip(pairs)
+      const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+      const instrs = [
+        ...arrayConcat(argInstrGroups),
+        ...targetInstrs,
+        B.Instr([], "tail-apply", [target, ...args], {}),
+      ]
+      return instrs
+    }
+
     default: {
       const [instrs, cell] =  explicateUnnestedTerm(state, term)
       return [

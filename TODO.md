@@ -1,7 +1,5 @@
 # basic2
 
-[meta-lisp.js] `explicateInTail` -- handle `Apply`
-
 [meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
 [meta-lisp.js] `explicateInTail` -- `QualifiedVarTerm` handle function
