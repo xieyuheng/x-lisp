@@ -37,9 +37,9 @@ function actualId(config: M.PackageConfig, id: string): string {
 }
 
 function setupBuiltinPackage(pkg: M.Package): void {
+  M.setupPrimitive()
   const mod = M.createMod("builtin", pkg)
   M.packageAddMod(pkg, mod)
-  M.typeBuiltin(mod)
 }
 
 function loadDependencies(

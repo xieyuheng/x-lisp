@@ -2,12 +2,10 @@ import * as M from "../index.ts"
 
 export function formatDefinition(definition: M.Definition): string {
   switch (definition.kind) {
-    case "PrimitiveFunctionDefinition":
     case "PrimitiveFunctionDeclaration": {
       return `(declare-primitive-function ${definition.name} ${definition.arity})`
     }
 
-    case "PrimitiveVariableDefinition":
     case "PrimitiveVariableDeclaration": {
       return `(declare-primitive-variable ${definition.name})`
     }

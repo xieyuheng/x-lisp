@@ -83,23 +83,26 @@ function definitionToValue(
 ): M.Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
-      let message = `[definitionToValue] can not handle declared primitive function`
-      throw new Error(message)
-    }
-
-    case "PrimitiveVariableDeclaration": {
-      let message = `[definitionToValue] can not handle declared primitive variable`
-      throw new Error(message)
-    }
-
-    case "PrimitiveFunctionDefinition":
-    case "FunctionDefinition":
-    case "TestDefinition": {
+      const fn = M.lookupPrimitiveFunction(definition.name)
+      if (fn === undefined) {
+        let message = `[definitionToValue] no JS implementation for primitive function: ${definition.name}`
+        throw new Error(message)
+      }
       return M.DefinitionValue(definition)
     }
 
-    case "PrimitiveVariableDefinition": {
-      return definition.value
+    case "PrimitiveVariableDeclaration": {
+      const value = M.lookupPrimitiveVariable(definition.name)
+      if (value === undefined) {
+        let message = `[definitionToValue] no JS value for primitive variable: ${definition.name}`
+        throw new Error(message)
+      }
+      return value
+    }
+
+    case "FunctionDefinition":
+    case "TestDefinition": {
+      return M.DefinitionValue(definition)
     }
 
     case "TypeDefinition": {

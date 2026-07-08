@@ -2,8 +2,6 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export type Definition =
-  | PrimitiveFunctionDefinition
-  | PrimitiveVariableDefinition
   | PrimitiveFunctionDeclaration
   | PrimitiveVariableDeclaration
   | FunctionDefinition
@@ -12,57 +10,6 @@ export type Definition =
   | TypeDefinition
   | AlgebraicTypeDefinition
   | OpaqueTypeDefinition
-
-export type TypeFunction = (...args: Array<M.Value>) => M.Value
-
-export type PrimitiveFunctionDefinition = {
-  kind: "PrimitiveFunctionDefinition"
-  mod: M.Mod
-  name: string
-  arity: number
-  fn: TypeFunction
-  location: SourceLocation
-}
-
-export function PrimitiveFunctionDefinition(
-  mod: M.Mod,
-  name: string,
-  arity: number,
-  fn: TypeFunction,
-  location: SourceLocation,
-): PrimitiveFunctionDefinition {
-  return {
-    kind: "PrimitiveFunctionDefinition",
-    mod,
-    name,
-    arity,
-    fn,
-    location,
-  }
-}
-
-export type PrimitiveVariableDefinition = {
-  kind: "PrimitiveVariableDefinition"
-  mod: M.Mod
-  name: string
-  value: M.Value
-  location: SourceLocation
-}
-
-export function PrimitiveVariableDefinition(
-  mod: M.Mod,
-  name: string,
-  value: M.Value,
-  location: SourceLocation,
-): PrimitiveVariableDefinition {
-  return {
-    kind: "PrimitiveVariableDefinition",
-    mod,
-    name,
-    value,
-    location,
-  }
-}
 
 export type PrimitiveFunctionDeclaration = {
   kind: "PrimitiveFunctionDeclaration"

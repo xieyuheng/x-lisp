@@ -43,15 +43,19 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     }
 
     case "ExternFunctionDefinition": {
-      return Ppml.prettySyntax("extern-function", [], [
-        Ppml.text(definition.name),
-      ])
+      return Ppml.prettySyntax(
+        "extern-function",
+        [],
+        [Ppml.text(definition.name)],
+      )
     }
 
     case "ExternVariableDefinition": {
-      return Ppml.prettySyntax("extern-variable", [], [
-        Ppml.text(definition.name),
-      ])
+      return Ppml.prettySyntax(
+        "extern-variable",
+        [],
+        [Ppml.text(definition.name)],
+      )
     }
   }
 }
