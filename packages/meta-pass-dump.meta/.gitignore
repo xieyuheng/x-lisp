@@ -1,4 +1,5 @@
 expected/bundle.basic
+expected/bundle.basic2
 expected/bundle.xvm.asm
 expected/bundle.xvm.exe
 expected/bundle.x86.asm
