@@ -1,3 +1,3 @@
-export * from "./BuildPipeline.ts"
+export * from "./BuildXvmPipeline.ts"
 export * from "./CheckPipeline.ts"
-export * from "./TestPipeline.ts"
+export * from "./TestXvmPipeline.ts"
