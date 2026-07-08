@@ -57,9 +57,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 # 指令
 
-指令分为两种形态：
-
-**产生值的指令**（有输出 cell）：
+有输出 cell 的指令：
 
 ```scheme
 (= <cell> (<op> <cell> ... :<key> <attribute> ...))
@@ -70,7 +68,13 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 - `<cell>`（右侧）：指令的输入 cell
 - `:<key> <attribute>`：指令的属性常量
 
-**不产生值的指令**（无输出 cell，如 terminator 和副作用指令）：
+未来支持多输出 cell 可以用如下语法支持：
+
+```scheme
+(= <cell> ... (<op> <cell> ... :<key> <attribute> ...))
+```
+
+无输出 cell 的指令，如 terminator 和副作用指令：
 
 ```scheme
 (<op> <cell> ... :<key> <attribute> ...)
@@ -108,6 +112,9 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 # 类型
 
+每个 cell 都有固定的类型，
+可以根据 cell 的使用情况推导出来。
+
 类型分为基本类型和复合类型，
 复合类型包含结构体类型和函数类型。
 
@@ -124,7 +131,8 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 - `pointer-t` 是 **opaque 指针** -- 不带元素类型。
   类型信息由 `load` / `store` 指令的 `:content-type` 属性携带。
-- `value-t` 是 tagged dynamic value。所有 meta-lisp 值在 IR 中统一用此类型。
+- `value-t` 是 tagged dynamic value。
+  所有 meta-lisp 值在 IR 中统一用此类型。
 
 ## 结构体类型
 
@@ -149,7 +157,11 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 (-> value-t value-t value-t value-t)
 ```
 
-用于 `(claim)` 声明函数的类型。
+未来需要支持多返回值类型可以用 `(values)` 语法：
+
+```scheme
+(-> int64-t int64-t (values int64-t int64-t))
+```
 
 # 格子
 
@@ -193,7 +205,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 (claim <name> <type>)
 ```
 
-声明一个顶层定义的类型。
+声明一个定义的类型。
 
 函数用 `(-> ...)` arrow-type：
 
@@ -209,23 +221,20 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 (claim counter int64-t)
 ```
 
-`claim` 存储于模块的 `claims` 中，不在 `definitions` 中。
-
 # 定义
-
-basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 
 ## (define-function)
 
 ```scheme
 (define-function <name>
-  <block> ...)
+  <block>
+  ...)
 ```
 
 定义可执行函数。
 
-- 完整类型由同名 `claim` 提供。
-- `blocks` 的第一个 block 是 entry block。
+- 完整类型由同名 `(claim)` 提供。
+- 第一个 block 是 entry block。
 - 参数通过 `(argument :index N)` 获取。
 
 ```scheme
@@ -242,19 +251,21 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 ## (define-variable)
 
 ```scheme
-(define-variable <name>)            ;; BSS（无初始化）
-(define-variable <name> <exp>)      ;; 静态初始化
+(define-variable <name>)        ;; 无初始化，或运行时初始化
+(define-variable <name> <exp>)  ;; 静态初始化
 ```
 
 定义全局变量。
 
-- 完整类型由同名 `claim` 提供。
-- 不带 `<exp>` 时等价于 BSS 段的未初始化变量。
+- 完整类型由同名 `(claim)` 提供。
 - 带 `<exp>` 时以数据表达式描述数据段内存布局，静态初始化。
 
 ```scheme
 (claim origin point-t)
-(define-variable origin (struct point-t (x 0) (y 0)))
+(define-variable origin
+  (struct point-t
+    (x 0)
+    (y 0)))
 
 (claim buffer buffer-t)
 (define-variable buffer)
@@ -263,14 +274,14 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 ## (define-struct)
 
 ```scheme
-(define-struct <type-name>-t
+(define-struct <type-name>
   (<field-name> <type>)
   ...)
 ```
 
 声明结构体类型及字段布局。
 
-- 类型名必须以 `-t` 结尾。
+- `<type-name>` 的惯例是以 `-t` 结尾。
 - 字段列表是有序的，决定各字段偏移与总大小。
 - 布局为 packed -- 字段间无 padding。
 
@@ -288,7 +299,6 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 # 数据表达式
 
 数据表达式用于 `(define-variable)`，描述数据段内存布局。
-它不是 cell，而是独立的数据类型。
 
 ## 裸字面量
 
@@ -333,12 +343,14 @@ basic-lisp 有三种定义：结构体定义、函数定义和变量定义。
 ## (struct)
 
 ```scheme
-(struct <name> (<field> <exp>) ...)
+(struct <type-name>
+  (<field> <exp>)
+  ...)
 ```
 
 描述 struct 实例的内存布局。`<field>` 的值是递归的数据表达式。
 
-`<name>` 必选。
+`<type-name>` 必选。
 
 ```scheme
 (define-variable origin
