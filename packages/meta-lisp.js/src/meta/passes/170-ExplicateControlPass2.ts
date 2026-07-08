@@ -97,6 +97,8 @@ function generateLabel(
   return label
 }
 
+type ExplicateMode = "InTail" | "InBody"
+
 function explicateSimpleTerm(
   state: State,
   term: M.Term,

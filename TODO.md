@@ -1,9 +1,13 @@
 # basic2
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInMode` & `explicateInBody`
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateSimpleTerm` -- `QualifiedVarTerm` handle function
-[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateSimpleTerm` -- handle `ApplyTerm` -- use type information
+[meta-lisp.js] 170-ExplicateControlPass2 -- `findLastOutputCell`
+
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInMode` -- `QualifiedVarTerm` handle function
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInMode` -- handle `ApplyTerm` -- use type information
+
+[meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInTail`
 
