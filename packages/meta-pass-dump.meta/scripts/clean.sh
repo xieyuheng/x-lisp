@@ -2,4 +2,4 @@
 
 set -e
 
-rm -rf expected snapshot self-expected self-snapshot
+rm -rf build snapshot self-build self-snapshot

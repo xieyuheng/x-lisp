@@ -1,20 +1,16 @@
-# git
-worktrees
+# meta-lisp
+build
+self-build
+
+# meta-lisp
+*.o
+*.x86
+
+# vitest
+coverage
 
 # node
 *.cpuprofile
-
-# x-lisp
-*.o
-*.exe
-*.xvm.exe
-
-# c
-*.o
-*.a
-*.po
-*.test
-*.snapshot
 
 # npm
 node_modules
@@ -26,11 +22,6 @@ node_modules
 *~
 *#*
 .#*
-
-# GNU global
-GPATH
-GRTAGS
-GTAGS
 
 # vscode
 .vscode

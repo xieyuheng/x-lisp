@@ -28,5 +28,40 @@ function explicateControlDefinition(
   basicMod: B.Mod,
   definition: M.Definition,
 ): Array<B.Definition> {
-  return []
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration": {
+      return [
+        B.ExternFunctionDefinition(
+          definitionQualifiedName(definition),
+        ),
+      ]
+    }
+
+    case "PrimitiveVariableDeclaration": {
+      return [
+        B.ExternVariableDefinition(
+          definitionQualifiedName(definition),
+        ),
+      ]
+    }
+
+    // - do not generate code for type.
+    case "AlgebraicTypeDefinition":
+    case "OpaqueTypeDefinition":
+    case "TypeDefinition": {
+      return []
+    }
+
+    case "FunctionDefinition": {
+            return []
+    }
+
+    case "TestDefinition": {
+            return []
+    }
+
+    case "VariableDefinition": {
+      return []
+    }
+  }
 }

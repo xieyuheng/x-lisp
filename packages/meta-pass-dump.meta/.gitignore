@@ -1,6 +1,6 @@
-expected/bundle.basic
-expected/bundle.basic2
-expected/bundle.xvm.asm
-expected/bundle.xvm.exe
-expected/bundle.x86.asm
-expected/bundle.x86.exe
+build/bundle.basic
+build/bundle.basic2
+build/bundle.xvm.asm
+build/bundle.xvm.exe
+build/bundle.x86.asm
+build/bundle.x86.exe

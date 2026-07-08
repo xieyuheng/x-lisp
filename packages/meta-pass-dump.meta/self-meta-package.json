@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "build": {
     "source-directory": "src",
-    "output-directory": "self-expected",
+    "output-directory": "self-build",
     "snapshot-directory": "self-snapshot"
   },
   "dependencies": {

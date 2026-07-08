@@ -3,4 +3,4 @@
 set -e
 
 ./meta-lisp.js build-xvm
-./scripts/sanitize-dump.sh expected
+./scripts/sanitize-dump.sh build

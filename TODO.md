@@ -1,6 +1,5 @@
 # basic2
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateControlDefinition` handle `PrimitiveFunctionDeclaration` and `PrimitiveVariableDeclaration`
 [meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
 # self-hosting
