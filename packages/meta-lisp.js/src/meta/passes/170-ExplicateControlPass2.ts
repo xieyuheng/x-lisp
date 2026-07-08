@@ -97,54 +97,108 @@ function generateLabel(
   return label
 }
 
-// function explicateSimpleTerm(state: State, term: M.Term): [Array<B.Instr>, B.Cell] {
-//   switch (term.kind) {
-//     case "SymbolTerm": {
-//       const cell = generateCell("symbol")
-//       return [B.Instr(term.content, term.location)]
-//     }
+function explicateSimpleTerm(
+  state: State,
+  term: M.Term,
+): [Array<B.Instr>, B.Cell] {
+  switch (term.kind) {
+    case "SymbolTerm": {
+      const result = generateCell(state, "symbol")
+      const instrs = [
+        B.Instr([result], "symbol-value", [], {
+          content: B.SymbolAttribute(term.content),
+        }),
+      ]
+      return [instrs, result]
+    }
 
-//     case "KeywordTerm": {
-//       return B.KeywordExp(term.content, term.location)
-//     }
+    case "KeywordTerm": {
+      const result = generateCell(state, "keyword")
+      const instrs = [
+        B.Instr([result], "keyword-value", [], {
+          content: B.SymbolAttribute(term.content),
+        }),
+      ]
+      return [instrs, result]
+    }
 
-//     case "StringTerm": {
-//       return B.StringExp(term.content, term.location)
-//     }
+    case "StringTerm": {
+      const result = generateCell(state, "string")
+      const instrs = [
+        B.Instr([result], "string-value", [], {
+          content: B.StringAttribute(term.content),
+        }),
+      ]
+      return [instrs, result]
+    }
 
-//     case "IntTerm": {
-//       return B.IntExp(term.content, term.location)
-//     }
+    case "IntTerm": {
+      const i64 = generateCell(state, "i64")
+      const result = generateCell(state, "int")
+      const instrs = [
+        B.Instr([i64], "int64", [], {
+          content: B.IntAttribute(term.content),
+        }),
+        B.Instr([result], "tag-int", [i64], {}),
+      ]
+      return [instrs, result]
+    }
 
-//     case "FloatTerm": {
-//       return B.FloatExp(term.content, term.location)
-//     }
+    case "FloatTerm": {
+      const f64 = generateCell(state, "f64")
+      const result = generateCell(state, "float")
+      const instrs = [
+        B.Instr([f64], "float64", [], {
+          content: B.FloatAttribute(term.content),
+        }),
+        B.Instr([result], "tag-float", [f64], {}),
+      ]
+      return [instrs, result]
+    }
 
-//     case "VarTerm": {
-//       return B.VarExp(term.name, term.location)
-//     }
+    case "VarTerm": {
+      return [[], generateCell(state, term.name)]
+    }
 
-//     case "QualifiedVarTerm": {
-//       const prefix = resolvePackageId(pkg, term.pkgName)
-//       return B.VarExp(`${prefix}/${term.modName}/${term.name}`, term.location)
-//     }
+    case "QualifiedVarTerm": {
+      const prefix = resolvePackageId(state.pkg, term.pkgName)
+      const address = generateCell(state, "address")
+      const result = generateCell(state, "const")
+      const instrs = [
+        B.Instr([address], "address", [], {
+          name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
+        }),
+        B.Instr([result], "load", [address], {}),
+      ]
+      return [instrs, result]
+    }
 
-//     case "ApplyTerm": {
-//       return B.ApplyExp(
-//         toBasicExp(term.target, pkg),
-//         term.args.map((arg) => toBasicExp(arg, pkg)),
-//         term.location,
-//       )
-//     }
+    // case "ApplyTerm": {
+    //   return B.ApplyExp(
+    //     toBasicExp(term.target, pkg),
+    //     term.args.map((arg) => toBasicExp(arg, pkg)),
+    //     term.location,
+    //   )
+    // }
 
-//     default: {
-//       let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
-//       message += `\n  term kind: ${term.kind}`
-//       message += `\n  term: ${M.formatTerm(term)}`
-//       throw new S.ErrorWithSourceLocation(message, term.location)
-//     }
-//   }
-// }
+    default: {
+      let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
+      message += `\n  term kind: ${term.kind}`
+      message += `\n  term: ${M.formatTerm(term)}`
+      throw new S.ErrorWithSourceLocation(message, term.location)
+    }
+  }
+}
+
+function resolvePackageId(pkg: M.Package, pkgName: string): string {
+  if (pkgName === pkg.id) return pkg.id
+
+  const dep = pkg.dependencies.get(pkgName)
+  if (!dep) {
+    throw new Error(`[resolvePackageId] unknown package: "${pkgName}"`)
+  }
+  return dep.id
+}
 
 function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
   if (!M.isAtomOperandTerm(term)) {

@@ -1,13 +1,14 @@
 # basic2
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- `generateCell`
-[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateSimpleTerm`
+[meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
+
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateSimpleTerm` -- `QualifiedVarTerm` handle function
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateSimpleTerm` -- handle `ApplyTerm` -- use type information
+
 [meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInTail`
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
-
-[meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
 # self-hosting
 
