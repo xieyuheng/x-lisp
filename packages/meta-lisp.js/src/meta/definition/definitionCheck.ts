@@ -62,9 +62,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
     }
 
     case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration":
-    case "PrimitiveFunctionDefinition":
-    case "PrimitiveVariableDefinition": {
+    case "PrimitiveVariableDeclaration": {
       const type = M.modLookupClaimedType(mod, name)
       if (!type) {
         const errorMessage = `unclaimed primitive definition: ${definition.name}`

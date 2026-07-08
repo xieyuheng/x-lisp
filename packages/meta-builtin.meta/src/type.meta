@@ -1,3 +1,4 @@
 (module builtin)
 
+(declare-primitive-variable type-t)
 (claim-type type-t)

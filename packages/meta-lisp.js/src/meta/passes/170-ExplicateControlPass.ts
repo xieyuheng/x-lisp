@@ -31,8 +31,7 @@ function explicateControlDefinition(
   definition: M.Definition,
 ): Array<B.Definition> {
   switch (definition.kind) {
-    case "PrimitiveFunctionDeclaration":
-    case "PrimitiveFunctionDefinition": {
+    case "PrimitiveFunctionDeclaration": {
       return [
         B.PrimitiveFunctionDeclaration(
           basicMod,
@@ -43,8 +42,7 @@ function explicateControlDefinition(
       ]
     }
 
-    case "PrimitiveVariableDeclaration":
-    case "PrimitiveVariableDefinition": {
+    case "PrimitiveVariableDeclaration": {
       return [
         B.PrimitiveVariableDeclaration(
           basicMod,

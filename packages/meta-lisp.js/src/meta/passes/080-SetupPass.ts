@@ -48,53 +48,25 @@ function setupStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
     }
 
     case "DeclarePrimitiveFunctionStmt": {
-      const definition = M.modLookupDefinition(mod, stmt.name)
-      if (definition) {
-        if (definition.kind !== "PrimitiveFunctionDefinition") {
-          let message = `[setupStmt] expect PrimitiveFunctionDefinition`
-          message += `\n  definition: ${M.formatDefinition(definition)}`
-          throw new S.ErrorWithSourceLocation(message, stmt.location)
-        }
-
-        if (definition.arity !== stmt.arity) {
-          let message = `[setupStmt] arity mismatch`
-          message += `\n  definition name: ${definition.name}`
-          message += `\n  definition arity: ${definition.arity}`
-          message += `\n  declared arity: ${stmt.arity}`
-          throw new S.ErrorWithSourceLocation(message, stmt.location)
-        }
-      } else {
-        M.modDefine(
+      M.modDefine(
+        mod,
+        stmt.name,
+        M.PrimitiveFunctionDeclaration(
           mod,
           stmt.name,
-          M.PrimitiveFunctionDeclaration(
-            mod,
-            stmt.name,
-            stmt.arity,
-            stmt.location,
-          ),
-        )
-      }
-
+          stmt.arity,
+          stmt.location,
+        ),
+      )
       return
     }
 
     case "DeclarePrimitiveVariableStmt": {
-      const definition = M.modLookupDefinition(mod, stmt.name)
-      if (definition) {
-        if (definition.kind !== "PrimitiveVariableDefinition") {
-          let message = `[setupStmt] expect PrimitiveVariableDefinition`
-          message += `\n  definition: ${M.formatDefinition(definition)}`
-          throw new S.ErrorWithSourceLocation(message, stmt.location)
-        }
-      } else {
-        M.modDefine(
-          mod,
-          stmt.name,
-          M.PrimitiveVariableDeclaration(mod, stmt.name, stmt.location),
-        )
-      }
-
+      M.modDefine(
+        mod,
+        stmt.name,
+        M.PrimitiveVariableDeclaration(mod, stmt.name, stmt.location),
+      )
       return
     }
 

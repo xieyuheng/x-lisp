@@ -40,8 +40,13 @@ function applyDefinition(
   args: Array<M.Value>,
 ): M.Value {
   switch (definition.kind) {
-    case "PrimitiveFunctionDefinition": {
-      return definition.fn(...args)
+    case "PrimitiveFunctionDeclaration": {
+      const fn = M.lookupPrimitiveFunction(definition.name)
+      if (fn === undefined) {
+        let message = `[applyDefinition] no JS implementation for: ${definition.name}`
+        throw new Error(message)
+      }
+      return fn(...args)
     }
 
     case "TypeDefinition": {

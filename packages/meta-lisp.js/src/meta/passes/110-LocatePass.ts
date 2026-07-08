@@ -14,9 +14,7 @@ export function LocatePass(pkg: M.Package): void {
 function locateDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration":
-    case "PrimitiveFunctionDefinition":
-    case "PrimitiveVariableDefinition": {
+    case "PrimitiveVariableDeclaration": {
       return null
     }
 

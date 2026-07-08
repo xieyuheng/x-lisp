@@ -14,14 +14,12 @@ export function prettyDefinition(definition: M.Definition): Array<Ppml.Node> {
 
 function nodeForDefinition(definition: M.Definition): Ppml.Node {
   switch (definition.kind) {
-    case "PrimitiveFunctionDefinition":
     case "PrimitiveFunctionDeclaration": {
       return Ppml.text(
         `(declare-primitive-function ${definition.name} ${definition.arity.toString()})`,
       )
     }
 
-    case "PrimitiveVariableDefinition":
     case "PrimitiveVariableDeclaration": {
       return Ppml.text(`(declare-primitive-variable ${definition.name})`)
     }
