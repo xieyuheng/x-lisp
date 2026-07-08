@@ -23,11 +23,11 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 展开逻辑用 continuation-passing style 组织。每个上下文接收一个
 `cont`（"做完这步之后要继续执行的东西"）：
 
-| 上下文 | 语义 |
-|--------|------|
-| `let` 上下文 | rhs 的结果要绑定给 `x`，然后执行 cont |
-| `begin` 上下文 | head 的结果要丢弃，然后执行 cont |
-| `if` 上下文 | cond 的结果决定走 `then` 还是 `else` |
+| 上下文         | 语义                                  |
+|----------------|---------------------------------------|
+| `let` 上下文   | rhs 的结果要绑定给 `x`，然后执行 cont |
+| `begin` 上下文 | head 的结果要丢弃，然后执行 cont      |
+| `if` 上下文    | cond 的结果决定走 `then` 还是 `else`  |
 
 每种上下文都必须处理 rhs/head/cond 中可能出现的三种形式，
 产生 3 × 3 = 9 种变换情况。
@@ -188,23 +188,23 @@ join:
 
 ;; 变换后
 (if a
-  (goto then-0)
-  (goto else-0))
+  (goto then.0)
+  (goto else.0))
 
-then-0:
+then.0:
   (if b
-    (goto then-1)
-    (goto else-1))
+    (goto then.1)
+    (goto else.1))
 
-else-0:
+else.0:
   (if c
-    (goto then-1)
-    (goto else-1))
+    (goto then.1)
+    (goto else.1))
 
-then-1:
+then.1:
   (f 1)
 
-else-1:
+else.1:
   (f -1)
 ```
 
@@ -212,15 +212,13 @@ else-1:
 
 九个 case 共享相同的底层机制：
 
-1. **上浮**（cases 1, 2, 4, 5, 7, 8）：将嵌套结构的子表达式提取到外层，
+1. **上浮**：将嵌套结构的子表达式提取到外层，
    使当前位置只留下原子操作。这些情况不需要创建新 block。
 
-2. **分裂**（cases 3, 6, 9）：`if` 位于绑定或副作用位置时，
+2. **分裂**：`if` 位于绑定或副作用位置时，
    需要创建 join block 用 `goto` 连接控制流。
    case 9 是最复杂的情况——条件本身是嵌套 `if`，
    外层 then/else 被 captures 为独立 block，
    内层测试复用时跳转到相应目标。
 
-`let` 和 `begin` 上下文高度对称——区别仅在于 rhs 的结果
-需要绑定（`let`）还是丢弃（`begin`），以及 join label 前缀。
 3×3 的交叉结构是 CPS 扁平化的必然产物。
