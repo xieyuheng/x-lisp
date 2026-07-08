@@ -41,5 +41,17 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
         blockNodes,
       )
     }
+
+    case "ExternFunctionDefinition": {
+      return Ppml.prettySyntax("extern-function", [], [
+        Ppml.text(definition.name),
+      ])
+    }
+
+    case "ExternVariableDefinition": {
+      return Ppml.prettySyntax("extern-variable", [], [
+        Ppml.text(definition.name),
+      ])
+    }
   }
 }

@@ -40,6 +40,16 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
       return B.SetupDefinition(name, blocks)
     }
 
+    case "extern-function": {
+      const name = S.asSymbolSexp(elements[1]).content
+      return B.ExternFunctionDefinition(name)
+    }
+
+    case "extern-variable": {
+      const name = S.asSymbolSexp(elements[1]).content
+      return B.ExternVariableDefinition(name)
+    }
+
     default: {
       throw new S.ErrorWithSourceLocation(
         `[parseDefinition] unknown definition form: ${S.formatSexp(sexp)}`,

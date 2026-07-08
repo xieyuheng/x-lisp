@@ -37,6 +37,8 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
   - [(define-setup)](#define-setup)
   - [(define-variable)](#define-variable)
   - [(define-struct)](#define-struct)
+  - [(extern-function)](#extern-function)
+  - [(extern-variable)](#extern-variable)
 - [数据](#数据)
   - [裸字面量](#裸字面量)
   - [(address)](#address)
@@ -324,6 +326,43 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
   (count int64-t)
   (entries pointer-t)
   (title pointer-t))
+```
+
+## (extern-function)
+
+```scheme
+(extern-function <name>)
+```
+
+声明外部函数。
+
+- 完整类型由同名 `(claim)` 提供。
+- 外部函数的实现在编译单元外部（如运行时原生函数、动态链接库等）。
+- 仅在已存在同名 `(claim)` 时有效。
+
+```scheme
+(claim malloc (-> int64-t pointer-t))
+(extern-function malloc)
+
+(claim free (-> pointer-t void-t))
+(extern-function free)
+```
+
+## (extern-variable)
+
+```scheme
+(extern-variable <name>)
+```
+
+声明外部变量。
+
+- 完整类型由同名 `(claim)` 提供。
+- 外部变量的实现在编译单元外部（如运行时提供的全局变量）。
+- 仅在已存在同名 `(claim)` 时有效。
+
+```scheme
+(claim errno int64-t)
+(extern-variable errno)
 ```
 
 # 数据

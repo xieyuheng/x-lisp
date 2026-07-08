@@ -3,7 +3,12 @@ import { type Data } from "../data/index.ts"
 import { type Type } from "../type/index.ts"
 
 export type Definition =
-  StructDefinition | FunctionDefinition | VariableDefinition | SetupDefinition
+  | StructDefinition
+  | FunctionDefinition
+  | VariableDefinition
+  | SetupDefinition
+  | ExternFunctionDefinition
+  | ExternVariableDefinition
 
 export type StructDefinition = {
   kind: "StructDefinition"
@@ -55,4 +60,26 @@ export function SetupDefinition(
   blocks: Array<Block>,
 ): SetupDefinition {
   return { kind: "SetupDefinition", name, blocks }
+}
+
+export type ExternFunctionDefinition = {
+  kind: "ExternFunctionDefinition"
+  name: string
+}
+
+export function ExternFunctionDefinition(
+  name: string,
+): ExternFunctionDefinition {
+  return { kind: "ExternFunctionDefinition", name }
+}
+
+export type ExternVariableDefinition = {
+  kind: "ExternVariableDefinition"
+  name: string
+}
+
+export function ExternVariableDefinition(
+  name: string,
+): ExternVariableDefinition {
+  return { kind: "ExternVariableDefinition", name }
 }
