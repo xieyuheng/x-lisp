@@ -23,3 +23,10 @@
               (string-to-symbol module-name)
               (zero-location (fragment-path fragment)))
             (fragment-stmts fragment)))))))
+
+(define (zero-location path)
+  (make-source-location
+    path
+    (make-source-span
+      (make-source-position 0 0 0)
+      (make-source-position 0 0 0))))

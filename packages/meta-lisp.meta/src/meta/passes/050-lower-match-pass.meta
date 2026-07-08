@@ -12,9 +12,7 @@
       (= fragment-scopes (module-analysis-report-fragment-scopes module-analysis-report))
       (match (hash-get-maybe path fragment-scopes)
         ((nothing)
-         (error-with-location
-           (@string "(lower-match-pass) missing scope for: " path)
-           (zero-location path)))
+         (error (@string "(lower-match-pass) missing scope for: " path)))
         ((just scope)
          (= ctx (make-desugar-match-ctx
                   scope
