@@ -137,15 +137,19 @@ function toBasicExp(term: M.Term, pkg: M.Package): B.Exp {
     case "SymbolTerm": {
       return B.SymbolExp(term.content, term.location)
     }
+
     case "KeywordTerm": {
       return B.KeywordExp(term.content, term.location)
     }
+
     case "StringTerm": {
       return B.StringExp(term.content, term.location)
     }
+
     case "IntTerm": {
       return B.IntExp(term.content, term.location)
     }
+
     case "FloatTerm": {
       return B.FloatExp(term.content, term.location)
     }

@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
+import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
 import * as B from "../../basic2/index.ts"
 import * as M from "../index.ts"
-import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
 
 export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
@@ -98,7 +98,7 @@ function generateLabel(
   return label
 }
 
-function explicateInBody(
+function explicateUnnestedTerm(
   state: State,
   term: M.Term,
 ): [Array<B.Instr>, B.Cell] {
@@ -190,9 +190,7 @@ function explicateInBody(
     }
 
     default: {
-      let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
-      message += `\n  term kind: ${term.kind}`
-      message += `\n  term: ${M.formatTerm(term)}`
+      let message = `[explicateUnnestedTerm] unhandled term`
       throw new S.ErrorWithSourceLocation(message, term.location)
     }
   }

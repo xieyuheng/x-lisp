@@ -1,17 +1,14 @@
 # basic2
 
-[meta-lisp.js] inline `explicateSimpleTerm` to `explicateInTail`
-[meta-lisp.js] 170-ExplicateControlPass2 -- `findLastOutputCell`
-
-[meta-lisp.js] `explicateInTail` -- `QualifiedVarTerm` handle function
-[meta-lisp.js] `explicateInTail` -- handle `ApplyTerm` -- use type information
-
-[meta-lisp.js] `explicateInBody` -- `QualifiedVarTerm` handle function
-[meta-lisp.js] `explicateInBody` -- `ApplyTerm` handle direct call
+[meta-lisp.js] `explicateInTail` -- handle `Apply`
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInTail`
+[meta-lisp.js] `explicateInTail` -- `QualifiedVarTerm` handle function
+[meta-lisp.js] `explicateInTail` -- `ApplyTerm` handle direct call -- use arity and type information
+
+[meta-lisp.js] `explicateInBody` -- `QualifiedVarTerm` handle function
+[meta-lisp.js] `explicateInBody` -- `ApplyTerm` handle direct call
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
