@@ -4,8 +4,8 @@ import {
   ListType,
   SetType,
   TypeType,
-} from "./type/index.ts"
-import { type Value, TypeValue, asTypeValue } from "./value/index.ts"
+} from "../type/index.ts"
+import { type Value, TypeValue, asTypeValue } from "../value/index.ts"
 
 export type TypeFunction = (...args: Array<Value>) => Value
 
