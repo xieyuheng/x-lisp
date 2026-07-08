@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { encodeArithmetic } from "./arithmetic.ts"
 import { encodeControl } from "./control.ts"

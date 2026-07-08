@@ -32,10 +32,7 @@ export type DefineDataStmt = {
   value: Data
 }
 
-export function DefineDataStmt(
-  name: string,
-  value: Data,
-): DefineDataStmt {
+export function DefineDataStmt(name: string, value: Data): DefineDataStmt {
   return {
     kind: "DefineDataStmt",
     name,
@@ -83,10 +80,7 @@ export type DefineSpaceStmt = {
   size: Data
 }
 
-export function DefineSpaceStmt(
-  name: string,
-  size: Data,
-): DefineSpaceStmt {
+export function DefineSpaceStmt(name: string, size: Data): DefineSpaceStmt {
   return {
     kind: "DefineSpaceStmt",
     name,

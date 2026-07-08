@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 export function CheckPass(mod: X86.Mod): void {

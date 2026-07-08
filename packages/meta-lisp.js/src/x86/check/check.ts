@@ -69,7 +69,11 @@ export function check(
         let message = `[check] expected struct type for StructData, got: ${X86.formatType(expectedType)}`
         throw new Error(message)
       }
-      const typeFields = dataTypeUnfold(mod, expectedType, S.zeroLocation("check"))
+      const typeFields = dataTypeUnfold(
+        mod,
+        expectedType,
+        S.zeroLocation("check"),
+      )
 
       checkFields(mod, data.fields, typeFields)
       return
@@ -104,14 +108,14 @@ export function checkFields(
   const fieldEntries = Object.entries(fields)
   if (fieldEntries.length !== typeFields.size) {
     let message = `[checkFields] field count mismatch: expected ${typeFields.size}, got ${fieldEntries.length}`
-      throw new Error(message)
+    throw new Error(message)
   }
 
   for (const [expectedName, expectedType] of typeFields) {
     const fieldExp = fields[expectedName]
     if (fieldExp === undefined) {
       let message = `[checkFields] missing field: "${expectedName}"`
-    throw new Error(message)
+      throw new Error(message)
     }
     check(mod, fieldExp, expectedType)
   }
@@ -126,7 +130,11 @@ export function dataTypeUnfold(
     let message = `[dataTypeUnfold] expected named type for struct unfolding`
     throw new Error(message)
   }
-  const structDefinition = lookupStructDefinition(mod, dataType.name, S.zeroLocation("dataTypeUnfold"))
+  const structDefinition = lookupStructDefinition(
+    mod,
+    dataType.name,
+    S.zeroLocation("dataTypeUnfold"),
+  )
 
   const result = new Map<string, X86.Type>()
   for (const fieldName of Object.keys(structDefinition.fields)) {
@@ -163,13 +171,21 @@ export function isIntegerAtomTypeCtor(name: string): boolean {
 
 function checkPointerTarget(mod: X86.Mod, target: X86.Data): void {
   if (target.kind === "StructData") {
-    check(mod, target, namedDataType(mod, target.name, S.zeroLocation("checkPointerTarget")))
+    check(
+      mod,
+      target,
+      namedDataType(mod, target.name, S.zeroLocation("checkPointerTarget")),
+    )
 
     return
   }
 
   if (target.kind === "StringData") {
-    check(mod, target, namedDataType(mod, "string-t", S.zeroLocation("checkPointerTarget")))
+    check(
+      mod,
+      target,
+      namedDataType(mod, "string-t", S.zeroLocation("checkPointerTarget")),
+    )
 
     return
   }
@@ -199,7 +215,6 @@ export function inferDataType(mod: X86.Mod, value: X86.Data): X86.Type {
   switch (value.kind) {
     case "StructData": {
       return namedDataType(mod, value.name, S.zeroLocation("inferDataType"))
-
     }
     case "PointerData":
     case "AddressData":

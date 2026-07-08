@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 let anonCounter = 0
@@ -12,8 +11,7 @@ export function ResolveDataOperandsPass(mod: X86.Mod): void {
         const newOperands = instr.operands.map((op) =>
           resolveDataOperand(mod, op),
         )
-        block.instrs[i] = X86.Instr(instr.op, newOperands
-    )
+        block.instrs[i] = X86.Instr(instr.op, newOperands)
       }
     }
   }
@@ -25,8 +23,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
   const data = op.data
 
   if (data.kind === "IntData") {
-    return X86.ImmOperand(data.value
-    )
+    return X86.ImmOperand(data.value)
   }
 
   if (data.kind === "StringData") {

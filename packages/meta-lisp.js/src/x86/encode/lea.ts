@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_DISP0, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"

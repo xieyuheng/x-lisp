@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { regCode } from "./reg.ts"
 import { encodeRegDeref } from "./regderef.ts"
@@ -24,7 +23,7 @@ export function encodeStack(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[${instr.op}] unsupported operand: ${op.kind}`
-    throw new Error(message)
+  throw new Error(message)
 }
 
 function encodePushReg(reg: string): EncodedInstruction {

@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import type {
   AddressOperand,
@@ -60,7 +59,7 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[mov] unsupported operand combination: dst=${dst.kind} src=${src.kind}`
-    throw new Error(message)
+  throw new Error(message)
 }
 
 function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {

@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -40,5 +39,5 @@ export function encodeImul(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[imul] unsupported operands: dst=${dst.kind} src=${src.kind}`
-    throw new Error(message)
+  throw new Error(message)
 }

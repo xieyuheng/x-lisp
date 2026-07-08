@@ -4,9 +4,9 @@ import {
   inferDataType,
   lookupStructDefinition,
 } from "../check/check.ts"
+import type { Data } from "../data/index.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { encode, encodedSize } from "../encode/index.ts"
-import type { Data } from "../data/index.ts"
 import { formatType } from "../format/formatType.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Mod } from "../mod/index.ts"
@@ -201,7 +201,11 @@ function unpackMetadataStruct(
   }
   const structExp = value.target
   return {
-    structType: structDataTypeByName(mod, structExp.name, S.zeroLocation("emitDataSection")),
+    structType: structDataTypeByName(
+      mod,
+      structExp.name,
+      S.zeroLocation("emitDataSection"),
+    ),
 
     structExp,
   }
@@ -425,7 +429,11 @@ function emitPointerTarget(
   if (targetData.kind === "StructData") {
     return emitFieldsTree(
       mod,
-      structDataTypeByName(mod, targetData.name, S.zeroLocation("emitPointerTarget")),
+      structDataTypeByName(
+        mod,
+        targetData.name,
+        S.zeroLocation("emitPointerTarget"),
+      ),
       targetData.fields,
       buf,
       offset,
@@ -509,14 +517,15 @@ function computeFieldTreeSize(
   throw new Error(message)
 }
 
-function computePointerTargetSize(
-  mod: Mod,
-  targetData: Data,
-): number {
+function computePointerTargetSize(mod: Mod, targetData: Data): number {
   if (targetData.kind === "StructData") {
     return computeFieldsTreeSize(
       mod,
-      structDataTypeByName(mod, targetData.name, S.zeroLocation("computePointerTargetSize")),
+      structDataTypeByName(
+        mod,
+        targetData.name,
+        S.zeroLocation("computePointerTargetSize"),
+      ),
       targetData.fields,
     )
   }

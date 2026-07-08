@@ -7,17 +7,11 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
   "(cons* 'define-code name blocks)": ({ name, blocks }, { location }) => {
     const blockSexps = S.asListSexp(blocks).elements
     const parsedBlocks = blockSexps.map((bs) => parseBlock(bs))
-    return X86.DefineCodeStmt(
-      S.asSymbolSexp(name).content,
-      parsedBlocks,
-    )
+    return X86.DefineCodeStmt(S.asSymbolSexp(name).content, parsedBlocks)
   },
 
   "`(define-data ,name ,value)": ({ name, value }, { location }) => {
-    return X86.DefineDataStmt(
-      S.asSymbolSexp(name).content,
-      parseData(value),
-    )
+    return X86.DefineDataStmt(S.asSymbolSexp(name).content, parseData(value))
   },
 
   "`(define-metadata ,name ,value)": ({ name, value }, { location }) => {
@@ -29,17 +23,11 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
 
   "(cons* 'define-struct name fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseTypeFields(fields)
-    return X86.DefineStructStmt(
-      S.asSymbolSexp(name).content,
-      parsedFields,
-    )
+    return X86.DefineStructStmt(S.asSymbolSexp(name).content, parsedFields)
   },
 
   "`(define-space ,name ,size)": ({ name, size }, { location }) => {
-    return X86.DefineSpaceStmt(
-      S.asSymbolSexp(name).content,
-      parseData(size),
-    )
+    return X86.DefineSpaceStmt(S.asSymbolSexp(name).content, parseData(size))
   },
 })
 
@@ -59,8 +47,7 @@ function parseBlock(sexp: S.Sexp): X86.Block {
   }
   const blockName = S.asSymbolSexp(elements[1]).content
   const instrs = elements.slice(2).map((i) => parseInstr(i))
-  return X86.Block(blockName, instrs
-    )
+  return X86.Block(blockName, instrs)
 }
 
 function parseTypeFields(rest: S.Sexp): Record<string, X86.Type> {

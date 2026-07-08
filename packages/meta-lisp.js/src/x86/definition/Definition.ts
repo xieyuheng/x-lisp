@@ -33,10 +33,7 @@ export type DataDefinition = {
   value: Data
 }
 
-export function DataDefinition(
-  name: string,
-  value: Data,
-): DataDefinition {
+export function DataDefinition(name: string, value: Data): DataDefinition {
   return {
     kind: "DataDefinition",
     name,
@@ -84,10 +81,7 @@ export type SpaceDefinition = {
   size: Data
 }
 
-export function SpaceDefinition(
-  name: string,
-  size: Data,
-): SpaceDefinition {
+export function SpaceDefinition(name: string, size: Data): SpaceDefinition {
   return {
     kind: "SpaceDefinition",
     name,

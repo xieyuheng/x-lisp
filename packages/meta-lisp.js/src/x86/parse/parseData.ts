@@ -28,19 +28,16 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
       }
       fields[fieldName] = parseData(fieldElements[1])
     }
-    return X86.StructData(name, fields
-    )
+    return X86.StructData(name, fields)
   },
 
   "`(pointer ,target)": ({ target }, { location }) => {
-    return X86.PointerData(parseData(target)
-    )
+    return X86.PointerData(parseData(target))
   },
 
   "(cons* 'array rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
-    return X86.ArrayData(elements.map(parseData)
-    )
+    return X86.ArrayData(elements.map(parseData))
   },
 
   "(cons* 'address rest)": ({ rest }, { location }) => {
@@ -49,8 +46,7 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
       let message = "(address name) takes exactly one symbol"
       throw new Error(message)
     }
-    return X86.AddressData(S.asSymbolSexp(elements[0]).content
-    )
+    return X86.AddressData(S.asSymbolSexp(elements[0]).content)
   },
 
   "(cons* target args)": ({ target }, { location }) => {
@@ -61,11 +57,9 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
   data: ({ data }, { location }) => {
     switch (data.kind) {
       case "IntSexp":
-        return X86.IntData(S.asIntSexp(data).content
-    )
+        return X86.IntData(S.asIntSexp(data).content)
       case "StringSexp":
-        return X86.StringData(S.asStringSexp(data).content
-    )
+        return X86.StringData(S.asStringSexp(data).content)
       default: {
         let message = `unexpected data: ${S.formatSexp(data)}`
         throw new Error(message)

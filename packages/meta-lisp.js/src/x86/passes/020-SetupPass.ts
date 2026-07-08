@@ -9,47 +9,30 @@ export function SetupPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
 function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      X86.modDefine(
-        mod,
-        X86.CodeDefinition(stmt.name, stmt.blocks
-    ),
-      )
+      X86.modDefine(mod, X86.CodeDefinition(stmt.name, stmt.blocks))
       break
     }
 
     case "DefineDataStmt": {
-      X86.modDefine(
-        mod,
-        X86.DataDefinition(stmt.name, stmt.value
-    ),
-      )
+      X86.modDefine(mod, X86.DataDefinition(stmt.name, stmt.value))
       break
     }
 
     case "DefineMetadataStmt": {
-      X86.modDefine(
-        mod,
-        X86.MetadataDefinition(stmt.name, stmt.value
-    ),
-      )
+      X86.modDefine(mod, X86.MetadataDefinition(stmt.name, stmt.value))
       break
     }
 
     case "DefineStructStmt": {
       mod.definitions.set(
         stmt.name,
-        X86.StructDefinition(stmt.name, stmt.fields
-    ),
+        X86.StructDefinition(stmt.name, stmt.fields),
       )
       break
     }
 
     case "DefineSpaceStmt": {
-      X86.modDefine(
-        mod,
-        X86.SpaceDefinition(stmt.name, stmt.size
-    ),
-      )
+      X86.modDefine(mod, X86.SpaceDefinition(stmt.name, stmt.size))
       break
     }
   }

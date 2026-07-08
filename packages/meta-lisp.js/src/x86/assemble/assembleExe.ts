@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import { emitTo, encode } from "../encode/index.ts"
 import type { Mod, ValueRelocation } from "../mod/index.ts"
 import {
