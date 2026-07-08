@@ -222,3 +222,63 @@ else.1:
    内层测试复用时跳转到相应目标。
 
 3×3 的交叉结构是 CPS 扁平化的必然产物。
+
+# 附：FloatPass 不可分离的反例
+
+想把 6 个"上浮"情况提取为独立 pass，但分裂 case 阻止了这种分离。
+
+## 分裂 case 依赖上浮 case
+
+考虑 `let-rhs is if` 分裂 case：
+
+```scheme
+(let ((x (if cond
+           (let ((y 1)) y)     ;; ← 分支是 Let1Term
+           (let ((z 2)) z))))
+  (+ x 1))
+```
+
+分裂展开后需要递归处理每个分支：
+
+```scheme
+;; 展开 then 分支
+(let ((x (let ((y 1)) y)))
+  (goto join))
+
+;; 再用上浮 case 展开
+(let ((y 1))
+  (let ((x y))
+    (goto join)))
+```
+
+`(let ((y 1)) y)` 在 `if` 分支内部，不在 rhs/head/condition 位置。
+FloatPass 不能提前消除——提到外面会破坏作用域（`y` 只在 then 分支有效）。
+
+同理，`begin-head is if` 依赖 `explicateInBegin1` 中的上浮：
+
+```scheme
+(begin
+  (if cond
+    (let ((y 1)) (f y))     ;; ← 分支以 Let1Term 开头
+    (let ((z 2)) (g z)))
+  (+ z 3))
+```
+
+`if-condition is if` 依赖 `explicateInIf` 中的上浮：
+
+```scheme
+(if (if a
+      (let ((x 1)) (> x 0))   ;; ← 子条件以 Let1Term 开头
+      (let ((x 2)) (> x 1)))
+  (f 1)
+  (f -1))
+```
+
+## 结论
+
+三个分裂 case 全部递归调用上下文函数处理分支/子条件。
+分支/子条件可以任意嵌套控制流，始终需要上浮 case 来即时展开。
+因此 ExplicateControlPass 必须保持全部 9 个 case，不可简化。
+
+FloatPass 只是**在 Term IR 层面重复同样的上浮变换**作为前置规范化步骤，
+并不能让 ExplicateControlPass 减少任何一个 case。
