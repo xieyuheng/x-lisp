@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
 import { parseBlock } from "./parseBlock.ts"
-import { parseExp } from "./parseExp.ts"
+import { parseData } from "./parseData.ts"
 import { parseType } from "./parseType.ts"
 
 export function parseDefinition(sexp: S.Sexp): B.Definition {
@@ -30,7 +30,7 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
 
     case "define-variable": {
       const name = S.asSymbolSexp(elements[1]).content
-      const init = elements.length >= 3 ? parseExp(elements[2]) : null
+      const init = elements.length >= 3 ? parseData(elements[2]) : null
       return B.VariableDefinition(name, init)
     }
 

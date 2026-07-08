@@ -1,6 +1,6 @@
 export * from "./formatBlock.ts"
+export * from "./formatData.ts"
 export * from "./formatDefinition.ts"
-export * from "./formatExp.ts"
 export * from "./formatInstr.ts"
 export * from "./formatMod.ts"
 export * from "./formatOperand.ts"
