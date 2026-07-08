@@ -26,9 +26,10 @@
     id))
 
 (define (setup-builtin-package package)
+  (setup-primitive)
   (= mod (empty-mod 'builtin package))
   (package-put-mod! 'builtin mod package)
-  (type-builtin mod))
+  void)
 
 (define (validate-builtin config)
   (unless (hash-has? "meta-builtin" (package-config-dependencies config))

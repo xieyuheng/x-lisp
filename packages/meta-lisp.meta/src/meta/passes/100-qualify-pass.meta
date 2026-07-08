@@ -23,8 +23,6 @@
   (match definition
     ((primitive-function-declaration mod name arity location) definition)
     ((primitive-variable-declaration mod name location) definition)
-    ((primitive-function-definition mod name arity fn location) definition)
-    ((primitive-variable-definition mod name value location) definition)
     ((function-definition mod name parameters body location)
      (function-definition mod name parameters
        (qualify-free-var mod (list-to-set parameters) body)

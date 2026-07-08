@@ -33,33 +33,11 @@
      (mod-claim mod name type)
      (mod-admit mod name))
     ((declare-primitive-function-stmt name arity location)
-     (match (mod-lookup-definition mod name)
-       ((just definition)
-        (unless (primitive-function-definition? definition)
-          (error-with-location
-            (@string "(setup-stmt) expect primitive-function-definition"
-                     "\n  definition: " (format-definition definition))
-            location))
-        (unless (equal? (primitive-function-definition-arity definition) arity)
-          (error-with-location
-            (@string "(setup-stmt) arity mismatch"
-                     "\n  definition arity: " (format (primitive-function-definition-arity definition))
-                     "\n  declared arity: " (format arity))
-            location)))
-       ((nothing)
-        (mod-define mod name
-          (primitive-function-declaration mod name arity location)))))
+     (mod-define mod name
+       (primitive-function-declaration mod name arity location)))
     ((declare-primitive-variable-stmt name location)
-     (match (mod-lookup-definition mod name)
-       ((just definition)
-        (unless (primitive-variable-definition? definition)
-          (error-with-location
-            (@string "(setup-stmt) expect primitive-variable-definition"
-                     "\n  definition: " (format-definition definition))
-            location)))
-       ((nothing)
-        (mod-define mod name
-          (primitive-variable-declaration mod name location)))))
+     (mod-define mod name
+       (primitive-variable-declaration mod name location)))
     ((define-function-stmt name parameters body location)
      (mod-define mod name
        (function-definition mod name parameters body location)))

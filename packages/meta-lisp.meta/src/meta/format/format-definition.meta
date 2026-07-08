@@ -3,19 +3,10 @@
 (claim format-definition (-> definition-t string-t))
 (define (format-definition definition)
   (match definition
-    ((primitive-function-definition mod name arity fn location)
-     (= claim-str (format-definition-claim mod name))
-     (@string claim-str
-              "(declare-primitive-function "
-               (symbol-to-string name) " " (format-as-sexp arity) ")"))
     ((primitive-function-declaration mod name arity location)
      (@string "(declare-primitive-function "
                (symbol-to-string name) " "
                (format-as-sexp arity) ")"))
-    ((primitive-variable-definition mod name value location)
-     (= claim-str (format-definition-claim mod name))
-     (@string claim-str
-              "(declare-primitive-variable " (symbol-to-string name) ")"))
     ((primitive-variable-declaration mod name location)
      (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
      ((function-definition mod name parameters body location)
@@ -90,10 +81,6 @@
 (claim definition-mod-name (-> definition-t symbol-t))
 (define (definition-mod-name definition)
   (match definition
-    ((primitive-function-definition mod name arity fn location)
-     (mod-name mod))
-    ((primitive-variable-definition mod name value location)
-     (mod-name mod))
     ((primitive-function-declaration mod name arity location)
      (mod-name mod))
     ((primitive-variable-declaration mod name location)
@@ -114,10 +101,6 @@
 (claim definition-name (-> definition-t symbol-t))
 (define (definition-name definition)
   (match definition
-    ((primitive-function-definition mod name arity fn location)
-     name)
-    ((primitive-variable-definition mod name value location)
-     name)
     ((primitive-function-declaration mod name arity location)
      name)
     ((primitive-variable-declaration mod name location)

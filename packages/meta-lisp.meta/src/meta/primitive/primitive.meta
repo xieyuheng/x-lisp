@@ -1,0 +1,56 @@
+(module meta)
+
+(define primitive-functions (make-hash))
+(define primitive-variables (make-hash))
+(define primitive-initialized (make-box))
+
+(claim setup-primitive (-> void-t))
+(define (setup-primitive)
+  (when (box-empty? primitive-initialized)
+    (box-put! true primitive-initialized)
+    (define-primitive-variable 'type-t (type-value (type-type)))
+    (define-primitive-variable 'int-t (type-value (atom-type 'int)))
+    (define-primitive-variable 'float-t (type-value (atom-type 'float)))
+    (define-primitive-variable 'string-t (type-value (atom-type 'string)))
+    (define-primitive-variable 'symbol-t (type-value (atom-type 'symbol)))
+    (define-primitive-variable 'keyword-t (type-value (atom-type 'keyword)))
+    (define-primitive-variable 'bool-t (type-value (atom-type 'bool)))
+    (define-primitive-variable 'void-t (type-value (atom-type 'void)))
+    (define-primitive-variable 'file-t (type-value (atom-type 'file)))
+    (define-primitive-function 'list-t
+      (lambda (args)
+        (type-value (list-type (type-value-type (list-first args))))))
+    (define-primitive-function 'set-t
+      (lambda (args)
+        (type-value (set-type (type-value-type (list-first args))))))
+    (define-primitive-function 'hash-t
+      (lambda (args)
+        (= key (list-first args))
+        (= value (list-second args))
+        (type-value (hash-type (type-value-type key) (type-value-type value)))))))
+
+(claim define-primitive-function
+  (-> symbol-t (-> (list-t value-t) value-t)
+      void-t))
+(define (define-primitive-function name fn)
+  (hash-put! name fn primitive-functions)
+  void)
+
+(claim define-primitive-variable
+  (-> symbol-t value-t
+      void-t))
+(define (define-primitive-variable name value)
+  (hash-put! name value primitive-variables)
+  void)
+
+(claim lookup-primitive-function
+  (-> symbol-t
+      (maybe-t (-> (list-t value-t) value-t))))
+(define (lookup-primitive-function name)
+  (hash-get-maybe name primitive-functions))
+
+(claim lookup-primitive-variable
+  (-> symbol-t
+      (maybe-t value-t)))
+(define (lookup-primitive-variable name)
+  (hash-get-maybe name primitive-variables))

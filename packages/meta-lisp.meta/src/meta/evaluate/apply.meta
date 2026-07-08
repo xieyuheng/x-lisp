@@ -19,8 +19,12 @@
 (claim apply-definition (-> evaluation-mode-t definition-t (list-t value-t) value-t))
 (define (apply-definition mode definition args)
   (match definition
-    ((primitive-function-definition mod name arity fn location)
-     (fn args))
+    ((primitive-function-declaration mod name arity location)
+     (match (lookup-primitive-function name)
+       ((just fn) (fn args))
+       ((nothing)
+        (error (@string "(apply-definition) no implementation for primitive function: "
+                        (symbol-to-string name))))))
      ((type-definition mod name parameters body location)
       (let ((env (env-put-many parameters args (empty-env mode))))
         (evaluate mod env body)))

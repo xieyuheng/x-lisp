@@ -1,17 +1,6 @@
 (module meta)
 
 (define-enum definition-t
-  (primitive-function-definition
-    (mod mod-t)
-    (name symbol-t)
-    (arity int-t)
-    (fn (-> (list-t value-t) value-t))
-    (location source-location-t))
-  (primitive-variable-definition
-    (mod mod-t)
-    (name symbol-t)
-    (value value-t)
-    (location source-location-t))
   (primitive-function-declaration
     (mod mod-t)
     (name symbol-t)

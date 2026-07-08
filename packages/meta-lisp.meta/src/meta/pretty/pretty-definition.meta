@@ -5,26 +5,19 @@
 (claim pretty-definition (-> definition-t (list-t ppml/node-t)))
 (define (pretty-definition definition)
   (match definition
-    ((primitive-function-definition mod name arity fn location)
+    ((primitive-function-declaration mod name arity location)
      (let ((body (ppml/text (@string "(declare-primitive-function "
                               (symbol-to-string name) " "
                               (format-as-sexp arity) ")"))))
        (match (pretty-definition-claim mod name)
          ((just claim-node) [claim-node body])
          ((nothing) [body]))))
-    ((primitive-function-declaration mod name arity location)
-     [(ppml/text (@string "(declare-primitive-function "
-                   (symbol-to-string name) " "
-                   (format-as-sexp arity) ")"))])
-    ((primitive-variable-definition mod name value location)
+    ((primitive-variable-declaration mod name location)
      (let ((body (ppml/text (@string "(declare-primitive-variable "
                               (symbol-to-string name) ")"))))
        (match (pretty-definition-claim mod name)
          ((just claim-node) [claim-node body])
          ((nothing) [body]))))
-    ((primitive-variable-declaration mod name location)
-     [(ppml/text (@string "(declare-primitive-variable "
-                   (symbol-to-string name) ")"))])
     ((function-definition mod name parameters body location)
      (let* ((name-str (symbol-to-string name))
             (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters))
