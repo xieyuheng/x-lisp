@@ -23,5 +23,10 @@ export function formatDefinition(definition: B.Definition): string {
       }
       return `(define-variable ${definition.name} ${formatData(definition.init)})`
     }
+
+    case "SetupDefinition": {
+      const blockTexts = definition.blocks.map(formatBlock).join(" ")
+      return `(define-setup ${definition.name} ${blockTexts})`
+    }
   }
 }

@@ -34,6 +34,12 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
       return B.VariableDefinition(name, init)
     }
 
+    case "define-setup": {
+      const name = S.asSymbolSexp(elements[1]).content
+      const blocks = elements.slice(2).map(parseBlock)
+      return B.SetupDefinition(name, blocks)
+    }
+
     default: {
       throw new S.ErrorWithSourceLocation(
         `[parseDefinition] unknown definition form: ${S.formatSexp(sexp)}`,
