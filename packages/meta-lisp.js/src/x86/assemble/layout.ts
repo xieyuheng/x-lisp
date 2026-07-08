@@ -317,7 +317,7 @@ function emitFieldTree(
   deferred: Array<{ off: number; fn: (pos: number) => number }>,
 ): number {
   if (fieldData.kind === "IntData") {
-    return writeIntLE(buf, offset, typeSize(mod, fieldType), fieldData.value)
+    return writeIntLE(buf, offset, typeSize(mod, fieldType), fieldData.content)
   }
 
   if (fieldData.kind === "StructData") {
@@ -409,7 +409,7 @@ function emitFieldTree(
         let message = `[emitFieldTree] array element must be integer, got: ${elem.kind}`
         throw new Error(message)
       }
-      pos = writeIntLE(buf, pos, elemSize, elem.value)
+      pos = writeIntLE(buf, pos, elemSize, elem.content)
     }
     return pos
   }

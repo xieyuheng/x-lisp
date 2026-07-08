@@ -15,13 +15,13 @@ export function AddressData(name: string): AddressData {
 
 export type IntData = {
   kind: "IntData"
-  value: bigint
+  content: bigint
 }
 
-export function IntData(value: bigint): IntData {
+export function IntData(content: bigint): IntData {
   return {
     kind: "IntData",
-    value,
+    content,
   }
 }
 

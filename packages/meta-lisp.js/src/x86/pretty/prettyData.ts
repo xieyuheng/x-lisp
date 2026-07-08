@@ -6,7 +6,7 @@ export function prettyData(data: X86.Data): Ppml.Node {
     case "AddressData":
       return Ppml.prettySyntax("address", [], [Ppml.text(data.name)])
     case "IntData":
-      return Ppml.text(data.value.toString())
+      return Ppml.text(data.content.toString())
     case "StringData":
       return Ppml.text(JSON.stringify(data.content))
     case "StructData": {

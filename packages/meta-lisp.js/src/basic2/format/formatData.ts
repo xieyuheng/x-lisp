@@ -5,9 +5,9 @@ export function formatData(data: B.Data): string {
     case "AddressData":
       return `(address ${data.name})`
     case "IntData":
-      return data.value.toString()
+      return data.content.toString()
     case "FloatData":
-      return data.value.toString()
+      return data.content.toString()
     case "StringData":
       return JSON.stringify(data.content)
     case "StructData": {

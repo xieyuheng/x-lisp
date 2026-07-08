@@ -18,20 +18,20 @@ export function AddressData(name: string): AddressData {
 
 export type IntData = {
   kind: "IntData"
-  value: bigint
+  content: bigint
 }
 
-export function IntData(value: bigint): IntData {
-  return { kind: "IntData", value }
+export function IntData(content: bigint): IntData {
+  return { kind: "IntData", content }
 }
 
 export type FloatData = {
   kind: "FloatData"
-  value: number
+  content: number
 }
 
-export function FloatData(value: number): FloatData {
-  return { kind: "FloatData", value }
+export function FloatData(content: number): FloatData {
+  return { kind: "FloatData", content }
 }
 
 export type StringData = {

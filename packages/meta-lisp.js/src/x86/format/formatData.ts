@@ -5,7 +5,7 @@ export function formatData(data: X86.Data): string {
     case "AddressData":
       return `(address ${data.name})`
     case "IntData":
-      return data.value.toString()
+      return data.content.toString()
     case "StringData":
       return JSON.stringify(data.content)
     case "StructData": {

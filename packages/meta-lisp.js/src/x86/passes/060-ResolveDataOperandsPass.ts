@@ -23,7 +23,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
   const data = op.data
 
   if (data.kind === "IntData") {
-    return X86.ImmOperand(data.value)
+    return X86.ImmOperand(data.content)
   }
 
   if (data.kind === "StringData") {

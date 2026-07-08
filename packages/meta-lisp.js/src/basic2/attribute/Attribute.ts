@@ -11,56 +11,56 @@ export type Attribute =
 
 export type TypeAttribute = {
   kind: "TypeAttribute"
-  value: Type
+  content: Type
 }
 
-export function TypeAttribute(value: Type): TypeAttribute {
-  return { kind: "TypeAttribute", value }
+export function TypeAttribute(content: Type): TypeAttribute {
+  return { kind: "TypeAttribute", content }
 }
 
 export type SymbolAttribute = {
   kind: "SymbolAttribute"
-  value: string
+  content: string
 }
 
-export function SymbolAttribute(value: string): SymbolAttribute {
-  return { kind: "SymbolAttribute", value }
+export function SymbolAttribute(content: string): SymbolAttribute {
+  return { kind: "SymbolAttribute", content }
 }
 
 export type IntAttribute = {
   kind: "IntAttribute"
-  value: bigint
+  content: bigint
 }
 
-export function IntAttribute(value: bigint): IntAttribute {
-  return { kind: "IntAttribute", value }
+export function IntAttribute(content: bigint): IntAttribute {
+  return { kind: "IntAttribute", content }
 }
 
 export type FloatAttribute = {
   kind: "FloatAttribute"
-  value: number
+  content: number
 }
 
-export function FloatAttribute(value: number): FloatAttribute {
-  return { kind: "FloatAttribute", value }
+export function FloatAttribute(content: number): FloatAttribute {
+  return { kind: "FloatAttribute", content }
 }
 
 export type BoolAttribute = {
   kind: "BoolAttribute"
-  value: boolean
+  content: boolean
 }
 
-export function BoolAttribute(value: boolean): BoolAttribute {
-  return { kind: "BoolAttribute", value }
+export function BoolAttribute(content: boolean): BoolAttribute {
+  return { kind: "BoolAttribute", content }
 }
 
 export type StringAttribute = {
   kind: "StringAttribute"
-  value: string
+  content: string
 }
 
-export function StringAttribute(value: string): StringAttribute {
-  return { kind: "StringAttribute", value }
+export function StringAttribute(content: string): StringAttribute {
+  return { kind: "StringAttribute", content }
 }
 
 export type ListAttribute = {

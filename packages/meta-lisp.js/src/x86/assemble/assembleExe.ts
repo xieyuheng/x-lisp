@@ -97,7 +97,7 @@ export function assembleExe(mod: Mod): Uint8Array {
         let message = `define-space size must be integer, got: ${size.kind}`
         throw new Error(message)
       }
-      spaceSize += Number(size.value)
+      spaceSize += Number(size.content)
     }
   }
 

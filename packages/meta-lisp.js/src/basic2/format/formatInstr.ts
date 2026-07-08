@@ -22,17 +22,17 @@ export function formatInstr(instr: B.Instr): string {
 function formatAttribute(attribute: B.Attribute): string {
   switch (attribute.kind) {
     case "TypeAttribute":
-      return formatType(attribute.value)
+      return formatType(attribute.content)
     case "SymbolAttribute":
-      return attribute.value
+      return attribute.content
     case "IntAttribute":
-      return attribute.value.toString()
+      return attribute.content.toString()
     case "FloatAttribute":
-      return attribute.value.toString()
+      return attribute.content.toString()
     case "BoolAttribute":
-      return `(${attribute.value})`
+      return `(${attribute.content})`
     case "StringAttribute":
-      return JSON.stringify(attribute.value)
+      return JSON.stringify(attribute.content)
     case "ListAttribute":
       return `(${attribute.elements.map(formatAttribute).join(" ")})`
   }
