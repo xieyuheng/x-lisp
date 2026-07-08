@@ -24,7 +24,8 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
 
     case "define-function": {
       const name = S.asSymbolSexp(elements[1]).content
-      const blocks = elements.slice(2).map(parseBlock)
+      const parsedBlocks = elements.slice(2).map(parseBlock)
+      const blocks = new Map(parsedBlocks.map((b) => [b.label, b]))
       return B.FunctionDefinition(name, blocks)
     }
 
@@ -36,7 +37,8 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
 
     case "define-setup": {
       const name = S.asSymbolSexp(elements[1]).content
-      const blocks = elements.slice(2).map(parseBlock)
+      const parsedBlocks = elements.slice(2).map(parseBlock)
+      const blocks = new Map(parsedBlocks.map((b) => [b.label, b]))
       return B.SetupDefinition(name, blocks)
     }
 

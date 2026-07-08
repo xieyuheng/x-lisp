@@ -26,12 +26,12 @@ export function StructDefinition(
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
   name: string
-  blocks: Array<Block>
+  blocks: Map<string, Block>
 }
 
 export function FunctionDefinition(
   name: string,
-  blocks: Array<Block>,
+  blocks: Map<string, Block>,
 ): FunctionDefinition {
   return { kind: "FunctionDefinition", name, blocks }
 }
@@ -52,12 +52,12 @@ export function VariableDefinition(
 export type SetupDefinition = {
   kind: "SetupDefinition"
   name: string
-  blocks: Array<Block>
+  blocks: Map<string, Block>
 }
 
 export function SetupDefinition(
   name: string,
-  blocks: Array<Block>,
+  blocks: Map<string, Block>,
 ): SetupDefinition {
   return { kind: "SetupDefinition", name, blocks }
 }

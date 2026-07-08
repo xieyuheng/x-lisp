@@ -30,19 +30,11 @@ function explicateControlDefinition(
 ): Array<B.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
-      return [
-        B.ExternFunctionDefinition(
-          definitionQualifiedName(definition),
-        ),
-      ]
+      return [B.ExternFunctionDefinition(definitionQualifiedName(definition))]
     }
 
     case "PrimitiveVariableDeclaration": {
-      return [
-        B.ExternVariableDefinition(
-          definitionQualifiedName(definition),
-        ),
-      ]
+      return [B.ExternVariableDefinition(definitionQualifiedName(definition))]
     }
 
     // - do not generate code for type.
@@ -53,11 +45,11 @@ function explicateControlDefinition(
     }
 
     case "FunctionDefinition": {
-            return []
+      return []
     }
 
     case "TestDefinition": {
-            return []
+      return []
     }
 
     case "VariableDefinition": {

@@ -13,7 +13,9 @@ export function formatDefinition(definition: B.Definition): string {
     }
 
     case "FunctionDefinition": {
-      const blockTexts = definition.blocks.map(formatBlock).join(" ")
+      const blockTexts = Array.from(definition.blocks.values())
+        .map(formatBlock)
+        .join(" ")
       return `(define-function ${definition.name} ${blockTexts})`
     }
 
@@ -25,7 +27,9 @@ export function formatDefinition(definition: B.Definition): string {
     }
 
     case "SetupDefinition": {
-      const blockTexts = definition.blocks.map(formatBlock).join(" ")
+      const blockTexts = Array.from(definition.blocks.values())
+        .map(formatBlock)
+        .join(" ")
       return `(define-setup ${definition.name} ${blockTexts})`
     }
 

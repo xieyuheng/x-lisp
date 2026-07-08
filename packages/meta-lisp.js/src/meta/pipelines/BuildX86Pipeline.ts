@@ -3,9 +3,6 @@ import {
   fileWriteln,
   openOutputFile,
 } from "@xieyuheng/std.js/file"
-import { systemShellRun } from "@xieyuheng/std.js/system"
-import Path from "node:path"
-import { fileURLToPath } from "node:url"
 import * as B from "../../basic2/index.ts"
 import * as M from "../index.ts"
 

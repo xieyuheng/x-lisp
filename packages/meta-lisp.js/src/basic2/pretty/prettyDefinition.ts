@@ -17,7 +17,9 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     }
 
     case "FunctionDefinition": {
-      const blockNodes = definition.blocks.map(prettyBlock)
+      const blockNodes = Array.from(definition.blocks.values()).map(
+        prettyBlock,
+      )
       return Ppml.prettyVertical(
         "define-function",
         [Ppml.text(definition.name)],
@@ -34,7 +36,9 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     }
 
     case "SetupDefinition": {
-      const blockNodes = definition.blocks.map(prettyBlock)
+      const blockNodes = Array.from(definition.blocks.values()).map(
+        prettyBlock,
+      )
       return Ppml.prettyVertical(
         "define-setup",
         [Ppml.text(definition.name)],
