@@ -133,7 +133,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 | `value-t`   | 带有 tag 的动态值 |
 
 - `pointer-t` 是 **opaque 指针** -- 不带元素类型。
-  类型信息由 `load` / `store` 指令的 `:content-type` 属性携带。
+  读写类型由操作数 cell 的类型推导。
 - `value-t` 是 tagged dynamic value。
   所有 meta-lisp 值在 IR 中统一用此类型。
 
@@ -270,7 +270,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
   (block entry
     (= g (address :name global-counter))
     (= zero (int64 :content 0))
-    (store g zero :content-type int64-t)
+    (store g zero)
     (return)))
 
 (claim main (-> int64-t))
