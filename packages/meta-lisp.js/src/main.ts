@@ -18,7 +18,7 @@ const router = cli.createRouter("meta-lisp.js", version)
 
 router.defineRoutes([
   "check --config --dump",
-  "build-xvm --config --dump --basic",
+  "build-xvm --config --dump",
   "test-xvm  --config --profile --builtin",
   "format-basic2 <input>",
   "assemble-x86-flat <input> <output>",
@@ -41,7 +41,6 @@ router.defineHandlers({
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    if ("--basic" in options) pkg.config.compiler.basic = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     M.BuildXvmPipeline(pkg)
   },
