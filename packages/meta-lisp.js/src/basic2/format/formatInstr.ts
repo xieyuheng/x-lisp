@@ -31,6 +31,8 @@ function formatAttribute(attribute: B.Attribute): string {
       return attribute.value.toString()
     case "BoolAttribute":
       return `(${attribute.value})`
+    case "StringAttribute":
+      return JSON.stringify(attribute.value)
     case "ListAttribute":
       return `(${attribute.elements.map(formatAttribute).join(" ")})`
   }

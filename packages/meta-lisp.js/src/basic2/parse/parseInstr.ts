@@ -99,6 +99,10 @@ function parseAttribute(sexp: S.Sexp): B.Attribute {
     return B.FloatAttribute(sexp.content)
   }
 
+  if (S.isStringSexp(sexp)) {
+    return B.StringAttribute(sexp.content)
+  }
+
   if (S.isListSexp(sexp)) {
     if (sexp.elements.length === 1 && S.isSymbolSexp(sexp.elements[0])) {
       const name = sexp.elements[0].content

@@ -6,6 +6,7 @@ export type Attribute =
   | IntAttribute
   | FloatAttribute
   | BoolAttribute
+  | StringAttribute
   | ListAttribute
 
 export type TypeAttribute = {
@@ -51,6 +52,15 @@ export type BoolAttribute = {
 
 export function BoolAttribute(value: boolean): BoolAttribute {
   return { kind: "BoolAttribute", value }
+}
+
+export type StringAttribute = {
+  kind: "StringAttribute"
+  value: string
+}
+
+export function StringAttribute(value: string): StringAttribute {
+  return { kind: "StringAttribute", value }
 }
 
 export type ListAttribute = {
