@@ -72,6 +72,7 @@ export const knownOps: Record<string, ArrowType> = {
   float64: ArrowType([], Float64Type()),
   bool: ArrowType([], BoolType()),
   address: ArrowType([], PointerType()),
+  "function-value": ArrowType([], ValueType()),
   symbol: ArrowType([], PointerType()),
   keyword: ArrowType([], PointerType()),
   string: ArrowType([], PointerType()),
