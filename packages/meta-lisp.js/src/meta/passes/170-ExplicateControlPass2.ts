@@ -1,6 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../../basic2/index.ts"
 import * as M from "../index.ts"
+import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
 
 export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
@@ -97,9 +98,7 @@ function generateLabel(
   return label
 }
 
-type ExplicateMode = "InTail" | "InBody"
-
-function explicateSimpleTerm(
+function explicateInBody(
   state: State,
   term: M.Term,
 ): [Array<B.Instr>, B.Cell] {
@@ -163,6 +162,7 @@ function explicateSimpleTerm(
     }
 
     case "QualifiedVarTerm": {
+      // TODO handle function
       const prefix = resolvePackageId(state.pkg, term.pkgName)
       const address = generateCell(state, "address")
       const result = generateCell(state, "const")
@@ -175,13 +175,19 @@ function explicateSimpleTerm(
       return [instrs, result]
     }
 
-    // case "ApplyTerm": {
-    //   return B.ApplyExp(
-    //     toBasicExp(term.target, pkg),
-    //     term.args.map((arg) => toBasicExp(arg, pkg)),
-    //     term.location,
-    //   )
-    // }
+    case "ApplyTerm": {
+      // TODO handle direct call
+      const pairs = term.args.map((arg) => explicateInBody(state, arg))
+      const [argInstrGroups, args] = arrayUnzip(pairs)
+      const [targetInstrs, target] = explicateInBody(state, term.target)
+      const result = generateCell(state, "result")
+      const instrs = [
+        ...arrayConcat(argInstrGroups),
+        ...targetInstrs,
+        B.Instr([result], "apply", [target, ...args], {}),
+      ]
+      return [instrs, result]
+    }
 
     default: {
       let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
