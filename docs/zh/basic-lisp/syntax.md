@@ -252,13 +252,13 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ```scheme
 (define-variable <name>)        ;; 无初始化，或运行时初始化
-(define-variable <name> <exp>)  ;; 静态初始化
+(define-variable <name> <data>)  ;; 静态初始化
 ```
 
 定义全局变量。
 
 - 完整类型由同名 `(claim)` 提供。
-- 带 `<exp>` 时以数据表达式描述数据段内存布局，静态初始化。
+- 带 `<data>` 时以数据表达式描述数据段内存布局，静态初始化。
 
 ```scheme
 (claim origin point-t)
@@ -344,7 +344,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ```scheme
 (struct <type-name>
-  (<field> <exp>)
+  (<field> <data>)
   ...)
 ```
 
@@ -362,7 +362,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 ## (pointer)
 
 ```scheme
-(pointer <exp>)
+(pointer <data>)
 ```
 
 指向内联数据的指针，数据序列化在指针之后。
@@ -377,7 +377,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 ## (array)
 
 ```scheme
-(array <exp> ...)
+(array <data> ...)
 ```
 
 定长有序数组。

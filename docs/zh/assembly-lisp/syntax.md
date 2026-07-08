@@ -31,14 +31,13 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
 - [类型](#类型)
   - [具名类型](#具名类型)
   - [数组类型](#数组类型)
-- [表达式](#表达式)
+- [数据](#数据)
   - [整数](#整数)
   - [字符串](#字符串)
   - [(struct)](#struct)
   - [(pointer)](#pointer)
   - [(array)](#array)
   - [符号地址](#符号地址)
-- [数据值](#数据值)
 - [位移](#位移)
   - [整数位移](#整数位移)
   - [(offset-of)](#offset-of)
@@ -117,9 +116,9 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (array-t pointer-t 8)
 ```
 
-# 表达式
+# 数据
 
-表达式（exp）是求值前的 AST——用户在源码中书写的形式，带有位置信息。
+数据（data）描述数据段内存布局——用户在源码中书写的编译期常量形式。
 
 ## 整数
 
@@ -148,7 +147,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 ## (struct)
 
 ```scheme
-(struct <name> (<field> <exp>) ...)
+(struct <name> (<field> <data>) ...)
 ```
 
 struct 字面量。
@@ -168,10 +167,10 @@ struct 字面量。
 ## (pointer)
 
 ```scheme
-(pointer <exp>)
+(pointer <data>)
 ```
 
-编译期创建匿名 data slot 存放 `<exp>`，求值为指向它的指针。
+编译期创建匿名 data slot 存放 `<data>`，产出为指向它的指针。
 
 ```scheme
 (pointer (struct node-t (value 1) (next 0)))
@@ -181,7 +180,7 @@ struct 字面量。
 ## (array)
 
 ```scheme
-(array <exp> ...)
+(array <data> ...)
 ```
 
 数组字面量。
@@ -200,15 +199,7 @@ origin        ;; 取 origin 的地址
 factorial     ;; 取 factorial 的地址
 ```
 
-# 数据值
-
-数据值（value）是表达式求值后的结果——布局阶段使用，不带源码位置。
-
-- 整数、字符串、地址字面量直接求值到对应 value。
-- struct / pointer / array 递归求值所有子表达式。
-- 裸符号先查 env，再查 mod 定义：是数据/代码/空间定义则返回 `address-value`；是类型定义则返回 `type-value`。
-
-**自描述与 opaque 的强制**：因为没有 `claim`，`define-data` 的类型完全由值自身推断：
+**类型推断**：因为没有 `claim`，`define-data` 的类型完全由数据自身推断：
 
 - `(struct <name> ...)` → 该 struct 类型；struct 字面量必须带类型名。
 - `(pointer ...)` / 裸符号 → `pointer-t`。
@@ -395,11 +386,11 @@ factorial     ;; 取 factorial 的地址
 
 ## data-operand
 
-当操作数位置不匹配任何已知形式时，fallback 解析为 `exp-t` 并包装为 `data-operand`。
+当操作数位置不匹配任何已知形式时，fallback 解析为 `data-t` 并包装为 `data-operand`。
 
 预编码阶段将 `data-operand` 解析为具体 operand：
 
-| `exp` 类型      | 解析为               | 编码               |
+| `data` 类型     | 解析为               | 编码               |
 |-----------------|----------------------|--------------------|
 | 整数            | `imm-operand`        | 立即数             |
 | 字符串          | 匿名 data slot + `deref-operand` | `[rip + disp32]` |
@@ -472,10 +463,10 @@ factorial     ;; 取 factorial 的地址
 ## (define-data)
 
 ```scheme
-(define-data <name> <value>)
+(define-data <name> <data>)
 ```
 
-定义一个具名数据块。`<value>` 是一个 `exp-t`，类型由值自描述推断（无 `claim`）。
+定义一个具名数据块。`<data>` 是一个 `data-t`，类型由值自描述推断（无 `claim`）。
 
 ```scheme
 (define-data greeting "hello")
@@ -577,7 +568,7 @@ factorial     ;; 取 factorial 的地址
 ```
 
 - **SubmitPass**：把 `Stmt` 转换为 `Definition` 并注册到 `Mod`。
-- **CheckPass**：遍历所有数据定义，推断类型并验证 `exp` 与类型匹配。
+- **CheckPass**：遍历所有数据定义，推断类型并验证 `data` 与类型匹配。
 - **ResolveDisplacements**：把所有 `offset-of` 替换为具体整数位移。
 - **ResolveDataOperands**：遍历所有指令，把 `data-operand` 求值并替换为具体 operand。仅 `.exe` 模式运行。
 - **assembleExe**：代码布局 + 数据布局 + 重定位 → 最终二进制。
@@ -612,5 +603,5 @@ uint16_t arity = meta->arity;
 - 重定位分四类：
   - **rel32 标号**：`jmp` / `call` / `j` 的相对位移。
   - **内部指针**：data 内部 `(pointer ...)` 的占位 → 匿名 slot 偏移。
-  - **数据地址**：裸符号（AddressExp）→ 目标 label 地址。
+  - **数据地址**：裸符号（AddressData）→ 目标 label 地址。
   - **外部符号**：`(external-label ...)` → 外部地址。
