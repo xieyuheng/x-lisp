@@ -46,15 +46,13 @@ function explicateDefinition(
     }
 
     case "FunctionDefinition": {
-      const state = createState(definition.mod.pkg)
+      const usedNames = M.termOccurredNames(definition.body)
+      const state = createState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = explicateInTail(state, definition.body)
       return [
-        B.FunctionDefinition(
-          definitionQualifiedName(definition),
-          state.blocks,
-        ),
+        B.FunctionDefinition(definitionQualifiedName(definition), state.blocks),
       ]
     }
 
@@ -70,23 +68,21 @@ function explicateDefinition(
 
 type State = {
   pkg: M.Package
-  cellCount: number
+  usedNames: Set<string>
   blocks: Map<string, B.Block>
 }
 
-function createState(pkg: M.Package): State {
-  return { pkg, cellCount: 0, blocks: new Map() }
+function createState(pkg: M.Package, usedNames: Set<string>): State {
+  return { pkg, usedNames, blocks: new Map() }
 }
 
 function addBlock(state: State, block: B.Block): void {
   state.blocks.set(block.label, block)
 }
 
-function generateCell(
-  state: State,
-  name: string,
-): B.Cell {
-  const id = `${name}.${++state.cellCount}`
+function generateCell(state: State, name: string): B.Cell {
+  const id = M.generateRelativeFreshName(state.usedNames, name)
+  state.usedNames.add(id)
   return B.Cell(id)
 }
 
@@ -100,6 +96,55 @@ function generateLabel(
   addBlock(state, block)
   return label
 }
+
+// function explicateSimpleTerm(state: State, term: M.Term): [Array<B.Instr>, B.Cell] {
+//   switch (term.kind) {
+//     case "SymbolTerm": {
+//       const cell = generateCell("symbol")
+//       return [B.Instr(term.content, term.location)]
+//     }
+
+//     case "KeywordTerm": {
+//       return B.KeywordExp(term.content, term.location)
+//     }
+
+//     case "StringTerm": {
+//       return B.StringExp(term.content, term.location)
+//     }
+
+//     case "IntTerm": {
+//       return B.IntExp(term.content, term.location)
+//     }
+
+//     case "FloatTerm": {
+//       return B.FloatExp(term.content, term.location)
+//     }
+
+//     case "VarTerm": {
+//       return B.VarExp(term.name, term.location)
+//     }
+
+//     case "QualifiedVarTerm": {
+//       const prefix = resolvePackageId(pkg, term.pkgName)
+//       return B.VarExp(`${prefix}/${term.modName}/${term.name}`, term.location)
+//     }
+
+//     case "ApplyTerm": {
+//       return B.ApplyExp(
+//         toBasicExp(term.target, pkg),
+//         term.args.map((arg) => toBasicExp(arg, pkg)),
+//         term.location,
+//       )
+//     }
+
+//     default: {
+//       let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
+//       message += `\n  term kind: ${term.kind}`
+//       message += `\n  term: ${M.formatTerm(term)}`
+//       throw new S.ErrorWithSourceLocation(message, term.location)
+//     }
+//   }
+// }
 
 function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
   if (!M.isAtomOperandTerm(term)) {

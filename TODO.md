@@ -1,5 +1,7 @@
 # basic2
 
+[meta-lisp.js] 170-ExplicateControlPass2 -- `generateCell`
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateSimpleTerm`
 [meta-lisp.js] 170-ExplicateControlPass2 -- `explicateInTail`
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
