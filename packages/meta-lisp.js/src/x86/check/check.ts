@@ -13,8 +13,7 @@ export function check(
         !isIntegerAtomTypeCtor(expectedType.name)
       ) {
         let message = `[check] expected integer type for IntData, got: ${X86.formatType(expectedType)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       return
     }
@@ -25,8 +24,7 @@ export function check(
         expectedType.name !== "string-t"
       ) {
         let message = `[check] expected string-t for StringData, got: ${X86.formatType(expectedType)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       return
     }
@@ -37,22 +35,19 @@ export function check(
         expectedType.name !== "pointer-t"
       ) {
         let message = `[check] expected pointer-t for AddressData, got: ${X86.formatType(expectedType)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       const def = X86.modLookupDefinition(mod, data.name)
       if (def === undefined) {
         let message = `[check] unknown name: ${data.name}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       if (
         def.kind === "StructDefinition" ||
         def.kind === "PrimitiveTypeDefinition"
       ) {
         let message = `[check] type name cannot be used as data address: ${data.name}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       return
     }
@@ -63,8 +58,7 @@ export function check(
         expectedType.name !== "pointer-t"
       ) {
         let message = `[check] expected pointer-t for PointerData, got: ${X86.formatType(expectedType)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       checkPointerTarget(mod, data.target)
       return
@@ -73,8 +67,7 @@ export function check(
     case "StructData": {
       if (expectedType.kind !== "NamedType") {
         let message = `[check] expected struct type for StructData, got: ${X86.formatType(expectedType)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       const typeFields = dataTypeUnfold(mod, expectedType, S.zeroLocation("check"))
 
@@ -85,13 +78,11 @@ export function check(
     case "ArrayData": {
       if (expectedType.kind !== "ArrayType") {
         let message = `[check] expected array type for ArrayData, got: ${X86.formatType(expectedType)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       if (data.elements.length !== expectedType.length) {
         let message = `[check] array length mismatch: expected ${expectedType.length}, got ${data.elements.length}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       for (const elem of data.elements) {
         check(mod, elem, expectedType.element)
@@ -100,10 +91,7 @@ export function check(
     }
 
     default: {
-      throw new S.ErrorWithSourceLocation(
-        `[check] unexpected expression kind in data`,
-        S.zeroLocation("check"),
-      )
+      throw new Error(`[check] unexpected expression kind in data`)
     }
   }
 }
@@ -116,20 +104,14 @@ export function checkFields(
   const fieldEntries = Object.entries(fields)
   if (fieldEntries.length !== typeFields.size) {
     let message = `[checkFields] field count mismatch: expected ${typeFields.size}, got ${fieldEntries.length}`
-    throw new S.ErrorWithSourceLocation(
-      message,
-      S.zeroLocation("<checkFields>"),
-    )
+      throw new Error(message)
   }
 
   for (const [expectedName, expectedType] of typeFields) {
     const fieldExp = fields[expectedName]
     if (fieldExp === undefined) {
       let message = `[checkFields] missing field: "${expectedName}"`
-      throw new S.ErrorWithSourceLocation(
-        message,
-        S.zeroLocation("<checkFields>"),
-      )
+    throw new Error(message)
     }
     check(mod, fieldExp, expectedType)
   }
@@ -142,8 +124,7 @@ export function dataTypeUnfold(
 ): Map<string, X86.Type> {
   if (dataType.kind !== "NamedType") {
     let message = `[dataTypeUnfold] expected named type for struct unfolding`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   const structDefinition = lookupStructDefinition(mod, dataType.name, S.zeroLocation("dataTypeUnfold"))
 
@@ -162,8 +143,7 @@ export function lookupStructDefinition(
   const definition = X86.modLookupDefinition(mod, name)
   if (definition === undefined || definition.kind !== "StructDefinition") {
     let message = `[lookupStructDefinition] unknown struct type: ${name}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   return definition
 }
@@ -195,8 +175,7 @@ function checkPointerTarget(mod: X86.Mod, target: X86.Data): void {
   }
 
   let message = `[check] pointer target must be (struct <name> ...) or a string literal, got: ${target.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }
 
 function namedDataType(
@@ -211,8 +190,7 @@ function namedDataType(
       definition.kind !== "PrimitiveTypeDefinition")
   ) {
     let message = `[check] unknown type: ${name}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   return X86.NamedType(definition.name)
 }
@@ -232,8 +210,7 @@ export function inferDataType(mod: X86.Mod, value: X86.Data): X86.Type {
 
     default: {
       let message = `[inferDataType] define-data value must be self-describing (named struct, pointer, address, or string), got: ${value.kind}`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
   }
 }

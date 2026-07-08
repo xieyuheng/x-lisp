@@ -40,6 +40,5 @@ export function encodeImul(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[imul] unsupported operands: dst=${dst.kind} src=${src.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
 }

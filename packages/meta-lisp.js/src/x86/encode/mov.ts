@@ -60,8 +60,7 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[mov] unsupported operand combination: dst=${dst.kind} src=${src.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
 }
 
 function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {

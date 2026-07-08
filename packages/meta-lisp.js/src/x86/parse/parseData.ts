@@ -6,13 +6,11 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
     const elements = S.asListSexp(rest).elements
     if (elements.length < 2) {
       let message = "struct requires a name and at least one field"
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     if (elements[0].kind !== "SymbolSexp") {
       let message = "struct name must be a symbol"
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     const name = S.asSymbolSexp(elements[0]).content
     const fields: Record<string, X86.Data> = {}
@@ -21,14 +19,12 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
       const fieldElements = field.elements
       if (fieldElements.length !== 2) {
         let message = "struct field must have two elements: name and value"
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       const fieldName = S.asSymbolSexp(fieldElements[0]).content
       if (fields[fieldName] !== undefined) {
         let message = `duplicate struct field: ${fieldName}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       fields[fieldName] = parseData(fieldElements[1])
     }
@@ -51,8 +47,7 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
     const elements = S.asListSexp(rest).elements
     if (elements.length !== 1) {
       let message = "(address name) takes exactly one symbol"
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     return X86.AddressData(S.asSymbolSexp(elements[0]).content
     )
@@ -60,8 +55,7 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
 
   "(cons* target args)": ({ target }, { location }) => {
     let message = `[parseData] unexpected expression form starting with: ${S.formatSexp(target)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   },
 
   data: ({ data }, { location }) => {
@@ -74,8 +68,7 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
     )
       default: {
         let message = `unexpected data: ${S.formatSexp(data)}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
     }
   },

@@ -11,8 +11,7 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
   "`(imm ,value)": ({ value }, { location }) => {
     if (value.kind !== "IntSexp") {
       let message = "imm operand requires an integer value"
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     return X86.ImmOperand(S.asIntSexp(value).content
     )
@@ -27,8 +26,7 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     const elements = S.asListSexp(rest).elements
     if (elements.length !== 1) {
       let message = `(address name) takes exactly one symbol`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     return X86.AddressOperand(S.asSymbolSexp(elements[0]).content
     )
@@ -92,8 +90,7 @@ export function parseOperand(sexp: S.Sexp): X86.Operand {
       let message =
         `unexpected symbol "${sexp.content}" in operand position; ` +
         `did you mean (address ${sexp.content}) or (var ${sexp.content})?`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     return X86.DataOperand(parseData(sexp)
     )
@@ -103,19 +100,16 @@ export function parseOperand(sexp: S.Sexp): X86.Operand {
 function parseRegName(sexp: S.Sexp): string {
   if (sexp.kind !== "ListSexp") {
     let message = `expected (reg ...), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   const elements = sexp.elements
   if (elements.length !== 2) {
     let message = `expected (reg name), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "reg") {
     let message = `expected (reg name), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   return S.asSymbolSexp(elements[1]).content
 }
@@ -128,8 +122,7 @@ function parseImmValue(sexp: S.Sexp): bigint {
     return BigInt(sexp.content)
   }
   let message = `expected integer, got: ${S.formatSexp(sexp)}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }
 
 function parseDisplacement(sexp: S.Sexp): X86.Displacement {
@@ -146,8 +139,7 @@ function parseDisplacement(sexp: S.Sexp): X86.Displacement {
     )
     }
     let message = `expected integer or (offset-of ...), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   return X86.IntDisplacement(parseImmValue(sexp)
     )
@@ -156,19 +148,16 @@ function parseDisplacement(sexp: S.Sexp): X86.Displacement {
 function parseAddressOperand(sexp: S.Sexp): X86.AddressOperand {
   if (sexp.kind !== "ListSexp") {
     let message = `expected (address name), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   const elements = sexp.elements
   if (elements.length !== 2) {
     let message = `expected (address name), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "address") {
     let message = `expected (address name), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   return X86.AddressOperand(S.asSymbolSexp(elements[1]).content
     )

@@ -96,8 +96,7 @@ export function assembleExe(mod: Mod): Uint8Array {
       const size = definition.size
       if (size.kind !== "IntData") {
         let message = `define-space size must be integer, got: ${size.kind}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       spaceSize += Number(size.value)
     }

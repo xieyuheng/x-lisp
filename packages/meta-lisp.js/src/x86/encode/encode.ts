@@ -47,7 +47,6 @@ export function encode(instr: Instr): Array<EncodedInstruction> {
       return []
     default:
       let message = `unknown instruction: ${instr.op}`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
   }
 }

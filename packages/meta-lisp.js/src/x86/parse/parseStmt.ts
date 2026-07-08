@@ -46,19 +46,16 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
 function parseBlock(sexp: S.Sexp): X86.Block {
   if (sexp.kind !== "ListSexp") {
     let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   const elements = sexp.elements
   if (elements.length < 2) {
     let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "block") {
     let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   const blockName = S.asSymbolSexp(elements[1]).content
   const instrs = elements.slice(2).map((i) => parseInstr(i))
@@ -72,8 +69,7 @@ function parseTypeFields(rest: S.Sexp): Record<string, X86.Type> {
   for (const elem of elements) {
     if (elem.kind !== "ListSexp" || elem.elements.length !== 2) {
       let message = `expected (field-name type), got: ${S.formatSexp(elem)}`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     const fieldName = S.asSymbolSexp(elem.elements[0]).content
     const type = parseType(elem.elements[1])
@@ -99,6 +95,5 @@ function parseType(sexp: S.Sexp): X86.Type {
     }
   }
   let message = `expected type name or (array-t element-type length), got: ${S.formatSexp(sexp)}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }

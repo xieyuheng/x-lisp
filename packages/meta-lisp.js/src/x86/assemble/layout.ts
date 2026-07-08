@@ -91,8 +91,7 @@ export function collectCodeLayout(
         if (instr.op === "label") {
           let message =
             "(label ...) cannot be an instruction; labels are defined by blocks"
-          throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+          throw new Error(message)
         }
 
         const encodings = encode(instr)
@@ -198,8 +197,7 @@ function unpackMetadataStruct(
 ): { structType: Type; structExp: { fields: Record<string, Data> } } {
   if (value.kind !== "PointerData" || value.target.kind !== "StructData") {
     let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
   const structExp = value.target
   return {
@@ -282,8 +280,7 @@ function emitFieldsTree(
     const fieldType = fieldTypes.get(name)
     if (!fieldType) {
       let message = `unknown field: ${name}`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     pos = emitFieldTree(
       mod,
@@ -399,16 +396,14 @@ function emitFieldTree(
   if (fieldData.kind === "ArrayData") {
     if (fieldType.kind !== "ArrayType") {
       let message = `[emitFieldTree] expected array type for array value`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     let pos = offset
     const elemSize = typeSize(mod, fieldType.element)
     for (const elem of fieldData.elements) {
       if (elem.kind !== "IntData") {
         let message = `[emitFieldTree] array element must be integer, got: ${elem.kind}`
-        throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+        throw new Error(message)
       }
       pos = writeIntLE(buf, pos, elemSize, elem.value)
     }
@@ -416,7 +411,7 @@ function emitFieldTree(
   }
 
   let message = `unsupported data value`
-  throw new S.ErrorWithSourceLocation(message, S.zeroLocation("emitFieldTree"))
+  throw new Error(message)
 }
 
 function emitPointerTarget(
@@ -448,8 +443,7 @@ function emitPointerTarget(
   }
 
   let message = `unsupported pointer target: ${targetData.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }
 
 function computeFieldsTreeSize(
@@ -464,8 +458,7 @@ function computeFieldsTreeSize(
     const fieldType = fieldTypes.get(name)
     if (!fieldType) {
       let message = `unknown field: ${name}`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     const r = computeFieldTreeSize(mod, fieldType, data)
     total += r.fixed
@@ -513,7 +506,7 @@ function computeFieldTreeSize(
   }
 
   let message = `unsupported data value`
-  throw new S.ErrorWithSourceLocation(message, S.zeroLocation("computeFieldTreeSize"))
+  throw new Error(message)
 }
 
 function computePointerTargetSize(
@@ -533,8 +526,7 @@ function computePointerTargetSize(
   }
 
   let message = `unsupported pointer target: ${targetData.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }
 
 export function offsetOf(

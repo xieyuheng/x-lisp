@@ -16,14 +16,12 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
   const ext = EXT[instr.op]
   if (ext === undefined) {
     let message = `unknown shift op: ${instr.op}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
 
   if (dst.kind !== "RegOperand") {
     let message = `[${instr.op}] dst must be register, got: ${dst.kind}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
 
   if (src.kind === "RegOperand" && src.name === "rcx") {
@@ -35,8 +33,7 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[${instr.op}] unsupported src operand: ${src.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }
 
 function encodeShiftCl(dstReg: string, ext: number): EncodedInstruction {

@@ -8,8 +8,7 @@ export const parseInstr: S.Router<X86.Instr> = S.createRouter<X86.Instr>({
     if (opName === "label") {
       let message =
         "(label ...) cannot be an instruction; labels are defined by blocks"
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
     const ops = S.asListSexp(operands).elements.map((o) => parseOperand(o))
     return X86.Instr(opName, ops

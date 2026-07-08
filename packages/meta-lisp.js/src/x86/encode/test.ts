@@ -24,6 +24,5 @@ export function encodeTest(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[test] unsupported operands: dst=${dst.kind} src=${src.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
 }

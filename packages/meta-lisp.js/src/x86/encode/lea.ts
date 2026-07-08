@@ -12,8 +12,7 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
 
   if (dst.kind !== "RegOperand") {
     let message = `[lea] dst must be register, got: ${dst.kind}`
-    throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+    throw new Error(message)
   }
 
   if (src.kind === "RegDerefOperand") {
@@ -25,8 +24,7 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[lea] unsupported src operand: ${src.kind}`
-  throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+  throw new Error(message)
 }
 
 function encodeLeaRegDeref(

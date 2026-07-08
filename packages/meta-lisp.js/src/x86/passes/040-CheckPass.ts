@@ -13,8 +13,7 @@ function checkDuplicateNames(mod: X86.Mod): void {
       Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1
     ) {
       let message = `[CheckPass] duplicate definition: ${name}`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
   }
 }
@@ -34,8 +33,7 @@ function checkMetadataTargets(mod: X86.Mod): void {
       targetDefinition.kind !== "CodeDefinition"
     ) {
       let message = `[CheckPass] define-metadata target "${target}" is not a define-code`
-      throw new S.ErrorWithSourceLocation(message
-    , S.zeroLocation("x86"))
+      throw new Error(message)
     }
 
     X86.check(mod, meta.value, X86.inferDataType(mod, meta.value))
