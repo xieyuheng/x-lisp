@@ -36,7 +36,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
   - [(define-function)](#define-function)
   - [(define-variable)](#define-variable)
   - [(define-struct)](#define-struct)
-- [数据表达式](#数据表达式)
+- [数据](#数据)
   - [裸字面量](#裸字面量)
   - [(address)](#address)
   - [(struct)](#struct)
@@ -258,7 +258,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 定义全局变量。
 
 - 完整类型由同名 `(claim)` 提供。
-- 带 `<data>` 时以数据表达式描述数据段内存布局，静态初始化。
+- 带 `<data>` 时以数据描述数据段内存布局，静态初始化。
 
 ```scheme
 (claim origin point-t)
@@ -296,9 +296,9 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
   (title pointer-t))
 ```
 
-# 数据表达式
+# 数据
 
-数据表达式用于 `(define-variable)`，描述数据段内存布局。
+数据用于 `(define-variable)`，描述变量所绑定的静态数据。
 
 ## 裸字面量
 
@@ -348,9 +348,9 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
   ...)
 ```
 
-描述 struct 实例的内存布局。`<field>` 的值是递归的数据表达式。
+描述 struct 实例的内存布局。
 
-`<type-name>` 必选。
+例如：
 
 ```scheme
 (define-variable origin
@@ -365,7 +365,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 (pointer <data>)
 ```
 
-指向内联数据的指针，数据序列化在指针之后。
+指向匿名数据的指针。
 
 ```scheme
 (pointer
