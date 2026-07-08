@@ -9,7 +9,7 @@ export function ExplicateControlPass(pkg: M.Package): B.Mod {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
-        for (const basicDefinition of explicateControlDefinition(
+        for (const basicDefinition of explicateDefinition(
           basicMod,
           definition,
         )) {
@@ -26,7 +26,7 @@ function definitionQualifiedName(definition: M.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
-function explicateControlDefinition(
+function explicateDefinition(
   basicMod: B.Mod,
   definition: M.Definition,
 ): Array<B.Definition> {
@@ -63,7 +63,7 @@ function explicateControlDefinition(
       const state = createState(definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
-      block.instrs = explicateControlInTail(state, definition.body)
+      block.instrs = explicateInTail(state, definition.body)
       return [
         B.FunctionDefinition(
           basicMod,
@@ -79,7 +79,7 @@ function explicateControlDefinition(
       const state = createState(definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
-      block.instrs = explicateControlInTail(state, definition.body)
+      block.instrs = explicateInTail(state, definition.body)
       return [
         B.TestDefinition(
           basicMod,
@@ -94,7 +94,7 @@ function explicateControlDefinition(
       const state = createState(definition.mod.pkg)
       const block = B.Block("body", [], definition.location)
       addBlock(state, block)
-      block.instrs = explicateControlInTail(state, definition.body)
+      block.instrs = explicateInTail(state, definition.body)
       return [
         B.VariableDefinition(
           basicMod,
@@ -186,36 +186,36 @@ function resolvePackageId(pkg: M.Package, pkgName: string): string {
   return dep.id
 }
 
-function explicateControlInTail(state: State, term: M.Term): Array<B.Instr> {
+function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
   if (!M.isAtomOperandTerm(term)) {
-    let message = `[explicateControlInTail] expect AtomOperandTerm`
+    let message = `[explicateInTail] expect AtomOperandTerm`
     throw new S.ErrorWithSourceLocation(message, term.location)
   }
 
   switch (term.kind) {
     case "Let1Term": {
-      return explicateControlInLet1(
+      return explicateInLet1(
         state,
         term.name,
         term.rhs,
-        explicateControlInTail(state, term.body),
+        explicateInTail(state, term.body),
       )
     }
 
     case "Begin1Term": {
-      return explicateControlInBegin1(
+      return explicateInBegin1(
         state,
         term.head,
-        explicateControlInTail(state, term.body),
+        explicateInTail(state, term.body),
       )
     }
 
     case "IfTerm": {
-      return explicateControlInIf(
+      return explicateInIf(
         state,
         term.condition,
-        explicateControlInTail(state, term.consequent),
-        explicateControlInTail(state, term.alternative),
+        explicateInTail(state, term.consequent),
+        explicateInTail(state, term.alternative),
       )
     }
 
@@ -225,7 +225,7 @@ function explicateControlInTail(state: State, term: M.Term): Array<B.Instr> {
   }
 }
 
-function explicateControlInLet1(
+function explicateInLet1(
   state: State,
   name: string,
   rhs: M.Term,
@@ -233,31 +233,31 @@ function explicateControlInLet1(
 ): Array<B.Instr> {
   switch (rhs.kind) {
     case "Let1Term": {
-      return explicateControlInLet1(
+      return explicateInLet1(
         state,
         rhs.name,
         rhs.rhs,
-        explicateControlInLet1(state, name, rhs.body, cont),
+        explicateInLet1(state, name, rhs.body, cont),
       )
     }
 
     case "Begin1Term": {
-      return explicateControlInBegin1(
+      return explicateInBegin1(
         state,
         rhs.head,
-        explicateControlInLet1(state, name, rhs.body, cont),
+        explicateInLet1(state, name, rhs.body, cont),
       )
     }
 
     case "IfTerm": {
       const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
-      return explicateControlInIf(
+      return explicateInIf(
         state,
         rhs.condition,
-        explicateControlInLet1(state, name, rhs.consequent, [
+        explicateInLet1(state, name, rhs.consequent, [
           B.GotoInstr(letBodyLabel, rhs.location),
         ]),
-        explicateControlInLet1(state, name, rhs.alternative, [
+        explicateInLet1(state, name, rhs.alternative, [
           B.GotoInstr(letBodyLabel, rhs.location),
         ]),
       )
@@ -272,38 +272,38 @@ function explicateControlInLet1(
   }
 }
 
-function explicateControlInBegin1(
+function explicateInBegin1(
   state: State,
   head: M.Term,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
     case "Let1Term": {
-      return explicateControlInLet1(
+      return explicateInLet1(
         state,
         head.name,
         head.rhs,
-        explicateControlInBegin1(state, head.body, cont),
+        explicateInBegin1(state, head.body, cont),
       )
     }
 
     case "Begin1Term": {
-      return explicateControlInBegin1(
+      return explicateInBegin1(
         state,
         head.head,
-        explicateControlInBegin1(state, head.body, cont),
+        explicateInBegin1(state, head.body, cont),
       )
     }
 
     case "IfTerm": {
       const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
-      return explicateControlInIf(
+      return explicateInIf(
         state,
         head.condition,
-        explicateControlInBegin1(state, head.consequent, [
+        explicateInBegin1(state, head.consequent, [
           B.GotoInstr(letBodyLabel, head.location),
         ]),
-        explicateControlInBegin1(state, head.alternative, [
+        explicateInBegin1(state, head.alternative, [
           B.GotoInstr(letBodyLabel, head.location),
         ]),
       )
@@ -318,7 +318,7 @@ function explicateControlInBegin1(
   }
 }
 
-function explicateControlInIf(
+function explicateInIf(
   state: State,
   condition: M.Term,
   thenCont: Array<B.Instr>,
@@ -369,7 +369,7 @@ function explicateControlInIf(
         condition.args.length === 1
       ) {
         const [negatedCondition] = condition.args
-        return explicateControlInIf(state, negatedCondition, elseCont, thenCont)
+        return explicateInIf(state, negatedCondition, elseCont, thenCont)
       }
 
       return [
@@ -383,19 +383,19 @@ function explicateControlInIf(
     }
 
     case "Let1Term": {
-      return explicateControlInLet1(
+      return explicateInLet1(
         state,
         condition.name,
         condition.rhs,
-        explicateControlInIf(state, condition.body, thenCont, elseCont),
+        explicateInIf(state, condition.body, thenCont, elseCont),
       )
     }
 
     case "Begin1Term": {
-      return explicateControlInBegin1(
+      return explicateInBegin1(
         state,
         condition.head,
-        explicateControlInIf(state, condition.body, thenCont, elseCont),
+        explicateInIf(state, condition.body, thenCont, elseCont),
       )
     }
 
@@ -412,16 +412,16 @@ function explicateControlInIf(
           condition.location,
         ),
       ]
-      return explicateControlInIf(
+      return explicateInIf(
         state,
         condition.condition,
-        explicateControlInIf(state, condition.consequent, thenCont, elseCont),
-        explicateControlInIf(state, condition.alternative, thenCont, elseCont),
+        explicateInIf(state, condition.consequent, thenCont, elseCont),
+        explicateInIf(state, condition.alternative, thenCont, elseCont),
       )
     }
 
     default: {
-      let message = `[ExplicateControlPass] [explicateControlInIf] unhandled condition`
+      let message = `[ExplicateControlPass] [explicateInIf] unhandled condition`
       message += `\n  condition: ${M.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }

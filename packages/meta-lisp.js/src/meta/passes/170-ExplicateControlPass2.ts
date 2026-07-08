@@ -8,7 +8,7 @@ export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
-        for (const basicDefinition of explicateControlDefinition(
+        for (const basicDefinition of explicateDefinition(
           basicMod,
           definition,
         )) {
@@ -25,7 +25,7 @@ function definitionQualifiedName(definition: M.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
-function explicateControlDefinition(
+function explicateDefinition(
   basicMod: B.Mod,
   definition: M.Definition,
 ): Array<B.Definition> {
@@ -49,7 +49,7 @@ function explicateControlDefinition(
       const state = createState(definition.mod.pkg)
       const block = B.Block("body", [])
       addBlock(state, block)
-      block.instrs = explicateControlInTail(state, definition.body)
+      block.instrs = explicateInTail(state, definition.body)
       return [
         B.FunctionDefinition(
           definitionQualifiedName(definition),
@@ -70,15 +70,24 @@ function explicateControlDefinition(
 
 type State = {
   pkg: M.Package
+  cellCount: number
   blocks: Map<string, B.Block>
 }
 
 function createState(pkg: M.Package): State {
-  return { pkg, blocks: new Map() }
+  return { pkg, cellCount: 0, blocks: new Map() }
 }
 
 function addBlock(state: State, block: B.Block): void {
   state.blocks.set(block.label, block)
+}
+
+function generateCell(
+  state: State,
+  name: string,
+): B.Cell {
+  const id = `${name}.${++state.cellCount}`
+  return B.Cell(id)
 }
 
 function generateLabel(
@@ -92,9 +101,9 @@ function generateLabel(
   return label
 }
 
-function explicateControlInTail(state: State, term: M.Term): Array<B.Instr> {
+function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
   if (!M.isAtomOperandTerm(term)) {
-    let message = `[explicateControlInTail] expect AtomOperandTerm`
+    let message = `[explicateInTail] expect AtomOperandTerm`
     throw new S.ErrorWithSourceLocation(message, term.location)
   }
 
@@ -102,28 +111,28 @@ function explicateControlInTail(state: State, term: M.Term): Array<B.Instr> {
 
   // switch (term.kind) {
   //   case "Let1Term": {
-  //     return explicateControlInLet1(
+  //     return explicateInLet1(
   //       state,
   //       term.name,
   //       term.rhs,
-  //       explicateControlInTail(state, term.body),
+  //       explicateInTail(state, term.body),
   //     )
   //   }
 
   //   case "Begin1Term": {
-  //     return explicateControlInBegin1(
+  //     return explicateInBegin1(
   //       state,
   //       term.head,
-  //       explicateControlInTail(state, term.body),
+  //       explicateInTail(state, term.body),
   //     )
   //   }
 
   //   case "IfTerm": {
-  //     return explicateControlInIf(
+  //     return explicateInIf(
   //       state,
   //       term.condition,
-  //       explicateControlInTail(state, term.consequent),
-  //       explicateControlInTail(state, term.alternative),
+  //       explicateInTail(state, term.consequent),
+  //       explicateInTail(state, term.alternative),
   //     )
   //   }
 
