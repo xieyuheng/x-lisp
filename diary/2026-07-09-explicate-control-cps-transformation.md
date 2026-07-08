@@ -36,7 +36,7 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 
 ## let 上下文 × 3
 
-### 1. rhs 是 let — 上浮内层绑定
+### rhs 是 let — 上浮内层绑定
 
 ```scheme
 ;; 变换前
@@ -49,7 +49,7 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
     (+ x 3)))
 ```
 
-### 2. rhs 是 begin — 副作用提前
+### rhs 是 begin — 副作用提前
 
 ```scheme
 ;; 变换前
@@ -62,7 +62,7 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
     (+ x 3)))
 ```
 
-### 3. rhs 是 if — 需要 join 节点
+### rhs 是 if — 需要 join 节点
 
 `let` 的结果来自 `if` 的两条分支，需要 join block 收敛控制流。
 
@@ -90,7 +90,7 @@ join:
 
 ## begin 上下文 × 3
 
-### 4. head 是 let
+### head 是 let
 
 ```scheme
 ;; 变换前
@@ -104,7 +104,7 @@ join:
     (+ z 3)))
 ```
 
-### 5. head 是 begin
+### head 是 begin
 
 ```scheme
 ;; 变换前
@@ -118,7 +118,7 @@ join:
     (+ z 3)))
 ```
 
-### 6. head 是 if — 需要 join 节点
+### head 是 if — 需要 join 节点
 
 ```scheme
 ;; 变换前
@@ -145,7 +145,7 @@ join:
 
 ## if 上下文 × 3
 
-### 7. condition 是 let
+### condition 是 let
 
 ```scheme
 ;; 变换前
@@ -160,7 +160,7 @@ join:
     (f -1)))
 ```
 
-### 8. condition 是 begin
+### condition 是 begin
 
 ```scheme
 ;; 变换前
@@ -175,7 +175,7 @@ join:
     (g -1)))
 ```
 
-### 9. condition 是 if — 嵌套短路，需要 label
+### condition 是 if — 嵌套短路，需要 label
 
 这是最复杂的变换。外层 `if` 的 then/else 被 captures 为两个
 独立 block，内层测试 b 和 c 时分别跳转到对应 block。
