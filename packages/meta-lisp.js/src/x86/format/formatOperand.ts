@@ -35,6 +35,6 @@ export function formatOperand(operand: X86.Operand): string {
     case "ExternalLabelOperand":
       return `(external-label ${operand.name})`
     case "DataOperand":
-      return X86.formatExp(operand.exp)
+      return X86.formatData(operand.data)
   }
 }

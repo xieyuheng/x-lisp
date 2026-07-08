@@ -21,7 +21,7 @@ export function registerBuiltinTypes(mod: Mod): void {
   for (const primitive of primitives) {
     mod.definitions.set(
       primitive.name,
-      PrimitiveTypeDefinition(primitive.name, primitive.size, builtinLocation),
+      PrimitiveTypeDefinition(primitive.name, primitive.size),
     )
   }
 }

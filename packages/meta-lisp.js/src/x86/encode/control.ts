@@ -60,7 +60,8 @@ export function encodeControl(instr: Instr): Array<EncodedInstruction> {
       return encodeJcc(instr)
     default:
       let message = `unknown control op: ${instr.op}`
-      throw new S.ErrorWithSourceLocation(message, instr.location)
+      throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 }
 
@@ -70,7 +71,7 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
   if (target.kind === "RegDerefOperand") {
     const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(
       target,
-      instr.location,
+      S.zeroLocation("instr"),
     )
     return [
       {
@@ -91,7 +92,8 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
 
   if (target.kind !== "LabelOperand") {
     let message = `[call] expected label or reg-deref, got: ${target.kind}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   return [
@@ -113,7 +115,7 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   if (target.kind === "RegDerefOperand") {
     const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(
       target,
-      instr.location,
+      S.zeroLocation("instr"),
     )
     return [
       {
@@ -134,7 +136,8 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
 
   if (target.kind !== "LabelOperand") {
     let message = `[jmp] expected label or reg-deref, got: ${target.kind}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   return [
@@ -182,18 +185,21 @@ function encodeJcc(instr: Instr): Array<EncodedInstruction> {
   const cc = instr.operands[0]
   if (cc.kind !== "CcOperand") {
     let message = `[j] first operand must be cc, got: ${cc.kind}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
   const ccCode = CC_CODES[cc.code]
   if (ccCode === undefined) {
     let message = `unknown condition code: ${cc.code}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   const target = instr.operands[1]
   if (target.kind !== "LabelOperand") {
     let message = `[j] second operand must be label, got: ${target.kind}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   return [
@@ -227,5 +233,6 @@ function encodeRegDerefForCall(
     }
   }
   let message = "[call] indirect only supports simple register operand"
-  throw new S.ErrorWithSourceLocation(message, location)
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }

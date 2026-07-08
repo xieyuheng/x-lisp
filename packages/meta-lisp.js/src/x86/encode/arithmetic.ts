@@ -18,7 +18,8 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
   const map = OPCODE_MAP[instr.op]
   if (!map) {
     let message = `unknown arithmetic op: ${instr.op}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   if (dst.kind === "RegOperand") {
@@ -48,7 +49,8 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
-  throw new S.ErrorWithSourceLocation(message, instr.location)
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }
 
 function encodeArithRegReg(

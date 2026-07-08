@@ -12,7 +12,8 @@ export function ResolveDataOperandsPass(mod: X86.Mod): void {
         const newOperands = instr.operands.map((op) =>
           resolveDataOperand(mod, op),
         )
-        block.instrs[i] = X86.Instr(instr.op, newOperands, instr.location)
+        block.instrs[i] = X86.Instr(instr.op, newOperands
+    )
       }
     }
   }
@@ -21,53 +22,40 @@ export function ResolveDataOperandsPass(mod: X86.Mod): void {
 function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
   if (op.kind !== "DataOperand") return op
 
-  const value = X86.evaluate(mod, X86.emptyEnv(), op.exp)
+  const data = op.data
 
-  if (value.kind === "IntValue") {
-    return X86.ImmOperand(value.value, op.location)
+  if (data.kind === "IntData") {
+    return X86.ImmOperand(data.value
+    )
   }
 
-  if (value.kind === "StringValue") {
+  if (data.kind === "StringData") {
     const anonName = `©data.${anonCounter++}`
     mod.definitions.set(
       anonName,
-      X86.DataDefinition(
-        anonName,
-        X86.PointerExp(op.exp, op.location),
-        op.location,
-      ),
+      X86.DataDefinition(anonName, X86.PointerData(data)),
     )
-    return X86.DerefOperand(
-      X86.AddressOperand(anonName, op.location),
-      op.location,
-    )
+    return X86.DerefOperand(X86.AddressOperand(anonName))
   }
 
-  if (value.kind === "PointerValue") {
+  if (data.kind === "PointerData") {
     const anonName = `©data.${anonCounter++}`
-    mod.definitions.set(
-      anonName,
-      X86.DataDefinition(anonName, op.exp, op.location),
-    )
-    return X86.DerefOperand(
-      X86.AddressOperand(anonName, op.location),
-      op.location,
-    )
+    mod.definitions.set(anonName, X86.DataDefinition(anonName, data))
+    return X86.DerefOperand(X86.AddressOperand(anonName))
   }
-  if (value.kind === "StructValue") {
+  if (data.kind === "StructData") {
     let message = `bare struct in operand is not supported; use (pointer (struct ...)) or (address name)`
-    throw new S.ErrorWithSourceLocation(message, op.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
-  if (value.kind === "ArrayValue") {
+  if (data.kind === "ArrayData") {
     let message = `bare array in operand is not supported; use (pointer (array ...)) or (address name)`
-    throw new S.ErrorWithSourceLocation(message, op.location)
-  }
-  if (value.kind === "TypeValue") {
-    let message = `type values are not allowed in operand position`
-    throw new S.ErrorWithSourceLocation(message, op.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   let message = `unexpected value kind in data operand`
-  throw new S.ErrorWithSourceLocation(message, op.location)
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }

@@ -6,15 +6,13 @@ import {
 } from "../check/check.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { encode, encodedSize } from "../encode/index.ts"
-import { emptyEnv, evaluate } from "../evaluate/index.ts"
-import type { Exp } from "../exp/index.ts"
+import type { Data } from "../data/index.ts"
 import { formatType } from "../format/formatType.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Type } from "../type/index.ts"
 import { NamedType } from "../type/Type.ts"
 import { typeSize } from "../type/typeSize.ts"
-import type { Value } from "../value/index.ts"
 
 export type Relocation = {
   labelName: string
@@ -93,7 +91,8 @@ export function collectCodeLayout(
         if (instr.op === "label") {
           let message =
             "(label ...) cannot be an instruction; labels are defined by blocks"
-          throw new S.ErrorWithSourceLocation(message, instr.location)
+          throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
         }
 
         const encodings = encode(instr)
@@ -176,7 +175,7 @@ export function emitDataSection(
     const { structType, structExp } = unpackMetadataStruct(
       mod,
       metaDef.value,
-      metaDef.location,
+      S.zeroLocation("metaDef"),
     )
     pos = emitFieldsTree(
       mod,
@@ -194,16 +193,18 @@ export function emitDataSection(
 
 function unpackMetadataStruct(
   mod: Mod,
-  value: Exp,
+  value: Data,
   location: S.SourceLocation,
-): { structType: Type; structExp: { fields: Record<string, Exp> } } {
-  if (value.kind !== "PointerExp" || value.target.kind !== "StructExp") {
+): { structType: Type; structExp: { fields: Record<string, Data> } } {
+  if (value.kind !== "PointerData" || value.target.kind !== "StructData") {
     let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
-    throw new S.ErrorWithSourceLocation(message, location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
   const structExp = value.target
   return {
-    structType: structDataTypeByName(mod, structExp.name, location),
+    structType: structDataTypeByName(mod, structExp.name, S.zeroLocation("emitDataSection")),
+
     structExp,
   }
 }
@@ -214,13 +215,14 @@ function structDataTypeByName(
   location: S.SourceLocation,
 ): Type {
   lookupStructDefinition(mod, name, location)
+
   return NamedType(name)
 }
 
 function emitTopValue(
   mod: Mod,
   fieldType: Type,
-  fieldExp: Exp,
+  fieldExp: Data,
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
@@ -256,7 +258,7 @@ function computeDataSectionSize(mod: Mod): number {
     const { structType, structExp } = unpackMetadataStruct(
       mod,
       metaDef.value,
-      metaDef.location,
+      S.zeroLocation("metaDef"),
     )
     total += computeFieldsTreeSize(mod, structType, structExp.fields)
   }
@@ -266,7 +268,7 @@ function computeDataSectionSize(mod: Mod): number {
 function emitFieldsTree(
   mod: Mod,
   dataType: Type,
-  fields: Record<string, Exp>,
+  fields: Record<string, Data>,
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
@@ -276,16 +278,17 @@ function emitFieldsTree(
   const deferred: Array<{ off: number; fn: (pos: number) => number }> = []
   let pos = offset
 
-  for (const [name, exp] of Object.entries(fields)) {
+  for (const [name, data] of Object.entries(fields)) {
     const fieldType = fieldTypes.get(name)
     if (!fieldType) {
       let message = `unknown field: ${name}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
+      throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
     }
     pos = emitFieldTree(
       mod,
       fieldType,
-      exp,
+      data,
       buf,
       pos,
       relocs,
@@ -305,28 +308,22 @@ function emitFieldsTree(
 function emitFieldTree(
   mod: Mod,
   fieldType: Type,
-  fieldExp: Exp,
+  fieldData: Data,
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
   addressRelocs: Array<DataAddressReloc>,
   deferred: Array<{ off: number; fn: (pos: number) => number }>,
 ): number {
-  const value = evaluate(mod, emptyEnv(), fieldExp)
-
-  if (value.kind === "IntValue") {
-    return writeIntLE(buf, offset, typeSize(mod, fieldType), value.value)
+  if (fieldData.kind === "IntData") {
+    return writeIntLE(buf, offset, typeSize(mod, fieldType), fieldData.value)
   }
 
-  if (value.kind === "StructValue") {
-    if (fieldExp.kind !== "StructExp") {
-      let message = `[emitFieldTree] expected struct expression for struct value`
-      throw new S.ErrorWithSourceLocation(message, fieldExp.location)
-    }
+  if (fieldData.kind === "StructData") {
     return emitFieldsTree(
       mod,
       fieldType,
-      fieldExp.fields,
+      fieldData.fields,
       buf,
       offset,
       relocs,
@@ -334,16 +331,16 @@ function emitFieldTree(
     )
   }
 
-  if (value.kind === "AddressValue") {
+  if (fieldData.kind === "AddressData") {
     writeInt64(buf, offset, 0n)
     addressRelocs.push({
       patchOffset: offset,
-      labelName: value.name,
+      labelName: fieldData.name,
     })
     return offset + 8
   }
 
-  if (value.kind === "PointerValue") {
+  if (fieldData.kind === "PointerData") {
     writeInt64(buf, offset, 0n)
     const placeholder = offset
     offset += 8
@@ -353,8 +350,7 @@ function emitFieldTree(
         const targetOff = pos
         const newPos = emitPointerTarget(
           mod,
-          value.target,
-          fieldExp,
+          fieldData.target,
           buf,
           pos,
           relocs,
@@ -370,7 +366,7 @@ function emitFieldTree(
     return offset
   }
 
-  if (value.kind === "StringValue") {
+  if (fieldData.kind === "StringData") {
     if (typeSize(mod, fieldType) === 8) {
       writeInt64(buf, offset, 0n)
       const placeholder = offset
@@ -379,11 +375,11 @@ function emitFieldTree(
         off: 0,
         fn: (pos: number) => {
           const targetOff = pos
-          for (let i = 0; i < value.content.length; i++) {
-            buf[pos + i] = value.content.charCodeAt(i)
+          for (let i = 0; i < fieldData.content.length; i++) {
+            buf[pos + i] = fieldData.content.charCodeAt(i)
           }
-          buf[pos + value.content.length] = 0
-          const newPos = pos + value.content.length + 1
+          buf[pos + fieldData.content.length] = 0
+          const newPos = pos + fieldData.content.length + 1
           relocs.push({
             patchOffset: placeholder,
             targetOffset: targetOff,
@@ -393,55 +389,49 @@ function emitFieldTree(
       })
       return offset
     }
-    for (let i = 0; i < value.content.length; i++) {
-      buf[offset + i] = value.content.charCodeAt(i)
+    for (let i = 0; i < fieldData.content.length; i++) {
+      buf[offset + i] = fieldData.content.charCodeAt(i)
     }
-    buf[offset + value.content.length] = 0
-    return offset + value.content.length + 1
+    buf[offset + fieldData.content.length] = 0
+    return offset + fieldData.content.length + 1
   }
 
-  if (value.kind === "ArrayValue") {
+  if (fieldData.kind === "ArrayData") {
     if (fieldType.kind !== "ArrayType") {
       let message = `[emitFieldTree] expected array type for array value`
-      throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+      throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
     }
     let pos = offset
     const elemSize = typeSize(mod, fieldType.element)
-    for (const elem of value.elements) {
-      if (elem.kind !== "IntValue") {
+    for (const elem of fieldData.elements) {
+      if (elem.kind !== "IntData") {
         let message = `[emitFieldTree] array element must be integer, got: ${elem.kind}`
-        throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+        throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
       }
       pos = writeIntLE(buf, pos, elemSize, elem.value)
     }
     return pos
   }
 
-  let message = `unsupported data value: ${value.kind}`
-  throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+  let message = `unsupported data value`
+  throw new S.ErrorWithSourceLocation(message, S.zeroLocation("emitFieldTree"))
 }
 
 function emitPointerTarget(
   mod: Mod,
-  targetValue: Value,
-  originalExp: Exp,
+  targetData: Data,
   buf: Uint8Array,
   offset: number,
   relocs: Array<InternalReloc>,
   addressRelocs: Array<DataAddressReloc>,
 ): number {
-  if (targetValue.kind === "StructValue") {
-    if (
-      originalExp.kind !== "PointerExp" ||
-      originalExp.target.kind !== "StructExp"
-    ) {
-      let message = `[emitPointerTarget] expected (pointer (struct ...)) expression`
-      throw new S.ErrorWithSourceLocation(message, originalExp.location)
-    }
+  if (targetData.kind === "StructData") {
     return emitFieldsTree(
       mod,
-      structDataTypeByName(mod, targetValue.name, originalExp.location),
-      originalExp.target.fields,
+      structDataTypeByName(mod, targetData.name, S.zeroLocation("emitPointerTarget")),
+      targetData.fields,
       buf,
       offset,
       relocs,
@@ -449,33 +439,35 @@ function emitPointerTarget(
     )
   }
 
-  if (targetValue.kind === "StringValue") {
-    for (let i = 0; i < targetValue.content.length; i++) {
-      buf[offset + i] = targetValue.content.charCodeAt(i)
+  if (targetData.kind === "StringData") {
+    for (let i = 0; i < targetData.content.length; i++) {
+      buf[offset + i] = targetData.content.charCodeAt(i)
     }
-    buf[offset + targetValue.content.length] = 0
-    return offset + targetValue.content.length + 1
+    buf[offset + targetData.content.length] = 0
+    return offset + targetData.content.length + 1
   }
 
-  let message = `unsupported pointer target: ${targetValue.kind}`
-  throw new S.ErrorWithSourceLocation(message, originalExp.location)
+  let message = `unsupported pointer target: ${targetData.kind}`
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }
 
 function computeFieldsTreeSize(
   mod: Mod,
   dataType: Type,
-  fields: Record<string, Exp>,
+  fields: Record<string, Data>,
 ): number {
   const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
   let total = 0
   let deferred = 0
-  for (const [name, exp] of Object.entries(fields)) {
+  for (const [name, data] of Object.entries(fields)) {
     const fieldType = fieldTypes.get(name)
     if (!fieldType) {
       let message = `unknown field: ${name}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
+      throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
     }
-    const r = computeFieldTreeSize(mod, fieldType, exp)
+    const r = computeFieldTreeSize(mod, fieldType, data)
     total += r.fixed
     deferred += r.deferred
   }
@@ -487,75 +479,62 @@ type SizeResult = { fixed: number; deferred: number }
 function computeFieldTreeSize(
   mod: Mod,
   fieldType: Type,
-  fieldExp: Exp,
+  fieldData: Data,
 ): SizeResult {
-  const value = evaluate(mod, emptyEnv(), fieldExp)
-
-  if (value.kind === "IntValue") {
+  if (fieldData.kind === "IntData") {
     return { fixed: typeSize(mod, fieldType), deferred: 0 }
   }
 
-  if (value.kind === "StructValue") {
-    if (fieldExp.kind !== "StructExp") {
-      let message = `[computeFieldTreeSize] expected struct expression for struct value`
-      throw new S.ErrorWithSourceLocation(message, fieldExp.location)
-    }
+  if (fieldData.kind === "StructData") {
     return {
-      fixed: computeFieldsTreeSize(mod, fieldType, fieldExp.fields),
+      fixed: computeFieldsTreeSize(mod, fieldType, fieldData.fields),
       deferred: 0,
     }
   }
 
-  if (value.kind === "AddressValue") {
+  if (fieldData.kind === "AddressData") {
     return { fixed: 8, deferred: 0 }
   }
 
-  if (value.kind === "PointerValue") {
-    const inner = computePointerTargetSize(mod, value.target, fieldExp)
+  if (fieldData.kind === "PointerData") {
+    const inner = computePointerTargetSize(mod, fieldData.target)
     return { fixed: 8, deferred: inner }
   }
 
-  if (value.kind === "StringValue") {
+  if (fieldData.kind === "StringData") {
     if (typeSize(mod, fieldType) === 8) {
-      return { fixed: 8, deferred: value.content.length + 1 }
+      return { fixed: 8, deferred: fieldData.content.length + 1 }
     }
-    return { fixed: value.content.length + 1, deferred: 0 }
+    return { fixed: fieldData.content.length + 1, deferred: 0 }
   }
 
-  if (value.kind === "ArrayValue") {
+  if (fieldData.kind === "ArrayData") {
     return { fixed: typeSize(mod, fieldType), deferred: 0 }
   }
 
-  let message = `unsupported data value: ${value.kind}`
-  throw new S.ErrorWithSourceLocation(message, fieldExp.location)
+  let message = `unsupported data value`
+  throw new S.ErrorWithSourceLocation(message, S.zeroLocation("computeFieldTreeSize"))
 }
 
 function computePointerTargetSize(
   mod: Mod,
-  targetValue: Value,
-  originalExp: Exp,
+  targetData: Data,
 ): number {
-  if (targetValue.kind === "StructValue") {
-    if (
-      originalExp.kind !== "PointerExp" ||
-      originalExp.target.kind !== "StructExp"
-    ) {
-      let message = `[computePointerTargetSize] expected (pointer (struct ...)) expression`
-      throw new S.ErrorWithSourceLocation(message, originalExp.location)
-    }
+  if (targetData.kind === "StructData") {
     return computeFieldsTreeSize(
       mod,
-      structDataTypeByName(mod, targetValue.name, originalExp.location),
-      originalExp.target.fields,
+      structDataTypeByName(mod, targetData.name, S.zeroLocation("computePointerTargetSize")),
+      targetData.fields,
     )
   }
 
-  if (targetValue.kind === "StringValue") {
-    return targetValue.content.length + 1
+  if (targetData.kind === "StringData") {
+    return targetData.content.length + 1
   }
 
-  let message = `unsupported pointer target: ${targetValue.kind}`
-  throw new S.ErrorWithSourceLocation(message, originalExp.location)
+  let message = `unsupported pointer target: ${targetData.kind}`
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }
 
 export function offsetOf(
@@ -615,7 +594,6 @@ export function resolveDisplacements(mod: Mod): void {
             op.disp = {
               kind: "IntDisplacement",
               value,
-              location: op.disp.location,
             }
           }
         }

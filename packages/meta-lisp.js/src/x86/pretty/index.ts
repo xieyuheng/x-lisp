@@ -1,6 +1,6 @@
 export * from "./prettyBlock.ts"
 export * from "./prettyDefinition.ts"
-export * from "./prettyExp.ts"
+export * from "./prettyData.ts"
 export * from "./prettyInstr.ts"
 export * from "./prettyOperand.ts"
 export * from "./prettyStmt.ts"

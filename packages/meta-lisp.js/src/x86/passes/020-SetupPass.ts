@@ -11,7 +11,8 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineCodeStmt": {
       X86.modDefine(
         mod,
-        X86.CodeDefinition(stmt.name, stmt.blocks, stmt.location),
+        X86.CodeDefinition(stmt.name, stmt.blocks
+    ),
       )
       break
     }
@@ -19,7 +20,8 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineDataStmt": {
       X86.modDefine(
         mod,
-        X86.DataDefinition(stmt.name, stmt.value, stmt.location),
+        X86.DataDefinition(stmt.name, stmt.value
+    ),
       )
       break
     }
@@ -27,7 +29,8 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineMetadataStmt": {
       X86.modDefine(
         mod,
-        X86.MetadataDefinition(stmt.name, stmt.value, stmt.location),
+        X86.MetadataDefinition(stmt.name, stmt.value
+    ),
       )
       break
     }
@@ -35,7 +38,8 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineStructStmt": {
       mod.definitions.set(
         stmt.name,
-        X86.StructDefinition(stmt.name, stmt.fields, stmt.location),
+        X86.StructDefinition(stmt.name, stmt.fields
+    ),
       )
       break
     }
@@ -43,7 +47,8 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     case "DefineSpaceStmt": {
       X86.modDefine(
         mod,
-        X86.SpaceDefinition(stmt.name, stmt.size, stmt.location),
+        X86.SpaceDefinition(stmt.name, stmt.size
+    ),
       )
       break
     }

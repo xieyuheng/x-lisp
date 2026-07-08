@@ -1,6 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
 import { emitTo, encode } from "../encode/index.ts"
-import { emptyEnv, evaluate } from "../evaluate/index.ts"
 import type { Mod, ValueRelocation } from "../mod/index.ts"
 import {
   collectCodeLayout,
@@ -94,12 +93,13 @@ export function assembleExe(mod: Mod): Uint8Array {
   let spaceSize = 0
   for (const definition of mod.definitions.values()) {
     if (definition.kind === "SpaceDefinition") {
-      const value = evaluate(mod, emptyEnv(), definition.size)
-      if (value.kind !== "IntValue") {
-        let message = `define-space size must be integer, got: ${value.kind}`
-        throw new S.ErrorWithSourceLocation(message, definition.location)
+      const size = definition.size
+      if (size.kind !== "IntData") {
+        let message = `define-space size must be integer, got: ${size.kind}`
+        throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
       }
-      spaceSize += Number(value.value)
+      spaceSize += Number(size.value)
     }
   }
 

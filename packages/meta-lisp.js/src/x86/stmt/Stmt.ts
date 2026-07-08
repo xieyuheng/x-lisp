@@ -1,6 +1,5 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Block } from "../block/index.ts"
-import type { Exp } from "../exp/index.ts"
+import type { Data } from "../data/index.ts"
 import type { Type } from "../type/index.ts"
 
 export type Stmt =
@@ -14,59 +13,50 @@ export type DefineCodeStmt = {
   kind: "DefineCodeStmt"
   name: string
   blocks: Array<Block>
-  location: SourceLocation
 }
 
 export function DefineCodeStmt(
   name: string,
   blocks: Array<Block>,
-  location: SourceLocation,
 ): DefineCodeStmt {
   return {
     kind: "DefineCodeStmt",
     name,
     blocks,
-    location,
   }
 }
 
 export type DefineDataStmt = {
   kind: "DefineDataStmt"
   name: string
-  value: Exp
-  location: SourceLocation
+  value: Data
 }
 
 export function DefineDataStmt(
   name: string,
-  value: Exp,
-  location: SourceLocation,
+  value: Data,
 ): DefineDataStmt {
   return {
     kind: "DefineDataStmt",
     name,
     value,
-    location,
   }
 }
 
 export type DefineMetadataStmt = {
   kind: "DefineMetadataStmt"
   name: string
-  value: Exp
-  location: SourceLocation
+  value: Data
 }
 
 export function DefineMetadataStmt(
   name: string,
-  value: Exp,
-  location: SourceLocation,
+  value: Data,
 ): DefineMetadataStmt {
   return {
     kind: "DefineMetadataStmt",
     name,
     value,
-    location,
   }
 }
 
@@ -74,38 +64,32 @@ export type DefineStructStmt = {
   kind: "DefineStructStmt"
   name: string
   fields: Record<string, Type>
-  location: SourceLocation
 }
 
 export function DefineStructStmt(
   name: string,
   fields: Record<string, Type>,
-  location: SourceLocation,
 ): DefineStructStmt {
   return {
     kind: "DefineStructStmt",
     name,
     fields,
-    location,
   }
 }
 
 export type DefineSpaceStmt = {
   kind: "DefineSpaceStmt"
   name: string
-  size: Exp
-  location: SourceLocation
+  size: Data
 }
 
 export function DefineSpaceStmt(
   name: string,
-  size: Exp,
-  location: SourceLocation,
+  size: Data,
 ): DefineSpaceStmt {
   return {
     kind: "DefineSpaceStmt",
     name,
     size,
-    location,
   }
 }

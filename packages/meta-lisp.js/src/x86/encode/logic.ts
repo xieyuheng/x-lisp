@@ -17,7 +17,8 @@ export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
   const map = OPCODE_MAP[instr.op]
   if (!map) {
     let message = `unknown logic op: ${instr.op}`
-    throw new S.ErrorWithSourceLocation(message, instr.location)
+    throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
   }
 
   if (dst.kind === "RegOperand" && src.kind === "RegOperand") {
@@ -29,7 +30,8 @@ export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
-  throw new S.ErrorWithSourceLocation(message, instr.location)
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }
 
 function encodeLogicRegReg(

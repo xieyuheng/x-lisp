@@ -24,7 +24,8 @@ export function encodeStack(instr: Instr): Array<EncodedInstruction> {
   }
 
   let message = `[${instr.op}] unsupported operand: ${op.kind}`
-  throw new S.ErrorWithSourceLocation(message, instr.location)
+  throw new S.ErrorWithSourceLocation(message
+    , S.zeroLocation("x86"))
 }
 
 function encodePushReg(reg: string): EncodedInstruction {

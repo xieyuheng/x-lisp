@@ -1,7 +1,7 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as X86 from "../index.ts"
 import { prettyBlock } from "./prettyBlock.ts"
-import { prettyExp } from "./prettyExp.ts"
+import { prettyData } from "./prettyData.ts"
 
 export function prettyDefinition(definition: X86.Definition): Ppml.Node {
   switch (definition.kind) {
@@ -17,13 +17,13 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
       return Ppml.prettySyntax(
         "define-data",
         [Ppml.text(definition.name)],
-        [prettyExp(definition.value)],
+        [prettyData(definition.value)],
       )
     case "MetadataDefinition":
       return Ppml.prettySyntax(
         "define-metadata",
         [Ppml.text(definition.target)],
-        [prettyExp(definition.value)],
+        [prettyData(definition.value)],
       )
     case "StructDefinition": {
       const fieldNodes = Object.keys(definition.fields).map((name) =>
@@ -39,7 +39,7 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
       return Ppml.prettySyntax(
         "define-space",
         [Ppml.text(definition.name)],
-        [prettyExp(definition.size)],
+        [prettyData(definition.size)],
       )
     case "PrimitiveTypeDefinition":
       return Ppml.text(X86.formatDefinition(definition))
