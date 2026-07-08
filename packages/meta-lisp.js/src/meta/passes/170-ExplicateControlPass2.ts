@@ -177,9 +177,9 @@ function explicateUnnestedTerm(
 
     case "ApplyTerm": {
       // TODO handle direct call
-      const pairs = term.args.map((arg) => explicateInBody(state, arg))
+      const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
-      const [targetInstrs, target] = explicateInBody(state, term.target)
+      const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
       const result = generateCell(state, "result")
       const instrs = [
         ...arrayConcat(argInstrGroups),
@@ -212,37 +212,248 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
     throw new S.ErrorWithSourceLocation(message, term.location)
   }
 
+  switch (term.kind) {
+    case "Let1Term": {
+      return explicateInLet1(
+        state,
+        term.name,
+        term.rhs,
+        explicateInTail(state, term.body),
+      )
+    }
+
+    case "Begin1Term": {
+      return explicateInBegin1(
+        state,
+        term.head,
+        explicateInTail(state, term.body),
+      )
+    }
+
+    case "IfTerm": {
+      return explicateInIf(
+        state,
+        term.condition,
+        explicateInTail(state, term.consequent),
+        explicateInTail(state, term.alternative),
+      )
+    }
+
+    default: {
+      const [instrs, cell] =  explicateUnnestedTerm(state, term)
+      return [
+        ...instrs,
+        B.Instr([], "return", [cell], {})]
+    }
+  }
+}
+
+
+function explicateInLet1(
+  state: State,
+  name: string,
+  rhs: M.Term,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
   return []
 
-  // switch (term.kind) {
+  // switch (rhs.kind) {
   //   case "Let1Term": {
   //     return explicateInLet1(
   //       state,
-  //       term.name,
-  //       term.rhs,
-  //       explicateInTail(state, term.body),
+  //       rhs.name,
+  //       rhs.rhs,
+  //       explicateInLet1(state, name, rhs.body, cont),
   //     )
   //   }
 
   //   case "Begin1Term": {
   //     return explicateInBegin1(
   //       state,
-  //       term.head,
-  //       explicateInTail(state, term.body),
+  //       rhs.head,
+  //       explicateInLet1(state, name, rhs.body, cont),
   //     )
   //   }
 
   //   case "IfTerm": {
+  //     const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
   //     return explicateInIf(
   //       state,
-  //       term.condition,
-  //       explicateInTail(state, term.consequent),
-  //       explicateInTail(state, term.alternative),
+  //       rhs.condition,
+  //       explicateInLet1(state, name, rhs.consequent, [
+  //         B.GotoInstr(letBodyLabel, rhs.location),
+  //       ]),
+  //       explicateInLet1(state, name, rhs.alternative, [
+  //         B.GotoInstr(letBodyLabel, rhs.location),
+  //       ]),
   //     )
   //   }
 
   //   default: {
-  //     return [B.ReturnInstr(toBasicExp(term, state.pkg), term.location)]
+  //     return [
+  //       B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location),
+  //       ...cont,
+  //     ]
+  //   }
+  // }
+}
+
+function explicateInBegin1(
+  state: State,
+  head: M.Term,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  return []
+
+  // switch (head.kind) {
+  //   case "Let1Term": {
+  //     return explicateInLet1(
+  //       state,
+  //       head.name,
+  //       head.rhs,
+  //       explicateInBegin1(state, head.body, cont),
+  //     )
+  //   }
+
+  //   case "Begin1Term": {
+  //     return explicateInBegin1(
+  //       state,
+  //       head.head,
+  //       explicateInBegin1(state, head.body, cont),
+  //     )
+  //   }
+
+  //   case "IfTerm": {
+  //     const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
+  //     return explicateInIf(
+  //       state,
+  //       head.condition,
+  //       explicateInBegin1(state, head.consequent, [
+  //         B.GotoInstr(letBodyLabel, head.location),
+  //       ]),
+  //       explicateInBegin1(state, head.alternative, [
+  //         B.GotoInstr(letBodyLabel, head.location),
+  //       ]),
+  //     )
+  //   }
+
+  //   default: {
+  //     return [
+  //       B.PerformInstr(toBasicExp(head, state.pkg), head.location),
+  //       ...cont,
+  //     ]
+  //   }
+  // }
+}
+
+function explicateInIf(
+  state: State,
+  condition: M.Term,
+  thenCont: Array<B.Instr>,
+  elseCont: Array<B.Instr>,
+): Array<B.Instr> {
+  return []
+
+  // if (
+  //   condition.kind === "QualifiedVarTerm" &&
+  //   condition.modName === "builtin" &&
+  //   condition.name === "true"
+  // ) {
+  //   return thenCont
+  // }
+
+  // if (
+  //   condition.kind === "QualifiedVarTerm" &&
+  //   condition.modName === "builtin" &&
+  //   condition.name === "false"
+  // ) {
+  //   return elseCont
+  // }
+
+  // switch (condition.kind) {
+  //   case "VarTerm": {
+  //     return [
+  //       B.TestInstr(
+  //         B.ApplyExp(
+  //           B.VarExp("meta-builtin/builtin/same?", condition.location),
+  //           [
+  //             B.VarExp(condition.name, condition.location),
+  //             B.VarExp("meta-builtin/builtin/true", condition.location),
+  //           ],
+  //           condition.location,
+  //         ),
+  //         condition.location,
+  //       ),
+  //       B.BranchInstr(
+  //         generateLabel(state, "then", thenCont, condition.location),
+  //         generateLabel(state, "else", elseCont, condition.location),
+  //         condition.location,
+  //       ),
+  //     ]
+  //   }
+
+  //   case "ApplyTerm": {
+  //     if (
+  //       condition.target.kind === "VarTerm" &&
+  //       condition.target.name === "not" &&
+  //       condition.args.length === 1
+  //     ) {
+  //       const [negatedCondition] = condition.args
+  //       return explicateInIf(state, negatedCondition, elseCont, thenCont)
+  //     }
+
+  //     return [
+  //       B.TestInstr(toBasicExp(condition, state.pkg), condition.location),
+  //       B.BranchInstr(
+  //         generateLabel(state, "then", thenCont, condition.location),
+  //         generateLabel(state, "else", elseCont, condition.location),
+  //         condition.location,
+  //       ),
+  //     ]
+  //   }
+
+  //   case "Let1Term": {
+  //     return explicateInLet1(
+  //       state,
+  //       condition.name,
+  //       condition.rhs,
+  //       explicateInIf(state, condition.body, thenCont, elseCont),
+  //     )
+  //   }
+
+  //   case "Begin1Term": {
+  //     return explicateInBegin1(
+  //       state,
+  //       condition.head,
+  //       explicateInIf(state, condition.body, thenCont, elseCont),
+  //     )
+  //   }
+
+  //   case "IfTerm": {
+  //     thenCont = [
+  //       B.GotoInstr(
+  //         generateLabel(state, "then", thenCont, condition.location),
+  //         condition.location,
+  //       ),
+  //     ]
+  //     elseCont = [
+  //       B.GotoInstr(
+  //         generateLabel(state, "else", elseCont, condition.location),
+  //         condition.location,
+  //       ),
+  //     ]
+  //     return explicateInIf(
+  //       state,
+  //       condition.condition,
+  //       explicateInIf(state, condition.consequent, thenCont, elseCont),
+  //       explicateInIf(state, condition.alternative, thenCont, elseCont),
+  //     )
+  //   }
+
+  //   default: {
+  //     let message = `[ExplicateControlPass] [explicateInIf] unhandled condition`
+  //     message += `\n  condition: ${M.formatTerm(condition)}`
+  //     throw new S.ErrorWithSourceLocation(message, condition.location)
   //   }
   // }
 }
