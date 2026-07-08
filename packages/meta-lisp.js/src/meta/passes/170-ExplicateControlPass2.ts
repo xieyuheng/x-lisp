@@ -253,14 +253,11 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
     }
 
     default: {
-      const [instrs, cell] =  explicateUnnestedTerm(state, term)
-      return [
-        ...instrs,
-        B.Instr([], "return", [cell], {})]
+      const [instrs, cell] = explicateUnnestedTerm(state, term)
+      return [...instrs, B.Instr([], "return", [cell], {})]
     }
   }
 }
-
 
 function explicateInLet1(
   state: State,
