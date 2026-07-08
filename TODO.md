@@ -1,5 +1,10 @@
 # basic2
 
+[meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
+[meta-lisp.js] 170-ExplicateControlPass2 -- `explicateControlInTail`
+
+[meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
+
 [meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
 # self-hosting
