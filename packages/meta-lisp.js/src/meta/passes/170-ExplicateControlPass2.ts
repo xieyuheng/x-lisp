@@ -215,50 +215,27 @@ function explicateUnnestedTerm(
     }
 
     case "ApplyTerm": {
-      // - maybe compile a direct call
-      if (term.target.kind === "QualifiedVarTerm") {
-        const definition = M.packageLookupDefinition(
-          state.pkg,
-          term.target.pkgName,
-          term.target.modName,
-          term.target.name,
-        )
-        if (definition === undefined) {
-          let message = `[explicateUnnestedTerm/ApplyTerm] undefined qualified variable`
-          message += `\n  from package: ${state.pkg.rootDirectory}`
-          message += `\n  qualified name: ${term.target.pkgName}/${term.target.modName}/${term.target.name}`
-          throw new S.ErrorWithSourceLocation(message, term.location)
-        }
-
-        if (
-          definition.kind === "PrimitiveFunctionDeclaration" ||
-          definition.kind === "FunctionDefinition" ||
-          definition.kind === "TestDefinition"
-        ) {
-          if (M.definitionArity(definition) === term.args.length) {
-            const prefix = resolvePackageId(state.pkg, term.target.pkgName)
-            const address = generateCell(state, "address")
-            const pairs = term.args.map((arg) =>
-              explicateUnnestedTerm(state, arg),
-            )
-            const [argInstrGroups, args] = arrayUnzip(pairs)
-            const value = generateCell(state, "value")
-            const instrs = [
-              B.Instr("address", [], [address], {
-                name: B.SymbolAttribute(
-                  `${prefix}/${term.target.modName}/${term.target.name}`,
-                ),
-              }),
-              ...arrayConcat(argInstrGroups),
-              B.Instr("call", [address, ...args], [value], {}),
-            ]
-            return [instrs, value]
-          }
-        }
-      }
+      const direct =
+        term.target.kind === "QualifiedVarTerm"
+          ? tryResolveDirectCall(state, term.target, term.args.length)
+          : undefined
 
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
+
+      if (direct) {
+        const address = generateCell(state, "address")
+        const value = generateCell(state, "value")
+        const instrs = [
+          B.Instr("address", [], [address], {
+            name: B.SymbolAttribute(direct.qualifiedName),
+          }),
+          ...arrayConcat(argInstrGroups),
+          B.Instr("call", [address, ...args], [value], {}),
+        ]
+        return [instrs, value]
+      }
+
       const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
       const value = generateCell(state, "value")
       const instrs = [
@@ -284,6 +261,40 @@ function resolvePackageId(pkg: M.Package, pkgName: string): string {
     throw new Error(`[resolvePackageId] unknown package: "${pkgName}"`)
   }
   return dep.id
+}
+
+function tryResolveDirectCall(
+  state: State,
+  target: M.QualifiedVarTerm,
+  argCount: number,
+): { qualifiedName: string } | undefined {
+  const definition = M.packageLookupDefinition(
+    state.pkg,
+    target.pkgName,
+    target.modName,
+    target.name,
+  )
+
+  if (definition === undefined) {
+    let message = `[tryResolveDirectCall] undefined qualified variable`
+    message += `\n  from package: ${state.pkg.rootDirectory}`
+    message += `\n  qualified name: ${target.pkgName}/${target.modName}/${target.name}`
+    throw new S.ErrorWithSourceLocation(message, target.location)
+  }
+
+  if (
+    (definition.kind === "PrimitiveFunctionDeclaration" ||
+      definition.kind === "FunctionDefinition" ||
+      definition.kind === "TestDefinition") &&
+    M.definitionArity(definition) === argCount
+  ) {
+    const prefix = resolvePackageId(state.pkg, target.pkgName)
+    return {
+      qualifiedName: `${prefix}/${target.modName}/${target.name}`,
+    }
+  }
+
+  return undefined
 }
 
 function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
@@ -320,48 +331,25 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
     }
 
     case "ApplyTerm": {
-      // - maybe compile a direct call
-      if (term.target.kind === "QualifiedVarTerm") {
-        const definition = M.packageLookupDefinition(
-          state.pkg,
-          term.target.pkgName,
-          term.target.modName,
-          term.target.name,
-        )
-        if (definition === undefined) {
-          let message = `[explicateUnnestedTerm/ApplyTerm] undefined qualified variable`
-          message += `\n  from package: ${state.pkg.rootDirectory}`
-          message += `\n  qualified name: ${term.target.pkgName}/${term.target.modName}/${term.target.name}`
-          throw new S.ErrorWithSourceLocation(message, term.location)
-        }
-
-        if (
-          definition.kind === "PrimitiveFunctionDeclaration" ||
-          definition.kind === "FunctionDefinition" ||
-          definition.kind === "TestDefinition"
-        ) {
-          if (M.definitionArity(definition) === term.args.length) {
-            const prefix = resolvePackageId(state.pkg, term.target.pkgName)
-            const address = generateCell(state, "address")
-            const pairs = term.args.map((arg) =>
-              explicateUnnestedTerm(state, arg),
-            )
-            const [argInstrGroups, args] = arrayUnzip(pairs)
-            return [
-              B.Instr("address", [], [address], {
-                name: B.SymbolAttribute(
-                  `${prefix}/${term.target.modName}/${term.target.name}`,
-                ),
-              }),
-              ...arrayConcat(argInstrGroups),
-              B.Instr("tail-call", [address, ...args], [], {}),
-            ]
-          }
-        }
-      }
+      const direct =
+        term.target.kind === "QualifiedVarTerm"
+          ? tryResolveDirectCall(state, term.target, term.args.length)
+          : undefined
 
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
+
+      if (direct) {
+        const address = generateCell(state, "address")
+        return [
+          B.Instr("address", [], [address], {
+            name: B.SymbolAttribute(direct.qualifiedName),
+          }),
+          ...arrayConcat(argInstrGroups),
+          B.Instr("tail-call", [address, ...args], [], {}),
+        ]
+      }
+
       const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
       return [
         ...targetInstrs,
