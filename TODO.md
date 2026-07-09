@@ -1,7 +1,6 @@
 # basic2
 
-[meta-lisp.js] `explicateInBegin1`
-[meta-lisp.js] `explicateInIf`
+[meta-lisp.js] `explicateInIf` -- handle `ApplyTerm` and `VarTerm`
 
 [meta-lisp.js] `explicateInLet1` -- handle default
 [meta-lisp.js] `explicateInLet1` -- assign vs provide

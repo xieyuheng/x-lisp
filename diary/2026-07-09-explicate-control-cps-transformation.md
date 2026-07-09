@@ -171,30 +171,20 @@ begin-body:
 独立 block，内层测试 b 和 c 时分别跳转到对应 block。
 
 ```scheme
-(if (if a b c)
+(if (if p (f a) (f b))
   (f 1)
   (f -1))
 
 ;; =>
 
-(if a
-  (goto then.0)
-  (goto else.0))
+(if p
+  (if (f a) (goto then) (goto else))
+  (if (f b) (goto then) (goto else)))
 
-then.0:
-  (if b
-    (goto then.1)
-    (goto else.1))
-
-else.0:
-  (if c
-    (goto then.1)
-    (goto else.1))
-
-then.1:
+then:
   (f 1)
 
-else.1:
+else:
   (f -1)
 ```
 

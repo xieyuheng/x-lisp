@@ -285,15 +285,14 @@ function explicateInLet1(
 
     case "IfTerm": {
       const label = generateLabel(state, "let-body", cont)
+      const gotoBody = [
+        B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
+      ]
       return explicateInIf(
         state,
         rhs.condition,
-        explicateInLet1(state, name, rhs.consequent, [
-          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
-        ]),
-        explicateInLet1(state, name, rhs.alternative, [
-          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
-        ]),
+        explicateInLet1(state, name, rhs.consequent, gotoBody),
+        explicateInLet1(state, name, rhs.alternative, gotoBody),
       )
     }
 
@@ -332,23 +331,20 @@ function explicateInBegin1(
 
     case "IfTerm": {
       const label = generateLabel(state, "begin-body", cont)
+      const gotoBody = [
+        B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
+      ]
       return explicateInIf(
         state,
         head.condition,
-        explicateInBegin1(state, head.consequent, [
-          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
-        ]),
-        explicateInBegin1(state, head.alternative, [
-          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
-        ]),
+        explicateInBegin1(state, head.consequent, gotoBody),
+        explicateInBegin1(state, head.alternative, gotoBody),
       )
     }
 
     default: {
-      return [
-        // B.PerformInstr(toBasicExp(head, state.pkg), head.location),
-        ...cont,
-      ]
+      const [headInstrs, headCell] = explicateUnnestedTerm(state, head)
+      return [...headInstrs, ...cont]
     }
   }
 }
@@ -359,108 +355,106 @@ function explicateInIf(
   thenCont: Array<B.Instr>,
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
-  return []
+  if (
+    condition.kind === "QualifiedVarTerm" &&
+    condition.modName === "builtin" &&
+    condition.name === "true"
+  ) {
+    return thenCont
+  }
 
-  // if (
-  //   condition.kind === "QualifiedVarTerm" &&
-  //   condition.modName === "builtin" &&
-  //   condition.name === "true"
-  // ) {
-  //   return thenCont
-  // }
+  if (
+    condition.kind === "QualifiedVarTerm" &&
+    condition.modName === "builtin" &&
+    condition.name === "false"
+  ) {
+    return elseCont
+  }
 
-  // if (
-  //   condition.kind === "QualifiedVarTerm" &&
-  //   condition.modName === "builtin" &&
-  //   condition.name === "false"
-  // ) {
-  //   return elseCont
-  // }
+  if (
+    condition.kind === "ApplyTerm" &&
+    condition.target.kind === "VarTerm" &&
+    condition.target.name === "not" &&
+    condition.args.length === 1
+  ) {
+    const [negatedCondition] = condition.args
+    return explicateInIf(state, negatedCondition, elseCont, thenCont)
+  }
 
-  // switch (condition.kind) {
-  //   case "VarTerm": {
-  //     return [
-  //       B.TestInstr(
-  //         B.ApplyExp(
-  //           B.VarExp("meta-builtin/builtin/same?", condition.location),
-  //           [
-  //             B.VarExp(condition.name, condition.location),
-  //             B.VarExp("meta-builtin/builtin/true", condition.location),
-  //           ],
-  //           condition.location,
-  //         ),
-  //         condition.location,
-  //       ),
-  //       B.BranchInstr(
-  //         generateLabel(state, "then", thenCont, condition.location),
-  //         generateLabel(state, "else", elseCont, condition.location),
-  //         condition.location,
-  //       ),
-  //     ]
-  //   }
+  switch (condition.kind) {
+    // case "VarTerm": {
+    //   return [
+    //     B.TestInstr(
+    //       B.ApplyExp(
+    //         B.VarExp("meta-builtin/builtin/same?", condition.location),
+    //         [
+    //           B.VarExp(condition.name, condition.location),
+    //           B.VarExp("meta-builtin/builtin/true", condition.location),
+    //         ],
+    //         condition.location,
+    //       ),
+    //       condition.location,
+    //     ),
+    //     B.BranchInstr(
+    //       generateLabel(state, "then", thenCont, condition.location),
+    //       generateLabel(state, "else", elseCont, condition.location),
+    //       condition.location,
+    //     ),
+    //   ]
+    // }
 
-  //   case "ApplyTerm": {
-  //     if (
-  //       condition.target.kind === "VarTerm" &&
-  //       condition.target.name === "not" &&
-  //       condition.args.length === 1
-  //     ) {
-  //       const [negatedCondition] = condition.args
-  //       return explicateInIf(state, negatedCondition, elseCont, thenCont)
-  //     }
+    // case "ApplyTerm": {
+    //   return [
+    //     B.TestInstr(toBasicExp(condition, state.pkg), condition.location),
+    //     B.BranchInstr(
+    //       generateLabel(state, "then", thenCont, condition.location),
+    //       generateLabel(state, "else", elseCont, condition.location),
+    //       condition.location,
+    //     ),
+    //   ]
+    // }
 
-  //     return [
-  //       B.TestInstr(toBasicExp(condition, state.pkg), condition.location),
-  //       B.BranchInstr(
-  //         generateLabel(state, "then", thenCont, condition.location),
-  //         generateLabel(state, "else", elseCont, condition.location),
-  //         condition.location,
-  //       ),
-  //     ]
-  //   }
+    case "Let1Term": {
+      return explicateInLet1(
+        state,
+        condition.name,
+        condition.rhs,
+        explicateInIf(state, condition.body, thenCont, elseCont),
+      )
+    }
 
-  //   case "Let1Term": {
-  //     return explicateInLet1(
-  //       state,
-  //       condition.name,
-  //       condition.rhs,
-  //       explicateInIf(state, condition.body, thenCont, elseCont),
-  //     )
-  //   }
+    case "Begin1Term": {
+      return explicateInBegin1(
+        state,
+        condition.head,
+        explicateInIf(state, condition.body, thenCont, elseCont),
+      )
+    }
 
-  //   case "Begin1Term": {
-  //     return explicateInBegin1(
-  //       state,
-  //       condition.head,
-  //       explicateInIf(state, condition.body, thenCont, elseCont),
-  //     )
-  //   }
+    case "IfTerm": {
+      const gotoThen = [
+        B.Instr([], "goto", [], {
+          label: B.SymbolAttribute(generateLabel(state, "then", thenCont)),
+        }),
+      ]
+      const gotoElse = [
+        B.Instr([], "goto", [], {
+          label: B.SymbolAttribute(generateLabel(state, "else", elseCont)),
+        }),
+      ]
 
-  //   case "IfTerm": {
-  //     thenCont = [
-  //       B.GotoInstr(
-  //         generateLabel(state, "then", thenCont, condition.location),
-  //         condition.location,
-  //       ),
-  //     ]
-  //     elseCont = [
-  //       B.GotoInstr(
-  //         generateLabel(state, "else", elseCont, condition.location),
-  //         condition.location,
-  //       ),
-  //     ]
-  //     return explicateInIf(
-  //       state,
-  //       condition.condition,
-  //       explicateInIf(state, condition.consequent, thenCont, elseCont),
-  //       explicateInIf(state, condition.alternative, thenCont, elseCont),
-  //     )
-  //   }
+      return explicateInIf(
+        state,
+        condition.condition,
+        explicateInIf(state, condition.consequent, gotoThen, gotoElse),
+        explicateInIf(state, condition.alternative, gotoThen, gotoElse),
+      )
+    }
 
-  //   default: {
-  //     let message = `[ExplicateControlPass] [explicateInIf] unhandled condition`
-  //     message += `\n  condition: ${M.formatTerm(condition)}`
-  //     throw new S.ErrorWithSourceLocation(message, condition.location)
-  //   }
-  // }
+    default: {
+      let message = `[ExplicateControlPass] [explicateInIf] unhandled condition`
+      message += `\n  condition: ${M.formatTerm(condition)}`
+      throw new S.ErrorWithSourceLocation(message, condition.location)
+    }
+  }
 }

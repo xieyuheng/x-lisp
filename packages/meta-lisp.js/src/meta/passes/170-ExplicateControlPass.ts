@@ -255,15 +255,12 @@ function explicateInLet1(
 
     case "IfTerm": {
       const label = generateLabel(state, "let-body", cont, rhs.location)
+      const gotoBody = [B.GotoInstr(label, rhs.location)]
       return explicateInIf(
         state,
         rhs.condition,
-        explicateInLet1(state, name, rhs.consequent, [
-          B.GotoInstr(label, rhs.location),
-        ]),
-        explicateInLet1(state, name, rhs.alternative, [
-          B.GotoInstr(label, rhs.location),
-        ]),
+        explicateInLet1(state, name, rhs.consequent, gotoBody),
+        explicateInLet1(state, name, rhs.alternative, gotoBody),
       )
     }
 
@@ -301,15 +298,12 @@ function explicateInBegin1(
 
     case "IfTerm": {
       const label = generateLabel(state, "begin-body", cont, head.location)
+      const gotoBody = [B.GotoInstr(label, head.location)]
       return explicateInIf(
         state,
         head.condition,
-        explicateInBegin1(state, head.consequent, [
-          B.GotoInstr(label, head.location),
-        ]),
-        explicateInBegin1(state, head.alternative, [
-          B.GotoInstr(label, head.location),
-        ]),
+        explicateInBegin1(state, head.consequent, gotoBody),
+        explicateInBegin1(state, head.alternative, gotoBody),
       )
     }
 
@@ -404,13 +398,13 @@ function explicateInIf(
     }
 
     case "IfTerm": {
-      thenCont = [
+      const gotoThen = [
         B.GotoInstr(
           generateLabel(state, "then", thenCont, condition.location),
           condition.location,
         ),
       ]
-      elseCont = [
+      const gotoElse = [
         B.GotoInstr(
           generateLabel(state, "else", elseCont, condition.location),
           condition.location,
@@ -419,8 +413,8 @@ function explicateInIf(
       return explicateInIf(
         state,
         condition.condition,
-        explicateInIf(state, condition.consequent, thenCont, elseCont),
-        explicateInIf(state, condition.alternative, thenCont, elseCont),
+        explicateInIf(state, condition.consequent, gotoThen, gotoElse),
+        explicateInIf(state, condition.alternative, gotoThen, gotoElse),
       )
     }
 
