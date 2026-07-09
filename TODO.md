@@ -1,8 +1,5 @@
 # basic2
 
-[meta-lisp.js] `explicateInTail` -- `ApplyTerm` handle direct call
-[meta-lisp.js] `explicateUnnestedTerm` -- `ApplyTerm` handle direct call
-
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
 

@@ -170,7 +170,7 @@ function explicateUnnestedTerm(
         term.name,
       )
       if (definition === undefined) {
-        let message = `[explicateUnnestedTerm] undefined qualified variable`
+        let message = `[explicateUnnestedTerm/QualifiedVarTerm] undefined qualified variable`
         message += `\n  from package: ${state.pkg.rootDirectory}`
         message += `\n  qualified name: ${term.pkgName}/${term.modName}/${term.name}`
         throw new S.ErrorWithSourceLocation(message, term.location)
@@ -215,14 +215,55 @@ function explicateUnnestedTerm(
     }
 
     case "ApplyTerm": {
-      // TODO handle direct call
+      // - maybe compile a direct call
+      if (term.target.kind === "QualifiedVarTerm") {
+        const definition = M.packageLookupDefinition(
+          state.pkg,
+          term.target.pkgName,
+          term.target.modName,
+          term.target.name,
+        )
+        if (definition === undefined) {
+          let message = `[explicateUnnestedTerm/ApplyTerm] undefined qualified variable`
+          message += `\n  from package: ${state.pkg.rootDirectory}`
+          message += `\n  qualified name: ${term.target.pkgName}/${term.target.modName}/${term.target.name}`
+          throw new S.ErrorWithSourceLocation(message, term.location)
+        }
+
+        if (
+          definition.kind === "PrimitiveFunctionDeclaration" ||
+          definition.kind === "FunctionDefinition" ||
+          definition.kind === "TestDefinition"
+        ) {
+          if (M.definitionArity(definition) === term.args.length) {
+            const prefix = resolvePackageId(state.pkg, term.target.pkgName)
+            const address = generateCell(state, "address")
+            const pairs = term.args.map((arg) =>
+              explicateUnnestedTerm(state, arg),
+            )
+            const [argInstrGroups, args] = arrayUnzip(pairs)
+            const value = generateCell(state, "value")
+            const instrs = [
+              B.Instr("address", [], [address], {
+                name: B.SymbolAttribute(
+                  `${prefix}/${term.target.modName}/${term.target.name}`,
+                ),
+              }),
+              ...arrayConcat(argInstrGroups),
+              B.Instr("call", [address, ...args], [value], {}),
+            ]
+            return [instrs, value]
+          }
+        }
+      }
+
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
       const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
       const value = generateCell(state, "value")
       const instrs = [
-        ...arrayConcat(argInstrGroups),
         ...targetInstrs,
+        ...arrayConcat(argInstrGroups),
         B.Instr("apply", [target, ...args], [value], {}),
       ]
       return [instrs, value]
@@ -279,16 +320,54 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
     }
 
     case "ApplyTerm": {
-      // TODO handle direct call
+      // - maybe compile a direct call
+      if (term.target.kind === "QualifiedVarTerm") {
+        const definition = M.packageLookupDefinition(
+          state.pkg,
+          term.target.pkgName,
+          term.target.modName,
+          term.target.name,
+        )
+        if (definition === undefined) {
+          let message = `[explicateUnnestedTerm/ApplyTerm] undefined qualified variable`
+          message += `\n  from package: ${state.pkg.rootDirectory}`
+          message += `\n  qualified name: ${term.target.pkgName}/${term.target.modName}/${term.target.name}`
+          throw new S.ErrorWithSourceLocation(message, term.location)
+        }
+
+        if (
+          definition.kind === "PrimitiveFunctionDeclaration" ||
+          definition.kind === "FunctionDefinition" ||
+          definition.kind === "TestDefinition"
+        ) {
+          if (M.definitionArity(definition) === term.args.length) {
+            const prefix = resolvePackageId(state.pkg, term.target.pkgName)
+            const address = generateCell(state, "address")
+            const pairs = term.args.map((arg) =>
+              explicateUnnestedTerm(state, arg),
+            )
+            const [argInstrGroups, args] = arrayUnzip(pairs)
+            return [
+              B.Instr("address", [], [address], {
+                name: B.SymbolAttribute(
+                  `${prefix}/${term.target.modName}/${term.target.name}`,
+                ),
+              }),
+              ...arrayConcat(argInstrGroups),
+              B.Instr("tail-call", [address, ...args], [], {}),
+            ]
+          }
+        }
+      }
+
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
       const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
-      const instrs = [
-        ...arrayConcat(argInstrGroups),
+      return [
         ...targetInstrs,
+        ...arrayConcat(argInstrGroups),
         B.Instr("tail-apply", [target, ...args], [], {}),
       ]
-      return instrs
     }
 
     default: {
