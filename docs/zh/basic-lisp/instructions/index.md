@@ -69,6 +69,7 @@ basic-lisp IR 的所有指令按功能分类。
 - [`to-int64`](to-int64.md) — 从 value 解构 int64
 - [`to-float64`](to-float64.md) — 从 value 解构 float64
 - [`to-bool`](to-bool.md) — 从 value 解构 bool
+- [`copy`](copy.md) — 创建 SSA 别名
 
 ## 字面量
 
@@ -99,7 +100,6 @@ basic-lisp IR 的所有指令按功能分类。
 - [`return`](return.md) — 函数返回
 - [`goto`](goto.md) — 无条件跳转
 - [`branch`](branch.md) — 条件分支
-- [`unreachable`](unreachable.md) — 不可达路径标记
 
 ## 函数调用
 

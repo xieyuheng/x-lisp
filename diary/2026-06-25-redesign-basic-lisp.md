@@ -112,7 +112,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 |----|----------|-----------|
 | `iadd` `isub` `imul` `idiv` `fadd` `fsub` `fmul` `fdiv` `shl` `shr` `bitand` `bitor` `bitxor` `padd` `and` `or` `xor` | [left, right] | — |
 | `icmp-eq` `icmp-ne` `icmp-lt` `icmp-le` `icmp-gt` `icmp-ge` `fcmp-eq` `fcmp-ne` `fcmp-lt` `fcmp-le` `fcmp-gt` `fcmp-ge` `bool-eq` `bool-ne` `pointer-eq` `pointer-ne` `value-eq` `value-ne` | [left, right] | — |
-| `not` `tag-int` `tag-float` `tag-bool` `to-int64` `to-float64` `to-bool` `const` | [operand] | — |
+| `not` `tag-int` `tag-float` `tag-bool` `to-int64` `to-float64` `to-bool` `copy` | [operand] | — |
 | `load` | [pointer] | — |
 | `call` | [target, ...args] | — |
 | `apply` | [target, ...args] | — |
@@ -127,8 +127,6 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 | `branch` | [condition] | `:then-label <name> :else-label <name>` |
 | `tail-call` | [target, ...args] | — |
 | `tail-apply` | [target, ...args] | — |
-| `unreachable` | [] | — |
-
 ## Binary op 列表
 
 | 类别           | 类型    | op name                                                   |
@@ -151,7 +149,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 | 逻辑     | `not`                            |
 | Tag 包装 | `tag-int` `tag-float` `tag-bool` |
 | Tag 解构 | `to-int64` `to-float64` `to-bool` |
-| 绑定     | `const`                          |
+| 绑定     | `copy`                           |
 
 ## 说明
 
@@ -161,7 +159,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - **`type` 字段**：表示本指令结果（SSA 变量）的类型。算术 / 位运算 / 逻辑 op 的 type 等于 operand 类型；比较 op 的 type 恒为 `bool-t`；terminator 类指令的 type 恒为 `void-t`。
 - `tag-int` / `tag-float` / `tag-bool`：将原始类型值包装为 `value-type`。
 - `to-int64` / `to-float64` / `to-bool`：从 `value-type` 中解构原始类型值（运行时类型检查）。
-- `const`：将 operand 绑定到 SSA 名字。`(= p pointer-t (const (address origin)))`。codegen 不为 `const` 生成代码。
+- `copy`：创建 SSA 别名。`(= x int64-t (copy y))`。codegen 不为 `copy` 生成代码。
 - `load`：从 `pointer` 指向的地址加载值。opaque pointer 不带元素类型，type 不可省。
 - `store`：将 `value` 写入 `pointer` 指向的地址。`content-type` 为被存储值的类型。本指令 type 为 `void-t`。
 - `call`：静态调用，`target` 为 `(address f)` 或 SSA var。
@@ -176,7 +174,6 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 - `goto`：无条件跳转到 label。type 为 `void-t`。
 - `branch`：若 `condition` 为真跳转到 `then-label`，否则跳转到 `else-label`。`condition` 必须为 `bool-t`。type 为 `void-t`。
 - `tail-call` / `tail-apply`：尾调用 / 尾动态调用。type 为 `void-t`。
-- `unreachable`：不可达路径标记。type 为 `void-t`。
 
 # Block
 
@@ -187,7 +184,7 @@ parse 与 format 时使用常见名称：`int64-t`、`float64-t`、`bool-t`、`v
 ```
 
 - `label`：block 名称，跳转目标。
-- `instrs`：指令序列。最后一条指令必须为 terminator 类指令（`return` / `goto` / `branch` / `tail-call` / `tail-apply` / `unreachable`）。
+- `instrs`：指令序列。最后一条指令必须为 terminator 类指令（`return` / `goto` / `branch` / `tail-call` / `tail-apply`）。
 
 # Claim
 

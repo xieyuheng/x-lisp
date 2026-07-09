@@ -10,7 +10,7 @@ title: offset-of
 
 # 描述
 
-沿 struct 字段路径逐级计算累积字节偏移，编译时常量。无 operand。
+沿 struct 字段路径逐级计算累积字节偏移，编译时常量。无 input。
 
 # 例子
 

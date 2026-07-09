@@ -10,7 +10,7 @@ title: int64
 
 # 描述
 
-零 operand 指令。通过 `:content` 属性创建 `int64-t` 类型的常量 SSA 绑定。
+零 input 指令。通过 `:content` 属性创建 `int64-t` 类型的常量 SSA 绑定。
 
 `:content` 接受整数值。
 
