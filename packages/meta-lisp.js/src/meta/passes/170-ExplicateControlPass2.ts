@@ -82,6 +82,7 @@ function addBlock(state: State, block: B.Block): void {
 }
 
 function generateCell(state: State, name: string): B.Cell {
+  state.usedNames.add(name)
   const id = M.generateRelativeFreshName(state.usedNames, name)
   state.usedNames.add(id)
   return B.Cell(id)
@@ -104,57 +105,57 @@ function explicateUnnestedTerm(
 ): [Array<B.Instr>, B.Cell] {
   switch (term.kind) {
     case "SymbolTerm": {
-      const result = generateCell(state, "symbol")
+      const value = generateCell(state, "symbol")
       const instrs = [
-        B.Instr("symbol-value", [], [result], {
+        B.Instr("symbol-value", [], [value], {
           content: B.SymbolAttribute(term.content),
         }),
       ]
-      return [instrs, result]
+      return [instrs, value]
     }
 
     case "KeywordTerm": {
-      const result = generateCell(state, "keyword")
+      const value = generateCell(state, "keyword")
       const instrs = [
-        B.Instr("keyword-value", [], [result], {
+        B.Instr("keyword-value", [], [value], {
           content: B.SymbolAttribute(term.content),
         }),
       ]
-      return [instrs, result]
+      return [instrs, value]
     }
 
     case "StringTerm": {
-      const result = generateCell(state, "string")
+      const value = generateCell(state, "string")
       const instrs = [
-        B.Instr("string-value", [], [result], {
+        B.Instr("string-value", [], [value], {
           content: B.StringAttribute(term.content),
         }),
       ]
-      return [instrs, result]
+      return [instrs, value]
     }
 
     case "IntTerm": {
       const i64 = generateCell(state, "i64")
-      const result = generateCell(state, "int")
+      const value = generateCell(state, "int")
       const instrs = [
         B.Instr("int64", [], [i64], {
           content: B.IntAttribute(term.content),
         }),
-        B.Instr("tag-int", [i64], [result], {}),
+        B.Instr("tag-int", [i64], [value], {}),
       ]
-      return [instrs, result]
+      return [instrs, value]
     }
 
     case "FloatTerm": {
       const f64 = generateCell(state, "f64")
-      const result = generateCell(state, "float")
+      const value = generateCell(state, "float")
       const instrs = [
         B.Instr("float64", [], [f64], {
           content: B.FloatAttribute(term.content),
         }),
-        B.Instr("tag-float", [f64], [result], {}),
+        B.Instr("tag-float", [f64], [value], {}),
       ]
-      return [instrs, result]
+      return [instrs, value]
     }
 
     case "VarTerm": {
@@ -162,17 +163,63 @@ function explicateUnnestedTerm(
     }
 
     case "QualifiedVarTerm": {
-      // TODO handle function
-      const prefix = resolvePackageId(state.pkg, term.pkgName)
-      const address = generateCell(state, "address")
-      const result = generateCell(state, "const")
-      const instrs = [
-        B.Instr("address", [], [address], {
-          name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
-        }),
-        B.Instr("load", [address], [result], {}),
-      ]
-      return [instrs, result]
+      const qualifiedMod = M.packageLookupMod(
+        state.pkg,
+        term.pkgName,
+        term.modName,
+      )
+      if (qualifiedMod === undefined) {
+        let message = `[explicateUnnestedTerm] undefined module prefix`
+        message += `\n  from package: ${state.pkg.rootDirectory}`
+        message += `\n  qualified name: ${term.pkgName}/${term.modName}/${term.name}`
+        throw new S.ErrorWithSourceLocation(message, term.location)
+      }
+
+      const definition = M.modLookupDefinition(qualifiedMod, term.name)
+      if (definition === undefined) {
+        let message = `[explicateUnnestedTerm] undefined qualified variable`
+        message += `\n  from package: ${state.pkg.rootDirectory}`
+        message += `\n  module name: ${qualifiedMod.name}`
+        message += `\n  qualified name: ${term.pkgName}/${term.modName}/${term.name}`
+        throw new S.ErrorWithSourceLocation(message, term.location)
+      }
+
+      if (
+        definition.kind === "PrimitiveVariableDeclaration" ||
+        definition.kind === "VariableDefinition"
+      ) {
+        const prefix = resolvePackageId(state.pkg, term.pkgName)
+        const address = generateCell(state, "address")
+        const value = generateCell(state, "const")
+        const instrs = [
+          B.Instr("address", [], [address], {
+            name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
+          }),
+          B.Instr("load", [address], [value], {
+            type: B.TypeAttribute(B.ValueType()),
+          }),
+        ]
+        return [instrs, value]
+      }
+
+      if (
+        definition.kind === "PrimitiveFunctionDeclaration" ||
+        definition.kind === "FunctionDefinition" ||
+        definition.kind === "TestDefinition"
+      ) {
+        const prefix = resolvePackageId(state.pkg, term.pkgName)
+        const value = generateCell(state, "fn")
+        const instrs = [
+          B.Instr("function-value", [], [value], {
+            name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
+            arity: B.IntAttribute(BigInt(M.definitionArity(definition))),
+          }),
+        ]
+        return [instrs, value]
+      }
+
+      let message = `[explicateUnnestedTerm] unhandled definition`
+      throw new S.ErrorWithSourceLocation(message, definition.location)
     }
 
     case "ApplyTerm": {
@@ -180,13 +227,13 @@ function explicateUnnestedTerm(
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
       const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
-      const result = generateCell(state, "result")
+      const value = generateCell(state, "value")
       const instrs = [
         ...arrayConcat(argInstrGroups),
         ...targetInstrs,
-        B.Instr("apply", [target, ...args], [result], {}),
+        B.Instr("apply", [target, ...args], [value], {}),
       ]
-      return [instrs, result]
+      return [instrs, value]
     }
 
     default: {
