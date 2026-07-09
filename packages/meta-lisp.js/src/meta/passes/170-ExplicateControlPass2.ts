@@ -49,7 +49,17 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
       const state = createState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
-      block.instrs = explicateInTail(state, definition.body)
+
+      const argumentInstrs = definition.parameters.map((name, i) =>
+        B.Instr("argument", [], [B.Cell(name)], {
+          index: B.IntAttribute(BigInt(i)),
+        }),
+      )
+      block.instrs = [
+        ...argumentInstrs,
+        ...explicateInTail(state, definition.body),
+      ]
+
       return [
         B.FunctionDefinition(definitionQualifiedName(definition), state.blocks),
       ]
