@@ -39,11 +39,11 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 ### rhs 是 let — 上浮内层绑定
 
 ```scheme
-;; 变换前
 (let ((x (let ((y 1)) (+ y 2))))
   (+ x 3))
 
-;; 变换后
+;; =>
+
 (let ((y 1))
   (let ((x (+ y 2)))
     (+ x 3)))
@@ -52,11 +52,11 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 ### rhs 是 begin — 副作用提前
 
 ```scheme
-;; 变换前
 (let ((x (begin (f a) 42)))
   (+ x 3))
 
-;; 变换后
+;; =>
+
 (begin (f a)
   (let ((x 42))
     (+ x 3)))
@@ -67,24 +67,18 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 `let` 的结果来自 `if` 的两条分支，需要 join block 收敛控制流。
 
 ```scheme
-;; 变换前
-(let ((x (if cond 10 20)))
+(let ((x (if p a b)))
   (+ x 3))
 
-;; 变换后
-(if cond
-  (goto then)
-  (goto else))
+;; =>
 
-then:
-  (let ((x 10))
-    (goto join))
+(if p
+  (let ((x a))
+    (goto let-body))
+  (let ((x b))
+    (goto let-body)))
 
-else:
-  (let ((x 20))
-    (goto join))
-
-join:
+let-body:
   (+ x 3)
 ```
 
@@ -93,12 +87,12 @@ join:
 ### head 是 let
 
 ```scheme
-;; 变换前
 (begin
   (let ((y 1)) (+ y 2))
   (+ z 3))
 
-;; 变换后
+;; =>
+
 (let ((y 1))
   (begin (+ y 2)
     (+ z 3)))
@@ -107,12 +101,12 @@ join:
 ### head 是 begin
 
 ```scheme
-;; 变换前
 (begin
   (begin (f a) (g b))
   (+ z 3))
 
-;; 变换后
+;; =>
+
 (begin (f a)
   (begin (g b)
     (+ z 3)))
@@ -121,13 +115,13 @@ join:
 ### head 是 if — 需要 join 节点
 
 ```scheme
-;; 变换前
 (begin
-  (if cond (f a) (g b))
+  (if p (f a) (g b))
   (+ z 3))
 
-;; 变换后
-(if cond
+;; =>
+
+(if p
   (goto then)
   (goto else))
 
@@ -148,12 +142,12 @@ join:
 ### condition 是 let
 
 ```scheme
-;; 变换前
 (if (let ((x 1)) (> x 0))
   (f 1)
   (f -1))
 
-;; 变换后
+;; =>
+
 (let ((x 1))
   (if (> x 0)
     (f 1)
@@ -163,14 +157,14 @@ join:
 ### condition 是 begin
 
 ```scheme
-;; 变换前
-(if (begin (f a) cond)
+(if (begin (f a) p)
   (g 1)
   (g -1))
 
-;; 变换后
+;; =>
+
 (begin (f a)
-  (if cond
+  (if p
     (g 1)
     (g -1)))
 ```
@@ -181,12 +175,12 @@ join:
 独立 block，内层测试 b 和 c 时分别跳转到对应 block。
 
 ```scheme
-;; 变换前
 (if (if a b c)
   (f 1)
   (f -1))
 
-;; 变换后
+;; =>
+
 (if a
   (goto then.0)
   (goto else.0))
@@ -232,7 +226,7 @@ else.1:
 考虑 `let-rhs is if` 分裂 case：
 
 ```scheme
-(let ((x (if cond
+(let ((x (if p
            (let ((y 1)) y)     ;; ← 分支是 Let1Term
            (let ((z 2)) z))))
   (+ x 1))
@@ -258,7 +252,7 @@ FloatPass 不能提前消除——提到外面会破坏作用域（`y` 只在 th
 
 ```scheme
 (begin
-  (if cond
+  (if p
     (let ((y 1)) (f y))     ;; ← 分支以 Let1Term 开头
     (let ((z 2)) (g z)))
   (+ z 3))

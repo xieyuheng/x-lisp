@@ -265,47 +265,46 @@ function explicateInLet1(
   rhs: M.Term,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
-  return []
+  switch (rhs.kind) {
+    case "Let1Term": {
+      return explicateInLet1(
+        state,
+        rhs.name,
+        rhs.rhs,
+        explicateInLet1(state, name, rhs.body, cont),
+      )
+    }
 
-  // switch (rhs.kind) {
-  //   case "Let1Term": {
-  //     return explicateInLet1(
-  //       state,
-  //       rhs.name,
-  //       rhs.rhs,
-  //       explicateInLet1(state, name, rhs.body, cont),
-  //     )
-  //   }
+    case "Begin1Term": {
+      return explicateInBegin1(
+        state,
+        rhs.head,
+        explicateInLet1(state, name, rhs.body, cont),
+      )
+    }
 
-  //   case "Begin1Term": {
-  //     return explicateInBegin1(
-  //       state,
-  //       rhs.head,
-  //       explicateInLet1(state, name, rhs.body, cont),
-  //     )
-  //   }
+    case "IfTerm": {
+      const letBodyLabel = generateLabel(state, "let-body", cont)
+      return explicateInIf(
+        state,
+        rhs.condition,
+        explicateInLet1(state, name, rhs.consequent, [
+          B.Instr([], "goto", [], { label: B.SymbolAttribute(letBodyLabel) }),
+        ]),
+        explicateInLet1(state, name, rhs.alternative, [
+          B.Instr([], "goto", [], { label: B.SymbolAttribute(letBodyLabel) }),
+        ]),
+      )
+    }
 
-  //   case "IfTerm": {
-  //     const letBodyLabel = generateLabel(state, "let-body", cont, rhs.location)
-  //     return explicateInIf(
-  //       state,
-  //       rhs.condition,
-  //       explicateInLet1(state, name, rhs.consequent, [
-  //         B.GotoInstr(letBodyLabel, rhs.location),
-  //       ]),
-  //       explicateInLet1(state, name, rhs.alternative, [
-  //         B.GotoInstr(letBodyLabel, rhs.location),
-  //       ]),
-  //     )
-  //   }
-
-  //   default: {
-  //     return [
-  //       B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location),
-  //       ...cont,
-  //     ]
-  //   }
-  // }
+    default: {
+      // TODO
+      return [
+        // B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location),
+        ...cont,
+      ]
+    }
+  }
 }
 
 function explicateInBegin1(

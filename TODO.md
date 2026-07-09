@@ -1,12 +1,16 @@
 # basic2
 
+[meta-lisp.js] `explicateInLet1`
+[meta-lisp.js] `explicateInBegin1`
+[meta-lisp.js] `explicateInIf`
+
 [meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type
 
 [meta-lisp.js] `explicateInTail` -- `QualifiedVarTerm` handle function
 [meta-lisp.js] `explicateInTail` -- `ApplyTerm` handle direct call -- use arity and type information
 
-[meta-lisp.js] `explicateInBody` -- `QualifiedVarTerm` handle function
-[meta-lisp.js] `explicateInBody` -- `ApplyTerm` handle direct call
+[meta-lisp.js] `explicateUnnestedTerm` -- `QualifiedVarTerm` handle function
+[meta-lisp.js] `explicateUnnestedTerm` -- `ApplyTerm` handle direct call
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
