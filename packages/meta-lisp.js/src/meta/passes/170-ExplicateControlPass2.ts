@@ -9,9 +9,7 @@ export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
-        for (const basicDefinition of explicateDefinition(
-          definition,
-        )) {
+        for (const basicDefinition of explicateDefinition(definition)) {
           basicMod.definitions.set(basicDefinition.name, basicDefinition)
         }
       }
@@ -25,9 +23,7 @@ function definitionQualifiedName(definition: M.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
-function explicateDefinition(
-  definition: M.Definition,
-): Array<B.Definition> {
+function explicateDefinition(definition: M.Definition): Array<B.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
       return [B.ExternFunctionDefinition(definitionQualifiedName(definition))]
@@ -290,7 +286,9 @@ function explicateInLet1(
     case "IfTerm": {
       if (state.useSites.has(name)) {
         const gotoBody = B.Instr("goto", [], [], {
-          label: B.SymbolAttribute(generateLabel(state, "let-body", restInstrs)),
+          label: B.SymbolAttribute(
+            generateLabel(state, "let-body", restInstrs),
+          ),
         })
         return explicateInIf(
           state,
@@ -299,9 +297,14 @@ function explicateInLet1(
           explicateInLet1(state, name, rhs.alternative, [gotoBody]),
         )
       } else {
-        state.useSites
+        state.useSites.add(name)
         const gotoBody = B.Instr("goto", [], [], {
-          label: B.SymbolAttribute(generateLabel(state, "let-body", restInstrs)),
+          label: B.SymbolAttribute(
+            generateLabel(state, "let-body", [
+              B.Instr("use", [], [B.Cell(name)], {}),
+              ...restInstrs,
+            ]),
+          ),
         })
         return explicateInIf(
           state,
@@ -314,11 +317,21 @@ function explicateInLet1(
 
     default: {
       const [rhsInstrs, rhsCell] = explicateUnnestedTerm(state, rhs)
-      return [
-        ...rhsInstrs,
-        B.Instr("copy", [rhsCell], [B.Cell(name)], {}),
-        ...restInstrs,
-      ]
+      if (state.useSites.has(name)) {
+        return [
+          ...rhsInstrs,
+          B.Instr("provide", [rhsCell], [], {
+            "use-site": B.SymbolAttribute(name),
+          }),
+          ...restInstrs,
+        ]
+      } else {
+        return [
+          ...rhsInstrs,
+          B.Instr("copy", [rhsCell], [B.Cell(name)], {}),
+          ...restInstrs,
+        ]
+      }
     }
   }
 }
@@ -348,7 +361,9 @@ function explicateInBegin1(
 
     case "IfTerm": {
       const gotoBody = B.Instr("goto", [], [], {
-        label: B.SymbolAttribute(generateLabel(state, "begin-body", restInstrs)),
+        label: B.SymbolAttribute(
+          generateLabel(state, "begin-body", restInstrs),
+        ),
       })
       return explicateInIf(
         state,
