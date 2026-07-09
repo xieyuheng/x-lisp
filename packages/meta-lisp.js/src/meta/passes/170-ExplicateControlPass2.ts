@@ -106,7 +106,7 @@ function explicateUnnestedTerm(
     case "SymbolTerm": {
       const result = generateCell(state, "symbol")
       const instrs = [
-        B.Instr([result], "symbol-value", [], {
+        B.Instr("symbol-value", [], [result], {
           content: B.SymbolAttribute(term.content),
         }),
       ]
@@ -116,7 +116,7 @@ function explicateUnnestedTerm(
     case "KeywordTerm": {
       const result = generateCell(state, "keyword")
       const instrs = [
-        B.Instr([result], "keyword-value", [], {
+        B.Instr("keyword-value", [], [result], {
           content: B.SymbolAttribute(term.content),
         }),
       ]
@@ -126,7 +126,7 @@ function explicateUnnestedTerm(
     case "StringTerm": {
       const result = generateCell(state, "string")
       const instrs = [
-        B.Instr([result], "string-value", [], {
+        B.Instr("string-value", [], [result], {
           content: B.StringAttribute(term.content),
         }),
       ]
@@ -137,10 +137,10 @@ function explicateUnnestedTerm(
       const i64 = generateCell(state, "i64")
       const result = generateCell(state, "int")
       const instrs = [
-        B.Instr([i64], "int64", [], {
+        B.Instr("int64", [], [i64], {
           content: B.IntAttribute(term.content),
         }),
-        B.Instr([result], "tag-int", [i64], {}),
+        B.Instr("tag-int", [i64], [result], {}),
       ]
       return [instrs, result]
     }
@@ -149,10 +149,10 @@ function explicateUnnestedTerm(
       const f64 = generateCell(state, "f64")
       const result = generateCell(state, "float")
       const instrs = [
-        B.Instr([f64], "float64", [], {
+        B.Instr("float64", [], [f64], {
           content: B.FloatAttribute(term.content),
         }),
-        B.Instr([result], "tag-float", [f64], {}),
+        B.Instr("tag-float", [f64], [result], {}),
       ]
       return [instrs, result]
     }
@@ -167,10 +167,10 @@ function explicateUnnestedTerm(
       const address = generateCell(state, "address")
       const result = generateCell(state, "const")
       const instrs = [
-        B.Instr([address], "address", [], {
+        B.Instr("address", [], [address], {
           name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
         }),
-        B.Instr([result], "load", [address], {}),
+        B.Instr("load", [address], [result], {}),
       ]
       return [instrs, result]
     }
@@ -184,7 +184,7 @@ function explicateUnnestedTerm(
       const instrs = [
         ...arrayConcat(argInstrGroups),
         ...targetInstrs,
-        B.Instr([result], "apply", [target, ...args], {}),
+        B.Instr("apply", [target, ...args], [result], {}),
       ]
       return [instrs, result]
     }
@@ -247,14 +247,14 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
       const instrs = [
         ...arrayConcat(argInstrGroups),
         ...targetInstrs,
-        B.Instr([], "tail-apply", [target, ...args], {}),
+        B.Instr("tail-apply", [target, ...args], [], {}),
       ]
       return instrs
     }
 
     default: {
       const [instrs, cell] = explicateUnnestedTerm(state, term)
-      return [...instrs, B.Instr([], "return", [cell], {})]
+      return [...instrs, B.Instr("return", [cell], [], {})]
     }
   }
 }
@@ -284,7 +284,7 @@ function explicateInLet1(
     }
 
     case "IfTerm": {
-      const gotoBody = B.Instr([], "goto", [], {
+      const gotoBody = B.Instr("goto", [], [], {
         label: B.SymbolAttribute(generateLabel(state, "let-body", cont)),
       })
       return explicateInIf(
@@ -329,7 +329,7 @@ function explicateInBegin1(
     }
 
     case "IfTerm": {
-      const gotoBody = B.Instr([], "goto", [], {
+      const gotoBody = B.Instr("goto", [], [], {
         label: B.SymbolAttribute(generateLabel(state, "begin-body", cont)),
       })
       return explicateInIf(
@@ -383,12 +383,15 @@ function explicateInIf(
     case "VarTerm": {
       const bool = generateCell(state, "bool")
       return [
-        B.Instr([bool], "to-bool", [B.Cell(condition.name)], {}),
-          B.Instr([], "branch", [bool], {
-            "then-label": B.SymbolAttribute(generateLabel(state, "then", thenCont)),
-            "else-label": B.SymbolAttribute(generateLabel(state, "else", elseCont)),
-          }
-        ),
+        B.Instr("to-bool", [B.Cell(condition.name)], [bool], {}),
+        B.Instr("branch", [bool], [], {
+          "then-label": B.SymbolAttribute(
+            generateLabel(state, "then", thenCont),
+          ),
+          "else-label": B.SymbolAttribute(
+            generateLabel(state, "else", elseCont),
+          ),
+        }),
       ]
     }
 
@@ -421,10 +424,10 @@ function explicateInIf(
     }
 
     case "IfTerm": {
-      const gotoThen = B.Instr([], "goto", [], {
+      const gotoThen = B.Instr("goto", [], [], {
         label: B.SymbolAttribute(generateLabel(state, "then", thenCont)),
       })
-      const gotoElse = B.Instr([], "goto", [], {
+      const gotoElse = B.Instr("goto", [], [], {
         label: B.SymbolAttribute(generateLabel(state, "else", elseCont)),
       })
       return explicateInIf(

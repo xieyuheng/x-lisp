@@ -16,10 +16,10 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
       )
     }
 
-    const results: Array<B.Cell> = []
+    const output: Array<B.Cell> = []
     for (let i = 1; i < innerListIndex; i++) {
       const id = S.asSymbolSexp(elements[i]).content
-      results.push(B.Cell(id))
+      output.push(B.Cell(id))
     }
 
     const innerList = S.asListSexp(elements[innerListIndex])
@@ -27,31 +27,31 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
     const op = S.asSymbolSexp(innerElements[0]).content
 
     const rest = innerElements.slice(1)
-    const operands = parseOperands(rest)
+    const input = parseInput(rest)
     const attributes = parseAttributes(rest)
 
-    return B.Instr(results, op, operands, attributes)
+    return B.Instr(op, input, output, attributes)
   }
 
   const op = S.asSymbolSexp(elements[0]).content
   const rest = elements.slice(1)
-  const operands = parseOperands(rest)
+  const input = parseInput(rest)
   const attributes = parseAttributes(rest)
-  return B.Instr([], op, operands, attributes)
+  return B.Instr(op, input, [], attributes)
 }
 
-function parseOperands(sexps: Array<S.Sexp>): Array<B.Cell> {
-  const operands: Array<B.Cell> = []
+function parseInput(sexps: Array<S.Sexp>): Array<B.Cell> {
+  const input: Array<B.Cell> = []
   let i = 0
   while (i < sexps.length) {
     if (isAttributeKey(sexps[i])) {
       i += 2
     } else {
-      operands.push(parseOperand(sexps[i]))
+      input.push(parseOperand(sexps[i]))
       i += 1
     }
   }
-  return operands
+  return input
 }
 
 function parseAttributes(sexps: Array<S.Sexp>): Record<string, B.Attribute> {
