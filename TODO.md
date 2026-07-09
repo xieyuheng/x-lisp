@@ -1,6 +1,5 @@
 # basic2
 
-[meta-lisp.js] `explicateInLet1` -- handle default
 [meta-lisp.js] `explicateInLet1` -- assign vs provide
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` claim to claim -- type to opaque type

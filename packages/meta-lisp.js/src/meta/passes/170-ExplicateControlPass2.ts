@@ -296,9 +296,10 @@ function explicateInLet1(
     }
 
     default: {
-      // TODO
+      const [rhsInstrs, rhsCell] = explicateUnnestedTerm(state, rhs)
       return [
-        // B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location),
+        ...rhsInstrs,
+        B.Instr("copy", [rhsCell], [B.Cell(name)], {}),
         ...cont,
       ]
     }
