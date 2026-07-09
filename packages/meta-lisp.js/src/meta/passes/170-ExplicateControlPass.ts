@@ -233,7 +233,7 @@ function explicateInLet1(
   state: State,
   name: string,
   rhs: M.Term,
-  cont: Array<B.Instr>,
+  restInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (rhs.kind) {
     case "Let1Term": {
@@ -241,7 +241,7 @@ function explicateInLet1(
         state,
         rhs.name,
         rhs.rhs,
-        explicateInLet1(state, name, rhs.body, cont),
+        explicateInLet1(state, name, rhs.body, restInstrs),
       )
     }
 
@@ -249,13 +249,13 @@ function explicateInLet1(
       return explicateInBegin1(
         state,
         rhs.head,
-        explicateInLet1(state, name, rhs.body, cont),
+        explicateInLet1(state, name, rhs.body, restInstrs),
       )
     }
 
     case "IfTerm": {
       const gotoBody = B.GotoInstr(
-        generateLabel(state, "let-body", cont, rhs.location),
+        generateLabel(state, "let-body", restInstrs, rhs.location),
         rhs.location,
       )
       return explicateInIf(
@@ -269,7 +269,7 @@ function explicateInLet1(
     default: {
       return [
         B.AssignInstr(name, explicateUnnestedTerm(state, rhs), rhs.location),
-        ...cont,
+        ...restInstrs,
       ]
     }
   }
@@ -278,7 +278,7 @@ function explicateInLet1(
 function explicateInBegin1(
   state: State,
   head: M.Term,
-  cont: Array<B.Instr>,
+  restInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
     case "Let1Term": {
@@ -286,7 +286,7 @@ function explicateInBegin1(
         state,
         head.name,
         head.rhs,
-        explicateInBegin1(state, head.body, cont),
+        explicateInBegin1(state, head.body, restInstrs),
       )
     }
 
@@ -294,13 +294,13 @@ function explicateInBegin1(
       return explicateInBegin1(
         state,
         head.head,
-        explicateInBegin1(state, head.body, cont),
+        explicateInBegin1(state, head.body, restInstrs),
       )
     }
 
     case "IfTerm": {
       const gotoBody = B.GotoInstr(
-        generateLabel(state, "begin-body", cont, head.location),
+        generateLabel(state, "begin-body", restInstrs, head.location),
         head.location,
       )
       return explicateInIf(
@@ -314,7 +314,7 @@ function explicateInBegin1(
     default: {
       return [
         B.PerformInstr(explicateUnnestedTerm(state, head), head.location),
-        ...cont,
+        ...restInstrs,
       ]
     }
   }
@@ -323,15 +323,15 @@ function explicateInBegin1(
 function explicateInIf(
   state: State,
   condition: M.Term,
-  thenCont: Array<B.Instr>,
-  elseCont: Array<B.Instr>,
+  thenInstrs: Array<B.Instr>,
+  elseInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   if (
     condition.kind === "QualifiedVarTerm" &&
     condition.modName === "builtin" &&
     condition.name === "true"
   ) {
-    return thenCont
+    return thenInstrs
   }
 
   if (
@@ -339,7 +339,7 @@ function explicateInIf(
     condition.modName === "builtin" &&
     condition.name === "false"
   ) {
-    return elseCont
+    return elseInstrs
   }
 
   if (
@@ -349,7 +349,7 @@ function explicateInIf(
     condition.args.length === 1
   ) {
     const [negatedCondition] = condition.args
-    return explicateInIf(state, negatedCondition, elseCont, thenCont)
+    return explicateInIf(state, negatedCondition, elseInstrs, thenInstrs)
   }
 
   switch (condition.kind) {
@@ -367,8 +367,8 @@ function explicateInIf(
           condition.location,
         ),
         B.BranchInstr(
-          generateLabel(state, "then", thenCont, condition.location),
-          generateLabel(state, "else", elseCont, condition.location),
+          generateLabel(state, "then", thenInstrs, condition.location),
+          generateLabel(state, "else", elseInstrs, condition.location),
           condition.location,
         ),
       ]
@@ -381,8 +381,8 @@ function explicateInIf(
           condition.location,
         ),
         B.BranchInstr(
-          generateLabel(state, "then", thenCont, condition.location),
-          generateLabel(state, "else", elseCont, condition.location),
+          generateLabel(state, "then", thenInstrs, condition.location),
+          generateLabel(state, "else", elseInstrs, condition.location),
           condition.location,
         ),
       ]
@@ -393,7 +393,7 @@ function explicateInIf(
         state,
         condition.name,
         condition.rhs,
-        explicateInIf(state, condition.body, thenCont, elseCont),
+        explicateInIf(state, condition.body, thenInstrs, elseInstrs),
       )
     }
 
@@ -401,17 +401,17 @@ function explicateInIf(
       return explicateInBegin1(
         state,
         condition.head,
-        explicateInIf(state, condition.body, thenCont, elseCont),
+        explicateInIf(state, condition.body, thenInstrs, elseInstrs),
       )
     }
 
     case "IfTerm": {
       const gotoThen = B.GotoInstr(
-        generateLabel(state, "then", thenCont, condition.location),
+        generateLabel(state, "then", thenInstrs, condition.location),
         condition.location,
       )
       const gotoElse = B.GotoInstr(
-        generateLabel(state, "else", elseCont, condition.location),
+        generateLabel(state, "else", elseInstrs, condition.location),
         condition.location,
       )
       return explicateInIf(
