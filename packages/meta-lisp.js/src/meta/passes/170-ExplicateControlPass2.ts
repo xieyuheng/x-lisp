@@ -284,9 +284,8 @@ function explicateInLet1(
     }
 
     case "IfTerm": {
-      const label = generateLabel(state, "let-body", cont)
       const gotoBody = B.Instr([], "goto", [], {
-        label: B.SymbolAttribute(label),
+        label: B.SymbolAttribute(generateLabel(state, "let-body", cont)),
       })
       return explicateInIf(
         state,
@@ -330,9 +329,8 @@ function explicateInBegin1(
     }
 
     case "IfTerm": {
-      const label = generateLabel(state, "begin-body", cont)
       const gotoBody = B.Instr([], "goto", [], {
-        label: B.SymbolAttribute(label),
+        label: B.SymbolAttribute(generateLabel(state, "begin-body", cont)),
       })
       return explicateInIf(
         state,

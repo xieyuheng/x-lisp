@@ -254,8 +254,10 @@ function explicateInLet1(
     }
 
     case "IfTerm": {
-      const label = generateLabel(state, "let-body", cont, rhs.location)
-      const gotoBody = B.GotoInstr(label, rhs.location)
+      const gotoBody = B.GotoInstr(
+        generateLabel(state, "let-body", cont, rhs.location),
+        rhs.location,
+      )
       return explicateInIf(
         state,
         rhs.condition,
@@ -297,8 +299,10 @@ function explicateInBegin1(
     }
 
     case "IfTerm": {
-      const label = generateLabel(state, "begin-body", cont, head.location)
-      const gotoBody = B.GotoInstr(label, head.location)
+      const gotoBody = B.GotoInstr(
+        generateLabel(state, "begin-body", cont, head.location),
+        head.location,
+      )
       return explicateInIf(
         state,
         head.condition,
