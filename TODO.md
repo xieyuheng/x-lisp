@@ -1,8 +1,6 @@
 # basic2
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- `eraseType` from meta-lisp claim to basic-lisp claim -- type to opaque type
-
-[meta-lisp.js] `explicateInTail` -- `ApplyTerm` handle direct call -- use arity and type information
+[meta-lisp.js] `explicateInTail` -- `ApplyTerm` handle direct call
 [meta-lisp.js] `explicateUnnestedTerm` -- `ApplyTerm` handle direct call
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`

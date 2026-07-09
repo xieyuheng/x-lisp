@@ -163,23 +163,15 @@ function explicateUnnestedTerm(
     }
 
     case "QualifiedVarTerm": {
-      const qualifiedMod = M.packageLookupMod(
+      const definition = M.packageLookupDefinition(
         state.pkg,
         term.pkgName,
         term.modName,
+        term.name,
       )
-      if (qualifiedMod === undefined) {
-        let message = `[explicateUnnestedTerm] undefined module prefix`
-        message += `\n  from package: ${state.pkg.rootDirectory}`
-        message += `\n  qualified name: ${term.pkgName}/${term.modName}/${term.name}`
-        throw new S.ErrorWithSourceLocation(message, term.location)
-      }
-
-      const definition = M.modLookupDefinition(qualifiedMod, term.name)
       if (definition === undefined) {
         let message = `[explicateUnnestedTerm] undefined qualified variable`
         message += `\n  from package: ${state.pkg.rootDirectory}`
-        message += `\n  module name: ${qualifiedMod.name}`
         message += `\n  qualified name: ${term.pkgName}/${term.modName}/${term.name}`
         throw new S.ErrorWithSourceLocation(message, term.location)
       }

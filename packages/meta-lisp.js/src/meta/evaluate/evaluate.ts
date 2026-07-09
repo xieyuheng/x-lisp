@@ -20,19 +20,15 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
     }
 
     case "QualifiedVarTerm": {
-      const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
-      if (qualifiedMod === undefined) {
-        let message = `[evaluate] undefined module prefix`
-        message += `\n  from package: ${mod.pkg.rootDirectory}`
-        message += `\n  qualified name: ${exp.pkgName}/${exp.modName}/${exp.name}`
-        throw new S.ErrorWithSourceLocation(message, exp.location)
-      }
-
-      const definition = M.modLookupDefinition(qualifiedMod, exp.name)
+      const definition = M.packageLookupDefinition(
+        mod.pkg,
+        exp.pkgName,
+        exp.modName,
+        exp.name,
+      )
       if (definition === undefined) {
         let message = `[evaluate] undefined qualified variable`
         message += `\n  from package: ${mod.pkg.rootDirectory}`
-        message += `\n  module name: ${qualifiedMod.name}`
         message += `\n  name: ${exp.name}`
         throw new S.ErrorWithSourceLocation(message, exp.location)
       }

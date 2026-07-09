@@ -27,18 +27,32 @@ export function createPackage(
 
 export function packageLookupMod(
   pkg: Package,
-  pkgId: string,
+  pkgName: string,
   modName: string,
 ): M.Mod | undefined {
-  if (pkgId === pkg.id) {
+  if (pkgName === pkg.id) {
     return pkg.mods.get(modName)
   }
   for (const dep of pkg.dependencies.values()) {
-    if (dep.config.name === pkgId) {
+    if (dep.config.name === pkgName) {
       return dep.mods.get(modName)
     }
   }
   return undefined
+}
+
+export function packageLookupDefinition(
+  pkg: Package,
+  pkgName: string,
+  modName: string,
+  name: string,
+): M.Definition | undefined {
+  const qualifiedMod = packageLookupMod(pkg, pkgName, modName)
+  if (qualifiedMod === undefined) {
+    return undefined
+  }
+
+  return M.modLookupDefinition(qualifiedMod, name)
 }
 
 export function packageAddMod(pkg: Package, mod: M.Mod): void {
