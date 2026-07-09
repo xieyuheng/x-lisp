@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
+import { setUnion } from "@xieyuheng/std.js/set"
 import * as B from "../../basic2/index.ts"
 import * as M from "../index.ts"
 
@@ -41,7 +42,10 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
     }
 
     case "FunctionDefinition": {
-      const usedNames = M.termOccurredNames(definition.body)
+      const usedNames = setUnion(
+        M.termOccurredNames(definition.body),
+        new Set(definition.parameters),
+      )
       const state = createState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)

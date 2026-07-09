@@ -2,6 +2,7 @@
 
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `parameters`
 [meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
+[meta-lisp.js] 170-ExplicateControlPass2 -- handle `TestDefinition`
 
 # self-hosting
 
