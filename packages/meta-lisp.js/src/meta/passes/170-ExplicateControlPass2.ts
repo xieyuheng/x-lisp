@@ -398,7 +398,10 @@ function explicateInIf(
     }
 
     case "ApplyTerm": {
-      const [conditionInstrs, conditionCell] = explicateUnnestedTerm(state, condition)
+      const [conditionInstrs, conditionCell] = explicateUnnestedTerm(
+        state,
+        condition,
+      )
       const bool = generateCell(state, "bool")
       return [
         ...conditionInstrs,
