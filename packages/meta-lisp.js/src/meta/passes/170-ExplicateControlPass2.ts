@@ -158,7 +158,7 @@ function explicateUnnestedTerm(
     }
 
     case "VarTerm": {
-      return [[], generateCell(state, term.name)]
+      return [[], B.Cell(term.name)]
     }
 
     case "QualifiedVarTerm": {
@@ -285,14 +285,14 @@ function explicateInLet1(
 
     case "IfTerm": {
       const label = generateLabel(state, "let-body", cont)
-      const gotoBody = [
-        B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
-      ]
+      const gotoBody = B.Instr([], "goto", [], {
+        label: B.SymbolAttribute(label),
+      })
       return explicateInIf(
         state,
         rhs.condition,
-        explicateInLet1(state, name, rhs.consequent, gotoBody),
-        explicateInLet1(state, name, rhs.alternative, gotoBody),
+        explicateInLet1(state, name, rhs.consequent, [gotoBody]),
+        explicateInLet1(state, name, rhs.alternative, [gotoBody]),
       )
     }
 
@@ -331,14 +331,14 @@ function explicateInBegin1(
 
     case "IfTerm": {
       const label = generateLabel(state, "begin-body", cont)
-      const gotoBody = [
-        B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
-      ]
+      const gotoBody = B.Instr([], "goto", [], {
+        label: B.SymbolAttribute(label),
+      })
       return explicateInIf(
         state,
         head.condition,
-        explicateInBegin1(state, head.consequent, gotoBody),
-        explicateInBegin1(state, head.alternative, gotoBody),
+        explicateInBegin1(state, head.consequent, [gotoBody]),
+        explicateInBegin1(state, head.alternative, [gotoBody]),
       )
     }
 
@@ -432,22 +432,17 @@ function explicateInIf(
     }
 
     case "IfTerm": {
-      const gotoThen = [
-        B.Instr([], "goto", [], {
-          label: B.SymbolAttribute(generateLabel(state, "then", thenCont)),
-        }),
-      ]
-      const gotoElse = [
-        B.Instr([], "goto", [], {
-          label: B.SymbolAttribute(generateLabel(state, "else", elseCont)),
-        }),
-      ]
-
+      const gotoThen = B.Instr([], "goto", [], {
+        label: B.SymbolAttribute(generateLabel(state, "then", thenCont)),
+      })
+      const gotoElse = B.Instr([], "goto", [], {
+        label: B.SymbolAttribute(generateLabel(state, "else", elseCont)),
+      })
       return explicateInIf(
         state,
         condition.condition,
-        explicateInIf(state, condition.consequent, gotoThen, gotoElse),
-        explicateInIf(state, condition.alternative, gotoThen, gotoElse),
+        explicateInIf(state, condition.consequent, [gotoThen], [gotoElse]),
+        explicateInIf(state, condition.alternative, [gotoThen], [gotoElse]),
       )
     }
 

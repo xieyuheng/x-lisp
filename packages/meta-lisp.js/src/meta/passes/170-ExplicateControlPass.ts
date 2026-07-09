@@ -255,12 +255,12 @@ function explicateInLet1(
 
     case "IfTerm": {
       const label = generateLabel(state, "let-body", cont, rhs.location)
-      const gotoBody = [B.GotoInstr(label, rhs.location)]
+      const gotoBody = B.GotoInstr(label, rhs.location)
       return explicateInIf(
         state,
         rhs.condition,
-        explicateInLet1(state, name, rhs.consequent, gotoBody),
-        explicateInLet1(state, name, rhs.alternative, gotoBody),
+        explicateInLet1(state, name, rhs.consequent, [gotoBody]),
+        explicateInLet1(state, name, rhs.alternative, [gotoBody]),
       )
     }
 
@@ -298,12 +298,12 @@ function explicateInBegin1(
 
     case "IfTerm": {
       const label = generateLabel(state, "begin-body", cont, head.location)
-      const gotoBody = [B.GotoInstr(label, head.location)]
+      const gotoBody = B.GotoInstr(label, head.location)
       return explicateInIf(
         state,
         head.condition,
-        explicateInBegin1(state, head.consequent, gotoBody),
-        explicateInBegin1(state, head.alternative, gotoBody),
+        explicateInBegin1(state, head.consequent, [gotoBody]),
+        explicateInBegin1(state, head.alternative, [gotoBody]),
       )
     }
 
@@ -338,6 +338,16 @@ function explicateInIf(
     return elseCont
   }
 
+  if (
+    condition.kind === "ApplyTerm" &&
+    condition.target.kind === "VarTerm" &&
+    condition.target.name === "not" &&
+    condition.args.length === 1
+  ) {
+    const [negatedCondition] = condition.args
+    return explicateInIf(state, negatedCondition, elseCont, thenCont)
+  }
+
   switch (condition.kind) {
     case "VarTerm": {
       return [
@@ -361,17 +371,11 @@ function explicateInIf(
     }
 
     case "ApplyTerm": {
-      if (
-        condition.target.kind === "VarTerm" &&
-        condition.target.name === "not" &&
-        condition.args.length === 1
-      ) {
-        const [negatedCondition] = condition.args
-        return explicateInIf(state, negatedCondition, elseCont, thenCont)
-      }
-
       return [
-        B.TestInstr(explicateUnnestedTerm(state, condition), condition.location),
+        B.TestInstr(
+          explicateUnnestedTerm(state, condition),
+          condition.location,
+        ),
         B.BranchInstr(
           generateLabel(state, "then", thenCont, condition.location),
           generateLabel(state, "else", elseCont, condition.location),
@@ -398,23 +402,19 @@ function explicateInIf(
     }
 
     case "IfTerm": {
-      const gotoThen = [
-        B.GotoInstr(
-          generateLabel(state, "then", thenCont, condition.location),
-          condition.location,
-        ),
-      ]
-      const gotoElse = [
-        B.GotoInstr(
-          generateLabel(state, "else", elseCont, condition.location),
-          condition.location,
-        ),
-      ]
+      const gotoThen = B.GotoInstr(
+        generateLabel(state, "then", thenCont, condition.location),
+        condition.location,
+      )
+      const gotoElse = B.GotoInstr(
+        generateLabel(state, "else", elseCont, condition.location),
+        condition.location,
+      )
       return explicateInIf(
         state,
         condition.condition,
-        explicateInIf(state, condition.consequent, gotoThen, gotoElse),
-        explicateInIf(state, condition.alternative, gotoThen, gotoElse),
+        explicateInIf(state, condition.consequent, [gotoThen], [gotoElse]),
+        explicateInIf(state, condition.alternative, [gotoThen], [gotoElse]),
       )
     }
 
