@@ -26,6 +26,8 @@
 (extern-function meta-builtin/builtin/not)
 (define-function meta-builtin/builtin/negation
   (block body
+    (= p (argument :index 0))
+    (= x (argument :index 1))
     (= value.1 (apply p x))
     (= _.1 (copy value.1))
     (= address.1 (address :name meta-builtin/builtin/not))
@@ -36,10 +38,13 @@
     (tail-call address.1)))
 (define-function meta-builtin/builtin/box-empty?
   (block body
+    (= box (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-empty?))
     (tail-call address.1 box)))
 (define-function meta-builtin/builtin/box-put!
   (block body
+    (= value (argument :index 0))
+    (= box (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/box-empty?))
     (= value.1 (call address.3 box))
     (= bool.1 (to-bool value.1))
@@ -54,6 +59,7 @@
     (tail-call address.2 int.1 value box)))
 (define-function meta-builtin/builtin/box-get-maybe
   (block body
+    (= box (argument :index 0))
     (= address.4 (address :name meta-builtin/builtin/box-empty?))
     (= value.2 (call address.4 box))
     (= bool.1 (to-bool value.2))
@@ -69,6 +75,7 @@
     (tail-call address.2 _.1)))
 (define-function meta-builtin/builtin/box-get
   (block body
+    (= box (argument :index 0))
     (= address.16 (address :name meta-builtin/builtin/box-get-maybe))
     (= value.15 (call address.16 box))
     (= _.1 (copy value.15))
@@ -152,6 +159,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/box-get-with-location
   (block body
+    (= box (argument :index 0))
+    (= location (argument :index 1))
     (= address.19 (address :name meta-builtin/builtin/box-get-maybe))
     (= value.18 (call address.19 box))
     (= _.1 (copy value.18))
@@ -244,6 +253,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/cli-router-run-test©λ1
   (block body
+    (= result.1 (argument :index 0))
+    (= ctx.1 (argument :index 1))
     (= address.5 (address :name meta-builtin/builtin/cli-arg-get))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -263,6 +274,9 @@
     (return const.1)))
 (define-function meta-builtin/builtin/make-cli-ctx
   (block body
+    (= args (argument :index 0))
+    (= options (argument :index 1))
+    (= passthrough (argument :index 2))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.1 (copy value.5))
@@ -278,6 +292,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/cli-ctx?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -309,42 +324,55 @@
     (return const.2)))
 (define-function meta-builtin/builtin/cli-ctx-args
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-ctx-put-args!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-ctx-options
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-ctx-put-options!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-ctx-passthrough
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-ctx-put-passthrough!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/make-cli-route
   (block body
+    (= command (argument :index 0))
+    (= name (argument :index 1))
+    (= arg-names (argument :index 2))
+    (= option-names (argument :index 3))
     (= address.6 (address :name meta-builtin/builtin/make-list))
     (= value.6 (call address.6))
     (= list.1 (copy value.6))
@@ -362,6 +390,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/cli-route?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -393,42 +422,52 @@
     (return const.2)))
 (define-function meta-builtin/builtin/cli-route-command
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-route-put-command!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-route-name
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-route-put-name!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-route-arg-names
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-route-put-arg-names!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-route-option-names
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 4))
     (= int.1 (tag-int i64.1))
@@ -436,12 +475,18 @@
 (define-function
     meta-builtin/builtin/cli-route-put-option-names!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 4))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/make-cli-router
   (block body
+    (= name (argument :index 0))
+    (= version (argument :index 1))
+    (= routes (argument :index 2))
+    (= handlers (argument :index 3))
     (= address.6 (address :name meta-builtin/builtin/make-list))
     (= value.6 (call address.6))
     (= list.1 (copy value.6))
@@ -459,6 +504,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/cli-router?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -490,54 +536,68 @@
     (return const.2)))
 (define-function meta-builtin/builtin/cli-router-name
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-router-put-name!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-router-version
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-router-put-version!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-router-routes
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-router-put-routes!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-router-handlers
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 4))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/cli-router-put-handlers!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 4))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/cli-make-router
   (block body
+    (= name (argument :index 0))
+    (= version (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.2 (call address.3))
     (= _.1 (copy value.2))
@@ -548,6 +608,7 @@
     (tail-call address.1 name version _.1 _.2)))
 (define-function meta-builtin/builtin/cli-parse-route
   (block body
+    (= command (argument :index 0))
     (= address.13 (address :name meta-builtin/builtin/string-split))
     (= string.1 (string-value :content " "))
     (= value.12 (call address.13 string.1 command))
@@ -612,16 +673,20 @@
     (goto :label let-body.4)))
 (define-function meta-builtin/builtin/cli-parse-route©λ1
   (block body
+    (= t.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/equal?))
     (= string.1 (string-value :content "--"))
     (tail-call address.1 t.1 string.1)))
 (define-function meta-builtin/builtin/cli-parse-route©λ2
   (block body
+    (= t.2 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/string-starts-with?))
     (= string.1 (string-value :content "--"))
     (tail-call address.1 string.1 t.2)))
 (define-function meta-builtin/builtin/cli-route-match
   (block body
+    (= route (argument :index 0))
+    (= argv (argument :index 1))
     (= address.7 (address :name meta-builtin/builtin/make-box))
     (= value.7 (call address.7))
     (= loop.1 (copy value.7))
@@ -647,6 +712,12 @@
     (tail-apply _.2 argv _.3 _.4 _.5 const.1)))
 (define-function meta-builtin/builtin/cli-route-match©λ1
   (block body
+    (= loop.1 (argument :index 0))
+    (= tokens.1 (argument :index 1))
+    (= args.1 (argument :index 2))
+    (= options.1 (argument :index 3))
+    (= passthrough.1 (argument :index 4))
+    (= in-passthrough?.1 (argument :index 5))
     (= address.47 (address :name meta-builtin/builtin/list-empty?))
     (= value.37 (call address.47 tokens.1))
     (= bool.6 (to-bool value.37))
@@ -783,6 +854,8 @@
     (branch bool.5 :then-label then.9 :else-label else.10)))
 (define-function meta-builtin/builtin/cli-define-route
   (block body
+    (= router (argument :index 0))
+    (= command (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/cli-parse-route))
     (= value.3 (call address.4 command))
     (= _.1 (copy value.3))
@@ -796,6 +869,9 @@
     (tail-call address.1 _.3 router)))
 (define-function meta-builtin/builtin/cli-define-handler
   (block body
+    (= router (argument :index 0))
+    (= name (argument :index 1))
+    (= handler (argument :index 2))
     (= address.3 (address :name meta-builtin/builtin/cli-router-handlers))
     (= value.2 (call address.3 router))
     (= _.1 (copy value.2))
@@ -806,6 +882,7 @@
     (tail-call address.1 _.2 router)))
 (define-function meta-builtin/builtin/cli-print-name-and-version
   (block body
+    (= router (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/make-list))
     (= value.6 (call address.7))
     (= list.1 (copy value.6))
@@ -827,6 +904,7 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/cli-print-commands
   (block body
+    (= router (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/println))
     (= string.1 (string-value :content "commands:"))
     (= value.2 (call address.3 string.1))
@@ -838,6 +916,7 @@
     (tail-call address.1 fn.1 _.1)))
 (define-function meta-builtin/builtin/cli-print-commands©λ1
   (block body
+    (= route.1 (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/cli-route-command))
     (= value.2 (call address.3 route.1))
     (= _.1 (copy value.2))
@@ -849,6 +928,8 @@
     (tail-call address.1 _.2)))
 (define-function meta-builtin/builtin/cli-router-run
   (block body
+    (= router (argument :index 0))
+    (= argv (argument :index 1))
     (= address.47 (address :name meta-builtin/builtin/list-empty?))
     (= value.45 (call address.47 argv))
     (= bool.5 (to-bool value.45))
@@ -1040,6 +1121,8 @@
     (branch bool.4 :then-label then.7 :else-label else.8)))
 (define-function meta-builtin/builtin/cli-router-run©λ1
   (block body
+    (= name.1 (argument :index 0))
+    (= r.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-route-name))
     (= value.1 (call address.2 r.1))
     (= _.1 (copy value.1))
@@ -1047,6 +1130,8 @@
     (tail-call address.1 _.1 name.1)))
 (define-function meta-builtin/builtin/cli-router-run©λ2
   (block body
+    (= name.1 (argument :index 0))
+    (= r.2 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-route-name))
     (= value.1 (call address.2 r.2))
     (= _.1 (copy value.1))
@@ -1054,6 +1139,8 @@
     (tail-call address.1 _.1 name.1)))
 (define-function meta-builtin/builtin/cli-router-run©λ3
   (block body
+    (= name.1 (argument :index 0))
+    (= r.3 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-route-name))
     (= value.1 (call address.2 r.3))
     (= _.1 (copy value.1))
@@ -1061,6 +1148,7 @@
     (tail-call address.1 _.1 name.1)))
 (define-function meta-builtin/builtin/cli-arg-count
   (block body
+    (= ctx (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/cli-ctx-args))
     (= value.1 (call address.2 ctx))
     (= _.1 (copy value.1))
@@ -1068,6 +1156,8 @@
     (tail-call address.1 _.1)))
 (define-function meta-builtin/builtin/cli-arg-get
   (block body
+    (= i (argument :index 0))
+    (= ctx (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-ctx-args))
     (= value.1 (call address.2 ctx))
     (= _.1 (copy value.1))
@@ -1075,6 +1165,8 @@
     (tail-call address.1 i _.1)))
 (define-function meta-builtin/builtin/cli-option-has?
   (block body
+    (= name (argument :index 0))
+    (= ctx (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-ctx-options))
     (= value.1 (call address.2 ctx))
     (= _.1 (copy value.1))
@@ -1082,6 +1174,8 @@
     (tail-call address.1 name _.1)))
 (define-function meta-builtin/builtin/cli-option-get
   (block body
+    (= name (argument :index 0))
+    (= ctx (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-ctx-options))
     (= value.1 (call address.2 ctx))
     (= _.1 (copy value.1))
@@ -1089,6 +1183,7 @@
     (tail-call address.1 name _.1)))
 (define-function meta-builtin/builtin/cli-passthrough-count
   (block body
+    (= ctx (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/cli-ctx-passthrough))
     (= value.1 (call address.2 ctx))
     (= _.1 (copy value.1))
@@ -1096,6 +1191,8 @@
     (tail-call address.1 _.1)))
 (define-function meta-builtin/builtin/cli-passthrough-get
   (block body
+    (= i (argument :index 0))
+    (= ctx (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/cli-ctx-passthrough))
     (= value.1 (call address.2 ctx))
     (= _.1 (copy value.1))
@@ -1103,6 +1200,8 @@
     (tail-call address.1 i _.1)))
 (define-function meta-builtin/builtin/call-with-input-file
   (block body
+    (= path (argument :index 0))
+    (= f (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/open-input-file))
     (= value.3 (call address.2 path))
     (= file.1 (copy value.3))
@@ -1113,6 +1212,8 @@
     (return result.1)))
 (define-function meta-builtin/builtin/call-with-output-file
   (block body
+    (= path (argument :index 0))
+    (= f (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/open-output-file))
     (= value.3 (call address.2 path))
     (= file.1 (copy value.3))
@@ -1132,6 +1233,7 @@
 (extern-function meta-builtin/builtin/println)
 (define-function meta-builtin/builtin/float-product
   (block body
+    (= xs (argument :index 0))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.5 xs))
     (= bool.1 (to-bool value.4))
@@ -1154,6 +1256,7 @@
     (tail-call address.1 _.1 _.3)))
 (define-function meta-builtin/builtin/float-sum
   (block body
+    (= xs (argument :index 0))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.5 xs))
     (= bool.1 (to-bool value.4))
@@ -1195,59 +1298,81 @@
 (extern-function meta-builtin/builtin/float-compare-descending)
 (define-function meta-builtin/builtin/for-hash-value
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/hash-each-value))
     (tail-call address.1 fn data)))
 (define-function meta-builtin/builtin/for-hash-key
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/hash-each-key))
     (tail-call address.1 fn data)))
 (define-function meta-builtin/builtin/for-hash-entry
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/hash-each-entry))
     (tail-call address.1 fn data)))
 (define-function meta-builtin/builtin/for-hash
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/hash-each))
     (tail-call address.1 fn data)))
 (define-function meta-builtin/builtin/for-hash-test©λ1
   (block body
+    (= key.1 (argument :index 0))
+    (= value.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/println))
     (= value.2 (call address.2 key.1))
     (= address.1 (address :name meta-builtin/builtin/println))
     (tail-call address.1 value.1)))
 (define-function meta-builtin/builtin/for-list-index
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-each-index))
     (tail-call address.1 fn data)))
 (define-function meta-builtin/builtin/for-list-index-test©λ1
   (block body
+    (= i.1 (argument :index 0))
+    (= x.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/println))
     (= value.1 (call address.2 i.1))
     (= address.1 (address :name meta-builtin/builtin/println))
     (tail-call address.1 x.1)))
 (define-function meta-builtin/builtin/for-list
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-each))
     (tail-call address.1 fn data)))
 (define-function meta-builtin/builtin/for-set
   (block body
+    (= data (argument :index 0))
+    (= fn (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/set-each))
     (tail-call address.1 fn data)))
 (extern-function meta-builtin/builtin/format-as-sexp)
 (define-function meta-builtin/builtin/format-int
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/format-as-sexp))
     (tail-call address.1 x)))
 (define-function meta-builtin/builtin/format-float
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/format-as-sexp))
     (tail-call address.1 x)))
 (define-function meta-builtin/builtin/format-keyword
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/format-as-sexp))
     (tail-call address.1 x)))
 (define-function meta-builtin/builtin/format-symbol
   (block body
+    (= x (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/format-as-sexp))
     (= value.1 (call address.2 x))
     (= _.1 (copy value.1))
@@ -1256,14 +1381,17 @@
     (tail-call address.1 string.1 _.1)))
 (define-function meta-builtin/builtin/format-bool
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/format-as-sexp))
     (tail-call address.1 x)))
 (define-function meta-builtin/builtin/format-string
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/format-as-sexp))
     (tail-call address.1 x)))
 (define-function meta-builtin/builtin/format-void
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/format-as-sexp))
     (tail-call address.1 x)))
 (extern-function meta-builtin/builtin/fs-exists?)
@@ -1281,34 +1409,50 @@
 (extern-function meta-builtin/builtin/fs-rename)
 (define-function meta-builtin/builtin/constant
   (block body
+    (= x (argument :index 0))
+    (= y (argument :index 1))
     (return x)))
 (define-function meta-builtin/builtin/swap
   (block body
+    (= f (argument :index 0))
+    (= x (argument :index 1))
+    (= y (argument :index 2))
     (tail-apply f y x)))
 (define-function meta-builtin/builtin/drop
   (block body
+    (= f (argument :index 0))
     (= fn.1 (function-value :name meta-builtin/builtin/drop©λ1 :arity 3))
     (tail-apply fn.1 f)))
 (define-function meta-builtin/builtin/drop©λ1
   (block body
+    (= f (argument :index 0))
+    (= dropped.1 (argument :index 1))
+    (= x.1 (argument :index 2))
     (tail-apply f x.1)))
 (define-function meta-builtin/builtin/dup
   (block body
+    (= f (argument :index 0))
     (= fn.1 (function-value :name meta-builtin/builtin/dup©λ1 :arity 2))
     (tail-apply fn.1 f)))
 (define-function meta-builtin/builtin/dup©λ1
   (block body
+    (= f (argument :index 0))
+    (= x.1 (argument :index 1))
     (tail-apply f x.1 x.1)))
 (define-function meta-builtin/builtin/identity
   (block body
+    (= x (argument :index 0))
     (return x)))
 (define-function meta-builtin/builtin/ignore
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/void))
     (= const.1 (load address.1 :type value-t))
     (return const.1)))
 (define-function meta-builtin/builtin/hash-append
   (block body
+    (= hash (argument :index 0))
+    (= rest (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-copy))
     (= value.3 (call address.2 hash))
     (= new-hash.1 (copy value.3))
@@ -1320,6 +1464,9 @@
     (return new-hash.1)))
 (define-function meta-builtin/builtin/hash-append©λ1
   (block body
+    (= new-hash.1 (argument :index 0))
+    (= key.1 (argument :index 1))
+    (= value.1 (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/hash-put!))
     (= value.2 (call address.2 key.1 value.1 new-hash.1))
     (= address.1 (address :name meta-builtin/builtin/void))
@@ -1327,6 +1474,8 @@
     (return const.1)))
 (define-function meta-builtin/builtin/hash-each-value
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-values))
     (= value.1 (call address.2 hash))
     (= _.1 (copy value.1))
@@ -1334,6 +1483,8 @@
     (tail-call address.1 f _.1)))
 (define-function meta-builtin/builtin/hash-each-key
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-keys))
     (= value.1 (call address.2 hash))
     (= _.1 (copy value.1))
@@ -1341,6 +1492,8 @@
     (tail-call address.1 f _.1)))
 (define-function meta-builtin/builtin/hash-each-entry
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-entries))
     (= value.1 (call address.2 hash))
     (= _.1 (copy value.1))
@@ -1348,6 +1501,8 @@
     (tail-call address.1 f _.1)))
 (define-function meta-builtin/builtin/hash-each
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-each©λ1 :arity 2))
     (= value.2 (apply fn.1 f))
     (= _.1 (copy value.2))
@@ -1358,6 +1513,8 @@
     (tail-call address.1 _.1 _.2)))
 (define-function meta-builtin/builtin/hash-each©λ1
   (block body
+    (= f (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.2 (call address.2 entry.1))
     (= _.1 (copy value.2))
@@ -1367,24 +1524,31 @@
     (tail-apply f _.1 _.2)))
 (define-function meta-builtin/builtin/hash-each-value-test©λ1
   (block body
+    (= value.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/println))
     (tail-call address.1 value.1)))
 (define-function meta-builtin/builtin/hash-each-key-test©λ1
   (block body
+    (= key.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/println))
     (tail-call address.1 key.1)))
 (define-function meta-builtin/builtin/hash-each-entry-test©λ1
   (block body
+    (= entry.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/println))
     (tail-call address.1 entry.1)))
 (define-function meta-builtin/builtin/hash-each-test©λ1
   (block body
+    (= key.1 (argument :index 0))
+    (= value.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/println))
     (= value.2 (call address.2 key.1))
     (= address.1 (address :name meta-builtin/builtin/println))
     (tail-call address.1 value.1)))
 (define-function meta-builtin/builtin/make-hash-entry
   (block body
+    (= key (argument :index 0))
+    (= value (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -1398,6 +1562,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/hash-entry?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -1429,30 +1594,37 @@
     (return const.2)))
 (define-function meta-builtin/builtin/hash-entry-key
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/hash-entry-put-key!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/hash-entry-value
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/hash-entry-put-value!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/hash-from-entries
   (block body
+    (= entries (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/make-hash))
     (= value.1 (call address.2))
     (= hash.1 (copy value.1))
@@ -1460,6 +1632,8 @@
     (tail-call address.1 entries hash.1)))
 (define-function meta-builtin/builtin/hash-get-maybe
   (block body
+    (= key (argument :index 0))
+    (= hash (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/hash-has?))
     (= value.2 (call address.4 key hash))
     (= bool.1 (to-bool value.2))
@@ -1475,15 +1649,19 @@
     (tail-call address.3)))
 (define-function meta-builtin/builtin/hash-invert
   (block body
+    (= hash (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/hash-map))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-invert©λ1 :arity 2))
     (tail-call address.1 fn.1 hash)))
 (define-function meta-builtin/builtin/hash-invert©λ1
   (block body
+    (= k.1 (argument :index 0))
+    (= v.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/make-hash-entry))
     (tail-call address.1 v.1 k.1)))
 (define-function meta-builtin/builtin/hash-invert-group
   (block body
+    (= hash (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/make-hash))
     (= value.3 (call address.2))
     (= hash.1 (copy value.3))
@@ -1496,6 +1674,9 @@
     (return new-hash.1)))
 (define-function meta-builtin/builtin/hash-invert-group©λ1
   (block body
+    (= new-hash.1 (argument :index 0))
+    (= hash (argument :index 1))
+    (= value.1 (argument :index 2))
     (= fn.1 (function-value :name meta-builtin/builtin/equal? :arity 2))
     (= value.5 (apply fn.1 value.1))
     (= _.1 (copy value.5))
@@ -1512,6 +1693,8 @@
     (tail-call address.1 value.1 _.3 new-hash.1)))
 (define-function meta-builtin/builtin/hash-map-key
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-map-key©λ1 :arity 2))
     (= value.3 (apply fn.1 f))
     (= _.1 (copy value.3))
@@ -1525,6 +1708,8 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/hash-map-key©λ1
   (block body
+    (= f (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.3 (call address.3 entry.1))
     (= _.1 (copy value.3))
@@ -1537,6 +1722,8 @@
     (tail-call address.1 _.2 _.3)))
 (define-function meta-builtin/builtin/hash-map-value
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-map-value©λ1 :arity 2))
     (= value.3 (apply fn.1 f))
     (= _.1 (copy value.3))
@@ -1550,6 +1737,8 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/hash-map-value©λ1
   (block body
+    (= f (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.3 (call address.3 entry.1))
     (= _.1 (copy value.3))
@@ -1562,6 +1751,8 @@
     (tail-call address.1 _.1 _.3)))
 (define-function meta-builtin/builtin/hash-map-entry
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/hash-entries))
     (= value.2 (call address.3 hash))
     (= _.1 (copy value.2))
@@ -1572,6 +1763,7 @@
     (tail-call address.1 _.2)))
 (define-function meta-builtin/builtin/hash-map-entry-test©λ1
   (block body
+    (= entry.1 (argument :index 0))
     (= address.5 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.4 (call address.5 entry.1))
     (= _.1 (copy value.4))
@@ -1592,6 +1784,8 @@
     (tail-call address.1 _.2 _.4)))
 (define-function meta-builtin/builtin/hash-map
   (block body
+    (= f (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-map©λ1 :arity 2))
     (= value.3 (apply fn.1 f))
     (= _.1 (copy value.3))
@@ -1605,6 +1799,8 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/hash-map©λ1
   (block body
+    (= f (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.2 (call address.2 entry.1))
     (= _.1 (copy value.2))
@@ -1614,6 +1810,8 @@
     (tail-apply f _.1 _.2)))
 (define-function meta-builtin/builtin/hash-map-test©λ1
   (block body
+    (= key.1 (argument :index 0))
+    (= value.1 (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/iadd))
     (= i64.2 (int64 :content 1))
     (= int.2 (tag-int i64.2))
@@ -1628,6 +1826,8 @@
     (tail-call address.1 _.1 _.2)))
 (define-function meta-builtin/builtin/hash-put-entries
   (block body
+    (= entries (argument :index 0))
+    (= hash (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-copy))
     (= value.1 (call address.2 hash))
     (= _.1 (copy value.1))
@@ -1635,6 +1835,8 @@
     (tail-call address.1 entries _.1)))
 (define-function meta-builtin/builtin/hash-put-entries!
   (block body
+    (= entries (argument :index 0))
+    (= hash (argument :index 1))
     (= address.10 (address :name meta-builtin/builtin/list-empty?))
     (= value.8 (call address.10 entries))
     (= bool.1 (to-bool value.8))
@@ -1654,6 +1856,8 @@
     (tail-call address.1 _.1 hash)))
 (define-function meta-builtin/builtin/hash-put-entry
   (block body
+    (= entry (argument :index 0))
+    (= hash (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.2 (call address.3 entry))
     (= _.1 (copy value.2))
@@ -1664,6 +1868,8 @@
     (tail-call address.1 _.1 _.2 hash)))
 (define-function meta-builtin/builtin/hash-put-entry!
   (block body
+    (= entry (argument :index 0))
+    (= hash (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.2 (call address.3 entry))
     (= _.1 (copy value.2))
@@ -1674,6 +1880,8 @@
     (tail-call address.1 _.1 _.2 hash)))
 (define-function meta-builtin/builtin/hash-select
   (block body
+    (= p (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-select©λ1 :arity 2))
     (= value.3 (apply fn.1 p))
     (= _.1 (copy value.3))
@@ -1687,6 +1895,8 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/hash-select©λ1
   (block body
+    (= p (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.2 (call address.2 entry.1))
     (= _.1 (copy value.2))
@@ -1696,6 +1906,8 @@
     (tail-apply p _.1 _.2)))
 (define-function meta-builtin/builtin/hash-select-key
   (block body
+    (= p (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-select-key©λ1 :arity 2))
     (= value.3 (apply fn.1 p))
     (= _.1 (copy value.3))
@@ -1709,12 +1921,16 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/hash-select-key©λ1
   (block body
+    (= p (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/hash-entry-key))
     (= value.1 (call address.1 entry.1))
     (= _.1 (copy value.1))
     (tail-apply p _.1)))
 (define-function meta-builtin/builtin/hash-select-value
   (block body
+    (= p (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-select-value©λ1 :arity 2))
     (= value.3 (apply fn.1 p))
     (= _.1 (copy value.3))
@@ -1728,12 +1944,16 @@
     (tail-call address.1 _.3)))
 (define-function meta-builtin/builtin/hash-select-value©λ1
   (block body
+    (= p (argument :index 0))
+    (= entry.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/hash-entry-value))
     (= value.1 (call address.1 entry.1))
     (= _.1 (copy value.1))
     (tail-apply p _.1)))
 (define-function meta-builtin/builtin/hash-reject
   (block body
+    (= p (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/hash-reject©λ1 :arity 3))
     (= value.1 (apply fn.1 p))
     (= _.1 (copy value.1))
@@ -1741,12 +1961,17 @@
     (tail-call address.1 _.1 hash)))
 (define-function meta-builtin/builtin/hash-reject©λ1
   (block body
+    (= p (argument :index 0))
+    (= key.1 (argument :index 1))
+    (= value.1 (argument :index 2))
     (= value.2 (apply p key.1 value.1))
     (= _.1 (copy value.2))
     (= address.1 (address :name meta-builtin/builtin/not))
     (tail-call address.1 _.1)))
 (define-function meta-builtin/builtin/hash-reject-key
   (block body
+    (= p (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/negation :arity 2))
     (= value.1 (apply fn.1 p))
     (= _.1 (copy value.1))
@@ -1754,6 +1979,8 @@
     (tail-call address.1 _.1 hash)))
 (define-function meta-builtin/builtin/hash-reject-value
   (block body
+    (= p (argument :index 0))
+    (= hash (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/negation :arity 2))
     (= value.1 (apply fn.1 p))
     (= _.1 (copy value.1))
@@ -1774,6 +2001,8 @@
 (extern-function meta-builtin/builtin/hash-values)
 (define-function meta-builtin/builtin/int-align
   (block body
+    (= alignment (argument :index 0))
+    (= n (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/imod))
     (= value.3 (call address.4 n alignment))
     (= remainder.1 (copy value.3))
@@ -1793,6 +2022,7 @@
     (tail-call address.1 _.1 alignment)))
 (define-function meta-builtin/builtin/int-product
   (block body
+    (= xs (argument :index 0))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.5 xs))
     (= bool.1 (to-bool value.4))
@@ -1815,6 +2045,7 @@
     (tail-call address.1 _.1 _.3)))
 (define-function meta-builtin/builtin/int-sum
   (block body
+    (= xs (argument :index 0))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.5 xs))
     (= bool.1 (to-bool value.4))
@@ -1865,6 +2096,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/json-null?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -1896,6 +2128,7 @@
     (return const.2)))
 (define-function meta-builtin/builtin/json-bool
   (block body
+    (= value (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -1907,6 +2140,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/json-bool?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -1938,18 +2172,22 @@
     (return const.2)))
 (define-function meta-builtin/builtin/json-bool-value
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/json-bool-put-value!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/json-number
   (block body
+    (= value (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -1961,6 +2199,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/json-number?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -1992,18 +2231,22 @@
     (return const.2)))
 (define-function meta-builtin/builtin/json-number-value
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/json-number-put-value!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/json-string
   (block body
+    (= value (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -2015,6 +2258,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/json-string?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -2046,18 +2290,22 @@
     (return const.2)))
 (define-function meta-builtin/builtin/json-string-value
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/json-string-put-value!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/json-array
   (block body
+    (= elements (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -2069,6 +2317,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/json-array?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -2100,18 +2349,22 @@
     (return const.2)))
 (define-function meta-builtin/builtin/json-array-elements
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/json-array-put-elements!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/json-object
   (block body
+    (= entries (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -2123,6 +2376,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/json-object?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -2154,12 +2408,15 @@
     (return const.2)))
 (define-function meta-builtin/builtin/json-object-entries
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/json-object-put-entries!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
@@ -2174,6 +2431,8 @@
 (extern-function meta-builtin/builtin/keyword-concat)
 (define-function meta-builtin/builtin/list-append
   (block body
+    (= list (argument :index 0))
+    (= tail (argument :index 1))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.5 list))
     (= bool.1 (to-bool value.4))
@@ -2194,6 +2453,7 @@
     (tail-call address.1 _.1 _.3)))
 (define-function meta-builtin/builtin/list-concat
   (block body
+    (= lists (argument :index 0))
     (= address.6 (address :name meta-builtin/builtin/list-empty?))
     (= value.5 (call address.6 lists))
     (= bool.1 (to-bool value.5))
@@ -2217,12 +2477,17 @@
     (tail-call address.2 _.1 _.3)))
 (define-function meta-builtin/builtin/list-each-index
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-each-index-aux))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 f list int.1)))
 (define-function meta-builtin/builtin/list-each-index-aux
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
+    (= i (argument :index 2))
     (= address.6 (address :name meta-builtin/builtin/list-empty?))
     (= value.5 (call address.6 list))
     (= bool.1 (to-bool value.5))
@@ -2248,6 +2513,9 @@
     (tail-call address.2 f _.2 _.3)))
 (define-function meta-builtin/builtin/list-each-index-test©λ1
   (block body
+    (= results.1 (argument :index 0))
+    (= i.1 (argument :index 1))
+    (= x.1 (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/make-pair))
     (= value.1 (call address.2 i.1 x.1))
     (= _.1 (copy value.1))
@@ -2255,6 +2523,8 @@
     (tail-call address.1 _.1 results.1)))
 (define-function meta-builtin/builtin/list-each
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.5 list))
     (= bool.1 (to-bool value.4))
@@ -2275,6 +2545,7 @@
     (tail-call address.2 f _.2)))
 (define-function meta-builtin/builtin/list-each-test©λ1
   (block body
+    (= x.1 (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/print))
     (= value.1 (call address.2 x.1))
     (= address.1 (address :name meta-builtin/builtin/print))
@@ -2282,12 +2553,15 @@
     (tail-call address.1 string.1)))
 (define-function meta-builtin/builtin/list-enumerate
   (block body
+    (= list (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-enumerate-aux))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 list int.1)))
 (define-function meta-builtin/builtin/list-enumerate-aux
   (block body
+    (= list (argument :index 0))
+    (= i (argument :index 1))
     (= address.8 (address :name meta-builtin/builtin/list-empty?))
     (= value.7 (call address.8 list))
     (= bool.1 (to-bool value.7))
@@ -2319,6 +2593,8 @@
     (tail-call address.2 _.2 _.5)))
 (define-function meta-builtin/builtin/list-every?
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
     (= address.12 (address :name meta-builtin/builtin/list-empty?))
     (= value.9 (call address.12 list))
     (= bool.2 (to-bool value.9))
@@ -2349,6 +2625,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/list-some?
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
     (= address.11 (address :name meta-builtin/builtin/list-empty?))
     (= value.8 (call address.11 list))
     (= bool.2 (to-bool value.8))
@@ -2376,6 +2654,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/list-find
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
     (= address.12 (address :name meta-builtin/builtin/list-empty?))
     (= value.9 (call address.12 list))
     (= bool.2 (to-bool value.9))
@@ -2404,18 +2684,24 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/list-find-test©λ1
   (block body
+    (= x.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/equal?))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 x.1 int.1)))
 (define-function meta-builtin/builtin/list-find-index
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-find-index-aux))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 p list int.1)))
 (define-function meta-builtin/builtin/list-find-index-aux
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
+    (= index (argument :index 2))
     (= address.10 (address :name meta-builtin/builtin/list-empty?))
     (= value.9 (call address.10 list))
     (= bool.2 (to-bool value.9))
@@ -2446,12 +2732,15 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/list-find-index-test©λ1
   (block body
+    (= x.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/equal?))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 x.1 int.1)))
 (define-function meta-builtin/builtin/list-flat-map-index
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/list-map-index))
     (= value.1 (call address.2 f list))
     (= _.1 (copy value.1))
@@ -2460,6 +2749,8 @@
 (define-function
     meta-builtin/builtin/list-flat-map-index-test©λ1
   (block body
+    (= i.1 (argument :index 0))
+    (= x.1 (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.2 (copy value.3))
@@ -2471,6 +2762,8 @@
 (define-function
     meta-builtin/builtin/list-flat-map-index-test©λ2
   (block body
+    (= i.2 (argument :index 0))
+    (= x.2 (argument :index 1))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.5 (copy value.5))
@@ -2488,6 +2781,8 @@
 (define-function
     meta-builtin/builtin/list-flat-map-index-test©λ3
   (block body
+    (= i.3 (argument :index 0))
+    (= x.3 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/make-list))
     (= value.1 (call address.1))
     (= list.8 (copy value.1))
@@ -2495,6 +2790,8 @@
 (define-function
     meta-builtin/builtin/list-flat-map-index-test©λ4
   (block body
+    (= i.4 (argument :index 0))
+    (= x.4 (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.11 (copy value.3))
@@ -2505,6 +2802,8 @@
     (return list.11)))
 (define-function meta-builtin/builtin/list-flat-map
   (block body
+    (= f (argument :index 0))
+    (= xs (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/list-map))
     (= value.1 (call address.2 f xs))
     (= _.1 (copy value.1))
@@ -2512,6 +2811,7 @@
     (tail-call address.1 _.1)))
 (define-function meta-builtin/builtin/list-flat-map-test©λ1
   (block body
+    (= x.1 (argument :index 0))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.2 (copy value.4))
@@ -2527,18 +2827,26 @@
     (return list.2)))
 (define-function meta-builtin/builtin/list-flat-map-test©λ2
   (block body
+    (= x.2 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/make-list))
     (= value.1 (call address.1))
     (= list.5 (copy value.1))
     (return list.5)))
 (define-function meta-builtin/builtin/list-fold-left-index
   (block body
+    (= f (argument :index 0))
+    (= folded (argument :index 1))
+    (= list (argument :index 2))
     (= address.1 (address :name meta-builtin/builtin/list-fold-left-index-aux))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 f folded list int.1)))
 (define-function meta-builtin/builtin/list-fold-left-index-aux
   (block body
+    (= f (argument :index 0))
+    (= folded (argument :index 1))
+    (= list (argument :index 2))
+    (= i (argument :index 3))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.5 (call address.5 list))
     (= bool.1 (to-bool value.5))
@@ -2564,6 +2872,9 @@
 (define-function
     meta-builtin/builtin/list-fold-left-index-test©λ1
   (block body
+    (= i.1 (argument :index 0))
+    (= folded.1 (argument :index 1))
+    (= x.1 (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/imul))
     (= value.1 (call address.2 i.1 x.1))
     (= _.1 (copy value.1))
@@ -2572,15 +2883,24 @@
 (define-function
     meta-builtin/builtin/list-fold-left-index-test©λ2
   (block body
+    (= i.2 (argument :index 0))
+    (= folded.2 (argument :index 1))
+    (= _.1 (argument :index 2))
     (= address.1 (address :name meta-builtin/builtin/cons))
     (tail-call address.1 i.2 folded.2)))
 (define-function
     meta-builtin/builtin/list-fold-left-index-test©λ3
   (block body
+    (= i.3 (argument :index 0))
+    (= folded.3 (argument :index 1))
+    (= x.2 (argument :index 2))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 folded.3 x.2)))
 (define-function meta-builtin/builtin/list-fold-left
   (block body
+    (= f (argument :index 0))
+    (= folded (argument :index 1))
+    (= list (argument :index 2))
     (= address.4 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.4 list))
     (= bool.1 (to-bool value.4))
@@ -2600,6 +2920,9 @@
     (tail-call address.1 f _.2 _.3)))
 (define-function meta-builtin/builtin/list-fold-right-index
   (block body
+    (= f (argument :index 0))
+    (= folded (argument :index 1))
+    (= list (argument :index 2))
     (= address.3 (address :name meta-builtin/builtin/list-length))
     (= value.2 (call address.3 list))
     (= _.1 (copy value.2))
@@ -2612,6 +2935,10 @@
     (tail-call address.1 f folded list _.2)))
 (define-function meta-builtin/builtin/list-fold-right-index-aux
   (block body
+    (= f (argument :index 0))
+    (= folded (argument :index 1))
+    (= list (argument :index 2))
+    (= i (argument :index 3))
     (= address.5 (address :name meta-builtin/builtin/list-empty?))
     (= value.5 (call address.5 list))
     (= bool.1 (to-bool value.5))
@@ -2637,6 +2964,9 @@
 (define-function
     meta-builtin/builtin/list-fold-right-index-test©λ1
   (block body
+    (= i.1 (argument :index 0))
+    (= x.1 (argument :index 1))
+    (= folded.1 (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/make-pair))
     (= value.1 (call address.2 i.1 x.1))
     (= _.1 (copy value.1))
@@ -2645,6 +2975,9 @@
 (define-function
     meta-builtin/builtin/list-fold-right-index-test©λ2
   (block body
+    (= i.2 (argument :index 0))
+    (= x.2 (argument :index 1))
+    (= folded.2 (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/imul))
     (= value.1 (call address.2 i.2 x.2))
     (= _.1 (copy value.1))
@@ -2653,10 +2986,16 @@
 (define-function
     meta-builtin/builtin/list-fold-right-index-test©λ3
   (block body
+    (= i.3 (argument :index 0))
+    (= x.3 (argument :index 1))
+    (= folded.3 (argument :index 2))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x.3 folded.3)))
 (define-function meta-builtin/builtin/list-fold-right
   (block body
+    (= f (argument :index 0))
+    (= folded (argument :index 1))
+    (= list (argument :index 2))
     (= address.4 (address :name meta-builtin/builtin/list-empty?))
     (= value.4 (call address.4 list))
     (= bool.1 (to-bool value.4))
@@ -2676,10 +3015,12 @@
     (tail-call address.1 f _.2 _.3)))
 (define-function meta-builtin/builtin/list-first
   (block body
+    (= list (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/car))
     (tail-call address.1 list)))
 (define-function meta-builtin/builtin/list-second
   (block body
+    (= list (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/cdr))
     (= value.1 (call address.2 list))
     (= _.1 (copy value.1))
@@ -2687,6 +3028,7 @@
     (tail-call address.1 _.1)))
 (define-function meta-builtin/builtin/list-third
   (block body
+    (= list (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/cdr))
     (= value.2 (call address.3 list))
     (= _.1 (copy value.2))
@@ -2697,6 +3039,8 @@
     (tail-call address.1 _.2)))
 (define-function meta-builtin/builtin/list-group
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/make-hash))
     (= value.3 (call address.2))
     (= hash.1 (copy value.3))
@@ -2709,6 +3053,9 @@
     (return new-hash.1)))
 (define-function meta-builtin/builtin/list-group©λ1
   (block body
+    (= new-hash.1 (argument :index 0))
+    (= f (argument :index 1))
+    (= value.1 (argument :index 2))
     (= value.7 (apply f value.1))
     (= key.1 (copy value.7))
     (= address.8 (address :name meta-builtin/builtin/hash-has?))
@@ -2738,12 +3085,17 @@
     (goto :label begin-body.1)))
 (define-function meta-builtin/builtin/list-map-index
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-map-index-aux))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 f list int.1)))
 (define-function meta-builtin/builtin/list-map-index-aux
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
+    (= i (argument :index 2))
     (= address.7 (address :name meta-builtin/builtin/list-empty?))
     (= value.7 (call address.7 list))
     (= bool.1 (to-bool value.7))
@@ -2774,17 +3126,26 @@
     (tail-call address.2 _.2 _.5)))
 (define-function meta-builtin/builtin/list-map-index-test©λ1
   (block body
+    (= i.1 (argument :index 0))
+    (= x.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 i.1 x.1)))
 (define-function meta-builtin/builtin/list-map-index-test©λ2
   (block body
+    (= i.2 (argument :index 0))
+    (= _.1 (argument :index 1))
     (return i.2)))
 (define-function meta-builtin/builtin/list-map-index-test©λ3
   (block body
+    (= i.3 (argument :index 0))
+    (= x.2 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 i.3 x.2)))
 (define-function meta-builtin/builtin/list-map-zip
   (block body
+    (= f (argument :index 0))
+    (= left (argument :index 1))
+    (= right (argument :index 2))
     (= fn.1 (function-value :name meta-builtin/builtin/list-map-zip©λ1 :arity 2))
     (= value.2 (apply fn.1 f))
     (= _.1 (copy value.2))
@@ -2795,6 +3156,8 @@
     (tail-call address.1 _.1 _.2)))
 (define-function meta-builtin/builtin/list-map-zip©λ1
   (block body
+    (= f (argument :index 0))
+    (= pair.1 (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/pair-first))
     (= value.2 (call address.2 pair.1))
     (= _.1 (copy value.2))
@@ -2804,6 +3167,8 @@
     (tail-apply f _.1 _.2)))
 (define-function meta-builtin/builtin/list-map
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.6 (address :name meta-builtin/builtin/list-empty?))
     (= value.6 (call address.6 list))
     (= bool.1 (to-bool value.6))
@@ -2829,6 +3194,8 @@
     (tail-call address.2 _.2 _.4)))
 (define-function meta-builtin/builtin/list-member?
   (block body
+    (= x (argument :index 0))
+    (= list (argument :index 1))
     (= address.12 (address :name meta-builtin/builtin/list-empty?))
     (= value.8 (call address.12 list))
     (= bool.2 (to-bool value.8))
@@ -2857,6 +3224,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/list-product
   (block body
+    (= lhs (argument :index 0))
+    (= rhs (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/list-product©λ1 :arity 2))
     (= value.2 (apply fn.1 rhs))
     (= _.1 (copy value.2))
@@ -2867,6 +3236,8 @@
     (tail-call address.1 _.2)))
 (define-function meta-builtin/builtin/list-product©λ1
   (block body
+    (= rhs (argument :index 0))
+    (= left.1 (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/list-product©λ1©λ1 :arity 2))
     (= value.1 (apply fn.1 left.1))
     (= _.1 (copy value.1))
@@ -2874,16 +3245,21 @@
     (tail-call address.1 _.1 rhs)))
 (define-function meta-builtin/builtin/list-product©λ1©λ1
   (block body
+    (= left.1 (argument :index 0))
+    (= right.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/make-pair))
     (tail-call address.1 left.1 right.1)))
 (define-function meta-builtin/builtin/list-range
   (block body
+    (= length (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-range-aux))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 length int.1)))
 (define-function meta-builtin/builtin/list-range-aux
   (block body
+    (= length (argument :index 0))
+    (= current (argument :index 1))
     (= address.5 (address :name meta-builtin/builtin/int-greater-or-equal?))
     (= value.4 (call address.5 current length))
     (= bool.1 (to-bool value.4))
@@ -2906,6 +3282,8 @@
     (tail-call address.2 current _.2)))
 (define-function meta-builtin/builtin/list-select
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
     (= address.13 (address :name meta-builtin/builtin/list-empty?))
     (= value.11 (call address.13 list))
     (= bool.2 (to-bool value.11))
@@ -2939,6 +3317,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/list-reject
   (block body
+    (= p (argument :index 0))
+    (= list (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/negation :arity 2))
     (= value.1 (apply fn.1 p))
     (= _.1 (copy value.1))
@@ -2946,6 +3326,8 @@
     (tail-call address.1 _.1 list)))
 (define-function meta-builtin/builtin/list-sort!
   (block body
+    (= comp (argument :index 0))
+    (= lst (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/list-length))
     (= value.3 (call address.3 lst))
     (= n.1 (copy value.3))
@@ -2961,6 +3343,8 @@
     (return lst)))
 (define-function meta-builtin/builtin/list-sort
   (block body
+    (= comp (argument :index 0))
+    (= lst (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/list-copy))
     (= value.1 (call address.2 lst))
     (= _.1 (copy value.1))
@@ -2968,6 +3352,10 @@
     (tail-call address.1 comp _.1)))
 (define-function meta-builtin/builtin/quicksort-range!
   (block body
+    (= comp (argument :index 0))
+    (= lst (argument :index 1))
+    (= lo (argument :index 2))
+    (= hi (argument :index 3))
     (= address.7 (address :name meta-builtin/builtin/int-less?))
     (= value.5 (call address.7 lo hi))
     (= bool.1 (to-bool value.5))
@@ -2996,6 +3384,10 @@
     (return const.1)))
 (define-function meta-builtin/builtin/partition-3way!
   (block body
+    (= comp (argument :index 0))
+    (= lst (argument :index 1))
+    (= lo (argument :index 2))
+    (= hi (argument :index 3))
     (= address.4 (address :name meta-builtin/builtin/iadd))
     (= value.3 (call address.4 lo hi))
     (= _.1 (copy value.3))
@@ -3011,6 +3403,12 @@
     (tail-call address.1 comp lst pivot.1 lo hi lo)))
 (define-function meta-builtin/builtin/partition-3way-aux
   (block body
+    (= comp (argument :index 0))
+    (= lst (argument :index 1))
+    (= pivot (argument :index 2))
+    (= less (argument :index 3))
+    (= greater (argument :index 4))
+    (= i (argument :index 5))
     (= address.29 (address :name meta-builtin/builtin/int-greater?))
     (= value.26 (call address.29 i greater))
     (= bool.3 (to-bool value.26))
@@ -3108,6 +3506,8 @@
     (branch bool.2 :then-label then.3 :else-label else.4)))
 (define-function meta-builtin/builtin/list-take
   (block body
+    (= n (argument :index 0))
+    (= list (argument :index 1))
     (= address.14 (address :name meta-builtin/builtin/int-non-negative?))
     (= value.13 (call address.14 n))
     (= _.1 (copy value.13))
@@ -3179,6 +3579,8 @@
     (branch bool.1 :then-label then.3 :else-label else.4)))
 (define-function meta-builtin/builtin/list-drop
   (block body
+    (= n (argument :index 0))
+    (= list (argument :index 1))
     (= address.11 (address :name meta-builtin/builtin/int-non-negative?))
     (= value.10 (call address.11 n))
     (= _.1 (copy value.10))
@@ -3241,6 +3643,8 @@
     (branch bool.1 :then-label then.3 :else-label else.4)))
 (define-function meta-builtin/builtin/list-zip
   (block body
+    (= left (argument :index 0))
+    (= right (argument :index 1))
     (= address.10 (address :name meta-builtin/builtin/list-empty?))
     (= value.9 (call address.10 left))
     (= bool.2 (to-bool value.9))
@@ -3284,6 +3688,7 @@
     (branch bool.1 :then-label then.3 :else-label else.4)))
 (define-function meta-builtin/builtin/list-unzip
   (block body
+    (= pairs (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/list-map))
     (= fn.2 (function-value :name meta-builtin/builtin/pair-first :arity 1))
     (= value.2 (call address.3 fn.2 pairs))
@@ -3319,6 +3724,8 @@
 (extern-function meta-builtin/builtin/list-to-set)
 (define-function meta-builtin/builtin/maybe-else
   (block body
+    (= default (argument :index 0))
+    (= maybe (argument :index 1))
     (= address.8 (address :name meta-builtin/builtin/just?))
     (= value.8 (call address.8 maybe))
     (= bool.2 (to-bool value.8))
@@ -3366,6 +3773,7 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function meta-builtin/builtin/just
   (block body
+    (= value (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -3377,6 +3785,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/just?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -3408,12 +3817,15 @@
     (return const.2)))
 (define-function meta-builtin/builtin/just-value
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/just-put-value!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
@@ -3429,6 +3841,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/nothing?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -3460,6 +3873,7 @@
     (return const.2)))
 (define-function meta-builtin/builtin/pair-to-list
   (block body
+    (= pair (argument :index 0))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.1 (copy value.5))
@@ -3476,6 +3890,8 @@
     (return list.1)))
 (define-function meta-builtin/builtin/make-pair
   (block body
+    (= first (argument :index 0))
+    (= second (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -3489,6 +3905,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/pair?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -3520,24 +3937,30 @@
     (return const.2)))
 (define-function meta-builtin/builtin/pair-first
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/pair-put-first!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/pair-second
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/pair-put-second!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
@@ -3555,6 +3978,8 @@
 (extern-function meta-builtin/builtin/path-resolve)
 (define-function meta-builtin/builtin/set-each
   (block body
+    (= f (argument :index 0))
+    (= set (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/set-to-list))
     (= value.2 (call address.3 set))
     (= _.1 (copy value.2))
@@ -3565,6 +3990,8 @@
     (return const.1)))
 (define-function meta-builtin/builtin/set-every?
   (block body
+    (= p (argument :index 0))
+    (= set (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/set-to-list))
     (= value.1 (call address.2 set))
     (= _.1 (copy value.1))
@@ -3572,6 +3999,8 @@
     (tail-call address.1 p _.1)))
 (define-function meta-builtin/builtin/set-some?
   (block body
+    (= p (argument :index 0))
+    (= set (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/set-to-list))
     (= value.1 (call address.2 set))
     (= _.1 (copy value.1))
@@ -3579,6 +4008,8 @@
     (tail-call address.1 p _.1)))
 (define-function meta-builtin/builtin/set-map
   (block body
+    (= f (argument :index 0))
+    (= set (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/make-set))
     (= value.3 (call address.2))
     (= new-set.1 (copy value.3))
@@ -3590,16 +4021,22 @@
     (return new-set.1)))
 (define-function meta-builtin/builtin/set-map©λ1
   (block body
+    (= new-set.1 (argument :index 0))
+    (= f (argument :index 1))
+    (= e.1 (argument :index 2))
     (= value.1 (apply f e.1))
     (= _.1 (copy value.1))
     (= address.1 (address :name meta-builtin/builtin/set-add!))
     (tail-call address.1 _.1 new-set.1)))
 (define-function meta-builtin/builtin/set-map-test©λ1
   (block body
+    (= n.1 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 n.1 n.1)))
 (define-function meta-builtin/builtin/set-select
   (block body
+    (= p (argument :index 0))
+    (= set (argument :index 1))
     (= address.2 (address :name meta-builtin/builtin/make-set))
     (= value.3 (call address.2))
     (= set.1 (copy value.3))
@@ -3612,6 +4049,9 @@
     (return new-set.1)))
 (define-function meta-builtin/builtin/set-select©λ1
   (block body
+    (= new-set.1 (argument :index 0))
+    (= p (argument :index 1))
+    (= e.1 (argument :index 2))
     (= value.2 (apply p e.1))
     (= bool.1 (to-bool value.2))
     (branch bool.1 :then-label then.1 :else-label else.2))
@@ -3627,6 +4067,8 @@
     (return const.2)))
 (define-function meta-builtin/builtin/set-reject
   (block body
+    (= p (argument :index 0))
+    (= set (argument :index 1))
     (= fn.1 (function-value :name meta-builtin/builtin/negation :arity 2))
     (= value.1 (apply fn.1 p))
     (= _.1 (copy value.1))
@@ -3634,6 +4076,7 @@
     (tail-call address.1 _.1 set)))
 (define-function meta-builtin/builtin/set-union-many
   (block body
+    (= sets (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/make-set))
     (= value.1 (call address.2))
     (= _.1 (copy value.1))
@@ -3659,6 +4102,7 @@
 (extern-function meta-builtin/builtin/set-disjoint?)
 (define-function meta-builtin/builtin/format-sexp
   (block body
+    (= sexp (argument :index 0))
     (= address.36 (address :name meta-builtin/builtin/symbol-sexp?))
     (= value.29 (call address.36 sexp))
     (= bool.7 (to-bool value.29))
@@ -3801,6 +4245,8 @@
 (define-function
     meta-builtin/builtin/sexp-collect-key-value-hash-loop
   (block body
+    (= remaining (argument :index 0))
+    (= result (argument :index 1))
     (= address.32 (address :name meta-builtin/builtin/list-empty?))
     (= value.24 (call address.32 remaining))
     (= bool.8 (to-bool value.24))
@@ -3936,6 +4382,7 @@
 (define-function
     meta-builtin/builtin/sexp-collect-key-value-hash
   (block body
+    (= sexps (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/make-hash))
     (= value.1 (call address.2))
     (= hash.1 (copy value.1))
@@ -3944,6 +4391,8 @@
 (define-function
     meta-builtin/builtin/sexp-collect-key-value-pairs-loop
   (block body
+    (= remaining (argument :index 0))
+    (= result (argument :index 1))
     (= address.34 (address :name meta-builtin/builtin/list-empty?))
     (= value.25 (call address.34 remaining))
     (= bool.8 (to-bool value.25))
@@ -4083,6 +4532,7 @@
 (define-function
     meta-builtin/builtin/sexp-collect-key-value-pairs
   (block body
+    (= sexps (argument :index 0))
     (= address.2 (address :name meta-builtin/builtin/make-list))
     (= value.1 (call address.2))
     (= list.1 (copy value.1))
@@ -4090,6 +4540,7 @@
     (tail-call address.1 sexps list.1)))
 (define-function meta-builtin/builtin/sexp-location
   (block body
+    (= sexp (argument :index 0))
     (= address.23 (address :name meta-builtin/builtin/symbol-sexp?))
     (= value.22 (call address.23 sexp))
     (= bool.6 (to-bool value.22))
@@ -4198,6 +4649,8 @@
     (branch bool.5 :then-label then.9 :else-label else.10)))
 (define-function meta-builtin/builtin/symbol-sexp
   (block body
+    (= content (argument :index 0))
+    (= location (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4211,6 +4664,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/symbol-sexp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4242,30 +4696,38 @@
     (return const.2)))
 (define-function meta-builtin/builtin/symbol-sexp-content
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/symbol-sexp-put-content!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/symbol-sexp-location
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/symbol-sexp-put-location!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/keyword-sexp
   (block body
+    (= content (argument :index 0))
+    (= location (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4279,6 +4741,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/keyword-sexp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4310,30 +4773,38 @@
     (return const.2)))
 (define-function meta-builtin/builtin/keyword-sexp-content
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/keyword-sexp-put-content!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/keyword-sexp-location
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/keyword-sexp-put-location!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/string-sexp
   (block body
+    (= content (argument :index 0))
+    (= location (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4347,6 +4818,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/string-sexp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4378,30 +4850,38 @@
     (return const.2)))
 (define-function meta-builtin/builtin/string-sexp-content
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/string-sexp-put-content!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/string-sexp-location
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/string-sexp-put-location!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/int-sexp
   (block body
+    (= content (argument :index 0))
+    (= location (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4415,6 +4895,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/int-sexp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4446,30 +4927,38 @@
     (return const.2)))
 (define-function meta-builtin/builtin/int-sexp-content
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/int-sexp-put-content!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/int-sexp-location
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/int-sexp-put-location!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/float-sexp
   (block body
+    (= content (argument :index 0))
+    (= location (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4483,6 +4972,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/float-sexp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4514,30 +5004,38 @@
     (return const.2)))
 (define-function meta-builtin/builtin/float-sexp-content
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/float-sexp-put-content!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/float-sexp-location
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/float-sexp-put-location!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/list-sexp
   (block body
+    (= elements (argument :index 0))
+    (= location (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4551,6 +5049,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/list-sexp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4582,24 +5081,30 @@
     (return const.2)))
 (define-function meta-builtin/builtin/list-sexp-elements
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/list-sexp-put-elements!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/list-sexp-location
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/list-sexp-put-location!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
@@ -4607,6 +5112,8 @@
 (extern-function meta-builtin/builtin/parse-sexps)
 (define-function meta-builtin/builtin/make-source-location
   (block body
+    (= path (argument :index 0))
+    (= span (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4620,6 +5127,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/source-location?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4651,30 +5159,38 @@
     (return const.2)))
 (define-function meta-builtin/builtin/source-location-path
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/source-location-put-path!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/source-location-span
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/source-location-put-span!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/make-source-span
   (block body
+    (= start (argument :index 0))
+    (= end (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -4688,6 +5204,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/source-span?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4719,30 +5236,39 @@
     (return const.2)))
 (define-function meta-builtin/builtin/source-span-start
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/source-span-put-start!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/source-span-end
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/source-span-put-end!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/make-source-position
   (block body
+    (= index (argument :index 0))
+    (= row (argument :index 1))
+    (= column (argument :index 2))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.1 (copy value.5))
@@ -4758,6 +5284,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/source-position?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4789,30 +5316,37 @@
     (return const.2)))
 (define-function meta-builtin/builtin/source-position-index
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/source-position-put-index!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/source-position-row
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/source-position-put-row!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/source-position-column
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
@@ -4820,6 +5354,8 @@
 (define-function
     meta-builtin/builtin/source-position-put-column!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
@@ -4828,6 +5364,8 @@
   meta-builtin/builtin/format-message-with-source-location)
 (define-function meta-builtin/builtin/string-repeat
   (block body
+    (= n (argument :index 0))
+    (= string (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -4887,6 +5425,9 @@
 (extern-function meta-builtin/builtin/symbol-concat)
 (define-function meta-builtin/builtin/make-triple
   (block body
+    (= first (argument :index 0))
+    (= second (argument :index 1))
+    (= third (argument :index 2))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.1 (copy value.5))
@@ -4902,6 +5443,7 @@
     (return list.1)))
 (define-function meta-builtin/builtin/triple?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -4933,36 +5475,45 @@
     (return const.2)))
 (define-function meta-builtin/builtin/triple-first
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/triple-put-first!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/triple-second
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/triple-put-second!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function meta-builtin/builtin/triple-third
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function meta-builtin/builtin/triple-put-third!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
@@ -4978,6 +5529,7 @@
 (extern-function meta-builtin/builtin/void?)
 (define-function pkg-0/math/even?
   (block body
+    (= n (argument :index 0))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -4998,6 +5550,7 @@
     (tail-call address.2 _.1)))
 (define-function pkg-0/math/odd?
   (block body
+    (= n (argument :index 0))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -5018,6 +5571,7 @@
     (tail-call address.2 _.1)))
 (define-function pkg-0/math/factorial
   (block body
+    (= n (argument :index 0))
     (= address.4 (address :name meta-builtin/builtin/int-less-or-equal?))
     (= i64.3 (int64 :content 1))
     (= int.3 (tag-int i64.3))
@@ -5041,6 +5595,7 @@
     (tail-call address.1 _.2 n)))
 (define-function pkg-0/math/fibonacci
   (block body
+    (= n (argument :index 0))
     (= address.6 (address :name meta-builtin/builtin/int-less-or-equal?))
     (= i64.3 (int64 :content 1))
     (= int.3 (tag-int i64.3))
@@ -5070,6 +5625,8 @@
     (tail-call address.1 _.2 _.4)))
 (define-function pkg-0/math/gcd
   (block body
+    (= a (argument :index 0))
+    (= b (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/equal?))
     (= i64.1 (int64 :content 0))
     (= int.1 (tag-int i64.1))
@@ -5086,6 +5643,7 @@
     (tail-call address.1 b _.1)))
 (define-function pkg-0/math/square
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/imul))
     (tail-call address.1 x x)))
 (define-function self/010-my-list/nil
@@ -5099,6 +5657,7 @@
     (return list.1)))
 (define-function self/010-my-list/nil?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -5130,6 +5689,8 @@
     (return const.2)))
 (define-function self/010-my-list/li
   (block body
+    (= head (argument :index 0))
+    (= tail (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -5143,6 +5704,7 @@
     (return list.1)))
 (define-function self/010-my-list/li?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -5174,30 +5736,37 @@
     (return const.2)))
 (define-function self/010-my-list/li-head
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/010-my-list/li-put-head!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/010-my-list/li-tail
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/010-my-list/li-put-tail!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/010-my-list/my-list-head
   (block body
+    (= list (argument :index 0))
     (= address.20 (address :name self/010-my-list/nil?))
     (= value.18 (call address.20 list))
     (= bool.2 (to-bool value.18))
@@ -5291,6 +5860,7 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function self/010-my-list/my-list-tail
   (block body
+    (= list (argument :index 0))
     (= address.20 (address :name self/010-my-list/nil?))
     (= value.18 (call address.20 list))
     (= bool.2 (to-bool value.18))
@@ -5384,6 +5954,7 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function self/010-my-list/my-list-length
   (block body
+    (= list (argument :index 0))
     (= address.11 (address :name self/010-my-list/nil?))
     (= value.9 (call address.11 list))
     (= bool.2 (to-bool value.9))
@@ -5442,6 +6013,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function self/010-my-list/my-list-map
   (block body
+    (= f (argument :index 0))
+    (= list (argument :index 1))
     (= address.12 (address :name self/010-my-list/nil?))
     (= value.10 (call address.12 list))
     (= bool.2 (to-bool value.10))
@@ -5499,6 +6072,8 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function self/010-my-list/my-list-append
   (block body
+    (= left (argument :index 0))
+    (= right (argument :index 1))
     (= address.11 (address :name self/010-my-list/nil?))
     (= value.9 (call address.11 left))
     (= bool.2 (to-bool value.9))
@@ -5553,6 +6128,9 @@
     (branch bool.1 :then-label then.1 :else-label else.2)))
 (define-function self/010-my-list/my-list-map-zip
   (block body
+    (= f (argument :index 0))
+    (= list1 (argument :index 1))
+    (= list2 (argument :index 2))
     (= address.24 (address :name self/010-my-list/nil?))
     (= value.20 (call address.24 list1))
     (= bool.4 (to-bool value.20))
@@ -5665,6 +6243,9 @@
     (branch bool.3 :then-label then.5 :else-label else.6)))
 (define-function self/010-my-list/my-list-map-zip-2
   (block body
+    (= f (argument :index 0))
+    (= list1 (argument :index 1))
+    (= list2 (argument :index 2))
     (= address.64 (address :name self/010-my-list/nil?))
     (= value.56 (call address.64 list1))
     (= bool.8 (to-bool value.56))
@@ -5956,6 +6537,7 @@
     (branch bool.7 :then-label then.13 :else-label else.14)))
 (define-function self/010-my-list/my-list-adjacent-dedup
   (block body
+    (= list (argument :index 0))
     (= address.31 (address :name self/010-my-list/nil?))
     (= value.25 (call address.31 list))
     (= bool.5 (to-bool value.25))
@@ -6088,6 +6670,8 @@
     (branch bool.4 :then-label then.7 :else-label else.8)))
 (define-function self/010-pair/make-pair
   (block body
+    (= first (argument :index 0))
+    (= second (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -6101,6 +6685,7 @@
     (return list.1)))
 (define-function self/010-pair/pair?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -6132,30 +6717,37 @@
     (return const.2)))
 (define-function self/010-pair/pair-first
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/010-pair/pair-put-first!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/010-pair/pair-second
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/010-pair/pair-put-second!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/010-pair/pair-swap
   (block body
+    (= p (argument :index 0))
     (= address.9 (address :name self/010-pair/pair?))
     (= value.7 (call address.9 p))
     (= bool.1 (to-bool value.7))
@@ -6200,6 +6792,7 @@
     (tail-call address.4 string.1 _.4)))
 (define-function self/050-lambda/var-exp
   (block body
+    (= name (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
     (= list.1 (copy value.3))
@@ -6211,6 +6804,7 @@
     (return list.1)))
 (define-function self/050-lambda/var-exp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -6242,18 +6836,23 @@
     (return const.2)))
 (define-function self/050-lambda/var-exp-name
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/var-exp-put-name!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/apply-exp
   (block body
+    (= target (argument :index 0))
+    (= arg (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -6267,6 +6866,7 @@
     (return list.1)))
 (define-function self/050-lambda/apply-exp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -6298,30 +6898,38 @@
     (return const.2)))
 (define-function self/050-lambda/apply-exp-target
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/apply-exp-put-target!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/apply-exp-arg
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/apply-exp-put-arg!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/lambda-exp
   (block body
+    (= parameter (argument :index 0))
+    (= body (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/make-list))
     (= value.4 (call address.4))
     (= list.1 (copy value.4))
@@ -6335,6 +6943,7 @@
     (return list.1)))
 (define-function self/050-lambda/lambda-exp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -6366,30 +6975,39 @@
     (return const.2)))
 (define-function self/050-lambda/lambda-exp-parameter
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/lambda-exp-put-parameter!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/lambda-exp-body
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/lambda-exp-put-body!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/let-exp
   (block body
+    (= name (argument :index 0))
+    (= rhs (argument :index 1))
+    (= body (argument :index 2))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.1 (copy value.5))
@@ -6405,6 +7023,7 @@
     (return list.1)))
 (define-function self/050-lambda/let-exp?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -6436,42 +7055,54 @@
     (return const.2)))
 (define-function self/050-lambda/let-exp-name
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/let-exp-put-name!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/let-exp-rhs
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/let-exp-put-rhs!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/let-exp-body
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/let-exp-put-body!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/closure-value
   (block body
+    (= env (argument :index 0))
+    (= parameter (argument :index 1))
+    (= body (argument :index 2))
     (= address.5 (address :name meta-builtin/builtin/make-list))
     (= value.5 (call address.5))
     (= list.1 (copy value.5))
@@ -6487,6 +7118,7 @@
     (return list.1)))
 (define-function self/050-lambda/closure-value?
   (block body
+    (= value (argument :index 0))
     (= address.7 (address :name meta-builtin/builtin/list?))
     (= value.4 (call address.7 value))
     (= bool.2 (to-bool value.4))
@@ -6518,42 +7150,53 @@
     (return const.2)))
 (define-function self/050-lambda/closure-value-env
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/closure-value-put-env!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/closure-value-parameter
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/closure-value-put-parameter!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 2))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/closure-value-body
   (block body
+    (= target (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/list-get))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 target)))
 (define-function self/050-lambda/closure-value-put-body!
   (block body
+    (= value (argument :index 0))
+    (= target (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/list-put!))
     (= i64.1 (int64 :content 3))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-function self/050-lambda/evaluate
   (block body
+    (= exp (argument :index 0))
+    (= env (argument :index 1))
     (= address.40 (address :name self/050-lambda/var-exp?))
     (= value.35 (call address.40 exp))
     (= bool.6 (to-bool value.35))
@@ -6735,6 +7378,8 @@
     (branch bool.5 :then-label then.9 :else-label else.10)))
 (define-function self/050-lambda/apply
   (block body
+    (= target (argument :index 0))
+    (= arg (argument :index 1))
     (= address.11 (address :name self/050-lambda/closure-value?))
     (= value.9 (call address.11 target))
     (= bool.1 (to-bool value.9))
@@ -6786,12 +7431,14 @@
     (tail-call address.6 string.1 _.5)))
 (define-function self/060-desugar/add1
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 x)))
 (define-function self/060-desugar/double
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x x)))
 (define-function self/060-desugar/example-let-star
@@ -6849,6 +7496,8 @@
     (return const.2)))
 (define-function self/060-desugar/example-and
   (block body
+    (= a (argument :index 0))
+    (= b (argument :index 1))
     (= bool.1 (to-bool a))
     (branch bool.1 :then-label then.1 :else-label else.2))
   (block then.1
@@ -6859,6 +7508,8 @@
     (return const.1)))
 (define-function self/060-desugar/example-or
   (block body
+    (= a (argument :index 0))
+    (= b (argument :index 1))
     (= bool.1 (to-bool a))
     (branch bool.1 :then-label then.1 :else-label else.2))
   (block then.1
@@ -6884,6 +7535,7 @@
     (tail-call address.1 int.1)))
 (define-function self/060-desugar/example-chain©λ1
   (block body
+    (= target.1 (argument :index 0))
     (= address.2 (address :name self/060-desugar/add1))
     (= value.1 (call address.2 target.1))
     (= _.1 (copy value.1))
@@ -6897,6 +7549,7 @@
     (tail-call address.1 int.1)))
 (define-function self/060-desugar/example-compose©λ1
   (block body
+    (= target.1 (argument :index 0))
     (= address.2 (address :name self/060-desugar/double))
     (= value.1 (call address.2 target.1))
     (= _.1 (copy value.1))
@@ -6929,6 +7582,8 @@
     (return const.1)))
 (define-function self/060-desugar/example-letrec©λ1
   (block body
+    (= odd?.1 (argument :index 0))
+    (= n.1 (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -6951,6 +7606,8 @@
     (tail-apply _.1 _.2)))
 (define-function self/060-desugar/example-letrec©λ2
   (block body
+    (= even?.1 (argument :index 0))
+    (= n.2 (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -6996,6 +7653,8 @@
     (return const.1)))
 (define-function self/060-desugar/example-letrec-star©λ1
   (block body
+    (= odd?.1 (argument :index 0))
+    (= n.1 (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -7018,6 +7677,8 @@
     (tail-apply _.1 _.2)))
 (define-function self/060-desugar/example-letrec-star©λ2
   (block body
+    (= even?.1 (argument :index 0))
+    (= n.2 (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -7063,6 +7724,8 @@
     (return const.1)))
 (define-function self/060-desugar/example-local-define©λ1
   (block body
+    (= odd?.1 (argument :index 0))
+    (= n.1 (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -7085,6 +7748,8 @@
     (tail-apply _.1 _.2)))
 (define-function self/060-desugar/example-local-define©λ2
   (block body
+    (= even?.1 (argument :index 0))
+    (= n.2 (argument :index 1))
     (= address.4 (address :name meta-builtin/builtin/equal?))
     (= i64.2 (int64 :content 0))
     (= int.2 (tag-int i64.2))
@@ -7118,18 +7783,22 @@
 (define-function
     self/070-cross-package-import-all/example-square
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name pkg-0/math/square))
     (tail-call address.1 x)))
 (define-function self/070-cross-package-import-as/example-square
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name pkg-0/math/square))
     (tail-call address.1 x)))
 (define-function self/070-cross-package-import/example-square
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name pkg-0/math/square))
     (tail-call address.1 x)))
 (define-function self/070-module-lib/greet
   (block body
+    (= name (argument :index 0))
     (= address.3 (address :name meta-builtin/builtin/string-append))
     (= address.2 (address :name self/070-module-lib/greeting))
     (= const.1 (load address.2 :type value-t))
@@ -7140,26 +7809,36 @@
     (tail-call address.1 _.1 name)))
 (define-function self/110-function/identity
   (block body
+    (= x (argument :index 0))
     (return x)))
 (define-function self/110-function/compose2
   (block body
+    (= f (argument :index 0))
+    (= g (argument :index 1))
+    (= x (argument :index 2))
     (= value.1 (apply g x))
     (= _.1 (copy value.1))
     (tail-apply f _.1)))
 (define-function self/110-function/double
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x x)))
 (define-function self/110-type-annotations/identity
   (block body
+    (= x (argument :index 0))
     (return x)))
 (define-function self/110-type-annotations/compose2
   (block body
+    (= f (argument :index 0))
+    (= g (argument :index 1))
+    (= x (argument :index 2))
     (= value.1 (apply g x))
     (= _.1 (copy value.1))
     (tail-apply f _.1)))
 (define-function self/110-type-annotations/double
   (block body
+    (= x (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x x)))
 (define-function self/140-uniquify/f
@@ -7170,17 +7849,22 @@
     (tail-call address.1 int.1)))
 (define-function self/140-uniquify/f©λ1
   (block body
+    (= x.1 (argument :index 0))
     (= address.1 (address :name self/140-uniquify/f©λ1©λ1))
     (tail-call address.1 x.1)))
 (define-function self/140-uniquify/f©λ1©λ1
   (block body
+    (= x.2 (argument :index 0))
     (return x.2)))
 (define-function self/150-lift-lambda/make-adder
   (block body
+    (= x (argument :index 0))
     (= fn.1 (function-value :name self/150-lift-lambda/make-adder©λ1 :arity 2))
     (tail-apply fn.1 x)))
 (define-function self/150-lift-lambda/make-adder©λ1
   (block body
+    (= x (argument :index 0))
+    (= y.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x y.1)))
 (define-function self/150-lift-lambda/f
@@ -7191,12 +7875,16 @@
     (tail-call address.1 int.1)))
 (define-function self/160-unnest/g
   (block body
+    (= x (argument :index 0))
     (return x)))
 (define-function self/160-unnest/h
   (block body
+    (= x (argument :index 0))
     (return x)))
 (define-function self/160-unnest/f
   (block body
+    (= x (argument :index 0))
+    (= y (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x y)))
 (define-function self/160-unnest/test
@@ -7224,6 +7912,8 @@
     (tail-call address.1 x.1 int.1)))
 (define-function self/180-codegen/add
   (block body
+    (= x (argument :index 0))
+    (= y (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x y)))
 (define-function self/180-codegen/f
