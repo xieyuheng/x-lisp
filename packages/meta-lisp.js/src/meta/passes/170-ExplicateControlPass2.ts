@@ -380,26 +380,17 @@ function explicateInIf(
   }
 
   switch (condition.kind) {
-    // case "VarTerm": {
-    //   return [
-    //     B.TestInstr(
-    //       B.ApplyExp(
-    //         B.VarExp("meta-builtin/builtin/same?", condition.location),
-    //         [
-    //           B.VarExp(condition.name, condition.location),
-    //           B.VarExp("meta-builtin/builtin/true", condition.location),
-    //         ],
-    //         condition.location,
-    //       ),
-    //       condition.location,
-    //     ),
-    //     B.BranchInstr(
-    //       generateLabel(state, "then", thenCont, condition.location),
-    //       generateLabel(state, "else", elseCont, condition.location),
-    //       condition.location,
-    //     ),
-    //   ]
-    // }
+    case "VarTerm": {
+      const bool = generateCell(state, "bool")
+      return [
+        B.Instr([bool], "to-bool", [B.Cell(condition.name)], {}),
+          B.Instr([], "branch", [bool], {
+            "then-label": B.SymbolAttribute(generateLabel(state, "then", thenCont)),
+            "else-label": B.SymbolAttribute(generateLabel(state, "else", elseCont)),
+          }
+        ),
+      ]
+    }
 
     // case "ApplyTerm": {
     //   return [
