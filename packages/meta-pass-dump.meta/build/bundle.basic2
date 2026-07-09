@@ -775,10 +775,10 @@
     (= address.1 (address :name meta-builtin/builtin/make-cli-ctx))
     (tail-call address.1 args.1 options.1 passthrough.1))
   (block else.12
-    (= address.45 (address :name meta-builtin/builtin/equal?))
-    (= address.46 (address :name meta-builtin/builtin/true))
-    (= const.7 (load address.46 :type value-t))
-    (= value.36 (call address.45 in-passthrough?.1 const.7))
+    (= address.46 (address :name meta-builtin/builtin/equal?))
+    (= address.45 (address :name meta-builtin/builtin/true))
+    (= const.7 (load address.45 :type value-t))
+    (= value.36 (call address.46 in-passthrough?.1 const.7))
     (= bool.5 (to-bool value.36))
     (branch bool.5 :then-label then.9 :else-label else.10)))
 (define-function meta-builtin/builtin/cli-define-route
@@ -7130,11 +7130,11 @@
     (tail-call address.1 x)))
 (define-function self/070-module-lib/greet
   (block body
-    (= address.2 (address :name meta-builtin/builtin/string-append))
-    (= address.3 (address :name self/070-module-lib/greeting))
-    (= const.1 (load address.3 :type value-t))
+    (= address.3 (address :name meta-builtin/builtin/string-append))
+    (= address.2 (address :name self/070-module-lib/greeting))
+    (= const.1 (load address.2 :type value-t))
     (= string.1 (string-value :content ", "))
-    (= value.1 (call address.2 const.1 string.1))
+    (= value.1 (call address.3 const.1 string.1))
     (= _.1 (copy value.1))
     (= address.1 (address :name meta-builtin/builtin/string-append))
     (tail-call address.1 _.1 name)))

@@ -215,14 +215,9 @@ function explicateUnnestedTerm(
     }
 
     case "ApplyTerm": {
-      const direct =
-        term.target.kind === "QualifiedVarTerm"
-          ? tryResolveDirectCall(state, term.target, term.args.length)
-          : undefined
-
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
-
+      const direct = tryResolveDirectCall(state, term.target, term.args.length)
       if (direct) {
         const address = generateCell(state, "address")
         const value = generateCell(state, "value")
@@ -234,16 +229,16 @@ function explicateUnnestedTerm(
           B.Instr("call", [address, ...args], [value], {}),
         ]
         return [instrs, value]
+      } else {
+        const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+        const value = generateCell(state, "value")
+        const instrs = [
+          ...targetInstrs,
+          ...arrayConcat(argInstrGroups),
+          B.Instr("apply", [target, ...args], [value], {}),
+        ]
+        return [instrs, value]
       }
-
-      const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
-      const value = generateCell(state, "value")
-      const instrs = [
-        ...targetInstrs,
-        ...arrayConcat(argInstrGroups),
-        B.Instr("apply", [target, ...args], [value], {}),
-      ]
-      return [instrs, value]
     }
 
     default: {
@@ -265,9 +260,11 @@ function resolvePackageId(pkg: M.Package, pkgName: string): string {
 
 function tryResolveDirectCall(
   state: State,
-  target: M.QualifiedVarTerm,
+  target: M.Term,
   argCount: number,
 ): { qualifiedName: string } | undefined {
+  if (target.kind !== "QualifiedVarTerm") return undefined
+
   const definition = M.packageLookupDefinition(
     state.pkg,
     target.pkgName,
@@ -331,14 +328,9 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
     }
 
     case "ApplyTerm": {
-      const direct =
-        term.target.kind === "QualifiedVarTerm"
-          ? tryResolveDirectCall(state, term.target, term.args.length)
-          : undefined
-
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
-
+      const direct = tryResolveDirectCall(state, term.target, term.args.length)
       if (direct) {
         const address = generateCell(state, "address")
         return [
@@ -348,14 +340,14 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
           ...arrayConcat(argInstrGroups),
           B.Instr("tail-call", [address, ...args], [], {}),
         ]
+      } else {
+        const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+        return [
+          ...targetInstrs,
+          ...arrayConcat(argInstrGroups),
+          B.Instr("tail-apply", [target, ...args], [], {}),
+        ]
       }
-
-      const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
-      return [
-        ...targetInstrs,
-        ...arrayConcat(argInstrGroups),
-        B.Instr("tail-apply", [target, ...args], [], {}),
-      ]
     }
 
     default: {
