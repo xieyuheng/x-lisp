@@ -452,7 +452,7 @@ function explicateInIf(
     }
 
     default: {
-      let message = `[ExplicateControlPass] [explicateInIf] unhandled condition`
+      let message = `[explicateInIf] unhandled condition`
       message += `\n  condition: ${M.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }

@@ -132,7 +132,7 @@ function generateLabel(
   return label
 }
 
-function toBasicExp(term: M.Term, pkg: M.Package): B.Exp {
+function explicateUnnestedTerm(state: State, term: M.Term): B.Exp {
   switch (term.kind) {
     case "SymbolTerm": {
       return B.SymbolExp(term.content, term.location)
@@ -159,20 +159,20 @@ function toBasicExp(term: M.Term, pkg: M.Package): B.Exp {
     }
 
     case "QualifiedVarTerm": {
-      const prefix = resolvePackageId(pkg, term.pkgName)
+      const prefix = resolvePackageId(state.pkg, term.pkgName)
       return B.VarExp(`${prefix}/${term.modName}/${term.name}`, term.location)
     }
 
     case "ApplyTerm": {
       return B.ApplyExp(
-        toBasicExp(term.target, pkg),
-        term.args.map((arg) => toBasicExp(arg, pkg)),
+        explicateUnnestedTerm(state, term.target),
+        term.args.map((arg) => explicateUnnestedTerm(state, arg)),
         term.location,
       )
     }
 
     default: {
-      let message = `[ExplicateControlPass] [toBasicExp] unhandled term`
+      let message = `[explicateUnnestedTerm] unhandled term`
       message += `\n  term kind: ${term.kind}`
       message += `\n  term: ${M.formatTerm(term)}`
       throw new S.ErrorWithSourceLocation(message, term.location)
@@ -224,7 +224,7 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
     }
 
     default: {
-      return [B.ReturnInstr(toBasicExp(term, state.pkg), term.location)]
+      return [B.ReturnInstr(explicateUnnestedTerm(state, term), term.location)]
     }
   }
 }
@@ -266,7 +266,7 @@ function explicateInLet1(
 
     default: {
       return [
-        B.AssignInstr(name, toBasicExp(rhs, state.pkg), rhs.location),
+        B.AssignInstr(name, explicateUnnestedTerm(state, rhs), rhs.location),
         ...cont,
       ]
     }
@@ -309,7 +309,7 @@ function explicateInBegin1(
 
     default: {
       return [
-        B.PerformInstr(toBasicExp(head, state.pkg), head.location),
+        B.PerformInstr(explicateUnnestedTerm(state, head), head.location),
         ...cont,
       ]
     }
@@ -371,7 +371,7 @@ function explicateInIf(
       }
 
       return [
-        B.TestInstr(toBasicExp(condition, state.pkg), condition.location),
+        B.TestInstr(explicateUnnestedTerm(state, condition), condition.location),
         B.BranchInstr(
           generateLabel(state, "then", thenCont, condition.location),
           generateLabel(state, "else", elseCont, condition.location),
@@ -419,7 +419,7 @@ function explicateInIf(
     }
 
     default: {
-      let message = `[ExplicateControlPass] [explicateInIf] unhandled condition`
+      let message = `[explicateInIf] unhandled condition`
       message += `\n  condition: ${M.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
