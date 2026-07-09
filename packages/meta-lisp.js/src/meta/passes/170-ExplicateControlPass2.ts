@@ -284,15 +284,15 @@ function explicateInLet1(
     }
 
     case "IfTerm": {
-      const letBodyLabel = generateLabel(state, "let-body", cont)
+      const label = generateLabel(state, "let-body", cont)
       return explicateInIf(
         state,
         rhs.condition,
         explicateInLet1(state, name, rhs.consequent, [
-          B.Instr([], "goto", [], { label: B.SymbolAttribute(letBodyLabel) }),
+          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
         ]),
         explicateInLet1(state, name, rhs.alternative, [
-          B.Instr([], "goto", [], { label: B.SymbolAttribute(letBodyLabel) }),
+          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
         ]),
       )
     }
@@ -312,47 +312,45 @@ function explicateInBegin1(
   head: M.Term,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
-  return []
+  switch (head.kind) {
+    case "Let1Term": {
+      return explicateInLet1(
+        state,
+        head.name,
+        head.rhs,
+        explicateInBegin1(state, head.body, cont),
+      )
+    }
 
-  // switch (head.kind) {
-  //   case "Let1Term": {
-  //     return explicateInLet1(
-  //       state,
-  //       head.name,
-  //       head.rhs,
-  //       explicateInBegin1(state, head.body, cont),
-  //     )
-  //   }
+    case "Begin1Term": {
+      return explicateInBegin1(
+        state,
+        head.head,
+        explicateInBegin1(state, head.body, cont),
+      )
+    }
 
-  //   case "Begin1Term": {
-  //     return explicateInBegin1(
-  //       state,
-  //       head.head,
-  //       explicateInBegin1(state, head.body, cont),
-  //     )
-  //   }
+    case "IfTerm": {
+      const label = generateLabel(state, "begin-body", cont)
+      return explicateInIf(
+        state,
+        head.condition,
+        explicateInBegin1(state, head.consequent, [
+          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
+        ]),
+        explicateInBegin1(state, head.alternative, [
+          B.Instr([], "goto", [], { label: B.SymbolAttribute(label) }),
+        ]),
+      )
+    }
 
-  //   case "IfTerm": {
-  //     const letBodyLabel = generateLabel(state, "let-body", cont, head.location)
-  //     return explicateInIf(
-  //       state,
-  //       head.condition,
-  //       explicateInBegin1(state, head.consequent, [
-  //         B.GotoInstr(letBodyLabel, head.location),
-  //       ]),
-  //       explicateInBegin1(state, head.alternative, [
-  //         B.GotoInstr(letBodyLabel, head.location),
-  //       ]),
-  //     )
-  //   }
-
-  //   default: {
-  //     return [
-  //       B.PerformInstr(toBasicExp(head, state.pkg), head.location),
-  //       ...cont,
-  //     ]
-  //   }
-  // }
+    default: {
+      return [
+        // B.PerformInstr(toBasicExp(head, state.pkg), head.location),
+        ...cont,
+      ]
+    }
+  }
 }
 
 function explicateInIf(

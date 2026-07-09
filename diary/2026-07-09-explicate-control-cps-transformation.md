@@ -34,7 +34,7 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 
 # 九种变换
 
-## let 上下文 × 3
+## let
 
 ### rhs 是 let — 上浮内层绑定
 
@@ -67,15 +67,15 @@ meta-lisp Term 有三种控制流形式，可以任意嵌套：
 `let` 的结果来自 `if` 的两条分支，需要 join block 收敛控制流。
 
 ```scheme
-(let ((x (if p a b)))
+(let ((x (if p (f a) (f b))))
   (+ x 3))
 
 ;; =>
 
 (if p
-  (let ((x a))
+  (let ((x (f a)))
     (goto let-body))
-  (let ((x b))
+  (let ((x (f b)))
     (goto let-body)))
 
 let-body:
@@ -122,18 +122,14 @@ let-body:
 ;; =>
 
 (if p
-  (goto then)
-  (goto else))
+  (begin
+    (f a)
+    (goto begin-body))
+  (begin
+    (g b)
+    (goto begin-body)))
 
-then:
-  (begin (f a)
-    (goto join))
-
-else:
-  (begin (g b)
-    (goto join))
-
-join:
+begin-body:
   (+ z 3)
 ```
 
