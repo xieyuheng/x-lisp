@@ -381,9 +381,10 @@ function explicateInIf(
 
   switch (condition.kind) {
     case "VarTerm": {
+      const conditionCell = B.Cell(condition.name)
       const bool = generateCell(state, "bool")
       return [
-        B.Instr("to-bool", [B.Cell(condition.name)], [bool], {}),
+        B.Instr("to-bool", [conditionCell], [bool], {}),
         B.Instr("branch", [bool], [], {
           "then-label": B.SymbolAttribute(
             generateLabel(state, "then", thenCont),
@@ -395,16 +396,22 @@ function explicateInIf(
       ]
     }
 
-    // case "ApplyTerm": {
-    //   return [
-    //     B.TestInstr(toBasicExp(condition, state.pkg), condition.location),
-    //     B.BranchInstr(
-    //       generateLabel(state, "then", thenCont, condition.location),
-    //       generateLabel(state, "else", elseCont, condition.location),
-    //       condition.location,
-    //     ),
-    //   ]
-    // }
+    case "ApplyTerm": {
+      const [conditionInstrs, conditionCell] = explicateUnnestedTerm(state, condition)
+      const bool = generateCell(state, "bool")
+      return [
+        ...conditionInstrs,
+        B.Instr("to-bool", [conditionCell], [bool], {}),
+        B.Instr("branch", [bool], [], {
+          "then-label": B.SymbolAttribute(
+            generateLabel(state, "then", thenCont),
+          ),
+          "else-label": B.SymbolAttribute(
+            generateLabel(state, "else", elseCont),
+          ),
+        }),
+      ]
+    }
 
     case "Let1Term": {
       return explicateInLet1(
