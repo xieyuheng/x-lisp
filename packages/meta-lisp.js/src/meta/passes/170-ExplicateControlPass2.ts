@@ -7,6 +7,18 @@ import * as M from "../index.ts"
 export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
+  const variableNames: Array<string> = []
+
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
+      for (const definition of mod.definitions.values()) {
+        if (definition.kind === "VariableDefinition") {
+          variableNames.push(definitionQualifiedName(definition))
+        }
+      }
+    }
+  }
+
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
@@ -15,6 +27,11 @@ export function ExplicateControlPass2(pkg: M.Package): B.Mod {
         }
       }
     }
+  }
+
+  if (variableNames.length > 0) {
+    const setupDefinition = generateSetupVariables(pkg, variableNames)
+    basicMod.definitions.set(setupDefinition.name, setupDefinition)
   }
 
   return basicMod
@@ -70,9 +87,52 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
     }
 
     case "VariableDefinition": {
-      return []
+      const usedNames = M.termOccurredNames(definition.body)
+      const state = createState(definition.mod.pkg, usedNames)
+      const block = B.Block("body", [])
+      addBlock(state, block)
+      block.instrs = explicateInTail(state, definition.body)
+
+      const qualifiedName = definitionQualifiedName(definition)
+      return [
+        B.VariableDefinition(qualifiedName, null),
+        B.FunctionDefinition(`@setup.${qualifiedName}`, state.blocks),
+      ]
     }
   }
+}
+
+function generateSetupVariables(
+  pkg: M.Package,
+  variableNames: Array<string>,
+): B.SetupDefinition {
+  const state = createState(pkg, new Set())
+  const block = B.Block("body", [])
+  addBlock(state, block)
+
+  const instrs: Array<B.Instr> = []
+
+  for (const qualifiedName of variableNames) {
+    const setupAddress = generateCell(state, "setup-address")
+    const result = generateCell(state, "result")
+    const variableAddress = generateCell(state, "variable-address")
+
+    instrs.push(
+      B.Instr("address", [], [setupAddress], {
+        name: B.SymbolAttribute(`@setup.${qualifiedName}`),
+      }),
+      B.Instr("call", [setupAddress], [result], {}),
+      B.Instr("address", [], [variableAddress], {
+        name: B.SymbolAttribute(qualifiedName),
+      }),
+      B.Instr("store", [variableAddress, result], [], {}),
+    )
+  }
+
+  instrs.push(B.Instr("return", [], [], {}))
+  block.instrs = instrs
+
+  return B.SetupDefinition("@setup-variables", state.blocks)
 }
 
 type State = {
