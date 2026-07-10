@@ -8,12 +8,17 @@ export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
   const variableNames: Array<string> = []
+  const testNames: Array<string> = []
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.mods.values()) {
       for (const definition of mod.definitions.values()) {
         if (definition.kind === "VariableDefinition") {
           variableNames.push(definitionQualifiedName(definition))
+        }
+
+        if (definition.kind === "TestDefinition") {
+          testNames.push(definitionQualifiedName(definition))
         }
       }
     }
@@ -32,6 +37,11 @@ export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   if (variableNames.length > 0) {
     const setupDefinition = generateSetupVariables(pkg, variableNames)
     basicMod.definitions.set(setupDefinition.name, setupDefinition)
+  }
+
+  if (testNames.length > 0) {
+    const runTestsDefinition = generateRunTests(pkg, testNames)
+    basicMod.definitions.set(runTestsDefinition.name, runTestsDefinition)
   }
 
   return basicMod
@@ -83,7 +93,15 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
     }
 
     case "TestDefinition": {
-      return []
+      const usedNames = M.termOccurredNames(definition.body)
+      const state = createState(definition.mod.pkg, usedNames)
+      const block = B.Block("body", [])
+      addBlock(state, block)
+      block.instrs = explicateInTail(state, definition.body)
+
+      return [
+        B.FunctionDefinition(definitionQualifiedName(definition), state.blocks),
+      ]
     }
 
     case "VariableDefinition": {
@@ -133,6 +151,34 @@ function generateSetupVariables(
   block.instrs = instrs
 
   return B.FunctionDefinition("@setup-variables", state.blocks)
+}
+
+function generateRunTests(
+  pkg: M.Package,
+  testNames: Array<string>,
+): B.FunctionDefinition {
+  const state = createState(pkg, new Set())
+  const block = B.Block("body", [])
+  addBlock(state, block)
+
+  const instrs: Array<B.Instr> = []
+
+  for (const qualifiedName of testNames) {
+    const test = generateCell(state, "test")
+    const result = generateCell(state, "result")
+
+    instrs.push(
+      B.Instr("address", [], [test], {
+        name: B.SymbolAttribute(qualifiedName),
+      }),
+      B.Instr("call", [test], [result], {}),
+    )
+  }
+
+  instrs.push(B.Instr("return", [], [], {}))
+  block.instrs = instrs
+
+  return B.FunctionDefinition("@run-tests", state.blocks)
 }
 
 type State = {
