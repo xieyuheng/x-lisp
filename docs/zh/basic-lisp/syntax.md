@@ -34,7 +34,6 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
   - [(claim)](#claim)
 - [定义](#定义)
   - [(define-function)](#define-function)
-  - [(define-setup)](#define-setup)
   - [(define-variable)](#define-variable)
   - [(define-struct)](#define-struct)
   - [(extern-function)](#extern-function)
@@ -249,35 +248,6 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
     (= one (int64 :content 1))
     (= result (iadd n one))
     (return result))))
-```
-
-## (define-setup)
-
-```scheme
-(define-setup <name>
-  <block>
-  ...)
-```
-
-定义初始化函数。
-
-- setup 函数在程序入口（main）之前，按源码顺序依次调用。
-- setup 函数无参数、无返回值。
-- 除调用时机不同外，setup 函数的内部结构与普通函数相同。
-
-```scheme
-(define-setup init-globals
-  (block entry
-    (= g (address :name global-counter))
-    (= zero (int64 :content 0))
-    (store g zero)
-    (return)))
-
-(claim main (-> int64-t))
-(define-function main
-  (block entry
-    (= c (int64 :content 42))
-    (return c)))
 ```
 
 ## (define-variable)

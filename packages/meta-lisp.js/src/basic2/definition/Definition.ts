@@ -6,7 +6,6 @@ export type Definition =
   | StructDefinition
   | FunctionDefinition
   | VariableDefinition
-  | SetupDefinition
   | ExternFunctionDefinition
   | ExternVariableDefinition
 
@@ -47,19 +46,6 @@ export function VariableDefinition(
   init: Data | null,
 ): VariableDefinition {
   return { kind: "VariableDefinition", name, init }
-}
-
-export type SetupDefinition = {
-  kind: "SetupDefinition"
-  name: string
-  blocks: Map<string, Block>
-}
-
-export function SetupDefinition(
-  name: string,
-  blocks: Map<string, Block>,
-): SetupDefinition {
-  return { kind: "SetupDefinition", name, blocks }
 }
 
 export type ExternFunctionDefinition = {

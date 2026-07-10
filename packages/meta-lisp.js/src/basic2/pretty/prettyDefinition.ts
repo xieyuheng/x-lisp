@@ -33,15 +33,6 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
       return Ppml.prettySyntax("define-variable", [], body)
     }
 
-    case "SetupDefinition": {
-      const blockNodes = Array.from(definition.blocks.values()).map(prettyBlock)
-      return Ppml.prettyVertical(
-        "define-setup",
-        [Ppml.text(definition.name)],
-        blockNodes,
-      )
-    }
-
     case "ExternFunctionDefinition": {
       return Ppml.prettySyntax(
         "extern-function",

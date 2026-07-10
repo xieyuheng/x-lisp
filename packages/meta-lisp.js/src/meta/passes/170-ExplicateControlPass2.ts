@@ -105,7 +105,7 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
 function generateSetupVariables(
   pkg: M.Package,
   variableNames: Array<string>,
-): B.SetupDefinition {
+): B.FunctionDefinition {
   const state = createState(pkg, new Set())
   const block = B.Block("body", [])
   addBlock(state, block)
@@ -132,7 +132,7 @@ function generateSetupVariables(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.SetupDefinition("@setup-variables", state.blocks)
+  return B.FunctionDefinition("@setup-variables", state.blocks)
 }
 
 type State = {

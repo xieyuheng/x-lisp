@@ -26,13 +26,6 @@ export function formatDefinition(definition: B.Definition): string {
       return `(define-variable ${definition.name} ${formatData(definition.init)})`
     }
 
-    case "SetupDefinition": {
-      const blockTexts = Array.from(definition.blocks.values())
-        .map(formatBlock)
-        .join(" ")
-      return `(define-setup ${definition.name} ${blockTexts})`
-    }
-
     case "ExternFunctionDefinition": {
       return `(extern-function ${definition.name})`
     }
