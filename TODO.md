@@ -1,7 +1,6 @@
 # basic2
 
-[meta-lisp.js] 170-ExplicateControlPass2 -- handle `VariableDefinition`
-[meta-lisp.js] 170-ExplicateControlPass2 -- handle `TestDefinition`
+[meta-lisp.js] 170-ExplicateControlPass2 -- handle `TestDefinition` -- generate `@run-tests`
 
 # self-hosting
 

@@ -113,9 +113,9 @@ function generateSetupVariables(
   const instrs: Array<B.Instr> = []
 
   for (const qualifiedName of variableNames) {
-    const setupAddress = generateCell(state, "setup-address")
+    const setupAddress = generateCell(state, "setup")
     const result = generateCell(state, "result")
-    const variableAddress = generateCell(state, "variable-address")
+    const variableAddress = generateCell(state, "variable")
 
     instrs.push(
       B.Instr("address", [], [setupAddress], {
