@@ -13,6 +13,6 @@
 (claim test (-> int-t))
 
 (define (test)
-  (= _.1 (self/160-unnest/g 1))
-  (= _.2 (self/160-unnest/h 2))
-  (self/160-unnest/f _.1 _.2))
+  (= unnested.1 (self/160-unnest/g 1))
+  (= unnested.2 (self/160-unnest/h 2))
+  (self/160-unnest/f unnested.1 unnested.2))

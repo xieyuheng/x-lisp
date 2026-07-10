@@ -4,7 +4,7 @@
 
 (claim compose2 (polymorphic (A B C) (-> (-> A B) (-> C A) (-> C B))))
 
-(define (compose2 f g x) (= _.1 (g x)) (f _.1))
+(define (compose2 f g x) (= unnested.1 (g x)) (f unnested.1))
 
 (claim double (-> int-t int-t))
 

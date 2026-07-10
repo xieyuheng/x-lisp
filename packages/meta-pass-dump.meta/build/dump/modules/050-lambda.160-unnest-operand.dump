@@ -25,11 +25,11 @@
   (if (meta-builtin/builtin/list? value)
     (if
         (begin
-          (= _.1 (meta-builtin/builtin/list-length value))
-          (meta-builtin/builtin/equal? _.1 2))
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 2))
       (begin
-        (= _.2 (meta-builtin/builtin/list-head value))
-        (meta-builtin/builtin/equal? _.2 var-exp))
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 var-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -57,11 +57,11 @@
   (if (meta-builtin/builtin/list? value)
     (if
         (begin
-          (= _.1 (meta-builtin/builtin/list-length value))
-          (meta-builtin/builtin/equal? _.1 3))
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 3))
       (begin
-        (= _.2 (meta-builtin/builtin/list-head value))
-        (meta-builtin/builtin/equal? _.2 apply-exp))
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 apply-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -98,11 +98,11 @@
   (if (meta-builtin/builtin/list? value)
     (if
         (begin
-          (= _.1 (meta-builtin/builtin/list-length value))
-          (meta-builtin/builtin/equal? _.1 3))
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 3))
       (begin
-        (= _.2 (meta-builtin/builtin/list-head value))
-        (meta-builtin/builtin/equal? _.2 lambda-exp))
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 lambda-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -140,11 +140,11 @@
   (if (meta-builtin/builtin/list? value)
     (if
         (begin
-          (= _.1 (meta-builtin/builtin/list-length value))
-          (meta-builtin/builtin/equal? _.1 4))
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 4))
       (begin
-        (= _.2 (meta-builtin/builtin/list-head value))
-        (meta-builtin/builtin/equal? _.2 let-exp))
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 let-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -229,11 +229,11 @@
   (if (meta-builtin/builtin/list? value)
     (if
         (begin
-          (= _.1 (meta-builtin/builtin/list-length value))
-          (meta-builtin/builtin/equal? _.1 4))
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 4))
       (begin
-        (= _.2 (meta-builtin/builtin/list-head value))
-        (meta-builtin/builtin/equal? _.2 closure-value))
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 closure-value))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -274,43 +274,49 @@
       (= name.1 (self/050-lambda/var-exp-name exp))
       (if
           (begin
-            (= _.1 (self/050-lambda/env-lookup name.1 env))
-            (meta-builtin/builtin/just? _.1))
+            (= unnested.1 (self/050-lambda/env-lookup name.1 env))
+            (meta-builtin/builtin/just? unnested.1))
         (begin
           (= value.1
              (begin
-               (= _.2 (self/050-lambda/env-lookup name.1 env))
-               (meta-builtin/builtin/just-value _.2)))
+               (= unnested.2 (self/050-lambda/env-lookup name.1 env))
+               (meta-builtin/builtin/just-value unnested.2)))
           value.1)
         (if
             (begin
-              (= _.3 (self/050-lambda/env-lookup name.1 env))
-              (meta-builtin/builtin/nothing? _.3))
+              (= unnested.3 (self/050-lambda/env-lookup name.1 env))
+              (meta-builtin/builtin/nothing? unnested.3))
           (begin
-            (= _.4 (meta-builtin/builtin/make-source-position 719 25 18))
-            (= _.5 (meta-builtin/builtin/make-source-position 743 25 42))
-            (= _.6 (meta-builtin/builtin/make-source-span _.4 _.5))
-            (= _.7
+            (= unnested.4 (meta-builtin/builtin/make-source-position 719 25 18))
+            (= unnested.5 (meta-builtin/builtin/make-source-position 743 25 42))
+            (= unnested.6
+               (meta-builtin/builtin/make-source-span unnested.4 unnested.5))
+            (= unnested.7
                (meta-builtin/builtin/make-source-location
                 "src/050-lambda.meta"
-                _.6))
-            (meta-builtin/builtin/error-with-location "undefined name" _.7))
+                unnested.6))
+            (meta-builtin/builtin/error-with-location
+             "undefined name"
+             unnested.7))
           (begin
-            (= _.8 (meta-builtin/builtin/make-source-position 645 23 6))
-            (= _.9 (meta-builtin/builtin/make-source-position 650 23 11))
-            (= _.10 (meta-builtin/builtin/make-source-span _.8 _.9))
-            (= _.11
+            (= unnested.8 (meta-builtin/builtin/make-source-position 645 23 6))
+            (= unnested.9 (meta-builtin/builtin/make-source-position 650 23 11))
+            (= unnested.10
+               (meta-builtin/builtin/make-source-span unnested.8 unnested.9))
+            (= unnested.11
                (meta-builtin/builtin/make-source-location
                 "src/050-lambda.meta"
-                _.10))
-            (meta-builtin/builtin/error-with-location "cond mismatch" _.11)))))
+                unnested.10))
+            (meta-builtin/builtin/error-with-location
+             "cond mismatch"
+             unnested.11)))))
     (if (self/050-lambda/apply-exp? exp)
       (begin
         (= arg.1 (self/050-lambda/apply-exp-arg exp))
         (= target.1 (self/050-lambda/apply-exp-target exp))
-        (= _.12 (self/050-lambda/evaluate target.1 env))
-        (= _.13 (self/050-lambda/evaluate arg.1 env))
-        (self/050-lambda/apply _.12 _.13))
+        (= unnested.12 (self/050-lambda/evaluate target.1 env))
+        (= unnested.13 (self/050-lambda/evaluate arg.1 env))
+        (self/050-lambda/apply unnested.12 unnested.13))
       (if (self/050-lambda/lambda-exp? exp)
         (begin
           (= body.1 (self/050-lambda/lambda-exp-body exp))
@@ -323,18 +329,21 @@
             (= name.2 (self/050-lambda/let-exp-name exp))
             (= env.1
                (begin
-                 (= _.14 (self/050-lambda/evaluate rhs.1 env))
-                 (self/050-lambda/extend-env name.2 _.14 env)))
+                 (= unnested.14 (self/050-lambda/evaluate rhs.1 env))
+                 (self/050-lambda/extend-env name.2 unnested.14 env)))
             (self/050-lambda/evaluate body.2 env.1))
           (begin
-            (= _.15 (meta-builtin/builtin/make-source-position 609 21 3))
-            (= _.16 (meta-builtin/builtin/make-source-position 614 21 8))
-            (= _.17 (meta-builtin/builtin/make-source-span _.15 _.16))
-            (= _.18
+            (= unnested.15 (meta-builtin/builtin/make-source-position 609 21 3))
+            (= unnested.16 (meta-builtin/builtin/make-source-position 614 21 8))
+            (= unnested.17
+               (meta-builtin/builtin/make-source-span unnested.15 unnested.16))
+            (= unnested.18
                (meta-builtin/builtin/make-source-location
                 "src/050-lambda.meta"
-                _.17))
-            (meta-builtin/builtin/error-with-location "cond mismatch" _.18)))))))
+                unnested.17))
+            (meta-builtin/builtin/error-with-location
+             "cond mismatch"
+             unnested.18)))))))
 
 (claim apply (polymorphic (A) (-> 050-lambda/value-t 050-lambda/value-t A)))
 
@@ -344,14 +353,15 @@
       (= body.1 (self/050-lambda/closure-value-body target))
       (= parameter.1 (self/050-lambda/closure-value-parameter target))
       (= env.1 (self/050-lambda/closure-value-env target))
-      (= _.1 (self/050-lambda/extend-env parameter.1 arg env.1))
-      (self/050-lambda/evaluate body.1 _.1))
+      (= unnested.1 (self/050-lambda/extend-env parameter.1 arg env.1))
+      (self/050-lambda/evaluate body.1 unnested.1))
     (begin
-      (= _.2 (meta-builtin/builtin/make-source-position 1046 35 3))
-      (= _.3 (meta-builtin/builtin/make-source-position 1051 35 8))
-      (= _.4 (meta-builtin/builtin/make-source-span _.2 _.3))
-      (= _.5
+      (= unnested.2 (meta-builtin/builtin/make-source-position 1046 35 3))
+      (= unnested.3 (meta-builtin/builtin/make-source-position 1051 35 8))
+      (= unnested.4
+         (meta-builtin/builtin/make-source-span unnested.2 unnested.3))
+      (= unnested.5
          (meta-builtin/builtin/make-source-location
           "src/050-lambda.meta"
-          _.4))
-      (meta-builtin/builtin/error-with-location "cond mismatch" _.5))))
+          unnested.4))
+      (meta-builtin/builtin/error-with-location "cond mismatch" unnested.5))))
