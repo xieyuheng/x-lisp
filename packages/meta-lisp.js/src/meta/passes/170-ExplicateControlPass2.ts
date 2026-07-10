@@ -110,7 +110,7 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
       const qualifiedName = definitionQualifiedName(definition)
       return [
         B.VariableDefinition(qualifiedName, null),
-        B.FunctionDefinition(`@setup.${qualifiedName}`, state.blocks),
+        B.FunctionDefinition(`©setup.${qualifiedName}`, state.blocks),
       ]
     }
   }
@@ -133,7 +133,7 @@ function generateSetupVariables(
 
     instrs.push(
       B.Instr("address", [], [setupAddress], {
-        name: B.SymbolAttribute(`@setup.${qualifiedName}`),
+        name: B.SymbolAttribute(`©setup.${qualifiedName}`),
       }),
       B.Instr("call", [setupAddress], [result], {}),
       B.Instr("address", [], [variableAddress], {
@@ -146,7 +146,7 @@ function generateSetupVariables(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.FunctionDefinition("@setup-variables", state.blocks)
+  return B.FunctionDefinition("©setup-variables", state.blocks)
 }
 
 function generateRunTests(
@@ -174,7 +174,7 @@ function generateRunTests(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.FunctionDefinition("@run-tests", state.blocks)
+  return B.FunctionDefinition("©run-tests", state.blocks)
 }
 
 type State = {

@@ -25670,17 +25670,17 @@
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 value target)))
 (define-variable self/050-lambda/empty-env)
-(define-function @setup.self/050-lambda/empty-env
+(define-function ©setup.self/050-lambda/empty-env
   (block body
     (= fn.1 (function-value :name meta-builtin/builtin/make-hash :arity 0))
     (return fn.1)))
 (define-variable self/050-lambda/extend-env)
-(define-function @setup.self/050-lambda/extend-env
+(define-function ©setup.self/050-lambda/extend-env
   (block body
     (= fn.1 (function-value :name meta-builtin/builtin/hash-put :arity 3))
     (return fn.1)))
 (define-variable self/050-lambda/env-lookup)
-(define-function @setup.self/050-lambda/env-lookup
+(define-function ©setup.self/050-lambda/env-lookup
   (block body
     (= fn.1 (function-value :name meta-builtin/builtin/hash-get-maybe :arity 2))
     (return fn.1)))
@@ -26383,7 +26383,7 @@
     (= address.1 (address :name pkg-0/math/square))
     (tail-call address.1 x)))
 (define-variable self/070-module-lib/greeting)
-(define-function @setup.self/070-module-lib/greeting
+(define-function ©setup.self/070-module-lib/greeting
   (block body
     (= string.1 (string-value :content "Hello"))
     (return string.1)))
@@ -26416,7 +26416,7 @@
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x x)))
 (define-variable self/110-function/answer)
-(define-function @setup.self/110-function/answer
+(define-function ©setup.self/110-function/answer
   (block body
     (= i64.1 (int64 :content 42))
     (= int.1 (tag-int i64.1))
@@ -26439,7 +26439,7 @@
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x x)))
 (define-variable self/110-type-annotations/answer)
-(define-function @setup.self/110-type-annotations/answer
+(define-function ©setup.self/110-type-annotations/answer
   (block body
     (= i64.1 (int64 :content 42))
     (= int.1 (tag-int i64.1))
@@ -26527,34 +26527,34 @@
     (= i64.2 (int64 :content 2))
     (= int.2 (tag-int i64.2))
     (tail-call address.1 int.1 int.2)))
-(define-function @setup-variables
+(define-function ©setup-variables
   (block body
-    (= setup.1 (address :name @setup.self/050-lambda/empty-env))
+    (= setup.1 (address :name ©setup.self/050-lambda/empty-env))
     (= result.1 (call setup.1))
     (= variable.1 (address :name self/050-lambda/empty-env))
     (store variable.1 result.1)
-    (= setup.2 (address :name @setup.self/050-lambda/extend-env))
+    (= setup.2 (address :name ©setup.self/050-lambda/extend-env))
     (= result.2 (call setup.2))
     (= variable.2 (address :name self/050-lambda/extend-env))
     (store variable.2 result.2)
-    (= setup.3 (address :name @setup.self/050-lambda/env-lookup))
+    (= setup.3 (address :name ©setup.self/050-lambda/env-lookup))
     (= result.3 (call setup.3))
     (= variable.3 (address :name self/050-lambda/env-lookup))
     (store variable.3 result.3)
-    (= setup.4 (address :name @setup.self/070-module-lib/greeting))
+    (= setup.4 (address :name ©setup.self/070-module-lib/greeting))
     (= result.4 (call setup.4))
     (= variable.4 (address :name self/070-module-lib/greeting))
     (store variable.4 result.4)
-    (= setup.5 (address :name @setup.self/110-function/answer))
+    (= setup.5 (address :name ©setup.self/110-function/answer))
     (= result.5 (call setup.5))
     (= variable.5 (address :name self/110-function/answer))
     (store variable.5 result.5)
-    (= setup.6 (address :name @setup.self/110-type-annotations/answer))
+    (= setup.6 (address :name ©setup.self/110-type-annotations/answer))
     (= result.6 (call setup.6))
     (= variable.6 (address :name self/110-type-annotations/answer))
     (store variable.6 result.6)
     (return)))
-(define-function @run-tests
+(define-function ©run-tests
   (block body
     (= test.1 (address :name meta-builtin/builtin/bool-test))
     (= result.1 (call test.1))
