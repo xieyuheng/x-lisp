@@ -1,7 +1,3 @@
-# basic2
-
-[meta-lisp.js] 170-ExplicateControlPass2 -- handle `TestDefinition` -- generate `@run-tests`
-
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta

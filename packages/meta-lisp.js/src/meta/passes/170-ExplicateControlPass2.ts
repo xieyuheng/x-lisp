@@ -7,6 +7,16 @@ import * as M from "../index.ts"
 export function ExplicateControlPass2(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.mods.values()) {
+      for (const definition of mod.definitions.values()) {
+        for (const basicDefinition of explicateDefinition(definition)) {
+          basicMod.definitions.set(basicDefinition.name, basicDefinition)
+        }
+      }
+    }
+  }
+
   const variableNames: Array<string> = []
   const testNames: Array<string> = []
 
@@ -24,25 +34,11 @@ export function ExplicateControlPass2(pkg: M.Package): B.Mod {
     }
   }
 
-  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
-      for (const definition of mod.definitions.values()) {
-        for (const basicDefinition of explicateDefinition(definition)) {
-          basicMod.definitions.set(basicDefinition.name, basicDefinition)
-        }
-      }
-    }
-  }
+  const setupDefinition = generateSetupVariables(pkg, variableNames)
+  basicMod.definitions.set(setupDefinition.name, setupDefinition)
 
-  if (variableNames.length > 0) {
-    const setupDefinition = generateSetupVariables(pkg, variableNames)
-    basicMod.definitions.set(setupDefinition.name, setupDefinition)
-  }
-
-  if (testNames.length > 0) {
-    const runTestsDefinition = generateRunTests(pkg, testNames)
-    basicMod.definitions.set(runTestsDefinition.name, runTestsDefinition)
-  }
+  const runTestsDefinition = generateRunTests(pkg, testNames)
+  basicMod.definitions.set(runTestsDefinition.name, runTestsDefinition)
 
   return basicMod
 }
