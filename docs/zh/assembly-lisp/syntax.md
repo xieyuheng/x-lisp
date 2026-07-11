@@ -125,13 +125,6 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 0
 ```
 
-整数字面量。
-
-```scheme
-(int 42)
-(int -1)
-```
-
 ## 字符串
 
 ```scheme
@@ -139,26 +132,20 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 ""
 ```
 
-字符串字面量。
-
 ## (struct)
 
 ```scheme
-(struct <name> (<field> <data>) ...)
+(struct <name>
+  (<field> <data>)
+  ...)
 ```
 
-struct 字面量。
-
-`<name>` 一般必选。当字段类型已知时，`<name>` 可以省略 `(maybe)`。
+例如：
 
 ```scheme
-;; 带类型名
 (struct point-t
   (x 0)
   (y 0))
-
-;; 省略类型名（当字段类型已知）
-(struct (x 0) (y 0))
 ```
 
 ## (pointer)
@@ -171,7 +158,6 @@ struct 字面量。
 
 ```scheme
 (pointer (struct node-t (value 1) (next 0)))
-(pointer "hello")
 ```
 
 ## (array)
@@ -180,7 +166,7 @@ struct 字面量。
 (array <data> ...)
 ```
 
-数组字面量。
+例如：
 
 ```scheme
 (array 1 2 3 4 5)
@@ -189,21 +175,15 @@ struct 字面量。
 
 ## 符号地址
 
-裸符号即取该符号的地址——在汇编语言中，标签本身就是地址。
-
 ```scheme
-origin        ;; 取 origin 的地址
-factorial     ;; 取 factorial 的地址
+(address <name>)
 ```
 
-**类型推断**：因为没有 `claim`，`define-data` 的类型完全由数据自身推断：
+例如：
 
-- `(struct <name> ...)` → 该 struct 类型；struct 字面量必须带类型名。
-- `(pointer ...)` / 裸符号 → `pointer-t`。
-- 字符串 → `string-t`。
-- 裸整数 / 裸 array → 错误（不自描述，必须包在 struct 中）。
-
-由于指针 opaque，`(pointer (struct ...))` 的目标 struct **必须具名**——目标的类型只能由字面量自带的类型名提供。
+```scheme
+(address factorial)
+```
 
 # 位移
 
