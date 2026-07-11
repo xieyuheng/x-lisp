@@ -55,13 +55,11 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
 - [顶层定义](#顶层定义)
   - [(define-code)](#define-code)
   - [(define-data)](#define-data)
-  - [(define-metadata)](#define-metadata)
   - [(define-struct)](#define-struct)
   - [(define-space)](#define-space)
 - [模块](#模块)
 - [汇编过程](#汇编过程)
 - [约定](#约定)
-  - [-8 slot 与元数据](#-8-slot-与元数据)
   - [序列化与重定位](#序列化与重定位)
 
 # 注释
@@ -462,29 +460,6 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 由于指针 opaque，`(pointer (struct ...))` 的目标 struct **必须具名**。
 
-## (define-metadata)
-
-```scheme
-(define-metadata <name>
-  <value>)
-```
-
-为 `<name>` 这个 label 的 `-8` slot 填充元数据。
-
-`<value>` 典型为 `(pointer (struct <name> ...))`——汇编器创建匿名 struct slot，并在 `<name> - 8` 处填入指向它的指针。
-
-```scheme
-(define-struct func-meta-t
-  (arity int64-t)
-  (name string-t))
-
-(define-metadata my-func
-  (pointer
-    (struct func-meta-t
-      (arity 3)
-      (name "triple"))))
-```
-
 ## (define-struct)
 
 ```scheme
@@ -524,10 +499,9 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 # 模块
 
-模块是所有定义的容器，加上元数据表与匿名数据表。
+模块是所有定义的容器，加上匿名数据表。
 
 - `definitions`：所有 `define-code` / `define-data` / `define-struct` / `define-space` 的定义。
-- `metadata-definitions`：按 `target` 索引的元数据表（`define-metadata`）。
 - `anonymous-data`：`data-operand` 解析时产生的匿名 `data-definition`（含生成的名字如 `©data.0`）。
 
 # 汇编过程
@@ -551,27 +525,6 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 - **assembleExe**：代码布局 + 数据布局 + 重定位 → 最终二进制。
 
 # 约定
-
-## -8 slot 与元数据
-
-每个有 `define-metadata` 的 label 自动在前面（对齐到 8 字节）保留一个 `-8` slot：
-`label_addr - 8` 处存放一个 8 字节指针，指向与该 label 关联的元数据 struct 实例。
-
-```
-                    ┌──────────────────┐
-                    │ metadata ptr     │  ← label_addr - 8
-label_addr →        ├──────────────────┤
-                    │ push rbp         │
-                    │ ...              │
-                    └──────────────────┘
-```
-
-运行时 O(1) 访问：
-
-```c
-function_metadata_t* meta = *(function_metadata_t**)((char*)func_ptr - 8);
-uint16_t arity = meta->arity;
-```
 
 ## 序列化与重定位
 
