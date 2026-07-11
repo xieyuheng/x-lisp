@@ -1,3 +1,7 @@
+# codegen
+
+[assembly-lisp] more tests
+
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta

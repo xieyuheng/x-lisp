@@ -25,19 +25,13 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
 - [前言](#前言)
 - [目录](#目录)
 - [注释](#注释)
-- [类型](#类型)
-  - [具名类型](#具名类型)
-  - [数组类型](#数组类型)
-- [数据](#数据)
-  - [整数](#整数)
-  - [字符串](#字符串)
-  - [(struct)](#struct)
-  - [(pointer)](#pointer)
-  - [(array)](#array)
-  - [符号地址](#符号地址)
-- [位移](#位移)
-  - [整数位移](#整数位移)
-  - [(offset-of)](#offset-of)
+- [指令](#指令)
+- [基本块](#基本块)
+- [顶层定义](#顶层定义)
+  - [(define-code)](#define-code)
+  - [(define-struct)](#define-struct)
+  - [(define-data)](#define-data)
+  - [(define-space)](#define-space)
 - [操作数](#操作数)
   - [(reg)](#reg)
   - [(imm)](#imm)
@@ -49,18 +43,20 @@ assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
   - [(var)](#var)
   - [(external-label)](#external-label)
   - [data-operand](#data-operand)
-- [指令](#指令)
-  - [指令索引](instructions/index.md)
-- [基本块](#基本块)
-- [顶层定义](#顶层定义)
-  - [(define-code)](#define-code)
-  - [(define-data)](#define-data)
-  - [(define-struct)](#define-struct)
-  - [(define-space)](#define-space)
-- [模块](#模块)
-- [汇编过程](#汇编过程)
-- [约定](#约定)
-  - [序列化与重定位](#序列化与重定位)
+- [类型](#类型)
+  - [内置类型](#内置类型)
+  - [结构体类型](#结构体类型)
+  - [数组类型](#数组类型)
+- [数据](#数据)
+  - [整数](#整数)
+  - [字符串](#字符串)
+  - [(struct)](#struct)
+  - [(pointer)](#pointer)
+  - [(array)](#array)
+  - [符号地址](#符号地址)
+- [位移](#位移)
+  - [整数位移](#整数位移)
+  - [(offset-of)](#offset-of)
 
 # 注释
 
@@ -71,150 +67,110 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (mov (reg rax) (imm 42))  ;; 行尾注释
 ```
 
-# 类型
+# 指令
 
-类型是一个 tagged union——可以是具名类型或定长数组类型。
-
-## 具名类型
-
-内建原始类型：
-
-| 类型        | 大小    | 说明       |
-|-------------|---------|------------|
-| `pointer-t` | 8 bytes | opaque 指针 |
-| `string-t`  | 8 bytes | 等于 `pointer-t`（C 意义的 `const char *`） |
-| `int8-t`    | 1 byte  | 有符号 8 位整数  |
-| `int16-t`   | 2 bytes | 有符号 16 位整数 |
-| `int32-t`   | 4 bytes | 有符号 32 位整数 |
-| `int64-t`   | 8 bytes | 有符号 64 位整数 |
-| `uint8-t`   | 1 byte  | 无符号 8 位整数  |
-| `uint16-t`  | 2 bytes | 无符号 16 位整数 |
-| `uint32-t`  | 4 bytes | 无符号 32 位整数 |
-| `uint64-t`  | 8 bytes | 无符号 64 位整数 |
-
-- `pointer-t` 是 **opaque** 指针——无 pointee 类型，纯 8 字节地址。
-- 用户 struct 类型由 `define-struct` 引入（见「顶层定义」），通过名称引用（如 `point-t`）。类型名必须以 `-t` 结尾。
-
-结构体按 `__attribute__((packed))` 布局——字段间无 padding，每个字段按类型大小依次排列。
-
-## 数组类型
+所有指令统一为 op + operands。
 
 ```scheme
-(array-t <element-type> <length>)
+(<op> <operand> ...)
 ```
 
-`(array-t <T> <N>)` 是定长数组——`N` 个连续 `<T>` 元素，总大小 = `sizeof(T) * N`。
+每条指令的语法和操作数约束详见[指令索引](instructions/index.md)。
+
+# 基本块
 
 ```scheme
-(array-t uint8-t 256)
-(array-t int64-t 10)
-(array-t pointer-t 8)
+(block <label>
+  <instr>
+  ...)
 ```
 
-# 数据
+基本块由标号和指令序列组成。
 
-数据（data）描述数据段内存布局——用户在源码中书写的编译期常量形式。
-
-## 整数
+- 一个函数的第一个 block 是 entry block。
+- 一个 block 执行到末尾若没有 `ret` / `jmp`，
+  控制流顺序流入紧邻的下一个 block。
 
 ```scheme
-42
--1
-0
+(block entry
+  (mov (reg rax) (imm 10))
+  (mov (reg rcx) (imm 3))
+  (cmp (reg rax) (reg rcx))
+  (j (cc g) (label is-greater))
+  (mov (reg rax) (imm 0))
+  (ret))
+
+(block is-greater
+  (mov (reg rax) (imm 1))
+  (ret))
 ```
 
-## 字符串
+# 顶层定义
+
+## (define-code)
 
 ```scheme
-"hello"
-""
-```
-
-## (struct)
-
-```scheme
-(struct <name>
-  (<field> <data>)
+(define-code <name>
+  <block>
   ...)
 ```
 
 例如：
 
 ```scheme
-(struct point-t
-  (x 0)
-  (y 0))
+(define-code add1
+  (block entry
+    (mov (reg rax) (reg-deref (reg rbp) 16))
+    (add (reg rax) (imm 1))
+    (ret)))
 ```
 
-## (pointer)
+## (define-struct)
 
 ```scheme
-(pointer <data>)
+(define-struct <type-name>
+  (<field-name> <type>)
+  ...)
 ```
 
-编译期创建匿名 data slot 存放 `<data>`，产出为指向它的指针。
+声明结构体类型与字段布局。
+
+- 类型名按惯例以 `-t` 结尾。
+- 字段间无 padding。
 
 ```scheme
-(pointer (struct node-t (value 1) (next 0)))
+(define-struct point-t
+  (x int64-t)
+  (y int64-t))
 ```
 
-## (array)
+## (define-data)
 
 ```scheme
-(array <data> ...)
+(define-data <name> <data>)
 ```
 
 例如：
 
 ```scheme
-(array 1 2 3 4 5)
-(array "a" "b" "c")
+(define-data origin
+  (struct point-t
+    (x 0)
+    (y 0)))
 ```
 
-## 符号地址
+## (define-space)
 
 ```scheme
-(address <name>)
+(define-space <name> <size>)
 ```
 
-例如：
+分配未初始化内存。
 
 ```scheme
-(address factorial)
+(define-space buffer 4096)
+(define-space stack 16384)
 ```
-
-# 位移
-
-`reg-deref` 的位移（displacement）是编译期常量，有两种形态。
-
-## 整数位移
-
-```scheme
-8
--8
-16
-```
-
-直接给出字节数。
-
-## (offset-of)
-
-```scheme
-(offset-of <struct-type> <field> ...)
-```
-
-沿 `struct-type` 的字段路径逐级累加偏移，求值为字节数。
-
-```scheme
-(offset-of point-t y)            ;; point-t 中 y 字段的字节偏移
-(offset-of node-a-t next)        ;; node-a-t 中 next 字段的字节偏移
-```
-
-- `offset-of` 把「struct 类型 + 字段名 → 偏移」分离成独立的编译期计算。
-- **`offset-of` 不穿指针**——它只在单个 struct 内逐字段累加；一旦字段是 `pointer-t`，路径即终止。
-- 跨指针的字段访问要靠「`offset-of` + `deref` + `offset-of`」链式组合。
-
-编译期 pass 会将所有 `offset-of` 替换为具体整数位移。
 
 # 操作数
 
@@ -254,14 +210,14 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (label <name>)
 ```
 
-代码标号引用——专用于 **rel32** 域（`jmp` / `call` / `j` 的跳转目标）。
+代码标号引用 -- 专用于 **rel32** 域（`jmp` / `call` / `j` 的跳转目标）。
 
 ```scheme
 (label is-greater)
 (label merge)
 ```
 
-`(label ...)` 不能作为指令——标号只能由 `block` 定义。
+`(label ...)` 不能作为指令 -- 标号只能由 `block` 定义。
 
 ## (address)
 
@@ -359,9 +315,9 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (external-label printf)
 ```
 
-## data-operand
+## 数据
 
-当操作数位置不匹配任何已知形式时，fallback 解析为 `data-t` 并包装为 `data-operand`。
+当操作数位置不匹配任何已知形式时，fallback 为 `data-operand`。
 
 预编码阶段将 `data-operand` 解析为具体 operand：
 
@@ -372,7 +328,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 | `(pointer ...)` | 匿名 data slot + `deref-operand` | `[rip + disp32]` |
 | 裸符号          | `address-operand`    | movabs             |
 
-裸 `(struct ...)` 和 `(array ...)` 不支持——报错。
+裸 `(struct ...)` 和 `(array ...)` 不支持 -- 报错。
 
 ```scheme
 (mov (reg rax) "hello")                           ;; 匿名字符串 → deref
@@ -382,156 +338,148 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 当前 **只在 `.exe` 格式下支持**（flat 格式没有独立 data section）。
 
-# 指令
+# 类型
 
-所有指令统一为 op + operands。
+## 内置类型
+
+| 类型        | 大小    | 说明                     |
+|-------------|---------|--------------------------|
+| `pointer-t` | 8 bytes | opaque 指针              |
+| `string-t`  | 8 bytes | 类似 C 的 `const char *` |
+| `int8-t`    | 1 byte  | 有符号 8 位整数          |
+| `int16-t`   | 2 bytes | 有符号 16 位整数         |
+| `int32-t`   | 4 bytes | 有符号 32 位整数         |
+| `int64-t`   | 8 bytes | 有符号 64 位整数         |
+| `uint8-t`   | 1 byte  | 无符号 8 位整数          |
+| `uint16-t`  | 2 bytes | 无符号 16 位整数         |
+| `uint32-t`  | 4 bytes | 无符号 32 位整数         |
+| `uint64-t`  | 8 bytes | 无符号 64 位整数         |
+
+- `pointer-t` 是 **opaque** 指针——无 pointee 类型，纯 8 字节地址。
+- 用户 struct 类型由 `define-struct` 引入（见「顶层定义」），
+  通过名称引用（如 `point-t`）。类型名必须以 `-t` 结尾。
+
+## 结构体类型
+
+有 `(define-struct)` 定义。
+
+结构字段间无 padding。
+
+## 数组类型
 
 ```scheme
-(<op> <operand> ...)
+(array-t <element-type> <length>)
 ```
 
-每条指令的语法和操作数约束详见[指令索引](instructions/index.md)。
-
-# 基本块
-
-基本块由标号和指令序列组成。
-
-- `name`：block 名称，即本地标号（跳转目标）。
-- 一个函数的第一个 block 是 entry block。
-- block 之间忠实 x86 地 **fall-through**：一个 block 执行到末尾若没有 `ret` / `jmp`，控制流顺序流入紧邻的下一个 block。
+`(array-t <T> <N>)` 是定长数组 -- `N` 个连续 `<T>` 元素，总大小 = `sizeof(T) * N`。
 
 ```scheme
-(block entry
-  (mov (reg rax) (imm 10))
-  (mov (reg rcx) (imm 3))
-  (cmp (reg rax) (reg rcx))
-  (j (cc g) (label is-greater))
-  (mov (reg rax) (imm 0))
-  (ret))
-
-(block is-greater
-  (mov (reg rax) (imm 1))
-  (ret))
+(array-t uint8-t 256)
+(array-t int64-t 10)
+(array-t pointer-t 8)
 ```
 
-- 上面 `j (cc g)` 成立则跳到 `is-greater`，不成立则 fall-through 到 `(mov (reg rax) (imm 0))`。
+# 数据
 
-# 顶层定义
+数据（data）描述数据段内存布局 -- 用户在源码中书写的编译期常量形式。
 
-## (define-code)
+## 整数
 
 ```scheme
-(define-code <name>
-  <block> ...)
+42
+-1
+0
 ```
 
-定义一个可执行函数。
+## 字符串
 
 ```scheme
-(define-code add1
-  (block entry
-    (mov (reg rax) (reg-deref (reg rbp) 16))
-    (add (reg rax) (imm 1))
-    (ret)))
+"hello"
+""
 ```
 
-## (define-data)
+## (struct)
 
 ```scheme
-(define-data <name> <data>)
-```
-
-定义一个具名数据块。`<data>` 是一个 `data-t`，类型由值自描述推断（无 `claim`）。
-
-```scheme
-(define-data greeting "hello")
-
-(define-data origin
-  (struct point-t
-    (x 0)
-    (y 0)))
-
-(define-data head
-  (pointer
-    (struct node-t
-      (value 1)
-      (next 0))))
-```
-
-由于指针 opaque，`(pointer (struct ...))` 的目标 struct **必须具名**。
-
-## (define-struct)
-
-```scheme
-(define-struct <name>-t
-  (<field-name> <type>)
+(struct <name>
+  (<field> <data>)
   ...)
 ```
 
-声明结构体类型与字段布局。
-
-- 类型名必须以 `-t` 结尾。
-- 字段是**有序**的——决定各字段偏移与总大小。
-- 布局为 packed——字段间无 padding。
+例如：
 
 ```scheme
-(define-struct point-t
-  (x int64-t)
-  (y int64-t))
-
-(define-struct node-a-t
-  (next pointer-t)
-  (value int64-t))
+(struct point-t
+  (x 0)
+  (y 0))
 ```
 
-## (define-space)
+## (pointer)
 
 ```scheme
-(define-space <name> <size>)
+(pointer <data>)
 ```
 
-分配未初始化内存（BSS 语义）。
+编译期创建匿名 data slot 存放 `<data>`，产出为指向它的指针。
 
 ```scheme
-(define-space buffer 4096)
-(define-space stack 16384)
+(pointer (struct node-t (value 1) (next 0)))
 ```
 
-# 模块
+## (array)
 
-模块是所有定义的容器，加上匿名数据表。
-
-- `definitions`：所有 `define-code` / `define-data` / `define-struct` / `define-space` 的定义。
-- `anonymous-data`：`data-operand` 解析时产生的匿名 `data-definition`（含生成的名字如 `©data.0`）。
-
-# 汇编过程
-
-汇编管道：
-
-```
-源码
-  → parseStmt      → Stmt[]               （解析层）
-  → SubmitPass     → Mod                  （提交层）
-  → CheckPass      → 类型检查             （检查层）
-  → ResolveDisplacements  → offset-of → int-displacement
-  → ResolveDataOperands   → data-operand → 具体 operand
-  → assembleExe    → bytes
+```scheme
+(array <data> ...)
 ```
 
-- **SubmitPass**：把 `Stmt` 转换为 `Definition` 并注册到 `Mod`。
-- **CheckPass**：遍历所有数据定义，推断类型并验证 `data` 与类型匹配。
-- **ResolveDisplacements**：把所有 `offset-of` 替换为具体整数位移。
-- **ResolveDataOperands**：遍历所有指令，把 `data-operand` 求值并替换为具体 operand。仅 `.exe` 模式运行。
-- **assembleExe**：代码布局 + 数据布局 + 重定位 → 最终二进制。
+例如：
 
-# 约定
+```scheme
+(array 1 2 3 4 5)
+(array "a" "b" "c")
+```
 
-## 序列化与重定位
+## 符号地址
 
-- 所有 struct 按 packed 布局——字段间无 padding。
-- 指针 / 字符串字段先写占位地址，再登记重定位项。Loader mmap 后回填。
-- 重定位分四类：
-  - **rel32 标号**：`jmp` / `call` / `j` 的相对位移。
-  - **内部指针**：data 内部 `(pointer ...)` 的占位 → 匿名 slot 偏移。
-  - **数据地址**：裸符号（AddressData）→ 目标 label 地址。
-  - **外部符号**：`(external-label ...)` → 外部地址。
+```scheme
+(address <name>)
+```
+
+例如：
+
+```scheme
+(address factorial)
+```
+
+# 位移
+
+`reg-deref` 的位移（displacement）是编译期常量，有两种形态。
+
+## 整数位移
+
+```scheme
+8
+-8
+16
+```
+
+直接给出字节数。
+
+## (offset-of)
+
+```scheme
+(offset-of <struct-type> <field> ...)
+```
+
+沿 `struct-type` 的字段路径逐级累加偏移，求值为字节数。
+
+```scheme
+(offset-of point-t y)            ;; point-t 中 y 字段的字节偏移
+(offset-of node-a-t next)        ;; node-a-t 中 next 字段的字节偏移
+```
+
+- `offset-of` 把「struct 类型 + 字段名 → 偏移」分离成独立的编译期计算。
+- **`offset-of` 不穿指针** -- 它只在单个 struct 内逐字段累加；一旦字段是 `pointer-t`，路径即终止。
+- 跨指针的字段访问要靠「`offset-of` + `deref` + `offset-of`」链式组合。
+
+编译期 pass 会将所有 `offset-of` 替换为具体整数位移。
