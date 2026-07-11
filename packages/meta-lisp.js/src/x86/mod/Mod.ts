@@ -1,4 +1,3 @@
-import type { MetadataDefinition } from "../definition/Definition.ts"
 import type { Definition } from "../definition/index.ts"
 import { registerBuiltinTypes } from "../type/typeBuiltin.ts"
 
@@ -10,14 +9,12 @@ export type ValueRelocation = {
 
 export type Mod = {
   definitions: Map<string, Definition>
-  metadataDefinitions: Map<string, MetadataDefinition>
   valueRelocations: Map<string, ValueRelocation>
 }
 
 export function createMod(): Mod {
   const mod: Mod = {
     definitions: new Map(),
-    metadataDefinitions: new Map(),
     valueRelocations: new Map(),
   }
   registerBuiltinTypes(mod)
@@ -25,16 +22,7 @@ export function createMod(): Mod {
 }
 
 export function modDefine(mod: Mod, definition: Definition): void {
-  switch (definition.kind) {
-    case "MetadataDefinition": {
-      mod.metadataDefinitions.set(definition.target, definition)
-      return
-    }
-    default: {
-      mod.definitions.set(definition.name, definition)
-      return
-    }
-  }
+  mod.definitions.set(definition.name, definition)
 }
 
 export function modLookupDefinition(
@@ -42,11 +30,4 @@ export function modLookupDefinition(
   name: string,
 ): Definition | undefined {
   return mod.definitions.get(name)
-}
-
-export function modLookupMetadata(
-  mod: Mod,
-  target: string,
-): MetadataDefinition | undefined {
-  return mod.metadataDefinitions.get(target)
 }

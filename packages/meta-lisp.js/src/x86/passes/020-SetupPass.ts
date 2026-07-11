@@ -18,11 +18,6 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
       break
     }
 
-    case "DefineMetadataStmt": {
-      X86.modDefine(mod, X86.MetadataDefinition(stmt.name, stmt.value))
-      break
-    }
-
     case "DefineStructStmt": {
       mod.definitions.set(
         stmt.name,

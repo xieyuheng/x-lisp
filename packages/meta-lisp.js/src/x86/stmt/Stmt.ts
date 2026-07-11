@@ -3,11 +3,7 @@ import type { Data } from "../data/index.ts"
 import type { Type } from "../type/index.ts"
 
 export type Stmt =
-  | DefineCodeStmt
-  | DefineDataStmt
-  | DefineMetadataStmt
-  | DefineStructStmt
-  | DefineSpaceStmt
+  DefineCodeStmt | DefineDataStmt | DefineStructStmt | DefineSpaceStmt
 
 export type DefineCodeStmt = {
   kind: "DefineCodeStmt"
@@ -35,23 +31,6 @@ export type DefineDataStmt = {
 export function DefineDataStmt(name: string, value: Data): DefineDataStmt {
   return {
     kind: "DefineDataStmt",
-    name,
-    value,
-  }
-}
-
-export type DefineMetadataStmt = {
-  kind: "DefineMetadataStmt"
-  name: string
-  value: Data
-}
-
-export function DefineMetadataStmt(
-  name: string,
-  value: Data,
-): DefineMetadataStmt {
-  return {
-    kind: "DefineMetadataStmt",
     name,
     value,
   }

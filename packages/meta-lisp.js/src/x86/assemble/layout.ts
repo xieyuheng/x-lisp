@@ -73,13 +73,7 @@ export function collectCodeLayout(
     if (definition.kind !== "CodeDefinition") continue
 
     if (align) {
-      if (mod.metadataDefinitions.has(definition.name)) {
-        const placeholderPos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
-        if (placeholderPos > pos) pos = placeholderPos
-        pos += 8
-      } else {
-        pos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
-      }
+      pos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
     }
 
     const fnLocalLabels = localLabels.get(definition.name)!
@@ -169,46 +163,7 @@ export function emitDataSection(
     )
   }
 
-  for (const [targetName, metaDef] of mod.metadataDefinitions) {
-    labels.set(`.meta.${targetName}`, startImageOffset + pos)
-    const { structType, structExp } = unpackMetadataStruct(
-      mod,
-      metaDef.value,
-      S.zeroLocation("metaDef"),
-    )
-    pos = emitFieldsTree(
-      mod,
-      structType,
-      structExp.fields,
-      buf,
-      pos,
-      relocs,
-      addressRelocs,
-    )
-  }
-
   return { bytes: buf, relocs, addressRelocs }
-}
-
-function unpackMetadataStruct(
-  mod: Mod,
-  value: Data,
-  location: S.SourceLocation,
-): { structType: Type; structExp: { fields: Record<string, Data> } } {
-  if (value.kind !== "PointerData" || value.target.kind !== "StructData") {
-    let message = `[emitDataSection] define-metadata value must be (pointer (struct <name> ...))`
-    throw new Error(message)
-  }
-  const structExp = value.target
-  return {
-    structType: structDataTypeByName(
-      mod,
-      structExp.name,
-      S.zeroLocation("emitDataSection"),
-    ),
-
-    structExp,
-  }
 }
 
 function structDataTypeByName(
@@ -255,14 +210,6 @@ function computeDataSectionSize(mod: Mod): number {
     const dataType = inferDataType(mod, definition.value)
     const r = computeFieldTreeSize(mod, dataType, definition.value)
     total += r.fixed + r.deferred
-  }
-  for (const [, metaDef] of mod.metadataDefinitions) {
-    const { structType, structExp } = unpackMetadataStruct(
-      mod,
-      metaDef.value,
-      S.zeroLocation("metaDef"),
-    )
-    total += computeFieldsTreeSize(mod, structType, structExp.fields)
   }
   return total
 }
@@ -616,36 +563,6 @@ export function extractLabelInfo(instr: Instr): { name: string } | null {
     }
   }
   return null
-}
-
-export type MetadataSlots = Array<{
-  codeName: string
-  placeholderOffset: number
-}>
-
-export function collectMetadataSlots(mod: Mod): MetadataSlots {
-  const slots: MetadataSlots = []
-  let pos = 0
-  for (const definition of mod.definitions.values()) {
-    if (definition.kind !== "CodeDefinition") continue
-
-    if (mod.metadataDefinitions.has(definition.name)) {
-      const placeholderPos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
-      if (placeholderPos > pos) pos = placeholderPos
-      slots.push({ codeName: definition.name, placeholderOffset: pos })
-      pos += 8
-    } else {
-      pos = (pos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
-    }
-
-    for (const block of definition.blocks) {
-      for (const instr of block.instrs) {
-        const encodings = encode(instr)
-        pos += encodings.reduce((s, e) => s + encodedSize(e), 0)
-      }
-    }
-  }
-  return slots
 }
 
 function encodedDispOffset(enc: EncodedInstruction): number {

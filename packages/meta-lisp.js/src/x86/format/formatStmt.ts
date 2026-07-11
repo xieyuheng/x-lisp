@@ -10,8 +10,6 @@ export function formatStmt(stmt: X86.Stmt): string {
     }
     case "DefineDataStmt":
       return `(define-data ${stmt.name} ${formatData(stmt.value)})`
-    case "DefineMetadataStmt":
-      return `(define-metadata ${stmt.name} ${formatData(stmt.value)})`
     case "DefineStructStmt": {
       const fields = Object.keys(stmt.fields)
         .map((name) => `(${name} ${X86.formatType(stmt.fields[name])})`)

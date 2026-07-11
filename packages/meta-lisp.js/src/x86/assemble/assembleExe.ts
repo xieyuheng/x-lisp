@@ -2,16 +2,13 @@ import { emitTo, encode } from "../encode/index.ts"
 import type { Mod, ValueRelocation } from "../mod/index.ts"
 import {
   collectCodeLayout,
-  collectMetadataSlots,
   emitDataSection,
   resolveDisplacements,
   writeInt32LE,
-  writeInt64,
   writeU32LE,
   type EmittedData,
   type ExternalReloc,
   type InternalReloc,
-  type MetadataSlots,
   type Relocation,
 } from "./layout.ts"
 
@@ -67,14 +64,7 @@ export function assembleExe(mod: Mod): Uint8Array {
     )
   }
 
-  const metadataSlots: MetadataSlots = collectMetadataSlots(mod)
-
-  const internalRelocs: Array<InternalReloc> = buildInternalRelocs(
-    mod,
-    labels,
-    dataResult.relocs,
-    metadataSlots,
-  )
+  const internalRelocs: Array<InternalReloc> = [...dataResult.relocs]
 
   for (const addressReloc of dataResult.addressRelocs) {
     const base = labels.get(addressReloc.labelName)
@@ -129,7 +119,7 @@ export function assembleExe(mod: Mod): Uint8Array {
   writeU32LE(buf, 0x10, spaceSize)
   writeU32LE(buf, 0x14, internalRelocs.length)
   writeU32LE(buf, 0x18, externalRelocCount)
-  writeU32LE(buf, 0x1c, computeEntryOffset(mod))
+  writeU32LE(buf, 0x1c, 0)
   writeU32LE(buf, 0x20, valueRelocationCount)
 
   let pos = 64
@@ -280,17 +270,7 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
 
-    if (mod.metadataDefinitions.has(definition.name)) {
-      const placeholderPos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
-      while (codePos < placeholderPos) {
-        buf[start + codePos] = 0
-        codePos++
-      }
-      writeInt64(buf, start + codePos, 0n)
-      codePos += 8
-    } else {
-      codePos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
-    }
+    codePos = (codePos + ALIGN_8 - 1) & ~(ALIGN_8 - 1)
 
     for (const block of definition.blocks) {
       for (const instr of block.instrs) {
@@ -302,33 +282,4 @@ function emitCodeSection(mod: Mod, buf: Uint8Array, start: number): number {
     }
   }
   return start + codePos
-}
-
-function computeEntryOffset(mod: Mod): number {
-  for (const definition of mod.definitions.values()) {
-    if (definition.kind !== "CodeDefinition") continue
-    return mod.metadataDefinitions.has(definition.name) ? 8 : 0
-  }
-  return 0
-}
-
-function buildInternalRelocs(
-  mod: Mod,
-  labels: Map<string, number>,
-  dataRelocs: Array<InternalReloc>,
-  metadataSlots: MetadataSlots,
-): Array<InternalReloc> {
-  const result: Array<InternalReloc> = [...dataRelocs]
-
-  for (const slot of metadataSlots) {
-    const metaLabel = `.meta.${slot.codeName}`
-    const target = labels.get(metaLabel)
-    if (target === undefined) continue
-    result.push({
-      patchOffset: slot.placeholderOffset,
-      targetOffset: target,
-    })
-  }
-
-  return result
 }

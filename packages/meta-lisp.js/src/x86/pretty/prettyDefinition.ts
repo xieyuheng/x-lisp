@@ -19,12 +19,6 @@ export function prettyDefinition(definition: X86.Definition): Ppml.Node {
         [Ppml.text(definition.name)],
         [prettyData(definition.value)],
       )
-    case "MetadataDefinition":
-      return Ppml.prettySyntax(
-        "define-metadata",
-        [Ppml.text(definition.target)],
-        [prettyData(definition.value)],
-      )
     case "StructDefinition": {
       const fieldNodes = Object.keys(definition.fields).map((name) =>
         Ppml.text(`(${name} ${X86.formatType(definition.fields[name])})`),

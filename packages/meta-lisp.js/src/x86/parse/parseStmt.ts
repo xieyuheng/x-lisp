@@ -14,13 +14,6 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
     return X86.DefineDataStmt(S.asSymbolSexp(name).content, parseData(value))
   },
 
-  "`(define-metadata ,name ,value)": ({ name, value }, { location }) => {
-    return X86.DefineMetadataStmt(
-      S.asSymbolSexp(name).content,
-      parseData(value),
-    )
-  },
-
   "(cons* 'define-struct name fields)": ({ name, fields }, { location }) => {
     const parsedFields = parseTypeFields(fields)
     return X86.DefineStructStmt(S.asSymbolSexp(name).content, parsedFields)

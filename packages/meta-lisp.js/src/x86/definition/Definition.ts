@@ -5,7 +5,6 @@ import type { Type } from "../type/index.ts"
 export type Definition =
   | CodeDefinition
   | DataDefinition
-  | MetadataDefinition
   | StructDefinition
   | SpaceDefinition
   | PrimitiveTypeDefinition
@@ -37,23 +36,6 @@ export function DataDefinition(name: string, value: Data): DataDefinition {
   return {
     kind: "DataDefinition",
     name,
-    value,
-  }
-}
-
-export type MetadataDefinition = {
-  kind: "MetadataDefinition"
-  target: string
-  value: Data
-}
-
-export function MetadataDefinition(
-  target: string,
-  value: Data,
-): MetadataDefinition {
-  return {
-    kind: "MetadataDefinition",
-    target,
     value,
   }
 }

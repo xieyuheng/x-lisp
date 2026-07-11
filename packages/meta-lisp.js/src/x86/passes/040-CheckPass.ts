@@ -3,7 +3,6 @@ import * as X86 from "../index.ts"
 export function CheckPass(mod: X86.Mod): void {
   checkDuplicateNames(mod)
   checkDataFields(mod)
-  checkMetadataTargets(mod)
 }
 
 function checkDuplicateNames(mod: X86.Mod): void {
@@ -21,20 +20,5 @@ function checkDataFields(mod: X86.Mod): void {
   for (const [, definition] of mod.definitions) {
     if (definition.kind !== "DataDefinition") continue
     X86.check(mod, definition.value, X86.inferDataType(mod, definition.value))
-  }
-}
-
-function checkMetadataTargets(mod: X86.Mod): void {
-  for (const [target, meta] of mod.metadataDefinitions) {
-    const targetDefinition = X86.modLookupDefinition(mod, target)
-    if (
-      targetDefinition === undefined ||
-      targetDefinition.kind !== "CodeDefinition"
-    ) {
-      let message = `[CheckPass] define-metadata target "${target}" is not a define-code`
-      throw new Error(message)
-    }
-
-    X86.check(mod, meta.value, X86.inferDataType(mod, meta.value))
   }
 }

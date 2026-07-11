@@ -10,8 +10,6 @@ export function formatDefinition(definition: X86.Definition): string {
     }
     case "DataDefinition":
       return `(define-data ${definition.name} ${formatData(definition.value)})`
-    case "MetadataDefinition":
-      return `(define-metadata ${definition.target} ${formatData(definition.value)})`
     case "StructDefinition": {
       const fields = Object.keys(definition.fields)
         .map((name) => `(${name} ${X86.formatType(definition.fields[name])})`)
