@@ -4,19 +4,22 @@ title: 语法
 
 # 前言
 
-assembly-lisp 是 **x86-64 汇编语言的 Lisp 语法 DSL**。
+assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
 
-使用**符号表达式**（S-expression）语法来编写 x86-64 汇编程序。
-保留 x86-64 的机器语义（寄存器、寻址模式、指令集），提供 `define-code`、`define-data`、`define-struct` 等结构化抽象。
+值只携带它内在的属性；「如何解释」由操作决定。
 
-**值只携带它内在的属性；「如何解释」的语义放到操作上。**
-
-- 指针 opaque——不携带元素类型，纯 8 字节地址。
+- 指针 opaque -- 不携带元素类型，纯 8 字节地址。
 - struct 的「形状/布局」为偏移计算的依据。
-- 类型不附着在指针值上，而是落在「声明」（`define-struct`）与「操作」（`offset-of`）上。
 
-模块顶层由**顶层定义**（definition）组成。
-函数由**基本块**（block）组成，基本块由**指令**（instr）组成。
+概念层级：
+
+- definition
+  - code-definition
+    - block
+      - instr
+        - operand
+  - data-definition
+    - data
 
 下面分组介绍 assembly-lisp 的所有语法。
 
@@ -355,7 +358,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 | `uint32-t`  | 4 bytes | 无符号 32 位整数         |
 | `uint64-t`  | 8 bytes | 无符号 64 位整数         |
 
-- `pointer-t` 是 **opaque** 指针——无 pointee 类型，纯 8 字节地址。
+- `pointer-t` 是 **opaque** 指针 -- 无 pointee 类型，纯 8 字节地址。
 - 用户 struct 类型由 `define-struct` 引入（见「顶层定义」），
   通过名称引用（如 `point-t`）。类型名必须以 `-t` 结尾。
 
