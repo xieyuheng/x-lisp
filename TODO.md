@@ -6,10 +6,7 @@
 
 [meta-lisp.js] 为了让 assembly-lisp 更方手写。
 
-- 修改 (reg rax) 语法为 %rag，
-- 保持 (var <name>) 语法为 (var <name>)
-- 简化 (address <name>) 语法为 <name>
-- 简化 (imm <int>) 语法 <int>
+- TODO
 
 assembly-lisp 的文档： docs/zh/assembly-lisp/*
 assembly-lisp 的实现： [meta-lisp.js] 中的 x86/*
