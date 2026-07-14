@@ -26,5 +26,5 @@
 
 (define-code target
   (block entry
-    (mov (reg rax) (imm 99))
+    (mov (reg rax) 99)
     (ret)))

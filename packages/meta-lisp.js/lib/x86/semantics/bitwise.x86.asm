@@ -9,8 +9,8 @@
 
 (define-code test-bitwise
   (block entry
-    (mov (reg rax) (imm 255))
-    (and (reg rax) (imm 15))
-    (shl (reg rax) (imm 4))
-    (or (reg rax) (imm 10))
+    (mov (reg rax) 255)
+    (and (reg rax) 15)
+    (shl (reg rax) 4)
+    (or (reg rax) 10)
     (ret)))

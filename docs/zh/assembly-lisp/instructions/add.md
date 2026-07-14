@@ -12,7 +12,7 @@ title: add
 
 ```
 <dst> := (reg) (reg-deref)
-<src> := (reg) (imm) (reg-deref) (deref) (address)
+<src> := (reg) <int> (reg-deref) (deref) (address)
 ```
 
 <dst> 与 <src> 不能同时为内存操作数
@@ -25,5 +25,5 @@ title: add
 
 ```scheme
 (add (reg rax) (reg rcx))
-(add (reg rax) (imm 1))
+(add (reg rax) 1)
 ```

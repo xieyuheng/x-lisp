@@ -10,7 +10,7 @@ export function formatOperand(operand: X86.Operand): string {
     case "RegOperand":
       return `(reg ${operand.name})`
     case "ImmOperand":
-      return `(imm ${operand.value})`
+      return operand.value.toString()
     case "LabelOperand":
       return `(label ${operand.name})`
     case "AddressOperand":

@@ -28,7 +28,7 @@
 (define-code test-write-nested
   (block entry
     (mov (reg rax) (address my-rect))
-    (mov (reg-deref (reg rax) (offset-of rect-t bottom-right x)) (imm 99))
-    (mov (reg-deref (reg rax) (offset-of rect-t top-left y)) (imm 77))
+    (mov (reg-deref (reg rax) (offset-of rect-t bottom-right x)) 99)
+    (mov (reg-deref (reg rax) (offset-of rect-t top-left y)) 77)
     (mov (reg rax) (reg-deref (reg rax) (offset-of rect-t bottom-right x)))
     (ret)))

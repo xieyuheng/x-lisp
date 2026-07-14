@@ -8,7 +8,7 @@
 (define-code test-xor
   (block entry
     (xor (reg rax) (reg rax))
-    (mov (reg rax) (imm 7))
+    (mov (reg rax) 7)
     (xor (reg rax) (reg rax))
-    (mov (reg rax) (imm 3))
+    (mov (reg rax) 3)
     (ret)))

@@ -12,7 +12,7 @@ title: shr
 
 ```
 <dst> := (reg) (reg-deref)
-<src> := (reg) (imm) (reg-deref) (deref) (address)
+<src> := (reg) <int> (reg-deref) (deref) (address)
 ```
 
 <dst> 与 <src> 不能同时为内存操作数
@@ -24,5 +24,5 @@ title: shr
 # 例子
 
 ```scheme
-(shr (reg rax) (imm 1))
+(shr (reg rax) 1)
 ```

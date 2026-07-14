@@ -15,6 +15,6 @@
 (define-code test-write-read
   (block entry
     (mov (reg rax) (address my-counter))
-    (mov (reg-deref (reg rax) (offset-of counter-t value)) (imm 42))
+    (mov (reg-deref (reg rax) (offset-of counter-t value)) 42)
     (mov (reg rax) (reg-deref (reg rax) (offset-of counter-t value)))
     (ret)))

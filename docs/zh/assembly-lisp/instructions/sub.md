@@ -12,7 +12,7 @@ title: sub
 
 ```
 <dst> := (reg) (reg-deref)
-<src> := (reg) (imm) (reg-deref) (deref) (address)
+<src> := (reg) <int> (reg-deref) (deref) (address)
 ```
 
 <dst> 与 <src> 不能同时为内存操作数
@@ -24,5 +24,5 @@ title: sub
 # 例子
 
 ```scheme
-(sub (reg rax) (imm 1))
+(sub (reg rax) 1)
 ```

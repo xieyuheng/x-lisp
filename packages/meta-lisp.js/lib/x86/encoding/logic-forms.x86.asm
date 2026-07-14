@@ -18,20 +18,20 @@
 (define-code and-forms
   (block entry
     (and (reg rax) (reg rcx))                  ;; 23 /r: reg &= reg
-    (and (reg rax) (imm 7))                    ;; 83 /4: reg &= imm8
-    (and (reg rax) (imm 255))                  ;; 81 /4: reg &= imm32
+    (and (reg rax) 7)                    ;; 83 /4: reg &= imm8
+    (and (reg rax) 255)                  ;; 81 /4: reg &= imm32
     (ret)))
 
 (define-code or-forms
   (block entry
     (or (reg rax) (reg rcx))                   ;; 0B /r: reg |= reg
-    (or (reg rax) (imm 7))                     ;; 83 /1: reg |= imm8
-    (or (reg rax) (imm 255))                   ;; 81 /1: reg |= imm32
+    (or (reg rax) 7)                     ;; 83 /1: reg |= imm8
+    (or (reg rax) 255)                   ;; 81 /1: reg |= imm32
     (ret)))
 
 (define-code xor-forms
   (block entry
     (xor (reg rax) (reg rcx))                  ;; 33 /r: reg ^= reg
-    (xor (reg rax) (imm 7))                    ;; 83 /6: reg ^= imm8
-    (xor (reg rax) (imm 255))                  ;; 81 /6: reg ^= imm32
+    (xor (reg rax) 7)                    ;; 83 /6: reg ^= imm8
+    (xor (reg rax) 255)                  ;; 81 /6: reg ^= imm32
     (ret)))

@@ -8,11 +8,11 @@
 
 (define-code helper
   (block entry
-    (mov (reg rax) (imm 1))
+    (mov (reg rax) 1)
     (ret)))
 
 (define-code test-call
   (block entry
     (call (label helper))
-    (add (reg rax) (imm 40))
+    (add (reg rax) 40)
     (ret)))

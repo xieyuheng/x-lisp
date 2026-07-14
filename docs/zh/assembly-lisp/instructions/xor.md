@@ -12,7 +12,7 @@ title: xor
 
 ```
 <dst> := (reg) (reg-deref)
-<src> := (reg) (imm) (reg-deref) (deref) (address)
+<src> := (reg) <int> (reg-deref) (deref) (address)
 ```
 
 <dst> 与 <src> 不能同时为内存操作数

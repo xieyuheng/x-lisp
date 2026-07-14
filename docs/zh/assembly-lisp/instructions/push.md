@@ -11,7 +11,7 @@ title: push
 # 操作数
 
 ```
-<src> := (reg) (imm) (reg-deref) (deref)
+<src> := (reg) <int> (reg-deref) (deref)
 ```
 
 # 描述

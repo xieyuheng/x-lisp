@@ -12,14 +12,14 @@
 
 (define-code shl-forms
   (block entry
-    (shl (reg rax) (imm 1))                    ;; D1 /4: shl by 1
-    (shl (reg rax) (imm 3))                    ;; C1 /4: shl by imm8 > 1
+    (shl (reg rax) 1)                    ;; D1 /4: shl by 1
+    (shl (reg rax) 3)                    ;; C1 /4: shl by imm8 > 1
     (shl (reg rax) (reg rcx))                  ;; D3 /4: shl by CL
     (ret)))
 
 (define-code shr-forms
   (block entry
-    (shr (reg rax) (imm 1))                    ;; D1 /5: shr by 1
-    (shr (reg rax) (imm 3))                    ;; C1 /5: shr by imm8 > 1
+    (shr (reg rax) 1)                    ;; D1 /5: shr by 1
+    (shr (reg rax) 3)                    ;; C1 /5: shr by imm8 > 1
     (shr (reg rax) (reg rcx))                  ;; D3 /5: shr by CL
     (ret)))

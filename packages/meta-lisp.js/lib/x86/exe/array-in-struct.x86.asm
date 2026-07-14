@@ -15,5 +15,5 @@
   (block entry
     (mov (reg rax) (address buf))
     (mov (reg rax) (reg-deref (reg rax)))
-    (and (reg rax) (imm 255))
+    (and (reg rax) 255)
     (ret)))

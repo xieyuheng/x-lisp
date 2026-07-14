@@ -12,7 +12,7 @@ title: mov
 
 ```
 <dst> := (reg) (reg-deref) (deref)
-<src> := (reg) (imm) (reg-deref) (deref) (address)
+<src> := (reg) <int> (reg-deref) (deref) (address)
 ```
 
 <dst> 与 <src> 不能同时为内存操作数
@@ -24,6 +24,6 @@ title: mov
 # 例子
 
 ```scheme
-(mov (reg rax) (imm 42))
+(mov (reg rax) 42)
 (mov (reg rcx) (reg rax))
 ```

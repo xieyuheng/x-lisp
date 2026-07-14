@@ -20,5 +20,5 @@
     (mov (reg rax) (address my-config))
     (mov (reg rax) (reg-deref (reg rax) (offset-of config-t description)))
     (mov (reg rax) (reg-deref (reg rax)))
-    (and (reg rax) (imm 255))
+    (and (reg rax) 255)
     (ret)))

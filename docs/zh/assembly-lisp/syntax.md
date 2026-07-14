@@ -37,7 +37,6 @@ assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
   - [(define-space)](#define-space)
 - [操作数](#操作数)
   - [(reg)](#reg)
-  - [(imm)](#imm)
   - [(label)](#label)
   - [(address)](#address)
   - [(deref)](#deref)
@@ -67,7 +66,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 ```scheme
 ;; 这是一条注释
-(mov (reg rax) (imm 42))  ;; 行尾注释
+(mov (reg rax) 42)  ;; 行尾注释
 ```
 
 # 指令
@@ -96,15 +95,15 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 ```scheme
 (block entry
-  (mov (reg rax) (imm 10))
-  (mov (reg rcx) (imm 3))
+  (mov (reg rax) 10)
+  (mov (reg rcx) 3)
   (cmp (reg rax) (reg rcx))
   (j (cc g) (label is-greater))
-  (mov (reg rax) (imm 0))
+  (mov (reg rax) 0)
   (ret))
 
 (block is-greater
-  (mov (reg rax) (imm 1))
+  (mov (reg rax) 1)
   (ret))
 ```
 
@@ -124,7 +123,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (define-code add1
   (block entry
     (mov (reg rax) (reg-deref (reg rbp) 16))
-    (add (reg rax) (imm 1))
+    (add (reg rax) 1)
     (ret)))
 ```
 
@@ -192,19 +191,6 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 ```scheme
 (reg rax)
 (reg r15)
-```
-
-## (imm)
-
-```scheme
-(imm <value>)
-```
-
-立即数。
-
-```scheme
-(imm 42)
-(imm -1)
 ```
 
 ## (label)
@@ -335,7 +321,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 ```scheme
 (mov (reg rax) "hello")                           ;; 匿名字符串 → deref
-(mov (reg rcx) 42)                                ;; 等价于 (imm 42)
+(mov (reg rcx) 42)                                ;; 立即数
 (mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + deref
 ```
 

@@ -12,7 +12,7 @@ title: test
 
 ```
 <lhs> := (reg) (reg-deref)
-<rhs> := (reg) (imm) (reg-deref) (deref) (address)
+<rhs> := (reg) <int> (reg-deref) (deref) (address)
 ```
 
 <lhs> 与 <rhs> 不能同时为内存操作数

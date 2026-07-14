@@ -20,5 +20,5 @@
     (mov (reg rax) (address my-msg))
     (mov (reg rax) (reg-deref (reg rax) (offset-of msg-t text)))
     (mov (reg rax) (reg-deref (reg rax)))
-    (and (reg rax) (imm 255))
+    (and (reg rax) 255)
     (ret)))

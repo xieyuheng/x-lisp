@@ -14,9 +14,9 @@
 
 (define-code mov-reg-imm
   (block entry
-    (mov (reg rax) (imm 42))                   ;; C7 /0: REX.W + C7 C0 + imm32
-    (mov (reg rcx) (imm -1))                   ;; C7 /0: REX.W + C7 C1 + imm32
-    (mov (reg r8) (imm 7))                     ;; C7 /0: REX.B + C7 C0 + imm32
+    (mov (reg rax) 42)                   ;; C7 /0: REX.W + C7 C0 + imm32
+    (mov (reg rcx) -1)                   ;; C7 /0: REX.W + C7 C1 + imm32
+    (mov (reg r8) 7)                     ;; C7 /0: REX.B + C7 C0 + imm32
     (ret)))
 
 (define-code mov-mem-reg
@@ -33,5 +33,5 @@
 
 (define-code mov-mem-imm
   (block entry
-    (mov (reg-deref (reg rbp) -8) (imm 42))    ;; C7 /0: REX.W + C7 45 F8 + imm32
+    (mov (reg-deref (reg rbp) -8) 42)    ;; C7 /0: REX.W + C7 45 F8 + imm32
     (ret)))

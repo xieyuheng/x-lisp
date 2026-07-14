@@ -8,7 +8,7 @@
 
 (define-code test-add
   (block entry
-    (mov (reg rax) (imm 10))
-    (add (reg rax) (imm 20))
-    (add (reg rax) (imm 5))
+    (mov (reg rax) 10)
+    (add (reg rax) 20)
+    (add (reg rax) 5)
     (ret)))

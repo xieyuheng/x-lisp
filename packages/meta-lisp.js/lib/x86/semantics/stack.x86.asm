@@ -8,8 +8,8 @@
 
 (define-code test-stack
   (block entry
-    (mov (reg rax) (imm 100))
+    (mov (reg rax) 100)
     (push (reg rax))
-    (mov (reg rax) (imm 0))
+    (mov (reg rax) 0)
     (pop (reg rax))
     (ret)))

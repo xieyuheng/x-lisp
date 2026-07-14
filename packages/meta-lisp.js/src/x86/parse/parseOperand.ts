@@ -7,14 +7,6 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.RegOperand(S.asSymbolSexp(name).content)
   },
 
-  "`(imm ,value)": ({ value }, { location }) => {
-    if (value.kind !== "IntSexp") {
-      let message = "imm operand requires an integer value"
-      throw new Error(message)
-    }
-    return X86.ImmOperand(S.asIntSexp(value).content)
-  },
-
   "`(label ,name)": ({ name }, { location }) => {
     return X86.LabelOperand(S.asSymbolSexp(name).content)
   },
@@ -67,6 +59,10 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
 })
 
 export function parseOperand(sexp: S.Sexp): X86.Operand {
+  if (sexp.kind === "IntSexp") {
+    return X86.ImmOperand(sexp.content)
+  }
+
   try {
     return parseOperandRouter(sexp)
   } catch {
