@@ -85,7 +85,7 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
-  if (target.kind === "ExternalLabelOperand") {
+  if (target.kind === "ExternOperand") {
     return encodeIndirectExternal("call", target.name)
   }
 
@@ -128,7 +128,7 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
-  if (target.kind === "ExternalLabelOperand") {
+  if (target.kind === "ExternOperand") {
     return encodeIndirectExternal("jmp", target.name)
   }
 

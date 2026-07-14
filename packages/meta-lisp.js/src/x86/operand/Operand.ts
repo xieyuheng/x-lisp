@@ -9,7 +9,7 @@ export type Operand =
   | RegDerefOperand
   | CcOperand
   | VarOperand
-  | ExternalLabelOperand
+  | ExternOperand
   | DataOperand
 
 export type RegOperand = {
@@ -150,14 +150,14 @@ export function VarOperand(name: string): VarOperand {
   }
 }
 
-export type ExternalLabelOperand = {
-  kind: "ExternalLabelOperand"
+export type ExternOperand = {
+  kind: "ExternOperand"
   name: string
 }
 
-export function ExternalLabelOperand(name: string): ExternalLabelOperand {
+export function ExternOperand(name: string): ExternOperand {
   return {
-    kind: "ExternalLabelOperand",
+    kind: "ExternOperand",
     name,
   }
 }

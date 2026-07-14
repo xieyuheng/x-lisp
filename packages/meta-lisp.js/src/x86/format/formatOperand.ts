@@ -32,8 +32,8 @@ export function formatOperand(operand: X86.Operand): string {
       return `(cc ${operand.code})`
     case "VarOperand":
       return `(var ${operand.name})`
-    case "ExternalLabelOperand":
-      return `(external-label ${operand.name})`
+    case "ExternOperand":
+      return `(extern ${operand.name})`
     case "DataOperand":
       return X86.formatData(operand.data)
   }

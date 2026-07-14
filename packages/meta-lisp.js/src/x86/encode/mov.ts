@@ -2,7 +2,7 @@ import type { Instr } from "../instr/index.ts"
 import type {
   AddressOperand,
   DerefOperand,
-  ExternalLabelOperand,
+  ExternOperand,
   RegDerefOperand,
 } from "../operand/index.ts"
 import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
@@ -38,8 +38,8 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return [encodeMovRegRegDeref(dstReg, src)]
     }
 
-    if (src.kind === "ExternalLabelOperand") {
-      return [encodeMovRegExternalLabel(dstReg, src)]
+    if (src.kind === "ExternOperand") {
+      return [encodeMovRegExtern(dstReg, src)]
     }
   }
 
@@ -224,9 +224,9 @@ function encodeMovRegDerefAddress(
   return [lea, mov]
 }
 
-function encodeMovRegExternalLabel(
+function encodeMovRegExtern(
   dstReg: string,
-  src: ExternalLabelOperand,
+  src: ExternOperand,
 ): EncodedInstruction {
   const code = regCode(dstReg)
   const ext = isExtendedReg(dstReg)

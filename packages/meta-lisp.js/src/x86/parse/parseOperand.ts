@@ -53,8 +53,8 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.VarOperand(S.asSymbolSexp(name).content)
   },
 
-  "`(external-label ,name)": ({ name }, { location }) => {
-    return X86.ExternalLabelOperand(S.asSymbolSexp(name).content)
+  "`(extern ,name)": ({ name }, { location }) => {
+    return X86.ExternOperand(S.asSymbolSexp(name).content)
   },
 })
 

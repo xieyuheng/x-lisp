@@ -43,7 +43,7 @@ assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
   - [(reg-deref)](#reg-deref)
   - [(cc)](#cc)
   - [(var)](#var)
-  - [(external-label)](#external-label)
+  - [(extern)](#extern)
   - [data-operand](#data-operand)
 - [类型](#类型)
   - [内置类型](#内置类型)
@@ -292,16 +292,16 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 带 `var` 的汇编语言是中间表示；寄存器分配 pass 会把它替换为 `reg` 或 `reg-deref`。
 
-## (external-label)
+## (extern)
 
 ```scheme
-(external-label <name>)
+(extern <name>)
 ```
 
 外部符号引用（如 libc 函数、syscall 入口），由外部重定位解析。
 
 ```scheme
-(external-label printf)
+(extern printf)
 ```
 
 ## 数据
