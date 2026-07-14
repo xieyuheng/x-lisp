@@ -5,7 +5,7 @@ A simply typed lisp for implementing new lisp languages.
 ## Features
 
 - Hindley-Milner type system (all types can be inferred).
-- Algebraic data types and pattern matching (no subtyping and no OOP).
+- Algebraic data types and pattern matching (no subtyping).
 - Tail recursion optimization (no need `for`/`while` loop syntax).
 - Module system decoupled from the file system.
 - Built-in testing framework.

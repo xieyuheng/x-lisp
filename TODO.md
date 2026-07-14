@@ -1,6 +1,18 @@
-# codegen
+# assembly-lisp
 
-[assembly-lisp] more tests
+[learn] 先写 assembly-lisp 代码的例子试试，然后再决定是否修改语法。
+
+[meta-runtime.c] 设计新的 `xexe_t` 格式，用一个 buffer 忠实反应数据内容，然后设计 API 函数都直接操作 buffer。
+
+[meta-lisp.js] 为了让 assembly-lisp 更方手写。
+
+- 修改 (reg rax) 语法为 %rag，
+- 保持 (var <name>) 语法为 (var <name>)
+- 简化 (address <name>) 语法为 <name>
+- 简化 (imm <int>) 语法 <int>
+
+assembly-lisp 的文档： docs/zh/assembly-lisp/*
+assembly-lisp 的实现： [meta-lisp.js] 中的 x86/*
 
 # self-hosting
 
