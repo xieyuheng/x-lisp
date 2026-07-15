@@ -3,7 +3,7 @@
 ; Encodings exercised:
 ;   mov reg, (address ...)                       — RIP-relative LEA-style load of label addr
 ;   mov [reg + offset-of(...)], imm              — C7 /0 with disp   (write to field)
-;   mov reg, (reg-deref reg (offset-of ...))     — 8B /r with disp   (read from field)
+;   mov reg, (deref reg (offset-of ...))     — 8B /r with disp   (read from field)
 
 (define-struct counter-t
   (value int64-t))
@@ -15,6 +15,6 @@
 (define-code test-write-read
   (block entry
     (mov (reg rax) (address my-counter))
-    (mov (reg-deref (reg rax) (offset-of counter-t value)) 42)
-    (mov (reg rax) (reg-deref (reg rax) (offset-of counter-t value)))
+    (mov (deref (reg rax) (offset-of counter-t value)) 42)
+    (mov (reg rax) (deref (reg rax) (offset-of counter-t value)))
     (ret)))

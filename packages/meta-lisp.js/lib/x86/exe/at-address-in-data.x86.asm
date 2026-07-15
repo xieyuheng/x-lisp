@@ -16,5 +16,5 @@
 (define-code test-at-address
   (block entry
     (mov (reg rax) (deref (address ptr)))
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (deref (reg rax)))
     (ret)))

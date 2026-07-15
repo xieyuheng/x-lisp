@@ -18,7 +18,7 @@
 (define-code read-null-char
   (block entry
     (mov (reg rax) (address my-msg))
-    (mov (reg rax) (reg-deref (reg rax) (offset-of msg-t text)))
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (deref (reg rax) (offset-of msg-t text)))
+    (mov (reg rax) (deref (reg rax)))
     (and (reg rax) 255)
     (ret)))

@@ -20,29 +20,46 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.AddressOperand(S.asSymbolSexp(elements[0]).content)
   },
 
-  "`(deref ,address)": ({ address }, { location }) => {
-    return X86.DerefOperand(parseAddressOperand(address))
-  },
+  "(cons* 'deref first rest)": ({ first, rest }, { location }) => {
+    if (
+      first.kind === "ListSexp" &&
+      first.elements.length >= 2 &&
+      first.elements[0].kind === "SymbolSexp" &&
+      first.elements[0].content === "address"
+    ) {
+      return X86.DerefOperand(parseAddressOperand(first))
+    }
 
-  "(cons* 'reg-deref base rest)": ({ base, rest }, { location }) => {
-    const baseName = parseRegName(base)
-    const elements = S.asListSexp(rest).elements
-    if (elements.length === 0) {
-      return X86.RegDerefOperand(baseName, undefined, undefined, undefined)
-    }
-    if (elements.length === 1) {
-      const disp = parseDisplacement(elements[0])
-      return X86.RegDerefOperand(baseName, undefined, undefined, disp)
-    }
-    if (elements.length === 2) {
+    if (
+      first.kind === "ListSexp" &&
+      first.elements.length >= 2 &&
+      first.elements[0].kind === "SymbolSexp" &&
+      first.elements[0].content === "reg"
+    ) {
+      const baseName = parseRegName(first)
+      const elements = S.asListSexp(rest).elements
+      if (elements.length === 0) {
+        return X86.RegDerefOperand(baseName, undefined, undefined, undefined)
+      }
+      if (elements.length === 1) {
+        const disp = parseDisplacement(elements[0])
+        return X86.RegDerefOperand(baseName, undefined, undefined, disp)
+      }
+      if (elements.length === 2) {
+        const index = parseRegName(elements[0])
+        const scale = parseImmValue(elements[1])
+        return X86.RegDerefOperand(baseName, index, scale, undefined)
+      }
       const index = parseRegName(elements[0])
       const scale = parseImmValue(elements[1])
-      return X86.RegDerefOperand(baseName, index, scale, undefined)
+      const disp = parseDisplacement(elements[2])
+      return X86.RegDerefOperand(baseName, index, scale, disp)
     }
-    const index = parseRegName(elements[0])
-    const scale = parseImmValue(elements[1])
-    const disp = parseDisplacement(elements[2])
-    return X86.RegDerefOperand(baseName, index, scale, disp)
+
+    let message =
+      `(deref ...) expects (address ...) or (reg ...) as first argument, ` +
+      `got: ${S.formatSexp(first)}`
+    throw new Error(message)
   },
 
   "`(cc ,code)": ({ code }, { location }) => {

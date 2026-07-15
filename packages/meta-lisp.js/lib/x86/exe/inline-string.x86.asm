@@ -8,6 +8,6 @@
 (define-code test-inline-string
   (block entry
     (mov (reg rax) "hello")
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (deref (reg rax)))
     (and (reg rax) 255)
     (ret)))

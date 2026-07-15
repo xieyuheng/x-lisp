@@ -5,7 +5,7 @@ title: lea
 # 语法
 
 ```scheme
-(lea <dst> (reg-deref <base> [<index>] [<scale>] [<disp>]))
+(lea <dst> (deref <base> [<index>] [<scale>] [<disp>]))
 ```
 
 # 操作数
@@ -14,15 +14,15 @@ title: lea
 <dst> := (reg)
 ```
 
-第二个操作数必须为 `(reg-deref ...)`，参见[(reg-deref)](../syntax.md#reg-deref)
+第二个操作数必须为 `(deref ...)`，参见[(deref)](../syntax.md#deref)
 
 # 描述
 
-加载有效地址（Load Effective Address）。将 `(reg-deref ...)` 计算的地址写入 <dst>
+加载有效地址（Load Effective Address）。将 `(deref ...)` 计算的地址写入 <dst>
 
 # 例子
 
 ```scheme
-(lea (reg rax) (reg-deref (reg rbp) -8))
-(lea (reg rcx) (reg-deref (reg rbx) (reg rax) 8))
+(lea (reg rax) (deref (reg rbp) -8))
+(lea (reg rcx) (deref (reg rbx) (reg rax) 8))
 ```

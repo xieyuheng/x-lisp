@@ -30,6 +30,6 @@
 (define-code read-entry-value
   (block entry
     (mov (reg rax) (address my-config))
-    (mov (reg rax) (reg-deref (reg rax) (offset-of config-t table)))
-    (mov (reg rax) (reg-deref (reg rax) (offset-of entry-t value)))
+    (mov (reg rax) (deref (reg rax) (offset-of config-t table)))
+    (mov (reg rax) (deref (reg rax) (offset-of entry-t value)))
     (ret)))

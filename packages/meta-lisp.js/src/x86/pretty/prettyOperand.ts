@@ -33,7 +33,7 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       if (operand.disp !== undefined) {
         parts.push(prettyDisplacement(operand.disp))
       }
-      return Ppml.prettySyntax("reg-deref", [], parts)
+      return Ppml.prettySyntax("deref", [], parts)
     }
     case "CcOperand":
       return Ppml.prettySyntax("cc", [], [Ppml.text(operand.code)])

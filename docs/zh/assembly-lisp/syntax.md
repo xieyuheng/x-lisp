@@ -40,7 +40,6 @@ assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
   - [(label)](#label)
   - [(address)](#address)
   - [(deref)](#deref)
-  - [(reg-deref)](#reg-deref)
   - [(cc)](#cc)
   - [(var)](#var)
   - [(extern)](#extern)
@@ -122,7 +121,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 ```scheme
 (define-code add1
   (block entry
-    (mov (reg rax) (reg-deref (reg rbp) 16))
+    (mov (reg rax) (deref (reg rbp) 16))
     (add (reg rax) 1)
     (ret)))
 ```
@@ -224,36 +223,37 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 ## (deref)
 
 ```scheme
-(deref (address <name>))
+(deref <first> ...)
 ```
 
-读取该符号地址处的内容，编码为 `[rip + disp32]`。内部包裹一个 `address-operand`。
+内存寻址操作数。根据第一个参数的 tag 区分为两种编码模式：
+
+**rip-相对**：第一个参数为 `(address <name>)`，编码为 `[rip + disp32]`。
 
 ```scheme
 (deref (address k))
+(deref (address origin))
 ```
 
-## (reg-deref)
+**寄存器相对**：第一个参数为 `(reg <base>)`，支持完整 SIB。
 
 ```scheme
-(reg-deref (reg <base>)
-           [(reg <index>)]
-           [<scale>]
-           [<disp>])
+(deref (reg <base>)
+       [(reg <index>)]
+       [<scale>]
+       [<disp>])
 ```
-
-寄存器相对寻址，支持完整 SIB。
 
 - `base` / `index`：寄存器名，文本语法写 `(reg ...)`。
 - `scale`：可选，仅 `1` / `2` / `4` / `8`。
 - `disp`：可选，整数或 `(offset-of ...)`。
 
 ```scheme
-(reg-deref (reg rbp))                             ;; [rbp]
-(reg-deref (reg rbp) -8)                          ;; [rbp - 8]
-(reg-deref (reg rbp) (offset-of point-t y))       ;; [rbp + offset]
-(reg-deref (reg rbp) (reg rax) 8)                 ;; [rbp + rax*8]
-(reg-deref (reg rbp) (reg rax) 8 -16)             ;; [rbp + rax*8 - 16]
+(deref (reg rbp))                             ;; [rbp]
+(deref (reg rbp) -8)                          ;; [rbp - 8]
+(deref (reg rbp) (offset-of point-t y))       ;; [rbp + offset]
+(deref (reg rbp) (reg rax) 8)                 ;; [rbp + rax*8]
+(deref (reg rbp) (reg rax) 8 -16)             ;; [rbp + rax*8 - 16]
 ```
 
 ## (cc)
@@ -290,7 +290,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 寄存器分配前的虚拟变量。
 
-带 `var` 的汇编语言是中间表示；寄存器分配 pass 会把它替换为 `reg` 或 `reg-deref`。
+带 `var` 的汇编语言是中间表示；寄存器分配 pass 会把它替换为 `reg` 或 `deref`。
 
 ## (extern)
 
@@ -442,7 +442,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 # 位移
 
-`reg-deref` 的位移（displacement）是编译期常量，有两种形态。
+`deref` 的位移（displacement）是编译期常量，有两种形态。
 
 ## 整数位移
 

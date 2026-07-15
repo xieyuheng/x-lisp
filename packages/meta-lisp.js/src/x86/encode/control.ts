@@ -90,7 +90,7 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (target.kind !== "LabelOperand") {
-    let message = `[call] expected label or reg-deref, got: ${target.kind}`
+    let message = `[call] expected label or deref, got: ${target.kind}`
     throw new Error(message)
   }
 
@@ -133,7 +133,7 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (target.kind !== "LabelOperand") {
-    let message = `[jmp] expected label or reg-deref, got: ${target.kind}`
+    let message = `[jmp] expected label or deref, got: ${target.kind}`
     throw new Error(message)
   }
 

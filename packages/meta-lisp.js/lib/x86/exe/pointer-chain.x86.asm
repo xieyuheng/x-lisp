@@ -29,7 +29,7 @@
 (define-code read-chain
   (block entry
     (mov (reg rax) (address chain))
-    (mov (reg rax) (reg-deref (reg rax) (offset-of node-a-t next)))
-    (mov (reg rax) (reg-deref (reg rax)))
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (deref (reg rax) (offset-of node-a-t next)))
+    (mov (reg rax) (deref (reg rax)))
+    (mov (reg rax) (deref (reg rax)))
     (ret)))

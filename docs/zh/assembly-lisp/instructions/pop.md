@@ -11,7 +11,7 @@ title: pop
 # 操作数
 
 ```
-<dst> := (reg) (reg-deref)
+<dst> := (reg) (deref)
 ```
 
 # 描述

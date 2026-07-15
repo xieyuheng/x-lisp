@@ -22,5 +22,5 @@
 (define-code read-via-address
   (block entry
     (mov (reg rax) (deref (address origin-ptr)))   ;; rax = *origin-ptr = &origin
-    (mov (reg rax) (reg-deref (reg rax)))           ;; rax = origin.x = 11
+    (mov (reg rax) (deref (reg rax)))           ;; rax = origin.x = 11
     (ret)))

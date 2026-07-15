@@ -26,7 +26,7 @@ export function formatOperand(operand: X86.Operand): string {
       if (operand.disp !== undefined) {
         parts.push(formatDisplacement(operand.disp))
       }
-      return `(reg-deref ${parts.join(" ")})`
+      return `(deref ${parts.join(" ")})`
     }
     case "CcOperand":
       return `(cc ${operand.code})`

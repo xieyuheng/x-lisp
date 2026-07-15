@@ -21,17 +21,17 @@
 
 (define-code mov-mem-reg
   (block entry
-    (mov (reg-deref (reg rbp) -8) (reg rax))   ;; 89 /r: REX.W + 89 45 F8
-    (mov (reg-deref (reg rbp) -8) (reg rcx))   ;; 89 /r: REX.W + 89 4D F8
+    (mov (deref (reg rbp) -8) (reg rax))   ;; 89 /r: REX.W + 89 45 F8
+    (mov (deref (reg rbp) -8) (reg rcx))   ;; 89 /r: REX.W + 89 4D F8
     (ret)))
 
 (define-code mov-reg-mem
   (block entry
-    (mov (reg rax) (reg-deref (reg rbp) -8))   ;; 8B /r: REX.W + 8B 45 F8
-    (mov (reg rcx) (reg-deref (reg rbp) -8))   ;; 8B /r: REX.W + 8B 4D F8
+    (mov (reg rax) (deref (reg rbp) -8))   ;; 8B /r: REX.W + 8B 45 F8
+    (mov (reg rcx) (deref (reg rbp) -8))   ;; 8B /r: REX.W + 8B 4D F8
     (ret)))
 
 (define-code mov-mem-imm
   (block entry
-    (mov (reg-deref (reg rbp) -8) 42)    ;; C7 /0: REX.W + C7 45 F8 + imm32
+    (mov (deref (reg rbp) -8) 42)    ;; C7 /0: REX.W + C7 45 F8 + imm32
     (ret)))

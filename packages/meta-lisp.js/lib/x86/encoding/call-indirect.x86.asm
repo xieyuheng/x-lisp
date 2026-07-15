@@ -6,10 +6,10 @@
 
 (define-code call-indirect-reg
   (block entry
-    (call (reg-deref (reg rax)))              ;; FF /2: FF D0  (call rax)
+    (call (deref (reg rax)))              ;; FF /2: FF D0  (call rax)
     (ret)))
 
 (define-code call-indirect-ext
   (block entry
-    (call (reg-deref (reg r8)))               ;; FF /2: 41 FF D0  (call r8, REX.B)
+    (call (deref (reg r8)))               ;; FF /2: 41 FF D0  (call r8, REX.B)
     (ret)))

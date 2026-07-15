@@ -12,5 +12,5 @@
 (define-code test-var-operand
   (block entry
     (mov (reg rax) (address answer))
-    (mov (reg rax) (reg-deref (reg rax)))
+    (mov (reg rax) (deref (reg rax)))
     (ret)))

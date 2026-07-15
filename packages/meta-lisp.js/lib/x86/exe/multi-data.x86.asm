@@ -17,8 +17,8 @@
 (define-code sum-two-cells
   (block entry
     (mov (reg rax) (address my-first))
-    (mov (reg rax) (reg-deref (reg rax) (offset-of cell-t x)))
+    (mov (reg rax) (deref (reg rax) (offset-of cell-t x)))
     (mov (reg rcx) (address my-second))
-    (mov (reg rcx) (reg-deref (reg rcx) (offset-of cell-t x)))
+    (mov (reg rcx) (deref (reg rcx) (offset-of cell-t x)))
     (add (reg rax) (reg rcx))
     (ret)))
