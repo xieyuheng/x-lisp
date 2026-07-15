@@ -70,11 +70,12 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 # 指令
 
-所有指令统一为 op + operands。
-
 ```scheme
 (<op> <operand> ...)
 ```
+
+所有指令统一为 op + operands。
+采用 intel 的操作数顺序，目标操作数在前，源操作数在后。
 
 每条指令的语法和操作数约束详见[指令索引](instructions/index.md)。
 

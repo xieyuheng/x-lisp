@@ -3,23 +3,22 @@
 0000000E  488B35EB0F0000    mov rsi,[rel 0x1000]
 00000015  48C7C20C000000    mov rdx,0xc
 0000001C  0F05              syscall
-0000001E  48C7C000000000    mov rax,0x0
-00000025  C3                ret
-00000026  0000              add [rax],al
-00000028  0000              add [rax],al
-0000002A  0000              add [rax],al
-0000002C  0000              add [rax],al
-0000002E  68656C6C6F        push qword 0x6f6c6c65
-00000033  20776F            and [rdi+0x6f],dh
-00000036  726C              jc 0xa4
-00000038  640A00            or al,[fs:rax]
-0000003B  0010              add [rax],dl
-0000003D  0000              add [rax],al
-0000003F  0810              or [rax],dl
+0000001E  C3                ret
+0000001F  0000              add [rax],al
+00000021  0000              add [rax],al
+00000023  0000              add [rax],al
+00000025  0000              add [rax],al
+00000027  68656C6C6F        push qword 0x6f6c6c65
+0000002C  20776F            and [rdi+0x6f],dh
+0000002F  726C              jc 0x9d
+00000031  640A00            or al,[fs:rax]
+00000034  0010              add [rax],dl
+00000036  0000              add [rax],al
+00000038  0810              or [rax],dl
+0000003A  0000              add [rax],al
+0000003C  0500000001        add eax,0x1000000
 00000041  0000              add [rax],al
-00000043  0500000001        add eax,0x1000000
-00000048  0000              add [rax],al
-0000004A  006D61            add [rbp+0x61],ch
-0000004D  696E0000000000    imul ebp,[rsi+0x0],dword 0x0
-00000054  0000              add [rax],al
-00000056  0000              add [rax],al
+00000043  006D61            add [rbp+0x61],ch
+00000046  696E0000000000    imul ebp,[rsi+0x0],dword 0x0
+0000004D  0000              add [rax],al
+0000004F  0000              add [rax],al

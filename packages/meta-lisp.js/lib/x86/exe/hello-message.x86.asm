@@ -8,5 +8,4 @@
     (mov (reg rsi) (deref (reg rsi)))
     (mov (reg rdx) 14)
     (syscall)
-    (mov (reg rax) 0)
     (ret)))
