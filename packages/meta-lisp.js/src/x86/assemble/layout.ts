@@ -315,33 +315,26 @@ function emitFieldTree(
   }
 
   if (fieldData.kind === "StringData") {
-    if (typeSize(mod, fieldType) === 8) {
-      writeInt64(buf, offset, 0n)
-      const placeholder = offset
-      offset += 8
-      deferred.push({
-        off: 0,
-        fn: (pos: number) => {
-          const targetOff = pos
-          for (let i = 0; i < fieldData.content.length; i++) {
-            buf[pos + i] = fieldData.content.charCodeAt(i)
-          }
-          buf[pos + fieldData.content.length] = 0
-          const newPos = pos + fieldData.content.length + 1
-          relocs.push({
-            patchOffset: placeholder,
-            targetOffset: targetOff,
-          })
-          return newPos
-        },
-      })
-      return offset
-    }
-    for (let i = 0; i < fieldData.content.length; i++) {
-      buf[offset + i] = fieldData.content.charCodeAt(i)
-    }
-    buf[offset + fieldData.content.length] = 0
-    return offset + fieldData.content.length + 1
+    writeInt64(buf, offset, 0n)
+    const placeholder = offset
+    offset += 8
+    deferred.push({
+      off: 0,
+      fn: (pos: number) => {
+        const targetOff = pos
+        for (let i = 0; i < fieldData.content.length; i++) {
+          buf[pos + i] = fieldData.content.charCodeAt(i)
+        }
+        buf[pos + fieldData.content.length] = 0
+        const newPos = pos + fieldData.content.length + 1
+        relocs.push({
+          patchOffset: placeholder,
+          targetOffset: targetOff,
+        })
+        return newPos
+      },
+    })
+    return offset
   }
 
   if (fieldData.kind === "ArrayData") {
@@ -450,10 +443,7 @@ function computeFieldTreeSize(
   }
 
   if (fieldData.kind === "StringData") {
-    if (typeSize(mod, fieldType) === 8) {
-      return { fixed: 8, deferred: fieldData.content.length + 1 }
-    }
-    return { fixed: fieldData.content.length + 1, deferred: 0 }
+    return { fixed: 8, deferred: fieldData.content.length + 1 }
   }
 
   if (fieldData.kind === "ArrayData") {
