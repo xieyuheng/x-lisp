@@ -12,6 +12,8 @@ cd packages/std.c; ./scripts/test.sh; cd ../..
 cd packages/cli.c; ./scripts/test.sh; cd ../..
 cd packages/meta-runtime.c; ./scripts/test.sh; cd ../..
 
+cd packages/meta-lisp.js; ./scripts/test.sh; cd ../..
+
 cd packages/meta-builtin.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-math.meta; ./scripts/test.sh; cd ../..
 cd packages/meta-example.meta; ./scripts/test.sh; cd ../..
