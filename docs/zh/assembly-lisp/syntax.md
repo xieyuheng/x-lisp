@@ -265,18 +265,18 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 条件码，仅用于 `j` 指令。
 
-| 代码 | 含义           |
-|------|----------------|
-| `e`  | equal          |
-| `ne` | not equal      |
-| `l`  | less           |
-| `le` | less or equal  |
-| `g`  | greater        |
+| 代码 | 含义             |
+|------|------------------|
+| `e`  | equal            |
+| `ne` | not equal        |
+| `l`  | less             |
+| `le` | less or equal    |
+| `g`  | greater          |
 | `ge` | greater or equal |
-| `b`  | below          |
-| `be` | below or equal |
-| `a`  | above          |
-| `ae` | above or equal |
+| `b`  | below            |
+| `be` | below or equal   |
+| `a`  | above            |
+| `ae` | above or equal   |
 
 ```scheme
 (cc e)
@@ -311,12 +311,12 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 预编码阶段将 `data-operand` 解析为具体 operand：
 
-| `data` 类型     | 解析为               | 编码               |
-|-----------------|----------------------|--------------------|
-| 整数            | `imm-operand`        | 立即数             |
+| `data` 类型     | 解析为                           | 编码             |
+|-----------------|----------------------------------|------------------|
+| 整数            | `imm-operand`                    | 立即数           |
 | 字符串          | 匿名 data slot + `deref-operand` | `[rip + disp32]` |
 | `(pointer ...)` | 匿名 data slot + `deref-operand` | `[rip + disp32]` |
-| 裸符号          | `address-operand`    | movabs             |
+| 裸符号          | `address-operand`                | movabs           |
 
 裸 `(struct ...)` 和 `(array ...)` 不支持 -- 报错。
 
