@@ -5,6 +5,7 @@ import { encodeImul } from "./imul.ts"
 import { encodeLea } from "./lea.ts"
 import { encodeLogic } from "./logic.ts"
 import { encodeMov } from "./mov.ts"
+import { encodeNop } from "./nop.ts"
 import { encodeShift } from "./shift.ts"
 import { encodeStack } from "./stack.ts"
 import { encodeSyscall } from "./syscall.ts"
@@ -40,6 +41,8 @@ export function encode(instr: Instr): Array<EncodedInstruction> {
       return encodeTest(instr)
     case "imul":
       return encodeImul(instr)
+    case "nop":
+      return encodeNop()
     case "syscall":
       return encodeSyscall()
     case "label":
