@@ -223,29 +223,28 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 ## (deref)
 
+**rip-相对寻址**：
+
 ```scheme
-(deref <first> ...)
+(deref (address <name>))
 ```
 
-内存寻址操作数。根据第一个参数的 tag 区分为两种编码模式：
-
-**rip-相对**：第一个参数为 `(address <name>)`，编码为 `[rip + disp32]`。
+编码为 `[rip + disp32]`。
 
 ```scheme
-(deref (address k))
 (deref (address origin))
 ```
 
-**寄存器相对**：第一个参数为 `(reg <base>)`，支持完整 SIB。
+**寄存器相对寻址**：
+
+第一个参数为 `(reg <base>)`，支持完整 SIB。
 
 ```scheme
-(deref (reg <base>)
-       [(reg <index>)]
-       [<scale>]
-       [<disp>])
+(deref (reg <base>) (reg <index>) <scale> <disp>)
 ```
 
-- `base` / `index`：寄存器名，文本语法写 `(reg ...)`。
+- `base`：base 寄存器名。
+- `index`：可选，index 寄存器名。
 - `scale`：可选，仅 `1` / `2` / `4` / `8`。
 - `disp`：可选，整数或 `(offset-of ...)`。
 
