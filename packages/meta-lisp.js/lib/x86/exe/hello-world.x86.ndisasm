@@ -81,7 +81,9 @@
 000000BF  0000              add [rax],al
 000000C1  0000              add [rax],al
 000000C3  0000              add [rax],al
-000000C5  001500000000      add [rel 0xcb],dl
+000000C5  0008              add [rax],cl
+000000C7  0000              add [rax],al
+000000C9  0000              add [rax],al
 000000CB  0000              add [rax],al
 000000CD  0022              add [rdx],ah
 000000CF  0000              add [rax],al

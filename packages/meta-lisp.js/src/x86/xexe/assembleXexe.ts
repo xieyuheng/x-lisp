@@ -232,7 +232,7 @@ function emitXexeData(
   labels: Map<string, LabelInfo>,
   relocs: Array<XexeRelocationEntry>,
 ): Uint8Array {
-  let anonCounter = 0
+  let anonCounter = maxAnonIndex(mod) + 1
 
   let totalSize = 0
   for (const definition of mod.definitions.values()) {
@@ -263,17 +263,17 @@ function emitXexeData(
       buf,
       pos,
       relocs,
-      labels,
       deferred,
-      () => anonCounter++,
     )
 
-    for (const d of deferred) {
-      const targetOffset = d.emit(pos)
+    while (deferred.length > 0) {
+      const d = deferred.shift()!
+      const targetStart = pos
+      pos = d.emit(pos)
       const anonName = `\xa9data.${anonCounter++}`
       labels.set(anonName, {
         segmentKind: XexeDataSegment,
-        segmentOffset: targetOffset,
+        segmentOffset: targetStart,
       })
       relocs.push({
         type: "label-abs64",
@@ -281,11 +281,22 @@ function emitXexeData(
         segmentKind: XexeDataSegment,
         segmentOffset: d.pointerSlotOffset,
       })
-      pos = targetOffset
     }
   }
 
   return buf
+}
+
+function maxAnonIndex(mod: Mod): number {
+  let max = -1
+  for (const name of mod.definitions.keys()) {
+    const m = name.match(/^\xa9data\.(\d+)$/)
+    if (m) {
+      const n = parseInt(m[1])
+      if (n > max) max = n
+    }
+  }
+  return max
 }
 
 function computeTreeSize(mod: Mod, dataType: Type, value: Data): number {
@@ -345,9 +356,7 @@ function emitTree(
   buf: Uint8Array,
   offset: number,
   relocs: Array<XexeRelocationEntry>,
-  labels: Map<string, LabelInfo>,
   deferred: Array<DeferredItem>,
-  nextAnon: () => number,
 ): number {
   if (value.kind === "IntData") {
     return writeIntLE(buf, offset, typeSize(mod, dataType), value.content)
@@ -362,17 +371,7 @@ function emitTree(
         let message = `unknown field: ${name}`
         throw new Error(message)
       }
-      pos = emitTree(
-        mod,
-        ft,
-        data,
-        buf,
-        pos,
-        relocs,
-        labels,
-        deferred,
-        nextAnon,
-      )
+      pos = emitTree(mod, ft, data, buf, pos, relocs, deferred)
     }
     return pos
   }
@@ -392,20 +391,10 @@ function emitTree(
     writeInt64(buf, offset, 0n)
     const pointerSlotOffset = offset
     offset += 8
-    const anonIndex = nextAnon()
     deferred.push({
       pointerSlotOffset,
       emit: (start: number) =>
-        emitPointerTarget(
-          mod,
-          value.target,
-          buf,
-          start,
-          relocs,
-          labels,
-          deferred,
-          () => anonIndex + deferred.length + 100,
-        ),
+        emitPointerTarget(mod, value.target, buf, start, relocs, deferred),
     })
     return offset
   }
@@ -415,7 +404,6 @@ function emitTree(
       writeInt64(buf, offset, 0n)
       const pointerSlotOffset = offset
       offset += 8
-      const anonIndex = nextAnon()
       deferred.push({
         pointerSlotOffset,
         emit: (start: number) => {
@@ -472,9 +460,7 @@ function emitPointerTarget(
   buf: Uint8Array,
   offset: number,
   relocs: Array<XexeRelocationEntry>,
-  labels: Map<string, LabelInfo>,
   deferred: Array<DeferredItem>,
-  nextAnon: () => number,
 ): number {
   if (target.kind === "StructData") {
     return emitTree(
@@ -484,9 +470,7 @@ function emitPointerTarget(
       buf,
       offset,
       relocs,
-      labels,
       deferred,
-      nextAnon,
     )
   }
 
