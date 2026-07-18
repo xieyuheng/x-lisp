@@ -1,7 +1,3 @@
-# assembly-lisp
-
-[meta-runtime.c] `xexe_format`
-
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta

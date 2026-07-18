@@ -256,15 +256,7 @@ function emitXexeData(
 
     const deferred: Array<DeferredItem> = []
 
-    pos = emitTree(
-      mod,
-      dataType,
-      definition.value,
-      buf,
-      pos,
-      relocs,
-      deferred,
-    )
+    pos = emitTree(mod, dataType, definition.value, buf, pos, relocs, deferred)
 
     while (deferred.length > 0) {
       const d = deferred.shift()!
