@@ -4,7 +4,7 @@
 ;;       → replace with ImmOperand
 ;;       → encode: mov rax, 42
 
-(define-code test-inline-int
+(define-code main
   (block entry
     (mov (reg rax) 42)
     (ret)))

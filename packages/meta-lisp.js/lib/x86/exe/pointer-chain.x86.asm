@@ -26,7 +26,7 @@
               (value 0))))
     (value 0)))
 
-(define-code read-chain
+(define-code main
   (block entry
     (mov (reg rax) (address chain))
     (mov (reg rax) (deref (reg rax) (offset-of node-a-t next)))

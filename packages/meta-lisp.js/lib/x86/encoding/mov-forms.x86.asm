@@ -5,7 +5,7 @@
 ;  C7 /0 — mov r/m64, imm32
 ;  8D /r — LEA (address in flat mode uses LEA with rip-relative)
 
-(define-code mov-reg-reg
+(define-code main
   (block entry
     (mov (reg rax) (reg rcx))                  ;; 8B /r: REX.W + 8B C1
     (mov (reg rcx) (reg rax))                  ;; 8B /r: REX.W + 8B C8

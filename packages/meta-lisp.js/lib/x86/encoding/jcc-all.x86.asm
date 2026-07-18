@@ -8,7 +8,7 @@
 ;   82 b(c)   86 be(na)  87 a(nbe) 83 ae(nb)
 ;   88 s       89 ns
 
-(define-code jcc-e
+(define-code main
   (block entry (j (cc e) (label target)))
   (block target (ret)))
 

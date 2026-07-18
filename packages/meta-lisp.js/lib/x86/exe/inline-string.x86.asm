@@ -5,7 +5,7 @@
 ;;       → replace with DerefOperand
 ;;       → encode: mov rax, [rip + disp32]
 
-(define-code test-inline-string
+(define-code main
   (block entry
     (mov (reg rax) "hello")
     (mov (reg rax) (deref (reg rax)))

@@ -2,7 +2,7 @@
 ;
 ; 90 — NOP
 
-(define-code test-nop
+(define-code main
   (block entry
     (nop)
     (ret)))

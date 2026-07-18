@@ -9,7 +9,7 @@
 ;
 ; target label defined by another define-code block.
 
-(define-code test-mov-address
+(define-code main
   (block entry
     (mov (reg rax) (address target))        ;; LEA rax, [rip+disp32]  — load &target
     (ret)))

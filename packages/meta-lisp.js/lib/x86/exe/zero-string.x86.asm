@@ -15,7 +15,7 @@
     (version 1)
     (text "")))
 
-(define-code read-null-char
+(define-code main
   (block entry
     (mov (reg rax) (address my-msg))
     (mov (reg rax) (deref (reg rax) (offset-of msg-t text)))

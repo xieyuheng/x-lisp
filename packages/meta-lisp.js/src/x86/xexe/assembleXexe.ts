@@ -52,7 +52,7 @@ export function assembleXexe(mod: Mod, entryName?: string): Xexe {
     spaceSize += s
   }
 
-  const resolvedEntryName = entryName || findFirstCodeName(mod)
+  const resolvedEntryName = entryName || "main"
   const entry = labels.get(resolvedEntryName)
   if (entry === undefined) {
     let message = `entry name not found: ${resolvedEntryName}`
@@ -505,16 +505,6 @@ function emitPointerTarget(
 // ---------------------------------------------------------------------------
 // helpers
 // ---------------------------------------------------------------------------
-
-function findFirstCodeName(mod: Mod): string {
-  for (const definition of mod.definitions.values()) {
-    if (definition.kind === "CodeDefinition") {
-      return definition.name
-    }
-  }
-  let message = `no CodeDefinition found; cannot determine entry point`
-  throw new Error(message)
-}
 
 function writeIntLE(
   buf: Uint8Array,

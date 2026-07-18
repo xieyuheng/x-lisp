@@ -4,7 +4,7 @@
 ;
 ; Not executed in semantics tests (exit syscall would terminate the runner).
 
-(define-code test-syscall
+(define-code main
   (block entry
     (syscall)
     (ret)))

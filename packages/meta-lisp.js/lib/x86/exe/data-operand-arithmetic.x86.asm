@@ -4,7 +4,7 @@
 ;;       3  → DataOperand → IntExp → ImmOperand → sub
 ;; verifies that DataOperand resolution is not mov-specific
 
-(define-code test-data-operand-arithmetic
+(define-code main
   (block entry
     (mov (reg rax) 10)
     (add (reg rax) 5)

@@ -18,7 +18,7 @@
 ;  83 /7 — CMP r/m64, imm8
 ;  81 /7 — CMP r/m64, imm32
 
-(define-code add-forms
+(define-code main
   (block entry
     (add (reg rax) (reg rcx))                  ;; 03 /r: reg += reg
     (add (reg rax) (deref (reg rbp) -8))   ;; 03 /r: reg += mem

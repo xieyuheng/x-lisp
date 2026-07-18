@@ -25,7 +25,7 @@
     (bottom-right (struct point-t (x 0) (y 0)))
     (color 0)))
 
-(define-code test-write-nested
+(define-code main
   (block entry
     (mov (reg rax) (address my-rect))
     (mov (deref (reg rax) (offset-of rect-t bottom-right x)) 99)

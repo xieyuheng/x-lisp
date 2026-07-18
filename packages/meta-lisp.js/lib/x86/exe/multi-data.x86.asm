@@ -14,7 +14,7 @@
   (struct cell-t
     (x 20)))
 
-(define-code sum-two-cells
+(define-code main
   (block entry
     (mov (reg rax) (address my-first))
     (mov (reg rax) (deref (reg rax) (offset-of cell-t x)))
