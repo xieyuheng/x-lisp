@@ -1,6 +1,11 @@
 # assembly-lisp
 
-[meta-runtime.c] 设计新的 `xexe_t` 格式，用一个 buffer 忠实反应数据内容，然后设计 API 函数都直接操作 buffer。
+[meta-runtime.c] `make_xexe`
+[meta-runtime.c] `xexe_free`
+
+[meta-runtime.c] `xexe_load` API
+[meta-runtime.c] `xexe_version`
+[meta-runtime.c] `xexe_format`
 
 # self-hosting
 

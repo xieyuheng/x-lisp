@@ -1,9 +1,9 @@
 #pragma once
 
-// - why: every field is 8 bytes,
-//   because arm and risc-v require 8 bytes alignment.
-
 struct __attribute__((packed)) xexe_header_t {
+  // - why: every field is 8 bytes,
+  //   because arm and risc-v require 8 bytes alignment.
+
   uint8_t magic[8]; // "xexe\0\0\0\0" magic number
   uint8_t machine[8]; // "x86-64\0\0"
   uint64_t version;
@@ -32,6 +32,9 @@ struct __attribute__((packed)) xexe_header_t {
 
 typedef uint64_t xexe_string_t; // offset to string table
 
+// - why: every field is 8 bytes,
+//   because arm and risc-v require 8 bytes alignment.
+
 typedef uint64_t xexe_segment_kind_t;
 
 #define XEXE_CODE_SEGMENT 0
@@ -49,4 +52,9 @@ struct __attribute__((packed)) xexe_relocation_entry_t {
   xexe_string_t name;
   xexe_segment_kind_t segment_kind;
   uint64_t segment_offset;
+};
+
+struct xexe_t {
+  xexe_header_t *header;
+  buffer_t *buffer;
 };
