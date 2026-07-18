@@ -34,6 +34,8 @@ export function formatOperand(operand: X86.Operand): string {
       return `(var ${operand.name})`
     case "ExternOperand":
       return `(extern ${operand.name})`
+    case "RelocationOperand":
+      return `(relocation ${operand.type} ${operand.name})`
     case "DataOperand":
       return X86.formatData(operand.data)
   }

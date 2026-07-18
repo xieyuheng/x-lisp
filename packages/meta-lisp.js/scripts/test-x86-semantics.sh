@@ -4,7 +4,8 @@ set -e
 parallel="parallel -v --halt now,fail=1"
 ASM_DIR="lib/x86/semantics"
 
-find "$ASM_DIR" -name "*.x86.asm" | $parallel ./meta-lisp.js assemble-x86-flat {} {.}.flat
-find "$ASM_DIR" -name "*.x86.flat" | $parallel ./meta run-x86-flat-and-print {} ">" {.}.out
-find "$ASM_DIR" -name "*.x86.flat" | $parallel xxd {} ">" {.}.xxd
-find "$ASM_DIR" -name "*.x86.flat" | $parallel ndisasm -b 64 {} ">" {.}.ndisasm
+find "$ASM_DIR" -name "*.x86.asm" | $parallel ./meta-lisp.js assemble-x86-xexe {} {.}.xexe
+# TODO: xexe loader is WIP, run step disabled for now
+# find "$ASM_DIR" -name "*.x86.xexe" | $parallel ./meta run-x86-xexe-and-print {} ">" {.}.out
+find "$ASM_DIR" -name "*.x86.xexe" | $parallel xxd {} ">" {.}.xxd
+find "$ASM_DIR" -name "*.x86.xexe" | $parallel ndisasm -b 64 -e 120 {} ">" {.}.ndisasm

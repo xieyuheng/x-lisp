@@ -75,27 +75,6 @@ static void handle_test_xvm(cli_ctx_t *ctx) {
 }
 
 
-static void handle_run_x86_flat(cli_ctx_t *ctx) {
-  const char *pathname = cli_arg_get(ctx, 0);
-  file_t *file = open_file_or_fail(pathname, "rb");
-  buffer_t *buffer = make_buffer();
-  buffer_read(buffer, file);
-  file_close(file);
-  x86_execute_flat(buffer);
-  buffer_free(buffer);
-}
-
-static void handle_run_x86_flat_and_print(cli_ctx_t *ctx) {
-  const char *pathname = cli_arg_get(ctx, 0);
-  file_t *file = open_file_or_fail(pathname, "rb");
-  buffer_t *buffer = make_buffer();
-  buffer_read(buffer, file);
-  file_close(file);
-  void *result = x86_execute_flat(buffer);
-  buffer_free(buffer);
-  printf("%ld\n", (int64_t) result);
-}
-
 static void handle_run_x86_exe(cli_ctx_t *ctx) {
   const char *pathname = cli_arg_get(ctx, 0);
   file_t *file = open_file_or_fail(pathname, "rb");
@@ -223,8 +202,6 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "assemble-xvm file.xvm.asm --output --profile");
   cli_define_route(router, "run-xvm file.xvm.exe --entry");
   cli_define_route(router, "test-xvm file.xvm.exe --profile --snapshot --builtin");
-  cli_define_route(router, "run-x86-flat file.x86.flat");
-  cli_define_route(router, "run-x86-flat-and-print file.x86.flat");
   cli_define_route(router, "run-x86-exe file.x86.exe");
   cli_define_route(router, "run-x86-exe-and-print file.x86.exe");
   cli_define_route(router, "run-x86 file.x86.exe --entry");
@@ -233,8 +210,6 @@ int main(int argc, char *argv[]) {
   cli_define_handler(router, "assemble-xvm", handle_assemble_xvm);
   cli_define_handler(router, "run-xvm", handle_run_xvm);
   cli_define_handler(router, "test-xvm", handle_test_xvm);
-  cli_define_handler(router, "run-x86-flat", handle_run_x86_flat);
-  cli_define_handler(router, "run-x86-flat-and-print", handle_run_x86_flat_and_print);
   cli_define_handler(router, "run-x86-exe", handle_run_x86_exe);
   cli_define_handler(router, "run-x86-exe-and-print", handle_run_x86_exe_and_print);
   cli_define_handler(router, "run-x86", handle_run_x86_native);

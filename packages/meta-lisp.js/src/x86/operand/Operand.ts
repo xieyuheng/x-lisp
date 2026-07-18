@@ -10,6 +10,7 @@ export type Operand =
   | CcOperand
   | VarOperand
   | ExternOperand
+  | RelocationOperand
   | DataOperand
 
 export type RegOperand = {
@@ -158,6 +159,23 @@ export type ExternOperand = {
 export function ExternOperand(name: string): ExternOperand {
   return {
     kind: "ExternOperand",
+    name,
+  }
+}
+
+export type RelocationOperand = {
+  kind: "RelocationOperand"
+  type: string
+  name: string
+}
+
+export function RelocationOperand(
+  type: string,
+  name: string,
+): RelocationOperand {
+  return {
+    kind: "RelocationOperand",
+    type,
     name,
   }
 }

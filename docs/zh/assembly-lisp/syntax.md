@@ -44,7 +44,10 @@ assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
   - [(cc)](#cc)
   - [(var)](#var)
   - [(extern)](#extern)
+  - [(relocation)](#relocation)
+  - [(label-rel32 中 +4 的含义)](#label-rel32-中-4-的含义)
   - [data-operand](#data-operand)
+- [操作数与重定位类型](#操作数与重定位类型)
 - [类型](#类型)
   - [内置类型](#内置类型)
   - [结构体类型](#结构体类型)
@@ -305,6 +308,59 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (extern printf)
 ```
 
+## (relocation)
+
+```scheme
+(relocation <type> <name>)
+```
+
+自定义重定位 operand，出现在指令中。汇编器将其编码为 64-bit 立即数（movabs），
+`type` 决定 loader 的回填方式。
+
+| type | hole 大小 | loader 操作 |
+|------|-----------|-------------|
+| `label-rel32` | 32-bit | `target - (base + offset + 4)` |
+| `label-abs64` | 64-bit | `target` |
+| `extern` | 64-bit | symbol 绝对地址 |
+| `symbol-value` | 64-bit | loader 计算 symbol → tagged value |
+| `keyword-value` | 64-bit | loader 计算 keyword → tagged value |
+| 其他自定义 | 64-bit | 由 loader 解释 |
+
+```scheme
+(mov (reg rax) (relocation symbol-value foo))
+```
+
+### (label-rel32 中 +4 的含义)
+
+`label-rel32` 告诉 loader 在 32-bit 字段写入**相对位移**。
+x86-64 中所有使用相对寻址的指令，位移是相对于**下一条指令的地址**
+（即 RIP 在当前指令执行时的值）：
+
+```
+call rel32          → rip = 下一条指令
+jmp rel32           → 同上
+jcc rel32           → 同上
+mov r, [rip+disp32] → 同上
+lea r, [rip+disp32] → 同上
+```
+
+这些指令的 32-bit 位移字段恰好是指令的最后一个字段。
+relocation entry 的 `segmentOffset` 指向该字段的**起始位置**。
+
+```
+┌──────────────── instruction ────────────────┐
+│  opcode  │  ModR/M  │  displacement (4 bytes) │
+│                        ↑                     │
+│                   segmentOffset               │
+│                        ├──── 4 bytes ────┤    │
+│                                          ↑    │
+│                          segmentOffset + 4 = rip
+└──────────────────────────────────────────────┘
+```
+
+因此 loader 写入 `target - (base + segmentOffset + 4)`。
+`segmentOffset` 是 hole 起点，加 4 得到下一条指令的位置。
+
 ## 数据
 
 当操作数位置不匹配任何已知形式时，fallback 为 `data-operand`。
@@ -326,7 +382,38 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + deref
 ```
 
-当前 **只在 `.exe` 格式下支持**（flat 格式没有独立 data section）。
+当前 **只在 `.xexe` 格式下支持**（flat 格式没有独立 data section）。
+
+# 操作数与重定位类型
+
+汇编器在生成 `.xexe` 时，以下 operand 自动产生 relocation table 条目。
+
+### Code 段
+
+| operand | 指令 | 编码 | reloc type | segment |
+|---------|------|------|------------|---------|
+| `(label X)` | `call` / `jmp` / `j` | `opcode + disp32` | `label-rel32` | CODE |
+| `(address X)` | `mov` / `lea` | `[rip + disp32]` | `label-rel32` | CODE |
+| `(deref (address X))` | `mov` | `[rip + disp32]` | `label-rel32` | CODE |
+| `(extern X)` | `mov` | `movabs imm64` | `extern` | CODE |
+| `(relocation T X)` | `mov` | `movabs imm64` | `T` | CODE |
+
+`(label X)`、`(address X)` 和 `(deref (address X))` 在语义上等价于
+`(relocation label-rel32 X)`。
+
+`(extern X)` 等价于 `(relocation extern X)`。
+
+### Data 段
+
+| 数据形式 | reloc type | segment |
+|----------|------------|---------|
+| `(address X)` 字段 | `label-abs64` | DATA |
+| `(pointer ...)` 字段 | `label-abs64` | DATA |
+| string 作为 pointer-t 字段 | `label-abs64` | DATA |
+
+data 段中的 `(address X)` 等价于 `(relocation label-abs64 X)`。
+pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分配名称
+并记录为 label table 的 DATA 条目。
 
 # 类型
 

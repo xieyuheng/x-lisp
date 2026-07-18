@@ -22,30 +22,6 @@ static uint32_t read_u32_le(const uint8_t *p) {
     | ((uint32_t) p[3] << 24);
 }
 
-void *x86_execute_flat(const buffer_t *buffer) {
-  uint8_t *bytes = buffer_raw_bytes(buffer);
-  size_t length = buffer_length(buffer);
-
-  void *memory = mmap(
-    NULL, length,
-    PROT_READ | PROT_WRITE | PROT_EXEC,
-    MAP_PRIVATE | MAP_ANONYMOUS,
-    -1, 0);
-
-  if (memory == MAP_FAILED) {
-    where_printf("[mmap]: %s\n", strerror(errno));
-    exit(1);
-  }
-
-  memcpy(memory, bytes, length);
-
-  fn_t *fn;
-  memcpy(&fn, &memory, sizeof(fn));
-  void *result = fn();
-  munmap(memory, length);
-  return result;
-}
-
 void *x86_execute_exe(const buffer_t *buffer) {
   return x86_execute_exe_with_xvm(NULL, buffer);
 }

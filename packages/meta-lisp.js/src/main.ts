@@ -22,8 +22,7 @@ router.defineRoutes([
   "build-x86 --config --dump",
   "test-xvm  --config --profile --builtin",
   "format-basic2 <input>",
-  "assemble-x86-flat <input> <output>",
-  "assemble-x86-exe <input> <output>",
+  "assemble-x86-xexe <input> <output> --entry",
 ])
 
 router.defineHandlers({
@@ -76,24 +75,16 @@ router.defineHandlers({
     process.stdout.write(text)
   },
 
-  "assemble-x86-flat": ({ args: [input, output] }) => {
+  "assemble-x86-xexe": ({ args: [input, output], options }) => {
+    const entryName = options["--entry"]
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
     const stmts = sexps.map((s) => X86.parseStmt(s))
     const mod = X86.createMod()
     X86.BuildPipeline(mod, stmts)
-    const flat = X86.assembleFlat(mod)
-    fs.writeFileSync(output, flat)
-  },
-
-  "assemble-x86-exe": ({ args: [input, output] }) => {
-    const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps(code, { path: input })
-    const stmts = sexps.map((s) => X86.parseStmt(s))
-    const mod = X86.createMod()
-    X86.BuildPipeline(mod, stmts)
-    const exe = X86.assembleExe(mod)
-    fs.writeFileSync(output, exe)
+    const xexe = X86.assembleXexe(mod, entryName)
+    const buf = X86.emitXexe(xexe)
+    fs.writeFileSync(output, buf)
   },
 })
 

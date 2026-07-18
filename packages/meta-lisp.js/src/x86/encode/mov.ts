@@ -4,6 +4,7 @@ import type {
   DerefOperand,
   ExternOperand,
   RegDerefOperand,
+  RelocationOperand,
 } from "../operand/index.ts"
 import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
 import { isExtendedReg, regCode } from "./reg.ts"
@@ -40,6 +41,10 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
 
     if (src.kind === "ExternOperand") {
       return [encodeMovRegExtern(dstReg, src)]
+    }
+
+    if (src.kind === "RelocationOperand") {
+      return [encodeMovRelocation(dstReg, src)]
     }
   }
 
@@ -239,5 +244,22 @@ function encodeMovRegExtern(
     displacement: null,
     immediate: { size: 8, value: 0n },
     externalReloc: { symbolName: src.name },
+  }
+}
+
+function encodeMovRelocation(
+  dstReg: string,
+  _src: RelocationOperand,
+): EncodedInstruction {
+  const code = regCode(dstReg)
+  const ext = isExtendedReg(dstReg)
+  return {
+    prefixes: [],
+    rex: ext ? 0x49 : 0x48,
+    opcode: [0xb8 + (ext ? code - 8 : code)],
+    modRM: null,
+    sib: null,
+    displacement: null,
+    immediate: { size: 8, value: 0n },
   }
 }

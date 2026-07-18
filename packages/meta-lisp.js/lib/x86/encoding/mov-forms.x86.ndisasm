@@ -2,15 +2,213 @@
 00000003  488BC8            mov rcx,rax
 00000006  4D8BC1            mov r8,r9
 00000009  C3                ret
-0000000A  48C7C02A000000    mov rax,0x2a
-00000011  48C7C1FFFFFFFF    mov rcx,0xffffffffffffffff
-00000018  49C7C007000000    mov r8,0x7
-0000001F  C3                ret
-00000020  488945F8          mov [rbp-0x8],rax
-00000024  48894DF8          mov [rbp-0x8],rcx
-00000028  C3                ret
-00000029  488B45F8          mov rax,[rbp-0x8]
-0000002D  488B4DF8          mov rcx,[rbp-0x8]
-00000031  C3                ret
-00000032  48C745F82A000000  mov qword [rbp-0x8],0x2a
-0000003A  C3                ret
+0000000A  0000              add [rax],al
+0000000C  0000              add [rax],al
+0000000E  0000              add [rax],al
+00000010  48C7C02A000000    mov rax,0x2a
+00000017  48C7C1FFFFFFFF    mov rcx,0xffffffffffffffff
+0000001E  49C7C007000000    mov r8,0x7
+00000025  C3                ret
+00000026  0000              add [rax],al
+00000028  488945F8          mov [rbp-0x8],rax
+0000002C  48894DF8          mov [rbp-0x8],rcx
+00000030  C3                ret
+00000031  0000              add [rax],al
+00000033  0000              add [rax],al
+00000035  0000              add [rax],al
+00000037  00488B            add [rax-0x75],cl
+0000003A  45F8              clc
+0000003C  488B4DF8          mov rcx,[rbp-0x8]
+00000040  C3                ret
+00000041  0000              add [rax],al
+00000043  0000              add [rax],al
+00000045  0000              add [rax],al
+00000047  0048C7            add [rax-0x39],cl
+0000004A  45F8              clc
+0000004C  2A00              sub al,[rax]
+0000004E  0000              add [rax],al
+00000050  C3                ret
+00000051  6D                insd
+00000052  6F                outsd
+00000053  762D              jna 0x82
+00000055  7265              jc 0xbc
+00000057  672D72656700      sub eax,0x676572
+0000005D  6D                insd
+0000005E  6F                outsd
+0000005F  762D              jna 0x8e
+00000061  7265              jc 0xc8
+00000063  672D7265672F      sub eax,0x2f676572
+00000069  656E              gs outsb
+0000006B  7472              jz 0xdf
+0000006D  7900              jns 0x6f
+0000006F  6D                insd
+00000070  6F                outsd
+00000071  762D              jna 0xa0
+00000073  7265              jc 0xda
+00000075  672D696D6D00      sub eax,0x6d6d69
+0000007B  6D                insd
+0000007C  6F                outsd
+0000007D  762D              jna 0xac
+0000007F  7265              jc 0xe6
+00000081  672D696D6D2F      sub eax,0x2f6d6d69
+00000087  656E              gs outsb
+00000089  7472              jz 0xfd
+0000008B  7900              jns 0x8d
+0000008D  6D                insd
+0000008E  6F                outsd
+0000008F  762D              jna 0xbe
+00000091  6D                insd
+00000092  656D              gs insd
+00000094  2D72656700        sub eax,0x676572
+00000099  6D                insd
+0000009A  6F                outsd
+0000009B  762D              jna 0xca
+0000009D  6D                insd
+0000009E  656D              gs insd
+000000A0  2D7265672F        sub eax,0x2f676572
+000000A5  656E              gs outsb
+000000A7  7472              jz 0x11b
+000000A9  7900              jns 0xab
+000000AB  6D                insd
+000000AC  6F                outsd
+000000AD  762D              jna 0xdc
+000000AF  7265              jc 0x116
+000000B1  672D6D656D00      sub eax,0x6d656d
+000000B7  6D                insd
+000000B8  6F                outsd
+000000B9  762D              jna 0xe8
+000000BB  7265              jc 0x122
+000000BD  672D6D656D2F      sub eax,0x2f6d656d
+000000C3  656E              gs outsb
+000000C5  7472              jz 0x139
+000000C7  7900              jns 0xc9
+000000C9  6D                insd
+000000CA  6F                outsd
+000000CB  762D              jna 0xfa
+000000CD  6D                insd
+000000CE  656D              gs insd
+000000D0  2D696D6D00        sub eax,0x6d6d69
+000000D5  6D                insd
+000000D6  6F                outsd
+000000D7  762D              jna 0x106
+000000D9  6D                insd
+000000DA  656D              gs insd
+000000DC  2D696D6D2F        sub eax,0x2f6d6d69
+000000E1  656E              gs outsb
+000000E3  7472              jz 0x157
+000000E5  7900              jns 0xe7
+000000E7  0000              add [rax],al
+000000E9  0000              add [rax],al
+000000EB  0000              add [rax],al
+000000ED  0000              add [rax],al
+000000EF  0000              add [rax],al
+000000F1  0000              add [rax],al
+000000F3  0000              add [rax],al
+000000F5  0000              add [rax],al
+000000F7  0000              add [rax],al
+000000F9  0000              add [rax],al
+000000FB  0000              add [rax],al
+000000FD  0000              add [rax],al
+000000FF  0C00              or al,0x0
+00000101  0000              add [rax],al
+00000103  0000              add [rax],al
+00000105  0000              add [rax],al
+00000107  0000              add [rax],al
+00000109  0000              add [rax],al
+0000010B  0000              add [rax],al
+0000010D  0000              add [rax],al
+0000010F  0000              add [rax],al
+00000111  0000              add [rax],al
+00000113  0000              add [rax],al
+00000115  0000              add [rax],al
+00000117  1E                db 0x1e
+00000118  0000              add [rax],al
+0000011A  0000              add [rax],al
+0000011C  0000              add [rax],al
+0000011E  0000              add [rax],al
+00000120  0000              add [rax],al
+00000122  0000              add [rax],al
+00000124  0000              add [rax],al
+00000126  0010              add [rax],dl
+00000128  0000              add [rax],al
+0000012A  0000              add [rax],al
+0000012C  0000              add [rax],al
+0000012E  002A              add [rdx],ch
+00000130  0000              add [rax],al
+00000132  0000              add [rax],al
+00000134  0000              add [rax],al
+00000136  0000              add [rax],al
+00000138  0000              add [rax],al
+0000013A  0000              add [rax],al
+0000013C  0000              add [rax],al
+0000013E  0010              add [rax],dl
+00000140  0000              add [rax],al
+00000142  0000              add [rax],al
+00000144  0000              add [rax],al
+00000146  003C00            add [rax+rax],bh
+00000149  0000              add [rax],al
+0000014B  0000              add [rax],al
+0000014D  0000              add [rax],al
+0000014F  0000              add [rax],al
+00000151  0000              add [rax],al
+00000153  0000              add [rax],al
+00000155  0000              add [rax],al
+00000157  2800              sub [rax],al
+00000159  0000              add [rax],al
+0000015B  0000              add [rax],al
+0000015D  0000              add [rax],al
+0000015F  480000            o64 add [rax],al
+00000162  0000              add [rax],al
+00000164  0000              add [rax],al
+00000166  0000              add [rax],al
+00000168  0000              add [rax],al
+0000016A  0000              add [rax],al
+0000016C  0000              add [rax],al
+0000016E  0028              add [rax],ch
+00000170  0000              add [rax],al
+00000172  0000              add [rax],al
+00000174  0000              add [rax],al
+00000176  005A00            add [rdx+0x0],bl
+00000179  0000              add [rax],al
+0000017B  0000              add [rax],al
+0000017D  0000              add [rax],al
+0000017F  0000              add [rax],al
+00000181  0000              add [rax],al
+00000183  0000              add [rax],al
+00000185  0000              add [rax],al
+00000187  3800              cmp [rax],al
+00000189  0000              add [rax],al
+0000018B  0000              add [rax],al
+0000018D  0000              add [rax],al
+0000018F  660000            o16 add [rax],al
+00000192  0000              add [rax],al
+00000194  0000              add [rax],al
+00000196  0000              add [rax],al
+00000198  0000              add [rax],al
+0000019A  0000              add [rax],al
+0000019C  0000              add [rax],al
+0000019E  0038              add [rax],bh
+000001A0  0000              add [rax],al
+000001A2  0000              add [rax],al
+000001A4  0000              add [rax],al
+000001A6  007800            add [rax+0x0],bh
+000001A9  0000              add [rax],al
+000001AB  0000              add [rax],al
+000001AD  0000              add [rax],al
+000001AF  0000              add [rax],al
+000001B1  0000              add [rax],al
+000001B3  0000              add [rax],al
+000001B5  0000              add [rax],al
+000001B7  480000            o64 add [rax],al
+000001BA  0000              add [rax],al
+000001BC  0000              add [rax],al
+000001BE  00840000000000    add [rax+rax+0x0],al
+000001C5  0000              add [rax],al
+000001C7  0000              add [rax],al
+000001C9  0000              add [rax],al
+000001CB  0000              add [rax],al
+000001CD  0000              add [rax],al
+000001CF  480000            o64 add [rax],al
+000001D2  0000              add [rax],al
+000001D4  0000              add [rax],al
+000001D6  00                db 0x00
