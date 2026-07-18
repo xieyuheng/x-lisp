@@ -23,7 +23,7 @@
 0000003B  7367              jnc 0xa4
 0000003D  00C2              add dl,al
 0000003F  A964617461        test eax,0x61746164
-00000044  2E3100            xor [cs:rax],eax
+00000044  2E3000            xor [cs:rax],al
 00000047  6C                insb
 00000048  61                db 0x61
 00000049  62                db 0x62
@@ -78,7 +78,7 @@
 000000B0  0000              add [rax],al
 000000B2  0000              add [rax],al
 000000B4  0000              add [rax],al
-000000B6  0011              add [rcx],dl
+000000B6  0010              add [rax],dl
 000000B8  0000              add [rax],al
 000000BA  0000              add [rax],al
 000000BC  0000              add [rax],al

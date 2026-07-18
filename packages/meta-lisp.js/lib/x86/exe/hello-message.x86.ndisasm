@@ -26,7 +26,7 @@
 0000004D  61                db 0x61
 0000004E  676500C2          gs add dl,al
 00000052  A964617461        test eax,0x61746164
-00000057  2E3100            xor [cs:rax],eax
+00000057  2E3000            xor [cs:rax],al
 0000005A  6C                insb
 0000005B  61                db 0x61
 0000005C  62                db 0x62
@@ -81,7 +81,7 @@
 000000C3  0000              add [rax],al
 000000C5  0000              add [rax],al
 000000C7  0000              add [rax],al
-000000C9  0017              add [rdi],dl
+000000C9  0008              add [rax],cl
 000000CB  0000              add [rax],al
 000000CD  0000              add [rax],al
 000000CF  0000              add [rax],al
