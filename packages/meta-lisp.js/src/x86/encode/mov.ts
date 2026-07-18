@@ -243,7 +243,6 @@ function encodeMovRegExtern(
     sib: null,
     displacement: null,
     immediate: { size: 8, value: 0n },
-    externalReloc: { symbolName: src.name },
   }
 }
 

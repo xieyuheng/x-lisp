@@ -164,7 +164,6 @@ function encodeIndirectExternal(
     sib: null,
     displacement: null,
     immediate: { size: 8, value: 0n },
-    externalReloc: { symbolName },
   }
   const indirect: EncodedInstruction = {
     prefixes: [],
