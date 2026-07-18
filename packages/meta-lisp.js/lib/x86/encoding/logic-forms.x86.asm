@@ -15,7 +15,7 @@
 ;  83 /6 — XOR r/m64, imm8
 ;  81 /6 — XOR r/m64, imm32
 
-(define-code and-forms
+(define-code main
   (block entry
     (and (reg rax) (reg rcx))                  ;; 23 /r: reg &= reg
     (and (reg rax) 7)                    ;; 83 /4: reg &= imm8

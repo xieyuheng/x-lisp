@@ -10,7 +10,7 @@
 ; [base + index*scale] — SIB with index
 ; [base + index*scale + disp] — full SIB + displacement
 
-(define-code rbp-displacement
+(define-code main
   (block entry
     (mov (reg rax) (deref (reg rbp) 0))              ;; [rbp+0] → mod=01 disp8(0)
     (mov (reg rax) (deref (reg rbp) -8))             ;; [rbp-8] → mod=01 disp8

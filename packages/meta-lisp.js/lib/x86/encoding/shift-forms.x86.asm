@@ -10,7 +10,7 @@
 ;  D3 /5 — SHR r/m64, CL
 ;  C1 /5 — SHR r/m64, imm8
 
-(define-code shl-forms
+(define-code main
   (block entry
     (shl (reg rax) 1)                    ;; D1 /4: shl by 1
     (shl (reg rax) 3)                    ;; C1 /4: shl by imm8 > 1

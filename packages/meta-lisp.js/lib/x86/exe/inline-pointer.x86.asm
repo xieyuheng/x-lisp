@@ -10,7 +10,7 @@
   (x int64-t)
   (y int64-t))
 
-(define-code test-inline-pointer
+(define-code main
   (block entry
     (mov (reg rax) (pointer (struct point-t (x 77) (y 88))))
     (mov (reg rax) (deref (reg rax)))

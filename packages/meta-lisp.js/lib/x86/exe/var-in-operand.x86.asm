@@ -9,7 +9,7 @@
 (define-data answer
   (struct int-cell-t (value 99)))
 
-(define-code test-var-operand
+(define-code main
   (block entry
     (mov (reg rax) (address answer))
     (mov (reg rax) (deref (reg rax)))

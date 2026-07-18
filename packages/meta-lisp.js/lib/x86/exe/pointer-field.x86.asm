@@ -27,7 +27,7 @@
                (key "foo")
                (value 42))))))
 
-(define-code read-entry-value
+(define-code main
   (block entry
     (mov (reg rax) (address my-config))
     (mov (reg rax) (deref (reg rax) (offset-of config-t table)))

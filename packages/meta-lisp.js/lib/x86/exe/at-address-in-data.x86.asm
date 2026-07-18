@@ -13,7 +13,7 @@
 (define-data ptr
   (address cell))
 
-(define-code test-at-address
+(define-code main
   (block entry
     (mov (reg rax) (deref (address ptr)))
     (mov (reg rax) (deref (reg rax)))

@@ -11,7 +11,7 @@
   (struct buffer-t
     (data (array 10 20 30 40 50))))
 
-(define-code test-array
+(define-code main
   (block entry
     (mov (reg rax) (address buf))
     (mov (reg rax) (deref (reg rax)))

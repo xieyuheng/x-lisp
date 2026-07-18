@@ -4,7 +4,7 @@
 ;
 ; Direct call (E8 rel32) already covered in semantic tests.
 
-(define-code call-indirect-reg
+(define-code main
   (block entry
     (call (deref (reg rax)))              ;; FF /2: FF D0  (call rax)
     (ret)))

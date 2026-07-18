@@ -12,7 +12,7 @@
   (struct counter-t
     (value 0)))
 
-(define-code test-write-read
+(define-code main
   (block entry
     (mov (reg rax) (address my-counter))
     (mov (deref (reg rax) (offset-of counter-t value)) 42)

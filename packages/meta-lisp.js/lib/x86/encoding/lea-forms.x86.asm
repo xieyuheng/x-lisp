@@ -9,7 +9,7 @@
 ;   [base + idx*scale]   — SIB
 ;   [base + idx*scale + disp] — SIB + displacement
 
-(define-code lea-base
+(define-code main
   (block entry
     (lea (reg rax) (deref (reg rcx)))       ;; 8D /r: REX.W + 8D 01  (no disp)
     (ret)))
