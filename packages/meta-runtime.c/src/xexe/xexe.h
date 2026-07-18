@@ -1,21 +1,38 @@
 #pragma once
 
+// - why: every field is 8 bytes,
+//   because arm and risc-v require 8 bytes alignment.
+
 struct __attribute__((packed)) xexe_header_t {
-  uint8_t magic[4]; // "xexe" magic number
+  uint8_t magic[8]; // "xexe\0\0\0\0" magic number
+  uint8_t machine[8]; // "x86-64\0\0"
+  uint64_t version;
+
+  uint64_t code_file_offset;
   uint64_t code_size;
+  uint64_t entry_code_segment_offset;
+
+  uint64_t data_file_offset;
   uint64_t data_size;
+
   uint64_t space_size;
-  uint64_t entry_offset; // offset to code segment
-  uint64_t label_count;
-  uint64_t relocation_count;
-  uint8_t reserved[12]; // padding to 64 bytes
+
+  uint64_t string_table_file_offset;
+  uint64_t string_table_size;
+
+  uint64_t label_table_file_offset;
+  uint64_t label_table_size;
+
+  uint64_t relocation_table_file_offset;
+  uint64_t relocation_table_size;
 };
 
-_Static_assert(sizeof(xexe_header_t) == 64, "xexe_header_t must be exactly 64 bytes");
+// - note: string in string table must be unique,
+//   so that we can compare string by pointer.
 
 typedef uint64_t xexe_string_t; // offset to string table
 
-typedef uint8_t xexe_segment_kind_t;
+typedef uint64_t xexe_segment_kind_t;
 
 #define XEXE_CODE_SEGMENT 0
 #define XEXE_DATA_SEGMENT 1
