@@ -2,8 +2,6 @@
 
 [meta-runtime.c] `xexe_format`
 
-[meta-lisp.js] assemble x86 to xexe
-
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta
