@@ -3,33 +3,3 @@
 0000000B  48C1E004          shl rax,byte 0x4
 0000000F  4883C80A          or rax,byte +0xa
 00000013  C3                ret
-00000014  6D                insd
-00000015  61                db 0x61
-00000016  696E006D61696E    imul ebp,[rsi+0x0],dword 0x6e69616d
-0000001D  2F                db 0x2f
-0000001E  656E              gs outsb
-00000020  7472              jz 0x94
-00000022  7900              jns 0x24
-00000024  0000              add [rax],al
-00000026  0000              add [rax],al
-00000028  0000              add [rax],al
-0000002A  0000              add [rax],al
-0000002C  0000              add [rax],al
-0000002E  0000              add [rax],al
-00000030  0000              add [rax],al
-00000032  0000              add [rax],al
-00000034  0000              add [rax],al
-00000036  0000              add [rax],al
-00000038  0000              add [rax],al
-0000003A  0000              add [rax],al
-0000003C  0500000000        add eax,0x0
-00000041  0000              add [rax],al
-00000043  0000              add [rax],al
-00000045  0000              add [rax],al
-00000047  0000              add [rax],al
-00000049  0000              add [rax],al
-0000004B  0000              add [rax],al
-0000004D  0000              add [rax],al
-0000004F  0000              add [rax],al
-00000051  0000              add [rax],al
-00000053  00                db 0x00

@@ -102,6 +102,81 @@ static void handle_run_x86_xexe_and_print(cli_ctx_t *ctx) {
   printf("%ld\n", (int64_t) result);
 }
 
+static void handle_xexe_info(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  file_t *file = open_file_or_fail(pathname, "rb");
+  buffer_t *buffer = make_buffer();
+  buffer_read(buffer, file);
+  file_close(file);
+  xexe_t *xexe = make_xexe(buffer);
+  xexe_check(xexe);
+
+  xexe_header_t *h = xexe->header;
+  size_t label_count = h->label_table_size / sizeof(xexe_label_entry_t);
+  size_t relocation_count = h->relocation_table_size / sizeof(xexe_relocation_entry_t);
+
+  printf("Magic:      xexe\n");
+  printf("Machine:    x86-64\n");
+  printf("Version:    %lu\n", h->version);
+  printf("Code:       %lu bytes at file offset %lu\n", h->code_size, h->code_file_offset);
+  printf("Entry:      offset %lu in code segment\n", h->entry_code_segment_offset);
+  printf("Data:       %lu bytes at file offset %lu\n", h->data_size, h->data_file_offset);
+  printf("Space:      %lu bytes\n", h->space_size);
+  printf("String table:     %lu bytes at file offset %lu\n", h->string_table_size, h->string_table_file_offset);
+  printf("Label table:      %zu entries (%lu bytes) at file offset %lu\n", label_count, h->label_table_size, h->label_table_file_offset);
+  printf("Relocation table: %zu entries (%lu bytes) at file offset %lu\n", relocation_count, h->relocation_table_size, h->relocation_table_file_offset);
+
+  xexe_free(xexe);
+}
+
+static void handle_xexe_disasm(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  file_t *file = open_file_or_fail(pathname, "rb");
+  buffer_t *buffer = make_buffer();
+  buffer_read(buffer, file);
+  file_close(file);
+  xexe_t *xexe = make_xexe(buffer);
+  xexe_check(xexe);
+
+  xexe_header_t *h = xexe->header;
+  uint8_t *file_start = buffer_raw_bytes(buffer);
+  uint8_t *code = file_start + h->code_file_offset;
+
+  FILE *pipe = popen("ndisasm -b 64 -", "w");
+  if (!pipe) {
+    where_printf("[xexe-disasm] popen failed\n");
+    exit(1);
+  }
+  fwrite(code, 1, h->code_size, pipe);
+  pclose(pipe);
+
+  xexe_free(xexe);
+}
+
+static void handle_xexe_xxd(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  file_t *file = open_file_or_fail(pathname, "rb");
+  buffer_t *buffer = make_buffer();
+  buffer_read(buffer, file);
+  file_close(file);
+  xexe_t *xexe = make_xexe(buffer);
+  xexe_check(xexe);
+
+  xexe_header_t *h = xexe->header;
+  uint8_t *file_start = buffer_raw_bytes(buffer);
+  uint8_t *code = file_start + h->code_file_offset;
+
+  FILE *pipe = popen("xxd", "w");
+  if (!pipe) {
+    where_printf("[xexe-xxd] popen failed\n");
+    exit(1);
+  }
+  fwrite(code, 1, h->code_size, pipe);
+  pclose(pipe);
+
+  xexe_free(xexe);
+}
+
 int main(int argc, char *argv[]) {
   sanity_check();
   setbuf(stdout, NULL);
@@ -117,12 +192,18 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "test-xvm file.xvm.exe --profile --snapshot --builtin");
   cli_define_route(router, "run-x86-xexe file.x86.xexe");
   cli_define_route(router, "run-x86-xexe-and-print file.x86.xexe");
+  cli_define_route(router, "xexe-info file.x86.xexe");
+  cli_define_route(router, "xexe-disasm file.x86.xexe");
+  cli_define_route(router, "xexe-xxd file.x86.xexe");
 
   cli_define_handler(router, "assemble-xvm", handle_assemble_xvm);
   cli_define_handler(router, "run-xvm", handle_run_xvm);
   cli_define_handler(router, "test-xvm", handle_test_xvm);
   cli_define_handler(router, "run-x86-xexe", handle_run_x86_xexe);
   cli_define_handler(router, "run-x86-xexe-and-print", handle_run_x86_xexe_and_print);
+  cli_define_handler(router, "xexe-info", handle_xexe_info);
+  cli_define_handler(router, "xexe-disasm", handle_xexe_disasm);
+  cli_define_handler(router, "xexe-xxd", handle_xexe_xxd);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);
