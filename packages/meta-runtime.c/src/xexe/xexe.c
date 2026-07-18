@@ -11,3 +11,7 @@ xexe_t *make_xexe(buffer_t *buffer) {
 void xexe_free(xexe_t *self) {
   buffer_free(self->buffer);
 }
+
+uint64_t xexe_version(xexe_t *xexe) {
+  return xexe->header->version;
+}

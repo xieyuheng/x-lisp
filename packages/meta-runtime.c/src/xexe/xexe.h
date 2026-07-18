@@ -61,3 +61,5 @@ struct xexe_t {
 
 xexe_t *make_xexe(buffer_t *buffer);
 void xexe_free(xexe_t *self);
+
+uint64_t xexe_version(xexe_t *self);

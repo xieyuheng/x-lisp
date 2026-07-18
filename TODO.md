@@ -1,6 +1,6 @@
 # assembly-lisp
 
-[meta-runtime.c] `xexe_version`
+[meta-runtime.c] `xexe_check`
 [meta-runtime.c] `xexe_format`
 
 [meta-lisp.js] assemble x86 to xexe
