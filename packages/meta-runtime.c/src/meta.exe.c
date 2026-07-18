@@ -26,27 +26,27 @@ static void handle_assemble_xvm(cli_ctx_t *ctx) {
   const char *output = cli_option_get(ctx, "--output");
   bool profile = cli_option_has(ctx, "--profile");
   mod_t *mod = xvm_asm_load_mod(make_path(pathname), profile);
-  xvm_exe_t *xexe = make_xvm_exe();
-  xvm_exe_from_mod(xexe, mod);
+  xvm_exe_t *exe = make_xvm_exe();
+  xvm_exe_from_mod(exe, mod);
   mod_free(mod);
   if (output) {
-    xvm_exe_dump(xexe, output);
+    xvm_exe_dump(exe, output);
   } else {
     char *default_output = build_output_pathname(pathname);
-    xvm_exe_dump(xexe, default_output);
+    xvm_exe_dump(exe, default_output);
     free(default_output);
   }
-  xvm_exe_free(xexe);
+  xvm_exe_free(exe);
 }
 
 static void handle_run_xvm(cli_ctx_t *ctx) {
   setup_current_command_line(ctx->passthrough);
 
   const char *pathname = cli_arg_get(ctx, 0);
-  xvm_exe_t *xexe = make_xvm_exe();
-  xvm_exe_load(xexe, pathname);
-  mod_t *mod = xvm_exe_to_mod(xexe);
-  xvm_exe_free(xexe);
+  xvm_exe_t *exe = make_xvm_exe();
+  xvm_exe_load(exe, pathname);
+  mod_t *mod = xvm_exe_to_mod(exe);
+  xvm_exe_free(exe);
 
   const char *entry = cli_option_get(ctx, "--entry");
   if (!entry) {
@@ -67,10 +67,10 @@ static void handle_test_xvm(cli_ctx_t *ctx) {
   const char *snapshot = cli_option_get(ctx, "--snapshot");
   bool profile = cli_option_has(ctx, "--profile");
   bool builtin = cli_option_has(ctx, "--builtin");
-  xvm_exe_t *xexe = make_xvm_exe();
-  xvm_exe_load(xexe, pathname);
-  mod_t *mod = xvm_exe_to_mod(xexe);
-  xvm_exe_free(xexe);
+  xvm_exe_t *exe = make_xvm_exe();
+  xvm_exe_load(exe, pathname);
+  mod_t *mod = xvm_exe_to_mod(exe);
+  xvm_exe_free(exe);
   mod_test(mod, snapshot, profile, builtin);
 }
 
