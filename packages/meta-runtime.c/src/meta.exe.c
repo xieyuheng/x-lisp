@@ -75,118 +75,31 @@ static void handle_test_xvm(cli_ctx_t *ctx) {
 }
 
 
-static void handle_run_x86_exe(cli_ctx_t *ctx) {
+static void handle_run_x86_xexe(cli_ctx_t *ctx) {
   const char *pathname = cli_arg_get(ctx, 0);
   file_t *file = open_file_or_fail(pathname, "rb");
   buffer_t *buffer = make_buffer();
   buffer_read(buffer, file);
   file_close(file);
-  x86_execute_exe(buffer);
-  buffer_free(buffer);
+  xexe_t *xexe = make_xexe(buffer);
+  xexe_check(xexe);
+  xexe_load(xexe);
+  xexe_call_entry(xexe);
+  xexe_free(xexe);
 }
 
-static void handle_run_x86_exe_and_print(cli_ctx_t *ctx) {
+static void handle_run_x86_xexe_and_print(cli_ctx_t *ctx) {
   const char *pathname = cli_arg_get(ctx, 0);
   file_t *file = open_file_or_fail(pathname, "rb");
   buffer_t *buffer = make_buffer();
   buffer_read(buffer, file);
   file_close(file);
-  void *result = x86_execute_exe(buffer);
-  buffer_free(buffer);
+  xexe_t *xexe = make_xexe(buffer);
+  xexe_check(xexe);
+  xexe_load(xexe);
+  void *result = xexe_call_entry(xexe);
+  xexe_free(xexe);
   printf("%ld\n", (int64_t) result);
-}
-
-static void handle_run_x86_native(cli_ctx_t *ctx) {
-  const char *pathname = cli_arg_get(ctx, 0);
-  const char *entry_name = cli_option_get(ctx, "--entry");
-
-  mod_t *mod = make_mod();
-  import_builtin(mod);
-  mod_setup(mod);
-
-  file_t *file = open_file_or_fail(pathname, "rb");
-  buffer_t *buffer = make_buffer();
-  buffer_read(buffer, file);
-  file_close(file);
-
-  xvm_t *xvm = make_xvm(mod);
-  x86_image_t *image = x86_load_image(xvm, buffer);
-  if (!image) exit(1);
-
-  if (entry_name) {
-    x86_call_native_entry(image, entry_name, 0, NULL);
-  } else {
-    x86_call_entry(image);
-  }
-
-  x86_unload_image(image, xvm);
-  xvm_free(xvm);
-  buffer_free(buffer);
-  mod_free(mod);
-}
-
-static void handle_test_x86(cli_ctx_t *ctx) {
-  const char *pathname = cli_arg_get(ctx, 0);
-  const char *snapshot = cli_option_get(ctx, "--snapshot");
-  bool profile = cli_option_has(ctx, "--profile");
-
-  mod_t *mod = make_mod();
-  import_builtin(mod);
-  mod_setup(mod);
-
-  file_t *file = open_file_or_fail(pathname, "rb");
-  buffer_t *buffer = make_buffer();
-  buffer_read(buffer, file);
-  file_close(file);
-
-  xvm_t *xvm = make_xvm(mod);
-  x86_image_t *image = x86_load_image(xvm, buffer);
-  if (!image) exit(1);
-
-  array_t *tests = x86_collect_tests(image);
-  const size_t testCount = array_length(tests);
-
-  x86_call_entry(image);
-
-  for (size_t i = 0; i < testCount; i++) {
-    const char *name = (const char *) array_get(tests, i);
-    double test_start = time_millisecond();
-
-    if (snapshot == NULL) {
-      x86_call_native_entry(image, name, 0, NULL);
-    } else {
-      path_t *path = make_path(snapshot);
-      path_join(path, name);
-      path_join_extension(path, ".out");
-      char *segment = path_pop_segment(path);
-      fs_ensure_directory(path_raw_string(path));
-      path_push_segment(path, segment);
-
-      stdout_push(path_raw_string(path));
-      x86_call_native_entry(image, name, 0, NULL);
-      stdout_drop();
-
-      char *output = fs_read(path_raw_string(path));
-      if (string_is_empty(output)) {
-        fs_delete_file(path_raw_string(path));
-      }
-      string_free(output);
-      path_free(path);
-    }
-
-    printf("[test] %s", name);
-    if (profile) {
-      double elapsed = time_millisecond_passed(test_start);
-      printf(" -- %.3fms", elapsed);
-    }
-    printf("\n");
-  }
-
-  array_free(tests);
-  x86_unload_image(image, xvm);
-  xvm_free(xvm);
-  buffer_free(buffer);
-  mod_free(mod);
 }
 
 int main(int argc, char *argv[]) {
@@ -202,18 +115,14 @@ int main(int argc, char *argv[]) {
   cli_define_route(router, "assemble-xvm file.xvm.asm --output --profile");
   cli_define_route(router, "run-xvm file.xvm.exe --entry");
   cli_define_route(router, "test-xvm file.xvm.exe --profile --snapshot --builtin");
-  cli_define_route(router, "run-x86-exe file.x86.exe");
-  cli_define_route(router, "run-x86-exe-and-print file.x86.exe");
-  cli_define_route(router, "run-x86 file.x86.exe --entry");
-  cli_define_route(router, "test-x86 file.x86.exe --profile --snapshot");
+  cli_define_route(router, "run-x86-xexe file.x86.xexe");
+  cli_define_route(router, "run-x86-xexe-and-print file.x86.xexe");
 
   cli_define_handler(router, "assemble-xvm", handle_assemble_xvm);
   cli_define_handler(router, "run-xvm", handle_run_xvm);
   cli_define_handler(router, "test-xvm", handle_test_xvm);
-  cli_define_handler(router, "run-x86-exe", handle_run_x86_exe);
-  cli_define_handler(router, "run-x86-exe-and-print", handle_run_x86_exe_and_print);
-  cli_define_handler(router, "run-x86", handle_run_x86_native);
-  cli_define_handler(router, "test-x86", handle_test_x86);
+  cli_define_handler(router, "run-x86-xexe", handle_run_x86_xexe);
+  cli_define_handler(router, "run-x86-xexe-and-print", handle_run_x86_xexe_and_print);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);

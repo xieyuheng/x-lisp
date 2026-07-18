@@ -54,9 +54,39 @@ struct __attribute__((packed)) xexe_relocation_entry_t {
   uint64_t segment_offset;
 };
 
+// Pack {kind, offset} into void* for the label_map record_t.
+// offset is segment-relative and guaranteed < 2G, so 32 bits suffice.
+
+#define XEXE_LABEL_PACK(kind, offset) \
+  ((void *)(uint64_t)(((uint64_t)(kind) << 32) | ((uint64_t)(offset) & 0xFFFFFFFF)))
+
+#define XEXE_LABEL_KIND(packed) \
+  ((xexe_segment_kind_t)((uint64_t)(packed) >> 32))
+
+#define XEXE_LABEL_OFFSET(packed) \
+  ((uint64_t)(packed) & 0xFFFFFFFF)
+
 struct xexe_t {
   xexe_header_t *header;
   buffer_t *buffer; // owns the buffer.
+
+  // mmap'd image
+  void *image;
+  size_t image_size;
+  void *code;
+  void *data;
+  void *space;
+  void *entry; // code + entry_code_segment_offset
+
+  // parsed tables — pointers into buffer, no copy
+  const char *string_table;
+  xexe_label_entry_t *label_entries;
+  size_t label_count;
+  xexe_relocation_entry_t *relocation_entries;
+  size_t relocation_count;
+
+  // label name → XEXE_LABEL_PACK(kind, segment_offset)
+  record_t *label_map;
 };
 
 xexe_t *make_xexe(buffer_t *buffer);
@@ -64,3 +94,6 @@ void xexe_free(xexe_t *self);
 
 void xexe_check(xexe_t *self);
 uint64_t xexe_version(xexe_t *self);
+
+void xexe_load(xexe_t *self);
+void *xexe_call_entry(xexe_t *self);
