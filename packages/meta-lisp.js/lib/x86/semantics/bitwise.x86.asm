@@ -7,7 +7,7 @@
 ;   or  reg, imm8  — 83 /1  (REX.W + 83 + ModRM mod=3 reg=1 rm=r + imm8)
 ;   ret            — C3
 
-(define-code test-bitwise
+(define-code main
   (block entry
     (mov (reg rax) 255)
     (and (reg rax) 15)

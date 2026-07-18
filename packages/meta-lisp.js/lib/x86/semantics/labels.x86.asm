@@ -7,7 +7,7 @@
 ;
 ; Labels: block names only (no bare-symbol labels)
 
-(define-code test-labels
+(define-code main
   (block entry
     (mov (reg rax) 0)
     (jmp (label done))

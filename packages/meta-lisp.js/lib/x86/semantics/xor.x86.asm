@@ -5,7 +5,7 @@
 ;   mov reg, imm32 — C7 /0
 ;   ret            — C3
 
-(define-code test-xor
+(define-code main
   (block entry
     (xor (reg rax) (reg rax))
     (mov (reg rax) 7)

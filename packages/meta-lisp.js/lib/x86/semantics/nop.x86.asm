@@ -5,7 +5,7 @@
 ;   mov reg, imm32
 ;   ret
 
-(define-code test-nop
+(define-code main
   (block entry
     (mov (reg rax) 7)
     (nop)

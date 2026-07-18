@@ -6,7 +6,7 @@
 ;   j cc label     — 0F 8x rel32  (condition code: g)
 ;   ret            — C3
 
-(define-code test-conditional
+(define-code main
   (block entry
     (mov (reg rax) 10)
     (mov (reg rcx) 3)

@@ -6,7 +6,7 @@
 ;   add reg, imm32 — 81 /0  (REX.W + 81 + ModRM mod=3 reg=0 rm=r + imm32)
 ;   ret            — C3
 
-(define-code test-add
+(define-code main
   (block entry
     (mov (reg rax) 10)
     (add (reg rax) 20)

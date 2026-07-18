@@ -16,7 +16,7 @@
     (x 42)
     (y 100)))
 
-(define-code read-point-x
+(define-code main
   (block entry
     (mov (reg rax) (address my-point))
     (mov (reg rax) (deref (reg rax) (offset-of point-t x)))

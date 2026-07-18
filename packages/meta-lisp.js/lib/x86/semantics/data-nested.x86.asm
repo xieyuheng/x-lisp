@@ -26,7 +26,7 @@
     (bottom-right (struct point-t (x 100) (y 200)))
     (color 255)))
 
-(define-code read-rect
+(define-code main
   (block entry
     (mov (reg rax) (address my-rect))
     (mov (reg rax) (deref (reg rax) (offset-of rect-t bottom-right x)))

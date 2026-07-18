@@ -6,7 +6,7 @@
 ;   pop reg        — 58+r
 ;   ret            — C3
 
-(define-code test-stack
+(define-code main
   (block entry
     (mov (reg rax) 100)
     (push (reg rax))
