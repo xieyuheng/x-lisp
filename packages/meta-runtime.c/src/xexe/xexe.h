@@ -56,5 +56,8 @@ struct __attribute__((packed)) xexe_relocation_entry_t {
 
 struct xexe_t {
   xexe_header_t *header;
-  buffer_t *buffer;
+  buffer_t *buffer; // owns the buffer.
 };
+
+xexe_t *make_xexe(buffer_t *buffer);
+void xexe_free(xexe_t *self);

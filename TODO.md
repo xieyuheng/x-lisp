@@ -1,11 +1,9 @@
 # assembly-lisp
 
-[meta-runtime.c] `make_xexe`
-[meta-runtime.c] `xexe_free`
-
-[meta-runtime.c] `xexe_load` API
 [meta-runtime.c] `xexe_version`
 [meta-runtime.c] `xexe_format`
+
+[meta-lisp.js] assemble x86 to xexe
 
 # self-hosting
 
