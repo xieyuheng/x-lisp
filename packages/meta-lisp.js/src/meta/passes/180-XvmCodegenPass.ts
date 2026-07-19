@@ -3,7 +3,7 @@ import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
 import * as Xvm from "../../xvm/index.ts"
 
-export function CodegenPass(pkg: M.Package, basicMod: B.Mod): Xvm.Mod {
+export function XvmCodegenPass(pkg: M.Package, basicMod: B.Mod): Xvm.Mod {
   const xvmMod = Xvm.createMod()
   for (const definition of basicMod.definitions.values()) {
     for (const stackDefinition of codegenDefinition(basicMod, definition)) {
@@ -201,7 +201,7 @@ function codegenBlock(
       pendingCondition = result
     } else if (instr.kind === "BranchInstr") {
       if (pendingCondition === null) {
-        throw new Error("[CodegenPass] BranchInstr without TestInstr")
+        throw new Error("[XvmCodegenPass] BranchInstr without TestInstr")
       }
 
       instrs.push(
@@ -267,7 +267,7 @@ function codegenInstr(
     }
 
     case "BranchInstr": {
-      throw new Error("[CodegenPass] BranchInstr handled in codegenBlock")
+      throw new Error("[XvmCodegenPass] BranchInstr handled in codegenBlock")
     }
 
     case "GotoInstr": {
@@ -385,7 +385,7 @@ function codegenVar(state: State, name: string, exp: B.VarExp): CodegenResult {
 
   switch (definition.kind) {
     case "TestDefinition": {
-      let message = `[CodegenPass / codegenVar] can not handle TestDefinition`
+      let message = `[XvmCodegenPass / codegenVar] can not handle TestDefinition`
       throw new Error(message)
     }
 
@@ -481,7 +481,7 @@ function codegenGeneralApply(
 
   switch (definition.kind) {
     case "TestDefinition": {
-      let message = `[CodegenPass / codegenGeneralApply] can not handle TestDefinition`
+      let message = `[XvmCodegenPass / codegenGeneralApply] can not handle TestDefinition`
       throw new Error(message)
     }
 
