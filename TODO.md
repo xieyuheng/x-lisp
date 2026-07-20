@@ -1,10 +1,10 @@
 # native code generation
 
-[meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `StructDefinition`
+[meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `FunctionDefinition`
 
 [meta-lisp.js] 190-SelectInstructionPass -- `selectBlock`
 
-[meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `FunctionDefinition`
+[meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `StructDefinition`
 [meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `VariableDefinition`
 [meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `ExternFunctionDefinition`
 [meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `ExternVariableDefinition`
