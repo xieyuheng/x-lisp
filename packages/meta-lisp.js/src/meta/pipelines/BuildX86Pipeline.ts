@@ -4,8 +4,8 @@ import {
   openOutputFile,
 } from "@xieyuheng/std.js/file"
 import * as B from "../../basic2/index.ts"
-import * as M from "../index.ts"
 import * as X86 from "../../x86/index.ts"
+import * as M from "../index.ts"
 
 export function BuildX86Pipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)

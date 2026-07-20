@@ -16,6 +16,8 @@ assembly-lisp 的所有指令按功能分类。
 ## 数据移动
 
 - [`mov`](mov.md) — 数据传送
+- [`movzx`](movzx.md) — 零扩展 byte 至 quadword
+- [`set`](set.md) — 按条件码设置 byte
 
 ## 算术与逻辑
 

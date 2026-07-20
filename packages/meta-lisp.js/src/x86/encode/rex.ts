@@ -1,4 +1,4 @@
-import { isExtendedReg } from "./reg.ts"
+import { regInfo } from "./reg.ts"
 
 export function computeRex(
   w: boolean,
@@ -7,9 +7,39 @@ export function computeRex(
   rm: string | null,
 ): number | null {
   let value = 0x40
+  let needed = w
   if (w) value |= 0x08
-  if (reg && isExtendedReg(reg)) value |= 0x04
-  if (index && isExtendedReg(index)) value |= 0x02
-  if (rm && isExtendedReg(rm)) value |= 0x01
-  return value === 0x40 ? null : value
+
+  if (reg) {
+    const r = regInfo(reg)
+    if (r.isExtended) {
+      value |= 0x04
+      needed = true
+    }
+    if (r.needsRex) {
+      needed = true
+    }
+  }
+  if (index) {
+    const r = regInfo(index)
+    if (r.isExtended) {
+      value |= 0x02
+      needed = true
+    }
+    if (r.needsRex) {
+      needed = true
+    }
+  }
+  if (rm) {
+    const r = regInfo(rm)
+    if (r.isExtended) {
+      value |= 0x01
+      needed = true
+    }
+    if (r.needsRex) {
+      needed = true
+    }
+  }
+
+  return needed ? value : null
 }

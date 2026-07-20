@@ -5,7 +5,9 @@ import { encodeImul } from "./imul.ts"
 import { encodeLea } from "./lea.ts"
 import { encodeLogic } from "./logic.ts"
 import { encodeMov } from "./mov.ts"
+import { encodeMovzx } from "./movzx.ts"
 import { encodeNop } from "./nop.ts"
+import { encodeSet } from "./set.ts"
 import { encodeShift } from "./shift.ts"
 import { encodeStack } from "./stack.ts"
 import { encodeSyscall } from "./syscall.ts"
@@ -45,6 +47,10 @@ export function encode(instr: Instr): Array<EncodedInstruction> {
       return encodeNop()
     case "syscall":
       return encodeSyscall()
+    case "set":
+      return encodeSet(instr)
+    case "movzx":
+      return encodeMovzx(instr)
     case "label":
       return []
     default:
