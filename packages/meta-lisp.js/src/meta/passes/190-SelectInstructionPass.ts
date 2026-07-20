@@ -21,7 +21,8 @@ function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
     }
 
     case  "FunctionDefinition": {
-      const blocks = Array.from(definition.blocks.values()).map((block) => selectBlock(block))
+      const blocks = Array.from(definition.blocks.values())
+        .map((block) => selectBlock(block))
       return [X86.DefineCodeStmt(definition.name, blocks)]
     }
 
