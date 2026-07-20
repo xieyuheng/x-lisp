@@ -49,5 +49,11 @@ function selectBlock(basicBlock: B.Block): X86.Block {
 }
 
 function selectInstr(instr: B.Instr): Array<X86.Instr> {
-  return []
+  switch (instr.op) {
+    default: {
+      let message = `[selectInstr] unhandled instr: ${B.formatInstr(instr)}`
+      console.log(message)
+      return []
+    }
+  }
 }

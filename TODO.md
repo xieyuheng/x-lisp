@@ -1,6 +1,6 @@
 # native code generation
 
-[meta-lisp.js] 190-SelectInstructionPass -- `selectBlock`
+[meta-lisp.js] 190-SelectInstructionPass -- `selectInstr`
 
 [meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `StructDefinition`
 [meta-lisp.js] 190-SelectInstructionPass -- `selectDefinition` -- handle `VariableDefinition`
