@@ -11,7 +11,7 @@ export function SelectInstructionPass(
 ): X86.Mod {
   const x86Mod = X86.createMod()
   const stmts = Array.from(basicMod.definitions.values()).flatMap(
-    (definition) => selectDefinition(definition, ssaReport),
+    (definition) => selectDefinition(definition, basicMod, ssaReport),
   )
   X86.BuildPipeline(x86Mod, stmts)
   return x86Mod
@@ -19,6 +19,7 @@ export function SelectInstructionPass(
 
 function selectDefinition(
   definition: B.Definition,
+  basicMod: B.Mod,
   ssaReport: M.SsaAnalysisReport,
 ): Array<X86.Stmt> {
   switch (definition.kind) {
@@ -35,7 +36,7 @@ function selectDefinition(
       }
 
       const blocks = Array.from(definition.blocks.values()).map((block) =>
-        selectBlock(block, ssaGraph),
+        selectBlock(block, basicMod, ssaGraph),
       )
       return [X86.DefineCodeStmt(definition.name, blocks)]
     }
@@ -58,6 +59,7 @@ function selectDefinition(
 }
 
 type SelectState = {
+  basicMod: B.Mod
   ssaGraph: B.SsaGraph
   icmpMap: Map<string, { cc: string; a: string; b: string }>
 }
@@ -114,6 +116,12 @@ function cellToVar(cell: B.Cell): X86.VarOperand {
   return X86.VarOperand(cell.id)
 }
 
+function setupArgs(argCells: Array<B.Cell>): Array<X86.Instr> {
+  return argCells.map((cell, i) =>
+    X86.Instr("mov", [X86.RegOperand(argRegs[i]), cellToVar(cell)]),
+  )
+}
+
 function selectBinaryOp(instr: B.Instr): Array<X86.Instr> {
   const x86op = binaryX86Op[instr.op]
   const [a, b] = instr.input
@@ -131,9 +139,11 @@ function selectBinaryOp(instr: B.Instr): Array<X86.Instr> {
 
 function selectBlock(
   basicBlock: B.Block,
+  basicMod: B.Mod,
   ssaGraph: B.SsaGraph,
 ): X86.Block {
   const state: SelectState = {
+    basicMod,
     ssaGraph,
     icmpMap: new Map(),
   }
@@ -359,6 +369,102 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         X86.Instr(
           "mov",
           [cellToVar(out), X86.RelocationOperand("string-value", content)],
+        ),
+      ]
+    }
+
+    case "load": {
+      const [ptr] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr(
+          "mov",
+          [
+            cellToVar(out),
+            X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
+          ],
+        ),
+      ]
+    }
+
+    case "store": {
+      const [ptr, val] = instr.input
+      return [
+        X86.Instr(
+          "mov",
+          [
+            X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
+            cellToVar(val),
+          ],
+        ),
+      ]
+    }
+
+    case "call": {
+      const [targetCell, ...argCells] = instr.input
+      const [out] = instr.output
+
+      const defInfo = state.ssaGraph.cellInfos.get(targetCell.id)
+      const definedByAddress =
+        defInfo !== undefined && defInfo.definedBy.instr.op === "address"
+
+      if (definedByAddress) {
+        const name = B.expectSymbol(
+          defInfo.definedBy.instr.attributes,
+          "name",
+        )
+        const definition = B.modLookupDefinition(state.basicMod, name)
+        const isExtern = definition?.kind === "ExternFunctionDefinition"
+        const target = isExtern
+          ? X86.ExternOperand(name)
+          : X86.LabelOperand(name)
+        return [
+          ...setupArgs(argCells),
+          X86.Instr("call", [target]),
+          X86.Instr("mov", [cellToVar(out), X86.RegOperand("rax")]),
+        ]
+      }
+
+      return [
+        X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(targetCell)]),
+        ...setupArgs(argCells),
+        X86.Instr(
+          "call",
+          [X86.RegDerefOperand("rax", undefined, undefined, undefined)],
+        ),
+        X86.Instr("mov", [cellToVar(out), X86.RegOperand("rax")]),
+      ]
+    }
+
+    case "tail-call": {
+      const [targetCell, ...argCells] = instr.input
+
+      const defInfo = state.ssaGraph.cellInfos.get(targetCell.id)
+      const definedByAddress =
+        defInfo !== undefined && defInfo.definedBy.instr.op === "address"
+
+      if (definedByAddress) {
+        const name = B.expectSymbol(
+          defInfo.definedBy.instr.attributes,
+          "name",
+        )
+        const definition = B.modLookupDefinition(state.basicMod, name)
+        const isExtern = definition?.kind === "ExternFunctionDefinition"
+        const target = isExtern
+          ? X86.ExternOperand(name)
+          : X86.LabelOperand(name)
+        return [
+          ...setupArgs(argCells),
+          X86.Instr("tail-jmp", [target]),
+        ]
+      }
+
+      return [
+        X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(targetCell)]),
+        ...setupArgs(argCells),
+        X86.Instr(
+          "tail-jmp",
+          [X86.RegDerefOperand("rax", undefined, undefined, undefined)],
         ),
       ]
     }
