@@ -1,0 +1,4 @@
+00000000  48D1F8            sar rax,1
+00000003  48C1F803          sar rax,byte 0x3
+00000007  48D3F8            sar rax,cl
+0000000A  C3                ret

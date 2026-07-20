@@ -1,5 +1,5 @@
-import type { Attribute } from "./Attribute.ts"
 import type { Type } from "../type/index.ts"
+import type { Attribute } from "./Attribute.ts"
 
 function expectAttribute(
   attributes: Record<string, Attribute>,

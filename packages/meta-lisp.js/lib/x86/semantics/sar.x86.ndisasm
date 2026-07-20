@@ -1,0 +1,3 @@
+00000000  48C7C0D6FFFFFF    mov rax,0xffffffffffffffd6
+00000007  48C1F803          sar rax,byte 0x3
+0000000B  C3                ret

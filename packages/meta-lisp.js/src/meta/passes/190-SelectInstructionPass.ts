@@ -129,7 +129,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
     case "argument": {
       const [out] = instr.output
       const index = Number(B.expectInt(instr.attributes, "index"))
-      return [X86.Instr("mov", [cellToVar(out), X86.RegOperand(argRegs[index])])]
+      return [
+        X86.Instr("mov", [cellToVar(out), X86.RegOperand(argRegs[index])]),
+      ]
     }
 
     case "int64": {
@@ -141,7 +143,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
     case "bool": {
       const [out] = instr.output
       const value = B.expectBool(instr.attributes, "value")
-      return [X86.Instr("mov", [cellToVar(out), X86.ImmOperand(value ? 1n : 0n)])]
+      return [
+        X86.Instr("mov", [cellToVar(out), X86.ImmOperand(value ? 1n : 0n)]),
+      ]
     }
 
     case "copy": {
