@@ -29,6 +29,11 @@ function selectDefinition(
 
     case "FunctionDefinition": {
       const ssaGraph = ssaReport.ssaGraphs.get(definition.name)
+      if (ssaGraph === undefined) {
+        let message = `[selectDefinition] undefined ssa report: ${definition.name}`
+        throw new Error(message)
+      }
+
       const blocks = Array.from(definition.blocks.values()).map((block) =>
         selectBlock(block, ssaGraph),
       )
@@ -126,10 +131,10 @@ function selectBinaryOp(instr: B.Instr): Array<X86.Instr> {
 
 function selectBlock(
   basicBlock: B.Block,
-  ssaGraph: B.SsaGraph | undefined,
+  ssaGraph: B.SsaGraph,
 ): X86.Block {
   const state: SelectState = {
-    ssaGraph: ssaGraph ?? { cellInfos: new Map(), useSiteInfos: new Map() },
+    ssaGraph,
     icmpMap: new Map(),
   }
   const instrs = basicBlock.instrs.flatMap((instr) => selectInstr(state, instr))
