@@ -426,12 +426,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [targetCell, ...argCells] = instr.input
       const [out] = instr.output
 
-      const defInfo = state.ssaGraph.cellInfos.get(targetCell.id)
-      const definedByAddress =
-        defInfo !== undefined && defInfo.definedBy.instr.op === "address"
-
-      if (definedByAddress) {
-        const name = B.expectSymbol(defInfo.definedBy.instr.attributes, "name")
+      if (B.ssaIsDefinedByOp(state.ssaGraph, targetCell.id, "address")) {
+        const definer = B.ssaGetDefiner(state.ssaGraph, targetCell.id)
+        const name = B.expectSymbol(definer.attributes, "name")
         const definition = B.modLookupDefinition(state.basicMod, name)
         const isExtern = definition?.kind === "ExternFunctionDefinition"
         const target = isExtern
@@ -457,12 +454,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
     case "tail-call": {
       const [targetCell, ...argCells] = instr.input
 
-      const defInfo = state.ssaGraph.cellInfos.get(targetCell.id)
-      const definedByAddress =
-        defInfo !== undefined && defInfo.definedBy.instr.op === "address"
-
-      if (definedByAddress) {
-        const name = B.expectSymbol(defInfo.definedBy.instr.attributes, "name")
+      if (B.ssaIsDefinedByOp(state.ssaGraph, targetCell.id, "address")) {
+        const definer = B.ssaGetDefiner(state.ssaGraph, targetCell.id)
+        const name = B.expectSymbol(definer.attributes, "name")
         const definition = B.modLookupDefinition(state.basicMod, name)
         const isExtern = definition?.kind === "ExternFunctionDefinition"
         const target = isExtern

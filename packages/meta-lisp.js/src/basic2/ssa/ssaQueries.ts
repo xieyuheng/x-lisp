@@ -6,6 +6,11 @@ export type Use = {
   inputIndex: number
 }
 
+export type Def = {
+  instr: Instr
+  outputIndex: number
+}
+
 export function ssaGetCellInfo(
   graph: SsaGraph,
   cellId: string,
@@ -45,4 +50,26 @@ export function ssaGetUses(graph: SsaGraph, cellId: string): Array<Use> {
   const info = graph.cellInfos.get(cellId)
   if (!info) return []
   return info.usedBy
+}
+
+export function ssaGetDefiner(graph: SsaGraph, cellId: string): Instr {
+  const info = graph.cellInfos.get(cellId)
+  if (!info) throw new Error(`[ssaGetDefiner] unknown cell: ${cellId}`)
+  return info.definedBy.instr
+}
+
+export function ssaGetDef(graph: SsaGraph, cellId: string): Def {
+  const info = graph.cellInfos.get(cellId)
+  if (!info) throw new Error(`[ssaGetDef] unknown cell: ${cellId}`)
+  return info.definedBy
+}
+
+export function ssaIsDefinedByOp(
+  graph: SsaGraph,
+  cellId: string,
+  op: string,
+): boolean {
+  const info = graph.cellInfos.get(cellId)
+  if (!info) throw new Error(`[ssaIsDefinedByOp] unknown cell: ${cellId}`)
+  return info.definedBy.instr.op === op
 }
