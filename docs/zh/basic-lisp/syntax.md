@@ -247,7 +247,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
     (= n (argument :index 0))
     (= one (int64 :content 1))
     (= result (iadd n one))
-    (return result))))
+    (return result)))
 ```
 
 ## (define-variable)
@@ -437,7 +437,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
     (= n (argument :index 0))
     (= one (int64 :content 1))
     (= result (iadd n one))
-    (return result))))
+    (return result)))
 
 (define-struct point-t
   (x int64-t)
