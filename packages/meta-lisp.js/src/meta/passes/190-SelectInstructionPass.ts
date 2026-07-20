@@ -247,12 +247,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const cc = cmpCc[instr.op]
 
-      const cellInfo = state.ssaGraph.cellInfos.get(out.id)
-      const usedByBranch =
-        cellInfo?.usedBy.length === 1 &&
-        cellInfo.usedBy[0].instr.op === "branch"
+      const user = B.ssaGetSoleUser(state.ssaGraph, out.id)
 
-      if (usedByBranch) {
+      if (user?.op === "branch") {
         state.icmpMap.set(out.id, { cc, a: a.id, b: b.id })
         return []
       }
