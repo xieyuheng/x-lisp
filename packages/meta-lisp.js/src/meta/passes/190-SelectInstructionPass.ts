@@ -311,6 +311,58 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       return []
     }
 
+    case "address": {
+      const [out] = instr.output
+      const name = B.expectSymbol(instr.attributes, "name")
+      return [
+        X86.Instr("mov", [cellToVar(out), X86.AddressOperand(name)]),
+      ]
+    }
+
+    case "function-value": {
+      const [out] = instr.output
+      const name = B.expectSymbol(instr.attributes, "name")
+      return [
+        X86.Instr(
+          "mov",
+          [cellToVar(out), X86.RelocationOperand("function-value", name)],
+        ),
+      ]
+    }
+
+    case "symbol-value": {
+      const [out] = instr.output
+      const content = B.expectSymbol(instr.attributes, "content")
+      return [
+        X86.Instr(
+          "mov",
+          [cellToVar(out), X86.RelocationOperand("symbol-value", content)],
+        ),
+      ]
+    }
+
+    case "keyword-value": {
+      const [out] = instr.output
+      const content = B.expectSymbol(instr.attributes, "content")
+      return [
+        X86.Instr(
+          "mov",
+          [cellToVar(out), X86.RelocationOperand("keyword-value", content)],
+        ),
+      ]
+    }
+
+    case "string-value": {
+      const [out] = instr.output
+      const content = B.expectString(instr.attributes, "content")
+      return [
+        X86.Instr(
+          "mov",
+          [cellToVar(out), X86.RelocationOperand("string-value", content)],
+        ),
+      ]
+    }
+
     default: {
       let message = `[selectInstr] unhandled instr: ${B.formatInstr(instr)}`
       console.log(message)
