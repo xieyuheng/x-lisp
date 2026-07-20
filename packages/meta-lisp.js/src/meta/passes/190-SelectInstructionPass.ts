@@ -84,6 +84,21 @@ const commutativeOps = new Set([
   "bitxor",
 ])
 
+const cmpCc: Record<string, string> = {
+  "icmp-eq": "e",
+  "icmp-ne": "ne",
+  "icmp-lt": "l",
+  "icmp-le": "le",
+  "icmp-gt": "g",
+  "icmp-ge": "ge",
+  "bool-eq": "e",
+  "bool-ne": "ne",
+  "pointer-eq": "e",
+  "pointer-ne": "ne",
+  "value-eq": "e",
+  "value-ne": "ne",
+}
+
 function cellToVar(cell: B.Cell): X86.VarOperand {
   return X86.VarOperand(cell.id)
 }
@@ -192,6 +207,49 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       return [
         X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
         X86.Instr("shr", [cellToVar(out), X86.ImmOperand(TAG_BITS)]),
+      ]
+    }
+
+    case "icmp-eq":
+    case "icmp-ne":
+    case "icmp-lt":
+    case "icmp-le":
+    case "icmp-gt":
+    case "icmp-ge":
+    case "bool-eq":
+    case "bool-ne":
+    case "pointer-eq":
+    case "pointer-ne":
+    case "value-eq":
+    case "value-ne": {
+      const [a, b] = instr.input
+      const [out] = instr.output
+      state.icmpMap.set(out.id, {
+        cc: cmpCc[instr.op],
+        a: a.id,
+        b: b.id,
+      })
+      return []
+    }
+
+    case "branch": {
+      const [cond] = instr.input
+      const thenLabel = B.expectSymbol(instr.attributes, "then-label")
+      const elseLabel = B.expectSymbol(instr.attributes, "else-label")
+
+      const icmp = state.icmpMap.get(cond.id)
+      if (icmp) {
+        return [
+          X86.Instr("cmp", [X86.VarOperand(icmp.a), X86.VarOperand(icmp.b)]),
+          X86.Instr("j", [X86.CcOperand(icmp.cc), X86.LabelOperand(thenLabel)]),
+          X86.Instr("jmp", [X86.LabelOperand(elseLabel)]),
+        ]
+      }
+
+      return [
+        X86.Instr("cmp", [cellToVar(cond), X86.ImmOperand(1n)]),
+        X86.Instr("j", [X86.CcOperand("e"), X86.LabelOperand(thenLabel)]),
+        X86.Instr("jmp", [X86.LabelOperand(elseLabel)]),
       ]
     }
 
