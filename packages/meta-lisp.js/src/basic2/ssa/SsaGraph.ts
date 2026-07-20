@@ -1,5 +1,4 @@
 import { type Block } from "../block/index.ts"
-import { type Cell } from "../cell/index.ts"
 import { type Instr } from "../instr/index.ts"
 
 export type CellInfo = {

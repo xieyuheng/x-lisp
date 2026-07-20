@@ -43,7 +43,7 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
   const basicMod = M.ExplicateControlPass2(rootPkg)
   BasicBundle(rootPkg, basicMod)
 
-  M.SsaAnalysisPass(rootPkg, basicMod)
+  const ssaReport = M.SsaAnalysisPass(rootPkg, basicMod)
 
   const x86Mod = M.SelectInstructionPass(rootPkg, basicMod)
   X86Bundle(rootPkg, x86Mod)

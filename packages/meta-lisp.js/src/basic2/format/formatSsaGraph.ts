@@ -1,5 +1,5 @@
-import { formatInstr } from "./formatInstr.ts"
 import { type SsaGraph } from "../ssa/index.ts"
+import { formatInstr } from "./formatInstr.ts"
 
 export function formatSsaGraph(graph: SsaGraph): Array<string> {
   const lines: Array<string> = []

@@ -19,10 +19,7 @@ export function buildSsaGraph(blocks: Array<Block>): SsaGraph {
   return { cellInfos, useSiteInfos }
 }
 
-function setupCells(
-  block: Block,
-  cellInfos: Map<string, CellInfo>,
-): void {
+function setupCells(block: Block, cellInfos: Map<string, CellInfo>): void {
   for (const instr of block.instrs) {
     for (let i = 0; i < instr.output.length; i++) {
       const cell = instr.output[i]
@@ -53,10 +50,7 @@ function setupUseSites(
   }
 }
 
-function setupUses(
-  block: Block,
-  cellInfos: Map<string, CellInfo>,
-): void {
+function setupUses(block: Block, cellInfos: Map<string, CellInfo>): void {
   for (const instr of block.instrs) {
     for (let i = 0; i < instr.input.length; i++) {
       const cell = instr.input[i]
