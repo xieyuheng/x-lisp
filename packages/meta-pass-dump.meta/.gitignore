@@ -3,3 +3,4 @@ build/bundle.xvm.asm
 build/bundle.xvm.exe
 build/bundle.x86.asm
 build/bundle.x86.exe
+build/dump/*.huge.dump
