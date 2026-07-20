@@ -1,6 +1,5 @@
 # native code generation
 
-[meta-lisp.js] BuildX86Pipeline.ts -- call SelectInstructionPass
 [meta-lisp.js] 190-SelectInstructionPass -- select* function
 
 # self-hosting

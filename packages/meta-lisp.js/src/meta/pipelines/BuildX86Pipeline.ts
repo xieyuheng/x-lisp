@@ -5,6 +5,7 @@ import {
 } from "@xieyuheng/std.js/file"
 import * as B from "../../basic2/index.ts"
 import * as M from "../index.ts"
+import * as X86 from "../../x86/index.ts"
 
 export function BuildX86Pipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
@@ -41,6 +42,9 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
 
   const basicMod = M.ExplicateControlPass2(rootPkg)
   BasicBundle(rootPkg, basicMod)
+
+  const x86Mod = M.SelectInstructionPass(rootPkg, basicMod)
+  X86Bundle(rootPkg, x86Mod)
 }
 
 function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
@@ -50,6 +54,21 @@ function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
     const textWidth = 64
     const code = definitions
       .map((definition) => B.formatPrettyDefinition(textWidth, definition))
+      .join("\n")
+    fileWriteln(file, code)
+  })
+}
+
+function X86Bundle(pkg: M.Package, x86Mod: X86.Mod): void {
+  const directory = M.packageOutputDirectory(pkg)
+  callWithFile(openOutputFile(`${directory}/bundle.x86.asm`), (file) => {
+    // if (pkg.config.entry) {
+    //   fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
+    // }
+    const definitions = Array.from(x86Mod.definitions.values())
+    const textWidth = 64
+    const code = definitions
+      .map((definition) => X86.formatPrettyDefinition(textWidth, definition))
       .join("\n")
     fileWriteln(file, code)
   })
