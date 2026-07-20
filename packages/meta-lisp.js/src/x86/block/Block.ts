@@ -1,13 +1,13 @@
 import type { Instr } from "../instr/index.ts"
 
 export type Block = {
-  name: string
+  label: string
   instrs: Array<Instr>
 }
 
-export function Block(name: string, instrs: Array<Instr>): Block {
+export function Block(label: string, instrs: Array<Instr>): Block {
   return {
-    name,
+    label,
     instrs,
   }
 }

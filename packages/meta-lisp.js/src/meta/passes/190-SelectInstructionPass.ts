@@ -13,7 +13,7 @@ export function SelectInstructionPass(pkg: M.Package, basicMod: B.Mod): X86.Mod 
   return x86Mod
 }
 
-export function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
+function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
   switch (definition.kind) {
     case  "StructDefinition": {
       // TODO
@@ -21,8 +21,8 @@ export function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
     }
 
     case  "FunctionDefinition": {
-      // TODO
-      return []
+      const blocks = Array.from(definition.blocks.values()).map((block) => selectBlock(block))
+      return [X86.DefineCodeStmt(definition.name, blocks)]
     }
 
     case  "VariableDefinition": {
@@ -40,4 +40,13 @@ export function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
       return []
     }
   }
+}
+
+function selectBlock(basicBlock: B.Block): X86.Block {
+  const instrs = basicBlock.instrs.flatMap(instr => selectInstr(instr))
+  return X86.Block(basicBlock.label, instrs)
+}
+
+function selectInstr(instr: B.Instr): Array<X86.Instr> {
+  return []
 }

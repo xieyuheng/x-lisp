@@ -90,7 +90,7 @@ function collectLocalLabels(mod: Mod): Map<string, Set<string>> {
     const local = new Set<string>()
     map.set(definition.name, local)
     for (const block of definition.blocks) {
-      local.add(block.name)
+      local.add(block.label)
     }
   }
   return map
@@ -143,7 +143,7 @@ function emitXexeCode(
     })
 
     for (const block of definition.blocks) {
-      labels.set(scopedName(definition.name, block.name), {
+      labels.set(scopedName(definition.name, block.label), {
         segmentKind: XexeCodeSegment,
         segmentOffset: pos,
       })
