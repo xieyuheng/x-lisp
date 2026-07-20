@@ -38,9 +38,9 @@ const IMMEDIATE_TAG = 0b110n
 const OBJECT_TAG = 0b111n
 ```
 
-## Float Nan-Boxing
+## Float Low-bit Tagging
 
-浮点数使用 nan-boxing 变体（`packages/meta-runtime.c/src/value/float.c`）：
+浮点数使用 Low-bit Tagging（`packages/meta-runtime.c/src/value/float.c`）：
 
 ```c
 inline value_t x_float(double target) {
