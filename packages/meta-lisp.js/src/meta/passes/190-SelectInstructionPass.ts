@@ -7,16 +7,20 @@ import * as X86 from "../../x86/index.ts"
 export function SelectInstructionPass(
   pkg: M.Package,
   basicMod: B.Mod,
+  ssaReport: M.SsaAnalysisReport,
 ): X86.Mod {
   const x86Mod = X86.createMod()
   const stmts = Array.from(basicMod.definitions.values()).flatMap(
-    (definition) => selectDefinition(definition),
+    (definition) => selectDefinition(definition, ssaReport),
   )
   X86.BuildPipeline(x86Mod, stmts)
   return x86Mod
 }
 
-function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
+function selectDefinition(
+  definition: B.Definition,
+  ssaReport: M.SsaAnalysisReport,
+): Array<X86.Stmt> {
   switch (definition.kind) {
     case "StructDefinition": {
       // TODO
@@ -24,8 +28,9 @@ function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
     }
 
     case "FunctionDefinition": {
+      const ssaGraph = ssaReport.ssaGraphs.get(definition.name)
       const blocks = Array.from(definition.blocks.values()).map((block) =>
-        selectBlock(block),
+        selectBlock(block, ssaGraph),
       )
       return [X86.DefineCodeStmt(definition.name, blocks)]
     }
@@ -48,6 +53,7 @@ function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
 }
 
 type SelectState = {
+  ssaGraph: B.SsaGraph
   icmpMap: Map<string, { cc: string; a: string; b: string }>
 }
 
@@ -118,8 +124,14 @@ function selectBinaryOp(instr: B.Instr): Array<X86.Instr> {
   ]
 }
 
-function selectBlock(basicBlock: B.Block): X86.Block {
-  const state: SelectState = { icmpMap: new Map() }
+function selectBlock(
+  basicBlock: B.Block,
+  ssaGraph: B.SsaGraph | undefined,
+): X86.Block {
+  const state: SelectState = {
+    ssaGraph: ssaGraph ?? { cellInfos: new Map(), useSiteInfos: new Map() },
+    icmpMap: new Map(),
+  }
   const instrs = basicBlock.instrs.flatMap((instr) => selectInstr(state, instr))
   return X86.Block(basicBlock.label, instrs)
 }
@@ -228,12 +240,23 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
     case "value-ne": {
       const [a, b] = instr.input
       const [out] = instr.output
-      state.icmpMap.set(out.id, {
-        cc: cmpCc[instr.op],
-        a: a.id,
-        b: b.id,
-      })
-      return []
+      const cc = cmpCc[instr.op]
+
+      const cellInfo = state.ssaGraph.cellInfos.get(out.id)
+      const usedByBranch =
+        cellInfo?.usedBy.length === 1 &&
+        cellInfo.usedBy[0].instr.op === "branch"
+
+      if (usedByBranch) {
+        state.icmpMap.set(out.id, { cc, a: a.id, b: b.id })
+        return []
+      }
+
+      return [
+        X86.Instr("cmp", [cellToVar(a), cellToVar(b)]),
+        X86.Instr("set", [X86.CcOperand(cc), X86.RegOperand("al")]),
+        X86.Instr("movzx", [cellToVar(out), X86.RegOperand("al")]),
+      ]
     }
 
     case "branch": {
@@ -245,7 +268,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       if (icmp) {
         return [
           X86.Instr("cmp", [X86.VarOperand(icmp.a), X86.VarOperand(icmp.b)]),
-          X86.Instr("j", [X86.CcOperand(icmp.cc), X86.LabelOperand(thenLabel)]),
+          X86.Instr(
+            "j",
+            [X86.CcOperand(icmp.cc), X86.LabelOperand(thenLabel)],
+          ),
           X86.Instr("jmp", [X86.LabelOperand(elseLabel)]),
         ]
       }
@@ -255,6 +281,32 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         X86.Instr("j", [X86.CcOperand("e"), X86.LabelOperand(thenLabel)]),
         X86.Instr("jmp", [X86.LabelOperand(elseLabel)]),
       ]
+    }
+
+    case "return": {
+      const [val] = instr.input
+      if (val) {
+        return [
+          X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(val)]),
+          X86.Instr("ret", []),
+        ]
+      }
+      return [X86.Instr("ret", [])]
+    }
+
+    case "goto": {
+      const label = B.expectSymbol(instr.attributes, "label")
+      return [X86.Instr("jmp", [X86.LabelOperand(label)])]
+    }
+
+    case "provide": {
+      const [val] = instr.input
+      const site = B.expectSymbol(instr.attributes, "use-site")
+      return [X86.Instr("mov", [X86.VarOperand(site), cellToVar(val)])]
+    }
+
+    case "use": {
+      return []
     }
 
     default: {
