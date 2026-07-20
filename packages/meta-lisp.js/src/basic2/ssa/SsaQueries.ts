@@ -35,19 +35,13 @@ export function ssaGetSoleUse(
   return undefined
 }
 
-export function ssaGetUsers(
-  graph: SsaGraph,
-  cellId: string,
-): Array<Instr> {
+export function ssaGetUsers(graph: SsaGraph, cellId: string): Array<Instr> {
   const info = graph.cellInfos.get(cellId)
   if (!info) return []
   return info.usedBy.map((use) => use.instr)
 }
 
-export function ssaGetUses(
-  graph: SsaGraph,
-  cellId: string,
-): Array<Use> {
+export function ssaGetUses(graph: SsaGraph, cellId: string): Array<Use> {
   const info = graph.cellInfos.get(cellId)
   if (!info) return []
   return info.usedBy

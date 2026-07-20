@@ -280,10 +280,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       if (icmp) {
         return [
           X86.Instr("cmp", [X86.VarOperand(icmp.a), X86.VarOperand(icmp.b)]),
-          X86.Instr(
-            "j",
-            [X86.CcOperand(icmp.cc), X86.LabelOperand(thenLabel)],
-          ),
+          X86.Instr("j", [X86.CcOperand(icmp.cc), X86.LabelOperand(thenLabel)]),
           X86.Instr("jmp", [X86.LabelOperand(elseLabel)]),
         ]
       }
@@ -324,19 +321,17 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
     case "address": {
       const [out] = instr.output
       const name = B.expectSymbol(instr.attributes, "name")
-      return [
-        X86.Instr("mov", [cellToVar(out), X86.AddressOperand(name)]),
-      ]
+      return [X86.Instr("mov", [cellToVar(out), X86.AddressOperand(name)])]
     }
 
     case "function-value": {
       const [out] = instr.output
       const name = B.expectSymbol(instr.attributes, "name")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("function-value", name)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("function-value", name),
+        ]),
       ]
     }
 
@@ -344,10 +339,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectSymbol(instr.attributes, "content")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("symbol-value", content)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("symbol-value", content),
+        ]),
       ]
     }
 
@@ -355,10 +350,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectSymbol(instr.attributes, "content")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("symbol", content)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("symbol", content),
+        ]),
       ]
     }
 
@@ -366,10 +361,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectSymbol(instr.attributes, "content")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("keyword-value", content)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("keyword-value", content),
+        ]),
       ]
     }
 
@@ -377,10 +372,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectSymbol(instr.attributes, "content")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("keyword", content)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("keyword", content),
+        ]),
       ]
     }
 
@@ -388,10 +383,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectString(instr.attributes, "content")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("string-value", content)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("string-value", content),
+        ]),
       ]
     }
 
@@ -399,10 +394,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectString(instr.attributes, "content")
       return [
-        X86.Instr(
-          "mov",
-          [cellToVar(out), X86.RelocationOperand("string", content)],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RelocationOperand("string", content),
+        ]),
       ]
     }
 
@@ -410,26 +405,20 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [ptr] = instr.input
       const [out] = instr.output
       return [
-        X86.Instr(
-          "mov",
-          [
-            cellToVar(out),
-            X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
-          ],
-        ),
+        X86.Instr("mov", [
+          cellToVar(out),
+          X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
+        ]),
       ]
     }
 
     case "store": {
       const [ptr, val] = instr.input
       return [
-        X86.Instr(
-          "mov",
-          [
-            X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
-            cellToVar(val),
-          ],
-        ),
+        X86.Instr("mov", [
+          X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
+          cellToVar(val),
+        ]),
       ]
     }
 
@@ -442,10 +431,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         defInfo !== undefined && defInfo.definedBy.instr.op === "address"
 
       if (definedByAddress) {
-        const name = B.expectSymbol(
-          defInfo.definedBy.instr.attributes,
-          "name",
-        )
+        const name = B.expectSymbol(defInfo.definedBy.instr.attributes, "name")
         const definition = B.modLookupDefinition(state.basicMod, name)
         const isExtern = definition?.kind === "ExternFunctionDefinition"
         const target = isExtern
@@ -461,10 +447,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       return [
         X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(targetCell)]),
         ...setupArgs(argCells),
-        X86.Instr(
-          "call",
-          [X86.RegDerefOperand("rax", undefined, undefined, undefined)],
-        ),
+        X86.Instr("call", [
+          X86.RegDerefOperand("rax", undefined, undefined, undefined),
+        ]),
         X86.Instr("mov", [cellToVar(out), X86.RegOperand("rax")]),
       ]
     }
@@ -477,28 +462,21 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         defInfo !== undefined && defInfo.definedBy.instr.op === "address"
 
       if (definedByAddress) {
-        const name = B.expectSymbol(
-          defInfo.definedBy.instr.attributes,
-          "name",
-        )
+        const name = B.expectSymbol(defInfo.definedBy.instr.attributes, "name")
         const definition = B.modLookupDefinition(state.basicMod, name)
         const isExtern = definition?.kind === "ExternFunctionDefinition"
         const target = isExtern
           ? X86.ExternOperand(name)
           : X86.LabelOperand(name)
-        return [
-          ...setupArgs(argCells),
-          X86.Instr("tail-jmp", [target]),
-        ]
+        return [...setupArgs(argCells), X86.Instr("tail-jmp", [target])]
       }
 
       return [
         X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(targetCell)]),
         ...setupArgs(argCells),
-        X86.Instr(
-          "tail-jmp",
-          [X86.RegDerefOperand("rax", undefined, undefined, undefined)],
-        ),
+        X86.Instr("tail-jmp", [
+          X86.RegDerefOperand("rax", undefined, undefined, undefined),
+        ]),
       ]
     }
 
