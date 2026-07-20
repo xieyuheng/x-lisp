@@ -7,6 +7,7 @@ import type { EncodedInstruction } from "./types.ts"
 const EXT: Record<string, number> = {
   shl: 4,
   shr: 5,
+  sar: 7,
 }
 
 export function encodeShift(instr: Instr): Array<EncodedInstruction> {

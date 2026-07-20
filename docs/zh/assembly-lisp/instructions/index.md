@@ -30,7 +30,8 @@ assembly-lisp 的所有指令按功能分类。
 - [`or`](or.md) — 按位或
 - [`xor`](xor.md) — 按位异或
 - [`shl`](shl.md) — 左移
-- [`shr`](shr.md) — 右移
+- [`shr`](shr.md) — 逻辑右移
+- [`sar`](sar.md) — 算术右移
 
 ## 栈操作
 

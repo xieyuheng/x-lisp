@@ -47,13 +47,154 @@ function selectDefinition(definition: B.Definition): Array<X86.Stmt> {
   }
 }
 
+type SelectState = {
+  icmpMap: Map<string, { cc: string; a: string; b: string }>
+}
+
+const argRegs = ["rdi", "rsi", "rdx", "rcx", "r8", "r9"]
+
+const TAG_BITS = 3n
+const INT_TAG = 0b000n
+const FLOAT_TAG = 0b001n
+const IMMEDIATE_TAG = 0b110n
+const OBJECT_TAG = 0b111n
+
+const binaryX86Op: Record<string, string> = {
+  iadd: "add",
+  isub: "sub",
+  imul: "imul",
+  and: "and",
+  or: "or",
+  xor: "xor",
+  shl: "shl",
+  shr: "shr",
+  bitand: "and",
+  bitor: "or",
+  bitxor: "xor",
+}
+
+const commutativeOps = new Set([
+  "iadd",
+  "imul",
+  "and",
+  "or",
+  "xor",
+  "bitand",
+  "bitor",
+  "bitxor",
+])
+
+function cellToVar(cell: B.Cell): X86.VarOperand {
+  return X86.VarOperand(cell.id)
+}
+
+function selectBinaryOp(instr: B.Instr): Array<X86.Instr> {
+  const x86op = binaryX86Op[instr.op]
+  const [a, b] = instr.input
+  const [out] = instr.output
+
+  if (commutativeOps.has(instr.op) && out.id === b.id) {
+    return [X86.Instr(x86op, [cellToVar(out), cellToVar(a)])]
+  }
+
+  return [
+    X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
+    X86.Instr(x86op, [cellToVar(out), cellToVar(b)]),
+  ]
+}
+
 function selectBlock(basicBlock: B.Block): X86.Block {
-  const instrs = basicBlock.instrs.flatMap((instr) => selectInstr(instr))
+  const state: SelectState = { icmpMap: new Map() }
+  const instrs = basicBlock.instrs.flatMap((instr) => selectInstr(state, instr))
   return X86.Block(basicBlock.label, instrs)
 }
 
-function selectInstr(instr: B.Instr): Array<X86.Instr> {
+function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
   switch (instr.op) {
+    case "argument": {
+      const [out] = instr.output
+      const index = Number(B.expectInt(instr.attributes, "index"))
+      return [X86.Instr("mov", [cellToVar(out), X86.RegOperand(argRegs[index])])]
+    }
+
+    case "int64": {
+      const [out] = instr.output
+      const value = B.expectInt(instr.attributes, "content")
+      return [X86.Instr("mov", [cellToVar(out), X86.ImmOperand(value)])]
+    }
+
+    case "bool": {
+      const [out] = instr.output
+      const value = B.expectBool(instr.attributes, "value")
+      return [X86.Instr("mov", [cellToVar(out), X86.ImmOperand(value ? 1n : 0n)])]
+    }
+
+    case "copy": {
+      const [src] = instr.input
+      const [out] = instr.output
+      return [X86.Instr("mov", [cellToVar(out), cellToVar(src)])]
+    }
+
+    case "iadd":
+    case "isub":
+    case "imul":
+    case "and":
+    case "or":
+    case "xor":
+    case "shl":
+    case "shr":
+    case "bitand":
+    case "bitor":
+    case "bitxor": {
+      return selectBinaryOp(instr)
+    }
+
+    case "not": {
+      const [a] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
+        X86.Instr("xor", [cellToVar(out), X86.ImmOperand(1n)]),
+      ]
+    }
+
+    case "tag-int": {
+      const [a] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
+        X86.Instr("shl", [cellToVar(out), X86.ImmOperand(TAG_BITS)]),
+      ]
+    }
+
+    case "tag-bool": {
+      const [a] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
+        X86.Instr("shl", [cellToVar(out), X86.ImmOperand(TAG_BITS)]),
+        X86.Instr("or", [cellToVar(out), X86.ImmOperand(IMMEDIATE_TAG)]),
+      ]
+    }
+
+    case "to-int64": {
+      const [a] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
+        X86.Instr("sar", [cellToVar(out), X86.ImmOperand(TAG_BITS)]),
+      ]
+    }
+
+    case "to-bool": {
+      const [a] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr("mov", [cellToVar(out), cellToVar(a)]),
+        X86.Instr("shr", [cellToVar(out), X86.ImmOperand(TAG_BITS)]),
+      ]
+    }
+
     default: {
       let message = `[selectInstr] unhandled instr: ${B.formatInstr(instr)}`
       console.log(message)

@@ -28,6 +28,7 @@ export function encode(instr: Instr): Array<EncodedInstruction> {
       return encodeLogic(instr)
     case "shl":
     case "shr":
+    case "sar":
       return encodeShift(instr)
     case "push":
     case "pop":
