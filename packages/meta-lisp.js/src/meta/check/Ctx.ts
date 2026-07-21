@@ -5,10 +5,15 @@ import * as M from "../index.ts"
 export type Ctx = {
   bindings: Map<string, M.Type>
   transparentOpaqueNames: Set<string>
+  varTypes: Map<string, M.Type>
 }
 
 export function emptyCtx(): Ctx {
-  return { bindings: new Map(), transparentOpaqueNames: new Set() }
+  return {
+    bindings: new Map(),
+    transparentOpaqueNames: new Set(),
+    varTypes: new Map(),
+  }
 }
 
 export function ctxNames(ctx: Ctx): Set<string> {

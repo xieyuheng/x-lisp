@@ -78,7 +78,12 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
 
     case "VariableDefinition":
     case "TestDefinition": {
-      const outcome = tryCheckDefinitionBody(mod, name, definition.body)
+      const outcome = tryCheckDefinitionBody(
+        mod,
+        definition,
+        name,
+        definition.body,
+      )
       M.modMarkChecked(mod, name)
       if (outcome === "OutcomeError")
         M.modMarkOutcome(mod, name, "OutcomeError")
@@ -94,7 +99,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
               definition.body,
               definition.location,
             )
-      const outcome = tryCheckDefinitionBody(mod, name, body)
+      const outcome = tryCheckDefinitionBody(mod, definition, name, body)
       M.modMarkChecked(mod, name)
       if (outcome === "OutcomeError")
         M.modMarkOutcome(mod, name, "OutcomeError")
@@ -107,7 +112,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
         definition.body,
         definition.location,
       )
-      const outcome = tryCheckDefinitionBody(mod, name, body)
+      const outcome = tryCheckDefinitionBody(mod, definition, name, body)
       M.modMarkChecked(mod, name)
       if (outcome === "OutcomeError")
         M.modMarkOutcome(mod, name, "OutcomeError")
@@ -157,6 +162,7 @@ function tryCheckTerm(
     writeln(S.sourceLocationReport(result.exp.location, result.message))
     return "OutcomeError"
   }
+  walkVarTypes(ctx, result.subst)
   return "OutcomeOk"
 }
 
@@ -174,6 +180,7 @@ function tryCheckTypeTerm(
 
 function tryCheckDefinitionBody(
   mod: M.Mod,
+  definition: M.Definition,
   name: string,
   exp: M.Term,
 ): M.Outcome {
@@ -193,20 +200,26 @@ function tryCheckDefinitionBody(
       const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
       const ctx = M.emptyCtx()
       ctx.transparentOpaqueNames = opaqueNames
-      return tryCheckTerm(mod, ctx, exp, transparentType)
+      const outcome = tryCheckTerm(mod, ctx, exp, transparentType)
+      if (outcome === "OutcomeOk") definitionPutVarTypes(definition, ctx.varTypes)
+      return outcome
     }
   }
 
   const type = M.modLookupClaimedType(mod, name)
   if (type) {
-    return tryCheckTerm(mod, M.emptyCtx(), exp, type)
+    const ctx = M.emptyCtx()
+    const outcome = tryCheckTerm(mod, ctx, exp, type)
+    if (outcome === "OutcomeOk") definitionPutVarTypes(definition, ctx.varTypes)
+    return outcome
   }
 
-  return tryInferDefinitionBody(mod, name, exp)
+  return tryInferDefinitionBody(mod, definition, name, exp)
 }
 
 function tryInferDefinitionBody(
   mod: M.Mod,
+  definition: M.Definition,
   name: string,
   exp: M.Term,
 ): M.Outcome {
@@ -224,10 +237,37 @@ function tryInferDefinitionBody(
     writeln(S.sourceLocationReport(result.exp.location, result.message))
     return "OutcomeError"
   } else {
+    walkVarTypes(ctx, result.subst)
+    definitionPutVarTypes(definition, ctx.varTypes)
     let inferredType = M.substDeepWalk(result.subst, result.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
     return "OutcomeOk"
+  }
+}
+
+function walkVarTypes(ctx: M.Ctx, subst: M.Subst): void {
+  if (ctx.varTypes.size === 0) return
+  for (const [name, type] of ctx.varTypes) {
+    ctx.varTypes.set(name, M.substDeepWalk(subst, type))
+  }
+}
+
+function definitionPutVarTypes(
+  definition: M.Definition,
+  varTypes: Map<string, M.Type>,
+): void {
+  switch (definition.kind) {
+    case "FunctionDefinition":
+    case "VariableDefinition":
+    case "TestDefinition":
+    case "TypeDefinition": {
+      definition.varTypes = varTypes
+      return
+    }
+    default: {
+      throw new Error(`[definitionPutVarTypes] unexpected definition kind: ${definition.kind}`)
+    }
   }
 }
 
