@@ -1,19 +1,11 @@
-(claim add1 (-> int-t int-t))
-
 (define (add1 x) (meta-builtin/builtin/iadd 1 x))
 
-(claim double (-> int-t int-t))
-
 (define (double x) (meta-builtin/builtin/iadd x x))
-
-(claim example-let-star (-> int-t))
 
 (define (example-let-star)
   (= x 1)
   (= y (meta-builtin/builtin/iadd x 1))
   (meta-builtin/builtin/iadd x y))
-
-(claim example-cond (-> int-t))
 
 (define (example-cond)
   (if (meta-builtin/builtin/equal? 1 1)
@@ -28,47 +20,29 @@
          (meta-builtin/builtin/make-source-position 176 6 24)
          (meta-builtin/builtin/make-source-position 180 6 28)))))))
 
-(claim example-begin (-> int-t))
-
 (define (example-begin) 1 2 3)
-
-(claim example-when (-> void-t))
 
 (define (example-when)
   (if meta-builtin/builtin/true
     (begin 1 meta-builtin/builtin/void)
     meta-builtin/builtin/void))
 
-(claim example-unless (-> void-t))
-
 (define (example-unless)
   (if meta-builtin/builtin/false
     meta-builtin/builtin/void
     (begin 2 meta-builtin/builtin/void)))
 
-(claim example-and (-> bool-t bool-t bool-t))
-
 (define (example-and a b) (if a b meta-builtin/builtin/false))
-
-(claim example-or (-> bool-t bool-t bool-t))
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(claim example-pipe (-> int-t))
-
 (define (example-pipe) (self/060-desugar/double (self/060-desugar/add1 5)))
-
-(claim example-chain (-> int-t))
 
 (define (example-chain)
   ((lambda (target) (self/060-desugar/double (self/060-desugar/add1 target))) 5))
 
-(claim example-compose (-> int-t))
-
 (define (example-compose)
   ((lambda (target) (self/060-desugar/add1 (self/060-desugar/double target))) 5))
-
-(claim example-letrec (-> void-t))
 
 (define (example-letrec)
   (= even?.1 (meta-builtin/builtin/make-box))
@@ -91,8 +65,6 @@
   (meta-builtin/builtin/box-put! odd?.value odd?)
   meta-builtin/builtin/void)
 
-(claim example-letrec-star (-> void-t))
-
 (define (example-letrec-star)
   (= even?.1 (meta-builtin/builtin/make-box))
   (= odd?.1 (meta-builtin/builtin/make-box))
@@ -111,8 +83,6 @@
        ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1))))
    odd?)
   meta-builtin/builtin/void)
-
-(claim example-local-define (-> void-t))
 
 (define (example-local-define)
   (= even?.1 (meta-builtin/builtin/make-box))

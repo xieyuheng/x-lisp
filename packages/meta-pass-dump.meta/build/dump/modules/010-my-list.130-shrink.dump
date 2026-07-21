@@ -204,11 +204,11 @@
           (begin
             (= tail2 (self/010-my-list/li-tail list2))
             (= head2 (self/010-my-list/li-head list2))
-            (= tail1 (self/010-my-list/li-tail list1))
-            (= head1 (self/010-my-list/li-head list1))
+            (= tail1.1 (self/010-my-list/li-tail list1))
+            (= head1.1 (self/010-my-list/li-head list1))
             (self/010-my-list/li
-             (f head1 head2)
-             (self/010-my-list/my-list-map-zip f tail1 tail2)))
+             (f head1.1 head2)
+             (self/010-my-list/my-list-map-zip f tail1.1 tail2)))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
@@ -236,7 +236,7 @@
     (begin (= _ list2) (self/010-my-list/nil))
     (if (self/010-my-list/li? list1)
       (if (self/010-my-list/nil? list2)
-        (begin (= _ list1) (self/010-my-list/nil))
+        (begin (= _.1 list1) (self/010-my-list/nil))
         (if (self/010-my-list/li? list2)
           (if (self/010-my-list/nil? list1)
             (meta-builtin/builtin/error-with-location
@@ -263,17 +263,19 @@
                 (meta-builtin/builtin/error-with-location
                  (meta-builtin/builtin/string-concat
                   (begin
-                    (= list (meta-builtin/builtin/make-list))
-                    (meta-builtin/builtin/list-push! "pattern mismatch on:" list)
-                    (meta-builtin/builtin/list-push! " " list)
+                    (= list.1 (meta-builtin/builtin/make-list))
+                    (meta-builtin/builtin/list-push!
+                     "pattern mismatch on:"
+                     list.1)
+                    (meta-builtin/builtin/list-push! " " list.1)
                     (meta-builtin/builtin/list-push!
                      (meta-builtin/builtin/format list1)
-                     list)
-                    (meta-builtin/builtin/list-push! " " list)
+                     list.1)
+                    (meta-builtin/builtin/list-push! " " list.1)
                     (meta-builtin/builtin/list-push!
                      (meta-builtin/builtin/format list2)
-                     list)
-                    list))
+                     list.1)
+                    list.1))
                  (meta-builtin/builtin/make-source-location
                   "src/010-my-list.meta"
                   (meta-builtin/builtin/make-source-span

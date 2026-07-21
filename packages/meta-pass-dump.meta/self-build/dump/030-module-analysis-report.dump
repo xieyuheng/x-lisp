@@ -44,8 +44,8 @@
       (mod-name 110-type-annotations)
       (imported-names 620)
       (imported-prefixes 0))
-    ("src/140-uniquify.meta"
-      (mod-name 140-uniquify)
+    ("src/115-uniquify.meta"
+      (mod-name 115-uniquify)
       (imported-names 621)
       (imported-prefixes 0))
     ("src/150-lift-lambda.meta"

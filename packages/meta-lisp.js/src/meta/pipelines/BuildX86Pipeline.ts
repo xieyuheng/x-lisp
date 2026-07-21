@@ -34,9 +34,9 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
   for (const pkg of closure) M.ClaimPass(pkg)
   for (const pkg of closure) M.QualifyPass(pkg)
   for (const pkg of closure) M.LocatePass(pkg)
+  for (const pkg of closure) M.UniquifyPass(pkg)
   for (const pkg of closure) M.CheckPass(pkg)
   for (const pkg of closure) M.ShrinkPass(pkg)
-  for (const pkg of closure) M.UniquifyPass(pkg)
   for (const pkg of closure) M.LiftLambdaPass(pkg)
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 

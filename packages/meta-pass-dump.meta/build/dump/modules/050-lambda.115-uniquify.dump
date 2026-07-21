@@ -251,8 +251,6 @@
 (define (closure-value-put-body! value target)
   (meta-builtin/builtin/list-put! 3 value target))
 
-(claim evaluate (-> 050-lambda/exp-t 050-lambda/env-t 050-lambda/value-t))
-
 (define (evaluate exp env)
   (if (self/050-lambda/var-exp? exp)
     (begin
@@ -309,8 +307,6 @@
             (meta-builtin/builtin/make-source-span
              (meta-builtin/builtin/make-source-position 609 21 3)
              (meta-builtin/builtin/make-source-position 614 21 8)))))))))
-
-(claim apply (polymorphic (A) (-> 050-lambda/value-t 050-lambda/value-t A)))
 
 (define (apply target arg)
   (if (self/050-lambda/closure-value? target)

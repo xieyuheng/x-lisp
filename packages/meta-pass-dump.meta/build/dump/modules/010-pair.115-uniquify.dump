@@ -43,9 +43,6 @@
 (define (pair-put-second! value target)
   (meta-builtin/builtin/list-put! 2 value target))
 
-(claim pair-swap
-  (polymorphic (A B) (-> (010-pair/pair-t A B) (010-pair/pair-t B A))))
-
 (define (pair-swap p)
   (if (self/010-pair/pair? p)
     (begin

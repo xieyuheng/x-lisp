@@ -81,10 +81,10 @@
          meta-builtin/builtin/true
          ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1)))))
   (= odd?.value.1
-     (lambda (n)
-       (if (meta-builtin/builtin/equal? n 0)
+     (lambda (n.1)
+       (if (meta-builtin/builtin/equal? n.1 0)
          meta-builtin/builtin/false
-         ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1)))))
+         ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1)))))
   (= even?.value even?.value.1)
   (= odd?.value odd?.value.1)
   (meta-builtin/builtin/box-put! even?.value even?)
@@ -105,10 +105,10 @@
        ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
    even?)
   (meta-builtin/builtin/box-put!
-   (lambda (n)
-     (if (meta-builtin/builtin/equal? n 0)
+   (lambda (n.1)
+     (if (meta-builtin/builtin/equal? n.1 0)
        meta-builtin/builtin/false
-       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1))))
+       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1))))
    odd?)
   meta-builtin/builtin/void)
 
@@ -126,9 +126,9 @@
        ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
    even?)
   (meta-builtin/builtin/box-put!
-   (lambda (n)
-     (if (meta-builtin/builtin/equal? n 0)
+   (lambda (n.1)
+     (if (meta-builtin/builtin/equal? n.1 0)
        meta-builtin/builtin/false
-       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n 1))))
+       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1))))
    odd?)
   meta-builtin/builtin/void)

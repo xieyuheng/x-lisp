@@ -293,15 +293,15 @@
           (self/050-lambda/closure-value env parameter body))
         (if (self/050-lambda/let-exp? exp)
           (begin
-            (= body (self/050-lambda/let-exp-body exp))
+            (= body.1 (self/050-lambda/let-exp-body exp))
             (= rhs (self/050-lambda/let-exp-rhs exp))
-            (= name (self/050-lambda/let-exp-name exp))
-            (= env
+            (= name.1 (self/050-lambda/let-exp-name exp))
+            (= env.1
                (self/050-lambda/extend-env
-                name
+                name.1
                 (self/050-lambda/evaluate rhs env)
                 env))
-            (self/050-lambda/evaluate body env))
+            (self/050-lambda/evaluate body.1 env.1))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location

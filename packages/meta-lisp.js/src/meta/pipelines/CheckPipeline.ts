@@ -34,6 +34,7 @@ export function CheckPipeline(rootPkg: M.Package): M.Outcome {
 
   for (const pkg of closure) M.QualifyPass(pkg)
   for (const pkg of closure) M.LocatePass(pkg)
+  for (const pkg of closure) M.UniquifyPass(pkg)
 
   for (const pkg of closure) {
     if (M.CheckPass(pkg) === "OutcomeError") outcome = "OutcomeError"

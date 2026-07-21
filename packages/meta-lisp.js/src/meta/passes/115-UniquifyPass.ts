@@ -8,7 +8,7 @@ export function UniquifyPass(pkg: M.Package): void {
     }
   }
 
-  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "140-uniquify")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "115-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {
