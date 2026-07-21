@@ -9,9 +9,9 @@
 (claim example-let-star (-> int-t))
 
 (define (example-let-star)
-  (= x.1 1)
-  (= y.1 (meta-builtin/builtin/iadd x.1 1))
-  (meta-builtin/builtin/iadd x.1 y.1))
+  (= x 1)
+  (= y (meta-builtin/builtin/iadd x 1))
+  (meta-builtin/builtin/iadd x y))
 
 (claim example-cond (-> int-t))
 
@@ -61,80 +61,74 @@
 (claim example-chain (-> int-t))
 
 (define (example-chain)
-  ((lambda (target.1)
-     (self/060-desugar/double (self/060-desugar/add1 target.1)))
-   5))
+  ((lambda (target) (self/060-desugar/double (self/060-desugar/add1 target))) 5))
 
 (claim example-compose (-> int-t))
 
 (define (example-compose)
-  ((lambda (target.1)
-     (self/060-desugar/add1 (self/060-desugar/double target.1)))
-   5))
+  ((lambda (target) (self/060-desugar/add1 (self/060-desugar/double target))) 5))
 
 (claim example-letrec (-> void-t))
 
 (define (example-letrec)
-  (= even?.1.1 (meta-builtin/builtin/make-box))
-  (= odd?.1.1 (meta-builtin/builtin/make-box))
-  (= even?.1 even?.1.1)
-  (= odd?.1 odd?.1.1)
-  (= even?.value.1.1
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (= even?.value.1
+     (lambda (n)
+       (if (meta-builtin/builtin/equal? n 0)
+         meta-builtin/builtin/true
+         ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1)))))
+  (= odd?.value.1
      (lambda (n.1)
        (if (meta-builtin/builtin/equal? n.1 0)
-         meta-builtin/builtin/true
-         ((meta-builtin/builtin/box-get odd?.1)
-          (meta-builtin/builtin/isub n.1 1)))))
-  (= odd?.value.1.1
-     (lambda (n.2)
-       (if (meta-builtin/builtin/equal? n.2 0)
          meta-builtin/builtin/false
-         ((meta-builtin/builtin/box-get even?.1)
-          (meta-builtin/builtin/isub n.2 1)))))
-  (= even?.value.1 even?.value.1.1)
-  (= odd?.value.1 odd?.value.1.1)
-  (meta-builtin/builtin/box-put! even?.value.1 even?.1)
-  (meta-builtin/builtin/box-put! odd?.value.1 odd?.1)
+         ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1)))))
+  (= even?.value even?.value.1)
+  (= odd?.value odd?.value.1)
+  (meta-builtin/builtin/box-put! even?.value even?)
+  (meta-builtin/builtin/box-put! odd?.value odd?)
   meta-builtin/builtin/void)
 
 (claim example-letrec-star (-> void-t))
 
 (define (example-letrec-star)
-  (= even?.1.1 (meta-builtin/builtin/make-box))
-  (= odd?.1.1 (meta-builtin/builtin/make-box))
-  (= even?.1 even?.1.1)
-  (= odd?.1 odd?.1.1)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (meta-builtin/builtin/box-put!
+   (lambda (n)
+     (if (meta-builtin/builtin/equal? n 0)
+       meta-builtin/builtin/true
+       ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
+   even?)
   (meta-builtin/builtin/box-put!
    (lambda (n.1)
      (if (meta-builtin/builtin/equal? n.1 0)
-       meta-builtin/builtin/true
-       ((meta-builtin/builtin/box-get odd?.1) (meta-builtin/builtin/isub n.1 1))))
-   even?.1)
-  (meta-builtin/builtin/box-put!
-   (lambda (n.2)
-     (if (meta-builtin/builtin/equal? n.2 0)
        meta-builtin/builtin/false
-       ((meta-builtin/builtin/box-get even?.1) (meta-builtin/builtin/isub n.2 1))))
-   odd?.1)
+       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1))))
+   odd?)
   meta-builtin/builtin/void)
 
 (claim example-local-define (-> void-t))
 
 (define (example-local-define)
-  (= even?.1.1 (meta-builtin/builtin/make-box))
-  (= odd?.1.1 (meta-builtin/builtin/make-box))
-  (= even?.1 even?.1.1)
-  (= odd?.1 odd?.1.1)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (meta-builtin/builtin/box-put!
+   (lambda (n)
+     (if (meta-builtin/builtin/equal? n 0)
+       meta-builtin/builtin/true
+       ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1))))
+   even?)
   (meta-builtin/builtin/box-put!
    (lambda (n.1)
      (if (meta-builtin/builtin/equal? n.1 0)
-       meta-builtin/builtin/true
-       ((meta-builtin/builtin/box-get odd?.1) (meta-builtin/builtin/isub n.1 1))))
-   even?.1)
-  (meta-builtin/builtin/box-put!
-   (lambda (n.2)
-     (if (meta-builtin/builtin/equal? n.2 0)
        meta-builtin/builtin/false
-       ((meta-builtin/builtin/box-get even?.1) (meta-builtin/builtin/isub n.2 1))))
-   odd?.1)
+       ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1))))
+   odd?)
   meta-builtin/builtin/void)

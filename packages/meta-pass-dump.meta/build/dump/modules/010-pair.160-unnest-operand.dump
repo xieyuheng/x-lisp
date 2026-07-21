@@ -8,11 +8,11 @@
 (claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
 
 (define (make-pair first second)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! make-pair list.1)
-  (meta-builtin/builtin/list-push! first list.1)
-  (meta-builtin/builtin/list-push! second list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! make-pair list)
+  (meta-builtin/builtin/list-push! first list)
+  (meta-builtin/builtin/list-push! second list)
+  list)
 
 (claim pair? (polymorphic (A B) (-> (pair-t A B) meta-builtin/builtin/bool-t)))
 
@@ -52,9 +52,9 @@
 (define (pair-swap p)
   (if (self/010-pair/pair? p)
     (begin
-      (= b.1 (self/010-pair/pair-second p))
-      (= a.1 (self/010-pair/pair-first p))
-      (self/010-pair/make-pair b.1 a.1))
+      (= b (self/010-pair/pair-second p))
+      (= a (self/010-pair/pair-first p))
+      (self/010-pair/make-pair b a))
     (begin
       (= unnested.1 (meta-builtin/builtin/make-source-position 95 5 3))
       (= unnested.2 (meta-builtin/builtin/make-source-position 100 5 8))

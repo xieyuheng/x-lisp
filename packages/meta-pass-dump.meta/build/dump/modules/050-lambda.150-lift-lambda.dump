@@ -14,10 +14,10 @@
 (claim var-exp (-> meta-builtin/builtin/symbol-t exp-t))
 
 (define (var-exp name)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! var-exp list.1)
-  (meta-builtin/builtin/list-push! name list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! var-exp list)
+  (meta-builtin/builtin/list-push! name list)
+  list)
 
 (claim var-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -42,11 +42,11 @@
 (claim apply-exp (-> exp-t exp-t exp-t))
 
 (define (apply-exp target arg)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! apply-exp list.1)
-  (meta-builtin/builtin/list-push! target list.1)
-  (meta-builtin/builtin/list-push! arg list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! apply-exp list)
+  (meta-builtin/builtin/list-push! target list)
+  (meta-builtin/builtin/list-push! arg list)
+  list)
 
 (claim apply-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -80,11 +80,11 @@
 (claim lambda-exp (-> meta-builtin/builtin/symbol-t exp-t exp-t))
 
 (define (lambda-exp parameter body)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! lambda-exp list.1)
-  (meta-builtin/builtin/list-push! parameter list.1)
-  (meta-builtin/builtin/list-push! body list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! lambda-exp list)
+  (meta-builtin/builtin/list-push! parameter list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
 
 (claim lambda-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -118,12 +118,12 @@
 (claim let-exp (-> meta-builtin/builtin/symbol-t exp-t exp-t exp-t))
 
 (define (let-exp name rhs body)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! let-exp list.1)
-  (meta-builtin/builtin/list-push! name list.1)
-  (meta-builtin/builtin/list-push! rhs list.1)
-  (meta-builtin/builtin/list-push! body list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! let-exp list)
+  (meta-builtin/builtin/list-push! name list)
+  (meta-builtin/builtin/list-push! rhs list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
 
 (claim let-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -204,12 +204,12 @@
 (claim closure-value (-> env-t meta-builtin/builtin/symbol-t exp-t value-t))
 
 (define (closure-value env parameter body)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! closure-value list.1)
-  (meta-builtin/builtin/list-push! env list.1)
-  (meta-builtin/builtin/list-push! parameter list.1)
-  (meta-builtin/builtin/list-push! body list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! closure-value list)
+  (meta-builtin/builtin/list-push! env list)
+  (meta-builtin/builtin/list-push! parameter list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
 
 (claim closure-value? (-> value-t meta-builtin/builtin/bool-t))
 
@@ -256,16 +256,15 @@
 (define (evaluate exp env)
   (if (self/050-lambda/var-exp? exp)
     (begin
-      (= name.1 (self/050-lambda/var-exp-name exp))
-      (if (meta-builtin/builtin/just? (self/050-lambda/env-lookup name.1 env))
+      (= name (self/050-lambda/var-exp-name exp))
+      (if (meta-builtin/builtin/just? (self/050-lambda/env-lookup name env))
         (begin
-          (= value.1
+          (= value
              (meta-builtin/builtin/just-value
-              (self/050-lambda/env-lookup name.1 env)))
-          value.1)
+              (self/050-lambda/env-lookup name env)))
+          value)
         (if
-            (meta-builtin/builtin/nothing?
-             (self/050-lambda/env-lookup name.1 env))
+            (meta-builtin/builtin/nothing? (self/050-lambda/env-lookup name env))
           (meta-builtin/builtin/error-with-location
            "undefined name"
            (meta-builtin/builtin/make-source-location
@@ -282,27 +281,27 @@
              (meta-builtin/builtin/make-source-position 650 23 11)))))))
     (if (self/050-lambda/apply-exp? exp)
       (begin
-        (= arg.1 (self/050-lambda/apply-exp-arg exp))
-        (= target.1 (self/050-lambda/apply-exp-target exp))
+        (= arg (self/050-lambda/apply-exp-arg exp))
+        (= target (self/050-lambda/apply-exp-target exp))
         (self/050-lambda/apply
-         (self/050-lambda/evaluate target.1 env)
-         (self/050-lambda/evaluate arg.1 env)))
+         (self/050-lambda/evaluate target env)
+         (self/050-lambda/evaluate arg env)))
       (if (self/050-lambda/lambda-exp? exp)
         (begin
-          (= body.1 (self/050-lambda/lambda-exp-body exp))
-          (= parameter.1 (self/050-lambda/lambda-exp-parameter exp))
-          (self/050-lambda/closure-value env parameter.1 body.1))
+          (= body (self/050-lambda/lambda-exp-body exp))
+          (= parameter (self/050-lambda/lambda-exp-parameter exp))
+          (self/050-lambda/closure-value env parameter body))
         (if (self/050-lambda/let-exp? exp)
           (begin
-            (= body.2 (self/050-lambda/let-exp-body exp))
-            (= rhs.1 (self/050-lambda/let-exp-rhs exp))
-            (= name.2 (self/050-lambda/let-exp-name exp))
+            (= body.1 (self/050-lambda/let-exp-body exp))
+            (= rhs (self/050-lambda/let-exp-rhs exp))
+            (= name.1 (self/050-lambda/let-exp-name exp))
             (= env.1
                (self/050-lambda/extend-env
-                name.2
-                (self/050-lambda/evaluate rhs.1 env)
+                name.1
+                (self/050-lambda/evaluate rhs env)
                 env))
-            (self/050-lambda/evaluate body.2 env.1))
+            (self/050-lambda/evaluate body.1 env.1))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
@@ -316,12 +315,12 @@
 (define (apply target arg)
   (if (self/050-lambda/closure-value? target)
     (begin
-      (= body.1 (self/050-lambda/closure-value-body target))
-      (= parameter.1 (self/050-lambda/closure-value-parameter target))
-      (= env.1 (self/050-lambda/closure-value-env target))
+      (= body (self/050-lambda/closure-value-body target))
+      (= parameter (self/050-lambda/closure-value-parameter target))
+      (= env (self/050-lambda/closure-value-env target))
       (self/050-lambda/evaluate
-       body.1
-       (self/050-lambda/extend-env parameter.1 arg env.1)))
+       body
+       (self/050-lambda/extend-env parameter arg env)))
     (meta-builtin/builtin/error-with-location
      "cond mismatch"
      (meta-builtin/builtin/make-source-location

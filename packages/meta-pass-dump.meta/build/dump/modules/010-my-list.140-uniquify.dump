@@ -7,9 +7,9 @@
 (claim nil (polymorphic (E) (-> (my-list-t E))))
 
 (define (nil)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! nil list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! nil list)
+  list)
 
 (claim nil? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -23,11 +23,11 @@
 (claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li head tail)
-  (= list.1 (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! li list.1)
-  (meta-builtin/builtin/list-push! head list.1)
-  (meta-builtin/builtin/list-push! tail list.1)
-  list.1)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! li list)
+  (meta-builtin/builtin/list-push! head list)
+  (meta-builtin/builtin/list-push! tail list)
+  list)
 
 (claim li? (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -64,13 +64,13 @@
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/string-concat
       (begin
-        (= list.1.1 (meta-builtin/builtin/make-list))
-        (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1.1)
-        (meta-builtin/builtin/list-push! " " list.1.1)
+        (= list.1 (meta-builtin/builtin/make-list))
+        (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1)
+        (meta-builtin/builtin/list-push! " " list.1)
         (meta-builtin/builtin/list-push!
          (meta-builtin/builtin/format list)
-         list.1.1)
-        list.1.1))
+         list.1)
+        list.1))
      (meta-builtin/builtin/make-source-location
       "src/010-my-list.meta"
       (meta-builtin/builtin/make-source-span
@@ -78,9 +78,9 @@
        (meta-builtin/builtin/make-source-position 132 7 8))))
     (if (self/010-my-list/li? list)
       (begin
-        (= tail.1 (self/010-my-list/li-tail list))
-        (= head.1 (self/010-my-list/li-head list))
-        head.1)
+        (= tail (self/010-my-list/li-tail list))
+        (= head (self/010-my-list/li-head list))
+        head)
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
@@ -97,13 +97,13 @@
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/string-concat
       (begin
-        (= list.1.1 (meta-builtin/builtin/make-list))
-        (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1.1)
-        (meta-builtin/builtin/list-push! " " list.1.1)
+        (= list.1 (meta-builtin/builtin/make-list))
+        (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1)
+        (meta-builtin/builtin/list-push! " " list.1)
         (meta-builtin/builtin/list-push!
          (meta-builtin/builtin/format list)
-         list.1.1)
-        list.1.1))
+         list.1)
+        list.1))
      (meta-builtin/builtin/make-source-location
       "src/010-my-list.meta"
       (meta-builtin/builtin/make-source-span
@@ -111,9 +111,9 @@
        (meta-builtin/builtin/make-source-position 203 11 8))))
     (if (self/010-my-list/li? list)
       (begin
-        (= tail.1 (self/010-my-list/li-tail list))
-        (= head.1 (self/010-my-list/li-head list))
-        tail.1)
+        (= tail (self/010-my-list/li-tail list))
+        (= head (self/010-my-list/li-head list))
+        tail)
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
@@ -129,9 +129,9 @@
     0
     (if (self/010-my-list/li? list)
       (begin
-        (= tail.1 (self/010-my-list/li-tail list))
-        (= head.1 (self/010-my-list/li-head list))
-        (meta-builtin/builtin/iadd 1 (self/010-my-list/my-list-length tail.1)))
+        (= tail (self/010-my-list/li-tail list))
+        (= head (self/010-my-list/li-head list))
+        (meta-builtin/builtin/iadd 1 (self/010-my-list/my-list-length tail)))
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
@@ -150,9 +150,9 @@
     (self/010-my-list/nil)
     (if (self/010-my-list/li? list)
       (begin
-        (= tail.1 (self/010-my-list/li-tail list))
-        (= head.1 (self/010-my-list/li-head list))
-        (self/010-my-list/li (f head.1) (self/010-my-list/my-list-map f tail.1)))
+        (= tail (self/010-my-list/li-tail list))
+        (= head (self/010-my-list/li-head list))
+        (self/010-my-list/li (f head) (self/010-my-list/my-list-map f tail)))
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
@@ -173,11 +173,9 @@
     right
     (if (self/010-my-list/li? left)
       (begin
-        (= tail.1 (self/010-my-list/li-tail left))
-        (= head.1 (self/010-my-list/li-head left))
-        (self/010-my-list/li
-         head.1
-         (self/010-my-list/my-list-append tail.1 right)))
+        (= tail (self/010-my-list/li-tail left))
+        (= head (self/010-my-list/li-head left))
+        (self/010-my-list/li head (self/010-my-list/my-list-append tail right)))
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
@@ -195,22 +193,22 @@
 
 (define (my-list-map-zip f list1 list2)
   (if (self/010-my-list/nil? list1)
-    (begin (= _.1 list2) (self/010-my-list/nil))
+    (begin (= _ list2) (self/010-my-list/nil))
     (if (self/010-my-list/li? list1)
       (if (self/010-my-list/nil? list2)
         (begin
-          (= tail1.1 (self/010-my-list/li-tail list1))
-          (= head1.1 (self/010-my-list/li-head list1))
+          (= tail1 (self/010-my-list/li-tail list1))
+          (= head1 (self/010-my-list/li-head list1))
           (self/010-my-list/nil))
         (if (self/010-my-list/li? list2)
           (begin
-            (= tail2.1 (self/010-my-list/li-tail list2))
-            (= head2.1 (self/010-my-list/li-head list2))
-            (= tail1.2 (self/010-my-list/li-tail list1))
-            (= head1.2 (self/010-my-list/li-head list1))
+            (= tail2 (self/010-my-list/li-tail list2))
+            (= head2 (self/010-my-list/li-head list2))
+            (= tail1.1 (self/010-my-list/li-tail list1))
+            (= head1.1 (self/010-my-list/li-head list1))
             (self/010-my-list/li
-             (f head1.2 head2.1)
-             (self/010-my-list/my-list-map-zip f tail1.2 tail2.1)))
+             (f head1.1 head2)
+             (self/010-my-list/my-list-map-zip f tail1.1 tail2)))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
@@ -235,26 +233,26 @@
 
 (define (my-list-map-zip-2 f list1 list2)
   (if (self/010-my-list/nil? list1)
-    (begin (= _.1 list2) (self/010-my-list/nil))
+    (begin (= _ list2) (self/010-my-list/nil))
     (if (self/010-my-list/li? list1)
       (if (self/010-my-list/nil? list2)
-        (begin (= _.2 list1) (self/010-my-list/nil))
+        (begin (= _.1 list1) (self/010-my-list/nil))
         (if (self/010-my-list/li? list2)
           (if (self/010-my-list/nil? list1)
             (meta-builtin/builtin/error-with-location
              (meta-builtin/builtin/string-concat
               (begin
-                (= list.1 (meta-builtin/builtin/make-list))
-                (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1)
-                (meta-builtin/builtin/list-push! " " list.1)
+                (= list (meta-builtin/builtin/make-list))
+                (meta-builtin/builtin/list-push! "pattern mismatch on:" list)
+                (meta-builtin/builtin/list-push! " " list)
                 (meta-builtin/builtin/list-push!
                  (meta-builtin/builtin/format list1)
-                 list.1)
-                (meta-builtin/builtin/list-push! " " list.1)
+                 list)
+                (meta-builtin/builtin/list-push! " " list)
                 (meta-builtin/builtin/list-push!
                  (meta-builtin/builtin/format list2)
-                 list.1)
-                list.1))
+                 list)
+                list))
              (meta-builtin/builtin/make-source-location
               "src/010-my-list.meta"
               (meta-builtin/builtin/make-source-span
@@ -265,19 +263,19 @@
                 (meta-builtin/builtin/error-with-location
                  (meta-builtin/builtin/string-concat
                   (begin
-                    (= list.2 (meta-builtin/builtin/make-list))
+                    (= list.1 (meta-builtin/builtin/make-list))
                     (meta-builtin/builtin/list-push!
                      "pattern mismatch on:"
-                     list.2)
-                    (meta-builtin/builtin/list-push! " " list.2)
+                     list.1)
+                    (meta-builtin/builtin/list-push! " " list.1)
                     (meta-builtin/builtin/list-push!
                      (meta-builtin/builtin/format list1)
-                     list.2)
-                    (meta-builtin/builtin/list-push! " " list.2)
+                     list.1)
+                    (meta-builtin/builtin/list-push! " " list.1)
                     (meta-builtin/builtin/list-push!
                      (meta-builtin/builtin/format list2)
-                     list.2)
-                    list.2))
+                     list.1)
+                    list.1))
                  (meta-builtin/builtin/make-source-location
                   "src/010-my-list.meta"
                   (meta-builtin/builtin/make-source-span
@@ -285,13 +283,13 @@
                    (meta-builtin/builtin/make-source-position 886 37 13))))
                 (if (self/010-my-list/li? list2)
                   (begin
-                    (= tail2.1 (self/010-my-list/li-tail list2))
-                    (= head2.1 (self/010-my-list/li-head list2))
-                    (= tail1.1 (self/010-my-list/li-tail list1))
-                    (= head1.1 (self/010-my-list/li-head list1))
+                    (= tail2 (self/010-my-list/li-tail list2))
+                    (= head2 (self/010-my-list/li-head list2))
+                    (= tail1 (self/010-my-list/li-tail list1))
+                    (= head1 (self/010-my-list/li-head list1))
                     (self/010-my-list/li
-                     (f head1.1 head2.1)
-                     (self/010-my-list/my-list-map-zip-2 f tail1.1 tail2.1)))
+                     (f head1 head2)
+                     (self/010-my-list/my-list-map-zip-2 f tail1 tail2)))
                   (meta-builtin/builtin/error-with-location
                    "cond mismatch"
                    (meta-builtin/builtin/make-source-location
@@ -330,22 +328,21 @@
     (if (self/010-my-list/li? list)
       (if (self/010-my-list/nil? (self/010-my-list/li-tail list))
         (begin
-          (= head.1 (self/010-my-list/li-head list))
-          (self/010-my-list/li head.1 (self/010-my-list/nil)))
+          (= head (self/010-my-list/li-head list))
+          (self/010-my-list/li head (self/010-my-list/nil)))
         (if (self/010-my-list/li? (self/010-my-list/li-tail list))
           (begin
-            (= rest.1
-               (self/010-my-list/li-tail (self/010-my-list/li-tail list)))
-            (= second.1
+            (= rest (self/010-my-list/li-tail (self/010-my-list/li-tail list)))
+            (= second
                (self/010-my-list/li-head (self/010-my-list/li-tail list)))
-            (= first.1 (self/010-my-list/li-head list))
-            (if (meta-builtin/builtin/equal? first.1 second.1)
+            (= first (self/010-my-list/li-head list))
+            (if (meta-builtin/builtin/equal? first second)
               (self/010-my-list/my-list-adjacent-dedup
-               (self/010-my-list/li second.1 rest.1))
+               (self/010-my-list/li second rest))
               (self/010-my-list/li
-               first.1
+               first
                (self/010-my-list/my-list-adjacent-dedup
-                (self/010-my-list/li second.1 rest.1)))))
+                (self/010-my-list/li second rest)))))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location

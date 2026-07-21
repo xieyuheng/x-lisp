@@ -9,9 +9,9 @@
 (claim example-let-star (-> int-t))
 
 (define (example-let-star)
-  (= x.1 1)
-  (= y.1 (meta-builtin/builtin/iadd x.1 1))
-  (meta-builtin/builtin/iadd x.1 y.1))
+  (= x 1)
+  (= y (meta-builtin/builtin/iadd x 1))
+  (meta-builtin/builtin/iadd x y))
 
 (claim example-cond (-> int-t))
 
@@ -67,107 +67,107 @@
 
 (define (example-chain) (self/060-desugar/example-chain©λ1 5))
 
-(define (example-chain©λ1 target.1)
-  (= unnested.1 (self/060-desugar/add1 target.1))
+(define (example-chain©λ1 target)
+  (= unnested.1 (self/060-desugar/add1 target))
   (self/060-desugar/double unnested.1))
 
 (claim example-compose (-> int-t))
 
 (define (example-compose) (self/060-desugar/example-compose©λ1 5))
 
-(define (example-compose©λ1 target.1)
-  (= unnested.1 (self/060-desugar/double target.1))
+(define (example-compose©λ1 target)
+  (= unnested.1 (self/060-desugar/double target))
   (self/060-desugar/add1 unnested.1))
 
 (claim example-letrec (-> void-t))
 
 (define (example-letrec)
-  (= even?.1.1 (meta-builtin/builtin/make-box))
-  (= odd?.1.1 (meta-builtin/builtin/make-box))
-  (= even?.1 even?.1.1)
-  (= odd?.1 odd?.1.1)
-  (= even?.value.1.1 (self/060-desugar/example-letrec©λ1 odd?.1))
-  (= odd?.value.1.1 (self/060-desugar/example-letrec©λ2 even?.1))
-  (= even?.value.1 even?.value.1.1)
-  (= odd?.value.1 odd?.value.1.1)
-  (meta-builtin/builtin/box-put! even?.value.1 even?.1)
-  (meta-builtin/builtin/box-put! odd?.value.1 odd?.1)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (= even?.value.1 (self/060-desugar/example-letrec©λ1 odd?))
+  (= odd?.value.1 (self/060-desugar/example-letrec©λ2 even?))
+  (= even?.value even?.value.1)
+  (= odd?.value odd?.value.1)
+  (meta-builtin/builtin/box-put! even?.value even?)
+  (meta-builtin/builtin/box-put! odd?.value odd?)
   meta-builtin/builtin/void)
 
-(define (example-letrec©λ1 odd?.1 n.1)
-  (if (meta-builtin/builtin/equal? n.1 0)
+(define (example-letrec©λ1 odd? n)
+  (if (meta-builtin/builtin/equal? n 0)
     meta-builtin/builtin/true
     (begin
-      (= unnested.1 (meta-builtin/builtin/box-get odd?.1))
-      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
+      (= unnested.1 (meta-builtin/builtin/box-get odd?))
+      (= unnested.2 (meta-builtin/builtin/isub n 1))
       (unnested.1 unnested.2))))
 
-(define (example-letrec©λ2 even?.1 n.2)
-  (if (meta-builtin/builtin/equal? n.2 0)
+(define (example-letrec©λ2 even? n.1)
+  (if (meta-builtin/builtin/equal? n.1 0)
     meta-builtin/builtin/false
     (begin
-      (= unnested.1 (meta-builtin/builtin/box-get even?.1))
-      (= unnested.2 (meta-builtin/builtin/isub n.2 1))
+      (= unnested.1 (meta-builtin/builtin/box-get even?))
+      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
       (unnested.1 unnested.2))))
 
 (claim example-letrec-star (-> void-t))
 
 (define (example-letrec-star)
-  (= even?.1.1 (meta-builtin/builtin/make-box))
-  (= odd?.1.1 (meta-builtin/builtin/make-box))
-  (= even?.1 even?.1.1)
-  (= odd?.1 odd?.1.1)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
   (begin
-    (= unnested.1 (self/060-desugar/example-letrec-star©λ1 odd?.1))
-    (meta-builtin/builtin/box-put! unnested.1 even?.1))
+    (= unnested.1 (self/060-desugar/example-letrec-star©λ1 odd?))
+    (meta-builtin/builtin/box-put! unnested.1 even?))
   (begin
-    (= unnested.2 (self/060-desugar/example-letrec-star©λ2 even?.1))
-    (meta-builtin/builtin/box-put! unnested.2 odd?.1))
+    (= unnested.2 (self/060-desugar/example-letrec-star©λ2 even?))
+    (meta-builtin/builtin/box-put! unnested.2 odd?))
   meta-builtin/builtin/void)
 
-(define (example-letrec-star©λ1 odd?.1 n.1)
-  (if (meta-builtin/builtin/equal? n.1 0)
+(define (example-letrec-star©λ1 odd? n)
+  (if (meta-builtin/builtin/equal? n 0)
     meta-builtin/builtin/true
     (begin
-      (= unnested.1 (meta-builtin/builtin/box-get odd?.1))
-      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
+      (= unnested.1 (meta-builtin/builtin/box-get odd?))
+      (= unnested.2 (meta-builtin/builtin/isub n 1))
       (unnested.1 unnested.2))))
 
-(define (example-letrec-star©λ2 even?.1 n.2)
-  (if (meta-builtin/builtin/equal? n.2 0)
+(define (example-letrec-star©λ2 even? n.1)
+  (if (meta-builtin/builtin/equal? n.1 0)
     meta-builtin/builtin/false
     (begin
-      (= unnested.1 (meta-builtin/builtin/box-get even?.1))
-      (= unnested.2 (meta-builtin/builtin/isub n.2 1))
+      (= unnested.1 (meta-builtin/builtin/box-get even?))
+      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
       (unnested.1 unnested.2))))
 
 (claim example-local-define (-> void-t))
 
 (define (example-local-define)
-  (= even?.1.1 (meta-builtin/builtin/make-box))
-  (= odd?.1.1 (meta-builtin/builtin/make-box))
-  (= even?.1 even?.1.1)
-  (= odd?.1 odd?.1.1)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
   (begin
-    (= unnested.1 (self/060-desugar/example-local-define©λ1 odd?.1))
-    (meta-builtin/builtin/box-put! unnested.1 even?.1))
+    (= unnested.1 (self/060-desugar/example-local-define©λ1 odd?))
+    (meta-builtin/builtin/box-put! unnested.1 even?))
   (begin
-    (= unnested.2 (self/060-desugar/example-local-define©λ2 even?.1))
-    (meta-builtin/builtin/box-put! unnested.2 odd?.1))
+    (= unnested.2 (self/060-desugar/example-local-define©λ2 even?))
+    (meta-builtin/builtin/box-put! unnested.2 odd?))
   meta-builtin/builtin/void)
 
-(define (example-local-define©λ1 odd?.1 n.1)
-  (if (meta-builtin/builtin/equal? n.1 0)
+(define (example-local-define©λ1 odd? n)
+  (if (meta-builtin/builtin/equal? n 0)
     meta-builtin/builtin/true
     (begin
-      (= unnested.1 (meta-builtin/builtin/box-get odd?.1))
-      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
+      (= unnested.1 (meta-builtin/builtin/box-get odd?))
+      (= unnested.2 (meta-builtin/builtin/isub n 1))
       (unnested.1 unnested.2))))
 
-(define (example-local-define©λ2 even?.1 n.2)
-  (if (meta-builtin/builtin/equal? n.2 0)
+(define (example-local-define©λ2 even? n.1)
+  (if (meta-builtin/builtin/equal? n.1 0)
     meta-builtin/builtin/false
     (begin
-      (= unnested.1 (meta-builtin/builtin/box-get even?.1))
-      (= unnested.2 (meta-builtin/builtin/isub n.2 1))
+      (= unnested.1 (meta-builtin/builtin/box-get even?))
+      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
       (unnested.1 unnested.2))))

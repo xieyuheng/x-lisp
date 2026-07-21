@@ -1,6 +1,6 @@
 (claim make-adder (-> int-t int-t int-t))
 
-(define (make-adder x) (lambda (y.1) (meta-builtin/builtin/iadd x y.1)))
+(define (make-adder x) (lambda (y) (meta-builtin/builtin/iadd x y)))
 
 (claim f (-> (-> int-t int-t)))
 

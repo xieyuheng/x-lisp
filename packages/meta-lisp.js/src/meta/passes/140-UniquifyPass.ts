@@ -20,18 +20,34 @@ function uniquifyDefinition(definition: M.Definition): null {
       return null
     }
 
-    case "FunctionDefinition":
-    case "VariableDefinition":
-    case "TestDefinition":
+    case "FunctionDefinition": {
+      definition.body = uniquifyTerm(
+        new Set(definition.parameters),
+        {},
+        definition.body,
+      )
+      return null
+    }
+
     case "TypeDefinition": {
-      definition.body = uniquifyTerm({}, {}, definition.body)
+      definition.body = uniquifyTerm(
+        new Set(definition.parameters),
+        {},
+        definition.body,
+      )
+      return null
+    }
+
+    case "VariableDefinition":
+    case "TestDefinition": {
+      definition.body = uniquifyTerm(new Set(), {}, definition.body)
       return null
     }
   }
 }
 
 function uniquifyTerm(
-  nameCounts: Record<string, number>,
+  usedNames: Set<string>,
   nameTable: Record<string, string>,
   term: M.Term,
 ): M.Term {
@@ -42,65 +58,36 @@ function uniquifyTerm(
     }
 
     case "LambdaTerm": {
-      countNames(nameCounts, term.parameters)
-      const parameters = term.parameters.map((name) =>
-        generateNameInCounts(nameCounts, name),
-      )
+      const parameters = term.parameters.map((name) => {
+        const freshName = M.generateRelativeFreshName(usedNames, name)
+        usedNames.add(freshName)
+        return freshName
+      })
       const newNameTable = {
         ...nameTable,
         ...Object.fromEntries(arrayZip(term.parameters, parameters)),
       }
       return M.LambdaTerm(
         parameters,
-        uniquifyTerm(nameCounts, newNameTable, term.body),
+        uniquifyTerm(usedNames, newNameTable, term.body),
         term.location,
       )
     }
 
     case "Let1Term": {
-      countName(nameCounts, term.name)
-      const newName = generateNameInCounts(nameCounts, term.name)
+      const newName = M.generateRelativeFreshName(usedNames, term.name)
+      usedNames.add(newName)
       const newNameTable = { ...nameTable, [term.name]: newName }
       return M.Let1Term(
         newName,
-        uniquifyTerm(nameCounts, nameTable, term.rhs),
-        uniquifyTerm(nameCounts, newNameTable, term.body),
+        uniquifyTerm(usedNames, nameTable, term.rhs),
+        uniquifyTerm(usedNames, newNameTable, term.body),
         term.location,
       )
     }
 
     default: {
-      return M.termTraverse((e) => uniquifyTerm(nameCounts, nameTable, e), term)
+      return M.termTraverse((e) => uniquifyTerm(usedNames, nameTable, e), term)
     }
-  }
-}
-
-function countName(nameCounts: Record<string, number>, name: string): void {
-  const count = nameCounts[name]
-  if (count === undefined) {
-    nameCounts[name] = 1
-  } else {
-    nameCounts[name] = count + 1
-  }
-}
-
-function countNames(
-  nameCounts: Record<string, number>,
-  names: Array<string>,
-): void {
-  for (const name of names) {
-    countName(nameCounts, name)
-  }
-}
-
-function generateNameInCounts(
-  nameCounts: Record<string, number>,
-  name: string,
-): string {
-  const count = nameCounts[name]
-  if (count === undefined) {
-    return name
-  } else {
-    return `${name}.${count}`
   }
 }
