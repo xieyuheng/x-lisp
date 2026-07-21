@@ -17,7 +17,7 @@ description: 生成 Meta-lisp 代码时保证括号正确匹配的技术 + 验�
 
 写完后运行验证：
 ```bash
-python3 .agents/skills/lisp-brackets/check-brackets.py <file.meta>
+node .agents/skills/lisp-brackets/check-brackets.mjs <file.meta>
 ```
 
 ## 模板速查
@@ -99,7 +99,7 @@ python3 .agents/skills/lisp-brackets/check-brackets.py <file.meta>
 
 ## 检查清单
 
-1. `check-brackets.py` 通过
+1. `check-brackets.mjs` 通过
 2. `let`/`let*` 绑定列表是 `((... ...))` 双括号
 3. `match` 子句是 `((pattern) body)`
 4. `cond` 的 `else` 没有多余括号

@@ -23,7 +23,7 @@
 
 测试：
 
-- 你可以使用 check-brackets.py 检查 meta-lisp 代码文件的括号是否匹配。
+- 你可以使用 check-brackets.mjs 检查 meta-lisp 代码文件的括号是否匹配。
 - 在 meta-bracket-test.meta/ 项目中，你可以使用 scripts/ 下工具：
   - ./scripts/check.sh # 类型检查
   - ./scripts/test.sh # 运行测试
