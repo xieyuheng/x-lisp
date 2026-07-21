@@ -117,7 +117,6 @@ AI agent 应用中文回答用户的问题。
 - 标准流程：check → build → test
 - [meta-lisp.meta] 额外有 `scripts/build.sh`（编译为 xvm 汇编）和 `scripts/self-check.sh`（自举验证）
 - **不要猜测 API 用法** — 优先使用 [meta-builtin.meta] 中已定义的内建函数，需要新函数时再到 `meta-builtin.meta/src/` 下查看声明
-- **修改前应加载 `lisp-brackets` skill**，改后运行 `node .agents/skills/lisp-brackets/check-brackets.mjs <file.meta>`
 - `meta-error.meta` 的类型错误是**预期输出**，不要误判为 bug
 - **变量名可以用完整单词如 `list`/`hash`/`set`** — meta-lisp 与 Scheme 一样是单一命名空间（Lisp-1），但容器通过 `(@list ...)` / `[...]`、`(@set ...)`、`(@hash ...)` 等 `@` 前缀特殊语法构造，而非函数作用（如 Scheme 的 `(list ...)`），因此这些名字作变量不会遮蔽任何内建构造器。禁止 `lst`/`acc` 等无意义缩写
 
@@ -156,7 +155,6 @@ Agent 应在对应场景主动加载 skill：
 | 场景 | 加载 Skill |
 |---|---|
 | 编写或修改 C 代码 | `scalable-c` |
-| 编写或修改 `.meta` 代码 | `lisp-brackets` |
 | 重构、设计新模块 | `oop-thinking` |
 | 解决复杂问题 | `how-to-solve-it` |
 
