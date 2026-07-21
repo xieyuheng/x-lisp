@@ -69,6 +69,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
           const retType = M.createFreshVarType("R")
           const type = M.ArrowType([argType], retType)
           const [parameter] = exp.parameters
+          ctx.varTypes.set(parameter, argType)
           return M.checkThenInfer(
             M.checkByInfer(
               mod,
@@ -83,6 +84,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
           const retType = M.createFreshVarType("R")
           const type = M.ArrowType([argType], retType)
           const [parameter, ...restParameters] = exp.parameters
+          ctx.varTypes.set(parameter, argType)
           return M.checkThenInfer(
             M.checkByInfer(
               mod,
@@ -119,6 +121,7 @@ export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
         return M.inferThenInfer(
           M.infer(mod, ctx, exp.rhs),
           (inferredType) => (subst) => {
+            ctx.varTypes.set(exp.name, inferredType)
             if (M.termIsSyntacticValue(exp.rhs)) {
               ctx = M.substDeepWalkCtx(subst, ctx)
               inferredType = M.substDeepWalk(subst, inferredType)
