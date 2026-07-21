@@ -201,7 +201,8 @@ function tryCheckDefinitionBody(
       const ctx = M.emptyCtx()
       ctx.transparentOpaqueNames = opaqueNames
       const outcome = tryCheckTerm(mod, ctx, exp, transparentType)
-      if (outcome === "OutcomeOk") definitionPutVarTypes(definition, ctx.varTypes)
+      if (outcome === "OutcomeOk")
+        M.definitionPutVarTypes(definition, ctx.varTypes)
       return outcome
     }
   }
@@ -210,7 +211,8 @@ function tryCheckDefinitionBody(
   if (type) {
     const ctx = M.emptyCtx()
     const outcome = tryCheckTerm(mod, ctx, exp, type)
-    if (outcome === "OutcomeOk") definitionPutVarTypes(definition, ctx.varTypes)
+    if (outcome === "OutcomeOk")
+      M.definitionPutVarTypes(definition, ctx.varTypes)
     return outcome
   }
 
@@ -238,7 +240,7 @@ function tryInferDefinitionBody(
     return "OutcomeError"
   } else {
     walkVarTypes(ctx, result.subst)
-    definitionPutVarTypes(definition, ctx.varTypes)
+    M.definitionPutVarTypes(definition, ctx.varTypes)
     let inferredType = M.substDeepWalk(result.subst, result.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
@@ -251,23 +253,10 @@ function walkVarTypes(ctx: M.Ctx, subst: M.Subst): void {
   for (const [name, type] of ctx.varTypes) {
     ctx.varTypes.set(name, M.substDeepWalk(subst, type))
   }
-}
-
-function definitionPutVarTypes(
-  definition: M.Definition,
-  varTypes: Map<string, M.Type>,
-): void {
-  switch (definition.kind) {
-    case "FunctionDefinition":
-    case "VariableDefinition":
-    case "TestDefinition":
-    case "TypeDefinition": {
-      definition.varTypes = varTypes
-      return
-    }
-    default: {
-      throw new Error(`[definitionPutVarTypes] unexpected definition kind: ${definition.kind}`)
-    }
+  const types = [...ctx.varTypes.values()]
+  const canonicalSubst = M.generateCanonicalLabelSubst(types)
+  for (const [name, type] of ctx.varTypes) {
+    ctx.varTypes.set(name, M.substDeepWalk(canonicalSubst, type))
   }
 }
 

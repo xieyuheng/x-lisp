@@ -1,0 +1,4 @@
+(check-var-types
+  (add
+    (x int-t)
+    (y int-t)))

@@ -1,0 +1,43 @@
+(check-var-types
+  (add1
+    (x int-t))
+  (double
+    (x int-t))
+  (example-let-star
+    (x int-t)
+    (y int-t))
+  (example-and
+    (a bool-t)
+    (b bool-t))
+  (example-or
+    (a bool-t)
+    (b bool-t))
+  (example-chain
+    (target int-t))
+  (example-compose
+    (target int-t))
+  (example-letrec
+    (even? (builtin/box-t (-> int-t bool-t)))
+    (even?.1 (builtin/box-t (-> int-t bool-t)))
+    (even?.value (-> int-t bool-t))
+    (even?.value.1 (-> int-t bool-t))
+    (n int-t)
+    (n.1 int-t)
+    (odd? (builtin/box-t (-> int-t bool-t)))
+    (odd?.1 (builtin/box-t (-> int-t bool-t)))
+    (odd?.value (-> int-t bool-t))
+    (odd?.value.1 (-> int-t bool-t)))
+  (example-letrec-star
+    (even? (builtin/box-t (-> int-t bool-t)))
+    (even?.1 (builtin/box-t (-> int-t bool-t)))
+    (n int-t)
+    (n.1 int-t)
+    (odd? (builtin/box-t (-> int-t bool-t)))
+    (odd?.1 (builtin/box-t (-> int-t bool-t))))
+  (example-local-define
+    (even? (builtin/box-t (-> int-t bool-t)))
+    (even?.1 (builtin/box-t (-> int-t bool-t)))
+    (n int-t)
+    (n.1 int-t)
+    (odd? (builtin/box-t (-> int-t bool-t)))
+    (odd?.1 (builtin/box-t (-> int-t bool-t)))))

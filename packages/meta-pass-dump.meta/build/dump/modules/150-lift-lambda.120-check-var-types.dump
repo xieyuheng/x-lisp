@@ -1,0 +1,4 @@
+(check-var-types
+  (make-adder
+    (x int-t)
+    (y int-t)))

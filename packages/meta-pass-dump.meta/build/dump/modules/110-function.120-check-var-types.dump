@@ -1,0 +1,9 @@
+(check-var-types
+  (identity
+    (x _.1))
+  (compose2
+    (f (-> _.1 _.2))
+    (g (-> _.3 _.1))
+    (x _.3))
+  (double
+    (x int-t)))

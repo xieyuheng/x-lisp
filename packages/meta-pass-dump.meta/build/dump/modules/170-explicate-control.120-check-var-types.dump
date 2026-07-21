@@ -1,0 +1,3 @@
+(check-var-types
+  (f
+    (x int-t)))

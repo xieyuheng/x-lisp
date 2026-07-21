@@ -1,0 +1,20 @@
+(check-var-types
+  (evaluate
+    (arg 050-lambda/exp-t)
+    (body 050-lambda/exp-t)
+    (body.1 050-lambda/exp-t)
+    (env 050-lambda/env-t)
+    (env.1 050-lambda/env-t)
+    (exp 050-lambda/exp-t)
+    (name symbol-t)
+    (name.1 symbol-t)
+    (parameter symbol-t)
+    (rhs 050-lambda/exp-t)
+    (target 050-lambda/exp-t)
+    (value 050-lambda/value-t))
+  (apply
+    (arg 050-lambda/value-t)
+    (body 050-lambda/exp-t)
+    (env 050-lambda/env-t)
+    (parameter symbol-t)
+    (target 050-lambda/value-t)))

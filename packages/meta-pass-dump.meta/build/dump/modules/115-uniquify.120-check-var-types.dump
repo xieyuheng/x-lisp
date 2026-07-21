@@ -1,0 +1,4 @@
+(check-var-types
+  (f
+    (x int-t)
+    (x.1 int-t)))
