@@ -26444,18 +26444,18 @@
     (= i64.1 (int64 :content 42))
     (= int.1 (tag-int i64.1))
     (return int.1)))
-(define-function self/140-uniquify/f
+(define-function self/115-uniquify/f
   (block body
-    (= address.1 (address :name self/140-uniquify/f©λ1))
+    (= address.1 (address :name self/115-uniquify/f©λ1))
     (= i64.1 (int64 :content 1))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1)))
-(define-function self/140-uniquify/f©λ1
+(define-function self/115-uniquify/f©λ1
   (block body
     (= x (argument :index 0))
-    (= address.1 (address :name self/140-uniquify/f©λ1©λ1))
+    (= address.1 (address :name self/115-uniquify/f©λ1©λ1))
     (tail-call address.1 x)))
-(define-function self/140-uniquify/f©λ1©λ1
+(define-function self/115-uniquify/f©λ1©λ1
   (block body
     (= x.1 (argument :index 0))
     (return x.1)))
