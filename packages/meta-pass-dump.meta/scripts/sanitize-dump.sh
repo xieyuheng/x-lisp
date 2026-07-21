@@ -11,10 +11,10 @@ SCRIPT_DIR="$(realpath "$(dirname "$0")")"
 DUMP_DIR="$1/dump"
 BUILD_DIR="$(realpath "$1")"
 
-SANITIZER="$SCRIPT_DIR/sanitize-dump.py"
+SANITIZER="$SCRIPT_DIR/sanitize-dump.mjs"
 
 if [ -d "$DUMP_DIR" ]; then
-  find "$DUMP_DIR" -name '*.dump' -print0 | xargs -0 python3 "$SANITIZER"
+  find "$DUMP_DIR" -name '*.dump' -print0 | xargs -0 node "$SANITIZER"
 else
   echo "[sanitize-dump.sh] dump directory does not exist: $DUMP_DIR"
 fi
@@ -22,6 +22,6 @@ fi
 BUNDLES=(bundle.basic bundle.basic2)
 for bundle in "${BUNDLES[@]}"; do
   if [ -f "$BUILD_DIR/$bundle" ]; then
-    python3 "$SANITIZER" "$BUILD_DIR/$bundle"
+    node "$SANITIZER" "$BUILD_DIR/$bundle"
   fi
 done
