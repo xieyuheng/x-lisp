@@ -3,7 +3,7 @@
 set -e
 
 ./scripts/prepare.sh
-./scripts/clean.sh
 ./scripts/format.sh
+./scripts/check.sh
 ./scripts/build.sh
 ./scripts/test.sh
