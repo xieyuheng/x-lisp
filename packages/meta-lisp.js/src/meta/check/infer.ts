@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
 
 export type TypeError = { term: M.Term; message: string }
@@ -71,7 +72,11 @@ export function infer(
     }
 
     case "QualifiedVarTerm": {
-      const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
+      const qualifiedMod = Pkg.packageLookupMod(
+        mod.pkg,
+        exp.pkgName,
+        exp.modName,
+      )
       if (qualifiedMod === undefined) {
         let message = `undefined module prefix`
         message += `\n  from package: ${mod.pkg.rootDirectory}`
