@@ -33,7 +33,7 @@ export type QualifiedVarTerm = {
 
 export type LambdaTerm = {
   kind: "LambdaTerm"
-  parameters: Array<{ name: string; type: M.Type }>
+  parameters: Array<string>
   body: Term
   type: M.Type
   location: SourceLocation
@@ -127,7 +127,7 @@ export function QualifiedVarTerm(
 }
 
 export function LambdaTerm(
-  parameters: Array<{ name: string; type: M.Type }>,
+  parameters: Array<string>,
   body: Term,
   type: M.Type,
   location: SourceLocation,

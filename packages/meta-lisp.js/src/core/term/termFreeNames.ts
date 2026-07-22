@@ -24,7 +24,7 @@ export function termFreeNames(
 
     case "LambdaTerm": {
       return termFreeNames(
-        new Set([...boundNames, ...term.parameters.map((p) => p.name)]),
+        new Set([...boundNames, ...term.parameters]),
         term.body,
       )
     }
