@@ -1,3 +1,4 @@
+import * as C from "../../core/index.ts"
 import * as M from "../index.ts"
 
 export function checkAssignable(
@@ -5,7 +6,7 @@ export function checkAssignable(
   ctx: M.Ctx,
   exp: M.Term,
   type: M.Type,
-): M.Either<M.TypeError, M.Core> {
+): M.Either<M.TypeError, C.Term> {
   const inferResult = M.infer(mod, ctx, exp)
   if (inferResult.kind === "Left") return inferResult
   const { type: inferredType, core } = inferResult.right
@@ -64,7 +65,7 @@ export function checkByInfer(
   ctx: M.Ctx,
   exp: M.Term,
   type: M.Type,
-): M.Either<M.TypeError, M.Core> {
+): M.Either<M.TypeError, C.Term> {
   const inferResult = M.infer(mod, ctx, exp)
   if (inferResult.kind === "Left") return inferResult
   const { type: inferredType, core } = inferResult.right
