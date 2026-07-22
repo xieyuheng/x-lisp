@@ -163,7 +163,6 @@ function tryCheckTerm(
     )
     return "OutcomeError"
   }
-  walkVarTypes(ctx)
   return "OutcomeOk"
 }
 
@@ -202,8 +201,6 @@ function tryCheckDefinitionBody(
       const ctx = M.emptyCtx()
       ctx.transparentOpaqueNames = opaqueNames
       const outcome = tryCheckTerm(mod, ctx, exp, transparentType)
-      if (outcome === "OutcomeOk")
-        M.definitionPutVarTypes(definition, ctx.varTypes)
       return outcome
     }
   }
@@ -212,8 +209,6 @@ function tryCheckDefinitionBody(
   if (type) {
     const ctx = M.emptyCtx()
     const outcome = tryCheckTerm(mod, ctx, exp, type)
-    if (outcome === "OutcomeOk")
-      M.definitionPutVarTypes(definition, ctx.varTypes)
     return outcome
   }
 
@@ -241,24 +236,10 @@ function tryInferDefinitionBody(
     )
     return "OutcomeError"
   } else {
-    walkVarTypes(ctx)
-    M.definitionPutVarTypes(definition, ctx.varTypes)
     let inferredType = M.substDeepWalk(M.ctxSubst(ctx), result.right.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
     return "OutcomeOk"
-  }
-}
-
-function walkVarTypes(ctx: M.Ctx): void {
-  if (ctx.varTypes.size === 0) return
-  for (const [name, type] of ctx.varTypes) {
-    ctx.varTypes.set(name, M.substDeepWalk(M.ctxSubst(ctx), type))
-  }
-  const types = [...ctx.varTypes.values()]
-  const canonicalSubst = M.generateCanonicalLabelSubst(types)
-  for (const [name, type] of ctx.varTypes) {
-    ctx.varTypes.set(name, M.substDeepWalk(canonicalSubst, type))
   }
 }
 

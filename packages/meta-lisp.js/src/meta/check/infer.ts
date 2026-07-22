@@ -111,7 +111,6 @@ export function infer(
         const retType = M.createFreshVarType("R")
         const type = M.ArrowType([argType], retType)
         const [parameter] = exp.parameters
-        ctx.varTypes.set(parameter, argType)
         const bodyResult = M.checkByInfer(
           mod,
           M.ctxPut(ctx, parameter, argType),
@@ -135,7 +134,6 @@ export function infer(
         const retType = M.createFreshVarType("R")
         const type = M.ArrowType([argType], retType)
         const [parameter, ...restParameters] = exp.parameters
-        ctx.varTypes.set(parameter, argType)
         const bodyResult = M.checkByInfer(
           mod,
           M.ctxPut(ctx, parameter, argType),
@@ -193,7 +191,6 @@ export function infer(
       const rhsResult = M.infer(mod, ctx, exp.rhs)
       if (M.isLeft(rhsResult)) return rhsResult
       const { type: rhsType, core: rhsCore } = rhsResult.right
-      ctx.varTypes.set(exp.name, rhsType)
       if (M.termIsSyntacticValue(exp.rhs)) {
         ctx = M.substDeepWalkCtx(M.ctxSubst(ctx), ctx)
         let walkedType = M.substDeepWalk(M.ctxSubst(ctx), rhsType)

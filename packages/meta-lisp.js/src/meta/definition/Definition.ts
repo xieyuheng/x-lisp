@@ -60,7 +60,6 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   body: M.Term
-  varTypes: Map<string, M.Type>
   location: SourceLocation
 }
 
@@ -77,7 +76,6 @@ export function FunctionDefinition(
     name,
     parameters,
     body,
-    varTypes: new Map(),
     location,
   }
 }
@@ -87,7 +85,6 @@ export type VariableDefinition = {
   mod: M.Mod
   name: string
   body: M.Term
-  varTypes: Map<string, M.Type>
   location: SourceLocation
 }
 
@@ -102,7 +99,6 @@ export function VariableDefinition(
     mod,
     name,
     body,
-    varTypes: new Map(),
     location,
   }
 }
@@ -112,7 +108,6 @@ export type TestDefinition = {
   mod: M.Mod
   name: string
   body: M.Term
-  varTypes: Map<string, M.Type>
   location: SourceLocation
 }
 
@@ -127,7 +122,6 @@ export function TestDefinition(
     mod,
     name,
     body,
-    varTypes: new Map(),
     location,
   }
 }
@@ -138,7 +132,6 @@ export type TypeDefinition = {
   name: string
   parameters: Array<string>
   body: M.Term
-  varTypes: Map<string, M.Type>
   location: SourceLocation
 }
 
@@ -155,7 +148,6 @@ export function TypeDefinition(
     name,
     parameters,
     body,
-    varTypes: new Map(),
     location,
   }
 }

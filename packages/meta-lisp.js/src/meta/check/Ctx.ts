@@ -14,7 +14,6 @@ export type SubstRef = { value: M.Subst }
 export type Ctx = {
   bindings: Map<string, M.Type>
   transparentOpaqueNames: Set<string>
-  varTypes: Map<string, M.Type>
   subst: SubstRef
 }
 
@@ -22,7 +21,6 @@ export function emptyCtx(): Ctx {
   return {
     bindings: new Map(),
     transparentOpaqueNames: new Set(),
-    varTypes: new Map(),
     subst: { value: M.emptySubst() },
   }
 }
