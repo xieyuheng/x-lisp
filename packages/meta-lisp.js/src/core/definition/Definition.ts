@@ -1,6 +1,6 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
-import { type Mod } from "./Mod.ts"
-import { type Term } from "./term/Term.ts"
+import { type Mod } from "../mod/Mod.ts"
+import { type Term } from "../term/Term.ts"
 
 export type Definition =
   | PrimitiveFunctionDeclaration

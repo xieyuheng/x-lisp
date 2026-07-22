@@ -1,4 +1,3 @@
-export * from "./Definition.ts"
-export * from "./elaborateDefinition.ts"
-export * from "./Mod.ts"
+export * from "./definition/index.ts"
+export * from "./mod/index.ts"
 export * from "./term/index.ts"

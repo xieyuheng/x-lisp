@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Pkg from "../package/index.ts"
-import { type Definition } from "./Definition.ts"
+import * as Pkg from "../../package/index.ts"
+import { type Definition } from "../definition/Definition.ts"
 
 export type Mod = {
   name: string
