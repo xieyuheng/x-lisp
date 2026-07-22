@@ -156,13 +156,14 @@ function tryCheckTerm(
   exp: M.Term,
   type: M.Type,
 ): M.Outcome {
-  const effect = M.checkAssignable(mod, ctx, exp, type)
-  const result = effect(M.emptySubst())
-  if (result.kind === "CheckError") {
-    writeln(S.sourceLocationReport(result.exp.location, result.message))
+  const result = M.checkAssignable(mod, ctx, exp, type)
+  if (M.isLeft(result)) {
+    writeln(
+      S.sourceLocationReport(result.left.term.location, result.left.message),
+    )
     return "OutcomeError"
   }
-  walkVarTypes(ctx, result.subst)
+  walkVarTypes(ctx)
   return "OutcomeOk"
 }
 
@@ -233,25 +234,26 @@ function tryInferDefinitionBody(
   //   in mod.inferredTypes for peers to find during type inference.
   //   It will be overwritten with the actual inferred type on success.
   M.modPutInferredType(mod, name, freshVarType)
-  const effect = M.infer(mod, ctx, exp)
-  const result = effect(M.emptySubst())
-  if (result.kind === "InferError") {
-    writeln(S.sourceLocationReport(result.exp.location, result.message))
+  const result = M.infer(mod, ctx, exp)
+  if (M.isLeft(result)) {
+    writeln(
+      S.sourceLocationReport(result.left.term.location, result.left.message),
+    )
     return "OutcomeError"
   } else {
-    walkVarTypes(ctx, result.subst)
+    walkVarTypes(ctx)
     M.definitionPutVarTypes(definition, ctx.varTypes)
-    let inferredType = M.substDeepWalk(result.subst, result.type)
+    let inferredType = M.substDeepWalk(M.ctxSubst(ctx), result.right.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
     return "OutcomeOk"
   }
 }
 
-function walkVarTypes(ctx: M.Ctx, subst: M.Subst): void {
+function walkVarTypes(ctx: M.Ctx): void {
   if (ctx.varTypes.size === 0) return
   for (const [name, type] of ctx.varTypes) {
-    ctx.varTypes.set(name, M.substDeepWalk(subst, type))
+    ctx.varTypes.set(name, M.substDeepWalk(M.ctxSubst(ctx), type))
   }
   const types = [...ctx.varTypes.values()]
   const canonicalSubst = M.generateCanonicalLabelSubst(types)

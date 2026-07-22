@@ -1,169 +1,263 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function infer(mod: M.Mod, ctx: M.Ctx, exp: M.Term): M.InferEffect {
-  return (subst) => {
-    switch (exp.kind) {
-      case "SymbolTerm": {
-        const type = M.AtomType("symbol")
-        return M.okInferEffect(type)(subst)
-      }
+export type TypeError = { term: M.Term; message: string }
 
-      case "KeywordTerm": {
-        const type = M.AtomType("keyword")
-        return M.okInferEffect(type)(subst)
-      }
+export type Inferred = { core: M.Core; type: M.Type }
 
-      case "StringTerm": {
-        const type = M.AtomType("string")
-        return M.okInferEffect(type)(subst)
-      }
+export function Inferred(core: M.Core, type: M.Type): Inferred {
+  return { core, type }
+}
 
-      case "IntTerm": {
-        const type = M.AtomType("int")
-        return M.okInferEffect(type)(subst)
-      }
+export function infer(
+  mod: M.Mod,
+  ctx: M.Ctx,
+  exp: M.Term,
+): M.Either<TypeError, Inferred> {
+  switch (exp.kind) {
+    case "SymbolTerm": {
+      return M.Right(
+        M.Inferred(
+          M.SymbolCore(exp.content, M.AtomType("symbol"), exp.location),
+          M.AtomType("symbol"),
+        ),
+      )
+    }
 
-      case "FloatTerm": {
-        const type = M.AtomType("float")
-        return M.okInferEffect(type)(subst)
-      }
+    case "KeywordTerm": {
+      return M.Right(
+        M.Inferred(
+          M.KeywordCore(exp.content, M.AtomType("keyword"), exp.location),
+          M.AtomType("keyword"),
+        ),
+      )
+    }
 
-      case "VarTerm": {
-        const type = M.ctxLookupType(ctx, exp.name)
-        if (type) return M.okInferEffect(type)(subst)
-        return inferLookup(mod, ctx, exp.name, exp)(subst)
-      }
+    case "StringTerm": {
+      return M.Right(
+        M.Inferred(
+          M.StringCore(exp.content, M.AtomType("string"), exp.location),
+          M.AtomType("string"),
+        ),
+      )
+    }
 
-      case "QualifiedVarTerm": {
-        const qualifiedMod = M.packageLookupMod(
-          mod.pkg,
-          exp.pkgName,
-          exp.modName,
+    case "IntTerm": {
+      return M.Right(
+        M.Inferred(
+          M.IntCore(exp.content, M.AtomType("int"), exp.location),
+          M.AtomType("int"),
+        ),
+      )
+    }
+
+    case "FloatTerm": {
+      return M.Right(
+        M.Inferred(
+          M.FloatCore(exp.content, M.AtomType("float"), exp.location),
+          M.AtomType("float"),
+        ),
+      )
+    }
+
+    case "VarTerm": {
+      const type = M.ctxLookupType(ctx, exp.name)
+      if (type) {
+        return M.Right(
+          M.Inferred(M.VarCore(exp.name, type, exp.location), type),
         )
-        if (qualifiedMod === undefined) {
-          let message = `undefined module prefix`
-          message += `\n  from package: ${mod.pkg.rootDirectory}`
-          throw new S.ErrorWithSourceLocation(message, exp.location)
-        }
-
-        return inferLookup(qualifiedMod, ctx, exp.name, exp)(subst)
       }
+      return inferLookup(mod, ctx, exp.name, exp)
+    }
 
-      case "ApplyTerm": {
-        return M.inferThenInfer(infer(mod, ctx, exp.target), (targetType) =>
-          inferApplyArrowType(mod, ctx, targetType, exp.args, exp),
-        )(subst)
+    case "QualifiedVarTerm": {
+      const qualifiedMod = M.packageLookupMod(mod.pkg, exp.pkgName, exp.modName)
+      if (qualifiedMod === undefined) {
+        let message = `undefined module prefix`
+        message += `\n  from package: ${mod.pkg.rootDirectory}`
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       }
+      return inferLookup(qualifiedMod, ctx, exp.name, exp)
+    }
 
-      case "LambdaTerm": {
-        if (exp.parameters.length === 0) {
-          const retType = M.createFreshVarType("R")
-          const type = M.ArrowType([], retType)
-          return M.checkThenInfer(
-            M.checkByInfer(mod, ctx, exp.body, retType),
-            M.okInferEffect(type),
-          )(subst)
-        } else if (exp.parameters.length === 1) {
-          const argType = M.createFreshVarType("A")
-          const retType = M.createFreshVarType("R")
-          const type = M.ArrowType([argType], retType)
-          const [parameter] = exp.parameters
-          ctx.varTypes.set(parameter, argType)
-          return M.checkThenInfer(
-            M.checkByInfer(
-              mod,
-              M.ctxPut(ctx, parameter, argType),
-              exp.body,
-              retType,
-            ),
-            M.okInferEffect(type),
-          )(subst)
-        } else {
-          const argType = M.createFreshVarType("A")
-          const retType = M.createFreshVarType("R")
-          const type = M.ArrowType([argType], retType)
-          const [parameter, ...restParameters] = exp.parameters
-          ctx.varTypes.set(parameter, argType)
-          return M.checkThenInfer(
-            M.checkByInfer(
-              mod,
-              M.ctxPut(ctx, parameter, argType),
-              M.LambdaTerm(restParameters, exp.body, exp.location),
-              retType,
-            ),
-            M.okInferEffect(type),
-          )(subst)
-        }
-      }
+    case "ApplyTerm": {
+      const targetResult = M.infer(mod, ctx, exp.target)
+      if (M.isLeft(targetResult)) return targetResult
+      const { type: targetType, core: targetCore } = targetResult.right
+      return inferApplyArrowType(
+        mod,
+        ctx,
+        targetType,
+        targetCore,
+        exp.args,
+        exp,
+      )
+    }
 
-      case "TheTerm": {
-        const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), exp.type)
-        return M.checkThenInfer(
-          M.checkAssignable(mod, ctx, exp.instance, type),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "IfTerm": {
-        const type = M.createFreshVarType("X")
-        return M.checkThenInfer(
-          M.sequenceCheckEffect([
-            M.checkByInfer(mod, ctx, exp.condition, M.AtomType("bool")),
-            M.checkByInfer(mod, ctx, exp.consequent, type),
-            M.checkByInfer(mod, ctx, exp.alternative, type),
-          ]),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "Let1Term": {
-        return M.inferThenInfer(
-          M.infer(mod, ctx, exp.rhs),
-          (inferredType) => (subst) => {
-            ctx.varTypes.set(exp.name, inferredType)
-            if (M.termIsSyntacticValue(exp.rhs)) {
-              ctx = M.substDeepWalkCtx(subst, ctx)
-              inferredType = M.substDeepWalk(subst, inferredType)
-              inferredType = M.generalizeInCtx(ctx, inferredType)
-            }
-            ctx = M.ctxPut(ctx, exp.name, inferredType)
-            return infer(mod, ctx, exp.body)(subst)
-          },
-        )(subst)
-      }
-
-      case "Begin1Term": {
-        return M.inferThenInfer(infer(mod, ctx, exp.head), (_headType) =>
-          infer(mod, ctx, exp.body),
-        )(subst)
-      }
-
-      case "ArrowTerm": {
-        const type = M.TypeType()
-        return M.checkThenInfer(
-          M.sequenceCheckEffect([
-            ...exp.argTypes.map((argType) =>
-              M.checkByInfer(mod, ctx, argType, type),
-            ),
-            M.checkByInfer(mod, ctx, exp.retType, type),
-          ]),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
-      case "PolymorphicTerm": {
-        const type = M.TypeType()
-        ctx = M.ctxPutMany(
-          ctx,
-          exp.parameters,
-          exp.parameters.map(() => type),
+    case "LambdaTerm": {
+      if (exp.parameters.length === 0) {
+        const retType = M.createFreshVarType("R")
+        const type = M.ArrowType([], retType)
+        const bodyResult = M.checkByInfer(mod, ctx, exp.body, retType)
+        if (M.isLeft(bodyResult)) return bodyResult
+        return M.Right(
+          M.Inferred(
+            M.LambdaCore([], bodyResult.right, type, exp.location),
+            type,
+          ),
         )
-        return M.checkThenInfer(
-          M.checkByInfer(mod, ctx, exp.body, type),
-          M.okInferEffect(type),
-        )(subst)
+      } else if (exp.parameters.length === 1) {
+        const argType = M.createFreshVarType("A")
+        const retType = M.createFreshVarType("R")
+        const type = M.ArrowType([argType], retType)
+        const [parameter] = exp.parameters
+        ctx.varTypes.set(parameter, argType)
+        const bodyResult = M.checkByInfer(
+          mod,
+          M.ctxPut(ctx, parameter, argType),
+          exp.body,
+          retType,
+        )
+        if (M.isLeft(bodyResult)) return bodyResult
+        return M.Right(
+          M.Inferred(
+            M.LambdaCore(
+              [{ name: parameter, type: argType }],
+              bodyResult.right,
+              type,
+              exp.location,
+            ),
+            type,
+          ),
+        )
+      } else {
+        const argType = M.createFreshVarType("A")
+        const retType = M.createFreshVarType("R")
+        const type = M.ArrowType([argType], retType)
+        const [parameter, ...restParameters] = exp.parameters
+        ctx.varTypes.set(parameter, argType)
+        const bodyResult = M.checkByInfer(
+          mod,
+          M.ctxPut(ctx, parameter, argType),
+          M.LambdaTerm(restParameters, exp.body, exp.location),
+          retType,
+        )
+        if (M.isLeft(bodyResult)) return bodyResult
+        return M.Right(
+          M.Inferred(
+            M.LambdaCore(
+              [{ name: parameter, type: argType }],
+              bodyResult.right,
+              type,
+              exp.location,
+            ),
+            type,
+          ),
+        )
       }
+    }
+
+    case "TheTerm": {
+      const type = M.evaluateType(mod, M.emptyEnv("OpaqueMode"), exp.type)
+      const checkResult = M.checkAssignable(mod, ctx, exp.instance, type)
+      if (M.isLeft(checkResult)) return checkResult
+      return M.Right(M.Inferred(checkResult.right, type))
+    }
+
+    case "IfTerm": {
+      const type = M.createFreshVarType("X")
+      const conditionResult = M.checkByInfer(
+        mod,
+        ctx,
+        exp.condition,
+        M.AtomType("bool"),
+      )
+      if (M.isLeft(conditionResult)) return conditionResult
+      const consequentResult = M.checkByInfer(mod, ctx, exp.consequent, type)
+      if (M.isLeft(consequentResult)) return consequentResult
+      const alternativeResult = M.checkByInfer(mod, ctx, exp.alternative, type)
+      if (M.isLeft(alternativeResult)) return alternativeResult
+      return M.Right({
+        type,
+        core: M.IfCore(
+          conditionResult.right,
+          consequentResult.right,
+          alternativeResult.right,
+          type,
+          exp.location,
+        ),
+      })
+    }
+
+    case "Let1Term": {
+      const rhsResult = M.infer(mod, ctx, exp.rhs)
+      if (M.isLeft(rhsResult)) return rhsResult
+      const { type: rhsType, core: rhsCore } = rhsResult.right
+      ctx.varTypes.set(exp.name, rhsType)
+      if (M.termIsSyntacticValue(exp.rhs)) {
+        ctx = M.substDeepWalkCtx(M.ctxSubst(ctx), ctx)
+        let walkedType = M.substDeepWalk(M.ctxSubst(ctx), rhsType)
+        walkedType = M.generalizeInCtx(ctx, walkedType)
+        ctx = M.ctxPut(ctx, exp.name, walkedType)
+        const bodyResult = M.infer(mod, ctx, exp.body)
+        if (M.isLeft(bodyResult)) return bodyResult
+        const { type: bodyType, core: bodyCore } = bodyResult.right
+        return M.Right(
+          M.Inferred(
+            M.Let1Core(exp.name, rhsCore, bodyCore, bodyType, exp.location),
+            bodyType,
+          ),
+        )
+      } else {
+        ctx = M.ctxPut(ctx, exp.name, rhsType)
+        const bodyResult = M.infer(mod, ctx, exp.body)
+        if (M.isLeft(bodyResult)) return bodyResult
+        const { type: bodyType, core: bodyCore } = bodyResult.right
+        return M.Right(
+          M.Inferred(
+            M.Let1Core(exp.name, rhsCore, bodyCore, bodyType, exp.location),
+            bodyType,
+          ),
+        )
+      }
+    }
+
+    case "Begin1Term": {
+      const headResult = M.infer(mod, ctx, exp.head)
+      if (M.isLeft(headResult)) return headResult
+      const { core: headCore } = headResult.right
+      const bodyResult = M.infer(mod, ctx, exp.body)
+      if (M.isLeft(bodyResult)) return bodyResult
+      const { type: bodyType, core: bodyCore } = bodyResult.right
+      return M.Right(
+        M.Inferred(
+          M.Begin1Core(headCore, bodyCore, bodyType, exp.location),
+          bodyType,
+        ),
+      )
+    }
+
+    case "ArrowTerm": {
+      const type = M.TypeType()
+      for (const argType of exp.argTypes) {
+        const result = M.checkByInfer(mod, ctx, argType, type)
+        if (M.isLeft(result)) return result
+      }
+      const retResult = M.checkByInfer(mod, ctx, exp.retType, type)
+      if (M.isLeft(retResult)) return retResult
+      return M.Right(M.Inferred(retResult.right, type))
+    }
+
+    case "PolymorphicTerm": {
+      const type = M.TypeType()
+      ctx = M.ctxPutMany(
+        ctx,
+        exp.parameters,
+        exp.parameters.map(() => type),
+      )
+      const bodyResult = M.checkByInfer(mod, ctx, exp.body, type)
+      if (M.isLeft(bodyResult)) return bodyResult
+      return M.Right(M.Inferred(bodyResult.right, type))
     }
   }
 }
@@ -173,122 +267,159 @@ function inferLookup(
   ctx: M.Ctx,
   name: string,
   exp: M.Term,
-): M.InferEffect {
-  return (subst) => {
-    if (ctx.transparentOpaqueNames.has(name)) {
-      const claimedEntry = M.modLookupClaimedEntry(mod, name)
-      if (claimedEntry) {
-        const transparentType = M.evaluateType(
-          mod,
-          M.emptyEnv("TransparentMode"),
-          claimedEntry.term,
-        )
-        return M.okInferEffect(transparentType)(subst)
-      }
+): M.Either<TypeError, Inferred> {
+  if (ctx.transparentOpaqueNames.has(name)) {
+    const claimedEntry = M.modLookupClaimedEntry(mod, name)
+    if (claimedEntry) {
+      const transparentType = M.evaluateType(
+        mod,
+        M.emptyEnv("TransparentMode"),
+        claimedEntry.term,
+      )
+      return M.Right(
+        M.Inferred(
+          M.VarCore(name, transparentType, exp.location),
+          transparentType,
+        ),
+      )
     }
+  }
 
-    const claimedType = M.modLookupClaimedType(mod, name)
-    if (claimedType) return M.okInferEffect(claimedType)(subst)
+  const claimedType = M.modLookupClaimedType(mod, name)
+  if (claimedType) {
+    return M.Right(
+      M.Inferred(M.VarCore(name, claimedType, exp.location), claimedType),
+    )
+  }
 
-    const definition = M.modLookupDefinition(mod, name)
-    if (definition === undefined) {
-      let message = `undefined variable`
-      message += `\n  package id: ${mod.pkg.id}`
-      message += `\n  module name: ${mod.name}`
-      message += `\n  name: ${name}`
-      return M.errorInferEffect(exp, message)(subst)
-    }
-
-    {
-      // - when: inferLookup is called for B while checking A,
-      //   and tryInferDefinitionBody has pre-allocated a fresh type
-      //   variable for B, meaning B is in a mutual-recursive group with A.
-      //   Return this fresh variable immediately to avoid infinite recursion.
-      const inferredType = M.modLookupInferredType(mod, name)
-      if (inferredType) return M.okInferEffect(inferredType)(subst)
-    }
-
-    // - when: B is defined later in the module, so it has no pre-allocated
-    //   type variable and no inferred type yet.
-    //   Check B on demand to obtain its type.
-    //   This branch must come AFTER the mutual-recursion check above,
-    //   otherwise checking a mutual-recursive group would loop infinitely.
-    //
-    // - We do NOT propagate the return value here,
-    //   because the error message is already printed by definitionCheck,
-    //   and outcome is tracked in DefinitionState for CheckPass.
-    M.definitionCheck(definition)
-
-    {
-      // - when: after definitionCheck, tryInferDefinitionBody has stored
-      //   B's inferred type in mod.inferredTypes. Retrieve it.
-      const inferredType = M.modLookupInferredType(mod, name)
-      if (inferredType) return M.okInferEffect(inferredType)(subst)
-    }
-
-    let message = `[typeInferLookup] internal error: infer fail after check`
+  const definition = M.modLookupDefinition(mod, name)
+  if (definition === undefined) {
+    let message = `undefined variable`
+    message += `\n  package id: ${mod.pkg.id}`
     message += `\n  module name: ${mod.name}`
     message += `\n  name: ${name}`
-    throw new S.ErrorWithSourceLocation(message, exp.location)
+    return M.Left({ term: exp, message })
   }
+
+  {
+    // - when: inferLookup is called for B while checking A,
+    //   and tryInferDefinitionBody has pre-allocated a fresh type
+    //   variable for B, meaning B is in a mutual-recursive group with A.
+    //   Return this fresh variable immediately to avoid infinite recursion.
+    const inferredType = M.modLookupInferredType(mod, name)
+    if (inferredType) {
+      return M.Right(
+        M.Inferred(M.VarCore(name, inferredType, exp.location), inferredType),
+      )
+    }
+  }
+
+  // - when: B is defined later in the module, so it has no pre-allocated
+  //   type variable and no Inferred type yet.
+  //   Check B on demand to obtain its type.
+  //   This branch must come AFTER the mutual-recursion check above,
+  //   otherwise checking a mutual-recursive group would loop infinitely.
+  //
+  // - We do NOT propagate the return value here,
+  //   because the error message is already printed by definitionCheck,
+  //   and outcome is tracked in DefinitionState for CheckPass.
+  M.definitionCheck(definition)
+
+  {
+    // - when: after definitionCheck, tryInferDefinitionBody has stored
+    //   B's Inferred type in mod.inferredTypes. Retrieve it.
+    const inferredType = M.modLookupInferredType(mod, name)
+    if (inferredType) {
+      return M.Right(
+        M.Inferred(M.VarCore(name, inferredType, exp.location), inferredType),
+      )
+    }
+  }
+
+  let message = `[typeInferLookup] internal error: infer fail after check`
+  message += `\n  module name: ${mod.name}`
+  message += `\n  name: ${name}`
+  throw new S.ErrorWithSourceLocation(message, exp.location)
 }
 
 function inferApplyArrowType(
   mod: M.Mod,
   ctx: M.Ctx,
   type: M.Type,
+  targetCore: M.Core,
   args: Array<M.Term>,
   originalExp: M.Term,
-): M.InferEffect {
-  return (subst) => {
-    if (args.length === 0) {
-      const retType = M.createFreshVarType("R")
-      const arrowType = M.ArrowType([], retType)
-      const newSubst = M.unify(subst, type, arrowType)
-      if (newSubst === undefined) {
-        type = M.substDeepWalk(subst, type)
-        let message = `expecting nullary arrow type`
-        message += `\n  expected type: ${M.formatType(type)}`
-        return M.errorInferEffect(originalExp, message)(subst)
-      }
-
-      return M.okInferEffect(retType)(newSubst)
-    } else if (args.length === 1) {
-      const argType = M.createFreshVarType("A")
-      const retType = M.createFreshVarType("R")
-      const arrowType = M.ArrowType([argType], retType)
-      const newSubst = M.unify(subst, type, arrowType)
-      if (newSubst === undefined) {
-        type = M.substDeepWalk(subst, type)
-        let message = `expecting arrow type`
-        message += `\n  expected type: ${M.formatType(type)}`
-        message += `\n  args: ${M.formatTerms(args)}`
-        return M.errorInferEffect(originalExp, message)(subst)
-      }
-
-      const [arg] = args
-      return M.checkThenInfer(
-        M.checkByInfer(mod, ctx, arg, argType),
-        M.okInferEffect(retType),
-      )(newSubst)
-    } else {
-      const argType = M.createFreshVarType("A")
-      const retType = M.createFreshVarType("R")
-      const arrowType = M.ArrowType([argType], retType)
-      const newSubst = M.unify(subst, type, arrowType)
-      if (newSubst === undefined) {
-        type = M.substDeepWalk(subst, type)
-        let message = `expecting arrow type`
-        message += `\n  expected type: ${M.formatType(type)}`
-        message += `\n  args: ${M.formatTerms(args)}`
-        return M.errorInferEffect(originalExp, message)(subst)
-      }
-
-      const [arg, ...restArgs] = args
-      return M.checkThenInfer(
-        M.checkByInfer(mod, ctx, arg, argType),
-        inferApplyArrowType(mod, ctx, retType, restArgs, originalExp),
-      )(newSubst)
+): M.Either<TypeError, Inferred> {
+  if (args.length === 0) {
+    const retType = M.createFreshVarType("R")
+    const arrowType = M.ArrowType([], retType)
+    const newSubst = M.unify(M.ctxSubst(ctx), type, arrowType)
+    if (newSubst === undefined) {
+      type = M.substDeepWalk(M.ctxSubst(ctx), type)
+      const message =
+        `expecting nullary arrow type` +
+        `\n  expected type: ${M.formatType(type)}`
+      return M.Left({ term: originalExp, message })
     }
+    M.ctxPutSubst(ctx, newSubst)
+    return M.Right(
+      M.Inferred(
+        M.ApplyCore(targetCore, [], retType, originalExp.location),
+        retType,
+      ),
+    )
+  } else if (args.length === 1) {
+    const argType = M.createFreshVarType("A")
+    const retType = M.createFreshVarType("R")
+    const arrowType = M.ArrowType([argType], retType)
+    const newSubst = M.unify(M.ctxSubst(ctx), type, arrowType)
+    if (newSubst === undefined) {
+      type = M.substDeepWalk(M.ctxSubst(ctx), type)
+      const message =
+        `expecting arrow type` +
+        `\n  expected type: ${M.formatType(type)}` +
+        `\n  args: ${M.formatTerms(args)}`
+      return M.Left({ term: originalExp, message })
+    }
+    M.ctxPutSubst(ctx, newSubst)
+    const [arg] = args
+    const argResult = M.checkByInfer(mod, ctx, arg, argType)
+    if (M.isLeft(argResult)) return argResult
+    return M.Right(
+      M.Inferred(
+        M.ApplyCore(
+          targetCore,
+          [argResult.right],
+          retType,
+          originalExp.location,
+        ),
+        retType,
+      ),
+    )
+  } else {
+    const argType = M.createFreshVarType("A")
+    const retType = M.createFreshVarType("R")
+    const arrowType = M.ArrowType([argType], retType)
+    const newSubst = M.unify(M.ctxSubst(ctx), type, arrowType)
+    if (newSubst === undefined) {
+      type = M.substDeepWalk(M.ctxSubst(ctx), type)
+      const message =
+        `expecting arrow type` +
+        `\n  expected type: ${M.formatType(type)}` +
+        `\n  args: ${M.formatTerms(args)}`
+      return M.Left({ term: originalExp, message })
+    }
+    M.ctxPutSubst(ctx, newSubst)
+    const [arg, ...restArgs] = args
+    const argResult = M.checkByInfer(mod, ctx, arg, argType)
+    if (M.isLeft(argResult)) return argResult
+    return inferApplyArrowType(
+      mod,
+      ctx,
+      retType,
+      targetCore,
+      restArgs,
+      originalExp,
+    )
   }
 }
