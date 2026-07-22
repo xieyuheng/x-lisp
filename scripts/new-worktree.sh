@@ -12,16 +12,14 @@ if [ $# -ne 1 ]; then
 fi
 
 NAME="$1"
-TS=$(date +%Y-%m-%d-%H-%M)
-SUFFIXED="${NAME}--${TS}"
 
 HERE="$(cd "$(dirname "$0")" && pwd -P)"
 REPO_ROOT="$(cd "$HERE/.." && pwd -P)"
 
-(cd "$REPO_ROOT" && git branch "$SUFFIXED")
-(cd "$REPO_ROOT" && git worktree add "worktrees/$SUFFIXED" "$SUFFIXED")
+(cd "$REPO_ROOT" && git branch "$NAME")
+(cd "$REPO_ROOT" && git worktree add "worktrees/$NAME" "$NAME")
 
-cd "$REPO_ROOT/worktrees/$SUFFIXED"
+cd "$REPO_ROOT/worktrees/$NAME"
 
 [ -f scripts/prepare.sh ] && ./scripts/prepare.sh
 
