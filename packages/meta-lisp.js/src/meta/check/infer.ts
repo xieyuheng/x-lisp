@@ -126,12 +126,7 @@ export function infer(
         if (M.isLeft(bodyResult)) return bodyResult
         return M.Right(
           M.Inferred(
-            C.LambdaTerm(
-              [{ name: parameter, type: argType }],
-              bodyResult.right,
-              type,
-              exp.location,
-            ),
+            C.LambdaTerm([parameter], bodyResult.right, type, exp.location),
             type,
           ),
         )
@@ -149,12 +144,7 @@ export function infer(
         if (M.isLeft(bodyResult)) return bodyResult
         return M.Right(
           M.Inferred(
-            C.LambdaTerm(
-              [{ name: parameter, type: argType }],
-              bodyResult.right,
-              type,
-              exp.location,
-            ),
+            C.LambdaTerm([parameter], bodyResult.right, type, exp.location),
             type,
           ),
         )

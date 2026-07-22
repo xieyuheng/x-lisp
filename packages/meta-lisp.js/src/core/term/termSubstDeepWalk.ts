@@ -33,10 +33,7 @@ export function termSubstDeepWalk(subst: M.Subst, term: Term): Term {
       )
     case "LambdaTerm":
       return LambdaTerm(
-        term.parameters.map((p) => ({
-          name: p.name,
-          type: M.substDeepWalk(subst, p.type),
-        })),
+        term.parameters,
         termSubstDeepWalk(subst, term.body),
         M.substDeepWalk(subst, term.type),
         term.location,

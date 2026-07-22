@@ -18,7 +18,7 @@ export function termOccurredNames(term: Term): Set<string> {
 
     case "LambdaTerm": {
       return setUnionMany([
-        new Set(term.parameters.map((p) => p.name)),
+        new Set(term.parameters),
         termOccurredNames(term.body),
       ])
     }
