@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
 import { type Env, type EvaluationMode } from "./Env.ts"
 
@@ -20,7 +21,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
     }
 
     case "QualifiedVarTerm": {
-      const definition = M.packageLookupDefinition(
+      const definition = Pkg.packageLookupDefinition(
         mod.pkg,
         exp.pkgName,
         exp.modName,

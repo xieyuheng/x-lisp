@@ -9,7 +9,8 @@ import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B2 from "./basic2/index.ts"
-import * as M from "./meta/index.ts"
+import * as Pkg from "./package/index.ts"
+import * as Pipelines from "./pipelines/index.ts"
 import * as X86 from "./x86/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
@@ -29,39 +30,39 @@ router.defineHandlers({
   check: ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
+    const pkg = Pkg.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    const outcome = M.CheckPipeline(pkg)
+    Pkg.validateCompilerOptions(pkg.config.compiler)
+    const outcome = Pipelines.CheckPipeline(pkg)
     if (outcome === "OutcomeError") process.exit(2)
   },
 
   "build-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
+    const pkg = Pkg.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    M.BuildXvmPipeline(pkg)
+    Pkg.validateCompilerOptions(pkg.config.compiler)
+    Pipelines.BuildXvmPipeline(pkg)
   },
 
   "build-x86": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
+    const pkg = Pkg.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    M.BuildX86Pipeline(pkg)
+    Pkg.validateCompilerOptions(pkg.config.compiler)
+    Pipelines.BuildX86Pipeline(pkg)
   },
 
   "test-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
+    const pkg = Pkg.loadPackage("self", configPath)
     if ("--profile" in options) pkg.config.compiler.profile = "true"
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    M.TestXvmPipeline(pkg)
+    Pkg.validateCompilerOptions(pkg.config.compiler)
+    Pipelines.TestXvmPipeline(pkg)
   },
 
   "format-basic2": ({ args: [input] }) => {

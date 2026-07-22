@@ -1,3 +1,0 @@
-(check-var-types
-  (example-square
-    (x int-t)))

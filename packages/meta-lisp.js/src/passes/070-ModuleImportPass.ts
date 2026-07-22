@@ -1,0 +1,200 @@
+import * as M from "../meta/index.ts"
+import * as Pkg from "../package/index.ts"
+import * as Passes from "./index.ts"
+
+export function ModuleImportPass(
+  pkg: Pkg.Package,
+  report: Passes.ModuleAnalysisReport,
+): void {
+  for (const [path, fragment] of pkg.fragments) {
+    const scope = report.fragmentScopes.get(path)
+    if (scope) {
+      fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
+        moduleImportStmt(scope, stmt),
+      )
+    } else {
+      let message = `[ModuleImportPass] missing scope for: ${path}`
+      throw new Error(message)
+    }
+  }
+
+  if (pkg.config.compiler.dump)
+    Pkg.packageDumpDesugaredFragments(pkg, "070-module-import")
+}
+
+function moduleImportStmt(
+  scope: Passes.FragmentScope,
+  stmt: M.Stmt<M.Term>,
+): M.Stmt<M.Term> {
+  switch (stmt.kind) {
+    case "ClaimStmt": {
+      return M.ClaimStmt(
+        stmt.name,
+        moduleImportTerm(scope, stmt.type),
+        stmt.location,
+      )
+    }
+
+    case "AdmitStmt": {
+      return M.AdmitStmt(
+        stmt.name,
+        moduleImportTerm(scope, stmt.type),
+        stmt.location,
+      )
+    }
+
+    case "DefineFunctionStmt": {
+      const boundNames = new Set(stmt.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      return M.DefineFunctionStmt(
+        stmt.name,
+        stmt.parameters,
+        moduleImportTerm(newScope, stmt.body),
+        stmt.location,
+      )
+    }
+
+    case "DefineVariableStmt": {
+      return M.DefineVariableStmt(
+        stmt.name,
+        moduleImportTerm(scope, stmt.body),
+        stmt.location,
+      )
+    }
+
+    case "DefineTestStmt": {
+      return M.DefineTestStmt(
+        stmt.name,
+        moduleImportTerm(scope, stmt.body),
+        stmt.location,
+      )
+    }
+
+    case "DefineTypeStmt": {
+      return M.DefineTypeStmt(
+        stmt.name,
+        stmt.parameters,
+        moduleImportTerm(scope, stmt.body),
+        stmt.location,
+      )
+    }
+
+    case "DefineAlgebraicTypeStmt": {
+      const boundNames = new Set(stmt.typeConstructor.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      for (const ctor of stmt.dataConstructors) {
+        ctor.fields = ctor.fields.map((field: M.ExplicitDataField<M.Term>) => ({
+          ...field,
+          type: moduleImportTerm(newScope, field.type),
+        }))
+      }
+      return stmt
+    }
+
+    case "DefineOpaqueTypeStmt": {
+      const boundNames = new Set(stmt.typeConstructor.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      return M.DefineOpaqueTypeStmt(
+        stmt.typeConstructor,
+        moduleImportTerm(newScope, stmt.representationType),
+        stmt.interfaceEntries.map((f) => ({
+          ...f,
+          type: moduleImportTerm(newScope, f.type),
+        })),
+        stmt.location,
+      )
+    }
+
+    default: {
+      return stmt
+    }
+  }
+}
+
+function moduleImportTerm(scope: Passes.FragmentScope, term: M.Term): M.Term {
+  switch (term.kind) {
+    case "VarTerm": {
+      const entry = scope.importedNames.get(term.name)
+      if (entry) {
+        return M.QualifiedVarTerm(
+          entry.pkgName,
+          entry.modName,
+          entry.name,
+          term.location,
+        )
+      } else {
+        return term
+      }
+    }
+
+    case "QualifiedVarTerm": {
+      const entry = scope.importedPrefixes.get(term.modName)
+      if (entry) {
+        return M.QualifiedVarTerm(
+          entry.pkgName,
+          entry.modName,
+          term.name,
+          term.location,
+        )
+      } else {
+        return term
+      }
+    }
+
+    case "LambdaTerm": {
+      const boundNames = new Set(term.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      return M.LambdaTerm(
+        term.parameters,
+        moduleImportTerm(newScope, term.body),
+        term.location,
+      )
+    }
+
+    case "PolymorphicTerm": {
+      const boundNames = new Set(term.parameters)
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      return M.PolymorphicTerm(
+        term.parameters,
+        moduleImportTerm(newScope, term.body),
+        term.location,
+      )
+    }
+
+    case "Let1Term": {
+      const boundNames = new Set([term.name])
+      const newScope = scopeFilterBoundNames(scope, boundNames)
+      return M.Let1Term(
+        term.name,
+        moduleImportTerm(scope, term.rhs),
+        moduleImportTerm(newScope, term.body),
+        term.location,
+      )
+    }
+
+    default: {
+      return M.termTraverse((child) => moduleImportTerm(scope, child), term)
+    }
+  }
+}
+
+function scopeFilterBoundNames(
+  scope: Passes.FragmentScope,
+  boundNames: Set<string>,
+): Passes.FragmentScope {
+  const importedNames: Map<
+    string,
+    { pkgName: string; modName: string; name: string }
+  > = new Map()
+  for (const [key, entry] of scope.importedNames) {
+    if (!boundNames.has(key)) {
+      importedNames.set(key, entry)
+    }
+  }
+
+  return {
+    modName: scope.modName,
+    importedNames,
+    importedPrefixes: scope.importedPrefixes,
+  }
+}

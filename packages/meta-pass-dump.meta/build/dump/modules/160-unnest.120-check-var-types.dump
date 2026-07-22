@@ -1,8 +1,0 @@
-(check-var-types
-  (g
-    (x _.1))
-  (h
-    (x _.1))
-  (f
-    (x int-t)
-    (y int-t)))

@@ -1,5 +1,0 @@
-(check-var-types
-  (pair-swap
-    (a _.1)
-    (b _.2)
-    (p (010-pair/pair-t _.1 _.2))))
