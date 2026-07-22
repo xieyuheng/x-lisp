@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import { writeln } from "@xieyuheng/std.js/file"
+import * as C from "../../core/index.ts"
 import * as M from "../index.ts"
 
 // definitionCheck is the single point where a definition's types are checked.
@@ -33,11 +34,6 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
     return M.modOutcome(mod, name)
   }
 
-  if (mod.admitted.has(name)) {
-    M.modMarkChecked(mod, name)
-    return "OutcomeOk"
-  }
-
   switch (definition.kind) {
     case "AlgebraicTypeDefinition": {
       let outcome: M.Outcome = "OutcomeOk"
@@ -49,7 +45,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
               mod,
               field.type,
               definition.typeConstructor.parameters,
-            ) === "OutcomeError"
+            ) === null
           )
             outcome = "OutcomeError"
         }
@@ -128,7 +124,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
             mod,
             entry.type,
             definition.typeConstructor.parameters,
-          ) === "OutcomeError"
+          ) === null
         )
           outcome = "OutcomeError"
       }
@@ -138,7 +134,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
           mod,
           definition.representationType,
           definition.typeConstructor.parameters,
-        ) === "OutcomeError"
+        ) === null
       )
         outcome = "OutcomeError"
 
@@ -155,22 +151,22 @@ function tryCheckTerm(
   ctx: M.Ctx,
   exp: M.Term,
   type: M.Type,
-): M.Outcome {
+): C.Term | null {
   const result = M.checkAssignable(mod, ctx, exp, type)
   if (M.isLeft(result)) {
     writeln(
       S.sourceLocationReport(result.left.term.location, result.left.message),
     )
-    return "OutcomeError"
+    return null
   }
-  return "OutcomeOk"
+  return result.right
 }
 
 function tryCheckTypeTerm(
   mod: M.Mod,
   exp: M.Term,
   typeParameters: Array<string>,
-): M.Outcome {
+): C.Term | null {
   let ctx = M.emptyCtx()
   for (const name of typeParameters) {
     ctx = M.ctxPut(ctx, name, M.TypeType())
@@ -184,6 +180,10 @@ function tryCheckDefinitionBody(
   name: string,
   exp: M.Term,
 ): M.Outcome {
+  if (mod.admitted.has(name)) {
+    return tryInferDefinitionBody(mod, definition, name, exp)
+  }
+
   if (mod.opaque.has(name)) {
     const claimedEntry = M.modLookupClaimedEntry(mod, name)
     if (claimedEntry) {
@@ -200,16 +200,20 @@ function tryCheckDefinitionBody(
       const opaqueNames = findOpaqueNamesByInterfaceName(mod, name) ?? new Set()
       const ctx = M.emptyCtx()
       ctx.transparentOpaqueNames = opaqueNames
-      const outcome = tryCheckTerm(mod, ctx, exp, transparentType)
-      return outcome
+      const core = tryCheckTerm(mod, ctx, exp, transparentType)
+      if (!core) return "OutcomeError"
+      storeCoreTerm(mod, definition, core)
+      return "OutcomeOk"
     }
   }
 
   const type = M.modLookupClaimedType(mod, name)
   if (type) {
     const ctx = M.emptyCtx()
-    const outcome = tryCheckTerm(mod, ctx, exp, type)
-    return outcome
+    const core = tryCheckTerm(mod, ctx, exp, type)
+    if (!core) return "OutcomeError"
+    storeCoreTerm(mod, definition, core)
+    return "OutcomeOk"
   }
 
   return tryInferDefinitionBody(mod, definition, name, exp)
@@ -236,10 +240,51 @@ function tryInferDefinitionBody(
     )
     return "OutcomeError"
   } else {
+    const core = C.termSubstDeepWalk(M.ctxSubst(ctx), result.right.core)
+    storeCoreTerm(mod, definition, core)
     let inferredType = M.substDeepWalk(M.ctxSubst(ctx), result.right.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
     return "OutcomeOk"
+  }
+}
+
+function storeCoreTerm(
+  mod: M.Mod,
+  definition: M.Definition,
+  core: C.Term,
+): void {
+  switch (definition.kind) {
+    case "FunctionDefinition": {
+      if (core.kind !== "LambdaTerm") {
+        throw new Error(
+          `[storeCoreTerm] expected LambdaTerm for FunctionDefinition`,
+        )
+      }
+      M.modPutCoreTerm(mod, definition.name, core.body)
+      return
+    }
+    case "TypeDefinition": {
+      // - When parameters.length > 0, exp was wrapped in LambdaTerm,
+      //   so core is a LambdaTerm; unwrap to get the inner body.
+      //   When parameters.length === 0, core is the inner body directly.
+      if (core.kind === "LambdaTerm") {
+        M.modPutCoreTerm(mod, definition.name, core.body)
+      } else {
+        M.modPutCoreTerm(mod, definition.name, core)
+      }
+      return
+    }
+    case "VariableDefinition":
+    case "TestDefinition": {
+      M.modPutCoreTerm(mod, definition.name, core)
+      return
+    }
+    default: {
+      throw new Error(
+        `[storeCoreTerm] unexpected definition kind: ${definition.kind}`,
+      )
+    }
   }
 }
 

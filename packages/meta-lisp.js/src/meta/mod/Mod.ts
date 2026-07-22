@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import type { Term as CoreTerm } from "../../core/index.ts"
 import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
 
@@ -24,6 +25,7 @@ export type ClaimedEntry = {
 export type DefinitionState = {
   isChecked: boolean
   outcome: Outcome
+  coreTerm?: CoreTerm
 }
 
 export type Mod = {
@@ -158,6 +160,25 @@ export function modLookupInferredType(
 
 export function modPutInferredType(mod: Mod, name: string, type: M.Type): void {
   mod.inferredTypes.set(name, type)
+}
+
+// CoreTerm
+
+export function modPutCoreTerm(
+  mod: Mod,
+  name: string,
+  coreTerm: CoreTerm,
+): void {
+  const state = mod.definitionStates.get(name) ?? initialDefinitionState()
+  state.coreTerm = coreTerm
+  mod.definitionStates.set(name, state)
+}
+
+export function modLookupCoreTerm(
+  mod: Mod,
+  name: string,
+): CoreTerm | undefined {
+  return mod.definitionStates.get(name)?.coreTerm
 }
 
 // DataConstructor

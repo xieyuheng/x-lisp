@@ -1,5 +1,4 @@
 export * from "./check.ts"
-export * from "./Core.ts"
 export * from "./Ctx.ts"
 export * from "./Either.ts"
 export * from "./generalizeInCtx.ts"
