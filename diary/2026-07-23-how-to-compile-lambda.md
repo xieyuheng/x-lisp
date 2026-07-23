@@ -159,22 +159,73 @@ struct closure_t {
 编译时可以为 apply 和 tail apply 生成很简单的汇编代码：
 
 ```asm
-               ; 假设闭包保存在 rbx 中
-mov rax, [rbx] ; 将闭包元组指针中的第一个元素（函数指针）加载到 rax
-mov rdi, rbx   ; 将闭包自身作为第一个参数传入
-...            ; 将普通参数放入其他寄存器（rsi 等）
-call rax       ; 间接调用
-               ; 或者对于尾调用
-jmp rax        ; 间接跳转
+                 ; 假设闭包保存在 rbx 中
+  mov rax, [rbx] ; 将闭包元组指针中的第一个元素（函数指针）加载到 rax
+  mov rdi, rbx   ; 将闭包自身作为第一个参数传入
+  ...            ; 将普通参数放入其他寄存器（rsi 等）
+  call rax       ; 间接调用
+                 ; 或者对于尾调用
+  tail-jmp rax   ; 间接跳转
 ```
+
+`tail-jmp` 是伪指令，
+需要在寄存器分配之后，
+确定了 prolog 和 epilog 之后，
+才能处理为的真实 `jmp` 指令。
 
 # tail call
 
-TODO
+想要理解编译 tail call 的方式，
+首先要理解编译 call 的方式。
+
+编译 call 时，需要根据函数的所有局部变量使用寄存器的方式，
+来生成 .prolog 代码，以在栈中预留空间，给寄存器中保存不下的局部变量，
+并且生成 .epilog 代码，以返还在栈中预留的空间。
+
+```asm
+.prolog:
+  <prolog-body>
+
+.body:
+  <function-body>
+
+.epilog:
+  <epilog-body>
+  ret
+```
+
+编译 tail call 时，
+只需要把之前预留的 `tall-jmp` 伪指令，
+翻译为 `<epilog-body>` + 真实的 `jmp` 指令：
+
+```asm
+  tail-jmp rax
+
+;; =>
+
+  <epilog-body>
+  jmp rax
+```
 
 # limit arity
 
-为了实现尾部递归优化，
-我们需要把所有的函数的参数个数有限制在 6 个之内。
+在使用 x86-64 时，
+linux 的寄存器参数是 6 个，
+windows 的寄存器参数是 4 个。
+C 的 calling convention 都要求，
+多余的参数从 caller 的 stack 中取。
 
-TODO
+按照上面的编译 tail call 的方式，
+`<epilog-body>` 会清除这些多余的变量。
+
+因此，为了简化 tail call 的实现，
+我们需要把所有的函数的参数个数有限制在 6 个或 4 个之内。
+多余的参数都转化为 vector 来传递。
+
+也就是说需要有一个 limit arity pass，
+把所有的函数都转化为 arity 在限定范围内的函数。
+所有函数调用也都要跟着修改。
+
+由于在 elaboration 处理完 auto currying 之后，
+所有的 apply 语法都是参数个数正好的，
+所有这个 pass 实现起来很简单。
