@@ -1,6 +1,6 @@
 export * from "./Term.ts"
 export * from "./termFreeNames.ts"
+export * from "./termFreeVarTypes.ts"
 export * from "./termOccurredNames.ts"
 export * from "./termSubstDeepWalk.ts"
 export * from "./termTraverse.ts"
-export * from "./termFreeVarTypes.ts"
