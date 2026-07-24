@@ -1,3 +1,14 @@
+# closure-pass
+
+[meta-lisp.js] simplify to `CurryValue` to `ClosureValue`
+[meta-runtime.c] simplify to `curry_t` to `closure_t`
+[meta-lisp.js] lift-lambda-pass to convert-closure-pass
+- or keep the pass name
+
+# remove assign
+
+[meta-lisp.js] remove (=) as sugar for (let)
+
 # native code generation
 
 [meta-lisp.js] 190-SelectInstructionPass -- `selectInstr`
