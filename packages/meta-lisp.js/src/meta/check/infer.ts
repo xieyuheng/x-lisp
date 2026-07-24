@@ -86,15 +86,56 @@ export function infer(
     case "ApplyTerm": {
       const targetResult = M.infer(mod, ctx, exp.target)
       if (M.isLeft(targetResult)) return targetResult
-      const { type: targetType, core: targetCore } = targetResult.right
-      return inferApplyArrowType(
-        mod,
-        ctx,
-        targetType,
-        targetCore,
-        exp.args,
-        exp,
+      let { type: targetType, core: targetCore } = targetResult.right
+      const args = exp.args
+
+      if (args.length === 0) {
+        const retType = M.createFreshVarType("R")
+        const arrowType = M.ArrowType([], retType)
+        const newSubst = M.unify(M.ctxSubst(ctx), targetType, arrowType)
+        if (newSubst === undefined) {
+          targetType = M.substDeepWalk(M.ctxSubst(ctx), targetType)
+          const message =
+            `expecting nullary arrow type` +
+            `\n  expected type: ${M.formatType(targetType)}`
+          return M.Left({ term: exp, message })
+        }
+        M.ctxPutSubst(ctx, newSubst)
+        return M.Right(
+          M.Inferred(C.ApplyTerm(targetCore, [], exp.location), retType),
+        )
+      }
+
+      const argCores: Array<C.Term> = []
+      let currentType = targetType
+
+      for (const arg of args) {
+        const argType = M.createFreshVarType("A")
+        const retType = M.createFreshVarType("R")
+        const arrowType = M.ArrowType([argType], retType)
+        const newSubst = M.unify(M.ctxSubst(ctx), currentType, arrowType)
+        if (newSubst === undefined) {
+          currentType = M.substDeepWalk(M.ctxSubst(ctx), currentType)
+          const message =
+            `expecting arrow type` +
+            `\n  expected type: ${M.formatType(currentType)}` +
+            `\n  args: ${M.formatTerms(args)}`
+          return M.Left({ term: exp, message })
+        }
+        M.ctxPutSubst(ctx, newSubst)
+        const argResult = M.checkByInfer(mod, ctx, arg, argType)
+        if (M.isLeft(argResult)) return argResult
+        argCores.push(argResult.right)
+        currentType = retType
+      }
+
+      return M.Right(
+        M.Inferred(
+          C.ApplyTerm(targetCore, argCores, exp.location),
+          currentType,
+        ),
       )
+
     }
 
     case "LambdaTerm": {
@@ -312,60 +353,4 @@ function inferLookup(
   message += `\n  module name: ${mod.name}`
   message += `\n  name: ${name}`
   throw new S.ErrorWithSourceLocation(message, exp.location)
-}
-
-function inferApplyArrowType(
-  mod: M.Mod,
-  ctx: M.Ctx,
-  type: M.Type,
-  targetCore: C.Term,
-  args: Array<M.Term>,
-  originalExp: M.Term,
-): M.Either<TypeError, Inferred> {
-  if (args.length === 0) {
-    const retType = M.createFreshVarType("R")
-    const arrowType = M.ArrowType([], retType)
-    const newSubst = M.unify(M.ctxSubst(ctx), type, arrowType)
-    if (newSubst === undefined) {
-      type = M.substDeepWalk(M.ctxSubst(ctx), type)
-      const message =
-        `expecting nullary arrow type` +
-        `\n  expected type: ${M.formatType(type)}`
-      return M.Left({ term: originalExp, message })
-    }
-    M.ctxPutSubst(ctx, newSubst)
-    return M.Right(
-      M.Inferred(C.ApplyTerm(targetCore, [], originalExp.location), retType),
-    )
-  }
-
-  const argCores: Array<C.Term> = []
-  let currentType = type
-
-  for (const arg of args) {
-    const argType = M.createFreshVarType("A")
-    const retType = M.createFreshVarType("R")
-    const arrowType = M.ArrowType([argType], retType)
-    const newSubst = M.unify(M.ctxSubst(ctx), currentType, arrowType)
-    if (newSubst === undefined) {
-      currentType = M.substDeepWalk(M.ctxSubst(ctx), currentType)
-      const message =
-        `expecting arrow type` +
-        `\n  expected type: ${M.formatType(currentType)}` +
-        `\n  args: ${M.formatTerms(args)}`
-      return M.Left({ term: originalExp, message })
-    }
-    M.ctxPutSubst(ctx, newSubst)
-    const argResult = M.checkByInfer(mod, ctx, arg, argType)
-    if (M.isLeft(argResult)) return argResult
-    argCores.push(argResult.right)
-    currentType = retType
-  }
-
-  return M.Right(
-    M.Inferred(
-      C.ApplyTerm(targetCore, argCores, originalExp.location),
-      currentType,
-    ),
-  )
 }

@@ -91,10 +91,10 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
         definition.parameters.length === 0
           ? definition.body
           : M.LambdaTerm(
-            definition.parameters,
-            definition.body,
-            definition.location,
-          )
+              definition.parameters,
+              definition.body,
+              definition.location,
+            )
       const outcome = tryCheckDefinitionBody(mod, definition, name, body)
       M.modMarkChecked(mod, name)
       if (outcome === "OutcomeError")
