@@ -135,9 +135,13 @@ export function infer(
         }
 
         // eta-expansion
-        //   (iadd 1)
-        // =>
-        //   (lambda (curry.0) (iadd 1 curry.0))
+        //
+        // (iadd 1)
+        //
+        // ;; =>
+        //
+        // (lambda (curry.0)
+        //   (iadd 1 curry.0))
         if (arity > term.args.length) {
           const usedNames = M.termOccurredNames(term)
           usedNames.add("curried")
@@ -168,11 +172,29 @@ export function infer(
           )
         }
 
-        // early apply
+        // early-apply
+        //
+        // (define (adder n)
+        //   (lambda (x)
+        //     (iadd n x)))
+        //
+        // (adder 1 2)
+        //
+        // ;; =>
+        //
+        // ((adder 1) 2)
         if (arity < term.args.length) {
           return M.Right(
             M.Inferred(
-              C.ApplyTerm(targetInferred.core, argCores, term.location),
+              C.ApplyTerm(
+                C.ApplyTerm(
+                  targetInferred.core,
+                  argCores.slice(0, arity),
+                  term.location,
+                ),
+                argCores.slice(arity),
+                term.location,
+              ),
               retType,
             ),
           )
