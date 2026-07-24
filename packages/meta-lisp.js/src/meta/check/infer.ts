@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import { arrayZip } from "@xieyuheng/std.js/array"
+import { range } from "@xieyuheng/std.js/range"
 import * as C from "../../core/index.ts"
 import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
@@ -98,12 +99,22 @@ export function infer(
     }
 
     case "ApplyTerm": {
+      const targetResult = M.infer(mod, ctx, term.target)
+      if (M.isLeft(targetResult)) return targetResult
+      const targetInferred = targetResult.right
+
       const argTypes = term.args.map((_) => M.createFreshVarType("A"))
       const retType = M.createFreshVarType("R")
       const arrowType = M.ArrowType(argTypes, retType)
-      const targetResult = M.check(mod, ctx, term.target, arrowType)
-      if (M.isLeft(targetResult)) return targetResult
-      const targetCore = targetResult.right
+
+      const unifyResult = M.checkUnify(
+        ctx,
+        term,
+        targetInferred.type,
+        arrowType,
+      )
+      if (M.isLeft(unifyResult)) return unifyResult
+
       const argCores: Array<C.Term> = []
       for (const [arg, argType] of arrayZip(term.args, argTypes)) {
         const argResult = M.check(mod, ctx, arg, argType)
@@ -111,8 +122,68 @@ export function infer(
         argCores.push(argResult.right)
       }
 
+      // handle auto-currying
+      if (M.isArrowType(targetInferred.type)) {
+        const arity = targetInferred.type.argTypes.length
+        if (arity === term.args.length) {
+          return M.Right(
+            M.Inferred(
+              C.ApplyTerm(targetInferred.core, argCores, term.location),
+              retType,
+            ),
+          )
+        }
+
+        // eta-expansion
+        //   (iadd 1)
+        // =>
+        //   (lambda (curry.0) (iadd 1 curry.0))
+        if (arity > term.args.length) {
+          const usedNames = M.termOccurredNames(term)
+          usedNames.add("curried")
+          const curriedParameters = range(arity - term.args.length).map((i) => {
+            const curriedParameter = M.generateRelativeFreshName(
+              usedNames,
+              "curried",
+            )
+            usedNames.add(curriedParameter)
+            return curriedParameter
+          })
+          const curriedVars = curriedParameters.map((name) =>
+            C.VarTerm(name, term.location),
+          )
+          return M.Right(
+            M.Inferred(
+              C.LambdaTerm(
+                curriedParameters,
+                C.ApplyTerm(
+                  targetInferred.core,
+                  [...argCores, ...curriedVars],
+                  term.location,
+                ),
+                term.location,
+              ),
+              retType,
+            ),
+          )
+        }
+
+        // early apply
+        if (arity < term.args.length) {
+          return M.Right(
+            M.Inferred(
+              C.ApplyTerm(targetInferred.core, argCores, term.location),
+              retType,
+            ),
+          )
+        }
+      }
+
       return M.Right(
-        M.Inferred(C.ApplyTerm(targetCore, argCores, term.location), retType),
+        M.Inferred(
+          C.ApplyTerm(targetInferred.core, argCores, term.location),
+          retType,
+        ),
       )
     }
 
