@@ -1,5 +1,8 @@
 import * as M from "../index.ts"
 
+// - note: evaluate implement auto-currying at runtime,
+//   by nested CurryValue instead of flat ClosureValue
+
 export type Value = TypeValue | CurryValue | DefinitionValue
 
 export type TypeValue = {

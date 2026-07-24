@@ -1,6 +1,5 @@
 # closure-pass
 
-[meta-lisp.js] simplify to `CurryValue` to `ClosureValue`
 [meta-runtime.c] simplify to `curry_t` to `closure_t`
 [meta-lisp.js] lift-lambda-pass to convert-closure-pass
 - or keep the pass name
