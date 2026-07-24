@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import { arrayZip } from "@xieyuheng/std.js/array"
 import * as C from "../../core/index.ts"
 import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
@@ -84,58 +85,22 @@ export function infer(
     }
 
     case "ApplyTerm": {
-      const targetResult = M.infer(mod, ctx, exp.target)
+      const argTypes = exp.args.map((_) => M.createFreshVarType("A"))
+      const retType = M.createFreshVarType("R")
+      const arrowType = M.ArrowType(argTypes, retType)
+      const targetResult = M.checkByInfer(mod, ctx, exp.target, arrowType)
       if (M.isLeft(targetResult)) return targetResult
-      let { type: targetType, core: targetCore } = targetResult.right
-      const args = exp.args
-
-      if (args.length === 0) {
-        const retType = M.createFreshVarType("R")
-        const arrowType = M.ArrowType([], retType)
-        const newSubst = M.unify(M.ctxSubst(ctx), targetType, arrowType)
-        if (newSubst === undefined) {
-          targetType = M.substDeepWalk(M.ctxSubst(ctx), targetType)
-          const message =
-            `expecting nullary arrow type` +
-            `\n  expected type: ${M.formatType(targetType)}`
-          return M.Left({ term: exp, message })
-        }
-        M.ctxPutSubst(ctx, newSubst)
-        return M.Right(
-          M.Inferred(C.ApplyTerm(targetCore, [], exp.location), retType),
-        )
-      }
-
+      const targetCore = targetResult.right
       const argCores: Array<C.Term> = []
-      let currentType = targetType
-
-      for (const arg of args) {
-        const argType = M.createFreshVarType("A")
-        const retType = M.createFreshVarType("R")
-        const arrowType = M.ArrowType([argType], retType)
-        const newSubst = M.unify(M.ctxSubst(ctx), currentType, arrowType)
-        if (newSubst === undefined) {
-          currentType = M.substDeepWalk(M.ctxSubst(ctx), currentType)
-          const message =
-            `expecting arrow type` +
-            `\n  expected type: ${M.formatType(currentType)}` +
-            `\n  args: ${M.formatTerms(args)}`
-          return M.Left({ term: exp, message })
-        }
-        M.ctxPutSubst(ctx, newSubst)
+      for (const [arg, argType] of arrayZip(exp.args, argTypes)) {
         const argResult = M.checkByInfer(mod, ctx, arg, argType)
         if (M.isLeft(argResult)) return argResult
         argCores.push(argResult.right)
-        currentType = retType
       }
 
       return M.Right(
-        M.Inferred(
-          C.ApplyTerm(targetCore, argCores, exp.location),
-          currentType,
-        ),
+        M.Inferred(C.ApplyTerm(targetCore, argCores, exp.location), retType),
       )
-
     }
 
     case "LambdaTerm": {
