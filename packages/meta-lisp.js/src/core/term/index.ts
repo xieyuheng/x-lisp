@@ -1,0 +1,7 @@
+export * from "./formatTerm.ts"
+export * from "./isAtomOperandTerm.ts"
+export * from "./isAtomTerm.ts"
+export * from "./Term.ts"
+export * from "./termFreeNames.ts"
+export * from "./termOccurredNames.ts"
+export * from "./termTraverse.ts"

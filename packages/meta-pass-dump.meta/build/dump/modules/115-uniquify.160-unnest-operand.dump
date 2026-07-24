@@ -1,5 +1,3 @@
-(claim f (-> int-t))
-
 (define (f) (self/115-uniquify/f©λ1 1))
 
 (define (f©λ1 x) (self/115-uniquify/f©λ1©λ1 x))

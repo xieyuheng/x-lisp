@@ -1,14 +1,14 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import * as B from "../basic/index.ts"
-import * as M from "../meta/index.ts"
+import * as C from "../core/index.ts"
 import * as Pkg from "../package/index.ts"
 
 export function ExplicateControlPass(pkg: Pkg.Package): B.Mod {
   const basicMod = B.createMod()
 
   for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
+    for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         for (const basicDefinition of explicateDefinition(
           basicMod,
@@ -23,13 +23,13 @@ export function ExplicateControlPass(pkg: Pkg.Package): B.Mod {
   return basicMod
 }
 
-function definitionQualifiedName(definition: M.Definition): string {
+function definitionQualifiedName(definition: C.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
 function explicateDefinition(
   basicMod: B.Mod,
-  definition: M.Definition,
+  definition: C.Definition,
 ): Array<B.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
@@ -54,11 +54,6 @@ function explicateDefinition(
     }
 
     // - do not generate code for type.
-    case "AlgebraicTypeDefinition":
-    case "OpaqueTypeDefinition":
-    case "TypeDefinition": {
-      return []
-    }
 
     case "FunctionDefinition": {
       const state = createState(definition.mod.pkg)
@@ -133,7 +128,7 @@ function generateLabel(
   return label
 }
 
-function explicateUnnestedTerm(state: State, term: M.Term): B.Exp {
+function explicateUnnestedTerm(state: State, term: C.Term): B.Exp {
   switch (term.kind) {
     case "SymbolTerm": {
       return B.SymbolExp(term.content, term.location)
@@ -175,7 +170,7 @@ function explicateUnnestedTerm(state: State, term: M.Term): B.Exp {
     default: {
       let message = `[explicateUnnestedTerm] unhandled term`
       message += `\n  term kind: ${term.kind}`
-      message += `\n  term: ${M.formatTerm(term)}`
+      message += `\n  term: ${C.formatTerm(term)}`
       throw new S.ErrorWithSourceLocation(message, term.location)
     }
   }
@@ -191,8 +186,8 @@ function resolvePackageId(pkg: Pkg.Package, pkgName: string): string {
   return dep.id
 }
 
-function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
-  if (!M.isAtomOperandTerm(term)) {
+function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
+  if (!C.isAtomOperandTerm(term)) {
     let message = `[explicateInTail] expect AtomOperandTerm`
     throw new S.ErrorWithSourceLocation(message, term.location)
   }
@@ -233,7 +228,7 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
 function explicateInLet1(
   state: State,
   name: string,
-  rhs: M.Term,
+  rhs: C.Term,
   restInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (rhs.kind) {
@@ -278,7 +273,7 @@ function explicateInLet1(
 
 function explicateInBegin1(
   state: State,
-  head: M.Term,
+  head: C.Term,
   restInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
@@ -323,7 +318,7 @@ function explicateInBegin1(
 
 function explicateInIf(
   state: State,
-  condition: M.Term,
+  condition: C.Term,
   thenInstrs: Array<B.Instr>,
   elseInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
@@ -425,7 +420,7 @@ function explicateInIf(
 
     default: {
       let message = `[explicateInIf] unhandled condition`
-      message += `\n  condition: ${M.formatTerm(condition)}`
+      message += `\n  condition: ${C.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }

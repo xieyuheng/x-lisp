@@ -1,8 +1,4 @@
-(claim greeting string-t)
-
 (define greeting "Hello")
-
-(claim greet (-> string-t string-t))
 
 (define (greet name)
   (= unnested.1

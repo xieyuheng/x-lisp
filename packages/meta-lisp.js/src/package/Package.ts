@@ -1,4 +1,8 @@
 import Path from "node:path"
+import type {
+  Definition as CoreDefinition,
+  Mod as CoreMod,
+} from "../core/index.ts"
 import * as M from "../meta/index.ts"
 import { type PackageConfig } from "./PackageConfig.ts"
 
@@ -8,6 +12,7 @@ export type Package = {
   config: PackageConfig
   fragments: Map<string, M.Fragment>
   mods: Map<string, M.Mod>
+  coreMods: Map<string, CoreMod>
   dependencies: Map<string, Package>
 }
 
@@ -22,6 +27,7 @@ export function createPackage(
     config,
     fragments: new Map(),
     mods: new Map(),
+    coreMods: new Map(),
     dependencies: new Map(),
   }
 }
@@ -54,6 +60,23 @@ export function packageLookupDefinition(
   }
 
   return M.modLookupDefinition(qualifiedMod, name)
+}
+
+export function packageLookupCoreDefinition(
+  pkg: Package,
+  pkgName: string,
+  modName: string,
+  name: string,
+): CoreDefinition | undefined {
+  if (pkgName === pkg.id) {
+    return pkg.coreMods.get(modName)?.definitions.get(name)
+  }
+  for (const dep of pkg.dependencies.values()) {
+    if (dep.config.name === pkgName) {
+      return dep.coreMods.get(modName)?.definitions.get(name)
+    }
+  }
+  return undefined
 }
 
 export function packageAddMod(pkg: Package, mod: M.Mod): void {

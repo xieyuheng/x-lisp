@@ -2,6 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
 import { setUnion } from "@xieyuheng/std.js/set"
 import * as B from "../basic2/index.ts"
+import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
 import * as Pkg from "../package/index.ts"
 
@@ -9,7 +10,7 @@ export function ExplicateControlPass2(pkg: Pkg.Package): B.Mod {
   const basicMod = B.createMod()
 
   for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
+    for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         for (const basicDefinition of explicateDefinition(definition)) {
           basicMod.definitions.set(basicDefinition.name, basicDefinition)
@@ -22,7 +23,7 @@ export function ExplicateControlPass2(pkg: Pkg.Package): B.Mod {
   const testNames: Array<string> = []
 
   for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
-    for (const mod of orderedPkg.mods.values()) {
+    for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         if (definition.kind === "VariableDefinition") {
           variableNames.push(definitionQualifiedName(definition))
@@ -44,11 +45,11 @@ export function ExplicateControlPass2(pkg: Pkg.Package): B.Mod {
   return basicMod
 }
 
-function definitionQualifiedName(definition: M.Definition): string {
+function definitionQualifiedName(definition: C.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
-function explicateDefinition(definition: M.Definition): Array<B.Definition> {
+function explicateDefinition(definition: C.Definition): Array<B.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
       return [B.ExternFunctionDefinition(definitionQualifiedName(definition))]
@@ -58,16 +59,9 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
       return [B.ExternVariableDefinition(definitionQualifiedName(definition))]
     }
 
-    // - do not generate code for type.
-    case "AlgebraicTypeDefinition":
-    case "OpaqueTypeDefinition":
-    case "TypeDefinition": {
-      return []
-    }
-
     case "FunctionDefinition": {
       const usedNames = setUnion(
-        M.termOccurredNames(definition.body),
+        C.termOccurredNames(definition.body),
         new Set(definition.parameters),
       )
       const state = createState(definition.mod.pkg, usedNames)
@@ -90,7 +84,7 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
     }
 
     case "TestDefinition": {
-      const usedNames = M.termOccurredNames(definition.body)
+      const usedNames = C.termOccurredNames(definition.body)
       const state = createState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
@@ -102,7 +96,7 @@ function explicateDefinition(definition: M.Definition): Array<B.Definition> {
     }
 
     case "VariableDefinition": {
-      const usedNames = M.termOccurredNames(definition.body)
+      const usedNames = C.termOccurredNames(definition.body)
       const state = createState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
@@ -218,7 +212,7 @@ function generateLabel(
 
 function explicateUnnestedTerm(
   state: State,
-  term: M.Term,
+  term: C.Term,
 ): [Array<B.Instr>, B.Cell] {
   switch (term.kind) {
     case "SymbolTerm": {
@@ -280,7 +274,7 @@ function explicateUnnestedTerm(
     }
 
     case "QualifiedVarTerm": {
-      const definition = Pkg.packageLookupDefinition(
+      const definition = Pkg.packageLookupCoreDefinition(
         state.pkg,
         term.pkgName,
         term.modName,
@@ -321,7 +315,7 @@ function explicateUnnestedTerm(
         const instrs = [
           B.Instr("function-value", [], [value], {
             name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
-            arity: B.IntAttribute(BigInt(M.definitionArity(definition))),
+            arity: B.IntAttribute(BigInt(C.definitionArity(definition))),
           }),
         ]
         return [instrs, value]
@@ -377,12 +371,12 @@ function resolvePackageId(pkg: Pkg.Package, pkgName: string): string {
 
 function tryResolveDirectCall(
   state: State,
-  target: M.Term,
+  target: C.Term,
   argCount: number,
 ): { qualifiedName: string } | undefined {
   if (target.kind !== "QualifiedVarTerm") return undefined
 
-  const definition = Pkg.packageLookupDefinition(
+  const definition = Pkg.packageLookupCoreDefinition(
     state.pkg,
     target.pkgName,
     target.modName,
@@ -400,7 +394,7 @@ function tryResolveDirectCall(
     (definition.kind === "PrimitiveFunctionDeclaration" ||
       definition.kind === "FunctionDefinition" ||
       definition.kind === "TestDefinition") &&
-    M.definitionArity(definition) === argCount
+    C.definitionArity(definition) === argCount
   ) {
     const prefix = resolvePackageId(state.pkg, target.pkgName)
     return {
@@ -411,8 +405,8 @@ function tryResolveDirectCall(
   return undefined
 }
 
-function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
-  if (!M.isAtomOperandTerm(term)) {
+function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
+  if (!C.isAtomOperandTerm(term)) {
     let message = `[explicateInTail] expect AtomOperandTerm`
     throw new S.ErrorWithSourceLocation(message, term.location)
   }
@@ -477,7 +471,7 @@ function explicateInTail(state: State, term: M.Term): Array<B.Instr> {
 function explicateInLet1(
   state: State,
   name: string,
-  rhs: M.Term,
+  rhs: C.Term,
   restInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (rhs.kind) {
@@ -553,7 +547,7 @@ function explicateInLet1(
 
 function explicateInBegin1(
   state: State,
-  head: M.Term,
+  head: C.Term,
   restInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (head.kind) {
@@ -597,7 +591,7 @@ function explicateInBegin1(
 
 function explicateInIf(
   state: State,
-  condition: M.Term,
+  condition: C.Term,
   thenInstrs: Array<B.Instr>,
   elseInstrs: Array<B.Instr>,
 ): Array<B.Instr> {
@@ -698,7 +692,7 @@ function explicateInIf(
 
     default: {
       let message = `[explicateInIf] unhandled condition`
-      message += `\n  condition: ${M.formatTerm(condition)}`
+      message += `\n  condition: ${C.formatTerm(condition)}`
       throw new S.ErrorWithSourceLocation(message, condition.location)
     }
   }

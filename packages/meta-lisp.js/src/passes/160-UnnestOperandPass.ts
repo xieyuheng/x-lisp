@@ -1,15 +1,17 @@
 import { arrayUnzip } from "@xieyuheng/std.js/array"
+import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
 import * as Pkg from "../package/index.ts"
 
 export function UnnestOperandPass(pkg: Pkg.Package): void {
-  for (const mod of pkg.mods.values()) {
-    for (const definition of mod.definitions.values()) {
+  for (const coreMod of pkg.coreMods.values()) {
+    for (const definition of coreMod.definitions.values()) {
       unnestOperandDefinition(definition)
     }
   }
 
-  if (pkg.config.compiler.dump) Pkg.packageDumpMods(pkg, "160-unnest-operand")
+  if (pkg.config.compiler.dump)
+    Pkg.packageDumpCoreMods(pkg, "160-unnest-operand")
 }
 
 type State = {
@@ -17,22 +19,17 @@ type State = {
 }
 
 function createState(usedNames: Set<string>): State {
-  return {
-    usedNames,
-  }
+  return { usedNames }
 }
 
-function unnestOperandDefinition(definition: M.Definition): null {
+function unnestOperandDefinition(definition: C.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration":
-    case "AlgebraicTypeDefinition":
-    case "OpaqueTypeDefinition": {
+    case "PrimitiveVariableDeclaration": {
       return null
     }
 
-    case "FunctionDefinition":
-    case "TypeDefinition": {
+    case "FunctionDefinition": {
       const usedNames = new Set(definition.parameters)
       const state = createState(usedNames)
       definition.body = unnestOperandTerm(state, definition.body)
@@ -56,7 +53,7 @@ function generateName(state: State, name: string): string {
   return freshName
 }
 
-function unnestOperandTerm(state: State, term: M.Term): M.Term {
+function unnestOperandTerm(state: State, term: C.Term): C.Term {
   switch (term.kind) {
     case "ApplyTerm": {
       const [targetEntries, newTarget] = unnestOperandAtom(state, term.target)
@@ -66,32 +63,33 @@ function unnestOperandTerm(state: State, term: M.Term): M.Term {
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       return prependLets(
         [...targetEntries, ...argsEntries],
-        M.ApplyTerm(newTarget, newArgs, term.location),
+        C.ApplyTerm(newTarget, newArgs, term.location),
       )
     }
 
     default: {
-      return M.termTraverse((e) => unnestOperandTerm(state, e), term)
+      return C.termTraverse((e) => unnestOperandTerm(state, e), term)
     }
   }
 }
 
-function prependLets(entries: Array<Entry>, term: M.Term): M.Term {
+function prependLets(entries: Array<Entry>, term: C.Term): C.Term {
   if (entries.length === 0) {
     return term
   }
 
   const [[name, rhs], ...restEntries] = entries
+  const body = prependLets(restEntries, term)
   if (name === null) {
-    return M.Begin1Term(rhs, prependLets(restEntries, term), term.location)
+    return C.Begin1Term(rhs, body, term.location)
   } else {
-    return M.Let1Term(name, rhs, prependLets(restEntries, term), term.location)
+    return C.Let1Term(name, rhs, body, term.location)
   }
 }
 
-type Entry = [string | null, M.Term]
+type Entry = [string | null, C.Term]
 
-function unnestOperandAtom(state: State, term: M.Term): [Array<Entry>, M.Term] {
+function unnestOperandAtom(state: State, term: C.Term): [Array<Entry>, C.Term] {
   switch (term.kind) {
     case "VarTerm":
     case "QualifiedVarTerm":
@@ -110,13 +108,11 @@ function unnestOperandAtom(state: State, term: M.Term): [Array<Entry>, M.Term] {
       )
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       const unnestedName = generateName(state, "unnested")
-      const entry: Entry = [
-        unnestedName,
-        M.ApplyTerm(newTarget, newArgs, term.location),
-      ]
+      const rhs = C.ApplyTerm(newTarget, newArgs, term.location)
+      const entry: Entry = [unnestedName, rhs]
       return [
         [...targetEntries, ...argsEntries, entry],
-        M.VarTerm(unnestedName, term.location),
+        C.VarTerm(unnestedName, term.location),
       ]
     }
 
@@ -134,8 +130,9 @@ function unnestOperandAtom(state: State, term: M.Term): [Array<Entry>, M.Term] {
 
     default: {
       const unnestedName = generateName(state, "unnested")
-      const entry: Entry = [unnestedName, unnestOperandTerm(state, term)]
-      return [[entry], M.VarTerm(unnestedName, term.location)]
+      const rhs = unnestOperandTerm(state, term)
+      const entry: Entry = [unnestedName, rhs]
+      return [[entry], C.VarTerm(unnestedName, term.location)]
     }
   }
 }
