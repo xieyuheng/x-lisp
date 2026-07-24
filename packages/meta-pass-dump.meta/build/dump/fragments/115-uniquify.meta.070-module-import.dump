@@ -1,5 +1,0 @@
-(import-all meta-builtin/builtin)
-
-(module 115-uniquify)
-
-(define (f) ((lambda (x) ((lambda (x) x) x)) 1))

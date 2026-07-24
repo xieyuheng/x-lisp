@@ -1,7 +1,0 @@
-(module 070-cross-module)
-
-(import 070-module-lib greet)
-
-(define (say-hello) (greet "world"))
-
-(define (get-greeting) 070-module-lib/greeting)

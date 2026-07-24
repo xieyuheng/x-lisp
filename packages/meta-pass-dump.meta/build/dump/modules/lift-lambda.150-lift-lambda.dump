@@ -1,0 +1,5 @@
+(define (make-adder x) (self/lift-lambda/make-adder©λ1 x))
+
+(define (make-adder©λ1 x y) (meta-builtin/builtin/iadd x y))
+
+(define (f) (self/lift-lambda/make-adder 1))

@@ -1,0 +1,5 @@
+(import-all meta-builtin/builtin)
+
+(module explicate-control)
+
+(define (f) (let ((x 1)) (if true (iadd x 2) x)))

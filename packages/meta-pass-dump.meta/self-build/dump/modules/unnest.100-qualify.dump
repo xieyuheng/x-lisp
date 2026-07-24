@@ -1,0 +1,7 @@
+(define (g x) x)
+
+(define (h x) x)
+
+(define (f x y) (meta-builtin/builtin/iadd x y))
+
+(define (test) (self/unnest/f (self/unnest/g 1) (self/unnest/h 2)))

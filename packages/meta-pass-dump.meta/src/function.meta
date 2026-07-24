@@ -1,0 +1,9 @@
+(module function)
+
+(define (identity x) x)
+
+(define (compose2 f g x) (f (g x)))
+
+(define (double x) (iadd x x))
+
+(define answer (the int-t 42))

@@ -1,3 +1,0 @@
-(define (say-hello) (self/070-module-lib/greet "world"))
-
-(define (get-greeting) self/070-module-lib/greeting)

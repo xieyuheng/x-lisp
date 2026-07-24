@@ -1,0 +1,253 @@
+(define (var-exp name)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! var-exp list)
+  (meta-builtin/builtin/list-push! name list)
+  list)
+
+(define (var-exp? value)
+  (if (meta-builtin/builtin/list? value)
+    (if
+        (begin
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 2))
+      (begin
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 var-exp))
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
+
+(define (var-exp-name target) (meta-builtin/builtin/list-get 1 target))
+
+(define (var-exp-put-name! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(define (apply-exp target arg)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! apply-exp list)
+  (meta-builtin/builtin/list-push! target list)
+  (meta-builtin/builtin/list-push! arg list)
+  list)
+
+(define (apply-exp? value)
+  (if (meta-builtin/builtin/list? value)
+    (if
+        (begin
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 3))
+      (begin
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 apply-exp))
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
+
+(define (apply-exp-target target) (meta-builtin/builtin/list-get 1 target))
+
+(define (apply-exp-put-target! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(define (apply-exp-arg target) (meta-builtin/builtin/list-get 2 target))
+
+(define (apply-exp-put-arg! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(define (lambda-exp parameter body)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! lambda-exp list)
+  (meta-builtin/builtin/list-push! parameter list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
+
+(define (lambda-exp? value)
+  (if (meta-builtin/builtin/list? value)
+    (if
+        (begin
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 3))
+      (begin
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 lambda-exp))
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
+
+(define (lambda-exp-parameter target) (meta-builtin/builtin/list-get 1 target))
+
+(define (lambda-exp-put-parameter! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(define (lambda-exp-body target) (meta-builtin/builtin/list-get 2 target))
+
+(define (lambda-exp-put-body! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(define (let-exp name rhs body)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! let-exp list)
+  (meta-builtin/builtin/list-push! name list)
+  (meta-builtin/builtin/list-push! rhs list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
+
+(define (let-exp? value)
+  (if (meta-builtin/builtin/list? value)
+    (if
+        (begin
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 4))
+      (begin
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 let-exp))
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
+
+(define (let-exp-name target) (meta-builtin/builtin/list-get 1 target))
+
+(define (let-exp-put-name! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(define (let-exp-rhs target) (meta-builtin/builtin/list-get 2 target))
+
+(define (let-exp-put-rhs! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(define (let-exp-body target) (meta-builtin/builtin/list-get 3 target))
+
+(define (let-exp-put-body! value target)
+  (meta-builtin/builtin/list-put! 3 value target))
+
+(define empty-env meta-builtin/builtin/make-hash)
+
+(define extend-env meta-builtin/builtin/hash-put)
+
+(define env-lookup meta-builtin/builtin/hash-get-maybe)
+
+(define (closure-value env parameter body)
+  (= list (meta-builtin/builtin/make-list))
+  (meta-builtin/builtin/list-push! closure-value list)
+  (meta-builtin/builtin/list-push! env list)
+  (meta-builtin/builtin/list-push! parameter list)
+  (meta-builtin/builtin/list-push! body list)
+  list)
+
+(define (closure-value? value)
+  (if (meta-builtin/builtin/list? value)
+    (if
+        (begin
+          (= unnested.1 (meta-builtin/builtin/list-length value))
+          (meta-builtin/builtin/equal? unnested.1 4))
+      (begin
+        (= unnested.2 (meta-builtin/builtin/list-head value))
+        (meta-builtin/builtin/equal? unnested.2 closure-value))
+      meta-builtin/builtin/false)
+    meta-builtin/builtin/false))
+
+(define (closure-value-env target) (meta-builtin/builtin/list-get 1 target))
+
+(define (closure-value-put-env! value target)
+  (meta-builtin/builtin/list-put! 1 value target))
+
+(define (closure-value-parameter target)
+  (meta-builtin/builtin/list-get 2 target))
+
+(define (closure-value-put-parameter! value target)
+  (meta-builtin/builtin/list-put! 2 value target))
+
+(define (closure-value-body target) (meta-builtin/builtin/list-get 3 target))
+
+(define (closure-value-put-body! value target)
+  (meta-builtin/builtin/list-put! 3 value target))
+
+(define (evaluate exp env)
+  (if (self/lambda/var-exp? exp)
+    (begin
+      (= name (self/lambda/var-exp-name exp))
+      (if
+          (begin
+            (= unnested.1 (self/lambda/env-lookup name env))
+            (meta-builtin/builtin/just? unnested.1))
+        (begin
+          (= value
+             (begin
+               (= unnested.2 (self/lambda/env-lookup name env))
+               (meta-builtin/builtin/just-value unnested.2)))
+          value)
+        (if
+            (begin
+              (= unnested.3 (self/lambda/env-lookup name env))
+              (meta-builtin/builtin/nothing? unnested.3))
+          (begin
+            (= unnested.4 (meta-builtin/builtin/make-source-position 715 25 18))
+            (= unnested.5 (meta-builtin/builtin/make-source-position 739 25 42))
+            (= unnested.6
+               (meta-builtin/builtin/make-source-span unnested.4 unnested.5))
+            (= unnested.7
+               (meta-builtin/builtin/make-source-location
+                "src/lambda.meta"
+                unnested.6))
+            (meta-builtin/builtin/error-with-location
+             "undefined name"
+             unnested.7))
+          (begin
+            (= unnested.8 (meta-builtin/builtin/make-source-position 641 23 6))
+            (= unnested.9 (meta-builtin/builtin/make-source-position 646 23 11))
+            (= unnested.10
+               (meta-builtin/builtin/make-source-span unnested.8 unnested.9))
+            (= unnested.11
+               (meta-builtin/builtin/make-source-location
+                "src/lambda.meta"
+                unnested.10))
+            (meta-builtin/builtin/error-with-location
+             "cond mismatch"
+             unnested.11)))))
+    (if (self/lambda/apply-exp? exp)
+      (begin
+        (= arg (self/lambda/apply-exp-arg exp))
+        (= target (self/lambda/apply-exp-target exp))
+        (= unnested.12 (self/lambda/evaluate target env))
+        (= unnested.13 (self/lambda/evaluate arg env))
+        (self/lambda/apply unnested.12 unnested.13))
+      (if (self/lambda/lambda-exp? exp)
+        (begin
+          (= body (self/lambda/lambda-exp-body exp))
+          (= parameter (self/lambda/lambda-exp-parameter exp))
+          (self/lambda/closure-value env parameter body))
+        (if (self/lambda/let-exp? exp)
+          (begin
+            (= body.1 (self/lambda/let-exp-body exp))
+            (= rhs (self/lambda/let-exp-rhs exp))
+            (= name.1 (self/lambda/let-exp-name exp))
+            (= env.1
+               (begin
+                 (= unnested.14 (self/lambda/evaluate rhs env))
+                 (self/lambda/extend-env name.1 unnested.14 env)))
+            (self/lambda/evaluate body.1 env.1))
+          (begin
+            (= unnested.15 (meta-builtin/builtin/make-source-position 605 21 3))
+            (= unnested.16 (meta-builtin/builtin/make-source-position 610 21 8))
+            (= unnested.17
+               (meta-builtin/builtin/make-source-span unnested.15 unnested.16))
+            (= unnested.18
+               (meta-builtin/builtin/make-source-location
+                "src/lambda.meta"
+                unnested.17))
+            (meta-builtin/builtin/error-with-location
+             "cond mismatch"
+             unnested.18)))))))
+
+(define (apply target arg)
+  (if (self/lambda/closure-value? target)
+    (begin
+      (= body (self/lambda/closure-value-body target))
+      (= parameter (self/lambda/closure-value-parameter target))
+      (= env (self/lambda/closure-value-env target))
+      (= unnested.1 (self/lambda/extend-env parameter arg env))
+      (self/lambda/evaluate body unnested.1))
+    (begin
+      (= unnested.2 (meta-builtin/builtin/make-source-position 1042 35 3))
+      (= unnested.3 (meta-builtin/builtin/make-source-position 1047 35 8))
+      (= unnested.4
+         (meta-builtin/builtin/make-source-span unnested.2 unnested.3))
+      (= unnested.5
+         (meta-builtin/builtin/make-source-location
+          "src/lambda.meta"
+          unnested.4))
+      (meta-builtin/builtin/error-with-location "cond mismatch" unnested.5))))

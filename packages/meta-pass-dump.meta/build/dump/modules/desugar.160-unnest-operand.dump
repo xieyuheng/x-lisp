@@ -1,0 +1,143 @@
+(define (add1 x) (meta-builtin/builtin/iadd 1 x))
+
+(define (double x) (meta-builtin/builtin/iadd x x))
+
+(define (example-let-star)
+  (= x 1)
+  (= y (meta-builtin/builtin/iadd x 1))
+  (meta-builtin/builtin/iadd x y))
+
+(define (example-cond)
+  (if (meta-builtin/builtin/equal? 1 1)
+    1
+    (if meta-builtin/builtin/true
+      2
+      (begin
+        (= unnested.1 (meta-builtin/builtin/make-source-position 172 6 24))
+        (= unnested.2 (meta-builtin/builtin/make-source-position 176 6 28))
+        (= unnested.3
+           (meta-builtin/builtin/make-source-span unnested.1 unnested.2))
+        (= unnested.4
+           (meta-builtin/builtin/make-source-location
+            "src/desugar.meta"
+            unnested.3))
+        (meta-builtin/builtin/error-with-location "cond mismatch" unnested.4)))))
+
+(define (example-begin) 1 2 3)
+
+(define (example-when)
+  (if meta-builtin/builtin/true
+    (begin 1 meta-builtin/builtin/void)
+    meta-builtin/builtin/void))
+
+(define (example-unless)
+  (if meta-builtin/builtin/false
+    meta-builtin/builtin/void
+    (begin 2 meta-builtin/builtin/void)))
+
+(define (example-and a b) (if a b meta-builtin/builtin/false))
+
+(define (example-or a b) (if a meta-builtin/builtin/true b))
+
+(define (example-pipe)
+  (= unnested.1 (self/desugar/add1 5))
+  (self/desugar/double unnested.1))
+
+(define (example-chain) (self/desugar/example-chain©λ1 5))
+
+(define (example-chain©λ1 target)
+  (= unnested.1 (self/desugar/add1 target))
+  (self/desugar/double unnested.1))
+
+(define (example-compose) (self/desugar/example-compose©λ1 5))
+
+(define (example-compose©λ1 target)
+  (= unnested.1 (self/desugar/double target))
+  (self/desugar/add1 unnested.1))
+
+(define (example-letrec)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (= even?.value.1 (self/desugar/example-letrec©λ1 odd?))
+  (= odd?.value.1 (self/desugar/example-letrec©λ2 even?))
+  (= even?.value even?.value.1)
+  (= odd?.value odd?.value.1)
+  (meta-builtin/builtin/box-put! even?.value even?)
+  (meta-builtin/builtin/box-put! odd?.value odd?)
+  meta-builtin/builtin/void)
+
+(define (example-letrec©λ1 odd? n)
+  (if (meta-builtin/builtin/equal? n 0)
+    meta-builtin/builtin/true
+    (begin
+      (= unnested.1 (meta-builtin/builtin/box-get odd?))
+      (= unnested.2 (meta-builtin/builtin/isub n 1))
+      (unnested.1 unnested.2))))
+
+(define (example-letrec©λ2 even? n.1)
+  (if (meta-builtin/builtin/equal? n.1 0)
+    meta-builtin/builtin/false
+    (begin
+      (= unnested.1 (meta-builtin/builtin/box-get even?))
+      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
+      (unnested.1 unnested.2))))
+
+(define (example-letrec-star)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (begin
+    (= unnested.1 (self/desugar/example-letrec-star©λ1 odd?))
+    (meta-builtin/builtin/box-put! unnested.1 even?))
+  (begin
+    (= unnested.2 (self/desugar/example-letrec-star©λ2 even?))
+    (meta-builtin/builtin/box-put! unnested.2 odd?))
+  meta-builtin/builtin/void)
+
+(define (example-letrec-star©λ1 odd? n)
+  (if (meta-builtin/builtin/equal? n 0)
+    meta-builtin/builtin/true
+    (begin
+      (= unnested.1 (meta-builtin/builtin/box-get odd?))
+      (= unnested.2 (meta-builtin/builtin/isub n 1))
+      (unnested.1 unnested.2))))
+
+(define (example-letrec-star©λ2 even? n.1)
+  (if (meta-builtin/builtin/equal? n.1 0)
+    meta-builtin/builtin/false
+    (begin
+      (= unnested.1 (meta-builtin/builtin/box-get even?))
+      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
+      (unnested.1 unnested.2))))
+
+(define (example-local-define)
+  (= even?.1 (meta-builtin/builtin/make-box))
+  (= odd?.1 (meta-builtin/builtin/make-box))
+  (= even? even?.1)
+  (= odd? odd?.1)
+  (begin
+    (= unnested.1 (self/desugar/example-local-define©λ1 odd?))
+    (meta-builtin/builtin/box-put! unnested.1 even?))
+  (begin
+    (= unnested.2 (self/desugar/example-local-define©λ2 even?))
+    (meta-builtin/builtin/box-put! unnested.2 odd?))
+  meta-builtin/builtin/void)
+
+(define (example-local-define©λ1 odd? n)
+  (if (meta-builtin/builtin/equal? n 0)
+    meta-builtin/builtin/true
+    (begin
+      (= unnested.1 (meta-builtin/builtin/box-get odd?))
+      (= unnested.2 (meta-builtin/builtin/isub n 1))
+      (unnested.1 unnested.2))))
+
+(define (example-local-define©λ2 even? n.1)
+  (if (meta-builtin/builtin/equal? n.1 0)
+    meta-builtin/builtin/false
+    (begin
+      (= unnested.1 (meta-builtin/builtin/box-get even?))
+      (= unnested.2 (meta-builtin/builtin/isub n.1 1))
+      (unnested.1 unnested.2))))

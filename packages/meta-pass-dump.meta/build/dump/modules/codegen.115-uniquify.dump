@@ -1,0 +1,3 @@
+(define (add x y) (meta-builtin/builtin/iadd x y))
+
+(define (f) (self/codegen/add 1 2))

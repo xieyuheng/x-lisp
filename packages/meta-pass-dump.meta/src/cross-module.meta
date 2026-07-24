@@ -1,0 +1,7 @@
+(module cross-module)
+
+(import module-lib greet)
+
+(define (say-hello) (greet "world"))
+
+(define (get-greeting) module-lib/greeting)

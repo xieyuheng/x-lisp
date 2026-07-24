@@ -1,0 +1,7 @@
+(import-all meta-builtin/builtin)
+
+(module codegen)
+
+(define (add x y) (meta-builtin/builtin/iadd x y))
+
+(define (f) (add 1 2))

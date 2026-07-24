@@ -1,0 +1,186 @@
+(import-all meta-builtin/builtin)
+
+(module my-list)
+
+(define-algebraic-type (my-list-t E)
+  ((nil) nil?)
+  ((li (head E) (tail (my-list-t E)))
+   li?
+   (head li-head li-put-head!)
+   (tail li-tail li-put-tail!)))
+
+(admit nil (polymorphic (E) (-> (my-list-t E))))
+
+(define (nil) ['nil])
+
+(admit nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+
+(define (nil? value)
+  (and (list? value)
+       (equal? (list-length value) 1)
+       (equal? (list-head value) 'nil)))
+
+(admit li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail) ['li head tail])
+
+(admit li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+
+(define (li? value)
+  (and (list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) 'li)))
+
+(admit li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(admit li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target) (list-put! 1 value target))
+
+(admit li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(admit li-put-tail!
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target) (list-put! 2 value target))
+
+(define (my-list-head list)
+  (cond
+    ((self/my-list/nil? list)
+     (meta-builtin/builtin/error-with-location
+      (@string "pattern mismatch on:" " " (meta-builtin/builtin/format list))
+      (meta-builtin/builtin/make-source-location
+       "src/my-list.meta"
+       (meta-builtin/builtin/make-source-span
+        (meta-builtin/builtin/make-source-position 123 7 3)
+        (meta-builtin/builtin/make-source-position 128 7 8)))))
+    ((self/my-list/li? list)
+     (begin
+       (= tail (self/my-list/li-tail list))
+       (= head (self/my-list/li-head list))
+       head))))
+
+(define (my-list-tail list)
+  (cond
+    ((self/my-list/nil? list)
+     (meta-builtin/builtin/error-with-location
+      (@string "pattern mismatch on:" " " (meta-builtin/builtin/format list))
+      (meta-builtin/builtin/make-source-location
+       "src/my-list.meta"
+       (meta-builtin/builtin/make-source-span
+        (meta-builtin/builtin/make-source-position 194 11 3)
+        (meta-builtin/builtin/make-source-position 199 11 8)))))
+    ((self/my-list/li? list)
+     (begin
+       (= tail (self/my-list/li-tail list))
+       (= head (self/my-list/li-head list))
+       tail))))
+
+(define (my-list-length list)
+  (cond
+    ((self/my-list/nil? list) 0)
+    ((self/my-list/li? list)
+     (begin
+       (= tail (self/my-list/li-tail list))
+       (= head (self/my-list/li-head list))
+       (iadd 1 (my-list-length tail))))))
+
+(define (my-list-map f list)
+  (cond
+    ((self/my-list/nil? list) (nil))
+    ((self/my-list/li? list)
+     (begin
+       (= tail (self/my-list/li-tail list))
+       (= head (self/my-list/li-head list))
+       (li (f head) (my-list-map f tail))))))
+
+(define (my-list-append left right)
+  (cond
+    ((self/my-list/nil? left) right)
+    ((self/my-list/li? left)
+     (begin
+       (= tail (self/my-list/li-tail left))
+       (= head (self/my-list/li-head left))
+       (li head (my-list-append tail right))))))
+
+(define (my-list-map-zip f list1 list2)
+  (cond
+    ((self/my-list/nil? list1) (begin (= _ list2) (nil)))
+    ((self/my-list/li? list1)
+     (cond
+       ((self/my-list/nil? list2)
+        (begin
+          (= tail1 (self/my-list/li-tail list1))
+          (= head1 (self/my-list/li-head list1))
+          (nil)))
+       ((self/my-list/li? list2)
+        (begin
+          (= tail2 (self/my-list/li-tail list2))
+          (= head2 (self/my-list/li-head list2))
+          (= tail1 (self/my-list/li-tail list1))
+          (= head1 (self/my-list/li-head list1))
+          (li (f head1 head2) (my-list-map-zip f tail1 tail2))))))))
+
+(define (my-list-map-zip-2 f list1 list2)
+  (cond
+    ((self/my-list/nil? list1) (begin (= _ list2) (nil)))
+    ((self/my-list/li? list1)
+     (cond
+       ((self/my-list/nil? list2) (begin (= _ list1) (nil)))
+       ((self/my-list/li? list2)
+        (cond
+          ((self/my-list/nil? list1)
+           (meta-builtin/builtin/error-with-location
+            (@string
+              "pattern mismatch on:"
+              " "
+              (meta-builtin/builtin/format list1)
+              " "
+              (meta-builtin/builtin/format list2))
+            (meta-builtin/builtin/make-source-location
+             "src/my-list.meta"
+             (meta-builtin/builtin/make-source-span
+              (meta-builtin/builtin/make-source-position 872 37 3)
+              (meta-builtin/builtin/make-source-position 882 37 13)))))
+          ((self/my-list/li? list1)
+           (cond
+             ((self/my-list/nil? list2)
+              (meta-builtin/builtin/error-with-location
+               (@string
+                 "pattern mismatch on:"
+                 " "
+                 (meta-builtin/builtin/format list1)
+                 " "
+                 (meta-builtin/builtin/format list2))
+               (meta-builtin/builtin/make-source-location
+                "src/my-list.meta"
+                (meta-builtin/builtin/make-source-span
+                 (meta-builtin/builtin/make-source-position 872 37 3)
+                 (meta-builtin/builtin/make-source-position 882 37 13)))))
+             ((self/my-list/li? list2)
+              (begin
+                (= tail2 (self/my-list/li-tail list2))
+                (= head2 (self/my-list/li-head list2))
+                (= tail1 (self/my-list/li-tail list1))
+                (= head1 (self/my-list/li-head list1))
+                (li (f head1 head2) (my-list-map-zip-2 f tail1 tail2))))))))))))
+
+(define (my-list-adjacent-dedup list)
+  (cond
+    ((self/my-list/nil? list) (nil))
+    ((self/my-list/li? list)
+     (cond
+       ((self/my-list/nil? (self/my-list/li-tail list))
+        (begin (= head (self/my-list/li-head list)) (li head (nil))))
+       ((self/my-list/li? (self/my-list/li-tail list))
+        (begin
+          (= rest (self/my-list/li-tail (self/my-list/li-tail list)))
+          (= second (self/my-list/li-head (self/my-list/li-tail list)))
+          (= first (self/my-list/li-head list))
+          (if (equal? first second)
+            (my-list-adjacent-dedup (li second rest))
+            (li first (my-list-adjacent-dedup (li second rest))))))))))

@@ -1,0 +1,10 @@
+(define (g x) x)
+
+(define (h x) x)
+
+(define (f x y) (meta-builtin/builtin/iadd x y))
+
+(define (test)
+  (= unnested.1 (self/unnest/g 1))
+  (= unnested.2 (self/unnest/h 2))
+  (self/unnest/f unnested.1 unnested.2))

@@ -1,3 +1,0 @@
-(define (make-adder x) (lambda (y) (meta-builtin/builtin/iadd x y)))
-
-(define (f) (self/150-lift-lambda/make-adder 1))

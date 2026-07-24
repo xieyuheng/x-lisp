@@ -1,0 +1,9 @@
+(module unnest)
+
+(define (g x) x)
+
+(define (h x) x)
+
+(define (f x y) (iadd x y))
+
+(define (test) (f (g 1) (h 2)))

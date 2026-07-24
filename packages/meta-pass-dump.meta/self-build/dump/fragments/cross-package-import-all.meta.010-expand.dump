@@ -1,0 +1,5 @@
+(module cross-package-import-all)
+
+(import-all meta-math/math)
+
+(define (example-square x) (square x))

@@ -161,62 +161,62 @@
       (name symbol-sexp)
       (accessor-names symbol-sexp-content symbol-sexp-location)
       (predicate-name symbol-sexp?))
-    ("self/010-my-list/li"
+    ("self/lambda/apply-exp"
       (pkg-name self)
-      (mod-name 010-my-list)
-      (type-name my-list-t)
-      (name li)
-      (accessor-names li-head li-tail)
-      (predicate-name li?))
-    ("self/010-my-list/nil"
-      (pkg-name self)
-      (mod-name 010-my-list)
-      (type-name my-list-t)
-      (name nil)
-      (accessor-names )
-      (predicate-name nil?))
-    ("self/010-pair/make-pair"
-      (pkg-name self)
-      (mod-name 010-pair)
-      (type-name pair-t)
-      (name make-pair)
-      (accessor-names pair-first pair-second)
-      (predicate-name pair?))
-    ("self/050-lambda/apply-exp"
-      (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (type-name exp-t)
       (name apply-exp)
       (accessor-names apply-exp-target apply-exp-arg)
       (predicate-name apply-exp?))
-    ("self/050-lambda/closure-value"
+    ("self/lambda/closure-value"
       (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (type-name value-t)
       (name closure-value)
       (accessor-names closure-value-env closure-value-parameter closure-value-body)
       (predicate-name closure-value?))
-    ("self/050-lambda/lambda-exp"
+    ("self/lambda/lambda-exp"
       (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (type-name exp-t)
       (name lambda-exp)
       (accessor-names lambda-exp-parameter lambda-exp-body)
       (predicate-name lambda-exp?))
-    ("self/050-lambda/let-exp"
+    ("self/lambda/let-exp"
       (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (type-name exp-t)
       (name let-exp)
       (accessor-names let-exp-name let-exp-rhs let-exp-body)
       (predicate-name let-exp?))
-    ("self/050-lambda/var-exp"
+    ("self/lambda/var-exp"
       (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (type-name exp-t)
       (name var-exp)
       (accessor-names var-exp-name)
-      (predicate-name var-exp?)))
+      (predicate-name var-exp?))
+    ("self/my-list/li"
+      (pkg-name self)
+      (mod-name my-list)
+      (type-name my-list-t)
+      (name li)
+      (accessor-names li-head li-tail)
+      (predicate-name li?))
+    ("self/my-list/nil"
+      (pkg-name self)
+      (mod-name my-list)
+      (type-name my-list-t)
+      (name nil)
+      (accessor-names )
+      (predicate-name nil?))
+    ("self/pair/make-pair"
+      (pkg-name self)
+      (mod-name pair)
+      (type-name pair-t)
+      (name make-pair)
+      (accessor-names pair-first pair-second)
+      (predicate-name pair?)))
   (algebraic-type-infos
     ("meta-builtin/builtin/cli-ctx-t"
       (pkg-name meta-builtin)
@@ -278,23 +278,23 @@
       (mod-name builtin)
       (name triple-t)
       (constructor-names make-triple))
-    ("self/010-my-list/my-list-t"
+    ("self/lambda/exp-t"
       (pkg-name self)
-      (mod-name 010-my-list)
-      (name my-list-t)
-      (constructor-names nil li))
-    ("self/010-pair/pair-t"
-      (pkg-name self)
-      (mod-name 010-pair)
-      (name pair-t)
-      (constructor-names make-pair))
-    ("self/050-lambda/exp-t"
-      (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (name exp-t)
       (constructor-names var-exp apply-exp lambda-exp let-exp))
-    ("self/050-lambda/value-t"
+    ("self/lambda/value-t"
       (pkg-name self)
-      (mod-name 050-lambda)
+      (mod-name lambda)
       (name value-t)
-      (constructor-names closure-value))))
+      (constructor-names closure-value))
+    ("self/my-list/my-list-t"
+      (pkg-name self)
+      (mod-name my-list)
+      (name my-list-t)
+      (constructor-names nil li))
+    ("self/pair/pair-t"
+      (pkg-name self)
+      (mod-name pair)
+      (name pair-t)
+      (constructor-names make-pair))))
