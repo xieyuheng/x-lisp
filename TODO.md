@@ -1,9 +1,3 @@
-# closure-pass
-
-[meta-runtime.c] simplify to `curry_t` to `closure_t`
-[meta-lisp.js] lift-lambda-pass to convert-closure-pass
-- or keep the pass name
-
 # limit-arity
 
 [meta-lisp.js] limit-arity-pass
