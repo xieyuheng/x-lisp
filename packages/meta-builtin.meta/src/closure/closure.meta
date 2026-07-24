@@ -1,0 +1,7 @@
+(module builtin)
+
+(exempt make-closure closure-put-arg! closure-arg)
+
+(declare-primitive-function make-closure 2)
+(declare-primitive-function closure-put-arg! 3)
+(declare-primitive-function closure-arg 2)

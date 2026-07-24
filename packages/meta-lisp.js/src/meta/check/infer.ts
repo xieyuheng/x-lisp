@@ -123,8 +123,9 @@ export function infer(
       }
 
       // handle auto-currying
-      if (M.isArrowType(targetInferred.type)) {
-        const arity = targetInferred.type.argTypes.length
+      const appliedType = M.typeFreshen(targetInferred.type)
+      if (M.isArrowType(appliedType)) {
+        const arity = appliedType.argTypes.length
         if (arity === term.args.length) {
           return M.Right(
             M.Inferred(

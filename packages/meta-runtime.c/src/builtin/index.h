@@ -19,4 +19,5 @@
 #include "json.h"
 #include "fs.h"
 #include "process.h"
+#include "closure.h"
 #include "import_builtin.h"

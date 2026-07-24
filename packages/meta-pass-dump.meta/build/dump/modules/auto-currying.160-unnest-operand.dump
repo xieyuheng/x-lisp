@@ -8,9 +8,14 @@
 (define (example-eta-expansion©λ2 curried.1)
   (meta-builtin/builtin/iadd 1 curried.1))
 
-(define (adder n) (self/auto-currying/adder©λ1 n))
+(define (adder n)
+  (= unnested.1
+     (meta-builtin/builtin/make-closure self/auto-currying/adder©λ1 1))
+  (meta-builtin/builtin/closure-put-arg! 0 n unnested.1))
 
-(define (adder©λ1 n x) (meta-builtin/builtin/iadd n x))
+(define (adder©λ1 ©closure x)
+  (= n (meta-builtin/builtin/closure-arg 0 ©closure))
+  (meta-builtin/builtin/iadd n x))
 
 (define (example-early-apply)
   (begin (= unnested.1 (self/auto-currying/adder 1)) (unnested.1 2))

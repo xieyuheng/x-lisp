@@ -2,65 +2,65 @@
   (fragment-scopes
     ("src/auto-currying.meta"
       (mod-name auto-currying)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/codegen.meta"
       (mod-name codegen)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/cross-module.meta"
       (mod-name cross-module)
-      (imported-names 622)
+      (imported-names 625)
       (imported-prefixes 0))
     ("src/cross-package-import-all.meta"
       (mod-name cross-package-import-all)
-      (imported-names 633)
+      (imported-names 636)
       (imported-prefixes 0))
     ("src/cross-package-import-as.meta"
       (mod-name cross-package-import-as)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 1))
     ("src/cross-package-import.meta"
       (mod-name cross-package-import)
-      (imported-names 622)
+      (imported-names 625)
       (imported-prefixes 0))
     ("src/desugar.meta"
       (mod-name desugar)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/explicate-control.meta"
       (mod-name explicate-control)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/function.meta"
       (mod-name function)
-      (imported-names 620)
+      (imported-names 623)
       (imported-prefixes 0))
     ("src/lambda.meta"
       (mod-name lambda)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/module-lib.meta"
       (mod-name module-lib)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/my-list.meta"
       (mod-name my-list)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/pair.meta"
       (mod-name pair)
-      (imported-names 614)
+      (imported-names 617)
       (imported-prefixes 0))
     ("src/type-annotations.meta"
       (mod-name type-annotations)
-      (imported-names 620)
+      (imported-names 623)
       (imported-prefixes 0))
     ("src/uniquify.meta"
       (mod-name uniquify)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))
     ("src/unnest.meta"
       (mod-name unnest)
-      (imported-names 621)
+      (imported-names 624)
       (imported-prefixes 0))))

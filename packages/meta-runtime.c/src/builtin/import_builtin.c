@@ -267,6 +267,12 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/fs-delete", x_fs_delete);
   define_primitive_2(mod, "meta-builtin/builtin/fs-rename", x_fs_rename);
 
+  // closure
+
+  define_primitive_2(mod, "meta-builtin/builtin/make-closure", x_make_closure);
+  define_primitive_3(mod, "meta-builtin/builtin/closure-put-arg!", x_closure_put_arg_mut);
+  define_primitive_2(mod, "meta-builtin/builtin/closure-arg", x_closure_arg);
+
   // process
 
   define_primitive_1(mod, "meta-builtin/builtin/exit", x_exit);

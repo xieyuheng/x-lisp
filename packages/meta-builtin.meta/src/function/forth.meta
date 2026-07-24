@@ -3,7 +3,9 @@
 (claim swap
   (polymorphic (A B C)
     (-> (-> A B C)
-        (-> B A C))))
+        B
+        A
+        C)))
 
 (define (swap f x y) (f y x))
 

@@ -60,7 +60,7 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration": {
       const type = M.modLookupClaimedType(mod, name)
-      if (!type) {
+      if (!type && !mod.exempted.has(name)) {
         const errorMessage = `unclaimed primitive definition: ${definition.name}`
         writeln(S.sourceLocationReport(definition.location, errorMessage))
         // Even for unclaimed primitive, it is not a CheckError:
@@ -180,7 +180,7 @@ function tryCheckDefinitionBody(
   name: string,
   exp: M.Term,
 ): M.Outcome {
-  if (mod.admitted.has(name)) {
+  if (mod.admitted.has(name) || mod.exempted.has(name)) {
     return tryInferDefinitionBody(mod, definition, name, exp)
   }
 

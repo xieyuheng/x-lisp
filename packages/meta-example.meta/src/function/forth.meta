@@ -2,13 +2,13 @@
 
 (claim swap
   (polymorphic (X Y Z)
-    (-> (-> Y X Z) (-> X Y Z))))
+    (-> (-> Y X Z) X Y Z)))
 
 (define (swap f x y) (f y x))
 
 (claim drop
   (polymorphic (X Y Z)
-    (-> (-> X Z) (-> Y X Z))))
+    (-> (-> X Z) Y X Z)))
 
 (define (drop f)
   (lambda (dropped)
@@ -17,7 +17,7 @@
 
 (claim dup
   (polymorphic (X Z)
-    (-> (-> X X Z) (-> X Z))))
+    (-> (-> X X Z) X Z)))
 
 (define (dup f)
   (lambda (x)

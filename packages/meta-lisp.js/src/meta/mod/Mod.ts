@@ -32,6 +32,7 @@ export type Mod = {
   name: string
   stmts: Array<M.Stmt<M.Exp>>
   admitted: Set<string>
+  exempted: Set<string>
   definitions: Map<string, M.Definition>
   definitionStates: Map<string, DefinitionState>
   claimed: Map<string, ClaimedEntry>
@@ -46,6 +47,7 @@ export function createMod(name: string, pkg: Pkg.Package): Mod {
     name,
     stmts: [],
     admitted: new Set(),
+    exempted: new Set(),
     definitions: new Map(),
     definitionStates: new Map(),
     claimed: new Map(),
@@ -109,6 +111,12 @@ export function modOutcome(mod: Mod, name: string): Outcome {
 
 export function modAdmit(mod: Mod, name: string): void {
   mod.admitted.add(name)
+}
+
+// Exempted
+
+export function modExempt(mod: Mod, name: string): void {
+  mod.exempted.add(name)
 }
 
 // Claimed

@@ -2,7 +2,7 @@
 
 (claim compose2
   (polymorphic (A B C)
-    (-> (-> B C) (-> A B) (-> A C))))
+    (-> (-> B C) (-> A B) A C)))
 
 (define (compose2 f g x) (f (g x)))
 

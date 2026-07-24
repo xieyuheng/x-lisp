@@ -23,7 +23,7 @@ function setupStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   switch (stmt.kind) {
     case "ExemptStmt": {
       for (const name of stmt.names) {
-        M.modAdmit(mod, name)
+        M.modExempt(mod, name)
       }
 
       return

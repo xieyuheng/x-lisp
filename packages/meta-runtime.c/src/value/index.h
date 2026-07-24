@@ -11,7 +11,7 @@
 #include "bool.h"
 #include "void.h"
 #include "object.h"
-#include "curry.h"
+#include "closure.h"
 #include "xstring.h"
 #include "xhash.h"
 #include "xset.h"
