@@ -117,51 +117,22 @@ export function infer(
     }
 
     case "LambdaTerm": {
-      if (term.parameters.length === 0) {
-        const retType = M.createFreshVarType("R")
-        const type = M.ArrowType([], retType)
-        const bodyResult = M.check(mod, ctx, term.body, retType)
-        if (M.isLeft(bodyResult)) return bodyResult
-        return M.Right(
-          M.Inferred(C.LambdaTerm([], bodyResult.right, term.location), type),
-        )
-      } else if (term.parameters.length === 1) {
-        const argType = M.createFreshVarType("A")
-        const retType = M.createFreshVarType("R")
-        const type = M.ArrowType([argType], retType)
-        const [parameter] = term.parameters
-        const bodyResult = M.check(
-          mod,
-          M.ctxPut(ctx, parameter, argType),
-          term.body,
-          retType,
-        )
-        if (M.isLeft(bodyResult)) return bodyResult
-        return M.Right(
-          M.Inferred(
-            C.LambdaTerm([parameter], bodyResult.right, term.location),
-            type,
-          ),
-        )
-      } else {
-        const argType = M.createFreshVarType("A")
-        const retType = M.createFreshVarType("R")
-        const type = M.ArrowType([argType], retType)
-        const [parameter, ...restParameters] = term.parameters
-        const bodyResult = M.check(
-          mod,
-          M.ctxPut(ctx, parameter, argType),
-          M.LambdaTerm(restParameters, term.body, term.location),
-          retType,
-        )
-        if (M.isLeft(bodyResult)) return bodyResult
-        return M.Right(
-          M.Inferred(
-            C.LambdaTerm([parameter], bodyResult.right, term.location),
-            type,
-          ),
-        )
-      }
+      const argTypes = term.parameters.map((_) => M.createFreshVarType("A"))
+      const retType = M.createFreshVarType("R")
+      const type = M.ArrowType(argTypes, retType)
+      const bodyResult = M.check(
+        mod,
+        M.ctxPutMany(ctx, term.parameters, argTypes),
+        term.body,
+        retType,
+      )
+      if (M.isLeft(bodyResult)) return bodyResult
+      return M.Right(
+        M.Inferred(
+          C.LambdaTerm(term.parameters, bodyResult.right, term.location),
+          type,
+        ),
+      )
     }
 
     case "TheTerm": {
