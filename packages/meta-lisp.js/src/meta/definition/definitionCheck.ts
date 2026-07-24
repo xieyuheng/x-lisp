@@ -91,10 +91,10 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
         definition.parameters.length === 0
           ? definition.body
           : M.LambdaTerm(
-              definition.parameters,
-              definition.body,
-              definition.location,
-            )
+            definition.parameters,
+            definition.body,
+            definition.location,
+          )
       const outcome = tryCheckDefinitionBody(mod, definition, name, body)
       M.modMarkChecked(mod, name)
       if (outcome === "OutcomeError")
@@ -263,7 +263,7 @@ function storeCoreTerm(
       }
       let n = definition.parameters.length
       if (n === 0) n = 1
-      let body = core
+      let body: C.Term = core
       for (let i = 0; i < n; i++) {
         if (body.kind !== "LambdaTerm") break
         body = body.body
@@ -275,7 +275,7 @@ function storeCoreTerm(
       if (core.kind === "LambdaTerm") {
         let n = definition.parameters.length
         if (n === 0) n = 1
-        let body = core
+        let body: C.Term = core
         for (let i = 0; i < n; i++) {
           if (body.kind !== "LambdaTerm") break
           body = body.body

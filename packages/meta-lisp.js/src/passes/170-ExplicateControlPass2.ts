@@ -322,7 +322,7 @@ function explicateUnnestedTerm(
       }
 
       let message = `[explicateUnnestedTerm] unhandled definition`
-      throw new S.ErrorWithSourceLocation(message, definition.location)
+      throw new Error(message)
     }
 
     case "ApplyTerm": {
