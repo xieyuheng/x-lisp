@@ -2289,7 +2289,7 @@
     (= address.7 (address :name meta-builtin/builtin/make-box))
     (= value.7 (call address.7))
     (= loop (copy value.7))
-    (= fn.1 (function-value :name meta-builtin/builtin/cli-route-match©λ1 :arity 6))
+    (= fn.1 (function-value :name meta-builtin/builtin/cli-route-match©λ1 :arity 2))
     (= value.6 (apply fn.1 loop))
     (= unnested.1 (copy value.6))
     (= address.6 (address :name meta-builtin/builtin/box-put!))
@@ -2313,9 +2313,41 @@
   (block body
     (= loop (argument :index 0))
     (= tokens (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/cli-route-match©λ1©λ1 :arity 3))
+    (tail-apply fn.1 tokens loop)))
+(define-function meta-builtin/builtin/cli-route-match©λ1©λ1
+  (block body
+    (= tokens (argument :index 0))
+    (= loop (argument :index 1))
     (= args (argument :index 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/cli-route-match©λ1©λ1©λ1 :arity 4))
+    (tail-apply fn.1 args tokens loop)))
+(define-function meta-builtin/builtin/cli-route-match©λ1©λ1©λ1
+  (block body
+    (= args (argument :index 0))
+    (= tokens (argument :index 1))
+    (= loop (argument :index 2))
     (= options (argument :index 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/cli-route-match©λ1©λ1©λ1©λ1 :arity 5))
+    (tail-apply fn.1 options args tokens loop)))
+(define-function
+    meta-builtin/builtin/cli-route-match©λ1©λ1©λ1©λ1
+  (block body
+    (= options (argument :index 0))
+    (= args (argument :index 1))
+    (= tokens (argument :index 2))
+    (= loop (argument :index 3))
     (= passthrough (argument :index 4))
+    (= fn.1 (function-value :name meta-builtin/builtin/cli-route-match©λ1©λ1©λ1©λ1©λ1 :arity 6))
+    (tail-apply fn.1 passthrough options args tokens loop)))
+(define-function
+    meta-builtin/builtin/cli-route-match©λ1©λ1©λ1©λ1©λ1
+  (block body
+    (= passthrough (argument :index 0))
+    (= options (argument :index 1))
+    (= args (argument :index 2))
+    (= tokens (argument :index 3))
+    (= loop (argument :index 4))
     (= in-passthrough? (argument :index 5))
     (= address.47 (address :name meta-builtin/builtin/list-empty?))
     (= value.37 (call address.47 tokens))
@@ -3267,9 +3299,14 @@
     (= int.2 (tag-int i64.2))
     (= value.1 (call address.2 int.1 int.2 hash))
     (= address.1 (address :name meta-builtin/builtin/for-hash))
-    (= fn.1 (function-value :name meta-builtin/builtin/for-hash-test©λ1 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/for-hash-test©λ1 :arity 1))
     (tail-call address.1 hash fn.1)))
 (define-function meta-builtin/builtin/for-hash-test©λ1
+  (block body
+    (= key (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/for-hash-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 key)))
+(define-function meta-builtin/builtin/for-hash-test©λ1©λ1
   (block body
     (= key (argument :index 0))
     (= value (argument :index 1))
@@ -3298,9 +3335,14 @@
     (= symbol.1 (symbol-value :content c))
     (= value.1 (call address.2 symbol.1 list))
     (= address.1 (address :name meta-builtin/builtin/for-list-index))
-    (= fn.1 (function-value :name meta-builtin/builtin/for-list-index-test©λ1 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/for-list-index-test©λ1 :arity 1))
     (tail-call address.1 list fn.1)))
 (define-function meta-builtin/builtin/for-list-index-test©λ1
+  (block body
+    (= i (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/for-list-index-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 i)))
+(define-function meta-builtin/builtin/for-list-index-test©λ1©λ1
   (block body
     (= i (argument :index 0))
     (= x (argument :index 1))
@@ -3949,13 +3991,18 @@
 (define-function meta-builtin/builtin/drop
   (block body
     (= f (argument :index 0))
-    (= fn.1 (function-value :name meta-builtin/builtin/drop©λ1 :arity 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/drop©λ1 :arity 2))
     (tail-apply fn.1 f)))
 (define-function meta-builtin/builtin/drop©λ1
   (block body
     (= f (argument :index 0))
     (= dropped (argument :index 1))
-    (= x (argument :index 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/drop©λ1©λ1 :arity 2))
+    (tail-apply fn.1 f)))
+(define-function meta-builtin/builtin/drop©λ1©λ1
+  (block body
+    (= f (argument :index 0))
+    (= x (argument :index 1))
     (tail-apply f x)))
 (define-function meta-builtin/builtin/dup
   (block body
@@ -4364,13 +4411,19 @@
     (= address.2 (address :name meta-builtin/builtin/hash-copy))
     (= value.3 (call address.2 hash))
     (= new-hash (copy value.3))
-    (= fn.1 (function-value :name meta-builtin/builtin/hash-append©λ1 :arity 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-append©λ1 :arity 2))
     (= value.2 (apply fn.1 new-hash))
     (= unnested.1 (copy value.2))
     (= address.1 (address :name meta-builtin/builtin/hash-each))
     (= value.1 (call address.1 unnested.1 rest))
     (return new-hash)))
 (define-function meta-builtin/builtin/hash-append©λ1
+  (block body
+    (= new-hash (argument :index 0))
+    (= key (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-append©λ1©λ1 :arity 3))
+    (tail-apply fn.1 new-hash key)))
+(define-function meta-builtin/builtin/hash-append©λ1©λ1
   (block body
     (= new-hash (argument :index 0))
     (= key (argument :index 1))
@@ -4657,9 +4710,14 @@
     (= int.2 (tag-int i64.2))
     (= value.1 (call address.2 int.1 int.2 hash))
     (= address.1 (address :name meta-builtin/builtin/hash-each))
-    (= fn.1 (function-value :name meta-builtin/builtin/hash-each-test©λ1 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-each-test©λ1 :arity 1))
     (tail-call address.1 fn.1 hash)))
 (define-function meta-builtin/builtin/hash-each-test©λ1
+  (block body
+    (= key (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-each-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 key)))
+(define-function meta-builtin/builtin/hash-each-test©λ1©λ1
   (block body
     (= key (argument :index 0))
     (= value (argument :index 1))
@@ -4946,9 +5004,14 @@
   (block body
     (= hash (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/hash-map))
-    (= fn.1 (function-value :name meta-builtin/builtin/hash-invert©λ1 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-invert©λ1 :arity 1))
     (tail-call address.1 fn.1 hash)))
 (define-function meta-builtin/builtin/hash-invert©λ1
+  (block body
+    (= k (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-invert©λ1©λ1 :arity 2))
+    (tail-apply fn.1 k)))
+(define-function meta-builtin/builtin/hash-invert©λ1©λ1
   (block body
     (= k (argument :index 0))
     (= v (argument :index 1))
@@ -5487,7 +5550,7 @@
     (= int.8 (tag-int i64.8))
     (= value.6 (call address.7 int.7 int.8 hash.1))
     (= address.6 (address :name meta-builtin/builtin/hash-map))
-    (= fn.1 (function-value :name meta-builtin/builtin/hash-map-test©λ1 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-map-test©λ1 :arity 1))
     (= value.5 (call address.6 fn.1 hash.1))
     (= unnested.1 (copy value.5))
     (= address.5 (address :name meta-builtin/builtin/make-source-position))
@@ -5518,6 +5581,11 @@
     (= address.1 (address :name meta-builtin/builtin/assert-equal-with-location))
     (tail-call address.1 hash unnested.1 unnested.5)))
 (define-function meta-builtin/builtin/hash-map-test©λ1
+  (block body
+    (= key (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-map-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 key)))
+(define-function meta-builtin/builtin/hash-map-test©λ1©λ1
   (block body
     (= key (argument :index 0))
     (= value (argument :index 1))
@@ -5836,7 +5904,7 @@
   (block body
     (= p (argument :index 0))
     (= hash (argument :index 1))
-    (= fn.1 (function-value :name meta-builtin/builtin/hash-reject©λ1 :arity 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-reject©λ1 :arity 2))
     (= value.1 (apply fn.1 p))
     (= unnested.1 (copy value.1))
     (= address.1 (address :name meta-builtin/builtin/hash-select))
@@ -5845,6 +5913,12 @@
   (block body
     (= p (argument :index 0))
     (= key (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/hash-reject©λ1©λ1 :arity 3))
+    (tail-apply fn.1 key p)))
+(define-function meta-builtin/builtin/hash-reject©λ1©λ1
+  (block body
+    (= key (argument :index 0))
+    (= p (argument :index 1))
     (= value (argument :index 2))
     (= value.1 (apply p key value))
     (= unnested.1 (copy value.1))
@@ -8165,7 +8239,7 @@
     (= value.18 (call address.18))
     (= list (copy value.18))
     (= results (copy list))
-    (= fn.1 (function-value :name meta-builtin/builtin/list-each-index-test©λ1 :arity 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-each-index-test©λ1 :arity 2))
     (= value.17 (apply fn.1 results))
     (= unnested.1 (copy value.17))
     (= address.17 (address :name meta-builtin/builtin/make-list))
@@ -8237,6 +8311,12 @@
     (= address.1 (address :name meta-builtin/builtin/assert-equal-with-location))
     (tail-call address.1 results list.2 unnested.8)))
 (define-function meta-builtin/builtin/list-each-index-test©λ1
+  (block body
+    (= results (argument :index 0))
+    (= i (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-each-index-test©λ1©λ1 :arity 3))
+    (tail-apply fn.1 results i)))
+(define-function meta-builtin/builtin/list-each-index-test©λ1©λ1
   (block body
     (= results (argument :index 0))
     (= i (argument :index 1))
@@ -9098,7 +9178,7 @@
     (= int.34 (tag-int i64.34))
     (= value.48 (call address.49 int.34 list.2))
     (= address.48 (address :name meta-builtin/builtin/list-flat-map-index))
-    (= fn.4 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ1 :arity 2))
+    (= fn.4 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ1 :arity 1))
     (= value.47 (call address.48 fn.4 list.2))
     (= unnested.1 (copy value.47))
     (= address.47 (address :name meta-builtin/builtin/make-source-position))
@@ -9192,7 +9272,7 @@
     (= symbol.1 (symbol-value :content c))
     (= value.25 (call address.26 symbol.1 list.5))
     (= address.25 (address :name meta-builtin/builtin/list-flat-map-index))
-    (= fn.3 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ2 :arity 2))
+    (= fn.3 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ2 :arity 1))
     (= value.24 (call address.25 fn.3 list.5))
     (= unnested.12 (copy value.24))
     (= address.24 (address :name meta-builtin/builtin/make-source-position))
@@ -9241,7 +9321,7 @@
     (= int.13 (tag-int i64.13))
     (= value.14 (call address.15 int.13 list.8))
     (= address.14 (address :name meta-builtin/builtin/list-flat-map-index))
-    (= fn.2 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ3 :arity 2))
+    (= fn.2 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ3 :arity 1))
     (= value.13 (call address.14 fn.2 list.8))
     (= unnested.17 (copy value.13))
     (= address.13 (address :name meta-builtin/builtin/make-source-position))
@@ -9278,7 +9358,7 @@
     (= value.6 (call address.7))
     (= list.11 (copy value.6))
     (= address.6 (address :name meta-builtin/builtin/list-flat-map-index))
-    (= fn.1 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ4 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ4 :arity 1))
     (= value.5 (call address.6 fn.1 list.11))
     (= unnested.22 (copy value.5))
     (= address.5 (address :name meta-builtin/builtin/make-source-position))
@@ -9312,6 +9392,12 @@
     meta-builtin/builtin/list-flat-map-index-test©λ1
   (block body
     (= i (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 i)))
+(define-function
+    meta-builtin/builtin/list-flat-map-index-test©λ1©λ1
+  (block body
+    (= i (argument :index 0))
     (= x (argument :index 1))
     (= address.3 (address :name meta-builtin/builtin/make-list))
     (= value.3 (call address.3))
@@ -9323,6 +9409,12 @@
     (return list.1)))
 (define-function
     meta-builtin/builtin/list-flat-map-index-test©λ2
+  (block body
+    (= i.1 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ2©λ1 :arity 2))
+    (tail-apply fn.1 i.1)))
+(define-function
+    meta-builtin/builtin/list-flat-map-index-test©λ2©λ1
   (block body
     (= i.1 (argument :index 0))
     (= x.1 (argument :index 1))
@@ -9344,13 +9436,24 @@
     meta-builtin/builtin/list-flat-map-index-test©λ3
   (block body
     (= i.2 (argument :index 0))
-    (= x.2 (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ3©λ1 :arity 1))
+    (return fn.1)))
+(define-function
+    meta-builtin/builtin/list-flat-map-index-test©λ3©λ1
+  (block body
+    (= x.2 (argument :index 0))
     (= address.1 (address :name meta-builtin/builtin/make-list))
     (= value.1 (call address.1))
     (= list.7 (copy value.1))
     (return list.7)))
 (define-function
     meta-builtin/builtin/list-flat-map-index-test©λ4
+  (block body
+    (= i.3 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-flat-map-index-test©λ4©λ1 :arity 2))
+    (tail-apply fn.1 i.3)))
+(define-function
+    meta-builtin/builtin/list-flat-map-index-test©λ4©λ1
   (block body
     (= i.3 (argument :index 0))
     (= x.3 (argument :index 1))
@@ -9656,7 +9759,7 @@
     (= int.26 (tag-int i64.26))
     (= value.28 (call address.29 int.26 list))
     (= address.28 (address :name meta-builtin/builtin/list-fold-left-index))
-    (= fn.3 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ1 :arity 3))
+    (= fn.3 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ1 :arity 1))
     (= i64.25 (int64 :content 0))
     (= int.25 (tag-int i64.25))
     (= value.27 (call address.28 fn.3 int.25 list))
@@ -9706,7 +9809,7 @@
     (= symbol.1 (symbol-value :content c))
     (= value.17 (call address.18 symbol.1 list.2))
     (= address.17 (address :name meta-builtin/builtin/list-fold-left-index))
-    (= fn.2 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ2 :arity 3))
+    (= fn.2 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ2 :arity 1))
     (= value.16 (call address.17 fn.2 list.1 list.2))
     (= unnested.6 (copy value.16))
     (= address.16 (address :name meta-builtin/builtin/make-list))
@@ -9755,7 +9858,7 @@
     (= value.6 (call address.7))
     (= list.4 (copy value.6))
     (= address.6 (address :name meta-builtin/builtin/list-fold-left-index))
-    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ3 :arity 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ3 :arity 1))
     (= i64.8 (int64 :content 0))
     (= int.8 (tag-int i64.8))
     (= value.5 (call address.6 fn.1 int.8 list.4))
@@ -9793,6 +9896,19 @@
     meta-builtin/builtin/list-fold-left-index-test©λ1
   (block body
     (= i (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 i)))
+(define-function
+    meta-builtin/builtin/list-fold-left-index-test©λ1©λ1
+  (block body
+    (= i (argument :index 0))
+    (= folded (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ1©λ1©λ1 :arity 3))
+    (tail-apply fn.1 i folded)))
+(define-function
+    meta-builtin/builtin/list-fold-left-index-test©λ1©λ1©λ1
+  (block body
+    (= i (argument :index 0))
     (= folded (argument :index 1))
     (= x (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/imul))
@@ -9804,7 +9920,20 @@
     meta-builtin/builtin/list-fold-left-index-test©λ2
   (block body
     (= i.1 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ2©λ1 :arity 2))
+    (tail-apply fn.1 i.1)))
+(define-function
+    meta-builtin/builtin/list-fold-left-index-test©λ2©λ1
+  (block body
+    (= i.1 (argument :index 0))
     (= folded.1 (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ2©λ1©λ1 :arity 3))
+    (tail-apply fn.1 folded.1 i.1)))
+(define-function
+    meta-builtin/builtin/list-fold-left-index-test©λ2©λ1©λ1
+  (block body
+    (= folded.1 (argument :index 0))
+    (= i.1 (argument :index 1))
     (= _ (argument :index 2))
     (= address.1 (address :name meta-builtin/builtin/cons))
     (tail-call address.1 i.1 folded.1)))
@@ -9812,8 +9941,19 @@
     meta-builtin/builtin/list-fold-left-index-test©λ3
   (block body
     (= i.2 (argument :index 0))
-    (= folded.2 (argument :index 1))
-    (= x.1 (argument :index 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ3©λ1 :arity 1))
+    (return fn.1)))
+(define-function
+    meta-builtin/builtin/list-fold-left-index-test©λ3©λ1
+  (block body
+    (= folded.2 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-left-index-test©λ3©λ1©λ1 :arity 2))
+    (tail-apply fn.1 folded.2)))
+(define-function
+    meta-builtin/builtin/list-fold-left-index-test©λ3©λ1©λ1
+  (block body
+    (= folded.2 (argument :index 0))
+    (= x.1 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 folded.2 x.1)))
 (define-function meta-builtin/builtin/list-fold-left
@@ -10030,7 +10170,7 @@
     (= symbol.4 (symbol-value :content c))
     (= value.30 (call address.31 symbol.4 list.1))
     (= address.30 (address :name meta-builtin/builtin/list-fold-right-index))
-    (= fn.3 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ1 :arity 3))
+    (= fn.3 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ1 :arity 1))
     (= value.29 (call address.30 fn.3 list list.1))
     (= unnested.1 (copy value.29))
     (= address.29 (address :name meta-builtin/builtin/make-list))
@@ -10103,7 +10243,7 @@
     (= int.17 (tag-int i64.17))
     (= value.13 (call address.14 int.17 list.3))
     (= address.13 (address :name meta-builtin/builtin/list-fold-right-index))
-    (= fn.2 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ2 :arity 3))
+    (= fn.2 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ2 :arity 1))
     (= i64.16 (int64 :content 0))
     (= int.16 (tag-int i64.16))
     (= value.12 (call address.13 fn.2 int.16 list.3))
@@ -10141,7 +10281,7 @@
     (= value.6 (call address.7))
     (= list.4 (copy value.6))
     (= address.6 (address :name meta-builtin/builtin/list-fold-right-index))
-    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ3 :arity 3))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ3 :arity 1))
     (= i64.8 (int64 :content 0))
     (= int.8 (tag-int i64.8))
     (= value.5 (call address.6 fn.1 int.8 list.4))
@@ -10179,7 +10319,20 @@
     meta-builtin/builtin/list-fold-right-index-test©λ1
   (block body
     (= i (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 i)))
+(define-function
+    meta-builtin/builtin/list-fold-right-index-test©λ1©λ1
+  (block body
+    (= i (argument :index 0))
     (= x (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ1©λ1©λ1 :arity 3))
+    (tail-apply fn.1 x i)))
+(define-function
+    meta-builtin/builtin/list-fold-right-index-test©λ1©λ1©λ1
+  (block body
+    (= x (argument :index 0))
+    (= i (argument :index 1))
     (= folded (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/make-pair))
     (= value.1 (call address.2 i x))
@@ -10190,7 +10343,20 @@
     meta-builtin/builtin/list-fold-right-index-test©λ2
   (block body
     (= i.1 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ2©λ1 :arity 2))
+    (tail-apply fn.1 i.1)))
+(define-function
+    meta-builtin/builtin/list-fold-right-index-test©λ2©λ1
+  (block body
+    (= i.1 (argument :index 0))
     (= x.1 (argument :index 1))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ2©λ1©λ1 :arity 3))
+    (tail-apply fn.1 x.1 i.1)))
+(define-function
+    meta-builtin/builtin/list-fold-right-index-test©λ2©λ1©λ1
+  (block body
+    (= x.1 (argument :index 0))
+    (= i.1 (argument :index 1))
     (= folded.1 (argument :index 2))
     (= address.2 (address :name meta-builtin/builtin/imul))
     (= value.1 (call address.2 i.1 x.1))
@@ -10201,8 +10367,19 @@
     meta-builtin/builtin/list-fold-right-index-test©λ3
   (block body
     (= i.2 (argument :index 0))
-    (= x.2 (argument :index 1))
-    (= folded.2 (argument :index 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ3©λ1 :arity 1))
+    (return fn.1)))
+(define-function
+    meta-builtin/builtin/list-fold-right-index-test©λ3©λ1
+  (block body
+    (= x.2 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-fold-right-index-test©λ3©λ1©λ1 :arity 2))
+    (tail-apply fn.1 x.2)))
+(define-function
+    meta-builtin/builtin/list-fold-right-index-test©λ3©λ1©λ1
+  (block body
+    (= x.2 (argument :index 0))
+    (= folded.2 (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 x.2 folded.2)))
 (define-function meta-builtin/builtin/list-fold-right
@@ -10597,7 +10774,7 @@
     (= int.25 (tag-int i64.25))
     (= value.32 (call address.33 int.25 list))
     (= address.32 (address :name meta-builtin/builtin/list-map-index))
-    (= fn.3 (function-value :name meta-builtin/builtin/list-map-index-test©λ1 :arity 2))
+    (= fn.3 (function-value :name meta-builtin/builtin/list-map-index-test©λ1 :arity 1))
     (= value.31 (call address.32 fn.3 list))
     (= unnested.1 (copy value.31))
     (= address.31 (address :name meta-builtin/builtin/make-list))
@@ -10655,7 +10832,7 @@
     (= symbol.1 (symbol-value :content c))
     (= value.18 (call address.19 symbol.1 list.2))
     (= address.18 (address :name meta-builtin/builtin/list-map-index))
-    (= fn.2 (function-value :name meta-builtin/builtin/list-map-index-test©λ2 :arity 2))
+    (= fn.2 (function-value :name meta-builtin/builtin/list-map-index-test©λ2 :arity 1))
     (= value.17 (call address.18 fn.2 list.2))
     (= unnested.6 (copy value.17))
     (= address.17 (address :name meta-builtin/builtin/make-list))
@@ -10704,7 +10881,7 @@
     (= value.7 (call address.8))
     (= list.4 (copy value.7))
     (= address.7 (address :name meta-builtin/builtin/list-map-index))
-    (= fn.1 (function-value :name meta-builtin/builtin/list-map-index-test©λ3 :arity 2))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-map-index-test©λ3 :arity 1))
     (= value.6 (call address.7 fn.1 list.4))
     (= unnested.11 (copy value.6))
     (= address.6 (address :name meta-builtin/builtin/make-list))
@@ -10740,15 +10917,30 @@
 (define-function meta-builtin/builtin/list-map-index-test©λ1
   (block body
     (= i (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-map-index-test©λ1©λ1 :arity 2))
+    (tail-apply fn.1 i)))
+(define-function meta-builtin/builtin/list-map-index-test©λ1©λ1
+  (block body
+    (= i (argument :index 0))
     (= x (argument :index 1))
     (= address.1 (address :name meta-builtin/builtin/iadd))
     (tail-call address.1 i x)))
 (define-function meta-builtin/builtin/list-map-index-test©λ2
   (block body
     (= i.1 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-map-index-test©λ2©λ1 :arity 2))
+    (tail-apply fn.1 i.1)))
+(define-function meta-builtin/builtin/list-map-index-test©λ2©λ1
+  (block body
+    (= i.1 (argument :index 0))
     (= _ (argument :index 1))
     (return i.1)))
 (define-function meta-builtin/builtin/list-map-index-test©λ3
+  (block body
+    (= i.2 (argument :index 0))
+    (= fn.1 (function-value :name meta-builtin/builtin/list-map-index-test©λ3©λ1 :arity 2))
+    (tail-apply fn.1 i.2)))
+(define-function meta-builtin/builtin/list-map-index-test©λ3©λ1
   (block body
     (= i.2 (argument :index 0))
     (= x.1 (argument :index 1))

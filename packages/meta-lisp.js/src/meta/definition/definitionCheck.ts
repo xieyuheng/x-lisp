@@ -1,6 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
 import { writeln } from "@xieyuheng/std.js/file"
-import * as C from "../../core/index.ts"
 import * as M from "../index.ts"
 
 // definitionCheck is the single point where a definition's types are checked.
@@ -151,7 +150,7 @@ function tryCheckTerm(
   ctx: M.Ctx,
   exp: M.Term,
   type: M.Type,
-): C.Term | null {
+): M.Term | null {
   const result = M.checkAssignable(mod, ctx, exp, type)
   if (M.isLeft(result)) {
     writeln(
@@ -166,7 +165,7 @@ function tryCheckTypeTerm(
   mod: M.Mod,
   exp: M.Term,
   typeParameters: Array<string>,
-): C.Term | null {
+): M.Term | null {
   let ctx = M.emptyCtx()
   for (const name of typeParameters) {
     ctx = M.ctxPut(ctx, name, M.TypeType())
@@ -202,7 +201,7 @@ function tryCheckDefinitionBody(
       ctx.transparentOpaqueNames = opaqueNames
       const core = tryCheckTerm(mod, ctx, exp, transparentType)
       if (!core) return "OutcomeError"
-      storeCoreTerm(mod, definition, core)
+      storeTerm(definition, core)
       return "OutcomeOk"
     }
   }
@@ -212,7 +211,7 @@ function tryCheckDefinitionBody(
     const ctx = M.emptyCtx()
     const core = tryCheckTerm(mod, ctx, exp, type)
     if (!core) return "OutcomeError"
-    storeCoreTerm(mod, definition, core)
+    storeTerm(definition, core)
     return "OutcomeOk"
   }
 
@@ -240,8 +239,8 @@ function tryInferDefinitionBody(
     )
     return "OutcomeError"
   } else {
-    const core = C.termSubstDeepWalk(M.ctxSubst(ctx), result.right.core)
-    storeCoreTerm(mod, definition, core)
+    const core = result.right.core
+    storeTerm(definition, core)
     let inferredType = M.substDeepWalk(M.ctxSubst(ctx), result.right.type)
     inferredType = M.generalizeInCtx(M.emptyCtx(), inferredType)
     M.modPutInferredType(mod, name, inferredType)
@@ -249,19 +248,22 @@ function tryInferDefinitionBody(
   }
 }
 
-function storeCoreTerm(
-  mod: M.Mod,
-  definition: M.Definition,
-  core: C.Term,
-): void {
+function storeTerm(definition: M.Definition, core: M.Term): void {
   switch (definition.kind) {
     case "FunctionDefinition": {
       if (core.kind !== "LambdaTerm") {
         throw new Error(
-          `[storeCoreTerm] expected LambdaTerm for FunctionDefinition`,
+          `[storeTerm] expected LambdaTerm for FunctionDefinition`,
         )
       }
-      M.modPutCoreTerm(mod, definition.name, core.body)
+      let n = definition.parameters.length
+      if (n === 0) n = 1
+      let body = core
+      for (let i = 0; i < n; i++) {
+        if (body.kind !== "LambdaTerm") break
+        body = body.body
+      }
+      definition.body = body
       return
     }
     case "TypeDefinition": {
@@ -269,20 +271,27 @@ function storeCoreTerm(
       //   so core is a LambdaTerm; unwrap to get the inner body.
       //   When parameters.length === 0, core is the inner body directly.
       if (core.kind === "LambdaTerm") {
-        M.modPutCoreTerm(mod, definition.name, core.body)
+        let n = definition.parameters.length
+        if (n === 0) n = 1
+        let body = core
+        for (let i = 0; i < n; i++) {
+          if (body.kind !== "LambdaTerm") break
+          body = body.body
+        }
+        definition.body = body
       } else {
-        M.modPutCoreTerm(mod, definition.name, core)
+        definition.body = core
       }
       return
     }
     case "VariableDefinition":
     case "TestDefinition": {
-      M.modPutCoreTerm(mod, definition.name, core)
+      definition.body = core
       return
     }
     default: {
       throw new Error(
-        `[storeCoreTerm] unexpected definition kind: ${definition.kind}`,
+        `[storeTerm] unexpected definition kind: ${definition.kind}`,
       )
     }
   }

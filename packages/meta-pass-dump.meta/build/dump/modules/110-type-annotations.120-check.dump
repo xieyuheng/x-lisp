@@ -12,4 +12,4 @@
 
 (claim answer int-t)
 
-(define answer (the meta-builtin/builtin/int-t 42))
+(define answer 42)

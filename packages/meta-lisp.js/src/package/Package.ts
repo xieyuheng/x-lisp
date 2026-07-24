@@ -1,5 +1,4 @@
 import Path from "node:path"
-import type { Mod as CoreMod } from "../core/index.ts"
 import * as M from "../meta/index.ts"
 import { type PackageConfig } from "./PackageConfig.ts"
 
@@ -9,7 +8,6 @@ export type Package = {
   config: PackageConfig
   fragments: Map<string, M.Fragment>
   mods: Map<string, M.Mod>
-  coreMods: Map<string, CoreMod>
   dependencies: Map<string, Package>
 }
 
@@ -24,7 +22,6 @@ export function createPackage(
     config,
     fragments: new Map(),
     mods: new Map(),
-    coreMods: new Map(),
     dependencies: new Map(),
   }
 }
