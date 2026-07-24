@@ -88,12 +88,12 @@ export function infer(
       const argTypes = exp.args.map((_) => M.createFreshVarType("A"))
       const retType = M.createFreshVarType("R")
       const arrowType = M.ArrowType(argTypes, retType)
-      const targetResult = M.checkByInfer(mod, ctx, exp.target, arrowType)
+      const targetResult = M.check(mod, ctx, exp.target, arrowType)
       if (M.isLeft(targetResult)) return targetResult
       const targetCore = targetResult.right
       const argCores: Array<C.Term> = []
       for (const [arg, argType] of arrayZip(exp.args, argTypes)) {
-        const argResult = M.checkByInfer(mod, ctx, arg, argType)
+        const argResult = M.check(mod, ctx, arg, argType)
         if (M.isLeft(argResult)) return argResult
         argCores.push(argResult.right)
       }
@@ -107,7 +107,7 @@ export function infer(
       if (exp.parameters.length === 0) {
         const retType = M.createFreshVarType("R")
         const type = M.ArrowType([], retType)
-        const bodyResult = M.checkByInfer(mod, ctx, exp.body, retType)
+        const bodyResult = M.check(mod, ctx, exp.body, retType)
         if (M.isLeft(bodyResult)) return bodyResult
         return M.Right(
           M.Inferred(C.LambdaTerm([], bodyResult.right, exp.location), type),
@@ -117,7 +117,7 @@ export function infer(
         const retType = M.createFreshVarType("R")
         const type = M.ArrowType([argType], retType)
         const [parameter] = exp.parameters
-        const bodyResult = M.checkByInfer(
+        const bodyResult = M.check(
           mod,
           M.ctxPut(ctx, parameter, argType),
           exp.body,
@@ -135,7 +135,7 @@ export function infer(
         const retType = M.createFreshVarType("R")
         const type = M.ArrowType([argType], retType)
         const [parameter, ...restParameters] = exp.parameters
-        const bodyResult = M.checkByInfer(
+        const bodyResult = M.check(
           mod,
           M.ctxPut(ctx, parameter, argType),
           M.LambdaTerm(restParameters, exp.body, exp.location),
@@ -160,16 +160,16 @@ export function infer(
 
     case "IfTerm": {
       const type = M.createFreshVarType("X")
-      const conditionResult = M.checkByInfer(
+      const conditionResult = M.check(
         mod,
         ctx,
         exp.condition,
         M.AtomType("bool"),
       )
       if (M.isLeft(conditionResult)) return conditionResult
-      const consequentResult = M.checkByInfer(mod, ctx, exp.consequent, type)
+      const consequentResult = M.check(mod, ctx, exp.consequent, type)
       if (M.isLeft(consequentResult)) return consequentResult
-      const alternativeResult = M.checkByInfer(mod, ctx, exp.alternative, type)
+      const alternativeResult = M.check(mod, ctx, exp.alternative, type)
       if (M.isLeft(alternativeResult)) return alternativeResult
       return M.Right({
         type,
@@ -229,10 +229,10 @@ export function infer(
     case "ArrowTerm": {
       const type = M.TypeType()
       for (const argType of exp.argTypes) {
-        const result = M.checkByInfer(mod, ctx, argType, type)
+        const result = M.check(mod, ctx, argType, type)
         if (M.isLeft(result)) return result
       }
-      const retResult = M.checkByInfer(mod, ctx, exp.retType, type)
+      const retResult = M.check(mod, ctx, exp.retType, type)
       if (M.isLeft(retResult)) return retResult
       return M.Right(M.Inferred(retResult.right, type))
     }
@@ -244,7 +244,7 @@ export function infer(
         exp.parameters,
         exp.parameters.map(() => type),
       )
-      const bodyResult = M.checkByInfer(mod, ctx, exp.body, type)
+      const bodyResult = M.check(mod, ctx, exp.body, type)
       if (M.isLeft(bodyResult)) return bodyResult
       return M.Right(M.Inferred(bodyResult.right, type))
     }

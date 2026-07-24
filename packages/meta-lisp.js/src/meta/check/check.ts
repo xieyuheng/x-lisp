@@ -60,7 +60,7 @@ export function checkSubstInstance(
   return M.Right(undefined)
 }
 
-export function checkByInfer(
+export function check(
   mod: M.Mod,
   ctx: M.Ctx,
   exp: M.Term,
