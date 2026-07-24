@@ -5,6 +5,10 @@
 [meta-lisp.js] lift-lambda-pass to convert-closure-pass
 - or keep the pass name
 
+# limit-arity
+
+[meta-lisp.js] limit-arity-pass
+
 # remove assign
 
 [meta-lisp.js] remove (=) as sugar for (let)
