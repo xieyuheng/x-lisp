@@ -1,0 +1,17 @@
+(define (example-eta-expansion)
+  self/auto-currying/example-eta-expansion©λ1
+  self/auto-currying/example-eta-expansion©λ2)
+
+(define (example-eta-expansion©λ1 curried.1)
+  (meta-builtin/builtin/iadd 1 curried.1))
+
+(define (example-eta-expansion©λ2 curried.1)
+  (meta-builtin/builtin/iadd 1 curried.1))
+
+(define (adder n) (self/auto-currying/adder©λ1 n))
+
+(define (adder©λ1 n x) (meta-builtin/builtin/iadd n x))
+
+(define (example-early-apply)
+  ((self/auto-currying/adder 1) 2)
+  ((self/auto-currying/adder 1) 2))

@@ -85,8 +85,8 @@ struct curry_t {
 
 ;; =>
 
-(lambda (curry.0)
-  (iadd 1 curry.0))
+(lambda (curried.1)
+  (iadd 1 curried.1))
 ```
 
 参数过量时提前 apply：

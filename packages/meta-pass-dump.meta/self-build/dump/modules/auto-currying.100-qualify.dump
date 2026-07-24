@@ -1,0 +1,9 @@
+(define (example-eta-expansion)
+  (meta-builtin/builtin/iadd 1)
+  (lambda (curried.1) (meta-builtin/builtin/iadd 1 curried.1)))
+
+(define (adder n) (lambda (x) (meta-builtin/builtin/iadd n x)))
+
+(define (example-early-apply)
+  (self/auto-currying/adder 1 2)
+  ((self/auto-currying/adder 1) 2))

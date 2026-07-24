@@ -24213,6 +24213,54 @@
     (= i64.1 (int64 :content 81))
     (= int.1 (tag-int i64.1))
     (tail-call address.1 int.1 unnested.2 unnested.6)))
+(define-function self/auto-currying/example-eta-expansion
+  (block body
+    (= fn.2 (function-value :name self/auto-currying/example-eta-expansion©λ1 :arity 1))
+    (= fn.1 (function-value :name self/auto-currying/example-eta-expansion©λ2 :arity 1))
+    (return fn.1)))
+(define-function self/auto-currying/example-eta-expansion©λ1
+  (block body
+    (= curried.1 (argument :index 0))
+    (= address.1 (address :name meta-builtin/builtin/iadd))
+    (= i64.1 (int64 :content 1))
+    (= int.1 (tag-int i64.1))
+    (tail-call address.1 int.1 curried.1)))
+(define-function self/auto-currying/example-eta-expansion©λ2
+  (block body
+    (= curried.1 (argument :index 0))
+    (= address.1 (address :name meta-builtin/builtin/iadd))
+    (= i64.1 (int64 :content 1))
+    (= int.1 (tag-int i64.1))
+    (tail-call address.1 int.1 curried.1)))
+(define-function self/auto-currying/adder
+  (block body
+    (= n (argument :index 0))
+    (= fn.1 (function-value :name self/auto-currying/adder©λ1 :arity 2))
+    (tail-apply fn.1 n)))
+(define-function self/auto-currying/adder©λ1
+  (block body
+    (= n (argument :index 0))
+    (= x (argument :index 1))
+    (= address.1 (address :name meta-builtin/builtin/iadd))
+    (tail-call address.1 n x)))
+(define-function self/auto-currying/example-early-apply
+  (block body
+    (= address.2 (address :name self/auto-currying/adder))
+    (= i64.4 (int64 :content 1))
+    (= int.4 (tag-int i64.4))
+    (= value.3 (call address.2 int.4))
+    (= unnested.1 (copy value.3))
+    (= i64.3 (int64 :content 2))
+    (= int.3 (tag-int i64.3))
+    (= value.2 (apply unnested.1 int.3))
+    (= address.1 (address :name self/auto-currying/adder))
+    (= i64.2 (int64 :content 1))
+    (= int.2 (tag-int i64.2))
+    (= value.1 (call address.1 int.2))
+    (= unnested.2 (copy value.1))
+    (= i64.1 (int64 :content 2))
+    (= int.1 (tag-int i64.1))
+    (tail-apply unnested.2 int.1)))
 (define-function self/codegen/add
   (block body
     (= x (argument :index 0))
@@ -25279,23 +25327,6 @@
     (= address.6 (address :name meta-builtin/builtin/error-with-location))
     (= string.1 (string-value :content "cond mismatch"))
     (tail-call address.6 string.1 unnested.5)))
-(define-function self/lift-lambda/make-adder
-  (block body
-    (= x (argument :index 0))
-    (= fn.1 (function-value :name self/lift-lambda/make-adder©λ1 :arity 2))
-    (tail-apply fn.1 x)))
-(define-function self/lift-lambda/make-adder©λ1
-  (block body
-    (= x (argument :index 0))
-    (= y (argument :index 1))
-    (= address.1 (address :name meta-builtin/builtin/iadd))
-    (tail-call address.1 x y)))
-(define-function self/lift-lambda/f
-  (block body
-    (= address.1 (address :name self/lift-lambda/make-adder))
-    (= i64.1 (int64 :content 1))
-    (= int.1 (tag-int i64.1))
-    (tail-call address.1 int.1)))
 (define-variable self/module-lib/greeting)
 (define-function ©setup.self/module-lib/greeting
   (block body

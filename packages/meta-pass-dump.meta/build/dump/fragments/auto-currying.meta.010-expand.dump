@@ -1,0 +1,8 @@
+(module auto-currying)
+
+(define (example-eta-expansion)
+  (begin (iadd 1) (lambda (curried.1) (iadd 1 curried.1))))
+
+(define (adder n) (lambda (x) (iadd n x)))
+
+(define (example-early-apply) (begin (adder 1 2) ((adder 1) 2)))

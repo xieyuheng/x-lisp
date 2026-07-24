@@ -1,5 +1,9 @@
 (module-analysis-report
   (fragment-scopes
+    ("src/auto-currying.meta"
+      (mod-name auto-currying)
+      (imported-names 621)
+      (imported-prefixes 0))
     ("src/codegen.meta"
       (mod-name codegen)
       (imported-names 621)
@@ -34,10 +38,6 @@
       (imported-prefixes 0))
     ("src/lambda.meta"
       (mod-name lambda)
-      (imported-names 621)
-      (imported-prefixes 0))
-    ("src/lift-lambda.meta"
-      (mod-name lift-lambda)
       (imported-names 621)
       (imported-prefixes 0))
     ("src/module-lib.meta"

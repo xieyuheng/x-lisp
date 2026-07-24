@@ -140,8 +140,8 @@ export function infer(
         //
         // ;; =>
         //
-        // (lambda (curry.0)
-        //   (iadd 1 curry.0))
+        // (lambda (curried.1)
+        //   (iadd 1 curried.1))
         if (arity > term.args.length) {
           const usedNames = M.termOccurredNames(term)
           usedNames.add("curried")
