@@ -303,6 +303,10 @@ export function arrowTypeUncurrying(type: Type): Type {
   )
 }
 
+export function arrowTypeArity(type: Type): number {
+  return asArrowType(type).argTypes.length
+}
+
 export function polymorphicTypeFreshSelf(
   type: PolymorphicType,
 ): PolymorphicType {

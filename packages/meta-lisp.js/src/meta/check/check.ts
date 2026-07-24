@@ -27,6 +27,29 @@ export function checkAssignable(
   const unifyResult = checkUnify(ctx, term, freshenedInferred, freshenedType)
   if (M.isLeft(unifyResult)) return unifyResult
 
+  if (M.isArrowType(freshenedInferred) && M.isArrowType(freshenedType)) {
+    const inferredArity = M.arrowTypeArity(freshenedInferred)
+    const typeArity = M.arrowTypeArity(freshenedType)
+    if (inferredArity !== typeArity) {
+      const prettyUnknownSubst = M.generatePrettyUnknownSubst([
+        inferredType,
+        type,
+      ])
+
+      const formattedInferred = M.substDeepWalk(
+        prettyUnknownSubst,
+        inferredType,
+      )
+      const formattedExpected = M.substDeepWalk(prettyUnknownSubst, type)
+
+      const message =
+        `arrow type arity mismatch` +
+        `\n  inferred type: ${M.formatType(formattedInferred)}` +
+        `\n  expected type: ${M.formatType(formattedExpected)}`
+      return M.Left({ term, message })
+    }
+  }
+
   return M.Right(core)
 }
 

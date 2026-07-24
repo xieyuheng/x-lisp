@@ -17,6 +17,36 @@ src/function/Y-type-error.meta:8:19 -- unification fail
   9 |    (lambda (x) (f (lambda (t) ((x x) t))))))
  10 | 
 
+src/function/arrow-shape-error.meta:10:2 -- arrow type arity mismatch
+  inferred type: (-> A B C D)
+  expected type: (polymorphic (A.11375 B.955 C.15) (-> (-> A.11375 B.955 C.15) B.955 A.11375 C.15))
+  8 |     (-> (-> A B C) (-> B A C))))
+  9 | 
+ 10 | (define (swap f x y) (f y x))
+    |  ~~~~~~                       
+ 11 | 
+ 12 | (claim drop
+
+src/function/arrow-shape-error.meta:16:2 -- arrow type arity mismatch
+  inferred type: (-> A B)
+  expected type: (polymorphic (A.11381 B.957 C.17) (-> (-> A.11381 B.957) C.17 A.11381 B.957))
+ 14 |     (-> (-> A B) C A B)))
+ 15 | 
+ 16 | (define (drop f)
+    |  ~~~~~~          
+ 17 |   (lambda (dropped x) (f x)))
+ 18 | 
+
+src/function/arrow-shape-error.meta:23:2 -- arrow type arity mismatch
+  inferred type: (-> A B)
+  expected type: (polymorphic (A.11387 B.959) (-> (-> A.11387 A.11387 B.959) A.11387 B.959))
+ 21 |     (-> (-> A A B) A B)))
+ 22 | 
+ 23 | (define (dup f)
+    |  ~~~~~~         
+ 24 |   (lambda (x) (f x x)))
+ 25 | 
+
 src/function/identity-type-error-1.meta:7:2 -- expected type is not a substitution instance of inferred type
   inferred type: (-> A A)
   expected type: (-> B C)
