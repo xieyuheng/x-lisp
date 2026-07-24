@@ -4,10 +4,10 @@ import * as M from "../index.ts"
 export function checkAssignable(
   mod: M.Mod,
   ctx: M.Ctx,
-  exp: M.Term,
+  term: M.Term,
   type: M.Type,
 ): M.Either<M.TypeError, C.Term> {
-  const inferResult = M.infer(mod, ctx, exp)
+  const inferResult = M.infer(mod, ctx, term)
   if (inferResult.kind === "Left") return inferResult
   const { type: inferredType, core } = inferResult.right
 
@@ -18,13 +18,13 @@ export function checkAssignable(
 
   const substResult = checkSubstInstance(
     ctx,
-    exp,
+    term,
     freshenedInferred,
     freshenedType,
   )
   if (substResult.kind === "Left") return substResult
 
-  const unifyResult = checkUnify(ctx, exp, freshenedInferred, freshenedType)
+  const unifyResult = checkUnify(ctx, term, freshenedInferred, freshenedType)
   if (M.isLeft(unifyResult)) return unifyResult
 
   return M.Right(core)
@@ -32,7 +32,7 @@ export function checkAssignable(
 
 export function checkSubstInstance(
   ctx: M.Ctx,
-  exp: M.Term,
+  term: M.Term,
   inferredType: M.Type,
   type: M.Type,
 ): M.Either<M.TypeError, void> {
@@ -54,7 +54,7 @@ export function checkSubstInstance(
       `expected type is not a substitution instance of inferred type` +
       `\n  inferred type: ${M.formatType(inferredType)}` +
       `\n  expected type: ${M.formatType(type)}`
-    return M.Left({ term: exp, message })
+    return M.Left({ term: term, message })
   }
 
   return M.Right(undefined)
@@ -63,14 +63,14 @@ export function checkSubstInstance(
 export function check(
   mod: M.Mod,
   ctx: M.Ctx,
-  exp: M.Term,
+  term: M.Term,
   type: M.Type,
 ): M.Either<M.TypeError, C.Term> {
-  const inferResult = M.infer(mod, ctx, exp)
+  const inferResult = M.infer(mod, ctx, term)
   if (inferResult.kind === "Left") return inferResult
   const { type: inferredType, core } = inferResult.right
 
-  const unifyResult = checkUnify(ctx, exp, inferredType, type)
+  const unifyResult = checkUnify(ctx, term, inferredType, type)
   if (M.isLeft(unifyResult)) return unifyResult
 
   return M.Right(core)
@@ -78,7 +78,7 @@ export function check(
 
 export function checkUnify(
   ctx: M.Ctx,
-  exp: M.Term,
+  term: M.Term,
   inferredType: M.Type,
   type: M.Type,
 ): M.Either<M.TypeError, void> {
@@ -99,7 +99,7 @@ export function checkUnify(
       `unification fail` +
       `\n  inferred type: ${M.formatType(inferredType)}` +
       `\n  expected type: ${M.formatType(type)}`
-    return M.Left({ term: exp, message })
+    return M.Left({ term: term, message })
   }
 
   M.ctxPutSubst(ctx, newSubst)
