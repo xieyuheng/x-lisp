@@ -5,7 +5,7 @@ import * as M from "../index.ts"
 
 export type TypeError = { term: M.Term; message: string }
 
-export function TypeError(term: M.Term; message: string): TypeError {
+export function TypeError(term: M.Term, message: string): TypeError {
   return { term, message }
 }
 
