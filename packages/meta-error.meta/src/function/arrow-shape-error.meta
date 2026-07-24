@@ -11,16 +11,14 @@
 
 (claim drop
   (polymorphic (A B C)
-    (-> (-> A B)
-        (-> C A B))))
+    (-> (-> A B) C A B)))
 
 (define (drop f)
   (lambda (dropped x) (f x)))
 
 (claim dup
   (polymorphic (A B)
-    (-> (-> A A B)
-        (-> A B))))
+    (-> (-> A A B) A B)))
 
 (define (dup f)
   (lambda (x) (f x x)))

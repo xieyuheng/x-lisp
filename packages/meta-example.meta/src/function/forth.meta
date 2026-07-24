@@ -1,27 +1,24 @@
 (module example)
 
 (claim swap
-  (polymorphic (X Y Z)
-    (-> (-> Y X Z) X Y Z)))
+  (polymorphic (A B C)
+    (-> (-> A B C) B A C)))
 
 (define (swap f x y) (f y x))
 
 (claim drop
-  (polymorphic (X Y Z)
-    (-> (-> X Z) Y X Z)))
+  (polymorphic (A B C)
+    (-> (-> A B) (-> C A B))))
 
 (define (drop f)
-  (lambda (dropped)
-    (lambda (x)
-      (f x))))
+  (lambda (dropped x) (f x)))
 
 (claim dup
-  (polymorphic (X Z)
-    (-> (-> X X Z) X Z)))
+  (polymorphic (A B)
+    (-> (-> A A B) (-> A B))))
 
 (define (dup f)
-  (lambda (x)
-    (f x x)))
+  (lambda (x) (f x x)))
 
 (define-test forth-test
   (= f (lambda (x) x))
