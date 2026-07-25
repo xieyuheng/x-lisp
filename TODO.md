@@ -1,7 +1,3 @@
-# remove assign
-
-[meta-lisp.js] remove (=) syntax
-
 # limit-arity
 
 [meta-lisp.js] limit-arity-pass
