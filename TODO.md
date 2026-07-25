@@ -1,7 +1,5 @@
 # remove assign
 
-remove all (=) from meta-lisp.meta
-
 [meta-lisp.js] remove (=) syntax
 
 # limit-arity

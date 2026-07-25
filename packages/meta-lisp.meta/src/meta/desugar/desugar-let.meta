@@ -29,14 +29,14 @@
   (cond
     ((list-empty? bindings) body)
     ((equal? 1 (list-length bindings))
-     (= binding (car bindings))
-     (let1-exp (binding-name binding) (binding-rhs binding) body location))
+     (let ((binding (car bindings)))
+       (let1-exp (binding-name binding) (binding-rhs binding) body location)))
     (else
-     (= used-names
-        (set-union
-          (exp-occurred-names body)
-          (set-union-many (list-map binding-occurred-names bindings))))
-     (let-star-exp (desugar-let-bindings used-names bindings) body location))))
+     (let ((used-names
+             (set-union
+               (exp-occurred-names body)
+               (set-union-many (list-map binding-occurred-names bindings)))))
+       (let-star-exp (desugar-let-bindings used-names bindings) body location)))))
 
 (claim desugar-let-bindings
   (-> (set-t symbol-t) (list-t binding-t)
@@ -56,8 +56,8 @@
 (define (desugar-let-binding used-names binding)
   (match binding
     ((make-binding name rhs location)
-     (= fresh-name (generate-relative-fresh-name used-names name))
-     (set-add! fresh-name used-names)
-     (make-pair
-       (make-binding fresh-name rhs location)
-       (make-binding name (var-exp fresh-name location) location)))))
+     (let ((fresh-name (generate-relative-fresh-name used-names name)))
+       (set-add! fresh-name used-names)
+       (make-pair
+         (make-binding fresh-name rhs location)
+         (make-binding name (var-exp fresh-name location) location))))))
