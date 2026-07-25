@@ -29,8 +29,8 @@
     ((lambda-exp parameter body)
      (closure-value env parameter body))
     ((let-exp name rhs body)
-     (= env (extend-env name (evaluate rhs env) env))
-     (evaluate body env))))
+     (let ((env (extend-env name (evaluate rhs env) env)))
+       (evaluate body env)))))
 
 (define (apply target arg)
   (match target
