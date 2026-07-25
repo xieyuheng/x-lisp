@@ -1,5 +1,8 @@
 #pragma once
 
+typedef struct closure_t closure_t;
+typedef struct closure_child_iter_t closure_child_iter_t;
+
 extern const object_class_t closure_class;
 
 struct closure_t {

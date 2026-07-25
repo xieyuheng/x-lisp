@@ -12,5 +12,6 @@
 #include "define.h"
 #include "call.h"
 #include "apply.h"
+#include "closure.h"
 #include "xvm_asm.h"
 #include "xvm_exe.h"
