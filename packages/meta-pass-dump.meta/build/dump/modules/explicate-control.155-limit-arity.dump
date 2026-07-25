@@ -1,0 +1,2 @@
+(define (f)
+  (let ((x 1)) (if meta-builtin/builtin/true (meta-builtin/builtin/iadd x 2) x)))
