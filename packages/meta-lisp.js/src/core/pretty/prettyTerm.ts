@@ -26,11 +26,7 @@ export function prettyTerm(term: Term): Ppml.Node {
 
     case "LambdaTerm": {
       const paramsNode = Ppml.prettyApplication(term.parameters.map(Ppml.text))
-      return Ppml.prettySyntax(
-        "lambda",
-        [paramsNode],
-        prettyTermBody(term.body),
-      )
+      return Ppml.prettySyntax("lambda", [paramsNode], [prettyTerm(term.body)])
     }
 
     case "ApplyTerm": {
@@ -40,18 +36,14 @@ export function prettyTerm(term: Term): Ppml.Node {
     }
 
     case "Let1Term": {
-      const assignNode = Ppml.group(
-        Ppml.text("("),
-        Ppml.text("="),
-        Ppml.text(" "),
+      const binding = Ppml.prettyApplication([
         Ppml.text(term.name),
-        Ppml.indent(3, Ppml.br(), prettyTerm(term.rhs)),
-        Ppml.text(")"),
-      )
+        prettyTerm(term.rhs),
+      ])
       return Ppml.prettySyntax(
-        "begin",
-        [],
-        [assignNode, ...prettyTermBody(term.body)],
+        "let",
+        [Ppml.prettyList([binding])],
+        [prettyTerm(term.body)],
       )
     }
 
@@ -59,7 +51,7 @@ export function prettyTerm(term: Term): Ppml.Node {
       return Ppml.prettySyntax(
         "begin",
         [],
-        [prettyTerm(term.head), ...prettyTermBody(term.body)],
+        [prettyTerm(term.head), prettyTerm(term.body)],
       )
     }
 
@@ -70,23 +62,5 @@ export function prettyTerm(term: Term): Ppml.Node {
         [prettyTerm(term.consequent), prettyTerm(term.alternative)],
       )
     }
-  }
-}
-
-export function prettyTermBody(body: Term): Array<Ppml.Node> {
-  if (body.kind === "Begin1Term") {
-    return [prettyTerm(body.head), ...prettyTermBody(body.body)]
-  } else if (body.kind === "Let1Term") {
-    const assignNode = Ppml.group(
-      Ppml.text("("),
-      Ppml.text("="),
-      Ppml.text(" "),
-      Ppml.text(body.name),
-      Ppml.indent(3, Ppml.br(), prettyTerm(body.rhs)),
-      Ppml.text(")"),
-    )
-    return [assignNode, ...prettyTermBody(body.body)]
-  } else {
-    return [prettyTerm(body)]
   }
 }

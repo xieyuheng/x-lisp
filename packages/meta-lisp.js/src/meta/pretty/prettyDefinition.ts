@@ -1,6 +1,6 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as M from "../index.ts"
-import { prettyTerm, prettyTermBody } from "./prettyExp.ts"
+import { prettyTerm } from "./prettyExp.ts"
 
 export function prettyDefinition(definition: M.Definition): Array<Ppml.Node> {
   const defNode = nodeForDefinition(definition)
@@ -28,25 +28,25 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
       const name = definition.name
       const paramNodes = definition.parameters.map(Ppml.text)
       const defNode = Ppml.prettyApplication([Ppml.text(name), ...paramNodes])
-      const body = prettyTermBody(definition.body)
+      const body = [prettyTerm(definition.body)]
       return Ppml.prettySyntax("define", [defNode], body)
     }
 
     case "VariableDefinition": {
       const name = definition.name
-      const body = prettyTermBody(definition.body)
+      const body = [prettyTerm(definition.body)]
       return Ppml.prettySyntax("define", [Ppml.text(name)], body)
     }
 
     case "TestDefinition": {
       const name = definition.name
-      const body = prettyTermBody(definition.body)
+      const body = [prettyTerm(definition.body)]
       return Ppml.prettySyntax("define-test", [Ppml.text(name)], body)
     }
 
     case "TypeDefinition": {
       const name = definition.name
-      const body = prettyTermBody(definition.body)
+      const body = [prettyTerm(definition.body)]
       return Ppml.prettySyntax("define-type", [Ppml.text(name)], body)
     }
 
