@@ -1,18 +1,21 @@
-// ConvertClosurePass
-//
-// 将词法作用域下的 Lambda 表达式转换为：
-// - 带额外闭包参数的顶层函数定义（lambda lifting）。
-// - 在 Lambda 创建点构造闭包：堆分配的 [函数指针, 自由变量值...] 元组。
-// - 在自由变量使用点访问闭包字段。
-//
-// 解决两个问题：
-// - 生命周期：Lambda 可能作为返回值逃逸其定义作用域，
-//   自由变量必须从栈转移到堆。
-// - 统一调用：所有函数值——无论来自顶层定义还是 Lambda——
-//   都通过闭包对象间接调用。
-
 import * as C from "../core/index.ts"
 import * as Pkg from "../package/index.ts"
+
+// ConvertClosurePass
+//
+// 将 lexical scope 下的「匿名函数（lambda）」和「函数引用」，
+// 统一转换为「顶层全局函数 + 堆分配的环境数据（list）」的组合。
+//
+// 这个 pass 解决了两个核心问题：
+//
+// - 生命周期问题：
+//   函数的自由变量必须从栈上转移到堆上，
+//   因为函数可能作为返回值逃逸出当前作用域。
+//
+// - 调用统一问题：
+//   无论函数是顶层定义的、还是匿名 Lambda，
+//   在调用点必须拥有统一的调用方式（即通过闭包对象间接调用）。
+//   只有这样，才能以统一的方式生成 x86 的间接函数调用指令。
 
 export function ConvertClosurePass(pkg: Pkg.Package): void {
   for (const coreMod of pkg.coreMods.values()) {
