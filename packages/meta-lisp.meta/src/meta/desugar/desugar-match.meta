@@ -134,15 +134,15 @@
     ((<pattern> ...) (let ((v1 target)) <body>)))
   (match clause
     ((make-match-clause patterns body location)
-     (= pattern (car patterns))
-     (unless (var-exp? pattern)
-       (error-with-location
-         "(desugar-var-pattern-clause) expect var-pattern"
-         (exp-location pattern)))
-     (make-match-clause
-       (cdr patterns)
-       (let1-exp (var-exp-name pattern) target body location)
-       location))))
+     (let ((pattern (car patterns)))
+       (unless (var-exp? pattern)
+         (error-with-location
+           "(desugar-var-pattern-clause) expect var-pattern"
+           (exp-location pattern)))
+       (make-match-clause
+         (cdr patterns)
+         (let1-exp (var-exp-name pattern) target body location)
+         location)))))
 
 (define (var-pattern-clause? clause)
   (and (not (list-empty? (match-clause-patterns clause)))
@@ -161,29 +161,29 @@
       (list-t data-pattern-clause-group-t)))
 
 (define (group-clauses-by-data-pattern ctx clauses)
-  (= report (desugar-match-ctx-algebraic-analysis-report ctx))
-  (= infos (algebraic-analysis-report-data-constructor-infos report))
-  (match (lookup-same-algebraic-type-info ctx clauses)
-    ((make-algebraic-type-info pkg-name mod-name name constructor-names)
-     (swap list-map constructor-names
-       (lambda (ctor-name)
-         (= key (algebraic-key pkg-name mod-name ctor-name))
-         (= data-constructor-info (hash-get key infos))
-         (make-data-pattern-clause-group
-           data-constructor-info
-           (list-select
-             (clause-starts-with-data-constructor? ctx data-constructor-info)
-             clauses)))))))
+  (let* ((report (desugar-match-ctx-algebraic-analysis-report ctx))
+         (infos (algebraic-analysis-report-data-constructor-infos report)))
+    (match (lookup-same-algebraic-type-info ctx clauses)
+      ((make-algebraic-type-info pkg-name mod-name name constructor-names)
+       (swap list-map constructor-names
+         (lambda (ctor-name)
+           (let* ((key (algebraic-key pkg-name mod-name ctor-name))
+                  (data-constructor-info (hash-get key infos)))
+             (make-data-pattern-clause-group
+               data-constructor-info
+               (list-select
+                 (clause-starts-with-data-constructor? ctx data-constructor-info)
+                 clauses)))))))))
 
 (define (clause-starts-with-data-constructor? ctx info clause)
-  (= pattern (car (match-clause-patterns clause)))
-  (if (not (data-pattern? pattern))
-    false
-    (match (resolve-data-pattern-qualified-name ctx pattern)
-      ((make-qualified-name pkg-name mod-name name)
-       (and (equal? (data-constructor-info-pkg-name info) pkg-name)
-            (equal? (data-constructor-info-mod-name info) mod-name)
-            (equal? (data-constructor-info-name info) name))))))
+  (let ((pattern (car (match-clause-patterns clause))))
+    (if (not (data-pattern? pattern))
+      false
+      (match (resolve-data-pattern-qualified-name ctx pattern)
+        ((make-qualified-name pkg-name mod-name name)
+         (and (equal? (data-constructor-info-pkg-name info) pkg-name)
+              (equal? (data-constructor-info-mod-name info) mod-name)
+              (equal? (data-constructor-info-name info) name)))))))
 
 (define (desugar-data-pattern-clause-group ctx group targets default-exp location)
   (@comment
@@ -242,49 +242,49 @@
     (error-with-location
       "(resolve-data-pattern-qualified-name) expect data-pattern"
       (exp-location pattern)))
-  (= target (apply-exp-target pattern))
-  (match target
-    ((qualified-var-exp pkg-name mod-name name location)
-     (make-qualified-name pkg-name mod-name name))
-    ((var-exp name location)
-     (= scope (desugar-match-ctx-scope ctx))
-     (= imported-names (fragment-scope-imported-names scope))
-     (match (hash-get-maybe name imported-names)
-       ((just qualified-name) qualified-name)
-       ((nothing)
-        (make-qualified-name
-          (desugar-match-ctx-pkg-name ctx)
-          (desugar-match-ctx-current-mod-name ctx)
-          name))))
-    (else
-     (error-with-location
-       "(resolve-data-pattern-qualified-name) unhandled target"
-       (exp-location target)))))
+  (let ((target (apply-exp-target pattern)))
+    (match target
+      ((qualified-var-exp pkg-name mod-name name location)
+       (make-qualified-name pkg-name mod-name name))
+      ((var-exp name location)
+       (let* ((scope (desugar-match-ctx-scope ctx))
+              (imported-names (fragment-scope-imported-names scope)))
+         (match (hash-get-maybe name imported-names)
+           ((just qualified-name) qualified-name)
+           ((nothing)
+            (make-qualified-name
+              (desugar-match-ctx-pkg-name ctx)
+              (desugar-match-ctx-current-mod-name ctx)
+              name)))))
+      (else
+       (error-with-location
+         "(resolve-data-pattern-qualified-name) unhandled target"
+         (exp-location target))))))
 
 (define (lookup-same-algebraic-type-info ctx clauses)
-  (= info (lookup-algebraic-type-info-from-clause ctx (car clauses)))
-  (for-list (cdr clauses)
-    (lambda (clause)
-      (unless (equal? info (lookup-algebraic-type-info-from-clause ctx clause))
-        (error-with-location
-          "(lookup-same-algebraic-type-info) algebraic-type-info mismatch"
-          (match-clause-location clause)))))
-  info)
+  (let ((info (lookup-algebraic-type-info-from-clause ctx (car clauses))))
+    (for-list (cdr clauses)
+      (lambda (clause)
+        (unless (equal? info (lookup-algebraic-type-info-from-clause ctx clause))
+          (error-with-location
+            "(lookup-same-algebraic-type-info) algebraic-type-info mismatch"
+            (match-clause-location clause)))))
+    info))
 
 (define (lookup-algebraic-type-info-from-clause ctx clause)
-  (= pattern (car (match-clause-patterns clause)))
-  (unless (data-pattern? pattern)
-    (error-with-location
-      "(lookup-algebraic-type-info-from-clause) expect data pattern"
-      (exp-location pattern)))
-  (= info (lookup-data-constructor-info-from-pattern ctx pattern))
-  (= report (desugar-match-ctx-algebraic-analysis-report ctx))
-  (hash-get
-    (algebraic-key
-      (data-constructor-info-pkg-name info)
-      (data-constructor-info-mod-name info)
-      (data-constructor-info-type-name info))
-    (algebraic-analysis-report-algebraic-type-infos report)))
+  (let ((pattern (car (match-clause-patterns clause))))
+    (unless (data-pattern? pattern)
+      (error-with-location
+        "(lookup-algebraic-type-info-from-clause) expect data pattern"
+        (exp-location pattern)))
+    (let ((info (lookup-data-constructor-info-from-pattern ctx pattern))
+          (report (desugar-match-ctx-algebraic-analysis-report ctx)))
+      (hash-get
+        (algebraic-key
+          (data-constructor-info-pkg-name info)
+          (data-constructor-info-mod-name info)
+          (data-constructor-info-type-name info))
+        (algebraic-analysis-report-algebraic-type-infos report)))))
 
 (define (lookup-data-constructor-info-from-pattern ctx pattern)
   (unless (data-pattern? pattern)
@@ -293,26 +293,26 @@
       (exp-location pattern)))
   (match (resolve-data-pattern-qualified-name ctx pattern)
     ((make-qualified-name pkg-name mod-name name)
-     (= report (desugar-match-ctx-algebraic-analysis-report ctx))
-     (hash-get
-       (algebraic-key pkg-name mod-name name)
-       (algebraic-analysis-report-data-constructor-infos report)))))
+     (let ((report (desugar-match-ctx-algebraic-analysis-report ctx)))
+       (hash-get
+         (algebraic-key pkg-name mod-name name)
+         (algebraic-analysis-report-data-constructor-infos report))))))
 
 (claim group-clauses-by-pattern-kind
   (-> (list-t match-clause-t)
       (list-t (list-t match-clause-t))))
 
 (define (group-clauses-by-pattern-kind clauses)
-  (= groups [])
-  (for-list clauses
-    (lambda (clause)
-      (if (list-empty? groups)
-        (ignore (list-push! [clause] groups))
-        (let ((last (list-last groups)))
-          (if (same-pattern-kind? clause (list-first last))
-            (ignore (list-push! clause last))
-            (ignore (list-push! [clause] groups)))))))
-  groups)
+  (let ((groups []))
+    (for-list clauses
+      (lambda (clause)
+        (if (list-empty? groups)
+          (ignore (list-push! [clause] groups))
+          (let ((last (list-last groups)))
+            (if (same-pattern-kind? clause (list-first last))
+              (ignore (list-push! clause last))
+              (ignore (list-push! [clause] groups)))))))
+    groups))
 
 (define (same-pattern-kind? x y)
   (or (equal? (var-pattern-clause? x) (var-pattern-clause? y))

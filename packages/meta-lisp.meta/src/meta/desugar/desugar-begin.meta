@@ -13,14 +13,14 @@
     (else
      (match (car sequence)
        ((local-define-exp name parameters body head-location)
-        (= local-defines (collect-adjacent-local-defines sequence []))
-        (= remaining (list-drop (list-length local-defines) sequence))
-        (letrec-star-exp
-          (list-map desugar-local-define local-defines)
-          (if (list-empty? remaining)
-            (qualified-var-exp 'meta-builtin 'builtin 'void location)
-            (desugar-begin remaining location))
-          location))
+        (let* ((local-defines (collect-adjacent-local-defines sequence []))
+               (remaining (list-drop (list-length local-defines) sequence)))
+          (letrec-star-exp
+            (list-map desugar-local-define local-defines)
+            (if (list-empty? remaining)
+              (qualified-var-exp 'meta-builtin 'builtin 'void location)
+              (desugar-begin remaining location))
+            location)))
        ((assign-exp name rhs head-location)
         (let1-exp name rhs (desugar-begin (cdr sequence) location) head-location))
        (else

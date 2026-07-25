@@ -8,17 +8,17 @@
   (cond
     ((list-empty? bindings) body)
     ((list-empty? (cdr bindings))
-     (= binding (car bindings))
-     (let1-exp
-       (binding-name binding)
-       (binding-rhs binding)
-       body
-       location))
+     (let ((binding (car bindings)))
+       (let1-exp
+         (binding-name binding)
+         (binding-rhs binding)
+         body
+         location)))
     (else
-     (= binding (car bindings))
-     (= rest-bindings (cdr bindings))
-     (let1-exp
-       (binding-name binding)
-       (binding-rhs binding)
-       (desugar-let-star rest-bindings body location)
-       location))))
+     (let ((binding (car bindings))
+           (rest-bindings (cdr bindings)))
+       (let1-exp
+         (binding-name binding)
+         (binding-rhs binding)
+         (desugar-let-star rest-bindings body location)
+         location)))))
