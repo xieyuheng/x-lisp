@@ -88,5 +88,5 @@ function xvmAssemble(pkg: Pkg.Package): void {
     Pkg.packageOutputDirectory(pkg),
     "bundle.xvm.asm",
   )
-  systemShellRun(xvmPath, ["assemble-xvm", xvmAsmPath])
+  systemShellRun(xvmPath, ["assemble", xvmAsmPath])
 }

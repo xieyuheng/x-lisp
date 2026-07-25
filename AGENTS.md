@@ -6,7 +6,7 @@ title: AI Agent 工作指南
 
 # 前言
 
-引用 package 名时使用 `[package-name]` 格式（如 [std.js]、[meta-runtime.c]、[meta-lisp.meta]）。
+引用 package 名时使用 `[package-name]` 格式（如 [std.js]、[xrt.c]、[meta-lisp.meta]）。
 
 AI agent 应用中文回答用户的问题。
 
@@ -24,7 +24,6 @@ AI agent 应用中文回答用户的问题。
 
 - [std.c] — 基础库
 - [cli.c] — CLI 库，依赖 [std.c]
-- [meta-runtime.c] — 多后端运行时，依赖 [std.c] + [cli.c]
 - [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数），依赖 [std.c]
 - [xvm.c] — XVM 虚拟机运行时 + 编译器，依赖 [xrt.c] + [std.c] + [cli.c]
 - [xexe.c] — x86-64 可执行文件加载/运行，依赖 [xrt.c] + [std.c] + [cli.c]

@@ -84,13 +84,13 @@ int main(int argc, char *argv[]) {
 
   cli_router_t *router = cli_make_router("xvm", "0.1.0");
 
-  cli_define_route(router, "assemble-xvm file.xvm.asm --output --profile");
-  cli_define_route(router, "run-xvm file.xvm.exe --entry");
-  cli_define_route(router, "test-xvm file.xvm.exe --profile --snapshot --builtin");
+  cli_define_route(router, "assemble file.xvm.asm --output --profile");
+  cli_define_route(router, "run file.xvm.exe --entry");
+  cli_define_route(router, "test file.xvm.exe --profile --snapshot --builtin");
 
-  cli_define_handler(router, "assemble-xvm", handle_assemble_xvm);
-  cli_define_handler(router, "run-xvm", handle_run_xvm);
-  cli_define_handler(router, "test-xvm", handle_test_xvm);
+  cli_define_handler(router, "assemble", handle_assemble_xvm);
+  cli_define_handler(router, "run", handle_run_xvm);
+  cli_define_handler(router, "test", handle_test_xvm);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);

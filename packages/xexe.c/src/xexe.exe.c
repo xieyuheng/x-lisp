@@ -117,17 +117,17 @@ int main(int argc, char *argv[]) {
 
   cli_router_t *router = cli_make_router("xexe", "0.1.0");
 
-  cli_define_route(router, "run-x86-xexe file.x86.xexe");
-  cli_define_route(router, "run-x86-xexe-and-print file.x86.xexe");
-  cli_define_route(router, "xexe-info file.x86.xexe");
-  cli_define_route(router, "xexe-disasm file.x86.xexe");
-  cli_define_route(router, "xexe-xxd file.x86.xexe");
+  cli_define_route(router, "run file.x86.xexe");
+  cli_define_route(router, "run-and-print file.x86.xexe");
+  cli_define_route(router, "info file.x86.xexe");
+  cli_define_route(router, "disasm file.x86.xexe");
+  cli_define_route(router, "xxd file.x86.xexe");
 
-  cli_define_handler(router, "run-x86-xexe", handle_run_x86_xexe);
-  cli_define_handler(router, "run-x86-xexe-and-print", handle_run_x86_xexe_and_print);
-  cli_define_handler(router, "xexe-info", handle_xexe_info);
-  cli_define_handler(router, "xexe-disasm", handle_xexe_disasm);
-  cli_define_handler(router, "xexe-xxd", handle_xexe_xxd);
+  cli_define_handler(router, "run", handle_run_x86_xexe);
+  cli_define_handler(router, "run-and-print", handle_run_x86_xexe_and_print);
+  cli_define_handler(router, "info", handle_xexe_info);
+  cli_define_handler(router, "disasm", handle_xexe_disasm);
+  cli_define_handler(router, "xxd", handle_xexe_xxd);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);
