@@ -9,19 +9,19 @@
 (define (lower-match-pass module-analysis-report algebraic-analysis-report package)
   (for-hash (package-fragments package)
     (lambda (path fragment)
-      (= fragment-scopes (module-analysis-report-fragment-scopes module-analysis-report))
-      (match (hash-get-maybe path fragment-scopes)
-        ((nothing)
-         (error (@string "(lower-match-pass) missing scope for: " path)))
-        ((just scope)
-         (= ctx (make-desugar-match-ctx
-                  scope
-                  (fragment-mod-name fragment)
-                  algebraic-analysis-report
-                  (package-id package)))
-         (fragment-put-stmts!
-           (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
-           fragment)))))
+      (let ((fragment-scopes (module-analysis-report-fragment-scopes module-analysis-report)))
+        (match (hash-get-maybe path fragment-scopes)
+          ((nothing)
+           (error (@string "(lower-match-pass) missing scope for: " path)))
+          ((just scope)
+           (let ((ctx (make-desugar-match-ctx
+                        scope
+                        (fragment-mod-name fragment)
+                        algebraic-analysis-report
+                        (package-id package))))
+             (fragment-put-stmts!
+               (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
+               fragment)))))))
   (when (hash-has? "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "050-lower-match")))
 

@@ -32,17 +32,17 @@
          [(desugar-data-constructor data-constructor)]
          location)))
     ((define-struct-stmt type-constructor fields location)
-     (= type-name (pre-type-constructor-name type-constructor))
-     (= base-name (make-base-name type-name location))
-     (expand-define-algebraic-type
-       (define-algebraic-type-stmt
-         type-constructor
-         [(make-explicit-data-constructor
-            (make-data-constructor-name base-name)
-            (list-map (desugar-data-field base-name) fields)
-            (make-data-predicate-name base-name)
-            location)]
-         location)))
+     (let* ((type-name (pre-type-constructor-name type-constructor))
+            (base-name (make-base-name type-name location)))
+       (expand-define-algebraic-type
+         (define-algebraic-type-stmt
+           type-constructor
+           [(make-explicit-data-constructor
+              (make-data-constructor-name base-name)
+              (list-map (desugar-data-field base-name) fields)
+              (make-data-predicate-name base-name)
+              location)]
+           location))))
     ((define-record-type-stmt type-constructor data-constructor location)
      (expand-define-algebraic-type
        (define-algebraic-type-stmt
@@ -58,16 +58,16 @@
       symbol-t))
 
 (define (make-base-name type-name location)
-  (= type-name-string (symbol-to-string type-name))
-  (unless (string-ends-with? "-t" type-name-string)
-    (error-with-location
-      (@string "(make-base-name) type-name must end with -t"
-               "\n  type-name: " type-name-string)
-      location))
-  (string-to-symbol
-    (string-substring
-      0 (isub (string-length type-name-string) 2)
-      type-name-string)))
+  (let ((type-name-string (symbol-to-string type-name)))
+    (unless (string-ends-with? "-t" type-name-string)
+      (error-with-location
+        (@string "(make-base-name) type-name must end with -t"
+                 "\n  type-name: " type-name-string)
+        location))
+    (string-to-symbol
+      (string-substring
+        0 (isub (string-length type-name-string) 2)
+        type-name-string))))
 
 (claim make-data-constructor-name
   (-> symbol-t
@@ -106,13 +106,13 @@
       exp-t))
 
 (define (make-type-exp type-constructor location)
-  (= parameters (pre-type-constructor-parameters type-constructor))
-  (if (list-empty? parameters)
-    (var-exp (pre-type-constructor-name type-constructor) location)
-    (apply-exp
+  (let ((parameters (pre-type-constructor-parameters type-constructor)))
+    (if (list-empty? parameters)
       (var-exp (pre-type-constructor-name type-constructor) location)
-      (list-map (lambda (parameter) (var-exp parameter location)) parameters)
-      location)))
+      (apply-exp
+        (var-exp (pre-type-constructor-name type-constructor) location)
+        (list-map (lambda (parameter) (var-exp parameter location)) parameters)
+        location))))
 
 (claim admit-with-type-parameters
   (-> symbol-t (list-t symbol-t) exp-t source-location-t
@@ -128,27 +128,27 @@
       (explicit-data-constructor-t exp-t)))
 
 (define (desugar-data-constructor ctor)
-  (= ctor-name (pre-data-constructor-name ctor))
-  (make-explicit-data-constructor
-    ctor-name
-    (list-map
-      (desugar-data-field ctor-name)
-      (pre-data-constructor-fields ctor))
-    (make-data-predicate-name ctor-name)
-    (pre-data-constructor-location ctor)))
+  (let ((ctor-name (pre-data-constructor-name ctor)))
+    (make-explicit-data-constructor
+      ctor-name
+      (list-map
+        (desugar-data-field ctor-name)
+        (pre-data-constructor-fields ctor))
+      (make-data-predicate-name ctor-name)
+      (pre-data-constructor-location ctor))))
 
 (claim desugar-data-field
   (-> symbol-t pre-data-field-t
       (explicit-data-field-t exp-t)))
 
 (define (desugar-data-field base field)
-  (= field-name (pre-data-field-name field))
-  (make-explicit-data-field
-    field-name
-    (pre-data-field-type field)
-    (make-data-accessor-name base field-name)
-    (just (make-data-modifier-name base field-name))
-    (pre-data-field-location field)))
+  (let ((field-name (pre-data-field-name field)))
+    (make-explicit-data-field
+      field-name
+      (pre-data-field-type field)
+      (make-data-accessor-name base field-name)
+      (just (make-data-modifier-name base field-name))
+      (pre-data-field-location field))))
 
 (claim expand-define-algebraic-type
   (-> (stmt-t exp-t)
@@ -243,21 +243,21 @@
 (define (expand-accessor type-constructor ctor index field)
   (match field
     ((make-explicit-data-field name type accessor-name _ location)
-     (= type-exp (make-type-exp type-constructor location))
-     [(admit-with-type-parameters
-        accessor-name
-        (pre-type-constructor-parameters type-constructor)
-        (arrow-exp [type-exp] type location)
-        location)
-      (define-function-stmt
-        accessor-name
-        ['target]
-        (apply-exp
-          (var-exp 'list-get location)
-          [(int-exp (iadd index 1) location)
-           (var-exp 'target location)]
+     (let ((type-exp (make-type-exp type-constructor location)))
+       [(admit-with-type-parameters
+          accessor-name
+          (pre-type-constructor-parameters type-constructor)
+          (arrow-exp [type-exp] type location)
           location)
-        location)])))
+        (define-function-stmt
+          accessor-name
+          ['target]
+          (apply-exp
+            (var-exp 'list-get location)
+            [(int-exp (iadd index 1) location)
+             (var-exp 'target location)]
+            location)
+          location)]))))
 
 (claim expand-modifier
   (-> pre-type-constructor-t
@@ -272,19 +272,19 @@
      (match modifier-name-maybe
        ((nothing) [])
        ((just modifier-name)
-        (= type-exp (make-type-exp type-constructor location))
-        [(admit-with-type-parameters
-           modifier-name
-           (pre-type-constructor-parameters type-constructor)
-           (arrow-exp [type type-exp] type-exp location)
-           location)
-         (define-function-stmt
-           modifier-name
-           ['value 'target]
-           (apply-exp
-             (var-exp 'list-put! location)
-             [(int-exp (iadd index 1) location)
-              (var-exp 'value location)
-              (var-exp 'target location)]
+        (let ((type-exp (make-type-exp type-constructor location)))
+          [(admit-with-type-parameters
+             modifier-name
+             (pre-type-constructor-parameters type-constructor)
+             (arrow-exp [type type-exp] type-exp location)
              location)
-           location)])))))
+           (define-function-stmt
+             modifier-name
+             ['value 'target]
+             (apply-exp
+               (var-exp 'list-put! location)
+               [(int-exp (iadd index 1) location)
+                (var-exp 'value location)
+                (var-exp 'target location)]
+               location)
+             location)]))))))
