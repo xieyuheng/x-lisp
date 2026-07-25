@@ -11,7 +11,7 @@ export function TestXvmPipeline(pkg: Pkg.Package): void {
     "bundle.xvm.exe",
   )
   systemShellRun(xvmPath, [
-    "test-xvm",
+    "test",
     xvmExePath,
     "--snapshot",
     Pkg.packageSnapshotDirectory(pkg),
