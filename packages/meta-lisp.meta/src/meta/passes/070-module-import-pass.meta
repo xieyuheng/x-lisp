@@ -6,18 +6,18 @@
       void-t))
 
 (define (module-import-pass report package)
-  (= scopes (module-analysis-report-fragment-scopes report))
-  (for-hash (package-fragments package)
-    (lambda (path fragment)
-      (match (hash-get-maybe path scopes)
-        ((just scope)
-         (fragment-put-desugared-stmts!
-           (list-map (module-import-stmt scope) (fragment-desugared-stmts fragment))
-           fragment))
-        ((nothing)
-         (error (@string "(module-import-pass) missing scope for: " path))))))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
-    (package-dump-desugared-fragments package "070-module-import")))
+  (let ((scopes (module-analysis-report-fragment-scopes report)))
+    (for-hash (package-fragments package)
+      (lambda (path fragment)
+        (match (hash-get-maybe path scopes)
+          ((just scope)
+           (fragment-put-desugared-stmts!
+             (list-map (module-import-stmt scope) (fragment-desugared-stmts fragment))
+             fragment))
+          ((nothing)
+           (error (@string "(module-import-pass) missing scope for: " path))))))
+    (when (hash-has? "dump" (package-config-compiler (package-config package)))
+      (package-dump-desugared-fragments package "070-module-import"))))
 
 (claim module-import-stmt
   (-> fragment-scope-t (stmt-t term-t)
@@ -30,9 +30,9 @@
     ((admit-stmt name type location)
      (admit-stmt name (module-import-term scope type) location))
     ((define-function-stmt name parameters body location)
-     (= bound-names (list-to-set parameters))
-     (= new-scope (scope-filter-bound-names scope bound-names))
-     (define-function-stmt name parameters (module-import-term new-scope body) location))
+     (let* ((bound-names (list-to-set parameters))
+            (new-scope (scope-filter-bound-names scope bound-names)))
+       (define-function-stmt name parameters (module-import-term new-scope body) location)))
     ((define-variable-stmt name body location)
      (define-variable-stmt name (module-import-term scope body) location))
     ((define-test-stmt name body location)
@@ -40,19 +40,19 @@
     ((define-type-stmt name parameters body location)
      (define-type-stmt name parameters (module-import-term scope body) location))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
-     (= new-scope (scope-filter-bound-names scope bound-names))
-     (define-algebraic-type-stmt
-       type-constructor
-       (list-map (module-import-explicit-data-constructor new-scope) data-constructors)
-       location))
+     (let* ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
+            (new-scope (scope-filter-bound-names scope bound-names)))
+       (define-algebraic-type-stmt
+         type-constructor
+         (list-map (module-import-explicit-data-constructor new-scope) data-constructors)
+         location)))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
-     (= bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
-     (= new-scope (scope-filter-bound-names scope bound-names))
-     (define-opaque-type-stmt type-constructor
-       (module-import-term new-scope representation-type)
-       (list-map (module-import-pre-interface-entry new-scope) interface-entries)
-       location))
+     (let* ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
+            (new-scope (scope-filter-bound-names scope bound-names)))
+       (define-opaque-type-stmt type-constructor
+         (module-import-term new-scope representation-type)
+         (list-map (module-import-pre-interface-entry new-scope) interface-entries)
+         location)))
     (else stmt)))
 
 (define (module-import-explicit-data-constructor scope ctor)
@@ -89,47 +89,47 @@
 (define (module-import-term scope term)
   (match term
     ((var-term name location)
-     (= imported-names (fragment-scope-imported-names scope))
-     (match (hash-get-maybe name imported-names)
-       ((just entry)
-        (qualified-var-term
-          (qualified-name-pkg-name entry)
-          (qualified-name-mod-name entry)
-          (qualified-name-name entry)
-          location))
-       ((nothing) term)))
+     (let ((imported-names (fragment-scope-imported-names scope)))
+       (match (hash-get-maybe name imported-names)
+         ((just entry)
+          (qualified-var-term
+            (qualified-name-pkg-name entry)
+            (qualified-name-mod-name entry)
+            (qualified-name-name entry)
+            location))
+         ((nothing) term))))
     ((qualified-var-term pkg-name mod-name name location)
-     (= imported-prefixes (fragment-scope-imported-prefixes scope))
-     (match (hash-get-maybe mod-name imported-prefixes)
-       ((just entry)
-        (qualified-var-term
-          (qualified-prefix-pkg-name entry)
-          (qualified-prefix-mod-name entry)
-          name
-          location))
-       ((nothing) term)))
+     (let ((imported-prefixes (fragment-scope-imported-prefixes scope)))
+       (match (hash-get-maybe mod-name imported-prefixes)
+         ((just entry)
+          (qualified-var-term
+            (qualified-prefix-pkg-name entry)
+            (qualified-prefix-mod-name entry)
+            name
+            location))
+         ((nothing) term))))
     ((lambda-term parameters body location)
-     (= bound-names (list-to-set parameters))
-     (= new-scope (scope-filter-bound-names scope bound-names))
-     (lambda-term
-       parameters
-       (module-import-term new-scope body)
-       location))
+     (let* ((bound-names (list-to-set parameters))
+            (new-scope (scope-filter-bound-names scope bound-names)))
+       (lambda-term
+         parameters
+         (module-import-term new-scope body)
+         location)))
     ((polymorphic-term parameters body location)
-     (= bound-names (list-to-set parameters))
-     (= new-scope (scope-filter-bound-names scope bound-names))
-     (polymorphic-term
-       parameters
-       (module-import-term new-scope body)
-       location))
+     (let* ((bound-names (list-to-set parameters))
+            (new-scope (scope-filter-bound-names scope bound-names)))
+       (polymorphic-term
+         parameters
+         (module-import-term new-scope body)
+         location)))
     ((let1-term name rhs body location)
-     (= bound-names (@set name))
-     (= new-scope (scope-filter-bound-names scope bound-names))
-     (let1-term
-       name
-       (module-import-term scope rhs)
-       (module-import-term new-scope body)
-       location))
+     (let* ((bound-names (@set name))
+            (new-scope (scope-filter-bound-names scope bound-names)))
+       (let1-term
+         name
+         (module-import-term scope rhs)
+         (module-import-term new-scope body)
+         location)))
     (else (term-traverse (module-import-term scope) term))))
 
 (claim scope-filter-bound-names
