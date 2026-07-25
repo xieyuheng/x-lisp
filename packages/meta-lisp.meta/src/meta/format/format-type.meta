@@ -12,8 +12,8 @@
     ((atom-type name)
      (symbol-to-string name))
     ((arrow-type arg-types ret-type)
-     (= args-str (format-types arg-types))
-     (@string "(-> " args-str " " (format-type ret-type) ")"))
+     (let ((args-str (format-types arg-types)))
+       (@string "(-> " args-str " " (format-type ret-type) ")")))
     ((list-type element-type)
      (@string "(list-t " (format-type element-type) ")"))
     ((set-type element-type)
@@ -22,12 +22,12 @@
      (@string "(hash-t " (format-type key-type) " "
               (format-type value-type) ")"))
     ((data-type type-constructor arg-types)
-     (= mod-name (mod-name (type-constructor-mod type-constructor)))
-     (= name (type-constructor-name type-constructor))
-     (if (list-empty? arg-types)
-        (@string (symbol-to-string mod-name) "/" (symbol-to-string name))
-        (@string "(" (symbol-to-string mod-name) "/" (symbol-to-string name) " "
-                 (format-types arg-types) ")")))
+     (let ((mod-name (mod-name (type-constructor-mod type-constructor)))
+           (name (type-constructor-name type-constructor)))
+       (if (list-empty? arg-types)
+         (@string (symbol-to-string mod-name) "/" (symbol-to-string name))
+         (@string "(" (symbol-to-string mod-name) "/" (symbol-to-string name) " "
+                  (format-types arg-types) ")"))))
     ((polymorphic-type var-types body-type)
      (@string "(polymorphic (" (format-types var-types) ") "
               (format-type body-type) ")"))))

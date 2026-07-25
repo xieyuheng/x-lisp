@@ -24,8 +24,8 @@
         (list-map pretty-block (hash-values blocks)))])))
 
 (define (pretty-block block)
-  (= label-str (symbol-to-string (block-label block)))
-  (= instrs (block-instrs block))
-  (ppml/pretty-vertical "block"
-    [(ppml/text label-str)]
-    (list-map pretty-instr instrs)))
+  (let ((label-str (symbol-to-string (block-label block)))
+        (instrs (block-instrs block)))
+    (ppml/pretty-vertical "block"
+      [(ppml/text label-str)]
+      (list-map pretty-instr instrs))))

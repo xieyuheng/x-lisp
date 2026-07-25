@@ -25,9 +25,9 @@
         (type-value (set-type (type-value-type (list-first args))))))
     (define-primitive-function 'hash-t
       (lambda (args)
-        (= key (list-first args))
-        (= value (list-second args))
-        (type-value (hash-type (type-value-type key) (type-value-type value)))))))
+        (let ((key (list-first args))
+              (value (list-second args)))
+          (type-value (hash-type (type-value-type key) (type-value-type value))))))))
 
 (claim define-primitive-function
   (-> symbol-t (-> (list-t value-t) value-t)

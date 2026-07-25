@@ -6,15 +6,15 @@
     ((type-value type)
      (format-type type))
     ((curry-value target arity args)
-     (= args-str (format-values args))
-     (= target-str (format-value target))
-     (if (equal? args-str "")
-       target-str
-       (@string "(" target-str " " args-str ")")))
+     (let ((args-str (format-values args))
+           (target-str (format-value target)))
+       (if (equal? args-str "")
+         target-str
+         (@string "(" target-str " " args-str ")"))))
     ((definition-value definition)
-     (= mod-name (symbol-to-string (definition-mod-name definition)))
-     (= name (symbol-to-string (definition-name definition)))
-     (@string mod-name "/" name))))
+     (let ((mod-name (symbol-to-string (definition-mod-name definition)))
+           (name (symbol-to-string (definition-name definition))))
+       (@string mod-name "/" name)))))
 
 (define (format-values values)
   (string-join " " (list-map format-value values)))
