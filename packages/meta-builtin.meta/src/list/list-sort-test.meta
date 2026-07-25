@@ -3,15 +3,13 @@
 (define-test list-sort-test
   ;; int ascending, list-sort! mutates in-place
 
-  (begin
-    (= list [2 3 1])
+  (let ((list [2 3 1]))
     (assert-equal [1 2 3] (list-sort! int-compare-ascending list))
     (assert-equal [1 2 3] list))
 
   ;; int ascending, list-sort returns new list
 
-  (begin
-    (= list [2 3 1])
+  (let ((list [2 3 1]))
     (assert-equal [1 2 3] (list-sort int-compare-ascending list))
     (assert-equal [2 3 1] list))
 

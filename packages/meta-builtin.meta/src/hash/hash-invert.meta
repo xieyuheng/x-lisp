@@ -20,13 +20,13 @@
         (hash-t V (set-t K)))))
 
 (define (hash-invert-group hash)
-  (= new-hash (@hash))
-  (hash-each-value
-   (lambda (value)
-     (= keys (hash-keys (hash-select-value (equal? value) hash)))
-     (hash-put! value (list-to-set keys) new-hash))
-   hash)
-  new-hash)
+  (let ((new-hash (@hash)))
+    (hash-each-value
+      (lambda (value)
+        (let ((keys (hash-keys (hash-select-value (equal? value) hash))))
+          (hash-put! value (list-to-set keys) new-hash)))
+      hash)
+    new-hash))
 
 (define-test hash-invert-group-test
   (assert-equal

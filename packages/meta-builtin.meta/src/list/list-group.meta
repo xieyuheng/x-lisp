@@ -6,16 +6,16 @@
         (hash-t K (list-t V)))))
 
 (define (list-group f list)
-  (= new-hash (@hash))
-  (list-each
-   (lambda (value)
-     (= key (f value))
-     (unless (hash-has? key new-hash)
-       (hash-put! key [value] new-hash))
-     (= group (hash-get key new-hash))
-     (list-push! value group))
-   list)
-  new-hash)
+  (let ((new-hash (@hash)))
+   (list-each
+     (lambda (value)
+       (let ((key (f value)))
+         (unless (hash-has? key new-hash)
+           (hash-put! key [value] new-hash))
+         (let ((group (hash-get key new-hash)))
+           (list-push! value group))))
+     list)
+   new-hash))
 
 (define-test list-group-test
   (assert-equal

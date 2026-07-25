@@ -6,9 +6,9 @@
         (set-t B))))
 
 (define (set-map f set)
-  (= new-set (make-set))
-  (set-each (lambda (e) (set-add! (f e) new-set)) set)
-  new-set)
+  (let ((new-set (make-set)))
+    (set-each (lambda (e) (set-add! (f e) new-set)) set)
+    new-set))
 
 (define-test set-map-test
   (assert-equal (@set 2 4 6)

@@ -19,10 +19,10 @@
       (list-each-index-aux f (cdr list) (iadd i 1)))))
 
 (define-test list-each-index-test
-  (= results [])
-  (list-each-index
-   (lambda (i x)
-     (list-push! (make-pair i x) results))
-   ['a 'b 'c])
-  (assert-equal results
-    [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]))
+  (let ((results []))
+    (list-each-index
+      (lambda (i x)
+        (list-push! (make-pair i x) results))
+      ['a 'b 'c])
+    (assert-equal results
+      [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)])))
