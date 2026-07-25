@@ -19,8 +19,8 @@
 (define (desugar-fragment fragment)
   (match fragment
     ((make-fragment mod-name path stmts _)
-     (= desugared-stmts (list-map desugar-stmt stmts))
-     (make-fragment mod-name path stmts desugared-stmts))))
+     (let ((desugared-stmts (list-map desugar-stmt stmts)))
+       (make-fragment mod-name path stmts desugared-stmts)))))
 
 (claim desugar-stmt
   (-> (stmt-t exp-t)
