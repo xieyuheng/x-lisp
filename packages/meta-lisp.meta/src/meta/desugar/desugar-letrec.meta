@@ -44,14 +44,14 @@
              (set-union-many (list-map binding-occurred-names bindings))))
          (tmp-bindings (list-map-zip (make-tmp-binding used-names) bindings new-rhs-exps))
          (tmp-var-exps (list-map make-binding-var-exp tmp-bindings))
-         (box-put-exps (list-map-zip make-box-put-exp tmp-var-exps bindings))))
-  (let-exp
-    box-bindings
+         (box-put-exps (list-map-zip make-box-put-exp tmp-var-exps bindings)))
     (let-exp
-      tmp-bindings
-      (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)
-      location)
-    location))
+      box-bindings
+      (let-exp
+        tmp-bindings
+        (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)
+        location)
+      location)))
 
 (define (make-tmp-binding used-names binding rhs)
   (match binding
