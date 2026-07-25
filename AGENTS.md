@@ -157,6 +157,7 @@ Agent 应在对应场景主动加载 skill：
 | 编写或修改 C 代码 | `scalable-c` |
 | 重构、设计新模块 | `oop-thinking` |
 | 解决复杂问题 | `how-to-solve-it` |
+| 用户提出设计/实现需求 | `design-partner` |
 
 # 禁止事项
 
