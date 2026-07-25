@@ -138,12 +138,6 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
             ),
           )
           if (element.name === name) shadowed = true
-        } else if (element.kind === "AssignExp") {
-          const newRhs = shadowed
-            ? element.rhs
-            : expNaiveSubst(element.rhs, name, rhs)
-          newSequence.push(M.AssignExp(element.name, newRhs, element.location))
-          if (element.name === name) shadowed = true
         } else {
           newSequence.push(
             shadowed ? element : expNaiveSubst(element, name, rhs),
@@ -155,11 +149,6 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
 
     case "LocalDefineExp": {
       let message = `[expNaiveSubst] local (define) can only appear in (begin)`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
-    }
-
-    case "AssignExp": {
-      let message = `[expNaiveSubst] (=) can only appear in (begin)`
       throw new S.ErrorWithSourceLocation(message, exp.location)
     }
 

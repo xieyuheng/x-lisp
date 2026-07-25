@@ -21,9 +21,7 @@
               (qualified-var-exp 'meta-builtin 'builtin 'void location)
               (desugar-begin remaining location))
             location)))
-       ((assign-exp name rhs head-location)
-        (let1-exp name rhs (desugar-begin (cdr sequence) location) head-location))
-       (else
+        (else
         (begin1-exp
           (car sequence)
           (desugar-begin (cdr sequence) location)

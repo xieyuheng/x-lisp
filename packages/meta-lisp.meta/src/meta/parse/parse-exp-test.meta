@@ -69,10 +69,6 @@
   (assert-equal "(begin a b c)"
     (format-exp (parse-exp (@sexp (begin a b c))))))
 
-(define-test parse-assign-test
-  (assert-equal "(= x 1)"
-    (format-exp (parse-exp (@sexp (= x 1))))))
-
 (define-test parse-list-test
   (assert-equal "[1 2]"
     (format-exp (parse-exp (@sexp (@list 1 2)))))

@@ -51,7 +51,7 @@
     ((and-exp exps location)
      (@string "(and " (format-exps exps) ")"))
     ((let1-exp name rhs body location)
-     (@string "(begin (= " (symbol-to-string name) " " (format-exp rhs) ") "
+     (@string "(let ((" (symbol-to-string name) " " (format-exp rhs) ")) "
               (format-exp-body body) ")"))
     ((let-exp bindings body location)
      (@string "(let (" (format-bindings bindings) ") " (format-exp body) ")"))
@@ -79,8 +79,6 @@
        (@string "(define (" (symbol-to-string name) " "
                 (string-join " " (list-map symbol-to-string parameters)) ") "
                 (format-exp body) ")")))
-    ((assign-exp name rhs location)
-     (@string "(= " (symbol-to-string name) " " (format-exp rhs) ")"))
     ((if-exp condition consequent alternative location)
      (@string "(if " (format-exp condition) " "
               (format-exp consequent) " "
@@ -118,8 +116,8 @@
     ((begin1-exp head body location)
      (@string (format-exp head) " " (format-exp-body body)))
     ((let1-exp name rhs body location)
-     (@string "(= " (symbol-to-string name) " " (format-exp rhs) ") "
-              (format-exp-body body)))
+     (@string "(let ((" (symbol-to-string name) " " (format-exp rhs) ")) "
+              (format-exp-body body) ")"))
     ((begin-exp sequence location)
      (format-exps sequence))
     (else (format-exp exp))))

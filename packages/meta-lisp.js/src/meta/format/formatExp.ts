@@ -102,7 +102,7 @@ export function formatExp(exp: M.Exp): string {
     case "Let1Exp": {
       const rhs = formatExp(exp.rhs)
       const body = formatBody(exp.body)
-      return `(begin (= ${exp.name} ${rhs}) ${body})`
+      return `(let ((${exp.name} ${rhs})) ${body})`
     }
 
     case "LetExp": {
@@ -147,10 +147,6 @@ export function formatExp(exp: M.Exp): string {
     case "BeginExp": {
       const sequence = formatExps(exp.sequence)
       return `(begin ${sequence})`
-    }
-
-    case "AssignExp": {
-      return `(= ${exp.name} ${formatExp(exp.rhs)})`
     }
 
     case "IfExp": {
@@ -293,7 +289,7 @@ export function formatBody(body: M.Exp): string {
   if (body.kind === "Begin1Exp") {
     return `${formatExp(body.head)} ${formatBody(body.body)}`
   } else if (body.kind === "Let1Exp") {
-    return `(= ${body.name} ${formatExp(body.rhs)}) ${formatBody(body.body)}`
+    return `(let ((${body.name} ${formatExp(body.rhs)})) ${formatBody(body.body)})`
   } else if (body.kind === "BeginExp") {
     return formatExps(body.sequence)
   } else {
@@ -305,7 +301,7 @@ export function formatTermBody(body: M.Term): string {
   if (body.kind === "Begin1Term") {
     return `${M.formatTerm(body.head)} ${formatTermBody(body.body)}`
   } else if (body.kind === "Let1Term") {
-    return `(= ${body.name} ${M.formatTerm(body.rhs)}) ${formatTermBody(body.body)}`
+    return `(let ((${body.name} ${M.formatTerm(body.rhs)})) ${formatTermBody(body.body)})`
   } else {
     return M.formatTerm(body)
   }

@@ -21,7 +21,6 @@ export type Exp =
   | LocalDefineExp
   | Begin1Exp
   | BeginExp
-  | AssignExp
   | IfExp
   | WhenExp
   | UnlessExp
@@ -444,26 +443,6 @@ export function BeginExp(
   return {
     kind: "BeginExp",
     sequence,
-    location,
-  }
-}
-
-export type AssignExp = {
-  kind: "AssignExp"
-  name: string
-  rhs: Exp
-  location: SourceLocation
-}
-
-export function AssignExp(
-  name: string,
-  rhs: Exp,
-  location: SourceLocation,
-): AssignExp {
-  return {
-    kind: "AssignExp",
-    name,
-    rhs,
     location,
   }
 }

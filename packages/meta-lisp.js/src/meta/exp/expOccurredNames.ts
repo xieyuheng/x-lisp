@@ -100,10 +100,6 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       return setUnionMany(exp.sequence.map((e) => expOccurredNames(e)))
     }
 
-    case "AssignExp": {
-      return setUnion(new Set([exp.name]), expOccurredNames(exp.rhs))
-    }
-
     case "IfExp": {
       return setUnionMany([
         expOccurredNames(exp.condition),

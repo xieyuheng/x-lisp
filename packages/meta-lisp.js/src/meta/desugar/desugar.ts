@@ -24,12 +24,6 @@ export function desugar(exp: M.Exp): M.Term {
       return desugar(desugarBegin(exp.sequence, exp.location))
     }
 
-    case "AssignExp": {
-      let message = `[desugar] (=) must occur in the head of (begin)`
-      message += `\n  exp: ${M.formatExp(exp)}`
-      throw new S.ErrorWithSourceLocation(message, exp.location)
-    }
-
     case "LocalDefineExp": {
       let message = `[desugar] local (define) must occur in the body of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`

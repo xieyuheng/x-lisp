@@ -56,8 +56,6 @@
      (set-union (exp-occurred-names head) (exp-occurred-names body)))
     ((begin-exp sequence location)
      (set-union-many (list-map exp-occurred-names sequence)))
-    ((assign-exp name rhs location)
-     (set-union (@set name) (exp-occurred-names rhs)))
     ((if-exp condition consequent alternative location)
      (set-union-many
        [(exp-occurred-names condition)

@@ -82,10 +82,6 @@
        (ppml/pretty-syntax "begin"
          []
          (list-map pretty-exp sequence))))
-    ((assign-exp name rhs location)
-     (ppml/pretty-syntax "="
-       [(ppml/text (symbol-to-string name))]
-       [(pretty-exp rhs)]))
     ((if-exp condition consequent alternative location)
      (ppml/pretty-syntax "if"
        [(pretty-exp condition)]

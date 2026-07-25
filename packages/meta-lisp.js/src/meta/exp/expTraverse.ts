@@ -118,10 +118,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.BeginExp(exp.sequence.map(onExp), exp.location)
     }
 
-    case "AssignExp": {
-      return M.AssignExp(exp.name, onExp(exp.rhs), exp.location)
-    }
-
     case "WhenExp": {
       return M.WhenExp(
         onExp(exp.condition),

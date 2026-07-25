@@ -21,7 +21,6 @@
   (local-define-exp (name symbol-t) (parameters (list-t symbol-t)) (body exp-t) (location source-location-t))
   (begin1-exp (head exp-t) (body exp-t) (location source-location-t))
   (begin-exp (sequence (list-t exp-t)) (location source-location-t))
-  (assign-exp (name symbol-t) (rhs exp-t) (location source-location-t))
   (if-exp (condition exp-t) (consequent exp-t) (alternative exp-t) (location source-location-t))
   (when-exp (condition exp-t) (consequent exp-t) (location source-location-t))
   (unless-exp (condition exp-t) (alternative exp-t) (location source-location-t))

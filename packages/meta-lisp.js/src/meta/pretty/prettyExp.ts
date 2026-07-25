@@ -148,14 +148,6 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       return Ppml.prettySyntax("begin", [], exp.sequence.map(prettyExp))
     }
 
-    case "AssignExp": {
-      return Ppml.prettySyntax(
-        "=",
-        [],
-        [Ppml.text(exp.name), prettyExp(exp.rhs)],
-      )
-    }
-
     case "IfExp": {
       return Ppml.prettySyntax(
         "if",

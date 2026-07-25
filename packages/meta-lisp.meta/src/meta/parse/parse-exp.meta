@@ -145,12 +145,6 @@
      (match-exp (list-map parse-exp (list-sexp-elements (car sexps)))
                 (list-map parse-match-many-clause (cdr sexps))
                 keyword-location))
-    ((equal? tag '=)
-     (@comment
-       (= <name> <exp>))
-     (assign-exp (symbol-sexp-content (car sexps))
-                 (parse-exp (list-get 1 sexps))
-                 location))
     ((equal? tag 'begin)
      (@comment
        (begin <body>))

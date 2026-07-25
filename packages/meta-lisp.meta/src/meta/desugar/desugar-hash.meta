@@ -10,24 +10,22 @@
       (exp-occurred-names (hash-entry-key entry))
       (exp-occurred-names (hash-entry-value entry))))
   (let* ((used-names (set-union-many (list-map entry-used-names entries)))
-         (fresh-name (generate-relative-fresh-name used-names 'hash)))
-    (desugar-begin
-      (list-concat
-        [[(assign-exp
-            fresh-name
-            (apply-exp
-              (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)
-              []
-              location)
-            location)]
-         (list-map
-           (lambda (entry)
-             (apply-exp
-               (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
-               [(hash-entry-key entry)
-                (hash-entry-value entry)
-                (var-exp fresh-name location)]
-               location))
-           entries)
-         [(var-exp fresh-name location)]])
-      location)))
+         (fresh-name (generate-relative-fresh-name used-names 'hash))
+         (make (apply-exp
+                 (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)
+                 []
+                 location))
+         (body (list-fold-right
+                 (lambda (entry acc)
+                   (begin1-exp
+                     (apply-exp
+                       (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
+                       [(hash-entry-key entry)
+                        (hash-entry-value entry)
+                        (var-exp fresh-name location)]
+                       location)
+                     acc
+                     location))
+                 (var-exp fresh-name location)
+                 entries)))
+    (let1-exp fresh-name make body location)))

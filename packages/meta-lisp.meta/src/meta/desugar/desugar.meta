@@ -8,12 +8,6 @@
   (match exp
     ((begin-exp sequence location)
      (desugar (desugar-begin sequence location)))
-    ((assign-exp name rhs location)
-     (error-with-location
-       (@string
-         "(desugar) (=) must occur in the head of (begin)"
-         "\n  exp: " (format-exp exp))
-       location))
     ((local-define-exp name parameters body location)
      (error-with-location
        (@string

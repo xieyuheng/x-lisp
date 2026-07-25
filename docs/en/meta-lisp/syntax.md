@@ -53,7 +53,6 @@ All meta-Lisp syntax is presented below in groups.
   - [(begin)](#begin)
   - [(let)](#let)
   - [(let*)](#let-1)
-  - [(=)](#assign)
   - [(letrec)](#letrec)
   - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
@@ -426,8 +425,8 @@ The function body `<body>` can be multiple expressions:
 
 ```meta-lisp
 (define (f x)
-  (= y (iadd x 1))
-  (imul y 2))
+  (let ((y (iadd x 1)))
+    (imul y 2)))
 ```
 
 # Types
@@ -681,9 +680,9 @@ Earlier expressions are typically for side effects.
 The `<body>` of `(lambda)` and `(define)` function bodies both work like `(begin)`'s `<body>`.
 
 ```meta-lisp
-(define (f x)
-  (= y (iadd x 1))
-  (imul y 2))
+`(define (f x)
+  (let ((y (iadd x 1)))
+    (imul y 2)))
 ```
 
 ## (let)
@@ -740,38 +739,6 @@ Each `<exp>` can reference previously bound names.
 (let ((x 1))
   (let ((y (iadd x 1)))
     (iadd x y)))
-```
-
-<a name="assign"></a>
-## (=)
-
-```meta-lisp
-(= <name> <exp>)
-```
-
-Local variable binding in `<body>`.
-
-Can only be used inside a `<body>`.
-Replaces nested `(let)` to reduce indentation.
-
-```meta-lisp
-(define (f x)
-  (= y (iadd x 1))
-  (println y)
-  (= z (iadd y 1))
-  (println z)
-  (iadd y z))
-```
-
-Equivalent to:
-
-```meta-lisp
-(define (f x)
-  (let ((y (iadd x 1)))
-    (println y)
-    (let ((z (iadd y 1)))
-      (println z)
-      (iadd y z))))
 ```
 
 ## (letrec)
@@ -889,14 +856,14 @@ Sequential dependency:
   b)  ;; => 2
 ```
 
-`(=)` and `(define)` can be mixed:
+`(let)` and `(define)` can be mixed:
 
 ```meta-lisp
 (begin
-  (= one 1)
-  (define a one)
-  (define b (iadd a one))
-  b)  ;; => 2
+  (let ((one 1))
+    (define a one)
+    (define b (iadd a one))
+    b))  ;; => 2
 ```
 
 # Function composition

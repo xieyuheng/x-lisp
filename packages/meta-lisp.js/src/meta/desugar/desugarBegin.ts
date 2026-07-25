@@ -39,16 +39,7 @@ export function desugarBegin(
     return head
   }
 
-  if (head.kind === "AssignExp") {
-    return M.Let1Exp(
-      head.name,
-      head.rhs,
-      desugarBegin(rest, location),
-      location,
-    )
-  } else {
-    return M.Begin1Exp(head, desugarBegin(rest, location), location)
-  }
+  return M.Begin1Exp(head, desugarBegin(rest, location), location)
 }
 
 function collectAdjacentLocalDefines(

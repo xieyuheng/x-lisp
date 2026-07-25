@@ -61,8 +61,6 @@
      (begin1-exp (f head) (f body) location))
     ((begin-exp sequence location)
      (begin-exp (list-map f sequence) location))
-    ((assign-exp name rhs location)
-     (assign-exp name (f rhs) location))
     ((when-exp condition consequent location)
      (when-exp (f condition) (f consequent) location))
     ((unless-exp condition alternative location)

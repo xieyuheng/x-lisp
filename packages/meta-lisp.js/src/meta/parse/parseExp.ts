@@ -100,10 +100,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "`(= ,name ,rhs)": ({ name, rhs }, { location }) => {
-    return M.AssignExp(S.asSymbolSexp(name).content, parseExp(rhs), location)
-  },
-
   "(cons* 'define (cons* name parameters) body)": (
     { name, parameters, body },
     { sexp },

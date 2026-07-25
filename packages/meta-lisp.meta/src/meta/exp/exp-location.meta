@@ -26,7 +26,6 @@
     ((local-define-exp name parameters body location) location)
     ((begin1-exp head body location) location)
     ((begin-exp sequence location) location)
-    ((assign-exp name rhs location) location)
     ((if-exp condition consequent alternative location) location)
     ((when-exp condition consequent location) location)
     ((unless-exp condition alternative location) location)

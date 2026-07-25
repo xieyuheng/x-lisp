@@ -53,7 +53,6 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(begin)](#begin)
   - [(let)](#let)
   - [(let*)](#let-1)
-  - [(=)](#assign)
   - [(letrec)](#letrec)
   - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
@@ -427,8 +426,8 @@ builtin/list-empty?
 
 ```meta-lisp
 (define (f x)
-  (= y (iadd x 1))
-  (imul y 2))
+  (let ((y (iadd x 1)))
+    (imul y 2)))
 ```
 
 # 类型
@@ -686,8 +685,8 @@ builtin/list-empty?
 
 ```meta-lisp
 (define (f x)
-  (= y (iadd x 1))
-  (imul y 2))
+  (let ((y (iadd x 1)))
+    (imul y 2)))
 ```
 
 ## (let)
@@ -744,38 +743,6 @@ builtin/list-empty?
 (let ((x 1))
   (let ((y (iadd x 1)))
     (iadd x y)))
-```
-
-<a name="assign"></a>
-## (=)
-
-```meta-lisp
-(= <name> <exp>)
-```
-
-`<body>` 中的局部变量绑定。
-
-只能在 `<body>` 中使用。
-用来代替嵌套的 `(let)`，以减少缩进。
-
-```meta-lisp
-(define (f x)
-  (= y (iadd x 1))
-  (println y)
-  (= z (iadd y 1))
-  (println z)
-  (iadd y z))
-```
-
-等价于：
-
-```meta-lisp
-(define (f x)
-  (let ((y (iadd x 1)))
-    (println y)
-    (let ((z (iadd y 1)))
-      (println z)
-      (iadd y z))))
 ```
 
 ## (letrec)
@@ -893,14 +860,14 @@ builtin/list-empty?
   b)  ;; => 2
 ```
 
-`(=)` 与 `(define)` 可以混合使用：
+`(let)` 与 `(define)` 可以混合使用：
 
 ```meta-lisp
 (begin
-  (= one 1)
-  (define a one)
-  (define b (iadd a one))
-  b)  ;; => 2
+  (let ((one 1))
+    (define a one)
+    (define b (iadd a one))
+    b))  ;; => 2
 ```
 
 # 函数组合

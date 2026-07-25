@@ -6,22 +6,20 @@
 
 (define (desugar-list elements location)
   (let* ((used-names (set-union-many (list-map exp-occurred-names elements)))
-         (fresh-name (generate-relative-fresh-name used-names 'list)))
-    (desugar-begin
-      (list-concat
-        [[(assign-exp
-            fresh-name
-            (apply-exp
-              (qualified-var-exp 'meta-builtin 'builtin 'make-list location)
-              []
-              location)
-            location)]
-         (list-map
-           (lambda (element)
-             (apply-exp
-               (qualified-var-exp 'meta-builtin 'builtin 'list-push! location)
-               [element (var-exp fresh-name location)]
-               location))
-           elements)
-         [(var-exp fresh-name location)]])
-      location)))
+         (fresh-name (generate-relative-fresh-name used-names 'list))
+         (make (apply-exp
+                 (qualified-var-exp 'meta-builtin 'builtin 'make-list location)
+                 []
+                 location))
+         (body (list-fold-right
+                 (lambda (element acc)
+                   (begin1-exp
+                     (apply-exp
+                       (qualified-var-exp 'meta-builtin 'builtin 'list-push! location)
+                       [element (var-exp fresh-name location)]
+                       location)
+                     acc
+                     location))
+                 (var-exp fresh-name location)
+                 elements)))
+    (let1-exp fresh-name make body location)))
