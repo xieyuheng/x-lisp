@@ -1,12 +1,12 @@
 (module meta)
 
 (define (load-fragment path)
-  (= code (fs-read path))
-  (= sexps (parse-sexps path code))
-  (= stmts (list-map parse-stmt sexps))
-  (= module-stmt (list-find declare-module-stmt? stmts))
-  (match module-stmt
-    ((just (declare-module-stmt name location))
-     (make-fragment name path stmts []))
-    ((nothing)
-     (error "(load-fragment) expect (module) statement in fragment"))))
+  (let* ((code (fs-read path))
+         (sexps (parse-sexps path code))
+         (stmts (list-map parse-stmt sexps))
+         (module-stmt (list-find declare-module-stmt? stmts)))
+    (match module-stmt
+      ((just (declare-module-stmt name location))
+       (make-fragment name path stmts []))
+      ((nothing)
+       (error "(load-fragment) expect (module) statement in fragment")))))

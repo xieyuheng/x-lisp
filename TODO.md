@@ -1,6 +1,6 @@
 # remove assign
 
-remove (=) from meta-lisp.meta
+remove all (=) from meta-lisp.meta
 
 [meta-lisp.js] remove (=) syntax
 

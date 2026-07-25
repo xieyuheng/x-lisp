@@ -3,7 +3,9 @@ import * as M from "../index.ts"
 
 // - To implement `reify`.
 
-export function generateCanonicalLabelSubst(sourceTypes: Array<M.Type>): M.Subst {
+export function generateCanonicalLabelSubst(
+  sourceTypes: Array<M.Type>,
+): M.Subst {
   const freeVarTypes = arrayDedup(
     sourceTypes.flatMap((type) => M.typeFreeVarTypes(new Set(), type)),
     M.varTypeEqual,
@@ -21,7 +23,9 @@ export function generateCanonicalLabelSubst(sourceTypes: Array<M.Type>): M.Subst
 
 // - To improve error report.
 
-export function generatePrettyUnknownSubst(sourceTypes: Array<M.Type>): M.Subst {
+export function generatePrettyUnknownSubst(
+  sourceTypes: Array<M.Type>,
+): M.Subst {
   const freeVarTypes = arrayDedup(
     sourceTypes.flatMap((type) => M.typeFreeVarTypes(new Set(), type)),
     M.varTypeEqual,
