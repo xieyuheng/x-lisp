@@ -40,6 +40,10 @@
       (mod-name lambda)
       (imported-names 624)
       (imported-prefixes 0))
+    ("src/limit-arity.meta"
+      (mod-name limit-arity)
+      (imported-names 624)
+      (imported-prefixes 0))
     ("src/module-lib.meta"
       (mod-name module-lib)
       (imported-names 624)

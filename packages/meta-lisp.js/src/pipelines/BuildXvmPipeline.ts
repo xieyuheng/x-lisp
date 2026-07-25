@@ -42,6 +42,7 @@ export function BuildXvmPipeline(rootPkg: Pkg.Package): void {
   for (const pkg of closure) Passes.UniquifyPass(pkg)
   for (const pkg of closure) Passes.CheckPass(pkg)
   for (const pkg of closure) Passes.ConvertClosurePass(pkg)
+  for (const pkg of closure) Passes.LimitArityPass(pkg, 6)
   for (const pkg of closure) Passes.UnnestOperandPass(pkg)
 
   const basicMod = Passes.ExplicateControlPass(rootPkg)

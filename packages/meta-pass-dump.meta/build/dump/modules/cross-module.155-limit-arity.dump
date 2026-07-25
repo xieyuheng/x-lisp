@@ -1,0 +1,3 @@
+(define (say-hello) (self/module-lib/greet "world"))
+
+(define (get-greeting) self/module-lib/greeting)
