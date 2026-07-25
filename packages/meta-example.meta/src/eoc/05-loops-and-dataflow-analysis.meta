@@ -7,17 +7,17 @@
   void)
 
 (define-test eoc-05-02
-  (= x (begin
-         (println 1)
-         (println 2)
-         (println 3)
-         6))
-  (begin
-    (println 4)
-    (println 5)
-    (println 6)
-    (println (iadd x x))
-    void))
+  (let ((x (begin
+             (println 1)
+             (println 2)
+             (println 3)
+             6)))
+    (begin
+      (println 4)
+      (println 5)
+      (println 6)
+      (println (iadd x x))
+      void)))
 
 (define-test eoc-05-03
   (if (begin

@@ -9,8 +9,8 @@
   (assert-equal "hello! world!" (@string "hello! " "world!")))
 
 (define-test string-with-variable-test
-  (= x "hello")
-  (= y "world")
-  (assert-equal "helloworld" (@string x y))
-  (assert-equal "hello, world" (@string x ", " y))
-  (assert-equal "(--hello--)" (@string "(--" x "--)")))
+  (let ((x "hello")
+        (y "world"))
+    (assert-equal "helloworld" (@string x y))
+    (assert-equal "hello, world" (@string x ", " y))
+    (assert-equal "(--hello--)" (@string "(--" x "--)"))))

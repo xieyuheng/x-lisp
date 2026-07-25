@@ -21,9 +21,9 @@
   (lambda (x) (f x x)))
 
 (define-test forth-test
-  (= f (lambda (x) x))
-  (= square (dup imul))
-  (println (square (f 1)))
-  (println (square (f 2)))
-  (println (square (f 3)))
-  (println (square (f 4))))
+  (let ((f (lambda (x) x))
+        (square (dup imul)))
+    (println (square (f 1)))
+    (println (square (f 2)))
+    (println (square (f 3)))
+    (println (square (f 4)))))

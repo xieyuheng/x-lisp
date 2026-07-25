@@ -1,7 +1,6 @@
 # remove assign
 
 remove (=) from meta-builtin.meta
-remove (=) from meta-example.meta
 remove (=) from meta-pass-dump.meta
 remove (=) from meta-lisp.meta
 

@@ -11,9 +11,9 @@
   (assert (not (or false false false))))
 
 (define-test if-bare-true-test
-  (= flag true)
-  (assert-equal (if flag 1 2) 1))
+  (let ((flag true))
+    (assert-equal (if flag 1 2) 1)))
 
 (define-test if-bare-false-test
-  (= flag false)
-  (assert-equal (if flag 1 2) 2))
+  (let ((flag false))
+    (assert-equal (if flag 1 2) 2)))
