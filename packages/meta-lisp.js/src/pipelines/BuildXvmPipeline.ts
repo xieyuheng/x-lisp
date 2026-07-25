@@ -83,10 +83,10 @@ function XvmBundle(pkg: Pkg.Package, xvmMod: Xvm.Mod): void {
 
 function xvmAssemble(pkg: Pkg.Package): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-  const metaPath = Path.join(currentDir, "../../../meta-runtime.c/src/meta.exe")
+  const xvmPath = Path.join(currentDir, "../../../xvm.c/src/xvm.exe")
   const xvmAsmPath = Path.join(
     Pkg.packageOutputDirectory(pkg),
     "bundle.xvm.asm",
   )
-  systemShellRun(metaPath, ["assemble-xvm", xvmAsmPath])
+  systemShellRun(xvmPath, ["assemble-xvm", xvmAsmPath])
 }

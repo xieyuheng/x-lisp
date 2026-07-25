@@ -25,6 +25,9 @@ AI agent 应用中文回答用户的问题。
 - [std.c] — 基础库
 - [cli.c] — CLI 库，依赖 [std.c]
 - [meta-runtime.c] — 多后端运行时，依赖 [std.c] + [cli.c]
+- [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数），依赖 [std.c]
+- [xvm.c] — XVM 虚拟机运行时 + 编译器，依赖 [xrt.c] + [std.c] + [cli.c]
+- [xexe.c] — x86-64 可执行文件加载/运行，依赖 [xrt.c] + [std.c] + [cli.c]
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
 
@@ -36,7 +39,7 @@ AI agent 应用中文回答用户的问题。
 # 依赖链
 
 1. `pnpm install`（或 `scripts/prepare.sh`）
-2. C：[std.c] → [cli.c] → [meta-runtime.c]
+2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c] / [xexe.c]
 3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 二进制
 

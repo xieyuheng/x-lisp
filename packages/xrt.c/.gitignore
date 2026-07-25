@@ -1,0 +1,20 @@
+# c
+*.o
+*.a
+*.exe
+*.x86.exe
+*.x86.flat
+*.xvm.exe
+*.bin
+*.test
+*.snapshot
+
+# GNU global
+GPATH
+GRTAGS
+GTAGS
+
+# emacs
+*~
+*#*
+.#*
