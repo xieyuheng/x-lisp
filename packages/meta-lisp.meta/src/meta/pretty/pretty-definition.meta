@@ -88,18 +88,18 @@
 
 (claim pretty-definition-claim (-> mod-t symbol-t (maybe-t ppml/node-t)))
 (define (pretty-definition-claim mod name)
-  (= claimed-entry (mod-lookup-claimed-entry mod name))
-  (if (not (nothing? claimed-entry))
-    (let ((term (claimed-entry-term (just-value claimed-entry))))
-      (just (ppml/pretty-syntax "claim"
-              [(ppml/text (symbol-to-string name))]
-              [(pretty-term term)])))
-    (let ((inferred-type (mod-lookup-inferred-type mod name)))
-      (if (not (nothing? inferred-type))
+  (let ((claimed-entry (mod-lookup-claimed-entry mod name)))
+    (if (not (nothing? claimed-entry))
+      (let ((term (claimed-entry-term (just-value claimed-entry))))
         (just (ppml/pretty-syntax "claim"
                 [(ppml/text (symbol-to-string name))]
-                [(pretty-type (just-value inferred-type))]))
-        (nothing)))))
+                [(pretty-term term)])))
+      (let ((inferred-type (mod-lookup-inferred-type mod name)))
+        (if (not (nothing? inferred-type))
+          (just (ppml/pretty-syntax "claim"
+                  [(ppml/text (symbol-to-string name))]
+                  [(pretty-type (just-value inferred-type))]))
+          (nothing))))))
 
 (claim pretty-type (-> type-t ppml/node-t))
 (define (pretty-type type)

@@ -5,39 +5,43 @@
 (claim pretty-stmt
   (polymorphic (E)
     (-> (-> E ppml/node-t) (stmt-t E) ppml/node-t)))
+
 (define (pretty-stmt pretty-body stmt)
   (match stmt
     ((import-stmt pkg-name mod-name names location)
-     (= mod-name-str (symbol-to-string mod-name))
-     (= pkg-name-str (symbol-to-string pkg-name))
-     (= full (if (equal? pkg-name-str "self") mod-name-str
-               (@string pkg-name-str "/" mod-name-str)))
-     (ppml/pretty-syntax "import"
-       [(ppml/text full)]
-       (list-map (lambda (n) (ppml/text (symbol-to-string n))) names)))
+     (let* ((mod-name-str (symbol-to-string mod-name))
+            (pkg-name-str (symbol-to-string pkg-name))
+            (full (if (equal? pkg-name-str "self")
+                    mod-name-str
+                    (@string pkg-name-str "/" mod-name-str))))
+       (ppml/pretty-syntax "import"
+         [(ppml/text full)]
+         (list-map (lambda (n) (ppml/text (symbol-to-string n))) names))))
     ((import-as-stmt pkg-name mod-name prefix location)
-     (= mod-name-str (symbol-to-string mod-name))
-     (= pkg-name-str (symbol-to-string pkg-name))
-     (= full (if (equal? pkg-name-str "self") mod-name-str
-               (@string pkg-name-str "/" mod-name-str)))
-     (ppml/pretty-syntax "import-as"
-       [(ppml/text full)
-        (ppml/text (symbol-to-string prefix))] []))
+     (let* ((mod-name-str (symbol-to-string mod-name))
+            (pkg-name-str (symbol-to-string pkg-name))
+            (full (if (equal? pkg-name-str "self")
+                    mod-name-str
+                    (@string pkg-name-str "/" mod-name-str))))
+       (ppml/pretty-syntax "import-as"
+         [(ppml/text full)
+          (ppml/text (symbol-to-string prefix))] [])))
     ((import-all-stmt pkg-name mod-name location)
-     (= mod-name-str (symbol-to-string mod-name))
-     (= pkg-name-str (symbol-to-string pkg-name))
-     (= full (if (equal? pkg-name-str "self") mod-name-str
-               (@string pkg-name-str "/" mod-name-str)))
-     (ppml/pretty-syntax "import-all"
-       [(ppml/text full)] []))
+     (let* ((mod-name-str (symbol-to-string mod-name))
+            (pkg-name-str (symbol-to-string pkg-name))
+            (full (if (equal? pkg-name-str "self")
+                    mod-name-str
+                    (@string pkg-name-str "/" mod-name-str))))
+       (ppml/pretty-syntax "import-all"
+         [(ppml/text full)] [])))
     ((define-function-stmt name parameters body location)
-     (let ((name-str (symbol-to-string name))
-           (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
-       (let ((def-node (ppml/pretty-application (just name-str)
-                         (cons (ppml/text name-str) param-nodes))))
-         (ppml/pretty-syntax "define"
-           [def-node]
-           [(pretty-body body)]))))
+     (let* ((name-str (symbol-to-string name))
+            (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters))
+            (def-node (ppml/pretty-application (just name-str)
+                        (cons (ppml/text name-str) param-nodes))))
+       (ppml/pretty-syntax "define"
+         [def-node]
+         [(pretty-body body)])))
     ((define-variable-stmt name body location)
      (ppml/pretty-syntax "define"
        [(ppml/text (symbol-to-string name))]

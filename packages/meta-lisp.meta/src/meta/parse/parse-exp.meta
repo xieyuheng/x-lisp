@@ -7,10 +7,10 @@
 (define (parse-exp sexp)
   (match sexp
     ((symbol-sexp content location)
-     (= string (symbol-to-string content))
-     (if (string-contains? "/" string)
-       (parse-qualified-var-exp string location)
-       (var-exp content location)))
+     (let ((string (symbol-to-string content)))
+       (if (string-contains? "/" string)
+         (parse-qualified-var-exp string location)
+         (var-exp content location))))
     ((keyword-sexp content location) (keyword-exp content location))
     ((string-sexp content location) (string-exp content location))
     ((int-sexp content location) (int-exp content location))
@@ -22,27 +22,27 @@
       exp-t))
 
 (define (parse-qualified-var-exp string location)
-  (= parts (string-split "/" string))
-  (cond
-    ((equal? (list-length parts) 3)
-     (@comment
-       <package-name>/<module-name>/<name>)
-     (qualified-var-exp
-       (string-to-symbol (list-get 0 parts))
-       (string-to-symbol (list-get 1 parts))
-       (string-to-symbol (list-get 2 parts))
-       location))
-    ((equal? (list-length parts) 2)
-     (@comment
-       <module-name>/<name>)
-     (qualified-var-exp
-       'self
-       (string-to-symbol (list-get 0 parts))
-       (string-to-symbol (list-get 1 parts))
-       location))
-    (else
-      (= message "(parse-qualified-var-exp) qualified variable must have one or two /")
-      (error-with-location message location))))
+  (let ((parts (string-split "/" string)))
+    (cond
+      ((equal? (list-length parts) 3)
+       (@comment
+         <package-name>/<module-name>/<name>)
+       (qualified-var-exp
+         (string-to-symbol (list-get 0 parts))
+         (string-to-symbol (list-get 1 parts))
+         (string-to-symbol (list-get 2 parts))
+         location))
+      ((equal? (list-length parts) 2)
+       (@comment
+         <module-name>/<name>)
+       (qualified-var-exp
+         'self
+         (string-to-symbol (list-get 0 parts))
+         (string-to-symbol (list-get 1 parts))
+         location))
+      (else
+       (let ((message "(parse-qualified-var-exp) qualified variable must have one or two /"))
+         (error-with-location message location))))))
 
 (define syntax-keywords
   ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
@@ -55,11 +55,11 @@
 
 (define (parse-compound-exp sexps location)
   (cond ((symbol-sexp? (car sexps))
-         (= tag (symbol-sexp-content (car sexps)))
-         (if (list-some? (equal? tag) syntax-keywords)
-           (let ((keyword-location (symbol-sexp-location (car sexps))))
-             (parse-special-form-exp tag (cdr sexps) location keyword-location))
-           (parse-apply-exp (car sexps) (cdr sexps) location)))
+         (let ((tag (symbol-sexp-content (car sexps))))
+           (if (list-some? (equal? tag) syntax-keywords)
+             (let ((keyword-location (symbol-sexp-location (car sexps))))
+               (parse-special-form-exp tag (cdr sexps) location keyword-location))
+             (parse-apply-exp (car sexps) (cdr sexps) location))))
         (else (parse-apply-exp (car sexps) (cdr sexps) location))))
 
 (claim parse-apply-exp
@@ -341,10 +341,10 @@
       (list-t (hash-entry-t exp-t exp-t))))
 
 (define (parse-hash-entries sexps)
-  (cond ((list-empty? sexps) [])
-        (else
-          (= key (car sexps))
-          (= value (car (cdr sexps)))
-          (= rest (cdr (cdr sexps)))
-          (cons (make-hash-entry (parse-exp key) (parse-exp value))
-                (parse-hash-entries rest)))))
+  (if (list-empty? sexps)
+    []
+    (let ((key (car sexps))
+          (value (car (cdr sexps)))
+          (rest (cdr (cdr sexps))))
+      (cons (make-hash-entry (parse-exp key) (parse-exp value))
+        (parse-hash-entries rest)))))

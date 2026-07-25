@@ -9,8 +9,8 @@
     ((list-sexp elements location)
      (unless (symbol-sexp? (car elements))
        (error-with-location "(parse-stmt) head of stmt should be a symbol" (sexp-location sexp)))
-     (= tag (symbol-sexp-content (car elements)))
-     (parse-special-form-stmt tag (cdr elements) location))
+     (let ((tag (symbol-sexp-content (car elements))))
+       (parse-special-form-stmt tag (cdr elements) location)))
     (else
       (error-with-location "(parse-stmt) unhandled sexp" (sexp-location sexp)))))
 
@@ -84,29 +84,29 @@
     ((equal? tag 'import)
      (@comment
        (import <module-name> <name> ...))
-     (= source (parse-import-source (car sexps)))
-     (import-stmt
-       (pair-first source)
-       (pair-second source)
-       (list-map symbol-sexp-content (cdr sexps))
-       location))
+     (let ((source (parse-import-source (car sexps))))
+       (import-stmt
+         (pair-first source)
+         (pair-second source)
+         (list-map symbol-sexp-content (cdr sexps))
+         location)))
     ((equal? tag 'import-as)
      (@comment
        (import-as <module-name> <prefix>))
-     (= source (parse-import-source (car sexps)))
-     (import-as-stmt
-       (pair-first source)
-       (pair-second source)
-       (symbol-sexp-content (car (cdr sexps)))
-       location))
+     (let ((source (parse-import-source (car sexps))))
+       (import-as-stmt
+         (pair-first source)
+         (pair-second source)
+         (symbol-sexp-content (car (cdr sexps)))
+         location)))
     ((equal? tag 'import-all)
      (@comment
        (import-all <module-name>))
-     (= source (parse-import-source (car sexps)))
-     (import-all-stmt
-       (pair-first source)
-       (pair-second source)
-       location))
+     (let ((source (parse-import-source (car sexps))))
+       (import-all-stmt
+         (pair-first source)
+         (pair-second source)
+         location)))
     ((equal? tag 'define-enum)
      (@comment
        (define-enum <type-name>
@@ -191,12 +191,12 @@
        (define-opaque-type (<type-name> <type-parameter> ...) <representation-type>
          (<interface-name> <interface-type>)
          ...))
-     (= type-constructor (parse-pre-type-constructor (car sexps)))
-     (define-opaque-type-stmt
-       type-constructor
-       (parse-exp (car (cdr sexps)))
-       (list-map parse-pre-interface-entry (cdr (cdr sexps)))
-       location))
+     (let ((type-constructor (parse-pre-type-constructor (car sexps))))
+       (define-opaque-type-stmt
+         type-constructor
+         (parse-exp (car (cdr sexps)))
+         (list-map parse-pre-interface-entry (cdr (cdr sexps)))
+         location)))
     ((equal? tag 'claim)
      (@comment
        (claim <name> <type>))
@@ -286,13 +286,13 @@
       (pair-t symbol-t symbol-t)))
 
 (define (parse-import-source sexp)
-  (= raw (symbol-sexp-content sexp))
-  (= raw-string (symbol-to-string raw))
-  (= parts (string-split "/" raw-string))
-  (if (equal? (list-length parts) 1)
-    (make-pair 'self raw)
-    (make-pair (string-to-symbol (list-get 0 parts))
-               (string-to-symbol (list-get 1 parts)))))
+  (let* ((raw (symbol-sexp-content sexp))
+         (raw-string (symbol-to-string raw))
+         (parts (string-split "/" raw-string)))
+    (if (equal? (list-length parts) 1)
+      (make-pair 'self raw)
+      (make-pair (string-to-symbol (list-get 0 parts))
+        (string-to-symbol (list-get 1 parts))))))
 
 (claim parse-explicit-data-constructor
   (-> (list-t sexp-t) source-location-t
@@ -304,15 +304,15 @@
      <predicate-name>
      (<field-name> <accessor-name> <modifier-name>)
      ...))
-  (= data-constructor (parse-pre-data-constructor (car sexps)))
-  (= field-interface-table (cdr (cdr sexps)))
-  (make-explicit-data-constructor
-    (pre-data-constructor-name data-constructor)
-    (list-map
-      (resolve-explicit-data-field field-interface-table)
-      (pre-data-constructor-fields data-constructor))
-    (symbol-sexp-content (car (cdr sexps)))
-    location))
+  (let ((data-constructor (parse-pre-data-constructor (car sexps)))
+        (field-interface-table (cdr (cdr sexps))))
+    (make-explicit-data-constructor
+      (pre-data-constructor-name data-constructor)
+      (list-map
+        (resolve-explicit-data-field field-interface-table)
+        (pre-data-constructor-fields data-constructor))
+      (symbol-sexp-content (car (cdr sexps)))
+      location)))
 
 (claim resolve-explicit-data-field
   (-> (list-t sexp-t) pre-data-field-t
