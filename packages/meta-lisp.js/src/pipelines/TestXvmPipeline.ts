@@ -5,12 +5,12 @@ import * as Pkg from "../package/index.ts"
 
 export function TestXvmPipeline(pkg: Pkg.Package): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-  const metaPath = Path.join(currentDir, "../../../meta-runtime.c/src/meta.exe")
+  const xvmPath = Path.join(currentDir, "../../../xvm.c/src/xvm.exe")
   const xvmExePath = Path.join(
     Pkg.packageOutputDirectory(pkg),
     "bundle.xvm.exe",
   )
-  systemShellRun(metaPath, [
+  systemShellRun(xvmPath, [
     "test-xvm",
     xvmExePath,
     "--snapshot",

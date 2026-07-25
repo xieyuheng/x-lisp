@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+../xexe.c/src/xexe.exe $@

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-../meta-runtime.c/src/meta.exe $@
