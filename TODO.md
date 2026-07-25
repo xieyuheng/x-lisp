@@ -1,10 +1,15 @@
+# remove assign
+
+remove (=) from meta-builtin.meta
+remove (=) from meta-example.meta
+remove (=) from meta-pass-dump.meta
+remove (=) from meta-lisp.meta
+
+[meta-lisp.js] remove (=) syntax
+
 # limit-arity
 
 [meta-lisp.js] limit-arity-pass
-
-# remove assign
-
-[meta-lisp.js] remove (=) as sugar for (let)
 
 # native code generation
 
