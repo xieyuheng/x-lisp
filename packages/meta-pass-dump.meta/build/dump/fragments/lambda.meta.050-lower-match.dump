@@ -206,8 +206,8 @@
        (= body (self/lambda/let-exp-body exp))
        (= rhs (self/lambda/let-exp-rhs exp))
        (= name (self/lambda/let-exp-name exp))
-       (= env (extend-env name (evaluate rhs env) env))
-       (evaluate body env)))))
+       (let ((env (extend-env name (evaluate rhs env) env)))
+         (evaluate body env))))))
 
 (define (apply target arg)
   (cond

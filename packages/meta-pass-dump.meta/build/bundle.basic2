@@ -25856,7 +25856,7 @@
     (tail-call address.1 body unnested.1))
   (block else.2
     (= address.10 (address :name meta-builtin/builtin/make-source-position))
-    (= i64.4 (int64 :content 1042))
+    (= i64.4 (int64 :content 1050))
     (= int.4 (tag-int i64.4))
     (= i64.5 (int64 :content 35))
     (= int.5 (tag-int i64.5))
@@ -25865,7 +25865,7 @@
     (= value.8 (call address.10 int.4 int.5 int.6))
     (= unnested.2 (copy value.8))
     (= address.9 (address :name meta-builtin/builtin/make-source-position))
-    (= i64.1 (int64 :content 1047))
+    (= i64.1 (int64 :content 1055))
     (= int.1 (tag-int i64.1))
     (= i64.2 (int64 :content 35))
     (= int.2 (tag-int i64.2))

@@ -205,5 +205,5 @@
      (meta-builtin/builtin/make-source-location
       "src/lambda.meta"
       (meta-builtin/builtin/make-source-span
-       (meta-builtin/builtin/make-source-position 1042 35 3)
-       (meta-builtin/builtin/make-source-position 1047 35 8))))))
+       (meta-builtin/builtin/make-source-position 1050 35 3)
+       (meta-builtin/builtin/make-source-position 1055 35 8))))))
