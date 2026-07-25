@@ -1,7 +1,3 @@
-# limit-arity
-
-[meta-lisp.js] limit-arity-pass
-
 # native code generation
 
 [meta-lisp.js] 190-SelectInstructionPass -- `selectInstr`
