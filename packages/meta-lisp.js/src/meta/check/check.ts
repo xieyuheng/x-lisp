@@ -9,43 +9,34 @@ export function checkAssignable(
 ): M.Either<M.TypeError, C.Term> {
   const inferResult = M.infer(mod, ctx, term)
   if (inferResult.kind === "Left") return inferResult
-  const { type: inferredType, core } = inferResult.right
+
+  const inferred = inferResult.right
+  const core = inferred.core
+  let inferredType = inferred.type
 
   // - need to use typeFreshen to remove polymorphic type
   //   before calling checkSubstInstance.
-  const freshenedInferred = M.typeFreshen(inferredType)
-  const freshenedType = M.typeFreshen(type)
+  inferredType = M.typeFreshen(inferredType)
+  type = M.typeFreshen(type)
 
-  const substResult = checkSubstInstance(
-    ctx,
-    term,
-    freshenedInferred,
-    freshenedType,
-  )
+  const substResult = checkSubstInstance(ctx, term, inferredType, type)
   if (substResult.kind === "Left") return substResult
 
-  const unifyResult = checkUnify(ctx, term, freshenedInferred, freshenedType)
+  const unifyResult = checkUnify(ctx, term, inferredType, type)
   if (M.isLeft(unifyResult)) return unifyResult
 
-  if (M.isArrowType(freshenedInferred) && M.isArrowType(freshenedType)) {
-    const inferredArity = M.arrowTypeArity(freshenedInferred)
-    const typeArity = M.arrowTypeArity(freshenedType)
+  if (M.isArrowType(inferredType) && M.isArrowType(type)) {
+    const inferredArity = M.arrowTypeArity(inferredType)
+    const typeArity = M.arrowTypeArity(type)
     if (inferredArity !== typeArity) {
-      const prettyUnknownSubst = M.generatePrettyUnknownSubst([
-        inferredType,
-        type,
-      ])
-
-      const formattedInferred = M.substDeepWalk(
-        prettyUnknownSubst,
-        inferredType,
-      )
-      const formattedExpected = M.substDeepWalk(prettyUnknownSubst, type)
-
+      const sourceTypes = [inferredType, type]
+      const prettyUnknownSubst = M.generatePrettyUnknownSubst(sourceTypes)
+      inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
+      type = M.substDeepWalk(prettyUnknownSubst, type)
       const message =
         `arrow type arity mismatch` +
-        `\n  inferred type: ${M.formatType(formattedInferred)}` +
-        `\n  expected type: ${M.formatType(formattedExpected)}`
+        `\n  inferred type: ${M.formatType(inferredType)}` +
+        `\n  expected type: ${M.formatType(type)}`
       return M.Left({ term, message })
     }
   }
@@ -65,14 +56,10 @@ export function checkSubstInstance(
   // - In the theory of polymorphic type,
   //   inferredType should be more general than expected type.
   if (!M.isSubstitutionInstance(type, inferredType)) {
-    const prettyUnknownSubst = M.generatePrettyUnknownSubst([
-      inferredType,
-      type,
-    ])
-
+    const sourceTypes = [inferredType, type]
+    const prettyUnknownSubst = M.generatePrettyUnknownSubst(sourceTypes)
     inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
     type = M.substDeepWalk(prettyUnknownSubst, type)
-
     const message =
       `expected type is not a substitution instance of inferred type` +
       `\n  inferred type: ${M.formatType(inferredType)}` +
@@ -109,15 +96,10 @@ export function checkUnify(
   if (newSubst === undefined) {
     inferredType = M.substDeepWalk(M.ctxSubst(ctx), inferredType)
     type = M.substDeepWalk(M.ctxSubst(ctx), type)
-
-    const prettyUnknownSubst = M.generatePrettyUnknownSubst([
-      inferredType,
-      type,
-    ])
-
+    const sourceTypes = [inferredType, type]
+    const prettyUnknownSubst = M.generatePrettyUnknownSubst(sourceTypes)
     inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
     type = M.substDeepWalk(prettyUnknownSubst, type)
-
     const message =
       `unification fail` +
       `\n  inferred type: ${M.formatType(inferredType)}` +
