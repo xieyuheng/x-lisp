@@ -40,16 +40,16 @@
        (qualify-free-var mod (list-to-set parameters) body)
        location))
     ((algebraic-type-definition mod name type-constructor data-constructors location)
-     (= bound-names (list-to-set (type-constructor-parameters type-constructor)))
-     (algebraic-type-definition mod name type-constructor
-       (list-map (qualify-data-constructor bound-names) data-constructors)
-       location))
+     (let ((bound-names (list-to-set (type-constructor-parameters type-constructor))))
+       (algebraic-type-definition mod name type-constructor
+         (list-map (qualify-data-constructor bound-names) data-constructors)
+         location)))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
-     (= bound-names (list-to-set (type-constructor-parameters type-constructor)))
-     (opaque-type-definition mod name type-constructor
-       (qualify-free-var mod bound-names representation-type)
-       (list-map (qualify-interface-entry mod bound-names) interface-entries)
-       location))))
+     (let ((bound-names (list-to-set (type-constructor-parameters type-constructor))))
+       (opaque-type-definition mod name type-constructor
+         (qualify-free-var mod bound-names representation-type)
+         (list-map (qualify-interface-entry mod bound-names) interface-entries)
+         location)))))
 
 (define (qualify-data-constructor bound-names data-constructor)
   (match data-constructor
