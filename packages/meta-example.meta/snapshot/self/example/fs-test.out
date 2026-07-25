@@ -35,6 +35,7 @@ function/compose-and-pipe.meta
 function/compose2.meta
 function/forth.meta
 function/identity.meta
+function/sum9.meta
 lambda
 lambda/lambda-interpreter-test.meta
 lambda/lambda.meta
