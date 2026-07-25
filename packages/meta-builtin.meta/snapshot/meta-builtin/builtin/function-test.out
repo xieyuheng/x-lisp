@@ -1,2 +1,2 @@
 #(definition meta-builtin/builtin/iadd)
-#(definition meta-builtin/builtin/function-test©λ1)
+(@closure #(definition meta-builtin/builtin/function-test©λ1) [])

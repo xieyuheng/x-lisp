@@ -1,3 +1,16 @@
+// ConvertClosurePass
+//
+// 将词法作用域下的 Lambda 表达式转换为：
+// - 带额外闭包参数的顶层函数定义（lambda lifting）。
+// - 在 Lambda 创建点构造闭包：堆分配的 [函数指针, 自由变量值...] 元组。
+// - 在自由变量使用点访问闭包字段。
+//
+// 解决两个问题：
+// - 生命周期：Lambda 可能作为返回值逃逸其定义作用域，
+//   自由变量必须从栈转移到堆。
+// - 统一调用：所有函数值——无论来自顶层定义还是 Lambda——
+//   都通过闭包对象间接调用。
+
 import * as C from "../core/index.ts"
 import * as Pkg from "../package/index.ts"
 
@@ -53,25 +66,6 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
       const freeNames = Array.from(C.termFreeNames(new Set(), term))
       const liftedCount = state.lifted.length + 1
       const newFunctionName = `${state.definition.name}©λ${liftedCount}`
-
-      if (freeNames.length === 0) {
-        state.lifted.push(
-          C.FunctionDefinition(
-            state.coreMod,
-            newFunctionName,
-            term.parameters,
-            term.body,
-            term.location,
-          ),
-        )
-
-        return C.QualifiedVarTerm(
-          state.coreMod.pkg.id,
-          state.coreMod.name,
-          newFunctionName,
-          term.location,
-        )
-      }
 
       const newParameters = ["©closure", ...term.parameters]
       const newBody = wrapBodyWithClosureArgs(
