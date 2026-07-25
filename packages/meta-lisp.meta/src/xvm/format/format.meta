@@ -11,32 +11,29 @@
      (@string "(declare-primitive-variable "
                (symbol-to-string name) ")"))
     ((function-definition name arity instrs location)
-     (= instrs-str (string-join " " (list-map format-instr instrs)))
      (@string "(define-function "
-               (symbol-to-string name) " "
-               (format-as-sexp arity) " "
-              instrs-str ")"))
+              (symbol-to-string name) " "
+              (format-as-sexp arity) " "
+              (string-join " " (list-map format-instr instrs)) ")"))
     ((variable-definition name instrs location)
-     (= instrs-str (string-join " " (list-map format-instr instrs)))
      (@string "(define-variable "
               (symbol-to-string name) " "
-              instrs-str ")"))
+              (string-join " " (list-map format-instr instrs)) ")"))
     ((test-definition name instrs location)
-     (= instrs-str (string-join " " (list-map format-instr instrs)))
      (@string "(define-test "
               (symbol-to-string name) " "
-              instrs-str ")"))))
+              (string-join " " (list-map format-instr instrs)) ")"))))
 
 (claim format-instr (-> instr-t string-t))
 (define (format-instr instr)
-  (= op (instr-op instr))
-  (= operands (instr-operands instr))
-  (if (equal? (symbol-to-string op) "label")
-    (string-join " " (list-map format-operand operands))
-    (if (list-empty? operands)
-      (@string "(" (symbol-to-string op) ")")
-      (let ((operands-str (string-join " " (list-map format-operand operands))))
-        (@string "(" (symbol-to-string op) " " operands-str ")")))))
+  (let ((op (instr-op instr))
+        (operands (instr-operands instr)))
+    (if (equal? (symbol-to-string op) "label")
+      (string-join " " (list-map format-operand operands))
+      (if (list-empty? operands)
+        (@string "(" (symbol-to-string op) ")")
+        (let ((operands-str (string-join " " (list-map format-operand operands))))
+          (@string "(" (symbol-to-string op) " " operands-str ")"))))))
 
 (claim format-operand (-> operand-t string-t))
 (define (format-operand operand)
