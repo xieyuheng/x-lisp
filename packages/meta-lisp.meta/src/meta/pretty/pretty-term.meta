@@ -25,28 +25,25 @@
                (if (list-empty? parameters)
                  (ppml/pretty-application (nothing) param-nodes)
                  (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
-         (ppml/pretty-syntax "lambda"
-           [params-node]
-           (pretty-term-body body)))))
+          (ppml/pretty-syntax "lambda"
+            [params-node]
+            [(pretty-term body)]))))
     ((apply-term target args location)
      (let ((target-op (term-op-string target))
            (all-elements (cons (pretty-term target) (list-map pretty-term args))))
        (ppml/pretty-application target-op all-elements)))
     ((let1-term name rhs body location)
-     (ppml/pretty-syntax "begin"
-       []
-        (cons (ppml/group
-               [(ppml/text "(")
-                (ppml/text "=")
-                (ppml/text " ")
-                (ppml/text (symbol-to-string name))
-                (ppml/indent 3 [(ppml/br) (pretty-term rhs)])
-                (ppml/text ")")])
-              (pretty-term-body body))))
+     (let ((name-str (symbol-to-string name))
+           (rhs-node (pretty-term rhs)))
+       (ppml/pretty-syntax "let"
+         [(ppml/pretty-application (nothing)
+            [(ppml/pretty-application (just name-str)
+               [(ppml/text name-str) rhs-node])])]
+         [(pretty-term body)])))
     ((begin1-term head body location)
      (ppml/pretty-syntax "begin"
        []
-       (cons (pretty-term head) (pretty-term-body body))))
+       [(pretty-term head) (pretty-term body)]))
     ((if-term condition consequent alternative location)
      (ppml/pretty-syntax "if"
        [(pretty-term condition)]
@@ -81,20 +78,3 @@
       (just (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
     (else (nothing))))
 
-(claim pretty-term-body (-> term-t (list-t ppml/node-t)))
-
-(define (pretty-term-body term)
-  (match term
-    ((begin1-term head body location)
-     (cons (pretty-term head) (pretty-term-body body)))
-    ((let1-term name rhs body location)
-      (cons (ppml/group
-              [(ppml/text "(")
-               (ppml/text "=")
-               (ppml/text " ")
-               (ppml/text (symbol-to-string name))
-               (ppml/indent 3 [(ppml/br) (pretty-term rhs)])
-               (ppml/text ")")])
-            (pretty-term-body body)))
-    (else
-      [(pretty-term term)])))

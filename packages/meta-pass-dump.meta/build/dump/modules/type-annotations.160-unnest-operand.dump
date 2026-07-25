@@ -1,6 +1,6 @@
 (define (identity x) x)
 
-(define (compose2 f g x) (= unnested.1 (g x)) (f unnested.1))
+(define (compose2 f g x) (let ((unnested.1 (g x))) (f unnested.1)))
 
 (define (double x) (meta-builtin/builtin/iadd x x))
 

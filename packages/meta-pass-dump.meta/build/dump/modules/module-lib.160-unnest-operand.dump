@@ -1,6 +1,7 @@
 (define greeting "Hello")
 
 (define (greet name)
-  (= unnested.1
-     (meta-builtin/builtin/string-append self/module-lib/greeting ", "))
-  (meta-builtin/builtin/string-append unnested.1 name))
+  (let
+      ((unnested.1
+        (meta-builtin/builtin/string-append self/module-lib/greeting ", ")))
+    (meta-builtin/builtin/string-append unnested.1 name)))

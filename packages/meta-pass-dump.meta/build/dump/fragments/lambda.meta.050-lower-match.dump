@@ -182,38 +182,32 @@
 (define (evaluate exp env)
   (cond
     ((self/lambda/var-exp? exp)
-     (begin
-       (= name (self/lambda/var-exp-name exp))
+     (let ((name (self/lambda/var-exp-name exp)))
        (cond
          ((meta-builtin/builtin/just? (env-lookup name env))
-          (begin
-            (= value (meta-builtin/builtin/just-value (env-lookup name env)))
+          (let ((value (meta-builtin/builtin/just-value (env-lookup name env))))
             value))
          ((meta-builtin/builtin/nothing? (env-lookup name env))
           (error "undefined name")))))
     ((self/lambda/apply-exp? exp)
-     (begin
-       (= arg (self/lambda/apply-exp-arg exp))
-       (= target (self/lambda/apply-exp-target exp))
-       (apply (evaluate target env) (evaluate arg env))))
+     (let ((arg (self/lambda/apply-exp-arg exp)))
+       (let ((target (self/lambda/apply-exp-target exp)))
+         (apply (evaluate target env) (evaluate arg env)))))
     ((self/lambda/lambda-exp? exp)
-     (begin
-       (= body (self/lambda/lambda-exp-body exp))
-       (= parameter (self/lambda/lambda-exp-parameter exp))
-       (closure-value env parameter body)))
+     (let ((body (self/lambda/lambda-exp-body exp)))
+       (let ((parameter (self/lambda/lambda-exp-parameter exp)))
+         (closure-value env parameter body))))
     ((self/lambda/let-exp? exp)
-     (begin
-       (= body (self/lambda/let-exp-body exp))
-       (= rhs (self/lambda/let-exp-rhs exp))
-       (= name (self/lambda/let-exp-name exp))
-       (let ((env (extend-env name (evaluate rhs env) env)))
-         (evaluate body env))))))
+     (let ((body (self/lambda/let-exp-body exp)))
+       (let ((rhs (self/lambda/let-exp-rhs exp)))
+         (let ((name (self/lambda/let-exp-name exp)))
+           (let ((env (extend-env name (evaluate rhs env) env)))
+             (evaluate body env))))))))
 
 (define (apply target arg)
   (cond
     ((self/lambda/closure-value? target)
-     (begin
-       (= body (self/lambda/closure-value-body target))
-       (= parameter (self/lambda/closure-value-parameter target))
-       (= env (self/lambda/closure-value-env target))
-       (evaluate body (extend-env parameter arg env))))))
+     (let ((body (self/lambda/closure-value-body target)))
+       (let ((parameter (self/lambda/closure-value-parameter target)))
+         (let ((env (self/lambda/closure-value-env target)))
+           (evaluate body (extend-env parameter arg env))))))))

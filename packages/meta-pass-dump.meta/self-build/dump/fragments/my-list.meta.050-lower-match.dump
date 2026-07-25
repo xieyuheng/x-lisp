@@ -59,10 +59,8 @@
         (meta-builtin/builtin/make-source-position 123 7 3)
         (meta-builtin/builtin/make-source-position 128 7 8)))))
     ((self/my-list/li? list)
-     (begin
-       (= tail (self/my-list/li-tail list))
-       (= head (self/my-list/li-head list))
-       head))))
+     (let ((tail (self/my-list/li-tail list)))
+       (let ((head (self/my-list/li-head list))) head)))))
 
 (define (my-list-tail list)
   (cond
@@ -75,62 +73,53 @@
         (meta-builtin/builtin/make-source-position 194 11 3)
         (meta-builtin/builtin/make-source-position 199 11 8)))))
     ((self/my-list/li? list)
-     (begin
-       (= tail (self/my-list/li-tail list))
-       (= head (self/my-list/li-head list))
-       tail))))
+     (let ((tail (self/my-list/li-tail list)))
+       (let ((head (self/my-list/li-head list))) tail)))))
 
 (define (my-list-length list)
   (cond
     ((self/my-list/nil? list) 0)
     ((self/my-list/li? list)
-     (begin
-       (= tail (self/my-list/li-tail list))
-       (= head (self/my-list/li-head list))
-       (iadd 1 (my-list-length tail))))))
+     (let ((tail (self/my-list/li-tail list)))
+       (let ((head (self/my-list/li-head list))) (iadd 1 (my-list-length tail)))))))
 
 (define (my-list-map f list)
   (cond
     ((self/my-list/nil? list) (nil))
     ((self/my-list/li? list)
-     (begin
-       (= tail (self/my-list/li-tail list))
-       (= head (self/my-list/li-head list))
-       (li (f head) (my-list-map f tail))))))
+     (let ((tail (self/my-list/li-tail list)))
+       (let ((head (self/my-list/li-head list)))
+         (li (f head) (my-list-map f tail)))))))
 
 (define (my-list-append left right)
   (cond
     ((self/my-list/nil? left) right)
     ((self/my-list/li? left)
-     (begin
-       (= tail (self/my-list/li-tail left))
-       (= head (self/my-list/li-head left))
-       (li head (my-list-append tail right))))))
+     (let ((tail (self/my-list/li-tail left)))
+       (let ((head (self/my-list/li-head left)))
+         (li head (my-list-append tail right)))))))
 
 (define (my-list-map-zip f list1 list2)
   (cond
-    ((self/my-list/nil? list1) (begin (= _ list2) (nil)))
+    ((self/my-list/nil? list1) (let ((_ list2)) (nil)))
     ((self/my-list/li? list1)
      (cond
        ((self/my-list/nil? list2)
-        (begin
-          (= tail1 (self/my-list/li-tail list1))
-          (= head1 (self/my-list/li-head list1))
-          (nil)))
+        (let ((tail1 (self/my-list/li-tail list1)))
+          (let ((head1 (self/my-list/li-head list1))) (nil))))
        ((self/my-list/li? list2)
-        (begin
-          (= tail2 (self/my-list/li-tail list2))
-          (= head2 (self/my-list/li-head list2))
-          (= tail1 (self/my-list/li-tail list1))
-          (= head1 (self/my-list/li-head list1))
-          (li (f head1 head2) (my-list-map-zip f tail1 tail2))))))))
+        (let ((tail2 (self/my-list/li-tail list2)))
+          (let ((head2 (self/my-list/li-head list2)))
+            (let ((tail1 (self/my-list/li-tail list1)))
+              (let ((head1 (self/my-list/li-head list1)))
+                (li (f head1 head2) (my-list-map-zip f tail1 tail2)))))))))))
 
 (define (my-list-map-zip-2 f list1 list2)
   (cond
-    ((self/my-list/nil? list1) (begin (= _ list2) (nil)))
+    ((self/my-list/nil? list1) (let ((_ list2)) (nil)))
     ((self/my-list/li? list1)
      (cond
-       ((self/my-list/nil? list2) (begin (= _ list1) (nil)))
+       ((self/my-list/nil? list2) (let ((_ list1)) (nil)))
        ((self/my-list/li? list2)
         (cond
           ((self/my-list/nil? list1)
@@ -162,12 +151,11 @@
                  (meta-builtin/builtin/make-source-position 872 37 3)
                  (meta-builtin/builtin/make-source-position 882 37 13)))))
              ((self/my-list/li? list2)
-              (begin
-                (= tail2 (self/my-list/li-tail list2))
-                (= head2 (self/my-list/li-head list2))
-                (= tail1 (self/my-list/li-tail list1))
-                (= head1 (self/my-list/li-head list1))
-                (li (f head1 head2) (my-list-map-zip-2 f tail1 tail2))))))))))))
+              (let ((tail2 (self/my-list/li-tail list2)))
+                (let ((head2 (self/my-list/li-head list2)))
+                  (let ((tail1 (self/my-list/li-tail list1)))
+                    (let ((head1 (self/my-list/li-head list1)))
+                      (li (f head1 head2) (my-list-map-zip-2 f tail1 tail2)))))))))))))))
 
 (define (my-list-adjacent-dedup list)
   (cond
@@ -175,12 +163,11 @@
     ((self/my-list/li? list)
      (cond
        ((self/my-list/nil? (self/my-list/li-tail list))
-        (begin (= head (self/my-list/li-head list)) (li head (nil))))
+        (let ((head (self/my-list/li-head list))) (li head (nil))))
        ((self/my-list/li? (self/my-list/li-tail list))
-        (begin
-          (= rest (self/my-list/li-tail (self/my-list/li-tail list)))
-          (= second (self/my-list/li-head (self/my-list/li-tail list)))
-          (= first (self/my-list/li-head list))
-          (if (equal? first second)
-            (my-list-adjacent-dedup (li second rest))
-            (li first (my-list-adjacent-dedup (li second rest))))))))))
+        (let ((rest (self/my-list/li-tail (self/my-list/li-tail list))))
+          (let ((second (self/my-list/li-head (self/my-list/li-tail list))))
+            (let ((first (self/my-list/li-head list)))
+              (if (equal? first second)
+                (my-list-adjacent-dedup (li second rest))
+                (li first (my-list-adjacent-dedup (li second rest))))))))))))

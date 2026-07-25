@@ -23,7 +23,7 @@
             (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters))
             (def-node (ppml/pretty-application (just name-str)
                         (cons (ppml/text name-str) param-nodes)))
-            (define-node (ppml/pretty-syntax "define" [def-node] (pretty-term-body body))))
+            (define-node (ppml/pretty-syntax "define" [def-node] [(pretty-term body)])))
        (match (pretty-definition-claim mod name)
          ((just claim-node) [claim-node define-node])
          ((nothing) [define-node]))))
@@ -33,22 +33,22 @@
         [claim-node
          (ppml/pretty-syntax "define"
            [(ppml/text (symbol-to-string name))]
-           (pretty-term-body body))])
+           [(pretty-term body)])])
        ((nothing)
         [(ppml/pretty-syntax "define"
            [(ppml/text (symbol-to-string name))]
-           (pretty-term-body body))])))
+           [(pretty-term body)])])))
     ((test-definition mod name body location)
      (match (pretty-definition-claim mod name)
        ((just claim-node)
         [claim-node
          (ppml/pretty-syntax "define-test"
            [(ppml/text (symbol-to-string name))]
-           (pretty-term-body body))])
+           [(pretty-term body)])])
        ((nothing)
         [(ppml/pretty-syntax "define-test"
            [(ppml/text (symbol-to-string name))]
-           (pretty-term-body body))])))
+           [(pretty-term body)])])))
     ((type-definition mod name parameters body location)
      (let* ((name-str (symbol-to-string name))
             (params-str (string-join " " (list-map symbol-to-string parameters)))

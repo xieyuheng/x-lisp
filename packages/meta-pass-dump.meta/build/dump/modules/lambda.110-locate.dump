@@ -12,10 +12,10 @@
 (claim var-exp (-> meta-builtin/builtin/symbol-t exp-t))
 
 (define (var-exp name)
-  (= list (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! var-exp list)
-  (meta-builtin/builtin/list-push! name list)
-  list)
+  (let ((list (meta-builtin/builtin/make-list)))
+    (begin
+      (meta-builtin/builtin/list-push! var-exp list)
+      (begin (meta-builtin/builtin/list-push! name list) list))))
 
 (claim var-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -40,11 +40,12 @@
 (claim apply-exp (-> exp-t exp-t exp-t))
 
 (define (apply-exp target arg)
-  (= list (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! apply-exp list)
-  (meta-builtin/builtin/list-push! target list)
-  (meta-builtin/builtin/list-push! arg list)
-  list)
+  (let ((list (meta-builtin/builtin/make-list)))
+    (begin
+      (meta-builtin/builtin/list-push! apply-exp list)
+      (begin
+        (meta-builtin/builtin/list-push! target list)
+        (begin (meta-builtin/builtin/list-push! arg list) list)))))
 
 (claim apply-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -78,11 +79,12 @@
 (claim lambda-exp (-> meta-builtin/builtin/symbol-t exp-t exp-t))
 
 (define (lambda-exp parameter body)
-  (= list (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! lambda-exp list)
-  (meta-builtin/builtin/list-push! parameter list)
-  (meta-builtin/builtin/list-push! body list)
-  list)
+  (let ((list (meta-builtin/builtin/make-list)))
+    (begin
+      (meta-builtin/builtin/list-push! lambda-exp list)
+      (begin
+        (meta-builtin/builtin/list-push! parameter list)
+        (begin (meta-builtin/builtin/list-push! body list) list)))))
 
 (claim lambda-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -116,12 +118,14 @@
 (claim let-exp (-> meta-builtin/builtin/symbol-t exp-t exp-t exp-t))
 
 (define (let-exp name rhs body)
-  (= list (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! let-exp list)
-  (meta-builtin/builtin/list-push! name list)
-  (meta-builtin/builtin/list-push! rhs list)
-  (meta-builtin/builtin/list-push! body list)
-  list)
+  (let ((list (meta-builtin/builtin/make-list)))
+    (begin
+      (meta-builtin/builtin/list-push! let-exp list)
+      (begin
+        (meta-builtin/builtin/list-push! name list)
+        (begin
+          (meta-builtin/builtin/list-push! rhs list)
+          (begin (meta-builtin/builtin/list-push! body list) list))))))
 
 (claim let-exp? (-> exp-t meta-builtin/builtin/bool-t))
 
@@ -202,12 +206,14 @@
 (claim closure-value (-> env-t meta-builtin/builtin/symbol-t exp-t value-t))
 
 (define (closure-value env parameter body)
-  (= list (meta-builtin/builtin/make-list))
-  (meta-builtin/builtin/list-push! closure-value list)
-  (meta-builtin/builtin/list-push! env list)
-  (meta-builtin/builtin/list-push! parameter list)
-  (meta-builtin/builtin/list-push! body list)
-  list)
+  (let ((list (meta-builtin/builtin/make-list)))
+    (begin
+      (meta-builtin/builtin/list-push! closure-value list)
+      (begin
+        (meta-builtin/builtin/list-push! env list)
+        (begin
+          (meta-builtin/builtin/list-push! parameter list)
+          (begin (meta-builtin/builtin/list-push! body list) list))))))
 
 (claim closure-value? (-> value-t meta-builtin/builtin/bool-t))
 
@@ -251,12 +257,11 @@
 
 (define (evaluate exp env)
   (if (self/lambda/var-exp? exp)
-    (begin
-      (= name (self/lambda/var-exp-name exp))
+    (let ((name (self/lambda/var-exp-name exp)))
       (if (meta-builtin/builtin/just? (self/lambda/env-lookup name env))
-        (begin
-          (= value
-             (meta-builtin/builtin/just-value (self/lambda/env-lookup name env)))
+        (let
+            ((value
+              (meta-builtin/builtin/just-value (self/lambda/env-lookup name env))))
           value)
         (if (meta-builtin/builtin/nothing? (self/lambda/env-lookup name env))
           (meta-builtin/builtin/error-with-location
@@ -274,25 +279,25 @@
              (meta-builtin/builtin/make-source-position 641 23 6)
              (meta-builtin/builtin/make-source-position 646 23 11)))))))
     (if (self/lambda/apply-exp? exp)
-      (begin
-        (= arg (self/lambda/apply-exp-arg exp))
-        (= target (self/lambda/apply-exp-target exp))
-        (self/lambda/apply
-         (self/lambda/evaluate target env)
-         (self/lambda/evaluate arg env)))
+      (let ((arg (self/lambda/apply-exp-arg exp)))
+        (let ((target (self/lambda/apply-exp-target exp)))
+          (self/lambda/apply
+           (self/lambda/evaluate target env)
+           (self/lambda/evaluate arg env))))
       (if (self/lambda/lambda-exp? exp)
-        (begin
-          (= body (self/lambda/lambda-exp-body exp))
-          (= parameter (self/lambda/lambda-exp-parameter exp))
-          (self/lambda/closure-value env parameter body))
+        (let ((body (self/lambda/lambda-exp-body exp)))
+          (let ((parameter (self/lambda/lambda-exp-parameter exp)))
+            (self/lambda/closure-value env parameter body)))
         (if (self/lambda/let-exp? exp)
-          (begin
-            (= body (self/lambda/let-exp-body exp))
-            (= rhs (self/lambda/let-exp-rhs exp))
-            (= name (self/lambda/let-exp-name exp))
-            (= env
-               (self/lambda/extend-env name (self/lambda/evaluate rhs env) env))
-            (self/lambda/evaluate body env))
+          (let ((body (self/lambda/let-exp-body exp)))
+            (let ((rhs (self/lambda/let-exp-rhs exp)))
+              (let ((name (self/lambda/let-exp-name exp)))
+                (let
+                    ((env (self/lambda/extend-env
+                           name
+                           (self/lambda/evaluate rhs env)
+                           env)))
+                  (self/lambda/evaluate body env)))))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
@@ -303,11 +308,10 @@
 
 (define (apply target arg)
   (if (self/lambda/closure-value? target)
-    (begin
-      (= body (self/lambda/closure-value-body target))
-      (= parameter (self/lambda/closure-value-parameter target))
-      (= env (self/lambda/closure-value-env target))
-      (self/lambda/evaluate body (self/lambda/extend-env parameter arg env)))
+    (let ((body (self/lambda/closure-value-body target)))
+      (let ((parameter (self/lambda/closure-value-parameter target)))
+        (let ((env (self/lambda/closure-value-env target)))
+          (self/lambda/evaluate body (self/lambda/extend-env parameter arg env)))))
     (meta-builtin/builtin/error-with-location
      "cond mismatch"
      (meta-builtin/builtin/make-source-location

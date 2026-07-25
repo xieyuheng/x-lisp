@@ -79,7 +79,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       ])
       return Ppml.prettySyntax(
         "let",
-        [Ppml.prettyList([binding])],
+        [Ppml.prettyApplication([binding])],
         prettyBody(exp.body),
       )
     }
@@ -360,7 +360,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
       ])
       return Ppml.prettySyntax(
         "let",
-        [Ppml.prettyList([binding])],
+        [Ppml.prettyApplication([binding])],
         [prettyTerm(term.body)],
       )
     }

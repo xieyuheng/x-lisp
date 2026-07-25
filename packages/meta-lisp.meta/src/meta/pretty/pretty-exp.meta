@@ -41,16 +41,13 @@
        []
        (list-map pretty-exp steps)))
     ((let1-exp name rhs body location)
-     (ppml/pretty-syntax "begin"
-       []
-        (cons (ppml/group
-               [(ppml/text "(")
-                (ppml/text "=")
-                (ppml/text " ")
-                (ppml/text (symbol-to-string name))
-                (ppml/indent 3 [(ppml/br) (pretty-exp rhs)])
-                (ppml/text ")")])
-              (pretty-exp-body body))))
+     (let ((name-str (symbol-to-string name))
+           (rhs-node (pretty-exp rhs)))
+       (ppml/pretty-syntax "let"
+         [(ppml/pretty-application (nothing)
+            [(ppml/pretty-application (just name-str)
+               [(ppml/text name-str) rhs-node])])]
+         (pretty-exp-body body))))
     ((let-exp bindings body location)
      (ppml/pretty-syntax "let"
        [(pretty-bindings bindings)]
@@ -78,7 +75,7 @@
     ((begin1-exp head body location)
      (ppml/pretty-syntax "begin"
        []
-       (cons (pretty-exp head) (pretty-exp-body body))))
+       [(pretty-exp head) (pretty-exp body)]))
     ((begin-exp sequence location)
      (if (equal? (list-length sequence) 1)
        (pretty-exp (car sequence))
@@ -174,17 +171,6 @@
 
 (define (pretty-exp-body exp)
   (match exp
-    ((begin1-exp head body location)
-     (cons (pretty-exp head) (pretty-exp-body body)))
-    ((let1-exp name rhs body location)
-      (cons (ppml/group
-              [(ppml/text "(")
-               (ppml/text "=")
-               (ppml/text " ")
-               (ppml/text (symbol-to-string name))
-               (ppml/indent 3 [(ppml/br) (pretty-exp rhs)])
-               (ppml/text ")")])
-            (pretty-exp-body body)))
     ((begin-exp sequence location)
      (list-map pretty-exp sequence))
     (else

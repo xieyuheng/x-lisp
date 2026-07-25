@@ -38,7 +38,5 @@
 (define (pair-swap p)
   (cond
     ((self/pair/pair? p)
-     (begin
-       (= b (self/pair/pair-second p))
-       (= a (self/pair/pair-first p))
-       (make-pair b a)))))
+     (let ((b (self/pair/pair-second p)))
+       (let ((a (self/pair/pair-first p))) (make-pair b a))))))

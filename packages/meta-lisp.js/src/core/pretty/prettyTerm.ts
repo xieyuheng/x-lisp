@@ -42,7 +42,7 @@ export function prettyTerm(term: Term): Ppml.Node {
       ])
       return Ppml.prettySyntax(
         "let",
-        [Ppml.prettyList([binding])],
+        [Ppml.prettyApplication([binding])],
         [prettyTerm(term.body)],
       )
     }
