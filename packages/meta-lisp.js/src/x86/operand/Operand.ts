@@ -3,6 +3,7 @@ import type { Data } from "../data/index.ts"
 export type Operand =
   | RegOperand
   | ImmOperand
+  | FloatOperand
   | LabelOperand
   | AddressOperand
   | DerefOperand
@@ -33,6 +34,18 @@ export type ImmOperand = {
 export function ImmOperand(value: bigint): ImmOperand {
   return {
     kind: "ImmOperand",
+    value,
+  }
+}
+
+export type FloatOperand = {
+  kind: "FloatOperand"
+  value: number
+}
+
+export function FloatOperand(value: number): FloatOperand {
+  return {
+    kind: "FloatOperand",
     value,
   }
 }

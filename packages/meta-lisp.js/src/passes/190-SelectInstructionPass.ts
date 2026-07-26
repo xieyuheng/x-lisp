@@ -73,6 +73,11 @@ const FLOAT_TAG = 0b001n
 const IMMEDIATE_TAG = 0b110n
 const OBJECT_TAG = 0b111n
 
+// -8n is the signed 64-bit interpretation of ~0b111 (0xfffffffffffffff8).
+// x86 `and r64, imm8` sign-extends imm8 to 64 bits, so -8n encodes as
+// a compact imm8 instead of a full imm32/imm64.
+const PAYLOAD_MASK = -8n
+
 const binaryX86Op: Record<string, string> = {
   iadd: "add",
   isub: "sub",
@@ -461,6 +466,22 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         X86.Instr("tail-jmp", [
           X86.RegDerefOperand("rax", undefined, undefined, undefined),
         ]),
+      ]
+    }
+
+    case "float64": {
+      const [out] = instr.output
+      const content = B.expectFloat(instr.attributes, "content")
+      return [X86.Instr("mov", [cellToVar(out), X86.FloatOperand(content)])]
+    }
+
+    case "tag-float": {
+      const [x] = instr.input
+      const [out] = instr.output
+      return [
+        X86.Instr("mov", [cellToVar(out), cellToVar(x)]),
+        X86.Instr("and", [cellToVar(out), X86.ImmOperand(PAYLOAD_MASK)]),
+        X86.Instr("or", [cellToVar(out), X86.ImmOperand(FLOAT_TAG)]),
       ]
     }
 

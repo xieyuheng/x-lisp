@@ -27,6 +27,10 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return [encodeMovRegImm(dstReg, src.value)]
     }
 
+    if (src.kind === "FloatOperand") {
+      return [encodeMovRegFloat(dstReg, src.value)]
+    }
+
     if (src.kind === "AddressOperand") {
       return [encodeMovRegAddress(dstReg, src)]
     }
@@ -104,6 +108,13 @@ function encodeMovRegImm(dstReg: string, value: bigint): EncodedInstruction {
     displacement: null,
     immediate: { size: 4, value },
   }
+}
+
+function encodeMovRegFloat(dstReg: string, value: number): EncodedInstruction {
+  const buf = new ArrayBuffer(8)
+  new DataView(buf).setFloat64(0, value, true)
+  const bitPattern = new DataView(buf).getBigUint64(0, true)
+  return encodeMovRegImm(dstReg, bitPattern)
 }
 
 function encodeMovRegAddress(

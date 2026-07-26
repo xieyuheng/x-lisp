@@ -16,6 +16,8 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       return Ppml.prettySyntax("reg", [], [Ppml.text(operand.name)])
     case "ImmOperand":
       return Ppml.text(operand.value.toString())
+    case "FloatOperand":
+      return Ppml.text(operand.value.toString())
     case "LabelOperand":
       return Ppml.prettySyntax("label", [], [Ppml.text(operand.name)])
     case "AddressOperand":
