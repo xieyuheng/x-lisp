@@ -5,7 +5,14 @@ import * as C from "../../core/index.ts"
 import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
 
-export type TypeError = { term: M.Term; message: string }
+export type TypeError = {
+  term: M.Term
+  message: string
+}
+
+export function TypeError(term: M.Term, message: string): TypeError {
+  return { term, message }
+}
 
 export type Inferred = { core: C.Term; type: M.Type }
 
@@ -71,6 +78,7 @@ export function infer(
         ctx,
         term.name,
         C.VarTerm(term.name, term.location),
+        term,
       )
     }
 
@@ -95,6 +103,7 @@ export function infer(
           term.name,
           term.location,
         ),
+        term
       )
     }
 
@@ -334,6 +343,7 @@ function inferLookup(
   ctx: M.Ctx,
   name: string,
   term: C.Term,
+  originalTerm: M.Term,
 ): M.Either<TypeError, Inferred> {
   if (ctx.transparentOpaqueNames.has(name)) {
     const claimedEntry = M.modLookupClaimedEntry(mod, name)
@@ -358,7 +368,7 @@ function inferLookup(
     message += `\n  package id: ${mod.pkg.id}`
     message += `\n  module name: ${mod.name}`
     message += `\n  name: ${name}`
-    return M.Left({ term: term, message })
+    return M.Left(TypeError(originalTerm, message))
   }
 
   {
