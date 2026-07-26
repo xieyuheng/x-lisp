@@ -62,5 +62,13 @@ export function prettyTerm(term: Term): Ppml.Node {
         [prettyTerm(term.consequent), prettyTerm(term.alternative)],
       )
     }
+
+    case "ClosureTerm": {
+      return Ppml.prettySyntax(
+        "@closure",
+        [Ppml.text(`${term.pkgName}/${term.modName}/${term.name}`)],
+        term.args.map(prettyTerm),
+      )
+    }
   }
 }

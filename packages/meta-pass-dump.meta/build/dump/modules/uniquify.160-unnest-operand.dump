@@ -1,5 +1,6 @@
-(define (f) (self/uniquify/f©λ1 1))
+(define (f) (let ((unnested.1 (@closure self/uniquify/f©λ1))) (unnested.1 1)))
 
-(define (f©λ1 x) (self/uniquify/f©λ1©λ1 x))
+(define (f©λ1 ©closure x)
+  (let ((unnested.1 (@closure self/uniquify/f©λ1©λ1))) (unnested.1 x)))
 
-(define (f©λ1©λ1 x.1) x.1)
+(define (f©λ1©λ1 ©closure x.1) x.1)

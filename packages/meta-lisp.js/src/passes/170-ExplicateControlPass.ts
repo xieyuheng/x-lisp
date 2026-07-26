@@ -167,6 +167,33 @@ function explicateUnnestedTerm(state: State, term: C.Term): B.Exp {
       )
     }
 
+    case "ClosureTerm": {
+      const prefix = resolvePackageId(state.pkg, term.pkgName)
+      const qualifiedFuncName = `${prefix}/${term.modName}/${term.name}`
+      const freeVarExps = term.args.map((arg) =>
+        explicateUnnestedTerm(state, arg),
+      )
+
+      let result: B.Exp = B.ApplyExp(
+        B.VarExp("meta-builtin/builtin/make-closure", term.location),
+        [
+          B.VarExp(qualifiedFuncName, term.location),
+          B.IntExp(BigInt(freeVarExps.length), term.location),
+        ],
+        term.location,
+      )
+
+      for (let i = 0; i < freeVarExps.length; i++) {
+        result = B.ApplyExp(
+          B.VarExp("meta-builtin/builtin/closure-put-arg!", term.location),
+          [B.IntExp(BigInt(i), term.location), freeVarExps[i], result],
+          term.location,
+        )
+      }
+
+      return result
+    }
+
     default: {
       let message = `[explicateUnnestedTerm] unhandled term`
       message += `\n  term kind: ${term.kind}`

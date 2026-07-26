@@ -36,5 +36,9 @@ export function isAtomOperandTerm(term: Term): boolean {
         isAtomOperandTerm(term.alternative)
       )
     }
+
+    case "ClosureTerm": {
+      return true
+    }
   }
 }

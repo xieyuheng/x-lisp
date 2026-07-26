@@ -37,14 +37,14 @@
 
 (define (example-pipe) (self/desugar/double (self/desugar/add1 5)))
 
-(define (example-chain) (self/desugar/example-chain©λ1 5))
+(define (example-chain) ((@closure self/desugar/example-chain©λ1) 5))
 
-(define (example-chain©λ1 target)
+(define (example-chain©λ1 ©closure target)
   (self/desugar/double (self/desugar/add1 target)))
 
-(define (example-compose) (self/desugar/example-compose©λ1 5))
+(define (example-compose) ((@closure self/desugar/example-compose©λ1) 5))
 
-(define (example-compose©λ1 target)
+(define (example-compose©λ1 ©closure target)
   (self/desugar/add1 (self/desugar/double target)))
 
 (define (example-letrec)
@@ -52,22 +52,9 @@
     (let ((odd?.1 (meta-builtin/builtin/make-box)))
       (let ((even? even?.1))
         (let ((odd? odd?.1))
-          (let
-              ((even?.value.1
-                (meta-builtin/builtin/closure-put-arg!
-                 0
-                 odd?
-                 (meta-builtin/builtin/make-closure
-                  self/desugar/example-letrec©λ1
-                  1))))
+          (let ((even?.value.1 (@closure self/desugar/example-letrec©λ1 odd?)))
             (let
-                ((odd?.value.1
-                  (meta-builtin/builtin/closure-put-arg!
-                   0
-                   even?
-                   (meta-builtin/builtin/make-closure
-                    self/desugar/example-letrec©λ2
-                    1))))
+                ((odd?.value.1 (@closure self/desugar/example-letrec©λ2 even?)))
               (let ((even?.value even?.value.1))
                 (let ((odd?.value odd?.value.1))
                   (begin
@@ -95,21 +82,11 @@
         (let ((odd? odd?.1))
           (begin
             (meta-builtin/builtin/box-put!
-             (meta-builtin/builtin/closure-put-arg!
-              0
-              odd?
-              (meta-builtin/builtin/make-closure
-               self/desugar/example-letrec-star©λ1
-               1))
+             (@closure self/desugar/example-letrec-star©λ1 odd?)
              even?)
             (begin
               (meta-builtin/builtin/box-put!
-               (meta-builtin/builtin/closure-put-arg!
-                0
-                even?
-                (meta-builtin/builtin/make-closure
-                 self/desugar/example-letrec-star©λ2
-                 1))
+               (@closure self/desugar/example-letrec-star©λ2 even?)
                odd?)
               meta-builtin/builtin/void)))))))
 
@@ -132,21 +109,11 @@
         (let ((odd? odd?.1))
           (begin
             (meta-builtin/builtin/box-put!
-             (meta-builtin/builtin/closure-put-arg!
-              0
-              odd?
-              (meta-builtin/builtin/make-closure
-               self/desugar/example-local-define©λ1
-               1))
+             (@closure self/desugar/example-local-define©λ1 odd?)
              even?)
             (begin
               (meta-builtin/builtin/box-put!
-               (meta-builtin/builtin/closure-put-arg!
-                0
-                even?
-                (meta-builtin/builtin/make-closure
-                 self/desugar/example-local-define©λ2
-                 1))
+               (@closure self/desugar/example-local-define©λ2 even?)
                odd?)
               meta-builtin/builtin/void)))))))
 

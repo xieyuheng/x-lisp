@@ -52,5 +52,9 @@ export function termOccurredNames(term: Term): Set<string> {
         termOccurredNames(term.alternative),
       ])
     }
+
+    case "ClosureTerm": {
+      return setUnionMany(term.args.map(termOccurredNames))
+    }
   }
 }

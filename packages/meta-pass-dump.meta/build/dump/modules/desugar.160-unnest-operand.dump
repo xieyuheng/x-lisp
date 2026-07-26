@@ -44,15 +44,17 @@
 (define (example-pipe)
   (let ((unnested.1 (self/desugar/add1 5))) (self/desugar/double unnested.1)))
 
-(define (example-chain) (self/desugar/example-chain©λ1 5))
+(define (example-chain)
+  (let ((unnested.1 (@closure self/desugar/example-chain©λ1))) (unnested.1 5)))
 
-(define (example-chain©λ1 target)
+(define (example-chain©λ1 ©closure target)
   (let ((unnested.1 (self/desugar/add1 target)))
     (self/desugar/double unnested.1)))
 
-(define (example-compose) (self/desugar/example-compose©λ1 5))
+(define (example-compose)
+  (let ((unnested.1 (@closure self/desugar/example-compose©λ1))) (unnested.1 5)))
 
-(define (example-compose©λ1 target)
+(define (example-compose©λ1 ©closure target)
   (let ((unnested.1 (self/desugar/double target)))
     (self/desugar/add1 unnested.1)))
 
@@ -61,22 +63,9 @@
     (let ((odd?.1 (meta-builtin/builtin/make-box)))
       (let ((even? even?.1))
         (let ((odd? odd?.1))
-          (let
-              ((even?.value.1
-                (let
-                    ((unnested.1
-                      (meta-builtin/builtin/make-closure
-                       self/desugar/example-letrec©λ1
-                       1)))
-                  (meta-builtin/builtin/closure-put-arg! 0 odd? unnested.1))))
+          (let ((even?.value.1 (@closure self/desugar/example-letrec©λ1 odd?)))
             (let
-                ((odd?.value.1
-                  (let
-                      ((unnested.2
-                        (meta-builtin/builtin/make-closure
-                         self/desugar/example-letrec©λ2
-                         1)))
-                    (meta-builtin/builtin/closure-put-arg! 0 even? unnested.2))))
+                ((odd?.value.1 (@closure self/desugar/example-letrec©λ2 even?)))
               (let ((even?.value even?.value.1))
                 (let ((odd?.value odd?.value.1))
                   (begin
@@ -108,24 +97,13 @@
         (let ((odd? odd?.1))
           (begin
             (let
-                ((unnested.1
-                  (meta-builtin/builtin/make-closure
-                   self/desugar/example-letrec-star©λ1
-                   1)))
-              (let
-                  ((unnested.2
-                    (meta-builtin/builtin/closure-put-arg! 0 odd? unnested.1)))
-                (meta-builtin/builtin/box-put! unnested.2 even?)))
+                ((unnested.1 (@closure self/desugar/example-letrec-star©λ1 odd?)))
+              (meta-builtin/builtin/box-put! unnested.1 even?))
             (begin
               (let
-                  ((unnested.3
-                    (meta-builtin/builtin/make-closure
-                     self/desugar/example-letrec-star©λ2
-                     1)))
-                (let
-                    ((unnested.4
-                      (meta-builtin/builtin/closure-put-arg! 0 even? unnested.3)))
-                  (meta-builtin/builtin/box-put! unnested.4 odd?)))
+                  ((unnested.2
+                    (@closure self/desugar/example-letrec-star©λ2 even?)))
+                (meta-builtin/builtin/box-put! unnested.2 odd?))
               meta-builtin/builtin/void)))))))
 
 (define (example-letrec-star©λ1 ©closure n)
@@ -152,23 +130,13 @@
           (begin
             (let
                 ((unnested.1
-                  (meta-builtin/builtin/make-closure
-                   self/desugar/example-local-define©λ1
-                   1)))
-              (let
-                  ((unnested.2
-                    (meta-builtin/builtin/closure-put-arg! 0 odd? unnested.1)))
-                (meta-builtin/builtin/box-put! unnested.2 even?)))
+                  (@closure self/desugar/example-local-define©λ1 odd?)))
+              (meta-builtin/builtin/box-put! unnested.1 even?))
             (begin
               (let
-                  ((unnested.3
-                    (meta-builtin/builtin/make-closure
-                     self/desugar/example-local-define©λ2
-                     1)))
-                (let
-                    ((unnested.4
-                      (meta-builtin/builtin/closure-put-arg! 0 even? unnested.3)))
-                  (meta-builtin/builtin/box-put! unnested.4 odd?)))
+                  ((unnested.2
+                    (@closure self/desugar/example-local-define©λ2 even?)))
+                (meta-builtin/builtin/box-put! unnested.2 odd?))
               meta-builtin/builtin/void)))))))
 
 (define (example-local-define©λ1 ©closure n)

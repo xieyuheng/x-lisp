@@ -57,5 +57,11 @@ export function termFreeNames(
         termFreeNames(boundNames, term.alternative),
       ])
     }
+
+    case "ClosureTerm": {
+      return setUnionMany(
+        term.args.map((arg) => termFreeNames(boundNames, arg)),
+      )
+    }
   }
 }

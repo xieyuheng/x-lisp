@@ -1,6 +1,7 @@
 import {
   ApplyTerm,
   Begin1Term,
+  ClosureTerm,
   IfTerm,
   LambdaTerm,
   Let1Term,
@@ -49,6 +50,16 @@ export function termTraverse(onTerm: (term: Term) => Term, term: Term): Term {
         onTerm(term.condition),
         onTerm(term.consequent),
         onTerm(term.alternative),
+        term.location,
+      )
+    }
+
+    case "ClosureTerm": {
+      return ClosureTerm(
+        term.pkgName,
+        term.modName,
+        term.name,
+        term.args.map(onTerm),
         term.location,
       )
     }

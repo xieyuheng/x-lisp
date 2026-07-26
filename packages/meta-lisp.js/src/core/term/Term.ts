@@ -13,6 +13,7 @@ export type Term =
   | StringTerm
   | SymbolTerm
   | KeywordTerm
+  | ClosureTerm
 
 export type VarTerm = {
   kind: "VarTerm"
@@ -180,4 +181,23 @@ export function KeywordTerm(
   location: SourceLocation,
 ): KeywordTerm {
   return { kind: "KeywordTerm", content, location }
+}
+
+export type ClosureTerm = {
+  kind: "ClosureTerm"
+  pkgName: string
+  modName: string
+  name: string
+  args: Array<Term>
+  location: SourceLocation
+}
+
+export function ClosureTerm(
+  pkgName: string,
+  modName: string,
+  name: string,
+  args: Array<Term>,
+  location: SourceLocation,
+): ClosureTerm {
+  return { kind: "ClosureTerm", pkgName, modName, name, args, location }
 }

@@ -87,11 +87,14 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
         ),
       )
 
-      return buildClosureConstruction(
+      const freeVarTerms = freeNames.map((name) =>
+        C.VarTerm(name, term.location),
+      )
+      return C.ClosureTerm(
         state.coreMod.pkg.id,
         state.coreMod.name,
         newFunctionName,
-        freeNames,
+        freeVarTerms,
         term.location,
       )
     }
@@ -120,43 +123,5 @@ function wrapBodyWithClosureArgs(
       location,
     )
   }
-  return result
-}
-
-function buildClosureConstruction(
-  pkgId: string,
-  modName: string,
-  funcName: string,
-  freeNames: Array<string>,
-  location: C.Term["location"],
-): C.Term {
-  const size = freeNames.length
-
-  let result: C.Term = C.ApplyTerm(
-    C.QualifiedVarTerm("meta-builtin", "builtin", "make-closure", location),
-    [
-      C.QualifiedVarTerm(pkgId, modName, funcName, location),
-      C.IntTerm(BigInt(size), location),
-    ],
-    location,
-  )
-
-  for (let i = 0; i < size; i++) {
-    result = C.ApplyTerm(
-      C.QualifiedVarTerm(
-        "meta-builtin",
-        "builtin",
-        "closure-put-arg!",
-        location,
-      ),
-      [
-        C.IntTerm(BigInt(i), location),
-        C.VarTerm(freeNames[i], location),
-        result,
-      ],
-      location,
-    )
-  }
-
   return result
 }

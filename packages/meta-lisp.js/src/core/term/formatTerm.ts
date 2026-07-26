@@ -40,5 +40,8 @@ export function formatTerm(term: Term): string {
 
     case "IfTerm":
       return `(if ${formatTerm(term.condition)} ${formatTerm(term.consequent)} ${formatTerm(term.alternative)})`
+
+    case "ClosureTerm":
+      return `(@closure ${term.pkgName}/${term.modName}/${term.name} ${term.args.map(formatTerm).join(" ")})`
   }
 }

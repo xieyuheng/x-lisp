@@ -67,6 +67,23 @@ function unnestOperandTerm(state: State, term: C.Term): C.Term {
       )
     }
 
+    case "ClosureTerm": {
+      const [argsEntriesArray, newArgs] = arrayUnzip(
+        term.args.map((arg) => unnestOperandAtom(state, arg)),
+      )
+      const argsEntries = argsEntriesArray.flatMap((entries) => entries)
+      return prependLets(
+        argsEntries,
+        C.ClosureTerm(
+          term.pkgName,
+          term.modName,
+          term.name,
+          newArgs,
+          term.location,
+        ),
+      )
+    }
+
     default: {
       return C.termTraverse((e) => unnestOperandTerm(state, e), term)
     }

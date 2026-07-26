@@ -325,6 +325,63 @@ function explicateUnnestedTerm(
       throw new Error(message)
     }
 
+    case "ClosureTerm": {
+      const { pkgName, modName, name: funcName, args: freeVarTerms } = term
+      const prefix = resolvePackageId(state.pkg, pkgName)
+      const qualifiedFuncName = `${prefix}/${modName}/${funcName}`
+
+      const pairs = freeVarTerms.map((arg) => explicateUnnestedTerm(state, arg))
+      const [argInstrGroups, freeVarCells] = arrayUnzip(pairs)
+
+      const functionAddress = generateCell(state, "function-address")
+      const size = generateCell(state, "closure-size")
+      const makeClosureAddress = generateCell(state, "make-closure-address")
+      const closure = generateCell(state, "closure")
+
+      const instrs = [
+        ...arrayConcat(argInstrGroups),
+        B.Instr("address", [], [functionAddress], {
+          name: B.SymbolAttribute(qualifiedFuncName),
+        }),
+        B.Instr("int64", [], [size], {
+          content: B.IntAttribute(BigInt(freeVarCells.length)),
+        }),
+        B.Instr("address", [], [makeClosureAddress], {
+          name: B.SymbolAttribute("meta-builtin/builtin/make-closure"),
+        }),
+        B.Instr(
+          "call",
+          [makeClosureAddress, functionAddress, size],
+          [closure],
+          {},
+        ),
+      ]
+
+      let current = closure
+      for (let i = 0; i < freeVarCells.length; i++) {
+        const putArgAddress = generateCell(state, "put-arg-address")
+        const index = generateCell(state, "index")
+        const next = generateCell(state, "closure")
+        instrs.push(
+          B.Instr("address", [], [putArgAddress], {
+            name: B.SymbolAttribute("meta-builtin/builtin/closure-put-arg!"),
+          }),
+          B.Instr("int64", [], [index], {
+            content: B.IntAttribute(BigInt(i)),
+          }),
+          B.Instr(
+            "call",
+            [putArgAddress, index, freeVarCells[i], current],
+            [next],
+            {},
+          ),
+        )
+        current = next
+      }
+
+      return [instrs, current]
+    }
+
     case "ApplyTerm": {
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)

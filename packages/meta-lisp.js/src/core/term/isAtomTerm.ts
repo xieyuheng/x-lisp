@@ -16,6 +16,7 @@ export function isAtomTerm(term: Term): boolean {
     case "Let1Term":
     case "Begin1Term":
     case "IfTerm":
+    case "ClosureTerm":
       return false
   }
 }
