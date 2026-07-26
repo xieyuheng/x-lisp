@@ -106,11 +106,11 @@
 (define (let-exp-put-body! value target)
   (meta-builtin/builtin/list-put! 3 value target))
 
-(define empty-env meta-builtin/builtin/make-hash)
+(define empty-env (@closure meta-builtin/builtin/make-hash©wrap))
 
-(define extend-env meta-builtin/builtin/hash-put)
+(define extend-env (@closure meta-builtin/builtin/hash-put©wrap))
 
-(define env-lookup meta-builtin/builtin/hash-get-maybe)
+(define env-lookup (@closure meta-builtin/builtin/hash-get-maybe©wrap))
 
 (define (closure-value env parameter body)
   (let ((list (meta-builtin/builtin/make-list)))

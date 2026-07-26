@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as C from "../core/index.ts"
 import * as Pkg from "../package/index.ts"
 
@@ -56,6 +57,60 @@ function convertClosureDefinition(
   }
 }
 
+function wrapParameters(definition: C.Definition): Array<string> {
+  switch (definition.kind) {
+    case "FunctionDefinition":
+      return definition.parameters
+    case "PrimitiveFunctionDeclaration":
+      return Array.from({ length: definition.arity }, (_, i) => `x${i + 1}`)
+    case "TestDefinition":
+      return []
+    default:
+      throw new S.ErrorWithSourceLocation(
+        "[wrapParameters] unexpected definition kind",
+        definition.location,
+      )
+  }
+}
+
+function definitionIsFunction(definition: C.Definition): boolean {
+  return (
+    definition.kind === "FunctionDefinition" ||
+    definition.kind === "PrimitiveFunctionDeclaration" ||
+    definition.kind === "TestDefinition"
+  )
+}
+
+function liftFunctionReference(
+  definition: C.Definition,
+  pkgName: string,
+  modName: string,
+  name: string,
+  location: S.SourceLocation,
+): C.Term {
+  const qualifiedMod = definition.mod
+
+  const wrapName = `${name}©wrap`
+  if (!qualifiedMod.definitions.has(wrapName)) {
+    const parameters = wrapParameters(definition)
+    const wrapFunctionDefinition = C.FunctionDefinition(
+      qualifiedMod,
+      wrapName,
+      ["©closure", ...parameters],
+      C.ApplyTerm(
+        C.QualifiedVarTerm(pkgName, modName, name, location),
+        parameters.map((p) => C.VarTerm(p, location)),
+        location,
+      ),
+      location,
+    )
+    qualifiedMod.definitions.set(wrapName, wrapFunctionDefinition)
+    convertClosureDefinition(qualifiedMod, wrapFunctionDefinition)
+  }
+
+  return C.ClosureTerm(pkgName, modName, wrapName, [], location)
+}
+
 function convertClosureTerm(state: State, term: C.Term): C.Term {
   switch (term.kind) {
     case "LambdaTerm": {
@@ -71,42 +126,33 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
     }
 
     case "QualifiedVarTerm": {
-      if (term.pkgName !== state.coreMod.pkg.id && term.pkgName !== "self") {
-        return term
-      }
-
-      if (term.modName !== state.coreMod.name) {
-        return term
-      }
-
-      const definition = C.modLookupDefinition(state.coreMod, term.name)
-      if (definition?.kind !== "FunctionDefinition") {
-        return term
-      }
-
-      const wrapName = `${term.name}©wrap`
-      const wrapParameters = ["©closure", ...definition.parameters]
-      const wrapBody = C.ApplyTerm(
-        term,
-        definition.parameters.map((p) => C.VarTerm(p, term.location)),
-        term.location,
-      )
-
-      const wrapFunctionDefinition = C.FunctionDefinition(
-        state.coreMod,
-        wrapName,
-        wrapParameters,
-        wrapBody,
-        term.location,
-      )
-      state.coreMod.definitions.set(wrapName, wrapFunctionDefinition)
-      convertClosureDefinition(state.coreMod, wrapFunctionDefinition)
-
-      return C.ClosureTerm(
+      const qualifiedMod = Pkg.packageLookupCoreMod(
+        state.coreMod.pkg,
         term.pkgName,
         term.modName,
-        wrapName,
-        [],
+      )
+      if (qualifiedMod === undefined) {
+        throw new S.ErrorWithSourceLocation(
+          "[convertClosureTerm] qualifiedMod not found",
+          term.location,
+        )
+      }
+
+      const qualifiedDefinition = qualifiedMod.definitions.get(term.name)
+      if (qualifiedDefinition === undefined) {
+        throw new S.ErrorWithSourceLocation(
+          "[convertClosureTerm] qualifiedDefinition not found",
+          term.location,
+        )
+      }
+
+      if (!definitionIsFunction(qualifiedDefinition)) return term
+
+      return liftFunctionReference(
+        qualifiedDefinition,
+        term.pkgName,
+        term.modName,
+        term.name,
         term.location,
       )
     }
@@ -144,7 +190,7 @@ function liftLambda(
   state: State,
   parameters: Array<string>,
   body: C.Term,
-  location: C.Term["location"],
+  location: S.SourceLocation,
 ): C.Term {
   const lambdaTerm = C.LambdaTerm(parameters, body, location)
   const freeNames = Array.from(C.termFreeNames(new Set(), lambdaTerm))

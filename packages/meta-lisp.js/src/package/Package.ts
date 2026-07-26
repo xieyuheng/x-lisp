@@ -79,6 +79,22 @@ export function packageLookupCoreDefinition(
   return undefined
 }
 
+export function packageLookupCoreMod(
+  pkg: Package,
+  pkgName: string,
+  modName: string,
+): CoreMod | undefined {
+  if (pkgName === "self" || pkgName === pkg.id) {
+    return pkg.coreMods.get(modName)
+  }
+  for (const dep of pkg.dependencies.values()) {
+    if (dep.config.name === pkgName) {
+      return dep.coreMods.get(modName)
+    }
+  }
+  return undefined
+}
+
 export function packageAddMod(pkg: Package, mod: M.Mod): void {
   pkg.mods.set(mod.name, mod)
 }

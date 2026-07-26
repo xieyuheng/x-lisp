@@ -29,7 +29,7 @@
    5))
 
 (define (example-swap)
-  (self/function-reference/swap meta-builtin/builtin/iadd 3 4))
+  (self/function-reference/swap (@closure meta-builtin/builtin/iadd©wrap) 3 4))
 
 (define (add1©wrap ©closure x) (self/function-reference/add1 x))
 

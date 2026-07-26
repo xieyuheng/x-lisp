@@ -28,7 +28,8 @@
       (self/function-reference/compose2 unnested.1 unnested.2 5))))
 
 (define (example-swap)
-  (self/function-reference/swap meta-builtin/builtin/iadd 3 4))
+  (let ((unnested.1 (@closure meta-builtin/builtin/iadd©wrap)))
+    (self/function-reference/swap unnested.1 3 4)))
 
 (define (add1©wrap ©closure x) (self/function-reference/add1 x))
 
