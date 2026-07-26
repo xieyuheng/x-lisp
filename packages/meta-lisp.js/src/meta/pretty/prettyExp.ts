@@ -323,7 +323,11 @@ export function prettyTerm(term: M.Term): Ppml.Node {
     }
 
     case "FloatTerm": {
-      return Ppml.text(`${term.content}`)
+      if (Number.isInteger(term.content)) {
+        return Ppml.text(`${term.content}.0`)
+      } else {
+        return Ppml.text(`${term.content}`)
+      }
     }
 
     case "VarTerm": {

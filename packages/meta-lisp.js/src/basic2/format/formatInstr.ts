@@ -28,7 +28,11 @@ function formatAttribute(attribute: B.Attribute): string {
     case "IntAttribute":
       return attribute.content.toString()
     case "FloatAttribute":
-      return attribute.content.toString()
+      if (Number.isInteger(attribute.content)) {
+        return `${attribute.content}.0`
+      } else {
+        return attribute.content.toString()
+      }
     case "BoolAttribute":
       return `(${attribute.content})`
     case "StringAttribute":

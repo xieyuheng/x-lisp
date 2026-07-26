@@ -32,6 +32,10 @@
       (mod-name explicate-control)
       (imported-names 624)
       (imported-prefixes 0))
+    ("src/float.meta"
+      (mod-name float)
+      (imported-names 624)
+      (imported-prefixes 0))
     ("src/function-reference.meta"
       (mod-name function-reference)
       (imported-names 622)

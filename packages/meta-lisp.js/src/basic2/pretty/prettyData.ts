@@ -8,7 +8,11 @@ export function prettyData(data: B.Data): Ppml.Node {
     case "IntData":
       return Ppml.text(data.content.toString())
     case "FloatData":
-      return Ppml.text(data.content.toString())
+      if (Number.isInteger(data.content)) {
+        return Ppml.text(`${data.content}.0`)
+      } else {
+        return Ppml.text(data.content.toString())
+      }
     case "StringData":
       return Ppml.text(JSON.stringify(data.content))
     case "StructData": {

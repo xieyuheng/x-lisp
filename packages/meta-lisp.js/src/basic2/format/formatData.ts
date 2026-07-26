@@ -7,7 +7,11 @@ export function formatData(data: B.Data): string {
     case "IntData":
       return data.content.toString()
     case "FloatData":
-      return data.content.toString()
+      if (Number.isInteger(data.content)) {
+        return `${data.content}.0`
+      } else {
+        return data.content.toString()
+      }
     case "StringData":
       return JSON.stringify(data.content)
     case "StructData": {

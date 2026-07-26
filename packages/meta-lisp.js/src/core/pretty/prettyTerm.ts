@@ -16,7 +16,11 @@ export function prettyTerm(term: Term): Ppml.Node {
       return Ppml.text(`${term.content}`)
 
     case "FloatTerm":
-      return Ppml.text(`${term.content}`)
+      if (Number.isInteger(term.content)) {
+        return Ppml.text(`${term.content}.0`)
+      } else {
+        return Ppml.text(`${term.content}`)
+      }
 
     case "VarTerm":
       return Ppml.text(term.name)

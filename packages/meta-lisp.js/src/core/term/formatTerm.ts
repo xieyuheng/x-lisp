@@ -15,7 +15,11 @@ export function formatTerm(term: Term): string {
       return `${term.content}`
 
     case "FloatTerm":
-      return `${term.content}`
+      if (Number.isInteger(term.content)) {
+        return `${term.content}.0`
+      } else {
+        return `${term.content}`
+      }
 
     case "VarTerm":
       return term.name

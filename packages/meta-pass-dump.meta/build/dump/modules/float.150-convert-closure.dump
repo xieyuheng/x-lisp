@@ -1,0 +1,5 @@
+(define zero 0.0)
+
+(define (float-double x) (meta-builtin/builtin/fadd x x))
+
+(define (float-half x) (meta-builtin/builtin/fdiv x 2.0))

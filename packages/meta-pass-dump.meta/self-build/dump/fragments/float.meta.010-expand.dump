@@ -1,0 +1,7 @@
+(module float)
+
+(define zero 0.0)
+
+(define (float-double x) (fadd x x))
+
+(define (float-half x) (fdiv x 2.0))
