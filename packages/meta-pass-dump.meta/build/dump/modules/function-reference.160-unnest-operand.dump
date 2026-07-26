@@ -1,0 +1,37 @@
+(define (add1 x) (meta-builtin/builtin/iadd x 1))
+
+(define (sub1 x) (meta-builtin/builtin/isub x 1))
+
+(define (identity x) x)
+
+(define (apply-to-zero f) (f 0))
+
+(define (compose2 f g x) (let ((unnested.1 (g x))) (f unnested.1)))
+
+(define (swap f x y) (f y x))
+
+(define (example-function-as-argument)
+  (let ((unnested.1 (@closure self/function-reference/add1©wrap)))
+    (self/function-reference/apply-to-zero unnested.1)))
+
+(define (add1©wrap ©closure x) (self/function-reference/add1 x))
+
+(define (example-second-function-as-argument)
+  (let ((unnested.1 (@closure self/function-reference/sub1©wrap)))
+    (self/function-reference/apply-to-zero unnested.1)))
+
+(define (sub1©wrap ©closure x) (self/function-reference/sub1 x))
+
+(define (example-identity-as-argument)
+  (let ((unnested.1 (@closure self/function-reference/identity©wrap)))
+    (self/function-reference/apply-to-zero unnested.1)))
+
+(define (identity©wrap ©closure x) (self/function-reference/identity x))
+
+(define (example-compose2)
+  (let ((unnested.1 (@closure self/function-reference/add1©wrap)))
+    (let ((unnested.2 (@closure self/function-reference/sub1©wrap)))
+      (self/function-reference/compose2 unnested.1 unnested.2 5))))
+
+(define (example-swap)
+  (self/function-reference/swap meta-builtin/builtin/iadd 3 4))

@@ -66,35 +66,54 @@ function convertClosureDefinition(
 function convertClosureTerm(state: State, term: C.Term): C.Term {
   switch (term.kind) {
     case "LambdaTerm": {
-      const freeNames = Array.from(C.termFreeNames(new Set(), term))
-      const liftedCount = state.lifted.length + 1
-      const newFunctionName = `${state.definition.name}©λ${liftedCount}`
+      return liftLambda(state, term.parameters, term.body, term.location)
+    }
 
-      const newParameters = ["©closure", ...term.parameters]
-      const newBody = wrapBodyWithClosureArgs(
-        freeNames,
-        term.body,
+    case "ApplyTerm": {
+      return C.ApplyTerm(
+        convertClosureTermInApplyTarget(state, term.target),
+        term.args.map((arg) => convertClosureTerm(state, arg)),
+        term.location,
+      )
+    }
+
+    case "QualifiedVarTerm": {
+      if (term.pkgName !== state.coreMod.pkg.id && term.pkgName !== "self") {
+        return term
+      }
+
+      if (term.modName !== state.coreMod.name) {
+        return term
+      }
+
+      const definition = C.modLookupDefinition(state.coreMod, term.name)
+      if (definition?.kind !== "FunctionDefinition") {
+        return term
+      }
+
+      const wrapName = `${term.name}©wrap`
+      const wrapParameters = ["©closure", ...definition.parameters]
+      const wrapBody = C.ApplyTerm(
+        term,
+        definition.parameters.map((p) => C.VarTerm(p, term.location)),
         term.location,
       )
 
       state.lifted.push(
         C.FunctionDefinition(
           state.coreMod,
-          newFunctionName,
-          newParameters,
-          newBody,
+          wrapName,
+          wrapParameters,
+          wrapBody,
           term.location,
         ),
       )
 
-      const freeVarTerms = freeNames.map((name) =>
-        C.VarTerm(name, term.location),
-      )
       return C.ClosureTerm(
-        state.coreMod.pkg.id,
-        state.coreMod.name,
-        newFunctionName,
-        freeVarTerms,
+        term.pkgName,
+        term.modName,
+        wrapName,
+        [],
         term.location,
       )
     }
@@ -103,6 +122,63 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
       return C.termTraverse((e) => convertClosureTerm(state, e), term)
     }
   }
+}
+
+function convertClosureTermInApplyTarget(state: State, term: C.Term): C.Term {
+  switch (term.kind) {
+    case "LambdaTerm": {
+      return liftLambda(state, term.parameters, term.body, term.location)
+    }
+
+    case "ApplyTerm": {
+      return C.ApplyTerm(
+        convertClosureTermInApplyTarget(state, term.target),
+        term.args.map((arg) => convertClosureTerm(state, arg)),
+        term.location,
+      )
+    }
+
+    default: {
+      return C.termTraverse(
+        (e) => convertClosureTermInApplyTarget(state, e),
+        term,
+      )
+    }
+  }
+}
+
+function liftLambda(
+  state: State,
+  parameters: Array<string>,
+  body: C.Term,
+  location: C.Term["location"],
+): C.Term {
+  const lambdaTerm = C.LambdaTerm(parameters, body, location)
+  const freeNames = Array.from(C.termFreeNames(new Set(), lambdaTerm))
+  const liftedCount = state.lifted.length + 1
+  const newFunctionName = `${state.definition.name}©λ${liftedCount}`
+
+  const newParameters = ["©closure", ...parameters]
+  const newBody = wrapBodyWithClosureArgs(freeNames, body, location)
+
+  state.lifted.push(
+    C.FunctionDefinition(
+      state.coreMod,
+      newFunctionName,
+      newParameters,
+      newBody,
+      location,
+    ),
+  )
+
+  const freeVarTerms = freeNames.map((name) => C.VarTerm(name, location))
+  return C.ClosureTerm(
+    state.coreMod.pkg.id,
+    state.coreMod.name,
+    newFunctionName,
+    freeVarTerms,
+    location,
+  )
 }
 
 function wrapBodyWithClosureArgs(
