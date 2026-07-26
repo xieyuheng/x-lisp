@@ -15,5 +15,5 @@ title: tail-call
 # 例子
 
 ```scheme
-(tail-call (address aux) x y)
+(tail-call address x y)
 ```
