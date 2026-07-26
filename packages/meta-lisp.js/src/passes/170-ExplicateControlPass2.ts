@@ -305,22 +305,6 @@ function explicateUnnestedTerm(
         return [instrs, value]
       }
 
-      if (
-        definition.kind === "PrimitiveFunctionDeclaration" ||
-        definition.kind === "FunctionDefinition" ||
-        definition.kind === "TestDefinition"
-      ) {
-        const prefix = resolvePackageId(state.pkg, term.pkgName)
-        const value = generateCell(state, "fn")
-        const instrs = [
-          B.Instr("function-value", [], [value], {
-            name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
-            arity: B.IntAttribute(BigInt(C.definitionArity(definition))),
-          }),
-        ]
-        return [instrs, value]
-      }
-
       let message = `[explicateUnnestedTerm] unhandled definition`
       throw new Error(message)
     }

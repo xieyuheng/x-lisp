@@ -1,8 +1,0 @@
-(claim add-or-sub (-> value-t value-t value-t value-t))
-
-(claim get-adder (-> value-t))
-
-(define-function get-adder
-  (block body
-    (= f (function-value :name add-or-sub :arity 3))
-    (return f)))

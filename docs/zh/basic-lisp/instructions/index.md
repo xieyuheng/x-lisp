@@ -77,7 +77,6 @@ basic-lisp IR 的所有指令按功能分类。
 - [`float64`](float64.md) — float64 常量
 - [`bool`](bool.md) — bool 常量
 - [`address`](address.md) — 符号地址
-- [`function-value`](function-value.md) — 函数值地址
 
 ## 常量
 
