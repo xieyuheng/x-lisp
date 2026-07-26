@@ -1,0 +1,23 @@
+(module function-reference)
+
+(define (add1 x) (iadd x 1))
+
+(define (sub1 x) (isub x 1))
+
+(define (identity x) x)
+
+(define (apply-to-zero f) (f 0))
+
+(define (compose2 f g x) (f (g x)))
+
+(define (swap f x y) (f y x))
+
+(define (example-function-as-argument) (apply-to-zero add1))
+
+(define (example-second-function-as-argument) (apply-to-zero sub1))
+
+(define (example-identity-as-argument) (apply-to-zero identity))
+
+(define (example-compose2) (compose2 add1 sub1 5))
+
+(define (example-swap) (swap iadd 3 4))

@@ -1,0 +1,29 @@
+(define (add1 x) (meta-builtin/builtin/iadd x 1))
+
+(define (sub1 x) (meta-builtin/builtin/isub x 1))
+
+(define (identity x) x)
+
+(define (apply-to-zero f) (f 0))
+
+(define (compose2 f g x) (f (g x)))
+
+(define (swap f x y) (f y x))
+
+(define (example-function-as-argument)
+  (self/function-reference/apply-to-zero self/function-reference/add1))
+
+(define (example-second-function-as-argument)
+  (self/function-reference/apply-to-zero self/function-reference/sub1))
+
+(define (example-identity-as-argument)
+  (self/function-reference/apply-to-zero self/function-reference/identity))
+
+(define (example-compose2)
+  (self/function-reference/compose2
+   self/function-reference/add1
+   self/function-reference/sub1
+   5))
+
+(define (example-swap)
+  (self/function-reference/swap meta-builtin/builtin/iadd 3 4))
