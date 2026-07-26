@@ -103,7 +103,7 @@ export function infer(
           term.name,
           term.location,
         ),
-        term
+        term,
       )
     }
 
