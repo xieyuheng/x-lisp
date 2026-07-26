@@ -383,11 +383,17 @@ function explicateUnnestedTerm(
         return [instrs, value]
       } else {
         const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+        const fnGetter = generateCell(state, "fn-getter")
+        const fn = generateCell(state, "fn")
         const value = generateCell(state, "value")
         const instrs = [
           ...targetInstrs,
+          B.Instr("address", [], [fnGetter], {
+            name: B.SymbolAttribute("meta-builtin/builtin/closure-fn"),
+          }),
+          B.Instr("call", [fnGetter, target], [fn], {}),
           ...arrayConcat(argInstrGroups),
-          B.Instr("apply", [target, ...args], [value], {}),
+          B.Instr("call", [fn, target, ...args], [value], {}),
         ]
         return [instrs, value]
       }
@@ -494,10 +500,16 @@ function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
         ]
       } else {
         const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+        const fnGetter = generateCell(state, "fn-getter")
+        const fn = generateCell(state, "fn")
         return [
           ...targetInstrs,
+          B.Instr("address", [], [fnGetter], {
+            name: B.SymbolAttribute("meta-builtin/builtin/closure-fn"),
+          }),
+          B.Instr("call", [fnGetter, target], [fn], {}),
           ...arrayConcat(argInstrGroups),
-          B.Instr("tail-apply", [target, ...args], [], {}),
+          B.Instr("tail-call", [fn, target, ...args], [], {}),
         ]
       }
     }
