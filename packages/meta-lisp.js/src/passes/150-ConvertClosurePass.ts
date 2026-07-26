@@ -19,12 +19,11 @@ import * as Pkg from "../package/index.ts"
 
 export function ConvertClosurePass(pkg: Pkg.Package): void {
   for (const coreMod of pkg.coreMods.values()) {
-    coreMod.definitions = new Map(
-      coreMod.definitions
-        .values()
-        .flatMap((definition) => convertClosureDefinition(coreMod, definition))
-        .map((definition) => [definition.name, definition]),
-    )
+    const names = Array.from(coreMod.definitions.keys())
+    for (const name of names) {
+      const definition = coreMod.definitions.get(name)!
+      convertClosureDefinition(coreMod, definition)
+    }
   }
 
   if (pkg.config.compiler.dump)
@@ -33,32 +32,26 @@ export function ConvertClosurePass(pkg: Pkg.Package): void {
 
 type State = {
   coreMod: C.Mod
-  lifted: Array<C.Definition>
+  localLambdaCount: number
   definition: C.Definition
 }
 
 function convertClosureDefinition(
   coreMod: C.Mod,
   definition: C.Definition,
-): Array<C.Definition> {
+): void {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration": {
-      return [definition]
+      return
     }
 
     case "FunctionDefinition":
     case "VariableDefinition":
     case "TestDefinition": {
-      const lifted: Array<C.Definition> = []
-      const state = { coreMod, lifted, definition }
+      const state = { coreMod, localLambdaCount: 0, definition }
       definition.body = convertClosureTerm(state, definition.body)
-      return [
-        definition,
-        ...lifted.flatMap((definition) =>
-          convertClosureDefinition(coreMod, definition),
-        ),
-      ]
+      return
     }
   }
 }
@@ -99,15 +92,15 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
         term.location,
       )
 
-      state.lifted.push(
-        C.FunctionDefinition(
-          state.coreMod,
-          wrapName,
-          wrapParameters,
-          wrapBody,
-          term.location,
-        ),
+      const wrapFunctionDefinition = C.FunctionDefinition(
+        state.coreMod,
+        wrapName,
+        wrapParameters,
+        wrapBody,
+        term.location,
       )
+      state.coreMod.definitions.set(wrapName, wrapFunctionDefinition)
+      convertClosureDefinition(state.coreMod, wrapFunctionDefinition)
 
       return C.ClosureTerm(
         term.pkgName,
@@ -155,21 +148,21 @@ function liftLambda(
 ): C.Term {
   const lambdaTerm = C.LambdaTerm(parameters, body, location)
   const freeNames = Array.from(C.termFreeNames(new Set(), lambdaTerm))
-  const liftedCount = state.lifted.length + 1
-  const newFunctionName = `${state.definition.name}©λ${liftedCount}`
+  state.localLambdaCount++
+  const newFunctionName = `${state.definition.name}©λ${state.localLambdaCount}`
 
   const newParameters = ["©closure", ...parameters]
   const newBody = wrapBodyWithClosureArgs(freeNames, body, location)
 
-  state.lifted.push(
-    C.FunctionDefinition(
-      state.coreMod,
-      newFunctionName,
-      newParameters,
-      newBody,
-      location,
-    ),
+  const functionDefinition = C.FunctionDefinition(
+    state.coreMod,
+    newFunctionName,
+    newParameters,
+    newBody,
+    location,
   )
+  state.coreMod.definitions.set(newFunctionName, functionDefinition)
+  convertClosureDefinition(state.coreMod, functionDefinition)
 
   const freeVarTerms = freeNames.map((name) => C.VarTerm(name, location))
   return C.ClosureTerm(
