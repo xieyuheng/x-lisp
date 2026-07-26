@@ -1,10 +1,11 @@
 (module float)
 
 ;; Low-bit tagging loses 3 bits of precision.
-;; (define pi 3.14) is disabled -- its round-trip 3.139999999999997
-;; causes dump diff between JS compiler (build/) and self-hosting compiler (self-build/).
+;; e.g. 3.14 -> 3.139999999999997
+;; causes dump diff between JS compiler (build/)
+;; and self-hosting compiler (self-build/).
 
-;;(define pi 3.14)
+;; (define pi 3.14)
 
 (define zero 0.0)
 
