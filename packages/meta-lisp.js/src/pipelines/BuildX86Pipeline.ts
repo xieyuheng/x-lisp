@@ -48,7 +48,12 @@ export function BuildX86Pipeline(rootPkg: Pkg.Package): void {
   const ssaReport = Passes.SsaAnalysisPass(rootPkg, basicMod)
 
   const x86Mod = Passes.SelectInstructionPass(rootPkg, basicMod, ssaReport)
-  X86Bundle(rootPkg, x86Mod)
+
+  const { mod: x86ModAssigned, homeMap } = Passes.AssignHomesPass(x86Mod)
+  const x86ModPatched = Passes.PatchInstructionsPass(x86ModAssigned)
+  const x86ModFinal = Passes.PrologEpilogPass(x86ModPatched, homeMap)
+
+  X86Bundle(rootPkg, x86ModFinal)
 }
 
 function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
