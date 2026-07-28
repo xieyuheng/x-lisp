@@ -1,5 +1,5 @@
 ---
-title: fs-list-recursive
+title: path-list-recursive
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-list-recursive
 # 例子
 
 ```meta-lisp
-(fs-list-recursive "/tmp")  ;; => ["/tmp/a.txt" "/tmp/subdir/b.txt"]
+(path-list-recursive "/tmp")  ;; => ["/tmp/a.txt" "/tmp/subdir/b.txt"]
 ```

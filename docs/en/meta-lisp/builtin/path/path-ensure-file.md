@@ -1,5 +1,5 @@
 ---
-title: fs-ensure-file
+title: path-ensure-file
 ---
 
 # Type
@@ -15,5 +15,5 @@ Ensure a file exists. Creates an empty file if it doesn't exist.
 # Examples
 
 ```meta-lisp
-(fs-ensure-file "/tmp/foo.txt")
+(path-ensure-file "/tmp/foo.txt")
 ```

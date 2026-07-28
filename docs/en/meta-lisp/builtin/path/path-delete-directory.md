@@ -1,5 +1,5 @@
 ---
-title: fs-delete
+title: path-delete-directory
 ---
 
 # Type
@@ -10,10 +10,10 @@ title: fs-delete
 
 # Description
 
-Recursively delete a file or directory.
+Delete an empty directory.
 
 # Examples
 
 ```meta-lisp
-(fs-delete "/tmp/foo")
+(path-delete-directory "/tmp/foo")
 ```

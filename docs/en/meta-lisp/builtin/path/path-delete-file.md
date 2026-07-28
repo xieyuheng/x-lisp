@@ -1,5 +1,5 @@
 ---
-title: fs-delete-directory
+title: path-delete-file
 ---
 
 # Type
@@ -10,10 +10,10 @@ title: fs-delete-directory
 
 # Description
 
-Delete an empty directory.
+Delete a file.
 
 # Examples
 
 ```meta-lisp
-(fs-delete-directory "/tmp/foo")
+(path-delete-file "/tmp/foo.txt")
 ```

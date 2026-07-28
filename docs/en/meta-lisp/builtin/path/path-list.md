@@ -1,5 +1,5 @@
 ---
-title: fs-list
+title: path-list
 ---
 
 # Type
@@ -15,5 +15,5 @@ List directory contents.
 # Examples
 
 ```meta-lisp
-(fs-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
+(path-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
 ```

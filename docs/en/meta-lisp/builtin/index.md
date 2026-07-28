@@ -23,7 +23,6 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Function operations](#function-operations)
 - [for- Iteration](#for-iteration)
 - [File I/O](#file-io)
-- [File system](#file-system)
 - [Path operations](#path-operations)
 - [Assertions](#assertions)
 - [Error handling](#error-handling)
@@ -517,38 +516,9 @@ File handle read/write operations.
 - [`print`](file/print.md) — Print any value
 - [`println`](file/println.md) — Print any value with newline
 
-## File system
-
-Functions that operate directly on the file system.
-
-### Query
-
-- [`fs-exists`](fs/fs-exists.md) — Check if path exists
-- [`fs-is-file`](fs/fs-is-file.md) — Check if path is a file
-- [`fs-is-directory`](fs/fs-is-directory.md) — Check if path is a directory
-
-### Read and write
-
-- [`fs-read`](fs/fs-read.md) — Read file
-- [`fs-write`](fs/fs-write.md) — Write file
-
-### Directory operations
-
-- [`fs-list`](fs/fs-list.md) — List directory contents
-- [`fs-list-recursive`](fs/fs-list-recursive.md) — List directory recursively
-- [`fs-ensure-file`](fs/fs-ensure-file.md) — Ensure file exists
-- [`fs-ensure-directory`](fs/fs-ensure-directory.md) — Ensure directory exists
-
-### Delete and rename
-
-- [`fs-delete-file`](fs/fs-delete-file.md) — Delete file
-- [`fs-delete-directory`](fs/fs-delete-directory.md) — Delete empty directory
-- [`fs-delete`](fs/fs-delete.md) — Delete recursively
-- [`fs-rename`](fs/fs-rename.md) — Rename
-
 ## Path operations
 
-Path string manipulation functions.
+Path string manipulation and file system functions.
 
 - [`path-base-name`](path/path-base-name.md) — Get file name
 - [`path-directory-name`](path/path-directory-name.md) — Get directory name
@@ -561,6 +531,31 @@ Path string manipulation functions.
 - [`path-relative`](path/path-relative.md) — Compute relative path
 - [`path-relative-to-cwd`](path/path-relative-to-cwd.md) — Relative to current working directory
 - [`path-resolve`](path/path-resolve.md) — Resolve to absolute path
+
+### Query
+
+- [`path-exists`](path/path-exists.md) — Check if path exists
+- [`path-is-file`](path/path-is-file.md) — Check if path is a file
+- [`path-is-directory`](path/path-is-directory.md) — Check if path is a directory
+
+### Read and write
+
+- [`path-read`](path/path-read.md) — Read file
+- [`path-write`](path/path-write.md) — Write file
+
+### Directory operations
+
+- [`path-list`](path/path-list.md) — List directory contents
+- [`path-list-recursive`](path/path-list-recursive.md) — List directory recursively
+- [`path-ensure-file`](path/path-ensure-file.md) — Ensure file exists
+- [`path-ensure-directory`](path/path-ensure-directory.md) — Ensure directory exists
+
+### Delete and rename
+
+- [`path-delete-file`](path/path-delete-file.md) — Delete file
+- [`path-delete-directory`](path/path-delete-directory.md) — Delete empty directory
+- [`path-delete`](path/path-delete.md) — Delete recursively
+- [`path-rename`](path/path-rename.md) — Rename
 
 ## Assertions
 

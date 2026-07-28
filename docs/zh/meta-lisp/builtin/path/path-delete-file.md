@@ -1,5 +1,5 @@
 ---
-title: fs-delete-file
+title: path-delete-file
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-delete-file
 # 例子
 
 ```meta-lisp
-(fs-delete-file "/tmp/foo.txt")
+(path-delete-file "/tmp/foo.txt")
 ```

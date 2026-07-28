@@ -1,5 +1,5 @@
 ---
-title: fs-read
+title: path-read
 ---
 
 # Type
@@ -15,5 +15,5 @@ Read file content as a string.
 # Examples
 
 ```meta-lisp
-(fs-read "/tmp/foo.txt")  ;; => file content
+(path-read "/tmp/foo.txt")  ;; => file content
 ```

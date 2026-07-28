@@ -1,5 +1,5 @@
 ---
-title: fs-write
+title: path-write
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-write
 # 例子
 
 ```meta-lisp
-(fs-write "/tmp/foo.txt" "hello world")
+(path-write "/tmp/foo.txt" "hello world")
 ```

@@ -1,5 +1,5 @@
 ---
-title: fs-is-file
+title: path-is-file
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-is-file
 # 例子
 
 ```meta-lisp
-(fs-is-file "/tmp/foo.txt")  ;; => true 或 false
+(path-is-file "/tmp/foo.txt")  ;; => true 或 false
 ```

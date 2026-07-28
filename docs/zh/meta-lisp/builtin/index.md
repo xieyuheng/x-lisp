@@ -523,28 +523,28 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 ### 查询
 
-- [`fs-exists`](fs/fs-exists.md) — 路径是否存在
-- [`fs-is-file`](fs/fs-is-file.md) — 是否为文件
-- [`fs-is-directory`](fs/fs-is-directory.md) — 是否为目录
+- [`path-exists`](path/path-exists.md) — 路径是否存在
+- [`path-is-file`](path/path-is-file.md) — 是否为文件
+- [`path-is-directory`](path/path-is-directory.md) — 是否为目录
 
 ### 读写
 
-- [`fs-read`](fs/fs-read.md) — 读取文件
-- [`fs-write`](fs/fs-write.md) — 写入文件
+- [`path-read`](path/path-read.md) — 读取文件
+- [`path-write`](path/path-write.md) — 写入文件
 
 ### 目录操作
 
-- [`fs-list`](fs/fs-list.md) — 列出目录内容
-- [`fs-list-recursive`](fs/fs-list-recursive.md) — 递归列出目录
-- [`fs-ensure-file`](fs/fs-ensure-file.md) — 确保文件存在
-- [`fs-ensure-directory`](fs/fs-ensure-directory.md) — 确保目录存在
+- [`path-list`](path/path-list.md) — 列出目录内容
+- [`path-list-recursive`](path/path-list-recursive.md) — 递归列出目录
+- [`path-ensure-file`](path/path-ensure-file.md) — 确保文件存在
+- [`path-ensure-directory`](path/path-ensure-directory.md) — 确保目录存在
 
 ### 删除与重命名
 
-- [`fs-delete-file`](fs/fs-delete-file.md) — 删除文件
-- [`fs-delete-directory`](fs/fs-delete-directory.md) — 删除空目录
-- [`fs-delete`](fs/fs-delete.md) — 递归删除
-- [`fs-rename`](fs/fs-rename.md) — 重命名
+- [`path-delete-file`](path/path-delete-file.md) — 删除文件
+- [`path-delete-directory`](path/path-delete-directory.md) — 删除空目录
+- [`path-delete`](path/path-delete.md) — 递归删除
+- [`path-rename`](path/path-rename.md) — 重命名
 
 ## 路径操作
 

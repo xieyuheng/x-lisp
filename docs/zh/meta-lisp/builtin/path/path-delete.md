@@ -1,5 +1,5 @@
 ---
-title: fs-delete-directory
+title: path-delete
 ---
 
 # 类型
@@ -10,10 +10,10 @@ title: fs-delete-directory
 
 # 描述
 
-删除空目录。
+递归删除文件或目录。
 
 # 例子
 
 ```meta-lisp
-(fs-delete-directory "/tmp/foo")
+(path-delete "/tmp/foo")
 ```

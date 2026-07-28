@@ -1,5 +1,5 @@
 ---
-title: fs-is-file
+title: path-exists
 ---
 
 # Type
@@ -10,10 +10,10 @@ title: fs-is-file
 
 # Description
 
-Check if a path is a file.
+Check if a path exists.
 
 # Examples
 
 ```meta-lisp
-(fs-is-file "/tmp/foo.txt")  ;; => true or false
+(path-exists "/tmp/foo")  ;; => true or false
 ```

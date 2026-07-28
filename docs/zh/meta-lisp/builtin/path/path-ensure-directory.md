@@ -1,5 +1,5 @@
 ---
-title: fs-ensure-directory
+title: path-ensure-directory
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-ensure-directory
 # 例子
 
 ```meta-lisp
-(fs-ensure-directory "/tmp/foo/bar")
+(path-ensure-directory "/tmp/foo/bar")
 ```

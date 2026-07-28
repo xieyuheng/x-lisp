@@ -1,5 +1,5 @@
 ---
-title: fs-rename
+title: path-rename
 ---
 
 # Type
@@ -15,5 +15,5 @@ Rename a file or directory.
 # Examples
 
 ```meta-lisp
-(fs-rename "/tmp/old.txt" "/tmp/new.txt")
+(path-rename "/tmp/old.txt" "/tmp/new.txt")
 ```

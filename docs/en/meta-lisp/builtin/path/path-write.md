@@ -1,5 +1,5 @@
 ---
-title: fs-write
+title: path-write
 ---
 
 # Type
@@ -15,5 +15,5 @@ Write a string to a file. Creates the file if it doesn't exist, overwrites if it
 # Examples
 
 ```meta-lisp
-(fs-write "/tmp/foo.txt" "hello world")
+(path-write "/tmp/foo.txt" "hello world")
 ```

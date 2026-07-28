@@ -297,7 +297,7 @@
 
 (define (dump-module-analysis-report result package)
   (let ((dump-directory (path-join (package-output-directory package) "dump")))
-    (fs-ensure-directory dump-directory)
+    (path-ensure-directory dump-directory)
     (let ((dump-path (@string dump-directory "/030-module-analysis-report.dump")))
-      (fs-ensure-file dump-path)
-      (fs-write dump-path (@string (format-module-analysis-report result false) "\n")))))
+      (path-ensure-file dump-path)
+      (path-write dump-path (@string (format-module-analysis-report result false) "\n")))))

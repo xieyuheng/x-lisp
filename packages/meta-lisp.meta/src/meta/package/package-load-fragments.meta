@@ -1,7 +1,7 @@
 (module meta)
 
 (define (package-load-fragments package directory)
-  (pipe (fs-list-recursive directory)
+  (pipe (path-list-recursive directory)
     (list-each
       (lambda (name)
         (when (string-ends-with ".meta" name)

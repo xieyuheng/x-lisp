@@ -1,5 +1,5 @@
 ---
-title: fs-read
+title: path-read
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-read
 # 例子
 
 ```meta-lisp
-(fs-read "/tmp/foo.txt")  ;; => 文件内容
+(path-read "/tmp/foo.txt")  ;; => 文件内容
 ```

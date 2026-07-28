@@ -1,5 +1,5 @@
 ---
-title: fs-exists
+title: path-exists
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-exists
 # 例子
 
 ```meta-lisp
-(fs-exists "/tmp/foo")  ;; => true 或 false
+(path-exists "/tmp/foo")  ;; => true 或 false
 ```

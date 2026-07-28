@@ -1,5 +1,5 @@
 ---
-title: fs-list
+title: path-list
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-list
 # 例子
 
 ```meta-lisp
-(fs-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
+(path-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
 ```

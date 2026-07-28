@@ -1,16 +1,16 @@
 (module example)
 
-(define-test fs-test
-  (assert-equal "abc\n" (fs-read "src/fs/file-1.txt"))
+(define-test path-test
+  (assert-equal "abc\n" (path-read "src/fs/file-1.txt"))
 
-  (fs-write "src/fs/file-2.txt" "123\n")
-  (assert-equal "123\n" (fs-read "src/fs/file-2.txt"))
+  (path-write "src/fs/file-2.txt" "123\n")
+  (assert-equal "123\n" (path-read "src/fs/file-2.txt"))
 
-  (fs-write "src/fs/file-2.txt" "abc\n")
-  (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
+  (path-write "src/fs/file-2.txt" "abc\n")
+  (assert-equal "abc\n" (path-read "src/fs/file-2.txt"))
 
-  (list-each println (list-sort string-compare-lexical (fs-list "src")))
+  (list-each println (list-sort string-compare-lexical (path-list "src")))
   (print "\n")
 
-  (list-each println (list-sort string-compare-lexical (fs-list-recursive "src")))
+  (list-each println (list-sort string-compare-lexical (path-list-recursive "src")))
   (print "\n"))

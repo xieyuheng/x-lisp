@@ -1,5 +1,5 @@
 ---
-title: fs-ensure-directory
+title: path-ensure-directory
 ---
 
 # Type
@@ -15,5 +15,5 @@ Ensure a directory exists. Creates the directory (including parents) if it doesn
 # Examples
 
 ```meta-lisp
-(fs-ensure-directory "/tmp/foo/bar")
+(path-ensure-directory "/tmp/foo/bar")
 ```

@@ -1,5 +1,5 @@
 ---
-title: fs-rename
+title: path-rename
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: fs-rename
 # 例子
 
 ```meta-lisp
-(fs-rename "/tmp/old.txt" "/tmp/new.txt")
+(path-rename "/tmp/old.txt" "/tmp/new.txt")
 ```

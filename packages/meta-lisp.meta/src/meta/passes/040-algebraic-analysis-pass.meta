@@ -79,10 +79,10 @@
 
 (define (dump-algebraic-analysis-report report package)
   (let ((dump-directory (path-join (package-output-directory package) "dump")))
-    (fs-ensure-directory dump-directory)
+    (path-ensure-directory dump-directory)
     (let ((dump-path (@string dump-directory "/040-algebraic-analysis-report.dump")))
-      (fs-ensure-file dump-path)
-      (fs-write dump-path (@string (format-algebraic-analysis-report report) "\n")))))
+      (path-ensure-file dump-path)
+      (path-write dump-path (@string (format-algebraic-analysis-report report) "\n")))))
 
 (define (format-algebraic-analysis-report report)
   (let ((lines []))

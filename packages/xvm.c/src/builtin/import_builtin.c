@@ -439,32 +439,32 @@ void import_builtin(mod_t *mod) {
 
   // fs
 
-  define_primitive_1(mod, "meta-builtin/builtin/fs-exists", x_fs_exists);
-  define_primitive_1(mod, "meta-builtin/builtin/路径存在", x_fs_exists);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-is-file", x_fs_is_file);
-  define_primitive_1(mod, "meta-builtin/builtin/路径为文件", x_fs_is_file);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-is-directory", x_fs_is_directory);
-  define_primitive_1(mod, "meta-builtin/builtin/路径为目录", x_fs_is_directory);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-read", x_fs_read);
-  define_primitive_1(mod, "meta-builtin/builtin/路径读", x_fs_read);
-  define_primitive_2(mod, "meta-builtin/builtin/fs-write", x_fs_write);
-  define_primitive_2(mod, "meta-builtin/builtin/路径写", x_fs_write);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-list", x_fs_list);
-  define_primitive_1(mod, "meta-builtin/builtin/路径列表", x_fs_list);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-list-recursive", x_fs_list_recursive);
-  define_primitive_1(mod, "meta-builtin/builtin/路径递归列表", x_fs_list_recursive);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-ensure-file", x_fs_ensure_file);
-  define_primitive_1(mod, "meta-builtin/builtin/路径确保文件", x_fs_ensure_file);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-ensure-directory", x_fs_ensure_directory);
-  define_primitive_1(mod, "meta-builtin/builtin/路径确保目录", x_fs_ensure_directory);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-delete-file", x_fs_delete_file);
-  define_primitive_1(mod, "meta-builtin/builtin/路径删除文件", x_fs_delete_file);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-delete-directory", x_fs_delete_directory);
-  define_primitive_1(mod, "meta-builtin/builtin/路径删除目录", x_fs_delete_directory);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-delete", x_fs_delete);
-  define_primitive_1(mod, "meta-builtin/builtin/路径删除", x_fs_delete);
-  define_primitive_2(mod, "meta-builtin/builtin/fs-rename", x_fs_rename);
-  define_primitive_2(mod, "meta-builtin/builtin/路径重命名", x_fs_rename);
+  define_primitive_1(mod, "meta-builtin/builtin/path-exists", x_path_exists);
+  define_primitive_1(mod, "meta-builtin/builtin/路径存在", x_path_exists);
+  define_primitive_1(mod, "meta-builtin/builtin/path-is-file", x_path_is_file);
+  define_primitive_1(mod, "meta-builtin/builtin/路径为文件", x_path_is_file);
+  define_primitive_1(mod, "meta-builtin/builtin/path-is-directory", x_path_is_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/路径为目录", x_path_is_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/path-read", x_path_read);
+  define_primitive_1(mod, "meta-builtin/builtin/路径读", x_path_read);
+  define_primitive_2(mod, "meta-builtin/builtin/path-write", x_path_write);
+  define_primitive_2(mod, "meta-builtin/builtin/路径写", x_path_write);
+  define_primitive_1(mod, "meta-builtin/builtin/path-list", x_path_list);
+  define_primitive_1(mod, "meta-builtin/builtin/路径列表", x_path_list);
+  define_primitive_1(mod, "meta-builtin/builtin/path-list-recursive", x_path_list_recursive);
+  define_primitive_1(mod, "meta-builtin/builtin/路径递归列表", x_path_list_recursive);
+  define_primitive_1(mod, "meta-builtin/builtin/path-ensure-file", x_path_ensure_file);
+  define_primitive_1(mod, "meta-builtin/builtin/路径确保文件", x_path_ensure_file);
+  define_primitive_1(mod, "meta-builtin/builtin/path-ensure-directory", x_path_ensure_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/路径确保目录", x_path_ensure_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/path-delete-file", x_path_delete_file);
+  define_primitive_1(mod, "meta-builtin/builtin/路径删除文件", x_path_delete_file);
+  define_primitive_1(mod, "meta-builtin/builtin/path-delete-directory", x_path_delete_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/路径删除目录", x_path_delete_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/path-delete", x_path_delete);
+  define_primitive_1(mod, "meta-builtin/builtin/路径删除", x_path_delete);
+  define_primitive_2(mod, "meta-builtin/builtin/path-rename", x_path_rename);
+  define_primitive_2(mod, "meta-builtin/builtin/路径重命名", x_path_rename);
 
   // closure
 

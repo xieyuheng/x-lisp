@@ -1,5 +1,5 @@
 ---
-title: fs-is-directory
+title: path-is-file
 ---
 
 # Type
@@ -10,10 +10,10 @@ title: fs-is-directory
 
 # Description
 
-Check if a path is a directory.
+Check if a path is a file.
 
 # Examples
 
 ```meta-lisp
-(fs-is-directory "/tmp")  ;; => true or false
+(path-is-file "/tmp/foo.txt")  ;; => true or false
 ```

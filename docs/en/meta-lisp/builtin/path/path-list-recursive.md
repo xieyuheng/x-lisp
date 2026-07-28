@@ -1,5 +1,5 @@
 ---
-title: fs-list-recursive
+title: path-list-recursive
 ---
 
 # Type
@@ -15,5 +15,5 @@ List directory contents recursively.
 # Examples
 
 ```meta-lisp
-(fs-list-recursive "/tmp")  ;; => ["/tmp/a.txt" "/tmp/subdir/b.txt"]
+(path-list-recursive "/tmp")  ;; => ["/tmp/a.txt" "/tmp/subdir/b.txt"]
 ```
