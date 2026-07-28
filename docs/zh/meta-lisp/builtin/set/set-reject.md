@@ -15,5 +15,5 @@ title: set-reject
 # 例子
 
 ```meta-lisp
-(set-reject int-non-negative? (@set -2 -1 0 1 2))  ;; => (@set -2 -1)
+(set-reject int-is-non-negative (@set -2 -1 0 1 2))  ;; => (@set -2 -1)
 ```

@@ -21,8 +21,8 @@ The compiler handles tail calls correctly — no stack growth.
 # How to compare two values?
 
 ```meta-lisp
-(equal? a b)     ;; structural equality
-(same? a b)      ;; reference equality, or same for atomic data
+(equal a b)     ;; structural equality
+(same a b)      ;; reference equality, or same for atomic data
 ```
 
 # How to print debug info?

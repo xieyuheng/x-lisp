@@ -24,7 +24,7 @@ Pair type constructor. `(pair-t A B)` represents a pair containing values of typ
 
 ```meta-lisp
 (claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
-(claim pair? (polymorphic (A) (-> A bool-t)))
+(claim is-pair (polymorphic (A) (-> A bool-t)))
 (claim pair-first  (polymorphic (A B) (-> (pair-t A B) A)))
 (claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
 (claim pair-put-first!  (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))

@@ -24,7 +24,7 @@ type-t
 
 ```meta-lisp
 (claim make-source-location (-> string-t source-span-t source-location-t))
-(claim source-location?     (-> source-location-t bool-t))
+(claim is-source-location     (-> source-location-t bool-t))
 (claim source-location-path (-> source-location-t string-t))
 (claim source-location-span (-> source-location-t source-span-t))
 ```

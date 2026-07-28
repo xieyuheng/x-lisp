@@ -15,6 +15,6 @@ title: assert-not
 # 例子
 
 ```meta-lisp
-(assert-not (equal? 1 2))
+(assert-not (equal 1 2))
 (assert-not (< 2 1))
 ```

@@ -16,7 +16,7 @@ title: hash-reject-value
 
 ```meta-lisp
 (hash-reject-value
-  int-non-negative?
+  int-is-non-negative
   (@hash 'a 1 'b 2 'x -1 'y -2))
 ;; => (@hash 'x -1 'y -2)
 ```

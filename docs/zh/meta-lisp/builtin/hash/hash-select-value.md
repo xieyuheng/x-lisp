@@ -16,7 +16,7 @@ title: hash-select-value
 
 ```meta-lisp
 (hash-select-value
-  int-non-negative?
+  int-is-non-negative
   (@hash 'a 1 'b 2 'x -1 'y -2))
 ;; => (@hash 'a 1 'b 2)
 ```

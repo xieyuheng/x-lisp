@@ -15,6 +15,6 @@ title: list-find
 # 例子
 
 ```meta-lisp
-(list-find int? ['a 'b 3 'd])  ;; => (just 3)
-(list-find int? ['a 'b 'c])    ;; => (nothing)
+(list-find is-int ['a 'b 3 'd])  ;; => (just 3)
+(list-find is-int ['a 'b 'c])    ;; => (nothing)
 ```

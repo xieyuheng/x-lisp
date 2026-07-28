@@ -15,6 +15,6 @@ title: list-find-index
 # 例子
 
 ```meta-lisp
-(list-find-index int? ['a 'b 3 'd])  ;; => 2
-(list-find-index int? ['a 'b 'c])    ;; => -1
+(list-find-index is-int ['a 'b 3 'd])  ;; => 2
+(list-find-index is-int ['a 'b 'c])    ;; => -1
 ```

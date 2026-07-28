@@ -16,5 +16,5 @@ title: nothing
 
 ```meta-lisp
 (let ((m nothing))
-  (nothing? m))  ;; => true
+  (is-nothing m))  ;; => true
 ```

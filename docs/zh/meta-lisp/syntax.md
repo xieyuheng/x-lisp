@@ -598,7 +598,7 @@ builtin/list-empty?
 `(unless)` 表达式的返回值总是 `void`。
 
 ```meta-lisp
-(unless (equal? x 0)
+(unless (equal x 0)
   (print (idiv 1 x))
   (newline))
 ```
@@ -652,7 +652,7 @@ builtin/list-empty?
 从左到右求值。遇到第一个真值就停止并返回该值。全假时返回最后一个值。
 
 ```meta-lisp
-(or (equal? x 0) (equal? x 1))
+(or (equal x 0) (equal x 1))
 ```
 
 零个参数时返回 `false`。
@@ -727,17 +727,17 @@ builtin/list-empty?
 互相递归的例子：
 
 ```meta-lisp
-(letrec ((even?
+(letrec ((is-even
           (lambda (n)
-            (if (equal? n 0)
+            (if (equal n 0)
               true
-              (odd? (isub n 1)))))
-         (odd?
+              (is-odd (isub n 1)))))
+         (is-odd
           (lambda (n)
-            (if (equal? n 0)
+            (if (equal n 0)
               false
-              (even? (isub n 1))))))
-  (assert (even? 4)))
+              (is-even (isub n 1))))))
+  (assert (is-even 4)))
 ```
 
 顺序依赖的例子：
@@ -764,15 +764,15 @@ builtin/list-empty?
 
 ```meta-lisp
 (begin
-  (define (even? n)
-    (if (equal? n 0)
+  (define (is-even n)
+    (if (equal n 0)
       true
-      (odd? (isub n 1))))
-  (define (odd? n)
-    (if (equal? n 0)
+      (is-odd (isub n 1))))
+  (define (is-odd n)
+    (if (equal n 0)
       false
-      (even? (isub n 1))))
-  (even? 4))
+      (is-even (isub n 1))))
+  (is-even 4))
 ```
 
 顺序依赖的例子：
@@ -1199,7 +1199,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
-  (box-empty? (-> (box-t E) bool-t))
+  (box-is-empty (-> (box-t E) bool-t))
   (box-put! (-> E (box-t E) (box-t E)))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
@@ -1208,7 +1208,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (list-t E))))
-(claim box-empty? (polymorphic (E) (-> (list-t E) bool-t)))
+(claim box-is-empty (polymorphic (E) (-> (list-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
 ```
@@ -1219,7 +1219,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define (make-box) (make-list))
 
 (define (box-put! value box)
-  (if (box-empty? box)
+  (if (box-is-empty box)
     (list-push! value box)
     (list-put! 0 value box)))
 ```
@@ -1228,7 +1228,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
-(claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
+(claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
 ```
@@ -1272,10 +1272,10 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (module example)
 
-(define (even? n)
-  (if (equal? n 0)
+(define (is-even n)
+  (if (equal n 0)
     true
-    (odd? (isub n 1))))
+    (is-odd (isub n 1))))
 ```
 
 `odd.meta`:
@@ -1283,10 +1283,10 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (module example)
 
-(define (odd? n)
-  (if (equal? n 0)
+(define (is-odd n)
+  (if (equal n 0)
     false
-    (even? (isub n 1))))
+    (is-even (isub n 1))))
 ```
 
 ## (import)
@@ -1401,5 +1401,5 @@ m/exp-t
 
 - `(assert x)` -- 断言 `x` 为 `true`。
 - `(assert-not x)` -- 断言 `x` 为 `false`。
-- `(assert-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 相等（使用 `equal?` 比较）。
+- `(assert-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 相等（使用 `equal` 比较）。
 - `(assert-not-equal lhs rhs)` -- 断言 `lhs` 与 `rhs` 不相等。

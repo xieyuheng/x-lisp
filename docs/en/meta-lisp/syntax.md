@@ -291,13 +291,13 @@ Defines a module-level variable.
 
 A variable references a bound name.
 
-Names consist of letters, digits, `-`, `?`, `!` and other characters.
+Names consist of letters, digits, `-`, `!` and other characters.
 
 ```meta-lisp
 x
 factorial
 list-length
-list-empty?
+list-is-empty
 ```
 
 ## Qualified variables
@@ -306,7 +306,7 @@ list-empty?
 
 ```meta-lisp
 builtin/list-length
-builtin/list-empty?
+builtin/list-is-empty
 ```
 
 Qualified names can be used directly without `(import)`.
@@ -557,7 +557,7 @@ Otherwise, `<alternative>` is evaluated and returned.
 
 ```meta-lisp
 (define (abs x)
-  (if (int-less? x 0)
+  (if (int-less x 0)
     (ineg x)
     x))
 ```
@@ -576,7 +576,7 @@ When `<condition>` is true, `<body>` is evaluated; otherwise skipped.
 A `(when)` expression always returns `void`.
 
 ```meta-lisp
-(when debug?
+(when is-debug
   (print "debug mode")
   (newline))
 ```
@@ -595,7 +595,7 @@ When `<condition>` is false, `<body>` is evaluated; otherwise skipped.
 An `(unless)` expression always returns `void`.
 
 ```meta-lisp
-(unless (equal? x 0)
+(unless (equal x 0)
   (print (idiv 1 x))
   (newline))
 ```
@@ -617,8 +617,8 @@ The last `<question>` can be `else` as the default branch.
 ```meta-lisp
 (define (classify x)
   (cond
-   ((int-positive? x) "positive")
-   ((int-negative? x) "negative")
+   ((int-is-positive x) "positive")
+   ((int-is-negative x) "negative")
    (else "zero")))
 ```
 
@@ -633,7 +633,7 @@ Short-circuit and.
 Evaluates left to right. Stops and returns the value at the first false. Returns the last value if all are true.
 
 ```meta-lisp
-(and (int? x) (int-positive? x))
+(and (is-int x) (int-is-positive x))
 ```
 
 Returns `true` with zero arguments.
@@ -649,7 +649,7 @@ Short-circuit or.
 Evaluates left to right. Stops and returns the value at the first true. Returns the last value if all are false.
 
 ```meta-lisp
-(or (equal? x 0) (equal? x 1))
+(or (equal x 0) (equal x 1))
 ```
 
 Returns `false` with zero arguments.
@@ -723,17 +723,17 @@ All `<exp>`s can reference all `<name>`s.
 Mutual recursion:
 
 ```meta-lisp
-(letrec ((even?
+(letrec ((is-even
           (lambda (n)
-            (if (equal? n 0)
+            (if (equal n 0)
               true
-              (odd? (isub n 1)))))
-         (odd?
+              (is-odd (isub n 1)))))
+         (is-odd
           (lambda (n)
-            (if (equal? n 0)
+            (if (equal n 0)
               false
-              (even? (isub n 1))))))
-  (assert (even? 4)))
+              (is-even (isub n 1))))))
+  (assert (is-even 4)))
 ```
 
 Sequential dependency:
@@ -760,15 +760,15 @@ Mutual recursion (equivalent to the `(letrec)` example above):
 
 ```meta-lisp
 (begin
-  (define (even? n)
-    (if (equal? n 0)
+  (define (is-even n)
+    (if (equal n 0)
       true
-      (odd? (isub n 1))))
-  (define (odd? n)
-    (if (equal? n 0)
+      (is-odd (isub n 1))))
+  (define (is-odd n)
+    (if (equal n 0)
       false
-      (even? (isub n 1))))
-  (even? 4))
+      (is-even (isub n 1))))
+  (is-even 4))
 ```
 
 Sequential dependency:
@@ -912,7 +912,7 @@ For example:
 ```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
-   point?
+   is-point
    (x point-x point-put-x!)
    (y point-y point-put-y!)))
 ```
@@ -921,7 +921,7 @@ This generates functions with the following types:
 
 ```meta-lisp
 (claim make-point (-> float-t float-t point-t))
-(claim point? (-> point-t bool-t))
+(claim is-point (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
 (claim point-y (-> point-t float-t))
 (claim point-put-x! (-> float-t point-t point-t))
@@ -932,14 +932,14 @@ Usage example:
 
 ```meta-lisp
 (define p (make-point 1.0 2.0))
-(point? p)      ;; => true
+(is-point p)    ;; => true
 (point-x p)     ;; => 1.0
 (point-put-x! p 3.0)
 (point-x p)     ;; => 3.0
 ```
 
 For single-constructor algebraic types,
-the predicate `point?` is redundant and meaningless.
+the predicate `is-point` is redundant and meaningless.
 Predicates are only meaningful when there are multiple constructors.
 
 Types defined with `(define-algebraic-type)` can have type parameters.
@@ -949,20 +949,20 @@ For example:
 ```meta-lisp
 (define-algebraic-type (my-list-t E)
   ((nil)
-   nil?)
+   is-nil)
   ((li (head E) (tail (my-list-t E)))
-   li?
-   (head li-head li-put-head!)
-   (tail li-tail li-put-tail!)))
+   is-li
+    (head li-head li-put-head!)
+    (tail li-tail li-put-tail!)))
 ```
 
 This generates functions with the following types:
 
 ```meta-lisp
 (claim nil (polymorphic (E) (-> (my-list-t E))))
-(claim nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(claim is-nil (polymorphic (E) (-> (my-list-t E) bool-t)))
 (claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
-(claim li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(claim is-li (polymorphic (E) (-> (my-list-t E) bool-t)))
 (claim li-head (polymorphic (E) (-> (my-list-t E) E)))
 (claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 (claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
@@ -990,7 +990,7 @@ Similar to `(define-algebraic-type)`, but with only one constructor.
 ```meta-lisp
 (define-record-type point-t
   (make-point (x float-t) (y float-t))
-  point?
+  is-point
   (x point-x point-put-x!)
   (y point-y point-put-y!))
 ```
@@ -1000,7 +1000,7 @@ Equivalent to:
 ```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
-   point?
+   is-point
    (x point-x point-put-x!)
    (y point-y point-put-y!)))
 ```
@@ -1041,21 +1041,21 @@ Equivalent to:
 ```meta-lisp
 (define-algebraic-type exp-t
   ((var-exp (name symbol-t))
-   var-exp?
+   is-var-exp
    (name var-exp-name var-exp-put-name!))
   ((apply-exp (target exp-t) (arg exp-t))
-   apply-exp?
+   is-apply-exp
    (target apply-exp-target apply-exp-put-target!)
    (arg apply-exp-arg apply-exp-put-arg!))
   ((lambda-exp (parameter symbol-t) (body exp-t))
-   lambda-exp?
+   is-lambda-exp
    (parameter lambda-exp-parameter lambda-exp-put-parameter!)
    (body lambda-exp-body lambda-exp-put-body!)))
 ```
 
 For a given `<constructor-name>`, the naming rules are:
 
-- `<predicate-name>` = `<constructor-name>?` -- `var-exp?`
+- `<predicate-name>` = `is-<constructor-name>` -- `is-var-exp`
 - `<accessor-name>` = `<constructor-name>-<field-name>` -- `var-exp-name`
 - `<modifier-name>` = `<constructor-name>-put-<field-name>!` -- `var-exp-put-name!`
 
@@ -1086,7 +1086,7 @@ Equivalent to:
 ```meta-lisp
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
-   point?
+   is-point
    (x point-x point-put-x!)
    (y point-y point-put-y!)))
 ```
@@ -1094,7 +1094,7 @@ Equivalent to:
 For a given `<type-name>`, the naming rules are:
 
 - `<type-name>` = `<base-name>-t` -- `point-t`
-- `<predicate-name>` = `<base-name>?` -- `point?`
+- `<predicate-name>` = `is-<base-name>` -- `is-point`
 - `<constructor-name>` = `make-<base-name>` -- `make-point`
 - `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
 - `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
@@ -1191,7 +1191,7 @@ For example, the builtin `box-t` with internal representation `(list-t E)`:
 ```meta-lisp
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
-  (box-empty? (-> (box-t E) bool-t))
+  (box-is-empty (-> (box-t E) bool-t))
   (box-put! (-> E (box-t E) (box-t E)))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
@@ -1200,7 +1200,7 @@ When implementing interface functions, it is equivalent to declaring:
 
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (list-t E))))
-(claim box-empty? (polymorphic (E) (-> (list-t E) bool-t)))
+(claim box-is-empty (polymorphic (E) (-> (list-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
 ```
@@ -1211,7 +1211,7 @@ Thus interface functions can use list APIs internally:
 (define (make-box) (make-list))
 
 (define (box-put! value box)
-  (if (box-empty? box)
+  (if (box-is-empty box)
     (list-push! value box)
     (list-put! 0 value box)))
 ```
@@ -1220,7 +1220,7 @@ When using interface functions, it is equivalent to declaring:
 
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
-(claim box-empty? (polymorphic (E) (-> (box-t E) bool-t)))
+(claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
 (claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
 ```
@@ -1264,10 +1264,10 @@ Functions in the same module, even if written in different files, can be mutuall
 ```meta-lisp
 (module example)
 
-(define (even? n)
-  (if (equal? n 0)
+(define (is-even n)
+  (if (equal n 0)
     true
-    (odd? (isub n 1))))
+    (is-odd (isub n 1))))
 ```
 
 `odd.meta`:
@@ -1275,10 +1275,10 @@ Functions in the same module, even if written in different files, can be mutuall
 ```meta-lisp
 (module example)
 
-(define (odd? n)
-  (if (equal? n 0)
+(define (is-odd n)
+  (if (equal n 0)
     false
-    (even? (isub n 1))))
+    (is-even (isub n 1))))
 ```
 
 ## (import)
@@ -1393,5 +1393,5 @@ The following assertions are supported:
 
 - `(assert x)` -- Asserts `x` is `true`.
 - `(assert-not x)` -- Asserts `x` is `false`.
-- `(assert-equal lhs rhs)` -- Asserts `lhs` equals `rhs` (using `equal?`).
+- `(assert-equal lhs rhs)` -- Asserts `lhs` equals `rhs` (using `equal`).
 - `(assert-not-equal lhs rhs)` -- Asserts `lhs` does not equal `rhs`.

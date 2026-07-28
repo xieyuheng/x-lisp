@@ -37,9 +37,9 @@ All builtin functions in meta-lisp, categorized by functionality.
 
 Operations applicable to all types.
 
-- [`atom?`](value/atom-p.md) — Check if a value is an atom
-- [`same?`](value/same-p.md) — Atom or reference equality
-- [`equal?`](value/equal-p.md) — Structural equality
+- [`is-atom`](value/is-atom.md) — Check if a value is an atom
+- [`same`](value/same.md) — Atom or reference equality
+- [`equal`](value/equal.md) — Structural equality
 - [`format`](value/format.md) — Format any value as a string
 - [`hash-code`](value/hash-code.md) — Compute hash code
 - [`total-compare`](value/total-compare.md) — Total order comparison
@@ -48,7 +48,7 @@ Operations applicable to all types.
 
 Operations on `bool-t`.
 
-- [`bool?`](bool/bool-p.md) — Check if a value is a boolean
+- [`is-bool`](bool/is-bool.md) — Check if a value is a boolean
 - [`not`](bool/not.md) — Logical not
 
 ## Integer
@@ -57,7 +57,7 @@ Operations on `int-t`.
 
 ### Type check
 
-- [`int?`](int/int-p.md) — Check if a value is an integer
+- [`is-int`](int/is-int.md) — Check if a value is an integer
 
 ### Arithmetic
 
@@ -70,16 +70,16 @@ Operations on `int-t`.
 
 ### Predicates
 
-- [`int-positive?`](int/int-positive-p.md) — Check if positive
-- [`int-non-negative?`](int/int-non-negative-p.md) — Check if non-negative
-- [`int-non-zero?`](int/int-non-zero-p.md) — Check if non-zero
+- [`int-is-positive`](int/int-is-positive.md) — Check if positive
+- [`int-is-non-negative`](int/int-is-non-negative.md) — Check if non-negative
+- [`int-is-non-zero`](int/int-is-non-zero.md) — Check if non-zero
 
 ### Comparisons
 
-- [`int-less?`](int/int-less-p.md) — Less than
-- [`int-greater?`](int/int-greater-p.md) — Greater than
-- [`int-less-or-equal?`](int/int-less-or-equal-p.md) — Less than or equal
-- [`int-greater-or-equal?`](int/int-greater-or-equal-p.md) — Greater than or equal
+- [`int-less`](int/int-less.md) — Less than
+- [`int-greater`](int/int-greater.md) — Greater than
+- [`int-less-or-equal`](int/int-less-or-equal.md) — Less than or equal
+- [`int-greater-or-equal`](int/int-greater-or-equal.md) — Greater than or equal
 - [`int-compare-ascending`](int/int-compare-ascending.md) — Ascending comparison function
 - [`int-compare-descending`](int/int-compare-descending.md) — Descending comparison function
 
@@ -100,7 +100,7 @@ Operations on `float-t`.
 
 ### Type check
 
-- [`float?`](float/float-p.md) — Check if a value is a float
+- [`is-float`](float/is-float.md) — Check if a value is a float
 
 ### Arithmetic
 
@@ -113,16 +113,16 @@ Operations on `float-t`.
 
 ### Predicates
 
-- [`float-positive?`](float/float-positive-p.md) — Check if positive
-- [`float-non-negative?`](float/float-non-negative-p.md) — Check if non-negative
-- [`float-non-zero?`](float/float-non-zero-p.md) — Check if non-zero
+- [`float-is-positive`](float/float-is-positive.md) — Check if positive
+- [`float-is-non-negative`](float/float-is-non-negative.md) — Check if non-negative
+- [`float-is-non-zero`](float/float-is-non-zero.md) — Check if non-zero
 
 ### Comparisons
 
-- [`float-less?`](float/float-less-p.md) — Less than
-- [`float-greater?`](float/float-greater-p.md) — Greater than
-- [`float-less-or-equal?`](float/float-less-or-equal-p.md) — Less than or equal
-- [`float-greater-or-equal?`](float/float-greater-or-equal-p.md) — Greater than or equal
+- [`float-less`](float/float-less.md) — Less than
+- [`float-greater`](float/float-greater.md) — Greater than
+- [`float-less-or-equal`](float/float-less-or-equal.md) — Less than or equal
+- [`float-greater-or-equal`](float/float-greater-or-equal.md) — Greater than or equal
 - [`float-compare-ascending`](float/float-compare-ascending.md) — Ascending comparison function
 - [`float-compare-descending`](float/float-compare-descending.md) — Descending comparison function
 
@@ -142,15 +142,15 @@ Operations on `string-t`.
 
 ### Type checks
 
-- [`string?`](string/string-p.md) — Check if a value is a string
-- [`string-int?`](string/string-int-p.md) — Check if string is integer format
-- [`string-float?`](string/string-float-p.md) — Check if string is float format
+- [`is-string`](string/is-string.md) — Check if a value is a string
+- [`string-is-int`](string/string-is-int.md) — Check if string is integer format
+- [`string-is-float`](string/string-is-float.md) — Check if string is float format
 
 ### Basics
 
 - [`string-length`](string/string-length.md) — Length
-- [`string-empty?`](string/string-empty-p.md) — Check if empty
-- [`string-blank?`](string/string-blank-p.md) — Check if blank
+- [`string-is-empty`](string/string-is-empty.md) — Check if empty
+- [`string-is-blank`](string/string-is-blank.md) — Check if blank
 
 ### Concatenation and splitting
 
@@ -162,9 +162,9 @@ Operations on `string-t`.
 
 ### Search and replace
 
-- [`string-starts-with?`](string/string-starts-with-p.md) — Check prefix
-- [`string-ends-with?`](string/string-ends-with-p.md) — Check suffix
-- [`string-contains?`](string/string-contains-p.md) — Check if contains substring
+- [`string-starts-with`](string/string-starts-with.md) — Check prefix
+- [`string-ends-with`](string/string-ends-with.md) — Check suffix
+- [`string-contains`](string/string-contains.md) — Check if contains substring
 - [`string-find-index`](string/string-find-index.md) — Find substring position
 - [`string-replace`](string/string-replace.md) — Replace substring
 
@@ -202,7 +202,7 @@ Operations on `string-t`.
 
 Operations on `symbol-t`.
 
-- [`symbol?`](symbol/symbol-p.md) — Check if a value is a symbol
+- [`is-symbol`](symbol/is-symbol.md) — Check if a value is a symbol
 - [`symbol-length`](symbol/symbol-length.md) — Length of symbol name
 - [`symbol-append`](symbol/symbol-append.md) — Append two symbols
 - [`symbol-concat`](symbol/symbol-concat.md) — Concatenate a list of symbols
@@ -212,7 +212,7 @@ Operations on `symbol-t`.
 
 Operations on `keyword-t`.
 
-- [`keyword?`](keyword/keyword-p.md) — Check if a value is a keyword
+- [`is-keyword`](keyword/is-keyword.md) — Check if a value is a keyword
 - [`keyword-length`](keyword/keyword-length.md) — Length of keyword name
 - [`keyword-append`](keyword/keyword-append.md) — Append two keywords
 - [`keyword-concat`](keyword/keyword-concat.md) — Concatenate a list of keywords
@@ -220,7 +220,7 @@ Operations on `keyword-t`.
 
 ## Void
 
-- [`void?`](void/void-p.md) — Check if a value is void
+- [`is-void`](void/is-void.md) — Check if a value is void
 
 ## List
 
@@ -230,7 +230,7 @@ Operations on `(list-t E)`.
 
 - [`list-t`](list/list-t.md) — List type constructor
 - [`make-list`](list/make-list.md) — Create an empty list
-- [`list?`](list/list-p.md) — Check if a value is a list
+- [`is-list`](list/is-list.md) — Check if a value is a list
 - [`cons`](list/cons.md) — Prepend an element
 
 ### Access
@@ -249,8 +249,8 @@ Operations on `(list-t E)`.
 ### Info
 
 - [`list-length`](list/list-length.md) — List length
-- [`list-empty?`](list/list-empty-p.md) — Check if empty
-- [`list-member?`](list/list-member-p.md) — Check if contains element
+- [`list-is-empty`](list/list-is-empty.md) — Check if empty
+- [`list-member`](list/list-member.md) — Check if contains element
 
 ### Mutation
 
@@ -301,8 +301,8 @@ Operations on `(list-t E)`.
 
 ### Quantification
 
-- [`list-every?`](list/list-every-p.md) — All elements satisfy predicate
-- [`list-some?`](list/list-some-p.md) — Some element satisfies predicate
+- [`list-every`](list/list-every.md) — All elements satisfy predicate
+- [`list-some`](list/list-some.md) — Some element satisfies predicate
 
 ### Sublists
 
@@ -329,9 +329,9 @@ Operations on `(set-t E)`.
 ### Info
 
 - [`set-size`](set/set-size.md) — Set size
-- [`set-empty?`](set/set-empty-p.md) — Check if empty
-- [`set-member?`](set/set-member-p.md) — Check if contains element
-- [`set-subset?`](set/set-subset-p.md) — Check if subset
+- [`set-is-empty`](set/set-is-empty.md) — Check if empty
+- [`set-is-member`](set/set-is-member.md) — Check if contains element
+- [`set-subset`](set/set-subset.md) — Check if subset
 
 ### Mutation
 
@@ -347,13 +347,13 @@ Operations on `(set-t E)`.
 - [`set-union`](set/set-union.md) — Union
 - [`set-inter`](set/set-inter.md) — Intersection
 - [`set-difference`](set/set-difference.md) — Difference
-- [`set-disjoint?`](set/set-disjoint-p.md) — Check if disjoint
+- [`set-disjoint`](set/set-disjoint.md) — Check if disjoint
 
 ### Iteration and transformation
 
 - [`set-each`](set/set-each.md) — Iterate with side effects
-- [`set-every?`](set/set-every-p.md) — All elements satisfy predicate
-- [`set-some?`](set/set-some-p.md) — Some element satisfies predicate
+- [`set-every`](set/set-every.md) — All elements satisfy predicate
+- [`set-some`](set/set-some.md) — Some element satisfies predicate
 - [`set-map`](set/set-map.md) — Map over elements
 - [`set-select`](set/set-select.md) — Filter
 - [`set-reject`](set/set-reject.md) — Opposite of filter
@@ -375,9 +375,9 @@ Operations on `(hash-t K V)`.
 
 ### Info
 
-- [`hash-empty?`](hash/hash-empty-p.md) — Check if empty
+- [`hash-is-empty`](hash/hash-is-empty.md) — Check if empty
 - [`hash-length`](hash/hash-length.md) — Entry count
-- [`hash-has?`](hash/hash-has-p.md) — Check if contains key
+- [`hash-has`](hash/hash-has.md) — Check if contains key
 
 ### Access
 
@@ -434,7 +434,7 @@ Operations on `(pair-t A B)`.
 
 - [`pair-t`](pair/pair-t.md) — Pair type constructor
 - [`make-pair`](pair/make-pair.md) — Construct a pair
-- [`pair?`](pair/pair-p.md) — Check if a value is a pair
+- [`is-pair`](pair/is-pair.md) — Check if a value is a pair
 - [`pair-first`](pair/pair-first.md) — First element
 - [`pair-second`](pair/pair-second.md) — Second element
 - [`pair-put-first!`](pair/pair-put-first-mut.md) — Replace first element
@@ -447,8 +447,8 @@ Operations on `(maybe-t A)`.
 - [`maybe-t`](maybe/maybe-t.md) — Maybe type constructor
 - [`just`](maybe/just.md) — Construct a present value
 - [`nothing`](maybe/nothing.md) — Represent a missing value
-- [`just?`](maybe/just-p.md) — Check if just
-- [`nothing?`](maybe/nothing-p.md) — Check if nothing
+- [`is-just`](maybe/is-just.md) — Check if just
+- [`is-nothing`](maybe/is-nothing.md) — Check if nothing
 - [`just-value`](maybe/just-value.md) — Extract value from just
 - [`just-put-value!`](maybe/just-put-value-mut.md) — Replace value in just
 
@@ -458,7 +458,7 @@ Operations on the opaque type `(box-t E)`.
 
 - [`box-t`](box/box-t.md) — Box type constructor
 - [`make-box`](box/make-box.md) — Create an empty box
-- [`box-empty?`](box/box-empty-p.md) — Check if empty
+- [`box-is-empty`](box/box-is-empty.md) — Check if empty
 - [`box-put!`](box/box-put-mut.md) — Store a value
 - [`box-get-maybe`](box/box-get-maybe.md) — Get value as maybe
 - [`box-get`](box/box-get.md) — Get value (error if empty)
@@ -523,9 +523,9 @@ Functions that operate directly on the file system.
 
 ### Query
 
-- [`fs-exists?`](fs/fs-exists-p.md) — Check if path exists
-- [`fs-file?`](fs/fs-file-p.md) — Check if path is a file
-- [`fs-directory?`](fs/fs-directory-p.md) — Check if path is a directory
+- [`fs-exists`](fs/fs-exists.md) — Check if path exists
+- [`fs-is-file`](fs/fs-is-file.md) — Check if path is a file
+- [`fs-is-directory`](fs/fs-is-directory.md) — Check if path is a directory
 
 ### Read and write
 
@@ -554,8 +554,8 @@ Path string manipulation functions.
 - [`path-directory-name`](path/path-directory-name.md) — Get directory name
 - [`path-extension`](path/path-extension.md) — Get file extension
 - [`path-stem`](path/path-stem.md) — Get file stem
-- [`path-absolute?`](path/path-absolute-p.md) — Check if absolute
-- [`path-relative?`](path/path-relative-p.md) — Check if relative
+- [`path-is-absolute`](path/path-is-absolute.md) — Check if absolute
+- [`path-is-relative`](path/path-is-relative.md) — Check if relative
 - [`path-join`](path/path-join.md) — Join paths
 - [`path-normalize`](path/path-normalize.md) — Normalize path
 - [`path-relative`](path/path-relative.md) — Compute relative path

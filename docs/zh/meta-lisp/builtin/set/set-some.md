@@ -1,0 +1,20 @@
+---
+title: set-some
+---
+
+# 类型
+
+```meta-lisp
+(polymorphic (A) (-> (-> A bool-t) (set-t A) bool-t))
+```
+
+# 描述
+
+判断集合中是否有元素满足条件。
+
+# 例子
+
+```meta-lisp
+(set-some int-is-non-negative (@set -1 0 1))  ;; => true
+(set-some int-is-non-negative (@set -1 -2))   ;; => false
+```

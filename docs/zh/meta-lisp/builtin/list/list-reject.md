@@ -15,6 +15,6 @@ title: list-reject
 # 例子
 
 ```meta-lisp
-(list-reject int? ['a 1 'b 2])       ;; => ['a 'b]
-(list-reject int-non-negative? [0 1 -1 2])  ;; => [-1]
+(list-reject is-int ['a 1 'b 2])       ;; => ['a 'b]
+(list-reject int-is-non-negative [0 1 -1 2])  ;; => [-1]
 ```

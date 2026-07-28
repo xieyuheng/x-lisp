@@ -2,9 +2,9 @@
 
 (declare-primitive-variable int-t)
 (declare-primitive-function is-int 1)
-(declare-primitive-function int-positive 1)
+(declare-primitive-function int-is-positive 1)
 (declare-primitive-function int-is-non-negative 1)
-(declare-primitive-function int-non-zero 1)
+(declare-primitive-function int-is-non-zero 1)
 (declare-primitive-function ineg 1)
 (declare-primitive-function iadd 2)
 (declare-primitive-function isub 2)
@@ -22,9 +22,9 @@
 
 (claim int-t type-t)
 (claim is-int (polymorphic (A) (-> A bool-t)))
-(claim int-positive (-> int-t bool-t))
+(claim int-is-positive (-> int-t bool-t))
 (claim int-is-non-negative (-> int-t bool-t))
-(claim int-non-zero (-> int-t bool-t))
+(claim int-is-non-zero (-> int-t bool-t))
 (claim ineg (-> int-t int-t))
 (claim iadd (-> int-t int-t int-t))
 (claim isub (-> int-t int-t int-t))

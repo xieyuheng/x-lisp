@@ -25,7 +25,7 @@ Triple type constructor. `(triple-t A B C)` represents a triple containing value
 
 ```meta-lisp
 (claim make-triple (polymorphic (A B C) (-> A B C (triple-t A B C))))
-(claim triple? (polymorphic (A) (-> A bool-t)))
+(claim is-triple (polymorphic (A) (-> A bool-t)))
 (claim triple-first  (polymorphic (A B C) (-> (triple-t A B C) A)))
 (claim triple-second (polymorphic (A B C) (-> (triple-t A B C) B)))
 (claim triple-third  (polymorphic (A B C) (-> (triple-t A B C) C)))

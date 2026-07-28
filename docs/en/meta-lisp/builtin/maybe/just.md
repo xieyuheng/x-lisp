@@ -16,5 +16,5 @@ Constructor of `maybe-t`, representing a present value.
 
 ```meta-lisp
 (let ((m (just 42)))
-  (just? m))       ;; => true
+  (is-just m))       ;; => true
 ```

@@ -16,5 +16,5 @@ title: make-hash
 
 ```meta-lisp
 (let ((h (make-hash)))
-  (hash-empty? h))  ;; => true
+  (hash-is-empty h))  ;; => true
 ```

@@ -16,5 +16,5 @@ title: make-box
 
 ```meta-lisp
 (define box (make-box))
-(box-empty? box) ;; => true
+(box-is-empty box) ;; => true
 ```

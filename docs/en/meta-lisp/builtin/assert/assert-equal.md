@@ -10,7 +10,7 @@ title: assert-equal
 
 # Description
 
-Assert two values are equal (compared using `equal?`). Raises an error if they are not equal.
+Assert two values are equal (compared using `equal`). Raises an error if they are not equal.
 
 # Examples
 

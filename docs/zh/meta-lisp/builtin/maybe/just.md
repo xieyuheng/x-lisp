@@ -16,5 +16,5 @@ title: just
 
 ```meta-lisp
 (let ((m (just 42)))
-  (just? m))       ;; => true
+  (is-just m))       ;; => true
 ```

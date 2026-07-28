@@ -24,7 +24,7 @@ type-t
 
 ```meta-lisp
 (claim make-source-span (-> source-position-t source-position-t source-span-t))
-(claim source-span?     (-> source-span-t bool-t))
+(claim is-source-span     (-> source-span-t bool-t))
 (claim source-span-start (-> source-span-t source-position-t))
 (claim source-span-end   (-> source-span-t source-position-t))
 ```

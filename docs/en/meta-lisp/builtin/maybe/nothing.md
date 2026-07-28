@@ -16,5 +16,5 @@ Constructor of `maybe-t`, representing a missing value.
 
 ```meta-lisp
 (let ((m nothing))
-  (nothing? m))  ;; => true
+  (is-nothing m))  ;; => true
 ```
