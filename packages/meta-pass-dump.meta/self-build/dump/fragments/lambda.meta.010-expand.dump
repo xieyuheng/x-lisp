@@ -33,7 +33,8 @@
 
 (admit var-exp-put-name! (-> symbol-t exp-t exp-t))
 
-(define (var-exp-put-name! value target) (list-put! 1 value target))
+(define (var-exp-put-name! value target)
+  (begin (list-put! 1 value target) target))
 
 (admit apply-exp (-> exp-t exp-t exp-t))
 
@@ -52,7 +53,8 @@
 
 (admit apply-exp-put-target! (-> exp-t exp-t exp-t))
 
-(define (apply-exp-put-target! value target) (list-put! 1 value target))
+(define (apply-exp-put-target! value target)
+  (begin (list-put! 1 value target) target))
 
 (admit apply-exp-arg (-> exp-t exp-t))
 
@@ -60,7 +62,8 @@
 
 (admit apply-exp-put-arg! (-> exp-t exp-t exp-t))
 
-(define (apply-exp-put-arg! value target) (list-put! 2 value target))
+(define (apply-exp-put-arg! value target)
+  (begin (list-put! 2 value target) target))
 
 (admit lambda-exp (-> symbol-t exp-t exp-t))
 
@@ -79,7 +82,8 @@
 
 (admit lambda-exp-put-parameter! (-> symbol-t exp-t exp-t))
 
-(define (lambda-exp-put-parameter! value target) (list-put! 1 value target))
+(define (lambda-exp-put-parameter! value target)
+  (begin (list-put! 1 value target) target))
 
 (admit lambda-exp-body (-> exp-t exp-t))
 
@@ -87,7 +91,8 @@
 
 (admit lambda-exp-put-body! (-> exp-t exp-t exp-t))
 
-(define (lambda-exp-put-body! value target) (list-put! 2 value target))
+(define (lambda-exp-put-body! value target)
+  (begin (list-put! 2 value target) target))
 
 (admit let-exp (-> symbol-t exp-t exp-t exp-t))
 
@@ -106,7 +111,8 @@
 
 (admit let-exp-put-name! (-> symbol-t exp-t exp-t))
 
-(define (let-exp-put-name! value target) (list-put! 1 value target))
+(define (let-exp-put-name! value target)
+  (begin (list-put! 1 value target) target))
 
 (admit let-exp-rhs (-> exp-t exp-t))
 
@@ -114,7 +120,8 @@
 
 (admit let-exp-put-rhs! (-> exp-t exp-t exp-t))
 
-(define (let-exp-put-rhs! value target) (list-put! 2 value target))
+(define (let-exp-put-rhs! value target)
+  (begin (list-put! 2 value target) target))
 
 (admit let-exp-body (-> exp-t exp-t))
 
@@ -122,7 +129,8 @@
 
 (admit let-exp-put-body! (-> exp-t exp-t exp-t))
 
-(define (let-exp-put-body! value target) (list-put! 3 value target))
+(define (let-exp-put-body! value target)
+  (begin (list-put! 3 value target) target))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
@@ -159,7 +167,8 @@
 
 (admit closure-value-put-env! (-> env-t value-t value-t))
 
-(define (closure-value-put-env! value target) (list-put! 1 value target))
+(define (closure-value-put-env! value target)
+  (begin (list-put! 1 value target) target))
 
 (admit closure-value-parameter (-> value-t symbol-t))
 
@@ -167,7 +176,8 @@
 
 (admit closure-value-put-parameter! (-> symbol-t value-t value-t))
 
-(define (closure-value-put-parameter! value target) (list-put! 2 value target))
+(define (closure-value-put-parameter! value target)
+  (begin (list-put! 2 value target) target))
 
 (admit closure-value-body (-> value-t exp-t))
 
@@ -175,7 +185,8 @@
 
 (admit closure-value-put-body! (-> exp-t value-t value-t))
 
-(define (closure-value-put-body! value target) (list-put! 3 value target))
+(define (closure-value-put-body! value target)
+  (begin (list-put! 3 value target) target))
 
 (define (evaluate exp env)
   (match exp

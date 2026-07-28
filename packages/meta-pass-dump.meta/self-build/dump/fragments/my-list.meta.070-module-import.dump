@@ -50,7 +50,7 @@
 (admit li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li-put-head! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (admit li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 
@@ -60,7 +60,7 @@
   (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
 (define (li-put-tail! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (my-list-head list)
   (if (self/my-list/is-nil list)

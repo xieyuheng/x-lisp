@@ -26,25 +26,29 @@ value_t x_set_is_member(value_t value, value_t set) {
 
 value_t x_set_add_mut(value_t value, value_t set) {
   xset_add(to_xset(set), value);
-  return set;
+  return x_void;
 }
 
 value_t x_set_add(value_t value, value_t set) {
-  return x_set_add_mut(value, x_set_copy(set));
+  value_t copy = x_set_copy(set);
+  xset_add(to_xset(copy), value);
+  return copy;
 }
 
 value_t x_set_delete_mut(value_t value, value_t set) {
   xset_delete(to_xset(set), value);
-  return set;
+  return x_void;
 }
 
 value_t x_set_delete(value_t value, value_t set) {
-  return x_set_delete_mut(value, x_set_copy(set));
+  value_t copy = x_set_copy(set);
+  xset_delete(to_xset(copy), value);
+  return copy;
 }
 
 value_t x_set_clear_mut(value_t set) {
   xset_clear(to_xset(set));
-  return set;
+  return x_void;
 }
 
 value_t x_set_union(value_t lhs, value_t rhs) {

@@ -14,7 +14,7 @@
 (define (var-exp-name target) (meta-builtin/builtin/list-get 1 target))
 
 (define (var-exp-put-name! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (apply-exp target arg)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -36,12 +36,12 @@
 (define (apply-exp-target target) (meta-builtin/builtin/list-get 1 target))
 
 (define (apply-exp-put-target! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (apply-exp-arg target) (meta-builtin/builtin/list-get 2 target))
 
 (define (apply-exp-put-arg! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (lambda-exp parameter body)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -63,12 +63,12 @@
 (define (lambda-exp-parameter target) (meta-builtin/builtin/list-get 1 target))
 
 (define (lambda-exp-put-parameter! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (lambda-exp-body target) (meta-builtin/builtin/list-get 2 target))
 
 (define (lambda-exp-put-body! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (let-exp name rhs body)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -90,17 +90,17 @@
 (define (let-exp-name target) (meta-builtin/builtin/list-get 1 target))
 
 (define (let-exp-put-name! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (let-exp-rhs target) (meta-builtin/builtin/list-get 2 target))
 
 (define (let-exp-put-rhs! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (let-exp-body target) (meta-builtin/builtin/list-get 3 target))
 
 (define (let-exp-put-body! value target)
-  (meta-builtin/builtin/list-put! 3 value target))
+  (begin (meta-builtin/builtin/list-put! 3 value target) target))
 
 (define empty-env meta-builtin/builtin/make-hash)
 
@@ -130,18 +130,18 @@
 (define (closure-value-env target) (meta-builtin/builtin/list-get 1 target))
 
 (define (closure-value-put-env! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (closure-value-parameter target)
   (meta-builtin/builtin/list-get 2 target))
 
 (define (closure-value-put-parameter! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (closure-value-body target) (meta-builtin/builtin/list-get 3 target))
 
 (define (closure-value-put-body! value target)
-  (meta-builtin/builtin/list-put! 3 value target))
+  (begin (meta-builtin/builtin/list-put! 3 value target) target))
 
 (define (evaluate exp env)
   (if (self/lambda/is-var-exp exp)

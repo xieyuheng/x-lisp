@@ -23,7 +23,8 @@
 
 (admit pair-put-first! (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
 
-(define (pair-put-first! value target) (list-put! 1 value target))
+(define (pair-put-first! value target)
+  (begin (list-put! 1 value target) target))
 
 (admit pair-second (polymorphic (A B) (-> (pair-t A B) B)))
 
@@ -31,6 +32,7 @@
 
 (admit pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
 
-(define (pair-put-second! value target) (list-put! 2 value target))
+(define (pair-put-second! value target)
+  (begin (list-put! 2 value target) target))
 
 (define (pair-swap p) (match p ((make-pair a b) (make-pair b a))))

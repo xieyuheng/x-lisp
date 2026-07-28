@@ -37,7 +37,7 @@
 (admit pair-put-first! (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
 
 (define (pair-put-first! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (admit pair-second (polymorphic (A B) (-> (pair-t A B) B)))
 
@@ -46,7 +46,7 @@
 (admit pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
 
 (define (pair-put-second! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (pair-swap p)
   (if (self/pair/is-pair p)
