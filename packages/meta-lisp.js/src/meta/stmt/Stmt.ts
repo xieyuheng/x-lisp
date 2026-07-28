@@ -1,6 +1,8 @@
 import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
+export type Lang = "zh" | "en"
+
 export type Stmt<E> =
   | ImportStmt
   | ImportAsStmt
@@ -181,18 +183,21 @@ export type DefineEnumStmt<E> = {
   kind: "DefineEnumStmt"
   typeConstructor: PreTypeConstructor
   dataConstructors: Array<PreDataConstructor>
+  lang: Lang
   location: SourceLocation
 }
 
 export function DefineEnumStmt<E>(
   typeConstructor: PreTypeConstructor,
   dataConstructors: Array<PreDataConstructor>,
+  lang: Lang,
   location: SourceLocation,
 ): DefineEnumStmt<E> {
   return {
     kind: "DefineEnumStmt",
     typeConstructor,
     dataConstructors,
+    lang,
     location,
   }
 }
@@ -201,18 +206,21 @@ export type DefineStructStarStmt<E> = {
   kind: "DefineStructStarStmt"
   typeConstructor: PreTypeConstructor
   dataConstructor: PreDataConstructor
+  lang: Lang
   location: SourceLocation
 }
 
 export function DefineStructStarStmt<E>(
   typeConstructor: PreTypeConstructor,
   dataConstructor: PreDataConstructor,
+  lang: Lang,
   location: SourceLocation,
 ): DefineStructStarStmt<E> {
   return {
     kind: "DefineStructStarStmt",
     typeConstructor,
     dataConstructor,
+    lang,
     location,
   }
 }
@@ -221,18 +229,21 @@ export type DefineStructStmt<E> = {
   kind: "DefineStructStmt"
   typeConstructor: PreTypeConstructor
   fields: Array<PreDataField>
+  lang: Lang
   location: SourceLocation
 }
 
 export function DefineStructStmt<E>(
   typeConstructor: PreTypeConstructor,
   fields: Array<PreDataField>,
+  lang: Lang,
   location: SourceLocation,
 ): DefineStructStmt<E> {
   return {
     kind: "DefineStructStmt",
     typeConstructor,
     fields,
+    lang,
     location,
   }
 }
@@ -265,18 +276,21 @@ export type DefineRecordTypeStmt<E> = {
   kind: "DefineRecordTypeStmt"
   typeConstructor: PreTypeConstructor
   dataConstructor: ExplicitDataConstructor<E>
+  lang: Lang
   location: SourceLocation
 }
 
 export function DefineRecordTypeStmt<E>(
   typeConstructor: PreTypeConstructor,
   dataConstructor: ExplicitDataConstructor<E>,
+  lang: Lang,
   location: SourceLocation,
 ): DefineRecordTypeStmt<E> {
   return {
     kind: "DefineRecordTypeStmt",
     typeConstructor,
     dataConstructor,
+    lang,
     location,
   }
 }

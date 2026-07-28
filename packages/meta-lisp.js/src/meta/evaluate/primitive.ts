@@ -18,21 +18,39 @@ export function setupPrimitive(): void {
   initialized = true
 
   definePrimitiveVariable("type-t", TypeValue(TypeType()))
+  definePrimitiveVariable("类型型", TypeValue(TypeType()))
   definePrimitiveVariable("int-t", TypeValue(AtomType("int")))
+  definePrimitiveVariable("整数型", TypeValue(AtomType("int")))
   definePrimitiveVariable("float-t", TypeValue(AtomType("float")))
+  definePrimitiveVariable("浮点型", TypeValue(AtomType("float")))
   definePrimitiveVariable("string-t", TypeValue(AtomType("string")))
+  definePrimitiveVariable("字符串型", TypeValue(AtomType("string")))
   definePrimitiveVariable("symbol-t", TypeValue(AtomType("symbol")))
+  definePrimitiveVariable("符号型", TypeValue(AtomType("symbol")))
   definePrimitiveVariable("keyword-t", TypeValue(AtomType("keyword")))
+  definePrimitiveVariable("关键字型", TypeValue(AtomType("keyword")))
   definePrimitiveVariable("bool-t", TypeValue(AtomType("bool")))
+  definePrimitiveVariable("布尔型", TypeValue(AtomType("bool")))
   definePrimitiveVariable("void-t", TypeValue(AtomType("void")))
+  definePrimitiveVariable("空型", TypeValue(AtomType("void")))
   definePrimitiveVariable("file-t", TypeValue(AtomType("file")))
+  definePrimitiveVariable("文件型", TypeValue(AtomType("file")))
   definePrimitiveFunction("list-t", (E: Value) =>
+    TypeValue(ListType(asTypeValue(E).type)),
+  )
+  definePrimitiveFunction("列表型", (E: Value) =>
     TypeValue(ListType(asTypeValue(E).type)),
   )
   definePrimitiveFunction("set-t", (E: Value) =>
     TypeValue(SetType(asTypeValue(E).type)),
   )
+  definePrimitiveFunction("集合型", (E: Value) =>
+    TypeValue(SetType(asTypeValue(E).type)),
+  )
   definePrimitiveFunction("hash-t", (K: Value, V: Value) =>
+    TypeValue(HashType(asTypeValue(K).type, asTypeValue(V).type)),
+  )
+  definePrimitiveFunction("散列型", (K: Value, V: Value) =>
     TypeValue(HashType(asTypeValue(K).type, asTypeValue(V).type)),
   )
 }

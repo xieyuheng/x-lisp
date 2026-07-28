@@ -16,6 +16,19 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "(cons* '定义 (cons* name parameters) body)": (
+    { name, parameters, body },
+    { sexp },
+  ) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.DefineFunctionStmt(
+      S.asSymbolSexp(name).content,
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineVariableStmt(
@@ -25,7 +38,25 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "(cons* '定义 name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.DefineVariableStmt(
+      S.asSymbolSexp(name).content,
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "(cons* 'define-test name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.DefineTestStmt(
+      S.asSymbolSexp(name).content,
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
+  "(cons* '定义测试 name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.DefineTestStmt(
       S.asSymbolSexp(name).content,
@@ -64,7 +95,21 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "(cons* '豁免 names)": ({ names }, { location }) => {
+    return M.ExemptStmt(
+      S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
+      location,
+    )
+  },
+
   "(cons* 'private names)": ({ names }, { location }) => {
+    return M.PrivateStmt(
+      S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
+      location,
+    )
+  },
+
+  "(cons* '私有 names)": ({ names }, { location }) => {
     return M.PrivateStmt(
       S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
       location,
@@ -75,7 +120,23 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.DeclareModuleStmt(S.asSymbolSexp(name).content, location)
   },
 
+  "`(模块 ,name)": ({ name }, { location }) => {
+    return M.DeclareModuleStmt(S.asSymbolSexp(name).content, location)
+  },
+
   "(cons* 'import modName entries)": ({ modName, entries }, { location }) => {
+    const { pkgName, modName: moduleName } = parseImportSource(
+      S.asSymbolSexp(modName).content,
+    )
+    return M.ImportStmt(
+      pkgName,
+      moduleName,
+      S.asListSexp(entries).elements.map((x) => S.asSymbolSexp(x).content),
+      location,
+    )
+  },
+
+  "(cons* '导入 modName entries)": ({ modName, entries }, { location }) => {
     const { pkgName, modName: moduleName } = parseImportSource(
       S.asSymbolSexp(modName).content,
     )
@@ -99,7 +160,26 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "`(导入为 ,modName ,prefix)": ({ modName, prefix }, { location }) => {
+    const { pkgName, modName: moduleName } = parseImportSource(
+      S.asSymbolSexp(modName).content,
+    )
+    return M.ImportAsStmt(
+      pkgName,
+      moduleName,
+      S.asSymbolSexp(prefix).content,
+      location,
+    )
+  },
+
   "`(import-all ,modName)": ({ modName, prefix }, { location }) => {
+    const { pkgName, modName: moduleName } = parseImportSource(
+      S.asSymbolSexp(modName).content,
+    )
+    return M.ImportAllStmt(pkgName, moduleName, location)
+  },
+
+  "`(全导入 ,modName)": ({ modName, prefix }, { location }) => {
     const { pkgName, modName: moduleName } = parseImportSource(
       S.asSymbolSexp(modName).content,
     )
@@ -113,11 +193,45 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.DefineEnumStmt(
       parseTypeConstructor(head),
       S.asListSexp(constructors).elements.map(parseDataConstructor),
+      "en",
+      location,
+    )
+  },
+
+  "(cons* '定义枚举 head constructors)": (
+    { head, constructors },
+    { location },
+  ) => {
+    return M.DefineEnumStmt(
+      parseTypeConstructor(head),
+      S.asListSexp(constructors).elements.map(parseDataConstructor),
+      "zh",
       location,
     )
   },
 
   "(cons* 'define-opaque-type head representation ifaces)": (
+    { head, representation, ifaces },
+    { location },
+  ) => {
+    const typeConstructor = parseTypeConstructor(head)
+    const interfaceEntries = S.asListSexp(ifaces).elements.map((iface) => {
+      const parts = S.asListSexp(iface).elements
+      return {
+        name: S.asSymbolSexp(parts[0]).content,
+        type: parseExp(parts[1]),
+        location: parts[0].location,
+      }
+    })
+    return M.DefineOpaqueTypeStmt(
+      typeConstructor,
+      parseExp(representation),
+      interfaceEntries,
+      location,
+    )
+  },
+
+  "(cons* '定义黑盒类型 head representation ifaces)": (
     { head, representation, ifaces },
     { location },
   ) => {
@@ -149,10 +263,31 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "(cons* '定义代数类型 head constructors)": (
+    { head, constructors },
+    { location },
+  ) => {
+    return M.DefineAlgebraicTypeStmt(
+      parseTypeConstructor(head),
+      S.asListSexp(constructors).elements.map(parseExplicitDataConstructor),
+      location,
+    )
+  },
+
   "(cons* 'define-struct* head ctor)": ({ head, ctor }, { location }) => {
     return M.DefineStructStarStmt(
       parseTypeConstructor(head),
       parseDataConstructor(S.asListSexp(ctor).elements[0]),
+      "en",
+      location,
+    )
+  },
+
+  "(cons* '定义结构* head ctor)": ({ head, ctor }, { location }) => {
+    return M.DefineStructStarStmt(
+      parseTypeConstructor(head),
+      parseDataConstructor(S.asListSexp(ctor).elements[0]),
+      "zh",
       location,
     )
   },
@@ -161,6 +296,16 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.DefineStructStmt(
       parseTypeConstructor(head),
       S.asListSexp(fields).elements.map(parseDataField),
+      "en",
+      location,
+    )
+  },
+
+  "(cons* '定义结构 head fields)": ({ head, fields }, { location }) => {
+    return M.DefineStructStmt(
+      parseTypeConstructor(head),
+      S.asListSexp(fields).elements.map(parseDataField),
+      "zh",
       location,
     )
   },
@@ -216,6 +361,63 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
         predicate: S.asSymbolSexp(predicate).content,
         location,
       },
+      "en",
+      location,
+    )
+  },
+
+  "(cons* '定义记录类型 head ctor predicate accessors)": (
+    { head, ctor, predicate, accessors },
+    { location },
+  ) => {
+    const ctorList = S.asListSexp(ctor).elements
+    const constructorName = S.asSymbolSexp(ctorList[0]).content
+    const fields = ctorList.slice(1).map((field) => {
+      const fieldList = S.asListSexp(field).elements
+      return {
+        name: S.asSymbolSexp(fieldList[0]).content,
+        type: parseExp(fieldList[1]),
+        location,
+      }
+    })
+
+    const accessorList = S.asListSexp(accessors).elements
+    const accessorMap = new Map<
+      string,
+      { accessorName: string; modifierName?: string }
+    >()
+    for (const accessor of accessorList) {
+      const entry = S.asListSexp(accessor).elements
+      const fieldEntry: {
+        accessorName: string
+        modifierName?: string
+      } = {
+        accessorName: S.asSymbolSexp(entry[1]).content,
+      }
+      if (entry.length >= 3) {
+        fieldEntry.modifierName = S.asSymbolSexp(entry[2]).content
+      }
+      accessorMap.set(S.asSymbolSexp(entry[0]).content, fieldEntry)
+    }
+
+    return M.DefineRecordTypeStmt(
+      parseTypeConstructor(head),
+      {
+        name: constructorName,
+        fields: fields.map((field) => {
+          const names = accessorMap.get(field.name)
+          return {
+            ...field,
+            accessorName: names
+              ? names.accessorName
+              : `${constructorName}${field.name}`,
+            modifierName: names ? names.modifierName : undefined,
+          }
+        }),
+        predicate: S.asSymbolSexp(predicate).content,
+        location,
+      },
+      "zh",
       location,
     )
   },
@@ -224,11 +426,23 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     return M.ClaimStmt(S.asSymbolSexp(name).content, parseExp(type), location)
   },
 
+  "`(声明 ,name ,type)": ({ name, type }, { location }) => {
+    return M.ClaimStmt(S.asSymbolSexp(name).content, parseExp(type), location)
+  },
+
   "`(claim-type ,name)": ({ name }, { location }) => {
     return M.ClaimTypeStmt(S.asSymbolSexp(name).content, location)
   },
 
+  "`(声明类型 ,name)": ({ name }, { location }) => {
+    return M.ClaimTypeStmt(S.asSymbolSexp(name).content, location)
+  },
+
   "`(admit ,name ,type)": ({ name, type }, { location }) => {
+    return M.AdmitStmt(S.asSymbolSexp(name).content, parseExp(type), location)
+  },
+
+  "`(承认 ,name ,type)": ({ name, type }, { location }) => {
     return M.AdmitStmt(S.asSymbolSexp(name).content, parseExp(type), location)
   },
 
@@ -243,6 +457,14 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "`(声明原语函数 ,name ,arity)": ({ name, arity }, { location }) => {
+    return M.DeclarePrimitiveFunctionStmt(
+      S.asSymbolSexp(name).content,
+      Number(S.asIntSexp(arity).content),
+      location,
+    )
+  },
+
   "`(declare-primitive-variable ,name)": ({ name }, { location }) => {
     return M.DeclarePrimitiveVariableStmt(
       S.asSymbolSexp(name).content,
@@ -250,7 +472,18 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "`(声明原语变量 ,name)": ({ name }, { location }) => {
+    return M.DeclarePrimitiveVariableStmt(
+      S.asSymbolSexp(name).content,
+      location,
+    )
+  },
+
   "(cons* '@comment sexps)": ({ sexps }, { location }) => {
+    return M.CommentStmt(S.asListSexp(sexps).elements, location)
+  },
+
+  "(cons* '@注释 sexps)": ({ sexps }, { location }) => {
     return M.CommentStmt(S.asListSexp(sexps).elements, location)
   },
 })

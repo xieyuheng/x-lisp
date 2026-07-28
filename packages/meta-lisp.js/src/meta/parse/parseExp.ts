@@ -21,7 +21,20 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '函 parameters body)": ({ parameters, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.LambdaExp(
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "`(@quote ,sexp)": ({ sexp }, { location }) => {
+    return M.QuoteExp(sexp, location)
+  },
+
+  "`(@引用 ,sexp)": ({ sexp }, { location }) => {
     return M.QuoteExp(sexp, location)
   },
 
@@ -29,11 +42,32 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.SexpExp(sexp, location)
   },
 
+  "`(@符号算式 ,sexp)": ({ sexp }, { location }) => {
+    return M.SexpExp(sexp, location)
+  },
+
   "(cons* '@comment sexps)": ({ sexps }, { location }) => {
     return M.CommentExp(S.asListSexp(sexps).elements, location)
   },
 
+  "(cons* '@注释 sexps)": ({ sexps }, { location }) => {
+    return M.CommentExp(S.asListSexp(sexps).elements, location)
+  },
+
   "`(if ,condition ,consequent ,alternative)": (
+    { condition, consequent, alternative },
+    { sexp },
+  ) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.IfExp(
+      parseExp(condition),
+      parseExp(consequent),
+      parseExp(alternative),
+      keyword.location,
+    )
+  },
+
+  "`(若 ,condition ,consequent ,alternative)": (
     { condition, consequent, alternative },
     { sexp },
   ) => {
@@ -55,7 +89,25 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '当 condition body)": ({ condition, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.WhenExp(
+      parseExp(condition),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "(cons* 'unless condition body)": ({ condition, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.UnlessExp(
+      parseExp(condition),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
+  "(cons* '除非 condition body)": ({ condition, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.UnlessExp(
       parseExp(condition),
@@ -69,7 +121,17 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.AndExp(S.asListSexp(exps).elements.map(parseExp), keyword.location)
   },
 
+  "(cons* '且 exps)": ({ exps }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.AndExp(S.asListSexp(exps).elements.map(parseExp), keyword.location)
+  },
+
   "(cons* 'or exps)": ({ exps }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.OrExp(S.asListSexp(exps).elements.map(parseExp), keyword.location)
+  },
+
+  "(cons* '或 exps)": ({ exps }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.OrExp(S.asListSexp(exps).elements.map(parseExp), keyword.location)
   },
@@ -82,7 +144,24 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '择 clauses)": ({ clauses }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.CondExp(
+      S.asListSexp(clauses).elements.map(parseCondClause),
+      keyword.location,
+    )
+  },
+
   "(cons* 'match target clauses)": ({ target, clauses }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.MatchExp(
+      [parseExp(target)],
+      S.asListSexp(clauses).elements.map(parseMatchClause),
+      keyword.location,
+    )
+  },
+
+  "(cons* '匹配 target clauses)": ({ target, clauses }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.MatchExp(
       [parseExp(target)],
@@ -100,7 +179,29 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '匹配多个 targets clauses)": ({ targets, clauses }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.MatchExp(
+      S.asListSexp(targets).elements.map(parseExp),
+      S.asListSexp(clauses).elements.map(parseMatchManyClause),
+      keyword.location,
+    )
+  },
+
   "(cons* 'define (cons* name parameters) body)": (
+    { name, parameters, body },
+    { sexp },
+  ) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.LocalDefineExp(
+      S.asSymbolSexp(name).content,
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
+  "(cons* '定义 (cons* name parameters) body)": (
     { name, parameters, body },
     { sexp },
   ) => {
@@ -123,12 +224,36 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '定义 name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.LocalDefineExp(
+      S.asSymbolSexp(name).content,
+      [],
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "(cons* 'begin body)": ({ body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return parseBody(body, keyword.location)
   },
 
+  "(cons* '循序 body)": ({ body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return parseBody(body, keyword.location)
+  },
+
   "(cons* 'let bindings body)": ({ bindings, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.LetExp(
+      S.asListSexp(bindings).elements.map(parseBinding),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
+  "(cons* '令 bindings body)": ({ bindings, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LetExp(
       S.asListSexp(bindings).elements.map(parseBinding),
@@ -146,11 +271,24 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '递归令 bindings body)": ({ bindings, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.LetrecExp(
+      S.asListSexp(bindings).elements.map(parseBinding),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "(cons* '@square-bracket elements)": ({ elements }, { location }) => {
     return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
 
   "(cons* '@list elements)": ({ elements }, { location }) => {
+    return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
+  },
+
+  "(cons* '@列表 elements)": ({ elements }, { location }) => {
     return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
 
@@ -161,13 +299,39 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '@字符串 elements)": ({ elements }, { location }) => {
+    return M.StringConcatExp(
+      S.asListSexp(elements).elements.map(parseExp),
+      location,
+    )
+  },
+
   "(cons* '@set elements)": ({ elements }, { location }) => {
+    return M.SetExp(S.asListSexp(elements).elements.map(parseExp), location)
+  },
+
+  "(cons* '@集合 elements)": ({ elements }, { location }) => {
     return M.SetExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
 
   "(cons* '@hash elements)": ({ elements }, { location }) => {
     if (S.asListSexp(elements).elements.length % 2 === 1) {
       let message = `(@hash) body length must be even`
+      throw new S.ErrorWithSourceLocation(message, location)
+    }
+
+    const entries = arrayGroup2(S.asListSexp(elements).elements).map(
+      ([key, value]) => ({
+        key: parseExp(key),
+        value: parseExp(value),
+      }),
+    )
+    return M.HashExp(entries, location)
+  },
+
+  "(cons* '@散列 elements)": ({ elements }, { location }) => {
+    if (S.asListSexp(elements).elements.length % 2 === 1) {
+      let message = `(@散列) body length must be even`
       throw new S.ErrorWithSourceLocation(message, location)
     }
 
@@ -191,7 +355,19 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.TheExp(parseExp(schema), parseExp(exp), location)
   },
 
+  "`(型例 ,schema ,exp)": ({ schema, exp }, { location }) => {
+    return M.TheExp(parseExp(schema), parseExp(exp), location)
+  },
+
   "`(polymorphic ,parameters ,type)": ({ parameters, type }, { location }) => {
+    return M.PolymorphicExp(
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
+      parseExp(type),
+      location,
+    )
+  },
+
+  "`(多态 ,parameters ,type)": ({ parameters, type }, { location }) => {
     return M.PolymorphicExp(
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseExp(type),
@@ -207,11 +383,27 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* '管道 target steps)": ({ target, steps }, { location }) => {
+    return M.PipeExp(
+      parseExp(target),
+      S.asListSexp(steps).elements.map(parseExp),
+      location,
+    )
+  },
+
   "(cons* 'chain steps)": ({ steps }, { location }) => {
     return M.ChainExp(S.asListSexp(steps).elements.map(parseExp), location)
   },
 
+  "(cons* '串联 steps)": ({ steps }, { location }) => {
+    return M.ChainExp(S.asListSexp(steps).elements.map(parseExp), location)
+  },
+
   "(cons* 'compose steps)": ({ steps }, { location }) => {
+    return M.ComposeExp(S.asListSexp(steps).elements.map(parseExp), location)
+  },
+
+  "(cons* '复合 steps)": ({ steps }, { location }) => {
     return M.ComposeExp(S.asListSexp(steps).elements.map(parseExp), location)
   },
 
@@ -266,6 +458,12 @@ const parseBinding = S.createRouter<M.Binding>({
 const parseCondClause = S.createRouter<M.CondClause>({
   "(cons* question body)": ({ question, body }, { location }) => {
     if (question.kind === "SymbolSexp" && question.content === "else") {
+      return M.CondClause(
+        M.QualifiedVarExp("meta-builtin", "builtin", "true", location),
+        parseBody(body, body.location),
+        location,
+      )
+    } else if (question.kind === "SymbolSexp" && question.content === "否则") {
       return M.CondClause(
         M.QualifiedVarExp("meta-builtin", "builtin", "true", location),
         parseBody(body, body.location),

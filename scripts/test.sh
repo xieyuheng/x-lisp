@@ -20,6 +20,7 @@ cd packages/meta-builtin.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-math.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-example.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-error.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
+# cd packages/元语例子; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-lisp.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-pass-dump.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 

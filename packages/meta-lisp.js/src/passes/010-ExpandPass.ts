@@ -84,15 +84,21 @@ function desugarDefineEnum(
     const fields = ctor.fields.map((field) => ({
       name: field.name,
       type: field.type,
-      accessorName: `${ctor.name}-${field.name}`,
-      modifierName: `${ctor.name}-put-${field.name}!`,
+      accessorName:
+        stmt.lang === "zh"
+          ? `${ctor.name}${field.name}`
+          : `${ctor.name}-${field.name}`,
+      modifierName:
+        stmt.lang === "zh"
+          ? `${ctor.name}置${field.name}之`
+          : `${ctor.name}-put-${field.name}!`,
       location: field.location,
     }))
 
     return {
       name: ctor.name,
       fields,
-      predicate: `${ctor.name}?`,
+      predicate: stmt.lang === "zh" ? `${ctor.name}乎` : `${ctor.name}?`,
       location: ctor.location,
     }
   })
@@ -104,26 +110,35 @@ function desugarDefineEnum(
   )
 }
 
+function parseTypeNameBase(name: string, lang: M.Lang): string {
+  if (lang === "en" && name.endsWith("-t")) {
+    return name.slice(0, -2)
+  }
+  if (lang === "zh" && name.endsWith("型")) {
+    return name.slice(0, -1)
+  }
+  let message = `[desugarDefineStruct] type name must end with "${lang === "en" ? "-t" : "型"}"`
+  message += `\n  type name: ${name}`
+  message += `\n  hint: use the explicit (define-algebraic-type) syntax instead`
+  throw new Error(message)
+}
+
 function desugarDefineStructStar(
   stmt: M.DefineStructStarStmt<M.Exp>,
 ): M.DefineAlgebraicTypeStmt<M.Exp> {
   const typeName = stmt.typeConstructor.name
-
-  if (!typeName.endsWith("-t")) {
-    let message = `[desugarDefineStruct] type name must end with "-t"`
-    message += `\n  type name: ${typeName}`
-    message += `\n  hint: use the explicit (define-algebraic-type) syntax instead`
-    throw new Error(message)
-  }
-
-  const base = typeName.slice(0, -2)
+  const base = parseTypeNameBase(typeName, stmt.lang)
   const ctor = stmt.dataConstructor
 
   const fields = ctor.fields.map((field) => ({
     name: field.name,
     type: field.type,
-    accessorName: `${base}-${field.name}`,
-    modifierName: `${base}-put-${field.name}!`,
+    accessorName:
+      stmt.lang === "zh" ? `${base}${field.name}` : `${base}-${field.name}`,
+    modifierName:
+      stmt.lang === "zh"
+        ? `${base}置${field.name}之`
+        : `${base}-put-${field.name}!`,
     location: field.location,
   }))
 
@@ -131,7 +146,7 @@ function desugarDefineStructStar(
     {
       name: ctor.name,
       fields,
-      predicate: `${base}?`,
+      predicate: stmt.lang === "zh" ? `${base}乎` : `${base}?`,
       location: ctor.location,
     },
   ]
@@ -147,29 +162,25 @@ function desugarDefineStruct(
   stmt: M.DefineStructStmt<M.Exp>,
 ): M.DefineAlgebraicTypeStmt<M.Exp> {
   const typeName = stmt.typeConstructor.name
-
-  if (!typeName.endsWith("-t")) {
-    let message = `[desugarDefineStruct] type name must end with "-t"`
-    message += `\n  type name: ${typeName}`
-    message += `\n  hint: use the explicit (define-algebraic-type) syntax instead`
-    throw new Error(message)
-  }
-
-  const base = typeName.slice(0, -2)
+  const base = parseTypeNameBase(typeName, stmt.lang)
 
   const fields = stmt.fields.map((field) => ({
     name: field.name,
     type: field.type,
-    accessorName: `${base}-${field.name}`,
-    modifierName: `${base}-put-${field.name}!`,
+    accessorName:
+      stmt.lang === "zh" ? `${base}${field.name}` : `${base}-${field.name}`,
+    modifierName:
+      stmt.lang === "zh"
+        ? `${base}置${field.name}之`
+        : `${base}-put-${field.name}!`,
     location: field.location,
   }))
 
   const dataConstructors = [
     {
-      name: `make-${base}`,
+      name: stmt.lang === "zh" ? `作${base}` : `make-${base}`,
       fields,
-      predicate: `${base}?`,
+      predicate: stmt.lang === "zh" ? `${base}乎` : `${base}?`,
       location: stmt.location,
     },
   ]
