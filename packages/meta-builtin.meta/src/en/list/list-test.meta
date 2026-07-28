@@ -78,29 +78,6 @@
     (assert-equal 1 (list-pop! list))
     (assert-equal list [])))
 
-(define-test list-push-test
-  (let ((list [])
-         (list (list-push 1 list))
-         (list (list-push 2 list))
-         (list (list-push 3 list)))
-    (assert-equal list [1 2 3]))
-
-  ;; list-push has NO side effect:
-
-  (let ((list []))
-    (list-push 1 list)
-    (list-push 2 list)
-    (list-push 3 list)
-    (assert-equal list []))
-
-  ;; list-push! has side effect:
-
-  (let ((list []))
-    (list-push! 1 list)
-    (list-push! 2 list)
-    (list-push! 3 list)
-    (assert-equal list [1 2 3])))
-
 (define-test list-put-test
   (let ((list [0 0 0])
          (list (list-put 0 1 list))

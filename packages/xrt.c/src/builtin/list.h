@@ -7,7 +7,6 @@ x_fn_1_t x_list_length;
 x_fn_1_t x_list_is_empty;
 x_fn_1_t x_list_pop_mut;
 x_fn_2_t x_list_push_mut;
-x_fn_2_t x_list_push;
 x_fn_1_t x_list_pop_front_mut;
 x_fn_2_t x_list_push_front_mut;
 x_fn_2_t x_list_get;

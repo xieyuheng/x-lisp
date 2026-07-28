@@ -301,8 +301,6 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/列表末出之", x_list_pop_mut);
   define_primitive_2(mod, "meta-builtin/builtin/list-push!", x_list_push_mut);
   define_primitive_2(mod, "meta-builtin/builtin/列表末入之", x_list_push_mut);
-  define_primitive_2(mod, "meta-builtin/builtin/list-push", x_list_push);
-  define_primitive_2(mod, "meta-builtin/builtin/列表末入", x_list_push);
   define_primitive_1(mod, "meta-builtin/builtin/list-pop-front!", x_list_pop_front_mut);
   define_primitive_1(mod, "meta-builtin/builtin/列表首出之", x_list_pop_front_mut);
   define_primitive_2(mod, "meta-builtin/builtin/list-push-front!", x_list_push_front_mut);

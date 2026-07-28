@@ -257,7 +257,6 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`list-copy`](list/list-copy.md) — 复制列表
 - [`list-put`](list/list-put.md) — 按索引替换元素（不可变）
 - [`list-put!`](list/list-put-mut.md) — 按索引替换元素（可变）
-- [`list-push`](list/list-push.md) — 尾部追加（不可变）
 - [`list-push!`](list/list-push-mut.md) — 尾部追加（可变）
 - [`list-push-front!`](list/list-push-front-mut.md) — 头部添加（可变）
 - [`list-pop!`](list/list-pop-mut.md) — 弹出尾部元素（可变）

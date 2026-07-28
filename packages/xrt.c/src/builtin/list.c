@@ -29,10 +29,6 @@ value_t x_list_push_mut(value_t value, value_t list) {
   return list;
 }
 
-value_t x_list_push(value_t value, value_t list) {
-  return x_list_push_mut(value, x_list_copy(list));
-}
-
 value_t x_list_pop_front_mut(value_t list) {
   return xlist_pop_front(to_xlist(list));
 }

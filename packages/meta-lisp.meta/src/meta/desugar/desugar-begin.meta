@@ -51,4 +51,4 @@
     local-defines
     (collect-adjacent-local-defines
       (cdr sequence)
-      (list-push (car sequence) local-defines))))
+      (list-append local-defines [(car sequence)]))))

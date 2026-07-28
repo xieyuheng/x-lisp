@@ -256,7 +256,6 @@ Operations on `(list-t E)`.
 - [`list-copy`](list/list-copy.md) — Copy a list
 - [`list-put`](list/list-put.md) — Replace at index (immutable)
 - [`list-put!`](list/list-put-mut.md) — Replace at index (mutable)
-- [`list-push`](list/list-push.md) — Append at end (immutable)
 - [`list-push!`](list/list-push-mut.md) — Append at end (mutable)
 - [`list-push-front!`](list/list-push-front-mut.md) — Prepend at front (mutable)
 - [`list-pop!`](list/list-pop-mut.md) — Pop from end (mutable)
