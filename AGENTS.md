@@ -127,28 +127,11 @@ AI agent 应用中文回答用户的问题。
 - `scripts/clean.sh` — 清理 build 和 snapshot 产物
 - `scripts/test.sh`  — type-check → build → test
 
-# 自举循环
+# 完整测试
 
-项目的核心架构：**JS 编译器引导 .meta 编译器，.meta 编译器最终编译自身**。
+**改动完成后，必须在 repo 根目录运行 `./scripts/all.sh` 做完整测试**，涵盖 prepare → clean → format → build → test 全部环节。
 
-```
-[meta-lisp.js]（引导编译器，JS 实现）
-        │
-        │ 编译
-        ▼
-[meta-lisp.meta]（自举编译器，.meta 实现）
-        │
-        │ 自编译（self-hosting）
-        ▼
-[meta-lisp.meta]（即使用自己编译自己）
-```
-
-**修改 [meta-lisp.js] 时必须做的事：**
-1. `packages/meta-lisp.js/scripts/test.sh` — JS 自身测试
-2. `packages/meta-lisp.meta/scripts/test.sh` — 用 JS 编译器编译 .meta 编译器
-3. `packages/meta-lisp.meta/scripts/self-check.sh` — 验证自举
-
-任何一环失败视为修改不完整。
+不要只跑单个 package 的测试就认为改动完成——依赖链（C → JS → .meta）意味着一个 package 的改动可能影响下游。
 
 # 技能指引
 
@@ -170,8 +153,7 @@ Agent 应在对应场景主动加载 skill：
 # 禁止事项
 
 - **不要直接调用 `make`** — 用各 package 的 `scripts/`
-- **不要跳过 `scripts/check.sh`** — type-check 是修改的必备步骤
-- **改 [meta-lisp.js] 后不能只跑 JS 测试** — 必须完成自举循环验证
+- **不要跳过 `./scripts/all.sh`** — 改动完成后必须在 repo 根目录跑完整测试
 - **不要主动提交代码** — 只有用户明确要求提交时才执行 `git commit`
 - **C 代码不要直接 `#include "foo.h"`** — 始终 `#include "index.h"`
 
