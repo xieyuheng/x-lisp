@@ -1,0 +1,16 @@
+(module example)
+
+(define-test path-test
+  (assert-equal "abc\n" (path-read "src/path/file-1.txt"))
+
+  (path-write "src/path/file-2.txt" "123\n")
+  (assert-equal "123\n" (path-read "src/path/file-2.txt"))
+
+  (path-write "src/path/file-2.txt" "abc\n")
+  (assert-equal "abc\n" (path-read "src/path/file-2.txt"))
+
+  (list-each println (list-sort string-compare-lexical (path-list "src")))
+  (print "\n")
+
+  (list-each println (list-sort string-compare-lexical (path-list-recursive "src")))
+  (print "\n"))

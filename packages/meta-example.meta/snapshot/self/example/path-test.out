@@ -2,12 +2,12 @@ adt
 cli
 eoc
 file
-fs
 function
 lambda
 module
 my-list
 package
+path
 syntax
 
 adt
@@ -25,10 +25,6 @@ file
 file/file-1.txt
 file/file-2.txt
 file/file.meta
-fs
-fs/file-1.txt
-fs/file-2.txt
-fs/fs.meta
 function
 function/SKI.meta
 function/compose-and-pipe.meta
@@ -58,6 +54,10 @@ package/direct-meta-math.meta
 package/import-all-meta-math.meta
 package/import-as-meta-math.meta
 package/import-meta-math.meta
+path
+path/file-1.txt
+path/file-2.txt
+path/path.meta
 syntax
 syntax/comment.meta
 syntax/cond.meta
