@@ -16,5 +16,5 @@ Assert a condition is false. Raises an error if the condition is true.
 
 ```meta-lisp
 (assert-not (equal 1 2))
-(assert-not (< 2 1))
+(assert-not (int-less 2 1))
 ```
