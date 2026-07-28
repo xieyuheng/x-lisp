@@ -6,7 +6,7 @@
         (maybe-t V))))
 
 (define (hash-get-maybe key hash)
-  (if (hash-has? key hash)
+  (if (hash-has key hash)
     (just (hash-get key hash))
     (nothing)))
 

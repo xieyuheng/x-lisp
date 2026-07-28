@@ -6,7 +6,7 @@
     ((import-stmt pkg-name mod-name names location)
      (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
-            (full (if (equal? pkg-name-str "self")
+            (full (if (equal pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (@string "(import " full " "
@@ -14,14 +14,14 @@
     ((import-as-stmt pkg-name mod-name prefix location)
      (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
-            (full (if (equal? pkg-name-str "self")
+            (full (if (equal pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (@string "(import-as " full " " (symbol-to-string prefix) ")")))
     ((import-all-stmt pkg-name mod-name location)
      (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
-            (full (if (equal? pkg-name-str "self")
+            (full (if (equal pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (@string "(import-all " full ")")))
@@ -51,7 +51,7 @@
             (fields (explicit-data-constructor-fields data-constructor))
             (pred (explicit-data-constructor-predicate-name data-constructor))
             (field-strs (list-map format-explicit-data-field fields))
-            (ctor-clause (if (list-empty? field-strs)
+            (ctor-clause (if (list-is-empty field-strs)
                            (@string "(" (symbol-to-string ctor) ")")
                            (@string "(" (symbol-to-string ctor) " "
                                     (string-join " " field-strs) ")")))
@@ -85,14 +85,14 @@
     ((declare-primitive-variable-stmt name location)
      (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
     ((comment-stmt sexps location)
-      (if (list-empty? sexps)
+      (if (list-is-empty sexps)
         (@string "(@comment)")
         (@string "(@comment " (string-join " " (list-map format-sexp sexps)) ")")))))
 
 (define (format-type-constructor tc)
   (let ((name-str (symbol-to-string (pre-type-constructor-name tc)))
         (params (pre-type-constructor-parameters tc)))
-    (if (list-empty? params)
+    (if (list-is-empty params)
       name-str
       (@string "(" name-str " "
                (string-join " " (list-map symbol-to-string params)) ")"))))
@@ -100,7 +100,7 @@
 (define (format-pre-data-constructor ctor)
   (let ((name-str (symbol-to-string (pre-data-constructor-name ctor)))
         (fields (pre-data-constructor-fields ctor)))
-    (if (list-empty? fields)
+    (if (list-is-empty fields)
       name-str
       (@string "(" name-str " "
                (string-join " " (list-map format-pre-data-field fields)) ")"))))
@@ -108,7 +108,7 @@
 (define (format-pre-data-field field)
   (let ((name-str (symbol-to-string (pre-data-field-name field)))
         (type-str (format-exp (pre-data-field-type field))))
-    (if (equal? type-str "")
+    (if (equal type-str "")
       name-str
       (@string "(" name-str " " type-str ")"))))
 
@@ -116,12 +116,12 @@
   (let ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
          (fields (explicit-data-constructor-fields ctor))
          (pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor)))
-         (group (if (list-empty? fields)
+         (group (if (list-is-empty fields)
                   (@string "(" name-str ")")
                   (@string "(" name-str " "
                            (string-join " " (list-map format-explicit-data-field fields)) ")")))
          (accessor-entries (list-map format-algebraic-type-accessor fields)))
-    (if (list-empty? accessor-entries)
+    (if (list-is-empty accessor-entries)
       (@string "(" group " " pred-str ")")
       (@string "(" group " " pred-str " "
                (string-join " " accessor-entries) ")"))))
@@ -129,7 +129,7 @@
 (define (format-explicit-data-field field)
   (let ((name-str (symbol-to-string (explicit-data-field-name field)))
         (type-str (format-exp (explicit-data-field-type field))))
-    (if (equal? type-str "")
+    (if (equal type-str "")
       name-str
       (@string "(" name-str " " type-str ")"))))
 

@@ -43,7 +43,7 @@
           (lambda (fragment)
             (for-list (fragment-stmts fragment)
               (algebraic-analysis-stmt report alias fragment))))))
-    (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (when (hash-has "dump" (package-config-compiler (package-config package)))
       (dump-algebraic-analysis-report report package))
     report))
 

@@ -1,7 +1,7 @@
 #include "index.h"
 
 value_t x_error(value_t info) {
-  assert(xstring_p(info));
+  assert(is_xstring(info));
   buffer_t *buffer = make_buffer();
   write_string(buffer, "(error) ");
   write_string(buffer, xstring_string(to_xstring(info)));
@@ -10,7 +10,7 @@ value_t x_error(value_t info) {
 }
 
 value_t x_error_with_location(value_t info, value_t location) {
-  assert(xstring_p(info));
+  assert(is_xstring(info));
   buffer_t *message_buffer = make_buffer();
   write_string(message_buffer, "(error) ");
   write_string(message_buffer, xstring_string(to_xstring(info)));

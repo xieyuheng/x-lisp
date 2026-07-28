@@ -3,7 +3,7 @@
 (claim gcd (-> int-t int-t int-t))
 
 (define (gcd a b)
-  (if (equal? b 0)
+  (if (equal b 0)
     a
     (gcd b (imod a b))))
 

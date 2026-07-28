@@ -1,7 +1,7 @@
 (module builtin)
 
 (define-test hash-test
-  (assert (hash-empty? (@hash)))
+  (assert (hash-is-empty (@hash)))
 
   (println (@hash))
   (println (@hash 1 2))

@@ -63,11 +63,11 @@ value_t x_path_stem(value_t string) {
   return x_object(make_xstring_take(stem));
 }
 
-value_t x_path_absolute_p(value_t string) {
+value_t x_path_is_absolute(value_t string) {
   return x_bool(string_starts_with(xstring_string(to_xstring(string)), "/"));
 }
 
-value_t x_path_relative_p(value_t string) {
+value_t x_path_is_relative(value_t string) {
   return x_bool(!string_starts_with(xstring_string(to_xstring(string)), "/"));
 }
 
@@ -87,7 +87,7 @@ value_t x_path_normalize(value_t string) {
 }
 
 value_t x_path_resolve(value_t x) {
-  if (to_bool(x_path_absolute_p(x)))
+  if (to_bool(x_path_is_absolute(x)))
     return x;
   return x_path_normalize(x_path_join(x_current_directory(), x));
 }

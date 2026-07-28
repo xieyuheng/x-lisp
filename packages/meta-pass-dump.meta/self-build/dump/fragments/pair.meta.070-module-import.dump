@@ -4,7 +4,7 @@
 
 (define-algebraic-type (pair-t A B)
   ((make-pair (first A) (second B))
-   pair?
+   is-pair
    (first pair-first pair-put-first!)
    (second pair-second pair-put-second!)))
 
@@ -18,12 +18,13 @@
         (meta-builtin/builtin/list-push! first list)
         (begin (meta-builtin/builtin/list-push! second list) list)))))
 
-(admit pair? (polymorphic (A B) (-> (pair-t A B) meta-builtin/builtin/bool-t)))
+(admit is-pair
+  (polymorphic (A B) (-> (pair-t A B) meta-builtin/builtin/bool-t)))
 
-(define (pair? value)
-  (if (meta-builtin/builtin/list? value)
-    (if (meta-builtin/builtin/equal? (meta-builtin/builtin/list-length value) 3)
-      (meta-builtin/builtin/equal?
+(define (is-pair value)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
+      (meta-builtin/builtin/equal
        (meta-builtin/builtin/list-head value)
        make-pair)
       meta-builtin/builtin/false)
@@ -48,7 +49,7 @@
   (meta-builtin/builtin/list-put! 2 value target))
 
 (define (pair-swap p)
-  (if (self/pair/pair? p)
+  (if (self/pair/is-pair p)
     (let ((b (self/pair/pair-second p)))
       (let ((a (self/pair/pair-first p))) (make-pair b a)))
     (meta-builtin/builtin/error "cond mismatch")))

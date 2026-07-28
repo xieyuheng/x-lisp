@@ -155,23 +155,23 @@ static value_t for_list(const char *end, list_t *tokens) {
 }
 
 bool sexp_has_tag(value_t sexp, const char *tag) {
-  return xlist_p(sexp)
-    && false_p(x_list_empty_p(sexp))
-    && equal_p(x_car(sexp), x_object(intern_symbol(tag)));
+  return is_xlist(sexp)
+    && is_false(x_list_is_empty(sexp))
+    && equal(x_car(sexp), x_object(intern_symbol(tag)));
 }
 
 void write_as_sexp(buffer_t *buffer, value_t sexp) {
-  if (symbol_p(sexp)) {
+  if (is_symbol(sexp)) {
     write_string(buffer, symbol_string(to_symbol(sexp)));
     return;
   }
 
-  if (atom_p(sexp)) {
+  if (is_atom(sexp)) {
     write_atom(buffer, sexp);
     return;
   }
 
-  if (xlist_p(sexp)) {
+  if (is_xlist(sexp)) {
     xlist_t *xlist = to_xlist(sexp);
     size_t length = array_length(xlist->elements);
     write_string(buffer, "(");
@@ -185,7 +185,7 @@ void write_as_sexp(buffer_t *buffer, value_t sexp) {
   }
 
 
-  if (xset_p(sexp)) {
+  if (is_xset(sexp)) {
     xset_t *xset = to_xset(sexp);
     set_iter_t iter;
     set_iter_init(&iter, xset->set);
@@ -206,7 +206,7 @@ void write_as_sexp(buffer_t *buffer, value_t sexp) {
     return;
   }
 
-  if (xhash_p(sexp)) {
+  if (is_xhash(sexp)) {
     xhash_t *xhash = to_xhash(sexp);
     write_string(buffer, "(@hash");
     hash_iter_t iter;

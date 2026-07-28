@@ -10,7 +10,7 @@ struct xlist_t {
 xlist_t *make_xlist(void);
 void xlist_free(xlist_t *self);
 
-bool xlist_p(value_t value);
+bool is_xlist(value_t value);
 xlist_t *to_xlist(value_t value);
 
 value_t xlist_get(const xlist_t *self, size_t index);

@@ -9,6 +9,6 @@
 (claim mod-lookup-definition (-> mod-t symbol-t (maybe-t definition-t)))
 (define (mod-lookup-definition mod name)
   (let ((definitions (mod-definitions mod)))
-    (if (hash-has? name definitions)
+    (if (hash-has name definitions)
       (just (hash-get name definitions))
       (nothing))))

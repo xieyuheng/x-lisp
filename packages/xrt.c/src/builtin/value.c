@@ -1,22 +1,22 @@
 #include "index.h"
 
-value_t x_atom_p(value_t value) {
-  return x_bool(atom_p(value));
+value_t x_is_atom(value_t value) {
+  return x_bool(is_atom(value));
 }
 
-value_t x_same_p(value_t lhs, value_t rhs) {
-  return x_bool(same_p(lhs, rhs));
+value_t x_same(value_t lhs, value_t rhs) {
+  return x_bool(same(lhs, rhs));
 }
 
-value_t x_equal_p(value_t lhs, value_t rhs) {
-  if (object_p(lhs)
-    && object_p(rhs)
+value_t x_equal(value_t lhs, value_t rhs) {
+  if (is_object(lhs)
+    && is_object(rhs)
     && to_object(lhs)->header.class == to_object(rhs)->header.class
     && to_object(lhs)->header.class->equal_fn != NULL) {
     return x_bool(to_object(lhs)->header.class->equal_fn(to_object(lhs), to_object(rhs)));
   }
 
-  return x_same_p(lhs, rhs);
+  return x_same(lhs, rhs);
 }
 
 value_t x_format(value_t value) {

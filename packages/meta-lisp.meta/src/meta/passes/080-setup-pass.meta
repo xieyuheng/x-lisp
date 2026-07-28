@@ -12,7 +12,7 @@
         (package-put-mod! mod-name mod package)
         (for-list (fragment-desugared-stmts fragment)
           (setup-stmt mod)))))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+  (when (hash-has "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "080-setup")))
 
 (claim setup-stmt
@@ -85,13 +85,13 @@
     (else void)))
 
 (define (make-polymorphic-term-from-parameters parameters type location)
-  (if (list-empty? parameters)
+  (if (list-is-empty parameters)
     type
     (polymorphic-term parameters type location)))
 
 (define (make-type-term-from-parameters parameters location)
   (let ((type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location)))
-    (if (list-empty? parameters)
+    (if (list-is-empty parameters)
       type-term
       (arrow-term (list-map (constant type-term) parameters) type-term location))))
 

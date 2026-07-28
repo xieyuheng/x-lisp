@@ -25,7 +25,7 @@ definition_t *make_variable_definition(char *name, value_t value);
 
 void definition_free(definition_t *self);
 
-bool definition_p(value_t value);
+bool is_definition(value_t value);
 definition_t *to_definition(value_t value);
 
 bool definition_equal(definition_t *lhs, definition_t *rhs);

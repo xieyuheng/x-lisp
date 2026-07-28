@@ -34,7 +34,7 @@
      (let ((tc-name (type-constructor-name type-constructor))
            (tc-params (type-constructor-parameters type-constructor))
            (ctors-str (string-join " " (list-map format-data-constructor data-constructors))))
-       (if (list-empty? tc-params)
+       (if (list-is-empty tc-params)
          (@string "(define-enum " (symbol-to-string tc-name) " " ctors-str ")")
          (@string "(define-enum (" (symbol-to-string tc-name) " "
                   (string-join " " (list-map symbol-to-string tc-params)) ") "
@@ -48,7 +48,7 @@
                                      (@string "(" (symbol-to-string (interface-entry-name entry)) " "
                                               (format-term (interface-entry-type entry)) ")"))
                            interface-entries))))
-       (if (list-empty? tc-params)
+       (if (list-is-empty tc-params)
          (@string "(define-opaque-type " tc-name " " repr-str " " ifaces-str ")")
          (@string "(define-opaque-type (" tc-name " "
                   (string-join " " (list-map symbol-to-string tc-params)) ") "
@@ -57,25 +57,25 @@
 (define (format-data-constructor data-constructor)
   (let ((name-str (symbol-to-string (data-constructor-name data-constructor)))
         (fields (data-constructor-fields data-constructor)))
-    (if (list-empty? fields)
+    (if (list-is-empty fields)
       name-str
       (@string "(" name-str " "
                (string-join " "
                  (list-map (lambda (field)
                              (let ((fn (symbol-to-string (data-field-name field)))
                                    (ft (format-term (data-field-type field))))
-                               (if (equal? ft "")
+                               (if (equal ft "")
                                  fn
                                  (@string "(" fn " " ft ")"))))
                    fields)) ")"))))
 
 (define (format-definition-claim mod name)
   (let ((claimed-entry (mod-lookup-claimed-entry mod name)))
-    (if (not (nothing? claimed-entry))
+    (if (not (is-nothing claimed-entry))
       (let ((term (claimed-entry-term (just-value claimed-entry))))
         (@string "(claim " (symbol-to-string name) " " (format-term term) ") "))
       (let ((inferred-type (mod-lookup-inferred-type mod name)))
-        (if (not (nothing? inferred-type))
+        (if (not (is-nothing inferred-type))
           (@string "(claim " (symbol-to-string name) " "
                    (format-type (just-value inferred-type)) ") ")
           "")))))

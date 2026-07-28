@@ -4,7 +4,7 @@
   (pipe (fs-list-recursive directory)
     (list-each
       (lambda (name)
-        (when (string-ends-with? ".meta" name)
+        (when (string-ends-with ".meta" name)
           (let ((path (path-join directory name))
                  (fragment (load-fragment path)))
             (package-put-fragment! path fragment package)))))))

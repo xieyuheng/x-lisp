@@ -167,15 +167,15 @@ static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_ind
 
       value_entry_t *entry = NULL;
 
-      if (keyword_p(value)) {
+      if (is_keyword(value)) {
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_KEYWORD;
         entry->data = string_copy(keyword_string(to_keyword(value)));
-      } else if (xstring_p(value)) {
+      } else if (is_xstring(value)) {
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_STRING;
         entry->data = string_copy(xstring_string(to_xstring(value)));
-      } else if (symbol_p(value)) {
+      } else if (is_symbol(value)) {
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_SYMBOL;
         entry->data = string_copy(symbol_string(to_symbol(value)));

@@ -261,22 +261,22 @@ void write_json(buffer_t *buffer, value_t json) {
 }
 
 static void write_json_value(buffer_t *buffer, value_t json) {
-  assert(xlist_p(json));
+  assert(is_xlist(json));
   xlist_t *xs = to_xlist(json);
   assert(!array_is_empty(xs->elements));
 
   value_t tag_value = xlist_get(xs, 0);
-  assert(symbol_p(tag_value));
+  assert(is_symbol(tag_value));
   const char *tag = symbol_string(to_symbol(tag_value));
 
   if (string_equal(tag, "json-null")) {
     write_string(buffer, "null");
   } else if (string_equal(tag, "json-bool")) {
     value_t b = xlist_get(xs, 1);
-    write_string(buffer, true_p(b) ? "true" : "false");
+    write_string(buffer, is_true(b) ? "true" : "false");
   } else if (string_equal(tag, "json-number")) {
     value_t n = xlist_get(xs, 1);
-    if (float_p(n)) {
+    if (is_float(n)) {
       write_atom(buffer, n);
     } else {
       write_template(buffer, "%ld", to_int64(n));

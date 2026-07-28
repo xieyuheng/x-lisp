@@ -6,8 +6,8 @@
         (list-t (pair-t A B)))))
 
 (define (list-zip left right)
-  (if (or (list-empty? left)
-          (list-empty? right))
+  (if (or (list-is-empty left)
+          (list-is-empty right))
     []
     (cons (make-pair (car left) (car right))
           (list-zip (cdr left) (cdr right)))))

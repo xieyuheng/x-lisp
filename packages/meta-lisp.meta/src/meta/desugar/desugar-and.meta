@@ -6,9 +6,9 @@
 
 (define (desugar-and exps location)
   (cond
-    ((list-empty? exps)
+    ((list-is-empty exps)
      (qualified-var-exp 'meta-builtin 'builtin 'true location))
-    ((equal? 1 (list-length exps))
+    ((equal 1 (list-length exps))
      (car exps))
     (else
      (if-exp

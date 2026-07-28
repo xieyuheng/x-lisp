@@ -10,7 +10,7 @@
        (let ((config (load-package-config config-path))
               (root-directory (path-directory-name resolved-path))
               (package (empty-package (actual-id config id) root-directory config)))
-         (if (equal? (package-config-name config) "meta-builtin")
+         (if (equal (package-config-name config) "meta-builtin")
            (setup-builtin-package package)
            (validate-builtin config))
          (load-dependencies package root-directory config)
@@ -21,7 +21,7 @@
            package))))))
 
 (define (actual-id config id)
-  (if (equal? (package-config-name config) "meta-builtin")
+  (if (equal (package-config-name config) "meta-builtin")
     'meta-builtin
     id))
 
@@ -32,7 +32,7 @@
     void))
 
 (define (validate-builtin config)
-  (unless (hash-has? "meta-builtin" (package-config-dependencies config))
+  (unless (hash-has "meta-builtin" (package-config-dependencies config))
     (error "[loadPackage] missing required dependency \"meta-builtin\"")))
 
 (define package-serial-numbers (make-hash))
@@ -51,7 +51,7 @@
       (let ((dep-resolved
               (path-resolve
                 (path-join (path-join root-directory dep-path) "meta-package.json"))))
-        (if (equal? alias "meta-builtin")
+        (if (equal alias "meta-builtin")
           (hash-put! 'meta-builtin
             (load-package 'meta-builtin dep-resolved)
             (package-dependencies package))
@@ -63,7 +63,7 @@
 (define (validate-prelude package config)
   (hash-each-key
     (lambda (pkg-name)
-      (unless (hash-has? (string-to-symbol pkg-name) (package-dependencies package))
+      (unless (hash-has (string-to-symbol pkg-name) (package-dependencies package))
         (error
           (string-append "[loadPackage] prelude references unknown package: " pkg-name))))
     (package-config-prelude config)))

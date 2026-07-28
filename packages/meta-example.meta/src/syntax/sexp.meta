@@ -2,105 +2,105 @@
 
 (define-test sexp-symbol-test
   (let ((sx (@sexp foo)))
-    (assert (symbol-sexp? sx))
+    (assert (is-symbol-sexp sx))
     (assert-equal 'foo (symbol-sexp-content sx))
-    (assert (source-location? (symbol-sexp-location sx)))))
+    (assert (is-source-location (symbol-sexp-location sx)))))
 
 (define-test sexp-string-test
   (let ((sx (@sexp "hello")))
-    (assert (string-sexp? sx))
+    (assert (is-string-sexp sx))
     (assert-equal "hello" (string-sexp-content sx))
-    (assert (source-location? (string-sexp-location sx)))))
+    (assert (is-source-location (string-sexp-location sx)))))
 
 (define-test sexp-int-test
   (let ((sx (@sexp 42)))
-    (assert (int-sexp? sx))
+    (assert (is-int-sexp sx))
     (assert-equal 42 (int-sexp-content sx))
-    (assert (source-location? (int-sexp-location sx)))))
+    (assert (is-source-location (int-sexp-location sx)))))
 
 (define-test sexp-float-test
   (let ((sx (@sexp 3.14)))
-    (assert (float-sexp? sx))
+    (assert (is-float-sexp sx))
     (assert-equal 3.14 (float-sexp-content sx))
-    (assert (source-location? (float-sexp-location sx)))))
+    (assert (is-source-location (float-sexp-location sx)))))
 
 (define-test sexp-keyword-test
   (let ((sx (@sexp :hello)))
-    (assert (keyword-sexp? sx))
+    (assert (is-keyword-sexp sx))
     (assert-equal :hello (keyword-sexp-content sx))
-    (assert (source-location? (keyword-sexp-location sx)))))
+    (assert (is-source-location (keyword-sexp-location sx)))))
 
 (define-test sexp-empty-list-test
   (let ((sx (@sexp ())))
-    (assert (list-sexp? sx))
+    (assert (is-list-sexp sx))
     (let ((elements (list-sexp-elements sx)))
-      (assert (list-empty? elements)))
-    (assert (source-location? (list-sexp-location sx)))))
+      (assert (list-is-empty elements)))
+    (assert (is-source-location (list-sexp-location sx)))))
 
 (define-test sexp-list-test
   (let ((sx (@sexp (a b c))))
-    (assert (list-sexp? sx))
+    (assert (is-list-sexp sx))
     (let ((elements (list-sexp-elements sx)))
       (assert-equal 3 (list-length elements))
-      (assert (symbol-sexp? (car elements)))
+      (assert (is-symbol-sexp (car elements)))
       (assert-equal 'a (symbol-sexp-content (car elements)))
       (assert-equal 'b (symbol-sexp-content (car (cdr elements))))
       (assert-equal 'c (symbol-sexp-content (car (cdr (cdr elements))))))
-    (assert (source-location? (list-sexp-location sx)))))
+    (assert (is-source-location (list-sexp-location sx)))))
 
 (define-test sexp-mixed-list-test
   (let ((sx (@sexp (1 "two" :three four))))
-    (assert (list-sexp? sx))
+    (assert (is-list-sexp sx))
     (let ((elements (list-sexp-elements sx)))
       (assert-equal 4 (list-length elements))
-      (assert (int-sexp? (car elements)))
+      (assert (is-int-sexp (car elements)))
       (assert-equal 1 (int-sexp-content (car elements)))
-      (assert (string-sexp? (car (cdr elements))))
+      (assert (is-string-sexp (car (cdr elements))))
       (assert-equal "two" (string-sexp-content (car (cdr elements))))
-      (assert (keyword-sexp? (car (cdr (cdr elements)))))
+      (assert (is-keyword-sexp (car (cdr (cdr elements)))))
       (assert-equal :three (keyword-sexp-content (car (cdr (cdr elements)))))
-      (assert (symbol-sexp? (car (cdr (cdr (cdr elements))))))
+      (assert (is-symbol-sexp (car (cdr (cdr (cdr elements))))))
       (assert-equal 'four (symbol-sexp-content (car (cdr (cdr (cdr elements)))))))))
 
 (define-test sexp-nested-list-test
   (let ((sx (@sexp (a (b c) d))))
-    (assert (list-sexp? sx))
+    (assert (is-list-sexp sx))
     (let ((elements (list-sexp-elements sx)))
       (assert-equal 3 (list-length elements))
-      (assert (symbol-sexp? (car elements)))
-      (assert (list-sexp? (car (cdr elements))))
+      (assert (is-symbol-sexp (car elements)))
+      (assert (is-list-sexp (car (cdr elements))))
       (let ((inner (list-sexp-elements (car (cdr elements)))))
         (assert-equal 2 (list-length inner))
-        (assert (symbol-sexp? (car inner)))
+        (assert (is-symbol-sexp (car inner)))
         (assert-equal 'b (symbol-sexp-content (car inner)))
         (assert-equal 'c (symbol-sexp-content (car (cdr inner)))))
       (assert-equal 'd (symbol-sexp-content (car (cdr (cdr elements))))))))
 
 (define-test sexp-nested-nested-list-test
   (let ((sx (@sexp ((a b) c))))
-    (assert (list-sexp? sx))
+    (assert (is-list-sexp sx))
     (let ((elements (list-sexp-elements sx)))
       (assert-equal 2 (list-length elements))
-      (assert (list-sexp? (car elements)))
+      (assert (is-list-sexp (car elements)))
       (let ((inner (list-sexp-elements (car elements))))
-        (assert (symbol-sexp? (car inner)))
+        (assert (is-symbol-sexp (car inner)))
         (assert-equal 'a (symbol-sexp-content (car inner)))
         (assert-equal 'b (symbol-sexp-content (car (cdr inner)))))
-      (assert (symbol-sexp? (car (cdr elements))))
+      (assert (is-symbol-sexp (car (cdr elements))))
       (assert-equal 'c (symbol-sexp-content (car (cdr elements)))))))
 
 (define-test sexp-quote-vs-sexp-test
   (let ((sexp-val (@sexp (a b c)))
         (quote-val (@quote (a b c))))
-    (assert (list-sexp? sexp-val))
-    (assert (list? quote-val))))
+    (assert (is-list-sexp sexp-val))
+    (assert (is-list quote-val))))
 
 (define-test sexp-negative-int-test
   (let ((sx (@sexp -1)))
-    (assert (int-sexp? sx))
+    (assert (is-int-sexp sx))
     (assert-equal -1 (int-sexp-content sx))))
 
 (define-test sexp-negative-float-test
   (let ((sx (@sexp -2.5)))
-    (assert (float-sexp? sx))
+    (assert (is-float-sexp sx))
     (assert-equal -2.5 (float-sexp-content sx))))

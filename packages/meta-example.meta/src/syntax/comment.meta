@@ -1,8 +1,8 @@
 (module example)
 
 (define-test comment-evaluates-to-void-test
-  (assert (void? (@comment foo)))
-  (assert (void? (@comment (this is a structured comment)))))
+  (assert (is-void (@comment foo)))
+  (assert (is-void (@comment (this is a structured comment)))))
 
 (define-test comment-in-expression-test
   (assert-equal 42

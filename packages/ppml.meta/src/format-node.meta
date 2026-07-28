@@ -5,7 +5,7 @@
   (layout width 0 [(make-entry 0 'inline node)] ""))
 
 (define (layout width cursor targets result)
-  (if (list-empty? targets)
+  (if (list-is-empty targets)
     result
     (let ((target (list-head targets))
            (rest (list-tail targets))
@@ -28,7 +28,7 @@
                  (cons (make-entry (iadd indentation length) mode child) rest)
                  result))
         ((break-node space)
-         (if (equal? mode 'inline)
+         (if (equal mode 'inline)
            (layout width (iadd cursor (string-length space)) rest
                    (string-append result space))
            (let ((new-line (string-append "\n" (string-repeat indentation " "))))
@@ -51,7 +51,7 @@
   (fit-inline-step width 0 nodes))
 
 (define (fit-inline-step width cursor nodes)
-  (if (list-empty? nodes)
+  (if (list-is-empty nodes)
     true
     (let ((node (list-head nodes))
            (rest (list-tail nodes)))
@@ -60,7 +60,7 @@
          (fit-inline-step width cursor rest))
         ((text-node content)
          (let ((new-cursor (iadd cursor (string-length content))))
-           (if (int-greater? new-cursor width)
+           (if (int-greater new-cursor width)
              false
              (fit-inline-step width new-cursor rest))))
         ((append-node left right)
@@ -69,7 +69,7 @@
          (fit-inline-step width cursor (cons child rest)))
         ((break-node space)
          (let ((new-cursor (iadd cursor (string-length space))))
-           (if (int-greater? new-cursor width)
+           (if (int-greater new-cursor width)
              false
              (fit-inline-step width new-cursor rest))))
         ((hard-break-node)

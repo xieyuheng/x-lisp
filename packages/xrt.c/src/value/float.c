@@ -12,12 +12,12 @@ inline value_t x_float(double target) {
   return (the_union.as_uint64 & PAYLOAD_MASK) | X_FLOAT;
 }
 
-inline bool float_p(value_t value) {
+inline bool is_float(value_t value) {
   return value_tag(value) == X_FLOAT;
 }
 
 inline double to_double(value_t value) {
-  assert(float_p(value));
+  assert(is_float(value));
 
   double_or_uint64_t the_union = (double_or_uint64_t) {
     .as_uint64 = ((uint64_t) value) & PAYLOAD_MASK
@@ -26,8 +26,8 @@ inline double to_double(value_t value) {
   return the_union.as_double;
 }
 
-inline value_t x_float_p(value_t value) {
-  return x_bool(float_p(value));
+inline value_t x_is_float(value_t value) {
+  return x_bool(is_float(value));
 }
 
 inline value_t x_fneg(value_t x) {
@@ -62,31 +62,31 @@ value_t x_float_min(value_t x, value_t y) {
   return x_float(fmin(to_double(x), to_double(y)));
 }
 
-value_t x_float_greater_p(value_t x, value_t y) {
+value_t x_float_greater(value_t x, value_t y) {
   return x_bool(to_double(x) > to_double(y));
 }
 
-value_t x_float_less_p(value_t x, value_t y) {
+value_t x_float_less(value_t x, value_t y) {
   return x_bool(to_double(x) < to_double(y));
 }
 
-value_t x_float_greater_or_equal_p(value_t x, value_t y) {
+value_t x_float_greater_or_equal(value_t x, value_t y) {
   return x_bool(to_double(x) >= to_double(y));
 }
 
-value_t x_float_less_or_equal_p(value_t x, value_t y) {
+value_t x_float_less_or_equal(value_t x, value_t y) {
   return x_bool(to_double(x) <= to_double(y));
 }
 
-value_t x_float_positive_p(value_t x) {
+value_t x_float_positive(value_t x) {
   return x_bool(to_double(x) > 0);
 }
 
-value_t x_float_non_negative_p(value_t x) {
+value_t x_float_non_negative(value_t x) {
   return x_bool(to_double(x) >= 0);
 }
 
-value_t x_float_non_zero_p(value_t x) {
+value_t x_float_non_zero(value_t x) {
   return x_bool(to_double(x) != 0);
 }
 
@@ -111,7 +111,7 @@ value_t x_float_compare_descending(value_t x, value_t y) {
 }
 
 inline value_t x_float_to_int(value_t x) {
-  if (!x_float_p(x)) {
+  if (!x_is_float(x)) {
     who_printf("type mismatch\n");
     exit(1);
   }

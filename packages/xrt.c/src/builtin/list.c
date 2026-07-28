@@ -4,8 +4,8 @@ value_t x_make_list(void) {
   return x_object(make_xlist());
 }
 
-value_t x_any_list_p(value_t value) {
-  return x_bool(xlist_p(value));
+value_t x_is_any_list(value_t value) {
+  return x_bool(is_xlist(value));
 }
 
 value_t x_list_copy(value_t list) {
@@ -16,7 +16,7 @@ value_t x_list_length(value_t list) {
   return x_int(array_length(to_xlist(list)->elements));
 }
 
-value_t x_list_empty_p(value_t list) {
+value_t x_list_is_empty(value_t list) {
   return x_bool(array_is_empty(to_xlist(list)->elements));
 }
 

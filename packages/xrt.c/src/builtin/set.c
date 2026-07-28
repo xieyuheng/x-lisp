@@ -4,8 +4,8 @@ value_t x_make_set(void) {
   return x_object(make_xset());
 }
 
-value_t x_any_set_p(value_t value) {
-  return x_bool(xset_p(value));
+value_t x_is_any_set(value_t value) {
+  return x_bool(is_xset(value));
 }
 
 value_t x_set_copy(value_t set) {
@@ -16,12 +16,12 @@ value_t x_set_size(value_t set) {
   return x_int(xset_size(to_xset(set)));
 }
 
-value_t x_set_empty_p(value_t set) {
-  return x_bool(xset_empty_p(to_xset(set)));
+value_t x_set_is_empty(value_t set) {
+  return x_bool(xset_is_empty(to_xset(set)));
 }
 
-value_t x_set_member_p(value_t value, value_t set) {
-  return x_bool(xset_member_p(to_xset(set), value));
+value_t x_set_is_member(value_t value, value_t set) {
+  return x_bool(xset_is_member(to_xset(set), value));
 }
 
 value_t x_set_add_mut(value_t value, value_t set) {
@@ -59,12 +59,12 @@ value_t x_set_difference(value_t lhs, value_t rhs) {
   return x_object(xset_difference(to_xset(lhs), to_xset(rhs)));
 }
 
-value_t x_set_subset_p(value_t subset, value_t set) {
-  return x_bool(xset_subset_p(to_xset(subset), to_xset(set)));
+value_t x_set_subset(value_t subset, value_t set) {
+  return x_bool(xset_subset(to_xset(subset), to_xset(set)));
 }
 
-value_t x_set_disjoint_p(value_t lhs, value_t rhs) {
-  return x_bool(xset_disjoint_p(to_xset(lhs), to_xset(rhs)));
+value_t x_set_disjoint(value_t lhs, value_t rhs) {
+  return x_bool(xset_disjoint(to_xset(lhs), to_xset(rhs)));
 }
 
 value_t x_set_to_list(value_t set) {

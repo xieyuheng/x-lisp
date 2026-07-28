@@ -6,9 +6,9 @@ static void apply_closure(xvm_t *xvm, uint8_t n, const uint16_t *args, value_t *
                            closure_t *closure);
 
 void apply(xvm_t *xvm, value_t target, uint8_t argc, const uint16_t *args, value_t *locals) {
-  if (definition_p(target)) {
+  if (is_definition(target)) {
     apply_definition(xvm, argc, args, locals, to_definition(target));
-  } else if (closure_p(target)) {
+  } else if (is_closure(target)) {
     apply_closure(xvm, argc, args, locals, to_closure(target));
   } else {
     who_printf("unhandled value\n");

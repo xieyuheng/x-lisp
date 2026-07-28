@@ -53,7 +53,7 @@
      (let ((name-str (symbol-to-string name))
             (params-str (string-join " " (list-map symbol-to-string parameters)))
             (body-node (ppml/pretty-syntax "define-type"
-                         [(if (list-empty? parameters)
+                         [(if (list-is-empty parameters)
                             (ppml/text name-str)
                             (ppml/text (@string "(" name-str " " params-str ")")))]
                          [(pretty-term body)])))
@@ -65,7 +65,7 @@
             (name-str (symbol-to-string (type-constructor-name type-constructor)))
             (params-str (string-join " " (list-map symbol-to-string tc-params)))
             (define-node (ppml/pretty-syntax "define-enum"
-                           [(if (list-empty? tc-params)
+                           [(if (list-is-empty tc-params)
                               (ppml/text name-str)
                               (ppml/text (@string "(" name-str " " params-str ")")))]
                            (list-map pretty-data-constructor data-constructors))))
@@ -77,7 +77,7 @@
             (name-str (symbol-to-string name))
             (params-str (string-join " " (list-map symbol-to-string tc-params)))
             (define-node (ppml/pretty-syntax "define-opaque-type"
-                           [(if (list-empty? tc-params)
+                           [(if (list-is-empty tc-params)
                               (ppml/text name-str)
                               (ppml/text (@string "(" name-str " " params-str ")")))
                             (pretty-term representation-type)]
@@ -89,13 +89,13 @@
 (claim pretty-definition-claim (-> mod-t symbol-t (maybe-t ppml/node-t)))
 (define (pretty-definition-claim mod name)
   (let ((claimed-entry (mod-lookup-claimed-entry mod name)))
-    (if (not (nothing? claimed-entry))
+    (if (not (is-nothing claimed-entry))
       (let ((term (claimed-entry-term (just-value claimed-entry))))
         (just (ppml/pretty-syntax "claim"
                 [(ppml/text (symbol-to-string name))]
                 [(pretty-term term)])))
       (let ((inferred-type (mod-lookup-inferred-type mod name)))
-        (if (not (nothing? inferred-type))
+        (if (not (is-nothing inferred-type))
           (just (ppml/pretty-syntax "claim"
                   [(ppml/text (symbol-to-string name))]
                   [(pretty-type (just-value inferred-type))]))
@@ -105,7 +105,7 @@
 (define (pretty-type type)
   (match type
     ((var-type name serial-number)
-     (if (equal? serial-number 0)
+     (if (equal serial-number 0)
        (ppml/text (symbol-to-string name))
        (ppml/text (@string (symbol-to-string name) "." (format-as-sexp serial-number)))))
     ((canonical-label-type serial-number)
@@ -116,7 +116,7 @@
      (ppml/text (@string (symbol-to-string name) "-t")))
     ((arrow-type arg-types ret-type)
      (let ((arg-nodes (list-map pretty-type arg-types)))
-       (if (list-empty? arg-types)
+       (if (list-is-empty arg-types)
          (ppml/pretty-application (just "->") [(ppml/text "->") (pretty-type ret-type)])
          (ppml/pretty-application (just "->") (cons (ppml/text "->") (list-append arg-nodes [(pretty-type ret-type)]))))))
     ((list-type element-type)
@@ -130,7 +130,7 @@
             (name-str (symbol-to-string (type-constructor-name type-constructor)))
             (full-name (@string mod-name-str "/" name-str))
             (arg-nodes (list-map pretty-type arg-types)))
-       (if (list-empty? arg-types)
+       (if (list-is-empty arg-types)
          (ppml/text full-name)
          (ppml/pretty-application (just full-name) (cons (ppml/text full-name) arg-nodes)))))
     ((polymorphic-type var-types body-type)
@@ -142,7 +142,7 @@
 (define (pretty-data-constructor data-constructor)
   (let ((name (ppml/text (symbol-to-string (data-constructor-name data-constructor))))
         (fields (data-constructor-fields data-constructor)))
-    (if (list-empty? fields)
+    (if (list-is-empty fields)
       name
       (let ((field-nodes (list-map pretty-data-field fields)))
         (ppml/pretty-application (just (symbol-to-string (data-constructor-name data-constructor)))

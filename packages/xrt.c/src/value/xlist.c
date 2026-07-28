@@ -25,13 +25,13 @@ void xlist_free(xlist_t *self) {
   free(self);
 }
 
-bool xlist_p(value_t value) {
-  return object_p(value) &&
+bool is_xlist(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &xlist_class;
 }
 
 xlist_t *to_xlist(value_t value) {
-  assert(xlist_p(value));
+  assert(is_xlist(value));
   return (xlist_t *) to_object(value);
 }
 
@@ -76,7 +76,7 @@ bool xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
   for (size_t i = 0; i < array_length(lhs->elements); i++) {
     value_t left = xlist_get(lhs, i);
     value_t right = xlist_get(rhs, i);
-    if (!equal_p(left, right))
+    if (!equal(left, right))
       return false;
   }
 
@@ -165,7 +165,7 @@ void xlist_child_iter_free(xlist_child_iter_t *self) {
 object_t *xlist_child_iter_next(xlist_child_iter_t *iter) {
   if (iter->index < array_length(iter->xlist->elements)) {
     value_t value = xlist_get(iter->xlist, iter->index++);
-    return object_p(value)
+    return is_object(value)
       ? to_object(value)
       : xlist_child_iter_next(iter);
   }

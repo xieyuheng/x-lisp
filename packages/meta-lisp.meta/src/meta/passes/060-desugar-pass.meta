@@ -9,7 +9,7 @@
     (package-put-fragments!
       (hash-map-value desugar-fragment (package-fragments package))
       package))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+  (when (hash-has "dump" (package-config-compiler (package-config package)))
     (package-dump-desugared-fragments package "060-desugar")))
 
 (claim desugar-fragment

@@ -6,12 +6,12 @@
   (assert-equal ".txt" (path-extension "a/b/c/file.test.txt"))
   (assert-equal "file.test" (path-stem "a/b/c/file.test.txt"))
 
-  (assert (path-absolute? "/a/b/c/file.test.txt"))
-  (assert-not (path-relative? "/a/b/c/file.test.txt"))
-  (assert (path-relative? "a/b/c/file.test.txt"))
-  (assert (path-relative? "./a/b/c/file.test.txt"))
-  (assert-not (path-absolute? "a/b/c/file.test.txt"))
-  (assert-not (path-absolute? "./a/b/c/file.test.txt"))
+  (assert (path-is-absolute "/a/b/c/file.test.txt"))
+  (assert-not (path-is-relative "/a/b/c/file.test.txt"))
+  (assert (path-is-relative "a/b/c/file.test.txt"))
+  (assert (path-is-relative "./a/b/c/file.test.txt"))
+  (assert-not (path-is-absolute "a/b/c/file.test.txt"))
+  (assert-not (path-is-absolute "./a/b/c/file.test.txt"))
 
   (assert-equal "a/b/c/d/e/f" (path-join "a/b/c" "d/e/f"))
   (assert-equal "a/b/c/d/e/f" (path-join "a/b/c/" "/d/e/f"))

@@ -15,7 +15,7 @@ struct closure_t {
 closure_t *make_closure(definition_t *definition, size_t size);
 void closure_free(closure_t *self);
 
-bool closure_p(value_t value);
+bool is_closure(value_t value);
 closure_t *to_closure(value_t value);
 
 bool closure_equal(const closure_t *lhs, const closure_t *rhs);

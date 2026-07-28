@@ -2,7 +2,7 @@
 
 (define-record-type point-t
   (make-point (x float-t) (y float-t))
-  point?
+  is-point
   (x point-x point-put-x!)
   (y point-y))
 

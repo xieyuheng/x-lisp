@@ -98,7 +98,7 @@ function desugarDefineEnum(
     return {
       name: ctor.name,
       fields,
-      predicate: stmt.lang === "zh" ? `${ctor.name}乎` : `${ctor.name}?`,
+      predicate: stmt.lang === "zh" ? `为${ctor.name}` : `is-${ctor.name}`,
       location: ctor.location,
     }
   })
@@ -146,7 +146,7 @@ function desugarDefineStructStar(
     {
       name: ctor.name,
       fields,
-      predicate: stmt.lang === "zh" ? `${base}乎` : `${base}?`,
+      predicate: stmt.lang === "zh" ? `为${base}` : `is-${base}`,
       location: ctor.location,
     },
   ]
@@ -180,7 +180,7 @@ function desugarDefineStruct(
     {
       name: stmt.lang === "zh" ? `作${base}` : `make-${base}`,
       fields,
-      predicate: stmt.lang === "zh" ? `${base}乎` : `${base}?`,
+      predicate: stmt.lang === "zh" ? `为${base}` : `is-${base}`,
       location: stmt.location,
     },
   ]
@@ -275,12 +275,12 @@ function expandPredicate(
       M.AndExp(
         [
           M.ApplyExp(
-            M.VarExp("list?", ctor.location),
+            M.VarExp("is-list", ctor.location),
             [M.VarExp("value", ctor.location)],
             ctor.location,
           ),
           M.ApplyExp(
-            M.VarExp("equal?", ctor.location),
+            M.VarExp("equal", ctor.location),
             [
               M.ApplyExp(
                 M.VarExp("list-length", ctor.location),
@@ -292,7 +292,7 @@ function expandPredicate(
             ctor.location,
           ),
           M.ApplyExp(
-            M.VarExp("equal?", ctor.location),
+            M.VarExp("equal", ctor.location),
             [
               M.ApplyExp(
                 M.VarExp("list-head", ctor.location),

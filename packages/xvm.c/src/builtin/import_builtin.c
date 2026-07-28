@@ -3,8 +3,8 @@
 void import_builtin(mod_t *mod) {
   // int
 
-  define_primitive_1(mod, "meta-builtin/builtin/int?", x_int_p);
-  define_primitive_1(mod, "meta-builtin/builtin/整数乎", x_int_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-int", x_is_int);
+  define_primitive_1(mod, "meta-builtin/builtin/为整数", x_is_int);
   define_primitive_1(mod, "meta-builtin/builtin/ineg", x_ineg);
   define_primitive_1(mod, "meta-builtin/builtin/整数负", x_ineg);
   define_primitive_2(mod, "meta-builtin/builtin/iadd", x_iadd);
@@ -21,20 +21,20 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/整数最大", x_int_max);
   define_primitive_2(mod, "meta-builtin/builtin/int-min", x_int_min);
   define_primitive_2(mod, "meta-builtin/builtin/整数最小", x_int_min);
-  define_primitive_2(mod, "meta-builtin/builtin/int-greater?", x_int_greater_p);
-  define_primitive_2(mod, "meta-builtin/builtin/整数大于乎", x_int_greater_p);
-  define_primitive_2(mod, "meta-builtin/builtin/int-less?", x_int_less_p);
-  define_primitive_2(mod, "meta-builtin/builtin/整数小于乎", x_int_less_p);
-  define_primitive_2(mod, "meta-builtin/builtin/int-greater-or-equal?", x_int_greater_or_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/整数大于等于乎", x_int_greater_or_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/int-less-or-equal?", x_int_less_or_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/整数小于等于乎", x_int_less_or_equal_p);
-  define_primitive_1(mod, "meta-builtin/builtin/int-positive?", x_int_positive_p);
-  define_primitive_1(mod, "meta-builtin/builtin/整数正乎", x_int_positive_p);
-  define_primitive_1(mod, "meta-builtin/builtin/int-non-negative?", x_int_non_negative_p);
-  define_primitive_1(mod, "meta-builtin/builtin/整数非负乎", x_int_non_negative_p);
-  define_primitive_1(mod, "meta-builtin/builtin/int-non-zero?", x_int_non_zero_p);
-  define_primitive_1(mod, "meta-builtin/builtin/整数非零乎", x_int_non_zero_p);
+  define_primitive_2(mod, "meta-builtin/builtin/int-greater", x_int_greater);
+  define_primitive_2(mod, "meta-builtin/builtin/整数大于", x_int_greater);
+  define_primitive_2(mod, "meta-builtin/builtin/int-less", x_int_less);
+  define_primitive_2(mod, "meta-builtin/builtin/整数小于", x_int_less);
+  define_primitive_2(mod, "meta-builtin/builtin/int-greater-or-equal", x_int_greater_or_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/整数大于等于", x_int_greater_or_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/int-less-or-equal", x_int_less_or_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/整数小于等于", x_int_less_or_equal);
+  define_primitive_1(mod, "meta-builtin/builtin/int-positive", x_int_positive);
+  define_primitive_1(mod, "meta-builtin/builtin/整数正", x_int_positive);
+  define_primitive_1(mod, "meta-builtin/builtin/int-is-non-negative", x_int_non_negative);
+  define_primitive_1(mod, "meta-builtin/builtin/整数为非负", x_int_non_negative);
+  define_primitive_1(mod, "meta-builtin/builtin/int-non-zero", x_int_non_zero);
+  define_primitive_1(mod, "meta-builtin/builtin/整数非零", x_int_non_zero);
   define_primitive_2(mod, "meta-builtin/builtin/int-compare-ascending", x_int_compare_ascending);
   define_primitive_2(mod, "meta-builtin/builtin/整数升序比较", x_int_compare_ascending);
   define_primitive_2(mod, "meta-builtin/builtin/int-compare-descending", x_int_compare_descending);
@@ -44,8 +44,8 @@ void import_builtin(mod_t *mod) {
 
   // float
 
-  define_primitive_1(mod, "meta-builtin/builtin/float?", x_float_p);
-  define_primitive_1(mod, "meta-builtin/builtin/浮点乎", x_float_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-float", x_is_float);
+  define_primitive_1(mod, "meta-builtin/builtin/为浮点", x_is_float);
   define_primitive_1(mod, "meta-builtin/builtin/fneg", x_fneg);
   define_primitive_1(mod, "meta-builtin/builtin/浮点负", x_fneg);
   define_primitive_2(mod, "meta-builtin/builtin/fadd", x_fadd);
@@ -62,20 +62,20 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/浮点最大", x_float_max);
   define_primitive_2(mod, "meta-builtin/builtin/float-min", x_float_min);
   define_primitive_2(mod, "meta-builtin/builtin/浮点最小", x_float_min);
-  define_primitive_2(mod, "meta-builtin/builtin/float-greater?", x_float_greater_p);
-  define_primitive_2(mod, "meta-builtin/builtin/浮点大于乎", x_float_greater_p);
-  define_primitive_2(mod, "meta-builtin/builtin/float-less?", x_float_less_p);
-  define_primitive_2(mod, "meta-builtin/builtin/浮点小于乎", x_float_less_p);
-  define_primitive_2(mod, "meta-builtin/builtin/float-greater-or-equal?", x_float_greater_or_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/浮点大于等于乎", x_float_greater_or_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/float-less-or-equal?", x_float_less_or_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/浮点小于等于乎", x_float_less_or_equal_p);
-  define_primitive_1(mod, "meta-builtin/builtin/float-positive?", x_float_positive_p);
-  define_primitive_1(mod, "meta-builtin/builtin/浮点正乎", x_float_positive_p);
-  define_primitive_1(mod, "meta-builtin/builtin/float-non-negative?", x_float_non_negative_p);
-  define_primitive_1(mod, "meta-builtin/builtin/浮点非负乎", x_float_non_negative_p);
-  define_primitive_1(mod, "meta-builtin/builtin/float-non-zero?", x_float_non_zero_p);
-  define_primitive_1(mod, "meta-builtin/builtin/浮点非零乎", x_float_non_zero_p);
+  define_primitive_2(mod, "meta-builtin/builtin/float-greater", x_float_greater);
+  define_primitive_2(mod, "meta-builtin/builtin/浮点大于", x_float_greater);
+  define_primitive_2(mod, "meta-builtin/builtin/float-less", x_float_less);
+  define_primitive_2(mod, "meta-builtin/builtin/浮点小于", x_float_less);
+  define_primitive_2(mod, "meta-builtin/builtin/float-greater-or-equal", x_float_greater_or_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/浮点大于等于", x_float_greater_or_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/float-less-or-equal", x_float_less_or_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/浮点小于等于", x_float_less_or_equal);
+  define_primitive_1(mod, "meta-builtin/builtin/float-positive", x_float_positive);
+  define_primitive_1(mod, "meta-builtin/builtin/浮点正", x_float_positive);
+  define_primitive_1(mod, "meta-builtin/builtin/float-is-non-negative", x_float_non_negative);
+  define_primitive_1(mod, "meta-builtin/builtin/浮点为非负", x_float_non_negative);
+  define_primitive_1(mod, "meta-builtin/builtin/float-non-zero", x_float_non_zero);
+  define_primitive_1(mod, "meta-builtin/builtin/浮点非零", x_float_non_zero);
   define_primitive_2(mod, "meta-builtin/builtin/float-compare-ascending", x_float_compare_ascending);
   define_primitive_2(mod, "meta-builtin/builtin/浮点升序比较", x_float_compare_ascending);
   define_primitive_2(mod, "meta-builtin/builtin/float-compare-descending", x_float_compare_descending);
@@ -89,8 +89,8 @@ void import_builtin(mod_t *mod) {
   define_variable(mod, "meta-builtin/builtin/真", x_true);
   define_variable(mod, "meta-builtin/builtin/false", x_false);
   define_variable(mod, "meta-builtin/builtin/假", x_false);
-  define_primitive_1(mod, "meta-builtin/builtin/bool?", x_bool_p);
-  define_primitive_1(mod, "meta-builtin/builtin/布尔乎", x_bool_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-bool", x_is_bool);
+  define_primitive_1(mod, "meta-builtin/builtin/为布尔", x_is_bool);
   define_primitive_1(mod, "meta-builtin/builtin/not", x_not);
   define_primitive_1(mod, "meta-builtin/builtin/非", x_not);
 
@@ -98,8 +98,8 @@ void import_builtin(mod_t *mod) {
 
   define_variable(mod, "meta-builtin/builtin/void", x_void);
   define_variable(mod, "meta-builtin/builtin/空", x_void);
-  define_primitive_1(mod, "meta-builtin/builtin/void?", x_void_p);
-  define_primitive_1(mod, "meta-builtin/builtin/空乎", x_void_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-void", x_is_void);
+  define_primitive_1(mod, "meta-builtin/builtin/为空", x_is_void);
 
   // type
 
@@ -132,12 +132,12 @@ void import_builtin(mod_t *mod) {
 
   // value
 
-  define_primitive_1(mod, "meta-builtin/builtin/atom?", x_atom_p);
-  define_primitive_1(mod, "meta-builtin/builtin/原子乎", x_atom_p);
-  define_primitive_2(mod, "meta-builtin/builtin/same?", x_same_p);
-  define_primitive_2(mod, "meta-builtin/builtin/相同乎", x_same_p);
-  define_primitive_2(mod, "meta-builtin/builtin/equal?", x_equal_p);
-  define_primitive_2(mod, "meta-builtin/builtin/相等乎", x_equal_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-atom", x_is_atom);
+  define_primitive_1(mod, "meta-builtin/builtin/为原子", x_is_atom);
+  define_primitive_2(mod, "meta-builtin/builtin/same", x_same);
+  define_primitive_2(mod, "meta-builtin/builtin/相同", x_same);
+  define_primitive_2(mod, "meta-builtin/builtin/equal", x_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/相等", x_equal);
   define_primitive_1(mod, "meta-builtin/builtin/format", x_format);
   define_primitive_1(mod, "meta-builtin/builtin/呈现", x_format);
   define_primitive_1(mod, "meta-builtin/builtin/hash-code", x_hash_code);
@@ -174,10 +174,10 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/路径取扩展名", x_path_extension);
   define_primitive_1(mod, "meta-builtin/builtin/path-stem", x_path_stem);
   define_primitive_1(mod, "meta-builtin/builtin/路径取主干", x_path_stem);
-  define_primitive_1(mod, "meta-builtin/builtin/path-absolute?", x_path_absolute_p);
-  define_primitive_1(mod, "meta-builtin/builtin/路径绝对乎", x_path_absolute_p);
-  define_primitive_1(mod, "meta-builtin/builtin/path-relative?", x_path_relative_p);
-  define_primitive_1(mod, "meta-builtin/builtin/路径相对乎", x_path_relative_p);
+  define_primitive_1(mod, "meta-builtin/builtin/path-is-absolute", x_path_is_absolute);
+  define_primitive_1(mod, "meta-builtin/builtin/路径为绝对", x_path_is_absolute);
+  define_primitive_1(mod, "meta-builtin/builtin/path-is-relative", x_path_is_relative);
+  define_primitive_1(mod, "meta-builtin/builtin/路径为相对", x_path_is_relative);
   define_primitive_2(mod, "meta-builtin/builtin/path-join", x_path_join);
   define_primitive_2(mod, "meta-builtin/builtin/路径连接", x_path_join);
   define_primitive_1(mod, "meta-builtin/builtin/path-normalize", x_path_normalize);
@@ -198,8 +198,8 @@ void import_builtin(mod_t *mod) {
 
   // keyword
 
-  define_primitive_1(mod, "meta-builtin/builtin/keyword?", x_keyword_p);
-  define_primitive_1(mod, "meta-builtin/builtin/关键字乎", x_keyword_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-keyword", x_is_keyword);
+  define_primitive_1(mod, "meta-builtin/builtin/为关键字", x_is_keyword);
   define_primitive_1(mod, "meta-builtin/builtin/keyword-length", x_keyword_length);
   define_primitive_1(mod, "meta-builtin/builtin/关键字长度", x_keyword_length);
   define_primitive_1(mod, "meta-builtin/builtin/keyword-to-string", x_keyword_to_string);
@@ -211,8 +211,8 @@ void import_builtin(mod_t *mod) {
 
   // symbol
 
-  define_primitive_1(mod, "meta-builtin/builtin/symbol?", x_symbol_p);
-  define_primitive_1(mod, "meta-builtin/builtin/符号乎", x_symbol_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-symbol", x_is_symbol);
+  define_primitive_1(mod, "meta-builtin/builtin/为符号", x_is_symbol);
   define_primitive_1(mod, "meta-builtin/builtin/symbol-length", x_symbol_length);
   define_primitive_1(mod, "meta-builtin/builtin/符号长度", x_symbol_length);
   define_primitive_1(mod, "meta-builtin/builtin/symbol-to-string", x_symbol_to_string);
@@ -224,14 +224,14 @@ void import_builtin(mod_t *mod) {
 
   // string
 
-  define_primitive_1(mod, "meta-builtin/builtin/string?", x_string_p);
-  define_primitive_1(mod, "meta-builtin/builtin/字符串乎", x_string_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-string", x_is_string);
+  define_primitive_1(mod, "meta-builtin/builtin/为字符串", x_is_string);
   define_primitive_1(mod, "meta-builtin/builtin/string-length", x_string_length);
   define_primitive_1(mod, "meta-builtin/builtin/字符串长度", x_string_length);
-  define_primitive_1(mod, "meta-builtin/builtin/string-empty?", x_string_empty_p);
-  define_primitive_1(mod, "meta-builtin/builtin/字符串空乎", x_string_empty_p);
-  define_primitive_1(mod, "meta-builtin/builtin/string-blank?", x_string_blank_p);
-  define_primitive_1(mod, "meta-builtin/builtin/字符串空白乎", x_string_blank_p);
+  define_primitive_1(mod, "meta-builtin/builtin/string-is-empty", x_string_is_empty);
+  define_primitive_1(mod, "meta-builtin/builtin/字符串为空", x_string_is_empty);
+  define_primitive_1(mod, "meta-builtin/builtin/string-is-blank", x_string_is_blank);
+  define_primitive_1(mod, "meta-builtin/builtin/字符串为空白", x_string_is_blank);
   define_primitive_3(mod, "meta-builtin/builtin/string-substring", x_string_substring);
   define_primitive_3(mod, "meta-builtin/builtin/字符串子串", x_string_substring);
   define_primitive_2(mod, "meta-builtin/builtin/string-append", x_string_append);
@@ -252,18 +252,18 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/字符串合并", x_string_join);
   define_primitive_3(mod, "meta-builtin/builtin/string-replace", x_string_replace);
   define_primitive_3(mod, "meta-builtin/builtin/字符串替换", x_string_replace);
-  define_primitive_2(mod, "meta-builtin/builtin/string-starts-with?", x_string_starts_with_p);
-  define_primitive_2(mod, "meta-builtin/builtin/字符串起首乎", x_string_starts_with_p);
-  define_primitive_2(mod, "meta-builtin/builtin/string-ends-with?", x_string_ends_with_p);
-  define_primitive_2(mod, "meta-builtin/builtin/字符串结尾乎", x_string_ends_with_p);
+  define_primitive_2(mod, "meta-builtin/builtin/string-starts-with", x_string_starts_with);
+  define_primitive_2(mod, "meta-builtin/builtin/字符串起首", x_string_starts_with);
+  define_primitive_2(mod, "meta-builtin/builtin/string-ends-with", x_string_ends_with);
+  define_primitive_2(mod, "meta-builtin/builtin/字符串结尾", x_string_ends_with);
   define_primitive_1(mod, "meta-builtin/builtin/string-to-upper-case", x_string_to_upper_case);
   define_primitive_1(mod, "meta-builtin/builtin/字符串转大写", x_string_to_upper_case);
   define_primitive_1(mod, "meta-builtin/builtin/string-to-lower-case", x_string_to_lower_case);
   define_primitive_1(mod, "meta-builtin/builtin/字符串转小写", x_string_to_lower_case);
   define_primitive_2(mod, "meta-builtin/builtin/string-get-code-point", x_string_get_code_point);
   define_primitive_2(mod, "meta-builtin/builtin/字符串取码点", x_string_get_code_point);
-  define_primitive_2(mod, "meta-builtin/builtin/string-contains?", x_string_contains_p);
-  define_primitive_2(mod, "meta-builtin/builtin/字符串包含乎", x_string_contains_p);
+  define_primitive_2(mod, "meta-builtin/builtin/string-contains", x_string_contains);
+  define_primitive_2(mod, "meta-builtin/builtin/字符串包含", x_string_contains);
   define_primitive_2(mod, "meta-builtin/builtin/string-find-index", x_string_find_index);
   define_primitive_2(mod, "meta-builtin/builtin/字符串查找索引", x_string_find_index);
   define_primitive_1(mod, "meta-builtin/builtin/string-trim-left", x_string_trim_left);
@@ -276,10 +276,10 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/字符串修剪尾", x_string_trim_end);
   define_primitive_1(mod, "meta-builtin/builtin/string-trim", x_string_trim);
   define_primitive_1(mod, "meta-builtin/builtin/字符串修剪", x_string_trim);
-  define_primitive_1(mod, "meta-builtin/builtin/string-int?", x_string_int_p);
-  define_primitive_1(mod, "meta-builtin/builtin/字符串为整数乎", x_string_int_p);
-  define_primitive_1(mod, "meta-builtin/builtin/string-float?", x_string_float_p);
-  define_primitive_1(mod, "meta-builtin/builtin/字符串为浮点乎", x_string_float_p);
+  define_primitive_1(mod, "meta-builtin/builtin/string-is-int", x_string_is_int);
+  define_primitive_1(mod, "meta-builtin/builtin/字符串为整数", x_string_is_int);
+  define_primitive_1(mod, "meta-builtin/builtin/string-is-float", x_string_is_float);
+  define_primitive_1(mod, "meta-builtin/builtin/字符串为浮点", x_string_is_float);
   define_primitive_1(mod, "meta-builtin/builtin/string-to-int", x_string_to_int);
   define_primitive_1(mod, "meta-builtin/builtin/字符串转整数", x_string_to_int);
   define_primitive_1(mod, "meta-builtin/builtin/string-to-float", x_string_to_float);
@@ -289,14 +289,14 @@ void import_builtin(mod_t *mod) {
 
   define_primitive_0(mod, "meta-builtin/builtin/make-list", x_make_list);
   define_primitive_0(mod, "meta-builtin/builtin/作列表", x_make_list);
-  define_primitive_1(mod, "meta-builtin/builtin/list?", x_any_list_p);
-  define_primitive_1(mod, "meta-builtin/builtin/列表乎", x_any_list_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-list", x_is_any_list);
+  define_primitive_1(mod, "meta-builtin/builtin/为列表", x_is_any_list);
   define_primitive_1(mod, "meta-builtin/builtin/list-copy", x_list_copy);
   define_primitive_1(mod, "meta-builtin/builtin/列表复制", x_list_copy);
   define_primitive_1(mod, "meta-builtin/builtin/list-length", x_list_length);
   define_primitive_1(mod, "meta-builtin/builtin/列表长度", x_list_length);
-  define_primitive_1(mod, "meta-builtin/builtin/list-empty?", x_list_empty_p);
-  define_primitive_1(mod, "meta-builtin/builtin/列表空乎", x_list_empty_p);
+  define_primitive_1(mod, "meta-builtin/builtin/list-is-empty", x_list_is_empty);
+  define_primitive_1(mod, "meta-builtin/builtin/列表为空", x_list_is_empty);
   define_primitive_1(mod, "meta-builtin/builtin/list-pop!", x_list_pop_mut);
   define_primitive_1(mod, "meta-builtin/builtin/列表末出之", x_list_pop_mut);
   define_primitive_2(mod, "meta-builtin/builtin/list-push!", x_list_push_mut);
@@ -337,18 +337,18 @@ void import_builtin(mod_t *mod) {
 
   define_primitive_0(mod, "meta-builtin/builtin/make-hash", x_make_hash);
   define_primitive_0(mod, "meta-builtin/builtin/作散列", x_make_hash);
-  define_primitive_1(mod, "meta-builtin/builtin/hash?", x_any_hash_p);
-  define_primitive_1(mod, "meta-builtin/builtin/散列乎", x_any_hash_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-hash", x_is_any_hash);
+  define_primitive_1(mod, "meta-builtin/builtin/为散列", x_is_any_hash);
   define_primitive_1(mod, "meta-builtin/builtin/hash-copy", x_hash_copy);
   define_primitive_1(mod, "meta-builtin/builtin/散列复制", x_hash_copy);
   define_primitive_1(mod, "meta-builtin/builtin/hash-length", x_hash_length);
   define_primitive_1(mod, "meta-builtin/builtin/散列长度", x_hash_length);
-  define_primitive_1(mod, "meta-builtin/builtin/hash-empty?", x_hash_empty_p);
-  define_primitive_1(mod, "meta-builtin/builtin/散列空乎", x_hash_empty_p);
+  define_primitive_1(mod, "meta-builtin/builtin/hash-is-empty", x_hash_is_empty);
+  define_primitive_1(mod, "meta-builtin/builtin/散列为空", x_hash_is_empty);
   define_primitive_2(mod, "meta-builtin/builtin/hash-get", x_hash_get);
   define_primitive_2(mod, "meta-builtin/builtin/散列取", x_hash_get);
-  define_primitive_2(mod, "meta-builtin/builtin/hash-has?", x_hash_has_p);
-  define_primitive_2(mod, "meta-builtin/builtin/散列有乎", x_hash_has_p);
+  define_primitive_2(mod, "meta-builtin/builtin/hash-has", x_hash_has);
+  define_primitive_2(mod, "meta-builtin/builtin/散列有", x_hash_has);
   define_primitive_3(mod, "meta-builtin/builtin/hash-put!", x_hash_put_mut);
   define_primitive_3(mod, "meta-builtin/builtin/散列置之", x_hash_put_mut);
   define_primitive_3(mod, "meta-builtin/builtin/hash-put", x_hash_put);
@@ -367,16 +367,16 @@ void import_builtin(mod_t *mod) {
 
   define_primitive_0(mod, "meta-builtin/builtin/make-set", x_make_set);
   define_primitive_0(mod, "meta-builtin/builtin/作集合", x_make_set);
-  define_primitive_1(mod, "meta-builtin/builtin/set?", x_any_set_p);
-  define_primitive_1(mod, "meta-builtin/builtin/集合乎", x_any_set_p);
+  define_primitive_1(mod, "meta-builtin/builtin/is-set", x_is_any_set);
+  define_primitive_1(mod, "meta-builtin/builtin/为集合", x_is_any_set);
   define_primitive_1(mod, "meta-builtin/builtin/set-copy", x_set_copy);
   define_primitive_1(mod, "meta-builtin/builtin/集合复制", x_set_copy);
   define_primitive_1(mod, "meta-builtin/builtin/set-size", x_set_size);
   define_primitive_1(mod, "meta-builtin/builtin/集合大小", x_set_size);
-  define_primitive_1(mod, "meta-builtin/builtin/set-empty?", x_set_empty_p);
-  define_primitive_1(mod, "meta-builtin/builtin/集合空乎", x_set_empty_p);
-  define_primitive_2(mod, "meta-builtin/builtin/set-member?", x_set_member_p);
-  define_primitive_2(mod, "meta-builtin/builtin/集合属于乎", x_set_member_p);
+  define_primitive_1(mod, "meta-builtin/builtin/set-is-empty", x_set_is_empty);
+  define_primitive_1(mod, "meta-builtin/builtin/集合为空", x_set_is_empty);
+  define_primitive_2(mod, "meta-builtin/builtin/set-is-member", x_set_is_member);
+  define_primitive_2(mod, "meta-builtin/builtin/集合属于", x_set_is_member);
   define_primitive_2(mod, "meta-builtin/builtin/set-add!", x_set_add_mut);
   define_primitive_2(mod, "meta-builtin/builtin/集合添加之", x_set_add_mut);
   define_primitive_2(mod, "meta-builtin/builtin/set-add", x_set_add);
@@ -393,10 +393,10 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/集合交", x_set_inter);
   define_primitive_2(mod, "meta-builtin/builtin/set-difference", x_set_difference);
   define_primitive_2(mod, "meta-builtin/builtin/集合差", x_set_difference);
-  define_primitive_2(mod, "meta-builtin/builtin/set-subset?", x_set_subset_p);
-  define_primitive_2(mod, "meta-builtin/builtin/集合子集乎", x_set_subset_p);
-  define_primitive_2(mod, "meta-builtin/builtin/set-disjoint?", x_set_disjoint_p);
-  define_primitive_2(mod, "meta-builtin/builtin/集合不相交乎", x_set_disjoint_p);
+  define_primitive_2(mod, "meta-builtin/builtin/set-subset", x_set_subset);
+  define_primitive_2(mod, "meta-builtin/builtin/集合子集", x_set_subset);
+  define_primitive_2(mod, "meta-builtin/builtin/set-disjoint", x_set_disjoint);
+  define_primitive_2(mod, "meta-builtin/builtin/集合不相交", x_set_disjoint);
   define_primitive_1(mod, "meta-builtin/builtin/set-to-list", x_set_to_list);
   define_primitive_1(mod, "meta-builtin/builtin/集合转列表", x_set_to_list);
 
@@ -439,12 +439,12 @@ void import_builtin(mod_t *mod) {
 
   // fs
 
-  define_primitive_1(mod, "meta-builtin/builtin/fs-exists?", x_fs_exists_p);
-  define_primitive_1(mod, "meta-builtin/builtin/路径存在乎", x_fs_exists_p);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-file?", x_fs_file_p);
-  define_primitive_1(mod, "meta-builtin/builtin/路径文件乎", x_fs_file_p);
-  define_primitive_1(mod, "meta-builtin/builtin/fs-directory?", x_fs_directory_p);
-  define_primitive_1(mod, "meta-builtin/builtin/路径目录乎", x_fs_directory_p);
+  define_primitive_1(mod, "meta-builtin/builtin/fs-exists", x_fs_exists);
+  define_primitive_1(mod, "meta-builtin/builtin/路径存在", x_fs_exists);
+  define_primitive_1(mod, "meta-builtin/builtin/fs-is-file", x_fs_is_file);
+  define_primitive_1(mod, "meta-builtin/builtin/路径为文件", x_fs_is_file);
+  define_primitive_1(mod, "meta-builtin/builtin/fs-is-directory", x_fs_is_directory);
+  define_primitive_1(mod, "meta-builtin/builtin/路径为目录", x_fs_is_directory);
   define_primitive_1(mod, "meta-builtin/builtin/fs-read", x_fs_read);
   define_primitive_1(mod, "meta-builtin/builtin/路径读", x_fs_read);
   define_primitive_2(mod, "meta-builtin/builtin/fs-write", x_fs_write);

@@ -22,7 +22,7 @@
     ((lambda-term parameters body location)
      (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
        (let ((params-node
-               (if (list-empty? parameters)
+               (if (list-is-empty parameters)
                  (ppml/pretty-application (nothing) param-nodes)
                  (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
           (ppml/pretty-syntax "lambda"
@@ -61,7 +61,7 @@
     ((polymorphic-term parameters body location)
      (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
        (let ((params-node
-               (if (list-empty? parameters)
+               (if (list-is-empty parameters)
                  (ppml/pretty-application (nothing) param-nodes)
                  (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
          (ppml/pretty-syntax "polymorphic"

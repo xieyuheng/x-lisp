@@ -3,15 +3,15 @@
 (import-as meta-math/math math)
 
 (define-test even-test
-  (assert (math/even? 0))
-  (assert-not (math/even? 1))
-  (assert (math/even? 2))
-  (assert-not (math/even? 3))
-  (assert (math/even? 4)))
+  (assert (math/is-even 0))
+  (assert-not (math/is-even 1))
+  (assert (math/is-even 2))
+  (assert-not (math/is-even 3))
+  (assert (math/is-even 4)))
 
 (define-test odd-test
-  (assert-not (math/odd? 0))
-  (assert (math/odd? 1))
-  (assert-not (math/odd? 2))
-  (assert (math/odd? 3))
-  (assert-not (math/odd? 4)))
+  (assert-not (math/is-odd 0))
+  (assert (math/is-odd 1))
+  (assert-not (math/is-odd 2))
+  (assert (math/is-odd 3))
+  (assert-not (math/is-odd 4)))

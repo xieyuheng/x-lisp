@@ -6,25 +6,25 @@ inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
 
-bool atom_p(value_t value) {
-  return int_p(value) ||
-    float_p(value) ||
-    xstring_p(value) ||
-    symbol_p(value) ||
-    keyword_p(value) ||
-    bool_p(value) ||
-    void_p(value);
+bool is_atom(value_t value) {
+  return is_int(value) ||
+    is_float(value) ||
+    is_xstring(value) ||
+    is_symbol(value) ||
+    is_keyword(value) ||
+    is_bool(value) ||
+    is_void(value);
 }
 
-bool same_p(value_t lhs, value_t rhs) {
+bool same(value_t lhs, value_t rhs) {
   return lhs == rhs;
 }
 
-bool equal_p(value_t lhs, value_t rhs) {
-  if (same_p(lhs, rhs)) return true;
+bool equal(value_t lhs, value_t rhs) {
+  if (same(lhs, rhs)) return true;
 
-  if (object_p(lhs)
-    && object_p(rhs)
+  if (is_object(lhs)
+    && is_object(rhs)
     && to_object(lhs)->header.class == to_object(rhs)->header.class
     && to_object(lhs)->header.class->equal_fn != NULL) {
     return to_object(lhs)->header.class->equal_fn(to_object(lhs), to_object(rhs));
@@ -34,15 +34,15 @@ bool equal_p(value_t lhs, value_t rhs) {
 }
 
 hash_code_t value_hash_code(value_t value) {
-  if (int_p(value)) {
+  if (is_int(value)) {
     return value;
   }
 
-  if (float_p(value)) {
+  if (is_float(value)) {
     return value;
   }
 
-  if (object_p(value)) {
+  if (is_object(value)) {
     object_t *object = to_object(value);
     if (object->header.class->hash_code_fn) {
       return object->header.class->hash_code_fn(object);
@@ -52,7 +52,7 @@ hash_code_t value_hash_code(value_t value) {
     }
   }
 
-  if (immediate_p(value)) {
+  if (is_immediate(value)) {
     return value;
   }
 
@@ -61,21 +61,21 @@ hash_code_t value_hash_code(value_t value) {
 }
 
 ordering_t value_total_compare(value_t lhs, value_t rhs) {
-  if (same_p(lhs, rhs)) return 0;
+  if (same(lhs, rhs)) return 0;
 
   if (value_tag(lhs) != value_tag(rhs)) {
     return value_tag(lhs) - value_tag(rhs);
   }
 
-  if (int_p(lhs) && int_p(rhs)) {
+  if (is_int(lhs) && is_int(rhs)) {
     return to_int64(lhs) - to_int64(rhs);
   }
 
-  if (float_p(lhs) && float_p(rhs)) {
+  if (is_float(lhs) && is_float(rhs)) {
     return to_double(lhs) - to_double(rhs);
   }
 
-  if (object_p(lhs) && object_p(rhs)) {
+  if (is_object(lhs) && is_object(rhs)) {
     if (to_object(lhs)->header.class != to_object(rhs)->header.class) {
       return string_compare_lexical(
         to_object(lhs)->header.class->name,
@@ -93,7 +93,7 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
     }
   }
 
-  if (immediate_p(lhs) && immediate_p(rhs)) {
+  if (is_immediate(lhs) && is_immediate(rhs)) {
     return (int64_t) (lhs - rhs);
   }
 
@@ -104,14 +104,14 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
 }
 
 void write_atom(buffer_t *buffer, value_t value) {
-  assert(atom_p(value));
+  assert(is_atom(value));
 
-  if (int_p(value)) {
+  if (is_int(value)) {
     write_template(buffer, "%ld", to_int64(value));
     return;
   }
 
-  if (float_p(value)) {
+  if (is_float(value)) {
     char string[64];
     sprintf(string, "%.17g", to_double(value));
     if (!string_has_char(string, '.')) {
@@ -125,55 +125,55 @@ void write_atom(buffer_t *buffer, value_t value) {
     return;
   }
 
-  if (xstring_p(value)) {
+  if (is_xstring(value)) {
     write_string(buffer, "\"");
     write_string_escaped(buffer, xstring_string(to_xstring(value)));
     write_string(buffer, "\"");
     return;
   }
 
-  if (symbol_p(value)) {
+  if (is_symbol(value)) {
     write_string(buffer, "'");
     write_string(buffer, symbol_string(to_symbol(value)));
     return;
   }
 
-  if (keyword_p(value)) {
+  if (is_keyword(value)) {
     write_string(buffer, ":");
     write_string(buffer, keyword_string(to_keyword(value)));
     return;
   }
 
-  if (true_p(value)) {
+  if (is_true(value)) {
     write_string(buffer, "#t");
     return;
   }
 
-  if (false_p(value)) {
+  if (is_false(value)) {
     write_string(buffer, "#f");
     return;
   }
 
-  if (void_p(value)) {
+  if (is_void(value)) {
     write_string(buffer, "#void");
     return;
   }
 }
 
 void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
-  if (atom_p(value)) {
+  if (is_atom(value)) {
     write_atom(buffer, value);
     return;
   }
 
-  if (object_p(value)) {
+  if (is_object(value)) {
     object_t *object = to_object(value);
-    if (object_circle_start_p(ctx, object)) {
+    if (is_object_circle_start(ctx, object)) {
       write_template(buffer, "#%ld=", object_circle_index(ctx, object));
       object_circle_meet(ctx, object);
       object_format(buffer, ctx, object);
       return;
-    } else if (object_circle_end_p(ctx, object)) {
+    } else if (is_object_circle_end(ctx, object)) {
       write_template(buffer, "#%ld#", object_circle_index(ctx, object));
       return;
     } else {
@@ -188,7 +188,7 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
 
 void write_value(buffer_t *buffer, value_t value) {
   object_circle_ctx_t *ctx = make_object_circle_ctx();
-  if (object_p(value)) {
+  if (is_object(value)) {
     object_circle_collect(ctx, to_object(value));
     set_clear(ctx->occurred_objects);
   }

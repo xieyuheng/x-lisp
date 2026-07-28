@@ -12,7 +12,7 @@
     (-> (-> int-t E R R) R (list-t E) int-t R)))
 
 (define (list-fold-right-index-aux f folded list i)
-  (if (list-empty? list)
+  (if (list-is-empty list)
     folded
     (list-fold-right-index-aux
      f (f i (list-last list) folded)

@@ -55,14 +55,14 @@ void xstring_free(xstring_t *self) {
   free(self);
 }
 
-bool xstring_p(value_t value) {
-  return object_p(value) &&
+bool is_xstring(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &xstring_class;
 }
 
 xstring_t *to_xstring(value_t value) {
-  if (!xstring_p(value)) {
-    if (object_p(value)) {
+  if (!is_xstring(value)) {
+    if (is_object(value)) {
       object_t *object = to_object(value);
       who_printf("expected string, got object class: %s\n", object->header.class->name);
     } else {

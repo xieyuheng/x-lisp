@@ -1,7 +1,7 @@
 #include "index.h"
 
-value_t x_keyword_p(value_t value) {
-  return x_bool(keyword_p(value));
+value_t x_is_keyword(value_t value) {
+  return x_bool(is_keyword(value));
 }
 
 value_t x_keyword_length(value_t keyword) {

@@ -16,7 +16,7 @@
              fragment))
           ((nothing)
            (error (@string "(module-import-pass) missing scope for: " path))))))
-    (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (when (hash-has "dump" (package-config-compiler (package-config package)))
       (package-dump-desugared-fragments package "070-module-import"))))
 
 (claim module-import-stmt
@@ -141,5 +141,5 @@
     ((make-fragment-scope mod-name imported-names imported-prefixes)
      (make-fragment-scope
        mod-name
-       (hash-reject-key (swap set-member? bound-names) imported-names)
+       (hash-reject-key (swap set-is-member bound-names) imported-names)
        imported-prefixes))))

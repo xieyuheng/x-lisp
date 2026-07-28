@@ -12,7 +12,7 @@
           (mod-put-definition! name
             (qualify-definition definition)
             mod)))))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+  (when (hash-has "dump" (package-config-compiler (package-config package)))
     (package-dump-mods package "100-qualify")))
 
 (claim qualify-definition
@@ -75,7 +75,7 @@
 (define (qualify-free-var mod bound-names term)
   (match term
     ((var-term name location)
-     (if (set-member? name bound-names)
+     (if (set-is-member name bound-names)
        term
        (qualified-var-term
          (package-id (mod-package mod))

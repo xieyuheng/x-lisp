@@ -24,7 +24,7 @@
         (println 1)
         (println 2)
         (println 3)
-        (equal? 1 2))
+        (equal 1 2))
     (begin
       (println 111))
     (begin

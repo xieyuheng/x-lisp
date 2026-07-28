@@ -10,13 +10,13 @@ struct xset_t {
 xset_t *make_xset(void);
 void xset_free(xset_t *self);
 
-bool xset_p(value_t value);
+bool is_xset(value_t value);
 xset_t *to_xset(value_t value);
 
 size_t xset_size(const xset_t *self);
-bool xset_empty_p(const xset_t *self);
+bool xset_is_empty(const xset_t *self);
 
-bool xset_member_p(const xset_t *self, value_t value);
+bool xset_is_member(const xset_t *self, value_t value);
 void xset_add(xset_t *self, value_t value);
 bool xset_delete(xset_t *self, value_t value);
 void xset_clear(xset_t *self);
@@ -36,5 +36,5 @@ xset_t *xset_union(const xset_t *lhs, const xset_t *rhs);
 xset_t *xset_inter(const xset_t *lhs, const xset_t *rhs);
 xset_t *xset_difference(const xset_t *lhs, const xset_t *rhs);
 
-bool xset_subset_p(const xset_t *lhs, const xset_t *rhs);
-bool xset_disjoint_p(const xset_t *lhs, const xset_t *rhs);
+bool xset_subset(const xset_t *lhs, const xset_t *rhs);
+bool xset_disjoint(const xset_t *lhs, const xset_t *rhs);

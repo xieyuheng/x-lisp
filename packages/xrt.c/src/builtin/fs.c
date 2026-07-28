@@ -1,16 +1,16 @@
 #include "index.h"
 
-value_t x_fs_exists_p(value_t path) {
+value_t x_fs_exists(value_t path) {
   const char *pathname = xstring_string(to_xstring(path));
   return x_bool(fs_exists(pathname));
 }
 
-value_t x_fs_file_p(value_t path) {
+value_t x_fs_is_file(value_t path) {
   const char *pathname = xstring_string(to_xstring(path));
   return x_bool(fs_is_file(pathname));
 }
 
-value_t x_fs_directory_p(value_t path) {
+value_t x_fs_is_directory(value_t path) {
   const char *pathname = xstring_string(to_xstring(path));
   return x_bool(fs_is_directory(pathname));
 }

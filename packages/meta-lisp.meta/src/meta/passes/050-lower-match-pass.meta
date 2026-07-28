@@ -22,7 +22,7 @@
              (fragment-put-stmts!
                (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
                fragment)))))))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+  (when (hash-has "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "050-lower-match")))
 
 (claim lower-match-stmt

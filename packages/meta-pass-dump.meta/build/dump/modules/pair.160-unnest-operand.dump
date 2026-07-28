@@ -6,13 +6,13 @@
         (meta-builtin/builtin/list-push! first list)
         (begin (meta-builtin/builtin/list-push! second list) list)))))
 
-(define (pair? value)
-  (if (meta-builtin/builtin/list? value)
+(define (is-pair value)
+  (if (meta-builtin/builtin/is-list value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/list-length value)))
-          (meta-builtin/builtin/equal? unnested.1 3))
+          (meta-builtin/builtin/equal unnested.1 3))
       (let ((unnested.2 (meta-builtin/builtin/list-head value)))
-        (meta-builtin/builtin/equal? unnested.2 make-pair))
+        (meta-builtin/builtin/equal unnested.2 make-pair))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -27,7 +27,7 @@
   (meta-builtin/builtin/list-put! 2 value target))
 
 (define (pair-swap p)
-  (if (self/pair/pair? p)
+  (if (self/pair/is-pair p)
     (let ((b (self/pair/pair-second p)))
       (let ((a (self/pair/pair-first p))) (self/pair/make-pair b a)))
     (let ((unnested.1 (meta-builtin/builtin/make-source-position 91 5 3)))

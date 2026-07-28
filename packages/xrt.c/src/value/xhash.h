@@ -10,11 +10,11 @@ struct xhash_t {
 xhash_t *make_xhash(void);
 void xhash_free(xhash_t *self);
 
-bool xhash_p(value_t value);
+bool is_xhash(value_t value);
 xhash_t *to_xhash(value_t value);
 
 size_t xhash_length(const xhash_t *self);
-bool xhash_empty_p(const xhash_t *self);
+bool xhash_is_empty(const xhash_t *self);
 
 bool xhash_has(const xhash_t *self, value_t key);
 value_t xhash_get(const xhash_t *self, value_t key);

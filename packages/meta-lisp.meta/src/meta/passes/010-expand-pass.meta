@@ -10,7 +10,7 @@
       (fragment-put-stmts!
         (list-flat-map expand-stmt (fragment-stmts fragment))
         fragment)))
-  (when (hash-has? "dump" (package-config-compiler (package-config package)))
+  (when (hash-has "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "010-expand")))
 
 (claim expand-stmt
@@ -59,7 +59,7 @@
 
 (define (make-base-name type-name location)
   (let ((type-name-string (symbol-to-string type-name)))
-    (unless (string-ends-with? "-t" type-name-string)
+    (unless (string-ends-with "-t" type-name-string)
       (error-with-location
         (@string "(make-base-name) type-name must end with -t"
                  "\n  type-name: " type-name-string)
@@ -99,7 +99,7 @@
 
 (define (make-data-predicate-name base)
   (string-to-symbol
-    (@string (symbol-to-string base) "?")))
+    (@string "is-" (symbol-to-string base))))
 
 (claim make-type-exp
   (-> pre-type-constructor-t source-location-t
@@ -107,7 +107,7 @@
 
 (define (make-type-exp type-constructor location)
   (let ((parameters (pre-type-constructor-parameters type-constructor)))
-    (if (list-empty? parameters)
+    (if (list-is-empty parameters)
       (var-exp (pre-type-constructor-name type-constructor) location)
       (apply-exp
         (var-exp (pre-type-constructor-name type-constructor) location)
@@ -119,7 +119,7 @@
       (stmt-t exp-t)))
 
 (define (admit-with-type-parameters name parameters type location)
-  (if (list-empty? parameters)
+  (if (list-is-empty parameters)
     (admit-stmt name type location)
     (admit-stmt name (polymorphic-exp parameters type location) location)))
 
@@ -219,14 +219,14 @@
         predicate-name
         ['value]
         (and-exp
-          [(apply-exp (var-exp 'list? location) [(var-exp 'value location)] location)
+          [(apply-exp (var-exp 'is-list location) [(var-exp 'value location)] location)
            (apply-exp
-             (var-exp 'equal? location)
+             (var-exp 'equal location)
              [(apply-exp (var-exp 'list-length location) [(var-exp 'value location)] location)
               (int-exp (iadd (list-length fields) 1) location)]
              location)
            (apply-exp
-             (var-exp 'equal? location)
+             (var-exp 'equal location)
              [(apply-exp (var-exp 'list-head location) [(var-exp 'value location)] location)
               (symbol-exp name location)]
              location)]

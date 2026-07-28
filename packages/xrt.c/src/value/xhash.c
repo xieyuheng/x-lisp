@@ -17,7 +17,7 @@ static hash_code_t value_hash_fn(const void *key) {
 }
 
 static bool value_equal_fn(const void *lhs, const void *rhs) {
-  return equal_p((value_t) lhs, (value_t) rhs);
+  return equal((value_t) lhs, (value_t) rhs);
 }
 
 xhash_t *make_xhash(void) {
@@ -35,13 +35,13 @@ void xhash_free(xhash_t *self) {
   free(self);
 }
 
-bool xhash_p(value_t value) {
-  return object_p(value) &&
+bool is_xhash(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &xhash_class;
 }
 
 xhash_t *to_xhash(value_t value) {
-  assert(xhash_p(value));
+  assert(is_xhash(value));
   return (xhash_t *) to_object(value);
 }
 
@@ -49,7 +49,7 @@ size_t xhash_length(const xhash_t *self) {
   return hash_length(self->hash);
 }
 
-bool xhash_empty_p(const xhash_t *self) {
+bool xhash_is_empty(const xhash_t *self) {
   return hash_is_empty(self->hash);
 }
 
@@ -100,7 +100,7 @@ bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
   while (key) {
     value_t left = xhash_get(lhs, key);
     value_t right = xhash_get(rhs, key);
-    if (!equal_p(left, right))
+    if (!equal(left, right))
       return false;
 
     key = (value_t) hash_iter_next_key(&iter);
@@ -220,7 +220,7 @@ object_t *xhash_child_iter_next(xhash_child_iter_t *iter) {
   if (iter->entry) {
     value_t value = (value_t) iter->entry->value;
     iter->entry = NULL;
-    return object_p(value)
+    return is_object(value)
       ? to_object(value)
       : xhash_child_iter_next(iter);
   }
@@ -228,7 +228,7 @@ object_t *xhash_child_iter_next(xhash_child_iter_t *iter) {
   iter->entry = hash_iter_next_entry(&iter->hash_iter);
   if (iter->entry) {
     value_t value = (value_t) iter->entry->key;
-    return object_p(value)
+    return is_object(value)
       ? to_object(value)
       : xhash_child_iter_next(iter);
   }

@@ -1,8 +1,8 @@
 #pragma once
 
-x_fn_1_t x_fs_exists_p;
-x_fn_1_t x_fs_file_p;
-x_fn_1_t x_fs_directory_p;
+x_fn_1_t x_fs_exists;
+x_fn_1_t x_fs_is_file;
+x_fn_1_t x_fs_is_directory;
 x_fn_1_t x_fs_read;
 x_fn_2_t x_fs_write;
 x_fn_1_t x_fs_list;

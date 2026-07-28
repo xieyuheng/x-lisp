@@ -9,8 +9,8 @@
   (var-exp (name symbol-t) (location source-location-t))
   (apply-exp (target exp-t) (args (list-t exp-t)) (location source-location-t)))
 
-(claim is-var? (-> exp-t bool-t))
-(define (is-var? exp)
+(claim is-var (-> exp-t bool-t))
+(define (is-var exp)
   (match exp
     ((var-exp name location) true)
     (else false)))
@@ -39,7 +39,7 @@
     ((apply-exp target args location)
      (let ((target-str (format-exp target))
            (args-str (format-exps args)))
-       (if (equal? args-str "")
+       (if (equal args-str "")
          (@string "(" target-str ")")
          (@string "(" target-str " " args-str ")"))))))
 

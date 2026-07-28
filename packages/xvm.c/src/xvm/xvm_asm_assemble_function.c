@@ -1,10 +1,10 @@
 #include "index.h"
 
 static bool is_literal(value_t sexp) {
-  return keyword_p(sexp)
-    || xstring_p(sexp)
-    || int_p(sexp)
-    || float_p(sexp);
+  return is_keyword(sexp)
+    || is_xstring(sexp)
+    || is_int(sexp)
+    || is_float(sexp);
 }
 
 static bool is_quote(value_t sexp) {
@@ -30,7 +30,7 @@ static void assemble_apply_args(struct instr_t *instr, value_t operands) {
 }
 
 static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
-  if (symbol_p(sexp)) {
+  if (is_symbol(sexp)) {
     function_add_label(function, symbol_string(to_symbol(sexp)));
     return;
   }
@@ -209,7 +209,7 @@ static size_t count_call_args(value_t args) {
 }
 
 static size_t instr_max_local(value_t sexp) {
-  if (symbol_p(sexp)) return 0;
+  if (is_symbol(sexp)) return 0;
 
   if (sexp_has_tag(sexp, "move")) {
     value_t args = x_cdr(sexp);

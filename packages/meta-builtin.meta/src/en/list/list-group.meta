@@ -10,7 +10,7 @@
    (list-each
      (lambda (value)
        (let ((key (f value)))
-         (unless (hash-has? key new-hash)
+         (unless (hash-has key new-hash)
            (hash-put! key [value] new-hash))
          (let ((group (hash-get key new-hash)))
            (list-push! value group))))

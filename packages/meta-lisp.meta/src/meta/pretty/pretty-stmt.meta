@@ -11,7 +11,7 @@
     ((import-stmt pkg-name mod-name names location)
      (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
-            (full (if (equal? pkg-name-str "self")
+            (full (if (equal pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (ppml/pretty-syntax "import"
@@ -20,7 +20,7 @@
     ((import-as-stmt pkg-name mod-name prefix location)
      (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
-            (full (if (equal? pkg-name-str "self")
+            (full (if (equal pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (ppml/pretty-syntax "import-as"
@@ -29,7 +29,7 @@
     ((import-all-stmt pkg-name mod-name location)
      (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
-            (full (if (equal? pkg-name-str "self")
+            (full (if (equal pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (ppml/pretty-syntax "import-all"
@@ -54,7 +54,7 @@
      (let ((name-str (symbol-to-string name))
            (params-str (string-join " " (list-map symbol-to-string parameters))))
        (ppml/pretty-syntax "define-type"
-         [(if (list-empty? parameters)
+         [(if (list-is-empty parameters)
             (ppml/text name-str)
             (ppml/text (@string "(" name-str " " params-str ")")))]
          [(pretty-body body)])))
@@ -121,7 +121,7 @@
 (define (pretty-pre-type-constructor tc)
   (let ((name (ppml/text (symbol-to-string (pre-type-constructor-name tc))))
         (params (pre-type-constructor-parameters tc)))
-    (if (list-empty? params)
+    (if (list-is-empty params)
       name
       (ppml/pretty-application (just (symbol-to-string (pre-type-constructor-name tc)))
         (cons name (list-map (lambda (p) (ppml/text (symbol-to-string p))) params))))))
@@ -129,7 +129,7 @@
 (define (pretty-pre-data-constructor ctor)
   (let ((name (ppml/text (symbol-to-string (pre-data-constructor-name ctor))))
         (fields (pre-data-constructor-fields ctor)))
-    (if (list-empty? fields)
+    (if (list-is-empty fields)
       name
       (ppml/pretty-application (just (symbol-to-string (pre-data-constructor-name ctor)))
         (cons name (list-map pretty-pre-data-field fields))))))

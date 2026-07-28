@@ -4,8 +4,8 @@ value_t x_make_hash(void) {
   return x_object(make_xhash());
 }
 
-value_t x_any_hash_p(value_t value) {
-  return x_bool(xhash_p(value));
+value_t x_is_any_hash(value_t value) {
+  return x_bool(is_xhash(value));
 }
 
 value_t x_hash_copy(value_t hash) {
@@ -16,15 +16,15 @@ value_t x_hash_length(value_t hash) {
   return x_int(xhash_length(to_xhash(hash)));
 }
 
-value_t x_hash_empty_p(value_t hash) {
-  return x_bool(xhash_empty_p(to_xhash(hash)));
+value_t x_hash_is_empty(value_t hash) {
+  return x_bool(xhash_is_empty(to_xhash(hash)));
 }
 
 value_t x_hash_get(value_t key, value_t hash) {
   return xhash_get(to_xhash(hash), key);
 }
 
-value_t x_hash_has_p(value_t key, value_t hash) {
+value_t x_hash_has(value_t key, value_t hash) {
   return x_bool(xhash_has(to_xhash(hash), key));
 }
 

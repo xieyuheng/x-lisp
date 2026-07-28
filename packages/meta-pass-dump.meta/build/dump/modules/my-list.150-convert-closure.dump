@@ -2,10 +2,10 @@
   (let ((list (meta-builtin/builtin/make-list)))
     (begin (meta-builtin/builtin/list-push! nil list) list)))
 
-(define (nil? value)
-  (if (meta-builtin/builtin/list? value)
-    (if (meta-builtin/builtin/equal? (meta-builtin/builtin/list-length value) 1)
-      (meta-builtin/builtin/equal? (meta-builtin/builtin/list-head value) nil)
+(define (is-nil value)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 1)
+      (meta-builtin/builtin/equal (meta-builtin/builtin/list-head value) nil)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -17,10 +17,10 @@
         (meta-builtin/builtin/list-push! head list)
         (begin (meta-builtin/builtin/list-push! tail list) list)))))
 
-(define (li? value)
-  (if (meta-builtin/builtin/list? value)
-    (if (meta-builtin/builtin/equal? (meta-builtin/builtin/list-length value) 3)
-      (meta-builtin/builtin/equal? (meta-builtin/builtin/list-head value) li)
+(define (is-li value)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
+      (meta-builtin/builtin/equal (meta-builtin/builtin/list-head value) li)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -35,7 +35,7 @@
   (meta-builtin/builtin/list-put! 2 value target))
 
 (define (my-list-head list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/string-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
@@ -53,7 +53,7 @@
       (meta-builtin/builtin/make-source-span
        (meta-builtin/builtin/make-source-position 123 7 3)
        (meta-builtin/builtin/make-source-position 128 7 8))))
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list))) head))
       (meta-builtin/builtin/error-with-location
@@ -65,7 +65,7 @@
          (meta-builtin/builtin/make-source-position 128 7 8)))))))
 
 (define (my-list-tail list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/string-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
@@ -83,7 +83,7 @@
       (meta-builtin/builtin/make-source-span
        (meta-builtin/builtin/make-source-position 194 11 3)
        (meta-builtin/builtin/make-source-position 199 11 8))))
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list))) tail))
       (meta-builtin/builtin/error-with-location
@@ -95,9 +95,9 @@
          (meta-builtin/builtin/make-source-position 199 11 8)))))))
 
 (define (my-list-length list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     0
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list)))
           (meta-builtin/builtin/iadd 1 (self/my-list/my-list-length tail))))
@@ -110,9 +110,9 @@
          (meta-builtin/builtin/make-source-position 272 15 8)))))))
 
 (define (my-list-map f list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (self/my-list/nil)
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list)))
           (self/my-list/li (f head) (self/my-list/my-list-map f tail))))
@@ -125,9 +125,9 @@
          (meta-builtin/builtin/make-source-position 384 20 8)))))))
 
 (define (my-list-append left right)
-  (if (self/my-list/nil? left)
+  (if (self/my-list/is-nil left)
     right
-    (if (self/my-list/li? left)
+    (if (self/my-list/is-li left)
       (let ((tail (self/my-list/li-tail left)))
         (let ((head (self/my-list/li-head left)))
           (self/my-list/li head (self/my-list/my-list-append tail right))))
@@ -140,13 +140,13 @@
          (meta-builtin/builtin/make-source-position 511 25 8)))))))
 
 (define (my-list-map-zip f list1 list2)
-  (if (self/my-list/nil? list1)
+  (if (self/my-list/is-nil list1)
     (let ((_ list2)) (self/my-list/nil))
-    (if (self/my-list/li? list1)
-      (if (self/my-list/nil? list2)
+    (if (self/my-list/is-li list1)
+      (if (self/my-list/is-nil list2)
         (let ((tail1 (self/my-list/li-tail list1)))
           (let ((head1 (self/my-list/li-head list1))) (self/my-list/nil)))
-        (if (self/my-list/li? list2)
+        (if (self/my-list/is-li list2)
           (let ((tail2 (self/my-list/li-tail list2)))
             (let ((head2 (self/my-list/li-head list2)))
               (let ((tail1.1 (self/my-list/li-tail list1)))
@@ -170,13 +170,13 @@
          (meta-builtin/builtin/make-source-position 650 30 13)))))))
 
 (define (my-list-map-zip-2 f list1 list2)
-  (if (self/my-list/nil? list1)
+  (if (self/my-list/is-nil list1)
     (let ((_ list2)) (self/my-list/nil))
-    (if (self/my-list/li? list1)
-      (if (self/my-list/nil? list2)
+    (if (self/my-list/is-li list1)
+      (if (self/my-list/is-nil list2)
         (let ((_.1 list1)) (self/my-list/nil))
-        (if (self/my-list/li? list2)
-          (if (self/my-list/nil? list1)
+        (if (self/my-list/is-li list2)
+          (if (self/my-list/is-nil list1)
             (meta-builtin/builtin/error-with-location
              (meta-builtin/builtin/string-concat
               (let ((list (meta-builtin/builtin/make-list)))
@@ -200,8 +200,8 @@
               (meta-builtin/builtin/make-source-span
                (meta-builtin/builtin/make-source-position 872 37 3)
                (meta-builtin/builtin/make-source-position 882 37 13))))
-            (if (self/my-list/li? list1)
-              (if (self/my-list/nil? list2)
+            (if (self/my-list/is-li list1)
+              (if (self/my-list/is-nil list2)
                 (meta-builtin/builtin/error-with-location
                  (meta-builtin/builtin/string-concat
                   (let ((list.1 (meta-builtin/builtin/make-list)))
@@ -227,7 +227,7 @@
                   (meta-builtin/builtin/make-source-span
                    (meta-builtin/builtin/make-source-position 872 37 3)
                    (meta-builtin/builtin/make-source-position 882 37 13))))
-                (if (self/my-list/li? list2)
+                (if (self/my-list/is-li list2)
                   (let ((tail2 (self/my-list/li-tail list2)))
                     (let ((head2 (self/my-list/li-head list2)))
                       (let ((tail1 (self/my-list/li-tail list1)))
@@ -265,17 +265,17 @@
          (meta-builtin/builtin/make-source-position 882 37 13)))))))
 
 (define (my-list-adjacent-dedup list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (self/my-list/nil)
-    (if (self/my-list/li? list)
-      (if (self/my-list/nil? (self/my-list/li-tail list))
+    (if (self/my-list/is-li list)
+      (if (self/my-list/is-nil (self/my-list/li-tail list))
         (let ((head (self/my-list/li-head list)))
           (self/my-list/li head (self/my-list/nil)))
-        (if (self/my-list/li? (self/my-list/li-tail list))
+        (if (self/my-list/is-li (self/my-list/li-tail list))
           (let ((rest (self/my-list/li-tail (self/my-list/li-tail list))))
             (let ((second (self/my-list/li-head (self/my-list/li-tail list))))
               (let ((first (self/my-list/li-head list)))
-                (if (meta-builtin/builtin/equal? first second)
+                (if (meta-builtin/builtin/equal first second)
                   (self/my-list/my-list-adjacent-dedup
                    (self/my-list/li second rest))
                   (self/my-list/li

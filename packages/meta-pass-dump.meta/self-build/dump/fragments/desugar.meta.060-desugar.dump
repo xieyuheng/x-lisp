@@ -9,7 +9,7 @@
 (define (example-let-star) (let ((x 1)) (let ((y (iadd x 1))) (iadd x y))))
 
 (define (example-cond)
-  (if (equal? 1 1)
+  (if (equal 1 1)
     1
     (if meta-builtin/builtin/true
       2
@@ -34,39 +34,39 @@
 (define (example-compose) ((lambda (target) (add1 (double target))) 5))
 
 (define (example-letrec)
-  (let ((even? (meta-builtin/builtin/make-box)))
-    (let ((odd? (meta-builtin/builtin/make-box)))
+  (let ((is-even (meta-builtin/builtin/make-box)))
+    (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (meta-builtin/builtin/box-put!
          (lambda (n)
-           (if (equal? n 0)
+           (if (equal n 0)
              true
-             ((meta-builtin/builtin/box-get odd?) (isub n 1))))
-         even?)
+             ((meta-builtin/builtin/box-get is-odd) (isub n 1))))
+         is-even)
         (begin
           (meta-builtin/builtin/box-put!
            (lambda (n)
-             (if (equal? n 0)
+             (if (equal n 0)
                false
-               ((meta-builtin/builtin/box-get even?) (isub n 1))))
-           odd?)
+               ((meta-builtin/builtin/box-get is-even) (isub n 1))))
+           is-odd)
           void)))))
 
 (define (example-local-define)
-  (let ((even? (meta-builtin/builtin/make-box)))
-    (let ((odd? (meta-builtin/builtin/make-box)))
+  (let ((is-even (meta-builtin/builtin/make-box)))
+    (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (meta-builtin/builtin/box-put!
          (lambda (n)
-           (if (equal? n 0)
+           (if (equal n 0)
              true
-             ((meta-builtin/builtin/box-get odd?) (isub n 1))))
-         even?)
+             ((meta-builtin/builtin/box-get is-odd) (isub n 1))))
+         is-even)
         (begin
           (meta-builtin/builtin/box-put!
            (lambda (n)
-             (if (equal? n 0)
+             (if (equal n 0)
                false
-               ((meta-builtin/builtin/box-get even?) (isub n 1))))
-           odd?)
+               ((meta-builtin/builtin/box-get is-even) (isub n 1))))
+           is-odd)
           void)))))

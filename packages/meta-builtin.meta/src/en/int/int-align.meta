@@ -4,7 +4,7 @@
 
 (define (int-align alignment n)
   (let ((remainder (imod n alignment)))
-    (if (equal? 0 remainder)
+    (if (equal 0 remainder)
       n
       (iadd (isub n remainder) alignment))))
 

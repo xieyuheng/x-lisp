@@ -6,7 +6,7 @@
 
 (claim collect-names-from-stmts (-> (list-t (stmt-t exp-t)) (set-t symbol-t) (set-t symbol-t)))
 (define (collect-names-from-stmts stmts names)
-  (if (list-empty? stmts)
+  (if (list-is-empty stmts)
     names
     (let ((head (list-head stmts))
           (tail (list-tail stmts)))

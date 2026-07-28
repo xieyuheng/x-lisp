@@ -6,7 +6,7 @@
         void-t)))
 
 (define (list-each f list)
-  (if (list-empty? list)
+  (if (list-is-empty list)
     void
     (begin
       (f (car list))

@@ -5,15 +5,15 @@
 
   (assert-equal 2 (string-length "中文"))
 
-  (assert (string-empty? ""))
-  (assert-not (string-empty? " "))
+  (assert (string-is-empty ""))
+  (assert-not (string-is-empty " "))
 
-  (assert (string-blank? ""))
-  (assert (string-blank? " "))
-  (assert (string-blank? "  "))
-  (assert (string-blank? " \n "))
-  (assert (string-blank? " \n\t "))
-  (assert-not (string-blank? " \n.\t "))
+  (assert (string-is-blank ""))
+  (assert (string-is-blank " "))
+  (assert (string-is-blank "  "))
+  (assert (string-is-blank " \n "))
+  (assert (string-is-blank " \n\t "))
+  (assert-not (string-is-blank " \n.\t "))
 
   (assert-equal "abcdef" (string-append "abc" "def"))
 
@@ -39,19 +39,19 @@
   (assert-equal "a/b/c" (string-replace "." "/" "a.b.c")))
 
 (define-test string-starts-with-test
-  (assert (string-starts-with? "" "abc"))
-  (assert (string-starts-with? "a" "abc"))
-  (assert (string-starts-with? "ab" "abc"))
-  (assert (string-starts-with? "abc" "abc"))
-  (assert-not (string-starts-with? "abc~" "abc"))
-  (assert-not (string-starts-with? "b" "abc"))
+  (assert (string-starts-with "" "abc"))
+  (assert (string-starts-with "a" "abc"))
+  (assert (string-starts-with "ab" "abc"))
+  (assert (string-starts-with "abc" "abc"))
+  (assert-not (string-starts-with "abc~" "abc"))
+  (assert-not (string-starts-with "b" "abc"))
 
-  (assert (string-ends-with? "" "abc"))
-  (assert (string-ends-with? "c" "abc"))
-  (assert (string-ends-with? "bc" "abc"))
-  (assert (string-ends-with? "abc" "abc"))
-  (assert-not (string-ends-with? "~abc" "abc"))
-  (assert-not (string-ends-with? "b" "abc")))
+  (assert (string-ends-with "" "abc"))
+  (assert (string-ends-with "c" "abc"))
+  (assert (string-ends-with "bc" "abc"))
+  (assert (string-ends-with "abc" "abc"))
+  (assert-not (string-ends-with "~abc" "abc"))
+  (assert-not (string-ends-with "b" "abc")))
 
 (define-test string-to-upper-case-test
   (assert-equal "ABC" (string-to-upper-case "abc"))
@@ -63,9 +63,9 @@
   (assert-equal 99 (string-get-code-point 2 "abc")))
 
 (define-test string-contains-test
-  (assert (string-contains? "bb" "aabbcc"))
-  (assert (string-contains? "ab" "aabbcc"))
-  (assert-not (string-contains? "ba" "aabbcc")))
+  (assert (string-contains "bb" "aabbcc"))
+  (assert (string-contains "ab" "aabbcc"))
+  (assert-not (string-contains "ba" "aabbcc")))
 
 (define-test string-find-index-test
   (assert-equal 0 (string-find-index "0" "01234"))
@@ -85,22 +85,22 @@
   (assert-equal "  abc" (string-trim-end "  abc  "))
   (assert-equal "abc" (string-trim "  abc  ")))
 
-(define-test string-int?-test
-  (assert (string-int? "123"))
-  (assert (string-int? "-123"))
-  (assert (string-int? "0"))
-  (assert-not (string-int? "abc"))
-  (assert-not (string-int? "123.0"))
-  (assert-not (string-int? "")))
+(define-test string-is-int-test
+  (assert (string-is-int "123"))
+  (assert (string-is-int "-123"))
+  (assert (string-is-int "0"))
+  (assert-not (string-is-int "abc"))
+  (assert-not (string-is-int "123.0"))
+  (assert-not (string-is-int "")))
 
-(define-test string-float?-test
-  (assert (string-float? "123.0"))
-  (assert (string-float? "-123.5"))
-  (assert (string-float? "0.0"))
-  (assert (string-float? ".5"))
-  (assert-not (string-float? "abc"))
-  (assert-not (string-float? "123"))
-  (assert-not (string-float? "")))
+(define-test string-is-float-test
+  (assert (string-is-float "123.0"))
+  (assert (string-is-float "-123.5"))
+  (assert (string-is-float "0.0"))
+  (assert (string-is-float ".5"))
+  (assert-not (string-is-float "abc"))
+  (assert-not (string-is-float "123"))
+  (assert-not (string-is-float "")))
 
 (define-test string-to-int-test
   (assert-equal 123 (string-to-int "123"))

@@ -12,7 +12,7 @@
     (-> (-> int-t A B) (list-t A) int-t (list-t B))))
 
 (define (list-map-index-aux f list i)
-  (if (list-empty? list)
+  (if (list-is-empty list)
     []
     (cons (f i (car list))
           (list-map-index-aux f (cdr list) (iadd i 1)))))

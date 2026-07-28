@@ -4,7 +4,7 @@
 
 (define-algebraic-type (pair-t A B)
   ((make-pair (first A) (second B))
-   pair?
+   is-pair
    (first pair-first pair-put-first!)
    (second pair-second pair-put-second!)))
 
@@ -12,12 +12,12 @@
 
 (define (make-pair first second) ['make-pair first second])
 
-(admit pair? (polymorphic (A B) (-> (pair-t A B) bool-t)))
+(admit is-pair (polymorphic (A B) (-> (pair-t A B) bool-t)))
 
-(define (pair? value)
-  (and (list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) 'make-pair)))
+(define (is-pair value)
+  (and (is-list value)
+       (equal (list-length value) 3)
+       (equal (list-head value) 'make-pair)))
 
 (admit pair-first (polymorphic (A B) (-> (pair-t A B) A)))
 
@@ -37,6 +37,6 @@
 
 (define (pair-swap p)
   (cond
-    ((self/pair/pair? p)
+    ((self/pair/is-pair p)
      (let ((b (self/pair/pair-second p)))
        (let ((a (self/pair/pair-first p))) (make-pair b a))))))

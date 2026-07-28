@@ -13,7 +13,7 @@
     ((float-term content location) (make-set))
     ((qualified-var-term pkg-name mod-name name location) (make-set))
     ((var-term name location)
-     (if (set-member? name bound-names)
+     (if (set-is-member name bound-names)
        (make-set)
        (set-add name (make-set))))
     ((lambda-term parameters body location)

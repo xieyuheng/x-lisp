@@ -3,7 +3,7 @@
 (claim fibonacci (-> int-t int-t))
 
 (define (fibonacci n)
-  (if (int-less-or-equal? n 1)
+  (if (int-less-or-equal n 1)
     n
     (iadd (fibonacci (isub n 1))
           (fibonacci (isub n 2)))))

@@ -5,7 +5,7 @@
       exp-t))
 
 (define (desugar-cond clauses location)
-  (if (list-empty? clauses)
+  (if (list-is-empty clauses)
     (apply-exp
       (qualified-var-exp 'meta-builtin 'builtin 'error location)
       [(string-exp "cond mismatch" location)]

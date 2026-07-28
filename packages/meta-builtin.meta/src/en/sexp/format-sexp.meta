@@ -9,6 +9,6 @@
     ((int-sexp content location) (format-as-sexp content))
     ((float-sexp content location) (format-as-sexp content))
     ((list-sexp elements location)
-     (if (list-empty? elements)
+     (if (list-is-empty elements)
        "()"
        (@string "(" (string-join " " (list-map format-sexp elements)) ")")))))

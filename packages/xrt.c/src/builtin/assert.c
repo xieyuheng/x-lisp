@@ -21,7 +21,7 @@ value_t x_assert_not(value_t value) {
 }
 
 value_t x_assert_equal(value_t lhs, value_t rhs) {
-  if (equal_p(lhs, rhs)) return x_void;
+  if (equal(lhs, rhs)) return x_void;
 
   buffer_t *buffer = make_buffer();
   write_string(buffer, "(assert-equal) fail");
@@ -32,7 +32,7 @@ value_t x_assert_equal(value_t lhs, value_t rhs) {
 }
 
 value_t x_assert_not_equal(value_t lhs, value_t rhs) {
-  if (!equal_p(lhs, rhs)) return x_void;
+  if (!equal(lhs, rhs)) return x_void;
 
   buffer_t *buffer = make_buffer();
   write_string(buffer, "(assert-not-equal) fail");
@@ -77,7 +77,7 @@ value_t x_assert_not_with_location(value_t value, value_t location) {
 }
 
 value_t x_assert_equal_with_location(value_t lhs, value_t rhs, value_t location) {
-  if (equal_p(lhs, rhs)) return x_void;
+  if (equal(lhs, rhs)) return x_void;
 
   buffer_t *message_buffer = make_buffer();
   write_string(message_buffer, "(assert-equal) fail");
@@ -95,7 +95,7 @@ value_t x_assert_equal_with_location(value_t lhs, value_t rhs, value_t location)
 }
 
 value_t x_assert_not_equal_with_location(value_t lhs, value_t rhs, value_t location) {
-  if (!equal_p(lhs, rhs)) return x_void;
+  if (!equal(lhs, rhs)) return x_void;
 
   buffer_t *message_buffer = make_buffer();
   write_string(message_buffer, "(assert-not-equal) fail");

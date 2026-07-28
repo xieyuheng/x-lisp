@@ -45,14 +45,14 @@ size_t symbol_length(const symbol_t *self) {
   return string_length(self->string);
 }
 
-bool symbol_p(value_t value) {
-  return object_p(value) &&
+bool is_symbol(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &symbol_class;
 }
 
 symbol_t *to_symbol(value_t value) {
-  if (!symbol_p(value)) {
-    if (object_p(value)) {
+  if (!is_symbol(value)) {
+    if (is_object(value)) {
       object_t *object = to_object(value);
       who_printf("expected symbol, got object class: %s\n", object->header.class->name);
     } else {

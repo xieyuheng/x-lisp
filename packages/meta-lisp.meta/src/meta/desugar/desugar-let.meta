@@ -6,8 +6,8 @@
 
 (define (desugar-let bindings body location)
   (cond
-    ((list-empty? bindings) body)
-    ((list-empty? (cdr bindings))
+    ((list-is-empty bindings) body)
+    ((list-is-empty (cdr bindings))
      (let ((binding (car bindings)))
        (let1-exp
          (binding-name binding)

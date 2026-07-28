@@ -8,7 +8,7 @@
 
 (define (example-let-star) (let ((x 1) (y (iadd x 1))) (iadd x y)))
 
-(define (example-cond) (cond ((equal? 1 1) 1) (meta-builtin/builtin/true 2)))
+(define (example-cond) (cond ((equal 1 1) 1) (meta-builtin/builtin/true 2)))
 
 (define (example-begin) (begin 1 2 3))
 
@@ -28,12 +28,12 @@
 
 (define (example-letrec)
   (letrec
-      ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
-       (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
+      ((is-even (lambda (n) (if (equal n 0) true (is-odd (isub n 1)))))
+       (is-odd (lambda (n) (if (equal n 0) false (is-even (isub n 1))))))
     void))
 
 (define (example-local-define)
   (begin
-    (define (even? n) (if (equal? n 0) true (odd? (isub n 1))))
-    (define (odd? n) (if (equal? n 0) false (even? (isub n 1))))
+    (define (is-even n) (if (equal n 0) true (is-odd (isub n 1))))
+    (define (is-odd n) (if (equal n 0) false (is-even (isub n 1))))
     void))

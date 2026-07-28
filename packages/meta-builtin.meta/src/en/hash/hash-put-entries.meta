@@ -14,7 +14,7 @@
         (hash-t K V))))
 
 (define (hash-put-entries! entries hash)
-  (if (list-empty? entries)
+  (if (list-is-empty entries)
     hash
     (let ((entry (car entries)))
       (hash-put-entry! entry hash)

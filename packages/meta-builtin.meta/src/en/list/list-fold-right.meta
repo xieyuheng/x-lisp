@@ -7,7 +7,7 @@
         R)))
 
 (define (list-fold-right f folded list)
-  (if (list-empty? list)
+  (if (list-is-empty list)
     folded
     (list-fold-right
      f (f (list-last list) folded)

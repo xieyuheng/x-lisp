@@ -12,7 +12,7 @@
     (-> (-> int-t A Any) (list-t A) int-t void-t)))
 
 (define (list-each-index-aux f list i)
-  (if (list-empty? list)
+  (if (list-is-empty list)
     void
     (begin
       (f i (car list))

@@ -5,7 +5,7 @@
       exp-t))
 
 (define (desugar-pipe target steps location)
-  (if (list-empty? steps)
+  (if (list-is-empty steps)
     target
     (desugar-pipe
       (apply-exp (car steps) [target] location)

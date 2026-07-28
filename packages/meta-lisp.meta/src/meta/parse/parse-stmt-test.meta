@@ -7,8 +7,8 @@
 (define-test parse-stmt-import-test
   (assert-equal "(import foo a b c)"
     (format-stmt (parse-stmt (@sexp (import foo a b c)))))
-  (assert-equal "(import meta-math/math even? odd?)"
-    (format-stmt (parse-stmt (@sexp (import meta-math/math even? odd?))))))
+  (assert-equal "(import meta-math/math is-even is-odd)"
+    (format-stmt (parse-stmt (@sexp (import meta-math/math is-even is-odd))))))
 
 (define-test parse-stmt-import-as-test
   (assert-equal "(import-as foo prefix)"
@@ -96,46 +96,44 @@
 
 (define-test parse-stmt-define-opaque-type-test
   (assert-equal
-    "(define-opaque-type (box-t E) (list-t E) (make-box (-> (box-t E))) (box-empty? (-> (box-t E) bool-t)))"
+    "(define-opaque-type (box-t E) (list-t E) (make-box (-> (box-t E))) (box-is-empty (-> (box-t E) bool-t)))"
     (format-stmt (parse-stmt (@sexp (define-opaque-type (box-t E) (list-t E)
                                       (make-box (-> (box-t E)))
-                                      (box-empty? (-> (box-t E) bool-t))))))))
+                                      (box-is-empty (-> (box-t E) bool-t))))))))
 
 (define-test parse-stmt-define-algebraic-type-test
   (assert-equal
-    "(define-algebraic-type bool-t ((true) true?) ((false) false?))"
+    "(define-algebraic-type bool-t ((true) is-true) ((false) is-false))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type bool-t
-                 ((true) true?)
-                 ((false) false?))))))
+                 ((true) is-true)
+                 ((false) is-false))))))
   (assert-equal
-    "(define-algebraic-type point-t ((make-point (x float-t) (y float-t)) point? (x point-x point-put-x!) (y point-y)))"
+    "(define-algebraic-type point-t ((make-point (x float-t) (y float-t)) is-point (x point-x point-put-x!) (y point-y)))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type point-t
                  ((make-point (x float-t) (y float-t))
-                  point?
+                  is-point
                   (x point-x point-put-x!)
                   (y point-y)))))))
   (assert-equal
-    "(define-algebraic-type (my-list-t E) ((nil) nil?) ((li (head E) (tail (my-list-t E))) li? (head li-head) (tail li-tail)))"
+    "(define-algebraic-type (my-list-t E) ((nil) is-nil) ((li (head E) (tail (my-list-t E))) is-li (head li-head) (tail li-tail)))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type (my-list-t E)
-                 ((nil) nil?)
+                 ((nil) is-nil)
                  ((li (head E) (tail (my-list-t E)))
-                  li?
+                  is-li
                   (head li-head)
-                  (tail li-tail))))))))
-
-(define-test parse-stmt-define-record-type-test
+                  (tail li-tail)))))))
   (assert-equal
-    "(define-record-type (pair-t A B) (pair (first A) (second B)) pair? (first pair-first pair-put-first!) (second pair-second pair-put-second!))"
+    "(define-record-type (pair-t A B) (pair (first A) (second B)) is-pair (first pair-first pair-put-first!) (second pair-second pair-put-second!))"
     (format-stmt
       (parse-stmt
         (@sexp (define-record-type (pair-t A B)
                  (pair (first A) (second B))
-                 pair?
+                 is-pair
                  (first pair-first pair-put-first!)
                  (second pair-second pair-put-second!)))))))

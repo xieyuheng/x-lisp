@@ -1,9 +1,9 @@
 (module my-list)
 
 (define-algebraic-type (my-list-t E)
-  ((nil) nil?)
+  ((nil) is-nil)
   ((li (head E) (tail (my-list-t E)))
-   li?
+   is-li
    (head li-head li-put-head!)
    (tail li-tail li-put-tail!)))
 
@@ -11,23 +11,23 @@
 
 (define (nil) ['nil])
 
-(admit nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(admit is-nil (polymorphic (E) (-> (my-list-t E) bool-t)))
 
-(define (nil? value)
-  (and (list? value)
-       (equal? (list-length value) 1)
-       (equal? (list-head value) 'nil)))
+(define (is-nil value)
+  (and (is-list value)
+       (equal (list-length value) 1)
+       (equal (list-head value) 'nil)))
 
 (admit li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li head tail) ['li head tail])
 
-(admit li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(admit is-li (polymorphic (E) (-> (my-list-t E) bool-t)))
 
-(define (li? value)
-  (and (list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) 'li)))
+(define (is-li value)
+  (and (is-list value)
+       (equal (list-length value) 3)
+       (equal (list-head value) 'li)))
 
 (admit li-head (polymorphic (E) (-> (my-list-t E) E)))
 
@@ -80,6 +80,6 @@
     ((nil) (nil))
     ((li head (nil)) (li head (nil)))
     ((li first (li second rest))
-     (if (equal? first second)
+     (if (equal first second)
        (my-list-adjacent-dedup (li second rest))
        (li first (my-list-adjacent-dedup (li second rest)))))))

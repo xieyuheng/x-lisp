@@ -3,7 +3,7 @@
 (claim factorial (-> int-t int-t))
 
 (define (factorial n)
-    (if (int-less-or-equal? n 1)
+    (if (int-less-or-equal n 1)
       1
       (imul (factorial (isub n 1)) n)))
 

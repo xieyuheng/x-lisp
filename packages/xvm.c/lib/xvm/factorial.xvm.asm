@@ -1,6 +1,6 @@
 (define-function factorial 1
   (load 1 1)
-  (call meta-builtin/builtin/int-less-or-equal? 0 1)
+  (call meta-builtin/builtin/int-less-or-equal 0 1)
   (load-result 2)
   (jump-if-not 2 else)
   (load 1 1)

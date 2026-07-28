@@ -1,6 +1,6 @@
 (module builtin)
 
 (define-test path-relative-to-cwd-test
-  (assert (path-relative? (path-relative-to-cwd "/a/b")))
-  (assert (not (path-absolute? (path-relative-to-cwd "/a/b"))))
-  (assert (string? (path-relative-to-cwd "/tmp"))))
+  (assert (path-is-relative (path-relative-to-cwd "/a/b")))
+  (assert (not (path-is-absolute (path-relative-to-cwd "/a/b"))))
+  (assert (is-string (path-relative-to-cwd "/tmp"))))

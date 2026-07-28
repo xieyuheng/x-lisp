@@ -6,17 +6,17 @@ inline value_t x_int(int64_t target) {
   return (target << 3) | X_INT;
 }
 
-inline bool int_p(value_t value) {
+inline bool is_int(value_t value) {
   return value_tag(value) == X_INT;
 }
 
 inline int64_t to_int64(value_t value) {
-  assert(int_p(value));
+  assert(is_int(value));
   return ((int64_t) value) >> 3;
 }
 
-inline value_t x_int_p(value_t value) {
-  return x_bool(int_p(value));
+inline value_t x_is_int(value_t value) {
+  return x_bool(is_int(value));
 }
 
 inline value_t x_ineg(value_t x) {
@@ -51,31 +51,31 @@ value_t x_int_min(value_t x, value_t y) {
   return x_int(int_min(to_int64(x), to_int64(y)));
 }
 
-value_t x_int_greater_p(value_t x, value_t y) {
+value_t x_int_greater(value_t x, value_t y) {
   return x_bool(to_int64(x) > to_int64(y));
 }
 
-value_t x_int_less_p(value_t x, value_t y) {
+value_t x_int_less(value_t x, value_t y) {
   return x_bool(to_int64(x) < to_int64(y));
 }
 
-value_t x_int_greater_or_equal_p(value_t x, value_t y) {
+value_t x_int_greater_or_equal(value_t x, value_t y) {
   return x_bool(to_int64(x) >= to_int64(y));
 }
 
-value_t x_int_less_or_equal_p(value_t x, value_t y) {
+value_t x_int_less_or_equal(value_t x, value_t y) {
   return x_bool(to_int64(x) <= to_int64(y));
 }
 
-value_t x_int_positive_p(value_t x) {
+value_t x_int_positive(value_t x) {
   return x_bool(to_int64(x) > 0);
 }
 
-value_t x_int_non_negative_p(value_t x) {
+value_t x_int_non_negative(value_t x) {
   return x_bool(to_int64(x) >= 0);
 }
 
-value_t x_int_non_zero_p(value_t x) {
+value_t x_int_non_zero(value_t x) {
   return x_bool(to_int64(x) != 0);
 }
 
@@ -100,7 +100,7 @@ value_t x_int_compare_descending(value_t x, value_t y) {
 }
 
 inline value_t x_int_to_float(value_t x) {
-  if (!x_int_p(x)) {
+  if (!x_is_int(x)) {
     who_printf("type mismatch\n");
     exit(1);
   }

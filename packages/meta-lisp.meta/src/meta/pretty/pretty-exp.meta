@@ -69,7 +69,7 @@
        []
        [(pretty-exp head) (pretty-exp body)]))
     ((begin-exp sequence location)
-     (if (equal? (list-length sequence) 1)
+     (if (equal (list-length sequence) 1)
        (pretty-exp (car sequence))
        (ppml/pretty-syntax "begin"
          []
@@ -102,7 +102,7 @@
     ((list-exp elements location)
       (ppml/pretty-list (list-map pretty-exp elements)))
     ((string-concat-exp elements location)
-     (if (list-empty? elements)
+     (if (list-is-empty elements)
        (ppml/group [(ppml/text "(@string") (ppml/text ")")])
        (ppml/pretty-syntax "@string" [] (list-map pretty-exp elements))))
     ((set-exp elements location)
@@ -129,7 +129,7 @@
          [(ppml/text (@string "(" params-str ")"))]
          [(pretty-exp body)])))
     ((match-exp targets clauses location)
-     (if (equal? (list-length targets) 1)
+     (if (equal (list-length targets) 1)
        (ppml/pretty-syntax "match"
          [(list-head (list-map pretty-exp targets))]
          (list-map pretty-match-clause clauses))
@@ -182,7 +182,7 @@
 (define (pretty-match-clause clause)
   (let ((patterns (match-clause-patterns clause))
         (body (pretty-exp-body (match-clause-body clause))))
-    (if (equal? (list-length patterns) 1)
+    (if (equal (list-length patterns) 1)
       (ppml/pretty-application (nothing)
         (cons (pretty-exp (list-head patterns)) body))
       (let ((patterns-node (ppml/pretty-application (nothing)

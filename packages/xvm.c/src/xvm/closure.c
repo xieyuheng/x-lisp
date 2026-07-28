@@ -25,13 +25,13 @@ void closure_free(closure_t *self) {
   free(self);
 }
 
-bool closure_p(value_t value) {
-  return object_p(value) &&
+bool is_closure(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &closure_class;
 }
 
 closure_t *to_closure(value_t value) {
-  assert(closure_p(value));
+  assert(is_closure(value));
   return (closure_t *) to_object(value);
 }
 
@@ -41,7 +41,7 @@ bool closure_equal(const closure_t *lhs, const closure_t *rhs) {
   if (lhs->args == rhs->args) return true;
 
   for (size_t i = 0; i < lhs->size; i++) {
-    if (!equal_p(lhs->args[i], rhs->args[i])) return false;
+    if (!equal(lhs->args[i], rhs->args[i])) return false;
   }
 
   return true;
@@ -61,14 +61,14 @@ void closure_format(buffer_t *buffer, object_circle_ctx_t *ctx, const closure_t 
 
 struct closure_child_iter_t {
   const closure_t *closure;
-  bool definition_consumed_p;
+  bool definition_consumed;
   size_t index;
 };
 
 closure_child_iter_t *make_closure_child_iter(const closure_t *closure) {
   closure_child_iter_t *self = new(closure_child_iter_t);
   self->closure = closure;
-  self->definition_consumed_p = false;
+  self->definition_consumed = false;
   self->index = 0;
   return self;
 }
@@ -78,14 +78,14 @@ void closure_child_iter_free(closure_child_iter_t *self) {
 }
 
 object_t *closure_child_iter_next(closure_child_iter_t *iter) {
-  if (!iter->definition_consumed_p) {
-    iter->definition_consumed_p = true;
+  if (!iter->definition_consumed) {
+    iter->definition_consumed = true;
     return (object_t *) iter->closure->definition;
   }
 
   if (iter->index < iter->closure->size) {
     value_t value = iter->closure->args[iter->index++];
-    return object_p(value)
+    return is_object(value)
       ? to_object(value)
       : closure_child_iter_next(iter);
   }

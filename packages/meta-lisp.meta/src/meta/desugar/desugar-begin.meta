@@ -6,9 +6,9 @@
 
 (define (desugar-begin sequence location)
   (cond
-    ((list-empty? sequence)
+    ((list-is-empty sequence)
      (error-with-location "(desugar-begin) (begin) must not be empty" location))
-    ((equal? 1 (list-length sequence))
+    ((equal 1 (list-length sequence))
      (car sequence))
     (else
      (match (car sequence)
@@ -17,7 +17,7 @@
                (remaining (list-drop (list-length local-defines) sequence)))
           (letrec-exp
             (list-map desugar-local-define local-defines)
-            (if (list-empty? remaining)
+            (if (list-is-empty remaining)
               (qualified-var-exp 'meta-builtin 'builtin 'void location)
               (desugar-begin remaining location))
             location)))
@@ -36,7 +36,7 @@
     ((local-define-exp name parameters body location)
      (make-binding
        name
-       (if (list-empty? parameters)
+       (if (list-is-empty parameters)
          body
          (lambda-exp parameters body location))
        location))))
@@ -46,8 +46,8 @@
       (list-t exp-t)))
 
 (define (collect-adjacent-local-defines sequence local-defines)
-  (if (or (list-empty? sequence)
-          (not (local-define-exp? (car sequence))))
+  (if (or (list-is-empty sequence)
+          (not (is-local-define-exp (car sequence))))
     local-defines
     (collect-adjacent-local-defines
       (cdr sequence)

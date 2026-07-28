@@ -4,25 +4,25 @@ value_t x_bool(bool target) {
   return target ? x_true : x_false;
 }
 
-bool bool_p(value_t value) {
+bool is_bool(value_t value) {
   return value == x_true || value == x_false;
 }
 
-bool true_p(value_t value) {
+bool is_true(value_t value) {
   return value == x_true;
 }
 
-bool false_p(value_t value) {
+bool is_false(value_t value) {
   return value == x_false;
 }
 
 bool to_bool(value_t value) {
-  assert(bool_p(value));
+  assert(is_bool(value));
   return value == x_true;
 }
 
-value_t x_bool_p(value_t value) {
-  return x_bool(bool_p(value));
+value_t x_is_bool(value_t value) {
+  return x_bool(is_bool(value));
 }
 
 value_t x_not(value_t x) {

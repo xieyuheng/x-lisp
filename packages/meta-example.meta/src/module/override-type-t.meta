@@ -5,7 +5,7 @@
   (b-type))
 
 (define-test override-type-t-test
-  (assert (a-type? (a-type)))
-  (assert (b-type? (b-type)))
-  (assert-not (a-type? (b-type)))
-  (assert-not (b-type? (a-type))))
+  (assert (is-a-type (a-type)))
+  (assert (is-b-type (b-type)))
+  (assert-not (is-a-type (b-type)))
+  (assert-not (is-b-type (a-type))))

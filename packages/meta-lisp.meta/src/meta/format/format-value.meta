@@ -8,7 +8,7 @@
     ((curry-value target arity args)
      (let ((args-str (format-values args))
            (target-str (format-value target)))
-       (if (equal? args-str "")
+       (if (equal args-str "")
          target-str
          (@string "(" target-str " " args-str ")"))))
     ((definition-value definition)

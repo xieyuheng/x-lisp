@@ -46,6 +46,6 @@
     ((nil) (nil))
     ((li head (nil)) (li head (nil)))
     ((li first (li second rest))
-     (if (equal? first second)
+     (if (equal first second)
        (my-list-adjacent-dedup (li second rest))
        (li first (my-list-adjacent-dedup (li second rest)))))))

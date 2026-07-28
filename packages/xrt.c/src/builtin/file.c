@@ -34,7 +34,7 @@ value_t x_file_writeln(value_t file, value_t string) {
 }
 
 value_t x_print(value_t x) {
-  if (xstring_p(x)) {
+  if (is_xstring(x)) {
     print_string(xstring_string(to_xstring(x)));
   } else {
     print_value(x);

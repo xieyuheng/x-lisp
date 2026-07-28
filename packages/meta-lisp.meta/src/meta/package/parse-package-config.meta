@@ -13,13 +13,13 @@
       (parse-compiler entries))))
 
 (define (parse-dependencies entries)
-  (if (hash-has? "dependencies" entries)
+  (if (hash-has "dependencies" entries)
     (let ((dep-entries (json-object-entries (hash-get "dependencies" entries))))
       (hash-map-value json-string-value dep-entries))
     (make-hash)))
 
 (define (parse-prelude entries)
-  (if (hash-has? "prelude" entries)
+  (if (hash-has "prelude" entries)
     (let ((prelude-entries (json-object-entries (hash-get "prelude" entries))))
       (hash-map-value
         (lambda (v)
@@ -29,12 +29,12 @@
     (make-hash)))
 
 (define (parse-entry entries)
-  (if (hash-has? "entry" entries)
+  (if (hash-has "entry" entries)
     (just (json-string-value (hash-get "entry" entries)))
     (nothing)))
 
 (define (parse-compiler entries)
-  (if (hash-has? "compiler" entries)
+  (if (hash-has "compiler" entries)
     (let ((compiler-entries (json-object-entries (hash-get "compiler" entries))))
       (hash-map-value json-string-value compiler-entries))
     (make-hash)))

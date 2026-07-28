@@ -2,23 +2,23 @@
 
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
-  (box-empty? (-> (box-t E) bool-t))
+  (box-is-empty (-> (box-t E) bool-t))
   (box-put! (-> E (box-t E) (box-t E)))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 
 (define (make-box)
   (make-list))
 
-(define (box-empty? box)
-  (list-empty? box))
+(define (box-is-empty box)
+  (list-is-empty box))
 
 (define (box-put! value box)
-  (if (box-empty? box)
+  (if (box-is-empty box)
     (list-push! value box)
     (list-put! 0 value box)))
 
 (define (box-get-maybe box)
-  (if (box-empty? box)
+  (if (box-is-empty box)
     (nothing)
     (just (car box))))
 
@@ -46,9 +46,9 @@
 
 (define-test box-test
   (let ((box (make-box)))
-    (assert (box-empty? box))
+    (assert (box-is-empty box))
     (assert-equal (nothing) (box-get-maybe box))
     (box-put! 42 box)
-    (assert-not (box-empty? box))
+    (assert-not (box-is-empty box))
     (assert-equal 42 (box-get box))
     (assert-equal (just 42) (box-get-maybe box))))

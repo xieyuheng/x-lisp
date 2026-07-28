@@ -380,7 +380,7 @@ function explicateInIf(
       return [
         B.TestInstr(
           B.ApplyExp(
-            B.VarExp("meta-builtin/builtin/same?", condition.location),
+            B.VarExp("meta-builtin/builtin/same", condition.location),
             [
               B.VarExp(condition.name, condition.location),
               B.VarExp("meta-builtin/builtin/true", condition.location),

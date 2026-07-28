@@ -3,7 +3,7 @@
 (define-test path-resolve-test
   (assert-equal (path-resolve "/etc") "/etc")
   (assert-equal (path-resolve "/a/b") "/a/b")
-  (assert (path-absolute? (path-resolve "foo")))
-  (assert (path-absolute? (path-resolve "./bar")))
+  (assert (path-is-absolute (path-resolve "foo")))
+  (assert (path-is-absolute (path-resolve "./bar")))
   (assert-equal (path-resolve "foo")
     (path-normalize (path-join (current-directory) "foo"))))

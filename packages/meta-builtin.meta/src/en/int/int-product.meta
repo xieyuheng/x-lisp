@@ -5,7 +5,7 @@
       int-t))
 
 (define (int-product xs)
-  (if (list-empty? xs)
+  (if (list-is-empty xs)
     1
     (imul (car xs) (int-product (cdr xs)))))
 

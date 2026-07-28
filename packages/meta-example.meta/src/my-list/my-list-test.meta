@@ -3,11 +3,11 @@
 (define-test my-list-test
   ;; data constructor predicate
 
-  (assert (nil? (nil)))
-  (assert (li? (li 1 (li 2 (li 3 (nil))))))
+  (assert (is-nil (nil)))
+  (assert (is-li (li 1 (li 2 (li 3 (nil))))))
 
-  (assert-not (li? (nil)))
-  (assert-not (nil? (li 1 (li 2 (li 3 (nil))))))
+  (assert-not (is-li (nil)))
+  (assert-not (is-nil (li 1 (li 2 (li 3 (nil))))))
 
   ;; data accessor
 

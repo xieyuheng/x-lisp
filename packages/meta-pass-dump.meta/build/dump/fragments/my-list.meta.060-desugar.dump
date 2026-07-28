@@ -3,9 +3,9 @@
 (module my-list)
 
 (define-algebraic-type (my-list-t E)
-  ((nil) nil?)
+  ((nil) is-nil)
   ((li (head E) (tail (my-list-t E)))
-   li?
+   is-li
    (head li-head li-put-head!)
    (tail li-tail li-put-tail!)))
 
@@ -15,12 +15,12 @@
   (let ((list (meta-builtin/builtin/make-list)))
     (begin (meta-builtin/builtin/list-push! nil list) list)))
 
-(admit nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(admit is-nil (polymorphic (E) (-> (my-list-t E) bool-t)))
 
-(define (nil? value)
-  (if (list? value)
-    (if (equal? (list-length value) 1)
-      (equal? (list-head value) nil)
+(define (is-nil value)
+  (if (is-list value)
+    (if (equal (list-length value) 1)
+      (equal (list-head value) nil)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -34,12 +34,12 @@
         (meta-builtin/builtin/list-push! head list)
         (begin (meta-builtin/builtin/list-push! tail list) list)))))
 
-(admit li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(admit is-li (polymorphic (E) (-> (my-list-t E) bool-t)))
 
-(define (li? value)
-  (if (list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) li)
+(define (is-li value)
+  (if (is-list value)
+    (if (equal (list-length value) 3)
+      (equal (list-head value) li)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -61,7 +61,7 @@
 (define (li-put-tail! value target) (list-put! 2 value target))
 
 (define (my-list-head list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/string-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
@@ -79,13 +79,13 @@
       (meta-builtin/builtin/make-source-span
        (meta-builtin/builtin/make-source-position 123 7 3)
        (meta-builtin/builtin/make-source-position 128 7 8))))
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list))) head))
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-tail list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/string-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
@@ -103,46 +103,46 @@
       (meta-builtin/builtin/make-source-span
        (meta-builtin/builtin/make-source-position 194 11 3)
        (meta-builtin/builtin/make-source-position 199 11 8))))
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list))) tail))
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-length list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     0
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list)))
           (iadd 1 (my-list-length tail))))
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-map f list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (nil)
-    (if (self/my-list/li? list)
+    (if (self/my-list/is-li list)
       (let ((tail (self/my-list/li-tail list)))
         (let ((head (self/my-list/li-head list)))
           (li (f head) (my-list-map f tail))))
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-append left right)
-  (if (self/my-list/nil? left)
+  (if (self/my-list/is-nil left)
     right
-    (if (self/my-list/li? left)
+    (if (self/my-list/is-li left)
       (let ((tail (self/my-list/li-tail left)))
         (let ((head (self/my-list/li-head left)))
           (li head (my-list-append tail right))))
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-map-zip f list1 list2)
-  (if (self/my-list/nil? list1)
+  (if (self/my-list/is-nil list1)
     (let ((_ list2)) (nil))
-    (if (self/my-list/li? list1)
-      (if (self/my-list/nil? list2)
+    (if (self/my-list/is-li list1)
+      (if (self/my-list/is-nil list2)
         (let ((tail1 (self/my-list/li-tail list1)))
           (let ((head1 (self/my-list/li-head list1))) (nil)))
-        (if (self/my-list/li? list2)
+        (if (self/my-list/is-li list2)
           (let ((tail2 (self/my-list/li-tail list2)))
             (let ((head2 (self/my-list/li-head list2)))
               (let ((tail1 (self/my-list/li-tail list1)))
@@ -152,13 +152,13 @@
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-map-zip-2 f list1 list2)
-  (if (self/my-list/nil? list1)
+  (if (self/my-list/is-nil list1)
     (let ((_ list2)) (nil))
-    (if (self/my-list/li? list1)
-      (if (self/my-list/nil? list2)
+    (if (self/my-list/is-li list1)
+      (if (self/my-list/is-nil list2)
         (let ((_ list1)) (nil))
-        (if (self/my-list/li? list2)
-          (if (self/my-list/nil? list1)
+        (if (self/my-list/is-li list2)
+          (if (self/my-list/is-nil list1)
             (meta-builtin/builtin/error-with-location
              (meta-builtin/builtin/string-concat
               (let ((list (meta-builtin/builtin/make-list)))
@@ -182,8 +182,8 @@
               (meta-builtin/builtin/make-source-span
                (meta-builtin/builtin/make-source-position 872 37 3)
                (meta-builtin/builtin/make-source-position 882 37 13))))
-            (if (self/my-list/li? list1)
-              (if (self/my-list/nil? list2)
+            (if (self/my-list/is-li list1)
+              (if (self/my-list/is-nil list2)
                 (meta-builtin/builtin/error-with-location
                  (meta-builtin/builtin/string-concat
                   (let ((list (meta-builtin/builtin/make-list)))
@@ -209,7 +209,7 @@
                   (meta-builtin/builtin/make-source-span
                    (meta-builtin/builtin/make-source-position 872 37 3)
                    (meta-builtin/builtin/make-source-position 882 37 13))))
-                (if (self/my-list/li? list2)
+                (if (self/my-list/is-li list2)
                   (let ((tail2 (self/my-list/li-tail list2)))
                     (let ((head2 (self/my-list/li-head list2)))
                       (let ((tail1 (self/my-list/li-tail list1)))
@@ -221,16 +221,16 @@
       (meta-builtin/builtin/error "cond mismatch"))))
 
 (define (my-list-adjacent-dedup list)
-  (if (self/my-list/nil? list)
+  (if (self/my-list/is-nil list)
     (nil)
-    (if (self/my-list/li? list)
-      (if (self/my-list/nil? (self/my-list/li-tail list))
+    (if (self/my-list/is-li list)
+      (if (self/my-list/is-nil (self/my-list/li-tail list))
         (let ((head (self/my-list/li-head list))) (li head (nil)))
-        (if (self/my-list/li? (self/my-list/li-tail list))
+        (if (self/my-list/is-li (self/my-list/li-tail list))
           (let ((rest (self/my-list/li-tail (self/my-list/li-tail list))))
             (let ((second (self/my-list/li-head (self/my-list/li-tail list))))
               (let ((first (self/my-list/li-head list)))
-                (if (equal? first second)
+                (if (equal first second)
                   (my-list-adjacent-dedup (li second rest))
                   (li first (my-list-adjacent-dedup (li second rest)))))))
           (meta-builtin/builtin/error "cond mismatch")))

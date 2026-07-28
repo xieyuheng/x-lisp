@@ -10,7 +10,7 @@
   (-> int-t int-t (list-t int-t)))
 
 (define (list-range-aux length current)
-  (if (int-greater-or-equal? current length)
+  (if (int-greater-or-equal current length)
     []
     (cons current (list-range-aux length (iadd current 1)))))
 

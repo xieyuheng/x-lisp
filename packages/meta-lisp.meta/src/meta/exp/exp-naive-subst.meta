@@ -16,19 +16,19 @@
     ((sexp-exp sexp location) exp)
     ((comment-exp content location) exp)
     ((var-exp var-name location)
-     (if (equal? var-name name) rhs exp))
+     (if (equal var-name name) rhs exp))
     ((lambda-exp parameters body location)
-     (if (list-member? name parameters)
+     (if (list-member name parameters)
        exp
        (lambda-exp parameters (exp-naive-subst body name rhs) location)))
     ((polymorphic-exp parameters body location)
-     (if (list-member? name parameters)
+     (if (list-member name parameters)
        exp
        (polymorphic-exp parameters (exp-naive-subst body name rhs) location)))
     ((let1-exp binding-name let-rhs body location)
      (let1-exp binding-name
                (exp-naive-subst let-rhs name rhs)
-               (if (equal? binding-name name) body (exp-naive-subst body name rhs))
+               (if (equal binding-name name) body (exp-naive-subst body name rhs))
                location))
     ((let-exp bindings body location)
      (let ((result (naive-subst-let-star bindings name rhs false))
@@ -39,7 +39,7 @@
                 location)))
     ((letrec-exp bindings body location)
      (let ((all-names (list-map binding-name bindings))
-            (shadowed (list-member? name all-names)))
+            (shadowed (list-member name all-names)))
        (letrec-exp (if shadowed bindings
                      (list-map (lambda (b)
                                  (make-binding (binding-name b)
@@ -121,7 +121,7 @@
                                                                   (set-union s (pattern-bound-names p)))
                                                                (make-set)
                                                                (match-clause-patterns clause)))))
-                                       (if (list-member? name patterns-names)
+                                       (if (list-member name patterns-names)
                                          clause
                                          (make-match-clause
                                            (match-clause-patterns clause)
@@ -132,13 +132,13 @@
     (else exp)))
 
 (define (naive-subst-let-star bindings name rhs shadowed)
-  (if (list-empty? bindings)
+  (if (list-is-empty bindings)
     (make-pair [] shadowed)
     (let ((binding (list-head bindings))
            (rest (list-tail bindings))
            (b-name (binding-name binding))
            (new-rhs (if shadowed (binding-rhs binding) (exp-naive-subst (binding-rhs binding) name rhs)))
-           (next-shadowed (or shadowed (equal? b-name name)))
+           (next-shadowed (or shadowed (equal b-name name)))
            (rest-result (naive-subst-let-star rest name rhs next-shadowed))
            (rest-bindings (pair-first rest-result))
            (final-shadowed (pair-second rest-result)))
@@ -146,13 +146,13 @@
                  final-shadowed))))
 
 (define (naive-subst-begin sequence name rhs location)
-  (if (list-empty? sequence)
+  (if (list-is-empty sequence)
     (begin-exp [] location)
     (let ((element (list-head sequence))
            (rest (list-tail sequence)))
       (match element
         ((local-define-exp local-name parameters body loc)
-         (let ((shadowed (equal? local-name name))
+         (let ((shadowed (equal local-name name))
                 (new-body (if shadowed body (exp-naive-subst body name rhs)))
                 (rest-exp (naive-subst-begin rest name rhs location)))
            (begin-exp (cons (local-define-exp local-name parameters new-body loc)

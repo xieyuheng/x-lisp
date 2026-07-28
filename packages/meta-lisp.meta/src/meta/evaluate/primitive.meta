@@ -6,7 +6,7 @@
 
 (claim setup-primitive (-> void-t))
 (define (setup-primitive)
-  (when (box-empty? primitive-initialized)
+  (when (box-is-empty primitive-initialized)
     (box-put! true primitive-initialized)
     (define-primitive-variable 'type-t (type-value (type-type)))
     (define-primitive-variable 'int-t (type-value (atom-type 'int)))

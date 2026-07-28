@@ -6,8 +6,8 @@
         (list-t A))))
 
 (define (list-take n list)
-  (assert (int-non-negative? n))
-  (if (or (equal? n 0) (list-empty? list))
+  (assert (int-is-non-negative n))
+  (if (or (equal n 0) (list-is-empty list))
     []
     (cons (car list) (list-take (isub n 1) (cdr list)))))
 
@@ -24,8 +24,8 @@
         (list-t A))))
 
 (define (list-drop n list)
-  (assert (int-non-negative? n))
-  (if (or (equal? n 0) (list-empty? list))
+  (assert (int-is-non-negative n))
+  (if (or (equal n 0) (list-is-empty list))
     list
     (list-drop (isub n 1) (cdr list))))
 

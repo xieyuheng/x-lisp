@@ -45,13 +45,13 @@ size_t keyword_length(const keyword_t *self) {
   return string_length(self->string);
 }
 
-bool keyword_p(value_t value) {
-  return object_p(value) &&
+bool is_keyword(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &keyword_class;
 }
 
 keyword_t *to_keyword(value_t value) {
-  assert(keyword_p(value));
+  assert(is_keyword(value));
   return (keyword_t *) to_object(value);
 }
 

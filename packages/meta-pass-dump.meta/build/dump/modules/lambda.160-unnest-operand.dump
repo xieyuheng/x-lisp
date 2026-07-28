@@ -4,13 +4,13 @@
       (meta-builtin/builtin/list-push! var-exp list)
       (begin (meta-builtin/builtin/list-push! name list) list))))
 
-(define (var-exp? value)
-  (if (meta-builtin/builtin/list? value)
+(define (is-var-exp value)
+  (if (meta-builtin/builtin/is-list value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/list-length value)))
-          (meta-builtin/builtin/equal? unnested.1 2))
+          (meta-builtin/builtin/equal unnested.1 2))
       (let ((unnested.2 (meta-builtin/builtin/list-head value)))
-        (meta-builtin/builtin/equal? unnested.2 var-exp))
+        (meta-builtin/builtin/equal unnested.2 var-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -27,13 +27,13 @@
         (meta-builtin/builtin/list-push! target list)
         (begin (meta-builtin/builtin/list-push! arg list) list)))))
 
-(define (apply-exp? value)
-  (if (meta-builtin/builtin/list? value)
+(define (is-apply-exp value)
+  (if (meta-builtin/builtin/is-list value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/list-length value)))
-          (meta-builtin/builtin/equal? unnested.1 3))
+          (meta-builtin/builtin/equal unnested.1 3))
       (let ((unnested.2 (meta-builtin/builtin/list-head value)))
-        (meta-builtin/builtin/equal? unnested.2 apply-exp))
+        (meta-builtin/builtin/equal unnested.2 apply-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -55,13 +55,13 @@
         (meta-builtin/builtin/list-push! parameter list)
         (begin (meta-builtin/builtin/list-push! body list) list)))))
 
-(define (lambda-exp? value)
-  (if (meta-builtin/builtin/list? value)
+(define (is-lambda-exp value)
+  (if (meta-builtin/builtin/is-list value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/list-length value)))
-          (meta-builtin/builtin/equal? unnested.1 3))
+          (meta-builtin/builtin/equal unnested.1 3))
       (let ((unnested.2 (meta-builtin/builtin/list-head value)))
-        (meta-builtin/builtin/equal? unnested.2 lambda-exp))
+        (meta-builtin/builtin/equal unnested.2 lambda-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -85,13 +85,13 @@
           (meta-builtin/builtin/list-push! rhs list)
           (begin (meta-builtin/builtin/list-push! body list) list))))))
 
-(define (let-exp? value)
-  (if (meta-builtin/builtin/list? value)
+(define (is-let-exp value)
+  (if (meta-builtin/builtin/is-list value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/list-length value)))
-          (meta-builtin/builtin/equal? unnested.1 4))
+          (meta-builtin/builtin/equal unnested.1 4))
       (let ((unnested.2 (meta-builtin/builtin/list-head value)))
-        (meta-builtin/builtin/equal? unnested.2 let-exp))
+        (meta-builtin/builtin/equal unnested.2 let-exp))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -126,13 +126,13 @@
           (meta-builtin/builtin/list-push! parameter list)
           (begin (meta-builtin/builtin/list-push! body list) list))))))
 
-(define (closure-value? value)
-  (if (meta-builtin/builtin/list? value)
+(define (is-closure-value value)
+  (if (meta-builtin/builtin/is-list value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/list-length value)))
-          (meta-builtin/builtin/equal? unnested.1 4))
+          (meta-builtin/builtin/equal unnested.1 4))
       (let ((unnested.2 (meta-builtin/builtin/list-head value)))
-        (meta-builtin/builtin/equal? unnested.2 closure-value))
+        (meta-builtin/builtin/equal unnested.2 closure-value))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
@@ -153,11 +153,11 @@
   (meta-builtin/builtin/list-put! 3 value target))
 
 (define (evaluate exp env)
-  (if (self/lambda/var-exp? exp)
+  (if (self/lambda/is-var-exp exp)
     (let ((name (self/lambda/var-exp-name exp)))
       (if
           (let ((unnested.1 (self/lambda/env-lookup name env)))
-            (meta-builtin/builtin/just? unnested.1))
+            (meta-builtin/builtin/is-just unnested.1))
         (let
             ((value
               (let ((unnested.2 (self/lambda/env-lookup name env)))
@@ -165,7 +165,7 @@
           value)
         (if
             (let ((unnested.3 (self/lambda/env-lookup name env)))
-              (meta-builtin/builtin/nothing? unnested.3))
+              (meta-builtin/builtin/is-nothing unnested.3))
           (let
               ((unnested.4 (meta-builtin/builtin/make-source-position 715 25 18)))
             (let
@@ -198,17 +198,17 @@
                   (meta-builtin/builtin/error-with-location
                    "cond mismatch"
                    unnested.11))))))))
-    (if (self/lambda/apply-exp? exp)
+    (if (self/lambda/is-apply-exp exp)
       (let ((arg (self/lambda/apply-exp-arg exp)))
         (let ((target (self/lambda/apply-exp-target exp)))
           (let ((unnested.12 (self/lambda/evaluate target env)))
             (let ((unnested.13 (self/lambda/evaluate arg env)))
               (self/lambda/apply unnested.12 unnested.13)))))
-      (if (self/lambda/lambda-exp? exp)
+      (if (self/lambda/is-lambda-exp exp)
         (let ((body (self/lambda/lambda-exp-body exp)))
           (let ((parameter (self/lambda/lambda-exp-parameter exp)))
             (self/lambda/closure-value env parameter body)))
-        (if (self/lambda/let-exp? exp)
+        (if (self/lambda/is-let-exp exp)
           (let ((body.1 (self/lambda/let-exp-body exp)))
             (let ((rhs (self/lambda/let-exp-rhs exp)))
               (let ((name.1 (self/lambda/let-exp-name exp)))
@@ -237,7 +237,7 @@
                    unnested.18))))))))))
 
 (define (apply target arg)
-  (if (self/lambda/closure-value? target)
+  (if (self/lambda/is-closure-value target)
     (let ((body (self/lambda/closure-value-body target)))
       (let ((parameter (self/lambda/closure-value-parameter target)))
         (let ((env (self/lambda/closure-value-env target)))

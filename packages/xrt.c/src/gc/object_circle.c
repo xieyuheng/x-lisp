@@ -13,12 +13,12 @@ void object_circle_ctx_free(object_circle_ctx_t *self) {
   free(self);
 }
 
-bool object_circle_start_p(object_circle_ctx_t *self, object_t *object) {
+bool is_object_circle_start(object_circle_ctx_t *self, object_t *object) {
   return hash_has(self->circle_indexes, object)
     && !set_member(self->occurred_objects, object);
 }
 
-bool object_circle_end_p(object_circle_ctx_t *self, object_t *object) {
+bool is_object_circle_end(object_circle_ctx_t *self, object_t *object) {
   return hash_has(self->circle_indexes, object)
     && set_member(self->occurred_objects, object);
 }

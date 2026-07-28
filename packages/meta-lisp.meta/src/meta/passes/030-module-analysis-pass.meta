@@ -42,10 +42,10 @@
           (hash-put! path scope (module-analysis-report-fragment-scopes report))
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
-              (if (outcome-error? (ensure-imported-mod-exists package stmt))
+              (if (is-outcome-error (ensure-imported-mod-exists package stmt))
                 (ignore (module-analysis-report-put-outcome! (outcome-error) report))
                 (execute-import package scope stmt)))))))
-    (when (hash-has? "dump" (package-config-compiler (package-config package)))
+    (when (hash-has "dump" (package-config-compiler (package-config package)))
       (dump-module-analysis-report report package))
     report))
 
@@ -69,7 +69,7 @@
       fragment-stmts
       (list-flat-map
         (lambda (stmt)
-          (if (private-stmt? stmt)
+          (if (is-private-stmt stmt)
             (private-stmt-names stmt)
             []))))))
 
@@ -83,7 +83,7 @@
     (for-hash-value (package-fragments package)
       (lambda (fragment)
         (let ((mod-name (fragment-mod-name fragment)))
-          (if (hash-has? mod-name result)
+          (if (hash-has mod-name result)
             (let ((existing (hash-get mod-name result)))
               (for-list (extract fragment) (lambda (name) (set-add! name existing))))
             (ignore (hash-put! mod-name (list-to-set (extract fragment)) result))))))
@@ -94,7 +94,7 @@
       package-t))
 
 (define (lookup-package package pkg-name)
-  (if (equal? pkg-name 'self)
+  (if (equal pkg-name 'self)
     package
     (hash-get pkg-name (package-dependencies package))))
 
@@ -105,7 +105,7 @@
 (define (lookup-mod-defined-names package pkg-name mod-name)
   (let ((target (lookup-package package pkg-name))
          (defined (collect-defined-names target)))
-    (if (hash-has? mod-name defined)
+    (if (hash-has mod-name defined)
       (hash-get mod-name defined)
       (make-set))))
 
@@ -116,7 +116,7 @@
 (define (lookup-mod-private-names package pkg-name mod-name)
   (let ((target (lookup-package package pkg-name))
          (private (collect-private-names target)))
-    (if (hash-has? mod-name private)
+    (if (hash-has mod-name private)
       (hash-get mod-name private)
       (make-set))))
 
@@ -153,7 +153,7 @@
      (let ((imported-private-names (lookup-mod-private-names package pkg-name mod-name)))
        (for-list names
          (lambda (name)
-           (unless (set-member? name imported-private-names)
+           (unless (set-is-member name imported-private-names)
              (hash-put! name
                (make-qualified-name pkg-name mod-name name)
                (fragment-scope-imported-names scope)))))))
@@ -169,7 +169,7 @@
          (lambda (name)
            ;; - why: skip names already defined in the current module,
            ;;   so that local definitions can override imported ones.
-           (unless (set-member? name current-defined-names)
+           (unless (set-is-member name current-defined-names)
              (hash-put! name
                (make-qualified-name pkg-name mod-name name)
                (fragment-scope-imported-names scope)))))))
@@ -180,31 +180,31 @@
       outcome-t))
 
 (define (ensure-mod-exists package pkg-name mod-name location)
-  (if (equal? pkg-name 'self)
-    (if (not (has-fragment-of-mod-name? (hash-values (package-fragments package)) mod-name))
+  (if (equal pkg-name 'self)
+    (if (not (has-fragment-of-mod-name (hash-values (package-fragments package)) mod-name))
       (let ((message (@string "undefined module: " (symbol-to-string mod-name))))
         (println (format-message-with-source-location message location))
         (outcome-error))
       (outcome-ok))
-    (if (not (hash-has? pkg-name (package-dependencies package)))
+    (if (not (hash-has pkg-name (package-dependencies package)))
       (let ((message (@string "undefined package: " (symbol-to-string pkg-name))))
         (println (format-message-with-source-location message location))
         (outcome-error))
       (let ((dependency (hash-get pkg-name (package-dependencies package))))
-        (if (not (has-fragment-of-mod-name? (hash-values (package-fragments dependency)) mod-name))
+        (if (not (has-fragment-of-mod-name (hash-values (package-fragments dependency)) mod-name))
           (let ((message (@string "undefined module: " (symbol-to-string pkg-name) "/" (symbol-to-string mod-name))))
             (println (format-message-with-source-location message location))
             (outcome-error))
           (outcome-ok))))))
 
-(claim has-fragment-of-mod-name?
+(claim has-fragment-of-mod-name
   (-> (list-t fragment-t) symbol-t
       bool-t))
 
-(define (has-fragment-of-mod-name? fragments mod-name)
-  (list-some?
+(define (has-fragment-of-mod-name fragments mod-name)
+  (list-some
     (lambda (fragment)
-      (equal? (fragment-mod-name fragment) mod-name))
+      (equal (fragment-mod-name fragment) mod-name))
     fragments))
 
 (define (close-top lines)
@@ -225,10 +225,10 @@
       (string-compare-lexical (hash-entry-key a) (hash-entry-key b)))
     (hash-entries entries)))
 
-(define (format-name-value entry debug?)
+(define (format-name-value entry debug)
   (@string
     (symbol-to-string (hash-entry-key entry)) " "
-    (if debug?
+    (if debug
       (let ((names (hash-entry-value entry)))
         (string-join " "
           (list-map symbol-to-string
@@ -242,7 +242,7 @@
   (-> module-analysis-report-t bool-t
       string-t))
 
-(define (format-module-analysis-report result debug?)
+(define (format-module-analysis-report result debug)
   (let ((lines []))
     (list-push! "(module-analysis-report" lines)
     (list-push! "  (fragment-scopes" lines)
@@ -254,7 +254,7 @@
           (list-push!
             (@string "      (mod-name " (symbol-to-string (fragment-scope-mod-name scope)) ")")
             lines)
-          (if debug?
+          (if debug
             (begin
               (list-push! "      (imported-names" lines)
               (for-list (sort-entries-by-symbol-key (fragment-scope-imported-names scope))

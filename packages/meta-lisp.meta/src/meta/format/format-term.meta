@@ -20,7 +20,7 @@
     ((apply-term target args location)
      (let ((target-str (format-term target))
            (args-str (format-terms args)))
-       (if (equal? args-str "")
+       (if (equal args-str "")
          (@string "(" target-str ")")
          (@string "(" target-str " " args-str ")"))))
     ((arrow-term arg-types ret-type location)

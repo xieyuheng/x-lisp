@@ -24,7 +24,7 @@
     ((data-type type-constructor arg-types)
      (let ((mod-name (mod-name (type-constructor-mod type-constructor)))
            (name (type-constructor-name type-constructor)))
-       (if (list-empty? arg-types)
+       (if (list-is-empty arg-types)
          (@string (symbol-to-string mod-name) "/" (symbol-to-string name))
          (@string "(" (symbol-to-string mod-name) "/" (symbol-to-string name) " "
                   (format-types arg-types) ")"))))

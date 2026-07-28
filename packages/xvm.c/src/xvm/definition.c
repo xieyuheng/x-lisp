@@ -60,13 +60,13 @@ void definition_free(definition_t *self) {
   }
 }
 
-bool definition_p(value_t value) {
-  return object_p(value) &&
+bool is_definition(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &definition_class;
 }
 
 definition_t *to_definition(value_t value) {
-  assert(definition_p(value));
+  assert(is_definition(value));
   return (definition_t *) to_object(value);
 }
 

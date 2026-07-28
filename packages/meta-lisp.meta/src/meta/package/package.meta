@@ -37,12 +37,12 @@
 
 (claim package-lookup-mod (-> package-t symbol-t symbol-t (maybe-t mod-t)))
 (define (package-lookup-mod package pkg-name name)
-  (let ((mods (if (or (equal? pkg-name 'self)
-                      (equal? pkg-name (package-id package)))
+  (let ((mods (if (or (equal pkg-name 'self)
+                      (equal pkg-name (package-id package)))
                 (package-mods package)
                 (package-mods
                   (hash-get pkg-name (package-dependencies package))))))
-    (if (hash-has? name mods)
+    (if (hash-has name mods)
       (just (hash-get name mods))
       (nothing))))
 
@@ -57,7 +57,7 @@
   (let ((results [])
         (seen (@set)))
     (define (collect package)
-      (unless (set-member? (package-id package) seen)
+      (unless (set-is-member (package-id package) seen)
         (set-add! (package-id package) seen)
         (hash-each-value collect (package-dependencies package))
         (list-push! package results)))

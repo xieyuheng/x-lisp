@@ -8,7 +8,7 @@ void symbol_free(symbol_t *self);
 const char *symbol_string(const symbol_t *self);
 size_t symbol_length(const symbol_t *self);
 
-bool symbol_p(value_t value);
+bool is_symbol(value_t value);
 symbol_t *to_symbol(value_t value);
 
 void symbol_format(buffer_t *buffer, object_circle_ctx_t *ctx, const symbol_t *self);

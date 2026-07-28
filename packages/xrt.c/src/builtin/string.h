@@ -1,9 +1,9 @@
 #pragma once
 
-x_fn_1_t x_string_p;
+x_fn_1_t x_is_string;
 x_fn_1_t x_string_length;
-x_fn_1_t x_string_empty_p;
-x_fn_1_t x_string_blank_p;
+x_fn_1_t x_string_is_empty;
+x_fn_1_t x_string_is_blank;
 x_fn_3_t x_string_substring;
 x_fn_2_t x_string_append;
 x_fn_1_t x_string_concat;
@@ -14,19 +14,19 @@ x_fn_1_t x_string_lines;
 x_fn_2_t x_string_split;
 x_fn_2_t x_string_join;
 x_fn_3_t x_string_replace;
-x_fn_2_t x_string_starts_with_p;
-x_fn_2_t x_string_ends_with_p;
+x_fn_2_t x_string_starts_with;
+x_fn_2_t x_string_ends_with;
 x_fn_1_t x_string_to_upper_case;
 x_fn_1_t x_string_to_lower_case;
 x_fn_2_t x_string_get_code_point;
-x_fn_2_t x_string_contains_p;
+x_fn_2_t x_string_contains;
 x_fn_2_t x_string_find_index;
 x_fn_1_t x_string_trim_left;
 x_fn_1_t x_string_trim_right;
 x_fn_1_t x_string_trim_start;
 x_fn_1_t x_string_trim_end;
 x_fn_1_t x_string_trim;
-x_fn_1_t x_string_int_p;
-x_fn_1_t x_string_float_p;
+x_fn_1_t x_string_is_int;
+x_fn_1_t x_string_is_float;
 x_fn_1_t x_string_to_int;
 x_fn_1_t x_string_to_float;

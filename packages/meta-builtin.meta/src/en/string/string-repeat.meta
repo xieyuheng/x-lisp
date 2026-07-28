@@ -5,7 +5,7 @@
       string-t))
 
 (define (string-repeat n string)
-  (if (equal? n 0)
+  (if (equal n 0)
     ""
     (string-append string (string-repeat (isub n 1) string))))
 

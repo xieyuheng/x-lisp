@@ -5,7 +5,7 @@ extern const object_class_t xfile_class;
 struct xfile_t {
   struct object_header_t header;
   file_t *file;
-  bool open_p;
+  bool is_open;
   char *pathname; // optional
 };
 
@@ -17,7 +17,7 @@ xfile_t *open_input_xfile(char *pathname);
 xfile_t *open_output_xfile(char *pathname);
 void xfile_close(xfile_t *self);
 
-bool xfile_p(value_t value);
+bool is_xfile(value_t value);
 xfile_t *to_xfile(value_t value);
 
 bool xfile_equal(const xfile_t *lhs, const xfile_t *rhs);

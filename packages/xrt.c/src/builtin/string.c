@@ -1,18 +1,18 @@
 #include "index.h"
 
-value_t x_string_p(value_t value) {
-  return x_bool(xstring_p(value));
+value_t x_is_string(value_t value) {
+  return x_bool(is_xstring(value));
 }
 
 value_t x_string_length(value_t string) {
   return x_int(xstring_length(to_xstring(string)));
 }
 
-value_t x_string_empty_p(value_t string) {
+value_t x_string_is_empty(value_t string) {
   return x_bool(xstring_is_empty(to_xstring(string)));
 }
 
-value_t x_string_blank_p(value_t string) {
+value_t x_string_is_blank(value_t string) {
   return x_bool(string_is_blank(xstring_string(to_xstring(string))));
 }
 
@@ -127,14 +127,14 @@ value_t x_string_replace(value_t pattern, value_t replacement, value_t string) {
   return result;
 }
 
-value_t x_string_starts_with_p(value_t prefix, value_t string) {
+value_t x_string_starts_with(value_t prefix, value_t string) {
   return x_bool(
     string_starts_with(
       xstring_string(to_xstring(string)),
       xstring_string(to_xstring(prefix))));
 }
 
-value_t x_string_ends_with_p(value_t suffix, value_t string) {
+value_t x_string_ends_with(value_t suffix, value_t string) {
   return x_bool(
     string_ends_with(
       xstring_string(to_xstring(string)),
@@ -162,7 +162,7 @@ value_t x_string_get_code_point(value_t index, value_t string) {
       to_int64(index)));
 }
 
-value_t x_string_contains_p(value_t substring, value_t string) {
+value_t x_string_contains(value_t substring, value_t string) {
   return x_bool(
     string_contains(
       xstring_string(to_xstring(string)),
@@ -211,27 +211,27 @@ value_t x_string_trim(value_t string) {
         xstring_string(to_xstring(string)))));
 }
 
-value_t x_string_int_p(value_t string) {
-  assert(xstring_p(string));
+value_t x_string_is_int(value_t string) {
+  assert(is_xstring(string));
   const char *str = xstring_string(to_xstring(string));
   return x_bool(string_is_int(str) && !string_contains(str, "."));
 }
 
-value_t x_string_float_p(value_t string) {
-  assert(xstring_p(string));
+value_t x_string_is_float(value_t string) {
+  assert(is_xstring(string));
   const char *str = xstring_string(to_xstring(string));
   return x_bool(string_is_double(str) && string_contains(str, "."));
 }
 
 value_t x_string_to_int(value_t string) {
-  assert(xstring_p(string));
+  assert(is_xstring(string));
   const char *str = xstring_string(to_xstring(string));
   assert(string_is_int(str));
   return x_int(string_parse_int(str));
 }
 
 value_t x_string_to_float(value_t string) {
-  assert(xstring_p(string));
+  assert(is_xstring(string));
   const char *str = xstring_string(to_xstring(string));
   assert(string_is_double(str));
   return x_float(string_parse_double(str));

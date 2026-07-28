@@ -3,17 +3,17 @@
 (module lambda)
 
 (define-algebraic-type exp-t
-  ((var-exp (name symbol-t)) var-exp? (name var-exp-name var-exp-put-name!))
+  ((var-exp (name symbol-t)) is-var-exp (name var-exp-name var-exp-put-name!))
   ((apply-exp (target exp-t) (arg exp-t))
-   apply-exp?
+   is-apply-exp
    (target apply-exp-target apply-exp-put-target!)
    (arg apply-exp-arg apply-exp-put-arg!))
   ((lambda-exp (parameter symbol-t) (body exp-t))
-   lambda-exp?
+   is-lambda-exp
    (parameter lambda-exp-parameter lambda-exp-put-parameter!)
    (body lambda-exp-body lambda-exp-put-body!))
   ((let-exp (name symbol-t) (rhs exp-t) (body exp-t))
-   let-exp?
+   is-let-exp
    (name let-exp-name let-exp-put-name!)
    (rhs let-exp-rhs let-exp-put-rhs!)
    (body let-exp-body let-exp-put-body!)))
@@ -22,12 +22,12 @@
 
 (define (var-exp name) ['var-exp name])
 
-(admit var-exp? (-> exp-t bool-t))
+(admit is-var-exp (-> exp-t bool-t))
 
-(define (var-exp? value)
-  (and (list? value)
-       (equal? (list-length value) 2)
-       (equal? (list-head value) 'var-exp)))
+(define (is-var-exp value)
+  (and (is-list value)
+       (equal (list-length value) 2)
+       (equal (list-head value) 'var-exp)))
 
 (admit var-exp-name (-> exp-t symbol-t))
 
@@ -41,12 +41,12 @@
 
 (define (apply-exp target arg) ['apply-exp target arg])
 
-(admit apply-exp? (-> exp-t bool-t))
+(admit is-apply-exp (-> exp-t bool-t))
 
-(define (apply-exp? value)
-  (and (list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) 'apply-exp)))
+(define (is-apply-exp value)
+  (and (is-list value)
+       (equal (list-length value) 3)
+       (equal (list-head value) 'apply-exp)))
 
 (admit apply-exp-target (-> exp-t exp-t))
 
@@ -68,12 +68,12 @@
 
 (define (lambda-exp parameter body) ['lambda-exp parameter body])
 
-(admit lambda-exp? (-> exp-t bool-t))
+(admit is-lambda-exp (-> exp-t bool-t))
 
-(define (lambda-exp? value)
-  (and (list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) 'lambda-exp)))
+(define (is-lambda-exp value)
+  (and (is-list value)
+       (equal (list-length value) 3)
+       (equal (list-head value) 'lambda-exp)))
 
 (admit lambda-exp-parameter (-> exp-t symbol-t))
 
@@ -95,12 +95,12 @@
 
 (define (let-exp name rhs body) ['let-exp name rhs body])
 
-(admit let-exp? (-> exp-t bool-t))
+(admit is-let-exp (-> exp-t bool-t))
 
-(define (let-exp? value)
-  (and (list? value)
-       (equal? (list-length value) 4)
-       (equal? (list-head value) 'let-exp)))
+(define (is-let-exp value)
+  (and (is-list value)
+       (equal (list-length value) 4)
+       (equal (list-head value) 'let-exp)))
 
 (admit let-exp-name (-> exp-t symbol-t))
 
@@ -139,7 +139,7 @@
 
 (define-algebraic-type value-t
   ((closure-value (env env-t) (parameter symbol-t) (body exp-t))
-   closure-value?
+   is-closure-value
    (env closure-value-env closure-value-put-env!)
    (parameter closure-value-parameter closure-value-put-parameter!)
    (body closure-value-body closure-value-put-body!)))
@@ -148,12 +148,12 @@
 
 (define (closure-value env parameter body) ['closure-value env parameter body])
 
-(admit closure-value? (-> value-t bool-t))
+(admit is-closure-value (-> value-t bool-t))
 
-(define (closure-value? value)
-  (and (list? value)
-       (equal? (list-length value) 4)
-       (equal? (list-head value) 'closure-value)))
+(define (is-closure-value value)
+  (and (is-list value)
+       (equal (list-length value) 4)
+       (equal (list-head value) 'closure-value)))
 
 (admit closure-value-env (-> value-t env-t))
 
@@ -181,23 +181,23 @@
 
 (define (evaluate exp env)
   (cond
-    ((self/lambda/var-exp? exp)
+    ((self/lambda/is-var-exp exp)
      (let ((name (self/lambda/var-exp-name exp)))
        (cond
-         ((meta-builtin/builtin/just? (env-lookup name env))
+         ((meta-builtin/builtin/is-just (env-lookup name env))
           (let ((value (meta-builtin/builtin/just-value (env-lookup name env))))
             value))
-         ((meta-builtin/builtin/nothing? (env-lookup name env))
+         ((meta-builtin/builtin/is-nothing (env-lookup name env))
           (error "undefined name")))))
-    ((self/lambda/apply-exp? exp)
+    ((self/lambda/is-apply-exp exp)
      (let ((arg (self/lambda/apply-exp-arg exp)))
        (let ((target (self/lambda/apply-exp-target exp)))
          (apply (evaluate target env) (evaluate arg env)))))
-    ((self/lambda/lambda-exp? exp)
+    ((self/lambda/is-lambda-exp exp)
      (let ((body (self/lambda/lambda-exp-body exp)))
        (let ((parameter (self/lambda/lambda-exp-parameter exp)))
          (closure-value env parameter body))))
-    ((self/lambda/let-exp? exp)
+    ((self/lambda/is-let-exp exp)
      (let ((body (self/lambda/let-exp-body exp)))
        (let ((rhs (self/lambda/let-exp-rhs exp)))
          (let ((name (self/lambda/let-exp-name exp)))
@@ -206,7 +206,7 @@
 
 (define (apply target arg)
   (cond
-    ((self/lambda/closure-value? target)
+    ((self/lambda/is-closure-value target)
      (let ((body (self/lambda/closure-value-body target)))
        (let ((parameter (self/lambda/closure-value-parameter target)))
          (let ((env (self/lambda/closure-value-env target)))

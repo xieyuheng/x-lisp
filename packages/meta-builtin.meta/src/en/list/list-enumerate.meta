@@ -12,7 +12,7 @@
     (-> (list-t A) int-t (list-t (pair-t int-t A)))))
 
 (define (list-enumerate-aux list i)
-  (if (list-empty? list)
+  (if (list-is-empty list)
     []
     (cons (make-pair i (car list))
           (list-enumerate-aux (cdr list) (iadd i 1)))))

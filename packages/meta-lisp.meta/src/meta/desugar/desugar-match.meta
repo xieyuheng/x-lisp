@@ -11,12 +11,12 @@
   =>
 
   (cond
-    ((ctor1? target)
+    ((is-ctor1 target)
      (let ((v11 (ctor1-accessor1 target))
             (v12 (ctor1-accessor2 target))
             ...)
        body1))
-    ((ctor2? target)
+    ((is-ctor2 target)
      (let ((v21 (ctor2-accessor1 target))
             (v22 (ctor2-accessor2 target))
             ...)
@@ -98,21 +98,21 @@
 (define (desugar-match ctx targets clauses default-exp location)
   (for-list clauses
     (lambda (clause)
-      (unless (equal? (list-length (match-clause-patterns clause)) (list-length targets))
+      (unless (equal (list-length (match-clause-patterns clause)) (list-length targets))
         (error-with-location
           (@string "(desugar-match) targets length mismatch"
                    "\n  targets: " (format-exps targets)
                    "\n  patterns: " (format-exps (match-clause-patterns clause)))
           location))))
   (cond
-    ((list-empty? clauses) default-exp)
-    ((list-empty? targets) (match-clause-body (car clauses)))
-    ((list-every? var-pattern-clause? clauses)
+    ((list-is-empty clauses) default-exp)
+    ((list-is-empty targets) (match-clause-body (car clauses)))
+    ((list-every is-var-pattern-clause clauses)
      (desugar-match
        ctx (cdr targets)
        (list-map (desugar-var-pattern-clause (car targets)) clauses)
        default-exp location))
-    ((list-every? data-pattern-clause? clauses)
+    ((list-every is-data-pattern-clause clauses)
      (cond-exp
        (list-map
          (lambda (group)
@@ -135,7 +135,7 @@
   (match clause
     ((make-match-clause patterns body location)
      (let ((pattern (car patterns)))
-       (unless (var-exp? pattern)
+       (unless (is-var-exp pattern)
          (error-with-location
            "(desugar-var-pattern-clause) expect var-pattern"
            (exp-location pattern)))
@@ -144,13 +144,13 @@
          (let1-exp (var-exp-name pattern) target body location)
          location)))))
 
-(define (var-pattern-clause? clause)
-  (and (not (list-empty? (match-clause-patterns clause)))
-       (var-pattern? (car (match-clause-patterns clause)))))
+(define (is-var-pattern-clause clause)
+  (and (not (list-is-empty (match-clause-patterns clause)))
+       (is-var-pattern (car (match-clause-patterns clause)))))
 
-(define (data-pattern-clause? clause)
-  (and (not (list-empty? (match-clause-patterns clause)))
-       (data-pattern? (car (match-clause-patterns clause)))))
+(define (is-data-pattern-clause clause)
+  (and (not (list-is-empty (match-clause-patterns clause)))
+       (is-data-pattern (car (match-clause-patterns clause)))))
 
 (define-struct data-pattern-clause-group-t
   (info data-constructor-info-t)
@@ -172,18 +172,18 @@
              (make-data-pattern-clause-group
                data-constructor-info
                (list-select
-                 (clause-starts-with-data-constructor? ctx data-constructor-info)
+                 (clause-starts-with-data-constructor ctx data-constructor-info)
                  clauses)))))))))
 
-(define (clause-starts-with-data-constructor? ctx info clause)
+(define (clause-starts-with-data-constructor ctx info clause)
   (let ((pattern (car (match-clause-patterns clause))))
-    (if (not (data-pattern? pattern))
+    (if (not (is-data-pattern pattern))
       false
       (match (resolve-data-pattern-qualified-name ctx pattern)
         ((make-qualified-name pkg-name mod-name name)
-         (and (equal? (data-constructor-info-pkg-name info) pkg-name)
-              (equal? (data-constructor-info-mod-name info) mod-name)
-              (equal? (data-constructor-info-name info) name)))))))
+         (and (equal (data-constructor-info-pkg-name info) pkg-name)
+              (equal (data-constructor-info-mod-name info) mod-name)
+              (equal (data-constructor-info-name info) name)))))))
 
 (define (desugar-data-pattern-clause-group ctx group targets default-exp location)
   (@comment
@@ -226,7 +226,7 @@
   (match clause
     ((make-match-clause patterns body location)
      (define (spread-data-pattern pattern)
-       (unless (data-pattern? pattern)
+       (unless (is-data-pattern pattern)
          (error-with-location
            (@string "(spread-data-pattern) expect data pattern"
                     "\n  pattern: " (format-exp pattern))
@@ -238,7 +238,7 @@
        location))))
 
 (define (resolve-data-pattern-qualified-name ctx pattern)
-  (unless (data-pattern? pattern)
+  (unless (is-data-pattern pattern)
     (error-with-location
       "(resolve-data-pattern-qualified-name) expect data-pattern"
       (exp-location pattern)))
@@ -265,7 +265,7 @@
   (let ((info (lookup-algebraic-type-info-from-clause ctx (car clauses))))
     (for-list (cdr clauses)
       (lambda (clause)
-        (unless (equal? info (lookup-algebraic-type-info-from-clause ctx clause))
+        (unless (equal info (lookup-algebraic-type-info-from-clause ctx clause))
           (error-with-location
             "(lookup-same-algebraic-type-info) algebraic-type-info mismatch"
             (match-clause-location clause)))))
@@ -273,7 +273,7 @@
 
 (define (lookup-algebraic-type-info-from-clause ctx clause)
   (let ((pattern (car (match-clause-patterns clause))))
-    (unless (data-pattern? pattern)
+    (unless (is-data-pattern pattern)
       (error-with-location
         "(lookup-algebraic-type-info-from-clause) expect data pattern"
         (exp-location pattern)))
@@ -287,7 +287,7 @@
         (algebraic-analysis-report-algebraic-type-infos report)))))
 
 (define (lookup-data-constructor-info-from-pattern ctx pattern)
-  (unless (data-pattern? pattern)
+  (unless (is-data-pattern pattern)
     (error-with-location
       "(lookup-data-constructor-info-from-pattern) expect data pattern"
       (exp-location pattern)))
@@ -306,17 +306,17 @@
   (let ((groups []))
     (for-list clauses
       (lambda (clause)
-        (if (list-empty? groups)
+        (if (list-is-empty groups)
           (ignore (list-push! [clause] groups))
           (let ((last (list-last groups)))
-            (if (same-pattern-kind? clause (list-first last))
+            (if (same-pattern-kind clause (list-first last))
               (ignore (list-push! clause last))
               (ignore (list-push! [clause] groups)))))))
     groups))
 
-(define (same-pattern-kind? x y)
-  (or (equal? (var-pattern-clause? x) (var-pattern-clause? y))
-      (equal? (data-pattern-clause? x) (data-pattern-clause? y))))
+(define (same-pattern-kind x y)
+  (or (equal (is-var-pattern-clause x) (is-var-pattern-clause y))
+      (equal (is-data-pattern-clause x) (is-data-pattern-clause y))))
 
 (define (make-default-exp targets location)
   (apply-exp

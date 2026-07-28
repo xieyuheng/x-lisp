@@ -34,8 +34,8 @@
      [4 5 6]
      [7 8 10]])
 
-  (assert (list-empty? []))
-  (assert-not (list-empty? [1]))
+  (assert (list-is-empty []))
+  (assert-not (list-is-empty [1]))
 
   (assert-equal (cons 1 (cons 2 (cons 3 []))) [1 2 3])
   (assert-equal (car [1 2 3]) 1)

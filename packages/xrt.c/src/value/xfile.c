@@ -13,7 +13,7 @@ xfile_t *make_xfile(file_t *file) {
   xfile_t *self = new(xfile_t);
   self->header.class = &xfile_class;
   self->file = file;
-  self->open_p = true;
+  self->is_open = true;
   gc_add_object(global_gc, (object_t *) self);
   return self;
 }
@@ -29,7 +29,7 @@ xfile_t *make_static_xfile(file_t *file) {
   self->header.class = &xfile_class;
   self->header.is_static = true;
   self->file = file;
-  self->open_p = true;
+  self->is_open = true;
 
   array_push(static_xfiles, self);
   return self;
@@ -59,19 +59,19 @@ xfile_t *open_output_xfile(char *pathname) {
 }
 
 void xfile_close(xfile_t *self) {
-  if (self->open_p) {
+  if (self->is_open) {
     file_close(self->file);
-    self->open_p = false;
+    self->is_open = false;
   }
 }
 
-bool xfile_p(value_t value) {
-  return object_p(value) &&
+bool is_xfile(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &xfile_class;
 }
 
 xfile_t *to_xfile(value_t value) {
-  assert(xfile_p(value));
+  assert(is_xfile(value));
   return (xfile_t *) to_object(value);
 }
 

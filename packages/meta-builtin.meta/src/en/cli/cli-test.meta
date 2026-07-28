@@ -5,20 +5,20 @@
     (assert-equal "add x y -- add two numbers" (cli-route-command route))
     (assert-equal "add" (cli-route-name route))
     (assert-equal ["x" "y"] (cli-route-arg-names route))
-    (assert (list-empty? (cli-route-option-names route)))))
+    (assert (list-is-empty (cli-route-option-names route)))))
 
 (define-test cli-parse-route-option-test
   (let ((route (cli-parse-route "mul --x --y -- mul two numbers")))
     (assert-equal "mul --x --y -- mul two numbers" (cli-route-command route))
     (assert-equal "mul" (cli-route-name route))
-    (assert (list-empty? (cli-route-arg-names route)))
+    (assert (list-is-empty (cli-route-arg-names route)))
     (assert-equal ["--x" "--y"] (cli-route-option-names route))))
 
 (define-test cli-parse-route-simple-test
   (let ((route (cli-parse-route "hello")))
     (assert-equal "hello" (cli-route-name route))
-    (assert (list-empty? (cli-route-arg-names route)))
-    (assert (list-empty? (cli-route-option-names route)))))
+    (assert (list-is-empty (cli-route-arg-names route)))
+    (assert (list-is-empty (cli-route-option-names route)))))
 
 (define-test cli-route-match-args-test
   (let ((route (cli-parse-route "add x y"))
@@ -26,13 +26,13 @@
     (assert-equal 2 (cli-arg-count ctx))
     (assert-equal "1" (cli-arg-get 0 ctx))
     (assert-equal "2" (cli-arg-get 1 ctx))
-    (assert (list-empty? (cli-ctx-passthrough ctx)))))
+    (assert (list-is-empty (cli-ctx-passthrough ctx)))))
 
 (define-test cli-route-match-options-test
   (let ((route (cli-parse-route "cmd --verbose --name"))
          (ctx (cli-route-match route ["--verbose" "--name" "hello"])))
-    (assert (cli-option-has? "--verbose" ctx))
-    (assert (cli-option-has? "--name" ctx))
+    (assert (cli-option-has "--verbose" ctx))
+    (assert (cli-option-has "--name" ctx))
     (assert-equal "" (cli-option-get "--verbose" ctx))
     (assert-equal "hello" (cli-option-get "--name" ctx))))
 
@@ -49,7 +49,7 @@
          (ctx (cli-route-match route ["prog.xexe" "--entry" "main" "--" "--verbose"])))
     (assert-equal 1 (cli-arg-count ctx))
     (assert-equal "prog.xexe" (cli-arg-get 0 ctx))
-    (assert (cli-option-has? "--entry" ctx))
+    (assert (cli-option-has "--entry" ctx))
     (assert-equal "main" (cli-option-get "--entry" ctx))
     (assert-equal 1 (cli-passthrough-count ctx))
     (assert-equal "--verbose" (cli-passthrough-get 0 ctx))))
@@ -58,7 +58,7 @@
   (let ((router (cli-make-router "test" "0.1.0")))
     (assert-equal "test" (cli-router-name router))
     (assert-equal "0.1.0" (cli-router-version router))
-    (assert (list-empty? (cli-router-routes router)))))
+    (assert (list-is-empty (cli-router-routes router)))))
 
 (define-test cli-define-route-test
   (let ((router (cli-make-router "test" "0.1.0"))

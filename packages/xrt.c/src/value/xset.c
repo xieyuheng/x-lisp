@@ -17,7 +17,7 @@ static hash_code_t value_hash_fn(const void *key) {
 }
 
 static bool value_equal_fn(const void *lhs, const void *rhs) {
-  return equal_p((value_t) lhs, (value_t) rhs);
+  return equal((value_t) lhs, (value_t) rhs);
 }
 
 xset_t *make_xset(void) {
@@ -35,13 +35,13 @@ void xset_free(xset_t *self) {
   free(self);
 }
 
-bool xset_p(value_t value) {
-  return object_p(value) &&
+bool is_xset(value_t value) {
+  return is_object(value) &&
     to_object(value)->header.class == &xset_class;
 }
 
 xset_t *to_xset(value_t value) {
-  assert(xset_p(value));
+  assert(is_xset(value));
   return (xset_t *) to_object(value);
 }
 
@@ -49,11 +49,11 @@ size_t xset_size(const xset_t *self) {
   return set_size(self->set);
 }
 
-bool xset_empty_p(const xset_t *self) {
+bool xset_is_empty(const xset_t *self) {
   return set_is_empty(self->set);
 }
 
-inline bool xset_member_p(const xset_t *self, value_t value) {
+inline bool xset_is_member(const xset_t *self, value_t value) {
   return set_member(self->set, (void *) value);
 }
 
@@ -90,7 +90,7 @@ bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
   set_iter_init(&iter, lhs->set);
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   while (entry) {
-    if (!xset_member_p(rhs, (value_t) entry->value))
+    if (!xset_is_member(rhs, (value_t) entry->value))
       return false;
 
     entry =  set_iter_next_entry(&iter);
@@ -196,7 +196,7 @@ object_t *xset_child_iter_next(xset_child_iter_t *iter) {
   const hash_entry_t *entry = set_iter_next_entry(&iter->set_iter);
   if (entry) {
     value_t value = (value_t) entry->value;
-    return object_p(value)
+    return is_object(value)
       ? to_object(value)
       : xset_child_iter_next(iter);
   }
@@ -223,7 +223,7 @@ xset_t *xset_inter(const xset_t *lhs, const xset_t *rhs) {
   set_iter_init(&iter, lhs->set);
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   while (entry) {
-    if (xset_member_p(rhs, (value_t) entry->value)) {
+    if (xset_is_member(rhs, (value_t) entry->value)) {
       xset_add(new_set, (value_t) entry->value);
     }
 
@@ -246,12 +246,12 @@ xset_t *xset_difference(const xset_t *lhs, const xset_t *rhs) {
   return new_set;
 }
 
-bool xset_subset_p(const xset_t *lhs, const xset_t *rhs) {
+bool xset_subset(const xset_t *lhs, const xset_t *rhs) {
   set_iter_t iter;
   set_iter_init(&iter, lhs->set);
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   while (entry) {
-    if (!xset_member_p(rhs, (value_t) entry->value))
+    if (!xset_is_member(rhs, (value_t) entry->value))
       return false;
 
     entry =  set_iter_next_entry(&iter);
@@ -260,12 +260,12 @@ bool xset_subset_p(const xset_t *lhs, const xset_t *rhs) {
   return true;
 }
 
-bool xset_disjoint_p(const xset_t *lhs, const xset_t *rhs) {
+bool xset_disjoint(const xset_t *lhs, const xset_t *rhs) {
   set_iter_t iter;
   set_iter_init(&iter, lhs->set);
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   while (entry) {
-    if (xset_member_p(rhs, (value_t) entry->value))
+    if (xset_is_member(rhs, (value_t) entry->value))
       return false;
 
     entry =  set_iter_next_entry(&iter);

@@ -34,9 +34,9 @@
   (let ((sexps (parse-sexps "test" ":x 1 :y 2 :z 3"))
          (result (sexp-collect-key-value-hash sexps)))
     (assert-equal 3 (hash-length result))
-    (assert (hash-has? :x result))
-    (assert (hash-has? :y result))
-    (assert (hash-has? :z result))))
+    (assert (hash-has :x result))
+    (assert (hash-has :y result))
+    (assert (hash-has :z result))))
 
 (define-test sexp-collect-key-value-hash-empty-test
   (assert-equal 0 (hash-length (sexp-collect-key-value-hash []))))

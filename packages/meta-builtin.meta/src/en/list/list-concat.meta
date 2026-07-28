@@ -6,7 +6,7 @@
         (list-t A))))
 
 (define (list-concat lists)
-  (if (list-empty? lists)
+  (if (list-is-empty lists)
     []
     (list-append
      (car lists)

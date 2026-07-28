@@ -367,7 +367,7 @@ static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {
   while (frame) {
     value_t *locals = frame_locals(frame);
     for (size_t j = 0; j < frame->local_count; j++) {
-      if (object_p(locals[j])) {
+      if (is_object(locals[j])) {
         array_push(roots, to_object(locals[j]));
       }
     }
@@ -382,7 +382,7 @@ static void xvm_gc_roots_in_mod(xvm_t *xvm, array_t *roots) {
   while (definition) {
     if (definition->kind == VARIABLE_DEFINITION) {
       value_t value = definition->variable_definition.value;
-      if (object_p(value)) {
+      if (is_object(value)) {
         array_push(roots, to_object(value));
       }
     }
@@ -397,12 +397,12 @@ static array_t *xvm_gc_roots(xvm_t *xvm) {
 
   for (size_t i = 0; i < stack_length(xvm->root_stack); i++) {
     value_t value = (value_t) stack_get(xvm->root_stack, i);
-    if (object_p(value)) {
+    if (is_object(value)) {
       array_push(roots, to_object(value));
     }
   }
 
-  if (object_p(xvm->result)) {
+  if (is_object(xvm->result)) {
     array_push(roots, to_object(xvm->result));
   }
 

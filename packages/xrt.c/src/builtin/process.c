@@ -62,13 +62,13 @@ value_t x_current_directory(void) {
 
 static value_t stdout_file_value;
 static value_t stderr_file_value;
-static bool standard_files_initialized_p = false;
+static bool standard_files_initialized = false;
 
 static void ensure_standard_files(void) {
-  if (!standard_files_initialized_p) {
+  if (!standard_files_initialized) {
     stdout_file_value = x_object(make_static_xfile(stdout));
     stderr_file_value = x_object(make_static_xfile(stderr));
-    standard_files_initialized_p = true;
+    standard_files_initialized = true;
   }
 }
 

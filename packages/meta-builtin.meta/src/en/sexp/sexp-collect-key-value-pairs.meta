@@ -4,13 +4,13 @@
   (-> (list-t sexp-t) (list-t (pair-t keyword-t sexp-t))))
 
 (define (sexp-collect-key-value-pairs-loop remaining result)
-  (if (list-empty? remaining)
+  (if (list-is-empty remaining)
     (list-reverse result)
     (let ((first (car remaining)))
       (match first
         ((keyword-sexp content location)
          (let ((rest (cdr remaining)))
-           (if (list-empty? rest)
+           (if (list-is-empty rest)
              (sexp-collect-key-value-pairs-loop rest result)
              (sexp-collect-key-value-pairs-loop
               (cdr rest)

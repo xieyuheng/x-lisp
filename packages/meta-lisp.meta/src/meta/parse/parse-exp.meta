@@ -8,7 +8,7 @@
   (match sexp
     ((symbol-sexp content location)
      (let ((string (symbol-to-string content)))
-       (if (string-contains? "/" string)
+       (if (string-contains "/" string)
          (parse-qualified-var-exp string location)
          (var-exp content location))))
     ((keyword-sexp content location) (keyword-exp content location))
@@ -24,7 +24,7 @@
 (define (parse-qualified-var-exp string location)
   (let ((parts (string-split "/" string)))
     (cond
-      ((equal? (list-length parts) 3)
+      ((equal (list-length parts) 3)
        (@comment
          <package-name>/<module-name>/<name>)
        (qualified-var-exp
@@ -32,7 +32,7 @@
          (string-to-symbol (list-get 1 parts))
          (string-to-symbol (list-get 2 parts))
          location))
-      ((equal? (list-length parts) 2)
+      ((equal (list-length parts) 2)
        (@comment
          <module-name>/<name>)
        (qualified-var-exp
@@ -54,9 +54,9 @@
       exp-t))
 
 (define (parse-compound-exp sexps location)
-  (cond ((symbol-sexp? (car sexps))
+  (cond ((is-symbol-sexp (car sexps))
          (let ((tag (symbol-sexp-content (car sexps))))
-           (if (list-some? (equal? tag) syntax-keywords)
+           (if (list-some (equal tag) syntax-keywords)
              (let ((keyword-location (symbol-sexp-location (car sexps))))
                (parse-special-form-exp tag (cdr sexps) location keyword-location))
              (parse-apply-exp (car sexps) (cdr sexps) location))))
@@ -77,22 +77,22 @@
 
 (define (parse-special-form-exp tag sexps location keyword-location)
   (cond
-    ((equal? tag 'lambda)
+    ((equal tag 'lambda)
      (@comment
        (lambda (<parameter> ...)
          <body>))
      (lambda-exp (parse-parameters (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal? tag '@quote)
+    ((equal tag '@quote)
      (@comment
        (@quote <sexp>))
      (quote-exp (car sexps) location))
-    ((equal? tag '@sexp)
+    ((equal tag '@sexp)
      (@comment
        (@sexp <sexp>))
      (sexp-exp (car sexps) location))
-    ((equal? tag 'if)
+    ((equal tag 'if)
      (@comment
        (if <condition>
          <consequent>
@@ -101,35 +101,35 @@
              (parse-exp (list-get 1 sexps))
              (parse-exp (list-get 2 sexps))
              keyword-location))
-    ((equal? tag 'when)
+    ((equal tag 'when)
      (@comment
        (when <condition>
          <body>))
      (when-exp (parse-exp (car sexps))
                (parse-body (cdr sexps) location)
                keyword-location))
-    ((equal? tag 'unless)
+    ((equal tag 'unless)
      (@comment
        (unless <condition>
          <body>))
      (unless-exp (parse-exp (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal? tag 'and)
+    ((equal tag 'and)
      (@comment
        (and <exp> ...))
      (and-exp (list-map parse-exp sexps) keyword-location))
-    ((equal? tag 'or)
+    ((equal tag 'or)
      (@comment
        (or <exp> ...))
      (or-exp (list-map parse-exp sexps) keyword-location))
-    ((equal? tag 'cond)
+    ((equal tag 'cond)
      (@comment
        (cond
          (<question> <answer>)
          ...))
      (cond-exp (list-map parse-cond-clause sexps) keyword-location))
-    ((equal? tag 'match)
+    ((equal tag 'match)
      (@comment
        (match <target>
          (<pattern> <body>)
@@ -137,7 +137,7 @@
      (match-exp [(parse-exp (car sexps))]
                 (list-map parse-match-clause (cdr sexps))
                 keyword-location))
-    ((equal? tag 'match-many)
+    ((equal tag 'match-many)
      (@comment
        (match-many (<target> ...)
          ((<pattern> ...) <body>)
@@ -145,11 +145,11 @@
      (match-exp (list-map parse-exp (list-sexp-elements (car sexps)))
                 (list-map parse-match-many-clause (cdr sexps))
                 keyword-location))
-    ((equal? tag 'begin)
+    ((equal tag 'begin)
      (@comment
        (begin <body>))
      (parse-body sexps keyword-location))
-    ((equal? tag 'let)
+    ((equal tag 'let)
      (@comment
        (let ((<name> <exp>)
              ...)
@@ -157,7 +157,7 @@
      (let-exp (parse-bindings (car sexps))
               (parse-body (cdr sexps) location)
               keyword-location))
-    ((equal? tag 'letrec)
+    ((equal tag 'letrec)
      (@comment
        (letrec ((<name> <exp>)
                 ...)
@@ -165,8 +165,8 @@
      (letrec-exp (parse-bindings (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal? tag 'define)
-     (cond ((list-sexp? (car sexps))
+    ((equal tag 'define)
+     (cond ((is-list-sexp (car sexps))
             (@comment
               (define (<name> <parameter> ...) <body>))
             (local-define-exp
@@ -182,60 +182,60 @@
                []
                (parse-body (cdr sexps) location)
                keyword-location))))
-    ((equal? tag '@list)
+    ((equal tag '@list)
      (@comment
        (@list <exp> ...))
      (list-exp (list-map parse-exp sexps) location))
-    ((equal? tag '@square-bracket)
+    ((equal tag '@square-bracket)
      (@comment
        [<exp> ...])
      (list-exp (list-map parse-exp sexps) location))
-    ((equal? tag '@string)
+    ((equal tag '@string)
      (@comment
        (@string <exp> ...))
      (string-concat-exp (list-map parse-exp sexps) location))
-    ((equal? tag '@set)
+    ((equal tag '@set)
      (@comment
        (@set <exp> ...))
      (set-exp (list-map parse-exp sexps) location))
-    ((equal? tag '@hash)
+    ((equal tag '@hash)
      (@comment
        (@hash <key> <value> ...))
      (hash-exp (parse-hash-entries sexps) location))
-    ((equal? tag '->)
+    ((equal tag '->)
      (@comment
        (-> <arg-type> ... <ret-type>))
      (arrow-exp (list-map parse-exp (list-init sexps))
                 (parse-exp (list-last sexps))
                 location))
-    ((equal? tag 'the)
+    ((equal tag 'the)
      (@comment
        (the <type> <exp>))
      (the-exp (parse-exp (car sexps))
               (parse-exp (list-get 1 sexps))
               location))
-    ((equal? tag 'polymorphic)
+    ((equal tag 'polymorphic)
      (@comment
        (polymorphic (<type-parameter> ...)
          <type>))
      (polymorphic-exp (parse-parameters (car sexps))
                       (parse-exp (list-get 1 sexps))
                       location))
-    ((equal? tag 'pipe)
+    ((equal tag 'pipe)
      (@comment
        (pipe <init> <step> ...))
      (pipe-exp (parse-exp (car sexps))
                (list-map parse-exp (cdr sexps))
                location))
-    ((equal? tag 'chain)
+    ((equal tag 'chain)
      (@comment
        (chain <step> ...))
      (chain-exp (list-map parse-exp sexps) location))
-    ((equal? tag 'compose)
+    ((equal tag 'compose)
      (@comment
        (compose <step> ...))
      (compose-exp (list-map parse-exp sexps) location))
-    ((equal? tag '@comment)
+    ((equal tag '@comment)
      (@comment
        (@comment <sexp> ...))
      (comment-exp sexps location))))
@@ -254,7 +254,7 @@
 
 (define (parse-body sexps location)
   (let ((exps (list-map parse-exp sexps)))
-    (if (equal? (list-length exps) 1)
+    (if (equal (list-length exps) 1)
       (car exps)
       (begin-exp exps location))))
 
@@ -265,8 +265,8 @@
 (define (parse-cond-clause sexp)
   (match sexp
     ((list-sexp elements location)
-     (if (and (symbol-sexp? (car elements))
-              (equal? (symbol-sexp-content (car elements)) 'else))
+     (if (and (is-symbol-sexp (car elements))
+              (equal (symbol-sexp-content (car elements)) 'else))
        (make-cond-clause (qualified-var-exp 'meta-builtin 'builtin 'true location)
                          (parse-body (cdr elements) location)
                          location)
@@ -319,7 +319,7 @@
       (list-t (hash-entry-t exp-t exp-t))))
 
 (define (parse-hash-entries sexps)
-  (if (list-empty? sexps)
+  (if (list-is-empty sexps)
     []
     (let ((key (car sexps))
           (value (car (cdr sexps)))
