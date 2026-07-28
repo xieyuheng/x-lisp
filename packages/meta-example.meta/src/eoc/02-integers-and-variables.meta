@@ -28,7 +28,7 @@
     (println (ineg z))))
 
 (define-test eoc-02-05
-  (let* ((a 42)
+  (let ((a 42)
          (b a))
     (println b)))
 

@@ -6,7 +6,7 @@
         A)))
 
 (define (call-with-input-file path f)
-  (let* ((file (open-input-file path))
+  (let ((file (open-input-file path))
          (result (f file)))
     (file-close file)
     result))
@@ -17,7 +17,7 @@
         A)))
 
 (define (call-with-output-file path f)
-  (let* ((file (open-output-file path))
+  (let ((file (open-output-file path))
          (result (f file)))
     (file-close file)
     result))

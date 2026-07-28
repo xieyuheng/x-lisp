@@ -26,15 +26,7 @@
      (set-union
        (set-union-many (list-map binding-occurred-names bindings))
        (exp-occurred-names body)))
-    ((let-star-exp bindings body location)
-     (set-union
-       (set-union-many (list-map binding-occurred-names bindings))
-       (exp-occurred-names body)))
     ((letrec-exp bindings body location)
-     (set-union
-       (set-union-many (list-map binding-occurred-names bindings))
-       (exp-occurred-names body)))
-    ((letrec-star-exp bindings body location)
      (set-union
        (set-union-many (list-map binding-occurred-names bindings))
        (exp-occurred-names body)))

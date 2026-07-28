@@ -7,7 +7,7 @@
 (define (layout width cursor targets result)
   (if (list-empty? targets)
     result
-    (let* ((target (list-head targets))
+    (let ((target (list-head targets))
            (rest (list-tail targets))
            (indentation (entry-indentation target))
            (mode (entry-mode target))
@@ -53,7 +53,7 @@
 (define (fit-inline-step width cursor nodes)
   (if (list-empty? nodes)
     true
-    (let* ((node (list-head nodes))
+    (let ((node (list-head nodes))
            (rest (list-tail nodes)))
       (match node
         ((null-node)

@@ -1,7 +1,7 @@
 (module meta)
 
 (define (load-fragment path)
-  (let* ((code (fs-read path))
+  (let ((code (fs-read path))
          (sexps (parse-sexps path code))
          (stmts (list-map parse-stmt sexps))
          (module-stmt (list-find declare-module-stmt? stmts)))

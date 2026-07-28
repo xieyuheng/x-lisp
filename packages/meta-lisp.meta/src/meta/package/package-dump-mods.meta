@@ -6,7 +6,7 @@
     (package-mods package)))
 
 (define (package-dump-mod package tag mod)
-  (let* ((width 80)
+  (let ((width 80)
          (code (pretty-mod-definitions width mod))
          (name (symbol-to-string (mod-name mod)))
          (dump-directory (path-join (package-output-directory package) "dump"))

@@ -9,7 +9,7 @@
     (set-union
       (exp-occurred-names (hash-entry-key entry))
       (exp-occurred-names (hash-entry-value entry))))
-  (let* ((used-names (set-union-many (list-map entry-used-names entries)))
+  (let ((used-names (set-union-many (list-map entry-used-names entries)))
          (fresh-name (generate-relative-fresh-name used-names 'hash))
          (make (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)

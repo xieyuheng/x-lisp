@@ -46,7 +46,7 @@
 
 (define syntax-keywords
   ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
-   'begin '= 'let 'let* 'letrec 'letrec* '@list '@square-bracket '@set '@hash '@sexp '@string
+   'begin '= 'let 'letrec '@list '@square-bracket '@set '@hash '@sexp '@string
    '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
 
 (claim parse-compound-exp
@@ -157,14 +157,6 @@
      (let-exp (parse-bindings (car sexps))
               (parse-body (cdr sexps) location)
               keyword-location))
-    ((equal? tag 'let*)
-     (@comment
-       (let* ((<name> <exp>)
-              ...)
-         <body>))
-     (let-star-exp (parse-bindings (car sexps))
-                   (parse-body (cdr sexps) location)
-                   keyword-location))
     ((equal? tag 'letrec)
      (@comment
        (letrec ((<name> <exp>)
@@ -173,14 +165,6 @@
      (letrec-exp (parse-bindings (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal? tag 'letrec*)
-     (@comment
-       (letrec* ((<name> <exp>)
-                 ...)
-         <body>))
-     (letrec-star-exp (parse-bindings (car sexps))
-                      (parse-body (cdr sexps) location)
-                      keyword-location))
     ((equal? tag 'define)
      (cond ((list-sexp? (car sexps))
             (@comment

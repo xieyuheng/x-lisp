@@ -23,7 +23,7 @@
 
 (claim cli-parse-route (-> string-t cli-route-t))
 (define (cli-parse-route command)
-  (let* ((tokens (list-reject string-blank? (string-split " " command)))
+  (let ((tokens (list-reject string-blank? (string-split " " command)))
          (dash-idx (list-find-index (lambda (t) (equal? t "--")) tokens))
          (main (if (int-greater-or-equal? dash-idx 0)
                  (list-take dash-idx tokens)

@@ -19,7 +19,7 @@
        (if (nothing? qualified-mod)
          (error-with-location "(evaluate) undefined module prefix"
            (term-location term))
-         (let* ((found-mod (just-value qualified-mod))
+         (let ((found-mod (just-value qualified-mod))
                 (definition (mod-lookup-definition found-mod name)))
            (if (not (nothing? definition))
              (definition-to-value (env-mode env) (just-value definition))
@@ -30,7 +30,7 @@
            (ret-type (evaluate-type mod env ret-type)))
        (type-value (arrow-type arg-types ret-type))))
     ((polymorphic-term parameters body location)
-     (let* ((var-types (list-map (lambda (parameter) (var-type parameter 0)) parameters))
+     (let ((var-types (list-map (lambda (parameter) (var-type parameter 0)) parameters))
             (body-env (env-put-many parameters
                         (list-map (lambda (vt) (type-value vt)) var-types)
                         env))

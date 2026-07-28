@@ -5,7 +5,7 @@
       exp-t))
 
 (define (desugar-set elements location)
-  (let* ((used-names (set-union-many (list-map exp-occurred-names elements)))
+  (let ((used-names (set-union-many (list-map exp-occurred-names elements)))
          (fresh-name (generate-relative-fresh-name used-names 'set))
          (make (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'make-set location)

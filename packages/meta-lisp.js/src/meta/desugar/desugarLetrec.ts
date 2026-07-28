@@ -1,6 +1,5 @@
 import type { SourceLocation } from "@xieyuheng/sexp.js"
-import { arrayMapZip } from "@xieyuheng/std.js/array"
-import { setUnion, setUnionMany } from "@xieyuheng/std.js/set"
+import { arrayMapZip, arrayZip } from "@xieyuheng/std.js/array"
 import * as M from "../index.ts"
 
 // Desugar `(letrec)` using box:
@@ -18,60 +17,73 @@ import * as M from "../index.ts"
 //           (x2 (make-box))
 //           ...
 //           (xn (make-box)))
-//       (let ((v1 e1)
-//             (v2 e2)
-//             ...
-//             (vn en))
-//         (box-put! x1 v1)
-//         (box-put! x2 v2)
-//         ...
-//         (box-put! xn vn)
-//         body))
+//       (box-put! e1 x1)
+//       (box-put! e2 x2)
+//       ...
+//       (box-put! en xn)
+//       body)
 
 export function desugarLetrec(
   bindings: Array<M.Binding>,
   body: M.Exp,
   location: SourceLocation,
 ): M.Exp {
-  const boxBindings = bindings.map(M.makeBoxBinding)
-  const boxGetExps = bindings.map(M.makeBoxGetExp)
+  const boxBindings = bindings.map(makeBoxBinding)
+  const boxGetExps = bindings.map(makeBoxGetExp)
   const names = bindings.map((binding) => binding.name)
   const expBoxGetSubst = (exp: M.Exp) =>
-    M.expNaiveSubstMany(exp, names, boxGetExps)
+    expNaiveSubstMany(exp, names, boxGetExps)
   const newRhsExps = bindings.map((binding) => expBoxGetSubst(binding.rhs))
-  const usedNames = setUnion(
-    M.expOccurredNames(body),
-    setUnionMany(bindings.map(M.bindingOccurredNames)),
-  )
-  const tmpBindings = arrayMapZip(
-    makeTmpBinding(usedNames),
-    bindings,
-    newRhsExps,
-  )
-  const tmpVarExps = tmpBindings.map(makeBindingVarExp)
-  const boxPutExps = arrayMapZip(M.makeBoxPutExp, tmpVarExps, bindings)
+  const boxPutExps = arrayMapZip(makeBoxPutExp, newRhsExps, bindings)
   return M.LetExp(
     boxBindings,
-    M.LetExp(
-      tmpBindings,
-      M.BeginExp([...boxPutExps, expBoxGetSubst(body)], location),
-      location,
-    ),
+    M.BeginExp([...boxPutExps, expBoxGetSubst(body)], location),
     location,
   )
 }
 
-function makeTmpBinding(
-  usedNames: Set<string>,
-): (binding: M.Binding, rhs: M.Exp) => M.Binding {
-  return (binding, rhs) =>
-    M.Binding(
-      M.generateRelativeFreshName(usedNames, `${binding.name}.value`),
-      rhs,
+export function makeBoxBinding(binding: M.Binding): M.Binding {
+  return M.Binding(
+    binding.name,
+    M.ApplyExp(
+      M.QualifiedVarExp(
+        "meta-builtin",
+        "builtin",
+        "make-box",
+        binding.location,
+      ),
+      [],
       binding.location,
-    )
+    ),
+    binding.location,
+  )
 }
 
-function makeBindingVarExp(binding: M.Binding): M.Exp {
-  return M.VarExp(binding.name, binding.location)
+export function makeBoxGetExp(binding: M.Binding): M.Exp {
+  return M.ApplyExp(
+    M.QualifiedVarExp("meta-builtin", "builtin", "box-get", binding.location),
+    [M.VarExp(binding.name, binding.location)],
+    binding.location,
+  )
+}
+
+export function makeBoxPutExp(valueExp: M.Exp, binding: M.Binding): M.Exp {
+  return M.ApplyExp(
+    M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", binding.location),
+    [valueExp, M.VarExp(binding.name, binding.location)],
+    binding.location,
+  )
+}
+
+export function expNaiveSubstMany(
+  exp: M.Exp,
+  names: Array<string>,
+  rhsExps: Array<M.Exp>,
+): M.Exp {
+  return arrayZip(names, rhsExps).reduce(expNaiveSubstPair, exp)
+}
+
+function expNaiveSubstPair(exp: M.Exp, pair: [string, M.Exp]): M.Exp {
+  const [name, rhs] = pair
+  return M.expNaiveSubst(exp, name, rhs)
 }

@@ -7,7 +7,7 @@
 (define (setup-pass package)
   (for-hash (package-fragments package)
     (lambda (path fragment)
-      (let* ((mod-name (fragment-mod-name fragment))
+      (let ((mod-name (fragment-mod-name fragment))
              (mod (maybe-else (empty-mod mod-name package) (package-lookup-mod package 'self mod-name))))
         (package-put-mod! mod-name mod package)
         (for-list (fragment-desugared-stmts fragment)
@@ -52,7 +52,7 @@
      (mod-define mod name
        (type-definition mod name parameters body location)))
     ((define-algebraic-type-stmt pre-type-constructor explicit-data-constructors location)
-     (let* ((name (pre-type-constructor-name pre-type-constructor))
+     (let ((name (pre-type-constructor-name pre-type-constructor))
             (type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
             (parameters (type-constructor-parameters type-constructor))
             (data-constructors (list-map (make-data-constructor-from-explicit mod name) explicit-data-constructors)))
@@ -67,7 +67,7 @@
            (hash-put! (data-constructor-name data-constructor) data-constructor
              (mod-data-constructors mod))))))
     ((define-opaque-type-stmt pre-type-constructor representation-type pre-interface-entries location)
-     (let* ((name (pre-type-constructor-name pre-type-constructor))
+     (let ((name (pre-type-constructor-name pre-type-constructor))
             (type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
             (parameters (type-constructor-parameters type-constructor)))
        (mod-claim mod name (make-type-term-from-parameters parameters location))

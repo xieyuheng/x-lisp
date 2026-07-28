@@ -9,7 +9,7 @@
 (define (pretty-stmt pretty-body stmt)
   (match stmt
     ((import-stmt pkg-name mod-name names location)
-     (let* ((mod-name-str (symbol-to-string mod-name))
+     (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
             (full (if (equal? pkg-name-str "self")
                     mod-name-str
@@ -18,7 +18,7 @@
          [(ppml/text full)]
          (list-map (lambda (n) (ppml/text (symbol-to-string n))) names))))
     ((import-as-stmt pkg-name mod-name prefix location)
-     (let* ((mod-name-str (symbol-to-string mod-name))
+     (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
             (full (if (equal? pkg-name-str "self")
                     mod-name-str
@@ -27,7 +27,7 @@
          [(ppml/text full)
           (ppml/text (symbol-to-string prefix))] [])))
     ((import-all-stmt pkg-name mod-name location)
-     (let* ((mod-name-str (symbol-to-string mod-name))
+     (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
             (full (if (equal? pkg-name-str "self")
                     mod-name-str
@@ -35,7 +35,7 @@
        (ppml/pretty-syntax "import-all"
          [(ppml/text full)] [])))
     ((define-function-stmt name parameters body location)
-     (let* ((name-str (symbol-to-string name))
+     (let ((name-str (symbol-to-string name))
             (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters))
             (def-node (ppml/pretty-application (just name-str)
                         (cons (ppml/text name-str) param-nodes))))

@@ -286,7 +286,7 @@
       (pair-t symbol-t symbol-t)))
 
 (define (parse-import-source sexp)
-  (let* ((raw (symbol-sexp-content sexp))
+  (let ((raw (symbol-sexp-content sexp))
          (raw-string (symbol-to-string raw))
          (parts (string-split "/" raw-string)))
     (if (equal? (list-length parts) 1)

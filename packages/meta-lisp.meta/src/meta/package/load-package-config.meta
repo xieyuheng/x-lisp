@@ -4,6 +4,6 @@
   (parse-package-config config-path (fs-read config-path)))
 
 (define-test load-package-config-test
-  (let* ((config-path "meta-package.json")
+  (let ((config-path "meta-package.json")
          (config (load-package-config config-path)))
     (assert-equal "meta-lisp" (package-config-name config))))

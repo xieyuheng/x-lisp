@@ -52,16 +52,8 @@
      (ppml/pretty-syntax "let"
        [(pretty-bindings bindings)]
        (pretty-exp-body body)))
-    ((let-star-exp bindings body location)
-     (ppml/pretty-syntax "let*"
-       [(pretty-bindings bindings)]
-       (pretty-exp-body body)))
     ((letrec-exp bindings body location)
      (ppml/pretty-syntax "letrec"
-       [(pretty-bindings bindings)]
-       (pretty-exp-body body)))
-    ((letrec-star-exp bindings body location)
-     (ppml/pretty-syntax "letrec*"
        [(pretty-bindings bindings)]
        (pretty-exp-body body)))
     ((local-define-exp name parameters body location)

@@ -71,16 +71,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "LetStarExp": {
-      return M.LetStarExp(
-        exp.bindings.map((binding) =>
-          M.Binding(binding.name, onExp(binding.rhs), binding.location),
-        ),
-        onExp(exp.body),
-        exp.location,
-      )
-    }
-
     case "LetrecExp": {
       return M.LetrecExp(
         exp.bindings.map((binding) =>
@@ -95,16 +85,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.LocalDefineExp(
         exp.name,
         exp.parameters,
-        onExp(exp.body),
-        exp.location,
-      )
-    }
-
-    case "LetrecStarExp": {
-      return M.LetrecStarExp(
-        exp.bindings.map((binding) =>
-          M.Binding(binding.name, onExp(binding.rhs), binding.location),
-        ),
         onExp(exp.body),
         exp.location,
       )

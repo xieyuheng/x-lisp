@@ -52,9 +52,7 @@ All meta-Lisp syntax is presented below in groups.
 - [Sequencing and bindings](#sequencing-and-bindings)
   - [(begin)](#begin)
   - [(let)](#let)
-  - [(let*)](#let-1)
   - [(letrec)](#letrec)
-  - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
 - [Function composition](#function-composition)
   - [(pipe)](#pipe)
@@ -693,10 +691,9 @@ The `<body>` of `(lambda)` and `(define)` function bodies both work like `(begin
   <body>)
 ```
 
-Parallel local variable bindings.
+Sequential local variable bindings.
 
-All right-hand side `<exp>`s are evaluated in the same outer scope, invisible to each other.
-Then all `<name>`s are simultaneously bound to the results, and `<body>` is evaluated.
+Each `<exp>` can reference previously bound names.
 
 ```meta-lisp
 (let ((x 1))
@@ -705,40 +702,10 @@ Then all `<name>`s are simultaneously bound to the results, and `<body>` is eval
 (let ((x 1)
       (y 2))
   (iadd x y))  ;; => 3
-```
 
-Parallel means later bindings cannot refer to earlier ones:
-
-```meta-lisp
 (let ((x 1)
-      (y (iadd x 1)))  ;; Error: x not visible on the right side
-  (iadd x y))
-```
-
-## (let*)
-
-```meta-lisp
-(let* ((<name> <exp>)
-       ...)
-  <body>)
-```
-
-Sequential local variable bindings.
-
-Each `<exp>` can reference previously bound names.
-
-```meta-lisp
-(let* ((x 1)
-       (y (iadd x 1)))
+      (y (iadd x 1)))
   (iadd x y))  ;; => 3
-```
-
-`(let*)` is equivalent to nested `(let)`:
-
-```meta-lisp
-(let ((x 1))
-  (let ((y (iadd x 1)))
-    (iadd x y)))
 ```
 
 ## (letrec)
@@ -751,8 +718,7 @@ Each `<exp>` can reference previously bound names.
 
 Similar to `(let)`, but supports recursion and mutual recursion.
 
-All `<exp>`s are evaluated in the same scope, invisible to each other.
-All `<name>`s are simultaneously bound to the results, then `<body>` is evaluated.
+All `<exp>`s can reference all `<name>`s.
 
 Mutual recursion:
 
@@ -770,53 +736,11 @@ Mutual recursion:
   (assert (even? 4)))
 ```
 
-Difference from `(letrec*)` (see below):
-
-```meta-lisp
-;; (letrec*) supports sequential dependency:
-(letrec* ((a 1)
-          (b (iadd a 1)))
-  b)  ;; => 2
-
-;; (letrec) parallel semantics — no sequential dependency:
-(letrec ((a 1)
-         (b (iadd a 1)))  ;; Error: a not visible here
-  b)
-```
-
-## (letrec*)
-
-```meta-lisp
-(letrec* ((<name> <exp>)
-          ...)
-  <body>)
-```
-
-Similar to `(let*)`, but supports recursion and mutual recursion.
-
-All `<exp>`s can reference all `<name>`s.
-
-Mutual recursion:
-
-```meta-lisp
-(letrec* ((even?
-           (lambda (n)
-             (if (equal? n 0)
-               true
-               (odd? (isub n 1)))))
-          (odd?
-           (lambda (n)
-             (if (equal? n 0)
-               false
-               (even? (isub n 1))))))
-  (assert (even? 4)))
-```
-
 Sequential dependency:
 
 ```meta-lisp
-(letrec* ((a 1)
-          (b (iadd a 1)))
+(letrec ((a 1)
+         (b (iadd a 1)))
   b)  ;; => 2
 ```
 
@@ -830,9 +754,9 @@ Sequential dependency:
 Local recursive variable bindings in `<body>`.
 
 Allows `(define)` inside `<body>`.
-Replaces nested `(letrec*)` to reduce indentation.
+Replaces nested `(letrec)` to reduce indentation.
 
-Mutual recursion (equivalent to the `(letrec*)` example above):
+Mutual recursion (equivalent to the `(letrec)` example above):
 
 ```meta-lisp
 (begin

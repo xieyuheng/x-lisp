@@ -4,7 +4,7 @@
 (define (format-stmt stmt)
   (match stmt
     ((import-stmt pkg-name mod-name names location)
-     (let* ((mod-name-str (symbol-to-string mod-name))
+     (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
             (full (if (equal? pkg-name-str "self")
                     mod-name-str
@@ -12,14 +12,14 @@
        (@string "(import " full " "
                 (string-join " " (list-map symbol-to-string names)) ")")))
     ((import-as-stmt pkg-name mod-name prefix location)
-     (let* ((mod-name-str (symbol-to-string mod-name))
+     (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
             (full (if (equal? pkg-name-str "self")
                     mod-name-str
                     (@string pkg-name-str "/" mod-name-str))))
        (@string "(import-as " full " " (symbol-to-string prefix) ")")))
     ((import-all-stmt pkg-name mod-name location)
-     (let* ((mod-name-str (symbol-to-string mod-name))
+     (let ((mod-name-str (symbol-to-string mod-name))
             (pkg-name-str (symbol-to-string pkg-name))
             (full (if (equal? pkg-name-str "self")
                     mod-name-str
@@ -47,7 +47,7 @@
       (@string "(define-struct " (format-type-constructor type-constructor) " "
                (string-join " " (list-map format-pre-data-field fields)) ")"))
     ((define-record-type-stmt type-constructor data-constructor location)
-     (let* ((ctor (explicit-data-constructor-name data-constructor))
+     (let ((ctor (explicit-data-constructor-name data-constructor))
             (fields (explicit-data-constructor-fields data-constructor))
             (pred (explicit-data-constructor-predicate-name data-constructor))
             (field-strs (list-map format-explicit-data-field fields))
@@ -113,7 +113,7 @@
       (@string "(" name-str " " type-str ")"))))
 
 (define (format-explicit-data-constructor ctor)
-  (let* ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
+  (let ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
          (fields (explicit-data-constructor-fields ctor))
          (pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor)))
          (group (if (list-empty? fields)

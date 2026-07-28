@@ -16,8 +16,8 @@
        (meta-builtin/builtin/make-source-location
         "src/desugar.meta"
         (meta-builtin/builtin/make-source-span
-         (meta-builtin/builtin/make-source-position 172 6 24)
-         (meta-builtin/builtin/make-source-position 176 6 28)))))))
+         (meta-builtin/builtin/make-source-position 171 6 24)
+         (meta-builtin/builtin/make-source-position 175 6 28)))))))
 
 (define (example-begin) (begin 1 (begin 2 3)))
 
@@ -44,74 +44,43 @@
   ((lambda (target) (self/desugar/add1 (self/desugar/double target))) 5))
 
 (define (example-letrec)
-  (let ((even?.1 (meta-builtin/builtin/make-box)))
-    (let ((odd?.1 (meta-builtin/builtin/make-box)))
-      (let ((even? even?.1))
-        (let ((odd? odd?.1))
-          (let
-              ((even?.value.1
-                (lambda (n)
-                  (if (meta-builtin/builtin/equal? n 0)
-                    meta-builtin/builtin/true
-                    ((meta-builtin/builtin/box-get odd?)
-                     (meta-builtin/builtin/isub n 1))))))
-            (let
-                ((odd?.value.1
-                  (lambda (n)
-                    (if (meta-builtin/builtin/equal? n 0)
-                      meta-builtin/builtin/false
-                      ((meta-builtin/builtin/box-get even?)
-                       (meta-builtin/builtin/isub n 1))))))
-              (let ((even?.value even?.value.1))
-                (let ((odd?.value odd?.value.1))
-                  (begin
-                    (meta-builtin/builtin/box-put! even?.value even?)
-                    (begin
-                      (meta-builtin/builtin/box-put! odd?.value odd?)
-                      meta-builtin/builtin/void)))))))))))
-
-(define (example-letrec-star)
-  (let ((even?.1 (meta-builtin/builtin/make-box)))
-    (let ((odd?.1 (meta-builtin/builtin/make-box)))
-      (let ((even? even?.1))
-        (let ((odd? odd?.1))
-          (begin
-            (meta-builtin/builtin/box-put!
-             (lambda (n)
-               (if (meta-builtin/builtin/equal? n 0)
-                 meta-builtin/builtin/true
-                 ((meta-builtin/builtin/box-get odd?)
-                  (meta-builtin/builtin/isub n 1))))
-             even?)
-            (begin
-              (meta-builtin/builtin/box-put!
-               (lambda (n)
-                 (if (meta-builtin/builtin/equal? n 0)
-                   meta-builtin/builtin/false
-                   ((meta-builtin/builtin/box-get even?)
-                    (meta-builtin/builtin/isub n 1))))
-               odd?)
-              meta-builtin/builtin/void)))))))
+  (let ((even? (meta-builtin/builtin/make-box)))
+    (let ((odd? (meta-builtin/builtin/make-box)))
+      (begin
+        (meta-builtin/builtin/box-put!
+         (lambda (n)
+           (if (meta-builtin/builtin/equal? n 0)
+             meta-builtin/builtin/true
+             ((meta-builtin/builtin/box-get odd?)
+              (meta-builtin/builtin/isub n 1))))
+         even?)
+        (begin
+          (meta-builtin/builtin/box-put!
+           (lambda (n)
+             (if (meta-builtin/builtin/equal? n 0)
+               meta-builtin/builtin/false
+               ((meta-builtin/builtin/box-get even?)
+                (meta-builtin/builtin/isub n 1))))
+           odd?)
+          meta-builtin/builtin/void)))))
 
 (define (example-local-define)
-  (let ((even?.1 (meta-builtin/builtin/make-box)))
-    (let ((odd?.1 (meta-builtin/builtin/make-box)))
-      (let ((even? even?.1))
-        (let ((odd? odd?.1))
-          (begin
-            (meta-builtin/builtin/box-put!
-             (lambda (n)
-               (if (meta-builtin/builtin/equal? n 0)
-                 meta-builtin/builtin/true
-                 ((meta-builtin/builtin/box-get odd?)
-                  (meta-builtin/builtin/isub n 1))))
-             even?)
-            (begin
-              (meta-builtin/builtin/box-put!
-               (lambda (n)
-                 (if (meta-builtin/builtin/equal? n 0)
-                   meta-builtin/builtin/false
-                   ((meta-builtin/builtin/box-get even?)
-                    (meta-builtin/builtin/isub n 1))))
-               odd?)
-              meta-builtin/builtin/void)))))))
+  (let ((even? (meta-builtin/builtin/make-box)))
+    (let ((odd? (meta-builtin/builtin/make-box)))
+      (begin
+        (meta-builtin/builtin/box-put!
+         (lambda (n)
+           (if (meta-builtin/builtin/equal? n 0)
+             meta-builtin/builtin/true
+             ((meta-builtin/builtin/box-get odd?)
+              (meta-builtin/builtin/isub n 1))))
+         even?)
+        (begin
+          (meta-builtin/builtin/box-put!
+           (lambda (n)
+             (if (meta-builtin/builtin/equal? n 0)
+               meta-builtin/builtin/false
+               ((meta-builtin/builtin/box-get even?)
+                (meta-builtin/builtin/isub n 1))))
+           odd?)
+          meta-builtin/builtin/void)))))

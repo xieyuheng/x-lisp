@@ -32,7 +32,7 @@
          [(desugar-data-constructor data-constructor)]
          location)))
     ((define-struct-stmt type-constructor fields location)
-     (let* ((type-name (pre-type-constructor-name type-constructor))
+     (let ((type-name (pre-type-constructor-name type-constructor))
             (base-name (make-base-name type-name location)))
        (expand-define-algebraic-type
          (define-algebraic-type-stmt

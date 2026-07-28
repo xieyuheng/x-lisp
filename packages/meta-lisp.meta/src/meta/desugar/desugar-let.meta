@@ -1,26 +1,5 @@
 (module meta)
 
-(@comment
-  desugar (let) to (let*)
-
-  (let ((x1 e1)
-        (x2 e2)
-        ...
-        (xn en))
-    body)
-
-  let [t1 t2 ... tn] be fresh names
-
-  (let* ((t1 e1)
-         (t2 e2)
-         ...
-         (tn en)
-         (x1 t1)
-         (x2 t2)
-         ...
-         (xn tn))
-    body))
-
 (claim desugar-let
   (-> (list-t binding-t) exp-t source-location-t
       exp-t))
@@ -28,36 +7,18 @@
 (define (desugar-let bindings body location)
   (cond
     ((list-empty? bindings) body)
-    ((equal? 1 (list-length bindings))
+    ((list-empty? (cdr bindings))
      (let ((binding (car bindings)))
-       (let1-exp (binding-name binding) (binding-rhs binding) body location)))
+       (let1-exp
+         (binding-name binding)
+         (binding-rhs binding)
+         body
+         location)))
     (else
-     (let ((used-names
-             (set-union
-               (exp-occurred-names body)
-               (set-union-many (list-map binding-occurred-names bindings)))))
-       (let-star-exp (desugar-let-bindings used-names bindings) body location)))))
-
-(claim desugar-let-bindings
-  (-> (set-t symbol-t) (list-t binding-t)
-      (list-t binding-t)))
-
-(define (desugar-let-bindings used-names bindings)
-  (pipe bindings
-    (list-map (desugar-let-binding used-names))
-    list-unzip
-    pair-to-list
-    list-concat))
-
-(claim desugar-let-binding
-  (-> (set-t symbol-t) binding-t
-      (pair-t binding-t binding-t)))
-
-(define (desugar-let-binding used-names binding)
-  (match binding
-    ((make-binding name rhs location)
-     (let ((fresh-name (generate-relative-fresh-name used-names name)))
-       (set-add! fresh-name used-names)
-       (make-pair
-         (make-binding fresh-name rhs location)
-         (make-binding name (var-exp fresh-name location) location))))))
+     (let ((binding (car bindings))
+           (rest-bindings (cdr bindings)))
+       (let1-exp
+         (binding-name binding)
+         (binding-rhs binding)
+         (desugar-let rest-bindings body location)
+         location)))))

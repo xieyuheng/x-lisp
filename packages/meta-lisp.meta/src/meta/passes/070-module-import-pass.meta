@@ -30,7 +30,7 @@
     ((admit-stmt name type location)
      (admit-stmt name (module-import-term scope type) location))
     ((define-function-stmt name parameters body location)
-     (let* ((bound-names (list-to-set parameters))
+     (let ((bound-names (list-to-set parameters))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (define-function-stmt name parameters (module-import-term new-scope body) location)))
     ((define-variable-stmt name body location)
@@ -40,14 +40,14 @@
     ((define-type-stmt name parameters body location)
      (define-type-stmt name parameters (module-import-term scope body) location))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (let* ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
+     (let ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (define-algebraic-type-stmt
          type-constructor
          (list-map (module-import-explicit-data-constructor new-scope) data-constructors)
          location)))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
-     (let* ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
+     (let ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (define-opaque-type-stmt type-constructor
          (module-import-term new-scope representation-type)
@@ -109,21 +109,21 @@
             location))
          ((nothing) term))))
     ((lambda-term parameters body location)
-     (let* ((bound-names (list-to-set parameters))
+     (let ((bound-names (list-to-set parameters))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (lambda-term
          parameters
          (module-import-term new-scope body)
          location)))
     ((polymorphic-term parameters body location)
-     (let* ((bound-names (list-to-set parameters))
+     (let ((bound-names (list-to-set parameters))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (polymorphic-term
          parameters
          (module-import-term new-scope body)
          location)))
     ((let1-term name rhs body location)
-     (let* ((bound-names (@set name))
+     (let ((bound-names (@set name))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (let1-term
          name

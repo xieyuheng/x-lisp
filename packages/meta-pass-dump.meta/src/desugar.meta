@@ -3,7 +3,7 @@
 (define (add1 x) (iadd 1 x))
 (define (double x) (iadd x x))
 
-(define (example-let-star) (let* ((x 1) (y (iadd x 1))) (iadd x y)))
+(define (example-let-star) (let ((x 1) (y (iadd x 1))) (iadd x y)))
 (define (example-cond) (cond ((equal? 1 1) 1) (else 2)))
 (define (example-begin) (begin 1 2 3))
 (define (example-when) (when true 1))
@@ -15,11 +15,6 @@
 (define (example-compose) ((compose add1 double) 5))
 (define (example-letrec)
   (letrec
-    ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
-     (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
-    void))
-(define (example-letrec-star)
-  (letrec*
     ((even? (lambda (n) (if (equal? n 0) true (odd? (isub n 1)))))
      (odd? (lambda (n) (if (equal? n 0) false (even? (isub n 1))))))
     void))

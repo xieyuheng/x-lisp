@@ -19,7 +19,7 @@
          ((just claim-node) [claim-node body])
          ((nothing) [body]))))
     ((function-definition mod name parameters body location)
-     (let* ((name-str (symbol-to-string name))
+     (let ((name-str (symbol-to-string name))
             (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters))
             (def-node (ppml/pretty-application (just name-str)
                         (cons (ppml/text name-str) param-nodes)))
@@ -50,7 +50,7 @@
            [(ppml/text (symbol-to-string name))]
            [(pretty-term body)])])))
     ((type-definition mod name parameters body location)
-     (let* ((name-str (symbol-to-string name))
+     (let ((name-str (symbol-to-string name))
             (params-str (string-join " " (list-map symbol-to-string parameters)))
             (body-node (ppml/pretty-syntax "define-type"
                          [(if (list-empty? parameters)
@@ -61,7 +61,7 @@
          ((just claim-node) [claim-node body-node])
          ((nothing) [body-node]))))
     ((algebraic-type-definition mod name type-constructor data-constructors location)
-     (let* ((tc-params (type-constructor-parameters type-constructor))
+     (let ((tc-params (type-constructor-parameters type-constructor))
             (name-str (symbol-to-string (type-constructor-name type-constructor)))
             (params-str (string-join " " (list-map symbol-to-string tc-params)))
             (define-node (ppml/pretty-syntax "define-enum"
@@ -73,7 +73,7 @@
          ((just claim-node) [claim-node define-node])
          ((nothing) [define-node]))))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
-     (let* ((tc-params (type-constructor-parameters type-constructor))
+     (let ((tc-params (type-constructor-parameters type-constructor))
             (name-str (symbol-to-string name))
             (params-str (string-join " " (list-map symbol-to-string tc-params)))
             (define-node (ppml/pretty-syntax "define-opaque-type"
@@ -126,7 +126,7 @@
     ((hash-type key-type value-type)
      (ppml/pretty-application (just "hash-t") [(ppml/text "hash-t") (pretty-type key-type) (pretty-type value-type)]))
     ((data-type type-constructor arg-types)
-     (let* ((mod-name-str (symbol-to-string (mod-name (type-constructor-mod type-constructor))))
+     (let ((mod-name-str (symbol-to-string (mod-name (type-constructor-mod type-constructor))))
             (name-str (symbol-to-string (type-constructor-name type-constructor)))
             (full-name (@string mod-name-str "/" name-str))
             (arg-nodes (list-map pretty-type arg-types)))

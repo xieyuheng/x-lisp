@@ -103,7 +103,7 @@
       (set-t name-t)))
 
 (define (lookup-mod-defined-names package pkg-name mod-name)
-  (let* ((target (lookup-package package pkg-name))
+  (let ((target (lookup-package package pkg-name))
          (defined (collect-defined-names target)))
     (if (hash-has? mod-name defined)
       (hash-get mod-name defined)
@@ -114,7 +114,7 @@
       (set-t name-t)))
 
 (define (lookup-mod-private-names package pkg-name mod-name)
-  (let* ((target (lookup-package package pkg-name))
+  (let ((target (lookup-package package pkg-name))
          (private (collect-private-names target)))
     (if (hash-has? mod-name private)
       (hash-get mod-name private)

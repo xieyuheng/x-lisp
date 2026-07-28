@@ -51,18 +51,6 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
     }
 
     case "LetExp": {
-      const allNames = new Set(exp.bindings.map((b) => b.name))
-      const shadowed = allNames.has(name)
-      return M.LetExp(
-        exp.bindings.map((b) =>
-          M.Binding(b.name, expNaiveSubst(b.rhs, name, rhs), b.location),
-        ),
-        shadowed ? exp.body : expNaiveSubst(exp.body, name, rhs),
-        exp.location,
-      )
-    }
-
-    case "LetStarExp": {
       const newBindings: Array<M.Binding> = []
       let shadowed = false
       for (const b of exp.bindings) {
@@ -70,7 +58,7 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
         newBindings.push(M.Binding(b.name, newRhs, b.location))
         if (b.name === name) shadowed = true
       }
-      return M.LetStarExp(
+      return M.LetExp(
         newBindings,
         shadowed ? exp.body : expNaiveSubst(exp.body, name, rhs),
         exp.location,
@@ -81,20 +69,6 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       const allNames = new Set(exp.bindings.map((b) => b.name))
       const shadowed = allNames.has(name)
       return M.LetrecExp(
-        shadowed
-          ? exp.bindings
-          : exp.bindings.map((b) =>
-              M.Binding(b.name, expNaiveSubst(b.rhs, name, rhs), b.location),
-            ),
-        shadowed ? exp.body : expNaiveSubst(exp.body, name, rhs),
-        exp.location,
-      )
-    }
-
-    case "LetrecStarExp": {
-      const allNames = new Set(exp.bindings.map((b) => b.name))
-      const shadowed = allNames.has(name)
-      return M.LetrecStarExp(
         shadowed
           ? exp.bindings
           : exp.bindings.map((b) =>

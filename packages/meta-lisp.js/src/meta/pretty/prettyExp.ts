@@ -92,25 +92,9 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       )
     }
 
-    case "LetStarExp": {
-      return Ppml.prettySyntax(
-        "let*",
-        [prettyBindings(exp.bindings)],
-        prettyBody(exp.body),
-      )
-    }
-
     case "LetrecExp": {
       return Ppml.prettySyntax(
         "letrec",
-        [prettyBindings(exp.bindings)],
-        prettyBody(exp.body),
-      )
-    }
-
-    case "LetrecStarExp": {
-      return Ppml.prettySyntax(
-        "letrec*",
         [prettyBindings(exp.bindings)],
         prettyBody(exp.body),
       )

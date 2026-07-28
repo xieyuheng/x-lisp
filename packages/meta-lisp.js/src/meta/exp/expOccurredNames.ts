@@ -42,13 +42,6 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       )
     }
 
-    case "LetStarExp": {
-      return setUnion(
-        setUnionMany(exp.bindings.map(bindingOccurredNames)),
-        expOccurredNames(exp.body),
-      )
-    }
-
     case "LetrecExp": {
       return setUnion(
         setUnionMany(exp.bindings.map(bindingOccurredNames)),
@@ -59,13 +52,6 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
     case "LocalDefineExp": {
       return setUnion(
         new Set([exp.name, ...exp.parameters]),
-        expOccurredNames(exp.body),
-      )
-    }
-
-    case "LetrecStarExp": {
-      return setUnion(
-        setUnionMany(exp.bindings.map(bindingOccurredNames)),
         expOccurredNames(exp.body),
       )
     }

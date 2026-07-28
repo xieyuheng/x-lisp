@@ -52,9 +52,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 - [顺序与绑定](#顺序与绑定)
   - [(begin)](#begin)
   - [(let)](#let)
-  - [(let*)](#let-1)
   - [(letrec)](#letrec)
-  - [(letrec*)](#letrec-1)
   - [local (define)](#local-define)
 - [函数组合](#函数组合)
   - [(pipe)](#pipe)
@@ -697,10 +695,9 @@ builtin/list-empty?
   <body>)
 ```
 
-并行局部变量绑定。
+顺序局部变量绑定。
 
-所有右侧 `<exp>` 在同一个外层作用域中求值，互相不可见。
-然后所有 `<name>` 同时绑定到求值结果，再求值 `<body>`。
+每个 `<exp>` 可以引用前面绑定的名字。
 
 ```meta-lisp
 (let ((x 1))
@@ -709,40 +706,10 @@ builtin/list-empty?
 (let ((x 1)
       (y 2))
   (iadd x y))  ;; => 3
-```
 
-并行意味着后面的绑定不能引用前面的：
-
-```meta-lisp
 (let ((x 1)
-      (y (iadd x 1)))  ;; 错误：x 在右侧不可见
-  (iadd x y))
-```
-
-## (let*)
-
-```meta-lisp
-(let* ((<name> <exp>)
-       ...)
-  <body>)
-```
-
-顺序局部变量绑定。
-
-每个 `<exp>` 可以引用前面绑定的名字。
-
-```meta-lisp
-(let* ((x 1)
-       (y (iadd x 1)))
+      (y (iadd x 1)))
   (iadd x y))  ;; => 3
-```
-
-`(let*)` 等价于嵌套的 `(let)`：
-
-```meta-lisp
-(let ((x 1))
-  (let ((y (iadd x 1)))
-    (iadd x y)))
 ```
 
 ## (letrec)
@@ -755,8 +722,7 @@ builtin/list-empty?
 
 类似 `(let)`，但是允许递归与互相递归。
 
-所有 `<exp>` 在同一作用域中求值，互相不可见对方的值。
-所有 `<name>` 同时绑定到求值结果，然后求值 `<body>`。
+所有 `<exp>` 可以引用所有 `<name>`。
 
 互相递归的例子：
 
@@ -774,53 +740,11 @@ builtin/list-empty?
   (assert (even? 4)))
 ```
 
-与 `(letrec*)`（见下文）的区别：
-
-```meta-lisp
-;; (letrec*) 支持顺序依赖：
-(letrec* ((a 1)
-          (b (iadd a 1)))
-  b)  ;; => 2
-
-;; (letrec) 的并行语义不支持顺序依赖：
-(letrec ((a 1)
-         (b (iadd a 1)))  ;; 错误：a 在此处不可见
-  b)
-```
-
-## (letrec*)
-
-```meta-lisp
-(letrec* ((<name> <exp>)
-          ...)
-  <body>)
-```
-
-与 `(let*)` 类似，但是允许递归与互相递归。
-
-所有 `<exp>` 可以引用所有 `<name>`。
-
-互相递归的例子：
-
-```meta-lisp
-(letrec* ((even?
-           (lambda (n)
-             (if (equal? n 0)
-               true
-               (odd? (isub n 1)))))
-          (odd?
-           (lambda (n)
-             (if (equal? n 0)
-               false
-               (even? (isub n 1))))))
-  (assert (even? 4)))
-```
-
 顺序依赖的例子：
 
 ```meta-lisp
-(letrec* ((a 1)
-          (b (iadd a 1)))
+(letrec ((a 1)
+         (b (iadd a 1)))
   b)  ;; => 2
 ```
 
@@ -834,9 +758,9 @@ builtin/list-empty?
 `<body>` 中的局部可递归变量绑定。
 
 允许 `(define)` 在 `<body>` 中使用。
-用来代替嵌套的 `(letrec*)`，以减少缩进。
+用来代替嵌套的 `(letrec)`，以减少缩进。
 
-互相递归的例子（与 `(letrec*)` 的例子等价）：
+互相递归的例子（与 `(letrec)` 的例子等价）：
 
 ```meta-lisp
 (begin

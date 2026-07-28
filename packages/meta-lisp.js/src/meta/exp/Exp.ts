@@ -15,8 +15,6 @@ export type Exp =
   | ComposeExp
   | Let1Exp
   | LetExp
-  | LetStarExp
-  | LetrecStarExp
   | LetrecExp
   | LocalDefineExp
   | Begin1Exp
@@ -321,46 +319,6 @@ export function LetExp(
 ): LetExp {
   return {
     kind: "LetExp",
-    bindings,
-    body,
-    location,
-  }
-}
-
-export type LetStarExp = {
-  kind: "LetStarExp"
-  bindings: Array<Binding>
-  body: Exp
-  location: SourceLocation
-}
-
-export function LetStarExp(
-  bindings: Array<Binding>,
-  body: Exp,
-  location: SourceLocation,
-): LetStarExp {
-  return {
-    kind: "LetStarExp",
-    bindings,
-    body,
-    location,
-  }
-}
-
-export type LetrecStarExp = {
-  kind: "LetrecStarExp"
-  bindings: Array<Binding>
-  body: Exp
-  location: SourceLocation
-}
-
-export function LetrecStarExp(
-  bindings: Array<Binding>,
-  body: Exp,
-  location: SourceLocation,
-): LetrecStarExp {
-  return {
-    kind: "LetrecStarExp",
     bindings,
     body,
     location,

@@ -26,7 +26,7 @@ export function desugarBegin(
       ),
     )
 
-    return M.LetrecStarExp(
+    return M.LetrecExp(
       bindings,
       remaining.length === 0
         ? M.QualifiedVarExp("meta-builtin", "builtin", "void", location)

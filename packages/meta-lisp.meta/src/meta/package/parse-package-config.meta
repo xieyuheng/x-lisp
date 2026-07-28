@@ -1,7 +1,7 @@
 (module meta)
 
 (define (parse-package-config path string)
-  (let* ((json (parse-json string))
+  (let ((json (parse-json string))
          (entries (json-object-entries json)))
     (make-package-config
       (json-string-value (hash-get "name" entries))

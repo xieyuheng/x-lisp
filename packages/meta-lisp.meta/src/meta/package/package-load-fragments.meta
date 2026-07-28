@@ -5,6 +5,6 @@
     (list-each
       (lambda (name)
         (when (string-ends-with? ".meta" name)
-          (let* ((path (path-join directory name))
+          (let ((path (path-join directory name))
                  (fragment (load-fragment path)))
             (package-put-fragment! path fragment package)))))))

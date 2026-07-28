@@ -7,7 +7,7 @@
     (match (hash-get-maybe resolved-path package-cache)
       ((just pkg) pkg)
       ((nothing)
-       (let* ((config (load-package-config config-path))
+       (let ((config (load-package-config config-path))
               (root-directory (path-directory-name resolved-path))
               (package (empty-package (actual-id config id) root-directory config)))
          (if (equal? (package-config-name config) "meta-builtin")

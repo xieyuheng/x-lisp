@@ -66,8 +66,6 @@ syntax/if.meta
 syntax/let.meta
 syntax/letrec-even-odd.meta
 syntax/letrec-sequential-binding.meta
-syntax/letrec-star-even-odd.meta
-syntax/letrec-star-sequential-binding.meta
 syntax/local-define-even-odd.meta
 syntax/local-define-sequential-binding.meta
 syntax/name-collision.meta

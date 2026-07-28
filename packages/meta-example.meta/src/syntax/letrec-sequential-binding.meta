@@ -1,8 +1,13 @@
 (module letrec)
 
+(define-test sequential-binding-test
+  (letrec ((a 1)
+            (b (iadd a 1)))
+    (assert-equal 2 b)))
+
 ;; - uncomment to see runtime error:
 
 ;; (define-test sequential-binding-runtime-error
-;;   (letrec ((a 1)
-;;            (b (iadd a 1)))
+;;   (letrec ((b (iadd a 1))
+;;             (a 1))
 ;;     (assert-equal 2 b)))

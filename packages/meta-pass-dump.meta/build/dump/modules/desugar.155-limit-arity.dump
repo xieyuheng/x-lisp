@@ -16,8 +16,8 @@
        (meta-builtin/builtin/make-source-location
         "src/desugar.meta"
         (meta-builtin/builtin/make-source-span
-         (meta-builtin/builtin/make-source-position 172 6 24)
-         (meta-builtin/builtin/make-source-position 176 6 28)))))))
+         (meta-builtin/builtin/make-source-position 171 6 24)
+         (meta-builtin/builtin/make-source-position 175 6 28)))))))
 
 (define (example-begin) (begin 1 (begin 2 3)))
 
@@ -42,50 +42,30 @@
 (define (example-compose) ((@closure self/desugar/example-compose©λ1) 5))
 
 (define (example-letrec)
-  (let ((even?.1 (meta-builtin/builtin/make-box)))
-    (let ((odd?.1 (meta-builtin/builtin/make-box)))
-      (let ((even? even?.1))
-        (let ((odd? odd?.1))
-          (let ((even?.value.1 (@closure self/desugar/example-letrec©λ1 odd?)))
-            (let
-                ((odd?.value.1 (@closure self/desugar/example-letrec©λ2 even?)))
-              (let ((even?.value even?.value.1))
-                (let ((odd?.value odd?.value.1))
-                  (begin
-                    (meta-builtin/builtin/box-put! even?.value even?)
-                    (begin
-                      (meta-builtin/builtin/box-put! odd?.value odd?)
-                      meta-builtin/builtin/void)))))))))))
-
-(define (example-letrec-star)
-  (let ((even?.1 (meta-builtin/builtin/make-box)))
-    (let ((odd?.1 (meta-builtin/builtin/make-box)))
-      (let ((even? even?.1))
-        (let ((odd? odd?.1))
-          (begin
-            (meta-builtin/builtin/box-put!
-             (@closure self/desugar/example-letrec-star©λ1 odd?)
-             even?)
-            (begin
-              (meta-builtin/builtin/box-put!
-               (@closure self/desugar/example-letrec-star©λ2 even?)
-               odd?)
-              meta-builtin/builtin/void)))))))
+  (let ((even? (meta-builtin/builtin/make-box)))
+    (let ((odd? (meta-builtin/builtin/make-box)))
+      (begin
+        (meta-builtin/builtin/box-put!
+         (@closure self/desugar/example-letrec©λ1 odd?)
+         even?)
+        (begin
+          (meta-builtin/builtin/box-put!
+           (@closure self/desugar/example-letrec©λ2 even?)
+           odd?)
+          meta-builtin/builtin/void)))))
 
 (define (example-local-define)
-  (let ((even?.1 (meta-builtin/builtin/make-box)))
-    (let ((odd?.1 (meta-builtin/builtin/make-box)))
-      (let ((even? even?.1))
-        (let ((odd? odd?.1))
-          (begin
-            (meta-builtin/builtin/box-put!
-             (@closure self/desugar/example-local-define©λ1 odd?)
-             even?)
-            (begin
-              (meta-builtin/builtin/box-put!
-               (@closure self/desugar/example-local-define©λ2 even?)
-               odd?)
-              meta-builtin/builtin/void)))))))
+  (let ((even? (meta-builtin/builtin/make-box)))
+    (let ((odd? (meta-builtin/builtin/make-box)))
+      (begin
+        (meta-builtin/builtin/box-put!
+         (@closure self/desugar/example-local-define©λ1 odd?)
+         even?)
+        (begin
+          (meta-builtin/builtin/box-put!
+           (@closure self/desugar/example-local-define©λ2 even?)
+           odd?)
+          meta-builtin/builtin/void)))))
 
 (define (example-chain©λ1 ©closure target)
   (self/desugar/double (self/desugar/add1 target)))
@@ -100,18 +80,6 @@
       ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1)))))
 
 (define (example-letrec©λ2 ©closure n.1)
-  (let ((even? (meta-builtin/builtin/closure-arg 0 ©closure)))
-    (if (meta-builtin/builtin/equal? n.1 0)
-      meta-builtin/builtin/false
-      ((meta-builtin/builtin/box-get even?) (meta-builtin/builtin/isub n.1 1)))))
-
-(define (example-letrec-star©λ1 ©closure n)
-  (let ((odd? (meta-builtin/builtin/closure-arg 0 ©closure)))
-    (if (meta-builtin/builtin/equal? n 0)
-      meta-builtin/builtin/true
-      ((meta-builtin/builtin/box-get odd?) (meta-builtin/builtin/isub n 1)))))
-
-(define (example-letrec-star©λ2 ©closure n.1)
   (let ((even? (meta-builtin/builtin/closure-arg 0 ©closure)))
     (if (meta-builtin/builtin/equal? n.1 0)
       meta-builtin/builtin/false

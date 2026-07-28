@@ -137,27 +137,9 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* 'let* bindings body)": ({ bindings, body }, { sexp }) => {
-    const keyword = S.asListSexp(sexp).elements[0]
-    return M.LetStarExp(
-      S.asListSexp(bindings).elements.map(parseBinding),
-      parseBody(body, body.location),
-      keyword.location,
-    )
-  },
-
   "(cons* 'letrec bindings body)": ({ bindings, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LetrecExp(
-      S.asListSexp(bindings).elements.map(parseBinding),
-      parseBody(body, body.location),
-      keyword.location,
-    )
-  },
-
-  "(cons* 'letrec* bindings body)": ({ bindings, body }, { sexp }) => {
-    const keyword = S.asListSexp(sexp).elements[0]
-    return M.LetrecStarExp(
       S.asListSexp(bindings).elements.map(parseBinding),
       parseBody(body, body.location),
       keyword.location,

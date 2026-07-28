@@ -111,12 +111,6 @@ export function formatExp(exp: M.Exp): string {
       return `(let (${bindings}) ${body})`
     }
 
-    case "LetStarExp": {
-      const bindings = exp.bindings.map(formatBinding).join(" ")
-      const body = formatBody(exp.body)
-      return `(let* (${bindings}) ${body})`
-    }
-
     case "LetrecExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
@@ -130,12 +124,6 @@ export function formatExp(exp: M.Exp): string {
       } else {
         return `(define ${exp.name} ${formatBody(exp.body)})`
       }
-    }
-
-    case "LetrecStarExp": {
-      const bindings = exp.bindings.map(formatBinding).join(" ")
-      const body = formatBody(exp.body)
-      return `(letrec* (${bindings}) ${body})`
     }
 
     case "Begin1Exp": {

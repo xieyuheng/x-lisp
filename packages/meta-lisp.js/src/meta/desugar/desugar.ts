@@ -7,9 +7,7 @@ import { desugarCompose } from "./desugarCompose.ts"
 import { desugarCond } from "./desugarCond.ts"
 import { desugarHash } from "./desugarHash.ts"
 import { desugarLet } from "./desugarLet.ts"
-import { desugarLetStar } from "./desugarLetStar.ts"
 import { desugarLetrec } from "./desugarLetrec.ts"
-import { desugarLetrecStar } from "./desugarLetrecStar.ts"
 import { desugarList } from "./desugarList.ts"
 import { desugarOr } from "./desugarOr.ts"
 import { desugarPipe } from "./desugarPipe.ts"
@@ -112,20 +110,12 @@ export function desugar(exp: M.Exp): M.Term {
       return M.Begin1Term(desugar(exp.head), desugar(exp.body), exp.location)
     }
 
-    case "LetStarExp": {
-      return desugar(desugarLetStar(exp.bindings, exp.body, exp.location))
+    case "LetExp": {
+      return desugar(desugarLet(exp.bindings, exp.body, exp.location))
     }
 
     case "LetrecExp": {
       return desugar(desugarLetrec(exp.bindings, exp.body, exp.location))
-    }
-
-    case "LetrecStarExp": {
-      return desugar(desugarLetrecStar(exp.bindings, exp.body, exp.location))
-    }
-
-    case "LetExp": {
-      return desugar(desugarLet(exp.bindings, exp.body, exp.location))
     }
 
     case "LambdaExp": {

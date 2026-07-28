@@ -28,7 +28,7 @@
     (match op-maybe
       ((just op)
        (if (int-less-or-equal? (string-length op) 3)
-         (let* ((indentation (iadd (string-length op) 2))
+         (let ((indentation (iadd (string-length op) 2))
                 (body-node
                   (if (list-empty? (cdr elements))
                     (car elements)

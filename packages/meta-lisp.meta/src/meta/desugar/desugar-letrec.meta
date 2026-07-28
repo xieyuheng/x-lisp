@@ -12,56 +12,72 @@
   let [e1 e2 ... en] and body
   have their [x1 x2 ... xn]
   replaced with [(box-get x1) (box-get x2) ... (box-get xn)]
-  and let [t1 t2 ... tn] be fresh names
 
   (let ((x1 (make-box))
         (x2 (make-box))
         ...
         (xn (make-box)))
-    (let ((t1 e1)
-          (t2 e2)
-          ...
-          (tn en))
-      (box-put! t1 x1)
-      (box-put! t2 x2)
-      ...
-      (box-put! tn xn)
-      body)))
+    (box-put! e1 x1)
+    (box-put! e2 x2)
+    ...
+    (box-put! en xn)
+    body))
 
 (claim desugar-letrec
   (-> (list-t binding-t) exp-t source-location-t
       exp-t))
 
 (define (desugar-letrec bindings body location)
-  (let* ((box-bindings (list-map make-box-binding bindings))
+  (let ((box-bindings (list-map make-box-binding bindings))
          (box-get-exps (list-map make-box-get-exp bindings))
          (names (list-map binding-name bindings))
          (exp-box-get-subst (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
          (new-rhs-exps (list-map (compose exp-box-get-subst binding-rhs) bindings))
-         (used-names
-           (set-union
-             (exp-occurred-names body)
-             (set-union-many (list-map binding-occurred-names bindings))))
-         (tmp-bindings (list-map-zip (make-tmp-binding used-names) bindings new-rhs-exps))
-         (tmp-var-exps (list-map make-binding-var-exp tmp-bindings))
-         (box-put-exps (list-map-zip make-box-put-exp tmp-var-exps bindings)))
+         (box-put-exps (list-map-zip make-box-put-exp new-rhs-exps bindings)))
     (let-exp
       box-bindings
-      (let-exp
-        tmp-bindings
-        (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)
-        location)
+      (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)
       location)))
 
-(define (make-tmp-binding used-names binding rhs)
+(define (make-box-binding binding)
   (match binding
     ((make-binding name _ location)
      (make-binding
-       (generate-relative-fresh-name used-names (symbol-append name '.value))
-       rhs
+       name
+       (apply-exp
+         (qualified-var-exp 'meta-builtin 'builtin 'make-box location)
+         []
+         location)
        location))))
 
-(define (make-binding-var-exp binding)
+(define (make-box-get-exp binding)
+  (match binding
+    ((make-binding name rhs location)
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'box-get location)
+       [(var-exp name location)]
+       location))))
+
+(define (make-box-put-exp value-exp binding)
   (match binding
     ((make-binding name _ location)
-     (var-exp name location))))
+     (apply-exp
+       (qualified-var-exp 'meta-builtin 'builtin 'box-put! location)
+       [value-exp (var-exp name location)]
+       location))))
+
+(claim exp-naive-subst-many
+  (-> exp-t (list-t symbol-t) (list-t exp-t)
+      exp-t))
+
+(define (exp-naive-subst-many exp names rhs-exps)
+  (list-fold-left exp-naive-subst-pair exp (list-zip names rhs-exps)))
+
+(claim exp-naive-subst-pair
+  (-> exp-t (pair-t symbol-t exp-t)
+      exp-t))
+
+(define (exp-naive-subst-pair exp pair)
+  (match pair
+    ((make-pair name rhs)
+     (exp-naive-subst exp name rhs))))

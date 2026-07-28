@@ -58,7 +58,7 @@
            (mod-name (fragment-mod-name fragment)))
        (for-list data-constructors
          (lambda (ctor)
-           (let* ((key (algebraic-key pkg-name mod-name (explicit-data-constructor-name ctor)))
+           (let ((key (algebraic-key pkg-name mod-name (explicit-data-constructor-name ctor)))
                   (fields (explicit-data-constructor-fields ctor))
                   (data-constructor-info
                     (make-data-constructor-info
@@ -68,7 +68,7 @@
                       (explicit-data-constructor-predicate-name ctor))))
              (hash-put! key data-constructor-info
                (algebraic-analysis-report-data-constructor-infos report)))))
-       (let* ((constructor-names (list-map explicit-data-constructor-name data-constructors))
+       (let ((constructor-names (list-map explicit-data-constructor-name data-constructors))
               (type-key (algebraic-key pkg-name mod-name type-name))
               (algebraic-type-info
                 (make-algebraic-type-info pkg-name mod-name type-name constructor-names)))

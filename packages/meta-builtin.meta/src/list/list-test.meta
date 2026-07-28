@@ -79,7 +79,7 @@
     (assert-equal list [])))
 
 (define-test list-push-test
-  (let* ((list [])
+  (let ((list [])
          (list (list-push 1 list))
          (list (list-push 2 list))
          (list (list-push 3 list)))
@@ -102,7 +102,7 @@
     (assert-equal list [1 2 3])))
 
 (define-test list-put-test
-  (let* ((list [0 0 0])
+  (let ((list [0 0 0])
          (list (list-put 0 1 list))
          (list (list-put 1 2 list))
          (list (list-put 2 3 list)))

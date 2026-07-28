@@ -22,16 +22,16 @@
     (format-exp (parse-exp (@sexp (let ((x 1) (y 2)) (f x y)))))))
 
 (define-test parse-let-star-test
-  (assert-equal "(let* ((x 1) (y x)) y)"
-    (format-exp (parse-exp (@sexp (let* ((x 1) (y x)) y))))))
+  (assert-equal "(let ((x 1) (y x)) y)"
+    (format-exp (parse-exp (@sexp (let ((x 1) (y x)) y))))))
 
 (define-test parse-letrec-test
   (assert-equal "(letrec ((f (lambda (x) x))) (f 1))"
     (format-exp (parse-exp (@sexp (letrec ((f (lambda (x) x))) (f 1)))))))
 
 (define-test parse-letrec-star-test
-  (assert-equal "(letrec* ((x 1) (y x)) y)"
-    (format-exp (parse-exp (@sexp (letrec* ((x 1) (y x)) y))))))
+  (assert-equal "(letrec ((x 1) (y x)) y)"
+    (format-exp (parse-exp (@sexp (letrec ((x 1) (y x)) y))))))
 
 (define-test parse-local-define-test
   (assert-equal "(define x 1)"

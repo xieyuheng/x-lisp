@@ -12,12 +12,12 @@
 
   (cond
     ((ctor1? target)
-     (let* ((v11 (ctor1-accessor1 target))
+     (let ((v11 (ctor1-accessor1 target))
             (v12 (ctor1-accessor2 target))
             ...)
        body1))
     ((ctor2? target)
-     (let* ((v21 (ctor2-accessor1 target))
+     (let ((v21 (ctor2-accessor1 target))
             (v22 (ctor2-accessor2 target))
             ...)
        body2))
@@ -161,13 +161,13 @@
       (list-t data-pattern-clause-group-t)))
 
 (define (group-clauses-by-data-pattern ctx clauses)
-  (let* ((report (desugar-match-ctx-algebraic-analysis-report ctx))
+  (let ((report (desugar-match-ctx-algebraic-analysis-report ctx))
          (infos (algebraic-analysis-report-data-constructor-infos report)))
     (match (lookup-same-algebraic-type-info ctx clauses)
       ((make-algebraic-type-info pkg-name mod-name name constructor-names)
        (swap list-map constructor-names
          (lambda (ctor-name)
-           (let* ((key (algebraic-key pkg-name mod-name ctor-name))
+           (let ((key (algebraic-key pkg-name mod-name ctor-name))
                   (data-constructor-info (hash-get key infos)))
              (make-data-pattern-clause-group
                data-constructor-info
@@ -247,7 +247,7 @@
       ((qualified-var-exp pkg-name mod-name name location)
        (make-qualified-name pkg-name mod-name name))
       ((var-exp name location)
-       (let* ((scope (desugar-match-ctx-scope ctx))
+       (let ((scope (desugar-match-ctx-scope ctx))
               (imported-names (fragment-scope-imported-names scope)))
          (match (hash-get-maybe name imported-names)
            ((just qualified-name) qualified-name)
