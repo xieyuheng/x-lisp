@@ -90,7 +90,7 @@ function desugarDefineEnum(
           : `${ctor.name}-${field.name}`,
       modifierName:
         stmt.lang === "zh"
-          ? `${ctor.name}置${field.name}之`
+          ? `${ctor.name}置${field.name}`
           : `${ctor.name}-put-${field.name}`,
       location: field.location,
     }))
@@ -137,7 +137,7 @@ function desugarDefineStructStar(
       stmt.lang === "zh" ? `${base}${field.name}` : `${base}-${field.name}`,
     modifierName:
       stmt.lang === "zh"
-        ? `${base}置${field.name}之`
+        ? `${base}置${field.name}`
         : `${base}-put-${field.name}`,
     location: field.location,
   }))
@@ -171,7 +171,7 @@ function desugarDefineStruct(
       stmt.lang === "zh" ? `${base}${field.name}` : `${base}-${field.name}`,
     modifierName:
       stmt.lang === "zh"
-        ? `${base}置${field.name}之`
+        ? `${base}置${field.name}`
         : `${base}-put-${field.name}`,
     location: field.location,
   }))
