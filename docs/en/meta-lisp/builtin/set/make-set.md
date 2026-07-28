@@ -15,5 +15,5 @@ Create an empty set.
 # Examples
 
 ```meta-lisp
-(make-set)  ;; => #{}
+(make-set)  ;; => (@set)
 ```

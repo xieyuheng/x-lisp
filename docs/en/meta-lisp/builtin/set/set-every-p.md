@@ -15,6 +15,6 @@ Check if all elements satisfy the predicate.
 # Examples
 
 ```meta-lisp
-(set-every? int-non-negative? #{0 1 2})  ;; => true
-(set-every? int-non-negative? #{0 -1})   ;; => false
+(set-every? int-non-negative? (@set 0 1 2))  ;; => true
+(set-every? int-non-negative? (@set 0 -1))   ;; => false
 ```

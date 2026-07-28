@@ -15,6 +15,6 @@ Check if the set is empty.
 # Examples
 
 ```meta-lisp
-(set-empty? #{})       ;; => true
-(set-empty? #{1 2 3})  ;; => false
+(set-empty? (@set) )       ;; => true
+(set-empty? (@set 1 2 3))  ;; => false
 ```

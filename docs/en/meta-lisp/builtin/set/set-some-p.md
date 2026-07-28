@@ -15,6 +15,6 @@ Check if some element satisfies the predicate.
 # Examples
 
 ```meta-lisp
-(set-some? int-non-negative? #{-1 0 1})  ;; => true
-(set-some? int-non-negative? #{-1 -2})   ;; => false
+(set-some? int-non-negative? (@set -1 0 1))  ;; => true
+(set-some? int-non-negative? (@set -1 -2))   ;; => false
 ```

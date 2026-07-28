@@ -15,6 +15,6 @@ title: set-every?
 # 例子
 
 ```meta-lisp
-(set-every? int-non-negative? #{0 1 2})  ;; => true
-(set-every? int-non-negative? #{0 -1})   ;; => false
+(set-every? int-non-negative? (@set 0 1 2))  ;; => true
+(set-every? int-non-negative? (@set 0 -1))   ;; => false
 ```

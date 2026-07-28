@@ -15,6 +15,6 @@ Add an element to the set, returning a new set.
 # Examples
 
 ```meta-lisp
-(set-add 4 #{1 2 3})  ;; => #{1 2 3 4}
-(set-add 1 #{1 2 3})  ;; => #{1 2 3}
+(set-add 4 (@set 1 2 3))  ;; => (@set 1 2 3 4)
+(set-add 1 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

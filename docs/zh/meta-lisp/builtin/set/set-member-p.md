@@ -15,6 +15,6 @@ title: set-member?
 # 例子
 
 ```meta-lisp
-(set-member? 2 #{1 2 3})  ;; => true
-(set-member? 0 #{1 2 3})  ;; => false
+(set-member? 2 (@set 1 2 3))  ;; => true
+(set-member? 0 (@set 1 2 3))  ;; => false
 ```

@@ -15,6 +15,6 @@ Intersection of two sets.
 # Examples
 
 ```meta-lisp
-(set-inter #{1 2 3} #{2 3 4})  ;; => #{2 3}
-(set-inter #{1} #{2})          ;; => #{}
+(set-inter (@set 1 2 3) (@set 2 3 4))  ;; => (@set 2 3)
+(set-inter (@set 1) (@set 2))          ;; => (@set) 
 ```

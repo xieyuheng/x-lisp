@@ -15,6 +15,6 @@ Convert a set to a list.
 # Examples
 
 ```meta-lisp
-(set-to-list #{1 2 3})  ;; => [1 2 3]
-(set-to-list #{})       ;; => []
+(set-to-list (@set 1 2 3))  ;; => [1 2 3]
+(set-to-list (@set))       ;; => []
 ```

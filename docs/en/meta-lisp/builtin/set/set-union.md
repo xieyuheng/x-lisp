@@ -15,6 +15,6 @@ Union of two sets.
 # Examples
 
 ```meta-lisp
-(set-union #{1 2} #{2 3})  ;; => #{1 2 3}
-(set-union #{1} #{})       ;; => #{1}
+(set-union (@set 1 2) (@set 2 3))  ;; => (@set 1 2 3)
+(set-union (@set 1) (@set) )       ;; => (@set 1)
 ```

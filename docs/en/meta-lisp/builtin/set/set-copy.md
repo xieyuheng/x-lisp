@@ -15,5 +15,5 @@ Copy a set, returning a new set.
 # Examples
 
 ```meta-lisp
-(set-copy #{1 2 3})  ;; => #{1 2 3}
+(set-copy (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

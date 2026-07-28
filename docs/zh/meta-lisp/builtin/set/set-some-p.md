@@ -15,6 +15,6 @@ title: set-some?
 # 例子
 
 ```meta-lisp
-(set-some? int-non-negative? #{-1 0 1})  ;; => true
-(set-some? int-non-negative? #{-1 -2})   ;; => false
+(set-some? int-non-negative? (@set -1 0 1))  ;; => true
+(set-some? int-non-negative? (@set -1 -2))   ;; => false
 ```

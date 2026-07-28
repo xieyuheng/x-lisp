@@ -15,5 +15,5 @@ Clear the set, returning an empty set.
 # Examples
 
 ```meta-lisp
-(set-clear! #{1 2 3})  ;; => #{}
+(set-clear! (@set 1 2 3))  ;; => (@set) 
 ```

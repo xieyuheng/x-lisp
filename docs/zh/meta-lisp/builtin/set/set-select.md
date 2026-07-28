@@ -15,5 +15,5 @@ title: set-select
 # 例子
 
 ```meta-lisp
-(set-select int-non-negative? #{-2 -1 0 1 2})  ;; => #{0 1 2}
+(set-select int-non-negative? (@set -2 -1 0 1 2))  ;; => (@set 0 1 2)
 ```

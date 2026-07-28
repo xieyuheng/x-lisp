@@ -15,5 +15,5 @@ title: set-each
 # 例子
 
 ```meta-lisp
-(set-each println #{1 2 3})
+(set-each println (@set 1 2 3))
 ```

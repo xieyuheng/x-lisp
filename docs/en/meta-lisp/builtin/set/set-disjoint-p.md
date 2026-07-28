@@ -15,6 +15,6 @@ Check if two sets are disjoint (no common elements).
 # Examples
 
 ```meta-lisp
-(set-disjoint? #{1 2} #{3 4})  ;; => true
-(set-disjoint? #{1 2} #{2 3})  ;; => false
+(set-disjoint? (@set 1 2) (@set 3 4))  ;; => true
+(set-disjoint? (@set 1 2) (@set 2 3))  ;; => false
 ```

@@ -15,6 +15,6 @@ Number of elements in the set.
 # Examples
 
 ```meta-lisp
-(set-size #{1 2 3})  ;; => 3
-(set-size #{})       ;; => 0
+(set-size (@set 1 2 3))  ;; => 3
+(set-size (@set))       ;; => 0
 ```

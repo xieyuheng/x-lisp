@@ -15,6 +15,6 @@ title: set-difference
 # 例子
 
 ```meta-lisp
-(set-difference #{1 2 3} #{2 3})  ;; => #{1}
-(set-difference #{1 2} #{1 2 3})  ;; => #{}
+(set-difference (@set 1 2 3) (@set 2 3))  ;; => (@set 1)
+(set-difference (@set 1 2) (@set 1 2 3))  ;; => (@set)
 ```

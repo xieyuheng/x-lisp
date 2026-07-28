@@ -15,5 +15,5 @@ title: make-set
 # 例子
 
 ```meta-lisp
-(make-set)  ;; => #{}
+(make-set)  ;; => (@set)
 ```

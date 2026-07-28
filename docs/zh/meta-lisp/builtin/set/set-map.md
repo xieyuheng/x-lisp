@@ -15,5 +15,5 @@ title: set-map
 # 例子
 
 ```meta-lisp
-(set-map (lambda (n) (iadd n n)) #{1 2 3})  ;; => #{2 4 6}
+(set-map (lambda (n) (iadd n n)) (@set 1 2 3))  ;; => (@set 2 4 6)
 ```

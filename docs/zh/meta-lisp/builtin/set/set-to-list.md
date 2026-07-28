@@ -15,6 +15,6 @@ title: set-to-list
 # 例子
 
 ```meta-lisp
-(set-to-list #{1 2 3})  ;; => [1 2 3]
-(set-to-list #{})       ;; => []
+(set-to-list (@set 1 2 3))  ;; => [1 2 3]
+(set-to-list (@set))       ;; => []
 ```

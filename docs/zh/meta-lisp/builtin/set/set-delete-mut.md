@@ -15,5 +15,5 @@ title: set-delete!
 # 例子
 
 ```meta-lisp
-(set-delete! 2 #{1 2 3})  ;; => #{1 3}
+(set-delete! 2 (@set 1 2 3))  ;; => (@set 1 3)
 ```

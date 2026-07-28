@@ -15,7 +15,7 @@ title: set-subset?
 # 例子
 
 ```meta-lisp
-(set-subset? #{1 2} #{1 2 3})  ;; => true
-(set-subset? #{1 2 3} #{1 2})  ;; => false
-(set-subset? #{} #{1 2 3})     ;; => true
+(set-subset? (@set 1 2) (@set 1 2 3))  ;; => true
+(set-subset? (@set 1 2 3) (@set 1 2))  ;; => false
+(set-subset? (@set) (@set 1 2 3))     ;; => true
 ```
