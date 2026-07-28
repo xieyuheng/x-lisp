@@ -279,12 +279,15 @@
              (arrow-exp [type type-exp] type-exp location)
              location)
            (define-function-stmt
-             modifier-name
-             ['value 'target]
-             (apply-exp
-               (var-exp 'list-put! location)
-               [(int-exp (iadd index 1) location)
-                (var-exp 'value location)
-                (var-exp 'target location)]
-               location)
-             location)]))))))
+              modifier-name
+              ['value 'target]
+              (begin-exp
+                [(apply-exp
+                   (var-exp 'list-put! location)
+                   [(int-exp (iadd index 1) location)
+                    (var-exp 'value location)
+                    (var-exp 'target location)]
+                   location)
+                 (var-exp 'target location)]
+                location)
+              location)]))))))

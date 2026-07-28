@@ -26,7 +26,7 @@ value_t x_list_pop_mut(value_t list) {
 
 value_t x_list_push_mut(value_t value, value_t list) {
   xlist_push(to_xlist(list), value);
-  return list;
+  return x_void;
 }
 
 value_t x_list_pop_front_mut(value_t list) {
@@ -35,7 +35,7 @@ value_t x_list_pop_front_mut(value_t list) {
 
 value_t x_list_push_front_mut(value_t value, value_t list) {
   xlist_push_front(to_xlist(list), value);
-  return list;
+  return x_void;
 }
 
 value_t x_list_get(value_t index, value_t list) {
@@ -44,11 +44,13 @@ value_t x_list_get(value_t index, value_t list) {
 
 value_t x_list_put_mut(value_t index, value_t value, value_t list) {
   xlist_put(to_xlist(list), to_int64(index), value);
-  return list;
+  return x_void;
 }
 
 value_t x_list_put(value_t index, value_t value, value_t list) {
-  return x_list_put_mut(index, value, x_list_copy(list));
+  value_t copy = x_list_copy(list);
+  xlist_put(to_xlist(copy), to_int64(index), value);
+  return copy;
 }
 
 value_t x_car(value_t list) {
@@ -62,7 +64,9 @@ value_t x_cdr(value_t list) {
 }
 
 value_t x_cons(value_t head, value_t tail) {
-  return x_list_push_front_mut(head, x_list_copy(tail));
+  value_t copy = x_list_copy(tail);
+  xlist_push_front(to_xlist(copy), head);
+  return copy;
 }
 
 value_t x_list_head(value_t list) {
@@ -86,11 +90,13 @@ value_t x_list_last(value_t list) {
 
 value_t x_list_reverse_mut(value_t list) {
   array_reverse(to_xlist(list)->elements);
-  return list;
+  return x_void;
 }
 
 value_t x_list_reverse(value_t list) {
-  return x_list_reverse_mut(x_list_copy(list));
+  value_t copy = x_list_copy(list);
+  array_reverse(to_xlist(copy)->elements);
+  return copy;
 }
 
 value_t x_list_to_set(value_t list) {

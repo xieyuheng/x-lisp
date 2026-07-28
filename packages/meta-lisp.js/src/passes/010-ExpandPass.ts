@@ -376,11 +376,17 @@ function expandModifier(
     M.DefineFunctionStmt(
       field.modifierName,
       ["value", "target"],
-      M.ApplyExp(
-        M.VarExp("list-put!", field.location),
+      M.BeginExp(
         [
-          M.IntExp(BigInt(index + 1), field.location),
-          M.VarExp("value", field.location),
+          M.ApplyExp(
+            M.VarExp("list-put!", field.location),
+            [
+              M.IntExp(BigInt(index + 1), field.location),
+              M.VarExp("value", field.location),
+              M.VarExp("target", field.location),
+            ],
+            field.location,
+          ),
           M.VarExp("target", field.location),
         ],
         field.location,

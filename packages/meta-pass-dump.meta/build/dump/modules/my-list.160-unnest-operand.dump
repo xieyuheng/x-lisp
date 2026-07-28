@@ -33,12 +33,12 @@
 (define (li-head target) (meta-builtin/builtin/list-get 1 target))
 
 (define (li-put-head! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (li-tail target) (meta-builtin/builtin/list-get 2 target))
 
 (define (li-put-tail! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (my-list-head list)
   (if (self/my-list/is-nil list)

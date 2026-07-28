@@ -35,7 +35,7 @@
 
 (admit li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
-(define (li-put-head! value target) (list-put! 1 value target))
+(define (li-put-head! value target) (begin (list-put! 1 value target) target))
 
 (admit li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 
@@ -44,7 +44,7 @@
 (admit li-put-tail!
   (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
-(define (li-put-tail! value target) (list-put! 2 value target))
+(define (li-put-tail! value target) (begin (list-put! 2 value target) target))
 
 (define (my-list-head list) (match list ((li head tail) head)))
 

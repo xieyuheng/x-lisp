@@ -19,12 +19,12 @@
 (define (pair-first target) (meta-builtin/builtin/list-get 1 target))
 
 (define (pair-put-first! value target)
-  (meta-builtin/builtin/list-put! 1 value target))
+  (begin (meta-builtin/builtin/list-put! 1 value target) target))
 
 (define (pair-second target) (meta-builtin/builtin/list-get 2 target))
 
 (define (pair-put-second! value target)
-  (meta-builtin/builtin/list-put! 2 value target))
+  (begin (meta-builtin/builtin/list-put! 2 value target) target))
 
 (define (pair-swap p)
   (if (self/pair/is-pair p)

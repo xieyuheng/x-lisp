@@ -30,20 +30,24 @@ value_t x_hash_has(value_t key, value_t hash) {
 
 value_t x_hash_put_mut(value_t key, value_t value, value_t hash) {
   xhash_put(to_xhash(hash), key, value);
-  return hash;
+  return x_void;
 }
 
 value_t x_hash_put(value_t key, value_t value, value_t hash) {
-  return x_hash_put_mut(key, value, x_hash_copy(hash));
+  value_t copy = x_hash_copy(hash);
+  xhash_put(to_xhash(copy), key, value);
+  return copy;
 }
 
 value_t x_hash_delete_mut(value_t key, value_t hash) {
   xhash_delete(to_xhash(hash), key);
-  return hash;
+  return x_void;
 }
 
 value_t x_hash_delete(value_t key, value_t hash) {
-  return x_hash_delete_mut(key, x_hash_copy(hash));
+  value_t copy = x_hash_copy(hash);
+  xhash_delete(to_xhash(copy), key);
+  return copy;
 }
 
 value_t x_hash_keys(value_t hash) {

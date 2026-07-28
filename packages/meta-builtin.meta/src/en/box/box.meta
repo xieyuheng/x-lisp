@@ -3,7 +3,7 @@
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put! (-> E (box-t E) (box-t E)))
+  (box-put! (-> E (box-t E) void-t))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 
 (define (make-box)
