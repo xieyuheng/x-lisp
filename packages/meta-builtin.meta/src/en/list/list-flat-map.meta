@@ -15,4 +15,4 @@
   (assert-equal []
     (list-flat-map (lambda (x) []) [1 2 3]))
   (assert-equal [3 2 1 6 5 4]
-    (list-flat-map list-reverse [[1 2 3] [4 5 6]])))
+    (list-flat-map list-reverse-copy [[1 2 3] [4 5 6]])))

@@ -10,14 +10,14 @@
       (lambda (mod)
         (for-hash (mod-claimed mod)
           (lambda (name entry)
-            (list-push! (setup-claimed-type mod name entry) outcomes)))))
+            (list-push (setup-claimed-type mod name entry) outcomes)))))
     (outcome-conj outcomes)))
 
 (define (setup-claimed-type mod name entry)
   (cond ((or (set-is-member name (mod-admitted mod))
              (hash-has name (mod-definitions mod)))
          (let ((type (evaluate-type mod (empty-env (opaque-mode)) (claimed-entry-term entry))))
-           (claimed-entry-put-type! (just type) entry)
+           (claimed-entry-put-type (just type) entry)
            (outcome-ok)))
         (else
          (println

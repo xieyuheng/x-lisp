@@ -3,8 +3,8 @@
 (define-algebraic-type (pair-t A B)
   ((make-pair (first A) (second B))
    is-pair
-   (first pair-first pair-put-first!)
-   (second pair-second pair-put-second!)))
+   (first pair-first pair-put-first)
+   (second pair-second pair-put-second)))
 
 (admit make-pair (polymorphic (A B) (-> A B (pair-t A B))))
 
@@ -21,18 +21,16 @@
 
 (define (pair-first target) (list-get 1 target))
 
-(admit pair-put-first! (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+(admit pair-put-first (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
 
-(define (pair-put-first! value target)
-  (begin (list-put! 1 value target) target))
+(define (pair-put-first value target) (begin (list-put 1 value target) target))
 
 (admit pair-second (polymorphic (A B) (-> (pair-t A B) B)))
 
 (define (pair-second target) (list-get 2 target))
 
-(admit pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+(admit pair-put-second (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
 
-(define (pair-put-second! value target)
-  (begin (list-put! 2 value target) target))
+(define (pair-put-second value target) (begin (list-put 2 value target) target))
 
 (define (pair-swap p) (match p ((make-pair a b) (make-pair b a))))

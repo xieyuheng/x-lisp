@@ -10,10 +10,11 @@ title: hash-put
 
 # 描述
 
-设置键值对，返回新的哈希表。
+设置键值对，同 `hash-put-copy`。
 
 # 例子
 
 ```meta-lisp
-(hash-put "c" 3 (@hash "a" 1 "b" 2))  ;; => (@hash "a" 1 "b" 2 "c" 3)
+(let ((h (@hash "a" 1)))
+  (hash-put "b" 2 h))
 ```

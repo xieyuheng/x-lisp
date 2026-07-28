@@ -17,10 +17,10 @@ import * as M from "../index.ts"
 //           (x2 (make-box))
 //           ...
 //           (xn (make-box)))
-//       (box-put! e1 x1)
-//       (box-put! e2 x2)
+//       (box-put e1 x1)
+//       (box-put e2 x2)
 //       ...
-//       (box-put! en xn)
+//       (box-put en xn)
 //       body)
 
 export function desugarLetrec(
@@ -69,7 +69,7 @@ export function makeBoxGetExp(binding: M.Binding): M.Exp {
 
 export function makeBoxPutExp(valueExp: M.Exp, binding: M.Binding): M.Exp {
   return M.ApplyExp(
-    M.QualifiedVarExp("meta-builtin", "builtin", "box-put!", binding.location),
+    M.QualifiedVarExp("meta-builtin", "builtin", "box-put", binding.location),
     [valueExp, M.VarExp(binding.name, binding.location)],
     binding.location,
   )

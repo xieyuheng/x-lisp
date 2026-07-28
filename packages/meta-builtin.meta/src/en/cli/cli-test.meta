@@ -72,8 +72,8 @@
          (result (make-list)))
     (cli-define-handler router "add"
       (lambda (ctx)
-        (list-push! (cli-arg-get 0 ctx) result)
-        (list-push! (cli-arg-get 1 ctx) result)
+        (list-push (cli-arg-get 0 ctx) result)
+        (list-push (cli-arg-get 1 ctx) result)
         void))
     (cli-router-run router ["add" "3" "4"])
     (assert-equal ["3" "4"] result)))

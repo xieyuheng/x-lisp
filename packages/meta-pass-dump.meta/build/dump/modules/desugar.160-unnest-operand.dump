@@ -55,10 +55,10 @@
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (let ((unnested.1 (@closure self/desugar/example-letrec©λ1 is-odd)))
-          (meta-builtin/builtin/box-put! unnested.1 is-even))
+          (meta-builtin/builtin/box-put unnested.1 is-even))
         (begin
           (let ((unnested.2 (@closure self/desugar/example-letrec©λ2 is-even)))
-            (meta-builtin/builtin/box-put! unnested.2 is-odd))
+            (meta-builtin/builtin/box-put unnested.2 is-odd))
           meta-builtin/builtin/void)))))
 
 (define (example-local-define)
@@ -67,12 +67,12 @@
       (begin
         (let
             ((unnested.1 (@closure self/desugar/example-local-define©λ1 is-odd)))
-          (meta-builtin/builtin/box-put! unnested.1 is-even))
+          (meta-builtin/builtin/box-put unnested.1 is-even))
         (begin
           (let
               ((unnested.2
                 (@closure self/desugar/example-local-define©λ2 is-even)))
-            (meta-builtin/builtin/box-put! unnested.2 is-odd))
+            (meta-builtin/builtin/box-put unnested.2 is-odd))
           meta-builtin/builtin/void)))))
 
 (define (example-chain©λ1 ©closure target)

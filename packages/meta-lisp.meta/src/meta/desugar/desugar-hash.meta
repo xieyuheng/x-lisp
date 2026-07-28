@@ -19,7 +19,7 @@
                  (lambda (entry acc)
                    (begin1-exp
                      (apply-exp
-                       (qualified-var-exp 'meta-builtin 'builtin 'hash-put! location)
+                        (qualified-var-exp 'meta-builtin 'builtin 'hash-put location)
                        [(hash-entry-key entry)
                         (hash-entry-value entry)
                         (var-exp fresh-name location)]

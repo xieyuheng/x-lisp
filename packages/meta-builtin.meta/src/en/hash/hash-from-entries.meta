@@ -6,7 +6,7 @@
         (hash-t K V))))
 
 (define (hash-from-entries entries)
-  (hash-put-entries entries (@hash)))
+  (hash-put-entries-copy entries (@hash)))
 
 (define-test hash-from-entries-test
   (assert-equal

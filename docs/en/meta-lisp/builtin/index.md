@@ -254,16 +254,16 @@ Operations on `(list-t E)`.
 ### Mutation
 
 - [`list-copy`](list/list-copy.md) — Copy a list
-- [`list-put`](list/list-put.md) — Replace at index (immutable)
-- [`list-put!`](list/list-put-mut.md) — Replace at index (mutable)
-- [`list-push!`](list/list-push-mut.md) — Append at end (mutable)
-- [`list-push-front!`](list/list-push-front-mut.md) — Prepend at front (mutable)
-- [`list-pop!`](list/list-pop-mut.md) — Pop from end (mutable)
-- [`list-pop-front!`](list/list-pop-front-mut.md) — Pop from front (mutable)
+- [`list-put`](list/list-put.md) — Replace at index (mutable)
+- [`list-put-copy`](list/list-put-copy.md) — Replace at index (immutable)
+- [`list-push`](list/list-push.md) — Append at end (mutable)
+- [`list-push-front`](list/list-push-front.md) — Prepend at front (mutable)
+- [`list-pop`](list/list-pop.md) — Pop from end (mutable)
+- [`list-pop-front`](list/list-pop-front.md) — Pop from front (mutable)
 
 ### Transformation
 
-- [`list-reverse`](list/list-reverse.md) — Reverse
+- [`list-reverse-copy`](list/list-reverse-copy.md) — Reverse
 - [`list-to-set`](list/list-to-set.md) — Convert to set
 
 ### Generation
@@ -273,8 +273,8 @@ Operations on `(list-t E)`.
 
 ### Sort
 
-- [`list-sort!`](list/list-sort-mut.md) — Sort in-place with comparator
-- [`list-sort`](list/list-sort.md) — Sort with comparator (immutable)
+- [`list-sort`](list/list-sort.md) — Sort in-place with comparator
+- [`list-sort-copy`](list/list-sort-copy.md) — Sort with comparator (immutable)
 
 ### Iteration and mapping
 
@@ -334,11 +334,11 @@ Operations on `(set-t E)`.
 ### Mutation
 
 - [`set-copy`](set/set-copy.md) — Copy a set
-- [`set-add`](set/set-add.md) — Add element (immutable)
-- [`set-add!`](set/set-add-mut.md) — Add element (mutable)
-- [`set-delete`](set/set-delete.md) — Delete element (immutable)
-- [`set-delete!`](set/set-delete-mut.md) — Delete element (mutable)
-- [`set-clear!`](set/set-clear-mut.md) — Clear set (mutable)
+- [`set-add`](set/set-add.md) — Add element (mutable)
+- [`set-add-copy`](set/set-add-copy.md) — Add element (immutable)
+- [`set-delete`](set/set-delete.md) — Delete element (mutable)
+- [`set-delete-copy`](set/set-delete-copy.md) — Delete element (immutable)
+- [`set-clear`](set/set-clear.md) — Clear set (mutable)
 
 ### Set operations
 
@@ -390,11 +390,11 @@ Operations on `(hash-t K V)`.
 
 ### Mutation
 
-- [`hash-put`](hash/hash-put.md) — Add key-value pair (immutable)
-- [`hash-put!`](hash/hash-put-mut.md) — Add key-value pair (mutable)
-- [`hash-put-entries`](hash/hash-put-entries.md) — Put entries (immutable)
-- [`hash-put-entries!`](hash/hash-put-entries-mut.md) — Put entries (mutable)
-- [`hash-delete!`](hash/hash-delete-mut.md) — Delete by key (mutable)
+- [`hash-put`](hash/hash-put.md) — Add key-value pair (mutable)
+- [`hash-put-copy`](hash/hash-put-copy.md) — Add key-value pair (immutable)
+- [`hash-put-entries`](hash/hash-put-entries.md) — Put entries (mutable)
+- [`hash-put-entries-copy`](hash/hash-put-entries-copy.md) — Put entries (immutable)
+- [`hash-delete`](hash/hash-delete.md) — Delete by key (mutable)
 - [`hash-copy`](hash/hash-copy.md) — Copy hash table
 
 ### Iteration
@@ -457,7 +457,7 @@ Operations on the opaque type `(box-t E)`.
 - [`box-t`](box/box-t.md) — Box type constructor
 - [`make-box`](box/make-box.md) — Create an empty box
 - [`box-is-empty`](box/box-is-empty.md) — Check if empty
-- [`box-put!`](box/box-put-mut.md) — Store a value
+- [`box-put`](box/box-put.md) — Store a value
 - [`box-get-maybe`](box/box-get-maybe.md) — Get value as maybe
 - [`box-get`](box/box-get.md) — Get value (error if empty)
 

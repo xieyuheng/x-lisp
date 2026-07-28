@@ -14,7 +14,7 @@
                  (sexp-collect-key-value-hash-loop rest result)
                  (sexp-collect-key-value-hash-loop
                   (cdr rest)
-                  (hash-put content (car rest) result)))))
+                  (hash-put-copy content (car rest) result)))))
           (else
            (sexp-collect-key-value-hash-loop (cdr remaining) result))))))
 

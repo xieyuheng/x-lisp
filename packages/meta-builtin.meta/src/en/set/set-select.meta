@@ -10,7 +10,7 @@
     (set-each
       (lambda (e)
         (when (p e)
-          (set-add! e new-set)))
+          (set-add e new-set)))
       set)
     new-set))
 

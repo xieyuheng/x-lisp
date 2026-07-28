@@ -11,8 +11,8 @@
 (define (empty-package id root-directory config)
   (make-package id root-directory config (make-hash) (make-hash) (make-hash)))
 
-(define (package-put-fragment! path fragment package)
-  (hash-put! path fragment (package-fragments package)))
+(define (package-put-fragment path fragment package)
+  (hash-put path fragment (package-fragments package)))
 
 (define (package-source-directory package)
   (path-join
@@ -46,8 +46,8 @@
       (just (hash-get name mods))
       (nothing))))
 
-(define (package-put-mod! name mod package)
-  (hash-put! name mod (package-mods package)))
+(define (package-put-mod name mod package)
+  (hash-put name mod (package-mods package)))
 
 (claim package-closure-in-topological-order
   (-> package-t
@@ -58,8 +58,8 @@
         (seen (@set)))
     (define (collect package)
       (unless (set-is-member (package-id package) seen)
-        (set-add! (package-id package) seen)
+        (set-add (package-id package) seen)
         (hash-each-value collect (package-dependencies package))
-        (list-push! package results)))
+        (list-push package results)))
     (collect package)
     results))

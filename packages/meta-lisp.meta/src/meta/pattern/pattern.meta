@@ -3,7 +3,7 @@
 (claim pattern-bound-names (-> exp-t (set-t symbol-t)))
 (define (pattern-bound-names pattern)
   (if (is-var-exp pattern)
-    (set-add (var-exp-name pattern) (make-set))
+    (set-add-copy (var-exp-name pattern) (make-set))
     (if (is-data-pattern pattern)
       (let ((args (apply-exp-args pattern)))
         (list-fold-left (lambda (s arg)

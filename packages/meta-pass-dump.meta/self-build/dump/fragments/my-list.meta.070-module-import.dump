@@ -6,14 +6,14 @@
   ((nil) is-nil)
   ((li (head E) (tail (my-list-t E)))
    is-li
-   (head li-head li-put-head!)
-   (tail li-tail li-put-tail!)))
+   (head li-head li-put-head)
+   (tail li-tail li-put-tail)))
 
 (admit nil (polymorphic (E) (-> (my-list-t E))))
 
 (define (nil)
   (let ((list (meta-builtin/builtin/make-list)))
-    (begin (meta-builtin/builtin/list-push! nil list) list)))
+    (begin (meta-builtin/builtin/list-push nil list) list)))
 
 (admit is-nil (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -29,10 +29,10 @@
 (define (li head tail)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! li list)
+      (meta-builtin/builtin/list-push li list)
       (begin
-        (meta-builtin/builtin/list-push! head list)
-        (begin (meta-builtin/builtin/list-push! tail list) list)))))
+        (meta-builtin/builtin/list-push head list)
+        (begin (meta-builtin/builtin/list-push tail list) list)))))
 
 (admit is-li (polymorphic (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -47,20 +47,20 @@
 
 (define (li-head target) (meta-builtin/builtin/list-get 1 target))
 
-(admit li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+(admit li-put-head (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
 
-(define (li-put-head! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (li-put-head value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (admit li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
 
 (define (li-tail target) (meta-builtin/builtin/list-get 2 target))
 
-(admit li-put-tail!
+(admit li-put-tail
   (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
-(define (li-put-tail! value target)
-  (begin (meta-builtin/builtin/list-put! 2 value target) target))
+(define (li-put-tail value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (define (my-list-head list)
   (if (self/my-list/is-nil list)
@@ -68,11 +68,11 @@
      (meta-builtin/builtin/string-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
         (begin
-          (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1)
+          (meta-builtin/builtin/list-push "pattern mismatch on:" list.1)
           (begin
-            (meta-builtin/builtin/list-push! " " list.1)
+            (meta-builtin/builtin/list-push " " list.1)
             (begin
-              (meta-builtin/builtin/list-push!
+              (meta-builtin/builtin/list-push
                (meta-builtin/builtin/format list)
                list.1)
               list.1)))))
@@ -92,11 +92,11 @@
      (meta-builtin/builtin/string-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
         (begin
-          (meta-builtin/builtin/list-push! "pattern mismatch on:" list.1)
+          (meta-builtin/builtin/list-push "pattern mismatch on:" list.1)
           (begin
-            (meta-builtin/builtin/list-push! " " list.1)
+            (meta-builtin/builtin/list-push " " list.1)
             (begin
-              (meta-builtin/builtin/list-push!
+              (meta-builtin/builtin/list-push
                (meta-builtin/builtin/format list)
                list.1)
               list.1)))))
@@ -165,17 +165,17 @@
              (meta-builtin/builtin/string-concat
               (let ((list (meta-builtin/builtin/make-list)))
                 (begin
-                  (meta-builtin/builtin/list-push! "pattern mismatch on:" list)
+                  (meta-builtin/builtin/list-push "pattern mismatch on:" list)
                   (begin
-                    (meta-builtin/builtin/list-push! " " list)
+                    (meta-builtin/builtin/list-push " " list)
                     (begin
-                      (meta-builtin/builtin/list-push!
+                      (meta-builtin/builtin/list-push
                        (meta-builtin/builtin/format list1)
                        list)
                       (begin
-                        (meta-builtin/builtin/list-push! " " list)
+                        (meta-builtin/builtin/list-push " " list)
                         (begin
-                          (meta-builtin/builtin/list-push!
+                          (meta-builtin/builtin/list-push
                            (meta-builtin/builtin/format list2)
                            list)
                           list)))))))
@@ -190,19 +190,19 @@
                  (meta-builtin/builtin/string-concat
                   (let ((list (meta-builtin/builtin/make-list)))
                     (begin
-                      (meta-builtin/builtin/list-push!
+                      (meta-builtin/builtin/list-push
                        "pattern mismatch on:"
                        list)
                       (begin
-                        (meta-builtin/builtin/list-push! " " list)
+                        (meta-builtin/builtin/list-push " " list)
                         (begin
-                          (meta-builtin/builtin/list-push!
+                          (meta-builtin/builtin/list-push
                            (meta-builtin/builtin/format list1)
                            list)
                           (begin
-                            (meta-builtin/builtin/list-push! " " list)
+                            (meta-builtin/builtin/list-push " " list)
                             (begin
-                              (meta-builtin/builtin/list-push!
+                              (meta-builtin/builtin/list-push
                                (meta-builtin/builtin/format list2)
                                list)
                               list)))))))

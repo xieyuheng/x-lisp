@@ -185,7 +185,7 @@ function explicateUnnestedTerm(state: State, term: C.Term): B.Exp {
 
       for (let i = 0; i < freeVarExps.length; i++) {
         result = B.ApplyExp(
-          B.VarExp("meta-builtin/builtin/closure-put-arg!", term.location),
+          B.VarExp("meta-builtin/builtin/closure-put-arg", term.location),
           [B.IntExp(BigInt(i), term.location), freeVarExps[i], result],
           term.location,
         )

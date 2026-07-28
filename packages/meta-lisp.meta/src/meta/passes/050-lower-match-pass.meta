@@ -19,7 +19,7 @@
                         (fragment-mod-name fragment)
                         algebraic-analysis-report
                         (package-id package))))
-             (fragment-put-stmts!
+             (fragment-put-stmts
                (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
                fragment)))))))
   (when (hash-has "dump" (package-config-compiler (package-config package)))

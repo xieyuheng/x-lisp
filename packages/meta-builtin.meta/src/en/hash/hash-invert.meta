@@ -24,7 +24,7 @@
     (hash-each-value
       (lambda (value)
         (let ((keys (hash-keys (hash-select-value (equal value) hash))))
-          (hash-put! value (list-to-set keys) new-hash)))
+          (hash-put value (list-to-set keys) new-hash)))
       hash)
     new-hash))
 

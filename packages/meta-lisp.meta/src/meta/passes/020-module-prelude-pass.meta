@@ -17,7 +17,7 @@
     (lambda (package-name module-names)
       (for-list module-names
         (lambda (module-name)
-          (list-push-front!
+          (list-push-front
             (import-all-stmt
               (string-to-symbol package-name)
               (string-to-symbol module-name)

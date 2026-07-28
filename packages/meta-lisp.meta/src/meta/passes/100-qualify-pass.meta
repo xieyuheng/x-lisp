@@ -9,7 +9,7 @@
     (lambda (mod)
       (for-hash (mod-definitions mod)
         (lambda (name definition)
-          (mod-put-definition! name
+          (mod-put-definition name
             (qualify-definition definition)
             mod)))))
   (when (hash-has "dump" (package-config-compiler (package-config package)))
@@ -93,7 +93,7 @@
     ((let1-term name rhs body location)
      (let1-term name
        (qualify-free-var mod bound-names rhs)
-       (qualify-free-var mod (set-add name bound-names) body)
+       (qualify-free-var mod (set-add-copy name bound-names) body)
        location))
     (else
      (term-traverse (qualify-free-var mod bound-names) term))))

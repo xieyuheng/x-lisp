@@ -17,7 +17,7 @@
          (validate-prelude package config)
          (let ((source-directory (package-source-directory package)))
            (package-load-fragments package source-directory)
-           (hash-put! resolved-path package package-cache)
+           (hash-put resolved-path package package-cache)
            package))))))
 
 (define (actual-id config id)
@@ -28,7 +28,7 @@
 (define (setup-builtin-package package)
   (setup-primitive)
   (let ((mod (empty-mod 'builtin package)))
-    (package-put-mod! 'builtin mod package)
+    (package-put-mod 'builtin mod package)
     void))
 
 (define (validate-builtin config)
@@ -42,7 +42,7 @@
     ((just id) id)
     ((nothing)
      (let ((id (string-to-symbol (string-append "pkg-" (format (hash-length package-serial-numbers))))))
-       (hash-put! dep-resolved id package-serial-numbers)
+       (hash-put dep-resolved id package-serial-numbers)
        id))))
 
 (define (load-dependencies package root-directory config)
@@ -52,10 +52,10 @@
               (path-resolve
                 (path-join (path-join root-directory dep-path) "meta-package.json"))))
         (if (equal alias "meta-builtin")
-          (hash-put! 'meta-builtin
+          (hash-put 'meta-builtin
             (load-package 'meta-builtin dep-resolved)
             (package-dependencies package))
-          (hash-put! (string-to-symbol alias)
+          (hash-put (string-to-symbol alias)
             (load-package (dependency-id dep-resolved) dep-resolved)
             (package-dependencies package)))))
     (package-config-dependencies config)))

@@ -10,11 +10,10 @@ title: set-delete
 
 # Description
 
-Delete an element from the set, returning a new set.
+Delete an element from the set. Mutates the set in place.
 
 # Examples
 
 ```meta-lisp
 (set-delete 2 (@set 1 2 3))  ;; => (@set 1 3)
-(set-delete 0 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

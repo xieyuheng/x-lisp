@@ -11,7 +11,7 @@
       (lambda (path fragment)
         (match (hash-get-maybe path scopes)
           ((just scope)
-           (fragment-put-desugared-stmts!
+           (fragment-put-desugared-stmts
              (list-map (module-import-stmt scope) (fragment-desugared-stmts fragment))
              fragment))
           ((nothing)

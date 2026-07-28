@@ -91,7 +91,7 @@ function desugarDefineEnum(
       modifierName:
         stmt.lang === "zh"
           ? `${ctor.name}置${field.name}之`
-          : `${ctor.name}-put-${field.name}!`,
+          : `${ctor.name}-put-${field.name}`,
       location: field.location,
     }))
 
@@ -138,7 +138,7 @@ function desugarDefineStructStar(
     modifierName:
       stmt.lang === "zh"
         ? `${base}置${field.name}之`
-        : `${base}-put-${field.name}!`,
+        : `${base}-put-${field.name}`,
     location: field.location,
   }))
 
@@ -172,7 +172,7 @@ function desugarDefineStruct(
     modifierName:
       stmt.lang === "zh"
         ? `${base}置${field.name}之`
-        : `${base}-put-${field.name}!`,
+        : `${base}-put-${field.name}`,
     location: field.location,
   }))
 
@@ -379,7 +379,7 @@ function expandModifier(
       M.BeginExp(
         [
           M.ApplyExp(
-            M.VarExp("list-put!", field.location),
+            M.VarExp("list-put", field.location),
             [
               M.IntExp(BigInt(index + 1), field.location),
               M.VarExp("value", field.location),

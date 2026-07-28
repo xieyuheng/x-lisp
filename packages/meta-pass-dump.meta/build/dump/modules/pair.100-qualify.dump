@@ -10,10 +10,10 @@
 (define (make-pair first second)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! make-pair list)
+      (meta-builtin/builtin/list-push make-pair list)
       (begin
-        (meta-builtin/builtin/list-push! first list)
-        (begin (meta-builtin/builtin/list-push! second list) list)))))
+        (meta-builtin/builtin/list-push first list)
+        (begin (meta-builtin/builtin/list-push second list) list)))))
 
 (claim is-pair
   (polymorphic (A B) (-> (pair-t A B) meta-builtin/builtin/bool-t)))
@@ -31,19 +31,19 @@
 
 (define (pair-first target) (meta-builtin/builtin/list-get 1 target))
 
-(claim pair-put-first! (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+(claim pair-put-first (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
 
-(define (pair-put-first! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (pair-put-first value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
 
 (define (pair-second target) (meta-builtin/builtin/list-get 2 target))
 
-(claim pair-put-second! (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+(claim pair-put-second (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
 
-(define (pair-put-second! value target)
-  (begin (meta-builtin/builtin/list-put! 2 value target) target))
+(define (pair-put-second value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (define (pair-swap p)
   (if (self/pair/is-pair p)

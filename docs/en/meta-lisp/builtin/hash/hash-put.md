@@ -10,10 +10,13 @@ title: hash-put
 
 # Description
 
-Set a key-value pair, returning a new hash table.
+Set a key-value pair, same as `hash-put-copy`.
 
 # Examples
 
 ```meta-lisp
-(hash-put "c" 3 (@hash "a" 1 "b" 2))  ;; => (@hash "a" 1 "b" 2 "c" 3)
+(let ((h (@hash "a" 1)))
+  (hash-put "b" 2 h)
+  h)
+;; => (@hash "a" 1 "b" 2)
 ```

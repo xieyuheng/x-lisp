@@ -110,13 +110,13 @@
                  ((true) is-true)
                  ((false) is-false))))))
   (assert-equal
-    "(define-algebraic-type point-t ((make-point (x float-t) (y float-t)) is-point (x point-x point-put-x!) (y point-y)))"
+    "(define-algebraic-type point-t ((make-point (x float-t) (y float-t)) is-point (x point-x point-put-x) (y point-y)))"
     (format-stmt
       (parse-stmt
         (@sexp (define-algebraic-type point-t
                  ((make-point (x float-t) (y float-t))
                   is-point
-                  (x point-x point-put-x!)
+                  (x point-x point-put-x)
                   (y point-y)))))))
   (assert-equal
     "(define-algebraic-type (my-list-t E) ((nil) is-nil) ((li (head E) (tail (my-list-t E))) is-li (head li-head) (tail li-tail)))"
@@ -129,11 +129,11 @@
                   (head li-head)
                   (tail li-tail)))))))
   (assert-equal
-    "(define-record-type (pair-t A B) (pair (first A) (second B)) is-pair (first pair-first pair-put-first!) (second pair-second pair-put-second!))"
+    "(define-record-type (pair-t A B) (pair (first A) (second B)) is-pair (first pair-first pair-put-first) (second pair-second pair-put-second))"
     (format-stmt
       (parse-stmt
         (@sexp (define-record-type (pair-t A B)
                  (pair (first A) (second B))
                  is-pair
-                 (first pair-first pair-put-first!)
-                 (second pair-second pair-put-second!)))))))
+                 (first pair-first pair-put-first)
+                 (second pair-second pair-put-second)))))))

@@ -7,7 +7,7 @@
 (define (expand-pass package)
   (for-hash-value (package-fragments package)
     (lambda (fragment)
-      (fragment-put-stmts!
+      (fragment-put-stmts
         (list-flat-map expand-stmt (fragment-stmts fragment))
         fragment)))
   (when (hash-has "dump" (package-config-compiler (package-config package)))
@@ -91,7 +91,7 @@
 
 (define (make-data-modifier-name base field-name)
   (string-to-symbol
-    (@string (symbol-to-string base) "-put-" (symbol-to-string field-name) "!")))
+    (@string (symbol-to-string base) "-put-" (symbol-to-string field-name))))
 
 (claim make-data-predicate-name
   (-> symbol-t
@@ -283,7 +283,7 @@
               ['value 'target]
               (begin-exp
                 [(apply-exp
-                   (var-exp 'list-put! location)
+                   (var-exp 'list-put location)
                    [(int-exp (iadd index 1) location)
                     (var-exp 'value location)
                     (var-exp 'target location)]

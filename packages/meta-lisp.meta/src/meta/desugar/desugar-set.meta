@@ -15,7 +15,7 @@
                  (lambda (element acc)
                    (begin1-exp
                      (apply-exp
-                       (qualified-var-exp 'meta-builtin 'builtin 'set-add! location)
+                        (qualified-var-exp 'meta-builtin 'builtin 'set-add location)
                        [element (var-exp fresh-name location)]
                        location)
                      acc

@@ -17,10 +17,10 @@
         (x2 (make-box))
         ...
         (xn (make-box)))
-    (box-put! e1 x1)
-    (box-put! e2 x2)
+    (box-put e1 x1)
+    (box-put e2 x2)
     ...
-    (box-put! en xn)
+    (box-put en xn)
     body))
 
 (claim desugar-letrec
@@ -62,7 +62,7 @@
   (match binding
     ((make-binding name _ location)
      (apply-exp
-       (qualified-var-exp 'meta-builtin 'builtin 'box-put! location)
+        (qualified-var-exp 'meta-builtin 'builtin 'box-put location)
        [value-exp (var-exp name location)]
        location))))
 

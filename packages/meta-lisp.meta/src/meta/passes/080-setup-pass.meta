@@ -9,7 +9,7 @@
     (lambda (path fragment)
       (let ((mod-name (fragment-mod-name fragment))
              (mod (maybe-else (empty-mod mod-name package) (package-lookup-mod package 'self mod-name))))
-        (package-put-mod! mod-name mod package)
+        (package-put-mod mod-name mod package)
         (for-list (fragment-desugared-stmts fragment)
           (setup-stmt mod)))))
   (when (hash-has "dump" (package-config-compiler (package-config package)))
@@ -27,7 +27,7 @@
      (mod-claim mod name type))
     ((claim-type-stmt name location)
      (let ((type-term (make-type-term-from-parameters [] location)))
-       (hash-put! name (make-claimed-entry type-term (just (type-type))) (mod-claimed mod))
+       (hash-put name (make-claimed-entry type-term (just (type-type))) (mod-claimed mod))
        void))
     ((admit-stmt name type location)
      (mod-claim mod name type)
@@ -64,7 +64,7 @@
            location))
        (for-list data-constructors
          (lambda (data-constructor)
-           (hash-put! (data-constructor-name data-constructor) data-constructor
+           (hash-put (data-constructor-name data-constructor) data-constructor
              (mod-data-constructors mod))))))
     ((define-opaque-type-stmt pre-type-constructor representation-type pre-interface-entries location)
      (let ((name (pre-type-constructor-name pre-type-constructor))
@@ -81,7 +81,7 @@
              ((make-pre-interface-entry name type location)
               (let ((wrapped-type (make-polymorphic-term-from-parameters parameters type location)))
                 (mod-claim mod name wrapped-type)
-                (set-add! name (mod-opaque mod)))))))))
+                (set-add name (mod-opaque mod)))))))))
     (else void)))
 
 (define (make-polymorphic-term-from-parameters parameters type location)

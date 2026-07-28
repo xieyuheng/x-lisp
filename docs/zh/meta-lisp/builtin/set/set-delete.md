@@ -10,11 +10,10 @@ title: set-delete
 
 # 描述
 
-从集合中删除元素，返回新集合。
+从集合中删除元素，同 `set-delete`。
 
 # 例子
 
 ```meta-lisp
 (set-delete 2 (@set 1 2 3))  ;; => (@set 1 3)
-(set-delete 0 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

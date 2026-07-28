@@ -45,11 +45,11 @@
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
-        (meta-builtin/builtin/box-put!
+        (meta-builtin/builtin/box-put
          (@closure self/desugar/example-letrec©λ1 is-odd)
          is-even)
         (begin
-          (meta-builtin/builtin/box-put!
+          (meta-builtin/builtin/box-put
            (@closure self/desugar/example-letrec©λ2 is-even)
            is-odd)
           meta-builtin/builtin/void)))))
@@ -58,11 +58,11 @@
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
-        (meta-builtin/builtin/box-put!
+        (meta-builtin/builtin/box-put
          (@closure self/desugar/example-local-define©λ1 is-odd)
          is-even)
         (begin
-          (meta-builtin/builtin/box-put!
+          (meta-builtin/builtin/box-put
            (@closure self/desugar/example-local-define©λ2 is-even)
            is-odd)
           meta-builtin/builtin/void)))))

@@ -6,7 +6,7 @@
 
 (define (desugar-pass package)
   (ignore
-    (package-put-fragments!
+    (package-put-fragments
       (hash-map-value desugar-fragment (package-fragments package))
       package))
   (when (hash-has "dump" (package-config-compiler (package-config package)))

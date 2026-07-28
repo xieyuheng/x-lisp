@@ -2,9 +2,9 @@
 
 (define-test list-test
   (let ((list (make-list)))
-    (list-push! 1 list)
-    (list-push! 2 list)
-    (list-push! 3 list)
+    (list-push 1 list)
+    (list-push 2 list)
+    (list-push 3 list)
     (println list))
 
   (println (the (list-t int-t) [1 2 3]))
@@ -73,46 +73,46 @@
 
 (define-test list-pop-test
   (let ((list [1 2 3]))
-    (assert-equal 3 (list-pop! list))
-    (assert-equal 2 (list-pop! list))
-    (assert-equal 1 (list-pop! list))
+    (assert-equal 3 (list-pop list))
+    (assert-equal 2 (list-pop list))
+    (assert-equal 1 (list-pop list))
     (assert-equal list [])))
 
 (define-test list-put-test
   (let ((list [0 0 0])
-         (list (list-put 0 1 list))
-         (list (list-put 1 2 list))
-         (list (list-put 2 3 list)))
+         (list (list-put-copy 0 1 list))
+         (list (list-put-copy 1 2 list))
+         (list (list-put-copy 2 3 list)))
     (assert-equal list [1 2 3]))
 
-  ;; list-put has NO side effect:
+  ;; list-put-copy has NO side effect:
+
+  (let ((list [0 0 0]))
+    (list-put-copy 0 1 list)
+    (list-put-copy 1 2 list)
+    (list-put-copy 2 3 list)
+    (assert-equal list [0 0 0]))
+
+  ;; list-put has side effect:
 
   (let ((list [0 0 0]))
     (list-put 0 1 list)
     (list-put 1 2 list)
     (list-put 2 3 list)
-    (assert-equal list [0 0 0]))
-
-  ;; list-put! has side effect:
-
-  (let ((list [0 0 0]))
-    (list-put! 0 1 list)
-    (list-put! 1 2 list)
-    (list-put! 2 3 list)
     (assert-equal list [1 2 3])))
 
 (define-test list-reverse-test
-  (assert-equal (list-reverse [1 2 3]) [3 2 1]))
+  (assert-equal (list-reverse-copy [1 2 3]) [3 2 1]))
 
 (define-test list-pop-front-test
   (let ((list [1 2 3]))
-    (assert-equal 1 (list-pop-front! list))
-    (assert-equal 2 (list-pop-front! list))
-    (assert-equal 3 (list-pop-front! list))
+    (assert-equal 1 (list-pop-front list))
+    (assert-equal 2 (list-pop-front list))
+    (assert-equal 3 (list-pop-front list))
     (assert-equal list []))
 
   (let ((list []))
-    (list-push-front! 3 list)
-    (list-push-front! 2 list)
-    (list-push-front! 1 list)
+    (list-push-front 3 list)
+    (list-push-front 2 list)
+    (list-push-front 1 list)
     (assert-equal list [1 2 3])))

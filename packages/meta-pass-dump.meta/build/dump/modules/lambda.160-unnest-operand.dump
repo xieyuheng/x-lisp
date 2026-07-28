@@ -1,8 +1,8 @@
 (define (var-exp name)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! var-exp list)
-      (begin (meta-builtin/builtin/list-push! name list) list))))
+      (meta-builtin/builtin/list-push var-exp list)
+      (begin (meta-builtin/builtin/list-push name list) list))))
 
 (define (is-var-exp value)
   (if (meta-builtin/builtin/is-list value)
@@ -16,16 +16,16 @@
 
 (define (var-exp-name target) (meta-builtin/builtin/list-get 1 target))
 
-(define (var-exp-put-name! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (var-exp-put-name value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (define (apply-exp target arg)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! apply-exp list)
+      (meta-builtin/builtin/list-push apply-exp list)
       (begin
-        (meta-builtin/builtin/list-push! target list)
-        (begin (meta-builtin/builtin/list-push! arg list) list)))))
+        (meta-builtin/builtin/list-push target list)
+        (begin (meta-builtin/builtin/list-push arg list) list)))))
 
 (define (is-apply-exp value)
   (if (meta-builtin/builtin/is-list value)
@@ -39,21 +39,21 @@
 
 (define (apply-exp-target target) (meta-builtin/builtin/list-get 1 target))
 
-(define (apply-exp-put-target! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (apply-exp-put-target value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (define (apply-exp-arg target) (meta-builtin/builtin/list-get 2 target))
 
-(define (apply-exp-put-arg! value target)
-  (begin (meta-builtin/builtin/list-put! 2 value target) target))
+(define (apply-exp-put-arg value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (define (lambda-exp parameter body)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! lambda-exp list)
+      (meta-builtin/builtin/list-push lambda-exp list)
       (begin
-        (meta-builtin/builtin/list-push! parameter list)
-        (begin (meta-builtin/builtin/list-push! body list) list)))))
+        (meta-builtin/builtin/list-push parameter list)
+        (begin (meta-builtin/builtin/list-push body list) list)))))
 
 (define (is-lambda-exp value)
   (if (meta-builtin/builtin/is-list value)
@@ -67,23 +67,23 @@
 
 (define (lambda-exp-parameter target) (meta-builtin/builtin/list-get 1 target))
 
-(define (lambda-exp-put-parameter! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (lambda-exp-put-parameter value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (define (lambda-exp-body target) (meta-builtin/builtin/list-get 2 target))
 
-(define (lambda-exp-put-body! value target)
-  (begin (meta-builtin/builtin/list-put! 2 value target) target))
+(define (lambda-exp-put-body value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (define (let-exp name rhs body)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! let-exp list)
+      (meta-builtin/builtin/list-push let-exp list)
       (begin
-        (meta-builtin/builtin/list-push! name list)
+        (meta-builtin/builtin/list-push name list)
         (begin
-          (meta-builtin/builtin/list-push! rhs list)
-          (begin (meta-builtin/builtin/list-push! body list) list))))))
+          (meta-builtin/builtin/list-push rhs list)
+          (begin (meta-builtin/builtin/list-push body list) list))))))
 
 (define (is-let-exp value)
   (if (meta-builtin/builtin/is-list value)
@@ -97,34 +97,34 @@
 
 (define (let-exp-name target) (meta-builtin/builtin/list-get 1 target))
 
-(define (let-exp-put-name! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (let-exp-put-name value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (define (let-exp-rhs target) (meta-builtin/builtin/list-get 2 target))
 
-(define (let-exp-put-rhs! value target)
-  (begin (meta-builtin/builtin/list-put! 2 value target) target))
+(define (let-exp-put-rhs value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (define (let-exp-body target) (meta-builtin/builtin/list-get 3 target))
 
-(define (let-exp-put-body! value target)
-  (begin (meta-builtin/builtin/list-put! 3 value target) target))
+(define (let-exp-put-body value target)
+  (begin (meta-builtin/builtin/list-put 3 value target) target))
 
 (define empty-env (@closure meta-builtin/builtin/make-hash©wrap))
 
-(define extend-env (@closure meta-builtin/builtin/hash-put©wrap))
+(define extend-env (@closure meta-builtin/builtin/hash-put-copy©wrap))
 
 (define env-lookup (@closure meta-builtin/builtin/hash-get-maybe©wrap))
 
 (define (closure-value env parameter body)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
-      (meta-builtin/builtin/list-push! closure-value list)
+      (meta-builtin/builtin/list-push closure-value list)
       (begin
-        (meta-builtin/builtin/list-push! env list)
+        (meta-builtin/builtin/list-push env list)
         (begin
-          (meta-builtin/builtin/list-push! parameter list)
-          (begin (meta-builtin/builtin/list-push! body list) list))))))
+          (meta-builtin/builtin/list-push parameter list)
+          (begin (meta-builtin/builtin/list-push body list) list))))))
 
 (define (is-closure-value value)
   (if (meta-builtin/builtin/is-list value)
@@ -138,19 +138,19 @@
 
 (define (closure-value-env target) (meta-builtin/builtin/list-get 1 target))
 
-(define (closure-value-put-env! value target)
-  (begin (meta-builtin/builtin/list-put! 1 value target) target))
+(define (closure-value-put-env value target)
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (define (closure-value-parameter target)
   (meta-builtin/builtin/list-get 2 target))
 
-(define (closure-value-put-parameter! value target)
-  (begin (meta-builtin/builtin/list-put! 2 value target) target))
+(define (closure-value-put-parameter value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (define (closure-value-body target) (meta-builtin/builtin/list-get 3 target))
 
-(define (closure-value-put-body! value target)
-  (begin (meta-builtin/builtin/list-put! 3 value target) target))
+(define (closure-value-put-body value target)
+  (begin (meta-builtin/builtin/list-put 3 value target) target))
 
 (define (evaluate exp env)
   (if (self/lambda/is-var-exp exp)
@@ -167,10 +167,10 @@
             (let ((unnested.3 (self/lambda/env-lookup name env)))
               (meta-builtin/builtin/is-nothing unnested.3))
           (let
-              ((unnested.4 (meta-builtin/builtin/make-source-position 715 25 18)))
+              ((unnested.4 (meta-builtin/builtin/make-source-position 720 25 18)))
             (let
                 ((unnested.5
-                  (meta-builtin/builtin/make-source-position 739 25 42)))
+                  (meta-builtin/builtin/make-source-position 744 25 42)))
               (let
                   ((unnested.6
                     (meta-builtin/builtin/make-source-span unnested.4 unnested.5)))
@@ -183,10 +183,10 @@
                    "undefined name"
                    unnested.7)))))
           (let
-              ((unnested.8 (meta-builtin/builtin/make-source-position 641 23 6)))
+              ((unnested.8 (meta-builtin/builtin/make-source-position 646 23 6)))
             (let
                 ((unnested.9
-                  (meta-builtin/builtin/make-source-position 646 23 11)))
+                  (meta-builtin/builtin/make-source-position 651 23 11)))
               (let
                   ((unnested.10
                     (meta-builtin/builtin/make-source-span unnested.8 unnested.9)))
@@ -218,10 +218,10 @@
                         (self/lambda/extend-env name.1 unnested.14 env))))
                   (self/lambda/evaluate body.1 env.1)))))
           (let
-              ((unnested.15 (meta-builtin/builtin/make-source-position 605 21 3)))
+              ((unnested.15 (meta-builtin/builtin/make-source-position 610 21 3)))
             (let
                 ((unnested.16
-                  (meta-builtin/builtin/make-source-position 610 21 8)))
+                  (meta-builtin/builtin/make-source-position 615 21 8)))
               (let
                   ((unnested.17
                     (meta-builtin/builtin/make-source-span
@@ -243,8 +243,8 @@
         (let ((env (self/lambda/closure-value-env target)))
           (let ((unnested.1 (self/lambda/extend-env parameter arg env)))
             (self/lambda/evaluate body unnested.1)))))
-    (let ((unnested.2 (meta-builtin/builtin/make-source-position 1050 35 3)))
-      (let ((unnested.3 (meta-builtin/builtin/make-source-position 1055 35 8)))
+    (let ((unnested.2 (meta-builtin/builtin/make-source-position 1055 35 3)))
+      (let ((unnested.3 (meta-builtin/builtin/make-source-position 1060 35 8)))
         (let
             ((unnested.4
               (meta-builtin/builtin/make-source-span unnested.2 unnested.3)))

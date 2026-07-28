@@ -255,16 +255,16 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 修改
 
 - [`list-copy`](list/list-copy.md) — 复制列表
-- [`list-put`](list/list-put.md) — 按索引替换元素（不可变）
-- [`list-put!`](list/list-put-mut.md) — 按索引替换元素（可变）
-- [`list-push!`](list/list-push-mut.md) — 尾部追加（可变）
-- [`list-push-front!`](list/list-push-front-mut.md) — 头部添加（可变）
-- [`list-pop!`](list/list-pop-mut.md) — 弹出尾部元素（可变）
-- [`list-pop-front!`](list/list-pop-front-mut.md) — 弹出头部元素（可变）
+- [`list-put`](list/list-put.md) — 按索引替换元素（可变）
+- [`list-put-copy`](list/list-put-copy.md) — 按索引替换元素（不可变）
+- [`list-push`](list/list-push.md) — 尾部追加（可变）
+- [`list-push-front`](list/list-push-front.md) — 头部添加（可变）
+- [`list-pop`](list/list-pop.md) — 弹出尾部元素（可变）
+- [`list-pop-front`](list/list-pop-front.md) — 弹出头部元素（可变）
 
 ### 变换
 
-- [`list-reverse`](list/list-reverse.md) — 反转
+- [`list-reverse-copy`](list/list-reverse-copy.md) — 反转
 - [`list-to-set`](list/list-to-set.md) — 转集合
 
 ### 生成
@@ -274,8 +274,8 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 排序
 
-- [`list-sort!`](list/list-sort-mut.md) — 原地排序
-- [`list-sort`](list/list-sort.md) — 排序（不可变）
+- [`list-sort`](list/list-sort.md) — 原地排序
+- [`list-sort-copy`](list/list-sort-copy.md) — 排序（不可变）
 
 ### 遍历与映射
 
@@ -335,11 +335,11 @@ meta-lisp 的所有内置函数按功能分类索引。
 ### 修改
 
 - [`set-copy`](set/set-copy.md) — 复制集合
-- [`set-add`](set/set-add.md) — 添加元素（不可变）
-- [`set-add!`](set/set-add-mut.md) — 添加元素（可变）
-- [`set-delete`](set/set-delete.md) — 删除元素（不可变）
-- [`set-delete!`](set/set-delete-mut.md) — 删除元素（可变）
-- [`set-clear!`](set/set-clear-mut.md) — 清空集合（可变）
+- [`set-add`](set/set-add.md) — 添加元素（可变）
+- [`set-add-copy`](set/set-add-copy.md) — 添加元素（不可变）
+- [`set-delete`](set/set-delete.md) — 删除元素（可变）
+- [`set-delete-copy`](set/set-delete-copy.md) — 删除元素（不可变）
+- [`set-clear`](set/set-clear.md) — 清空集合（可变）
 
 ### 集合运算
 
@@ -391,11 +391,11 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 修改
 
-- [`hash-put`](hash/hash-put.md) — 添加键值对（不可变）
-- [`hash-put!`](hash/hash-put-mut.md) — 添加键值对（可变）
-- [`hash-put-entries`](hash/hash-put-entries.md) — 批量放入条目（不可变）
-- [`hash-put-entries!`](hash/hash-put-entries-mut.md) — 批量放入条目（可变）
-- [`hash-delete!`](hash/hash-delete-mut.md) — 按键删除（可变）
+- [`hash-put`](hash/hash-put.md) — 添加键值对（可变）
+- [`hash-put-copy`](hash/hash-put-copy.md) — 添加键值对（不可变）
+- [`hash-put-entries`](hash/hash-put-entries.md) — 批量放入条目（可变）
+- [`hash-put-entries-copy`](hash/hash-put-entries-copy.md) — 批量放入条目（不可变）
+- [`hash-delete`](hash/hash-delete.md) — 按键删除（可变）
 - [`hash-copy`](hash/hash-copy.md) — 复制哈希表
 
 ### 遍历
@@ -458,7 +458,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`box-t`](box/box-t.md) — box 类型构造器
 - [`make-box`](box/make-box.md) — 创建空 box
 - [`box-is-empty`](box/box-is-empty.md) — 判断是否为空
-- [`box-put!`](box/box-put-mut.md) — 存入值
+- [`box-put`](box/box-put.md) — 存入值
 - [`box-get-maybe`](box/box-get-maybe.md) — 取出可选值
 - [`box-get`](box/box-get.md) — 取出值（空 box 时报错）
 

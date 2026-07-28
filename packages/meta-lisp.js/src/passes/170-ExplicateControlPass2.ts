@@ -348,7 +348,7 @@ function explicateUnnestedTerm(
         const next = generateCell(state, "closure")
         instrs.push(
           B.Instr("address", [], [putArgAddress], {
-            name: B.SymbolAttribute("meta-builtin/builtin/closure-put-arg!"),
+            name: B.SymbolAttribute("meta-builtin/builtin/closure-put-arg"),
           }),
           B.Instr("int64", [], [index], {
             content: B.IntAttribute(BigInt(i)),

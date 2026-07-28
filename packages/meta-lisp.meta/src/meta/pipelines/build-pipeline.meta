@@ -7,11 +7,11 @@
     (let ((module-reports (make-hash)))
       (for-list closure
         (lambda (package)
-          (hash-put! (package-id package) (module-analysis-pass package) module-reports)))
+          (hash-put (package-id package) (module-analysis-pass package) module-reports)))
       (let ((algebraic-reports (make-hash)))
         (for-list closure
           (lambda (package)
-            (hash-put! (package-id package) (algebraic-analysis-pass package) algebraic-reports)))
+            (hash-put (package-id package) (algebraic-analysis-pass package) algebraic-reports)))
         (for-list closure
           (lambda (package)
             (lower-match-pass

@@ -10,11 +10,10 @@ title: set-add
 
 # 描述
 
-向集合中添加元素，返回新集合。
+向集合中添加元素，同 `set-add-copy`。
 
 # 例子
 
 ```meta-lisp
 (set-add 4 (@set 1 2 3))  ;; => (@set 1 2 3 4)
-(set-add 1 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

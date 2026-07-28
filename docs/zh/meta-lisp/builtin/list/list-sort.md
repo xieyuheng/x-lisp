@@ -10,14 +10,14 @@ title: list-sort
 
 # 描述
 
-使用比较函数排序列表的副本。不修改原列表。
+使用比较函数对列表原地排序。返回原列表。
 
 # 例子
 
 ```meta-lisp
 ;; int
-(list-sort int-compare-ascending [3 1 2])    ;; => [1 2 3]
-(list-sort int-compare-descending [3 1 2])   ;; => [3 2 1]
+(list-sort int-compare-ascending [3 1 2])   ;; => [1 2 3]
+(list-sort int-compare-descending [3 1 2])  ;; => [3 2 1]
 
 ;; float
 (list-sort float-compare-ascending [3.0 1.0 2.0])   ;; => [1.0 2.0 3.0]

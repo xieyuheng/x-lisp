@@ -19,7 +19,7 @@ export function desugarHash(
     (body: M.Exp, entry: { key: M.Exp; value: M.Exp }): M.Exp =>
       M.Begin1Exp(
         M.ApplyExp(
-          M.QualifiedVarExp("meta-builtin", "builtin", "hash-put!", location),
+          M.QualifiedVarExp("meta-builtin", "builtin", "hash-put", location),
           [entry.key, entry.value, M.VarExp(freshName, location)],
           location,
         ),

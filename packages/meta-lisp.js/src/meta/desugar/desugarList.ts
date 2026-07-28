@@ -15,7 +15,7 @@ export function desugarList(
     (body: M.Exp, element: M.Exp): M.Exp =>
       M.Begin1Exp(
         M.ApplyExp(
-          M.QualifiedVarExp("meta-builtin", "builtin", "list-push!", location),
+          M.QualifiedVarExp("meta-builtin", "builtin", "list-push", location),
           [element, M.VarExp(freshName, location)],
           location,
         ),

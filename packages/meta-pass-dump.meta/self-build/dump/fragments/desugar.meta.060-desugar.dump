@@ -37,14 +37,14 @@
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
-        (meta-builtin/builtin/box-put!
+        (meta-builtin/builtin/box-put
          (lambda (n)
            (if (equal n 0)
              true
              ((meta-builtin/builtin/box-get is-odd) (isub n 1))))
          is-even)
         (begin
-          (meta-builtin/builtin/box-put!
+          (meta-builtin/builtin/box-put
            (lambda (n)
              (if (equal n 0)
                false
@@ -56,14 +56,14 @@
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
-        (meta-builtin/builtin/box-put!
+        (meta-builtin/builtin/box-put
          (lambda (n)
            (if (equal n 0)
              true
              ((meta-builtin/builtin/box-get is-odd) (isub n 1))))
          is-even)
         (begin
-          (meta-builtin/builtin/box-put!
+          (meta-builtin/builtin/box-put
            (lambda (n)
              (if (equal n 0)
                false

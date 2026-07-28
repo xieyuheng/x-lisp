@@ -1,33 +1,33 @@
 (module builtin)
 
-(claim list-sort!
+(claim list-sort-copy
   (polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E))))
+
+(define (list-sort-copy comp lst)
+  (list-sort comp (list-copy lst)))
 
 (claim list-sort
   (polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E))))
 
-(define (list-sort! comp lst)
+(define (list-sort comp lst)
   (let ((n (list-length lst)))
-    (quicksort-range! comp lst 0 (isub n 1)))
+    (quicksort-range comp lst 0 (isub n 1)))
   lst)
 
-(define (list-sort comp lst)
-  (list-sort! comp (list-copy lst)))
-
-(claim quicksort-range!
+(claim quicksort-range
   (polymorphic (E) (-> (-> E E int-t) (list-t E) int-t int-t void-t)))
 
-(define (quicksort-range! comp lst lo hi)
+(define (quicksort-range comp lst lo hi)
   (if (int-less lo hi)
-    (let ((bounds (partition-3way! comp lst lo hi)))
-      (quicksort-range! comp lst lo (list-get 0 bounds))
-      (quicksort-range! comp lst (list-get 1 bounds) hi))
+    (let ((bounds (partition-3way comp lst lo hi)))
+      (quicksort-range comp lst lo (list-get 0 bounds))
+      (quicksort-range comp lst (list-get 1 bounds) hi))
     void))
 
-(claim partition-3way!
+(claim partition-3way
   (polymorphic (E) (-> (-> E E int-t) (list-t E) int-t int-t (list-t int-t))))
 
-(define (partition-3way! comp lst lo hi)
+(define (partition-3way comp lst lo hi)
   (let ((pivot (list-get (idiv (iadd lo hi) 2) lst)))
     (partition-3way-aux comp lst pivot lo hi lo)))
 
@@ -42,14 +42,14 @@
         ((int-less cmp 0)
           (let ((tmp (list-get i lst))
                 (v   (list-get less lst)))
-            (list-put! i    v   lst)
-            (list-put! less tmp lst)
+            (list-put i    v   lst)
+            (list-put less tmp lst)
             (partition-3way-aux comp lst pivot (iadd less 1) greater (iadd i 1))))
         ((int-greater cmp 0)
           (let ((tmp (list-get i lst))
                 (v   (list-get greater lst)))
-            (list-put! i       v   lst)
-            (list-put! greater tmp lst)
+            (list-put i       v   lst)
+            (list-put greater tmp lst)
             (partition-3way-aux comp lst pivot less (isub greater 1) i)))
         (else
           (partition-3way-aux comp lst pivot less greater (iadd i 1)))))))

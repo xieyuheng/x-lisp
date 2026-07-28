@@ -22,7 +22,7 @@
   (let ((results []))
     (list-each-index
       (lambda (i x)
-        (list-push! (make-pair i x) results))
+        (list-push (make-pair i x) results))
       ['a 'b 'c])
     (assert-equal results
       [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)])))

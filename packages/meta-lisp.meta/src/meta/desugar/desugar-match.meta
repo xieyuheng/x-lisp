@@ -307,11 +307,11 @@
     (for-list clauses
       (lambda (clause)
         (if (list-is-empty groups)
-          (ignore (list-push! [clause] groups))
+          (ignore (list-push [clause] groups))
           (let ((last (list-last groups)))
             (if (same-pattern-kind clause (list-first last))
-              (ignore (list-push! clause last))
-              (ignore (list-push! [clause] groups)))))))
+              (ignore (list-push clause last))
+              (ignore (list-push [clause] groups)))))))
     groups))
 
 (define (same-pattern-kind x y)

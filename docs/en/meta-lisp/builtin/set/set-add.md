@@ -10,11 +10,10 @@ title: set-add
 
 # Description
 
-Add an element to the set, returning a new set.
+Add an element to the set, same as `set-add-copy`.
 
 # Examples
 
 ```meta-lisp
 (set-add 4 (@set 1 2 3))  ;; => (@set 1 2 3 4)
-(set-add 1 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```
