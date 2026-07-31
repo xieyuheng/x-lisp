@@ -57,11 +57,13 @@ static void *segment_base(xexe_t *self, xexe_segment_kind_t kind) {
 }
 
 static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
-  void *packed = record_get(self->label_map, (char *) name);
-  if (!packed) {
+  // - note: a label at code offset 0 packs to NULL, so check existence
+  //   with record_has rather than testing the record_get result.
+  if (!record_has(self->label_map, (char *) name)) {
     where_printf("[xexe_load] undefined label: %s\n", name);
     exit(1);
   }
+  void *packed = record_get(self->label_map, (char *) name);
 
   xexe_segment_kind_t target_kind = XEXE_LABEL_KIND(packed);
   uint64_t target_offset = XEXE_LABEL_OFFSET(packed);
@@ -75,11 +77,13 @@ static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_add
 }
 
 static void apply_label_abs64(xexe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
-  void *packed = record_get(self->label_map, (char *) name);
-  if (!packed) {
+  // - note: a label at code offset 0 packs to NULL, so check existence
+  //   with record_has rather than testing the record_get result.
+  if (!record_has(self->label_map, (char *) name)) {
     where_printf("[xexe_load] undefined label: %s\n", name);
     exit(1);
   }
+  void *packed = record_get(self->label_map, (char *) name);
 
   xexe_segment_kind_t target_kind = XEXE_LABEL_KIND(packed);
   uint64_t target_offset = XEXE_LABEL_OFFSET(packed);

@@ -59,6 +59,8 @@ struct __attribute__((packed)) xexe_relocation_entry_t {
 
 // Pack {kind, offset} into void* for the label_map record_t.
 // offset is segment-relative and guaranteed < 2G, so 32 bits suffice.
+// - note: a label at code offset 0 packs to NULL; callers must use
+//   record_has to check existence before record_get.
 
 #define XEXE_LABEL_PACK(kind, offset) \
   ((void *)(uint64_t)(((uint64_t)(kind) << 32) | ((uint64_t)(offset) & 0xFFFFFFFF)))
