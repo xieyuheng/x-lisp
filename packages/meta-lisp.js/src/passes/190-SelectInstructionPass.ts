@@ -402,7 +402,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       return [
         X86.Instr("mov", [
           cellToVar(out),
-          X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
+          X86.RegDerefOperand("qword", ptr.id, undefined, undefined, undefined),
         ]),
       ]
     }
@@ -411,7 +411,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [ptr, val] = instr.input
       return [
         X86.Instr("mov", [
-          X86.RegDerefOperand(ptr.id, undefined, undefined, undefined),
+          X86.RegDerefOperand("qword", ptr.id, undefined, undefined, undefined),
           cellToVar(val),
         ]),
       ]
@@ -440,7 +440,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(targetCell)]),
         ...setupArgs(argCells),
         X86.Instr("call", [
-          X86.RegDerefOperand("rax", undefined, undefined, undefined),
+          X86.RegDerefOperand("qword", "rax", undefined, undefined, undefined),
         ]),
         X86.Instr("mov", [cellToVar(out), X86.RegOperand("rax")]),
       ]
@@ -464,7 +464,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
         X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(targetCell)]),
         ...setupArgs(argCells),
         X86.Instr("tail-jmp", [
-          X86.RegDerefOperand("rax", undefined, undefined, undefined),
+          X86.RegDerefOperand("qword", "rax", undefined, undefined, undefined),
         ]),
       ]
     }

@@ -15,6 +15,6 @@
 (define-code main
   (block entry
     (mov (reg rax) (address my-counter))
-    (mov (deref (reg rax) (offset-of counter-t value)) 42)
+    (mov (deref qword (reg rax) (offset-of counter-t value)) 42)
     (mov (reg rax) (deref (reg rax) (offset-of counter-t value)))
     (ret)))

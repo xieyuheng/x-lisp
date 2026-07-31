@@ -56,7 +56,7 @@ static void *segment_base(xexe_t *self, xexe_segment_kind_t kind) {
   }
 }
 
-static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_addr) {
+static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
   void *packed = record_get(self->label_map, (char *) name);
   if (!packed) {
     where_printf("[xexe_load] undefined label: %s\n", name);
@@ -68,13 +68,13 @@ static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_add
 
   uint8_t *target_base = segment_base(self, target_kind);
   uint64_t target_addr = (uint64_t)(target_base + target_offset);
-  uint64_t rip = (uint64_t) patch_addr + 4;
 
-  int32_t displacement = (int32_t)(target_addr - rip);
+  // value = S + A - P
+  int32_t displacement = (int32_t)((int64_t) target_addr + addend - (int64_t) patch_addr);
   *(int32_t *) patch_addr = displacement;
 }
 
-static void apply_label_abs64(xexe_t *self, const char *name, uint8_t *patch_addr) {
+static void apply_label_abs64(xexe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
   void *packed = record_get(self->label_map, (char *) name);
   if (!packed) {
     where_printf("[xexe_load] undefined label: %s\n", name);
@@ -87,7 +87,8 @@ static void apply_label_abs64(xexe_t *self, const char *name, uint8_t *patch_add
   uint8_t *target_base = segment_base(self, target_kind);
   uint64_t target_addr = (uint64_t)(target_base + target_offset);
 
-  *(uint64_t *) patch_addr = target_addr;
+  // value = S + A
+  *(uint64_t *) patch_addr = (uint64_t)((int64_t) target_addr + addend);
 }
 
 // ---------------------------------------------------------------------------
@@ -163,9 +164,9 @@ void xexe_load(xexe_t *self) {
     uint8_t *patch_addr = (uint8_t *) segment_base(self, r->segment_kind) + r->segment_offset;
 
     if (string_equal(type, "label-rel32")) {
-      apply_label_rel32(self, name, patch_addr);
+      apply_label_rel32(self, name, patch_addr, r->addend);
     } else if (string_equal(type, "label-abs64")) {
-      apply_label_abs64(self, name, patch_addr);
+      apply_label_abs64(self, name, patch_addr, r->addend);
     } else if (string_equal(type, "extern")) {
       where_printf("[xexe_load] warning: 'extern' relocation not supported yet\n");
     } else {

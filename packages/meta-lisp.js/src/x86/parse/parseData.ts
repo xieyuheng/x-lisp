@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
+import { parseIntegerSexp } from "./parseInteger.ts"
 
 export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
   "(cons* 'struct rest)": ({ rest }, { location }) => {
@@ -58,6 +59,14 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
     switch (data.kind) {
       case "IntSexp":
         return X86.IntData(S.asIntSexp(data).content)
+      case "SymbolSexp": {
+        const int = parseIntegerSexp(data)
+        if (int !== undefined) {
+          return X86.IntData(int)
+        }
+        let message = `unexpected symbol in data: ${S.formatSexp(data)}`
+        throw new Error(message)
+      }
       case "StringSexp":
         return X86.StringData(S.asStringSexp(data).content)
       default: {

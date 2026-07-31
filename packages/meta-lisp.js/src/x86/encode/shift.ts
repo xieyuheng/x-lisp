@@ -2,6 +2,7 @@ import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { computeRex } from "./rex.ts"
+import { deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 const EXT: Record<string, number> = {
@@ -24,23 +25,29 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
     throw new Error(message)
   }
 
+  const size = deriveOpSize(instr)
+
   if (src.kind === "RegOperand" && src.name === "rcx") {
-    return [encodeShiftCl(dst.name, ext)]
+    return [encodeShiftCl(dst.name, ext, size)]
   }
 
   if (src.kind === "ImmOperand") {
-    return [encodeShiftImm(dst.name, src.value, ext)]
+    return [encodeShiftImm(dst.name, src.value, ext, size)]
   }
 
   let message = `[${instr.op}] unsupported src operand: ${src.kind}`
   throw new Error(message)
 }
 
-function encodeShiftCl(dstReg: string, ext: number): EncodedInstruction {
+function encodeShiftCl(
+  dstReg: string,
+  ext: number,
+  size: 1 | 2 | 4 | 8,
+): EncodedInstruction {
   return {
-    prefixes: [],
-    rex: computeRex(true, null, null, dstReg),
-    opcode: [0xd3],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, null, null, dstReg),
+    opcode: [size === 1 ? 0xd2 : 0xd3],
     modRM: modRM(MOD_REG, ext, regCode(dstReg)),
     sib: null,
     displacement: null,
@@ -52,12 +59,13 @@ function encodeShiftImm(
   dstReg: string,
   value: bigint,
   ext: number,
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   if (value === 1n) {
     return {
-      prefixes: [],
-      rex: computeRex(true, null, null, dstReg),
-      opcode: [0xd1],
+      prefixes: sizePrefix(size),
+      rex: computeRex(size === 8, null, null, dstReg),
+      opcode: [size === 1 ? 0xd0 : 0xd1],
       modRM: modRM(MOD_REG, ext, regCode(dstReg)),
       sib: null,
       displacement: null,
@@ -65,9 +73,9 @@ function encodeShiftImm(
     }
   }
   return {
-    prefixes: [],
-    rex: computeRex(true, null, null, dstReg),
-    opcode: [0xc1],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, null, null, dstReg),
+    opcode: [size === 1 ? 0xc0 : 0xc1],
     modRM: modRM(MOD_REG, ext, regCode(dstReg)),
     sib: null,
     displacement: null,

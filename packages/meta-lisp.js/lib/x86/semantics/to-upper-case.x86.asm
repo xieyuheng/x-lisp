@@ -16,24 +16,15 @@
     (j (cc e) (label exit))        ; jump if equal to 0 (0 means eof) to exit:
                                    ; or fall through to test for lowercase
 
-    ; - todo:
-    ;   we should support:
-    ;   cmp byte [buffer], 61h
-    (mov (reg al) (deref (address buffer)))
-    (cmp (reg al) 97)               ; test input char against lowercase 'a'
-    (j (cc b) (label write))        ; if below 'a' in ascii chart, not lowercase
-    (cmp (reg al) 122)              ; test input char against lowercase 'z'
-    (j (cc a) (label write))        ; if above 'z' in ascii chart, not lowercase
+    (cmp (deref byte (address buffer)) 0x61)  ; test input char against lowercase 'a'
+    (j (cc b) (label write))                 ; if below 'a' in ascii chart, not lowercase
+    (cmp (deref byte (address buffer)) 0x7a)  ; test input char against lowercase 'z'
+    (j (cc a) (label write))                 ; if above 'z' in ascii chart, not lowercase
 
     ; at this point, we have a lowercase character
     ; subtract 20h from lowercase to give uppercase
     ; and then write out the char to stdout:
-    ; - todo:
-    ;   we should support:
-    ;   sub byte [buffer], 20h
-    (sub (reg al) 32)
-    (mov (reg rbx) (address buffer))
-    (mov (deref (reg rbx)) (reg al)))
+    (sub (deref byte (address buffer)) 0x20))
 
   (block write
     (mov (reg rax) 1)         ; specify sys_write call

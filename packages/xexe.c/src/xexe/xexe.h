@@ -52,6 +52,9 @@ struct __attribute__((packed)) xexe_relocation_entry_t {
   xexe_string_t name;
   xexe_segment_kind_t segment_kind;
   uint64_t segment_offset;
+  // - note: constant addend. For label-rel32 the assembler computes
+  //   addend = -(rip - hole), so the loader applies S + A - P directly.
+  int64_t addend;
 };
 
 // Pack {kind, offset} into void* for the label_map record_t.

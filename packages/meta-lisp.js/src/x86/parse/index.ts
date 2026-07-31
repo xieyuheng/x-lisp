@@ -1,4 +1,5 @@
 export * from "./parseData.ts"
 export * from "./parseInstr.ts"
+export * from "./parseInteger.ts"
 export * from "./parseOperand.ts"
 export * from "./parseStmt.ts"

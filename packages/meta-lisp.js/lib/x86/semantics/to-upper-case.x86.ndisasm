@@ -6,18 +6,15 @@
 0000001F  0F05              syscall
 00000021  4883F800          cmp rax,byte +0x0
 00000025  0F8400000000      jz near 0x2b
-0000002B  488B0500000000    mov rax,[rel 0x32]
-00000032  4883F861          cmp rax,byte +0x61
-00000036  0F8200000000      jc near 0x3c
-0000003C  4883F87A          cmp rax,byte +0x7a
-00000040  0F8700000000      ja near 0x46
-00000046  4883E820          sub rax,byte +0x20
-0000004A  488D1D00000000    lea rbx,[rel 0x51]
-00000051  488903            mov [rbx],rax
-00000054  48C7C001000000    mov rax,0x1
-0000005B  48C7C701000000    mov rdi,0x1
-00000062  488D3500000000    lea rsi,[rel 0x69]
-00000069  48C7C201000000    mov rdx,0x1
-00000070  0F05              syscall
-00000072  E900000000        jmp 0x77
-00000077  C3                ret
+0000002B  803D0000000061    cmp byte [rel 0x32],0x61
+00000032  0F8200000000      jc near 0x38
+00000038  803D000000007A    cmp byte [rel 0x3f],0x7a
+0000003F  0F8700000000      ja near 0x45
+00000045  802D0000000020    sub byte [rel 0x4c],0x20
+0000004C  48C7C001000000    mov rax,0x1
+00000053  48C7C701000000    mov rdi,0x1
+0000005A  488D3500000000    lea rsi,[rel 0x61]
+00000061  48C7C201000000    mov rdx,0x1
+00000068  0F05              syscall
+0000006A  E900000000        jmp 0x6f
+0000006F  C3                ret

@@ -1,5 +1,20 @@
 import type { Data } from "../data/index.ts"
 
+export type Size = "byte" | "word" | "dword" | "qword"
+
+export function sizeToBytes(size: Size): 1 | 2 | 4 | 8 {
+  switch (size) {
+    case "byte":
+      return 1
+    case "word":
+      return 2
+    case "dword":
+      return 4
+    case "qword":
+      return 8
+  }
+}
+
 export type Operand =
   | RegOperand
   | ImmOperand
@@ -76,6 +91,8 @@ export function AddressOperand(name: string): AddressOperand {
 
 export type Displacement = IntDisplacement | OffsetOfDisplacement
 
+export type MemOperand = DerefOperand | RegDerefOperand
+
 export type IntDisplacement = {
   kind: "IntDisplacement"
   value: bigint
@@ -107,18 +124,24 @@ export function OffsetOfDisplacement(
 
 export type DerefOperand = {
   kind: "DerefOperand"
+  size: Size | undefined
   address: AddressOperand
 }
 
-export function DerefOperand(address: AddressOperand): DerefOperand {
+export function DerefOperand(
+  size: Size | undefined,
+  address: AddressOperand,
+): DerefOperand {
   return {
     kind: "DerefOperand",
+    size,
     address,
   }
 }
 
 export type RegDerefOperand = {
   kind: "RegDerefOperand"
+  size: Size | undefined
   base: string
   index: string | undefined
   scale: bigint | undefined
@@ -126,6 +149,7 @@ export type RegDerefOperand = {
 }
 
 export function RegDerefOperand(
+  size: Size | undefined,
   base: string,
   index: string | undefined,
   scale: bigint | undefined,
@@ -133,6 +157,7 @@ export function RegDerefOperand(
 ): RegDerefOperand {
   return {
     kind: "RegDerefOperand",
+    size,
     base,
     index,
     scale,

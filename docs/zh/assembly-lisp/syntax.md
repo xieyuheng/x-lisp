@@ -227,24 +227,38 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 ## (deref)
 
+内存操作数。**size**（`byte` / `word` / `dword` / `qword`，对应 1 / 2 / 4 / 8 字节）
+是可选的首参数：
+
+```scheme
+(deref <size> <address-or-reg …>)
+```
+
+- 省略 size 时由配对的操作数推断（如 `(mov (reg al) (deref …))` 中 `al` 推断 1 字节）；
+  与立即数配对时**必须**显式 size（如 `(cmp (deref byte …) 0x61)`）。
+- 显式 size 与配对寄存器 size 不一致时，check pass 报错。
+
 **rip-相对寻址**：
 
 ```scheme
 (deref (address <name>))
+(deref byte (address <name>))
 ```
 
 编码为 `[rip + disp32]`。
 
 ```scheme
 (deref (address origin))
+(deref byte (address buffer))
 ```
 
 **寄存器相对寻址**：
 
-第一个参数为 `(reg <base>)`，支持完整 SIB。
+第一个参数（size 之后）为 `(reg <base>)`，支持完整 SIB。
 
 ```scheme
 (deref (reg <base>) (reg <index>) <scale> <disp>)
+(deref dword (reg <base>) -8)
 ```
 
 - `base`：base 寄存器名。
@@ -255,6 +269,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 ```scheme
 (deref (reg rbp))                             ;; [rbp]
 (deref (reg rbp) -8)                          ;; [rbp - 8]
+(deref dword (reg rbp) -8)                    ;; [rbp - 8] dword
 (deref (reg rbp) (offset-of point-t y))       ;; [rbp + offset]
 (deref (reg rbp) (reg rax) 8)                 ;; [rbp + rax*8]
 (deref (reg rbp) (reg rax) 8 -16)             ;; [rbp + rax*8 - 16]
@@ -319,8 +334,8 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 
 | type | hole 大小 | loader 操作 |
 |------|-----------|-------------|
-| `label-rel32` | 32-bit | `target - (base + offset + 4)` |
-| `label-abs64` | 64-bit | `target` |
+| `label-rel32` | 32-bit | `target + addend - (base + offset)` |
+| `label-abs64` | 64-bit | `target + addend` |
 | `extern` | 64-bit | symbol 绝对地址 |
 | `symbol-value` | 64-bit | loader 计算 symbol → tagged value |
 | `keyword-value` | 64-bit | loader 计算 keyword → tagged value |
@@ -330,7 +345,7 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (mov (reg rax) (relocation symbol-value foo))
 ```
 
-### (label-rel32 中 +4 的含义)
+### (label-rel32 中 addend 的含义)
 
 `label-rel32` 告诉 loader 在 32-bit 字段写入**相对位移**。
 x86-64 中所有使用相对寻址的指令，位移是相对于**下一条指令的地址**
@@ -342,24 +357,33 @@ jmp rel32           → 同上
 jcc rel32           → 同上
 mov r, [rip+disp32] → 同上
 lea r, [rip+disp32] → 同上
+cmp r/m, imm        → 同上
 ```
 
-这些指令的 32-bit 位移字段恰好是指令的最后一个字段。
-relocation entry 的 `segmentOffset` 指向该字段的**起始位置**。
+位移字段（hole）不一定是指令的最后一个字段 —— 如
+`cmp byte [buffer], 61h` 中 disp32 之后还有 imm8。
+relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
+`addend` 由汇编器在生成指令时算出 `addend = -(rip - segmentOffset)`，
+即「下一条指令相对位移起点的偏移」的相反数：
 
 ```
-┌──────────────── instruction ────────────────┐
-│  opcode  │  ModR/M  │  displacement (4 bytes) │
-│                        ↑                     │
-│                   segmentOffset               │
-│                        ├──── 4 bytes ────┤    │
-│                                          ↑    │
-│                          segmentOffset + 4 = rip
-└──────────────────────────────────────────────┘
+┌────────────────────────── instruction ──────────────────────────┐
+│  opcode  │  ModR/M  │  displacement (4 bytes) │  immediate      │
+│                        ↑                       └────┐            │
+│                   segmentOffset                      └─ rip       │
+│                        ├──────── 4 + imm ────────┤              │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-因此 loader 写入 `target - (base + segmentOffset + 4)`。
-`segmentOffset` 是 hole 起点，加 4 得到下一条指令的位置。
+因此 loader 写入 `target + addend - (base + segmentOffset)`。
+
+- 位移是最后一个字段时（如 `call rel32`、`mov [rip+disp32]`），
+  `addend = -4`。
+- 位移后还有立即数时（如 `cmp byte [buffer], imm8`），
+  `addend = -(4 + imm_size)`。
+
+汇编器（而非 loader）负责把「指令布局」编码进 addend —— loader 只需执行
+统一的公式 `S + A - P`，完全不需要知道指令结构。
 
 ## 数据
 
@@ -462,10 +486,16 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 ## 整数
 
+支持十进制、十六进制（`0x`）、二进制（`0b`）、八进制（`0o`）前缀，可带符号：
+
 ```scheme
 42
 -1
-0
+0x61
+0x7a
+-0x20
+0b101
+0o17
 ```
 
 ## 字符串

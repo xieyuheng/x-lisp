@@ -9,7 +9,7 @@ const MACHINE = new TextEncoder().encode("x86-64\0\0")
 
 const HEADER_SIZE = 120
 const LABEL_ENTRY_SIZE = 24
-const RELOCATION_ENTRY_SIZE = 32
+const RELOCATION_ENTRY_SIZE = 40
 
 export function emitXexe(xexe: Xexe): Uint8Array {
   const stringNames = collectStringNames(xexe)
@@ -182,6 +182,8 @@ function emitRelocationTable(
     writeU64LE(buf, pos, BigInt(entry.segmentKind))
     pos += 8
     writeU64LE(buf, pos, BigInt(entry.segmentOffset))
+    pos += 8
+    writeU64LE(buf, pos, entry.addend)
     pos += 8
   }
 }

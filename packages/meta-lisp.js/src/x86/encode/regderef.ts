@@ -1,4 +1,8 @@
-import type { Displacement, RegDerefOperand } from "../operand/index.ts"
+import type {
+  Displacement,
+  MemOperand,
+  RegDerefOperand,
+} from "../operand/index.ts"
 import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { SIB_NO_INDEX, sibByte } from "./sib.ts"
@@ -10,8 +14,24 @@ export type RegDerefEncoding = {
   }
   sib: number | null
   disp: { size: 1 | 2 | 4; value: number } | null
-  rexRm: string
+  rexRm: string | null
   rexIndex: string | null
+}
+
+export function encodeMem(op: MemOperand): RegDerefEncoding {
+  if (op.kind === "DerefOperand") {
+    return {
+      modrm: {
+        codeForReg: (reg: number) => modRM(MOD_DISP0, reg, 5),
+        codeForOpExt: (ext: number) => modRM(MOD_DISP0, ext, 5),
+      },
+      sib: null,
+      disp: { size: 4, value: 0 },
+      rexRm: null,
+      rexIndex: null,
+    }
+  }
+  return encodeRegDeref(op)
 }
 
 function dispValue(disp: Displacement | undefined): number {

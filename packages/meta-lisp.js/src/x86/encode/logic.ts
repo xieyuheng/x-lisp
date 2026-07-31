@@ -2,12 +2,16 @@ import type { Instr } from "../instr/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { computeRex } from "./rex.ts"
+import { checkImm8, deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
 
-const OPCODE_MAP: Record<string, { mr: number; rm: number; immExt: number }> = {
-  and: { mr: 0x21, rm: 0x23, immExt: 4 },
-  or: { mr: 0x09, rm: 0x0b, immExt: 1 },
-  xor: { mr: 0x31, rm: 0x33, immExt: 6 },
+const OPCODE_MAP: Record<
+  string,
+  { mr: number; rm: number; mr8: number; rm8: number; immExt: number }
+> = {
+  and: { mr: 0x21, rm: 0x23, mr8: 0x20, rm8: 0x22, immExt: 4 },
+  or: { mr: 0x09, rm: 0x0b, mr8: 0x08, rm8: 0x0a, immExt: 1 },
+  xor: { mr: 0x31, rm: 0x33, mr8: 0x30, rm8: 0x32, immExt: 6 },
 }
 
 export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
@@ -20,11 +24,11 @@ export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (dst.kind === "RegOperand" && src.kind === "RegOperand") {
-    return [encodeLogicRegReg(dst.name, src.name, map.rm)]
+    return [encodeLogicRegReg(dst.name, src.name, map, deriveOpSize(instr))]
   }
 
   if (dst.kind === "RegOperand" && src.kind === "ImmOperand") {
-    return [encodeLogicRegImm(dst.name, src.value, map)]
+    return [encodeLogicRegImm(dst.name, src.value, map, deriveOpSize(instr))]
   }
 
   let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
@@ -34,12 +38,13 @@ export function encodeLogic(instr: Instr): Array<EncodedInstruction> {
 function encodeLogicRegReg(
   dstReg: string,
   srcReg: string,
-  opcode: number,
+  map: { rm: number; rm8: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   return {
-    prefixes: [],
-    rex: computeRex(true, dstReg, null, srcReg),
-    opcode: [opcode],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, dstReg, null, srcReg),
+    opcode: [size === 1 ? map.rm8 : map.rm],
     modRM: modRM(MOD_REG, regCode(dstReg), regCode(srcReg)),
     sib: null,
     displacement: null,
@@ -51,17 +56,39 @@ function encodeLogicRegImm(
   dstReg: string,
   value: bigint,
   map: { immExt: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const size = isImm8(value) ? 1 : 4
-  const opcode = size === 1 ? 0x83 : 0x81
+  if (size === 1) {
+    checkImm8(value)
+    return {
+      prefixes: [],
+      rex: computeRex(false, null, null, dstReg),
+      opcode: [0x80],
+      modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
+      sib: null,
+      displacement: null,
+      immediate: { size: 1, value },
+    }
+  }
+  if (isImm8(value)) {
+    return {
+      prefixes: sizePrefix(size),
+      rex: computeRex(size === 8, null, null, dstReg),
+      opcode: [0x83],
+      modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
+      sib: null,
+      displacement: null,
+      immediate: { size: 1, value },
+    }
+  }
   return {
-    prefixes: [],
-    rex: computeRex(true, null, null, dstReg),
-    opcode: [opcode],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, null, null, dstReg),
+    opcode: [0x81],
     modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
     sib: null,
     displacement: null,
-    immediate: { size, value },
+    immediate: { size: size === 2 ? 2 : 4, value },
   }
 }
 

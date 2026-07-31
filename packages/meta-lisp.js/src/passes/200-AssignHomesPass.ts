@@ -47,6 +47,7 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
     homeMap.set(
       varName,
       X86.RegDerefOperand(
+        "qword",
         "rbp",
         undefined,
         undefined,
@@ -163,7 +164,7 @@ function expandLoadStore(
       X86.Instr("mov", [X86.RegOperand("rax"), ptrHome]),
       X86.Instr("mov", [
         X86.RegOperand("rax"),
-        X86.RegDerefOperand("rax", undefined, undefined, undefined),
+        X86.RegDerefOperand("qword", "rax", undefined, undefined, undefined),
       ]),
       X86.Instr("mov", [outHome, X86.RegOperand("rax")]),
     ]
@@ -175,7 +176,7 @@ function expandLoadStore(
       X86.Instr("mov", [X86.RegOperand("rax"), ptrHome]),
       X86.Instr("mov", [X86.RegOperand("rcx"), valHome]),
       X86.Instr("mov", [
-        X86.RegDerefOperand("rax", undefined, undefined, undefined),
+        X86.RegDerefOperand("qword", "rax", undefined, undefined, undefined),
         X86.RegOperand("rcx"),
       ]),
     ]

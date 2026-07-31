@@ -1,6 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 import { parseData } from "./parseData.ts"
+import { parseIntegerSexp } from "./parseInteger.ts"
 
 const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
   "`(reg ,name)": ({ name }, { location }) => {
@@ -21,44 +22,69 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
   },
 
   "(cons* 'deref first rest)": ({ first, rest }, { location }) => {
-    if (
-      first.kind === "ListSexp" &&
-      first.elements.length >= 2 &&
-      first.elements[0].kind === "SymbolSexp" &&
-      first.elements[0].content === "address"
-    ) {
-      return X86.DerefOperand(parseAddressOperand(first))
+    const args = S.asListSexp(rest).elements
+
+    let size: X86.Size | undefined = undefined
+    let head = first
+    let restArgs = args
+
+    if (first.kind === "SymbolSexp" && parseSizeName(first.content)) {
+      size = parseSizeName(first.content)
+      if (args.length === 0) {
+        let message = `(deref <size> ...) requires an address or register after the size`
+        throw new Error(message)
+      }
+      head = args[0]
+      restArgs = args.slice(1)
     }
 
     if (
-      first.kind === "ListSexp" &&
-      first.elements.length >= 2 &&
-      first.elements[0].kind === "SymbolSexp" &&
-      first.elements[0].content === "reg"
+      head.kind === "ListSexp" &&
+      head.elements.length >= 2 &&
+      head.elements[0].kind === "SymbolSexp" &&
+      head.elements[0].content === "address"
     ) {
-      const baseName = parseRegName(first)
-      const elements = S.asListSexp(rest).elements
-      if (elements.length === 0) {
-        return X86.RegDerefOperand(baseName, undefined, undefined, undefined)
+      if (restArgs.length !== 0) {
+        let message = `(deref (address name)) takes no further arguments`
+        throw new Error(message)
       }
-      if (elements.length === 1) {
-        const disp = parseDisplacement(elements[0])
-        return X86.RegDerefOperand(baseName, undefined, undefined, disp)
+      return X86.DerefOperand(size, parseAddressOperand(head))
+    }
+
+    if (
+      head.kind === "ListSexp" &&
+      head.elements.length >= 2 &&
+      head.elements[0].kind === "SymbolSexp" &&
+      head.elements[0].content === "reg"
+    ) {
+      const baseName = parseRegName(head)
+      if (restArgs.length === 0) {
+        return X86.RegDerefOperand(
+          size,
+          baseName,
+          undefined,
+          undefined,
+          undefined,
+        )
       }
-      if (elements.length === 2) {
-        const index = parseRegName(elements[0])
-        const scale = parseImmValue(elements[1])
-        return X86.RegDerefOperand(baseName, index, scale, undefined)
+      if (restArgs.length === 1) {
+        const disp = parseDisplacement(restArgs[0])
+        return X86.RegDerefOperand(size, baseName, undefined, undefined, disp)
       }
-      const index = parseRegName(elements[0])
-      const scale = parseImmValue(elements[1])
-      const disp = parseDisplacement(elements[2])
-      return X86.RegDerefOperand(baseName, index, scale, disp)
+      if (restArgs.length === 2) {
+        const index = parseRegName(restArgs[0])
+        const scale = parseImmValue(restArgs[1])
+        return X86.RegDerefOperand(size, baseName, index, scale, undefined)
+      }
+      const index = parseRegName(restArgs[0])
+      const scale = parseImmValue(restArgs[1])
+      const disp = parseDisplacement(restArgs[2])
+      return X86.RegDerefOperand(size, baseName, index, scale, disp)
     }
 
     let message =
       `(deref ...) expects (address ...) or (reg ...) as first argument, ` +
-      `got: ${S.formatSexp(first)}`
+      `got: ${S.formatSexp(head)}`
     throw new Error(message)
   },
 
@@ -83,8 +109,9 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
 })
 
 export function parseOperand(sexp: S.Sexp): X86.Operand {
-  if (sexp.kind === "IntSexp") {
-    return X86.ImmOperand(sexp.content)
+  const int = parseIntegerSexp(sexp)
+  if (int !== undefined) {
+    return X86.ImmOperand(int)
   }
 
   try {
@@ -97,6 +124,18 @@ export function parseOperand(sexp: S.Sexp): X86.Operand {
       throw new Error(message)
     }
     return X86.DataOperand(parseData(sexp))
+  }
+}
+
+function parseSizeName(name: string): X86.Size | undefined {
+  switch (name) {
+    case "byte":
+    case "word":
+    case "dword":
+    case "qword":
+      return name
+    default:
+      return undefined
   }
 }
 
@@ -118,11 +157,9 @@ function parseRegName(sexp: S.Sexp): string {
 }
 
 function parseImmValue(sexp: S.Sexp): bigint {
-  if (sexp.kind === "IntSexp") {
-    return sexp.content
-  }
-  if (sexp.kind === "SymbolSexp" && sexp.content.startsWith("-")) {
-    return BigInt(sexp.content)
+  const int = parseIntegerSexp(sexp)
+  if (int !== undefined) {
+    return int
   }
   let message = `expected integer, got: ${S.formatSexp(sexp)}`
   throw new Error(message)

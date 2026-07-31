@@ -16,6 +16,7 @@ export type XexeRelocationEntry = {
   name: string
   segmentKind: XexeSegmentKind
   segmentOffset: number
+  addend: bigint
 }
 
 export type Xexe = {

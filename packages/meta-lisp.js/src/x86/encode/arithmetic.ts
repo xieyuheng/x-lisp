@@ -1,14 +1,19 @@
 import type { Instr } from "../instr/index.ts"
+import type { MemOperand } from "../operand/index.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
-import { encodeRegDeref } from "./regderef.ts"
+import { encodeMem } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
+import { checkImm8, deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
 
-const OPCODE_MAP: Record<string, { mr: number; rm: number; immExt: number }> = {
-  add: { mr: 0x01, rm: 0x03, immExt: 0 },
-  sub: { mr: 0x29, rm: 0x2b, immExt: 5 },
-  cmp: { mr: 0x39, rm: 0x3b, immExt: 7 },
+const OPCODE_MAP: Record<
+  string,
+  { mr: number; rm: number; mr8: number; rm8: number; immExt: number }
+> = {
+  add: { mr: 0x01, rm: 0x03, mr8: 0x00, rm8: 0x02, immExt: 0 },
+  sub: { mr: 0x29, rm: 0x2b, mr8: 0x28, rm8: 0x2a, immExt: 5 },
+  cmp: { mr: 0x39, rm: 0x3b, mr8: 0x38, rm8: 0x3a, immExt: 7 },
 }
 
 export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
@@ -24,26 +29,29 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
     const dstReg = dst.name
 
     if (src.kind === "RegOperand") {
-      return [encodeArithRegReg(dstReg, src.name, map.rm)]
+      return [encodeArithRegReg(dstReg, src.name, map, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeArithRegImm(dstReg, src.value, map)]
+      return [encodeArithRegImm(dstReg, src.value, map, deriveOpSize(instr))]
     }
   }
 
-  if (dst.kind === "RegDerefOperand") {
+  if (dst.kind === "RegDerefOperand" || dst.kind === "DerefOperand") {
     if (src.kind === "RegOperand") {
-      return [encodeArithMemReg(dst, src.name, map.mr)]
+      return [encodeArithMemReg(dst, src.name, map, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeArithMemImm(dst, src.value, map)]
+      return [encodeArithMemImm(dst, src.value, map, deriveOpSize(instr))]
     }
   }
 
-  if (src.kind === "RegDerefOperand" && dst.kind === "RegOperand") {
-    return [encodeArithRegMem(dst.name, src, map.rm)]
+  if (
+    (src.kind === "RegDerefOperand" || src.kind === "DerefOperand") &&
+    dst.kind === "RegOperand"
+  ) {
+    return [encodeArithRegMem(dst.name, src, map, deriveOpSize(instr))]
   }
 
   let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
@@ -53,12 +61,13 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
 function encodeArithRegReg(
   dstReg: string,
   srcReg: string,
-  opcode: number,
+  map: { rm: number; rm8: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   return {
-    prefixes: [],
-    rex: computeRex(true, dstReg, null, srcReg),
-    opcode: [opcode],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, dstReg, null, srcReg),
+    opcode: [size === 1 ? map.rm8 : map.rm],
     modRM: modRM(MOD_REG, regCode(dstReg), regCode(srcReg)),
     sib: null,
     displacement: null,
@@ -70,11 +79,24 @@ function encodeArithRegImm(
   dstReg: string,
   value: bigint,
   map: { immExt: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  if (isImm8(value)) {
+  if (size === 1) {
+    checkImm8(value)
     return {
       prefixes: [],
-      rex: computeRex(true, null, null, dstReg),
+      rex: computeRex(false, null, null, dstReg),
+      opcode: [0x80],
+      modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
+      sib: null,
+      displacement: null,
+      immediate: { size: 1, value },
+    }
+  }
+  if (isImm8(value)) {
+    return {
+      prefixes: sizePrefix(size),
+      rex: computeRex(size === 8, null, null, dstReg),
       opcode: [0x83],
       modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
       sib: null,
@@ -83,26 +105,27 @@ function encodeArithRegImm(
     }
   }
   return {
-    prefixes: [],
-    rex: computeRex(true, null, null, dstReg),
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, null, null, dstReg),
     opcode: [0x81],
     modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
     sib: null,
     displacement: null,
-    immediate: { size: 4, value },
+    immediate: { size: size === 2 ? 2 : 4, value },
   }
 }
 
 function encodeArithRegMem(
   dstReg: string,
-  src: import("../operand/index.ts").RegDerefOperand,
-  opcode: number,
+  src: MemOperand,
+  map: { rm: number; rm8: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(src)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(src)
   return {
-    prefixes: [],
-    rex: computeRex(true, dstReg, rexIndex, rexRm),
-    opcode: [opcode],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, dstReg, rexIndex, rexRm),
+    opcode: [size === 1 ? map.rm8 : map.rm],
     modRM: modrm.codeForReg(regCode(dstReg)),
     sib,
     displacement: disp,
@@ -111,15 +134,16 @@ function encodeArithRegMem(
 }
 
 function encodeArithMemReg(
-  dst: import("../operand/index.ts").RegDerefOperand,
+  dst: MemOperand,
   srcReg: string,
-  opcode: number,
+  map: { mr: number; mr8: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
   return {
-    prefixes: [],
-    rex: computeRex(true, srcReg, rexIndex, rexRm),
-    opcode: [opcode],
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, srcReg, rexIndex, rexRm),
+    opcode: [size === 1 ? map.mr8 : map.mr],
     modRM: modrm.codeForReg(regCode(srcReg)),
     sib,
     displacement: disp,
@@ -128,15 +152,27 @@ function encodeArithMemReg(
 }
 
 function encodeArithMemImm(
-  dst: import("../operand/index.ts").RegDerefOperand,
+  dst: MemOperand,
   value: bigint,
   map: { immExt: number },
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
-  if (isImm8(value)) {
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+  if (size === 1) {
     return {
       prefixes: [],
-      rex: computeRex(true, null, rexIndex, rexRm),
+      rex: computeRex(false, null, rexIndex, rexRm),
+      opcode: [0x80],
+      modRM: modrm.codeForOpExt(map.immExt),
+      sib,
+      displacement: disp,
+      immediate: { size: 1, value },
+    }
+  }
+  if (isImm8(value)) {
+    return {
+      prefixes: sizePrefix(size),
+      rex: computeRex(size === 8, null, rexIndex, rexRm),
       opcode: [0x83],
       modRM: modrm.codeForOpExt(map.immExt),
       sib,
@@ -145,13 +181,13 @@ function encodeArithMemImm(
     }
   }
   return {
-    prefixes: [],
-    rex: computeRex(true, null, rexIndex, rexRm),
+    prefixes: sizePrefix(size),
+    rex: computeRex(size === 8, null, rexIndex, rexRm),
     opcode: [0x81],
     modRM: modrm.codeForOpExt(map.immExt),
     sib,
     displacement: disp,
-    immediate: { size: 4, value },
+    immediate: { size: size === 2 ? 2 : 4, value },
   }
 }
 

@@ -33,5 +33,5 @@
 
 (define-code mov-mem-imm
   (block entry
-    (mov (deref (reg rbp) -8) 42)    ;; C7 /0: REX.W + C7 45 F8 + imm32
+    (mov (deref qword (reg rbp) -8) 42)    ;; C7 /0: REX.W + C7 45 F8 + imm32
     (ret)))

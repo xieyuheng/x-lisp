@@ -3,13 +3,14 @@ import type {
   AddressOperand,
   DerefOperand,
   ExternOperand,
-  RegDerefOperand,
+  MemOperand,
   RelocationOperand,
 } from "../operand/index.ts"
 import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
 import { isExtendedReg, regCode } from "./reg.ts"
-import { encodeRegDeref } from "./regderef.ts"
+import { encodeMem } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
+import { checkImm8, deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 export function encodeMov(instr: Instr): Array<EncodedInstruction> {
@@ -20,11 +21,11 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     const dstReg = dst.name
 
     if (src.kind === "RegOperand") {
-      return [encodeMovRegReg(dstReg, src.name)]
+      return [encodeMovRegReg(dstReg, src.name, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeMovRegImm(dstReg, src.value)]
+      return [encodeMovRegImm(dstReg, src.value, deriveOpSize(instr))]
     }
 
     if (src.kind === "FloatOperand") {
@@ -36,11 +37,11 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     }
 
     if (src.kind === "DerefOperand") {
-      return [encodeMovRegDeref(dstReg, src)]
+      return [encodeMovRegDeref(dstReg, src, deriveOpSize(instr))]
     }
 
     if (src.kind === "RegDerefOperand") {
-      return [encodeMovRegRegDeref(dstReg, src)]
+      return [encodeMovRegRegDeref(dstReg, src, deriveOpSize(instr))]
     }
 
     if (src.kind === "ExternOperand") {
@@ -52,18 +53,18 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     }
   }
 
-  if (dst.kind === "RegDerefOperand") {
+  if (dst.kind === "RegDerefOperand" || dst.kind === "DerefOperand") {
     if (src.kind === "RegOperand") {
-      return [encodeMovRegDerefReg(dst, src.name)]
+      return [encodeMovMemReg(dst, src.name, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      const result = encodeMovRegDerefImm(dst, src.value)
+      const result = encodeMovMemImm(dst, src.value, deriveOpSize(instr))
       return Array.isArray(result) ? result : [result]
     }
 
     if (src.kind === "AddressOperand") {
-      return encodeMovRegDerefAddress(dst, src)
+      return encodeMovMemAddress(dst, src)
     }
   }
 
@@ -71,12 +72,16 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
   throw new Error(message)
 }
 
-function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {
-  const rex = computeRex(true, dstReg, null, srcReg)
+function encodeMovRegReg(
+  dstReg: string,
+  srcReg: string,
+  size: 1 | 2 | 4 | 8,
+): EncodedInstruction {
+  const rex = computeRex(size === 8, dstReg, null, srcReg)
   return {
-    prefixes: [],
+    prefixes: sizePrefix(size),
     rex,
-    opcode: [0x8b],
+    opcode: [size === 1 ? 0x8a : 0x8b],
     modRM: modRM(MOD_REG, regCode(dstReg), regCode(srcReg)),
     sib: null,
     displacement: null,
@@ -84,10 +89,52 @@ function encodeMovRegReg(dstReg: string, srcReg: string): EncodedInstruction {
   }
 }
 
-function encodeMovRegImm(dstReg: string, value: bigint): EncodedInstruction {
+function encodeMovRegImm(
+  dstReg: string,
+  value: bigint,
+  size: 1 | 2 | 4 | 8,
+): EncodedInstruction {
+  const code = regCode(dstReg)
+  const ext = isExtendedReg(dstReg)
+
+  if (size === 1) {
+    checkImm8(value)
+    return {
+      prefixes: [],
+      rex: computeRex(false, null, null, dstReg),
+      opcode: [0xb0 + code],
+      modRM: null,
+      sib: null,
+      displacement: null,
+      immediate: { size: 1, value },
+    }
+  }
+
+  if (size === 2) {
+    return {
+      prefixes: [0x66],
+      rex: computeRex(false, null, null, dstReg),
+      opcode: [0xb8 + code],
+      modRM: null,
+      sib: null,
+      displacement: null,
+      immediate: { size: 2, value },
+    }
+  }
+
+  if (size === 4) {
+    return {
+      prefixes: [],
+      rex: computeRex(false, null, null, dstReg),
+      opcode: [0xb8 + code],
+      modRM: null,
+      sib: null,
+      displacement: null,
+      immediate: { size: 4, value },
+    }
+  }
+
   if (value < -(1n << 31n) || value > 0xffffffffn) {
-    const code = regCode(dstReg)
-    const ext = isExtendedReg(dstReg)
     return {
       prefixes: [],
       rex: ext ? 0x49 : 0x48,
@@ -114,7 +161,7 @@ function encodeMovRegFloat(dstReg: string, value: number): EncodedInstruction {
   const buf = new ArrayBuffer(8)
   new DataView(buf).setFloat64(0, value, true)
   const bitPattern = new DataView(buf).getBigUint64(0, true)
-  return encodeMovRegImm(dstReg, bitPattern)
+  return encodeMovRegImm(dstReg, bitPattern, 8)
 }
 
 function encodeMovRegAddress(
@@ -135,30 +182,15 @@ function encodeMovRegAddress(
 
 function encodeMovRegDeref(
   dstReg: string,
-  _src: DerefOperand,
+  src: DerefOperand,
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const rex = computeRex(true, dstReg, null, null)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(src)
+  const rex = computeRex(size === 8, dstReg, rexIndex, rexRm)
   return {
-    prefixes: [],
+    prefixes: sizePrefix(size),
     rex,
-    opcode: [0x8b],
-    modRM: modRM(MOD_DISP0, regCode(dstReg), 5),
-    sib: null,
-    displacement: { size: 4, value: 0 },
-    immediate: null,
-  }
-}
-
-function encodeMovRegRegDeref(
-  dstReg: string,
-  src: RegDerefOperand,
-): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(src)
-  const rex = computeRex(true, dstReg, rexIndex, rexRm)
-  return {
-    prefixes: [],
-    rex,
-    opcode: [0x8b],
+    opcode: [size === 1 ? 0x8a : 0x8b],
     modRM: modrm.codeForReg(regCode(dstReg)),
     sib: sib,
     displacement: disp,
@@ -166,16 +198,35 @@ function encodeMovRegRegDeref(
   }
 }
 
-function encodeMovRegDerefReg(
-  dst: RegDerefOperand,
-  srcReg: string,
+function encodeMovRegRegDeref(
+  dstReg: string,
+  src: MemOperand,
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
-  const rex = computeRex(true, srcReg, rexIndex, rexRm)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(src)
+  const rex = computeRex(size === 8, dstReg, rexIndex, rexRm)
   return {
-    prefixes: [],
+    prefixes: sizePrefix(size),
     rex,
-    opcode: [0x89],
+    opcode: [size === 1 ? 0x8a : 0x8b],
+    modRM: modrm.codeForReg(regCode(dstReg)),
+    sib: sib,
+    displacement: disp,
+    immediate: null,
+  }
+}
+
+function encodeMovMemReg(
+  dst: MemOperand,
+  srcReg: string,
+  size: 1 | 2 | 4 | 8,
+): EncodedInstruction {
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+  const rex = computeRex(size === 8, srcReg, rexIndex, rexRm)
+  return {
+    prefixes: sizePrefix(size),
+    rex,
+    opcode: [size === 1 ? 0x88 : 0x89],
     modRM: modrm.codeForReg(regCode(srcReg)),
     sib: sib,
     displacement: disp,
@@ -183,13 +234,54 @@ function encodeMovRegDerefReg(
   }
 }
 
-function encodeMovRegDerefImm(
-  dst: RegDerefOperand,
+function encodeMovMemImm(
+  dst: MemOperand,
   value: bigint,
+  size: 1 | 2 | 4 | 8,
 ): EncodedInstruction | Array<EncodedInstruction> {
+  if (size === 1) {
+    const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+    checkImm8(value)
+    return {
+      prefixes: [],
+      rex: computeRex(false, null, rexIndex, rexRm),
+      opcode: [0xc6],
+      modRM: modrm.codeForOpExt(0),
+      sib: sib,
+      displacement: disp,
+      immediate: { size: 1, value },
+    }
+  }
+
+  if (size === 2) {
+    const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+    return {
+      prefixes: [0x66],
+      rex: computeRex(false, null, rexIndex, rexRm),
+      opcode: [0xc7],
+      modRM: modrm.codeForOpExt(0),
+      sib: sib,
+      displacement: disp,
+      immediate: { size: 2, value },
+    }
+  }
+
+  if (size === 4) {
+    const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+    return {
+      prefixes: [],
+      rex: computeRex(false, null, rexIndex, rexRm),
+      opcode: [0xc7],
+      modRM: modrm.codeForOpExt(0),
+      sib: sib,
+      displacement: disp,
+      immediate: { size: 4, value },
+    }
+  }
+
   if (value < -(1n << 31n) || value > 0xffffffffn) {
-    const raxMov = encodeMovRegImm("rax", value)
-    const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
+    const raxMov = encodeMovRegImm("rax", value, 8)
+    const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
     const mov: EncodedInstruction = {
       prefixes: [],
       rex: computeRex(true, null, rexIndex, rexRm),
@@ -201,7 +293,7 @@ function encodeMovRegDerefImm(
     }
     return [raxMov, mov]
   }
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
   const rex = computeRex(true, null, rexIndex, rexRm)
   return {
     prefixes: [],
@@ -214,8 +306,8 @@ function encodeMovRegDerefImm(
   }
 }
 
-function encodeMovRegDerefAddress(
-  dst: RegDerefOperand,
+function encodeMovMemAddress(
+  dst: MemOperand,
   _src: AddressOperand,
 ): Array<EncodedInstruction> {
   const lea: EncodedInstruction = {
@@ -227,7 +319,7 @@ function encodeMovRegDerefAddress(
     displacement: { size: 4, value: 0 },
     immediate: null,
   }
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(dst)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
   const mov: EncodedInstruction = {
     prefixes: [],
     rex: computeRex(true, null, rexIndex, rexRm),

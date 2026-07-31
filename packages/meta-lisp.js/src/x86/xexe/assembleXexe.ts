@@ -171,11 +171,17 @@ function emitXexeCode(
               enc.displacement !== null &&
               enc.displacement.value === 0
             ) {
+              // - addend = -(rip - hole), where rip is the address of the
+              //   next instruction. Encoders know the instruction layout,
+              //   so they compute it; the loader just applies S + A - P.
+              const dispOffset = encodedDispOffset(enc)
+              const addend = BigInt(dispOffset - encodedSize(enc))
               relocs.push({
                 type: relocInfo.type,
                 name: resolvedName,
                 segmentKind: XexeCodeSegment,
-                segmentOffset: instrPos + encodedDispOffset(enc),
+                segmentOffset: instrPos + dispOffset,
+                addend,
               })
             } else if (
               relocInfo.holeKind === "imm64" &&
@@ -187,6 +193,7 @@ function emitXexeCode(
                 name: resolvedName,
                 segmentKind: XexeCodeSegment,
                 segmentOffset: instrPos + encodedImmOffset(enc),
+                addend: 0n,
               })
             }
             instrPos += encodedSize(enc)
@@ -272,6 +279,7 @@ function emitXexeData(
         name: anonName,
         segmentKind: XexeDataSegment,
         segmentOffset: d.pointerSlotOffset,
+        addend: 0n,
       })
     }
   }
@@ -375,6 +383,7 @@ function emitTree(
       name: value.name,
       segmentKind: XexeDataSegment,
       segmentOffset: offset,
+      addend: 0n,
     })
     return offset + 8
   }

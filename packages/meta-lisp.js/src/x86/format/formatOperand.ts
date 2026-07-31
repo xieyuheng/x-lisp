@@ -17,10 +17,16 @@ export function formatOperand(operand: X86.Operand): string {
       return `(label ${operand.name})`
     case "AddressOperand":
       return `(address ${operand.name})`
-    case "DerefOperand":
-      return `(deref ${formatOperand(operand.address)})`
+    case "DerefOperand": {
+      const parts: Array<string> = []
+      if (operand.size !== undefined) parts.push(operand.size)
+      parts.push(formatOperand(operand.address))
+      return `(deref ${parts.join(" ")})`
+    }
     case "RegDerefOperand": {
-      const parts = [`(reg ${operand.base})`]
+      const parts: Array<string> = []
+      if (operand.size !== undefined) parts.push(operand.size)
+      parts.push(`(reg ${operand.base})`)
       if (operand.index !== undefined) {
         parts.push(`(reg ${operand.index})`)
         parts.push(operand.scale?.toString() || "1")

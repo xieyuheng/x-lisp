@@ -32,13 +32,13 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
       anonName,
       X86.DataDefinition(anonName, X86.PointerData(data)),
     )
-    return X86.DerefOperand(X86.AddressOperand(anonName))
+    return X86.DerefOperand("qword", X86.AddressOperand(anonName))
   }
 
   if (data.kind === "PointerData") {
     const anonName = `©data.${anonCounter++}`
     mod.definitions.set(anonName, X86.DataDefinition(anonName, data))
-    return X86.DerefOperand(X86.AddressOperand(anonName))
+    return X86.DerefOperand("qword", X86.AddressOperand(anonName))
   }
   if (data.kind === "StructData") {
     let message = `bare struct in operand is not supported; use (pointer (struct ...)) or (address name)`
