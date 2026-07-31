@@ -6,7 +6,7 @@ import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
 import * as Pkg from "../package/index.ts"
 
-export function ExplicateControlPass2(pkg: Pkg.Package): B.Mod {
+export function ExplicateControlPass(pkg: Pkg.Package): B.Mod {
   const basicMod = B.createMod()
 
   for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
