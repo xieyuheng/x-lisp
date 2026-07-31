@@ -1,5 +1,3 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
-
 export type Operand =
   | SymbolOperand
   | KeywordOperand
@@ -11,98 +9,71 @@ export type Operand =
 export type SymbolOperand = {
   kind: "SymbolOperand"
   content: string
-  location: SourceLocation
 }
 
-export function SymbolOperand(
-  content: string,
-  location: SourceLocation,
-): SymbolOperand {
+export function SymbolOperand(content: string): SymbolOperand {
   return {
     kind: "SymbolOperand",
     content,
-    location,
   }
 }
 
 export type StringOperand = {
   kind: "StringOperand"
   content: string
-  location: SourceLocation
 }
 
-export function StringOperand(
-  content: string,
-  location: SourceLocation,
-): StringOperand {
+export function StringOperand(content: string): StringOperand {
   return {
     kind: "StringOperand",
     content,
-    location,
   }
 }
 
 export type KeywordOperand = {
   kind: "KeywordOperand"
   content: string
-  location: SourceLocation
 }
 
-export function KeywordOperand(
-  content: string,
-  location: SourceLocation,
-): KeywordOperand {
+export function KeywordOperand(content: string): KeywordOperand {
   return {
     kind: "KeywordOperand",
     content,
-    location,
   }
 }
 
 export type IntOperand = {
   kind: "IntOperand"
   content: bigint
-  location: SourceLocation
 }
 
-export function IntOperand(
-  content: bigint,
-  location: SourceLocation,
-): IntOperand {
+export function IntOperand(content: bigint): IntOperand {
   return {
     kind: "IntOperand",
     content,
-    location,
   }
 }
 
 export type FloatOperand = {
   kind: "FloatOperand"
   content: number
-  location: SourceLocation
 }
 
-export function FloatOperand(
-  content: number,
-  location: SourceLocation,
-): FloatOperand {
+export function FloatOperand(content: number): FloatOperand {
   return {
     kind: "FloatOperand",
     content,
-    location,
   }
 }
 
 export type VarOperand = {
   kind: "VarOperand"
   name: string
-  location: SourceLocation
 }
 
-export function VarOperand(name: string, location: SourceLocation): VarOperand {
+export function VarOperand(name: string): VarOperand {
   return {
     kind: "VarOperand",
     name,
-    location,
   }
 }
