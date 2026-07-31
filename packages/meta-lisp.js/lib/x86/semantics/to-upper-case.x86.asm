@@ -1,10 +1,8 @@
 (define-space buffer 8)
 
-(define-code main
-  (block entry
-    ; for correct debugging
-    (mov (reg rbp) (reg rsp)))
+;; 注意：必须符合 c 的调用约定
 
+(define-code main
   (block read
     (mov (reg rax) 0)                  ; specify sys_read call
     (mov (reg rdi) 0)                  ; specify file descriptor 0: standard input
