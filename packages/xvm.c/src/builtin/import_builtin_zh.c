@@ -197,6 +197,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/散列有", x_hash_has);
   define_primitive_3(mod, "meta-builtin/builtin/散列置", x_hash_put_mut);
   define_primitive_3(mod, "meta-builtin/builtin/散列置复制", x_hash_put);
+  define_primitive_2(mod, "meta-builtin/builtin/散列删除", x_hash_delete_mut);
   define_primitive_1(mod, "meta-builtin/builtin/散列键", x_hash_keys);
   define_primitive_1(mod, "meta-builtin/builtin/散列值", x_hash_values);
   define_primitive_1(mod, "meta-builtin/builtin/散列条目", x_hash_entries);
@@ -227,6 +228,10 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/断言非", x_assert_not);
   define_primitive_2(mod, "meta-builtin/builtin/断言相等", x_assert_equal);
   define_primitive_2(mod, "meta-builtin/builtin/断言不等", x_assert_not_equal);
+  define_primitive_2(mod, "meta-builtin/builtin/断言及位置", x_assert_with_location);
+  define_primitive_2(mod, "meta-builtin/builtin/断言非及位置", x_assert_not_with_location);
+  define_primitive_3(mod, "meta-builtin/builtin/断言相等及位置", x_assert_equal_with_location);
+  define_primitive_3(mod, "meta-builtin/builtin/断言不等及位置", x_assert_not_equal_with_location);
 
   // error
 
@@ -237,6 +242,7 @@ void import_builtin_zh(mod_t *mod) {
 
   define_primitive_2(mod, "meta-builtin/builtin/解析符号算式", x_parse_sexps);
   define_primitive_1(mod, "meta-builtin/builtin/呈现为符号算式", x_format_as_sexp);
+  define_primitive_2(mod, "meta-builtin/builtin/呈现消息及源码位置", x_format_message_with_source_location);
 
   // json
 
@@ -258,6 +264,12 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/路径删除目录", x_path_delete_directory);
   define_primitive_1(mod, "meta-builtin/builtin/路径删除", x_path_delete);
   define_primitive_2(mod, "meta-builtin/builtin/路径重命名", x_path_rename);
+
+  // closure
+
+  define_primitive_2(mod, "meta-builtin/builtin/作闭包", x_make_closure);
+  define_primitive_3(mod, "meta-builtin/builtin/闭包置参", x_closure_put_arg_mut);
+  define_primitive_2(mod, "meta-builtin/builtin/闭包取参", x_closure_arg);
 
   // process
 
