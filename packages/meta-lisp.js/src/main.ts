@@ -8,7 +8,7 @@ import { getPackageJson } from "@xieyuheng/std.js/node"
 import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import * as B2 from "./basic2/index.ts"
+import * as B2 from "./basic/index.ts"
 import * as Pkg from "./package/index.ts"
 import * as Pipelines from "./pipelines/index.ts"
 import * as X86 from "./x86/index.ts"
@@ -22,7 +22,7 @@ router.defineRoutes([
   "build-xvm --config --dump",
   "build-x86 --config --dump",
   "test-xvm  --config --profile --builtin",
-  "format-basic2 <input>",
+  "format-basic <input>",
   "assemble-x86-xexe <input> <output> --entry",
 ])
 
@@ -65,7 +65,7 @@ router.defineHandlers({
     Pipelines.TestXvmPipeline(pkg)
   },
 
-  "format-basic2": ({ args: [input] }) => {
+  "format-basic": ({ args: [input] }) => {
     if (input === "-") {
       input = "/dev/stdin"
     }

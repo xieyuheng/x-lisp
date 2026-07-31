@@ -1,5 +1,5 @@
 import { zeroLocation } from "@xieyuheng/sexp.js"
-import * as B from "../basic2/index.ts"
+import * as B from "../basic/index.ts"
 import * as Xvm from "../xvm/index.ts"
 import { type XvmExplicateReport } from "./170-XvmExplicateControlPass.ts"
 

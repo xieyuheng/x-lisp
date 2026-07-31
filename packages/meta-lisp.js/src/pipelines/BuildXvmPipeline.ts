@@ -6,7 +6,7 @@ import {
 import { systemShellRun } from "@xieyuheng/std.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import * as B from "../basic2/index.ts"
+import * as B from "../basic/index.ts"
 import * as Pkg from "../package/index.ts"
 import * as Passes from "../passes/index.ts"
 import * as Xvm from "../xvm/index.ts"

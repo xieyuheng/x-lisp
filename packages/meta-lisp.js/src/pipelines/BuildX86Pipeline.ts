@@ -3,7 +3,7 @@ import {
   fileWriteln,
   openOutputFile,
 } from "@xieyuheng/std.js/file"
-import * as B from "../basic2/index.ts"
+import * as B from "../basic/index.ts"
 import * as Pkg from "../package/index.ts"
 import * as Passes from "../passes/index.ts"
 import * as X86 from "../x86/index.ts"
@@ -58,7 +58,7 @@ export function BuildX86Pipeline(rootPkg: Pkg.Package): void {
 
 function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
   const directory = Pkg.packageOutputDirectory(pkg)
-  callWithFile(openOutputFile(`${directory}/bundle.basic2`), (file) => {
+  callWithFile(openOutputFile(`${directory}/bundle.x86.basic`), (file) => {
     const definitions = Array.from(basicMod.definitions.values())
     const textWidth = 64
     const code = definitions

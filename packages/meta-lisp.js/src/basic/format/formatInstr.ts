@@ -1,30 +1,43 @@
-import { type Instr } from "../instr/index.ts"
-import { formatExp } from "./formatExp.ts"
+import * as B from "../index.ts"
+import { formatOperand } from "./formatOperand.ts"
+import { formatType } from "./formatType.ts"
 
-export function formatInstr(instr: Instr): string {
-  switch (instr.kind) {
-    case "AssignInstr": {
-      return `(= ${instr.dest} ${formatExp(instr.exp)})`
-    }
+export function formatInstr(instr: B.Instr): string {
+  const operandTexts = instr.input.map(formatOperand)
+  const attrTexts = Object.entries(instr.attributes).map(
+    ([key, attr]) => `:${key} ${formatAttribute(attr)}`,
+  )
 
-    case "PerformInstr": {
-      return `(perform ${formatExp(instr.exp)})`
-    }
+  const innerParts = [instr.op, ...operandTexts, ...attrTexts]
+  const inner = `(${innerParts.join(" ")})`
 
-    case "TestInstr": {
-      return `(test ${formatExp(instr.exp)})`
-    }
+  if (instr.output.length === 0) {
+    return inner
+  }
 
-    case "BranchInstr": {
-      return `(branch ${instr.thenLabel} ${instr.elseLabel})`
-    }
+  const ids = instr.output.map((c) => c.id).join(" ")
+  return `(= ${ids} ${inner})`
+}
 
-    case "GotoInstr": {
-      return `(goto ${instr.label})`
-    }
-
-    case "ReturnInstr": {
-      return `(return ${formatExp(instr.exp)})`
-    }
+function formatAttribute(attribute: B.Attribute): string {
+  switch (attribute.kind) {
+    case "TypeAttribute":
+      return formatType(attribute.content)
+    case "SymbolAttribute":
+      return attribute.content
+    case "IntAttribute":
+      return attribute.content.toString()
+    case "FloatAttribute":
+      if (Number.isInteger(attribute.content)) {
+        return `${attribute.content}.0`
+      } else {
+        return attribute.content.toString()
+      }
+    case "BoolAttribute":
+      return `(${attribute.content})`
+    case "StringAttribute":
+      return JSON.stringify(attribute.content)
+    case "ListAttribute":
+      return `(${attribute.elements.map(formatAttribute).join(" ")})`
   }
 }

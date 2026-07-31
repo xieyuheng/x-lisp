@@ -1,4 +1,4 @@
-import * as B from "../basic2/index.ts"
+import * as B from "../basic/index.ts"
 import * as Pkg from "../package/index.ts"
 import * as X86 from "../x86/index.ts"
 import * as Passes from "./index.ts"

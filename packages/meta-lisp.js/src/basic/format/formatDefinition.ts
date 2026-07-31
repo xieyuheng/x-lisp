@@ -1,45 +1,37 @@
-import type { Block } from "../block/index.ts"
-import { type Definition } from "../definition/index.ts"
-import { formatInstr } from "./formatInstr.ts"
+import * as B from "../index.ts"
+import { formatBlock } from "./formatBlock.ts"
+import { formatData } from "./formatData.ts"
+import { formatType } from "./formatType.ts"
 
-export function formatDefinition(definition: Definition): string {
+export function formatDefinition(definition: B.Definition): string {
   switch (definition.kind) {
-    case "PrimitiveFunctionDeclaration": {
-      return `(declare-primitive-function ${definition.name} ${definition.arity})`
-    }
-
-    case "PrimitiveVariableDeclaration": {
-      return `(declare-primitive-variable ${definition.name})`
+    case "StructDefinition": {
+      const fieldTexts = Object.entries(definition.fields)
+        .map(([name, type]) => `(${name} ${formatType(type)})`)
+        .join(" ")
+      return `(define-struct ${definition.name} ${fieldTexts})`
     }
 
     case "FunctionDefinition": {
-      const name = definition.name
-      const parameters = definition.parameters.join(" ")
-      const blocks = Array.from(
-        definition.blocks.values().map(formatBlock),
-      ).join(" ")
-      return `(define-function (${name} ${parameters}) ${blocks})`
+      const blockTexts = Array.from(definition.blocks.values())
+        .map(formatBlock)
+        .join(" ")
+      return `(define-function ${definition.name} ${blockTexts})`
     }
 
     case "VariableDefinition": {
-      const name = definition.name
-      const blocks = Array.from(
-        definition.blocks.values().map(formatBlock),
-      ).join(" ")
-      return `(define-variable ${name} ${blocks})`
+      if (definition.init === null) {
+        return `(define-variable ${definition.name})`
+      }
+      return `(define-variable ${definition.name} ${formatData(definition.init)})`
     }
 
-    case "TestDefinition": {
-      const name = definition.name
-      const blocks = Array.from(
-        definition.blocks.values().map(formatBlock),
-      ).join(" ")
-      return `(define-test ${name} ${blocks})`
+    case "ExternFunctionDefinition": {
+      return `(extern-function ${definition.name})`
+    }
+
+    case "ExternVariableDefinition": {
+      return `(extern-variable ${definition.name})`
     }
   }
-}
-
-function formatBlock(block: Block): string {
-  const instrs = block.instrs.map(formatInstr).join(" ")
-  return `(block ${block.label} ${instrs})`
 }

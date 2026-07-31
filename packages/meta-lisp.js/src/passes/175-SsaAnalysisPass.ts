@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as B from "../basic2/index.ts"
+import * as B from "../basic/index.ts"
 import * as Pkg from "../package/index.ts"
 
 export type SsaAnalysisReport = {

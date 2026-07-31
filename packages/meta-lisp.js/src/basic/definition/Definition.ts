@@ -1,125 +1,71 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
-import type { Mod } from "../mod/index.ts"
+import { type Data } from "../data/index.ts"
+import { type Type } from "../type/index.ts"
 
 export type Definition =
-  | PrimitiveFunctionDeclaration
-  | PrimitiveVariableDeclaration
+  | StructDefinition
   | FunctionDefinition
   | VariableDefinition
-  | TestDefinition
+  | ExternFunctionDefinition
+  | ExternVariableDefinition
 
-export type PrimitiveFunctionDeclaration = {
-  kind: "PrimitiveFunctionDeclaration"
-  mod: Mod
+export type StructDefinition = {
+  kind: "StructDefinition"
   name: string
-  arity: number
-  location: SourceLocation
+  fields: Record<string, Type>
 }
 
-export function PrimitiveFunctionDeclaration(
-  mod: Mod,
+export function StructDefinition(
   name: string,
-  arity: number,
-  location: SourceLocation,
-): PrimitiveFunctionDeclaration {
-  return {
-    kind: "PrimitiveFunctionDeclaration",
-    mod,
-    name,
-    arity,
-    location,
-  }
-}
-
-export type PrimitiveVariableDeclaration = {
-  kind: "PrimitiveVariableDeclaration"
-  mod: Mod
-  name: string
-  location: SourceLocation
-}
-
-export function PrimitiveVariableDeclaration(
-  mod: Mod,
-  name: string,
-  location: SourceLocation,
-): PrimitiveVariableDeclaration {
-  return {
-    kind: "PrimitiveVariableDeclaration",
-    mod,
-    name,
-    location,
-  }
+  fields: Record<string, Type>,
+): StructDefinition {
+  return { kind: "StructDefinition", name, fields }
 }
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
-  mod: Mod
   name: string
-  parameters: Array<string>
   blocks: Map<string, Block>
-  location: SourceLocation
 }
 
 export function FunctionDefinition(
-  mod: Mod,
   name: string,
-  parameters: Array<string>,
   blocks: Map<string, Block>,
-  location: SourceLocation,
 ): FunctionDefinition {
-  return {
-    kind: "FunctionDefinition",
-    mod,
-    name,
-    parameters,
-    blocks,
-    location,
-  }
+  return { kind: "FunctionDefinition", name, blocks }
 }
 
 export type VariableDefinition = {
   kind: "VariableDefinition"
-  mod: Mod
   name: string
-  blocks: Map<string, Block>
-  location: SourceLocation
+  init: Data | null
 }
 
 export function VariableDefinition(
-  mod: Mod,
   name: string,
-  blocks: Map<string, Block>,
-  location: SourceLocation,
+  init: Data | null,
 ): VariableDefinition {
-  return {
-    kind: "VariableDefinition",
-    mod,
-    name,
-    blocks,
-    location,
-  }
+  return { kind: "VariableDefinition", name, init }
 }
 
-export type TestDefinition = {
-  kind: "TestDefinition"
-  mod: Mod
+export type ExternFunctionDefinition = {
+  kind: "ExternFunctionDefinition"
   name: string
-  blocks: Map<string, Block>
-  location: SourceLocation
 }
 
-export function TestDefinition(
-  mod: Mod,
+export function ExternFunctionDefinition(
   name: string,
-  blocks: Map<string, Block>,
-  location: SourceLocation,
-): TestDefinition {
-  return {
-    kind: "TestDefinition",
-    mod,
-    name,
-    blocks,
-    location,
-  }
+): ExternFunctionDefinition {
+  return { kind: "ExternFunctionDefinition", name }
+}
+
+export type ExternVariableDefinition = {
+  kind: "ExternVariableDefinition"
+  name: string
+}
+
+export function ExternVariableDefinition(
+  name: string,
+): ExternVariableDefinition {
+  return { kind: "ExternVariableDefinition", name }
 }
