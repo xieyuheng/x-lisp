@@ -1,7 +1,0 @@
-(module xvm)
-
-(import-as ppml/ppml ppml)
-
-(claim pretty-instr (-> xvm/instr-t ppml/node-t))
-(define (pretty-instr instr)
-  (ppml/text (format-instr instr)))

@@ -1,9 +1,0 @@
-(module basic)
-
-(define-enum instr-t
-  (assign-instr (dest symbol-t) (exp exp-t) (location source-location-t))
-  (perform-instr (exp exp-t) (location source-location-t))
-  (test-instr (exp exp-t) (location source-location-t))
-  (branch-instr (then-label symbol-t) (else-label symbol-t) (location source-location-t))
-  (goto-instr (label symbol-t) (location source-location-t))
-  (return-instr (exp exp-t) (location source-location-t)))

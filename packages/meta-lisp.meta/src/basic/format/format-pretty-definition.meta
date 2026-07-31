@@ -1,9 +1,0 @@
-(module basic)
-
-(import-as ppml/ppml ppml)
-
-(claim format-pretty-definition (-> int-t basic/definition-t string-t))
-(define (format-pretty-definition width definition)
-  (let ((nodes (pretty-definition definition)))
-    (string-join "\n\n"
-      (list-map (lambda (node) (ppml/format-node width node)) nodes))))

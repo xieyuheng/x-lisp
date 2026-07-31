@@ -1,9 +1,0 @@
-(module xvm)
-
-(define-enum operand-t
-  (symbol-operand (content symbol-t) (location source-location-t))
-  (keyword-operand (content keyword-t) (location source-location-t))
-  (string-operand (content string-t) (location source-location-t))
-  (int-operand (content int-t) (location source-location-t))
-  (float-operand (content float-t) (location source-location-t))
-  (var-operand (name symbol-t) (location source-location-t)))
