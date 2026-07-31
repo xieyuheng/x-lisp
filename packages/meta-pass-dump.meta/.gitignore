@@ -1,4 +1,5 @@
-build/bundle.basic
+build/bundle.xvm.basic
+build/bundle.x86.basic
 build/bundle.xvm.asm
 build/bundle.xvm.exe
 build/bundle.x86.asm

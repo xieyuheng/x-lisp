@@ -6,7 +6,7 @@ import {
 import { systemShellRun } from "@xieyuheng/std.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import * as B from "../basic/index.ts"
+import * as B from "../basic2/index.ts"
 import * as Pkg from "../package/index.ts"
 import * as Passes from "../passes/index.ts"
 import * as Xvm from "../xvm/index.ts"
@@ -45,10 +45,10 @@ export function BuildXvmPipeline(rootPkg: Pkg.Package): void {
   for (const pkg of closure) Passes.LimitArityPass(pkg, 6)
   for (const pkg of closure) Passes.UnnestOperandPass(pkg)
 
-  const basicMod = Passes.ExplicateControlPass(rootPkg)
-  BasicBundle(rootPkg, basicMod)
+  const xvmResult = Passes.XvmExplicateControlPass(rootPkg)
+  BasicBundle(rootPkg, xvmResult.mod)
 
-  const xvmMod = Passes.XvmCodegenPass(rootPkg, basicMod)
+  const xvmMod = Passes.XvmCodegenPass(xvmResult)
   XvmBundle(rootPkg, xvmMod)
 
   xvmAssemble(rootPkg)
@@ -56,7 +56,7 @@ export function BuildXvmPipeline(rootPkg: Pkg.Package): void {
 
 function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
   const directory = Pkg.packageOutputDirectory(pkg)
-  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) => {
+  callWithFile(openOutputFile(`${directory}/bundle.xvm.basic`), (file) => {
     const definitions = Array.from(basicMod.definitions.values())
     const textWidth = 64
     const code = definitions

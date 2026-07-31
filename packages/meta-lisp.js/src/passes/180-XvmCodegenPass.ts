@@ -1,615 +1,310 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
-import * as B from "../basic/index.ts"
-import * as Pkg from "../package/index.ts"
+import { zeroLocation } from "@xieyuheng/sexp.js"
+import * as B from "../basic2/index.ts"
 import * as Xvm from "../xvm/index.ts"
+import { type XvmExplicateReport } from "./170-XvmExplicateControlPass.ts"
 
-export function XvmCodegenPass(pkg: Pkg.Package, basicMod: B.Mod): Xvm.Mod {
+export function XvmCodegenPass(result: XvmExplicateReport): Xvm.Mod {
   const xvmMod = Xvm.createMod()
-  for (const definition of basicMod.definitions.values()) {
-    for (const stackDefinition of codegenDefinition(basicMod, definition)) {
-      xvmMod.definitions.set(stackDefinition.name, stackDefinition)
+  const loc = zeroLocation("codegen")
+
+  for (const [name, definition] of result.mod.definitions) {
+    if (definition.kind !== "FunctionDefinition") continue
+
+    const { arity, instrs } = codegenFunction(definition)
+
+    if (result.variableNames.has(name)) {
+      xvmMod.definitions.set(name, Xvm.VariableDefinition(name, instrs, loc))
+    } else if (result.testNames.has(name)) {
+      xvmMod.definitions.set(name, Xvm.TestDefinition(name, instrs, loc))
+    } else {
+      xvmMod.definitions.set(
+        name,
+        Xvm.FunctionDefinition(name, arity, instrs, loc),
+      )
     }
+  }
+
+  for (const [name, arity] of result.primitiveFunctions) {
+    xvmMod.definitions.set(
+      name,
+      Xvm.PrimitiveFunctionDeclaration(name, arity, loc),
+    )
+  }
+
+  for (const name of result.primitiveVariables) {
+    xvmMod.definitions.set(name, Xvm.PrimitiveVariableDeclaration(name, loc))
   }
 
   return xvmMod
 }
 
-type State = {
-  mod: B.Mod
-  location: SourceLocation
-  localIndexes: Map<string, number>
-  nextLocal: number
+type CodegenState = {
+  cellIndexes: Map<string, number>
 }
 
-type CodegenResult = {
-  instrs: Array<Xvm.Instr>
-  result: number
-}
+function allocateRegisters(definition: B.FunctionDefinition): {
+  cellIndexes: Map<string, number>
+  arity: number
+} {
+  const cellIndexes = new Map<string, number>()
+  let arity = 0
+  let nextIndex = 0
 
-function createState(mod: B.Mod, location: SourceLocation): State {
-  return {
-    mod,
-    location,
-    localIndexes: new Map(),
-    nextLocal: 0,
+  for (const block of definition.blocks.values()) {
+    for (const instr of block.instrs) {
+      if (instr.op === "argument") {
+        const index = Number(B.expectInt(instr.attributes, "index"))
+        cellIndexes.set(instr.output[0].id, index)
+        if (index + 1 > arity) arity = index + 1
+        if (index + 1 > nextIndex) nextIndex = index + 1
+      }
+    }
   }
+
+  const allCellIds = new Set<string>()
+  for (const block of definition.blocks.values()) {
+    for (const instr of block.instrs) {
+      for (const cell of instr.output) {
+        allCellIds.add(cell.id)
+      }
+      if (instr.op === "provide") {
+        const useSite = B.expectSymbol(instr.attributes, "use-site")
+        allCellIds.add(useSite)
+      }
+    }
+  }
+
+  for (const cellId of allCellIds) {
+    if (!cellIndexes.has(cellId)) {
+      cellIndexes.set(cellId, nextIndex)
+      nextIndex++
+    }
+  }
+
+  return { cellIndexes, arity }
 }
 
-function addLocalIndexes(state: State, name: string): void {
-  const index = state.localIndexes.get(name)
+function lookupIndex(state: CodegenState, cellId: string): number {
+  const index = state.cellIndexes.get(cellId)
   if (index === undefined) {
-    const newIndex = state.localIndexes.size
-    state.localIndexes.set(name, newIndex)
+    throw new Error(`[lookupIndex] unknown cell: ${cellId}`)
   }
-}
-
-function lookupLocalIndex(state: State, name: string): number {
-  const index = state.localIndexes.get(name)
-  if (index === undefined) {
-    let message = `[lookupLocalIndex] undefined name: ${name}`
-    throw new Error(message)
-  }
-
   return index
 }
 
-function allocateTemp(state: State): number {
-  const temp = state.nextLocal
-  state.nextLocal = temp + 1
-  return temp
+function toIntOp(n: number): Xvm.IntOperand {
+  return Xvm.IntOperand(BigInt(n), zeroLocation("codegen"))
 }
 
-function collectLocalIndexes(state: State, definition: B.Definition): null {
-  switch (definition.kind) {
-    case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration": {
-      return null
-    }
+function codegenFunction(definition: B.FunctionDefinition): {
+  arity: number
+  instrs: Array<Xvm.Instr>
+} {
+  const { cellIndexes, arity } = allocateRegisters(definition)
+  const state: CodegenState = { cellIndexes }
+  const loc = zeroLocation("codegen")
 
-    case "FunctionDefinition": {
-      for (const parameter of definition.parameters) {
-        addLocalIndexes(state, parameter)
-      }
+  const instrs: Array<Xvm.Instr> = []
 
-      for (const block of definition.blocks.values()) {
-        collectLocalIndexesFromBlock(state, block)
-      }
+  for (const block of definition.blocks.values()) {
+    instrs.push(Xvm.Instr("label", [Xvm.VarOperand(block.label, loc)], loc))
 
-      return null
-    }
-
-    case "VariableDefinition": {
-      for (const block of definition.blocks.values()) {
-        collectLocalIndexesFromBlock(state, block)
-      }
-
-      return null
-    }
-
-    case "TestDefinition": {
-      for (const block of definition.blocks.values()) {
-        collectLocalIndexesFromBlock(state, block)
-      }
-
-      return null
-    }
-  }
-}
-
-function collectLocalIndexesFromBlock(state: State, block: B.Block): void {
-  for (const instr of block.instrs) {
-    collectLocalIndexesFromInstr(state, instr)
-  }
-}
-
-function collectLocalIndexesFromInstr(state: State, instr: B.Instr): void {
-  if (instr.kind === "AssignInstr") {
-    addLocalIndexes(state, instr.dest)
-  }
-}
-
-function codegenDefinition(
-  mod: B.Mod,
-  definition: B.Definition,
-): Array<Xvm.Definition> {
-  switch (definition.kind) {
-    case "PrimitiveFunctionDeclaration": {
-      return [
-        Xvm.PrimitiveFunctionDeclaration(
-          definition.name,
-          definition.arity,
-          definition.location,
-        ),
-      ]
-    }
-
-    case "PrimitiveVariableDeclaration": {
-      return [
-        Xvm.PrimitiveVariableDeclaration(definition.name, definition.location),
-      ]
-    }
-
-    case "FunctionDefinition": {
-      const state = createState(mod, definition.location)
-      collectLocalIndexes(state, definition)
-      state.nextLocal = state.localIndexes.size
-      const blocks = definition.blocks.values()
-      const instrs = [
-        ...blocks.flatMap((block) =>
-          codegenBlock(state, definition.name, block),
-        ),
-      ]
-      return [
-        Xvm.FunctionDefinition(
-          definition.name,
-          definition.parameters.length,
-          instrs,
-          definition.location,
-        ),
-      ]
-    }
-
-    case "VariableDefinition": {
-      const state = createState(mod, definition.location)
-      collectLocalIndexes(state, definition)
-      state.nextLocal = state.localIndexes.size
-      const blocks = definition.blocks.values()
-      const instrs = [
-        ...blocks.flatMap((block) =>
-          codegenBlock(state, definition.name, block),
-        ),
-      ]
-      return [
-        Xvm.VariableDefinition(definition.name, instrs, definition.location),
-      ]
-    }
-
-    case "TestDefinition": {
-      const state = createState(mod, definition.location)
-      collectLocalIndexes(state, definition)
-      state.nextLocal = state.localIndexes.size
-      const blocks = definition.blocks.values()
-      const instrs = [
-        ...blocks.flatMap((block) =>
-          codegenBlock(state, definition.name, block),
-        ),
-      ]
-      return [Xvm.TestDefinition(definition.name, instrs, definition.location)]
-    }
-  }
-}
-
-function codegenBlock(
-  state: State,
-  name: string,
-  block: B.Block,
-): Array<Xvm.Instr> {
-  const instrs: Array<Xvm.Instr> = [
-    Xvm.Instr(
-      "label",
-      [Xvm.VarOperand(block.label, state.location)],
-      state.location,
-    ),
-  ]
-
-  let pendingCondition: number | null = null
-
-  for (const instr of block.instrs) {
-    if (instr.kind === "TestInstr") {
-      const { instrs: expInstrs, result } = codegenExp(state, name, instr.exp)
-      instrs.push(...expInstrs)
-      pendingCondition = result
-    } else if (instr.kind === "BranchInstr") {
-      if (pendingCondition === null) {
-        throw new Error("[XvmCodegenPass] BranchInstr without TestInstr")
-      }
-
-      instrs.push(
-        Xvm.Instr(
-          "jump-if-not",
-          [
-            Xvm.IntOperand(BigInt(pendingCondition), state.location),
-            Xvm.VarOperand(instr.elseLabel, state.location),
-          ],
-          state.location,
-        ),
-        Xvm.Instr(
-          "jump",
-          [Xvm.VarOperand(instr.thenLabel, state.location)],
-          state.location,
-        ),
-      )
-      pendingCondition = null
-    } else {
-      instrs.push(...codegenInstr(state, name, instr))
+    for (const instr of block.instrs) {
+      const generated = codegenInstr(state, instr, loc)
+      for (const gi of generated) instrs.push(gi)
     }
   }
 
-  return instrs
-}
-
-function toIntOp(n: number, loc: SourceLocation): Xvm.IntOperand {
-  return Xvm.IntOperand(BigInt(n), loc)
+  return { arity, instrs }
 }
 
 function codegenInstr(
-  state: State,
-  name: string,
+  state: CodegenState,
   instr: B.Instr,
+  loc: ReturnType<typeof zeroLocation>,
 ): Array<Xvm.Instr> {
-  switch (instr.kind) {
-    case "AssignInstr": {
-      const { instrs, result } = codegenExp(state, name, instr.exp)
-      const destIndex = lookupLocalIndex(state, instr.dest)
-      if (result !== destIndex) {
-        instrs.push(
-          Xvm.Instr(
-            "move",
-            [
-              toIntOp(destIndex, state.location),
-              toIntOp(result, state.location),
-              Xvm.VarOperand(instr.dest, state.location),
-            ],
-            state.location,
-          ),
-        )
-      }
-      return instrs
+  switch (instr.op) {
+    case "argument": {
+      return []
     }
 
-    case "PerformInstr": {
-      const { instrs } = codegenExp(state, name, instr.exp)
-      return instrs
-    }
-
-    case "TestInstr": {
-      return codegenExp(state, name, instr.exp).instrs
-    }
-
-    case "BranchInstr": {
-      throw new Error("[XvmCodegenPass] BranchInstr handled in codegenBlock")
-    }
-
-    case "GotoInstr": {
+    case "int": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const value = B.expectInt(instr.attributes, "content")
       return [
-        Xvm.Instr(
-          "jump",
-          [Xvm.VarOperand(instr.label, state.location)],
-          state.location,
-        ),
+        Xvm.Instr("load", [toIntOp(dstIdx), Xvm.IntOperand(value, loc)], loc),
       ]
     }
 
-    case "ReturnInstr": {
-      return codegenTailExp(state, name, instr.exp)
-    }
-  }
-}
-
-function basicAtomToOperand(exp: B.Exp): Xvm.Operand {
-  switch (exp.kind) {
-    case "SymbolExp":
-      return Xvm.SymbolOperand(exp.content, exp.location)
-    case "KeywordExp":
-      return Xvm.KeywordOperand(exp.content, exp.location)
-    case "StringExp":
-      return Xvm.StringOperand(exp.content, exp.location)
-    case "IntExp":
-      return Xvm.IntOperand(exp.content, exp.location)
-    case "FloatExp":
-      return Xvm.FloatOperand(exp.content, exp.location)
-    case "VarExp":
-      return Xvm.VarOperand(exp.name, exp.location)
-    case "ApplyExp": {
-      let message = `[basicAtomToOperand] unhandled exp`
-      message += `\n  exp: ${B.formatExp(exp)}`
-      throw new Error(message)
-    }
-  }
-}
-
-function codegenExp(state: State, name: string, exp: B.Exp): CodegenResult {
-  switch (exp.kind) {
-    case "SymbolExp":
-    case "KeywordExp":
-    case "StringExp":
-    case "IntExp":
-    case "FloatExp": {
-      const dst = allocateTemp(state)
-      return {
-        instrs: [
-          Xvm.Instr(
-            "load",
-            [toIntOp(dst, state.location), basicAtomToOperand(exp)],
-            state.location,
-          ),
-        ],
-        result: dst,
-      }
+    case "float": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const value = B.expectFloat(instr.attributes, "content")
+      return [
+        Xvm.Instr("load", [toIntOp(dstIdx), Xvm.FloatOperand(value, loc)], loc),
+      ]
     }
 
-    case "VarExp": {
-      return codegenVar(state, name, exp)
-    }
-
-    case "ApplyExp": {
-      return codegenApply(state, name, exp)
-    }
-  }
-}
-
-function codegenTailExp(
-  state: State,
-  name: string,
-  exp: B.Exp,
-): Array<Xvm.Instr> {
-  switch (exp.kind) {
-    case "SymbolExp":
-    case "KeywordExp":
-    case "StringExp":
-    case "IntExp":
-    case "FloatExp": {
-      const dst = allocateTemp(state)
+    case "symbol": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const content = B.expectSymbol(instr.attributes, "content")
       return [
         Xvm.Instr(
           "load",
-          [toIntOp(dst, state.location), basicAtomToOperand(exp)],
-          state.location,
+          [toIntOp(dstIdx), Xvm.SymbolOperand(content, loc)],
+          loc,
         ),
-        Xvm.Instr("return", [toIntOp(dst, state.location)], state.location),
       ]
     }
 
-    case "VarExp": {
-      const { instrs, result } = codegenVar(state, name, exp)
-      instrs.push(
-        Xvm.Instr("return", [toIntOp(result, state.location)], state.location),
-      )
-      return instrs
+    case "keyword": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const content = B.expectSymbol(instr.attributes, "content")
+      return [
+        Xvm.Instr(
+          "load",
+          [toIntOp(dstIdx), Xvm.KeywordOperand(content, loc)],
+          loc,
+        ),
+      ]
     }
 
-    case "ApplyExp": {
-      return codegenTailApply(state, name, exp)
-    }
-  }
-}
-
-function codegenVar(state: State, name: string, exp: B.VarExp): CodegenResult {
-  const definition = B.modLookupDefinition(state.mod, exp.name)
-  if (definition === undefined) {
-    return {
-      instrs: [],
-      result: lookupLocalIndex(state, exp.name),
-    }
-  }
-
-  switch (definition.kind) {
-    case "TestDefinition": {
-      let message = `[XvmCodegenPass / codegenVar] can not handle TestDefinition`
-      throw new Error(message)
+    case "string": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const content = B.expectString(instr.attributes, "content")
+      return [
+        Xvm.Instr(
+          "load",
+          [toIntOp(dstIdx), Xvm.StringOperand(content, loc)],
+          loc,
+        ),
+      ]
     }
 
-    case "PrimitiveFunctionDeclaration":
-    case "FunctionDefinition": {
-      const dst = allocateTemp(state)
-      return {
-        instrs: [
-          Xvm.Instr(
-            "ref",
-            [
-              toIntOp(dst, state.location),
-              Xvm.VarOperand(exp.name, state.location),
-            ],
-            state.location,
-          ),
-        ],
-        result: dst,
+    case "copy": {
+      const srcIdx = lookupIndex(state, instr.input[0].id)
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      if (srcIdx !== dstIdx) {
+        return [Xvm.Instr("move", [toIntOp(dstIdx), toIntOp(srcIdx)], loc)]
       }
+      return []
     }
 
-    case "PrimitiveVariableDeclaration":
-    case "VariableDefinition": {
-      const dst = allocateTemp(state)
-      return {
-        instrs: [
-          Xvm.Instr(
-            "global-load",
-            [
-              toIntOp(dst, state.location),
-              Xvm.VarOperand(exp.name, state.location),
-            ],
-            state.location,
-          ),
-        ],
-        result: dst,
+    case "provide": {
+      const srcIdx = lookupIndex(state, instr.input[0].id)
+      const useSite = B.expectSymbol(instr.attributes, "use-site")
+      const useSiteIdx = lookupIndex(state, useSite)
+      if (srcIdx !== useSiteIdx) {
+        return [Xvm.Instr("move", [toIntOp(useSiteIdx), toIntOp(srcIdx)], loc)]
       }
-    }
-  }
-}
-
-function codegenApply(
-  state: State,
-  name: string,
-  exp: B.ApplyExp,
-): CodegenResult {
-  return codegenGeneralApply(state, name, exp, false) as CodegenResult
-}
-
-function codegenTailApply(
-  state: State,
-  name: string,
-  exp: B.ApplyExp,
-): Array<Xvm.Instr> {
-  return codegenGeneralApply(state, name, exp, true) as Array<Xvm.Instr>
-}
-
-function codegenGeneralApply(
-  state: State,
-  name: string,
-  exp: B.ApplyExp,
-  isTail: boolean,
-): CodegenResult | Array<Xvm.Instr> {
-  const applyMode = isTail ? "tail-apply" : "apply"
-  const callMode = isTail ? "tail-call" : "call"
-  const loc = state.location
-
-  const definition = B.modLookupDefinition(
-    state.mod,
-    B.asVarExp(exp.target).name,
-  )
-
-  if (definition === undefined) {
-    const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
-    const targetResult = codegenExp(state, name, exp.target)
-    const instrs: Array<Xvm.Instr> = [
-      ...argResults.flatMap((r) => r.instrs),
-      ...targetResult.instrs,
-      Xvm.Instr(
-        applyMode,
-        [
-          toIntOp(targetResult.result, loc),
-          ...argResults.map((r) => toIntOp(r.result, loc)),
-        ],
-        loc,
-      ),
-    ]
-    if (isTail) return instrs
-    const dst = allocateTemp(state)
-    instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
-    return { instrs, result: dst }
-  }
-
-  switch (definition.kind) {
-    case "TestDefinition": {
-      let message = `[XvmCodegenPass / codegenGeneralApply] can not handle TestDefinition`
-      throw new Error(message)
+      return []
     }
 
-    case "PrimitiveFunctionDeclaration":
-    case "FunctionDefinition": {
-      const arity = B.definitionArity(definition)
-      if (exp.args.length < arity) {
-        const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
-        const refDst = allocateTemp(state)
-        const instrs: Array<Xvm.Instr> = [
-          ...argResults.flatMap((r) => r.instrs),
-          Xvm.Instr(
-            "ref",
-            [
-              toIntOp(refDst, loc),
-              Xvm.VarOperand(B.asVarExp(exp.target).name, loc),
-            ],
-            loc,
-          ),
-          Xvm.Instr(
-            applyMode,
-            [
-              toIntOp(refDst, loc),
-              ...argResults.map((r) => toIntOp(r.result, loc)),
-            ],
-            loc,
-          ),
-        ]
-        if (isTail) return instrs
-        const dst = allocateTemp(state)
-        instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
-        return { instrs, result: dst }
-      } else if (exp.args.length === arity) {
-        const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
-        const instrs: Array<Xvm.Instr> = [
-          ...argResults.flatMap((r) => r.instrs),
-          Xvm.Instr(
-            callMode,
-            [
-              Xvm.VarOperand(B.asVarExp(exp.target).name, loc),
-              ...argResults.map((r) => toIntOp(r.result, loc)),
-            ],
-            loc,
-          ),
-        ]
-        if (isTail) return instrs
-        const dst = allocateTemp(state)
-        instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
-        return { instrs, result: dst }
-      } else {
-        const firstArgs = exp.args.slice(0, arity)
-        const restArgs = exp.args.slice(arity)
-        const firstArgResults = firstArgs.map((arg) =>
-          codegenExp(state, name, arg),
-        )
-        const restArgResults = restArgs.map((arg) =>
-          codegenExp(state, name, arg),
-        )
-
-        const instrs: Array<Xvm.Instr> = [
-          ...firstArgResults.flatMap((r) => r.instrs),
-          Xvm.Instr(
-            "call",
-            [
-              Xvm.VarOperand(B.asVarExp(exp.target).name, loc),
-              ...firstArgResults.map((r) => toIntOp(r.result, loc)),
-            ],
-            loc,
-          ),
-        ]
-
-        if (isTail) {
-          const tempResult = allocateTemp(state)
-          instrs.push(Xvm.Instr("load-result", [toIntOp(tempResult, loc)], loc))
-          instrs.push(...restArgResults.flatMap((r) => r.instrs))
-          instrs.push(
-            Xvm.Instr(
-              "tail-apply",
-              [
-                toIntOp(tempResult, loc),
-                ...restArgResults.map((r) => toIntOp(r.result, loc)),
-              ],
-              loc,
-            ),
-          )
-          return instrs
-        } else {
-          const tempResult = allocateTemp(state)
-          instrs.push(Xvm.Instr("load-result", [toIntOp(tempResult, loc)], loc))
-          instrs.push(...restArgResults.flatMap((r) => r.instrs))
-          instrs.push(
-            Xvm.Instr(
-              "apply",
-              [
-                toIntOp(tempResult, loc),
-                ...restArgResults.map((r) => toIntOp(r.result, loc)),
-              ],
-              loc,
-            ),
-          )
-          const dst = allocateTemp(state)
-          instrs.push(Xvm.Instr("load-result", [toIntOp(dst, loc)], loc))
-          return { instrs, result: dst }
-        }
-      }
+    case "use": {
+      return []
     }
 
-    case "PrimitiveVariableDeclaration":
-    case "VariableDefinition": {
-      const argResults = exp.args.map((arg) => codegenExp(state, name, arg))
-      const dst = allocateTemp(state)
-      const instrs: Array<Xvm.Instr> = [
-        ...argResults.flatMap((r) => r.instrs),
+    case "ref": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const name = B.expectSymbol(instr.attributes, "name")
+      return [
+        Xvm.Instr("ref", [toIntOp(dstIdx), Xvm.VarOperand(name, loc)], loc),
+      ]
+    }
+
+    case "global-load": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const name = B.expectSymbol(instr.attributes, "name")
+      return [
         Xvm.Instr(
           "global-load",
-          [toIntOp(dst, loc), Xvm.VarOperand(B.asVarExp(exp.target).name, loc)],
-          loc,
-        ),
-        Xvm.Instr(
-          applyMode,
-          [toIntOp(dst, loc), ...argResults.map((r) => toIntOp(r.result, loc))],
+          [toIntOp(dstIdx), Xvm.VarOperand(name, loc)],
           loc,
         ),
       ]
-      if (isTail) return instrs
-      const resultDst = allocateTemp(state)
-      instrs.push(Xvm.Instr("load-result", [toIntOp(resultDst, loc)], loc))
-      return { instrs, result: resultDst }
+    }
+
+    case "global-store": {
+      const srcIdx = lookupIndex(state, instr.input[0].id)
+      const name = B.expectSymbol(instr.attributes, "name")
+      return [
+        Xvm.Instr(
+          "global-store",
+          [toIntOp(srcIdx), Xvm.VarOperand(name, loc)],
+          loc,
+        ),
+      ]
+    }
+
+    case "call": {
+      const name = B.expectSymbol(instr.attributes, "name")
+      const args = instr.input.map((c) => toIntOp(lookupIndex(state, c.id)))
+      const result: Array<Xvm.Instr> = [
+        Xvm.Instr("call", [Xvm.VarOperand(name, loc), ...args], loc),
+      ]
+      if (instr.output.length > 0) {
+        const dstIdx = lookupIndex(state, instr.output[0].id)
+        result.push(Xvm.Instr("load-result", [toIntOp(dstIdx)], loc))
+      }
+      return result
+    }
+
+    case "tail-call": {
+      const name = B.expectSymbol(instr.attributes, "name")
+      const args = instr.input.map((c) => toIntOp(lookupIndex(state, c.id)))
+      return [Xvm.Instr("tail-call", [Xvm.VarOperand(name, loc), ...args], loc)]
+    }
+
+    case "apply": {
+      const targetIdx = lookupIndex(state, instr.input[0].id)
+      const args = instr.input
+        .slice(1)
+        .map((c) => toIntOp(lookupIndex(state, c.id)))
+      const result: Array<Xvm.Instr> = [
+        Xvm.Instr("apply", [toIntOp(targetIdx), ...args], loc),
+      ]
+      if (instr.output.length > 0) {
+        const dstIdx = lookupIndex(state, instr.output[0].id)
+        result.push(Xvm.Instr("load-result", [toIntOp(dstIdx)], loc))
+      }
+      return result
+    }
+
+    case "tail-apply": {
+      const targetIdx = lookupIndex(state, instr.input[0].id)
+      const args = instr.input
+        .slice(1)
+        .map((c) => toIntOp(lookupIndex(state, c.id)))
+      return [Xvm.Instr("tail-apply", [toIntOp(targetIdx), ...args], loc)]
+    }
+
+    case "branch": {
+      const condIdx = lookupIndex(state, instr.input[0].id)
+      const thenLabel = B.expectSymbol(instr.attributes, "then-label")
+      const elseLabel = B.expectSymbol(instr.attributes, "else-label")
+      return [
+        Xvm.Instr(
+          "jump-if-not",
+          [toIntOp(condIdx), Xvm.VarOperand(elseLabel, loc)],
+          loc,
+        ),
+        Xvm.Instr("jump", [Xvm.VarOperand(thenLabel, loc)], loc),
+      ]
+    }
+
+    case "goto": {
+      const label = B.expectSymbol(instr.attributes, "label")
+      return [Xvm.Instr("jump", [Xvm.VarOperand(label, loc)], loc)]
+    }
+
+    case "return": {
+      const srcIdx = lookupIndex(state, instr.input[0].id)
+      return [Xvm.Instr("return", [toIntOp(srcIdx)], loc)]
+    }
+
+    default: {
+      let message = `[codegenInstr] unhandled instr op: ${instr.op}`
+      console.error(message)
+      return []
     }
   }
 }
