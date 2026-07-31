@@ -1,3 +1,13 @@
+# x86-64
+
+review 200-AssignHomesPass.ts
+review 210-PatchInstructionsPass.ts
+review 220-PrologEpilogPass.ts
+
+# loader
+
+[xexe.c] review loader 的代码。
+
 # native code generation
 
 [meta-lisp.js] 190-SelectInstructionPass -- `selectInstr`
