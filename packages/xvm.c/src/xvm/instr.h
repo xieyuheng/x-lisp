@@ -14,6 +14,19 @@ typedef enum {
   OP_TAIL_APPLY,
   OP_JUMP,
   OP_JUMP_IF_NOT,
+  OP_IADD,
+  OP_ISUB,
+  OP_IMUL,
+  OP_IDIV,
+  OP_IMOD,
+  OP_INEG,
+  OP_INT_GREATER,
+  OP_INT_LESS,
+  OP_INT_GREATER_OR_EQUAL,
+  OP_INT_LESS_OR_EQUAL,
+  OP_INT_POSITIVE,
+  OP_INT_NON_NEGATIVE,
+  OP_INT_NON_ZERO,
 } op_t;
 
 struct instr_t {
@@ -30,6 +43,8 @@ struct instr_t {
     struct { uint16_t src; definition_t *definition; } global_store;
     struct { int32_t offset; } jump;
     struct { uint16_t src; int32_t offset; } jump_if_not;
+    struct { uint16_t dst; uint16_t src1; uint16_t src2; } arith;
+    struct { uint16_t dst; uint16_t src; } unary;
   };
 };
 

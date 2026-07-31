@@ -31,6 +31,19 @@ static const struct instr_enc_t ENC[] = {
   [OP_TAIL_APPLY]  = { APPLY, 1 + SZU16 + 1 },
   [OP_JUMP]        = { FIXED, 1 + SZI32 },
   [OP_JUMP_IF_NOT] = { FIXED, 1 + SZU16 + SZI32 },
+  [OP_IADD]        = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_ISUB]        = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_IMUL]        = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_IDIV]        = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_IMOD]        = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_INEG]        = { FIXED, 1 + SZU16 + SZU16 },
+  [OP_INT_GREATER] = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_INT_LESS]    = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_INT_GREATER_OR_EQUAL] = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_INT_LESS_OR_EQUAL]    = { FIXED, 1 + SZU16 + SZU16 + SZU16 },
+  [OP_INT_POSITIVE]        = { FIXED, 1 + SZU16 + SZU16 },
+  [OP_INT_NON_NEGATIVE]    = { FIXED, 1 + SZU16 + SZU16 },
+  [OP_INT_NON_ZERO]        = { FIXED, 1 + SZU16 + SZU16 },
 };
 
 size_t instr_length(struct instr_t instr) {
@@ -98,6 +111,26 @@ void instr_encode(uint8_t *code, struct instr_t instr) {
     case OP_JUMP_IF_NOT:
       enc_u16(code + 1, instr.jump_if_not.src);
       enc_i32(code + 1 + SZU16, instr.jump_if_not.offset);
+      return;
+    case OP_IADD:
+    case OP_ISUB:
+    case OP_IMUL:
+    case OP_IDIV:
+    case OP_IMOD:
+    case OP_INT_GREATER:
+    case OP_INT_LESS:
+    case OP_INT_GREATER_OR_EQUAL:
+    case OP_INT_LESS_OR_EQUAL:
+      enc_u16(code + 1, instr.arith.dst);
+      enc_u16(code + 1 + SZU16, instr.arith.src1);
+      enc_u16(code + 1 + SZU16 + SZU16, instr.arith.src2);
+      return;
+    case OP_INEG:
+    case OP_INT_POSITIVE:
+    case OP_INT_NON_NEGATIVE:
+    case OP_INT_NON_ZERO:
+      enc_u16(code + 1, instr.unary.dst);
+      enc_u16(code + 1 + SZU16, instr.unary.src);
       return;
     default:
       unreachable();

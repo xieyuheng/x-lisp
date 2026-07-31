@@ -199,6 +199,32 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
       return result
     }
 
+    case "iadd":
+    case "isub":
+    case "imul":
+    case "idiv":
+    case "imod":
+    case "int-greater":
+    case "int-less":
+    case "int-greater-or-equal":
+    case "int-less-or-equal": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const src1Idx = lookupIndex(state, instr.input[0].id)
+      const src2Idx = lookupIndex(state, instr.input[1].id)
+      return [
+        Xvm.Instr(instr.op, [intOp(dstIdx), intOp(src1Idx), intOp(src2Idx)]),
+      ]
+    }
+
+    case "ineg":
+    case "int-is-positive":
+    case "int-is-non-negative":
+    case "int-is-non-zero": {
+      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const srcIdx = lookupIndex(state, instr.input[0].id)
+      return [Xvm.Instr(instr.op, [intOp(dstIdx), intOp(srcIdx)])]
+    }
+
     case "tail-call": {
       const name = B.expectSymbol(instr.attributes, "name")
       const args = instr.input.map((c) => intOp(lookupIndex(state, c.id)))

@@ -302,6 +302,16 @@ function explicateUnnestedTerm(
       const [argInstrGroups, args] = arrayUnzip(pairs)
       const direct = tryResolveDirectCall(state, term.target)
       if (direct) {
+        const op = INT_ARITH_OPS[direct.qualifiedName]
+        if (op) {
+          const value = generateCell(state, "value")
+          const instrs = [
+            ...arrayConcat(argInstrGroups),
+            B.Instr(op, args, [value], {}),
+          ]
+          return [instrs, value]
+        }
+
         const value = generateCell(state, "value")
         const instrs = [
           ...arrayConcat(argInstrGroups),
@@ -337,6 +347,22 @@ function resolvePackageId(pkg: Pkg.Package, pkgName: string): string {
     throw new Error(`[resolvePackageId] unknown package: "${pkgName}"`)
   }
   return dep.id
+}
+
+const INT_ARITH_OPS: Record<string, string> = {
+  "meta-builtin/builtin/iadd": "iadd",
+  "meta-builtin/builtin/isub": "isub",
+  "meta-builtin/builtin/imul": "imul",
+  "meta-builtin/builtin/idiv": "idiv",
+  "meta-builtin/builtin/imod": "imod",
+  "meta-builtin/builtin/ineg": "ineg",
+  "meta-builtin/builtin/int-greater": "int-greater",
+  "meta-builtin/builtin/int-less": "int-less",
+  "meta-builtin/builtin/int-greater-or-equal": "int-greater-or-equal",
+  "meta-builtin/builtin/int-less-or-equal": "int-less-or-equal",
+  "meta-builtin/builtin/int-is-positive": "int-is-positive",
+  "meta-builtin/builtin/int-is-non-negative": "int-is-non-negative",
+  "meta-builtin/builtin/int-is-non-zero": "int-is-non-zero",
 }
 
 function tryResolveDirectCall(

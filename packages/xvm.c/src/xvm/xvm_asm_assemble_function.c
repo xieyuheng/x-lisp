@@ -192,6 +192,43 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     return;
   }
 
+  if (sexp_has_tag(sexp, "iadd") || sexp_has_tag(sexp, "isub")
+      || sexp_has_tag(sexp, "imul") || sexp_has_tag(sexp, "idiv")
+      || sexp_has_tag(sexp, "imod") || sexp_has_tag(sexp, "int-greater")
+      || sexp_has_tag(sexp, "int-less") || sexp_has_tag(sexp, "int-greater-or-equal")
+      || sexp_has_tag(sexp, "int-less-or-equal")) {
+    value_t args = x_cdr(sexp);
+    struct instr_t instr;
+    if (sexp_has_tag(sexp, "iadd")) instr.op = OP_IADD;
+    if (sexp_has_tag(sexp, "isub")) instr.op = OP_ISUB;
+    if (sexp_has_tag(sexp, "imul")) instr.op = OP_IMUL;
+    if (sexp_has_tag(sexp, "idiv")) instr.op = OP_IDIV;
+    if (sexp_has_tag(sexp, "imod")) instr.op = OP_IMOD;
+    if (sexp_has_tag(sexp, "int-greater")) instr.op = OP_INT_GREATER;
+    if (sexp_has_tag(sexp, "int-less")) instr.op = OP_INT_LESS;
+    if (sexp_has_tag(sexp, "int-greater-or-equal")) instr.op = OP_INT_GREATER_OR_EQUAL;
+    if (sexp_has_tag(sexp, "int-less-or-equal")) instr.op = OP_INT_LESS_OR_EQUAL;
+    instr.arith.dst = to_int64(x_car(args));
+    instr.arith.src1 = to_int64(x_car(x_cdr(args)));
+    instr.arith.src2 = to_int64(x_car(x_cdr(x_cdr(args))));
+    function_append_instr(function, instr);
+    return;
+  }
+
+  if (sexp_has_tag(sexp, "ineg") || sexp_has_tag(sexp, "int-is-positive")
+      || sexp_has_tag(sexp, "int-is-non-negative") || sexp_has_tag(sexp, "int-is-non-zero")) {
+    value_t args = x_cdr(sexp);
+    struct instr_t instr;
+    if (sexp_has_tag(sexp, "ineg")) instr.op = OP_INEG;
+    if (sexp_has_tag(sexp, "int-is-positive")) instr.op = OP_INT_POSITIVE;
+    if (sexp_has_tag(sexp, "int-is-non-negative")) instr.op = OP_INT_NON_NEGATIVE;
+    if (sexp_has_tag(sexp, "int-is-non-zero")) instr.op = OP_INT_NON_ZERO;
+    instr.unary.dst = to_int64(x_car(args));
+    instr.unary.src = to_int64(x_car(x_cdr(args)));
+    function_append_instr(function, instr);
+    return;
+  }
+
   who_printf("unhandled instr: "); print_value(sexp); printf("\n");
 }
 
@@ -269,6 +306,27 @@ static size_t instr_max_local(value_t sexp) {
 
   if (sexp_has_tag(sexp, "jump-if-not")) {
     return to_int64(x_car(x_cdr(sexp)));
+  }
+
+  if (sexp_has_tag(sexp, "iadd") || sexp_has_tag(sexp, "isub")
+      || sexp_has_tag(sexp, "imul") || sexp_has_tag(sexp, "idiv")
+      || sexp_has_tag(sexp, "imod") || sexp_has_tag(sexp, "int-greater")
+      || sexp_has_tag(sexp, "int-less") || sexp_has_tag(sexp, "int-greater-or-equal")
+      || sexp_has_tag(sexp, "int-less-or-equal")) {
+    value_t args = x_cdr(sexp);
+    size_t dst = to_int64(x_car(args));
+    size_t src1 = to_int64(x_car(x_cdr(args)));
+    size_t src2 = to_int64(x_car(x_cdr(x_cdr(args))));
+    size_t max = dst > src1 ? dst : src1;
+    return max > src2 ? max : src2;
+  }
+
+  if (sexp_has_tag(sexp, "ineg") || sexp_has_tag(sexp, "int-is-positive")
+      || sexp_has_tag(sexp, "int-is-non-negative") || sexp_has_tag(sexp, "int-is-non-zero")) {
+    value_t args = x_cdr(sexp);
+    size_t dst = to_int64(x_car(args));
+    size_t src = to_int64(x_car(x_cdr(args)));
+    return dst > src ? dst : src;
   }
 
   return 0;

@@ -335,6 +335,106 @@ static inline void exec_jump_if_not(frame_t *frame, value_t *locals) {
   }
 }
 
+static inline void exec_iadd(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_iadd(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_isub(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_isub(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_imul(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_imul(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_idiv(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_idiv(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_imod(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_imod(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_int_greater(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_int_greater(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_int_less(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_int_less(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_int_greater_or_equal(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_int_greater_or_equal(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_int_less_or_equal(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src1; memory_load(frame->pc + 1 + sizeof(uint16_t), src1);
+  uint16_t src2; memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src2);
+  locals[dst] = x_int_less_or_equal(locals[src1], locals[src2]);
+  frame->pc += 1 + 3 * sizeof(uint16_t);
+}
+
+static inline void exec_ineg(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src; memory_load(frame->pc + 1 + sizeof(uint16_t), src);
+  locals[dst] = x_ineg(locals[src]);
+  frame->pc += 1 + 2 * sizeof(uint16_t);
+}
+
+static inline void exec_int_positive(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src; memory_load(frame->pc + 1 + sizeof(uint16_t), src);
+  locals[dst] = x_int_positive(locals[src]);
+  frame->pc += 1 + 2 * sizeof(uint16_t);
+}
+
+static inline void exec_int_non_negative(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src; memory_load(frame->pc + 1 + sizeof(uint16_t), src);
+  locals[dst] = x_int_non_negative(locals[src]);
+  frame->pc += 1 + 2 * sizeof(uint16_t);
+}
+
+static inline void exec_int_non_zero(frame_t *frame, value_t *locals) {
+  uint16_t dst; memory_load(frame->pc + 1, dst);
+  uint16_t src; memory_load(frame->pc + 1 + sizeof(uint16_t), src);
+  locals[dst] = x_int_non_zero(locals[src]);
+  frame->pc += 1 + 2 * sizeof(uint16_t);
+}
+
 void xvm_execute(xvm_t *xvm) {
   assert(xvm->break_depth <= xvm->frame_count);
 
@@ -356,6 +456,19 @@ void xvm_execute(xvm_t *xvm) {
     case OP_TAIL_APPLY:    exec_tail_apply(xvm, frame, locals);      continue;
     case OP_JUMP:          exec_jump(frame);                         break;
     case OP_JUMP_IF_NOT:   exec_jump_if_not(frame, locals);          break;
+    case OP_IADD:          exec_iadd(frame, locals);                    break;
+    case OP_ISUB:          exec_isub(frame, locals);                    break;
+    case OP_IMUL:          exec_imul(frame, locals);                    break;
+    case OP_IDIV:          exec_idiv(frame, locals);                    break;
+    case OP_IMOD:          exec_imod(frame, locals);                    break;
+    case OP_INEG:          exec_ineg(frame, locals);                    break;
+    case OP_INT_GREATER:   exec_int_greater(frame, locals);             break;
+    case OP_INT_LESS:      exec_int_less(frame, locals);                break;
+    case OP_INT_GREATER_OR_EQUAL: exec_int_greater_or_equal(frame, locals); break;
+    case OP_INT_LESS_OR_EQUAL:    exec_int_less_or_equal(frame, locals);    break;
+    case OP_INT_POSITIVE:  exec_int_positive(frame, locals);            break;
+    case OP_INT_NON_NEGATIVE: exec_int_non_negative(frame, locals);     break;
+    case OP_INT_NON_ZERO:  exec_int_non_zero(frame, locals);            break;
     }
   }
 }
