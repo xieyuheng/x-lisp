@@ -10,21 +10,17 @@
 ; target label defined by another define-code block.
 
 (define-code main
-  entry
   (mov (reg rax) (address target))        ;; LEA rax, [rip+disp32]  — load &target
   (ret))
 
 (define-code test-mov-deref
-  entry
   (mov (reg rax) (deref (address target)))  ;; MOV rax, [rip+disp32]  — load *target
   (ret))
 
 (define-code test-lea-address
-  entry
   (lea (reg rax) (address target))        ;; LEA rax, [rip+disp32]  — load &target
   (ret))
 
 (define-code target
-  entry
   (mov (reg rax) 99)
   (ret))

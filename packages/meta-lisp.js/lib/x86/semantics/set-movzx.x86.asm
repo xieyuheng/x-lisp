@@ -6,7 +6,6 @@
 ; Verifies both setcc and movzx correctly set/read byte registers
 
 (define-code main
-  entry
   (mov (reg rax) 10)
   (mov (reg rcx) 5)
   (cmp (reg rax) (reg rcx))

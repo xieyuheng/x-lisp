@@ -27,7 +27,6 @@
     (color 255)))
 
 (define-code main
-  entry
   (mov (reg rax) (address my-rect))
   (mov (reg rax) (deref (reg rax) (offset-of rect-t bottom-right x)))
   (ret))

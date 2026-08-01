@@ -5,6 +5,5 @@
 ; Not executed in semantics tests (exit syscall would terminate the runner).
 
 (define-code main
-  entry
   (syscall)
   (ret))

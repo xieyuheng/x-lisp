@@ -15,7 +15,6 @@
     (x 20)))
 
 (define-code main
-  entry
   (mov (reg rax) (address my-first))
   (mov (reg rax) (deref (reg rax) (offset-of cell-t x)))
   (mov (reg rcx) (address my-second))

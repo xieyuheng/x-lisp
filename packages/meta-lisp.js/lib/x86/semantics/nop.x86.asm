@@ -6,7 +6,6 @@
 ;   ret
 
 (define-code main
-  entry
   (mov (reg rax) 7)
   (nop)
   (nop)

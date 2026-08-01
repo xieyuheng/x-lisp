@@ -19,7 +19,6 @@
 (define-data hex-output " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n")
 
 (define-code main
-  prelog
   (push (reg rbx))
   (push (reg r15))
 

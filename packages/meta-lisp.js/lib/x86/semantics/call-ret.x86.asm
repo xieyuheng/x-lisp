@@ -7,12 +7,10 @@
 ;   ret            — C3
 
 (define-code main
-  entry
   (call (label helper))
   (add (reg rax) 40)
   (ret))
 
 (define-code helper
-  entry
   (mov (reg rax) 1)
   (ret))

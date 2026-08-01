@@ -15,7 +15,6 @@
 ;   48 0F B6 C1  (movzx rax, cl)
 
 (define-code main
-  entry
   (mov (reg rax) 10)
   (mov (reg rcx) 5)
   (cmp (reg rax) (reg rcx))

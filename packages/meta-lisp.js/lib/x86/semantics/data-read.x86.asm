@@ -17,7 +17,6 @@
     (y 100)))
 
 (define-code main
-  entry
   (mov (reg rax) (address my-point))
   (mov (reg rax) (deref (reg rax) (offset-of point-t x)))
   (ret))

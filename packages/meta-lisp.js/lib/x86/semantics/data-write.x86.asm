@@ -13,7 +13,6 @@
     (value 0)))
 
 (define-code main
-  entry
   (mov (reg rax) (address my-counter))
   (mov (deref qword (reg rax) (offset-of counter-t value)) 42)
   (mov (reg rax) (deref (reg rax) (offset-of counter-t value)))

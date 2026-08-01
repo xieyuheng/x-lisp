@@ -8,7 +8,6 @@
 ;   ret            — C3
 
 (define-code main
-  entry
   (mov (reg rax) 255)
   (and (reg rax) 15)
   (shl (reg rax) 4)

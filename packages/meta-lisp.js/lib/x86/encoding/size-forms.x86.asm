@@ -11,7 +11,6 @@
 (define-space buffer 8)
 
 (define-code main
-  entry
   (mov (reg al) (deref byte (address buffer)))      ;; 8A 05 disp32
   (mov (deref byte (address buffer)) (reg al))      ;; 88 05 disp32
   (mov (deref byte (address buffer)) 0x61)          ;; C6 05 disp32 61
@@ -21,7 +20,6 @@
   (ret))
 
 (define-code cmp-sub-sizes
-  entry
   (cmp (deref byte (address buffer)) 0x61)          ;; 80 3D disp32 61
   (sub (deref byte (address buffer)) 0x20)          ;; 80 2D disp32 20
   (cmp (reg al) 0x61)                               ;; 3C 61
@@ -31,7 +29,6 @@
   (ret))
 
 (define-code inferred-size
-  entry
   (mov (reg al) (deref (address buffer)))           ;; 8A 05 disp32, inferred byte
   (mov (reg rax) (deref (address buffer)))          ;; 48 8B 05 disp32, inferred qword
   (ret))

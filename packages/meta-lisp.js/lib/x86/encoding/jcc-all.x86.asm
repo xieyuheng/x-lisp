@@ -9,73 +9,61 @@
 ;   88 s       89 ns
 
 (define-code main
-  entry
   (j (cc e) (label target))
   target
   (ret))
 
 (define-code jcc-ne
-  entry
   (j (cc ne) (label target))
   target
   (ret))
 
 (define-code jcc-l
-  entry
   (j (cc l) (label target))
   target
   (ret))
 
 (define-code jcc-le
-  entry
   (j (cc le) (label target))
   target
   (ret))
 
 (define-code jcc-g
-  entry
   (j (cc g) (label target))
   target
   (ret))
 
 (define-code jcc-ge
-  entry
   (j (cc ge) (label target))
   target
   (ret))
 
 (define-code jcc-b
-  entry
   (j (cc b) (label target))
   target
   (ret))
 
 (define-code jcc-be
-  entry
   (j (cc be) (label target))
   target
   (ret))
 
 (define-code jcc-a
-  entry
   (j (cc a) (label target))
   target
   (ret))
 
 (define-code jcc-ae
-  entry
   (j (cc ae) (label target))
   target
   (ret))
 
 (define-code jcc-s
-  entry
   (j (cc s) (label target))
   target
   (ret))
 
 (define-code jcc-ns
-  entry
   (j (cc ns) (label target))
   target
   (ret))

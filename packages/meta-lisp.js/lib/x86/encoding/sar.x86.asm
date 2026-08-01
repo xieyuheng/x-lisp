@@ -6,7 +6,6 @@
 ;  C1 /7 — SAR r/m64, imm8
 
 (define-code main
-  entry
   (sar (reg rax) 1)                    ;; D1 /7: sar by 1
   (sar (reg rax) 3)                    ;; C1 /7: sar by imm8 > 1
   (sar (reg rax) (reg rcx))                  ;; D3 /7: sar by CL

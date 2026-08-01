@@ -1,7 +1,6 @@
 (define-data message "hello message\n")
 
 (define-code main
-  entry
   (mov (reg rax) 1)
   (mov (reg rdi) 1)
   (mov (reg rsi) (address message))

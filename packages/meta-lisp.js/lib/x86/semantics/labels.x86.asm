@@ -8,7 +8,6 @@
 ; Labels: bare symbols (label definitions), no block wrapping
 
 (define-code main
-  entry
   (mov (reg rax) 0)
   (jmp (label done))
   (mov (reg rax) 99)

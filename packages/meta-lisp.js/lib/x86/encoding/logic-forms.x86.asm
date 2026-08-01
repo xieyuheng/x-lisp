@@ -16,21 +16,18 @@
 ;  81 /6 — XOR r/m64, imm32
 
 (define-code main
-  entry
   (and (reg rax) (reg rcx))                  ;; 23 /r: reg &= reg
   (and (reg rax) 7)                    ;; 83 /4: reg &= imm8
   (and (reg rax) 255)                  ;; 81 /4: reg &= imm32
   (ret))
 
 (define-code or-forms
-  entry
   (or (reg rax) (reg rcx))                   ;; 0B /r: reg |= reg
   (or (reg rax) 7)                     ;; 83 /1: reg |= imm8
   (or (reg rax) 255)                   ;; 81 /1: reg |= imm32
   (ret))
 
 (define-code xor-forms
-  entry
   (xor (reg rax) (reg rcx))                  ;; 33 /r: reg ^= reg
   (xor (reg rax) 7)                    ;; 83 /6: reg ^= imm8
   (xor (reg rax) 255)                  ;; 81 /6: reg ^= imm32

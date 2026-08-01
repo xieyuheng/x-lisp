@@ -16,7 +16,6 @@
     (text "")))
 
 (define-code main
-  entry
   (mov (reg rax) (address my-msg))
   (mov (reg rax) (deref (reg rax) (offset-of msg-t text)))
   (mov (reg rax) (deref (reg rax)))

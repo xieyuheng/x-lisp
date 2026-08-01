@@ -19,7 +19,6 @@
 ;  81 /7 — CMP r/m64, imm32
 
 (define-code main
-  entry
   (add (reg rax) (reg rcx))                  ;; 03 /r: reg += reg
   (add (reg rax) (deref (reg rbp) -8))   ;; 03 /r: reg += mem
   (add (deref (reg rbp) -8) (reg rax))   ;; 01 /r: mem += reg
@@ -30,7 +29,6 @@
   (ret))
 
 (define-code sub-forms
-  entry
   (sub (reg rax) (reg rcx))                  ;; 2B /r: reg -= reg
   (sub (reg rax) (deref (reg rbp) -8))   ;; 2B /r: reg -= mem
   (sub (deref (reg rbp) -8) (reg rax))   ;; 29 /r: mem -= reg
@@ -41,7 +39,6 @@
   (ret))
 
 (define-code cmp-forms
-  entry
   (cmp (reg rax) (reg rcx))                  ;; 3B /r: cmp reg, reg
   (cmp (reg rax) (deref (reg rbp) -8))   ;; 3B /r: cmp reg, mem
   (cmp (deref (reg rbp) -8) (reg rax))   ;; 39 /r: cmp mem, reg

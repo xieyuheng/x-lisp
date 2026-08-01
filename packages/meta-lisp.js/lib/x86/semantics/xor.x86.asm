@@ -6,7 +6,6 @@
 ;   ret            — C3
 
 (define-code main
-  entry
   (xor (reg rax) (reg rax))
   (mov (reg rax) 7)
   (xor (reg rax) (reg rax))
