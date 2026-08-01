@@ -1,7 +1,7 @@
 (模块 内置)
 
 (声明原始变量 整数型)
-;; (声明原始函数 is-int 1)
+;; (声明原始函数 为整数 1)
 ;; (声明原始函数 int-is-positive 1)
 ;; (声明原始函数 int-is-non-negative 1)
 ;; (声明原始函数 int-is-non-zero 1)
@@ -21,7 +21,7 @@
 ;; (声明原始函数 int-compare-descending 2)
 
 (声明 整数型 类型型)
-;; (claim is-int (polymorphic (A) (-> A bool-t)))
+;; (声明 为整数 (多态 (甲) (-> 甲 真假型)))
 ;; (claim int-is-positive (-> int-t bool-t))
 ;; (claim int-is-non-negative (-> int-t bool-t))
 ;; (claim int-is-non-zero (-> int-t bool-t))

@@ -88,6 +88,29 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
+  "(cons* '定义类型 (cons* name parameters) body)": (
+    { name, parameters, body },
+    { sexp },
+  ) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.DefineTypeStmt(
+      S.asSymbolSexp(name).content,
+      S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
+  "(cons* '定义类型 name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asListSexp(sexp).elements[0]
+    return M.DefineTypeStmt(
+      S.asSymbolSexp(name).content,
+      [],
+      parseBody(body, body.location),
+      keyword.location,
+    )
+  },
+
   "(cons* 'exempt names)": ({ names }, { location }) => {
     return M.ExemptStmt(
       S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
