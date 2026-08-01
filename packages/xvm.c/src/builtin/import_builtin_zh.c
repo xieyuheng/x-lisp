@@ -49,7 +49,7 @@ void import_builtin_zh(mod_t *mod) {
 
   define_variable(mod, "meta-builtin/内置/真", x_true);
   define_variable(mod, "meta-builtin/内置/假", x_false);
-  define_primitive_1(mod, "meta-builtin/内置/为布尔", x_is_bool);
+  define_primitive_1(mod, "meta-builtin/内置/为真假", x_is_bool);
   define_primitive_1(mod, "meta-builtin/内置/非", x_not);
 
   // void
@@ -66,7 +66,7 @@ void import_builtin_zh(mod_t *mod) {
   define_variable_primitive_0(mod, "meta-builtin/内置/字符串型", x_string_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/符号型", x_symbol_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/关键字型", x_keyword_t);
-  define_variable_primitive_0(mod, "meta-builtin/内置/布尔型", x_bool_t);
+  define_variable_primitive_0(mod, "meta-builtin/内置/真假型", x_bool_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/空型", x_void_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/文件型", x_file_t);
   define_primitive_1(mod, "meta-builtin/内置/列表型", x_list_t);

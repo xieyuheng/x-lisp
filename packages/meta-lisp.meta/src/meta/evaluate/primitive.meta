@@ -21,7 +21,7 @@
     (define-primitive-variable 'keyword-t (type-value (atom-type 'keyword)))
     (define-primitive-variable '关键字型 (type-value (atom-type 'keyword)))
     (define-primitive-variable 'bool-t (type-value (atom-type 'bool)))
-    (define-primitive-variable '布尔型 (type-value (atom-type 'bool)))
+    (define-primitive-variable '真假型 (type-value (atom-type 'bool)))
     (define-primitive-variable 'void-t (type-value (atom-type 'void)))
     (define-primitive-variable '空型 (type-value (atom-type 'void)))
     (define-primitive-variable 'file-t (type-value (atom-type 'file)))

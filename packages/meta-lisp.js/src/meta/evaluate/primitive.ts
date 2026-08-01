@@ -30,7 +30,7 @@ export function setupPrimitive(): void {
   definePrimitiveVariable("keyword-t", TypeValue(AtomType("keyword")))
   definePrimitiveVariable("关键字型", TypeValue(AtomType("keyword")))
   definePrimitiveVariable("bool-t", TypeValue(AtomType("bool")))
-  definePrimitiveVariable("布尔型", TypeValue(AtomType("bool")))
+  definePrimitiveVariable("真假型", TypeValue(AtomType("bool")))
   definePrimitiveVariable("void-t", TypeValue(AtomType("void")))
   definePrimitiveVariable("空型", TypeValue(AtomType("void")))
   definePrimitiveVariable("file-t", TypeValue(AtomType("file")))
