@@ -1,3 +1,10 @@
+# 中文
+
+[meta-builtin.meta] 翻译 assert.meta
+[meta-builtin.meta] 翻译 error.meta
+[meta-builtin.meta] 翻译 process.meta
+[meta-builtin.meta] 翻译 bool.meta
+
 # x86-64
 
 review 200-AssignHomesPass.ts
