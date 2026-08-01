@@ -5,13 +5,13 @@
 ;   jmp label      — E9 rel32
 ;   ret            — C3
 ;
-; Labels: block names only (no bare-symbol labels)
+; Labels: bare symbols (label definitions), no block wrapping
 
 (define-code main
-  (block entry
-    (mov (reg rax) 0)
-    (jmp (label done))
-    (mov (reg rax) 99)
-    (ret))
-  (block done
-    (ret)))
+  entry
+  (mov (reg rax) 0)
+  (jmp (label done))
+  (mov (reg rax) 99)
+  (ret)
+  done
+  (ret))

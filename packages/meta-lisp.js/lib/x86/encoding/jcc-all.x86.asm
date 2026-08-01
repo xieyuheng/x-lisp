@@ -9,49 +9,73 @@
 ;   88 s       89 ns
 
 (define-code main
-  (block entry (j (cc e) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc e) (label target))
+  target
+  (ret))
 
 (define-code jcc-ne
-  (block entry (j (cc ne) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc ne) (label target))
+  target
+  (ret))
 
 (define-code jcc-l
-  (block entry (j (cc l) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc l) (label target))
+  target
+  (ret))
 
 (define-code jcc-le
-  (block entry (j (cc le) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc le) (label target))
+  target
+  (ret))
 
 (define-code jcc-g
-  (block entry (j (cc g) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc g) (label target))
+  target
+  (ret))
 
 (define-code jcc-ge
-  (block entry (j (cc ge) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc ge) (label target))
+  target
+  (ret))
 
 (define-code jcc-b
-  (block entry (j (cc b) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc b) (label target))
+  target
+  (ret))
 
 (define-code jcc-be
-  (block entry (j (cc be) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc be) (label target))
+  target
+  (ret))
 
 (define-code jcc-a
-  (block entry (j (cc a) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc a) (label target))
+  target
+  (ret))
 
 (define-code jcc-ae
-  (block entry (j (cc ae) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc ae) (label target))
+  target
+  (ret))
 
 (define-code jcc-s
-  (block entry (j (cc s) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc s) (label target))
+  target
+  (ret))
 
 (define-code jcc-ns
-  (block entry (j (cc ns) (label target)))
-  (block target (ret)))
+  entry
+  (j (cc ns) (label target))
+  target
+  (ret))

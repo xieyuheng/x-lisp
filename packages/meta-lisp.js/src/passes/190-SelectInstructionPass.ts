@@ -36,10 +36,10 @@ function selectDefinition(
         throw new Error(message)
       }
 
-      const blocks = Array.from(definition.blocks.values()).map((block) =>
+      const instrs = Array.from(definition.blocks.values()).flatMap((block) =>
         selectBlock(block, basicMod, ssaGraph),
       )
-      return [X86.DefineCodeStmt(definition.name, blocks)]
+      return [X86.DefineCodeStmt(definition.name, instrs)]
     }
 
     case "VariableDefinition": {
@@ -147,14 +147,14 @@ function selectBlock(
   basicBlock: B.Block,
   basicMod: B.Mod,
   ssaGraph: B.SsaGraph,
-): X86.Block {
+): Array<X86.Instr> {
   const state: SelectState = {
     basicMod,
     ssaGraph,
     icmpMap: new Map(),
   }
   const instrs = basicBlock.instrs.flatMap((instr) => selectInstr(state, instr))
-  return X86.Block(basicBlock.label, instrs)
+  return [X86.Instr("label", [X86.LabelOperand(basicBlock.label)]), ...instrs]
 }
 
 function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {

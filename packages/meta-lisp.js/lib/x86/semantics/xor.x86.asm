@@ -6,9 +6,9 @@
 ;   ret            — C3
 
 (define-code main
-  (block entry
-    (xor (reg rax) (reg rax))
-    (mov (reg rax) 7)
-    (xor (reg rax) (reg rax))
-    (mov (reg rax) 3)
-    (ret)))
+  entry
+  (xor (reg rax) (reg rax))
+  (mov (reg rax) 7)
+  (xor (reg rax) (reg rax))
+  (mov (reg rax) 3)
+  (ret))

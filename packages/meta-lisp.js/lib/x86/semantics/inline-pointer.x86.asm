@@ -11,7 +11,7 @@
   (y int64-t))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (pointer (struct point-t (x 77) (y 88))))
-    (mov (reg rax) (deref (reg rax)))
-    (ret)))
+  entry
+  (mov (reg rax) (pointer (struct point-t (x 77) (y 88))))
+  (mov (reg rax) (deref (reg rax)))
+  (ret))

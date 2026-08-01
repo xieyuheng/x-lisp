@@ -9,19 +9,14 @@ export function PatchInstructionsPass(x86Mod: X86.Mod): X86.Mod {
       continue
     }
 
-    const newBlocks = definition.blocks.map((block) => patchBlock(block))
+    const newInstrs = definition.instrs.flatMap((instr) => patchInstr(instr))
     newMod.definitions.set(
       definition.name,
-      X86.CodeDefinition(definition.name, newBlocks),
+      X86.CodeDefinition(definition.name, newInstrs),
     )
   }
 
   return newMod
-}
-
-function patchBlock(block: X86.Block): X86.Block {
-  const patchedInstrs = block.instrs.flatMap((instr) => patchInstr(instr))
-  return X86.Block(block.label, patchedInstrs)
 }
 
 function patchInstr(instr: X86.Instr): Array<X86.Instr> {

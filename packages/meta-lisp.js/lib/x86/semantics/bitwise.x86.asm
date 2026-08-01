@@ -8,9 +8,9 @@
 ;   ret            — C3
 
 (define-code main
-  (block entry
-    (mov (reg rax) 255)
-    (and (reg rax) 15)
-    (shl (reg rax) 4)
-    (or (reg rax) 10)
-    (ret)))
+  entry
+  (mov (reg rax) 255)
+  (and (reg rax) 15)
+  (shl (reg rax) 4)
+  (or (reg rax) 10)
+  (ret))

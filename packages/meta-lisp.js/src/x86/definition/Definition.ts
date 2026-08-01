@@ -1,5 +1,5 @@
-import type { Block } from "../block/index.ts"
 import type { Data } from "../data/index.ts"
+import type { Instr } from "../instr/index.ts"
 import type { Type } from "../type/index.ts"
 
 export type Definition =
@@ -12,17 +12,17 @@ export type Definition =
 export type CodeDefinition = {
   kind: "CodeDefinition"
   name: string
-  blocks: Array<Block>
+  instrs: Array<Instr>
 }
 
 export function CodeDefinition(
   name: string,
-  blocks: Array<Block>,
+  instrs: Array<Instr>,
 ): CodeDefinition {
   return {
     kind: "CodeDefinition",
     name,
-    blocks,
+    instrs,
   }
 }
 

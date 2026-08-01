@@ -6,9 +6,9 @@
 ;   ret
 
 (define-code main
-  (block entry
-    (mov (reg rax) 7)
-    (nop)
-    (nop)
-    (nop)
-    (ret)))
+  entry
+  (mov (reg rax) 7)
+  (nop)
+  (nop)
+  (nop)
+  (ret))

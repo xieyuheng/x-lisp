@@ -33,10 +33,8 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
       newMod.definitions.set(definition.name, definition)
       continue
     }
-    for (const block of definition.blocks) {
-      for (const instr of block.instrs) {
-        collectVars(instr, allVars)
-      }
+    for (const instr of definition.instrs) {
+      collectVars(instr, allVars)
     }
   }
 
@@ -59,12 +57,12 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
 
   for (const definition of x86Mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
-    const newBlocks = definition.blocks.map((block) =>
-      assignBlockHomes(block, homeMap),
+    const newInstrs = definition.instrs.flatMap((instr) =>
+      assignInstrHomes(instr, homeMap),
     )
     newMod.definitions.set(
       definition.name,
-      X86.CodeDefinition(definition.name, newBlocks),
+      X86.CodeDefinition(definition.name, newInstrs),
     )
   }
 
@@ -101,16 +99,6 @@ function assignOperand(
     return home
   }
   return op
-}
-
-function assignBlockHomes(
-  block: X86.Block,
-  homeMap: Map<string, X86.RegDerefOperand>,
-): X86.Block {
-  const instrs = block.instrs.flatMap((instr) =>
-    assignInstrHomes(instr, homeMap),
-  )
-  return X86.Block(block.label, instrs)
 }
 
 function assignInstrHomes(

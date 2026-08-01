@@ -4,10 +4,10 @@ import { parseData } from "./parseData.ts"
 import { parseInstr } from "./parseInstr.ts"
 
 export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
-  "(cons* 'define-code name blocks)": ({ name, blocks }, { location }) => {
-    const blockSexps = S.asListSexp(blocks).elements
-    const parsedBlocks = blockSexps.map((bs) => parseBlock(bs))
-    return X86.DefineCodeStmt(S.asSymbolSexp(name).content, parsedBlocks)
+  "(cons* 'define-code name body)": ({ name, body }, { location }) => {
+    const bodyElements = S.asListSexp(body).elements
+    const parsedInstrs = bodyElements.map((sexp) => parseCodeItem(sexp))
+    return X86.DefineCodeStmt(S.asSymbolSexp(name).content, parsedInstrs)
   },
 
   "`(define-data ,name ,value)": ({ name, value }, { location }) => {
@@ -24,23 +24,11 @@ export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
   },
 })
 
-function parseBlock(sexp: S.Sexp): X86.Block {
-  if (sexp.kind !== "ListSexp") {
-    let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
-    throw new Error(message)
+function parseCodeItem(sexp: S.Sexp): X86.Instr {
+  if (sexp.kind === "SymbolSexp") {
+    return X86.Instr("label", [X86.LabelOperand(sexp.content)])
   }
-  const elements = sexp.elements
-  if (elements.length < 2) {
-    let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
-    throw new Error(message)
-  }
-  if (elements[0].kind !== "SymbolSexp" || elements[0].content !== "block") {
-    let message = `expected (block name ...), got: ${S.formatSexp(sexp)}`
-    throw new Error(message)
-  }
-  const blockName = S.asSymbolSexp(elements[1]).content
-  const instrs = elements.slice(2).map((i) => parseInstr(i))
-  return X86.Block(blockName, instrs)
+  return parseInstr(sexp)
 }
 
 function parseTypeFields(rest: S.Sexp): Record<string, X86.Type> {

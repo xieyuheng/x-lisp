@@ -5,14 +5,12 @@ let anonCounter = 0
 export function ResolveDataOperandsPass(mod: X86.Mod): void {
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
-    for (const block of definition.blocks) {
-      for (let i = 0; i < block.instrs.length; i++) {
-        const instr = block.instrs[i]
-        const newOperands = instr.operands.map((op) =>
-          resolveDataOperand(mod, op),
-        )
-        block.instrs[i] = X86.Instr(instr.op, newOperands)
-      }
+    for (let i = 0; i < definition.instrs.length; i++) {
+      const instr = definition.instrs[i]
+      const newOperands = instr.operands.map((op) =>
+        resolveDataOperand(mod, op),
+      )
+      definition.instrs[i] = X86.Instr(instr.op, newOperands)
     }
   }
 }

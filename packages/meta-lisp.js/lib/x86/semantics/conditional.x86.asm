@@ -7,13 +7,13 @@
 ;   ret            — C3
 
 (define-code main
-  (block entry
-    (mov (reg rax) 10)
-    (mov (reg rcx) 3)
-    (cmp (reg rax) (reg rcx))
-    (j (cc g) (label is-greater))
-    (mov (reg rax) 0)
-    (ret))
-  (block is-greater
-    (mov (reg rax) 1)
-    (ret)))
+  entry
+  (mov (reg rax) 10)
+  (mov (reg rcx) 3)
+  (cmp (reg rax) (reg rcx))
+  (j (cc g) (label is-greater))
+  (mov (reg rax) 0)
+  (ret)
+  is-greater
+  (mov (reg rax) 1)
+  (ret))

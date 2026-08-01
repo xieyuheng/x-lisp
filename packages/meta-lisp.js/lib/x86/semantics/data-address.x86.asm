@@ -20,7 +20,7 @@
 (define-data origin-ptr (address origin))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (deref (address origin-ptr)))   ;; rax = *origin-ptr = &origin
-    (mov (reg rax) (deref (reg rax)))           ;; rax = origin.x = 11
-    (ret)))
+  entry
+  (mov (reg rax) (deref (address origin-ptr)))   ;; rax = *origin-ptr = &origin
+  (mov (reg rax) (deref (reg rax)))           ;; rax = origin.x = 11
+  (ret))

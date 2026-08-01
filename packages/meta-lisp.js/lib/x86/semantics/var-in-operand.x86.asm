@@ -10,7 +10,7 @@
   (struct int-cell-t (value 99)))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (address answer))
-    (mov (reg rax) (deref (reg rax)))
-    (ret)))
+  entry
+  (mov (reg rax) (address answer))
+  (mov (reg rax) (deref (reg rax)))
+  (ret))

@@ -7,13 +7,13 @@
 ;  0F AF /r — IMUL r64, r/m64  (two-operand form)
 
 (define-code main
-  (block entry
-    (test (reg rax) (reg rax))                ;; 85 /r: REX.W + 85 C0
-    (test (reg rcx) (reg rdx))                ;; 85 /r: REX.W + 85 D1
-    (ret)))
+  entry
+  (test (reg rax) (reg rax))                ;; 85 /r: REX.W + 85 C0
+  (test (reg rcx) (reg rdx))                ;; 85 /r: REX.W + 85 D1
+  (ret))
 
 (define-code imul-form
-  (block entry
-    (imul (reg rax) (reg rcx))                ;; 0F AF /r: REX.W + 0F AF C1
-    (imul (reg rax) (deref (reg rbp) -8)) ;; 0F AF /r: REX.W + 0F AF 45 F8
-    (ret)))
+  entry
+  (imul (reg rax) (reg rcx))                ;; 0F AF /r: REX.W + 0F AF C1
+  (imul (reg rax) (deref (reg rbp) -8)) ;; 0F AF /r: REX.W + 0F AF 45 F8
+  (ret))

@@ -5,8 +5,8 @@
 ;; verifies that DataOperand resolution is not mov-specific
 
 (define-code main
-  (block entry
-    (mov (reg rax) 10)
-    (add (reg rax) 5)
-    (sub (reg rax) 3)
-    (ret)))
+  entry
+  (mov (reg rax) 10)
+  (add (reg rax) 5)
+  (sub (reg rax) 3)
+  (ret))

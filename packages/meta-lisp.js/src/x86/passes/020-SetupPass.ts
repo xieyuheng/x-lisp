@@ -9,7 +9,7 @@ export function SetupPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
 function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      X86.modDefine(mod, X86.CodeDefinition(stmt.name, stmt.blocks))
+      X86.modDefine(mod, X86.CodeDefinition(stmt.name, stmt.instrs))
       break
     }
 

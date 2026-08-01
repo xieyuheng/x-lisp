@@ -1,12 +1,12 @@
 import * as X86 from "../index.ts"
-import { formatBlock } from "./formatBlock.ts"
 import { formatData } from "./formatData.ts"
+import { formatInstr } from "./formatInstr.ts"
 
 export function formatStmt(stmt: X86.Stmt): string {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      const blocks = stmt.blocks.map(formatBlock).join(" ")
-      return `(define-code ${stmt.name} ${blocks})`
+      const instrs = stmt.instrs.map(formatInstr).join(" ")
+      return `(define-code ${stmt.name} ${instrs})`
     }
     case "DefineDataStmt":
       return `(define-data ${stmt.name} ${formatData(stmt.value)})`

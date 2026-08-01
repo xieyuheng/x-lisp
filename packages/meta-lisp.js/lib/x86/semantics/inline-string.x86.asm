@@ -6,8 +6,8 @@
 ;;       → encode: mov rax, [rip + disp32]
 
 (define-code main
-  (block entry
-    (mov (reg rax) "hello")
-    (mov (reg rax) (deref (reg rax)))
-    (and (reg rax) 255)
-    (ret)))
+  entry
+  (mov (reg rax) "hello")
+  (mov (reg rax) (deref (reg rax)))
+  (and (reg rax) 255)
+  (ret))

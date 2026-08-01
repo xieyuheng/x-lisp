@@ -16,9 +16,9 @@
     (description "abc")))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (address my-config))
-    (mov (reg rax) (deref (reg rax) (offset-of config-t description)))
-    (mov (reg rax) (deref (reg rax)))
-    (and (reg rax) 255)
-    (ret)))
+  entry
+  (mov (reg rax) (address my-config))
+  (mov (reg rax) (deref (reg rax) (offset-of config-t description)))
+  (mov (reg rax) (deref (reg rax)))
+  (and (reg rax) 255)
+  (ret))

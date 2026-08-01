@@ -14,7 +14,7 @@
   (address cell))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (deref (address ptr)))
-    (mov (reg rax) (deref (reg rax)))
-    (ret)))
+  entry
+  (mov (reg rax) (deref (address ptr)))
+  (mov (reg rax) (deref (reg rax)))
+  (ret))

@@ -48,21 +48,19 @@ export function offsetOf(
 export function resolveDisplacements(mod: Mod): void {
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
-    for (const block of definition.blocks) {
-      for (const instr of block.instrs) {
-        for (const op of instr.operands) {
-          if (
-            op.kind === "RegDerefOperand" &&
-            op.disp !== undefined &&
-            op.disp.kind === "OffsetOfDisplacement"
-          ) {
-            const value = BigInt(
-              offsetOf(mod, op.disp.structType, op.disp.fields),
-            )
-            op.disp = {
-              kind: "IntDisplacement",
-              value,
-            }
+    for (const instr of definition.instrs) {
+      for (const op of instr.operands) {
+        if (
+          op.kind === "RegDerefOperand" &&
+          op.disp !== undefined &&
+          op.disp.kind === "OffsetOfDisplacement"
+        ) {
+          const value = BigInt(
+            offsetOf(mod, op.disp.structType, op.disp.fields),
+          )
+          op.disp = {
+            kind: "IntDisplacement",
+            value,
           }
         }
       }

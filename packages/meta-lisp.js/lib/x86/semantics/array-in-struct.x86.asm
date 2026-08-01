@@ -12,8 +12,8 @@
     (data (array 10 20 30 40 50))))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (address buf))
-    (mov (reg rax) (deref (reg rax)))
-    (and (reg rax) 255)
-    (ret)))
+  entry
+  (mov (reg rax) (address buf))
+  (mov (reg rax) (deref (reg rax)))
+  (and (reg rax) 255)
+  (ret))

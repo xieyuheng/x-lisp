@@ -42,17 +42,15 @@ function checkDataFields(mod: X86.Mod): void {
 function checkInstrSizes(mod: X86.Mod): void {
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
-    for (const block of definition.blocks) {
-      for (const instr of block.instrs) {
-        if (!isSizeCheckedInstr(instr)) continue
-        try {
-          X86.deriveOpSize(instr)
-        } catch (error) {
-          let message =
-            `[CheckPass] in block ${block.label}: ` +
-            (error instanceof Error ? error.message : String(error))
-          throw new Error(message)
-        }
+    for (const instr of definition.instrs) {
+      if (!isSizeCheckedInstr(instr)) continue
+      try {
+        X86.deriveOpSize(instr)
+      } catch (error) {
+        let message =
+          `[CheckPass] in function ${definition.name}: ` +
+          (error instanceof Error ? error.message : String(error))
+        throw new Error(message)
       }
     }
   }

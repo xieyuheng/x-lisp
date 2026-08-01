@@ -4,7 +4,7 @@
 ; Test 2:  42 >> 3 =  5  (positive values also work)
 
 (define-code main
-  (block entry
-    (mov (reg rax) -42)
-    (sar (reg rax) 3)
-    (ret)))
+  entry
+  (mov (reg rax) -42)
+  (sar (reg rax) 3)
+  (ret))

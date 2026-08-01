@@ -1,12 +1,12 @@
 import * as X86 from "../index.ts"
-import { formatBlock } from "./formatBlock.ts"
 import { formatData } from "./formatData.ts"
+import { formatInstr } from "./formatInstr.ts"
 
 export function formatDefinition(definition: X86.Definition): string {
   switch (definition.kind) {
     case "CodeDefinition": {
-      const blocks = definition.blocks.map(formatBlock).join(" ")
-      return `(define-code ${definition.name} ${blocks})`
+      const instrs = definition.instrs.map(formatInstr).join(" ")
+      return `(define-code ${definition.name} ${instrs})`
     }
     case "DataDefinition":
       return `(define-data ${definition.name} ${formatData(definition.value)})`

@@ -12,16 +12,16 @@ export function PrologEpilogPass(
       continue
     }
 
-    const stackSpace = computeStackSpace(definition.blocks, homeMap)
+    const stackSpace = computeStackSpace(definition.instrs, homeMap)
 
-    const newBlocks = prologEpilogDefinition(
+    const newInstrs = prologEpilogDefinition(
       definition.name,
-      definition.blocks,
+      definition.instrs,
       stackSpace,
     )
     newMod.definitions.set(
       definition.name,
-      X86.CodeDefinition(definition.name, newBlocks),
+      X86.CodeDefinition(definition.name, newInstrs),
     )
   }
 
@@ -29,19 +29,17 @@ export function PrologEpilogPass(
 }
 
 function computeStackSpace(
-  blocks: Array<X86.Block>,
+  instrs: Array<X86.Instr>,
   homeMap: Map<string, X86.RegDerefOperand>,
 ): number {
   let maxAbsOffset = 0n
-  for (const block of blocks) {
-    for (const instr of block.instrs) {
-      for (const op of instr.operands) {
-        if (op.kind === "RegDerefOperand") {
-          const disp = op.disp
-          if (disp && disp.kind === "IntDisplacement") {
-            const v = disp.value < 0n ? -disp.value : disp.value
-            if (v > maxAbsOffset) maxAbsOffset = v
-          }
+  for (const instr of instrs) {
+    for (const op of instr.operands) {
+      if (op.kind === "RegDerefOperand") {
+        const disp = op.disp
+        if (disp && disp.kind === "IntDisplacement") {
+          const v = disp.value < 0n ? -disp.value : disp.value
+          if (v > maxAbsOffset) maxAbsOffset = v
         }
       }
     }
@@ -56,28 +54,17 @@ function align16(n: number): number {
 
 function prologEpilogDefinition(
   funcName: string,
-  blocks: Array<X86.Block>,
+  instrs: Array<X86.Instr>,
   stackSpace: number,
-): Array<X86.Block> {
-  const withTailJmpExpanded = blocks.map((block) =>
-    expandTailJmp(block, stackSpace),
-  )
+): Array<X86.Instr> {
+  const withTailJmpExpanded = expandTailJmps(instrs, stackSpace)
 
-  const idx = withTailJmpExpanded.findIndex((b) => b.label === "body")
+  const idx = withTailJmpExpanded.findIndex(
+    (instr) => instr.op === "label" && labelOf(instr) === "body",
+  )
   if (idx === -1) return withTailJmpExpanded
 
-  const beginBlock = withTailJmpExpanded[idx]
-
-  const bodyInstrs = beginBlock.instrs.map((instr) => {
-    if (instr.op === "ret") {
-      return X86.Instr("jmp", [X86.LabelOperand("epilog")])
-    }
-    return instr
-  })
-
-  const epilogBody = makeEpilogBody(stackSpace)
-
-  const prologBlock = X86.Block("body", [
+  const prologInstrs = [
     X86.Instr("push", [X86.RegOperand("rbp")]),
     X86.Instr("mov", [X86.RegOperand("rbp"), X86.RegOperand("rsp")]),
     ...(stackSpace > 0
@@ -88,18 +75,36 @@ function prologEpilogDefinition(
           ]),
         ]
       : []),
-    ...(bodyInstrs.length > 0
-      ? [X86.Instr("jmp", [X86.LabelOperand("body.body")])]
-      : []),
-  ])
+  ]
 
-  const bodyBlock = X86.Block("body.body", bodyInstrs)
+  const result: Array<X86.Instr> = []
+  for (const instr of withTailJmpExpanded) {
+    if (instr.op === "ret") {
+      result.push(X86.Instr("jmp", [X86.LabelOperand("epilog")]))
+      continue
+    }
+    result.push(instr)
+    if (instr.op === "label" && labelOf(instr) === "body") {
+      result.push(...prologInstrs)
+    }
+  }
 
-  const epilogBlock = X86.Block("epilog", [...epilogBody, X86.Instr("ret", [])])
+  result.push(
+    X86.Instr("label", [X86.LabelOperand("epilog")]),
+    ...makeEpilogBody(stackSpace),
+    X86.Instr("ret", []),
+  )
 
-  const result = [...withTailJmpExpanded]
-  result.splice(idx, 1, prologBlock, bodyBlock, epilogBlock)
   return result
+}
+
+function labelOf(instr: X86.Instr): string {
+  const [op] = instr.operands
+  if (op.kind !== "LabelOperand") {
+    let message = `[labelOf] expected LabelOperand`
+    throw new Error(message)
+  }
+  return op.name
 }
 
 function makeEpilogBody(stackSpace: number): Array<X86.Instr> {
@@ -116,12 +121,14 @@ function makeEpilogBody(stackSpace: number): Array<X86.Instr> {
   return body
 }
 
-function expandTailJmp(block: X86.Block, stackSpace: number): X86.Block {
+function expandTailJmps(
+  instrs: Array<X86.Instr>,
+  stackSpace: number,
+): Array<X86.Instr> {
   const epilogBody = makeEpilogBody(stackSpace)
-  const instrs = block.instrs.flatMap((instr) => {
+  return instrs.flatMap((instr) => {
     if (instr.op !== "tail-jmp") return [instr]
     const [target] = instr.operands
     return [...epilogBody, X86.Instr("jmp", [target])]
   })
-  return X86.Block(block.label, instrs)
 }

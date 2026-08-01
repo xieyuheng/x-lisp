@@ -1,4 +1,3 @@
-export * from "./formatBlock.ts"
 export * from "./formatData.ts"
 export * from "./formatDefinition.ts"
 export * from "./formatInstr.ts"

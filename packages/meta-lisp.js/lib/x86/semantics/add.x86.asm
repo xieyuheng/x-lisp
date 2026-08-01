@@ -7,8 +7,8 @@
 ;   ret            — C3
 
 (define-code main
-  (block entry
-    (mov (reg rax) 10)
-    (add (reg rax) 20)
-    (add (reg rax) 5)
-    (ret)))
+  entry
+  (mov (reg rax) 10)
+  (add (reg rax) 20)
+  (add (reg rax) 5)
+  (ret))

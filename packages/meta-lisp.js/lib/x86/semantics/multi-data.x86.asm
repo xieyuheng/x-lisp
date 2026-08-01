@@ -15,10 +15,10 @@
     (x 20)))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (address my-first))
-    (mov (reg rax) (deref (reg rax) (offset-of cell-t x)))
-    (mov (reg rcx) (address my-second))
-    (mov (reg rcx) (deref (reg rcx) (offset-of cell-t x)))
-    (add (reg rax) (reg rcx))
-    (ret)))
+  entry
+  (mov (reg rax) (address my-first))
+  (mov (reg rax) (deref (reg rax) (offset-of cell-t x)))
+  (mov (reg rcx) (address my-second))
+  (mov (reg rcx) (deref (reg rcx) (offset-of cell-t x)))
+  (add (reg rax) (reg rcx))
+  (ret))

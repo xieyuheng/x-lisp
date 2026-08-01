@@ -27,9 +27,9 @@
     (value 0)))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (address chain))
-    (mov (reg rax) (deref (reg rax) (offset-of node-a-t next)))
-    (mov (reg rax) (deref (reg rax)))
-    (mov (reg rax) (deref (reg rax)))
-    (ret)))
+  entry
+  (mov (reg rax) (address chain))
+  (mov (reg rax) (deref (reg rax) (offset-of node-a-t next)))
+  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (deref (reg rax)))
+  (ret))

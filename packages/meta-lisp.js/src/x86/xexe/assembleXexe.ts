@@ -89,8 +89,10 @@ function collectLocalLabels(mod: Mod): Map<string, Set<string>> {
     if (definition.kind !== "CodeDefinition") continue
     const local = new Set<string>()
     map.set(definition.name, local)
-    for (const block of definition.blocks) {
-      local.add(block.label)
+    for (const instr of definition.instrs) {
+      if (instr.op !== "label") continue
+      const [op] = instr.operands
+      if (op.kind === "LabelOperand") local.add(op.name)
     }
   }
   return map
@@ -142,66 +144,66 @@ function emitXexeCode(
       segmentOffset: pos,
     })
 
-    for (const block of definition.blocks) {
-      labels.set(scopedName(definition.name, block.label), {
-        segmentKind: XexeCodeSegment,
-        segmentOffset: pos,
-      })
-
-      for (const instr of block.instrs) {
-        if (instr.op === "label") {
-          let message =
-            "(label ...) cannot be an instruction; labels are defined by blocks"
+    for (const instr of definition.instrs) {
+      if (instr.op === "label") {
+        const [op] = instr.operands
+        if (op.kind !== "LabelOperand") {
+          let message = `[emitXexeCode] label instruction must have LabelOperand`
           throw new Error(message)
         }
-
-        const encodings = encode(instr)
-        const size = encodings.reduce((s, e) => s + encodedSize(e), 0)
-
-        const relocInfo = findCodeRelocInfo(instr)
-        if (relocInfo) {
-          const resolvedName = fnLocalLabels.has(relocInfo.name)
-            ? scopedName(definition.name, relocInfo.name)
-            : relocInfo.name
-
-          let instrPos = pos
-          for (const enc of encodings) {
-            if (
-              relocInfo.holeKind === "disp32" &&
-              enc.displacement !== null &&
-              enc.displacement.value === 0
-            ) {
-              // - addend = -(rip - hole), where rip is the address of the
-              //   next instruction. Encoders know the instruction layout,
-              //   so they compute it; the loader just applies S + A - P.
-              const dispOffset = encodedDispOffset(enc)
-              const addend = BigInt(dispOffset - encodedSize(enc))
-              relocs.push({
-                type: relocInfo.type,
-                name: resolvedName,
-                segmentKind: XexeCodeSegment,
-                segmentOffset: instrPos + dispOffset,
-                addend,
-              })
-            } else if (
-              relocInfo.holeKind === "imm64" &&
-              enc.immediate !== null &&
-              enc.immediate.value === 0n
-            ) {
-              relocs.push({
-                type: relocInfo.type,
-                name: resolvedName,
-                segmentKind: XexeCodeSegment,
-                segmentOffset: instrPos + encodedImmOffset(enc),
-                addend: 0n,
-              })
-            }
-            instrPos += encodedSize(enc)
-          }
-        }
-
-        pos += size
+        labels.set(scopedName(definition.name, op.name), {
+          segmentKind: XexeCodeSegment,
+          segmentOffset: pos,
+        })
+        continue
       }
+
+      const encodings = encode(instr)
+      const size = encodings.reduce((s, e) => s + encodedSize(e), 0)
+
+      const relocInfo = findCodeRelocInfo(instr)
+      if (relocInfo) {
+        const resolvedName = fnLocalLabels.has(relocInfo.name)
+          ? scopedName(definition.name, relocInfo.name)
+          : relocInfo.name
+
+        let instrPos = pos
+        for (const enc of encodings) {
+          if (
+            relocInfo.holeKind === "disp32" &&
+            enc.displacement !== null &&
+            enc.displacement.value === 0
+          ) {
+            // - addend = -(rip - hole), where rip is the address of the
+            //   next instruction. Encoders know the instruction layout,
+            //   so they compute it; the loader just applies S + A - P.
+            const dispOffset = encodedDispOffset(enc)
+            const addend = BigInt(dispOffset - encodedSize(enc))
+            relocs.push({
+              type: relocInfo.type,
+              name: resolvedName,
+              segmentKind: XexeCodeSegment,
+              segmentOffset: instrPos + dispOffset,
+              addend,
+            })
+          } else if (
+            relocInfo.holeKind === "imm64" &&
+            enc.immediate !== null &&
+            enc.immediate.value === 0n
+          ) {
+            relocs.push({
+              type: relocInfo.type,
+              name: resolvedName,
+              segmentKind: XexeCodeSegment,
+              segmentOffset: instrPos + encodedImmOffset(enc),
+              addend: 0n,
+            })
+          }
+          instrPos += encodedSize(enc)
+        }
+      }
+
+      pos += size
     }
   }
 
@@ -213,11 +215,10 @@ function emitXexeCode(
 
     pos = (pos + 7) & ~7
 
-    for (const block of definition.blocks) {
-      for (const instr of block.instrs) {
-        for (const enc of encode(instr)) {
-          pos = emitTo(enc, buf, pos)
-        }
+    for (const instr of definition.instrs) {
+      if (instr.op === "label") continue
+      for (const enc of encode(instr)) {
+        pos = emitTo(enc, buf, pos)
       }
     }
   }

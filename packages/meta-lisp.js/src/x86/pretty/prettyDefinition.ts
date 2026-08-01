@@ -1,16 +1,16 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as X86 from "../index.ts"
-import { prettyBlock } from "./prettyBlock.ts"
 import { prettyData } from "./prettyData.ts"
+import { prettyInstr } from "./prettyInstr.ts"
 
 export function prettyDefinition(definition: X86.Definition): Ppml.Node {
   switch (definition.kind) {
     case "CodeDefinition": {
-      const blockNodes = definition.blocks.map(prettyBlock)
+      const instrNodes = definition.instrs.map(prettyInstr)
       return Ppml.prettyVertical(
         "define-code",
         [Ppml.text(definition.name)],
-        blockNodes,
+        instrNodes,
       )
     }
     case "DataDefinition":

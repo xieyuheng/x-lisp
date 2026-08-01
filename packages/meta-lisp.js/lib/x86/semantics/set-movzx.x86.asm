@@ -6,15 +6,15 @@
 ; Verifies both setcc and movzx correctly set/read byte registers
 
 (define-code main
-  (block entry
-    (mov (reg rax) 10)
-    (mov (reg rcx) 5)
-    (cmp (reg rax) (reg rcx))
-    (set (cc g) (reg al))
-    (movzx (reg rax) (reg al))
+  entry
+  (mov (reg rax) 10)
+  (mov (reg rcx) 5)
+  (cmp (reg rax) (reg rcx))
+  (set (cc g) (reg al))
+  (movzx (reg rax) (reg al))
 
-    (mov (reg rcx) 1)
-    (cmp (reg rax) (reg rcx))
-    (set (cc e) (reg al))
-    (movzx (reg rax) (reg al))
-    (ret)))
+  (mov (reg rcx) 1)
+  (cmp (reg rax) (reg rcx))
+  (set (cc e) (reg al))
+  (movzx (reg rax) (reg al))
+  (ret))

@@ -28,8 +28,8 @@
                (value 42))))))
 
 (define-code main
-  (block entry
-    (mov (reg rax) (address my-config))
-    (mov (reg rax) (deref (reg rax) (offset-of config-t table)))
-    (mov (reg rax) (deref (reg rax) (offset-of entry-t value)))
-    (ret)))
+  entry
+  (mov (reg rax) (address my-config))
+  (mov (reg rax) (deref (reg rax) (offset-of config-t table)))
+  (mov (reg rax) (deref (reg rax) (offset-of entry-t value)))
+  (ret))

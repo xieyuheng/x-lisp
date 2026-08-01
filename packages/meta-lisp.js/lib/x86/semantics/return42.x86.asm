@@ -5,6 +5,6 @@
 ;   ret            — C3
 
 (define-code main
-  (block entry
-    (mov (reg rax) 42)
-    (ret)))
+  entry
+  (mov (reg rax) 42)
+  (ret))

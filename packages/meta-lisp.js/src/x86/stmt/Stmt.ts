@@ -1,5 +1,5 @@
-import type { Block } from "../block/index.ts"
 import type { Data } from "../data/index.ts"
+import type { Instr } from "../instr/index.ts"
 import type { Type } from "../type/index.ts"
 
 export type Stmt =
@@ -8,17 +8,17 @@ export type Stmt =
 export type DefineCodeStmt = {
   kind: "DefineCodeStmt"
   name: string
-  blocks: Array<Block>
+  instrs: Array<Instr>
 }
 
 export function DefineCodeStmt(
   name: string,
-  blocks: Array<Block>,
+  instrs: Array<Instr>,
 ): DefineCodeStmt {
   return {
     kind: "DefineCodeStmt",
     name,
-    blocks,
+    instrs,
   }
 }
 
