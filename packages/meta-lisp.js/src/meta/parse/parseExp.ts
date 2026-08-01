@@ -144,7 +144,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* '择 clauses)": ({ clauses }, { sexp }) => {
+  "(cons* '若则 clauses)": ({ clauses }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.CondExp(
       S.asListSexp(clauses).elements.map(parseCondClause),
@@ -179,7 +179,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* '匹配多个 targets clauses)": ({ targets, clauses }, { sexp }) => {
+  "(cons* '多匹配 targets clauses)": ({ targets, clauses }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.MatchExp(
       S.asListSexp(targets).elements.map(parseExp),

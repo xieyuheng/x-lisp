@@ -49,7 +49,7 @@
     '(lambda @quote if when unless and or cond match match-many
       begin let letrec @list @square-bracket @set @hash @sexp @string
       -> the polymorphic pipe chain compose define @comment)
-    '(函数 @引用 若 当 除非 且 或 择 匹配 匹配多个
+    '(函数 @引用 若 当 除非 且 或 若则 匹配 多匹配
       循序 令 递归令 @列表 @集合 @散列 @符号算式 @字符串
       -> 型例 多态 管道 串联 复合 定义 @注释)))
 
@@ -127,7 +127,7 @@
      (@comment
        (or <exp> ...))
      (or-exp (list-map parse-exp sexps) keyword-location))
-    ((list-member tag '(cond 择))
+    ((list-member tag '(cond 若则))
      (@comment
        (cond
          (<question> <answer>)
@@ -141,7 +141,7 @@
      (match-exp [(parse-exp (car sexps))]
                 (list-map parse-match-clause (cdr sexps))
                 keyword-location))
-    ((list-member tag '(match-many 匹配多个))
+    ((list-member tag '(match-many 多匹配))
      (@comment
        (match-many (<target> ...)
          ((<pattern> ...) <body>)

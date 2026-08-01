@@ -95,7 +95,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "(cons* '豁免 names)": ({ names }, { location }) => {
+  "(cons* '免检 names)": ({ names }, { location }) => {
     return M.ExemptStmt(
       S.asListSexp(names).elements.map((x) => S.asSymbolSexp(x).content),
       location,
@@ -457,7 +457,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "`(声明原语函数 ,name ,arity)": ({ name, arity }, { location }) => {
+  "`(声明原始函数 ,name ,arity)": ({ name, arity }, { location }) => {
     return M.DeclarePrimitiveFunctionStmt(
       S.asSymbolSexp(name).content,
       Number(S.asIntSexp(arity).content),
@@ -472,7 +472,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "`(声明原语变量 ,name)": ({ name }, { location }) => {
+  "`(声明原始变量 ,name)": ({ name }, { location }) => {
     return M.DeclarePrimitiveVariableStmt(
       S.asSymbolSexp(name).content,
       location,
