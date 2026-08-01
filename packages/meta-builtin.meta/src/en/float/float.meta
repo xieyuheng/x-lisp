@@ -1,6 +1,5 @@
 (module builtin)
 
-(declare-primitive-variable float-t)
 (declare-primitive-function is-float 1)
 (declare-primitive-function float-is-positive 1)
 (declare-primitive-function float-is-non-negative 1)
@@ -20,7 +19,6 @@
 (declare-primitive-function float-compare-ascending 2)
 (declare-primitive-function float-compare-descending 2)
 
-(claim float-t type-t)
 (claim is-float (polymorphic (A) (-> A bool-t)))
 (claim float-is-positive (-> float-t bool-t))
 (claim float-is-non-negative (-> float-t bool-t))

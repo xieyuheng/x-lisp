@@ -1,6 +1,5 @@
 (module builtin)
 
-(declare-primitive-function list-t 1)
 (declare-primitive-function is-list 1)
 (declare-primitive-function make-list 0)
 (declare-primitive-function car 1)
@@ -24,7 +23,6 @@
 (declare-primitive-function list-reverse 1)
 (declare-primitive-function list-to-set 1)
 
-(claim list-t (-> type-t type-t))
 (claim is-list (polymorphic (A) (-> A bool-t)))
 (claim make-list (polymorphic (E) (-> (list-t E))))
 (claim car (polymorphic (E) (-> (list-t E) E)))

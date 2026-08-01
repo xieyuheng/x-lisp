@@ -1,6 +1,5 @@
 (module builtin)
 
-(declare-primitive-variable int-t)
 (declare-primitive-function is-int 1)
 (declare-primitive-function int-is-positive 1)
 (declare-primitive-function int-is-non-negative 1)
@@ -20,7 +19,6 @@
 (declare-primitive-function int-compare-ascending 2)
 (declare-primitive-function int-compare-descending 2)
 
-(claim int-t type-t)
 (claim is-int (polymorphic (A) (-> A bool-t)))
 (claim int-is-positive (-> int-t bool-t))
 (claim int-is-non-negative (-> int-t bool-t))

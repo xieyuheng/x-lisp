@@ -1,9 +1,7 @@
 (module builtin)
 
-(declare-primitive-variable void-t)
 (declare-primitive-variable void)
 (declare-primitive-function is-void 1)
 
-(claim void-t type-t)
 (claim void void-t)
 (claim is-void (polymorphic (A) (-> A bool-t)))

@@ -1,6 +1,5 @@
 (module builtin)
 
-(declare-primitive-function set-t 1)
 (declare-primitive-function make-set 0)
 (declare-primitive-function set-copy 1)
 (declare-primitive-function set-size 1)
@@ -18,7 +17,6 @@
 (declare-primitive-function set-difference 2)
 (declare-primitive-function set-disjoint 2)
 
-(claim set-t (-> type-t type-t))
 (claim make-set (polymorphic (E) (-> (set-t E))))
 (claim set-copy (polymorphic (E) (-> (set-t E) (set-t E))))
 (claim set-size (polymorphic (E) (-> (set-t E) int-t)))

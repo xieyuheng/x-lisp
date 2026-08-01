@@ -1,13 +1,11 @@
 (module builtin)
 
-(declare-primitive-variable symbol-t)
 (declare-primitive-function is-symbol 1)
 (declare-primitive-function symbol-length 1)
 (declare-primitive-function symbol-to-string 1)
 (declare-primitive-function symbol-append 2)
 (declare-primitive-function symbol-concat 1)
 
-(claim symbol-t type-t)
 (claim is-symbol (polymorphic (A) (-> A bool-t)))
 (claim symbol-length (-> symbol-t int-t))
 (claim symbol-to-string (-> symbol-t string-t))
