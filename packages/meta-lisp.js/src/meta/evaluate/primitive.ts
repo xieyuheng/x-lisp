@@ -28,7 +28,7 @@ export function setupPrimitive(): void {
   definePrimitiveVariable("symbol-t", TypeValue(AtomType("symbol")))
   definePrimitiveVariable("符号型", TypeValue(AtomType("symbol")))
   definePrimitiveVariable("keyword-t", TypeValue(AtomType("keyword")))
-  definePrimitiveVariable("关键字型", TypeValue(AtomType("keyword")))
+  definePrimitiveVariable("标签型", TypeValue(AtomType("keyword")))
   definePrimitiveVariable("bool-t", TypeValue(AtomType("bool")))
   definePrimitiveVariable("真假型", TypeValue(AtomType("bool")))
   definePrimitiveVariable("void-t", TypeValue(AtomType("void")))

@@ -65,7 +65,7 @@ void import_builtin_zh(mod_t *mod) {
   define_variable_primitive_0(mod, "meta-builtin/内置/浮点型", x_float_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/文本型", x_string_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/符号型", x_symbol_t);
-  define_variable_primitive_0(mod, "meta-builtin/内置/关键字型", x_keyword_t);
+  define_variable_primitive_0(mod, "meta-builtin/内置/标签型", x_keyword_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/真假型", x_bool_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/空型", x_void_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/文件型", x_file_t);
@@ -114,11 +114,11 @@ void import_builtin_zh(mod_t *mod) {
 
   // keyword
 
-  define_primitive_1(mod, "meta-builtin/内置/为关键字", x_is_keyword);
-  define_primitive_1(mod, "meta-builtin/内置/关键字长度", x_keyword_length);
-  define_primitive_1(mod, "meta-builtin/内置/关键字转文本", x_keyword_to_string);
-  define_primitive_2(mod, "meta-builtin/内置/关键字拼接", x_keyword_append);
-  define_primitive_1(mod, "meta-builtin/内置/关键字连接", x_keyword_concat);
+  define_primitive_1(mod, "meta-builtin/内置/为标签", x_is_keyword);
+  define_primitive_1(mod, "meta-builtin/内置/标签长度", x_keyword_length);
+  define_primitive_1(mod, "meta-builtin/内置/标签转文本", x_keyword_to_string);
+  define_primitive_2(mod, "meta-builtin/内置/标签拼接", x_keyword_append);
+  define_primitive_1(mod, "meta-builtin/内置/标签连接", x_keyword_concat);
 
   // symbol
 
