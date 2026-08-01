@@ -20,7 +20,7 @@
 
 (define (parse-special-form-stmt tag sexps location)
   (cond
-    ((equal tag 'define)
+    ((list-member tag '(define 定义))
      (cond ((is-list-sexp (car sexps))
             (@comment
               (define (<name> <parameter> ...)
@@ -31,20 +31,20 @@
               (parse-body (cdr sexps) location)
               location))
            (else
-             (@comment
-               (define <name> <exp>))
-             (define-variable-stmt
-               (symbol-sexp-content (car sexps))
-               (parse-body (cdr sexps) location)
-               location))))
-    ((equal tag 'define-test)
+            (@comment
+              (define <name> <exp>))
+            (define-variable-stmt
+              (symbol-sexp-content (car sexps))
+              (parse-body (cdr sexps) location)
+              location))))
+    ((list-member tag '(define-test 定义测试))
      (@comment
        (define-test <test-name> <body>))
      (define-test-stmt
        (symbol-sexp-content (car sexps))
        (parse-body (cdr sexps) location)
        location))
-    ((equal tag 'define-type)
+    ((list-member tag '(define-type 定义类型))
      (cond ((is-list-sexp (car sexps))
             (@comment
               (define-type (<type-name> <type-parameter> ...)
@@ -55,33 +55,33 @@
               (parse-body (cdr sexps) location)
               location))
            (else
-             (@comment
-               (define-type <type-name>
-                 <body>))
-             (define-type-stmt
-               (symbol-sexp-content (car sexps))
-               []
-               (parse-body (cdr sexps) location)
-               location))))
-    ((equal tag 'exempt)
+            (@comment
+              (define-type <type-name>
+                <body>))
+            (define-type-stmt
+              (symbol-sexp-content (car sexps))
+              []
+              (parse-body (cdr sexps) location)
+              location))))
+    ((list-member tag '(exempt 豁免))
      (@comment
        (exempt <name> ...))
      (exempt-stmt
        (list-map symbol-sexp-content sexps)
        location))
-    ((equal tag 'private)
+    ((list-member tag '(private 私有))
      (@comment
        (private <name> ...))
      (private-stmt
        (list-map symbol-sexp-content sexps)
        location))
-    ((equal tag 'module)
+    ((list-member tag '(module 模块))
      (@comment
        (module <module-name>))
      (declare-module-stmt
        (symbol-sexp-content (car sexps))
        location))
-    ((equal tag 'import)
+    ((list-member tag '(import 导入))
      (@comment
        (import <module-name> <name> ...))
      (let ((source (parse-import-source (car sexps))))
@@ -90,7 +90,7 @@
          (pair-second source)
          (list-map symbol-sexp-content (cdr sexps))
          location)))
-    ((equal tag 'import-as)
+    ((list-member tag '(import-as 导入为))
      (@comment
        (import-as <module-name> <prefix>))
      (let ((source (parse-import-source (car sexps))))
@@ -99,7 +99,7 @@
          (pair-second source)
          (symbol-sexp-content (car (cdr sexps)))
          location)))
-    ((equal tag 'import-all)
+    ((list-member tag '(import-all 全导入))
      (@comment
        (import-all <module-name>))
      (let ((source (parse-import-source (car sexps))))
@@ -107,7 +107,7 @@
          (pair-first source)
          (pair-second source)
          location)))
-    ((equal tag 'define-enum)
+    ((list-member tag '(define-enum 定义枚举))
      (@comment
        (define-enum <type-name>
          (<constructor-name> (<field-name> <type>) ...)
@@ -119,7 +119,7 @@
        (parse-pre-type-constructor (car sexps))
        (list-map parse-pre-data-constructor (cdr sexps))
        location))
-    ((equal tag 'define-algebraic-type)
+    ((list-member tag '(define-algebraic-type 定义代数类型))
      (@comment
        (define-algebraic-type <type-name>
          ((<constructor-name> (<field-name> <type>) ...)
@@ -139,9 +139,9 @@
                    (match sexp
                      ((list-sexp elements location)
                       (parse-explicit-data-constructor elements location))))
-                 (cdr sexps))
+         (cdr sexps))
        location))
-    ((equal tag 'define-struct)
+    ((list-member tag '(define-struct 定义结构))
      (@comment
        (define-struct <type-name>
          (<field-name> <type>)
@@ -153,7 +153,7 @@
        (parse-pre-type-constructor (car sexps))
        (list-map parse-pre-data-field (cdr sexps))
        location))
-    ((equal tag 'define-struct*)
+    ((list-member tag '(define-struct* 定义结构*))
      (@comment
        (define-struct* <type-name>
          (<constructor-name>
@@ -167,7 +167,7 @@
        (parse-pre-type-constructor (car sexps))
        (parse-pre-data-constructor (car (cdr sexps)))
        location))
-    ((equal tag 'define-record-type)
+    ((list-member tag '(define-record-type 定义记录类型))
      (@comment
        (define-record-type <type-name>
          (<constructor-name> (<field-name> <type>) ...)
@@ -183,7 +183,7 @@
        (parse-pre-type-constructor (car sexps))
        (parse-explicit-data-constructor (cdr sexps) location)
        location))
-    ((equal tag 'define-opaque-type)
+    ((list-member tag '(define-opaque-type 定义黑盒类型))
      (@comment
        (define-opaque-type <type-name> <representation-type>
          (<interface-name> <interface-type>)
@@ -197,40 +197,41 @@
          (parse-exp (car (cdr sexps)))
          (list-map parse-pre-interface-entry (cdr (cdr sexps)))
          location)))
-    ((equal tag 'claim)
+    ((list-member tag '(claim 声明))
      (@comment
        (claim <name> <type>))
      (claim-stmt
        (symbol-sexp-content (car sexps))
        (parse-exp (car (cdr sexps)))
        location))
-    ((equal tag 'claim-type)
+    ((list-member tag '(claim-type 声明类型))
      (@comment
        (claim-type <type-name>))
      (claim-type-stmt
        (symbol-sexp-content (car sexps))
        location))
-    ((equal tag 'admit)
+    ((list-member tag '(admit 承认))
+     (equal tag 'admit)
      (@comment
        (admit <name> <type>))
      (admit-stmt
        (symbol-sexp-content (car sexps))
        (parse-exp (car (cdr sexps)))
        location))
-    ((equal tag 'declare-primitive-function)
+    ((list-member tag '(declare-primitive-function 声明原语函数))
      (@comment
        (declare-primitive-function <name> <arity>))
      (declare-primitive-function-stmt
        (symbol-sexp-content (car sexps))
        (int-sexp-content (car (cdr sexps)))
        location))
-    ((equal tag 'declare-primitive-variable)
+    ((list-member tag '(declare-primitive-variable 声明原语变量))
      (@comment
        (declare-primitive-variable <name>))
      (declare-primitive-variable-stmt
        (symbol-sexp-content (car sexps))
        location))
-    ((equal tag '@comment)
+    ((list-member tag '(@comment @注释))
      (@comment
        (@comment <sexp> ...))
      (comment-stmt sexps location))))

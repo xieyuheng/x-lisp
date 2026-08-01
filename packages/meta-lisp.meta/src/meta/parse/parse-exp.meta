@@ -45,9 +45,13 @@
          (error-with-location message location))))))
 
 (define syntax-keywords
-  ['lambda '@quote 'if 'when 'unless 'and 'or 'cond 'match 'match-many
-   'begin '= 'let 'letrec '@list '@square-bracket '@set '@hash '@sexp '@string
-   '-> 'the 'polymorphic 'pipe 'chain 'compose 'define '@comment])
+  (list-append
+    '(lambda @quote if when unless and or cond match match-many
+      begin let letrec @list @square-bracket @set @hash @sexp @string
+      -> the polymorphic pipe chain compose define @comment)
+    '(函数 @引用 若 当 除非 且 或 择 匹配 匹配多个
+      循序 令 递归令 @列表 @集合 @散列 @符号算式 @字符串
+      -> 型例 多态 管道 串联 复合 定义 @注释)))
 
 (claim parse-compound-exp
   (-> (list-t sexp-t) source-location-t
@@ -77,22 +81,22 @@
 
 (define (parse-special-form-exp tag sexps location keyword-location)
   (cond
-    ((equal tag 'lambda)
+    ((list-member tag '(lambda 函))
      (@comment
        (lambda (<parameter> ...)
          <body>))
      (lambda-exp (parse-parameters (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal tag '@quote)
+    ((list-member tag '(@quote @引用))
      (@comment
        (@quote <sexp>))
      (quote-exp (car sexps) location))
-    ((equal tag '@sexp)
+    ((list-member tag '(@sexp @符号算式))
      (@comment
        (@sexp <sexp>))
      (sexp-exp (car sexps) location))
-    ((equal tag 'if)
+    ((list-member tag '(if 若))
      (@comment
        (if <condition>
          <consequent>
@@ -101,35 +105,35 @@
              (parse-exp (list-get 1 sexps))
              (parse-exp (list-get 2 sexps))
              keyword-location))
-    ((equal tag 'when)
+    ((list-member tag '(when 当))
      (@comment
        (when <condition>
          <body>))
      (when-exp (parse-exp (car sexps))
                (parse-body (cdr sexps) location)
                keyword-location))
-    ((equal tag 'unless)
+    ((list-member tag '(unless 除非))
      (@comment
        (unless <condition>
          <body>))
      (unless-exp (parse-exp (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal tag 'and)
+    ((list-member tag '(and 且))
      (@comment
        (and <exp> ...))
      (and-exp (list-map parse-exp sexps) keyword-location))
-    ((equal tag 'or)
+    ((list-member tag '(or 或))
      (@comment
        (or <exp> ...))
      (or-exp (list-map parse-exp sexps) keyword-location))
-    ((equal tag 'cond)
+    ((list-member tag '(cond 择))
      (@comment
        (cond
          (<question> <answer>)
          ...))
      (cond-exp (list-map parse-cond-clause sexps) keyword-location))
-    ((equal tag 'match)
+    ((list-member tag '(match 匹配))
      (@comment
        (match <target>
          (<pattern> <body>)
@@ -137,7 +141,7 @@
      (match-exp [(parse-exp (car sexps))]
                 (list-map parse-match-clause (cdr sexps))
                 keyword-location))
-    ((equal tag 'match-many)
+    ((list-member tag '(match-many 匹配多个))
      (@comment
        (match-many (<target> ...)
          ((<pattern> ...) <body>)
@@ -145,11 +149,11 @@
      (match-exp (list-map parse-exp (list-sexp-elements (car sexps)))
                 (list-map parse-match-many-clause (cdr sexps))
                 keyword-location))
-    ((equal tag 'begin)
+    ((list-member tag '(begin 循序))
      (@comment
        (begin <body>))
      (parse-body sexps keyword-location))
-    ((equal tag 'let)
+    ((list-member tag '(let 令))
      (@comment
        (let ((<name> <exp>)
              ...)
@@ -157,7 +161,7 @@
      (let-exp (parse-bindings (car sexps))
               (parse-body (cdr sexps) location)
               keyword-location))
-    ((equal tag 'letrec)
+    ((list-member tag '(letrec 递归令))
      (@comment
        (letrec ((<name> <exp>)
                 ...)
@@ -165,7 +169,7 @@
      (letrec-exp (parse-bindings (car sexps))
                  (parse-body (cdr sexps) location)
                  keyword-location))
-    ((equal tag 'define)
+    ((list-member tag '(define 定义))
      (cond ((is-list-sexp (car sexps))
             (@comment
               (define (<name> <parameter> ...) <body>))
@@ -182,7 +186,7 @@
                []
                (parse-body (cdr sexps) location)
                keyword-location))))
-    ((equal tag '@list)
+    ((list-member tag '(@list @列表))
      (@comment
        (@list <exp> ...))
      (list-exp (list-map parse-exp sexps) location))
@@ -190,15 +194,15 @@
      (@comment
        [<exp> ...])
      (list-exp (list-map parse-exp sexps) location))
-    ((equal tag '@string)
+    ((list-member tag '(@string @字符串))
      (@comment
        (@string <exp> ...))
      (string-concat-exp (list-map parse-exp sexps) location))
-    ((equal tag '@set)
+    ((list-member tag '(@set @集合))
      (@comment
        (@set <exp> ...))
      (set-exp (list-map parse-exp sexps) location))
-    ((equal tag '@hash)
+    ((list-member tag '(@hash @散列))
      (@comment
        (@hash <key> <value> ...))
      (hash-exp (parse-hash-entries sexps) location))
@@ -208,34 +212,34 @@
      (arrow-exp (list-map parse-exp (list-init sexps))
                 (parse-exp (list-last sexps))
                 location))
-    ((equal tag 'the)
+    ((list-member tag '(the 型例))
      (@comment
        (the <type> <exp>))
      (the-exp (parse-exp (car sexps))
               (parse-exp (list-get 1 sexps))
               location))
-    ((equal tag 'polymorphic)
+    ((list-member tag '(polymorphic 多态))
      (@comment
        (polymorphic (<type-parameter> ...)
          <type>))
      (polymorphic-exp (parse-parameters (car sexps))
                       (parse-exp (list-get 1 sexps))
                       location))
-    ((equal tag 'pipe)
+    ((list-member tag '(pipe 管道))
      (@comment
        (pipe <init> <step> ...))
      (pipe-exp (parse-exp (car sexps))
                (list-map parse-exp (cdr sexps))
                location))
-    ((equal tag 'chain)
+    ((list-member tag '(chain 串联))
      (@comment
        (chain <step> ...))
      (chain-exp (list-map parse-exp sexps) location))
-    ((equal tag 'compose)
+    ((list-member tag '(compose 复合))
      (@comment
        (compose <step> ...))
      (compose-exp (list-map parse-exp sexps) location))
-    ((equal tag '@comment)
+    ((list-member tag '(@comment @注释))
      (@comment
        (@comment <sexp> ...))
      (comment-exp sexps location))))
