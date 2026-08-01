@@ -270,7 +270,7 @@
   (match sexp
     ((list-sexp elements location)
      (if (and (is-symbol-sexp (car elements))
-              (equal (symbol-sexp-content (car elements)) 'else))
+              (list-member (symbol-sexp-content (car elements)) '(else 否则)))
        (make-cond-clause (qualified-var-exp 'meta-builtin 'builtin 'true location)
                          (parse-body (cdr elements) location)
                          location)
