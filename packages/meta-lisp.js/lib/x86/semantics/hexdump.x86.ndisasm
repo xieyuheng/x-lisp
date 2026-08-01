@@ -1,34 +1,43 @@
-00000000  48C7C000000000    mov rax,0x0
-00000007  48C7C700000000    mov rdi,0x0
-0000000E  488D3500000000    lea rsi,[rel 0x15]
-00000015  48C7C210000000    mov rdx,0x10
-0000001C  0F05              syscall
-0000001E  4C8BC8            mov r9,rax
-00000021  4883F800          cmp rax,byte +0x0
-00000025  0F8400000000      jz near 0x2b
-0000002B  488D3D00000000    lea rdi,[rel 0x32]
-00000032  488B3F            mov rdi,[rdi]
-00000035  4C8D0500000000    lea r8,[rel 0x3c]
-0000003C  4D8B00            mov r8,[r8]
-0000003F  4833C9            xor rcx,rcx
-00000042  4833C0            xor rax,rax
-00000045  488BD1            mov rdx,rcx
-00000048  488D1452          lea rdx,[rdx+rdx*2]
-0000004C  8A040E            mov al,[rsi+rcx]
-0000004F  4C8BD0            mov r10,rax
-00000052  80E00F            and al,0xf
-00000055  8A0407            mov al,[rdi+rax]
-00000058  4188441002        mov [r8+rdx+0x2],al
-0000005D  41C0EA04          shr r10b,byte 0x4
-00000061  468A1417          mov r10b,[rdi+r10]
-00000065  4588541001        mov [r8+rdx+0x1],r10b
-0000006A  4883C101          add rcx,byte +0x1
-0000006E  493BC9            cmp rcx,r9
-00000071  0F8600000000      jna near 0x77
-00000077  48C7C001000000    mov rax,0x1
-0000007E  48C7C701000000    mov rdi,0x1
-00000085  498BF0            mov rsi,r8
-00000088  48C7C231000000    mov rdx,0x31
-0000008F  0F05              syscall
-00000091  E900000000        jmp 0x96
-00000096  C3                ret
+00000000  53                push rbx
+00000001  4157              push r15
+00000003  48C7C000000000    mov rax,0x0
+0000000A  48C7C700000000    mov rdi,0x0
+00000011  488D3500000000    lea rsi,[rel 0x18]
+00000018  48C7C210000000    mov rdx,0x10
+0000001F  0F05              syscall
+00000021  4C8BF8            mov r15,rax
+00000024  4883F800          cmp rax,byte +0x0
+00000028  0F8400000000      jz near 0x2e
+0000002E  4833C9            xor rcx,rcx
+00000031  488BD1            mov rdx,rcx
+00000034  48D1E2            shl rdx,1
+00000037  4803D1            add rdx,rcx
+0000003A  4833C0            xor rax,rax
+0000003D  488D3500000000    lea rsi,[rel 0x44]
+00000044  4803F1            add rsi,rcx
+00000047  8A06              mov al,[rsi]
+00000049  488BD8            mov rbx,rax
+0000004C  488D3D00000000    lea rdi,[rel 0x53]
+00000053  488B3F            mov rdi,[rdi]
+00000056  80E00F            and al,0xf
+00000059  488B3500000000    mov rsi,[rel 0x60]
+00000060  4803F0            add rsi,rax
+00000063  8A06              mov al,[rsi]
+00000065  88441702          mov [rdi+rdx+0x2],al
+00000069  C0EB04            shr bl,byte 0x4
+0000006C  488B3500000000    mov rsi,[rel 0x73]
+00000073  4803F3            add rsi,rbx
+00000076  8A1E              mov bl,[rsi]
+00000078  885C1701          mov [rdi+rdx+0x1],bl
+0000007C  4883C101          add rcx,byte +0x1
+00000080  493BCF            cmp rcx,r15
+00000083  0F8600000000      jna near 0x89
+00000089  48C7C001000000    mov rax,0x1
+00000090  48C7C701000000    mov rdi,0x1
+00000097  488B3500000000    mov rsi,[rel 0x9e]
+0000009E  48C7C231000000    mov rdx,0x31
+000000A5  0F05              syscall
+000000A7  E900000000        jmp 0xac
+000000AC  415F              pop r15
+000000AE  5B                pop rbx
+000000AF  C3                ret

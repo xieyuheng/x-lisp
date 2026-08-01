@@ -82,6 +82,6 @@
     (jmp (label read)))
 
   (block done
-    (pop (reg rbx))
     (pop (reg r15))
+    (pop (reg rbx))
     (ret)))
