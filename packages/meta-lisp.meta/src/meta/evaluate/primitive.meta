@@ -15,7 +15,7 @@
     (define-primitive-variable 'float-t (type-value (atom-type 'float)))
     (define-primitive-variable '浮点型 (type-value (atom-type 'float)))
     (define-primitive-variable 'string-t (type-value (atom-type 'string)))
-    (define-primitive-variable '字符串型 (type-value (atom-type 'string)))
+    (define-primitive-variable '文本型 (type-value (atom-type 'string)))
     (define-primitive-variable 'symbol-t (type-value (atom-type 'symbol)))
     (define-primitive-variable '符号型 (type-value (atom-type 'symbol)))
     (define-primitive-variable 'keyword-t (type-value (atom-type 'keyword)))

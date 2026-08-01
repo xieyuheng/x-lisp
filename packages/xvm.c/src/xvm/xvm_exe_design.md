@@ -61,7 +61,7 @@
 string_table: char[string_table_size]
 ```
 
-NUL 字符分隔的字符串池，各条目通过 offset 引用。
+NUL 字符分隔的文本池，各条目通过 offset 引用。
 
 ## 设计约束
 

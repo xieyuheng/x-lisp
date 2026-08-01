@@ -24,7 +24,7 @@ export function setupPrimitive(): void {
   definePrimitiveVariable("float-t", TypeValue(AtomType("float")))
   definePrimitiveVariable("浮点型", TypeValue(AtomType("float")))
   definePrimitiveVariable("string-t", TypeValue(AtomType("string")))
-  definePrimitiveVariable("字符串型", TypeValue(AtomType("string")))
+  definePrimitiveVariable("文本型", TypeValue(AtomType("string")))
   definePrimitiveVariable("symbol-t", TypeValue(AtomType("symbol")))
   definePrimitiveVariable("符号型", TypeValue(AtomType("symbol")))
   definePrimitiveVariable("keyword-t", TypeValue(AtomType("keyword")))

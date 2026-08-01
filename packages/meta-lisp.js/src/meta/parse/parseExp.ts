@@ -299,7 +299,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* '@字符串 elements)": ({ elements }, { location }) => {
+  "(cons* '@文本 elements)": ({ elements }, { location }) => {
     return M.StringConcatExp(
       S.asListSexp(elements).elements.map(parseExp),
       location,
