@@ -16,6 +16,6 @@ title: box-get
 
 ```meta-lisp
 (define box (make-box))
-(box-put! 42 box)
+(box-put 42 box)
 (box-get box) ;; => 42
 ```

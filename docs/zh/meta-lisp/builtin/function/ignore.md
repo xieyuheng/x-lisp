@@ -15,6 +15,6 @@ title: ignore
 # 例子
 
 ```meta-lisp
-(ignore (hash-put! 'x 1 (make-hash)))  ;; => void
+(ignore (hash-put 'x 1 (make-hash)))  ;; => void
 (ignore 1)                             ;; => void
 ```

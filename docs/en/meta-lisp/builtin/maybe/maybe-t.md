@@ -26,7 +26,7 @@ Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or
 (claim just  (polymorphic (A) (-> A (maybe-t A))))
 (claim is-just (polymorphic (A) (-> (maybe-t A) bool-t)))
 (claim just-value (polymorphic (A) (-> (maybe-t A) A)))
-(claim just-put-value! (polymorphic (A) (-> A (maybe-t A) (maybe-t A))))
+(claim just-put-value (polymorphic (A) (-> A (maybe-t A) (maybe-t A))))
 
 (claim nothing (polymorphic (A) (-> (maybe-t A))))
 (claim is-nothing (polymorphic (A) (-> (maybe-t A) bool-t)))

@@ -29,9 +29,9 @@ type-t
 (claim triple-first  (polymorphic (A B C) (-> (triple-t A B C) A)))
 (claim triple-second (polymorphic (A B C) (-> (triple-t A B C) B)))
 (claim triple-third  (polymorphic (A B C) (-> (triple-t A B C) C)))
-(claim triple-put-first!  (polymorphic (A B C) (-> A (triple-t A B C) (triple-t A B C))))
-(claim triple-put-second! (polymorphic (A B C) (-> B (triple-t A B C) (triple-t A B C))))
-(claim triple-put-third!  (polymorphic (A B C) (-> C (triple-t A B C) (triple-t A B C))))
+(claim triple-put-first  (polymorphic (A B C) (-> A (triple-t A B C) (triple-t A B C))))
+(claim triple-put-second (polymorphic (A B C) (-> B (triple-t A B C) (triple-t A B C))))
+(claim triple-put-third  (polymorphic (A B C) (-> C (triple-t A B C) (triple-t A B C))))
 ```
 
 # 例子

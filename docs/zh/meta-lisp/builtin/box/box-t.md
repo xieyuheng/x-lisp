@@ -18,7 +18,7 @@ Box 类型构造器。内部表示为 `(list-t E)`。
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put! (-> E (box-t E) (box-t E)))
+  (box-put (-> E (box-t E) (box-t E)))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
 
@@ -27,7 +27,7 @@ Box 类型构造器。内部表示为 `(list-t E)`。
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
-(claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
+(claim box-put (polymorphic (E) (-> E (box-t E) (box-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
 (claim box-get (polymorphic (E) (-> (box-t E) E)))
 ```
@@ -37,7 +37,7 @@ Box 类型构造器。内部表示为 `(list-t E)`。
 ```meta-lisp
 (define box (make-box))
 (box-is-empty box)    ;; => true
-(box-put! 42 box)
+(box-put 42 box)
 (box-is-empty box)    ;; => false
 (box-get-maybe box) ;; => (just 42)
 (box-get box)       ;; => 42

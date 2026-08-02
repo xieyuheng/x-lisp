@@ -17,6 +17,6 @@ Check if a box is empty.
 ```meta-lisp
 (define box (make-box))
 (box-is-empty box) ;; => true
-(box-put! 42 box)
+(box-put 42 box)
 (box-is-empty box) ;; => false
 ```

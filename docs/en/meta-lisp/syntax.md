@@ -291,7 +291,7 @@ Defines a module-level variable.
 
 A variable references a bound name.
 
-Names consist of letters, digits, `-`, `!` and other characters.
+Names consist of letters, digits, `-` and other characters.
 
 ```meta-lisp
 x
@@ -913,8 +913,8 @@ For example:
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    is-point
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
+   (x point-x point-put-x)
+   (y point-y point-put-y)))
 ```
 
 This generates functions with the following types:
@@ -924,8 +924,8 @@ This generates functions with the following types:
 (claim is-point (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
 (claim point-y (-> point-t float-t))
-(claim point-put-x! (-> float-t point-t point-t))
-(claim point-put-y! (-> float-t point-t point-t))
+(claim point-put-x (-> float-t point-t point-t))
+(claim point-put-y (-> float-t point-t point-t))
 ```
 
 Usage example:
@@ -934,7 +934,7 @@ Usage example:
 (define p (make-point 1.0 2.0))
 (is-point p)    ;; => true
 (point-x p)     ;; => 1.0
-(point-put-x! p 3.0)
+(point-put-x p 3.0)
 (point-x p)     ;; => 3.0
 ```
 
@@ -952,8 +952,8 @@ For example:
    is-nil)
   ((li (head E) (tail (my-list-t E)))
    is-li
-    (head li-head li-put-head!)
-    (tail li-tail li-put-tail!)))
+    (head li-head li-put-head)
+    (tail li-tail li-put-tail)))
 ```
 
 This generates functions with the following types:
@@ -965,8 +965,8 @@ This generates functions with the following types:
 (claim is-li (polymorphic (E) (-> (my-list-t E) bool-t)))
 (claim li-head (polymorphic (E) (-> (my-list-t E) E)))
 (claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
-(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
-(claim li-put-tail! (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+(claim li-put-head (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li-put-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 ```
 
 ## (define-record-type)
@@ -991,8 +991,8 @@ Similar to `(define-algebraic-type)`, but with only one constructor.
 (define-record-type point-t
   (make-point (x float-t) (y float-t))
   is-point
-  (x point-x point-put-x!)
-  (y point-y point-put-y!))
+  (x point-x point-put-x)
+  (y point-y point-put-y))
 ```
 
 Equivalent to:
@@ -1001,8 +1001,8 @@ Equivalent to:
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    is-point
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
+   (x point-x point-put-x)
+   (y point-y point-put-y)))
 ```
 
 The `(define-record-type)` syntax comes from Scheme,
@@ -1042,22 +1042,22 @@ Equivalent to:
 (define-algebraic-type exp-t
   ((var-exp (name symbol-t))
    is-var-exp
-   (name var-exp-name var-exp-put-name!))
+   (name var-exp-name var-exp-put-name))
   ((apply-exp (target exp-t) (arg exp-t))
    is-apply-exp
-   (target apply-exp-target apply-exp-put-target!)
-   (arg apply-exp-arg apply-exp-put-arg!))
+   (target apply-exp-target apply-exp-put-target)
+   (arg apply-exp-arg apply-exp-put-arg))
   ((lambda-exp (parameter symbol-t) (body exp-t))
    is-lambda-exp
-   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
-   (body lambda-exp-body lambda-exp-put-body!)))
+   (parameter lambda-exp-parameter lambda-exp-put-parameter)
+   (body lambda-exp-body lambda-exp-put-body)))
 ```
 
 For a given `<constructor-name>`, the naming rules are:
 
 - `<predicate-name>` = `is-<constructor-name>` -- `is-var-exp`
 - `<accessor-name>` = `<constructor-name>-<field-name>` -- `var-exp-name`
-- `<modifier-name>` = `<constructor-name>-put-<field-name>!` -- `var-exp-put-name!`
+- `<modifier-name>` = `<constructor-name>-put-<field-name>` -- `var-exp-put-name`
 
 ## (define-struct)
 
@@ -1087,8 +1087,8 @@ Equivalent to:
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    is-point
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
+   (x point-x point-put-x)
+   (y point-y point-put-y)))
 ```
 
 For a given `<type-name>`, the naming rules are:
@@ -1097,7 +1097,7 @@ For a given `<type-name>`, the naming rules are:
 - `<predicate-name>` = `is-<base-name>` -- `is-point`
 - `<constructor-name>` = `make-<base-name>` -- `make-point`
 - `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
-- `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
+- `<modifier-name>` = `<base-name>-put-<field-name>` -- `point-put-x`
 
 <a name="define-struct-star"></a>
 ## (define-struct*)
@@ -1192,7 +1192,7 @@ For example, the builtin `box-t` with internal representation `(list-t E)`:
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put! (-> E (box-t E) (box-t E)))
+  (box-put (-> E (box-t E) (box-t E)))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
 
@@ -1201,7 +1201,7 @@ When implementing interface functions, it is equivalent to declaring:
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (list-t E))))
 (claim box-is-empty (polymorphic (E) (-> (list-t E) bool-t)))
-(claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim box-put (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
 ```
 
@@ -1210,10 +1210,10 @@ Thus interface functions can use list APIs internally:
 ```meta-lisp
 (define (make-box) (make-list))
 
-(define (box-put! value box)
+(define (box-put value box)
   (if (box-is-empty box)
-    (list-push! value box)
-    (list-put! 0 value box)))
+    (list-push value box)
+    (list-put 0 value box)))
 ```
 
 When using interface functions, it is equivalent to declaring:
@@ -1221,7 +1221,7 @@ When using interface functions, it is equivalent to declaring:
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
-(claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
+(claim box-put (polymorphic (E) (-> E (box-t E) (box-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
 ```
 

@@ -16,6 +16,6 @@ Get the value from a box. Throws an error if the box is empty.
 
 ```meta-lisp
 (define box (make-box))
-(box-put! 42 box)
+(box-put 42 box)
 (box-get box) ;; => 42
 ```

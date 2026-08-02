@@ -435,8 +435,8 @@ Operations on `(pair-t A B)`.
 - [`is-pair`](pair/is-pair.md) — Check if a value is a pair
 - [`pair-first`](pair/pair-first.md) — First element
 - [`pair-second`](pair/pair-second.md) — Second element
-- [`pair-put-first!`](pair/pair-put-first-mut.md) — Replace first element
-- [`pair-put-second!`](pair/pair-put-second-mut.md) — Replace second element
+- [`pair-put-first`](pair/pair-put-first.md) — Replace first element
+- [`pair-put-second`](pair/pair-put-second.md) — Replace second element
 
 ## Maybe
 
@@ -448,7 +448,7 @@ Operations on `(maybe-t A)`.
 - [`is-just`](maybe/is-just.md) — Check if just
 - [`is-nothing`](maybe/is-nothing.md) — Check if nothing
 - [`just-value`](maybe/just-value.md) — Extract value from just
-- [`just-put-value!`](maybe/just-put-value-mut.md) — Replace value in just
+- [`just-put-value`](maybe/just-put-value.md) — Replace value in just
 
 ## Box
 

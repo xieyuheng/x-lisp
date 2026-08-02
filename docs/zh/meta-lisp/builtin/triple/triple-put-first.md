@@ -1,21 +1,21 @@
 ---
-title: triple-put-first!
+title: triple-put-first
 ---
 
-# Type
+# 类型
 
 ```meta-lisp
 (polymorphic (A B C) (-> A (triple-t A B C) (triple-t A B C)))
 ```
 
-# Description
+# 描述
 
-Replace the first element of a triple.
+替换 triple 的第一个元素。
 
-# Examples
+# 例子
 
 ```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
-  (triple-put-first! 7 t)
+  (triple-put-first 7 t)
   (triple-first t))  ;; => 7
 ```

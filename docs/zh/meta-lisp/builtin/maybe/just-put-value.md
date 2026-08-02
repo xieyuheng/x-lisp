@@ -1,5 +1,5 @@
 ---
-title: just-put-value!
+title: just-put-value
 ---
 
 # 类型
@@ -16,6 +16,6 @@ title: just-put-value!
 
 ```meta-lisp
 (let ((m (just 42)))
-  (just-put-value! 7 m)
+  (just-put-value 7 m)
   (just-value m))  ;; => 7
 ```
