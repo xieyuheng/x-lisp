@@ -1,7 +1,0 @@
-(module builtin)
-
-(define (hash-put-entry-copy entry hash)
-  (hash-put-copy (hash-entry-key entry) (hash-entry-value entry) hash))
-
-(define (hash-put-entry entry hash)
-  (hash-put (hash-entry-key entry) (hash-entry-value entry) hash))
