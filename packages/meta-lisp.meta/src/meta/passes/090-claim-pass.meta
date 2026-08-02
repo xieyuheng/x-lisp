@@ -21,7 +21,7 @@
            (outcome-ok)))
         (else
          (println
-           (format-message-with-source-location
+           (format-message-with-location
              (@string
                "undefined claimed name"
                "\n  module: " (symbol-to-string (mod-name mod))

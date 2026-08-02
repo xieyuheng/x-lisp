@@ -14,9 +14,9 @@ value_t x_format_as_sexp(value_t sexp) {
   return result;
 }
 
-value_t x_format_message_with_source_location(value_t message, value_t location) {
+value_t x_format_message_with_location(value_t message, value_t location) {
   buffer_t *buffer = make_buffer();
-  write_message_with_source_location(
+  write_message_with_location(
     buffer,
     xstring_string(to_xstring(message)),
     value_to_source_location(location));

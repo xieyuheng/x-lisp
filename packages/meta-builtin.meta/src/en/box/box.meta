@@ -41,7 +41,7 @@
     ((nothing)
      (file-write
       (current-stderr-file)
-      (format-message-with-source-location "box is empty" location))
+      (format-message-with-location "box is empty" location))
      (error "box is empty"))))
 
 (define-test box-test

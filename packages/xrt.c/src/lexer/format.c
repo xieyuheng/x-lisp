@@ -110,7 +110,7 @@ static void write_position(buffer_t *buffer, struct position_t position) {
   write_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
 }
 
-void write_message_with_source_location(buffer_t *buffer, const char *message, struct source_location_t location) {
+void write_message_with_location(buffer_t *buffer, const char *message, struct source_location_t location) {
   assert(location.pathname);
 
   path_t *path = make_path(location.pathname);

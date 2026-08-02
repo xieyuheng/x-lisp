@@ -106,7 +106,7 @@
          "(mod-claim) name already claimed"
          "\n  name: " (symbol-to-string name)
          "\n"
-         (format-message-with-source-location "previous claim"
+         (format-message-with-location "previous claim"
            (term-location (claimed-entry-term previous))))
        (term-location term)))
     ((nothing)

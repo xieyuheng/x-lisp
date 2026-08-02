@@ -242,7 +242,7 @@ void import_builtin_en(mod_t *mod) {
 
   define_primitive_2(mod, "meta-builtin/builtin/parse-sexps", x_parse_sexps);
   define_primitive_1(mod, "meta-builtin/builtin/format-as-sexp", x_format_as_sexp);
-  define_primitive_2(mod, "meta-builtin/builtin/format-message-with-source-location", x_format_message_with_source_location);
+  define_primitive_2(mod, "meta-builtin/builtin/format-message-with-location", x_format_message_with_location);
 
   // json
 

@@ -13,5 +13,5 @@
   (row int-t)
   (column int-t))
 
-(declare-primitive-function format-message-with-source-location 2)
-(claim format-message-with-source-location (-> string-t source-location-t string-t))
+(declare-primitive-function format-message-with-location 2)
+(claim format-message-with-location (-> string-t source-location-t string-t))

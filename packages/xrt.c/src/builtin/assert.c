@@ -52,7 +52,7 @@ value_t x_assert_with_location(value_t value, value_t location) {
   buffer_free(message_buffer);
 
   buffer_t *output_buffer = make_buffer();
-  write_message_with_source_location(
+  write_message_with_location(
     output_buffer,
     message,
     value_to_source_location(location));
@@ -69,7 +69,7 @@ value_t x_assert_not_with_location(value_t value, value_t location) {
   buffer_free(message_buffer);
 
   buffer_t *output_buffer = make_buffer();
-  write_message_with_source_location(
+  write_message_with_location(
     output_buffer,
     message,
     value_to_source_location(location));
@@ -87,7 +87,7 @@ value_t x_assert_equal_with_location(value_t lhs, value_t rhs, value_t location)
   buffer_free(message_buffer);
 
   buffer_t *output_buffer = make_buffer();
-  write_message_with_source_location(
+  write_message_with_location(
     output_buffer,
     message,
     value_to_source_location(location));
@@ -105,7 +105,7 @@ value_t x_assert_not_equal_with_location(value_t lhs, value_t rhs, value_t locat
   buffer_free(message_buffer);
 
   buffer_t *output_buffer = make_buffer();
-  write_message_with_source_location(
+  write_message_with_location(
     output_buffer,
     message,
     value_to_source_location(location));

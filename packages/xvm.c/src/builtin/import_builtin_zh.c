@@ -242,7 +242,7 @@ void import_builtin_zh(mod_t *mod) {
 
   define_primitive_2(mod, "meta-builtin/内置/解析符号算式", x_parse_sexps_zh);
   define_primitive_1(mod, "meta-builtin/内置/呈现为符号算式", x_format_as_sexp);
-  define_primitive_2(mod, "meta-builtin/内置/呈现消息及源码位置", x_format_message_with_source_location);
+  define_primitive_2(mod, "meta-builtin/内置/呈现消息及位置", x_format_message_with_location);
 
   // json
 
