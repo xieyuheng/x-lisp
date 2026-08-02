@@ -5,7 +5,7 @@
 
 (define (sexp-collect-key-value-pairs-loop remaining result)
   (if (list-is-empty remaining)
-    (list-reverse-copy result)
+    (list-copy-reverse result)
     (let ((first (car remaining)))
       (match first
         ((keyword-sexp content location)

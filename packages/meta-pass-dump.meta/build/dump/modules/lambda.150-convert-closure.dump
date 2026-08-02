@@ -104,7 +104,7 @@
 
 (define empty-env (@closure meta-builtin/builtin/make-hash©wrap))
 
-(define extend-env (@closure meta-builtin/builtin/hash-put-copy©wrap))
+(define extend-env (@closure meta-builtin/builtin/hash-copy-put©wrap))
 
 (define env-lookup (@closure meta-builtin/builtin/hash-get-maybe©wrap))
 

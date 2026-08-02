@@ -1,5 +1,5 @@
 ---
-title: hash-put-entries-copy
+title: hash-copy-put-entries
 ---
 
 # 类型
@@ -15,7 +15,7 @@ title: hash-put-entries-copy
 # 例子
 
 ```meta-lisp
-(hash-put-entries-copy
+(hash-copy-put-entries
   [(make-hash-entry 'a 1) (make-hash-entry 'b 2)]
   (@hash))
 ;; => (@hash 'a 1 'b 2)

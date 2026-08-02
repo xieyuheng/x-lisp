@@ -184,7 +184,7 @@
 
 (claim extend-env (-> meta-builtin/builtin/symbol-t value-t env-t env-t))
 
-(define extend-env meta-builtin/builtin/hash-put-copy)
+(define extend-env meta-builtin/builtin/hash-copy-put)
 
 (claim env-lookup
   (-> meta-builtin/builtin/symbol-t env-t (meta-builtin/builtin/maybe-t value-t)))

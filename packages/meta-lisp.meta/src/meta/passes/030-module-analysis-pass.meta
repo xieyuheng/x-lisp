@@ -212,7 +212,7 @@
     (list-put i (@string (list-get i lines) ")") lines)))
 
 (define (sort-entries-by-symbol-key entries)
-  (list-sort-copy
+  (list-copy-sort
     (lambda (a b)
       (string-compare-lexical
         (symbol-to-string (hash-entry-key a))
@@ -220,7 +220,7 @@
     (hash-entries entries)))
 
 (define (sort-entries-by-string-key entries)
-  (list-sort-copy
+  (list-copy-sort
     (lambda (a b)
       (string-compare-lexical (hash-entry-key a) (hash-entry-key b)))
     (hash-entries entries)))
@@ -232,7 +232,7 @@
       (let ((names (hash-entry-value entry)))
         (string-join " "
           (list-map symbol-to-string
-            (list-sort-copy
+            (list-copy-sort
               (lambda (a b)
                 (string-compare-lexical (symbol-to-string a) (symbol-to-string b)))
               (set-to-list names)))))

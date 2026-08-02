@@ -10,7 +10,7 @@ title: set-add
 
 # Description
 
-Add an element to the set, same as `set-add-copy`.
+Add an element to the set, same as `set-copy-add`.
 
 # Examples
 

@@ -174,7 +174,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/list-push-front", x_list_push_front_mut);
   define_primitive_2(mod, "meta-builtin/builtin/list-get", x_list_get);
   define_primitive_3(mod, "meta-builtin/builtin/list-put", x_list_put_mut);
-  define_primitive_3(mod, "meta-builtin/builtin/list-put-copy", x_list_put);
+  define_primitive_3(mod, "meta-builtin/builtin/list-copy-put", x_list_put);
   define_primitive_1(mod, "meta-builtin/builtin/car", x_car);
   define_primitive_1(mod, "meta-builtin/builtin/cdr", x_cdr);
   define_primitive_2(mod, "meta-builtin/builtin/cons", x_cons);
@@ -183,7 +183,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/list-init", x_list_init);
   define_primitive_1(mod, "meta-builtin/builtin/list-last", x_list_last);
   define_primitive_1(mod, "meta-builtin/builtin/list-reverse", x_list_reverse_mut);
-  define_primitive_1(mod, "meta-builtin/builtin/list-reverse-copy", x_list_reverse);
+  define_primitive_1(mod, "meta-builtin/builtin/list-copy-reverse", x_list_reverse);
   define_primitive_1(mod, "meta-builtin/builtin/list-to-set", x_list_to_set);
 
   // hash
@@ -196,7 +196,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/hash-get", x_hash_get);
   define_primitive_2(mod, "meta-builtin/builtin/hash-has", x_hash_has);
   define_primitive_3(mod, "meta-builtin/builtin/hash-put", x_hash_put_mut);
-  define_primitive_3(mod, "meta-builtin/builtin/hash-put-copy", x_hash_put);
+  define_primitive_3(mod, "meta-builtin/builtin/hash-copy-put", x_hash_put);
   define_primitive_2(mod, "meta-builtin/builtin/hash-delete", x_hash_delete_mut);
   define_primitive_1(mod, "meta-builtin/builtin/hash-keys", x_hash_keys);
   define_primitive_1(mod, "meta-builtin/builtin/hash-values", x_hash_values);
@@ -211,9 +211,9 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/set-is-empty", x_set_is_empty);
   define_primitive_2(mod, "meta-builtin/builtin/set-is-member", x_set_is_member);
   define_primitive_2(mod, "meta-builtin/builtin/set-add", x_set_add_mut);
-  define_primitive_2(mod, "meta-builtin/builtin/set-add-copy", x_set_add);
+  define_primitive_2(mod, "meta-builtin/builtin/set-copy-add", x_set_add);
   define_primitive_2(mod, "meta-builtin/builtin/set-delete", x_set_delete_mut);
-  define_primitive_2(mod, "meta-builtin/builtin/set-delete-copy", x_set_delete);
+  define_primitive_2(mod, "meta-builtin/builtin/set-copy-delete", x_set_delete);
   define_primitive_1(mod, "meta-builtin/builtin/set-clear", x_set_clear_mut);
   define_primitive_2(mod, "meta-builtin/builtin/set-union", x_set_union);
   define_primitive_2(mod, "meta-builtin/builtin/set-inter", x_set_inter);

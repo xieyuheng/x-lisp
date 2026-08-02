@@ -1,5 +1,5 @@
 ---
-title: hash-put-copy
+title: hash-copy-put
 ---
 
 # Type
@@ -15,5 +15,5 @@ Set a key-value pair, returning a new hash table.
 # Examples
 
 ```meta-lisp
-(hash-put-copy "c" 3 (@hash "a" 1 "b" 2))  ;; => (@hash "a" 1 "b" 2 "c" 3)
+(hash-copy-put "c" 3 (@hash "a" 1 "b" 2))  ;; => (@hash "a" 1 "b" 2 "c" 3)
 ```

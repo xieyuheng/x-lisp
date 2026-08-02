@@ -1,5 +1,5 @@
 ---
-title: set-add-copy
+title: set-copy-add
 ---
 
 # Type
@@ -15,6 +15,6 @@ Add an element to the set, returning a new set.
 # Examples
 
 ```meta-lisp
-(set-add-copy 4 (@set 1 2 3))  ;; => (@set 1 2 3 4)
-(set-add-copy 1 (@set 1 2 3))  ;; => (@set 1 2 3)
+(set-copy-add 4 (@set 1 2 3))  ;; => (@set 1 2 3 4)
+(set-copy-add 1 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

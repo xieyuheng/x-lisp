@@ -10,7 +10,7 @@ title: hash-put
 
 # Description
 
-Set a key-value pair, same as `hash-put-copy`.
+Set a key-value pair, same as `hash-copy-put`.
 
 # Examples
 

@@ -1,5 +1,5 @@
 ---
-title: hash-put-entries-copy
+title: hash-copy-put-entries
 ---
 
 # Type
@@ -15,7 +15,7 @@ Put entries into a hash table, returning a new hash table.
 # Examples
 
 ```meta-lisp
-(hash-put-entries-copy
+(hash-copy-put-entries
   [(make-hash-entry 'a 1) (make-hash-entry 'b 2)]
   (@hash))
 ;; => (@hash 'a 1 'b 2)

@@ -10,7 +10,7 @@ title: list-put
 
 # Description
 
-Set element by index, same behavior as `list-put-copy`.
+Set element by index, same behavior as `list-copy-put`.
 
 # Examples
 

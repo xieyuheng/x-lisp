@@ -183,7 +183,7 @@
 
 (define empty-env meta-builtin/builtin/make-hash)
 
-(define extend-env meta-builtin/builtin/hash-put-copy)
+(define extend-env meta-builtin/builtin/hash-copy-put)
 
 (define env-lookup meta-builtin/builtin/hash-get-maybe)
 

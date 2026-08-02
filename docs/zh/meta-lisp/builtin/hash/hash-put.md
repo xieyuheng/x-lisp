@@ -10,7 +10,7 @@ title: hash-put
 
 # 描述
 
-设置键值对，同 `hash-put-copy`。
+设置键值对，同 `hash-copy-put`。
 
 # 例子
 

@@ -1,9 +1,9 @@
 (module builtin)
 
-(claim list-sort-copy
+(claim list-copy-sort
   (polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E))))
 
-(define (list-sort-copy comp lst)
+(define (list-copy-sort comp lst)
   (list-sort comp (list-copy lst)))
 
 (claim list-sort

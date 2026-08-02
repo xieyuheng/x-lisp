@@ -80,17 +80,17 @@
 
 (define-test list-put-test
   (let ((list [0 0 0])
-         (list (list-put-copy 0 1 list))
-         (list (list-put-copy 1 2 list))
-         (list (list-put-copy 2 3 list)))
+         (list (list-copy-put 0 1 list))
+         (list (list-copy-put 1 2 list))
+         (list (list-copy-put 2 3 list)))
     (assert-equal list [1 2 3]))
 
-  ;; list-put-copy has NO side effect:
+  ;; list-copy-put has NO side effect:
 
   (let ((list [0 0 0]))
-    (list-put-copy 0 1 list)
-    (list-put-copy 1 2 list)
-    (list-put-copy 2 3 list)
+    (list-copy-put 0 1 list)
+    (list-copy-put 1 2 list)
+    (list-copy-put 2 3 list)
     (assert-equal list [0 0 0]))
 
   ;; list-put has side effect:
@@ -102,7 +102,7 @@
     (assert-equal list [1 2 3])))
 
 (define-test list-reverse-test
-  (assert-equal (list-reverse-copy [1 2 3]) [3 2 1]))
+  (assert-equal (list-copy-reverse [1 2 3]) [3 2 1]))
 
 (define-test list-pop-front-test
   (let ((list [1 2 3]))

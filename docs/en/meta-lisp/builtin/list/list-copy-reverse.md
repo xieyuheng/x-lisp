@@ -1,5 +1,5 @@
 ---
-title: list-reverse-copy
+title: list-copy-reverse
 ---
 
 # Type
@@ -15,6 +15,6 @@ Reverse the list.
 # Examples
 
 ```meta-lisp
-(list-reverse-copy [1 2 3])  ;; => [3 2 1]
-(list-reverse-copy [])       ;; => []
+(list-copy-reverse [1 2 3])  ;; => [3 2 1]
+(list-copy-reverse [])       ;; => []
 ```

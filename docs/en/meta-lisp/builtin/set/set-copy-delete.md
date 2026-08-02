@@ -1,5 +1,5 @@
 ---
-title: set-delete-copy
+title: set-copy-delete
 ---
 
 # Type
@@ -15,6 +15,6 @@ Delete an element from the set, returning a new set.
 # Examples
 
 ```meta-lisp
-(set-delete-copy 2 (@set 1 2 3))  ;; => (@set 1 3)
-(set-delete-copy 0 (@set 1 2 3))  ;; => (@set 1 2 3)
+(set-copy-delete 2 (@set 1 2 3))  ;; => (@set 1 3)
+(set-copy-delete 0 (@set 1 2 3))  ;; => (@set 1 2 3)
 ```

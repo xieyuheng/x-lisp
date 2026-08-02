@@ -255,7 +255,7 @@ Operations on `(list-t E)`.
 
 - [`list-copy`](list/list-copy.md) — Copy a list
 - [`list-put`](list/list-put.md) — Replace at index (mutable)
-- [`list-put-copy`](list/list-put-copy.md) — Replace at index (immutable)
+- [`list-copy-put`](list/list-copy-put.md) — Replace at index (immutable)
 - [`list-push`](list/list-push.md) — Append at end (mutable)
 - [`list-push-front`](list/list-push-front.md) — Prepend at front (mutable)
 - [`list-pop`](list/list-pop.md) — Pop from end (mutable)
@@ -263,7 +263,7 @@ Operations on `(list-t E)`.
 
 ### Transformation
 
-- [`list-reverse-copy`](list/list-reverse-copy.md) — Reverse
+- [`list-copy-reverse`](list/list-copy-reverse.md) — Reverse
 - [`list-to-set`](list/list-to-set.md) — Convert to set
 
 ### Generation
@@ -274,7 +274,7 @@ Operations on `(list-t E)`.
 ### Sort
 
 - [`list-sort`](list/list-sort.md) — Sort in-place with comparator
-- [`list-sort-copy`](list/list-sort-copy.md) — Sort with comparator (immutable)
+- [`list-copy-sort`](list/list-copy-sort.md) — Sort with comparator (immutable)
 
 ### Iteration and mapping
 
@@ -335,9 +335,9 @@ Operations on `(set-t E)`.
 
 - [`set-copy`](set/set-copy.md) — Copy a set
 - [`set-add`](set/set-add.md) — Add element (mutable)
-- [`set-add-copy`](set/set-add-copy.md) — Add element (immutable)
+- [`set-copy-add`](set/set-copy-add.md) — Add element (immutable)
 - [`set-delete`](set/set-delete.md) — Delete element (mutable)
-- [`set-delete-copy`](set/set-delete-copy.md) — Delete element (immutable)
+- [`set-copy-delete`](set/set-copy-delete.md) — Delete element (immutable)
 - [`set-clear`](set/set-clear.md) — Clear set (mutable)
 
 ### Set operations
@@ -391,9 +391,9 @@ Operations on `(hash-t K V)`.
 ### Mutation
 
 - [`hash-put`](hash/hash-put.md) — Add key-value pair (mutable)
-- [`hash-put-copy`](hash/hash-put-copy.md) — Add key-value pair (immutable)
+- [`hash-copy-put`](hash/hash-copy-put.md) — Add key-value pair (immutable)
 - [`hash-put-entries`](hash/hash-put-entries.md) — Put entries (mutable)
-- [`hash-put-entries-copy`](hash/hash-put-entries-copy.md) — Put entries (immutable)
+- [`hash-copy-put-entries`](hash/hash-copy-put-entries.md) — Put entries (immutable)
 - [`hash-delete`](hash/hash-delete.md) — Delete by key (mutable)
 - [`hash-copy`](hash/hash-copy.md) — Copy hash table
 

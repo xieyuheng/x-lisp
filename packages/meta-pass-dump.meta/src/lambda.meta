@@ -12,7 +12,7 @@
   (env-lookup (-> symbol-t env-t (maybe-t value-t))))
 
 (define empty-env make-hash)
-(define extend-env hash-put-copy)
+(define extend-env hash-copy-put)
 (define env-lookup hash-get-maybe)
 
 (define-enum (value-t)

@@ -174,7 +174,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/列表首入", x_list_push_front_mut);
   define_primitive_2(mod, "meta-builtin/内置/列表取", x_list_get);
   define_primitive_3(mod, "meta-builtin/内置/列表存", x_list_put_mut);
-  define_primitive_3(mod, "meta-builtin/内置/列表存复制", x_list_put);
+  define_primitive_3(mod, "meta-builtin/内置/列表复制存", x_list_put);
   define_primitive_1(mod, "meta-builtin/内置/首", x_car);
   define_primitive_1(mod, "meta-builtin/内置/余", x_cdr);
   define_primitive_2(mod, "meta-builtin/内置/添", x_cons);
@@ -183,7 +183,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/列表除末", x_list_init);
   define_primitive_1(mod, "meta-builtin/内置/列表末", x_list_last);
   define_primitive_1(mod, "meta-builtin/内置/列表反转", x_list_reverse_mut);
-  define_primitive_1(mod, "meta-builtin/内置/列表反转复制", x_list_reverse);
+  define_primitive_1(mod, "meta-builtin/内置/列表复制反转", x_list_reverse);
   define_primitive_1(mod, "meta-builtin/内置/列表转集合", x_list_to_set);
 
   // hash
@@ -196,7 +196,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/散列取", x_hash_get);
   define_primitive_2(mod, "meta-builtin/内置/散列有", x_hash_has);
   define_primitive_3(mod, "meta-builtin/内置/散列存", x_hash_put_mut);
-  define_primitive_3(mod, "meta-builtin/内置/散列存复制", x_hash_put);
+  define_primitive_3(mod, "meta-builtin/内置/散列复制存", x_hash_put);
   define_primitive_2(mod, "meta-builtin/内置/散列删除", x_hash_delete_mut);
   define_primitive_1(mod, "meta-builtin/内置/散列键", x_hash_keys);
   define_primitive_1(mod, "meta-builtin/内置/散列值", x_hash_values);
@@ -211,9 +211,9 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/集合为空", x_set_is_empty);
   define_primitive_2(mod, "meta-builtin/内置/集合属于", x_set_is_member);
   define_primitive_2(mod, "meta-builtin/内置/集合添加", x_set_add_mut);
-  define_primitive_2(mod, "meta-builtin/内置/集合添加复制", x_set_add);
+  define_primitive_2(mod, "meta-builtin/内置/集合复制添加", x_set_add);
   define_primitive_2(mod, "meta-builtin/内置/集合删除", x_set_delete_mut);
-  define_primitive_2(mod, "meta-builtin/内置/集合删除复制", x_set_delete);
+  define_primitive_2(mod, "meta-builtin/内置/集合复制删除", x_set_delete);
   define_primitive_1(mod, "meta-builtin/内置/集合清空", x_set_clear_mut);
   define_primitive_2(mod, "meta-builtin/内置/集合并", x_set_union);
   define_primitive_2(mod, "meta-builtin/内置/集合交", x_set_inter);

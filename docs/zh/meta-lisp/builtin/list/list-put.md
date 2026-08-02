@@ -10,7 +10,7 @@ title: list-put
 
 # 描述
 
-按索引设置元素，与 `list-put-copy` 行为相同。
+按索引设置元素，与 `list-copy-put` 行为相同。
 
 # 例子
 

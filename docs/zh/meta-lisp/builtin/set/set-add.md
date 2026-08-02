@@ -10,7 +10,7 @@ title: set-add
 
 # 描述
 
-向集合中添加元素，同 `set-add-copy`。
+向集合中添加元素，同 `set-copy-add`。
 
 # 例子
 

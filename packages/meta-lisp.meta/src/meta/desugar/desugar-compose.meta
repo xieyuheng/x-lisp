@@ -5,4 +5,4 @@
       exp-t))
 
 (define (desugar-compose steps location)
-  (desugar-chain (list-reverse-copy steps) location))
+  (desugar-chain (list-copy-reverse steps) location))

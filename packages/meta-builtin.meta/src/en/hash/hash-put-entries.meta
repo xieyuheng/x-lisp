@@ -1,11 +1,11 @@
 (module builtin)
 
-(claim hash-put-entries-copy
+(claim hash-copy-put-entries
   (polymorphic (K V)
     (-> (list-t (hash-entry-t K V)) (hash-t K V)
         (hash-t K V))))
 
-(define (hash-put-entries-copy entries hash)
+(define (hash-copy-put-entries entries hash)
   (hash-put-entries entries (hash-copy hash)))
 
 (claim hash-put-entries
@@ -23,7 +23,7 @@
 (define-test hash-put-entries-test
   (assert-equal
     (@hash 'a 1 'b 2)
-      (hash-put-entries-copy [(make-hash-entry 'a 1)
+      (hash-copy-put-entries [(make-hash-entry 'a 1)
                        (make-hash-entry 'b 2)]
                       (@hash)))
 
