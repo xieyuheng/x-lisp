@@ -1,6 +1,7 @@
 # 中文
 
-[meta-builtin.meta] int-align.meta -- 翻译
+[meta-builtin.meta] 整数对齐.meta -- 用 相等 修复
+
 [meta-builtin.meta] int-product.meta -- 翻译
 [meta-builtin.meta] int-sum.meta -- 翻译
 
