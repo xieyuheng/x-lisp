@@ -154,7 +154,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 拼接与分割
 
-- [`string-append`](string/string-append.md) — 拼接两个字符串
+- [`string-append`](string/string-append.md) — 追加两个字符串
 - [`string-concat`](string/string-concat.md) — 拼接字符串列表
 - [`string-substring`](string/string-substring.md) — 取子串
 - [`string-split`](string/string-split.md) — 按分隔符分割
@@ -204,7 +204,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`is-symbol`](symbol/is-symbol.md) — 判断是否为符号
 - [`symbol-length`](symbol/symbol-length.md) — 符号名的长度
-- [`symbol-append`](symbol/symbol-append.md) — 拼接两个符号
+- [`symbol-append`](symbol/symbol-append.md) — 追加两个符号
 - [`symbol-concat`](symbol/symbol-concat.md) — 拼接符号列表
 - [`symbol-to-string`](symbol/symbol-to-string.md) — 转字符串
 
@@ -214,7 +214,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`is-keyword`](keyword/is-keyword.md) — 判断是否为关键字
 - [`keyword-length`](keyword/keyword-length.md) — 关键字名的长度
-- [`keyword-append`](keyword/keyword-append.md) — 拼接两个关键字
+- [`keyword-append`](keyword/keyword-append.md) — 追加两个关键字
 - [`keyword-concat`](keyword/keyword-concat.md) — 拼接关键字列表
 - [`keyword-to-string`](keyword/keyword-to-string.md) — 转字符串
 
@@ -281,8 +281,8 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`list-each`](list/list-each.md) — 遍历执行副作用
 - [`list-each-index`](list/list-each-index.md) — 带索引的遍历
-- [`list-map-concat`](list/list-map-concat.md) — 映射后连接
-- [`list-map-index-concat`](list/list-map-index-concat.md) — 带索引的映射后连接
+- [`list-map-concat`](list/list-map-concat.md) — 映射后拼接
+- [`list-map-index-concat`](list/list-map-index-concat.md) — 带索引的映射后拼接
 - [`list-map`](list/list-map.md) — 映射
 - [`list-map-index`](list/list-map-index.md) — 带索引的映射
 - [`list-zip-map`](list/list-zip-map.md) — 同时映射两个列表
@@ -307,7 +307,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`list-take`](list/list-take.md) — 取前 n 个元素
 - [`list-drop`](list/list-drop.md) — 去掉前 n 个元素
-- [`list-append`](list/list-append.md) — 拼接两个列表
+- [`list-append`](list/list-append.md) — 追加两个列表
 - [`list-concat`](list/list-concat.md) — 拼接列表的列表
 
 ### 分组与查找
@@ -423,7 +423,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ### 聚合
 
-- [`hash-append`](hash/hash-append.md) — 合并两个哈希表
+- [`hash-append`](hash/hash-append.md) — 追加两个哈希表
 - [`hash-invert`](hash/hash-invert.md) — 键值互换
 - [`hash-invert-group`](hash/hash-invert-group.md) — 键值互换并归组
 

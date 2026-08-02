@@ -117,16 +117,16 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/为标签", x_is_keyword);
   define_primitive_1(mod, "meta-builtin/内置/标签长度", x_keyword_length);
   define_primitive_1(mod, "meta-builtin/内置/标签转文本", x_keyword_to_string);
-  define_primitive_2(mod, "meta-builtin/内置/标签拼接", x_keyword_append);
-  define_primitive_1(mod, "meta-builtin/内置/标签连接", x_keyword_concat);
+  define_primitive_2(mod, "meta-builtin/内置/标签追加", x_keyword_append);
+  define_primitive_1(mod, "meta-builtin/内置/标签拼接", x_keyword_concat);
 
   // symbol
 
   define_primitive_1(mod, "meta-builtin/内置/为符号", x_is_symbol);
   define_primitive_1(mod, "meta-builtin/内置/符号长度", x_symbol_length);
   define_primitive_1(mod, "meta-builtin/内置/符号转文本", x_symbol_to_string);
-  define_primitive_2(mod, "meta-builtin/内置/符号拼接", x_symbol_append);
-  define_primitive_1(mod, "meta-builtin/内置/符号连接", x_symbol_concat);
+  define_primitive_2(mod, "meta-builtin/内置/符号追加", x_symbol_append);
+  define_primitive_1(mod, "meta-builtin/内置/符号拼接", x_symbol_concat);
 
   // string
 
@@ -135,14 +135,14 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/文本为空", x_string_is_empty);
   define_primitive_1(mod, "meta-builtin/内置/文本为空白", x_string_is_blank);
   define_primitive_3(mod, "meta-builtin/内置/文本截段", x_string_substring);
-  define_primitive_2(mod, "meta-builtin/内置/文本拼接", x_string_append);
-  define_primitive_1(mod, "meta-builtin/内置/文本连接", x_string_concat);
+  define_primitive_2(mod, "meta-builtin/内置/文本追加", x_string_append);
+  define_primitive_1(mod, "meta-builtin/内置/文本拼接", x_string_concat);
   define_primitive_2(mod, "meta-builtin/内置/文本字典序比较", x_string_compare_lexical);
   define_primitive_1(mod, "meta-builtin/内置/文本转符号", x_string_to_symbol);
   define_primitive_1(mod, "meta-builtin/内置/文本字符", x_string_chars);
   define_primitive_1(mod, "meta-builtin/内置/文本行", x_string_lines);
   define_primitive_2(mod, "meta-builtin/内置/文本分割", x_string_split);
-  define_primitive_2(mod, "meta-builtin/内置/文本合并", x_string_join);
+  define_primitive_2(mod, "meta-builtin/内置/文本连接", x_string_join);
   define_primitive_3(mod, "meta-builtin/内置/文本替换", x_string_replace);
   define_primitive_2(mod, "meta-builtin/内置/文本起首", x_string_starts_with);
   define_primitive_2(mod, "meta-builtin/内置/文本结尾", x_string_ends_with);
