@@ -1,9 +1,12 @@
 # 中文
 
-[meta-builtin.meta] 翻译 error.meta
-[meta-builtin.meta] 翻译 assert.meta
 [meta-builtin.meta] 翻译 process.meta
-[meta-builtin.meta] 翻译 bool.meta
+[meta-builtin.meta] 翻译 int.meta
+[meta-builtin.meta] 翻译 float.meta
+[meta-builtin.meta] 翻译 error.meta
+
+[meta-builtin.meta] 真假测试.meta -- 用 打印行 修复
+[meta-builtin.meta] 断言.meta -- 用 源码位置 修复 定位断言
 
 [meta-math.meta] 翻译
 [meta-example.meta] 翻译

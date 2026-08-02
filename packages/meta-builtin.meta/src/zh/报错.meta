@@ -1,7 +1,7 @@
 (模块 内置)
 
 (声明原始函数 报错 1)
-;; (声明原始函数 error-with-location 2)
+;; (声明原始函数 定位报错 2)
 
 (声明 报错 (多态 (甲) (-> 文本型 甲)))
-;; (claim error-with-location (polymorphic (B) (-> string-t source-location-t B)))
+;; (声明 定位报错 (多态 (甲) (-> 文本型 源码位置型 甲)))
