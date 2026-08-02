@@ -173,8 +173,8 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/列表首出", x_list_pop_front_mut);
   define_primitive_2(mod, "meta-builtin/内置/列表首入", x_list_push_front_mut);
   define_primitive_2(mod, "meta-builtin/内置/列表取", x_list_get);
-  define_primitive_3(mod, "meta-builtin/内置/列表置", x_list_put_mut);
-  define_primitive_3(mod, "meta-builtin/内置/列表置复制", x_list_put);
+  define_primitive_3(mod, "meta-builtin/内置/列表存", x_list_put_mut);
+  define_primitive_3(mod, "meta-builtin/内置/列表存复制", x_list_put);
   define_primitive_1(mod, "meta-builtin/内置/首", x_car);
   define_primitive_1(mod, "meta-builtin/内置/余", x_cdr);
   define_primitive_2(mod, "meta-builtin/内置/添", x_cons);
@@ -195,8 +195,8 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/散列为空", x_hash_is_empty);
   define_primitive_2(mod, "meta-builtin/内置/散列取", x_hash_get);
   define_primitive_2(mod, "meta-builtin/内置/散列有", x_hash_has);
-  define_primitive_3(mod, "meta-builtin/内置/散列置", x_hash_put_mut);
-  define_primitive_3(mod, "meta-builtin/内置/散列置复制", x_hash_put);
+  define_primitive_3(mod, "meta-builtin/内置/散列存", x_hash_put_mut);
+  define_primitive_3(mod, "meta-builtin/内置/散列存复制", x_hash_put);
   define_primitive_2(mod, "meta-builtin/内置/散列删除", x_hash_delete_mut);
   define_primitive_1(mod, "meta-builtin/内置/散列键", x_hash_keys);
   define_primitive_1(mod, "meta-builtin/内置/散列值", x_hash_values);
@@ -268,7 +268,7 @@ void import_builtin_zh(mod_t *mod) {
   // closure
 
   define_primitive_2(mod, "meta-builtin/内置/作闭包", x_make_closure);
-  define_primitive_3(mod, "meta-builtin/内置/闭包置参", x_closure_put_arg_mut);
+  define_primitive_3(mod, "meta-builtin/内置/闭包存参", x_closure_put_arg_mut);
   define_primitive_2(mod, "meta-builtin/内置/闭包取参", x_closure_arg);
 
   // process
