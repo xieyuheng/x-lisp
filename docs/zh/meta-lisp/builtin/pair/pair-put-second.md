@@ -1,21 +1,21 @@
 ---
-title: pair-put-second!
+title: pair-put-second
 ---
 
-# Type
+# 类型
 
 ```meta-lisp
 (polymorphic (A B) (-> B (pair-t A B) (pair-t A B)))
 ```
 
-# Description
+# 描述
 
-Replace the second element of a pair.
+替换 pair 的第二个元素。
 
-# Examples
+# 例子
 
 ```meta-lisp
 (let ((p (make-pair 1 "hello")))
-  (pair-put-second! "world" p)
+  (pair-put-second "world" p)
   (pair-second p))  ;; => "world"
 ```

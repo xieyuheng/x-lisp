@@ -15,6 +15,6 @@ Accepts any value and returns `void`. Used to discard the return value of a func
 # Examples
 
 ```meta-lisp
-(ignore (hash-put! 'x 1 (make-hash)))  ;; => void
+(ignore (hash-put 'x 1 (make-hash)))  ;; => void
 (ignore 1)                             ;; => void
 ```

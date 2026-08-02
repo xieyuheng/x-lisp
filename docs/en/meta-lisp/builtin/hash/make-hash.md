@@ -16,7 +16,7 @@ Create an empty hash table.
 
 ```meta-lisp
 (let ((h (make-hash)))
-  (hash-put! 'a 1 h)
+  (hash-put 'a 1 h)
   h)
 ;; => (@hash 'a 1)
 ```

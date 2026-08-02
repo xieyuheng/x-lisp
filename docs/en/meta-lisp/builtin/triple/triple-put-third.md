@@ -1,21 +1,21 @@
 ---
-title: triple-put-third!
+title: triple-put-third
 ---
 
-# 类型
+# Type
 
 ```meta-lisp
 (polymorphic (A B C) (-> C (triple-t A B C) (triple-t A B C)))
 ```
 
-# 描述
+# Description
 
-替换 triple 的第三个元素。
+Replace the third element of a triple.
 
-# 例子
+# Examples
 
 ```meta-lisp
 (let ((t (make-triple 1 "hello" #t)))
-  (triple-put-third! #f t)
+  (triple-put-third #f t)
   (triple-third t))  ;; => false
 ```

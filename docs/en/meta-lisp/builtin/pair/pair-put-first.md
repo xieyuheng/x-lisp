@@ -1,5 +1,5 @@
 ---
-title: pair-put-first!
+title: pair-put-first
 ---
 
 # Type
@@ -16,6 +16,6 @@ Replace the first element of a pair.
 
 ```meta-lisp
 (let ((p (make-pair 1 "hello")))
-  (pair-put-first! 7 p)
+  (pair-put-first 7 p)
   (pair-first p))  ;; => 7
 ```

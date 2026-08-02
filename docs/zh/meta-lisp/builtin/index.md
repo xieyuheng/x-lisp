@@ -436,8 +436,8 @@ pair 类型 `(pair-t A B)` 上的操作。
 - [`is-pair`](pair/is-pair.md) — 判断是否为 pair
 - [`pair-first`](pair/pair-first.md) — 取第一个元素
 - [`pair-second`](pair/pair-second.md) — 取第二个元素
-- [`pair-put-first!`](pair/pair-put-first-mut.md) — 替换第一个元素
-- [`pair-put-second!`](pair/pair-put-second-mut.md) — 替换第二个元素
+- [`pair-put-first`](pair/pair-put-first.md) — 替换第一个元素
+- [`pair-put-second`](pair/pair-put-second.md) — 替换第二个元素
 
 ## maybe
 
@@ -449,7 +449,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`is-just`](maybe/is-just.md) — 判断是否为 just
 - [`is-nothing`](maybe/is-nothing.md) — 判断是否为 nothing
 - [`just-value`](maybe/just-value.md) — 提取 just 中的值
-- [`just-put-value!`](maybe/just-put-value-mut.md) — 替换 just 中的值
+- [`just-put-value`](maybe/just-put-value.md) — 替换 just 中的值
 
 ## box
 

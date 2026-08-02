@@ -19,6 +19,6 @@ Number of key-value entries in the hash table.
   (hash-length h))  ;; => 1
 
 (let ((h (@hash "a" 1)))
-  (hash-put! "b" 2 h)
+  (hash-put "b" 2 h)
   (hash-length h))  ;; => 2
 ```

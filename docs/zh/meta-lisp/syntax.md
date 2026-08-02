@@ -291,7 +291,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 
 变量引用一个已绑定的名字。
 
-名字由字母、数字和 `-` `?` `!` 等字符组成。
+名字由字母、数字和 `-` 等字符组成。
 
 ```meta-lisp
 x
@@ -917,8 +917,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
+   (x point-x point-put-x)
+   (y point-y point-put-y)))
 ```
 
 将会生成具有下列类型的函数：
@@ -928,8 +928,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (claim point? (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
 (claim point-y (-> point-t float-t))
-(claim point-put-x! (-> float-t point-t point-t))
-(claim point-put-y! (-> float-t point-t point-t))
+(claim point-put-x (-> float-t point-t point-t))
+(claim point-put-y (-> float-t point-t point-t))
 ```
 
 使用举例：
@@ -938,7 +938,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define p (make-point 1.0 2.0))
 (point? p)      ;; => true
 (point-x p)     ;; => 1.0
-(point-put-x! p 3.0)
+(point-put-x p 3.0)
 (point-x p)     ;; => 3.0
 ```
 
@@ -957,8 +957,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
    nil?)
   ((li (head E) (tail (my-list-t E)))
    li?
-   (head li-head li-put-head!)
-   (tail li-tail li-put-tail!)))
+   (head li-head li-put-head)
+   (tail li-tail li-put-tail)))
 ```
 
 将会生成具有下列类型的函数：
@@ -970,8 +970,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (claim li? (polymorphic (E) (-> (my-list-t E) bool-t)))
 (claim li-head (polymorphic (E) (-> (my-list-t E) E)))
 (claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
-(claim li-put-head! (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
-(claim li-put-tail! (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+(claim li-put-head (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li-put-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 ```
 
 ## (define-record-type)
@@ -996,8 +996,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-record-type point-t
   (make-point (x float-t) (y float-t))
   point?
-  (x point-x point-put-x!)
-  (y point-y point-put-y!))
+  (x point-x point-put-x)
+  (y point-y point-put-y))
 ```
 
 等价于：
@@ -1006,8 +1006,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
+   (x point-x point-put-x)
+   (y point-y point-put-y)))
 ```
 
 `(define-record-type)` 这个语法来自 scheme，
@@ -1047,22 +1047,22 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-algebraic-type exp-t
   ((var-exp (name symbol-t))
    var-exp?
-   (name var-exp-name var-exp-put-name!))
+   (name var-exp-name var-exp-put-name))
   ((apply-exp (target exp-t) (arg exp-t))
    apply-exp?
-   (target apply-exp-target apply-exp-put-target!)
-   (arg apply-exp-arg apply-exp-put-arg!))
+   (target apply-exp-target apply-exp-put-target)
+   (arg apply-exp-arg apply-exp-put-arg))
   ((lambda-exp (parameter symbol-t) (body exp-t))
    lambda-exp?
-   (parameter lambda-exp-parameter lambda-exp-put-parameter!)
-   (body lambda-exp-body lambda-exp-put-body!)))
+   (parameter lambda-exp-parameter lambda-exp-put-parameter)
+   (body lambda-exp-body lambda-exp-put-body)))
 ```
 
 对于某个给定的 `<constructor-name>` 生成其名字的规则如下：
 
 - `<predicate-name>` = `<constructor-name>?` -- `var-exp?`
 - `<accessor-name>` = `<constructor-name>-<field-name>` -- `var-exp-name`
-- `<modifier-name>` = `<constructor-name>-put-<field-name>!` -- `var-exp-put-name!`
+- `<modifier-name>` = `<constructor-name>-put-<field-name>` -- `var-exp-put-name`
 
 ## (define-struct)
 
@@ -1093,8 +1093,8 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-algebraic-type point-t
   ((make-point (x float-t) (y float-t))
    point?
-   (x point-x point-put-x!)
-   (y point-y point-put-y!)))
+   (x point-x point-put-x)
+   (y point-y point-put-y)))
 ```
 
 对于某个给定的 `<type-name>` 生成其名字的规则如下：
@@ -1103,7 +1103,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 - `<predicate-name>` = `<base-name>?` -- `point?`
 - `<constructor-name>` = `make-<base-name>` -- `make-point`
 - `<accessor-name>` = `<base-name>-<field-name>` -- `point-x`
-- `<modifier-name>` = `<base-name>-put-<field-name>!` -- `point-put-x!`
+- `<modifier-name>` = `<base-name>-put-<field-name>` -- `point-put-x`
 
 <a name="define-struct-star"></a>
 ## (define-struct*)
@@ -1200,7 +1200,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 (define-opaque-type (box-t E) (list-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put! (-> E (box-t E) (box-t E)))
+  (box-put (-> E (box-t E) (box-t E)))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
 
@@ -1209,7 +1209,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (list-t E))))
 (claim box-is-empty (polymorphic (E) (-> (list-t E) bool-t)))
-(claim box-put! (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim box-put (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
 ```
 
@@ -1218,10 +1218,10 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (define (make-box) (make-list))
 
-(define (box-put! value box)
+(define (box-put value box)
   (if (box-is-empty box)
-    (list-push! value box)
-    (list-put! 0 value box)))
+    (list-push value box)
+    (list-put 0 value box)))
 ```
 
 在使用接口函数的时候，等价于声明了：
@@ -1229,7 +1229,7 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (claim make-box (polymorphic (E) (-> (box-t E))))
 (claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
-(claim box-put! (polymorphic (E) (-> E (box-t E) (box-t E))))
+(claim box-put (polymorphic (E) (-> E (box-t E) (box-t E))))
 (claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
 ```
 
