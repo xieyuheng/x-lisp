@@ -1,7 +1,5 @@
 #include "index.h"
 
-static void ignore_line_comments(list_t *tokens);
-
 static value_t for_sexp(list_t *tokens);
 static value_t for_list(const char *end, list_t *tokens);
 
@@ -23,18 +21,6 @@ value_t parse_sexps(const char *string) {
 
   list_free(tokens);
   return sexps;
-}
-
-static void ignore_line_comments(list_t *tokens) {
-  while (!list_is_empty(tokens)) {
-    token_t *token = list_first(tokens);
-    if (token->kind == LINE_COMMENT_TOKEN) {
-      list_pop_front(tokens);
-      token_free(token);
-    } else {
-      return;
-    }
-  }
 }
 
 // - assume a sexp exists (maybe after line comments)

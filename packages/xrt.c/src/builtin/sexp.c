@@ -24,3 +24,9 @@ value_t x_format_message_with_source_location(value_t message, value_t location)
   buffer_free(buffer);
   return result;
 }
+
+value_t x_parse_sexps_zh(value_t path, value_t string) {
+  return parse_located_sexps_zh(
+    xstring_string(to_xstring(path)),
+    xstring_string(to_xstring(string)));
+}
