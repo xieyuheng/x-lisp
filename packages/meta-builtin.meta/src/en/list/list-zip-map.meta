@@ -1,18 +1,18 @@
 (module builtin)
 
-(claim list-map-zip
+(claim list-zip-map
   (polymorphic (A B C)
     (-> (-> A B C) (list-t A) (list-t B)
         (list-t C))))
 
-(define (list-map-zip f left right)
+(define (list-zip-map f left right)
   (list-map
    (lambda (pair)
      (f (pair-first pair)
         (pair-second pair)))
    (list-zip left right)))
 
-(define-test list-map-zip-test
+(define-test list-zip-map-test
   (assert-equal
-    (list-map-zip iadd [1 2 3] [10 20 30])
+    (list-zip-map iadd [1 2 3] [10 20 30])
     [11 22 33]))

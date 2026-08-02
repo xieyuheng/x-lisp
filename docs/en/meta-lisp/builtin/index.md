@@ -284,7 +284,7 @@ Operations on `(list-t E)`.
 - [`list-flat-map-index`](list/list-flat-map-index.md) — Map with index and flatten
 - [`list-map`](list/list-map.md) — Map over elements
 - [`list-map-index`](list/list-map-index.md) — Map with index
-- [`list-map-zip`](list/list-map-zip.md) — Map over two lists in parallel
+- [`list-zip-map`](list/list-zip-map.md) — Map over two lists in parallel
 - [`list-zip`](list/list-zip.md) — Pair elements by position
 - [`list-unzip`](list/list-unzip.md) — Unzip pairs
 - [`list-select`](list/list-select.md) — Filter (keep matching)

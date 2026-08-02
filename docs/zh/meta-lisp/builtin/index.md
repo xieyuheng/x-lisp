@@ -285,7 +285,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`list-flat-map-index`](list/list-flat-map-index.md) — 带索引的映射并扁平化
 - [`list-map`](list/list-map.md) — 映射
 - [`list-map-index`](list/list-map-index.md) — 带索引的映射
-- [`list-map-zip`](list/list-map-zip.md) — 同时映射两个列表
+- [`list-zip-map`](list/list-zip-map.md) — 同时映射两个列表
 - [`list-zip`](list/list-zip.md) — 按位置配对
 - [`list-unzip`](list/list-unzip.md) — 解配对
 - [`list-select`](list/list-select.md) — 筛选（保留满足条件的）

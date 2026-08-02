@@ -33,7 +33,7 @@
          (names (list-map binding-name bindings))
          (exp-box-get-subst (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
          (new-rhs-exps (list-map (compose exp-box-get-subst binding-rhs) bindings))
-         (box-put-exps (list-map-zip make-box-put-exp new-rhs-exps bindings)))
+         (box-put-exps (list-zip-map make-box-put-exp new-rhs-exps bindings)))
     (let-exp
       box-bindings
       (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)

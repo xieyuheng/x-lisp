@@ -201,7 +201,7 @@
                "cond mismatch"
                unnested.5))))))))
 
-(define (my-list-map-zip f list1 list2)
+(define (my-list-zip-map f list1 list2)
   (if (self/my-list/is-nil list1)
     (let ((_ list2)) (self/my-list/nil))
     (if (self/my-list/is-li list1)
@@ -216,7 +216,7 @@
                   (let ((unnested.1 (f head1.1 head2)))
                     (let
                         ((unnested.2
-                          (self/my-list/my-list-map-zip f tail1.1 tail2)))
+                          (self/my-list/my-list-zip-map f tail1.1 tail2)))
                       (self/my-list/li unnested.1 unnested.2)))))))
           (let
               ((unnested.3 (meta-builtin/builtin/make-source-position 640 30 3)))
@@ -249,7 +249,7 @@
                "cond mismatch"
                unnested.10))))))))
 
-(define (my-list-map-zip-2 f list1 list2)
+(define (my-list-zip-map-2 f list1 list2)
   (if (self/my-list/is-nil list1)
     (let ((_ list2)) (self/my-list/nil))
     (if (self/my-list/is-li list1)
@@ -352,7 +352,7 @@
                           (let ((unnested.15 (f head1 head2)))
                             (let
                                 ((unnested.16
-                                  (self/my-list/my-list-map-zip-2 f tail1 tail2)))
+                                  (self/my-list/my-list-zip-map-2 f tail1 tail2)))
                               (self/my-list/li unnested.15 unnested.16)))))))
                   (let
                       ((unnested.17

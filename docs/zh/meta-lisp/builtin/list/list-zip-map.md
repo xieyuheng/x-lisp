@@ -1,5 +1,5 @@
 ---
-title: list-map-zip
+title: list-zip-map
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: list-map-zip
 # 例子
 
 ```meta-lisp
-(list-map-zip iadd [1 2 3] [10 20 30])  ;; => [11 22 33]
+(list-zip-map iadd [1 2 3] [10 20 30])  ;; => [11 22 33]
 ```

@@ -44,10 +44,10 @@ my-list
 my-list/my-list-adjacent-dedup.meta
 my-list/my-list-append.meta
 my-list/my-list-length.meta
-my-list/my-list-map-zip.meta
 my-list/my-list-map.meta
 my-list/my-list-snapshot.meta
 my-list/my-list-test.meta
+my-list/my-list-zip-map.meta
 my-list/my-list.meta
 package
 package/direct-meta-math.meta
