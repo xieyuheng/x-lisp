@@ -228,21 +228,21 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/断言非", x_assert_not);
   define_primitive_2(mod, "meta-builtin/内置/断言相等", x_assert_equal);
   define_primitive_2(mod, "meta-builtin/内置/断言不等", x_assert_not_equal);
-  define_primitive_2(mod, "meta-builtin/内置/断言及位置", x_assert_with_location);
-  define_primitive_2(mod, "meta-builtin/内置/断言非及位置", x_assert_not_with_location);
-  define_primitive_3(mod, "meta-builtin/内置/断言相等及位置", x_assert_equal_with_location);
-  define_primitive_3(mod, "meta-builtin/内置/断言不等及位置", x_assert_not_equal_with_location);
+  define_primitive_2(mod, "meta-builtin/内置/定位断言", x_assert_with_location);
+  define_primitive_2(mod, "meta-builtin/内置/定位断言非", x_assert_not_with_location);
+  define_primitive_3(mod, "meta-builtin/内置/定位断言相等", x_assert_equal_with_location);
+  define_primitive_3(mod, "meta-builtin/内置/定位断言不等", x_assert_not_equal_with_location);
 
   // error
 
   define_primitive_1(mod, "meta-builtin/内置/报错", x_error);
-  define_primitive_2(mod, "meta-builtin/内置/报错及位置", x_error_with_location);
+  define_primitive_2(mod, "meta-builtin/内置/定位报错", x_error_with_location);
 
   // sexp
 
   define_primitive_2(mod, "meta-builtin/内置/解析符号算式", x_parse_sexps_zh);
   define_primitive_1(mod, "meta-builtin/内置/呈现为符号算式", x_format_as_sexp);
-  define_primitive_2(mod, "meta-builtin/内置/呈现消息及位置", x_format_message_with_location);
+  define_primitive_2(mod, "meta-builtin/内置/呈现定位消息", x_format_message_with_location);
 
   // json
 
