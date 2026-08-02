@@ -1,5 +1,19 @@
 (algebraic-analysis-report
   (data-constructor-infos
+    ("meta-builtin/builtin/array-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name array-json)
+      (accessor-names array-json-elements)
+      (predicate-name is-array-json))
+    ("meta-builtin/builtin/bool-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name bool-json)
+      (accessor-names bool-json-value)
+      (predicate-name is-bool-json))
     ("meta-builtin/builtin/float-sexp"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -14,48 +28,6 @@
       (name int-sexp)
       (accessor-names int-sexp-content int-sexp-location)
       (predicate-name is-int-sexp))
-    ("meta-builtin/builtin/json-array"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name json-array)
-      (accessor-names json-array-elements)
-      (predicate-name is-json-array))
-    ("meta-builtin/builtin/json-bool"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name json-bool)
-      (accessor-names json-bool-value)
-      (predicate-name is-json-bool))
-    ("meta-builtin/builtin/json-null"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name json-null)
-      (accessor-names )
-      (predicate-name is-json-null))
-    ("meta-builtin/builtin/json-number"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name json-number)
-      (accessor-names json-number-value)
-      (predicate-name is-json-number))
-    ("meta-builtin/builtin/json-object"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name json-object)
-      (accessor-names json-object-entries)
-      (predicate-name is-json-object))
-    ("meta-builtin/builtin/json-string"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name json-string)
-      (accessor-names json-string-value)
-      (predicate-name is-json-string))
     ("meta-builtin/builtin/just"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -147,6 +119,34 @@
       (name nothing)
       (accessor-names )
       (predicate-name is-nothing))
+    ("meta-builtin/builtin/null-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name null-json)
+      (accessor-names )
+      (predicate-name is-null-json))
+    ("meta-builtin/builtin/number-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name number-json)
+      (accessor-names number-json-value)
+      (predicate-name is-number-json))
+    ("meta-builtin/builtin/object-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name object-json)
+      (accessor-names object-json-entries)
+      (predicate-name is-object-json))
+    ("meta-builtin/builtin/string-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name string-json)
+      (accessor-names string-json-value)
+      (predicate-name is-string-json))
     ("meta-builtin/builtin/string-sexp"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -242,7 +242,7 @@
       (pkg-name meta-builtin)
       (mod-name builtin)
       (name json-t)
-      (constructor-names json-null json-bool json-number json-string json-array json-object))
+      (constructor-names null-json bool-json number-json string-json array-json object-json))
     ("meta-builtin/builtin/maybe-t"
       (pkg-name meta-builtin)
       (mod-name builtin)

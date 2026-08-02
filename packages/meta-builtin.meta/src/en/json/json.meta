@@ -1,12 +1,12 @@
 (module builtin)
 
 (define-enum json-t
-  (json-null)
-  (json-bool (value bool-t))
-  (json-number (value float-t))
-  (json-string (value string-t))
-  (json-array (elements (list-t json-t)))
-  (json-object (entries (hash-t string-t json-t))))
+  (null-json)
+  (bool-json (value bool-t))
+  (number-json (value float-t))
+  (string-json (value string-t))
+  (array-json (elements (list-t json-t)))
+  (object-json (entries (hash-t string-t json-t))))
 
 (declare-primitive-function parse-json 1)
 (declare-primitive-function format-json 1)

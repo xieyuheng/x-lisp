@@ -1,40 +1,40 @@
 (module builtin)
 
-(define-test parse-json-null-test
-  (assert-equal (json-null) (parse-json "null")))
+(define-test parse-null-json-test
+  (assert-equal (null-json) (parse-json "null")))
 
-(define-test parse-json-bool-test
-  (assert-equal (json-bool true) (parse-json "true"))
-  (assert-equal (json-bool false) (parse-json "false")))
+(define-test parse-bool-json-test
+  (assert-equal (bool-json true) (parse-json "true"))
+  (assert-equal (bool-json false) (parse-json "false")))
 
-(define-test parse-json-number-test
-  (assert-equal (json-number 0.0) (parse-json "0"))
-  (assert-equal (json-number 42.0) (parse-json "42"))
-  (assert-equal (json-number -17.0) (parse-json "-17"))
-  (assert-equal (json-number 3.14) (parse-json "3.14")))
+(define-test parse-number-json-test
+  (assert-equal (number-json 0.0) (parse-json "0"))
+  (assert-equal (number-json 42.0) (parse-json "42"))
+  (assert-equal (number-json -17.0) (parse-json "-17"))
+  (assert-equal (number-json 3.14) (parse-json "3.14")))
 
-(define-test parse-json-string-test
-  (assert-equal (json-string "hello") (parse-json "\"hello\"")))
+(define-test parse-string-json-test
+  (assert-equal (string-json "hello") (parse-json "\"hello\"")))
 
-(define-test parse-json-array-test
-  (assert-equal (json-array [(json-number 1.0) (json-number 2.0) (json-number 3.0)])
+(define-test parse-array-json-test
+  (assert-equal (array-json [(number-json 1.0) (number-json 2.0) (number-json 3.0)])
                 (parse-json "[1, 2, 3]")))
 
-(define-test parse-json-object-test
-  (assert-equal (json-object (@hash "x" (json-number 1.0)))
+(define-test parse-object-json-test
+  (assert-equal (object-json (@hash "x" (number-json 1.0)))
                 (parse-json "{\"x\": 1}")))
 
 (define-test format-json-test
-  (assert-equal "null" (format-json (json-null)))
-  (assert-equal "true" (format-json (json-bool true)))
-  (assert-equal "false" (format-json (json-bool false)))
-  (assert-equal "0.0" (format-json (json-number 0.0)))
-  (assert-equal "42.0" (format-json (json-number 42.0)))
-  (println (format-json (json-number 3.14))))
+  (assert-equal "null" (format-json (null-json)))
+  (assert-equal "true" (format-json (bool-json true)))
+  (assert-equal "false" (format-json (bool-json false)))
+  (assert-equal "0.0" (format-json (number-json 0.0)))
+  (assert-equal "42.0" (format-json (number-json 42.0)))
+  (println (format-json (number-json 3.14))))
 
 (define-test format-json-string-escape-test
-  (println (format-json (json-string "hello")))
-  (println (format-json (json-string "a\"b")))
-  (println (format-json (json-string "a\\b")))
-  (println (format-json (json-string "a\nb")))
-  (println (format-json (json-string "a\tb"))))
+  (println (format-json (string-json "hello")))
+  (println (format-json (string-json "a\"b")))
+  (println (format-json (string-json "a\\b")))
+  (println (format-json (string-json "a\nb")))
+  (println (format-json (string-json "a\tb"))))
