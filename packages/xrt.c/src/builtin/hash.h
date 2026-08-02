@@ -14,3 +14,4 @@ x_fn_2_t x_hash_delete;
 x_fn_1_t x_hash_keys;
 x_fn_1_t x_hash_values;
 x_fn_1_t x_hash_entries;
+x_fn_1_t x_hash_entries_zh;
