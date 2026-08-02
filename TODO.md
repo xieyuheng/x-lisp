@@ -4,8 +4,6 @@
 [meta-builtin.meta] 值/format-test.meta
 [meta-builtin.meta] 值/same-test.meta
 
-[meta-builtin.meta] 整数对齐.meta -- 用 相等 修复
-
 [meta-builtin.meta] int-product.meta -- 翻译
 [meta-builtin.meta] int-sum.meta -- 翻译
 
