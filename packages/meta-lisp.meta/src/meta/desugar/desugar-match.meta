@@ -324,7 +324,7 @@
     [(string-concat-exp
        (list-concat
          [[(string-exp "pattern mismatch on:" location)]
-          (list-flat-map
+          (list-map-concat
             (lambda (target)
               [(string-exp " " location)
                (apply-exp

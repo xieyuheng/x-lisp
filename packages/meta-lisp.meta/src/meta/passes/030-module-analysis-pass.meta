@@ -67,7 +67,7 @@
     package
     (chain
       fragment-stmts
-      (list-flat-map
+      (list-map-concat
         (lambda (stmt)
           (if (is-private-stmt stmt)
             (private-stmt-names stmt)

@@ -280,8 +280,8 @@ Operations on `(list-t E)`.
 
 - [`list-each`](list/list-each.md) — Iterate with side effects
 - [`list-each-index`](list/list-each-index.md) — Iterate with index
-- [`list-flat-map`](list/list-flat-map.md) — Map and flatten
-- [`list-flat-map-index`](list/list-flat-map-index.md) — Map with index and flatten
+- [`list-map-concat`](list/list-map-concat.md) — Map and flatten
+- [`list-map-index-concat`](list/list-map-index-concat.md) — Map with index and flatten
 - [`list-map`](list/list-map.md) — Map over elements
 - [`list-map-index`](list/list-map-index.md) — Map with index
 - [`list-zip-map`](list/list-zip-map.md) — Map over two lists in parallel

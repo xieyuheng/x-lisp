@@ -281,8 +281,8 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`list-each`](list/list-each.md) — 遍历执行副作用
 - [`list-each-index`](list/list-each-index.md) — 带索引的遍历
-- [`list-flat-map`](list/list-flat-map.md) — 映射并扁平化
-- [`list-flat-map-index`](list/list-flat-map-index.md) — 带索引的映射并扁平化
+- [`list-map-concat`](list/list-map-concat.md) — 映射后连接
+- [`list-map-index-concat`](list/list-map-index-concat.md) — 带索引的映射后连接
 - [`list-map`](list/list-map.md) — 映射
 - [`list-map-index`](list/list-map-index.md) — 带索引的映射
 - [`list-zip-map`](list/list-zip-map.md) — 同时映射两个列表

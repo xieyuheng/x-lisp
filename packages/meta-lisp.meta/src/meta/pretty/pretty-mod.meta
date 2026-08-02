@@ -7,7 +7,7 @@
   (string-join "\n\n"
     (list-map
       (lambda (node) (ppml/format-node width node))
-      (list-flat-map pretty-definition
+      (list-map-concat pretty-definition
         (hash-values (mod-definitions mod))))))
 
 (claim pretty-mod-stmts (-> int-t mod-t string-t))
@@ -36,4 +36,4 @@
   (string-join "\n\n"
     (list-map
       (lambda (node) (ppml/format-node width node))
-      (list-flat-map pretty-definition definitions))))
+      (list-map-concat pretty-definition definitions))))

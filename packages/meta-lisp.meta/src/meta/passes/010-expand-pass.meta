@@ -8,7 +8,7 @@
   (for-hash-value (package-fragments package)
     (lambda (fragment)
       (fragment-put-stmts
-        (list-flat-map expand-stmt (fragment-stmts fragment))
+        (list-map-concat expand-stmt (fragment-stmts fragment))
         fragment)))
   (when (hash-has "dump" (package-config-compiler (package-config package)))
     (package-dump-fragments package "010-expand")))
@@ -159,12 +159,12 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (list-concat
        [[stmt]
-        (list-flat-map
+        (list-map-concat
           (lambda (ctor)
             (list-concat
               [(expand-constructor type-constructor ctor)
                (expand-predicate type-constructor ctor)
-               (list-flat-map-index
+               (list-map-index-concat
                  (lambda (index field)
                    (list-append
                      (expand-accessor type-constructor ctor index field)
