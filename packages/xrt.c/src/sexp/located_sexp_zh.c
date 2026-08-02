@@ -147,11 +147,11 @@ static value_t for_sexp_zh(value_t path, list_t *tokens) {
     value_t span = value_from_span_zh(token->span);
     value_t location = make_source_location_sexp_zh(path, span);
     if (string_equal(token->content, "'")) {
-      head = symbol_sexp_zh(x_object(intern_symbol("@quote")), location);
+      head = symbol_sexp_zh(x_object(intern_symbol("@引用")), location);
     } else if (string_equal(token->content, "`")) {
-      head = symbol_sexp_zh(x_object(intern_symbol("@quasiquote")), location);
+      head = symbol_sexp_zh(x_object(intern_symbol("@半引用")), location);
     } else if (string_equal(token->content, ",")) {
-      head = symbol_sexp_zh(x_object(intern_symbol("@unquote")), location);
+      head = symbol_sexp_zh(x_object(intern_symbol("@去引用")), location);
     } else {
       who_printf("unexpected quasiquote mark: %s", token->content);
       exit(1);
@@ -179,7 +179,7 @@ static value_t for_sexp_zh(value_t path, list_t *tokens) {
       value_t elements = for_elements_zh(path, "]", tokens, &end_span);
       struct span_t span = span_union(start_span, end_span);
       value_t location = make_source_location_sexp_zh(path, value_from_span_zh(span));
-      value_t content = x_object(intern_symbol("@square-bracket"));
+      value_t content = x_object(intern_symbol("@方括号"));
       value_t head = symbol_sexp_zh(content, location);
       x_list_push_front_mut(head, elements);
       token_free(token);
@@ -190,7 +190,7 @@ static value_t for_sexp_zh(value_t path, list_t *tokens) {
       value_t elements = for_elements_zh(path, "}", tokens, &end_span);
       struct span_t span = span_union(start_span, end_span);
       value_t location = make_source_location_sexp_zh(path, value_from_span_zh(span));
-      value_t content = x_object(intern_symbol("@curly-bracket"));
+      value_t content = x_object(intern_symbol("@花括号"));
       value_t head = symbol_sexp_zh(content, location);
       x_list_push_front_mut(head, elements);
       token_free(token);

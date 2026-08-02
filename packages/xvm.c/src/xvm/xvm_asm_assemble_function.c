@@ -7,6 +7,9 @@ static bool is_literal(value_t sexp) {
     || is_float(sexp);
 }
 
+// TODO: The Chinese parser produces `@引用` for quoted symbols.
+// If this assembler is to support Chinese compilation output,
+// it must recognize `@引用` here as well.
 static bool is_quote(value_t sexp) {
   return sexp_has_tag(sexp, "@quote");
 }

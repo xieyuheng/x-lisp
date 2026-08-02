@@ -50,7 +50,7 @@
       begin let letrec @list @square-bracket @set @hash @sexp @string
       -> the polymorphic pipe chain compose define @comment)
     '(函数 @引用 若 当 除非 且 或 若则 匹配 多匹配
-      循序 令 递归令 @列表 @集合 @散列 @符号算式 @文本
+      循序 令 递归令 @列表 @方括号 @集合 @散列 @符号算式 @文本
       -> 型例 多态 管道 串联 复合 定义 @注释)))
 
 (claim parse-compound-exp
@@ -190,7 +190,7 @@
      (@comment
        (@list <exp> ...))
      (list-exp (list-map parse-exp sexps) location))
-    ((equal tag '@square-bracket)
+    ((list-member tag '(@square-bracket @方括号))
      (@comment
        [<exp> ...])
      (list-exp (list-map parse-exp sexps) location))
