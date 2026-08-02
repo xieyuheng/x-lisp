@@ -1,5 +1,13 @@
 # 中文
 
+prompt：
+
+meta-lisp 设计了中文语法：docs/zh/元语/*
+下面我会给你发送代码，你要帮我翻译成中文语法。
+你只负责翻译，不需要修改文件。
+
+---
+
 [meta-builtin.meta] 值/format-test.meta
 [meta-builtin.meta] 值/same-test.meta
 
