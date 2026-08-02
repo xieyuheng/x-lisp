@@ -235,8 +235,8 @@ void import_builtin_zh(mod_t *mod) {
 
   // error
 
-  define_primitive_1(mod, "meta-builtin/内置/错误", x_error);
-  define_primitive_2(mod, "meta-builtin/内置/错误及位置", x_error_with_location);
+  define_primitive_1(mod, "meta-builtin/内置/报错", x_error);
+  define_primitive_2(mod, "meta-builtin/内置/报错及位置", x_error_with_location);
 
   // sexp
 

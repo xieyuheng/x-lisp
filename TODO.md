@@ -1,9 +1,12 @@
 # 中文
 
-[meta-builtin.meta] 翻译 assert.meta
 [meta-builtin.meta] 翻译 error.meta
+[meta-builtin.meta] 翻译 assert.meta
 [meta-builtin.meta] 翻译 process.meta
 [meta-builtin.meta] 翻译 bool.meta
+
+[meta-math.meta] 翻译
+[meta-example.meta] 翻译
 
 # x86-64
 
