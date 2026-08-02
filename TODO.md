@@ -1,6 +1,5 @@
 # 中文
 
-[meta-builtin.meta] 值/atom-test.meta
 [meta-builtin.meta] 值/format-test.meta
 [meta-builtin.meta] 值/same-test.meta
 
@@ -16,6 +15,8 @@
 
 [meta-math.meta] 翻译
 [meta-example.meta] 翻译
+
+[meta-lisp.js] 支持中文 定位断言
 
 # learn
 
