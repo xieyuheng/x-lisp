@@ -8,8 +8,6 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
-[meta-builtin.meta] 值/same-test.meta
-
 [meta-builtin.meta] int-product.meta -- 翻译
 [meta-builtin.meta] int-sum.meta -- 翻译
 
