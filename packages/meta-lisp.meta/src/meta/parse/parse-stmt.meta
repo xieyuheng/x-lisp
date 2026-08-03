@@ -218,14 +218,14 @@
        (symbol-sexp-content (car sexps))
        (parse-exp (car (cdr sexps)))
        location))
-    ((list-member tag '(declare-primitive-function 声明原始函数))
+    ((list-member tag '(declare-primitive-function 声明基本函数))
      (@comment
        (declare-primitive-function <name> <arity>))
      (declare-primitive-function-stmt
        (symbol-sexp-content (car sexps))
        (int-sexp-content (car (cdr sexps)))
        location))
-    ((list-member tag '(declare-primitive-variable 声明原始变量))
+    ((list-member tag '(declare-primitive-variable 声明基本变量))
      (@comment
        (declare-primitive-variable <name>))
      (declare-primitive-variable-stmt

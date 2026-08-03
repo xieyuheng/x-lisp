@@ -480,7 +480,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "`(声明原始函数 ,name ,arity)": ({ name, arity }, { location }) => {
+  "`(声明基本函数 ,name ,arity)": ({ name, arity }, { location }) => {
     return M.DeclarePrimitiveFunctionStmt(
       S.asSymbolSexp(name).content,
       Number(S.asIntSexp(arity).content),
@@ -495,7 +495,7 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "`(声明原始变量 ,name)": ({ name }, { location }) => {
+  "`(声明基本变量 ,name)": ({ name }, { location }) => {
     return M.DeclarePrimitiveVariableStmt(
       S.asSymbolSexp(name).content,
       location,
