@@ -1,5 +1,5 @@
 ---
-title: call-with-output-file
+title: use-output-file
 ---
 
 # 类型
@@ -16,6 +16,6 @@ title: call-with-output-file
 # 例子
 
 ```meta-lisp
-(call-with-output-file "output.txt"
+(use-output-file "output.txt"
   (lambda (file) (file-writeln file "hello")))
 ```

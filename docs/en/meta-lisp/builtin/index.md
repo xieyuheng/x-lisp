@@ -507,8 +507,8 @@ File handle read/write operations.
 
 ### Convenience
 
-- [`call-with-input-file`](file/call-with-input-file.md) — Auto-closing read
-- [`call-with-output-file`](file/call-with-output-file.md) — Auto-closing write
+- [`use-input-file`](file/use-input-file.md) — Auto-closing read
+- [`use-output-file`](file/use-output-file.md) — Auto-closing write
 
 ### Standard output
 

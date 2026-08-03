@@ -1,5 +1,5 @@
 ---
-title: call-with-input-file
+title: use-input-file
 ---
 
 # 类型
@@ -16,6 +16,6 @@ title: call-with-input-file
 # 例子
 
 ```meta-lisp
-(call-with-input-file "data.txt"
+(use-input-file "data.txt"
   (lambda (file) (file-read file)))
 ```

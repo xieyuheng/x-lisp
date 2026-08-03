@@ -1,22 +1,22 @@
 (module builtin)
 
-(claim call-with-input-file
+(claim use-input-file
   (polymorphic (A)
     (-> string-t (-> file-t A)
         A)))
 
-(define (call-with-input-file path f)
+(define (use-input-file path f)
   (let ((file (open-input-file path))
          (result (f file)))
     (file-close file)
     result))
 
-(claim call-with-output-file
+(claim use-output-file
   (polymorphic (A)
     (-> string-t (-> file-t A)
         A)))
 
-(define (call-with-output-file path f)
+(define (use-output-file path f)
   (let ((file (open-output-file path))
          (result (f file)))
     (file-close file)

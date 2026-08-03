@@ -1,5 +1,5 @@
 ---
-title: call-with-input-file
+title: use-input-file
 ---
 
 # Type
@@ -16,6 +16,6 @@ Open file for reading, pass the file handle to a function, and automatically clo
 # Examples
 
 ```meta-lisp
-(call-with-input-file "data.txt"
+(use-input-file "data.txt"
   (lambda (file) (file-read file)))
 ```

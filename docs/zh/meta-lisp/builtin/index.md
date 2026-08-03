@@ -508,8 +508,8 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 ### 便捷函数
 
-- [`call-with-input-file`](file/call-with-input-file.md) — 自动关闭的读取
-- [`call-with-output-file`](file/call-with-output-file.md) — 自动关闭的写入
+- [`use-input-file`](file/use-input-file.md) — 自动关闭的读取
+- [`use-output-file`](file/use-output-file.md) — 自动关闭的写入
 
 ### 标准输出
 

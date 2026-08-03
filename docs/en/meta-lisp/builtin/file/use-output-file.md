@@ -1,5 +1,5 @@
 ---
-title: call-with-output-file
+title: use-output-file
 ---
 
 # Type
@@ -16,6 +16,6 @@ Open file for writing, pass the file handle to a function, and automatically clo
 # Examples
 
 ```meta-lisp
-(call-with-output-file "output.txt"
+(use-output-file "output.txt"
   (lambda (file) (file-writeln file "hello")))
 ```
