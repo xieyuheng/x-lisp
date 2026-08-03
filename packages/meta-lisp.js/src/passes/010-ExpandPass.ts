@@ -261,7 +261,7 @@ function expandPredicate(
       stmt.typeConstructor.parameters,
       M.ArrowExp(
         [getDataType(stmt)],
-        M.VarExp("bool-t", ctor.location),
+        M.QualifiedVarExp("meta-builtin", "builtin", "bool-t", ctor.location),
         ctor.location,
       ),
       ctor.location,
@@ -275,15 +275,30 @@ function expandPredicate(
       M.AndExp(
         [
           M.ApplyExp(
-            M.VarExp("is-list", ctor.location),
+            M.QualifiedVarExp(
+              "meta-builtin",
+              "builtin",
+              "is-list",
+              ctor.location,
+            ),
             [M.VarExp("value", ctor.location)],
             ctor.location,
           ),
           M.ApplyExp(
-            M.VarExp("equal", ctor.location),
+            M.QualifiedVarExp(
+              "meta-builtin",
+              "builtin",
+              "equal",
+              ctor.location,
+            ),
             [
               M.ApplyExp(
-                M.VarExp("list-length", ctor.location),
+                M.QualifiedVarExp(
+                  "meta-builtin",
+                  "builtin",
+                  "list-length",
+                  ctor.location,
+                ),
                 [M.VarExp("value", ctor.location)],
                 ctor.location,
               ),
@@ -292,10 +307,20 @@ function expandPredicate(
             ctor.location,
           ),
           M.ApplyExp(
-            M.VarExp("equal", ctor.location),
+            M.QualifiedVarExp(
+              "meta-builtin",
+              "builtin",
+              "equal",
+              ctor.location,
+            ),
             [
               M.ApplyExp(
-                M.VarExp("list-head", ctor.location),
+                M.QualifiedVarExp(
+                  "meta-builtin",
+                  "builtin",
+                  "list-head",
+                  ctor.location,
+                ),
                 [M.VarExp("value", ctor.location)],
                 ctor.location,
               ),
@@ -335,7 +360,12 @@ function expandAccessor(
       field.accessorName,
       ["target"],
       M.ApplyExp(
-        M.VarExp("list-get", field.location),
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "list-get",
+          field.location,
+        ),
         [
           M.IntExp(BigInt(index + 1), field.location),
           M.VarExp("target", field.location),
@@ -379,7 +409,12 @@ function expandModifier(
       M.BeginExp(
         [
           M.ApplyExp(
-            M.VarExp("list-put", field.location),
+            M.QualifiedVarExp(
+              "meta-builtin",
+              "builtin",
+              "list-put",
+              field.location,
+            ),
             [
               M.IntExp(BigInt(index + 1), field.location),
               M.VarExp("value", field.location),

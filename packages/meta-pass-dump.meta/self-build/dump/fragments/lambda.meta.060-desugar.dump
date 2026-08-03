@@ -26,23 +26,23 @@
       (meta-builtin/builtin/list-push var-exp list)
       (begin (meta-builtin/builtin/list-push name list) list))))
 
-(admit is-var-exp (-> exp-t bool-t))
+(admit is-var-exp (-> exp-t meta-builtin/builtin/bool-t))
 
 (define (is-var-exp value)
-  (if (is-list value)
-    (if (equal (list-length value) 2)
-      (equal (list-head value) var-exp)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 2)
+      (meta-builtin/builtin/equal (meta-builtin/builtin/list-head value) var-exp)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
 (admit var-exp-name (-> exp-t symbol-t))
 
-(define (var-exp-name target) (list-get 1 target))
+(define (var-exp-name target) (meta-builtin/builtin/list-get 1 target))
 
 (admit var-exp-put-name (-> symbol-t exp-t exp-t))
 
 (define (var-exp-put-name value target)
-  (begin (list-put 1 value target) target))
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (admit apply-exp (-> exp-t exp-t exp-t))
 
@@ -54,32 +54,34 @@
         (meta-builtin/builtin/list-push target list)
         (begin (meta-builtin/builtin/list-push arg list) list)))))
 
-(admit is-apply-exp (-> exp-t bool-t))
+(admit is-apply-exp (-> exp-t meta-builtin/builtin/bool-t))
 
 (define (is-apply-exp value)
-  (if (is-list value)
-    (if (equal (list-length value) 3)
-      (equal (list-head value) apply-exp)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
+      (meta-builtin/builtin/equal
+       (meta-builtin/builtin/list-head value)
+       apply-exp)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
 (admit apply-exp-target (-> exp-t exp-t))
 
-(define (apply-exp-target target) (list-get 1 target))
+(define (apply-exp-target target) (meta-builtin/builtin/list-get 1 target))
 
 (admit apply-exp-put-target (-> exp-t exp-t exp-t))
 
 (define (apply-exp-put-target value target)
-  (begin (list-put 1 value target) target))
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (admit apply-exp-arg (-> exp-t exp-t))
 
-(define (apply-exp-arg target) (list-get 2 target))
+(define (apply-exp-arg target) (meta-builtin/builtin/list-get 2 target))
 
 (admit apply-exp-put-arg (-> exp-t exp-t exp-t))
 
 (define (apply-exp-put-arg value target)
-  (begin (list-put 2 value target) target))
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (admit lambda-exp (-> symbol-t exp-t exp-t))
 
@@ -91,32 +93,34 @@
         (meta-builtin/builtin/list-push parameter list)
         (begin (meta-builtin/builtin/list-push body list) list)))))
 
-(admit is-lambda-exp (-> exp-t bool-t))
+(admit is-lambda-exp (-> exp-t meta-builtin/builtin/bool-t))
 
 (define (is-lambda-exp value)
-  (if (is-list value)
-    (if (equal (list-length value) 3)
-      (equal (list-head value) lambda-exp)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
+      (meta-builtin/builtin/equal
+       (meta-builtin/builtin/list-head value)
+       lambda-exp)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
 (admit lambda-exp-parameter (-> exp-t symbol-t))
 
-(define (lambda-exp-parameter target) (list-get 1 target))
+(define (lambda-exp-parameter target) (meta-builtin/builtin/list-get 1 target))
 
 (admit lambda-exp-put-parameter (-> symbol-t exp-t exp-t))
 
 (define (lambda-exp-put-parameter value target)
-  (begin (list-put 1 value target) target))
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (admit lambda-exp-body (-> exp-t exp-t))
 
-(define (lambda-exp-body target) (list-get 2 target))
+(define (lambda-exp-body target) (meta-builtin/builtin/list-get 2 target))
 
 (admit lambda-exp-put-body (-> exp-t exp-t exp-t))
 
 (define (lambda-exp-put-body value target)
-  (begin (list-put 2 value target) target))
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (admit let-exp (-> symbol-t exp-t exp-t exp-t))
 
@@ -130,40 +134,41 @@
           (meta-builtin/builtin/list-push rhs list)
           (begin (meta-builtin/builtin/list-push body list) list))))))
 
-(admit is-let-exp (-> exp-t bool-t))
+(admit is-let-exp (-> exp-t meta-builtin/builtin/bool-t))
 
 (define (is-let-exp value)
-  (if (is-list value)
-    (if (equal (list-length value) 4)
-      (equal (list-head value) let-exp)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 4)
+      (meta-builtin/builtin/equal (meta-builtin/builtin/list-head value) let-exp)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
 (admit let-exp-name (-> exp-t symbol-t))
 
-(define (let-exp-name target) (list-get 1 target))
+(define (let-exp-name target) (meta-builtin/builtin/list-get 1 target))
 
 (admit let-exp-put-name (-> symbol-t exp-t exp-t))
 
 (define (let-exp-put-name value target)
-  (begin (list-put 1 value target) target))
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (admit let-exp-rhs (-> exp-t exp-t))
 
-(define (let-exp-rhs target) (list-get 2 target))
+(define (let-exp-rhs target) (meta-builtin/builtin/list-get 2 target))
 
 (admit let-exp-put-rhs (-> exp-t exp-t exp-t))
 
-(define (let-exp-put-rhs value target) (begin (list-put 2 value target) target))
+(define (let-exp-put-rhs value target)
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (admit let-exp-body (-> exp-t exp-t))
 
-(define (let-exp-body target) (list-get 3 target))
+(define (let-exp-body target) (meta-builtin/builtin/list-get 3 target))
 
 (admit let-exp-put-body (-> exp-t exp-t exp-t))
 
 (define (let-exp-put-body value target)
-  (begin (list-put 3 value target) target))
+  (begin (meta-builtin/builtin/list-put 3 value target) target))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
@@ -195,41 +200,44 @@
           (meta-builtin/builtin/list-push parameter list)
           (begin (meta-builtin/builtin/list-push body list) list))))))
 
-(admit is-closure-value (-> value-t bool-t))
+(admit is-closure-value (-> value-t meta-builtin/builtin/bool-t))
 
 (define (is-closure-value value)
-  (if (is-list value)
-    (if (equal (list-length value) 4)
-      (equal (list-head value) closure-value)
+  (if (meta-builtin/builtin/is-list value)
+    (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 4)
+      (meta-builtin/builtin/equal
+       (meta-builtin/builtin/list-head value)
+       closure-value)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
 (admit closure-value-env (-> value-t env-t))
 
-(define (closure-value-env target) (list-get 1 target))
+(define (closure-value-env target) (meta-builtin/builtin/list-get 1 target))
 
 (admit closure-value-put-env (-> env-t value-t value-t))
 
 (define (closure-value-put-env value target)
-  (begin (list-put 1 value target) target))
+  (begin (meta-builtin/builtin/list-put 1 value target) target))
 
 (admit closure-value-parameter (-> value-t symbol-t))
 
-(define (closure-value-parameter target) (list-get 2 target))
+(define (closure-value-parameter target)
+  (meta-builtin/builtin/list-get 2 target))
 
 (admit closure-value-put-parameter (-> symbol-t value-t value-t))
 
 (define (closure-value-put-parameter value target)
-  (begin (list-put 2 value target) target))
+  (begin (meta-builtin/builtin/list-put 2 value target) target))
 
 (admit closure-value-body (-> value-t exp-t))
 
-(define (closure-value-body target) (list-get 3 target))
+(define (closure-value-body target) (meta-builtin/builtin/list-get 3 target))
 
 (admit closure-value-put-body (-> exp-t value-t value-t))
 
 (define (closure-value-put-body value target)
-  (begin (list-put 3 value target) target))
+  (begin (meta-builtin/builtin/list-put 3 value target) target))
 
 (define (evaluate exp env)
   (if (self/lambda/is-var-exp exp)

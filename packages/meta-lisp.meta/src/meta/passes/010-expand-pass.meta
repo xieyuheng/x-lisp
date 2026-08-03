@@ -212,22 +212,22 @@
         (pre-type-constructor-parameters type-constructor)
         (arrow-exp
           [(make-type-exp type-constructor location)]
-          (var-exp 'bool-t location)
+          (qualified-var-exp 'meta-builtin 'builtin 'bool-t location)
           location)
         location)
       (define-function-stmt
         predicate-name
         ['value]
         (and-exp
-          [(apply-exp (var-exp 'is-list location) [(var-exp 'value location)] location)
+          [(apply-exp (qualified-var-exp 'meta-builtin 'builtin 'is-list location) [(var-exp 'value location)] location)
            (apply-exp
-             (var-exp 'equal location)
-             [(apply-exp (var-exp 'list-length location) [(var-exp 'value location)] location)
+             (qualified-var-exp 'meta-builtin 'builtin 'equal location)
+             [(apply-exp (qualified-var-exp 'meta-builtin 'builtin 'list-length location) [(var-exp 'value location)] location)
               (int-exp (iadd (list-length fields) 1) location)]
              location)
            (apply-exp
-             (var-exp 'equal location)
-             [(apply-exp (var-exp 'list-head location) [(var-exp 'value location)] location)
+             (qualified-var-exp 'meta-builtin 'builtin 'equal location)
+             [(apply-exp (qualified-var-exp 'meta-builtin 'builtin 'list-head location) [(var-exp 'value location)] location)
               (symbol-exp name location)]
              location)]
           location)
@@ -253,7 +253,7 @@
           accessor-name
           ['target]
           (apply-exp
-            (var-exp 'list-get location)
+            (qualified-var-exp 'meta-builtin 'builtin 'list-get location)
             [(int-exp (iadd index 1) location)
              (var-exp 'target location)]
             location)
@@ -283,7 +283,7 @@
               ['value 'target]
               (begin-exp
                 [(apply-exp
-                   (var-exp 'list-put location)
+                   (qualified-var-exp 'meta-builtin 'builtin 'list-put location)
                    [(int-exp (iadd index 1) location)
                     (var-exp 'value location)
                     (var-exp 'target location)]
