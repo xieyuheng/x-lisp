@@ -8,15 +8,17 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
-[meta-builtin.meta] int-product.meta -- 翻译
-[meta-builtin.meta] int-sum.meta -- 翻译
+[内置] 列表
 
-[meta-builtin.meta] process.meta -- 翻译
-[meta-builtin.meta] float.meta -- 翻译
-[meta-builtin.meta] error.meta -- 翻译
+[内置] 整数求积 -- 需要列表
+[内置] 整数求和 -- 需要列表
 
-[meta-builtin.meta] 真假测试.meta -- 用 打印行 修复
-[meta-builtin.meta] 断言.meta -- 用 源码位置 修复 定位断言
+[内置] process.meta -- 翻译
+[内置] error.meta -- 翻译
+[内置] 浮点
+
+[内置] 真假测试 -- 用 打印行 修复
+[内置] 断言 -- 用 源码位置 修复 定位断言
 
 [meta-math.meta] 翻译
 [meta-example.meta] 翻译
