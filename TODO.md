@@ -8,6 +8,8 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
+[meta-lisp.meta] add lang to stmt
+
 [内置] 匣子
 
 [内置] 列表逐项索引.meta -- 测试 依赖 二元组
