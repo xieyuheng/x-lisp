@@ -102,8 +102,8 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/路径为绝对", x_path_is_absolute);
   define_primitive_1(mod, "meta-builtin/内置/路径为相对", x_path_is_relative);
   define_primitive_2(mod, "meta-builtin/内置/路径连接", x_path_join);
-  define_primitive_1(mod, "meta-builtin/内置/路径标准化", x_path_normalize);
-  define_primitive_2(mod, "meta-builtin/内置/路径相对化", x_path_relative);
+  define_primitive_1(mod, "meta-builtin/内置/路径规范化", x_path_normalize);
+  define_primitive_2(mod, "meta-builtin/内置/路径相对", x_path_relative);
   define_primitive_1(mod, "meta-builtin/内置/路径相对于当前目录", x_path_relative_to_cwd);
   define_primitive_1(mod, "meta-builtin/内置/路径解析", x_path_resolve);
 
