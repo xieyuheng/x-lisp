@@ -178,10 +178,10 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/首", x_car);
   define_primitive_1(mod, "meta-builtin/内置/余", x_cdr);
   define_primitive_2(mod, "meta-builtin/内置/添", x_cons);
-  define_primitive_1(mod, "meta-builtin/内置/列表首", x_list_head);
-  define_primitive_1(mod, "meta-builtin/内置/列表余", x_list_tail);
-  define_primitive_1(mod, "meta-builtin/内置/列表除末", x_list_init);
-  define_primitive_1(mod, "meta-builtin/内置/列表末", x_list_last);
+  define_primitive_1(mod, "meta-builtin/内置/列表首项", x_list_head);
+  define_primitive_1(mod, "meta-builtin/内置/列表去首", x_list_tail);
+  define_primitive_1(mod, "meta-builtin/内置/列表去末", x_list_init);
+  define_primitive_1(mod, "meta-builtin/内置/列表末项", x_list_last);
   define_primitive_1(mod, "meta-builtin/内置/列表反转", x_list_reverse_mut);
   define_primitive_1(mod, "meta-builtin/内置/列表复制反转", x_list_reverse);
   define_primitive_1(mod, "meta-builtin/内置/列表转集合", x_list_to_set);
