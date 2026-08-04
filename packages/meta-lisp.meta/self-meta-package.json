@@ -1,7 +1,7 @@
 {
   "name": "meta-lisp",
   "version": "0.1.0",
-  "entry": "meta/main",
+  "entry": "main/main",
   "build": {
     "source-directory": "src",
     "output-directory": "self-build",
