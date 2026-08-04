@@ -8,6 +8,7 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
+[内置] 列表排序.meta -- 使用 box
 [内置] 列表截取.meta
 [内置] 列表测试.meta
 [内置] 列表拉链.meta
