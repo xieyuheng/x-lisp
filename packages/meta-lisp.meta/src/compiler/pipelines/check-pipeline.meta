@@ -1,0 +1,31 @@
+(module compiler)
+
+(define (check-pipeline root-package)
+  (let ((closure (meta/package-closure-in-topological-order root-package)))
+    (for-list closure meta/expand-pass)
+    (for-list closure meta/module-prelude-pass)
+    (let ((module-reports (make-hash)))
+      (for-list closure
+        (lambda (package)
+          (hash-put (meta/package-id package) (meta/module-analysis-pass package)
+            module-reports)))
+      (let ((algebraic-reports (make-hash)))
+        (for-list closure
+          (lambda (package)
+            (hash-put (meta/package-id package) (meta/algebraic-analysis-pass package)
+              algebraic-reports)))
+        (for-list closure
+          (lambda (package)
+            (meta/lower-match-pass
+              (hash-get (meta/package-id package) module-reports)
+              (hash-get (meta/package-id package) algebraic-reports)
+              package)))
+        (for-list closure meta/desugar-pass)
+        (for-list closure
+          (lambda (package)
+            (meta/module-import-pass
+              (hash-get (meta/package-id package) module-reports) package)))
+        (for-list closure meta/setup-pass)
+        (for-list closure meta/claim-pass)
+        (for-list closure meta/qualify-pass)
+        void))))
