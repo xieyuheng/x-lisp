@@ -11,36 +11,35 @@ import * as Passes from "../passes/index.ts"
 export function BuildX86Pipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
-  for (const pkg of closure) Passes.ExpandPass(pkg)
-  for (const pkg of closure) Passes.ModulePreludePass(pkg)
+  for (const pkg of closure) M.ExpandPass(pkg)
+  for (const pkg of closure) M.ModulePreludePass(pkg)
 
-  const moduleReports = new Map<string, Passes.ModuleAnalysisReport>()
+  const moduleReports = new Map<string, M.ModuleAnalysisReport>()
   for (const pkg of closure)
-    moduleReports.set(pkg.id, Passes.ModuleAnalysisPass(pkg))
+    moduleReports.set(pkg.id, M.ModuleAnalysisPass(pkg))
 
-  const algebraicReports = new Map<string, Passes.AlgebraicAnalysisReport>()
+  const algebraicReports = new Map<string, M.AlgebraicAnalysisReport>()
   for (const pkg of closure)
-    algebraicReports.set(pkg.id, Passes.AlgebraicAnalysisPass(pkg))
+    algebraicReports.set(pkg.id, M.AlgebraicAnalysisPass(pkg))
 
   for (const pkg of closure)
-    Passes.LowerMatchPass(
+    M.LowerMatchPass(
       pkg,
       moduleReports.get(pkg.id)!,
       algebraicReports.get(pkg.id)!,
     )
 
-  for (const pkg of closure) Passes.DesugarPass(pkg)
-  for (const pkg of closure)
-    Passes.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
-  for (const pkg of closure) Passes.SetupPass(pkg)
-  for (const pkg of closure) Passes.ClaimPass(pkg)
-  for (const pkg of closure) Passes.QualifyPass(pkg)
-  for (const pkg of closure) Passes.LocatePass(pkg)
-  for (const pkg of closure) Passes.UniquifyPass(pkg)
-  for (const pkg of closure) Passes.CheckPass(pkg)
-  for (const pkg of closure) Passes.ConvertClosurePass(pkg)
-  for (const pkg of closure) Passes.LimitArityPass(pkg, 6)
-  for (const pkg of closure) Passes.UnnestOperandPass(pkg)
+  for (const pkg of closure) M.DesugarPass(pkg)
+  for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
+  for (const pkg of closure) M.SetupPass(pkg)
+  for (const pkg of closure) M.ClaimPass(pkg)
+  for (const pkg of closure) M.QualifyPass(pkg)
+  for (const pkg of closure) M.LocatePass(pkg)
+  for (const pkg of closure) M.UniquifyPass(pkg)
+  for (const pkg of closure) M.CheckPass(pkg)
+  for (const pkg of closure) M.ConvertClosurePass(pkg)
+  for (const pkg of closure) M.LimitArityPass(pkg, 6)
+  for (const pkg of closure) M.UnnestOperandPass(pkg)
 
   const basicMod = Passes.ExplicateControlPass(rootPkg)
   const basicMod2 = Passes.CopyPropagationPass(basicMod)

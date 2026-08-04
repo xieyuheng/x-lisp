@@ -1,5 +1,4 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Passes from "../../compiler/passes/index.ts"
 import * as M from "../index.ts"
 
 // Desugar `(match)`, the basic idea is:
@@ -87,16 +86,16 @@ import * as M from "../index.ts"
 // we first group clauses by head pattern kind.
 
 export type DesugarMatchCtx = {
-  scope: Passes.FragmentScope
+  scope: M.FragmentScope
   currentModName: string
-  algebraicAnalysisReport: Passes.AlgebraicAnalysisReport
+  algebraicAnalysisReport: M.AlgebraicAnalysisReport
   pkgName: string
 }
 
 export function makeDesugarMatchCtx(
-  scope: Passes.FragmentScope,
+  scope: M.FragmentScope,
   currentModName: string,
-  algebraicAnalysisReport: Passes.AlgebraicAnalysisReport,
+  algebraicAnalysisReport: M.AlgebraicAnalysisReport,
   pkgName: string,
 ): DesugarMatchCtx {
   return { scope, currentModName, algebraicAnalysisReport, pkgName }
@@ -182,7 +181,7 @@ function isDataPatternClause(clause: M.MatchClause): boolean {
 }
 
 type DataPatternClauseGroup = {
-  dataConstructorInfo: Passes.DataConstructorInfo
+  dataConstructorInfo: M.DataConstructorInfo
   clauses: Array<M.MatchClause>
 }
 
@@ -232,7 +231,7 @@ function desugarDataPatternClauseGroup(
 function lookupAlgebraicTypeInfo(
   ctx: DesugarMatchCtx,
   clause: M.MatchClause,
-): Passes.AlgebraicTypeInfo {
+): M.AlgebraicTypeInfo {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) {
     let message = `[lookupAlgebraicTypeInfo] expect data pattern`
@@ -244,7 +243,7 @@ function lookupAlgebraicTypeInfo(
     pattern,
   )
   const info = ctx.algebraicAnalysisReport.dataConstructorInfos.get(
-    Passes.algebraicKey(pkgName, modName, name),
+    M.algebraicKey(pkgName, modName, name),
   )
   if (!info) {
     let message = `[lookupAlgebraicTypeInfo] undefined data constructor`
@@ -255,7 +254,7 @@ function lookupAlgebraicTypeInfo(
     throw new S.ErrorWithSourceLocation(message, clause.location)
   }
   const algebraicTypeInfo = ctx.algebraicAnalysisReport.algebraicTypeInfos.get(
-    Passes.algebraicKey(info.pkgName, info.modName, info.typeName),
+    M.algebraicKey(info.pkgName, info.modName, info.typeName),
   )
   if (!algebraicTypeInfo) {
     let message = `[lookupAlgebraicTypeInfo] cannot find algebraic type info`
@@ -270,7 +269,7 @@ function lookupAlgebraicTypeInfo(
 function lookupSameAlgebraicTypeInfo(
   ctx: DesugarMatchCtx,
   clauses: Array<M.MatchClause>,
-): Passes.AlgebraicTypeInfo {
+): M.AlgebraicTypeInfo {
   const first = lookupAlgebraicTypeInfo(ctx, clauses[0])
   for (const clause of clauses) {
     const current = lookupAlgebraicTypeInfo(ctx, clause)
@@ -291,7 +290,7 @@ function lookupSameAlgebraicTypeInfo(
 function clauseStartsWithDataConstructor(
   ctx: DesugarMatchCtx,
   clause: M.MatchClause,
-  info: Passes.DataConstructorInfo,
+  info: M.DataConstructorInfo,
 ): boolean {
   const [pattern] = clause.patterns
   if (!M.isDataPattern(pattern)) return false
@@ -323,7 +322,7 @@ function groupClausesByDataPattern(
   const algebraicTypeInfo = lookupSameAlgebraicTypeInfo(ctx, clauses)
 
   return algebraicTypeInfo.constructorNames.map((ctorName) => {
-    const key = Passes.algebraicKey(
+    const key = M.algebraicKey(
       algebraicTypeInfo.pkgName,
       algebraicTypeInfo.modName,
       ctorName,
