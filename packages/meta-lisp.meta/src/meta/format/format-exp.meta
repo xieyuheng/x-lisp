@@ -137,5 +137,5 @@
       (@string "((" (format-exps patterns) ") " (format-exp body) ")"))))
 
 (define (format-hash-entry entry)
-  (@string (format-exp (hash-entry-key entry)) " "
-           (format-exp (hash-entry-value entry))))
+  (@string (format-exp (pair-first entry)) " "
+           (format-exp (pair-second entry))))

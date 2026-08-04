@@ -320,7 +320,7 @@
 
 (claim parse-hash-entries
   (-> (list-t sexp-t)
-      (list-t (hash-entry-t exp-t exp-t))))
+      (list-t (pair-t exp-t exp-t))))
 
 (define (parse-hash-entries sexps)
   (if (list-is-empty sexps)
@@ -328,5 +328,5 @@
     (let ((key (car sexps))
           (value (car (cdr sexps)))
           (rest (cdr (cdr sexps))))
-      (cons (make-hash-entry (parse-exp key) (parse-exp value))
+      (cons (make-pair (parse-exp key) (parse-exp value))
         (parse-hash-entries rest)))))

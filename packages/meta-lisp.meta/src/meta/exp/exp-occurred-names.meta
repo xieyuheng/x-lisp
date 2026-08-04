@@ -84,8 +84,8 @@
        (list-map
          (lambda (entry)
            (set-union
-             (exp-occurred-names (hash-entry-key entry))
-             (exp-occurred-names (hash-entry-value entry))))
+             (exp-occurred-names (pair-first entry))
+             (exp-occurred-names (pair-second entry))))
          entries)))
     ((arrow-exp arg-types ret-type location)
      (set-union

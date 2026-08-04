@@ -99,9 +99,9 @@
      (set-exp (list-map (lambda (e) (exp-naive-subst e name rhs)) elements) location))
     ((hash-exp entries location)
      (hash-exp (list-map (lambda (entry)
-                                   (make-hash-entry
-                                     (exp-naive-subst (hash-entry-key entry) name rhs)
-                                     (exp-naive-subst (hash-entry-value entry) name rhs)))
+                                   (make-pair
+                                     (exp-naive-subst (pair-first entry) name rhs)
+                                     (exp-naive-subst (pair-second entry) name rhs)))
                                  entries)
                        location))
     ((arrow-exp arg-types ret-type location)

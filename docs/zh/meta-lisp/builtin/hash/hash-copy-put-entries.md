@@ -5,7 +5,7 @@ title: hash-copy-put-entries
 # 类型
 
 ```meta-lisp
-(polymorphic (K V) (-> (list-t (hash-entry-t K V)) (hash-t K V) (hash-t K V)))
+(polymorphic (K V) (-> (list-t (pair-t K V)) (hash-t K V) (hash-t K V)))
 ```
 
 # 描述
@@ -16,7 +16,7 @@ title: hash-copy-put-entries
 
 ```meta-lisp
 (hash-copy-put-entries
-  [(make-hash-entry 'a 1) (make-hash-entry 'b 2)]
+  [(make-pair 'a 1) (make-pair 'b 2)]
   (@hash))
 ;; => (@hash 'a 1 'b 2)
 ```

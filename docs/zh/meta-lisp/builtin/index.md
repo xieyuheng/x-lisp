@@ -366,11 +366,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`hash-t`](hash/hash-t.md) — 哈希表类型构造器
 - [`make-hash`](hash/make-hash.md) — 创建空哈希表
-- [`hash-entry-t`](hash/hash-entry-t.md) — 条目类型构造器
-- [`make-hash-entry`](hash/make-hash-entry.md) — 构造条目
-- [`hash-entry-key`](hash/hash-entry-key.md) — 条目的键访问器
-- [`hash-entry-value`](hash/hash-entry-value.md) — 条目的值访问器
-- [`hash-from-entries`](hash/hash-from-entries.md) — 从条目列表构建哈希表
+- [`hash-from-entries`](hash/hash-from-entries.md) — 从序对列表构建哈希表
 
 ### 信息
 

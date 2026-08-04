@@ -28,7 +28,7 @@
   (list-exp (elements (list-t exp-t)) (location source-location-t))
   (string-concat-exp (elements (list-t exp-t)) (location source-location-t))
   (set-exp (elements (list-t exp-t)) (location source-location-t))
-  (hash-exp (entries (list-t (hash-entry-t exp-t exp-t))) (location source-location-t))
+  (hash-exp (entries (list-t (pair-t exp-t exp-t))) (location source-location-t))
   (quote-exp (sexp sexp-t) (location source-location-t))
   (sexp-exp (sexp sexp-t) (location source-location-t))
   (arrow-exp (arg-types (list-t exp-t)) (ret-type exp-t) (location source-location-t))

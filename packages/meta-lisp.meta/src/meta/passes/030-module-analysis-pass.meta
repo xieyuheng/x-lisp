@@ -215,28 +215,28 @@
   (list-copy-sort
     (lambda (a b)
       (string-compare-lexical
-        (symbol-to-string (hash-entry-key a))
-        (symbol-to-string (hash-entry-key b))))
+        (symbol-to-string (pair-first a))
+        (symbol-to-string (pair-first b))))
     (hash-entries entries)))
 
 (define (sort-entries-by-string-key entries)
   (list-copy-sort
     (lambda (a b)
-      (string-compare-lexical (hash-entry-key a) (hash-entry-key b)))
+      (string-compare-lexical (pair-first a) (pair-first b)))
     (hash-entries entries)))
 
 (define (format-name-value entry debug)
   (@string
-    (symbol-to-string (hash-entry-key entry)) " "
+    (symbol-to-string (pair-first entry)) " "
     (if debug
-      (let ((names (hash-entry-value entry)))
+      (let ((names (pair-second entry)))
         (string-join " "
           (list-map symbol-to-string
             (list-copy-sort
               (lambda (a b)
                 (string-compare-lexical (symbol-to-string a) (symbol-to-string b)))
               (set-to-list names)))))
-      (format (set-size (hash-entry-value entry))))))
+      (format (set-size (pair-second entry))))))
 
 (claim format-module-analysis-report
   (-> module-analysis-report-t bool-t
@@ -248,8 +248,8 @@
     (list-push "  (fragment-scopes" lines)
     (for-list (sort-entries-by-string-key (module-analysis-report-fragment-scopes result))
       (lambda (entry)
-        (let ((path (hash-entry-key entry))
-              (scope (hash-entry-value entry)))
+        (let ((path (pair-first entry))
+              (scope (pair-second entry)))
           (list-push (@string "    (\"" path "\"") lines)
           (list-push
             (@string "      (mod-name " (symbol-to-string (fragment-scope-mod-name scope)) ")")
@@ -259,8 +259,8 @@
               (list-push "      (imported-names" lines)
               (for-list (sort-entries-by-symbol-key (fragment-scope-imported-names scope))
                 (lambda (entry)
-                  (let ((name (hash-entry-key entry))
-                        (qualified-entry (hash-entry-value entry)))
+                  (let ((name (pair-first entry))
+                        (qualified-entry (pair-second entry)))
                     (list-push
                       (@string "        (" (symbol-to-string name) " "
                                (symbol-to-string (qualified-name-pkg-name qualified-entry)) "/"
@@ -271,8 +271,8 @@
               (list-push "      (imported-prefixes" lines)
               (for-list (sort-entries-by-symbol-key (fragment-scope-imported-prefixes scope))
                 (lambda (entry)
-                  (let ((prefix (hash-entry-key entry))
-                        (qualified-prefix (hash-entry-value entry)))
+                  (let ((prefix (pair-first entry))
+                        (qualified-prefix (pair-second entry)))
                     (list-push
                       (@string "        (" (symbol-to-string prefix) " "
                                (symbol-to-string (qualified-prefix-pkg-name qualified-prefix)) "/"

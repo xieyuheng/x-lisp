@@ -5,7 +5,7 @@ title: hash-entries
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (hash-t K V) (list-t (hash-entry-t K V))))
+(polymorphic (K V) (-> (hash-t K V) (list-t (pair-t K V))))
 ```
 
 # Description

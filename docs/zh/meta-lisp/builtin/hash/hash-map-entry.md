@@ -6,7 +6,7 @@ title: hash-map-entry
 
 ```meta-lisp
 (polymorphic (K1 V1 K2 V2)
-  (-> (-> (hash-entry-t K1 V1) (hash-entry-t K2 V2))
+  (-> (-> (pair-t K1 V1) (pair-t K2 V2))
       (hash-t K1 V1)
       (hash-t K2 V2)))
 ```
@@ -20,9 +20,9 @@ title: hash-map-entry
 ```meta-lisp
 (hash-map-entry
   (lambda (e)
-    (make-hash-entry
-      (iadd 1 (hash-entry-key e))
-      (iadd 1 (hash-entry-value e))))
+    (make-pair
+      (iadd 1 (pair-first e))
+      (iadd 1 (pair-second e))))
   (@hash 1 2 3 4))
 ;; => (@hash 2 3 4 5)
 ```

@@ -192,6 +192,6 @@
 
 (define (pretty-hash-entry entry)
   (ppml/group
-    [(pretty-exp (hash-entry-key entry))
+    [(pretty-exp (pair-first entry))
      (ppml/text " ")
-     (pretty-exp (hash-entry-value entry))]))
+     (pretty-exp (pair-second entry))]))

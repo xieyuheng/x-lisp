@@ -18,7 +18,7 @@
 
 (claim for-hash-entry
   (polymorphic (K V Any)
-    (-> (hash-t K V) (-> (hash-entry-t K V) Any)
+    (-> (hash-t K V) (-> (pair-t K V) Any)
         void-t)))
 
 (define (for-hash-entry data fn)

@@ -70,13 +70,6 @@
       (name make-cli-router)
       (accessor-names cli-router-name cli-router-version cli-router-routes cli-router-handlers)
       (predicate-name is-cli-router))
-    ("meta-builtin/builtin/make-hash-entry"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name hash-entry-t)
-      (name make-hash-entry)
-      (accessor-names hash-entry-key hash-entry-value)
-      (predicate-name is-hash-entry))
     ("meta-builtin/builtin/make-source-location"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -226,11 +219,6 @@
       (mod-name builtin)
       (name cli-router-t)
       (constructor-names make-cli-router))
-    ("meta-builtin/builtin/hash-entry-t"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (name hash-entry-t)
-      (constructor-names make-hash-entry))
     ("meta-builtin/builtin/json-t"
       (pkg-name meta-builtin)
       (mod-name builtin)

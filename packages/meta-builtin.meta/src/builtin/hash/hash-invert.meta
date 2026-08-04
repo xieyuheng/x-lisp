@@ -6,7 +6,7 @@
         (hash-t V K))))
 
 (define (hash-invert hash)
-  (hash-map (lambda (k v) (make-hash-entry v k))
+  (hash-map (lambda (k v) (make-pair v k))
             hash))
 
 (define-test hash-invert-test

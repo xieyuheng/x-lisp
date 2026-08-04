@@ -18,7 +18,7 @@
 
 (claim hash-each-entry
   (polymorphic (K V Any)
-    (-> (-> (hash-entry-t K V) Any) (hash-t K V)
+    (-> (-> (pair-t K V) Any) (hash-t K V)
         void-t)))
 
 (define (hash-each-entry f hash)
@@ -31,7 +31,7 @@
 
 (define (hash-each f hash)
   (list-each (lambda (entry)
-               (f (hash-entry-key entry) (hash-entry-value entry)))
+               (f (pair-first entry) (pair-second entry)))
              (hash-entries hash)))
 
 (define-test hash-each-value-test
