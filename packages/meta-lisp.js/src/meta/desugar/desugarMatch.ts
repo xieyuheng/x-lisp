@@ -1,5 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Passes from "../../passes/index.ts"
+import * as Passes from "../../compiler/passes/index.ts"
 import * as M from "../index.ts"
 
 // Desugar `(match)`, the basic idea is:

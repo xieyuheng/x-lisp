@@ -9,8 +9,8 @@ import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B2 from "./basic/index.ts"
+import * as Compiler from "./compiler/index.ts"
 import * as M from "./meta/index.ts"
-import * as Pipelines from "./pipelines/index.ts"
 import * as X86 from "./x86/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
@@ -33,7 +33,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    const outcome = Pipelines.CheckPipeline(pkg)
+    const outcome = Compiler.CheckPipeline(pkg)
     if (outcome === "OutcomeError") process.exit(2)
   },
 
@@ -43,7 +43,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Pipelines.BuildXvmPipeline(pkg)
+    Compiler.BuildXvmPipeline(pkg)
   },
 
   "build-x86": ({ options }) => {
@@ -52,7 +52,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Pipelines.BuildX86Pipeline(pkg)
+    Compiler.BuildX86Pipeline(pkg)
   },
 
   "test-xvm": ({ options }) => {
@@ -62,7 +62,7 @@ router.defineHandlers({
     if ("--profile" in options) pkg.config.compiler.profile = "true"
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Pipelines.TestXvmPipeline(pkg)
+    Compiler.TestXvmPipeline(pkg)
   },
 
   "format-basic": ({ args: [input] }) => {

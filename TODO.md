@@ -8,7 +8,9 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
-[meta-lisp.js] setup compiler/pipelines
+[meta-lisp.js] move meta passes to meta/passes/
+[meta-lisp.js] move basic passes to basic/passes/
+[meta-lisp.js] move x86 passes to x86/passes/
 
 [meta-lisp.meta] setup compiler/pipelines
 [meta-lisp.meta] add lang to stmt
