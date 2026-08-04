@@ -161,6 +161,20 @@
       (name symbol-sexp)
       (accessor-names symbol-sexp-content symbol-sexp-location)
       (predicate-name is-symbol-sexp))
+    ("meta-builtin/内置/作三元组"
+      (pkg-name meta-builtin)
+      (mod-name 内置)
+      (type-name 三元组型)
+      (name 作三元组)
+      (accessor-names 三元组甲 三元组乙 三元组丙)
+      (predicate-name 为三元组))
+    ("meta-builtin/内置/作二元组"
+      (pkg-name meta-builtin)
+      (mod-name 内置)
+      (type-name 二元组型)
+      (name 作二元组)
+      (accessor-names 二元组甲 二元组乙)
+      (predicate-name 为二元组))
     ("self/lambda/apply-exp"
       (pkg-name self)
       (mod-name lambda)
@@ -278,6 +292,16 @@
       (mod-name builtin)
       (name triple-t)
       (constructor-names make-triple))
+    ("meta-builtin/内置/三元组型"
+      (pkg-name meta-builtin)
+      (mod-name 内置)
+      (name 三元组型)
+      (constructor-names 作三元组))
+    ("meta-builtin/内置/二元组型"
+      (pkg-name meta-builtin)
+      (mod-name 内置)
+      (name 二元组型)
+      (constructor-names 作二元组))
     ("self/lambda/exp-t"
       (pkg-name self)
       (mod-name lambda)
