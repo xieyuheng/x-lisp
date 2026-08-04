@@ -58,7 +58,7 @@
   (let ((name-str (symbol-to-string (data-constructor-name data-constructor)))
         (fields (data-constructor-fields data-constructor)))
     (if (list-is-empty fields)
-      name-str
+      (@string "(" name-str ")")
       (@string "(" name-str " "
                (string-join " "
                  (list-map (lambda (field)

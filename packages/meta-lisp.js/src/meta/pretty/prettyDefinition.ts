@@ -89,17 +89,13 @@ function nodeForDefinition(definition: M.Definition): Ppml.Node {
 }
 
 function prettyDataConstructor(dataConstructor: M.DataConstructor): Ppml.Node {
-  if (dataConstructor.fields.length === 0) {
-    return Ppml.text(dataConstructor.name)
-  } else {
-    const fieldNodes = dataConstructor.fields.map((field) =>
-      Ppml.prettyApplication([Ppml.text(field.name), prettyTerm(field.type)]),
-    )
-    return Ppml.prettyApplication([
-      Ppml.text(dataConstructor.name),
-      ...fieldNodes,
-    ])
-  }
+  const fieldNodes = dataConstructor.fields.map((field) =>
+    Ppml.prettyApplication([Ppml.text(field.name), prettyTerm(field.type)]),
+  )
+  return Ppml.prettyApplication([
+    Ppml.text(dataConstructor.name),
+    ...fieldNodes,
+  ])
 }
 
 function prettyDefinitionType(mod: M.Mod, name: string): Ppml.Node | undefined {

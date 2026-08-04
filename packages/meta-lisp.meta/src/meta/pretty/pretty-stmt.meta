@@ -129,10 +129,8 @@
 (define (pretty-pre-data-constructor ctor)
   (let ((name (ppml/text (symbol-to-string (pre-data-constructor-name ctor))))
         (fields (pre-data-constructor-fields ctor)))
-    (if (list-is-empty fields)
-      name
-      (ppml/pretty-application (just (symbol-to-string (pre-data-constructor-name ctor)))
-        (cons name (list-map pretty-pre-data-field fields))))))
+    (ppml/pretty-application (just (symbol-to-string (pre-data-constructor-name ctor)))
+      (cons name (list-map pretty-pre-data-field fields)))))
 
 (define (pretty-pre-data-field field)
   (let ((name (ppml/text (symbol-to-string (pre-data-field-name field))))

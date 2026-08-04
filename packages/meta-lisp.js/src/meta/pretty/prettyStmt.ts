@@ -198,12 +198,8 @@ function prettyPreTypeConstructor(tc: M.PreTypeConstructor): Ppml.Node {
 }
 
 function prettyPreDataConstructor(ctor: M.PreDataConstructor): Ppml.Node {
-  if (ctor.fields.length === 0) {
-    return Ppml.text(ctor.name)
-  } else {
-    const fieldNodes = ctor.fields.map(prettyPreDataField)
-    return Ppml.prettyApplication([Ppml.text(ctor.name), ...fieldNodes])
-  }
+  const fieldNodes = ctor.fields.map(prettyPreDataField)
+  return Ppml.prettyApplication([Ppml.text(ctor.name), ...fieldNodes])
 }
 
 function prettyPreDataField(field: M.PreDataField): Ppml.Node {

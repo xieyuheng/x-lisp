@@ -101,7 +101,7 @@
   (let ((name-str (symbol-to-string (pre-data-constructor-name ctor)))
         (fields (pre-data-constructor-fields ctor)))
     (if (list-is-empty fields)
-      name-str
+      (@string "(" name-str ")")
       (@string "(" name-str " "
                (string-join " " (list-map format-pre-data-field fields)) ")"))))
 

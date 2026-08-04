@@ -1,6 +1,6 @@
 (claim my-list-t (-> meta-builtin/builtin/type-t meta-builtin/builtin/type-t))
 
-(define-enum (my-list-t E) nil (li (head E) (tail (my-list-t E))))
+(define-enum (my-list-t E) (nil) (li (head E) (tail (my-list-t E))))
 
 (claim nil (polymorphic (E) (-> (my-list-t E))))
 

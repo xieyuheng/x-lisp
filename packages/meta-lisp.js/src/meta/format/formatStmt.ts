@@ -149,7 +149,7 @@ function formatTypeConstructor(typeConstructor: M.PreTypeConstructor): string {
 
 function formatDataConstructor(ctor: M.PreDataConstructor): string {
   if (ctor.fields.length === 0) {
-    return ctor.name
+    return `(${ctor.name})`
   } else {
     const fields = ctor.fields.map(formatDataField).join(" ")
     return `(${ctor.name} ${fields})`

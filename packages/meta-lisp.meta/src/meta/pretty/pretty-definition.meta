@@ -142,11 +142,8 @@
 (define (pretty-data-constructor data-constructor)
   (let ((name (ppml/text (symbol-to-string (data-constructor-name data-constructor))))
         (fields (data-constructor-fields data-constructor)))
-    (if (list-is-empty fields)
-      name
-      (let ((field-nodes (list-map pretty-data-field fields)))
-        (ppml/pretty-application (just (symbol-to-string (data-constructor-name data-constructor)))
-          (cons name field-nodes))))))
+    (ppml/pretty-application (just (symbol-to-string (data-constructor-name data-constructor)))
+      (cons name (list-map pretty-data-field fields)))))
 
 (define (pretty-data-field field)
   (let ((name (ppml/text (symbol-to-string (data-field-name field))))

@@ -87,7 +87,7 @@ function formatDataConstructor(dataConstructor: M.DataConstructor): string {
     .map((field) => `(${field.name} ${M.formatTerm(field.type)})`)
     .join(" ")
   if (dataConstructor.fields.length === 0) {
-    return `${dataConstructor.name}`
+    return `(${dataConstructor.name})`
   } else {
     return `(${dataConstructor.name} ${fields})`
   }

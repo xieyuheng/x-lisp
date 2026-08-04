@@ -79,13 +79,13 @@
     (format-stmt (parse-stmt (@sexp (@comment foo bar))))))
 
 (define-test parse-stmt-define-enum-test
-  (assert-equal "(define-enum color-t red green blue)"
+  (assert-equal "(define-enum color-t (red) (green) (blue))"
     (format-stmt (parse-stmt (@sexp (define-enum color-t (red) (green) (blue))))))
-  (assert-equal "(define-enum (maybe-t A) (just (value A)) nothing)"
+  (assert-equal "(define-enum (maybe-t A) (just (value A)) (nothing))"
     (format-stmt (parse-stmt (@sexp (define-enum (maybe-t A) (just (value A)) (nothing)))))))
 
 (define-test parse-stmt-define-enum-zh-test
-  (assert-equal "(define-enum 颜色 红 绿 蓝)"
+  (assert-equal "(define-enum 颜色 (红) (绿) (蓝))"
     (format-stmt (parse-stmt (@sexp (定义枚举 颜色 (红) (绿) (蓝)))))))
 
 (define-test parse-stmt-define-struct-test
