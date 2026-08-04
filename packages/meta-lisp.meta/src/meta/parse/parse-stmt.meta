@@ -107,7 +107,7 @@
          (pair-first source)
          (pair-second source)
          location)))
-    ((list-member tag '(define-enum 定义枚举))
+    ((equal tag 'define-enum)
      (@comment
        (define-enum <type-name>
          (<constructor-name> (<field-name> <type>) ...)
@@ -118,6 +118,20 @@
      (define-enum-stmt
        (parse-pre-type-constructor (car sexps))
        (list-map parse-pre-data-constructor (cdr sexps))
+       (en)
+       location))
+    ((equal tag '定义枚举)
+     (@comment
+       (定义枚举 <类型名>
+         (<构造器名> (<字段名> <类型>) ...)
+         ...)
+       (定义枚举 (<类型名> <类型参数> ...)
+         (<构造器名> (<字段名> <类型>) ...)
+         ...))
+     (define-enum-stmt
+       (parse-pre-type-constructor (car sexps))
+       (list-map parse-pre-data-constructor (cdr sexps))
+       (zh)
        location))
     ((list-member tag '(define-algebraic-type 定义代数类型))
      (@comment
@@ -141,7 +155,7 @@
                       (parse-explicit-data-constructor elements location))))
          (cdr sexps))
        location))
-    ((list-member tag '(define-struct 定义结构))
+    ((equal tag 'define-struct)
      (@comment
        (define-struct <type-name>
          (<field-name> <type>)
@@ -152,8 +166,22 @@
      (define-struct-stmt
        (parse-pre-type-constructor (car sexps))
        (list-map parse-pre-data-field (cdr sexps))
+       (en)
        location))
-    ((list-member tag '(define-struct* 定义结构*))
+    ((equal tag '定义结构)
+     (@comment
+       (定义结构 <类型名>
+         (<字段名> <类型>)
+         ...)
+       (定义结构 (<类型名> <类型参数> ...)
+         (<字段名> <类型>)
+         ...))
+     (define-struct-stmt
+       (parse-pre-type-constructor (car sexps))
+       (list-map parse-pre-data-field (cdr sexps))
+       (zh)
+       location))
+    ((equal tag 'define-struct*)
      (@comment
        (define-struct* <type-name>
          (<constructor-name>
@@ -166,8 +194,24 @@
      (define-struct-star-stmt
        (parse-pre-type-constructor (car sexps))
        (parse-pre-data-constructor (car (cdr sexps)))
+       (en)
        location))
-    ((list-member tag '(define-record-type 定义记录类型))
+    ((equal tag '定义结构*)
+     (@comment
+       (定义结构* <类型名>
+         (<构造器名>
+           (<字段名> <类型>)
+           ...))
+       (定义结构* (<类型名> <类型参数> ...)
+         (<构造器名>
+           (<字段名> <类型>)
+           ...)))
+     (define-struct-star-stmt
+       (parse-pre-type-constructor (car sexps))
+       (parse-pre-data-constructor (car (cdr sexps)))
+       (zh)
+       location))
+    ((equal tag 'define-record-type)
      (@comment
        (define-record-type <type-name>
          (<constructor-name> (<field-name> <type>) ...)
@@ -182,6 +226,24 @@
      (define-record-type-stmt
        (parse-pre-type-constructor (car sexps))
        (parse-explicit-data-constructor (cdr sexps) location)
+       (en)
+       location))
+    ((equal tag '定义记录类型)
+     (@comment
+       (定义记录类型 <类型名>
+         (<构造器名> (<字段名> <类型>) ...)
+         <谓词名>
+         (<字段名> <访问器名> <修改器名>)
+         ...)
+       (定义记录类型 (<类型名> <类型参数> ...)
+         (<构造器名> (<字段名> <类型>) ...)
+         <谓词名>
+         (<字段名> <访问器名> <修改器名>)
+         ...))
+     (define-record-type-stmt
+       (parse-pre-type-constructor (car sexps))
+       (parse-explicit-data-constructor (cdr sexps) location)
+       (zh)
        location))
     ((list-member tag '(define-opaque-type 定义黑盒类型))
      (@comment

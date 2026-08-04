@@ -84,15 +84,27 @@
   (assert-equal "(define-enum (maybe-t A) (just (value A)) nothing)"
     (format-stmt (parse-stmt (@sexp (define-enum (maybe-t A) (just (value A)) (nothing)))))))
 
+(define-test parse-stmt-define-enum-zh-test
+  (assert-equal "(define-enum 颜色 红 绿 蓝)"
+    (format-stmt (parse-stmt (@sexp (定义枚举 颜色 (红) (绿) (蓝)))))))
+
 (define-test parse-stmt-define-struct-test
   (assert-equal "(define-struct point-t (x int-t) (y int-t))"
     (format-stmt (parse-stmt (@sexp (define-struct point-t (x int-t) (y int-t))))))
   (assert-equal "(define-struct (box-t A) (value A))"
     (format-stmt (parse-stmt (@sexp (define-struct (box-t A) (value A)))))))
 
+(define-test parse-stmt-define-struct-zh-test
+  (assert-equal "(define-struct 点型 (x int-t) (y int-t))"
+    (format-stmt (parse-stmt (@sexp (定义结构 点型 (x int-t) (y int-t)))))))
+
 (define-test parse-stmt-define-struct-star-test
   (assert-equal "(define-struct* point-t (make-point (x int-t) (y int-t)))"
     (format-stmt (parse-stmt (@sexp (define-struct* point-t (make-point (x int-t) (y int-t))))))))
+
+(define-test parse-stmt-define-struct-star-zh-test
+  (assert-equal "(define-struct* 点型 (作点 (x int-t) (y int-t)))"
+    (format-stmt (parse-stmt (@sexp (定义结构* 点型 (作点 (x int-t) (y int-t))))))))
 
 (define-test parse-stmt-define-opaque-type-test
   (assert-equal
@@ -137,3 +149,14 @@
                  is-pair
                  (first pair-first pair-put-first)
                  (second pair-second pair-put-second)))))))
+
+(define-test parse-stmt-define-record-type-zh-test
+  (assert-equal
+    "(define-record-type 点型 (作点 (x int-t) (y int-t)) 为点 (x 点x 点存x) (y 点y 点存y))"
+    (format-stmt
+      (parse-stmt
+        (@sexp (定义记录类型 点型
+                 (作点 (x int-t) (y int-t))
+                 为点
+                 (x 点x 点存x)
+                 (y 点y 点存y)))))))

@@ -1,5 +1,9 @@
 (module meta)
 
+(define-enum lang-t
+  (en)
+  (zh))
+
 (define-enum (stmt-t E)
   (import-stmt
     (pkg-name symbol-t)
@@ -36,6 +40,7 @@
   (define-enum-stmt
     (type-constructor pre-type-constructor-t)
     (data-constructors (list-t pre-data-constructor-t))
+    (lang lang-t)
     (location source-location-t))
   (define-algebraic-type-stmt
     (type-constructor pre-type-constructor-t)
@@ -44,14 +49,17 @@
   (define-struct-stmt
     (type-constructor pre-type-constructor-t)
     (fields (list-t pre-data-field-t))
+    (lang lang-t)
     (location source-location-t))
   (define-struct-star-stmt
     (type-constructor pre-type-constructor-t)
     (data-constructor pre-data-constructor-t)
+    (lang lang-t)
     (location source-location-t))
   (define-record-type-stmt
     (type-constructor pre-type-constructor-t)
     (data-constructor (explicit-data-constructor-t E))
+    (lang lang-t)
     (location source-location-t))
   (define-opaque-type-stmt
     (type-constructor pre-type-constructor-t)

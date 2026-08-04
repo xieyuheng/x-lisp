@@ -37,16 +37,16 @@
      (@string "(define-type (" (symbol-to-string name) " "
               (string-join " " (list-map symbol-to-string parameters)) ") "
               (format-exp body) ")"))
-    ((define-enum-stmt type-constructor data-constructors location)
+    ((define-enum-stmt type-constructor data-constructors lang location)
      (@string "(define-enum " (format-type-constructor type-constructor) " "
               (string-join " " (list-map format-pre-data-constructor data-constructors)) ")"))
-    ((define-struct-star-stmt type-constructor data-constructor location)
+    ((define-struct-star-stmt type-constructor data-constructor lang location)
      (@string "(define-struct* " (format-type-constructor type-constructor) " "
               (format-pre-data-constructor data-constructor) ")"))
-     ((define-struct-stmt type-constructor fields location)
+     ((define-struct-stmt type-constructor fields lang location)
       (@string "(define-struct " (format-type-constructor type-constructor) " "
                (string-join " " (list-map format-pre-data-field fields)) ")"))
-    ((define-record-type-stmt type-constructor data-constructor location)
+    ((define-record-type-stmt type-constructor data-constructor lang location)
      (let ((ctor (explicit-data-constructor-name data-constructor))
             (fields (explicit-data-constructor-fields data-constructor))
             (pred (explicit-data-constructor-predicate-name data-constructor))

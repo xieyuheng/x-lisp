@@ -19,31 +19,40 @@
 
 (define (expand-stmt stmt)
   (match stmt
-    ((define-enum-stmt type-constructor data-constructors location)
+    ((define-enum-stmt type-constructor data-constructors lang location)
      (expand-define-algebraic-type
        (define-algebraic-type-stmt
          type-constructor
-         (list-map desugar-data-constructor data-constructors)
+         (list-map (desugar-data-constructor lang) data-constructors)
          location)))
-    ((define-struct-star-stmt type-constructor data-constructor location)
-     (expand-define-algebraic-type
-       (define-algebraic-type-stmt
-         type-constructor
-         [(desugar-data-constructor data-constructor)]
-         location)))
-    ((define-struct-stmt type-constructor fields location)
+    ((define-struct-star-stmt type-constructor data-constructor lang location)
      (let ((type-name (pre-type-constructor-name type-constructor))
-            (base-name (make-base-name type-name location)))
+            (base-name (make-base-name lang type-name location))
+            (ctor-name (pre-data-constructor-name data-constructor)))
        (expand-define-algebraic-type
          (define-algebraic-type-stmt
            type-constructor
            [(make-explicit-data-constructor
-              (make-data-constructor-name base-name)
-              (list-map (desugar-data-field base-name) fields)
-              (make-data-predicate-name base-name)
+              ctor-name
+              (list-map
+                (desugar-data-field lang base-name)
+                (pre-data-constructor-fields data-constructor))
+              (make-data-predicate-name lang base-name)
+              (pre-data-constructor-location data-constructor))]
+           location))))
+    ((define-struct-stmt type-constructor fields lang location)
+     (let ((type-name (pre-type-constructor-name type-constructor))
+            (base-name (make-base-name lang type-name location)))
+       (expand-define-algebraic-type
+         (define-algebraic-type-stmt
+           type-constructor
+           [(make-explicit-data-constructor
+              (make-data-constructor-name lang base-name)
+              (list-map (desugar-data-field lang base-name) fields)
+              (make-data-predicate-name lang base-name)
               location)]
            location))))
-    ((define-record-type-stmt type-constructor data-constructor location)
+    ((define-record-type-stmt type-constructor data-constructor lang location)
      (expand-define-algebraic-type
        (define-algebraic-type-stmt
          type-constructor
@@ -54,52 +63,64 @@
     (else [stmt])))
 
 (claim make-base-name
-  (-> symbol-t source-location-t
+  (-> lang-t symbol-t source-location-t
       symbol-t))
 
-(define (make-base-name type-name location)
+(define (make-base-name lang type-name location)
   (let ((type-name-string (symbol-to-string type-name)))
-    (unless (string-ends-with "-t" type-name-string)
+    (unless (if (equal lang (zh))
+              (string-ends-with "型" type-name-string)
+              (string-ends-with "-t" type-name-string))
       (error-with-location
-        (@string "(make-base-name) type-name must end with -t"
+        (@string "(make-base-name) type-name must end with "
+                 (if (equal lang (zh)) "型" "-t")
                  "\n  type-name: " type-name-string)
         location))
     (string-to-symbol
       (string-substring
-        0 (isub (string-length type-name-string) 2)
+        0 (isub (string-length type-name-string)
+                (if (equal lang (zh)) 1 2))
         type-name-string))))
 
 (claim make-data-constructor-name
-  (-> symbol-t
+  (-> lang-t symbol-t
       symbol-t))
 
-(define (make-data-constructor-name base)
+(define (make-data-constructor-name lang base)
   (string-to-symbol
-    (@string "make-" (symbol-to-string base))))
+    (if (equal lang (zh))
+      (@string "作" (symbol-to-string base))
+      (@string "make-" (symbol-to-string base)))))
 
 (claim make-data-accessor-name
-  (-> symbol-t symbol-t
+  (-> lang-t symbol-t symbol-t
       symbol-t))
 
-(define (make-data-accessor-name base field-name)
+(define (make-data-accessor-name lang base field-name)
   (string-to-symbol
-    (@string (symbol-to-string base) "-" (symbol-to-string field-name))))
+    (if (equal lang (zh))
+      (@string (symbol-to-string base) (symbol-to-string field-name))
+      (@string (symbol-to-string base) "-" (symbol-to-string field-name)))))
 
 (claim make-data-modifier-name
-  (-> symbol-t symbol-t
+  (-> lang-t symbol-t symbol-t
       symbol-t))
 
-(define (make-data-modifier-name base field-name)
+(define (make-data-modifier-name lang base field-name)
   (string-to-symbol
-    (@string (symbol-to-string base) "-put-" (symbol-to-string field-name))))
+    (if (equal lang (zh))
+      (@string (symbol-to-string base) "存" (symbol-to-string field-name))
+      (@string (symbol-to-string base) "-put-" (symbol-to-string field-name)))))
 
 (claim make-data-predicate-name
-  (-> symbol-t
+  (-> lang-t symbol-t
       symbol-t))
 
-(define (make-data-predicate-name base)
+(define (make-data-predicate-name lang base)
   (string-to-symbol
-    (@string "is-" (symbol-to-string base))))
+    (if (equal lang (zh))
+      (@string "为" (symbol-to-string base))
+      (@string "is-" (symbol-to-string base)))))
 
 (claim make-type-exp
   (-> pre-type-constructor-t source-location-t
@@ -124,30 +145,30 @@
     (admit-stmt name (polymorphic-exp parameters type location) location)))
 
 (claim desugar-data-constructor
-  (-> pre-data-constructor-t
+  (-> lang-t pre-data-constructor-t
       (explicit-data-constructor-t exp-t)))
 
-(define (desugar-data-constructor ctor)
+(define (desugar-data-constructor lang ctor)
   (let ((ctor-name (pre-data-constructor-name ctor)))
     (make-explicit-data-constructor
       ctor-name
       (list-map
-        (desugar-data-field ctor-name)
+        (desugar-data-field lang ctor-name)
         (pre-data-constructor-fields ctor))
-      (make-data-predicate-name ctor-name)
+      (make-data-predicate-name lang ctor-name)
       (pre-data-constructor-location ctor))))
 
 (claim desugar-data-field
-  (-> symbol-t pre-data-field-t
+  (-> lang-t symbol-t pre-data-field-t
       (explicit-data-field-t exp-t)))
 
-(define (desugar-data-field base field)
+(define (desugar-data-field lang base field)
   (let ((field-name (pre-data-field-name field)))
     (make-explicit-data-field
       field-name
       (pre-data-field-type field)
-      (make-data-accessor-name base field-name)
-      (just (make-data-modifier-name base field-name))
+      (make-data-accessor-name lang base field-name)
+      (just (make-data-modifier-name lang base field-name))
       (pre-data-field-location field))))
 
 (claim expand-define-algebraic-type
