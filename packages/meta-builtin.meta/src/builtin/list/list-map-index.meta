@@ -20,7 +20,7 @@
 (define-test list-map-index-test
   (assert-equal (list-map-index (lambda (i x) (iadd i x)) [10 20 30])
     [10 21 32])
-  (assert-equal (list-map-index (lambda (i _) i) ['a 'b 'c])
+  (assert-equal (list-map-index (lambda (i x) i) ['a 'b 'c])
     [0 1 2])
   (assert-equal (list-map-index (lambda (i x) (iadd i x)) [])
     []))
