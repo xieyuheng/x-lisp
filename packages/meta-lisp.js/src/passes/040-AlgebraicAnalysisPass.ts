@@ -1,7 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
 export type DataConstructorInfo = {
   name: string
@@ -32,9 +31,7 @@ export function algebraicKey(
   return `${pkgName}/${modName}/${name}`
 }
 
-export function AlgebraicAnalysisPass(
-  pkg: Pkg.Package,
-): AlgebraicAnalysisReport {
+export function AlgebraicAnalysisPass(pkg: M.Package): AlgebraicAnalysisReport {
   const dataConstructorInfos = new Map<string, DataConstructorInfo>()
   const algebraicTypeInfos = new Map<string, AlgebraicTypeInfo>()
 
@@ -114,9 +111,9 @@ function collectAlgebraicType(
 
 function dumpAlgebraicAnalysisReport(
   report: AlgebraicAnalysisReport,
-  pkg: Pkg.Package,
+  pkg: M.Package,
 ): void {
-  const dir = Path.join(Pkg.packageOutputDirectory(pkg), "dump")
+  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
   fs.mkdirSync(dir, { recursive: true })
   const file = Path.join(dir, "040-algebraic-analysis-report.dump")
   const content = formatAlgebraicAnalysisReport(report)

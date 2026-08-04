@@ -9,7 +9,7 @@ import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B2 from "./basic/index.ts"
-import * as Pkg from "./package/index.ts"
+import * as M from "./meta/index.ts"
 import * as Pipelines from "./pipelines/index.ts"
 import * as X86 from "./x86/index.ts"
 
@@ -30,9 +30,9 @@ router.defineHandlers({
   check: ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = Pkg.loadPackage("self", configPath)
+    const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    Pkg.validateCompilerOptions(pkg.config.compiler)
+    M.validateCompilerOptions(pkg.config.compiler)
     const outcome = Pipelines.CheckPipeline(pkg)
     if (outcome === "OutcomeError") process.exit(2)
   },
@@ -40,28 +40,28 @@ router.defineHandlers({
   "build-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = Pkg.loadPackage("self", configPath)
+    const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    Pkg.validateCompilerOptions(pkg.config.compiler)
+    M.validateCompilerOptions(pkg.config.compiler)
     Pipelines.BuildXvmPipeline(pkg)
   },
 
   "build-x86": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = Pkg.loadPackage("self", configPath)
+    const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
-    Pkg.validateCompilerOptions(pkg.config.compiler)
+    M.validateCompilerOptions(pkg.config.compiler)
     Pipelines.BuildX86Pipeline(pkg)
   },
 
   "test-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = Pkg.loadPackage("self", configPath)
+    const pkg = M.loadPackage("self", configPath)
     if ("--profile" in options) pkg.config.compiler.profile = "true"
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
-    Pkg.validateCompilerOptions(pkg.config.compiler)
+    M.validateCompilerOptions(pkg.config.compiler)
     Pipelines.TestXvmPipeline(pkg)
   },
 

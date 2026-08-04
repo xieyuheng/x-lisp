@@ -1,6 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
 import type { Term as CoreTerm } from "../../core/index.ts"
-import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
 
 export type Outcome = "OutcomeOk" | "OutcomeError"
@@ -39,10 +38,10 @@ export type Mod = {
   opaque: Set<string>
   inferredTypes: Map<string, M.Type>
   dataConstructors: Map<string, M.DataConstructor>
-  pkg: Pkg.Package
+  pkg: M.Package
 }
 
-export function createMod(name: string, pkg: Pkg.Package): Mod {
+export function createMod(name: string, pkg: M.Package): Mod {
   return {
     name,
     stmts: [],

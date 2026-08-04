@@ -6,7 +6,7 @@ import {
 } from "@xieyuheng/std.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/std.js/path"
 import Path from "node:path"
-import * as M from "../meta/index.ts"
+import * as M from "../index.ts"
 import {
   type Package,
   packageOutputDirectory,

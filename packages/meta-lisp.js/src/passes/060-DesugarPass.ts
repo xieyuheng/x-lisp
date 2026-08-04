@@ -1,14 +1,13 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function DesugarPass(pkg: Pkg.Package): void {
+export function DesugarPass(pkg: M.Package): void {
   for (const fragment of pkg.fragments.values()) {
     fragment.desugaredStmts = fragment.stmts.map(desugarStmt)
   }
 
   if (pkg.config.compiler.dump)
-    Pkg.packageDumpDesugaredFragments(pkg, "060-desugar")
+    M.packageDumpDesugaredFragments(pkg, "060-desugar")
 }
 
 function desugarStmt(stmt: M.Stmt<M.Exp>): M.Stmt<M.Term> {

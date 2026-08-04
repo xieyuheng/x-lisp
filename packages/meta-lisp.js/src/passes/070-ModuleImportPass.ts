@@ -1,9 +1,8 @@
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 import * as Passes from "./index.ts"
 
 export function ModuleImportPass(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   report: Passes.ModuleAnalysisReport,
 ): void {
   for (const [path, fragment] of pkg.fragments) {
@@ -19,7 +18,7 @@ export function ModuleImportPass(
   }
 
   if (pkg.config.compiler.dump)
-    Pkg.packageDumpDesugaredFragments(pkg, "070-module-import")
+    M.packageDumpDesugaredFragments(pkg, "070-module-import")
 }
 
 function moduleImportStmt(

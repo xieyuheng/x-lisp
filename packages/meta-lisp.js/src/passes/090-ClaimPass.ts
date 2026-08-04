@@ -1,9 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import { writeln } from "@xieyuheng/std.js/file"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function ClaimPass(pkg: Pkg.Package): M.Outcome {
+export function ClaimPass(pkg: M.Package): M.Outcome {
   const outcomes: Array<M.Outcome> = []
 
   for (const mod of pkg.mods.values()) {

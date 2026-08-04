@@ -1,14 +1,14 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Pkg from "../../package/index.ts"
 import { type Definition } from "../definition/Definition.ts"
+import * as M from "../../meta/index.ts"
 
 export type Mod = {
   name: string
   definitions: Map<string, Definition>
-  pkg: Pkg.Package
+  pkg: M.Package
 }
 
-export function createMod(name: string, pkg: Pkg.Package): Mod {
+export function createMod(name: string, pkg: M.Package): Mod {
   return {
     name,
     definitions: new Map(),

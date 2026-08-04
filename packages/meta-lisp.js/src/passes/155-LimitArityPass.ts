@@ -1,7 +1,7 @@
 import * as C from "../core/index.ts"
-import * as Pkg from "../package/index.ts"
+import * as M from "../meta/index.ts"
 
-export function LimitArityPass(pkg: Pkg.Package, maxArity: number): void {
+export function LimitArityPass(pkg: M.Package, maxArity: number): void {
   for (const coreMod of pkg.coreMods.values()) {
     coreMod.definitions = new Map(
       coreMod.definitions
@@ -13,7 +13,7 @@ export function LimitArityPass(pkg: Pkg.Package, maxArity: number): void {
     )
   }
 
-  if (pkg.config.compiler.dump) Pkg.packageDumpCoreMods(pkg, "155-limit-arity")
+  if (pkg.config.compiler.dump) M.packageDumpCoreMods(pkg, "155-limit-arity")
 }
 
 function limitArityDefinition(

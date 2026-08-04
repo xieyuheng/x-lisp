@@ -4,12 +4,12 @@ import {
   openOutputFile,
 } from "@xieyuheng/std.js/file"
 import * as B from "../basic/index.ts"
-import * as Pkg from "../package/index.ts"
+import * as M from "../meta/index.ts"
 import * as Passes from "../passes/index.ts"
 import * as X86 from "../x86/index.ts"
 
-export function BuildX86Pipeline(rootPkg: Pkg.Package): void {
-  const closure = Pkg.packageClosureInTopologicalOrder(rootPkg)
+export function BuildX86Pipeline(rootPkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
   for (const pkg of closure) Passes.ExpandPass(pkg)
   for (const pkg of closure) Passes.ModulePreludePass(pkg)
@@ -57,8 +57,8 @@ export function BuildX86Pipeline(rootPkg: Pkg.Package): void {
   X86Bundle(rootPkg, x86ModFinal)
 }
 
-function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
-  const directory = Pkg.packageOutputDirectory(pkg)
+function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
+  const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.x86.basic`), (file) => {
     const definitions = Array.from(basicMod.definitions.values())
     const textWidth = 64
@@ -69,8 +69,8 @@ function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
   })
 }
 
-function X86Bundle(pkg: Pkg.Package, x86Mod: X86.Mod): void {
-  const directory = Pkg.packageOutputDirectory(pkg)
+function X86Bundle(pkg: M.Package, x86Mod: X86.Mod): void {
+  const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.x86.asm`), (file) => {
     // if (pkg.config.entry) {
     //   fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)

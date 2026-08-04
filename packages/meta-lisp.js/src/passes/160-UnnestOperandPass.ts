@@ -1,17 +1,15 @@
 import { arrayUnzip } from "@xieyuheng/std.js/array"
 import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function UnnestOperandPass(pkg: Pkg.Package): void {
+export function UnnestOperandPass(pkg: M.Package): void {
   for (const coreMod of pkg.coreMods.values()) {
     for (const definition of coreMod.definitions.values()) {
       unnestOperandDefinition(definition)
     }
   }
 
-  if (pkg.config.compiler.dump)
-    Pkg.packageDumpCoreMods(pkg, "160-unnest-operand")
+  if (pkg.config.compiler.dump) M.packageDumpCoreMods(pkg, "160-unnest-operand")
 }
 
 type State = {

@@ -2,8 +2,8 @@ import Path from "node:path"
 import type {
   Definition as CoreDefinition,
   Mod as CoreMod,
-} from "../core/index.ts"
-import * as M from "../meta/index.ts"
+} from "../../core/index.ts"
+import * as M from "../index.ts"
 import { type PackageConfig } from "./PackageConfig.ts"
 
 export type Package = {

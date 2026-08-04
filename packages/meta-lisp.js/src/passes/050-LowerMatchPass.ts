@@ -1,9 +1,8 @@
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 import * as Passes from "./index.ts"
 
 export function LowerMatchPass(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   moduleReport: Passes.ModuleAnalysisReport,
   algebraicReport: Passes.AlgebraicAnalysisReport,
 ): void {
@@ -23,7 +22,7 @@ export function LowerMatchPass(
     }
   }
 
-  if (pkg.config.compiler.dump) Pkg.packageDumpFragments(pkg, "050-lower-match")
+  if (pkg.config.compiler.dump) M.packageDumpFragments(pkg, "050-lower-match")
 }
 
 function lowerMatchStmt(ctx: M.DesugarMatchCtx, stmt: M.Stmt<M.Exp>): void {

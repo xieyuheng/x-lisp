@@ -7,12 +7,12 @@ import { systemShellRun } from "@xieyuheng/std.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B from "../basic/index.ts"
-import * as Pkg from "../package/index.ts"
+import * as M from "../meta/index.ts"
 import * as Passes from "../passes/index.ts"
 import * as Xvm from "../xvm/index.ts"
 
-export function BuildXvmPipeline(rootPkg: Pkg.Package): void {
-  const closure = Pkg.packageClosureInTopologicalOrder(rootPkg)
+export function BuildXvmPipeline(rootPkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
   for (const pkg of closure) Passes.ExpandPass(pkg)
   for (const pkg of closure) Passes.ModulePreludePass(pkg)
@@ -55,8 +55,8 @@ export function BuildXvmPipeline(rootPkg: Pkg.Package): void {
   xvmAssemble(rootPkg)
 }
 
-function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
-  const directory = Pkg.packageOutputDirectory(pkg)
+function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
+  const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm.basic`), (file) => {
     const definitions = Array.from(basicMod.definitions.values())
     const textWidth = 64
@@ -67,8 +67,8 @@ function BasicBundle(pkg: Pkg.Package, basicMod: B.Mod): void {
   })
 }
 
-function XvmBundle(pkg: Pkg.Package, xvmMod: Xvm.Mod): void {
-  const directory = Pkg.packageOutputDirectory(pkg)
+function XvmBundle(pkg: M.Package, xvmMod: Xvm.Mod): void {
+  const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm.asm`), (file) => {
     if (pkg.config.entry) {
       fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
@@ -82,12 +82,9 @@ function XvmBundle(pkg: Pkg.Package, xvmMod: Xvm.Mod): void {
   })
 }
 
-function xvmAssemble(pkg: Pkg.Package): void {
+function xvmAssemble(pkg: M.Package): void {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
   const xvmPath = Path.join(currentDir, "../../../xvm.c/src/xvm.exe")
-  const xvmAsmPath = Path.join(
-    Pkg.packageOutputDirectory(pkg),
-    "bundle.xvm.asm",
-  )
+  const xvmAsmPath = Path.join(M.packageOutputDirectory(pkg), "bundle.xvm.asm")
   systemShellRun(xvmPath, ["assemble", xvmAsmPath])
 }

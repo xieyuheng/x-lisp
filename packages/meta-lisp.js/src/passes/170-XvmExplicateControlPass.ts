@@ -4,7 +4,6 @@ import { setUnion } from "@xieyuheng/std.js/set"
 import * as B from "../basic/index.ts"
 import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
 export type XvmExplicateReport = {
   mod: B.Mod
@@ -14,14 +13,14 @@ export type XvmExplicateReport = {
   primitiveVariables: Set<string>
 }
 
-export function XvmExplicateControlPass(pkg: Pkg.Package): XvmExplicateReport {
+export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
   const basicMod = B.createMod()
   const testNames = new Set<string>()
   const variableNames = new Set<string>()
   const primitiveFunctions = new Map<string, number>()
   const primitiveVariables = new Set<string>()
 
-  for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         switch (definition.kind) {
@@ -119,13 +118,13 @@ function definitionQualifiedName(definition: C.Definition): string {
 }
 
 type State = {
-  pkg: Pkg.Package
+  pkg: M.Package
   usedNames: Set<string>
   useSites: Set<string>
   blocks: Map<string, B.Block>
 }
 
-function createState(pkg: Pkg.Package, usedNames: Set<string>): State {
+function createState(pkg: M.Package, usedNames: Set<string>): State {
   return {
     pkg,
     usedNames,
@@ -216,7 +215,7 @@ function explicateUnnestedTerm(
     }
 
     case "QualifiedVarTerm": {
-      const definition = Pkg.packageLookupCoreDefinition(
+      const definition = M.packageLookupCoreDefinition(
         state.pkg,
         term.pkgName,
         term.modName,
@@ -339,7 +338,7 @@ function explicateUnnestedTerm(
   }
 }
 
-function resolvePackageId(pkg: Pkg.Package, pkgName: string): string {
+function resolvePackageId(pkg: M.Package, pkgName: string): string {
   if (pkgName === pkg.id) return pkg.id
 
   const dep = pkg.dependencies.get(pkgName)
@@ -371,7 +370,7 @@ function tryResolveDirectCall(
 ): { qualifiedName: string } | undefined {
   if (target.kind !== "QualifiedVarTerm") return undefined
 
-  const definition = Pkg.packageLookupCoreDefinition(
+  const definition = M.packageLookupCoreDefinition(
     state.pkg,
     target.pkgName,
     target.modName,

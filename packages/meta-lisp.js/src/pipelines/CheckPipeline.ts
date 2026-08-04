@@ -1,9 +1,8 @@
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 import * as Passes from "../passes/index.ts"
 
-export function CheckPipeline(rootPkg: Pkg.Package): M.Outcome {
-  const closure = Pkg.packageClosureInTopologicalOrder(rootPkg)
+export function CheckPipeline(rootPkg: M.Package): M.Outcome {
+  const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
   for (const pkg of closure) Passes.ExpandPass(pkg)
   for (const pkg of closure) Passes.ModulePreludePass(pkg)

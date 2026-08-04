@@ -1,22 +1,21 @@
 import * as S from "@xieyuheng/sexp.js"
 import { range } from "@xieyuheng/std.js/range"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function SetupPass(pkg: Pkg.Package): void {
+export function SetupPass(pkg: M.Package): void {
   for (const [path, fragment] of pkg.fragments) {
     const mod =
-      Pkg.packageLookupMod(pkg, pkg.id, fragment.modName) ||
+      M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
       M.createMod(fragment.modName, pkg)
 
-    Pkg.packageAddMod(pkg, mod)
+    M.packageAddMod(pkg, mod)
 
     for (const stmt of fragment.desugaredStmts) {
       setupStmt(mod, stmt)
     }
   }
 
-  if (pkg.config.compiler.dump) Pkg.packageDumpMods(pkg, "080-setup")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "080-setup")
 }
 
 function setupStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {

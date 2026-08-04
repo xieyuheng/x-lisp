@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as C from "../core/index.ts"
-import * as Pkg from "../package/index.ts"
+import * as M from "../meta/index.ts"
 
 // ConvertClosurePass
 //
@@ -18,7 +18,7 @@ import * as Pkg from "../package/index.ts"
 //   在调用点必须拥有统一的调用方式（即通过闭包对象间接调用）。
 //   只有这样，才能以统一的方式生成 x86 的间接函数调用指令。
 
-export function ConvertClosurePass(pkg: Pkg.Package): void {
+export function ConvertClosurePass(pkg: M.Package): void {
   for (const coreMod of pkg.coreMods.values()) {
     const names = Array.from(coreMod.definitions.keys())
     for (const name of names) {
@@ -28,7 +28,7 @@ export function ConvertClosurePass(pkg: Pkg.Package): void {
   }
 
   if (pkg.config.compiler.dump)
-    Pkg.packageDumpCoreMods(pkg, "150-convert-closure")
+    M.packageDumpCoreMods(pkg, "150-convert-closure")
 }
 
 type State = {
@@ -126,7 +126,7 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
     }
 
     case "QualifiedVarTerm": {
-      const qualifiedMod = Pkg.packageLookupCoreMod(
+      const qualifiedMod = M.packageLookupCoreMod(
         state.coreMod.pkg,
         term.pkgName,
         term.modName,

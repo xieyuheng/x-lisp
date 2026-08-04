@@ -1,14 +1,14 @@
 import fs from "node:fs"
 import Path from "node:path"
 import * as B from "../basic/index.ts"
-import * as Pkg from "../package/index.ts"
+import * as M from "../meta/index.ts"
 
 export type SsaAnalysisReport = {
   ssaGraphs: Map<string, B.SsaGraph>
 }
 
 export function SsaAnalysisPass(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   basicMod: B.Mod,
 ): SsaAnalysisReport {
   const ssaGraphs = new Map<string, B.SsaGraph>()
@@ -32,9 +32,9 @@ export function SsaAnalysisPass(
 
 function dumpSsaAnalysisReport(
   report: SsaAnalysisReport,
-  pkg: Pkg.Package,
+  pkg: M.Package,
 ): void {
-  const dir = Path.join(Pkg.packageOutputDirectory(pkg), "dump")
+  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
   fs.mkdirSync(dir, { recursive: true })
   const file = Path.join(dir, "175-ssa-analysis-report.huge.dump")
   const content = formatSsaAnalysisReport(report)

@@ -1,15 +1,14 @@
 import { arrayZip } from "@xieyuheng/std.js/array"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function UniquifyPass(pkg: Pkg.Package): void {
+export function UniquifyPass(pkg: M.Package): void {
   for (const mod of pkg.mods.values()) {
     for (const definition of mod.definitions.values()) {
       uniquifyDefinition(definition)
     }
   }
 
-  if (pkg.config.compiler.dump) Pkg.packageDumpMods(pkg, "115-uniquify")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "115-uniquify")
 }
 
 function uniquifyDefinition(definition: M.Definition): null {

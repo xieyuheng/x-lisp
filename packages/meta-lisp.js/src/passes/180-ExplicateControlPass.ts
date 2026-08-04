@@ -4,12 +4,11 @@ import { setUnion } from "@xieyuheng/std.js/set"
 import * as B from "../basic/index.ts"
 import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function ExplicateControlPass(pkg: Pkg.Package): B.Mod {
+export function ExplicateControlPass(pkg: M.Package): B.Mod {
   const basicMod = B.createMod()
 
-  for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         for (const basicDefinition of explicateDefinition(definition)) {
@@ -22,7 +21,7 @@ export function ExplicateControlPass(pkg: Pkg.Package): B.Mod {
   const variableNames: Array<string> = []
   const testNames: Array<string> = []
 
-  for (const orderedPkg of Pkg.packageClosureInTopologicalOrder(pkg)) {
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         if (definition.kind === "VariableDefinition") {
@@ -112,7 +111,7 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
 }
 
 function generateSetupVariables(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   variableNames: Array<string>,
 ): B.FunctionDefinition {
   const state = createState(pkg, new Set())
@@ -145,7 +144,7 @@ function generateSetupVariables(
 }
 
 function generateRunTests(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   testNames: Array<string>,
 ): B.FunctionDefinition {
   const state = createState(pkg, new Set())
@@ -173,13 +172,13 @@ function generateRunTests(
 }
 
 type State = {
-  pkg: Pkg.Package
+  pkg: M.Package
   usedNames: Set<string>
   useSites: Set<string>
   blocks: Map<string, B.Block>
 }
 
-function createState(pkg: Pkg.Package, usedNames: Set<string>): State {
+function createState(pkg: M.Package, usedNames: Set<string>): State {
   return {
     pkg,
     usedNames,
@@ -274,7 +273,7 @@ function explicateUnnestedTerm(
     }
 
     case "QualifiedVarTerm": {
-      const definition = Pkg.packageLookupCoreDefinition(
+      const definition = M.packageLookupCoreDefinition(
         state.pkg,
         term.pkgName,
         term.modName,
@@ -406,7 +405,7 @@ function explicateUnnestedTerm(
   }
 }
 
-function resolvePackageId(pkg: Pkg.Package, pkgName: string): string {
+function resolvePackageId(pkg: M.Package, pkgName: string): string {
   if (pkgName === pkg.id) return pkg.id
 
   const dep = pkg.dependencies.get(pkgName)
@@ -423,7 +422,7 @@ function tryResolveDirectCall(
 ): { qualifiedName: string } | undefined {
   if (target.kind !== "QualifiedVarTerm") return undefined
 
-  const definition = Pkg.packageLookupCoreDefinition(
+  const definition = M.packageLookupCoreDefinition(
     state.pkg,
     target.pkgName,
     target.modName,

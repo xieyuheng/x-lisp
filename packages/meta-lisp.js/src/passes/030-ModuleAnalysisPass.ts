@@ -6,7 +6,6 @@ import fs from "node:fs"
 import Path from "node:path"
 import * as M from "../meta/index.ts"
 import type { Outcome } from "../meta/mod/Mod.ts"
-import * as Pkg from "../package/index.ts"
 
 export type ModuleAnalysisReport = {
   fragmentScopes: Map<string, FragmentScope>
@@ -26,7 +25,7 @@ export type FragmentScope = {
   importedPrefixes: Map<Prefix, { pkgName: PkgName; modName: ModName }>
 }
 
-export function ModuleAnalysisPass(pkg: Pkg.Package): ModuleAnalysisReport {
+export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   const fragmentScopes = new Map<string, FragmentScope>()
   const moduleAnalysisReport: ModuleAnalysisReport = {
     fragmentScopes,
@@ -61,7 +60,7 @@ function createFragmentScope(modName: ModName): FragmentScope {
 }
 
 function submitImport(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   scope: FragmentScope,
   stmt: M.Stmt<M.Exp>,
 ): void {
@@ -105,10 +104,7 @@ function submitImport(
   }
 }
 
-function ensureImportedModExists(
-  pkg: Pkg.Package,
-  stmt: M.Stmt<M.Exp>,
-): Outcome {
+function ensureImportedModExists(pkg: M.Package, stmt: M.Stmt<M.Exp>): Outcome {
   switch (stmt.kind) {
     case "ImportStmt":
     case "ImportAsStmt":
@@ -122,7 +118,7 @@ function ensureImportedModExists(
 }
 
 function ensureModExists(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   pkgName: PkgName,
   modName: ModName,
   location: S.SourceLocation,
@@ -155,7 +151,7 @@ function ensureModExists(
   }
 }
 
-function lookupPackage(pkg: Pkg.Package, pkgName: PkgName): Pkg.Package {
+function lookupPackage(pkg: M.Package, pkgName: PkgName): M.Package {
   if (pkgName === "self") {
     return pkg
   } else {
@@ -166,7 +162,7 @@ function lookupPackage(pkg: Pkg.Package, pkgName: PkgName): Pkg.Package {
 }
 
 function lookupModDefinedNames(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   pkgName: PkgName,
   modName: ModName,
 ): Set<Name> {
@@ -176,7 +172,7 @@ function lookupModDefinedNames(
 }
 
 function lookupModPrivateNames(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   pkgName: PkgName,
   modName: ModName,
 ): Set<Name> {
@@ -186,7 +182,7 @@ function lookupModPrivateNames(
 }
 
 function lookupModPublicNames(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   pkgName: PkgName,
   modName: ModName,
 ): Set<Name> {
@@ -197,7 +193,7 @@ function lookupModPublicNames(
 }
 
 function collectNamesByMod(
-  pkg: Pkg.Package,
+  pkg: M.Package,
   extract: (fragment: M.Fragment) => Array<Name>,
 ): NameGroupByMod {
   const result = new Map<ModName, Set<Name>>()
@@ -214,11 +210,11 @@ function collectNamesByMod(
   return result
 }
 
-function collectDefinedNames(pkg: Pkg.Package): NameGroupByMod {
+function collectDefinedNames(pkg: M.Package): NameGroupByMod {
   return collectNamesByMod(pkg, (fragment) => [...M.fragmentNames(fragment)])
 }
 
-function collectPrivateNames(pkg: Pkg.Package): NameGroupByMod {
+function collectPrivateNames(pkg: M.Package): NameGroupByMod {
   return collectNamesByMod(pkg, (fragment) =>
     fragment.stmts
       .filter((stmt): stmt is M.PrivateStmt => stmt.kind === "PrivateStmt")
@@ -228,9 +224,9 @@ function collectPrivateNames(pkg: Pkg.Package): NameGroupByMod {
 
 function dumpModuleAnalysisReport(
   result: ModuleAnalysisReport,
-  pkg: Pkg.Package,
+  pkg: M.Package,
 ): void {
-  const dir = Path.join(Pkg.packageOutputDirectory(pkg), "dump")
+  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
   fs.mkdirSync(dir, { recursive: true })
   const file = Path.join(dir, "030-module-analysis-report.dump")
   const content = formatModuleAnalysisReport(result, false)

@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as M from "../meta/index.ts"
+import * as M from "../index.ts"
 import { type Package, packagePutFragment } from "./Package.ts"
 
 export function packageLoadFragments(pkg: Package, directory: string): void {

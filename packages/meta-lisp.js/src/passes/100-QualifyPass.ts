@@ -1,15 +1,14 @@
 import { setUnion } from "@xieyuheng/std.js/set"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
-export function QualifyPass(pkg: Pkg.Package): void {
+export function QualifyPass(pkg: M.Package): void {
   for (const mod of pkg.mods.values()) {
     for (const definition of mod.definitions.values()) {
       qualifyDefinition(definition)
     }
   }
 
-  if (pkg.config.compiler.dump) Pkg.packageDumpMods(pkg, "100-qualify")
+  if (pkg.config.compiler.dump) M.packageDumpMods(pkg, "100-qualify")
 }
 
 function qualifyDefinition(definition: M.Definition): null {

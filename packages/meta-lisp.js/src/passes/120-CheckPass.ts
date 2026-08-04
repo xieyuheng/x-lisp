@@ -1,6 +1,5 @@
 import * as C from "../core/index.ts"
 import * as M from "../meta/index.ts"
-import * as Pkg from "../package/index.ts"
 
 // - although after QualifyPass, CheckPass still need to handle unqualified Var,
 //   which is used by by inferring type of recursive function.
@@ -8,7 +7,7 @@ import * as Pkg from "../package/index.ts"
 // - CheckPass is a translation pass: it elaborates M.Term → C.Term
 //   via type-checking, and populates pkg.coreMods with C.Mod.
 
-export function CheckPass(pkg: Pkg.Package): M.Outcome {
+export function CheckPass(pkg: M.Package): M.Outcome {
   let outcome: M.Outcome = "OutcomeOk"
 
   for (const mod of pkg.mods.values()) {
@@ -28,7 +27,7 @@ export function CheckPass(pkg: Pkg.Package): M.Outcome {
   }
 
   if (pkg.config.compiler.dump) {
-    Pkg.packageDumpCoreMods(pkg, "120-check")
+    M.packageDumpCoreMods(pkg, "120-check")
   }
 
   return outcome

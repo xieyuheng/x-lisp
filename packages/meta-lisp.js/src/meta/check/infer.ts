@@ -2,7 +2,6 @@ import * as S from "@xieyuheng/sexp.js"
 import { arrayZip } from "@xieyuheng/std.js/array"
 import { range } from "@xieyuheng/std.js/range"
 import * as C from "../../core/index.ts"
-import * as Pkg from "../../package/index.ts"
 import * as M from "../index.ts"
 
 export type TypeError = {
@@ -83,7 +82,7 @@ export function infer(
     }
 
     case "QualifiedVarTerm": {
-      const qualifiedMod = Pkg.packageLookupMod(
+      const qualifiedMod = M.packageLookupMod(
         mod.pkg,
         term.pkgName,
         term.modName,
