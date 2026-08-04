@@ -105,13 +105,6 @@
       (name make-source-span)
       (accessor-names source-span-start source-span-end)
       (predicate-name is-source-span))
-    ("meta-builtin/builtin/make-triple"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name triple-t)
-      (name make-triple)
-      (accessor-names triple-first triple-second triple-third)
-      (predicate-name is-triple))
     ("meta-builtin/builtin/nothing"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -161,13 +154,6 @@
       (name symbol-sexp)
       (accessor-names symbol-sexp-content symbol-sexp-location)
       (predicate-name is-symbol-sexp))
-    ("meta-builtin/内置/作三元组"
-      (pkg-name meta-builtin)
-      (mod-name 内置)
-      (type-name 三元组型)
-      (name 作三元组)
-      (accessor-names 三元组甲 三元组乙 三元组丙)
-      (predicate-name 为三元组))
     ("meta-builtin/内置/作二元组"
       (pkg-name meta-builtin)
       (mod-name 内置)
@@ -287,16 +273,6 @@
       (mod-name builtin)
       (name source-span-t)
       (constructor-names make-source-span))
-    ("meta-builtin/builtin/triple-t"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (name triple-t)
-      (constructor-names make-triple))
-    ("meta-builtin/内置/三元组型"
-      (pkg-name meta-builtin)
-      (mod-name 内置)
-      (name 三元组型)
-      (constructor-names 作三元组))
     ("meta-builtin/内置/二元组型"
       (pkg-name meta-builtin)
       (mod-name 内置)
