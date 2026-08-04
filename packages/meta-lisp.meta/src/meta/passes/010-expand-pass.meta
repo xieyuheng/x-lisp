@@ -67,20 +67,19 @@
       symbol-t))
 
 (define (make-base-name lang type-name location)
-  (let ((type-name-string (symbol-to-string type-name)))
-    (unless (if (equal lang (zh))
-              (string-ends-with "型" type-name-string)
-              (string-ends-with "-t" type-name-string))
-      (error-with-location
-        (@string "(make-base-name) type-name must end with "
-                 (if (equal lang (zh)) "型" "-t")
-                 "\n  type-name: " type-name-string)
-        location))
-    (string-to-symbol
-      (string-substring
-        0 (isub (string-length type-name-string)
-                (if (equal lang (zh)) 1 2))
-        type-name-string))))
+  (let ((suffix (if (is-zh lang) "型" "-t")))
+    (let ((type-name-string (symbol-to-string type-name)))
+      (unless (string-ends-with suffix type-name-string)
+        (error-with-location
+          (@string "(make-base-name) type-name must end with "
+                   suffix
+                   "\n  type-name: " type-name-string)
+          location))
+      (string-to-symbol
+        (string-substring
+          0 (isub (string-length type-name-string)
+                  (string-length suffix))
+          type-name-string)))))
 
 (claim make-data-constructor-name
   (-> lang-t symbol-t
@@ -88,7 +87,7 @@
 
 (define (make-data-constructor-name lang base)
   (string-to-symbol
-    (if (equal lang (zh))
+    (if (is-zh lang)
       (@string "作" (symbol-to-string base))
       (@string "make-" (symbol-to-string base)))))
 
@@ -98,7 +97,7 @@
 
 (define (make-data-accessor-name lang base field-name)
   (string-to-symbol
-    (if (equal lang (zh))
+    (if (is-zh lang)
       (@string (symbol-to-string base) (symbol-to-string field-name))
       (@string (symbol-to-string base) "-" (symbol-to-string field-name)))))
 
@@ -108,7 +107,7 @@
 
 (define (make-data-modifier-name lang base field-name)
   (string-to-symbol
-    (if (equal lang (zh))
+    (if (is-zh lang)
       (@string (symbol-to-string base) "存" (symbol-to-string field-name))
       (@string (symbol-to-string base) "-put-" (symbol-to-string field-name)))))
 
@@ -118,7 +117,7 @@
 
 (define (make-data-predicate-name lang base)
   (string-to-symbol
-    (if (equal lang (zh))
+    (if (is-zh lang)
       (@string "为" (symbol-to-string base))
       (@string "is-" (symbol-to-string base)))))
 
