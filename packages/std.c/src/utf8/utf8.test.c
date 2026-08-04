@@ -72,6 +72,10 @@ int main(void) {
     assert(string_equal(utf8_encode(utf8_decode("abc")), "a"));
     assert(string_equal(utf8_encode(utf8_decode("中")), "中"));
     assert(string_equal(utf8_encode(utf8_decode("中文")), "中"));
+    assert(string_equal(utf8_encode(utf8_decode("元")), "元"));
+    assert(string_equal(utf8_encode(utf8_decode("组")), "组"));
+    assert(string_equal(utf8_encode(utf8_decode("作")), "作"));
+    assert(string_equal(utf8_encode(utf8_decode("𠀀")), "𠀀"));
   }
 
   test_end();

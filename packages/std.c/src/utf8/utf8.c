@@ -92,7 +92,7 @@ void utf8_encode_into(code_point_t code_point, char *dest) {
 
   if (code_point <= 0x07FF) {
     uint8_t byte_1 = pattern_2 | (code_point >> 6);
-    uint8_t byte_2 = pattern_r | ((uint8_t) code_point << 2 >> 2);
+    uint8_t byte_2 = pattern_r | (code_point & 0x3F);
     dest[0] = byte_1;
     dest[1] = byte_2;
     return;
@@ -100,8 +100,8 @@ void utf8_encode_into(code_point_t code_point, char *dest) {
 
   if (code_point <= 0xFFFF) {
     uint8_t byte_1 = pattern_3 | (code_point >> 12);
-    uint8_t byte_2 = pattern_r | ((uint8_t) (code_point >> 6) << 2 >> 2);
-    uint8_t byte_3 = pattern_r | ((uint8_t) code_point << 2 >> 2);
+    uint8_t byte_2 = pattern_r | ((code_point >> 6) & 0x3F);
+    uint8_t byte_3 = pattern_r | (code_point & 0x3F);
     dest[0] = byte_1;
     dest[1] = byte_2;
     dest[2] = byte_3;
@@ -110,9 +110,9 @@ void utf8_encode_into(code_point_t code_point, char *dest) {
 
   if (code_point <= 0x10FFFF) {
     uint8_t byte_1 = pattern_4 | (code_point >> 18);
-    uint8_t byte_2 = pattern_r | ((uint8_t) (code_point >> 12) << 2 >> 2);
-    uint8_t byte_3 = pattern_r | ((uint8_t) (code_point >> 6) << 2 >> 2);
-    uint8_t byte_4 = pattern_r | ((uint8_t) code_point << 2 >> 2);
+    uint8_t byte_2 = pattern_r | ((code_point >> 12) & 0x3F);
+    uint8_t byte_3 = pattern_r | ((code_point >> 6) & 0x3F);
+    uint8_t byte_4 = pattern_r | (code_point & 0x3F);
     dest[0] = byte_1;
     dest[1] = byte_2;
     dest[2] = byte_3;
