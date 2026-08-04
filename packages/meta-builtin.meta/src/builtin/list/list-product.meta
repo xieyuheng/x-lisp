@@ -1,12 +1,9 @@
 (module builtin)
 
 (define (list-product lhs rhs)
-    (list-concat
-     (list-map
-      (lambda (left)
-        (list-map (lambda (right)
-                    (make-pair left right))
-                  rhs))
+  (list-concat
+    (list-map
+      (lambda (left) (list-map (make-pair left) rhs))
       lhs)))
 
 (define-test list-product-test
