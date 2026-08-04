@@ -1,14 +1,13 @@
 import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
 import * as X86 from "../../x86/index.ts"
-import * as Passes from "./index.ts"
 
 // translate basic-lisp to assembly-lisp (with variables)
 
 export function SelectInstructionPass(
   pkg: M.Package,
   basicMod: B.Mod,
-  ssaReport: Passes.SsaAnalysisReport,
+  ssaReport: B.SsaAnalysisReport,
 ): X86.Mod {
   const x86Mod = X86.createMod()
   const stmts = Array.from(basicMod.definitions.values()).flatMap(
@@ -21,7 +20,7 @@ export function SelectInstructionPass(
 function selectDefinition(
   definition: B.Definition,
   basicMod: B.Mod,
-  ssaReport: Passes.SsaAnalysisReport,
+  ssaReport: B.SsaAnalysisReport,
 ): Array<X86.Stmt> {
   switch (definition.kind) {
     case "StructDefinition": {

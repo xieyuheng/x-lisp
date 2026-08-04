@@ -1,7 +1,4 @@
-import { type FunctionDefinition } from "../definition/index.ts"
-import { type Instr } from "../instr/index.ts"
-import { type Mod } from "../mod/index.ts"
-import { buildSsaGraph } from "../ssa/index.ts"
+import * as B from "../../basic/index.ts"
 
 // copy propagation：消除冗余的 copy 指令。
 //
@@ -17,19 +14,19 @@ import { buildSsaGraph } from "../ssa/index.ts"
 //   provide/use 是跨分支汇合点（phi），其值由运行时分支决定，
 //   无法静态替换为单一来源，需寄存器合并（coalescing）消除。
 
-export function copyPropagation(mod: Mod): void {
+export function CopyPropagationPass(mod: B.Mod): void {
   for (const definition of mod.definitions.values()) {
     if (definition.kind !== "FunctionDefinition") continue
     copyPropagateFunction(definition)
   }
 }
 
-function copyPropagateFunction(definition: FunctionDefinition): void {
+function copyPropagateFunction(definition: B.FunctionDefinition): void {
   const blocks = Array.from(definition.blocks.values())
-  const graph = buildSsaGraph(blocks)
+  const graph = B.buildSsaGraph(blocks)
 
   for (const block of blocks) {
-    const newInstrs: Array<Instr> = []
+    const newInstrs: Array<B.Instr> = []
     for (const instr of block.instrs) {
       if (instr.op !== "copy") {
         newInstrs.push(instr)

@@ -45,10 +45,10 @@ export function BuildXvmPipeline(rootPkg: M.Package): void {
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
   const xvmResult = Passes.XvmExplicateControlPass(rootPkg)
-  const xvmResult2 = Passes.XvmCopyPropagationPass(xvmResult)
-  BasicBundle(rootPkg, xvmResult2.mod)
+  B.CopyPropagationPass(xvmResult.mod)
+  BasicBundle(rootPkg, xvmResult.mod)
 
-  const xvmMod = Passes.XvmCodegenPass(xvmResult2)
+  const xvmMod = Passes.XvmCodegenPass(xvmResult)
   XvmBundle(rootPkg, xvmMod)
 
   xvmAssemble(rootPkg)

@@ -42,12 +42,12 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
   const basicMod = Passes.ExplicateControlPass(rootPkg)
-  const basicMod2 = Passes.CopyPropagationPass(basicMod)
-  BasicBundle(rootPkg, basicMod2)
+  B.CopyPropagationPass(basicMod)
+  BasicBundle(rootPkg, basicMod)
 
-  const ssaReport = Passes.SsaAnalysisPass(rootPkg, basicMod2)
+  const ssaReport = B.SsaAnalysisPass(rootPkg, basicMod)
 
-  const x86Mod = Passes.SelectInstructionPass(rootPkg, basicMod2, ssaReport)
+  const x86Mod = Passes.SelectInstructionPass(rootPkg, basicMod, ssaReport)
 
   const { mod: x86ModAssigned, homeMap } = Passes.AssignHomesPass(x86Mod)
   const x86ModPatched = Passes.PatchInstructionsPass(x86ModAssigned)
