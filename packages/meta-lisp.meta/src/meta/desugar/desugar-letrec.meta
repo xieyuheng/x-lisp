@@ -78,6 +78,4 @@
       exp-t))
 
 (define (exp-naive-subst-pair exp pair)
-  (match pair
-    ((make-pair name rhs)
-     (exp-naive-subst exp name rhs))))
+  (exp-naive-subst exp (pair-first pair) (pair-second pair)))

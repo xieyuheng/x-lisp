@@ -72,6 +72,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/list-t", x_list_t);
   define_primitive_1(mod, "meta-builtin/builtin/set-t", x_set_t);
   define_primitive_2(mod, "meta-builtin/builtin/hash-t", x_hash_t);
+  define_primitive_2(mod, "meta-builtin/builtin/pair-t", x_pair_t);
 
   // value
 
@@ -185,6 +186,14 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/list-reverse", x_list_reverse_mut);
   define_primitive_1(mod, "meta-builtin/builtin/list-copy-reverse", x_list_reverse);
   define_primitive_1(mod, "meta-builtin/builtin/list-to-set", x_list_to_set);
+
+  // pair
+
+  define_primitive_2(mod, "meta-builtin/builtin/make-pair", x_make_pair);
+  define_primitive_1(mod, "meta-builtin/builtin/pair-first", x_pair_first);
+  define_primitive_1(mod, "meta-builtin/builtin/pair-second", x_pair_second);
+  define_primitive_2(mod, "meta-builtin/builtin/pair-put-first", x_pair_put_first);
+  define_primitive_2(mod, "meta-builtin/builtin/pair-put-second", x_pair_put_second);
 
   // hash
 

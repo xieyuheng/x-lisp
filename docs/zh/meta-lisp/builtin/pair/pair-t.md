@@ -10,26 +10,7 @@ type-t
 
 # 描述
 
-二元组类型构造器。`(pair-t A B)` 表示一个包含类型 `A` 和 `B` 两个值的对。
-
-# 定义
-
-```meta-lisp
-(define-struct (pair-t A B)
-  (first A)
-  (second B))
-```
-
-# 自动生成
-
-```meta-lisp
-(claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
-(claim is-pair (polymorphic (A) (-> A bool-t)))
-(claim pair-first  (polymorphic (A B) (-> (pair-t A B) A)))
-(claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
-(claim pair-put-first  (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
-(claim pair-put-second (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
-```
+序对类型构造器。`(pair-t A B)` 表示一个包含类型 `A` 和 `B` 两个值的序对。它是语言内置类型，运行时表示为长度为 2 的列表。
 
 # 例子
 

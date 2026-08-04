@@ -52,6 +52,12 @@ function occurCheckWithBoundIds(
       )
     }
 
+    case "PairType": {
+      return [type.firstType, type.secondType].some((t) =>
+        occurCheckWithBoundIds(boundIds, subst, varType, t),
+      )
+    }
+
     case "DataType": {
       return type.argTypes.some((t) =>
         occurCheckWithBoundIds(boundIds, subst, varType, t),

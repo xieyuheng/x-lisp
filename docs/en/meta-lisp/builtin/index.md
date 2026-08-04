@@ -432,7 +432,6 @@ Operations on `(pair-t A B)`.
 
 - [`pair-t`](pair/pair-t.md) — Pair type constructor
 - [`make-pair`](pair/make-pair.md) — Construct a pair
-- [`is-pair`](pair/is-pair.md) — Check if a value is a pair
 - [`pair-first`](pair/pair-first.md) — First element
 - [`pair-second`](pair/pair-second.md) — Second element
 - [`pair-put-first`](pair/pair-put-first.md) — Replace first element

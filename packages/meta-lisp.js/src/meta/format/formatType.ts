@@ -53,6 +53,12 @@ export function formatType(type: M.Type): string {
       return `(hash-t ${keyType} ${valueType})`
     }
 
+    case "PairType": {
+      const firstType = formatType(type.firstType)
+      const secondType = formatType(type.secondType)
+      return `(pair-t ${firstType} ${secondType})`
+    }
+
     case "DataType": {
       const modName = type.typeConstructor.mod.name
       const name = type.typeConstructor.name

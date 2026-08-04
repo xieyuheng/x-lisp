@@ -12,6 +12,7 @@
 (declare-primitive-function list-t 1)
 (declare-primitive-function set-t 1)
 (declare-primitive-function hash-t 2)
+(declare-primitive-function pair-t 2)
 
 (claim-type type-t)
 (claim bool-t type-t)
@@ -25,3 +26,4 @@
 (claim list-t (-> type-t type-t))
 (claim set-t (-> type-t type-t))
 (claim hash-t (-> type-t type-t type-t))
+(claim pair-t (-> type-t type-t type-t))

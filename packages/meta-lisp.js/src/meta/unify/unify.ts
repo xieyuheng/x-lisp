@@ -78,6 +78,12 @@ export function unify(
     return subst
   }
 
+  if (M.isPairType(lhs) && M.isPairType(rhs)) {
+    subst = unify(subst, lhs.firstType, rhs.firstType)
+    subst = unify(subst, lhs.secondType, rhs.secondType)
+    return subst
+  }
+
   if (M.isDataType(lhs) && M.isDataType(rhs)) {
     if (!M.typeConstructorEqual(lhs.typeConstructor, rhs.typeConstructor)) {
       return undefined

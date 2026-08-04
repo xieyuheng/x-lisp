@@ -47,7 +47,17 @@
       (lambda (args)
         (let ((key (list-first args))
               (value (list-second args)))
-          (type-value (hash-type (type-value-type key) (type-value-type value))))))))
+          (type-value (hash-type (type-value-type key) (type-value-type value))))))
+    (define-primitive-function 'pair-t
+      (lambda (args)
+        (let ((first (list-first args))
+              (second (list-second args)))
+          (type-value (pair-type (type-value-type first) (type-value-type second))))))
+    (define-primitive-function '序对型
+      (lambda (args)
+        (let ((first (list-first args))
+              (second (list-second args)))
+          (type-value (pair-type (type-value-type first) (type-value-type second))))))))
 
 (claim define-primitive-function
   (-> symbol-t (-> (list-t value-t) value-t)

@@ -23,6 +23,12 @@ export function typeFreshen(type: M.Type): M.Type {
     case "HashType":
       return M.HashType(typeFreshen(type.keyType), typeFreshen(type.valueType))
 
+    case "PairType":
+      return M.PairType(
+        typeFreshen(type.firstType),
+        typeFreshen(type.secondType),
+      )
+
     case "DataType":
       return M.DataType(
         type.typeConstructor,

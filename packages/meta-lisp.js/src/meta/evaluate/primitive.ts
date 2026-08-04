@@ -2,6 +2,7 @@ import {
   AtomType,
   HashType,
   ListType,
+  PairType,
   SetType,
   TypeType,
 } from "../type/index.ts"
@@ -52,6 +53,12 @@ export function setupPrimitive(): void {
   )
   definePrimitiveFunction("散列型", (K: Value, V: Value) =>
     TypeValue(HashType(asTypeValue(K).type, asTypeValue(V).type)),
+  )
+  definePrimitiveFunction("pair-t", (A: Value, B: Value) =>
+    TypeValue(PairType(asTypeValue(A).type, asTypeValue(B).type)),
+  )
+  definePrimitiveFunction("序对型", (A: Value, B: Value) =>
+    TypeValue(PairType(asTypeValue(A).type, asTypeValue(B).type)),
   )
 }
 

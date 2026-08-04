@@ -61,6 +61,12 @@ function substDeepWalkWithBoundIds(
         substDeepWalkWithBoundIds(boundIds, subst, type.valueType),
       )
 
+    case "PairType":
+      return M.PairType(
+        substDeepWalkWithBoundIds(boundIds, subst, type.firstType),
+        substDeepWalkWithBoundIds(boundIds, subst, type.secondType),
+      )
+
     case "DataType":
       return M.DataType(
         type.typeConstructor,

@@ -125,6 +125,8 @@
      (ppml/pretty-application (just "set-t") [(ppml/text "set-t") (pretty-type element-type)]))
     ((hash-type key-type value-type)
      (ppml/pretty-application (just "hash-t") [(ppml/text "hash-t") (pretty-type key-type) (pretty-type value-type)]))
+    ((pair-type first-type second-type)
+     (ppml/pretty-application (just "pair-t") [(ppml/text "pair-t") (pretty-type first-type) (pretty-type second-type)]))
     ((data-type type-constructor arg-types)
      (let ((mod-name-str (symbol-to-string (mod-name (type-constructor-mod type-constructor))))
             (name-str (symbol-to-string (type-constructor-name type-constructor)))

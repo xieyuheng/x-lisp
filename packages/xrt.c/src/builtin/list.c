@@ -109,3 +109,32 @@ value_t x_list_to_set(value_t list) {
 
   return x_object(set);
 }
+
+// ---------------------------------------------------------------------------
+// pair
+// ---------------------------------------------------------------------------
+
+value_t x_make_pair(value_t first, value_t second) {
+  value_t pair = x_make_list();
+  xlist_push(to_xlist(pair), first);
+  xlist_push(to_xlist(pair), second);
+  return pair;
+}
+
+value_t x_pair_first(value_t pair) {
+  return xlist_get(to_xlist(pair), 0);
+}
+
+value_t x_pair_second(value_t pair) {
+  return xlist_get(to_xlist(pair), 1);
+}
+
+value_t x_pair_put_first(value_t value, value_t pair) {
+  xlist_put(to_xlist(pair), 0, value);
+  return pair;
+}
+
+value_t x_pair_put_second(value_t value, value_t pair) {
+  xlist_put(to_xlist(pair), 1, value);
+  return pair;
+}

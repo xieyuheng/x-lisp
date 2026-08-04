@@ -22,3 +22,8 @@ x_fn_1_t x_list_last;
 x_fn_1_t x_list_reverse_mut;
 x_fn_1_t x_list_reverse;
 x_fn_1_t x_list_to_set;
+x_fn_2_t x_make_pair;
+x_fn_1_t x_pair_first;
+x_fn_1_t x_pair_second;
+x_fn_2_t x_pair_put_first;
+x_fn_2_t x_pair_put_second;

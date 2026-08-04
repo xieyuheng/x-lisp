@@ -21,6 +21,9 @@
     ((hash-type key-type value-type)
      (@string "(hash-t " (format-type key-type) " "
               (format-type value-type) ")"))
+    ((pair-type first-type second-type)
+     (@string "(pair-t " (format-type first-type) " "
+              (format-type second-type) ")"))
     ((data-type type-constructor arg-types)
      (let ((mod-name (mod-name (type-constructor-mod type-constructor)))
            (name (type-constructor-name type-constructor)))

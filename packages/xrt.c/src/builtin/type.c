@@ -87,3 +87,11 @@ value_t x_hash_t(value_t K, value_t V) {
   x_list_push_mut(V, type);
   return type;
 }
+
+value_t x_pair_t(value_t A, value_t B) {
+  value_t type = x_make_list();
+  x_list_push_mut(x_object(intern_symbol("pair")), type);
+  x_list_push_mut(A, type);
+  x_list_push_mut(B, type);
+  return type;
+}

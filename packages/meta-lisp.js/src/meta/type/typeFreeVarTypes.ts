@@ -36,6 +36,11 @@ export function typeFreeVarTypes(
         typeFreeVarTypes(boundIds, t),
       )
 
+    case "PairType":
+      return [type.firstType, type.secondType].flatMap((t) =>
+        typeFreeVarTypes(boundIds, t),
+      )
+
     case "DataType":
       return type.argTypes.flatMap((t) => typeFreeVarTypes(boundIds, t))
 

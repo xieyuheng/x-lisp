@@ -433,7 +433,6 @@ pair 类型 `(pair-t A B)` 上的操作。
 
 - [`pair-t`](pair/pair-t.md) — pair 类型构造器
 - [`make-pair`](pair/make-pair.md) — 构造 pair
-- [`is-pair`](pair/is-pair.md) — 判断是否为 pair
 - [`pair-first`](pair/pair-first.md) — 取第一个元素
 - [`pair-second`](pair/pair-second.md) — 取第二个元素
 - [`pair-put-first`](pair/pair-put-first.md) — 替换第一个元素

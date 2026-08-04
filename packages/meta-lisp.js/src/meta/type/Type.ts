@@ -10,6 +10,7 @@ export type Type =
   | ListType
   | SetType
   | HashType
+  | PairType
   | DataType
   | PolymorphicType
 
@@ -173,6 +174,27 @@ export function isHashType(type: Type): type is HashType {
 export function asHashType(type: Type): HashType {
   if (isHashType(type)) return type
   throw new Error(`[asHashType] fail on: ${type.kind}`)
+}
+
+// PairType
+
+export type PairType = {
+  kind: "PairType"
+  firstType: Type
+  secondType: Type
+}
+
+export function PairType(firstType: Type, secondType: Type): PairType {
+  return { kind: "PairType", firstType, secondType }
+}
+
+export function isPairType(type: Type): type is PairType {
+  return type.kind === "PairType"
+}
+
+export function asPairType(type: Type): PairType {
+  if (isPairType(type)) return type
+  throw new Error(`[asPairType] fail on: ${type.kind}`)
 }
 
 // DataType
@@ -368,6 +390,13 @@ function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
     return HashType(
       replaceVarTypesInType(type.keyType, subst),
       replaceVarTypesInType(type.valueType, subst),
+    )
+  }
+
+  if (type.kind === "PairType") {
+    return PairType(
+      replaceVarTypesInType(type.firstType, subst),
+      replaceVarTypesInType(type.secondType, subst),
     )
   }
 

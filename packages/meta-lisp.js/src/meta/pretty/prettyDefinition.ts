@@ -175,6 +175,14 @@ function prettyType(type: M.Type): Ppml.Node {
       ])
     }
 
+    case "PairType": {
+      return Ppml.prettyApplication([
+        Ppml.text("pair-t"),
+        prettyType(type.firstType),
+        prettyType(type.secondType),
+      ])
+    }
+
     case "DataType": {
       const modName = type.typeConstructor.mod.name
       const name = type.typeConstructor.name

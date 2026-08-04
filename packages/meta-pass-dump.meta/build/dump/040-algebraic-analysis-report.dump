@@ -77,13 +77,6 @@
       (name make-hash-entry)
       (accessor-names hash-entry-key hash-entry-value)
       (predicate-name is-hash-entry))
-    ("meta-builtin/builtin/make-pair"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name pair-t)
-      (name make-pair)
-      (accessor-names pair-first pair-second)
-      (predicate-name is-pair))
     ("meta-builtin/builtin/make-source-location"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -154,13 +147,20 @@
       (name symbol-sexp)
       (accessor-names symbol-sexp-content symbol-sexp-location)
       (predicate-name is-symbol-sexp))
-    ("meta-builtin/内置/作二元组"
+    ("meta-builtin/内置/无"
       (pkg-name meta-builtin)
       (mod-name 内置)
-      (type-name 二元组型)
-      (name 作二元组)
-      (accessor-names 二元组甲 二元组乙)
-      (predicate-name 为二元组))
+      (type-name 或有型)
+      (name 无)
+      (accessor-names )
+      (predicate-name 为无))
+    ("meta-builtin/内置/有"
+      (pkg-name meta-builtin)
+      (mod-name 内置)
+      (type-name 或有型)
+      (name 有)
+      (accessor-names 有值)
+      (predicate-name 为有))
     ("self/lambda/apply-exp"
       (pkg-name self)
       (mod-name lambda)
@@ -209,14 +209,7 @@
       (type-name my-list-t)
       (name nil)
       (accessor-names )
-      (predicate-name is-nil))
-    ("self/pair/make-pair"
-      (pkg-name self)
-      (mod-name pair)
-      (type-name pair-t)
-      (name make-pair)
-      (accessor-names pair-first pair-second)
-      (predicate-name is-pair)))
+      (predicate-name is-nil)))
   (algebraic-type-infos
     ("meta-builtin/builtin/cli-ctx-t"
       (pkg-name meta-builtin)
@@ -248,11 +241,6 @@
       (mod-name builtin)
       (name maybe-t)
       (constructor-names just nothing))
-    ("meta-builtin/builtin/pair-t"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (name pair-t)
-      (constructor-names make-pair))
     ("meta-builtin/builtin/sexp-t"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -273,11 +261,11 @@
       (mod-name builtin)
       (name source-span-t)
       (constructor-names make-source-span))
-    ("meta-builtin/内置/二元组型"
+    ("meta-builtin/内置/或有型"
       (pkg-name meta-builtin)
       (mod-name 内置)
-      (name 二元组型)
-      (constructor-names 作二元组))
+      (name 或有型)
+      (constructor-names 有 无))
     ("self/lambda/exp-t"
       (pkg-name self)
       (mod-name lambda)
@@ -292,9 +280,4 @@
       (pkg-name self)
       (mod-name my-list)
       (name my-list-t)
-      (constructor-names nil li))
-    ("self/pair/pair-t"
-      (pkg-name self)
-      (mod-name pair)
-      (name pair-t)
-      (constructor-names make-pair))))
+      (constructor-names nil li))))

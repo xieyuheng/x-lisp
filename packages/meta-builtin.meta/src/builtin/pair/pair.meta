@@ -1,5 +1,13 @@
 (module builtin)
 
-(define-struct (pair-t A B)
-  (first A)
-  (second B))
+(declare-primitive-function make-pair 2)
+(declare-primitive-function pair-first 1)
+(declare-primitive-function pair-second 1)
+(declare-primitive-function pair-put-first 2)
+(declare-primitive-function pair-put-second 2)
+
+(claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
+(claim pair-first (polymorphic (A B) (-> (pair-t A B) A)))
+(claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
+(claim pair-put-first (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
+(claim pair-put-second (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))

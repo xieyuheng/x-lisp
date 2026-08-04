@@ -72,6 +72,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/列表型", x_list_t);
   define_primitive_1(mod, "meta-builtin/内置/集合型", x_set_t);
   define_primitive_2(mod, "meta-builtin/内置/散列型", x_hash_t);
+  define_primitive_2(mod, "meta-builtin/内置/序对型", x_pair_t);
 
   // value
 
@@ -185,6 +186,14 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/列表反转", x_list_reverse_mut);
   define_primitive_1(mod, "meta-builtin/内置/列表复制反转", x_list_reverse);
   define_primitive_1(mod, "meta-builtin/内置/列表转集合", x_list_to_set);
+
+  // pair
+
+  define_primitive_2(mod, "meta-builtin/内置/作序对", x_make_pair);
+  define_primitive_1(mod, "meta-builtin/内置/序对前项", x_pair_first);
+  define_primitive_1(mod, "meta-builtin/内置/序对后项", x_pair_second);
+  define_primitive_2(mod, "meta-builtin/内置/序对存前项", x_pair_put_first);
+  define_primitive_2(mod, "meta-builtin/内置/序对存后项", x_pair_put_second);
 
   // hash
 
