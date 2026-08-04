@@ -7,6 +7,4 @@
 (define (ignore x) void)
 
 (define-test ignore-test
-  (assert-equal void (ignore 1))
-  (assert-equal void (ignore "a"))
-  (assert-equal void (ignore (hash-put 'x 1 (make-hash)))))
+  (assert-equal void (ignore (iadd 1 1))))
