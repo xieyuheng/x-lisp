@@ -1,15 +1,5 @@
 (module builtin)
 
-(claim list-copy-sort
-  (polymorphic (E)
-    (-> (-> E E int-t) (list-t E)
-        (list-t E))))
-
-(define (list-copy-sort compare list)
-  (let ((new-list (list-copy list)))
-    (list-sort compare new-list)
-    new-list))
-
 (claim list-sort
   (polymorphic (E)
     (-> (-> E E int-t) (list-t E)
@@ -63,3 +53,13 @@
         (y (list-get j list)))
     (list-put i y list)
     (list-put j x list)))
+
+(claim list-copy-sort
+  (polymorphic (E)
+    (-> (-> E E int-t) (list-t E)
+        (list-t E))))
+
+(define (list-copy-sort compare list)
+  (let ((new-list (list-copy list)))
+    (list-sort compare new-list)
+    new-list))
