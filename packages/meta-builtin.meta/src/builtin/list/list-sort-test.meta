@@ -4,7 +4,7 @@
   ;; int ascending, list-sort mutates in-place
 
   (let ((list [2 3 1]))
-    (assert-equal [1 2 3] (list-sort int-compare-ascending list))
+    (list-sort int-compare-ascending list)
     (assert-equal [1 2 3] list))
 
   ;; int ascending, list-copy-sort returns new list

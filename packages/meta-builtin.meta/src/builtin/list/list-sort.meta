@@ -1,55 +1,66 @@
 (module builtin)
 
 (claim list-copy-sort
-  (polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E))))
+  (polymorphic (E)
+    (-> (-> E E int-t) (list-t E)
+        (list-t E))))
 
-(define (list-copy-sort comp lst)
-  (list-sort comp (list-copy lst)))
+(define (list-copy-sort compare list)
+  (let ((new-list (list-copy list)))
+    (list-sort compare new-list)
+    new-list))
 
 (claim list-sort
-  (polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E))))
+  (polymorphic (E)
+    (-> (-> E E int-t) (list-t E)
+        void-t)))
 
-(define (list-sort comp lst)
-  (let ((n (list-length lst)))
-    (quicksort-range comp lst 0 (isub n 1)))
-  lst)
+(define (list-sort compare list)
+  (let ((n (list-length list)))
+    (quicksort-range compare list 0 (isub n 1))))
 
 (claim quicksort-range
-  (polymorphic (E) (-> (-> E E int-t) (list-t E) int-t int-t void-t)))
+  (polymorphic (E)
+    (-> (-> E E int-t) (list-t E) int-t int-t
+        void-t)))
 
-(define (quicksort-range comp lst lo hi)
+(define (quicksort-range compare list lo hi)
   (if (int-less lo hi)
-    (let ((bounds (partition-3way comp lst lo hi)))
-      (quicksort-range comp lst lo (list-get 0 bounds))
-      (quicksort-range comp lst (list-get 1 bounds) hi))
+    (let ((bounds (partition-3way compare list lo hi)))
+      (quicksort-range compare list lo (list-get 0 bounds))
+      (quicksort-range compare list (list-get 1 bounds) hi))
     void))
 
 (claim partition-3way
-  (polymorphic (E) (-> (-> E E int-t) (list-t E) int-t int-t (list-t int-t))))
+  (polymorphic (E)
+    (-> (-> E E int-t) (list-t E) int-t int-t
+        (list-t int-t))))
 
-(define (partition-3way comp lst lo hi)
-  (let ((pivot (list-get (idiv (iadd lo hi) 2) lst)))
-    (partition-3way-aux comp lst pivot lo hi lo)))
+(define (partition-3way compare list lo hi)
+  (let ((pivot (list-get (idiv (iadd lo hi) 2) list)))
+    (partition-3way-aux compare list pivot lo hi lo)))
 
 (claim partition-3way-aux
-  (polymorphic (E) (-> (-> E E int-t) (list-t E) E int-t int-t int-t (list-t int-t))))
+  (polymorphic (E)
+    (-> (-> E E int-t) (list-t E) E int-t int-t int-t
+        (list-t int-t))))
 
-(define (partition-3way-aux comp lst pivot less greater i)
+(define (partition-3way-aux compare list pivot less greater i)
   (if (int-greater i greater)
     [(isub less 1) (iadd greater 1)]
-    (let ((cmp (comp (list-get i lst) pivot)))
+    (let ((cmp (compare (list-get i list) pivot)))
       (cond
         ((int-less cmp 0)
-          (let ((tmp (list-get i lst))
-                (v   (list-get less lst)))
-            (list-put i    v   lst)
-            (list-put less tmp lst)
-            (partition-3way-aux comp lst pivot (iadd less 1) greater (iadd i 1))))
+         (let ((tmp (list-get i list))
+               (v   (list-get less list)))
+           (list-put i    v   list)
+           (list-put less tmp list)
+           (partition-3way-aux compare list pivot (iadd less 1) greater (iadd i 1))))
         ((int-greater cmp 0)
-          (let ((tmp (list-get i lst))
-                (v   (list-get greater lst)))
-            (list-put i       v   lst)
-            (list-put greater tmp lst)
-            (partition-3way-aux comp lst pivot less (isub greater 1) i)))
+         (let ((tmp (list-get i list))
+               (v   (list-get greater list)))
+           (list-put i       v   list)
+           (list-put greater tmp list)
+           (partition-3way-aux compare list pivot less (isub greater 1) i)))
         (else
-          (partition-3way-aux comp lst pivot less greater (iadd i 1)))))))
+         (partition-3way-aux compare list pivot less greater (iadd i 1)))))))
