@@ -60,10 +60,6 @@
       (mod-name my-list)
       (imported-names 611)
       (imported-prefixes 0))
-    ("src/pair.meta"
-      (mod-name pair)
-      (imported-names 611)
-      (imported-prefixes 0))
     ("src/type-annotations.meta"
       (mod-name type-annotations)
       (imported-names 610)

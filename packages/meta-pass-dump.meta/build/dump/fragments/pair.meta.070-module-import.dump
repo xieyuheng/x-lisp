@@ -1,8 +1,0 @@
-(import-all meta-builtin/builtin)
-
-(module pair)
-
-(define (pair-swap p)
-  (meta-builtin/builtin/make-pair
-   (meta-builtin/builtin/pair-second p)
-   (meta-builtin/builtin/pair-first p)))

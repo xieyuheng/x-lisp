@@ -1,4 +1,0 @@
-(define (pair-swap p)
-  (let ((unnested.1 (meta-builtin/builtin/pair-second p)))
-    (let ((unnested.2 (meta-builtin/builtin/pair-first p)))
-      (meta-builtin/builtin/make-pair unnested.1 unnested.2))))

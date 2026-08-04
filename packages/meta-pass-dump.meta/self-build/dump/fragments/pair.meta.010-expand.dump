@@ -1,3 +1,0 @@
-(module pair)
-
-(define (pair-swap p) (make-pair (pair-second p) (pair-first p)))
