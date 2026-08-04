@@ -1,5 +1,5 @@
 (module builtin)
 
-(define (list-first list) (car list))
-(define (list-second list) (car (cdr list)))
-(define (list-third list) (car (cdr (cdr list))))
+(define (list-first list) (list-get 0 list))
+(define (list-second list) (list-get 1 list))
+(define (list-third list) (list-get 2 list))
