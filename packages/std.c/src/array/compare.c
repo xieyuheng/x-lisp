@@ -1,11 +1,15 @@
 #include "index.h"
 
 inline ordering_t int_compare_ascending(const void *lhs, const void *rhs) {
-  return (int64_t) lhs - (int64_t) rhs;
+  if ((int64_t) lhs < (int64_t) rhs) return -1;
+  if ((int64_t) lhs > (int64_t) rhs) return 1;
+  return 0;
 }
 
 inline ordering_t int_compare_descending(const void *lhs, const void *rhs) {
-  return (int64_t) rhs - (int64_t) lhs;
+  if ((int64_t) lhs < (int64_t) rhs) return 1;
+  if ((int64_t) lhs > (int64_t) rhs) return -1;
+  return 0;
 }
 
 inline ordering_t uint_compare_ascending(const void *lhs, const void *rhs) {
@@ -21,5 +25,8 @@ inline ordering_t uint_compare_descending(const void *lhs, const void *rhs) {
 }
 
 inline ordering_t string_compare_lexical(const void *lhs, const void *rhs) {
-  return strcmp(lhs, rhs);
+  int ordering = strcmp(lhs, rhs);
+  if (ordering < 0) return -1;
+  if (ordering > 0) return 1;
+  return 0;
 }

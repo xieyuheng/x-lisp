@@ -64,15 +64,20 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
   if (same(lhs, rhs)) return 0;
 
   if (value_tag(lhs) != value_tag(rhs)) {
-    return value_tag(lhs) - value_tag(rhs);
+    if (value_tag(lhs) < value_tag(rhs)) return -1;
+    return 1;
   }
 
   if (is_int(lhs) && is_int(rhs)) {
-    return to_int64(lhs) - to_int64(rhs);
+    if (to_int64(lhs) < to_int64(rhs)) return -1;
+    if (to_int64(lhs) > to_int64(rhs)) return 1;
+    return 0;
   }
 
   if (is_float(lhs) && is_float(rhs)) {
-    return to_double(lhs) - to_double(rhs);
+    if (to_double(lhs) < to_double(rhs)) return -1;
+    if (to_double(lhs) > to_double(rhs)) return 1;
+    return 0;
   }
 
   if (is_object(lhs) && is_object(rhs)) {
@@ -94,7 +99,9 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
   }
 
   if (is_immediate(lhs) && is_immediate(rhs)) {
-    return (int64_t) (lhs - rhs);
+    if ((int64_t) lhs < (int64_t) rhs) return -1;
+    if ((int64_t) lhs > (int64_t) rhs) return 1;
+    return 0;
   }
 
   who_printf("unhandled values\n");
