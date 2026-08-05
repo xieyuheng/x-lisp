@@ -7,7 +7,7 @@
 
 (define (hash-invert hash)
   (hash-map (lambda (k v) (make-pair v k))
-            hash))
+    hash))
 
 (define-test hash-invert-test
   (assert-equal
@@ -33,7 +33,7 @@
     (@hash 2 (@set 1 2)
            4 (@set 3 4))
     (hash-invert-group
-     (@hash 1 2
-            3 4
-            2 2
-            4 4))))
+      (@hash 1 2
+             3 4
+             2 2
+             4 4))))
