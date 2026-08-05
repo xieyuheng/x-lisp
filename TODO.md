@@ -9,7 +9,6 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 ---
 
 [meta-example.meta] 翻译
-[meta-lisp.js] 修复报错时下划线位置的计算 -- 支持中文
 
 # learn
 
