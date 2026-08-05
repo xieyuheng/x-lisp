@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-function path-base-name 1)
+(declare-primitive-function path-file-name 1)
 (declare-primitive-function path-directory-name 1)
 (declare-primitive-function path-extension 1)
 (declare-primitive-function path-stem 1)
@@ -25,7 +25,7 @@
 (declare-primitive-function path-delete 1)
 (declare-primitive-function path-rename 2)
 
-(claim path-base-name (-> string-t string-t))
+(claim path-file-name (-> string-t string-t))
 (claim path-directory-name (-> string-t string-t))
 (claim path-extension (-> string-t string-t))
 (claim path-stem (-> string-t string-t))

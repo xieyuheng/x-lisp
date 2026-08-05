@@ -2,7 +2,7 @@
 
 (define-test path-test
   (assert-equal "a/b/c" (path-directory-name "a/b/c/file.test.txt"))
-  (assert-equal "file.test.txt" (path-base-name "a/b/c/file.test.txt"))
+  (assert-equal "file.test.txt" (path-file-name "a/b/c/file.test.txt"))
   (assert-equal ".txt" (path-extension "a/b/c/file.test.txt"))
   (assert-equal "file.test" (path-stem "a/b/c/file.test.txt"))
 

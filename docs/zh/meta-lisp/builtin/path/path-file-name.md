@@ -1,5 +1,5 @@
 ---
-title: path-base-name
+title: path-file-name
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: path-base-name
 # 例子
 
 ```meta-lisp
-(path-base-name "/tmp/foo.txt")  ;; => "foo.txt"
+(path-file-name "/tmp/foo.txt")  ;; => "foo.txt"
 ```

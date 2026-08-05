@@ -1,5 +1,5 @@
 ---
-title: path-base-name
+title: path-file-name
 ---
 
 # Type
@@ -15,5 +15,5 @@ Get the file name component of a path.
 # Examples
 
 ```meta-lisp
-(path-base-name "/tmp/foo.txt")  ;; => "foo.txt"
+(path-file-name "/tmp/foo.txt")  ;; => "foo.txt"
 ```

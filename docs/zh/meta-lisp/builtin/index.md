@@ -544,7 +544,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 
 路径字符串的处理函数。
 
-- [`path-base-name`](path/path-base-name.md) — 取文件名部分
+- [`path-file-name`](path/path-file-name.md) — 取文件名部分
 - [`path-directory-name`](path/path-directory-name.md) — 取目录部分
 - [`path-extension`](path/path-extension.md) — 取扩展名
 - [`path-stem`](path/path-stem.md) — 取主干名

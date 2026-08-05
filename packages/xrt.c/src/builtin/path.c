@@ -1,6 +1,6 @@
 #include "index.h"
 
-value_t x_path_base_name(value_t string) {
+value_t x_path_file_name(value_t string) {
   path_t *path = make_path(xstring_string(to_xstring(string)));
   if (path_segment_length(path) == 0) {
     path_free(path);
@@ -32,7 +32,7 @@ value_t x_path_directory_name(value_t string) {
 }
 
 value_t x_path_extension(value_t string) {
-  string = x_path_base_name(string);
+  string = x_path_file_name(string);
   if (string_starts_with(xstring_string(to_xstring(string)), ".")) {
     return x_object(make_xstring(""));
   }
@@ -48,7 +48,7 @@ value_t x_path_extension(value_t string) {
 }
 
 value_t x_path_stem(value_t string) {
-  string = x_path_base_name(string);
+  string = x_path_file_name(string);
   if (string_starts_with(xstring_string(to_xstring(string)), ".")) {
     return string;
   }

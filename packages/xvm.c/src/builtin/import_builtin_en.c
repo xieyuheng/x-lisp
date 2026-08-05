@@ -96,7 +96,7 @@ void import_builtin_en(mod_t *mod) {
 
   // path
 
-  define_primitive_1(mod, "meta-builtin/builtin/path-base-name", x_path_base_name);
+  define_primitive_1(mod, "meta-builtin/builtin/path-file-name", x_path_file_name);
   define_primitive_1(mod, "meta-builtin/builtin/path-directory-name", x_path_directory_name);
   define_primitive_1(mod, "meta-builtin/builtin/path-extension", x_path_extension);
   define_primitive_1(mod, "meta-builtin/builtin/path-stem", x_path_stem);

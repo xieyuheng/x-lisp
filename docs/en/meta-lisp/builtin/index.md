@@ -514,7 +514,7 @@ File handle read/write operations.
 
 Path string manipulation and file system functions.
 
-- [`path-base-name`](path/path-base-name.md) — Get file name
+- [`path-file-name`](path/path-file-name.md) — Get file name
 - [`path-directory-name`](path/path-directory-name.md) — Get directory name
 - [`path-extension`](path/path-extension.md) — Get file extension
 - [`path-stem`](path/path-stem.md) — Get file stem

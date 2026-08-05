@@ -96,7 +96,7 @@ void import_builtin_zh(mod_t *mod) {
 
   // path
 
-  define_primitive_1(mod, "meta-builtin/内置/路径文件名", x_path_base_name);
+  define_primitive_1(mod, "meta-builtin/内置/路径文件名", x_path_file_name);
   define_primitive_1(mod, "meta-builtin/内置/路径目录名", x_path_directory_name);
   define_primitive_1(mod, "meta-builtin/内置/路径扩展名", x_path_extension);
   define_primitive_1(mod, "meta-builtin/内置/路径主干", x_path_stem);
