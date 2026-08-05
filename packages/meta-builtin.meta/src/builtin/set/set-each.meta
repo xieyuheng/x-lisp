@@ -6,5 +6,4 @@
         void-t)))
 
 (define (set-each f set)
-  (list-each f (set-to-list set))
-  void)
+  (list-each f (set-to-list set)))
