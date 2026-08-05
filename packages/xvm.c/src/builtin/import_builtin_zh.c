@@ -227,7 +227,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/集合交", x_set_inter);
   define_primitive_2(mod, "meta-builtin/内置/集合差", x_set_difference);
   define_primitive_2(mod, "meta-builtin/内置/集合子集", x_set_subset);
-  define_primitive_2(mod, "meta-builtin/内置/集合不相交", x_set_disjoint);
+  define_primitive_2(mod, "meta-builtin/内置/集合不交", x_set_disjoint);
   define_primitive_1(mod, "meta-builtin/内置/集合转列表", x_set_to_list);
 
   // assert
