@@ -10,8 +10,6 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 [内置] 符号算式
 
-[内置] 匣子定位取
-
 [meta-math.meta] 翻译
 [meta-example.meta] 翻译
 
