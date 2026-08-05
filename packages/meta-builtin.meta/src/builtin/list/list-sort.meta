@@ -16,47 +16,37 @@
 
 (define (quicksort compare list lo hi)
   (when (int-less lo hi)
-    (let ((less-box (make-box))
-          (greater-box (make-box)))
-      ;; use box to save multiple return value of quicksort-partition
-      (quicksort-partition compare list lo hi less-box greater-box)
-      (quicksort compare list lo (box-get less-box))
-      (quicksort compare list (box-get greater-box) hi))))
+    (let ((bounds (quicksort-partition compare list lo hi)))
+      (quicksort compare list lo (pair-first bounds))
+      (quicksort compare list (pair-second bounds) hi))))
 
 (claim quicksort-partition
   (polymorphic (E)
     (-> (-> E E int-t) (list-t E) int-t int-t
-        (box-t int-t) (box-t int-t)
-        void-t)))
+        (pair-t int-t int-t))))
 
-(define (quicksort-partition compare list lo hi less-box greater-box)
+(define (quicksort-partition compare list lo hi)
   (let ((pivot (list-get (idiv (iadd lo hi) 2) list)))
-    (quicksort-partition-loop compare list pivot lo lo hi less-box greater-box)))
+    (quicksort-partition-aux compare list pivot lo lo hi)))
 
-(claim quicksort-partition-loop
+(claim quicksort-partition-aux
   (polymorphic (E)
     (-> (-> E E int-t) (list-t E) E int-t int-t int-t
-        (box-t int-t) (box-t int-t)
-        void-t)))
+        (pair-t int-t int-t))))
 
-(define (quicksort-partition-loop compare list pivot index less greater less-box greater-box)
+(define (quicksort-partition-aux compare list pivot index less greater)
   (if (int-greater index greater)
-    (begin
-      (box-put (isub less 1) less-box)
-      (box-put (iadd greater 1) greater-box))
+    (make-pair (isub less 1) (iadd greater 1))
     (let ((cmp (compare (list-get index list) pivot)))
       (cond
         ((int-less cmp 0)
          (list-swap index less list)
-         (quicksort-partition-loop compare list pivot (iadd index 1) (iadd less 1) greater
-           less-box greater-box))
+         (quicksort-partition-aux compare list pivot (iadd index 1) (iadd less 1) greater))
         ((int-greater cmp 0)
          (list-swap index greater list)
-         (quicksort-partition-loop compare list pivot index less (isub greater 1)
-           less-box greater-box))
+         (quicksort-partition-aux compare list pivot index less (isub greater 1)))
         (else
-         (quicksort-partition-loop compare list pivot (iadd index 1) less greater
-           less-box greater-box))))))
+         (quicksort-partition-aux compare list pivot (iadd index 1) less greater))))))
 
 (define (list-swap i j list)
   (let ((x (list-get i list))
