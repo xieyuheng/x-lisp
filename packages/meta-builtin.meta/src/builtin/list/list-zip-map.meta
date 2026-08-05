@@ -7,10 +7,10 @@
 
 (define (list-zip-map f left right)
   (list-map
-   (lambda (pair)
-     (f (pair-first pair)
+    (lambda (pair)
+      (f (pair-first pair)
         (pair-second pair)))
-   (list-zip left right)))
+    (list-zip left right)))
 
 (define-test list-zip-map-test
   (assert-equal
