@@ -243,7 +243,7 @@ export function formatExp(exp: M.Exp): string {
       } else {
         const targets = exp.targets.map(formatExp).join(" ")
         const clauses = formatMatchClauses(exp.clauses)
-        return `(match-many (${targets}) ${clauses})`
+        return `(multi-match (${targets}) ${clauses})`
       }
     }
   }

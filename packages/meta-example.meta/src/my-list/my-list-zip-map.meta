@@ -6,7 +6,7 @@
         (my-list-t C))))
 
 (define (my-list-zip-map f list1 list2)
-  (match-many (list1 list2)
+  (multi-match (list1 list2)
     (((nil) _) (nil))
     (((li head1 tail1) (nil)) (nil))
     (((li head1 tail1) (li head2 tail2))
@@ -18,7 +18,7 @@
         (my-list-t C))))
 
 (define (my-list-zip-map-2 f list1 list2)
-  (match-many (list1 list2)
+  (multi-match (list1 list2)
     (((nil) _) (nil))
     ((_ (nil)) (nil))
     (((li head1 tail1) (li head2 tail2))

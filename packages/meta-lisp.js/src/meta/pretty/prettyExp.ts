@@ -232,7 +232,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
         return Ppml.prettySyntax("match", [prettyExp(exp.targets[0])], clauses)
       } else {
         const targetsNode = Ppml.prettyApplication(exp.targets.map(prettyExp))
-        return Ppml.prettySyntax("match-many", [targetsNode], clauses)
+        return Ppml.prettySyntax("multi-match", [targetsNode], clauses)
       }
     }
   }

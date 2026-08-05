@@ -183,14 +183,14 @@
             "src/my-list.meta"
             (meta-builtin/builtin/make-source-span
              (meta-builtin/builtin/make-source-position 640 30 3)
-             (meta-builtin/builtin/make-source-position 650 30 13))))))
+             (meta-builtin/builtin/make-source-position 651 30 14))))))
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
         "src/my-list.meta"
         (meta-builtin/builtin/make-source-span
          (meta-builtin/builtin/make-source-position 640 30 3)
-         (meta-builtin/builtin/make-source-position 650 30 13)))))))
+         (meta-builtin/builtin/make-source-position 651 30 14)))))))
 
 (define (my-list-zip-map-2 f list1 list2)
   (if (self/my-list/is-nil list1)
@@ -221,8 +221,8 @@
              (meta-builtin/builtin/make-source-location
               "src/my-list.meta"
               (meta-builtin/builtin/make-source-span
-               (meta-builtin/builtin/make-source-position 872 37 3)
-               (meta-builtin/builtin/make-source-position 882 37 13))))
+               (meta-builtin/builtin/make-source-position 873 37 3)
+               (meta-builtin/builtin/make-source-position 884 37 14))))
             (if (self/my-list/is-li list1)
               (if (self/my-list/is-nil list2)
                 (meta-builtin/builtin/error-with-location
@@ -248,8 +248,8 @@
                  (meta-builtin/builtin/make-source-location
                   "src/my-list.meta"
                   (meta-builtin/builtin/make-source-span
-                   (meta-builtin/builtin/make-source-position 872 37 3)
-                   (meta-builtin/builtin/make-source-position 882 37 13))))
+                   (meta-builtin/builtin/make-source-position 873 37 3)
+                   (meta-builtin/builtin/make-source-position 884 37 14))))
                 (if (self/my-list/is-li list2)
                   (let ((tail2 (self/my-list/li-tail list2)))
                     (let ((head2 (self/my-list/li-head list2)))
@@ -263,29 +263,29 @@
                    (meta-builtin/builtin/make-source-location
                     "src/my-list.meta"
                     (meta-builtin/builtin/make-source-span
-                     (meta-builtin/builtin/make-source-position 872 37 3)
-                     (meta-builtin/builtin/make-source-position 882 37 13))))))
+                     (meta-builtin/builtin/make-source-position 873 37 3)
+                     (meta-builtin/builtin/make-source-position 884 37 14))))))
               (meta-builtin/builtin/error-with-location
                "cond mismatch"
                (meta-builtin/builtin/make-source-location
                 "src/my-list.meta"
                 (meta-builtin/builtin/make-source-span
-                 (meta-builtin/builtin/make-source-position 872 37 3)
-                 (meta-builtin/builtin/make-source-position 882 37 13))))))
+                 (meta-builtin/builtin/make-source-position 873 37 3)
+                 (meta-builtin/builtin/make-source-position 884 37 14))))))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
             "src/my-list.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 872 37 3)
-             (meta-builtin/builtin/make-source-position 882 37 13))))))
+             (meta-builtin/builtin/make-source-position 873 37 3)
+             (meta-builtin/builtin/make-source-position 884 37 14))))))
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
         "src/my-list.meta"
         (meta-builtin/builtin/make-source-span
-         (meta-builtin/builtin/make-source-position 872 37 3)
-         (meta-builtin/builtin/make-source-position 882 37 13)))))))
+         (meta-builtin/builtin/make-source-position 873 37 3)
+         (meta-builtin/builtin/make-source-position 884 37 14)))))))
 
 (define (my-list-adjacent-dedup list)
   (if (self/my-list/is-nil list)
@@ -310,12 +310,12 @@
            (meta-builtin/builtin/make-source-location
             "src/my-list.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 1087 44 3)
-             (meta-builtin/builtin/make-source-position 1092 44 8))))))
+             (meta-builtin/builtin/make-source-position 1089 44 3)
+             (meta-builtin/builtin/make-source-position 1094 44 8))))))
       (meta-builtin/builtin/error-with-location
        "cond mismatch"
        (meta-builtin/builtin/make-source-location
         "src/my-list.meta"
         (meta-builtin/builtin/make-source-span
-         (meta-builtin/builtin/make-source-position 1087 44 3)
-         (meta-builtin/builtin/make-source-position 1092 44 8)))))))
+         (meta-builtin/builtin/make-source-position 1089 44 3)
+         (meta-builtin/builtin/make-source-position 1094 44 8)))))))

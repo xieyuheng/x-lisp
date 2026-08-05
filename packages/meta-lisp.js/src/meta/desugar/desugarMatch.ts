@@ -31,27 +31,27 @@ import * as M from "../index.ts"
 //
 // to
 //
-//     (match-many (target ...)
+//     (multi-match (target ...)
 //       ((pattern ...) body)
 //       ...)
 //
 // When all clause heads are var patterns:
 //
-//     (match-many (target <target> ...)
+//     (multi-match (target <target> ...)
 //       ((v1 <pattern> ...) <body>)
 //       ((v2 <pattern> ...) <body>)
 //       ...)
 //
 // =>
 //
-//     (match-many (<target> ...)
+//     (multi-match (<target> ...)
 //       ((<pattern> ...) (let ((v1 target)) <body>))
 //       ((<pattern> ...) (let ((v2 target)) <body>))
 //       ...)
 //
 // When all clause heads are data patterns:
 //
-//     (match-many (target <target> ...)
+//     (multi-match (target <target> ...)
 //       (((ctor1 x1 ...) <pattern> ...) <body>)
 //       (((ctor1 y1 ...) <pattern> ...) <body>)
 //       (((ctor2 x2 ...) <pattern> ...) <body>)
@@ -60,24 +60,24 @@ import * as M from "../index.ts"
 //
 // first group by head constructors:
 //
-//     (match-many (target <target> ...)
+//     (multi-match (target <target> ...)
 //       (((ctor1 x1 ...) <pattern> ...) <body>)
 //       (((ctor1 y1 ...) <pattern> ...) <body>)
 //       ...)
 //
-//     (match-many (target <target> ...)
+//     (multi-match (target <target> ...)
 //       (((ctor2 x2 ...) <pattern> ...) <body>)
 //       (((ctor2 y2 ...) <pattern> ...) <body>)
 //       ...)
 //
 // then spread the pattern vars in the data patterns:
 //
-//     (match-many ((ctor1-accessor1 target) ... <target> ...)
+//     (multi-match ((ctor1-accessor1 target) ... <target> ...)
 //       ((x1 ... <pattern> ...) <body>)
 //       ((y1 ... <pattern> ...) <body>)
 //       ...)
 //
-//     (match-many ((ctor2-accessor1 target) ... <target> ...)
+//     (multi-match ((ctor2-accessor1 target) ... <target> ...)
 //       ((x2 ... <pattern> ...) <body>)
 //       ((y2 ... <pattern> ...) <body>)
 //       ...)

@@ -46,10 +46,10 @@
 
 (define syntax-keywords
   (list-append
-    '(lambda @quote if when unless and or cond match match-many
+    '(lambda @quote if when unless and or cond match multi-match
       begin let letrec @list @square-bracket @set @hash @sexp @string
       -> the polymorphic pipe chain compose define @comment)
-    '(函 @引用 若 当 除非 且 或 若则 匹配 多匹配
+    '(函 @引用 若 当 除非 且 或 若则 匹配 多元匹配
       循序 令 递归令 @列表 @方括号 @集合 @散列 @符号算式 @文本
       -> 型例 多态 管道 串联 复合 定义 @注释)))
 
@@ -141,13 +141,13 @@
      (match-exp [(parse-exp (car sexps))]
        (list-map parse-match-clause (cdr sexps))
        keyword-location))
-    ((list-member tag '(match-many 多匹配))
+    ((list-member tag '(multi-match 多元匹配))
      (@comment
-       (match-many (<target> ...)
+       (multi-match (<target> ...)
          ((<pattern> ...) <body>)
          ...))
      (match-exp (list-map parse-exp (list-sexp-elements (car sexps)))
-       (list-map parse-match-many-clause (cdr sexps))
+       (list-map parse-multi-match-clause (cdr sexps))
        keyword-location))
     ((list-member tag '(begin 循序))
      (@comment
@@ -289,11 +289,11 @@
                         (parse-body (cdr elements) location)
                         location))))
 
-(claim parse-match-many-clause
+(claim parse-multi-match-clause
   (-> sexp-t
       match-clause-t))
 
-(define (parse-match-many-clause sexp)
+(define (parse-multi-match-clause sexp)
   (match sexp
     ((list-sexp elements location)
      (make-match-clause (list-map parse-exp (list-sexp-elements (car elements)))

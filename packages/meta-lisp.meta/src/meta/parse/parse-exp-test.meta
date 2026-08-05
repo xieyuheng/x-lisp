@@ -121,9 +121,9 @@
   (assert-equal "(match x ((var-exp name) name))"
     (format-exp (parse-exp (@sexp (match x ((var-exp name) name)))))))
 
-(define-test parse-match-many-test
-  (assert-equal "(match-many (x y) ((a b) c))"
-    (format-exp (parse-exp (@sexp (match-many (x y) ((a b) c)))))))
+(define-test parse-multi-match-test
+  (assert-equal "(multi-match (x y) ((a b) c))"
+    (format-exp (parse-exp (@sexp (multi-match (x y) ((a b) c)))))))
 
 (define-test parse-quote-test
   (assert-equal "'foo"

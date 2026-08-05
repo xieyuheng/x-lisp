@@ -133,7 +133,7 @@
        (ppml/pretty-syntax "match"
          [(list-head (list-map pretty-exp targets))]
          (list-map pretty-match-clause clauses))
-       (ppml/pretty-syntax "match-many"
+       (ppml/pretty-syntax "multi-match"
          [(ppml/group
             [(ppml/text "(")
              (ppml/flex (list-map pretty-exp targets))

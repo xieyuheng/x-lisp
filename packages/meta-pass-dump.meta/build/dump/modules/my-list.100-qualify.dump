@@ -179,8 +179,8 @@
              (meta-builtin/builtin/make-source-location
               "src/my-list.meta"
               (meta-builtin/builtin/make-source-span
-               (meta-builtin/builtin/make-source-position 872 37 3)
-               (meta-builtin/builtin/make-source-position 882 37 13))))
+               (meta-builtin/builtin/make-source-position 873 37 3)
+               (meta-builtin/builtin/make-source-position 884 37 14))))
             (if (self/my-list/is-li list1)
               (if (self/my-list/is-nil list2)
                 (meta-builtin/builtin/error-with-location
@@ -206,8 +206,8 @@
                  (meta-builtin/builtin/make-source-location
                   "src/my-list.meta"
                   (meta-builtin/builtin/make-source-span
-                   (meta-builtin/builtin/make-source-position 872 37 3)
-                   (meta-builtin/builtin/make-source-position 882 37 13))))
+                   (meta-builtin/builtin/make-source-position 873 37 3)
+                   (meta-builtin/builtin/make-source-position 884 37 14))))
                 (if (self/my-list/is-li list2)
                   (let ((tail2 (self/my-list/li-tail list2)))
                     (let ((head2 (self/my-list/li-head list2)))

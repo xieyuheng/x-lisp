@@ -170,7 +170,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* 'match-many targets clauses)": ({ targets, clauses }, { sexp }) => {
+  "(cons* 'multi-match targets clauses)": ({ targets, clauses }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.MatchExp(
       S.asListSexp(targets).elements.map(parseExp),
@@ -179,7 +179,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* '多匹配 targets clauses)": ({ targets, clauses }, { sexp }) => {
+  "(cons* '多元匹配 targets clauses)": ({ targets, clauses }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.MatchExp(
       S.asListSexp(targets).elements.map(parseExp),
