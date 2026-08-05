@@ -8,6 +8,15 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
+集合/
+集合.meta
+集合逐项.meta
+集合全部.meta
+集合映射.meta
+集合选取.meta
+集合测试.meta
+集合求并.meta
+
 [内置] 集合
 [内置] 散列
 
