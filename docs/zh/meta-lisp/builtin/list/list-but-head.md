@@ -1,5 +1,5 @@
 ---
-title: list-tail
+title: list-but-head
 ---
 
 # 类型
@@ -15,5 +15,5 @@ title: list-tail
 # 例子
 
 ```meta-lisp
-(list-tail [1 2 3])  ;; => [2 3]
+(list-but-head [1 2 3])  ;; => [2 3]
 ```

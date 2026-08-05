@@ -16,7 +16,7 @@
     folded
     (list-fold-right-index-aux
      f (f i (list-last list) folded)
-     (list-init list)
+     (list-but-last list)
      (isub i 1))))
 
 (define-test list-fold-right-index-test

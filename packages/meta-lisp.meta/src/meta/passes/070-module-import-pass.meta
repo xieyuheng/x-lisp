@@ -141,5 +141,5 @@
     ((make-fragment-scope mod-name imported-names imported-prefixes)
      (make-fragment-scope
        mod-name
-       (hash-reject-key (swap set-is-member bound-names) imported-names)
+       (hash-reject-key (swap set-member bound-names) imported-names)
        imported-prefixes))))

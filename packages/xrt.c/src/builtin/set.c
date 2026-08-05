@@ -20,7 +20,7 @@ value_t x_set_is_empty(value_t set) {
   return x_bool(xset_is_empty(to_xset(set)));
 }
 
-value_t x_set_is_member(value_t value, value_t set) {
+value_t x_set_member(value_t value, value_t set) {
   return x_bool(xset_is_member(to_xset(set), value));
 }
 

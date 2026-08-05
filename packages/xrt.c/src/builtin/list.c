@@ -73,11 +73,11 @@ value_t x_list_head(value_t list) {
   return x_car(list);
 }
 
-value_t x_list_tail(value_t list) {
+value_t x_list_but_head(value_t list) {
   return x_cdr(list);
 }
 
-value_t x_list_init(value_t list) {
+value_t x_list_but_last(value_t list) {
   list = x_list_copy(list);
   x_list_pop_mut(list);
   return list;

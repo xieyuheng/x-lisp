@@ -5,10 +5,10 @@
     (-> (list-t A) (list-t A)
         (list-t A))))
 
-(define (list-append list tail)
+(define (list-append list rest)
   (if (list-is-empty list)
-    tail
-    (cons (car list) (list-append (cdr list) tail))))
+    rest
+    (cons (car list) (list-append (cdr list) rest))))
 
 (define-test list-append-test
   (assert-equal

@@ -50,7 +50,7 @@
 
 (define (my-list-head list) (match list ((li head tail) head)))
 
-(define (my-list-tail list) (match list ((li head tail) tail)))
+(define (my-list-but-head list) (match list ((li head tail) tail)))
 
 (define (my-list-length list)
   (match list ((nil) 0) ((li head tail) (iadd 1 (my-list-length tail)))))

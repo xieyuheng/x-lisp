@@ -180,8 +180,8 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/cdr", x_cdr);
   define_primitive_2(mod, "meta-builtin/builtin/cons", x_cons);
   define_primitive_1(mod, "meta-builtin/builtin/list-head", x_list_head);
-  define_primitive_1(mod, "meta-builtin/builtin/list-tail", x_list_tail);
-  define_primitive_1(mod, "meta-builtin/builtin/list-init", x_list_init);
+  define_primitive_1(mod, "meta-builtin/builtin/list-but-head", x_list_but_head);
+  define_primitive_1(mod, "meta-builtin/builtin/list-but-last", x_list_but_last);
   define_primitive_1(mod, "meta-builtin/builtin/list-last", x_list_last);
   define_primitive_1(mod, "meta-builtin/builtin/list-reverse", x_list_reverse_mut);
   define_primitive_1(mod, "meta-builtin/builtin/list-copy-reverse", x_list_reverse);
@@ -218,7 +218,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/set-copy", x_set_copy);
   define_primitive_1(mod, "meta-builtin/builtin/set-size", x_set_size);
   define_primitive_1(mod, "meta-builtin/builtin/set-is-empty", x_set_is_empty);
-  define_primitive_2(mod, "meta-builtin/builtin/set-is-member", x_set_is_member);
+  define_primitive_2(mod, "meta-builtin/builtin/set-member", x_set_member);
   define_primitive_2(mod, "meta-builtin/builtin/set-add", x_set_add_mut);
   define_primitive_2(mod, "meta-builtin/builtin/set-copy-add", x_set_add);
   define_primitive_2(mod, "meta-builtin/builtin/set-delete", x_set_delete_mut);

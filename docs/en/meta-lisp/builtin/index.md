@@ -237,12 +237,12 @@ Operations on `(list-t E)`.
 - [`car`](list/car.md) — First element
 - [`cdr`](list/cdr.md) — Rest of the list
 - [`list-head`](list/list-head.md) — First element (same as `car`)
-- [`list-tail`](list/list-tail.md) — Rest of the list (same as `cdr`)
+- [`list-but-head`](list/list-but-head.md) — Rest of the list (same as `cdr`)
 - [`list-first`](list/list-first.md) — First element
 - [`list-second`](list/list-second.md) — Second element
 - [`list-third`](list/list-third.md) — Third element
 - [`list-last`](list/list-last.md) — Last element
-- [`list-init`](list/list-init.md) — All but last element
+- [`list-but-last`](list/list-but-last.md) — All but last element
 - [`list-get`](list/list-get.md) — Get element by index
 
 ### Info
@@ -328,7 +328,7 @@ Operations on `(set-t E)`.
 
 - [`set-size`](set/set-size.md) — Set size
 - [`set-is-empty`](set/set-is-empty.md) — Check if empty
-- [`set-is-member`](set/set-is-member.md) — Check if contains element
+- [`set-member`](set/set-member.md) — Check if contains element
 - [`set-subset`](set/set-subset.md) — Check if subset
 
 ### Mutation

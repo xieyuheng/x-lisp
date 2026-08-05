@@ -5,13 +5,13 @@
       symbol-t))
 
 (define (generate-relative-fresh-name used-names name)
-  (if (set-is-member name used-names)
+  (if (set-member name used-names)
     (generate-relative-fresh-name-loop used-names name 1)
     name))
 
 (define (generate-relative-fresh-name-loop used-names name n)
   (let ((candidate (symbol-append name (int-to-suffix-symbol n))))
-    (if (set-is-member candidate used-names)
+    (if (set-member candidate used-names)
       (generate-relative-fresh-name-loop used-names name (iadd 1 n))
       candidate)))
 

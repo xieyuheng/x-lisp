@@ -75,7 +75,7 @@
 (define (qualify-free-var mod bound-names term)
   (match term
     ((var-term name location)
-     (if (set-is-member name bound-names)
+     (if (set-member name bound-names)
        term
        (qualified-var-term
          (package-id (mod-package mod))

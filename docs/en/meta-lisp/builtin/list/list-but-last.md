@@ -1,5 +1,5 @@
 ---
-title: list-init
+title: list-but-last
 ---
 
 # Type
@@ -15,6 +15,6 @@ All elements of the list except the last one.
 # Examples
 
 ```meta-lisp
-(list-init [1 2 3])  ;; => [1 2]
-(list-init [1])      ;; => []
+(list-but-last [1 2 3])  ;; => [1 2]
+(list-but-last [1])      ;; => []
 ```

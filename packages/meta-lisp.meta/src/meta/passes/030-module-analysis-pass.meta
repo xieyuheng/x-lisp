@@ -153,7 +153,7 @@
      (let ((imported-private-names (lookup-mod-private-names package pkg-name mod-name)))
        (for-list names
          (lambda (name)
-           (unless (set-is-member name imported-private-names)
+           (unless (set-member name imported-private-names)
              (hash-put name
                (make-qualified-name pkg-name mod-name name)
                (fragment-scope-imported-names scope)))))))
@@ -169,7 +169,7 @@
          (lambda (name)
            ;; - why: skip names already defined in the current module,
            ;;   so that local definitions can override imported ones.
-           (unless (set-is-member name current-defined-names)
+           (unless (set-member name current-defined-names)
              (hash-put name
                (make-qualified-name pkg-name mod-name name)
                (fragment-scope-imported-names scope)))))))

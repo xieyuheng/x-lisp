@@ -180,8 +180,8 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/余", x_cdr);
   define_primitive_2(mod, "meta-builtin/内置/添", x_cons);
   define_primitive_1(mod, "meta-builtin/内置/列表首项", x_list_head);
-  define_primitive_1(mod, "meta-builtin/内置/列表去首", x_list_tail);
-  define_primitive_1(mod, "meta-builtin/内置/列表去末", x_list_init);
+  define_primitive_1(mod, "meta-builtin/内置/列表去首", x_list_but_head);
+  define_primitive_1(mod, "meta-builtin/内置/列表去末", x_list_but_last);
   define_primitive_1(mod, "meta-builtin/内置/列表末项", x_list_last);
   define_primitive_1(mod, "meta-builtin/内置/列表反转", x_list_reverse_mut);
   define_primitive_1(mod, "meta-builtin/内置/列表复制反转", x_list_reverse);
@@ -218,7 +218,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/集合复制", x_set_copy);
   define_primitive_1(mod, "meta-builtin/内置/集合大小", x_set_size);
   define_primitive_1(mod, "meta-builtin/内置/集合为空", x_set_is_empty);
-  define_primitive_2(mod, "meta-builtin/内置/集合属于", x_set_is_member);
+  define_primitive_2(mod, "meta-builtin/内置/集合属于", x_set_member);
   define_primitive_2(mod, "meta-builtin/内置/集合添加", x_set_add_mut);
   define_primitive_2(mod, "meta-builtin/内置/集合复制添加", x_set_add);
   define_primitive_2(mod, "meta-builtin/内置/集合删除", x_set_delete_mut);

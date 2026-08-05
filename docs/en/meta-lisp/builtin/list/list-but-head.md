@@ -1,5 +1,5 @@
 ---
-title: list-tail
+title: list-but-head
 ---
 
 # Type
@@ -15,5 +15,5 @@ Rest of the list after removing the first element, same as `cdr`.
 # Examples
 
 ```meta-lisp
-(list-tail [1 2 3])  ;; => [2 3]
+(list-but-head [1 2 3])  ;; => [2 3]
 ```

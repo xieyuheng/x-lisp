@@ -8,7 +8,7 @@
   (match list
     ((li head tail) head)))
 
-(define (my-list-tail list)
+(define (my-list-but-head list)
   (match list
     ((li head tail) tail)))
 

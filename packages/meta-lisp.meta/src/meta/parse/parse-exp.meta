@@ -209,7 +209,7 @@
     ((equal tag '->)
      (@comment
        (-> <arg-type> ... <ret-type>))
-     (arrow-exp (list-map parse-exp (list-init sexps))
+     (arrow-exp (list-map parse-exp (list-but-last sexps))
        (parse-exp (list-last sexps))
        location))
     ((list-member tag '(the 型例))

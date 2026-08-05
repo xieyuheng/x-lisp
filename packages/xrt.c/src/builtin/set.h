@@ -5,7 +5,7 @@ x_fn_1_t x_is_any_set;
 x_fn_1_t x_set_copy;
 x_fn_1_t x_set_size;
 x_fn_1_t x_set_is_empty;
-x_fn_2_t x_set_is_member;
+x_fn_2_t x_set_member;
 x_fn_2_t x_set_add_mut;
 x_fn_2_t x_set_add;
 x_fn_2_t x_set_delete_mut;

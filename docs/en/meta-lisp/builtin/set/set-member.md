@@ -1,5 +1,5 @@
 ---
-title: set-is-member
+title: set-member
 ---
 
 # Type
@@ -15,6 +15,6 @@ Check if an element exists in the set.
 # Examples
 
 ```meta-lisp
-(set-is-member 2 (@set 1 2 3))  ;; => true
-(set-is-member 0 (@set 1 2 3))  ;; => false
+(set-member 2 (@set 1 2 3))  ;; => true
+(set-member 0 (@set 1 2 3))  ;; => false
 ```

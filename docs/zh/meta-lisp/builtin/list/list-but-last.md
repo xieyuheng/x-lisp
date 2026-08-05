@@ -1,5 +1,5 @@
 ---
-title: list-init
+title: list-but-last
 ---
 
 # 类型
@@ -15,6 +15,6 @@ title: list-init
 # 例子
 
 ```meta-lisp
-(list-init [1 2 3])  ;; => [1 2]
-(list-init [1])      ;; => []
+(list-but-last [1 2 3])  ;; => [1 2]
+(list-but-last [1])      ;; => []
 ```

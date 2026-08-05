@@ -238,12 +238,12 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`car`](list/car.md) — 取第一个元素
 - [`cdr`](list/cdr.md) — 取除第一个外的剩余列表
 - [`list-head`](list/list-head.md) — 取第一个元素（同 `car`）
-- [`list-tail`](list/list-tail.md) — 取剩余列表（同 `cdr`）
+- [`list-but-head`](list/list-but-head.md) — 取剩余列表（同 `cdr`）
 - [`list-first`](list/list-first.md) — 取第一个元素
 - [`list-second`](list/list-second.md) — 取第二个元素
 - [`list-third`](list/list-third.md) — 取第三个元素
 - [`list-last`](list/list-last.md) — 取最后一个元素
-- [`list-init`](list/list-init.md) — 取除最后一个外的所有元素
+- [`list-but-last`](list/list-but-last.md) — 取除最后一个外的所有元素
 - [`list-get`](list/list-get.md) — 按索引取元素
 
 ### 信息
@@ -329,7 +329,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`set-size`](set/set-size.md) — 大小
 - [`set-is-empty`](set/set-is-empty.md) — 是否为空集
-- [`set-is-member`](set/set-is-member.md) — 是否包含某元素
+- [`set-member`](set/set-member.md) — 是否包含某元素
 - [`set-subset`](set/set-subset.md) — 是否为子集
 
 ### 修改
