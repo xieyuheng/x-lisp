@@ -1,0 +1,17 @@
+{
+  "name": "元语例子",
+  "version": "0.1.0",
+  "build": {
+    "source-directory": "src",
+    "output-directory": "build",
+    "snapshot-directory": "snapshot"
+  },
+  "dependencies": {
+    "meta-builtin": "../meta-builtin.meta",
+    "元语数学": "../元语数学"
+  },
+  "prelude": {
+    "meta-builtin": ["内置"],
+    "元语数学": ["元语数学"]
+  }
+}
