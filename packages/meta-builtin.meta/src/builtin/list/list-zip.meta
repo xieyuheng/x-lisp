@@ -6,11 +6,10 @@
         (list-t (pair-t A B)))))
 
 (define (list-zip left right)
-  (if (or (list-is-empty left)
-          (list-is-empty right))
+  (if (or (list-is-empty left) (list-is-empty right))
     []
     (cons (make-pair (car left) (car right))
-          (list-zip (cdr left) (cdr right)))))
+      (list-zip (cdr left) (cdr right)))))
 
 (define-test list-zip-test
   (assert-equal
@@ -27,7 +26,7 @@
 
 (define (list-unzip pairs)
   (make-pair (list-map pair-first pairs)
-             (list-map pair-second pairs)))
+    (list-map pair-second pairs)))
 
 (define-test list-unzip-test
   (assert-equal
