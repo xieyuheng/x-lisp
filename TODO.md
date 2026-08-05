@@ -9,6 +9,7 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 ---
 
 [meta-example.meta] 翻译
+模仿 [meta-example.meta] 项目，构造  翻译  为
 [meta-lisp.js] 支持中文 定位断言
 
 # learn

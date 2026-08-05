@@ -362,6 +362,19 @@ const INT_ARITH_OPS: Record<string, string> = {
   "meta-builtin/builtin/int-is-positive": "int-is-positive",
   "meta-builtin/builtin/int-is-non-negative": "int-is-non-negative",
   "meta-builtin/builtin/int-is-non-zero": "int-is-non-zero",
+  "meta-builtin/内置/整数加": "iadd",
+  "meta-builtin/内置/整数减": "isub",
+  "meta-builtin/内置/整数乘": "imul",
+  "meta-builtin/内置/整数除": "idiv",
+  "meta-builtin/内置/整数模": "imod",
+  "meta-builtin/内置/整数负": "ineg",
+  "meta-builtin/内置/整数大于": "int-greater",
+  "meta-builtin/内置/整数小于": "int-less",
+  "meta-builtin/内置/整数大于等于": "int-greater-or-equal",
+  "meta-builtin/内置/整数小于等于": "int-less-or-equal",
+  "meta-builtin/内置/整数为正": "int-is-positive",
+  "meta-builtin/内置/整数为非负": "int-is-non-negative",
+  "meta-builtin/内置/整数为非零": "int-is-non-zero",
 }
 
 function tryResolveDirectCall(
