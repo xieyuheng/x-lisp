@@ -16,5 +16,5 @@ title: hash-entries
 
 ```meta-lisp
 (let ((h (@hash 'a 1 'b 2)))
-  (hash-from-entries (hash-entries h)))  ;; => (@hash 'a 1 'b 2)
+  (make-hash-from-entries (hash-entries h)))  ;; => (@hash 'a 1 'b 2)
 ```

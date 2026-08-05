@@ -1,16 +1,16 @@
 (module builtin)
 
-(claim hash-from-entries
+(claim make-hash-from-entries
   (polymorphic (K V)
     (-> (list-t (pair-t K V))
         (hash-t K V))))
 
-(define (hash-from-entries entries)
+(define (make-hash-from-entries entries)
   (hash-copy-put-entries entries (@hash)))
 
-(define-test hash-from-entries-test
+(define-test make-hash-from-entries-test
   (assert-equal
     (@hash 'a 1 'b 2)
-    (hash-from-entries
+    (make-hash-from-entries
      [(make-pair 'a 1)
       (make-pair 'b 2)])))

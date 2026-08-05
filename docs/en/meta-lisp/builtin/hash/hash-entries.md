@@ -16,6 +16,6 @@ Convert all entries of a hash table to a list.
 
 ```meta-lisp
 (let ((entries (hash-entries (@hash 'a 1 'b 2))))
-  (hash-from-entries entries))
+  (make-hash-from-entries entries))
 ;; => (@hash 'a 1 'b 2)
 ```

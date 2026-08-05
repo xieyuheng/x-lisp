@@ -6,7 +6,7 @@
         (hash-t K V))))
 
 (define (hash-select p hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-select
     (lambda (entry) (p (pair-first entry) (pair-second entry)))
     (hash-entries hash))))
@@ -17,7 +17,7 @@
         (hash-t K V))))
 
 (define (hash-select-key p hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-select
     (lambda (entry) (p (pair-first entry)))
     (hash-entries hash))))
@@ -28,7 +28,7 @@
         (hash-t K V))))
 
 (define (hash-select-value p hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-select
     (lambda (entry) (p (pair-second entry)))
     (hash-entries hash))))

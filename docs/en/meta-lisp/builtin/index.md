@@ -365,7 +365,7 @@ Operations on `(hash-t K V)`.
 
 - [`hash-t`](hash/hash-t.md) — Hash table type constructor
 - [`make-hash`](hash/make-hash.md) — Create empty hash table
-- [`hash-from-entries`](hash/hash-from-entries.md) — Build hash from pair list
+- [`make-hash-from-entries`](hash/make-hash-from-entries.md) — Build hash from pair list
 
 ### Info
 

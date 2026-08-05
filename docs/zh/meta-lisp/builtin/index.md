@@ -366,7 +366,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 - [`hash-t`](hash/hash-t.md) — 哈希表类型构造器
 - [`make-hash`](hash/make-hash.md) — 创建空哈希表
-- [`hash-from-entries`](hash/hash-from-entries.md) — 从序对列表构建哈希表
+- [`make-hash-from-entries`](hash/make-hash-from-entries.md) — 从序对列表构建哈希表
 
 ### 信息
 

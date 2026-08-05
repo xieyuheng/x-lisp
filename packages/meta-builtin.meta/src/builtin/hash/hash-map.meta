@@ -6,7 +6,7 @@
         (hash-t K2 V))))
 
 (define (hash-map-key f hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-map (lambda (entry)
                (make-pair (f (pair-first entry)) (pair-second entry)))
              (hash-entries hash))))
@@ -22,7 +22,7 @@
         (hash-t K V2))))
 
 (define (hash-map-value f hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-map (lambda (entry)
                (make-pair (pair-first entry) (f (pair-second entry))))
              (hash-entries hash))))
@@ -40,7 +40,7 @@
         (hash-t K2 V2))))
 
 (define (hash-map-entry f hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-map f (hash-entries hash))))
 
 (define-test hash-map-entry-test
@@ -60,7 +60,7 @@
         (hash-t K2 V2))))
 
 (define (hash-map f hash)
-  (hash-from-entries
+  (make-hash-from-entries
    (list-map
     (lambda (entry)
       (f (pair-first entry) (pair-second entry)))

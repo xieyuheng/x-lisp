@@ -1,21 +1,21 @@
 ---
-title: hash-from-entries
+title: make-hash-from-entries
 ---
 
-# Type
+# 类型
 
 ```meta-lisp
 (polymorphic (K V) (-> (list-t (pair-t K V)) (hash-t K V)))
 ```
 
-# Description
+# 描述
 
-Build a hash table from a list of entries.
+从条目列表构建哈希表。
 
-# Examples
+# 例子
 
 ```meta-lisp
-(hash-from-entries
+(make-hash-from-entries
   [(make-pair 'a 1)
    (make-pair 'b 2)])
 ;; => (@hash 'a 1 'b 2)
