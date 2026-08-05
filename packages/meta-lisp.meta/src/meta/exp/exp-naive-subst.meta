@@ -135,7 +135,7 @@
   (if (list-is-empty bindings)
     (make-pair [] shadowed)
     (let ((binding (list-head bindings))
-           (rest (list-but-head bindings))
+           (rest (list-rest bindings))
            (b-name (binding-name binding))
            (new-rhs (if shadowed (binding-rhs binding) (exp-naive-subst (binding-rhs binding) name rhs)))
            (next-shadowed (or shadowed (equal b-name name)))
@@ -149,7 +149,7 @@
   (if (list-is-empty sequence)
     (begin-exp [] location)
     (let ((element (list-head sequence))
-           (rest (list-but-head sequence)))
+           (rest (list-rest sequence)))
       (match element
         ((local-define-exp local-name parameters body loc)
          (let ((shadowed (equal local-name name))

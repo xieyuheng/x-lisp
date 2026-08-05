@@ -73,7 +73,7 @@ value_t x_list_head(value_t list) {
   return x_car(list);
 }
 
-value_t x_list_but_head(value_t list) {
+value_t x_list_rest(value_t list) {
   return x_cdr(list);
 }
 

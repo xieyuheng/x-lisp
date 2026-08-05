@@ -238,7 +238,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`car`](list/car.md) — 取第一个元素
 - [`cdr`](list/cdr.md) — 取除第一个外的剩余列表
 - [`list-head`](list/list-head.md) — 取第一个元素（同 `car`）
-- [`list-but-head`](list/list-but-head.md) — 取剩余列表（同 `cdr`）
+- [`list-rest`](list/list-rest.md) — 取剩余列表（同 `cdr`）
 - [`list-first`](list/list-first.md) — 取第一个元素
 - [`list-second`](list/list-second.md) — 取第二个元素
 - [`list-third`](list/list-third.md) — 取第三个元素

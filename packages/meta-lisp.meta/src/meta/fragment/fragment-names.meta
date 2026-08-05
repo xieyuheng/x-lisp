@@ -9,7 +9,7 @@
   (if (list-is-empty stmts)
     names
     (let ((head (list-head stmts))
-          (tail (list-but-head stmts)))
+          (tail (list-rest stmts)))
       (let ((new-names (collect-name-from-stmt head names)))
         (collect-names-from-stmts tail new-names)))))
 

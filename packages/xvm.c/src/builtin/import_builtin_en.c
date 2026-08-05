@@ -180,7 +180,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/cdr", x_cdr);
   define_primitive_2(mod, "meta-builtin/builtin/cons", x_cons);
   define_primitive_1(mod, "meta-builtin/builtin/list-head", x_list_head);
-  define_primitive_1(mod, "meta-builtin/builtin/list-but-head", x_list_but_head);
+  define_primitive_1(mod, "meta-builtin/builtin/list-rest", x_list_rest);
   define_primitive_1(mod, "meta-builtin/builtin/list-but-last", x_list_but_last);
   define_primitive_1(mod, "meta-builtin/builtin/list-last", x_list_last);
   define_primitive_1(mod, "meta-builtin/builtin/list-reverse", x_list_reverse_mut);

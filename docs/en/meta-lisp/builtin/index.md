@@ -237,7 +237,7 @@ Operations on `(list-t E)`.
 - [`car`](list/car.md) — First element
 - [`cdr`](list/cdr.md) — Rest of the list
 - [`list-head`](list/list-head.md) — First element (same as `car`)
-- [`list-but-head`](list/list-but-head.md) — Rest of the list (same as `cdr`)
+- [`list-rest`](list/list-rest.md) — Rest of the list (same as `cdr`)
 - [`list-first`](list/list-first.md) — First element
 - [`list-second`](list/list-second.md) — Second element
 - [`list-third`](list/list-third.md) — Third element

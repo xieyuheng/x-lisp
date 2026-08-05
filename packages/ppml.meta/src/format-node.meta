@@ -8,7 +8,7 @@
   (if (list-is-empty targets)
     result
     (let ((target (list-head targets))
-           (rest (list-but-head targets))
+           (rest (list-rest targets))
            (indentation (entry-indentation target))
            (mode (entry-mode target))
            (node (entry-node target)))
@@ -54,7 +54,7 @@
   (if (list-is-empty nodes)
     true
     (let ((node (list-head nodes))
-           (rest (list-but-head nodes)))
+           (rest (list-rest nodes)))
       (match node
         ((null-node)
          (fit-inline-step width cursor rest))
