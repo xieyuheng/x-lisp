@@ -1,0 +1,15 @@
+{
+  "name": "元语数学",
+  "version": "0.1.0",
+  "build": {
+    "source-directory": "src",
+    "output-directory": "build",
+    "snapshot-directory": "snapshot"
+  },
+  "dependencies": {
+    "meta-builtin": "../meta-builtin.meta"
+  },
+  "prelude": {
+    "meta-builtin": ["内置"]
+  }
+}
