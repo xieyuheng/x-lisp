@@ -14,6 +14,7 @@ import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
 import { desugarSet } from "./desugarSet.ts"
 import { desugarSexp } from "./desugarSexp.ts"
+import { desugarSexpZh } from "./desugarSexpZh.ts"
 import { desugarStringConcat } from "./desugarStringConcat.ts"
 
 export function desugar(exp: M.Exp): M.Term {
@@ -87,7 +88,9 @@ export function desugar(exp: M.Exp): M.Term {
     }
 
     case "SexpExp": {
-      return desugar(desugarSexp(exp.sexp))
+      return desugar(
+        exp.lang === "zh" ? desugarSexpZh(exp.sexp) : desugarSexp(exp.sexp),
+      )
     }
 
     case "CommentExp": {

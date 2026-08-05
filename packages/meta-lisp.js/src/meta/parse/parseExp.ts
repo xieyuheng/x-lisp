@@ -39,11 +39,11 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "`(@sexp ,sexp)": ({ sexp }, { location }) => {
-    return M.SexpExp(sexp, location)
+    return M.SexpExp(sexp, "en", location)
   },
 
   "`(@符号算式 ,sexp)": ({ sexp }, { location }) => {
-    return M.SexpExp(sexp, location)
+    return M.SexpExp(sexp, "zh", location)
   },
 
   "(cons* '@comment sexps)": ({ sexps }, { location }) => {

@@ -1,5 +1,5 @@
-import assert from "node:assert"
 import * as M from "../../meta/index.ts"
+import { desugarLocationZh } from "../desugar/desugarLocationZh.ts"
 
 export function LocatePass(pkg: M.Package): void {
   for (const mod of pkg.mods.values()) {
@@ -88,7 +88,9 @@ function locateSpecialApply(term: M.Term): M.Term {
           targetWithLocation(term.target),
           [
             ...term.args.map((e) => locateSpecialApply(e)),
-            M.desugar(M.desugarLocation(term.location)),
+            term.target.modName === "内置"
+              ? M.desugar(desugarLocationZh(term.location))
+              : M.desugar(M.desugarLocation(term.location)),
           ],
           term.location,
         )
@@ -107,51 +109,60 @@ function locateSpecialApply(term: M.Term): M.Term {
   }
 }
 
+// prettier-ignore
 const locateTable: Array<{
+  modName: string
   source: string
   sourceArity: number
   target: string
 }> = [
-  { source: "error", sourceArity: 1, target: "error-with-location" },
-  { source: "assert", sourceArity: 1, target: "assert-with-location" },
-  { source: "assert-not", sourceArity: 1, target: "assert-not-with-location" },
-  {
-    source: "assert-not-equal",
-    sourceArity: 2,
-    target: "assert-not-equal-with-location",
-  },
-  {
-    source: "assert-equal",
-    sourceArity: 2,
-    target: "assert-equal-with-location",
-  },
-  { source: "box-get", sourceArity: 1, target: "box-get-with-location" },
+  { modName: "builtin", source: "error", sourceArity: 1, target: "error-with-location" },
+  { modName: "builtin", source: "assert", sourceArity: 1, target: "assert-with-location" },
+  { modName: "builtin", source: "assert-not", sourceArity: 1, target: "assert-not-with-location" },
+  { modName: "builtin", source: "assert-not-equal", sourceArity: 2, target: "assert-not-equal-with-location" },
+  { modName: "builtin", source: "assert-equal", sourceArity: 2, target: "assert-equal-with-location" },
+  { modName: "builtin", source: "box-get", sourceArity: 1, target: "box-get-with-location" },
+  { modName: "内置", source: "报错", sourceArity: 1, target: "定位报错" },
+  { modName: "内置", source: "断言", sourceArity: 1, target: "定位断言" },
+  { modName: "内置", source: "断言非", sourceArity: 1, target: "定位断言非" },
+  { modName: "内置", source: "断言不等", sourceArity: 2, target: "定位断言不等" },
+  { modName: "内置", source: "断言相等", sourceArity: 2, target: "定位断言相等" },
+  { modName: "内置", source: "匣子取", sourceArity: 1, target: "匣子定位取" },
 ]
 
-function findLocateEntry(name: string): {
+function findLocateEntry(
+  modName: string,
+  name: string,
+): {
+  modName: string
   source: string
   sourceArity: number
   target: string
 } {
-  const entry = locateTable.find((entry) => entry.source === name)
+  const entry = locateTable.find(
+    (entry) => entry.modName === modName && entry.source === name,
+  )
   if (entry === undefined) {
-    throw new Error(`[findLocateEntry] unknown source: ${name}`)
+    throw new Error(`[findLocateEntry] unknown source: ${modName}/${name}`)
   }
 
   return entry
 }
 
-function matchLocateEntry(term: M.Term, args: M.Term[]): boolean {
+function matchLocateEntry(
+  term: M.Term,
+  args: M.Term[],
+): term is M.QualifiedVarTerm {
   if (term.kind !== "QualifiedVarTerm") return false
-  if (term.modName !== "builtin") return false
-  const entry = locateTable.find((entry) => entry.source === term.name)
+  const entry = locateTable.find(
+    (entry) => entry.modName === term.modName && entry.source === term.name,
+  )
   if (entry === undefined) return false
   return args.length === entry.sourceArity
 }
 
-function targetWithLocation(term: M.Term): M.Term {
-  assert(term.kind === "QualifiedVarTerm")
-  const entry = findLocateEntry(term.name)
+function targetWithLocation(term: M.QualifiedVarTerm): M.Term {
+  const entry = findLocateEntry(term.modName, term.name)
   return M.QualifiedVarTerm(
     term.pkgName,
     term.modName,

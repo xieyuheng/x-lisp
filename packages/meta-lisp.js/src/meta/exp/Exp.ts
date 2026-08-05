@@ -1,4 +1,5 @@
 import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.js"
+import { type Lang } from "../index.ts"
 
 export type Exp =
   | SymbolExp
@@ -613,13 +614,19 @@ export function QuoteExp(sexp: Sexp, location: SourceLocation): QuoteExp {
 export type SexpExp = {
   kind: "SexpExp"
   sexp: Sexp
+  lang: Lang
   location: SourceLocation
 }
 
-export function SexpExp(sexp: Sexp, location: SourceLocation): SexpExp {
+export function SexpExp(
+  sexp: Sexp,
+  lang: Lang,
+  location: SourceLocation,
+): SexpExp {
   return {
     kind: "SexpExp",
     sexp,
+    lang,
     location,
   }
 }
