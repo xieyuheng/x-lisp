@@ -8,7 +8,6 @@ meta-lisp 设计了中文语法：docs/zh/元语/*
 
 ---
 
-[内置] 散列映射.meta
 [内置] 散列选取.meta
 [内置] 散列反转.meta
 

@@ -7,9 +7,9 @@
 
 (define (hash-map-key f hash)
   (make-hash-from-entries
-   (list-map (lambda (entry)
-               (make-pair (f (pair-first entry)) (pair-second entry)))
-             (hash-entries hash))))
+    (list-map (lambda (entry)
+                (make-pair (f (pair-first entry)) (pair-second entry)))
+      (hash-entries hash))))
 
 (define-test hash-map-key-test
   (assert-equal
@@ -23,9 +23,9 @@
 
 (define (hash-map-value f hash)
   (make-hash-from-entries
-   (list-map (lambda (entry)
-               (make-pair (pair-first entry) (f (pair-second entry))))
-             (hash-entries hash))))
+    (list-map (lambda (entry)
+                (make-pair (pair-first entry) (f (pair-second entry))))
+      (hash-entries hash))))
 
 (define-test hash-map-value-test
   (assert-equal
@@ -41,17 +41,17 @@
 
 (define (hash-map-entry f hash)
   (make-hash-from-entries
-   (list-map f (hash-entries hash))))
+    (list-map f (hash-entries hash))))
 
 (define-test hash-map-entry-test
   (assert-equal
     (@hash 2 3 4 5)
     (hash-map-entry
-     (lambda (entry)
-       (make-pair
-        (iadd 1 (pair-first entry))
-        (iadd 1 (pair-second entry))))
-     (@hash 1 2 3 4))))
+      (lambda (entry)
+        (make-pair
+          (iadd 1 (pair-first entry))
+          (iadd 1 (pair-second entry))))
+      (@hash 1 2 3 4))))
 
 (claim hash-map
   (polymorphic (K1 V1 K2 V2)
@@ -61,15 +61,15 @@
 
 (define (hash-map f hash)
   (make-hash-from-entries
-   (list-map
-    (lambda (entry)
-      (f (pair-first entry) (pair-second entry)))
-    (hash-entries hash))))
+    (list-map
+      (lambda (entry)
+        (f (pair-first entry) (pair-second entry)))
+      (hash-entries hash))))
 
 (define-test hash-map-test
   (assert-equal
     (@hash 2 3 4 5)
     (hash-map
-     (lambda (key value)
-       (make-pair (iadd 1 key) (iadd 1 value)))
-     (@hash 1 2 3 4))))
+      (lambda (key value)
+        (make-pair (iadd 1 key) (iadd 1 value)))
+      (@hash 1 2 3 4))))
