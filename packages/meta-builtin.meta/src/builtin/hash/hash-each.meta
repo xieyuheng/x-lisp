@@ -30,9 +30,8 @@
         void-t)))
 
 (define (hash-each f hash)
-  (list-each (lambda (entry)
-               (f (pair-first entry) (pair-second entry)))
-             (hash-entries hash)))
+  (list-each (lambda (entry) (f (pair-first entry) (pair-second entry)))
+    (hash-entries hash)))
 
 (define-test hash-each-value-test
   (hash-each-value
