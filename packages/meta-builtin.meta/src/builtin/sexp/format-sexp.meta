@@ -1,6 +1,7 @@
 (module builtin)
 
 (claim format-sexp (-> sexp-t string-t))
+
 (define (format-sexp sexp)
   (match sexp
     ((symbol-sexp content location) (symbol-to-string content))

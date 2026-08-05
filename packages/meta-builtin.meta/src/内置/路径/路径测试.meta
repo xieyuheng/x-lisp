@@ -1,10 +1,10 @@
 (模块 内置)
 
 (定义测试 路径测试
-  (断言相等 "a/b/c" (路径取目录名 "a/b/c/file.test.txt"))
-  (断言相等 "file.test.txt" (路径取文件名 "a/b/c/file.test.txt"))
-  (断言相等 ".txt" (路径取扩展名 "a/b/c/file.test.txt"))
-  (断言相等 "file.test" (路径取主干 "a/b/c/file.test.txt"))
+  (断言相等 "a/b/c" (路径目录名 "a/b/c/file.test.txt"))
+  (断言相等 "file.test.txt" (路径文件名 "a/b/c/file.test.txt"))
+  (断言相等 ".txt" (路径扩展名 "a/b/c/file.test.txt"))
+  (断言相等 "file.test" (路径主干 "a/b/c/file.test.txt"))
 
   (断言 (路径为绝对 "/a/b/c/file.test.txt"))
   (断言非 (路径为相对 "/a/b/c/file.test.txt"))
