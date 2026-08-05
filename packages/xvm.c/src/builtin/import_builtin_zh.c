@@ -209,6 +209,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/散列删除", x_hash_delete_mut);
   define_primitive_1(mod, "meta-builtin/内置/散列键", x_hash_keys);
   define_primitive_1(mod, "meta-builtin/内置/散列值", x_hash_values);
+  define_primitive_1(mod, "meta-builtin/内置/散列条目", x_hash_entries);
 
   // set
 
