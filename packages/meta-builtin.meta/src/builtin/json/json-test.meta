@@ -18,11 +18,11 @@
 
 (define-test parse-array-json-test
   (assert-equal (array-json [(number-json 1.0) (number-json 2.0) (number-json 3.0)])
-                (parse-json "[1, 2, 3]")))
+    (parse-json "[1, 2, 3]")))
 
 (define-test parse-object-json-test
   (assert-equal (object-json (@hash "x" (number-json 1.0)))
-                (parse-json "{\"x\": 1}")))
+    (parse-json "{\"x\": 1}")))
 
 (define-test format-json-test
   (assert-equal "null" (format-json (null-json)))
