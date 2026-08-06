@@ -2,7 +2,7 @@
 
 # meta-lisp
 
-A simply typed LISP.
+A LISP with type system.
 
 ## Features
 
