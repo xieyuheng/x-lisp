@@ -2,144 +2,144 @@
 
 (module lambda)
 
-(define-algebraic-type exp-t
-  ((var-exp (name symbol-t)) is-var-exp (name var-exp-name var-exp-put-name))
-  ((apply-exp (target exp-t) (arg exp-t))
-   is-apply-exp
-   (target apply-exp-target apply-exp-put-target)
-   (arg apply-exp-arg apply-exp-put-arg))
-  ((lambda-exp (parameter symbol-t) (body exp-t))
-   is-lambda-exp
-   (parameter lambda-exp-parameter lambda-exp-put-parameter)
-   (body lambda-exp-body lambda-exp-put-body))
-  ((let-exp (name symbol-t) (rhs exp-t) (body exp-t))
-   is-let-exp
-   (name let-exp-name let-exp-put-name)
-   (rhs let-exp-rhs let-exp-put-rhs)
-   (body let-exp-body let-exp-put-body)))
+(define-algebraic-type term-t
+  ((var-term (name symbol-t)) is-var-term (name var-term-name var-term-put-name))
+  ((apply-term (target term-t) (arg term-t))
+   is-apply-term
+   (target apply-term-target apply-term-put-target)
+   (arg apply-term-arg apply-term-put-arg))
+  ((lambda-term (parameter symbol-t) (body term-t))
+   is-lambda-term
+   (parameter lambda-term-parameter lambda-term-put-parameter)
+   (body lambda-term-body lambda-term-put-body))
+  ((let-term (name symbol-t) (rhs term-t) (body term-t))
+   is-let-term
+   (name let-term-name let-term-put-name)
+   (rhs let-term-rhs let-term-put-rhs)
+   (body let-term-body let-term-put-body)))
 
-(admit var-exp (-> symbol-t exp-t))
+(admit var-term (-> symbol-t term-t))
 
-(define (var-exp name) ['var-exp name])
+(define (var-term name) ['var-term name])
 
-(admit is-var-exp (-> exp-t meta-builtin/builtin/bool-t))
+(admit is-var-term (-> term-t meta-builtin/builtin/bool-t))
 
-(define (is-var-exp value)
+(define (is-var-term value)
   (and (meta-builtin/builtin/is-list value)
        (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 2)
        (meta-builtin/builtin/equal
         (meta-builtin/builtin/list-head value)
-        'var-exp)))
+        'var-term)))
 
-(admit var-exp-name (-> exp-t symbol-t))
+(admit var-term-name (-> term-t symbol-t))
 
-(define (var-exp-name target) (meta-builtin/builtin/list-get 1 target))
+(define (var-term-name target) (meta-builtin/builtin/list-get 1 target))
 
-(admit var-exp-put-name (-> symbol-t exp-t exp-t))
+(admit var-term-put-name (-> symbol-t term-t term-t))
 
-(define (var-exp-put-name value target)
+(define (var-term-put-name value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(admit apply-exp (-> exp-t exp-t exp-t))
+(admit apply-term (-> term-t term-t term-t))
 
-(define (apply-exp target arg) ['apply-exp target arg])
+(define (apply-term target arg) ['apply-term target arg])
 
-(admit is-apply-exp (-> exp-t meta-builtin/builtin/bool-t))
+(admit is-apply-term (-> term-t meta-builtin/builtin/bool-t))
 
-(define (is-apply-exp value)
+(define (is-apply-term value)
   (and (meta-builtin/builtin/is-list value)
        (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
        (meta-builtin/builtin/equal
         (meta-builtin/builtin/list-head value)
-        'apply-exp)))
+        'apply-term)))
 
-(admit apply-exp-target (-> exp-t exp-t))
+(admit apply-term-target (-> term-t term-t))
 
-(define (apply-exp-target target) (meta-builtin/builtin/list-get 1 target))
+(define (apply-term-target target) (meta-builtin/builtin/list-get 1 target))
 
-(admit apply-exp-put-target (-> exp-t exp-t exp-t))
+(admit apply-term-put-target (-> term-t term-t term-t))
 
-(define (apply-exp-put-target value target)
+(define (apply-term-put-target value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(admit apply-exp-arg (-> exp-t exp-t))
+(admit apply-term-arg (-> term-t term-t))
 
-(define (apply-exp-arg target) (meta-builtin/builtin/list-get 2 target))
+(define (apply-term-arg target) (meta-builtin/builtin/list-get 2 target))
 
-(admit apply-exp-put-arg (-> exp-t exp-t exp-t))
+(admit apply-term-put-arg (-> term-t term-t term-t))
 
-(define (apply-exp-put-arg value target)
+(define (apply-term-put-arg value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
 
-(admit lambda-exp (-> symbol-t exp-t exp-t))
+(admit lambda-term (-> symbol-t term-t term-t))
 
-(define (lambda-exp parameter body) ['lambda-exp parameter body])
+(define (lambda-term parameter body) ['lambda-term parameter body])
 
-(admit is-lambda-exp (-> exp-t meta-builtin/builtin/bool-t))
+(admit is-lambda-term (-> term-t meta-builtin/builtin/bool-t))
 
-(define (is-lambda-exp value)
+(define (is-lambda-term value)
   (and (meta-builtin/builtin/is-list value)
        (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
        (meta-builtin/builtin/equal
         (meta-builtin/builtin/list-head value)
-        'lambda-exp)))
+        'lambda-term)))
 
-(admit lambda-exp-parameter (-> exp-t symbol-t))
+(admit lambda-term-parameter (-> term-t symbol-t))
 
-(define (lambda-exp-parameter target) (meta-builtin/builtin/list-get 1 target))
+(define (lambda-term-parameter target) (meta-builtin/builtin/list-get 1 target))
 
-(admit lambda-exp-put-parameter (-> symbol-t exp-t exp-t))
+(admit lambda-term-put-parameter (-> symbol-t term-t term-t))
 
-(define (lambda-exp-put-parameter value target)
+(define (lambda-term-put-parameter value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(admit lambda-exp-body (-> exp-t exp-t))
+(admit lambda-term-body (-> term-t term-t))
 
-(define (lambda-exp-body target) (meta-builtin/builtin/list-get 2 target))
+(define (lambda-term-body target) (meta-builtin/builtin/list-get 2 target))
 
-(admit lambda-exp-put-body (-> exp-t exp-t exp-t))
+(admit lambda-term-put-body (-> term-t term-t term-t))
 
-(define (lambda-exp-put-body value target)
+(define (lambda-term-put-body value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
 
-(admit let-exp (-> symbol-t exp-t exp-t exp-t))
+(admit let-term (-> symbol-t term-t term-t term-t))
 
-(define (let-exp name rhs body) ['let-exp name rhs body])
+(define (let-term name rhs body) ['let-term name rhs body])
 
-(admit is-let-exp (-> exp-t meta-builtin/builtin/bool-t))
+(admit is-let-term (-> term-t meta-builtin/builtin/bool-t))
 
-(define (is-let-exp value)
+(define (is-let-term value)
   (and (meta-builtin/builtin/is-list value)
        (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 4)
        (meta-builtin/builtin/equal
         (meta-builtin/builtin/list-head value)
-        'let-exp)))
+        'let-term)))
 
-(admit let-exp-name (-> exp-t symbol-t))
+(admit let-term-name (-> term-t symbol-t))
 
-(define (let-exp-name target) (meta-builtin/builtin/list-get 1 target))
+(define (let-term-name target) (meta-builtin/builtin/list-get 1 target))
 
-(admit let-exp-put-name (-> symbol-t exp-t exp-t))
+(admit let-term-put-name (-> symbol-t term-t term-t))
 
-(define (let-exp-put-name value target)
+(define (let-term-put-name value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(admit let-exp-rhs (-> exp-t exp-t))
+(admit let-term-rhs (-> term-t term-t))
 
-(define (let-exp-rhs target) (meta-builtin/builtin/list-get 2 target))
+(define (let-term-rhs target) (meta-builtin/builtin/list-get 2 target))
 
-(admit let-exp-put-rhs (-> exp-t exp-t exp-t))
+(admit let-term-put-rhs (-> term-t term-t term-t))
 
-(define (let-exp-put-rhs value target)
+(define (let-term-put-rhs value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
 
-(admit let-exp-body (-> exp-t exp-t))
+(admit let-term-body (-> term-t term-t))
 
-(define (let-exp-body target) (meta-builtin/builtin/list-get 3 target))
+(define (let-term-body target) (meta-builtin/builtin/list-get 3 target))
 
-(admit let-exp-put-body (-> exp-t exp-t exp-t))
+(admit let-term-put-body (-> term-t term-t term-t))
 
-(define (let-exp-put-body value target)
+(define (let-term-put-body value target)
   (begin (meta-builtin/builtin/list-put 3 value target) target))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
@@ -154,13 +154,13 @@
 (define env-lookup hash-get-maybe)
 
 (define-algebraic-type value-t
-  ((closure-value (env env-t) (parameter symbol-t) (body exp-t))
+  ((closure-value (env env-t) (parameter symbol-t) (body term-t))
    is-closure-value
    (env closure-value-env closure-value-put-env)
    (parameter closure-value-parameter closure-value-put-parameter)
    (body closure-value-body closure-value-put-body)))
 
-(admit closure-value (-> env-t symbol-t exp-t value-t))
+(admit closure-value (-> env-t symbol-t term-t value-t))
 
 (define (closure-value env parameter body) ['closure-value env parameter body])
 
@@ -192,37 +192,37 @@
 (define (closure-value-put-parameter value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
 
-(admit closure-value-body (-> value-t exp-t))
+(admit closure-value-body (-> value-t term-t))
 
 (define (closure-value-body target) (meta-builtin/builtin/list-get 3 target))
 
-(admit closure-value-put-body (-> exp-t value-t value-t))
+(admit closure-value-put-body (-> term-t value-t value-t))
 
 (define (closure-value-put-body value target)
   (begin (meta-builtin/builtin/list-put 3 value target) target))
 
-(define (evaluate exp env)
+(define (evaluate term env)
   (cond
-    ((self/lambda/is-var-exp exp)
-     (let ((name (self/lambda/var-exp-name exp)))
+    ((self/lambda/is-var-term term)
+     (let ((name (self/lambda/var-term-name term)))
        (cond
          ((meta-builtin/builtin/is-just (env-lookup name env))
           (let ((value (meta-builtin/builtin/just-value (env-lookup name env))))
             value))
          ((meta-builtin/builtin/is-nothing (env-lookup name env))
           (error "undefined name")))))
-    ((self/lambda/is-apply-exp exp)
-     (let ((arg (self/lambda/apply-exp-arg exp)))
-       (let ((target (self/lambda/apply-exp-target exp)))
+    ((self/lambda/is-apply-term term)
+     (let ((arg (self/lambda/apply-term-arg term)))
+       (let ((target (self/lambda/apply-term-target term)))
          (apply (evaluate target env) (evaluate arg env)))))
-    ((self/lambda/is-lambda-exp exp)
-     (let ((body (self/lambda/lambda-exp-body exp)))
-       (let ((parameter (self/lambda/lambda-exp-parameter exp)))
+    ((self/lambda/is-lambda-term term)
+     (let ((body (self/lambda/lambda-term-body term)))
+       (let ((parameter (self/lambda/lambda-term-parameter term)))
          (closure-value env parameter body))))
-    ((self/lambda/is-let-exp exp)
-     (let ((body (self/lambda/let-exp-body exp)))
-       (let ((rhs (self/lambda/let-exp-rhs exp)))
-         (let ((name (self/lambda/let-exp-name exp)))
+    ((self/lambda/is-let-term term)
+     (let ((body (self/lambda/let-term-body term)))
+       (let ((rhs (self/lambda/let-term-rhs term)))
+         (let ((name (self/lambda/let-term-name term)))
            (let ((env (extend-env name (evaluate rhs env) env)))
              (evaluate body env))))))))
 

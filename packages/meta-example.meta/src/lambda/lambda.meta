@@ -1,22 +1,10 @@
 (module example)
 
-(define-algebraic-type term-t
-  ((var-term (name symbol-t))
-   is-var-term
-    (name var-term-name var-term-put-name))
-  ((apply-term (target term-t) (arg term-t))
-   is-apply-term
-    (target apply-term-target apply-term-put-target)
-    (arg apply-term-arg apply-term-put-arg))
-  ((lambda-term (parameter symbol-t) (body term-t))
-   is-lambda-term
-    (parameter lambda-term-parameter lambda-term-put-parameter)
-    (body lambda-term-body lambda-term-put-body))
-  ((let-term (name symbol-t) (rhs term-t) (body term-t))
-   is-let-term
-   (name let-term-name let-term-put-name)
-   (rhs let-term-rhs let-term-put-rhs)
-   (body let-term-body let-term-put-body)))
+(define-enum (term-t)
+  (var-term (name symbol-t))
+  (apply-term (target term-t) (arg term-t))
+  (lambda-term (parameter symbol-t) (body term-t))
+  (let-term (name symbol-t) (rhs term-t) (body term-t)))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
@@ -27,12 +15,8 @@
 (define extend-env hash-copy-put)
 (define env-lookup hash-get-maybe)
 
-(define-algebraic-type value-t
-  ((closure-value (env env-t) (parameter symbol-t) (body term-t))
-   is-closure-value
-   (env closure-value-env closure-value-put-env)
-   (parameter closure-value-parameter closure-value-put-parameter)
-   (body closure-value-body closure-value-put-body)))
+(define-enum (value-t)
+  (closure-value (env env-t) (parameter symbol-t) (body term-t)))
 
 (define (evaluate term env)
   (match term

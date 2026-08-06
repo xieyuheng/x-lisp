@@ -238,13 +238,13 @@
       (name 符号符号算式)
       (accessor-names 符号符号算式内容 符号符号算式位置)
       (predicate-name 为符号符号算式))
-    ("self/lambda/apply-exp"
+    ("self/lambda/apply-term"
       (pkg-name self)
       (mod-name lambda)
-      (type-name exp-t)
-      (name apply-exp)
-      (accessor-names apply-exp-target apply-exp-arg)
-      (predicate-name is-apply-exp))
+      (type-name term-t)
+      (name apply-term)
+      (accessor-names apply-term-target apply-term-arg)
+      (predicate-name is-apply-term))
     ("self/lambda/closure-value"
       (pkg-name self)
       (mod-name lambda)
@@ -252,27 +252,27 @@
       (name closure-value)
       (accessor-names closure-value-env closure-value-parameter closure-value-body)
       (predicate-name is-closure-value))
-    ("self/lambda/lambda-exp"
+    ("self/lambda/lambda-term"
       (pkg-name self)
       (mod-name lambda)
-      (type-name exp-t)
-      (name lambda-exp)
-      (accessor-names lambda-exp-parameter lambda-exp-body)
-      (predicate-name is-lambda-exp))
-    ("self/lambda/let-exp"
+      (type-name term-t)
+      (name lambda-term)
+      (accessor-names lambda-term-parameter lambda-term-body)
+      (predicate-name is-lambda-term))
+    ("self/lambda/let-term"
       (pkg-name self)
       (mod-name lambda)
-      (type-name exp-t)
-      (name let-exp)
-      (accessor-names let-exp-name let-exp-rhs let-exp-body)
-      (predicate-name is-let-exp))
-    ("self/lambda/var-exp"
+      (type-name term-t)
+      (name let-term)
+      (accessor-names let-term-name let-term-rhs let-term-body)
+      (predicate-name is-let-term))
+    ("self/lambda/var-term"
       (pkg-name self)
       (mod-name lambda)
-      (type-name exp-t)
-      (name var-exp)
-      (accessor-names var-exp-name)
-      (predicate-name is-var-exp))
+      (type-name term-t)
+      (name var-term)
+      (accessor-names var-term-name)
+      (predicate-name is-var-term))
     ("self/my-list/li"
       (pkg-name self)
       (mod-name my-list)
@@ -348,11 +348,11 @@
       (mod-name 内置)
       (name 结森型)
       (constructor-names 空结森 真假结森 数字结森 文本结森 数组结森 对象结森))
-    ("self/lambda/exp-t"
+    ("self/lambda/term-t"
       (pkg-name self)
       (mod-name lambda)
-      (name exp-t)
-      (constructor-names var-exp apply-exp lambda-exp let-exp))
+      (name term-t)
+      (constructor-names var-term apply-term lambda-term let-term))
     ("self/lambda/value-t"
       (pkg-name self)
       (mod-name lambda)
