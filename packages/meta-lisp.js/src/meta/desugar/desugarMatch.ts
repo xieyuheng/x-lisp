@@ -405,7 +405,7 @@ export function makeDefaultExp(
       location,
     ),
     [
-      M.StringConcatExp(
+      M.TextConcatExp(
         [
           M.StringExp("pattern mismatch on:", location),
           ...targets.flatMap((target) => [

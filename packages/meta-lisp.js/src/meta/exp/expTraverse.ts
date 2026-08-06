@@ -146,8 +146,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.ListExp(exp.elements.map(onExp), exp.location)
     }
 
-    case "StringConcatExp": {
-      return M.StringConcatExp(exp.elements.map(onExp), exp.location)
+    case "TextConcatExp": {
+      return M.TextConcatExp(exp.elements.map(onExp), exp.location)
     }
 
     case "SetExp": {

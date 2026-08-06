@@ -1,9 +1,3 @@
-ambs StringConcat
-ambs stringConcat
-
-ambr StringConcat TextConcat
-ambr stringConcat textConcat
-
 # 中文
 
 prompt：

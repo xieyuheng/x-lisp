@@ -1,7 +1,7 @@
 import type { SourceLocation } from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function desugarStringConcat(
+export function desugarTextConcat(
   elements: Array<M.Exp>,
   location: SourceLocation,
 ): M.Exp {

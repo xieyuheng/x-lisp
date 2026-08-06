@@ -221,8 +221,8 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "StringConcatExp": {
-      return M.StringConcatExp(
+    case "TextConcatExp": {
+      return M.TextConcatExp(
         exp.elements.map((e) => expNaiveSubst(e, name, rhs)),
         exp.location,
       )

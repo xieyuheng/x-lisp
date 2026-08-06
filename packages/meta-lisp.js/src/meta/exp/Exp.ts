@@ -27,7 +27,7 @@ export type Exp =
   | OrExp
   | CondExp
   | ListExp
-  | StringConcatExp
+  | TextConcatExp
   | SetExp
   | HashExp
   | QuoteExp
@@ -549,18 +549,18 @@ export function ListExp(
   }
 }
 
-export type StringConcatExp = {
-  kind: "StringConcatExp"
+export type TextConcatExp = {
+  kind: "TextConcatExp"
   elements: Array<Exp>
   location: SourceLocation
 }
 
-export function StringConcatExp(
+export function TextConcatExp(
   elements: Array<Exp>,
   location: SourceLocation,
-): StringConcatExp {
+): TextConcatExp {
   return {
-    kind: "StringConcatExp",
+    kind: "TextConcatExp",
     elements,
     location,
   }

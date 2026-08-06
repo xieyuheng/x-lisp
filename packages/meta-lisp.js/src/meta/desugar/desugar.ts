@@ -15,7 +15,7 @@ import { desugarQuote } from "./desugarQuote.ts"
 import { desugarSet } from "./desugarSet.ts"
 import { desugarSexp } from "./desugarSexp.ts"
 import { desugarSexpZh } from "./desugarSexpZh.ts"
-import { desugarStringConcat } from "./desugarStringConcat.ts"
+import { desugarTextConcat } from "./desugarTextConcat.ts"
 
 export function desugar(exp: M.Exp): M.Term {
   switch (exp.kind) {
@@ -75,8 +75,8 @@ export function desugar(exp: M.Exp): M.Term {
       return desugar(desugarSet(exp.elements, exp.location))
     }
 
-    case "StringConcatExp": {
-      return desugar(desugarStringConcat(exp.elements, exp.location))
+    case "TextConcatExp": {
+      return desugar(desugarTextConcat(exp.elements, exp.location))
     }
 
     case "HashExp": {
