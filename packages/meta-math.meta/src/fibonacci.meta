@@ -5,8 +5,9 @@
 (define (fibonacci n)
   (if (int-less-or-equal n 1)
     n
-    (iadd (fibonacci (isub n 1))
-          (fibonacci (isub n 2)))))
+    (iadd
+      (fibonacci (isub n 1))
+      (fibonacci (isub n 2)))))
 
 (define-test fibonacci-test
   (assert-equal 0 (fibonacci 0))
@@ -19,5 +20,5 @@
   (assert-equal 13 (fibonacci 7))
   (assert-equal 21 (fibonacci 8))
   (assert-equal 34 (fibonacci 9))
-  (assert-equal 9227465 (fibonacci 35)) ;; 739.296ms
-  void)
+  ;; 739.296ms
+  (assert-equal 9227465 (fibonacci 35)))
