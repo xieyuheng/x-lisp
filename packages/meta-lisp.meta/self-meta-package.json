@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "meta-builtin": "../meta-builtin.meta",
-    "ppml": "../ppml.meta"
+    "ppml": "../ppml.meta",
+    "cli": "../cli.meta"
   },
   "prelude": {
     "meta-builtin": ["builtin"]

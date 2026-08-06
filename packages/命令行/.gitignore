@@ -1,0 +1,33 @@
+# meta-lisp
+build
+self-build
+
+# meta-lisp
+*.o
+*.x86
+
+# vitest
+coverage
+
+# node
+*.cpuprofile
+
+# npm
+node_modules
+
+# 0x
+*.0x/
+
+# emacs
+*~
+*#*
+.#*
+
+# vscode
+.vscode
+
+# idea
+.idea
+
+# macOS
+.DS_Store

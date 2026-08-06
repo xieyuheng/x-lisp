@@ -1,18 +1,15 @@
 {
-  "name": "meta-lisp",
+  "name": "命令行",
   "version": "0.1.0",
-  "entry": "main/main",
   "build": {
     "source-directory": "src",
     "output-directory": "build",
     "snapshot-directory": "snapshot"
   },
   "dependencies": {
-    "meta-builtin": "../meta-builtin.meta",
-    "ppml": "../ppml.meta",
-    "cli": "../cli.meta"
+    "meta-builtin": "../meta-builtin.meta"
   },
   "prelude": {
-    "meta-builtin": ["builtin"]
+    "meta-builtin": ["内置"]
   }
 }

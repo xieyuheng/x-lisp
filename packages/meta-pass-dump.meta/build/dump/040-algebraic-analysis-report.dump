@@ -49,27 +49,6 @@
       (name list-sexp)
       (accessor-names list-sexp-elements list-sexp-location)
       (predicate-name is-list-sexp))
-    ("meta-builtin/builtin/make-cli-ctx"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name cli-ctx-t)
-      (name make-cli-ctx)
-      (accessor-names cli-ctx-args cli-ctx-options cli-ctx-passthrough)
-      (predicate-name is-cli-ctx))
-    ("meta-builtin/builtin/make-cli-route"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name cli-route-t)
-      (name make-cli-route)
-      (accessor-names cli-route-command cli-route-name cli-route-arg-names cli-route-option-names)
-      (predicate-name is-cli-route))
-    ("meta-builtin/builtin/make-cli-router"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name cli-router-t)
-      (name make-cli-router)
-      (accessor-names cli-router-name cli-router-version cli-router-routes cli-router-handlers)
-      (predicate-name is-cli-router))
     ("meta-builtin/builtin/make-source-location"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -309,21 +288,6 @@
       (accessor-names )
       (predicate-name is-nil)))
   (algebraic-type-infos
-    ("meta-builtin/builtin/cli-ctx-t"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (name cli-ctx-t)
-      (constructor-names make-cli-ctx))
-    ("meta-builtin/builtin/cli-route-t"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (name cli-route-t)
-      (constructor-names make-cli-route))
-    ("meta-builtin/builtin/cli-router-t"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (name cli-router-t)
-      (constructor-names make-cli-router))
     ("meta-builtin/builtin/json-t"
       (pkg-name meta-builtin)
       (mod-name builtin)
