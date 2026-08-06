@@ -21,14 +21,14 @@
    ((equal 1 2) (assert false))
    (else (assert true))))
 
-(define-test cond-bare-true-test
+(define-test cond-true-test
   (let ((flag true))
     (cond (flag
             (assert true))
           (else
            (assert false)))))
 
-(define-test cond-bare-false-test
+(define-test cond-false-test
   (let ((flag false))
     (cond (flag
             (assert false))

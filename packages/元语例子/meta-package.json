@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "meta-builtin": "../meta-builtin.meta",
-    "元语数学": "../元语数学"
+    "元语数学": "../元语数学",
+    "命令行": "../命令行"
   },
   "prelude": {
     "meta-builtin": ["内置"],

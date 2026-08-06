@@ -616,6 +616,22 @@ function explicateInIf(
   }
 
   if (
+    condition.kind === "QualifiedVarTerm" &&
+    condition.modName === "内置" &&
+    condition.name === "真"
+  ) {
+    return thenInstrs
+  }
+
+  if (
+    condition.kind === "QualifiedVarTerm" &&
+    condition.modName === "内置" &&
+    condition.name === "假"
+  ) {
+    return elseInstrs
+  }
+
+  if (
     condition.kind === "ApplyTerm" &&
     condition.target.kind === "VarTerm" &&
     condition.target.name === "not" &&
