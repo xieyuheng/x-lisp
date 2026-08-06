@@ -68,7 +68,7 @@ export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
         throw new Error(message)
       }
       case "StringSexp":
-        return X86.TextData(S.asStringSexp(data).content)
+        return X86.StringData(S.asStringSexp(data).content)
       default: {
         let message = `unexpected data: ${S.formatSexp(data)}`
         throw new Error(message)

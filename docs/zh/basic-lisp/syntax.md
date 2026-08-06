@@ -292,7 +292,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
   (x int64-t)
   (y int64-t))
 
-(define-struct text-table-t
+(define-struct string-table-t
   (count int64-t)
   (entries pointer-t)
   (title pointer-t))
@@ -364,7 +364,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 ```
 
 字符串表达式会被翻译为指针，
-指向 text table 中 null 结尾的 C 风格的 text。
+指向 string table 中 null 结尾的 C 风格的 string。
 
 ## (address)
 

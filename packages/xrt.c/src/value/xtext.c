@@ -6,7 +6,7 @@ struct xtext_t {
 };
 
 const object_class_t xtext_class = {
-  .name = "string",
+  .name = "text",
   .equal_fn = (object_equal_fn_t *) xtext_equal,
   .write_fn = (object_write_fn_t *) xtext_format,
   .hash_code_fn = (object_hash_code_fn_t *) xtext_hash_code,

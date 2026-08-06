@@ -15,7 +15,7 @@ export function registerBuiltinTypes(mod: Mod): void {
     { name: "uint16-t", size: 2 },
     { name: "uint32-t", size: 4 },
     { name: "uint64-t", size: 8 },
-    { name: "text-t", size: 8 },
+    { name: "string-t", size: 8 },
   ]
 
   for (const primitive of primitives) {

@@ -384,13 +384,13 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       ]
     }
 
-    case "text": {
+    case "string": {
       const [out] = instr.output
       const content = B.expectString(instr.attributes, "content")
       return [
         X86.Instr("mov", [
           cellToVar(out),
-          X86.RelocationOperand("text", content),
+          X86.RelocationOperand("string", content),
         ]),
       ]
     }

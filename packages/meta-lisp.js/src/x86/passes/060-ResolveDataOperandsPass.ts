@@ -24,7 +24,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
     return X86.ImmOperand(data.content)
   }
 
-  if (data.kind === "TextData") {
+  if (data.kind === "StringData") {
     const anonName = `©data.${anonCounter++}`
     mod.definitions.set(
       anonName,

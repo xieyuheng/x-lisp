@@ -1,14 +1,14 @@
-; x86.exe: text-t field — pointer to text, read first byte
+; x86.exe: string-t field — pointer to string, read first byte
 ;
 ; data layout (depth-first):
-;   config.desc → 8B placeholder (reloc → text bytes)
+;   config.desc → 8B placeholder (reloc → string bytes)
 ;   "abc\0"
 ;
 ; define-code: load config.desc pointer, deref to 8 bytes, mask to first char → 97 ('a')
 
 (define-struct config-t
   (version int64-t)
-  (description text-t))
+  (description string-t))
 
 (define-data my-config
   (struct config-t

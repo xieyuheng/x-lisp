@@ -1,14 +1,14 @@
-; x86.exe: zero-length text-t field
+; x86.exe: zero-length string-t field
 ;
 ; data layout:
 ;   msg.text → 8B placeholder (reloc → "")
 ;   ""\0 after all struct fields (just a null byte)
 ;
-; define-code: load text pointer, read first byte = 0 (null terminator)
+; define-code: load string pointer, read first byte = 0 (null terminator)
 
 (define-struct msg-t
   (version int64-t)
-  (text text-t))
+  (text string-t))
 
 (define-data my-msg
   (struct msg-t

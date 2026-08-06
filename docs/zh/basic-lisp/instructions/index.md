@@ -82,7 +82,7 @@ basic-lisp IR 的所有指令按功能分类。
 
 - [`symbol`](symbol.md) — symbol 裸指针
 - [`keyword`](keyword.md) — keyword 裸指针
-- [`text`](text.md) — C 风格字符串指针
+- [`string`](string.md) — C 风格字符串指针
 - [`symbol-value`](symbol-value.md) — 带 tag 的 symbol 值
 - [`keyword-value`](keyword-value.md) — 带 tag 的 keyword 值
 - [`text-value`](text-value.md) — 带 tag 的 text 值

@@ -235,7 +235,7 @@ function explicateUnnestedTerm(
     }
 
     case "StringTerm": {
-      const value = generateCell(state, "text")
+      const value = generateCell(state, "string")
       const instrs = [
         B.Instr("text-value", [], [value], {
           content: B.StringAttribute(term.content),

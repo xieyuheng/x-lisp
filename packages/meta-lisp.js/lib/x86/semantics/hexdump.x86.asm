@@ -52,14 +52,14 @@
   (mov (reg rdi) (address hex-output))
   (mov (reg rdi) (deref (reg rdi)))
 
-  ; Look up low nybble character and insert it into the text:
+  ; Look up low nybble character and insert it into the string:
   (and (reg al) 0x0f)                       ; Mask out all but the low nybble
   (mov (reg rsi) (deref (address hex-digits)))
   (add (reg rsi) (reg rax))
   (mov (reg al) (deref (reg rsi)))           ; Look up the char equivalent of nybble
   (mov (deref (reg rdi) (reg rdx) 1 2) (reg al)) ; Write the char equivalent to hex-output
 
-  ; Look up high nybble character and insert it into the text:
+  ; Look up high nybble character and insert it into the string:
   (shr (reg bl) 4)                           ; Shift high 4 bits of char into low 4 bits
   (mov (reg rsi) (deref (address hex-digits)))
   (add (reg rsi) (reg rbx))

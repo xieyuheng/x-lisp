@@ -2,7 +2,7 @@ export type Data =
   | AddressData
   | IntData
   | FloatData
-  | TextData
+  | StringData
   | StructData
   | PointerData
   | ArrayData
@@ -34,13 +34,13 @@ export function FloatData(content: number): FloatData {
   return { kind: "FloatData", content }
 }
 
-export type TextData = {
-  kind: "TextData"
+export type StringData = {
+  kind: "StringData"
   content: string
 }
 
-export function TextData(content: string): TextData {
-  return { kind: "TextData", content }
+export function StringData(content: string): StringData {
+  return { kind: "StringData", content }
 }
 
 export type StructData = {

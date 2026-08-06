@@ -6,7 +6,7 @@ export function formatData(data: X86.Data): string {
       return `(address ${data.name})`
     case "IntData":
       return data.content.toString()
-    case "TextData":
+    case "StringData":
       return JSON.stringify(data.content)
     case "StructData": {
       const fields = Object.entries(data.fields)

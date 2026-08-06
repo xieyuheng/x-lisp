@@ -1,4 +1,4 @@
-;; test: DataOperand fallback for text literal in operand position
+;; test: DataOperand fallback for string literal in operand position
 ;; path: "hello" → parseOperand fallback → parseExp → StringExp
 ;;       → ResolveDataOperands: evaluate → StringValue
 ;;       → register anonymous DataDefinition (©data.N with PointerExp)

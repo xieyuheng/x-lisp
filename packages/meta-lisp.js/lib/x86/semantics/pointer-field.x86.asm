@@ -12,7 +12,7 @@
 ;   step 4: ret
 
 (define-struct entry-t
-  (key text-t)
+  (key string-t)
   (value int64-t))
 
 (define-struct config-t

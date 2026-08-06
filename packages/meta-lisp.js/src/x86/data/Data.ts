@@ -1,5 +1,5 @@
 export type Data =
-  AddressData | IntData | TextData | StructData | PointerData | ArrayData
+  AddressData | IntData | StringData | StructData | PointerData | ArrayData
 
 export type AddressData = {
   kind: "AddressData"
@@ -25,14 +25,14 @@ export function IntData(content: bigint): IntData {
   }
 }
 
-export type TextData = {
-  kind: "TextData"
+export type StringData = {
+  kind: "StringData"
   content: string
 }
 
-export function TextData(content: string): TextData {
+export function StringData(content: string): StringData {
   return {
-    kind: "TextData",
+    kind: "StringData",
     content,
   }
 }
