@@ -1,39 +1,39 @@
 (module example)
 
-(define (evaluate-and-print exp)
-  (println (evaluate exp (empty-env))))
+(define (evaluate-and-print term)
+  (println (evaluate term (empty-env))))
 
 (define-test lambda-interpreter-test
   (evaluate-and-print
-   (lambda-exp 'x (var-exp 'x)))
+   (lambda-term 'x (var-term 'x)))
 
   (evaluate-and-print
-   (apply-exp
-    (lambda-exp 'x (var-exp 'x))
-    (lambda-exp 'x (var-exp 'x))))
+   (apply-term
+    (lambda-term 'x (var-term 'x))
+    (lambda-term 'x (var-term 'x))))
 
   (evaluate-and-print
-   (apply-exp
-    (apply-exp
-     (lambda-exp 'x (var-exp 'x))
-     (lambda-exp 'x (var-exp 'x)))
-    (apply-exp
-     (lambda-exp 'x (var-exp 'x))
-     (lambda-exp 'x (var-exp 'x)))))
+   (apply-term
+    (apply-term
+     (lambda-term 'x (var-term 'x))
+     (lambda-term 'x (var-term 'x)))
+    (apply-term
+     (lambda-term 'x (var-term 'x))
+     (lambda-term 'x (var-term 'x)))))
 
   (evaluate-and-print
-   (let-exp
-    'id (lambda-exp 'x (var-exp 'x))
-    (var-exp 'id)))
+   (let-term
+    'id (lambda-term 'x (var-term 'x))
+    (var-term 'id)))
 
   (evaluate-and-print
-   (let-exp
-    'id (lambda-exp 'x (var-exp 'x))
-    (apply-exp (var-exp 'id) (var-exp 'id))))
+   (let-term
+    'id (lambda-term 'x (var-term 'x))
+    (apply-term (var-term 'id) (var-term 'id))))
 
   (evaluate-and-print
-   (let-exp
-    'id (lambda-exp 'x (var-exp 'x))
-    (apply-exp
-     (apply-exp (var-exp 'id) (var-exp 'id))
-     (apply-exp (var-exp 'id) (var-exp 'id))))))
+   (let-term
+    'id (lambda-term 'x (var-term 'x))
+    (apply-term
+     (apply-term (var-term 'id) (var-term 'id))
+     (apply-term (var-term 'id) (var-term 'id))))))

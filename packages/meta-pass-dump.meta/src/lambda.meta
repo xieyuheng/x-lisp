@@ -1,10 +1,10 @@
 (module lambda)
 
-(define-enum (exp-t)
-  (var-exp (name symbol-t))
-  (apply-exp (target exp-t) (arg exp-t))
-  (lambda-exp (parameter symbol-t) (body exp-t))
-  (let-exp (name symbol-t) (rhs exp-t) (body exp-t)))
+(define-enum (term-t)
+  (var-term (name symbol-t))
+  (apply-term (target term-t) (arg term-t))
+  (lambda-term (parameter symbol-t) (body term-t))
+  (let-term (name symbol-t) (rhs term-t) (body term-t)))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
@@ -16,19 +16,19 @@
 (define env-lookup hash-get-maybe)
 
 (define-enum (value-t)
-  (closure-value (env env-t) (parameter symbol-t) (body exp-t)))
+  (closure-value (env env-t) (parameter symbol-t) (body term-t)))
 
-(define (evaluate exp env)
-  (match exp
-    ((var-exp name)
+(define (evaluate term env)
+  (match term
+    ((var-term name)
      (match (env-lookup name env)
        ((just value) value)
        ((nothing) (error "undefined name"))))
-    ((apply-exp target arg)
+    ((apply-term target arg)
      (apply (evaluate target env) (evaluate arg env)))
-    ((lambda-exp parameter body)
+    ((lambda-term parameter body)
      (closure-value env parameter body))
-    ((let-exp name rhs body)
+    ((let-term name rhs body)
      (let ((env (extend-env name (evaluate rhs env) env)))
        (evaluate body env)))))
 
