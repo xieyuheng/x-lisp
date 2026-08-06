@@ -76,9 +76,8 @@
 
 ## 文档
 
-- [语法参考](docs/zh/meta-lisp/syntax.md)
-- [内置函数](docs/zh/meta-lisp/builtin/index.md)
-- [常见问题](docs/zh/meta-lisp/faq.md)
+- [语法参考](docs/zh/meta-lisp/语法.md)
+- [内置函数](docs/zh/meta-lisp/内置/索引.md)
 
 ## 开源协议
 

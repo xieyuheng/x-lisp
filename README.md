@@ -74,7 +74,6 @@ A LISP with type system.
 
 - [Syntax Reference](docs/en/meta-lisp/syntax.md)
 - [Builtin Functions](docs/en/meta-lisp/builtin/index.md)
-- [FAQ](docs/en/meta-lisp/faq.md)
 
 ## License
 
