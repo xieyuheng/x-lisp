@@ -14,7 +14,7 @@ A LISP with type system.
 
 ## Examples
 
-```scheme
+```meta-lisp
 (module example)
 
 (claim factorial (-> int-t int-t))
@@ -33,7 +33,7 @@ A LISP with type system.
   (assert-equal 120 (factorial 5)))
 ```
 
-```scheme
+```meta-lisp
 (module example)
 
 (define-enum term-t
