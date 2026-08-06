@@ -18,6 +18,7 @@ cd packages/meta-lisp.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 
 cd packages/meta-builtin.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-math.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
+cd packages/cli.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/元语数学; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/元语例子; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/meta-example.meta; ./scripts/clean.sh; ./scripts/test.sh; cd ../..

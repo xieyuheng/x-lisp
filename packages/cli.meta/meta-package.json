@@ -1,5 +1,5 @@
 {
-  "name": "meta-example",
+  "name": "cli",
   "version": "0.1.0",
   "build": {
     "source-directory": "src",
@@ -7,9 +7,7 @@
     "snapshot-directory": "snapshot"
   },
   "dependencies": {
-    "meta-builtin": "../meta-builtin.meta",
-    "meta-math": "../meta-math.meta",
-    "cli": "../cli.meta"
+    "meta-builtin": "../meta-builtin.meta"
   },
   "prelude": {
     "meta-builtin": ["builtin"]

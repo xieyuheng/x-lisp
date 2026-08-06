@@ -1,0 +1,146 @@
+(module cli)
+
+(define-struct ctx-t
+  (args (list-t text-t))
+  (options (hash-t text-t text-t))
+  (passthrough (list-t text-t)))
+
+(define-struct route-t
+  (command text-t)
+  (name text-t)
+  (arg-names (list-t text-t))
+  (option-names (list-t text-t)))
+
+(define-struct router-t
+  (name text-t)
+  (version text-t)
+  (routes (list-t route-t))
+  (handlers (hash-t text-t (-> ctx-t void-t))))
+
+(claim new-router (-> text-t text-t router-t))
+
+(define (new-router name version)
+  (make-router name version (make-list) (make-hash)))
+
+(claim parse-route (-> text-t route-t))
+
+(define (parse-route command)
+  (let ((tokens (list-reject text-is-blank (text-split " " command)))
+         (dash-idx (list-find-index (lambda (t) (equal t "--")) tokens))
+         (main (if (int-greater-or-equal dash-idx 0)
+                 (list-take dash-idx tokens)
+                 tokens))
+         (name (car main))
+         (rest (cdr main))
+         (first-opt-idx (list-find-index (lambda (t) (text-starts-with "--" t)) rest))
+         (arg-count (if (int-greater-or-equal first-opt-idx 0) first-opt-idx (list-length rest)))
+         (args (list-take arg-count rest))
+         (options (list-drop arg-count rest)))
+    (make-route command name args options)))
+
+(claim route-match (-> route-t (list-t text-t) ctx-t))
+
+(define (route-match route argv)
+  (define (loop tokens args options passthrough in-passthrough)
+    (cond ((list-is-empty tokens)
+           (make-ctx args options passthrough))
+          ((equal in-passthrough true)
+           (list-push (car tokens) passthrough)
+           (loop (cdr tokens) args options passthrough true))
+          ((equal (car tokens) "--")
+           (loop (cdr tokens) args options passthrough true))
+          ((text-starts-with "-" (car tokens))
+           (let ((token (car tokens))
+                 (rest (cdr tokens)))
+             (cond ((list-is-empty rest)
+                    (hash-put token "" options)
+                    (loop rest args options passthrough false))
+                   ((text-starts-with "-" (car rest))
+                    (hash-put token "" options)
+                    (loop rest args options passthrough false))
+                   (else
+                    (hash-put token (car rest) options)
+                    (loop (cdr rest) args options passthrough false)))))
+          (else
+           (list-push (car tokens) args)
+           (loop (cdr tokens) args options passthrough false))))
+  (loop argv (make-list) (make-hash) (make-list) false))
+
+(claim define-route (-> router-t text-t router-t))
+
+(define (define-route router command)
+  (let ((routes (router-routes router)))
+    (list-push (parse-route command) routes)
+    (router-put-routes routes router)))
+
+(claim define-handler (-> router-t text-t (-> ctx-t void-t) router-t))
+
+(define (define-handler router name handler)
+  (let ((handlers (router-handlers router)))
+    (hash-put name handler handlers)
+    (router-put-handlers handlers router)))
+
+(claim print-name-and-version (-> router-t void-t))
+
+(define (print-name-and-version router)
+  (println (text-join " " [(router-name router) (router-version router)])))
+
+(claim print-commands (-> router-t void-t))
+
+(define (print-commands router)
+  (println "commands:")
+  (list-each (lambda (route)
+               (println (text-append "  " (route-command route))))
+             (router-routes router)))
+
+(claim router-run (-> router-t (list-t text-t) void-t))
+
+(define (router-run router argv)
+  (if (list-is-empty argv)
+    (begin
+      (print-name-and-version router)
+      (print-commands router))
+    (let ((name (car argv))
+          (tokens (cdr argv)))
+      (match (list-find (lambda (r) (equal (route-name r) name))
+                        (router-routes router))
+        ((just route)
+         (match (hash-get-maybe name (router-handlers router))
+           ((just handler) (handler (route-match route tokens)))
+           ((nothing)
+            (println (text-join " " ["[cli] undefined handler:" name]))
+            (exit 1))))
+        ((nothing)
+         (println (text-join " " ["unknown command:" name]))
+         (print-name-and-version router)
+         (print-commands router))))))
+
+(claim arg-count (-> ctx-t int-t))
+
+(define (arg-count ctx)
+  (list-length (ctx-args ctx)))
+
+(claim arg-get (-> int-t ctx-t text-t))
+
+(define (arg-get i ctx)
+  (list-get i (ctx-args ctx)))
+
+(claim option-has (-> text-t ctx-t bool-t))
+
+(define (option-has name ctx)
+  (hash-has name (ctx-options ctx)))
+
+(claim option-get (-> text-t ctx-t text-t))
+
+(define (option-get name ctx)
+  (hash-get name (ctx-options ctx)))
+
+(claim passthrough-count (-> ctx-t int-t))
+
+(define (passthrough-count ctx)
+  (list-length (ctx-passthrough ctx)))
+
+(claim passthrough-get (-> int-t ctx-t text-t))
+
+(define (passthrough-get i ctx)
+  (list-get i (ctx-passthrough ctx)))

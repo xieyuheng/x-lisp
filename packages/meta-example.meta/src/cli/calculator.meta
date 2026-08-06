@@ -1,37 +1,39 @@
 (module calculator)
 
+(import-as cli/cli cli)
+
 (define (main)
-  (define router (cli-make-router "calculator" "0.1.0"))
+  (define router (cli/new-router "calculator" "0.1.0"))
 
-  (cli-define-route router "hello -- say hello")
-  (cli-define-route router "add x y -- add two numbers")
-  (cli-define-route router "mul --x --y -- multiply two numbers")
-  (cli-define-route router "bye -- say bye bye")
-  (cli-define-route router "passthrough -- print passthrough args")
+  (cli/define-route router "hello -- say hello")
+  (cli/define-route router "add x y -- add two numbers")
+  (cli/define-route router "mul --x --y -- multiply two numbers")
+  (cli/define-route router "bye -- say bye bye")
+  (cli/define-route router "passthrough -- print passthrough args")
 
-  (cli-define-handler router "hello" handle-hello)
-  (cli-define-handler router "add" handle-add)
-  (cli-define-handler router "mul" handle-mul)
-  (cli-define-handler router "bye" handle-bye)
-  (cli-define-handler router "passthrough" handle-passthrough)
+  (cli/define-handler router "hello" handle-hello)
+  (cli/define-handler router "add" handle-add)
+  (cli/define-handler router "mul" handle-mul)
+  (cli/define-handler router "bye" handle-bye)
+  (cli/define-handler router "passthrough" handle-passthrough)
 
-  (cli-router-run router (current-command-line)))
+  (cli/router-run router (current-command-line)))
 
 (define (handle-hello ctx)
   (println "hello world"))
 
 (define (handle-add ctx)
-  (let ((x (text-to-int (cli-arg-get 0 ctx)))
-        (y (text-to-int (cli-arg-get 1 ctx))))
+  (let ((x (text-to-int (cli/arg-get 0 ctx)))
+        (y (text-to-int (cli/arg-get 1 ctx))))
     (println (iadd x y))))
 
 (define (handle-mul ctx)
-  (let ((x (text-to-int (cli-option-get "--x" ctx)))
-        (y (text-to-int (cli-option-get "--y" ctx))))
+  (let ((x (text-to-int (cli/option-get "--x" ctx)))
+        (y (text-to-int (cli/option-get "--y" ctx))))
     (println (imul x y))))
 
 (define (handle-bye ctx)
   (println "bye bye"))
 
 (define (handle-passthrough ctx)
-  (println (text-join " " (cli-ctx-passthrough ctx))))
+  (println (text-join " " (cli/ctx-passthrough ctx))))

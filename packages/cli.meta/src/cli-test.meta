@@ -1,0 +1,84 @@
+(module cli)
+
+(define-test parse-route-test
+  (let ((route (parse-route "add x y -- add two numbers")))
+    (assert-equal "add x y -- add two numbers" (route-command route))
+    (assert-equal "add" (route-name route))
+    (assert-equal ["x" "y"] (route-arg-names route))
+    (assert (list-is-empty (route-option-names route)))))
+
+(define-test parse-route-option-test
+  (let ((route (parse-route "mul --x --y -- mul two numbers")))
+    (assert-equal "mul --x --y -- mul two numbers" (route-command route))
+    (assert-equal "mul" (route-name route))
+    (assert (list-is-empty (route-arg-names route)))
+    (assert-equal ["--x" "--y"] (route-option-names route))))
+
+(define-test parse-route-simple-test
+  (let ((route (parse-route "hello")))
+    (assert-equal "hello" (route-name route))
+    (assert (list-is-empty (route-arg-names route)))
+    (assert (list-is-empty (route-option-names route)))))
+
+(define-test route-match-args-test
+  (let ((route (parse-route "add x y"))
+         (ctx (route-match route ["1" "2"])))
+    (assert-equal 2 (arg-count ctx))
+    (assert-equal "1" (arg-get 0 ctx))
+    (assert-equal "2" (arg-get 1 ctx))
+    (assert (list-is-empty (ctx-passthrough ctx)))))
+
+(define-test route-match-options-test
+  (let ((route (parse-route "cmd --verbose --name"))
+         (ctx (route-match route ["--verbose" "--name" "hello"])))
+    (assert (option-has "--verbose" ctx))
+    (assert (option-has "--name" ctx))
+    (assert-equal "" (option-get "--verbose" ctx))
+    (assert-equal "hello" (option-get "--name" ctx))))
+
+(define-test route-match-passthrough-test
+  (let ((route (parse-route "cmd"))
+         (ctx (route-match route ["--" "check" "--profile"])))
+    (assert-equal 0 (arg-count ctx))
+    (assert-equal 2 (passthrough-count ctx))
+    (assert-equal "check" (passthrough-get 0 ctx))
+    (assert-equal "--profile" (passthrough-get 1 ctx))))
+
+(define-test route-match-mixed-test
+  (let ((route (parse-route "run file --entry"))
+         (ctx (route-match route ["prog.xexe" "--entry" "main" "--" "--verbose"])))
+    (assert-equal 1 (arg-count ctx))
+    (assert-equal "prog.xexe" (arg-get 0 ctx))
+    (assert (option-has "--entry" ctx))
+    (assert-equal "main" (option-get "--entry" ctx))
+    (assert-equal 1 (passthrough-count ctx))
+    (assert-equal "--verbose" (passthrough-get 0 ctx))))
+
+(define-test new-router-test
+  (let ((router (new-router "test" "0.1.0")))
+    (assert-equal "test" (router-name router))
+    (assert-equal "0.1.0" (router-version router))
+    (assert (list-is-empty (router-routes router)))))
+
+(define-test define-route-test
+  (let ((router (new-router "test" "0.1.0"))
+         (router (define-route router "add x y"))
+         (router (define-route router "sub a b")))
+    (assert-equal 2 (list-length (router-routes router)))))
+
+(define-test router-run-test
+  (let ((router (new-router "test" "0.1.0"))
+         (router (define-route router "add x y"))
+         (result (make-list)))
+    (define-handler router "add"
+      (lambda (ctx)
+        (list-push (arg-get 0 ctx) result)
+        (list-push (arg-get 1 ctx) result)
+        void))
+    (router-run router ["add" "3" "4"])
+    (assert-equal ["3" "4"] result)))
+
+(define-test router-run-test-no-command
+  (let ((router (new-router "test" "0.1.0"))
+         (router (define-route router "add x y")))
+    (router-run router [])))
