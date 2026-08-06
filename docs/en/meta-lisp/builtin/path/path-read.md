@@ -5,12 +5,12 @@ title: path-read
 # Type
 
 ```meta-lisp
-(-> string-t string-t)
+(-> text-t text-t)
 ```
 
 # Description
 
-Read file content as a string.
+Read file content as a text.
 
 # Examples
 

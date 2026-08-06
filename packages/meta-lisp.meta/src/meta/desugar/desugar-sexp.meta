@@ -11,10 +11,10 @@
        (qualified-var-exp 'meta-builtin 'builtin 'symbol-sexp location)
        [(symbol-exp content location) (desugar-location location)]
        location))
-    ((string-sexp content location)
+    ((text-sexp content location)
      (apply-exp
-       (qualified-var-exp 'meta-builtin 'builtin 'string-sexp location)
-       [(string-exp content location) (desugar-location location)]
+       (qualified-var-exp 'meta-builtin 'builtin 'text-sexp location)
+       [(text-exp content location) (desugar-location location)]
        location))
     ((int-sexp content location)
      (apply-exp

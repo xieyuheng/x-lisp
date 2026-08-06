@@ -17,9 +17,9 @@
         (hash.1 "wrong"))
     (assert-equal (@hash "key" hash) (@hash "key" "value"))))
 
-(define-test string-name-collision-test
+(define-test text-name-collision-test
   (let ((list "hello"))
-    (assert-equal "hello" (@string list))))
+    (assert-equal "hello" (@text list))))
 
 (define-test nested-list-name-collision-test
   (let ((list 42))

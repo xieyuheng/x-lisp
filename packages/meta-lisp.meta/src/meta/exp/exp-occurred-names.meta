@@ -8,7 +8,7 @@
   (match exp
     ((symbol-exp content location) (make-set))
     ((keyword-exp content location) (make-set))
-    ((string-exp content location) (make-set))
+    ((text-exp content location) (make-set))
     ((int-exp content location) (make-set))
     ((float-exp content location) (make-set))
     ((qualified-var-exp pkg-name mod-name name location) (make-set))
@@ -75,7 +75,7 @@
          clauses)))
     ((list-exp elements location)
      (set-union-many (list-map exp-occurred-names elements)))
-    ((string-concat-exp elements location)
+    ((text-concat-exp elements location)
      (set-union-many (list-map exp-occurred-names elements)))
     ((set-exp elements location)
      (set-union-many (list-map exp-occurred-names elements)))

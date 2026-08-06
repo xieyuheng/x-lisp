@@ -1,3 +1,6 @@
+- const object_class_t xtext_class 的 .name 目前还是 string
+- 中文文档中，还有用 字符串 来描述文本的地方
+
 # 中文
 
 prompt：

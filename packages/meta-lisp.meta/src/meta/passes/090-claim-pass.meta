@@ -22,9 +22,9 @@
         (else
          (println
            (format-message-with-location
-             (@string
+             (@text
                "undefined claimed name"
-               "\n  module: " (symbol-to-string (mod-name mod))
-               "\n  name: " (symbol-to-string name))
+               "\n  module: " (symbol-to-text (mod-name mod))
+               "\n  name: " (symbol-to-text name))
              (term-location (claimed-entry-term entry))))
          (outcome-error))))

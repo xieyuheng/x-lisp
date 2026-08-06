@@ -7,7 +7,7 @@
 (define (desugar-location location)
   (apply-exp
     (qualified-var-exp 'meta-builtin 'builtin 'make-source-location location)
-    [(string-exp (source-location-path location) location)
+    [(text-exp (source-location-path location) location)
      (exp-from-span (source-location-span location) location)]
     location))
 

@@ -68,58 +68,58 @@
 
 (define (make-base-name lang type-name location)
   (let ((suffix (if (is-zh lang) "型" "-t")))
-    (let ((type-name-string (symbol-to-string type-name)))
-      (unless (string-ends-with suffix type-name-string)
+    (let ((type-name-text (symbol-to-text type-name)))
+      (unless (text-ends-with suffix type-name-text)
         (error-with-location
-          (@string "(make-base-name) type-name must end with "
+          (@text "(make-base-name) type-name must end with "
                    suffix
-                   "\n  type-name: " type-name-string)
+                   "\n  type-name: " type-name-text)
           location))
-      (string-to-symbol
-        (string-substring
-          0 (isub (string-length type-name-string)
-                  (string-length suffix))
-          type-name-string)))))
+      (text-to-symbol
+        (text-slice
+          0 (isub (text-length type-name-text)
+                  (text-length suffix))
+          type-name-text)))))
 
 (claim make-data-constructor-name
   (-> lang-t symbol-t
       symbol-t))
 
 (define (make-data-constructor-name lang base)
-  (string-to-symbol
+  (text-to-symbol
     (if (is-zh lang)
-      (@string "作" (symbol-to-string base))
-      (@string "make-" (symbol-to-string base)))))
+      (@text "作" (symbol-to-text base))
+      (@text "make-" (symbol-to-text base)))))
 
 (claim make-data-accessor-name
   (-> lang-t symbol-t symbol-t
       symbol-t))
 
 (define (make-data-accessor-name lang base field-name)
-  (string-to-symbol
+  (text-to-symbol
     (if (is-zh lang)
-      (@string (symbol-to-string base) (symbol-to-string field-name))
-      (@string (symbol-to-string base) "-" (symbol-to-string field-name)))))
+      (@text (symbol-to-text base) (symbol-to-text field-name))
+      (@text (symbol-to-text base) "-" (symbol-to-text field-name)))))
 
 (claim make-data-modifier-name
   (-> lang-t symbol-t symbol-t
       symbol-t))
 
 (define (make-data-modifier-name lang base field-name)
-  (string-to-symbol
+  (text-to-symbol
     (if (is-zh lang)
-      (@string (symbol-to-string base) "存" (symbol-to-string field-name))
-      (@string (symbol-to-string base) "-put-" (symbol-to-string field-name)))))
+      (@text (symbol-to-text base) "存" (symbol-to-text field-name))
+      (@text (symbol-to-text base) "-put-" (symbol-to-text field-name)))))
 
 (claim make-data-predicate-name
   (-> lang-t symbol-t
       symbol-t))
 
 (define (make-data-predicate-name lang base)
-  (string-to-symbol
+  (text-to-symbol
     (if (is-zh lang)
-      (@string "为" (symbol-to-string base))
-      (@string "is-" (symbol-to-string base)))))
+      (@text "为" (symbol-to-text base))
+      (@text "is-" (symbol-to-text base)))))
 
 (claim make-type-exp
   (-> pre-type-constructor-t source-location-t

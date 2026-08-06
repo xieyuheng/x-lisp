@@ -75,7 +75,7 @@
     (else
      ;; - why: no need to handle stmts that are removed during expand-pass.
      (error-with-location
-       (@string "(desugar-stmt) unhandled stmt kind: " (format-stmt stmt))
+       (@text "(desugar-stmt) unhandled stmt kind: " (format-stmt stmt))
        (stmt-location stmt)))))
 
 (claim desugar-explicit-data-constructor

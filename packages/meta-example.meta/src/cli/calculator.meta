@@ -21,17 +21,17 @@
   (println "hello world"))
 
 (define (handle-add ctx)
-  (let ((x (string-to-int (cli-arg-get 0 ctx)))
-        (y (string-to-int (cli-arg-get 1 ctx))))
+  (let ((x (text-to-int (cli-arg-get 0 ctx)))
+        (y (text-to-int (cli-arg-get 1 ctx))))
     (println (iadd x y))))
 
 (define (handle-mul ctx)
-  (let ((x (string-to-int (cli-option-get "--x" ctx)))
-        (y (string-to-int (cli-option-get "--y" ctx))))
+  (let ((x (text-to-int (cli-option-get "--x" ctx)))
+        (y (text-to-int (cli-option-get "--y" ctx))))
     (println (imul x y))))
 
 (define (handle-bye ctx)
   (println "bye bye"))
 
 (define (handle-passthrough ctx)
-  (println (string-join " " (cli-ctx-passthrough ctx))))
+  (println (text-join " " (cli-ctx-passthrough ctx))))

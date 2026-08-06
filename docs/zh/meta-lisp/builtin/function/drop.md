@@ -17,6 +17,6 @@ title: drop
 # 例子
 
 ```meta-lisp
-(define (greet name) (println (string-append "Hello, " name)))
+(define (greet name) (println (text-append "Hello, " name)))
 ((drop greet) "ignored" "World")  ;; 输出 "Hello, World"
 ```

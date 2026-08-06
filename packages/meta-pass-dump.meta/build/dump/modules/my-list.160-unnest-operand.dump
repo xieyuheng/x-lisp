@@ -50,7 +50,7 @@
           (begin
             (let ((unnested.1 (meta-builtin/builtin/format list)))
               (meta-builtin/builtin/list-push unnested.1 list.1))
-            (let ((unnested.2 (meta-builtin/builtin/string-concat list.1)))
+            (let ((unnested.2 (meta-builtin/builtin/text-concat list.1)))
               (let
                   ((unnested.3
                     (meta-builtin/builtin/make-source-position 123 7 3)))
@@ -97,7 +97,7 @@
           (begin
             (let ((unnested.1 (meta-builtin/builtin/format list)))
               (meta-builtin/builtin/list-push unnested.1 list.1))
-            (let ((unnested.2 (meta-builtin/builtin/string-concat list.1)))
+            (let ((unnested.2 (meta-builtin/builtin/text-concat list.1)))
               (let
                   ((unnested.3
                     (meta-builtin/builtin/make-source-position 194 11 3)))
@@ -271,8 +271,7 @@
                         (let ((unnested.2 (meta-builtin/builtin/format list2)))
                           (meta-builtin/builtin/list-push unnested.2 list))
                         (let
-                            ((unnested.3
-                              (meta-builtin/builtin/string-concat list)))
+                            ((unnested.3 (meta-builtin/builtin/text-concat list)))
                           (let
                               ((unnested.4
                                 (meta-builtin/builtin/make-source-position
@@ -318,7 +317,7 @@
                               (meta-builtin/builtin/list-push unnested.9 list.1))
                             (let
                                 ((unnested.10
-                                  (meta-builtin/builtin/string-concat list.1)))
+                                  (meta-builtin/builtin/text-concat list.1)))
                               (let
                                   ((unnested.11
                                     (meta-builtin/builtin/make-source-position

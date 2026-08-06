@@ -9,7 +9,7 @@ inline tag_t value_tag(value_t value) {
 bool is_atom(value_t value) {
   return is_int(value) ||
     is_float(value) ||
-    is_xstring(value) ||
+    is_xtext(value) ||
     is_symbol(value) ||
     is_keyword(value) ||
     is_bool(value) ||
@@ -132,9 +132,9 @@ void write_atom(buffer_t *buffer, value_t value) {
     return;
   }
 
-  if (is_xstring(value)) {
+  if (is_xtext(value)) {
     write_string(buffer, "\"");
-    write_string_escaped(buffer, xstring_string(to_xstring(value)));
+    write_string_escaped(buffer, xtext_string(to_xtext(value)));
     write_string(buffer, "\"");
     return;
   }

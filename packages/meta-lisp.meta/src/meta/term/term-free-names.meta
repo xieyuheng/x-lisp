@@ -8,7 +8,7 @@
   (match term
     ((symbol-term content location) (make-set))
     ((keyword-term content location) (make-set))
-    ((string-term content location) (make-set))
+    ((text-term content location) (make-set))
     ((int-term content location) (make-set))
     ((float-term content location) (make-set))
     ((qualified-var-term pkg-name mod-name name location) (make-set))

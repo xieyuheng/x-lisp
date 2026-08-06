@@ -13,7 +13,7 @@ export function prettyData(data: B.Data): Ppml.Node {
       } else {
         return Ppml.text(data.content.toString())
       }
-    case "StringData":
+    case "TextData":
       return Ppml.text(JSON.stringify(data.content))
     case "StructData": {
       const fieldNodes = Object.entries(data.fields).map(([fname, fdata]) =>

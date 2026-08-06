@@ -433,10 +433,10 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 |----------|------------|---------|
 | `(address X)` 字段 | `label-abs64` | DATA |
 | `(pointer ...)` 字段 | `label-abs64` | DATA |
-| string 作为 pointer-t 字段 | `label-abs64` | DATA |
+| text 作为 pointer-t 字段 | `label-abs64` | DATA |
 
 data 段中的 `(address X)` 等价于 `(relocation label-abs64 X)`。
-pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分配名称
+pointer 和 text 字段的目标（匿名的 data slot）由汇编器自动分配名称
 并记录为 label table 的 DATA 条目。
 
 # 类型
@@ -446,7 +446,7 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 | 类型        | 大小    | 说明                     |
 |-------------|---------|--------------------------|
 | `pointer-t` | 8 bytes | opaque 指针              |
-| `string-t`  | 8 bytes | 类似 C 的 `const char *` |
+| `text-t`  | 8 bytes | 类似 C 的 `const char *` |
 | `int8-t`    | 1 byte  | 有符号 8 位整数          |
 | `int16-t`   | 2 bytes | 有符号 16 位整数         |
 | `int32-t`   | 4 bytes | 有符号 32 位整数         |

@@ -5,7 +5,7 @@ title: path-relative-to-cwd
 # Type
 
 ```meta-lisp
-(-> string-t string-t)
+(-> text-t text-t)
 ```
 
 # Description

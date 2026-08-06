@@ -4,11 +4,11 @@ title: format-int
 
 # Type
 ```meta-lisp
-(-> int-t string-t)
+(-> int-t text-t)
 ```
 
 # Description
-Format an integer as an S-expression string.
+Format an integer as an S-expression text.
 
 # Examples
 ```meta-lisp

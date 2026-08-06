@@ -4,11 +4,11 @@ title: format-keyword
 
 # Type
 ```meta-lisp
-(-> keyword-t string-t)
+(-> keyword-t text-t)
 ```
 
 # Description
-Format a keyword as an S-expression string.
+Format a keyword as an S-expression text.
 
 # Examples
 ```meta-lisp

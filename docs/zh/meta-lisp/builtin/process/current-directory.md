@@ -5,7 +5,7 @@ title: current-directory
 # 类型
 
 ```meta-lisp
-(-> string-t)
+(-> text-t)
 ```
 
 # 描述

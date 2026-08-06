@@ -1,9 +1,9 @@
 (module override-builtin-name)
 
-(claim string-length (-> string-t int-t))
-(define (string-length s)
+(claim text-length (-> text-t int-t))
+(define (text-length s)
   42)
 
 (define-test override-builtin-name-test
-  (assert-equal (string-length "hello") 42)
-  (assert-equal (meta-builtin/builtin/string-length "hello") 5))
+  (assert-equal (text-length "hello") 42)
+  (assert-equal (meta-builtin/builtin/text-length "hello") 5))

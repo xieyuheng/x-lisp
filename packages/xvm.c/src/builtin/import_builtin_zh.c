@@ -63,7 +63,7 @@ void import_builtin_zh(mod_t *mod) {
   define_variable_primitive_0(mod, "meta-builtin/内置/任意型", x_any_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/整数型", x_int_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/浮点型", x_float_t);
-  define_variable_primitive_0(mod, "meta-builtin/内置/文本型", x_string_t);
+  define_variable_primitive_0(mod, "meta-builtin/内置/文本型", x_text_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/符号型", x_symbol_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/标签型", x_keyword_t);
   define_variable_primitive_0(mod, "meta-builtin/内置/真假型", x_bool_t);
@@ -117,7 +117,7 @@ void import_builtin_zh(mod_t *mod) {
 
   define_primitive_1(mod, "meta-builtin/内置/为标签", x_is_keyword);
   define_primitive_1(mod, "meta-builtin/内置/标签长度", x_keyword_length);
-  define_primitive_1(mod, "meta-builtin/内置/标签转文本", x_keyword_to_string);
+  define_primitive_1(mod, "meta-builtin/内置/标签转文本", x_keyword_to_text);
   define_primitive_2(mod, "meta-builtin/内置/标签追加", x_keyword_append);
   define_primitive_1(mod, "meta-builtin/内置/标签拼接", x_keyword_concat);
 
@@ -125,42 +125,42 @@ void import_builtin_zh(mod_t *mod) {
 
   define_primitive_1(mod, "meta-builtin/内置/为符号", x_is_symbol);
   define_primitive_1(mod, "meta-builtin/内置/符号长度", x_symbol_length);
-  define_primitive_1(mod, "meta-builtin/内置/符号转文本", x_symbol_to_string);
+  define_primitive_1(mod, "meta-builtin/内置/符号转文本", x_symbol_to_text);
   define_primitive_2(mod, "meta-builtin/内置/符号追加", x_symbol_append);
   define_primitive_1(mod, "meta-builtin/内置/符号拼接", x_symbol_concat);
 
   // string
 
-  define_primitive_1(mod, "meta-builtin/内置/为文本", x_is_string);
-  define_primitive_1(mod, "meta-builtin/内置/文本长度", x_string_length);
-  define_primitive_1(mod, "meta-builtin/内置/文本为空", x_string_is_empty);
-  define_primitive_1(mod, "meta-builtin/内置/文本为空白", x_string_is_blank);
-  define_primitive_3(mod, "meta-builtin/内置/文本截段", x_string_substring);
-  define_primitive_2(mod, "meta-builtin/内置/文本追加", x_string_append);
-  define_primitive_1(mod, "meta-builtin/内置/文本拼接", x_string_concat);
-  define_primitive_2(mod, "meta-builtin/内置/文本字典序比较", x_string_compare_lexical);
-  define_primitive_1(mod, "meta-builtin/内置/文本转符号", x_string_to_symbol);
-  define_primitive_1(mod, "meta-builtin/内置/文本字符", x_string_chars);
-  define_primitive_1(mod, "meta-builtin/内置/文本行", x_string_lines);
-  define_primitive_2(mod, "meta-builtin/内置/文本分割", x_string_split);
-  define_primitive_2(mod, "meta-builtin/内置/文本连接", x_string_join);
-  define_primitive_3(mod, "meta-builtin/内置/文本替换", x_string_replace);
-  define_primitive_2(mod, "meta-builtin/内置/文本起首", x_string_starts_with);
-  define_primitive_2(mod, "meta-builtin/内置/文本结尾", x_string_ends_with);
-  define_primitive_1(mod, "meta-builtin/内置/文本转大写", x_string_to_upper_case);
-  define_primitive_1(mod, "meta-builtin/内置/文本转小写", x_string_to_lower_case);
-  define_primitive_2(mod, "meta-builtin/内置/文本取码点", x_string_get_code_point);
-  define_primitive_2(mod, "meta-builtin/内置/文本包含", x_string_contains);
-  define_primitive_2(mod, "meta-builtin/内置/文本查找索引", x_string_find_index);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪左", x_string_trim_left);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪右", x_string_trim_right);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪首", x_string_trim_start);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪尾", x_string_trim_end);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪", x_string_trim);
-  define_primitive_1(mod, "meta-builtin/内置/文本为整数", x_string_is_int);
-  define_primitive_1(mod, "meta-builtin/内置/文本为浮点", x_string_is_float);
-  define_primitive_1(mod, "meta-builtin/内置/文本转整数", x_string_to_int);
-  define_primitive_1(mod, "meta-builtin/内置/文本转浮点", x_string_to_float);
+  define_primitive_1(mod, "meta-builtin/内置/为文本", x_is_text);
+  define_primitive_1(mod, "meta-builtin/内置/文本长度", x_text_length);
+  define_primitive_1(mod, "meta-builtin/内置/文本为空", x_text_is_empty);
+  define_primitive_1(mod, "meta-builtin/内置/文本为空白", x_text_is_blank);
+  define_primitive_3(mod, "meta-builtin/内置/文本截段", x_text_slice);
+  define_primitive_2(mod, "meta-builtin/内置/文本追加", x_text_append);
+  define_primitive_1(mod, "meta-builtin/内置/文本拼接", x_text_concat);
+  define_primitive_2(mod, "meta-builtin/内置/文本字典序比较", x_text_compare_lexical);
+  define_primitive_1(mod, "meta-builtin/内置/文本转符号", x_text_to_symbol);
+  define_primitive_1(mod, "meta-builtin/内置/文本字符", x_text_chars);
+  define_primitive_1(mod, "meta-builtin/内置/文本行", x_text_lines);
+  define_primitive_2(mod, "meta-builtin/内置/文本分割", x_text_split);
+  define_primitive_2(mod, "meta-builtin/内置/文本连接", x_text_join);
+  define_primitive_3(mod, "meta-builtin/内置/文本替换", x_text_replace);
+  define_primitive_2(mod, "meta-builtin/内置/文本起首", x_text_starts_with);
+  define_primitive_2(mod, "meta-builtin/内置/文本结尾", x_text_ends_with);
+  define_primitive_1(mod, "meta-builtin/内置/文本转大写", x_text_to_upper_case);
+  define_primitive_1(mod, "meta-builtin/内置/文本转小写", x_text_to_lower_case);
+  define_primitive_2(mod, "meta-builtin/内置/文本取码点", x_text_get_code_point);
+  define_primitive_2(mod, "meta-builtin/内置/文本包含", x_text_contains);
+  define_primitive_2(mod, "meta-builtin/内置/文本查找索引", x_text_find_index);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪左", x_text_trim_left);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪右", x_text_trim_right);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪首", x_text_trim_start);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪尾", x_text_trim_end);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪", x_text_trim);
+  define_primitive_1(mod, "meta-builtin/内置/文本为整数", x_text_is_int);
+  define_primitive_1(mod, "meta-builtin/内置/文本为浮点", x_text_is_float);
+  define_primitive_1(mod, "meta-builtin/内置/文本转整数", x_text_to_int);
+  define_primitive_1(mod, "meta-builtin/内置/文本转浮点", x_text_to_float);
 
   // list
 

@@ -5,7 +5,7 @@ title: path-delete-file
 # Type
 
 ```meta-lisp
-(-> string-t void-t)
+(-> text-t void-t)
 ```
 
 # Description

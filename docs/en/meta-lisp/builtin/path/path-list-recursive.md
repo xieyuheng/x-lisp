@@ -5,7 +5,7 @@ title: path-list-recursive
 # Type
 
 ```meta-lisp
-(-> string-t (list-t string-t))
+(-> text-t (list-t text-t))
 ```
 
 # Description

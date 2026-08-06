@@ -138,65 +138,65 @@ meta-lisp 的所有内置函数按功能分类索引。
 
 ## 字符串
 
-字符串类型 `string-t` 上的操作。
+字符串类型 `text-t` 上的操作。
 
 ### 类型判断
 
-- [`is-string`](string/is-string.md) — 判断是否为字符串
-- [`string-is-int`](string/string-is-int.md) — 是否为整数格式
-- [`string-is-float`](string/string-is-float.md) — 是否为浮点数格式
+- [`is-text`](text/is-text.md) — 判断是否为字符串
+- [`text-is-int`](text/text-is-int.md) — 是否为整数格式
+- [`text-is-float`](text/text-is-float.md) — 是否为浮点数格式
 
 ### 基本操作
 
-- [`string-length`](string/string-length.md) — 长度
-- [`string-is-empty`](string/string-is-empty.md) — 是否为空串
-- [`string-is-blank`](string/string-is-blank.md) — 是否为空白串
+- [`text-length`](text/text-length.md) — 长度
+- [`text-is-empty`](text/text-is-empty.md) — 是否为空串
+- [`text-is-blank`](text/text-is-blank.md) — 是否为空白串
 
 ### 拼接与分割
 
-- [`string-append`](string/string-append.md) — 追加两个字符串
-- [`string-concat`](string/string-concat.md) — 拼接字符串列表
-- [`string-substring`](string/string-substring.md) — 取子串
-- [`string-split`](string/string-split.md) — 按分隔符分割
-- [`string-join`](string/string-join.md) — 用分隔符连接
+- [`text-append`](text/text-append.md) — 追加两个字符串
+- [`text-concat`](text/text-concat.md) — 拼接字符串列表
+- [`text-slice`](text/text-slice.md) — 取子串
+- [`text-split`](text/text-split.md) — 按分隔符分割
+- [`text-join`](text/text-join.md) — 用分隔符连接
 
 ### 查找与替换
 
-- [`string-starts-with`](string/string-starts-with.md) — 是否以某串开头
-- [`string-ends-with`](string/string-ends-with.md) — 是否以某串结尾
-- [`string-contains`](string/string-contains.md) — 是否包含子串
-- [`string-find-index`](string/string-find-index.md) — 查找子串位置
-- [`string-replace`](string/string-replace.md) — 替换子串
+- [`text-starts-with`](text/text-starts-with.md) — 是否以某串开头
+- [`text-ends-with`](text/text-ends-with.md) — 是否以某串结尾
+- [`text-contains`](text/text-contains.md) — 是否包含子串
+- [`text-find-index`](text/text-find-index.md) — 查找子串位置
+- [`text-replace`](text/text-replace.md) — 替换子串
 
 ### 修剪
 
-- [`string-trim`](string/string-trim.md) — 修剪两端空白
-- [`string-trim-start`](string/string-trim-start.md) — 修剪开头空白
-- [`string-trim-end`](string/string-trim-end.md) — 修剪结尾空白
-- [`string-trim-left`](string/string-trim-left.md) — 修剪左侧空白
-- [`string-trim-right`](string/string-trim-right.md) — 修剪右侧空白
+- [`text-trim`](text/text-trim.md) — 修剪两端空白
+- [`text-trim-start`](text/text-trim-start.md) — 修剪开头空白
+- [`text-trim-end`](text/text-trim-end.md) — 修剪结尾空白
+- [`text-trim-left`](text/text-trim-left.md) — 修剪左侧空白
+- [`text-trim-right`](text/text-trim-right.md) — 修剪右侧空白
 
 ### 大小写转换
 
-- [`string-to-lower-case`](string/string-to-lower-case.md) — 转小写
-- [`string-to-upper-case`](string/string-to-upper-case.md) — 转大写
+- [`text-to-lower-case`](text/text-to-lower-case.md) — 转小写
+- [`text-to-upper-case`](text/text-to-upper-case.md) — 转大写
 
 ### 类型转换
 
-- [`string-to-int`](string/string-to-int.md) — 字符串转整数
-- [`string-to-float`](string/string-to-float.md) — 字符串转浮点数
-- [`string-to-symbol`](string/string-to-symbol.md) — 字符串转符号
+- [`text-to-int`](text/text-to-int.md) — 字符串转整数
+- [`text-to-float`](text/text-to-float.md) — 字符串转浮点数
+- [`text-to-symbol`](text/text-to-symbol.md) — 字符串转符号
 
 ### 字符与码点
 
-- [`string-chars`](string/string-chars.md) — 拆分为字符列表
-- [`string-get-code-point`](string/string-get-code-point.md) — 取码点
-- [`string-lines`](string/string-lines.md) — 按行分割
+- [`text-chars`](text/text-chars.md) — 拆分为字符列表
+- [`text-get-code-point`](text/text-get-code-point.md) — 取码点
+- [`text-lines`](text/text-lines.md) — 按行分割
 
 ### 派生函数
 
-- [`string-repeat`](string/string-repeat.md) — 重复字符串
-- [`string-compare-lexical`](string/string-compare-lexical.md) — 字典序比较
+- [`text-repeat`](text/text-repeat.md) — 重复字符串
+- [`text-compare-lexical`](text/text-compare-lexical.md) — 字典序比较
 
 ## 符号
 
@@ -206,7 +206,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`symbol-length`](symbol/symbol-length.md) — 符号名的长度
 - [`symbol-append`](symbol/symbol-append.md) — 追加两个符号
 - [`symbol-concat`](symbol/symbol-concat.md) — 拼接符号列表
-- [`symbol-to-string`](symbol/symbol-to-string.md) — 转字符串
+- [`symbol-to-text`](symbol/symbol-to-text.md) — 转字符串
 
 ## 关键字
 
@@ -216,7 +216,7 @@ meta-lisp 的所有内置函数按功能分类索引。
 - [`keyword-length`](keyword/keyword-length.md) — 关键字名的长度
 - [`keyword-append`](keyword/keyword-append.md) — 追加两个关键字
 - [`keyword-concat`](keyword/keyword-concat.md) — 拼接关键字列表
-- [`keyword-to-string`](keyword/keyword-to-string.md) — 转字符串
+- [`keyword-to-text`](keyword/keyword-to-text.md) — 转字符串
 
 ## void
 
@@ -593,7 +593,7 @@ maybe 类型 `(maybe-t A)` 上的操作。
 - [`format-keyword`](format/format-keyword.md) — 格式化关键字
 - [`format-symbol`](format/format-symbol.md) — 格式化符号
 - [`format-bool`](format/format-bool.md) — 格式化布尔值
-- [`format-string`](format/format-string.md) — 格式化字符串
+- [`format-text`](format/format-text.md) — 格式化字符串
 - [`format-void`](format/format-void.md) — 格式化 void
 
 ## S 表达式

@@ -2,7 +2,7 @@
 
 static bool is_literal(value_t sexp) {
   return is_keyword(sexp)
-    || is_xstring(sexp)
+    || is_xtext(sexp)
     || is_int(sexp)
     || is_float(sexp);
 }

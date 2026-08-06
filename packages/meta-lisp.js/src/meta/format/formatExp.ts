@@ -185,9 +185,9 @@ export function formatExp(exp: M.Exp): string {
     case "StringConcatExp": {
       const elements = formatExps(exp.elements)
       if (elements === "") {
-        return `(@string)`
+        return `(@text)`
       } else {
-        return `(@string ${elements})`
+        return `(@text ${elements})`
       }
     }
 

@@ -100,7 +100,7 @@
     (lambda (clause)
       (unless (equal (list-length (match-clause-patterns clause)) (list-length targets))
         (error-with-location
-          (@string "(desugar-match) targets length mismatch"
+          (@text "(desugar-match) targets length mismatch"
                    "\n  targets: " (format-exps targets)
                    "\n  patterns: " (format-exps (match-clause-patterns clause)))
           location))))
@@ -228,7 +228,7 @@
      (define (spread-data-pattern pattern)
        (unless (is-data-pattern pattern)
          (error-with-location
-           (@string "(spread-data-pattern) expect data pattern"
+           (@text "(spread-data-pattern) expect data pattern"
                     "\n  pattern: " (format-exp pattern))
            (exp-location pattern)))
        (apply-exp-args pattern))
@@ -321,12 +321,12 @@
 (define (make-default-exp targets location)
   (apply-exp
     (qualified-var-exp 'meta-builtin 'builtin 'error-with-location location)
-    [(string-concat-exp
+    [(text-concat-exp
        (list-concat
-         [[(string-exp "pattern mismatch on:" location)]
+         [[(text-exp "pattern mismatch on:" location)]
           (list-map-concat
             (lambda (target)
-              [(string-exp " " location)
+              [(text-exp " " location)
                (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'format location)
                  [target]

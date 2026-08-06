@@ -2,7 +2,7 @@
 
 (claim use-input-file
   (polymorphic (A)
-    (-> string-t (-> file-t A)
+    (-> text-t (-> file-t A)
         A)))
 
 (define (use-input-file path f)
@@ -13,7 +13,7 @@
 
 (claim use-output-file
   (polymorphic (A)
-    (-> string-t (-> file-t A)
+    (-> text-t (-> file-t A)
         A)))
 
 (define (use-output-file path f)

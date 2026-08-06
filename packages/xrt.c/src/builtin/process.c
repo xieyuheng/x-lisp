@@ -32,7 +32,7 @@ value_t x_current_command_line(void) {
   size_t length = array_length(command_line);
   for (size_t i = 0; i < length; i++) {
     char *str = (char *) array_get(command_line, i);
-    x_list_push_mut(x_object(make_xstring(str)), list);
+    x_list_push_mut(x_object(make_xtext(str)), list);
   }
   return list;
 }
@@ -45,7 +45,7 @@ value_t x_current_full_command_line(void) {
   size_t length = array_length(full_command_line);
   for (size_t i = 0; i < length; i++) {
     char *str = (char *) array_get(full_command_line, i);
-    x_list_push_mut(x_object(make_xstring(str)), list);
+    x_list_push_mut(x_object(make_xtext(str)), list);
   }
   return list;
 }
@@ -57,7 +57,7 @@ value_t x_exit(value_t status) {
 
 value_t x_current_directory(void) {
   char *cwd = getcwd(NULL, 0);
-  return x_object(make_xstring_take(cwd));
+  return x_object(make_xtext_take(cwd));
 }
 
 static value_t stdout_file_value;

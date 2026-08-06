@@ -5,7 +5,7 @@ title: path-delete
 # 类型
 
 ```meta-lisp
-(-> string-t void-t)
+(-> text-t void-t)
 ```
 
 # 描述

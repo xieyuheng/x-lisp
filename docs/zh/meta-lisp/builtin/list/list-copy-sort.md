@@ -23,6 +23,6 @@ title: list-copy-sort
 (list-copy-sort float-compare-ascending [3.0 1.0 2.0])   ;; => [1.0 2.0 3.0]
 (list-copy-sort float-compare-descending [3.0 1.0 2.0])  ;; => [3.0 2.0 1.0]
 
-;; string
-(list-copy-sort string-compare-lexical ["c" "a" "b"])     ;; => ["a" "b" "c"]
+;; text
+(list-copy-sort text-compare-lexical ["c" "a" "b"])     ;; => ["a" "b" "c"]
 ```

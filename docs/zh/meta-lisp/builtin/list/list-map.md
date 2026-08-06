@@ -16,5 +16,5 @@ title: list-map
 
 ```meta-lisp
 (list-map (iadd 10) [1 2 3])  ;; => [11 12 13]
-(list-map is-string [1 "a" 3])  ;; => [false true false]
+(list-map is-text [1 "a" 3])  ;; => [false true false]
 ```

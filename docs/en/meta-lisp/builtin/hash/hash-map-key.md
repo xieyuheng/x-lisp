@@ -15,6 +15,6 @@ Map a function over keys, leaving values unchanged.
 # Examples
 
 ```meta-lisp
-(hash-map-key symbol->string (@hash 'a 1 'b 2))
+(hash-map-key symbol->text (@hash 'a 1 'b 2))
 ;; => (@hash "a" 1 "b" 2)
 ```

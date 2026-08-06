@@ -6,11 +6,11 @@
     (assert-equal 'foo (symbol-sexp-content sx))
     (assert (is-source-location (symbol-sexp-location sx)))))
 
-(define-test sexp-string-test
+(define-test sexp-text-test
   (let ((sx (@sexp "hello")))
-    (assert (is-string-sexp sx))
-    (assert-equal "hello" (string-sexp-content sx))
-    (assert (is-source-location (string-sexp-location sx)))))
+    (assert (is-text-sexp sx))
+    (assert-equal "hello" (text-sexp-content sx))
+    (assert (is-source-location (text-sexp-location sx)))))
 
 (define-test sexp-int-test
   (let ((sx (@sexp 42)))
@@ -55,8 +55,8 @@
       (assert-equal 4 (list-length elements))
       (assert (is-int-sexp (car elements)))
       (assert-equal 1 (int-sexp-content (car elements)))
-      (assert (is-string-sexp (car (cdr elements))))
-      (assert-equal "two" (string-sexp-content (car (cdr elements))))
+      (assert (is-text-sexp (car (cdr elements))))
+      (assert-equal "two" (text-sexp-content (car (cdr elements))))
       (assert (is-keyword-sexp (car (cdr (cdr elements)))))
       (assert-equal :three (keyword-sexp-content (car (cdr (cdr elements)))))
       (assert (is-symbol-sexp (car (cdr (cdr (cdr elements))))))

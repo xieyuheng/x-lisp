@@ -5,12 +5,12 @@ title: error
 # Type
 
 ```meta-lisp
-(polymorphic (B) (-> string B))
+(polymorphic (B) (-> text-t B))
 ```
 
 # Description
 
-Throw an error with a string as the error message. Does not return.
+Throw an error with a text as the error message. Does not return.
 
 # Examples
 

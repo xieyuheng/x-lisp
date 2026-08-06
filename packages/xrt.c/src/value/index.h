@@ -11,7 +11,7 @@
 #include "bool.h"
 #include "void.h"
 #include "object.h"
-#include "xstring.h"
+#include "xtext.h"
 #include "xhash.h"
 #include "xset.h"
 #include "xlist.h"

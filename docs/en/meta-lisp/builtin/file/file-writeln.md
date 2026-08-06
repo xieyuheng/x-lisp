@@ -5,12 +5,12 @@ title: file-writeln
 # Type
 
 ```meta-lisp
-(-> file-t string-t void-t)
+(-> file-t text-t void-t)
 ```
 
 # Description
 
-Write a string to a file followed by a newline.
+Write a text to a file followed by a newline.
 
 # Examples
 

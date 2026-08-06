@@ -2,12 +2,12 @@
 
 (declare-primitive-function is-symbol 1)
 (declare-primitive-function symbol-length 1)
-(declare-primitive-function symbol-to-string 1)
+(declare-primitive-function symbol-to-text 1)
 (declare-primitive-function symbol-append 2)
 (declare-primitive-function symbol-concat 1)
 
 (claim is-symbol (polymorphic (A) (-> A bool-t)))
 (claim symbol-length (-> symbol-t int-t))
-(claim symbol-to-string (-> symbol-t string-t))
+(claim symbol-to-text (-> symbol-t text-t))
 (claim symbol-append (-> symbol-t symbol-t symbol-t))
 (claim symbol-concat (-> (list-t symbol-t) symbol-t))

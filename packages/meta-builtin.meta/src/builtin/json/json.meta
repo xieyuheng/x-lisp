@@ -4,12 +4,12 @@
   (null-json)
   (bool-json (value bool-t))
   (number-json (value float-t))
-  (string-json (value string-t))
+  (text-json (value text-t))
   (array-json (elements (list-t json-t)))
-  (object-json (entries (hash-t string-t json-t))))
+  (object-json (entries (hash-t text-t json-t))))
 
 (declare-primitive-function parse-json 1)
 (declare-primitive-function format-json 1)
 
-(claim parse-json (-> string-t json-t))
-(claim format-json (-> json-t string-t))
+(claim parse-json (-> text-t json-t))
+(claim format-json (-> json-t text-t))

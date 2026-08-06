@@ -5,12 +5,12 @@ title: format
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A string-t))
+(polymorphic (A) (-> A text-t))
 ```
 
 # Description
 
-Format any value as a string representation.
+Format any value as a text representation.
 
 # Examples
 

@@ -16,5 +16,5 @@ Apply a function to each element of the list, returning a new list.
 
 ```meta-lisp
 (list-map (iadd 10) [1 2 3])  ;; => [11 12 13]
-(list-map string? [1 "a" 3])  ;; => [false true false]
+(list-map text? [1 "a" 3])  ;; => [false true false]
 ```

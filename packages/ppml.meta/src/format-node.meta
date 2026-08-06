@@ -1,6 +1,6 @@
 (module ppml)
 
-(claim format-node (-> int-t node-t string-t))
+(claim format-node (-> int-t node-t text-t))
 (define (format-node width node)
   (layout width 0 [(make-entry 0 'inline node)] ""))
 
@@ -16,8 +16,8 @@
         ((null-node)
          (layout width cursor rest result))
         ((text-node content)
-         (layout width (iadd cursor (string-length content)) rest
-                 (string-append result content)))
+         (layout width (iadd cursor (text-length content)) rest
+                 (text-append result content)))
         ((append-node left right)
          (layout width cursor
                  (cons (make-entry indentation mode left)
@@ -29,15 +29,15 @@
                  result))
         ((break-node space)
          (if (equal mode 'inline)
-           (layout width (iadd cursor (string-length space)) rest
-                   (string-append result space))
-           (let ((new-line (string-append "\n" (string-repeat indentation " "))))
+           (layout width (iadd cursor (text-length space)) rest
+                   (text-append result space))
+           (let ((new-line (text-append "\n" (text-repeat indentation " "))))
              (layout width indentation rest
-                     (string-append result new-line)))))
+                     (text-append result new-line)))))
         ((hard-break-node)
-         (let ((new-line (string-append "\n" (string-repeat indentation " "))))
+         (let ((new-line (text-append "\n" (text-repeat indentation " "))))
            (layout width indentation rest
-                   (string-append result new-line))))
+                   (text-append result new-line))))
         ((group-node child)
          (if (fit-inline (isub width cursor) [child])
            (layout width cursor
@@ -59,7 +59,7 @@
         ((null-node)
          (fit-inline-step width cursor rest))
         ((text-node content)
-         (let ((new-cursor (iadd cursor (string-length content))))
+         (let ((new-cursor (iadd cursor (text-length content))))
            (if (int-greater new-cursor width)
              false
              (fit-inline-step width new-cursor rest))))
@@ -68,7 +68,7 @@
         ((indent-node length child)
          (fit-inline-step width cursor (cons child rest)))
         ((break-node space)
-         (let ((new-cursor (iadd cursor (string-length space))))
+         (let ((new-cursor (iadd cursor (text-length space))))
            (if (int-greater new-cursor width)
              false
              (fit-inline-step width new-cursor rest))))

@@ -8,7 +8,7 @@
   (match term
     ((symbol-term content location) location)
     ((keyword-term content location) location)
-    ((string-term content location) location)
+    ((text-term content location) location)
     ((int-term content location) location)
     ((float-term content location) location)
     ((var-term name location) location)

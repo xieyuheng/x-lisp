@@ -16,5 +16,5 @@ List type constructor. `(list-t E)` represents a list with element type `E`.
 
 ```meta-lisp
 (claim numbers (list-t int-t))
-(claim names (list-t string-t))
+(claim names (list-t text-t))
 ```

@@ -1,5 +1,5 @@
 # 类型
-(-> int-t string-t)
+(-> int-t text-t)
 
 # 描述
 将整数格式化为 S 表达式字符串。

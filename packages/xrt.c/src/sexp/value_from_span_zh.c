@@ -25,7 +25,7 @@ value_t value_from_source_location_zh(struct source_location_t location) {
   value_t data = x_make_list();
   value_t tag = x_object(intern_symbol("作源码位置"));
   x_list_push_mut(tag, data);
-  x_list_push_mut(x_object(make_xstring(location.pathname)), data);
+  x_list_push_mut(x_object(make_xtext(location.pathname)), data);
   x_list_push_mut(value_from_span_zh(location.span), data);
   return data;
 }

@@ -5,7 +5,7 @@ title: file-read
 # 类型
 
 ```meta-lisp
-(-> file-t string-t)
+(-> file-t text-t)
 ```
 
 # 描述

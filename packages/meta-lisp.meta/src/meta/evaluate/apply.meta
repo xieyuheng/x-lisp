@@ -23,8 +23,8 @@
      (match (lookup-primitive-function name)
        ((just fn) (fn args))
        ((nothing)
-        (error (@string "(apply-definition) no implementation for primitive function: "
-                        (symbol-to-string name))))))
+        (error (@text "(apply-definition) no implementation for primitive function: "
+                        (symbol-to-text name))))))
      ((type-definition mod name parameters body location)
       (let ((env (env-put-many parameters args (empty-env mode))))
         (evaluate mod env body)))

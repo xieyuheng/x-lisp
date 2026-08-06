@@ -5,12 +5,12 @@ title: parse-sexps
 # Type
 
 ```meta-lisp
-(-> string-t string-t (list-t sexp-t))
+(-> text-t text-t (list-t sexp-t))
 ```
 
 # Description
 
-Parse a string into a list of located S-expressions. The first argument is the filename, the second is the source content.
+Parse a text into a list of located S-expressions. The first argument is the filename, the second is the source content.
 
 # Examples
 

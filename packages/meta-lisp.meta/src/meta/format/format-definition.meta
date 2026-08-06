@@ -1,82 +1,82 @@
 (module meta)
 
-(claim format-definition (-> definition-t string-t))
+(claim format-definition (-> definition-t text-t))
 (define (format-definition definition)
   (match definition
     ((primitive-function-declaration mod name arity location)
-     (@string "(declare-primitive-function "
-              (symbol-to-string name) " "
+     (@text "(declare-primitive-function "
+              (symbol-to-text name) " "
               (format-as-sexp arity) ")"))
     ((primitive-variable-declaration mod name location)
-     (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
+     (@text "(declare-primitive-variable " (symbol-to-text name) ")"))
     ((function-definition mod name parameters body location)
      (let ((claim-str (format-definition-claim mod name))
-           (params-str (string-join " " (list-map symbol-to-string parameters)))
+           (params-str (text-join " " (list-map symbol-to-text parameters)))
            (body-str (format-term body)))
-       (@string claim-str
-                "(define (" (symbol-to-string name) " "
+       (@text claim-str
+                "(define (" (symbol-to-text name) " "
                 params-str ") " body-str ")")))
     ((variable-definition mod name body location)
      (let ((claim-str (format-definition-claim mod name))
            (body-str (format-term body)))
-       (@string claim-str
-                "(define " (symbol-to-string name)
+       (@text claim-str
+                "(define " (symbol-to-text name)
                 " " body-str ")")))
     ((test-definition mod name body location)
      (let ((claim-str (format-definition-claim mod name))
            (body-str (format-term body)))
-       (@string claim-str "(define-test " (symbol-to-string name) " " body-str ")")))
+       (@text claim-str "(define-test " (symbol-to-text name) " " body-str ")")))
     ((type-definition mod name parameters body location)
      (let ((claim-str (format-definition-claim mod name))
            (body-str (format-term body)))
-       (@string claim-str "(define-type " (symbol-to-string name) " " body-str ")")))
+       (@text claim-str "(define-type " (symbol-to-text name) " " body-str ")")))
     ((algebraic-type-definition mod name type-constructor data-constructors location)
      (let ((tc-name (type-constructor-name type-constructor))
            (tc-params (type-constructor-parameters type-constructor))
-           (ctors-str (string-join " " (list-map format-data-constructor data-constructors))))
+           (ctors-str (text-join " " (list-map format-data-constructor data-constructors))))
        (if (list-is-empty tc-params)
-         (@string "(define-enum " (symbol-to-string tc-name) " " ctors-str ")")
-         (@string "(define-enum (" (symbol-to-string tc-name) " "
-                  (string-join " " (list-map symbol-to-string tc-params)) ") "
+         (@text "(define-enum " (symbol-to-text tc-name) " " ctors-str ")")
+         (@text "(define-enum (" (symbol-to-text tc-name) " "
+                  (text-join " " (list-map symbol-to-text tc-params)) ") "
                   ctors-str ")"))))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
-     (let ((tc-name (symbol-to-string name))
+     (let ((tc-name (symbol-to-text name))
            (tc-params (type-constructor-parameters type-constructor))
            (repr-str (format-term representation-type))
-           (ifaces-str (string-join " "
+           (ifaces-str (text-join " "
                          (list-map (lambda (entry)
-                                     (@string "(" (symbol-to-string (interface-entry-name entry)) " "
+                                     (@text "(" (symbol-to-text (interface-entry-name entry)) " "
                                               (format-term (interface-entry-type entry)) ")"))
                            interface-entries))))
        (if (list-is-empty tc-params)
-         (@string "(define-opaque-type " tc-name " " repr-str " " ifaces-str ")")
-         (@string "(define-opaque-type (" tc-name " "
-                  (string-join " " (list-map symbol-to-string tc-params)) ") "
+         (@text "(define-opaque-type " tc-name " " repr-str " " ifaces-str ")")
+         (@text "(define-opaque-type (" tc-name " "
+                  (text-join " " (list-map symbol-to-text tc-params)) ") "
                   repr-str " " ifaces-str ")"))))))
 
 (define (format-data-constructor data-constructor)
-  (let ((name-str (symbol-to-string (data-constructor-name data-constructor)))
+  (let ((name-str (symbol-to-text (data-constructor-name data-constructor)))
         (fields (data-constructor-fields data-constructor)))
     (if (list-is-empty fields)
-      (@string "(" name-str ")")
-      (@string "(" name-str " "
-               (string-join " "
+      (@text "(" name-str ")")
+      (@text "(" name-str " "
+               (text-join " "
                  (list-map (lambda (field)
-                             (let ((fn (symbol-to-string (data-field-name field)))
+                             (let ((fn (symbol-to-text (data-field-name field)))
                                    (ft (format-term (data-field-type field))))
                                (if (equal ft "")
                                  fn
-                                 (@string "(" fn " " ft ")"))))
+                                 (@text "(" fn " " ft ")"))))
                    fields)) ")"))))
 
 (define (format-definition-claim mod name)
   (let ((claimed-entry (mod-lookup-claimed-entry mod name)))
     (if (not (is-nothing claimed-entry))
       (let ((term (claimed-entry-term (just-value claimed-entry))))
-        (@string "(claim " (symbol-to-string name) " " (format-term term) ") "))
+        (@text "(claim " (symbol-to-text name) " " (format-term term) ") "))
       (let ((inferred-type (mod-lookup-inferred-type mod name)))
         (if (not (is-nothing inferred-type))
-          (@string "(claim " (symbol-to-string name) " "
+          (@text "(claim " (symbol-to-text name) " "
                    (format-type (just-value inferred-type)) ") ")
           "")))))
 

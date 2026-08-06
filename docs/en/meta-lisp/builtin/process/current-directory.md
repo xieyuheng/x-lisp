@@ -5,7 +5,7 @@ title: current-directory
 # Type
 
 ```meta-lisp
-(-> string-t)
+(-> text-t)
 ```
 
 # Description

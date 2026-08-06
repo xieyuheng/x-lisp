@@ -77,7 +77,7 @@ value_t parse_located_sexps_zh(const char *pathname, const char *string) {
   list_t *tokens = lexer_lex(lexer);
   lexer_free(lexer);
 
-  value_t path = x_object(make_xstring(pathname));
+  value_t path = x_object(make_xtext(pathname));
   value_t sexps = x_make_list();
   while (true) {
     ignore_line_comments(tokens);
@@ -119,7 +119,7 @@ static value_t for_sexp_zh(value_t path, list_t *tokens) {
   }
 
   case STRING_TOKEN: {
-    value_t content = x_object(make_xstring_take(string_copy(token->content)));
+    value_t content = x_object(make_xtext_take(string_copy(token->content)));
     value_t span = value_from_span_zh(token->span);
     value_t location = make_source_location_sexp_zh(path, span);
     token_free(token);

@@ -5,7 +5,7 @@ title: open-input-file
 # 类型
 
 ```meta-lisp
-(-> string-t file-t)
+(-> text-t file-t)
 ```
 
 # 描述

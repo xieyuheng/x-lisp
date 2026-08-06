@@ -119,20 +119,6 @@
       (name object-json)
       (accessor-names object-json-entries)
       (predicate-name is-object-json))
-    ("meta-builtin/builtin/string-json"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name json-t)
-      (name string-json)
-      (accessor-names string-json-value)
-      (predicate-name is-string-json))
-    ("meta-builtin/builtin/string-sexp"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name sexp-t)
-      (name string-sexp)
-      (accessor-names string-sexp-content string-sexp-location)
-      (predicate-name is-string-sexp))
     ("meta-builtin/builtin/symbol-sexp"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -140,6 +126,20 @@
       (name symbol-sexp)
       (accessor-names symbol-sexp-content symbol-sexp-location)
       (predicate-name is-symbol-sexp))
+    ("meta-builtin/builtin/text-json"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name json-t)
+      (name text-json)
+      (accessor-names text-json-value)
+      (predicate-name is-text-json))
+    ("meta-builtin/builtin/text-sexp"
+      (pkg-name meta-builtin)
+      (mod-name builtin)
+      (type-name sexp-t)
+      (name text-sexp)
+      (accessor-names text-sexp-content text-sexp-location)
+      (predicate-name is-text-sexp))
     ("meta-builtin/内置/作源码位置"
       (pkg-name meta-builtin)
       (mod-name 内置)
@@ -328,7 +328,7 @@
       (pkg-name meta-builtin)
       (mod-name builtin)
       (name json-t)
-      (constructor-names null-json bool-json number-json string-json array-json object-json))
+      (constructor-names null-json bool-json number-json text-json array-json object-json))
     ("meta-builtin/builtin/maybe-t"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -338,7 +338,7 @@
       (pkg-name meta-builtin)
       (mod-name builtin)
       (name sexp-t)
-      (constructor-names symbol-sexp keyword-sexp string-sexp int-sexp float-sexp list-sexp))
+      (constructor-names symbol-sexp keyword-sexp text-sexp int-sexp float-sexp list-sexp))
     ("meta-builtin/builtin/source-location-t"
       (pkg-name meta-builtin)
       (mod-name builtin)

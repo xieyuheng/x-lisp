@@ -63,7 +63,7 @@ void import_builtin_en(mod_t *mod) {
   define_variable_primitive_0(mod, "meta-builtin/builtin/any-t", x_any_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/int-t", x_int_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/float-t", x_float_t);
-  define_variable_primitive_0(mod, "meta-builtin/builtin/string-t", x_string_t);
+  define_variable_primitive_0(mod, "meta-builtin/builtin/text-t", x_text_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/symbol-t", x_symbol_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/keyword-t", x_keyword_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/bool-t", x_bool_t);
@@ -117,7 +117,7 @@ void import_builtin_en(mod_t *mod) {
 
   define_primitive_1(mod, "meta-builtin/builtin/is-keyword", x_is_keyword);
   define_primitive_1(mod, "meta-builtin/builtin/keyword-length", x_keyword_length);
-  define_primitive_1(mod, "meta-builtin/builtin/keyword-to-string", x_keyword_to_string);
+  define_primitive_1(mod, "meta-builtin/builtin/keyword-to-text", x_keyword_to_text);
   define_primitive_2(mod, "meta-builtin/builtin/keyword-append", x_keyword_append);
   define_primitive_1(mod, "meta-builtin/builtin/keyword-concat", x_keyword_concat);
 
@@ -125,42 +125,42 @@ void import_builtin_en(mod_t *mod) {
 
   define_primitive_1(mod, "meta-builtin/builtin/is-symbol", x_is_symbol);
   define_primitive_1(mod, "meta-builtin/builtin/symbol-length", x_symbol_length);
-  define_primitive_1(mod, "meta-builtin/builtin/symbol-to-string", x_symbol_to_string);
+  define_primitive_1(mod, "meta-builtin/builtin/symbol-to-text", x_symbol_to_text);
   define_primitive_2(mod, "meta-builtin/builtin/symbol-append", x_symbol_append);
   define_primitive_1(mod, "meta-builtin/builtin/symbol-concat", x_symbol_concat);
 
   // string
 
-  define_primitive_1(mod, "meta-builtin/builtin/is-string", x_is_string);
-  define_primitive_1(mod, "meta-builtin/builtin/string-length", x_string_length);
-  define_primitive_1(mod, "meta-builtin/builtin/string-is-empty", x_string_is_empty);
-  define_primitive_1(mod, "meta-builtin/builtin/string-is-blank", x_string_is_blank);
-  define_primitive_3(mod, "meta-builtin/builtin/string-substring", x_string_substring);
-  define_primitive_2(mod, "meta-builtin/builtin/string-append", x_string_append);
-  define_primitive_1(mod, "meta-builtin/builtin/string-concat", x_string_concat);
-  define_primitive_2(mod, "meta-builtin/builtin/string-compare-lexical", x_string_compare_lexical);
-  define_primitive_1(mod, "meta-builtin/builtin/string-to-symbol", x_string_to_symbol);
-  define_primitive_1(mod, "meta-builtin/builtin/string-chars", x_string_chars);
-  define_primitive_1(mod, "meta-builtin/builtin/string-lines", x_string_lines);
-  define_primitive_2(mod, "meta-builtin/builtin/string-split", x_string_split);
-  define_primitive_2(mod, "meta-builtin/builtin/string-join", x_string_join);
-  define_primitive_3(mod, "meta-builtin/builtin/string-replace", x_string_replace);
-  define_primitive_2(mod, "meta-builtin/builtin/string-starts-with", x_string_starts_with);
-  define_primitive_2(mod, "meta-builtin/builtin/string-ends-with", x_string_ends_with);
-  define_primitive_1(mod, "meta-builtin/builtin/string-to-upper-case", x_string_to_upper_case);
-  define_primitive_1(mod, "meta-builtin/builtin/string-to-lower-case", x_string_to_lower_case);
-  define_primitive_2(mod, "meta-builtin/builtin/string-get-code-point", x_string_get_code_point);
-  define_primitive_2(mod, "meta-builtin/builtin/string-contains", x_string_contains);
-  define_primitive_2(mod, "meta-builtin/builtin/string-find-index", x_string_find_index);
-  define_primitive_1(mod, "meta-builtin/builtin/string-trim-left", x_string_trim_left);
-  define_primitive_1(mod, "meta-builtin/builtin/string-trim-right", x_string_trim_right);
-  define_primitive_1(mod, "meta-builtin/builtin/string-trim-start", x_string_trim_start);
-  define_primitive_1(mod, "meta-builtin/builtin/string-trim-end", x_string_trim_end);
-  define_primitive_1(mod, "meta-builtin/builtin/string-trim", x_string_trim);
-  define_primitive_1(mod, "meta-builtin/builtin/string-is-int", x_string_is_int);
-  define_primitive_1(mod, "meta-builtin/builtin/string-is-float", x_string_is_float);
-  define_primitive_1(mod, "meta-builtin/builtin/string-to-int", x_string_to_int);
-  define_primitive_1(mod, "meta-builtin/builtin/string-to-float", x_string_to_float);
+  define_primitive_1(mod, "meta-builtin/builtin/is-text", x_is_text);
+  define_primitive_1(mod, "meta-builtin/builtin/text-length", x_text_length);
+  define_primitive_1(mod, "meta-builtin/builtin/text-is-empty", x_text_is_empty);
+  define_primitive_1(mod, "meta-builtin/builtin/text-is-blank", x_text_is_blank);
+  define_primitive_3(mod, "meta-builtin/builtin/text-slice", x_text_slice);
+  define_primitive_2(mod, "meta-builtin/builtin/text-append", x_text_append);
+  define_primitive_1(mod, "meta-builtin/builtin/text-concat", x_text_concat);
+  define_primitive_2(mod, "meta-builtin/builtin/text-compare-lexical", x_text_compare_lexical);
+  define_primitive_1(mod, "meta-builtin/builtin/text-to-symbol", x_text_to_symbol);
+  define_primitive_1(mod, "meta-builtin/builtin/text-chars", x_text_chars);
+  define_primitive_1(mod, "meta-builtin/builtin/text-lines", x_text_lines);
+  define_primitive_2(mod, "meta-builtin/builtin/text-split", x_text_split);
+  define_primitive_2(mod, "meta-builtin/builtin/text-join", x_text_join);
+  define_primitive_3(mod, "meta-builtin/builtin/text-replace", x_text_replace);
+  define_primitive_2(mod, "meta-builtin/builtin/text-starts-with", x_text_starts_with);
+  define_primitive_2(mod, "meta-builtin/builtin/text-ends-with", x_text_ends_with);
+  define_primitive_1(mod, "meta-builtin/builtin/text-to-upper-case", x_text_to_upper_case);
+  define_primitive_1(mod, "meta-builtin/builtin/text-to-lower-case", x_text_to_lower_case);
+  define_primitive_2(mod, "meta-builtin/builtin/text-get-code-point", x_text_get_code_point);
+  define_primitive_2(mod, "meta-builtin/builtin/text-contains", x_text_contains);
+  define_primitive_2(mod, "meta-builtin/builtin/text-find-index", x_text_find_index);
+  define_primitive_1(mod, "meta-builtin/builtin/text-trim-left", x_text_trim_left);
+  define_primitive_1(mod, "meta-builtin/builtin/text-trim-right", x_text_trim_right);
+  define_primitive_1(mod, "meta-builtin/builtin/text-trim-start", x_text_trim_start);
+  define_primitive_1(mod, "meta-builtin/builtin/text-trim-end", x_text_trim_end);
+  define_primitive_1(mod, "meta-builtin/builtin/text-trim", x_text_trim);
+  define_primitive_1(mod, "meta-builtin/builtin/text-is-int", x_text_is_int);
+  define_primitive_1(mod, "meta-builtin/builtin/text-is-float", x_text_is_float);
+  define_primitive_1(mod, "meta-builtin/builtin/text-to-int", x_text_to_int);
+  define_primitive_1(mod, "meta-builtin/builtin/text-to-float", x_text_to_float);
 
   // list
 

@@ -12,7 +12,7 @@ value_t parse_located_sexps(const char *pathname, const char *string) {
   list_t *tokens = lexer_lex(lexer);
   lexer_free(lexer);
 
-  value_t path = x_object(make_xstring(pathname));
+  value_t path = x_object(make_xtext(pathname));
   value_t sexps = x_make_list();
   while (true) {
     ignore_line_comments(tokens);
@@ -59,7 +59,7 @@ static value_t keyword_sexp(value_t content, value_t location) {
 
 static value_t string_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
-  value_t tag = x_object(intern_symbol("string-sexp"));
+  value_t tag = x_object(intern_symbol("text-sexp"));
   x_list_push_mut(tag, sexp);
   x_list_push_mut(content, sexp);
   x_list_push_mut(location, sexp);
@@ -129,7 +129,7 @@ static value_t for_sexp(value_t path, list_t *tokens) {
   }
 
   case STRING_TOKEN: {
-    value_t content = x_object(make_xstring_take(string_copy(token->content)));
+    value_t content = x_object(make_xtext_take(string_copy(token->content)));
     value_t span = value_from_span(token->span);
     value_t location = make_source_location_sexp(path, span);
     token_free(token);

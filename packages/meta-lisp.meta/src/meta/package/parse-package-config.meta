@@ -1,11 +1,11 @@
 (module meta)
 
-(define (parse-package-config path string)
-  (let ((json (parse-json string))
+(define (parse-package-config path text)
+  (let ((json (parse-json text))
          (entries (object-json-entries json)))
     (make-package-config
-      (string-json-value (hash-get "name" entries))
-      (string-json-value (hash-get "version" entries))
+      (text-json-value (hash-get "name" entries))
+      (text-json-value (hash-get "version" entries))
       (parse-entry entries)
       (parse-build-config (hash-get "build" entries))
       (parse-dependencies entries)
@@ -15,7 +15,7 @@
 (define (parse-dependencies entries)
   (if (hash-has "dependencies" entries)
     (let ((dep-entries (object-json-entries (hash-get "dependencies" entries))))
-      (hash-map-value string-json-value dep-entries))
+      (hash-map-value text-json-value dep-entries))
     (make-hash)))
 
 (define (parse-prelude entries)
@@ -24,24 +24,24 @@
       (hash-map-value
         (lambda (v)
           (let ((arr (array-json-elements v)))
-            (list-map string-json-value arr)))
+            (list-map text-json-value arr)))
         prelude-entries))
     (make-hash)))
 
 (define (parse-entry entries)
   (if (hash-has "entry" entries)
-    (just (string-json-value (hash-get "entry" entries)))
+    (just (text-json-value (hash-get "entry" entries)))
     (nothing)))
 
 (define (parse-compiler entries)
   (if (hash-has "compiler" entries)
     (let ((compiler-entries (object-json-entries (hash-get "compiler" entries))))
-      (hash-map-value string-json-value compiler-entries))
+      (hash-map-value text-json-value compiler-entries))
     (make-hash)))
 
 (define (parse-build-config json-value)
   (let ((entries (object-json-entries json-value)))
     (make-build-config
-      (string-json-value (hash-get "source-directory" entries))
-      (string-json-value (hash-get "output-directory" entries))
-      (string-json-value (hash-get "snapshot-directory" entries)))))
+      (text-json-value (hash-get "source-directory" entries))
+      (text-json-value (hash-get "output-directory" entries))
+      (text-json-value (hash-get "snapshot-directory" entries)))))

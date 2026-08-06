@@ -13,8 +13,8 @@
   (assert-equal (number-json -17.0) (parse-json "-17"))
   (assert-equal (number-json 3.14) (parse-json "3.14")))
 
-(define-test parse-string-json-test
-  (assert-equal (string-json "hello") (parse-json "\"hello\"")))
+(define-test parse-text-json-test
+  (assert-equal (text-json "hello") (parse-json "\"hello\"")))
 
 (define-test parse-array-json-test
   (assert-equal (array-json [(number-json 1.0) (number-json 2.0) (number-json 3.0)])
@@ -32,9 +32,9 @@
   (assert-equal "42.0" (format-json (number-json 42.0)))
   (println (format-json (number-json 3.14))))
 
-(define-test format-json-string-escape-test
-  (println (format-json (string-json "hello")))
-  (println (format-json (string-json "a\"b")))
-  (println (format-json (string-json "a\\b")))
-  (println (format-json (string-json "a\nb")))
-  (println (format-json (string-json "a\tb"))))
+(define-test format-json-text-escape-test
+  (println (format-json (text-json "hello")))
+  (println (format-json (text-json "a\"b")))
+  (println (format-json (text-json "a\\b")))
+  (println (format-json (text-json "a\nb")))
+  (println (format-json (text-json "a\tb"))))

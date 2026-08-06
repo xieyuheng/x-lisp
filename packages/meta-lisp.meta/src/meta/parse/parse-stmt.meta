@@ -292,12 +292,12 @@
 
 (define (parse-import-source sexp)
   (let ((raw (symbol-sexp-content sexp))
-         (raw-string (symbol-to-string raw))
-         (parts (string-split "/" raw-string)))
+         (raw-text (symbol-to-text raw))
+         (parts (text-split "/" raw-text)))
     (if (equal (list-length parts) 1)
       (make-pair 'self raw)
-      (make-pair (string-to-symbol (list-get 0 parts))
-        (string-to-symbol (list-get 1 parts))))))
+      (make-pair (text-to-symbol (list-get 0 parts))
+        (text-to-symbol (list-get 1 parts))))))
 
 (claim parse-explicit-data-constructor
   (-> (list-t sexp-t) source-location-t

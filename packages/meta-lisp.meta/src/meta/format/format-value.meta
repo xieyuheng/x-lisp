@@ -1,6 +1,6 @@
 (module meta)
 
-(claim format-value (-> value-t string-t))
+(claim format-value (-> value-t text-t))
 (define (format-value value)
   (match value
     ((type-value type)
@@ -10,11 +10,11 @@
            (target-str (format-value target)))
        (if (equal args-str "")
          target-str
-         (@string "(" target-str " " args-str ")"))))
+         (@text "(" target-str " " args-str ")"))))
     ((definition-value definition)
-     (let ((mod-name (symbol-to-string (definition-mod-name definition)))
-           (name (symbol-to-string (definition-name definition))))
-       (@string mod-name "/" name)))))
+     (let ((mod-name (symbol-to-text (definition-mod-name definition)))
+           (name (symbol-to-text (definition-name definition))))
+       (@text mod-name "/" name)))))
 
 (define (format-values values)
-  (string-join " " (list-map format-value values)))
+  (text-join " " (list-map format-value values)))

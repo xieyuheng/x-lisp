@@ -9,8 +9,8 @@
   (path-write "src/path/file-2.txt" "abc\n")
   (assert-equal "abc\n" (path-read "src/path/file-2.txt"))
 
-  (list-each println (list-copy-sort string-compare-lexical (path-list "src")))
+  (list-each println (list-copy-sort text-compare-lexical (path-list "src")))
   (print "\n")
 
-  (list-each println (list-copy-sort string-compare-lexical (path-list-recursive "src")))
+  (list-each println (list-copy-sort text-compare-lexical (path-list-recursive "src")))
   (print "\n"))

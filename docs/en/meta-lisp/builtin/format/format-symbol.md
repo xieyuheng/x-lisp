@@ -4,11 +4,11 @@ title: format-symbol
 
 # Type
 ```meta-lisp
-(-> symbol-t string-t)
+(-> symbol-t text-t)
 ```
 
 # Description
-Format a symbol as an S-expression string.
+Format a symbol as an S-expression text.
 
 # Examples
 ```meta-lisp

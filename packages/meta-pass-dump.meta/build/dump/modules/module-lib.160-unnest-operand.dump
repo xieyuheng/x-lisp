@@ -3,5 +3,5 @@
 (define (greet name)
   (let
       ((unnested.1
-        (meta-builtin/builtin/string-append self/module-lib/greeting ", ")))
-    (meta-builtin/builtin/string-append unnested.1 name)))
+        (meta-builtin/builtin/text-append self/module-lib/greeting ", ")))
+    (meta-builtin/builtin/text-append unnested.1 name)))

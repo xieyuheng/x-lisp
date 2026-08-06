@@ -1,7 +1,7 @@
 (module builtin)
 
 (define-struct source-location-t
-  (path string-t)
+  (path text-t)
   (span source-span-t))
 
 (define-struct source-span-t
@@ -14,4 +14,4 @@
   (column int-t))
 
 (declare-primitive-function format-message-with-location 2)
-(claim format-message-with-location (-> string-t source-location-t string-t))
+(claim format-message-with-location (-> text-t source-location-t text-t))

@@ -1,15 +1,15 @@
 (module builtin)
 
-(claim format-sexp (-> sexp-t string-t))
+(claim format-sexp (-> sexp-t text-t))
 
 (define (format-sexp sexp)
   (match sexp
-    ((symbol-sexp content location) (symbol-to-string content))
+    ((symbol-sexp content location) (symbol-to-text content))
     ((keyword-sexp content location) (format-as-sexp content))
-    ((string-sexp content location) (format-as-sexp content))
+    ((text-sexp content location) (format-as-sexp content))
     ((int-sexp content location) (format-as-sexp content))
     ((float-sexp content location) (format-as-sexp content))
     ((list-sexp elements location)
      (if (list-is-empty elements)
        "()"
-       (@string "(" (string-join " " (list-map format-sexp elements)) ")")))))
+       (@text "(" (text-join " " (list-map format-sexp elements)) ")")))))

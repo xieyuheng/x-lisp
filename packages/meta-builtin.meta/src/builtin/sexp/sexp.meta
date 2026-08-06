@@ -3,11 +3,11 @@
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
   (keyword-sexp (content keyword-t) (location source-location-t))
-  (string-sexp (content string-t) (location source-location-t))
+  (text-sexp (content text-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))
   (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
 
 (declare-primitive-function parse-sexps 2)
 
-(claim parse-sexps (-> string-t string-t (list-t sexp-t)))
+(claim parse-sexps (-> text-t text-t (list-t sexp-t)))

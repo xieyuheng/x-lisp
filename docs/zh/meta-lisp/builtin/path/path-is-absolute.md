@@ -5,7 +5,7 @@ title: path-is-absolute
 # 类型
 
 ```meta-lisp
-(-> string-t bool-t)
+(-> text-t bool-t)
 ```
 
 # 描述

@@ -2,12 +2,12 @@
 
 (declare-primitive-function is-keyword 1)
 (declare-primitive-function keyword-length 1)
-(declare-primitive-function keyword-to-string 1)
+(declare-primitive-function keyword-to-text 1)
 (declare-primitive-function keyword-append 2)
 (declare-primitive-function keyword-concat 1)
 
 (claim is-keyword (polymorphic (A) (-> A bool-t)))
 (claim keyword-length (-> keyword-t int-t))
-(claim keyword-to-string (-> keyword-t string-t))
+(claim keyword-to-text (-> keyword-t text-t))
 (claim keyword-append (-> keyword-t keyword-t keyword-t))
 (claim keyword-concat (-> (list-t keyword-t) keyword-t))

@@ -324,7 +324,7 @@ function computeTreeSize(mod: Mod, dataType: Type, value: Data): number {
     return 8 + inner
   }
 
-  if (value.kind === "StringData") {
+  if (value.kind === "TextData") {
     if (typeSize(mod, dataType) === 8) {
       return 8 + value.content.length + 1
     }
@@ -345,7 +345,7 @@ function computePointerTargetSize(mod: Mod, target: Data): number {
       target,
     )
   }
-  if (target.kind === "StringData") return target.content.length + 1
+  if (target.kind === "TextData") return target.content.length + 1
   let message = `unsupported pointer target: ${target.kind}`
   throw new Error(message)
 }
@@ -401,7 +401,7 @@ function emitTree(
     return offset
   }
 
-  if (value.kind === "StringData") {
+  if (value.kind === "TextData") {
     if (typeSize(mod, dataType) === 8) {
       writeInt64(buf, offset, 0n)
       const pointerSlotOffset = offset
@@ -476,7 +476,7 @@ function emitPointerTarget(
     )
   }
 
-  if (target.kind === "StringData") {
+  if (target.kind === "TextData") {
     for (let i = 0; i < target.content.length; i++) {
       buf[offset + i] = target.content.charCodeAt(i)
     }

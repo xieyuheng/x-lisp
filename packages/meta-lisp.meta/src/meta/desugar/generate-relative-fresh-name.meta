@@ -16,4 +16,4 @@
       candidate)))
 
 (define (int-to-suffix-symbol n)
-  (string-to-symbol (string-append "." (format-int n))))
+  (text-to-symbol (text-append "." (format-int n))))

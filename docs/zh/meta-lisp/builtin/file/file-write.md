@@ -5,7 +5,7 @@ title: file-write
 # 类型
 
 ```meta-lisp
-(-> file-t string-t void-t)
+(-> file-t text-t void-t)
 ```
 
 # 描述

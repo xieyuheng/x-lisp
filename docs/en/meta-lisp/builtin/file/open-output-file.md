@@ -5,7 +5,7 @@ title: open-output-file
 # Type
 
 ```meta-lisp
-(-> string-t file-t)
+(-> text-t file-t)
 ```
 
 # Description

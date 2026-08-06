@@ -102,9 +102,9 @@
   (match (hash-get-maybe name (mod-claimed mod))
     ((just previous)
      (error-with-location
-       (@string
+       (@text
          "(mod-claim) name already claimed"
-         "\n  name: " (symbol-to-string name)
+         "\n  name: " (symbol-to-text name)
          "\n"
          (format-message-with-location "previous claim"
            (term-location (claimed-entry-term previous))))
@@ -128,9 +128,9 @@
 (define (mod-define mod name definition)
   (let ((definitions (mod-definitions mod)))
     (if (hash-has name definitions)
-      (error (@string
+      (error (@text
                "[mod-define] name already defined"
-               "\n  name: " (symbol-to-string name)))
+               "\n  name: " (symbol-to-text name)))
       (hash-put name definition definitions)))
   void)
 

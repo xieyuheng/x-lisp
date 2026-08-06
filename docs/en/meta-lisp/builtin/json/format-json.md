@@ -5,12 +5,12 @@ title: format-json
 # Type
 
 ```meta-lisp
-(-> json-t string-t)
+(-> json-t text-t)
 ```
 
 # Description
 
-Format a `json-t` value as a JSON string.
+Format a `json-t` value as a JSON text.
 
 # Examples
 
@@ -18,5 +18,5 @@ Format a `json-t` value as a JSON string.
 (format-json (null-json))             ;; => "null"
 (format-json (bool-json true))        ;; => "true"
 (format-json (number-json 42.0))      ;; => "42.0"
-(format-json (string-json "hello"))   ;; => "\"hello\""
+(format-json (text-json "hello"))   ;; => "\"hello\""
 ```

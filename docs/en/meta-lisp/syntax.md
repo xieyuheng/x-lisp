@@ -23,7 +23,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(@list)](#list)
   - [(@set)](#set)
   - [(@hash)](#hash)
-  - [(@string)](#string)
+  - [(@text)](#text)
   - [(@quote)](#quote)
   - [(@sexp)](#sexp)
 - [Variables](#variables)
@@ -200,26 +200,26 @@ Creates a hash table.
 (@hash "a" 1 "b" 2)
 ```
 
-## (@string)
+## (@text)
 
 ```meta-lisp
-(@string <exp> ...)
+(@text <exp> ...)
 ```
 
-Concatenates string expressions into a single string.
+Concatenates text expressions into a single text.
 
 ```meta-lisp
-(@string "hello" " " "world")
-(@string "(" x ")")
-(@string)
+(@text "hello" " " "world")
+(@text "(" x ")")
+(@text)
 ```
 
 The example above is equivalent to:
 
 ```meta-lisp
-(string-concat ["hello" " " "world"])
-(string-concat ["(" x ")"])
-(string-concat [])
+(text-concat ["hello" " " "world"])
+(text-concat ["(" x ")"])
+(text-concat [])
 ```
 
 ## (@quote)
@@ -257,7 +257,7 @@ The `sexp-t` type is defined as:
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
   (keyword-sexp (content keyword-t) (location source-location-t))
-  (string-sexp (content string-t) (location source-location-t))
+  (text-sexp (content text-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))
   (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
@@ -435,7 +435,7 @@ The function body `<body>` can be multiple expressions:
 |-------------|---------------|--------------------------------|
 | `int-t`     | Integer       | `42` `-1`                      |
 | `float-t`   | Float         | `3.14` `-2.5`                  |
-| `string-t`  | String        | `"hello"`                      |
+| `text-t`  | String        | `"hello"`                      |
 | `symbol-t`  | Symbol        | `'foo`                         |
 | `keyword-t` | Keyword       | `:key`                         |
 | `bool-t`    | Boolean       | `true` `false`                 |
@@ -465,7 +465,7 @@ For example:
 ```meta-lisp
 (-> int-t int-t)
 (-> int-t int-t int-t)
-(-> string-t bool-t)
+(-> text-t bool-t)
 ```
 
 ## (claim)
@@ -1136,9 +1136,9 @@ This variant of `(define-struct)` exists because sometimes `make-<base-name>` ne
 ```meta-lisp
 (define-struct* package-t
   (make-package
-   (root-directory string-t)
+   (root-directory text-t)
    (config package-config-t)
-   (fragments (hash-t string-t fragment-t))))
+   (fragments (hash-t text-t fragment-t))))
 
 (define (empty-package root-directory config)
   (make-package root-directory config (make-hash)))

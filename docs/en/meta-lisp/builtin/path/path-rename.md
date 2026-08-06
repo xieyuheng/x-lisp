@@ -5,7 +5,7 @@ title: path-rename
 # Type
 
 ```meta-lisp
-(-> string-t string-t void-t)
+(-> text-t text-t void-t)
 ```
 
 # Description

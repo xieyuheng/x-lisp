@@ -1,7 +1,7 @@
 (module meta)
 
 (define-struct module-analysis-report-t
-  (fragment-scopes (hash-t string-t fragment-scope-t))
+  (fragment-scopes (hash-t text-t fragment-scope-t))
   (outcome outcome-t))
 
 ;; - why: type aliases help us to understand the key type of hash-t.
@@ -182,17 +182,17 @@
 (define (ensure-mod-exists package pkg-name mod-name location)
   (if (equal pkg-name 'self)
     (if (not (has-fragment-of-mod-name (hash-values (package-fragments package)) mod-name))
-      (let ((message (@string "undefined module: " (symbol-to-string mod-name))))
+      (let ((message (@text "undefined module: " (symbol-to-text mod-name))))
         (println (format-message-with-location message location))
         (outcome-error))
       (outcome-ok))
     (if (not (hash-has pkg-name (package-dependencies package)))
-      (let ((message (@string "undefined package: " (symbol-to-string pkg-name))))
+      (let ((message (@text "undefined package: " (symbol-to-text pkg-name))))
         (println (format-message-with-location message location))
         (outcome-error))
       (let ((dependency (hash-get pkg-name (package-dependencies package))))
         (if (not (has-fragment-of-mod-name (hash-values (package-fragments dependency)) mod-name))
-          (let ((message (@string "undefined module: " (symbol-to-string pkg-name) "/" (symbol-to-string mod-name))))
+          (let ((message (@text "undefined module: " (symbol-to-text pkg-name) "/" (symbol-to-text mod-name))))
             (println (format-message-with-location message location))
             (outcome-error))
           (outcome-ok))))))
@@ -209,50 +209,50 @@
 
 (define (close-top lines)
   (let ((i (isub (list-length lines) 1)))
-    (list-put i (@string (list-get i lines) ")") lines)))
+    (list-put i (@text (list-get i lines) ")") lines)))
 
 (define (sort-entries-by-symbol-key entries)
   (list-copy-sort
     (lambda (a b)
-      (string-compare-lexical
-        (symbol-to-string (pair-first a))
-        (symbol-to-string (pair-first b))))
+      (text-compare-lexical
+        (symbol-to-text (pair-first a))
+        (symbol-to-text (pair-first b))))
     (hash-entries entries)))
 
-(define (sort-entries-by-string-key entries)
+(define (sort-entries-by-text-key entries)
   (list-copy-sort
     (lambda (a b)
-      (string-compare-lexical (pair-first a) (pair-first b)))
+      (text-compare-lexical (pair-first a) (pair-first b)))
     (hash-entries entries)))
 
 (define (format-name-value entry debug)
-  (@string
-    (symbol-to-string (pair-first entry)) " "
+  (@text
+    (symbol-to-text (pair-first entry)) " "
     (if debug
       (let ((names (pair-second entry)))
-        (string-join " "
-          (list-map symbol-to-string
+        (text-join " "
+          (list-map symbol-to-text
             (list-copy-sort
               (lambda (a b)
-                (string-compare-lexical (symbol-to-string a) (symbol-to-string b)))
+                (text-compare-lexical (symbol-to-text a) (symbol-to-text b)))
               (set-to-list names)))))
       (format (set-size (pair-second entry))))))
 
 (claim format-module-analysis-report
   (-> module-analysis-report-t bool-t
-      string-t))
+      text-t))
 
 (define (format-module-analysis-report result debug)
   (let ((lines []))
     (list-push "(module-analysis-report" lines)
     (list-push "  (fragment-scopes" lines)
-    (for-list (sort-entries-by-string-key (module-analysis-report-fragment-scopes result))
+    (for-list (sort-entries-by-text-key (module-analysis-report-fragment-scopes result))
       (lambda (entry)
         (let ((path (pair-first entry))
               (scope (pair-second entry)))
-          (list-push (@string "    (\"" path "\"") lines)
+          (list-push (@text "    (\"" path "\"") lines)
           (list-push
-            (@string "      (mod-name " (symbol-to-string (fragment-scope-mod-name scope)) ")")
+            (@text "      (mod-name " (symbol-to-text (fragment-scope-mod-name scope)) ")")
             lines)
           (if debug
             (begin
@@ -262,10 +262,10 @@
                   (let ((name (pair-first entry))
                         (qualified-entry (pair-second entry)))
                     (list-push
-                      (@string "        (" (symbol-to-string name) " "
-                               (symbol-to-string (qualified-name-pkg-name qualified-entry)) "/"
-                               (symbol-to-string (qualified-name-mod-name qualified-entry)) "/"
-                               (symbol-to-string (qualified-name-name qualified-entry)) ")")
+                      (@text "        (" (symbol-to-text name) " "
+                               (symbol-to-text (qualified-name-pkg-name qualified-entry)) "/"
+                               (symbol-to-text (qualified-name-mod-name qualified-entry)) "/"
+                               (symbol-to-text (qualified-name-name qualified-entry)) ")")
                       lines))))
               (close-top lines)
               (list-push "      (imported-prefixes" lines)
@@ -274,22 +274,22 @@
                   (let ((prefix (pair-first entry))
                         (qualified-prefix (pair-second entry)))
                     (list-push
-                      (@string "        (" (symbol-to-string prefix) " "
-                               (symbol-to-string (qualified-prefix-pkg-name qualified-prefix)) "/"
-                               (symbol-to-string (qualified-prefix-mod-name qualified-prefix)) ")")
+                      (@text "        (" (symbol-to-text prefix) " "
+                               (symbol-to-text (qualified-prefix-pkg-name qualified-prefix)) "/"
+                               (symbol-to-text (qualified-prefix-mod-name qualified-prefix)) ")")
                       lines))))
               (close-top lines))
             (begin
               (list-push
-                (@string "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")")
+                (@text "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")")
                 lines)
               (list-push
-                (@string "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")")
+                (@text "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")")
                 lines)))
           (close-top lines))))
     (close-top lines)
     (close-top lines)
-    (string-join "\n" lines)))
+    (text-join "\n" lines)))
 
 (claim dump-module-analysis-report
   (-> module-analysis-report-t package-t
@@ -298,6 +298,6 @@
 (define (dump-module-analysis-report result package)
   (let ((dump-directory (path-join (package-output-directory package) "dump")))
     (path-ensure-directory dump-directory)
-    (let ((dump-path (@string dump-directory "/030-module-analysis-report.dump")))
+    (let ((dump-path (@text dump-directory "/030-module-analysis-report.dump")))
       (path-ensure-file dump-path)
-      (path-write dump-path (@string (format-module-analysis-report result false) "\n")))))
+      (path-write dump-path (@text (format-module-analysis-report result false) "\n")))))

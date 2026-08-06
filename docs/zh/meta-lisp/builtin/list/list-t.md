@@ -16,5 +16,5 @@ type-t
 
 ```meta-lisp
 (claim numbers (list-t int-t))
-(claim names (list-t string-t))
+(claim names (list-t text-t))
 ```

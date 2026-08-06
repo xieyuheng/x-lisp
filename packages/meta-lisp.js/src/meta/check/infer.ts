@@ -47,7 +47,7 @@ export function infer(
       return M.Right(
         M.Inferred(
           C.StringTerm(term.content, term.location),
-          M.AtomType("string"),
+          M.AtomType("text"),
         ),
       )
     }

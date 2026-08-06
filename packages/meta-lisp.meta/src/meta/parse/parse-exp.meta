@@ -7,38 +7,38 @@
 (define (parse-exp sexp)
   (match sexp
     ((symbol-sexp content location)
-     (let ((string (symbol-to-string content)))
-       (if (string-contains "/" string)
-         (parse-qualified-var-exp string location)
+     (let ((text (symbol-to-text content)))
+       (if (text-contains "/" text)
+         (parse-qualified-var-exp text location)
          (var-exp content location))))
     ((keyword-sexp content location) (keyword-exp content location))
-    ((string-sexp content location) (string-exp content location))
+    ((text-sexp content location) (text-exp content location))
     ((int-sexp content location) (int-exp content location))
     ((float-sexp content location) (float-exp content location))
     ((list-sexp elements location) (parse-compound-exp elements location))))
 
 (claim parse-qualified-var-exp
-  (-> string-t source-location-t
+  (-> text-t source-location-t
       exp-t))
 
-(define (parse-qualified-var-exp string location)
-  (let ((parts (string-split "/" string)))
+(define (parse-qualified-var-exp text location)
+  (let ((parts (text-split "/" text)))
     (cond
       ((equal (list-length parts) 3)
        (@comment
          <package-name>/<module-name>/<name>)
        (qualified-var-exp
-         (string-to-symbol (list-get 0 parts))
-         (string-to-symbol (list-get 1 parts))
-         (string-to-symbol (list-get 2 parts))
+         (text-to-symbol (list-get 0 parts))
+         (text-to-symbol (list-get 1 parts))
+         (text-to-symbol (list-get 2 parts))
          location))
       ((equal (list-length parts) 2)
        (@comment
          <module-name>/<name>)
        (qualified-var-exp
          'self
-         (string-to-symbol (list-get 0 parts))
-         (string-to-symbol (list-get 1 parts))
+         (text-to-symbol (list-get 0 parts))
+         (text-to-symbol (list-get 1 parts))
          location))
       (else
        (let ((message "(parse-qualified-var-exp) qualified variable must have one or two /"))
@@ -47,7 +47,7 @@
 (define syntax-keywords
   (list-append
     '(lambda @quote if when unless and or cond match multi-match
-      begin let letrec @list @square-bracket @set @hash @sexp @string
+      begin let letrec @list @square-bracket @set @hash @sexp @text
       -> the polymorphic pipe chain compose define @comment)
     '(函 @引用 若 当 除非 且 或 若则 匹配 多元匹配
       循序 令 递归令 @列表 @方括号 @集合 @散列 @符号算式 @文本
@@ -194,10 +194,10 @@
      (@comment
        [<exp> ...])
      (list-exp (list-map parse-exp sexps) location))
-    ((list-member tag '(@string @文本))
+    ((list-member tag '(@text @文本))
      (@comment
-       (@string <exp> ...))
-     (string-concat-exp (list-map parse-exp sexps) location))
+       (@text <exp> ...))
+     (text-concat-exp (list-map parse-exp sexps) location))
     ((list-member tag '(@set @集合))
      (@comment
        (@set <exp> ...))

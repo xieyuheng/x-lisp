@@ -5,7 +5,7 @@ title: format-as-sexp
 # 类型
 
 ```meta-lisp
-(polymorphic (A) (-> A string-t))
+(polymorphic (A) (-> A text-t))
 ```
 
 # 描述

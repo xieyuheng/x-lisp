@@ -5,7 +5,7 @@ title: format-sexp
 # 类型
 
 ```meta-lisp
-(-> sexp-t string-t)
+(-> sexp-t text-t)
 ```
 
 # 描述

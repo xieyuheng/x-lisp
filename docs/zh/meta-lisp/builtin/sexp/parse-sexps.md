@@ -5,7 +5,7 @@ title: parse-sexps
 # 类型
 
 ```meta-lisp
-(-> string-t string-t (list-t sexp-t))
+(-> text-t text-t (list-t sexp-t))
 ```
 
 # 描述

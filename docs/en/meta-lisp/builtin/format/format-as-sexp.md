@@ -5,12 +5,12 @@ title: format-as-sexp
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A string-t))
+(polymorphic (A) (-> A text-t))
 ```
 
 # Description
 
-Format an arbitrary value as an S-expression string.
+Format an arbitrary value as an S-expression text.
 
 # Examples
 

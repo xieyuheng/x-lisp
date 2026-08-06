@@ -10,6 +10,6 @@
 (claim is-atom (polymorphic (A) (-> A bool-t)))
 (claim same (polymorphic (A B) (-> A B bool-t)))
 (claim equal (polymorphic (A B) (-> A B bool-t)))
-(claim format (polymorphic (A) (-> A string-t)))
+(claim format (polymorphic (A) (-> A text-t)))
 (claim hash-code (polymorphic (A) (-> A int-t)))
 (claim total-compare (polymorphic (A B) (-> A B int-t)))

@@ -6,7 +6,7 @@ title: use-output-file
 
 ```meta-lisp
 (polymorphic (A)
-  (-> string-t (-> file-t A) A))
+  (-> text-t (-> file-t A) A))
 ```
 
 # Description

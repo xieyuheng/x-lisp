@@ -1,0 +1,7 @@
+(module builtin)
+
+(define-test text-concat-test
+  (assert-equal "hello world" (text-concat ["hello" " " "world"]))
+  (assert-equal "abcdef" (text-concat ["a" "b" "c" "d" "e" "f"]))
+  (assert-equal "" (text-concat []))
+  (assert-equal "" (text-concat ["" "" ""])))

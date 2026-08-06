@@ -12,7 +12,7 @@ export function formatData(data: B.Data): string {
       } else {
         return data.content.toString()
       }
-    case "StringData":
+    case "TextData":
       return JSON.stringify(data.content)
     case "StructData": {
       const fields = Object.entries(data.fields)

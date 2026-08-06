@@ -9,31 +9,31 @@
      (ppml/text (format-as-sexp content)))
     ((keyword-term content location)
      (ppml/text (format-as-sexp content)))
-    ((string-term content location)
+    ((text-term content location)
      (ppml/text (format-as-sexp content)))
     ((int-term content location)
      (ppml/text (format-as-sexp content)))
     ((float-term content location)
      (ppml/text (format-as-sexp content)))
     ((var-term name location)
-     (ppml/text (symbol-to-string name)))
+     (ppml/text (symbol-to-text name)))
     ((qualified-var-term pkg-name mod-name name location)
-      (ppml/text (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
+      (ppml/text (@text (symbol-to-text pkg-name) "/" (symbol-to-text mod-name) "/" (symbol-to-text name))))
     ((lambda-term parameters body location)
-     (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+     (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters)))
        (let ((params-node
                (if (list-is-empty parameters)
                  (ppml/pretty-application (nothing) param-nodes)
-                 (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
+                 (ppml/pretty-application (just (symbol-to-text (list-head parameters))) param-nodes))))
           (ppml/pretty-syntax "lambda"
             [params-node]
             [(pretty-term body)]))))
     ((apply-term target args location)
-     (let ((target-op (term-op-string target))
+     (let ((target-op (term-op-text target))
            (all-elements (cons (pretty-term target) (list-map pretty-term args))))
        (ppml/pretty-application target-op all-elements)))
     ((let1-term name rhs body location)
-     (let ((name-str (symbol-to-string name))
+     (let ((name-str (symbol-to-text name))
            (rhs-node (pretty-term rhs)))
        (ppml/pretty-syntax "let"
          [(ppml/pretty-application (nothing)
@@ -59,22 +59,22 @@
        [(pretty-term type) (pretty-term instance)]
        []))
     ((polymorphic-term parameters body location)
-     (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+     (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters)))
        (let ((params-node
                (if (list-is-empty parameters)
                  (ppml/pretty-application (nothing) param-nodes)
-                 (ppml/pretty-application (just (symbol-to-string (list-head parameters))) param-nodes))))
+                 (ppml/pretty-application (just (symbol-to-text (list-head parameters))) param-nodes))))
          (ppml/pretty-syntax "polymorphic"
            [params-node]
            [(pretty-term body)]))))))
 
-(claim term-op-string (-> term-t (maybe-t string-t)))
-(define (term-op-string term)
+(claim term-op-text (-> term-t (maybe-t text-t)))
+(define (term-op-text term)
   (match term
     ((symbol-term content location) (just (format-as-sexp content)))
     ((keyword-term content location) (just (format-as-sexp content)))
-    ((var-term name location) (just (symbol-to-string name)))
+    ((var-term name location) (just (symbol-to-text name)))
     ((qualified-var-term pkg-name mod-name name location)
-      (just (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
+      (just (@text (symbol-to-text pkg-name) "/" (symbol-to-text mod-name) "/" (symbol-to-text name))))
     (else (nothing))))
 

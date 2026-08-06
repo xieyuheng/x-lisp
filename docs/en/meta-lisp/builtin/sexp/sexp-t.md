@@ -18,7 +18,7 @@ Located S-expression type. Represents a parsed S-expression with source location
 (define-enum sexp-t
   (symbol-sexp  (content symbol-t)            (location source-location-t))
   (keyword-sexp (content keyword-t)           (location source-location-t))
-  (string-sexp  (content string-t)            (location source-location-t))
+  (text-sexp  (content text-t)            (location source-location-t))
   (int-sexp     (content int-t)               (location source-location-t))
   (float-sexp   (content float-t)             (location source-location-t))
   (list-sexp    (elements (list-t sexp-t))
@@ -42,12 +42,12 @@ Located S-expression type. Represents a parsed S-expression with source location
 (claim keyword-sexp-put-content  (-> keyword-t sexp-t sexp-t))
 (claim keyword-sexp-put-location (-> source-location-t sexp-t sexp-t))
 
-(claim string-sexp  (-> string-t source-location-t sexp-t))
-(claim is-string-sexp (-> sexp-t bool-t))
-(claim string-sexp-content  (-> sexp-t string-t))
-(claim string-sexp-location (-> sexp-t source-location-t))
-(claim string-sexp-put-content  (-> string-t sexp-t sexp-t))
-(claim string-sexp-put-location (-> source-location-t sexp-t sexp-t))
+(claim text-sexp  (-> text-t source-location-t sexp-t))
+(claim is-text-sexp (-> sexp-t bool-t))
+(claim text-sexp-content  (-> sexp-t text-t))
+(claim text-sexp-location (-> sexp-t source-location-t))
+(claim text-sexp-put-content  (-> text-t sexp-t sexp-t))
+(claim text-sexp-put-location (-> source-location-t sexp-t sexp-t))
 
 (claim int-sexp  (-> int-t source-location-t sexp-t))
 (claim is-int-sexp (-> sexp-t bool-t))

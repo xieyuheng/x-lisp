@@ -4,7 +4,7 @@ import * as B from "../index.ts"
 export function parseData(sexp: S.Sexp): B.Data {
   if (S.isIntSexp(sexp)) return B.IntData(sexp.content)
   if (S.isFloatSexp(sexp)) return B.FloatData(sexp.content)
-  if (S.isStringSexp(sexp)) return B.StringData(sexp.content)
+  if (S.isStringSexp(sexp)) return B.TextData(sexp.content)
 
   const list = S.asListSexp(sexp)
   const head = S.asSymbolSexp(list.elements[0])

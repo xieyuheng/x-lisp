@@ -5,12 +5,12 @@ title: file-write
 # Type
 
 ```meta-lisp
-(-> file-t string-t void-t)
+(-> file-t text-t void-t)
 ```
 
 # Description
 
-Write a string to a file.
+Write a text to a file.
 
 # Examples
 

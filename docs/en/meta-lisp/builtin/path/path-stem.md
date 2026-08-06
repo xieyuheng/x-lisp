@@ -5,7 +5,7 @@ title: path-stem
 # Type
 
 ```meta-lisp
-(-> string-t string-t)
+(-> text-t text-t)
 ```
 
 # Description

@@ -4,11 +4,11 @@ title: format-void
 
 # Type
 ```meta-lisp
-(-> void-t string-t)
+(-> void-t text-t)
 ```
 
 # Description
-Format void as an S-expression string.
+Format void as an S-expression text.
 
 # Examples
 ```meta-lisp

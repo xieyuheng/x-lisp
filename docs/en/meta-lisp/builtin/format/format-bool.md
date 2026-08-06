@@ -4,11 +4,11 @@ title: format-bool
 
 # Type
 ```meta-lisp
-(-> bool-t string-t)
+(-> bool-t text-t)
 ```
 
 # Description
-Format a boolean as an S-expression string.
+Format a boolean as an S-expression text.
 
 # Examples
 ```meta-lisp

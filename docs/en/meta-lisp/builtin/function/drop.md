@@ -17,6 +17,6 @@ Create a new function that ignores the first argument.
 # Examples
 
 ```meta-lisp
-(define (greet name) (println (string-append "Hello, " name)))
+(define (greet name) (println (text-append "Hello, " name)))
 ((drop greet) "ignored" "World")  ;; prints "Hello, World"
 ```

@@ -30,10 +30,10 @@ The compiler handles tail calls correctly — no stack growth.
 ```meta-lisp
 (print x)        ;; print a value
 (println x)      ;; print a value and newline
-(write x)        ;; print a string
-(writeln x)      ;; print a string and newline
+(write x)        ;; print a text
+(writeln x)      ;; print a text and newline
 (newline)        ;; print a newline
-(format x)       ;; format a value as a string
+(format x)       ;; format a value as a text
 ```
 
 # Differences from Scheme?

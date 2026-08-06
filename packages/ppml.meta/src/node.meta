@@ -2,10 +2,10 @@
 
 (define-enum node-t
   (null-node)
-  (text-node (content string-t))
+  (text-node (content text-t))
   (append-node (left node-t) (right node-t))
   (indent-node (length int-t) (child node-t))
-  (break-node (space string-t))
+  (break-node (space text-t))
   (hard-break-node)
   (group-node (child node-t)))
 

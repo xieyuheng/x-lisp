@@ -1,0 +1,16 @@
+(module example)
+
+(define-test text-test
+  (assert-equal "" (@text))
+  (assert-equal "a" (@text "a"))
+  (assert-equal "ab" (@text "a" "b"))
+  (assert-equal "abc" (@text "a" "b" "c"))
+  (assert-equal "hello world" (@text "hello" " " "world"))
+  (assert-equal "hello! world!" (@text "hello! " "world!")))
+
+(define-test text-with-variable-test
+  (let ((x "hello")
+        (y "world"))
+    (assert-equal "helloworld" (@text x y))
+    (assert-equal "hello, world" (@text x ", " y))
+    (assert-equal "(--hello--)" (@text "(--" x "--)"))))

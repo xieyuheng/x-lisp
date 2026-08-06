@@ -4,11 +4,11 @@ title: format-float
 
 # Type
 ```meta-lisp
-(-> float-t string-t)
+(-> float-t text-t)
 ```
 
 # Description
-Format a float as an S-expression string.
+Format a float as an S-expression text.
 
 # Examples
 ```meta-lisp

@@ -5,7 +5,7 @@ title: path-file-name
 # 类型
 
 ```meta-lisp
-(-> string-t string-t)
+(-> text-t text-t)
 ```
 
 # 描述

@@ -25,7 +25,7 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
         M.QualifiedVarExp(
           "meta-builtin",
           "builtin",
-          "string-sexp",
+          "text-sexp",
           sexp.location,
         ),
         [

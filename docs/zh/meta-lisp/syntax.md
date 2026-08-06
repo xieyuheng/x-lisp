@@ -23,7 +23,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
   - [(@list)](#list)
   - [(@set)](#set)
   - [(@hash)](#hash)
-  - [(@string)](#string)
+  - [(@text)](#text)
   - [(@quote)](#quote)
   - [(@sexp)](#sexp)
 - [变量](#变量)
@@ -200,26 +200,26 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (@hash "a" 1 "b" 2)
 ```
 
-## (@string)
+## (@text)
 
 ```meta-lisp
-(@string <exp> ...)
+(@text <exp> ...)
 ```
 
 将多个字符串表达式拼接成一个字符串。
 
 ```meta-lisp
-(@string "hello" " " "world")
-(@string "(" x ")")
-(@string)
+(@text "hello" " " "world")
+(@text "(" x ")")
+(@text)
 ```
 
 上面的例子等价于：
 
 ```meta-lisp
-(string-concat ["hello" " " "world"])
-(string-concat ["(" x ")"])
-(string-concat [])
+(text-concat ["hello" " " "world"])
+(text-concat ["(" x ")"])
+(text-concat [])
 ```
 
 ## (@quote)
@@ -257,7 +257,7 @@ meta-lisp 使用**符号表达式**（S-expression）语法。
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
   (keyword-sexp (content keyword-t) (location source-location-t))
-  (string-sexp (content string-t) (location source-location-t))
+  (text-sexp (content text-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))
   (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
@@ -436,7 +436,7 @@ builtin/list-empty?
 |-------------|--------|-------------------------------|
 | `int-t`     | 整数   | `42` `-1`                     |
 | `float-t`   | 浮点数 | `3.14` `-2.5`                 |
-| `string-t`  | 字符串 | `"hello"`                     |
+| `text-t`  | 字符串 | `"hello"`                     |
 | `symbol-t`  | 符号   | `'foo`                        |
 | `keyword-t` | 关键字 | `:key`                        |
 | `bool-t`    | 布尔值 | `true` `false`                |
@@ -466,7 +466,7 @@ builtin/list-empty?
 ```meta-lisp
 (-> int-t int-t)
 (-> int-t int-t int-t)
-(-> string-t bool-t)
+(-> text-t bool-t)
 ```
 
 ## (claim)
@@ -1144,9 +1144,9 @@ meta-lisp 提供了从**显式**（explicit）到便捷的多种语法来定义�
 ```meta-lisp
 (define-struct* package-t
   (make-package
-   (root-directory string-t)
+   (root-directory text-t)
    (config package-config-t)
-   (fragments (hash-t string-t fragment-t))))
+   (fragments (hash-t text-t fragment-t))))
 
 (define (empty-package root-directory config)
   (make-package root-directory config (make-hash)))

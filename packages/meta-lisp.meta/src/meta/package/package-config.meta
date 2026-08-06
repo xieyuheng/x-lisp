@@ -1,15 +1,15 @@
 (module meta)
 
 (define-struct build-config-t
-  (source-directory string-t)
-  (output-directory string-t)
-  (snapshot-directory string-t))
+  (source-directory text-t)
+  (output-directory text-t)
+  (snapshot-directory text-t))
 
 (define-struct package-config-t
-  (name string-t)
-  (version string-t)
-  (entry (maybe-t string-t))
+  (name text-t)
+  (version text-t)
+  (entry (maybe-t text-t))
   (build build-config-t)
-  (dependencies (hash-t string-t string-t))
-  (prelude (hash-t string-t (list-t string-t)))
-  (compiler (hash-t string-t string-t)))
+  (dependencies (hash-t text-t text-t))
+  (prelude (hash-t text-t (list-t text-t)))
+  (compiler (hash-t text-t text-t)))

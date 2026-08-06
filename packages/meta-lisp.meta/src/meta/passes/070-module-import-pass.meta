@@ -15,7 +15,7 @@
              (list-map (module-import-stmt scope) (fragment-desugared-stmts fragment))
              fragment))
           ((nothing)
-           (error (@string "(module-import-pass) missing scope for: " path))))))
+           (error (@text "(module-import-pass) missing scope for: " path))))))
     (when (hash-has "dump" (package-config-compiler (package-config package)))
       (package-dump-desugared-fragments package "070-module-import"))))
 

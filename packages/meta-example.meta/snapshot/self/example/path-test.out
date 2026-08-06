@@ -71,6 +71,6 @@ syntax/local-define-sequential-binding.meta
 syntax/name-collision.meta
 syntax/quote.meta
 syntax/sexp.meta
-syntax/string.meta
+syntax/text.meta
 syntax/the.meta
 

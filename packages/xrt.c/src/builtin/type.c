@@ -25,7 +25,7 @@ value_t x_float_t(void) {
   x_list_push_mut(x_object(intern_symbol("float")), type);
   return type;
 }
-value_t x_string_t(void) {
+value_t x_text_t(void) {
   value_t type = x_make_list();
   x_list_push_mut(x_object(intern_symbol("atom")), type);
   x_list_push_mut(x_object(intern_symbol("string")), type);

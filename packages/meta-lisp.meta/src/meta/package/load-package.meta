@@ -41,7 +41,7 @@
   (match (hash-get-maybe dep-resolved package-serial-numbers)
     ((just id) id)
     ((nothing)
-     (let ((id (string-to-symbol (string-append "pkg-" (format (hash-length package-serial-numbers))))))
+     (let ((id (text-to-symbol (text-append "pkg-" (format (hash-length package-serial-numbers))))))
        (hash-put dep-resolved id package-serial-numbers)
        id))))
 
@@ -55,7 +55,7 @@
           (hash-put 'meta-builtin
             (load-package 'meta-builtin dep-resolved)
             (package-dependencies package))
-          (hash-put (string-to-symbol alias)
+          (hash-put (text-to-symbol alias)
             (load-package (dependency-id dep-resolved) dep-resolved)
             (package-dependencies package)))))
     (package-config-dependencies config)))
@@ -63,7 +63,7 @@
 (define (validate-prelude package config)
   (hash-each-key
     (lambda (pkg-name)
-      (unless (hash-has (string-to-symbol pkg-name) (package-dependencies package))
+      (unless (hash-has (text-to-symbol pkg-name) (package-dependencies package))
         (error
-          (string-append "[loadPackage] prelude references unknown package: " pkg-name))))
+          (text-append "[loadPackage] prelude references unknown package: " pkg-name))))
     (package-config-prelude config)))

@@ -8,8 +8,8 @@ value_t x_symbol_length(value_t symbol) {
   return x_int(symbol_length(to_symbol(symbol)));
 }
 
-value_t x_symbol_to_string(value_t symbol) {
-  return x_object(make_xstring(symbol_string(to_symbol(symbol))));
+value_t x_symbol_to_text(value_t symbol) {
+  return x_object(make_xtext(symbol_string(to_symbol(symbol))));
 }
 
 value_t x_symbol_append(value_t left, value_t right) {

@@ -171,10 +171,10 @@ static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_ind
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_KEYWORD;
         entry->data = string_copy(keyword_string(to_keyword(value)));
-      } else if (is_xstring(value)) {
+      } else if (is_xtext(value)) {
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_STRING;
-        entry->data = string_copy(xstring_string(to_xstring(value)));
+        entry->data = string_copy(xtext_string(to_xtext(value)));
       } else if (is_symbol(value)) {
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_SYMBOL;
@@ -603,7 +603,7 @@ void xvm_exe_load(xvm_exe_t *self, const char *pathname) {
 static value_t *build_value_table(xvm_exe_t *self, uint32_t *out_count) {
   uint32_t value_count = (uint32_t)array_length(self->values);
   value_t *value_objects = allocate(sizeof(value_t) * (value_count > 0 ? value_count : 1));
-  record_t *xstring_pool = make_record();
+  record_t *xtext_pool = make_record();
   for (uint32_t i = 0; i < value_count; i++) {
     value_entry_t *entry = array_get(self->values, i);
     switch (entry->kind) {
@@ -611,10 +611,10 @@ static value_t *build_value_table(xvm_exe_t *self, uint32_t *out_count) {
       value_objects[i] = x_object(intern_keyword(entry->data));
       break;
     case XVM_EXE_VALUE_STRING: {
-      xstring_t *xstr = record_get(xstring_pool, entry->data);
+      xtext_t *xstr = record_get(xtext_pool, entry->data);
       if (!xstr) {
-        xstr = make_static_xstring(entry->data);
-        record_put(xstring_pool, entry->data, xstr);
+        xstr = make_static_xtext(entry->data);
+        record_put(xtext_pool, entry->data, xstr);
       }
       value_objects[i] = x_object(xstr);
       break;
@@ -627,7 +627,7 @@ static value_t *build_value_table(xvm_exe_t *self, uint32_t *out_count) {
       exit(1);
     }
   }
-  record_free(xstring_pool);
+  record_free(xtext_pool);
   *out_count = value_count;
   return value_objects;
 }

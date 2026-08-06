@@ -5,7 +5,7 @@ title: file-read
 # Type
 
 ```meta-lisp
-(-> file-t string-t)
+(-> file-t text-t)
 ```
 
 # Description

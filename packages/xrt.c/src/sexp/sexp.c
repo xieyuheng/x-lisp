@@ -46,7 +46,7 @@ static value_t for_sexp(list_t *tokens) {
   }
 
   case STRING_TOKEN: {
-    value_t sexp = x_object(make_static_xstring(token->content));
+    value_t sexp = x_object(make_static_xtext(token->content));
     token_free(token);
     return sexp;
   }

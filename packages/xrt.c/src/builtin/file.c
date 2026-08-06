@@ -1,13 +1,13 @@
 #include "index.h"
 
 value_t x_open_input_file(value_t path) {
-  char *pathname = string_copy(xstring_string(to_xstring(path)));
+  char *pathname = string_copy(xtext_string(to_xtext(path)));
   xfile_t *xfile = open_input_xfile(pathname);
   return x_object(xfile);
 }
 
 value_t x_open_output_file(value_t path) {
-  char *pathname = string_copy(xstring_string(to_xstring(path)));
+  char *pathname = string_copy(xtext_string(to_xtext(path)));
   xfile_t *xfile = open_output_xfile(pathname);
   return x_object(xfile);
 }
@@ -18,24 +18,24 @@ value_t x_file_close(value_t file) {
 }
 
 value_t x_file_read(value_t file) {
-  xstring_t *xstring = make_xstring_take(xfile_read(to_xfile(file)));
-  return x_object(xstring);
+  xtext_t *xtext = make_xtext_take(xfile_read(to_xfile(file)));
+  return x_object(xtext);
 }
 
 value_t x_file_write(value_t file, value_t string) {
-  xfile_write(to_xfile(file), xstring_string(to_xstring(string)));
+  xfile_write(to_xfile(file), xtext_string(to_xtext(string)));
   return x_void;
 }
 
 value_t x_file_writeln(value_t file, value_t string) {
-  xfile_write(to_xfile(file), xstring_string(to_xstring(string)));
+  xfile_write(to_xfile(file), xtext_string(to_xtext(string)));
   xfile_write(to_xfile(file), "\n");
   return x_void;
 }
 
 value_t x_print(value_t x) {
-  if (is_xstring(x)) {
-    print_string(xstring_string(to_xstring(x)));
+  if (is_xtext(x)) {
+    print_string(xtext_string(to_xtext(x)));
   } else {
     print_value(x);
   }

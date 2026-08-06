@@ -10,7 +10,7 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Boolean](#boolean)
 - [Integer](#integer)
 - [Float](#float)
-- [String](#string)
+- [Text](#text)
 - [Symbol](#symbol)
 - [Keyword](#keyword)
 - [Void](#void)
@@ -39,7 +39,7 @@ Operations applicable to all types.
 - [`is-atom`](value/is-atom.md) — Check if a value is an atom
 - [`same`](value/same.md) — Atom or reference equality
 - [`equal`](value/equal.md) — Structural equality
-- [`format`](value/format.md) — Format any value as a string
+- [`format`](value/format.md) — Format any value as a text
 - [`hash-code`](value/hash-code.md) — Compute hash code
 - [`total-compare`](value/total-compare.md) — Total order comparison
 
@@ -135,67 +135,67 @@ Operations on `float-t`.
 - [`float-sum`](float/float-sum.md) — Sum of a list
 - [`float-product`](float/float-product.md) — Product of a list
 
-## String
+## Text
 
-Operations on `string-t`.
+Operations on `text-t`.
 
 ### Type checks
 
-- [`is-string`](string/is-string.md) — Check if a value is a string
-- [`string-is-int`](string/string-is-int.md) — Check if string is integer format
-- [`string-is-float`](string/string-is-float.md) — Check if string is float format
+- [`is-text`](text/is-text.md) — Check if a value is a text
+- [`text-is-int`](text/text-is-int.md) — Check if text is integer format
+- [`text-is-float`](text/text-is-float.md) — Check if text is float format
 
 ### Basics
 
-- [`string-length`](string/string-length.md) — Length
-- [`string-is-empty`](string/string-is-empty.md) — Check if empty
-- [`string-is-blank`](string/string-is-blank.md) — Check if blank
+- [`text-length`](text/text-length.md) — Length
+- [`text-is-empty`](text/text-is-empty.md) — Check if empty
+- [`text-is-blank`](text/text-is-blank.md) — Check if blank
 
 ### Concatenation and splitting
 
-- [`string-append`](string/string-append.md) — Append two strings
-- [`string-concat`](string/string-concat.md) — Concatenate a list of strings
-- [`string-substring`](string/string-substring.md) — Extract substring
-- [`string-split`](string/string-split.md) — Split by delimiter
-- [`string-join`](string/string-join.md) — Join with delimiter
+- [`text-append`](text/text-append.md) — Append two strings
+- [`text-concat`](text/text-concat.md) — Concatenate a list of strings
+- [`text-slice`](text/text-slice.md) — Extract substring
+- [`text-split`](text/text-split.md) — Split by delimiter
+- [`text-join`](text/text-join.md) — Join with delimiter
 
 ### Search and replace
 
-- [`string-starts-with`](string/string-starts-with.md) — Check prefix
-- [`string-ends-with`](string/string-ends-with.md) — Check suffix
-- [`string-contains`](string/string-contains.md) — Check if contains substring
-- [`string-find-index`](string/string-find-index.md) — Find substring position
-- [`string-replace`](string/string-replace.md) — Replace substring
+- [`text-starts-with`](text/text-starts-with.md) — Check prefix
+- [`text-ends-with`](text/text-ends-with.md) — Check suffix
+- [`text-contains`](text/text-contains.md) — Check if contains substring
+- [`text-find-index`](text/text-find-index.md) — Find substring position
+- [`text-replace`](text/text-replace.md) — Replace substring
 
 ### Trimming
 
-- [`string-trim`](string/string-trim.md) — Trim both ends
-- [`string-trim-start`](string/string-trim-start.md) — Trim start
-- [`string-trim-end`](string/string-trim-end.md) — Trim end
-- [`string-trim-left`](string/string-trim-left.md) — Trim left
-- [`string-trim-right`](string/string-trim-right.md) — Trim right
+- [`text-trim`](text/text-trim.md) — Trim both ends
+- [`text-trim-start`](text/text-trim-start.md) — Trim start
+- [`text-trim-end`](text/text-trim-end.md) — Trim end
+- [`text-trim-left`](text/text-trim-left.md) — Trim left
+- [`text-trim-right`](text/text-trim-right.md) — Trim right
 
 ### Case conversion
 
-- [`string-to-lower-case`](string/string-to-lower-case.md) — Convert to lower case
-- [`string-to-upper-case`](string/string-to-upper-case.md) — Convert to upper case
+- [`text-to-lower-case`](text/text-to-lower-case.md) — Convert to lower case
+- [`text-to-upper-case`](text/text-to-upper-case.md) — Convert to upper case
 
 ### Type conversion
 
-- [`string-to-int`](string/string-to-int.md) — Parse string to integer
-- [`string-to-float`](string/string-to-float.md) — Parse string to float
-- [`string-to-symbol`](string/string-to-symbol.md) — Convert string to symbol
+- [`text-to-int`](text/text-to-int.md) — Parse text to integer
+- [`text-to-float`](text/text-to-float.md) — Parse text to float
+- [`text-to-symbol`](text/text-to-symbol.md) — Convert text to symbol
 
 ### Characters and code points
 
-- [`string-chars`](string/string-chars.md) — Split into character list
-- [`string-get-code-point`](string/string-get-code-point.md) — Get code point
-- [`string-lines`](string/string-lines.md) — Split into lines
+- [`text-chars`](text/text-chars.md) — Split into character list
+- [`text-get-code-point`](text/text-get-code-point.md) — Get code point
+- [`text-lines`](text/text-lines.md) — Split into lines
 
 ### Derived
 
-- [`string-repeat`](string/string-repeat.md) — Repeat a string
-- [`string-compare-lexical`](string/string-compare-lexical.md) — Lexicographic comparison
+- [`text-repeat`](text/text-repeat.md) — Repeat a text
+- [`text-compare-lexical`](text/text-compare-lexical.md) — Lexicographic comparison
 
 ## Symbol
 
@@ -205,7 +205,7 @@ Operations on `symbol-t`.
 - [`symbol-length`](symbol/symbol-length.md) — Length of symbol name
 - [`symbol-append`](symbol/symbol-append.md) — Append two symbols
 - [`symbol-concat`](symbol/symbol-concat.md) — Concatenate a list of symbols
-- [`symbol-to-string`](symbol/symbol-to-string.md) — Convert to string
+- [`symbol-to-text`](symbol/symbol-to-text.md) — Convert to text
 
 ## Keyword
 
@@ -215,7 +215,7 @@ Operations on `keyword-t`.
 - [`keyword-length`](keyword/keyword-length.md) — Length of keyword name
 - [`keyword-append`](keyword/keyword-append.md) — Append two keywords
 - [`keyword-concat`](keyword/keyword-concat.md) — Concatenate a list of keywords
-- [`keyword-to-string`](keyword/keyword-to-string.md) — Convert to string
+- [`keyword-to-text`](keyword/keyword-to-text.md) — Convert to text
 
 ## Void
 
@@ -497,8 +497,8 @@ File handle read/write operations.
 ### Read and write
 
 - [`file-read`](file/file-read.md) — Read entire file
-- [`file-write`](file/file-write.md) — Write a string
-- [`file-writeln`](file/file-writeln.md) — Write a string with newline
+- [`file-write`](file/file-write.md) — Write a text
+- [`file-writeln`](file/file-writeln.md) — Write a text with newline
 
 ### Convenience
 
@@ -512,7 +512,7 @@ File handle read/write operations.
 
 ## Path operations
 
-Path string manipulation and file system functions.
+Path text manipulation and file system functions.
 
 - [`path-file-name`](path/path-file-name.md) — Get file name
 - [`path-directory-name`](path/path-directory-name.md) — Get directory name
@@ -588,7 +588,7 @@ Type-specific S-expression formatting functions.
 - [`format-keyword`](format/format-keyword.md) — Format a keyword
 - [`format-symbol`](format/format-symbol.md) — Format a symbol
 - [`format-bool`](format/format-bool.md) — Format a bool
-- [`format-string`](format/format-string.md) — Format a string
+- [`format-text`](format/format-text.md) — Format a text
 - [`format-void`](format/format-void.md) — Format void
 
 ## S-expression
@@ -617,5 +617,5 @@ JSON values and operations.
 
 ### Parse and format
 
-- [`parse-json`](json/parse-json.md) — Parse a JSON string
-- [`format-json`](json/format-json.md) — Format as a JSON string
+- [`parse-json`](json/parse-json.md) — Parse a JSON text
+- [`format-json`](json/format-json.md) — Format as a JSON text

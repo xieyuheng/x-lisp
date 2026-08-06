@@ -5,7 +5,7 @@ title: path-extension
 # Type
 
 ```meta-lisp
-(-> string-t string-t)
+(-> text-t text-t)
 ```
 
 # Description

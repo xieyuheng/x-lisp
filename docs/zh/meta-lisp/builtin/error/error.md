@@ -5,7 +5,7 @@ title: error
 # 类型
 
 ```meta-lisp
-(polymorphic (B) (-> string B))
+(polymorphic (B) (-> text-t B))
 ```
 
 # 描述

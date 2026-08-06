@@ -1,0 +1,16 @@
+(module builtin)
+
+(claim text-repeat
+  (-> int-t text-t
+      text-t))
+
+(define (text-repeat n text)
+  (if (equal n 0)
+    ""
+    (text-append text (text-repeat (isub n 1) text))))
+
+(define-test text-repeat-test
+  (assert-equal "" (text-repeat 0 "a"))
+  (assert-equal "a" (text-repeat 1 "a"))
+  (assert-equal "aa" (text-repeat 2 "a"))
+  (assert-equal "aaa" (text-repeat 3 "a")))

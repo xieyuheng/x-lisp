@@ -2,6 +2,6 @@
 
 (define-struct fragment-t
   (mod-name symbol-t)
-  (path string-t)
+  (path text-t)
   (stmts (list-t (stmt-t exp-t)))
   (desugared-stmts (list-t (stmt-t term-t))))

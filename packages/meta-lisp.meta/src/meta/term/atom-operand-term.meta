@@ -6,7 +6,7 @@
   (match term
     ((symbol-term content location) true)
     ((keyword-term content location) true)
-    ((string-term content location) true)
+    ((text-term content location) true)
     ((int-term content location) true)
     ((float-term content location) true)
     ((var-term name location) true)

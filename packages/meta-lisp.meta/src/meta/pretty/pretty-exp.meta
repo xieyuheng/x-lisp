@@ -6,26 +6,26 @@
 (define (pretty-exp exp)
   (match exp
     ((symbol-exp content location)
-     (ppml/text (@string "'" (symbol-to-string content))))
+     (ppml/text (@text "'" (symbol-to-text content))))
     ((keyword-exp content location)
-     (ppml/text (@string ":" (keyword-to-string content))))
-    ((string-exp content location)
+     (ppml/text (@text ":" (keyword-to-text content))))
+    ((text-exp content location)
      (ppml/text (format-as-sexp content)))
     ((int-exp content location)
      (ppml/text (format-as-sexp content)))
     ((float-exp content location)
      (ppml/text (format-as-sexp content)))
     ((var-exp name location)
-     (ppml/text (symbol-to-string name)))
+     (ppml/text (symbol-to-text name)))
     ((qualified-var-exp pkg-name mod-name name location)
-      (ppml/text (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
+      (ppml/text (@text (symbol-to-text pkg-name) "/" (symbol-to-text mod-name) "/" (symbol-to-text name))))
     ((lambda-exp parameters body location)
-     (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
+     (let ((params-str (text-join " " (list-map symbol-to-text parameters))))
        (ppml/pretty-syntax "lambda"
-         [(ppml/text (@string "(" params-str ")"))]
+         [(ppml/text (@text "(" params-str ")"))]
          (pretty-exp-body body))))
     ((apply-exp target args location)
-     (let ((target-op (exp-op-string target))
+     (let ((target-op (exp-op-text target))
            (all-elements (cons (pretty-exp target) (list-map pretty-exp args))))
        (ppml/pretty-application target-op all-elements)))
     ((pipe-exp target steps location)
@@ -41,7 +41,7 @@
        []
        (list-map pretty-exp steps)))
     ((let1-exp name rhs body location)
-     (let ((name-str (symbol-to-string name))
+     (let ((name-str (symbol-to-text name))
            (rhs-node (pretty-exp rhs)))
        (ppml/pretty-syntax "let"
          [(ppml/pretty-application (nothing)
@@ -57,8 +57,8 @@
        [(pretty-bindings bindings)]
        (pretty-exp-body body)))
     ((local-define-exp name parameters body location)
-     (let ((name-str (symbol-to-string name))
-           (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-string p))) parameters)))
+     (let ((name-str (symbol-to-text name))
+           (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters)))
        (let ((def-node (ppml/pretty-application (just name-str)
                          (cons (ppml/text name-str) param-nodes))))
          (ppml/pretty-syntax "define"
@@ -101,16 +101,16 @@
        (list-map pretty-cond-clause clauses)))
     ((list-exp elements location)
       (ppml/pretty-list (list-map pretty-exp elements)))
-    ((string-concat-exp elements location)
+    ((text-concat-exp elements location)
      (if (list-is-empty elements)
-       (ppml/group [(ppml/text "(@string") (ppml/text ")")])
-       (ppml/pretty-syntax "@string" [] (list-map pretty-exp elements))))
+       (ppml/group [(ppml/text "(@text") (ppml/text ")")])
+       (ppml/pretty-syntax "@text" [] (list-map pretty-exp elements))))
     ((set-exp elements location)
      (ppml/pretty-syntax "@set" [] (list-map pretty-exp elements)))
     ((hash-exp entries location)
      (ppml/pretty-syntax "@hash" [] (list-map pretty-hash-entry entries)))
     ((quote-exp sexp location)
-     (ppml/text (@string "'" (format-sexp sexp))))
+     (ppml/text (@text "'" (format-sexp sexp))))
     ((sexp-exp sexp location)
      (ppml/pretty-application (just "@sexp")
        [(ppml/text (format-sexp sexp))]))
@@ -124,9 +124,9 @@
        [(pretty-exp type)]
        [(pretty-exp instance)]))
     ((polymorphic-exp parameters body location)
-     (let ((params-str (string-join " " (list-map symbol-to-string parameters))))
+     (let ((params-str (text-join " " (list-map symbol-to-text parameters))))
        (ppml/pretty-syntax "polymorphic"
-         [(ppml/text (@string "(" params-str ")"))]
+         [(ppml/text (@text "(" params-str ")"))]
          [(pretty-exp body)])))
     ((match-exp targets clauses location)
      (if (equal (list-length targets) 1)
@@ -145,14 +145,14 @@
 
 ;; Helpers
 
-(claim exp-op-string (-> exp-t (maybe-t string-t)))
-(define (exp-op-string exp)
+(claim exp-op-text (-> exp-t (maybe-t text-t)))
+(define (exp-op-text exp)
   (match exp
-    ((symbol-exp content location) (just (@string "'" (symbol-to-string content))))
-    ((keyword-exp content location) (just (@string ":" (keyword-to-string content))))
-    ((var-exp name location) (just (symbol-to-string name)))
+    ((symbol-exp content location) (just (@text "'" (symbol-to-text content))))
+    ((keyword-exp content location) (just (@text ":" (keyword-to-text content))))
+    ((var-exp name location) (just (symbol-to-text name)))
     ((qualified-var-exp pkg-name mod-name name location)
-      (just (@string (symbol-to-string pkg-name) "/" (symbol-to-string mod-name) "/" (symbol-to-string name))))
+      (just (@text (symbol-to-text pkg-name) "/" (symbol-to-text mod-name) "/" (symbol-to-text name))))
     (else (nothing))))
 
 (claim pretty-exp-body (-> exp-t (list-t ppml/node-t)))
@@ -169,7 +169,7 @@
     (list-map pretty-binding bindings)))
 
 (define (pretty-binding binding)
-  (let ((name-str (symbol-to-string (binding-name binding)))
+  (let ((name-str (symbol-to-text (binding-name binding)))
         (rhs-node (pretty-exp (binding-rhs binding))))
     (ppml/pretty-application (just name-str)
       [(ppml/text name-str) rhs-node])))

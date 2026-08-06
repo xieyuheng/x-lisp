@@ -28,8 +28,8 @@ value_t make_json_number(double x) {
 
 value_t make_json_string(const char *s) {
   value_t v = x_object(make_xlist());
-  xlist_push(to_xlist(v), x_object(intern_symbol("string-json")));
-  xlist_push(to_xlist(v), x_object(make_static_xstring(s)));
+  xlist_push(to_xlist(v), x_object(intern_symbol("text-json")));
+  xlist_push(to_xlist(v), x_object(make_static_xtext(s)));
   return v;
 }
 
@@ -56,7 +56,7 @@ value_t make_json_object(void) {
 void json_object_put(value_t object, const char *key, value_t value) {
   xlist_t *xs = to_xlist(object);
   xhash_t *hash = to_xhash(xlist_get(xs, 1));
-  xhash_put(hash, x_object(make_static_xstring(key)), value);
+  xhash_put(hash, x_object(make_static_xtext(key)), value);
 }
 
 // ── JSON parser ──
@@ -281,9 +281,9 @@ static void write_json_value(buffer_t *buffer, value_t json) {
     } else {
       write_template(buffer, "%ld", to_int64(n));
     }
-  } else if (string_equal(tag, "string-json")) {
+  } else if (string_equal(tag, "text-json")) {
     value_t s = xlist_get(xs, 1);
-    write_json_string_escaped(buffer, xstring_string(to_xstring(s)));
+    write_json_string_escaped(buffer, xtext_string(to_xtext(s)));
   } else if (string_equal(tag, "array-json")) {
     write_string(buffer, "[");
     value_t elements = xlist_get(xs, 1);
@@ -304,7 +304,7 @@ static void write_json_value(buffer_t *buffer, value_t json) {
     while (entry) {
       if (!first) write_string(buffer, ", ");
       first = false;
-      write_json_string_escaped(buffer, xstring_string(to_xstring((value_t)(uint64_t)entry->key)));
+      write_json_string_escaped(buffer, xtext_string(to_xtext((value_t)(uint64_t)entry->key)));
       write_string(buffer, ": ");
       write_json_value(buffer, (value_t)(uint64_t)entry->value);
       entry = hash_iter_next_entry(&iter);

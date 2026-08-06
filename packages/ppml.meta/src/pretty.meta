@@ -1,7 +1,7 @@
 (module ppml)
 
 (claim pretty-syntax
-  (-> string-t (list-t node-t) (list-t node-t)
+  (-> text-t (list-t node-t) (list-t node-t)
       node-t))
 
 (define (pretty-syntax name header body)
@@ -10,7 +10,7 @@
     (group [(text "(") head-node body-node (text ")")])))
 
 (claim pretty-vertical
-  (-> string-t (list-t node-t) (list-t node-t)
+  (-> text-t (list-t node-t) (list-t node-t)
       node-t))
 
 (define (pretty-vertical name header body)
@@ -19,7 +19,7 @@
     (group [(text "(") head-node body-node (text ")")])))
 
 (claim pretty-application
-  (-> (maybe-t string-t) (list-t node-t)
+  (-> (maybe-t text-t) (list-t node-t)
       node-t))
 
 (define (pretty-application op-maybe elements)
@@ -27,8 +27,8 @@
     (group [(text "(") (text ")")])
     (match op-maybe
       ((just op)
-       (if (int-less-or-equal (string-length op) 3)
-         (let ((indentation (iadd (string-length op) 2))
+       (if (int-less-or-equal (text-length op) 3)
+         (let ((indentation (iadd (text-length op) 2))
                 (body-node
                   (if (list-is-empty (cdr elements))
                     (car elements)

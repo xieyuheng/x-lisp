@@ -5,7 +5,7 @@ title: current-command-line
 # 类型
 
 ```meta-lisp
-(-> (list-t string-t))
+(-> (list-t text-t))
 ```
 
 # 描述

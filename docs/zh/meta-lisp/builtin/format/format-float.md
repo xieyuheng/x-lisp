@@ -1,5 +1,5 @@
 # 类型
-(-> float-t string-t)
+(-> float-t text-t)
 
 # 描述
 将浮点数格式化为 S 表达式字符串。

@@ -54,7 +54,7 @@
   (cond
     ((self/my-list/is-nil list)
      (meta-builtin/builtin/error-with-location
-      (@string "pattern mismatch on:" " " (meta-builtin/builtin/format list))
+      (@text "pattern mismatch on:" " " (meta-builtin/builtin/format list))
       (meta-builtin/builtin/make-source-location
        "src/my-list.meta"
        (meta-builtin/builtin/make-source-span
@@ -68,7 +68,7 @@
   (cond
     ((self/my-list/is-nil list)
      (meta-builtin/builtin/error-with-location
-      (@string "pattern mismatch on:" " " (meta-builtin/builtin/format list))
+      (@text "pattern mismatch on:" " " (meta-builtin/builtin/format list))
       (meta-builtin/builtin/make-source-location
        "src/my-list.meta"
        (meta-builtin/builtin/make-source-span
@@ -126,7 +126,7 @@
         (cond
           ((self/my-list/is-nil list1)
            (meta-builtin/builtin/error-with-location
-            (@string
+            (@text
               "pattern mismatch on:"
               " "
               (meta-builtin/builtin/format list1)
@@ -141,7 +141,7 @@
            (cond
              ((self/my-list/is-nil list2)
               (meta-builtin/builtin/error-with-location
-               (@string
+               (@text
                  "pattern mismatch on:"
                  " "
                  (meta-builtin/builtin/format list1)

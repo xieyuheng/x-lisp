@@ -18,8 +18,8 @@
   (assert-equal "#t" (format-bool true))
   (assert-equal "#f" (format-bool false)))
 
-(define-test format-string-test
-  (assert-equal "\"abc\"" (format-string "abc")))
+(define-test format-text-test
+  (assert-equal "\"abc\"" (format-text "abc")))
 
 (define-test format-void-test
   (assert-equal "#void" (format-void void)))

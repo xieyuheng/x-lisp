@@ -5,7 +5,7 @@ title: format-json
 # 类型
 
 ```meta-lisp
-(-> json-t string-t)
+(-> json-t text-t)
 ```
 
 # 描述
@@ -18,5 +18,5 @@ title: format-json
 (format-json (null-json))             ;; => "null"
 (format-json (bool-json true))        ;; => "true"
 (format-json (number-json 42.0))      ;; => "42.0"
-(format-json (string-json "hello"))   ;; => "\"hello\""
+(format-json (text-json "hello"))   ;; => "\"hello\""
 ```

@@ -5,12 +5,12 @@ title: path-write
 # Type
 
 ```meta-lisp
-(-> string-t string-t void-t)
+(-> text-t text-t void-t)
 ```
 
 # Description
 
-Write a string to a file. Creates the file if it doesn't exist, overwrites if it does.
+Write a text to a file. Creates the file if it doesn't exist, overwrites if it does.
 
 # Examples
 

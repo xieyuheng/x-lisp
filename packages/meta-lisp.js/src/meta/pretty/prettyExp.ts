@@ -179,7 +179,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
     }
 
     case "StringConcatExp": {
-      return Ppml.prettySyntax("@string", [], exp.elements.map(prettyExp))
+      return Ppml.prettySyntax("@text", [], exp.elements.map(prettyExp))
     }
 
     case "SetExp": {

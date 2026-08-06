@@ -25,8 +25,8 @@
 
   (assert-equal [3.0 2.0 1.0] (list-copy-sort float-compare-descending [2.0 3.0 1.0]))
 
-  ;; string lexical
+  ;; text lexical
 
   (assert-equal
     ["a" "b" "c"]
-    (list-copy-sort string-compare-lexical ["b" "c" "a"])))
+    (list-copy-sort text-compare-lexical ["b" "c" "a"])))

@@ -5,7 +5,7 @@ title: path-is-file
 # Type
 
 ```meta-lisp
-(-> string-t bool-t)
+(-> text-t bool-t)
 ```
 
 # Description

@@ -8,7 +8,7 @@
   (if (list-is-empty clauses)
     (apply-exp
       (qualified-var-exp 'meta-builtin 'builtin 'error location)
-      [(string-exp "cond mismatch" location)]
+      [(text-exp "cond mismatch" location)]
       location)
     (let ((head-clause (car clauses))
           (rest-clauses (cdr clauses)))

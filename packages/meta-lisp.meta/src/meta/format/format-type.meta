@@ -1,39 +1,39 @@
 (module meta)
 
-(claim format-type (-> type-t string-t))
+(claim format-type (-> type-t text-t))
 (define (format-type type)
   (match type
     ((var-type name serial-number)
-     (symbol-to-string name))
+     (symbol-to-text name))
     ((canonical-label-type serial-number)
-     (@string "_." (format-as-sexp serial-number)))
+     (@text "_." (format-as-sexp serial-number)))
     ((type-type)
      "type-t")
     ((atom-type name)
-     (symbol-to-string name))
+     (symbol-to-text name))
     ((arrow-type arg-types ret-type)
      (let ((args-str (format-types arg-types)))
-       (@string "(-> " args-str " " (format-type ret-type) ")")))
+       (@text "(-> " args-str " " (format-type ret-type) ")")))
     ((list-type element-type)
-     (@string "(list-t " (format-type element-type) ")"))
+     (@text "(list-t " (format-type element-type) ")"))
     ((set-type element-type)
-     (@string "(set-t " (format-type element-type) ")"))
+     (@text "(set-t " (format-type element-type) ")"))
     ((hash-type key-type value-type)
-     (@string "(hash-t " (format-type key-type) " "
+     (@text "(hash-t " (format-type key-type) " "
               (format-type value-type) ")"))
     ((pair-type first-type second-type)
-     (@string "(pair-t " (format-type first-type) " "
+     (@text "(pair-t " (format-type first-type) " "
               (format-type second-type) ")"))
     ((data-type type-constructor arg-types)
      (let ((mod-name (mod-name (type-constructor-mod type-constructor)))
            (name (type-constructor-name type-constructor)))
        (if (list-is-empty arg-types)
-         (@string (symbol-to-string mod-name) "/" (symbol-to-string name))
-         (@string "(" (symbol-to-string mod-name) "/" (symbol-to-string name) " "
+         (@text (symbol-to-text mod-name) "/" (symbol-to-text name))
+         (@text "(" (symbol-to-text mod-name) "/" (symbol-to-text name) " "
                   (format-types arg-types) ")"))))
     ((polymorphic-type var-types body-type)
-     (@string "(polymorphic (" (format-types var-types) ") "
+     (@text "(polymorphic (" (format-types var-types) ") "
               (format-type body-type) ")"))))
 
 (define (format-types types)
-  (string-join " " (list-map format-type types)))
+  (text-join " " (list-map format-type types)))

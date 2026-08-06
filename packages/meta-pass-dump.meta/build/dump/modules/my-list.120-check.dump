@@ -37,7 +37,7 @@
 (define (my-list-head list)
   (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
-     (meta-builtin/builtin/string-concat
+     (meta-builtin/builtin/text-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
         (begin
           (meta-builtin/builtin/list-push "pattern mismatch on:" list.1)
@@ -67,7 +67,7 @@
 (define (my-list-rest list)
   (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
-     (meta-builtin/builtin/string-concat
+     (meta-builtin/builtin/text-concat
       (let ((list.1 (meta-builtin/builtin/make-list)))
         (begin
           (meta-builtin/builtin/list-push "pattern mismatch on:" list.1)
@@ -178,7 +178,7 @@
         (if (self/my-list/is-li list2)
           (if (self/my-list/is-nil list1)
             (meta-builtin/builtin/error-with-location
-             (meta-builtin/builtin/string-concat
+             (meta-builtin/builtin/text-concat
               (let ((list (meta-builtin/builtin/make-list)))
                 (begin
                   (meta-builtin/builtin/list-push "pattern mismatch on:" list)
@@ -203,7 +203,7 @@
             (if (self/my-list/is-li list1)
               (if (self/my-list/is-nil list2)
                 (meta-builtin/builtin/error-with-location
-                 (meta-builtin/builtin/string-concat
+                 (meta-builtin/builtin/text-concat
                   (let ((list.1 (meta-builtin/builtin/make-list)))
                     (begin
                       (meta-builtin/builtin/list-push

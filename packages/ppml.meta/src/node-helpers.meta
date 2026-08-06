@@ -4,7 +4,7 @@
 (define (nil)
   (null-node))
 
-(claim text (-> string-t node-t))
+(claim text (-> text-t node-t))
 (define (text s)
   (text-node s))
 

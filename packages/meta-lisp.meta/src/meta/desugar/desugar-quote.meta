@@ -8,8 +8,8 @@
   (match sexp
     ((symbol-sexp content location)
      (symbol-exp content location))
-    ((string-sexp content location)
-     (string-exp content location))
+    ((text-sexp content location)
+     (text-exp content location))
     ((int-sexp content location)
      (int-exp content location))
     ((float-sexp content location)

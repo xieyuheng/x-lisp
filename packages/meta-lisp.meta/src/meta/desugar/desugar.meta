@@ -10,7 +10,7 @@
      (desugar (desugar-begin sequence location)))
     ((local-define-exp name parameters body location)
      (error-with-location
-       (@string
+       (@text
          "(desugar) local (define) must occur in the body of (begin)"
          "\n  exp: " (format-exp exp))
        location))
@@ -40,8 +40,8 @@
      (desugar (desugar-list elements location)))
     ((set-exp elements location)
      (desugar (desugar-set elements location)))
-    ((string-concat-exp elements location)
-     (desugar (desugar-string-concat elements location)))
+    ((text-concat-exp elements location)
+     (desugar (desugar-text-concat elements location)))
     ((hash-exp entries location)
      (desugar (desugar-hash entries location)))
     ((quote-exp sexp location)
@@ -70,8 +70,8 @@
      (symbol-term content location))
     ((keyword-exp content location)
      (keyword-term content location))
-    ((string-exp content location)
-     (string-term content location))
+    ((text-exp content location)
+     (text-term content location))
     ((int-exp content location)
      (int-term content location))
     ((float-exp content location)

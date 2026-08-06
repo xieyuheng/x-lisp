@@ -1,0 +1,114 @@
+(module builtin)
+
+(define-test text-test
+  (println "abc")
+
+  (assert-equal 2 (text-length "中文"))
+
+  (assert (text-is-empty ""))
+  (assert-not (text-is-empty " "))
+
+  (assert (text-is-blank ""))
+  (assert (text-is-blank " "))
+  (assert (text-is-blank "  "))
+  (assert (text-is-blank " \n "))
+  (assert (text-is-blank " \n\t "))
+  (assert-not (text-is-blank " \n.\t "))
+
+  (assert-equal "abcdef" (text-append "abc" "def"))
+
+  (assert-equal ["a" "b" "c"] (text-chars "abc"))
+
+  (assert-equal ["123" "456" "789"] (text-lines "123\n456\n789\n"))
+  (assert-equal ["123" "456" "789"] (text-lines "123\n456\n789"))
+  (assert-equal ["123" "" "789"] (text-lines "123\n\n789\n"))
+  (assert-equal ["123" "" "789"] (text-lines "123\n\n789"))
+
+  (assert-equal "中" (text-slice 0 1 "中文"))
+  (assert-equal "文" (text-slice 1 2 "中文")))
+
+(define-test text-join-test
+  (assert-equal "a.b.c" (text-join "." ["a" "b" "c"]))
+  (assert-equal "a..b..c" (text-join ".." ["a" "b" "c"])))
+
+(define-test text-split-test
+  (assert-equal ["a" "b" "c"] (text-split "." "a.b.c"))
+  (assert-equal ["a" "b" "c"] (text-split ".." "a..b..c")))
+
+(define-test text-replace-test
+  (assert-equal "a/b/c" (text-replace "." "/" "a.b.c")))
+
+(define-test text-starts-with-test
+  (assert (text-starts-with "" "abc"))
+  (assert (text-starts-with "a" "abc"))
+  (assert (text-starts-with "ab" "abc"))
+  (assert (text-starts-with "abc" "abc"))
+  (assert-not (text-starts-with "abc~" "abc"))
+  (assert-not (text-starts-with "b" "abc"))
+
+  (assert (text-ends-with "" "abc"))
+  (assert (text-ends-with "c" "abc"))
+  (assert (text-ends-with "bc" "abc"))
+  (assert (text-ends-with "abc" "abc"))
+  (assert-not (text-ends-with "~abc" "abc"))
+  (assert-not (text-ends-with "b" "abc")))
+
+(define-test text-to-upper-case-test
+  (assert-equal "ABC" (text-to-upper-case "abc"))
+  (assert-equal "abc" (text-to-lower-case "ABC")))
+
+(define-test text-get-code-point-test
+  (assert-equal 97 (text-get-code-point 0 "abc"))
+  (assert-equal 98 (text-get-code-point 1 "abc"))
+  (assert-equal 99 (text-get-code-point 2 "abc")))
+
+(define-test text-contains-test
+  (assert (text-contains "bb" "aabbcc"))
+  (assert (text-contains "ab" "aabbcc"))
+  (assert-not (text-contains "ba" "aabbcc")))
+
+(define-test text-find-index-test
+  (assert-equal 0 (text-find-index "0" "01234"))
+  (assert-equal 1 (text-find-index "1" "01234"))
+  (assert-equal 2 (text-find-index "2" "01234"))
+  (assert-equal -1 (text-find-index "5" "01234"))
+
+  (assert-equal 0 (text-find-index "01" "01234"))
+  (assert-equal 1 (text-find-index "12" "01234"))
+  (assert-equal 2 (text-find-index "23" "01234"))
+  (assert-equal -1 (text-find-index "21" "01234")))
+
+(define-test text-trim-test
+  (assert-equal "abc  " (text-trim-left "  abc  "))
+  (assert-equal "  abc" (text-trim-right "  abc  "))
+  (assert-equal "abc  " (text-trim-start "  abc  "))
+  (assert-equal "  abc" (text-trim-end "  abc  "))
+  (assert-equal "abc" (text-trim "  abc  ")))
+
+(define-test text-is-int-test
+  (assert (text-is-int "123"))
+  (assert (text-is-int "-123"))
+  (assert (text-is-int "0"))
+  (assert-not (text-is-int "abc"))
+  (assert-not (text-is-int "123.0"))
+  (assert-not (text-is-int "")))
+
+(define-test text-is-float-test
+  (assert (text-is-float "123.0"))
+  (assert (text-is-float "-123.5"))
+  (assert (text-is-float "0.0"))
+  (assert (text-is-float ".5"))
+  (assert-not (text-is-float "abc"))
+  (assert-not (text-is-float "123"))
+  (assert-not (text-is-float "")))
+
+(define-test text-to-int-test
+  (assert-equal 123 (text-to-int "123"))
+  (assert-equal -123 (text-to-int "-123"))
+  (assert-equal 0 (text-to-int "0")))
+
+(define-test text-to-float-test
+  (assert-equal 123.0 (text-to-float "123.0"))
+  (assert-equal -123.5 (text-to-float "-123.5"))
+  (assert-equal 0.0 (text-to-float "0.0"))
+  (assert-equal 0.5 (text-to-float ".5")))

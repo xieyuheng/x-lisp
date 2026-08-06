@@ -23,7 +23,7 @@ value_t value_from_source_location(struct source_location_t location) {
   value_t data = x_make_list();
   value_t tag = x_object(intern_symbol("make-source-location"));
   x_list_push_mut(tag, data);
-  x_list_push_mut(x_object(make_xstring(location.pathname)), data);
+  x_list_push_mut(x_object(make_xtext(location.pathname)), data);
   x_list_push_mut(value_from_span(location.span), data);
   return data;
 }
@@ -45,7 +45,7 @@ struct span_t value_to_span(value_t value) {
 
 struct source_location_t value_to_source_location(value_t value) {
   return (struct source_location_t) {
-    .pathname = xstring_string(to_xstring(xlist_get(to_xlist(value), 1))),
+    .pathname = xtext_string(to_xtext(xlist_get(to_xlist(value), 1))),
     .span = value_to_span(xlist_get(to_xlist(value), 2)),
   };
 }

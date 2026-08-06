@@ -1,148 +1,148 @@
 (module meta)
 
-(claim format-stmt (-> (stmt-t exp-t) string-t))
+(claim format-stmt (-> (stmt-t exp-t) text-t))
 (define (format-stmt stmt)
   (match stmt
     ((import-stmt pkg-name mod-name names location)
-     (let ((mod-name-str (symbol-to-string mod-name))
-            (pkg-name-str (symbol-to-string pkg-name))
+     (let ((mod-name-str (symbol-to-text mod-name))
+            (pkg-name-str (symbol-to-text pkg-name))
             (full (if (equal pkg-name-str "self")
                     mod-name-str
-                    (@string pkg-name-str "/" mod-name-str))))
-       (@string "(import " full " "
-                (string-join " " (list-map symbol-to-string names)) ")")))
+                    (@text pkg-name-str "/" mod-name-str))))
+       (@text "(import " full " "
+                (text-join " " (list-map symbol-to-text names)) ")")))
     ((import-as-stmt pkg-name mod-name prefix location)
-     (let ((mod-name-str (symbol-to-string mod-name))
-            (pkg-name-str (symbol-to-string pkg-name))
+     (let ((mod-name-str (symbol-to-text mod-name))
+            (pkg-name-str (symbol-to-text pkg-name))
             (full (if (equal pkg-name-str "self")
                     mod-name-str
-                    (@string pkg-name-str "/" mod-name-str))))
-       (@string "(import-as " full " " (symbol-to-string prefix) ")")))
+                    (@text pkg-name-str "/" mod-name-str))))
+       (@text "(import-as " full " " (symbol-to-text prefix) ")")))
     ((import-all-stmt pkg-name mod-name location)
-     (let ((mod-name-str (symbol-to-string mod-name))
-            (pkg-name-str (symbol-to-string pkg-name))
+     (let ((mod-name-str (symbol-to-text mod-name))
+            (pkg-name-str (symbol-to-text pkg-name))
             (full (if (equal pkg-name-str "self")
                     mod-name-str
-                    (@string pkg-name-str "/" mod-name-str))))
-       (@string "(import-all " full ")")))
+                    (@text pkg-name-str "/" mod-name-str))))
+       (@text "(import-all " full ")")))
     ((define-function-stmt name parameters body location)
-     (@string "(define (" (symbol-to-string name) " "
-              (string-join " " (list-map symbol-to-string parameters)) ") "
+     (@text "(define (" (symbol-to-text name) " "
+              (text-join " " (list-map symbol-to-text parameters)) ") "
               (format-exp body) ")"))
     ((define-variable-stmt name body location)
-     (@string "(define " (symbol-to-string name) " " (format-exp body) ")"))
+     (@text "(define " (symbol-to-text name) " " (format-exp body) ")"))
     ((define-test-stmt name body location)
-     (@string "(define-test " (symbol-to-string name) " " (format-exp body) ")"))
+     (@text "(define-test " (symbol-to-text name) " " (format-exp body) ")"))
     ((define-type-stmt name parameters body location)
-     (@string "(define-type (" (symbol-to-string name) " "
-              (string-join " " (list-map symbol-to-string parameters)) ") "
+     (@text "(define-type (" (symbol-to-text name) " "
+              (text-join " " (list-map symbol-to-text parameters)) ") "
               (format-exp body) ")"))
     ((define-enum-stmt type-constructor data-constructors lang location)
-     (@string "(define-enum " (format-type-constructor type-constructor) " "
-              (string-join " " (list-map format-pre-data-constructor data-constructors)) ")"))
+     (@text "(define-enum " (format-type-constructor type-constructor) " "
+              (text-join " " (list-map format-pre-data-constructor data-constructors)) ")"))
     ((define-struct-star-stmt type-constructor data-constructor lang location)
-     (@string "(define-struct* " (format-type-constructor type-constructor) " "
+     (@text "(define-struct* " (format-type-constructor type-constructor) " "
               (format-pre-data-constructor data-constructor) ")"))
      ((define-struct-stmt type-constructor fields lang location)
-      (@string "(define-struct " (format-type-constructor type-constructor) " "
-               (string-join " " (list-map format-pre-data-field fields)) ")"))
+      (@text "(define-struct " (format-type-constructor type-constructor) " "
+               (text-join " " (list-map format-pre-data-field fields)) ")"))
     ((define-record-type-stmt type-constructor data-constructor lang location)
      (let ((ctor (explicit-data-constructor-name data-constructor))
             (fields (explicit-data-constructor-fields data-constructor))
             (pred (explicit-data-constructor-predicate-name data-constructor))
             (field-strs (list-map format-explicit-data-field fields))
             (ctor-clause (if (list-is-empty field-strs)
-                           (@string "(" (symbol-to-string ctor) ")")
-                           (@string "(" (symbol-to-string ctor) " "
-                                    (string-join " " field-strs) ")")))
+                           (@text "(" (symbol-to-text ctor) ")")
+                           (@text "(" (symbol-to-text ctor) " "
+                                    (text-join " " field-strs) ")")))
             (accessor-strs (list-map format-algebraic-type-accessor fields)))
-       (@string "(define-record-type " (format-type-constructor type-constructor) " "
+       (@text "(define-record-type " (format-type-constructor type-constructor) " "
                 ctor-clause " "
-                (symbol-to-string pred) " "
-                (string-join " " accessor-strs) ")")))
+                (symbol-to-text pred) " "
+                (text-join " " accessor-strs) ")")))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
-     (@string "(define-algebraic-type " (format-type-constructor type-constructor) " "
-              (string-join " " (list-map format-explicit-data-constructor data-constructors)) ")"))
+     (@text "(define-algebraic-type " (format-type-constructor type-constructor) " "
+              (text-join " " (list-map format-explicit-data-constructor data-constructors)) ")"))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
-     (@string "(define-opaque-type " (format-type-constructor type-constructor) " "
+     (@text "(define-opaque-type " (format-type-constructor type-constructor) " "
               (format-exp representation-type) " "
-              (string-join " " (list-map format-pre-interface-entry interface-entries)) ")"))
+              (text-join " " (list-map format-pre-interface-entry interface-entries)) ")"))
     ((claim-stmt name type location)
-     (@string "(claim " (symbol-to-string name) " " (format-exp type) ")"))
+     (@text "(claim " (symbol-to-text name) " " (format-exp type) ")"))
     ((claim-type-stmt name location)
-     (@string "(claim-type " (symbol-to-string name) ")"))
+     (@text "(claim-type " (symbol-to-text name) ")"))
     ((admit-stmt name type location)
-     (@string "(admit " (symbol-to-string name) " " (format-exp type) ")"))
+     (@text "(admit " (symbol-to-text name) " " (format-exp type) ")"))
     ((private-stmt names location)
-     (@string "(private " (string-join " " (list-map symbol-to-string names)) ")"))
+     (@text "(private " (text-join " " (list-map symbol-to-text names)) ")"))
     ((exempt-stmt names location)
-     (@string "(exempt " (string-join " " (list-map symbol-to-string names)) ")"))
+     (@text "(exempt " (text-join " " (list-map symbol-to-text names)) ")"))
     ((declare-module-stmt name location)
-     (@string "(module " (symbol-to-string name) ")"))
+     (@text "(module " (symbol-to-text name) ")"))
     ((declare-primitive-function-stmt name arity location)
-     (@string "(declare-primitive-function " (symbol-to-string name) " "
+     (@text "(declare-primitive-function " (symbol-to-text name) " "
                (format-as-sexp arity) ")"))
     ((declare-primitive-variable-stmt name location)
-     (@string "(declare-primitive-variable " (symbol-to-string name) ")"))
+     (@text "(declare-primitive-variable " (symbol-to-text name) ")"))
     ((comment-stmt sexps location)
       (if (list-is-empty sexps)
-        (@string "(@comment)")
-        (@string "(@comment " (string-join " " (list-map format-sexp sexps)) ")")))))
+        (@text "(@comment)")
+        (@text "(@comment " (text-join " " (list-map format-sexp sexps)) ")")))))
 
 (define (format-type-constructor tc)
-  (let ((name-str (symbol-to-string (pre-type-constructor-name tc)))
+  (let ((name-str (symbol-to-text (pre-type-constructor-name tc)))
         (params (pre-type-constructor-parameters tc)))
     (if (list-is-empty params)
       name-str
-      (@string "(" name-str " "
-               (string-join " " (list-map symbol-to-string params)) ")"))))
+      (@text "(" name-str " "
+               (text-join " " (list-map symbol-to-text params)) ")"))))
 
 (define (format-pre-data-constructor ctor)
-  (let ((name-str (symbol-to-string (pre-data-constructor-name ctor)))
+  (let ((name-str (symbol-to-text (pre-data-constructor-name ctor)))
         (fields (pre-data-constructor-fields ctor)))
     (if (list-is-empty fields)
-      (@string "(" name-str ")")
-      (@string "(" name-str " "
-               (string-join " " (list-map format-pre-data-field fields)) ")"))))
+      (@text "(" name-str ")")
+      (@text "(" name-str " "
+               (text-join " " (list-map format-pre-data-field fields)) ")"))))
 
 (define (format-pre-data-field field)
-  (let ((name-str (symbol-to-string (pre-data-field-name field)))
+  (let ((name-str (symbol-to-text (pre-data-field-name field)))
         (type-str (format-exp (pre-data-field-type field))))
     (if (equal type-str "")
       name-str
-      (@string "(" name-str " " type-str ")"))))
+      (@text "(" name-str " " type-str ")"))))
 
 (define (format-explicit-data-constructor ctor)
-  (let ((name-str (symbol-to-string (explicit-data-constructor-name ctor)))
+  (let ((name-str (symbol-to-text (explicit-data-constructor-name ctor)))
          (fields (explicit-data-constructor-fields ctor))
-         (pred-str (symbol-to-string (explicit-data-constructor-predicate-name ctor)))
+         (pred-str (symbol-to-text (explicit-data-constructor-predicate-name ctor)))
          (group (if (list-is-empty fields)
-                  (@string "(" name-str ")")
-                  (@string "(" name-str " "
-                           (string-join " " (list-map format-explicit-data-field fields)) ")")))
+                  (@text "(" name-str ")")
+                  (@text "(" name-str " "
+                           (text-join " " (list-map format-explicit-data-field fields)) ")")))
          (accessor-entries (list-map format-algebraic-type-accessor fields)))
     (if (list-is-empty accessor-entries)
-      (@string "(" group " " pred-str ")")
-      (@string "(" group " " pred-str " "
-               (string-join " " accessor-entries) ")"))))
+      (@text "(" group " " pred-str ")")
+      (@text "(" group " " pred-str " "
+               (text-join " " accessor-entries) ")"))))
 
 (define (format-explicit-data-field field)
-  (let ((name-str (symbol-to-string (explicit-data-field-name field)))
+  (let ((name-str (symbol-to-text (explicit-data-field-name field)))
         (type-str (format-exp (explicit-data-field-type field))))
     (if (equal type-str "")
       name-str
-      (@string "(" name-str " " type-str ")"))))
+      (@text "(" name-str " " type-str ")"))))
 
 (define (format-algebraic-type-accessor field)
-  (let ((name-str (symbol-to-string (explicit-data-field-name field)))
-        (accessor-str (symbol-to-string (explicit-data-field-accessor-name field)))
+  (let ((name-str (symbol-to-text (explicit-data-field-name field)))
+        (accessor-str (symbol-to-text (explicit-data-field-accessor-name field)))
         (modifier (explicit-data-field-modifier-name-maybe field)))
     (match modifier
       ((just modifier-name)
-       (@string "(" name-str " " accessor-str " " (symbol-to-string modifier-name) ")"))
+       (@text "(" name-str " " accessor-str " " (symbol-to-text modifier-name) ")"))
       ((nothing)
-       (@string "(" name-str " " accessor-str ")")))))
+       (@text "(" name-str " " accessor-str ")")))))
 
 (define (format-pre-interface-entry entry)
-  (@string "(" (symbol-to-string (pre-interface-entry-name entry)) " "
+  (@text "(" (symbol-to-text (pre-interface-entry-name entry)) " "
            (format-exp (pre-interface-entry-type entry)) ")"))

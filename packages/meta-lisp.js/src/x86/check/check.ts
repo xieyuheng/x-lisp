@@ -18,12 +18,9 @@ export function check(
       return
     }
 
-    case "StringData": {
-      if (
-        expectedType.kind !== "NamedType" ||
-        expectedType.name !== "string-t"
-      ) {
-        let message = `[check] expected string-t for StringData, got: ${X86.formatType(expectedType)}`
+    case "TextData": {
+      if (expectedType.kind !== "NamedType" || expectedType.name !== "text-t") {
+        let message = `[check] expected text-t for TextData, got: ${X86.formatType(expectedType)}`
         throw new Error(message)
       }
       return
@@ -180,11 +177,11 @@ function checkPointerTarget(mod: X86.Mod, target: X86.Data): void {
     return
   }
 
-  if (target.kind === "StringData") {
+  if (target.kind === "TextData") {
     check(
       mod,
       target,
-      namedDataType(mod, "string-t", S.zeroLocation("checkPointerTarget")),
+      namedDataType(mod, "text-t", S.zeroLocation("checkPointerTarget")),
     )
 
     return
@@ -220,8 +217,8 @@ export function inferDataType(mod: X86.Mod, value: X86.Data): X86.Type {
     case "AddressData":
       return namedDataType(mod, "pointer-t", S.zeroLocation("inferDataType"))
 
-    case "StringData":
-      return namedDataType(mod, "string-t", S.zeroLocation("inferDataType"))
+    case "TextData":
+      return namedDataType(mod, "text-t", S.zeroLocation("inferDataType"))
 
     default: {
       let message = `[inferDataType] define-data value must be self-describing (named struct, pointer, address, or string), got: ${value.kind}`

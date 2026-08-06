@@ -2,38 +2,38 @@
 
 (import-as ppml/ppml ppml)
 
-(claim pretty-mod-definitions (-> int-t mod-t string-t))
+(claim pretty-mod-definitions (-> int-t mod-t text-t))
 (define (pretty-mod-definitions width mod)
-  (string-join "\n\n"
+  (text-join "\n\n"
     (list-map
       (lambda (node) (ppml/format-node width node))
       (list-map-concat pretty-definition
         (hash-values (mod-definitions mod))))))
 
-(claim pretty-mod-stmts (-> int-t mod-t string-t))
+(claim pretty-mod-stmts (-> int-t mod-t text-t))
 (define (pretty-mod-stmts width mod)
-  (string-join "\n\n"
+  (text-join "\n\n"
     (list-map
       (lambda (stmt) (ppml/format-node width (pretty-stmt pretty-exp stmt)))
       (mod-stmts mod))))
 
-(claim pretty-fragment-stmts (-> int-t (list-t (stmt-t exp-t)) string-t))
+(claim pretty-fragment-stmts (-> int-t (list-t (stmt-t exp-t)) text-t))
 (define (pretty-fragment-stmts width stmts)
-  (string-join "\n\n"
+  (text-join "\n\n"
     (list-map
       (lambda (stmt) (ppml/format-node width (pretty-stmt pretty-exp stmt)))
       stmts)))
 
-(claim pretty-fragment-desugared-stmts (-> int-t (list-t (stmt-t term-t)) string-t))
+(claim pretty-fragment-desugared-stmts (-> int-t (list-t (stmt-t term-t)) text-t))
 (define (pretty-fragment-desugared-stmts width stmts)
-  (string-join "\n\n"
+  (text-join "\n\n"
     (list-map
       (lambda (stmt) (ppml/format-node width (pretty-stmt pretty-term stmt)))
       stmts)))
 
-(claim pretty-definitions (-> int-t (list-t definition-t) string-t))
+(claim pretty-definitions (-> int-t (list-t definition-t) text-t))
 (define (pretty-definitions width definitions)
-  (string-join "\n\n"
+  (text-join "\n\n"
     (list-map
       (lambda (node) (ppml/format-node width node))
       (list-map-concat pretty-definition definitions))))

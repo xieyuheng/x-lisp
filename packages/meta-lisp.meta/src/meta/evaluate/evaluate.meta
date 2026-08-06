@@ -56,14 +56,14 @@
      (match (lookup-primitive-function name)
        ((just fn) (definition-value definition))
        ((nothing)
-        (error (@string "(definition-to-value) no implementation for primitive function: "
-                        (symbol-to-string name))))))
+        (error (@text "(definition-to-value) no implementation for primitive function: "
+                        (symbol-to-text name))))))
     ((primitive-variable-declaration mod name location)
      (match (lookup-primitive-variable name)
        ((just value) value)
        ((nothing)
-        (error (@string "(definition-to-value) no value for primitive variable: "
-                        (symbol-to-string name))))))
+        (error (@text "(definition-to-value) no value for primitive variable: "
+                        (symbol-to-text name))))))
     ((function-definition mod name parameters body location)
      (definition-value definition))
     ((test-definition mod name body location)

@@ -5,12 +5,12 @@ title: format-sexp
 # Type
 
 ```meta-lisp
-(-> sexp-t string-t)
+(-> sexp-t text-t)
 ```
 
 # Description
 
-Format an S-expression as a string.
+Format an S-expression as a text.
 
 # Examples
 

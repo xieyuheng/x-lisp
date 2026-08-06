@@ -22,7 +22,7 @@ value_t x_equal(value_t lhs, value_t rhs) {
 value_t x_format(value_t value) {
   buffer_t *buffer = make_buffer();
   write_value(buffer, value);
-  value_t result = x_object(make_xstring_take(buffer_to_string(buffer)));
+  value_t result = x_object(make_xtext_take(buffer_to_string(buffer)));
   buffer_free(buffer);
   return result;
 }

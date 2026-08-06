@@ -25,7 +25,7 @@ static value_t make_json_number_zh(double x) {
 static value_t make_json_string_zh(const char *s) {
   value_t v = x_object(make_xlist());
   xlist_push(to_xlist(v), x_object(intern_symbol("文本结森")));
-  xlist_push(to_xlist(v), x_object(make_static_xstring(s)));
+  xlist_push(to_xlist(v), x_object(make_static_xtext(s)));
   return v;
 }
 
@@ -232,7 +232,7 @@ static void write_json_value_zh(buffer_t *buffer, value_t json) {
     }
   } else if (string_equal(tag, "文本结森")) {
     value_t s = xlist_get(xs, 1);
-    write_json_string_escaped(buffer, xstring_string(to_xstring(s)));
+    write_json_string_escaped(buffer, xtext_string(to_xtext(s)));
   } else if (string_equal(tag, "数组结森")) {
     write_string(buffer, "[");
     value_t elements = xlist_get(xs, 1);
@@ -253,7 +253,7 @@ static void write_json_value_zh(buffer_t *buffer, value_t json) {
     while (entry) {
       if (!first) write_string(buffer, ", ");
       first = false;
-      write_json_string_escaped(buffer, xstring_string(to_xstring((value_t)(uint64_t)entry->key)));
+      write_json_string_escaped(buffer, xtext_string(to_xtext((value_t)(uint64_t)entry->key)));
       write_string(buffer, ": ");
       write_json_value_zh(buffer, (value_t)(uint64_t)entry->value);
       entry = hash_iter_next_entry(&iter);
