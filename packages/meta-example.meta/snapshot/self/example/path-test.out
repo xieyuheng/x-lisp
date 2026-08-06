@@ -1,4 +1,3 @@
-adt
 cli
 eoc
 file
@@ -8,11 +7,9 @@ module
 my-list
 package
 path
+point
 syntax
 
-adt
-adt/point-record.meta
-adt/point-struct.meta
 cli
 cli/calculator.meta
 cli/current-command-line.meta
@@ -58,6 +55,9 @@ path
 path/file-1.txt
 path/file-2.txt
 path/path.meta
+point
+point/point-record.meta
+point/point-struct.meta
 syntax
 syntax/comment.meta
 syntax/cond.meta
