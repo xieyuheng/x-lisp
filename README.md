@@ -1,24 +1,21 @@
+[ [English](README.md) | [中文](README.zh.md) ]
+
 # meta-lisp
 
-A simply typed lisp for implementing new lisp languages.
+A simply typed LISP.
 
 ## Features
 
-- Hindley-Milner type system (all types can be inferred).
-- Algebraic data types and pattern matching (no subtyping).
-- Tail recursion optimization (no need `for`/`while` loop syntax).
+- Use Hindley-Milner type system (all types can be inferred).
+- Support algebraic type and pattern matching (no subtyping).
+- Support tail recursion optimization (no need special loop syntax).
 - Module system decoupled from the file system.
 - Built-in testing framework.
 
 ## Examples
 
 ```scheme
-;; use (module) to declare current module.
-;; code of one module can be written in many files.
-
 (module example)
-
-;; use (claim) to write type annotation.
 
 (claim factorial (-> int-t int-t))
 
@@ -26,8 +23,6 @@ A simply typed lisp for implementing new lisp languages.
   (if (int-less-or-equal? n 1)
     1
     (imul (factorial (isub n 1)) n)))
-
-;; built-in test framework.
 
 (define-test factorial-test
   (assert-equal 1 (factorial 0))
@@ -41,14 +36,10 @@ A simply typed lisp for implementing new lisp languages.
 ```scheme
 (module example)
 
-;; use (define-enum) to define algebraic data type.
-
-(define-enum exp-t
-  (var-exp (name symbol-t))
-  (apply-exp (target exp-t) (arg exp-t))
-  (lambda-exp (parameter symbol-t) (body exp-t)))
-
-;; use (define-opaque-type) to define new type without wrapper.
+(define-enum term-t
+  (var-term (name symbol-t))
+  (apply-term (target term-t) (arg term-t))
+  (lambda-term (parameter symbol-t) (body term-t)))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
@@ -59,21 +50,19 @@ A simply typed lisp for implementing new lisp languages.
 (define extend-env hash-put)
 (define env-lookup hash-get-maybe)
 
-;; pattern matching on algebraic data.
-
-(define (evaluate exp env)
-  (match exp
-    ((var-exp name)
+(define (evaluate term env)
+  (match term
+    ((var-term name)
      (match (env-lookup name env)
        ((just value) value)
        ((nothing) (error "undefined name"))))
-    ((apply-exp target arg)
+    ((apply-term target arg)
      (apply (evaluate target env) (evaluate arg env)))
-    ((lambda-exp parameter body)
+    ((lambda-term parameter body)
      (closure-value env parameter body))))
 
 (define-enum value-t
-  (closure-value (env env-t) (parameter symbol-t) (body exp-t)))
+  (closure-value (env env-t) (parameter symbol-t) (body term-t)))
 
 (define (apply target arg)
   (match target
@@ -83,9 +72,9 @@ A simply typed lisp for implementing new lisp languages.
 
 ## Documentation
 
-- [Syntax Reference](docs/en/meta-lisp/syntax.md) ([中文](docs/zh/meta-lisp/syntax.md))
-- [Builtin Functions](docs/en/meta-lisp/builtin/index.md) ([中文](docs/zh/meta-lisp/builtin/index.md))
-- [FAQ](docs/en/meta-lisp/faq.md) ([中文](docs/zh/meta-lisp/faq.md))
+- [Syntax Reference](docs/en/meta-lisp/syntax.md)
+- [Builtin Functions](docs/en/meta-lisp/builtin/index.md)
+- [FAQ](docs/en/meta-lisp/faq.md)
 
 ## License
 
