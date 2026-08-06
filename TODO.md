@@ -1,15 +1,3 @@
-# 中文
-
-prompt：
-
-meta-lisp 设计了中文语法：docs/zh/元语/*
-下面我会给你发送代码，你要帮我翻译成中文语法。
-你只负责翻译，不需要修改文件。
-
----
-
-[meta-example.meta] 翻译
-
 # learn
 
 快速看完 asm 的书，学习 c calling。

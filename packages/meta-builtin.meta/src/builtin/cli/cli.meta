@@ -18,10 +18,12 @@
   (handlers (hash-t text-t (-> cli-ctx-t void-t))))
 
 (claim cli-make-router (-> text-t text-t cli-router-t))
+
 (define (cli-make-router name version)
   (make-cli-router name version (make-list) (make-hash)))
 
 (claim cli-parse-route (-> text-t cli-route-t))
+
 (define (cli-parse-route command)
   (let ((tokens (list-reject text-is-blank (text-split " " command)))
          (dash-idx (list-find-index (lambda (t) (equal t "--")) tokens))
@@ -37,6 +39,7 @@
     (make-cli-route command name args options)))
 
 (claim cli-route-match (-> cli-route-t (list-t text-t) cli-ctx-t))
+
 (define (cli-route-match route argv)
   (define (loop tokens args options passthrough in-passthrough)
     (cond ((list-is-empty tokens)
@@ -64,22 +67,26 @@
   (loop argv (make-list) (make-hash) (make-list) false))
 
 (claim cli-define-route (-> cli-router-t text-t cli-router-t))
+
 (define (cli-define-route router command)
   (let ((routes (cli-router-routes router)))
     (list-push (cli-parse-route command) routes)
     (cli-router-put-routes routes router)))
 
 (claim cli-define-handler (-> cli-router-t text-t (-> cli-ctx-t void-t) cli-router-t))
+
 (define (cli-define-handler router name handler)
   (let ((handlers (cli-router-handlers router)))
     (hash-put name handler handlers)
     (cli-router-put-handlers handlers router)))
 
 (claim cli-print-name-and-version (-> cli-router-t void-t))
+
 (define (cli-print-name-and-version router)
   (println (text-join " " [(cli-router-name router) (cli-router-version router)])))
 
 (claim cli-print-commands (-> cli-router-t void-t))
+
 (define (cli-print-commands router)
   (println "commands:")
   (list-each (lambda (route)
@@ -87,6 +94,7 @@
              (cli-router-routes router)))
 
 (claim cli-router-run (-> cli-router-t (list-t text-t) void-t))
+
 (define (cli-router-run router argv)
   (if (list-is-empty argv)
     (begin
@@ -108,25 +116,31 @@
          (cli-print-commands router))))))
 
 (claim cli-arg-count (-> cli-ctx-t int-t))
+
 (define (cli-arg-count ctx)
   (list-length (cli-ctx-args ctx)))
 
 (claim cli-arg-get (-> int-t cli-ctx-t text-t))
+
 (define (cli-arg-get i ctx)
   (list-get i (cli-ctx-args ctx)))
 
 (claim cli-option-has (-> text-t cli-ctx-t bool-t))
+
 (define (cli-option-has name ctx)
   (hash-has name (cli-ctx-options ctx)))
 
 (claim cli-option-get (-> text-t cli-ctx-t text-t))
+
 (define (cli-option-get name ctx)
   (hash-get name (cli-ctx-options ctx)))
 
 (claim cli-passthrough-count (-> cli-ctx-t int-t))
+
 (define (cli-passthrough-count ctx)
   (list-length (cli-ctx-passthrough ctx)))
 
 (claim cli-passthrough-get (-> int-t cli-ctx-t text-t))
+
 (define (cli-passthrough-get i ctx)
   (list-get i (cli-ctx-passthrough ctx)))
