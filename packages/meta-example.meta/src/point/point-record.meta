@@ -13,8 +13,9 @@
 (define point-put-y 42)
 
 (define (point-distance-squared point)
-  (fadd (fmul (point-x point) (point-x point))
-        (fmul (point-y point) (point-y point))))
+  (fadd
+    (fmul (point-x point) (point-x point))
+    (fmul (point-y point) (point-y point))))
 
 (define-test point-test
   (let ((point (make-point 1.0 2.0)))
