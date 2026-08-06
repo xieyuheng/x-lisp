@@ -6,14 +6,6 @@
 学习 plan9 的编译器 loader 技术。
 学习 chez-scheme 的可执行文件格式。
 
-# xvm
-
-xvm 优化，不要放弃这个后端
-
-# lowerBuiltin
-
-iadd isub imul 转化为 basic2 中的 op
-
 # x86-64
 
 review 200-AssignHomesPass.ts
