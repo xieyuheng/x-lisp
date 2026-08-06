@@ -5,35 +5,35 @@
 
 (define-test lambda-interpreter-test
   (evaluate-and-print
-   (lambda-term 'x (var-term 'x)))
+    (lambda-term 'x (var-term 'x)))
 
   (evaluate-and-print
-   (apply-term
-    (lambda-term 'x (var-term 'x))
-    (lambda-term 'x (var-term 'x))))
-
-  (evaluate-and-print
-   (apply-term
     (apply-term
-     (lambda-term 'x (var-term 'x))
-     (lambda-term 'x (var-term 'x)))
+      (lambda-term 'x (var-term 'x))
+      (lambda-term 'x (var-term 'x))))
+
+  (evaluate-and-print
     (apply-term
-     (lambda-term 'x (var-term 'x))
-     (lambda-term 'x (var-term 'x)))))
+      (apply-term
+        (lambda-term 'x (var-term 'x))
+        (lambda-term 'x (var-term 'x)))
+      (apply-term
+        (lambda-term 'x (var-term 'x))
+        (lambda-term 'x (var-term 'x)))))
 
   (evaluate-and-print
-   (let-term
-    'id (lambda-term 'x (var-term 'x))
-    (var-term 'id)))
+    (let-term
+      'id (lambda-term 'x (var-term 'x))
+      (var-term 'id)))
 
   (evaluate-and-print
-   (let-term
-    'id (lambda-term 'x (var-term 'x))
-    (apply-term (var-term 'id) (var-term 'id))))
+    (let-term
+      'id (lambda-term 'x (var-term 'x))
+      (apply-term (var-term 'id) (var-term 'id))))
 
   (evaluate-and-print
-   (let-term
-    'id (lambda-term 'x (var-term 'x))
-    (apply-term
-     (apply-term (var-term 'id) (var-term 'id))
-     (apply-term (var-term 'id) (var-term 'id))))))
+    (let-term
+      'id (lambda-term 'x (var-term 'x))
+      (apply-term
+        (apply-term (var-term 'id) (var-term 'id))
+        (apply-term (var-term 'id) (var-term 'id))))))

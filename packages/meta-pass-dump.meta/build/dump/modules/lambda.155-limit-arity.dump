@@ -161,15 +161,15 @@
            (meta-builtin/builtin/make-source-location
             "src/lambda.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 734 25 18)
-             (meta-builtin/builtin/make-source-position 758 25 42))))
+             (meta-builtin/builtin/make-source-position 730 25 18)
+             (meta-builtin/builtin/make-source-position 754 25 42))))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
             "src/lambda.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 660 23 6)
-             (meta-builtin/builtin/make-source-position 665 23 11)))))))
+             (meta-builtin/builtin/make-source-position 656 23 6)
+             (meta-builtin/builtin/make-source-position 661 23 11)))))))
     (if (self/lambda/is-apply-term term)
       (let ((arg (self/lambda/apply-term-arg term)))
         (let ((target (self/lambda/apply-term-target term)))
@@ -196,8 +196,8 @@
            (meta-builtin/builtin/make-source-location
             "src/lambda.meta"
             (meta-builtin/builtin/make-source-span
-             (meta-builtin/builtin/make-source-position 622 21 3)
-             (meta-builtin/builtin/make-source-position 627 21 8)))))))))
+             (meta-builtin/builtin/make-source-position 618 21 3)
+             (meta-builtin/builtin/make-source-position 623 21 8)))))))))
 
 (define (apply target arg)
   (if (self/lambda/is-closure-value target)
@@ -210,5 +210,5 @@
      (meta-builtin/builtin/make-source-location
       "src/lambda.meta"
       (meta-builtin/builtin/make-source-span
-       (meta-builtin/builtin/make-source-position 1072 35 3)
-       (meta-builtin/builtin/make-source-position 1077 35 8))))))
+       (meta-builtin/builtin/make-source-position 1068 35 3)
+       (meta-builtin/builtin/make-source-position 1073 35 8))))))

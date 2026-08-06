@@ -1,6 +1,6 @@
 (module lambda)
 
-(define-enum (term-t)
+(define-enum term-t
   (var-term (name symbol-t))
   (apply-term (target term-t) (arg term-t))
   (lambda-term (parameter symbol-t) (body term-t))
@@ -15,7 +15,7 @@
 (define extend-env hash-copy-put)
 (define env-lookup hash-get-maybe)
 
-(define-enum (value-t)
+(define-enum value-t
   (closure-value (env env-t) (parameter symbol-t) (body term-t)))
 
 (define (evaluate term env)
