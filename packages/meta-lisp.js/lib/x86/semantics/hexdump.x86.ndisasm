@@ -9,16 +9,16 @@
 00000024  4883F800          cmp rax,byte +0x0
 00000028  0F8400000000      jz near 0x2e
 0000002E  4833C9            xor rcx,rcx
-00000031  488BD1            mov rdx,rcx
-00000034  48D1E2            shl rdx,1
-00000037  4803D1            add rdx,rcx
-0000003A  4833C0            xor rax,rax
-0000003D  488D3500000000    lea rsi,[rel 0x44]
-00000044  4803F1            add rsi,rcx
-00000047  8A06              mov al,[rsi]
-00000049  488BD8            mov rbx,rax
-0000004C  488D3D00000000    lea rdi,[rel 0x53]
-00000053  488B3F            mov rdi,[rdi]
+00000031  4833C0            xor rax,rax
+00000034  488D3500000000    lea rsi,[rel 0x3b]
+0000003B  4803F1            add rsi,rcx
+0000003E  8A06              mov al,[rsi]
+00000040  488BD8            mov rbx,rax
+00000043  488D3D00000000    lea rdi,[rel 0x4a]
+0000004A  488B3F            mov rdi,[rdi]
+0000004D  488BD1            mov rdx,rcx
+00000050  48D1E2            shl rdx,1
+00000053  4803D1            add rdx,rcx
 00000056  80E00F            and al,0xf
 00000059  488B3500000000    mov rsi,[rel 0x60]
 00000060  4803F0            add rsi,rax

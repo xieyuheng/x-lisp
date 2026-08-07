@@ -36,11 +36,6 @@
   (xor (reg rcx) (reg rcx))          ; Clear hex-output pointer to 0
 
   scan
-  ; Here we calculate the offset into the hex-output, which is rcx X 3
-  (mov (reg rdx) (reg rcx))                 ; Copy the pointer into hex-output into rdx
-  (shl (reg rdx) 1)                         ; Multiply pointer by 2 using left shift
-  (add (reg rdx) (reg rcx))                 ; Complete the multiplication X3
-
   ; Get a character from the buffer and put it in both rax and rbx:
   (xor (reg rax) (reg rax))                 ; Clear rax to 0
   (mov (reg rsi) (address buffer))          ; Place address of file buffer into rsi
@@ -51,6 +46,11 @@
   ; Place address of hex-output into rdi
   (mov (reg rdi) (address hex-output))
   (mov (reg rdi) (deref (reg rdi)))
+
+  ; Here we calculate the offset into the hex-output, which is rcx X 3
+  (mov (reg rdx) (reg rcx))                 ; Copy the pointer into hex-output into rdx
+  (shl (reg rdx) 1)                         ; Multiply pointer by 2 using left shift
+  (add (reg rdx) (reg rcx))                 ; Complete the multiplication X3
 
   ; Look up low nybble character and insert it into the string:
   (and (reg al) 0x0f)                       ; Mask out all but the low nybble
@@ -64,7 +64,7 @@
   (mov (reg rsi) (deref (address hex-digits)))
   (add (reg rsi) (reg rbx))
   (mov (reg bl) (deref (reg rsi)))           ; Look up the char equivalent of nybble
-  (mov (deref (reg rdi) (reg rdx) 1 1) (reg bl)) ; hex-output[rdx+1] = r10b
+  (mov (deref (reg rdi) (reg rdx) 1 1) (reg bl)) ; hex-output[rdx+1] = bl
 
   ; Bump the buffer pointer to the next character and see if we're done:
   (add (reg rcx) 1)                 ; Increment hex-output pointer
