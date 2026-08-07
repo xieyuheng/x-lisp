@@ -1,6 +1,6 @@
 [ [English](README.md) | [中文](README.zh.md) ]
 
-# 元语
+# 玄鉴
 
 一个带有类型系统的 LISP 语言。
 

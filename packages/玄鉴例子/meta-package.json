@@ -1,5 +1,5 @@
 {
-  "name": "元语例子",
+  "name": "玄鉴例子",
   "version": "0.1.0",
   "build": {
     "source-directory": "src",
@@ -8,11 +8,11 @@
   },
   "dependencies": {
     "meta-builtin": "../meta-builtin.meta",
-    "元语数学": "../元语数学",
+    "玄鉴数学": "../玄鉴数学",
     "命令行": "../命令行"
   },
   "prelude": {
     "meta-builtin": ["内置"],
-    "元语数学": ["数学"]
+    "玄鉴数学": ["数学"]
   }
 }
