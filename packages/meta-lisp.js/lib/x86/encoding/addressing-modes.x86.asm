@@ -22,6 +22,6 @@
   (ret))
 
 (define-code sib-with-index
-  (mov (reg rax) (deref (reg rbp) (reg rcx) 8))    ;; [rbp+rcx*8] → SIB(3,rcx,rbp)
-  (mov (reg rax) (deref (reg rbp) (reg rcx) 8 -16));; [rbp+rcx*8-16] → SIB(3,rcx,rbp) + disp8
+  (mov (reg rax) (deref (reg rbp) (* (reg rcx) 8)))    ;; [rbp+rcx*8] → SIB(3,rcx,rbp)
+  (mov (reg rax) (deref (reg rbp) (* (reg rcx) 8) -16));; [rbp+rcx*8-16] → SIB(3,rcx,rbp) + disp8
   (ret))

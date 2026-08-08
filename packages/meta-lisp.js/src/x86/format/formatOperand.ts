@@ -28,8 +28,11 @@ export function formatOperand(operand: X86.Operand): string {
       if (operand.size !== undefined) parts.push(operand.size)
       parts.push(`(reg ${operand.base})`)
       if (operand.index !== undefined) {
-        parts.push(`(reg ${operand.index})`)
-        parts.push(operand.scale?.toString() || "1")
+        if (operand.scale !== undefined) {
+          parts.push(`(* (reg ${operand.index}) ${operand.scale})`)
+        } else {
+          parts.push(`(reg ${operand.index})`)
+        }
       }
       if (operand.disp !== undefined) {
         parts.push(formatDisplacement(operand.disp))

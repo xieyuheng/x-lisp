@@ -57,6 +57,56 @@ test("parseOperand: reg deref with explicit size", () => {
   }
 })
 
+test("parseOperand: reg deref with index omits scale", () => {
+  const op = parseOperand(parse("(deref (reg rbp) (reg rax))"))
+  assert.equal(op.kind, "RegDerefOperand")
+  if (op.kind === "RegDerefOperand") {
+    assert.equal(op.base, "rbp")
+    assert.equal(op.index, "rax")
+    assert.equal(op.scale, undefined)
+    assert.equal(op.disp, undefined)
+  }
+})
+
+test("parseOperand: reg deref with index and disp omits scale", () => {
+  const op = parseOperand(parse("(deref (reg rbp) (reg rax) -16)"))
+  assert.equal(op.kind, "RegDerefOperand")
+  if (op.kind === "RegDerefOperand") {
+    assert.equal(op.base, "rbp")
+    assert.equal(op.index, "rax")
+    assert.equal(op.scale, undefined)
+    assert.equal(op.disp?.kind, "IntDisplacement")
+    if (op.disp?.kind === "IntDisplacement") {
+      assert.equal(op.disp.value, -16n)
+    }
+  }
+})
+
+test("parseOperand: reg deref with scaled index", () => {
+  const op = parseOperand(parse("(deref (reg rbp) (* (reg rax) 8))"))
+  assert.equal(op.kind, "RegDerefOperand")
+  if (op.kind === "RegDerefOperand") {
+    assert.equal(op.base, "rbp")
+    assert.equal(op.index, "rax")
+    assert.equal(op.scale, 8n)
+    assert.equal(op.disp, undefined)
+  }
+})
+
+test("parseOperand: reg deref with scaled index and disp", () => {
+  const op = parseOperand(parse("(deref (reg rbp) (* (reg rax) 8) -16)"))
+  assert.equal(op.kind, "RegDerefOperand")
+  if (op.kind === "RegDerefOperand") {
+    assert.equal(op.base, "rbp")
+    assert.equal(op.index, "rax")
+    assert.equal(op.scale, 8n)
+    assert.equal(op.disp?.kind, "IntDisplacement")
+    if (op.disp?.kind === "IntDisplacement") {
+      assert.equal(op.disp.value, -16n)
+    }
+  }
+})
+
 test("deriveOpSize: infer from register when deref omits size", () => {
   const instr = parseInstr(parse("(mov (reg al) (deref (address buffer)))"))
   assert.equal(deriveOpSize(instr), 1)

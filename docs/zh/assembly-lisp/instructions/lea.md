@@ -24,5 +24,5 @@ title: lea
 
 ```scheme
 (lea (reg rax) (deref (reg rbp) -8))
-(lea (reg rcx) (deref (reg rbx) (reg rax) 8))
+(lea (reg rcx) (deref (reg rbx) (* (reg rax) 8)))
 ```

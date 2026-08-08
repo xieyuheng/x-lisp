@@ -67,19 +67,28 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
           undefined,
         )
       }
-      if (restArgs.length === 1) {
-        const disp = parseDisplacement(restArgs[0])
-        return X86.RegDerefOperand(size, baseName, undefined, undefined, disp)
+      const indexForm = parseIndexForm(restArgs[0])
+      if (indexForm !== null) {
+        const tail = restArgs.slice(1)
+        if (tail.length > 1) {
+          let message = `(deref (reg base) index [disp]) takes at most one displacement`
+          throw new Error(message)
+        }
+        const disp = tail.length === 1 ? parseDisplacement(tail[0]) : undefined
+        return X86.RegDerefOperand(
+          size,
+          baseName,
+          indexForm.index,
+          indexForm.scale,
+          disp,
+        )
       }
-      if (restArgs.length === 2) {
-        const index = parseRegName(restArgs[0])
-        const scale = parseImmValue(restArgs[1])
-        return X86.RegDerefOperand(size, baseName, index, scale, undefined)
+      if (restArgs.length !== 1) {
+        let message = `(deref (reg base) disp) takes exactly one displacement`
+        throw new Error(message)
       }
-      const index = parseRegName(restArgs[0])
-      const scale = parseImmValue(restArgs[1])
-      const disp = parseDisplacement(restArgs[2])
-      return X86.RegDerefOperand(size, baseName, index, scale, disp)
+      const disp = parseDisplacement(restArgs[0])
+      return X86.RegDerefOperand(size, baseName, undefined, undefined, disp)
     }
 
     let message =
@@ -154,6 +163,38 @@ function parseRegName(sexp: S.Sexp): string {
     throw new Error(message)
   }
   return S.asSymbolSexp(elements[1]).content
+}
+
+function parseIndexForm(
+  sexp: S.Sexp,
+): { index: string; scale: bigint | undefined } | null {
+  if (sexp.kind !== "ListSexp") return null
+  const elements = sexp.elements
+  if (elements.length === 0 || elements[0].kind !== "SymbolSexp") {
+    return null
+  }
+  const head = elements[0].content
+  if (head === "reg") {
+    if (elements.length !== 2) {
+      let message = `expected (reg name), got: ${S.formatSexp(sexp)}`
+      throw new Error(message)
+    }
+    return {
+      index: S.asSymbolSexp(elements[1]).content,
+      scale: undefined,
+    }
+  }
+  if (head === "*") {
+    if (elements.length !== 3) {
+      let message = `expected (* (reg index) scale), got: ${S.formatSexp(sexp)}`
+      throw new Error(message)
+    }
+    return {
+      index: parseRegName(elements[1]),
+      scale: parseImmValue(elements[2]),
+    }
+  }
+  return null
 }
 
 function parseImmValue(sexp: S.Sexp): bigint {

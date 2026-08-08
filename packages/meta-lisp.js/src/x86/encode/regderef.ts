@@ -47,7 +47,7 @@ function dispValue(disp: Displacement | undefined): number {
 export function encodeRegDeref(op: RegDerefOperand): RegDerefEncoding {
   const base = op.base
   const index = op.index
-  const scale = op.scale ? Number(op.scale) : 0
+  const scale = op.scale ? Number(op.scale) : op.index ? 1 : 0
   const disp = dispValue(op.disp)
 
   if (index) {

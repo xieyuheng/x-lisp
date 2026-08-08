@@ -33,8 +33,20 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       if (operand.size !== undefined) parts.push(Ppml.text(operand.size))
       parts.push(Ppml.prettySyntax("reg", [], [Ppml.text(operand.base)]))
       if (operand.index !== undefined) {
-        parts.push(Ppml.prettySyntax("reg", [], [Ppml.text(operand.index)]))
-        parts.push(Ppml.text(operand.scale?.toString() || "1"))
+        if (operand.scale !== undefined) {
+          parts.push(
+            Ppml.prettySyntax(
+              "*",
+              [],
+              [
+                Ppml.prettySyntax("reg", [], [Ppml.text(operand.index)]),
+                Ppml.text(operand.scale.toString()),
+              ],
+            ),
+          )
+        } else {
+          parts.push(Ppml.prettySyntax("reg", [], [Ppml.text(operand.index)]))
+        }
       }
       if (operand.disp !== undefined) {
         parts.push(prettyDisplacement(operand.disp))

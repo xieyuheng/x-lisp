@@ -257,13 +257,14 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 第一个参数（size 之后）为 `(reg <base>)`，支持完整 SIB。
 
 ```scheme
-(deref (reg <base>) (reg <index>) <scale> <disp>)
+(deref (reg <base>) (<index> | (* <index> <scale>)) [<disp>])
 (deref dword (reg <base>) -8)
 ```
 
 - `base`：base 寄存器名。
-- `index`：可选，index 寄存器名。
-- `scale`：可选，仅 `1` / `2` / `4` / `8`。
+- `index`：可选，index 寄存器名，写作 `(reg <name>)`。
+- `scale`：可选，仅 `1` / `2` / `4` / `8`，与 index 一起写作 `(* (reg <name>) <scale>)`。
+  省略 `(* ...)` 时 scale 默认 `1`。
 - `disp`：可选，整数或 `(offset-of ...)`。
 
 ```scheme
@@ -271,8 +272,10 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 (deref (reg rbp) -8)                          ;; [rbp - 8]
 (deref dword (reg rbp) -8)                    ;; [rbp - 8] dword
 (deref (reg rbp) (offset-of point-t y))       ;; [rbp + offset]
-(deref (reg rbp) (reg rax) 8)                 ;; [rbp + rax*8]
-(deref (reg rbp) (reg rax) 8 -16)             ;; [rbp + rax*8 - 16]
+(deref (reg rbp) (reg rax))                   ;; [rbp + rax]
+(deref (reg rbp) (reg rax) -16)               ;; [rbp + rax - 16]
+(deref (reg rbp) (* (reg rax) 8))             ;; [rbp + rax*8]
+(deref (reg rbp) (* (reg rax) 8) -16)         ;; [rbp + rax*8 - 16]
 ```
 
 ## (cc)

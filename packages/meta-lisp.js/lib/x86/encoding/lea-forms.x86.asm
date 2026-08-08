@@ -24,6 +24,6 @@
   (ret))
 
 (define-code lea-sib
-  (lea (reg rax) (deref (reg rbp) (reg rcx) 8))         ;; SIB(3,rcx,rbp)
-  (lea (reg rax) (deref (reg rbp) (reg rcx) 8 -16))     ;; SIB(3,rcx,rbp) + disp8
+  (lea (reg rax) (deref (reg rbp) (* (reg rcx) 8)))         ;; SIB(3,rcx,rbp)
+  (lea (reg rax) (deref (reg rbp) (* (reg rcx) 8) -16))     ;; SIB(3,rcx,rbp) + disp8
   (ret))

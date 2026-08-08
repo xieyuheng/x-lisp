@@ -57,14 +57,14 @@
   (mov (reg rsi) (deref (address hex-digits)))
   (add (reg rsi) (reg rax))
   (mov (reg al) (deref (reg rsi)))           ; Look up the char equivalent of nybble
-  (mov (deref (reg rdi) (reg rdx) 1 2) (reg al)) ; Write the char equivalent to hex-output
+  (mov (deref (reg rdi) (reg rdx) 2) (reg al)) ; Write the char equivalent to hex-output
 
   ; Look up high nybble character and insert it into the string:
   (shr (reg bl) 4)                           ; Shift high 4 bits of char into low 4 bits
   (mov (reg rsi) (deref (address hex-digits)))
   (add (reg rsi) (reg rbx))
   (mov (reg bl) (deref (reg rsi)))           ; Look up the char equivalent of nybble
-  (mov (deref (reg rdi) (reg rdx) 1 1) (reg bl)) ; hex-output[rdx+1] = bl
+  (mov (deref (reg rdi) (reg rdx) 1) (reg bl)) ; hex-output[rdx+1] = bl
 
   ; Bump the buffer pointer to the next character and see if we're done:
   (add (reg rcx) 1)                 ; Increment hex-output pointer
