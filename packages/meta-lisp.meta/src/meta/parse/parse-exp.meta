@@ -8,7 +8,7 @@
   (match sexp
     ((symbol-sexp content location)
      (let ((text (symbol-to-text content)))
-       (if (text-contains "/" text)
+       (if (text-include "/" text)
          (parse-qualified-var-exp text location)
          (var-exp content location))))
     ((keyword-sexp content location) (keyword-exp content location))

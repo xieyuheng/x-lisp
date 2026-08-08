@@ -163,7 +163,7 @@ Operations on `text-t`.
 
 - [`text-starts-with`](text/text-starts-with.md) — Check prefix
 - [`text-ends-with`](text/text-ends-with.md) — Check suffix
-- [`text-contains`](text/text-contains.md) — Check if contains substring
+- [`text-include`](text/text-include.md) — Check if includes substring
 - [`text-find-index`](text/text-find-index.md) — Find substring position
 - [`text-replace`](text/text-replace.md) — Replace substring
 
@@ -329,7 +329,7 @@ Operations on `(set-t E)`.
 - [`set-size`](set/set-size.md) — Set size
 - [`set-is-empty`](set/set-is-empty.md) — Check if empty
 - [`set-member`](set/set-member.md) — Check if contains element
-- [`set-subset`](set/set-subset.md) — Check if subset
+- [`set-include`](set/set-include.md) — Check if included
 
 ### Mutation
 

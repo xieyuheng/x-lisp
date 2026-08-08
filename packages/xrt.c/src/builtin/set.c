@@ -63,7 +63,7 @@ value_t x_set_difference(value_t lhs, value_t rhs) {
   return x_object(xset_difference(to_xset(lhs), to_xset(rhs)));
 }
 
-value_t x_set_subset(value_t subset, value_t set) {
+value_t x_set_include(value_t subset, value_t set) {
   return x_bool(xset_subset(to_xset(subset), to_xset(set)));
 }
 

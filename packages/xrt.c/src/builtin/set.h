@@ -14,6 +14,6 @@ x_fn_1_t x_set_clear_mut;
 x_fn_2_t x_set_union;
 x_fn_2_t x_set_inter;
 x_fn_2_t x_set_difference;
-x_fn_2_t x_set_subset;
+x_fn_2_t x_set_include;
 x_fn_2_t x_set_disjoint;
 x_fn_1_t x_set_to_list;

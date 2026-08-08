@@ -150,7 +150,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/builtin/text-to-upper-case", x_text_to_upper_case);
   define_primitive_1(mod, "meta-builtin/builtin/text-to-lower-case", x_text_to_lower_case);
   define_primitive_2(mod, "meta-builtin/builtin/text-get-code-point", x_text_get_code_point);
-  define_primitive_2(mod, "meta-builtin/builtin/text-contains", x_text_contains);
+  define_primitive_2(mod, "meta-builtin/builtin/text-include", x_text_include);
   define_primitive_2(mod, "meta-builtin/builtin/text-find-index", x_text_find_index);
   define_primitive_1(mod, "meta-builtin/builtin/text-trim-left", x_text_trim_left);
   define_primitive_1(mod, "meta-builtin/builtin/text-trim-right", x_text_trim_right);
@@ -227,7 +227,7 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/set-union", x_set_union);
   define_primitive_2(mod, "meta-builtin/builtin/set-inter", x_set_inter);
   define_primitive_2(mod, "meta-builtin/builtin/set-difference", x_set_difference);
-  define_primitive_2(mod, "meta-builtin/builtin/set-subset", x_set_subset);
+  define_primitive_2(mod, "meta-builtin/builtin/set-include", x_set_include);
   define_primitive_2(mod, "meta-builtin/builtin/set-disjoint", x_set_disjoint);
   define_primitive_1(mod, "meta-builtin/builtin/set-to-list", x_set_to_list);
 

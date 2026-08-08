@@ -19,7 +19,7 @@ x_fn_2_t x_text_ends_with;
 x_fn_1_t x_text_to_upper_case;
 x_fn_1_t x_text_to_lower_case;
 x_fn_2_t x_text_get_code_point;
-x_fn_2_t x_text_contains;
+x_fn_2_t x_text_include;
 x_fn_2_t x_text_find_index;
 x_fn_1_t x_text_trim_left;
 x_fn_1_t x_text_trim_right;

@@ -62,10 +62,10 @@
   (assert-equal 98 (text-get-code-point 1 "abc"))
   (assert-equal 99 (text-get-code-point 2 "abc")))
 
-(define-test text-contains-test
-  (assert (text-contains "bb" "aabbcc"))
-  (assert (text-contains "ab" "aabbcc"))
-  (assert-not (text-contains "ba" "aabbcc")))
+(define-test text-include-test
+  (assert (text-include "bb" "aabbcc"))
+  (assert (text-include "ab" "aabbcc"))
+  (assert-not (text-include "ba" "aabbcc")))
 
 (define-test text-find-index-test
   (assert-equal 0 (text-find-index "0" "01234"))

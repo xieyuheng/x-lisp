@@ -162,7 +162,7 @@ value_t x_text_get_code_point(value_t index, value_t string) {
       to_int64(index)));
 }
 
-value_t x_text_contains(value_t substring, value_t string) {
+value_t x_text_include(value_t substring, value_t string) {
   return x_bool(
     string_contains(
       xtext_string(to_xtext(string)),

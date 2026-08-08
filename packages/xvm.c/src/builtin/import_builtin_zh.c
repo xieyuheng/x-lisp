@@ -150,7 +150,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/文本转大写", x_text_to_upper_case);
   define_primitive_1(mod, "meta-builtin/内置/文本转小写", x_text_to_lower_case);
   define_primitive_2(mod, "meta-builtin/内置/文本取码点", x_text_get_code_point);
-  define_primitive_2(mod, "meta-builtin/内置/文本包含", x_text_contains);
+  define_primitive_2(mod, "meta-builtin/内置/文本含于", x_text_include);
   define_primitive_2(mod, "meta-builtin/内置/文本查找索引", x_text_find_index);
   define_primitive_1(mod, "meta-builtin/内置/文本修剪左", x_text_trim_left);
   define_primitive_1(mod, "meta-builtin/内置/文本修剪右", x_text_trim_right);
@@ -227,7 +227,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/集合并", x_set_union);
   define_primitive_2(mod, "meta-builtin/内置/集合交", x_set_inter);
   define_primitive_2(mod, "meta-builtin/内置/集合差", x_set_difference);
-  define_primitive_2(mod, "meta-builtin/内置/集合子集", x_set_subset);
+  define_primitive_2(mod, "meta-builtin/内置/集合含于", x_set_include);
   define_primitive_2(mod, "meta-builtin/内置/集合不交", x_set_disjoint);
   define_primitive_1(mod, "meta-builtin/内置/集合转列表", x_set_to_list);
 
