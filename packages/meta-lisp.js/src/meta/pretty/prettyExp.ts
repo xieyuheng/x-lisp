@@ -52,10 +52,10 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       return Ppml.prettyApplication([target, ...args])
     }
 
-    case "PipeExp": {
+    case "FlowExp": {
       const target = prettyExp(exp.target)
       const steps = exp.steps.map(prettyExp)
-      return Ppml.prettySyntax("pipe", [target], steps)
+      return Ppml.prettySyntax("flow", [target], steps)
     }
 
     case "ChainExp": {

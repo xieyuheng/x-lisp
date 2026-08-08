@@ -10,7 +10,7 @@
 (define (example-unless) (unless false 2))
 (define (example-and a b) (and a b))
 (define (example-or a b) (or a b))
-(define (example-pipe) (pipe 5 add1 double))
+(define (example-flow) (flow 5 add1 double))
 (define (example-chain) ((chain add1 double) 5))
 (define (example-compose) ((compose add1 double) 5))
 (define (example-letrec)

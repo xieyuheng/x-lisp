@@ -28,8 +28,8 @@
      (let ((target-op (exp-op-text target))
            (all-elements (cons (pretty-exp target) (list-map pretty-exp args))))
        (ppml/pretty-application target-op all-elements)))
-    ((pipe-exp target steps location)
-     (ppml/pretty-syntax "pipe"
+    ((flow-exp target steps location)
+     (ppml/pretty-syntax "flow"
        [(pretty-exp target)]
        (list-map pretty-exp steps)))
     ((chain-exp steps location)

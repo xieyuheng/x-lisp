@@ -1,13 +1,13 @@
 (module meta)
 
-(claim desugar-pipe
+(claim desugar-flow
   (-> exp-t (list-t exp-t) source-location-t
       exp-t))
 
-(define (desugar-pipe target steps location)
+(define (desugar-flow target steps location)
   (if (list-is-empty steps)
     target
-    (desugar-pipe
+    (desugar-flow
       (apply-exp (car steps) [target] location)
       (cdr steps)
       location)))

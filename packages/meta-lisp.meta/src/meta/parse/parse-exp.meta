@@ -48,10 +48,10 @@
   (list-append
     '(lambda @quote if when unless and or cond match multi-match
       begin let letrec @list @square-bracket @set @hash @sexp @text
-      -> the all pipe chain compose define @comment)
+      -> the all flow chain compose define @comment)
     '(函 @引用 若 当 除非 且 或 若则 匹配 多元匹配
       循序 令 递归令 @列表 @方括号 @集合 @散列 @符号算式 @文本
-      -> 型例 泛型 管道 串联 复合 定义 @注释)))
+      -> 型例 泛型 顺流 衔接 复合 定义 @注释)))
 
 (claim parse-compound-exp
   (-> (list-t sexp-t) source-location-t
@@ -225,13 +225,13 @@
      (all-exp (parse-parameters (car sexps))
        (parse-exp (list-get 1 sexps))
        location))
-    ((list-member tag '(pipe 管道))
+    ((list-member tag '(flow 顺流))
      (@comment
-       (pipe <init> <step> ...))
-     (pipe-exp (parse-exp (car sexps))
+       (flow <init> <step> ...))
+     (flow-exp (parse-exp (car sexps))
        (list-map parse-exp (cdr sexps))
        location))
-    ((list-member tag '(chain 串联))
+    ((list-member tag '(chain 衔接))
      (@comment
        (chain <step> ...))
      (chain-exp (list-map parse-exp sexps) location))

@@ -41,7 +41,7 @@
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(define (example-pipe)
+(define (example-flow)
   (let ((unnested.1 (self/desugar/add1 5))) (self/desugar/double unnested.1)))
 
 (define (example-chain)

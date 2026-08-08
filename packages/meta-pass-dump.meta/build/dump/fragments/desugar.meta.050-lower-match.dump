@@ -20,7 +20,7 @@
 
 (define (example-or a b) (or a b))
 
-(define (example-pipe) (pipe 5 add1 double))
+(define (example-flow) (flow 5 add1 double))
 
 (define (example-chain) ((chain add1 double) 5))
 

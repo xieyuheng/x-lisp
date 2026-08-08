@@ -10,7 +10,7 @@ export function desugarChain(
   const freshName = M.generateRelativeFreshName(usedNames, "target")
   return M.LambdaExp(
     [freshName],
-    M.PipeExp(M.VarExp(freshName, location), steps, location),
+    M.FlowExp(M.VarExp(freshName, location), steps, location),
     location,
   )
 }

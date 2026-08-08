@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function desugarPipe(
+export function desugarFlow(
   target: M.Exp,
   steps: Array<M.Exp>,
   location: S.SourceLocation,

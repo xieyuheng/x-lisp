@@ -5,12 +5,12 @@ import { desugarBegin } from "./desugarBegin.ts"
 import { desugarChain } from "./desugarChain.ts"
 import { desugarCompose } from "./desugarCompose.ts"
 import { desugarCond } from "./desugarCond.ts"
+import { desugarFlow } from "./desugarFlow.ts"
 import { desugarHash } from "./desugarHash.ts"
 import { desugarLet } from "./desugarLet.ts"
 import { desugarLetrec } from "./desugarLetrec.ts"
 import { desugarList } from "./desugarList.ts"
 import { desugarOr } from "./desugarOr.ts"
-import { desugarPipe } from "./desugarPipe.ts"
 import { desugarQuote } from "./desugarQuote.ts"
 import { desugarSet } from "./desugarSet.ts"
 import { desugarSexp } from "./desugarSexp.ts"
@@ -97,8 +97,8 @@ export function desugar(exp: M.Exp): M.Term {
       return M.QualifiedVarTerm("meta-builtin", "builtin", "void", exp.location)
     }
 
-    case "PipeExp": {
-      return desugar(desugarPipe(exp.target, exp.steps, exp.location))
+    case "FlowExp": {
+      return desugar(desugarFlow(exp.target, exp.steps, exp.location))
     }
 
     case "ChainExp": {

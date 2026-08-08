@@ -71,13 +71,13 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "PipeExp": {
+    case "FlowExp": {
       const target = formatExp(exp.target)
       const steps = formatExps(exp.steps)
       if (steps === "") {
-        return `(pipe ${target})`
+        return `(flow ${target})`
       } else {
-        return `(pipe ${target} ${steps})`
+        return `(flow ${target} ${steps})`
       }
     }
 

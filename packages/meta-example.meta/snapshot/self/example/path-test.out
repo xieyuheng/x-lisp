@@ -24,7 +24,7 @@ file/file-2.txt
 file/file.meta
 function
 function/SKI.meta
-function/compose-and-pipe.meta
+function/compose-and-flow.meta
 function/compose2.meta
 function/forth.meta
 function/identity.meta

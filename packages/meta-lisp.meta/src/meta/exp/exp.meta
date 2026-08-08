@@ -10,7 +10,7 @@
   (qualified-var-exp (pkg-name symbol-t) (mod-name symbol-t) (name symbol-t) (location source-location-t))
   (lambda-exp (parameters (list-t symbol-t)) (body exp-t) (location source-location-t))
   (apply-exp (target exp-t) (args (list-t exp-t)) (location source-location-t))
-  (pipe-exp (target exp-t) (steps (list-t exp-t)) (location source-location-t))
+  (flow-exp (target exp-t) (steps (list-t exp-t)) (location source-location-t))
   (chain-exp (steps (list-t exp-t)) (location source-location-t))
   (compose-exp (steps (list-t exp-t)) (location source-location-t))
   (let1-exp (name symbol-t) (rhs exp-t) (body exp-t) (location source-location-t))

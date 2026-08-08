@@ -33,7 +33,7 @@
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(define (example-pipe) (double (add1 5)))
+(define (example-flow) (double (add1 5)))
 
 (define (example-chain) ((lambda (target) (double (add1 target))) 5))
 

@@ -35,8 +35,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "PipeExp": {
-      return M.PipeExp(
+    case "FlowExp": {
+      return M.FlowExp(
         onExp(exp.target),
         exp.steps.map((e) => onExp(e)),
         exp.location,

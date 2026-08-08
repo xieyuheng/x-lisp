@@ -134,8 +134,8 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "PipeExp": {
-      return M.PipeExp(
+    case "FlowExp": {
+      return M.FlowExp(
         expNaiveSubst(exp.target, name, rhs),
         exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
         exp.location,

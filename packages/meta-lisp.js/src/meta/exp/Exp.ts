@@ -11,7 +11,7 @@ export type Exp =
   | QualifiedVarExp
   | LambdaExp
   | ApplyExp
-  | PipeExp
+  | FlowExp
   | ChainExp
   | ComposeExp
   | Let1Exp
@@ -211,20 +211,20 @@ export function ApplyExp(
   }
 }
 
-export type PipeExp = {
-  kind: "PipeExp"
+export type FlowExp = {
+  kind: "FlowExp"
   target: Exp
   steps: Array<Exp>
   location: SourceLocation
 }
 
-export function PipeExp(
+export function FlowExp(
   target: Exp,
   steps: Array<Exp>,
   location: SourceLocation,
-): PipeExp {
+): FlowExp {
   return {
-    kind: "PipeExp",
+    kind: "FlowExp",
     target,
     steps,
     location,

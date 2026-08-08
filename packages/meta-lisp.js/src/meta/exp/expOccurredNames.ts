@@ -63,7 +63,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       )
     }
 
-    case "PipeExp": {
+    case "FlowExp": {
       return setUnion(
         expOccurredNames(exp.target),
         setUnionMany(exp.steps.map(expOccurredNames)),

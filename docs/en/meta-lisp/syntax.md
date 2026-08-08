@@ -55,7 +55,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(letrec)](#letrec)
   - [local (define)](#local-define)
 - [Function composition](#function-composition)
-  - [(pipe)](#pipe)
+  - [(flow)](#flow)
   - [(chain)](#chain)
   - [(compose)](#compose)
 - [Algebraic data types](#algebraic-data-types)
@@ -792,19 +792,19 @@ Sequential dependency:
 
 # Function composition
 
-## (pipe)
+## (flow)
 
 ```meta-lisp
-(pipe <init> <step> ...)
+(flow <init> <step> ...)
 ```
 
-Pipeline.
+Flow.
 
 Passes `<init>` to the first `<step>`, the result to the second `<step>`, and so on.
 
 ```meta-lisp
-(pipe 5 add1 double)        ;; => 12
-(pipe 2 add1 double square) ;; => 36
+(flow 5 add1 double)        ;; => 12
+(flow 2 add1 double square) ;; => 36
 ```
 
 Equivalent to:
@@ -822,7 +822,7 @@ Equivalent to:
 
 Pipeline-style function composition.
 
-Unlike `(pipe)`, `(chain)` does not take an initial value — it returns a function.
+Unlike `(flow)`, `(chain)` does not take an initial value — it returns a function.
 
 ```meta-lisp
 (chain add1 double)
@@ -832,8 +832,8 @@ Unlike `(pipe)`, `(chain)` does not take an initial value — it returns a funct
 Equivalent to:
 
 ```meta-lisp
-(lambda (x) (pipe x add1 double))
-(lambda (x) (pipe x add1 double square))
+(lambda (x) (flow x add1 double))
+(lambda (x) (flow x add1 double square))
 ```
 
 Equivalent to:

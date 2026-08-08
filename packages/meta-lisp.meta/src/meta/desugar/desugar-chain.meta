@@ -9,5 +9,5 @@
          (fresh-name (generate-relative-fresh-name used-names 'target)))
     (lambda-exp
       [fresh-name]
-      (pipe-exp (var-exp fresh-name location) steps location)
+      (flow-exp (var-exp fresh-name location) steps location)
       location)))

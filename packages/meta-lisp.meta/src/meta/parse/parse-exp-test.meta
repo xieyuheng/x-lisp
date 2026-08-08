@@ -103,9 +103,9 @@
   (assert-equal "(all (A) (-> A A))"
     (format-exp (parse-exp (@sexp (all (A) (-> A A)))))))
 
-(define-test parse-pipe-test
-  (assert-equal "(pipe x f g)"
-    (format-exp (parse-exp (@sexp (pipe x f g))))))
+(define-test parse-flow-test
+  (assert-equal "(flow x f g)"
+    (format-exp (parse-exp (@sexp (flow x f g))))))
 
 (define-test parse-chain-test
   (assert-equal "(chain f g)"

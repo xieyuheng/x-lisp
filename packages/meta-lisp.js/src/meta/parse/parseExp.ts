@@ -375,16 +375,16 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* 'pipe target steps)": ({ target, steps }, { location }) => {
-    return M.PipeExp(
+  "(cons* 'flow target steps)": ({ target, steps }, { location }) => {
+    return M.FlowExp(
       parseExp(target),
       S.asListSexp(steps).elements.map(parseExp),
       location,
     )
   },
 
-  "(cons* '管道 target steps)": ({ target, steps }, { location }) => {
-    return M.PipeExp(
+  "(cons* '顺流 target steps)": ({ target, steps }, { location }) => {
+    return M.FlowExp(
       parseExp(target),
       S.asListSexp(steps).elements.map(parseExp),
       location,
@@ -395,7 +395,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.ChainExp(S.asListSexp(steps).elements.map(parseExp), location)
   },
 
-  "(cons* '串联 steps)": ({ steps }, { location }) => {
+  "(cons* '衔接 steps)": ({ steps }, { location }) => {
     return M.ChainExp(S.asListSexp(steps).elements.map(parseExp), location)
   },
 

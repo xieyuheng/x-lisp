@@ -14,7 +14,7 @@
     ((var-exp name location) location)
     ((qualified-var-exp pkg-name mod-name name location) location)
     ((apply-exp target args location) location)
-    ((pipe-exp target steps location) location)
+    ((flow-exp target steps location) location)
     ((chain-exp steps location) location)
     ((compose-exp steps location) location)
     ((lambda-exp parameters body location) location)

@@ -36,7 +36,7 @@
      (set-union
        (exp-occurred-names target)
        (set-union-many (list-map exp-occurred-names args))))
-    ((pipe-exp target steps location)
+    ((flow-exp target steps location)
      (set-union
        (exp-occurred-names target)
        (set-union-many (list-map exp-occurred-names steps))))
