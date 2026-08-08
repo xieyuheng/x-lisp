@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim use-input-file
-  (polymorphic (A)
+  (all (A)
     (-> text-t (-> file-t A)
         A)))
 
@@ -12,7 +12,7 @@
     result))
 
 (claim use-output-file
-  (polymorphic (A)
+  (all (A)
     (-> text-t (-> file-t A)
         A)))
 

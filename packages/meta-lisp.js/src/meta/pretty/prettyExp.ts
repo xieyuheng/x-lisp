@@ -43,11 +43,7 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
 
     case "PolymorphicExp": {
       const paramsNode = Ppml.prettyApplication(exp.parameters.map(Ppml.text))
-      return Ppml.prettySyntax(
-        "polymorphic",
-        [paramsNode],
-        [prettyExp(exp.body)],
-      )
+      return Ppml.prettySyntax("all", [paramsNode], [prettyExp(exp.body)])
     }
 
     case "ApplyExp": {
@@ -379,11 +375,7 @@ export function prettyTerm(term: M.Term): Ppml.Node {
 
     case "PolymorphicTerm": {
       const paramsNode = Ppml.prettyApplication(term.parameters.map(Ppml.text))
-      return Ppml.prettySyntax(
-        "polymorphic",
-        [paramsNode],
-        [prettyTerm(term.body)],
-      )
+      return Ppml.prettySyntax("all", [paramsNode], [prettyTerm(term.body)])
     }
   }
 }

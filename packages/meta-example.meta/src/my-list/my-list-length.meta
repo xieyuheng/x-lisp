@@ -4,7 +4,7 @@
 ;; - assume type variables are the same during recursive call.
 
 ;; (claim my-list-length
-;;   (polymorphic (E)
+;;   (all (E)
 ;;     (-> (my-list-t E)
 ;;         int-t)))
 

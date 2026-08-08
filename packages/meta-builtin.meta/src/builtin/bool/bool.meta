@@ -7,5 +7,5 @@
 
 (claim true bool-t)
 (claim false bool-t)
-(claim is-bool (polymorphic (A) (-> A bool-t)))
+(claim is-bool (all (A) (-> A bool-t)))
 (claim not (-> bool-t bool-t))

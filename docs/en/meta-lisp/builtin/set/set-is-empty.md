@@ -5,7 +5,7 @@ title: set-is-empty
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (set-t E) bool-t))
+(all (E) (-> (set-t E) bool-t))
 ```
 
 # Description

@@ -25,11 +25,11 @@ Box type constructor. Internally represented as `(list-t E)`.
 # Generated
 
 ```meta-lisp
-(claim make-box (polymorphic (E) (-> (box-t E))))
-(claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
-(claim box-put (polymorphic (E) (-> E (box-t E) (box-t E))))
-(claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
-(claim box-get (polymorphic (E) (-> (box-t E) E)))
+(claim make-box (all (E) (-> (box-t E))))
+(claim box-is-empty (all (E) (-> (box-t E) bool-t)))
+(claim box-put (all (E) (-> E (box-t E) (box-t E))))
+(claim box-get-maybe (all (E) (-> (box-t E) (maybe-t E))))
+(claim box-get (all (E) (-> (box-t E) E)))
 ```
 
 # Examples

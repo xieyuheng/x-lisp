@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim hash-select
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> K V bool-t) (hash-t K V)
         (hash-t K V))))
 
@@ -12,7 +12,7 @@
       (hash-entries hash))))
 
 (claim hash-select-key
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> K bool-t) (hash-t K V)
         (hash-t K V))))
 
@@ -23,7 +23,7 @@
       (hash-entries hash))))
 
 (claim hash-select-value
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> V bool-t) (hash-t K V)
         (hash-t K V))))
 
@@ -34,7 +34,7 @@
       (hash-entries hash))))
 
 (claim hash-reject
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> K V bool-t) (hash-t K V)
         (hash-t K V))))
 
@@ -43,7 +43,7 @@
     hash))
 
 (claim hash-reject-key
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> K bool-t) (hash-t K V)
         (hash-t K V))))
 
@@ -51,7 +51,7 @@
   (hash-select-key (negation p) hash))
 
 (claim hash-reject-value
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> V bool-t) (hash-t K V)
         (hash-t K V))))
 

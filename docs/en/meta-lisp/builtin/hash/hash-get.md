@@ -5,7 +5,7 @@ title: hash-get
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> K (hash-t K V) V))
+(all (K V) (-> K (hash-t K V) V))
 ```
 
 # Description

@@ -29,7 +29,7 @@
          (@text "(-> " (format-exp ret-type) ")")
          (@text "(-> " args-str " " (format-exp ret-type) ")"))))
     ((polymorphic-exp parameters body location)
-     (@text "(polymorphic (" (text-join " " (list-map symbol-to-text parameters)) ") "
+     (@text "(all (" (text-join " " (list-map symbol-to-text parameters)) ") "
               (format-exp body) ")"))
     ((lambda-exp parameters body location)
      (@text "(lambda (" (text-join " " (list-map symbol-to-text parameters)) ") "

@@ -1,7 +1,7 @@
 (module Y-type-error)
 
 (claim Y
-  (polymorphic (A)
+  (all (A)
     (-> (-> A A) A)))
 
 (define (Y f)

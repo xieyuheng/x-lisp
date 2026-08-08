@@ -31,7 +31,7 @@
 (declare-primitive-function text-to-int 1)
 (declare-primitive-function text-to-float 1)
 
-(claim is-text (polymorphic (A) (-> A bool-t)))
+(claim is-text (all (A) (-> A bool-t)))
 (claim text-length (-> text-t int-t))
 (claim text-is-empty (-> text-t bool-t))
 (claim text-is-blank (-> text-t bool-t))

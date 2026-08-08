@@ -5,7 +5,7 @@ title: list-push
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> E (list-t E) (list-t E)))
+(all (E) (-> E (list-t E) (list-t E)))
 ```
 
 # Description

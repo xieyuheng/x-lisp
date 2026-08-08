@@ -5,7 +5,7 @@ title: make-list
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (list-t E)))
+(all (E) (-> (list-t E)))
 ```
 
 # Description

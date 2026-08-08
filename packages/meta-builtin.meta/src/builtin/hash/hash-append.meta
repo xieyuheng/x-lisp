@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim hash-append
-  (polymorphic (K V)
+  (all (K V)
     (-> (hash-t K V) (hash-t K V)
         (hash-t K V))))
 

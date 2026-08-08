@@ -5,7 +5,7 @@ title: hash-length
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (hash-t K V) int-t))
+(all (K V) (-> (hash-t K V) int-t))
 ```
 
 # Description

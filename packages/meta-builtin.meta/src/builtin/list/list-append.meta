@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-append
-  (polymorphic (A)
+  (all (A)
     (-> (list-t A) (list-t A)
         (list-t A))))
 

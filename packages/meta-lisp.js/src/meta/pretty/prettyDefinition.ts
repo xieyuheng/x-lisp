@@ -201,7 +201,7 @@ function prettyType(type: M.Type): Ppml.Node {
       const varTypes = type.varTypes.map(prettyType)
       const bodyType = prettyType(type.bodyType)
       return Ppml.prettySyntax(
-        "polymorphic",
+        "all",
         [],
         [
           Ppml.group(Ppml.text("("), Ppml.flex(varTypes), Ppml.text(")")),

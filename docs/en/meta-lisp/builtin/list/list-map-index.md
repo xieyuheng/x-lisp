@@ -5,7 +5,7 @@ title: list-map-index
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> (-> int-t A B) (list-t A) (list-t B)))
+(all (A B) (-> (-> int-t A B) (list-t A) (list-t B)))
 ```
 
 # Description

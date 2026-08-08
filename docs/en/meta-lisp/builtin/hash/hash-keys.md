@@ -5,7 +5,7 @@ title: hash-keys
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (hash-t K V) (list-t K)))
+(all (K V) (-> (hash-t K V) (list-t K)))
 ```
 
 # Description

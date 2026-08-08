@@ -5,7 +5,7 @@ title: set-map
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> (-> A B) (set-t A) (set-t B)))
+(all (A B) (-> (-> A B) (set-t A) (set-t B)))
 ```
 
 # Description

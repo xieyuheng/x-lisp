@@ -15,5 +15,5 @@
 (claim file-read (-> file-t text-t))
 (claim file-write (-> file-t text-t void-t))
 (claim file-writeln (-> file-t text-t void-t))
-(claim print (polymorphic (A) (-> A void-t)))
-(claim println (polymorphic (A) (-> A void-t)))
+(claim print (all (A) (-> A void-t)))
+(claim println (all (A) (-> A void-t)))

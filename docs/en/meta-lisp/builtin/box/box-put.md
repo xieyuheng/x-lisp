@@ -5,7 +5,7 @@ title: box-put
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> E (box-t E) (box-t E)))
+(all (E) (-> E (box-t E) (box-t E)))
 ```
 
 # Description

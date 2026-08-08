@@ -99,9 +99,9 @@
   (assert-equal "(the int-t 42)"
     (format-exp (parse-exp (@sexp (the int-t 42))))))
 
-(define-test parse-polymorphic-test
-  (assert-equal "(polymorphic (A) (-> A A))"
-    (format-exp (parse-exp (@sexp (polymorphic (A) (-> A A)))))))
+(define-test parse-all-test
+  (assert-equal "(all (A) (-> A A))"
+    (format-exp (parse-exp (@sexp (all (A) (-> A A)))))))
 
 (define-test parse-pipe-test
   (assert-equal "(pipe x f g)"

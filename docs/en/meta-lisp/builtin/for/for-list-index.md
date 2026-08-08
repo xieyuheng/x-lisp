@@ -5,7 +5,7 @@ title: for-list-index
 # Type
 
 ```meta-lisp
-(polymorphic (A Any) (-> (list-t A) (-> int-t A Any) void-t))
+(all (A Any) (-> (list-t A) (-> int-t A Any) void-t))
 ```
 
 # Description

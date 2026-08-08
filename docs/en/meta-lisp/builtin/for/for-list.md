@@ -5,7 +5,7 @@ title: for-list
 # Type
 
 ```meta-lisp
-(polymorphic (A Any) (-> (list-t A) (-> A Any) void-t))
+(all (A Any) (-> (list-t A) (-> A Any) void-t))
 ```
 
 # Description

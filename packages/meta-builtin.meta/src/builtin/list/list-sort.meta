@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-sort
-  (polymorphic (E)
+  (all (E)
     (-> (-> E E int-t) (list-t E)
         void-t)))
 
@@ -10,7 +10,7 @@
     (quicksort compare list 0 (isub n 1))))
 
 (claim quicksort
-  (polymorphic (E)
+  (all (E)
     (-> (-> E E int-t) (list-t E) int-t int-t
         void-t)))
 
@@ -21,7 +21,7 @@
       (quicksort compare list (pair-second bounds) hi))))
 
 (claim quicksort-partition
-  (polymorphic (E)
+  (all (E)
     (-> (-> E E int-t) (list-t E) int-t int-t
         (pair-t int-t int-t))))
 
@@ -30,7 +30,7 @@
     (quicksort-partition-aux compare list pivot lo lo hi)))
 
 (claim quicksort-partition-aux
-  (polymorphic (E)
+  (all (E)
     (-> (-> E E int-t) (list-t E) E int-t int-t int-t
         (pair-t int-t int-t))))
 
@@ -55,7 +55,7 @@
     (list-put j x list)))
 
 (claim list-copy-sort
-  (polymorphic (E)
+  (all (E)
     (-> (-> E E int-t) (list-t E)
         (list-t E))))
 

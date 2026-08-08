@@ -5,7 +5,7 @@ title: hash-each-entry
 # Type
 
 ```meta-lisp
-(polymorphic (K V Any) (-> (-> (pair-t K V) Any) (hash-t K V) void-t))
+(all (K V Any) (-> (-> (pair-t K V) Any) (hash-t K V) void-t))
 ```
 
 # Description

@@ -6,7 +6,7 @@
 (declare-primitive-function keyword-append 2)
 (declare-primitive-function keyword-concat 1)
 
-(claim is-keyword (polymorphic (A) (-> A bool-t)))
+(claim is-keyword (all (A) (-> A bool-t)))
 (claim keyword-length (-> keyword-t int-t))
 (claim keyword-to-text (-> keyword-t text-t))
 (claim keyword-append (-> keyword-t keyword-t keyword-t))

@@ -5,7 +5,7 @@ title: hash-get-maybe
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> K (hash-t K V) (maybe-t V)))
+(all (K V) (-> K (hash-t K V) (maybe-t V)))
 ```
 
 # Description

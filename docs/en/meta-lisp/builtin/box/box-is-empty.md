@@ -5,7 +5,7 @@ title: box-is-empty
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (box-t E) bool-t))
+(all (E) (-> (box-t E) bool-t))
 ```
 
 # Description

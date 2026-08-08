@@ -1,7 +1,7 @@
 (module my-list)
 
 (claim my-list-zip-map
-  (polymorphic (A B C)
+  (all (A B C)
     (-> (-> A B C) (my-list-t A) (my-list-t B)
         (my-list-t C))))
 
@@ -13,7 +13,7 @@
      (li (f head1 head2) (my-list-zip-map f tail1 tail2)))))
 
 (claim my-list-zip-map-2
-  (polymorphic (A B C)
+  (all (A B C)
     (-> (-> A B C) (my-list-t A) (my-list-t B)
         (my-list-t C))))
 

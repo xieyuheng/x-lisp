@@ -5,7 +5,7 @@ title: list-get
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> int-t (list-t E) E))
+(all (E) (-> int-t (list-t E) E))
 ```
 
 # Description

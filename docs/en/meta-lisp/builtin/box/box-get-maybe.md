@@ -5,7 +5,7 @@ title: box-get-maybe
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (box-t E) (maybe-t E)))
+(all (E) (-> (box-t E) (maybe-t E)))
 ```
 
 # Description

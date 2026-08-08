@@ -5,7 +5,7 @@ title: set-select
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (-> A bool-t) (set-t A) (set-t A)))
+(all (A) (-> (-> A bool-t) (set-t A) (set-t A)))
 ```
 
 # Description

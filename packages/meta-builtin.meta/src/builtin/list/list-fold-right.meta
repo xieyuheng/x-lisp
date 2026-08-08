@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-fold-right
-  (polymorphic (E R)
+  (all (E R)
     (-> (-> E R R)
         R (list-t E)
         R)))

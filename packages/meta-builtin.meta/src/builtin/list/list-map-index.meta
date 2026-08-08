@@ -1,14 +1,14 @@
 (module builtin)
 
 (claim list-map-index
-  (polymorphic (A B)
+  (all (A B)
     (-> (-> int-t A B) (list-t A) (list-t B))))
 
 (define (list-map-index f list)
   (list-map-index-aux f list 0))
 
 (claim list-map-index-aux
-  (polymorphic (A B)
+  (all (A B)
     (-> (-> int-t A B) (list-t A) int-t (list-t B))))
 
 (define (list-map-index-aux f list i)

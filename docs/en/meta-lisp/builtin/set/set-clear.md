@@ -5,7 +5,7 @@ title: set-clear
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (set-t E) (set-t E)))
+(all (E) (-> (set-t E) (set-t E)))
 ```
 
 # Description

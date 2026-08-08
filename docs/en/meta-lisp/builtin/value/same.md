@@ -5,7 +5,7 @@ title: same
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> A B bool-t))
+(all (A B) (-> A B bool-t))
 ```
 
 # Description

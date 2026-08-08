@@ -5,7 +5,7 @@ title: list-zip-map
 # Type
 
 ```meta-lisp
-(polymorphic (A B C) (-> (-> A B C) (list-t A) (list-t B) (list-t C)))
+(all (A B C) (-> (-> A B C) (list-t A) (list-t B) (list-t C)))
 ```
 
 # Description

@@ -5,7 +5,7 @@ title: list-third
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (list-t A) A))
+(all (A) (-> (list-t A) A))
 ```
 
 # Description

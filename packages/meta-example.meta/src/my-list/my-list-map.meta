@@ -1,7 +1,7 @@
 (module my-list)
 
 (claim my-list-map
-  (polymorphic (A B)
+  (all (A B)
     (-> (-> A B) (my-list-t A)
         (my-list-t B))))
 

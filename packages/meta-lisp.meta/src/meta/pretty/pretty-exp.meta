@@ -125,7 +125,7 @@
        [(pretty-exp instance)]))
     ((polymorphic-exp parameters body location)
      (let ((params-str (text-join " " (list-map symbol-to-text parameters))))
-       (ppml/pretty-syntax "polymorphic"
+       (ppml/pretty-syntax "all"
          [(ppml/text (@text "(" params-str ")"))]
          [(pretty-exp body)])))
     ((match-exp targets clauses location)

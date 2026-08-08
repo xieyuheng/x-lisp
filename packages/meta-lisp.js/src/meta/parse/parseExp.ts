@@ -359,7 +359,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.TheExp(parseExp(schema), parseExp(exp), location)
   },
 
-  "`(polymorphic ,parameters ,type)": ({ parameters, type }, { location }) => {
+  "`(all ,parameters ,type)": ({ parameters, type }, { location }) => {
     return M.PolymorphicExp(
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseExp(type),
@@ -367,7 +367,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "`(多态 ,parameters ,type)": ({ parameters, type }, { location }) => {
+  "`(泛型 ,parameters ,type)": ({ parameters, type }, { location }) => {
     return M.PolymorphicExp(
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseExp(type),

@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-member
-  (polymorphic (A)
+  (all (A)
     (-> A (list-t A)
         bool-t)))
 

@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim set-every
-  (polymorphic (A)
+  (all (A)
     (-> (-> A bool-t) (set-t A)
         bool-t)))
 
@@ -13,7 +13,7 @@
   (assert-not (set-every int-is-non-negative (@set 0 1 -1 2 3))))
 
 (claim set-some
-  (polymorphic (A)
+  (all (A)
     (-> (-> A bool-t) (set-t A)
         bool-t)))
 

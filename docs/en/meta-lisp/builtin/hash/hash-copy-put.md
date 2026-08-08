@@ -5,7 +5,7 @@ title: hash-copy-put
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> K V (hash-t K V) (hash-t K V)))
+(all (K V) (-> K V (hash-t K V) (hash-t K V)))
 ```
 
 # Description

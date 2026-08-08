@@ -5,7 +5,7 @@ title: make-box
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (box-t E)))
+(all (E) (-> (box-t E)))
 ```
 
 # Description

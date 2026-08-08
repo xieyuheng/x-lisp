@@ -1,14 +1,14 @@
 (module builtin)
 
 (claim list-fold-left-index
-  (polymorphic (E R)
+  (all (E R)
     (-> (-> int-t R E R) R (list-t E) R)))
 
 (define (list-fold-left-index f folded list)
   (list-fold-left-index-aux f folded list 0))
 
 (claim list-fold-left-index-aux
-  (polymorphic (E R)
+  (all (E R)
     (-> (-> int-t R E R) R (list-t E) int-t R)))
 
 (define (list-fold-left-index-aux f folded list i)

@@ -2,7 +2,7 @@
 
 (declare-primitive-function format-as-sexp 1)
 
-(claim format-as-sexp (polymorphic (A) (-> A text-t)))
+(claim format-as-sexp (all (A) (-> A text-t)))
 
 (claim format-int (-> int-t text-t))
 (define (format-int x) (format-as-sexp x))

@@ -5,7 +5,7 @@ title: hash-map-value
 # Type
 
 ```meta-lisp
-(polymorphic (K V1 V2) (-> (-> V1 V2) (hash-t K V1) (hash-t K V2)))
+(all (K V1 V2) (-> (-> V1 V2) (hash-t K V1) (hash-t K V2)))
 ```
 
 # Description

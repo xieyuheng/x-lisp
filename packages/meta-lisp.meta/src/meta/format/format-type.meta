@@ -32,7 +32,7 @@
          (@text "(" (symbol-to-text mod-name) "/" (symbol-to-text name) " "
                   (format-types arg-types) ")"))))
     ((polymorphic-type var-types body-type)
-     (@text "(polymorphic (" (format-types var-types) ") "
+     (@text "(all (" (format-types var-types) ") "
               (format-type body-type) ")"))))
 
 (define (format-types types)

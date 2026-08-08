@@ -1,7 +1,7 @@
 (module identity-type-error-1)
 
 (claim identity
-  (polymorphic (A B)
+  (all (A B)
     (-> A B)))
 
 (define (identity x) x)

@@ -5,7 +5,7 @@ title: list-member
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A (list-t A) bool-t))
+(all (A) (-> A (list-t A) bool-t))
 ```
 
 # Description

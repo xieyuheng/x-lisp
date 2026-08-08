@@ -58,7 +58,7 @@ export function formatExp(exp: M.Exp): string {
     case "PolymorphicExp": {
       const parameters = formatParameters(exp.parameters)
       const body = formatExp(exp.body)
-      return `(polymorphic (${parameters}) ${body})`
+      return `(all (${parameters}) ${body})`
     }
 
     case "ApplyExp": {

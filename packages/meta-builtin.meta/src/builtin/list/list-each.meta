@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-each
-  (polymorphic (A Any)
+  (all (A Any)
     (-> (-> A Any) (list-t A)
         void-t)))
 

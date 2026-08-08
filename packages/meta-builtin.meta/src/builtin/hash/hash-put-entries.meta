@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim hash-copy-put-entries
-  (polymorphic (K V)
+  (all (K V)
     (-> (list-t (pair-t K V)) (hash-t K V)
         (hash-t K V))))
 
@@ -9,7 +9,7 @@
   (hash-put-entries entries (hash-copy hash)))
 
 (claim hash-put-entries
-  (polymorphic (K V)
+  (all (K V)
     (-> (list-t (pair-t K V)) (hash-t K V)
         (hash-t K V))))
 

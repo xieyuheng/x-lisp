@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-zip
-  (polymorphic (A B)
+  (all (A B)
     (-> (list-t A) (list-t B)
         (list-t (pair-t A B)))))
 
@@ -20,7 +20,7 @@
     [(make-pair 'a 1) (make-pair 'b 2)]))
 
 (claim list-unzip
-  (polymorphic (A B)
+  (all (A B)
     (-> (list-t (pair-t A B))
         (pair-t (list-t A) (list-t B)))))
 

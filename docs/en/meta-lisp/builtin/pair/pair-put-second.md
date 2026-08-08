@@ -5,7 +5,7 @@ title: pair-put-second
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> B (pair-t A B) (pair-t A B)))
+(all (A B) (-> B (pair-t A B) (pair-t A B)))
 ```
 
 # Description

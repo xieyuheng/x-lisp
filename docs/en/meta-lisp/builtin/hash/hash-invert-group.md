@@ -5,7 +5,7 @@ title: hash-invert-group
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (hash-t K V) (hash-t V (set-t K))))
+(all (K V) (-> (hash-t K V) (hash-t V (set-t K))))
 ```
 
 # Description

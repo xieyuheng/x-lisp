@@ -1,14 +1,14 @@
 (module builtin)
 
 (claim list-enumerate
-  (polymorphic (A)
+  (all (A)
     (-> (list-t A) (list-t (pair-t int-t A)))))
 
 (define (list-enumerate list)
   (list-enumerate-aux list 0))
 
 (claim list-enumerate-aux
-  (polymorphic (A)
+  (all (A)
     (-> (list-t A) int-t (list-t (pair-t int-t A)))))
 
 (define (list-enumerate-aux list i)

@@ -27,7 +27,7 @@
      (let ((args-str (format-terms arg-types)))
        (@text "(-> " args-str " " (format-term ret-type) ")")))
     ((polymorphic-term parameters body location)
-     (@text "(polymorphic (" (text-join " " (list-map symbol-to-text parameters)) ") "
+     (@text "(all (" (text-join " " (list-map symbol-to-text parameters)) ") "
               (format-term body) ")"))
     ((lambda-term parameters body location)
      (@text "(lambda (" (text-join " " (list-map symbol-to-text parameters)) ") "

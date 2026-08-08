@@ -73,7 +73,7 @@ export function formatType(type: M.Type): string {
     case "PolymorphicType": {
       const varTypes = formatTypes(type.varTypes)
       const bodyType = formatType(type.bodyType)
-      return `(polymorphic (${varTypes}) ${bodyType})`
+      return `(all (${varTypes}) ${bodyType})`
     }
   }
 }

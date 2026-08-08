@@ -5,7 +5,7 @@ title: list-to-set
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (list-t E) (set-t E)))
+(all (E) (-> (list-t E) (set-t E)))
 ```
 
 # Description

@@ -5,7 +5,7 @@ title: use-output-file
 # Type
 
 ```meta-lisp
-(polymorphic (A)
+(all (A)
   (-> text-t (-> file-t A) A))
 ```
 

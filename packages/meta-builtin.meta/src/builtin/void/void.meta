@@ -4,4 +4,4 @@
 (declare-primitive-function is-void 1)
 
 (claim void void-t)
-(claim is-void (polymorphic (A) (-> A bool-t)))
+(claim is-void (all (A) (-> A bool-t)))

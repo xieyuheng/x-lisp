@@ -5,7 +5,7 @@ title: car
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (list-t E) E))
+(all (E) (-> (list-t E) E))
 ```
 
 # Description

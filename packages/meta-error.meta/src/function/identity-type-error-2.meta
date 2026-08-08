@@ -1,11 +1,11 @@
 (module identity-type-error-2)
 
 (claim identity
-  (polymorphic (A)
+  (all (A)
     (-> A A)))
 
 (define (identity x) x)
 
 (define-test identity-test
-  (the (polymorphic (A) (-> A A)) identity)
-  (the (polymorphic (A B) (-> A B)) identity))
+  (the (all (A) (-> A A)) identity)
+  (the (all (A B) (-> A B)) identity))

@@ -19,7 +19,7 @@
 (declare-primitive-function float-compare-ascending 2)
 (declare-primitive-function float-compare-descending 2)
 
-(claim is-float (polymorphic (A) (-> A bool-t)))
+(claim is-float (all (A) (-> A bool-t)))
 (claim float-is-positive (-> float-t bool-t))
 (claim float-is-non-negative (-> float-t bool-t))
 (claim float-is-non-zero (-> float-t bool-t))

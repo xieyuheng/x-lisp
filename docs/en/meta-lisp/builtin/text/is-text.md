@@ -5,7 +5,7 @@ title: is-text
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A bool-t))
+(all (A) (-> A bool-t))
 ```
 
 # Description

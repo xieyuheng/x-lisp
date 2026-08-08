@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-map-concat
-  (polymorphic (A B)
+  (all (A B)
     (-> (-> A (list-t B))
         (list-t A)
         (list-t B))))

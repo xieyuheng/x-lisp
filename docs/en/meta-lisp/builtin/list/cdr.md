@@ -5,7 +5,7 @@ title: cdr
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (list-t E) (list-t E)))
+(all (E) (-> (list-t E) (list-t E)))
 ```
 
 # Description

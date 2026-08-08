@@ -5,7 +5,7 @@ title: pair-first
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> (pair-t A B) A))
+(all (A B) (-> (pair-t A B) A))
 ```
 
 # Description

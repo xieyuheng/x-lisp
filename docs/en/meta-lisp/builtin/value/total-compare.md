@@ -5,7 +5,7 @@ title: total-compare
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> A B int-t))
+(all (A B) (-> A B int-t))
 ```
 
 # Description

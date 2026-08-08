@@ -1,14 +1,14 @@
 (module builtin)
 
 (claim list-each-index
-  (polymorphic (A Any)
+  (all (A Any)
     (-> (-> int-t A Any) (list-t A) void-t)))
 
 (define (list-each-index f list)
   (list-each-index-aux f list 0))
 
 (claim list-each-index-aux
-  (polymorphic (A Any)
+  (all (A Any)
     (-> (-> int-t A Any) (list-t A) int-t void-t)))
 
 (define (list-each-index-aux f list i)

@@ -5,7 +5,7 @@ title: identity
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A A))
+(all (A) (-> A A))
 ```
 
 # Description

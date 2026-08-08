@@ -64,7 +64,7 @@
                (if (list-is-empty parameters)
                  (ppml/pretty-application (nothing) param-nodes)
                  (ppml/pretty-application (just (symbol-to-text (list-head parameters))) param-nodes))))
-         (ppml/pretty-syntax "polymorphic"
+         (ppml/pretty-syntax "all"
            [params-node]
            [(pretty-term body)]))))))
 

@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim list-group
-  (polymorphic (K V)
+  (all (K V)
     (-> (-> V K) (list-t V)
         (hash-t K (list-t V)))))
 

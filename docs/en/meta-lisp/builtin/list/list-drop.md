@@ -5,7 +5,7 @@ title: list-drop
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> int-t (list-t A) (list-t A)))
+(all (A) (-> int-t (list-t A) (list-t A)))
 ```
 
 # Description

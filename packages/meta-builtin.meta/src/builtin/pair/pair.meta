@@ -6,8 +6,8 @@
 (declare-primitive-function pair-put-first 2)
 (declare-primitive-function pair-put-second 2)
 
-(claim make-pair (polymorphic (A B) (-> A B (pair-t A B))))
-(claim pair-first (polymorphic (A B) (-> (pair-t A B) A)))
-(claim pair-second (polymorphic (A B) (-> (pair-t A B) B)))
-(claim pair-put-first (polymorphic (A B) (-> A (pair-t A B) (pair-t A B))))
-(claim pair-put-second (polymorphic (A B) (-> B (pair-t A B) (pair-t A B))))
+(claim make-pair (all (A B) (-> A B (pair-t A B))))
+(claim pair-first (all (A B) (-> (pair-t A B) A)))
+(claim pair-second (all (A B) (-> (pair-t A B) B)))
+(claim pair-put-first (all (A B) (-> A (pair-t A B) (pair-t A B))))
+(claim pair-put-second (all (A B) (-> B (pair-t A B) (pair-t A B))))

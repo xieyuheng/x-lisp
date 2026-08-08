@@ -1,7 +1,7 @@
 (module my-list)
 
 (claim my-list-adjacent-dedup
-  (polymorphic (E)
+  (all (E)
     (-> (my-list-t E)
         (my-list-t E))))
 

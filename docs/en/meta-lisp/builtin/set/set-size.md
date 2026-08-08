@@ -5,7 +5,7 @@ title: set-size
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (set-t E) int-t))
+(all (E) (-> (set-t E) int-t))
 ```
 
 # Description

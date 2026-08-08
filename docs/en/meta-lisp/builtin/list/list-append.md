@@ -5,7 +5,7 @@ title: list-append
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (list-t A) (list-t A) (list-t A)))
+(all (A) (-> (list-t A) (list-t A) (list-t A)))
 ```
 
 # Description

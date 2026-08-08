@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim make-hash-from-entries
-  (polymorphic (K V)
+  (all (K V)
     (-> (list-t (pair-t K V))
         (hash-t K V))))
 

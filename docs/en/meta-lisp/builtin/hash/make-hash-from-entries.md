@@ -5,7 +5,7 @@ title: make-hash-from-entries
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (list-t (pair-t K V)) (hash-t K V)))
+(all (K V) (-> (list-t (pair-t K V)) (hash-t K V)))
 ```
 
 # Description

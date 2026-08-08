@@ -52,7 +52,7 @@ export function formatTerm(term: M.Term): string {
       return `(the ${formatTerm(term.type)} ${formatTerm(term.instance)})`
 
     case "PolymorphicTerm":
-      return `(polymorphic (${term.parameters.join(" ")}) ${formatTerm(term.body)})`
+      return `(all (${term.parameters.join(" ")}) ${formatTerm(term.body)})`
   }
 }
 

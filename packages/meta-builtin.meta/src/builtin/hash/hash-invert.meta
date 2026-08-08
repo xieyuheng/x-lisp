@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim hash-invert
-  (polymorphic (K V)
+  (all (K V)
     (-> (hash-t K V)
         (hash-t V K))))
 
@@ -15,7 +15,7 @@
     (hash-invert (@hash 1 2 3 4))))
 
 (claim hash-invert-group
-  (polymorphic (K V)
+  (all (K V)
     (-> (hash-t K V)
         (hash-t V (set-t K)))))
 

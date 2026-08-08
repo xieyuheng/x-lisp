@@ -5,7 +5,7 @@ title: format-as-sexp
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A text-t))
+(all (A) (-> A text-t))
 ```
 
 # Description

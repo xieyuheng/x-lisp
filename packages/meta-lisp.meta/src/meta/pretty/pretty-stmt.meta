@@ -3,7 +3,7 @@
 (import-as ppml/ppml ppml)
 
 (claim pretty-stmt
-  (polymorphic (E)
+  (all (E)
     (-> (-> E ppml/node-t) (stmt-t E) ppml/node-t)))
 
 (define (pretty-stmt pretty-body stmt)

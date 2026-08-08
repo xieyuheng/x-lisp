@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim set-each
-  (polymorphic (A Any)
+  (all (A Any)
     (-> (-> A Any) (set-t A)
         void-t)))
 

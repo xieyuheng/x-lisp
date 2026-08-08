@@ -5,7 +5,7 @@ title: list-enumerate
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (list-t A) (list-t (pair-t int-t A))))
+(all (A) (-> (list-t A) (list-t (pair-t int-t A))))
 ```
 
 # Description

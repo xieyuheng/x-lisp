@@ -5,7 +5,7 @@ title: hash-is-empty
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (hash-t K V) bool-t))
+(all (K V) (-> (hash-t K V) bool-t))
 ```
 
 # Description

@@ -5,7 +5,7 @@ title: list-copy-sort
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (-> E E int-t) (list-t E) (list-t E)))
+(all (E) (-> (-> E E int-t) (list-t E) (list-t E)))
 ```
 
 # Description

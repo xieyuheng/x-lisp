@@ -23,7 +23,7 @@
     (just (car box))))
 
 (claim box-get
-  (polymorphic (E)
+  (all (E)
     (-> (box-t E) E)))
 
 (define (box-get box)
@@ -32,7 +32,7 @@
     ((nothing) (error "box is empty"))))
 
 (claim box-get-with-location
-  (polymorphic (E)
+  (all (E)
     (-> (box-t E) source-location-t E)))
 
 (define (box-get-with-location box location)

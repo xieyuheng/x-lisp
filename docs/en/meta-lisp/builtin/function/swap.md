@@ -5,7 +5,7 @@ title: swap
 # Type
 
 ```meta-lisp
-(polymorphic (A B C)
+(all (A B C)
   (-> (-> A B C)
       (-> B A C)))
 ```

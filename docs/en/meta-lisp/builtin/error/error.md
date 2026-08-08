@@ -5,7 +5,7 @@ title: error
 # Type
 
 ```meta-lisp
-(polymorphic (B) (-> text-t B))
+(all (B) (-> text-t B))
 ```
 
 # Description

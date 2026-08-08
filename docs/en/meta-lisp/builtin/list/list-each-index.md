@@ -5,7 +5,7 @@ title: list-each-index
 # Type
 
 ```meta-lisp
-(polymorphic (A Any) (-> (-> int-t A Any) (list-t A) void-t))
+(all (A Any) (-> (-> int-t A Any) (list-t A) void-t))
 ```
 
 # Description

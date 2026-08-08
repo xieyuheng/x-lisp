@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim for-list-index
-  (polymorphic (A Any)
+  (all (A Any)
     (-> (list-t A) (-> int-t A Any)
         void-t)))
 

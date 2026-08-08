@@ -5,7 +5,7 @@ title: list-reject
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (-> A bool-t) (list-t A) (list-t A)))
+(all (A) (-> (-> A bool-t) (list-t A) (list-t A)))
 ```
 
 # Description

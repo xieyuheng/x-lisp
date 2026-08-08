@@ -5,7 +5,7 @@ title: for-hash-key
 # Type
 
 ```meta-lisp
-(polymorphic (K V Any) (-> (hash-t K V) (-> K Any) void-t))
+(all (K V Any) (-> (hash-t K V) (-> K Any) void-t))
 ```
 
 # Description

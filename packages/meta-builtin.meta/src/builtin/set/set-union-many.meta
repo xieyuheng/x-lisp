@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim set-union-many
-  (polymorphic (E)
+  (all (E)
     (-> (list-t (set-t E))
         (set-t E))))
 

@@ -5,7 +5,7 @@ title: list-map-concat
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> (-> A (list-t B)) (list-t A) (list-t B)))
+(all (A B) (-> (-> A (list-t B)) (list-t A) (list-t B)))
 ```
 
 # Description

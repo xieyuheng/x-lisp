@@ -5,7 +5,7 @@ title: set-member
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> E (set-t E) bool-t))
+(all (E) (-> E (set-t E) bool-t))
 ```
 
 # Description

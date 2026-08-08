@@ -5,7 +5,7 @@ title: hash-code
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A int-t))
+(all (A) (-> A int-t))
 ```
 
 # Description

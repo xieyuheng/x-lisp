@@ -41,7 +41,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(claim)](#claim)
   - [(admit)](#admit)
   - [(the)](#the)
-  - [(polymorphic)](#polymorphic)
+  - [(all)](#all)
 - [Conditionals](#conditionals)
   - [(if)](#if)
   - [(when)](#when)
@@ -519,24 +519,24 @@ The compiler checks whether `<exp>`'s actual type matches. Useful for clarifying
     (iadd x 1)))
 ```
 
-## (polymorphic)
+## (all)
 
 ```meta-lisp
-(polymorphic (<type-parameter> ...)
+(all (<type-parameter> ...)
   <type>)
 ```
 
 A type containing type variables.
 
 Type variables are usually single uppercase letters, referenced within `<type>`.
-Used in `claim` for polymorphic function signatures.
+Used in `claim` for generic function signatures.
 
 ```meta-lisp
-(claim identity (polymorphic (A) (-> A A)))
+(claim identity (all (A) (-> A A)))
 
-(claim car (polymorphic (E) (-> (list-t E) E)))
-(claim cdr (polymorphic (E) (-> (list-t E) (list-t E))))
-(claim cons (polymorphic (E) (-> E (list-t E) (list-t E))))
+(claim car (all (E) (-> (list-t E) E)))
+(claim cdr (all (E) (-> (list-t E) (list-t E))))
+(claim cons (all (E) (-> E (list-t E) (list-t E))))
 ```
 
 # Conditionals
@@ -959,14 +959,14 @@ For example:
 This generates functions with the following types:
 
 ```meta-lisp
-(claim nil (polymorphic (E) (-> (my-list-t E))))
-(claim is-nil (polymorphic (E) (-> (my-list-t E) bool-t)))
-(claim li (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
-(claim is-li (polymorphic (E) (-> (my-list-t E) bool-t)))
-(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
-(claim li-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
-(claim li-put-head (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
-(claim li-put-tail (polymorphic (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+(claim nil (all (E) (-> (my-list-t E))))
+(claim is-nil (all (E) (-> (my-list-t E) bool-t)))
+(claim li (all (E) (-> E (my-list-t E) (my-list-t E))))
+(claim is-li (all (E) (-> (my-list-t E) bool-t)))
+(claim li-head (all (E) (-> (my-list-t E) E)))
+(claim li-tail (all (E) (-> (my-list-t E) (my-list-t E))))
+(claim li-put-head (all (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 ```
 
 ## (define-record-type)
@@ -1199,10 +1199,10 @@ For example, the builtin `box-t` with internal representation `(list-t E)`:
 When implementing interface functions, it is equivalent to declaring:
 
 ```meta-lisp
-(claim make-box (polymorphic (E) (-> (list-t E))))
-(claim box-is-empty (polymorphic (E) (-> (list-t E) bool-t)))
-(claim box-put (polymorphic (E) (-> E (list-t E) (list-t E))))
-(claim box-get-maybe (polymorphic (E) (-> (list-t E) (maybe-t E))))
+(claim make-box (all (E) (-> (list-t E))))
+(claim box-is-empty (all (E) (-> (list-t E) bool-t)))
+(claim box-put (all (E) (-> E (list-t E) (list-t E))))
+(claim box-get-maybe (all (E) (-> (list-t E) (maybe-t E))))
 ```
 
 Thus interface functions can use list APIs internally:
@@ -1219,16 +1219,16 @@ Thus interface functions can use list APIs internally:
 When using interface functions, it is equivalent to declaring:
 
 ```meta-lisp
-(claim make-box (polymorphic (E) (-> (box-t E))))
-(claim box-is-empty (polymorphic (E) (-> (box-t E) bool-t)))
-(claim box-put (polymorphic (E) (-> E (box-t E) (box-t E))))
-(claim box-get-maybe (polymorphic (E) (-> (box-t E) (maybe-t E))))
+(claim make-box (all (E) (-> (box-t E))))
+(claim box-is-empty (all (E) (-> (box-t E) bool-t)))
+(claim box-put (all (E) (-> E (box-t E) (box-t E))))
+(claim box-get-maybe (all (E) (-> (box-t E) (maybe-t E))))
 ```
 
 External code can only operate on `box-t` through interface functions:
 
 ```meta-lisp
-(claim box-get (polymorphic (E) (-> (box-t E) E)))
+(claim box-get (all (E) (-> (box-t E) E)))
 (define (box-get box)
   (match (box-get-maybe box)
     ((just value) value)

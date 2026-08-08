@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim hash-each-value
-  (polymorphic (K V Any)
+  (all (K V Any)
     (-> (-> V Any) (hash-t K V)
         void-t)))
 
@@ -9,7 +9,7 @@
   (list-each f (hash-values hash)))
 
 (claim hash-each-key
-  (polymorphic (K V Any)
+  (all (K V Any)
     (-> (-> K Any) (hash-t K V)
         void-t)))
 
@@ -17,7 +17,7 @@
   (list-each f (hash-keys hash)))
 
 (claim hash-each-entry
-  (polymorphic (K V Any)
+  (all (K V Any)
     (-> (-> (pair-t K V) Any) (hash-t K V)
         void-t)))
 
@@ -25,7 +25,7 @@
   (list-each f (hash-entries hash)))
 
 (claim hash-each
-  (polymorphic (K V Any)
+  (all (K V Any)
     (-> (-> K V Any) (hash-t K V)
         void-t)))
 

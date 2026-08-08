@@ -5,7 +5,7 @@ title: list-length
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (list-t E) int-t))
+(all (E) (-> (list-t E) int-t))
 ```
 
 # Description

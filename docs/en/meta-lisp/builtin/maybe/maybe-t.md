@@ -23,13 +23,13 @@ Maybe type constructor. `(maybe-t A)` represents a value of type `A` that may or
 # Generated
 
 ```meta-lisp
-(claim just  (polymorphic (A) (-> A (maybe-t A))))
-(claim is-just (polymorphic (A) (-> (maybe-t A) bool-t)))
-(claim just-value (polymorphic (A) (-> (maybe-t A) A)))
-(claim just-put-value (polymorphic (A) (-> A (maybe-t A) (maybe-t A))))
+(claim just  (all (A) (-> A (maybe-t A))))
+(claim is-just (all (A) (-> (maybe-t A) bool-t)))
+(claim just-value (all (A) (-> (maybe-t A) A)))
+(claim just-put-value (all (A) (-> A (maybe-t A) (maybe-t A))))
 
-(claim nothing (polymorphic (A) (-> (maybe-t A))))
-(claim is-nothing (polymorphic (A) (-> (maybe-t A) bool-t)))
+(claim nothing (all (A) (-> (maybe-t A))))
+(claim is-nothing (all (A) (-> (maybe-t A) bool-t)))
 ```
 
 # Examples

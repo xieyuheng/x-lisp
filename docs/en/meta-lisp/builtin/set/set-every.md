@@ -5,7 +5,7 @@ title: set-every
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (-> A bool-t) (set-t A) bool-t))
+(all (A) (-> (-> A bool-t) (set-t A) bool-t))
 ```
 
 # Description

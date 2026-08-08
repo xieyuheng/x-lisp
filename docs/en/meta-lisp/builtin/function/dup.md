@@ -5,7 +5,7 @@ title: dup
 # Type
 
 ```meta-lisp
-(polymorphic (A B)
+(all (A B)
   (-> (-> A A B)
       (-> A B)))
 ```

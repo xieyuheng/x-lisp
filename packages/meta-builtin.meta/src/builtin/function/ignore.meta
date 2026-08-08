@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim ignore
-  (polymorphic (A)
+  (all (A)
     (-> A void-t)))
 
 (define (ignore x) void)

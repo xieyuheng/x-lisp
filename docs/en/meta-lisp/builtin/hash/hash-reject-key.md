@@ -5,7 +5,7 @@ title: hash-reject-key
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (-> K bool-t) (hash-t K V) (hash-t K V)))
+(all (K V) (-> (-> K bool-t) (hash-t K V) (hash-t K V)))
 ```
 
 # Description

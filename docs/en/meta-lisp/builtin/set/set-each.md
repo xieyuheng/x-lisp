@@ -5,7 +5,7 @@ title: set-each
 # Type
 
 ```meta-lisp
-(polymorphic (A Any) (-> (-> A Any) (set-t A) void-t))
+(all (A Any) (-> (-> A Any) (set-t A) void-t))
 ```
 
 # Description

@@ -5,7 +5,7 @@ title: list-fold-right-index
 # Type
 
 ```meta-lisp
-(polymorphic (E R) (-> (-> int-t E R R) R (list-t E) R))
+(all (E R) (-> (-> int-t E R R) R (list-t E) R))
 ```
 
 # Description

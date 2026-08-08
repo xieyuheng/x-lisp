@@ -5,7 +5,7 @@ title: println
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> A void-t))
+(all (A) (-> A void-t))
 ```
 
 # Description

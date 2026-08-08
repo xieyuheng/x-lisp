@@ -136,7 +136,7 @@
          (ppml/text full-name)
          (ppml/pretty-application (just full-name) (cons (ppml/text full-name) arg-nodes)))))
     ((polymorphic-type var-types body-type)
-     (ppml/pretty-syntax "polymorphic"
+     (ppml/pretty-syntax "all"
        []
        [(ppml/group [(ppml/text "(") (ppml/flex (list-map pretty-type var-types)) (ppml/text ")")])
         (pretty-type body-type)]))))

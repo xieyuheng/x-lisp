@@ -5,7 +5,7 @@ title: box-get
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> (box-t E) E))
+(all (E) (-> (box-t E) E))
 ```
 
 # Description

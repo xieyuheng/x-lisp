@@ -5,7 +5,7 @@ title: list-some
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (-> A bool-t) (list-t A) bool-t))
+(all (A) (-> (-> A bool-t) (list-t A) bool-t))
 ```
 
 # Description

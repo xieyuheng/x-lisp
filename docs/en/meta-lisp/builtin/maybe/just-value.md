@@ -5,7 +5,7 @@ title: just-value
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (maybe-t A) A))
+(all (A) (-> (maybe-t A) A))
 ```
 
 # Description

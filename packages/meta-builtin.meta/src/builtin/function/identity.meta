@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim identity
-  (polymorphic (A)
+  (all (A)
     (-> A A)))
 
 (define (identity x) x)

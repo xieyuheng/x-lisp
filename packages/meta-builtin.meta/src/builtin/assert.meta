@@ -11,9 +11,9 @@
 
 (claim assert (-> bool-t void-t))
 (claim assert-not (-> bool-t void-t))
-(claim assert-equal (polymorphic (A B) (-> A B void-t)))
-(claim assert-not-equal (polymorphic (A B) (-> A B void-t)))
+(claim assert-equal (all (A B) (-> A B void-t)))
+(claim assert-not-equal (all (A B) (-> A B void-t)))
 (claim assert-with-location (-> bool-t source-location-t void-t))
 (claim assert-not-with-location (-> bool-t source-location-t void-t))
-(claim assert-equal-with-location (polymorphic (A B) (-> A B source-location-t void-t)))
-(claim assert-not-equal-with-location (polymorphic (A B) (-> A B source-location-t void-t)))
+(claim assert-equal-with-location (all (A B) (-> A B source-location-t void-t)))
+(claim assert-not-equal-with-location (all (A B) (-> A B source-location-t void-t)))

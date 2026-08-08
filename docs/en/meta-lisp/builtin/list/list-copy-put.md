@@ -5,7 +5,7 @@ title: list-copy-put
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> int-t E (list-t E) (list-t E)))
+(all (E) (-> int-t E (list-t E) (list-t E)))
 ```
 
 # Description

@@ -5,7 +5,7 @@ title: make-pair
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> A B (pair-t A B)))
+(all (A B) (-> A B (pair-t A B)))
 ```
 
 # Description

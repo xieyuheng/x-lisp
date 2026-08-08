@@ -5,7 +5,7 @@ title: list-group
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> (-> V K) (list-t V) (hash-t K (list-t V))))
+(all (K V) (-> (-> V K) (list-t V) (hash-t K (list-t V))))
 ```
 
 # Description

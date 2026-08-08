@@ -5,7 +5,7 @@ title: is-nothing
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (maybe-t A) bool-t))
+(all (A) (-> (maybe-t A) bool-t))
 ```
 
 # Description

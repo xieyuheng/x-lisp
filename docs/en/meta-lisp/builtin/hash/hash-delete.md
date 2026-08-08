@@ -5,7 +5,7 @@ title: hash-delete
 # Type
 
 ```meta-lisp
-(polymorphic (K V) (-> K (hash-t K V) (hash-t K V)))
+(all (K V) (-> K (hash-t K V) (hash-t K V)))
 ```
 
 # Description

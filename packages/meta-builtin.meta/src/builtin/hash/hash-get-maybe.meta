@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim hash-get-maybe
-  (polymorphic (K V)
+  (all (K V)
     (-> K (hash-t K V)
         (maybe-t V))))
 

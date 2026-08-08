@@ -5,7 +5,7 @@ title: list-find-index
 # Type
 
 ```meta-lisp
-(polymorphic (A) (-> (-> A bool-t) (list-t A) int-t))
+(all (A) (-> (-> A bool-t) (list-t A) int-t))
 ```
 
 # Description

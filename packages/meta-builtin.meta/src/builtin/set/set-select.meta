@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim set-select
-  (polymorphic (A)
+  (all (A)
     (-> (-> A bool-t) (set-t A)
         (set-t A))))
 
@@ -18,7 +18,7 @@
   (assert-equal (@set 0 1 2) (set-select int-is-non-negative (@set -2 -1 0 1 2))))
 
 (claim set-reject
-  (polymorphic (A)
+  (all (A)
     (-> (-> A bool-t) (set-t A)
         (set-t A))))
 

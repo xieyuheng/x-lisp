@@ -5,7 +5,7 @@ title: constant
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> A B A))
+(all (A B) (-> A B A))
 ```
 
 # Description

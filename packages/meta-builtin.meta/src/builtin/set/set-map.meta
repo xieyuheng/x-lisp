@@ -1,7 +1,7 @@
 (module builtin)
 
 (claim set-map
-  (polymorphic (A B)
+  (all (A B)
     (-> (-> A B) (set-t A)
         (set-t B))))
 

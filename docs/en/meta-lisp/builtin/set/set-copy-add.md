@@ -5,7 +5,7 @@ title: set-copy-add
 # Type
 
 ```meta-lisp
-(polymorphic (E) (-> E (set-t E) (set-t E)))
+(all (E) (-> E (set-t E) (set-t E)))
 ```
 
 # Description

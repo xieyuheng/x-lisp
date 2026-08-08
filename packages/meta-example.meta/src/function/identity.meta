@@ -1,7 +1,7 @@
 (module example)
 
 (claim identity
-  (polymorphic (A)
+  (all (A)
     (-> A A)))
 
 (define (identity x) x)
@@ -12,5 +12,5 @@
   (let ((add1 (identity (iadd (identity 1)))))
     (the (-> int-t int-t) identity)
     (the (-> float-t float-t) identity)
-    (the (polymorphic (A) (-> A A)) identity)
+    (the (all (A) (-> A A)) identity)
     (assert-equal 2 (add1 1))))

@@ -5,7 +5,7 @@ title: assert-equal
 # Type
 
 ```meta-lisp
-(polymorphic (A B) (-> A B void-t))
+(all (A B) (-> A B void-t))
 ```
 
 # Description
