@@ -18,7 +18,7 @@
        (set-copy-add name (make-set))))
     ((lambda-term parameters body location)
      (term-free-names (set-union bound-names (list-to-set parameters)) body))
-    ((polymorphic-term parameters body location)
+    ((all-term parameters body location)
      (term-free-names (set-union bound-names (list-to-set parameters)) body))
     ((let1-term name rhs body location)
      (set-union (term-free-names bound-names rhs)

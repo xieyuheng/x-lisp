@@ -86,8 +86,8 @@
      (lambda-term parameters
        (qualify-free-var mod (set-union bound-names (list-to-set parameters)) body)
        location))
-    ((polymorphic-term parameters body location)
-     (polymorphic-term parameters
+    ((all-term parameters body location)
+     (all-term parameters
        (qualify-free-var mod (set-union bound-names (list-to-set parameters)) body)
        location))
     ((let1-term name rhs body location)

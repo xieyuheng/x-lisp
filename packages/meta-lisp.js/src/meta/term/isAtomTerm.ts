@@ -19,7 +19,7 @@ export function isAtomTerm(term: M.Term): boolean {
     case "IfTerm":
     case "ArrowTerm":
     case "TheTerm":
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       return false
     }
   }

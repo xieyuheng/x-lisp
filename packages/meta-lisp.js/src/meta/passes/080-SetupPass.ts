@@ -185,7 +185,7 @@ function setupStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
       )
 
       for (const entry of stmt.interfaceEntries) {
-        const wrappedType = makePolymorphicTermFromParameters(
+        const wrappedType = makeAllTermFromParameters(
           parameters,
           entry.type,
           entry.location,
@@ -198,7 +198,7 @@ function setupStmt(mod: M.Mod, stmt: M.Stmt<M.Term>): void {
   }
 }
 
-function makePolymorphicTermFromParameters(
+function makeAllTermFromParameters(
   parameters: Array<string>,
   type: M.Term,
   location: S.SourceLocation,
@@ -206,7 +206,7 @@ function makePolymorphicTermFromParameters(
   if (parameters.length === 0) {
     return type
   } else {
-    return M.PolymorphicTerm(parameters, type, location)
+    return M.AllTerm(parameters, type, location)
   }
 }
 

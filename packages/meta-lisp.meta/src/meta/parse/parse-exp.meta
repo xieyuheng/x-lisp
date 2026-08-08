@@ -222,7 +222,7 @@
      (@comment
        (all (<type-parameter> ...)
          <type>))
-     (polymorphic-exp (parse-parameters (car sexps))
+     (all-exp (parse-parameters (car sexps))
        (parse-exp (list-get 1 sexps))
        location))
     ((list-member tag '(pipe 管道))

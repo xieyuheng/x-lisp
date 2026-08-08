@@ -14,12 +14,12 @@ export function unify(
   lhs = M.substWalk(subst, lhs)
   rhs = M.substWalk(subst, rhs)
 
-  if (M.isPolymorphicType(lhs)) {
-    return unify(subst, M.polymorphicTypeFreshBodyType(lhs), rhs)
+  if (M.isAllType(lhs)) {
+    return unify(subst, M.allTypeFreshBodyType(lhs), rhs)
   }
 
-  if (M.isPolymorphicType(rhs)) {
-    return unify(subst, lhs, M.polymorphicTypeFreshBodyType(rhs))
+  if (M.isAllType(rhs)) {
+    return unify(subst, lhs, M.allTypeFreshBodyType(rhs))
   }
 
   if (M.isVarType(lhs) && M.isVarType(rhs)) {

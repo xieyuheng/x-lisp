@@ -64,7 +64,7 @@ function occurCheckWithBoundIds(
       )
     }
 
-    case "PolymorphicType": {
+    case "AllType": {
       return occurCheckWithBoundIds(
         new Set([...boundIds, ...type.varTypes.map(M.varTypeId)]),
         subst,

@@ -360,7 +360,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "`(all ,parameters ,type)": ({ parameters, type }, { location }) => {
-    return M.PolymorphicExp(
+    return M.AllExp(
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseExp(type),
       location,
@@ -368,7 +368,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   "`(泛型 ,parameters ,type)": ({ parameters, type }, { location }) => {
-    return M.PolymorphicExp(
+    return M.AllExp(
       S.asListSexp(parameters).elements.map((x) => S.asSymbolSexp(x).content),
       parseExp(type),
       location,

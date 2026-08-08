@@ -15,7 +15,7 @@ export type Term =
   | IfTerm
   | ArrowTerm
   | TheTerm
-  | PolymorphicTerm
+  | AllTerm
 
 export type SymbolTerm = {
   kind: "SymbolTerm"
@@ -282,20 +282,20 @@ export function TheTerm(
   }
 }
 
-export type PolymorphicTerm = {
-  kind: "PolymorphicTerm"
+export type AllTerm = {
+  kind: "AllTerm"
   parameters: Array<string>
   body: Term
   location: SourceLocation
 }
 
-export function PolymorphicTerm(
+export function AllTerm(
   parameters: Array<string>,
   body: Term,
   location: SourceLocation,
-): PolymorphicTerm {
+): AllTerm {
   return {
-    kind: "PolymorphicTerm",
+    kind: "AllTerm",
     parameters,
     body,
     location,

@@ -23,7 +23,7 @@ export function termOccurredNames(term: M.Term): Set<string> {
       ])
     }
 
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       return setUnionMany([
         new Set(term.parameters),
         termOccurredNames(term.body),

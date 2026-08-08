@@ -34,7 +34,7 @@ export type Exp =
   | SexpExp
   | ArrowExp
   | TheExp
-  | PolymorphicExp
+  | AllExp
   | MatchExp
   | CommentExp
 
@@ -671,20 +671,20 @@ export function TheExp(
   }
 }
 
-export type PolymorphicExp = {
-  kind: "PolymorphicExp"
+export type AllExp = {
+  kind: "AllExp"
   parameters: Array<string>
   body: Exp
   location: SourceLocation
 }
 
-export function PolymorphicExp(
+export function AllExp(
   parameters: Array<string>,
   body: Exp,
   location: SourceLocation,
-): PolymorphicExp {
+): AllExp {
   return {
-    kind: "PolymorphicExp",
+    kind: "AllExp",
     parameters,
     body,
     location,

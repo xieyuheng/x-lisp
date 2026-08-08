@@ -28,7 +28,7 @@
        (if (list-is-empty arg-types)
          (@text "(-> " (format-exp ret-type) ")")
          (@text "(-> " args-str " " (format-exp ret-type) ")"))))
-    ((polymorphic-exp parameters body location)
+    ((all-exp parameters body location)
      (@text "(all (" (text-join " " (list-map symbol-to-text parameters)) ") "
               (format-exp body) ")"))
     ((lambda-exp parameters body location)

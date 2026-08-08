@@ -33,7 +33,7 @@
   (sexp-exp (sexp sexp-t) (location source-location-t))
   (arrow-exp (arg-types (list-t exp-t)) (ret-type exp-t) (location source-location-t))
   (the-exp (type exp-t) (instance exp-t) (location source-location-t))
-  (polymorphic-exp (parameters (list-t symbol-t)) (body exp-t) (location source-location-t))
+  (all-exp (parameters (list-t symbol-t)) (body exp-t) (location source-location-t))
   (match-exp (targets (list-t exp-t)) (clauses (list-t match-clause-t)) (location source-location-t))
   (comment-exp (sexps (list-t sexp-t)) (location source-location-t)))
 

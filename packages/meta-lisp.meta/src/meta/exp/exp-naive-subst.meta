@@ -21,10 +21,10 @@
      (if (list-member name parameters)
        exp
        (lambda-exp parameters (exp-naive-subst body name rhs) location)))
-    ((polymorphic-exp parameters body location)
+    ((all-exp parameters body location)
      (if (list-member name parameters)
        exp
-       (polymorphic-exp parameters (exp-naive-subst body name rhs) location)))
+       (all-exp parameters (exp-naive-subst body name rhs) location)))
     ((let1-exp binding-name let-rhs body location)
      (let1-exp binding-name
                (exp-naive-subst let-rhs name rhs)

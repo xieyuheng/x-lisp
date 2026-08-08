@@ -11,4 +11,4 @@
   (hash-type (key-type type-t) (value-type type-t))
   (pair-type (first-type type-t) (second-type type-t))
   (data-type (type-constructor type-constructor-t) (arg-types (list-t type-t)))
-  (polymorphic-type (var-types (list-t type-t)) (body-type type-t)))
+  (all-type (var-types (list-t type-t)) (body-type type-t)))

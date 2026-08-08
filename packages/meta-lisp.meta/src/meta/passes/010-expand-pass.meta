@@ -141,7 +141,7 @@
 (define (admit-with-type-parameters name parameters type location)
   (if (list-is-empty parameters)
     (admit-stmt name type location)
-    (admit-stmt name (polymorphic-exp parameters type location) location)))
+    (admit-stmt name (all-exp parameters type location) location)))
 
 (claim desugar-data-constructor
   (-> lang-t pre-data-constructor-t

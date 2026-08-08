@@ -151,8 +151,8 @@ function qualifyFreeVar(
       )
     }
 
-    case "PolymorphicTerm": {
-      return M.PolymorphicTerm(
+    case "AllTerm": {
+      return M.AllTerm(
         term.parameters,
         qualifyFreeVar(
           mod,

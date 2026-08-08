@@ -51,7 +51,7 @@ export function formatTerm(term: M.Term): string {
     case "TheTerm":
       return `(the ${formatTerm(term.type)} ${formatTerm(term.instance)})`
 
-    case "PolymorphicTerm":
+    case "AllTerm":
       return `(all (${term.parameters.join(" ")}) ${formatTerm(term.body)})`
   }
 }

@@ -323,7 +323,7 @@ export function infer(
       return M.Right(M.Inferred(retResult.right, type))
     }
 
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       const type = M.TypeType()
       ctx = M.ctxPutMany(
         ctx,

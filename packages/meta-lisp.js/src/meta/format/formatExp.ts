@@ -55,7 +55,7 @@ export function formatExp(exp: M.Exp): string {
       return `(lambda (${parameters}) ${body})`
     }
 
-    case "PolymorphicExp": {
+    case "AllExp": {
       const parameters = formatParameters(exp.parameters)
       const body = formatExp(exp.body)
       return `(all (${parameters}) ${body})`

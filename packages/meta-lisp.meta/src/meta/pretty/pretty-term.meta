@@ -58,7 +58,7 @@
      (ppml/pretty-syntax "the"
        [(pretty-term type) (pretty-term instance)]
        []))
-    ((polymorphic-term parameters body location)
+    ((all-term parameters body location)
      (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters)))
        (let ((params-node
                (if (list-is-empty parameters)

@@ -150,10 +150,10 @@ function moduleImportTerm(scope: Passes.FragmentScope, term: M.Term): M.Term {
       )
     }
 
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       const boundNames = new Set(term.parameters)
       const newScope = scopeFilterBoundNames(scope, boundNames)
-      return M.PolymorphicTerm(
+      return M.AllTerm(
         term.parameters,
         moduleImportTerm(newScope, term.body),
         term.location,

@@ -12,7 +12,7 @@ export type Type =
   | HashType
   | PairType
   | DataType
-  | PolymorphicType
+  | AllType
 
 // VarType
 
@@ -221,28 +221,25 @@ export function asDataType(type: Type): DataType {
   throw new Error(`[asDataType] fail on: ${type.kind}`)
 }
 
-// PolymorphicType
+// AllType
 
-export type PolymorphicType = {
-  kind: "PolymorphicType"
+export type AllType = {
+  kind: "AllType"
   varTypes: Array<VarType>
   bodyType: Type
 }
 
-export function PolymorphicType(
-  varTypes: Array<VarType>,
-  bodyType: Type,
-): PolymorphicType {
-  return { kind: "PolymorphicType", varTypes, bodyType }
+export function AllType(varTypes: Array<VarType>, bodyType: Type): AllType {
+  return { kind: "AllType", varTypes, bodyType }
 }
 
-export function isPolymorphicType(type: Type): type is PolymorphicType {
-  return type.kind === "PolymorphicType"
+export function isAllType(type: Type): type is AllType {
+  return type.kind === "AllType"
 }
 
-export function asPolymorphicType(type: Type): PolymorphicType {
-  if (isPolymorphicType(type)) return type
-  throw new Error(`[asPolymorphicType] fail on: ${type.kind}`)
+export function asAllType(type: Type): AllType {
+  if (isAllType(type)) return type
+  throw new Error(`[asAllType] fail on: ${type.kind}`)
 }
 
 // Helpers
@@ -329,9 +326,7 @@ export function arrowTypeArity(type: Type): number {
   return asArrowType(type).argTypes.length
 }
 
-export function polymorphicTypeFreshSelf(
-  type: PolymorphicType,
-): PolymorphicType {
+export function allTypeFreshSelf(type: AllType): AllType {
   const varTypes = type.varTypes
   const bodyType = type.bodyType
   const newVarTypes = varTypes.map((vt) => createFreshVarType(vt.name))
@@ -340,17 +335,15 @@ export function polymorphicTypeFreshSelf(
     substMap.set(varTypes[i], newVarTypes[i])
   }
   const newBodyType = replaceVarTypesInType(bodyType, substMap)
-  return PolymorphicType(newVarTypes, newBodyType)
+  return AllType(newVarTypes, newBodyType)
 }
 
-export function polymorphicTypeFreshBodyType(type: PolymorphicType): Type {
-  const freshened = polymorphicTypeFreshSelf(type)
+export function allTypeFreshBodyType(type: AllType): Type {
+  const freshened = allTypeFreshSelf(type)
   return freshened.bodyType
 }
 
-export function polymorphicTypePrettifyVarTypes(
-  type: PolymorphicType,
-): PolymorphicType {
+export function allTypePrettifyVarTypes(type: AllType): AllType {
   const varTypes = type.varTypes
   const bodyType = type.bodyType
   const newVarTypes = range(varTypes.length).map((i) =>
@@ -361,7 +354,7 @@ export function polymorphicTypePrettifyVarTypes(
     substMap.set(varTypes[i], newVarTypes[i])
   }
   const newBodyType = replaceVarTypesInType(bodyType, substMap)
-  return PolymorphicType(newVarTypes, newBodyType)
+  return AllType(newVarTypes, newBodyType)
 }
 
 function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
@@ -407,7 +400,7 @@ function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
     )
   }
 
-  if (type.kind === "PolymorphicType") {
+  if (type.kind === "AllType") {
     const newVarTypes = type.varTypes.map((vt) => {
       const found = subst.get(vt)
       return found || vt
@@ -419,7 +412,7 @@ function replaceVarTypesInType(type: Type, subst: Map<VarType, VarType>): Type {
         filteredSubst.set(k, v)
       }
     }
-    return PolymorphicType(
+    return AllType(
       newVarTypes,
       replaceVarTypesInType(type.bodyType, filteredSubst),
     )

@@ -23,7 +23,7 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       return setUnionMany([new Set(exp.parameters), expOccurredNames(exp.body)])
     }
 
-    case "PolymorphicExp": {
+    case "AllExp": {
       return setUnionMany([new Set(exp.parameters), expOccurredNames(exp.body)])
     }
 

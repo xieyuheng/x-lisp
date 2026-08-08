@@ -38,6 +38,6 @@
     ((sexp-exp sexp location) location)
     ((arrow-exp arg-types ret-type location) location)
     ((the-exp type exp location) location)
-    ((polymorphic-exp parameters body location) location)
+    ((all-exp parameters body location) location)
     ((match-exp targets clauses location) location)
     ((comment-exp content location) location)))

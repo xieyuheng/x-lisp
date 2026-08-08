@@ -12,8 +12,6 @@ export function generalizeInCtx(ctx: M.Ctx, type: M.Type): M.Type {
     const dedupedVarTypes = arrayDedup(freeVarTypes, M.varTypeEqual).filter(
       (t): t is M.VarType => t.kind === "VarType",
     )
-    return M.polymorphicTypePrettifyVarTypes(
-      M.PolymorphicType(dedupedVarTypes, type),
-    )
+    return M.allTypePrettifyVarTypes(M.AllType(dedupedVarTypes, type))
   }
 }

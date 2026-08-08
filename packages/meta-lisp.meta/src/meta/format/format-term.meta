@@ -26,7 +26,7 @@
     ((arrow-term arg-types ret-type location)
      (let ((args-str (format-terms arg-types)))
        (@text "(-> " args-str " " (format-term ret-type) ")")))
-    ((polymorphic-term parameters body location)
+    ((all-term parameters body location)
      (@text "(all (" (text-join " " (list-map symbol-to-text parameters)) ") "
               (format-term body) ")"))
     ((lambda-term parameters body location)

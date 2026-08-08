@@ -32,11 +32,7 @@ function admitWithParameters(
   if (parameters.length === 0) {
     return M.AdmitStmt(name, type, location)
   } else {
-    return M.AdmitStmt(
-      name,
-      M.PolymorphicExp(parameters, type, location),
-      location,
-    )
+    return M.AdmitStmt(name, M.AllExp(parameters, type, location), location)
   }
 }
 

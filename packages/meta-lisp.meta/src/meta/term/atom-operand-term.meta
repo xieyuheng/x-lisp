@@ -30,5 +30,5 @@
     ((the-term type instance location)
      (and (is-atom-operand-term type)
           (is-atom-operand-term instance)))
-    ((polymorphic-term parameters body location)
+    ((all-term parameters body location)
      (is-atom-operand-term body))))

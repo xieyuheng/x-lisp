@@ -125,8 +125,8 @@ export function desugar(exp: M.Exp): M.Term {
       return M.LambdaTerm(exp.parameters, desugar(exp.body), exp.location)
     }
 
-    case "PolymorphicExp": {
-      return M.PolymorphicTerm(exp.parameters, desugar(exp.body), exp.location)
+    case "AllExp": {
+      return M.AllTerm(exp.parameters, desugar(exp.body), exp.location)
     }
 
     case "SymbolExp": {

@@ -123,7 +123,7 @@
      (ppml/pretty-syntax "the"
        [(pretty-exp type)]
        [(pretty-exp instance)]))
-    ((polymorphic-exp parameters body location)
+    ((all-exp parameters body location)
      (let ((params-str (text-join " " (list-map symbol-to-text parameters))))
        (ppml/pretty-syntax "all"
          [(ppml/text (@text "(" params-str ")"))]

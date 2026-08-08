@@ -17,12 +17,8 @@ export function termTraverse(onTerm: (term: Term) => Term, term: Term): Term {
       return M.LambdaTerm(term.parameters, onTerm(term.body), term.location)
     }
 
-    case "PolymorphicTerm": {
-      return M.PolymorphicTerm(
-        term.parameters,
-        onTerm(term.body),
-        term.location,
-      )
+    case "AllTerm": {
+      return M.AllTerm(term.parameters, onTerm(term.body), term.location)
     }
 
     case "ApplyTerm": {

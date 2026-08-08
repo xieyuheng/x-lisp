@@ -35,7 +35,7 @@ export function typeFreshen(type: M.Type): M.Type {
         type.argTypes.map((t) => typeFreshen(t)),
       )
 
-    case "PolymorphicType":
-      return typeFreshen(M.polymorphicTypeFreshBodyType(type))
+    case "AllType":
+      return typeFreshen(M.allTypeFreshBodyType(type))
   }
 }

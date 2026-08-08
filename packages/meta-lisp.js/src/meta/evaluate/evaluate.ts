@@ -44,7 +44,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
       return M.TypeValue(M.ArrowType(argTypes, retType))
     }
 
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       const varTypes = exp.parameters.map((parameter) =>
         M.VarType(parameter, BigInt(0)),
       )
@@ -57,7 +57,7 @@ export function evaluate(mod: M.Mod, env: Env, exp: M.Term): M.Value {
         ),
         exp.body,
       )
-      return M.TypeValue(M.PolymorphicType(varTypes, bodyType))
+      return M.TypeValue(M.AllType(varTypes, bodyType))
     }
 
     case "ApplyTerm": {

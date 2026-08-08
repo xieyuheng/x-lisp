@@ -29,7 +29,7 @@ export function termFreeNames(
       )
     }
 
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       return termFreeNames(
         new Set([...boundNames, ...term.parameters]),
         term.body,

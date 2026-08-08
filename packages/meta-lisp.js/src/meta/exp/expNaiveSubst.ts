@@ -32,9 +32,9 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "PolymorphicExp": {
+    case "AllExp": {
       if (exp.parameters.includes(name)) return exp
-      return M.PolymorphicExp(
+      return M.AllExp(
         exp.parameters,
         expNaiveSubst(exp.body, name, rhs),
         exp.location,

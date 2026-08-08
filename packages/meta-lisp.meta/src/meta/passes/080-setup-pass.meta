@@ -79,15 +79,15 @@
          (lambda (entry)
            (match entry
              ((make-pre-interface-entry name type location)
-              (let ((wrapped-type (make-polymorphic-term-from-parameters parameters type location)))
+              (let ((wrapped-type (make-all-term-from-parameters parameters type location)))
                 (mod-claim mod name wrapped-type)
                 (set-add name (mod-opaque mod)))))))))
     (else void)))
 
-(define (make-polymorphic-term-from-parameters parameters type location)
+(define (make-all-term-from-parameters parameters type location)
   (if (list-is-empty parameters)
     type
-    (polymorphic-term parameters type location)))
+    (all-term parameters type location)))
 
 (define (make-type-term-from-parameters parameters location)
   (let ((type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location)))

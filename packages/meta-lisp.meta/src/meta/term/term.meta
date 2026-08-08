@@ -15,4 +15,4 @@
   (if-term (condition term-t) (consequent term-t) (alternative term-t) (location source-location-t))
   (arrow-term (arg-types (list-t term-t)) (ret-type term-t) (location source-location-t))
   (the-term (type term-t) (instance term-t) (location source-location-t))
-  (polymorphic-term (parameters (list-t symbol-t)) (body term-t) (location source-location-t)))
+  (all-term (parameters (list-t symbol-t)) (body term-t) (location source-location-t)))

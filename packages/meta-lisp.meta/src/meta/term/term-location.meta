@@ -14,7 +14,7 @@
     ((var-term name location) location)
     ((qualified-var-term pkg-name mod-name name location) location)
     ((lambda-term parameters body location) location)
-    ((polymorphic-term parameters body location) location)
+    ((all-term parameters body location) location)
     ((apply-term target args location) location)
     ((let1-term name rhs body location) location)
     ((begin1-term head body location) location)

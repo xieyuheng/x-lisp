@@ -73,15 +73,15 @@ function substDeepWalkWithBoundIds(
         type.argTypes.map((t) => substDeepWalkWithBoundIds(boundIds, subst, t)),
       )
 
-    case "PolymorphicType": {
-      const freshened = M.polymorphicTypeFreshSelf(type)
+    case "AllType": {
+      const freshened = M.allTypeFreshSelf(type)
       const newVarTypes = freshened.varTypes
       const newBodyType = substDeepWalkWithBoundIds(
         new Set([...boundIds, ...newVarTypes.map(M.varTypeId)]),
         subst,
         freshened.bodyType,
       )
-      return M.PolymorphicType(newVarTypes, newBodyType)
+      return M.AllType(newVarTypes, newBodyType)
     }
   }
 }

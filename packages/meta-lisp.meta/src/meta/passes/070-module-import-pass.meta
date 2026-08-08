@@ -115,10 +115,10 @@
          parameters
          (module-import-term new-scope body)
          location)))
-    ((polymorphic-term parameters body location)
+    ((all-term parameters body location)
      (let ((bound-names (list-to-set parameters))
             (new-scope (scope-filter-bound-names scope bound-names)))
-       (polymorphic-term
+       (all-term
          parameters
          (module-import-term new-scope body)
          location)))

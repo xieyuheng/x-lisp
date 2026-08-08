@@ -23,8 +23,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.LambdaExp(exp.parameters, onExp(exp.body), exp.location)
     }
 
-    case "PolymorphicExp": {
-      return M.PolymorphicExp(exp.parameters, onExp(exp.body), exp.location)
+    case "AllExp": {
+      return M.AllExp(exp.parameters, onExp(exp.body), exp.location)
     }
 
     case "ApplyExp": {

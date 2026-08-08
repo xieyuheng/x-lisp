@@ -44,7 +44,7 @@ export function typeFreeVarTypes(
     case "DataType":
       return type.argTypes.flatMap((t) => typeFreeVarTypes(boundIds, t))
 
-    case "PolymorphicType":
+    case "AllType":
       return typeFreeVarTypes(
         new Set([...boundIds, ...type.varTypes.map(M.varTypeId)]),
         type.bodyType,

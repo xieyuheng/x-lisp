@@ -47,7 +47,7 @@ export function isAtomOperandTerm(term: M.Term): boolean {
       return isAtomOperandTerm(term.type) && isAtomOperandTerm(term.instance)
     }
 
-    case "PolymorphicTerm": {
+    case "AllTerm": {
       return isAtomOperandTerm(term.body)
     }
   }

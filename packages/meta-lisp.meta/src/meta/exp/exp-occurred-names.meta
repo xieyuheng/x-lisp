@@ -18,7 +18,7 @@
     ((var-exp name location) (@set name))
     ((lambda-exp parameters body location)
      (set-union (list-to-set parameters) (exp-occurred-names body)))
-    ((polymorphic-exp parameters body location)
+    ((all-exp parameters body location)
      (set-union (list-to-set parameters) (exp-occurred-names body)))
     ((let1-exp name rhs body location)
      (set-union-many [(@set name) (exp-occurred-names rhs) (exp-occurred-names body)]))

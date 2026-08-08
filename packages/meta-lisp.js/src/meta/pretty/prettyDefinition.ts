@@ -197,7 +197,7 @@ function prettyType(type: M.Type): Ppml.Node {
       }
     }
 
-    case "PolymorphicType": {
+    case "AllType": {
       const varTypes = type.varTypes.map(prettyType)
       const bodyType = prettyType(type.bodyType)
       return Ppml.prettySyntax(
