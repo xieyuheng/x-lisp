@@ -127,14 +127,14 @@ value_t x_text_replace(value_t pattern, value_t replacement, value_t string) {
   return result;
 }
 
-value_t x_text_starts_with(value_t prefix, value_t string) {
+value_t x_text_is_prefix(value_t prefix, value_t string) {
   return x_bool(
     string_starts_with(
       xtext_string(to_xtext(string)),
       xtext_string(to_xtext(prefix))));
 }
 
-value_t x_text_ends_with(value_t suffix, value_t string) {
+value_t x_text_is_suffix(value_t suffix, value_t string) {
   return x_bool(
     string_ends_with(
       xtext_string(to_xtext(string)),

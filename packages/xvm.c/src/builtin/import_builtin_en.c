@@ -145,8 +145,8 @@ void import_builtin_en(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/builtin/text-split", x_text_split);
   define_primitive_2(mod, "meta-builtin/builtin/text-join", x_text_join);
   define_primitive_3(mod, "meta-builtin/builtin/text-replace", x_text_replace);
-  define_primitive_2(mod, "meta-builtin/builtin/text-starts-with", x_text_starts_with);
-  define_primitive_2(mod, "meta-builtin/builtin/text-ends-with", x_text_ends_with);
+  define_primitive_2(mod, "meta-builtin/builtin/text-is-prefix", x_text_is_prefix);
+  define_primitive_2(mod, "meta-builtin/builtin/text-is-suffix", x_text_is_suffix);
   define_primitive_1(mod, "meta-builtin/builtin/text-to-upper-case", x_text_to_upper_case);
   define_primitive_1(mod, "meta-builtin/builtin/text-to-lower-case", x_text_to_lower_case);
   define_primitive_2(mod, "meta-builtin/builtin/text-get-code-point", x_text_get_code_point);

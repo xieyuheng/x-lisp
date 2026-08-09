@@ -4,7 +4,7 @@
   (flow (path-list-recursive directory)
     (list-each
       (lambda (name)
-        (when (text-ends-with ".meta" name)
+        (when (text-is-suffix ".meta" name)
           (let ((path (path-join directory name))
                  (fragment (load-fragment path)))
             (package-put-fragment path fragment package)))))))

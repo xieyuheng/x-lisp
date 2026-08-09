@@ -69,7 +69,7 @@
 (define (make-base-name lang type-name location)
   (let ((suffix (if (is-zh lang) "型" "-t")))
     (let ((type-name-text (symbol-to-text type-name)))
-      (unless (text-ends-with suffix type-name-text)
+      (unless (text-is-suffix suffix type-name-text)
         (error-with-location
           (@text "(make-base-name) type-name must end with "
                    suffix

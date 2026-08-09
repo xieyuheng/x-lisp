@@ -38,20 +38,20 @@
 (define-test text-replace-test
   (assert-equal "a/b/c" (text-replace "." "/" "a.b.c")))
 
-(define-test text-starts-with-test
-  (assert (text-starts-with "" "abc"))
-  (assert (text-starts-with "a" "abc"))
-  (assert (text-starts-with "ab" "abc"))
-  (assert (text-starts-with "abc" "abc"))
-  (assert-not (text-starts-with "abc~" "abc"))
-  (assert-not (text-starts-with "b" "abc"))
+(define-test text-is-prefix-test
+  (assert (text-is-prefix "" "abc"))
+  (assert (text-is-prefix "a" "abc"))
+  (assert (text-is-prefix "ab" "abc"))
+  (assert (text-is-prefix "abc" "abc"))
+  (assert-not (text-is-prefix "abc~" "abc"))
+  (assert-not (text-is-prefix "b" "abc"))
 
-  (assert (text-ends-with "" "abc"))
-  (assert (text-ends-with "c" "abc"))
-  (assert (text-ends-with "bc" "abc"))
-  (assert (text-ends-with "abc" "abc"))
-  (assert-not (text-ends-with "~abc" "abc"))
-  (assert-not (text-ends-with "b" "abc")))
+  (assert (text-is-suffix "" "abc"))
+  (assert (text-is-suffix "c" "abc"))
+  (assert (text-is-suffix "bc" "abc"))
+  (assert (text-is-suffix "abc" "abc"))
+  (assert-not (text-is-suffix "~abc" "abc"))
+  (assert-not (text-is-suffix "b" "abc")))
 
 (define-test text-to-upper-case-test
   (assert-equal "ABC" (text-to-upper-case "abc"))

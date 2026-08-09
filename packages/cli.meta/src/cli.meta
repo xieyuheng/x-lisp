@@ -32,7 +32,7 @@
                 tokens))
         (name (car main))
         (rest (cdr main))
-        (first-option-index (list-find-index (text-starts-with "--") rest))
+        (first-option-index (list-find-index (text-is-prefix "--") rest))
         (arg-count (if (int-greater-or-equal first-option-index 0)
                      first-option-index
                      (list-length rest)))
@@ -51,11 +51,11 @@
            (loop (cdr tokens) args options passthrough true))
           ((equal (car tokens) "--")
            (loop (cdr tokens) args options passthrough true))
-          ((text-starts-with "-" (car tokens))
+          ((text-is-prefix "-" (car tokens))
            (cond ((list-is-empty (cdr tokens))
                   (hash-put (car tokens) "" options)
                   (loop (cdr tokens) args options passthrough false))
-                 ((text-starts-with "-" (car (cdr tokens)))
+                 ((text-is-prefix "-" (car (cdr tokens)))
                   (hash-put (car tokens) "" options)
                   (loop (cdr tokens) args options passthrough false))
                  (else

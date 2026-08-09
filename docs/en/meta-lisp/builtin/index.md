@@ -161,8 +161,8 @@ Operations on `text-t`.
 
 ### Search and replace
 
-- [`text-starts-with`](text/text-starts-with.md) — Check prefix
-- [`text-ends-with`](text/text-ends-with.md) — Check suffix
+- [`text-is-prefix`](text/text-is-prefix.md) — Check if prefix
+- [`text-is-suffix`](text/text-is-suffix.md) — Check if suffix
 - [`text-include`](text/text-include.md) — Check if includes substring
 - [`text-find-index`](text/text-find-index.md) — Find substring position
 - [`text-replace`](text/text-replace.md) — Replace substring

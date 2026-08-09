@@ -145,8 +145,8 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/文本分割", x_text_split);
   define_primitive_2(mod, "meta-builtin/内置/文本连接", x_text_join);
   define_primitive_3(mod, "meta-builtin/内置/文本替换", x_text_replace);
-  define_primitive_2(mod, "meta-builtin/内置/文本起首", x_text_starts_with);
-  define_primitive_2(mod, "meta-builtin/内置/文本结尾", x_text_ends_with);
+  define_primitive_2(mod, "meta-builtin/内置/文本为前缀", x_text_is_prefix);
+  define_primitive_2(mod, "meta-builtin/内置/文本为后缀", x_text_is_suffix);
   define_primitive_1(mod, "meta-builtin/内置/文本转大写", x_text_to_upper_case);
   define_primitive_1(mod, "meta-builtin/内置/文本转小写", x_text_to_lower_case);
   define_primitive_2(mod, "meta-builtin/内置/文本取码点", x_text_get_code_point);
