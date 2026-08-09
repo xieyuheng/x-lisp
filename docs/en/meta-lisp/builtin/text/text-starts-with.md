@@ -15,7 +15,7 @@ Check if a text starts with a specified prefix.
 # Examples
 
 ```meta-lisp
-(text-starts-with "hello" "he")  ;; => true
-(text-starts-with "hello" "hi")  ;; => false
-(text-starts-with "hello" "")    ;; => true
+(text-starts-with "he" "hello")  ;; => true
+(text-starts-with "hi" "hello")  ;; => false
+(text-starts-with "" "hello")    ;; => true
 ```

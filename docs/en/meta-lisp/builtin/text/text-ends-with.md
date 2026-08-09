@@ -15,7 +15,7 @@ Check if a text ends with a specified suffix.
 # Examples
 
 ```meta-lisp
-(text-ends-with "hello" "lo")  ;; => true
-(text-ends-with "hello" "hi")  ;; => false
-(text-ends-with "hello" "")    ;; => true
+(text-ends-with "lo" "hello")  ;; => true
+(text-ends-with "hi" "hello")  ;; => false
+(text-ends-with "" "hello")    ;; => true
 ```

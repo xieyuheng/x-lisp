@@ -152,10 +152,10 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_2(mod, "meta-builtin/内置/文本取码点", x_text_get_code_point);
   define_primitive_2(mod, "meta-builtin/内置/文本含于", x_text_include);
   define_primitive_2(mod, "meta-builtin/内置/文本查找索引", x_text_find_index);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪左", x_text_trim_left);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪右", x_text_trim_right);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪首", x_text_trim_start);
-  define_primitive_1(mod, "meta-builtin/内置/文本修剪尾", x_text_trim_end);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪左端", x_text_trim_left);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪右端", x_text_trim_right);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪首端", x_text_trim_start);
+  define_primitive_1(mod, "meta-builtin/内置/文本修剪尾端", x_text_trim_end);
   define_primitive_1(mod, "meta-builtin/内置/文本修剪", x_text_trim);
   define_primitive_1(mod, "meta-builtin/内置/文本为整数", x_text_is_int);
   define_primitive_1(mod, "meta-builtin/内置/文本为浮点", x_text_is_float);
