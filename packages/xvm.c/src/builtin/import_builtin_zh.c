@@ -135,7 +135,7 @@ void import_builtin_zh(mod_t *mod) {
   define_primitive_1(mod, "meta-builtin/内置/文本长度", x_text_length);
   define_primitive_1(mod, "meta-builtin/内置/文本为空", x_text_is_empty);
   define_primitive_1(mod, "meta-builtin/内置/文本为空白", x_text_is_blank);
-  define_primitive_3(mod, "meta-builtin/内置/文本截段", x_text_slice);
+  define_primitive_3(mod, "meta-builtin/内置/文本截取", x_text_slice);
   define_primitive_2(mod, "meta-builtin/内置/文本追加", x_text_append);
   define_primitive_1(mod, "meta-builtin/内置/文本拼接", x_text_concat);
   define_primitive_2(mod, "meta-builtin/内置/文本字典序比较", x_text_compare_lexical);
