@@ -5,7 +5,7 @@ title: 语法
 # 前言
 
 basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
-使用**符号表达式**（S-expression）语法。
+使用**符号算式**（S-expression）语法。
 
 它同时支持两种编译目标：
 
@@ -363,7 +363,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 "world"
 ```
 
-字符串表达式会被翻译为指针，
+字符串字面量会被翻译为指针，
 指向 string table 中 null 结尾的 C 风格的 string。
 
 ## (address)
