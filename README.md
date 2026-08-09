@@ -4,14 +4,6 @@
 
 A LISP with type system.
 
-## Features
-
-- Use Hindley-Milner type system (all types can be inferred).
-- Support algebraic type and pattern matching (no subtyping).
-- Support tail recursion optimization (no need special loop syntax).
-- Module system decoupled from the file system.
-- Built-in testing framework.
-
 ## Examples
 
 ```scheme
@@ -96,6 +88,14 @@ A LISP with type system.
     ((closure-value env parameter body)
      (evaluate body (extend-env parameter arg env)))))
 ```
+
+## Features
+
+- Use Hindley-Milner type system (all types can be inferred).
+- Support algebraic type and pattern matching (no subtyping).
+- Support tail recursion optimization (no need special loop syntax).
+- Module system decoupled from the file system.
+- Built-in testing framework.
 
 ## Documentation
 
