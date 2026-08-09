@@ -17,6 +17,5 @@ Swap the two arguments of a function.
 # Examples
 
 ```meta-lisp
-(define (divide a b) (/ a b))
-((swap divide) 2 10)  ;; => 5 (equivalent to (divide 10 2))
+((swap isub) 10 3)  ;; => -7 (equivalent to (isub 3 10))
 ```

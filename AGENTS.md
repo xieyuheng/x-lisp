@@ -115,7 +115,7 @@ AI agent 应用中文回答用户的问题。
 
 ## meta-lisp 工作流
 
-- **meta-lisp 是一门新的 Lisp 方言**，有语法问题应先查阅[语法参考](docs/zh/meta-lisp/syntax.md)，不要套用其他 Lisp（如 Scheme、Common Lisp）的语法约定
+- **meta-lisp 是一门新的 Lisp 方言**，有语法问题应先查阅[语法参考](docs/zh/meta-lisp/语法.md)，不要套用其他 Lisp（如 Scheme、Common Lisp）的语法约定
 - 标准流程：check → build → test
 - [meta-lisp.meta] 额外有 `scripts/build.sh`（编译为 xvm 汇编）和 `scripts/self-check.sh`（自举验证）
 - **不要猜测 API 用法** — 优先使用 [meta-builtin.meta] 中已定义的内建函数，需要新函数时再到 `meta-builtin.meta/src/` 下查看声明
@@ -160,6 +160,5 @@ Agent 应在对应场景主动加载 skill：
 
 # 参考
 
-- [语法参考](docs/en/meta-lisp/syntax.md) ([中文](docs/zh/meta-lisp/syntax.md))
-- [内建函数](docs/en/meta-lisp/builtin/index.md) ([中文](docs/zh/meta-lisp/builtin/index.md))
-- [FAQ](docs/en/meta-lisp/faq.md) ([中文](docs/zh/meta-lisp/faq.md))
+- [语法参考](docs/en/meta-lisp/syntax.md) ([中文](docs/zh/meta-lisp/语法.md))
+- [内建函数](docs/en/meta-lisp/builtin/index.md) ([中文](docs/zh/meta-lisp/内置/索引.md))
