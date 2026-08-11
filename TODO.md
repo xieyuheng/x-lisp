@@ -6,7 +6,7 @@ review 220-PrologEpilogPass.ts
 
 # loader
 
-[xexe.c] review loader 的代码。
+[x86.c] review loader 的代码。
 
 # native code generation
 

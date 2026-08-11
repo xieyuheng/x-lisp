@@ -9,16 +9,16 @@ typedef void *(fn_t)(void);
 // lifecycle
 // ---------------------------------------------------------------------------
 
-xexe_t *make_xexe(buffer_t *buffer) {
-  xexe_t *self = new(xexe_t);
-  memset(self, 0, sizeof(xexe_t));
+x86_exe_t *make_x86_exe(buffer_t *buffer) {
+  x86_exe_t *self = new(x86_exe_t);
+  memset(self, 0, sizeof(x86_exe_t));
   void *bytes = buffer_raw_bytes(buffer);
   self->header = bytes;
   self->buffer = buffer;
   return self;
 }
 
-void xexe_free(xexe_t *self) {
+void x86_exe_free(x86_exe_t *self) {
   if (self->label_map) record_free(self->label_map);
   if (self->image) munmap(self->image, self->image_size);
   buffer_free(self->buffer);
@@ -29,44 +29,42 @@ void xexe_free(xexe_t *self) {
 // validation
 // ---------------------------------------------------------------------------
 
-void xexe_check(xexe_t *self) {
-  uint8_t magic[8] = {'x', 'e', 'x', 'e', 0, 0, 0, 0};
-  uint8_t machine[8] = {'x', '8', '6', '-', '6', '4', 0, 0};
+void x86_exe_check(x86_exe_t *self) {
+  uint8_t magic[8] = {'x', '8', '6', 0, 0, 0, 0, 0};
   assert(memcmp(self->header->magic, magic, 8) == 0);
-  assert(memcmp(self->header->machine, machine, 8) == 0);
 }
 
-uint64_t xexe_version(xexe_t *xexe) {
-  return xexe->header->version;
+uint64_t x86_exe_version(x86_exe_t *x86) {
+  return x86->header->version;
 }
 
 // ---------------------------------------------------------------------------
 // relocation helpers
 // ---------------------------------------------------------------------------
 
-static void *segment_base(xexe_t *self, xexe_segment_kind_t kind) {
+static void *segment_base(x86_exe_t *self, x86_exe_segment_kind_t kind) {
   switch (kind) {
-    case XEXE_CODE_SEGMENT:  return self->code;
-    case XEXE_DATA_SEGMENT:  return self->data;
-    case XEXE_SPACE_SEGMENT: return self->space;
+    case X86_CODE_SEGMENT:  return self->code;
+    case X86_DATA_SEGMENT:  return self->data;
+    case X86_SPACE_SEGMENT: return self->space;
     default: {
-      where_printf("[xexe_load] unknown segment kind: %lu\n", kind);
+      where_printf("[x86_exe_load] unknown segment kind: %lu\n", kind);
       exit(1);
     }
   }
 }
 
-static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
+static void apply_label_rel32(x86_exe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
   // - note: a label at code offset 0 packs to NULL, so check existence
   //   with record_has rather than testing the record_get result.
   if (!record_has(self->label_map, (char *) name)) {
-    where_printf("[xexe_load] undefined label: %s\n", name);
+    where_printf("[x86_exe_load] undefined label: %s\n", name);
     exit(1);
   }
   void *packed = record_get(self->label_map, (char *) name);
 
-  xexe_segment_kind_t target_kind = XEXE_LABEL_KIND(packed);
-  uint64_t target_offset = XEXE_LABEL_OFFSET(packed);
+  x86_exe_segment_kind_t target_kind = X86_LABEL_KIND(packed);
+  uint64_t target_offset = X86_LABEL_OFFSET(packed);
 
   uint8_t *target_base = segment_base(self, target_kind);
   uint64_t target_addr = (uint64_t)(target_base + target_offset);
@@ -76,17 +74,17 @@ static void apply_label_rel32(xexe_t *self, const char *name, uint8_t *patch_add
   *(int32_t *) patch_addr = displacement;
 }
 
-static void apply_label_abs64(xexe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
+static void apply_label_abs64(x86_exe_t *self, const char *name, uint8_t *patch_addr, int64_t addend) {
   // - note: a label at code offset 0 packs to NULL, so check existence
   //   with record_has rather than testing the record_get result.
   if (!record_has(self->label_map, (char *) name)) {
-    where_printf("[xexe_load] undefined label: %s\n", name);
+    where_printf("[x86_exe_load] undefined label: %s\n", name);
     exit(1);
   }
   void *packed = record_get(self->label_map, (char *) name);
 
-  xexe_segment_kind_t target_kind = XEXE_LABEL_KIND(packed);
-  uint64_t target_offset = XEXE_LABEL_OFFSET(packed);
+  x86_exe_segment_kind_t target_kind = X86_LABEL_KIND(packed);
+  uint64_t target_offset = X86_LABEL_OFFSET(packed);
 
   uint8_t *target_base = segment_base(self, target_kind);
   uint64_t target_addr = (uint64_t)(target_base + target_offset);
@@ -99,8 +97,8 @@ static void apply_label_abs64(xexe_t *self, const char *name, uint8_t *patch_add
 // load: parse → mmap → relocations → mprotect
 // ---------------------------------------------------------------------------
 
-void xexe_load(xexe_t *self) {
-  xexe_header_t *h = self->header;
+void x86_exe_load(x86_exe_t *self) {
+  x86_exe_header_t *h = self->header;
   uint8_t *file_start = buffer_raw_bytes(self->buffer);
 
   // --- parse string table ---
@@ -109,24 +107,24 @@ void xexe_load(xexe_t *self) {
 
   // --- parse label table ---
 
-  self->label_count = h->label_table_size / sizeof(xexe_label_entry_t);
-  self->label_entries = (xexe_label_entry_t *)(file_start + h->label_table_file_offset);
+  self->label_count = h->label_table_size / sizeof(x86_exe_label_entry_t);
+  self->label_entries = (x86_exe_label_entry_t *)(file_start + h->label_table_file_offset);
 
   self->label_map = make_record();
 
   for (size_t i = 0; i < self->label_count; i++) {
-    xexe_label_entry_t *entry = &self->label_entries[i];
+    x86_exe_label_entry_t *entry = &self->label_entries[i];
     const char *name = self->string_table + entry->name;
     record_put(self->label_map,
                (char *) name,
-               XEXE_LABEL_PACK(entry->segment_kind, entry->segment_offset));
+               X86_LABEL_PACK(entry->segment_kind, entry->segment_offset));
   }
 
   // --- parse relocation table ---
 
-  self->relocation_count = h->relocation_table_size / sizeof(xexe_relocation_entry_t);
+  self->relocation_count = h->relocation_table_size / sizeof(x86_exe_relocation_entry_t);
   self->relocation_entries =
-    (xexe_relocation_entry_t *)(file_start + h->relocation_table_file_offset);
+    (x86_exe_relocation_entry_t *)(file_start + h->relocation_table_file_offset);
 
   // --- mmap image ---
 
@@ -143,7 +141,7 @@ void xexe_load(xexe_t *self) {
     -1, 0);
 
   if (self->image == MAP_FAILED) {
-    where_printf("[xexe_load] mmap failed: %s\n", strerror(errno));
+    where_printf("[x86_exe_load] mmap failed: %s\n", strerror(errno));
     exit(1);
   }
 
@@ -161,7 +159,7 @@ void xexe_load(xexe_t *self) {
   // --- apply relocations ---
 
   for (size_t i = 0; i < self->relocation_count; i++) {
-    xexe_relocation_entry_t *r = &self->relocation_entries[i];
+    x86_exe_relocation_entry_t *r = &self->relocation_entries[i];
     const char *type = self->string_table + r->type;
     const char *name = self->string_table + r->name;
 
@@ -172,16 +170,16 @@ void xexe_load(xexe_t *self) {
     } else if (string_equal(type, "label-abs64")) {
       apply_label_abs64(self, name, patch_addr, r->addend);
     } else if (string_equal(type, "extern")) {
-      where_printf("[xexe_load] warning: 'extern' relocation not supported yet\n");
+      where_printf("[x86_exe_load] warning: 'extern' relocation not supported yet\n");
     } else {
-      where_printf("[xexe_load] warning: unknown relocation type '%s'\n", type);
+      where_printf("[x86_exe_load] warning: unknown relocation type '%s'\n", type);
     }
   }
 
   // --- mprotect code → RX ---
 
   if (mprotect(self->code, code_page, PROT_READ | PROT_EXEC) == -1) {
-    where_printf("[xexe_load] mprotect failed: %s\n", strerror(errno));
+    where_printf("[x86_exe_load] mprotect failed: %s\n", strerror(errno));
     exit(1);
   }
 }
@@ -190,7 +188,7 @@ void xexe_load(xexe_t *self) {
 // call entry
 // ---------------------------------------------------------------------------
 
-void *xexe_call_entry(xexe_t *self) {
+void *x86_exe_call_entry(x86_exe_t *self) {
   fn_t *fn;
   memcpy(&fn, &self->entry, sizeof(fn));
   return fn();

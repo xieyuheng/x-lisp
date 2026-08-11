@@ -408,11 +408,11 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 (mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + deref
 ```
 
-当前 **只在 `.xexe` 格式下支持**（flat 格式没有独立 data section）。
+当前 **只在 `.x86.exe` 格式下支持**（flat 格式没有独立 data section）。
 
 # 操作数与重定位类型
 
-汇编器在生成 `.xexe` 时，以下 operand 自动产生 relocation table 条目。
+汇编器在生成 `.x86.exe` 时，以下 operand 自动产生 relocation table 条目。
 
 ### Code 段
 

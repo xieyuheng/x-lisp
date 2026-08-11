@@ -10,7 +10,7 @@
 
 | offset | size | field                       | description           |
 |--------|------|-----------------------------|-----------------------|
-| 0      | 4    | magic                       | `0x58455845` ("XEXE", for xvm exe) |
+| 0      | 4    | magic                       | `0x006D7678` ("xvm", for xvm exe) |
 | 4      | 4    | version                     | `1`                   |
 | 8      | 4    | definition_count            |                       |
 | 12     | 4    | string_table_size           |                       |

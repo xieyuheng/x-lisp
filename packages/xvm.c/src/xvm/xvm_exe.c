@@ -428,11 +428,11 @@ static void parse_and_validate_header(uint8_t *bytes, size_t *offset, file_heade
   read_u32(bytes, offset, &header->entry_offset);
 
   if (header->magic != XVM_EXE_MAGIC) {
-    who_printf("invalid xexe magic: %08x\n", header->magic);
+    who_printf("invalid xvm.exe magic: %08x\n", header->magic);
     exit(1);
   }
   if (header->version != XVM_EXE_VERSION) {
-    who_printf("unsupported xexe version: %d\n", header->version);
+    who_printf("unsupported xvm.exe version: %d\n", header->version);
     exit(1);
   }
 }

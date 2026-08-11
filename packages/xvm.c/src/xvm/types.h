@@ -10,7 +10,7 @@ typedef struct frame_t frame_t;
 typedef struct xvm_t xvm_t;
 typedef struct xvm_exe_t xvm_exe_t;
 
-#define XVM_EXE_MAGIC   ((uint32_t) 0x58455845)
+#define XVM_EXE_MAGIC   ((uint32_t) 0x006D7678)
 #define XVM_EXE_VERSION ((uint32_t) 1)
 
 enum {

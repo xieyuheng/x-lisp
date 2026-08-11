@@ -46,9 +46,9 @@
 
 (define-test route-match-mixed-test
   (let ((route (parse-route "run file --entry"))
-        (ctx (route-match route ["prog.xexe" "--entry" "main" "--" "--verbose"])))
+        (ctx (route-match route ["prog.x86.exe" "--entry" "main" "--" "--verbose"])))
     (assert-equal 1 (arg-count ctx))
-    (assert-equal "prog.xexe" (arg-get 0 ctx))
+    (assert-equal "prog.x86.exe" (arg-get 0 ctx))
     (assert (option-has "--entry" ctx))
     (assert-equal "main" (option-get "--entry" ctx))
     (assert-equal 1 (passthrough-count ctx))

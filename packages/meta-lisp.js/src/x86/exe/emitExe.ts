@@ -1,35 +1,33 @@
 import {
-  type Xexe,
-  type XexeLabelEntry,
-  type XexeRelocationEntry,
+  type Exe,
+  type ExeLabelEntry,
+  type ExeRelocationEntry,
 } from "./types.ts"
 
-const MAGIC = new TextEncoder().encode("xexe\0\0\0\0")
-const MACHINE = new TextEncoder().encode("x86-64\0\0")
+const MAGIC = new TextEncoder().encode("x86\0\0\0\0")
 
-const HEADER_SIZE = 120
+const HEADER_SIZE = 112
 const LABEL_ENTRY_SIZE = 24
 const RELOCATION_ENTRY_SIZE = 40
 
-export function emitXexe(xexe: Xexe): Uint8Array {
-  const stringNames = collectStringNames(xexe)
+export function emitExe(exe: Exe): Uint8Array {
+  const stringNames = collectStringNames(exe)
   const strtab = buildStringTable(stringNames)
   const strtabOffsets = buildStringOffsets(stringNames)
 
   const codeFileOffset = HEADER_SIZE
-  const dataFileOffset = codeFileOffset + xexe.code.byteLength
-  const stringTableFileOffset = dataFileOffset + xexe.data.byteLength
+  const dataFileOffset = codeFileOffset + exe.code.byteLength
+  const stringTableFileOffset = dataFileOffset + exe.data.byteLength
   const stringTableSize = strtab.byteLength
   const labelTableFileOffset = stringTableFileOffset + stringTableSize
-  const labelTableSize = xexe.labelTable.length * LABEL_ENTRY_SIZE
+  const labelTableSize = exe.labelTable.length * LABEL_ENTRY_SIZE
   const relocationTableFileOffset = labelTableFileOffset + labelTableSize
-  const relocationTableSize =
-    xexe.relocationTable.length * RELOCATION_ENTRY_SIZE
+  const relocationTableSize = exe.relocationTable.length * RELOCATION_ENTRY_SIZE
 
   const totalSize = relocationTableFileOffset + relocationTableSize
   const buf = new Uint8Array(totalSize)
 
-  emitHeader(buf, xexe, {
+  emitHeader(buf, exe, {
     codeFileOffset,
     dataFileOffset,
     stringTableFileOffset,
@@ -40,14 +38,14 @@ export function emitXexe(xexe: Xexe): Uint8Array {
     relocationTableSize,
   })
 
-  buf.set(xexe.code, codeFileOffset)
-  buf.set(xexe.data, dataFileOffset)
+  buf.set(exe.code, codeFileOffset)
+  buf.set(exe.data, dataFileOffset)
   buf.set(strtab, stringTableFileOffset)
-  emitLabelTable(buf, labelTableFileOffset, xexe.labelTable, strtabOffsets)
+  emitLabelTable(buf, labelTableFileOffset, exe.labelTable, strtabOffsets)
   emitRelocationTable(
     buf,
     relocationTableFileOffset,
-    xexe.relocationTable,
+    exe.relocationTable,
     strtabOffsets,
   )
 
@@ -56,7 +54,7 @@ export function emitXexe(xexe: Xexe): Uint8Array {
 
 function emitHeader(
   buf: Uint8Array,
-  xexe: Xexe,
+  exe: Exe,
   offsets: {
     codeFileOffset: number
     dataFileOffset: number
@@ -71,25 +69,23 @@ function emitHeader(
   let pos = 0
   buf.set(MAGIC, pos)
   pos += 8
-  buf.set(MACHINE, pos)
-  pos += 8
 
   writeU64LE(buf, pos, 0n)
   pos += 8
 
   writeU64LE(buf, pos, BigInt(offsets.codeFileOffset))
   pos += 8
-  writeU64LE(buf, pos, BigInt(xexe.code.byteLength))
+  writeU64LE(buf, pos, BigInt(exe.code.byteLength))
   pos += 8
-  writeU64LE(buf, pos, BigInt(xexe.entryCodeSegmentOffset))
+  writeU64LE(buf, pos, BigInt(exe.entryCodeSegmentOffset))
   pos += 8
 
   writeU64LE(buf, pos, BigInt(offsets.dataFileOffset))
   pos += 8
-  writeU64LE(buf, pos, BigInt(xexe.data.byteLength))
+  writeU64LE(buf, pos, BigInt(exe.data.byteLength))
   pos += 8
 
-  writeU64LE(buf, pos, BigInt(xexe.spaceSize))
+  writeU64LE(buf, pos, BigInt(exe.spaceSize))
   pos += 8
 
   writeU64LE(buf, pos, BigInt(offsets.stringTableFileOffset))
@@ -107,12 +103,12 @@ function emitHeader(
   writeU64LE(buf, pos, BigInt(offsets.relocationTableSize))
 }
 
-function collectStringNames(xexe: Xexe): string[] {
+function collectStringNames(exe: Exe): string[] {
   const names: string[] = []
-  for (const entry of xexe.labelTable) {
+  for (const entry of exe.labelTable) {
     names.push(entry.name)
   }
-  for (const entry of xexe.relocationTable) {
+  for (const entry of exe.relocationTable) {
     names.push(entry.type)
     names.push(entry.name)
   }
@@ -150,7 +146,7 @@ function buildStringOffsets(names: string[]): Map<string, number> {
 function emitLabelTable(
   buf: Uint8Array,
   start: number,
-  entries: Array<XexeLabelEntry>,
+  entries: Array<ExeLabelEntry>,
   strtabOffsets: Map<string, number>,
 ): void {
   let pos = start
@@ -168,7 +164,7 @@ function emitLabelTable(
 function emitRelocationTable(
   buf: Uint8Array,
   start: number,
-  entries: Array<XexeRelocationEntry>,
+  entries: Array<ExeRelocationEntry>,
   strtabOffsets: Map<string, number>,
 ): void {
   let pos = start

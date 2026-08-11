@@ -17,24 +17,24 @@ import type { Type } from "../type/index.ts"
 import { NamedType } from "../type/Type.ts"
 import { typeSize } from "../type/typeSize.ts"
 import {
-  XexeCodeSegment,
-  XexeDataSegment,
-  XexeSpaceSegment,
-  type Xexe,
-  type XexeRelocationEntry,
-  type XexeSegmentKind,
+  ExeCodeSegment,
+  ExeDataSegment,
+  ExeSpaceSegment,
+  type Exe,
+  type ExeRelocationEntry,
+  type ExeSegmentKind,
 } from "./types.ts"
 
-type LabelInfo = { segmentKind: XexeSegmentKind; segmentOffset: number }
+type LabelInfo = { segmentKind: ExeSegmentKind; segmentOffset: number }
 
-export function assembleXexe(mod: Mod, entryName?: string): Xexe {
+export function assembleExe(mod: Mod, entryName?: string): Exe {
   resolveDisplacements(mod)
 
   const labels = new Map<string, LabelInfo>()
-  const relocs: Array<XexeRelocationEntry> = []
+  const relocs: Array<ExeRelocationEntry> = []
 
-  const code = emitXexeCode(mod, labels, relocs)
-  const data = emitXexeData(mod, labels, relocs)
+  const code = emitExeCode(mod, labels, relocs)
+  const data = emitExeData(mod, labels, relocs)
 
   let spaceSize = 0
   for (const definition of mod.definitions.values()) {
@@ -46,7 +46,7 @@ export function assembleXexe(mod: Mod, entryName?: string): Xexe {
     }
     const s = Number(size.content)
     labels.set(definition.name, {
-      segmentKind: XexeSpaceSegment,
+      segmentKind: ExeSpaceSegment,
       segmentOffset: spaceSize,
     })
     spaceSize += s
@@ -58,7 +58,7 @@ export function assembleXexe(mod: Mod, entryName?: string): Xexe {
     let message = `entry name not found: ${resolvedEntryName}`
     throw new Error(message)
   }
-  if (entry.segmentKind !== XexeCodeSegment) {
+  if (entry.segmentKind !== ExeCodeSegment) {
     let message = `entry "${resolvedEntryName}" is not a code segment label`
     throw new Error(message)
   }
@@ -124,10 +124,10 @@ function findCodeRelocInfo(instr: Instr): CodeRelocInfo {
   return null
 }
 
-function emitXexeCode(
+function emitExeCode(
   mod: Mod,
   labels: Map<string, LabelInfo>,
-  relocs: Array<XexeRelocationEntry>,
+  relocs: Array<ExeRelocationEntry>,
 ): Uint8Array {
   const localLabels = collectLocalLabels(mod)
 
@@ -140,7 +140,7 @@ function emitXexeCode(
     const fnLocalLabels = localLabels.get(definition.name)!
 
     labels.set(definition.name, {
-      segmentKind: XexeCodeSegment,
+      segmentKind: ExeCodeSegment,
       segmentOffset: pos,
     })
 
@@ -148,11 +148,11 @@ function emitXexeCode(
       if (instr.op === "label") {
         const [op] = instr.operands
         if (op.kind !== "LabelOperand") {
-          let message = `[emitXexeCode] label instruction must have LabelOperand`
+          let message = `[emitExeCode] label instruction must have LabelOperand`
           throw new Error(message)
         }
         labels.set(scopedName(definition.name, op.name), {
-          segmentKind: XexeCodeSegment,
+          segmentKind: ExeCodeSegment,
           segmentOffset: pos,
         })
         continue
@@ -182,7 +182,7 @@ function emitXexeCode(
             relocs.push({
               type: relocInfo.type,
               name: resolvedName,
-              segmentKind: XexeCodeSegment,
+              segmentKind: ExeCodeSegment,
               segmentOffset: instrPos + dispOffset,
               addend,
             })
@@ -194,7 +194,7 @@ function emitXexeCode(
             relocs.push({
               type: relocInfo.type,
               name: resolvedName,
-              segmentKind: XexeCodeSegment,
+              segmentKind: ExeCodeSegment,
               segmentOffset: instrPos + encodedImmOffset(enc),
               addend: 0n,
             })
@@ -235,10 +235,10 @@ type DeferredItem = {
   emit: (start: number) => number
 }
 
-function emitXexeData(
+function emitExeData(
   mod: Mod,
   labels: Map<string, LabelInfo>,
-  relocs: Array<XexeRelocationEntry>,
+  relocs: Array<ExeRelocationEntry>,
 ): Uint8Array {
   let anonCounter = maxAnonIndex(mod) + 1
 
@@ -258,7 +258,7 @@ function emitXexeData(
     const dataType = inferDataType(mod, definition.value)
 
     labels.set(definition.name, {
-      segmentKind: XexeDataSegment,
+      segmentKind: ExeDataSegment,
       segmentOffset: pos,
     })
 
@@ -272,13 +272,13 @@ function emitXexeData(
       pos = d.emit(pos)
       const anonName = `\xa9data.${anonCounter++}`
       labels.set(anonName, {
-        segmentKind: XexeDataSegment,
+        segmentKind: ExeDataSegment,
         segmentOffset: targetStart,
       })
       relocs.push({
         type: "label-abs64",
         name: anonName,
-        segmentKind: XexeDataSegment,
+        segmentKind: ExeDataSegment,
         segmentOffset: d.pointerSlotOffset,
         addend: 0n,
       })
@@ -356,7 +356,7 @@ function emitTree(
   value: Data,
   buf: Uint8Array,
   offset: number,
-  relocs: Array<XexeRelocationEntry>,
+  relocs: Array<ExeRelocationEntry>,
   deferred: Array<DeferredItem>,
 ): number {
   if (value.kind === "IntData") {
@@ -382,7 +382,7 @@ function emitTree(
     relocs.push({
       type: "label-abs64",
       name: value.name,
-      segmentKind: XexeDataSegment,
+      segmentKind: ExeDataSegment,
       segmentOffset: offset,
       addend: 0n,
     })
@@ -461,7 +461,7 @@ function emitPointerTarget(
   target: Data,
   buf: Uint8Array,
   offset: number,
-  relocs: Array<XexeRelocationEntry>,
+  relocs: Array<ExeRelocationEntry>,
   deferred: Array<DeferredItem>,
 ): number {
   if (target.kind === "StructData") {
