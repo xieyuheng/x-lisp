@@ -77,12 +77,10 @@ function parseAttributes(sexps: Array<S.Sexp>): Record<string, B.Attribute> {
 }
 
 function isAttributeKey(sexp: S.Sexp): boolean {
-  if (S.isKeywordSexp(sexp)) return true
   return S.isSymbolSexp(sexp) && sexp.content.startsWith(":")
 }
 
 function attributeKeyName(sexp: S.Sexp): string {
-  if (S.isKeywordSexp(sexp)) return sexp.content
   return S.asSymbolSexp(sexp).content.slice(1)
 }
 
@@ -114,6 +112,6 @@ function parseAttribute(sexp: S.Sexp): B.Attribute {
 
   throw new S.ErrorWithSourceLocation(
     `[parseAttribute] unknown attribute value: ${S.formatSexp(sexp)}`,
-    sexp.location,
+    (sexp as S.Sexp).location,
   )
 }

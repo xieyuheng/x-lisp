@@ -2,8 +2,7 @@ import * as S from "../index.ts"
 
 export type Sexp = AtomSexp | ListSexp
 
-export type AtomSexp =
-  SymbolSexp | StringSexp | IntSexp | FloatSexp | KeywordSexp
+export type AtomSexp = SymbolSexp | StringSexp | IntSexp | FloatSexp
 
 export type SymbolSexp = {
   kind: "SymbolSexp"
@@ -107,33 +106,6 @@ export function isFloatSexp(sexp: Sexp): sexp is FloatSexp {
 export function asFloatSexp(sexp: Sexp): FloatSexp {
   if (isFloatSexp(sexp)) return sexp
   let message = `[asFloatSexp] fail on: ${S.formatSexp(sexp)}`
-  throw new S.ErrorWithSourceLocation(message, sexp.location)
-}
-
-export type KeywordSexp = {
-  kind: "KeywordSexp"
-  content: string
-  location: S.SourceLocation
-}
-
-export function KeywordSexp(
-  content: string,
-  location: S.SourceLocation,
-): KeywordSexp {
-  return {
-    kind: "KeywordSexp",
-    content,
-    location,
-  }
-}
-
-export function isKeywordSexp(sexp: Sexp): sexp is KeywordSexp {
-  return sexp.kind === "KeywordSexp"
-}
-
-export function asKeywordSexp(sexp: Sexp): KeywordSexp {
-  if (isKeywordSexp(sexp)) return sexp
-  let message = `[asKeywordSexp] fail on: ${S.formatSexp(sexp)}`
   throw new S.ErrorWithSourceLocation(message, sexp.location)
 }
 

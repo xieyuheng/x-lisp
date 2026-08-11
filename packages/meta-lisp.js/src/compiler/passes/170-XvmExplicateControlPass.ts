@@ -170,16 +170,6 @@ function explicateUnnestedTerm(
       return [instrs, value]
     }
 
-    case "KeywordTerm": {
-      const value = generateCell(state, "keyword")
-      const instrs = [
-        B.Instr("keyword", [], [value], {
-          content: B.SymbolAttribute(term.content),
-        }),
-      ]
-      return [instrs, value]
-    }
-
     case "StringTerm": {
       const value = generateCell(state, "text")
       const instrs = [

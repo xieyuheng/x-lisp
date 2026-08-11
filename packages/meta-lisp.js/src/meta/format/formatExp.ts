@@ -17,10 +17,6 @@ export function formatParameters(parameters: Array<string>): string {
 
 export function formatExp(exp: M.Exp): string {
   switch (exp.kind) {
-    case "KeywordExp": {
-      return `:${exp.content}`
-    }
-
     case "SymbolExp": {
       return `'${exp.content}`
     }

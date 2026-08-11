@@ -26,11 +26,6 @@
        (qualified-var-exp 'meta-builtin 'builtin 'float-sexp location)
        [(float-exp content location) (desugar-location location)]
        location))
-    ((keyword-sexp content location)
-     (apply-exp
-       (qualified-var-exp 'meta-builtin 'builtin 'keyword-sexp location)
-       [(keyword-exp content location) (desugar-location location)]
-       location))
     ((list-sexp elements location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'list-sexp location)

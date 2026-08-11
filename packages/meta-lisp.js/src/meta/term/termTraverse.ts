@@ -4,7 +4,6 @@ import type { Term } from "./Term.ts"
 export function termTraverse(onTerm: (term: Term) => Term, term: Term): Term {
   switch (term.kind) {
     case "SymbolTerm":
-    case "KeywordTerm":
     case "StringTerm":
     case "IntTerm":
     case "FloatTerm":

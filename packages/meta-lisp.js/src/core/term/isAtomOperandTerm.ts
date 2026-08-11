@@ -4,7 +4,6 @@ import { isAtomTerm } from "./isAtomTerm.ts"
 export function isAtomOperandTerm(term: Term): boolean {
   switch (term.kind) {
     case "SymbolTerm":
-    case "KeywordTerm":
     case "StringTerm":
     case "IntTerm":
     case "FloatTerm":

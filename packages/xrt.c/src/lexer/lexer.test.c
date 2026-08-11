@@ -107,27 +107,6 @@ int main(void) {
   }
 
   {
-    list_t *tokens = test_lex("a :b");
-    assert(list_length(tokens) == 2);
-
-    {
-      token_t *token = list_pop_front(tokens);
-      assert(token->kind == SYMBOL_TOKEN);
-      assert(string_equal(token->content, "a"));
-      token_free(token);
-    }
-
-    {
-      token_t *token = list_pop_front(tokens);
-      assert(token->kind == KEYWORD_TOKEN);
-      assert(string_equal(token->content, "b"));
-      token_free(token);
-    }
-
-    list_free(tokens);
-  }
-
-  {
     list_t *tokens = test_lex(": #");
     assert(list_length(tokens) == 2);
 

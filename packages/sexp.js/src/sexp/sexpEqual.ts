@@ -6,8 +6,7 @@ export function sexpEqual(x: S.Sexp, y: S.Sexp): boolean {
     (x.kind === "SymbolSexp" && y.kind === "SymbolSexp") ||
     (x.kind === "StringSexp" && y.kind === "StringSexp") ||
     (x.kind === "IntSexp" && y.kind === "IntSexp") ||
-    (x.kind === "FloatSexp" && y.kind === "FloatSexp") ||
-    (x.kind === "KeywordSexp" && y.kind === "KeywordSexp")
+    (x.kind === "FloatSexp" && y.kind === "FloatSexp")
   ) {
     return x.content === y.content
   }

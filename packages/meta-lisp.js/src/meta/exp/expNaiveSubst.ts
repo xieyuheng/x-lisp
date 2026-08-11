@@ -7,7 +7,6 @@ import * as M from "../index.ts"
 export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
   switch (exp.kind) {
     case "SymbolExp":
-    case "KeywordExp":
     case "StringExp":
     case "IntExp":
     case "FloatExp":

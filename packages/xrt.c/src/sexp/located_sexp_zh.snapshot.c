@@ -15,10 +15,6 @@ int main(void) {
   echo("3f2c1");
   echo("3f2c1a8d/builtin/int-add");
 
-  // keyword
-
-  echo(":abc");
-
   // number
 
   echo("1");

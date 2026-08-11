@@ -133,12 +133,6 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
       return [Xvm.Instr("load", [intOp(dstIdx), Xvm.SymbolOperand(content)])]
     }
 
-    case "keyword": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
-      const content = B.expectSymbol(instr.attributes, "content")
-      return [Xvm.Instr("load", [intOp(dstIdx), Xvm.KeywordOperand(content)])]
-    }
-
     case "text": {
       const dstIdx = lookupIndex(state, instr.output[0].id)
       const content = B.expectString(instr.attributes, "content")

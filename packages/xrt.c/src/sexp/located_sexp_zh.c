@@ -11,15 +11,6 @@ static value_t symbol_sexp_zh(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t keyword_sexp_zh(value_t content, value_t location) {
-  value_t sexp = x_make_list();
-  value_t tag = x_object(intern_symbol("标签符号算式"));
-  x_list_push_mut(tag, sexp);
-  x_list_push_mut(content, sexp);
-  x_list_push_mut(location, sexp);
-  return sexp;
-}
-
 static value_t string_sexp_zh(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("文本符号算式"));
@@ -108,14 +99,6 @@ static value_t for_sexp_zh(value_t path, list_t *tokens) {
     value_t location = make_source_location_sexp_zh(path, span);
     token_free(token);
     return symbol_sexp_zh(content, location);
-  }
-
-  case KEYWORD_TOKEN: {
-    value_t content = x_object(intern_keyword(token->content));
-    value_t span = value_from_span_zh(token->span);
-    value_t location = make_source_location_sexp_zh(path, span);
-    token_free(token);
-    return keyword_sexp_zh(content, location);
   }
 
   case STRING_TOKEN: {

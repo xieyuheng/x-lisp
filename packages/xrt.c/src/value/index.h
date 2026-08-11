@@ -6,7 +6,6 @@
 #include "int.h"
 #include "float.h"
 #include "symbol.h"
-#include "keyword.h"
 #include "immediate.h"
 #include "bool.h"
 #include "void.h"

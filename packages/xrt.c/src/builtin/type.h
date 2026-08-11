@@ -6,7 +6,6 @@ x_fn_0_t x_int_t;
 x_fn_0_t x_float_t;
 x_fn_0_t x_text_t;
 x_fn_0_t x_symbol_t;
-x_fn_0_t x_keyword_t;
 x_fn_0_t x_bool_t;
 x_fn_0_t x_void_t;
 x_fn_0_t x_file_t;

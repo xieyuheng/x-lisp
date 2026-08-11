@@ -24,12 +24,6 @@
     (assert-equal 3.14 (float-sexp-content sx))
     (assert (is-source-location (float-sexp-location sx)))))
 
-(define-test sexp-keyword-test
-  (let ((sx (@sexp :hello)))
-    (assert (is-keyword-sexp sx))
-    (assert-equal :hello (keyword-sexp-content sx))
-    (assert (is-source-location (keyword-sexp-location sx)))))
-
 (define-test sexp-empty-list-test
   (let ((sx (@sexp ())))
     (assert (is-list-sexp sx))
@@ -57,8 +51,8 @@
       (assert-equal 1 (int-sexp-content (car elements)))
       (assert (is-text-sexp (car (cdr elements))))
       (assert-equal "two" (text-sexp-content (car (cdr elements))))
-      (assert (is-keyword-sexp (car (cdr (cdr elements)))))
-      (assert-equal :three (keyword-sexp-content (car (cdr (cdr elements)))))
+      (assert (is-symbol-sexp (car (cdr (cdr elements)))))
+      (assert-equal ':three (symbol-sexp-content (car (cdr (cdr elements)))))
       (assert (is-symbol-sexp (car (cdr (cdr (cdr elements))))))
       (assert-equal 'four (symbol-sexp-content (car (cdr (cdr (cdr elements)))))))))
 

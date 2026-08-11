@@ -65,7 +65,6 @@ void import_builtin_en(mod_t *mod) {
   define_variable_primitive_0(mod, "meta-builtin/builtin/float-t", x_float_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/text-t", x_text_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/symbol-t", x_symbol_t);
-  define_variable_primitive_0(mod, "meta-builtin/builtin/keyword-t", x_keyword_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/bool-t", x_bool_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/void-t", x_void_t);
   define_variable_primitive_0(mod, "meta-builtin/builtin/file-t", x_file_t);
@@ -112,14 +111,6 @@ void import_builtin_en(mod_t *mod) {
 
   define_primitive_2(mod, "meta-builtin/builtin/random-int", x_random_int);
   define_primitive_2(mod, "meta-builtin/builtin/random-float", x_random_float);
-
-  // keyword
-
-  define_primitive_1(mod, "meta-builtin/builtin/is-keyword", x_is_keyword);
-  define_primitive_1(mod, "meta-builtin/builtin/keyword-length", x_keyword_length);
-  define_primitive_1(mod, "meta-builtin/builtin/keyword-to-text", x_keyword_to_text);
-  define_primitive_2(mod, "meta-builtin/builtin/keyword-append", x_keyword_append);
-  define_primitive_1(mod, "meta-builtin/builtin/keyword-concat", x_keyword_concat);
 
   // symbol
 

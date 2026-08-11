@@ -19,10 +19,6 @@ export function desugarQuote(sexp: S.Sexp, location: S.SourceLocation): M.Exp {
       return M.FloatExp(sexp.content, location)
     }
 
-    case "KeywordSexp": {
-      return M.KeywordExp(sexp.content, location)
-    }
-
     case "ListSexp": {
       return M.ListExp(
         sexp.elements.map((e) => desugarQuote(e, location)),

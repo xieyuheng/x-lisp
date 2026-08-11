@@ -341,7 +341,6 @@ assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通�
 | `label-abs64` | 64-bit | `target + addend` |
 | `extern` | 64-bit | symbol 绝对地址 |
 | `symbol-value` | 64-bit | loader 计算 symbol → tagged value |
-| `keyword-value` | 64-bit | loader 计算 keyword → tagged value |
 | 其他自定义 | 64-bit | 由 loader 解释 |
 
 ```scheme

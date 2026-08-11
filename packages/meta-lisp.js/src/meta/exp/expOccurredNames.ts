@@ -4,7 +4,6 @@ import * as M from "../index.ts"
 export function expOccurredNames(exp: M.Exp): Set<string> {
   switch (exp.kind) {
     case "SymbolExp":
-    case "KeywordExp":
     case "StringExp":
     case "IntExp":
     case "FloatExp":

@@ -1,10 +1,5 @@
 export type Operand =
-  | SymbolOperand
-  | KeywordOperand
-  | StringOperand
-  | IntOperand
-  | FloatOperand
-  | VarOperand
+  SymbolOperand | StringOperand | IntOperand | FloatOperand | VarOperand
 
 export type SymbolOperand = {
   kind: "SymbolOperand"
@@ -26,18 +21,6 @@ export type StringOperand = {
 export function StringOperand(content: string): StringOperand {
   return {
     kind: "StringOperand",
-    content,
-  }
-}
-
-export type KeywordOperand = {
-  kind: "KeywordOperand"
-  content: string
-}
-
-export function KeywordOperand(content: string): KeywordOperand {
-  return {
-    kind: "KeywordOperand",
     content,
   }
 }

@@ -7,7 +7,6 @@
 (define (term-free-names bound-names term)
   (match term
     ((symbol-term content location) (make-set))
-    ((keyword-term content location) (make-set))
     ((text-term content location) (make-set))
     ((int-term content location) (make-set))
     ((float-term content location) (make-set))

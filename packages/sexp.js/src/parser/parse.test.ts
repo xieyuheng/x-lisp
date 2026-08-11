@@ -26,13 +26,6 @@ test("parse -- string", () => {
   assertParse('"abc"', S.StringSexp("abc", S.zeroLocation("[test]")))
 })
 
-test("parse -- keyword", () => {
-  assertParse(":t", S.KeywordSexp("t", S.zeroLocation("[test]")))
-  assertParse(":f", S.KeywordSexp("f", S.zeroLocation("[test]")))
-  assertParse(":null", S.KeywordSexp("null", S.zeroLocation("[test]")))
-  assertParse(":void", S.KeywordSexp("void", S.zeroLocation("[test]")))
-})
-
 test("parse -- number", () => {
   assertParse("1", S.IntSexp(1n, S.zeroLocation("[test]")))
   assertParse("0", S.IntSexp(0n, S.zeroLocation("[test]")))
@@ -105,9 +98,9 @@ test("parse -- flower brackets", () => {
     S.ListSexp(
       [
         S.SymbolSexp("@curly-bracket", S.zeroLocation("[test]")),
-        S.KeywordSexp("x", S.zeroLocation("[test]")),
+        S.SymbolSexp(":x", S.zeroLocation("[test]")),
         S.IntSexp(BigInt(1), S.zeroLocation("[test]")),
-        S.KeywordSexp("y", S.zeroLocation("[test]")),
+        S.SymbolSexp(":y", S.zeroLocation("[test]")),
         S.IntSexp(BigInt(2), S.zeroLocation("[test]")),
       ],
       S.zeroLocation("[test]"),
@@ -145,7 +138,7 @@ test("parse -- quotes", () => {
       [
         S.SymbolSexp("@quote", S.zeroLocation("[test]")),
         S.ListSexp(
-          [S.KeywordSexp("a", S.zeroLocation("[test]"))],
+          [S.SymbolSexp(":a", S.zeroLocation("[test]"))],
           S.zeroLocation("[test]"),
         ),
       ],

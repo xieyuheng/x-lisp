@@ -38,13 +38,6 @@ value_t x_symbol_t(void) {
   return type;
 }
 
-value_t x_keyword_t(void) {
-  value_t type = x_make_list();
-  x_list_push_mut(x_object(intern_symbol("atom")), type);
-  x_list_push_mut(x_object(intern_symbol("keyword")), type);
-  return type;
-}
-
 value_t x_bool_t(void) {
   value_t type = x_make_list();
   x_list_push_mut(x_object(intern_symbol("atom")), type);

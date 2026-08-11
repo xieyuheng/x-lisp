@@ -2,10 +2,6 @@ import { type Operand } from "../operand/index.ts"
 
 export function formatOperand(operand: Operand): string {
   switch (operand.kind) {
-    case "KeywordOperand": {
-      return `:${operand.content}`
-    }
-
     case "SymbolOperand": {
       return `'${operand.content}`
     }

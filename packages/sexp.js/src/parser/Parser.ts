@@ -132,13 +132,6 @@ export class Parser {
           remain,
         }
       }
-
-      case "Keyword": {
-        return {
-          sexp: S.KeywordSexp(token.value, token.location),
-          remain: tokens.slice(1),
-        }
-      }
     }
   }
 

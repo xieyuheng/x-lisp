@@ -4,7 +4,6 @@
 
 (define (is-atom-term term)
   (and (is-symbol-term term)
-       (is-keyword-term term)
        (is-text-term term)
        (is-int-term term)
        (is-float-term term)

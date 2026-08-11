@@ -8,7 +8,6 @@
 #include "path.h"
 #include "string.h"
 #include "symbol.h"
-#include "keyword.h"
 #include "list.h"
 #include "hash.h"
 #include "set.h"

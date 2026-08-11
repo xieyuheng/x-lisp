@@ -15,8 +15,7 @@ export function termTraverse(onTerm: (term: Term) => Term, term: Term): Term {
     case "IntTerm":
     case "FloatTerm":
     case "StringTerm":
-    case "SymbolTerm":
-    case "KeywordTerm": {
+    case "SymbolTerm": {
       return term
     }
 

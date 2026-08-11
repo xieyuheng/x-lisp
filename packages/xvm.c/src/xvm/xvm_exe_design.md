@@ -36,7 +36,7 @@
 
 | size | field       | description                   |
 |------|-------------|-------------------------------|
-| 1    | kind        | 1=keyword, 2=string, 3=symbol |
+| 1    | kind        | 2=string, 3=symbol   |
 | 4    | data_offset | 指向 string table             |
 
 ## Definition Relocation Table (definition_relocation_count 条)
@@ -65,7 +65,7 @@ NUL 字符分隔的文本池，各条目通过 offset 引用。
 
 ## 设计约束
 
-- OP_LOAD 的值仅支持 immediate（int/float/bool/void）和 keyword/string/symbol 对象。
+- OP_LOAD 的值仅支持 immediate（int/float/bool/void）和 string/symbol 对象。
   不支持 list/hash/set 等复合对象。
 - Variable definition 的 value 不序列化，通过 setup 阶段执行 body 来初始化。
 - Primitive definition 不序列化（C 函数指针不可移植），加载时通过 `import_builtin` 注册后按名字查找。

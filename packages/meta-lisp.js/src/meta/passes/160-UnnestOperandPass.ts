@@ -109,7 +109,6 @@ function unnestOperandAtom(state: State, term: C.Term): [Array<Entry>, C.Term] {
     case "VarTerm":
     case "QualifiedVarTerm":
     case "SymbolTerm":
-    case "KeywordTerm":
     case "StringTerm":
     case "IntTerm":
     case "FloatTerm": {

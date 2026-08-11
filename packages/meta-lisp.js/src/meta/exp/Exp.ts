@@ -3,7 +3,6 @@ import { type Lang } from "../index.ts"
 
 export type Exp =
   | SymbolExp
-  | KeywordExp
   | StringExp
   | IntExp
   | FloatExp
@@ -84,23 +83,6 @@ export function StringExp(
 ): StringExp {
   return {
     kind: "StringExp",
-    content,
-    location,
-  }
-}
-
-export type KeywordExp = {
-  kind: "KeywordExp"
-  content: string
-  location: SourceLocation
-}
-
-export function KeywordExp(
-  content: string,
-  location: SourceLocation,
-): KeywordExp {
-  return {
-    kind: "KeywordExp",
     content,
     location,
   }

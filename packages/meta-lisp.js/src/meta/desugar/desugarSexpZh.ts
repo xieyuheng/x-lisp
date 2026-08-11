@@ -68,22 +68,6 @@ export function desugarSexpZh(sexp: S.Sexp): M.Exp {
       )
     }
 
-    case "KeywordSexp": {
-      return M.ApplyExp(
-        M.QualifiedVarExp(
-          "meta-builtin",
-          "内置",
-          "标签符号算式",
-          sexp.location,
-        ),
-        [
-          M.KeywordExp(sexp.content, sexp.location),
-          desugarLocationZh(sexp.location),
-        ],
-        sexp.location,
-      )
-    }
-
     case "ListSexp": {
       return M.ApplyExp(
         M.QualifiedVarExp(

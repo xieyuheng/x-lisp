@@ -17,7 +17,6 @@ Located S-expression type. Represents a parsed S-expression with source location
 ```meta-lisp
 (define-enum sexp-t
   (symbol-sexp  (content symbol-t)            (location source-location-t))
-  (keyword-sexp (content keyword-t)           (location source-location-t))
   (text-sexp  (content text-t)            (location source-location-t))
   (int-sexp     (content int-t)               (location source-location-t))
   (float-sexp   (content float-t)             (location source-location-t))
@@ -34,13 +33,6 @@ Located S-expression type. Represents a parsed S-expression with source location
 (claim symbol-sexp-location (-> sexp-t source-location-t))
 (claim symbol-sexp-put-content  (-> symbol-t sexp-t sexp-t))
 (claim symbol-sexp-put-location (-> source-location-t sexp-t sexp-t))
-
-(claim keyword-sexp  (-> keyword-t source-location-t sexp-t))
-(claim is-keyword-sexp (-> sexp-t bool-t))
-(claim keyword-sexp-content  (-> sexp-t keyword-t))
-(claim keyword-sexp-location (-> sexp-t source-location-t))
-(claim keyword-sexp-put-content  (-> keyword-t sexp-t sexp-t))
-(claim keyword-sexp-put-location (-> source-location-t sexp-t sexp-t))
 
 (claim text-sexp  (-> text-t source-location-t sexp-t))
 (claim is-text-sexp (-> sexp-t bool-t))

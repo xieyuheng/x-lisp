@@ -4,10 +4,6 @@ import * as M from "../index.ts"
 
 export function prettyExp(exp: M.Exp): Ppml.Node {
   switch (exp.kind) {
-    case "KeywordExp": {
-      return Ppml.text(`:${exp.content}`)
-    }
-
     case "SymbolExp": {
       return Ppml.text(`'${exp.content}`)
     }
@@ -288,10 +284,6 @@ export function prettyTerm(term: M.Term): Ppml.Node {
   switch (term.kind) {
     case "SymbolTerm": {
       return Ppml.text(term.content)
-    }
-
-    case "KeywordTerm": {
-      return Ppml.text(`:${term.content}`)
     }
 
     case "StringTerm": {

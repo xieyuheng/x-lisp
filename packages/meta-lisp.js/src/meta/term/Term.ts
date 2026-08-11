@@ -2,7 +2,6 @@ import type { SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Term =
   | SymbolTerm
-  | KeywordTerm
   | StringTerm
   | IntTerm
   | FloatTerm
@@ -29,23 +28,6 @@ export function SymbolTerm(
 ): SymbolTerm {
   return {
     kind: "SymbolTerm",
-    content,
-    location,
-  }
-}
-
-export type KeywordTerm = {
-  kind: "KeywordTerm"
-  content: string
-  location: SourceLocation
-}
-
-export function KeywordTerm(
-  content: string,
-  location: SourceLocation,
-): KeywordTerm {
-  return {
-    kind: "KeywordTerm",
     content,
     location,
   }

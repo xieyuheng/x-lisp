@@ -12,7 +12,6 @@ export type Term =
   | FloatTerm
   | StringTerm
   | SymbolTerm
-  | KeywordTerm
   | ClosureTerm
 
 export type VarTerm = {
@@ -168,19 +167,6 @@ export function SymbolTerm(
   location: SourceLocation,
 ): SymbolTerm {
   return { kind: "SymbolTerm", content, location }
-}
-
-export type KeywordTerm = {
-  kind: "KeywordTerm"
-  content: string
-  location: SourceLocation
-}
-
-export function KeywordTerm(
-  content: string,
-  location: SourceLocation,
-): KeywordTerm {
-  return { kind: "KeywordTerm", content, location }
 }
 
 export type ClosureTerm = {

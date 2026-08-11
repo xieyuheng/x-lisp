@@ -4,7 +4,6 @@ import type { Exp } from "./Exp.ts"
 export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
   switch (exp.kind) {
     case "SymbolExp":
-    case "KeywordExp":
     case "StringExp":
     case "IntExp":
     case "FloatExp":

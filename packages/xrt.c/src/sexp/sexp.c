@@ -39,12 +39,6 @@ static value_t for_sexp(list_t *tokens) {
     return sexp;
   }
 
-  case KEYWORD_TOKEN: {
-    value_t sexp = x_object(intern_keyword(token->content));
-    token_free(token);
-    return sexp;
-  }
-
   case STRING_TOKEN: {
     value_t sexp = x_object(make_static_xtext(token->content));
     token_free(token);

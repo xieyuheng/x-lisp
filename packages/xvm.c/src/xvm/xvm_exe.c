@@ -167,11 +167,7 @@ static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_ind
 
       value_entry_t *entry = NULL;
 
-      if (is_keyword(value)) {
-        entry = new(value_entry_t);
-        entry->kind = XVM_EXE_VALUE_KEYWORD;
-        entry->data = string_copy(keyword_string(to_keyword(value)));
-      } else if (is_xtext(value)) {
+      if (is_xtext(value)) {
         entry = new(value_entry_t);
         entry->kind = XVM_EXE_VALUE_STRING;
         entry->data = string_copy(xtext_string(to_xtext(value)));
@@ -607,9 +603,6 @@ static value_t *build_value_table(xvm_exe_t *self, uint32_t *out_count) {
   for (uint32_t i = 0; i < value_count; i++) {
     value_entry_t *entry = array_get(self->values, i);
     switch (entry->kind) {
-    case XVM_EXE_VALUE_KEYWORD:
-      value_objects[i] = x_object(intern_keyword(entry->data));
-      break;
     case XVM_EXE_VALUE_STRING: {
       xtext_t *xstr = record_get(xtext_pool, entry->data);
       if (!xstr) {

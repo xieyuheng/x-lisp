@@ -5,7 +5,6 @@
 (define (is-atom-operand-term term)
   (match term
     ((symbol-term content location) true)
-    ((keyword-term content location) true)
     ((text-term content location) true)
     ((int-term content location) true)
     ((float-term content location) true)

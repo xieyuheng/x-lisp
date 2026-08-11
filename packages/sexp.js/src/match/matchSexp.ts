@@ -7,7 +7,6 @@ export type Effect = (subst: Subst) => Subst | void
 export function matchSexp(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
   return choiceEffect([
     matchString(mode, pattern, sexp),
-    matchKeyword(mode, pattern, sexp),
     matchSymbol(mode, pattern, sexp),
     matchInt(mode, pattern, sexp),
     matchFloat(mode, pattern, sexp),
@@ -48,15 +47,6 @@ function matchString(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
     () =>
       pattern.kind === "StringSexp" &&
       sexp.kind === "StringSexp" &&
-      pattern.content === sexp.content,
-  )
-}
-
-function matchKeyword(mode: Mode, pattern: S.Sexp, sexp: S.Sexp): Effect {
-  return guardEffect(
-    () =>
-      pattern.kind === "KeywordSexp" &&
-      sexp.kind === "KeywordSexp" &&
       pattern.content === sexp.content,
   )
 }

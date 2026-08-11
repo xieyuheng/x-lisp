@@ -4,7 +4,6 @@ import * as M from "../index.ts"
 export function termOccurredNames(term: M.Term): Set<string> {
   switch (term.kind) {
     case "SymbolTerm":
-    case "KeywordTerm":
     case "StringTerm":
     case "IntTerm":
     case "FloatTerm":

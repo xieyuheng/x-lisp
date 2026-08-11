@@ -5,8 +5,6 @@
   (match term
     ((symbol-term content location)
      (format-as-sexp content))
-    ((keyword-term content location)
-     (format-as-sexp content))
     ((text-term content location)
      (format-as-sexp content))
     ((int-term content location)

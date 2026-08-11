@@ -6,9 +6,6 @@ export function prettyTerm(term: Term): Ppml.Node {
     case "SymbolTerm":
       return Ppml.text(term.content)
 
-    case "KeywordTerm":
-      return Ppml.text(`:${term.content}`)
-
     case "StringTerm":
       return Ppml.text(JSON.stringify(term.content))
 

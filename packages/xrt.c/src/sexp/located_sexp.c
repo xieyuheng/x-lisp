@@ -48,15 +48,6 @@ static value_t symbol_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t keyword_sexp(value_t content, value_t location) {
-  value_t sexp = x_make_list();
-  value_t tag = x_object(intern_symbol("keyword-sexp"));
-  x_list_push_mut(tag, sexp);
-  x_list_push_mut(content, sexp);
-  x_list_push_mut(location, sexp);
-  return sexp;
-}
-
 static value_t string_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("text-sexp"));
@@ -118,14 +109,6 @@ static value_t for_sexp(value_t path, list_t *tokens) {
     value_t location = make_source_location_sexp(path, span);
     token_free(token);
     return symbol_sexp(content, location);
-  }
-
-  case KEYWORD_TOKEN: {
-    value_t content = x_object(intern_keyword(token->content));
-    value_t span = value_from_span(token->span);
-    value_t location = make_source_location_sexp(path, span);
-    token_free(token);
-    return keyword_sexp(content, location);
   }
 
   case STRING_TOKEN: {

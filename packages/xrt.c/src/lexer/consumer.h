@@ -21,5 +21,4 @@ bool can_consume_line_comment(lexer_t *); char *consume_line_comment(lexer_t *);
 bool can_consume_string(lexer_t *); char *consume_string(lexer_t *);
 bool can_consume_float(lexer_t *); char *consume_float(lexer_t *);
 bool can_consume_int(lexer_t *); char *consume_int(lexer_t *);
-bool can_consume_keyword(lexer_t *); char *consume_keyword(lexer_t *);
 bool can_consume_symbol(lexer_t *); char *consume_symbol(lexer_t *);

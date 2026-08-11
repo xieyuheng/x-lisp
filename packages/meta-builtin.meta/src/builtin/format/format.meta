@@ -10,9 +10,6 @@
 (claim format-float (-> float-t text-t))
 (define (format-float x) (format-as-sexp x))
 
-(claim format-keyword (-> keyword-t text-t))
-(define (format-keyword x) (format-as-sexp x))
-
 (claim format-symbol (-> symbol-t text-t))
 (define (format-symbol x) (text-append "'" (format-as-sexp x)))
 

@@ -19,7 +19,6 @@ enum {
 };
 
 enum {
-  XVM_EXE_VALUE_KEYWORD = 1,
   XVM_EXE_VALUE_STRING  = 2,
   XVM_EXE_VALUE_SYMBOL  = 3,
 };

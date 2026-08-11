@@ -14,8 +14,6 @@
      (int-exp content location))
     ((float-sexp content location)
      (float-exp content location))
-    ((keyword-sexp content location)
-     (keyword-exp content location))
     ((list-sexp elements location)
      (list-exp
        (list-map (swap desugar-quote location) elements)

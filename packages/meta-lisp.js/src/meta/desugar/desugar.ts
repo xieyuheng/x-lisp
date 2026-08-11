@@ -133,10 +133,6 @@ export function desugar(exp: M.Exp): M.Term {
       return M.SymbolTerm(exp.content, exp.location)
     }
 
-    case "KeywordExp": {
-      return M.KeywordTerm(exp.content, exp.location)
-    }
-
     case "StringExp": {
       return M.StringTerm(exp.content, exp.location)
     }

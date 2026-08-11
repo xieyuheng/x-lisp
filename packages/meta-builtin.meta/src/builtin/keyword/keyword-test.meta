@@ -1,6 +1,0 @@
-(module builtin)
-
-(define-test keyword-test
-  (assert-equal :abcdef (keyword-append :abc :def))
-
-  (println :abc))

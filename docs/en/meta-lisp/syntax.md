@@ -139,13 +139,6 @@ Symbols start with a single quote followed by a name.
 'bar
 ```
 
-Keywords start with a colon.
-
-```meta-lisp
-:key
-:name
-```
-
 Booleans are `true` and `false` — they are not literals, but variables bound to boolean values.
 
 The void value is `void` — also not a literal, but a variable bound to the void value.
@@ -256,7 +249,6 @@ The `sexp-t` type is defined as:
 ```meta-lisp
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
-  (keyword-sexp (content keyword-t) (location source-location-t))
   (text-sexp (content text-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))
@@ -437,7 +429,6 @@ The function body `<body>` can be multiple expressions:
 | `float-t`   | Float         | `3.14` `-2.5`                  |
 | `text-t`  | String        | `"hello"`                      |
 | `symbol-t`  | Symbol        | `'foo`                         |
-| `keyword-t` | Keyword       | `:key`                         |
 | `bool-t`    | Boolean       | `true` `false`                 |
 | `void-t`    | Void          | `void`                         |
 | `file-t`    | File          | `(open-input-file "abc.txt")`  |

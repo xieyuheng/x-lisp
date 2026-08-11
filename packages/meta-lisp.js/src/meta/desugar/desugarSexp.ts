@@ -60,22 +60,6 @@ export function desugarSexp(sexp: S.Sexp): M.Exp {
       )
     }
 
-    case "KeywordSexp": {
-      return M.ApplyExp(
-        M.QualifiedVarExp(
-          "meta-builtin",
-          "builtin",
-          "keyword-sexp",
-          sexp.location,
-        ),
-        [
-          M.KeywordExp(sexp.content, sexp.location),
-          desugarLocation(sexp.location),
-        ],
-        sexp.location,
-      )
-    }
-
     case "ListSexp": {
       return M.ApplyExp(
         M.QualifiedVarExp(

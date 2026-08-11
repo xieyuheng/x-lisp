@@ -7,7 +7,6 @@ export type TokenKind =
   | "BracketStart"
   | "BracketEnd"
   | "QuotationMark"
-  | "Keyword"
 
 export type Token = {
   kind: TokenKind

@@ -34,15 +34,6 @@ export function infer(
       )
     }
 
-    case "KeywordTerm": {
-      return M.Right(
-        M.Inferred(
-          C.KeywordTerm(term.content, term.location),
-          M.AtomType("keyword"),
-        ),
-      )
-    }
-
     case "StringTerm": {
       return M.Right(
         M.Inferred(

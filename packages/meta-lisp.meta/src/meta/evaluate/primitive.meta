@@ -18,8 +18,6 @@
     (define-primitive-variable '文本型 (type-value (atom-type 'text)))
     (define-primitive-variable 'symbol-t (type-value (atom-type 'symbol)))
     (define-primitive-variable '符号型 (type-value (atom-type 'symbol)))
-    (define-primitive-variable 'keyword-t (type-value (atom-type 'keyword)))
-    (define-primitive-variable '标签型 (type-value (atom-type 'keyword)))
     (define-primitive-variable 'bool-t (type-value (atom-type 'bool)))
     (define-primitive-variable '真假型 (type-value (atom-type 'bool)))
     (define-primitive-variable 'void-t (type-value (atom-type 'void)))

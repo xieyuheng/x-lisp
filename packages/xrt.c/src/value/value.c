@@ -11,7 +11,6 @@ bool is_atom(value_t value) {
     is_float(value) ||
     is_xtext(value) ||
     is_symbol(value) ||
-    is_keyword(value) ||
     is_bool(value) ||
     is_void(value);
 }
@@ -142,12 +141,6 @@ void write_atom(buffer_t *buffer, value_t value) {
   if (is_symbol(value)) {
     write_string(buffer, "'");
     write_string(buffer, symbol_string(to_symbol(value)));
-    return;
-  }
-
-  if (is_keyword(value)) {
-    write_string(buffer, ":");
-    write_string(buffer, keyword_string(to_keyword(value)));
     return;
   }
 

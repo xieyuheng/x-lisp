@@ -94,10 +94,6 @@ test("lexer -- comments", () => {
   assertTokens("; abc\nabc", [{ kind: "Symbol", value: "abc" }])
 })
 
-test("lexer -- keyword", () => {
-  assertTokens(":abc", [{ kind: "Keyword", value: "abc" }])
-})
-
 test("lexer -- string", () => {
   assertTokens('"abc"', [{ kind: "String", value: "abc" }])
 

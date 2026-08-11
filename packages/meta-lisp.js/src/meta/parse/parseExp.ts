@@ -419,8 +419,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
 
   data: ({ data }, { location }) => {
     switch (data.kind) {
-      case "KeywordSexp":
-        return M.KeywordExp(S.asKeywordSexp(data).content, location)
       case "IntSexp":
         return M.IntExp(S.asIntSexp(data).content, location)
       case "FloatSexp":

@@ -7,7 +7,6 @@
 (define (exp-occurred-names exp)
   (match exp
     ((symbol-exp content location) (make-set))
-    ((keyword-exp content location) (make-set))
     ((text-exp content location) (make-set))
     ((int-exp content location) (make-set))
     ((float-exp content location) (make-set))

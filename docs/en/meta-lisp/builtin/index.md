@@ -12,7 +12,6 @@ All builtin functions in meta-lisp, categorized by functionality.
 - [Float](#float)
 - [Text](#text)
 - [Symbol](#symbol)
-- [Keyword](#keyword)
 - [Void](#void)
 - [List](#list)
 - [Set](#set)
@@ -206,16 +205,6 @@ Operations on `symbol-t`.
 - [`symbol-append`](symbol/symbol-append.md) — Append two symbols
 - [`symbol-concat`](symbol/symbol-concat.md) — Concatenate a list of symbols
 - [`symbol-to-text`](symbol/symbol-to-text.md) — Convert to text
-
-## Keyword
-
-Operations on `keyword-t`.
-
-- [`is-keyword`](keyword/is-keyword.md) — Check if a value is a keyword
-- [`keyword-length`](keyword/keyword-length.md) — Length of keyword name
-- [`keyword-append`](keyword/keyword-append.md) — Append two keywords
-- [`keyword-concat`](keyword/keyword-concat.md) — Concatenate a list of keywords
-- [`keyword-to-text`](keyword/keyword-to-text.md) — Convert to text
 
 ## Void
 
@@ -585,7 +574,6 @@ Type-specific S-expression formatting functions.
 - [`format-as-sexp`](format/format-as-sexp.md) — Format an arbitrary value as an S-expression
 - [`format-int`](format/format-int.md) — Format an integer
 - [`format-float`](format/format-float.md) — Format a float
-- [`format-keyword`](format/format-keyword.md) — Format a keyword
 - [`format-symbol`](format/format-symbol.md) — Format a symbol
 - [`format-bool`](format/format-bool.md) — Format a bool
 - [`format-text`](format/format-text.md) — Format a text

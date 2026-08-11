@@ -5,9 +5,6 @@ export function formatTerm(term: Term): string {
     case "SymbolTerm":
       return term.content
 
-    case "KeywordTerm":
-      return `:${term.content}`
-
     case "StringTerm":
       return JSON.stringify(term.content)
 

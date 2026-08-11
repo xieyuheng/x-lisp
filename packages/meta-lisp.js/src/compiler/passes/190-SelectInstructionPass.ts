@@ -351,28 +351,6 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       ]
     }
 
-    case "keyword-value": {
-      const [out] = instr.output
-      const content = B.expectSymbol(instr.attributes, "content")
-      return [
-        X86.Instr("mov", [
-          cellToVar(out),
-          X86.RelocationOperand("keyword-value", content),
-        ]),
-      ]
-    }
-
-    case "keyword": {
-      const [out] = instr.output
-      const content = B.expectSymbol(instr.attributes, "content")
-      return [
-        X86.Instr("mov", [
-          cellToVar(out),
-          X86.RelocationOperand("keyword", content),
-        ]),
-      ]
-    }
-
     case "text-value": {
       const [out] = instr.output
       const content = B.expectString(instr.attributes, "content")

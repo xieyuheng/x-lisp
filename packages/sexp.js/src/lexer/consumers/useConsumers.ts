@@ -2,7 +2,6 @@ import * as S from "../index.ts"
 import { BracketEndConsumer } from "./BracketEndConsumer.ts"
 import { BracketStartConsumer } from "./BracketStartConsumer.ts"
 import { CommentConsumer } from "./CommentConsumer.ts"
-import { KeywordConsumer } from "./KeywordConsumer.ts"
 import { NumberConsumer } from "./NumberConsumer.ts"
 import { QuoteConsumer } from "./QuoteConsumer.ts"
 import { SpaceConsumer } from "./SpaceConsumer.ts"
@@ -19,7 +18,6 @@ export function useConsumers(): Array<S.Consumer> {
     new CommentConsumer(),
     new StringConsumer(),
     new NumberConsumer(),
-    new KeywordConsumer(),
     new SymbolConsumer(),
   ]
 }

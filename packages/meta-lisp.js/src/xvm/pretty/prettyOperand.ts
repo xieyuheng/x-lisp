@@ -3,10 +3,6 @@ import { type Operand } from "../operand/index.ts"
 
 export function prettyOperand(operand: Operand): Ppml.Node {
   switch (operand.kind) {
-    case "KeywordOperand": {
-      return Ppml.text(`:${operand.content}`)
-    }
-
     case "SymbolOperand": {
       return Ppml.text(`'${operand.content}`)
     }

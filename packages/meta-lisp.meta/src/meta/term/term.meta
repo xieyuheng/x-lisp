@@ -2,7 +2,6 @@
 
 (define-enum term-t
   (symbol-term (content symbol-t) (location source-location-t))
-  (keyword-term (content keyword-t) (location source-location-t))
   (text-term (content text-t) (location source-location-t))
   (int-term (content int-t) (location source-location-t))
   (float-term (content float-t) (location source-location-t))

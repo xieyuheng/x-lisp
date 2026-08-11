@@ -5,8 +5,6 @@
   (match exp
     ((symbol-exp content location)
      (format-as-sexp content))
-    ((keyword-exp content location)
-     (format-as-sexp content))
     ((text-exp content location)
      (format-as-sexp content))
     ((int-exp content location)

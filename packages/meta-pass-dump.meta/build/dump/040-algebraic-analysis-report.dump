@@ -35,13 +35,6 @@
       (name just)
       (accessor-names just-value)
       (predicate-name is-just))
-    ("meta-builtin/builtin/keyword-sexp"
-      (pkg-name meta-builtin)
-      (mod-name builtin)
-      (type-name sexp-t)
-      (name keyword-sexp)
-      (accessor-names keyword-sexp-content keyword-sexp-location)
-      (predicate-name is-keyword-sexp))
     ("meta-builtin/builtin/list-sexp"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -203,13 +196,6 @@
       (name 有)
       (accessor-names 有值)
       (predicate-name 为有))
-    ("meta-builtin/内置/标签符号算式"
-      (pkg-name meta-builtin)
-      (mod-name 内置)
-      (type-name 符号算式型)
-      (name 标签符号算式)
-      (accessor-names 标签符号算式内容 标签符号算式位置)
-      (predicate-name 为标签符号算式))
     ("meta-builtin/内置/浮点符号算式"
       (pkg-name meta-builtin)
       (mod-name 内置)
@@ -302,7 +288,7 @@
       (pkg-name meta-builtin)
       (mod-name builtin)
       (name sexp-t)
-      (constructor-names symbol-sexp keyword-sexp text-sexp int-sexp float-sexp list-sexp))
+      (constructor-names symbol-sexp text-sexp int-sexp float-sexp list-sexp))
     ("meta-builtin/builtin/source-location-t"
       (pkg-name meta-builtin)
       (mod-name builtin)
@@ -342,7 +328,7 @@
       (pkg-name meta-builtin)
       (mod-name 内置)
       (name 符号算式型)
-      (constructor-names 符号符号算式 标签符号算式 文本符号算式 整数符号算式 浮点符号算式 列表符号算式))
+      (constructor-names 符号符号算式 文本符号算式 整数符号算式 浮点符号算式 列表符号算式))
     ("meta-builtin/内置/结森型"
       (pkg-name meta-builtin)
       (mod-name 内置)

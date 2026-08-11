@@ -7,7 +7,6 @@
 (define (exp-traverse f exp)
   (match exp
     ((symbol-exp content location) exp)
-    ((keyword-exp content location) exp)
     ((text-exp content location) exp)
     ((int-exp content location) exp)
     ((float-exp content location) exp)

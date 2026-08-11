@@ -6,10 +6,6 @@ export function formatSexp(sexp: S.Sexp): string {
       return sexp.content
     }
 
-    case "KeywordSexp": {
-      return `:${sexp.content}`
-    }
-
     case "StringSexp": {
       return JSON.stringify(sexp.content)
     }

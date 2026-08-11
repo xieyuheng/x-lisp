@@ -2,7 +2,6 @@
 
 (define-enum sexp-t
   (symbol-sexp (content symbol-t) (location source-location-t))
-  (keyword-sexp (content keyword-t) (location source-location-t))
   (text-sexp (content text-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))

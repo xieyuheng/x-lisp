@@ -8,9 +8,6 @@
   (assert-equal "42.0" (format-float 42.0))
   (assert-equal "0.0" (format-float 0.0)))
 
-(define-test format-keyword-test
-  (assert-equal ":foo" (format-keyword :foo)))
-
 (define-test format-symbol-test
   (assert-equal "'hello" (format-symbol 'hello)))
 

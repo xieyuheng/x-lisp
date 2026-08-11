@@ -3,7 +3,6 @@ import * as M from "../index.ts"
 export function isAtomTerm(term: M.Term): boolean {
   switch (term.kind) {
     case "SymbolTerm":
-    case "KeywordTerm":
     case "StringTerm":
     case "IntTerm":
     case "FloatTerm":

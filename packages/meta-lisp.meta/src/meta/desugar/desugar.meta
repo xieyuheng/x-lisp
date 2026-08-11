@@ -68,8 +68,6 @@
      (all-term parameters (desugar body) location))
     ((symbol-exp content location)
      (symbol-term content location))
-    ((keyword-exp content location)
-     (keyword-term content location))
     ((text-exp content location)
      (text-term content location))
     ((int-exp content location)

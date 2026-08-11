@@ -7,7 +7,6 @@
 (define (term-traverse f term)
   (match term
     ((symbol-term content location) term)
-    ((keyword-term content location) term)
     ((text-term content location) term)
     ((int-term content location) term)
     ((float-term content location) term)
