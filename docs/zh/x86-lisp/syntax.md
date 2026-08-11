@@ -4,7 +4,7 @@ title: 语法
 
 # 前言
 
-assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
+x86-lisp 是 x86-64 的 Lisp 语法汇编。
 
 特点：
 
@@ -22,7 +22,7 @@ assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
   - data-definition
     - data
 
-下面分组介绍 assembly-lisp 的所有语法。
+下面分组介绍 x86-lisp 的所有语法。
 
 # 目录
 
@@ -65,7 +65,7 @@ assembly-lisp 使用 lisp 语法的汇编语言，支持 x86-64。
 
 # 注释
 
-assembly-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写两个分号 `;;`。
+x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写两个分号 `;;`。
 
 ```scheme
 ;; 这是一条注释

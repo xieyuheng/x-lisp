@@ -2,8 +2,8 @@
 
 ## 概述
 
-为 [meta-lisp.js] 的 `190-SelectInstructionPass`（basic-lisp → assembly-lisp）
-和 assembly-lisp 的 x86 编码层添加浮点数（float64）支持。
+为 [meta-lisp.js] 的 `190-SelectInstructionPass`（basic-lisp → x86-lisp）
+和 x86-lisp 的编码层添加浮点数（float64）支持。
 
 ## 当前状态
 
@@ -63,7 +63,7 @@ inline double to_double(value_t value) {
 
 ## 需要实现的内容
 
-### 1. assembly-lisp x86 编码层新增 SSE 指令
+### 1. x86-lisp 编码层新增 SSE 指令
 
 所有新文件在 `packages/meta-lisp.js/src/x86/encode/` 下：
 
@@ -88,8 +88,8 @@ xmm8 ～ xmm15: code 0-7,  isExtended=true
 
 ### 2. 设计文档
 
-每个新指令需要对应的 `docs/zh/assembly-lisp/instructions/<name>.md`，
-并更新 `docs/zh/assembly-lisp/instructions/index.md`。
+每个新指令需要对应的 `docs/zh/x86-lisp/instructions/<name>.md`，
+并更新 `docs/zh/x86-lisp/instructions/index.md`。
 
 参考已有文档格式：`set.md`, `movzx.md`, `sar.md`。
 
@@ -153,5 +153,5 @@ or  out FLOAT_TAG
 | `packages/meta-lisp.js/src/x86/encode/` | x86 编码器（mov.ts, arithmetic.ts, reg.ts 等） |
 | `packages/meta-lisp.js/src/x86/encode/reg.ts` | 寄存器 REG_TABLE |
 | `packages/meta-lisp.js/src/x86/encode/encode.ts` | 指令分发器 |
-| `docs/zh/assembly-lisp/instructions/` | 设计文档 |
+| `docs/zh/x86-lisp/instructions/` | 设计文档 |
 | `packages/meta-lisp.js/lib/x86/` | lib 测试文件 |

@@ -2,7 +2,7 @@ import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
 import * as X86 from "../../x86/index.ts"
 
-// translate basic-lisp to assembly-lisp (with variables)
+// translate basic-lisp to x86-lisp (with variables)
 
 export function SelectInstructionPass(
   pkg: M.Package,
