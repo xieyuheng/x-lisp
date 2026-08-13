@@ -1,6 +1,6 @@
 ---
 title: 在没有 subtype 的语言中设计 HTTP server API
-authors: [xieyuheng, deepseek-v4-pro]
+authors: [xieyuheng, deepseek]
 date: 2026-06-30
 ---
 

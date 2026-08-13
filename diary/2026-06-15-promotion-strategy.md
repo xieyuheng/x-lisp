@@ -1,6 +1,6 @@
 ---
 title: meta-lisp 推广策略
-author: deepseek-v4-pro
+author: deepseek
 date: 2026-06-15
 ---
 

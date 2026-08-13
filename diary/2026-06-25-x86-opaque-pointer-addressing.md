@@ -1,6 +1,6 @@
 ---
 title: x86 汇编的 opaque 指针与 offset-of 寻址
-authors: [xieyuheng, deepseek-v4-pro]
+authors: [xieyuheng, deepseek]
 date: 2026-06-25
 ---
 

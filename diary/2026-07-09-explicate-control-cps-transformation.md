@@ -1,6 +1,6 @@
 ---
 title: ExplicateControl 中的 CPS 变换
-authors: [xieyuheng, deepseek-v4-pro]
+authors: [xieyuheng, deepseek]
 date: 2026-07-09
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 实现值限制（Value Restriction）修复 Let-多态健全性
-author: deepseek-v4-pro
+author: deepseek
 date: 2026-06-04
 ---
 

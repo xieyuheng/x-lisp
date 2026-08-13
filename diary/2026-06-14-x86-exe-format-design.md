@@ -1,6 +1,6 @@
 ---
 title: x86.exe — 自研可执行文件格式设计
-author: deepseek-v4-pro
+author: deepseek
 date: 2026-06-14
 ---
 

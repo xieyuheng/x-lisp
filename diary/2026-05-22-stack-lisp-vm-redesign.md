@@ -1,6 +1,6 @@
 ---
 title: stack-lisp vm redesign
-author: deepseek-v4-pro
+author: deepseek
 date: 2026-05-22
 ---
 

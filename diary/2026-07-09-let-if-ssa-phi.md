@@ -1,6 +1,6 @@
 ---
 title: let + rhs-if 编译到 ssa 与 phi
-authors: [xieyuheng, deepseek-v4-pro]
+authors: [xieyuheng, deepseek]
 date: 2026-07-09
 ---
 

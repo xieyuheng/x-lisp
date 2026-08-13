@@ -1,6 +1,6 @@
 ---
 title: 重新设计 basic-lisp
-authors: [xieyuheng, deepseek-v4-pro]
+authors: [xieyuheng, deepseek]
 date: 2026-06-25
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: region-based memory allocation lifecycle
-authors: [xieyuheng, deepseek-v4-pro]
+authors: [xieyuheng, deepseek]
 date: 2026-07-05
 ---
 
