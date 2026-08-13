@@ -1,6 +1,6 @@
 ---
 title: remove define-struct*
-author: xieyuheng
+author: deepseek
 date: 2026-08-14
 ---
 
