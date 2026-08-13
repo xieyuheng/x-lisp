@@ -297,24 +297,6 @@ export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
     )
   },
 
-  "(cons* 'define-struct* head ctor)": ({ head, ctor }, { location }) => {
-    return M.DefineStructStarStmt(
-      parseTypeConstructor(head),
-      parseDataConstructor(S.asListSexp(ctor).elements[0]),
-      "en",
-      location,
-    )
-  },
-
-  "(cons* '定义结构* head ctor)": ({ head, ctor }, { location }) => {
-    return M.DefineStructStarStmt(
-      parseTypeConstructor(head),
-      parseDataConstructor(S.asListSexp(ctor).elements[0]),
-      "zh",
-      location,
-    )
-  },
-
   "(cons* 'define-struct head fields)": ({ head, fields }, { location }) => {
     return M.DefineStructStmt(
       parseTypeConstructor(head),

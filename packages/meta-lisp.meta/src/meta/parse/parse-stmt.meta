@@ -155,21 +155,6 @@
        (list-map parse-pre-data-field (cdr sexps))
        (if (equal tag '定义结构) (zh) (en))
        location))
-    ((list-member tag '(define-struct* 定义结构*))
-     (@comment
-       (define-struct* <type-name>
-         (<constructor-name>
-           (<field-name> <type>)
-           ...))
-       (define-struct* (<type-name> <type-parameter> ...)
-         (<constructor-name>
-           (<field-name> <type>)
-           ...)))
-     (define-struct-star-stmt
-       (parse-pre-type-constructor (car sexps))
-       (parse-pre-data-constructor (car (cdr sexps)))
-       (if (equal tag '定义结构*) (zh) (en))
-       location))
     ((list-member tag '(define-record-type 定义记录类型))
      (@comment
        (define-record-type <type-name>

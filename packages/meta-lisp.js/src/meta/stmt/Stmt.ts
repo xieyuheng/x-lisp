@@ -14,7 +14,6 @@ export type Stmt<E> =
   | DefineEnumStmt<E>
   | DefineAlgebraicTypeStmt<E>
   | DefineStructStmt<E>
-  | DefineStructStarStmt<E>
   | DefineRecordTypeStmt<E>
   | DefineOpaqueTypeStmt<E>
   | ClaimStmt<E>
@@ -197,29 +196,6 @@ export function DefineEnumStmt<E>(
     kind: "DefineEnumStmt",
     typeConstructor,
     dataConstructors,
-    lang,
-    location,
-  }
-}
-
-export type DefineStructStarStmt<E> = {
-  kind: "DefineStructStarStmt"
-  typeConstructor: PreTypeConstructor
-  dataConstructor: PreDataConstructor
-  lang: Lang
-  location: SourceLocation
-}
-
-export function DefineStructStarStmt<E>(
-  typeConstructor: PreTypeConstructor,
-  dataConstructor: PreDataConstructor,
-  lang: Lang,
-  location: SourceLocation,
-): DefineStructStarStmt<E> {
-  return {
-    kind: "DefineStructStarStmt",
-    typeConstructor,
-    dataConstructor,
     lang,
     location,
   }

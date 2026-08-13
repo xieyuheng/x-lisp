@@ -40,8 +40,6 @@
       (set-copy-add (pre-type-constructor-name type-constructor) names))
     ((define-struct-stmt type-constructor fields lang location)
       (set-copy-add (pre-type-constructor-name type-constructor) names))
-    ((define-struct-star-stmt type-constructor data-constructor lang location)
-      (set-copy-add (pre-type-constructor-name type-constructor) names))
     ((define-record-type-stmt type-constructor data-constructor lang location)
       (set-copy-add (pre-type-constructor-name type-constructor) names))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)

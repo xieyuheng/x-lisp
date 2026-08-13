@@ -71,10 +71,6 @@
      (ppml/pretty-syntax "define-struct"
        [(pretty-pre-type-constructor type-constructor)]
        (list-map pretty-pre-data-field fields)))
-    ((define-struct-star-stmt type-constructor data-constructor lang location)
-     (ppml/pretty-syntax "define-struct*"
-       [(pretty-pre-type-constructor type-constructor)]
-       [(pretty-pre-data-constructor data-constructor)]))
     ((define-record-type-stmt type-constructor data-constructor lang location)
      (ppml/pretty-syntax "define-record-type"
        [(pretty-pre-type-constructor type-constructor)]

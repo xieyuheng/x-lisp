@@ -63,12 +63,6 @@ export function formatStmt<E>(
       return `(define-enum ${type} ${constructors})`
     }
 
-    case "DefineStructStarStmt": {
-      const type = formatTypeConstructor(stmt.typeConstructor)
-      const constructor = formatDataConstructor(stmt.dataConstructor)
-      return `(define-struct* ${type} ${constructor})`
-    }
-
     case "DefineStructStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const fields = stmt.fields.map(formatDataField).join(" ")

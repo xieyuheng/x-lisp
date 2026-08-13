@@ -51,11 +51,6 @@
     (fields (list-t pre-data-field-t))
     (lang lang-t)
     (location source-location-t))
-  (define-struct-star-stmt
-    (type-constructor pre-type-constructor-t)
-    (data-constructor pre-data-constructor-t)
-    (lang lang-t)
-    (location source-location-t))
   (define-record-type-stmt
     (type-constructor pre-type-constructor-t)
     (data-constructor (explicit-data-constructor-t E))

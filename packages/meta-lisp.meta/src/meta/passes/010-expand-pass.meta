@@ -25,21 +25,6 @@
          type-constructor
          (list-map (desugar-data-constructor lang) data-constructors)
          location)))
-    ((define-struct-star-stmt type-constructor data-constructor lang location)
-     (let ((type-name (pre-type-constructor-name type-constructor))
-            (base-name (make-base-name lang type-name location))
-            (ctor-name (pre-data-constructor-name data-constructor)))
-       (expand-define-algebraic-type
-         (define-algebraic-type-stmt
-           type-constructor
-           [(make-explicit-data-constructor
-              ctor-name
-              (list-map
-                (desugar-data-field lang base-name)
-                (pre-data-constructor-fields data-constructor))
-              (make-data-predicate-name lang base-name)
-              (pre-data-constructor-location data-constructor))]
-           location))))
     ((define-struct-stmt type-constructor fields lang location)
      (let ((type-name (pre-type-constructor-name type-constructor))
             (base-name (make-base-name lang type-name location)))

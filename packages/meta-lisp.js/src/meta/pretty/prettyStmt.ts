@@ -79,12 +79,6 @@ export function prettyStmt<E>(
       return Ppml.prettySyntax("define-enum", [typeNode], ctorNodes)
     }
 
-    case "DefineStructStarStmt": {
-      const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
-      const ctorNode = prettyPreDataConstructor(stmt.dataConstructor)
-      return Ppml.prettySyntax("define-struct*", [typeNode], [ctorNode])
-    }
-
     case "DefineStructStmt": {
       const typeNode = prettyPreTypeConstructor(stmt.typeConstructor)
       const fieldNodes = stmt.fields.map(prettyPreDataField)

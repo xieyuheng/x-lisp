@@ -43,11 +43,6 @@ function expandStmt(stmt: M.Stmt<M.Exp>): Array<M.Stmt<M.Exp>> {
       return expandDefineAlgebraicType(algebraicType)
     }
 
-    case "DefineStructStarStmt": {
-      const algebraicType = desugarDefineStructStar(stmt)
-      return expandDefineAlgebraicType(algebraicType)
-    }
-
     case "DefineStructStmt": {
       const algebraicType = desugarDefineStruct(stmt)
       return expandDefineAlgebraicType(algebraicType)
@@ -116,41 +111,6 @@ function parseTypeNameBase(name: string, lang: M.Lang): string {
   message += `\n  type name: ${name}`
   message += `\n  hint: use the explicit (define-algebraic-type) syntax instead`
   throw new Error(message)
-}
-
-function desugarDefineStructStar(
-  stmt: M.DefineStructStarStmt<M.Exp>,
-): M.DefineAlgebraicTypeStmt<M.Exp> {
-  const typeName = stmt.typeConstructor.name
-  const base = parseTypeNameBase(typeName, stmt.lang)
-  const ctor = stmt.dataConstructor
-
-  const fields = ctor.fields.map((field) => ({
-    name: field.name,
-    type: field.type,
-    accessorName:
-      stmt.lang === "zh" ? `${base}${field.name}` : `${base}-${field.name}`,
-    modifierName:
-      stmt.lang === "zh"
-        ? `${base}存${field.name}`
-        : `${base}-put-${field.name}`,
-    location: field.location,
-  }))
-
-  const dataConstructors = [
-    {
-      name: ctor.name,
-      fields,
-      predicate: stmt.lang === "zh" ? `为${base}` : `is-${base}`,
-      location: ctor.location,
-    },
-  ]
-
-  return M.DefineAlgebraicTypeStmt(
-    stmt.typeConstructor,
-    dataConstructors,
-    stmt.location,
-  )
 }
 
 function desugarDefineStruct(
