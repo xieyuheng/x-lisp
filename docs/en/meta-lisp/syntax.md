@@ -42,6 +42,7 @@ All meta-Lisp syntax is presented below in groups.
   - [(admit)](#admit)
   - [(the)](#the)
   - [(all)](#all)
+  - [(define-type)](#define-type)
 - [Conditionals](#conditionals)
   - [(if)](#if)
   - [(when)](#when)
@@ -527,6 +528,32 @@ Used in `claim` for generic function signatures.
 (claim car (all (E) (-> (list-t E) E)))
 (claim cdr (all (E) (-> (list-t E) (list-t E))))
 (claim cons (all (E) (-> E (list-t E) (list-t E))))
+```
+
+## (define-type)
+
+```meta-lisp
+(define-type <type-name>
+  <body>)
+
+(define-type (<type-name> <type-parameter> ...)
+  <body>)
+```
+
+Defines a new type. `<type-name>` becomes a type constructor, and `<body>` is an expression that evaluates to a type.
+With type parameters, the parameters can be referenced within `<body>`.
+
+For example:
+
+```meta-lisp
+(define-type (non-empty-list-t A)
+  (pair-t A (list-t A)))
+```
+
+Usage:
+
+```meta-lisp
+(the (non-empty-list-t int-t) (make-pair 1 [2 3]))
 ```
 
 # Conditionals
