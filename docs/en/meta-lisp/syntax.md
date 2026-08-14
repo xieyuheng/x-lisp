@@ -189,7 +189,7 @@ Creates a set.
 Creates a hash table.
 
 ```meta-lisp
-(@hash :a 1 :b 2)
+(@hash 'a 1 'b 2)
 (@hash "a" 1 "b" 2)
 ```
 

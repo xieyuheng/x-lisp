@@ -86,8 +86,8 @@
     (format-exp (parse-exp (@sexp (@set))))))
 
 (define-test parse-hash-test
-  (assert-equal "(@hash :a 1 :b 2)"
-    (format-exp (parse-exp (@sexp (@hash :a 1 :b 2))))))
+  (assert-equal "(@hash 'a 1 'b 2)"
+    (format-exp (parse-exp (@sexp (@hash 'a 1 'b 2))))))
 
 (define-test parse-arrow-test
   (assert-equal "(-> int-t int-t)"
