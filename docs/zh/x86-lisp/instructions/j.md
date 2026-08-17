@@ -12,7 +12,7 @@ title: j
 
 ```
 <code> := e ne l le g ge b be a ae
-<name> := 基本块标号
+<name> := 标签
 ```
 
 # 描述

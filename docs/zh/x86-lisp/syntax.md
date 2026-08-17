@@ -16,9 +16,8 @@ x86-lisp 是 x86-64 的 Lisp 语法汇编。
 
 - definition
   - code-definition
-    - block
-      - instr
-        - operand
+    - instr
+      - operand
   - data-definition
     - data
 
@@ -30,7 +29,7 @@ x86-lisp 是 x86-64 的 Lisp 语法汇编。
 - [目录](#目录)
 - [注释](#注释)
 - [指令](#指令)
-- [基本块](#基本块)
+- [标签](#标签)
 - [顶层定义](#顶层定义)
   - [(define-code)](#define-code)
   - [(define-struct)](#define-struct)
@@ -83,30 +82,23 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 每条指令的语法和操作数约束详见[指令索引](instructions/index.md)。
 
-# 基本块
+# 标签
+
+`define-code` 的指令序列中的裸符号（bare symbol）是标签定义。
+
+- 标签只是代码中的一个位置标记，不改变控制流，也不引入新的作用域。
+- 控制流按指令顺序流动；若没有 `ret` / `jmp`，会继续执行后面的指令。
+- 一个函数的入口就是第一个可执行指令，不需要显式的入口标记。
 
 ```scheme
-(block <label>
-  <instr>
-  ...)
-```
-
-基本块由标号和指令序列组成。
-
-- 一个函数的第一个 block 是 entry block。
-- 一个 block 执行到末尾若没有 `ret` / `jmp`，
-  控制流顺序流入紧邻的下一个 block。
-
-```scheme
-(block entry
+(define-code main
   (mov (reg rax) 10)
   (mov (reg rcx) 3)
   (cmp (reg rax) (reg rcx))
   (j (cc g) (label is-greater))
   (mov (reg rax) 0)
-  (ret))
-
-(block is-greater
+  (ret)
+  is-greater
   (mov (reg rax) 1)
   (ret))
 ```
@@ -117,18 +109,19 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ```scheme
 (define-code <name>
-  <block>
+  <instr-or-label>
   ...)
 ```
+
+`<instr-or-label>` 是一条指令，或一个裸符号标签定义。
 
 例如：
 
 ```scheme
 (define-code add1
-  (block entry
-    (mov (reg rax) (deref (reg rbp) 16))
-    (add (reg rax) 1)
-    (ret)))
+  (mov (reg rax) (deref (reg rbp) 16))
+  (add (reg rax) 1)
+  (ret))
 ```
 
 ## (define-struct)
@@ -203,14 +196,14 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (label <name>)
 ```
 
-代码标号引用 -- 专用于 **rel32** 域（`jmp` / `call` / `j` 的跳转目标）。
+代码标签引用 -- 专用于 **rel32** 域（`jmp` / `call` / `j` 的跳转目标）。
 
 ```scheme
 (label is-greater)
 (label merge)
 ```
 
-`(label ...)` 不能作为指令 -- 标号只能由 `block` 定义。
+`(label ...)` 不能作为指令 -- 标签在 `define-code` 中用裸符号定义，这里只用 `(label <name>)` 来引用。
 
 ## (address)
 
