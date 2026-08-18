@@ -203,7 +203,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (label merge)
 ```
 
-`(label ...)` 不能作为指令 -- 标签在 `define-code` 中用裸符号定义，这里只用 `(label <name>)` 来引用。
+注意 `(label ...)` 是 operand，与指令中的地址标签 symbol 不同。
 
 ## (address)
 
@@ -277,7 +277,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (cc <code>)
 ```
 
-条件码，仅用于 `j` 指令。
+条件码，用作 `j` 指令的 operand。
 
 | 代码 | 含义             |
 |------|------------------|
@@ -325,16 +325,18 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (relocation <type> <name>)
 ```
 
-自定义重定位 operand，出现在指令中。汇编器将其编码为 64-bit 立即数（movabs），
+重定位 operand，在指令中留下回填空间，
+并在 relocation table 中记录 relocation entry。
+
 `type` 决定 loader 的回填方式。
 
-| type | hole 大小 | loader 操作 |
-|------|-----------|-------------|
-| `label-rel32` | 32-bit | `target + addend - (base + offset)` |
-| `label-abs64` | 64-bit | `target + addend` |
-| `extern` | 64-bit | symbol 绝对地址 |
-| `symbol-value` | 64-bit | loader 计算 symbol → tagged value |
-| 其他自定义 | 64-bit | 由 loader 解释 |
+| type           | hole 大小 | loader 操作                         |
+|----------------|-----------|-------------------------------------|
+| `label-rel32`  | 32-bit    | `target + addend - (base + offset)` |
+| `label-abs64`  | 64-bit    | `target + addend`                   |
+| `extern`       | 64-bit    | symbol 绝对地址                     |
+| `symbol-value` | 64-bit    | loader 计算 symbol → tagged value  |
+| 其他自定义     | 64-bit    | 由 loader 解释                      |
 
 ```scheme
 (mov (reg rax) (relocation symbol-value foo))
@@ -364,10 +366,10 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 ```
 ┌────────────────────────── instruction ──────────────────────────┐
 │  opcode  │  ModR/M  │  displacement (4 bytes) │  immediate      │
-│                        ↑                       └────┐            │
-│                   segmentOffset                      └─ rip       │
+│                        ↑                      └────┐            │
+│                   segmentOffset                    └─ rip       │
 │                        ├──────── 4 + imm ────────┤              │
-└──────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 因此 loader 写入 `target + addend - (base + segmentOffset)`。
@@ -409,13 +411,13 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 
 ### Code 段
 
-| operand | 指令 | 编码 | reloc type | segment |
-|---------|------|------|------------|---------|
-| `(label X)` | `call` / `jmp` / `j` | `opcode + disp32` | `label-rel32` | CODE |
-| `(address X)` | `mov` / `lea` | `[rip + disp32]` | `label-rel32` | CODE |
-| `(deref (address X))` | `mov` | `[rip + disp32]` | `label-rel32` | CODE |
-| `(extern X)` | `mov` | `movabs imm64` | `extern` | CODE |
-| `(relocation T X)` | `mov` | `movabs imm64` | `T` | CODE |
+| operand               | 指令                 | 编码              | reloc type    | segment |
+|-----------------------|----------------------|-------------------|---------------|---------|
+| `(label X)`           | `call` / `jmp` / `j` | `opcode + disp32` | `label-rel32` | CODE    |
+| `(address X)`         | `mov` / `lea`        | `[rip + disp32]`  | `label-rel32` | CODE    |
+| `(deref (address X))` | `mov`                | `[rip + disp32]`  | `label-rel32` | CODE    |
+| `(extern X)`          | `mov`                | `movabs imm64`    | `extern`      | CODE    |
+| `(relocation T X)`    | `mov`                | `movabs imm64`    | `T`           | CODE    |
 
 `(label X)`、`(address X)` 和 `(deref (address X))` 在语义上等价于
 `(relocation label-rel32 X)`。
@@ -424,11 +426,11 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 
 ### Data 段
 
-| 数据形式 | reloc type | segment |
-|----------|------------|---------|
-| `(address X)` 字段 | `label-abs64` | DATA |
-| `(pointer ...)` 字段 | `label-abs64` | DATA |
-| string 作为 pointer-t 字段 | `label-abs64` | DATA |
+| 数据形式                   | reloc type    | segment |
+|----------------------------|---------------|---------|
+| `(address X)` 字段         | `label-abs64` | DATA    |
+| `(pointer ...)` 字段       | `label-abs64` | DATA    |
+| string 作为 pointer-t 字段 | `label-abs64` | DATA    |
 
 data 段中的 `(address X)` 等价于 `(relocation label-abs64 X)`。
 pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分配名称
