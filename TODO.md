@@ -1,6 +1,3 @@
-reviwe x86.c loader 的代码。
-回顾 EOC 全书，用更合理的方式 比如 how-to-* 来总结编译器实现技巧。
-
 # x86-64
 
 review 200-AssignHomesPass.ts

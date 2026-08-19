@@ -335,7 +335,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 | `label-rel32`  | 32-bit    | `target + addend - (base + offset)` |
 | `label-abs64`  | 64-bit    | `target + addend`                   |
 | `extern`       | 64-bit    | symbol 绝对地址                     |
-| `symbol-value` | 64-bit    | loader 计算 symbol → tagged value  |
+| `symbol-value` | 64-bit    | loader 计算 symbol -> tagged value  |
 | 其他自定义     | 64-bit    | 由 loader 解释                      |
 
 ```scheme
