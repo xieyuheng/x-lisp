@@ -13,5 +13,5 @@
 
 (define-code imul-form
   (imul (reg rax) (reg rcx))                ;; 0F AF /r: REX.W + 0F AF C1
-  (imul (reg rax) (deref (reg rbp) -8)) ;; 0F AF /r: REX.W + 0F AF 45 F8
+  (imul (reg rax) (mem (reg rbp) -8)) ;; 0F AF /r: REX.W + 0F AF 45 F8
   (ret))

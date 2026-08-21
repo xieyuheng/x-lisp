@@ -39,7 +39,7 @@ x86-lisp 是 x86-64 的 Lisp 语法汇编。
   - [(reg)](#reg)
   - [(label)](#label)
   - [(address)](#address)
-  - [(deref)](#deref)
+  - [(mem)](#mem)
   - [(cc)](#cc)
   - [(var)](#var)
   - [(extern)](#extern)
@@ -119,7 +119,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ```scheme
 (define-code add1
-  (mov (reg rax) (deref (reg rbp) 16))
+  (mov (reg rax) (mem (reg rbp) 16))
   (add (reg rax) 1)
   (ret))
 ```
@@ -218,31 +218,31 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (address chain)
 ```
 
-## (deref)
+## (mem)
 
 内存操作数。**size**（`byte` / `word` / `dword` / `qword`，对应 1 / 2 / 4 / 8 字节）
 是可选的首参数：
 
 ```scheme
-(deref <size> <address-or-reg …>)
+(mem <size> <address-or-reg …>)
 ```
 
-- 省略 size 时由配对的操作数推断（如 `(mov (reg al) (deref …))` 中 `al` 推断 1 字节）；
-  与立即数配对时**必须**显式 size（如 `(cmp (deref byte …) 0x61)`）。
+- 省略 size 时由配对的操作数推断（如 `(mov (reg al) (mem …))` 中 `al` 推断 1 字节）；
+  与立即数配对时**必须**显式 size（如 `(cmp (mem byte …) 0x61)`）。
 - 显式 size 与配对寄存器 size 不一致时，check pass 报错。
 
 **rip-相对寻址**：
 
 ```scheme
-(deref (address <name>))
-(deref byte (address <name>))
+(mem (address <name>))
+(mem byte (address <name>))
 ```
 
 编码为 `[rip + disp32]`。
 
 ```scheme
-(deref (address origin))
-(deref byte (address buffer))
+(mem (address origin))
+(mem byte (address buffer))
 ```
 
 **寄存器相对寻址**：
@@ -250,8 +250,8 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 第一个参数（size 之后）为 `(reg <base>)`，支持完整 SIB。
 
 ```scheme
-(deref (reg <base>) (<index> | (* <index> <scale>)) [<disp>])
-(deref dword (reg <base>) -8)
+(mem (reg <base>) (<index> | (* <index> <scale>)) [<disp>])
+(mem dword (reg <base>) -8)
 ```
 
 - `base`：base 寄存器名。
@@ -261,14 +261,14 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 - `disp`：可选，整数或 `(offset-of ...)`。
 
 ```scheme
-(deref (reg rbp))                             ;; [rbp]
-(deref (reg rbp) -8)                          ;; [rbp - 8]
-(deref dword (reg rbp) -8)                    ;; [rbp - 8] dword
-(deref (reg rbp) (offset-of point-t y))       ;; [rbp + offset]
-(deref (reg rbp) (reg rax))                   ;; [rbp + rax]
-(deref (reg rbp) (reg rax) -16)               ;; [rbp + rax - 16]
-(deref (reg rbp) (* (reg rax) 8))             ;; [rbp + rax*8]
-(deref (reg rbp) (* (reg rax) 8) -16)         ;; [rbp + rax*8 - 16]
+(mem (reg rbp))                             ;; [rbp]
+(mem (reg rbp) -8)                          ;; [rbp - 8]
+(mem dword (reg rbp) -8)                    ;; [rbp - 8] dword
+(mem (reg rbp) (offset-of point-t y))       ;; [rbp + offset]
+(mem (reg rbp) (reg rax))                   ;; [rbp + rax]
+(mem (reg rbp) (reg rax) -16)               ;; [rbp + rax - 16]
+(mem (reg rbp) (* (reg rax) 8))             ;; [rbp + rax*8]
+(mem (reg rbp) (* (reg rax) 8) -16)         ;; [rbp + rax*8 - 16]
 ```
 
 ## (cc)
@@ -305,7 +305,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 寄存器分配前的虚拟变量。
 
-带 `var` 的汇编语言是中间表示；寄存器分配 pass 会把它替换为 `reg` 或 `deref`。
+带 `var` 的汇编语言是中间表示；寄存器分配 pass 会把它替换为 `reg` 或 `mem`。
 
 ## (extern)
 
@@ -391,16 +391,16 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 | `data` 类型     | 解析为                           | 编码             |
 |-----------------|----------------------------------|------------------|
 | 整数            | `imm-operand`                    | 立即数           |
-| 字符串          | 匿名 data slot + `deref-operand` | `[rip + disp32]` |
-| `(pointer ...)` | 匿名 data slot + `deref-operand` | `[rip + disp32]` |
+| 字符串          | 匿名 data slot + `mem-operand`   | `[rip + disp32]` |
+| `(pointer ...)` | 匿名 data slot + `mem-operand`   | `[rip + disp32]` |
 | 裸符号          | `address-operand`                | movabs           |
 
 裸 `(struct ...)` 和 `(array ...)` 不支持 -- 报错。
 
 ```scheme
-(mov (reg rax) "hello")                           ;; 匿名字符串 → deref
+(mov (reg rax) "hello")                           ;; 匿名字符串 → mem
 (mov (reg rcx) 42)                                ;; 立即数
-(mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + deref
+(mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + mem
 ```
 
 当前 **只在 `.x86.exe` 格式下支持**（flat 格式没有独立 data section）。
@@ -415,11 +415,11 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 |-----------------------|----------------------|-------------------|---------------|---------|
 | `(label X)`           | `call` / `jmp` / `j` | `opcode + disp32` | `label-rel32` | CODE    |
 | `(address X)`         | `mov` / `lea`        | `[rip + disp32]`  | `label-rel32` | CODE    |
-| `(deref (address X))` | `mov`                | `[rip + disp32]`  | `label-rel32` | CODE    |
+| `(mem (address X))`  | `mov`                | `[rip + disp32]`  | `label-rel32` | CODE    |
 | `(extern X)`          | `mov`                | `movabs imm64`    | `extern`      | CODE    |
 | `(relocation T X)`    | `mov`                | `movabs imm64`    | `T`           | CODE    |
 
-`(label X)`、`(address X)` 和 `(deref (address X))` 在语义上等价于
+`(label X)`、`(address X)` 和 `(mem (address X))` 在语义上等价于
 `(relocation label-rel32 X)`。
 
 `(extern X)` 等价于 `(relocation extern X)`。
@@ -557,7 +557,7 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 # 位移
 
-`deref` 的位移（displacement）是编译期常量，有两种形态。
+`mem` 的位移（displacement）是编译期常量，有两种形态。
 
 ## 整数位移
 
@@ -584,6 +584,6 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 - `offset-of` 把「struct 类型 + 字段名 → 偏移」分离成独立的编译期计算。
 - **`offset-of` 不穿指针** -- 它只在单个 struct 内逐字段累加；一旦字段是 `pointer-t`，路径即终止。
-- 跨指针的字段访问要靠「`offset-of` + `deref` + `offset-of`」链式组合。
+- 跨指针的字段访问要靠「`offset-of` + `mem` + `offset-of`」链式组合。
 
 编译期 pass 会将所有 `offset-of` 替换为具体整数位移。

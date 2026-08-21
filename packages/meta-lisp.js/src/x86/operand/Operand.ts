@@ -21,8 +21,8 @@ export type Operand =
   | FloatOperand
   | LabelOperand
   | AddressOperand
-  | DerefOperand
-  | RegDerefOperand
+  | RipMemOperand
+  | RegMemOperand
   | CcOperand
   | VarOperand
   | ExternOperand
@@ -91,7 +91,7 @@ export function AddressOperand(name: string): AddressOperand {
 
 export type Displacement = IntDisplacement | OffsetOfDisplacement
 
-export type MemOperand = DerefOperand | RegDerefOperand
+export type MemOperand = RipMemOperand | RegMemOperand
 
 export type IntDisplacement = {
   kind: "IntDisplacement"
@@ -122,25 +122,25 @@ export function OffsetOfDisplacement(
   }
 }
 
-export type DerefOperand = {
-  kind: "DerefOperand"
+export type RipMemOperand = {
+  kind: "RipMemOperand"
   size: Size | undefined
   address: AddressOperand
 }
 
-export function DerefOperand(
+export function RipMemOperand(
   size: Size | undefined,
   address: AddressOperand,
-): DerefOperand {
+): RipMemOperand {
   return {
-    kind: "DerefOperand",
+    kind: "RipMemOperand",
     size,
     address,
   }
 }
 
-export type RegDerefOperand = {
-  kind: "RegDerefOperand"
+export type RegMemOperand = {
+  kind: "RegMemOperand"
   size: Size | undefined
   base: string
   index: string | undefined
@@ -148,15 +148,15 @@ export type RegDerefOperand = {
   disp: Displacement | undefined
 }
 
-export function RegDerefOperand(
+export function RegMemOperand(
   size: Size | undefined,
   base: string,
   index: string | undefined,
   scale: bigint | undefined,
   disp: Displacement | undefined,
-): RegDerefOperand {
+): RegMemOperand {
   return {
-    kind: "RegDerefOperand",
+    kind: "RegMemOperand",
     size,
     base,
     index,

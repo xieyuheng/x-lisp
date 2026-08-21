@@ -11,16 +11,16 @@ title: call
 # 操作数
 
 ```
-<target> := (label) (deref)
+<target> := (label) (mem)
 ```
 
 # 描述
 
-函数调用。<target> 为 `(label)` 时静态调用，为 `(deref)` 时间接调用
+函数调用。<target> 为 `(label)` 时静态调用，为 `(mem)` 时间接调用
 
 # 例子
 
 ```scheme
 (call (label my-func))
-(call (deref (reg rax)))
+(call (mem (reg rax)))
 ```

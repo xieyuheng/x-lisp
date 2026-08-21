@@ -28,18 +28,18 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
 
   if (
     instr.op === "mov" &&
-    dst?.kind === "RegDerefOperand" &&
-    src?.kind === "RegDerefOperand" &&
-    isSameRegDeref(dst, src)
+    dst?.kind === "RegMemOperand" &&
+    src?.kind === "RegMemOperand" &&
+    isSameRegMem(dst, src)
   ) {
     return []
   }
 
-  if (dst?.kind === "RegDerefOperand" && src?.kind === "RegDerefOperand") {
+  if (dst?.kind === "RegMemOperand" && src?.kind === "RegMemOperand") {
     return patchTwoMemory(instr)
   }
 
-  if (dst?.kind === "RegDerefOperand" && requiresRegDst(instr.op)) {
+  if (dst?.kind === "RegMemOperand" && requiresRegDst(instr.op)) {
     return patchRegDstRequired(instr)
   }
 
@@ -52,10 +52,7 @@ function requiresRegDst(op: string): boolean {
   return regDstRequiredOps.has(op)
 }
 
-function isSameRegDeref(
-  a: X86.RegDerefOperand,
-  b: X86.RegDerefOperand,
-): boolean {
+function isSameRegMem(a: X86.RegMemOperand, b: X86.RegMemOperand): boolean {
   if (a.base !== b.base) return false
   if (a.index !== b.index) return false
   if (a.scale !== b.scale) return false
@@ -67,10 +64,7 @@ function isSameRegDeref(
 }
 
 function patchTwoMemory(instr: X86.Instr): Array<X86.Instr> {
-  const [dst, src] = instr.operands as [
-    X86.RegDerefOperand,
-    X86.RegDerefOperand,
-  ]
+  const [dst, src] = instr.operands as [X86.RegMemOperand, X86.RegMemOperand]
 
   switch (instr.op) {
     case "mov": {

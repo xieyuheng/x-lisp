@@ -2,7 +2,7 @@
 ;
 ; Encodings exercised:
 ;   mov reg, (address ...)            — RIP-relative LEA-style load of label addr
-;   mov reg, (deref reg offset)   — 8B /r with disp from offset-of
+;   mov reg, (mem reg offset)   — 8B /r with disp from offset-of
 ;
 ; Data: define-struct → claim → define-data → (address ...) + offset-of
 ;   offset-of(point-t x) = 0
@@ -18,5 +18,5 @@
 
 (define-code main
   (mov (reg rax) (address my-point))
-  (mov (reg rax) (deref (reg rax) (offset-of point-t x)))
+  (mov (reg rax) (mem (reg rax) (offset-of point-t x)))
   (ret))

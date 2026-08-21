@@ -4,7 +4,7 @@
 ;   config.desc → 8B placeholder (reloc → string bytes)
 ;   "abc\0"
 ;
-; define-code: load config.desc pointer, deref to 8 bytes, mask to first char → 97 ('a')
+; define-code: load config.desc pointer, mem to 8 bytes, mask to first char → 97 ('a')
 
 (define-struct config-t
   (version int64-t)
@@ -17,7 +17,7 @@
 
 (define-code main
   (mov (reg rax) (address my-config))
-  (mov (reg rax) (deref (reg rax) (offset-of config-t description)))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (reg rax) (offset-of config-t description)))
+  (mov (reg rax) (mem (reg rax)))
   (and (reg rax) 255)
   (ret))

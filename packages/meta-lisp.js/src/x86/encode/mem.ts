@@ -1,13 +1,13 @@
 import type {
   Displacement,
   MemOperand,
-  RegDerefOperand,
+  RegMemOperand,
 } from "../operand/index.ts"
 import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { SIB_NO_INDEX, sibByte } from "./sib.ts"
 
-export type RegDerefEncoding = {
+export type RegMemEncoding = {
   modrm: {
     codeForReg: (reg: number) => number
     codeForOpExt: (ext: number) => number
@@ -18,8 +18,8 @@ export type RegDerefEncoding = {
   rexIndex: string | null
 }
 
-export function encodeMem(op: MemOperand): RegDerefEncoding {
-  if (op.kind === "DerefOperand") {
+export function encodeMem(op: MemOperand): RegMemEncoding {
+  if (op.kind === "RipMemOperand") {
     return {
       modrm: {
         codeForReg: (reg: number) => modRM(MOD_DISP0, reg, 5),
@@ -31,20 +31,20 @@ export function encodeMem(op: MemOperand): RegDerefEncoding {
       rexIndex: null,
     }
   }
-  return encodeRegDeref(op)
+  return encodeRegMem(op)
 }
 
 function dispValue(disp: Displacement | undefined): number {
   if (disp === undefined) return 0
   if (disp.kind === "OffsetOfDisplacement") {
     let message =
-      "[encodeRegDeref] unresolved offset-of displacement; resolveDisplacements must run before encoding"
+      "[encodeRegMem] unresolved offset-of displacement; resolveDisplacements must run before encoding"
     throw new Error(message)
   }
   return Number(disp.value)
 }
 
-export function encodeRegDeref(op: RegDerefOperand): RegDerefEncoding {
+export function encodeRegMem(op: RegMemOperand): RegMemEncoding {
   const base = op.base
   const index = op.index
   const scale = op.scale ? Number(op.scale) : op.index ? 1 : 0
@@ -62,7 +62,7 @@ function encodeWithIndex(
   index: string,
   scale: number,
   disp: number,
-): RegDerefEncoding {
+): RegMemEncoding {
   const { mod, dispEnc } = computeDisp(disp)
   if (mod === MOD_DISP0 && (base === "rbp" || base === "r13")) {
     const d = { size: 1 as const, value: 0 }
@@ -71,7 +71,7 @@ function encodeWithIndex(
   return makeResult(mod, base, index, scale, dispEnc)
 }
 
-function encodeWithoutIndex(base: string, disp: number): RegDerefEncoding {
+function encodeWithoutIndex(base: string, disp: number): RegMemEncoding {
   const { mod, dispEnc } = computeDisp(disp)
   const needsSib = regCode(base) === 4
 
@@ -97,7 +97,7 @@ function makeResultForSibBase(
   mod: number,
   base: string,
   dispEnc: { size: 1 | 2 | 4; value: number } | null,
-): RegDerefEncoding {
+): RegMemEncoding {
   const sib = sibByte(0, SIB_NO_INDEX, regCode(base))
   return {
     modrm: {
@@ -130,7 +130,7 @@ function makeResult(
   index: string,
   scale: number,
   dispEnc: { size: 1 | 2 | 4; value: number } | null,
-): RegDerefEncoding {
+): RegMemEncoding {
   const sib = sibByte(scale, regCode(index), regCode(base))
   const rm = 4
   return {
@@ -149,7 +149,7 @@ function makeResultNoIndex(
   mod: number,
   base: string,
   dispEnc: { size: 1 | 2 | 4; value: number } | null,
-): RegDerefEncoding {
+): RegMemEncoding {
   return {
     modrm: {
       codeForReg: (reg: number) => modRM(mod, reg, regCode(base)),

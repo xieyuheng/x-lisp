@@ -17,7 +17,7 @@
 
 (define-code main
   (mov (reg rax) (address my-msg))
-  (mov (reg rax) (deref (reg rax) (offset-of msg-t text)))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (reg rax) (offset-of msg-t text)))
+  (mov (reg rax) (mem (reg rax)))
   (and (reg rax) 255)
   (ret))

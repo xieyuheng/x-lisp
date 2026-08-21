@@ -2,7 +2,7 @@
 ;; path: (@array 10 20 30 40 50) → parseExp → ArrayExp
 ;;       → evaluate → ArrayValue([IntValue(10), ..., IntValue(50)])
 ;;       → layout: inline write 5 × uint8_t elements
-;;       → read first byte via address + deref
+;;       → read first byte via address + mem
 
 (define-struct buffer-t
   (data (array-t uint8-t 5)))
@@ -13,6 +13,6 @@
 
 (define-code main
   (mov (reg rax) (address buf))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (reg rax)))
   (and (reg rax) 255)
   (ret))

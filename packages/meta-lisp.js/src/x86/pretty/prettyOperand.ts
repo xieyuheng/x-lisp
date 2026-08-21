@@ -22,13 +22,13 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       return Ppml.prettySyntax("label", [], [Ppml.text(operand.name)])
     case "AddressOperand":
       return Ppml.prettySyntax("address", [], [Ppml.text(operand.name)])
-    case "DerefOperand": {
+    case "RipMemOperand": {
       const parts: Array<Ppml.Node> = []
       if (operand.size !== undefined) parts.push(Ppml.text(operand.size))
       parts.push(prettyOperand(operand.address))
-      return Ppml.prettySyntax("deref", [], parts)
+      return Ppml.prettySyntax("mem", [], parts)
     }
-    case "RegDerefOperand": {
+    case "RegMemOperand": {
       const parts: Array<Ppml.Node> = []
       if (operand.size !== undefined) parts.push(Ppml.text(operand.size))
       parts.push(Ppml.prettySyntax("reg", [], [Ppml.text(operand.base)]))
@@ -51,7 +51,7 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       if (operand.disp !== undefined) {
         parts.push(prettyDisplacement(operand.disp))
       }
-      return Ppml.prettySyntax("deref", [], parts)
+      return Ppml.prettySyntax("mem", [], parts)
     }
     case "CcOperand":
       return Ppml.prettySyntax("cc", [], [Ppml.text(operand.code)])

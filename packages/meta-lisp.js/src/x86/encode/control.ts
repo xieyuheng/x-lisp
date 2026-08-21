@@ -35,8 +35,8 @@ export function encodeControl(instr: Instr): Array<EncodedInstruction> {
 function encodeCall(instr: Instr): Array<EncodedInstruction> {
   const target = instr.operands[0]
 
-  if (target.kind === "RegDerefOperand") {
-    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(
+  if (target.kind === "RegMemOperand") {
+    const { modrm, rexRm, rexIndex } = encodeRegMemForCall(
       target,
       S.zeroLocation("instr"),
     )
@@ -58,7 +58,7 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (target.kind !== "LabelOperand") {
-    let message = `[call] expected label or deref, got: ${target.kind}`
+    let message = `[call] expected label or mem, got: ${target.kind}`
     throw new Error(message)
   }
 
@@ -78,8 +78,8 @@ function encodeCall(instr: Instr): Array<EncodedInstruction> {
 function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   const target = instr.operands[0]
 
-  if (target.kind === "RegDerefOperand") {
-    const { modrm, rexRm, rexIndex } = encodeRegDerefForCall(
+  if (target.kind === "RegMemOperand") {
+    const { modrm, rexRm, rexIndex } = encodeRegMemForCall(
       target,
       S.zeroLocation("instr"),
     )
@@ -101,7 +101,7 @@ function encodeJmp(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (target.kind !== "LabelOperand") {
-    let message = `[jmp] expected label or deref, got: ${target.kind}`
+    let message = `[jmp] expected label or mem, got: ${target.kind}`
     throw new Error(message)
   }
 
@@ -176,8 +176,8 @@ function encodeJcc(instr: Instr): Array<EncodedInstruction> {
   ]
 }
 
-function encodeRegDerefForCall(
-  op: import("../operand/index.ts").RegDerefOperand,
+function encodeRegMemForCall(
+  op: import("../operand/index.ts").RegMemOperand,
   location: import("@xieyuheng/sexp.js").SourceLocation,
 ): {
   modrm: { codeForOpExt: (ext: number) => number }

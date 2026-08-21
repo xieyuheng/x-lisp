@@ -21,7 +21,7 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     return X86.AddressOperand(S.asSymbolSexp(elements[0]).content)
   },
 
-  "(cons* 'deref first rest)": ({ first, rest }, { location }) => {
+  "(cons* 'mem first rest)": ({ first, rest }, { location }) => {
     const args = S.asListSexp(rest).elements
 
     let size: X86.Size | undefined = undefined
@@ -31,7 +31,7 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     if (first.kind === "SymbolSexp" && parseSizeName(first.content)) {
       size = parseSizeName(first.content)
       if (args.length === 0) {
-        let message = `(deref <size> ...) requires an address or register after the size`
+        let message = `(mem <size> ...) requires an address or register after the size`
         throw new Error(message)
       }
       head = args[0]
@@ -45,10 +45,10 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
       head.elements[0].content === "address"
     ) {
       if (restArgs.length !== 0) {
-        let message = `(deref (address name)) takes no further arguments`
+        let message = `(mem (address name)) takes no further arguments`
         throw new Error(message)
       }
-      return X86.DerefOperand(size, parseAddressOperand(head))
+      return X86.RipMemOperand(size, parseAddressOperand(head))
     }
 
     if (
@@ -59,7 +59,7 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
     ) {
       const baseName = parseRegName(head)
       if (restArgs.length === 0) {
-        return X86.RegDerefOperand(
+        return X86.RegMemOperand(
           size,
           baseName,
           undefined,
@@ -71,11 +71,11 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
       if (indexForm !== null) {
         const tail = restArgs.slice(1)
         if (tail.length > 1) {
-          let message = `(deref (reg base) index [disp]) takes at most one displacement`
+          let message = `(mem (reg base) index [disp]) takes at most one displacement`
           throw new Error(message)
         }
         const disp = tail.length === 1 ? parseDisplacement(tail[0]) : undefined
-        return X86.RegDerefOperand(
+        return X86.RegMemOperand(
           size,
           baseName,
           indexForm.index,
@@ -84,15 +84,15 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
         )
       }
       if (restArgs.length !== 1) {
-        let message = `(deref (reg base) disp) takes exactly one displacement`
+        let message = `(mem (reg base) disp) takes exactly one displacement`
         throw new Error(message)
       }
       const disp = parseDisplacement(restArgs[0])
-      return X86.RegDerefOperand(size, baseName, undefined, undefined, disp)
+      return X86.RegMemOperand(size, baseName, undefined, undefined, disp)
     }
 
     let message =
-      `(deref ...) expects (address ...) or (reg ...) as first argument, ` +
+      `(mem ...) expects (address ...) or (reg ...) as first argument, ` +
       `got: ${S.formatSexp(head)}`
     throw new Error(message)
   },

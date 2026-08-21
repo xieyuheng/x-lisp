@@ -8,7 +8,7 @@
 ; Encodings exercised:
 ;   mov reg, (address ...)                       — RIP-relative LEA-style load of label addr
 ;   mov [reg + offset-of(...)], imm              — C7 /0 with disp   (write to sub-field)
-;   mov reg, (deref reg (offset-of ...))     — 8B /r with disp   (read from sub-field)
+;   mov reg, (mem reg (offset-of ...))     — 8B /r with disp   (read from sub-field)
 
 (define-struct point-t
   (x int64-t)
@@ -27,7 +27,7 @@
 
 (define-code main
   (mov (reg rax) (address my-rect))
-  (mov (deref qword (reg rax) (offset-of rect-t bottom-right x)) 99)
-  (mov (deref qword (reg rax) (offset-of rect-t top-left y)) 77)
-  (mov (reg rax) (deref (reg rax) (offset-of rect-t bottom-right x)))
+  (mov (mem qword (reg rax) (offset-of rect-t bottom-right x)) 99)
+  (mov (mem qword (reg rax) (offset-of rect-t top-left y)) 77)
+  (mov (reg rax) (mem (reg rax) (offset-of rect-t bottom-right x)))
   (ret))

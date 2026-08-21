@@ -2,7 +2,7 @@
 ;; path: (address cell) → parseExp → AddressExp
 ;;       → evaluate → AddressValue("cell")
 ;;       → layout: write 8-byte placeholder + DataAddressReloc to cell
-;;       → read via (deref (address ptr)) → load address → deref
+;;       → read via (mem (address ptr)) → load address → mem
 
 (define-struct int-cell-t
   (value int64-t))
@@ -14,6 +14,6 @@
   (address cell))
 
 (define-code main
-  (mov (reg rax) (deref (address ptr)))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (address ptr)))
+  (mov (reg rax) (mem (reg rax)))
   (ret))

@@ -51,7 +51,7 @@ export function resolveDisplacements(mod: Mod): void {
     for (const instr of definition.instrs) {
       for (const op of instr.operands) {
         if (
-          op.kind === "RegDerefOperand" &&
+          op.kind === "RegMemOperand" &&
           op.disp !== undefined &&
           op.disp.kind === "OffsetOfDisplacement"
         ) {

@@ -11,8 +11,8 @@ title: and
 # 操作数
 
 ```
-<dst> := (reg) (deref)
-<src> := (reg) <int> (deref) (address)
+<dst> := (reg) (mem)
+<src> := (reg) <int> (mem) (address)
 ```
 
 <dst> 与 <src> 不能同时为内存操作数

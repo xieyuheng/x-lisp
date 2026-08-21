@@ -1,7 +1,7 @@
 import type { Instr } from "../instr/index.ts"
+import { encodeRegMem } from "./mem.ts"
 import { MOD_DISP0, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
-import { encodeRegDeref } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
@@ -14,8 +14,8 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
     throw new Error(message)
   }
 
-  if (src.kind === "RegDerefOperand") {
-    return [encodeLeaRegDeref(dst.name, src)]
+  if (src.kind === "RegMemOperand") {
+    return [encodeLeaRegMem(dst.name, src)]
   }
 
   if (src.kind === "AddressOperand") {
@@ -26,11 +26,11 @@ export function encodeLea(instr: Instr): Array<EncodedInstruction> {
   throw new Error(message)
 }
 
-function encodeLeaRegDeref(
+function encodeLeaRegMem(
   dstReg: string,
-  src: import("../operand/index.ts").RegDerefOperand,
+  src: import("../operand/index.ts").RegMemOperand,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(src)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegMem(src)
   return {
     prefixes: [],
     rex: computeRex(true, dstReg, rexIndex, rexRm),

@@ -21,7 +21,7 @@ const KNOWN_REGS = new Set([
 
 export type AssignHomesResult = {
   mod: X86.Mod
-  homeMap: Map<string, X86.RegDerefOperand>
+  homeMap: Map<string, X86.RegMemOperand>
 }
 
 export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
@@ -38,13 +38,13 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
     }
   }
 
-  const homeMap = new Map<string, X86.RegDerefOperand>()
+  const homeMap = new Map<string, X86.RegMemOperand>()
   let index = 0
   for (const varName of allVars) {
     const offset = -8n * (BigInt(index) + 1n)
     homeMap.set(
       varName,
-      X86.RegDerefOperand(
+      X86.RegMemOperand(
         "qword",
         "rbp",
         undefined,
@@ -69,7 +69,7 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
   return { mod: newMod, homeMap }
 }
 
-function isVariableRegDerefBase(name: string): boolean {
+function isVariableRegMemBase(name: string): boolean {
   return !KNOWN_REGS.has(name)
 }
 
@@ -78,8 +78,8 @@ function collectVars(instr: X86.Instr, vars: Set<string>): void {
     if (op.kind === "VarOperand") {
       vars.add(op.name)
     }
-    if (op.kind === "RegDerefOperand") {
-      if (op.base !== undefined && isVariableRegDerefBase(op.base)) {
+    if (op.kind === "RegMemOperand") {
+      if (op.base !== undefined && isVariableRegMemBase(op.base)) {
         vars.add(op.base)
       }
     }
@@ -88,7 +88,7 @@ function collectVars(instr: X86.Instr, vars: Set<string>): void {
 
 function assignOperand(
   op: X86.Operand,
-  homeMap: Map<string, X86.RegDerefOperand>,
+  homeMap: Map<string, X86.RegMemOperand>,
 ): X86.Operand {
   if (op.kind === "VarOperand") {
     const home = homeMap.get(op.name)
@@ -103,9 +103,9 @@ function assignOperand(
 
 function assignInstrHomes(
   instr: X86.Instr,
-  homeMap: Map<string, X86.RegDerefOperand>,
+  homeMap: Map<string, X86.RegMemOperand>,
 ): Array<X86.Instr> {
-  const ptrBase = resolveVariableRegDerefBase(instr)
+  const ptrBase = resolveVariableRegMemBase(instr)
   if (ptrBase !== undefined && homeMap.has(ptrBase)) {
     return expandLoadStore(instr, ptrBase, homeMap)
   }
@@ -118,10 +118,10 @@ function assignInstrHomes(
   ]
 }
 
-function resolveVariableRegDerefBase(instr: X86.Instr): string | undefined {
+function resolveVariableRegMemBase(instr: X86.Instr): string | undefined {
   for (const op of instr.operands) {
-    if (op.kind === "RegDerefOperand") {
-      if (op.base !== undefined && isVariableRegDerefBase(op.base)) {
+    if (op.kind === "RegMemOperand") {
+      if (op.base !== undefined && isVariableRegMemBase(op.base)) {
         return op.base
       }
     }
@@ -136,7 +136,7 @@ function resolveVariableRegDerefBase(instr: X86.Instr): string | undefined {
 function expandLoadStore(
   instr: X86.Instr,
   cellBase: string,
-  homeMap: Map<string, X86.RegDerefOperand>,
+  homeMap: Map<string, X86.RegMemOperand>,
 ): Array<X86.Instr> {
   const ptrHome = homeMap.get(cellBase)
   if (ptrHome === undefined) {
@@ -146,25 +146,25 @@ function expandLoadStore(
 
   const [dstOp, srcOp] = instr.operands
 
-  if (srcOp?.kind === "RegDerefOperand") {
+  if (srcOp?.kind === "RegMemOperand") {
     const outHome = assignOperand(dstOp, homeMap)
     return [
       X86.Instr("mov", [X86.RegOperand("rax"), ptrHome]),
       X86.Instr("mov", [
         X86.RegOperand("rax"),
-        X86.RegDerefOperand("qword", "rax", undefined, undefined, undefined),
+        X86.RegMemOperand("qword", "rax", undefined, undefined, undefined),
       ]),
       X86.Instr("mov", [outHome, X86.RegOperand("rax")]),
     ]
   }
 
-  if (dstOp?.kind === "RegDerefOperand") {
+  if (dstOp?.kind === "RegMemOperand") {
     const valHome = assignOperand(srcOp, homeMap)
     return [
       X86.Instr("mov", [X86.RegOperand("rax"), ptrHome]),
       X86.Instr("mov", [X86.RegOperand("rcx"), valHome]),
       X86.Instr("mov", [
-        X86.RegDerefOperand("qword", "rax", undefined, undefined, undefined),
+        X86.RegMemOperand("qword", "rax", undefined, undefined, undefined),
         X86.RegOperand("rcx"),
       ]),
     ]

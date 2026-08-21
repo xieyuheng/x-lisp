@@ -6,7 +6,7 @@
 ; The (address origin) value in a data slot emits an 8-byte pointer plus a
 ; deferred internal relocation resolving to the `origin` label.
 ;
-; define-code: load *origin-ptr (= &origin), then deref to read origin.x = 11
+; define-code: load *origin-ptr (= &origin), then mem to read origin.x = 11
 
 (define-struct point-t
   (x int64-t)
@@ -20,6 +20,6 @@
 (define-data origin-ptr (address origin))
 
 (define-code main
-  (mov (reg rax) (deref (address origin-ptr)))   ;; rax = *origin-ptr = &origin
-  (mov (reg rax) (deref (reg rax)))           ;; rax = origin.x = 11
+  (mov (reg rax) (mem (address origin-ptr)))   ;; rax = *origin-ptr = &origin
+  (mov (reg rax) (mem (reg rax)))           ;; rax = origin.x = 11
   (ret))

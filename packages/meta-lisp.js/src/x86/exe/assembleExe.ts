@@ -114,7 +114,7 @@ function findCodeRelocInfo(instr: Instr): CodeRelocInfo {
       return { type: "label-rel32", name: op.name, holeKind: "disp32" }
     if (op.kind === "AddressOperand")
       return { type: "label-rel32", name: op.name, holeKind: "disp32" }
-    if (op.kind === "DerefOperand")
+    if (op.kind === "RipMemOperand")
       return { type: "label-rel32", name: op.address.name, holeKind: "disp32" }
     if (op.kind === "ExternOperand")
       return { type: "extern", name: op.name, holeKind: "imm64" }

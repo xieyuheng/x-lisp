@@ -11,8 +11,8 @@ title: cmp
 # 操作数
 
 ```
-<lhs> := (reg) (deref)
-<rhs> := (reg) <int> (deref) (address)
+<lhs> := (reg) (mem)
+<rhs> := (reg) <int> (mem) (address)
 ```
 
 <lhs> 与 <rhs> 不能同时为内存操作数

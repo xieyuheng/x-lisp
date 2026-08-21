@@ -7,8 +7,8 @@ export function operandSize(op: Operand): 1 | 2 | 4 | 8 | undefined {
   switch (op.kind) {
     case "RegOperand":
       return regSize(op.name)
-    case "DerefOperand":
-    case "RegDerefOperand":
+    case "RipMemOperand":
+    case "RegMemOperand":
       return op.size === undefined ? undefined : sizeToBytes(op.size)
     default:
       return undefined
@@ -23,7 +23,7 @@ export function deriveOpSize(instr: Instr): 1 | 2 | 4 | 8 {
   if (sizes.length === 0) {
     let message =
       `[deriveOpSize] cannot infer operand size for ${instr.op}; ` +
-      `annotate a deref with a size, e.g. (deref byte (address ...))`
+      `annotate a mem with a size, e.g. (mem byte (address ...))`
     throw new Error(message)
   }
 

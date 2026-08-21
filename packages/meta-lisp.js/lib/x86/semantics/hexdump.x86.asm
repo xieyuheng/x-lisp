@@ -40,12 +40,12 @@
   (xor (reg rax) (reg rax))                 ; Clear rax to 0
   (mov (reg rsi) (address buffer))          ; Place address of file buffer into rsi
   (add (reg rsi) (reg rcx))
-  (mov (reg al) (deref (reg rsi)))          ; Put a byte from the input buffer into al
+  (mov (reg al) (mem (reg rsi)))          ; Put a byte from the input buffer into al
   (mov (reg rbx) (reg rax))                 ; Duplicate byte in bl for second nybble
 
   ; Place address of hex-output into rdi
   (mov (reg rdi) (address hex-output))
-  (mov (reg rdi) (deref (reg rdi)))
+  (mov (reg rdi) (mem (reg rdi)))
 
   ; Here we calculate the offset into the hex-output, which is rcx X 3
   (mov (reg rdx) (reg rcx))                 ; Copy the pointer into hex-output into rdx
@@ -54,17 +54,17 @@
 
   ; Look up low nybble character and insert it into the string:
   (and (reg al) 0x0f)                       ; Mask out all but the low nybble
-  (mov (reg rsi) (deref (address hex-digits)))
+  (mov (reg rsi) (mem (address hex-digits)))
   (add (reg rsi) (reg rax))
-  (mov (reg al) (deref (reg rsi)))           ; Look up the char equivalent of nybble
-  (mov (deref (reg rdi) (reg rdx) 2) (reg al)) ; Write the char equivalent to hex-output
+  (mov (reg al) (mem (reg rsi)))           ; Look up the char equivalent of nybble
+  (mov (mem (reg rdi) (reg rdx) 2) (reg al)) ; Write the char equivalent to hex-output
 
   ; Look up high nybble character and insert it into the string:
   (shr (reg bl) 4)                           ; Shift high 4 bits of char into low 4 bits
-  (mov (reg rsi) (deref (address hex-digits)))
+  (mov (reg rsi) (mem (address hex-digits)))
   (add (reg rsi) (reg rbx))
-  (mov (reg bl) (deref (reg rsi)))           ; Look up the char equivalent of nybble
-  (mov (deref (reg rdi) (reg rdx) 1) (reg bl)) ; hex-output[rdx+1] = bl
+  (mov (reg bl) (mem (reg rsi)))           ; Look up the char equivalent of nybble
+  (mov (mem (reg rdi) (reg rdx) 1) (reg bl)) ; hex-output[rdx+1] = bl
 
   ; Bump the buffer pointer to the next character and see if we're done:
   (add (reg rcx) 1)                 ; Increment hex-output pointer
@@ -75,7 +75,7 @@
   ; Write the line of hexadecimal values to stdout:
   (mov (reg rax) 1)                  ; Specify syscall call 1: sys_write
   (mov (reg rdi) 1)                  ; Specify File Descriptor 1: Standard output
-  (mov (reg rsi) (deref (address hex-output)))   ; Pass address of hex-output in rsi
+  (mov (reg rsi) (mem (address hex-output)))   ; Pass address of hex-output in rsi
   (mov (reg rdx) 49)                 ; Pass size of the hex-output in rdx
   (syscall)
   (jmp (label read))

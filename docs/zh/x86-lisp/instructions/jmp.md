@@ -11,7 +11,7 @@ title: jmp
 # 操作数
 
 ```
-<target> := (label) (deref)
+<target> := (label) (mem)
 ```
 
 # 描述

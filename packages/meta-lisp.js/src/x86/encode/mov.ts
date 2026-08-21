@@ -1,14 +1,14 @@
 import type { Instr } from "../instr/index.ts"
 import type {
   AddressOperand,
-  DerefOperand,
   ExternOperand,
   MemOperand,
   RelocationOperand,
+  RipMemOperand,
 } from "../operand/index.ts"
+import { encodeMem } from "./mem.ts"
 import { MOD_DISP0, MOD_REG, modRM } from "./modrm.ts"
 import { isExtendedReg, regCode } from "./reg.ts"
-import { encodeMem } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
 import { checkImm8, deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
@@ -36,12 +36,12 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return [encodeMovRegAddress(dstReg, src)]
     }
 
-    if (src.kind === "DerefOperand") {
-      return [encodeMovRegDeref(dstReg, src, deriveOpSize(instr))]
+    if (src.kind === "RipMemOperand") {
+      return [encodeMovRegMem(dstReg, src, deriveOpSize(instr))]
     }
 
-    if (src.kind === "RegDerefOperand") {
-      return [encodeMovRegRegDeref(dstReg, src, deriveOpSize(instr))]
+    if (src.kind === "RegMemOperand") {
+      return [encodeMovRegRegMem(dstReg, src, deriveOpSize(instr))]
     }
 
     if (src.kind === "ExternOperand") {
@@ -53,7 +53,7 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
     }
   }
 
-  if (dst.kind === "RegDerefOperand" || dst.kind === "DerefOperand") {
+  if (dst.kind === "RegMemOperand" || dst.kind === "RipMemOperand") {
     if (src.kind === "RegOperand") {
       return [encodeMovMemReg(dst, src.name, deriveOpSize(instr))]
     }
@@ -180,9 +180,9 @@ function encodeMovRegAddress(
   }
 }
 
-function encodeMovRegDeref(
+function encodeMovRegMem(
   dstReg: string,
-  src: DerefOperand,
+  src: RipMemOperand,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(src)
@@ -198,7 +198,7 @@ function encodeMovRegDeref(
   }
 }
 
-function encodeMovRegRegDeref(
+function encodeMovRegRegMem(
   dstReg: string,
   src: MemOperand,
   size: 1 | 2 | 4 | 8,

@@ -1,11 +1,11 @@
-; x86.exe: pointer-t field — anonymous struct, read sub-field via deref
+; x86.exe: pointer-t field — anonymous struct, read sub-field via mem
 ;
 ; data layout (depth-first):
 ;   config.table  → 8B placeholder (reloc → entry bytes)
 ;   entry bytes   → key(8B zeros, reloc → "foo") + value(42)
 ;   "foo\0"
 ;
-; define-code: load config.table pointer, deref to entry.value, return 42
+; define-code: load config.table pointer, mem to entry.value, return 42
 ;   step 1: mov rax,(address my-config)                       — &my-config
 ;   step 2: mov rax,[rax + offset-of(config-t table)]         — table pointer (entry addr)
 ;   step 3: mov rax,[rax + offset-of(entry-t value)]          — entry.value
@@ -29,6 +29,6 @@
 
 (define-code main
   (mov (reg rax) (address my-config))
-  (mov (reg rax) (deref (reg rax) (offset-of config-t table)))
-  (mov (reg rax) (deref (reg rax) (offset-of entry-t value)))
+  (mov (reg rax) (mem (reg rax) (offset-of config-t table)))
+  (mov (reg rax) (mem (reg rax) (offset-of entry-t value)))
   (ret))

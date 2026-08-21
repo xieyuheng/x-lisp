@@ -30,37 +30,37 @@ test("parseOperand: hex / bin / oct integers", () => {
   }
 })
 
-test("parseOperand: deref with explicit size", () => {
-  const op = parseOperand(parse("(deref byte (address buffer))"))
-  assert.equal(op.kind, "DerefOperand")
-  if (op.kind === "DerefOperand") {
+test("parseOperand: mem with explicit size", () => {
+  const op = parseOperand(parse("(mem byte (address buffer))"))
+  assert.equal(op.kind, "RipMemOperand")
+  if (op.kind === "RipMemOperand") {
     assert.equal(op.size, "byte")
     assert.equal(op.address.name, "buffer")
   }
 })
 
-test("parseOperand: deref without size keeps undefined", () => {
-  const op = parseOperand(parse("(deref (address buffer))"))
-  assert.equal(op.kind, "DerefOperand")
-  if (op.kind === "DerefOperand") {
+test("parseOperand: mem without size keeps undefined", () => {
+  const op = parseOperand(parse("(mem (address buffer))"))
+  assert.equal(op.kind, "RipMemOperand")
+  if (op.kind === "RipMemOperand") {
     assert.equal(op.size, undefined)
   }
 })
 
-test("parseOperand: reg deref with explicit size", () => {
-  const op = parseOperand(parse("(deref dword (reg rbp) -8)"))
-  assert.equal(op.kind, "RegDerefOperand")
-  if (op.kind === "RegDerefOperand") {
+test("parseOperand: reg mem with explicit size", () => {
+  const op = parseOperand(parse("(mem dword (reg rbp) -8)"))
+  assert.equal(op.kind, "RegMemOperand")
+  if (op.kind === "RegMemOperand") {
     assert.equal(op.size, "dword")
     assert.equal(op.base, "rbp")
     assert.equal(op.disp?.kind, "IntDisplacement")
   }
 })
 
-test("parseOperand: reg deref with index omits scale", () => {
-  const op = parseOperand(parse("(deref (reg rbp) (reg rax))"))
-  assert.equal(op.kind, "RegDerefOperand")
-  if (op.kind === "RegDerefOperand") {
+test("parseOperand: reg mem with index omits scale", () => {
+  const op = parseOperand(parse("(mem (reg rbp) (reg rax))"))
+  assert.equal(op.kind, "RegMemOperand")
+  if (op.kind === "RegMemOperand") {
     assert.equal(op.base, "rbp")
     assert.equal(op.index, "rax")
     assert.equal(op.scale, undefined)
@@ -68,10 +68,10 @@ test("parseOperand: reg deref with index omits scale", () => {
   }
 })
 
-test("parseOperand: reg deref with index and disp omits scale", () => {
-  const op = parseOperand(parse("(deref (reg rbp) (reg rax) -16)"))
-  assert.equal(op.kind, "RegDerefOperand")
-  if (op.kind === "RegDerefOperand") {
+test("parseOperand: reg mem with index and disp omits scale", () => {
+  const op = parseOperand(parse("(mem (reg rbp) (reg rax) -16)"))
+  assert.equal(op.kind, "RegMemOperand")
+  if (op.kind === "RegMemOperand") {
     assert.equal(op.base, "rbp")
     assert.equal(op.index, "rax")
     assert.equal(op.scale, undefined)
@@ -82,10 +82,10 @@ test("parseOperand: reg deref with index and disp omits scale", () => {
   }
 })
 
-test("parseOperand: reg deref with scaled index", () => {
-  const op = parseOperand(parse("(deref (reg rbp) (* (reg rax) 8))"))
-  assert.equal(op.kind, "RegDerefOperand")
-  if (op.kind === "RegDerefOperand") {
+test("parseOperand: reg mem with scaled index", () => {
+  const op = parseOperand(parse("(mem (reg rbp) (* (reg rax) 8))"))
+  assert.equal(op.kind, "RegMemOperand")
+  if (op.kind === "RegMemOperand") {
     assert.equal(op.base, "rbp")
     assert.equal(op.index, "rax")
     assert.equal(op.scale, 8n)
@@ -93,10 +93,10 @@ test("parseOperand: reg deref with scaled index", () => {
   }
 })
 
-test("parseOperand: reg deref with scaled index and disp", () => {
-  const op = parseOperand(parse("(deref (reg rbp) (* (reg rax) 8) -16)"))
-  assert.equal(op.kind, "RegDerefOperand")
-  if (op.kind === "RegDerefOperand") {
+test("parseOperand: reg mem with scaled index and disp", () => {
+  const op = parseOperand(parse("(mem (reg rbp) (* (reg rax) 8) -16)"))
+  assert.equal(op.kind, "RegMemOperand")
+  if (op.kind === "RegMemOperand") {
     assert.equal(op.base, "rbp")
     assert.equal(op.index, "rax")
     assert.equal(op.scale, 8n)
@@ -107,18 +107,18 @@ test("parseOperand: reg deref with scaled index and disp", () => {
   }
 })
 
-test("deriveOpSize: infer from register when deref omits size", () => {
-  const instr = parseInstr(parse("(mov (reg al) (deref (address buffer)))"))
+test("deriveOpSize: infer from register when mem omits size", () => {
+  const instr = parseInstr(parse("(mov (reg al) (mem (address buffer)))"))
   assert.equal(deriveOpSize(instr), 1)
 })
 
-test("deriveOpSize: use explicit deref size", () => {
-  const instr = parseInstr(parse("(cmp (deref byte (address buffer)) 0x61)"))
+test("deriveOpSize: use explicit mem size", () => {
+  const instr = parseInstr(parse("(cmp (mem byte (address buffer)) 0x61)"))
   assert.equal(deriveOpSize(instr), 1)
 })
 
 test("deriveOpSize: qword from register pair", () => {
-  const instr = parseInstr(parse("(mov (reg rax) (deref (address buffer)))"))
+  const instr = parseInstr(parse("(mov (reg rax) (mem (address buffer)))"))
   assert.equal(deriveOpSize(instr), 8)
 })
 
@@ -128,7 +128,7 @@ test("deriveOpSize: size mismatch is rejected", () => {
 })
 
 test("deriveOpSize: cannot infer without any sized operand", () => {
-  const instr = parseInstr(parse("(cmp (deref (address buffer)) 0x61)"))
+  const instr = parseInstr(parse("(cmp (mem (address buffer)) 0x61)"))
   assert.throws(() => deriveOpSize(instr), /cannot infer/)
 })
 

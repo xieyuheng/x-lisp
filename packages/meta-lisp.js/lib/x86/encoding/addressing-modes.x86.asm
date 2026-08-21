@@ -11,17 +11,17 @@
 ; [base + index*scale + disp] — full SIB + displacement
 
 (define-code main
-  (mov (reg rax) (deref (reg rbp) 0))              ;; [rbp+0] → mod=01 disp8(0)
-  (mov (reg rax) (deref (reg rbp) -8))             ;; [rbp-8] → mod=01 disp8
-  (mov (reg rax) (deref (reg rbp) -128))           ;; [rbp-128] → mod=10 disp32 (imm8 boundary)
+  (mov (reg rax) (mem (reg rbp) 0))              ;; [rbp+0] → mod=01 disp8(0)
+  (mov (reg rax) (mem (reg rbp) -8))             ;; [rbp-8] → mod=01 disp8
+  (mov (reg rax) (mem (reg rbp) -128))           ;; [rbp-128] → mod=10 disp32 (imm8 boundary)
   (ret))
 
 (define-code rsp-sib
-  (mov (reg rax) (deref (reg rsp) 0))              ;; [rsp] → mod=00 rm=100 SIB(0,4,4)
-  (mov (reg rax) (deref (reg rsp) 8))              ;; [rsp+8] → mod=01 rm=100 SIB(0,4,4)
+  (mov (reg rax) (mem (reg rsp) 0))              ;; [rsp] → mod=00 rm=100 SIB(0,4,4)
+  (mov (reg rax) (mem (reg rsp) 8))              ;; [rsp+8] → mod=01 rm=100 SIB(0,4,4)
   (ret))
 
 (define-code sib-with-index
-  (mov (reg rax) (deref (reg rbp) (* (reg rcx) 8)))    ;; [rbp+rcx*8] → SIB(3,rcx,rbp)
-  (mov (reg rax) (deref (reg rbp) (* (reg rcx) 8) -16));; [rbp+rcx*8-16] → SIB(3,rcx,rbp) + disp8
+  (mov (reg rax) (mem (reg rbp) (* (reg rcx) 8)))    ;; [rbp+rcx*8] → SIB(3,rcx,rbp)
+  (mov (reg rax) (mem (reg rbp) (* (reg rcx) 8) -16));; [rbp+rcx*8-16] → SIB(3,rcx,rbp) + disp8
   (ret))

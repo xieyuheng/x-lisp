@@ -1,8 +1,8 @@
 import type { Instr } from "../instr/index.ts"
 import type { MemOperand } from "../operand/index.ts"
+import { encodeMem } from "./mem.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
-import { encodeMem } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
 import { checkImm8, deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
@@ -37,7 +37,7 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
     }
   }
 
-  if (dst.kind === "RegDerefOperand" || dst.kind === "DerefOperand") {
+  if (dst.kind === "RegMemOperand" || dst.kind === "RipMemOperand") {
     if (src.kind === "RegOperand") {
       return [encodeArithMemReg(dst, src.name, map, deriveOpSize(instr))]
     }
@@ -48,7 +48,7 @@ export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
   }
 
   if (
-    (src.kind === "RegDerefOperand" || src.kind === "DerefOperand") &&
+    (src.kind === "RegMemOperand" || src.kind === "RipMemOperand") &&
     dst.kind === "RegOperand"
   ) {
     return [encodeArithRegMem(dst.name, src, map, deriveOpSize(instr))]

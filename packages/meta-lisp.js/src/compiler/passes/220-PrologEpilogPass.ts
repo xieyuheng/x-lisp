@@ -2,7 +2,7 @@ import * as X86 from "../../x86/index.ts"
 
 export function PrologEpilogPass(
   x86Mod: X86.Mod,
-  homeMap: Map<string, X86.RegDerefOperand>,
+  homeMap: Map<string, X86.RegMemOperand>,
 ): X86.Mod {
   const newMod: X86.Mod = { definitions: new Map() }
 
@@ -30,12 +30,12 @@ export function PrologEpilogPass(
 
 function computeStackSpace(
   instrs: Array<X86.Instr>,
-  homeMap: Map<string, X86.RegDerefOperand>,
+  homeMap: Map<string, X86.RegMemOperand>,
 ): number {
   let maxAbsOffset = 0n
   for (const instr of instrs) {
     for (const op of instr.operands) {
-      if (op.kind === "RegDerefOperand") {
+      if (op.kind === "RegMemOperand") {
         const disp = op.disp
         if (disp && disp.kind === "IntDisplacement") {
           const v = disp.value < 0n ? -disp.value : disp.value

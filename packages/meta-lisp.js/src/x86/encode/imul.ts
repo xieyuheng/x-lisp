@@ -1,7 +1,7 @@
 import type { Instr } from "../instr/index.ts"
+import { encodeRegMem } from "./mem.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
-import { encodeRegDeref } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
 import { deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
@@ -28,8 +28,8 @@ export function encodeImul(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
-  if (dst.kind === "RegOperand" && src.kind === "RegDerefOperand") {
-    const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(src)
+  if (dst.kind === "RegOperand" && src.kind === "RegMemOperand") {
+    const { modrm, sib, disp, rexRm, rexIndex } = encodeRegMem(src)
     return [
       {
         prefixes: sizePrefix(size),

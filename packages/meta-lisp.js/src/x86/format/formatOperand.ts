@@ -17,13 +17,13 @@ export function formatOperand(operand: X86.Operand): string {
       return `(label ${operand.name})`
     case "AddressOperand":
       return `(address ${operand.name})`
-    case "DerefOperand": {
+    case "RipMemOperand": {
       const parts: Array<string> = []
       if (operand.size !== undefined) parts.push(operand.size)
       parts.push(formatOperand(operand.address))
-      return `(deref ${parts.join(" ")})`
+      return `(mem ${parts.join(" ")})`
     }
-    case "RegDerefOperand": {
+    case "RegMemOperand": {
       const parts: Array<string> = []
       if (operand.size !== undefined) parts.push(operand.size)
       parts.push(`(reg ${operand.base})`)
@@ -37,7 +37,7 @@ export function formatOperand(operand: X86.Operand): string {
       if (operand.disp !== undefined) {
         parts.push(formatDisplacement(operand.disp))
       }
-      return `(deref ${parts.join(" ")})`
+      return `(mem ${parts.join(" ")})`
     }
     case "CcOperand":
       return `(cc ${operand.code})`

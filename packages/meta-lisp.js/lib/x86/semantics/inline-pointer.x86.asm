@@ -2,9 +2,9 @@
 ;; path: (@pointer (@struct point-t ...)) → parseOperand fallback → parseExp → PointerExp
 ;;       → ResolveDataOperands: evaluate → PointerValue
 ;;       → register anonymous DataDefinition (©data.N)
-;;       → replace with DerefOperand
+;;       → replace with RipMemOperand
 ;;       → encode: mov rax, [rip + disp32]
-;;       → rax now holds pointer to anonymous struct; deref reads first field (x=77)
+;;       → rax now holds pointer to anonymous struct; mem reads first field (x=77)
 
 (define-struct point-t
   (x int64-t)
@@ -12,5 +12,5 @@
 
 (define-code main
   (mov (reg rax) (pointer (struct point-t (x 77) (y 88))))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (reg rax)))
   (ret))

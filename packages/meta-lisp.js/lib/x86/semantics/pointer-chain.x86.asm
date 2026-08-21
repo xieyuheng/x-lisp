@@ -1,7 +1,7 @@
 ; x86.exe: pointer chain with non-recursive structs — A -> B -> C
 ;
 ; node-a.next -> node-b.next -> node-c (value=77)
-; define-code derefs a->b->c->value, returns 77
+; define-code reads through a->b->c->value, returns 77
 ;
 ; Tests: deferred emit across multiple pointer levels with separate struct types
 
@@ -28,7 +28,7 @@
 
 (define-code main
   (mov (reg rax) (address chain))
-  (mov (reg rax) (deref (reg rax) (offset-of node-a-t next)))
-  (mov (reg rax) (deref (reg rax)))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (reg rax) (offset-of node-a-t next)))
+  (mov (reg rax) (mem (reg rax)))
+  (mov (reg rax) (mem (reg rax)))
   (ret))

@@ -1,7 +1,7 @@
 ;; test: (address name) in operand position → AddressOperand
 ;; path: (address answer) → parseOperand → AddressOperand("answer")
 ;;       → encode: lea rax, [rip + disp32] (movabs with relocation)
-;;       → then deref to read the value
+;;       → then mem to read the value
 
 (define-struct int-cell-t
   (value int64-t))
@@ -11,5 +11,5 @@
 
 (define-code main
   (mov (reg rax) (address answer))
-  (mov (reg rax) (deref (reg rax)))
+  (mov (reg rax) (mem (reg rax)))
   (ret))

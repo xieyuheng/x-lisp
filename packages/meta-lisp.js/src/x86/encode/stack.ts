@@ -1,6 +1,6 @@
 import type { Instr } from "../instr/index.ts"
+import { encodeRegMem } from "./mem.ts"
 import { regCode } from "./reg.ts"
-import { encodeRegDeref } from "./regderef.ts"
 import { computeRex } from "./rex.ts"
 import type { EncodedInstruction } from "./types.ts"
 
@@ -11,8 +11,8 @@ export function encodeStack(instr: Instr): Array<EncodedInstruction> {
     if (op.kind === "RegOperand") {
       return [encodePushReg(op.name)]
     }
-    if (op.kind === "RegDerefOperand") {
-      return [encodePushRegDeref(op)]
+    if (op.kind === "RegMemOperand") {
+      return [encodePushRegMem(op)]
     }
   }
 
@@ -38,10 +38,10 @@ function encodePushReg(reg: string): EncodedInstruction {
   }
 }
 
-function encodePushRegDeref(
-  op: import("../operand/index.ts").RegDerefOperand,
+function encodePushRegMem(
+  op: import("../operand/index.ts").RegMemOperand,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegDeref(op)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeRegMem(op)
   return {
     prefixes: [],
     rex: computeRex(false, null, rexIndex, rexRm),
