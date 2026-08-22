@@ -21,7 +21,7 @@ const KNOWN_REGS = new Set([
 
 export type AssignHomesResult = {
   mod: X86.Mod
-  homeMap: Map<string, X86.RegMemOperand>
+  homeMap: Map<string, X86.Operand>
 }
 
 export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
