@@ -1,153 +1,151 @@
 import * as X86 from "../../x86/index.ts"
 
-export function PatchInstructionsPass(x86Mod: X86.Mod): X86.Mod {
-  const newMod: X86.Mod = { definitions: new Map() }
+export function PatchInstructionsPass(x86Mod: X86.Mod): void {
+  // const newMod: X86.Mod = { definitions: new Map() }
 
-  for (const definition of x86Mod.definitions.values()) {
-    if (definition.kind !== "CodeDefinition") {
-      newMod.definitions.set(definition.name, definition)
-      continue
-    }
+  // for (const definition of x86Mod.definitions.values()) {
+  //   if (definition.kind !== "CodeDefinition") {
+  //     newMod.definitions.set(definition.name, definition)
+  //     continue
+  //   }
 
-    const newInstrs = definition.instrs.flatMap((instr) => patchInstr(instr))
-    newMod.definitions.set(
-      definition.name,
-      X86.CodeDefinition(definition.name, newInstrs),
-    )
-  }
-
-  return newMod
+  //   const newInstrs = definition.instrs.flatMap((instr) => patchInstr(instr))
+  //   newMod.definitions.set(
+  //     definition.name,
+  //     X86.CodeDefinition(definition.name, newInstrs),
+  //   )
+  // }
 }
 
-function patchInstr(instr: X86.Instr): Array<X86.Instr> {
-  if (instr.op === "tail-jmp" || instr.op === "label") {
-    return [instr]
-  }
+// function patchInstr(instr: X86.Instr): Array<X86.Instr> {
+//   if (instr.op === "tail-jmp" || instr.op === "label") {
+//     return [instr]
+//   }
 
-  const [dst, src] = instr.operands
+//   const [dst, src] = instr.operands
 
-  if (
-    instr.op === "mov" &&
-    dst?.kind === "RegMemOperand" &&
-    src?.kind === "RegMemOperand" &&
-    isSameRegMem(dst, src)
-  ) {
-    return []
-  }
+//   if (
+//     instr.op === "mov" &&
+//     dst?.kind === "RegMemOperand" &&
+//     src?.kind === "RegMemOperand" &&
+//     isSameRegMem(dst, src)
+//   ) {
+//     return []
+//   }
 
-  if (dst?.kind === "RegMemOperand" && src?.kind === "RegMemOperand") {
-    return patchTwoMemory(instr)
-  }
+//   if (dst?.kind === "RegMemOperand" && src?.kind === "RegMemOperand") {
+//     return patchTwoMemory(instr)
+//   }
 
-  if (dst?.kind === "RegMemOperand" && requiresRegDst(instr.op)) {
-    return patchRegDstRequired(instr)
-  }
+//   if (dst?.kind === "RegMemOperand" && requiresRegDst(instr.op)) {
+//     return patchRegDstRequired(instr)
+//   }
 
-  return [instr]
-}
+//   return [instr]
+// }
 
-const regDstRequiredOps = new Set(["shl", "shr", "sar", "imul", "movzx"])
+// const regDstRequiredOps = new Set(["shl", "shr", "sar", "imul", "movzx"])
 
-function requiresRegDst(op: string): boolean {
-  return regDstRequiredOps.has(op)
-}
+// function requiresRegDst(op: string): boolean {
+//   return regDstRequiredOps.has(op)
+// }
 
-function isSameRegMem(a: X86.RegMemOperand, b: X86.RegMemOperand): boolean {
-  if (a.base !== b.base) return false
-  if (a.index !== b.index) return false
-  if (a.scale !== b.scale) return false
-  if (a.disp === undefined && b.disp === undefined) return true
-  if (a.disp === undefined || b.disp === undefined) return false
-  if (a.disp.kind !== "IntDisplacement" || b.disp.kind !== "IntDisplacement")
-    return false
-  return a.disp.value === b.disp.value
-}
+// function isSameRegMem(a: X86.RegMemOperand, b: X86.RegMemOperand): boolean {
+//   if (a.base !== b.base) return false
+//   if (a.index !== b.index) return false
+//   if (a.scale !== b.scale) return false
+//   if (a.disp === undefined && b.disp === undefined) return true
+//   if (a.disp === undefined || b.disp === undefined) return false
+//   if (a.disp.kind !== "IntDisplacement" || b.disp.kind !== "IntDisplacement")
+//     return false
+//   return a.disp.value === b.disp.value
+// }
 
-function patchTwoMemory(instr: X86.Instr): Array<X86.Instr> {
-  const [dst, src] = instr.operands as [X86.RegMemOperand, X86.RegMemOperand]
+// function patchTwoMemory(instr: X86.Instr): Array<X86.Instr> {
+//   const [dst, src] = instr.operands as [X86.RegMemOperand, X86.RegMemOperand]
 
-  switch (instr.op) {
-    case "mov": {
-      return [
-        X86.Instr("mov", [X86.RegOperand("rax"), src]),
-        X86.Instr("mov", [dst, X86.RegOperand("rax")]),
-      ]
-    }
+//   switch (instr.op) {
+//     case "mov": {
+//       return [
+//         X86.Instr("mov", [X86.RegOperand("rax"), src]),
+//         X86.Instr("mov", [dst, X86.RegOperand("rax")]),
+//       ]
+//     }
 
-    case "add":
-    case "sub":
-    case "and":
-    case "or":
-    case "xor":
-    case "cmp": {
-      return [
-        X86.Instr("mov", [X86.RegOperand("rax"), src]),
-        X86.Instr(instr.op, [dst, X86.RegOperand("rax")]),
-      ]
-    }
+//     case "add":
+//     case "sub":
+//     case "and":
+//     case "or":
+//     case "xor":
+//     case "cmp": {
+//       return [
+//         X86.Instr("mov", [X86.RegOperand("rax"), src]),
+//         X86.Instr(instr.op, [dst, X86.RegOperand("rax")]),
+//       ]
+//     }
 
-    case "shl":
-    case "shr":
-    case "sar": {
-      return [
-        X86.Instr("mov", [X86.RegOperand("rax"), dst]),
-        X86.Instr("mov", [X86.RegOperand("rcx"), src]),
-        X86.Instr(instr.op, [X86.RegOperand("rax"), X86.RegOperand("rcx")]),
-        X86.Instr("mov", [dst, X86.RegOperand("rax")]),
-      ]
-    }
+//     case "shl":
+//     case "shr":
+//     case "sar": {
+//       return [
+//         X86.Instr("mov", [X86.RegOperand("rax"), dst]),
+//         X86.Instr("mov", [X86.RegOperand("rcx"), src]),
+//         X86.Instr(instr.op, [X86.RegOperand("rax"), X86.RegOperand("rcx")]),
+//         X86.Instr("mov", [dst, X86.RegOperand("rax")]),
+//       ]
+//     }
 
-    case "imul": {
-      return [
-        X86.Instr("mov", [X86.RegOperand("rax"), src]),
-        X86.Instr(instr.op, [X86.RegOperand("rax"), dst]),
-        X86.Instr("mov", [dst, X86.RegOperand("rax")]),
-      ]
-    }
+//     case "imul": {
+//       return [
+//         X86.Instr("mov", [X86.RegOperand("rax"), src]),
+//         X86.Instr(instr.op, [X86.RegOperand("rax"), dst]),
+//         X86.Instr("mov", [dst, X86.RegOperand("rax")]),
+//       ]
+//     }
 
-    default: {
-      return [instr]
-    }
-  }
-}
+//     default: {
+//       return [instr]
+//     }
+//   }
+// }
 
-function patchRegDstRequired(instr: X86.Instr): Array<X86.Instr> {
-  const [dst, src] = instr.operands
+// function patchRegDstRequired(instr: X86.Instr): Array<X86.Instr> {
+//   const [dst, src] = instr.operands
 
-  switch (instr.op) {
-    case "shl":
-    case "shr":
-    case "sar": {
-      if (src?.kind === "ImmOperand") {
-        return [
-          X86.Instr("mov", [X86.RegOperand("rax"), dst]),
-          X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
-          X86.Instr("mov", [dst, X86.RegOperand("rax")]),
-        ]
-      }
-      return [instr]
-    }
+//   switch (instr.op) {
+//     case "shl":
+//     case "shr":
+//     case "sar": {
+//       if (src?.kind === "ImmOperand") {
+//         return [
+//           X86.Instr("mov", [X86.RegOperand("rax"), dst]),
+//           X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
+//           X86.Instr("mov", [dst, X86.RegOperand("rax")]),
+//         ]
+//       }
+//       return [instr]
+//     }
 
-    case "movzx": {
-      if (src?.kind === "RegOperand") {
-        return [
-          X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
-          X86.Instr("mov", [dst, X86.RegOperand("rax")]),
-        ]
-      }
-      return [instr]
-    }
+//     case "movzx": {
+//       if (src?.kind === "RegOperand") {
+//         return [
+//           X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
+//           X86.Instr("mov", [dst, X86.RegOperand("rax")]),
+//         ]
+//       }
+//       return [instr]
+//     }
 
-    case "imul": {
-      return [
-        X86.Instr("mov", [X86.RegOperand("rax"), dst]),
-        X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
-        X86.Instr("mov", [dst, X86.RegOperand("rax")]),
-      ]
-    }
+//     case "imul": {
+//       return [
+//         X86.Instr("mov", [X86.RegOperand("rax"), dst]),
+//         X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
+//         X86.Instr("mov", [dst, X86.RegOperand("rax")]),
+//       ]
+//     }
 
-    default: {
-      return [instr]
-    }
-  }
-}
+//     default: {
+//       return [instr]
+//     }
+//   }
+// }

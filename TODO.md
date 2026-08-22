@@ -1,6 +1,5 @@
 # x86-64
 
-[compiler] 200-AssignHomesPass.ts -- use `HomeInfoMap`
 [compiler] 210-PatchInstructionsPass.ts -- use side effect on mod
 [compiler] 220-PrologEpilogPass.ts -- use side effect on mod
 
