@@ -1,11 +1,6 @@
 # x86-64
 
-[x86] Mod -- 带有 `homeInfos` -- 每个函数都有自己的 `HomeInfo`
-[compiler] 198-AllocateRegisterPass.ts -- 先不分配寄存器，只是返回 HomeInfo
-
-```typescript
-HomeInfo: { locations: Map<string, X86.Operand> }
-```
+[compiler] 198-AllocateRegisterPass.ts -- 先不分配寄存器，只是返回 `HomeInfoMap`
 
 200-AssignHomesPass.ts -- use side effect on mod
 210-PatchInstructionsPass.ts -- use side effect on mod

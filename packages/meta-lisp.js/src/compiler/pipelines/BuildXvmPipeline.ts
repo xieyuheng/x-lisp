@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url"
 import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
 import * as Xvm from "../../xvm/index.ts"
-import * as Passes from "../passes/index.ts"
+import * as Compiler from "../../compiler/index.ts"
 
 export function BuildXvmPipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
@@ -44,11 +44,11 @@ export function BuildXvmPipeline(rootPkg: M.Package): void {
   for (const pkg of closure) M.LimitArityPass(pkg, 6)
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
-  const xvmResult = Passes.XvmExplicateControlPass(rootPkg)
+  const xvmResult = Compiler.XvmExplicateControlPass(rootPkg)
   B.CopyPropagationPass(xvmResult.mod)
   BasicBundle(rootPkg, xvmResult.mod)
 
-  const xvmMod = Passes.XvmCodegenPass(xvmResult)
+  const xvmMod = Compiler.XvmCodegenPass(xvmResult)
   XvmBundle(rootPkg, xvmMod)
 
   xvmAssemble(rootPkg)

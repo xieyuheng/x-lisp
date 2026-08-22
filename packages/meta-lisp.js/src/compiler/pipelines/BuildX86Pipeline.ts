@@ -6,7 +6,7 @@ import {
 import * as B from "../../basic/index.ts"
 import * as M from "../../meta/index.ts"
 import * as X86 from "../../x86/index.ts"
-import * as Passes from "../passes/index.ts"
+import * as Compiler from "../../compiler/index.ts"
 
 export function BuildX86Pipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
@@ -41,17 +41,19 @@ export function BuildX86Pipeline(rootPkg: M.Package): void {
   for (const pkg of closure) M.LimitArityPass(pkg, 6)
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
-  const basicMod = Passes.ExplicateControlPass(rootPkg)
+  const basicMod = Compiler.ExplicateControlPass(rootPkg)
   B.CopyPropagationPass(basicMod)
   BasicBundle(rootPkg, basicMod)
 
   const ssaReport = B.SsaAnalysisPass(rootPkg, basicMod)
 
-  const x86Mod = Passes.SelectInstructionPass(rootPkg, basicMod, ssaReport)
+  const x86Mod = Compiler.SelectInstructionPass(rootPkg, basicMod, ssaReport)
 
-  const { mod: x86ModAssigned, homeMap } = Passes.AssignHomesPass(x86Mod)
-  const x86ModPatched = Passes.PatchInstructionsPass(x86ModAssigned)
-  const x86ModFinal = Passes.PrologEpilogPass(x86ModPatched, homeMap)
+  const homeInfoMap = Compiler.AllocateRegistersPass(x86Mod)
+
+  const { mod: x86ModAssigned, homeMap } = Compiler.AssignHomesPass(x86Mod)
+  const x86ModPatched = Compiler.PatchInstructionsPass(x86ModAssigned)
+  const x86ModFinal = Compiler.PrologEpilogPass(x86ModPatched, homeMap)
 
   X86Bundle(rootPkg, x86ModFinal)
 }
