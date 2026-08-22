@@ -2,12 +2,12 @@ import * as X86 from "../../x86/index.ts"
 import type { HomeInfoMap } from "./198-AllocateRegistersPass.ts";
 
 export function PrologEpilogPass(
-  x86Mod: X86.Mod,
+  mod: X86.Mod,
   homeInfoMap: HomeInfoMap,
 ): void {
   // const newMod: X86.Mod = { definitions: new Map() }
 
-  // for (const definition of x86Mod.definitions.values()) {
+  // for (const definition of mod.definitions.values()) {
   //   if (definition.kind !== "CodeDefinition") {
   //     newMod.definitions.set(definition.name, definition)
   //     continue

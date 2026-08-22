@@ -1,6 +1,6 @@
 # x86-64
 
-[compiler] 210-PatchInstructionsPass.ts -- use side effect on mod
+[compiler] 210-PatchInstructionsPass.ts -- review
 [compiler] 220-PrologEpilogPass.ts -- use side effect on mod
 
 # loader
