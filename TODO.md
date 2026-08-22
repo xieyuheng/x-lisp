@@ -1,10 +1,8 @@
 # x86-64
 
-[compiler] 198-AllocateRegisterPass.ts -- 先不分配寄存器，只是返回 `HomeInfoMap`
-
-200-AssignHomesPass.ts -- use side effect on mod
-210-PatchInstructionsPass.ts -- use side effect on mod
-220-PrologEpilogPass.ts -- use side effect on mod
+[compiler] 200-AssignHomesPass.ts -- use `HomeInfoMap`
+[compiler] 210-PatchInstructionsPass.ts -- use side effect on mod
+[compiler] 220-PrologEpilogPass.ts -- use side effect on mod
 
 # loader
 

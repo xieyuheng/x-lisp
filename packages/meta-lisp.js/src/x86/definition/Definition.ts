@@ -5,8 +5,8 @@ import type { Type } from "../type/index.ts"
 export type Definition =
   | CodeDefinition
   | DataDefinition
-  | StructDefinition
   | SpaceDefinition
+  | StructDefinition
   | PrimitiveTypeDefinition
 
 export type CodeDefinition = {
@@ -26,6 +26,12 @@ export function CodeDefinition(
   }
 }
 
+export function isCodeDefinition(
+  definition: Definition,
+): definition is CodeDefinition {
+  return definition.kind === "CodeDefinition"
+}
+
 export type DataDefinition = {
   kind: "DataDefinition"
   name: string
@@ -38,6 +44,32 @@ export function DataDefinition(name: string, value: Data): DataDefinition {
     name,
     value,
   }
+}
+
+export function isDataDefinition(
+  definition: Definition,
+): definition is DataDefinition {
+  return definition.kind === "DataDefinition"
+}
+
+export type SpaceDefinition = {
+  kind: "SpaceDefinition"
+  name: string
+  size: Data
+}
+
+export function SpaceDefinition(name: string, size: Data): SpaceDefinition {
+  return {
+    kind: "SpaceDefinition",
+    name,
+    size,
+  }
+}
+
+export function isSpaceDefinition(
+  definition: Definition,
+): definition is SpaceDefinition {
+  return definition.kind === "SpaceDefinition"
 }
 
 export type StructDefinition = {
@@ -54,20 +86,6 @@ export function StructDefinition(
     kind: "StructDefinition",
     name,
     fields,
-  }
-}
-
-export type SpaceDefinition = {
-  kind: "SpaceDefinition"
-  name: string
-  size: Data
-}
-
-export function SpaceDefinition(name: string, size: Data): SpaceDefinition {
-  return {
-    kind: "SpaceDefinition",
-    name,
-    size,
   }
 }
 

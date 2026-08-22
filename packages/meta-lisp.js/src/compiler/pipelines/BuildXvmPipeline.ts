@@ -7,9 +7,9 @@ import { systemShellRun } from "@xieyuheng/std.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B from "../../basic/index.ts"
+import * as Compiler from "../../compiler/index.ts"
 import * as M from "../../meta/index.ts"
 import * as Xvm from "../../xvm/index.ts"
-import * as Compiler from "../../compiler/index.ts"
 
 export function BuildXvmPipeline(rootPkg: M.Package): void {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
