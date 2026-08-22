@@ -1,8 +1,15 @@
 # x86-64
 
-review 200-AssignHomesPass.ts
-review 210-PatchInstructionsPass.ts
-review 220-PrologEpilogPass.ts
+[x86] Mod -- 带有 `homeInfos` -- 每个函数都有自己的 `HomeInfo`
+[compiler] 198-AllocateRegisterPass.ts -- 先不分配寄存器，只是返回 HomeInfo
+
+```typescript
+HomeInfo: { locations: Map<string, X86.Operand> }
+```
+
+200-AssignHomesPass.ts -- use side effect on mod
+210-PatchInstructionsPass.ts -- use side effect on mod
+220-PrologEpilogPass.ts -- use side effect on mod
 
 # loader
 

@@ -1,34 +1,15 @@
 import * as X86 from "../../x86/index.ts"
 
-const KNOWN_REGS = new Set([
-  "rax",
-  "rcx",
-  "rdx",
-  "rbx",
-  "rsp",
-  "rbp",
-  "rsi",
-  "rdi",
-  "r8",
-  "r9",
-  "r10",
-  "r11",
-  "r12",
-  "r13",
-  "r14",
-  "r15",
-])
-
 export type AssignHomesResult = {
   mod: X86.Mod
   homeMap: Map<string, X86.Operand>
 }
 
-export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
+export function AssignHomesPass(mod: X86.Mod): AssignHomesResult {
   const newMod: X86.Mod = { definitions: new Map() }
 
   const allVars = new Set<string>()
-  for (const definition of x86Mod.definitions.values()) {
+  for (const definition of mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") {
       newMod.definitions.set(definition.name, definition)
       continue
@@ -55,7 +36,7 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
     index++
   }
 
-  for (const definition of x86Mod.definitions.values()) {
+  for (const definition of mod.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
     const newInstrs = definition.instrs.flatMap((instr) =>
       assignInstrHomes(instr, homeMap),
@@ -68,6 +49,25 @@ export function AssignHomesPass(x86Mod: X86.Mod): AssignHomesResult {
 
   return { mod: newMod, homeMap }
 }
+
+const KNOWN_REGS = new Set([
+  "rax",
+  "rcx",
+  "rdx",
+  "rbx",
+  "rsp",
+  "rbp",
+  "rsi",
+  "rdi",
+  "r8",
+  "r9",
+  "r10",
+  "r11",
+  "r12",
+  "r13",
+  "r14",
+  "r15",
+])
 
 function isVariableRegMemBase(name: string): boolean {
   return !KNOWN_REGS.has(name)
