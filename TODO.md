@@ -1,7 +1,4 @@
-# x86-64
-
 [compiler] 210-PatchInstructionsPass.ts -- review
-[compiler] 220-PrologEpilogPass.ts -- review
 
 # loader
 

@@ -3,7 +3,9 @@ import * as X86 from "../../x86/index.ts"
 export function PatchInstructionsPass(mod: X86.Mod): void {
   for (const definition of mod.definitions.values()) {
     if (X86.isCodeDefinition(definition)) {
-      definition.instrs = definition.instrs.flatMap((instr) => patchInstr(instr))
+      definition.instrs = definition.instrs.flatMap((instr) =>
+        patchInstr(instr),
+      )
     }
   }
 }
@@ -17,9 +19,9 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
 
   if (
     instr.op === "mov" &&
-      dst?.kind === "RegMemOperand" &&
-      src?.kind === "RegMemOperand" &&
-      isSameRegMem(dst, src)
+    dst?.kind === "RegMemOperand" &&
+    src?.kind === "RegMemOperand" &&
+    isSameRegMem(dst, src)
   ) {
     return []
   }

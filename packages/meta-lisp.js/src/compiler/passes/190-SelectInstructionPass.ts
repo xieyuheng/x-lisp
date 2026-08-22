@@ -302,10 +302,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       if (val) {
         return [
           X86.Instr("mov", [X86.RegOperand("rax"), cellToVar(val)]),
-          X86.Instr("ret", []),
+          X86.Instr("jmp", [X86.LabelOperand("epilog")]),
         ]
       }
-      return [X86.Instr("ret", [])]
+      return [X86.Instr("jmp", [X86.LabelOperand("epilog")])]
     }
 
     case "goto": {
