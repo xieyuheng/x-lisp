@@ -69,11 +69,11 @@ function prologEpilogDefinition(
     X86.Instr("mov", [X86.RegOperand("rbp"), X86.RegOperand("rsp")]),
     ...(stackSpace > 0
       ? [
-        X86.Instr("sub", [
-          X86.RegOperand("rsp"),
-          X86.ImmOperand(BigInt(stackSpace)),
-        ]),
-      ]
+          X86.Instr("sub", [
+            X86.RegOperand("rsp"),
+            X86.ImmOperand(BigInt(stackSpace)),
+          ]),
+        ]
       : []),
   ]
 

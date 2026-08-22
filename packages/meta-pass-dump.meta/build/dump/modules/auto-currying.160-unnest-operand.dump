@@ -13,8 +13,8 @@
 (define (example-eta-expansion©λ1 ©closure curried.1)
   (meta-builtin/builtin/iadd 1 curried.1))
 
-(define (example-eta-expansion©λ2 ©closure curried.1)
-  (meta-builtin/builtin/iadd 1 curried.1))
+(define (example-eta-expansion©λ2 ©closure curried.1.1)
+  (meta-builtin/builtin/iadd 1 curried.1.1))
 
 (define (adder©λ1 ©closure x)
   (let ((n (meta-builtin/builtin/closure-arg 0 ©closure)))

@@ -56,11 +56,11 @@
          is-even)
         (begin
           (meta-builtin/builtin/box-put
-           (lambda (n.1)
-             (if (meta-builtin/builtin/equal n.1 0)
+           (lambda (n)
+             (if (meta-builtin/builtin/equal n 0)
                meta-builtin/builtin/false
                ((meta-builtin/builtin/box-get is-even)
-                (meta-builtin/builtin/isub n.1 1))))
+                (meta-builtin/builtin/isub n 1))))
            is-odd)
           meta-builtin/builtin/void)))))
 
@@ -77,10 +77,10 @@
          is-even)
         (begin
           (meta-builtin/builtin/box-put
-           (lambda (n.1)
-             (if (meta-builtin/builtin/equal n.1 0)
+           (lambda (n)
+             (if (meta-builtin/builtin/equal n 0)
                meta-builtin/builtin/false
                ((meta-builtin/builtin/box-get is-even)
-                (meta-builtin/builtin/isub n.1 1))))
+                (meta-builtin/builtin/isub n 1))))
            is-odd)
           meta-builtin/builtin/void)))))

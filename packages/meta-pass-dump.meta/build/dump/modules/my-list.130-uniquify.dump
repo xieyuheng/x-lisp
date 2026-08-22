@@ -1,16 +1,6 @@
-(claim my-list-t (-> meta-builtin/builtin/type-t meta-builtin/builtin/type-t))
-
-(define-enum (my-list-t E)
-  (nil)
-  (li (head E) (tail (self/my-list/my-list-t E))))
-
-(claim nil (all (E) (-> (my-list-t E))))
-
 (define (nil)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin (meta-builtin/builtin/list-push nil list) list)))
-
-(claim is-nil (all (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
 (define (is-nil value)
   (if (meta-builtin/builtin/is-list value)
@@ -18,8 +8,6 @@
       (meta-builtin/builtin/equal (meta-builtin/builtin/list-head value) nil)
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
-
-(claim li (all (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li head tail)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -29,8 +17,6 @@
         (meta-builtin/builtin/list-push head list)
         (begin (meta-builtin/builtin/list-push tail list) list)))))
 
-(claim is-li (all (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
-
 (define (is-li value)
   (if (meta-builtin/builtin/is-list value)
     (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 3)
@@ -38,20 +24,12 @@
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(claim li-head (all (E) (-> (my-list-t E) E)))
-
 (define (li-head target) (meta-builtin/builtin/list-get 1 target))
-
-(claim li-put-head (all (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li-put-head value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(claim li-tail (all (E) (-> (my-list-t E) (my-list-t E))))
-
 (define (li-tail target) (meta-builtin/builtin/list-get 2 target))
-
-(claim li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
 (define (li-put-tail value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))

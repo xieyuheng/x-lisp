@@ -51,8 +51,8 @@ title: passes
 # ClaimPass
 # QualifyPass
 # LocatePass
-# UniquifyPass
 # CheckPass
+# UniquifyPass
 # ConvertClosurePass
 # LimitArityPass
 # UnnestOperandPass

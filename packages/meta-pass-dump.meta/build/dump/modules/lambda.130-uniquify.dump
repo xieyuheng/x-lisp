@@ -1,25 +1,8 @@
-(claim term-t meta-builtin/builtin/type-t)
-
-(define-enum term-t
-  (var-term (name meta-builtin/builtin/symbol-t))
-  (apply-term (target self/lambda/term-t) (arg self/lambda/term-t))
-  (lambda-term
-   (parameter meta-builtin/builtin/symbol-t)
-   (body self/lambda/term-t))
-  (let-term
-   (name meta-builtin/builtin/symbol-t)
-   (rhs self/lambda/term-t)
-   (body self/lambda/term-t)))
-
-(claim var-term (-> meta-builtin/builtin/symbol-t term-t))
-
 (define (var-term name)
   (let ((list (meta-builtin/builtin/make-list)))
     (begin
       (meta-builtin/builtin/list-push var-term list)
       (begin (meta-builtin/builtin/list-push name list) list))))
-
-(claim is-var-term (-> term-t meta-builtin/builtin/bool-t))
 
 (define (is-var-term value)
   (if (meta-builtin/builtin/is-list value)
@@ -30,16 +13,10 @@
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(claim var-term-name (-> term-t meta-builtin/builtin/symbol-t))
-
 (define (var-term-name target) (meta-builtin/builtin/list-get 1 target))
-
-(claim var-term-put-name (-> meta-builtin/builtin/symbol-t term-t term-t))
 
 (define (var-term-put-name value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
-
-(claim apply-term (-> term-t term-t term-t))
 
 (define (apply-term target arg)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -48,8 +25,6 @@
       (begin
         (meta-builtin/builtin/list-push target list)
         (begin (meta-builtin/builtin/list-push arg list) list)))))
-
-(claim is-apply-term (-> term-t meta-builtin/builtin/bool-t))
 
 (define (is-apply-term value)
   (if (meta-builtin/builtin/is-list value)
@@ -60,25 +35,15 @@
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(claim apply-term-target (-> term-t term-t))
-
 (define (apply-term-target target) (meta-builtin/builtin/list-get 1 target))
-
-(claim apply-term-put-target (-> term-t term-t term-t))
 
 (define (apply-term-put-target value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(claim apply-term-arg (-> term-t term-t))
-
 (define (apply-term-arg target) (meta-builtin/builtin/list-get 2 target))
-
-(claim apply-term-put-arg (-> term-t term-t term-t))
 
 (define (apply-term-put-arg value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
-
-(claim lambda-term (-> meta-builtin/builtin/symbol-t term-t term-t))
 
 (define (lambda-term parameter body)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -87,8 +52,6 @@
       (begin
         (meta-builtin/builtin/list-push parameter list)
         (begin (meta-builtin/builtin/list-push body list) list)))))
-
-(claim is-lambda-term (-> term-t meta-builtin/builtin/bool-t))
 
 (define (is-lambda-term value)
   (if (meta-builtin/builtin/is-list value)
@@ -99,26 +62,15 @@
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(claim lambda-term-parameter (-> term-t meta-builtin/builtin/symbol-t))
-
 (define (lambda-term-parameter target) (meta-builtin/builtin/list-get 1 target))
-
-(claim lambda-term-put-parameter
-  (-> meta-builtin/builtin/symbol-t term-t term-t))
 
 (define (lambda-term-put-parameter value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(claim lambda-term-body (-> term-t term-t))
-
 (define (lambda-term-body target) (meta-builtin/builtin/list-get 2 target))
-
-(claim lambda-term-put-body (-> term-t term-t term-t))
 
 (define (lambda-term-put-body value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
-
-(claim let-term (-> meta-builtin/builtin/symbol-t term-t term-t term-t))
 
 (define (let-term name rhs body)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -130,8 +82,6 @@
           (meta-builtin/builtin/list-push rhs list)
           (begin (meta-builtin/builtin/list-push body list) list))))))
 
-(claim is-let-term (-> term-t meta-builtin/builtin/bool-t))
-
 (define (is-let-term value)
   (if (meta-builtin/builtin/is-list value)
     (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 4)
@@ -141,72 +91,26 @@
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(claim let-term-name (-> term-t meta-builtin/builtin/symbol-t))
-
 (define (let-term-name target) (meta-builtin/builtin/list-get 1 target))
-
-(claim let-term-put-name (-> meta-builtin/builtin/symbol-t term-t term-t))
 
 (define (let-term-put-name value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(claim let-term-rhs (-> term-t term-t))
-
 (define (let-term-rhs target) (meta-builtin/builtin/list-get 2 target))
-
-(claim let-term-put-rhs (-> term-t term-t term-t))
 
 (define (let-term-put-rhs value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
 
-(claim let-term-body (-> term-t term-t))
-
 (define (let-term-body target) (meta-builtin/builtin/list-get 3 target))
-
-(claim let-term-put-body (-> term-t term-t term-t))
 
 (define (let-term-put-body value target)
   (begin (meta-builtin/builtin/list-put 3 value target) target))
 
-(claim env-t meta-builtin/builtin/type-t)
-
-(define-opaque-type env-t
-    (meta-builtin/builtin/hash-t
-     meta-builtin/builtin/symbol-t
-     self/lambda/value-t)
-  (empty-env (-> self/lambda/env-t))
-  (extend-env
-   (-> meta-builtin/builtin/symbol-t
-       self/lambda/value-t
-       self/lambda/env-t
-       self/lambda/env-t))
-  (env-lookup
-   (-> meta-builtin/builtin/symbol-t
-       self/lambda/env-t
-       (meta-builtin/builtin/maybe-t self/lambda/value-t))))
-
-(claim empty-env (-> env-t))
-
 (define empty-env meta-builtin/builtin/make-hash)
-
-(claim extend-env (-> meta-builtin/builtin/symbol-t value-t env-t env-t))
 
 (define extend-env meta-builtin/builtin/hash-copy-put)
 
-(claim env-lookup
-  (-> meta-builtin/builtin/symbol-t env-t (meta-builtin/builtin/maybe-t value-t)))
-
 (define env-lookup meta-builtin/builtin/hash-get-maybe)
-
-(claim value-t meta-builtin/builtin/type-t)
-
-(define-enum value-t
-  (closure-value
-   (env self/lambda/env-t)
-   (parameter meta-builtin/builtin/symbol-t)
-   (body self/lambda/term-t)))
-
-(claim closure-value (-> env-t meta-builtin/builtin/symbol-t term-t value-t))
 
 (define (closure-value env parameter body)
   (let ((list (meta-builtin/builtin/make-list)))
@@ -218,8 +122,6 @@
           (meta-builtin/builtin/list-push parameter list)
           (begin (meta-builtin/builtin/list-push body list) list))))))
 
-(claim is-closure-value (-> value-t meta-builtin/builtin/bool-t))
-
 (define (is-closure-value value)
   (if (meta-builtin/builtin/is-list value)
     (if (meta-builtin/builtin/equal (meta-builtin/builtin/list-length value) 4)
@@ -229,31 +131,18 @@
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(claim closure-value-env (-> value-t env-t))
-
 (define (closure-value-env target) (meta-builtin/builtin/list-get 1 target))
-
-(claim closure-value-put-env (-> env-t value-t value-t))
 
 (define (closure-value-put-env value target)
   (begin (meta-builtin/builtin/list-put 1 value target) target))
 
-(claim closure-value-parameter (-> value-t meta-builtin/builtin/symbol-t))
-
 (define (closure-value-parameter target)
   (meta-builtin/builtin/list-get 2 target))
-
-(claim closure-value-put-parameter
-  (-> meta-builtin/builtin/symbol-t value-t value-t))
 
 (define (closure-value-put-parameter value target)
   (begin (meta-builtin/builtin/list-put 2 value target) target))
 
-(claim closure-value-body (-> value-t term-t))
-
 (define (closure-value-body target) (meta-builtin/builtin/list-get 3 target))
-
-(claim closure-value-put-body (-> term-t value-t value-t))
 
 (define (closure-value-put-body value target)
   (begin (meta-builtin/builtin/list-put 3 value target) target))

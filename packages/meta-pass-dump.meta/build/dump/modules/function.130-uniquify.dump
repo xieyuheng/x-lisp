@@ -4,4 +4,4 @@
 
 (define (double x) (meta-builtin/builtin/iadd x x))
 
-(define answer (the meta-builtin/builtin/int-t 42))
+(define answer 42)

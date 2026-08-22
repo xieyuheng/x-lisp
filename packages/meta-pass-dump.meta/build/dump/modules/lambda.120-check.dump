@@ -181,16 +181,15 @@
           (let ((parameter (self/lambda/lambda-term-parameter term)))
             (self/lambda/closure-value env parameter body)))
         (if (self/lambda/is-let-term term)
-          (let ((body.1 (self/lambda/let-term-body term)))
+          (let ((body (self/lambda/let-term-body term)))
             (let ((rhs (self/lambda/let-term-rhs term)))
-              (let ((name.1 (self/lambda/let-term-name term)))
+              (let ((name (self/lambda/let-term-name term)))
                 (let
-                    ((env.1
-                      (self/lambda/extend-env
-                       name.1
-                       (self/lambda/evaluate rhs env)
-                       env)))
-                  (self/lambda/evaluate body.1 env.1)))))
+                    ((env (self/lambda/extend-env
+                           name
+                           (self/lambda/evaluate rhs env)
+                           env)))
+                  (self/lambda/evaluate body env)))))
           (meta-builtin/builtin/error-with-location
            "cond mismatch"
            (meta-builtin/builtin/make-source-location
