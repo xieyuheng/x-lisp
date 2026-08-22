@@ -11,10 +11,6 @@ export function PatchInstructionsPass(mod: X86.Mod): void {
 }
 
 function patchInstr(instr: X86.Instr): Array<X86.Instr> {
-  if (instr.op === "tail-jmp" || instr.op === "label") {
-    return [instr]
-  }
-
   const [dst, src] = instr.operands
 
   if (

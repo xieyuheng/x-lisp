@@ -44,7 +44,7 @@ function makeEpilogInstrs(stackSpace: number): Array<X86.Instr> {
       X86.RegOperand("rsp"),
       X86.ImmOperand(BigInt(stackSpace)),
     ]),
-    body.push(X86.Instr("pop", [X86.RegOperand("rbp")])),
+    X86.Instr("pop", [X86.RegOperand("rbp")]),
   ]
 }
 
