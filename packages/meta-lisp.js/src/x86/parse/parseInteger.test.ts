@@ -77,7 +77,7 @@ test("parseOperand: reg mem with index and disp omits scale", () => {
     assert.equal(op.scale, undefined)
     assert.equal(op.disp?.kind, "IntDisplacement")
     if (op.disp?.kind === "IntDisplacement") {
-      assert.equal(op.disp.value, -16n)
+      assert.equal(op.disp.value, -16)
     }
   }
 })
@@ -88,7 +88,7 @@ test("parseOperand: reg mem with scaled index", () => {
   if (op.kind === "RegMemOperand") {
     assert.equal(op.base, "rbp")
     assert.equal(op.index, "rax")
-    assert.equal(op.scale, 8n)
+    assert.equal(op.scale, 8)
     assert.equal(op.disp, undefined)
   }
 })
@@ -99,10 +99,10 @@ test("parseOperand: reg mem with scaled index and disp", () => {
   if (op.kind === "RegMemOperand") {
     assert.equal(op.base, "rbp")
     assert.equal(op.index, "rax")
-    assert.equal(op.scale, 8n)
+    assert.equal(op.scale, 8)
     assert.equal(op.disp?.kind, "IntDisplacement")
     if (op.disp?.kind === "IntDisplacement") {
-      assert.equal(op.disp.value, -16n)
+      assert.equal(op.disp.value, -16)
     }
   }
 })

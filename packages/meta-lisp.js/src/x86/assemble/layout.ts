@@ -55,9 +55,7 @@ export function resolveDisplacements(mod: Mod): void {
           op.disp !== undefined &&
           op.disp.kind === "OffsetOfDisplacement"
         ) {
-          const value = BigInt(
-            offsetOf(mod, op.disp.structType, op.disp.fields),
-          )
+          const value = offsetOf(mod, op.disp.structType, op.disp.fields)
           op.disp = {
             kind: "IntDisplacement",
             value,

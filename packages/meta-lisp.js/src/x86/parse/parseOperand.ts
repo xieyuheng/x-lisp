@@ -167,7 +167,7 @@ function parseRegName(sexp: S.Sexp): string {
 
 function parseIndexForm(
   sexp: S.Sexp,
-): { index: string; scale: bigint | undefined } | null {
+): { index: string; scale: number | undefined } | null {
   if (sexp.kind !== "ListSexp") return null
   const elements = sexp.elements
   if (elements.length === 0 || elements[0].kind !== "SymbolSexp") {
@@ -191,7 +191,7 @@ function parseIndexForm(
     }
     return {
       index: parseRegName(elements[1]),
-      scale: parseImmValue(elements[2]),
+      scale: Number(parseImmValue(elements[2])),
     }
   }
   return null
@@ -221,7 +221,7 @@ function parseDisplacement(sexp: S.Sexp): X86.Displacement {
     let message = `expected integer or (offset-of ...), got: ${S.formatSexp(sexp)}`
     throw new Error(message)
   }
-  return X86.IntDisplacement(parseImmValue(sexp))
+  return X86.IntDisplacement(Number(parseImmValue(sexp)))
 }
 
 function parseAddressOperand(sexp: S.Sexp): X86.AddressOperand {

@@ -95,10 +95,10 @@ export type MemOperand = RipMemOperand | RegMemOperand
 
 export type IntDisplacement = {
   kind: "IntDisplacement"
-  value: bigint
+  value: number
 }
 
-export function IntDisplacement(value: bigint): IntDisplacement {
+export function IntDisplacement(value: number): IntDisplacement {
   return {
     kind: "IntDisplacement",
     value,
@@ -144,7 +144,7 @@ export type RegMemOperand = {
   size: Size | undefined
   base: string
   index: string | undefined
-  scale: bigint | undefined
+  scale: number | undefined
   disp: Displacement | undefined
 }
 
@@ -152,7 +152,7 @@ export function RegMemOperand(
   size: Size | undefined,
   base: string,
   index: string | undefined,
-  scale: bigint | undefined,
+  scale: number | undefined,
   disp: Displacement | undefined,
 ): RegMemOperand {
   return {

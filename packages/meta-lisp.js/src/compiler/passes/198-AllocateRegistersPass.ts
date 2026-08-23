@@ -36,7 +36,7 @@ function allocateRegisters(instrs: Array<X86.Instr>): HomeInfo {
         "rbp",
         undefined,
         undefined,
-        X86.IntDisplacement(BigInt(-8 * (index + 1))),
+        X86.IntDisplacement(-8 * (index + 1)),
       ),
     )
   }

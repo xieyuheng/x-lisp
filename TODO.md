@@ -1,8 +1,5 @@
-[compiler] 210-PatchInstructionsPass.ts -- review
-
-# loader
-
-[x86.c] review loader 的代码。
+[x86] review loader 的代码。
+[x86] review assembler
 
 # native code generation
 
