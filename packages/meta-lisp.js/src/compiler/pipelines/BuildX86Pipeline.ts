@@ -75,7 +75,12 @@ function X86Bundle(pkg: M.Package, x86Mod: X86.Mod): void {
     // if (pkg.config.entry) {
     //   fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
     // }
-    const definitions = Array.from(x86Mod.definitions.values())
+    // PrimitiveTypeDefinition is internal — createMod() registers the
+    // builtin types itself, so the bundle stays re-assemblable by
+    // `assemble-x86` (whose parser only knows user-language stmts).
+    const definitions = Array.from(x86Mod.definitions.values()).filter(
+      (definition) => definition.kind !== "PrimitiveTypeDefinition",
+    )
     const textWidth = 64
     const code = definitions
       .map((definition) => X86.formatPrettyDefinition(textWidth, definition))
