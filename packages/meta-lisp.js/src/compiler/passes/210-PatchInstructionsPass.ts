@@ -63,35 +63,16 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
   if (instr.operands.length === 2) {
     const dest = arrayGet(instr.operands, 0)
     const src = arrayGet(instr.operands, 1)
-    if (dest.kind === "RegMemOperand" && src.kind === "RegMemOperand") {
-      return patchTwoMemory(instr, dest, src)
-    }
-  }
-
-  return [instr]
-}
-
-function patchTwoMemory(
-  instr: X86.Instr,
-  dest: X86.RegMemOperand,
-  src: X86.RegMemOperand,
-): Array<X86.Instr> {
-  switch (instr.op) {
-    case "mov":
-    case "add":
-    case "sub":
-    case "and":
-    case "or":
-    case "xor": {
+    if (
+      (dest.kind === "RegMemOperand" || dest.kind === "RipMemOperand") &&
+      (src.kind === "RegMemOperand" || src.kind === "RipMemOperand")
+    ) {
       return [
         X86.Instr("mov", [X86.RegOperand("rax"), src]),
         X86.Instr(instr.op, [dest, X86.RegOperand("rax")]),
       ]
     }
-
-    default: {
-      let message = `[patchTwoMemory] unhandled instr: ${X86.formatInstr(instr)}`
-      throw new Error(message)
-    }
   }
+
+  return [instr]
 }

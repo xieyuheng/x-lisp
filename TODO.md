@@ -1,5 +1,5 @@
-[x86] review loader 的代码。
 [x86] review assembler
+[x86] review loader
 
 # native code generation
 

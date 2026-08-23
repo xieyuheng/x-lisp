@@ -377,9 +377,10 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [ptr] = instr.input
       const [out] = instr.output
       return [
+        X86.Instr("mov", [X86.RegOperand("rax"), X86.VarOperand(ptr.id)]),
         X86.Instr("mov", [
           cellToVar(out),
-          X86.RegMemOperand("qword", ptr.id, undefined, undefined, undefined),
+          X86.RegMemOperand("qword", "rax", undefined, undefined, undefined),
         ]),
       ]
     }
@@ -387,8 +388,9 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
     case "store": {
       const [ptr, val] = instr.input
       return [
+        X86.Instr("mov", [X86.RegOperand("rax"), X86.VarOperand(ptr.id)]),
         X86.Instr("mov", [
-          X86.RegMemOperand("qword", ptr.id, undefined, undefined, undefined),
+          X86.RegMemOperand("qword", "rax", undefined, undefined, undefined),
           cellToVar(val),
         ]),
       ]
