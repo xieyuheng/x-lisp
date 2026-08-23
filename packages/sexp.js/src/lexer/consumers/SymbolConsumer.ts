@@ -1,4 +1,5 @@
 import * as S from "../index.ts"
+import { charIsBlank, MARK_CHARS } from "../lexerHelpers.ts"
 
 export class SymbolConsumer implements S.Consumer {
   kind = "Symbol" as const
@@ -13,15 +14,12 @@ export class SymbolConsumer implements S.Consumer {
 }
 
 export function consumeSymbol(lexer: S.Lexer): string {
-  let value = ""
-  while (
-    !lexer.isEnd() &&
-    lexer.char().trim() !== "" &&
-    !S.lexerMarks().includes(lexer.char())
-  ) {
-    value += lexer.char()
+  const start = lexer.position.index
+  while (!lexer.isEnd()) {
+    const char = lexer.char()
+    if (char === undefined || charIsBlank(char) || MARK_CHARS.has(char)) break
     lexer.forward(1)
   }
 
-  return value
+  return lexer.text.slice(start, lexer.position.index)
 }

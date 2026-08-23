@@ -4,13 +4,13 @@ import { useConsumers } from "./consumers/useConsumers.ts"
 export function consume(lexer: S.Lexer): S.Token | undefined {
   for (const consumer of useConsumers()) {
     if (consumer.canConsume(lexer)) {
-      const start = lexer.position
+      const start = { ...lexer.position }
       const value = consumer.consume(lexer)
       if (consumer.kind === undefined) {
         return undefined
       }
 
-      const end = lexer.position
+      const end = { ...lexer.position }
       return {
         kind: consumer.kind,
         value,

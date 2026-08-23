@@ -1,21 +1,19 @@
-import { stringIsBlank } from "@xieyuheng/std.js/string"
 import * as S from "../index.ts"
+import { charIsBlank } from "../lexerHelpers.ts"
 
 export class SpaceConsumer implements S.Consumer {
   kind = undefined
 
   canConsume(lexer: S.Lexer): boolean {
-    return stringIsBlank(lexer.char())
+    return charIsBlank(lexer.char())
   }
 
   consume(lexer: S.Lexer): string {
-    let value = lexer.char()
-    lexer.forward(1)
-    while (!lexer.isEnd() && lexer.char().trim() === "") {
-      value += lexer.char()
+    const start = lexer.position.index
+    while (!lexer.isEnd() && charIsBlank(lexer.char())) {
       lexer.forward(1)
     }
 
-    return value
+    return lexer.text.slice(start, lexer.position.index)
   }
 }

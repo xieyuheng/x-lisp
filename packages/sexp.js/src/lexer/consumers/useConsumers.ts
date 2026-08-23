@@ -8,16 +8,18 @@ import { SpaceConsumer } from "./SpaceConsumer.ts"
 import { StringConsumer } from "./StringConsumer.ts"
 import { SymbolConsumer } from "./SymbolConsumer.ts"
 
+// Created once -- the order matters.
+const CONSUMERS: Array<S.Consumer> = [
+  new SpaceConsumer(),
+  new QuoteConsumer(),
+  new BracketStartConsumer(),
+  new BracketEndConsumer(),
+  new CommentConsumer(),
+  new StringConsumer(),
+  new NumberConsumer(),
+  new SymbolConsumer(),
+]
+
 export function useConsumers(): Array<S.Consumer> {
-  return [
-    // The order matters.
-    new SpaceConsumer(),
-    new QuoteConsumer(),
-    new BracketStartConsumer(),
-    new BracketEndConsumer(),
-    new CommentConsumer(),
-    new StringConsumer(),
-    new NumberConsumer(),
-    new SymbolConsumer(),
-  ]
+  return CONSUMERS
 }

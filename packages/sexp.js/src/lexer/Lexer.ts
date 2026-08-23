@@ -1,9 +1,8 @@
-import assert from "node:assert"
 import * as S from "../index.ts"
 import { consume } from "./consume.ts"
 
 export class Lexer {
-  position = S.initPosition()
+  position: S.Position = S.initPosition()
   text: string = ""
   path: string
 
@@ -27,34 +26,27 @@ export class Lexer {
   }
 
   isEnd(): boolean {
-    return this.text.length === this.position.index
+    return this.position.index >= this.text.length
   }
 
-  char(): string {
-    const char = this.text[this.position.index]
-    assert(char !== undefined)
-    return char
-  }
-
-  line(): string {
-    const lines = this.remain().split("\n")
-    return lines[0]
-  }
-
-  word(): string {
-    const words = this.line().split(" ")
-    return words[0]
-  }
-
-  remain(): string {
-    return this.text.slice(this.position.index)
+  char(): string | undefined {
+    return this.text[this.position.index]
   }
 
   forward(count: number): void {
-    if (this.isEnd()) return
+    let { index, row, column } = this.position
+    const text = this.text
 
-    while (count-- > 0) {
-      this.position = S.positionForwardChar(this.position, this.char())
+    while (count-- > 0 && index < text.length) {
+      if (text[index] === "\n") {
+        column = 0
+        row++
+      } else {
+        column++
+      }
+      index++
     }
+
+    this.position = { index, row, column }
   }
 }

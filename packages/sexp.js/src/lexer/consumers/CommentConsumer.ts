@@ -4,17 +4,15 @@ export class CommentConsumer implements S.Consumer {
   kind = undefined
 
   canConsume(lexer: S.Lexer): boolean {
-    return lexer.remain().startsWith(";")
+    return lexer.char() === ";"
   }
 
   consume(lexer: S.Lexer): string {
-    let value = lexer.char()
-    lexer.forward(1)
+    const start = lexer.position.index
     while (!lexer.isEnd() && lexer.char() !== "\n") {
-      value += lexer.char()
       lexer.forward(1)
     }
 
-    return value
+    return lexer.text.slice(start, lexer.position.index)
   }
 }

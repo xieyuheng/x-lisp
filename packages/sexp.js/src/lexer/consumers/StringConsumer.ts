@@ -11,20 +11,33 @@ export class StringConsumer implements S.Consumer {
   }
 
   consume(lexer: S.Lexer): string {
-    const line = lexer.line()
-    let index = 2 // over first `"` and the folloing char.
-    while (index <= line.length) {
-      const head = line.slice(0, index)
-      const value = jsonParseString(head)
-      if (value === undefined) {
-        index++
+    const start = lexer.position
+    const lineEnd = lexer.text.indexOf("\n", start.index)
+    const line =
+      lineEnd === -1
+        ? lexer.text.slice(start.index)
+        : lexer.text.slice(start.index, lineEnd)
+    const contentStart = start.index + 1
+
+    lexer.forward(1) // over the opening `"`
+
+    while (!lexer.isEnd()) {
+      const char = lexer.char()
+      if (char === "\\") {
+        lexer.forward(2)
+      } else if (char === '"') {
+        const raw = lexer.text.slice(contentStart, lexer.position.index)
+        lexer.forward(1)
+        const value = jsonParseString(`"${raw}"`)
+        if (value !== undefined) return value
+        break
+      } else if (char === "\n") {
+        break
       } else {
-        lexer.forward(index)
-        return value
+        lexer.forward(1)
       }
     }
 
-    const start = lexer.position
     const end = positionForwardChar(start, '"')
     let message = `Fail to parse double qouted string: ${line}\n`
     throw new ErrorWithSourceLocation(message, {

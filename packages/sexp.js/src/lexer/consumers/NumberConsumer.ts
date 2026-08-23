@@ -1,48 +1,45 @@
-import { jsonParseNumber } from "@xieyuheng/std.js/json"
-import { stringIsBlank } from "@xieyuheng/std.js/string"
 import * as S from "../index.ts"
+import { charIsBlank, MARK_CHARS } from "../lexerHelpers.ts"
+
+// A JSON number, matched once instead of the previous
+// per-prefix `JSON.parse` probing loop.
+const NUMBER_RE = /-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/y
 
 export class NumberConsumer implements S.Consumer {
   kind = "Number" as const
 
   canConsume(lexer: S.Lexer): boolean {
-    const word = lexer.word()
-    return lastSuccessAt(lexer, word) !== undefined
+    return matchNumber(lexer) !== -1
   }
 
   consume(lexer: S.Lexer): string {
-    const word = lexer.word()
-    const index = lastSuccessAt(lexer, word)
-    if (index === undefined) {
-      let message = `Expect to find lastSuccessAt in word: ${word}\n`
+    const length = matchNumber(lexer)
+    if (length === -1) {
+      let message = `Expect a number at index: ${lexer.position.index}`
       throw new Error(message)
     }
 
-    lexer.forward(index)
-    return word.slice(0, index)
+    const start = lexer.position.index
+    lexer.forward(length)
+    return lexer.text.slice(start, start + length)
   }
 }
 
-function lastSuccessAt(lexer: S.Lexer, text: string): number | undefined {
-  let index = 0
-  let lastSuccessAt: number | undefined = undefined
-  while (index <= text.length) {
-    const head = text.slice(0, index)
-    const value = jsonParseNumber(head)
-    const lastChar = text[index - 1]
-    const nextChar = text[index]
-    if (
-      value !== undefined &&
-      !stringIsBlank(lastChar) &&
-      (nextChar === undefined ||
-        stringIsBlank(nextChar) ||
-        S.lexerMarks().includes(nextChar))
-    ) {
-      lastSuccessAt = index
-    }
+// Returns the length of the number head starting at the current
+// position, or -1 when the head is not a number. A number head must
+// be followed by a blank, a mark, or the end of the text -- so that
+// `3f2c1` and `3-sphere` stay symbols.
+function matchNumber(lexer: S.Lexer): number {
+  const text = lexer.text
+  NUMBER_RE.lastIndex = lexer.position.index
+  const match = NUMBER_RE.exec(text)
+  if (match === null) return -1
 
-    index++
+  const end = lexer.position.index + match[0].length
+  const next = text[end]
+  if (next === undefined || charIsBlank(next) || MARK_CHARS.has(next)) {
+    return match[0].length
   }
 
-  return lastSuccessAt
+  return -1
 }

@@ -12,6 +12,7 @@ Executed in    9.38 secs    fish           external
 
 分析一下速度慢的原因
 
+帮我检查一下 xrt.c 中的 sexp 语法解析器，有没有类似的问题。
 
 [x86] review assembler
 

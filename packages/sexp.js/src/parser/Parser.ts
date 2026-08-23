@@ -1,7 +1,7 @@
 import { stringIsBigInt, stringIsNumber } from "@xieyuheng/std.js/string"
 import * as S from "../index.ts"
 
-type Result = { sexp: S.Sexp; remain: Array<S.Token> }
+type Result = { sexp: S.Sexp; next: number }
 
 export type ParserOptions = {
   path: string
@@ -15,32 +15,30 @@ export class Parser {
   }
 
   parse(text: string): Array<S.Sexp> {
-    let tokens = this.lexer.lex(text)
+    const tokens = this.lexer.lex(text)
     const array: Array<S.Sexp> = []
-    while (tokens.length > 0) {
-      const { sexp, remain } = this.handleTokens(tokens)
+    let index = 0
+    while (index < tokens.length) {
+      const { sexp, next } = this.parseTokens(tokens, index)
       array.push(sexp)
-      if (remain.length === 0) return array
-
-      tokens = remain
+      index = next
     }
 
     return array
   }
 
-  private handleTokens(tokens: Array<S.Token>): Result {
-    if (tokens[0] === undefined) {
+  private parseTokens(tokens: Array<S.Token>, index: number): Result {
+    const token = tokens[index]
+    if (token === undefined) {
       let message = "I expect a token, but there is no token remain\n"
       throw new Error(message)
     }
-
-    const token = tokens[0]
 
     switch (token.kind) {
       case "Symbol": {
         return {
           sexp: S.SymbolSexp(token.value, token.location),
-          remain: tokens.slice(1),
+          next: index + 1,
         }
       }
 
@@ -48,14 +46,14 @@ export class Parser {
         if (stringIsBigInt(token.value)) {
           return {
             sexp: S.IntSexp(BigInt(token.value), token.location),
-            remain: tokens.slice(1),
+            next: index + 1,
           }
         }
 
         if (stringIsNumber(token.value)) {
           return {
             sexp: S.FloatSexp(Number(token.value), token.location),
-            remain: tokens.slice(1),
+            next: index + 1,
           }
         }
 
@@ -66,16 +64,13 @@ export class Parser {
       case "String": {
         return {
           sexp: S.StringSexp(token.value, token.location),
-          remain: tokens.slice(1),
+          next: index + 1,
         }
       }
 
       case "BracketStart": {
         if (token.value === "[") {
-          const { sexp, remain } = this.handleTokensInBracket(
-            token,
-            tokens.slice(1),
-          )
+          const { sexp, next } = this.parseTokensInBracket(tokens, index, token)
           return {
             sexp: S.ListSexp(
               [
@@ -84,15 +79,12 @@ export class Parser {
               ],
               sexp.location,
             ),
-            remain,
+            next,
           }
         }
 
         if (token.value === "{") {
-          const { sexp, remain } = this.handleTokensInBracket(
-            token,
-            tokens.slice(1),
-          )
+          const { sexp, next } = this.parseTokensInBracket(tokens, index, token)
           return {
             sexp: S.ListSexp(
               [
@@ -101,11 +93,11 @@ export class Parser {
               ],
               sexp.location,
             ),
-            remain,
+            next,
           }
         }
 
-        return this.handleTokensInBracket(token, tokens.slice(1))
+        return this.parseTokensInBracket(tokens, index, token)
       }
 
       case "BracketEnd": {
@@ -114,7 +106,7 @@ export class Parser {
       }
 
       case "QuotationMark": {
-        const { sexp, remain } = this.handleTokens(tokens.slice(1))
+        const { sexp, next } = this.parseTokens(tokens, index + 1)
 
         const quoteTable: Record<string, string> = {
           "'": "@quote",
@@ -129,25 +121,26 @@ export class Parser {
 
         return {
           sexp: S.ListSexp([quoteSymbol, sexp], token.location),
-          remain,
+          next,
         }
       }
     }
   }
 
-  private handleTokensInBracket(
-    start: S.Token,
+  private parseTokensInBracket(
     tokens: Array<S.Token>,
+    startIndex: number,
+    start: S.Token,
   ): Result {
     const array: Array<S.Sexp> = []
 
+    let index = startIndex + 1
     while (true) {
-      if (tokens[0] === undefined) {
+      const token = tokens[index]
+      if (token === undefined) {
         let message = `I found missing BracketEnd\n`
         throw new S.ErrorWithSourceLocation(message, start.location)
       }
-
-      const token = tokens[0]
 
       if (token.kind === "BracketEnd") {
         if (!S.lexerMatchBrackets(start.value, token.value)) {
@@ -160,13 +153,13 @@ export class Parser {
             ...token.location,
             span: S.spanUnion(start.location.span, token.location.span),
           }),
-          remain: tokens.slice(1),
+          next: index + 1,
         }
       }
 
-      const head = this.handleTokens(tokens)
+      const head = this.parseTokens(tokens, index)
       array.push(head.sexp)
-      tokens = head.remain
+      index = head.next
     }
   }
 }
