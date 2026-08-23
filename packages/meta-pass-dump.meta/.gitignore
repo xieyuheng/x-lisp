@@ -4,4 +4,6 @@ build/bundle.xvm.asm
 build/bundle.xvm.exe
 build/bundle.x86.asm
 build/bundle.x86.exe
+build/main.x86.exe
+build/test.x86.exe
 build/dump/*.huge.dump
