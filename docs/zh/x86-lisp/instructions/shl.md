@@ -12,10 +12,10 @@ title: shl
 
 ```
 <dst> := (reg) (mem)
-<src> := (reg) <int> (mem) (address)
+<src> := (reg rcx) <int>
 ```
 
-<dst> 与 <src> 不能同时为内存操作数
+移位计数只能是 `CL`（`(reg rcx)`）或 0..255 的立即数。
 
 # 描述
 

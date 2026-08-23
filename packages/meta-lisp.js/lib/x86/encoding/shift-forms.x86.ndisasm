@@ -8,3 +8,15 @@
 00000012  E848C1E803        call 0x3e8c15f
 00000017  48D3E8            shr rax,cl
 0000001A  C3                ret
+0000001B  0000              add [rax],al
+0000001D  0000              add [rax],al
+0000001F  0048D1            add [rax-0x2f],cl
+00000022  65F8              gs clc
+00000024  48C165F803        shl qword [rbp-0x8],byte 0x3
+00000029  48D365F8          shl qword [rbp-0x8],cl
+0000002D  C3                ret
+0000002E  0000              add [rax],al
+00000030  48D16DF8          shr qword [rbp-0x8],1
+00000034  48C16DF803        shr qword [rbp-0x8],byte 0x3
+00000039  48D36DF8          shr qword [rbp-0x8],cl
+0000003D  C3                ret

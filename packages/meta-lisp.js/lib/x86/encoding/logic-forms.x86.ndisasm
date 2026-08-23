@@ -12,3 +12,24 @@
 00000026  07                db 0x07
 00000027  4881F0FF000000    xor rax,0xff
 0000002E  C3                ret
+0000002F  004821            add [rax+0x21],cl
+00000032  45F8              clc
+00000034  488365F807        and qword [rbp-0x8],byte +0x7
+00000039  488165F8E8030000  and qword [rbp-0x8],0x3e8
+00000041  2045F8            and [rbp-0x8],al
+00000044  8065F807          and byte [rbp-0x8],0x7
+00000048  482345F8          and rax,[rbp-0x8]
+0000004C  C3                ret
+0000004D  0000              add [rax],al
+0000004F  004809            add [rax+0x9],cl
+00000052  45F8              clc
+00000054  48834DF807        or qword [rbp-0x8],byte +0x7
+00000059  48814DF8E8030000  or qword [rbp-0x8],0x3e8
+00000061  480B45F8          or rax,[rbp-0x8]
+00000065  C3                ret
+00000066  0000              add [rax],al
+00000068  483145F8          xor [rbp-0x8],rax
+0000006C  488375F807        xor qword [rbp-0x8],byte +0x7
+00000071  488175F8E8030000  xor qword [rbp-0x8],0x3e8
+00000079  483345F8          xor rax,[rbp-0x8]
+0000007D  C3                ret

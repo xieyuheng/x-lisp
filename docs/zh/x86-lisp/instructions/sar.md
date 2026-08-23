@@ -11,7 +11,7 @@ title: sar
 # 操作数
 
 ```
-<dst> := (reg)
+<dst> := (reg) (mem)
 <src> := (reg rcx) | <int>
 ```
 

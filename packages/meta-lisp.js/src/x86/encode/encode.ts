@@ -1,9 +1,8 @@
 import type { Instr } from "../instr/index.ts"
-import { encodeArithmetic } from "./arithmetic.ts"
 import { encodeControl } from "./control.ts"
+import { encodeGroup1 } from "./group1.ts"
 import { encodeImul } from "./imul.ts"
 import { encodeLea } from "./lea.ts"
-import { encodeLogic } from "./logic.ts"
 import { encodeMov } from "./mov.ts"
 import { encodeMovzx } from "./movzx.ts"
 import { encodeNop } from "./nop.ts"
@@ -19,13 +18,12 @@ export function encode(instr: Instr): Array<EncodedInstruction> {
     case "mov":
       return encodeMov(instr)
     case "add":
-    case "sub":
-    case "cmp":
-      return encodeArithmetic(instr)
-    case "and":
     case "or":
+    case "and":
+    case "sub":
     case "xor":
-      return encodeLogic(instr)
+    case "cmp":
+      return encodeGroup1(instr)
     case "shl":
     case "shr":
     case "sar":

@@ -21,3 +21,15 @@
   (shr (reg rax) 3)                    ;; C1 /5: shr by imm8 > 1
   (shr (reg rax) (reg rcx))                  ;; D3 /5: shr by CL
   (ret))
+
+(define-code shl-mem-forms
+  (shl (mem qword (reg rbp) -8) 1)             ;; D1 /4: shl [rbp-8] by 1
+  (shl (mem qword (reg rbp) -8) 3)             ;; C1 /4: shl [rbp-8] by imm8
+  (shl (mem qword (reg rbp) -8) (reg rcx))     ;; D3 /4: shl [rbp-8] by CL
+  (ret))
+
+(define-code shr-mem-forms
+  (shr (mem qword (reg rbp) -8) 1)             ;; D1 /5: shr [rbp-8] by 1
+  (shr (mem qword (reg rbp) -8) 3)             ;; C1 /5: shr [rbp-8] by imm8
+  (shr (mem qword (reg rbp) -8) (reg rcx))     ;; D3 /5: shr [rbp-8] by CL
+  (ret))

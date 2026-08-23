@@ -46,20 +46,6 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
     }
   }
 
-  // the dest operand of shl shr sar must be register
-  // BUG this is a limit of assembler
-  if (instr.op === "shl" || instr.op === "shr" || instr.op === "sar") {
-    const dest = arrayGet(instr.operands, 0)
-    const src = arrayGet(instr.operands, 1)
-    if (dest.kind !== "RegOperand") {
-      return [
-        X86.Instr("mov", [X86.RegOperand("rax"), dest]),
-        X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
-        X86.Instr("mov", [dest, X86.RegOperand("rax")]),
-      ]
-    }
-  }
-
   // the dest operand of cmp must NOT be an immediate
   if (instr.op === "cmp") {
     const dest = arrayGet(instr.operands, 0)

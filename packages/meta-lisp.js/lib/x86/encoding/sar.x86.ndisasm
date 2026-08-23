@@ -2,3 +2,10 @@
 00000003  48C1F803          sar rax,byte 0x3
 00000007  48D3F8            sar rax,cl
 0000000A  C3                ret
+0000000B  0000              add [rax],al
+0000000D  0000              add [rax],al
+0000000F  0048D1            add [rax-0x2f],cl
+00000012  7DF8              jnl 0xc
+00000014  48C17DF803        sar qword [rbp-0x8],byte 0x3
+00000019  48D37DF8          sar qword [rbp-0x8],cl
+0000001D  C3                ret

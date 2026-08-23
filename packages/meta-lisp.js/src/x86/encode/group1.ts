@@ -1,5 +1,18 @@
-import * as X86 from "../index.ts"
+// Intel Group 1 opcodes: ADD / OR / AND / SUB / XOR / CMP
+//
+// All six share the same encoding shapes:
+//   mr / mr8 — op r/m, reg     (opcode families 01/00, 09/08, ...)
+//   rm / rm8 — op reg, r/m     (opcode families 03/02, 0B/0A, ...)
+//   imm      — op r/m, imm8 (83), op r/m, imm (81), op r/m8, imm8 (80)
+// The immediate forms differ only in the /digit extension:
+//   add=0  or=1  and=4  sub=5  xor=6  cmp=7
+//
+// The r/m operand may be a register or a memory location (RegMem / RipMem).
+// dst and src must not both be memory locations — x86 allows at most one
+// memory operand per instruction; the final fallthrough rejects that.
+
 import type { Instr } from "../instr/index.ts"
+import type { Operand } from "../operand/index.ts"
 import { encodeMem } from "./mem.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -12,53 +25,55 @@ const OPCODE_MAP: Record<
   { mr: number; rm: number; mr8: number; rm8: number; immExt: number }
 > = {
   add: { mr: 0x01, rm: 0x03, mr8: 0x00, rm8: 0x02, immExt: 0 },
+  or: { mr: 0x09, rm: 0x0b, mr8: 0x08, rm8: 0x0a, immExt: 1 },
+  and: { mr: 0x21, rm: 0x23, mr8: 0x20, rm8: 0x22, immExt: 4 },
   sub: { mr: 0x29, rm: 0x2b, mr8: 0x28, rm8: 0x2a, immExt: 5 },
+  xor: { mr: 0x31, rm: 0x33, mr8: 0x30, rm8: 0x32, immExt: 6 },
   cmp: { mr: 0x39, rm: 0x3b, mr8: 0x38, rm8: 0x3a, immExt: 7 },
 }
 
-export function encodeArithmetic(instr: Instr): Array<EncodedInstruction> {
+export function encodeGroup1(instr: Instr): Array<EncodedInstruction> {
   const dst = instr.operands[0]
   const src = instr.operands[1]
   const map = OPCODE_MAP[instr.op]
   if (!map) {
-    let message = `unknown arithmetic op: ${instr.op}`
+    let message = `unknown group-1 op: ${instr.op}`
     throw new Error(message)
   }
 
   if (dst.kind === "RegOperand") {
-    const dstReg = dst.name
-
     if (src.kind === "RegOperand") {
-      return [encodeArithRegReg(dstReg, src.name, map, deriveOpSize(instr))]
+      return [encodeRegReg(dst.name, src.name, map, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeArithRegImm(dstReg, src.value, map, deriveOpSize(instr))]
+      return [encodeRegImm(dst.name, src.value, map, deriveOpSize(instr))]
     }
   }
 
-  if (dst.kind === "RegMemOperand" || dst.kind === "RipMemOperand") {
+  if (isMemOperand(dst)) {
     if (src.kind === "RegOperand") {
-      return [encodeArithMemReg(dst, src.name, map, deriveOpSize(instr))]
+      return [encodeMemReg(dst, src.name, map, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeArithMemImm(dst, src.value, map, deriveOpSize(instr))]
+      return [encodeMemImm(dst, src.value, map, deriveOpSize(instr))]
     }
   }
 
-  if (
-    (src.kind === "RegMemOperand" || src.kind === "RipMemOperand") &&
-    dst.kind === "RegOperand"
-  ) {
-    return [encodeArithRegMem(dst.name, src, map, deriveOpSize(instr))]
+  if (dst.kind === "RegOperand" && isMemOperand(src)) {
+    return [encodeRegMem(dst.name, src, map, deriveOpSize(instr))]
   }
 
   let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
   throw new Error(message)
 }
 
-function encodeArithRegReg(
+function isMemOperand(op: Operand): boolean {
+  return op.kind === "RegMemOperand" || op.kind === "RipMemOperand"
+}
+
+function encodeRegReg(
   dstReg: string,
   srcReg: string,
   map: { rm: number; rm8: number },
@@ -75,7 +90,7 @@ function encodeArithRegReg(
   }
 }
 
-function encodeArithRegImm(
+function encodeRegImm(
   dstReg: string,
   value: bigint,
   map: { immExt: number },
@@ -115,9 +130,9 @@ function encodeArithRegImm(
   }
 }
 
-function encodeArithRegMem(
+function encodeRegMem(
   dstReg: string,
-  src: X86.Operand,
+  src: Operand,
   map: { rm: number; rm8: number },
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
@@ -133,8 +148,8 @@ function encodeArithRegMem(
   }
 }
 
-function encodeArithMemReg(
-  dst: X86.Operand,
+function encodeMemReg(
+  dst: Operand,
   srcReg: string,
   map: { mr: number; mr8: number },
   size: 1 | 2 | 4 | 8,
@@ -151,8 +166,8 @@ function encodeArithMemReg(
   }
 }
 
-function encodeArithMemImm(
-  dst: X86.Operand,
+function encodeMemImm(
+  dst: Operand,
   value: bigint,
   map: { immExt: number },
   size: 1 | 2 | 4 | 8,
