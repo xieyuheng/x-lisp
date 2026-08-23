@@ -21,10 +21,13 @@ char lexer_next_char(lexer_t *self) {
 }
 
 char *lexer_next_char_string(lexer_t *self) {
-  return string_substring(
-    self->string,
-    self->position.index,
-    self->position.index + 1);
+  // - do not go through `string_substring`: its bounds check
+  //   recomputes `strlen` of the whole remaining text on every
+  //   call, making per-single-char extraction O(n^2) overall.
+  char *content = allocate(2);
+  content[0] = self->string[self->position.index];
+  content[1] = '\0';
+  return content;
 }
 
 char *lexer_next_word_string(lexer_t *self) {

@@ -1,13 +1,12 @@
-[x86] review assembler
+[x86] assembler 目前有一些指令模式还不支持：
 
 - the dest operand of `shl shr sar` must be register
-- `and` 也有问题：
+- `and` 也有问题 `Error: [and] unsupported operands: dst=RegMemOperand src=ImmOperand`
 
-  ```
-  $ time ./meta-lisp.js assemble-x86 build/bundle.x86.asm build/bundle.x86.exe
-  Error: [and] unsupported operands: dst=RegMemOperand src=ImmOperand
-  ```
+分析一下这些问题是 x86 的局限，还是 我们的汇编器的 bug。
+应该如何解决？
 
+[x86] review assembler
 [x86] review loader
 
 # native code generation
