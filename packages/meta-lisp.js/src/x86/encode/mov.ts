@@ -63,6 +63,12 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return Array.isArray(result) ? result : [result]
     }
 
+    if (src.kind === "FloatOperand") {
+      // a double literal is the raw 64-bit bit pattern (8 bytes)
+      const result = encodeMovMemImm(dst, floatBits(src.value), 8)
+      return Array.isArray(result) ? result : [result]
+    }
+
     if (src.kind === "AddressOperand") {
       return encodeMovMemAddress(dst, src)
     }
@@ -158,10 +164,13 @@ function encodeMovRegImm(
 }
 
 function encodeMovRegFloat(dstReg: string, value: number): EncodedInstruction {
+  return encodeMovRegImm(dstReg, floatBits(value), 8)
+}
+
+function floatBits(value: number): bigint {
   const buf = new ArrayBuffer(8)
   new DataView(buf).setFloat64(0, value, true)
-  const bitPattern = new DataView(buf).getBigUint64(0, true)
-  return encodeMovRegImm(dstReg, bitPattern, 8)
+  return new DataView(buf).getBigUint64(0, true)
 }
 
 function encodeMovRegAddress(

@@ -40,6 +40,7 @@ x86-lisp 是 x86-64 的 Lisp 语法汇编。
   - [(label)](#label)
   - [(address)](#address)
   - [(mem)](#mem)
+  - [浮点字面量](#浮点字面量)
   - [(cc)](#cc)
   - [(var)](#var)
   - [(extern)](#extern)
@@ -270,6 +271,19 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (mem (reg rbp) (* (reg rax) 8))             ;; [rbp + rax*8]
 (mem (reg rbp) (* (reg rax) 8) -16)         ;; [rbp + rax*8 - 16]
 ```
+
+## 浮点字面量
+
+操作数位置的浮点字面量（如 `3.14`）编码为 double 的 **raw 64 位 IEEE-754 位模式**
+立即数（8 字节 movabs）。它是未打 tag 的常数——需要 tagged 值时配合 `and`/`or`
+的 tag 位操作（对应编译器 `float64` → `tag-float` 的输出模式）。
+
+```scheme
+(mov (reg rax) 3.14)                  ;; movabs rax, 0x40091EB851EB851F
+(mov (mem qword (reg rbp) -8) 3.14)   ;; movabs rax, bits; mov [rbp-8], rax
+```
+
+- 目标为 `mem` 时必须显式标注 `qword`（浮点字面量本身不带 size 信息）。
 
 ## (cc)
 

@@ -30,3 +30,10 @@
 (define-code mov-mem-imm
   (mov (mem qword (reg rbp) -8) 42)    ;; C7 /0: REX.W + C7 45 F8 + imm32
   (ret))
+
+(define-code mov-float-imm
+  ;; a double literal is the raw 64-bit IEEE-754 bit pattern:
+  ;; 3.14 → 0x40091EB851EB851F
+  (mov (reg rax) 3.14)                 ;; B8+rd: REX.W + B8 1F 85 EB 51 B8 1E 09 40
+  (mov (mem qword (reg rbp) -8) 3.14)  ;; movabs rax, bits + 89 45 F8 (mem ← rax)
+  (ret))

@@ -28,3 +28,15 @@
 0000004C  2A00              sub al,[rax]
 0000004E  0000              add [rax],al
 00000050  C3                ret
+00000051  0000              add [rax],al
+00000053  0000              add [rax],al
+00000055  0000              add [rax],al
+00000057  0048B8            add [rax-0x48],cl
+0000005A  1F                db 0x1f
+0000005B  85EB              test ebx,ebp
+0000005D  51                push rcx
+0000005E  B81E094048        mov eax,0x4840091e
+00000063  B81F85EB51        mov eax,0x51eb851f
+00000068  B81E094048        mov eax,0x4840091e
+0000006D  8945F8            mov [rbp-0x8],eax
+00000070  C3                ret

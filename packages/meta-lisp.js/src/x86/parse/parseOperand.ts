@@ -123,6 +123,10 @@ export function parseOperand(sexp: S.Sexp): X86.Operand {
     return X86.ImmOperand(int)
   }
 
+  if (S.isFloatSexp(sexp)) {
+    return X86.FloatOperand(sexp.content)
+  }
+
   try {
     return parseOperandRouter(sexp)
   } catch {
