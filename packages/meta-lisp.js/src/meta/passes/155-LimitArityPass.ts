@@ -34,8 +34,11 @@ function limitArityDefinition(
         return definition
       }
 
-      const firstParams = params.slice(0, maxArity)
-      const extraParams = params.slice(maxArity)
+      // if the args are: (x1 x2 x3 x4 x5 x6 x7 x8 x9) and maxArity == 6.
+      // the limited args should be (x1 x2 x3 x4 x5 ©rest)
+      // and ©rest == (x6 x7 x8 x9)
+      const firstParams = params.slice(0, maxArity - 1)
+      const extraParams = params.slice(maxArity - 1)
       const restName = "©rest"
 
       const body = extraParams.reduceRight(
@@ -87,8 +90,8 @@ function limitArityTerm(term: C.Term, maxArity: number): C.Term {
         return C.ApplyTerm(target, args, term.location)
       }
 
-      const firstArgs = args.slice(0, maxArity)
-      const restArgs = args.slice(maxArity)
+      const firstArgs = args.slice(0, maxArity - 1)
+      const restArgs = args.slice(maxArity - 1)
 
       const restList = restArgs.reduceRight(
         (restList: C.Term, arg: C.Term): C.Term =>

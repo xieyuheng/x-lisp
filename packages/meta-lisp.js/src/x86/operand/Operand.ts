@@ -91,8 +91,6 @@ export function AddressOperand(name: string): AddressOperand {
 
 export type Displacement = IntDisplacement | OffsetOfDisplacement
 
-export type MemOperand = RipMemOperand | RegMemOperand
-
 export type IntDisplacement = {
   kind: "IntDisplacement"
   value: number

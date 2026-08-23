@@ -46,6 +46,20 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
     }
   }
 
+  // the dest operand of shl shr sar must be register
+  // BUG this is a limit of assembler
+  if (instr.op === "shl" || instr.op === "shr" || instr.op === "sar") {
+    const dest = arrayGet(instr.operands, 0)
+    const src = arrayGet(instr.operands, 1)
+    if (dest.kind !== "RegOperand") {
+      return [
+        X86.Instr("mov", [X86.RegOperand("rax"), dest]),
+        X86.Instr(instr.op, [X86.RegOperand("rax"), src]),
+        X86.Instr("mov", [dest, X86.RegOperand("rax")]),
+      ]
+    }
+  }
+
   // the dest operand of cmp must NOT be an immediate
   if (instr.op === "cmp") {
     const dest = arrayGet(instr.operands, 0)
@@ -63,10 +77,7 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
   if (instr.operands.length === 2) {
     const dest = arrayGet(instr.operands, 0)
     const src = arrayGet(instr.operands, 1)
-    if (
-      (dest.kind === "RegMemOperand" || dest.kind === "RipMemOperand") &&
-      (src.kind === "RegMemOperand" || src.kind === "RipMemOperand")
-    ) {
+    if (isMemLocation(dest) && isMemLocation(src)) {
       return [
         X86.Instr("mov", [X86.RegOperand("rax"), src]),
         X86.Instr(instr.op, [dest, X86.RegOperand("rax")]),
@@ -75,4 +86,12 @@ function patchInstr(instr: X86.Instr): Array<X86.Instr> {
   }
 
   return [instr]
+}
+
+function isMemLocation(operand: X86.Operand): boolean {
+  return (
+    operand.kind === "RegMemOperand" ||
+    operand.kind === "RipMemOperand" ||
+    operand.kind === "RelocationOperand"
+  )
 }

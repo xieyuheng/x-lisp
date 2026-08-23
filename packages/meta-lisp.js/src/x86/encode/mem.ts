@@ -1,8 +1,5 @@
-import type {
-  Displacement,
-  MemOperand,
-  RegMemOperand,
-} from "../operand/index.ts"
+import * as X86 from "../index.ts"
+import type { Displacement, Operand, RegMemOperand } from "../operand/index.ts"
 import { MOD_DISP0, MOD_DISP32, MOD_DISP8, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
 import { SIB_NO_INDEX, sibByte } from "./sib.ts"
@@ -18,7 +15,7 @@ export type RegMemEncoding = {
   rexIndex: string | null
 }
 
-export function encodeMem(op: MemOperand): RegMemEncoding {
+export function encodeMem(op: Operand): RegMemEncoding {
   if (op.kind === "RipMemOperand") {
     return {
       modrm: {
@@ -31,7 +28,13 @@ export function encodeMem(op: MemOperand): RegMemEncoding {
       rexIndex: null,
     }
   }
-  return encodeRegMem(op)
+
+  if (op.kind === "RegMemOperand") {
+    return encodeRegMem(op)
+  }
+
+  let message = `[encodeMem] unhandled operand: ${X86.formatOperand(op)}`
+  throw new Error(message)
 }
 
 function dispValue(disp: Displacement | undefined): number {

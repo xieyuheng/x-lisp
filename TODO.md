@@ -1,4 +1,28 @@
+[x86] assembler 速度慢
+
+现在 我们的汇编器速度非常慢：
+
+  xyh@lattice /home/xyh/projects/xieyuheng/meta-lisp/packages/meta-pass-dump.meta (master) [1]
+$ time ./meta-lisp.js assemble-x86 build/example.x86.asm build/example.x86.exe
+
+________________________________________________________
+Executed in    9.38 secs    fish           external
+   usr time    5.25 secs    0.14 millis    5.25 secs
+   sys time    4.58 secs    1.07 millis    4.58 secs
+
+分析一下速度慢的原因
+
+
 [x86] review assembler
+
+- the dest operand of `shl shr sar` must be register
+- `and` 也有问题：
+
+  ```
+  $ time ./meta-lisp.js assemble-x86 build/bundle.x86.asm build/bundle.x86.exe
+  Error: [and] unsupported operands: dst=RegMemOperand src=ImmOperand
+  ```
+
 [x86] review loader
 
 # native code generation

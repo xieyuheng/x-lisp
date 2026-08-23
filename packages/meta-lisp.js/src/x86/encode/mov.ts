@@ -1,8 +1,8 @@
+import * as X86 from "../index.ts"
 import type { Instr } from "../instr/index.ts"
 import type {
   AddressOperand,
   ExternOperand,
-  MemOperand,
   RelocationOperand,
   RipMemOperand,
 } from "../operand/index.ts"
@@ -200,7 +200,7 @@ function encodeMovRegMem(
 
 function encodeMovRegRegMem(
   dstReg: string,
-  src: MemOperand,
+  src: X86.Operand,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(src)
@@ -217,7 +217,7 @@ function encodeMovRegRegMem(
 }
 
 function encodeMovMemReg(
-  dst: MemOperand,
+  dst: X86.Operand,
   srcReg: string,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
@@ -235,7 +235,7 @@ function encodeMovMemReg(
 }
 
 function encodeMovMemImm(
-  dst: MemOperand,
+  dst: X86.Operand,
   value: bigint,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction | Array<EncodedInstruction> {
@@ -307,7 +307,7 @@ function encodeMovMemImm(
 }
 
 function encodeMovMemAddress(
-  dst: MemOperand,
+  dst: X86.Operand,
   _src: AddressOperand,
 ): Array<EncodedInstruction> {
   const lea: EncodedInstruction = {

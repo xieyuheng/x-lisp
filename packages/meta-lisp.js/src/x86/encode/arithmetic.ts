@@ -1,5 +1,5 @@
+import * as X86 from "../index.ts"
 import type { Instr } from "../instr/index.ts"
-import type { MemOperand } from "../operand/index.ts"
 import { encodeMem } from "./mem.ts"
 import { MOD_REG, modRM } from "./modrm.ts"
 import { regCode } from "./reg.ts"
@@ -117,7 +117,7 @@ function encodeArithRegImm(
 
 function encodeArithRegMem(
   dstReg: string,
-  src: MemOperand,
+  src: X86.Operand,
   map: { rm: number; rm8: number },
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
@@ -134,7 +134,7 @@ function encodeArithRegMem(
 }
 
 function encodeArithMemReg(
-  dst: MemOperand,
+  dst: X86.Operand,
   srcReg: string,
   map: { mr: number; mr8: number },
   size: 1 | 2 | 4 | 8,
@@ -152,7 +152,7 @@ function encodeArithMemReg(
 }
 
 function encodeArithMemImm(
-  dst: MemOperand,
+  dst: X86.Operand,
   value: bigint,
   map: { immExt: number },
   size: 1 | 2 | 4 | 8,

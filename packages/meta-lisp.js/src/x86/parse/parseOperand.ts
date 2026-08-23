@@ -112,7 +112,7 @@ const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
   "`(relocation ,type ,name)": ({ type, name }, { location }) => {
     return X86.RelocationOperand(
       S.asSymbolSexp(type).content,
-      S.asSymbolSexp(name).content,
+      S.asStringSexp(name).content,
     )
   },
 })
