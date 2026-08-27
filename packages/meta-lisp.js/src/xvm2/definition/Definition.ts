@@ -9,17 +9,14 @@ export type Definition =
 export type PrimitiveFunctionDeclaration = {
   kind: "PrimitiveFunctionDeclaration"
   name: string
-  arity: number
 }
 
 export function PrimitiveFunctionDeclaration(
   name: string,
-  arity: number,
 ): PrimitiveFunctionDeclaration {
   return {
     kind: "PrimitiveFunctionDeclaration",
     name,
-    arity,
   }
 }
 

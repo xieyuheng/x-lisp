@@ -4,7 +4,7 @@ import { formatInstr } from "./formatInstr.ts"
 export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
-      return `(declare-primitive-function ${definition.name} ${definition.arity})`
+      return `(declare-primitive-function ${definition.name})`
     }
 
     case "PrimitiveVariableDeclaration": {

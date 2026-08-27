@@ -3,7 +3,9 @@
 set -e
 
 ./meta-lisp.js build-xvm
+./meta-lisp.js build-xvm2
 ./meta-lisp.js test-xvm --profile
 
+./meta-lisp.js test-xvm2 --profile
 ./meta-lisp.js build-x86
 # ./meta-lisp.js test-x86 --profile

@@ -153,10 +153,12 @@ xvm-lisp 中没有 `define-test` —— 测试就是普通零参函数，
 ## (declare-primitive-function)
 
 ```scheme
-(declare-primitive-function <name> <arity>)
+(declare-primitive-function <name>)
 ```
 
 声明由运行时（C 侧）提供的 primitive 函数。加载时按名字绑定。
+primitive 的 arity 不需要声明 —— 所有调用的参数个数由编译期保证，
+运行时无 curry 机制、不读取 arity。
 
 ## (declare-primitive-variable)
 

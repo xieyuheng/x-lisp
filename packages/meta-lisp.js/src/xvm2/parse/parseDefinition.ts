@@ -25,8 +25,7 @@ export function parseDefinition(sexp: S.Sexp): X2.Definition {
 
     case "declare-primitive-function": {
       const name = S.asSymbolSexp(elements[1]).content
-      const arity = Number(S.asIntSexp(elements[2]).content)
-      return X2.PrimitiveFunctionDeclaration(name, arity)
+      return X2.PrimitiveFunctionDeclaration(name)
     }
 
     case "declare-primitive-variable": {

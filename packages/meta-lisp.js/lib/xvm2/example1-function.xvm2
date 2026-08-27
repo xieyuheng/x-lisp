@@ -1,5 +1,5 @@
-(declare-primitive-function meta-builtin/builtin/println 1)
-(declare-primitive-function meta-builtin/builtin/imul 2)
+(declare-primitive-function meta-builtin/builtin/println)
+(declare-primitive-function meta-builtin/builtin/imul)
 
 (define-function (square x)
   (imul result x x)

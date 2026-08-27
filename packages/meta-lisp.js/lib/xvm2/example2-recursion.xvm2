@@ -1,4 +1,4 @@
-(declare-primitive-function meta-builtin/builtin/equal 2)
+(declare-primitive-function meta-builtin/builtin/equal)
 
 (define-function (factorial n)
   (load one 1)

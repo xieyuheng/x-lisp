@@ -66,7 +66,7 @@ title: 指令参考
 | `call-prim-0` … `call-prim-6` | `(call-prim-n (prim p) <a0> ...)` | 目标为 `(prim ...)`；n 个参数槽 | 静态 primitive 调用。直接调 C primitive，不压帧；结果入返回寄存器 |
 | `tail-call-0` … `tail-call-6` | `(tail-call-n (fn f) <a0> ...)` | 同上 | 尾函数调用 —— 回收当前帧后进入 callee，terminator |
 | `tail-call-prim-0` … `tail-call-prim-6` | `(tail-call-prim-n (prim p) <a0> ...)` | 同上 | 尾 primitive 调用，terminator |
-| `apply-0` … `apply-6` | `(apply-n <target> <a0> ...)` | `<target> := <var>`；n 个参数槽 | 动态调用。运行时按值的类型分派（fn / prim / closure / curry）；结果入返回寄存器 |
+| `apply-0` … `apply-6` | `(apply-n <target> <a0> ...)` | `<target> := <var>`；n 个参数槽 | 动态调用。运行时按值的类型分派（fn / prim / closure）；结果入返回寄存器 |
 | `tail-apply-0` … `tail-apply-6` | `(tail-apply-n <target> <a0> ...)` | 同上 | 尾动态调用，terminator |
 
 ## call / apply 与 load-result
@@ -92,17 +92,11 @@ title: 指令参考
 ## apply 的分派
 
 `apply-n` 的目标是运行时的值，按值的类型分派：fn → 压帧调用；
-prim → 直接 C 调用；closure → 解包后调用；curry → 合并参数后调用。
+prim → 直接 C 调用；closure → 解包后调用。
 
-## curry / over-application
-
-`apply-n` 不要求目标函数的 arity 等于 `n`：
-
-- `n < arity`：部分应用（curry），结果为 curry 对象；
-- `n == arity`：直接调用；
-- `n > arity`：调用后继续应用剩余参数（over-application）。
-
-`call-n` / `call-prim-n` 是静态调用，要求 `n == arity`，由翻译层保证。
+所有调用（含 `apply-n`）的参数个数都由编译期保证与目标函数的 arity
+一致 —— 编译时已消除 auto currying 与 over-application，运行时无需
+curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译层保证。
 
 # 控制流
 

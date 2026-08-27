@@ -21,8 +21,10 @@ const router = cli.createRouter("meta-lisp.js", version)
 router.defineRoutes([
   "check --config --dump",
   "build-xvm --config --dump",
+  "build-xvm2 --config --dump --entry",
   "build-x86 --config --dump --entry",
   "test-xvm  --config --profile --builtin",
+  "test-xvm2 --config --profile --builtin",
   "format-basic <input>",
   "format-xvm2 <input>",
   "assemble-x86 <input> <output> --entry",
@@ -48,6 +50,15 @@ router.defineHandlers({
     Compiler.BuildXvmPipeline(pkg)
   },
 
+  "build-xvm2": ({ options }) => {
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage("self", configPath)
+    if ("--dump" in options) pkg.config.compiler.dump = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    Compiler.BuildXvm2Pipeline(pkg, options["--entry"])
+  },
+
   "build-x86": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
@@ -65,6 +76,10 @@ router.defineHandlers({
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     Compiler.TestXvmPipeline(pkg)
+  },
+
+  "test-xvm2": ({ options }) => {
+    // TODO: 实现 xvm2 的测试管线（加载 bundle.xvm2.exe 并运行 ©run-tests）
   },
 
   "format-basic": ({ args: [input] }) => {
