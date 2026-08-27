@@ -3,12 +3,11 @@
 [xvm2] remove assembler
 [xvm2] remove old bytecode interpreter
 [xvm2] bytecode for basic-lisp
+[xvm2] .xvm.exe loader -- use TLV
+[xvm2] 实验 direct threaded code，看看是否比平凡的 switch 速度快
 
-- direct threaded code -- like erlang's beam
-
-[xvm2] .xvm.exe use tlv
 [meta-lisp.js] assemble basic-lisp to .xvm.exe
-[xvm] remove xvm as a language
+[meta-lisp.js] remove `xvm/`
 
 # x86
 
