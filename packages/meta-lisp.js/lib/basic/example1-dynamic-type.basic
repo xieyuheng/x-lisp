@@ -1,6 +1,6 @@
 (claim add-or-sub (-> value-t value-t value-t value-t))
 
-(define-function add-or-sub
+(define-function (add-or-sub flag a b)
   (block body
     (= flag (argument :index 0))
     (= a (argument :index 1))

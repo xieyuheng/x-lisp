@@ -2,7 +2,7 @@
 
 (claim read-x (-> pointer-t int64-t))
 
-(define-function read-x
+(define-function (read-x ptr)
   (block body
     (= ptr (argument :index 0))
     (= val (load ptr :type int64-t))
@@ -10,7 +10,7 @@
 
 (claim write-x (-> pointer-t int64-t void-t))
 
-(define-function write-x
+(define-function (write-x ptr val)
   (block body
     (= ptr (argument :index 0))
     (= val (argument :index 1))

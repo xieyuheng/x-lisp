@@ -25,14 +25,16 @@ export function StructDefinition(
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
   name: string
+  parameters: Array<string>
   blocks: Map<string, Block>
 }
 
 export function FunctionDefinition(
   name: string,
+  parameters: Array<string>,
   blocks: Map<string, Block>,
 ): FunctionDefinition {
-  return { kind: "FunctionDefinition", name, blocks }
+  return { kind: "FunctionDefinition", name, parameters, blocks }
 }
 
 export type VariableDefinition = {

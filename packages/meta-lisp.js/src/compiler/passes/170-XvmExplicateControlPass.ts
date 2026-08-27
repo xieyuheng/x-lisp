@@ -60,6 +60,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
               definitionQualifiedName(definition),
               B.FunctionDefinition(
                 definitionQualifiedName(definition),
+                definition.parameters,
                 state.blocks,
               ),
             )
@@ -78,7 +79,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
 
             basicMod.definitions.set(
               qname,
-              B.FunctionDefinition(qname, state.blocks),
+              B.FunctionDefinition(qname, [], state.blocks),
             )
             break
           }
@@ -95,7 +96,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
 
             basicMod.definitions.set(
               qname,
-              B.FunctionDefinition(qname, state.blocks),
+              B.FunctionDefinition(qname, [], state.blocks),
             )
             break
           }

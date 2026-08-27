@@ -228,21 +228,22 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 ## (define-function)
 
 ```scheme
-(define-function <name>
+(define-function (<name> <parameter> ...)
   <block>
   ...)
 ```
 
 定义可执行函数。
 
+- 第一个列表是函数签名：`<name>` 为函数名，`<parameter> ...` 为参数名列表。
 - 完整类型由同名 `(claim)` 提供。
 - 第一个 block 是 entry block。
-- 参数通过 `(argument :index N)` 获取。
+- 参数通过 `(argument :index N)` 获取，参数名与签名列表一致。
 
 ```scheme
 (claim add1 (-> int64-t int64-t))
 
-(define-function add1
+(define-function (add1 n)
   (block body
     (= n (argument :index 0))
     (= one (int64 :content 1))
@@ -432,7 +433,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ```scheme
 (claim add1 (-> int64-t int64-t))
-(define-function add1
+(define-function (add1 n)
   (block body
     (= n (argument :index 0))
     (= one (int64 :content 1))

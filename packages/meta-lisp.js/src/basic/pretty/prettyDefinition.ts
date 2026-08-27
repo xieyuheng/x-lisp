@@ -17,10 +17,14 @@ export function prettyDefinition(definition: B.Definition): Ppml.Node {
     }
 
     case "FunctionDefinition": {
+      const parametersText = definition.parameters.join(" ")
+      const signature = parametersText
+        ? `(${definition.name} ${parametersText})`
+        : `(${definition.name})`
       const blockNodes = Array.from(definition.blocks.values()).map(prettyBlock)
       return Ppml.prettyVertical(
         "define-function",
-        [Ppml.text(definition.name)],
+        [Ppml.text(signature)],
         blockNodes,
       )
     }

@@ -78,7 +78,11 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
       ]
 
       return [
-        B.FunctionDefinition(definitionQualifiedName(definition), state.blocks),
+        B.FunctionDefinition(
+          definitionQualifiedName(definition),
+          definition.parameters,
+          state.blocks,
+        ),
       ]
     }
 
@@ -90,7 +94,11 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
       block.instrs = explicateInTail(state, definition.body)
 
       return [
-        B.FunctionDefinition(definitionQualifiedName(definition), state.blocks),
+        B.FunctionDefinition(
+          definitionQualifiedName(definition),
+          [],
+          state.blocks,
+        ),
       ]
     }
 
@@ -104,7 +112,7 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
       const qualifiedName = definitionQualifiedName(definition)
       return [
         B.VariableDefinition(qualifiedName, null),
-        B.FunctionDefinition(`©setup.${qualifiedName}`, state.blocks),
+        B.FunctionDefinition(`©setup.${qualifiedName}`, [], state.blocks),
       ]
     }
   }
@@ -140,7 +148,7 @@ function generateSetupVariables(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.FunctionDefinition("©setup-variables", state.blocks)
+  return B.FunctionDefinition("©setup-variables", [], state.blocks)
 }
 
 function generateRunTests(
@@ -168,7 +176,7 @@ function generateRunTests(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.FunctionDefinition("©run-tests", state.blocks)
+  return B.FunctionDefinition("©run-tests", [], state.blocks)
 }
 
 type State = {

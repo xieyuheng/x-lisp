@@ -1,6 +1,6 @@
 (claim check-eq (-> value-t value-t bool-t))
 
-(define-function check-eq
+(define-function (check-eq x y)
   (block body
     (= x (argument :index 0))
     (= y (argument :index 1))

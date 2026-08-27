@@ -1,6 +1,6 @@
 (claim sign (-> int64-t int64-t))
 
-(define-function sign
+(define-function (sign n)
   (block body
     (= n (argument :index 0))
     (= zero (int64 :content 0))

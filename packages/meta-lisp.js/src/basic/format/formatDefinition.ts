@@ -13,10 +13,14 @@ export function formatDefinition(definition: B.Definition): string {
     }
 
     case "FunctionDefinition": {
+      const parametersText = definition.parameters.join(" ")
+      const signature = parametersText
+        ? `(${definition.name} ${parametersText})`
+        : `(${definition.name})`
       const blockTexts = Array.from(definition.blocks.values())
         .map(formatBlock)
         .join(" ")
-      return `(define-function ${definition.name} ${blockTexts})`
+      return `(define-function ${signature} ${blockTexts})`
     }
 
     case "VariableDefinition": {

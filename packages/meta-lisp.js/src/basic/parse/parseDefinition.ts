@@ -23,10 +23,14 @@ export function parseDefinition(sexp: S.Sexp): B.Definition {
     }
 
     case "define-function": {
-      const name = S.asSymbolSexp(elements[1]).content
+      const signature = S.asListSexp(elements[1])
+      const name = S.asSymbolSexp(signature.elements[0]).content
+      const parameters = signature.elements
+        .slice(1)
+        .map((parameter) => S.asSymbolSexp(parameter).content)
       const parsedBlocks = elements.slice(2).map(parseBlock)
       const blocks = new Map(parsedBlocks.map((b) => [b.label, b]))
-      return B.FunctionDefinition(name, blocks)
+      return B.FunctionDefinition(name, parameters, blocks)
     }
 
     case "define-variable": {

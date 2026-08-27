@@ -1,6 +1,6 @@
 (claim add-or-sub (-> bool-t int64-t int64-t int64-t))
 
-(define-function add-or-sub
+(define-function (add-or-sub flag a b)
   (block body
     (= flag (argument :index 0))
     (= a (argument :index 1))
