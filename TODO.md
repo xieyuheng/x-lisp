@@ -1,6 +1,5 @@
 # xvm2
 
-[xvm2] remove assembler
 [xvm2] remove old bytecode interpreter
 [xvm2] bytecode for basic-lisp
 [xvm2] .xvm.exe loader -- use TLV
