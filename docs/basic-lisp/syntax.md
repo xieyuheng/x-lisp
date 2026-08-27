@@ -87,7 +87,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 (branch cond :then-label then :else-label else)
 ```
 
-每条指令的类型和用法详见[指令索引](instructions/index.md)。
+每条指令的类型和用法详见[指令参考](instructions.md)。
 
 # 基本块
 
