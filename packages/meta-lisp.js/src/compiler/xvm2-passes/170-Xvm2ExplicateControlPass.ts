@@ -48,20 +48,14 @@ function definitionQualifiedName(definition: C.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
 }
 
-function explicateDefinition(
-  definition: C.Definition,
-): Array<B.Definition> {
+function explicateDefinition(definition: C.Definition): Array<B.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration": {
-      return [
-        B.ExternFunctionDefinition(definitionQualifiedName(definition)),
-      ]
+      return [B.ExternFunctionDefinition(definitionQualifiedName(definition))]
     }
 
     case "PrimitiveVariableDeclaration": {
-      return [
-        B.ExternVariableDefinition(definitionQualifiedName(definition)),
-      ]
+      return [B.ExternVariableDefinition(definitionQualifiedName(definition))]
     }
 
     case "FunctionDefinition": {
