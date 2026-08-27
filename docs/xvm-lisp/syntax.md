@@ -34,11 +34,16 @@ xvm-lisp 是 xvm2 虚拟机的 Lisp 语法汇编语言。
 - [标签](#标签)
 - [顶层定义](#顶层定义)
   - [(define-function)](#define-function)
-  - [(define-variable)](#define-variable)
-  - [(define-test)](#define-test)
+  - [(declare-variable)](#declare-variable)
   - [(declare-primitive-function)](#declare-primitive-function)
   - [(declare-primitive-variable)](#declare-primitive-variable)
   - [(default-entry)](#default-entry)
+- [全局变量与测试](#全局变量与测试)
+  - [©setup-variables](#©setup-variables)
+  - [©run-tests](#©run-tests)
+- [入口](#入口)
+  - [©main](#©main)
+  - [©test](#©test)
 - [操作数](#操作数)
   - [局部变量](#局部变量)
   - [(fn)](#fn)
@@ -129,41 +134,21 @@ xvm-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
   (return result))
 ```
 
-## (define-variable)
+## (declare-variable)
 
 ```scheme
-(define-variable <name>
-  <instr-or-label>
-  ...)
+(declare-variable <name>)
 ```
 
-定义全局变量，body 的返回值（`return` 的结果）即变量的初值。
+声明全局变量。
 
-```scheme
-(define-variable *version*
-  (load value 42)
-  (return value))
-```
+- 变量是全局存储槽，不携带初始化 body（与 basic-lisp 的 `define-variable` 带静态 data 不同）。
+- 变量的初值通过 [Setup 机制](#©setup-variables) 计算：编译器为每个变量
+  生成同名初始化函数 `©setup.<name>`（arity 0，`return` 的值即变量初值），
+  由聚合函数 `©setup-variables` 依次调用并写入变量。
 
-## (define-test)
-
-```scheme
-(define-test <name>
-  <instr-or-label>
-  ...)
-```
-
-定义测试函数，arity 为 0，通常以 `return-void` 结束。
-
-```scheme
-(define-test factorial-test
-  (load n 5)
-  (call-1 (fn factorial) n)
-  (load-result result)
-  (load expected 120)
-  (call-2 (prim meta-builtin/builtin/assert-equal) result expected)
-  (return-void))
-```
+xvm-lisp 中没有 `define-test` —— 测试就是普通零参函数，
+由 `©run-tests` 聚合调用（见 [全局变量与测试](#全局变量与测试)）。
 
 ## (declare-primitive-function)
 
@@ -188,6 +173,77 @@ xvm-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 ```
 
 指定程序的入口函数，与 `xvm2` 的 `run` 命令配合使用。
+入口函数被 [`©main`](#©main) 调用。
+
+# 全局变量与测试
+
+xvm-lisp 使用类似 x86-lisp 的 setup 机制：**变量没有初始化 body，
+测试没有独立定义形式**，两者都通过编译器生成的普通零参函数完成。
+
+## ©setup-variables
+
+```scheme
+(define-function (©setup-variables)
+  ...)
+```
+
+编译器生成的聚合函数（无变量时为空函数）：
+
+1. 对每个变量 `x`，依次调用其初始化函数 `©setup.x`；
+2. 将返回值 `global-store` 写入全局变量 `x`。
+
+变量初值来源：
+
+- 普通变量：`©setup.<name>` 是编译器生成的零参函数，
+  `return` 的值成为变量初值；
+- primitive 变量：无初始化函数，值由 C 运行时绑定。
+
+## ©run-tests
+
+```scheme
+(define-function (©run-tests)
+  ...)
+```
+
+编译器生成的聚合测试函数：依次调用每个测试函数。
+测试是零参普通函数（由 `define-function` 定义，通常以 `return-void` 结束），
+没有独立的 `define-test` 形式。
+
+```scheme
+(define-function (factorial-test)
+  (load n 5)
+  (call-1 (fn factorial) n)
+  (load-result result)
+  (load expected 120)
+  (call-2 (prim meta-builtin/builtin/assert-equal) result expected)
+  (return-void))
+```
+
+# 入口
+
+xvm-lisp 程序通过两个编译器生成的入口之一启动，均由运行时 `run` 命令调用：
+
+## ©main
+
+```scheme
+(define-function (©main)
+  (call-0 (fn ©setup-variables))
+  (call-0 (fn <entry>))
+  (return-void))
+```
+
+程序入口：先执行变量初始化，再调用 `(default-entry)` 指定的入口函数。
+
+## ©test
+
+```scheme
+(define-function (©test)
+  (call-0 (fn ©setup-variables))
+  (call-0 (fn ©run-tests))
+  (return-void))
+```
+
+测试入口：先执行变量初始化，再运行全部测试。
 
 # 操作数
 
@@ -271,12 +327,12 @@ primitive 函数引用。用于：
 
 `load` 的第二个 operand（`<value>`）接受以下字面量：
 
-| 记号      | 语法      | 例子          | 说明      |
-|-----------|-----------|---------------|-----------|
-| `<int>`   | 十进制整数 | `42` `-1` `0` | int 值    |
-| `<float>` | 浮点数     | `3.14` `-2.5` | float 值  |
-| `<string>`| `"..."`   | `"hello"` `""` | text 值  |
-| `'<symbol>`| quote 前缀 | `'foo` `'red` | symbol 值 |
+| 记号        | 语法       | 例子           | 说明      |
+|-------------|------------|----------------|-----------|
+| `<int>`     | 十进制整数 | `42` `-1` `0`  | int 值    |
+| `<float>`   | 浮点数     | `3.14` `-2.5`  | float 值  |
+| `<string>`  | `"..."`    | `"hello"` `""` | text 值   |
+| `'<symbol>` | quote 前缀 | `'foo` `'red`  | symbol 值 |
 
 - 字面量以统一的 `load` 载入，值的类型由 tag 携带，不需要分开的常量指令。
 - symbol 字面量必须带 quote 前缀 `'` —— 裸符号一律是 VarOperand，
