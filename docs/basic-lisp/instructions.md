@@ -6,15 +6,15 @@ title: 指令参考
 
 # 属性值类型
 
-| 记号 | 含义 |
-|------|------|
-| `<symbol>` | 符号名，如 `foo` |
-| `<int>` | 整数值，如 `42` |
-| `<float>` | 浮点值，如 `3.14` |
-| `<string>` | 字符串值，如 `"hello"` |
-| `<bool>` | 布尔值，如 `(true)` 或 `(false)` |
-| `<type>` | 类型引用，如 `int64-t`、`pointer-t` |
-| `(<symbol> ...)` | 符号列表，如 `(x y)` |
+| 记号             | 含义                                |
+|------------------|-------------------------------------|
+| `<symbol>`       | 符号名，如 `foo`                    |
+| `<int>`          | 整数值，如 `42`                     |
+| `<float>`        | 浮点值，如 `3.14`                   |
+| `<string>`       | 字符串值，如 `"hello"`              |
+| `<bool>`         | 布尔值，如 `(true)` 或 `(false)`    |
+| `<type>`         | 类型引用，如 `int64-t`、`pointer-t` |
+| `(<symbol> ...)` | 符号列表，如 `(x y)`                |
 
 # 目录
 
@@ -52,26 +52,26 @@ title: 指令参考
 
 # 比较指令
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `icmp-eq` | `bool-t` | `int64-t` `int64-t` | - | int64 相等 |
-| `icmp-ne` | `bool-t` | `int64-t` `int64-t` | - | int64 不等 |
-| `icmp-lt` | `bool-t` | `int64-t` `int64-t` | - | int64 小于 |
-| `icmp-le` | `bool-t` | `int64-t` `int64-t` | - | int64 小于等于 |
-| `icmp-gt` | `bool-t` | `int64-t` `int64-t` | - | int64 大于 |
-| `icmp-ge` | `bool-t` | `int64-t` `int64-t` | - | int64 大于等于 |
-| `fcmp-eq` | `bool-t` | `float64-t` `float64-t` | - | float64 相等 |
-| `fcmp-ne` | `bool-t` | `float64-t` `float64-t` | - | float64 不等 |
-| `fcmp-lt` | `bool-t` | `float64-t` `float64-t` | - | float64 小于 |
-| `fcmp-le` | `bool-t` | `float64-t` `float64-t` | - | float64 小于等于 |
-| `fcmp-gt` | `bool-t` | `float64-t` `float64-t` | - | float64 大于 |
-| `fcmp-ge` | `bool-t` | `float64-t` `float64-t` | - | float64 大于等于 |
-| `bool-eq` | `bool-t` | `bool-t` `bool-t` | - | bool 相等 |
-| `bool-ne` | `bool-t` | `bool-t` `bool-t` | - | bool 不等 |
-| `pointer-eq` | `bool-t` | `pointer-t` `pointer-t` | - | pointer 相等 |
-| `pointer-ne` | `bool-t` | `pointer-t` `pointer-t` | - | pointer 不等 |
-| `value-eq` | `bool-t` | `value-t` `value-t` | - | value identity 相等，对应 `eq?` |
-| `value-ne` | `bool-t` | `value-t` `value-t` | - | value identity 不等 |
+| 指令         | 输出     | 输入                    | 属性 | 描述                |
+|--------------|----------|-------------------------|------|---------------------|
+| `icmp-eq`    | `bool-t` | `int64-t` `int64-t`     | -    | int64 相等          |
+| `icmp-ne`    | `bool-t` | `int64-t` `int64-t`     | -    | int64 不等          |
+| `icmp-lt`    | `bool-t` | `int64-t` `int64-t`     | -    | int64 小于          |
+| `icmp-le`    | `bool-t` | `int64-t` `int64-t`     | -    | int64 小于等于      |
+| `icmp-gt`    | `bool-t` | `int64-t` `int64-t`     | -    | int64 大于          |
+| `icmp-ge`    | `bool-t` | `int64-t` `int64-t`     | -    | int64 大于等于      |
+| `fcmp-eq`    | `bool-t` | `float64-t` `float64-t` | -    | float64 相等        |
+| `fcmp-ne`    | `bool-t` | `float64-t` `float64-t` | -    | float64 不等        |
+| `fcmp-lt`    | `bool-t` | `float64-t` `float64-t` | -    | float64 小于        |
+| `fcmp-le`    | `bool-t` | `float64-t` `float64-t` | -    | float64 小于等于    |
+| `fcmp-gt`    | `bool-t` | `float64-t` `float64-t` | -    | float64 大于        |
+| `fcmp-ge`    | `bool-t` | `float64-t` `float64-t` | -    | float64 大于等于    |
+| `bool-eq`    | `bool-t` | `bool-t` `bool-t`       | -    | bool 相等           |
+| `bool-ne`    | `bool-t` | `bool-t` `bool-t`       | -    | bool 不等           |
+| `pointer-eq` | `bool-t` | `pointer-t` `pointer-t` | -    | pointer 相等        |
+| `pointer-ne` | `bool-t` | `pointer-t` `pointer-t` | -    | pointer 不等        |
+| `value-eq`   | `bool-t` | `value-t` `value-t`     | -    | value identity 相等 |
+| `value-ne`   | `bool-t` | `value-t` `value-t`     | -    | value identity 不等 |
 
 # 一元运算
 
@@ -97,12 +97,12 @@ title: 指令参考
 
 # 常量
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `symbol` | `pointer-t` | - | `:content <symbol>` | 获取 symbol 的裸指针地址 |
-| `string` | `pointer-t` | - | `:content <string>` | 获取 C 风格字符串指针地址 |
-| `symbol-value` | `value-t` | - | `:content <symbol>` | 获取带 tag 的 symbol 值 |
-| `text-value` | `value-t` | - | `:content <text>` | 获取带 tag 的 text 值 |
+| 指令           | 输出        | 输入 | 属性                | 描述                      |
+|----------------|-------------|------|---------------------|---------------------------|
+| `symbol`       | `pointer-t` | -    | `:content <symbol>` | 获取 symbol 的裸指针地址  |
+| `string`       | `pointer-t` | -    | `:content <string>` | 获取 C 风格字符串指针地址 |
+| `symbol-value` | `value-t`   | -    | `:content <symbol>` | 获取带 tag 的 symbol 值   |
+| `text-value`   | `value-t`   | -    | `:content <text>`   | 获取带 tag 的 text 值     |
 
 # 内存操作
 
