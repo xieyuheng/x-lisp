@@ -1,0 +1,15 @@
+(declare-primitive-function meta-builtin/builtin/println 1)
+(declare-primitive-function meta-builtin/builtin/imul 2)
+
+(define-function (square x)
+  (imul result x x)
+  (return result))
+
+(define-function (main)
+  (load n 3)
+  (call-1 (fn square) n)
+  (load-result r)
+  (call-1 (prim meta-builtin/builtin/println) r)
+  (return-void))
+
+(default-entry main)

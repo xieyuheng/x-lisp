@@ -12,6 +12,7 @@ import * as B2 from "./basic/index.ts"
 import * as Compiler from "./compiler/index.ts"
 import * as M from "./meta/index.ts"
 import * as X86 from "./x86/index.ts"
+import * as X2 from "./xvm2/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -23,6 +24,7 @@ router.defineRoutes([
   "build-x86 --config --dump --entry",
   "test-xvm  --config --profile --builtin",
   "format-basic <input>",
+  "format-xvm2 <input>",
   "assemble-x86 <input> <output> --entry",
 ])
 
@@ -73,6 +75,17 @@ router.defineHandlers({
     const sexps = S.parseSexps(code, { path: input })
     const mod = B2.parseMod(sexps)
     const text = Ppml.formatNode(B2.prettyMod(mod), { width: 80 }) + "\n"
+    process.stdout.write(text)
+  },
+
+  "format-xvm2": ({ args: [input] }) => {
+    if (input === "-") {
+      input = "/dev/stdin"
+    }
+    const code = fs.readFileSync(input, "utf-8")
+    const sexps = S.parseSexps(code, { path: input })
+    const mod = X2.parseMod(sexps)
+    const text = Ppml.formatNode(X2.prettyMod(mod), { width: 80 }) + "\n"
     process.stdout.write(text)
   },
 

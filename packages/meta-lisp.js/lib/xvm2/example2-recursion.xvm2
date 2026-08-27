@@ -1,0 +1,25 @@
+(declare-primitive-function meta-builtin/builtin/equal 2)
+
+(define-function (factorial n)
+  (load one 1)
+  (int-less-or-equal base n one)
+  (branch base (label base-case) (label recur-case))
+  base-case
+  (load result 1)
+  (return result)
+  recur-case
+  (isub m n one)
+  (call-1 (fn factorial) m)
+  (load-result sub)
+  (imul result n sub)
+  (return result))
+
+(define-function (main)
+  (load n 5)
+  (call-1 (fn factorial) n)
+  (load-result result)
+  (load expected 120)
+  (call-2 (prim meta-builtin/builtin/equal) result expected)
+  (return-void))
+
+(default-entry main)
