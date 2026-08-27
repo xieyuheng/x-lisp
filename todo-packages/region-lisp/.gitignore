@@ -1,0 +1,45 @@
+# git
+worktrees
+
+# node
+*.cpuprofile
+
+# x-lisp
+*.o
+*.exe
+*.xvm.exe
+
+# cmake
+build/
+
+# c
+*.o
+*.a
+*.po
+*.test
+*.snapshot
+
+# npm
+node_modules
+
+# 0x
+*.0x/
+
+# emacs
+*~
+*#*
+.#*
+
+# GNU global
+GPATH
+GRTAGS
+GTAGS
+
+# vscode
+.vscode
+
+# idea
+.idea
+
+# macOS
+.DS_Store
