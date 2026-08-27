@@ -30,25 +30,25 @@ title: 指令参考
 
 # 二元运算
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `iadd` | `int64-t` | `int64-t` `int64-t` | - | 整数加法 |
-| `isub` | `int64-t` | `int64-t` `int64-t` | - | 整数减法 |
-| `imul` | `int64-t` | `int64-t` `int64-t` | - | 整数乘法 |
-| `idiv` | `int64-t` | `int64-t` `int64-t` | - | 整数除法 |
-| `fadd` | `float64-t` | `float64-t` `float64-t` | - | 浮点加法 |
-| `fsub` | `float64-t` | `float64-t` `float64-t` | - | 浮点减法 |
-| `fmul` | `float64-t` | `float64-t` `float64-t` | - | 浮点乘法 |
-| `fdiv` | `float64-t` | `float64-t` `float64-t` | - | 浮点除法 |
-| `shl` | `int64-t` | `int64-t` `int64-t` | - | 左移位 |
-| `shr` | `int64-t` | `int64-t` `int64-t` | - | 右移位 |
-| `bitand` | `int64-t` | `int64-t` `int64-t` | - | 按位与 |
-| `bitor` | `int64-t` | `int64-t` `int64-t` | - | 按位或 |
-| `bitxor` | `int64-t` | `int64-t` `int64-t` | - | 按位异或 |
-| `padd` | `pointer-t` | `pointer-t` `int64-t` | - | 指针字节偏移加法，结果为 `base + offset` |
-| `and` | `bool-t` | `bool-t` `bool-t` | - | 逻辑与 |
-| `or` | `bool-t` | `bool-t` `bool-t` | - | 逻辑或 |
-| `xor` | `bool-t` | `bool-t` `bool-t` | - | 逻辑异或 |
+| 指令     | 输出        | 输入                    | 属性 | 描述                                     |
+|----------|-------------|-------------------------|------|------------------------------------------|
+| `iadd`   | `int64-t`   | `int64-t` `int64-t`     | -    | 整数加法                                 |
+| `isub`   | `int64-t`   | `int64-t` `int64-t`     | -    | 整数减法                                 |
+| `imul`   | `int64-t`   | `int64-t` `int64-t`     | -    | 整数乘法                                 |
+| `idiv`   | `int64-t`   | `int64-t` `int64-t`     | -    | 整数除法                                 |
+| `fadd`   | `float64-t` | `float64-t` `float64-t` | -    | 浮点加法                                 |
+| `fsub`   | `float64-t` | `float64-t` `float64-t` | -    | 浮点减法                                 |
+| `fmul`   | `float64-t` | `float64-t` `float64-t` | -    | 浮点乘法                                 |
+| `fdiv`   | `float64-t` | `float64-t` `float64-t` | -    | 浮点除法                                 |
+| `shl`    | `int64-t`   | `int64-t` `int64-t`     | -    | 左移位                                   |
+| `shr`    | `int64-t`   | `int64-t` `int64-t`     | -    | 右移位                                   |
+| `bitand` | `int64-t`   | `int64-t` `int64-t`     | -    | 按位与                                   |
+| `bitor`  | `int64-t`   | `int64-t` `int64-t`     | -    | 按位或                                   |
+| `bitxor` | `int64-t`   | `int64-t` `int64-t`     | -    | 按位异或                                 |
+| `padd`   | `pointer-t` | `pointer-t` `int64-t`   | -    | 指针字节偏移加法，结果为 `base + offset` |
+| `and`    | `bool-t`    | `bool-t` `bool-t`       | -    | 逻辑与                                   |
+| `or`     | `bool-t`    | `bool-t` `bool-t`       | -    | 逻辑或                                   |
+| `xor`    | `bool-t`    | `bool-t` `bool-t`       | -    | 逻辑异或                                 |
 
 # 比较指令
 
@@ -75,25 +75,25 @@ title: 指令参考
 
 # 一元运算
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `not` | `bool-t` | `bool-t` | - | 逻辑取反 |
-| `tag-int` | `value-t` | `int64-t` | - | 将 int64 包装为 value |
-| `tag-float` | `value-t` | `float64-t` | - | 将 float64 包装为 value |
-| `tag-bool` | `value-t` | `bool-t` | - | 将 bool 包装为 value |
-| `to-int64` | `int64-t` | `value-t` | - | 从 value 解构 int64，运行时类型检查 |
-| `to-float64` | `float64-t` | `value-t` | - | 从 value 解构 float64，运行时类型检查 |
-| `to-bool` | `bool-t` | `value-t` | - | 从 value 解构 bool，运行时类型检查 |
-| `copy` | `T` | `T` | - | 创建 SSA 别名，输入与输出是同一个值 |
+| 指令         | 输出        | 输入        | 属性 | 描述                                  |
+|--------------|-------------|-------------|------|---------------------------------------|
+| `not`        | `bool-t`    | `bool-t`    | -    | 逻辑取反                              |
+| `tag-int`    | `value-t`   | `int64-t`   | -    | 将 int64 包装为 value                 |
+| `tag-float`  | `value-t`   | `float64-t` | -    | 将 float64 包装为 value               |
+| `tag-bool`   | `value-t`   | `bool-t`    | -    | 将 bool 包装为 value                  |
+| `to-int64`   | `int64-t`   | `value-t`   | -    | 从 value 解构 int64，运行时类型检查   |
+| `to-float64` | `float64-t` | `value-t`   | -    | 从 value 解构 float64，运行时类型检查 |
+| `to-bool`    | `bool-t`    | `value-t`   | -    | 从 value 解构 bool，运行时类型检查    |
+| `copy`       | `T`         | `T`         | -    | 创建 SSA 别名，输入与输出是同一个值   |
 
 # 字面量
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `int64` | `int64-t` | - | `:content <int>` | 创建 `int64-t` 常量 |
-| `float64` | `float64-t` | - | `:content <float>` | 创建 `float64-t` 常量 |
-| `bool` | `bool-t` | - | `:content <bool>` | 创建 `bool-t` 常量，值为 `(true)` 或 `(false)` |
-| `address` | `pointer-t` | - | `:name <symbol>` | 获取顶层符号地址，链接时解析 |
+| 指令      | 输出        | 输入 | 属性               | 描述                                           |
+|-----------|-------------|------|--------------------|------------------------------------------------|
+| `int64`   | `int64-t`   | -    | `:content <int>`   | 创建 `int64-t` 常量                            |
+| `float64` | `float64-t` | -    | `:content <float>` | 创建 `float64-t` 常量                          |
+| `bool`    | `bool-t`    | -    | `:content <bool>`  | 创建 `bool-t` 常量，值为 `(true)` 或 `(false)` |
+| `address` | `pointer-t` | -    | `:name <symbol>`   | 获取顶层符号地址，链接时解析                   |
 
 # 常量
 
@@ -106,20 +106,20 @@ title: 指令参考
 
 # 内存操作
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `load` | `T` | `pointer-t` | `:type <type>` | 从 opaque 指针加载值 |
-| `store` | - | `pointer-t` `T` | - | 将值写入指针 |
-| `size-of` | `int64-t` | - | `:target-type <type>` | 计算目标类型字节大小，编译时常量 |
-| `offset-of` | `int64-t` | - | `:struct-type <type>` `:path (<symbol> ...)` | 沿 struct 字段路径计算累积字节偏移，编译时常量 |
+| 指令        | 输出      | 输入            | 属性                                         | 描述                                           |
+|-------------|-----------|-----------------|----------------------------------------------|------------------------------------------------|
+| `load`      | `T`       | `pointer-t`     | `:type <type>`                               | 从 opaque 指针加载值                           |
+| `store`     | -         | `pointer-t` `T` | -                                            | 将值写入指针                                   |
+| `size-of`   | `int64-t` | -               | `:target-type <type>`                        | 计算目标类型字节大小，编译时常量               |
+| `offset-of` | `int64-t` | -               | `:struct-type <type>` `:path (<symbol> ...)` | 沿 struct 字段路径计算累积字节偏移，编译时常量 |
 
 # 控制流
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `return` | - | 任意类型 | - | 函数返回，terminator |
-| `goto` | - | - | `:label <symbol>` | 无条件跳转，terminator |
-| `branch` | - | `bool-t` | `:then-label <symbol>` `:else-label <symbol>` | 条件分支，terminator |
+| 指令     | 输出 | 输入     | 属性                                          | 描述                   |
+|----------|------|----------|-----------------------------------------------|------------------------|
+| `return` | -    | 任意类型 | -                                             | 函数返回，terminator   |
+| `goto`   | -    | -        | `:label <symbol>`                             | 无条件跳转，terminator |
+| `branch` | -    | `bool-t` | `:then-label <symbol>` `:else-label <symbol>` | 条件分支，terminator   |
 
 ## branch
 
@@ -131,13 +131,13 @@ title: 指令参考
 
 # 函数调用
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `call` | `R` | `pointer-t` `T ...` | - | 静态函数调用 |
-| `tail-call` | - | `pointer-t` `T ...` | - | 尾调用，terminator |
-| `apply` | `R` | `value-t` `T ...` | - | 动态函数调用 |
-| `tail-apply` | - | `value-t` `T ...` | - | 尾动态调用，terminator |
-| `argument` | `T` | - | `:index <int>` | 获取函数参数，从 0 开始，只能在 entry block 使用 |
+| 指令         | 输出 | 输入                | 属性           | 描述                                             |
+|--------------|------|---------------------|----------------|--------------------------------------------------|
+| `call`       | `R`  | `pointer-t` `T ...` | -              | 静态函数调用                                     |
+| `tail-call`  | -    | `pointer-t` `T ...` | -              | 尾调用，terminator                               |
+| `apply`      | `R`  | `value-t` `T ...`   | -              | 动态函数调用                                     |
+| `tail-apply` | -    | `value-t` `T ...`   | -              | 尾动态调用，terminator                           |
+| `argument`   | `T`  | -                   | `:index <int>` | 获取函数参数，从 0 开始，只能在 entry block 使用 |
 
 ## call / apply
 
@@ -159,10 +159,10 @@ title: 指令参考
 
 # 动态值操作
 
-| 指令 | 输出 | 输入 | 属性 | 描述 |
-|------|------|------|------|------|
-| `use` | `T` | - | `:type <type>` | 从合并点读取值 |
-| `provide` | - | `T` | `:use-site <symbol>` | 向合并点写入值 |
+| 指令      | 输出 | 输入 | 属性                 | 描述           |
+|-----------|------|------|----------------------|----------------|
+| `use`     | `T`  | -    | `:type <type>`       | 从合并点读取值 |
+| `provide` | -    | `T`  | `:use-site <symbol>` | 向合并点写入值 |
 
 ## use / provide
 
