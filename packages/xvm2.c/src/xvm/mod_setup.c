@@ -1,0 +1,27 @@
+#include "index.h"
+
+void mod_setup(mod_t *mod) {
+  xvm_t *xvm = make_xvm(mod);
+
+  record_iter_t iter;
+  record_iter_init(&iter, xvm_mod(xvm)->definitions);
+  definition_t *definition = record_iter_next_value(&iter);
+  while (definition) {
+    if (definition->kind == VARIABLE_DEFINITION) {
+      assert(!(definition->variable_definition.function &&
+               definition->variable_definition.primitive));
+
+      if (definition->variable_definition.primitive) {
+        call_definition_now(xvm, definition);
+        definition->variable_definition.value = xvm->result;
+      } else if (definition->variable_definition.function) {
+        call_function_now(xvm, definition_function(definition));
+        definition->variable_definition.value = xvm->result;
+      }
+    }
+
+    definition = record_iter_next_value(&iter);
+  }
+
+  xvm_free(xvm);
+}

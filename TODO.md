@@ -1,5 +1,19 @@
-[x86] review assembler
+# xvm2
+
+[xvm2] remove assembler
+[xvm2] remove old bytecode interpreter
+[xvm2] bytecode for basic-lisp
+
+- direct threaded code -- like erlang's beam
+
+[xvm2] .xvm.exe use tlv
+[meta-lisp.js] assemble basic-lisp to .xvm.exe
+[xvm] remove xvm as a language
+
+# x86
+
 [x86] review loader
+[x86] review assembler
 
 # native code generation
 
