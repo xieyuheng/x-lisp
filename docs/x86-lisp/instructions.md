@@ -1,0 +1,108 @@
+---
+title: 指令参考
+---
+
+> 通用 operand 语法见 [syntax.md](syntax.md)。
+> 操作数约束中，空格分隔表示“可选其一”。
+
+## 操作数记号
+
+| 记号        | 含义                                 |
+|-------------|--------------------------------------|
+| `<reg>`     | 寄存器操作数，实际语法为 `(reg ...)` |
+| `<reg-8>`   | 8-bit 寄存器操作数                   |
+| `<reg-64>`  | 64-bit 寄存器操作数                  |
+| `<reg-rcx>` | `(reg rcx)`，移位计数专用            |
+| `<mem>`     | 内存操作数，实际语法为 `(mem ...)`   |
+| `<int>`     | 整数立即数                           |
+| `<address>` | 地址操作数                           |
+| `<label>`   | 标签操作数，实际语法为 `(label ...)` |
+| `<code>`    | 条件码，如 `e`、`ne`、`g` 等         |
+
+## 目录
+
+- [数据移动](#数据移动)
+- [算术与逻辑](#算术与逻辑)
+- [栈操作](#栈操作)
+- [控制流](#控制流)
+- [地址计算](#地址计算)
+- [系统调用](#系统调用)
+- [杂项](#杂项)
+
+# 数据移动
+
+| 指令 | 语法 | 操作数约束 | 描述 |
+|------|------|------------|------|
+| `mov` | `(mov <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；`<dest>` 与 `<src>` 不能同时为 `<mem>` | 数据传送 |
+| `movzx` | `(movzx <dest> <src>)` | `<dest> := <reg-64>`；`<src> := <reg-8>` | 零扩展 byte 至 quadword |
+| `set` | `(set (cc <code>) <dest>)` | `<code> := e ne l le g ge b be a ae`；`<dest> := <reg-8>` | 按条件码设置 byte |
+
+`movzx` 常与 `set` 搭配，将条件判断产生的 1 字节 0/1 扩展为完整 64 位布尔值：
+
+```scheme
+(set (cc g) (reg al))
+(movzx (reg rax) (reg al))
+```
+
+# 算术与逻辑
+
+| 指令 | 语法 | 操作数约束 | 描述 |
+|------|------|------------|------|
+| `add` | `(add <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 加法 |
+| `sub` | `(sub <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 减法 |
+| `imul` | `(imul <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 有符号乘法 |
+| `cmp` | `(cmp <lhs> <rhs>)` | `<lhs> := <reg> <mem>`；`<rhs> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 比较，设置标志位，不修改 `<lhs>` |
+| `test` | `(test <lhs> <rhs>)` | `<lhs> := <reg> <mem>`；`<rhs> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 按位测试，设置标志位，不修改 `<lhs>` |
+| `and` | `(and <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 按位与 |
+| `or` | `(or <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 按位或 |
+| `xor` | `(xor <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg> <int> <mem> <address>`；不能双 `<mem>` | 按位异或 |
+| `shl` | `(shl <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg-rcx> <int>` | 左移，移位计数只能是 `CL` 或 0..255 立即数 |
+| `shr` | `(shr <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg-rcx> <int>` | 逻辑右移，移位计数只能是 `CL` 或 0..255 立即数 |
+| `sar` | `(sar <dest> <src>)` | `<dest> := <reg> <mem>`；`<src> := <reg-rcx> <int>` | 算术右移，高位用符号位填充 |
+
+# 栈操作
+
+| 指令   | 语法           | 操作数约束                   | 描述 |
+|--------|----------------|------------------------------|------|
+| `push` | `(push <src>)` | `<src> := <reg> <int> <mem>` | 压栈 |
+| `pop`  | `(pop <dest>)` | `<dest> := <reg> <mem>`      | 弹栈 |
+
+# 控制流
+
+| 指令 | 语法 | 操作数约束 | 描述 |
+|------|------|------------|------|
+| `call` | `(call <target>)` | `<target> := <label> <mem>` | 函数调用；`(label)` 为静态调用，`(mem)` 为间接调用 |
+| `ret` | `(ret)` | - | 函数返回 |
+| `jmp` | `(jmp <target>)` | `<target> := <label> <mem>` | 无条件跳转 |
+| `j` | `(j (cc <code>) (label <name>))` | `<code> := e ne l le g ge b be a ae` | 条件跳转，条件成立时跳转，否则 fall-through |
+
+`j` 示例：
+
+```scheme
+(j (cc g) (label is-greater))
+```
+
+# 地址计算
+
+| 指令 | 语法 | 操作数约束 | 描述 |
+|------|------|------------|------|
+| `lea` | `(lea <dest> (mem <base> [<index>] [<scale>] [<disp>]))` | `<dest> := <reg>`；第二个操作数必须为 `(mem ...)` | 加载有效地址 |
+
+`lea` 示例：
+
+```scheme
+(lea (reg rax) (mem (reg rbp) -8))
+(lea (reg rcx) (mem (reg rbx) (* (reg rax) 8)))
+```
+
+# 系统调用
+
+| 指令 | 语法 | 操作数约束 | 描述 |
+|------|------|------------|------|
+| `syscall` | `(syscall)` | - | 系统调用指令 |
+
+# 杂项
+
+| 指令 | 语法 | 操作数约束 | 描述 |
+|------|------|------------|------|
+| `nop` | `(nop)` | - | 空操作，仅消耗一个字节 |
