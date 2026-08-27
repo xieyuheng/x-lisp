@@ -3,16 +3,16 @@ import { type Cell } from "../cell/index.ts"
 
 export type Instr = {
   op: string
-  input: Array<Cell>
   output: Array<Cell>
+  input: Array<Cell>
   attributes: Record<string, Attribute>
 }
 
 export function Instr(
   op: string,
-  input: Array<Cell>,
   output: Array<Cell>,
+  input: Array<Cell>,
   attributes: Record<string, Attribute>,
 ): Instr {
-  return { op, input, output, attributes }
+  return { op, output, input, attributes }
 }

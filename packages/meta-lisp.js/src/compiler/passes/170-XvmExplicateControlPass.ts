@@ -47,7 +47,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
             addBlock(state, block)
 
             const argumentInstrs = definition.parameters.map((name, i) =>
-              B.Instr("argument", [], [B.Cell(name)], {
+              B.Instr("argument", [B.Cell(name)], [], {
                 index: B.IntAttribute(BigInt(i)),
               }),
             )
@@ -163,7 +163,7 @@ function explicateUnnestedTerm(
     case "SymbolTerm": {
       const value = generateCell(state, "symbol")
       const instrs = [
-        B.Instr("symbol", [], [value], {
+        B.Instr("symbol", [value], [], {
           content: B.SymbolAttribute(term.content),
         }),
       ]
@@ -173,7 +173,7 @@ function explicateUnnestedTerm(
     case "StringTerm": {
       const value = generateCell(state, "text")
       const instrs = [
-        B.Instr("text", [], [value], {
+        B.Instr("text", [value], [], {
           content: B.StringAttribute(term.content),
         }),
       ]
@@ -183,7 +183,7 @@ function explicateUnnestedTerm(
     case "IntTerm": {
       const value = generateCell(state, "int")
       const instrs = [
-        B.Instr("int", [], [value], {
+        B.Instr("int", [value], [], {
           content: B.IntAttribute(term.content),
         }),
       ]
@@ -193,7 +193,7 @@ function explicateUnnestedTerm(
     case "FloatTerm": {
       const value = generateCell(state, "float")
       const instrs = [
-        B.Instr("float", [], [value], {
+        B.Instr("float", [value], [], {
           content: B.FloatAttribute(term.content),
         }),
       ]
@@ -227,7 +227,7 @@ function explicateUnnestedTerm(
       ) {
         const value = generateCell(state, "value")
         const instrs = [
-          B.Instr("global-load", [], [value], {
+          B.Instr("global-load", [value], [], {
             name: B.SymbolAttribute(qualifiedName),
           }),
         ]
@@ -236,7 +236,7 @@ function explicateUnnestedTerm(
 
       const value = generateCell(state, "ref")
       const instrs = [
-        B.Instr("ref", [], [value], {
+        B.Instr("ref", [value], [], {
           name: B.SymbolAttribute(qualifiedName),
         }),
       ]
@@ -257,13 +257,13 @@ function explicateUnnestedTerm(
 
       const instrs = [
         ...arrayConcat(argInstrGroups),
-        B.Instr("ref", [], [funcRef], {
+        B.Instr("ref", [funcRef], [], {
           name: B.SymbolAttribute(qualifiedFuncName),
         }),
-        B.Instr("int", [], [size], {
+        B.Instr("int", [size], [], {
           content: B.IntAttribute(BigInt(freeVarCells.length)),
         }),
-        B.Instr("call", [funcRef, size], [closure], {
+        B.Instr("call", [closure], [funcRef, size], {
           name: B.SymbolAttribute("meta-builtin/builtin/make-closure"),
         }),
       ]
@@ -273,10 +273,10 @@ function explicateUnnestedTerm(
         const index = generateCell(state, "index")
         const next = generateCell(state, "closure")
         instrs.push(
-          B.Instr("int", [], [index], {
+          B.Instr("int", [index], [], {
             content: B.IntAttribute(BigInt(i)),
           }),
-          B.Instr("call", [index, freeVarCells[i], current], [next], {
+          B.Instr("call", [next], [index, freeVarCells[i], current], {
             name: B.SymbolAttribute("meta-builtin/builtin/closure-put-arg"),
           }),
         )
@@ -296,7 +296,7 @@ function explicateUnnestedTerm(
           const value = generateCell(state, "value")
           const instrs = [
             ...arrayConcat(argInstrGroups),
-            B.Instr(op, args, [value], {}),
+            B.Instr(op, [value], args, {}),
           ]
           return [instrs, value]
         }
@@ -304,7 +304,7 @@ function explicateUnnestedTerm(
         const value = generateCell(state, "value")
         const instrs = [
           ...arrayConcat(argInstrGroups),
-          B.Instr("call", args, [value], {
+          B.Instr("call", [value], args, {
             name: B.SymbolAttribute(direct.qualifiedName),
           }),
         ]
@@ -316,7 +316,7 @@ function explicateUnnestedTerm(
       const instrs = [
         ...targetInstrs,
         ...arrayConcat(argInstrGroups),
-        B.Instr("apply", [target, ...args], [value], {}),
+        B.Instr("apply", [value], [target, ...args], {}),
       ]
       return [instrs, value]
     }
@@ -441,7 +441,7 @@ function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
       if (direct) {
         return [
           ...arrayConcat(argInstrGroups),
-          B.Instr("tail-call", args, [], {
+          B.Instr("tail-call", [], args, {
             name: B.SymbolAttribute(direct.qualifiedName),
           }),
         ]
@@ -451,13 +451,13 @@ function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
       return [
         ...targetInstrs,
         ...arrayConcat(argInstrGroups),
-        B.Instr("tail-apply", [target, ...args], [], {}),
+        B.Instr("tail-apply", [], [target, ...args], {}),
       ]
     }
 
     default: {
       const [instrs, cell] = explicateUnnestedTerm(state, term)
-      return [...instrs, B.Instr("return", [cell], [], {})]
+      return [...instrs, B.Instr("return", [], [cell], {})]
     }
   }
 }
@@ -505,7 +505,7 @@ function explicateInLet1(
       const gotoBody = B.Instr("goto", [], [], {
         label: B.SymbolAttribute(
           generateLabel(state, "let-body", [
-            B.Instr("use", [], [B.Cell(name)], {}),
+            B.Instr("use", [B.Cell(name)], [], {}),
             ...restInstrs,
           ]),
         ),
@@ -523,7 +523,7 @@ function explicateInLet1(
       if (state.useSites.has(name)) {
         return [
           ...rhsInstrs,
-          B.Instr("provide", [rhsCell], [], {
+          B.Instr("provide", [], [rhsCell], {
             "use-site": B.SymbolAttribute(name),
           }),
           ...restInstrs,
@@ -532,7 +532,7 @@ function explicateInLet1(
 
       return [
         ...rhsInstrs,
-        B.Instr("copy", [rhsCell], [B.Cell(name)], {}),
+        B.Instr("copy", [B.Cell(name)], [rhsCell], {}),
         ...restInstrs,
       ]
     }
@@ -635,7 +635,7 @@ function explicateInIf(
     case "VarTerm": {
       const conditionCell = B.Cell(condition.name)
       return [
-        B.Instr("branch", [conditionCell], [], {
+        B.Instr("branch", [], [conditionCell], {
           "then-label": B.SymbolAttribute(
             generateLabel(state, "then", thenInstrs),
           ),
@@ -653,7 +653,7 @@ function explicateInIf(
       )
       return [
         ...conditionInstrs,
-        B.Instr("branch", [conditionCell], [], {
+        B.Instr("branch", [], [conditionCell], {
           "then-label": B.SymbolAttribute(
             generateLabel(state, "then", thenInstrs),
           ),

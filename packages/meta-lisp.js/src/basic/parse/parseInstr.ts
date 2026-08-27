@@ -30,14 +30,14 @@ export function parseInstr(sexp: S.Sexp): B.Instr {
     const input = parseInput(rest)
     const attributes = parseAttributes(rest)
 
-    return B.Instr(op, input, output, attributes)
+    return B.Instr(op, output, input, attributes)
   }
 
   const op = S.asSymbolSexp(elements[0]).content
   const rest = elements.slice(1)
   const input = parseInput(rest)
   const attributes = parseAttributes(rest)
-  return B.Instr(op, input, [], attributes)
+  return B.Instr(op, [], input, attributes)
 }
 
 function parseInput(sexps: Array<S.Sexp>): Array<B.Cell> {
