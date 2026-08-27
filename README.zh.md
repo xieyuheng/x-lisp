@@ -2,7 +2,7 @@
 
 # x-lisp
 
-- [元语](docs/zh/meta-lisp/README.md)
+- [元语](docs/元语/说明.md)
 
 ## 开源协议
 

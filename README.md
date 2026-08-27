@@ -2,7 +2,7 @@
 
 # x-lisp
 
-- [meta-lisp](docs/en/meta-lisp/README.md)
+- [meta-lisp](docs/meta-lisp/README.md)
 
 ## License
 
