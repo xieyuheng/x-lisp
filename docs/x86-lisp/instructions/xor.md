@@ -5,17 +5,17 @@ title: xor
 # 语法
 
 ```scheme
-(xor <dst> <src>)
+(xor <dest> <src>)
 ```
 
 # 操作数
 
 ```
-<dst> := (reg) (mem)
+<dest> := (reg) (mem)
 <src> := (reg) <int> (mem) (address)
 ```
 
-<dst> 与 <src> 不能同时为内存操作数
+<dest> 与 <src> 不能同时为内存操作数
 
 # 描述
 

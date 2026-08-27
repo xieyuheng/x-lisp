@@ -366,18 +366,18 @@ void xvm_exe_dump(xvm_exe_t *self, const char *pathname) {
 
 // ── binary reading utilities ──
 
-static inline void read_u32(uint8_t *bytes, size_t *offset, uint32_t *dst) {
-  memory_load(bytes + *offset, *dst);
+static inline void read_u32(uint8_t *bytes, size_t *offset, uint32_t *dest) {
+  memory_load(bytes + *offset, *dest);
   *offset += 4;
 }
 
-static inline void read_u16(uint8_t *bytes, size_t *offset, uint16_t *dst) {
-  memory_load(bytes + *offset, *dst);
+static inline void read_u16(uint8_t *bytes, size_t *offset, uint16_t *dest) {
+  memory_load(bytes + *offset, *dest);
   *offset += 2;
 }
 
-static inline void read_byte(uint8_t *bytes, size_t *offset, uint8_t *dst) {
-  *dst = bytes[*offset];
+static inline void read_byte(uint8_t *bytes, size_t *offset, uint8_t *dest) {
+  *dest = bytes[*offset];
   *offset += 1;
 }
 

@@ -8,7 +8,7 @@
 //   add=0  or=1  and=4  sub=5  xor=6  cmp=7
 //
 // The r/m operand may be a register or a memory location (RegMem / RipMem).
-// dst and src must not both be memory locations — x86 allows at most one
+// dest and src must not both be memory locations — x86 allows at most one
 // memory operand per instruction; the final fallthrough rejects that.
 
 import type { Instr } from "../instr/index.ts"
@@ -33,7 +33,7 @@ const OPCODE_MAP: Record<
 }
 
 export function encodeGroup1(instr: Instr): Array<EncodedInstruction> {
-  const dst = instr.operands[0]
+  const dest = instr.operands[0]
   const src = instr.operands[1]
   const map = OPCODE_MAP[instr.op]
   if (!map) {
@@ -41,31 +41,31 @@ export function encodeGroup1(instr: Instr): Array<EncodedInstruction> {
     throw new Error(message)
   }
 
-  if (dst.kind === "RegOperand") {
+  if (dest.kind === "RegOperand") {
     if (src.kind === "RegOperand") {
-      return [encodeRegReg(dst.name, src.name, map, deriveOpSize(instr))]
+      return [encodeRegReg(dest.name, src.name, map, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeRegImm(dst.name, src.value, map, deriveOpSize(instr))]
+      return [encodeRegImm(dest.name, src.value, map, deriveOpSize(instr))]
     }
   }
 
-  if (isMemOperand(dst)) {
+  if (isMemOperand(dest)) {
     if (src.kind === "RegOperand") {
-      return [encodeMemReg(dst, src.name, map, deriveOpSize(instr))]
+      return [encodeMemReg(dest, src.name, map, deriveOpSize(instr))]
     }
 
     if (src.kind === "ImmOperand") {
-      return [encodeMemImm(dst, src.value, map, deriveOpSize(instr))]
+      return [encodeMemImm(dest, src.value, map, deriveOpSize(instr))]
     }
   }
 
-  if (dst.kind === "RegOperand" && isMemOperand(src)) {
-    return [encodeRegMem(dst.name, src, map, deriveOpSize(instr))]
+  if (dest.kind === "RegOperand" && isMemOperand(src)) {
+    return [encodeRegMem(dest.name, src, map, deriveOpSize(instr))]
   }
 
-  let message = `[${instr.op}] unsupported operands: dst=${dst.kind} src=${src.kind}`
+  let message = `[${instr.op}] unsupported operands: dest=${dest.kind} src=${src.kind}`
   throw new Error(message)
 }
 
@@ -74,16 +74,16 @@ function isMemOperand(op: Operand): boolean {
 }
 
 function encodeRegReg(
-  dstReg: string,
+  destReg: string,
   srcReg: string,
   map: { rm: number; rm8: number },
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   return {
     prefixes: sizePrefix(size),
-    rex: computeRex(size === 8, dstReg, null, srcReg),
+    rex: computeRex(size === 8, destReg, null, srcReg),
     opcode: [size === 1 ? map.rm8 : map.rm],
-    modRM: modRM(MOD_REG, regCode(dstReg), regCode(srcReg)),
+    modRM: modRM(MOD_REG, regCode(destReg), regCode(srcReg)),
     sib: null,
     displacement: null,
     immediate: null,
@@ -91,7 +91,7 @@ function encodeRegReg(
 }
 
 function encodeRegImm(
-  dstReg: string,
+  destReg: string,
   value: bigint,
   map: { immExt: number },
   size: 1 | 2 | 4 | 8,
@@ -100,9 +100,9 @@ function encodeRegImm(
     checkImm8(value)
     return {
       prefixes: [],
-      rex: computeRex(false, null, null, dstReg),
+      rex: computeRex(false, null, null, destReg),
       opcode: [0x80],
-      modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
+      modRM: modRM(MOD_REG, map.immExt, regCode(destReg)),
       sib: null,
       displacement: null,
       immediate: { size: 1, value },
@@ -111,9 +111,9 @@ function encodeRegImm(
   if (isImm8(value)) {
     return {
       prefixes: sizePrefix(size),
-      rex: computeRex(size === 8, null, null, dstReg),
+      rex: computeRex(size === 8, null, null, destReg),
       opcode: [0x83],
-      modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
+      modRM: modRM(MOD_REG, map.immExt, regCode(destReg)),
       sib: null,
       displacement: null,
       immediate: { size: 1, value },
@@ -121,9 +121,9 @@ function encodeRegImm(
   }
   return {
     prefixes: sizePrefix(size),
-    rex: computeRex(size === 8, null, null, dstReg),
+    rex: computeRex(size === 8, null, null, destReg),
     opcode: [0x81],
-    modRM: modRM(MOD_REG, map.immExt, regCode(dstReg)),
+    modRM: modRM(MOD_REG, map.immExt, regCode(destReg)),
     sib: null,
     displacement: null,
     immediate: { size: size === 2 ? 2 : 4, value },
@@ -131,7 +131,7 @@ function encodeRegImm(
 }
 
 function encodeRegMem(
-  dstReg: string,
+  destReg: string,
   src: Operand,
   map: { rm: number; rm8: number },
   size: 1 | 2 | 4 | 8,
@@ -139,9 +139,9 @@ function encodeRegMem(
   const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(src)
   return {
     prefixes: sizePrefix(size),
-    rex: computeRex(size === 8, dstReg, rexIndex, rexRm),
+    rex: computeRex(size === 8, destReg, rexIndex, rexRm),
     opcode: [size === 1 ? map.rm8 : map.rm],
-    modRM: modrm.codeForReg(regCode(dstReg)),
+    modRM: modrm.codeForReg(regCode(destReg)),
     sib,
     displacement: disp,
     immediate: null,
@@ -149,12 +149,12 @@ function encodeRegMem(
 }
 
 function encodeMemReg(
-  dst: Operand,
+  dest: Operand,
   srcReg: string,
   map: { mr: number; mr8: number },
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dest)
   return {
     prefixes: sizePrefix(size),
     rex: computeRex(size === 8, srcReg, rexIndex, rexRm),
@@ -167,12 +167,12 @@ function encodeMemReg(
 }
 
 function encodeMemImm(
-  dst: Operand,
+  dest: Operand,
   value: bigint,
   map: { immExt: number },
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dst)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dest)
   if (size === 1) {
     return {
       prefixes: [],

@@ -5,13 +5,13 @@ title: sar
 # 语法
 
 ```scheme
-(sar <dst> <src>)
+(sar <dest> <src>)
 ```
 
 # 操作数
 
 ```
-<dst> := (reg) (mem)
+<dest> := (reg) (mem)
 <src> := (reg rcx) | <int>
 ```
 
@@ -19,7 +19,7 @@ title: sar
 
 算术右移（Shift Arithmetic Right）。
 
-- `dst` 的位向右移，高位用符号位填充
+- `dest` 的位向右移，高位用符号位填充
 - `src` 可以是立即数或 `(reg rcx)`
 
 # 例子

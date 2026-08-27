@@ -5,13 +5,13 @@ title: movzx
 # 语法
 
 ```scheme
-(movzx <dst> <src>)
+(movzx <dest> <src>)
 ```
 
 # 操作数
 
 ```
-<dst> := (reg) — 64-bit 目标寄存器
+<dest> := (reg) — 64-bit 目标寄存器
 <src> := (reg) — 8-bit 源寄存器
 ```
 

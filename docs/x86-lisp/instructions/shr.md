@@ -5,13 +5,13 @@ title: shr
 # 语法
 
 ```scheme
-(shr <dst> <src>)
+(shr <dest> <src>)
 ```
 
 # 操作数
 
 ```
-<dst> := (reg) (mem)
+<dest> := (reg) (mem)
 <src> := (reg rcx) <int>
 ```
 

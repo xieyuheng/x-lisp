@@ -116,34 +116,34 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
     }
 
     case "int": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const value = B.expectInt(instr.attributes, "content")
-      return [Xvm.Instr("load", [intOp(dstIdx), Xvm.IntOperand(value)])]
+      return [Xvm.Instr("load", [intOp(destIdx), Xvm.IntOperand(value)])]
     }
 
     case "float": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const value = B.expectFloat(instr.attributes, "content")
-      return [Xvm.Instr("load", [intOp(dstIdx), Xvm.FloatOperand(value)])]
+      return [Xvm.Instr("load", [intOp(destIdx), Xvm.FloatOperand(value)])]
     }
 
     case "symbol": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const content = B.expectSymbol(instr.attributes, "content")
-      return [Xvm.Instr("load", [intOp(dstIdx), Xvm.SymbolOperand(content)])]
+      return [Xvm.Instr("load", [intOp(destIdx), Xvm.SymbolOperand(content)])]
     }
 
     case "text": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const content = B.expectString(instr.attributes, "content")
-      return [Xvm.Instr("load", [intOp(dstIdx), Xvm.StringOperand(content)])]
+      return [Xvm.Instr("load", [intOp(destIdx), Xvm.StringOperand(content)])]
     }
 
     case "copy": {
       const srcIdx = lookupIndex(state, instr.input[0].id)
-      const dstIdx = lookupIndex(state, instr.output[0].id)
-      if (srcIdx !== dstIdx) {
-        return [Xvm.Instr("move", [intOp(dstIdx), intOp(srcIdx)])]
+      const destIdx = lookupIndex(state, instr.output[0].id)
+      if (srcIdx !== destIdx) {
+        return [Xvm.Instr("move", [intOp(destIdx), intOp(srcIdx)])]
       }
       return []
     }
@@ -163,15 +163,15 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
     }
 
     case "ref": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const name = B.expectSymbol(instr.attributes, "name")
-      return [Xvm.Instr("ref", [intOp(dstIdx), Xvm.VarOperand(name)])]
+      return [Xvm.Instr("ref", [intOp(destIdx), Xvm.VarOperand(name)])]
     }
 
     case "global-load": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const name = B.expectSymbol(instr.attributes, "name")
-      return [Xvm.Instr("global-load", [intOp(dstIdx), Xvm.VarOperand(name)])]
+      return [Xvm.Instr("global-load", [intOp(destIdx), Xvm.VarOperand(name)])]
     }
 
     case "global-store": {
@@ -187,8 +187,8 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
         Xvm.Instr("call", [Xvm.VarOperand(name), ...args]),
       ]
       if (instr.output.length > 0) {
-        const dstIdx = lookupIndex(state, instr.output[0].id)
-        result.push(Xvm.Instr("load-result", [intOp(dstIdx)]))
+        const destIdx = lookupIndex(state, instr.output[0].id)
+        result.push(Xvm.Instr("load-result", [intOp(destIdx)]))
       }
       return result
     }
@@ -202,11 +202,11 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
     case "int-less":
     case "int-greater-or-equal":
     case "int-less-or-equal": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const src1Idx = lookupIndex(state, instr.input[0].id)
       const src2Idx = lookupIndex(state, instr.input[1].id)
       return [
-        Xvm.Instr(instr.op, [intOp(dstIdx), intOp(src1Idx), intOp(src2Idx)]),
+        Xvm.Instr(instr.op, [intOp(destIdx), intOp(src1Idx), intOp(src2Idx)]),
       ]
     }
 
@@ -214,9 +214,9 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
     case "int-is-positive":
     case "int-is-non-negative":
     case "int-is-non-zero": {
-      const dstIdx = lookupIndex(state, instr.output[0].id)
+      const destIdx = lookupIndex(state, instr.output[0].id)
       const srcIdx = lookupIndex(state, instr.input[0].id)
-      return [Xvm.Instr(instr.op, [intOp(dstIdx), intOp(srcIdx)])]
+      return [Xvm.Instr(instr.op, [intOp(destIdx), intOp(srcIdx)])]
     }
 
     case "tail-call": {
@@ -234,8 +234,8 @@ function codegenInstr(state: CodegenState, instr: B.Instr): Array<Xvm.Instr> {
         Xvm.Instr("apply", [intOp(targetIdx), ...args]),
       ]
       if (instr.output.length > 0) {
-        const dstIdx = lookupIndex(state, instr.output[0].id)
-        result.push(Xvm.Instr("load-result", [intOp(dstIdx)]))
+        const destIdx = lookupIndex(state, instr.output[0].id)
+        result.push(Xvm.Instr("load-result", [intOp(destIdx)]))
       }
       return result
     }

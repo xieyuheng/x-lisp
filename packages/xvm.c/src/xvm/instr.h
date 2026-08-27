@@ -32,19 +32,19 @@ typedef enum {
 struct instr_t {
   op_t op;
   union {
-    struct { uint16_t dst; uint16_t src; } mov;
-    struct { uint16_t dst; value_t value; } load;
-    struct { uint16_t dst; } load_result;
+    struct { uint16_t dest; uint16_t src; } mov;
+    struct { uint16_t dest; value_t value; } load;
+    struct { uint16_t dest; } load_result;
     struct { uint16_t src; } ret;
     struct { definition_t *definition; uint8_t argc; uint16_t *args; } call;
     struct { uint16_t target; uint8_t argc; uint16_t *args; } apply;
-    struct { uint16_t dst; definition_t *definition; } ref;
-    struct { uint16_t dst; definition_t *definition; } global_load;
+    struct { uint16_t dest; definition_t *definition; } ref;
+    struct { uint16_t dest; definition_t *definition; } global_load;
     struct { uint16_t src; definition_t *definition; } global_store;
     struct { int32_t offset; } jump;
     struct { uint16_t src; int32_t offset; } jump_if_not;
-    struct { uint16_t dst; uint16_t src1; uint16_t src2; } arith;
-    struct { uint16_t dst; uint16_t src; } unary;
+    struct { uint16_t dest; uint16_t src1; uint16_t src2; } arith;
+    struct { uint16_t dest; uint16_t src; } unary;
   };
 };
 

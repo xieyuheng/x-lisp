@@ -15,17 +15,17 @@ export function encodeSet(instr: Instr): Array<EncodedInstruction> {
     throw new Error(`[set] unknown condition code: ${ccOp.code}`)
   }
 
-  const dst = instr.operands[1]
-  if (dst.kind !== "RegOperand") {
-    throw new Error(`[set] dst must be register, got: ${dst.kind}`)
+  const dest = instr.operands[1]
+  if (dest.kind !== "RegOperand") {
+    throw new Error(`[set] dest must be register, got: ${dest.kind}`)
   }
 
   return [
     {
       prefixes: [],
-      rex: computeRex(false, null, null, dst.name),
+      rex: computeRex(false, null, null, dest.name),
       opcode: [0x0f, 0x90 + ccCode],
-      modRM: modRM(MOD_REG, 0, regCode(dst.name)),
+      modRM: modRM(MOD_REG, 0, regCode(dest.name)),
       sib: null,
       displacement: null,
       immediate: null,

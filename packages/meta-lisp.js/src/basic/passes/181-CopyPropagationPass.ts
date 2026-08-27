@@ -6,8 +6,8 @@ import * as B from "../../basic/index.ts"
 //   (= unnested.1 (copy value.4))
 //   (= value.3 (call unnested.1 ...))
 // 当 copy 的源 cell 只被这一条 copy 使用（usedBy.length === 1）时，
-// src 的定义点支配 dst 的所有使用点，替换是安全的：
-// 把 dst 的所有 use 替换为 src，删除该 copy。
+// src 的定义点支配 dest 的所有使用点，替换是安全的：
+// 把 dest 的所有 use 替换为 src，删除该 copy。
 // 链式 copy（a → b → c）随遍历顺序累积消除。
 //
 // 不处理 provide/use：
@@ -34,20 +34,20 @@ function copyPropagateFunction(definition: B.FunctionDefinition): void {
       }
 
       const src = instr.input[0]
-      const dst = instr.output[0]
+      const dest = instr.output[0]
       const srcInfo = graph.cellInfos.get(src.id)
       if (srcInfo === undefined || srcInfo.usedBy.length !== 1) {
         newInstrs.push(instr)
         continue
       }
 
-      const dstInfo = graph.cellInfos.get(dst.id)
-      if (dstInfo === undefined) {
+      const destInfo = graph.cellInfos.get(dest.id)
+      if (destInfo === undefined) {
         newInstrs.push(instr)
         continue
       }
 
-      for (const { instr: user, inputIndex } of dstInfo.usedBy) {
+      for (const { instr: user, inputIndex } of destInfo.usedBy) {
         user.input[inputIndex] = src
       }
     }

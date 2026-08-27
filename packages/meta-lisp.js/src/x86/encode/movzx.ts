@@ -6,12 +6,12 @@ import { sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 export function encodeMovzx(instr: Instr): Array<EncodedInstruction> {
-  const dst = instr.operands[0]
+  const dest = instr.operands[0]
   const src = instr.operands[1]
 
-  if (dst.kind !== "RegOperand" || src.kind !== "RegOperand") {
+  if (dest.kind !== "RegOperand" || src.kind !== "RegOperand") {
     throw new Error(
-      `[movzx] both operands must be registers, got dst=${dst.kind} src=${src.kind}`,
+      `[movzx] both operands must be registers, got dest=${dest.kind} src=${src.kind}`,
     )
   }
 
@@ -20,19 +20,19 @@ export function encodeMovzx(instr: Instr): Array<EncodedInstruction> {
     throw new Error(`[movzx] source must be 8-bit or 16-bit, got: ${src.name}`)
   }
 
-  const dstSize = regSize(dst.name)
-  if (dstSize <= srcSize) {
+  const destSize = regSize(dest.name)
+  if (destSize <= srcSize) {
     throw new Error(
-      `[movzx] destination must be wider than source: ${dst.name} vs ${src.name}`,
+      `[movzx] destination must be wider than source: ${dest.name} vs ${src.name}`,
     )
   }
 
   return [
     {
-      prefixes: sizePrefix(dstSize),
-      rex: computeRex(dstSize === 8, dst.name, null, src.name),
+      prefixes: sizePrefix(destSize),
+      rex: computeRex(destSize === 8, dest.name, null, src.name),
       opcode: srcSize === 1 ? [0x0f, 0xb6] : [0x0f, 0xb7],
-      modRM: modRM(MOD_REG, regCode(dst.name), regCode(src.name)),
+      modRM: modRM(MOD_REG, regCode(dest.name), regCode(src.name)),
       sib: null,
       displacement: null,
       immediate: null,

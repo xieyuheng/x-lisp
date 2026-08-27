@@ -6,17 +6,17 @@ import { deriveOpSize, sizePrefix } from "./size.ts"
 import type { EncodedInstruction } from "./types.ts"
 
 export function encodeTest(instr: Instr): Array<EncodedInstruction> {
-  const dst = instr.operands[0]
+  const dest = instr.operands[0]
   const src = instr.operands[1]
 
-  if (dst.kind === "RegOperand" && src.kind === "RegOperand") {
+  if (dest.kind === "RegOperand" && src.kind === "RegOperand") {
     const size = deriveOpSize(instr)
     return [
       {
         prefixes: sizePrefix(size),
-        rex: computeRex(size === 8, dst.name, null, src.name),
+        rex: computeRex(size === 8, dest.name, null, src.name),
         opcode: [size === 1 ? 0x84 : 0x85],
-        modRM: modRM(MOD_REG, regCode(dst.name), regCode(src.name)),
+        modRM: modRM(MOD_REG, regCode(dest.name), regCode(src.name)),
         sib: null,
         displacement: null,
         immediate: null,
@@ -24,6 +24,6 @@ export function encodeTest(instr: Instr): Array<EncodedInstruction> {
     ]
   }
 
-  let message = `[test] unsupported operands: dst=${dst.kind} src=${src.kind}`
+  let message = `[test] unsupported operands: dest=${dest.kind} src=${src.kind}`
   throw new Error(message)
 }

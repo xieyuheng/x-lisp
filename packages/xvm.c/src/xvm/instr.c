@@ -80,25 +80,25 @@ void instr_encode(uint8_t *code, struct instr_t instr) {
   case FIXED: {
     switch (instr.op) {
     case OP_MOVE:
-      enc_u16(code + 1, instr.mov.dst);
+      enc_u16(code + 1, instr.mov.dest);
       enc_u16(code + 1 + SZU16, instr.mov.src);
       return;
     case OP_LOAD:
-      enc_u16(code + 1, instr.load.dst);
+      enc_u16(code + 1, instr.load.dest);
       enc_val(code + 1 + SZU16, instr.load.value);
       return;
     case OP_LOAD_RESULT:
-      enc_u16(code + 1, instr.load_result.dst);
+      enc_u16(code + 1, instr.load_result.dest);
       return;
     case OP_RETURN:
       enc_u16(code + 1, instr.ret.src);
       return;
     case OP_REF:
-      enc_u16(code + 1, instr.ref.dst);
+      enc_u16(code + 1, instr.ref.dest);
       enc_ptr(code + 1 + SZU16, instr.ref.definition);
       return;
     case OP_GLOBAL_LOAD:
-      enc_u16(code + 1, instr.global_load.dst);
+      enc_u16(code + 1, instr.global_load.dest);
       enc_ptr(code + 1 + SZU16, instr.global_load.definition);
       return;
     case OP_GLOBAL_STORE:
@@ -121,7 +121,7 @@ void instr_encode(uint8_t *code, struct instr_t instr) {
     case OP_INT_LESS:
     case OP_INT_GREATER_OR_EQUAL:
     case OP_INT_LESS_OR_EQUAL:
-      enc_u16(code + 1, instr.arith.dst);
+      enc_u16(code + 1, instr.arith.dest);
       enc_u16(code + 1 + SZU16, instr.arith.src1);
       enc_u16(code + 1 + SZU16 + SZU16, instr.arith.src2);
       return;
@@ -129,7 +129,7 @@ void instr_encode(uint8_t *code, struct instr_t instr) {
     case OP_INT_POSITIVE:
     case OP_INT_NON_NEGATIVE:
     case OP_INT_NON_ZERO:
-      enc_u16(code + 1, instr.unary.dst);
+      enc_u16(code + 1, instr.unary.dest);
       enc_u16(code + 1 + SZU16, instr.unary.src);
       return;
     default:

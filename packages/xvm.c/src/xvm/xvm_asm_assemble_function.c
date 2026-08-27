@@ -41,7 +41,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     value_t args = x_cdr(sexp);
     struct instr_t instr;
     instr.op = OP_MOVE;
-    instr.mov.dst = to_int64(x_car(args));
+    instr.mov.dest = to_int64(x_car(args));
     instr.mov.src = to_int64(x_car(x_cdr(args)));
     function_append_instr(function, instr);
     return;
@@ -53,7 +53,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     if (is_literal(operand)) {
       struct instr_t instr;
       instr.op = OP_LOAD;
-      instr.load.dst = to_int64(x_car(args));
+      instr.load.dest = to_int64(x_car(args));
       instr.load.value = operand;
       function_append_instr(function, instr);
       return;
@@ -61,7 +61,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
       assert(is_quote);
       struct instr_t instr;
       instr.op = OP_LOAD;
-      instr.load.dst = to_int64(x_car(args));
+      instr.load.dest = to_int64(x_car(args));
       instr.load.value = x_car(x_cdr(operand));
       function_append_instr(function, instr);
       return;
@@ -72,7 +72,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     value_t args = x_cdr(sexp);
     struct instr_t instr;
     instr.op = OP_LOAD_RESULT;
-    instr.load_result.dst = to_int64(x_car(args));
+    instr.load_result.dest = to_int64(x_car(args));
     function_append_instr(function, instr);
     return;
   }
@@ -116,7 +116,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     value_t args = x_cdr(sexp);
     struct instr_t instr;
     instr.op = OP_REF;
-    instr.ref.dst = to_int64(x_car(args));
+    instr.ref.dest = to_int64(x_car(args));
     instr.ref.definition = mod_lookup_or_fail(mod, symbol_string(to_symbol(x_car(x_cdr(args)))));
     function_append_instr(function, instr);
     return;
@@ -126,7 +126,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     value_t args = x_cdr(sexp);
     struct instr_t instr;
     instr.op = OP_GLOBAL_LOAD;
-    instr.global_load.dst = to_int64(x_car(args));
+    instr.global_load.dest = to_int64(x_car(args));
     instr.global_load.definition = mod_lookup_or_fail(mod, symbol_string(to_symbol(x_car(x_cdr(args)))));
     function_append_instr(function, instr);
     return;
@@ -210,7 +210,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     if (sexp_has_tag(sexp, "int-less")) instr.op = OP_INT_LESS;
     if (sexp_has_tag(sexp, "int-greater-or-equal")) instr.op = OP_INT_GREATER_OR_EQUAL;
     if (sexp_has_tag(sexp, "int-less-or-equal")) instr.op = OP_INT_LESS_OR_EQUAL;
-    instr.arith.dst = to_int64(x_car(args));
+    instr.arith.dest = to_int64(x_car(args));
     instr.arith.src1 = to_int64(x_car(x_cdr(args)));
     instr.arith.src2 = to_int64(x_car(x_cdr(x_cdr(args))));
     function_append_instr(function, instr);
@@ -225,7 +225,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     if (sexp_has_tag(sexp, "int-is-positive")) instr.op = OP_INT_POSITIVE;
     if (sexp_has_tag(sexp, "int-is-non-negative")) instr.op = OP_INT_NON_NEGATIVE;
     if (sexp_has_tag(sexp, "int-is-non-zero")) instr.op = OP_INT_NON_ZERO;
-    instr.unary.dst = to_int64(x_car(args));
+    instr.unary.dest = to_int64(x_car(args));
     instr.unary.src = to_int64(x_car(x_cdr(args)));
     function_append_instr(function, instr);
     return;
@@ -316,19 +316,19 @@ static size_t instr_max_local(value_t sexp) {
       || sexp_has_tag(sexp, "int-less") || sexp_has_tag(sexp, "int-greater-or-equal")
       || sexp_has_tag(sexp, "int-less-or-equal")) {
     value_t args = x_cdr(sexp);
-    size_t dst = to_int64(x_car(args));
+    size_t dest = to_int64(x_car(args));
     size_t src1 = to_int64(x_car(x_cdr(args)));
     size_t src2 = to_int64(x_car(x_cdr(x_cdr(args))));
-    size_t max = dst > src1 ? dst : src1;
+    size_t max = dest > src1 ? dest : src1;
     return max > src2 ? max : src2;
   }
 
   if (sexp_has_tag(sexp, "ineg") || sexp_has_tag(sexp, "int-is-positive")
       || sexp_has_tag(sexp, "int-is-non-negative") || sexp_has_tag(sexp, "int-is-non-zero")) {
     value_t args = x_cdr(sexp);
-    size_t dst = to_int64(x_car(args));
+    size_t dest = to_int64(x_car(args));
     size_t src = to_int64(x_car(x_cdr(args)));
-    return dst > src ? dst : src;
+    return dest > src ? dest : src;
   }
 
   return 0;

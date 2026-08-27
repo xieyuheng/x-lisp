@@ -28,7 +28,7 @@ const EXT: Record<string, number> = {
 }
 
 export function encodeShift(instr: Instr): Array<EncodedInstruction> {
-  const dst = instr.operands[0]
+  const dest = instr.operands[0]
   const src = instr.operands[1]
   const ext = EXT[instr.op]
   if (ext === undefined) {
@@ -36,24 +36,24 @@ export function encodeShift(instr: Instr): Array<EncodedInstruction> {
     throw new Error(message)
   }
 
-  if (dst.kind !== "RegOperand" && !isMemOperand(dst)) {
-    let message = `[${instr.op}] unsupported dst operand: ${dst.kind}`
+  if (dest.kind !== "RegOperand" && !isMemOperand(dest)) {
+    let message = `[${instr.op}] unsupported dest operand: ${dest.kind}`
     throw new Error(message)
   }
 
   const size = deriveOpSize(instr)
 
   if (src.kind === "RegOperand" && src.name === "rcx") {
-    return dst.kind === "RegOperand"
-      ? [encodeShiftCl(dst.name, ext, size)]
-      : [encodeShiftMemCl(dst, ext, size)]
+    return dest.kind === "RegOperand"
+      ? [encodeShiftCl(dest.name, ext, size)]
+      : [encodeShiftMemCl(dest, ext, size)]
   }
 
   if (src.kind === "ImmOperand") {
     checkShiftCount(instr.op, src.value)
-    return dst.kind === "RegOperand"
-      ? [encodeShiftImm(dst.name, src.value, ext, size)]
-      : [encodeShiftMemImm(dst, src.value, ext, size)]
+    return dest.kind === "RegOperand"
+      ? [encodeShiftImm(dest.name, src.value, ext, size)]
+      : [encodeShiftMemImm(dest, src.value, ext, size)]
   }
 
   let message = `[${instr.op}] unsupported src operand: ${src.kind}`
@@ -74,15 +74,15 @@ function checkShiftCount(op: string, value: bigint): void {
 }
 
 function encodeShiftCl(
-  dstReg: string,
+  destReg: string,
   ext: number,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
   return {
     prefixes: sizePrefix(size),
-    rex: computeRex(size === 8, null, null, dstReg),
+    rex: computeRex(size === 8, null, null, destReg),
     opcode: [size === 1 ? 0xd2 : 0xd3],
-    modRM: modRM(MOD_REG, ext, regCode(dstReg)),
+    modRM: modRM(MOD_REG, ext, regCode(destReg)),
     sib: null,
     displacement: null,
     immediate: null,
@@ -90,7 +90,7 @@ function encodeShiftCl(
 }
 
 function encodeShiftImm(
-  dstReg: string,
+  destReg: string,
   value: bigint,
   ext: number,
   size: 1 | 2 | 4 | 8,
@@ -98,9 +98,9 @@ function encodeShiftImm(
   if (value === 1n) {
     return {
       prefixes: sizePrefix(size),
-      rex: computeRex(size === 8, null, null, dstReg),
+      rex: computeRex(size === 8, null, null, destReg),
       opcode: [size === 1 ? 0xd0 : 0xd1],
-      modRM: modRM(MOD_REG, ext, regCode(dstReg)),
+      modRM: modRM(MOD_REG, ext, regCode(destReg)),
       sib: null,
       displacement: null,
       immediate: null,
@@ -108,9 +108,9 @@ function encodeShiftImm(
   }
   return {
     prefixes: sizePrefix(size),
-    rex: computeRex(size === 8, null, null, dstReg),
+    rex: computeRex(size === 8, null, null, destReg),
     opcode: [size === 1 ? 0xc0 : 0xc1],
-    modRM: modRM(MOD_REG, ext, regCode(dstReg)),
+    modRM: modRM(MOD_REG, ext, regCode(destReg)),
     sib: null,
     displacement: null,
     immediate: { size: 1, value },
@@ -118,11 +118,11 @@ function encodeShiftImm(
 }
 
 function encodeShiftMemCl(
-  dstMem: Operand,
+  destMem: Operand,
   ext: number,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dstMem)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(destMem)
   return {
     prefixes: sizePrefix(size),
     rex: computeRex(size === 8, null, rexIndex, rexRm),
@@ -135,12 +135,12 @@ function encodeShiftMemCl(
 }
 
 function encodeShiftMemImm(
-  dstMem: Operand,
+  destMem: Operand,
   value: bigint,
   ext: number,
   size: 1 | 2 | 4 | 8,
 ): EncodedInstruction {
-  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(dstMem)
+  const { modrm, sib, disp, rexRm, rexIndex } = encodeMem(destMem)
   if (value === 1n) {
     return {
       prefixes: sizePrefix(size),

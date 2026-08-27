@@ -5,13 +5,13 @@ title: pop
 # 语法
 
 ```scheme
-(pop <dst>)
+(pop <dest>)
 ```
 
 # 操作数
 
 ```
-<dst> := (reg) (mem)
+<dest> := (reg) (mem)
 ```
 
 # 描述

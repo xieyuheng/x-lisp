@@ -273,7 +273,7 @@ struct 字面量。可出现在 `define-data` / `define-metadata` 的**顶层 va
 
 # 指令（instruction）
 
-操作码 + 操作数。NASM 方向（dst, src）。
+操作码 + 操作数。NASM 方向（dest, src）。
 
 ## 数据移动
 
