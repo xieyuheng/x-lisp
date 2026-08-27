@@ -402,12 +402,12 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 
 预编码阶段将 `data-operand` 解析为具体 operand：
 
-| `data` 类型     | 解析为                           | 编码             |
-|-----------------|----------------------------------|------------------|
-| 整数            | `imm-operand`                    | 立即数           |
-| 字符串          | 匿名 data slot + `mem-operand`   | `[rip + disp32]` |
-| `(pointer ...)` | 匿名 data slot + `mem-operand`   | `[rip + disp32]` |
-| 裸符号          | `address-operand`                | movabs           |
+| `data` 类型     | 解析为                         | 编码             |
+|-----------------|--------------------------------|------------------|
+| 整数            | `imm-operand`                  | 立即数           |
+| 字符串          | 匿名 data slot + `mem-operand` | `[rip + disp32]` |
+| `(pointer ...)` | 匿名 data slot + `mem-operand` | `[rip + disp32]` |
+| `(address ...)` | `address-operand`              | movabs           |
 
 裸 `(struct ...)` 和 `(array ...)` 不支持 -- 报错。
 
