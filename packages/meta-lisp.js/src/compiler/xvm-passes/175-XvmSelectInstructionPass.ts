@@ -2,7 +2,7 @@ import * as B from "../../basic/index.ts"
 import * as Xvm from "../../xvm/index.ts"
 import { type XvmExplicateReport } from "./170-XvmExplicateControlPass.ts"
 
-export function XvmCodegenPass(result: XvmExplicateReport): Xvm.Mod {
+export function XvmSelectInstructionPass(result: XvmExplicateReport): Xvm.Mod {
   const xvmMod = Xvm.createMod()
 
   for (const [name, definition] of result.mod.definitions) {

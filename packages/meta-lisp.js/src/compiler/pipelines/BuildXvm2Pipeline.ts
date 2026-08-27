@@ -48,7 +48,7 @@ export function BuildXvm2Pipeline(
   B.CopyPropagationPass(basicMod)
   BasicBundle(rootPkg, basicMod)
 
-  const mod = Compiler.Xvm2CodegenPass(basicMod)
+  const mod = Compiler.Xvm2SelectInstructionPass(basicMod)
 
   const entryName =
     entryOverride ??

@@ -48,7 +48,7 @@ export function BuildXvmPipeline(rootPkg: M.Package): void {
   B.CopyPropagationPass(xvmResult.mod)
   BasicBundle(rootPkg, xvmResult.mod)
 
-  const xvmMod = Compiler.XvmCodegenPass(xvmResult)
+  const xvmMod = Compiler.XvmSelectInstructionPass(xvmResult)
   XvmBundle(rootPkg, xvmMod)
 
   xvmAssemble(rootPkg)

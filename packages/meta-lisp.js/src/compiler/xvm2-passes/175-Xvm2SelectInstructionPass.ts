@@ -1,7 +1,7 @@
 import * as B from "../../basic/index.ts"
 import * as X2 from "../../xvm2/index.ts"
 
-export function Xvm2CodegenPass(mod: B.Mod): X2.Mod {
+export function Xvm2SelectInstructionPass(mod: B.Mod): X2.Mod {
   const x2Mod = X2.createMod()
 
   for (const [name, definition] of mod.definitions) {
@@ -230,7 +230,7 @@ function codegenInstr(mod: B.Mod, instr: B.Instr): Array<X2.Instr> {
     }
 
     default: {
-      let message = `[Xvm2CodegenPass] unhandled instr op: ${instr.op}`
+      let message = `[Xvm2SelectInstructionPass] unhandled instr op: ${instr.op}`
       throw new Error(message)
     }
   }
