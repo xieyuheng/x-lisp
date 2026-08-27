@@ -1,8 +1,8 @@
 # .xvm.exe 可执行文件格式
 
-`.xvm.exe` 是 meta-runtime xvm 后端的预编译可执行文件格式。
-将 `.xvm.asm` 源码的解析和汇编结果序列化为二进制，
-加载时无需重新解析 sexp 和汇编，只需反序列化 + 重定位即可执行。
+`.xvm.exe` 是 xvm 后端的预编译可执行文件格式。
+由外部编译器（如 [meta-lisp.js] 的 basic-lisp 编译目标）生成，
+[xvm2] 加载时无需解析 sexp 和汇编，只需反序列化 + 重定位即可执行。
 
 所有整数均为小端（little-endian）。
 

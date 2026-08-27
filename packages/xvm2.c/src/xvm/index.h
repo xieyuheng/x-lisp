@@ -2,7 +2,6 @@
 
 #include "deps.h"
 #include "types.h"
-#include "instr.h"
 #include "primitive.h"
 #include "function.h"
 #include "definition.h"
@@ -13,5 +12,4 @@
 #include "call.h"
 #include "apply.h"
 #include "closure.h"
-#include "xvm_asm.h"
 #include "xvm_exe.h"
