@@ -1,6 +1,7 @@
 ---
 title: tree and graph and data-oriented design
 date: 2026-07-12
+keywords: [region-lisp]
 ---
 
 人们在设计新的系统编程语言（比如 jai）来解决 c/c++ 的问题时，

@@ -1,6 +1,7 @@
 ---
 title: writting in c
 date: 2026-08-23
+keywords: [region-lisp]
 ---
 
 应该用 C 来实现，
