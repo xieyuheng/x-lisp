@@ -339,7 +339,7 @@ label 用独立的裸符号表示，写法同 stack-lisp。
 (load-lit 0 3.14)         ; float -> x_float(3.14)
 (load-lit 0 #t)           ; true -> x_true
 (load-lit 0 #f)           ; false -> x_false
-(load-lit 0 :void)        ; void -> x_void
+(load-lit 0 #void)        ; void -> x_void
 (load-lit 0 "hello")      ; string -> interned xstring
 (load-lit 0 symbol)       ; symbol -> interned symbol
 (load-lit 0 :keyword)     ; keyword -> interned keyword
