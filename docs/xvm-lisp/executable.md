@@ -163,88 +163,122 @@ primitive 不能直接作为 closure 的来源；必须先转换为其 wrap 函�
 
 ## opcode 表
 
-| `0x01` | `move`                   | `u16 dest` `u16 src`                                                           |
-| `0x02` | `load-int`               | `u16 dest` `i64 value`                                                         |
-| `0x03` | `load-float`             | `u16 dest` `f64 value`                                                         |
-| `0x04` | `load-string`            | `u16 dest` `u64 value`                                                         |
-| `0x05` | `load-symbol`            | `u16 dest` `u64 value`                                                         |
-| `0x06` | `load-closure`           | `u16 dest` `u64 target`                                                        |
-| `0x07` | `make-closure`           | `u16 dest` `u64 target` `u16 size`                                             |
-| `0x08` | `store-closure-arg`      | `u16 closure` `u16 index` `u16 value`                                          |
-| `0x09` | `load-result`            | `u16 dest`                                                                     |
-| `0x0a` | `load-global`            | `u16 dest` `u64 target`                                                        |
-| `0x0b` | `store-global`           | `u64 target` `u16 src`                                                         |
-| `0x10` | `call-0`                 | `u64 target`                                                                   |
-| `0x11` | `call-1`                 | `u64 target` `u16 arg0`                                                        |
-| `0x12` | `call-2`                 | `u64 target` `u16 arg0` `u16 arg1`                                             |
-| `0x13` | `call-3`                 | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2`                                  |
-| `0x14` | `call-4`                 | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3`                       |
-| `0x15` | `call-5`                 | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4`            |
-| `0x16` | `call-6`                 | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4` `u16 arg5` |
-| `0x17` | `call-prim-0`            | `u64 target`                                                                   |
-| `0x18` | `call-prim-1`            | `u64 target` `u16 arg0`                                                        |
-| `0x19` | `call-prim-2`            | `u64 target` `u16 arg0` `u16 arg1`                                             |
-| `0x1a` | `call-prim-3`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2`                                  |
-| `0x1b` | `call-prim-4`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3`                       |
-| `0x1c` | `call-prim-5`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4`            |
-| `0x1d` | `call-prim-6`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4` `u16 arg5` |
-| `0x1e` | `tail-call-0`            | `u64 target`                                                                   |
-| `0x1f` | `tail-call-1`            | `u64 target` `u16 arg0`                                                        |
-| `0x20` | `tail-call-2`            | `u64 target` `u16 arg0` `u16 arg1`                                             |
-| `0x21` | `tail-call-3`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2`                                  |
-| `0x22` | `tail-call-4`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3`                       |
-| `0x23` | `tail-call-5`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4`            |
-| `0x24` | `tail-call-6`            | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4` `u16 arg5` |
-| `0x25` | `tail-call-prim-0`       | `u64 target`                                                                   |
-| `0x26` | `tail-call-prim-1`       | `u64 target` `u16 arg0`                                                        |
-| `0x27` | `tail-call-prim-2`       | `u64 target` `u16 arg0` `u16 arg1`                                             |
-| `0x28` | `tail-call-prim-3`       | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2`                                  |
-| `0x29` | `tail-call-prim-4`       | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3`                       |
-| `0x2a` | `tail-call-prim-5`       | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4`            |
-| `0x2b` | `tail-call-prim-6`       | `u64 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4` `u16 arg5` |
-| `0x2c` | `apply-0`                | `u16 target`                                                                   |
-| `0x2d` | `apply-1`                | `u16 target` `u16 arg0`                                                        |
-| `0x2e` | `apply-2`                | `u16 target` `u16 arg0` `u16 arg1`                                             |
-| `0x2f` | `apply-3`                | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2`                                  |
-| `0x30` | `apply-4`                | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3`                       |
-| `0x31` | `apply-5`                | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4`            |
-| `0x32` | `apply-6`                | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4` `u16 arg5` |
-| `0x33` | `tail-apply-0`           | `u16 target`                                                                   |
-| `0x34` | `tail-apply-1`           | `u16 target` `u16 arg0`                                                        |
-| `0x35` | `tail-apply-2`           | `u16 target` `u16 arg0` `u16 arg1`                                             |
-| `0x36` | `tail-apply-3`           | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2`                                  |
-| `0x37` | `tail-apply-4`           | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3`                       |
-| `0x38` | `tail-apply-5`           | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4`            |
-| `0x39` | `tail-apply-6`           | `u16 target` `u16 arg0` `u16 arg1` `u16 arg2` `u16 arg3` `u16 arg4` `u16 arg5` |
-| `0x40` | `goto`                   | `i32 offset`                                                                   |
-| `0x41` | `branch`                 | `u16 cond` `i32 then` `i32 else`                                               |
-| `0x42` | `return`                 | `u16 src`                                                                      |
-| `0x43` | `return-void`            | 无                                                                             |
-| `0x50` | `iadd`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x51` | `isub`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x52` | `imul`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x53` | `idiv`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x54` | `imod`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x55` | `ineg`                   | `u16 dest` `u16 src`                                                           |
-| `0x58` | `int-greater`            | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x59` | `int-less`               | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x5a` | `int-greater-or-equal`   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x5b` | `int-less-or-equal`      | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x5c` | `int-is-positive`        | `u16 dest` `u16 src`                                                           |
-| `0x5d` | `int-is-non-negative`    | `u16 dest` `u16 src`                                                           |
-| `0x5e` | `int-is-non-zero`        | `u16 dest` `u16 src`                                                           |
-| `0x70` | `fadd`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x71` | `fsub`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x72` | `fmul`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x73` | `fdiv`                   | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x74` | `fneg`                   | `u16 dest` `u16 src`                                                           |
-| `0x78` | `float-greater`          | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x79` | `float-less`             | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x7a` | `float-greater-or-equal` | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x7b` | `float-less-or-equal`    | `u16 dest` `u16 src1` `u16 src2`                                               |
-| `0x7c` | `float-is-positive`      | `u16 dest` `u16 src`                                                           |
-| `0x7d` | `float-is-non-negative`  | `u16 dest` `u16 src`                                                           |
-| `0x7e` | `float-is-non-zero`      | `u16 dest` `u16 src`                                                           |
+### 数据传送
+
+```text
+0x01 move              u16 dest u16 src
+0x02 load-int          u16 dest i64 value
+0x03 load-float        u16 dest f64 value
+0x04 load-string       u16 dest u64 value
+0x05 load-symbol       u16 dest u64 value
+0x09 load-result       u16 dest
+0x0a load-global       u16 dest u64 target
+0x0b store-global      u64 target u16 src
+```
+
+### Closure
+
+```text
+0x06 load-closure      u16 dest u64 target
+0x07 make-closure      u16 dest u64 target u16 size
+0x08 store-closure-arg u16 closure u16 index u16 value
+```
+
+### 静态调用
+
+```text
+0x10 call-0             u64 target
+0x11 call-1             u64 target u16 arg0
+0x12 call-2             u64 target u16 arg0 u16 arg1
+0x13 call-3             u64 target u16 arg0 u16 arg1 u16 arg2
+0x14 call-4             u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
+0x15 call-5             u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x16 call-6             u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x17 call-prim-0        u64 target
+0x18 call-prim-1        u64 target u16 arg0
+0x19 call-prim-2        u64 target u16 arg0 u16 arg1
+0x1a call-prim-3        u64 target u16 arg0 u16 arg1 u16 arg2
+0x1b call-prim-4        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
+0x1c call-prim-5        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x1d call-prim-6        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x1e tail-call-0        u64 target
+0x1f tail-call-1        u64 target u16 arg0
+0x20 tail-call-2        u64 target u16 arg0 u16 arg1
+0x21 tail-call-3        u64 target u16 arg0 u16 arg1 u16 arg2
+0x22 tail-call-4        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
+0x23 tail-call-5        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x24 tail-call-6        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x25 tail-call-prim-0   u64 target
+0x26 tail-call-prim-1   u64 target u16 arg0
+0x27 tail-call-prim-2   u64 target u16 arg0 u16 arg1
+0x28 tail-call-prim-3   u64 target u16 arg0 u16 arg1 u16 arg2
+0x29 tail-call-prim-4   u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
+0x2a tail-call-prim-5   u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x2b tail-call-prim-6   u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+```
+
+### 动态调用
+
+```text
+0x2c apply-0            u16 target
+0x2d apply-1            u16 target u16 arg0
+0x2e apply-2            u16 target u16 arg0 u16 arg1
+0x2f apply-3            u16 target u16 arg0 u16 arg1 u16 arg2
+0x30 apply-4            u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
+0x31 apply-5            u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x32 apply-6            u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x33 tail-apply-0       u16 target
+0x34 tail-apply-1       u16 target u16 arg0
+0x35 tail-apply-2       u16 target u16 arg0 u16 arg1
+0x36 tail-apply-3       u16 target u16 arg0 u16 arg1 u16 arg2
+0x37 tail-apply-4       u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
+0x38 tail-apply-5       u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x39 tail-apply-6       u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+```
+
+### 控制流
+
+```text
+0x40 goto              i32 offset
+0x41 branch            u16 cond i32 then i32 else
+0x42 return            u16 src
+0x43 return-void       -
+```
+
+### 整数运算
+
+```text
+0x50 iadd                 u16 dest u16 src1 u16 src2
+0x51 isub                 u16 dest u16 src1 u16 src2
+0x52 imul                 u16 dest u16 src1 u16 src2
+0x53 idiv                 u16 dest u16 src1 u16 src2
+0x54 imod                 u16 dest u16 src1 u16 src2
+0x55 ineg                 u16 dest u16 src
+0x58 int-greater          u16 dest u16 src1 u16 src2
+0x59 int-less             u16 dest u16 src1 u16 src2
+0x5a int-greater-or-equal u16 dest u16 src1 u16 src2
+0x5b int-less-or-equal    u16 dest u16 src1 u16 src2
+0x5c int-is-positive      u16 dest u16 src
+0x5d int-is-non-negative  u16 dest u16 src
+0x5e int-is-non-zero      u16 dest u16 src
+```
+
+### 浮点运算
+
+```text
+0x70 fadd                   u16 dest u16 src1 u16 src2
+0x71 fsub                   u16 dest u16 src1 u16 src2
+0x72 fmul                   u16 dest u16 src1 u16 src2
+0x73 fdiv                   u16 dest u16 src1 u16 src2
+0x74 fneg                   u16 dest u16 src
+0x78 float-greater          u16 dest u16 src1 u16 src2
+0x79 float-less             u16 dest u16 src1 u16 src2
+0x7a float-greater-or-equal u16 dest u16 src1 u16 src2
+0x7b float-less-or-equal    u16 dest u16 src1 u16 src2
+0x7c float-is-positive      u16 dest u16 src
+0x7d float-is-non-negative  u16 dest u16 src
+0x7e float-is-non-zero      u16 dest u16 src
+```
 
 ## `load-int`
 
