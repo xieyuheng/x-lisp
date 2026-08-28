@@ -1,7 +1,7 @@
 #include "index.h"
 #include "../builtin/index.h"
 
-mod_t *xvm_asm_load_mod(path_t *path, bool profile) {
+program_t *xvm_asm_load_program(path_t *path, bool profile) {
   file_t *file = open_file_or_fail(path_raw_string(path), "r");
   char *string = file_read_string(file);
 
@@ -14,16 +14,16 @@ mod_t *xvm_asm_load_mod(path_t *path, bool profile) {
   }
 
   double loading_start = time_millisecond();
-  mod_t *mod = make_mod();
-  import_builtin(mod);
-  xvm_asm_declare(mod, sexps);
-  xvm_asm_prepare(mod, sexps);
-  xvm_asm_assemble(mod, sexps);
-  mod_setup(mod);
+  program_t *program = make_program();
+  import_builtin(program);
+  xvm_asm_declare(program, sexps);
+  xvm_asm_prepare(program, sexps);
+  xvm_asm_assemble(program, sexps);
+  program_setup(program);
   double loading_time = time_millisecond_passed(loading_start);
   if (profile) {
     who_printf("loading time: %.3fms\n", loading_time);
   }
 
-  return mod;
+  return program;
 }

@@ -1,8 +1,8 @@
 #include "index.h"
 
-xvm_t *make_xvm(mod_t *mod) {
+xvm_t *make_xvm(program_t *program) {
   xvm_t *self = new(xvm_t);
-  self->mod = mod;
+  self->program = program;
   self->result = x_void;
   self->frame_buffer = make_buffer();
   self->frame_offset = 0;
@@ -18,8 +18,8 @@ void xvm_free(xvm_t *self) {
   free(self);
 }
 
-mod_t *xvm_mod(const xvm_t *self) {
-  return self->mod;
+program_t *xvm_program(const xvm_t *self) {
+  return self->program;
 }
 
 value_t xvm_result(const xvm_t *self) {
@@ -490,7 +490,7 @@ static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {
 
 static void xvm_gc_roots_in_mod(xvm_t *xvm, array_t *roots) {
   record_iter_t iter;
-  record_iter_init(&iter, xvm_mod(xvm)->definitions);
+  record_iter_init(&iter, xvm_program(xvm)->definitions);
   definition_t *definition = record_iter_next_value(&iter);
   while (definition) {
     if (definition->kind == VARIABLE_DEFINITION) {

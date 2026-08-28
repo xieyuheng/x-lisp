@@ -31,7 +31,7 @@ static void assemble_apply_args(struct instr_t *instr, value_t operands) {
   }
 }
 
-static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
+static void assemble_instr(program_t *program, function_t *function, value_t sexp) {
   if (is_symbol(sexp)) {
     function_add_label(function, symbol_string(to_symbol(sexp)));
     return;
@@ -89,7 +89,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
   if (sexp_has_tag(sexp, "call")) {
     value_t args = x_cdr(sexp);
     const char *name = symbol_string(to_symbol(x_car(args)));
-    definition_t *definition = mod_lookup_or_fail(mod, name);
+    definition_t *definition = program_lookup_or_fail(program, name);
     struct instr_t instr;
     instr.op = OP_CALL;
     instr.call.definition = definition;
@@ -102,7 +102,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
   if (sexp_has_tag(sexp, "tail-call")) {
     value_t args = x_cdr(sexp);
     const char *name = symbol_string(to_symbol(x_car(args)));
-    definition_t *definition = mod_lookup_or_fail(mod, name);
+    definition_t *definition = program_lookup_or_fail(program, name);
     struct instr_t instr;
     instr.op = OP_TAIL_CALL;
     instr.call.definition = definition;
@@ -117,7 +117,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     struct instr_t instr;
     instr.op = OP_REF;
     instr.ref.dest = to_int64(x_car(args));
-    instr.ref.definition = mod_lookup_or_fail(mod, symbol_string(to_symbol(x_car(x_cdr(args)))));
+    instr.ref.definition = program_lookup_or_fail(program, symbol_string(to_symbol(x_car(x_cdr(args)))));
     function_append_instr(function, instr);
     return;
   }
@@ -127,7 +127,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     struct instr_t instr;
     instr.op = OP_GLOBAL_LOAD;
     instr.global_load.dest = to_int64(x_car(args));
-    instr.global_load.definition = mod_lookup_or_fail(mod, symbol_string(to_symbol(x_car(x_cdr(args)))));
+    instr.global_load.definition = program_lookup_or_fail(program, symbol_string(to_symbol(x_car(x_cdr(args)))));
     function_append_instr(function, instr);
     return;
   }
@@ -137,7 +137,7 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
     struct instr_t instr;
     instr.op = OP_GLOBAL_STORE;
     instr.global_store.src = to_int64(x_car(args));
-    instr.global_store.definition = mod_lookup_or_fail(mod, symbol_string(to_symbol(x_car(x_cdr(args)))));
+    instr.global_store.definition = program_lookup_or_fail(program, symbol_string(to_symbol(x_car(x_cdr(args)))));
     function_append_instr(function, instr);
     return;
   }
@@ -234,10 +234,10 @@ static void assemble_instr(mod_t *mod, function_t *function, value_t sexp) {
   who_printf("unhandled instr: "); print_value(sexp); printf("\n");
 }
 
-void xvm_asm_assemble_function(mod_t *mod, function_t *function, value_t body) {
+void xvm_asm_assemble_function(program_t *program, function_t *function, value_t body) {
   for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
     value_t sexp = x_list_get(x_int(i), body);
-    assemble_instr(mod, function, sexp);
+    assemble_instr(program, function, sexp);
   }
 
   function_patch_label_references(function);

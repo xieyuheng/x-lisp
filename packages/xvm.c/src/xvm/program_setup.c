@@ -1,10 +1,10 @@
 #include "index.h"
 
-void mod_setup(mod_t *mod) {
-  xvm_t *xvm = make_xvm(mod);
+void program_setup(program_t *program) {
+  xvm_t *xvm = make_xvm(program);
 
   record_iter_t iter;
-  record_iter_init(&iter, xvm_mod(xvm)->definitions);
+  record_iter_init(&iter, xvm_program(xvm)->definitions);
   definition_t *definition = record_iter_next_value(&iter);
   while (definition) {
     if (definition->kind == VARIABLE_DEFINITION) {

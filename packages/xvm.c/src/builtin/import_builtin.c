@@ -1,6 +1,6 @@
 #include "index.h"
 
-void import_builtin(mod_t *mod) {
-  import_builtin_en(mod);
-  import_builtin_zh(mod);
+void import_builtin(program_t *program) {
+  import_builtin_en(program);
+  import_builtin_zh(program);
 }

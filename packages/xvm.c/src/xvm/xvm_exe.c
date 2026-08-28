@@ -80,10 +80,10 @@ void xvm_exe_free(xvm_exe_t *self) {
   free(self);
 }
 
-// ── helpers for xvm_exe_from_mod ──
+// ── helpers for xvm_exe_from_program ──
 
-static uint8_t compute_flags(mod_t *mod, const char *name) {
-  return set_member(mod->test_names, (void *)name) ? XVM_EXE_FLAG_IS_TEST : 0;
+static uint8_t compute_flags(program_t *program, const char *name) {
+  return set_member(program->test_names, (void *)name) ? XVM_EXE_FLAG_IS_TEST : 0;
 }
 
 static bool should_serialize(definition_t *definition) {
@@ -95,9 +95,9 @@ static bool should_serialize(definition_t *definition) {
   unreachable();
 }
 
-static void collect_definitions_from_mod(xvm_exe_t *self, mod_t *mod) {
+static void collect_definitions_from_mod(xvm_exe_t *self, program_t *program) {
   record_iter_t iter;
-  record_iter_init(&iter, mod->definitions);
+  record_iter_init(&iter, program->definitions);
   const hash_entry_t *entry = record_iter_next_entry(&iter);
   while (entry) {
     definition_t *definition = entry->value;
@@ -108,7 +108,7 @@ static void collect_definitions_from_mod(xvm_exe_t *self, mod_t *mod) {
 
     definition_entry_t *def_entry = new(definition_entry_t);
     def_entry->name = string_copy(definition->name);
-    def_entry->flags = compute_flags(mod, definition->name);
+    def_entry->flags = compute_flags(program, definition->name);
 
     function_t *fn;
     if (definition->kind == FUNCTION_DEFINITION) {
@@ -200,11 +200,11 @@ static void collect_relocations_from_bytecode(xvm_exe_t *self) {
   }
 }
 
-void xvm_exe_from_mod(xvm_exe_t *self, mod_t *mod) {
-  collect_definitions_from_mod(self, mod);
+void xvm_exe_from_program(xvm_exe_t *self, program_t *program) {
+  collect_definitions_from_mod(self, program);
   collect_relocations_from_bytecode(self);
-  if (mod->entry_name) {
-    self->entry_name = string_copy(mod->entry_name);
+  if (program->entry_name) {
+    self->entry_name = string_copy(program->entry_name);
   }
 }
 
@@ -594,7 +594,7 @@ void xvm_exe_load(xvm_exe_t *self, const char *pathname) {
   free(bytes);
 }
 
-// ── helpers for xvm_exe_to_mod ──
+// ── helpers for xvm_exe_to_program ──
 
 static value_t *build_value_table(xvm_exe_t *self, uint32_t *out_count) {
   uint32_t value_count = (uint32_t)array_length(self->values);
@@ -625,7 +625,7 @@ static value_t *build_value_table(xvm_exe_t *self, uint32_t *out_count) {
   return value_objects;
 }
 
-static definition_t **build_definitions_and_register(xvm_exe_t *self, mod_t *mod,
+static definition_t **build_definitions_and_register(xvm_exe_t *self, program_t *program,
                                                      uint32_t *out_count) {
   uint32_t definition_count = (uint32_t)array_length(self->definitions);
   definition_t **definitions = allocate(sizeof(definition_t *) * (definition_count > 0 ? definition_count : 1));
@@ -647,10 +647,10 @@ static definition_t **build_definitions_and_register(xvm_exe_t *self, mod_t *mod
       definitions[i]->variable_definition.function = fn;
     }
 
-    mod_define(mod, def_entry->name, definitions[i]);
+    program_define(program, def_entry->name, definitions[i]);
 
     if (def_entry->flags & XVM_EXE_FLAG_IS_TEST) {
-      set_add(mod->test_names, string_copy(def_entry->name));
+      set_add(program->test_names, string_copy(def_entry->name));
     }
   }
 
@@ -659,7 +659,7 @@ static definition_t **build_definitions_and_register(xvm_exe_t *self, mod_t *mod
 }
 
 static void patch_definition_relocations(definition_t **definitions,
-                                         xvm_exe_t *self, mod_t *mod) {
+                                         xvm_exe_t *self, program_t *program) {
   for (uint32_t i = 0; i < array_length(self->definition_relocations); i++) {
     definition_relocation_t *reloc = array_get(self->definition_relocations, i);
     size_t def_index = reloc->definition_index;
@@ -669,7 +669,7 @@ static void patch_definition_relocations(definition_t **definitions,
     }
 
     function_t *fn = definition_function(definitions[def_index]);
-    definition_t *target_def = mod_lookup_or_fail(mod, reloc->target_name);
+    definition_t *target_def = program_lookup_or_fail(program, reloc->target_name);
 
     size_t code_offset = reloc->code_offset;
     if (code_offset + sizeof(definition_t *) > buffer_length(fn->buffer)) {
@@ -707,27 +707,27 @@ static void patch_value_relocations(definition_t **definitions,
   }
 }
 
-mod_t *xvm_exe_to_mod(xvm_exe_t *self) {
-  mod_t *mod = make_mod();
-  import_builtin(mod);
+program_t *xvm_exe_to_program(xvm_exe_t *self) {
+  program_t *program = make_program();
+  import_builtin(program);
 
   if (self->entry_name) {
-    mod->entry_name = string_copy(self->entry_name);
+    program->entry_name = string_copy(self->entry_name);
   }
 
   uint32_t value_count;
   value_t *value_objects = build_value_table(self, &value_count);
 
   uint32_t definition_count;
-  definition_t **definitions = build_definitions_and_register(self, mod, &definition_count);
+  definition_t **definitions = build_definitions_and_register(self, program, &definition_count);
 
-  patch_definition_relocations(definitions, self, mod);
+  patch_definition_relocations(definitions, self, program);
   patch_value_relocations(definitions, value_objects, value_count, self);
 
-  mod_setup(mod);
+  program_setup(program);
 
   free(value_objects);
   free(definitions);
 
-  return mod;
+  return program;
 }

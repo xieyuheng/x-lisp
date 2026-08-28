@@ -6,7 +6,7 @@
 #include "primitive.h"
 #include "function.h"
 #include "definition.h"
-#include "mod.h"
+#include "program.h"
 #include "xvm.h"
 #include "frame.h"
 #include "define.h"

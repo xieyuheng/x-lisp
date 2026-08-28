@@ -1,7 +1,7 @@
 #pragma once
 
 struct xvm_t {
-  mod_t *mod;
+  program_t *program;
   value_t result;
   buffer_t *frame_buffer;
   size_t frame_offset;
@@ -10,10 +10,10 @@ struct xvm_t {
   stack_t *root_stack;
 };
 
-xvm_t *make_xvm(mod_t *mod);
+xvm_t *make_xvm(program_t *program);
 void xvm_free(xvm_t *self);
 
-mod_t *xvm_mod(const xvm_t *self);
+program_t *xvm_program(const xvm_t *self);
 value_t xvm_result(const xvm_t *self);
 
 void xvm_push_function_frame(xvm_t *xvm, const function_t *fn,

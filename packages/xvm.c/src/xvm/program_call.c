@@ -1,7 +1,7 @@
 #include "index.h"
 
-void mod_call_entry(mod_t *mod, const char *name) {
-  definition_t *definition = mod_lookup(mod, name);
+void program_call_entry(program_t *program, const char *name) {
+  definition_t *definition = program_lookup(program, name);
   if (!definition) {
     who_printf("undefined function\n");
     who_printf("  name: %s\n", name);
@@ -15,7 +15,7 @@ void mod_call_entry(mod_t *mod, const char *name) {
     exit(1);
   }
 
-  xvm_t *xvm = make_xvm(mod);
+  xvm_t *xvm = make_xvm(program);
 
   if (definition->kind == PRIMITIVE_DEFINITION) {
     value_t *locals = allocate(sizeof(value_t) * 1);
