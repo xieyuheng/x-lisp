@@ -132,13 +132,13 @@ loader 根据 `type` 和 `name` 计算出要填入的值，并写入该位置。
 
 Relocation 类型：
 
-| type            | name 的含义 | loader 填入                                    |
-|-----------------|-------------|------------------------------------------------|
-| `string-value`  | 字符串内容   | string value，用于 `load-string`               |
-| `symbol-value`  | symbol 名    | symbol value，用于 `load-symbol`               |
-| `fn-pointer`    | 函数名       | function pointer                               |
-| `prim-pointer`  | primitive 名 | primitive function pointer                     |
-| `global-pointer`| 全局变量名   | global variable pointer                        |
+| type             | name 的含义  | loader 填入                      |
+|------------------|--------------|----------------------------------|
+| `string-value`   | 字符串内容   | string value，用于 `load-string` |
+| `symbol-value`   | symbol 名    | symbol value，用于 `load-symbol` |
+| `fn-pointer`     | 函数名       | function pointer                 |
+| `prim-pointer`   | primitive 名 | primitive function pointer       |
+| `global-pointer` | 全局变量名   | global variable pointer          |
 
 `fn-pointer` 用于：
 
@@ -164,16 +164,16 @@ primitive 不能直接作为 closure 的来源；必须先转换为其 wrap 函�
 ## opcode 表
 
 | `0x01` | `move`                   | `u16 dest` `u16 src`                                                           |
-| `0x02` | `load-int`              | `u16 dest` `i64 value`                                                         |
-| `0x03` | `load-float`            | `u16 dest` `f64 value`                                                         |
-| `0x04` | `load-string`           | `u16 dest` `u64 value`                                                         |
-| `0x05` | `load-symbol`           | `u16 dest` `u64 value`                                                         |
-| `0x06` | `load-closure`          | `u16 dest` `u64 target`                                                        |
-| `0x07` | `make-closure`          | `u16 dest` `u64 target` `u8 size`                                              |
-| `0x08` | `store-closure-arg`     | `u16 closure` `u8 index` `u16 value`                                           |
-| `0x09` | `load-result`           | `u16 dest`                                                                     |
-| `0x0a` | `load-global`           | `u16 dest` `u64 target`                                                        |
-| `0x0b` | `store-global`          | `u64 target` `u16 src`                                                         |
+| `0x02` | `load-int`               | `u16 dest` `i64 value`                                                         |
+| `0x03` | `load-float`             | `u16 dest` `f64 value`                                                         |
+| `0x04` | `load-string`            | `u16 dest` `u64 value`                                                         |
+| `0x05` | `load-symbol`            | `u16 dest` `u64 value`                                                         |
+| `0x06` | `load-closure`           | `u16 dest` `u64 target`                                                        |
+| `0x07` | `make-closure`           | `u16 dest` `u64 target` `u16 size`                                             |
+| `0x08` | `store-closure-arg`      | `u16 closure` `u16 index` `u16 value`                                          |
+| `0x09` | `load-result`            | `u16 dest`                                                                     |
+| `0x0a` | `load-global`            | `u16 dest` `u64 target`                                                        |
+| `0x0b` | `store-global`           | `u64 target` `u16 src`                                                         |
 | `0x10` | `call-0`                 | `u64 target`                                                                   |
 | `0x11` | `call-1`                 | `u64 target` `u16 arg0`                                                        |
 | `0x12` | `call-2`                 | `u64 target` `u16 arg0` `u16 arg1`                                             |
@@ -298,7 +298,7 @@ primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
 ```text
 u16 dest
 u64 target
-u8  size
+u16 size
 ```
 
 - `target` 产生 `type = fn-pointer` 的 relocation。
@@ -310,7 +310,7 @@ u8  size
 
 ```text
 u16 closure
-u8  index
+u16 index
 u16 value
 ```
 
