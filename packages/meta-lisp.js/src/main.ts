@@ -12,7 +12,7 @@ import * as B2 from "./basic/index.ts"
 import * as Compiler from "./compiler/index.ts"
 import * as M from "./meta/index.ts"
 import * as X86 from "./x86/index.ts"
-import * as X2 from "./xvm2/index.ts"
+import * as Xvm2 from "./xvm2/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -88,8 +88,9 @@ router.defineHandlers({
     }
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
-    const mod = B2.parseMod(sexps)
-    const text = Ppml.formatNode(B2.prettyMod(mod), { width: 80 }) + "\n"
+    const program = B2.parseProgram(sexps)
+    const text =
+      Ppml.formatNode(B2.prettyProgram(program), { width: 80 }) + "\n"
     process.stdout.write(text)
   },
 
@@ -99,8 +100,9 @@ router.defineHandlers({
     }
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
-    const mod = X2.parseMod(sexps)
-    const text = Ppml.formatNode(X2.prettyMod(mod), { width: 80 }) + "\n"
+    const program = Xvm2.parseProgram(sexps)
+    const text =
+      Ppml.formatNode(Xvm2.prettyProgram(program), { width: 80 }) + "\n"
     process.stdout.write(text)
   },
 
@@ -109,9 +111,9 @@ router.defineHandlers({
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
     const stmts = sexps.map((s) => X86.parseStmt(s))
-    const mod = X86.createMod()
-    X86.BuildPipeline(mod, stmts)
-    const exe = X86.assembleExe(mod, entryName)
+    const program = X86.createProgram()
+    X86.BuildPipeline(program, stmts)
+    const exe = X86.assembleExe(program, entryName)
     const buf = X86.emitExe(exe)
     fs.writeFileSync(output, buf)
   },

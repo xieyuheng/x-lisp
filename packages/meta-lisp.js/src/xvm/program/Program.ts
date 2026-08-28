@@ -1,18 +1,18 @@
 import { type Definition } from "../definition/index.ts"
 
-export type Mod = {
+export type Program = {
   definitions: Map<string, Definition>
 }
 
-export function createMod(): Mod {
+export function createProgram(): Program {
   return {
     definitions: new Map(),
   }
 }
 
-export function modLookupDefinition(
-  mod: Mod,
+export function programLookupDefinition(
+  program: Program,
   name: string,
 ): Definition | undefined {
-  return mod.definitions.get(name)
+  return program.definitions.get(name)
 }

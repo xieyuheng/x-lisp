@@ -1,33 +1,33 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as X2 from "../index.ts"
+import * as Xvm2 from "../index.ts"
 import { parseDefinition } from "./parseDefinition.ts"
 
-export function parseMod(sexps: Array<S.Sexp>): X2.Mod {
-  const mod = X2.createMod()
+export function parseProgram(sexps: Array<S.Sexp>): Xvm2.Program {
+  const program = Xvm2.createProgram()
   for (const sexp of sexps) {
     const list = S.asListSexp(sexp)
     const head = S.asSymbolSexp(list.elements[0]).content
 
     if (head === "default-entry") {
       const entry = S.asSymbolSexp(list.elements[1]).content
-      if (mod.entry !== undefined) {
+      if (program.entry !== undefined) {
         throw new S.ErrorWithSourceLocation(
-          `[parseMod] duplicate default-entry`,
+          `[parseProgram] duplicate default-entry`,
           sexp.location,
         )
       }
-      mod.entry = entry
+      program.entry = entry
       continue
     }
 
     const definition = parseDefinition(sexp)
-    if (mod.definitions.has(definition.name)) {
+    if (program.definitions.has(definition.name)) {
       throw new S.ErrorWithSourceLocation(
-        `[parseMod] duplicate definition: ${definition.name}`,
+        `[parseProgram] duplicate definition: ${definition.name}`,
         sexp.location,
       )
     }
-    mod.definitions.set(definition.name, definition)
+    program.definitions.set(definition.name, definition)
   }
-  return mod
+  return program
 }

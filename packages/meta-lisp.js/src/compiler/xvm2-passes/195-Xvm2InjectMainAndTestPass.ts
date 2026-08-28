@@ -1,4 +1,4 @@
-import * as X2 from "../../xvm2/index.ts"
+import * as Xvm2 from "../../xvm2/index.ts"
 
 // 注入入口包装函数，使每个可执行程序保持单一编译期入口：
 //
@@ -10,40 +10,40 @@ import * as X2 from "../../xvm2/index.ts"
 //           （仅当给定 build.entry 或 --entry 时）
 
 export function Xvm2InjectMainAndTestPass(
-  mod: X2.Mod,
+  program: Xvm2.Program,
   entryName: string | undefined,
 ): void {
-  mod.definitions.set(
+  program.definitions.set(
     "©test",
-    X2.FunctionDefinition(
+    Xvm2.FunctionDefinition(
       "©test",
       [],
       [
-        X2.Instr("call-0", [X2.FnOperand("©setup-variables")]),
-        X2.Instr("call-0", [X2.FnOperand("©run-tests")]),
-        X2.Instr("return-void", []),
+        Xvm2.Instr("call-0", [Xvm2.FnOperand("©setup-variables")]),
+        Xvm2.Instr("call-0", [Xvm2.FnOperand("©run-tests")]),
+        Xvm2.Instr("return-void", []),
       ],
     ),
   )
 
   if (entryName !== undefined) {
-    if (!mod.definitions.has(entryName)) {
+    if (!program.definitions.has(entryName)) {
       let message = `[Xvm2InjectMainAndTestPass] entry function not found: ${entryName}`
       throw new Error(message)
     }
 
-    mod.definitions.set(
+    program.definitions.set(
       "©main",
-      X2.FunctionDefinition(
+      Xvm2.FunctionDefinition(
         "©main",
         [],
         [
-          X2.Instr("call-0", [X2.FnOperand("©setup-variables")]),
-          X2.Instr("call-0", [X2.FnOperand(entryName)]),
-          X2.Instr("return-void", []),
+          Xvm2.Instr("call-0", [Xvm2.FnOperand("©setup-variables")]),
+          Xvm2.Instr("call-0", [Xvm2.FnOperand(entryName)]),
+          Xvm2.Instr("return-void", []),
         ],
       ),
     )
-    mod.entry = entryName
+    program.entry = entryName
   }
 }

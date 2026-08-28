@@ -13,9 +13,9 @@ function newHomeInfo(): HomeInfo {
 
 export type HomeInfoMap = Map<string, HomeInfo>
 
-export function AllocateRegistersPass(mod: X86.Mod): HomeInfoMap {
+export function AllocateRegistersPass(program: X86.Program): HomeInfoMap {
   const homeInfoMap = new Map()
-  for (const [name, definition] of mod.definitions) {
+  for (const [name, definition] of program.definitions) {
     if (X86.isCodeDefinition(definition)) {
       const homeInfo = allocateRegisters(definition.instrs)
       homeInfoMap.set(name, homeInfo)

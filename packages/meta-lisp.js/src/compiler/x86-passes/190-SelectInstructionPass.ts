@@ -6,20 +6,20 @@ import * as X86 from "../../x86/index.ts"
 
 export function SelectInstructionPass(
   pkg: M.Package,
-  basicMod: B.Mod,
+  basicProgram: B.Program,
   ssaReport: B.SsaAnalysisReport,
-): X86.Mod {
-  const x86Mod = X86.createMod()
-  const stmts = Array.from(basicMod.definitions.values()).flatMap(
-    (definition) => selectDefinition(definition, basicMod, ssaReport),
+): X86.Program {
+  const x86Program = X86.createProgram()
+  const stmts = Array.from(basicProgram.definitions.values()).flatMap(
+    (definition) => selectDefinition(definition, basicProgram, ssaReport),
   )
-  X86.BuildPipeline(x86Mod, stmts)
-  return x86Mod
+  X86.BuildPipeline(x86Program, stmts)
+  return x86Program
 }
 
 function selectDefinition(
   definition: B.Definition,
-  basicMod: B.Mod,
+  basicProgram: B.Program,
   ssaReport: B.SsaAnalysisReport,
 ): Array<X86.Stmt> {
   switch (definition.kind) {
@@ -36,7 +36,7 @@ function selectDefinition(
       }
 
       const instrs = Array.from(definition.blocks.values()).flatMap((block) =>
-        selectBlock(block, basicMod, ssaGraph),
+        selectBlock(block, basicProgram, ssaGraph),
       )
       return [X86.DefineCodeStmt(definition.name, instrs)]
     }
@@ -59,7 +59,7 @@ function selectDefinition(
 }
 
 type SelectState = {
-  basicMod: B.Mod
+  basicProgram: B.Program
   ssaGraph: B.SsaGraph
   icmpMap: Map<string, { cc: string; a: string; b: string }>
 }
@@ -144,11 +144,11 @@ function selectBinaryOp(instr: B.Instr): Array<X86.Instr> {
 
 function selectBlock(
   basicBlock: B.Block,
-  basicMod: B.Mod,
+  basicProgram: B.Program,
   ssaGraph: B.SsaGraph,
 ): Array<X86.Instr> {
   const state: SelectState = {
-    basicMod,
+    basicProgram,
     ssaGraph,
     icmpMap: new Map(),
   }
@@ -403,7 +403,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       if (B.ssaIsDefinedByOp(state.ssaGraph, targetCell.id, "address")) {
         const definer = B.ssaGetDefiner(state.ssaGraph, targetCell.id)
         const name = B.expectSymbol(definer.attributes, "name")
-        const definition = B.modLookupDefinition(state.basicMod, name)
+        const definition = B.programLookupDefinition(state.basicProgram, name)
         const isExtern = definition?.kind === "ExternFunctionDefinition"
         const target = isExtern
           ? X86.ExternOperand(name)
@@ -431,7 +431,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       if (B.ssaIsDefinedByOp(state.ssaGraph, targetCell.id, "address")) {
         const definer = B.ssaGetDefiner(state.ssaGraph, targetCell.id)
         const name = B.expectSymbol(definer.attributes, "name")
-        const definition = B.modLookupDefinition(state.basicMod, name)
+        const definition = B.programLookupDefinition(state.basicProgram, name)
         const isExtern = definition?.kind === "ExternFunctionDefinition"
         const target = isExtern
           ? X86.ExternOperand(name)

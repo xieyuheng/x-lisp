@@ -6,7 +6,7 @@ import * as C from "../../core/index.ts"
 import * as M from "../../meta/index.ts"
 
 export type XvmExplicateReport = {
-  mod: B.Mod
+  program: B.Program
   testNames: Set<string>
   variableNames: Set<string>
   primitiveFunctions: Map<string, number>
@@ -14,7 +14,7 @@ export type XvmExplicateReport = {
 }
 
 export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
-  const basicMod = B.createMod()
+  const basicProgram = B.createProgram()
   const testNames = new Set<string>()
   const variableNames = new Set<string>()
   const primitiveFunctions = new Map<string, number>()
@@ -56,7 +56,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
               ...explicateInTail(state, definition.body),
             ]
 
-            basicMod.definitions.set(
+            basicProgram.definitions.set(
               definitionQualifiedName(definition),
               B.FunctionDefinition(
                 definitionQualifiedName(definition),
@@ -77,7 +77,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
             addBlock(state, block)
             block.instrs = explicateInTail(state, definition.body)
 
-            basicMod.definitions.set(
+            basicProgram.definitions.set(
               qname,
               B.FunctionDefinition(qname, [], state.blocks),
             )
@@ -94,7 +94,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
             addBlock(state, block)
             block.instrs = explicateInTail(state, definition.body)
 
-            basicMod.definitions.set(
+            basicProgram.definitions.set(
               qname,
               B.FunctionDefinition(qname, [], state.blocks),
             )
@@ -106,7 +106,7 @@ export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
   }
 
   return {
-    mod: basicMod,
+    program: basicProgram,
     testNames,
     variableNames,
     primitiveFunctions,

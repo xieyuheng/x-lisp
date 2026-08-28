@@ -2,32 +2,40 @@ import * as B from "../../basic/index.ts"
 import * as Xvm from "../../xvm/index.ts"
 import { type XvmExplicateReport } from "./170-XvmExplicateControlPass.ts"
 
-export function XvmSelectInstructionPass(result: XvmExplicateReport): Xvm.Mod {
-  const xvmMod = Xvm.createMod()
+export function XvmSelectInstructionPass(
+  result: XvmExplicateReport,
+): Xvm.Program {
+  const xvmProgram = Xvm.createProgram()
 
-  for (const [name, definition] of result.mod.definitions) {
+  for (const [name, definition] of result.program.definitions) {
     if (definition.kind !== "FunctionDefinition") continue
 
     const { arity, instrs } = codegenFunction(definition)
 
     if (result.variableNames.has(name)) {
-      xvmMod.definitions.set(name, Xvm.VariableDefinition(name, instrs))
+      xvmProgram.definitions.set(name, Xvm.VariableDefinition(name, instrs))
     } else if (result.testNames.has(name)) {
-      xvmMod.definitions.set(name, Xvm.TestDefinition(name, instrs))
+      xvmProgram.definitions.set(name, Xvm.TestDefinition(name, instrs))
     } else {
-      xvmMod.definitions.set(name, Xvm.FunctionDefinition(name, arity, instrs))
+      xvmProgram.definitions.set(
+        name,
+        Xvm.FunctionDefinition(name, arity, instrs),
+      )
     }
   }
 
   for (const [name, arity] of result.primitiveFunctions) {
-    xvmMod.definitions.set(name, Xvm.PrimitiveFunctionDeclaration(name, arity))
+    xvmProgram.definitions.set(
+      name,
+      Xvm.PrimitiveFunctionDeclaration(name, arity),
+    )
   }
 
   for (const name of result.primitiveVariables) {
-    xvmMod.definitions.set(name, Xvm.PrimitiveVariableDeclaration(name))
+    xvmProgram.definitions.set(name, Xvm.PrimitiveVariableDeclaration(name))
   }
 
-  return xvmMod
+  return xvmProgram
 }
 
 type CodegenState = {

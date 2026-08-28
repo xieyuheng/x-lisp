@@ -2,11 +2,11 @@ import * as S from "@xieyuheng/sexp.js"
 import { lookupStructDefinition } from "../check/check.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { formatType } from "../format/formatType.ts"
-import type { Mod } from "../mod/index.ts"
+import type { Program } from "../program/index.ts"
 import { typeSize } from "../type/typeSize.ts"
 
 export function offsetOf(
-  mod: Mod,
+  program: Program,
   structTypeName: string,
   fields: Array<string>,
 ): number {
@@ -15,7 +15,7 @@ export function offsetOf(
 
   for (const step of fields) {
     const structDef = lookupStructDefinition(
-      mod,
+      program,
       currentTypeName,
       S.zeroLocation("offset-of"),
     )
@@ -33,7 +33,7 @@ export function offsetOf(
         found = true
         break
       }
-      fieldOffset += typeSize(mod, fieldType)
+      fieldOffset += typeSize(program, fieldType)
     }
 
     if (!found) {
@@ -45,8 +45,8 @@ export function offsetOf(
   return totalOffset
 }
 
-export function resolveDisplacements(mod: Mod): void {
-  for (const definition of mod.definitions.values()) {
+export function resolveDisplacements(program: Program): void {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
     for (const instr of definition.instrs) {
       for (const op of instr.operands) {
@@ -55,7 +55,7 @@ export function resolveDisplacements(mod: Mod): void {
           op.disp !== undefined &&
           op.disp.kind === "OffsetOfDisplacement"
         ) {
-          const value = offsetOf(mod, op.disp.structType, op.disp.fields)
+          const value = offsetOf(program, op.disp.structType, op.disp.fields)
           op.disp = {
             kind: "IntDisplacement",
             value,

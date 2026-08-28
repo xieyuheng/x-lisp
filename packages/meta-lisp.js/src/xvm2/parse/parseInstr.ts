@@ -1,10 +1,10 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as X2 from "../index.ts"
+import * as Xvm2 from "../index.ts"
 import { parseOperand } from "./parseOperand.ts"
 
-export function parseInstr(sexp: S.Sexp): X2.Instr {
+export function parseInstr(sexp: S.Sexp): Xvm2.Instr {
   if (S.isSymbolSexp(sexp)) {
-    return X2.Instr("label", [X2.VarOperand(sexp.content)])
+    return Xvm2.Instr("label", [Xvm2.VarOperand(sexp.content)])
   }
 
   const list = S.asListSexp(sexp)
@@ -18,5 +18,5 @@ export function parseInstr(sexp: S.Sexp): X2.Instr {
 
   const op = S.asSymbolSexp(elements[0]).content
   const operands = elements.slice(1).map((elem) => parseOperand(elem))
-  return X2.Instr(op, operands)
+  return Xvm2.Instr(op, operands)
 }

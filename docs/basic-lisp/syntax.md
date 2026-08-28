@@ -12,7 +12,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 - 编译 **meta-lisp** 这样的动态类型语言 -- 通过 `value-t` 和 tag 指令
 - 编译类似 **C** 的静态类型语言 -- 通过具体类型和内存指令
 
-模块顶层由**定义**（definition）和**声明**（claim）组成。
+程序顶层由**定义**（definition）和**声明**（claim）组成。
 函数由**基本块**（block）组成，基本块由**指令**（instr）组成。
 
 下面分组介绍 basic-lisp IR 的所有语法。

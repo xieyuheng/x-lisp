@@ -1,18 +1,17 @@
 import * as Ppml from "@xieyuheng/ppml.js"
-import * as B from "../index.ts"
+import * as Xvm2 from "../index.ts"
 import { prettyDefinition } from "./prettyDefinition.ts"
-import { prettyType } from "./prettyType.ts"
 
-export function prettyMod(mod: B.Mod): Ppml.Node {
+export function prettyProgram(program: Xvm2.Program): Ppml.Node {
   const children: Array<Ppml.Node> = []
 
-  for (const [name, type] of mod.claims) {
+  if (program.entry !== undefined) {
     children.push(
-      Ppml.prettySyntax("claim", [], [Ppml.text(name), prettyType(type)]),
+      Ppml.prettySyntax("default-entry", [], [Ppml.text(program.entry)]),
     )
   }
 
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     children.push(prettyDefinition(definition))
   }
 

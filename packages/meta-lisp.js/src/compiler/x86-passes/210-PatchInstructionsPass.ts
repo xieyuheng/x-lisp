@@ -1,8 +1,8 @@
 import { arrayGet } from "@xieyuheng/std.js/array"
 import * as X86 from "../../x86/index.ts"
 
-export function PatchInstructionsPass(mod: X86.Mod): void {
-  for (const definition of mod.definitions.values()) {
+export function PatchInstructionsPass(program: X86.Program): void {
+  for (const definition of program.definitions.values()) {
     if (X86.isCodeDefinition(definition)) {
       definition.instrs = definition.instrs.flatMap((instr) =>
         patchInstr(instr),

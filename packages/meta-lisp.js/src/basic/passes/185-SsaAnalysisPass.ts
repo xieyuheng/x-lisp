@@ -9,11 +9,11 @@ export type SsaAnalysisReport = {
 
 export function SsaAnalysisPass(
   pkg: M.Package,
-  basicMod: B.Mod,
+  basicProgram: B.Program,
 ): SsaAnalysisReport {
   const ssaGraphs = new Map<string, B.SsaGraph>()
 
-  for (const definition of basicMod.definitions.values()) {
+  for (const definition of basicProgram.definitions.values()) {
     if (definition.kind === "FunctionDefinition") {
       const blocks = Array.from(definition.blocks.values())
       const graph = B.buildSsaGraph(blocks)

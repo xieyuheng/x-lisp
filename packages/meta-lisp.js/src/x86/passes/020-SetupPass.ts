@@ -1,25 +1,25 @@
 import * as X86 from "../index.ts"
 
-export function SetupPass(mod: X86.Mod, stmts: X86.Stmt[]): void {
+export function SetupPass(program: X86.Program, stmts: X86.Stmt[]): void {
   for (const stmt of stmts) {
-    setupStmt(mod, stmt)
+    setupStmt(program, stmt)
   }
 }
 
-function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
+function setupStmt(program: X86.Program, stmt: X86.Stmt): void {
   switch (stmt.kind) {
     case "DefineCodeStmt": {
-      X86.modDefine(mod, X86.CodeDefinition(stmt.name, stmt.instrs))
+      X86.programDefine(program, X86.CodeDefinition(stmt.name, stmt.instrs))
       break
     }
 
     case "DefineDataStmt": {
-      X86.modDefine(mod, X86.DataDefinition(stmt.name, stmt.value))
+      X86.programDefine(program, X86.DataDefinition(stmt.name, stmt.value))
       break
     }
 
     case "DefineStructStmt": {
-      mod.definitions.set(
+      program.definitions.set(
         stmt.name,
         X86.StructDefinition(stmt.name, stmt.fields),
       )
@@ -27,7 +27,7 @@ function setupStmt(mod: X86.Mod, stmt: X86.Stmt): void {
     }
 
     case "DefineSpaceStmt": {
-      X86.modDefine(mod, X86.SpaceDefinition(stmt.name, stmt.size))
+      X86.programDefine(program, X86.SpaceDefinition(stmt.name, stmt.size))
       break
     }
   }

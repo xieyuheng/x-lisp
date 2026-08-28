@@ -45,19 +45,19 @@ export function BuildXvmPipeline(rootPkg: M.Package): void {
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
   const xvmResult = Compiler.XvmExplicateControlPass(rootPkg)
-  B.CopyPropagationPass(xvmResult.mod)
-  BasicBundle(rootPkg, xvmResult.mod)
+  B.CopyPropagationPass(xvmResult.program)
+  BasicBundle(rootPkg, xvmResult.program)
 
-  const xvmMod = Compiler.XvmSelectInstructionPass(xvmResult)
-  XvmBundle(rootPkg, xvmMod)
+  const xvmProgram = Compiler.XvmSelectInstructionPass(xvmResult)
+  XvmBundle(rootPkg, xvmProgram)
 
   xvmAssemble(rootPkg)
 }
 
-function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
+function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm.basic`), (file) => {
-    const definitions = Array.from(basicMod.definitions.values())
+    const definitions = Array.from(basicProgram.definitions.values())
     const textWidth = 64
     const code = definitions
       .map((definition) => B.formatPrettyDefinition(textWidth, definition))
@@ -66,13 +66,13 @@ function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
   })
 }
 
-function XvmBundle(pkg: M.Package, xvmMod: Xvm.Mod): void {
+function XvmBundle(pkg: M.Package, xvmProgram: Xvm.Program): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm.asm`), (file) => {
     if (pkg.config.entry) {
       fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
     }
-    const definitions = Array.from(xvmMod.definitions.values())
+    const definitions = Array.from(xvmProgram.definitions.values())
     const textWidth = 64
     const code = definitions
       .map((definition) => Xvm.formatPrettyDefinition(textWidth, definition))

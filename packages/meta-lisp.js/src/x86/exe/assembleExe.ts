@@ -12,7 +12,7 @@ import {
 import type { Data } from "../data/index.ts"
 import { emitTo, encode, encodedSize } from "../encode/index.ts"
 import type { Instr } from "../instr/index.ts"
-import type { Mod } from "../mod/index.ts"
+import type { Program } from "../program/index.ts"
 import type { Type } from "../type/index.ts"
 import { NamedType } from "../type/Type.ts"
 import { typeSize } from "../type/typeSize.ts"
@@ -27,17 +27,17 @@ import {
 
 type LabelInfo = { segmentKind: ExeSegmentKind; segmentOffset: number }
 
-export function assembleExe(mod: Mod, entryName?: string): Exe {
-  resolveDisplacements(mod)
+export function assembleExe(program: Program, entryName?: string): Exe {
+  resolveDisplacements(program)
 
   const labels = new Map<string, LabelInfo>()
   const relocs: Array<ExeRelocationEntry> = []
 
-  const code = emitExeCode(mod, labels, relocs)
-  const data = emitExeData(mod, labels, relocs)
+  const code = emitExeCode(program, labels, relocs)
+  const data = emitExeData(program, labels, relocs)
 
   let spaceSize = 0
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "SpaceDefinition") continue
     const size = definition.size
     if (size.kind !== "IntData") {
@@ -83,9 +83,9 @@ export function assembleExe(mod: Mod, entryName?: string): Exe {
 // code emission
 // ---------------------------------------------------------------------------
 
-function collectLocalLabels(mod: Mod): Map<string, Set<string>> {
+function collectLocalLabels(program: Program): Map<string, Set<string>> {
   const map = new Map<string, Set<string>>()
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
     const local = new Set<string>()
     map.set(definition.name, local)
@@ -125,14 +125,14 @@ function findCodeRelocInfo(instr: Instr): CodeRelocInfo {
 }
 
 function emitExeCode(
-  mod: Mod,
+  program: Program,
   labels: Map<string, LabelInfo>,
   relocs: Array<ExeRelocationEntry>,
 ): Uint8Array {
-  const localLabels = collectLocalLabels(mod)
+  const localLabels = collectLocalLabels(program)
 
   let pos = 0
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
 
     pos = (pos + 7) & ~7
@@ -210,7 +210,7 @@ function emitExeCode(
   const buf = new Uint8Array(pos)
   pos = 0
 
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
 
     pos = (pos + 7) & ~7
@@ -236,26 +236,26 @@ type DeferredItem = {
 }
 
 function emitExeData(
-  mod: Mod,
+  program: Program,
   labels: Map<string, LabelInfo>,
   relocs: Array<ExeRelocationEntry>,
 ): Uint8Array {
-  let anonCounter = maxAnonIndex(mod) + 1
+  let anonCounter = maxAnonIndex(program) + 1
 
   let totalSize = 0
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "DataDefinition") continue
-    const dataType = inferDataType(mod, definition.value)
-    totalSize += computeTreeSize(mod, dataType, definition.value)
+    const dataType = inferDataType(program, definition.value)
+    totalSize += computeTreeSize(program, dataType, definition.value)
   }
 
   const buf = new Uint8Array(totalSize)
   let pos = 0
 
-  for (const definition of mod.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "DataDefinition") continue
 
-    const dataType = inferDataType(mod, definition.value)
+    const dataType = inferDataType(program, definition.value)
 
     labels.set(definition.name, {
       segmentKind: ExeDataSegment,
@@ -264,7 +264,15 @@ function emitExeData(
 
     const deferred: Array<DeferredItem> = []
 
-    pos = emitTree(mod, dataType, definition.value, buf, pos, relocs, deferred)
+    pos = emitTree(
+      program,
+      dataType,
+      definition.value,
+      buf,
+      pos,
+      relocs,
+      deferred,
+    )
 
     while (deferred.length > 0) {
       const d = deferred.shift()!
@@ -288,9 +296,9 @@ function emitExeData(
   return buf
 }
 
-function maxAnonIndex(mod: Mod): number {
+function maxAnonIndex(program: Program): number {
   let max = -1
-  for (const name of mod.definitions.keys()) {
+  for (const name of program.definitions.keys()) {
     const m = name.match(/^\xa9data\.(\d+)$/)
     if (m) {
       const n = parseInt(m[1])
@@ -300,11 +308,15 @@ function maxAnonIndex(mod: Mod): number {
   return max
 }
 
-function computeTreeSize(mod: Mod, dataType: Type, value: Data): number {
-  if (value.kind === "IntData") return typeSize(mod, dataType)
+function computeTreeSize(
+  program: Program,
+  dataType: Type,
+  value: Data,
+): number {
+  if (value.kind === "IntData") return typeSize(program, dataType)
 
   if (value.kind === "StructData") {
-    const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
+    const fieldTypes = dataTypeUnfold(program, dataType, S.zeroLocation("data"))
     let total = 0
     for (const [name, data] of Object.entries(value.fields)) {
       const ft = fieldTypes.get(name)
@@ -312,7 +324,7 @@ function computeTreeSize(mod: Mod, dataType: Type, value: Data): number {
         let message = `unknown field: ${name}`
         throw new Error(message)
       }
-      total += computeTreeSize(mod, ft, data)
+      total += computeTreeSize(program, ft, data)
     }
     return total
   }
@@ -320,28 +332,28 @@ function computeTreeSize(mod: Mod, dataType: Type, value: Data): number {
   if (value.kind === "AddressData") return 8
 
   if (value.kind === "PointerData") {
-    const inner = computePointerTargetSize(mod, value.target)
+    const inner = computePointerTargetSize(program, value.target)
     return 8 + inner
   }
 
   if (value.kind === "StringData") {
-    if (typeSize(mod, dataType) === 8) {
+    if (typeSize(program, dataType) === 8) {
       return 8 + value.content.length + 1
     }
     return value.content.length + 1
   }
 
-  if (value.kind === "ArrayData") return typeSize(mod, dataType)
+  if (value.kind === "ArrayData") return typeSize(program, dataType)
 
   let message = `unsupported data value`
   throw new Error(message)
 }
 
-function computePointerTargetSize(mod: Mod, target: Data): number {
+function computePointerTargetSize(program: Program, target: Data): number {
   if (target.kind === "StructData") {
     return computeTreeSize(
-      mod,
-      structDataType(mod, target.name, S.zeroLocation("data")),
+      program,
+      structDataType(program, target.name, S.zeroLocation("data")),
       target,
     )
   }
@@ -351,7 +363,7 @@ function computePointerTargetSize(mod: Mod, target: Data): number {
 }
 
 function emitTree(
-  mod: Mod,
+  program: Program,
   dataType: Type,
   value: Data,
   buf: Uint8Array,
@@ -360,11 +372,11 @@ function emitTree(
   deferred: Array<DeferredItem>,
 ): number {
   if (value.kind === "IntData") {
-    return writeIntLE(buf, offset, typeSize(mod, dataType), value.content)
+    return writeIntLE(buf, offset, typeSize(program, dataType), value.content)
   }
 
   if (value.kind === "StructData") {
-    const fieldTypes = dataTypeUnfold(mod, dataType, S.zeroLocation("data"))
+    const fieldTypes = dataTypeUnfold(program, dataType, S.zeroLocation("data"))
     let pos = offset
     for (const [name, data] of Object.entries(value.fields)) {
       const ft = fieldTypes.get(name)
@@ -372,7 +384,7 @@ function emitTree(
         let message = `unknown field: ${name}`
         throw new Error(message)
       }
-      pos = emitTree(mod, ft, data, buf, pos, relocs, deferred)
+      pos = emitTree(program, ft, data, buf, pos, relocs, deferred)
     }
     return pos
   }
@@ -396,13 +408,13 @@ function emitTree(
     deferred.push({
       pointerSlotOffset,
       emit: (start: number) =>
-        emitPointerTarget(mod, value.target, buf, start, relocs, deferred),
+        emitPointerTarget(program, value.target, buf, start, relocs, deferred),
     })
     return offset
   }
 
   if (value.kind === "StringData") {
-    if (typeSize(mod, dataType) === 8) {
+    if (typeSize(program, dataType) === 8) {
       writeInt64(buf, offset, 0n)
       const pointerSlotOffset = offset
       offset += 8
@@ -432,7 +444,7 @@ function emitTree(
       throw new Error(message)
     }
     let pos = offset
-    const elemSize = typeSize(mod, dataType.element)
+    const elemSize = typeSize(program, dataType.element)
     for (const elem of value.elements) {
       if (elem.kind !== "IntData") {
         let message = `array element must be integer, got: ${elem.kind}`
@@ -448,16 +460,16 @@ function emitTree(
 }
 
 function structDataType(
-  mod: Mod,
+  program: Program,
   name: string,
   location: S.SourceLocation,
 ): Type {
-  lookupStructDefinition(mod, name, location)
+  lookupStructDefinition(program, name, location)
   return NamedType(name)
 }
 
 function emitPointerTarget(
-  mod: Mod,
+  program: Program,
   target: Data,
   buf: Uint8Array,
   offset: number,
@@ -466,8 +478,8 @@ function emitPointerTarget(
 ): number {
   if (target.kind === "StructData") {
     return emitTree(
-      mod,
-      structDataType(mod, target.name, S.zeroLocation("emitPointerTarget")),
+      program,
+      structDataType(program, target.name, S.zeroLocation("emitPointerTarget")),
       target,
       buf,
       offset,

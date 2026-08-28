@@ -11,10 +11,10 @@ import * as X86 from "../../x86/index.ts"
 //           (only when an entry is given by build.entry or --entry)
 
 export function InjectMainAndTestPass(
-  x86Mod: X86.Mod,
+  x86Program: X86.Program,
   entryName: string | undefined,
 ): void {
-  x86Mod.definitions.set(
+  x86Program.definitions.set(
     "©test",
     X86.CodeDefinition("©test", [
       X86.Instr("call", [X86.LabelOperand("©setup-variables")]),
@@ -24,12 +24,12 @@ export function InjectMainAndTestPass(
   )
 
   if (entryName !== undefined) {
-    if (!x86Mod.definitions.has(entryName)) {
+    if (!x86Program.definitions.has(entryName)) {
       let message = `[InjectMainAndTestPass] entry function not found: ${entryName}`
       throw new Error(message)
     }
 
-    x86Mod.definitions.set(
+    x86Program.definitions.set(
       "©main",
       X86.CodeDefinition("©main", [
         X86.Instr("call", [X86.LabelOperand("©setup-variables")]),

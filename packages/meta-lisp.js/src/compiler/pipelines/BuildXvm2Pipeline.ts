@@ -6,7 +6,7 @@ import {
 import * as B from "../../basic/index.ts"
 import * as Compiler from "../../compiler/index.ts"
 import * as M from "../../meta/index.ts"
-import * as X2 from "../../xvm2/index.ts"
+import * as Xvm2 from "../../xvm2/index.ts"
 
 export function BuildXvm2Pipeline(
   rootPkg: M.Package,
@@ -44,24 +44,24 @@ export function BuildXvm2Pipeline(
   for (const pkg of closure) M.LimitArityPass(pkg, 6)
   for (const pkg of closure) M.UnnestOperandPass(pkg)
 
-  const basicMod = Compiler.Xvm2ExplicateControlPass(rootPkg)
-  B.CopyPropagationPass(basicMod)
-  BasicBundle(rootPkg, basicMod)
+  const basicProgram = Compiler.Xvm2ExplicateControlPass(rootPkg)
+  B.CopyPropagationPass(basicProgram)
+  BasicBundle(rootPkg, basicProgram)
 
-  const mod = Compiler.Xvm2SelectInstructionPass(basicMod)
+  const program = Compiler.Xvm2SelectInstructionPass(basicProgram)
 
   const entryName =
     entryOverride ??
     (rootPkg.config.entry ? `${rootPkg.id}/${rootPkg.config.entry}` : undefined)
-  Compiler.Xvm2InjectMainAndTestPass(mod, entryName)
+  Compiler.Xvm2InjectMainAndTestPass(program, entryName)
 
-  X2Bundle(rootPkg, mod)
+  Xvm2Bundle(rootPkg, program)
 }
 
-function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
+function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm2.basic`), (file) => {
-    const definitions = Array.from(basicMod.definitions.values())
+    const definitions = Array.from(basicProgram.definitions.values())
     const textWidth = 64
     const code = definitions
       .map((definition) => B.formatPrettyDefinition(textWidth, definition))
@@ -70,16 +70,16 @@ function BasicBundle(pkg: M.Package, basicMod: B.Mod): void {
   })
 }
 
-function X2Bundle(pkg: M.Package, mod: X2.Mod): void {
+function Xvm2Bundle(pkg: M.Package, program: Xvm2.Program): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm2.asm`), (file) => {
-    if (mod.entry !== undefined) {
-      fileWriteln(file, `(default-entry ${mod.entry})`)
+    if (program.entry !== undefined) {
+      fileWriteln(file, `(default-entry ${program.entry})`)
     }
-    const definitions = Array.from(mod.definitions.values())
+    const definitions = Array.from(program.definitions.values())
     const textWidth = 64
     const code = definitions
-      .map((definition) => X2.formatPrettyDefinition(textWidth, definition))
+      .map((definition) => Xvm2.formatPrettyDefinition(textWidth, definition))
       .join("\n")
     fileWriteln(file, code)
   })

@@ -15,16 +15,17 @@ const SIZE_CHECKED_OPS = new Set([
   "imul",
 ])
 
-export function CheckPass(mod: X86.Mod): void {
-  checkDuplicateNames(mod)
-  checkDataFields(mod)
-  checkInstrSizes(mod)
+export function CheckPass(program: X86.Program): void {
+  checkDuplicateNames(program)
+  checkDataFields(program)
+  checkInstrSizes(program)
 }
 
-function checkDuplicateNames(mod: X86.Mod): void {
-  for (const [name, definition] of mod.definitions) {
+function checkDuplicateNames(program: X86.Program): void {
+  for (const [name, definition] of program.definitions) {
     if (
-      Array.from(mod.definitions.keys()).filter((k) => k === name).length > 1
+      Array.from(program.definitions.keys()).filter((k) => k === name).length >
+      1
     ) {
       let message = `[CheckPass] duplicate definition: ${name}`
       throw new Error(message)
@@ -32,15 +33,19 @@ function checkDuplicateNames(mod: X86.Mod): void {
   }
 }
 
-function checkDataFields(mod: X86.Mod): void {
-  for (const [, definition] of mod.definitions) {
+function checkDataFields(program: X86.Program): void {
+  for (const [, definition] of program.definitions) {
     if (definition.kind !== "DataDefinition") continue
-    X86.check(mod, definition.value, X86.inferDataType(mod, definition.value))
+    X86.check(
+      program,
+      definition.value,
+      X86.inferDataType(program, definition.value),
+    )
   }
 }
 
-function checkInstrSizes(mod: X86.Mod): void {
-  for (const definition of mod.definitions.values()) {
+function checkInstrSizes(program: X86.Program): void {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
     for (const instr of definition.instrs) {
       if (!isSizeCheckedInstr(instr)) continue

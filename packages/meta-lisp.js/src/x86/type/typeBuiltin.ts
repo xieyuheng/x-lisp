@@ -1,8 +1,8 @@
 import * as S from "@xieyuheng/sexp.js"
 import { PrimitiveTypeDefinition } from "../definition/Definition.ts"
-import type { Mod } from "../mod/index.ts"
+import type { Program } from "../program/index.ts"
 
-export function registerBuiltinTypes(mod: Mod): void {
+export function registerBuiltinTypes(program: Program): void {
   const builtinLocation = S.zeroLocation("<builtin>")
 
   const primitives: Array<{ name: string; size: number }> = [
@@ -19,7 +19,7 @@ export function registerBuiltinTypes(mod: Mod): void {
   ]
 
   for (const primitive of primitives) {
-    mod.definitions.set(
+    program.definitions.set(
       primitive.name,
       PrimitiveTypeDefinition(primitive.name, primitive.size),
     )

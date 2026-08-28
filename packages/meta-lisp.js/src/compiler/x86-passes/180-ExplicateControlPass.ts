@@ -5,14 +5,14 @@ import * as B from "../../basic/index.ts"
 import * as C from "../../core/index.ts"
 import * as M from "../../meta/index.ts"
 
-export function ExplicateControlPass(pkg: M.Package): B.Mod {
-  const basicMod = B.createMod()
+export function ExplicateControlPass(pkg: M.Package): B.Program {
+  const basicProgram = B.createProgram()
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
         for (const basicDefinition of explicateDefinition(definition)) {
-          basicMod.definitions.set(basicDefinition.name, basicDefinition)
+          basicProgram.definitions.set(basicDefinition.name, basicDefinition)
         }
       }
     }
@@ -36,12 +36,12 @@ export function ExplicateControlPass(pkg: M.Package): B.Mod {
   }
 
   const setupDefinition = generateSetupVariables(pkg, variableNames)
-  basicMod.definitions.set(setupDefinition.name, setupDefinition)
+  basicProgram.definitions.set(setupDefinition.name, setupDefinition)
 
   const runTestsDefinition = generateRunTests(pkg, testNames)
-  basicMod.definitions.set(runTestsDefinition.name, runTestsDefinition)
+  basicProgram.definitions.set(runTestsDefinition.name, runTestsDefinition)
 
-  return basicMod
+  return basicProgram
 }
 
 function definitionQualifiedName(definition: C.Definition): string {

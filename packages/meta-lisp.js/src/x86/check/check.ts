@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 
 export function check(
-  mod: X86.Mod,
+  program: X86.Program,
   data: X86.Data,
   expectedType: X86.Type,
 ): void {
@@ -37,7 +37,7 @@ export function check(
         let message = `[check] expected pointer-t for AddressData, got: ${X86.formatType(expectedType)}`
         throw new Error(message)
       }
-      const def = X86.modLookupDefinition(mod, data.name)
+      const def = X86.programLookupDefinition(program, data.name)
       if (def === undefined) {
         let message = `[check] unknown name: ${data.name}`
         throw new Error(message)
@@ -60,7 +60,7 @@ export function check(
         let message = `[check] expected pointer-t for PointerData, got: ${X86.formatType(expectedType)}`
         throw new Error(message)
       }
-      checkPointerTarget(mod, data.target)
+      checkPointerTarget(program, data.target)
       return
     }
 
@@ -70,12 +70,12 @@ export function check(
         throw new Error(message)
       }
       const typeFields = dataTypeUnfold(
-        mod,
+        program,
         expectedType,
         S.zeroLocation("check"),
       )
 
-      checkFields(mod, data.fields, typeFields)
+      checkFields(program, data.fields, typeFields)
       return
     }
 
@@ -89,7 +89,7 @@ export function check(
         throw new Error(message)
       }
       for (const elem of data.elements) {
-        check(mod, elem, expectedType.element)
+        check(program, elem, expectedType.element)
       }
       return
     }
@@ -101,7 +101,7 @@ export function check(
 }
 
 export function checkFields(
-  mod: X86.Mod,
+  program: X86.Program,
   fields: Record<string, X86.Data>,
   typeFields: Map<string, X86.Type>,
 ): void {
@@ -117,12 +117,12 @@ export function checkFields(
       let message = `[checkFields] missing field: "${expectedName}"`
       throw new Error(message)
     }
-    check(mod, fieldExp, expectedType)
+    check(program, fieldExp, expectedType)
   }
 }
 
 export function dataTypeUnfold(
-  mod: X86.Mod,
+  program: X86.Program,
   dataType: X86.Type,
   location: S.SourceLocation,
 ): Map<string, X86.Type> {
@@ -131,7 +131,7 @@ export function dataTypeUnfold(
     throw new Error(message)
   }
   const structDefinition = lookupStructDefinition(
-    mod,
+    program,
     dataType.name,
     S.zeroLocation("dataTypeUnfold"),
   )
@@ -144,11 +144,11 @@ export function dataTypeUnfold(
 }
 
 export function lookupStructDefinition(
-  mod: X86.Mod,
+  program: X86.Program,
   name: string,
   location: S.SourceLocation,
 ): X86.StructDefinition {
-  const definition = X86.modLookupDefinition(mod, name)
+  const definition = X86.programLookupDefinition(program, name)
   if (definition === undefined || definition.kind !== "StructDefinition") {
     let message = `[lookupStructDefinition] unknown struct type: ${name}`
     throw new Error(message)
@@ -169,12 +169,12 @@ export function isIntegerAtomTypeCtor(name: string): boolean {
   )
 }
 
-function checkPointerTarget(mod: X86.Mod, target: X86.Data): void {
+function checkPointerTarget(program: X86.Program, target: X86.Data): void {
   if (target.kind === "StructData") {
     check(
-      mod,
+      program,
       target,
-      namedDataType(mod, target.name, S.zeroLocation("checkPointerTarget")),
+      namedDataType(program, target.name, S.zeroLocation("checkPointerTarget")),
     )
 
     return
@@ -182,9 +182,9 @@ function checkPointerTarget(mod: X86.Mod, target: X86.Data): void {
 
   if (target.kind === "StringData") {
     check(
-      mod,
+      program,
       target,
-      namedDataType(mod, "string-t", S.zeroLocation("checkPointerTarget")),
+      namedDataType(program, "string-t", S.zeroLocation("checkPointerTarget")),
     )
 
     return
@@ -195,11 +195,11 @@ function checkPointerTarget(mod: X86.Mod, target: X86.Data): void {
 }
 
 function namedDataType(
-  mod: X86.Mod,
+  program: X86.Program,
   name: string,
   location: S.SourceLocation,
 ): X86.Type {
-  const definition = X86.modLookupDefinition(mod, name)
+  const definition = X86.programLookupDefinition(program, name)
   if (
     definition === undefined ||
     (definition.kind !== "StructDefinition" &&
@@ -211,17 +211,21 @@ function namedDataType(
   return X86.NamedType(definition.name)
 }
 
-export function inferDataType(mod: X86.Mod, value: X86.Data): X86.Type {
+export function inferDataType(program: X86.Program, value: X86.Data): X86.Type {
   switch (value.kind) {
     case "StructData": {
-      return namedDataType(mod, value.name, S.zeroLocation("inferDataType"))
+      return namedDataType(program, value.name, S.zeroLocation("inferDataType"))
     }
     case "PointerData":
     case "AddressData":
-      return namedDataType(mod, "pointer-t", S.zeroLocation("inferDataType"))
+      return namedDataType(
+        program,
+        "pointer-t",
+        S.zeroLocation("inferDataType"),
+      )
 
     case "StringData":
-      return namedDataType(mod, "string-t", S.zeroLocation("inferDataType"))
+      return namedDataType(program, "string-t", S.zeroLocation("inferDataType"))
 
     default: {
       let message = `[inferDataType] define-data value must be self-describing (named struct, pointer, address, or string), got: ${value.kind}`

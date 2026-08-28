@@ -2,20 +2,23 @@ import * as X86 from "../index.ts"
 
 let anonCounter = 0
 
-export function ResolveDataOperandsPass(mod: X86.Mod): void {
-  for (const definition of mod.definitions.values()) {
+export function ResolveDataOperandsPass(program: X86.Program): void {
+  for (const definition of program.definitions.values()) {
     if (definition.kind !== "CodeDefinition") continue
     for (let i = 0; i < definition.instrs.length; i++) {
       const instr = definition.instrs[i]
       const newOperands = instr.operands.map((op) =>
-        resolveDataOperand(mod, op),
+        resolveDataOperand(program, op),
       )
       definition.instrs[i] = X86.Instr(instr.op, newOperands)
     }
   }
 }
 
-function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
+function resolveDataOperand(
+  program: X86.Program,
+  op: X86.Operand,
+): X86.Operand {
   if (op.kind !== "DataOperand") return op
 
   const data = op.data
@@ -26,7 +29,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
 
   if (data.kind === "StringData") {
     const anonName = `©data.${anonCounter++}`
-    mod.definitions.set(
+    program.definitions.set(
       anonName,
       X86.DataDefinition(anonName, X86.PointerData(data)),
     )
@@ -35,7 +38,7 @@ function resolveDataOperand(mod: X86.Mod, op: X86.Operand): X86.Operand {
 
   if (data.kind === "PointerData") {
     const anonName = `©data.${anonCounter++}`
-    mod.definitions.set(anonName, X86.DataDefinition(anonName, data))
+    program.definitions.set(anonName, X86.DataDefinition(anonName, data))
     return X86.RipMemOperand("qword", X86.AddressOperand(anonName))
   }
   if (data.kind === "StructData") {
