@@ -34,7 +34,7 @@ title: 指令参考
 | `load-float` | `(load-float <dest> <float>)` | `<dest> := <var>`；`<float>` 为浮点数 | 载入 float 值 |
 | `load-string`| `(load-string <dest> "<string>")` | `<dest> := <var>`；`<string>` 为字符串 | 载入 string 值 |
 | `load-symbol`| `(load-symbol <dest> '<symbol>)` | `<dest> := <var>`；`'<symbol>` 为 symbol 字面量 | 载入 symbol 值 |
-| `load-closure` | `(load-closure <dest> (fn x))` 或 `(load-closure <dest> (prim x))` | `<dest> := <var>`；目标为 `(fn ...)` 或 `(prim ...)` | 载入无环境 closure（一等公民） |
+| `load-closure` | `(load-closure <dest> (fn x))` | `<dest> := <var>`；目标为 `(fn ...)` | 载入无环境 closure（一等公民）；`x` 可以是函数，也可以是 primitive 的 wrap 函数 |
 | `move`        | `(move <dest> <src>)`     | `<dest> := <var>`；`<src> := <var>` | 槽间拷贝                               |
 | `load-result` | `(load-result <dest>)`    | `<dest> := <var>`          | 从返回寄存器取回最近一次 `call-n` / `call-prim-n` / `apply-n` 的结果 |
 
@@ -42,14 +42,15 @@ title: 指令参考
 
 ```scheme
 (load-closure f (fn square))
-(load-closure p (prim meta-builtin/builtin/imul))
+;; primitive 必须先由编译器转换为其 wrap 函数，再 load-closure
+(load-closure p (fn meta-builtin/builtin/imul©wrap))
 ```
 
 # Closure 构造
 
 | 指令               | 语法                                                      | 操作数约束                                    | 描述                                        |
 |--------------------|-----------------------------------------------------------|-----------------------------------------------|---------------------------------------------|
-| `make-closure`     | `(make-closure <dest> (fn x) <size>)` 或 `(make-closure <dest> (prim x) <size>)` | `<dest> := <var>`；目标为 `(fn ...)` / `(prim ...)`；`<size>` 为环境槽数 | 分配带环境 closure，环境槽数为 `<size>` |
+| `make-closure`     | `(make-closure <dest> (fn x) <size>)` | `<dest> := <var>`；目标为 `(fn ...)`；`<size>` 为环境槽数 | 分配带环境 closure，环境槽数为 `<size>`；`x` 可以是函数，也可以是 primitive 的 wrap 函数 |
 | `store-closure-arg`| `(store-closure-arg <closure> <index> <value>)`           | `<closure> := <var>`；`<index>` 为下标；`<value> := <var>` | 将 `<value>` 写入 closure 的第 `<index>` 个环境槽 |
 
 ```scheme
@@ -180,7 +181,7 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 - fn / prim 不作为可动态 apply 的值存在；它们只作为静态引用：
   - `call-n` / `tail-call-n` 使用 `(fn ...)`
   - `call-prim-n` / `tail-call-prim-n` 使用 `(prim ...)`
-  - `load-closure` / `make-closure` 使用 `(fn ...)` 或 `(prim ...)` 作为 closure 的来源
+  - `load-closure` / `make-closure` 使用 `(fn ...)` 作为 closure 的来源；primitive 必须先转换为其 wrap 函数
 - 无环境 closure 用 `load-closure` 构造，可以优化为 relocation。
 - 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
 - `make-closure` 不接受可变数量的 env 参数，环境通过 `store-closure-arg` 逐个填充。

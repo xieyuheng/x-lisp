@@ -291,7 +291,7 @@ value
 primitive 函数引用。用于：
 
 - `call-prim-n` / `tail-call-prim-n` 的目标 —— 静态 primitive 调用；
-- `load-closure` / `make-closure` 的目标 —— 把 primitive 作为 closure 的来源。
+- 不作为 `load-closure` / `make-closure` 的直接目标 —— primitive 必须先转换为其 wrap 函数，再对 wrap 函数做 closure。
 
 ```scheme
 (prim meta-builtin/builtin/imul)

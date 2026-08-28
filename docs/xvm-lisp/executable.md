@@ -143,12 +143,13 @@ Relocation 类型：
 `fn-pointer` 用于：
 
 - `call-n` / `tail-call-n` 的 target
-- `load-closure` / `make-closure` 的 fn 来源
+- `load-closure` / `make-closure` 的 target
 
 `prim-pointer` 用于：
 
 - `call-prim-n` / `tail-call-prim-n` 的 target
-- `load-closure` / `make-closure` 的 primitive 来源
+
+primitive 不能直接作为 closure 的来源；必须先转换为其 wrap 函数，再使用 `fn-pointer`。
 
 # 指令集编码
 
@@ -288,8 +289,9 @@ u16 dest
 u64 target
 ```
 
-`target` 产生 `type = fn-pointer` 或 `type = prim-pointer` 的 relocation。
+`target` 产生 `type = fn-pointer` 的 relocation。
 loader 直接构造无环境 closure。
+primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
 
 ## `make-closure`
 
@@ -299,8 +301,9 @@ u64 target
 u8  size
 ```
 
-- `target` 产生 `type = fn-pointer` 或 `type = prim-pointer` 的 relocation。
+- `target` 产生 `type = fn-pointer` 的 relocation。
 - `size` 是环境槽数。
+- primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
 - `make-closure` 只分配 closure，不填充环境；环境由 `store-closure-arg` 填充。
 
 ## `store-closure-arg`
@@ -380,7 +383,7 @@ i32 else
    - 在其 `code` 的 `dest-offset` 处写入：
      - 对 `fn-pointer` / `prim-pointer` / `global-pointer`：对应的 function pointer / primitive function pointer / global variable pointer。
      - 对 `string-value` / `symbol-value`：对应的 string value / symbol value。
-     - `load-closure` / `make-closure` 通过 `fn-pointer` / `prim-pointer` 构造 closure value。
+     - `load-closure` / `make-closure` 通过 `fn-pointer` 构造 closure value。
 6. 找到 default entry，设置程序入口。
 
 # 设计不变量
@@ -389,7 +392,8 @@ i32 else
 - `apply-n` / `tail-apply-n` 的 target 必须是 closure。
 - fn / prim 不作为可动态 apply 的值存在；只作为静态引用：
   - `fn-pointer` 用于 `call-n` / `tail-call-n` / `load-closure` / `make-closure`
-  - `prim-pointer` 用于 `call-prim-n` / `tail-call-prim-n` / `load-closure` / `make-closure`
+  - `prim-pointer` 用于 `call-prim-n` / `tail-call-prim-n`
+  - primitive 必须先转换为其 wrap 函数，才能作为 `load-closure` / `make-closure` 的 `fn-pointer` 来源
 - 无环境 closure 用 `load-closure` 构造，可优化为 relocation。
 - 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
 - `make-closure` 不接受可变数量 env 参数，环境通过 `store-closure-arg` 逐个填充。
