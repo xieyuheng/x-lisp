@@ -289,9 +289,9 @@ function explicateUnnestedTerm(
         return [instrs, value]
       }
 
-      const value = generateCell(state, "ref")
+      const value = generateCell(state, "closure")
       const instrs = [
-        B.Instr("ref", [value], [], {
+        B.Instr("load-closure", [value], [], {
           name: B.SymbolAttribute(qualifiedName),
         }),
       ]
@@ -306,39 +306,35 @@ function explicateUnnestedTerm(
       const pairs = freeVarTerms.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, freeVarCells] = arrayUnzip(pairs)
 
-      const funcRef = generateCell(state, "func-ref")
-      const size = generateCell(state, "size")
       const closure = generateCell(state, "closure")
+
+      if (freeVarCells.length === 0) {
+        const instrs = [
+          ...arrayConcat(argInstrGroups),
+          B.Instr("load-closure", [closure], [], {
+            name: B.SymbolAttribute(qualifiedFuncName),
+          }),
+        ]
+        return [instrs, closure]
+      }
 
       const instrs = [
         ...arrayConcat(argInstrGroups),
-        B.Instr("ref", [funcRef], [], {
+        B.Instr("make-closure", [closure], [], {
           name: B.SymbolAttribute(qualifiedFuncName),
-        }),
-        B.Instr("int", [size], [], {
-          content: B.IntAttribute(BigInt(freeVarCells.length)),
-        }),
-        B.Instr("call", [closure], [funcRef, size], {
-          name: B.SymbolAttribute("meta-builtin/builtin/make-closure"),
+          size: B.IntAttribute(BigInt(freeVarCells.length)),
         }),
       ]
 
-      let current = closure
       for (let i = 0; i < freeVarCells.length; i++) {
-        const index = generateCell(state, "index")
-        const next = generateCell(state, "closure")
         instrs.push(
-          B.Instr("int", [index], [], {
-            content: B.IntAttribute(BigInt(i)),
-          }),
-          B.Instr("call", [next], [index, freeVarCells[i], current], {
-            name: B.SymbolAttribute("meta-builtin/builtin/closure-put-arg"),
+          B.Instr("store-closure-arg", [], [closure, freeVarCells[i]], {
+            index: B.IntAttribute(BigInt(i)),
           }),
         )
-        current = next
       }
 
-      return [instrs, current]
+      return [instrs, closure]
     }
 
     case "ApplyTerm": {

@@ -6,13 +6,13 @@
   (return twice))
 
 (define-function (inc n)
-  (load one 1)
+  (load-int one 1)
   (iadd result n one)
   (return result))
 
 (define-function (main)
-  (load f (fn inc))
-  (load x 10)
+  (load-closure f (fn inc))
+  (load-int x 10)
   (call-2 (fn apply-twice) f x)
   (load-result result)
   (return result))

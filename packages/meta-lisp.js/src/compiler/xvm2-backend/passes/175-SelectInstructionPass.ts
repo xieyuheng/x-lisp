@@ -74,25 +74,25 @@ function codegenInstr(program: B.Program, instr: B.Instr): Array<Xvm2.Instr> {
     case "int": {
       const dest = Xvm2.VarOperand(instr.output[0].id)
       const value = B.expectInt(instr.attributes, "content")
-      return [Xvm2.Instr("load", [dest, Xvm2.IntOperand(value)])]
+      return [Xvm2.Instr("load-int", [dest, Xvm2.IntOperand(value)])]
     }
 
     case "float": {
       const dest = Xvm2.VarOperand(instr.output[0].id)
       const value = B.expectFloat(instr.attributes, "content")
-      return [Xvm2.Instr("load", [dest, Xvm2.FloatOperand(value)])]
+      return [Xvm2.Instr("load-float", [dest, Xvm2.FloatOperand(value)])]
     }
 
     case "symbol": {
       const dest = Xvm2.VarOperand(instr.output[0].id)
       const content = B.expectSymbol(instr.attributes, "content")
-      return [Xvm2.Instr("load", [dest, Xvm2.SymbolOperand(content)])]
+      return [Xvm2.Instr("load-symbol", [dest, Xvm2.SymbolOperand(content)])]
     }
 
     case "text": {
       const dest = Xvm2.VarOperand(instr.output[0].id)
       const content = B.expectString(instr.attributes, "content")
-      return [Xvm2.Instr("load", [dest, Xvm2.StringOperand(content)])]
+      return [Xvm2.Instr("load-string", [dest, Xvm2.StringOperand(content)])]
     }
 
     case "copy": {
@@ -112,25 +112,48 @@ function codegenInstr(program: B.Program, instr: B.Instr): Array<Xvm2.Instr> {
       return []
     }
 
-    case "ref": {
+    case "load-closure": {
       const dest = Xvm2.VarOperand(instr.output[0].id)
       const name = B.expectSymbol(instr.attributes, "name")
-      if (isPrimitiveFunction(program, name)) {
-        return [Xvm2.Instr("load", [dest, Xvm2.PrimOperand(name)])]
-      }
-      return [Xvm2.Instr("load", [dest, Xvm2.FnOperand(name)])]
+      return [Xvm2.Instr("load-closure", [dest, Xvm2.FnOperand(name)])]
+    }
+
+    case "make-closure": {
+      const dest = Xvm2.VarOperand(instr.output[0].id)
+      const name = B.expectSymbol(instr.attributes, "name")
+      const size = B.expectInt(instr.attributes, "size")
+      return [
+        Xvm2.Instr("make-closure", [
+          dest,
+          Xvm2.FnOperand(name),
+          Xvm2.IntOperand(size),
+        ]),
+      ]
+    }
+
+    case "store-closure-arg": {
+      const closure = Xvm2.VarOperand(instr.input[0].id)
+      const value = Xvm2.VarOperand(instr.input[1].id)
+      const index = B.expectInt(instr.attributes, "index")
+      return [
+        Xvm2.Instr("store-closure-arg", [
+          closure,
+          Xvm2.IntOperand(index),
+          value,
+        ]),
+      ]
     }
 
     case "global-load": {
       const dest = Xvm2.VarOperand(instr.output[0].id)
       const name = B.expectSymbol(instr.attributes, "name")
-      return [Xvm2.Instr("global-load", [dest, Xvm2.GlobalOperand(name)])]
+      return [Xvm2.Instr("load-global", [dest, Xvm2.GlobalOperand(name)])]
     }
 
     case "global-store": {
       const src = Xvm2.VarOperand(instr.input[0].id)
       const name = B.expectSymbol(instr.attributes, "name")
-      return [Xvm2.Instr("global-store", [Xvm2.GlobalOperand(name), src])]
+      return [Xvm2.Instr("store-global", [Xvm2.GlobalOperand(name), src])]
     }
 
     case "call": {

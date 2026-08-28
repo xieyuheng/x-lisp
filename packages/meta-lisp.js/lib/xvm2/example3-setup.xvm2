@@ -2,25 +2,25 @@
 (declare-variable *name*)
 
 (define-function (©setup.*version*)
-  (load value 42)
+  (load-int value 42)
   (return value))
 
 (define-function (©setup.*name*)
-  (load value 'meta-lisp)
+  (load-symbol value 'meta-lisp)
   (return value))
 
 (define-function (©setup-variables)
   (call-0 (fn ©setup.*version*))
   (load-result version)
-  (global-store (global *version*) version)
+  (store-global (global *version*) version)
   (call-0 (fn ©setup.*name*))
   (load-result name)
-  (global-store (global *name*) name)
+  (store-global (global *name*) name)
   (return-void))
 
 (define-function (main)
   (call-0 (fn ©setup-variables))
-  (global-load v (global *version*))
+  (load-global v (global *version*))
   (return v))
 
 (default-entry main)
