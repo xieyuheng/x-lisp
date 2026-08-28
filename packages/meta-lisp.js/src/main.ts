@@ -9,7 +9,9 @@ import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B2 from "./basic/index.ts"
-import * as Compiler from "./compiler/index.ts"
+import * as X86Backend from "./compiler/x86-backend/index.ts"
+import * as XvmBackend from "./compiler/xvm-backend/index.ts"
+import * as Xvm2Backend from "./compiler/xvm2-backend/index.ts"
 import * as M from "./meta/index.ts"
 import * as X86 from "./x86/index.ts"
 import * as Xvm2 from "./xvm2/index.ts"
@@ -47,7 +49,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Compiler.BuildXvmPipeline(pkg)
+    XvmBackend.BuildPipeline(pkg)
   },
 
   "build-xvm2": ({ options }) => {
@@ -56,7 +58,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Compiler.BuildXvm2Pipeline(pkg, options["--entry"])
+    Xvm2Backend.BuildPipeline(pkg, options["--entry"])
   },
 
   "build-x86": ({ options }) => {
@@ -65,7 +67,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Compiler.BuildX86Pipeline(pkg, options["--entry"])
+    X86Backend.BuildPipeline(pkg, options["--entry"])
   },
 
   "test-xvm": ({ options }) => {
@@ -75,7 +77,7 @@ router.defineHandlers({
     if ("--profile" in options) pkg.config.compiler.profile = "true"
     if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Compiler.TestXvmPipeline(pkg)
+    XvmBackend.TestPipeline(pkg)
   },
 
   "test-xvm2": ({ options }) => {

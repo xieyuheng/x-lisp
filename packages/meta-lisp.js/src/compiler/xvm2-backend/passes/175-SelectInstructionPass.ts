@@ -1,7 +1,7 @@
-import * as B from "../../basic/index.ts"
-import * as Xvm2 from "../../xvm2/index.ts"
+import * as B from "../../../basic/index.ts"
+import * as Xvm2 from "../../../xvm2/index.ts"
 
-export function Xvm2SelectInstructionPass(program: B.Program): Xvm2.Program {
+export function SelectInstructionPass(program: B.Program): Xvm2.Program {
   const xvm2Program = Xvm2.createProgram()
 
   for (const [name, definition] of program.definitions) {
@@ -238,7 +238,7 @@ function codegenInstr(program: B.Program, instr: B.Instr): Array<Xvm2.Instr> {
     }
 
     default: {
-      let message = `[Xvm2SelectInstructionPass] unhandled instr op: ${instr.op}`
+      let message = `[SelectInstructionPass] unhandled instr op: ${instr.op}`
       throw new Error(message)
     }
   }

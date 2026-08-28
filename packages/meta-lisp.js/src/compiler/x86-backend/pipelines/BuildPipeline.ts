@@ -4,24 +4,24 @@ import {
   openOutputFile,
 } from "@xieyuheng/std.js/file"
 import * as fs from "node:fs"
-import * as B from "../../basic/index.ts"
-import * as Compiler from "../../compiler/index.ts"
-import * as M from "../../meta/index.ts"
-import * as X86 from "../../x86/index.ts"
+import * as B from "../../../basic/index.ts"
+import * as M from "../../../meta/index.ts"
+import * as X86 from "../../../x86/index.ts"
+import * as X86Backend from "../passes/index.ts"
 
-export function BuildX86Pipeline(
+export function BuildPipeline(
   rootPkg: M.Package,
   entryOverride?: string,
 ): void {
   M.CorePipeline(rootPkg)
 
-  const basicProgram = Compiler.ExplicateControlPass(rootPkg)
+  const basicProgram = X86Backend.ExplicateControlPass(rootPkg)
   B.CopyPropagationPass(basicProgram)
   BasicBundle(rootPkg, basicProgram)
 
   const ssaReport = B.SsaAnalysisPass(rootPkg, basicProgram)
 
-  const x86Program = Compiler.SelectInstructionPass(
+  const x86Program = X86Backend.SelectInstructionPass(
     rootPkg,
     basicProgram,
     ssaReport,
@@ -30,12 +30,12 @@ export function BuildX86Pipeline(
   const entryName =
     entryOverride ??
     (rootPkg.config.entry ? `${rootPkg.id}/${rootPkg.config.entry}` : undefined)
-  Compiler.InjectMainAndTestPass(x86Program, entryName)
+  X86Backend.InjectMainAndTestPass(x86Program, entryName)
 
-  const homeInfoMap = Compiler.AllocateRegistersPass(x86Program)
-  Compiler.AssignHomesPass(x86Program, homeInfoMap)
-  Compiler.PatchInstructionsPass(x86Program)
-  Compiler.PrologEpilogPass(x86Program, homeInfoMap)
+  const homeInfoMap = X86Backend.AllocateRegistersPass(x86Program)
+  X86Backend.AssignHomesPass(x86Program, homeInfoMap)
+  X86Backend.PatchInstructionsPass(x86Program)
+  X86Backend.PrologEpilogPass(x86Program, homeInfoMap)
 
   X86Bundle(rootPkg, x86Program)
   x86Assemble(rootPkg, x86Program, entryName)

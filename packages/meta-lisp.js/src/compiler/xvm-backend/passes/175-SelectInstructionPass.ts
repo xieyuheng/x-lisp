@@ -1,10 +1,8 @@
-import * as B from "../../basic/index.ts"
-import * as Xvm from "../../xvm/index.ts"
-import { type XvmExplicateReport } from "./170-XvmExplicateControlPass.ts"
+import * as B from "../../../basic/index.ts"
+import * as Xvm from "../../../xvm/index.ts"
+import { type ExplicateReport } from "./170-ExplicateControlPass.ts"
 
-export function XvmSelectInstructionPass(
-  result: XvmExplicateReport,
-): Xvm.Program {
+export function SelectInstructionPass(result: ExplicateReport): Xvm.Program {
   const xvmProgram = Xvm.createProgram()
 
   for (const [name, definition] of result.program.definitions) {

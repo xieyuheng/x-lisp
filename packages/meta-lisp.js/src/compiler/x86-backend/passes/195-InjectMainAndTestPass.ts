@@ -1,4 +1,4 @@
-import * as X86 from "../../x86/index.ts"
+import * as X86 from "../../../x86/index.ts"
 
 // Inject entry wrapper functions so that each executable keeps a single
 // compile-time entry and the loader only runs that fixed entry (ELF-like):

@@ -1,6 +1,6 @@
 import { numberAlign } from "@xieyuheng/std.js/number"
 import assert from "node:assert"
-import * as X86 from "../../x86/index.ts"
+import * as X86 from "../../../x86/index.ts"
 import type { HomeInfo, HomeInfoMap } from "./198-AllocateRegistersPass.ts"
 
 export function PrologEpilogPass(

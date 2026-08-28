@@ -3,27 +3,27 @@ import {
   fileWriteln,
   openOutputFile,
 } from "@xieyuheng/std.js/file"
-import * as B from "../../basic/index.ts"
-import * as Compiler from "../../compiler/index.ts"
-import * as M from "../../meta/index.ts"
-import * as Xvm2 from "../../xvm2/index.ts"
+import * as B from "../../../basic/index.ts"
+import * as M from "../../../meta/index.ts"
+import * as Xvm2 from "../../../xvm2/index.ts"
+import * as Xvm2Backend from "../passes/index.ts"
 
-export function BuildXvm2Pipeline(
+export function BuildPipeline(
   rootPkg: M.Package,
   entryOverride?: string,
 ): void {
   M.CorePipeline(rootPkg)
 
-  const basicProgram = Compiler.Xvm2ExplicateControlPass(rootPkg)
+  const basicProgram = Xvm2Backend.ExplicateControlPass(rootPkg)
   B.CopyPropagationPass(basicProgram)
   BasicBundle(rootPkg, basicProgram)
 
-  const program = Compiler.Xvm2SelectInstructionPass(basicProgram)
+  const program = Xvm2Backend.SelectInstructionPass(basicProgram)
 
   const entryName =
     entryOverride ??
     (rootPkg.config.entry ? `${rootPkg.id}/${rootPkg.config.entry}` : undefined)
-  Compiler.Xvm2InjectMainAndTestPass(program, entryName)
+  Xvm2Backend.InjectMainAndTestPass(program, entryName)
 
   Xvm2Bundle(rootPkg, program)
 }

@@ -1,121 +1,182 @@
 import * as S from "@xieyuheng/sexp.js"
 import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
 import { setUnion } from "@xieyuheng/std.js/set"
-import * as B from "../../basic/index.ts"
-import * as C from "../../core/index.ts"
-import * as M from "../../meta/index.ts"
+import * as B from "../../../basic/index.ts"
+import * as C from "../../../core/index.ts"
+import * as M from "../../../meta/index.ts"
 
-export type XvmExplicateReport = {
-  program: B.Program
-  testNames: Set<string>
-  variableNames: Set<string>
-  primitiveFunctions: Map<string, number>
-  primitiveVariables: Set<string>
-}
-
-export function XvmExplicateControlPass(pkg: M.Package): XvmExplicateReport {
+export function ExplicateControlPass(pkg: M.Package): B.Program {
   const basicProgram = B.createProgram()
-  const testNames = new Set<string>()
-  const variableNames = new Set<string>()
-  const primitiveFunctions = new Map<string, number>()
-  const primitiveVariables = new Set<string>()
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.coreMods.values()) {
       for (const definition of mod.definitions.values()) {
-        switch (definition.kind) {
-          case "PrimitiveFunctionDeclaration": {
-            primitiveFunctions.set(
-              definitionQualifiedName(definition),
-              definition.arity,
-            )
-            break
-          }
-
-          case "PrimitiveVariableDeclaration": {
-            primitiveVariables.add(definitionQualifiedName(definition))
-            break
-          }
-
-          case "FunctionDefinition": {
-            const usedNames = setUnion(
-              C.termOccurredNames(definition.body),
-              new Set(definition.parameters),
-            )
-            const state = createState(definition.mod.pkg, usedNames)
-            const block = B.Block("body", [])
-            addBlock(state, block)
-
-            const argumentInstrs = definition.parameters.map((name, i) =>
-              B.Instr("argument", [B.Cell(name)], [], {
-                index: B.IntAttribute(BigInt(i)),
-              }),
-            )
-            block.instrs = [
-              ...argumentInstrs,
-              ...explicateInTail(state, definition.body),
-            ]
-
-            basicProgram.definitions.set(
-              definitionQualifiedName(definition),
-              B.FunctionDefinition(
-                definitionQualifiedName(definition),
-                definition.parameters,
-                state.blocks,
-              ),
-            )
-            break
-          }
-
-          case "TestDefinition": {
-            const qname = definitionQualifiedName(definition)
-            testNames.add(qname)
-
-            const usedNames = C.termOccurredNames(definition.body)
-            const state = createState(definition.mod.pkg, usedNames)
-            const block = B.Block("body", [])
-            addBlock(state, block)
-            block.instrs = explicateInTail(state, definition.body)
-
-            basicProgram.definitions.set(
-              qname,
-              B.FunctionDefinition(qname, [], state.blocks),
-            )
-            break
-          }
-
-          case "VariableDefinition": {
-            const qname = definitionQualifiedName(definition)
-            variableNames.add(qname)
-
-            const usedNames = C.termOccurredNames(definition.body)
-            const state = createState(definition.mod.pkg, usedNames)
-            const block = B.Block("body", [])
-            addBlock(state, block)
-            block.instrs = explicateInTail(state, definition.body)
-
-            basicProgram.definitions.set(
-              qname,
-              B.FunctionDefinition(qname, [], state.blocks),
-            )
-            break
-          }
+        for (const basicDefinition of explicateDefinition(definition)) {
+          basicProgram.definitions.set(basicDefinition.name, basicDefinition)
         }
       }
     }
   }
 
-  return {
-    program: basicProgram,
-    testNames,
-    variableNames,
-    primitiveFunctions,
-    primitiveVariables,
+  const variableNames: Array<string> = []
+  const testNames: Array<string> = []
+
+  for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
+    for (const mod of orderedPkg.coreMods.values()) {
+      for (const definition of mod.definitions.values()) {
+        if (definition.kind === "VariableDefinition") {
+          variableNames.push(definitionQualifiedName(definition))
+        }
+
+        if (definition.kind === "TestDefinition") {
+          testNames.push(definitionQualifiedName(definition))
+        }
+      }
+    }
   }
+
+  const setupDefinition = generateSetupVariables(pkg, variableNames)
+  basicProgram.definitions.set(setupDefinition.name, setupDefinition)
+
+  const runTestsDefinition = generateRunTests(pkg, testNames)
+  basicProgram.definitions.set(runTestsDefinition.name, runTestsDefinition)
+
+  return basicProgram
 }
 
 function definitionQualifiedName(definition: C.Definition): string {
   return `${definition.mod.pkg.id}/${definition.mod.name}/${definition.name}`
+}
+
+function explicateDefinition(definition: C.Definition): Array<B.Definition> {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration": {
+      return [B.ExternFunctionDefinition(definitionQualifiedName(definition))]
+    }
+
+    case "PrimitiveVariableDeclaration": {
+      return [B.ExternVariableDefinition(definitionQualifiedName(definition))]
+    }
+
+    case "FunctionDefinition": {
+      const usedNames = setUnion(
+        C.termOccurredNames(definition.body),
+        new Set(definition.parameters),
+      )
+      const state = createState(definition.mod.pkg, usedNames)
+      const block = B.Block("body", [])
+      addBlock(state, block)
+
+      const argumentInstrs = definition.parameters.map((name, i) =>
+        B.Instr("argument", [B.Cell(name)], [], {
+          index: B.IntAttribute(BigInt(i)),
+        }),
+      )
+      block.instrs = [
+        ...argumentInstrs,
+        ...explicateInTail(state, definition.body),
+      ]
+
+      return [
+        B.FunctionDefinition(
+          definitionQualifiedName(definition),
+          definition.parameters,
+          state.blocks,
+        ),
+      ]
+    }
+
+    case "TestDefinition": {
+      const usedNames = C.termOccurredNames(definition.body)
+      const state = createState(definition.mod.pkg, usedNames)
+      const block = B.Block("body", [])
+      addBlock(state, block)
+      block.instrs = explicateInTail(state, definition.body)
+
+      return [
+        B.FunctionDefinition(
+          definitionQualifiedName(definition),
+          [],
+          state.blocks,
+        ),
+      ]
+    }
+
+    case "VariableDefinition": {
+      const usedNames = C.termOccurredNames(definition.body)
+      const state = createState(definition.mod.pkg, usedNames)
+      const block = B.Block("body", [])
+      addBlock(state, block)
+      block.instrs = explicateInTail(state, definition.body)
+
+      const qualifiedName = definitionQualifiedName(definition)
+      return [
+        B.VariableDefinition(qualifiedName, null),
+        B.FunctionDefinition(`©setup.${qualifiedName}`, [], state.blocks),
+      ]
+    }
+  }
+}
+
+function generateSetupVariables(
+  pkg: M.Package,
+  variableNames: Array<string>,
+): B.FunctionDefinition {
+  const state = createState(pkg, new Set())
+  const block = B.Block("body", [])
+  addBlock(state, block)
+
+  const instrs: Array<B.Instr> = []
+
+  for (const qualifiedName of variableNames) {
+    const setupAddress = generateCell(state, "setup")
+    const result = generateCell(state, "result")
+    const variableAddress = generateCell(state, "variable")
+
+    instrs.push(
+      B.Instr("address", [setupAddress], [], {
+        name: B.SymbolAttribute(`©setup.${qualifiedName}`),
+      }),
+      B.Instr("call", [result], [setupAddress], {}),
+      B.Instr("address", [variableAddress], [], {
+        name: B.SymbolAttribute(qualifiedName),
+      }),
+      B.Instr("store", [], [variableAddress, result], {}),
+    )
+  }
+
+  instrs.push(B.Instr("return", [], [], {}))
+  block.instrs = instrs
+
+  return B.FunctionDefinition("©setup-variables", [], state.blocks)
+}
+
+function generateRunTests(
+  pkg: M.Package,
+  testNames: Array<string>,
+): B.FunctionDefinition {
+  const state = createState(pkg, new Set())
+  const block = B.Block("body", [])
+  addBlock(state, block)
+
+  const instrs: Array<B.Instr> = []
+
+  for (const qualifiedName of testNames) {
+    const test = generateCell(state, "test")
+    const result = generateCell(state, "result")
+
+    instrs.push(
+      B.Instr("address", [test], [], {
+        name: B.SymbolAttribute(qualifiedName),
+      }),
+      B.Instr("call", [result], [test], {}),
+    )
+  }
+
+  instrs.push(B.Instr("return", [], [], {}))
+  block.instrs = instrs
+
+  return B.FunctionDefinition("©run-tests", [], state.blocks)
 }
 
 type State = {
@@ -164,7 +225,7 @@ function explicateUnnestedTerm(
     case "SymbolTerm": {
       const value = generateCell(state, "symbol")
       const instrs = [
-        B.Instr("symbol", [value], [], {
+        B.Instr("symbol-value", [value], [], {
           content: B.SymbolAttribute(term.content),
         }),
       ]
@@ -172,9 +233,9 @@ function explicateUnnestedTerm(
     }
 
     case "StringTerm": {
-      const value = generateCell(state, "text")
+      const value = generateCell(state, "string")
       const instrs = [
-        B.Instr("text", [value], [], {
+        B.Instr("text-value", [value], [], {
           content: B.StringAttribute(term.content),
         }),
       ]
@@ -182,21 +243,25 @@ function explicateUnnestedTerm(
     }
 
     case "IntTerm": {
+      const i64 = generateCell(state, "i64")
       const value = generateCell(state, "int")
       const instrs = [
-        B.Instr("int", [value], [], {
+        B.Instr("int64", [i64], [], {
           content: B.IntAttribute(term.content),
         }),
+        B.Instr("tag-int", [value], [i64], {}),
       ]
       return [instrs, value]
     }
 
     case "FloatTerm": {
+      const f64 = generateCell(state, "f64")
       const value = generateCell(state, "float")
       const instrs = [
-        B.Instr("float", [value], [], {
+        B.Instr("float64", [f64], [], {
           content: B.FloatAttribute(term.content),
         }),
+        B.Instr("tag-float", [value], [f64], {}),
       ]
       return [instrs, value]
     }
@@ -219,29 +284,26 @@ function explicateUnnestedTerm(
         throw new S.ErrorWithSourceLocation(message, term.location)
       }
 
-      const prefix = resolvePackageId(state.pkg, term.pkgName)
-      const qualifiedName = `${prefix}/${term.modName}/${term.name}`
-
       if (
         definition.kind === "PrimitiveVariableDeclaration" ||
         definition.kind === "VariableDefinition"
       ) {
-        const value = generateCell(state, "value")
+        const prefix = resolvePackageId(state.pkg, term.pkgName)
+        const address = generateCell(state, "address")
+        const value = generateCell(state, "const")
         const instrs = [
-          B.Instr("global-load", [value], [], {
-            name: B.SymbolAttribute(qualifiedName),
+          B.Instr("address", [address], [], {
+            name: B.SymbolAttribute(`${prefix}/${term.modName}/${term.name}`),
+          }),
+          B.Instr("load", [value], [address], {
+            type: B.TypeAttribute(B.ValueType()),
           }),
         ]
         return [instrs, value]
       }
 
-      const value = generateCell(state, "ref")
-      const instrs = [
-        B.Instr("ref", [value], [], {
-          name: B.SymbolAttribute(qualifiedName),
-        }),
-      ]
-      return [instrs, value]
+      let message = `[explicateUnnestedTerm] unhandled definition`
+      throw new Error(message)
     }
 
     case "ClosureTerm": {
@@ -252,34 +314,48 @@ function explicateUnnestedTerm(
       const pairs = freeVarTerms.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, freeVarCells] = arrayUnzip(pairs)
 
-      const funcRef = generateCell(state, "func-ref")
-      const size = generateCell(state, "size")
+      const functionAddress = generateCell(state, "function-address")
+      const size = generateCell(state, "closure-size")
+      const makeClosureAddress = generateCell(state, "make-closure-address")
       const closure = generateCell(state, "closure")
 
       const instrs = [
         ...arrayConcat(argInstrGroups),
-        B.Instr("ref", [funcRef], [], {
+        B.Instr("address", [functionAddress], [], {
           name: B.SymbolAttribute(qualifiedFuncName),
         }),
-        B.Instr("int", [size], [], {
+        B.Instr("int64", [size], [], {
           content: B.IntAttribute(BigInt(freeVarCells.length)),
         }),
-        B.Instr("call", [closure], [funcRef, size], {
+        B.Instr("address", [makeClosureAddress], [], {
           name: B.SymbolAttribute("meta-builtin/builtin/make-closure"),
         }),
+        B.Instr(
+          "call",
+          [closure],
+          [makeClosureAddress, functionAddress, size],
+          {},
+        ),
       ]
 
       let current = closure
       for (let i = 0; i < freeVarCells.length; i++) {
+        const putArgAddress = generateCell(state, "put-arg-address")
         const index = generateCell(state, "index")
         const next = generateCell(state, "closure")
         instrs.push(
-          B.Instr("int", [index], [], {
-            content: B.IntAttribute(BigInt(i)),
-          }),
-          B.Instr("call", [next], [index, freeVarCells[i], current], {
+          B.Instr("address", [putArgAddress], [], {
             name: B.SymbolAttribute("meta-builtin/builtin/closure-put-arg"),
           }),
+          B.Instr("int64", [index], [], {
+            content: B.IntAttribute(BigInt(i)),
+          }),
+          B.Instr(
+            "call",
+            [next],
+            [putArgAddress, index, freeVarCells[i], current],
+            {},
+          ),
         )
         current = next
       }
@@ -290,36 +366,34 @@ function explicateUnnestedTerm(
     case "ApplyTerm": {
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
-      const direct = tryResolveDirectCall(state, term.target)
+      const direct = tryResolveDirectCall(state, term.target, term.args.length)
       if (direct) {
-        const op = INT_ARITH_OPS[direct.qualifiedName]
-        if (op) {
-          const value = generateCell(state, "value")
-          const instrs = [
-            ...arrayConcat(argInstrGroups),
-            B.Instr(op, [value], args, {}),
-          ]
-          return [instrs, value]
-        }
-
+        const address = generateCell(state, "address")
         const value = generateCell(state, "value")
         const instrs = [
-          ...arrayConcat(argInstrGroups),
-          B.Instr("call", [value], args, {
+          B.Instr("address", [address], [], {
             name: B.SymbolAttribute(direct.qualifiedName),
           }),
+          ...arrayConcat(argInstrGroups),
+          B.Instr("call", [value], [address, ...args], {}),
+        ]
+        return [instrs, value]
+      } else {
+        const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+        const fnGetter = generateCell(state, "fn-getter")
+        const fn = generateCell(state, "fn")
+        const value = generateCell(state, "value")
+        const instrs = [
+          ...targetInstrs,
+          B.Instr("address", [fnGetter], [], {
+            name: B.SymbolAttribute("meta-builtin/builtin/closure-fn"),
+          }),
+          B.Instr("call", [fn], [fnGetter, target], {}),
+          ...arrayConcat(argInstrGroups),
+          B.Instr("call", [value], [fn, target, ...args], {}),
         ]
         return [instrs, value]
       }
-
-      const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
-      const value = generateCell(state, "value")
-      const instrs = [
-        ...targetInstrs,
-        ...arrayConcat(argInstrGroups),
-        B.Instr("apply", [value], [target, ...args], {}),
-      ]
-      return [instrs, value]
     }
 
     default: {
@@ -339,38 +413,10 @@ function resolvePackageId(pkg: M.Package, pkgName: string): string {
   return dep.id
 }
 
-const INT_ARITH_OPS: Record<string, string> = {
-  "meta-builtin/builtin/iadd": "iadd",
-  "meta-builtin/builtin/isub": "isub",
-  "meta-builtin/builtin/imul": "imul",
-  "meta-builtin/builtin/idiv": "idiv",
-  "meta-builtin/builtin/imod": "imod",
-  "meta-builtin/builtin/ineg": "ineg",
-  "meta-builtin/builtin/int-greater": "int-greater",
-  "meta-builtin/builtin/int-less": "int-less",
-  "meta-builtin/builtin/int-greater-or-equal": "int-greater-or-equal",
-  "meta-builtin/builtin/int-less-or-equal": "int-less-or-equal",
-  "meta-builtin/builtin/int-is-positive": "int-is-positive",
-  "meta-builtin/builtin/int-is-non-negative": "int-is-non-negative",
-  "meta-builtin/builtin/int-is-non-zero": "int-is-non-zero",
-  "meta-builtin/内置/整数加": "iadd",
-  "meta-builtin/内置/整数减": "isub",
-  "meta-builtin/内置/整数乘": "imul",
-  "meta-builtin/内置/整数除": "idiv",
-  "meta-builtin/内置/整数模": "imod",
-  "meta-builtin/内置/整数负": "ineg",
-  "meta-builtin/内置/整数大于": "int-greater",
-  "meta-builtin/内置/整数小于": "int-less",
-  "meta-builtin/内置/整数大于等于": "int-greater-or-equal",
-  "meta-builtin/内置/整数小于等于": "int-less-or-equal",
-  "meta-builtin/内置/整数为正": "int-is-positive",
-  "meta-builtin/内置/整数为非负": "int-is-non-negative",
-  "meta-builtin/内置/整数为非零": "int-is-non-zero",
-}
-
 function tryResolveDirectCall(
   state: State,
   target: C.Term,
+  argCount: number,
 ): { qualifiedName: string } | undefined {
   if (target.kind !== "QualifiedVarTerm") return undefined
 
@@ -389,9 +435,10 @@ function tryResolveDirectCall(
   }
 
   if (
-    definition.kind === "PrimitiveFunctionDeclaration" ||
-    definition.kind === "FunctionDefinition" ||
-    definition.kind === "TestDefinition"
+    (definition.kind === "PrimitiveFunctionDeclaration" ||
+      definition.kind === "FunctionDefinition" ||
+      definition.kind === "TestDefinition") &&
+    C.definitionArity(definition) === argCount
   ) {
     const prefix = resolvePackageId(state.pkg, target.pkgName)
     return {
@@ -438,22 +485,30 @@ function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
     case "ApplyTerm": {
       const pairs = term.args.map((arg) => explicateUnnestedTerm(state, arg))
       const [argInstrGroups, args] = arrayUnzip(pairs)
-      const direct = tryResolveDirectCall(state, term.target)
+      const direct = tryResolveDirectCall(state, term.target, term.args.length)
       if (direct) {
+        const address = generateCell(state, "address")
         return [
-          ...arrayConcat(argInstrGroups),
-          B.Instr("tail-call", [], args, {
+          B.Instr("address", [address], [], {
             name: B.SymbolAttribute(direct.qualifiedName),
           }),
+          ...arrayConcat(argInstrGroups),
+          B.Instr("tail-call", [], [address, ...args], {}),
+        ]
+      } else {
+        const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
+        const fnGetter = generateCell(state, "fn-getter")
+        const fn = generateCell(state, "fn")
+        return [
+          ...targetInstrs,
+          B.Instr("address", [fnGetter], [], {
+            name: B.SymbolAttribute("meta-builtin/builtin/closure-fn"),
+          }),
+          B.Instr("call", [fn], [fnGetter, target], {}),
+          ...arrayConcat(argInstrGroups),
+          B.Instr("tail-call", [], [fn, target, ...args], {}),
         ]
       }
-
-      const [targetInstrs, target] = explicateUnnestedTerm(state, term.target)
-      return [
-        ...targetInstrs,
-        ...arrayConcat(argInstrGroups),
-        B.Instr("tail-apply", [], [target, ...args], {}),
-      ]
     }
 
     default: {
@@ -500,23 +555,23 @@ function explicateInLet1(
           explicateInLet1(state, name, rhs.consequent, [gotoBody]),
           explicateInLet1(state, name, rhs.alternative, [gotoBody]),
         )
+      } else {
+        state.useSites.add(name)
+        const gotoBody = B.Instr("goto", [], [], {
+          label: B.SymbolAttribute(
+            generateLabel(state, "let-body", [
+              B.Instr("use", [B.Cell(name)], [], {}),
+              ...restInstrs,
+            ]),
+          ),
+        })
+        return explicateInIf(
+          state,
+          rhs.condition,
+          explicateInLet1(state, name, rhs.consequent, [gotoBody]),
+          explicateInLet1(state, name, rhs.alternative, [gotoBody]),
+        )
       }
-
-      state.useSites.add(name)
-      const gotoBody = B.Instr("goto", [], [], {
-        label: B.SymbolAttribute(
-          generateLabel(state, "let-body", [
-            B.Instr("use", [B.Cell(name)], [], {}),
-            ...restInstrs,
-          ]),
-        ),
-      })
-      return explicateInIf(
-        state,
-        rhs.condition,
-        explicateInLet1(state, name, rhs.consequent, [gotoBody]),
-        explicateInLet1(state, name, rhs.alternative, [gotoBody]),
-      )
     }
 
     default: {
@@ -529,13 +584,13 @@ function explicateInLet1(
           }),
           ...restInstrs,
         ]
+      } else {
+        return [
+          ...rhsInstrs,
+          B.Instr("copy", [B.Cell(name)], [rhsCell], {}),
+          ...restInstrs,
+        ]
       }
-
-      return [
-        ...rhsInstrs,
-        B.Instr("copy", [B.Cell(name)], [rhsCell], {}),
-        ...restInstrs,
-      ]
     }
   }
 }
@@ -578,7 +633,7 @@ function explicateInBegin1(
     }
 
     default: {
-      const [headInstrs] = explicateUnnestedTerm(state, head)
+      const [headInstrs, headCell] = explicateUnnestedTerm(state, head)
       return [...headInstrs, ...restInstrs]
     }
   }
@@ -635,8 +690,10 @@ function explicateInIf(
   switch (condition.kind) {
     case "VarTerm": {
       const conditionCell = B.Cell(condition.name)
+      const bool = generateCell(state, "bool")
       return [
-        B.Instr("branch", [], [conditionCell], {
+        B.Instr("to-bool", [bool], [conditionCell], {}),
+        B.Instr("branch", [], [bool], {
           "then-label": B.SymbolAttribute(
             generateLabel(state, "then", thenInstrs),
           ),
@@ -652,9 +709,11 @@ function explicateInIf(
         state,
         condition,
       )
+      const bool = generateCell(state, "bool")
       return [
         ...conditionInstrs,
-        B.Instr("branch", [], [conditionCell], {
+        B.Instr("to-bool", [bool], [conditionCell], {}),
+        B.Instr("branch", [], [bool], {
           "then-label": B.SymbolAttribute(
             generateLabel(state, "then", thenInstrs),
           ),

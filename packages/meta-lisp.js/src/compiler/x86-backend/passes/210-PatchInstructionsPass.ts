@@ -1,5 +1,5 @@
 import { arrayGet } from "@xieyuheng/std.js/array"
-import * as X86 from "../../x86/index.ts"
+import * as X86 from "../../../x86/index.ts"
 
 export function PatchInstructionsPass(program: X86.Program): void {
   for (const definition of program.definitions.values()) {

@@ -1,5 +1,5 @@
 import { setUnionMany } from "@xieyuheng/std.js/set"
-import * as X86 from "../../x86/index.ts"
+import * as X86 from "../../../x86/index.ts"
 
 export type HomeInfo = {
   locations: Map<string, X86.Operand>
