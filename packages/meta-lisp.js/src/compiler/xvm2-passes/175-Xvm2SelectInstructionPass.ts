@@ -131,7 +131,9 @@ function codegenInstr(mod: B.Mod, instr: B.Instr): Array<X2.Instr> {
       const name = B.expectSymbol(instr.attributes, "name")
       const args = instr.input.map((cell) => X2.VarOperand(cell.id))
       const isPrim = isPrimitiveFunction(mod, name)
-      const op = `call-${args.length}`
+      const op = isPrim
+        ? `call-prim-${args.length}`
+        : `call-${args.length}`
       const result: Array<X2.Instr> = [
         X2.Instr(op, [
           isPrim ? X2.PrimOperand(name) : X2.FnOperand(name),
@@ -149,7 +151,9 @@ function codegenInstr(mod: B.Mod, instr: B.Instr): Array<X2.Instr> {
       const name = B.expectSymbol(instr.attributes, "name")
       const args = instr.input.map((cell) => X2.VarOperand(cell.id))
       const isPrim = isPrimitiveFunction(mod, name)
-      const op = `tail-call-${args.length}`
+      const op = isPrim
+        ? `tail-call-prim-${args.length}`
+        : `tail-call-${args.length}`
       return [
         X2.Instr(op, [
           isPrim ? X2.PrimOperand(name) : X2.FnOperand(name),
