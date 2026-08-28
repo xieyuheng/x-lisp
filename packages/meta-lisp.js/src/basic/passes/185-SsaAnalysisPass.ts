@@ -1,19 +1,13 @@
-import fs from "node:fs"
-import Path from "node:path"
 import * as B from "../../basic/index.ts"
-import * as M from "../../meta/index.ts"
 
 export type SsaAnalysisReport = {
   ssaGraphs: Map<string, B.SsaGraph>
 }
 
-export function SsaAnalysisPass(
-  pkg: M.Package,
-  basicProgram: B.Program,
-): SsaAnalysisReport {
+export function SsaAnalysisPass(program: B.Program): SsaAnalysisReport {
   const ssaGraphs = new Map<string, B.SsaGraph>()
 
-  for (const definition of basicProgram.definitions.values()) {
+  for (const definition of program.definitions.values()) {
     if (definition.kind === "FunctionDefinition") {
       const blocks = Array.from(definition.blocks.values())
       const graph = B.buildSsaGraph(blocks)
@@ -21,27 +15,10 @@ export function SsaAnalysisPass(
     }
   }
 
-  const report: SsaAnalysisReport = { ssaGraphs }
-
-  if (pkg.config.compiler.dump) {
-    dumpSsaAnalysisReport(report, pkg)
-  }
-
-  return report
+  return { ssaGraphs }
 }
 
-function dumpSsaAnalysisReport(
-  report: SsaAnalysisReport,
-  pkg: M.Package,
-): void {
-  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
-  fs.mkdirSync(dir, { recursive: true })
-  const file = Path.join(dir, "175-ssa-analysis-report.huge.dump")
-  const content = formatSsaAnalysisReport(report)
-  fs.writeFileSync(file, content + "\n", "utf-8")
-}
-
-function formatSsaAnalysisReport(report: SsaAnalysisReport): string {
+export function formatSsaAnalysisReport(report: SsaAnalysisReport): string {
   const lines: Array<string> = []
   lines.push("(ssa-analysis-report")
 

@@ -4,6 +4,7 @@ import {
   openOutputFile,
 } from "@xieyuheng/std.js/file"
 import * as fs from "node:fs"
+import Path from "node:path"
 import * as B from "../../../basic/index.ts"
 import * as M from "../../../meta/index.ts"
 import * as X86 from "../../../x86/index.ts"
@@ -19,7 +20,11 @@ export function BuildPipeline(
   B.CopyPropagationPass(basicProgram)
   BasicBundle(rootPkg, basicProgram)
 
-  const ssaReport = B.SsaAnalysisPass(rootPkg, basicProgram)
+  const ssaReport = B.SsaAnalysisPass(basicProgram)
+
+  if (rootPkg.config.compiler.dump) {
+    dumpSsaAnalysisReport(ssaReport, rootPkg)
+  }
 
   const x86Program = X86Backend.SelectInstructionPass(
     rootPkg,
@@ -39,6 +44,17 @@ export function BuildPipeline(
 
   X86Bundle(rootPkg, x86Program)
   x86Assemble(rootPkg, x86Program, entryName)
+}
+
+function dumpSsaAnalysisReport(
+  report: B.SsaAnalysisReport,
+  pkg: M.Package,
+): void {
+  const dir = Path.join(M.packageOutputDirectory(pkg), "dump")
+  fs.mkdirSync(dir, { recursive: true })
+  const file = Path.join(dir, "175-ssa-analysis-report.huge.dump")
+  const content = B.formatSsaAnalysisReport(report)
+  fs.writeFileSync(file, content + "\n", "utf-8")
 }
 
 function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
