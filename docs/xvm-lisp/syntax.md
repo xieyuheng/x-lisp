@@ -59,7 +59,7 @@ xvm-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ```scheme
 ;; 这是一条注释
-(load x 42)  ;; 行尾注释
+(load-int x 42)  ;; 行尾注释
 ```
 
 # 指令
@@ -89,11 +89,11 @@ xvm-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ```scheme
 (define-function (factorial n)
-  (load one 1)
+  (load-int one 1)
   (int-less-or-equal base n one)
   (branch base (label base-case) (label recur-case))
   base-case
-  (load result 1)
+  (load-int result 1)
   (return result)
   recur-case
   (isub m n one)
@@ -109,7 +109,7 @@ xvm-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 - 指令内部 operand 位置的裸符号是 **局部变量**。
   两者位置不同，语法上完全区分。
 
-比较指令的两个输入都是槽 —— 比较字面量时需要先用 `load` 把字面量载入槽。
+比较指令的两个输入都是槽 —— 比较字面量时需要先用 `load-int` / `load-float` 等把字面量载入槽。
 
 # 顶层定义
 
@@ -192,7 +192,7 @@ xvm-lisp 使用类似 x86-lisp 的 setup 机制：**变量没有初始化 body�
 编译器生成的聚合函数（无变量时为空函数）：
 
 1. 对每个变量 `x`，依次调用其初始化函数 `©setup.x`；
-2. 将返回值 `global-store` 写入全局变量 `x`。
+2. 将返回值 `store-global` 写入全局变量 `x`。
 
 变量初值来源：
 
@@ -213,10 +213,10 @@ xvm-lisp 使用类似 x86-lisp 的 setup 机制：**变量没有初始化 body�
 
 ```scheme
 (define-function (factorial-test)
-  (load n 5)
+  (load-int n 5)
   (call-1 (fn factorial) n)
   (load-result result)
-  (load expected 120)
+  (load-int expected 120)
   (call-2 (prim meta-builtin/builtin/assert-equal) result expected)
   (return-void))
 ```
@@ -275,7 +275,7 @@ value
 函数定义引用。用于：
 
 - `call-n` / `tail-call-n` 的目标 —— 静态函数调用；
-- `load` 的 `<value>` —— 把函数作为一等公民值载入槽。
+- `load-closure` / `make-closure` 的目标 —— 把函数作为 closure 的来源。
 
 ```scheme
 (fn square)
@@ -291,7 +291,7 @@ value
 primitive 函数引用。用于：
 
 - `call-prim-n` / `tail-call-prim-n` 的目标 —— 静态 primitive 调用；
-- `load` 的 `<value>` —— 把 primitive 作为一等公民值载入槽。
+- `load-closure` / `make-closure` 的目标 —— 把 primitive 作为 closure 的来源。
 
 ```scheme
 (prim meta-builtin/builtin/imul)
@@ -303,7 +303,7 @@ primitive 函数引用。用于：
 (global <name>)
 ```
 
-全局变量引用。用于 `global-load` / `global-store`。
+全局变量引用。用于 `load-global` / `store-global`。
 
 ```scheme
 (global *version*)
@@ -327,24 +327,23 @@ primitive 函数引用。用于：
 
 ## 字面量
 
-`load` 的第二个 operand（`<value>`）接受以下字面量：
+不同类型的字面量使用不同的 load 指令：
 
-| 记号        | 语法       | 例子           | 说明      |
-|-------------|------------|----------------|-----------|
-| `<int>`     | 十进制整数 | `42` `-1` `0`  | int 值    |
-| `<float>`   | 浮点数     | `3.14` `-2.5`  | float 值  |
-| `<string>`  | `"..."`    | `"hello"` `""` | text 值   |
-| `'<symbol>` | quote 前缀 | `'foo` `'red`  | symbol 值 |
+| 指令           | 语法                               | 例子                         | 值        |
+|----------------|------------------------------------|------------------------------|-----------|
+| `load-int`     | `(load-int <dest> <int>)`          | `(load-int x 42)`            | int 值    |
+| `load-float`   | `(load-float <dest> <float>)`      | `(load-float x 3.14)`        | float 值  |
+| `load-string`  | `(load-string <dest> "<string>")`  | `(load-string x "hello")`    | string 值 |
+| `load-symbol`  | `(load-symbol <dest> '<symbol>)`   | `(load-symbol x 'foo)`       | symbol 值 |
 
-- 字面量以统一的 `load` 载入，值的类型由 tag 携带，不需要分开的常量指令。
 - symbol 字面量必须带 quote 前缀 `'` —— 裸符号一律是 VarOperand，
   不带引号的 `foo` 会被读作局部变量而非 symbol 值。
 - **没有 bool 字面量** —— meta-lisp 中 `true` / `false` 是 builtin 全局变量
   （`meta-builtin/builtin/true` / `meta-builtin/builtin/false`），
-  通过 `global-load` 获取：
+  通过 `load-global` 获取：
 
   ```scheme
-  (global-load t (global meta-builtin/builtin/true))
+  (load-global t (global meta-builtin/builtin/true))
   ```
 
   bool 值除此以外来自比较指令（如 `int-less`）的输出和 primitive 返回值。

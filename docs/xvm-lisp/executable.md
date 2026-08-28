@@ -132,15 +132,23 @@ loader 根据 `type` 和 `name` 计算出要填入的值，并写入该位置。
 
 Relocation 类型：
 
-| type        | name 的含义      | loader 填入                                        |
-|-------------|------------------|-----------------------------------------------------|
-| `fn`        | 函数名           | function pointer，用于 `call-n` / `tail-call-n` 的 target |
-| `prim`      | primitive 函数名 | primitive function pointer，用于 `call-prim-n` / `tail-call-prim-n` 的 target |
-| `global`    | 全局变量名       | global variable pointer                          |
-| `fn-value`  | 函数名           | function value，用于 `load` 的 value             |
-| `prim-value`| primitive 函数名 | primitive function value，用于 `load` 的 value   |
-| `string`    | 字符串内容       | string value                                     |
-| `symbol`    | symbol 名        | symbol value                                     |
+| type            | name 的含义 | loader 填入                                    |
+|-----------------|-------------|------------------------------------------------|
+| `string-value`  | 字符串内容   | string value，用于 `load-string`               |
+| `symbol-value`  | symbol 名    | symbol value，用于 `load-symbol`               |
+| `fn-pointer`    | 函数名       | function pointer                               |
+| `prim-pointer`  | primitive 名 | primitive function pointer                     |
+| `global-pointer`| 全局变量名   | global variable pointer                        |
+
+`fn-pointer` 用于：
+
+- `call-n` / `tail-call-n` 的 target
+- `load-closure` / `make-closure` 的 fn 来源
+
+`prim-pointer` 用于：
+
+- `call-prim-n` / `tail-call-prim-n` 的 target
+- `load-closure` / `make-closure` 的 primitive 来源
 
 # 指令集编码
 
@@ -155,10 +163,16 @@ Relocation 类型：
 ## opcode 表
 
 | `0x01` | `move`                   | `u16 dest` `u16 src`                                                           |
-| `0x02` | `load`                   | `u16 dest` `u64 value`                                                         |
-| `0x03` | `load-result`            | `u16 dest`                                                                     |
-| `0x04` | `load-global`            | `u16 dest` `u64 target`                                                        |
-| `0x05` | `store-global`           | `u64 target` `u16 src`                                                         |
+| `0x02` | `load-int`              | `u16 dest` `i64 value`                                                         |
+| `0x03` | `load-float`            | `u16 dest` `f64 value`                                                         |
+| `0x04` | `load-string`           | `u16 dest` `u64 value`                                                         |
+| `0x05` | `load-symbol`           | `u16 dest` `u64 value`                                                         |
+| `0x06` | `load-closure`          | `u16 dest` `u64 target`                                                        |
+| `0x07` | `make-closure`          | `u16 dest` `u64 target` `u8 size`                                              |
+| `0x08` | `store-closure-arg`     | `u16 closure` `u8 index` `u16 value`                                           |
+| `0x09` | `load-result`           | `u16 dest`                                                                     |
+| `0x0a` | `load-global`           | `u16 dest` `u64 target`                                                        |
+| `0x0b` | `store-global`          | `u64 target` `u16 src`                                                         |
 | `0x10` | `call-0`                 | `u64 target`                                                                   |
 | `0x11` | `call-1`                 | `u64 target` `u16 arg0`                                                        |
 | `0x12` | `call-2`                 | `u64 target` `u16 arg0` `u16 arg1`                                             |
@@ -231,22 +245,76 @@ Relocation 类型：
 | `0x7d` | `float-is-non-negative`  | `u16 dest` `u16 src`                                                           |
 | `0x7e` | `float-is-non-zero`      | `u16 dest` `u16 src`                                                           |
 
-## `load`
+## `load-int`
 
-`load` 装载一个 value 到槽：
+```text
+u16 dest
+i64 value
+```
+
+`value` 是立即数，不产生 relocation。
+
+## `load-float`
+
+```text
+u16 dest
+f64 value
+```
+
+`value` 是立即数，不产生 relocation。
+
+## `load-string`
 
 ```text
 u16 dest
 u64 value
 ```
 
-- `value` 是 8 字节的 value 槽。
-- int / float 由汇编器直接写入对应的 value。
-- string / symbol / fn / prim 通过 relocation 填入：
-  - `type = string`
-  - `type = symbol`
-  - `type = fn-value`
-  - `type = prim-value`
+`value` 产生 `type = string-value` 的 relocation。
+
+## `load-symbol`
+
+```text
+u16 dest
+u64 value
+```
+
+`value` 产生 `type = symbol-value` 的 relocation。
+
+## `load-closure`
+
+```text
+u16 dest
+u64 target
+```
+
+`target` 产生 `type = fn-pointer` 或 `type = prim-pointer` 的 relocation。
+loader 直接构造无环境 closure。
+
+## `make-closure`
+
+```text
+u16 dest
+u64 target
+u8  size
+```
+
+- `target` 产生 `type = fn-pointer` 或 `type = prim-pointer` 的 relocation。
+- `size` 是环境槽数。
+- `make-closure` 只分配 closure，不填充环境；环境由 `store-closure-arg` 填充。
+
+## `store-closure-arg`
+
+```text
+u16 closure
+u8  index
+u16 value
+```
+
+- `closure` 是 closure 所在槽。
+- `index` 是环境槽下标。
+- `value` 是要写入环境的值。
+- 通过多次 `store-closure-arg` 填充环境，不引入可变操作数。
 
 ## `call-n` / `call-prim-n`
 
@@ -259,8 +327,8 @@ u16 arg0
 u16 arg{n-1}
 ```
 
-- `call-n` 的 `target` 是函数名，产生 `type = fn` 的 relocation。
-- `call-prim-n` 的 `target` 是 primitive 函数名，产生 `type = prim` 的 relocation。
+- `call-n` 的 `target` 是函数名，产生 `type = fn-pointer` 的 relocation。
+- `call-prim-n` 的 `target` 是 primitive 函数名，产生 `type = prim-pointer` 的 relocation。
 - 参数个数 `n` 由 opcode 决定。
 
 ## `tail-call-n` / `tail-call-prim-n`
@@ -272,8 +340,8 @@ u16 arg0
 u16 arg{n-1}
 ```
 
-- `tail-call-n` 的 `target` 产生 `type = fn`。
-- `tail-call-prim-n` 的 `target` 产生 `type = prim`。
+- `tail-call-n` 的 `target` 产生 `type = fn-pointer`。
+- `tail-call-prim-n` 的 `target` 产生 `type = prim-pointer`。
 - 参数个数 `n` 由 opcode 决定。
 
 ## `apply-n` / `tail-apply-n`
@@ -286,6 +354,7 @@ u16 arg{n-1}
 ```
 
 `target` 是局部槽号，不产生 relocation。
+`target` 必须是 closure，运行时不再分派 fn / prim / closure。
 参数个数 `n` 由 opcode 决定。
 
 ## `branch`
@@ -309,9 +378,21 @@ i32 else
 5. 根据 relocation entry：
    - 找到 `dest-name` 对应的 function。
    - 在其 `code` 的 `dest-offset` 处写入：
-     - 对 `fn` / `prim` / `global`：对应的 function pointer / primitive function pointer / global variable pointer。
-     - 对 `fn-value` / `prim-value` / `string` / `symbol`：对应的 function value / primitive function value / string value / symbol value。
+     - 对 `fn-pointer` / `prim-pointer` / `global-pointer`：对应的 function pointer / primitive function pointer / global variable pointer。
+     - 对 `string-value` / `symbol-value`：对应的 string value / symbol value。
+     - `load-closure` / `make-closure` 通过 `fn-pointer` / `prim-pointer` 构造 closure value。
 6. 找到 default entry，设置程序入口。
+
+# 设计不变量
+
+- 所有指令的操作数个数固定。
+- `apply-n` / `tail-apply-n` 的 target 必须是 closure。
+- fn / prim 不作为可动态 apply 的值存在；只作为静态引用：
+  - `fn-pointer` 用于 `call-n` / `tail-call-n` / `load-closure` / `make-closure`
+  - `prim-pointer` 用于 `call-prim-n` / `tail-call-prim-n` / `load-closure` / `make-closure`
+- 无环境 closure 用 `load-closure` 构造，可优化为 relocation。
+- 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
+- `make-closure` 不接受可变数量 env 参数，环境通过 `store-closure-arg` 逐个填充。
 
 # 示例
 
@@ -319,7 +400,7 @@ i32 else
 
 ```scheme
 (define-function (main)
-  (load x 1)
+  (load-int x 1)
   (return x))
 ```
 
@@ -330,6 +411,6 @@ i32 else
   - `name = "main"`
   - `arity = 0`
   - `local_count = 1`
-  - code 包含 `load` 和 `return`
+  - code 包含 `load-int` 和 `return`
 - default entry：`"main"`
 - relocation：本例没有外部引用，所以没有 relocation entry。

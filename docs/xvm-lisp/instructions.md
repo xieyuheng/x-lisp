@@ -30,23 +30,39 @@ title: 指令参考
 
 | 指令          | 语法                      | 操作数约束                    | 描述                                   |
 |---------------|---------------------------|-------------------------------|----------------------------------------|
-| `load`        | `(load <dest> <value>)`   | `<dest> := <var>`；`<value>` 为字面量、`(fn ...)` 或 `(prim ...)` | 载入字面量或函数值到槽。所有类型统一走此指令，值的类型由 tag 携带 |
+| `load-int`   | `(load-int <dest> <int>)` | `<dest> := <var>`；`<int>` 为整数 | 载入 int 值 |
+| `load-float` | `(load-float <dest> <float>)` | `<dest> := <var>`；`<float>` 为浮点数 | 载入 float 值 |
+| `load-string`| `(load-string <dest> "<string>")` | `<dest> := <var>`；`<string>` 为字符串 | 载入 string 值 |
+| `load-symbol`| `(load-symbol <dest> '<symbol>)` | `<dest> := <var>`；`'<symbol>` 为 symbol 字面量 | 载入 symbol 值 |
+| `load-closure` | `(load-closure <dest> (fn x))` 或 `(load-closure <dest> (prim x))` | `<dest> := <var>`；目标为 `(fn ...)` 或 `(prim ...)` | 载入无环境 closure（一等公民） |
 | `move`        | `(move <dest> <src>)`     | `<dest> := <var>`；`<src> := <var>` | 槽间拷贝                               |
 | `load-result` | `(load-result <dest>)`    | `<dest> := <var>`          | 从返回寄存器取回最近一次 `call-n` / `call-prim-n` / `apply-n` 的结果 |
 
-`load` 装载函数值（一等公民）：
+载入无环境 closure：
 
 ```scheme
-(load f (fn square))
-(load p (prim meta-builtin/builtin/imul))
+(load-closure f (fn square))
+(load-closure p (prim meta-builtin/builtin/imul))
+```
+
+# Closure 构造
+
+| 指令               | 语法                                                      | 操作数约束                                    | 描述                                        |
+|--------------------|-----------------------------------------------------------|-----------------------------------------------|---------------------------------------------|
+| `make-closure`     | `(make-closure <dest> (fn x) <size>)` 或 `(make-closure <dest> (prim x) <size>)` | `<dest> := <var>`；目标为 `(fn ...)` / `(prim ...)`；`<size>` 为环境槽数 | 分配带环境 closure，环境槽数为 `<size>` |
+| `store-closure-arg`| `(store-closure-arg <closure> <index> <value>)`           | `<closure> := <var>`；`<index>` 为下标；`<value> := <var>` | 将 `<value>` 写入 closure 的第 `<index>` 个环境槽 |
+
+```scheme
+(make-closure c (fn add-y) 1)
+(store-closure-arg c 0 y)
 ```
 
 # 引用与全局
 
 | 指令           | 语法                         | 操作数约束                                   | 描述                 |
 |----------------|------------------------------|----------------------------------------------|----------------------|
-| `global-load`  | `(global-load <dest> (global x))` | `<dest> := <var>`                          | 读全局变量的值       |
-| `global-store` | `(global-store (global x) <src>)` | `<src> := <var>`                           | 将槽的值写入全局变量 |
+| `load-global`  | `(load-global <dest> (global x))` | `<dest> := <var>`                          | 读全局变量的值       |
+| `store-global` | `(store-global (global x) <src>)` | `<src> := <var>`                           | 将槽的值写入全局变量 |
 
 # 函数调用
 
@@ -55,7 +71,7 @@ title: 指令参考
 
 - `call-n` / `tail-call-n`：静态函数调用，目标为 `(fn ...)`。
 - `call-prim-n` / `tail-call-prim-n`：静态 primitive 调用，目标为 `(prim ...)`。
-- `apply-n`：动态调用，目标为 `<var>`（运行时的函数值）。
+- `apply-n`：动态调用，目标为 `<var>`（closure）。
 
 调用结果进入返回寄存器，**不使用 `<dest>`**；需要结果时，
 调用后跟一条 `load-result`。
@@ -66,7 +82,7 @@ title: 指令参考
 | `call-prim-0` … `call-prim-6` | `(call-prim-n (prim p) <a0> ...)` | 目标为 `(prim ...)`；n 个参数槽 | 静态 primitive 调用。直接调 C primitive，不压帧；结果入返回寄存器 |
 | `tail-call-0` … `tail-call-6` | `(tail-call-n (fn f) <a0> ...)` | 同上 | 尾函数调用 —— 回收当前帧后进入 callee，terminator |
 | `tail-call-prim-0` … `tail-call-prim-6` | `(tail-call-prim-n (prim p) <a0> ...)` | 同上 | 尾 primitive 调用，terminator |
-| `apply-0` … `apply-6` | `(apply-n <target> <a0> ...)` | `<target> := <var>`；n 个参数槽 | 动态调用。运行时按值的类型分派（fn / prim / closure）；结果入返回寄存器 |
+| `apply-0` … `apply-6` | `(apply-n <target> <a0> ...)` | `<target> := <var>`；n 个参数槽 | 动态调用。`target` 必须是 closure；结果入返回寄存器 |
 | `tail-apply-0` … `tail-apply-6` | `(tail-apply-n <target> <a0> ...)` | 同上 | 尾动态调用，terminator |
 
 ## call / apply 与 load-result
@@ -78,10 +94,10 @@ title: 指令参考
 (load-result result)
 ```
 
-动态调用先取函数值（`load` 装载一等公民函数）再 `apply-n`：
+动态调用先装载 closure 再 `apply-n`：
 
 ```scheme
-(load f (fn negation))
+(load-closure f (fn negation))
 (apply-1 f x)
 (load-result result)
 ```
@@ -89,10 +105,24 @@ title: 指令参考
 副作用调用（丢弃结果）不写 `load-result` —— 没有 dest 操作数，
 "丢弃"是零成本的。
 
-## apply 的分派
+## apply 的 target
 
-`apply-n` 的目标是运行时的值，按值的类型分派：fn → 压帧调用；
-prim → 直接 C 调用；closure → 解包后调用。
+`apply-n` / `tail-apply-n` 的 `target` 必须是 closure。
+运行时不再按 fn / prim / closure 分派，而是统一调用 closure。
+
+无环境 closure 用 `load-closure` 构造；
+带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
+
+```scheme
+;; 无环境 closure
+(load-closure f (fn square))
+(apply-1 f x)
+
+;; 带环境 closure
+(make-closure c (fn add-y) 1)
+(store-closure-arg c 0 y)
+(apply-1 c x)
+```
 
 所有调用（含 `apply-n`）的参数个数都由编译期保证与目标函数的 arity
 一致 —— 编译时已消除 auto currying 与 over-application，运行时无需
@@ -142,3 +172,15 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 | `fneg`                   | `(fneg <dest> <src>)`             | `<dest> := <var>`；`<src> := <var>` | 浮点取负     |
 | `float-greater` `float-less` `float-greater-or-equal` `float-less-or-equal` | `(float-less <dest> <a> <b>)` | `<dest> := <var>`；`<a> <b>` 为两个输入槽 | 浮点有序比较，结果为 bool 值 |
 | `float-is-positive` `float-is-non-negative` `float-is-non-zero` | `(float-is-positive <dest> <src>)` | `<dest> := <var>`；`<src> := <var>` | 浮点一元谓词，结果为 bool 值 |
+
+# 设计不变量
+
+- 所有指令的操作数个数固定。
+- `apply-n` / `tail-apply-n` 的 target 必须是 closure。
+- fn / prim 不作为可动态 apply 的值存在；它们只作为静态引用：
+  - `call-n` / `tail-call-n` 使用 `(fn ...)`
+  - `call-prim-n` / `tail-call-prim-n` 使用 `(prim ...)`
+  - `load-closure` / `make-closure` 使用 `(fn ...)` 或 `(prim ...)` 作为 closure 的来源
+- 无环境 closure 用 `load-closure` 构造，可以优化为 relocation。
+- 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
+- `make-closure` 不接受可变数量的 env 参数，环境通过 `store-closure-arg` 逐个填充。
