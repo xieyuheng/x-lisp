@@ -1,7 +1,6 @@
 # xvm2
 
-[xvm2] remove old bytecode interpreter
-[xvm2] bytecode for basic-lisp
+[xvm2] `xvm_t`
 [xvm2] .xvm.exe loader -- use TLV
 [xvm2] 实验 direct threaded code，看看是否比平凡的 switch 速度快
 
