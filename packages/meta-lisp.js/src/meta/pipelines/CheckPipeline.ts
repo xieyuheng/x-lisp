@@ -1,4 +1,4 @@
-import * as M from "../../meta/index.ts"
+import * as M from "../index.ts"
 
 export function CheckPipeline(rootPkg: M.Package): M.Outcome {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)

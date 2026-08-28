@@ -12,37 +12,7 @@ import * as M from "../../meta/index.ts"
 import * as Xvm from "../../xvm/index.ts"
 
 export function BuildXvmPipeline(rootPkg: M.Package): void {
-  const closure = M.packageClosureInTopologicalOrder(rootPkg)
-
-  for (const pkg of closure) M.ExpandPass(pkg)
-  for (const pkg of closure) M.ModulePreludePass(pkg)
-
-  const moduleReports = new Map<string, M.ModuleAnalysisReport>()
-  for (const pkg of closure)
-    moduleReports.set(pkg.id, M.ModuleAnalysisPass(pkg))
-
-  const algebraicReports = new Map<string, M.AlgebraicAnalysisReport>()
-  for (const pkg of closure)
-    algebraicReports.set(pkg.id, M.AlgebraicAnalysisPass(pkg))
-
-  for (const pkg of closure)
-    M.LowerMatchPass(
-      pkg,
-      moduleReports.get(pkg.id)!,
-      algebraicReports.get(pkg.id)!,
-    )
-
-  for (const pkg of closure) M.DesugarPass(pkg)
-  for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
-  for (const pkg of closure) M.SetupPass(pkg)
-  for (const pkg of closure) M.ClaimPass(pkg)
-  for (const pkg of closure) M.QualifyPass(pkg)
-  for (const pkg of closure) M.LocatePass(pkg)
-  for (const pkg of closure) M.CheckPass(pkg)
-  for (const pkg of closure) M.UniquifyPass(pkg)
-  for (const pkg of closure) M.ConvertClosurePass(pkg)
-  for (const pkg of closure) M.LimitArityPass(pkg, 6)
-  for (const pkg of closure) M.UnnestOperandPass(pkg)
+  M.CorePipeline(rootPkg)
 
   const xvmResult = Compiler.XvmExplicateControlPass(rootPkg)
   B.CopyPropagationPass(xvmResult.program)
