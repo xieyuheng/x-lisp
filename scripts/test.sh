@@ -4,7 +4,6 @@ set -e
 
 cd packages/std.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/cli.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
-cd packages/bin.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/sexp.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/ppml.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 
