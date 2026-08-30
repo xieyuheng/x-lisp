@@ -1,5 +1,6 @@
 ---
 title: ref vs struct
+author: xieyuheng
 date: 2026-08-23
 keywords: [region-lisp]
 ---

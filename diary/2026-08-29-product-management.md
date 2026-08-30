@@ -1,5 +1,6 @@
 ---
 title: product management
+author: xieyuheng
 date: 2026-08-29
 ---
 

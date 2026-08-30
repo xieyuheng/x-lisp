@@ -1,5 +1,6 @@
 ---
 title: writting in c
+author: xieyuheng
 date: 2026-08-23
 keywords: [region-lisp]
 ---
