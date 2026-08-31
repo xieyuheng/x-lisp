@@ -4,7 +4,7 @@ title: 语法
 
 # 前言
 
-xvm-lisp 是 xvm2 虚拟机的 Lisp 语法汇编语言。
+xvm-lisp 是 xvm 虚拟机的汇编语言。
 
 特点：
 
