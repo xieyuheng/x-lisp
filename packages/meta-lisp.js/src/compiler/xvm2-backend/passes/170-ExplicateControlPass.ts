@@ -414,8 +414,8 @@ const INT_ARITH_OPS: Record<string, string> = {
   "meta-builtin/内置/整数大于等于": "int-greater-or-equal",
   "meta-builtin/内置/整数小于等于": "int-less-or-equal",
   "meta-builtin/内置/整数为正": "int-is-positive",
-  "meta-builtin/内置/整数为非负": "int-is-non-negative",
-  "meta-builtin/内置/整数为非零": "int-is-non-zero",
+  "meta-builtin/内置/整数非负": "int-is-non-negative",
+  "meta-builtin/内置/整数非零": "int-is-non-zero",
 }
 
 function tryResolveDirectCall(
