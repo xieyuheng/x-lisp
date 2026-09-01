@@ -1,6 +1,6 @@
 # xvm2
 
-[xvm2] executable 文档草稿
+[xvm2] 改善 executable 文档
 
 [xvm2] `xvm_t`
 [xvm2] .xvm.exe loader -- use TLV
