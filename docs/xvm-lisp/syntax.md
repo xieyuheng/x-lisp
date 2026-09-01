@@ -227,19 +227,21 @@ xvm-lisp 使用 LISP 风格的行注释，以 `;` 开头直到行尾。
 
 不同类型的字面量使用不同的 load 指令：
 
-| 例子                      | 说明          |
-|---------------------------|---------------|
-| `(load-int x 42)`         | 加载 int      |
-| `(load-float x 3.14)`     | 加载 float    |
+| 例子                      | 说明        |
+|---------------------------|-------------|
+| `(load-int x 42)`         | 加载 int    |
+| `(load-float x 3.14)`     | 加载 float  |
 | `(load-string x "hello")` | 修正 string |
 | `(load-symbol x 'foo)`    | 修正 symbol |
 
 
-- BUG 没有 bool 字面量，通过 `load-global` 获取：
-  ```xvm-lisp
-  (load-global t (global meta-builtin/builtin/true))
-  ```
-  这样设计不对，因为这样没法脱离内置函数来写简单的汇编代码。
+没有 bool 字面量，通过 `load-global` 获取 bool 值。
+
+例如：
+
+```xvm-lisp
+(load-global t (global meta-builtin/builtin/true))
+```
 
 # 主函数
 
