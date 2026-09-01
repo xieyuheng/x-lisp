@@ -2,30 +2,20 @@
 title: 指令编码
 ---
 
-## 通用规则
-
-- 局部槽号一律为 `u16`。
-- TLV entry 内的 `name_offset` / `type_offset` 等字符串引用使用 string table 的 `u32 offset`。
-- 指令中的可修正字段在文件里是 8 字节占位符；loader patch 后变成运行时指针或 `value_t`。
-- label 偏移已在汇编时解析为 `i32`，不通过修正。
-- **每个指令的操作数个数固定**；`call-n`、`call-prim-n`、`apply-n` 等指令的 arity 由 opcode 决定，不在指令内额外保存 `argc`。
-
-## opcode 表
-
-### 数据传送
+# 加载
 
 ```text
 0x01 move              u16 dest u16 src
-0x02 load-int          u16 dest i64 value
-0x03 load-float        u16 dest f64 value
+0x02 load-int          u16 dest u64 value
+0x03 load-float        u16 dest u64 value
 0x04 load-string       u16 dest u64 value
 0x05 load-symbol       u16 dest u64 value
-0x09 load-result       u16 dest
-0x0a load-global       u16 dest u64 target
-0x0b store-global      u64 target u16 src
 ```
 
-### Closure
+- `load-string`：`value` 产生 `type = string-value` 的修正。
+- `load-symbol`：`value` 产生 `type = symbol-value` 的修正。
+
+# 闭包
 
 ```text
 0x06 load-closure      u16 dest u64 target
@@ -33,7 +23,20 @@ title: 指令编码
 0x08 store-closure-arg u16 closure u16 index u16 value
 ```
 
-### 静态调用
+- `load-closure`：`target` 产生 `type = fn-pointer` 的修正；loader 直接构造无环境 closure；primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
+- `make-closure`：`target` 产生 `type = fn-pointer` 的修正；`size` 是环境槽数；primitive 必须先转换为其 wrap 函数；`make-closure` 只分配 closure，不填充环境，环境由 `store-closure-arg` 填充。
+- `store-closure-arg`：`closure` 是 closure 所在槽，`index` 是环境槽下标，`value` 是要写入环境的值；通过多次 `store-closure-arg` 填充环境，不引入可变操作数。
+
+# 全局变量
+
+```text
+0x0a load-global       u16 dest u64 target
+0x0b store-global      u64 target u16 src
+```
+
+# 函数调用
+
+## 静态调用
 
 ```text
 0x10 call-0             u64 target
@@ -66,7 +69,10 @@ title: 指令编码
 0x2b tail-call-prim-6   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
-### 动态调用
+- `call-n` / `call-prim-n`：`call-n` 的 `target` 产生 `type = fn-pointer`，`call-prim-n` 的 `target` 产生 `type = prim-pointer`；参数个数 `n` 由 opcode 决定。
+- `tail-call-n` / `tail-call-prim-n`：`tail-call-n` 的 `target` 产生 `type = fn-pointer`，`tail-call-prim-n` 的 `target` 产生 `type = prim-pointer`；参数个数 `n` 由 opcode 决定。
+
+## 动态调用
 
 ```text
 0x2c apply-0            u16 target
@@ -85,7 +91,15 @@ title: 指令编码
 0x39 tail-apply-6       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
-### 控制流
+- `apply-n` / `tail-apply-n`：`target` 是局部槽号，不产生修正；`target` 必须是 closure；参数个数 `n` 由 opcode 决定。
+
+# 结果寄存器
+
+```text
+0x09 load-result       u16 dest
+```
+
+# 控制流
 
 ```text
 0x40 goto              i32 offset
@@ -94,7 +108,9 @@ title: 指令编码
 0x43 return-void       -
 ```
 
-### 整数运算
+- `branch`：`cond` 为 bool 值所在槽；`then` / `else` 是相对当前指令结束位置的偏移；偏移在汇编时解析，不产生修正。
+
+# 整数运算
 
 ```text
 0x50 iadd                 u16 dest u16 src1 u16 src2
@@ -112,7 +128,7 @@ title: 指令编码
 0x5e int-is-non-zero      u16 dest u16 src
 ```
 
-### 浮点运算
+# 浮点运算
 
 ```text
 0x70 fadd                   u16 dest u16 src1 u16 src2
@@ -128,129 +144,3 @@ title: 指令编码
 0x7d float-is-non-negative  u16 dest u16 src
 0x7e float-is-non-zero      u16 dest u16 src
 ```
-
-## `load-int`
-
-```text
-u16 dest
-i64 value
-```
-
-`value` 是立即数，不产生修正。
-
-## `load-float`
-
-```text
-u16 dest
-f64 value
-```
-
-`value` 是立即数，不产生修正。
-
-## `load-string`
-
-```text
-u16 dest
-u64 value
-```
-
-`value` 产生 `type = string-value` 的修正。
-
-## `load-symbol`
-
-```text
-u16 dest
-u64 value
-```
-
-`value` 产生 `type = symbol-value` 的修正。
-
-## `load-closure`
-
-```text
-u16 dest
-u64 target
-```
-
-`target` 产生 `type = fn-pointer` 的修正。
-loader 直接构造无环境 closure。
-primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
-
-## `make-closure`
-
-```text
-u16 dest
-u64 target
-u16 size
-```
-
-- `target` 产生 `type = fn-pointer` 的修正。
-- `size` 是环境槽数。
-- primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
-- `make-closure` 只分配 closure，不填充环境；环境由 `store-closure-arg` 填充。
-
-## `store-closure-arg`
-
-```text
-u16 closure
-u16 index
-u16 value
-```
-
-- `closure` 是 closure 所在槽。
-- `index` 是环境槽下标。
-- `value` 是要写入环境的值。
-- 通过多次 `store-closure-arg` 填充环境，不引入可变操作数。
-
-## `call-n` / `call-prim-n`
-
-`call-n` 和 `call-prim-n` 的 operands 模式相同：
-
-```text
-u64 target
-u16 arg1
-...
-u16 arg{n}
-```
-
-- `call-n` 的 `target` 是函数名，产生 `type = fn-pointer` 的修正。
-- `call-prim-n` 的 `target` 是 primitive 函数名，产生 `type = prim-pointer` 的修正。
-- 参数个数 `n` 由 opcode 决定。
-
-## `tail-call-n` / `tail-call-prim-n`
-
-```text
-u64 target
-u16 arg1
-...
-u16 arg{n}
-```
-
-- `tail-call-n` 的 `target` 产生 `type = fn-pointer`。
-- `tail-call-prim-n` 的 `target` 产生 `type = prim-pointer`。
-- 参数个数 `n` 由 opcode 决定。
-
-## `apply-n` / `tail-apply-n`
-
-```text
-u16 target
-u16 arg1
-...
-u16 arg{n}
-```
-
-`target` 是局部槽号，不产生修正。
-`target` 必须是 closure，运行时不再分派 fn / prim / closure。
-参数个数 `n` 由 opcode 决定。
-
-## `branch`
-
-```text
-u16 cond
-i32 then
-i32 else
-```
-
-- `cond` 为 bool 值所在槽。
-- `then` / `else` 是相对当前指令结束位置的偏移。
-- 偏移在汇编时解析，不产生修正。

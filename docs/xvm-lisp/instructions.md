@@ -5,11 +5,11 @@ title: 指令
 # 加载
 
 ```xvm-lisp
+(move <dest> <src>)
 (load-int <dest> <int>)
 (load-float <dest> <float>)
 (load-string <dest> <string>)
 (load-symbol <dest> <symbol>)
-(move <dest> <src>)
 ```
 
 操作数 `<dest>` 和 `<src>` 都代表局部变量。
@@ -19,7 +19,7 @@ title: 指令
 ```xvm-lisp
 (load-closure <dest> (fn <name>))
 (make-closure <dest> (fn <name>) <size>)
-(store-closure-arg <dest-closure> <index> <src>)
+(store-closure-arg <closure> <index> <src>)
 ```
 
 - `load-closure`：加载无环境的 closure，可以实现为 fixup。
@@ -39,6 +39,8 @@ title: 指令
 参数个数最多为 6。
 
 调用结果返回「结果寄存器」，调用后跟一条 `load-result`。
+
+## 静态调用
 
 ```xvm-lisp
 (call-0 (fn <name>))
@@ -72,7 +74,11 @@ title: 指令
 (tail-call-prim-4 (prim <name>) <arg1> <arg2> <arg3> <arg4>)
 (tail-call-prim-5 (prim <name>) <arg1> <arg2> <arg3> <arg4> <arg5>)
 (tail-call-prim-6 (prim <name>) <arg1> <arg2> <arg3> <arg4> <arg5> <arg6>)
+```
 
+## 动态调用
+
+```xvm-lisp
 (apply-0 <target>)
 (apply-1 <target> <arg1>)
 (apply-2 <target> <arg1> <arg2>)
