@@ -3,19 +3,26 @@ title: 指令参考
 ---
 
 > 通用语法见 [syntax.md](syntax.md)。
-> 操作数约束中，空格分隔表示“可选其一”。
 
 ## 操作数记号
 
-| 记号         | 含义                                            |
-|--------------|-------------------------------------------------|
-| `<var>`      | 局部变量，裸符号（VarOperand），如 `x` `result` |
-| `<dest>`     | 目标局部变量，即 `<var>`                        |
-| `<value>`    | 字面量，见语法 [字面量](syntax.md#字面量)       |
-| `(fn x)`     | 函数定义引用                                    |
-| `(prim x)`   | primitive 函数引用                              |
-| `(global x)` | 全局变量引用                                    |
-| `(label x)`  | 标签引用                                        |
+```text
+<var>      局部变量
+<dest>     目标局部变量
+<value>    字面量
+(fn x)     函数定义引用
+(prim x)   primitive 函数引用
+(global x) 全局变量引用
+(label x)  标签引用
+```
+
+- `<var>` 是局部变量，裸符号（VarOperand），如 `x` `result`。
+- `<dest>` 是目标局部变量，即 `<var>`。
+- `<value>` 是字面量，见语法 [字面量](syntax.md#字面量)。
+- `(fn x)` 是函数定义引用。
+- `(prim x)` 是 primitive 函数引用。
+- `(global x)` 是全局变量引用。
+- `(label x)` 是标签引用。
 
 ## 目录
 
@@ -28,15 +35,23 @@ title: 指令参考
 
 # 字面量与数据传送
 
-| 指令           | 语法                              | 操作数约束                                      | 描述                                                                            |
-|----------------|-----------------------------------|-------------------------------------------------|---------------------------------------------------------------------------------|
-| `load-int`     | `(load-int <dest> <int>)`         | `<dest> := <var>`；`<int>` 为整数               | 载入 int 值                                                                     |
-| `load-float`   | `(load-float <dest> <float>)`     | `<dest> := <var>`；`<float>` 为浮点数           | 载入 float 值                                                                   |
-| `load-string`  | `(load-string <dest> "<string>")` | `<dest> := <var>`；`<string>` 为字符串          | 载入 string 值                                                                  |
-| `load-symbol`  | `(load-symbol <dest> '<symbol>)`  | `<dest> := <var>`；`'<symbol>` 为 symbol 字面量 | 载入 symbol 值                                                                  |
-| `load-closure` | `(load-closure <dest> (fn x))`    | `<dest> := <var>`；目标为 `(fn ...)`            | 载入无环境 closure（一等公民）；`x` 可以是函数，也可以是 primitive 的 wrap 函数 |
-| `move`         | `(move <dest> <src>)`             | `<dest> := <var>`；`<src> := <var>`             | 槽间拷贝                                                                        |
-| `load-result`  | `(load-result <dest>)`            | `<dest> := <var>`                               | 从返回寄存器取回最近一次 `call-n` / `call-prim-n` / `apply-n` 的结果            |
+```text
+(load-int <dest> <int>)
+(load-float <dest> <float>)
+(load-string <dest> "<string>")
+(load-symbol <dest> '<symbol>)
+(load-closure <dest> (fn x))
+(move <dest> <src>)
+(load-result <dest>)
+```
+
+- `load-int`：载入 int 值；`<int>` 为整数。
+- `load-float`：载入 float 值；`<float>` 为浮点数。
+- `load-string`：载入 string 值；`<string>` 为字符串。
+- `load-symbol`：载入 symbol 值；`'<symbol>` 为 symbol 字面量。
+- `load-closure`：载入无环境 closure（一等公民）；目标为 `(fn ...)`；`x` 可以是函数，也可以是 primitive 的 wrap 函数。
+- `move`：槽间拷贝；`<dest> := <var>`，`<src> := <var>`。
+- `load-result`：从返回寄存器取回最近一次 `call-n` / `call-prim-n` / `apply-n` 的结果；`<dest> := <var>`。
 
 载入无环境 closure：
 
@@ -48,10 +63,13 @@ title: 指令参考
 
 # Closure 构造
 
-| 指令               | 语法                                                      | 操作数约束                                    | 描述                                        |
-|--------------------|-----------------------------------------------------------|-----------------------------------------------|---------------------------------------------|
-| `make-closure`     | `(make-closure <dest> (fn x) <size>)` | `<dest> := <var>`；目标为 `(fn ...)`；`<size>` 为环境槽数 | 分配带环境 closure，环境槽数为 `<size>`；`x` 可以是函数，也可以是 primitive 的 wrap 函数 |
-| `store-closure-arg`| `(store-closure-arg <closure> <index> <value>)`           | `<closure> := <var>`；`<index>` 为下标；`<value> := <var>` | 将 `<value>` 写入 closure 的第 `<index>` 个环境槽 |
+```text
+(make-closure <dest> (fn x) <size>)
+(store-closure-arg <closure> <index> <value>)
+```
+
+- `make-closure`：分配带环境 closure，环境槽数为 `<size>`；`<dest> := <var>`，目标为 `(fn ...)`；`x` 可以是函数，也可以是 primitive 的 wrap 函数。
+- `store-closure-arg`：将 `<value>` 写入 closure 的第 `<index>` 个环境槽；`<closure> := <var>`，`<index>` 为下标，`<value> := <var>`。
 
 ```scheme
 (make-closure c (fn add-y) 1)
@@ -60,10 +78,13 @@ title: 指令参考
 
 # 引用与全局
 
-| 指令           | 语法                         | 操作数约束                                   | 描述                 |
-|----------------|------------------------------|----------------------------------------------|----------------------|
-| `load-global`  | `(load-global <dest> (global x))` | `<dest> := <var>`                          | 读全局变量的值       |
-| `store-global` | `(store-global (global x) <src>)` | `<src> := <var>`                           | 将槽的值写入全局变量 |
+```text
+(load-global <dest> (global x))
+(store-global (global x) <src>)
+```
+
+- `load-global`：读全局变量的值；`<dest> := <var>`。
+- `store-global`：将槽的值写入全局变量；`<src> := <var>`。
 
 # 函数调用
 
@@ -77,14 +98,62 @@ title: 指令参考
 调用结果进入返回寄存器，**不使用 `<dest>`**；需要结果时，
 调用后跟一条 `load-result`。
 
-| 指令                                      | 语法                                   | 操作数约束                      | 描述                                                              |
-|-------------------------------------------|----------------------------------------|---------------------------------|-------------------------------------------------------------------|
-| `call-0` ... `call-6`                     | `(call-n (fn f) <a0> ...)`             | 目标为 `(fn ...)`；n 个参数槽   | 静态函数调用。要求 `n` 等于 f 的 arity；结果入返回寄存器          |
-| `call-prim-0` ... `call-prim-6`           | `(call-prim-n (prim p) <a0> ...)`      | 目标为 `(prim ...)`；n 个参数槽 | 静态 primitive 调用。直接调 C primitive，不压帧；结果入返回寄存器 |
-| `tail-call-0` ... `tail-call-6`           | `(tail-call-n (fn f) <a0> ...)`        | 同上                            | 尾函数调用 —— 回收当前帧后进入 callee，terminator               |
-| `tail-call-prim-0` ... `tail-call-prim-6` | `(tail-call-prim-n (prim p) <a0> ...)` | 同上                            | 尾 primitive 调用，terminator                                     |
-| `apply-0` ... `apply-6`                   | `(apply-n <target> <a0> ...)`          | `<target> := <var>`；n 个参数槽 | 动态调用。`target` 必须是 closure；结果入返回寄存器               |
-| `tail-apply-0` ... `tail-apply-6`         | `(tail-apply-n <target> <a0> ...)`     | 同上                            | 尾动态调用，terminator                                            |
+```text
+(call-0 (fn f))
+(call-1 (fn f) <a0>)
+(call-2 (fn f) <a0> <a1>)
+(call-3 (fn f) <a0> <a1> <a2>)
+(call-4 (fn f) <a0> <a1> <a2> <a3>)
+(call-5 (fn f) <a0> <a1> <a2> <a3> <a4>)
+(call-6 (fn f) <a0> <a1> <a2> <a3> <a4> <a5>)
+
+(call-prim-0 (prim p))
+(call-prim-1 (prim p) <a0>)
+(call-prim-2 (prim p) <a0> <a1>)
+(call-prim-3 (prim p) <a0> <a1> <a2>)
+(call-prim-4 (prim p) <a0> <a1> <a2> <a3>)
+(call-prim-5 (prim p) <a0> <a1> <a2> <a3> <a4>)
+(call-prim-6 (prim p) <a0> <a1> <a2> <a3> <a4> <a5>)
+
+(tail-call-0 (fn f))
+(tail-call-1 (fn f) <a0>)
+(tail-call-2 (fn f) <a0> <a1>)
+(tail-call-3 (fn f) <a0> <a1> <a2>)
+(tail-call-4 (fn f) <a0> <a1> <a2> <a3>)
+(tail-call-5 (fn f) <a0> <a1> <a2> <a3> <a4>)
+(tail-call-6 (fn f) <a0> <a1> <a2> <a3> <a4> <a5>)
+
+(tail-call-prim-0 (prim p))
+(tail-call-prim-1 (prim p) <a0>)
+(tail-call-prim-2 (prim p) <a0> <a1>)
+(tail-call-prim-3 (prim p) <a0> <a1> <a2>)
+(tail-call-prim-4 (prim p) <a0> <a1> <a2> <a3>)
+(tail-call-prim-5 (prim p) <a0> <a1> <a2> <a3> <a4>)
+(tail-call-prim-6 (prim p) <a0> <a1> <a2> <a3> <a4> <a5>)
+
+(apply-0 <target>)
+(apply-1 <target> <a0>)
+(apply-2 <target> <a0> <a1>)
+(apply-3 <target> <a0> <a1> <a2>)
+(apply-4 <target> <a0> <a1> <a2> <a3>)
+(apply-5 <target> <a0> <a1> <a2> <a3> <a4>)
+(apply-6 <target> <a0> <a1> <a2> <a3> <a4> <a5>)
+
+(tail-apply-0 <target>)
+(tail-apply-1 <target> <a0>)
+(tail-apply-2 <target> <a0> <a1>)
+(tail-apply-3 <target> <a0> <a1> <a2>)
+(tail-apply-4 <target> <a0> <a1> <a2> <a3>)
+(tail-apply-5 <target> <a0> <a1> <a2> <a3> <a4>)
+(tail-apply-6 <target> <a0> <a1> <a2> <a3> <a4> <a5>)
+```
+
+- `call-n`：静态函数调用。要求 `n` 等于 f 的 arity；结果入返回寄存器。
+- `call-prim-n`：静态 primitive 调用。直接调 C primitive，不压帧；结果入返回寄存器。
+- `tail-call-n`：尾函数调用 —— 回收当前帧后进入 callee，terminator。
+- `tail-call-prim-n`：尾 primitive 调用，terminator。
+- `apply-n`：动态调用。`target` 必须是 closure；结果入返回寄存器。
+- `tail-apply-n`：尾动态调用，terminator。
 
 ## call / apply 与 load-result
 
@@ -131,12 +200,17 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 
 # 控制流
 
-| 指令          | 语法                                           | 操作数约束                                            | 描述                                |
-|---------------|------------------------------------------------|-------------------------------------------------------|-------------------------------------|
-| `goto`        | `(goto (label l))`                             | `<label>` 为标签引用                                  | 无条件跳转，terminator              |
-| `branch`      | `(branch <cond> (label t) (label e))`          | `<cond> := <var>`（cond 为 bool 值）；两个 `<label>` | 条件分支，terminator                |
-| `return`      | `(return <src>)`                               | `<src> := <var>`                                      | 带值返回，terminator                |
-| `return-void` | `(return-void)`                                | -                                                     | void 返回，terminator               |
+```text
+(goto (label l))
+(branch <cond> (label t) (label e))
+(return <src>)
+(return-void)
+```
+
+- `goto`：无条件跳转，terminator；`<label>` 为标签引用。
+- `branch`：条件分支，terminator；`<cond> := <var>`（cond 为 bool 值），两个 `<label>` 分别为真、假分支。
+- `return`：带值返回，terminator；`<src> := <var>`。
+- `return-void`：void 返回，terminator。
 
 ## branch
 
@@ -152,12 +226,26 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 操作数必须是 int 值（`value_t` 的 tag 为 int），否则运行时报错。
 结果写入 `<dest>`，为 int 值。
 
-| 指令                                                                | 语法                             | 操作数约束                                | 描述                         |
-|---------------------------------------------------------------------|----------------------------------|-------------------------------------------|------------------------------|
-| `iadd` `isub` `imul` `idiv` `imod`                                  | `(iadd <dest> <a> <b>)`          | `<dest> := <var>`；`<a> <b>` 为两个输入槽 | 整数二元运算                 |
-| `ineg`                                                              | `(ineg <dest> <src>)`            | `<dest> := <var>`；`<src> := <var>`       | 整数取负                     |
-| `int-greater` `int-less` `int-greater-or-equal` `int-less-or-equal` | `(int-less <dest> <a> <b>)`      | `<dest> := <var>`；`<a> <b>` 为两个输入槽 | 整数有序比较，结果为 bool 值 |
-| `int-is-positive` `int-is-non-negative` `int-is-non-zero`           | `(int-is-positive <dest> <src>)` | `<dest> := <var>`；`<src> := <var>`       | 整数一元谓词，结果为 bool 值 |
+```text
+(iadd <dest> <a> <b>)
+(isub <dest> <a> <b>)
+(imul <dest> <a> <b>)
+(idiv <dest> <a> <b>)
+(imod <dest> <a> <b>)
+(ineg <dest> <src>)
+(int-greater <dest> <a> <b>)
+(int-less <dest> <a> <b>)
+(int-greater-or-equal <dest> <a> <b>)
+(int-less-or-equal <dest> <a> <b>)
+(int-is-positive <dest> <src>)
+(int-is-non-negative <dest> <src>)
+(int-is-non-zero <dest> <src>)
+```
+
+- `iadd` `isub` `imul` `idiv` `imod`：整数二元运算；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
+- `ineg`：整数取负；`<dest> := <var>`，`<src> := <var>`。
+- `int-greater` `int-less` `int-greater-or-equal` `int-less-or-equal`：整数有序比较，结果为 bool 值；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
+- `int-is-positive` `int-is-non-negative` `int-is-non-zero`：整数一元谓词，结果为 bool 值；`<dest> := <var>`，`<src> := <var>`。
 
 # 浮点运算
 
@@ -167,12 +255,25 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 > 注：`.xvm.basic` 当前的浮点运算走 builtin 调用，尚未映射为指令；
 > 以下指令为 xvm-lisp 预定义的指令形式，供翻译层直译时使用。
 
-| 指令                                                                        | 语法                               | 操作数约束                                | 描述                         |
-|-----------------------------------------------------------------------------|------------------------------------|-------------------------------------------|------------------------------|
-| `fadd` `fsub` `fmul` `fdiv`                                                 | `(fadd <dest> <a> <b>)`            | `<dest> := <var>`；`<a> <b>` 为两个输入槽 | 浮点二元运算                 |
-| `fneg`                                                                      | `(fneg <dest> <src>)`              | `<dest> := <var>`；`<src> := <var>`       | 浮点取负                     |
-| `float-greater` `float-less` `float-greater-or-equal` `float-less-or-equal` | `(float-less <dest> <a> <b>)`      | `<dest> := <var>`；`<a> <b>` 为两个输入槽 | 浮点有序比较，结果为 bool 值 |
-| `float-is-positive` `float-is-non-negative` `float-is-non-zero`             | `(float-is-positive <dest> <src>)` | `<dest> := <var>`；`<src> := <var>`       | 浮点一元谓词，结果为 bool 值 |
+```text
+(fadd <dest> <a> <b>)
+(fsub <dest> <a> <b>)
+(fmul <dest> <a> <b>)
+(fdiv <dest> <a> <b>)
+(fneg <dest> <src>)
+(float-greater <dest> <a> <b>)
+(float-less <dest> <a> <b>)
+(float-greater-or-equal <dest> <a> <b>)
+(float-less-or-equal <dest> <a> <b>)
+(float-is-positive <dest> <src>)
+(float-is-non-negative <dest> <src>)
+(float-is-non-zero <dest> <src>)
+```
+
+- `fadd` `fsub` `fmul` `fdiv`：浮点二元运算；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
+- `fneg`：浮点取负；`<dest> := <var>`，`<src> := <var>`。
+- `float-greater` `float-less` `float-greater-or-equal` `float-less-or-equal`：浮点有序比较，结果为 bool 值；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
+- `float-is-positive` `float-is-non-negative` `float-is-non-zero`：浮点一元谓词，结果为 bool 值；`<dest> := <var>`，`<src> := <var>`。
 
 # 设计不变量
 
