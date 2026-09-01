@@ -2,89 +2,44 @@
 title: 指令参考
 ---
 
-> 通用语法见 [syntax.md](syntax.md)。
+# 加载
 
-## 操作数记号
-
-```text
-<var>      局部变量
-<dest>     目标局部变量
-<value>    字面量
-(fn x)     函数定义引用
-(prim x)   primitive 函数引用
-(global x) 全局变量引用
-(label x)  标签引用
-```
-
-- `<var>` 是局部变量，裸符号（VarOperand），如 `x` `result`。
-- `<dest>` 是目标局部变量，即 `<var>`。
-- `<value>` 是字面量，见语法 [字面量](syntax.md#字面量)。
-- `(fn x)` 是函数定义引用。
-- `(prim x)` 是 primitive 函数引用。
-- `(global x)` 是全局变量引用。
-- `(label x)` 是标签引用。
-
-## 目录
-
-- [字面量与数据传送](#字面量与数据传送)
-- [引用与全局](#引用与全局)
-- [函数调用](#函数调用)
-- [控制流](#控制流)
-- [整数运算](#整数运算)
-- [浮点运算](#浮点运算)
-
-# 字面量与数据传送
-
-```text
+```xvm-lisp
 (load-int <dest> <int>)
 (load-float <dest> <float>)
-(load-string <dest> "<string>")
-(load-symbol <dest> '<symbol>)
-(load-closure <dest> (fn x))
+(load-string <dest> <string>)
+(load-symbol <dest> <symbol>)
 (move <dest> <src>)
 (load-result <dest>)
 ```
 
-- `load-int`：载入 int 值；`<int>` 为整数。
-- `load-float`：载入 float 值；`<float>` 为浮点数。
-- `load-string`：载入 string 值；`<string>` 为字符串。
-- `load-symbol`：载入 symbol 值；`'<symbol>` 为 symbol 字面量。
-- `load-closure`：载入无环境 closure（一等公民）；目标为 `(fn ...)`；`x` 可以是函数，也可以是 primitive 的 wrap 函数。
-- `move`：槽间拷贝；`<dest> := <var>`，`<src> := <var>`。
-- `load-result`：从返回寄存器取回最近一次 `call-n` / `call-prim-n` / `apply-n` 的结果；`<dest> := <var>`。
+- `load-int`：加载 int 值。
+- `load-float`：加载 float 值。
+- `load-string`：加载 string 值，需要 fixup。
+- `load-symbol`：加载 symbol 值，需要 fixup。
+- `load-result`：从返回寄存器取回最近一次 `call-n` / `call-prim-n` / `apply-n` 的结果。
 
-载入无环境 closure：
+# 闭包
 
-```scheme
-(load-closure f (fn square))
-;; primitive 必须先由编译器转换为其 wrap 函数，再 load-closure
-(load-closure p (fn meta-builtin/builtin/imul©wrap))
+```xvm-lisp
+(load-closure <dest> (fn <name>))
+(make-closure <dest> (fn <name>) <size>)
+(store-closure-arg <dest-closure> <index> <src>)
 ```
 
-# Closure 构造
+- `load-closure`：加载无环境 closure，可以实现为 fixup。
+- `make-closure`：作带环境的 closure，参数个数为 `<size>`。
+- `store-closure-arg`：存 closure 的参数。
 
-```text
-(make-closure <dest> (fn x) <size>)
-(store-closure-arg <closure> <index> <value>)
+# 全局变量
+
+```xvm-lisp
+(load-global <dest> (global <name>))
+(store-global (global <name>) <src>)
 ```
 
-- `make-closure`：分配带环境 closure，环境槽数为 `<size>`；`<dest> := <var>`，目标为 `(fn ...)`；`x` 可以是函数，也可以是 primitive 的 wrap 函数。
-- `store-closure-arg`：将 `<value>` 写入 closure 的第 `<index>` 个环境槽；`<closure> := <var>`，`<index>` 为下标，`<value> := <var>`。
-
-```scheme
-(make-closure c (fn add-y) 1)
-(store-closure-arg c 0 y)
-```
-
-# 引用与全局
-
-```text
-(load-global <dest> (global x))
-(store-global (global x) <src>)
-```
-
-- `load-global`：读全局变量的值；`<dest> := <var>`。
-- `store-global`：将槽的值写入全局变量；`<src> := <var>`。
+- `load-global`：读全局变量的值。
+- `store-global`：将槽的值写入全局变量。
 
 # 函数调用
 
@@ -98,7 +53,7 @@ title: 指令参考
 调用结果进入返回寄存器，**不使用 `<dest>`**；需要结果时，
 调用后跟一条 `load-result`。
 
-```text
+```xvm-lisp
 (call-0 (fn f))
 (call-1 (fn f) <a0>)
 (call-2 (fn f) <a0> <a1>)
@@ -159,14 +114,14 @@ title: 指令参考
 
 需要调用结果时，在调用后使用 `load-result`：
 
-```scheme
+```xvm-lisp
 (call-2 (fn factorial) n)
 (load-result result)
 ```
 
 动态调用先装载 closure 再 `apply-n`：
 
-```scheme
+```xvm-lisp
 (load-closure f (fn negation))
 (apply-1 f x)
 (load-result result)
@@ -183,7 +138,7 @@ title: 指令参考
 无环境 closure 用 `load-closure` 构造；
 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
 
-```scheme
+```xvm-lisp
 ;; 无环境 closure
 (load-closure f (fn square))
 (apply-1 f x)
@@ -200,7 +155,7 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 
 # 控制流
 
-```text
+```xvm-lisp
 (goto (label l))
 (branch <cond> (label t) (label e))
 (return <src>)
@@ -209,7 +164,7 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 
 - `goto`：无条件跳转，terminator；`<label>` 为标签引用。
 - `branch`：条件分支，terminator；`<cond> := <var>`（cond 为 bool 值），两个 `<label>` 分别为真、假分支。
-- `return`：带值返回，terminator；`<src> := <var>`。
+- `return`：带值返回，terminator。
 - `return-void`：void 返回，terminator。
 
 ## branch
@@ -217,7 +172,7 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 `branch` 的 `<cond>` 为 bool 值，为真时跳转到 `<then-label>`，
 否则跳转到 `<else-label>`。
 
-```scheme
+```xvm-lisp
 (branch is-positive (label positive) (label non-positive))
 ```
 
@@ -226,7 +181,7 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 操作数必须是 int 值（`value_t` 的 tag 为 int），否则运行时报错。
 结果写入 `<dest>`，为 int 值。
 
-```text
+```xvm-lisp
 (iadd <dest> <a> <b>)
 (isub <dest> <a> <b>)
 (imul <dest> <a> <b>)
@@ -242,11 +197,6 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 (int-is-non-zero <dest> <src>)
 ```
 
-- `iadd` `isub` `imul` `idiv` `imod`：整数二元运算；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
-- `ineg`：整数取负；`<dest> := <var>`，`<src> := <var>`。
-- `int-greater` `int-less` `int-greater-or-equal` `int-less-or-equal`：整数有序比较，结果为 bool 值；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
-- `int-is-positive` `int-is-non-negative` `int-is-non-zero`：整数一元谓词，结果为 bool 值；`<dest> := <var>`，`<src> := <var>`。
-
 # 浮点运算
 
 操作数必须是 float 值（`value_t` 的 tag 为 float），否则运行时报错。
@@ -255,7 +205,7 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 > 注：`.xvm.basic` 当前的浮点运算走 builtin 调用，尚未映射为指令；
 > 以下指令为 xvm-lisp 预定义的指令形式，供翻译层直译时使用。
 
-```text
+```xvm-lisp
 (fadd <dest> <a> <b>)
 (fsub <dest> <a> <b>)
 (fmul <dest> <a> <b>)
@@ -269,11 +219,6 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
 (float-is-non-negative <dest> <src>)
 (float-is-non-zero <dest> <src>)
 ```
-
-- `fadd` `fsub` `fmul` `fdiv`：浮点二元运算；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
-- `fneg`：浮点取负；`<dest> := <var>`，`<src> := <var>`。
-- `float-greater` `float-less` `float-greater-or-equal` `float-less-or-equal`：浮点有序比较，结果为 bool 值；`<dest> := <var>`，`<a> <b>` 为两个输入槽。
-- `float-is-positive` `float-is-non-negative` `float-is-non-zero`：浮点一元谓词，结果为 bool 值；`<dest> := <var>`，`<src> := <var>`。
 
 # 设计不变量
 
