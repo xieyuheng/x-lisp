@@ -2,7 +2,7 @@
 title: 语法
 ---
 
-# 纲要
+# 目录
 
 - 简介
   - 例子
@@ -27,7 +27,7 @@ xvm-lisp 是 xvm 虚拟机的汇编语言。
 - 需要可执行文件格式
 - 需要加载器
 
-例子：
+## 例子
 
 ```xvm-lisp
 (define-function (self/math/factorial n)
@@ -47,7 +47,7 @@ xvm-lisp 是 xvm 虚拟机的汇编语言。
   (return value.1))
 ```
 
-设计目标：
+## 设计目标
 
 - xvm 应该是一个可移植的虚拟架构。
   - 在实现 native 编译器之前临时使用。
@@ -56,7 +56,7 @@ xvm-lisp 是 xvm 虚拟机的汇编语言。
 - 运行应该高效。
   - 可以优化为 directed threaded 解释器。
 
-设计性质：
+## 设计性质
 
 - 直接支持动态类型语言的 tagged value 编码，
   所有内置函数的参数与返回值都是 tagged value，
@@ -128,7 +128,7 @@ xvm-lisp 使用 LISP 风格的行注释，以 `;` 开头直到行尾。
   (return result))
 ```
 
-## 标签
+# 标签
 
 ```xvm-lisp
 <label> := <name>
@@ -140,7 +140,7 @@ xvm-lisp 使用 LISP 风格的行注释，以 `;` 开头直到行尾。
   标签不改变控制流，也不引入新的作用域。
 - 一个函数的入口就是第一个可执行指令，可以没有起始标签。
 
-## 指令
+# 指令
 
 ```xvm-lisp
 <instr> := (<op> <operand> ...)

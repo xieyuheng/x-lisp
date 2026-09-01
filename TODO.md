@@ -1,5 +1,6 @@
 # xvm2
 
+给  instructions.md 加上目录，给  syntax.md 的目录加上连接。
 [xvm2] 改善 executable 文档
 
 [xvm2] `xvm_t`
