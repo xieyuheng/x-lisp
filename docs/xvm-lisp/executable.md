@@ -19,7 +19,7 @@ title: 可执行文件
 
 一个 `.xvm.exe` 可执行文件由**标长值（TLV）**条目的序列组成。
 
-- 基于[标长值（TLV）](../../diary/2026-08-27-tlv.md)。
+- 基于 [标长值（TLV）](../../diary/2026-08-27-tlv.md)。
 - 加载器按**标签（tag）**收集已知条目，忽略未知条目。
 
 标长值条目格式如下：
@@ -75,7 +75,7 @@ u8  code[code_length]
 - `name_offset` 指向 name table 中的函数名。
 - `arity` 是参数个数。
 - `local_count` 是局部槽位数。
-- `code` 是函数体字节码，编码见 [instructions.md](instructions.md)。
+- `code` 是函数体字节码，编码见 [指令](instructions.md)。
 - 函数的入口是 `code` 的第一个字节。
 
 ## 0x11 variable declaration
