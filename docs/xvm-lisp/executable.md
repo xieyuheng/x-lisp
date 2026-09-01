@@ -20,7 +20,6 @@ title: 可执行文件格式
   - [0x12 primitive function declaration](#0x12-primitive-function-declaration)
   - [0x13 primitive variable declaration](#0x13-primitive-variable-declaration)
   - [0x14 fixup](#0x14-fixup)
-- [指令编码](encoding.md)
 - [加载流程](#加载流程)
 - [示例](#示例)
 
@@ -74,7 +73,7 @@ u8  code[code_length]
 - `name_offset` 指向 string table 中的函数名。
 - `arity` 是参数个数。
 - `local_count` 是局部槽位数。
-- `code` 是函数体字节码，编码见 [encoding.md](encoding.md)。
+- `code` 是函数体字节码，编码见 [instructions.md](instructions.md)。
 - 函数的入口是 `code` 的第一个字节。
 
 ## 0x11 variable declaration
