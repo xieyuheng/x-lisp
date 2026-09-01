@@ -1,7 +1,13 @@
 # xvm2
 
-[xvm2] delete `default-entry`
+[xvm2] 删除 `default-entry`
 [xvm2] rename ©main to main, ©test to test
+
+[xvm2] syntax 文档草稿转正 -- 语法结构分析是否合理？
+
+[xvm2] executable 文档草稿
+[xvm2] instructions 文档草稿
+
 [xvm2] `xvm_t`
 [xvm2] .xvm.exe loader -- use TLV
 [xvm2] 实验 direct threaded code，看看是否比平凡的 switch 速度快
