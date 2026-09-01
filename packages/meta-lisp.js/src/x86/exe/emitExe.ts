@@ -1,14 +1,10 @@
-import {
-  type Exe,
-  type ExeLabelEntry,
-  type ExeRelocationEntry,
-} from "./types.ts"
+import { type Exe, type ExeFixupEntry, type ExeLabelEntry } from "./types.ts"
 
 const MAGIC = new TextEncoder().encode("x86\0\0\0\0")
 
 const HEADER_SIZE = 112
 const LABEL_ENTRY_SIZE = 24
-const RELOCATION_ENTRY_SIZE = 40
+const FIXUP_ENTRY_SIZE = 40
 
 export function emitExe(exe: Exe): Uint8Array {
   const stringNames = collectStringNames(exe)
@@ -21,10 +17,10 @@ export function emitExe(exe: Exe): Uint8Array {
   const stringTableSize = strtab.byteLength
   const labelTableFileOffset = stringTableFileOffset + stringTableSize
   const labelTableSize = exe.labelTable.length * LABEL_ENTRY_SIZE
-  const relocationTableFileOffset = labelTableFileOffset + labelTableSize
-  const relocationTableSize = exe.relocationTable.length * RELOCATION_ENTRY_SIZE
+  const fixupTableFileOffset = labelTableFileOffset + labelTableSize
+  const fixupTableSize = exe.fixupTable.length * FIXUP_ENTRY_SIZE
 
-  const totalSize = relocationTableFileOffset + relocationTableSize
+  const totalSize = fixupTableFileOffset + fixupTableSize
   const buf = new Uint8Array(totalSize)
 
   emitHeader(buf, exe, {
@@ -34,20 +30,15 @@ export function emitExe(exe: Exe): Uint8Array {
     stringTableSize,
     labelTableFileOffset,
     labelTableSize,
-    relocationTableFileOffset,
-    relocationTableSize,
+    fixupTableFileOffset,
+    fixupTableSize,
   })
 
   buf.set(exe.code, codeFileOffset)
   buf.set(exe.data, dataFileOffset)
   buf.set(strtab, stringTableFileOffset)
   emitLabelTable(buf, labelTableFileOffset, exe.labelTable, strtabOffsets)
-  emitRelocationTable(
-    buf,
-    relocationTableFileOffset,
-    exe.relocationTable,
-    strtabOffsets,
-  )
+  emitFixupTable(buf, fixupTableFileOffset, exe.fixupTable, strtabOffsets)
 
   return buf
 }
@@ -62,8 +53,8 @@ function emitHeader(
     stringTableSize: number
     labelTableFileOffset: number
     labelTableSize: number
-    relocationTableFileOffset: number
-    relocationTableSize: number
+    fixupTableFileOffset: number
+    fixupTableSize: number
   },
 ): void {
   let pos = 0
@@ -98,9 +89,9 @@ function emitHeader(
   writeU64LE(buf, pos, BigInt(offsets.labelTableSize))
   pos += 8
 
-  writeU64LE(buf, pos, BigInt(offsets.relocationTableFileOffset))
+  writeU64LE(buf, pos, BigInt(offsets.fixupTableFileOffset))
   pos += 8
-  writeU64LE(buf, pos, BigInt(offsets.relocationTableSize))
+  writeU64LE(buf, pos, BigInt(offsets.fixupTableSize))
 }
 
 function collectStringNames(exe: Exe): string[] {
@@ -108,7 +99,7 @@ function collectStringNames(exe: Exe): string[] {
   for (const entry of exe.labelTable) {
     names.push(entry.name)
   }
-  for (const entry of exe.relocationTable) {
+  for (const entry of exe.fixupTable) {
     names.push(entry.type)
     names.push(entry.name)
   }
@@ -161,10 +152,10 @@ function emitLabelTable(
   }
 }
 
-function emitRelocationTable(
+function emitFixupTable(
   buf: Uint8Array,
   start: number,
-  entries: Array<ExeRelocationEntry>,
+  entries: Array<ExeFixupEntry>,
   strtabOffsets: Map<string, number>,
 ): void {
   let pos = start

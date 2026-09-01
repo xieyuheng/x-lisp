@@ -42,7 +42,7 @@ export function operandEqual(lhs: Operand, rhs: Operand): boolean {
     return lhs.name === rhs.name
   }
 
-  if (lhs.kind === "RelocationOperand" && rhs.kind === "RelocationOperand") {
+  if (lhs.kind === "FixupOperand" && rhs.kind === "FixupOperand") {
     return lhs.type === rhs.type && lhs.name === rhs.name
   }
 

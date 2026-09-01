@@ -44,10 +44,10 @@ x86-lisp 是 x86-64 的 Lisp 语法汇编。
   - [(cc)](#cc)
   - [(var)](#var)
   - [(extern)](#extern)
-  - [(relocation)](#relocation)
+  - [(fixup)](#fixup)
   - [(label-rel32 中 +4 的含义)](#label-rel32-中-4-的含义)
   - [data-operand](#data-operand)
-- [操作数与重定位类型](#操作数与重定位类型)
+- [操作数与修正类型](#操作数与修正类型)
 - [类型](#类型)
   - [内置类型](#内置类型)
   - [结构体类型](#结构体类型)
@@ -212,7 +212,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (address <name>)
 ```
 
-符号地址作为 64-bit 立即数（`movabs` + 重定位）。
+符号地址作为 64-bit 立即数（`movabs` + 修正）。
 
 ```scheme
 (address origin)
@@ -327,20 +327,20 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 (extern <name>)
 ```
 
-外部符号引用（如 libc 函数、syscall 入口），由外部重定位解析。
+外部符号引用（如 libc 函数、syscall 入口），由外部修正处理。
 
 ```scheme
 (extern printf)
 ```
 
-## (relocation)
+## (fixup)
 
 ```scheme
-(relocation <type> <name>)
+(fixup <type> <name>)
 ```
 
-重定位 operand，在指令中留下回填空间，
-并在 relocation table 中记录 relocation entry。
+修正操作数，在指令中留下回填空间，
+并在修正表中记录修正条目。
 
 `type` 决定 loader 的回填方式。
 
@@ -353,7 +353,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 | 其他自定义     | 64-bit    | 由 loader 解释                      |
 
 ```scheme
-(mov (reg rax) (relocation symbol-value foo))
+(mov (reg rax) (fixup symbol-value foo))
 ```
 
 ### (label-rel32 中 addend 的含义)
@@ -373,7 +373,7 @@ cmp r/m, imm        → 同上
 
 位移字段（hole）不一定是指令的最后一个字段 —— 如
 `cmp byte [buffer], 61h` 中 disp32 之后还有 imm8。
-relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
+修正条目的 `segmentOffset` 指向位移字段的**起始位置**，
 `addend` 由汇编器在生成指令时算出 `addend = -(rip - segmentOffset)`，
 即「下一条指令相对位移起点的偏移」的相反数：
 
@@ -419,34 +419,34 @@ relocation entry 的 `segmentOffset` 指向位移字段的**起始位置**，
 
 当前 **只在 `.x86.exe` 格式下支持**（flat 格式没有独立 data section）。
 
-# 操作数与重定位类型
+# 操作数与修正类型
 
-汇编器在生成 `.x86.exe` 时，以下 operand 自动产生 relocation table 条目。
+汇编器在生成 `.x86.exe` 时，以下 operand 自动产生修正表条目。
 
 ### Code 段
 
-| operand               | 指令                 | 编码              | reloc type    | segment |
+| operand               | 指令                 | 编码              | 修正类型    | segment |
 |-----------------------|----------------------|-------------------|---------------|---------|
 | `(label X)`           | `call` / `jmp` / `j` | `opcode + disp32` | `label-rel32` | CODE    |
 | `(address X)`         | `mov` / `lea`        | `[rip + disp32]`  | `label-rel32` | CODE    |
 | `(mem (address X))`  | `mov`                | `[rip + disp32]`  | `label-rel32` | CODE    |
 | `(extern X)`          | `mov`                | `movabs imm64`    | `extern`      | CODE    |
-| `(relocation T X)`    | `mov`                | `movabs imm64`    | `T`           | CODE    |
+| `(fixup T X)`    | `mov`                | `movabs imm64`    | `T`           | CODE    |
 
 `(label X)`、`(address X)` 和 `(mem (address X))` 在语义上等价于
-`(relocation label-rel32 X)`。
+`(fixup label-rel32 X)`。
 
-`(extern X)` 等价于 `(relocation extern X)`。
+`(extern X)` 等价于 `(fixup extern X)`。
 
 ### Data 段
 
-| 数据形式                   | reloc type    | segment |
+| 数据形式                   | 修正类型    | segment |
 |----------------------------|---------------|---------|
 | `(address X)` 字段         | `label-abs64` | DATA    |
 | `(pointer ...)` 字段       | `label-abs64` | DATA    |
 | string 作为 pointer-t 字段 | `label-abs64` | DATA    |
 
-data 段中的 `(address X)` 等价于 `(relocation label-abs64 X)`。
+data 段中的 `(address X)` 等价于 `(fixup label-abs64 X)`。
 pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分配名称
 并记录为 label table 的 DATA 条目。
 

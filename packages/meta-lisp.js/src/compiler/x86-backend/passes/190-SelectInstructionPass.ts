@@ -335,7 +335,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       return [
         X86.Instr("mov", [
           cellToVar(out),
-          X86.RelocationOperand("symbol-value", content),
+          X86.FixupOperand("symbol-value", content),
         ]),
       ]
     }
@@ -344,10 +344,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectSymbol(instr.attributes, "content")
       return [
-        X86.Instr("mov", [
-          cellToVar(out),
-          X86.RelocationOperand("symbol", content),
-        ]),
+        X86.Instr("mov", [cellToVar(out), X86.FixupOperand("symbol", content)]),
       ]
     }
 
@@ -357,7 +354,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       return [
         X86.Instr("mov", [
           cellToVar(out),
-          X86.RelocationOperand("text-value", content),
+          X86.FixupOperand("text-value", content),
         ]),
       ]
     }
@@ -366,10 +363,7 @@ function selectInstr(state: SelectState, instr: B.Instr): Array<X86.Instr> {
       const [out] = instr.output
       const content = B.expectString(instr.attributes, "content")
       return [
-        X86.Instr("mov", [
-          cellToVar(out),
-          X86.RelocationOperand("string", content),
-        ]),
+        X86.Instr("mov", [cellToVar(out), X86.FixupOperand("string", content)]),
       ]
     }
 

@@ -3,7 +3,7 @@ import type { Instr } from "../instr/index.ts"
 import type {
   AddressOperand,
   ExternOperand,
-  RelocationOperand,
+  FixupOperand,
   RipMemOperand,
 } from "../operand/index.ts"
 import { encodeMem } from "./mem.ts"
@@ -48,8 +48,8 @@ export function encodeMov(instr: Instr): Array<EncodedInstruction> {
       return [encodeMovRegExtern(destReg, src)]
     }
 
-    if (src.kind === "RelocationOperand") {
-      return [encodeMovRelocation(destReg, src)]
+    if (src.kind === "FixupOperand") {
+      return [encodeMovFixup(destReg, src)]
     }
   }
 
@@ -358,9 +358,9 @@ function encodeMovRegExtern(
   }
 }
 
-function encodeMovRelocation(
+function encodeMovFixup(
   destReg: string,
-  _src: RelocationOperand,
+  _src: FixupOperand,
 ): EncodedInstruction {
   const code = regCode(destReg)
   const ext = isExtendedReg(destReg)

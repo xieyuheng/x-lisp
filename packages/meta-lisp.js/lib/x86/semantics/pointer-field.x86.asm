@@ -1,8 +1,8 @@
 ; x86.exe: pointer-t field — anonymous struct, read sub-field via mem
 ;
 ; data layout (depth-first):
-;   config.table  → 8B placeholder (reloc → entry bytes)
-;   entry bytes   → key(8B zeros, reloc → "foo") + value(42)
+;   config.table  → 8B placeholder (fixup → entry bytes)
+;   entry bytes   → key(8B zeros, fixup → "foo") + value(42)
 ;   "foo\0"
 ;
 ; define-code: load config.table pointer, mem to entry.value, return 42

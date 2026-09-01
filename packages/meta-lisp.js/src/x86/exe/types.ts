@@ -11,7 +11,7 @@ export type ExeLabelEntry = {
   segmentOffset: number
 }
 
-export type ExeRelocationEntry = {
+export type ExeFixupEntry = {
   type: string
   name: string
   segmentKind: ExeSegmentKind
@@ -25,5 +25,5 @@ export type Exe = {
   spaceSize: number
   entryCodeSegmentOffset: number
   labelTable: Array<ExeLabelEntry>
-  relocationTable: Array<ExeRelocationEntry>
+  fixupTable: Array<ExeFixupEntry>
 }

@@ -5,7 +5,7 @@ export {
   ExeDataSegment,
   ExeSpaceSegment,
   type Exe,
+  type ExeFixupEntry,
   type ExeLabelEntry,
-  type ExeRelocationEntry,
   type ExeSegmentKind,
 } from "./types.ts"

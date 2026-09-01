@@ -1,7 +1,7 @@
 ; x86.exe: zero-length string-t field
 ;
 ; data layout:
-;   msg.text → 8B placeholder (reloc → "")
+;   msg.text → 8B placeholder (fixup → "")
 ;   ""\0 after all struct fields (just a null byte)
 ;
 ; define-code: load string pointer, read first byte = 0 (null terminator)

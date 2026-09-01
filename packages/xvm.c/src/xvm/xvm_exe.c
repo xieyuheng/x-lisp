@@ -20,19 +20,19 @@ typedef struct {
   uint32_t definition_index;
   uint32_t code_offset;
   char    *target_name;
-} definition_relocation_t;
+} definition_fixup_t;
 
 typedef struct {
   uint32_t definition_index;
   uint32_t code_offset;
   uint32_t value_index;
-} value_relocation_t;
+} value_fixup_t;
 
 struct xvm_exe_t {
   array_t *definitions;
   array_t *values;
-  array_t *definition_relocations;
-  array_t *value_relocations;
+  array_t *definition_fixups;
+  array_t *value_fixups;
   char *entry_name;
 };
 
@@ -40,8 +40,8 @@ xvm_exe_t *make_xvm_exe(void) {
   xvm_exe_t *self = new(xvm_exe_t);
   self->definitions = make_array();
   self->values = make_array();
-  self->definition_relocations = make_array();
-  self->value_relocations = make_array();
+  self->definition_fixups = make_array();
+  self->value_fixups = make_array();
   self->entry_name = NULL;
   return self;
 }
@@ -62,18 +62,18 @@ void xvm_exe_free(xvm_exe_t *self) {
   }
   array_free(self->values);
 
-  for (size_t i = 0; i < array_length(self->definition_relocations); i++) {
-    definition_relocation_t *reloc = array_get(self->definition_relocations, i);
-    free(reloc->target_name);
-    free(reloc);
+  for (size_t i = 0; i < array_length(self->definition_fixups); i++) {
+    definition_fixup_t *fixup = array_get(self->definition_fixups, i);
+    free(fixup->target_name);
+    free(fixup);
   }
-  array_free(self->definition_relocations);
+  array_free(self->definition_fixups);
 
-  for (size_t i = 0; i < array_length(self->value_relocations); i++) {
-    value_relocation_t *reloc = array_get(self->value_relocations, i);
-    free(reloc);
+  for (size_t i = 0; i < array_length(self->value_fixups); i++) {
+    value_fixup_t *fixup = array_get(self->value_fixups, i);
+    free(fixup);
   }
-  array_free(self->value_relocations);
+  array_free(self->value_fixups);
 
   free(self->entry_name);
 
@@ -132,7 +132,7 @@ static void collect_definitions_from_mod(xvm_exe_t *self, program_t *program) {
   }
 }
 
-static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_index,
+static void scan_bytecode_for_fixups(xvm_exe_t *self, size_t definition_index,
                                           uint8_t *code, size_t length) {
   size_t pc = 0;
 
@@ -143,22 +143,22 @@ static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_ind
       definition_t *target;
       memory_load(code + pc + 1, target);
 
-      definition_relocation_t *reloc = new(definition_relocation_t);
-      reloc->definition_index = (uint32_t)definition_index;
-      reloc->code_offset = (uint32_t)(pc + 1);
-      reloc->target_name = string_copy(target->name);
-      array_push(self->definition_relocations, reloc);
+      definition_fixup_t *fixup = new(definition_fixup_t);
+      fixup->definition_index = (uint32_t)definition_index;
+      fixup->code_offset = (uint32_t)(pc + 1);
+      fixup->target_name = string_copy(target->name);
+      array_push(self->definition_fixups, fixup);
     }
 
     if (op == OP_REF || op == OP_GLOBAL_LOAD || op == OP_GLOBAL_STORE) {
       definition_t *target;
       memory_load(code + pc + 1 + sizeof(uint16_t), target);
 
-      definition_relocation_t *reloc = new(definition_relocation_t);
-      reloc->definition_index = (uint32_t)definition_index;
-      reloc->code_offset = (uint32_t)(pc + 1 + sizeof(uint16_t));
-      reloc->target_name = string_copy(target->name);
-      array_push(self->definition_relocations, reloc);
+      definition_fixup_t *fixup = new(definition_fixup_t);
+      fixup->definition_index = (uint32_t)definition_index;
+      fixup->code_offset = (uint32_t)(pc + 1 + sizeof(uint16_t));
+      fixup->target_name = string_copy(target->name);
+      array_push(self->definition_fixups, fixup);
     }
 
     if (op == OP_LOAD) {
@@ -181,11 +181,11 @@ static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_ind
         uint32_t value_index = (uint32_t)array_length(self->values);
         array_push(self->values, entry);
 
-        value_relocation_t *reloc = new(value_relocation_t);
-        reloc->definition_index = (uint32_t)definition_index;
-        reloc->code_offset = (uint32_t)(pc + 1 + sizeof(uint16_t));
-        reloc->value_index = value_index;
-        array_push(self->value_relocations, reloc);
+        value_fixup_t *fixup = new(value_fixup_t);
+        fixup->definition_index = (uint32_t)definition_index;
+        fixup->code_offset = (uint32_t)(pc + 1 + sizeof(uint16_t));
+        fixup->value_index = value_index;
+        array_push(self->value_fixups, fixup);
       }
     }
 
@@ -193,16 +193,16 @@ static void scan_bytecode_for_relocations(xvm_exe_t *self, size_t definition_ind
   }
 }
 
-static void collect_relocations_from_bytecode(xvm_exe_t *self) {
+static void collect_fixups_from_bytecode(xvm_exe_t *self) {
   for (size_t i = 0; i < array_length(self->definitions); i++) {
     definition_entry_t *def_entry = array_get(self->definitions, i);
-    scan_bytecode_for_relocations(self, i, def_entry->code, def_entry->code_length);
+    scan_bytecode_for_fixups(self, i, def_entry->code, def_entry->code_length);
   }
 }
 
 void xvm_exe_from_program(xvm_exe_t *self, program_t *program) {
   collect_definitions_from_mod(self, program);
-  collect_relocations_from_bytecode(self);
+  collect_fixups_from_bytecode(self);
   if (program->entry_name) {
     self->entry_name = string_copy(program->entry_name);
   }
@@ -252,9 +252,9 @@ static void collect_strings(string_table_builder_t *st, xvm_exe_t *self) {
     value_entry_t *val_entry = array_get(self->values, i);
     string_table_builder_add(st, val_entry->data);
   }
-  for (size_t i = 0; i < array_length(self->definition_relocations); i++) {
-    definition_relocation_t *reloc = array_get(self->definition_relocations, i);
-    string_table_builder_add(st, reloc->target_name);
+  for (size_t i = 0; i < array_length(self->definition_fixups); i++) {
+    definition_fixup_t *fixup = array_get(self->definition_fixups, i);
+    string_table_builder_add(st, fixup->target_name);
   }
   if (self->entry_name) {
     string_table_builder_add(st, self->entry_name);
@@ -262,8 +262,8 @@ static void collect_strings(string_table_builder_t *st, xvm_exe_t *self) {
 }
 
 static void write_header(buffer_t *out, uint32_t definition_count, uint32_t value_count,
-                         uint32_t definition_relocation_count,
-                         uint32_t value_relocation_count,
+                         uint32_t definition_fixup_count,
+                         uint32_t value_fixup_count,
                          uint32_t string_table_size,
                          uint32_t entry_offset) {
   uint8_t header[32];
@@ -274,8 +274,8 @@ static void write_header(buffer_t *out, uint32_t definition_count, uint32_t valu
   memory_store(header + 8,  definition_count);
   memory_store(header + 12, string_table_size);
   memory_store(header + 16, value_count);
-  memory_store(header + 20, definition_relocation_count);
-  memory_store(header + 24, value_relocation_count);
+  memory_store(header + 20, definition_fixup_count);
+  memory_store(header + 24, value_fixup_count);
   memory_store(header + 28, entry_offset);
   buffer_append_bytes(out, header, 32);
 }
@@ -310,25 +310,25 @@ static void write_values_section(buffer_t *out, xvm_exe_t *self,
   }
 }
 
-static void write_definition_relocations_section(buffer_t *out, xvm_exe_t *self,
+static void write_definition_fixups_section(buffer_t *out, xvm_exe_t *self,
                                                  string_table_builder_t *st) {
-  for (size_t i = 0; i < array_length(self->definition_relocations); i++) {
-    definition_relocation_t *reloc = array_get(self->definition_relocations, i);
-    uint32_t target_offset = string_table_builder_add(st, reloc->target_name);
+  for (size_t i = 0; i < array_length(self->definition_fixups); i++) {
+    definition_fixup_t *fixup = array_get(self->definition_fixups, i);
+    uint32_t target_offset = string_table_builder_add(st, fixup->target_name);
 
-    buffer_append_bytes(out, (uint8_t *)&reloc->definition_index, 4);
-    buffer_append_bytes(out, (uint8_t *)&reloc->code_offset, 4);
+    buffer_append_bytes(out, (uint8_t *)&fixup->definition_index, 4);
+    buffer_append_bytes(out, (uint8_t *)&fixup->code_offset, 4);
     buffer_append_bytes(out, (uint8_t *)&target_offset, 4);
   }
 }
 
-static void write_value_relocations_section(buffer_t *out, xvm_exe_t *self) {
-  for (size_t i = 0; i < array_length(self->value_relocations); i++) {
-    value_relocation_t *reloc = array_get(self->value_relocations, i);
+static void write_value_fixups_section(buffer_t *out, xvm_exe_t *self) {
+  for (size_t i = 0; i < array_length(self->value_fixups); i++) {
+    value_fixup_t *fixup = array_get(self->value_fixups, i);
 
-    buffer_append_bytes(out, (uint8_t *)&reloc->definition_index, 4);
-    buffer_append_bytes(out, (uint8_t *)&reloc->code_offset, 4);
-    buffer_append_bytes(out, (uint8_t *)&reloc->value_index, 4);
+    buffer_append_bytes(out, (uint8_t *)&fixup->definition_index, 4);
+    buffer_append_bytes(out, (uint8_t *)&fixup->code_offset, 4);
+    buffer_append_bytes(out, (uint8_t *)&fixup->value_index, 4);
   }
 }
 
@@ -338,8 +338,8 @@ void xvm_exe_dump(xvm_exe_t *self, const char *pathname) {
 
   uint32_t definition_count = (uint32_t)array_length(self->definitions);
   uint32_t value_count = (uint32_t)array_length(self->values);
-  uint32_t definition_relocation_count = (uint32_t)array_length(self->definition_relocations);
-  uint32_t value_relocation_count = (uint32_t)array_length(self->value_relocations);
+  uint32_t definition_fixup_count = (uint32_t)array_length(self->definition_fixups);
+  uint32_t value_fixup_count = (uint32_t)array_length(self->value_fixups);
   uint32_t string_table_size = (uint32_t)buffer_length(st->buffer);
   uint32_t entry_offset = self->entry_name
     ? string_table_builder_add(st, self->entry_name)
@@ -348,12 +348,12 @@ void xvm_exe_dump(xvm_exe_t *self, const char *pathname) {
   buffer_t *out = make_buffer();
 
   write_header(out, definition_count, value_count,
-               definition_relocation_count, value_relocation_count,
+               definition_fixup_count, value_fixup_count,
                string_table_size, entry_offset);
   write_definitions_section(out, self, st);
   write_values_section(out, self, st);
-  write_definition_relocations_section(out, self, st);
-  write_value_relocations_section(out, self);
+  write_definition_fixups_section(out, self, st);
+  write_value_fixups_section(out, self);
   buffer_append_bytes(out, buffer_raw_bytes(st->buffer), buffer_length(st->buffer));
 
   file_t *file = open_file_or_fail(pathname, "w");
@@ -402,7 +402,7 @@ typedef struct {
   uint32_t definition_index;
   uint32_t code_offset;
   uint32_t target_offset;
-} raw_definition_relocation_t;
+} raw_definition_fixup_t;
 
 // ── helpers for xvm_exe_load ──
 
@@ -412,8 +412,8 @@ typedef struct {
   uint32_t definition_count;
   uint32_t string_table_size;
   uint32_t value_count;
-  uint32_t definition_relocation_count;
-  uint32_t value_relocation_count;
+  uint32_t definition_fixup_count;
+  uint32_t value_fixup_count;
   uint32_t entry_offset;
 } file_header_t;
 
@@ -423,8 +423,8 @@ static void parse_and_validate_header(uint8_t *bytes, size_t *offset, file_heade
   read_u32(bytes, offset, &header->definition_count);
   read_u32(bytes, offset, &header->string_table_size);
   read_u32(bytes, offset, &header->value_count);
-  read_u32(bytes, offset, &header->definition_relocation_count);
-  read_u32(bytes, offset, &header->value_relocation_count);
+  read_u32(bytes, offset, &header->definition_fixup_count);
+  read_u32(bytes, offset, &header->value_fixup_count);
   read_u32(bytes, offset, &header->entry_offset);
 
   if (header->magic != XVM_EXE_MAGIC) {
@@ -481,32 +481,32 @@ static raw_value_t *parse_raw_values(uint8_t *bytes, size_t *offset,
   return raw_vals;
 }
 
-static raw_definition_relocation_t *parse_raw_definition_relocations(uint8_t *bytes, size_t *offset,
+static raw_definition_fixup_t *parse_raw_definition_fixups(uint8_t *bytes, size_t *offset,
                                                                      uint32_t count) {
-  raw_definition_relocation_t *raw_relocs = NULL;
+  raw_definition_fixup_t *raw_fixups = NULL;
   if (count > 0) {
-    raw_relocs = allocate(sizeof(raw_definition_relocation_t) * count);
+    raw_fixups = allocate(sizeof(raw_definition_fixup_t) * count);
   }
 
   for (uint32_t i = 0; i < count; i++) {
-    read_u32(bytes, offset, &raw_relocs[i].definition_index);
-    read_u32(bytes, offset, &raw_relocs[i].code_offset);
-    read_u32(bytes, offset, &raw_relocs[i].target_offset);
+    read_u32(bytes, offset, &raw_fixups[i].definition_index);
+    read_u32(bytes, offset, &raw_fixups[i].code_offset);
+    read_u32(bytes, offset, &raw_fixups[i].target_offset);
   }
 
-  return raw_relocs;
+  return raw_fixups;
 }
 
-static void parse_value_relocations(xvm_exe_t *self, uint8_t *bytes, size_t *offset,
+static void parse_value_fixups(xvm_exe_t *self, uint8_t *bytes, size_t *offset,
                                     uint32_t count) {
   for (uint32_t i = 0; i < count; i++) {
-    value_relocation_t *reloc = new(value_relocation_t);
+    value_fixup_t *fixup = new(value_fixup_t);
 
-    read_u32(bytes, offset, &reloc->definition_index);
-    read_u32(bytes, offset, &reloc->code_offset);
-    read_u32(bytes, offset, &reloc->value_index);
+    read_u32(bytes, offset, &fixup->definition_index);
+    read_u32(bytes, offset, &fixup->code_offset);
+    read_u32(bytes, offset, &fixup->value_index);
 
-    array_push(self->value_relocations, reloc);
+    array_push(self->value_fixups, fixup);
   }
 }
 
@@ -548,17 +548,17 @@ static void resolve_values(xvm_exe_t *self, raw_value_t *raw_vals,
   }
 }
 
-static void resolve_definition_relocations(xvm_exe_t *self,
-                                           raw_definition_relocation_t *raw_relocs,
+static void parse_definition_fixups(xvm_exe_t *self,
+                                           raw_definition_fixup_t *raw_fixups,
                                            uint32_t count, uint8_t *string_table) {
   for (uint32_t i = 0; i < count; i++) {
-    definition_relocation_t *reloc = new(definition_relocation_t);
+    definition_fixup_t *fixup = new(definition_fixup_t);
 
-    reloc->definition_index = raw_relocs[i].definition_index;
-    reloc->code_offset = raw_relocs[i].code_offset;
-    reloc->target_name = string_copy((const char *)(string_table + raw_relocs[i].target_offset));
+    fixup->definition_index = raw_fixups[i].definition_index;
+    fixup->code_offset = raw_fixups[i].code_offset;
+    fixup->target_name = string_copy((const char *)(string_table + raw_fixups[i].target_offset));
 
-    array_push(self->definition_relocations, reloc);
+    array_push(self->definition_fixups, fixup);
   }
 }
 
@@ -574,9 +574,9 @@ void xvm_exe_load(xvm_exe_t *self, const char *pathname) {
 
   raw_definition_t *raw_defs = parse_raw_definitions(bytes, &offset, header.definition_count);
   raw_value_t *raw_vals = parse_raw_values(bytes, &offset, header.value_count);
-  raw_definition_relocation_t *raw_def_relocs =
-    parse_raw_definition_relocations(bytes, &offset, header.definition_relocation_count);
-  parse_value_relocations(self, bytes, &offset, header.value_relocation_count);
+  raw_definition_fixup_t *raw_def_fixups =
+    parse_raw_definition_fixups(bytes, &offset, header.definition_fixup_count);
+  parse_value_fixups(self, bytes, &offset, header.value_fixup_count);
 
   uint8_t *string_table = bytes + offset;
 
@@ -586,11 +586,11 @@ void xvm_exe_load(xvm_exe_t *self, const char *pathname) {
 
   resolve_definitions(self, raw_defs, header.definition_count, string_table);
   resolve_values(self, raw_vals, header.value_count, string_table);
-  resolve_definition_relocations(self, raw_def_relocs, header.definition_relocation_count, string_table);
+  parse_definition_fixups(self, raw_def_fixups, header.definition_fixup_count, string_table);
 
   free(raw_defs);
   free(raw_vals);
-  free(raw_def_relocs);
+  free(raw_def_fixups);
   free(bytes);
 }
 
@@ -658,49 +658,49 @@ static definition_t **build_definitions_and_register(xvm_exe_t *self, program_t 
   return definitions;
 }
 
-static void patch_definition_relocations(definition_t **definitions,
+static void apply_definition_fixups(definition_t **definitions,
                                          xvm_exe_t *self, program_t *program) {
-  for (uint32_t i = 0; i < array_length(self->definition_relocations); i++) {
-    definition_relocation_t *reloc = array_get(self->definition_relocations, i);
-    size_t def_index = reloc->definition_index;
+  for (uint32_t i = 0; i < array_length(self->definition_fixups); i++) {
+    definition_fixup_t *fixup = array_get(self->definition_fixups, i);
+    size_t def_index = fixup->definition_index;
     if (def_index >= array_length(self->definitions)) {
-      who_printf("definition relocation definition_index out of range: %zu\n", def_index);
+      who_printf("definition fixup definition_index out of range: %zu\n", def_index);
       exit(1);
     }
 
     function_t *fn = definition_function(definitions[def_index]);
-    definition_t *target_def = program_lookup_or_fail(program, reloc->target_name);
+    definition_t *target_def = program_lookup_or_fail(program, fixup->target_name);
 
-    size_t code_offset = reloc->code_offset;
+    size_t code_offset = fixup->code_offset;
     if (code_offset + sizeof(definition_t *) > buffer_length(fn->buffer)) {
-      who_printf("definition relocation offset out of range: %zu\n", code_offset);
+      who_printf("definition fixup offset out of range: %zu\n", code_offset);
       exit(1);
     }
     memory_store(buffer_raw_bytes(fn->buffer) + code_offset, target_def);
   }
 }
 
-static void patch_value_relocations(definition_t **definitions,
+static void apply_value_fixups(definition_t **definitions,
                                     value_t *value_objects,
                                     uint32_t value_count, xvm_exe_t *self) {
-  for (uint32_t i = 0; i < array_length(self->value_relocations); i++) {
-    value_relocation_t *reloc = array_get(self->value_relocations, i);
-    size_t def_index = reloc->definition_index;
+  for (uint32_t i = 0; i < array_length(self->value_fixups); i++) {
+    value_fixup_t *fixup = array_get(self->value_fixups, i);
+    size_t def_index = fixup->definition_index;
     if (def_index >= array_length(self->definitions)) {
-      who_printf("value relocation definition_index out of range: %zu\n", def_index);
+      who_printf("value fixup definition_index out of range: %zu\n", def_index);
       exit(1);
     }
 
     function_t *fn = definition_function(definitions[def_index]);
-    size_t value_index = reloc->value_index;
+    size_t value_index = fixup->value_index;
     if (value_index >= value_count) {
-      who_printf("value relocation value_index out of range: %zu\n", value_index);
+      who_printf("value fixup value_index out of range: %zu\n", value_index);
       exit(1);
     }
 
-    size_t code_offset = reloc->code_offset;
+    size_t code_offset = fixup->code_offset;
     if (code_offset + sizeof(value_t) > buffer_length(fn->buffer)) {
-      who_printf("value relocation offset out of range: %zu\n", code_offset);
+      who_printf("value fixup offset out of range: %zu\n", code_offset);
       exit(1);
     }
     memory_store(buffer_raw_bytes(fn->buffer) + code_offset, value_objects[value_index]);
@@ -721,8 +721,8 @@ program_t *xvm_exe_to_program(xvm_exe_t *self) {
   uint32_t definition_count;
   definition_t **definitions = build_definitions_and_register(self, program, &definition_count);
 
-  patch_definition_relocations(definitions, self, program);
-  patch_value_relocations(definitions, value_objects, value_count, self);
+  apply_definition_fixups(definitions, self, program);
+  apply_value_fixups(definitions, value_objects, value_count, self);
 
   program_setup(program);
 

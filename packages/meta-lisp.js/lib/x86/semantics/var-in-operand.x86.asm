@@ -1,6 +1,6 @@
 ;; test: (address name) in operand position → AddressOperand
 ;; path: (address answer) → parseOperand → AddressOperand("answer")
-;;       → encode: lea rax, [rip + disp32] (movabs with relocation)
+;;       → encode: lea rax, [rip + disp32] (movabs with fixup)
 ;;       → then mem to read the value
 
 (define-struct int-cell-t

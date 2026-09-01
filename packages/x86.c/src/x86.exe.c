@@ -43,7 +43,7 @@ static void handle_x86_info(cli_ctx_t *ctx) {
 
   x86_exe_header_t *h = exe->header;
   size_t label_count = h->label_table_size / sizeof(x86_exe_label_entry_t);
-  size_t relocation_count = h->relocation_table_size / sizeof(x86_exe_relocation_entry_t);
+  size_t fixup_count = h->fixup_table_size / sizeof(x86_exe_fixup_entry_t);
 
   printf("Magic:      x86\n");
   printf("Version:    %lu\n", h->version);
@@ -53,7 +53,7 @@ static void handle_x86_info(cli_ctx_t *ctx) {
   printf("Space:      %lu bytes\n", h->space_size);
   printf("String table:     %lu bytes at file offset %lu\n", h->string_table_size, h->string_table_file_offset);
   printf("Label table:      %zu entries (%lu bytes) at file offset %lu\n", label_count, h->label_table_size, h->label_table_file_offset);
-  printf("Relocation table: %zu entries (%lu bytes) at file offset %lu\n", relocation_count, h->relocation_table_size, h->relocation_table_file_offset);
+  printf("Fixup table: %zu entries (%lu bytes) at file offset %lu\n", fixup_count, h->fixup_table_size, h->fixup_table_file_offset);
 
   x86_exe_free(exe);
 }

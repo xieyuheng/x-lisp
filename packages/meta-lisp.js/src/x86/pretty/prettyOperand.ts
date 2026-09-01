@@ -59,9 +59,9 @@ export function prettyOperand(operand: X86.Operand): Ppml.Node {
       return Ppml.prettySyntax("var", [], [Ppml.text(operand.name)])
     case "ExternOperand":
       return Ppml.prettySyntax("extern", [], [Ppml.text(operand.name)])
-    case "RelocationOperand":
+    case "FixupOperand":
       return Ppml.prettySyntax(
-        "relocation",
+        "fixup",
         [],
         [Ppml.text(operand.type), Ppml.text(operand.name)],
       )

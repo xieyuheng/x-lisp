@@ -2,7 +2,7 @@
 
 `.xvm.exe` 是 meta-runtime xvm 后端的预编译可执行文件格式。
 将 `.xvm.asm` 源码的解析和汇编结果序列化为二进制，
-加载时无需重新解析 sexp 和汇编，只需反序列化 + 重定位即可执行。
+加载时无需重新解析 sexp 和汇编，只需反序列化 + 修正即可执行。
 
 所有整数均为小端（little-endian）。
 
@@ -15,8 +15,8 @@
 | 8      | 4    | definition_count            |                       |
 | 12     | 4    | string_table_size           |                       |
 | 16     | 4    | value_count                 |                       |
-| 20     | 4    | definition_relocation_count |                       |
-| 24     | 4    | value_relocation_count      |                       |
+| 20     | 4    | definition_fixup_count |                       |
+| 24     | 4    | value_fixup_count      |                       |
 
 ## Definition Table (definition_count 条)
 
@@ -39,7 +39,7 @@
 | 1    | kind        | 2=string, 3=symbol   |
 | 4    | data_offset | 指向 string table             |
 
-## Definition Relocation Table (definition_relocation_count 条)
+## Definition 修正表（definition_fixup_count 条）
 
 | size | field               | description          |
 |------|---------------------|----------------------|
@@ -47,7 +47,7 @@
 | 4    | code_offset         | code 内字节偏移      |
 | 4    | string_table_offset | 指向 string table    |
 
-## Value Relocation Table (value_relocation_count 条)
+## Value 修正表（value_fixup_count 条）
 
 | size | field            | description          |
 |------|------------------|----------------------|

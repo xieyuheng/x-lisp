@@ -182,6 +182,6 @@ curry 机制。`call-n` / `call-prim-n` / `apply-n` 的 `n == arity` 由翻译�
   - `call-n` / `tail-call-n` 使用 `(fn ...)`
   - `call-prim-n` / `tail-call-prim-n` 使用 `(prim ...)`
   - `load-closure` / `make-closure` 使用 `(fn ...)` 作为 closure 的来源；primitive 必须先转换为其 wrap 函数
-- 无环境 closure 用 `load-closure` 构造，可以优化为 relocation。
+- 无环境 closure 用 `load-closure` 构造，可以优化为修正。
 - 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
 - `make-closure` 不接受可变数量的 env 参数，环境通过 `store-closure-arg` 逐个填充。

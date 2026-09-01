@@ -1,7 +1,7 @@
 ;; test: (address name) syntax in define-data
 ;; path: (address cell) → parseExp → AddressExp
 ;;       → evaluate → AddressValue("cell")
-;;       → layout: write 8-byte placeholder + DataAddressReloc to cell
+;;       → layout: write 8-byte placeholder + DataAddressFixup to cell
 ;;       → read via (mem (address ptr)) → load address → mem
 
 (define-struct int-cell-t

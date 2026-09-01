@@ -39,7 +39,7 @@ uint64_t x86_exe_version(x86_exe_t *x86) {
 }
 
 // ---------------------------------------------------------------------------
-// relocation helpers
+// fixup helpers
 // ---------------------------------------------------------------------------
 
 static void *segment_base(x86_exe_t *self, x86_exe_segment_kind_t kind) {
@@ -94,7 +94,7 @@ static void apply_label_abs64(x86_exe_t *self, const char *name, uint8_t *patch_
 }
 
 // ---------------------------------------------------------------------------
-// load: parse → mmap → relocations → mprotect
+// load: parse → mmap → fixups → mprotect
 // ---------------------------------------------------------------------------
 
 void x86_exe_load(x86_exe_t *self) {
@@ -120,11 +120,11 @@ void x86_exe_load(x86_exe_t *self) {
                X86_LABEL_PACK(entry->segment_kind, entry->segment_offset));
   }
 
-  // --- parse relocation table ---
+  // --- parse fixup table ---
 
-  self->relocation_count = h->relocation_table_size / sizeof(x86_exe_relocation_entry_t);
-  self->relocation_entries =
-    (x86_exe_relocation_entry_t *)(file_start + h->relocation_table_file_offset);
+  self->fixup_count = h->fixup_table_size / sizeof(x86_exe_fixup_entry_t);
+  self->fixup_entries =
+    (x86_exe_fixup_entry_t *)(file_start + h->fixup_table_file_offset);
 
   // --- mmap image ---
 
@@ -156,10 +156,10 @@ void x86_exe_load(x86_exe_t *self) {
   memcpy(self->code, file_start + h->code_file_offset, h->code_size);
   memcpy(self->data, file_start + h->data_file_offset, h->data_size);
 
-  // --- apply relocations ---
+  // --- apply fixups ---
 
-  for (size_t i = 0; i < self->relocation_count; i++) {
-    x86_exe_relocation_entry_t *r = &self->relocation_entries[i];
+  for (size_t i = 0; i < self->fixup_count; i++) {
+    x86_exe_fixup_entry_t *r = &self->fixup_entries[i];
     const char *type = self->string_table + r->type;
     const char *name = self->string_table + r->name;
 
@@ -170,9 +170,9 @@ void x86_exe_load(x86_exe_t *self) {
     } else if (string_equal(type, "label-abs64")) {
       apply_label_abs64(self, name, patch_addr, r->addend);
     } else if (string_equal(type, "extern")) {
-      where_printf("[x86_exe_load] warning: 'extern' relocation not supported yet\n");
+      where_printf("[x86_exe_load] warning: 'extern' fixup not supported yet\n");
     } else {
-      where_printf("[x86_exe_load] warning: unknown relocation type '%s'\n", type);
+      where_printf("[x86_exe_load] warning: unknown fixup type '%s'\n", type);
     }
   }
 

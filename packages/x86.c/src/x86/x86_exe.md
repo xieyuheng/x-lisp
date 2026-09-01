@@ -14,8 +14,8 @@ title: 可执行文件
 还在于通过可执行文件来控制 loader 的行为。
 
 其中最典型的对 loader 行为的控制，
-就是使用 `(relocation <type> <name>)` operand
-创建可执行文件中过的 relocation entry，
+就是使用 `(fixup <type> <name>)` operand
+创建可执行文件中的修正条目，
 来控制 loader 向 segment 中回填数据的方式。
 
 # x86.exe
@@ -30,7 +30,7 @@ x86.exe 的组成部分：
 | space segment    | 应加载为可读可写的未初始化数据区域      |
 | string table     | 记录文件中出现的所有字符串（null 结尾） |
 | label table      | 记录三个 segment 中 label 位置          |
-| relocation table | 控制 loader 向 segment 中回填数据的方式 |
+| 修正表 | 控制 loader 向 segment 中回填数据的方式 |
 
 # string table
 
@@ -46,18 +46,18 @@ label entry 需要记录这个 label 存在于哪个 segment，
 这样 loader 通过 mmap 为 segment 分配了地址之后，
 就可以知道每个 label 的真实地址。
 
-# relocation table
+# 修正表
 
-relocation table 由 relocation entry 的数组组成。
-relocation entry 由汇编中的 relocation operand 创建。
+修正表由修正条目的数组组成。
+修正条目由汇编中的修正操作数创建。
 
-relocation operand 的格式为 `(relocation <type> <name>)`：
+修正操作数的格式为 `(fixup <type> <name>)`：
 
 - `<type> <name>` 代表需要被回填的数据
   - `<type>` 代表不同的回填数据方式
   - `<name>` 代表需要回填的数据名字
 
-relocation entry 格式为 `[<type> <name> <segment> <offset> <addend>]`：
+修正条目格式为 `[<type> <name> <segment> <offset> <addend>]`：
 
 - `<segment> <offset> <addend>` 代表回填的位置
 - 整个 tuple 建立需要被回填的数据与回填位置之间的多对一关系。

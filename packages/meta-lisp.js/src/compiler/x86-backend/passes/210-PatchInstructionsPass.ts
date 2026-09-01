@@ -78,6 +78,6 @@ function isMemLocation(operand: X86.Operand): boolean {
   return (
     operand.kind === "RegMemOperand" ||
     operand.kind === "RipMemOperand" ||
-    operand.kind === "RelocationOperand"
+    operand.kind === "FixupOperand"
   )
 }

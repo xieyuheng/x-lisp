@@ -1,7 +1,7 @@
 ; x86.exe: string-t field — pointer to string, read first byte
 ;
 ; data layout (depth-first):
-;   config.desc → 8B placeholder (reloc → string bytes)
+;   config.desc → 8B placeholder (fixup → string bytes)
 ;   "abc\0"
 ;
 ; define-code: load config.desc pointer, mem to 8 bytes, mask to first char → 97 ('a')

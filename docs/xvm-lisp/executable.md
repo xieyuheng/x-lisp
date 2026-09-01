@@ -20,7 +20,7 @@ title: 可执行文件格式
   - [0x12 primitive function declaration](#0x12-primitive-function-declaration)
   - [0x13 primitive variable declaration](#0x13-primitive-variable-declaration)
   - [0x14 default entry](#0x14-default-entry)
-  - [0x15 relocation](#0x15-relocation)
+  - [0x15 fixup](#0x15-fixup)
 - [指令集编码](#指令集编码)
 - [加载流程](#加载流程)
 - [示例](#示例)
@@ -47,7 +47,7 @@ u8  value[length]
 | `0x12` | primitive function declaration |
 | `0x13` | primitive variable declaration |
 | `0x14` | default entry                  |
-| `0x15` | relocation entry               |
+| `0x15` | 修正条目               |
 
 说明：
 
@@ -107,9 +107,9 @@ u32 name_offset
 
 指定程序入口函数名。
 
-## 0x15 relocation
+## 0x15 fixup
 
-一个 relocation 是独立的一个 TLV entry。
+一个修正是独立的一个 TLV entry。
 
 ```
 u32 type_offset
@@ -121,7 +121,7 @@ u32 dest_offset
 
 其中：
 
-- `type` 是 relocation 类型字符串。
+- `type` 是修正类型字符串。
 - `name` 是目标符号或字面量内容。
 - `dest-type` 是目标容器类型；目前只有 `function`。
 - `dest-name` 是目标容器名；当 `dest-type = function` 时，它是函数名。
@@ -130,7 +130,7 @@ u32 dest_offset
 `dest-offset` 指向代码中一个 8 字节的占位符。
 loader 根据 `type` 和 `name` 计算出要填入的值，并写入该位置。
 
-Relocation 类型：
+修正类型：
 
 | type             | name 的含义  | loader 填入                      |
 |------------------|--------------|----------------------------------|
@@ -157,8 +157,8 @@ primitive 不能直接作为 closure 的来源；必须先转换为其 wrap 函�
 
 - 局部槽号一律为 `u16`。
 - TLV entry 内的 `name_offset` / `type_offset` 等字符串引用使用 string table 的 `u32 offset`。
-- 指令中的可重定位字段在文件里是 8 字节占位符；loader patch 后变成运行时指针或 `value_t`。
-- label 偏移已在汇编时解析为 `i32`，不通过 relocation 解析。
+- 指令中的可修正字段在文件里是 8 字节占位符；loader patch 后变成运行时指针或 `value_t`。
+- label 偏移已在汇编时解析为 `i32`，不通过修正。
 - **每个指令的操作数个数固定**；`call-n`、`call-prim-n`、`apply-n` 等指令的 arity 由 opcode 决定，不在指令内额外保存 `argc`。
 
 ## opcode 表
@@ -287,7 +287,7 @@ u16 dest
 i64 value
 ```
 
-`value` 是立即数，不产生 relocation。
+`value` 是立即数，不产生修正。
 
 ## `load-float`
 
@@ -296,7 +296,7 @@ u16 dest
 f64 value
 ```
 
-`value` 是立即数，不产生 relocation。
+`value` 是立即数，不产生修正。
 
 ## `load-string`
 
@@ -305,7 +305,7 @@ u16 dest
 u64 value
 ```
 
-`value` 产生 `type = string-value` 的 relocation。
+`value` 产生 `type = string-value` 的修正。
 
 ## `load-symbol`
 
@@ -314,7 +314,7 @@ u16 dest
 u64 value
 ```
 
-`value` 产生 `type = symbol-value` 的 relocation。
+`value` 产生 `type = symbol-value` 的修正。
 
 ## `load-closure`
 
@@ -323,7 +323,7 @@ u16 dest
 u64 target
 ```
 
-`target` 产生 `type = fn-pointer` 的 relocation。
+`target` 产生 `type = fn-pointer` 的修正。
 loader 直接构造无环境 closure。
 primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
 
@@ -335,7 +335,7 @@ u64 target
 u16 size
 ```
 
-- `target` 产生 `type = fn-pointer` 的 relocation。
+- `target` 产生 `type = fn-pointer` 的修正。
 - `size` 是环境槽数。
 - primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
 - `make-closure` 只分配 closure，不填充环境；环境由 `store-closure-arg` 填充。
@@ -364,8 +364,8 @@ u16 arg0
 u16 arg{n-1}
 ```
 
-- `call-n` 的 `target` 是函数名，产生 `type = fn-pointer` 的 relocation。
-- `call-prim-n` 的 `target` 是 primitive 函数名，产生 `type = prim-pointer` 的 relocation。
+- `call-n` 的 `target` 是函数名，产生 `type = fn-pointer` 的修正。
+- `call-prim-n` 的 `target` 是 primitive 函数名，产生 `type = prim-pointer` 的修正。
 - 参数个数 `n` 由 opcode 决定。
 
 ## `tail-call-n` / `tail-call-prim-n`
@@ -390,7 +390,7 @@ u16 arg0
 u16 arg{n-1}
 ```
 
-`target` 是局部槽号，不产生 relocation。
+`target` 是局部槽号，不产生修正。
 `target` 必须是 closure，运行时不再分派 fn / prim / closure。
 参数个数 `n` 由 opcode 决定。
 
@@ -404,15 +404,15 @@ i32 else
 
 - `cond` 为 bool 值所在槽。
 - `then` / `else` 是相对当前指令结束位置的偏移。
-- 偏移在汇编时解析，不产生 relocation。
+- 偏移在汇编时解析，不产生修正。
 
 # 加载流程
 
 1. 扫描所有 TLV entry。
 2. 找到 string table，建立 offset 映射。
 3. 收集 function / variable / primitive declarations，构建 `mod_t`。
-4. 收集所有 relocation entry。
-5. 根据 relocation entry：
+4. 收集所有修正条目。
+5. 根据修正条目：
    - 找到 `dest-name` 对应的 function。
    - 在其 `code` 的 `dest-offset` 处写入：
      - 对 `fn-pointer` / `prim-pointer` / `global-pointer`：对应的 function pointer / primitive function pointer / global variable pointer。
@@ -428,7 +428,7 @@ i32 else
   - `fn-pointer` 用于 `call-n` / `tail-call-n` / `load-closure` / `make-closure`
   - `prim-pointer` 用于 `call-prim-n` / `tail-call-prim-n`
   - primitive 必须先转换为其 wrap 函数，才能作为 `load-closure` / `make-closure` 的 `fn-pointer` 来源
-- 无环境 closure 用 `load-closure` 构造，可优化为 relocation。
+- 无环境 closure 用 `load-closure` 构造，可优化为修正。
 - 带环境 closure 用 `make-closure` + `store-closure-arg` 构造。
 - `make-closure` 不接受可变数量 env 参数，环境通过 `store-closure-arg` 逐个填充。
 
@@ -451,4 +451,4 @@ i32 else
   - `local_count = 1`
   - code 包含 `load-int` 和 `return`
 - default entry：`"main"`
-- relocation：本例没有外部引用，所以没有 relocation entry。
+- 修正：本例没有外部引用，所以没有修正条目。

@@ -45,9 +45,9 @@ export function formatOperand(operand: X86.Operand): string {
       return `(var ${operand.name})`
     case "ExternOperand":
       return `(extern ${operand.name})`
-    case "RelocationOperand": {
+    case "FixupOperand": {
       const name = JSON.stringify(operand.name)
-      return `(relocation ${operand.type} ${name})`
+      return `(fixup ${operand.type} ${name})`
     }
     case "DataOperand":
       return X86.formatData(operand.data)

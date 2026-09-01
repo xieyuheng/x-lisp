@@ -4,7 +4,7 @@
 ; origin-ptr = pointer-t whose value is (address origin) = &origin
 ;
 ; The (address origin) value in a data slot emits an 8-byte pointer plus a
-; deferred internal relocation resolving to the `origin` label.
+; deferred internal fixup pointing to the `origin` label.
 ;
 ; define-code: load *origin-ptr (= &origin), then mem to read origin.x = 11
 

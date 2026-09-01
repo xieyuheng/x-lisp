@@ -67,7 +67,7 @@ function isSizeCheckedInstr(instr: X86.Instr): boolean {
     (op) =>
       op.kind === "AddressOperand" ||
       op.kind === "ExternOperand" ||
-      op.kind === "RelocationOperand" ||
+      op.kind === "FixupOperand" ||
       op.kind === "VarOperand",
   )
 }

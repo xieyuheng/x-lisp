@@ -21,8 +21,8 @@ struct __attribute__((packed)) x86_exe_header_t {
   uint64_t label_table_file_offset;
   uint64_t label_table_size;
 
-  uint64_t relocation_table_file_offset;
-  uint64_t relocation_table_size;
+  uint64_t fixup_table_file_offset;
+  uint64_t fixup_table_size;
 };
 
 // - note: string in string table must be unique,
@@ -44,7 +44,7 @@ struct __attribute__((packed)) x86_exe_label_entry_t {
   uint64_t segment_offset;
 };
 
-struct __attribute__((packed)) x86_exe_relocation_entry_t {
+struct __attribute__((packed)) x86_exe_fixup_entry_t {
   x86_exe_string_t type;
   x86_exe_string_t name;
   x86_exe_segment_kind_t segment_kind;
@@ -84,8 +84,8 @@ struct x86_exe_t {
   const char *string_table;
   x86_exe_label_entry_t *label_entries;
   size_t label_count;
-  x86_exe_relocation_entry_t *relocation_entries;
-  size_t relocation_count;
+  x86_exe_fixup_entry_t *fixup_entries;
+  size_t fixup_count;
 
   // label name → X86_LABEL_PACK(kind, segment_offset)
   record_t *label_map;

@@ -21,7 +21,7 @@ import {
   ExeDataSegment,
   ExeSpaceSegment,
   type Exe,
-  type ExeRelocationEntry,
+  type ExeFixupEntry,
   type ExeSegmentKind,
 } from "./types.ts"
 
@@ -31,10 +31,10 @@ export function assembleExe(program: Program, entryName?: string): Exe {
   resolveDisplacements(program)
 
   const labels = new Map<string, LabelInfo>()
-  const relocs: Array<ExeRelocationEntry> = []
+  const fixups: Array<ExeFixupEntry> = []
 
-  const code = emitExeCode(program, labels, relocs)
-  const data = emitExeData(program, labels, relocs)
+  const code = emitExeCode(program, labels, fixups)
+  const data = emitExeData(program, labels, fixups)
 
   let spaceSize = 0
   for (const definition of program.definitions.values()) {
@@ -75,7 +75,7 @@ export function assembleExe(program: Program, entryName?: string): Exe {
     spaceSize,
     entryCodeSegmentOffset: entry.segmentOffset,
     labelTable,
-    relocationTable: relocs,
+    fixupTable: fixups,
   }
 }
 
@@ -102,13 +102,13 @@ function scopedName(fnName: string, labelName: string): string {
   return fnName + "/" + labelName
 }
 
-type CodeRelocInfo = null | {
+type CodeFixupInfo = null | {
   type: string
   name: string
   holeKind: "disp32" | "imm64"
 }
 
-function findCodeRelocInfo(instr: Instr): CodeRelocInfo {
+function findCodeFixupInfo(instr: Instr): CodeFixupInfo {
   for (const op of instr.operands) {
     if (op.kind === "LabelOperand")
       return { type: "label-rel32", name: op.name, holeKind: "disp32" }
@@ -118,7 +118,7 @@ function findCodeRelocInfo(instr: Instr): CodeRelocInfo {
       return { type: "label-rel32", name: op.address.name, holeKind: "disp32" }
     if (op.kind === "ExternOperand")
       return { type: "extern", name: op.name, holeKind: "imm64" }
-    if (op.kind === "RelocationOperand")
+    if (op.kind === "FixupOperand")
       return { type: op.type, name: op.name, holeKind: "imm64" }
   }
   return null
@@ -127,7 +127,7 @@ function findCodeRelocInfo(instr: Instr): CodeRelocInfo {
 function emitExeCode(
   program: Program,
   labels: Map<string, LabelInfo>,
-  relocs: Array<ExeRelocationEntry>,
+  fixups: Array<ExeFixupEntry>,
 ): Uint8Array {
   const localLabels = collectLocalLabels(program)
 
@@ -161,16 +161,16 @@ function emitExeCode(
       const encodings = encode(instr)
       const size = encodings.reduce((s, e) => s + encodedSize(e), 0)
 
-      const relocInfo = findCodeRelocInfo(instr)
-      if (relocInfo) {
-        const resolvedName = fnLocalLabels.has(relocInfo.name)
-          ? scopedName(definition.name, relocInfo.name)
-          : relocInfo.name
+      const fixupInfo = findCodeFixupInfo(instr)
+      if (fixupInfo) {
+        const resolvedName = fnLocalLabels.has(fixupInfo.name)
+          ? scopedName(definition.name, fixupInfo.name)
+          : fixupInfo.name
 
         let instrPos = pos
         for (const enc of encodings) {
           if (
-            relocInfo.holeKind === "disp32" &&
+            fixupInfo.holeKind === "disp32" &&
             enc.displacement !== null &&
             enc.displacement.value === 0
           ) {
@@ -179,20 +179,20 @@ function emitExeCode(
             //   so they compute it; the loader just applies S + A - P.
             const dispOffset = encodedDispOffset(enc)
             const addend = BigInt(dispOffset - encodedSize(enc))
-            relocs.push({
-              type: relocInfo.type,
+            fixups.push({
+              type: fixupInfo.type,
               name: resolvedName,
               segmentKind: ExeCodeSegment,
               segmentOffset: instrPos + dispOffset,
               addend,
             })
           } else if (
-            relocInfo.holeKind === "imm64" &&
+            fixupInfo.holeKind === "imm64" &&
             enc.immediate !== null &&
             enc.immediate.value === 0n
           ) {
-            relocs.push({
-              type: relocInfo.type,
+            fixups.push({
+              type: fixupInfo.type,
               name: resolvedName,
               segmentKind: ExeCodeSegment,
               segmentOffset: instrPos + encodedImmOffset(enc),
@@ -238,7 +238,7 @@ type DeferredItem = {
 function emitExeData(
   program: Program,
   labels: Map<string, LabelInfo>,
-  relocs: Array<ExeRelocationEntry>,
+  fixups: Array<ExeFixupEntry>,
 ): Uint8Array {
   let anonCounter = maxAnonIndex(program) + 1
 
@@ -270,7 +270,7 @@ function emitExeData(
       definition.value,
       buf,
       pos,
-      relocs,
+      fixups,
       deferred,
     )
 
@@ -283,7 +283,7 @@ function emitExeData(
         segmentKind: ExeDataSegment,
         segmentOffset: targetStart,
       })
-      relocs.push({
+      fixups.push({
         type: "label-abs64",
         name: anonName,
         segmentKind: ExeDataSegment,
@@ -368,7 +368,7 @@ function emitTree(
   value: Data,
   buf: Uint8Array,
   offset: number,
-  relocs: Array<ExeRelocationEntry>,
+  fixups: Array<ExeFixupEntry>,
   deferred: Array<DeferredItem>,
 ): number {
   if (value.kind === "IntData") {
@@ -384,14 +384,14 @@ function emitTree(
         let message = `unknown field: ${name}`
         throw new Error(message)
       }
-      pos = emitTree(program, ft, data, buf, pos, relocs, deferred)
+      pos = emitTree(program, ft, data, buf, pos, fixups, deferred)
     }
     return pos
   }
 
   if (value.kind === "AddressData") {
     writeInt64(buf, offset, 0n)
-    relocs.push({
+    fixups.push({
       type: "label-abs64",
       name: value.name,
       segmentKind: ExeDataSegment,
@@ -408,7 +408,7 @@ function emitTree(
     deferred.push({
       pointerSlotOffset,
       emit: (start: number) =>
-        emitPointerTarget(program, value.target, buf, start, relocs, deferred),
+        emitPointerTarget(program, value.target, buf, start, fixups, deferred),
     })
     return offset
   }
@@ -473,7 +473,7 @@ function emitPointerTarget(
   target: Data,
   buf: Uint8Array,
   offset: number,
-  relocs: Array<ExeRelocationEntry>,
+  fixups: Array<ExeFixupEntry>,
   deferred: Array<DeferredItem>,
 ): number {
   if (target.kind === "StructData") {
@@ -483,7 +483,7 @@ function emitPointerTarget(
       target,
       buf,
       offset,
-      relocs,
+      fixups,
       deferred,
     )
   }
