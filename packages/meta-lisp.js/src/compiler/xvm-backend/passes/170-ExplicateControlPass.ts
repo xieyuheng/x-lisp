@@ -440,6 +440,16 @@ function explicateInTail(state: State, term: C.Term): Array<B.Instr> {
       const [argInstrGroups, args] = arrayUnzip(pairs)
       const direct = tryResolveDirectCall(state, term.target)
       if (direct) {
+        const op = INT_ARITH_OPS[direct.qualifiedName]
+        if (op) {
+          const value = generateCell(state, "value")
+          return [
+            ...arrayConcat(argInstrGroups),
+            B.Instr(op, [value], args, {}),
+            B.Instr("return", [], [value], {}),
+          ]
+        }
+
         return [
           ...arrayConcat(argInstrGroups),
           B.Instr("tail-call", [], args, {

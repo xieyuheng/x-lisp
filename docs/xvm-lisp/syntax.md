@@ -33,17 +33,18 @@ xvm-lisp 是 xvm 虚拟机的汇编语言。
 (define-function (self/math/factorial n)
   body
   (load-int int.3 1)
-  (int-less-or-equal value.3 n int.3)
-  (branch value.3 (label then.1) (label else.2))
+  (int-less-or-equal value.4 n int.3)
+  (branch value.4 (label then.1) (label else.2))
   then.1
   (load-int int.1 1)
   (return int.1)
   else.2
   (load-int int.2 1)
-  (isub value.2 n int.2)
-  (call-1 (fn self/math/factorial) value.2)
-  (load-result value.1)
-  (tail-call-prim-2 (prim meta-builtin/builtin/imul) value.1 n))
+  (isub value.3 n int.2)
+  (call-1 (fn self/math/factorial) value.3)
+  (load-result value.2)
+  (imul value.1 value.2 n)
+  (return value.1))
 ```
 
 设计目标：
