@@ -2,358 +2,265 @@
 title: 语法
 ---
 
-# 前言
+# 纲要
+
+- 简介
+  - 例子
+  - 设计目标
+  - 设计性质
+- 程序
+  - 注释
+  - 函数
+- 标签
+- 指令
+- 操作数
+- 主函数
+
+# 简介
 
 xvm-lisp 是 xvm 虚拟机的汇编语言。
 
-特点：
+与 x86-lisp 同都属于底层汇编语言，
+具有汇编语言的共性：
 
-- 寄存器机器 —— 函数的局部值存放于编号槽位中，汇编时把局部变量名映射为槽号。
-- 槽位存放 tagged value（`value_t`）—— 值的类型由自身的 tag 携带，
-  指令按语义要求操作数的 tag（如 `iadd` 要求 int、`fadd` 要求 float）。
-- 指令采用 Intel 操作数顺序 —— 目标操作数在前，源操作数在后。
-- 所有 operand 在语法上完全区分：**裸符号只用于局部变量**，
-  定义引用（函数 / primitive / 全局变量）与跳转目标都带 tag，
-  字面量中 `symbol` 用 quote 前缀 `'`，以免与局部变量混淆。
+- 需要指令集编码
+- 需要可执行文件格式
+- 需要加载器
 
-概念层级：
+例子：
 
-- definition
-  - code-definition
-    - instr
-      - operand
+```xvm-lisp
+(define-function (self/math/factorial n)
+  body
+  (load-int int.3 1)
+  (int-less-or-equal value.3 n int.3)
+  (branch value.3 (label then.1) (label else.2))
+  then.1
+  (load-int int.1 1)
+  (return int.1)
+  else.2
+  (load-int int.2 1)
+  (isub value.2 n int.2)
+  (call-1 (fn self/math/factorial) value.2)
+  (load-result value.1)
+  (tail-call-prim-2 (prim meta-builtin/builtin/imul) value.1 n))
+```
 
-下面分组介绍 xvm-lisp 的所有语法。
+设计目标：
 
-# 目录
+- xvm 应该是一个可移植的虚拟架构。
+  - 在实现 native 编译器之前临时使用。
+- 实现应该简单。
+  - 易于用 c 写 xvm 的 bytecode 解释器。
+- 运行应该高效。
+  - 可以优化为 directed threaded 解释器。
 
-- [前言](#前言)
-- [目录](#目录)
-- [注释](#注释)
-- [指令](#指令)
-- [标签](#标签)
-- [顶层定义](#顶层定义)
-  - [(define-function)](#define-function)
-  - [(declare-variable)](#declare-variable)
-  - [(declare-primitive-function)](#declare-primitive-function)
-  - [(declare-primitive-variable)](#declare-primitive-variable)
-  - [(default-entry)](#default-entry)
-- [全局变量与测试](#全局变量与测试)
-  - [©setup-variables](#©setup-variables)
-  - [©run-tests](#©run-tests)
-- [入口](#入口)
-  - [©main](#©main)
-  - [©test](#©test)
-- [操作数](#操作数)
-  - [局部变量](#局部变量)
-  - [(fn)](#fn)
-  - [(prim)](#prim)
-  - [(global)](#global)
-  - [(label)](#label)
-  - [字面量](#字面量)
-- [汇编与槽位分配](#汇编与槽位分配)
+设计性质：
 
-# 注释
+- 直接支持动态类型语言的 tagged value 编码，
+  所有内置函数的参数与返回值都是 tagged value，
+  局部变量保存的也是 tagged value。
 
-xvm-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写两个分号 `;;`。
+- 指令采用 Intel 操作数顺序。
+  目标操作数在前，源操作数在后。
 
-```scheme
+- 与 x86 之类的真实架构不同，
+  没有有限数量的通用寄存器，
+  函数的所有局部变量都分配在栈上。
+
+- 为了方便读写汇编代码，
+  在一个函数中，允许直接使用具有名字的局部变量。
+
+  汇编器会把名字分配到栈中的内存位置：
+  - 一个函数内每个名字对应一个位置；
+  - 先分配函数的参数，再分配局部变量。
+
+- 为了保持简单，每个指令的操作数个数都是固定的，
+  每个位置的操作数类型也是固定的。
+
+- 避免函数调用约定，直接使用参数个数固定的函数调用指令，
+  -- `call-0 call-1 call-2` 等等，最高是 `call-6`。
+  对应于 System V AMD64 ABI 函数调用约定中，
+  寄存器传递的参数个数限制。
+
+- 设定一个特殊寄存器保存函数返回值，
+  用 `load-result` 指令取返回值。
+
+- 所有操作数在语法上用 sexp 完全区分，符号用于表示局部变量。
+
+# 程序
+
+```xvm-lisp
+<program> := (define-function (<name> <parameter> ...)
+               <instr-or-label>
+               ...)
+           | (declare-variable <name>)
+           | (declare-primitive-function <name>)
+           | (declare-primitive-variable <name>)
+
+<instr-or-label> := <instr> | <label>
+```
+
+## 注释
+
+xvm-lisp 使用 LISP 风格的行注释，以 `;` 开头直到行尾。
+通常写两个分号 `;;`。
+
+```xvm-lisp
 ;; 这是一条注释
 (load-int x 42)  ;; 行尾注释
 ```
 
-# 指令
+## 函数
 
-```scheme
-(<op> <operand> ...)
-```
-
-所有指令统一为 op + operands。
-采用 Intel 的操作数顺序，目标操作数在前，源操作数在后。
-
-- 有输出结果的指令，第一个 operand 是 `<dest>`；结果写入由 `<dest>` 命名的槽。
-- 函数调用（`call-n` / `call-prim-n` / `apply-n`）不使用 `<dest>` ——
-  结果进入返回寄存器，需要时用 `load-result` 取回。
-- `goto` / `branch` / `return` / `return-void` / `tail-call-n` / `tail-call-prim-n`
-  / `tail-apply-n` 是 terminator 指令，为一个基本块的结束。
-
-每条指令的语法和操作数约束详见[指令参考](instructions.md)。
-
-# 标签
-
-`define-function` 等定义中，指令序列里的裸符号（bare symbol）是标签定义。
-
-- 标签只是代码中的一个位置标记，不改变控制流，也不引入新的作用域。
-- 控制流按指令顺序流动；若没有 terminator，会继续执行后面的指令。
-- 一个函数的入口就是第一个可执行指令，不需要显式的入口标记。
-
-```scheme
-(define-function (factorial n)
-  (load-int one 1)
-  (int-less-or-equal base n one)
-  (branch base (label base-case) (label recur-case))
-  base-case
-  (load-int result 1)
-  (return result)
-  recur-case
-  (isub m n one)
-  (call-1 (fn factorial) m)
-  (load-result sub)
-  (imul result n sub)
-  (return result))
-```
-
-注意：
-
-- 指令序列元素位置的裸符号是**标签定义**；
-- 指令内部 operand 位置的裸符号是 **局部变量**。
-  两者位置不同，语法上完全区分。
-
-比较指令的两个输入都是槽 —— 比较字面量时需要先用 `load-int` / `load-float` 等把字面量载入槽。
-
-# 顶层定义
-
-## (define-function)
-
-```scheme
+```xvm-lisp
 (define-function (<name> <parameter> ...)
   <instr-or-label>
   ...)
 ```
 
-定义函数。
+例如：
 
-- 第一个列表是该函数的**签名**：`<name>` 为函数名，`<parameter> ...` 为参数名列表。
-- 参数名按声明顺序映射为槽 `0` 到 `arity - 1`（arity 即参数个数），
-  `call-n` 的 `n` 必须等于 arity。
-- `<instr-or-label>` 是一条指令，或一个裸符号标签定义。
-
-```scheme
+```xvm-lisp
 (define-function (square x)
   (imul result x x)
   (return result))
 ```
 
-## (declare-variable)
+## 标签
 
-```scheme
-(declare-variable <name>)
+```xvm-lisp
+<label> := <name>
 ```
 
-声明全局变量。
+在函数定义中，指令序列里的裸符号是标签。
 
-- 变量是全局存储槽，不携带初始化 body（与 basic-lisp 的 `define-variable` 带静态 data 不同）。
-- 变量的初值通过 [Setup 机制](#©setup-variables) 计算：编译器为每个变量
-  生成同名初始化函数 `©setup.<name>`（arity 0，`return` 的值即变量初值），
-  由聚合函数 `©setup-variables` 依次调用并写入变量。
+- 标签在函数中标记代码中的一个位置。
+  标签不改变控制流，也不引入新的作用域。
+- 一个函数的入口就是第一个可执行指令，可以没有起始标签。
 
-xvm-lisp 中没有 `define-test` —— 测试就是普通零参函数，
-由 `©run-tests` 聚合调用（见 [全局变量与测试](#全局变量与测试)）。
+## 指令
 
-## (declare-primitive-function)
-
-```scheme
-(declare-primitive-function <name>)
+```xvm-lisp
+<instr> := (<op> <operand> ...)
 ```
 
-声明由运行时（C 侧）提供的 primitive 函数。加载时按名字绑定。
-primitive 的 arity 不需要声明 —— 所有调用的参数个数由编译期保证，
-运行时无 curry 机制、不读取 arity。
+采用 Intel 的操作数顺序，目标操作数在前，源操作数在后。
 
-## (declare-primitive-variable)
+- 有输出结果的指令，第一个 operand 是 `<dest>`；结果写入 `<dest>`。
+- 函数调用（`call-n` / `call-prim-n` / `apply-n`）不使用 `<dest>`，
+  结果进入返回寄存器，需要时用 `load-result` 指令取回。
 
-```scheme
-(declare-primitive-variable <name>)
-```
-
-声明由运行时提供的 primitive 变量。加载时按名字绑定。
-
-## (default-entry)
-
-```scheme
-(default-entry <name>)
-```
-
-指定程序的入口函数，与 `xvm2` 的 `run` 命令配合使用。
-入口函数被 [`©main`](#©main) 调用。
-
-# 全局变量与测试
-
-xvm-lisp 使用类似 x86-lisp 的 setup 机制：**变量没有初始化 body，
-测试没有独立定义形式**，两者都通过编译器生成的普通零参函数完成。
-
-## ©setup-variables
-
-```scheme
-(define-function (©setup-variables)
-  ...)
-```
-
-编译器生成的聚合函数（无变量时为空函数）：
-
-1. 对每个变量 `x`，依次调用其初始化函数 `©setup.x`；
-2. 将返回值 `store-global` 写入全局变量 `x`。
-
-变量初值来源：
-
-- 普通变量：`©setup.<name>` 是编译器生成的零参函数，
-  `return` 的值成为变量初值；
-- primitive 变量：无初始化函数，值由 C 运行时绑定。
-
-## ©run-tests
-
-```scheme
-(define-function (©run-tests)
-  ...)
-```
-
-编译器生成的聚合测试函数：依次调用每个测试函数。
-测试是零参普通函数（由 `define-function` 定义，通常以 `return-void` 结束），
-没有独立的 `define-test` 形式。
-
-```scheme
-(define-function (factorial-test)
-  (load-int n 5)
-  (call-1 (fn factorial) n)
-  (load-result result)
-  (load-int expected 120)
-  (call-2 (prim meta-builtin/builtin/assert-equal) result expected)
-  (return-void))
-```
-
-# 入口
-
-xvm-lisp 程序通过两个编译器生成的入口之一启动，均由运行时 `run` 命令调用：
-
-## ©main
-
-```scheme
-(define-function (©main)
-  (call-0 (fn ©setup-variables))
-  (call-0 (fn <entry>))
-  (return-void))
-```
-
-程序入口：先执行变量初始化，再调用 `(default-entry)` 指定的入口函数。
-
-## ©test
-
-```scheme
-(define-function (©test)
-  (call-0 (fn ©setup-variables))
-  (call-0 (fn ©run-tests))
-  (return-void))
-```
-
-测试入口：先执行变量初始化，再运行全部测试。
+每条指令的语法和操作数约束详见[指令参考](instructions.md)。
 
 # 操作数
 
-操作数是指令的参数，按 xvm2 机器语义分类。
-各形式的含义由语法唯一决定，无歧义。
+```xvm-lisp
+<operand> := <name>
+           | (fn <name>)
+           | (prim <name>)
+           | (global <name>)
+           | (label <name>)
+           | <literal>
 
-## 局部变量
-
-```scheme
-<var> := <symbol>
-```
-
-局部变量（VarOperand），裸符号。汇编时把名字映射为槽号。
-
-```scheme
-x
-result
-value
+<literal> := <int>
+           | <float>
+           | <string>
+           | <symbol>
 ```
 
 ## (fn)
 
-```scheme
+```xvm-lisp
 (fn <name>)
 ```
 
-函数定义引用。用于：
+引用函数指针。需要修正。
 
-- `call-n` / `tail-call-n` 的目标 —— 静态函数调用；
-- `load-closure` / `make-closure` 的目标 —— 把函数作为 closure 的来源。
+用于：
 
-```scheme
-(fn square)
-(fn meta-builtin/builtin/factorial)
-```
+- `call-n` / `tail-call-n` 的目标，静态函数调用；
+- `load-closure` / `make-closure` 的目标，把函数作为 closure 的来源。
 
 ## (prim)
 
-```scheme
+```xvm-lisp
 (prim <name>)
 ```
 
-primitive 函数引用。用于：
+引用基本函数指针。需要修正。
 
-- `call-prim-n` / `tail-call-prim-n` 的目标 —— 静态 primitive 调用；
-- 不作为 `load-closure` / `make-closure` 的直接目标 —— primitive 必须先转换为其 wrap 函数，再对 wrap 函数做 closure。
+用于：
 
-```scheme
+- `call-prim-n` / `tail-call-prim-n` 的目标，静态基本函数调用；
+- 不作为 `load-closure` / `make-closure` 的直接目标，
+  基本函数必须先转换为其 wrap 函数，
+  再对 wrap 函数做 closure。
+
+```xvm-lisp
 (prim meta-builtin/builtin/imul)
 ```
 
 ## (global)
 
-```scheme
+```xvm-lisp
 (global <name>)
 ```
 
-全局变量引用。用于 `load-global` / `store-global`。
+引用全局变量指针。需要修正。
 
-```scheme
-(global *version*)
-(global meta-builtin/builtin/counter)
-```
+用于 `load-global` / `store-global`。
 
 ## (label)
 
-```scheme
+```xvm-lisp
 (label <name>)
 ```
 
-代码标签引用，用作 `goto` / `branch` 的跳转目标。
+引用代码标签。
 
-```scheme
-(label positive)
-(label merge)
-```
+用作 `goto` / `branch` 的跳转目标。
 
-注意 `(label ...)` 是 operand，与指令序列中的标签定义（裸符号）不同。
+注意 `(label ...)` 是操作数，与指令序列中的标签定义（裸符号）不同。
 
 ## 字面量
 
 不同类型的字面量使用不同的 load 指令：
 
-| 指令           | 语法                               | 例子                         | 值        |
-|----------------|------------------------------------|------------------------------|-----------|
-| `load-int`     | `(load-int <dest> <int>)`          | `(load-int x 42)`            | int 值    |
-| `load-float`   | `(load-float <dest> <float>)`      | `(load-float x 3.14)`        | float 值  |
-| `load-string`  | `(load-string <dest> "<string>")`  | `(load-string x "hello")`    | string 值 |
-| `load-symbol`  | `(load-symbol <dest> '<symbol>)`   | `(load-symbol x 'foo)`       | symbol 值 |
+| 例子                      | 说明          |
+|---------------------------|---------------|
+| `(load-int x 42)`         | 加载 int      |
+| `(load-float x 3.14)`     | 加载 float    |
+| `(load-string x "hello")` | 修正 string |
+| `(load-symbol x 'foo)`    | 修正 symbol |
 
-- symbol 字面量必须带 quote 前缀 `'` —— 裸符号一律是 VarOperand，
-  不带引号的 `foo` 会被读作局部变量而非 symbol 值。
-- **没有 bool 字面量** —— meta-lisp 中 `true` / `false` 是 builtin 全局变量
-  （`meta-builtin/builtin/true` / `meta-builtin/builtin/false`），
-  通过 `load-global` 获取：
 
-  ```scheme
+- BUG 没有 bool 字面量，通过 `load-global` 获取：
+  ```xvm-lisp
   (load-global t (global meta-builtin/builtin/true))
   ```
+  这样设计不对，因为这样没法脱离内置函数来写简单的汇编代码。
 
-  bool 值除此以外来自比较指令（如 `int-less`）的输出和 primitive 返回值。
-- void 的记法为 `#void`，但**不会出现在汇编代码中** ——
-  void 由 `return-void` 指令表达。
+# 主函数
 
-# 汇编与槽位分配
+约定程序的入口函数是 `main`。
 
-汇编（/编码）时，将每个函数的 VarOperand 名字映射为槽号：
+例如：
 
-- 参数名按 `(define-function (f x y) ...)` 的声明顺序映射为槽 `0..arity-1`；
-- 其余 VarOperand 按首次出现顺序从槽 `arity` 起分配；
-- 函数体中的同一名字映射到同一槽。
+```xvm-lisp
+(define-function (main)
+  (call-0 (fn setup-variables))
+  (call-0 (fn <entry>))
+  (return-void))
+```
+
+测试函数是 `test`。
+
+例如：
+
+```xvm-lisp
+(define-function (test)
+  (call-0 (fn setup-variables))
+  (call-0 (fn run-tests))
+  (return-void))
+```
