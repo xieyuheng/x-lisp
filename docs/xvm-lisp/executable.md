@@ -12,7 +12,7 @@ title: 可执行文件
   - [0x11 variable declaration](#0x11-variable-declaration)
   - [0x12 primitive function declaration](#0x12-primitive-function-declaration)
   - [0x13 primitive variable declaration](#0x13-primitive-variable-declaration)
-  - [0x14 fixup](#0x14-fixup)
+  - [0x14 function fixup table](#0x14-function-fixup-table)
 - [加载流程](#加载流程)
 
 # 标长值
@@ -39,7 +39,7 @@ u8  value[length]
 | `0x11` | variable declaration           |
 | `0x12` | primitive function declaration |
 | `0x13` | primitive variable declaration |
-| `0x14` | fixup entry                    |
+| `0x14` | function fixup table           |
 
 说明：
 
@@ -98,14 +98,15 @@ u32 name_offset
 u32 name_offset
 ```
 
-## 0x14 fixup
+## 0x14 function fixup table
 
-一个修正是独立的一个条目（而不是有一个「修正表条目」）。
+一个函数修正表条目包含若干函数修正记录。
+
+修正记录格式：
 
 ```
 u32 type_offset
 u32 name_offset
-u32 dest_type_offset
 u32 dest_name_offset
 u32 dest_offset
 ```
@@ -114,15 +115,8 @@ u32 dest_offset
 
 - `type` 是修正类型字符串。
 - `name` 是目标符号或字面量内容。
-- `dest_type` 是目标容器类型。
-- `dest_name` 是目标容器名。
-- `dest_offset` 是目标容器内字节偏移。
-
-目前 `dest_type` 类型（目前只有一个）：
-
-| `dest_type` | `dest_name` 的含义 | `dest_offset` 的含义 |
-|-------------|--------------------|----------------------|
-| `function`  | 函数名             | 函数 `code` 内的偏移 |
+- `dest_name` 是函数名。
+- `dest_offset` 是函数 `code` 内的偏移。
 
 `dest_offset` 指向代码中一个 8 字节的占位符。
 加载器根据 `type` 和 `name` 计算出要填入的值，并写入该位置。
@@ -153,8 +147,8 @@ u32 dest_offset
 - 找到 name table，建立 offset 映射。
 - 收集 primitive declaration 条目。
 - 收集 function / variable definition 条目。
-- 收集 fixup 条目。
-- 根据修正条目：
+- 收集 function fixup table 条目。
+- 根据函数修正表中的修正记录：
   - 找到 `dest_name` 对应的 function。
   - 在其 `code` 的 `dest_offset` 处执行修补。
 - 运行 `main` 或 `test` 函数。
