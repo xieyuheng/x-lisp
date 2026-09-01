@@ -37,52 +37,52 @@ title: 指令编码
 
 ```text
 0x10 call-0             u64 target
-0x11 call-1             u64 target u16 arg0
-0x12 call-2             u64 target u16 arg0 u16 arg1
-0x13 call-3             u64 target u16 arg0 u16 arg1 u16 arg2
-0x14 call-4             u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
-0x15 call-5             u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x16 call-6             u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x11 call-1             u64 target u16 arg1
+0x12 call-2             u64 target u16 arg1 u16 arg2
+0x13 call-3             u64 target u16 arg1 u16 arg2 u16 arg3
+0x14 call-4             u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x15 call-5             u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x16 call-6             u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 0x17 call-prim-0        u64 target
-0x18 call-prim-1        u64 target u16 arg0
-0x19 call-prim-2        u64 target u16 arg0 u16 arg1
-0x1a call-prim-3        u64 target u16 arg0 u16 arg1 u16 arg2
-0x1b call-prim-4        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
-0x1c call-prim-5        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x1d call-prim-6        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x18 call-prim-1        u64 target u16 arg1
+0x19 call-prim-2        u64 target u16 arg1 u16 arg2
+0x1a call-prim-3        u64 target u16 arg1 u16 arg2 u16 arg3
+0x1b call-prim-4        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x1c call-prim-5        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x1d call-prim-6        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 0x1e tail-call-0        u64 target
-0x1f tail-call-1        u64 target u16 arg0
-0x20 tail-call-2        u64 target u16 arg0 u16 arg1
-0x21 tail-call-3        u64 target u16 arg0 u16 arg1 u16 arg2
-0x22 tail-call-4        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
-0x23 tail-call-5        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x24 tail-call-6        u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x1f tail-call-1        u64 target u16 arg1
+0x20 tail-call-2        u64 target u16 arg1 u16 arg2
+0x21 tail-call-3        u64 target u16 arg1 u16 arg2 u16 arg3
+0x22 tail-call-4        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x23 tail-call-5        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x24 tail-call-6        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 0x25 tail-call-prim-0   u64 target
-0x26 tail-call-prim-1   u64 target u16 arg0
-0x27 tail-call-prim-2   u64 target u16 arg0 u16 arg1
-0x28 tail-call-prim-3   u64 target u16 arg0 u16 arg1 u16 arg2
-0x29 tail-call-prim-4   u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
-0x2a tail-call-prim-5   u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x2b tail-call-prim-6   u64 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x26 tail-call-prim-1   u64 target u16 arg1
+0x27 tail-call-prim-2   u64 target u16 arg1 u16 arg2
+0x28 tail-call-prim-3   u64 target u16 arg1 u16 arg2 u16 arg3
+0x29 tail-call-prim-4   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x2a tail-call-prim-5   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x2b tail-call-prim-6   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
 ### 动态调用
 
 ```text
 0x2c apply-0            u16 target
-0x2d apply-1            u16 target u16 arg0
-0x2e apply-2            u16 target u16 arg0 u16 arg1
-0x2f apply-3            u16 target u16 arg0 u16 arg1 u16 arg2
-0x30 apply-4            u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
-0x31 apply-5            u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x32 apply-6            u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x2d apply-1            u16 target u16 arg1
+0x2e apply-2            u16 target u16 arg1 u16 arg2
+0x2f apply-3            u16 target u16 arg1 u16 arg2 u16 arg3
+0x30 apply-4            u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x31 apply-5            u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x32 apply-6            u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 0x33 tail-apply-0       u16 target
-0x34 tail-apply-1       u16 target u16 arg0
-0x35 tail-apply-2       u16 target u16 arg0 u16 arg1
-0x36 tail-apply-3       u16 target u16 arg0 u16 arg1 u16 arg2
-0x37 tail-apply-4       u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3
-0x38 tail-apply-5       u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x39 tail-apply-6       u16 target u16 arg0 u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x34 tail-apply-1       u16 target u16 arg1
+0x35 tail-apply-2       u16 target u16 arg1 u16 arg2
+0x36 tail-apply-3       u16 target u16 arg1 u16 arg2 u16 arg3
+0x37 tail-apply-4       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
+0x38 tail-apply-5       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
+0x39 tail-apply-6       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
 ### 控制流
@@ -208,9 +208,9 @@ u16 value
 
 ```text
 u64 target
-u16 arg0
+u16 arg1
 ...
-u16 arg{n-1}
+u16 arg{n}
 ```
 
 - `call-n` 的 `target` 是函数名，产生 `type = fn-pointer` 的修正。
@@ -221,9 +221,9 @@ u16 arg{n-1}
 
 ```text
 u64 target
-u16 arg0
+u16 arg1
 ...
-u16 arg{n-1}
+u16 arg{n}
 ```
 
 - `tail-call-n` 的 `target` 产生 `type = fn-pointer`。
@@ -234,9 +234,9 @@ u16 arg{n-1}
 
 ```text
 u16 target
-u16 arg0
+u16 arg1
 ...
-u16 arg{n-1}
+u16 arg{n}
 ```
 
 `target` 是局部槽号，不产生修正。
