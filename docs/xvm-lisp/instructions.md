@@ -23,8 +23,10 @@ title: 指令
 0x05 load-symbol       u16 dest u64 value
 ```
 
-- `load-string`：`value` 产生 `type = string-value` 的修正。
-- `load-symbol`：`value` 产生 `type = symbol-value` 的修正。
+- `load-string`：
+  - `value` 产生 `(fixup string-value <name>)`
+- `load-symbol`：
+  - `value` 产生 `(fixup symbol-value <name>)`
 
 # 闭包
 
@@ -34,7 +36,7 @@ title: 指令
 (store-closure-arg <closure> <index> <src>)
 ```
 
-- `load-closure`：加载无环境的 closure，可以实现为 fixup。
+- `load-closure`：加载无环境的 closure。
 - `make-closure`：创建带环境的 closure，参数个数为 `<size>`。
 - `store-closure-arg`：存 closure 的参数。
 
@@ -46,9 +48,10 @@ title: 指令
 0x08 store-closure-arg u16 closure u16 index u16 value
 ```
 
-- `load-closure`：`target` 产生 `type = fn-pointer` 的修正；loader 直接构造无环境 closure；primitive 必须先转换为其 wrap 函数，再作为 `(fn ...)` 传入。
-- `make-closure`：`target` 产生 `type = fn-pointer` 的修正；`size` 是环境槽数；primitive 必须先转换为其 wrap 函数；`make-closure` 只分配 closure，不填充环境，环境由 `store-closure-arg` 填充。
-- `store-closure-arg`：`closure` 是 closure 所在槽，`index` 是环境槽下标，`value` 是要写入环境的值；通过多次 `store-closure-arg` 填充环境，不引入可变操作数。
+- `load-closure`：
+  - `target` 产生 `(fixup fn-pointer <name>)`
+- `make-closure`：
+  - `target` 产生 `(fixup fn-pointer <name>)`
 
 # 全局变量
 
@@ -140,8 +143,10 @@ title: 指令
 0x2b tail-call-prim-6   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
-- `call-n` / `call-prim-n`：`call-n` 的 `target` 产生 `type = fn-pointer`，`call-prim-n` 的 `target` 产生 `type = prim-pointer`；参数个数 `n` 由 opcode 决定。
-- `tail-call-n` / `tail-call-prim-n`：`tail-call-n` 的 `target` 产生 `type = fn-pointer`，`tail-call-prim-n` 的 `target` 产生 `type = prim-pointer`；参数个数 `n` 由 opcode 决定。
+- `call-n` / `tail-call-n`：
+  - `target` 产生 `(fixup fn-pointer <name>)`
+- `call-prim-n` / `tail-call-prim-n`：
+  - `target` 产生 `(fixup prim-pointer <name>)`
 
 ## 动态调用
 
@@ -185,8 +190,6 @@ title: 指令
 0x39 tail-apply-6       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
-- `apply-n` / `tail-apply-n`：`target` 是局部槽号，不产生修正；`target` 必须是 closure；参数个数 `n` 由 opcode 决定。
-
 # 结果寄存器
 
 ```xvm-lisp
@@ -224,13 +227,13 @@ title: 指令
 编码：
 
 ```text
-0x40 goto              i32 offset
-0x41 branch            u16 cond i32 then i32 else
+0x40 goto              i32 label
+0x41 branch            u16 cond i32 then-label i32 else-label
 0x42 return            u16 src
 0x43 return-void       -
 ```
 
-- `branch`：`cond` 为 bool 值所在槽；`then` / `else` 是相对当前指令结束位置的偏移；偏移在汇编时解析，不产生修正。
+`label` 是相对当前指令结束位置的偏移；偏移在汇编时解析，不产生修正。
 
 # 整数运算
 
