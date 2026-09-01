@@ -1,8 +1,6 @@
 ---
-title: 指令参考
+title: 指令
 ---
-
-> 通用语法见 [syntax.md](syntax.md)。
 
 # 属性值类型
 

@@ -1,9 +1,6 @@
 ---
-title: 指令参考
+title: 指令
 ---
-
-> 通用 operand 语法见 [syntax.md](syntax.md)。
-> 操作数约束中，空格分隔表示“可选其一”。
 
 ## 操作数记号
 
