@@ -11,5 +11,3 @@
   (load-result r)
   (call-1 (prim meta-builtin/builtin/println) r)
   (return-void))
-
-(default-entry main)

@@ -20,5 +20,3 @@
   (call-1 (fn classify) n)
   (load-result result)
   (return result))
-
-(default-entry main)

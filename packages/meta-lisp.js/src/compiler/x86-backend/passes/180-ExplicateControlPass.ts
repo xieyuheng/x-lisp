@@ -148,7 +148,7 @@ function generateSetupVariables(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.FunctionDefinition("©setup-variables", [], state.blocks)
+  return B.FunctionDefinition("setup-variables", [], state.blocks)
 }
 
 function generateRunTests(
@@ -176,7 +176,7 @@ function generateRunTests(
   instrs.push(B.Instr("return", [], [], {}))
   block.instrs = instrs
 
-  return B.FunctionDefinition("©run-tests", [], state.blocks)
+  return B.FunctionDefinition("run-tests", [], state.blocks)
 }
 
 type State = {

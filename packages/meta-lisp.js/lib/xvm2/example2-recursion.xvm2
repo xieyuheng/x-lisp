@@ -21,5 +21,3 @@
   (load-int expected 120)
   (call-2 (prim meta-builtin/builtin/equal) result expected)
   (return-void))
-
-(default-entry main)

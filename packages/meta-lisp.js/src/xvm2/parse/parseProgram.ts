@@ -8,18 +8,6 @@ export function parseProgram(sexps: Array<S.Sexp>): Xvm2.Program {
     const list = S.asListSexp(sexp)
     const head = S.asSymbolSexp(list.elements[0]).content
 
-    if (head === "default-entry") {
-      const entry = S.asSymbolSexp(list.elements[1]).content
-      if (program.entry !== undefined) {
-        throw new S.ErrorWithSourceLocation(
-          `[parseProgram] duplicate default-entry`,
-          sexp.location,
-        )
-      }
-      program.entry = entry
-      continue
-    }
-
     const definition = parseDefinition(sexp)
     if (program.definitions.has(definition.name)) {
       throw new S.ErrorWithSourceLocation(

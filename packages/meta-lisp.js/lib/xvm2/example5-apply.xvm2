@@ -16,5 +16,3 @@
   (call-2 (fn apply-twice) f x)
   (load-result result)
   (return result))
-
-(default-entry main)

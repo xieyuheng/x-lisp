@@ -43,9 +43,6 @@ function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
 function Xvm2Bundle(pkg: M.Package, program: Xvm2.Program): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.xvm2.asm`), (file) => {
-    if (program.entry !== undefined) {
-      fileWriteln(file, `(default-entry ${program.entry})`)
-    }
     const definitions = Array.from(program.definitions.values())
     const textWidth = 64
     const code = definitions

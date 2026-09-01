@@ -72,9 +72,6 @@ function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
 function X86Bundle(pkg: M.Package, x86Program: X86.Program): void {
   const directory = M.packageOutputDirectory(pkg)
   callWithFile(openOutputFile(`${directory}/bundle.x86.asm`), (file) => {
-    // if (pkg.config.entry) {
-    //   fileWriteln(file, `(default-entry ${pkg.id}/${pkg.config.entry})`)
-    // }
     // PrimitiveTypeDefinition is internal — createProgram() registers the
     // builtin types itself, so the bundle stays re-assemblable by
     // `assemble-x86` (whose parser only knows user-language stmts).
@@ -90,8 +87,8 @@ function X86Bundle(pkg: M.Package, x86Program: X86.Program): void {
 }
 
 // main vs test build: each executable has a single fixed entry.
-//   main.x86.exe — entry ©main  (call ©setup-variables; call <entry>)
-//   test.x86.exe — entry ©test  (call ©setup-variables; call ©run-tests)
+//   main.x86.exe — entry main  (call setup-variables; call <entry>)
+//   test.x86.exe — entry test  (call setup-variables; call run-tests)
 // Without an entry there is no main build — only test.x86.exe is produced.
 function x86Assemble(
   pkg: M.Package,
@@ -100,9 +97,9 @@ function x86Assemble(
 ): void {
   const directory = M.packageOutputDirectory(pkg)
   if (entryName !== undefined) {
-    writeExe(`${directory}/main.x86.exe`, x86Program, "©main")
+    writeExe(`${directory}/main.x86.exe`, x86Program, "main")
   }
-  writeExe(`${directory}/test.x86.exe`, x86Program, "©test")
+  writeExe(`${directory}/test.x86.exe`, x86Program, "test")
 }
 
 function writeExe(

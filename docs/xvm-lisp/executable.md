@@ -19,8 +19,7 @@ title: 可执行文件格式
   - [0x11 variable declaration](#0x11-variable-declaration)
   - [0x12 primitive function declaration](#0x12-primitive-function-declaration)
   - [0x13 primitive variable declaration](#0x13-primitive-variable-declaration)
-  - [0x14 default entry](#0x14-default-entry)
-  - [0x15 fixup](#0x15-fixup)
+  - [0x14 fixup](#0x14-fixup)
 - [指令集编码](#指令集编码)
 - [加载流程](#加载流程)
 - [示例](#示例)
@@ -46,8 +45,7 @@ u8  value[length]
 | `0x11` | variable declaration           |
 | `0x12` | primitive function declaration |
 | `0x13` | primitive variable declaration |
-| `0x14` | default entry                  |
-| `0x15` | 修正条目               |
+| `0x14` | 修正条目               |
 
 说明：
 
@@ -99,15 +97,7 @@ u32 name_offset
 u32 name_offset
 ```
 
-## 0x14 default entry
-
-```
-u32 name_offset
-```
-
-指定程序入口函数名。
-
-## 0x15 fixup
+## 0x14 fixup
 
 一个修正是独立的一个 TLV entry。
 
@@ -418,7 +408,7 @@ i32 else
      - 对 `fn-pointer` / `prim-pointer` / `global-pointer`：对应的 function pointer / primitive function pointer / global variable pointer。
      - 对 `string-value` / `symbol-value`：对应的 string value / symbol value。
      - `load-closure` / `make-closure` 通过 `fn-pointer` 构造 closure value。
-6. 找到 default entry，设置程序入口。
+6. 入口固定为 `main` / `test`；也可由运行时 `--entry` 显式指定。
 
 # 设计不变量
 
@@ -450,5 +440,4 @@ i32 else
   - `arity = 0`
   - `local_count = 1`
   - code 包含 `load-int` 和 `return`
-- default entry：`"main"`
 - 修正：本例没有外部引用，所以没有修正条目。

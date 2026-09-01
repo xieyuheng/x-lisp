@@ -81,7 +81,7 @@ router.defineHandlers({
   },
 
   "test-xvm2": ({ options }) => {
-    // TODO: 实现 xvm2 的测试管线（加载 bundle.xvm2.exe 并运行 ©run-tests）
+    // TODO: 实现 xvm2 的测试管线（加载 bundle.xvm2.exe 并运行 run-tests）
   },
 
   "format-basic": ({ args: [input] }) => {

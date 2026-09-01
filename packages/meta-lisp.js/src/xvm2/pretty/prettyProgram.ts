@@ -5,12 +5,6 @@ import { prettyDefinition } from "./prettyDefinition.ts"
 export function prettyProgram(program: Xvm2.Program): Ppml.Node {
   const children: Array<Ppml.Node> = []
 
-  if (program.entry !== undefined) {
-    children.push(
-      Ppml.prettySyntax("default-entry", [], [Ppml.text(program.entry)]),
-    )
-  }
-
   for (const definition of program.definitions.values()) {
     children.push(prettyDefinition(definition))
   }

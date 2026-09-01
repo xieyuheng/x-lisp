@@ -9,7 +9,7 @@
   (load-symbol value 'meta-lisp)
   (return value))
 
-(define-function (©setup-variables)
+(define-function (setup-variables)
   (call-0 (fn ©setup.*version*))
   (load-result version)
   (store-global (global *version*) version)
@@ -19,8 +19,6 @@
   (return-void))
 
 (define-function (main)
-  (call-0 (fn ©setup-variables))
+  (call-0 (fn setup-variables))
   (load-global v (global *version*))
   (return v))
-
-(default-entry main)
