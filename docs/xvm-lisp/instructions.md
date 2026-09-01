@@ -1,6 +1,7 @@
 ---
 title: 指令
 ---
+
 # 加载
 
 ```xvm-lisp
@@ -23,10 +24,10 @@ title: 指令
 0x05 load-symbol       u16 dest u64 value
 ```
 
-- `load-string`：
-  - `value` 产生 `(fixup string-value <name>)`
-- `load-symbol`：
-  - `value` 产生 `(fixup symbol-value <name>)`
+修正说明：
+
+- `load-string`：`value` 产生 `(fixup string-value <name>)`
+- `load-symbol`：`value` 产生 `(fixup symbol-value <name>)`
 
 # 闭包
 
@@ -48,10 +49,10 @@ title: 指令
 0x08 store-closure-arg u16 closure u16 index u16 value
 ```
 
-- `load-closure`：
-  - `target` 产生 `(fixup fn-pointer <name>)`
-- `make-closure`：
-  - `target` 产生 `(fixup fn-pointer <name>)`
+修正说明：
+
+- `load-closure`：`target` 产生 `(fixup fn-pointer <name>)`
+- `make-closure`：`target` 产生 `(fixup fn-pointer <name>)`
 
 # 全局变量
 
@@ -66,6 +67,11 @@ title: 指令
 0x0a load-global       u16 dest u64 target
 0x0b store-global      u64 target u16 src
 ```
+
+修正说明：
+
+- `load-global`：`target` 产生 `(fixup global-pointer <name>)`
+- `store-global`：`target` 产生 `(fixup global-pointer <name>)`
 
 # 函数调用
 
@@ -143,10 +149,10 @@ title: 指令
 0x2b tail-call-prim-6   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
 ```
 
-- `call-n` / `tail-call-n`：
-  - `target` 产生 `(fixup fn-pointer <name>)`
-- `call-prim-n` / `tail-call-prim-n`：
-  - `target` 产生 `(fixup prim-pointer <name>)`
+修正说明：
+
+- `call-n` / `tail-call-n`：`target` 产生 `(fixup fn-pointer <name>)`
+- `call-prim-n` / `tail-call-prim-n`：`target` 产生 `(fixup prim-pointer <name>)`
 
 ## 动态调用
 
@@ -233,7 +239,7 @@ title: 指令
 0x43 return-void       -
 ```
 
-`label` 是相对当前指令结束位置的偏移；偏移在汇编时解析，不产生修正。
+`label` / `then-label` / `else-label` 都是相对当前指令结束位置的偏移；偏移在汇编时解析，不产生修正。
 
 # 整数运算
 
