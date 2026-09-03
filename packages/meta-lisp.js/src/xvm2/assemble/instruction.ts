@@ -110,6 +110,10 @@ export function instructionSpec(op: string): InstrSpec {
   return spec
 }
 
+export function instructionSpecs(): Array<[string, InstrSpec]> {
+  return Object.entries(InstrSpecs)
+}
+
 export function opcodeFor(op: string): number {
   return instructionSpec(op).opcode
 }

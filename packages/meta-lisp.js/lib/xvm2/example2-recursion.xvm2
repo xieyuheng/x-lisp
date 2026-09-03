@@ -19,5 +19,5 @@
   (call-1 (fn factorial) n)
   (load-result result)
   (load-int expected 120)
-  (call-2 (prim meta-builtin/builtin/equal) result expected)
+  (call-prim-2 (prim meta-builtin/builtin/equal) result expected)
   (return-void))

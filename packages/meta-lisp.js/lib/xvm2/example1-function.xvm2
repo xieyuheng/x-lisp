@@ -9,5 +9,5 @@
   (load-int n 3)
   (call-1 (fn square) n)
   (load-result r)
-  (call-1 (prim meta-builtin/builtin/println) r)
+  (call-prim-1 (prim meta-builtin/builtin/println) r)
   (return-void))

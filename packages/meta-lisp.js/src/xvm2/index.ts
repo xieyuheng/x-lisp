@@ -1,5 +1,6 @@
 export * from "./assemble/index.ts"
 export * from "./definition/index.ts"
+export * from "./disassemble/index.ts"
 export * from "./exe/index.ts"
 export * from "./format/index.ts"
 export * from "./instr/index.ts"
