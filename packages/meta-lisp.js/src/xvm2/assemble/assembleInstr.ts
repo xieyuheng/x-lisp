@@ -60,10 +60,7 @@ function assembleOperand(
   operand: Operand,
 ): void {
   switch (spec) {
-    case "var":
-    case "dest":
-    case "src":
-    case "arg": {
+    case "var": {
       ctx.offset = writeU16LE(ctx.code, ctx.offset, lookupLocalIndex(ctx.localIndexMap, asVarOperand(operand).name))
       return
     }
@@ -78,8 +75,7 @@ function assembleOperand(
       return
     }
 
-    case "index":
-    case "size": {
+    case "u16": {
       ctx.offset = writeU16LE(ctx.code, ctx.offset, asU16Operand(operand).content)
       return
     }

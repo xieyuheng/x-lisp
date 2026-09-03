@@ -30,11 +30,11 @@ title: 指令
 编码：
 
 ```text
-0x01 move              u16 dest u16 src
-0x02 load-int          u16 dest u64 value
-0x03 load-float        u16 dest u64 value
-0x04 load-string       u16 dest u64 value
-0x05 load-symbol       u16 dest u64 value
+0x01 move              dest <var> src <var>
+0x02 load-int          dest <var> content <int>
+0x03 load-float        dest <var> content <float>
+0x04 load-string       dest <var> content <string>
+0x05 load-symbol       dest <var> content <symbol>
 ```
 
 修正说明：
@@ -57,9 +57,9 @@ title: 指令
 编码：
 
 ```text
-0x06 load-closure      u16 dest u64 target
-0x07 make-closure      u16 dest u64 target u16 size
-0x08 store-closure-arg u16 closure u16 index u16 value
+0x06 load-closure      dest <var> target <fn>
+0x07 make-closure      dest <var> target <fn> size <u16>
+0x08 store-closure-arg closure <var> index <u16> src <var>
 ```
 
 修正说明：
@@ -77,8 +77,8 @@ title: 指令
 编码：
 
 ```text
-0x0a load-global       u16 dest u64 target
-0x0b store-global      u64 target u16 src
+0x0a load-global       dest <var> target <global>
+0x0b store-global      target <global> src <var>
 ```
 
 修正说明：
@@ -132,34 +132,34 @@ title: 指令
 编码：
 
 ```text
-0x10 call-0             u64 target
-0x11 call-1             u64 target u16 arg1
-0x12 call-2             u64 target u16 arg1 u16 arg2
-0x13 call-3             u64 target u16 arg1 u16 arg2 u16 arg3
-0x14 call-4             u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x15 call-5             u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
-0x16 call-6             u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
-0x17 call-prim-0        u64 target
-0x18 call-prim-1        u64 target u16 arg1
-0x19 call-prim-2        u64 target u16 arg1 u16 arg2
-0x1a call-prim-3        u64 target u16 arg1 u16 arg2 u16 arg3
-0x1b call-prim-4        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x1c call-prim-5        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
-0x1d call-prim-6        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
-0x1e tail-call-0        u64 target
-0x1f tail-call-1        u64 target u16 arg1
-0x20 tail-call-2        u64 target u16 arg1 u16 arg2
-0x21 tail-call-3        u64 target u16 arg1 u16 arg2 u16 arg3
-0x22 tail-call-4        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x23 tail-call-5        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
-0x24 tail-call-6        u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
-0x25 tail-call-prim-0   u64 target
-0x26 tail-call-prim-1   u64 target u16 arg1
-0x27 tail-call-prim-2   u64 target u16 arg1 u16 arg2
-0x28 tail-call-prim-3   u64 target u16 arg1 u16 arg2 u16 arg3
-0x29 tail-call-prim-4   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x2a tail-call-prim-5   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
-0x2b tail-call-prim-6   u64 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
+0x10 call-0             target <fn>
+0x11 call-1             target <fn> arg1 <var>
+0x12 call-2             target <fn> arg1 <var> arg2 <var>
+0x13 call-3             target <fn> arg1 <var> arg2 <var> arg3 <var>
+0x14 call-4             target <fn> arg1 <var> arg2 <var> arg3 <var> arg4 <var>
+0x15 call-5             target <fn> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var>
+0x16 call-6             target <fn> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var> arg6 <var>
+0x17 call-prim-0        target <prim>
+0x18 call-prim-1        target <prim> arg1 <var>
+0x19 call-prim-2        target <prim> arg1 <var> arg2 <var>
+0x1a call-prim-3        target <prim> arg1 <var> arg2 <var> arg3 <var>
+0x1b call-prim-4        target <prim> arg1 <var> arg2 <var> arg3 <var> arg4 <var>
+0x1c call-prim-5        target <prim> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var>
+0x1d call-prim-6        target <prim> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var> arg6 <var>
+0x1e tail-call-0        target <fn>
+0x1f tail-call-1        target <fn> arg1 <var>
+0x20 tail-call-2        target <fn> arg1 <var> arg2 <var>
+0x21 tail-call-3        target <fn> arg1 <var> arg2 <var> arg3 <var>
+0x22 tail-call-4        target <fn> arg1 <var> arg2 <var> arg3 <var> arg4 <var>
+0x23 tail-call-5        target <fn> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var>
+0x24 tail-call-6        target <fn> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var> arg6 <var>
+0x25 tail-call-prim-0   target <prim>
+0x26 tail-call-prim-1   target <prim> arg1 <var>
+0x27 tail-call-prim-2   target <prim> arg1 <var> arg2 <var>
+0x28 tail-call-prim-3   target <prim> arg1 <var> arg2 <var> arg3 <var>
+0x29 tail-call-prim-4   target <prim> arg1 <var> arg2 <var> arg3 <var> arg4 <var>
+0x2a tail-call-prim-5   target <prim> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var>
+0x2b tail-call-prim-6   target <prim> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var> arg6 <var>
 ```
 
 修正说明：
@@ -193,20 +193,20 @@ title: 指令
 编码：
 
 ```text
-0x2c apply-0            u16 target
-0x2d apply-1            u16 target u16 arg1
-0x2e apply-2            u16 target u16 arg1 u16 arg2
-0x2f apply-3            u16 target u16 arg1 u16 arg2 u16 arg3
-0x30 apply-4            u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x31 apply-5            u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
-0x32 apply-6            u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
-0x33 tail-apply-0       u16 target
-0x34 tail-apply-1       u16 target u16 arg1
-0x35 tail-apply-2       u16 target u16 arg1 u16 arg2
-0x36 tail-apply-3       u16 target u16 arg1 u16 arg2 u16 arg3
-0x37 tail-apply-4       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4
-0x38 tail-apply-5       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5
-0x39 tail-apply-6       u16 target u16 arg1 u16 arg2 u16 arg3 u16 arg4 u16 arg5 u16 arg6
+0x2c apply-0            target <var>
+0x2d apply-1            target <var> arg1 <var>
+0x2e apply-2            target <var> arg1 <var> arg2 <var>
+0x2f apply-3            target <var> arg1 <var> arg2 <var> arg3 <var>
+0x30 apply-4            target <var> arg1 <var> arg2 <var> arg3 <var> arg4 <var>
+0x31 apply-5            target <var> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var>
+0x32 apply-6            target <var> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var> arg6 <var>
+0x33 tail-apply-0       target <var>
+0x34 tail-apply-1       target <var> arg1 <var>
+0x35 tail-apply-2       target <var> arg1 <var> arg2 <var>
+0x36 tail-apply-3       target <var> arg1 <var> arg2 <var> arg3 <var>
+0x37 tail-apply-4       target <var> arg1 <var> arg2 <var> arg3 <var> arg4 <var>
+0x38 tail-apply-5       target <var> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var>
+0x39 tail-apply-6       target <var> arg1 <var> arg2 <var> arg3 <var> arg4 <var> arg5 <var> arg6 <var>
 ```
 
 # 结果寄存器
@@ -229,7 +229,7 @@ title: 指令
 编码：
 
 ```text
-0x09 load-result       u16 dest
+0x09 load-result       dest <var>
 ```
 
 # 控制流
@@ -246,9 +246,9 @@ title: 指令
 编码：
 
 ```text
-0x40 goto              i32 label
-0x41 branch            u16 cond i32 then-label i32 else-label
-0x42 return            u16 src
+0x40 goto              target <label>
+0x41 branch            cond <var> then <label> else <label>
+0x42 return            src <var>
 0x43 return-void       -
 ```
 
@@ -275,19 +275,19 @@ title: 指令
 编码：
 
 ```text
-0x50 iadd                 u16 dest u16 src1 u16 src2
-0x51 isub                 u16 dest u16 src1 u16 src2
-0x52 imul                 u16 dest u16 src1 u16 src2
-0x53 idiv                 u16 dest u16 src1 u16 src2
-0x54 imod                 u16 dest u16 src1 u16 src2
-0x55 ineg                 u16 dest u16 src
-0x58 int-greater          u16 dest u16 src1 u16 src2
-0x59 int-less             u16 dest u16 src1 u16 src2
-0x5a int-greater-or-equal u16 dest u16 src1 u16 src2
-0x5b int-less-or-equal    u16 dest u16 src1 u16 src2
-0x5c int-is-positive      u16 dest u16 src
-0x5d int-is-non-negative  u16 dest u16 src
-0x5e int-is-non-zero      u16 dest u16 src
+0x50 iadd                 dest <var> src1 <var> src2 <var>
+0x51 isub                 dest <var> src1 <var> src2 <var>
+0x52 imul                 dest <var> src1 <var> src2 <var>
+0x53 idiv                 dest <var> src1 <var> src2 <var>
+0x54 imod                 dest <var> src1 <var> src2 <var>
+0x55 ineg                 dest <var> src <var>
+0x58 int-greater          dest <var> src1 <var> src2 <var>
+0x59 int-less             dest <var> src1 <var> src2 <var>
+0x5a int-greater-or-equal dest <var> src1 <var> src2 <var>
+0x5b int-less-or-equal    dest <var> src1 <var> src2 <var>
+0x5c int-is-positive      dest <var> src <var>
+0x5d int-is-non-negative  dest <var> src <var>
+0x5e int-is-non-zero      dest <var> src <var>
 ```
 
 # 浮点运算
@@ -310,16 +310,16 @@ title: 指令
 编码：
 
 ```text
-0x70 fadd                   u16 dest u16 src1 u16 src2
-0x71 fsub                   u16 dest u16 src1 u16 src2
-0x72 fmul                   u16 dest u16 src1 u16 src2
-0x73 fdiv                   u16 dest u16 src1 u16 src2
-0x74 fneg                   u16 dest u16 src
-0x78 float-greater          u16 dest u16 src1 u16 src2
-0x79 float-less             u16 dest u16 src1 u16 src2
-0x7a float-greater-or-equal u16 dest u16 src1 u16 src2
-0x7b float-less-or-equal    u16 dest u16 src1 u16 src2
-0x7c float-is-positive      u16 dest u16 src
-0x7d float-is-non-negative  u16 dest u16 src
-0x7e float-is-non-zero      u16 dest u16 src
+0x70 fadd                 dest <var> src1 <var> src2 <var>
+0x71 fsub                 dest <var> src1 <var> src2 <var>
+0x72 fmul                 dest <var> src1 <var> src2 <var>
+0x73 fdiv                 dest <var> src1 <var> src2 <var>
+0x74 fneg                 dest <var> src <var>
+0x78 float-greater        dest <var> src1 <var> src2 <var>
+0x79 float-less           dest <var> src1 <var> src2 <var>
+0x7a float-greater-or-equal dest <var> src1 <var> src2 <var>
+0x7b float-less-or-equal  dest <var> src1 <var> src2 <var>
+0x7c float-is-positive    dest <var> src <var>
+0x7d float-is-non-negative dest <var> src <var>
+0x7e float-is-non-zero    dest <var> src <var>
 ```
