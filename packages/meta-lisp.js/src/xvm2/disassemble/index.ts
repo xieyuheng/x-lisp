@@ -1,4 +1,5 @@
 export * from "./DisassembleContext.ts"
 export * from "./disassembleExe.ts"
 export * from "./disassembleFunction.ts"
+export * from "./disassembleInstr.ts"
 export * from "./formatProgram.ts"
