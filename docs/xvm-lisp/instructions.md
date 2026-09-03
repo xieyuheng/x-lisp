@@ -46,13 +46,13 @@ title: 指令
 
 ```xvm-lisp
 (load-closure <dest> (fn <name>))
-(make-closure <dest> (fn <name>) <size>)
-(store-closure-arg <closure> <index> <src>)
+(make-closure <dest> (fn <name>) (u16 <size>))
+(store-closure-arg <closure> (u16 <index>) <src>)
 ```
 
 - `load-closure`：加载无环境的 closure。
-- `make-closure`：创建带环境的 closure，参数个数为 `<size>`。
-- `store-closure-arg`：存 closure 的参数。
+- `make-closure`：创建带环境的 closure，参数个数为 `(u16 <size>)`。
+- `store-closure-arg`：存 closure 的参数，下标为 `(u16 <index>)`。
 
 编码：
 

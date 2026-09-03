@@ -40,6 +40,10 @@ export function parseOperand(sexp: S.Sexp): Xvm2.Operand {
       )
     }
 
+    if (head === "u16" && elements.length === 2 && S.isIntSexp(elements[1])) {
+      return Xvm2.U16Operand(Number(elements[1].content))
+    }
+
     if (head === "fn" && elements.length === 2) {
       return Xvm2.FnOperand(S.asSymbolSexp(elements[1]).content)
     }

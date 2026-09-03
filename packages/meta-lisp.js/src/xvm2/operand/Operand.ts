@@ -3,6 +3,7 @@ export type Operand =
   | StringOperand
   | IntOperand
   | FloatOperand
+  | U16Operand
   | VarOperand
   | FnOperand
   | PrimOperand
@@ -97,6 +98,31 @@ export function isFloatOperand(operand: Operand): operand is FloatOperand {
 export function asFloatOperand(operand: Operand): FloatOperand {
   if (!isFloatOperand(operand)) {
     throw new Error("[asFloatOperand] expected FloatOperand")
+  }
+  return operand
+}
+
+
+
+export type U16Operand = {
+  kind: "U16Operand"
+  content: number
+}
+
+export function U16Operand(content: number): U16Operand {
+  return {
+    kind: "U16Operand",
+    content,
+  }
+}
+
+export function isU16Operand(operand: Operand): operand is U16Operand {
+  return operand.kind === "U16Operand"
+}
+
+export function asU16Operand(operand: Operand): U16Operand {
+  if (!isU16Operand(operand)) {
+    throw new Error("[asU16Operand] expected U16Operand")
   }
   return operand
 }

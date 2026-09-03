@@ -11,6 +11,7 @@ import {
   asPrimOperand,
   asStringOperand,
   asSymbolOperand,
+  asU16Operand,
   asVarOperand,
   type Operand,
 } from "../operand/Operand.ts"
@@ -62,10 +63,7 @@ function assembleOperand(
     case "var":
     case "dest":
     case "src":
-    case "arg":
-    case "cond":
-    case "closure":
-    case "target": {
+    case "arg": {
       ctx.offset = writeU16LE(ctx.code, ctx.offset, varSlot(ctx, operand))
       return
     }
@@ -82,7 +80,7 @@ function assembleOperand(
 
     case "index":
     case "size": {
-      ctx.offset = writeU16LE(ctx.code, ctx.offset, Number(asIntOperand(operand).content))
+      ctx.offset = writeU16LE(ctx.code, ctx.offset, asU16Operand(operand).content)
       return
     }
 

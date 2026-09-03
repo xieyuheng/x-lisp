@@ -5,9 +5,6 @@ export type OperandSpec =
   | "dest"
   | "src"
   | "arg"
-  | "cond"
-  | "closure"
-  | "target"
   | "int"
   | "float"
   | "index"
@@ -32,7 +29,7 @@ const InstrSpecs: Record<string, InstrSpec> = {
   "load-symbol": { opcode: 0x05, operands: ["dest", "symbol"] },
   "load-closure": { opcode: 0x06, operands: ["dest", "fn"] },
   "make-closure": { opcode: 0x07, operands: ["dest", "fn", "size"] },
-  "store-closure-arg": { opcode: 0x08, operands: ["closure", "index", "src"] },
+  "store-closure-arg": { opcode: 0x08, operands: ["var", "index", "src"] },
   "load-result": { opcode: 0x09, operands: ["dest"] },
   "load-global": { opcode: 0x0a, operands: ["dest", "global"] },
   "store-global": { opcode: 0x0b, operands: ["global", "src"] },
@@ -64,22 +61,22 @@ const InstrSpecs: Record<string, InstrSpec> = {
   "tail-call-prim-4": { opcode: 0x29, operands: ["prim", "arg", "arg", "arg", "arg"] },
   "tail-call-prim-5": { opcode: 0x2a, operands: ["prim", "arg", "arg", "arg", "arg", "arg"] },
   "tail-call-prim-6": { opcode: 0x2b, operands: ["prim", "arg", "arg", "arg", "arg", "arg", "arg"] },
-  "apply-0": { opcode: 0x2c, operands: ["target"] },
-  "apply-1": { opcode: 0x2d, operands: ["target", "arg"] },
-  "apply-2": { opcode: 0x2e, operands: ["target", "arg", "arg"] },
-  "apply-3": { opcode: 0x2f, operands: ["target", "arg", "arg", "arg"] },
-  "apply-4": { opcode: 0x30, operands: ["target", "arg", "arg", "arg", "arg"] },
-  "apply-5": { opcode: 0x31, operands: ["target", "arg", "arg", "arg", "arg", "arg"] },
-  "apply-6": { opcode: 0x32, operands: ["target", "arg", "arg", "arg", "arg", "arg", "arg"] },
-  "tail-apply-0": { opcode: 0x33, operands: ["target"] },
-  "tail-apply-1": { opcode: 0x34, operands: ["target", "arg"] },
-  "tail-apply-2": { opcode: 0x35, operands: ["target", "arg", "arg"] },
-  "tail-apply-3": { opcode: 0x36, operands: ["target", "arg", "arg", "arg"] },
-  "tail-apply-4": { opcode: 0x37, operands: ["target", "arg", "arg", "arg", "arg"] },
-  "tail-apply-5": { opcode: 0x38, operands: ["target", "arg", "arg", "arg", "arg", "arg"] },
-  "tail-apply-6": { opcode: 0x39, operands: ["target", "arg", "arg", "arg", "arg", "arg", "arg"] },
+  "apply-0": { opcode: 0x2c, operands: ["var"] },
+  "apply-1": { opcode: 0x2d, operands: ["var", "arg"] },
+  "apply-2": { opcode: 0x2e, operands: ["var", "arg", "arg"] },
+  "apply-3": { opcode: 0x2f, operands: ["var", "arg", "arg", "arg"] },
+  "apply-4": { opcode: 0x30, operands: ["var", "arg", "arg", "arg", "arg"] },
+  "apply-5": { opcode: 0x31, operands: ["var", "arg", "arg", "arg", "arg", "arg"] },
+  "apply-6": { opcode: 0x32, operands: ["var", "arg", "arg", "arg", "arg", "arg", "arg"] },
+  "tail-apply-0": { opcode: 0x33, operands: ["var"] },
+  "tail-apply-1": { opcode: 0x34, operands: ["var", "arg"] },
+  "tail-apply-2": { opcode: 0x35, operands: ["var", "arg", "arg"] },
+  "tail-apply-3": { opcode: 0x36, operands: ["var", "arg", "arg", "arg"] },
+  "tail-apply-4": { opcode: 0x37, operands: ["var", "arg", "arg", "arg", "arg"] },
+  "tail-apply-5": { opcode: 0x38, operands: ["var", "arg", "arg", "arg", "arg", "arg"] },
+  "tail-apply-6": { opcode: 0x39, operands: ["var", "arg", "arg", "arg", "arg", "arg", "arg"] },
   "goto": { opcode: 0x40, operands: ["label"] },
-  "branch": { opcode: 0x41, operands: ["cond", "label", "label"] },
+  "branch": { opcode: 0x41, operands: ["var", "label", "label"] },
   "return": { opcode: 0x42, operands: ["src"] },
   "return-void": { opcode: 0x43, operands: [] },
   "iadd": { opcode: 0x50, operands: ["dest", "src", "src"] },
@@ -140,9 +137,6 @@ function operandSpecSize(operand: OperandSpec): number {
     case "dest":
     case "src":
     case "arg":
-    case "cond":
-    case "closure":
-    case "target":
     case "index":
     case "size": {
       return 2

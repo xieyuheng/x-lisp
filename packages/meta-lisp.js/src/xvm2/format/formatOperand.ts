@@ -22,6 +22,10 @@ export function formatOperand(operand: Operand): string {
       }
     }
 
+    case "U16Operand": {
+      return `(u16 ${operand.content})`
+    }
+
     case "VarOperand": {
       return operand.name
     }

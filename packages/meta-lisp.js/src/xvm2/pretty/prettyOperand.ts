@@ -23,6 +23,10 @@ export function prettyOperand(operand: Operand): Ppml.Node {
       }
     }
 
+    case "U16Operand": {
+      return Ppml.text(`(u16 ${operand.content})`)
+    }
+
     case "VarOperand": {
       return Ppml.text(operand.name)
     }
