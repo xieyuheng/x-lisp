@@ -1,0 +1,18 @@
+(define-function (apply-twice f x)
+  (apply-1 f x)
+  (load-result once)
+  (apply-1 f once)
+  (load-result twice)
+  (return twice))
+
+(define-function (inc n)
+  (load-int one 1)
+  (iadd result n one)
+  (return result))
+
+(define-function (main)
+  (load-closure f (fn inc))
+  (load-int x 10)
+  (call-2 (fn apply-twice) f x)
+  (load-result result)
+  (return result))

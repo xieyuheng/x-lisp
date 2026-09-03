@@ -1,9 +1,5 @@
 # xvm2
 
-[meta-lisp.js] xvm2 -- disassemble
-
-# xvm2
-
 [xvm2] `xvm_t`
 [xvm2] .xvm.exe loader -- use TLV
 [xvm2] 实验 direct threaded code，看看是否比平凡的 switch 速度快

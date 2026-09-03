@@ -13,6 +13,7 @@ import * as X86Backend from "./compiler/x86-backend/index.ts"
 import * as XvmBackend from "./compiler/xvm-backend/index.ts"
 import * as Xvm2Backend from "./compiler/xvm2-backend/index.ts"
 import * as M from "./meta/index.ts"
+import * as Tlv from "./tlv/index.ts"
 import * as X86 from "./x86/index.ts"
 import * as Xvm2 from "./xvm2/index.ts"
 
@@ -29,6 +30,8 @@ router.defineRoutes([
   "test-xvm2 --config --profile --builtin",
   "format-basic <input>",
   "format-xvm2 <input>",
+  "assemble-xvm2 <input> <output>",
+  "disassemble-xvm2 <input> <output>",
   "assemble-x86 <input> <output> --entry",
 ])
 
@@ -106,6 +109,25 @@ router.defineHandlers({
     const text =
       Ppml.formatNode(Xvm2.prettyProgram(program), { width: 80 }) + "\n"
     process.stdout.write(text)
+  },
+
+  "assemble-xvm2": ({ args: [input, output] }) => {
+    const code = fs.readFileSync(input, "utf-8")
+    const sexps = S.parseSexps(code, { path: input })
+    const program = Xvm2.parseProgram(sexps)
+    const exe = Xvm2.assembleProgram(program)
+    const tlv = Xvm2.encodeExe(exe)
+    const buf = Tlv.encodeTlv(tlv)
+    fs.writeFileSync(output, buf)
+  },
+
+  "disassemble-xvm2": ({ args: [input, output] }) => {
+    const bytes = new Uint8Array(fs.readFileSync(input))
+    const tlv = Tlv.decodeTlv(bytes)
+    const exe = Xvm2.decodeExe(tlv)
+    const program = Xvm2.disassembleExe(exe)
+    const text = Xvm2.formatProgram(program)
+    fs.writeFileSync(output, text)
   },
 
   "assemble-x86": ({ args: [input, output], options }) => {

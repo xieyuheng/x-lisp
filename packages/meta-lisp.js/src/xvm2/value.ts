@@ -3,7 +3,7 @@ export function tagInt(value: bigint): bigint {
 }
 
 export function untagInt(value: bigint): bigint {
-  return value >> 3n
+  return BigInt.asIntN(64, value) >> 3n
 }
 
 export function tagFloat(value: number): bigint {
