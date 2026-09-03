@@ -7,7 +7,7 @@ void object_free(object_t *self) {
   }
 }
 
-void object_write(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
+void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
   if (self == NULL) {
     write_template(buffer, "#(<null-object>)");
     return;
@@ -32,7 +32,7 @@ void object_write(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
 
 void object_print(object_circle_ctx_t *ctx, object_t *self) {
   buffer_t *buffer = make_buffer();
-  object_write(buffer, ctx, self);
+  object_format(buffer, ctx, self);
   buffer_write(buffer, stdout);
   buffer_free(buffer);
 }

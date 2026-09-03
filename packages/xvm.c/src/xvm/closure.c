@@ -3,7 +3,7 @@
 const object_class_t closure_class = {
   .name = "closure",
   .equal_fn = (object_equal_fn_t *) closure_equal,
-  .write_fn = (object_write_fn_t *) closure_write,
+  .write_fn = (object_write_fn_t *) closure_format,
   .free_fn = (free_fn_t *) closure_free,
   .make_child_iter_fn = (object_make_child_iter_fn_t *) make_closure_child_iter,
   .child_iter_next_fn = (object_child_iter_next_fn_t *) closure_child_iter_next,
@@ -47,13 +47,13 @@ bool closure_equal(const closure_t *lhs, const closure_t *rhs) {
   return true;
 }
 
-void closure_write(buffer_t *buffer, object_circle_ctx_t *ctx, const closure_t *self) {
+void closure_format(buffer_t *buffer, object_circle_ctx_t *ctx, const closure_t *self) {
   write_template(buffer, "(@closure ");
-  value_write(buffer, ctx, x_object(self->definition));
+  value_format(buffer, ctx, x_object(self->definition));
   write_template(buffer, " [");
   for (size_t i = 0; i < self->size; i++) {
     if (i > 0) write_template(buffer, " ");
-    value_write(buffer, ctx, self->args[i]);
+    value_format(buffer, ctx, self->args[i]);
   }
   write_template(buffer, "]");
   write_template(buffer, ")");

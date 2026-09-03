@@ -3,7 +3,7 @@
 const object_class_t xfile_class = {
   .name = "file",
   .equal_fn = (object_equal_fn_t *) xfile_equal,
-  .write_fn = (object_write_fn_t *) xfile_write,
+  .write_fn = (object_write_fn_t *) xfile_format,
   .hash_code_fn = (object_hash_code_fn_t *) xfile_hash_code,
   .compare_fn = (object_compare_fn_t *) xfile_compare,
   .free_fn = (free_fn_t *) xfile_free,
@@ -79,7 +79,7 @@ bool xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
   return lhs->file == rhs->file;
 }
 
-void xfile_write(buffer_t *buffer, object_circle_ctx_t *ctx, const xfile_t *self) {
+void xfile_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xfile_t *self) {
   (void) ctx;
   write_string(buffer, "#(file ");
   write_int(buffer, file_raw_fd(self->file));

@@ -3,7 +3,7 @@
 const object_class_t xhash_class = {
   .name = "hash",
   .equal_fn = (object_equal_fn_t *) xhash_equal,
-  .write_fn = (object_write_fn_t *) xhash_write,
+  .write_fn = (object_write_fn_t *) xhash_format,
   .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
   .compare_fn = (object_compare_fn_t *) xhash_compare,
   .free_fn = (free_fn_t *) xhash_free,
@@ -117,14 +117,14 @@ static void xhash_write_entries(buffer_t *buffer, object_circle_ctx_t *ctx, cons
   while (key) {
     value_t value = xhash_get(self, key);
     write_template(buffer, " ");
-    value_write(buffer, ctx, key);
+    value_format(buffer, ctx, key);
     write_template(buffer, " ");
-    value_write(buffer, ctx, value);
+    value_format(buffer, ctx, value);
     key = (value_t) hash_iter_next_key(&iter);
   }
 }
 
-void xhash_write(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self) {
+void xhash_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self) {
   write_template(buffer, "(@hash");
   xhash_write_entries(buffer, ctx, self);
   write_template(buffer, ")");
