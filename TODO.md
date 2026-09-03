@@ -1,6 +1,5 @@
 # xvm2
 
-[meta-lisp.js] xvm2/exe -- design API
 [meta-lisp.js] assemble xvm2/ xvm-lisp to .xvm2.exe
 
 # xvm2
