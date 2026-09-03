@@ -64,7 +64,7 @@ function assembleOperand(
     case "dest":
     case "src":
     case "arg": {
-      ctx.offset = writeU16LE(ctx.code, ctx.offset, varSlot(ctx, operand))
+      ctx.offset = writeU16LE(ctx.code, ctx.offset, lookupLocalIndex(ctx.localIndexMap, asVarOperand(operand).name))
       return
     }
 
@@ -141,7 +141,7 @@ function assembleOperand(
     case "label": {
       const end = start + instructionSize(instr)
       ctx.offset = writeI32LE(ctx.code, ctx.offset, 
-        requireLabel(ctx.labels, asLabelOperand(operand).name) - end,
+        lookupLabelOffset(ctx.labelOffsetMap, asLabelOperand(operand).name) - end,
       )
       return
     }
@@ -169,14 +169,16 @@ function addFixup(
   exe.functionFixupTable.fixups.push(fixup)
 }
 
-function varSlot(ctx: AssembleContext, operand: Operand): number {
-  const varOperand = asVarOperand(operand)
-  const slot = ctx.slotMap.get(varOperand.name)
-  if (slot === undefined) {
-    throw new Error(`[assembleInstr] unknown local variable: ${varOperand.name}`)
+function lookupLocalIndex(
+  localIndexMap: Map<string, number>,
+  name: string,
+): number {
+  const index = localIndexMap.get(name)
+  if (index === undefined) {
+    throw new Error(`[assembleInstr] unknown local variable: ${name}`)
   }
 
-  return slot
+  return index
 }
 
 function taggedInt(value: bigint): bigint {
@@ -191,10 +193,14 @@ function taggedFloat(value: number): bigint {
   return (view.getBigUint64(0, true) & 0xfffffffffffffff8n) | 1n
 }
 
-function requireLabel(labels: Map<string, number>, name: string): number {
-  const label = labels.get(name)
-  if (label === undefined) {
+function lookupLabelOffset(
+  labelOffsetMap: Map<string, number>,
+  name: string,
+): number {
+  const offset = labelOffsetMap.get(name)
+  if (offset === undefined) {
     throw new Error(`[assembleInstr] label not found: ${name}`)
   }
-  return label
+
+  return offset
 }
