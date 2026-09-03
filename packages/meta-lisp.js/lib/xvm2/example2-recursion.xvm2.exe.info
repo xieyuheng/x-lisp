@@ -1,0 +1,34 @@
+0x01 name-table 120
+  "meta-builtin/builtin/equal"
+  "factorial"
+  "fn-pointer"
+  "n"
+  "one"
+  "base"
+  "result"
+  "m"
+  "sub"
+  "base-case"
+  "recur-case"
+  "main"
+  "prim-pointer"
+  "expected"
+0x10 function-definition 130
+  name: factorial
+  arity: 1
+  local-count: 6
+  code-length: 74
+  local-names: (n one base result m sub)
+  labels: (base-case 29 recur-case 43)
+0x10 function-definition 78
+  name: main
+  arity: 0
+  local-count: 3
+  code-length: 50
+  local-names: (n result expected)
+  labels: ()
+0x12 primitive-function-declaration 4
+0x14 function-fixup-table 48
+  (fixup fn-pointer factorial) -> factorial:51
+  (fixup fn-pointer factorial) -> main:12
+  (fixup prim-pointer meta-builtin/builtin/equal) -> main:37

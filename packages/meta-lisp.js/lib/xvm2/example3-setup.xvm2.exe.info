@@ -1,0 +1,53 @@
+0x01 name-table 141
+  "*version*"
+  "*name*"
+  "©setup.*version*"
+  "value"
+  "©setup.*name*"
+  "symbol-value"
+  "meta-lisp"
+  "setup-variables"
+  "fn-pointer"
+  "global-pointer"
+  "version"
+  "name"
+  "main"
+  "v"
+0x10 function-definition 34
+  name: ©setup.*version*
+  arity: 0
+  local-count: 1
+  code-length: 14
+  local-names: (value)
+  labels: ()
+0x10 function-definition 34
+  name: ©setup.*name*
+  arity: 0
+  local-count: 1
+  code-length: 14
+  local-names: (value)
+  labels: ()
+0x10 function-definition 71
+  name: setup-variables
+  arity: 0
+  local-count: 2
+  code-length: 47
+  local-names: (version name)
+  labels: ()
+0x10 function-definition 43
+  name: main
+  arity: 0
+  local-count: 1
+  code-length: 23
+  local-names: (v)
+  labels: ()
+0x11 variable-declaration 4
+0x11 variable-declaration 4
+0x14 function-fixup-table 112
+  (fixup symbol-value meta-lisp) -> ©setup.*name*:3
+  (fixup fn-pointer ©setup.*version*) -> setup-variables:1
+  (fixup global-pointer *version*) -> setup-variables:13
+  (fixup fn-pointer ©setup.*name*) -> setup-variables:24
+  (fixup global-pointer *name*) -> setup-variables:36
+  (fixup fn-pointer setup-variables) -> main:1
+  (fixup global-pointer *version*) -> main:12

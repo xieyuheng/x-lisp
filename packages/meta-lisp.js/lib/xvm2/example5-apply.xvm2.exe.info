@@ -1,0 +1,36 @@
+0x01 name-table 60
+  "apply-twice"
+  "f"
+  "x"
+  "once"
+  "twice"
+  "inc"
+  "n"
+  "one"
+  "result"
+  "main"
+  "fn-pointer"
+0x10 function-definition 51
+  name: apply-twice
+  arity: 2
+  local-count: 4
+  code-length: 19
+  local-names: (f x once twice)
+  labels: ()
+0x10 function-definition 49
+  name: inc
+  arity: 1
+  local-count: 3
+  code-length: 21
+  local-names: (n one result)
+  labels: ()
+0x10 function-definition 69
+  name: main
+  arity: 0
+  local-count: 3
+  code-length: 41
+  local-names: (f x result)
+  labels: ()
+0x14 function-fixup-table 32
+  (fixup fn-pointer inc) -> main:3
+  (fixup fn-pointer apply-twice) -> main:23

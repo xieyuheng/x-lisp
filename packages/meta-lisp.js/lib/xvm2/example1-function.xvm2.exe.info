@@ -1,0 +1,30 @@
+0x01 name-table 104
+  "meta-builtin/builtin/println"
+  "meta-builtin/builtin/imul"
+  "square"
+  "x"
+  "result"
+  "main"
+  "fn-pointer"
+  "prim-pointer"
+  "n"
+  "r"
+0x10 function-definition 34
+  name: square
+  arity: 1
+  local-count: 2
+  code-length: 10
+  local-names: (x result)
+  labels: ()
+0x10 function-definition 61
+  name: main
+  arity: 0
+  local-count: 2
+  code-length: 37
+  local-names: (n r)
+  labels: ()
+0x12 primitive-function-declaration 4
+0x12 primitive-function-declaration 4
+0x14 function-fixup-table 32
+  (fixup fn-pointer square) -> main:12
+  (fixup prim-pointer meta-builtin/builtin/println) -> main:26

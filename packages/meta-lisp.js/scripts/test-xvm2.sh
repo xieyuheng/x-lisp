@@ -25,5 +25,13 @@ find "$XVM2_DIR" -name "*.xvm2.asm" | sort | while read -r file; do
     exit 1
   fi
   diff -u "$snapshot" "$TEMP_DIR/out.xvm2"
+
+  ./meta-lisp.js info-xvm2 "$exe_file" > "$TEMP_DIR/out.info"
+  info_snapshot="${file%.xvm2.asm}.xvm2.exe.info"
+  if [ ! -f "$info_snapshot" ]; then
+    echo "FAIL: missing info snapshot $info_snapshot"
+    exit 1
+  fi
+  diff -u "$info_snapshot" "$TEMP_DIR/out.info"
   echo "OK"
 done

@@ -30,6 +30,7 @@ router.defineRoutes([
   "test-xvm2 --config --profile --builtin",
   "format-basic <input>",
   "format-xvm2 <input>",
+  "info-xvm2 <input>",
   "assemble-xvm2 <input> <output>",
   "disassemble-xvm2 <input> <output>",
   "assemble-x86 <input> <output> --entry",
@@ -109,6 +110,11 @@ router.defineHandlers({
     const text =
       Ppml.formatNode(Xvm2.prettyProgram(program), { width: 80 }) + "\n"
     process.stdout.write(text)
+  },
+
+  "info-xvm2": ({ args: [input] }) => {
+    const bytes = new Uint8Array(fs.readFileSync(input))
+    process.stdout.write(Xvm2.formatTlvInfo(bytes))
   },
 
   "assemble-xvm2": ({ args: [input, output] }) => {

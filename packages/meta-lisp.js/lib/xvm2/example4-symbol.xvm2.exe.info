@@ -1,0 +1,33 @@
+0x01 name-table 96
+  "classify"
+  "symbol-value"
+  "negative"
+  "positive"
+  "zero"
+  "n"
+  "result"
+  "neg"
+  "not-neg"
+  "pos"
+  "zero-case"
+  "main"
+  "fn-pointer"
+0x10 function-definition 155
+  name: classify
+  arity: 1
+  local-count: 5
+  code-length: 87
+  local-names: (n zero negative result positive)
+  labels: (neg 29 not-neg 43 pos 59 zero-case 73)
+0x10 function-definition 52
+  name: main
+  arity: 0
+  local-count: 2
+  code-length: 28
+  local-names: (n result)
+  labels: ()
+0x14 function-fixup-table 64
+  (fixup symbol-value negative) -> classify:32
+  (fixup symbol-value positive) -> classify:62
+  (fixup symbol-value zero) -> classify:76
+  (fixup fn-pointer classify) -> main:12
