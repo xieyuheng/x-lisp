@@ -10,6 +10,6 @@ hash_code_t value_hash_code(value_t value);
 ordering_t value_total_compare(value_t lhs, value_t rhs);
 
 void write_atom(buffer_t *buffer, value_t value);
-void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value);
+void value_write(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value);
 void write_value(buffer_t *buffer, value_t value);
 void print_value(value_t value);

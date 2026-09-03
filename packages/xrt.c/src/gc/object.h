@@ -38,5 +38,5 @@ struct object_t {
 
 void object_free(object_t *self);
 
-void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self);
+void object_write(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self);
 void object_print(object_circle_ctx_t *ctx, object_t *self);

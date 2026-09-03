@@ -8,7 +8,7 @@ struct xtext_t {
 const object_class_t xtext_class = {
   .name = "text",
   .equal_fn = (object_equal_fn_t *) xtext_equal,
-  .write_fn = (object_write_fn_t *) xtext_format,
+  .write_fn = (object_write_fn_t *) xtext_write,
   .hash_code_fn = (object_hash_code_fn_t *) xtext_hash_code,
   .compare_fn = (object_compare_fn_t *) xtext_compare,
   .free_fn = (free_fn_t *) xtext_free,
@@ -77,7 +77,7 @@ bool xtext_equal(const xtext_t *lhs, const xtext_t *rhs) {
   return text_equal(lhs->text, rhs->text);
 }
 
-void xtext_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xtext_t *self) {
+void xtext_write(buffer_t *buffer, object_circle_ctx_t *ctx, const xtext_t *self) {
   (void) ctx;
   write_string(buffer, "\"");
   write_string(buffer, xtext_string(self));
