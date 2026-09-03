@@ -12,7 +12,7 @@ bool is_xtext(value_t value);
 xtext_t *to_xtext(value_t value);
 
 bool xtext_equal(const xtext_t *lhs, const xtext_t *rhs);
-void xtext_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xtext_t *self);
+void write_xtext(buffer_t *buffer, object_circle_ctx_t *ctx, const xtext_t *self);
 hash_code_t xtext_hash_code(const xtext_t *self);
 ordering_t xtext_compare(const xtext_t *lhs, const xtext_t *rhs);
 

@@ -160,7 +160,7 @@ void write_atom(buffer_t *buffer, value_t value) {
   }
 }
 
-void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
+void write_value_in_ctx(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   if (is_atom(value)) {
     write_atom(buffer, value);
     return;
@@ -171,13 +171,13 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
     if (is_object_circle_start(ctx, object)) {
       write_template(buffer, "#%ld=", object_circle_index(ctx, object));
       object_circle_meet(ctx, object);
-      object_format(buffer, ctx, object);
+      write_object(buffer, ctx, object);
       return;
     } else if (is_object_circle_end(ctx, object)) {
       write_template(buffer, "#%ld#", object_circle_index(ctx, object));
       return;
     } else {
-      object_format(buffer, ctx, object);
+      write_object(buffer, ctx, object);
       return;
     }
   }
@@ -193,7 +193,7 @@ void write_value(buffer_t *buffer, value_t value) {
     set_clear(ctx->occurred_objects);
   }
 
-  value_format(buffer, ctx, value);
+  write_value_in_ctx(buffer, ctx, value);
   object_circle_ctx_free(ctx);
 }
 

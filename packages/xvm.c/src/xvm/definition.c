@@ -3,7 +3,7 @@
 const object_class_t definition_class = {
   .name = "definition",
   .equal_fn = (object_equal_fn_t *) definition_equal,
-  .write_fn = (object_write_fn_t *) definition_format,
+  .write_fn = (object_write_fn_t *) write_definition,
 };
 
 static definition_t *make_definition(char *name) {
@@ -74,7 +74,7 @@ bool definition_equal(definition_t *lhs, definition_t *rhs) {
   return lhs == rhs;
 }
 
-void definition_format(buffer_t *buffer, object_circle_ctx_t *ctx, definition_t *self) {
+void write_definition(buffer_t *buffer, object_circle_ctx_t *ctx, definition_t *self) {
   (void) ctx;
   write_template(buffer, "#(definition %s)", self->name);
 }

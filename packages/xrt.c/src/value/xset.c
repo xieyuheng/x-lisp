@@ -3,7 +3,7 @@
 const object_class_t xset_class = {
   .name = "set",
   .equal_fn = (object_equal_fn_t *) xset_equal,
-  .write_fn = (object_write_fn_t *) xset_format,
+  .write_fn = (object_write_fn_t *) write_xset,
   .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
   .compare_fn = (object_compare_fn_t *) xset_compare,
   .free_fn = (free_fn_t *) xset_free,
@@ -99,7 +99,7 @@ bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
   return true;
 }
 
-void xset_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self) {
+void write_xset(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self) {
   write_template(buffer, "(@set");
 
   set_iter_t iter;
@@ -107,13 +107,13 @@ void xset_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self)
 
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   if (entry) {
-    value_format(buffer, ctx, (value_t) entry->value);
+    write_value_in_ctx(buffer, ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 
   while (entry) {
     write_template(buffer, " ");
-    value_format(buffer, ctx, (value_t) entry->value);
+    write_value_in_ctx(buffer, ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 

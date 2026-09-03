@@ -7,7 +7,7 @@ struct symbol_t {
 
 const object_class_t symbol_class = {
   .name = "symbol",
-  .write_fn = (object_write_fn_t *) symbol_format,
+  .write_fn = (object_write_fn_t *) write_symbol,
   .hash_code_fn = (object_hash_code_fn_t *) symbol_hash_code,
   .compare_fn = (object_compare_fn_t *) symbol_compare,
 };
@@ -67,7 +67,7 @@ symbol_t *to_symbol(value_t value) {
 }
 
 
-void symbol_format(buffer_t *buffer, object_circle_ctx_t *ctx, const symbol_t *self) {
+void write_symbol(buffer_t *buffer, object_circle_ctx_t *ctx, const symbol_t *self) {
   (void) ctx;
   write_string(buffer, "'");
   write_string(buffer, symbol_string(self));

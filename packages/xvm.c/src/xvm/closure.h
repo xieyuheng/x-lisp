@@ -19,7 +19,7 @@ bool is_closure(value_t value);
 closure_t *to_closure(value_t value);
 
 bool closure_equal(const closure_t *lhs, const closure_t *rhs);
-void closure_format(buffer_t *buffer, object_circle_ctx_t *ctx, const closure_t *self);
+void write_closure(buffer_t *buffer, object_circle_ctx_t *ctx, const closure_t *self);
 
 closure_child_iter_t *make_closure_child_iter(const closure_t *closure);
 void closure_child_iter_free(closure_child_iter_t *self);
