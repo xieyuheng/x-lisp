@@ -1,5 +1,5 @@
 import { type Tlv } from "../../tlv/index.ts"
-import { readU16LE, readU32LE } from "./bytes.ts"
+import { readU16LE, readU32LE } from "@xieyuheng/std.js/binary"
 import {
   ExeTags,
   makeNameTable,

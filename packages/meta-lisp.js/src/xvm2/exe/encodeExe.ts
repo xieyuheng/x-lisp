@@ -1,5 +1,5 @@
 import { Tlv, TlvEntry } from "../../tlv/index.ts"
-import { writeU16LE, writeU32LE } from "./bytes.ts"
+import { writeU16LE, writeU32LE } from "@xieyuheng/std.js/binary"
 import {
   ExeTags,
   nameTableGetOffset,

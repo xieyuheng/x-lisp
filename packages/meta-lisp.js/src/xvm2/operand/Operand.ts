@@ -21,6 +21,17 @@ export function SymbolOperand(content: string): SymbolOperand {
   }
 }
 
+export function isSymbolOperand(operand: Operand): operand is SymbolOperand {
+  return operand.kind === "SymbolOperand"
+}
+
+export function asSymbolOperand(operand: Operand): SymbolOperand {
+  if (!isSymbolOperand(operand)) {
+    throw new Error("[asSymbolOperand] expected SymbolOperand")
+  }
+  return operand
+}
+
 export type StringOperand = {
   kind: "StringOperand"
   content: string
@@ -31,6 +42,17 @@ export function StringOperand(content: string): StringOperand {
     kind: "StringOperand",
     content,
   }
+}
+
+export function isStringOperand(operand: Operand): operand is StringOperand {
+  return operand.kind === "StringOperand"
+}
+
+export function asStringOperand(operand: Operand): StringOperand {
+  if (!isStringOperand(operand)) {
+    throw new Error("[asStringOperand] expected StringOperand")
+  }
+  return operand
 }
 
 export type IntOperand = {
@@ -45,6 +67,17 @@ export function IntOperand(content: bigint): IntOperand {
   }
 }
 
+export function isIntOperand(operand: Operand): operand is IntOperand {
+  return operand.kind === "IntOperand"
+}
+
+export function asIntOperand(operand: Operand): IntOperand {
+  if (!isIntOperand(operand)) {
+    throw new Error("[asIntOperand] expected IntOperand")
+  }
+  return operand
+}
+
 export type FloatOperand = {
   kind: "FloatOperand"
   content: number
@@ -57,7 +90,17 @@ export function FloatOperand(content: number): FloatOperand {
   }
 }
 
-// 局部变量 —— 裸符号，汇编时映射为槽号。
+export function isFloatOperand(operand: Operand): operand is FloatOperand {
+  return operand.kind === "FloatOperand"
+}
+
+export function asFloatOperand(operand: Operand): FloatOperand {
+  if (!isFloatOperand(operand)) {
+    throw new Error("[asFloatOperand] expected FloatOperand")
+  }
+  return operand
+}
+
 export type VarOperand = {
   kind: "VarOperand"
   name: string
@@ -70,7 +113,17 @@ export function VarOperand(name: string): VarOperand {
   }
 }
 
-// 函数定义引用 —— (fn <name>)
+export function isVarOperand(operand: Operand): operand is VarOperand {
+  return operand.kind === "VarOperand"
+}
+
+export function asVarOperand(operand: Operand): VarOperand {
+  if (!isVarOperand(operand)) {
+    throw new Error("[asVarOperand] expected VarOperand")
+  }
+  return operand
+}
+
 export type FnOperand = {
   kind: "FnOperand"
   name: string
@@ -83,7 +136,17 @@ export function FnOperand(name: string): FnOperand {
   }
 }
 
-// primitive 函数引用 —— (prim <name>)
+export function isFnOperand(operand: Operand): operand is FnOperand {
+  return operand.kind === "FnOperand"
+}
+
+export function asFnOperand(operand: Operand): FnOperand {
+  if (!isFnOperand(operand)) {
+    throw new Error("[asFnOperand] expected FnOperand")
+  }
+  return operand
+}
+
 export type PrimOperand = {
   kind: "PrimOperand"
   name: string
@@ -96,7 +159,17 @@ export function PrimOperand(name: string): PrimOperand {
   }
 }
 
-// 全局变量引用 —— (global <name>)
+export function isPrimOperand(operand: Operand): operand is PrimOperand {
+  return operand.kind === "PrimOperand"
+}
+
+export function asPrimOperand(operand: Operand): PrimOperand {
+  if (!isPrimOperand(operand)) {
+    throw new Error("[asPrimOperand] expected PrimOperand")
+  }
+  return operand
+}
+
 export type GlobalOperand = {
   kind: "GlobalOperand"
   name: string
@@ -109,7 +182,17 @@ export function GlobalOperand(name: string): GlobalOperand {
   }
 }
 
-// 标签引用 —— (label <name>)
+export function isGlobalOperand(operand: Operand): operand is GlobalOperand {
+  return operand.kind === "GlobalOperand"
+}
+
+export function asGlobalOperand(operand: Operand): GlobalOperand {
+  if (!isGlobalOperand(operand)) {
+    throw new Error("[asGlobalOperand] expected GlobalOperand")
+  }
+  return operand
+}
+
 export type LabelOperand = {
   kind: "LabelOperand"
   name: string
@@ -120,4 +203,15 @@ export function LabelOperand(name: string): LabelOperand {
     kind: "LabelOperand",
     name,
   }
+}
+
+export function isLabelOperand(operand: Operand): operand is LabelOperand {
+  return operand.kind === "LabelOperand"
+}
+
+export function asLabelOperand(operand: Operand): LabelOperand {
+  if (!isLabelOperand(operand)) {
+    throw new Error("[asLabelOperand] expected LabelOperand")
+  }
+  return operand
 }

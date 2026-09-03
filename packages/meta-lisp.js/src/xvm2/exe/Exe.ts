@@ -1,5 +1,5 @@
 import { type FunctionFixupTable } from "./FunctionFixupTable.ts"
-import { type NameTable } from "./NameTable.ts"
+import { makeEmptyNameTable, type NameTable } from "./NameTable.ts"
 
 export * from "./FunctionFixupTable.ts"
 export * from "./NameTable.ts"
@@ -40,3 +40,16 @@ export const ExeTags = {
   PrimitiveVariableDeclaration: 0x13,
   FunctionFixupTable: 0x14,
 } as const
+
+export function makeEmptyExe(): Exe {
+  return {
+    nameTable: makeEmptyNameTable(),
+    functions: [],
+    variables: [],
+    primitiveFunctions: [],
+    primitiveVariables: [],
+    functionFixupTable: {
+      fixups: [],
+    },
+  }
+}

@@ -1,6 +1,6 @@
 # xvm2
 
-[meta-lisp.js] assemble xvm2/ xvm-lisp to .xvm2.exe
+[meta-lisp.js] xvm2 -- disassemble
 
 # xvm2
 
