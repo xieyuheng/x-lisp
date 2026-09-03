@@ -1,10 +1,17 @@
 # xvm2
 
+[meta-lisp.js] tlv/ -- setup
+[meta-lisp.js] tlv/ -- parseTlv formatTlv
+
+[meta-lisp.js] assemble xvm2/ xvm-lisp to .xvm2.exe
+
+# xvm2
+
 [xvm2] `xvm_t`
 [xvm2] .xvm.exe loader -- use TLV
 [xvm2] 实验 direct threaded code，看看是否比平凡的 switch 速度快
+[xvm2] 测试 TLV exe 和固定格式 exe 的 load 速度
 
-[meta-lisp.js] assemble basic-lisp to .xvm.exe
 [meta-lisp.js] remove `xvm/`
 
 # x86
