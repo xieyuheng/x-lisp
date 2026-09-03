@@ -1,7 +1,6 @@
 # xvm2
 
-[meta-lisp.js] tlv/ -- setup
-[meta-lisp.js] tlv/ -- parseTlv formatTlv
+[meta-lisp.js] xvm2/ -- Exe
 
 [meta-lisp.js] assemble xvm2/ xvm-lisp to .xvm2.exe
 
