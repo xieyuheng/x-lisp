@@ -1,3 +1,3 @@
-export * from "./decode.ts"
-export * from "./encode.ts"
+export * from "./decodeTlv.ts"
+export * from "./encodeTlv.ts"
 export * from "./types.ts"

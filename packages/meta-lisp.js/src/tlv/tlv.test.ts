@@ -1,8 +1,6 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
-import { decodeTlv } from "./decode.ts"
-import { encodeTlv } from "./encode.ts"
-import { Tlv, TlvEntry } from "./types.ts"
+import { decodeTlv, encodeTlv, Tlv, TlvEntry } from "./index.ts"
 
 test("encodeTlv / decodeTlv: round-trip", () => {
   const tlv = Tlv([
