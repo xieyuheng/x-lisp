@@ -84,11 +84,79 @@ export function decodeFunctionDefinition(
   const codeLength = readU32LE(value, 8)
   const code = value.slice(12, 12 + codeLength)
 
+  let offset = 12 + codeLength
+
+  const localNamesResult = readLocalNameOffsets(
+    value,
+    offset,
+    nameTable,
+    localCount,
+  )
+  offset = localNamesResult.nextOffset
+
+  const labelsResult = readLabels(value, offset, nameTable)
+  offset = labelsResult.nextOffset
+
   return {
     name: nameTableGetName(nameTable, nameOffset),
     arity,
-    localCount,
+    localNames: localNamesResult.localNames,
+    labels: labelsResult.labels,
     code,
+  }
+}
+
+function readLocalNameOffsets(
+  value: Uint8Array,
+  offset: number,
+  nameTable: NameTable,
+  localCount: number,
+): {
+  localNames: Array<string>
+  nextOffset: number
+} {
+  const localNames: Array<string> = []
+  for (let i = 0; i < localCount; i++) {
+    localNames.push(nameTableGetName(nameTable, readU32LE(value, offset)))
+    offset += 4
+  }
+
+  return {
+    localNames,
+    nextOffset: offset,
+  }
+}
+
+function readLabels(
+  value: Uint8Array,
+  offset: number,
+  nameTable: NameTable,
+): {
+  labels: Array<{ name: string; offset: number }>
+  nextOffset: number
+} {
+  const labelCount = readU32LE(value, offset)
+  offset += 4
+
+  const labelNameOffsets: Array<number> = []
+  for (let i = 0; i < labelCount; i++) {
+    labelNameOffsets.push(readU32LE(value, offset))
+    offset += 4
+  }
+
+  const labels: Array<{ name: string; offset: number }> = []
+  for (let i = 0; i < labelCount; i++) {
+    const labelOffset = readU32LE(value, offset)
+    offset += 4
+    labels.push({
+      name: nameTableGetName(nameTable, labelNameOffsets[i]),
+      offset: labelOffset,
+    })
+  }
+
+  return {
+    labels,
+    nextOffset: offset,
   }
 }
 

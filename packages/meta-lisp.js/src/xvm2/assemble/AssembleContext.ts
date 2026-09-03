@@ -8,13 +8,36 @@ export type AssembleContext = {
   labelOffsetMap: Map<string, number>
   code: Uint8Array
   offset: number
-  localCount: number
+}
+
+export function lookupLocalIndex(
+  localIndexMap: Map<string, number>,
+  name: string,
+): number {
+  const index = localIndexMap.get(name)
+  if (index === undefined) {
+    throw new Error(`[lookupLocalIndex] unknown local variable: ${name}`)
+  }
+
+  return index
+}
+
+export function lookupLabelOffset(
+  labelOffsetMap: Map<string, number>,
+  name: string,
+): number {
+  const offset = labelOffsetMap.get(name)
+  if (offset === undefined) {
+    throw new Error(`[lookupLabelOffset] label not found: ${name}`)
+  }
+
+  return offset
 }
 
 export function makeAssembleContext(
   definition: FunctionDefinition,
 ): AssembleContext {
-  const { localIndexMap, localCount } = allocateSlots(definition)
+  const localIndexMap = buildLocalIndexMap(definition)
   const sizes = definition.instrs.map(instructionSize)
   const labelOffsetMap = collectLabels(definition.instrs, sizes)
   const code = new Uint8Array(sizes.reduce((sum, size) => sum + size, 0))
@@ -25,14 +48,12 @@ export function makeAssembleContext(
     labelOffsetMap,
     code,
     offset: 0,
-    localCount,
   }
 }
 
-function allocateSlots(definition: FunctionDefinition): {
-  localIndexMap: Map<string, number>
-  localCount: number
-} {
+function buildLocalIndexMap(
+  definition: FunctionDefinition,
+): Map<string, number> {
   const localIndexMap = new Map<string, number>()
 
   definition.parameters.forEach((parameter, index) => {
@@ -52,10 +73,7 @@ function allocateSlots(definition: FunctionDefinition): {
     }
   }
 
-  return {
-    localIndexMap,
-    localCount: nextSlot,
-  }
+  return localIndexMap
 }
 
 function collectLabels(

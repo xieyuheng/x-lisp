@@ -52,7 +52,17 @@ export function readU16LE(bytes: Uint8Array, offset: number): number {
   return view.getUint16(offset, true)
 }
 
+export function readI32LE(bytes: Uint8Array, offset: number): number {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
+  return view.getInt32(offset, true)
+}
+
 export function readU32LE(bytes: Uint8Array, offset: number): number {
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
   return view.getUint32(offset, true)
+}
+
+export function readU64LE(bytes: Uint8Array, offset: number): bigint {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
+  return view.getBigUint64(offset, true)
 }

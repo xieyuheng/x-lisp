@@ -16,7 +16,8 @@ import {
   type Operand,
 } from "../operand/Operand.ts"
 import { writeI32LE, writeU16LE, writeU64LE, writeU8LE } from "@xieyuheng/std.js/binary"
-import { type AssembleContext } from "./AssembleContext.ts"
+import { lookupLabelOffset, lookupLocalIndex, type AssembleContext } from "./AssembleContext.ts"
+import { tagFloat, tagInt } from "../value.ts"
 import { instructionSize, instructionSpec, opcodeFor, type OperandSpec } from "./instruction.ts"
 
 export function assembleInstr(
@@ -66,12 +67,12 @@ function assembleOperand(
     }
 
     case "int": {
-      ctx.offset = writeU64LE(ctx.code, ctx.offset, taggedInt(asIntOperand(operand).content))
+      ctx.offset = writeU64LE(ctx.code, ctx.offset, tagInt(asIntOperand(operand).content))
       return
     }
 
     case "float": {
-      ctx.offset = writeU64LE(ctx.code, ctx.offset, taggedFloat(asFloatOperand(operand).content))
+      ctx.offset = writeU64LE(ctx.code, ctx.offset, tagFloat(asFloatOperand(operand).content))
       return
     }
 
@@ -163,40 +164,4 @@ function addFixup(
   }
 
   exe.functionFixupTable.fixups.push(fixup)
-}
-
-function lookupLocalIndex(
-  localIndexMap: Map<string, number>,
-  name: string,
-): number {
-  const index = localIndexMap.get(name)
-  if (index === undefined) {
-    throw new Error(`[assembleInstr] unknown local variable: ${name}`)
-  }
-
-  return index
-}
-
-function taggedInt(value: bigint): bigint {
-  return value << 3n
-}
-
-function taggedFloat(value: number): bigint {
-  const bytes = new Uint8Array(8)
-  const view = new DataView(bytes.buffer)
-  view.setFloat64(0, value, true)
-
-  return (view.getBigUint64(0, true) & 0xfffffffffffffff8n) | 1n
-}
-
-function lookupLabelOffset(
-  labelOffsetMap: Map<string, number>,
-  name: string,
-): number {
-  const offset = labelOffsetMap.get(name)
-  if (offset === undefined) {
-    throw new Error(`[assembleInstr] label not found: ${name}`)
-  }
-
-  return offset
 }

@@ -70,11 +70,18 @@ u16 arity
 u16 local_count
 u32 code_length
 u8  code[code_length]
+u32 local_name_offsets[local_count]
+u32 label_count
+u32 label_name_offsets[label_count]
+u32 label_offsets[label_count]
 ```
 
 - `name_offset` 指向 name table 中的函数名。
 - `arity` 是参数个数。
 - `local_count` 是局部槽位数。
+- `local_name_offsets` 按槽位顺序保存局部变量名。
+- `label_name_offsets` 保存 label 名字。
+- `label_offsets` 保存 label 在 code 中的偏移。
 - `code` 是函数体字节码，编码见 [指令](instructions.md)。
 - 函数的入口是 `code` 的第一个字节。
 

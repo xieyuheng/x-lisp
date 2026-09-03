@@ -5,6 +5,7 @@ import {
   nameTableGetOffset,
   type Exe,
   type ExeFunctionDefinition,
+  type ExeLabel,
   type ExePrimitiveFunctionDeclaration,
   type ExePrimitiveVariableDeclaration,
   type ExeVariableDeclaration,
@@ -64,16 +65,60 @@ export function encodeFunctionDefinition(
   nameTable: NameTable,
   fn: ExeFunctionDefinition,
 ): Uint8Array {
-  const bytes = new Uint8Array(4 + 2 + 2 + 4 + fn.code.byteLength)
+  const bytes = new Uint8Array(
+    4 +
+      2 +
+      2 +
+      4 +
+      fn.code.byteLength +
+      fn.localNames.length * 4 +
+      4 +
+      fn.labels.length * 8,
+  )
   let offset = 0
 
   offset = writeU32LE(bytes, offset, nameTableGetOffset(nameTable, fn.name))
   offset = writeU16LE(bytes, offset, fn.arity)
-  offset = writeU16LE(bytes, offset, fn.localCount)
+  offset = writeU16LE(bytes, offset, fn.localNames.length)
   offset = writeU32LE(bytes, offset, fn.code.byteLength)
   bytes.set(fn.code, offset)
+  offset += fn.code.byteLength
+
+  offset = writeLocalNameOffsets(bytes, offset, nameTable, fn.localNames)
+  offset = writeLabels(bytes, offset, nameTable, fn.labels)
 
   return bytes
+}
+
+function writeLocalNameOffsets(
+  bytes: Uint8Array,
+  offset: number,
+  nameTable: NameTable,
+  localNames: Array<string>,
+): number {
+  for (const name of localNames) {
+    offset = writeU32LE(bytes, offset, nameTableGetOffset(nameTable, name))
+  }
+
+  return offset
+}
+
+function writeLabels(
+  bytes: Uint8Array,
+  offset: number,
+  nameTable: NameTable,
+  labels: Array<ExeLabel>,
+): number {
+  offset = writeU32LE(bytes, offset, labels.length)
+
+  for (const label of labels) {
+    offset = writeU32LE(bytes, offset, nameTableGetOffset(nameTable, label.name))
+  }
+  for (const label of labels) {
+    offset = writeU32LE(bytes, offset, label.offset)
+  }
+
+  return offset
 }
 
 export function encodeVariableDeclaration(

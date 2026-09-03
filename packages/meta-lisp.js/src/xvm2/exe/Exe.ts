@@ -16,8 +16,14 @@ export type Exe = {
 export type ExeFunctionDefinition = {
   name: string
   arity: number
-  localCount: number
+  localNames: Array<string>
+  labels: Array<ExeLabel>
   code: Uint8Array
+}
+
+export type ExeLabel = {
+  name: string
+  offset: number
 }
 
 export type ExeVariableDeclaration = {
