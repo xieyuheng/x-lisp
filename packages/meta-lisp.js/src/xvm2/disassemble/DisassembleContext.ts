@@ -1,6 +1,9 @@
-import { type FunctionFixup, type Exe, type ExeFunctionDefinition } from "../exe/Exe.ts"
-import { type OperandSpec } from "../assemble/instruction.ts"
-import { instructionSpecs } from "../assemble/instruction.ts"
+import { instructionSpecs, type OperandSpec } from "../assemble/instruction.ts"
+import {
+  type Exe,
+  type ExeFunctionDefinition,
+  type FunctionFixup,
+} from "../exe/Exe.ts"
 
 export type DisassembleContext = {
   functionName: string

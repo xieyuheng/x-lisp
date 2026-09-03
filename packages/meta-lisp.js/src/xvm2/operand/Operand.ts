@@ -102,8 +102,6 @@ export function asFloatOperand(operand: Operand): FloatOperand {
   return operand
 }
 
-
-
 export type U16Operand = {
   kind: "U16Operand"
   content: number

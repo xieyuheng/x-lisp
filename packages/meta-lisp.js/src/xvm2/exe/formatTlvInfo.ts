@@ -3,9 +3,6 @@ import {
   decodeFunctionDefinition,
   decodeFunctionFixupTable,
   decodeNameTable,
-  decodePrimitiveFunctionDeclaration,
-  decodePrimitiveVariableDeclaration,
-  decodeVariableDeclaration,
 } from "./decodeExe.ts"
 import { ExeTags, type NameTable } from "./Exe.ts"
 
@@ -25,7 +22,9 @@ export function formatTlvInfo(bytes: Uint8Array): string {
   const lines: Array<string> = []
   for (const entry of tlv.entries) {
     const tagName = TagNames[entry.tag] ?? "unknown"
-    lines.push(`0x${entry.tag.toString(16).padStart(2, "0")} ${tagName} ${entry.value.byteLength}`)
+    lines.push(
+      `0x${entry.tag.toString(16).padStart(2, "0")} ${tagName} ${entry.value.byteLength}`,
+    )
 
     switch (entry.tag) {
       case ExeTags.NameTable: {
@@ -45,7 +44,9 @@ export function formatTlvInfo(bytes: Uint8Array): string {
         lines.push(`  local-count: ${fn.localNames.length}`)
         lines.push(`  code-length: ${fn.code.byteLength}`)
         lines.push(`  local-names: (${fn.localNames.join(" ")})`)
-        lines.push(`  labels: (${fn.labels.map((label) => `${label.name} ${label.offset}`).join(" ")})`)
+        lines.push(
+          `  labels: (${fn.labels.map((label) => `${label.name} ${label.offset}`).join(" ")})`,
+        )
         break
       }
 
@@ -65,7 +66,9 @@ export function formatTlvInfo(bytes: Uint8Array): string {
         if (nameTable === undefined) break
         const table = decodeFunctionFixupTable(nameTable, entry.value)
         for (const fixup of table.fixups) {
-          lines.push(`  (fixup ${fixup.type} ${fixup.name}) -> ${fixup.destName}:${fixup.destOffset}`)
+          lines.push(
+            `  (fixup ${fixup.type} ${fixup.name}) -> ${fixup.destName}:${fixup.destOffset}`,
+          )
         }
         break
       }

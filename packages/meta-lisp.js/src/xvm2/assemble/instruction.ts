@@ -17,6 +17,7 @@ export type InstrSpec = {
   operands: Array<OperandSpec>
 }
 
+// prettier-ignore
 const InstrSpecs: Record<string, InstrSpec> = {
   "move": { opcode: 0x01, operands: ["var", "var"] },
   "load-int": { opcode: 0x02, operands: ["var", "int"] },

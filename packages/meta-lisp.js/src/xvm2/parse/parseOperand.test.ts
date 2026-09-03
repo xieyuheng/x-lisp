@@ -1,6 +1,6 @@
+import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert/strict"
 import { test } from "node:test"
-import * as S from "@xieyuheng/sexp.js"
 import { formatOperand } from "../format/formatOperand.ts"
 import { parseOperand } from "./parseOperand.ts"
 

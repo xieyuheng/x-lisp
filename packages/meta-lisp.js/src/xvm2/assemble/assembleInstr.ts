@@ -1,10 +1,19 @@
+import {
+  writeI32LE,
+  writeU16LE,
+  writeU64LE,
+  writeU8LE,
+} from "@xieyuheng/std.js/binary"
 import { type Exe } from "../exe/Exe.ts"
-import { type FunctionFixup, type FixupType } from "../exe/FunctionFixupTable.ts"
+import {
+  type FixupType,
+  type FunctionFixup,
+} from "../exe/FunctionFixupTable.ts"
 import { nameTableAddName } from "../exe/NameTable.ts"
 import { type Instr } from "../instr/Instr.ts"
 import {
-  asFnOperand,
   asFloatOperand,
+  asFnOperand,
   asGlobalOperand,
   asIntOperand,
   asLabelOperand,
@@ -15,10 +24,18 @@ import {
   asVarOperand,
   type Operand,
 } from "../operand/Operand.ts"
-import { writeI32LE, writeU16LE, writeU64LE, writeU8LE } from "@xieyuheng/std.js/binary"
-import { lookupLabelOffset, lookupLocalIndex, type AssembleContext } from "./AssembleContext.ts"
 import { tagFloat, tagInt } from "../value.ts"
-import { instructionSize, instructionSpec, opcodeFor, type OperandSpec } from "./instruction.ts"
+import {
+  lookupLabelOffset,
+  lookupLocalIndex,
+  type AssembleContext,
+} from "./AssembleContext.ts"
+import {
+  instructionSize,
+  instructionSpec,
+  opcodeFor,
+  type OperandSpec,
+} from "./instruction.ts"
 
 export function assembleInstr(
   exe: Exe,
@@ -41,14 +58,7 @@ export function assembleInstr(
   ctx.offset = writeU8LE(ctx.code, ctx.offset, opcodeFor(instr.op))
 
   for (let i = 0; i < spec.operands.length; i++) {
-    assembleOperand(
-      exe,
-      ctx,
-      start,
-      instr,
-      spec.operands[i],
-      instr.operands[i],
-    )
+    assembleOperand(exe, ctx, start, instr, spec.operands[i], instr.operands[i])
   }
 }
 
@@ -62,22 +72,38 @@ function assembleOperand(
 ): void {
   switch (spec) {
     case "var": {
-      ctx.offset = writeU16LE(ctx.code, ctx.offset, lookupLocalIndex(ctx.localIndexMap, asVarOperand(operand).name))
+      ctx.offset = writeU16LE(
+        ctx.code,
+        ctx.offset,
+        lookupLocalIndex(ctx.localIndexMap, asVarOperand(operand).name),
+      )
       return
     }
 
     case "int": {
-      ctx.offset = writeU64LE(ctx.code, ctx.offset, tagInt(asIntOperand(operand).content))
+      ctx.offset = writeU64LE(
+        ctx.code,
+        ctx.offset,
+        tagInt(asIntOperand(operand).content),
+      )
       return
     }
 
     case "float": {
-      ctx.offset = writeU64LE(ctx.code, ctx.offset, tagFloat(asFloatOperand(operand).content))
+      ctx.offset = writeU64LE(
+        ctx.code,
+        ctx.offset,
+        tagFloat(asFloatOperand(operand).content),
+      )
       return
     }
 
     case "u16": {
-      ctx.offset = writeU16LE(ctx.code, ctx.offset, asU16Operand(operand).content)
+      ctx.offset = writeU16LE(
+        ctx.code,
+        ctx.offset,
+        asU16Operand(operand).content,
+      )
       return
     }
 
@@ -106,19 +132,19 @@ function assembleOperand(
     }
 
     case "fn": {
-      addFixup(
-        exe,
-        ctx,
-        "fn-pointer",
-        asFnOperand(operand).name,
-        ctx.offset,
-      )
+      addFixup(exe, ctx, "fn-pointer", asFnOperand(operand).name, ctx.offset)
       ctx.offset += 8
       return
     }
 
     case "prim": {
-      addFixup(exe, ctx, "prim-pointer", asPrimOperand(operand).name, ctx.offset)
+      addFixup(
+        exe,
+        ctx,
+        "prim-pointer",
+        asPrimOperand(operand).name,
+        ctx.offset,
+      )
       ctx.offset += 8
       return
     }
@@ -137,8 +163,11 @@ function assembleOperand(
 
     case "label": {
       const end = start + instructionSize(instr)
-      ctx.offset = writeI32LE(ctx.code, ctx.offset, 
-        lookupLabelOffset(ctx.labelOffsetMap, asLabelOperand(operand).name) - end,
+      ctx.offset = writeI32LE(
+        ctx.code,
+        ctx.offset,
+        lookupLabelOffset(ctx.labelOffsetMap, asLabelOperand(operand).name) -
+          end,
       )
       return
     }

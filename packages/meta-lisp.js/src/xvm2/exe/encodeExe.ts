@@ -1,5 +1,5 @@
-import { Tlv, TlvEntry } from "../../tlv/index.ts"
 import { writeU16LE, writeU32LE } from "@xieyuheng/std.js/binary"
+import { Tlv, TlvEntry } from "../../tlv/index.ts"
 import {
   ExeTags,
   nameTableGetOffset,
@@ -18,10 +18,16 @@ export function encodeExe(exe: Exe): Tlv {
   return Tlv([
     TlvEntry(ExeTags.NameTable, encodeNameTable(exe.nameTable)),
     ...exe.functions.map((fn) =>
-      TlvEntry(ExeTags.FunctionDefinition, encodeFunctionDefinition(exe.nameTable, fn)),
+      TlvEntry(
+        ExeTags.FunctionDefinition,
+        encodeFunctionDefinition(exe.nameTable, fn),
+      ),
     ),
     ...exe.variables.map((variable) =>
-      TlvEntry(ExeTags.VariableDeclaration, encodeVariableDeclaration(exe.nameTable, variable)),
+      TlvEntry(
+        ExeTags.VariableDeclaration,
+        encodeVariableDeclaration(exe.nameTable, variable),
+      ),
     ),
     ...exe.primitiveFunctions.map((primitive) =>
       TlvEntry(
@@ -35,7 +41,10 @@ export function encodeExe(exe: Exe): Tlv {
         encodePrimitiveVariableDeclaration(exe.nameTable, primitive),
       ),
     ),
-    TlvEntry(ExeTags.FunctionFixupTable, encodeFunctionFixupTable(exe.nameTable, exe.functionFixupTable)),
+    TlvEntry(
+      ExeTags.FunctionFixupTable,
+      encodeFunctionFixupTable(exe.nameTable, exe.functionFixupTable),
+    ),
   ])
 }
 
@@ -112,7 +121,11 @@ function writeLabels(
   offset = writeU32LE(bytes, offset, labels.length)
 
   for (const label of labels) {
-    offset = writeU32LE(bytes, offset, nameTableGetOffset(nameTable, label.name))
+    offset = writeU32LE(
+      bytes,
+      offset,
+      nameTableGetOffset(nameTable, label.name),
+    )
   }
   for (const label of labels) {
     offset = writeU32LE(bytes, offset, label.offset)

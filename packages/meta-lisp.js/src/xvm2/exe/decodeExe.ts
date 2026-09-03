@@ -1,5 +1,5 @@
-import { type Tlv } from "../../tlv/index.ts"
 import { readU16LE, readU32LE } from "@xieyuheng/std.js/binary"
+import { type Tlv } from "../../tlv/index.ts"
 import {
   ExeTags,
   makeNameTable,
@@ -16,7 +16,9 @@ import {
 } from "./Exe.ts"
 
 export function decodeExe(tlv: Tlv): Exe {
-  const nameTableEntry = tlv.entries.find((entry) => entry.tag === ExeTags.NameTable)
+  const nameTableEntry = tlv.entries.find(
+    (entry) => entry.tag === ExeTags.NameTable,
+  )
   if (nameTableEntry === undefined) {
     throw new Error("[decodeExe] missing name table")
   }
@@ -42,7 +44,8 @@ export function decodeExe(tlv: Tlv): Exe {
       ),
     functionFixupTable: decodeFunctionFixupTable(
       nameTable,
-      tlv.entries.find((entry) => entry.tag === ExeTags.FunctionFixupTable)?.value ?? new Uint8Array([]),
+      tlv.entries.find((entry) => entry.tag === ExeTags.FunctionFixupTable)
+        ?.value ?? new Uint8Array([]),
     ),
   }
 }

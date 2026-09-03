@@ -40,10 +40,7 @@ export function nameTableGetName(nameTable: NameTable, offset: number): string {
   return name
 }
 
-export function nameTableAddName(
-  nameTable: NameTable,
-  name: string,
-): number {
+export function nameTableAddName(nameTable: NameTable, name: string): number {
   const existing = nameTable.nameToOffset.get(name)
   if (existing !== undefined) {
     return existing

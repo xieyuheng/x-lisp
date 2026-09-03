@@ -1,6 +1,8 @@
 import { readI32LE, readU16LE, readU64LE } from "@xieyuheng/std.js/binary"
+import { instructionSize, type OperandSpec } from "../assemble/instruction.ts"
 import { Instr } from "../instr/Instr.ts"
 import {
+  FloatOperand,
   FnOperand,
   GlobalOperand,
   IntOperand,
@@ -10,10 +12,8 @@ import {
   SymbolOperand,
   U16Operand,
   VarOperand,
-  FloatOperand,
   type Operand,
 } from "../operand/Operand.ts"
-import { instructionSize, type OperandSpec } from "../assemble/instruction.ts"
 import { untagFloat, untagInt } from "../value.ts"
 import { type DisassembleContext } from "./DisassembleContext.ts"
 

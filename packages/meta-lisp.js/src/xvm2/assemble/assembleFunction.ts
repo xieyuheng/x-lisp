@@ -34,26 +34,19 @@ export function assembleFunction(
   })
 }
 
-function buildLocalNames(
-  localIndexMap: Map<string, number>,
-): Array<string> {
+function buildLocalNames(localIndexMap: Map<string, number>): Array<string> {
   return Array.from(localIndexMap.entries())
     .sort((a, b) => a[1] - b[1])
     .map(([name]) => name)
 }
 
-function buildLabels(
-  labelOffsetMap: Map<string, number>,
-): Array<ExeLabel> {
+function buildLabels(labelOffsetMap: Map<string, number>): Array<ExeLabel> {
   return Array.from(labelOffsetMap.entries())
     .sort((a, b) => a[1] - b[1])
     .map(([name, offset]) => ({ name, offset }))
 }
 
-function addNamesToNameTable(
-  nameTable: NameTable,
-  names: Array<string>,
-): void {
+function addNamesToNameTable(nameTable: NameTable, names: Array<string>): void {
   for (const name of names) {
     nameTableAddName(nameTable, name)
   }
