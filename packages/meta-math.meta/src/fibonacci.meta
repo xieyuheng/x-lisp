@@ -21,4 +21,5 @@
   (assert-equal 21 (fibonacci 8))
   (assert-equal 34 (fibonacci 9))
   ;; 739.296ms
-  (assert-equal 9227465 (fibonacci 35)))
+  (assert-equal 9227465 (fibonacci 35))
+  (println (fibonacci 40)))

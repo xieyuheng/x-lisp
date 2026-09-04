@@ -126,7 +126,7 @@ function codegenInstr(program: B.Program, instr: B.Instr): Array<Xvm2.Instr> {
         Xvm2.Instr("make-closure", [
           dest,
           Xvm2.FnOperand(name),
-          Xvm2.IntOperand(size),
+          Xvm2.U16Operand(Number(size)),
         ]),
       ]
     }
@@ -138,7 +138,7 @@ function codegenInstr(program: B.Program, instr: B.Instr): Array<Xvm2.Instr> {
       return [
         Xvm2.Instr("store-closure-arg", [
           closure,
-          Xvm2.IntOperand(index),
+          Xvm2.U16Operand(Number(index)),
           value,
         ]),
       ]

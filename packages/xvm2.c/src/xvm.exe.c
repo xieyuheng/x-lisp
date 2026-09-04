@@ -5,6 +5,44 @@ static void sanity_check(void) {
   assert(sizeof(uint64_t) == sizeof(size_t));
 }
 
+static void handle_run(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  const char *entry = cli_option_get(ctx, "--entry");
+
+  program_t *program = program_load(pathname);
+
+  if (!entry) {
+    if (program_lookup_function(program, "main")) {
+      entry = "main";
+    } else if (program_lookup_function(program, "test")) {
+      entry = "test";
+    } else {
+      who_printf("no entry function specified\n");
+      who_printf("  use --entry or add main/test to xvm2 asm source\n");
+      exit(1);
+    }
+  }
+
+  program_call_entry(program, entry);
+  program_free(program);
+}
+
+static void handle_test(cli_ctx_t *ctx) {
+  const char *pathname = cli_arg_get(ctx, 0);
+  bool profile = cli_option_has(ctx, "--profile");
+
+  program_t *program = program_load(pathname);
+
+  double start = time_millisecond();
+  program_call_entry(program, "test");
+  if (profile) {
+    double elapsed = time_millisecond_passed(start);
+    printf("[test] test -- %.3fms\n", elapsed);
+  }
+
+  program_free(program);
+}
+
 int main(int argc, char *argv[]) {
   sanity_check();
   setbuf(stdout, NULL);
@@ -14,6 +52,12 @@ int main(int argc, char *argv[]) {
   setup_full_command_line((size_t) argc, argv);
 
   cli_router_t *router = cli_make_router("xvm2", "0.1.0");
+
+  cli_define_route(router, "run file.xvm2.exe --entry");
+  cli_define_route(router, "test file.xvm2.exe --profile --builtin");
+
+  cli_define_handler(router, "run", handle_run);
+  cli_define_handler(router, "test", handle_test);
 
   cli_router_run(router, argc, argv);
   cli_router_free(router);

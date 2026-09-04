@@ -20,8 +20,8 @@ import {
   asPrimOperand,
   asStringOperand,
   asSymbolOperand,
-  asU16Operand,
   asVarOperand,
+  isU16Operand,
   type Operand,
 } from "../operand/Operand.ts"
 import { tagFloat, tagInt } from "../value.ts"
@@ -99,11 +99,12 @@ function assembleOperand(
     }
 
     case "u16": {
-      ctx.offset = writeU16LE(
-        ctx.code,
-        ctx.offset,
-        asU16Operand(operand).content,
-      )
+      if (isU16Operand(operand)) {
+        ctx.offset = writeU16LE(ctx.code, ctx.offset, operand.content)
+      } else {
+        const intOperand = asIntOperand(operand)
+        ctx.offset = writeU16LE(ctx.code, ctx.offset, Number(intOperand.content))
+      }
       return
     }
 

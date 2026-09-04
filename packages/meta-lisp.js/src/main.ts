@@ -85,7 +85,13 @@ router.defineHandlers({
   },
 
   "test-xvm2": ({ options }) => {
-    // TODO: 实现 xvm2 的测试管线（加载 bundle.xvm2.exe 并运行 run-tests）
+    const configPath =
+      options["--config"] || Path.join(process.cwd(), "meta-package.json")
+    const pkg = M.loadPackage("self", configPath)
+    if ("--profile" in options) pkg.config.compiler.profile = "true"
+    if ("--builtin" in options) pkg.config.compiler.builtin = "true"
+    M.validateCompilerOptions(pkg.config.compiler)
+    Xvm2Backend.TestPipeline(pkg)
   },
 
   "format-basic": ({ args: [input] }) => {

@@ -1,6 +1,5 @@
 # xvm2
 
-[xvm2] 实验 direct threaded code，看看是否比平凡的 switch 速度快
 [xvm2] 测试 TLV exe 和固定格式 exe 的 load 速度
 
 [meta-lisp.js] remove `xvm/`
