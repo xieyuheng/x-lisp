@@ -6,6 +6,7 @@ struct xvm_t {
   uint8_t *frame_bytes;
   size_t frame_capacity;
   size_t frame_offset;
+  size_t frame_top;
   size_t frame_count;
   size_t break_depth;
   stack_t *root_stack;

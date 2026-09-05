@@ -1,9 +1,7 @@
 #pragma once
 
 struct frame_t {
-  function_t *function;
   uint8_t *pc;
-  uint16_t local_count;
   size_t prev_frame_offset;
   value_t locals[];
 };
@@ -15,6 +13,8 @@ typedef struct frame_iter_t {
   const xvm_t *xvm;
   size_t offset;
   size_t count;
+  size_t frame_end;
+  size_t local_count;
 } frame_iter_t;
 
 void frame_iter_init(frame_iter_t *self, const xvm_t *xvm);

@@ -109,6 +109,7 @@ xvm_t *make_xvm(program_t *program) {
   self->frame_bytes = NULL;
   self->frame_capacity = 0;
   self->frame_offset = 0;
+  self->frame_top = 0;
   self->frame_count = 0;
   self->break_depth = 0;
   self->root_stack = make_stack();
@@ -147,26 +148,92 @@ inline frame_t *xvm_current_frame(xvm_t *xvm) {
 }
 
 static inline void init_frame_header(frame_t *frame, function_t *fn, size_t prev_frame_offset) {
-  frame->function = fn;
   frame->pc = fn->threaded_code + sizeof(void *);
-  frame->local_count = fn->local_count;
   frame->prev_frame_offset = prev_frame_offset;
+}
+
+static inline frame_t *frame_start_push(xvm_t *xvm, function_t *fn) {
+  frame_t *caller = xvm_current_frame(xvm);
+
+  size_t new_offset = xvm->frame_top;
+  size_t new_size = fn->frame_size;
+  frame_stack_ensure(xvm, new_offset + new_size);
+
+  frame_t *frame = (frame_t *)(xvm->frame_bytes + new_offset);
+  init_frame_header(frame, fn, caller ? xvm->frame_offset : 0);
+
+  xvm->frame_offset = new_offset;
+  xvm->frame_top = new_offset + new_size;
+  xvm->frame_count++;
+  return frame;
+}
+
+static inline void xvm_push_function_frame_0(xvm_t *xvm, function_t *fn) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  memory_clear(frame_locals(frame), fn->local_count * sizeof(value_t));
+}
+
+static inline void xvm_push_function_frame_1(xvm_t *xvm, function_t *fn, value_t a0) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  value_t *locals = frame_locals(frame);
+  locals[0] = a0;
+  memory_clear(locals + 1, (fn->local_count - 1) * sizeof(value_t));
+}
+
+static inline void xvm_push_function_frame_2(xvm_t *xvm, function_t *fn, value_t a0, value_t a1) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  value_t *locals = frame_locals(frame);
+  locals[0] = a0;
+  locals[1] = a1;
+  memory_clear(locals + 2, (fn->local_count - 2) * sizeof(value_t));
+}
+
+static inline void xvm_push_function_frame_3(xvm_t *xvm, function_t *fn, value_t a0, value_t a1, value_t a2) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  value_t *locals = frame_locals(frame);
+  locals[0] = a0;
+  locals[1] = a1;
+  locals[2] = a2;
+  memory_clear(locals + 3, (fn->local_count - 3) * sizeof(value_t));
+}
+
+static inline void xvm_push_function_frame_4(xvm_t *xvm, function_t *fn, value_t a0, value_t a1, value_t a2, value_t a3) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  value_t *locals = frame_locals(frame);
+  locals[0] = a0;
+  locals[1] = a1;
+  locals[2] = a2;
+  locals[3] = a3;
+  memory_clear(locals + 4, (fn->local_count - 4) * sizeof(value_t));
+}
+
+static inline void xvm_push_function_frame_5(xvm_t *xvm, function_t *fn, value_t a0, value_t a1, value_t a2, value_t a3, value_t a4) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  value_t *locals = frame_locals(frame);
+  locals[0] = a0;
+  locals[1] = a1;
+  locals[2] = a2;
+  locals[3] = a3;
+  locals[4] = a4;
+  memory_clear(locals + 5, (fn->local_count - 5) * sizeof(value_t));
+}
+
+static inline void xvm_push_function_frame_6(xvm_t *xvm, function_t *fn, value_t a0, value_t a1, value_t a2, value_t a3, value_t a4, value_t a5) {
+  frame_t *frame = frame_start_push(xvm, fn);
+  value_t *locals = frame_locals(frame);
+  locals[0] = a0;
+  locals[1] = a1;
+  locals[2] = a2;
+  locals[3] = a3;
+  locals[4] = a4;
+  locals[5] = a5;
+  memory_clear(locals + 6, (fn->local_count - 6) * sizeof(value_t));
 }
 
 void xvm_push_function_frame(xvm_t *xvm, function_t *fn,
                              uint8_t argc, const uint16_t *args) {
   frame_t *caller = xvm_current_frame(xvm);
-
-  size_t new_offset = 0;
-  if (caller) {
-    new_offset = xvm->frame_offset + frame_byte_size(caller->local_count);
-  }
-
-  size_t new_size = frame_byte_size(fn->local_count);
-  frame_stack_ensure(xvm, new_offset + new_size);
-
-  frame_t *frame = (frame_t *)(xvm->frame_bytes + new_offset);
-  init_frame_header(frame, fn, caller ? xvm->frame_offset : 0);
+  frame_t *frame = frame_start_push(xvm, fn);
 
   value_t *locals = frame_locals(frame);
   if (args && caller) {
@@ -177,25 +244,11 @@ void xvm_push_function_frame(xvm_t *xvm, function_t *fn,
   }
 
   memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
-
-  xvm->frame_offset = new_offset;
-  xvm->frame_count++;
 }
 
 void xvm_push_function_frame_with_values(xvm_t *xvm, function_t *fn,
                                           size_t argc, value_t *values) {
-  frame_t *caller = xvm_current_frame(xvm);
-
-  size_t new_offset = 0;
-  if (caller) {
-    new_offset = xvm->frame_offset + frame_byte_size(caller->local_count);
-  }
-
-  size_t new_size = frame_byte_size(fn->local_count);
-  frame_stack_ensure(xvm, new_offset + new_size);
-
-  frame_t *frame = (frame_t *)(xvm->frame_bytes + new_offset);
-  init_frame_header(frame, fn, caller ? xvm->frame_offset : 0);
+  frame_t *frame = frame_start_push(xvm, fn);
 
   value_t *locals = frame_locals(frame);
   for (size_t i = 0; i < argc && i < fn->local_count; i++) {
@@ -203,13 +256,11 @@ void xvm_push_function_frame_with_values(xvm_t *xvm, function_t *fn,
   }
 
   memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
-
-  xvm->frame_offset = new_offset;
-  xvm->frame_count++;
 }
 
 void xvm_pop_frame(xvm_t *xvm) {
   frame_t *current = xvm_current_frame(xvm);
+  xvm->frame_top = xvm->frame_offset;
   xvm->frame_offset = current->prev_frame_offset;
   xvm->frame_count--;
   xvm_gc_maybe_collect(xvm);
@@ -219,7 +270,6 @@ static void xvm_tail_call_replace(xvm_t *xvm, function_t *fn,
                                    uint8_t argc, const uint16_t *args) {
   frame_t *current = xvm_current_frame(xvm);
   size_t prev_frame_offset = current->prev_frame_offset;
-  size_t old_local_count = current->local_count;
 
   value_t saved[argc > 0 ? argc : 1];
   if (args) {
@@ -230,8 +280,8 @@ static void xvm_tail_call_replace(xvm_t *xvm, function_t *fn,
   }
 
   size_t current_start = xvm->frame_offset;
-  size_t old_size = frame_byte_size(old_local_count);
-  size_t new_size = frame_byte_size(fn->local_count);
+  size_t old_size = xvm->frame_top - current_start;
+  size_t new_size = fn->frame_size;
   size_t new_end = current_start + new_size;
 
   if (new_size > old_size) {
@@ -251,6 +301,7 @@ static void xvm_tail_call_replace(xvm_t *xvm, function_t *fn,
   memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
 
   xvm->frame_offset = current_start;
+  xvm->frame_top = new_end;
 }
 
 static uint8_t call_argc(uint8_t op) {
@@ -340,14 +391,102 @@ static inline void exec_return_void(xvm_t *xvm, frame_t *frame) {
   xvm_pop_frame(xvm);
 }
 
-static inline void exec_call_n(xvm_t *xvm, frame_t *frame, value_t *locals, uint8_t argc) {
+static inline void exec_call_0(xvm_t *xvm, frame_t *frame, value_t *locals) {
   (void) locals;
   function_t *fn;
   memory_load(frame->pc + 1, fn);
-  uint16_t *args = (uint16_t *)(frame->pc + 1 + sizeof(function_t *));
-  frame->pc += 1 + sizeof(function_t *) + argc * sizeof(uint16_t);
-  frame->pc += sizeof(void *);
-  xvm_push_function_frame(xvm, fn, argc, args);
+  frame->pc += 1 + sizeof(function_t *) + sizeof(void *);
+  xvm_push_function_frame_0(xvm, fn);
+}
+
+static inline void exec_call_1(xvm_t *xvm, frame_t *frame, value_t *locals) {
+  function_t *fn;
+  uint16_t a0;
+  memory_load(frame->pc + 1, fn);
+  memory_load(frame->pc + 1 + sizeof(function_t *), a0);
+  value_t v0 = locals[a0];
+  frame->pc += 1 + sizeof(function_t *) + 1 * sizeof(uint16_t) + sizeof(void *);
+  xvm_push_function_frame_1(xvm, fn, v0);
+}
+
+static inline void exec_call_2(xvm_t *xvm, frame_t *frame, value_t *locals) {
+  function_t *fn;
+  uint16_t a0, a1;
+  memory_load(frame->pc + 1, fn);
+  memory_load(frame->pc + 1 + sizeof(function_t *), a0);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + sizeof(uint16_t), a1);
+  value_t v0 = locals[a0];
+  value_t v1 = locals[a1];
+  frame->pc += 1 + sizeof(function_t *) + 2 * sizeof(uint16_t) + sizeof(void *);
+  xvm_push_function_frame_2(xvm, fn, v0, v1);
+}
+
+static inline void exec_call_3(xvm_t *xvm, frame_t *frame, value_t *locals) {
+  function_t *fn;
+  uint16_t a0, a1, a2;
+  memory_load(frame->pc + 1, fn);
+  memory_load(frame->pc + 1 + sizeof(function_t *), a0);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + sizeof(uint16_t), a1);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 2 * sizeof(uint16_t), a2);
+  value_t v0 = locals[a0];
+  value_t v1 = locals[a1];
+  value_t v2 = locals[a2];
+  frame->pc += 1 + sizeof(function_t *) + 3 * sizeof(uint16_t) + sizeof(void *);
+  xvm_push_function_frame_3(xvm, fn, v0, v1, v2);
+}
+
+static inline void exec_call_4(xvm_t *xvm, frame_t *frame, value_t *locals) {
+  function_t *fn;
+  uint16_t a0, a1, a2, a3;
+  memory_load(frame->pc + 1, fn);
+  memory_load(frame->pc + 1 + sizeof(function_t *), a0);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + sizeof(uint16_t), a1);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 2 * sizeof(uint16_t), a2);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 3 * sizeof(uint16_t), a3);
+  value_t v0 = locals[a0];
+  value_t v1 = locals[a1];
+  value_t v2 = locals[a2];
+  value_t v3 = locals[a3];
+  frame->pc += 1 + sizeof(function_t *) + 4 * sizeof(uint16_t) + sizeof(void *);
+  xvm_push_function_frame_4(xvm, fn, v0, v1, v2, v3);
+}
+
+static inline void exec_call_5(xvm_t *xvm, frame_t *frame, value_t *locals) {
+  function_t *fn;
+  uint16_t a0, a1, a2, a3, a4;
+  memory_load(frame->pc + 1, fn);
+  memory_load(frame->pc + 1 + sizeof(function_t *), a0);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + sizeof(uint16_t), a1);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 2 * sizeof(uint16_t), a2);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 3 * sizeof(uint16_t), a3);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 4 * sizeof(uint16_t), a4);
+  value_t v0 = locals[a0];
+  value_t v1 = locals[a1];
+  value_t v2 = locals[a2];
+  value_t v3 = locals[a3];
+  value_t v4 = locals[a4];
+  frame->pc += 1 + sizeof(function_t *) + 5 * sizeof(uint16_t) + sizeof(void *);
+  xvm_push_function_frame_5(xvm, fn, v0, v1, v2, v3, v4);
+}
+
+static inline void exec_call_6(xvm_t *xvm, frame_t *frame, value_t *locals) {
+  function_t *fn;
+  uint16_t a0, a1, a2, a3, a4, a5;
+  memory_load(frame->pc + 1, fn);
+  memory_load(frame->pc + 1 + sizeof(function_t *), a0);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + sizeof(uint16_t), a1);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 2 * sizeof(uint16_t), a2);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 3 * sizeof(uint16_t), a3);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 4 * sizeof(uint16_t), a4);
+  memory_load(frame->pc + 1 + sizeof(function_t *) + 5 * sizeof(uint16_t), a5);
+  value_t v0 = locals[a0];
+  value_t v1 = locals[a1];
+  value_t v2 = locals[a2];
+  value_t v3 = locals[a3];
+  value_t v4 = locals[a4];
+  value_t v5 = locals[a5];
+  frame->pc += 1 + sizeof(function_t *) + 6 * sizeof(uint16_t) + sizeof(void *);
+  xvm_push_function_frame_6(xvm, fn, v0, v1, v2, v3, v4, v5);
 }
 
 static inline void exec_call_prim_n(xvm_t *xvm, frame_t *frame, value_t *locals, uint8_t argc) {
@@ -787,11 +926,21 @@ void xvm_execute(xvm_t *xvm) {
 
   assert(xvm->break_depth <= xvm->frame_count);
 
+  if (!xvm->program->threaded_codes_ready) {
+    record_iter_t iter;
+    record_iter_init(&iter, xvm->program->functions);
+    function_t *fn = record_iter_next_value(&iter);
+    while (fn) {
+      ensure_threaded_function(fn);
+      fn = record_iter_next_value(&iter);
+    }
+    xvm->program->threaded_codes_ready = true;
+  }
+
   while (xvm->frame_count > xvm->break_depth) {
     frame_t *frame = xvm_current_frame(xvm);
     value_t *locals = frame_locals(frame);
 
-    ensure_threaded_function(frame->function);
     TH_DISPATCH();
 
     th_move: exec_move(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
@@ -805,13 +954,13 @@ void xvm_execute(xvm_t *xvm) {
     th_return: exec_return(xvm, frame, locals); continue;
     th_return_void: exec_return_void(xvm, frame); continue;
 
-    th_call_0: exec_call_n(xvm, frame, locals, 0); continue;
-    th_call_1: exec_call_n(xvm, frame, locals, 1); continue;
-    th_call_2: exec_call_n(xvm, frame, locals, 2); continue;
-    th_call_3: exec_call_n(xvm, frame, locals, 3); continue;
-    th_call_4: exec_call_n(xvm, frame, locals, 4); continue;
-    th_call_5: exec_call_n(xvm, frame, locals, 5); continue;
-    th_call_6: exec_call_n(xvm, frame, locals, 6); continue;
+    th_call_0: exec_call_0(xvm, frame, locals); continue;
+    th_call_1: exec_call_1(xvm, frame, locals); continue;
+    th_call_2: exec_call_2(xvm, frame, locals); continue;
+    th_call_3: exec_call_3(xvm, frame, locals); continue;
+    th_call_4: exec_call_4(xvm, frame, locals); continue;
+    th_call_5: exec_call_5(xvm, frame, locals); continue;
+    th_call_6: exec_call_6(xvm, frame, locals); continue;
 
     th_call_prim_0: exec_call_prim_n(xvm, frame, locals, 0); frame->pc += sizeof(void *); TH_NEXT();
     th_call_prim_1: exec_call_prim_n(xvm, frame, locals, 1); frame->pc += sizeof(void *); TH_NEXT();
@@ -894,7 +1043,8 @@ static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {
   frame_t *frame = frame_iter_next(&iter);
   while (frame) {
     value_t *locals = frame_locals(frame);
-    for (size_t j = 0; j < frame->local_count; j++) {
+    size_t local_count = iter.local_count;
+    for (size_t j = 0; j < local_count; j++) {
       if (is_object(locals[j])) {
         array_push(roots, to_object(locals[j]));
       }
@@ -971,8 +1121,9 @@ void xvm_inspect(xvm_t *xvm) {
   frame_t *frame = frame_iter_next(&iter);
   while (frame) {
     value_t *locals = frame_locals(frame);
+    size_t local_count = iter.local_count;
     print_string("[");
-    for (size_t j = 0; j < frame->local_count; j++) {
+    for (size_t j = 0; j < local_count; j++) {
       print_value(locals[j]);
       print_string(" ");
     }

@@ -9,6 +9,7 @@ function_t *make_function(const char *name, uint16_t arity, uint16_t local_count
   self->bytecode = NULL;
   self->threaded_code = NULL;
   self->threaded_code_length = 0;
+  self->frame_size = frame_byte_size(local_count);
   self->threaded_ready = false;
   return self;
 }

@@ -8,6 +8,7 @@ struct function_t {
   uint8_t *bytecode;
   uint8_t *threaded_code;
   uint32_t threaded_code_length;
+  size_t frame_size;
   bool threaded_ready;
 };
 
