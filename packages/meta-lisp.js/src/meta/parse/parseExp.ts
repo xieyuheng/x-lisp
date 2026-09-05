@@ -405,13 +405,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
 
   // - The following two cases must be at the end.
 
-  "(cons* '@square-bracket elements)": ({ elements }, { location }) => {
-    throw new S.ErrorWithSourceLocation(
-      `square bracket literal is not supported, use (@list ...)`,
-      location,
-    )
-  },
-
   "(cons* target args)": ({ target, args }, { location }) => {
     return M.ApplyExp(
       parseExp(target),

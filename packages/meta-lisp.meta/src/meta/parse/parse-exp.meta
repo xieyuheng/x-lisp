@@ -189,10 +189,6 @@
      (@comment
        (@list <exp> ...))
      (list-exp (list-map parse-exp sexps) location))
-    ((list-member tag '(@square-bracket @方括号))
-     (error-with-location
-       (@text "square bracket literal is not supported, use (@list ...)")
-       location))
     ((list-member tag '(@text @文本))
      (@comment
        (@text <exp> ...))
