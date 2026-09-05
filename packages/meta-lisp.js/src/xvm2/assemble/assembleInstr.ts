@@ -103,7 +103,11 @@ function assembleOperand(
         ctx.offset = writeU16LE(ctx.code, ctx.offset, operand.content)
       } else {
         const intOperand = asIntOperand(operand)
-        ctx.offset = writeU16LE(ctx.code, ctx.offset, Number(intOperand.content))
+        ctx.offset = writeU16LE(
+          ctx.code,
+          ctx.offset,
+          Number(intOperand.content),
+        )
       }
       return
     }
