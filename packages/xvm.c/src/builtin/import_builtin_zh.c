@@ -17,8 +17,8 @@ void import_builtin_zh(program_t *program) {
   define_primitive_2(program, "meta-builtin/内置/整数大于等于", x_int_greater_or_equal);
   define_primitive_2(program, "meta-builtin/内置/整数小于等于", x_int_less_or_equal);
   define_primitive_1(program, "meta-builtin/内置/整数为正", x_int_positive);
-  define_primitive_1(program, "meta-builtin/内置/整数为非负", x_int_non_negative);
-  define_primitive_1(program, "meta-builtin/内置/整数为非零", x_int_non_zero);
+  define_primitive_1(program, "meta-builtin/内置/整数非负", x_int_non_negative);
+  define_primitive_1(program, "meta-builtin/内置/整数非零", x_int_non_zero);
   define_primitive_2(program, "meta-builtin/内置/整数升序比较", x_int_compare_ascending);
   define_primitive_2(program, "meta-builtin/内置/整数降序比较", x_int_compare_descending);
   define_primitive_1(program, "meta-builtin/内置/整数转浮点", x_int_to_float);
@@ -39,8 +39,8 @@ void import_builtin_zh(program_t *program) {
   define_primitive_2(program, "meta-builtin/内置/浮点大于等于", x_float_greater_or_equal);
   define_primitive_2(program, "meta-builtin/内置/浮点小于等于", x_float_less_or_equal);
   define_primitive_1(program, "meta-builtin/内置/浮点为正", x_float_positive);
-  define_primitive_1(program, "meta-builtin/内置/浮点为非负", x_float_non_negative);
-  define_primitive_1(program, "meta-builtin/内置/浮点为非零", x_float_non_zero);
+  define_primitive_1(program, "meta-builtin/内置/浮点非负", x_float_non_negative);
+  define_primitive_1(program, "meta-builtin/内置/浮点非零", x_float_non_zero);
   define_primitive_2(program, "meta-builtin/内置/浮点升序比较", x_float_compare_ascending);
   define_primitive_2(program, "meta-builtin/内置/浮点降序比较", x_float_compare_descending);
   define_primitive_1(program, "meta-builtin/内置/浮点转整数", x_float_to_int);
