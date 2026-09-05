@@ -16,15 +16,15 @@ the executable name and subcommand).
 For example, given the invocation:
 
 ```
-xvm run program.x86.exe -- check --profile
+xvm run program.x86.exe -- check --verbose
 ```
 
 `(current-full-command-line)` returns
-`["xvm" "run" "program.x86.exe" "--" "check" "--profile"]`.
+`["xvm" "run" "program.x86.exe" "--" "check" "--verbose"]`.
 
 # Examples
 
 ```meta-lisp
 (current-full-command-line)
-;; => ["xvm" "run" "program.x86.exe" "--" "check" "--profile"]
+;; => ["xvm" "run" "program.x86.exe" "--" "check" "--verbose"]
 ```

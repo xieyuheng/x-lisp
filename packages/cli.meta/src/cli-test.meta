@@ -38,11 +38,11 @@
 
 (define-test route-match-passthrough-test
   (let ((route (parse-route "cmd"))
-        (ctx (route-match route ["--" "check" "--profile"])))
+        (ctx (route-match route ["--" "check" "--verbose"])))
     (assert-equal 0 (arg-count ctx))
     (assert-equal 2 (passthrough-count ctx))
     (assert-equal "check" (passthrough-get 0 ctx))
-    (assert-equal "--profile" (passthrough-get 1 ctx))))
+    (assert-equal "--verbose" (passthrough-get 1 ctx))))
 
 (define-test route-match-mixed-test
   (let ((route (parse-route "run file --entry"))
