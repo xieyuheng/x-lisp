@@ -66,8 +66,8 @@ src/function/identity-type-error-2.meta:11:29 -- expected type is not a substitu
  12 | 
 
 src/let/heterogeneous-list-error.meta:4:23 -- unification fail
-  inferred type: (list-t symbol-t)
-  expected type: (list-t int-t)
+  inferred type: (list-t int-t)
+  expected type: (list-t symbol-t)
  2 | 
  3 | (define-test heterogeneous-list-test
  4 |   (the (list-t int-t) (@list 'a 1)))

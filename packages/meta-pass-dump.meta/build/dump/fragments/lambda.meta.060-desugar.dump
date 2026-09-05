@@ -21,10 +21,9 @@
 (admit var-term (-> symbol-t term-t))
 
 (define (var-term name)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin
-      (meta-builtin/builtin/list-push var-term list)
-      (begin (meta-builtin/builtin/list-push name list) list))))
+  (meta-builtin/builtin/cons
+   var-term
+   (meta-builtin/builtin/cons name (meta-builtin/builtin/make-list))))
 
 (admit is-var-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -49,12 +48,11 @@
 (admit apply-term (-> term-t term-t term-t))
 
 (define (apply-term target arg)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin
-      (meta-builtin/builtin/list-push apply-term list)
-      (begin
-        (meta-builtin/builtin/list-push target list)
-        (begin (meta-builtin/builtin/list-push arg list) list)))))
+  (meta-builtin/builtin/cons
+   apply-term
+   (meta-builtin/builtin/cons
+    target
+    (meta-builtin/builtin/cons arg (meta-builtin/builtin/make-list)))))
 
 (admit is-apply-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -88,12 +86,11 @@
 (admit lambda-term (-> symbol-t term-t term-t))
 
 (define (lambda-term parameter body)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin
-      (meta-builtin/builtin/list-push lambda-term list)
-      (begin
-        (meta-builtin/builtin/list-push parameter list)
-        (begin (meta-builtin/builtin/list-push body list) list)))))
+  (meta-builtin/builtin/cons
+   lambda-term
+   (meta-builtin/builtin/cons
+    parameter
+    (meta-builtin/builtin/cons body (meta-builtin/builtin/make-list)))))
 
 (admit is-lambda-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -127,14 +124,13 @@
 (admit let-term (-> symbol-t term-t term-t term-t))
 
 (define (let-term name rhs body)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin
-      (meta-builtin/builtin/list-push let-term list)
-      (begin
-        (meta-builtin/builtin/list-push name list)
-        (begin
-          (meta-builtin/builtin/list-push rhs list)
-          (begin (meta-builtin/builtin/list-push body list) list))))))
+  (meta-builtin/builtin/cons
+   let-term
+   (meta-builtin/builtin/cons
+    name
+    (meta-builtin/builtin/cons
+     rhs
+     (meta-builtin/builtin/cons body (meta-builtin/builtin/make-list))))))
 
 (admit is-let-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -195,14 +191,13 @@
 (admit closure-value (-> env-t symbol-t term-t value-t))
 
 (define (closure-value env parameter body)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin
-      (meta-builtin/builtin/list-push closure-value list)
-      (begin
-        (meta-builtin/builtin/list-push env list)
-        (begin
-          (meta-builtin/builtin/list-push parameter list)
-          (begin (meta-builtin/builtin/list-push body list) list))))))
+  (meta-builtin/builtin/cons
+   closure-value
+   (meta-builtin/builtin/cons
+    env
+    (meta-builtin/builtin/cons
+     parameter
+     (meta-builtin/builtin/cons body (meta-builtin/builtin/make-list))))))
 
 (admit is-closure-value (-> value-t meta-builtin/builtin/bool-t))
 

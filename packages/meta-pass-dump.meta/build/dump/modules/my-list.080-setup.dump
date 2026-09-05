@@ -4,9 +4,7 @@
 
 (claim nil (all (E) (-> (my-list-t E))))
 
-(define (nil)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin (meta-builtin/builtin/list-push nil list) list)))
+(define (nil) (meta-builtin/builtin/cons nil (meta-builtin/builtin/make-list)))
 
 (claim is-nil (all (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -20,12 +18,11 @@
 (claim li (all (E) (-> E (my-list-t E) (my-list-t E))))
 
 (define (li head tail)
-  (let ((list (meta-builtin/builtin/make-list)))
-    (begin
-      (meta-builtin/builtin/list-push li list)
-      (begin
-        (meta-builtin/builtin/list-push head list)
-        (begin (meta-builtin/builtin/list-push tail list) list)))))
+  (meta-builtin/builtin/cons
+   li
+   (meta-builtin/builtin/cons
+    head
+    (meta-builtin/builtin/cons tail (meta-builtin/builtin/make-list)))))
 
 (claim is-li (all (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -58,16 +55,13 @@
   (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/text-concat
-      (let ((list.1 (meta-builtin/builtin/make-list)))
-        (begin
-          (meta-builtin/builtin/list-push "pattern mismatch on:" list.1)
-          (begin
-            (meta-builtin/builtin/list-push " " list.1)
-            (begin
-              (meta-builtin/builtin/list-push
-               (meta-builtin/builtin/format list)
-               list.1)
-              list.1)))))
+      (meta-builtin/builtin/cons
+       "pattern mismatch on:"
+       (meta-builtin/builtin/cons
+        " "
+        (meta-builtin/builtin/cons
+         (meta-builtin/builtin/format list)
+         (meta-builtin/builtin/make-list)))))
      (meta-builtin/builtin/make-source-location
       "src/my-list.meta"
       (meta-builtin/builtin/make-source-span
@@ -82,16 +76,13 @@
   (if (self/my-list/is-nil list)
     (meta-builtin/builtin/error-with-location
      (meta-builtin/builtin/text-concat
-      (let ((list.1 (meta-builtin/builtin/make-list)))
-        (begin
-          (meta-builtin/builtin/list-push "pattern mismatch on:" list.1)
-          (begin
-            (meta-builtin/builtin/list-push " " list.1)
-            (begin
-              (meta-builtin/builtin/list-push
-               (meta-builtin/builtin/format list)
-               list.1)
-              list.1)))))
+      (meta-builtin/builtin/cons
+       "pattern mismatch on:"
+       (meta-builtin/builtin/cons
+        " "
+        (meta-builtin/builtin/cons
+         (meta-builtin/builtin/format list)
+         (meta-builtin/builtin/make-list)))))
      (meta-builtin/builtin/make-source-location
       "src/my-list.meta"
       (meta-builtin/builtin/make-source-span
@@ -155,22 +146,17 @@
           (if (self/my-list/is-nil list1)
             (meta-builtin/builtin/error-with-location
              (meta-builtin/builtin/text-concat
-              (let ((list (meta-builtin/builtin/make-list)))
-                (begin
-                  (meta-builtin/builtin/list-push "pattern mismatch on:" list)
-                  (begin
-                    (meta-builtin/builtin/list-push " " list)
-                    (begin
-                      (meta-builtin/builtin/list-push
-                       (meta-builtin/builtin/format list1)
-                       list)
-                      (begin
-                        (meta-builtin/builtin/list-push " " list)
-                        (begin
-                          (meta-builtin/builtin/list-push
-                           (meta-builtin/builtin/format list2)
-                           list)
-                          list)))))))
+              (meta-builtin/builtin/cons
+               "pattern mismatch on:"
+               (meta-builtin/builtin/cons
+                " "
+                (meta-builtin/builtin/cons
+                 (meta-builtin/builtin/format list1)
+                 (meta-builtin/builtin/cons
+                  " "
+                  (meta-builtin/builtin/cons
+                   (meta-builtin/builtin/format list2)
+                   (meta-builtin/builtin/make-list)))))))
              (meta-builtin/builtin/make-source-location
               "src/my-list.meta"
               (meta-builtin/builtin/make-source-span
@@ -180,24 +166,17 @@
               (if (self/my-list/is-nil list2)
                 (meta-builtin/builtin/error-with-location
                  (meta-builtin/builtin/text-concat
-                  (let ((list (meta-builtin/builtin/make-list)))
-                    (begin
-                      (meta-builtin/builtin/list-push
-                       "pattern mismatch on:"
-                       list)
-                      (begin
-                        (meta-builtin/builtin/list-push " " list)
-                        (begin
-                          (meta-builtin/builtin/list-push
-                           (meta-builtin/builtin/format list1)
-                           list)
-                          (begin
-                            (meta-builtin/builtin/list-push " " list)
-                            (begin
-                              (meta-builtin/builtin/list-push
-                               (meta-builtin/builtin/format list2)
-                               list)
-                              list)))))))
+                  (meta-builtin/builtin/cons
+                   "pattern mismatch on:"
+                   (meta-builtin/builtin/cons
+                    " "
+                    (meta-builtin/builtin/cons
+                     (meta-builtin/builtin/format list1)
+                     (meta-builtin/builtin/cons
+                      " "
+                      (meta-builtin/builtin/cons
+                       (meta-builtin/builtin/format list2)
+                       (meta-builtin/builtin/make-list)))))))
                  (meta-builtin/builtin/make-source-location
                   "src/my-list.meta"
                   (meta-builtin/builtin/make-source-span
