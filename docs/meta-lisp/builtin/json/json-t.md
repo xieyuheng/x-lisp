@@ -63,6 +63,6 @@ JSON value type. Represents a parsed JSON value.
 (bool-json true)
 (number-json 42.0)
 (text-json "hello")
-(array-json [(number-json 1.0) (number-json 2.0)])
+(array-json (@list (number-json 1.0) (number-json 2.0)))
 (object-json (@hash "x" (number-json 1.0)))
 ```

@@ -15,6 +15,6 @@ Convert a list to a set, removing duplicate elements.
 # Examples
 
 ```meta-lisp
-(list-to-set [1 2 2 3])  ;; => (@set 1 2 3)
-(list-to-set [])         ;; => (@set)
+(list-to-set (@list 1 2 2 3))  ;; => (@set 1 2 3)
+(list-to-set (@list))         ;; => (@set)
 ```

@@ -21,11 +21,11 @@
 
 (define-test list-fold-right-index-test
   (assert-equal
-    (list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) [] ['a 'b 'c])
-    [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)])
+    (list-fold-right-index (lambda (i x folded) (cons (make-pair i x) folded)) (@list) (@list 'a 'b 'c))
+    (@list (make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)))
   (assert-equal
-    (list-fold-right-index (lambda (i x folded) (iadd (imul i x) folded)) 0 [10 20 30])
+    (list-fold-right-index (lambda (i x folded) (iadd (imul i x) folded)) 0 (@list 10 20 30))
     80)
   (assert-equal
-    (list-fold-right-index (lambda (i x folded) (iadd x folded)) 0 [])
+    (list-fold-right-index (lambda (i x folded) (iadd x folded)) 0 (@list))
     0))

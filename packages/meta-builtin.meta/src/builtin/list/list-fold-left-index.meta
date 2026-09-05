@@ -23,15 +23,15 @@
   (assert-equal
     (list-fold-left-index
       (lambda (i folded x) (iadd folded (imul i x)))
-      0 [10 20 30])
+      0 (@list 10 20 30))
     80)
   (assert-equal
     (list-fold-left-index
       (lambda (i folded x) (cons i folded))
-      [] ['a 'b 'c])
-    [2 1 0])
+      (@list) (@list 'a 'b 'c))
+    (@list 2 1 0))
   (assert-equal
     (list-fold-left-index
       (lambda (i folded x) (iadd folded x))
-      0 [])
+      0 (@list))
     0))

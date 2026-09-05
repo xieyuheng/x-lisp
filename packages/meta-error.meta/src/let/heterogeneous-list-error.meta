@@ -1,4 +1,4 @@
 (module heterogeneous-list-error)
 
 (define-test heterogeneous-list-test
-  (the (list-t int-t) ['a 1]))
+  (the (list-t int-t) (@list 'a 1)))

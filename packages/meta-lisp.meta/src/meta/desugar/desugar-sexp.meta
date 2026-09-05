@@ -9,26 +9,26 @@
     ((symbol-sexp content location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'symbol-sexp location)
-       [(symbol-exp content location) (desugar-location location)]
+       (@list (symbol-exp content location) (desugar-location location))
        location))
     ((text-sexp content location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'text-sexp location)
-       [(text-exp content location) (desugar-location location)]
+       (@list (text-exp content location) (desugar-location location))
        location))
     ((int-sexp content location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'int-sexp location)
-       [(int-exp content location) (desugar-location location)]
+       (@list (int-exp content location) (desugar-location location))
        location))
     ((float-sexp content location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'float-sexp location)
-       [(float-exp content location) (desugar-location location)]
+       (@list (float-exp content location) (desugar-location location))
        location))
     ((list-sexp elements location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'list-sexp location)
-       [(list-exp (list-map desugar-sexp elements) location)
-        (desugar-location location)]
+       (@list (list-exp (list-map desugar-sexp elements) location)
+        (desugar-location location))
        location))))

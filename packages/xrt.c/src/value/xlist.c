@@ -94,12 +94,11 @@ static void write_xlist_elements(buffer_t *buffer, object_circle_ctx_t *ctx, con
 
 void write_xlist(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *self) {
   if (array_is_empty(self->elements)) {
-    write_template(buffer, "[");
-    write_template(buffer, "]");
+    write_template(buffer, "(@list)");
   } else {
-    write_template(buffer, "[");
+    write_template(buffer, "(@list ");
     write_xlist_elements(buffer, ctx, self);
-    write_template(buffer, "]");
+    write_template(buffer, ")");
   }
 }
 

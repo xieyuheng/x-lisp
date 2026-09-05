@@ -10,6 +10,6 @@
     (iadd (car xs) (int-sum (cdr xs)))))
 
 (define-test int-sum-test
-  (assert-equal 0 (int-sum []))
-  (assert-equal 6 (int-sum [1 2 3]))
-  (assert-equal 10 (int-sum [1 2 3 4])))
+  (assert-equal 0 (int-sum (@list)))
+  (assert-equal 6 (int-sum (@list 1 2 3)))
+  (assert-equal 10 (int-sum (@list 1 2 3 4))))

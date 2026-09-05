@@ -7,6 +7,6 @@
          (module-stmt (list-find is-declare-module-stmt stmts)))
     (match module-stmt
       ((just (declare-module-stmt name location))
-       (make-fragment name path stmts []))
+       (make-fragment name path stmts (@list)))
       ((nothing)
        (error "(load-fragment) expect (module) statement in fragment")))))

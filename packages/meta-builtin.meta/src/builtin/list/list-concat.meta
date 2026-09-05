@@ -7,12 +7,12 @@
 
 (define (list-concat lists)
   (if (list-is-empty lists)
-    []
+    (@list)
     (list-append
      (car lists)
      (list-concat (cdr lists)))))
 
 (define-test list-concat-test
   (assert-equal
-    (list-concat [[1 2 3] [4 5 6]])
-    [1 2 3 4 5 6]))
+    (list-concat (@list (@list 1 2 3) (@list 4 5 6)))
+    (@list 1 2 3 4 5 6)))

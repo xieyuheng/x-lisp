@@ -46,10 +46,10 @@
 (define syntax-keywords
   (list-append
     '(lambda @quote if when unless and or cond match multi-match
-      begin let letrec @list @square-bracket @set @hash @sexp @text
+      begin let letrec @list @set @hash @sexp @text
       -> the all flow chain compose define @comment)
     '(函 @引用 若 当 除非 且 或 若则 匹配 多元匹配
-      循序 令 递归令 @列表 @方括号 @集合 @散列 @符号算式 @文本
+      循序 令 递归令 @列表 @集合 @散列 @符号算式 @文本
       -> 型例 泛型 顺流 衔接 复合 定义 @注释)))
 
 (claim parse-compound-exp
@@ -137,7 +137,7 @@
        (match <target>
          (<pattern> <body>)
          ...))
-     (match-exp [(parse-exp (car sexps))]
+     (match-exp (@list (parse-exp (car sexps)))
        (list-map parse-match-clause (cdr sexps))
        keyword-location))
     ((list-member tag '(multi-match 多元匹配))
@@ -182,7 +182,7 @@
               (define <name> <exp>))
             (local-define-exp
               (symbol-sexp-content (car sexps))
-              []
+              (@list)
               (parse-body (cdr sexps) location)
               keyword-location))))
     ((list-member tag '(@list @列表))
@@ -190,9 +190,9 @@
        (@list <exp> ...))
      (list-exp (list-map parse-exp sexps) location))
     ((list-member tag '(@square-bracket @方括号))
-     (@comment
-       [<exp> ...])
-     (list-exp (list-map parse-exp sexps) location))
+     (error-with-location
+       (@text "square bracket literal is not supported, use (@list ...)")
+       location))
     ((list-member tag '(@text @文本))
      (@comment
        (@text <exp> ...))
@@ -284,7 +284,7 @@
 (define (parse-match-clause sexp)
   (match sexp
     ((list-sexp elements location)
-     (make-match-clause [(parse-exp (car elements))]
+     (make-match-clause (@list (parse-exp (car elements)))
                         (parse-body (cdr elements) location)
                         location))))
 
@@ -323,7 +323,7 @@
 
 (define (parse-hash-entries sexps)
   (if (list-is-empty sexps)
-    []
+    (@list)
     (let ((key (car sexps))
           (value (car (cdr sexps)))
           (rest (cdr (cdr sexps))))

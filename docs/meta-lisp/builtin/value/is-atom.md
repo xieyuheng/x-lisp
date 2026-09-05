@@ -17,5 +17,5 @@ Check if a value is an atom (a non-list value).
 ```meta-lisp
 (is-atom 42)       ;; => true
 (is-atom "hello")  ;; => true
-(is-atom [1 2 3])  ;; => false
+(is-atom (@list 1 2 3))  ;; => false
 ```

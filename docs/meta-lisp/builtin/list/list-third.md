@@ -15,5 +15,5 @@ Third element.
 # Examples
 
 ```meta-lisp
-(list-third [1 2 3])  ;; => 3
+(list-third (@list 1 2 3))  ;; => 3
 ```

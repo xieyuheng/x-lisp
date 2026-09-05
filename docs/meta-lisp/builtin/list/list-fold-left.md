@@ -15,6 +15,6 @@ Left fold over the list.
 # Examples
 
 ```meta-lisp
-(list-fold-left iadd 0 [1 2 3 4])          ;; => 10
-(list-fold-left (swap cons) [] [1 2 3 4])  ;; => [4 3 2 1]
+(list-fold-left iadd 0 (@list 1 2 3 4))          ;; => 10
+(list-fold-left (swap cons) (@list) (@list 1 2 3 4))  ;; => (@list 4 3 2 1)
 ```

@@ -16,7 +16,7 @@ Build a hash table from a list of entries.
 
 ```meta-lisp
 (make-hash-from-entries
-  [(make-pair 'a 1)
-   (make-pair 'b 2)])
+  (@list (make-pair 'a 1)
+   (make-pair 'b 2)))
 ;; => (@hash 'a 1 'b 2)
 ```

@@ -11,7 +11,7 @@
      (lambda (value)
        (let ((key (f value)))
          (unless (hash-has key new-hash)
-           (hash-put key [value] new-hash))
+           (hash-put key (@list value) new-hash))
          (let ((group (hash-get key new-hash)))
            (list-push value group))))
      list)
@@ -19,7 +19,7 @@
 
 (define-test list-group-test
   (assert-equal
-    (@hash 0 [0 3]
-           1 [1 4]
-           2 [2 5])
-    (list-group (swap imod 3) [0 1 2 3 4 5])))
+    (@hash 0 (@list 0 3)
+           1 (@list 1 4)
+           2 (@list 2 5))
+    (list-group (swap imod 3) (@list 0 1 2 3 4 5))))

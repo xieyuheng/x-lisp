@@ -15,6 +15,6 @@ Prepend an element at the front of the list.
 # Examples
 
 ```meta-lisp
-(cons 1 [2 3])    ;; => [1 2 3]
-(cons "a" [])     ;; => ["a"]
+(cons 1 (@list 2 3))    ;; => (@list 1 2 3)
+(cons "a" (@list))     ;; => (@list "a")
 ```

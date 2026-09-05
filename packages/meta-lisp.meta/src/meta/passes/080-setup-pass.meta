@@ -26,7 +26,7 @@
     ((claim-stmt name type location)
      (mod-claim mod name type))
     ((claim-type-stmt name location)
-     (let ((type-term (make-type-term-from-parameters [] location)))
+     (let ((type-term (make-type-term-from-parameters (@list) location)))
        (hash-put name (make-claimed-entry type-term (just (type-type))) (mod-claimed mod))
        void))
     ((admit-stmt name type location)

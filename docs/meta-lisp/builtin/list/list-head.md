@@ -15,5 +15,5 @@ First element of the list, same as `car`.
 # Examples
 
 ```meta-lisp
-(list-head [1 2 3])  ;; => 1
+(list-head (@list 1 2 3))  ;; => 1
 ```

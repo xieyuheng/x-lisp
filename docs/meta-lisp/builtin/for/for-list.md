@@ -18,5 +18,5 @@ Apply a side-effecting function to each element.
 # Examples
 
 ```meta-lisp
-(for-list [1 2 3] println)
+(for-list (@list 1 2 3) println)
 ```

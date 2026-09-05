@@ -70,14 +70,10 @@
     (format-exp (parse-exp (@sexp (begin a b c))))))
 
 (define-test parse-list-test
-  (assert-equal "[1 2]"
+  (assert-equal "(@list 1 2)"
     (format-exp (parse-exp (@sexp (@list 1 2)))))
-  (assert-equal "[]"
-    (format-exp (parse-exp (@sexp (@list)))))
-  (assert-equal "[1 2]"
-    (format-exp (parse-exp (@sexp [1 2]))))
-  (assert-equal "[1 2]"
-    (format-exp (parse-exp (@sexp (@方括号 1 2))))))
+  (assert-equal "(@list)"
+    (format-exp (parse-exp (@sexp (@list))))))
 
 (define-test parse-set-test
   (assert-equal "(@set 1 2)"

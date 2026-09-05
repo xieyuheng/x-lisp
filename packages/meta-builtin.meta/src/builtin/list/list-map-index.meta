@@ -13,14 +13,14 @@
 
 (define (list-map-index-aux f list i)
   (if (list-is-empty list)
-    []
+    (@list)
     (cons (f i (car list))
           (list-map-index-aux f (cdr list) (iadd i 1)))))
 
 (define-test list-map-index-test
-  (assert-equal (list-map-index (lambda (i x) (iadd i x)) [10 20 30])
-    [10 21 32])
-  (assert-equal (list-map-index (lambda (i x) i) ['a 'b 'c])
-    [0 1 2])
-  (assert-equal (list-map-index (lambda (i x) (iadd i x)) [])
-    []))
+  (assert-equal (list-map-index (lambda (i x) (iadd i x)) (@list 10 20 30))
+    (@list 10 21 32))
+  (assert-equal (list-map-index (lambda (i x) i) (@list 'a 'b 'c))
+    (@list 0 1 2))
+  (assert-equal (list-map-index (lambda (i x) (iadd i x)) (@list))
+    (@list)))

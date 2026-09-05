@@ -17,6 +17,6 @@ Check if two values are the same atom or reference.
 ```meta-lisp
 (same 1 1)              ;; => true
 (same "a" "a")          ;; => true
-(same [1 2 3] [1 2 3])  ;; => false
+(same (@list 1 2 3) (@list 1 2 3))  ;; => false
 ```
 

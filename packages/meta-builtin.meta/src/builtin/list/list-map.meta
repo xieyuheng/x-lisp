@@ -7,10 +7,10 @@
 
 (define (list-map f list)
   (if (list-is-empty list)
-    []
+    (@list)
     (cons (f (car list)) (list-map f (cdr list)))))
 
 (define-test list-map-test
   (assert-equal
-    (list-map (iadd 10) [1 2 3])
-    [11 12 13]))
+    (list-map (iadd 10) (@list 1 2 3))
+    (@list 11 12 13)))

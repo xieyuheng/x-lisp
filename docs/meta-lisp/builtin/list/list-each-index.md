@@ -20,7 +20,7 @@ Iterate over each element with its index, for side effects.
    (print i)
    (write ": ")
    (println x))
- ['a 'b 'c])
+ (@list 'a 'b 'c))
 ;; Output:
 ;; 0: a
 ;; 1: b

@@ -60,7 +60,7 @@
                 <body>))
             (define-type-stmt
               (symbol-sexp-content (car sexps))
-              []
+              (@list)
               (parse-body (cdr sexps) location)
               location))))
     ((list-member tag '(exempt 免检))
@@ -237,7 +237,7 @@
        (list-map symbol-sexp-content (cdr sexps))
        location))
     ((symbol-sexp content location)
-     (make-pre-type-constructor content [] location))))
+     (make-pre-type-constructor content (@list) location))))
 
 (claim parse-pre-data-constructor
   (-> sexp-t

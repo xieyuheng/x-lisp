@@ -15,6 +15,6 @@ Number of elements in the list.
 # Examples
 
 ```meta-lisp
-(list-length [1 2 3])  ;; => 3
-(list-length [])       ;; => 0
+(list-length (@list 1 2 3))  ;; => 3
+(list-length (@list))       ;; => 0
 ```

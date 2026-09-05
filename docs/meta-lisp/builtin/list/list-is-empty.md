@@ -15,6 +15,6 @@ Check if the list is empty.
 # Examples
 
 ```meta-lisp
-(list-is-empty [])       ;; => true
-(list-is-empty [1 2 3])  ;; => false
+(list-is-empty (@list))       ;; => true
+(list-is-empty (@list 1 2 3))  ;; => false
 ```

@@ -15,5 +15,5 @@ Create an empty list.
 # Examples
 
 ```meta-lisp
-(make-list)  ;; => []
+(make-list)  ;; => (@list)
 ```

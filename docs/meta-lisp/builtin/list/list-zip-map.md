@@ -15,5 +15,5 @@ Combine two lists element-wise using a function.
 # Examples
 
 ```meta-lisp
-(list-zip-map iadd [1 2 3] [10 20 30])  ;; => [11 22 33]
+(list-zip-map iadd (@list 1 2 3) (@list 10 20 30))  ;; => (@list 11 22 33)
 ```

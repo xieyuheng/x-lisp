@@ -16,5 +16,5 @@ Get all keys of a hash table as a list.
 
 ```meta-lisp
 (let ((keys (hash-keys (@hash 1 2 3 4))))
-  (list-map (iadd 1) keys))  ;; => [2 4]
+  (list-map (iadd 1) keys))  ;; => (@list 2 4)
 ```

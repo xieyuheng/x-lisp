@@ -10,6 +10,6 @@
     (imul (car xs) (int-product (cdr xs)))))
 
 (define-test int-product-test
-  (assert-equal 1 (int-product []))
-  (assert-equal 6 (int-product [1 2 3]))
-  (assert-equal 24 (int-product [1 2 3 4])))
+  (assert-equal 1 (int-product (@list)))
+  (assert-equal 6 (int-product (@list 1 2 3)))
+  (assert-equal 24 (int-product (@list 1 2 3 4))))

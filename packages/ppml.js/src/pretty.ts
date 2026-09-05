@@ -48,9 +48,9 @@ export function prettyApplication(elements: Array<Ppml.Node>): Ppml.Node {
 
 export function prettyList(elements: Array<Ppml.Node>): Ppml.Node {
   if (elements.length === 0) {
-    return Ppml.group(Ppml.text("["), Ppml.text("]"))
+    return Ppml.group(Ppml.text("(@list)"))
   }
 
   const bodyNode = Ppml.group(Ppml.indent(1, Ppml.flex(elements)))
-  return Ppml.group(Ppml.text("["), bodyNode, Ppml.text("]"))
+  return Ppml.group(Ppml.text("(@list "), bodyNode, Ppml.text(")"))
 }

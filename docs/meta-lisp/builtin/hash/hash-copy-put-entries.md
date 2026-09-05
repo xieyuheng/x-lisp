@@ -16,7 +16,7 @@ Put entries into a hash table, returning a new hash table.
 
 ```meta-lisp
 (hash-copy-put-entries
-  [(make-pair 'a 1) (make-pair 'b 2)]
+  (@list (make-pair 'a 1) (make-pair 'b 2))
   (@hash))
 ;; => (@hash 'a 1 'b 2)
 ```

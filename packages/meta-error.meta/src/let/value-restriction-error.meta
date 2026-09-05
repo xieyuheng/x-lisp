@@ -2,4 +2,4 @@
 
 (define-test value-restriction-test
   (the (list-t int-t)
-    (list-map (iadd 1) ["x"])))
+    (list-map (iadd 1) (@list "x"))))

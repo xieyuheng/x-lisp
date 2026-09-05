@@ -15,9 +15,9 @@ Left fold with index. The callback receives the index, the folded value, and the
 # Examples
 
 ```meta-lisp
-(list-fold-left-index (lambda (i folded x) (iadd folded (imul i x))) 0 [10 20 30])
+(list-fold-left-index (lambda (i folded x) (iadd folded (imul i x))) 0 (@list 10 20 30))
 ;; => 80
 
-(list-fold-left-index (lambda (i folded _) (cons i folded)) [] ['a 'b 'c])
-;; => [2 1 0]
+(list-fold-left-index (lambda (i folded _) (cons i folded)) (@list) (@list 'a 'b 'c))
+;; => (@list 2 1 0)
 ```

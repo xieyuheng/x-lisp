@@ -20,7 +20,7 @@
 
 (admit var-term (-> symbol-t term-t))
 
-(define (var-term name) ['var-term name])
+(define (var-term name) (@list 'var-term name))
 
 (admit is-var-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -42,7 +42,7 @@
 
 (admit apply-term (-> term-t term-t term-t))
 
-(define (apply-term target arg) ['apply-term target arg])
+(define (apply-term target arg) (@list 'apply-term target arg))
 
 (admit is-apply-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -73,7 +73,7 @@
 
 (admit lambda-term (-> symbol-t term-t term-t))
 
-(define (lambda-term parameter body) ['lambda-term parameter body])
+(define (lambda-term parameter body) (@list 'lambda-term parameter body))
 
 (admit is-lambda-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -104,7 +104,7 @@
 
 (admit let-term (-> symbol-t term-t term-t term-t))
 
-(define (let-term name rhs body) ['let-term name rhs body])
+(define (let-term name rhs body) (@list 'let-term name rhs body))
 
 (admit is-let-term (-> term-t meta-builtin/builtin/bool-t))
 
@@ -162,7 +162,8 @@
 
 (admit closure-value (-> env-t symbol-t term-t value-t))
 
-(define (closure-value env parameter body) ['closure-value env parameter body])
+(define (closure-value env parameter body)
+  (@list 'closure-value env parameter body))
 
 (admit is-closure-value (-> value-t meta-builtin/builtin/bool-t))
 

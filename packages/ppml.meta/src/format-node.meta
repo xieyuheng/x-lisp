@@ -2,7 +2,7 @@
 
 (claim format-node (-> int-t node-t text-t))
 (define (format-node width node)
-  (layout width 0 [(make-entry 0 'inline node)] ""))
+  (layout width 0 (@list (make-entry 0 'inline node)) ""))
 
 (define (layout width cursor targets result)
   (if (list-is-empty targets)
@@ -39,7 +39,7 @@
            (layout width indentation rest
                    (text-append result new-line))))
         ((group-node child)
-         (if (fit-inline (isub width cursor) [child])
+         (if (fit-inline (isub width cursor) (@list child))
            (layout width cursor
                    (cons (make-entry indentation 'inline child) rest)
                    result)

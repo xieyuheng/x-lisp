@@ -34,8 +34,8 @@
               (format-exp body) ")"))
     ((list-exp elements location)
      (if (list-is-empty elements)
-       "[]"
-       (@text "[" (format-exps elements) "]")))
+       "(@list)"
+       (@text "(@list " (format-exps elements) ")")))
     ((text-concat-exp elements location)
      (if (list-is-empty elements)
        "(@text)"

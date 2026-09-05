@@ -15,5 +15,5 @@ Pair elements of two lists by position.
 # Examples
 
 ```meta-lisp
-(list-zip ['a 'b 'c] [1 2 3])   ;; => [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)]
+(list-zip (@list 'a 'b 'c) (@list 1 2 3))   ;; => (@list (make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3))
 ```

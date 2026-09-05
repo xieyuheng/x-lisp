@@ -70,8 +70,8 @@ src/let/heterogeneous-list-error.meta:4:23 -- unification fail
   expected type: (list-t int-t)
  2 | 
  3 | (define-test heterogeneous-list-test
- 4 |   (the (list-t int-t) ['a 1]))
-   |                       ~~~~~~   
+ 4 |   (the (list-t int-t) (@list 'a 1)))
+   |                       ~~~~~~~~~~~~   
  5 | 
 
 src/let/value-restriction-error.meta:5:24 -- unification fail
@@ -79,8 +79,8 @@ src/let/value-restriction-error.meta:5:24 -- unification fail
   expected type: (list-t int-t)
  3 | (define-test value-restriction-test
  4 |   (the (list-t int-t)
- 5 |     (list-map (iadd 1) ["x"])))
-   |                        ~~~~~    
+ 5 |     (list-map (iadd 1) (@list "x"))))
+   |                        ~~~~~~~~~~~    
  6 | 
 
 src/module/nat-private-type-error.meta:8:17 -- undefined variable

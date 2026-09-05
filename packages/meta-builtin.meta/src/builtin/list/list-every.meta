@@ -11,8 +11,8 @@
         (else (list-every p (cdr list)))))
 
 (define-test list-every-test
-  (assert (list-every int-is-non-negative [0 1 2 3]))
-  (assert-not (list-every int-is-non-negative [0 1 -1 2 3])))
+  (assert (list-every int-is-non-negative (@list 0 1 2 3)))
+  (assert-not (list-every int-is-non-negative (@list 0 1 -1 2 3))))
 
 (claim list-some
   (all (A)
@@ -25,5 +25,5 @@
         (else (list-some p (cdr list)))))
 
 (define-test list-some-test
-  (assert (list-some int-is-non-negative [-1 -2 0]))
-  (assert-not (list-some int-is-non-negative [-1 -2 -3])))
+  (assert (list-some int-is-non-negative (@list -1 -2 0)))
+  (assert-not (list-some int-is-non-negative (@list -1 -2 -3))))

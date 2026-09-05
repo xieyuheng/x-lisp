@@ -9,9 +9,9 @@
            (xn en))
     body)
 
-  let [e1 e2 ... en] and body
-  have their [x1 x2 ... xn]
-  replaced with [(box-get x1) (box-get x2) ... (box-get xn)]
+  let (@list e1 e2 ... en) and body
+  have their (@list x1 x2 ... xn)
+  replaced with (@list (box-get x1) (box-get x2) ... (box-get xn))
 
   (let ((x1 (make-box))
         (x2 (make-box))
@@ -36,7 +36,7 @@
          (box-put-exps (list-zip-map make-box-put-exp new-rhs-exps bindings)))
     (let-exp
       box-bindings
-      (begin-exp (list-append box-put-exps [(exp-box-get-subst body)]) location)
+      (begin-exp (list-append box-put-exps (@list (exp-box-get-subst body))) location)
       location)))
 
 (define (make-box-binding binding)
@@ -46,7 +46,7 @@
        name
        (apply-exp
          (qualified-var-exp 'meta-builtin 'builtin 'make-box location)
-         []
+         (@list)
          location)
        location))))
 
@@ -55,7 +55,7 @@
     ((make-binding name rhs location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'box-get location)
-       [(var-exp name location)]
+       (@list (var-exp name location))
        location))))
 
 (define (make-box-put-exp value-exp binding)
@@ -63,7 +63,7 @@
     ((make-binding name _ location)
      (apply-exp
         (qualified-var-exp 'meta-builtin 'builtin 'box-put location)
-       [value-exp (var-exp name location)]
+       (@list value-exp (var-exp name location))
        location))))
 
 (claim exp-naive-subst-many

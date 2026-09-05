@@ -71,7 +71,7 @@
         (lambda (stmt)
           (if (is-private-stmt stmt)
             (private-stmt-names stmt)
-            []))))))
+            (@list)))))))
 
 (claim collect-names-by-mod
   (-> package-t
@@ -243,7 +243,7 @@
       text-t))
 
 (define (format-module-analysis-report result debug)
-  (let ((lines []))
+  (let ((lines (@list)))
     (list-push "(module-analysis-report" lines)
     (list-push "  (fragment-scopes" lines)
     (for-list (sort-entries-by-text-key (module-analysis-report-fragment-scopes result))

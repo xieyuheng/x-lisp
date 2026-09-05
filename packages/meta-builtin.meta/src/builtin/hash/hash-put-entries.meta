@@ -23,15 +23,15 @@
 (define-test hash-put-entries-test
   (assert-equal
     (@hash 'a 1 'b 2)
-    (hash-copy-put-entries [(make-pair 'a 1)
-                            (make-pair 'b 2)]
+    (hash-copy-put-entries (@list (make-pair 'a 1)
+                            (make-pair 'b 2))
       (@hash)))
 
   (let ((hash (@hash)))
     (assert-equal
       (@hash 'a 1 'b 2)
-      (hash-put-entries [(make-pair 'a 1)
-                         (make-pair 'b 2)]
+      (hash-put-entries (@list (make-pair 'a 1)
+                         (make-pair 'b 2))
         hash))
     (assert-equal
       (@hash 'a 1 'b 2) hash)))

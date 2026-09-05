@@ -15,6 +15,6 @@ First element of the list.
 # Examples
 
 ```meta-lisp
-(car [1 2 3])  ;; => 1
-(car ["a" "b"])  ;; => "a"
+(car (@list 1 2 3))  ;; => 1
+(car (@list "a" "b"))  ;; => "a"
 ```

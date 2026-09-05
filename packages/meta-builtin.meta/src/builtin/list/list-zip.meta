@@ -7,17 +7,17 @@
 
 (define (list-zip left right)
   (if (or (list-is-empty left) (list-is-empty right))
-    []
+    (@list)
     (cons (make-pair (car left) (car right))
       (list-zip (cdr left) (cdr right)))))
 
 (define-test list-zip-test
   (assert-equal
-    (list-zip ['a 'b 'c] [1 2 3])
-    [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)])
+    (list-zip (@list 'a 'b 'c) (@list 1 2 3))
+    (@list (make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)))
   (assert-equal
-    (list-zip ['a 'b 'c] [1 2])
-    [(make-pair 'a 1) (make-pair 'b 2)]))
+    (list-zip (@list 'a 'b 'c) (@list 1 2))
+    (@list (make-pair 'a 1) (make-pair 'b 2))))
 
 (claim list-unzip
   (all (A B)
@@ -30,5 +30,5 @@
 
 (define-test list-unzip-test
   (assert-equal
-    (list-unzip [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)])
-    (make-pair ['a 'b 'c] [1 2 3])))
+    (list-unzip (@list (make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)))
+    (make-pair (@list 'a 'b 'c) (@list 1 2 3))))

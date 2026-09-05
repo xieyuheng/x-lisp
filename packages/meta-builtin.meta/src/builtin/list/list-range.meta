@@ -11,10 +11,10 @@
 
 (define (list-range-aux length current)
   (if (int-greater-or-equal current length)
-    []
+    (@list)
     (cons current (list-range-aux length (iadd current 1)))))
 
 (define-test list-range-test
-  (assert-equal (list-range 0) [])
-  (assert-equal (list-range 1) [0])
-  (assert-equal (list-range 5) [0 1 2 3 4]))
+  (assert-equal (list-range 0) (@list))
+  (assert-equal (list-range 1) (@list 0))
+  (assert-equal (list-range 5) (@list 0 1 2 3 4)))

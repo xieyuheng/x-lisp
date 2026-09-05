@@ -15,5 +15,5 @@ Copy a list, returning a new list.
 # Examples
 
 ```meta-lisp
-(list-copy [1 2 3])  ;; => [1 2 3]
+(list-copy (@list 1 2 3))  ;; => (@list 1 2 3)
 ```

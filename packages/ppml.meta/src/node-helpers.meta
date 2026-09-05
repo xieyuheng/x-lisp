@@ -57,7 +57,7 @@
   (letrec ((wrap-acc (lambda (acc rest)
                        (if (list-is-empty rest)
                          acc
-                         (wrap-acc (group [acc (br) (list-head rest)])
+                         (wrap-acc (group (@list acc (br) (list-head rest)))
                                    (list-rest rest))))))
     (if (list-is-empty nodes)
       (null-node)

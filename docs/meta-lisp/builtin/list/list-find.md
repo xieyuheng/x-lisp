@@ -15,6 +15,6 @@ Find the first element satisfying the predicate, returning `(just value)` or `(n
 # Examples
 
 ```meta-lisp
-(list-find int? ['a 'b 3 'd])  ;; => (just 3)
-(list-find int? ['a 'b 'c])    ;; => (nothing)
+(list-find int? (@list 'a 'b 3 'd))  ;; => (just 3)
+(list-find int? (@list 'a 'b 'c))    ;; => (nothing)
 ```

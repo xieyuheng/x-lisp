@@ -15,7 +15,7 @@ Take the first `n` elements of the list. Returns the whole list if `n` exceeds t
 # Examples
 
 ```meta-lisp
-(list-take 2 [1 2 3 4])  ;; => [1 2]
-(list-take 0 [1 2 3])    ;; => []
-(list-take 5 [1 2 3])    ;; => [1 2 3]
+(list-take 2 (@list 1 2 3 4))  ;; => (@list 1 2)
+(list-take 0 (@list 1 2 3))    ;; => (@list)
+(list-take 5 (@list 1 2 3))    ;; => (@list 1 2 3)
 ```

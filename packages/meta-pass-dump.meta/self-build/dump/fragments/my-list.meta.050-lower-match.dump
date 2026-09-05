@@ -11,7 +11,7 @@
 
 (admit nil (all (E) (-> (my-list-t E))))
 
-(define (nil) ['nil])
+(define (nil) (@list 'nil))
 
 (admit is-nil (all (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 
@@ -22,7 +22,7 @@
 
 (admit li (all (E) (-> E (my-list-t E) (my-list-t E))))
 
-(define (li head tail) ['li head tail])
+(define (li head tail) (@list 'li head tail))
 
 (admit is-li (all (E) (-> (my-list-t E) meta-builtin/builtin/bool-t)))
 

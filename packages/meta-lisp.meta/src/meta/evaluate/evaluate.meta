@@ -78,7 +78,7 @@
        (type-value type)))
     ((algebraic-type-definition mod name type-constructor data-constructors location)
      (if (list-is-empty (type-constructor-parameters type-constructor))
-       (type-value (data-type type-constructor []))
+       (type-value (data-type type-constructor (@list)))
        (definition-value definition)))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
      (if (equal mode (transparent-mode))
@@ -87,7 +87,7 @@
            (type-value type))
          (definition-value definition))
        (if (list-is-empty (type-constructor-parameters type-constructor))
-         (type-value (data-type type-constructor []))
+         (type-value (data-type type-constructor (@list)))
          (definition-value definition))))))
 
 (claim evaluate-type

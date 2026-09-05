@@ -207,13 +207,13 @@
           (lambda (accessor-name)
             (apply-exp
               (qualified-var-exp pkg-name mod-name accessor-name location)
-              [target]
+              (@list target)
               (exp-location target)))
           accessor-names))
       (make-cond-clause
         (apply-exp
           (qualified-var-exp pkg-name mod-name predicate-name location)
-          [(car targets)]
+          (@list (car targets))
           (exp-location (car targets)))
        (desugar-match
          ctx
@@ -303,15 +303,15 @@
       (list-t (list-t match-clause-t))))
 
 (define (group-clauses-by-pattern-kind clauses)
-  (let ((groups []))
+  (let ((groups (@list)))
     (for-list clauses
       (lambda (clause)
         (if (list-is-empty groups)
-          (ignore (list-push [clause] groups))
+          (ignore (list-push (@list clause) groups))
           (let ((last (list-last groups)))
             (if (same-pattern-kind clause (list-first last))
               (ignore (list-push clause last))
-              (ignore (list-push [clause] groups)))))))
+              (ignore (list-push (@list clause) groups)))))))
     groups))
 
 (define (same-pattern-kind x y)
@@ -321,17 +321,17 @@
 (define (make-default-exp targets location)
   (apply-exp
     (qualified-var-exp 'meta-builtin 'builtin 'error-with-location location)
-    [(text-concat-exp
+    (@list (text-concat-exp
        (list-concat
-         [[(text-exp "pattern mismatch on:" location)]
+         (@list (@list (text-exp "pattern mismatch on:" location))
           (list-map-concat
             (lambda (target)
-              [(text-exp " " location)
+              (@list (text-exp " " location)
                (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'format location)
-                 [target]
-                 location)])
-            targets)])
+                 (@list target)
+                 location)))
+            targets)))
        location)
-     (desugar-location location)]
+     (desugar-location location))
     location))

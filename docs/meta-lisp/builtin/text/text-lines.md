@@ -15,7 +15,7 @@ Split a text into lines by newline characters.
 # Examples
 
 ```meta-lisp
-(text-lines "a\nb\nc")  ;; => ["a" "b" "c"]
-(text-lines "abc")      ;; => ["abc"]
-(text-lines "")         ;; => [""]
+(text-lines "a\nb\nc")  ;; => (@list "a" "b" "c")
+(text-lines "abc")      ;; => (@list "abc")
+(text-lines "")         ;; => (@list "")
 ```

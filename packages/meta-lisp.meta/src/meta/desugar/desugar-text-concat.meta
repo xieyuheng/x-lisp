@@ -7,5 +7,5 @@
 (define (desugar-text-concat elements location)
   (apply-exp
     (qualified-var-exp 'meta-builtin 'builtin 'text-concat location)
-    [(list-exp elements location)]
+    (@list (list-exp elements location))
     location))

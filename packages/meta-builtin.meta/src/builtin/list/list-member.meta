@@ -11,5 +11,5 @@
         (else (list-member x (cdr list)))))
 
 (define-test list-member-test
-  (assert (list-member 2 [1 2 3]))
-  (assert-not (list-member 0 [1 2 3])))
+  (assert (list-member 2 (@list 1 2 3)))
+  (assert-not (list-member 0 (@list 1 2 3))))

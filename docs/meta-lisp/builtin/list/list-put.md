@@ -15,5 +15,5 @@ Set element by index, same behavior as `list-copy-put`.
 # Examples
 
 ```meta-lisp
-(list-put 0 10 [1 2 3])  ;; => [10 2 3]
+(list-put 0 10 (@list 1 2 3))  ;; => (@list 10 2 3)
 ```

@@ -13,12 +13,12 @@
 
 (define (list-enumerate-aux list i)
   (if (list-is-empty list)
-    []
+    (@list)
     (cons (make-pair i (car list))
           (list-enumerate-aux (cdr list) (iadd i 1)))))
 
 (define-test list-enumerate-test
-  (assert-equal (list-enumerate []) [])
-  (assert-equal (list-enumerate ['a]) [(make-pair 0 'a)])
-  (assert-equal (list-enumerate ['a 'b 'c])
-    [(make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c)]))
+  (assert-equal (list-enumerate (@list)) (@list))
+  (assert-equal (list-enumerate (@list 'a)) (@list (make-pair 0 'a)))
+  (assert-equal (list-enumerate (@list 'a 'b 'c))
+    (@list (make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c))))

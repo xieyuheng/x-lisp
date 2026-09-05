@@ -15,5 +15,5 @@ First element, same as `car`.
 # Examples
 
 ```meta-lisp
-(list-first [1 2 3])  ;; => 1
+(list-first (@list 1 2 3))  ;; => 1
 ```

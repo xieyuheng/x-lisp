@@ -15,6 +15,6 @@ Print any value to standard output.
 # Examples
 
 ```meta-lisp
-(list-each print [1 2 3])
+(list-each print (@list 1 2 3))
 ;; outputs: 123
 ```

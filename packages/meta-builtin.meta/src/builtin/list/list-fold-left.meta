@@ -14,5 +14,5 @@
      (list-rest list))))
 
 (define-test list-fold-left-test
-  (assert-equal 10 (list-fold-left iadd 0 [1 2 3 4]))
-  (assert-equal [4 3 2 1] (list-fold-left (swap cons) [] [1 2 3 4])))
+  (assert-equal 10 (list-fold-left iadd 0 (@list 1 2 3 4)))
+  (assert-equal (@list 4 3 2 1) (list-fold-left (swap cons) (@list) (@list 1 2 3 4))))

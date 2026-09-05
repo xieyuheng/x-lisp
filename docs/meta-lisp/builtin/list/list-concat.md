@@ -15,5 +15,5 @@ Flatten a list of lists by one level.
 # Examples
 
 ```meta-lisp
-(list-concat [[1 2] [3 4] [5]])  ;; => [1 2 3 4 5]
+(list-concat (@list (@list 1 2) (@list 3 4) (@list 5)))  ;; => (@list 1 2 3 4 5)
 ```

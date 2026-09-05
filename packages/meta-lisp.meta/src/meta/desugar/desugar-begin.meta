@@ -13,7 +13,7 @@
     (else
      (match (car sequence)
        ((local-define-exp name parameters body head-location)
-        (let ((local-defines (collect-adjacent-local-defines sequence []))
+        (let ((local-defines (collect-adjacent-local-defines sequence (@list)))
                (remaining (list-drop (list-length local-defines) sequence)))
           (letrec-exp
             (list-map desugar-local-define local-defines)
@@ -51,4 +51,4 @@
     local-defines
     (collect-adjacent-local-defines
       (cdr sequence)
-      (list-append local-defines [(car sequence)]))))
+      (list-append local-defines (@list (car sequence))))))

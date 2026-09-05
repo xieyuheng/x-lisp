@@ -15,5 +15,5 @@ List directory contents.
 # Examples
 
 ```meta-lisp
-(path-list "/tmp")  ;; => ["a.txt" "b.txt" "subdir"]
+(path-list "/tmp")  ;; => (@list "a.txt" "b.txt" "subdir")
 ```

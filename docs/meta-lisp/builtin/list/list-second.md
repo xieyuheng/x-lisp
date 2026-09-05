@@ -15,5 +15,5 @@ Second element.
 # Examples
 
 ```meta-lisp
-(list-second [1 2 3])  ;; => 2
+(list-second (@list 1 2 3))  ;; => 2
 ```

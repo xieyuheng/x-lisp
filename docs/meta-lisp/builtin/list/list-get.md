@@ -15,6 +15,6 @@ Get element by index, starting from 0.
 # Examples
 
 ```meta-lisp
-(list-get 0 [1 2 3])  ;; => 1
-(list-get 2 [1 2 3])  ;; => 3
+(list-get 0 (@list 1 2 3))  ;; => 1
+(list-get 2 (@list 1 2 3))  ;; => 3
 ```

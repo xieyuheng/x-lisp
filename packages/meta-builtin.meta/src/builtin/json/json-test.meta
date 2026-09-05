@@ -17,7 +17,7 @@
   (assert-equal (text-json "hello") (parse-json "\"hello\"")))
 
 (define-test parse-array-json-test
-  (assert-equal (array-json [(number-json 1.0) (number-json 2.0) (number-json 3.0)])
+  (assert-equal (array-json (@list (number-json 1.0) (number-json 2.0) (number-json 3.0)))
     (parse-json "[1, 2, 3]")))
 
 (define-test parse-object-json-test

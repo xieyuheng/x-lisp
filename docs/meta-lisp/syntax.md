@@ -146,20 +146,10 @@ The void value is `void` — also not a literal, but a variable bound to the voi
 ## (@list)
 
 ```meta-lisp
-[<exp> ...]
 (@list <exp> ...)
 ```
 
 Creates a list.
-
-```meta-lisp
-[1 2 3]
-["a" "b" "c"]
-```
-
-Bracket notation `[...]` is syntactic sugar for `(@list ...)`.
-
-The example above is equivalent to:
 
 ```meta-lisp
 (@list 1 2 3)
@@ -210,9 +200,9 @@ Concatenates text expressions into a single text.
 The example above is equivalent to:
 
 ```meta-lisp
-(text-concat ["hello" " " "world"])
-(text-concat ["(" x ")"])
-(text-concat [])
+(text-concat (@list "hello" " " "world"))
+(text-concat (@list "(" x ")"))
+(text-concat (@list))
 ```
 
 ## (@quote)
@@ -225,15 +215,15 @@ The example above is equivalent to:
 Create list of symbols or literal atoms.
 
 ```meta-lisp
-'(a b c)         ;; => ['a 'b 'c]
-'(1 2 3)         ;; => [1 2 3]
+'(a b c)         ;; => (@list 'a 'b 'c)
+'(1 2 3)         ;; => (@list 1 2 3)
 ```
 
 Equivalent to:
 
 ```meta-lisp
-(@quote (a b c))  ;; => ['a 'b 'c]
-(@quote (1 2 3))  ;; => [1 2 3]
+(@quote (a b c))  ;; => (@list 'a 'b 'c)
+(@quote (1 2 3))  ;; => (@list 1 2 3)
 ```
 
 ## (@sexp)
@@ -553,7 +543,7 @@ For example:
 Usage:
 
 ```meta-lisp
-(the (non-empty-list-t int-t) (make-pair 1 [2 3]))
+(the (non-empty-list-t int-t) (make-pair 1 (@list 2 3)))
 ```
 
 # Conditionals

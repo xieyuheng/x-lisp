@@ -7,112 +7,112 @@
     (list-push 3 list)
     (println list))
 
-  (println (the (list-t int-t) [1 2 3]))
-  (println [1 2 3])
+  (println (the (list-t int-t) (@list 1 2 3)))
+  (println (@list 1 2 3))
   (println '(1 2 3))
   (println (@list 1 2 3))
 
-  (println ['a 'b 'c])
+  (println (@list 'a 'b 'c))
   (println '(a b c))
 
-  (assert-equal [1 2 3] '(1 2 3))
-  (assert-equal ['a 'b 'c] '(a b c))
+  (assert-equal (@list 1 2 3) '(1 2 3))
+  (assert-equal (@list 'a 'b 'c) '(a b c))
 
   (assert-equal
-    [[1 2 3]
-     [4 5 6]
-     [7 8 9]]
-    [[1 2 3]
-     [4 5 6]
-     [7 8 9]])
+    (@list (@list 1 2 3)
+     (@list 4 5 6)
+     (@list 7 8 9))
+    (@list (@list 1 2 3)
+     (@list 4 5 6)
+     (@list 7 8 9)))
 
   (assert-not-equal
-    [[1 2 3]
-     [4 5 6]
-     [7 8 9]]
-    [[1 2 3]
-     [4 5 6]
-     [7 8 10]])
+    (@list (@list 1 2 3)
+     (@list 4 5 6)
+     (@list 7 8 9))
+    (@list (@list 1 2 3)
+     (@list 4 5 6)
+     (@list 7 8 10)))
 
-  (assert (list-is-empty []))
-  (assert-not (list-is-empty [1]))
+  (assert (list-is-empty (@list)))
+  (assert-not (list-is-empty (@list 1)))
 
-  (assert-equal (cons 1 (cons 2 (cons 3 []))) [1 2 3])
-  (assert-equal (car [1 2 3]) 1)
-  (assert-equal (cdr [1 2 3]) [2 3])
+  (assert-equal (cons 1 (cons 2 (cons 3 (@list)))) (@list 1 2 3))
+  (assert-equal (car (@list 1 2 3)) 1)
+  (assert-equal (cdr (@list 1 2 3)) (@list 2 3))
 
-  (assert-equal (list-head [1 2 3]) 1)
-  (assert-equal (list-rest [1 2 3]) [2 3])
+  (assert-equal (list-head (@list 1 2 3)) 1)
+  (assert-equal (list-rest (@list 1 2 3)) (@list 2 3))
 
-  (assert-equal (list-but-last [1 2 3]) [1 2])
-  (assert-equal (list-last [1 2 3]) 3)
+  (assert-equal (list-but-last (@list 1 2 3)) (@list 1 2))
+  (assert-equal (list-last (@list 1 2 3)) 3)
 
-  (assert-equal (@set 1 2 3) (list-to-set [1 2 3]))
+  (assert-equal (@set 1 2 3) (list-to-set (@list 1 2 3)))
 
-  (assert-equal (list-copy [1 2 3]) [1 2 3])
+  (assert-equal (list-copy (@list 1 2 3)) (@list 1 2 3))
 
-  (assert-equal (list-get 0 [1 2 3]) 1)
-  (assert-equal (list-get 1 [1 2 3]) 2)
-  (assert-equal (list-get 2 [1 2 3]) 3)
+  (assert-equal (list-get 0 (@list 1 2 3)) 1)
+  (assert-equal (list-get 1 (@list 1 2 3)) 2)
+  (assert-equal (list-get 2 (@list 1 2 3)) 3)
 
-  (assert-equal (list-length []) 0)
-  (assert-equal (list-length [1 2 3]) 3)
+  (assert-equal (list-length (@list)) 0)
+  (assert-equal (list-length (@list 1 2 3)) 3)
   (assert-equal
-    (list-length [[1 2 3]
-                  [4 5 6]
-                  [7 8 9]])
+    (list-length (@list (@list 1 2 3)
+                  (@list 4 5 6)
+                  (@list 7 8 9)))
     3)
 
   ;; list of functions
 
   (let ((fs (the (list-t (-> int-t int-t))
-              [(iadd 1) (iadd 2) (iadd 3)])))
+              (@list (iadd 1) (iadd 2) (iadd 3)))))
     (assert-equal 1 ((list-get 0 fs) 0))
     (assert-equal 2 ((list-get 1 fs) 0))
     (assert-equal 3 ((list-get 2 fs) 0))))
 
 (define-test list-pop-test
-  (let ((list [1 2 3]))
+  (let ((list (@list 1 2 3)))
     (assert-equal 3 (list-pop list))
     (assert-equal 2 (list-pop list))
     (assert-equal 1 (list-pop list))
-    (assert-equal list [])))
+    (assert-equal list (@list))))
 
 (define-test list-put-test
-  (let ((list [0 0 0])
+  (let ((list (@list 0 0 0))
          (list (list-copy-put 0 1 list))
          (list (list-copy-put 1 2 list))
          (list (list-copy-put 2 3 list)))
-    (assert-equal list [1 2 3]))
+    (assert-equal list (@list 1 2 3)))
 
   ;; list-copy-put has NO side effect:
 
-  (let ((list [0 0 0]))
+  (let ((list (@list 0 0 0)))
     (list-copy-put 0 1 list)
     (list-copy-put 1 2 list)
     (list-copy-put 2 3 list)
-    (assert-equal list [0 0 0]))
+    (assert-equal list (@list 0 0 0)))
 
   ;; list-put has side effect:
 
-  (let ((list [0 0 0]))
+  (let ((list (@list 0 0 0)))
     (list-put 0 1 list)
     (list-put 1 2 list)
     (list-put 2 3 list)
-    (assert-equal list [1 2 3])))
+    (assert-equal list (@list 1 2 3))))
 
 (define-test list-reverse-test
-  (assert-equal (list-copy-reverse [1 2 3]) [3 2 1]))
+  (assert-equal (list-copy-reverse (@list 1 2 3)) (@list 3 2 1)))
 
 (define-test list-pop-front-test
-  (let ((list [1 2 3]))
+  (let ((list (@list 1 2 3)))
     (assert-equal 1 (list-pop-front list))
     (assert-equal 2 (list-pop-front list))
     (assert-equal 3 (list-pop-front list))
-    (assert-equal list []))
+    (assert-equal list (@list)))
 
-  (let ((list []))
+  (let ((list (@list)))
     (list-push-front 3 list)
     (list-push-front 2 list)
     (list-push-front 1 list)
-    (assert-equal list [1 2 3])))
+    (assert-equal list (@list 1 2 3))))

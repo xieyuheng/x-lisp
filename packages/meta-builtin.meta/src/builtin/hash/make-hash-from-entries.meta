@@ -12,5 +12,5 @@
   (assert-equal
     (@hash 'a 1 'b 2)
     (make-hash-from-entries
-     [(make-pair 'a 1)
-      (make-pair 'b 2)])))
+     (@list (make-pair 'a 1)
+      (make-pair 'b 2)))))

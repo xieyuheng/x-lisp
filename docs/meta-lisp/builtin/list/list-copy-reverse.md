@@ -15,6 +15,6 @@ Reverse the list.
 # Examples
 
 ```meta-lisp
-(list-copy-reverse [1 2 3])  ;; => [3 2 1]
-(list-copy-reverse [])       ;; => []
+(list-copy-reverse (@list 1 2 3))  ;; => (@list 3 2 1)
+(list-copy-reverse (@list))       ;; => (@list)
 ```

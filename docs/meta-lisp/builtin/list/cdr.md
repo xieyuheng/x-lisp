@@ -15,6 +15,6 @@ Rest of the list after removing the first element.
 # Examples
 
 ```meta-lisp
-(cdr [1 2 3])   ;; => [2 3]
-(cdr [1])       ;; => []
+(cdr (@list 1 2 3))   ;; => (@list 2 3)
+(cdr (@list 1))       ;; => (@list)
 ```

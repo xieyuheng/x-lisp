@@ -15,6 +15,6 @@ Last element of the list.
 # Examples
 
 ```meta-lisp
-(list-last [1 2 3])  ;; => 3
-(list-last [1])      ;; => 1
+(list-last (@list 1 2 3))  ;; => 3
+(list-last (@list 1))      ;; => 1
 ```

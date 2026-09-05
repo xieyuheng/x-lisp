@@ -83,7 +83,7 @@
 (claim print-name-and-version (-> router-t void-t))
 
 (define (print-name-and-version router)
-  (println (text-join " " [(router-name router) (router-version router)])))
+  (println (text-join " " (@list (router-name router) (router-version router)))))
 
 (claim print-commands (-> router-t void-t))
 
@@ -108,10 +108,10 @@
          (match (hash-get-maybe name (router-handlers router))
            ((just handler) (handler (route-match route tokens)))
            ((nothing)
-            (println (text-join " " ["undefined handler:" name]))
+            (println (text-join " " (@list "undefined handler:" name)))
             (exit 1))))
         ((nothing)
-         (println (text-join " " ["unknown command:" name]))
+         (println (text-join " " (@list "unknown command:" name)))
          (print-name-and-version router)
          (print-commands router))))))
 

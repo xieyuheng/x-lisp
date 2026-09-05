@@ -26,5 +26,5 @@ xvm run program.x86.exe -- check --verbose
 
 ```meta-lisp
 (current-full-command-line)
-;; => ["xvm" "run" "program.x86.exe" "--" "check" "--verbose"]
+;; => (@list "xvm" "run" "program.x86.exe" "--" "check" "--verbose")
 ```

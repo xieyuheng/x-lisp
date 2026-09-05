@@ -35,7 +35,7 @@
   (type (maybe-t type-t)))
 
 (define (empty-mod name package)
-  (make-mod name []
+  (make-mod name (@list)
     (make-set)
     (make-hash)
     (make-hash)

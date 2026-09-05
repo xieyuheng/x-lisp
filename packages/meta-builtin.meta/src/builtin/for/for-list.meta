@@ -9,4 +9,4 @@
   (list-each fn data))
 
 (define-test for-list-test
-  (for-list [1 2 3] println))
+  (for-list (@list 1 2 3) println))

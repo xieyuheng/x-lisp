@@ -15,5 +15,5 @@ Append an element at the end of the list.
 # Examples
 
 ```meta-lisp
-(list-push 4 [1 2 3])  ;; => [1 2 3 4]
+(list-push 4 (@list 1 2 3))  ;; => (@list 1 2 3 4)
 ```

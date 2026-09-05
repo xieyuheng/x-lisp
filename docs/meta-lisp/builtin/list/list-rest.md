@@ -15,5 +15,5 @@ Rest of the list after removing the first element, same as `cdr`.
 # Examples
 
 ```meta-lisp
-(list-rest [1 2 3])  ;; => [2 3]
+(list-rest (@list 1 2 3))  ;; => (@list 2 3)
 ```

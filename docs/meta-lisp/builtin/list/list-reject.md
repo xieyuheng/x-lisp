@@ -15,6 +15,6 @@ Remove elements that satisfy the predicate.
 # Examples
 
 ```meta-lisp
-(list-reject int? ['a 1 'b 2])       ;; => ['a 'b]
-(list-reject int-non-negative? [0 1 -1 2])  ;; => [-1]
+(list-reject int? (@list 'a 1 'b 2))       ;; => (@list 'a 'b)
+(list-reject int-non-negative? (@list 0 1 -1 2))  ;; => (@list -1)
 ```

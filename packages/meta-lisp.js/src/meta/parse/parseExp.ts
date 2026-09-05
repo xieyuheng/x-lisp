@@ -280,10 +280,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* '@square-bracket elements)": ({ elements }, { location }) => {
-    return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
-  },
-
   "(cons* '@list elements)": ({ elements }, { location }) => {
     return M.ListExp(S.asListSexp(elements).elements.map(parseExp), location)
   },
@@ -408,6 +404,13 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 
   // - The following two cases must be at the end.
+
+  "(cons* '@square-bracket elements)": ({ elements }, { location }) => {
+    throw new S.ErrorWithSourceLocation(
+      `square bracket literal is not supported, use (@list ...)`,
+      location,
+    )
+  },
 
   "(cons* target args)": ({ target, args }, { location }) => {
     return M.ApplyExp(

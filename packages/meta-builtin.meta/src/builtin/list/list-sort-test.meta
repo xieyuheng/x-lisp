@@ -3,30 +3,30 @@
 (define-test list-sort-test
   ;; int ascending, list-sort mutates in-place
 
-  (let ((list [2 3 1]))
+  (let ((list (@list 2 3 1)))
     (list-sort int-compare-ascending list)
-    (assert-equal [1 2 3] list))
+    (assert-equal (@list 1 2 3) list))
 
   ;; int ascending, list-copy-sort returns new list
 
-  (let ((list [2 3 1]))
-    (assert-equal [1 2 3] (list-copy-sort int-compare-ascending list))
-    (assert-equal [2 3 1] list))
+  (let ((list (@list 2 3 1)))
+    (assert-equal (@list 1 2 3) (list-copy-sort int-compare-ascending list))
+    (assert-equal (@list 2 3 1) list))
 
   ;; int descending
 
-  (assert-equal [3 2 1] (list-copy-sort int-compare-descending [2 3 1]))
+  (assert-equal (@list 3 2 1) (list-copy-sort int-compare-descending (@list 2 3 1)))
 
   ;; float ascending
 
-  (assert-equal [1.0 2.0 3.0] (list-copy-sort float-compare-ascending [2.0 3.0 1.0]))
+  (assert-equal (@list 1.0 2.0 3.0) (list-copy-sort float-compare-ascending (@list 2.0 3.0 1.0)))
 
   ;; float descending
 
-  (assert-equal [3.0 2.0 1.0] (list-copy-sort float-compare-descending [2.0 3.0 1.0]))
+  (assert-equal (@list 3.0 2.0 1.0) (list-copy-sort float-compare-descending (@list 2.0 3.0 1.0)))
 
   ;; text lexical
 
   (assert-equal
-    ["a" "b" "c"]
-    (list-copy-sort text-compare-lexical ["b" "c" "a"])))
+    (@list "a" "b" "c")
+    (list-copy-sort text-compare-lexical (@list "b" "c" "a"))))

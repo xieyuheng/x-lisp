@@ -17,23 +17,23 @@
 
   (assert-equal "abcdef" (text-append "abc" "def"))
 
-  (assert-equal ["a" "b" "c"] (text-chars "abc"))
+  (assert-equal (@list "a" "b" "c") (text-chars "abc"))
 
-  (assert-equal ["123" "456" "789"] (text-lines "123\n456\n789\n"))
-  (assert-equal ["123" "456" "789"] (text-lines "123\n456\n789"))
-  (assert-equal ["123" "" "789"] (text-lines "123\n\n789\n"))
-  (assert-equal ["123" "" "789"] (text-lines "123\n\n789"))
+  (assert-equal (@list "123" "456" "789") (text-lines "123\n456\n789\n"))
+  (assert-equal (@list "123" "456" "789") (text-lines "123\n456\n789"))
+  (assert-equal (@list "123" "" "789") (text-lines "123\n\n789\n"))
+  (assert-equal (@list "123" "" "789") (text-lines "123\n\n789"))
 
   (assert-equal "中" (text-slice 0 1 "中文"))
   (assert-equal "文" (text-slice 1 2 "中文")))
 
 (define-test text-join-test
-  (assert-equal "a.b.c" (text-join "." ["a" "b" "c"]))
-  (assert-equal "a..b..c" (text-join ".." ["a" "b" "c"])))
+  (assert-equal "a.b.c" (text-join "." (@list "a" "b" "c")))
+  (assert-equal "a..b..c" (text-join ".." (@list "a" "b" "c"))))
 
 (define-test text-split-test
-  (assert-equal ["a" "b" "c"] (text-split "." "a.b.c"))
-  (assert-equal ["a" "b" "c"] (text-split ".." "a..b..c")))
+  (assert-equal (@list "a" "b" "c") (text-split "." "a.b.c"))
+  (assert-equal (@list "a" "b" "c") (text-split ".." "a..b..c")))
 
 (define-test text-replace-test
   (assert-equal "a/b/c" (text-replace "." "/" "a.b.c")))

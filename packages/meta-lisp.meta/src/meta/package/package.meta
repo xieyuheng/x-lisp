@@ -54,7 +54,7 @@
       (list-t package-t)))
 
 (define (package-closure-in-topological-order package)
-  (let ((results [])
+  (let ((results (@list))
         (seen (@set)))
     (define (collect package)
       (unless (set-member (package-id package) seen)

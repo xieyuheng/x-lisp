@@ -24,8 +24,8 @@
                  (ppml/pretty-application (nothing) param-nodes)
                  (ppml/pretty-application (just (symbol-to-text (list-head parameters))) param-nodes))))
           (ppml/pretty-syntax "lambda"
-            [params-node]
-            [(pretty-term body)]))))
+            (@list params-node)
+            (@list (pretty-term body))))))
     ((apply-term target args location)
      (let ((target-op (term-op-text target))
            (all-elements (cons (pretty-term target) (list-map pretty-term args))))
@@ -34,28 +34,28 @@
      (let ((name-str (symbol-to-text name))
            (rhs-node (pretty-term rhs)))
        (ppml/pretty-syntax "let"
-         [(ppml/pretty-application (nothing)
-            [(ppml/pretty-application (just name-str)
-               [(ppml/text name-str) rhs-node])])]
-         [(pretty-term body)])))
+         (@list (ppml/pretty-application (nothing)
+            (@list (ppml/pretty-application (just name-str)
+               (@list (ppml/text name-str) rhs-node)))))
+         (@list (pretty-term body)))))
     ((begin1-term head body location)
      (ppml/pretty-syntax "begin"
-       []
-       [(pretty-term head) (pretty-term body)]))
+       (@list)
+       (@list (pretty-term head) (pretty-term body))))
     ((if-term condition consequent alternative location)
      (ppml/pretty-syntax "if"
-       [(pretty-term condition)]
-       [(pretty-term consequent)
-        (pretty-term alternative)]))
+       (@list (pretty-term condition))
+       (@list (pretty-term consequent)
+        (pretty-term alternative))))
     ((arrow-term arg-types ret-type location)
      (let ((all-elements (cons (ppml/text "->")
                                (list-append (list-map pretty-term arg-types)
-                                            [(pretty-term ret-type)]))))
+                                            (@list (pretty-term ret-type))))))
        (ppml/pretty-application (just "->") all-elements)))
     ((the-term type instance location)
      (ppml/pretty-syntax "the"
-       [(pretty-term type) (pretty-term instance)]
-       []))
+       (@list (pretty-term type) (pretty-term instance))
+       (@list)))
     ((all-term parameters body location)
      (let ((param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters)))
        (let ((params-node
@@ -63,8 +63,8 @@
                  (ppml/pretty-application (nothing) param-nodes)
                  (ppml/pretty-application (just (symbol-to-text (list-head parameters))) param-nodes))))
          (ppml/pretty-syntax "all"
-           [params-node]
-           [(pretty-term body)]))))))
+           (@list params-node)
+           (@list (pretty-term body))))))))
 
 (claim term-op-text (-> term-t (maybe-t text-t)))
 (define (term-op-text term)

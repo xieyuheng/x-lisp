@@ -15,6 +15,6 @@ Pop the last element from the list.
 # Examples
 
 ```meta-lisp
-(list-pop [1 2 3])  ;; => 3
-(list-pop [1])      ;; => 1
+(list-pop (@list 1 2 3))  ;; => 3
+(list-pop (@list 1))      ;; => 1
 ```

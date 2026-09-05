@@ -132,7 +132,7 @@
 
 (define (naive-subst-let-star bindings name rhs shadowed)
   (if (list-is-empty bindings)
-    (make-pair [] shadowed)
+    (make-pair (@list) shadowed)
     (let ((binding (list-head bindings))
            (rest (list-rest bindings))
            (b-name (binding-name binding))
@@ -146,7 +146,7 @@
 
 (define (naive-subst-begin sequence name rhs location)
   (if (list-is-empty sequence)
-    (begin-exp [] location)
+    (begin-exp (@list) location)
     (let ((element (list-head sequence))
            (rest (list-rest sequence)))
       (match element

@@ -85,7 +85,7 @@
       (path-write dump-path (@text (format-algebraic-analysis-report report) "\n")))))
 
 (define (format-algebraic-analysis-report report)
-  (let ((lines []))
+  (let ((lines (@list)))
     (list-push "(algebraic-analysis-report" lines)
     (list-push "  (data-constructor-infos" lines)
     (for-list (sort-entries-by-text-key (algebraic-analysis-report-data-constructor-infos report))

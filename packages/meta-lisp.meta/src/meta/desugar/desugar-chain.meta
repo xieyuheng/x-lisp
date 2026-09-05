@@ -8,6 +8,6 @@
   (let ((used-names (set-union-many (list-map exp-occurred-names steps)))
          (fresh-name (generate-relative-fresh-name used-names 'target)))
     (lambda-exp
-      [fresh-name]
+      (@list fresh-name)
       (flow-exp (var-exp fresh-name location) steps location)
       location)))

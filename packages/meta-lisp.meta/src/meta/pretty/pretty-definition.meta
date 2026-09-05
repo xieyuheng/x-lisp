@@ -10,81 +10,81 @@
                               (symbol-to-text name) " "
                               (format-as-sexp arity) ")"))))
        (match (pretty-definition-claim mod name)
-         ((just claim-node) [claim-node body])
-         ((nothing) [body]))))
+         ((just claim-node) (@list claim-node body))
+         ((nothing) (@list body)))))
     ((primitive-variable-declaration mod name location)
      (let ((body (ppml/text (@text "(declare-primitive-variable "
                               (symbol-to-text name) ")"))))
        (match (pretty-definition-claim mod name)
-         ((just claim-node) [claim-node body])
-         ((nothing) [body]))))
+         ((just claim-node) (@list claim-node body))
+         ((nothing) (@list body)))))
     ((function-definition mod name parameters body location)
      (let ((name-str (symbol-to-text name))
             (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters))
             (def-node (ppml/pretty-application (just name-str)
                         (cons (ppml/text name-str) param-nodes)))
-            (define-node (ppml/pretty-syntax "define" [def-node] [(pretty-term body)])))
+            (define-node (ppml/pretty-syntax "define" (@list def-node) (@list (pretty-term body)))))
        (match (pretty-definition-claim mod name)
-         ((just claim-node) [claim-node define-node])
-         ((nothing) [define-node]))))
+         ((just claim-node) (@list claim-node define-node))
+         ((nothing) (@list define-node)))))
     ((variable-definition mod name body location)
      (match (pretty-definition-claim mod name)
        ((just claim-node)
-        [claim-node
+        (@list claim-node
          (ppml/pretty-syntax "define"
-           [(ppml/text (symbol-to-text name))]
-           [(pretty-term body)])])
+           (@list (ppml/text (symbol-to-text name)))
+           (@list (pretty-term body)))))
        ((nothing)
-        [(ppml/pretty-syntax "define"
-           [(ppml/text (symbol-to-text name))]
-           [(pretty-term body)])])))
+        (@list (ppml/pretty-syntax "define"
+           (@list (ppml/text (symbol-to-text name)))
+           (@list (pretty-term body)))))))
     ((test-definition mod name body location)
      (match (pretty-definition-claim mod name)
        ((just claim-node)
-        [claim-node
+        (@list claim-node
          (ppml/pretty-syntax "define-test"
-           [(ppml/text (symbol-to-text name))]
-           [(pretty-term body)])])
+           (@list (ppml/text (symbol-to-text name)))
+           (@list (pretty-term body)))))
        ((nothing)
-        [(ppml/pretty-syntax "define-test"
-           [(ppml/text (symbol-to-text name))]
-           [(pretty-term body)])])))
+        (@list (ppml/pretty-syntax "define-test"
+           (@list (ppml/text (symbol-to-text name)))
+           (@list (pretty-term body)))))))
     ((type-definition mod name parameters body location)
      (let ((name-str (symbol-to-text name))
             (params-str (text-join " " (list-map symbol-to-text parameters)))
             (body-node (ppml/pretty-syntax "define-type"
-                         [(if (list-is-empty parameters)
+                         (@list (if (list-is-empty parameters)
                             (ppml/text name-str)
-                            (ppml/text (@text "(" name-str " " params-str ")")))]
-                         [(pretty-term body)])))
+                            (ppml/text (@text "(" name-str " " params-str ")"))))
+                         (@list (pretty-term body)))))
        (match (pretty-definition-claim mod name)
-         ((just claim-node) [claim-node body-node])
-         ((nothing) [body-node]))))
+         ((just claim-node) (@list claim-node body-node))
+         ((nothing) (@list body-node)))))
     ((algebraic-type-definition mod name type-constructor data-constructors location)
      (let ((tc-params (type-constructor-parameters type-constructor))
             (name-str (symbol-to-text (type-constructor-name type-constructor)))
             (params-str (text-join " " (list-map symbol-to-text tc-params)))
             (define-node (ppml/pretty-syntax "define-enum"
-                           [(if (list-is-empty tc-params)
+                           (@list (if (list-is-empty tc-params)
                               (ppml/text name-str)
-                              (ppml/text (@text "(" name-str " " params-str ")")))]
+                              (ppml/text (@text "(" name-str " " params-str ")"))))
                            (list-map pretty-data-constructor data-constructors))))
        (match (pretty-definition-claim mod name)
-         ((just claim-node) [claim-node define-node])
-         ((nothing) [define-node]))))
+         ((just claim-node) (@list claim-node define-node))
+         ((nothing) (@list define-node)))))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
      (let ((tc-params (type-constructor-parameters type-constructor))
             (name-str (symbol-to-text name))
             (params-str (text-join " " (list-map symbol-to-text tc-params)))
             (define-node (ppml/pretty-syntax "define-opaque-type"
-                           [(if (list-is-empty tc-params)
+                           (@list (if (list-is-empty tc-params)
                               (ppml/text name-str)
                               (ppml/text (@text "(" name-str " " params-str ")")))
-                            (pretty-term representation-type)]
+                            (pretty-term representation-type))
                            (list-map pretty-interface-entry interface-entries))))
        (match (pretty-definition-claim mod name)
-         ((just claim-node) [claim-node define-node])
-         ((nothing) [define-node]))))))
+         ((just claim-node) (@list claim-node define-node))
+         ((nothing) (@list define-node)))))))
 
 (claim pretty-definition-claim (-> mod-t symbol-t (maybe-t ppml/node-t)))
 (define (pretty-definition-claim mod name)
@@ -92,13 +92,13 @@
     (if (not (is-nothing claimed-entry))
       (let ((term (claimed-entry-term (just-value claimed-entry))))
         (just (ppml/pretty-syntax "claim"
-                [(ppml/text (symbol-to-text name))]
-                [(pretty-term term)])))
+                (@list (ppml/text (symbol-to-text name)))
+                (@list (pretty-term term)))))
       (let ((inferred-type (mod-lookup-inferred-type mod name)))
         (if (not (is-nothing inferred-type))
           (just (ppml/pretty-syntax "claim"
-                  [(ppml/text (symbol-to-text name))]
-                  [(pretty-type (just-value inferred-type))]))
+                  (@list (ppml/text (symbol-to-text name)))
+                  (@list (pretty-type (just-value inferred-type)))))
           (nothing))))))
 
 (claim pretty-type (-> type-t ppml/node-t))
@@ -117,16 +117,16 @@
     ((arrow-type arg-types ret-type)
      (let ((arg-nodes (list-map pretty-type arg-types)))
        (if (list-is-empty arg-types)
-         (ppml/pretty-application (just "->") [(ppml/text "->") (pretty-type ret-type)])
-         (ppml/pretty-application (just "->") (cons (ppml/text "->") (list-append arg-nodes [(pretty-type ret-type)]))))))
+         (ppml/pretty-application (just "->") (@list (ppml/text "->") (pretty-type ret-type)))
+         (ppml/pretty-application (just "->") (cons (ppml/text "->") (list-append arg-nodes (@list (pretty-type ret-type))))))))
     ((list-type element-type)
-     (ppml/pretty-application (just "list-t") [(ppml/text "list-t") (pretty-type element-type)]))
+     (ppml/pretty-application (just "list-t") (@list (ppml/text "list-t") (pretty-type element-type))))
     ((set-type element-type)
-     (ppml/pretty-application (just "set-t") [(ppml/text "set-t") (pretty-type element-type)]))
+     (ppml/pretty-application (just "set-t") (@list (ppml/text "set-t") (pretty-type element-type))))
     ((hash-type key-type value-type)
-     (ppml/pretty-application (just "hash-t") [(ppml/text "hash-t") (pretty-type key-type) (pretty-type value-type)]))
+     (ppml/pretty-application (just "hash-t") (@list (ppml/text "hash-t") (pretty-type key-type) (pretty-type value-type))))
     ((pair-type first-type second-type)
-     (ppml/pretty-application (just "pair-t") [(ppml/text "pair-t") (pretty-type first-type) (pretty-type second-type)]))
+     (ppml/pretty-application (just "pair-t") (@list (ppml/text "pair-t") (pretty-type first-type) (pretty-type second-type))))
     ((data-type type-constructor arg-types)
      (let ((mod-name-str (symbol-to-text (mod-name (type-constructor-mod type-constructor))))
             (name-str (symbol-to-text (type-constructor-name type-constructor)))
@@ -137,9 +137,9 @@
          (ppml/pretty-application (just full-name) (cons (ppml/text full-name) arg-nodes)))))
     ((all-type var-types body-type)
      (ppml/pretty-syntax "all"
-       []
-       [(ppml/group [(ppml/text "(") (ppml/flex (list-map pretty-type var-types)) (ppml/text ")")])
-        (pretty-type body-type)]))))
+       (@list)
+       (@list (ppml/group (@list (ppml/text "(") (ppml/flex (list-map pretty-type var-types)) (ppml/text ")")))
+        (pretty-type body-type))))))
 
 (define (pretty-data-constructor data-constructor)
   (let ((name (ppml/text (symbol-to-text (data-constructor-name data-constructor))))
@@ -151,10 +151,10 @@
   (let ((name (ppml/text (symbol-to-text (data-field-name field))))
         (type-node (pretty-term (data-field-type field))))
     (ppml/pretty-application (just (symbol-to-text (data-field-name field)))
-      [name type-node])))
+      (@list name type-node))))
 
 (define (pretty-interface-entry entry)
   (let ((name (ppml/text (symbol-to-text (interface-entry-name entry))))
         (type-node (pretty-term (interface-entry-type entry))))
     (ppml/pretty-application (just (symbol-to-text (interface-entry-name entry)))
-      [name type-node])))
+      (@list name type-node))))

@@ -18,7 +18,7 @@ Apply a side-effecting function with index to each element.
 # Examples
 
 ```meta-lisp
-(for-list-index ['a 'b 'c]
+(for-list-index (@list 'a 'b 'c)
   (lambda (i x)
     (println i)
     (println x)))

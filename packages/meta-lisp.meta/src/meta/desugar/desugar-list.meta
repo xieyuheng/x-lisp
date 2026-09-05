@@ -9,14 +9,14 @@
          (fresh-name (generate-relative-fresh-name used-names 'list))
          (make (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'make-list location)
-                 []
+                 (@list)
                  location))
          (body (list-fold-right
                  (lambda (element acc)
                    (begin1-exp
                      (apply-exp
                         (qualified-var-exp 'meta-builtin 'builtin 'list-push location)
-                       [element (var-exp fresh-name location)]
+                       (@list element (var-exp fresh-name location))
                        location)
                      acc
                      location))

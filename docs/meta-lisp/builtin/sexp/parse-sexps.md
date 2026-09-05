@@ -16,5 +16,5 @@ Parse a text into a list of located S-expressions. The first argument is the fil
 
 ```meta-lisp
 (parse-sexps "test" "(a b c)")
-;; => [(list-sexp [symbol-sexp a ...] ...)]
+;; => (@list (list-sexp (@list symbol-sexp a ...) ...))
 ```

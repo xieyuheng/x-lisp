@@ -17,7 +17,7 @@ Put entries into a hash table, mutating the hash table in place.
 ```meta-lisp
 (let ((h (@hash)))
   (hash-put-entries
-    [(make-pair 'a 1) (make-pair 'b 2)]
+    (@list (make-pair 'a 1) (make-pair 'b 2))
     h)
   h)
 ```

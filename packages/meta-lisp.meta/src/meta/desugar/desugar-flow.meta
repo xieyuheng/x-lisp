@@ -8,6 +8,6 @@
   (if (list-is-empty steps)
     target
     (desugar-flow
-      (apply-exp (car steps) [target] location)
+      (apply-exp (car steps) (@list target) location)
       (cdr steps)
       location)))

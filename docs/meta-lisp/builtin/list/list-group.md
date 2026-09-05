@@ -16,6 +16,6 @@ Group list elements by a key function, returning a hash table.
 
 ```meta-lisp
 ;; (swap imod 3) flips arguments: (swap imod 3) => (lambda (x) (imod x 3))
-(list-group (swap imod 3) [0 1 2 3 4 5])
-;; => (@hash 0 [0 3] 1 [1 4] 2 [2 5])
+(list-group (swap imod 3) (@list 0 1 2 3 4 5))
+;; => (@hash 0 (@list 0 3) 1 (@list 1 4) 2 (@list 2 5))
 ```

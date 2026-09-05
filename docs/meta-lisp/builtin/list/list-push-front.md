@@ -15,5 +15,5 @@ Prepend an element at the front of the list, same as `cons`.
 # Examples
 
 ```meta-lisp
-(list-push-front 1 [2 3])  ;; => [1 2 3]
+(list-push-front 1 (@list 2 3))  ;; => (@list 1 2 3)
 ```
