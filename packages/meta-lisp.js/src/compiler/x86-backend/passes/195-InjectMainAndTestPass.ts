@@ -8,7 +8,7 @@ import * as X86 from "../../../x86/index.ts"
 //            unconditionally by ExplicateControlPass, empty when unused)
 //
 //   main — call setup-variables; call <entry>; ret
-//           (only when an entry is given by build.entry or --entry)
+//           (only when an entry is given by build.entry )
 
 export function InjectMainAndTestPass(
   x86Program: X86.Program,

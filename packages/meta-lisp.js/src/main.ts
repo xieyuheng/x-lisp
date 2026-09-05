@@ -10,7 +10,6 @@ import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B2 from "./basic/index.ts"
 import * as X86Backend from "./compiler/x86-backend/index.ts"
-import * as XvmBackend from "./compiler/xvm-backend/index.ts"
 import * as Xvm2Backend from "./compiler/xvm2-backend/index.ts"
 import * as M from "./meta/index.ts"
 import * as Tlv from "./tlv/index.ts"
@@ -23,17 +22,15 @@ const router = cli.createRouter("meta-lisp.js", version)
 
 router.defineRoutes([
   "check --config --dump",
-  "build-xvm --config --dump",
-  "build-xvm2 --config --dump --entry",
-  "build-x86 --config --dump --entry",
-  "test-xvm  --config --profile --builtin",
+  "build-xvm2 --config --dump",
+  "build-x86 --config --dump",
   "test-xvm2 --config",
   "format-basic <input>",
   "format-xvm2 <input>",
   "info-xvm2 <input>",
   "assemble-xvm2 <input> <output>",
   "disassemble-xvm2 <input> <output>",
-  "assemble-x86 <input> <output> --entry",
+  "assemble-x86 <input> <output>",
 ])
 
 router.defineHandlers({
@@ -47,22 +44,13 @@ router.defineHandlers({
     if (outcome === "OutcomeError") process.exit(2)
   },
 
-  "build-xvm": ({ options }) => {
-    const configPath =
-      options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
-    if ("--dump" in options) pkg.config.compiler.dump = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    XvmBackend.BuildPipeline(pkg)
-  },
-
   "build-xvm2": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    Xvm2Backend.BuildPipeline(pkg, options["--entry"])
+    Xvm2Backend.BuildPipeline(pkg)
   },
 
   "build-x86": ({ options }) => {
@@ -71,17 +59,7 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    X86Backend.BuildPipeline(pkg, options["--entry"])
-  },
-
-  "test-xvm": ({ options }) => {
-    const configPath =
-      options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
-    if ("--profile" in options) pkg.config.compiler.profile = "true"
-    if ("--builtin" in options) pkg.config.compiler.builtin = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-    XvmBackend.TestPipeline(pkg)
+    X86Backend.BuildPipeline(pkg)
   },
 
   "test-xvm2": ({ options }) => {
@@ -140,14 +118,13 @@ router.defineHandlers({
     fs.writeFileSync(output, text)
   },
 
-  "assemble-x86": ({ args: [input, output], options }) => {
-    const entryName = options["--entry"]
+  "assemble-x86": ({ args: [input, output] }) => {
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
     const stmts = sexps.map((s) => X86.parseStmt(s))
     const program = X86.createProgram()
     X86.BuildPipeline(program, stmts)
-    const exe = X86.assembleExe(program, entryName)
+    const exe = X86.assembleExe(program)
     const buf = X86.emitExe(exe)
     fs.writeFileSync(output, buf)
   },

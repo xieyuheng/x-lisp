@@ -1,6 +1,0 @@
-export * from "./definition/index.ts"
-export * from "./format/index.ts"
-export * from "./instr/index.ts"
-export * from "./operand/index.ts"
-export * from "./pretty/index.ts"
-export * from "./program/index.ts"

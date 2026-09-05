@@ -7,20 +7,18 @@ static void sanity_check(void) {
 
 static void handle_run(cli_ctx_t *ctx) {
   const char *pathname = cli_arg_get(ctx, 0);
-  const char *entry = cli_option_get(ctx, "--entry");
 
   program_t *program = program_load(pathname);
 
-  if (!entry) {
-    if (program_lookup_function(program, "main")) {
-      entry = "main";
-    } else if (program_lookup_function(program, "test")) {
-      entry = "test";
-    } else {
-      who_printf("no entry function specified\n");
-      who_printf("  use --entry or add main/test to xvm2 asm source\n");
-      exit(1);
-    }
+  const char *entry = NULL;
+  if (program_lookup_function(program, "main")) {
+    entry = "main";
+  } else if (program_lookup_function(program, "test")) {
+    entry = "test";
+  } else {
+    who_printf("no entry function specified\n");
+    who_printf("  add main/test to xvm2 asm source\n");
+    exit(1);
   }
 
   setup_current_command_line(ctx->passthrough);
@@ -46,7 +44,7 @@ int main(int argc, char *argv[]) {
 
   cli_router_t *router = cli_make_router("xvm2", "0.1.0");
 
-  cli_define_route(router, "run file.xvm2.exe --entry");
+  cli_define_route(router, "run file.xvm2.exe");
   cli_define_route(router, "test file.xvm2.exe");
 
   cli_define_handler(router, "run", handle_run);

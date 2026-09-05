@@ -12,6 +12,9 @@
     "cli": "../cli.meta"
   },
   "prelude": {
-    "meta-builtin": ["builtin"]
-  }
+    "meta-builtin": [
+      "builtin"
+    ]
+  },
+  "entry": "calculator/main"
 }

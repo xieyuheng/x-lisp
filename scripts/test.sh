@@ -10,7 +10,6 @@ cd packages/ppml.js; ./scripts/clean.sh; ./scripts/test.sh; cd ../..
 cd packages/std.c; ./scripts/test.sh; cd ../..
 cd packages/cli.c; ./scripts/test.sh; cd ../..
 cd packages/xrt.c; ./scripts/test.sh; cd ../..
-cd packages/xvm.c; ./scripts/test.sh; cd ../..
 cd packages/xvm2.c; ./scripts/test.sh; cd ../..
 cd packages/x86.c; ./scripts/test.sh; cd ../..
 

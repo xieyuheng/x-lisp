@@ -7,7 +7,6 @@ worktrees
 # x-lisp
 *.o
 *.exe
-*.xvm.exe
 
 # c
 *.o

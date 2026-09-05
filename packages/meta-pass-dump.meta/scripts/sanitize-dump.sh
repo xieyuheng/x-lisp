@@ -19,7 +19,7 @@ else
   echo "[sanitize-dump.sh] dump directory does not exist: $DUMP_DIR"
 fi
 
-BUNDLES=(bundle.xvm.basic bundle.xvm2.basic bundle.x86.basic)
+BUNDLES=(bundle.xvm2.basic bundle.x86.basic)
 for bundle in "${BUNDLES[@]}"; do
   if [ -f "$BUILD_DIR/$bundle" ]; then
     node "$SANITIZER" "$BUILD_DIR/$bundle"

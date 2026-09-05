@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-../xvm.c/src/xvm.exe $@

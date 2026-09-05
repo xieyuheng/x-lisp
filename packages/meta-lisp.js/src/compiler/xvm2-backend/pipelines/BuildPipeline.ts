@@ -10,10 +10,7 @@ import * as Tlv from "../../../tlv/index.ts"
 import * as Xvm2 from "../../../xvm2/index.ts"
 import * as Xvm2Backend from "../passes/index.ts"
 
-export function BuildPipeline(
-  rootPkg: M.Package,
-  entryOverride?: string,
-): void {
+export function BuildPipeline(rootPkg: M.Package): void {
   M.CorePipeline(rootPkg)
 
   const basicProgram = Xvm2Backend.ExplicateControlPass(rootPkg)
@@ -22,9 +19,9 @@ export function BuildPipeline(
 
   const program = Xvm2Backend.SelectInstructionPass(basicProgram)
 
-  const entryName =
-    entryOverride ??
-    (rootPkg.config.entry ? `${rootPkg.id}/${rootPkg.config.entry}` : undefined)
+  const entryName = rootPkg.config.entry
+    ? `${rootPkg.id}/${rootPkg.config.entry}`
+    : undefined
   Xvm2Backend.InjectMainAndTestPass(program, entryName)
 
   Xvm2Bundle(rootPkg, program)

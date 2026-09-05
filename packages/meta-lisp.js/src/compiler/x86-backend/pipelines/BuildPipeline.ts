@@ -10,10 +10,7 @@ import * as M from "../../../meta/index.ts"
 import * as X86 from "../../../x86/index.ts"
 import * as X86Backend from "../passes/index.ts"
 
-export function BuildPipeline(
-  rootPkg: M.Package,
-  entryOverride?: string,
-): void {
+export function BuildPipeline(rootPkg: M.Package): void {
   M.CorePipeline(rootPkg)
 
   const basicProgram = X86Backend.ExplicateControlPass(rootPkg)
@@ -32,9 +29,9 @@ export function BuildPipeline(
     ssaReport,
   )
 
-  const entryName =
-    entryOverride ??
-    (rootPkg.config.entry ? `${rootPkg.id}/${rootPkg.config.entry}` : undefined)
+  const entryName = rootPkg.config.entry
+    ? `${rootPkg.id}/${rootPkg.config.entry}`
+    : undefined
   X86Backend.InjectMainAndTestPass(x86Program, entryName)
 
   const homeInfoMap = X86Backend.AllocateRegistersPass(x86Program)

@@ -7,7 +7,7 @@ import * as Xvm2 from "../../../xvm2/index.ts"
 //            ExplicateControlPass 无条件生成，空时为空函数）
 //
 //   main — call-0 setup-variables; call-0 <entry>; return-void
-//           （仅当给定 build.entry 或 --entry 时）
+//           （仅当给定 build.entry  时）
 
 export function InjectMainAndTestPass(
   program: Xvm2.Program,

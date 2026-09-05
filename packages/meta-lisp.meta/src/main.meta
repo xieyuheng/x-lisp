@@ -5,13 +5,9 @@
 (define (main)
   (define router (cli/new-router "meta-lisp" "0.1.0"))
   (cli/define-route router "check --config --dump")
-  (cli/define-route router "build-xvm --config --dump --basic")
   (cli/define-route router "build-xvm2 --config --dump --basic")
-  (cli/define-route router "test-xvm --config --profile --builtin")
   (cli/define-handler router "check" handle-check)
-  (cli/define-handler router "build-xvm" handle-build)
   (cli/define-handler router "build-xvm2" handle-build)
-  (cli/define-handler router "test-xvm" handle-test)
   (cli/router-run router (current-command-line)))
 
 (define (get-config-path ctx)
@@ -34,10 +30,4 @@
     (when (cli/option-has "--basic" ctx) (hash-put "basic" "true" compiler))
     (compiler/build-pipeline package)))
 
-(define (handle-test ctx)
-  (let ((config-path (get-config-path ctx))
-         (package (meta/load-package 'self config-path))
-         (compiler (meta/package-config-compiler (meta/package-config package))))
-    (when (cli/option-has "--profile" ctx) (hash-put "profile" "true" compiler))
-    (when (cli/option-has "--builtin" ctx) (hash-put "builtin" "true" compiler))
-    (println "[test] not implemented")))
+
