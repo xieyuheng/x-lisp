@@ -25,7 +25,7 @@ AI agent 应用中文回答用户的问题。
 - [std.c] — 基础库
 - [cli.c] — CLI 库，依赖 [std.c]
 - [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数），依赖 [std.c]
-- [xvm2.c] — xvm2 虚拟机运行时，依赖 [xrt.c] + [std.c] + [cli.c]
+- [xvm.c] — xvm 虚拟机运行时，依赖 [xrt.c] + [std.c] + [cli.c]
 - [x86.c] — x86-64 可执行文件加载/运行，依赖 [xrt.c] + [std.c] + [cli.c]
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
@@ -38,7 +38,7 @@ AI agent 应用中文回答用户的问题。
 # 依赖链
 
 1. `pnpm install`（或 `scripts/prepare.sh`）
-2. C：[std.c] → [cli.c] → [xrt.c] → [xvm2.c] / [x86.c]
+2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c] / [x86.c]
 3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 二进制
 
@@ -117,7 +117,7 @@ AI agent 应用中文回答用户的问题。
 
 - **meta-lisp 是一门新的 Lisp 方言**，有语法问题应先查阅文档，不要套用其他 Lisp（如 Scheme、Common Lisp）的语法约定
 - 标准流程：check → build → test
-- [meta-lisp.meta] 额外有 `scripts/build.sh`（编译为 xvm2 汇编）和 `scripts/self-check.sh`（自举验证）
+- [meta-lisp.meta] 额外有 `scripts/build.sh`（编译为 xvm 汇编）和 `scripts/self-check.sh`（自举验证）
 - **不要猜测 API 用法** — 优先使用 [meta-builtin.meta] 中已定义的内建函数，需要新函数时再到 `meta-builtin.meta/src/` 下查看声明
 - `meta-error.meta` 的类型错误是**预期输出**，不要误判为 bug
 - **变量名可以用完整单词如 `list`/`hash`/`set`** — meta-lisp 与 Scheme 一样是单一命名空间（Lisp-1），但容器通过 `(@list ...)` / `[...]`、`(@set ...)`、`(@hash ...)` 等 `@` 前缀特殊语法构造，而非函数作用（如 Scheme 的 `(list ...)`），因此这些名字作变量不会遮蔽任何内建构造器。禁止 `lst`/`acc` 等无意义缩写

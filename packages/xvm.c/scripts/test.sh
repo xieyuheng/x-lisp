@@ -4,4 +4,4 @@ set -e
 
 make test
 
-./scripts/test-xvm2.sh
+./scripts/test-xvm.sh

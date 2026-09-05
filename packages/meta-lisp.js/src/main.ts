@@ -10,11 +10,11 @@ import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as B2 from "./basic/index.ts"
 import * as X86Backend from "./compiler/x86-backend/index.ts"
-import * as Xvm2Backend from "./compiler/xvm2-backend/index.ts"
+import * as Xvm2Backend from "./compiler/xvm-backend/index.ts"
 import * as M from "./meta/index.ts"
 import * as Tlv from "./tlv/index.ts"
 import * as X86 from "./x86/index.ts"
-import * as Xvm2 from "./xvm2/index.ts"
+import * as Xvm2 from "./xvm/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -22,14 +22,14 @@ const router = cli.createRouter("meta-lisp.js", version)
 
 router.defineRoutes([
   "check --config --dump",
-  "build-xvm2 --config --dump",
+  "build-xvm --config --dump",
   "build-x86 --config --dump",
-  "test-xvm2 --config",
+  "test-xvm --config",
   "format-basic <input>",
-  "format-xvm2 <input>",
-  "info-xvm2 <input>",
-  "assemble-xvm2 <input> <output>",
-  "disassemble-xvm2 <input> <output>",
+  "format-xvm <input>",
+  "info-xvm <input>",
+  "assemble-xvm <input> <output>",
+  "disassemble-xvm <input> <output>",
   "assemble-x86 <input> <output>",
 ])
 
@@ -44,7 +44,7 @@ router.defineHandlers({
     if (outcome === "OutcomeError") process.exit(2)
   },
 
-  "build-xvm2": ({ options }) => {
+  "build-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
@@ -62,7 +62,7 @@ router.defineHandlers({
     X86Backend.BuildPipeline(pkg)
   },
 
-  "test-xvm2": ({ options }) => {
+  "test-xvm": ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
@@ -82,7 +82,7 @@ router.defineHandlers({
     process.stdout.write(text)
   },
 
-  "format-xvm2": ({ args: [input] }) => {
+  "format-xvm": ({ args: [input] }) => {
     if (input === "-") {
       input = "/dev/stdin"
     }
@@ -94,12 +94,12 @@ router.defineHandlers({
     process.stdout.write(text)
   },
 
-  "info-xvm2": ({ args: [input] }) => {
+  "info-xvm": ({ args: [input] }) => {
     const bytes = new Uint8Array(fs.readFileSync(input))
     process.stdout.write(Xvm2.formatTlvInfo(bytes))
   },
 
-  "assemble-xvm2": ({ args: [input, output] }) => {
+  "assemble-xvm": ({ args: [input, output] }) => {
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
     const program = Xvm2.parseProgram(sexps)
@@ -109,7 +109,7 @@ router.defineHandlers({
     fs.writeFileSync(output, buf)
   },
 
-  "disassemble-xvm2": ({ args: [input, output] }) => {
+  "disassemble-xvm": ({ args: [input, output] }) => {
     const bytes = new Uint8Array(fs.readFileSync(input))
     const tlv = Tlv.decodeTlv(bytes)
     const exe = Xvm2.decodeExe(tlv)

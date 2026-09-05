@@ -10,7 +10,7 @@ dist
 *.x86
 *.x86.flat
 *.x86.exe
-*.xvm2.exe
+*.xvm.exe
 
 # vitest
 coverage

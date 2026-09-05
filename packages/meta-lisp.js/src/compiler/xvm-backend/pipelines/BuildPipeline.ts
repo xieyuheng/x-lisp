@@ -7,7 +7,7 @@ import * as fs from "node:fs"
 import * as B from "../../../basic/index.ts"
 import * as M from "../../../meta/index.ts"
 import * as Tlv from "../../../tlv/index.ts"
-import * as Xvm2 from "../../../xvm2/index.ts"
+import * as Xvm2 from "../../../xvm/index.ts"
 import * as Xvm2Backend from "../passes/index.ts"
 
 export function BuildPipeline(rootPkg: M.Package): void {
@@ -30,7 +30,7 @@ export function BuildPipeline(rootPkg: M.Package): void {
 
 function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
   const directory = M.packageOutputDirectory(pkg)
-  callWithFile(openOutputFile(`${directory}/bundle.xvm2.basic`), (file) => {
+  callWithFile(openOutputFile(`${directory}/bundle.xvm.basic`), (file) => {
     const definitions = Array.from(basicProgram.definitions.values())
     const textWidth = 64
     const code = definitions
@@ -42,7 +42,7 @@ function BasicBundle(pkg: M.Package, basicProgram: B.Program): void {
 
 function Xvm2Bundle(pkg: M.Package, program: Xvm2.Program): void {
   const directory = M.packageOutputDirectory(pkg)
-  callWithFile(openOutputFile(`${directory}/bundle.xvm2.asm`), (file) => {
+  callWithFile(openOutputFile(`${directory}/bundle.xvm.asm`), (file) => {
     const definitions = Array.from(program.definitions.values())
     const textWidth = 64
     const code = definitions
@@ -57,5 +57,5 @@ function Xvm2Assemble(pkg: M.Package, program: Xvm2.Program): void {
   const exe = Xvm2.assembleProgram(program)
   const tlv = Xvm2.encodeExe(exe)
   const buf = Tlv.encodeTlv(tlv)
-  fs.writeFileSync(`${directory}/bundle.xvm2.exe`, buf)
+  fs.writeFileSync(`${directory}/bundle.xvm.exe`, buf)
 }

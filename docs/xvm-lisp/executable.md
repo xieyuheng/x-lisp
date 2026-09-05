@@ -48,7 +48,7 @@ u8  value[length]
   - `0x00` 为注释
   - `0x01` 为 name table
 
-- xvm2 自定义 tag 从 `0x10` 开始。
+- xvm 自定义 tag 从 `0x10` 开始。
 
 # 条目明细
 

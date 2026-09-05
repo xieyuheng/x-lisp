@@ -1,14 +1,14 @@
 import * as B from "../../../basic/index.ts"
-import * as Xvm2 from "../../../xvm2/index.ts"
+import * as Xvm2 from "../../../xvm/index.ts"
 
 export function SelectInstructionPass(program: B.Program): Xvm2.Program {
-  const xvm2Program = Xvm2.createProgram()
+  const xvmProgram = Xvm2.createProgram()
 
   for (const [name, definition] of program.definitions) {
     switch (definition.kind) {
       case "FunctionDefinition": {
         const instrs = codegenFunction(program, definition)
-        xvm2Program.definitions.set(
+        xvmProgram.definitions.set(
           name,
           Xvm2.FunctionDefinition(name, definition.parameters, instrs),
         )
@@ -16,12 +16,12 @@ export function SelectInstructionPass(program: B.Program): Xvm2.Program {
       }
 
       case "VariableDefinition": {
-        xvm2Program.definitions.set(name, Xvm2.VariableDeclaration(name))
+        xvmProgram.definitions.set(name, Xvm2.VariableDeclaration(name))
         break
       }
 
       case "ExternFunctionDefinition": {
-        xvm2Program.definitions.set(
+        xvmProgram.definitions.set(
           name,
           Xvm2.PrimitiveFunctionDeclaration(name),
         )
@@ -29,7 +29,7 @@ export function SelectInstructionPass(program: B.Program): Xvm2.Program {
       }
 
       case "ExternVariableDefinition": {
-        xvm2Program.definitions.set(
+        xvmProgram.definitions.set(
           name,
           Xvm2.PrimitiveVariableDeclaration(name),
         )
@@ -38,7 +38,7 @@ export function SelectInstructionPass(program: B.Program): Xvm2.Program {
     }
   }
 
-  return xvm2Program
+  return xvmProgram
 }
 
 function codegenFunction(

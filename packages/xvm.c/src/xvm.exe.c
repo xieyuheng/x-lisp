@@ -17,7 +17,7 @@ static void handle_run(cli_ctx_t *ctx) {
     entry = "test";
   } else {
     who_printf("no entry function specified\n");
-    who_printf("  add main/test to xvm2 asm source\n");
+    who_printf("  add main/test to xvm asm source\n");
     exit(1);
   }
 
@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
 
   setup_full_command_line((size_t) argc, argv);
 
-  cli_router_t *router = cli_make_router("xvm2", "0.1.0");
+  cli_router_t *router = cli_make_router("xvm", "0.1.0");
 
-  cli_define_route(router, "run file.xvm2.exe");
-  cli_define_route(router, "test file.xvm2.exe");
+  cli_define_route(router, "run file.xvm.exe");
+  cli_define_route(router, "test file.xvm.exe");
 
   cli_define_handler(router, "run", handle_run);
   cli_define_handler(router, "test", handle_test);

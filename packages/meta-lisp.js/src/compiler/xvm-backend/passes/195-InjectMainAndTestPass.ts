@@ -1,4 +1,4 @@
-import * as Xvm2 from "../../../xvm2/index.ts"
+import * as Xvm2 from "../../../xvm/index.ts"
 
 // 注入入口包装函数，使每个可执行程序保持单一编译期入口：
 //

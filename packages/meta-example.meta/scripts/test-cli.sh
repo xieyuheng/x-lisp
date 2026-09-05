@@ -2,8 +2,8 @@
 
 set -e
 
-xvm=../xvm2.c/src/xvm.exe
-xvm_exe=build/bundle.xvm2.exe
+xvm=../xvm.c/src/xvm.exe
+xvm_exe=build/bundle.xvm.exe
 
 echo "=== hello ==="
 $xvm run $xvm_exe -- hello
