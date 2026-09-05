@@ -27,7 +27,7 @@ router.defineRoutes([
   "build-xvm2 --config --dump --entry",
   "build-x86 --config --dump --entry",
   "test-xvm  --config --profile --builtin",
-  "test-xvm2 --config --profile --builtin",
+  "test-xvm2 --config",
   "format-basic <input>",
   "format-xvm2 <input>",
   "info-xvm2 <input>",
@@ -88,8 +88,6 @@ router.defineHandlers({
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
-    if ("--profile" in options) pkg.config.compiler.profile = "true"
-    if ("--builtin" in options) pkg.config.compiler.builtin = "true"
     M.validateCompilerOptions(pkg.config.compiler)
     Xvm2Backend.TestPipeline(pkg)
   },

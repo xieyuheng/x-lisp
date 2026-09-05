@@ -29,17 +29,9 @@ static void handle_run(cli_ctx_t *ctx) {
 
 static void handle_test(cli_ctx_t *ctx) {
   const char *pathname = cli_arg_get(ctx, 0);
-  bool profile = cli_option_has(ctx, "--profile");
 
   program_t *program = program_load(pathname);
-
-  double start = time_millisecond();
   program_call_entry(program, "test");
-  if (profile) {
-    double elapsed = time_millisecond_passed(start);
-    printf("[test] test -- %.3fms\n", elapsed);
-  }
-
   program_free(program);
 }
 
@@ -54,7 +46,7 @@ int main(int argc, char *argv[]) {
   cli_router_t *router = cli_make_router("xvm2", "0.1.0");
 
   cli_define_route(router, "run file.xvm2.exe --entry");
-  cli_define_route(router, "test file.xvm2.exe --profile --builtin");
+  cli_define_route(router, "test file.xvm2.exe");
 
   cli_define_handler(router, "run", handle_run);
   cli_define_handler(router, "test", handle_test);

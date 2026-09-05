@@ -10,10 +10,5 @@ export function TestPipeline(pkg: M.Package): void {
     M.packageOutputDirectory(pkg),
     "bundle.xvm2.exe",
   )
-  systemShellRun(xvm2Path, [
-    "test",
-    xvm2ExePath,
-    "--profile",
-    pkg.config.compiler.builtin ? "--builtin" : "",
-  ])
+  systemShellRun(xvm2Path, ["test", xvm2ExePath])
 }

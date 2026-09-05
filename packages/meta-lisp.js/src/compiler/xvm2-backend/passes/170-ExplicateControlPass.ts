@@ -28,7 +28,7 @@ export function ExplicateControlPass(pkg: M.Package): B.Program {
           variableNames.push(definitionQualifiedName(definition))
         }
 
-        if (definition.kind === "TestDefinition") {
+        if (definition.kind === "TestDefinition" && orderedPkg === pkg) {
           testNames.add(definitionQualifiedName(definition))
         }
       }
