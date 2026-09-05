@@ -23,6 +23,7 @@ static void handle_run(cli_ctx_t *ctx) {
     }
   }
 
+  setup_current_command_line(ctx->passthrough);
   program_call_entry(program, entry);
   program_free(program);
 }

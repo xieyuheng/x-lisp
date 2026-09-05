@@ -1,9 +1,6 @@
-build/bundle.xvm.basic
-build/bundle.x86.basic
-build/bundle.xvm.asm
-build/bundle.xvm.exe
-build/bundle.x86.asm
-build/bundle.x86.exe
-build/main.x86.exe
-build/test.x86.exe
+build/bundle.*.basic
+build/bundle.*.asm
+build/bundle.*.exe
+build/main.*.exe
+build/test.*.exe
 build/dump/*.huge.dump
