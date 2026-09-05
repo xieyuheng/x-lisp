@@ -8,6 +8,5 @@
 #include "frame.h"
 #include "xvm.h"
 #include "call.h"
-#include "apply.h"
 #include "define.h"
 #include "loader.h"

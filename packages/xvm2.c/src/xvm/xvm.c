@@ -519,7 +519,22 @@ static inline void exec_apply_n(xvm_t *xvm, frame_t *frame, value_t *locals, uin
   uint16_t *args = (uint16_t *)(frame->pc + 1 + sizeof(uint16_t));
   frame->pc += 1 + sizeof(uint16_t) + argc * sizeof(uint16_t);
   frame->pc += sizeof(void *);
-  apply(xvm, locals[target_reg], argc, args, locals);
+
+  value_t target = locals[target_reg];
+  if (!is_closure(target)) {
+    who_printf("apply target is not a closure\n");
+    exit(1);
+  }
+
+  closure_t *closure = to_closure(target);
+  size_t count = (size_t)argc + 1;
+  value_t values[count > 0 ? count : 1];
+  values[0] = target;
+  for (size_t i = 0; i < argc; i++) {
+    values[1 + i] = locals[args[i]];
+  }
+
+  xvm_push_function_frame_with_values(xvm, closure->function, count, values);
 }
 
 static inline void exec_tail_apply_n(xvm_t *xvm, frame_t *frame, value_t *locals, uint8_t argc) {
