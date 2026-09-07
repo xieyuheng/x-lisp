@@ -4,12 +4,8 @@ set -e
 
 # stage2 -- meta-lisp code build
 
+parallel="parallel -v --halt now,fail=1"
+
 # meta build
 
-./scripts/run-in.sh meta-builtin.meta build.sh
-./scripts/run-in.sh meta-math.meta build.sh
-./scripts/run-in.sh cli.meta build.sh
-./scripts/run-in.sh meta-example.meta build.sh
-./scripts/run-in.sh 元语数学 build.sh
-./scripts/run-in.sh 命令行 build.sh
-./scripts/run-in.sh 元语例子 build.sh
+$parallel ./scripts/run-in.sh {} build.sh ::: meta-builtin.meta meta-math.meta cli.meta meta-example.meta 元语数学 命令行 元语例子
