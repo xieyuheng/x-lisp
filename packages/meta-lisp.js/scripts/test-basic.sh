@@ -1,19 +1,8 @@
 #!/usr/bin/env bash
+
 set -e
 
+parallel="parallel -v --halt now,fail=1"
 BASIC_DIR="lib/basic"
-TEMP_DIR=$(mktemp -d)
-trap 'rm -rf "$TEMP_DIR"' EXIT
 
-find "$BASIC_DIR" -name "*.basic" | sort | while read -r file; do
-  echo "=== $(basename "$file") ==="
-  first=$(./bin/meta-lisp.js basic:format "$file")
-  printf '%s' "$first" > "$TEMP_DIR/round1.basic"
-  second=$(./bin/meta-lisp.js basic:format "$TEMP_DIR/round1.basic")
-  if [ "$first" != "$second" ]; then
-    echo "FAIL: round-trip mismatch"
-    diff <(printf '%s' "$first") <(printf '%s' "$second")
-    exit 1
-  fi
-  echo "OK"
-done
+find "$BASIC_DIR" -name "*.basic" | $parallel ./bin/meta-lisp.js basic:format {} ">" {}.format

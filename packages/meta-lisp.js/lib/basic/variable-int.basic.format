@@ -1,0 +1,3 @@
+(claim counter int64-t)
+
+(define-variable counter 0)

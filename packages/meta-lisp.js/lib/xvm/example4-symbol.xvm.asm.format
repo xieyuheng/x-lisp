@@ -1,0 +1,22 @@
+(define-function (classify n)
+  (load-int zero 0)
+  (int-less negative n zero)
+  (branch negative (label neg) (label not-neg))
+  neg
+  (load-symbol result 'negative)
+  (return result)
+  not-neg
+  (int-is-positive positive n)
+  (branch positive (label pos) (label zero-case))
+  pos
+  (load-symbol result 'positive)
+  (return result)
+  zero-case
+  (load-symbol result 'zero)
+  (return result))
+
+(define-function (main)
+  (load-int n -3)
+  (call-1 (fn classify) n)
+  (load-result result)
+  (return result))

@@ -27,7 +27,7 @@ router.defineRoutes([
   "xvm:format <input>",
   "xvm:info <input>",
   "xvm:assemble <input> <output>",
-  "xvm:disassemble <input> <output>",
+  "xvm:disassemble <input>",
   "x86:assemble <input> <output>",
 ])
 
@@ -92,13 +92,13 @@ router.defineHandlers({
     fs.writeFileSync(output, buf)
   },
 
-  "xvm:disassemble": ({ args: [input, output] }) => {
+  "xvm:disassemble": ({ args: [input] }) => {
     const bytes = new Uint8Array(fs.readFileSync(input))
     const tlv = Tlv.decodeTlv(bytes)
     const exe = Xvm.decodeExe(tlv)
     const program = Xvm.disassembleExe(exe)
     const text = Xvm.formatProgram(program)
-    fs.writeFileSync(output, text)
+    process.stdout.write(text)
   },
 
   "x86:assemble": ({ args: [input, output] }) => {

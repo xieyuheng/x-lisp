@@ -1,0 +1,3 @@
+(claim greeting pointer-t)
+
+(define-variable greeting "hello")

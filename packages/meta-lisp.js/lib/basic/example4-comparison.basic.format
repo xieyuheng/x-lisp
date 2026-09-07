@@ -1,0 +1,19 @@
+(claim sign (-> int64-t int64-t))
+
+(define-function (sign n)
+  (block body
+    (= n (argument :index 0))
+    (= zero (int64 :content 0))
+    (= neg (icmp-lt n zero))
+    (branch neg :then-label negative :else-label non-negative))
+  (block negative
+    (= neg-one (int64 :content -1))
+    (return neg-one))
+  (block non-negative
+    (= pos (icmp-gt n zero))
+    (branch pos :then-label positive :else-label zero))
+  (block positive
+    (= one (int64 :content 1))
+    (return one))
+  (block zero
+    (return zero)))

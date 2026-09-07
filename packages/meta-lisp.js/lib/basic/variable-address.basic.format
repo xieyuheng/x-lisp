@@ -1,0 +1,9 @@
+(claim origin point-t)
+
+(claim ptr pointer-t)
+
+(define-struct point-t (x int64-t) (y int64-t))
+
+(define-variable origin (struct point-t ( x   0) ( y   0)))
+
+(define-variable ptr (address origin))

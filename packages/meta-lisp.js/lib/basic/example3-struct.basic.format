@@ -1,0 +1,21 @@
+(claim origin point-t)
+
+(claim set-origin (-> void-t))
+
+(claim printf (-> pointer-t int64-t))
+
+(define-struct point-t (x int64-t) (y int64-t))
+
+(define-variable origin)
+
+(define-function (set-origin)
+  (block body
+    (= x-offset (offset-of :struct-type point-t :path (x)))
+    (= origin-addr (address :name origin))
+    (= x-pointer (padd origin-addr x-offset))
+    (= zero (int64 :content 0))
+    (store x-pointer zero)
+    (= y-offset (offset-of :struct-type point-t :path (y)))
+    (= y-pointer (padd origin-addr y-offset))
+    (store y-pointer zero)
+    (return)))
