@@ -6,6 +6,7 @@
     "moduleResolution": "nodenext",
     "target": "esnext",
     "strict": true,
+    "types": ["node"],
     "rewriteRelativeImportExtensions": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
