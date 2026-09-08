@@ -20,7 +20,7 @@ AI agent 应用中文回答用户的问题。
 - [sexp.js] — S 表达式解析器
 - [basic-lisp.js] — basic-lisp IR
 - [xvm-lisp.js] — xvm-lisp 汇编/反汇编 + TLV
-- [x86-lisp.js] — x86-lisp 汇编（独立于编译器）
+- [x86-lisp.js] — x86-lisp 汇编，输出 ELF relocatable object（独立于编译器）
 - [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供根目录 `bin/meta-lisp.js` 编译器
 
 **C packages**（共享 `builders/make/c.mk`）：
@@ -29,7 +29,6 @@ AI agent 应用中文回答用户的问题。
 - [cli.c] — CLI 库
 - [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数）
 - [xvm.c] — xvm 虚拟机运行时
-- [x86.c] — x86-64 可执行文件加载/运行
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
 
@@ -41,7 +40,7 @@ AI agent 应用中文回答用户的问题。
 # 依赖链
 
 1. `pnpm install`
-2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c] / [x86.c]
+2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c]
 3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [basic-lisp.js]/[xvm-lisp.js] → [meta-lisp.js]
    （[x86-lisp.js] 独立于编译器，不参与编译管线）
 4. `.meta` 测试依赖 [meta-lisp.js] 编译器

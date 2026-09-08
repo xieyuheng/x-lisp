@@ -340,17 +340,17 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 ```
 
 修正操作数，在指令中留下回填空间，
-并在修正表中记录修正条目。
+并在 `.rela.text` / `.rela.data` 中记录重定位条目。
 
-`type` 决定 loader 的回填方式。
+`type` 是 x86-lisp 的修正类型，汇编器把它映射到 ELF 重定位类型。
 
-| type           | hole 大小 | loader 操作                         |
-|----------------|-----------|-------------------------------------|
-| `label-rel32`  | 32-bit    | `target + addend - (base + offset)` |
-| `label-abs64`  | 64-bit    | `target + addend`                   |
-| `extern`       | 64-bit    | symbol 绝对地址                     |
-| `symbol-value` | 64-bit    | loader 计算 symbol -> tagged value  |
-| 其他自定义     | 64-bit    | 由 loader 解释                      |
+| type           | hole 大小 | ELF 重定位类型   | 含义                              |
+|----------------|-----------|------------------|-----------------------------------|
+| `label-rel32`  | 32-bit    | `R_X86_64_PC32`  | `S + A - P`                       |
+| `label-abs64`  | 64-bit    | `R_X86_64_64`    | `S + A`                           |
+| `extern`       | 64-bit    | `R_X86_64_64`    | 外部符号绝对地址                  |
+| `symbol-value` | 64-bit    | `R_X86_64_64`    | 作为普通符号由链接器解析          |
+| 其他自定义     | 64-bit    | `R_X86_64_64`    | 作为普通符号由链接器解析          |
 
 ```scheme
 (mov (reg rax) (fixup symbol-value foo))
@@ -358,7 +358,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ### (label-rel32 中 addend 的含义)
 
-`label-rel32` 告诉 loader 在 32-bit 字段写入**相对位移**。
+`label-rel32` 告诉链接器在 32-bit 字段写入**相对位移**。
 x86-64 中所有使用相对寻址的指令，位移是相对于**下一条指令的地址**
 （即 RIP 在当前指令执行时的值）：
 
@@ -373,27 +373,27 @@ cmp r/m, imm        → 同上
 
 位移字段（hole）不一定是指令的最后一个字段 —— 如
 `cmp byte [buffer], 61h` 中 disp32 之后还有 imm8。
-修正条目的 `segmentOffset` 指向位移字段的**起始位置**，
-`addend` 由汇编器在生成指令时算出 `addend = -(rip - segmentOffset)`，
+重定位条目的 `r_offset` 指向位移字段的**起始位置**，
+`addend` 由汇编器在生成指令时算出 `addend = -(rip - r_offset)`，
 即「下一条指令相对位移起点的偏移」的相反数：
 
 ```
 ┌────────────────────────── instruction ──────────────────────────┐
 │  opcode  │  ModR/M  │  displacement (4 bytes) │  immediate      │
 │                        ↑                      └────┐            │
-│                   segmentOffset                    └─ rip       │
+│                   r_offset                         └─ rip       │
 │                        ├──────── 4 + imm ────────┤              │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-因此 loader 写入 `target + addend - (base + segmentOffset)`。
+因此链接器写入 `S + A - P`（`S` 是目标符号地址，`P` 是重定位字段地址）。
 
 - 位移是最后一个字段时（如 `call rel32`、`mov [rip+disp32]`），
   `addend = -4`。
 - 位移后还有立即数时（如 `cmp byte [buffer], imm8`），
   `addend = -(4 + imm_size)`。
 
-汇编器（而非 loader）负责把「指令布局」编码进 addend —— loader 只需执行
+汇编器（而非链接器）负责把「指令布局」编码进 addend —— 链接器只需执行
 统一的公式 `S + A - P`，完全不需要知道指令结构。
 
 ## 数据
@@ -417,34 +417,36 @@ cmp r/m, imm        → 同上
 (mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + mem
 ```
 
-当前 **只在 `.x86.exe` 格式下支持**（flat 格式没有独立 data section）。
+当前输出 **ELF64 relocatable object**（`ET_REL`）：代码进入 `.text`，
+数据进入 `.data`，`(define-space ...)` 进入 `.bss`。
 
-# 操作数与修正类型
+# 操作数与重定位类型
 
-汇编器在生成 `.x86.exe` 时，以下 operand 自动产生修正表条目。
+汇编器在生成 ELF relocatable object 时，以下 operand 自动产生
+`.rela.text` / `.rela.data` 重定位条目。
 
-### Code 段
+### Code 段（`.rela.text`）
 
-| operand               | 指令                 | 编码              | 修正类型    | segment |
-|-----------------------|----------------------|-------------------|---------------|---------|
-| `(label X)`           | `call` / `jmp` / `j` | `opcode + disp32` | `label-rel32` | CODE    |
-| `(address X)`         | `mov` / `lea`        | `[rip + disp32]`  | `label-rel32` | CODE    |
-| `(mem (address X))`  | `mov`                | `[rip + disp32]`  | `label-rel32` | CODE    |
-| `(extern X)`          | `mov`                | `movabs imm64`    | `extern`      | CODE    |
-| `(fixup T X)`    | `mov`                | `movabs imm64`    | `T`           | CODE    |
+| operand               | 指令                 | 编码              | 重定位类型      | section |
+|-----------------------|----------------------|-------------------|-----------------|---------|
+| `(label X)`           | `call` / `jmp` / `j` | `opcode + disp32` | `R_X86_64_PC32` | `.text` |
+| `(address X)`         | `mov` / `lea`        | `[rip + disp32]`  | `R_X86_64_PC32` | `.text` |
+| `(mem (address X))`  | `mov`                | `[rip + disp32]`  | `R_X86_64_PC32` | `.text` |
+| `(extern X)`          | `call` / `jmp`       | `movabs imm64`    | `R_X86_64_64`   | `.text` |
+| `(fixup T X)`         | `mov`                | `movabs imm64`    | `R_X86_64_64`   | `.text` |
 
 `(label X)`、`(address X)` 和 `(mem (address X))` 在语义上等价于
 `(fixup label-rel32 X)`。
 
 `(extern X)` 等价于 `(fixup extern X)`。
 
-### Data 段
+### Data 段（`.rela.data`）
 
-| 数据形式                   | 修正类型    | segment |
-|----------------------------|---------------|---------|
-| `(address X)` 字段         | `label-abs64` | DATA    |
-| `(pointer ...)` 字段       | `label-abs64` | DATA    |
-| string 作为 pointer-t 字段 | `label-abs64` | DATA    |
+| 数据形式                   | 重定位类型      | section |
+|----------------------------|-----------------|---------|
+| `(address X)` 字段         | `R_X86_64_64`   | `.data` |
+| `(pointer ...)` 字段       | `R_X86_64_64`   | `.data` |
+| string 作为 pointer-t 字段 | `R_X86_64_64`   | `.data` |
 
 data 段中的 `(address X)` 等价于 `(fixup label-abs64 X)`。
 pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分配名称

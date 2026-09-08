@@ -7,12 +7,18 @@ coverage
 # npm
 node_modules
 
+# x86-lisp build artifacts
+*.o
+*.x86.o
+*.x86.run
+*.x86.text
+
 # 0x
 *.0x/
 
 # emacs
 *~
-*#*
+*#
 .#*
 
 # vscode

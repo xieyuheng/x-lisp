@@ -16,7 +16,7 @@ When the xvm executable is invoked with `--`, all arguments after `--` are colle
 as the current command line. For example:
 
 ```
-xvm run program.x86.exe -- check --verbose
+xvm run program.xvm.exe -- check --verbose
 ```
 
 `(current-command-line)` returns `["check" "--verbose"]`.

@@ -21,8 +21,8 @@ router.defineHandlers({
     const stmts = sexps.map((s) => X86.parseStmt(s))
     const program = X86.createProgram()
     X86.BuildPipeline(program, stmts)
-    const exe = X86.assembleExe(program)
-    const buf = X86.emitExe(exe)
+    const object = X86.assembleObject(program)
+    const buf = X86.emitElfObject(object)
     fs.writeFileSync(output, buf)
   },
 })

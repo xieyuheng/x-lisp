@@ -2,11 +2,9 @@
 
 [xvm.c] review xvm.c 代码
 
-# x86
+# x86-lisp
 
-[x86.c] 修复 x86-lisp 文档
-[x86.c] x86-lisp 可执行文件改用 tlv
-[x86.c] 给 x86 后端加 gc
+[x86-lisp.js] 修复 x86-lisp 文档
 
 # self-hosting
 

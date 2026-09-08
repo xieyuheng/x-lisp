@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-root="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
-exec "$root/packages/x86.c/src/x86.exe" "$@"

@@ -17,24 +17,29 @@ import type { Type } from "../type/index.ts"
 import { NamedType } from "../type/Type.ts"
 import { typeSize } from "../type/typeSize.ts"
 import {
-  ExeCodeSegment,
-  ExeDataSegment,
-  ExeSpaceSegment,
-  type Exe,
-  type ExeFixupEntry,
-  type ExeSegmentKind,
+  ObjectCodeSection,
+  ObjectDataSection,
+  ObjectSpaceSection,
+  type ObjectFile,
+  type ObjectLabelKind,
+  type ObjectRelocation,
+  type ObjectSectionKind,
 } from "./types.ts"
 
-type LabelInfo = { segmentKind: ExeSegmentKind; segmentOffset: number }
+type LabelInfo = {
+  kind: ObjectLabelKind
+  sectionKind: ObjectSectionKind
+  sectionOffset: number
+}
 
-export function assembleExe(program: Program, entryName?: string): Exe {
+export function assembleObject(program: Program): ObjectFile {
   resolveDisplacements(program)
 
   const labels = new Map<string, LabelInfo>()
-  const fixups: Array<ExeFixupEntry> = []
+  const relocations: Array<ObjectRelocation> = []
 
-  const code = emitExeCode(program, labels, fixups)
-  const data = emitExeData(program, labels, fixups)
+  const code = emitCode(program, labels, relocations)
+  const data = emitData(program, labels, relocations)
 
   let spaceSize = 0
   for (const definition of program.definitions.values()) {
@@ -46,36 +51,26 @@ export function assembleExe(program: Program, entryName?: string): Exe {
     }
     const s = Number(size.content)
     labels.set(definition.name, {
-      segmentKind: ExeSpaceSegment,
-      segmentOffset: spaceSize,
+      kind: "space",
+      sectionKind: ObjectSpaceSection,
+      sectionOffset: spaceSize,
     })
     spaceSize += s
   }
 
-  const resolvedEntryName = entryName || "main"
-  const entry = labels.get(resolvedEntryName)
-  if (entry === undefined) {
-    let message = `entry name not found: ${resolvedEntryName}`
-    throw new Error(message)
-  }
-  if (entry.segmentKind !== ExeCodeSegment) {
-    let message = `entry "${resolvedEntryName}" is not a code segment label`
-    throw new Error(message)
-  }
-
-  const labelTable = [...labels.entries()].map(([name, info]) => ({
+  const labelEntries = [...labels.entries()].map(([name, info]) => ({
     name,
-    segmentKind: info.segmentKind,
-    segmentOffset: info.segmentOffset,
+    kind: info.kind,
+    sectionKind: info.sectionKind,
+    sectionOffset: info.sectionOffset,
   }))
 
   return {
     code,
     data,
     spaceSize,
-    entryCodeSegmentOffset: entry.segmentOffset,
-    labelTable,
-    fixupTable: fixups,
+    labels: labelEntries,
+    relocations,
   }
 }
 
@@ -124,10 +119,10 @@ function findCodeFixupInfo(instr: Instr): CodeFixupInfo {
   return null
 }
 
-function emitExeCode(
+function emitCode(
   program: Program,
   labels: Map<string, LabelInfo>,
-  fixups: Array<ExeFixupEntry>,
+  fixups: Array<ObjectRelocation>,
 ): Uint8Array {
   const localLabels = collectLocalLabels(program)
 
@@ -140,20 +135,22 @@ function emitExeCode(
     const fnLocalLabels = localLabels.get(definition.name)!
 
     labels.set(definition.name, {
-      segmentKind: ExeCodeSegment,
-      segmentOffset: pos,
+      kind: "function",
+      sectionKind: ObjectCodeSection,
+      sectionOffset: pos,
     })
 
     for (const instr of definition.instrs) {
       if (instr.op === "label") {
         const [op] = instr.operands
         if (op.kind !== "LabelOperand") {
-          let message = `[emitExeCode] label instruction must have LabelOperand`
+          let message = `[emitCode] label instruction must have LabelOperand`
           throw new Error(message)
         }
         labels.set(scopedName(definition.name, op.name), {
-          segmentKind: ExeCodeSegment,
-          segmentOffset: pos,
+          kind: "local",
+          sectionKind: ObjectCodeSection,
+          sectionOffset: pos,
         })
         continue
       }
@@ -182,8 +179,8 @@ function emitExeCode(
             fixups.push({
               type: fixupInfo.type,
               name: resolvedName,
-              segmentKind: ExeCodeSegment,
-              segmentOffset: instrPos + dispOffset,
+              sectionKind: ObjectCodeSection,
+              sectionOffset: instrPos + dispOffset,
               addend,
             })
           } else if (
@@ -194,8 +191,8 @@ function emitExeCode(
             fixups.push({
               type: fixupInfo.type,
               name: resolvedName,
-              segmentKind: ExeCodeSegment,
-              segmentOffset: instrPos + encodedImmOffset(enc),
+              sectionKind: ObjectCodeSection,
+              sectionOffset: instrPos + encodedImmOffset(enc),
               addend: 0n,
             })
           }
@@ -235,10 +232,10 @@ type DeferredItem = {
   emit: (start: number) => number
 }
 
-function emitExeData(
+function emitData(
   program: Program,
   labels: Map<string, LabelInfo>,
-  fixups: Array<ExeFixupEntry>,
+  fixups: Array<ObjectRelocation>,
 ): Uint8Array {
   let anonCounter = maxAnonIndex(program) + 1
 
@@ -258,8 +255,9 @@ function emitExeData(
     const dataType = inferDataType(program, definition.value)
 
     labels.set(definition.name, {
-      segmentKind: ExeDataSegment,
-      segmentOffset: pos,
+      kind: "data",
+      sectionKind: ObjectDataSection,
+      sectionOffset: pos,
     })
 
     const deferred: Array<DeferredItem> = []
@@ -280,14 +278,15 @@ function emitExeData(
       pos = d.emit(pos)
       const anonName = `\xa9data.${anonCounter++}`
       labels.set(anonName, {
-        segmentKind: ExeDataSegment,
-        segmentOffset: targetStart,
+        kind: "local",
+        sectionKind: ObjectDataSection,
+        sectionOffset: targetStart,
       })
       fixups.push({
         type: "label-abs64",
         name: anonName,
-        segmentKind: ExeDataSegment,
-        segmentOffset: d.pointerSlotOffset,
+        sectionKind: ObjectDataSection,
+        sectionOffset: d.pointerSlotOffset,
         addend: 0n,
       })
     }
@@ -368,7 +367,7 @@ function emitTree(
   value: Data,
   buf: Uint8Array,
   offset: number,
-  fixups: Array<ExeFixupEntry>,
+  fixups: Array<ObjectRelocation>,
   deferred: Array<DeferredItem>,
 ): number {
   if (value.kind === "IntData") {
@@ -394,8 +393,8 @@ function emitTree(
     fixups.push({
       type: "label-abs64",
       name: value.name,
-      segmentKind: ExeDataSegment,
-      segmentOffset: offset,
+      sectionKind: ObjectDataSection,
+      sectionOffset: offset,
       addend: 0n,
     })
     return offset + 8
@@ -473,7 +472,7 @@ function emitPointerTarget(
   target: Data,
   buf: Uint8Array,
   offset: number,
-  fixups: Array<ExeFixupEntry>,
+  fixups: Array<ObjectRelocation>,
   deferred: Array<DeferredItem>,
 ): number {
   if (target.kind === "StructData") {
