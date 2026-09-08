@@ -1,5 +1,5 @@
 import * as B from "@xieyuheng/basic-lisp.js"
-import * as M from "../../../meta/index.ts"
+import * as M from "../../meta/index.ts"
 import * as X86 from "@xieyuheng/x86-lisp.js"
 
 // translate basic-lisp to x86-lisp (with variables)

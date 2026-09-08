@@ -6,7 +6,7 @@ import {
 import * as fs from "node:fs"
 import Path from "node:path"
 import * as B from "@xieyuheng/basic-lisp.js"
-import * as M from "../../../meta/index.ts"
+import * as M from "../../meta/index.ts"
 import * as X86 from "@xieyuheng/x86-lisp.js"
 import * as X86Backend from "../passes/index.ts"
 

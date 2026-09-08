@@ -5,7 +5,7 @@ import {
 } from "@xieyuheng/std.js/file"
 import * as fs from "node:fs"
 import * as B from "@xieyuheng/basic-lisp.js"
-import * as M from "../../../meta/index.ts"
+import * as M from "../../meta/index.ts"
 import * as Xvm from "@xieyuheng/xvm-lisp.js"
 import * as XvmBackend from "../passes/index.ts"
 
