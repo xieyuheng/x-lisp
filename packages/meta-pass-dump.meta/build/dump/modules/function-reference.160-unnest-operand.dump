@@ -11,28 +11,51 @@
 (define (swap f x y) (f y x))
 
 (define (example-function-as-argument)
-  (let ((unnested.1 (@closure self/function-reference/add1©wrap)))
+  (let
+      ((unnested.1
+        (@closure
+            self/function-reference/©wrap.4.self.18.function-reference.4.add1)))
     (self/function-reference/apply-to-zero unnested.1)))
 
 (define (example-second-function-as-argument)
-  (let ((unnested.1 (@closure self/function-reference/sub1©wrap)))
+  (let
+      ((unnested.1
+        (@closure
+            self/function-reference/©wrap.4.self.18.function-reference.4.sub1)))
     (self/function-reference/apply-to-zero unnested.1)))
 
 (define (example-identity-as-argument)
-  (let ((unnested.1 (@closure self/function-reference/identity©wrap)))
+  (let
+      ((unnested.1
+        (@closure
+            self/function-reference/©wrap.4.self.18.function-reference.8.identity)))
     (self/function-reference/apply-to-zero unnested.1)))
 
 (define (example-compose2)
-  (let ((unnested.1 (@closure self/function-reference/add1©wrap)))
-    (let ((unnested.2 (@closure self/function-reference/sub1©wrap)))
+  (let
+      ((unnested.1
+        (@closure
+            self/function-reference/©wrap.4.self.18.function-reference.4.add1)))
+    (let
+        ((unnested.2
+          (@closure
+              self/function-reference/©wrap.4.self.18.function-reference.4.sub1)))
       (self/function-reference/compose2 unnested.1 unnested.2 5))))
 
 (define (example-swap)
-  (let ((unnested.1 (@closure meta-builtin/builtin/iadd©wrap)))
+  (let
+      ((unnested.1
+        (@closure self/function-reference/©wrap.12.meta-builtin.7.builtin.4.iadd)))
     (self/function-reference/swap unnested.1 3 4)))
 
-(define (add1©wrap ©closure x) (self/function-reference/add1 x))
+(define (©wrap.4.self.18.function-reference.4.add1 ©closure x)
+  (self/function-reference/add1 x))
 
-(define (sub1©wrap ©closure x) (self/function-reference/sub1 x))
+(define (©wrap.4.self.18.function-reference.4.sub1 ©closure x)
+  (self/function-reference/sub1 x))
 
-(define (identity©wrap ©closure x) (self/function-reference/identity x))
+(define (©wrap.4.self.18.function-reference.8.identity ©closure x)
+  (self/function-reference/identity x))
+
+(define (©wrap.12.meta-builtin.7.builtin.4.iadd ©closure x1 x2)
+  (meta-builtin/builtin/iadd x1 x2))

@@ -81,20 +81,47 @@ function definitionIsFunction(definition: C.Definition): boolean {
   )
 }
 
+// 将外部函数的限定名编码为确定的 wrapper 名字。
+//
+// 不能只用 `name©wrap`：不同 package/module 可能导出同名短名字，会冲突。
+// 也不能简单用 `.` 连接 `pkgName/modName/name`：
+// 例如 pkg="a.b", mod="c", name="d" 与 pkg="a", mod="b.c", name="d"
+// 都会得到 `a.b.c.d`，无法区分。
+//
+// 长度前缀编码是自定界的：
+//
+//   ©wrap.<len>.<part>.<len>.<part>.<len>.<part>
+//
+// 读取时先读长度，再精确消费对应数量的字符；因此 part 内部的 `.` 不会造成歧义。
+function encodeWrapperName(
+  pkgName: string,
+  modName: string,
+  name: string,
+): string {
+  const parts = [pkgName, modName, name]
+  const encoded = parts
+    .map((part) => `${Array.from(part).length}.${part}`)
+    .join(".")
+
+  return `©wrap.${encoded}`
+}
+
 function liftFunctionReference(
+  coreMod: C.Mod,
   definition: C.Definition,
   pkgName: string,
   modName: string,
   name: string,
   location: S.SourceLocation,
 ): C.Term {
-  const qualifiedMod = definition.mod
+  // wrapper 生成在当前正在编译的 package/module，而不是目标函数所属的依赖 module。
+  // 这样依赖的 coreMod/cache 保持不变，可以被多个下游 package 复用。
+  const wrapName = encodeWrapperName(pkgName, modName, name)
 
-  const wrapName = `${name}©wrap`
-  if (!qualifiedMod.definitions.has(wrapName)) {
+  if (!coreMod.definitions.has(wrapName)) {
     const parameters = wrapParameters(definition)
     const wrapFunctionDefinition = C.FunctionDefinition(
-      qualifiedMod,
+      coreMod,
       wrapName,
       ["©closure", ...parameters],
       C.ApplyTerm(
@@ -104,11 +131,11 @@ function liftFunctionReference(
       ),
       location,
     )
-    qualifiedMod.definitions.set(wrapName, wrapFunctionDefinition)
-    convertClosureDefinition(qualifiedMod, wrapFunctionDefinition)
+    coreMod.definitions.set(wrapName, wrapFunctionDefinition)
+    convertClosureDefinition(coreMod, wrapFunctionDefinition)
   }
 
-  return C.ClosureTerm(pkgName, modName, wrapName, [], location)
+  return C.ClosureTerm(coreMod.pkg.id, coreMod.name, wrapName, [], location)
 }
 
 function convertClosureTerm(state: State, term: C.Term): C.Term {
@@ -149,6 +176,7 @@ function convertClosureTerm(state: State, term: C.Term): C.Term {
       if (!definitionIsFunction(qualifiedDefinition)) return term
 
       return liftFunctionReference(
+        state.coreMod,
         qualifiedDefinition,
         term.pkgName,
         term.modName,

@@ -107,11 +107,14 @@
 (define (let-term-put-body value target)
   (begin (meta-builtin/builtin/array-put 3 value target) target))
 
-(define empty-env (@closure meta-builtin/builtin/make-hash©wrap))
+(define empty-env
+  (@closure self/lambda/©wrap.12.meta-builtin.7.builtin.9.make-hash))
 
-(define extend-env (@closure meta-builtin/builtin/hash-copy-put©wrap))
+(define extend-env
+  (@closure self/lambda/©wrap.12.meta-builtin.7.builtin.13.hash-copy-put))
 
-(define env-lookup (@closure meta-builtin/builtin/hash-get-maybe©wrap))
+(define env-lookup
+  (@closure self/lambda/©wrap.12.meta-builtin.7.builtin.14.hash-get-maybe))
 
 (define (closure-value env parameter body)
   (let ((array (meta-builtin/builtin/make-array)))
@@ -213,3 +216,12 @@
       (meta-builtin/builtin/make-source-span
        (meta-builtin/builtin/make-source-position 1068 35 3)
        (meta-builtin/builtin/make-source-position 1073 35 8))))))
+
+(define (©wrap.12.meta-builtin.7.builtin.9.make-hash ©closure)
+  (meta-builtin/builtin/make-hash))
+
+(define (©wrap.12.meta-builtin.7.builtin.13.hash-copy-put ©closure x1 x2 x3)
+  (meta-builtin/builtin/hash-copy-put x1 x2 x3))
+
+(define (©wrap.12.meta-builtin.7.builtin.14.hash-get-maybe ©closure key hash)
+  (meta-builtin/builtin/hash-get-maybe key hash))

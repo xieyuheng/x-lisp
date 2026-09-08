@@ -12,27 +12,37 @@
 
 (define (example-function-as-argument)
   (self/function-reference/apply-to-zero
-   (@closure self/function-reference/add1©wrap)))
+   (@closure self/function-reference/©wrap.4.self.18.function-reference.4.add1)))
 
 (define (example-second-function-as-argument)
   (self/function-reference/apply-to-zero
-   (@closure self/function-reference/sub1©wrap)))
+   (@closure self/function-reference/©wrap.4.self.18.function-reference.4.sub1)))
 
 (define (example-identity-as-argument)
   (self/function-reference/apply-to-zero
-   (@closure self/function-reference/identity©wrap)))
+   (@closure
+       self/function-reference/©wrap.4.self.18.function-reference.8.identity)))
 
 (define (example-compose2)
   (self/function-reference/compose2
-   (@closure self/function-reference/add1©wrap)
-   (@closure self/function-reference/sub1©wrap)
+   (@closure self/function-reference/©wrap.4.self.18.function-reference.4.add1)
+   (@closure self/function-reference/©wrap.4.self.18.function-reference.4.sub1)
    5))
 
 (define (example-swap)
-  (self/function-reference/swap (@closure meta-builtin/builtin/iadd©wrap) 3 4))
+  (self/function-reference/swap
+   (@closure self/function-reference/©wrap.12.meta-builtin.7.builtin.4.iadd)
+   3
+   4))
 
-(define (add1©wrap ©closure x) (self/function-reference/add1 x))
+(define (©wrap.4.self.18.function-reference.4.add1 ©closure x)
+  (self/function-reference/add1 x))
 
-(define (sub1©wrap ©closure x) (self/function-reference/sub1 x))
+(define (©wrap.4.self.18.function-reference.4.sub1 ©closure x)
+  (self/function-reference/sub1 x))
 
-(define (identity©wrap ©closure x) (self/function-reference/identity x))
+(define (©wrap.4.self.18.function-reference.8.identity ©closure x)
+  (self/function-reference/identity x))
+
+(define (©wrap.12.meta-builtin.7.builtin.4.iadd ©closure x1 x2)
+  (meta-builtin/builtin/iadd x1 x2))
