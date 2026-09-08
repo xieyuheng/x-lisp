@@ -5,9 +5,9 @@ import {
 } from "@xieyuheng/std.js/file"
 import * as fs from "node:fs"
 import Path from "node:path"
-import * as B from "../../../basic/index.ts"
+import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "../../../meta/index.ts"
-import * as X86 from "../../../x86/index.ts"
+import * as X86 from "@xieyuheng/x86-lisp.js"
 import * as X86Backend from "../passes/index.ts"
 
 export function BuildPipeline(rootPkg: M.Package): void {
@@ -69,7 +69,7 @@ function X86Bundle(pkg: M.Package, x86Program: X86.Program): void {
   callWithFile(openOutputFile(`${directory}/bundle.x86.asm`), (file) => {
     // PrimitiveTypeDefinition is internal — createProgram() registers the
     // builtin types itself, so the bundle stays re-assemblable by
-    // `x86:assemble` (whose parser only knows user-language stmts).
+    // `x86-lisp.js assemble` (whose parser only knows user-language stmts).
     const definitions = Array.from(x86Program.definitions.values()).filter(
       (definition) => definition.kind !== "PrimitiveTypeDefinition",
     )

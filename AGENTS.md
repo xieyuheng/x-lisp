@@ -18,7 +18,10 @@ AI agent 应用中文回答用户的问题。
 - [cli.js] — CLI 框架，依赖 [std.js]
 - [ppml.js] — 格式化打印，依赖 [std.js]
 - [sexp.js] — S 表达式解析器，依赖 [std.js]
-- [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供根目录 `bin/meta-lisp.js` 编译器
+- [basic-lisp.js] — basic-lisp IR，依赖 [std.js] / [sexp.js] / [ppml.js]
+- [xvm-lisp.js] — xvm-lisp 汇编/反汇编 + TLV，依赖 [std.js] / [sexp.js] / [ppml.js]
+- [x86-lisp.js] — x86-lisp 汇编，依赖 [std.js] / [sexp.js] / [ppml.js]
+- [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供根目录 `bin/meta-lisp.js` 编译器，依赖 [basic-lisp.js] / [xvm-lisp.js] / [x86-lisp.js]
 
 **C packages**（共享 `builders/make/c.mk`）：
 
@@ -39,7 +42,7 @@ AI agent 应用中文回答用户的问题。
 
 1. `pnpm install`
 2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c] / [x86.c]
-3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [meta-lisp.js]
+3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [basic-lisp.js]/[xvm-lisp.js]/[x86-lisp.js] → [meta-lisp.js]
 4. `.meta` 测试依赖 [meta-lisp.js] 编译器
 
 顶层 `scripts/all.sh` 按 stage 顺序驱动全部阶段。

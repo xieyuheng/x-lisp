@@ -1,5 +1,5 @@
-import * as B from "../../../basic/index.ts"
-import * as Xvm from "../../../xvm/index.ts"
+import * as B from "@xieyuheng/basic-lisp.js"
+import * as Xvm from "@xieyuheng/xvm-lisp.js"
 import { allocatingPrimitivesEn } from "./allocating-primitives-en.ts"
 import { allocatingPrimitivesZh } from "./allocating-primitives-zh.ts"
 

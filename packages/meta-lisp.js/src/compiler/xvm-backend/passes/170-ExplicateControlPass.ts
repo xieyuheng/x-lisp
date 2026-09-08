@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import { arrayConcat, arrayUnzip } from "@xieyuheng/std.js/array"
 import { setUnion } from "@xieyuheng/std.js/set"
-import * as B from "../../../basic/index.ts"
+import * as B from "@xieyuheng/basic-lisp.js"
 import * as C from "../../../core/index.ts"
 import * as M from "../../../meta/index.ts"
 

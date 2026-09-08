@@ -2,4 +2,4 @@
 
 set -e
 
-node --test src/**/*.test.ts
+npx tsc --noEmit

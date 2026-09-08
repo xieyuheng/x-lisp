@@ -1,29 +1,26 @@
 {
-  "name": "@xieyuheng/meta-lisp.js",
-  "version": "0.1.4",
+  "name": "@xieyuheng/basic-lisp.js",
+  "version": "0.1.0",
   "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./src/index.ts",
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
   "bin": {
-    "meta-lisp.js": "src/main.ts"
+    "basic-lisp.js": "src/main.ts"
   },
   "prettier": {
     "semi": false,
     "trailingComma": "all"
   },
   "dependencies": {
-    "@xieyuheng/basic-lisp.js": "workspace:*",
     "@xieyuheng/cli.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
-    "@xieyuheng/std.js": "workspace:*",
-    "@xieyuheng/x86-lisp.js": "workspace:*",
-    "@xieyuheng/xvm-lisp.js": "workspace:*",
-    "zod": "^4.5.4"
+    "@xieyuheng/std.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.4.1",

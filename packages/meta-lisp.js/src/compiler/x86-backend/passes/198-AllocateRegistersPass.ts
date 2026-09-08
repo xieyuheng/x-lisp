@@ -1,4 +1,4 @@
-import * as X86 from "../../../x86/index.ts"
+import * as X86 from "@xieyuheng/x86-lisp.js"
 
 export type HomeInfo = {
   locations: Map<string, X86.Operand>

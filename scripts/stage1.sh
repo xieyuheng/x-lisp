@@ -14,6 +14,9 @@ pnpm install
 ./scripts/run-in.sh cli.js format.sh
 ./scripts/run-in.sh sexp.js format.sh
 ./scripts/run-in.sh ppml.js format.sh
+./scripts/run-in.sh basic-lisp.js format.sh
+./scripts/run-in.sh xvm-lisp.js format.sh
+./scripts/run-in.sh x86-lisp.js format.sh
 ./scripts/run-in.sh meta-lisp.js format.sh
 
 # ts check
@@ -22,6 +25,9 @@ pnpm install
 ./scripts/run-in.sh cli.js check.sh
 ./scripts/run-in.sh sexp.js check.sh
 ./scripts/run-in.sh ppml.js check.sh
+./scripts/run-in.sh basic-lisp.js check.sh
+./scripts/run-in.sh xvm-lisp.js check.sh
+./scripts/run-in.sh x86-lisp.js check.sh
 ./scripts/run-in.sh meta-lisp.js check.sh
 
 # ts test
@@ -30,6 +36,9 @@ pnpm install
 ./scripts/run-in.sh cli.js clean.sh test.sh
 ./scripts/run-in.sh sexp.js clean.sh test.sh
 ./scripts/run-in.sh ppml.js clean.sh test.sh
+./scripts/run-in.sh basic-lisp.js clean.sh test.sh
+./scripts/run-in.sh xvm-lisp.js clean.sh test.sh
+./scripts/run-in.sh x86-lisp.js clean.sh test.sh
 ./scripts/run-in.sh meta-lisp.js clean.sh test.sh
 
 # bootstrap compiler type check error snapshot

@@ -1,4 +1,4 @@
-import * as Xvm from "../../../xvm/index.ts"
+import * as Xvm from "@xieyuheng/xvm-lisp.js"
 
 // 注入入口包装函数，使每个可执行程序保持单一编译期入口：
 //
