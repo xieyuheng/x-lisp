@@ -20,7 +20,7 @@ AI agent 应用中文回答用户的问题。
 - [sexp.js] — S 表达式解析器
 - [basic-lisp.js] — basic-lisp IR
 - [xvm-lisp.js] — xvm-lisp 汇编/反汇编 + TLV
-- [x86-lisp.js] — x86-lisp 汇编
+- [x86-lisp.js] — x86-lisp 汇编（独立于编译器）
 - [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供根目录 `bin/meta-lisp.js` 编译器
 
 **C packages**（共享 `builders/make/c.mk`）：
@@ -42,7 +42,8 @@ AI agent 应用中文回答用户的问题。
 
 1. `pnpm install`
 2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c] / [x86.c]
-3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [basic-lisp.js]/[xvm-lisp.js]/[x86-lisp.js] → [meta-lisp.js]
+3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [basic-lisp.js]/[xvm-lisp.js] → [meta-lisp.js]
+   （[x86-lisp.js] 独立于编译器，不参与编译管线）
 4. `.meta` 测试依赖 [meta-lisp.js] 编译器
 
 顶层 `scripts/all.sh` 按 stage 顺序驱动全部阶段。

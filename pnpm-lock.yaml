@@ -64,9 +64,6 @@ importers:
       '@xieyuheng/std.js':
         specifier: workspace:*
         version: link:../std.js
-      '@xieyuheng/x86-lisp.js':
-        specifier: workspace:*
-        version: link:../x86-lisp.js
       '@xieyuheng/xvm-lisp.js':
         specifier: workspace:*
         version: link:../xvm-lisp.js

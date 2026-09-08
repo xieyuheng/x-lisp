@@ -6,7 +6,6 @@ import { errorReport } from "@xieyuheng/std.js/error"
 import { getPackageJson } from "@xieyuheng/std.js/node"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import * as X86Backend from "./x86-backend/index.ts"
 import * as XvmBackend from "./xvm-backend/index.ts"
 import * as M from "./meta/index.ts"
 
@@ -59,7 +58,6 @@ router.defineHandlers({
     }
 
     XvmBackend.BuildPipeline(pkg)
-    X86Backend.BuildPipeline(pkg)
   },
 })
 
