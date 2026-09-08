@@ -67,32 +67,32 @@
            is-odd)
           meta-builtin/builtin/void)))))
 
-(define (example-chain©λ1 ©closure target)
+(define (example-chain©λ1 closure target)
   (self/desugar/double (self/desugar/add1 target)))
 
-(define (example-compose©λ1 ©closure target)
+(define (example-compose©λ1 closure target)
   (self/desugar/add1 (self/desugar/double target)))
 
-(define (example-letrec©λ1 ©closure n)
-  (let ((is-odd (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-letrec©λ1 closure n)
+  (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n 0)
       meta-builtin/builtin/true
       ((meta-builtin/builtin/box-get is-odd) (meta-builtin/builtin/isub n 1)))))
 
-(define (example-letrec©λ2 ©closure n.1)
-  (let ((is-even (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-letrec©λ2 closure n.1)
+  (let ((is-even (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n.1 0)
       meta-builtin/builtin/false
       ((meta-builtin/builtin/box-get is-even) (meta-builtin/builtin/isub n.1 1)))))
 
-(define (example-local-define©λ1 ©closure n)
-  (let ((is-odd (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-local-define©λ1 closure n)
+  (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n 0)
       meta-builtin/builtin/true
       ((meta-builtin/builtin/box-get is-odd) (meta-builtin/builtin/isub n 1)))))
 
-(define (example-local-define©λ2 ©closure n.1)
-  (let ((is-even (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-local-define©λ2 closure n.1)
+  (let ((is-even (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n.1 0)
       meta-builtin/builtin/false
       ((meta-builtin/builtin/box-get is-even) (meta-builtin/builtin/isub n.1 1)))))

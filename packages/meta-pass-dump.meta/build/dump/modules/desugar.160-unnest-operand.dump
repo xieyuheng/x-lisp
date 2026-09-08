@@ -75,40 +75,40 @@
             (meta-builtin/builtin/box-put unnested.2 is-odd))
           meta-builtin/builtin/void)))))
 
-(define (example-chain©λ1 ©closure target)
+(define (example-chain©λ1 closure target)
   (let ((unnested.1 (self/desugar/add1 target)))
     (self/desugar/double unnested.1)))
 
-(define (example-compose©λ1 ©closure target)
+(define (example-compose©λ1 closure target)
   (let ((unnested.1 (self/desugar/double target)))
     (self/desugar/add1 unnested.1)))
 
-(define (example-letrec©λ1 ©closure n)
-  (let ((is-odd (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-letrec©λ1 closure n)
+  (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n 0)
       meta-builtin/builtin/true
       (let ((unnested.1 (meta-builtin/builtin/box-get is-odd)))
         (let ((unnested.2 (meta-builtin/builtin/isub n 1)))
           (unnested.1 unnested.2))))))
 
-(define (example-letrec©λ2 ©closure n.1)
-  (let ((is-even (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-letrec©λ2 closure n.1)
+  (let ((is-even (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n.1 0)
       meta-builtin/builtin/false
       (let ((unnested.1 (meta-builtin/builtin/box-get is-even)))
         (let ((unnested.2 (meta-builtin/builtin/isub n.1 1)))
           (unnested.1 unnested.2))))))
 
-(define (example-local-define©λ1 ©closure n)
-  (let ((is-odd (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-local-define©λ1 closure n)
+  (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n 0)
       meta-builtin/builtin/true
       (let ((unnested.1 (meta-builtin/builtin/box-get is-odd)))
         (let ((unnested.2 (meta-builtin/builtin/isub n 1)))
           (unnested.1 unnested.2))))))
 
-(define (example-local-define©λ2 ©closure n.1)
-  (let ((is-even (meta-builtin/builtin/closure-arg 0 ©closure)))
+(define (example-local-define©λ2 closure n.1)
+  (let ((is-even (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n.1 0)
       meta-builtin/builtin/false
       (let ((unnested.1 (meta-builtin/builtin/box-get is-even)))

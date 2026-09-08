@@ -217,11 +217,11 @@
        (meta-builtin/builtin/make-source-position 1068 35 3)
        (meta-builtin/builtin/make-source-position 1073 35 8))))))
 
-(define (©wrap.12.meta-builtin.7.builtin.9.make-hash ©closure)
+(define (©wrap.12.meta-builtin.7.builtin.9.make-hash closure)
   (meta-builtin/builtin/make-hash))
 
-(define (©wrap.12.meta-builtin.7.builtin.13.hash-copy-put ©closure x1 x2 x3)
+(define (©wrap.12.meta-builtin.7.builtin.13.hash-copy-put closure x1 x2 x3)
   (meta-builtin/builtin/hash-copy-put x1 x2 x3))
 
-(define (©wrap.12.meta-builtin.7.builtin.14.hash-get-maybe ©closure key hash)
+(define (©wrap.12.meta-builtin.7.builtin.14.hash-get-maybe closure key hash)
   (meta-builtin/builtin/hash-get-maybe key hash))

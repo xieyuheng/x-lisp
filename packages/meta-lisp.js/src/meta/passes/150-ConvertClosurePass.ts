@@ -120,10 +120,15 @@ function liftFunctionReference(
 
   if (!coreMod.definitions.has(wrapName)) {
     const parameters = wrapParameters(definition)
+    // 局部闭包参数也采用 fresh-name 避让，避免与用户参数名冲突。
+    const closureParameter = M.generateRelativeFreshName(
+      new Set(parameters),
+      "closure",
+    )
     const wrapFunctionDefinition = C.FunctionDefinition(
       coreMod,
       wrapName,
-      ["©closure", ...parameters],
+      [closureParameter, ...parameters],
       C.ApplyTerm(
         C.QualifiedVarTerm(pkgName, modName, name, location),
         parameters.map((p) => C.VarTerm(p, location)),
@@ -225,8 +230,17 @@ function liftLambda(
   state.localLambdaCount++
   const newFunctionName = `${state.definition.name}©λ${state.localLambdaCount}`
 
-  const newParameters = ["©closure", ...parameters]
-  const newBody = wrapBodyWithClosureArgs(freeNames, body, location)
+  // 局部闭包参数采用 fresh-name 避让，避免与 lambda 参数或 body 中的名字冲突。
+  const usedNames = new Set([...parameters, ...C.termOccurredNames(body)])
+  const closureParameter = M.generateRelativeFreshName(usedNames, "closure")
+
+  const newParameters = [closureParameter, ...parameters]
+  const newBody = wrapBodyWithClosureArgs(
+    closureParameter,
+    freeNames,
+    body,
+    location,
+  )
 
   const functionDefinition = C.FunctionDefinition(
     state.coreMod,
@@ -249,6 +263,7 @@ function liftLambda(
 }
 
 function wrapBodyWithClosureArgs(
+  closureParameter: string,
   freeNames: Array<string>,
   body: C.Term,
   location: C.Term["location"],
@@ -259,7 +274,7 @@ function wrapBodyWithClosureArgs(
       freeNames[i],
       C.ApplyTerm(
         C.QualifiedVarTerm("meta-builtin", "builtin", "closure-arg", location),
-        [C.IntTerm(BigInt(i), location), C.VarTerm("©closure", location)],
+        [C.IntTerm(BigInt(i), location), C.VarTerm(closureParameter, location)],
         location,
       ),
       result,

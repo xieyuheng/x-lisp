@@ -28,23 +28,28 @@ function limitArityDefinition(
     }
 
     case "FunctionDefinition": {
-      const params = definition.parameters
-      if (params.length <= maxArity) {
+      const parameters = definition.parameters
+      if (parameters.length <= maxArity) {
         definition.body = limitArityTerm(definition.body, maxArity)
         return definition
       }
 
       // if the args are: (x1 x2 x3 x4 x5 x6 x7 x8 x9) and maxArity == 6.
-      // the limited args should be (x1 x2 x3 x4 x5 ©rest)
-      // and ©rest == (x6 x7 x8 x9)
-      const firstParams = params.slice(0, maxArity - 1)
-      const extraParams = params.slice(maxArity - 1)
-      const restName = "©rest"
+      // the limited args should be (x1 x2 x3 x4 x5 rest)
+      // and rest == (x6 x7 x8 x9)
+      const firstParameters = parameters.slice(0, maxArity - 1)
+      const extraParameters = parameters.slice(maxArity - 1)
+      // rest 参数采用 fresh-name 避让，避免与已有参数或 body 中的名字冲突。
+      const usedNames = new Set([
+        ...parameters,
+        ...C.termOccurredNames(definition.body),
+      ])
+      const restName = M.generateRelativeFreshName(usedNames, "rest")
 
-      const body = extraParams.reduceRight(
-        (body: C.Term, param: string, i: number): C.Term =>
+      const body = extraParameters.reduceRight(
+        (body: C.Term, parameter: string, i: number): C.Term =>
           C.Let1Term(
-            param,
+            parameter,
             C.ApplyTerm(
               C.QualifiedVarTerm(
                 "meta-builtin",
@@ -67,7 +72,7 @@ function limitArityDefinition(
       return C.FunctionDefinition(
         coreMod,
         definition.name,
-        [...firstParams, restName],
+        [...firstParameters, restName],
         body,
         definition.location,
       )

@@ -1,8 +1,8 @@
-(define (sum9 x1 x2 x3 x4 x5 ©rest)
-  (let ((x6 (meta-builtin/builtin/list-get 0 ©rest)))
-    (let ((x7 (meta-builtin/builtin/list-get 1 ©rest)))
-      (let ((x8 (meta-builtin/builtin/list-get 2 ©rest)))
-        (let ((x9 (meta-builtin/builtin/list-get 3 ©rest)))
+(define (sum9 x1 x2 x3 x4 x5 rest)
+  (let ((x6 (meta-builtin/builtin/list-get 0 rest)))
+    (let ((x7 (meta-builtin/builtin/list-get 1 rest)))
+      (let ((x8 (meta-builtin/builtin/list-get 2 rest)))
+        (let ((x9 (meta-builtin/builtin/list-get 3 rest)))
           (meta-builtin/builtin/iadd
            x1
            (meta-builtin/builtin/iadd

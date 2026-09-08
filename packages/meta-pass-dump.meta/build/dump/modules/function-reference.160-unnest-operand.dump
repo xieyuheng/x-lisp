@@ -48,14 +48,14 @@
         (@closure self/function-reference/©wrap.12.meta-builtin.7.builtin.4.iadd)))
     (self/function-reference/swap unnested.1 3 4)))
 
-(define (©wrap.4.self.18.function-reference.4.add1 ©closure x)
+(define (©wrap.4.self.18.function-reference.4.add1 closure x)
   (self/function-reference/add1 x))
 
-(define (©wrap.4.self.18.function-reference.4.sub1 ©closure x)
+(define (©wrap.4.self.18.function-reference.4.sub1 closure x)
   (self/function-reference/sub1 x))
 
-(define (©wrap.4.self.18.function-reference.8.identity ©closure x)
+(define (©wrap.4.self.18.function-reference.8.identity closure x)
   (self/function-reference/identity x))
 
-(define (©wrap.12.meta-builtin.7.builtin.4.iadd ©closure x1 x2)
+(define (©wrap.12.meta-builtin.7.builtin.4.iadd closure x1 x2)
   (meta-builtin/builtin/iadd x1 x2))
