@@ -8,7 +8,7 @@ import { getPackageJson } from "@xieyuheng/std.js/node"
 import * as fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import * as B2 from "./basic/index.ts"
+import * as B from "./basic/index.ts"
 import * as X86Backend from "./compiler/x86-backend/index.ts"
 import * as XvmBackend from "./compiler/xvm-backend/index.ts"
 import * as M from "./meta/index.ts"
@@ -59,9 +59,9 @@ router.defineHandlers({
     }
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps(code, { path: input })
-    const program = B2.parseProgram(sexps)
+    const program = B.parseProgram(sexps)
     const text =
-      Ppml.formatNode(B2.prettyProgram(program), { width: 80 }) + "\n"
+      Ppml.formatNode(B.prettyProgram(program), { width: 80 }) + "\n"
     process.stdout.write(text)
   },
 
