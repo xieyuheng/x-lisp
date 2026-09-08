@@ -1,19 +1,19 @@
 (define (example-eta-expansion)
   (begin
-    (@closure self/auto-currying/example-eta-expansion©λ1)
-    (@closure self/auto-currying/example-eta-expansion©λ2)))
+    (@closure self/auto-currying/©lambda.example-eta-expansion.1)
+    (@closure self/auto-currying/©lambda.example-eta-expansion.2)))
 
-(define (adder n) (@closure self/auto-currying/adder©λ1 n))
+(define (adder n) (@closure self/auto-currying/©lambda.adder.1 n))
 
 (define (example-early-apply)
   (begin ((self/auto-currying/adder 1) 2) ((self/auto-currying/adder 1) 2)))
 
-(define (example-eta-expansion©λ1 closure curried.1)
+(define (©lambda.example-eta-expansion.1 closure curried.1)
   (meta-builtin/builtin/iadd 1 curried.1))
 
-(define (example-eta-expansion©λ2 closure curried.1.1)
+(define (©lambda.example-eta-expansion.2 closure curried.1.1)
   (meta-builtin/builtin/iadd 1 curried.1.1))
 
-(define (adder©λ1 closure x)
+(define (©lambda.adder.1 closure x)
   (let ((n (meta-builtin/builtin/closure-arg 0 closure)))
     (meta-builtin/builtin/iadd n x)))

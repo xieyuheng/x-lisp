@@ -1,3 +1,4 @@
+export * from "./005-CheckReservedNamesPass.ts"
 export * from "./010-ExpandPass.ts"
 export * from "./020-ModulePreludePass.ts"
 export * from "./030-ModuleAnalysisPass.ts"

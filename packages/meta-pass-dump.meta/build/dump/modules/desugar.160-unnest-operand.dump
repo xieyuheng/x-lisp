@@ -45,19 +45,24 @@
   (let ((unnested.1 (self/desugar/add1 5))) (self/desugar/double unnested.1)))
 
 (define (example-chain)
-  (let ((unnested.1 (@closure self/desugar/example-chain©λ1))) (unnested.1 5)))
+  (let ((unnested.1 (@closure self/desugar/©lambda.example-chain.1)))
+    (unnested.1 5)))
 
 (define (example-compose)
-  (let ((unnested.1 (@closure self/desugar/example-compose©λ1))) (unnested.1 5)))
+  (let ((unnested.1 (@closure self/desugar/©lambda.example-compose.1)))
+    (unnested.1 5)))
 
 (define (example-letrec)
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
-        (let ((unnested.1 (@closure self/desugar/example-letrec©λ1 is-odd)))
+        (let
+            ((unnested.1 (@closure self/desugar/©lambda.example-letrec.1 is-odd)))
           (meta-builtin/builtin/box-put unnested.1 is-even))
         (begin
-          (let ((unnested.2 (@closure self/desugar/example-letrec©λ2 is-even)))
+          (let
+              ((unnested.2
+                (@closure self/desugar/©lambda.example-letrec.2 is-even)))
             (meta-builtin/builtin/box-put unnested.2 is-odd))
           meta-builtin/builtin/void)))))
 
@@ -66,24 +71,25 @@
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (let
-            ((unnested.1 (@closure self/desugar/example-local-define©λ1 is-odd)))
+            ((unnested.1
+              (@closure self/desugar/©lambda.example-local-define.1 is-odd)))
           (meta-builtin/builtin/box-put unnested.1 is-even))
         (begin
           (let
               ((unnested.2
-                (@closure self/desugar/example-local-define©λ2 is-even)))
+                (@closure self/desugar/©lambda.example-local-define.2 is-even)))
             (meta-builtin/builtin/box-put unnested.2 is-odd))
           meta-builtin/builtin/void)))))
 
-(define (example-chain©λ1 closure target)
+(define (©lambda.example-chain.1 closure target)
   (let ((unnested.1 (self/desugar/add1 target)))
     (self/desugar/double unnested.1)))
 
-(define (example-compose©λ1 closure target)
+(define (©lambda.example-compose.1 closure target)
   (let ((unnested.1 (self/desugar/double target)))
     (self/desugar/add1 unnested.1)))
 
-(define (example-letrec©λ1 closure n)
+(define (©lambda.example-letrec.1 closure n)
   (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n 0)
       meta-builtin/builtin/true
@@ -91,7 +97,7 @@
         (let ((unnested.2 (meta-builtin/builtin/isub n 1)))
           (unnested.1 unnested.2))))))
 
-(define (example-letrec©λ2 closure n.1)
+(define (©lambda.example-letrec.2 closure n.1)
   (let ((is-even (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n.1 0)
       meta-builtin/builtin/false
@@ -99,7 +105,7 @@
         (let ((unnested.2 (meta-builtin/builtin/isub n.1 1)))
           (unnested.1 unnested.2))))))
 
-(define (example-local-define©λ1 closure n)
+(define (©lambda.example-local-define.1 closure n)
   (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n 0)
       meta-builtin/builtin/true
@@ -107,7 +113,7 @@
         (let ((unnested.2 (meta-builtin/builtin/isub n 1)))
           (unnested.1 unnested.2))))))
 
-(define (example-local-define©λ2 closure n.1)
+(define (©lambda.example-local-define.2 closure n.1)
   (let ((is-even (meta-builtin/builtin/closure-arg 0 closure)))
     (if (meta-builtin/builtin/equal n.1 0)
       meta-builtin/builtin/false

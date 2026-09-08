@@ -228,7 +228,7 @@ function liftLambda(
   const lambdaTerm = C.LambdaTerm(parameters, body, location)
   const freeNames = Array.from(C.termFreeNames(new Set(), lambdaTerm))
   state.localLambdaCount++
-  const newFunctionName = `${state.definition.name}©λ${state.localLambdaCount}`
+  const newFunctionName = `©lambda.${state.definition.name}.${state.localLambdaCount}`
 
   // 局部闭包参数采用 fresh-name 避让，避免与 lambda 参数或 body 中的名字冲突。
   const usedNames = new Set([...parameters, ...C.termOccurredNames(body)])

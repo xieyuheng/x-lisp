@@ -3,11 +3,16 @@ import * as M from "../index.ts"
 export function CheckPipeline(rootPkg: M.Package): M.Outcome {
   const closure = M.packageClosureInTopologicalOrder(rootPkg)
 
+  let outcome: M.Outcome = "OutcomeOk"
+  for (const pkg of closure) {
+    if (M.CheckReservedNamesPass(pkg) === "OutcomeError")
+      outcome = "OutcomeError"
+  }
+
   for (const pkg of closure) M.ExpandPass(pkg)
   for (const pkg of closure) M.ModulePreludePass(pkg)
 
   const moduleReports = new Map<string, M.ModuleAnalysisReport>()
-  let outcome: M.Outcome = "OutcomeOk"
   for (const pkg of closure) {
     const report = M.ModuleAnalysisPass(pkg)
     moduleReports.set(pkg.id, report)
