@@ -14,22 +14,22 @@ AI agent 应用中文回答用户的问题。
 
 **JS/TS monorepo**（`pnpm-workspace.yaml` — `packages/*.js`）：
 
-- [std.js] — 基础库（无依赖）
-- [cli.js] — CLI 框架，依赖 [std.js]
-- [ppml.js] — 格式化打印，依赖 [std.js]
-- [sexp.js] — S 表达式解析器，依赖 [std.js]
-- [basic-lisp.js] — basic-lisp IR，依赖 [std.js] / [sexp.js] / [ppml.js]
-- [xvm-lisp.js] — xvm-lisp 汇编/反汇编 + TLV，依赖 [std.js] / [sexp.js] / [ppml.js]
-- [x86-lisp.js] — x86-lisp 汇编，依赖 [std.js] / [sexp.js] / [ppml.js]
-- [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供根目录 `bin/meta-lisp.js` 编译器，依赖 [basic-lisp.js] / [xvm-lisp.js] / [x86-lisp.js]
+- [std.js] — 基础库
+- [cli.js] — CLI 框架
+- [ppml.js] — 格式化打印
+- [sexp.js] — S 表达式解析器
+- [basic-lisp.js] — basic-lisp IR
+- [xvm-lisp.js] — xvm-lisp 汇编/反汇编 + TLV
+- [x86-lisp.js] — x86-lisp 汇编
+- [meta-lisp.js] — **引导编译器**，为 `.meta` package 提供根目录 `bin/meta-lisp.js` 编译器
 
 **C packages**（共享 `builders/make/c.mk`）：
 
 - [std.c] — 基础库
-- [cli.c] — CLI 库，依赖 [std.c]
-- [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数），依赖 [std.c]
-- [xvm.c] — xvm 虚拟机运行时，依赖 [xrt.c] + [std.c] + [cli.c]
-- [x86.c] — x86-64 可执行文件加载/运行，依赖 [xrt.c] + [std.c] + [cli.c]
+- [cli.c] — CLI 库
+- [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数）
+- [xvm.c] — xvm 虚拟机运行时
+- [x86.c] — x86-64 可执行文件加载/运行
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
 
