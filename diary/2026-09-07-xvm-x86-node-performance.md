@@ -14,6 +14,16 @@ date: 2026-09-07
   - 用 `bin/meta-lisp.js` 跑 node.js 编译器。
 - 实验方式 perf 硬件计数。
 
+实验环境：
+
+```
+$ fastfetch --logo none -s "Host:OS:Kernel:CPU"
+Host: EUL-WX9 (M1080)
+OS: Void Linux x86_64
+Kernel: Linux 7.2.2_1
+CPU: Intel(R) Core(TM) i7-10510U (8) @ 4.90 GHz
+```
+
 注意事项：
 
 - [meta-lisp.js] 测试时，暂时注释调 LocatePass/CheckPass 这些 pass，
@@ -51,7 +61,7 @@ date: 2026-09-07
 
 实验环境（与原实验不同）：
 
-```text
+```
 $ fastfetch --logo none -s "Host:OS:Kernel:CPU"
 Host: 21LE (ThinkBook 16 G6+ IMH)
 OS: Void Linux x86_64
