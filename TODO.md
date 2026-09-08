@@ -1,3 +1,7 @@
+review xvm.c 代码
+修复 x86-lisp 文档
+x86-lisp 可执行文件改用 tlv
+
 # x86
 
 [x86.c] 改为 tlv 格式的 exe
