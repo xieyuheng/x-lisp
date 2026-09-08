@@ -1,10 +1,3 @@
-# meta-lisp
-
-目前 meta-lisp 编译器在编译代码的过程中，
-会重复编译一个 package 的
-
-重新设计模块系统
-
 # xvm
 
 [xvm.c] review xvm.c 代码
