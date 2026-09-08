@@ -48,6 +48,8 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
+    const outcome = M.CheckPipeline(pkg)
+    if (outcome === "OutcomeError") process.exit(2)
     M.CorePipeline(pkg)
     XvmBackend.BuildPipeline(pkg)
     X86Backend.BuildPipeline(pkg)
