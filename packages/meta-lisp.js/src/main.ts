@@ -38,7 +38,16 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    const outcome = M.CheckPipeline(pkg)
+
+    const closure = M.packageClosureInTopologicalOrder(pkg)
+    let outcome: M.Outcome = "OutcomeOk"
+
+    for (const current of closure) {
+      if (M.CheckPipeline(current) === "OutcomeError") {
+        outcome = "OutcomeError"
+      }
+    }
+
     if (outcome === "OutcomeError") process.exit(2)
   },
 
@@ -48,9 +57,22 @@ router.defineHandlers({
     const pkg = M.loadPackage("self", configPath)
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
-    const outcome = M.CheckPipeline(pkg)
+
+    const closure = M.packageClosureInTopologicalOrder(pkg)
+    let outcome: M.Outcome = "OutcomeOk"
+
+    for (const current of closure) {
+      if (M.CheckPipeline(current) === "OutcomeError") {
+        outcome = "OutcomeError"
+      }
+    }
+
     if (outcome === "OutcomeError") process.exit(2)
-    M.CorePipeline(pkg)
+
+    for (const current of closure) {
+      M.CorePipeline(current)
+    }
+
     XvmBackend.BuildPipeline(pkg)
     X86Backend.BuildPipeline(pkg)
   },

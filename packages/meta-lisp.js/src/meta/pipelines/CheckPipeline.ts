@@ -1,48 +1,26 @@
 import * as M from "../index.ts"
 
-export function CheckPipeline(rootPkg: M.Package): M.Outcome {
-  const closure = M.packageClosureInTopologicalOrder(rootPkg)
+export function CheckPipeline(pkg: M.Package): M.Outcome {
+  let outcome: M.Outcome = M.CheckReservedNamesPass(pkg)
 
-  let outcome: M.Outcome = "OutcomeOk"
-  for (const pkg of closure) {
-    if (M.CheckReservedNamesPass(pkg) === "OutcomeError")
-      outcome = "OutcomeError"
-  }
+  M.ExpandPass(pkg)
+  M.ModulePreludePass(pkg)
 
-  for (const pkg of closure) M.ExpandPass(pkg)
-  for (const pkg of closure) M.ModulePreludePass(pkg)
+  const moduleReport = M.ModuleAnalysisPass(pkg)
+  if (moduleReport.outcome === "OutcomeError") outcome = "OutcomeError"
 
-  const moduleReports = new Map<string, M.ModuleAnalysisReport>()
-  for (const pkg of closure) {
-    const report = M.ModuleAnalysisPass(pkg)
-    moduleReports.set(pkg.id, report)
-    if (report.outcome === "OutcomeError") outcome = "OutcomeError"
-  }
+  const algebraicReport = M.AlgebraicAnalysisPass(pkg)
+  M.LowerMatchPass(pkg, moduleReport, algebraicReport)
 
-  const algebraicReports = new Map<string, M.AlgebraicAnalysisReport>()
-  for (const pkg of closure)
-    algebraicReports.set(pkg.id, M.AlgebraicAnalysisPass(pkg))
+  M.DesugarPass(pkg)
+  M.ModuleImportPass(pkg, moduleReport)
+  M.SetupPass(pkg)
 
-  for (const pkg of closure)
-    M.LowerMatchPass(
-      pkg,
-      moduleReports.get(pkg.id)!,
-      algebraicReports.get(pkg.id)!,
-    )
+  if (M.ClaimPass(pkg) === "OutcomeError") outcome = "OutcomeError"
+  M.QualifyPass(pkg)
+  M.LocatePass(pkg)
 
-  for (const pkg of closure) M.DesugarPass(pkg)
-  for (const pkg of closure) M.ModuleImportPass(pkg, moduleReports.get(pkg.id)!)
-  for (const pkg of closure) M.SetupPass(pkg)
-  for (const pkg of closure) {
-    if (M.ClaimPass(pkg) === "OutcomeError") outcome = "OutcomeError"
-  }
-
-  for (const pkg of closure) M.QualifyPass(pkg)
-  for (const pkg of closure) M.LocatePass(pkg)
-
-  for (const pkg of closure) {
-    if (M.CheckPass(pkg) === "OutcomeError") outcome = "OutcomeError"
-  }
+  if (M.CheckPass(pkg) === "OutcomeError") outcome = "OutcomeError"
 
   return outcome
 }
