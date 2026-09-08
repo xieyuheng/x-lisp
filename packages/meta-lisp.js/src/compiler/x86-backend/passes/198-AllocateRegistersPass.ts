@@ -1,4 +1,3 @@
-import { setUnionMany } from "@xieyuheng/std.js/set"
 import * as X86 from "../../../x86/index.ts"
 
 export type HomeInfo = {
@@ -26,9 +25,19 @@ export function AllocateRegistersPass(program: X86.Program): HomeInfoMap {
 }
 
 function allocateRegisters(instrs: Array<X86.Instr>): HomeInfo {
-  const varNames = Array.from(setUnionMany(instrs.map(instrVarNames)))
+  const varNames = new Set<string>()
+
+  for (const instr of instrs) {
+    for (const operand of instr.operands) {
+      if (operand.kind === "VarOperand") {
+        varNames.add(operand.name)
+      }
+    }
+  }
+
   const homeInfo = newHomeInfo()
-  for (const [index, varName] of varNames.entries()) {
+  let index = 0
+  for (const varName of varNames) {
     homeInfo.locations.set(
       varName,
       X86.RegMemOperand(
@@ -39,23 +48,8 @@ function allocateRegisters(instrs: Array<X86.Instr>): HomeInfo {
         X86.IntDisplacement(-8 * (index + 1)),
       ),
     )
+    index++
   }
 
   return homeInfo
-}
-
-function instrVarNames(instr: X86.Instr): Set<string> {
-  return setUnionMany(instr.operands.map(operandVarNames))
-}
-
-function operandVarNames(operand: X86.Operand): Set<string> {
-  switch (operand.kind) {
-    case "VarOperand": {
-      return new Set([operand.name])
-    }
-
-    default: {
-      return new Set()
-    }
-  }
 }
