@@ -2,8 +2,7 @@
 
 (define-struct build-config-t
   (source-directory text-t)
-  (output-directory text-t)
-  (snapshot-directory text-t))
+  (output-directory text-t))
 
 (define-struct package-config-t
   (name text-t)

@@ -9,7 +9,6 @@ export type PackageConfig = {
   build: {
     "source-directory": string
     "output-directory": string
-    "snapshot-directory": string
   }
   dependencies: Record<string, string>
   prelude: Record<string, Array<string>>
@@ -23,7 +22,6 @@ export const PackageConfigSchema = z.object({
   build: z.object({
     "source-directory": z.string(),
     "output-directory": z.string(),
-    "snapshot-directory": z.string(),
   }),
   dependencies: z.record(z.string(), z.string()).default({}),
   prelude: z.record(z.string(), z.array(z.string())).default({}),

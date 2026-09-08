@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "build": {
     "source-directory": "src",
-    "output-directory": "self-build",
-    "snapshot-directory": "self-snapshot"
+    "output-directory": "self-build"
   },
   "dependencies": {
     "meta-builtin": "../meta-builtin.meta",

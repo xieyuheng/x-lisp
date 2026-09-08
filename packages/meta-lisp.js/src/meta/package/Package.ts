@@ -130,13 +130,6 @@ export function packageOutputDirectory(pkg: Package): string {
   )
 }
 
-export function packageSnapshotDirectory(pkg: Package): string {
-  return Path.resolve(
-    pkg.rootDirectory,
-    pkg.config["build"]["snapshot-directory"],
-  )
-}
-
 export function packageClosureInTopologicalOrder(pkg: Package): Array<Package> {
   const result: Array<Package> = []
   const seen = new Set<string>()

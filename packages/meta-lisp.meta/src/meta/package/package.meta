@@ -28,13 +28,6 @@
       (package-config-build
         (package-config package)))))
 
-(define (package-snapshot-directory package)
-  (path-join
-    (package-root-directory package)
-    (build-config-snapshot-directory
-      (package-config-build
-        (package-config package)))))
-
 (claim package-lookup-mod (-> package-t symbol-t symbol-t (maybe-t mod-t)))
 (define (package-lookup-mod package pkg-name name)
   (let ((mods (if (or (equal pkg-name 'self)

@@ -1,10 +1,18 @@
-review xvm.c 代码
-修复 x86-lisp 文档
-x86-lisp 可执行文件改用 tlv
+# meta-lisp
+
+目前 meta-lisp 编译器在编译代码的过程中，
+会重复编译一个 package 的
+
+重新设计模块系统
+
+# xvm
+
+[xvm.c] review xvm.c 代码
 
 # x86
 
-[x86.c] 改为 tlv 格式的 exe
+[x86.c] 修复 x86-lisp 文档
+[x86.c] x86-lisp 可执行文件改用 tlv
 [x86.c] 给 x86 后端加 gc
 
 # self-hosting
@@ -22,7 +30,8 @@ x86-lisp 可执行文件改用 tlv
 [meta-lisp.meta] 170-explicate-control-pass.meta
 [meta-lisp.meta] 180-codegen-pass.meta
 
-# compile to native
-# socket api and network programming
-# http library
-# write agent in meta-lisp
+
+# write ai agent in meta-lisp
+
+socket api and network programming
+http library

@@ -43,5 +43,4 @@
   (let ((entries (object-json-entries json-value)))
     (make-build-config
       (text-json-value (hash-get "source-directory" entries))
-      (text-json-value (hash-get "output-directory" entries))
-      (text-json-value (hash-get "snapshot-directory" entries)))))
+      (text-json-value (hash-get "output-directory" entries)))))
