@@ -3,6 +3,7 @@
 struct line_t {
   size_t index;
   char *content;
+  size_t content_length;
   char *underline;
 };
 
@@ -12,6 +13,7 @@ static line_t *make_line(size_t index, char *content) {
   line_t *line = new(line_t);
   line->index = index;
   line->content = content;
+  line->content_length = utf8_string_length(content);
   line->underline = NULL;
   return line;
 }
@@ -25,34 +27,38 @@ static void line_free(line_t *line) {
   free(line);
 }
 
-static char *make_underline(struct span_t span, size_t start, size_t end) {
+static char *make_underline(struct span_t span, const text_t *text, line_t *line, size_t start, size_t end) {
   buffer_t *buffer = make_buffer();
   for (size_t i = start; i < end; i++) {
-    if (span.start.index <= i && i < span.end.index) {
-      write_char(buffer, '~');
-    } else {
-      write_char(buffer, ' ');
+    char mark = (span.start.index <= i && i < span.end.index) ? '~' : ' ';
+    // the position just past the end of the line is the newline or the end of file
+    size_t width = (i - start < line->content_length)
+      ? code_point_display_width(text_get_code_point(text, i))
+      : 1;
+    // a character occupies as many columns as its display width
+    for (size_t column = 0; column < width; column++) {
+      write_char(buffer, mark);
     }
   }
 
-  char *content = buffer_to_string(buffer);
+  char *underline = buffer_to_string(buffer);
   buffer_free(buffer);
 
-  if (string_is_blank(content)) {
-    string_free(content);
+  if (string_is_blank(underline)) {
+    string_free(underline);
     return NULL;
   } else {
-    return content;
+    return underline;
   }
 }
 
-static void lines_mark_underline(array_t *lines, struct span_t span) {
+static void lines_mark_underline(array_t *lines, struct span_t span, const text_t *text) {
   size_t cursor = 0;
   for (size_t i = 0; i < array_length(lines); i++) {
     line_t *line = array_get(lines, i);
     size_t start = cursor;
-    size_t end = cursor + string_length(line->content) + 1;
-    line->underline = make_underline(span, start, end);
+    size_t end = cursor + line->content_length + 1;
+    line->underline = make_underline(span, text, line, start, end);
     cursor = end;
   }
 }
@@ -93,7 +99,9 @@ void write_span_in_context(buffer_t *buffer, struct span_t span, const char *con
     index++;
   }
 
-  lines_mark_underline(lines, span);
+  text_t *text = make_text(context);
+  lines_mark_underline(lines, span, text);
+  text_free(text);
 
   size_t prefix_margin = get_prefix_margin(lines);
   for (size_t i = 0; i < array_length(lines); i++) {

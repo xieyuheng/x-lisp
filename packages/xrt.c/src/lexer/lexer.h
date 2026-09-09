@@ -3,6 +3,9 @@
 struct lexer_t {
   const char *string;
   size_t length;
+  // `cursor` counts bytes, while `position` counts characters,
+  // so that a span index is a character index, not a byte index.
+  size_t cursor;
   struct position_t position;
   const char *line_comment_introducer;
 };

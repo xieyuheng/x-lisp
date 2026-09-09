@@ -4,6 +4,7 @@ lexer_t *make_lexer(const char *string) {
   lexer_t *self = new(lexer_t);
   self->string = string;
   self->length = string_length(string);
+  self->cursor = 0;
   self->position = (struct position_t) {
     .index = 0,
     .row = 0,
@@ -17,7 +18,7 @@ void lexer_free(lexer_t *self) {
 }
 
 char lexer_next_char(lexer_t *self) {
-  return self->string[self->position.index];
+  return self->string[self->cursor];
 }
 
 char *lexer_next_char_string(lexer_t *self) {
@@ -25,14 +26,14 @@ char *lexer_next_char_string(lexer_t *self) {
   //   recomputes `strlen` of the whole remaining text on every
   //   call, making per-single-char extraction O(n^2) overall.
   char *content = allocate(2);
-  content[0] = self->string[self->position.index];
+  content[0] = self->string[self->cursor];
   content[1] = '\0';
   return content;
 }
 
 char *lexer_next_word_string(lexer_t *self) {
   buffer_t *buffer = make_buffer();
-  size_t index = self->position.index;
+  size_t index = self->cursor;
   while (index < self->length &&
        !char_is_blank(self->string[index]) &&
        !lexer_char_is_mark(self, self->string[index]))
@@ -47,15 +48,18 @@ char *lexer_next_word_string(lexer_t *self) {
 }
 
 bool lexer_is_finished(lexer_t *self) {
-  return self->position.index >= self->length;
+  return self->cursor >= self->length;
 }
 
 void lexer_forward(lexer_t *self, size_t count) {
   while (!lexer_is_finished(self) && count > 0) {
     count--;
-    self->position = position_forward_char(
-      self->position,
-      lexer_next_char(self));
+    char c = self->string[self->cursor];
+    self->cursor++;
+    // only a leading byte starts a character
+    if (((uint8_t) c & 0xC0) != 0x80) {
+      self->position = position_forward_char(self->position, c);
+    }
   }
 }
 
