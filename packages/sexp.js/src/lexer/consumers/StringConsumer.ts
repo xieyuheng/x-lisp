@@ -12,12 +12,13 @@ export class StringConsumer implements S.Consumer {
 
   consume(lexer: S.Lexer): string {
     const start = lexer.position
-    const lineEnd = lexer.text.indexOf("\n", start.index)
+    const startCursor = lexer.cursor
+    const lineEnd = lexer.text.indexOf("\n", startCursor)
     const line =
       lineEnd === -1
-        ? lexer.text.slice(start.index)
-        : lexer.text.slice(start.index, lineEnd)
-    const contentStart = start.index + 1
+        ? lexer.text.slice(startCursor)
+        : lexer.text.slice(startCursor, lineEnd)
+    const contentStart = startCursor + 1
 
     lexer.forward(1) // over the opening `"`
 
@@ -26,7 +27,7 @@ export class StringConsumer implements S.Consumer {
       if (char === "\\") {
         lexer.forward(2)
       } else if (char === '"') {
-        const raw = lexer.text.slice(contentStart, lexer.position.index)
+        const raw = lexer.text.slice(contentStart, lexer.cursor)
         lexer.forward(1)
         const value = jsonParseString(`"${raw}"`)
         if (value !== undefined) return value

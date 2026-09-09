@@ -8,11 +8,11 @@ export class CommentConsumer implements S.Consumer {
   }
 
   consume(lexer: S.Lexer): string {
-    const start = lexer.position.index
+    const start = lexer.cursor
     while (!lexer.isEnd() && lexer.char() !== "\n") {
       lexer.forward(1)
     }
 
-    return lexer.text.slice(start, lexer.position.index)
+    return lexer.text.slice(start, lexer.cursor)
   }
 }

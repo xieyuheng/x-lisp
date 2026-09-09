@@ -14,12 +14,12 @@ export class SymbolConsumer implements S.Consumer {
 }
 
 export function consumeSymbol(lexer: S.Lexer): string {
-  const start = lexer.position.index
+  const start = lexer.cursor
   while (!lexer.isEnd()) {
     const char = lexer.char()
     if (char === undefined || charIsBlank(char) || MARK_CHARS.has(char)) break
     lexer.forward(1)
   }
 
-  return lexer.text.slice(start, lexer.position.index)
+  return lexer.text.slice(start, lexer.cursor)
 }

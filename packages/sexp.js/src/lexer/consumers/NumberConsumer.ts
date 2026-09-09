@@ -15,11 +15,11 @@ export class NumberConsumer implements S.Consumer {
   consume(lexer: S.Lexer): string {
     const length = matchNumber(lexer)
     if (length === -1) {
-      let message = `Expect a number at index: ${lexer.position.index}`
+      let message = `Expect a number at index: ${lexer.cursor}`
       throw new Error(message)
     }
 
-    const start = lexer.position.index
+    const start = lexer.cursor
     lexer.forward(length)
     return lexer.text.slice(start, start + length)
   }
@@ -31,11 +31,11 @@ export class NumberConsumer implements S.Consumer {
 // `3f2c1` and `3-sphere` stay symbols.
 function matchNumber(lexer: S.Lexer): number {
   const text = lexer.text
-  NUMBER_RE.lastIndex = lexer.position.index
+  NUMBER_RE.lastIndex = lexer.cursor
   const match = NUMBER_RE.exec(text)
   if (match === null) return -1
 
-  const end = lexer.position.index + match[0].length
+  const end = lexer.cursor + match[0].length
   const next = text[end]
   if (next === undefined || charIsBlank(next) || MARK_CHARS.has(next)) {
     return match[0].length

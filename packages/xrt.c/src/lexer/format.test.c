@@ -46,5 +46,18 @@ int main(void) {
       "   |       ~~~~~~  \n");
   }
 
+  {
+    // a character outside the basic plane is one character in two code units
+    // "(定义 😀)": '(' 定 义 ' ' 😀 ')' are characters 0..5
+    const char *context = "(定义 😀)\n";
+    struct span_t span = {
+      .start = {.index = 4, .row = 0, .column = 4},
+      .end = {.index = 5, .row = 0, .column = 5},
+    };
+    assert_report(context, span,
+      " 1 | (定义 😀)\n"
+      "   |       ~~  \n");
+  }
+
   test_end();
 }
