@@ -1,3 +1,4 @@
+export * from "./codePointDisplayWidth.ts"
 export * from "./stringBernsteinHash.ts"
 export * from "./stringHasBlank.ts"
 export * from "./stringIsBigInt.ts"

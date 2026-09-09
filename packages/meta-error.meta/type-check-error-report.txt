@@ -83,6 +83,16 @@ src/let/value-restriction-error.meta:5:24 -- unification fail
    |                        ~~~~~~~~~~~    
  6 | 
 
+src/location/underline-width-error.meta:3:13 -- undefined variable
+  package id: self
+  module name: underline-width-error
+  name: 不存在
+ 1 | (module underline-width-error)
+ 2 | 
+ 3 | (define 中文名 不存在)
+   |                ~~~~~~  
+ 4 | 
+
 src/module/nat-private-type-error.meta:8:17 -- undefined variable
   package id: self
   module name: nat-private-type-error

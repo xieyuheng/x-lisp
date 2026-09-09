@@ -1,11 +1,3 @@
-# xvm
-
-[xvm.c] review xvm.c 代码
-
-# x86-lisp
-
-[x86-lisp.js] 修复 x86-lisp 文档
-
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta
@@ -21,8 +13,6 @@
 [meta-lisp.meta] 170-explicate-control-pass.meta
 [meta-lisp.meta] 180-codegen-pass.meta
 
+# xvm
 
-# write ai agent in meta-lisp
-
-socket api and network programming
-http library
+[xvm.c] review xvm.c 代码
