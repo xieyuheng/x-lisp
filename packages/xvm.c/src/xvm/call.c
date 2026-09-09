@@ -57,24 +57,10 @@ void call_primitive(
   }
 }
 
-void call_function_now_values(xvm_t *xvm, function_t *fn,
-                              uint8_t argc, const uint16_t *args, value_t *locals) {
-  value_t saved[argc > 0 ? argc : 1];
-  for (size_t i = 0; i < argc; i++) {
-    saved[i] = locals[args[i]];
-  }
-
-  size_t old_break = xvm->break_depth;
-  xvm->break_depth = xvm->frame_count;
-  xvm_push_function_frame_with_values(xvm, fn, argc, saved);
-  xvm_execute(xvm);
-  xvm->break_depth = old_break;
-}
-
 void call_function_now(xvm_t *xvm, function_t *fn) {
   size_t old_break = xvm->break_depth;
   xvm->break_depth = xvm->frame_count;
-  xvm_push_function_frame(xvm, fn, 0, NULL);
+  xvm_push_function_frame_with_values(xvm, fn, 0, NULL);
   xvm_execute(xvm);
   xvm->break_depth = old_break;
 }

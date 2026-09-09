@@ -6,7 +6,7 @@ static inline void exec_tail_apply_0(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[1];
@@ -25,7 +25,7 @@ static inline void exec_tail_apply_1(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[2];
@@ -49,7 +49,7 @@ static inline void exec_tail_apply_2(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[3];
@@ -78,7 +78,7 @@ static inline void exec_tail_apply_3(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[4];
@@ -112,7 +112,7 @@ static inline void exec_tail_apply_4(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[5];
@@ -151,7 +151,7 @@ static inline void exec_tail_apply_5(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[6];
@@ -195,7 +195,7 @@ static inline void exec_tail_apply_6(xvm_t *xvm, frame_t *frame, value_t *locals
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("tail-apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t tmp[7];

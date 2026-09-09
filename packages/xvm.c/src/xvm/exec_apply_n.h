@@ -7,7 +7,7 @@ static inline void exec_apply_0(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[1];
@@ -24,7 +24,7 @@ static inline void exec_apply_1(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[2];
@@ -44,7 +44,7 @@ static inline void exec_apply_2(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[3];
@@ -67,7 +67,7 @@ static inline void exec_apply_3(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[4];
@@ -93,7 +93,7 @@ static inline void exec_apply_4(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[5];
@@ -122,7 +122,7 @@ static inline void exec_apply_5(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[6];
@@ -154,7 +154,7 @@ static inline void exec_apply_6(xvm_t *xvm, frame_t *frame, value_t *locals) {
   value_t target = locals[target_reg];
   if (!is_closure(target)) {
     who_printf("apply target is not a closure\n");
-    exit(1);
+    assert(false);
   }
   closure_t *closure = to_closure(target);
   value_t values[7];

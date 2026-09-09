@@ -99,7 +99,9 @@ static void frame_stack_ensure(xvm_t *xvm, size_t length) {
     capacity *= 2;
   }
 
-  xvm->frame_bytes = realloc(xvm->frame_bytes, capacity);
+  void *bytes = realloc(xvm->frame_bytes, capacity);
+  assert(bytes != NULL);
+  xvm->frame_bytes = bytes;
   xvm->frame_capacity = capacity;
 }
 
@@ -113,6 +115,7 @@ xvm_t *make_xvm(program_t *program) {
   self->frame_top = 0;
   self->frame_count = 0;
   self->break_depth = 0;
+  self->gc_threshold = 4096;
   self->root_stack = make_stack();
   return self;
 }
@@ -231,28 +234,18 @@ static inline void xvm_push_function_frame_6(xvm_t *xvm, function_t *fn, value_t
   memory_clear(locals + 6, (fn->local_count - 6) * sizeof(value_t));
 }
 
-void xvm_push_function_frame(xvm_t *xvm, function_t *fn,
-                             uint8_t argc, const uint16_t *args) {
-  frame_t *caller = xvm_current_frame(xvm);
-  frame_t *frame = frame_start_push(xvm, fn);
-
-  value_t *locals = frame_locals(frame);
-  if (args && caller) {
-    value_t *caller_locals = frame_locals(caller);
-    for (size_t i = 0; i < argc; i++) {
-      locals[i] = caller_locals[args[i]];
-    }
+void xvm_push_function_frame_with_values(xvm_t *xvm, function_t *fn,
+                                          size_t argc, const value_t *values) {
+  if (argc > fn->local_count) {
+    who_printf("arity mismatch: %s has %u locals but got %zu arguments\n",
+               fn->name, (unsigned) fn->local_count, argc);
+    assert(false);
   }
 
-  memory_clear(locals + argc, (fn->local_count - argc) * sizeof(value_t));
-}
-
-void xvm_push_function_frame_with_values(xvm_t *xvm, function_t *fn,
-                                          size_t argc, value_t *values) {
   frame_t *frame = frame_start_push(xvm, fn);
 
   value_t *locals = frame_locals(frame);
-  for (size_t i = 0; i < argc && i < fn->local_count; i++) {
+  for (size_t i = 0; i < argc; i++) {
     locals[i] = values[i];
   }
 
@@ -457,12 +450,12 @@ static size_t instruction_operand_size(uint8_t op) {
   case OP_LOAD_FLOAT:
   case OP_LOAD_STRING:
   case OP_LOAD_SYMBOL:
-  case OP_LOAD_CLOSURE:
-  case OP_LOAD_GLOBAL: return 2 + 8;
-  case OP_MAKE_CLOSURE: return 2 + 8 + 2;
+  case OP_LOAD_CLOSURE: return 2 + sizeof(value_t);
+  case OP_LOAD_GLOBAL: return 2 + sizeof(value_t *);
+  case OP_MAKE_CLOSURE: return 2 + sizeof(function_t *) + 2;
   case OP_STORE_CLOSURE_ARG: return 2 + 2 + 2;
   case OP_LOAD_RESULT: return 2;
-  case OP_STORE_GLOBAL: return 8 + 2;
+  case OP_STORE_GLOBAL: return sizeof(value_t *) + 2;
   case OP_CALL_0:
   case OP_CALL_1:
   case OP_CALL_2:
@@ -470,6 +463,13 @@ static size_t instruction_operand_size(uint8_t op) {
   case OP_CALL_4:
   case OP_CALL_5:
   case OP_CALL_6:
+  case OP_TAIL_CALL_0:
+  case OP_TAIL_CALL_1:
+  case OP_TAIL_CALL_2:
+  case OP_TAIL_CALL_3:
+  case OP_TAIL_CALL_4:
+  case OP_TAIL_CALL_5:
+  case OP_TAIL_CALL_6: return sizeof(function_t *) + call_argc(op) * 2;
   case OP_CALL_PRIM_0:
   case OP_CALL_PRIM_1:
   case OP_CALL_PRIM_2:
@@ -477,20 +477,13 @@ static size_t instruction_operand_size(uint8_t op) {
   case OP_CALL_PRIM_4:
   case OP_CALL_PRIM_5:
   case OP_CALL_PRIM_6:
-  case OP_TAIL_CALL_0:
-  case OP_TAIL_CALL_1:
-  case OP_TAIL_CALL_2:
-  case OP_TAIL_CALL_3:
-  case OP_TAIL_CALL_4:
-  case OP_TAIL_CALL_5:
-  case OP_TAIL_CALL_6:
   case OP_TAIL_CALL_PRIM_0:
   case OP_TAIL_CALL_PRIM_1:
   case OP_TAIL_CALL_PRIM_2:
   case OP_TAIL_CALL_PRIM_3:
   case OP_TAIL_CALL_PRIM_4:
   case OP_TAIL_CALL_PRIM_5:
-  case OP_TAIL_CALL_PRIM_6: return 8 + call_argc(op) * 2;
+  case OP_TAIL_CALL_PRIM_6: return sizeof(primitive_fn_t) + call_argc(op) * 2;
   case OP_APPLY_0:
   case OP_APPLY_1:
   case OP_APPLY_2:
@@ -537,7 +530,7 @@ static size_t instruction_operand_size(uint8_t op) {
   case OP_FLOAT_IS_NON_ZERO: return 2 + 2;
   default: {
     who_printf("unknown opcode for size: 0x%02x\n", op);
-    exit(1);
+    assert(false);
   }
   }
 }
@@ -551,8 +544,8 @@ static size_t find_threaded_offset(
   for (size_t i = 0; i < count; i++) {
     if (orig_starts[i] == target) return threaded_offsets[i];
   }
-  who_printf("bad threaded jump target: %zu\n", target);
-  exit(1);
+  where_printf("bad threaded jump target: %zu\n", target);
+  assert(false);
 }
 
 static void function_build_threaded_code(function_t *fn) {
@@ -923,10 +916,8 @@ static array_t *xvm_gc_roots(xvm_t *xvm) {
 }
 
 void xvm_gc_maybe_collect(xvm_t *xvm) {
-  static size_t gc_threshold = 4096;
-
   size_t before = gc_object_count(global_gc);
-  if (before < gc_threshold) return;
+  if (before < xvm->gc_threshold) return;
 
   array_t *roots = xvm_gc_roots(xvm);
   for (size_t i = 0; i < array_length(roots); i++) {
@@ -941,12 +932,12 @@ void xvm_gc_maybe_collect(xvm_t *xvm) {
   size_t freed = before - after;
 
   if (freed < before / 10) {
-    gc_threshold = before * 2;
+    xvm->gc_threshold = before * 2;
   } else {
-    gc_threshold = after * 2;
+    xvm->gc_threshold = after * 2;
   }
-  if (gc_threshold < 1024) {
-    gc_threshold = 1024;
+  if (xvm->gc_threshold < 1024) {
+    xvm->gc_threshold = 1024;
   }
 }
 

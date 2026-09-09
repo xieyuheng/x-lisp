@@ -9,6 +9,7 @@ struct xvm_t {
   size_t frame_top;
   size_t frame_count;
   size_t break_depth;
+  size_t gc_threshold;
   stack_t *root_stack;
 };
 
@@ -18,10 +19,8 @@ void xvm_free(xvm_t *self);
 program_t *xvm_program(const xvm_t *self);
 value_t xvm_result(const xvm_t *self);
 
-void xvm_push_function_frame(xvm_t *xvm, function_t *fn,
-                             uint8_t argc, const uint16_t *args);
 void xvm_push_function_frame_with_values(xvm_t *xvm, function_t *fn,
-                                          size_t argc, value_t *values);
+                                          size_t argc, const value_t *values);
 void xvm_pop_frame(xvm_t *xvm);
 size_t xvm_frame_count(const xvm_t *xvm);
 
