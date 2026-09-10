@@ -301,8 +301,7 @@ Operations on `(list-t E)` — immutable lists.
 - [`list-zip-map`](list/list-zip-map.md) — Map over two lists in parallel
 - [`list-zip`](list/list-zip.md) — Pair elements by position
 - [`list-unzip`](list/list-unzip.md) — Unzip pairs
-- [`list-select`](list/list-select.md) — Filter (keep matching)
-- [`list-reject`](list/list-reject.md) — Opposite of filter (remove matching)
+- [`list-filter`](list/list-filter.md) — Filter (keep matching)
 
 ### Folding
 

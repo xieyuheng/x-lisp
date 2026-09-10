@@ -7,7 +7,7 @@
 
 (define (hash-select p hash)
   (make-hash-from-entries
-    (list-select
+    (list-filter
       (lambda (entry) (p (pair-first entry) (pair-second entry)))
       (hash-entries hash))))
 
@@ -18,7 +18,7 @@
 
 (define (hash-select-key p hash)
   (make-hash-from-entries
-    (list-select
+    (list-filter
       (lambda (entry) (p (pair-first entry)))
       (hash-entries hash))))
 
@@ -29,7 +29,7 @@
 
 (define (hash-select-value p hash)
   (make-hash-from-entries
-    (list-select
+    (list-filter
       (lambda (entry) (p (pair-second entry)))
       (hash-entries hash))))
 

@@ -1,0 +1,18 @@
+(module builtin)
+
+(claim list-filter
+  (all (A)
+    (-> (-> A bool-t) (list-t A)
+        (list-t A))))
+
+(define (list-filter p list)
+  (cond ((list-is-empty list) list)
+        ((p (car list))
+         (cons (car list) (list-filter p (cdr list))))
+        (else
+         (list-filter p (cdr list)))))
+
+(define-test list-filter-test
+  (assert-equal
+    (list-filter (negation (equal 0)) (@list 0 1 0 2 0 3))
+    (@list 1 2 3)))

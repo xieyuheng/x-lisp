@@ -25,7 +25,7 @@
 (claim parse-route (-> text-t route-t))
 
 (define (parse-route command)
-  (let ((tokens (list-reject text-is-blank (text-split " " command)))
+  (let ((tokens (list-filter (negation text-is-blank) (text-split " " command)))
         (dash-index (list-find-index (equal "--") tokens))
         (main (if (int-greater-or-equal dash-index 0)
                 (list-take dash-index tokens)
