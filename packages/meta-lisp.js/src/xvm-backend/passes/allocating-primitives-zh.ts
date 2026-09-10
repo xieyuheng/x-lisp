@@ -1,6 +1,6 @@
 // - prims that may allocate gc-heap objects (chinese namespace).
 // - short names, matched against the last segment of a qualified prim name.
-// - audited against [xrt.c] builtin implementations (2026-09).
+// - audited against [xvm.c] builtin implementations (2026-09).
 
 export const allocatingPrimitivesZh: Set<string> = new Set([
   // value

@@ -6,7 +6,7 @@ title: AI Agent 工作指南
 
 # 前言
 
-引用 package 名时使用 `[package-name]` 格式（如 [std.js]、[xrt.c]、[meta-lisp.meta]）。
+引用 package 名时使用 `[package-name]` 格式（如 [std.js]、[xvm.c]、[meta-lisp.meta]）。
 
 AI agent 应用中文回答用户的问题。
 
@@ -27,8 +27,7 @@ AI agent 应用中文回答用户的问题。
 
 - [std.c] — 基础库
 - [cli.c] — CLI 库
-- [xrt.c] — 共享运行时（值类型、GC、解析器、内建函数）
-- [xvm.c] — xvm 虚拟机运行时
+- [xvm.c] — 共享运行时与 xvm 虚拟机（值类型、GC、解析器、内建函数、VM）
 
 **`.meta` packages** — meta-lisp 源码，通过 [meta-lisp.js] 构建/运行：
 
@@ -40,7 +39,7 @@ AI agent 应用中文回答用户的问题。
 # 依赖链
 
 1. `pnpm install`
-2. C：[std.c] → [cli.c] → [xrt.c] → [xvm.c]
+2. C：[std.c] → [cli.c] → [xvm.c]
 3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [basic-lisp.js]/[xvm-lisp.js] → [meta-lisp.js]
    （[x86-lisp.js] 独立于编译器，不参与编译管线）
 4. `.meta` 测试依赖 [meta-lisp.js] 编译器
