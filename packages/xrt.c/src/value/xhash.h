@@ -28,6 +28,5 @@ void write_xhash(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self
 hash_code_t xhash_hash_code(const xhash_t *self);
 ordering_t xhash_compare(const xhash_t *lhs, const xhash_t *rhs);
 
-xhash_child_iter_t *make_xhash_child_iter(const xhash_t *hash);
-void xhash_child_iter_free(xhash_child_iter_t *self);
-object_t *xhash_child_iter_next(xhash_child_iter_t *iter);
+void xhash_for_each_child(const xhash_t *hash,
+                          object_visit_child_fn_t *visit, void *ctx);

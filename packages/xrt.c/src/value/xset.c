@@ -7,9 +7,7 @@ const object_class_t xset_class = {
   .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
   .compare_fn = (object_compare_fn_t *) xset_compare,
   .free_fn = (free_fn_t *) xset_free,
-  .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
-  .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
-  .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
+  .for_each_child_fn = (object_for_each_child_fn_t *) xset_for_each_child,
 };
 
 static hash_code_t value_hash_fn(const void *key) {
@@ -59,6 +57,7 @@ inline bool xset_is_member(const xset_t *self, value_t value) {
 
 inline void xset_add(xset_t *self, value_t value) {
   set_add(self->set, (void *) value);
+  gc_write_barrier((object_t *) self, value);
 }
 
 inline bool xset_delete(xset_t *self, value_t value) {
@@ -176,32 +175,16 @@ ordering_t xset_compare(const xset_t *lhs, const xset_t *rhs) {
   return ordering;
 }
 
-struct xset_child_iter_t {
-  const xset_t *set;
-  struct set_iter_t set_iter;
-};
-
-xset_child_iter_t *make_xset_child_iter(const xset_t *set) {
-  xset_child_iter_t *self = new(xset_child_iter_t);
-  self->set = set;
-  set_iter_init(&self->set_iter, set->set);
-  return self;
-}
-
-void xset_child_iter_free(xset_child_iter_t *self) {
-  free(self);
-}
-
-object_t *xset_child_iter_next(xset_child_iter_t *iter) {
-  const hash_entry_t *entry = set_iter_next_entry(&iter->set_iter);
-  if (entry) {
+void xset_for_each_child(const xset_t *set,
+                         object_visit_child_fn_t *visit, void *ctx) {
+  set_iter_t iter;
+  set_iter_init(&iter, set->set);
+  const hash_entry_t *entry = set_iter_next_entry(&iter);
+  while (entry) {
     value_t value = (value_t) entry->value;
-    return is_object(value)
-      ? to_object(value)
-      : xset_child_iter_next(iter);
+    if (is_object(value)) visit(to_object(value), ctx);
+    entry = set_iter_next_entry(&iter);
   }
-
-  return NULL;
 }
 
 xset_t *xset_union(const xset_t *lhs, const xset_t *rhs) {

@@ -4,6 +4,7 @@ value_t x_closure_put_arg_mut(value_t index_val, value_t value, value_t closure_
   size_t index = (size_t) to_int64(index_val);
   closure_t *closure = to_closure(closure_val);
   closure->args[index] = value;
+  gc_write_barrier((object_t *) closure, value);
   return x_object(closure);
 }
 

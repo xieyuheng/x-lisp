@@ -1,18 +1,11 @@
 #include "index.h"
 
-typedef struct closure_child_iter_t {
-  const closure_t *closure;
-  size_t index;
-} closure_child_iter_t;
-
 const object_class_t closure_class = {
   .name = "closure",
   .equal_fn = (object_equal_fn_t *) closure_equal,
   .write_fn = (object_write_fn_t *) write_closure,
   .free_fn = (free_fn_t *) closure_free,
-  .make_child_iter_fn = (object_make_child_iter_fn_t *) make_closure_child_iter,
-  .child_iter_next_fn = (object_child_iter_next_fn_t *) closure_child_iter_next,
-  .child_iter_free_fn = (free_fn_t *) closure_child_iter_free,
+  .for_each_child_fn = (object_for_each_child_fn_t *) closure_for_each_child,
 };
 
 closure_t *make_closure(function_t *function, size_t size) {
@@ -89,23 +82,10 @@ void write_closure(buffer_t *buffer, object_circle_ctx_t *ctx, const closure_t *
   write_template(buffer, "])");
 }
 
-closure_child_iter_t *make_closure_child_iter(const closure_t *closure) {
-  closure_child_iter_t *self = new(closure_child_iter_t);
-  self->closure = closure;
-  self->index = 0;
-  return self;
-}
-
-void closure_child_iter_free(closure_child_iter_t *self) {
-  free(self);
-}
-
-object_t *closure_child_iter_next(closure_child_iter_t *iter) {
-  while (iter->index < iter->closure->size) {
-    value_t value = iter->closure->args[iter->index++];
-    if (is_object(value)) {
-      return to_object(value);
-    }
+void closure_for_each_child(const closure_t *closure,
+                            object_visit_child_fn_t *visit, void *ctx) {
+  for (size_t i = 0; i < closure->size; i++) {
+    value_t value = closure->args[i];
+    if (is_object(value)) visit(to_object(value), ctx);
   }
-  return NULL;
 }

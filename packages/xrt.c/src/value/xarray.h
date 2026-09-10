@@ -29,6 +29,5 @@ void write_xarray(buffer_t *buffer, object_circle_ctx_t *ctx, const xarray_t *se
 hash_code_t xarray_hash_code(const xarray_t *self);
 ordering_t xarray_compare(const xarray_t *lhs, const xarray_t *rhs);
 
-xarray_child_iter_t *make_xarray_child_iter(const xarray_t *xarray);
-void xarray_child_iter_free(xarray_child_iter_t *self);
-object_t *xarray_child_iter_next(xarray_child_iter_t *iter);
+void xarray_for_each_child(const xarray_t *xarray,
+                           object_visit_child_fn_t *visit, void *ctx);

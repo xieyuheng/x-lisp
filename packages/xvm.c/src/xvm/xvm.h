@@ -9,7 +9,6 @@ struct xvm_t {
   size_t frame_top;
   size_t frame_count;
   size_t break_depth;
-  size_t gc_threshold;
   stack_t *root_stack;
 };
 

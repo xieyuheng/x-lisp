@@ -28,9 +28,8 @@ void write_xset(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self);
 hash_code_t xset_hash_code(const xset_t *self);
 ordering_t xset_compare(const xset_t *lhs, const xset_t *rhs);
 
-xset_child_iter_t *make_xset_child_iter(const xset_t *set);
-void xset_child_iter_free(xset_child_iter_t *self);
-object_t *xset_child_iter_next(xset_child_iter_t *iter);
+void xset_for_each_child(const xset_t *set,
+                         object_visit_child_fn_t *visit, void *ctx);
 
 xset_t *xset_union(const xset_t *lhs, const xset_t *rhs);
 xset_t *xset_inter(const xset_t *lhs, const xset_t *rhs);

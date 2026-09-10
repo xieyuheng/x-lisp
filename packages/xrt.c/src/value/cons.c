@@ -7,9 +7,7 @@ const object_class_t cons_class = {
   .hash_code_fn = (object_hash_code_fn_t *) cons_hash_code,
   .compare_fn = (object_compare_fn_t *) cons_compare,
   .free_fn = (free_fn_t *) cons_free,
-  .make_child_iter_fn = (object_make_child_iter_fn_t *) make_cons_child_iter,
-  .child_iter_next_fn = (object_child_iter_next_fn_t *) cons_child_iter_next,
-  .child_iter_free_fn = (free_fn_t *) cons_child_iter_free,
+  .for_each_child_fn = (object_for_each_child_fn_t *) cons_for_each_child,
 };
 
 cons_t *make_cons(value_t car, value_t cdr) {
@@ -30,7 +28,9 @@ void list_builder_append(list_builder_t *self, value_t value) {
   if (self->head == x_null) {
     self->head = cell;
   } else {
-    to_cons(self->tail)->cdr = cell;
+    cons_t *tail = to_cons(self->tail);
+    tail->cdr = cell;
+    gc_write_barrier((object_t *) tail, cell);
   }
   self->tail = cell;
 }
@@ -118,38 +118,8 @@ ordering_t cons_compare(const cons_t *lhs, const cons_t *rhs) {
   }
 }
 
-struct cons_child_iter_t {
-  const cons_t *cons;
-  uint8_t index;
-};
-
-cons_child_iter_t *make_cons_child_iter(const cons_t *cons) {
-  cons_child_iter_t *self = new(cons_child_iter_t);
-  self->cons = cons;
-  self->index = 0;
-  return self;
-}
-
-void cons_child_iter_free(cons_child_iter_t *self) {
-  free(self);
-}
-
-object_t *cons_child_iter_next(cons_child_iter_t *iter) {
-  while (true) {
-    if (iter->index == 0) {
-      iter->index = 1;
-      if (is_object(iter->cons->car)) {
-        return to_object(iter->cons->car);
-      }
-    }
-
-    if (iter->index == 1) {
-      iter->index = 2;
-      if (is_object(iter->cons->cdr)) {
-        return to_object(iter->cons->cdr);
-      }
-    }
-
-    return NULL;
-  }
+void cons_for_each_child(const cons_t *cons,
+                         object_visit_child_fn_t *visit, void *ctx) {
+  if (is_object(cons->car)) visit(to_object(cons->car), ctx);
+  if (is_object(cons->cdr)) visit(to_object(cons->cdr), ctx);
 }

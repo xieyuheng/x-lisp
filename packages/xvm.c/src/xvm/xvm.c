@@ -115,7 +115,6 @@ xvm_t *make_xvm(program_t *program) {
   self->frame_top = 0;
   self->frame_count = 0;
   self->break_depth = 0;
-  self->gc_threshold = 4096;
   self->root_stack = make_stack();
   return self;
 }
@@ -328,6 +327,7 @@ static inline void exec_store_closure_arg(frame_t *frame, value_t *locals) {
   memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), src);
   closure_t *closure = to_closure(locals[closure_reg]);
   closure->args[index] = locals[src];
+  gc_write_barrier((object_t *) closure, locals[src]);
   frame->pc += 1 + 3 * sizeof(uint16_t);
 }
 
@@ -680,29 +680,11 @@ static array_t *xvm_gc_roots(xvm_t *xvm) {
 }
 
 void xvm_gc_maybe_collect(xvm_t *xvm) {
-  size_t before = gc_object_count(global_gc);
-  if (before < xvm->gc_threshold) return;
+  if (!gc_should_collect(global_gc)) return;
 
   array_t *roots = xvm_gc_roots(xvm);
-  for (size_t i = 0; i < array_length(roots); i++) {
-    gc_mark_object(global_gc, array_get(roots, i));
-  }
-
-  gc_mark(global_gc);
-  gc_sweep(global_gc);
+  gc_collect(global_gc, roots);
   array_free(roots);
-
-  size_t after = gc_object_count(global_gc);
-  size_t freed = before - after;
-
-  if (freed < before / 10) {
-    xvm->gc_threshold = before * 2;
-  } else {
-    xvm->gc_threshold = after * 2;
-  }
-  if (xvm->gc_threshold < 1024) {
-    xvm->gc_threshold = 1024;
-  }
 }
 
 void xvm_inspect(xvm_t *xvm) {

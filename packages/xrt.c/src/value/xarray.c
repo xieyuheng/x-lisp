@@ -7,9 +7,7 @@ const object_class_t xarray_class = {
   .hash_code_fn = (object_hash_code_fn_t *) xarray_hash_code,
   .compare_fn = (object_compare_fn_t *) xarray_compare,
   .free_fn = (free_fn_t *) xarray_free,
-  .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xarray_child_iter,
-  .child_iter_next_fn = (object_child_iter_next_fn_t *) xarray_child_iter_next,
-  .child_iter_free_fn = (free_fn_t *) xarray_child_iter_free,
+  .for_each_child_fn = (object_for_each_child_fn_t *) xarray_for_each_child,
 };
 
 xarray_t *make_xarray(void) {
@@ -41,6 +39,7 @@ inline value_t xarray_get(const xarray_t *self, size_t index) {
 
 inline void xarray_put(xarray_t *self, size_t index, value_t value) {
   array_put(self->elements, index, (void *) value);
+  gc_write_barrier((object_t *) self, value);
 }
 
 inline value_t xarray_pop(xarray_t *self) {
@@ -49,6 +48,7 @@ inline value_t xarray_pop(xarray_t *self) {
 
 inline void xarray_push(xarray_t *self, value_t value) {
   array_push(self->elements, (void *) value);
+  gc_write_barrier((object_t *) self, value);
 }
 
 inline value_t xarray_pop_front(xarray_t *self) {
@@ -57,13 +57,14 @@ inline value_t xarray_pop_front(xarray_t *self) {
 
 inline void xarray_push_front(xarray_t *self, value_t value) {
   array_push_front(self->elements, (void *) value);
+  gc_write_barrier((object_t *) self, value);
 }
 
 xarray_t *xarray_copy(const xarray_t *self) {
   xarray_t *new_xarray = make_xarray();
 
   for (size_t i = 0; i < array_length(self->elements); i++) {
-    array_push(new_xarray->elements, (void *) xarray_get(self, i));
+    xarray_push(new_xarray, xarray_get(self, i));
   }
 
   return new_xarray;
@@ -145,29 +146,10 @@ ordering_t xarray_compare(const xarray_t *lhs, const xarray_t *rhs) {
   return xarray_compare_elements(lhs, rhs);
 }
 
-struct xarray_child_iter_t {
-  const xarray_t *xarray;
-  size_t index;
-};
-
-xarray_child_iter_t *make_xarray_child_iter(const xarray_t *xarray) {
-  xarray_child_iter_t *self = new(xarray_child_iter_t);
-  self->xarray = xarray;
-  self->index = 0;
-  return self;
-}
-
-void xarray_child_iter_free(xarray_child_iter_t *self) {
-  free(self);
-}
-
-object_t *xarray_child_iter_next(xarray_child_iter_t *iter) {
-  if (iter->index < array_length(iter->xarray->elements)) {
-    value_t value = xarray_get(iter->xarray, iter->index++);
-    return is_object(value)
-      ? to_object(value)
-      : xarray_child_iter_next(iter);
+void xarray_for_each_child(const xarray_t *xarray,
+                           object_visit_child_fn_t *visit, void *ctx) {
+  for (size_t i = 0; i < array_length(xarray->elements); i++) {
+    value_t value = xarray_get(xarray, i);
+    if (is_object(value)) visit(to_object(value), ctx);
   }
-
-  return NULL;
 }

@@ -31,6 +31,10 @@ void object_circle_meet(object_circle_ctx_t *self, object_t *object) {
   set_add(self->occurred_objects, object);
 }
 
+static void object_circle_visit(object_t *child, void *ctx) {
+  object_circle_collect((object_circle_ctx_t *) ctx, child);
+}
+
 void object_circle_collect(object_circle_ctx_t *self, object_t *object) {
   if (set_member(self->occurred_objects, object)) {
     if (hash_has(self->circle_indexes, object)) return;
@@ -41,16 +45,8 @@ void object_circle_collect(object_circle_ctx_t *self, object_t *object) {
   }
 
   const object_class_t *class = object->header.class;
-  if (class->make_child_iter_fn) {
+  if (class->for_each_child_fn) {
     set_add(self->occurred_objects, object);
-
-    void *iter = class->make_child_iter_fn(object);
-    object_t *child = class->child_iter_next_fn(iter);
-    while (child) {
-      object_circle_collect(self, child);
-      child = class->child_iter_next_fn(iter);
-    }
-
-    class->child_iter_free_fn(iter);
+    class->for_each_child_fn(object, object_circle_visit, self);
   }
 }

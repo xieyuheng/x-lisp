@@ -7,9 +7,7 @@ const object_class_t xhash_class = {
   .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
   .compare_fn = (object_compare_fn_t *) xhash_compare,
   .free_fn = (free_fn_t *) xhash_free,
-  .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xhash_child_iter,
-  .child_iter_next_fn = (object_child_iter_next_fn_t *) xhash_child_iter_next,
-  .child_iter_free_fn = (free_fn_t *) xhash_child_iter_free,
+  .for_each_child_fn = (object_for_each_child_fn_t *) xhash_for_each_child,
 };
 
 static hash_code_t value_hash_fn(const void *key) {
@@ -71,6 +69,8 @@ inline value_t xhash_get(const xhash_t *self, value_t key) {
 
 inline void xhash_put(xhash_t *self, value_t key, value_t value) {
   hash_put(self->hash, (void *) key, (void *) value);
+  gc_write_barrier((object_t *) self, key);
+  gc_write_barrier((object_t *) self, value);
 }
 
 inline void xhash_delete(xhash_t *self, value_t key) {
@@ -198,40 +198,16 @@ ordering_t xhash_compare(const xhash_t *lhs, const xhash_t *rhs) {
   return ordering;
 }
 
-struct xhash_child_iter_t {
-  const xhash_t *hash;
-  struct hash_iter_t hash_iter;
-  const hash_entry_t *entry;
-};
-
-xhash_child_iter_t *make_xhash_child_iter(const xhash_t *hash) {
-  xhash_child_iter_t *self = new(xhash_child_iter_t);
-  self->hash = hash;
-  hash_iter_init(&self->hash_iter, hash->hash);
-  self->entry = NULL;
-  return self;
-}
-
-void xhash_child_iter_free(xhash_child_iter_t *self) {
-  free(self);
-}
-
-object_t *xhash_child_iter_next(xhash_child_iter_t *iter) {
-  if (iter->entry) {
-    value_t value = (value_t) iter->entry->value;
-    iter->entry = NULL;
-    return is_object(value)
-      ? to_object(value)
-      : xhash_child_iter_next(iter);
+void xhash_for_each_child(const xhash_t *hash,
+                          object_visit_child_fn_t *visit, void *ctx) {
+  hash_iter_t iter;
+  hash_iter_init(&iter, hash->hash);
+  const hash_entry_t *entry = hash_iter_next_entry(&iter);
+  while (entry) {
+    value_t key = (value_t) entry->key;
+    if (is_object(key)) visit(to_object(key), ctx);
+    value_t value = (value_t) entry->value;
+    if (is_object(value)) visit(to_object(value), ctx);
+    entry = hash_iter_next_entry(&iter);
   }
-
-  iter->entry = hash_iter_next_entry(&iter->hash_iter);
-  if (iter->entry) {
-    value_t value = (value_t) iter->entry->key;
-    return is_object(value)
-      ? to_object(value)
-      : xhash_child_iter_next(iter);
-  }
-
-  return NULL;
 }
