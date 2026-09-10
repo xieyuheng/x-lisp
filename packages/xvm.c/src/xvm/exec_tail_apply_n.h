@@ -4,10 +4,6 @@ static inline void exec_tail_apply_0(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t target_reg;
   memory_load(frame->pc + 1, target_reg);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[1];
   tmp[0] = target;
@@ -23,10 +19,6 @@ static inline void exec_tail_apply_1(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t a0;
   memory_load(frame->pc + 1 + sizeof(uint16_t), a0);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[2];
   tmp[0] = target;
@@ -47,10 +39,6 @@ static inline void exec_tail_apply_2(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t a1;
   memory_load(frame->pc + 1 + 2 * sizeof(uint16_t), a1);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[3];
   tmp[0] = target;
@@ -76,10 +64,6 @@ static inline void exec_tail_apply_3(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t a2;
   memory_load(frame->pc + 1 + 3 * sizeof(uint16_t), a2);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[4];
   tmp[0] = target;
@@ -110,10 +94,6 @@ static inline void exec_tail_apply_4(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t a3;
   memory_load(frame->pc + 1 + 4 * sizeof(uint16_t), a3);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[5];
   tmp[0] = target;
@@ -149,10 +129,6 @@ static inline void exec_tail_apply_5(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t a4;
   memory_load(frame->pc + 1 + 5 * sizeof(uint16_t), a4);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[6];
   tmp[0] = target;
@@ -193,10 +169,6 @@ static inline void exec_tail_apply_6(xvm_t *xvm, frame_t *frame, value_t *locals
   uint16_t a5;
   memory_load(frame->pc + 1 + 6 * sizeof(uint16_t), a5);
   value_t target = locals[target_reg];
-  if (!is_closure(target)) {
-    who_printf("tail-apply target is not a closure\n");
-    assert(false);
-  }
   closure_t *closure = to_closure(target);
   value_t tmp[7];
   tmp[0] = target;

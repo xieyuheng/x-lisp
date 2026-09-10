@@ -95,12 +95,6 @@ value_t *program_lookup_variable_or_fail(program_t *self, const char *name) {
 
 void program_call_entry(program_t *self, const char *name) {
   function_t *fn = program_lookup_function_or_fail(self, name);
-  if (fn->arity != 0) {
-    who_printf("entry function must be 0 arity\n");
-    who_printf("  name: %s\n", name);
-    who_printf("  arity: %d\n", fn->arity);
-    exit(1);
-  }
 
   xvm_t *xvm = make_xvm(self);
   xvm_push_function_frame_with_values(xvm, fn, 0, NULL);

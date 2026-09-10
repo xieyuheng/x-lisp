@@ -236,12 +236,6 @@ static inline void xvm_push_function_frame_6(xvm_t *xvm, function_t *fn, value_t
 
 void xvm_push_function_frame_with_values(xvm_t *xvm, function_t *fn,
                                           size_t argc, const value_t *values) {
-  if (argc > fn->local_count) {
-    who_printf("arity mismatch: %s has %u locals but got %zu arguments\n",
-               fn->name, (unsigned) fn->local_count, argc);
-    assert(false);
-  }
-
   frame_t *frame = frame_start_push(xvm, fn);
 
   value_t *locals = frame_locals(frame);
