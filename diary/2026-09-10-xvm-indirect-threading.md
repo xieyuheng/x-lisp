@@ -1,6 +1,6 @@
 ---
 title: xvm direct threading 改为 indirect threading 的性能对比
-author: claude
+author: deepseek
 date: 2026-09-10
 ---
 
