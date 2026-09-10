@@ -11,7 +11,6 @@ program_t *make_program(void) {
   self->functions = make_record_with((free_fn_t *) function_free);
   self->primitives = make_record_with((free_fn_t *) primitive_entry_free);
   self->variables = make_record_with((free_fn_t *) free);
-  self->threaded_codes_ready = false;
   import_builtin(self);
   return self;
 }

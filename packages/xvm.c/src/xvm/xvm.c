@@ -152,7 +152,7 @@ inline frame_t *xvm_current_frame(xvm_t *xvm) {
 }
 
 static inline void init_frame_header(frame_t *frame, function_t *fn, size_t prev_frame_offset) {
-  frame->pc = fn->threaded_code + sizeof(void *);
+  frame->pc = fn->bytecode;
   frame->prev_frame_offset = prev_frame_offset;
 }
 
@@ -291,16 +291,6 @@ static void xvm_tail_call_replace(xvm_t *xvm, function_t *fn,
   xvm->frame_top = new_end;
 }
 
-static uint8_t call_argc(uint8_t op) {
-  if (op >= OP_CALL_0 && op <= OP_CALL_6) return op - OP_CALL_0;
-  if (op >= OP_CALL_PRIM_0 && op <= OP_CALL_PRIM_6) return op - OP_CALL_PRIM_0;
-  if (op >= OP_TAIL_CALL_0 && op <= OP_TAIL_CALL_6) return op - OP_TAIL_CALL_0;
-  if (op >= OP_TAIL_CALL_PRIM_0 && op <= OP_TAIL_CALL_PRIM_6) return op - OP_TAIL_CALL_PRIM_0;
-  if (op >= OP_APPLY_0 && op <= OP_APPLY_6) return op - OP_APPLY_0;
-  if (op >= OP_TAIL_APPLY_0 && op <= OP_TAIL_APPLY_6) return op - OP_TAIL_APPLY_0;
-  return 0;
-}
-
 static inline void exec_move(frame_t *frame, value_t *locals) {
   uint16_t dest; memory_load(frame->pc + 1, dest);
   uint16_t src; memory_load(frame->pc + 1 + sizeof(uint16_t), src);
@@ -437,329 +427,109 @@ DEFINE_UNARY_OP(float_is_positive, x_float_positive)
 DEFINE_UNARY_OP(float_is_non_negative, x_float_non_negative)
 DEFINE_UNARY_OP(float_is_non_zero, x_float_non_zero)
 
-static size_t instruction_operand_size(uint8_t op) {
-  switch (op) {
-  case OP_MOVE: return 2 + 2;
-  case OP_LOAD_INT:
-  case OP_LOAD_FLOAT:
-  case OP_LOAD_STRING:
-  case OP_LOAD_SYMBOL:
-  case OP_LOAD_CLOSURE: return 2 + sizeof(value_t);
-  case OP_LOAD_GLOBAL: return 2 + sizeof(value_t *);
-  case OP_MAKE_CLOSURE: return 2 + sizeof(function_t *) + 2;
-  case OP_STORE_CLOSURE_ARG: return 2 + 2 + 2;
-  case OP_LOAD_RESULT: return 2;
-  case OP_STORE_GLOBAL: return sizeof(value_t *) + 2;
-  case OP_CALL_0:
-  case OP_CALL_1:
-  case OP_CALL_2:
-  case OP_CALL_3:
-  case OP_CALL_4:
-  case OP_CALL_5:
-  case OP_CALL_6:
-  case OP_TAIL_CALL_0:
-  case OP_TAIL_CALL_1:
-  case OP_TAIL_CALL_2:
-  case OP_TAIL_CALL_3:
-  case OP_TAIL_CALL_4:
-  case OP_TAIL_CALL_5:
-  case OP_TAIL_CALL_6: return sizeof(function_t *) + call_argc(op) * 2;
-  case OP_CALL_PRIM_0:
-  case OP_CALL_PRIM_1:
-  case OP_CALL_PRIM_2:
-  case OP_CALL_PRIM_3:
-  case OP_CALL_PRIM_4:
-  case OP_CALL_PRIM_5:
-  case OP_CALL_PRIM_6:
-  case OP_TAIL_CALL_PRIM_0:
-  case OP_TAIL_CALL_PRIM_1:
-  case OP_TAIL_CALL_PRIM_2:
-  case OP_TAIL_CALL_PRIM_3:
-  case OP_TAIL_CALL_PRIM_4:
-  case OP_TAIL_CALL_PRIM_5:
-  case OP_TAIL_CALL_PRIM_6: return sizeof(primitive_fn_t) + call_argc(op) * 2;
-  case OP_APPLY_0:
-  case OP_APPLY_1:
-  case OP_APPLY_2:
-  case OP_APPLY_3:
-  case OP_APPLY_4:
-  case OP_APPLY_5:
-  case OP_APPLY_6:
-  case OP_TAIL_APPLY_0:
-  case OP_TAIL_APPLY_1:
-  case OP_TAIL_APPLY_2:
-  case OP_TAIL_APPLY_3:
-  case OP_TAIL_APPLY_4:
-  case OP_TAIL_APPLY_5:
-  case OP_TAIL_APPLY_6: return 2 + call_argc(op) * 2;
-  case OP_GOTO: return 4;
-  case OP_BRANCH: return 2 + 4 + 4;
-  case OP_RETURN: return 2;
-  case OP_RETURN_VOID:
-  case OP_GC: return 0;
-  case OP_IADD:
-  case OP_ISUB:
-  case OP_IMUL:
-  case OP_IDIV:
-  case OP_IMOD:
-  case OP_INT_GREATER:
-  case OP_INT_LESS:
-  case OP_INT_GREATER_OR_EQUAL:
-  case OP_INT_LESS_OR_EQUAL:
-  case OP_FADD:
-  case OP_FSUB:
-  case OP_FMUL:
-  case OP_FDIV:
-  case OP_FLOAT_GREATER:
-  case OP_FLOAT_LESS:
-  case OP_FLOAT_GREATER_OR_EQUAL:
-  case OP_FLOAT_LESS_OR_EQUAL: return 2 + 2 + 2;
-  case OP_INEG:
-  case OP_INT_IS_POSITIVE:
-  case OP_INT_IS_NON_NEGATIVE:
-  case OP_INT_IS_NON_ZERO:
-  case OP_FNEG:
-  case OP_FLOAT_IS_POSITIVE:
-  case OP_FLOAT_IS_NON_NEGATIVE:
-  case OP_FLOAT_IS_NON_ZERO: return 2 + 2;
-  default: {
-    who_printf("unknown opcode for size: 0x%02x\n", op);
-    assert(false);
-  }
-  }
-}
-
-static size_t find_threaded_offset(
-  const size_t *orig_starts,
-  const size_t *threaded_offsets,
-  size_t count,
-  size_t target
-) {
-  for (size_t i = 0; i < count; i++) {
-    if (orig_starts[i] == target) return threaded_offsets[i];
-  }
-  where_printf("bad threaded jump target: %zu\n", target);
-  assert(false);
-}
-
-static void function_build_threaded_code(function_t *fn) {
-  if (fn->bytecode == NULL || fn->code_length == 0) {
-    fn->threaded_code = NULL;
-    fn->threaded_code_length = 0;
-    fn->threaded_ready = false;
-    return;
-  }
-
-  size_t count = 0;
-  size_t pos = 0;
-  while (pos < fn->code_length) {
-    count += 1;
-    pos += 1 + instruction_operand_size(fn->bytecode[pos]);
-  }
-
-  size_t *orig_starts = allocate(sizeof(size_t) * count);
-  size_t *threaded_offsets = allocate(sizeof(size_t) * count);
-  size_t threaded_len = fn->code_length + count * sizeof(void *);
-  uint8_t *threaded = allocate(threaded_len);
-
-  pos = 0;
-  size_t out = 0;
-  for (size_t i = 0; i < count; i++) {
-    uint8_t op = fn->bytecode[pos];
-    size_t opsz = instruction_operand_size(op);
-    orig_starts[i] = pos;
-    threaded_offsets[i] = out + sizeof(void *);
-    pos += 1 + opsz;
-    out += sizeof(void *) + 1 + opsz;
-  }
-
-  pos = 0;
-  out = 0;
-  for (size_t i = 0; i < count; i++) {
-    uint8_t op = fn->bytecode[pos];
-    size_t opsz = instruction_operand_size(op);
-
-    // handler pointer slot is left zero; filled lazily at first threaded run.
-    threaded[out + sizeof(void *)] = op;
-    memory_copy(threaded + out + sizeof(void *) + 1, fn->bytecode + pos + 1, opsz);
-
-    if (op == OP_GOTO) {
-      int32_t orig_offset;
-      memory_load(fn->bytecode + pos + 1, orig_offset);
-      size_t orig_target = pos + 1 + opsz + (size_t) orig_offset;
-      size_t threaded_target = find_threaded_offset(orig_starts, threaded_offsets, count, orig_target);
-      int32_t new_offset = (int32_t) (threaded_target - (out + sizeof(void *) + 1 + opsz));
-      memory_store(threaded + out + sizeof(void *) + 1, new_offset);
-    }
-
-    if (op == OP_BRANCH) {
-      int32_t orig_then;
-      int32_t orig_else;
-      memory_load(fn->bytecode + pos + 1 + 2, orig_then);
-      memory_load(fn->bytecode + pos + 1 + 2 + 4, orig_else);
-
-      size_t orig_then_target = pos + 1 + opsz + (size_t) orig_then;
-      size_t orig_else_target = pos + 1 + opsz + (size_t) orig_else;
-      size_t threaded_then = find_threaded_offset(orig_starts, threaded_offsets, count, orig_then_target);
-      size_t threaded_else = find_threaded_offset(orig_starts, threaded_offsets, count, orig_else_target);
-
-      int32_t new_then = (int32_t) (threaded_then - (out + sizeof(void *) + 1 + opsz));
-      int32_t new_else = (int32_t) (threaded_else - (out + sizeof(void *) + 1 + opsz));
-      memory_store(threaded + out + sizeof(void *) + 1 + 2, new_then);
-      memory_store(threaded + out + sizeof(void *) + 1 + 2 + 4, new_else);
-    }
-
-    pos += 1 + opsz;
-    out += sizeof(void *) + 1 + opsz;
-  }
-
-  free(orig_starts);
-  free(threaded_offsets);
-
-  fn->threaded_code = threaded;
-  fn->threaded_code_length = threaded_len;
-  fn->threaded_ready = false;
-}
-
-void program_build_threaded_codes(program_t *program) {
-  record_iter_t iter;
-  record_iter_init(&iter, program->functions);
-  function_t *fn = record_iter_next_value(&iter);
-  while (fn) {
-    function_build_threaded_code(fn);
-    fn = record_iter_next_value(&iter);
-  }
-}
-
-static void *threaded_handlers[256];
-static bool threaded_handlers_ready = false;
-
-static void ensure_threaded_function(function_t *fn) {
-  if (fn->threaded_ready) return;
-
-  uint8_t *p = fn->threaded_code;
-  uint8_t *end = fn->threaded_code + fn->threaded_code_length;
-  while (p < end) {
-    uint8_t op = p[sizeof(void *)];
-    void *handler = threaded_handlers[op];
-    memory_copy(p, &handler, sizeof(handler));
-    p += sizeof(void *) + 1 + instruction_operand_size(op);
-  }
-
-  fn->threaded_ready = true;
-}
+static void *dispatch_table[256];
+static bool dispatch_table_ready = false;
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 
-#define TH_DISPATCH() goto *((void **)(frame->pc - sizeof(void *)))[0]
-#define TH_NEXT() goto *((void **)(frame->pc - sizeof(void *)))[0]
+#define TH_DISPATCH() goto *dispatch_table[frame->pc[0]]
+#define TH_NEXT() goto *dispatch_table[frame->pc[0]]
 
 void xvm_execute(xvm_t *xvm) {
-  if (!threaded_handlers_ready) {
-    threaded_handlers[OP_MOVE] = &&th_move;
-    threaded_handlers[OP_LOAD_INT] = &&th_load_value;
-    threaded_handlers[OP_LOAD_FLOAT] = &&th_load_value;
-    threaded_handlers[OP_LOAD_STRING] = &&th_load_value;
-    threaded_handlers[OP_LOAD_SYMBOL] = &&th_load_value;
-    threaded_handlers[OP_LOAD_CLOSURE] = &&th_load_value;
-    threaded_handlers[OP_MAKE_CLOSURE] = &&th_make_closure;
-    threaded_handlers[OP_STORE_CLOSURE_ARG] = &&th_store_closure_arg;
-    threaded_handlers[OP_LOAD_RESULT] = &&th_load_result;
-    threaded_handlers[OP_LOAD_GLOBAL] = &&th_load_global;
-    threaded_handlers[OP_STORE_GLOBAL] = &&th_store_global;
-    threaded_handlers[OP_RETURN] = &&th_return;
-    threaded_handlers[OP_RETURN_VOID] = &&th_return_void;
-    threaded_handlers[OP_GC] = &&th_gc;
+  if (!dispatch_table_ready) {
+    dispatch_table[OP_MOVE] = &&th_move;
+    dispatch_table[OP_LOAD_INT] = &&th_load_value;
+    dispatch_table[OP_LOAD_FLOAT] = &&th_load_value;
+    dispatch_table[OP_LOAD_STRING] = &&th_load_value;
+    dispatch_table[OP_LOAD_SYMBOL] = &&th_load_value;
+    dispatch_table[OP_LOAD_CLOSURE] = &&th_load_value;
+    dispatch_table[OP_MAKE_CLOSURE] = &&th_make_closure;
+    dispatch_table[OP_STORE_CLOSURE_ARG] = &&th_store_closure_arg;
+    dispatch_table[OP_LOAD_RESULT] = &&th_load_result;
+    dispatch_table[OP_LOAD_GLOBAL] = &&th_load_global;
+    dispatch_table[OP_STORE_GLOBAL] = &&th_store_global;
+    dispatch_table[OP_RETURN] = &&th_return;
+    dispatch_table[OP_RETURN_VOID] = &&th_return_void;
+    dispatch_table[OP_GC] = &&th_gc;
 
-    threaded_handlers[OP_CALL_0] = &&th_call_0;
-    threaded_handlers[OP_CALL_1] = &&th_call_1;
-    threaded_handlers[OP_CALL_2] = &&th_call_2;
-    threaded_handlers[OP_CALL_3] = &&th_call_3;
-    threaded_handlers[OP_CALL_4] = &&th_call_4;
-    threaded_handlers[OP_CALL_5] = &&th_call_5;
-    threaded_handlers[OP_CALL_6] = &&th_call_6;
-    threaded_handlers[OP_CALL_PRIM_0] = &&th_call_prim_0;
-    threaded_handlers[OP_CALL_PRIM_1] = &&th_call_prim_1;
-    threaded_handlers[OP_CALL_PRIM_2] = &&th_call_prim_2;
-    threaded_handlers[OP_CALL_PRIM_3] = &&th_call_prim_3;
-    threaded_handlers[OP_CALL_PRIM_4] = &&th_call_prim_4;
-    threaded_handlers[OP_CALL_PRIM_5] = &&th_call_prim_5;
-    threaded_handlers[OP_CALL_PRIM_6] = &&th_call_prim_6;
-    threaded_handlers[OP_TAIL_CALL_0] = &&th_tail_call_0;
-    threaded_handlers[OP_TAIL_CALL_1] = &&th_tail_call_1;
-    threaded_handlers[OP_TAIL_CALL_2] = &&th_tail_call_2;
-    threaded_handlers[OP_TAIL_CALL_3] = &&th_tail_call_3;
-    threaded_handlers[OP_TAIL_CALL_4] = &&th_tail_call_4;
-    threaded_handlers[OP_TAIL_CALL_5] = &&th_tail_call_5;
-    threaded_handlers[OP_TAIL_CALL_6] = &&th_tail_call_6;
-    threaded_handlers[OP_TAIL_CALL_PRIM_0] = &&th_tail_call_prim_0;
-    threaded_handlers[OP_TAIL_CALL_PRIM_1] = &&th_tail_call_prim_1;
-    threaded_handlers[OP_TAIL_CALL_PRIM_2] = &&th_tail_call_prim_2;
-    threaded_handlers[OP_TAIL_CALL_PRIM_3] = &&th_tail_call_prim_3;
-    threaded_handlers[OP_TAIL_CALL_PRIM_4] = &&th_tail_call_prim_4;
-    threaded_handlers[OP_TAIL_CALL_PRIM_5] = &&th_tail_call_prim_5;
-    threaded_handlers[OP_TAIL_CALL_PRIM_6] = &&th_tail_call_prim_6;
-    threaded_handlers[OP_APPLY_0] = &&th_apply_0;
-    threaded_handlers[OP_APPLY_1] = &&th_apply_1;
-    threaded_handlers[OP_APPLY_2] = &&th_apply_2;
-    threaded_handlers[OP_APPLY_3] = &&th_apply_3;
-    threaded_handlers[OP_APPLY_4] = &&th_apply_4;
-    threaded_handlers[OP_APPLY_5] = &&th_apply_5;
-    threaded_handlers[OP_APPLY_6] = &&th_apply_6;
-    threaded_handlers[OP_TAIL_APPLY_0] = &&th_tail_apply_0;
-    threaded_handlers[OP_TAIL_APPLY_1] = &&th_tail_apply_1;
-    threaded_handlers[OP_TAIL_APPLY_2] = &&th_tail_apply_2;
-    threaded_handlers[OP_TAIL_APPLY_3] = &&th_tail_apply_3;
-    threaded_handlers[OP_TAIL_APPLY_4] = &&th_tail_apply_4;
-    threaded_handlers[OP_TAIL_APPLY_5] = &&th_tail_apply_5;
-    threaded_handlers[OP_TAIL_APPLY_6] = &&th_tail_apply_6;
+    dispatch_table[OP_CALL_0] = &&th_call_0;
+    dispatch_table[OP_CALL_1] = &&th_call_1;
+    dispatch_table[OP_CALL_2] = &&th_call_2;
+    dispatch_table[OP_CALL_3] = &&th_call_3;
+    dispatch_table[OP_CALL_4] = &&th_call_4;
+    dispatch_table[OP_CALL_5] = &&th_call_5;
+    dispatch_table[OP_CALL_6] = &&th_call_6;
+    dispatch_table[OP_CALL_PRIM_0] = &&th_call_prim_0;
+    dispatch_table[OP_CALL_PRIM_1] = &&th_call_prim_1;
+    dispatch_table[OP_CALL_PRIM_2] = &&th_call_prim_2;
+    dispatch_table[OP_CALL_PRIM_3] = &&th_call_prim_3;
+    dispatch_table[OP_CALL_PRIM_4] = &&th_call_prim_4;
+    dispatch_table[OP_CALL_PRIM_5] = &&th_call_prim_5;
+    dispatch_table[OP_CALL_PRIM_6] = &&th_call_prim_6;
+    dispatch_table[OP_TAIL_CALL_0] = &&th_tail_call_0;
+    dispatch_table[OP_TAIL_CALL_1] = &&th_tail_call_1;
+    dispatch_table[OP_TAIL_CALL_2] = &&th_tail_call_2;
+    dispatch_table[OP_TAIL_CALL_3] = &&th_tail_call_3;
+    dispatch_table[OP_TAIL_CALL_4] = &&th_tail_call_4;
+    dispatch_table[OP_TAIL_CALL_5] = &&th_tail_call_5;
+    dispatch_table[OP_TAIL_CALL_6] = &&th_tail_call_6;
+    dispatch_table[OP_TAIL_CALL_PRIM_0] = &&th_tail_call_prim_0;
+    dispatch_table[OP_TAIL_CALL_PRIM_1] = &&th_tail_call_prim_1;
+    dispatch_table[OP_TAIL_CALL_PRIM_2] = &&th_tail_call_prim_2;
+    dispatch_table[OP_TAIL_CALL_PRIM_3] = &&th_tail_call_prim_3;
+    dispatch_table[OP_TAIL_CALL_PRIM_4] = &&th_tail_call_prim_4;
+    dispatch_table[OP_TAIL_CALL_PRIM_5] = &&th_tail_call_prim_5;
+    dispatch_table[OP_TAIL_CALL_PRIM_6] = &&th_tail_call_prim_6;
+    dispatch_table[OP_APPLY_0] = &&th_apply_0;
+    dispatch_table[OP_APPLY_1] = &&th_apply_1;
+    dispatch_table[OP_APPLY_2] = &&th_apply_2;
+    dispatch_table[OP_APPLY_3] = &&th_apply_3;
+    dispatch_table[OP_APPLY_4] = &&th_apply_4;
+    dispatch_table[OP_APPLY_5] = &&th_apply_5;
+    dispatch_table[OP_APPLY_6] = &&th_apply_6;
+    dispatch_table[OP_TAIL_APPLY_0] = &&th_tail_apply_0;
+    dispatch_table[OP_TAIL_APPLY_1] = &&th_tail_apply_1;
+    dispatch_table[OP_TAIL_APPLY_2] = &&th_tail_apply_2;
+    dispatch_table[OP_TAIL_APPLY_3] = &&th_tail_apply_3;
+    dispatch_table[OP_TAIL_APPLY_4] = &&th_tail_apply_4;
+    dispatch_table[OP_TAIL_APPLY_5] = &&th_tail_apply_5;
+    dispatch_table[OP_TAIL_APPLY_6] = &&th_tail_apply_6;
 
-    threaded_handlers[OP_GOTO] = &&th_goto;
-    threaded_handlers[OP_BRANCH] = &&th_branch;
+    dispatch_table[OP_GOTO] = &&th_goto;
+    dispatch_table[OP_BRANCH] = &&th_branch;
 
-    threaded_handlers[OP_IADD] = &&th_iadd;
-    threaded_handlers[OP_ISUB] = &&th_isub;
-    threaded_handlers[OP_IMUL] = &&th_imul;
-    threaded_handlers[OP_IDIV] = &&th_idiv;
-    threaded_handlers[OP_IMOD] = &&th_imod;
-    threaded_handlers[OP_INEG] = &&th_ineg;
-    threaded_handlers[OP_INT_GREATER] = &&th_int_greater;
-    threaded_handlers[OP_INT_LESS] = &&th_int_less;
-    threaded_handlers[OP_INT_GREATER_OR_EQUAL] = &&th_int_greater_or_equal;
-    threaded_handlers[OP_INT_LESS_OR_EQUAL] = &&th_int_less_or_equal;
-    threaded_handlers[OP_INT_IS_POSITIVE] = &&th_int_is_positive;
-    threaded_handlers[OP_INT_IS_NON_NEGATIVE] = &&th_int_is_non_negative;
-    threaded_handlers[OP_INT_IS_NON_ZERO] = &&th_int_is_non_zero;
+    dispatch_table[OP_IADD] = &&th_iadd;
+    dispatch_table[OP_ISUB] = &&th_isub;
+    dispatch_table[OP_IMUL] = &&th_imul;
+    dispatch_table[OP_IDIV] = &&th_idiv;
+    dispatch_table[OP_IMOD] = &&th_imod;
+    dispatch_table[OP_INEG] = &&th_ineg;
+    dispatch_table[OP_INT_GREATER] = &&th_int_greater;
+    dispatch_table[OP_INT_LESS] = &&th_int_less;
+    dispatch_table[OP_INT_GREATER_OR_EQUAL] = &&th_int_greater_or_equal;
+    dispatch_table[OP_INT_LESS_OR_EQUAL] = &&th_int_less_or_equal;
+    dispatch_table[OP_INT_IS_POSITIVE] = &&th_int_is_positive;
+    dispatch_table[OP_INT_IS_NON_NEGATIVE] = &&th_int_is_non_negative;
+    dispatch_table[OP_INT_IS_NON_ZERO] = &&th_int_is_non_zero;
 
-    threaded_handlers[OP_FADD] = &&th_fadd;
-    threaded_handlers[OP_FSUB] = &&th_fsub;
-    threaded_handlers[OP_FMUL] = &&th_fmul;
-    threaded_handlers[OP_FDIV] = &&th_fdiv;
-    threaded_handlers[OP_FNEG] = &&th_fneg;
-    threaded_handlers[OP_FLOAT_GREATER] = &&th_float_greater;
-    threaded_handlers[OP_FLOAT_LESS] = &&th_float_less;
-    threaded_handlers[OP_FLOAT_GREATER_OR_EQUAL] = &&th_float_greater_or_equal;
-    threaded_handlers[OP_FLOAT_LESS_OR_EQUAL] = &&th_float_less_or_equal;
-    threaded_handlers[OP_FLOAT_IS_POSITIVE] = &&th_float_is_positive;
-    threaded_handlers[OP_FLOAT_IS_NON_NEGATIVE] = &&th_float_is_non_negative;
-    threaded_handlers[OP_FLOAT_IS_NON_ZERO] = &&th_float_is_non_zero;
+    dispatch_table[OP_FADD] = &&th_fadd;
+    dispatch_table[OP_FSUB] = &&th_fsub;
+    dispatch_table[OP_FMUL] = &&th_fmul;
+    dispatch_table[OP_FDIV] = &&th_fdiv;
+    dispatch_table[OP_FNEG] = &&th_fneg;
+    dispatch_table[OP_FLOAT_GREATER] = &&th_float_greater;
+    dispatch_table[OP_FLOAT_LESS] = &&th_float_less;
+    dispatch_table[OP_FLOAT_GREATER_OR_EQUAL] = &&th_float_greater_or_equal;
+    dispatch_table[OP_FLOAT_LESS_OR_EQUAL] = &&th_float_less_or_equal;
+    dispatch_table[OP_FLOAT_IS_POSITIVE] = &&th_float_is_positive;
+    dispatch_table[OP_FLOAT_IS_NON_NEGATIVE] = &&th_float_is_non_negative;
+    dispatch_table[OP_FLOAT_IS_NON_ZERO] = &&th_float_is_non_zero;
 
-    threaded_handlers_ready = true;
+    dispatch_table_ready = true;
   }
 
   assert(xvm->break_depth <= xvm->frame_count);
-
-  if (!xvm->program->threaded_codes_ready) {
-    record_iter_t iter;
-    record_iter_init(&iter, xvm->program->functions);
-    function_t *fn = record_iter_next_value(&iter);
-    while (fn) {
-      ensure_threaded_function(fn);
-      fn = record_iter_next_value(&iter);
-    }
-    xvm->program->threaded_codes_ready = true;
-  }
 
   while (xvm->frame_count > xvm->break_depth) {
     frame_t *frame = xvm_current_frame(xvm);
@@ -767,16 +537,16 @@ void xvm_execute(xvm_t *xvm) {
 
     TH_DISPATCH();
 
-    th_move: exec_move(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_load_value: exec_load_value(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_make_closure: exec_make_closure(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_store_closure_arg: exec_store_closure_arg(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_load_result: exec_load_result(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_load_global: exec_load_global(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_store_global: exec_store_global(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
+    th_move: exec_move(frame, locals); TH_NEXT();
+    th_load_value: exec_load_value(frame, locals); TH_NEXT();
+    th_make_closure: exec_make_closure(frame, locals); TH_NEXT();
+    th_store_closure_arg: exec_store_closure_arg(frame, locals); TH_NEXT();
+    th_load_result: exec_load_result(xvm, frame, locals); TH_NEXT();
+    th_load_global: exec_load_global(frame, locals); TH_NEXT();
+    th_store_global: exec_store_global(frame, locals); TH_NEXT();
     th_return: exec_return(xvm, frame, locals); continue;
     th_return_void: exec_return_void(xvm, frame); continue;
-    th_gc: xvm_gc_maybe_collect(xvm); frame->pc += 1 + sizeof(void *); TH_NEXT();
+    th_gc: xvm_gc_maybe_collect(xvm); frame->pc += 1; TH_NEXT();
 
     th_call_0: exec_call_0(xvm, frame, locals); continue;
     th_call_1: exec_call_1(xvm, frame, locals); continue;
@@ -786,13 +556,13 @@ void xvm_execute(xvm_t *xvm) {
     th_call_5: exec_call_5(xvm, frame, locals); continue;
     th_call_6: exec_call_6(xvm, frame, locals); continue;
 
-    th_call_prim_0: exec_call_prim_0(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_call_prim_1: exec_call_prim_1(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_call_prim_2: exec_call_prim_2(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_call_prim_3: exec_call_prim_3(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_call_prim_4: exec_call_prim_4(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_call_prim_5: exec_call_prim_5(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_call_prim_6: exec_call_prim_6(xvm, frame, locals); frame->pc += sizeof(void *); TH_NEXT();
+    th_call_prim_0: exec_call_prim_0(xvm, frame, locals); TH_NEXT();
+    th_call_prim_1: exec_call_prim_1(xvm, frame, locals); TH_NEXT();
+    th_call_prim_2: exec_call_prim_2(xvm, frame, locals); TH_NEXT();
+    th_call_prim_3: exec_call_prim_3(xvm, frame, locals); TH_NEXT();
+    th_call_prim_4: exec_call_prim_4(xvm, frame, locals); TH_NEXT();
+    th_call_prim_5: exec_call_prim_5(xvm, frame, locals); TH_NEXT();
+    th_call_prim_6: exec_call_prim_6(xvm, frame, locals); TH_NEXT();
 
     th_tail_call_0: exec_tail_call_0(xvm, frame, locals); continue;
     th_tail_call_1: exec_tail_call_1(xvm, frame, locals); continue;
@@ -829,32 +599,32 @@ void xvm_execute(xvm_t *xvm) {
     th_goto: exec_jump(frame); TH_NEXT();
     th_branch: exec_branch(frame, locals); TH_NEXT();
 
-    th_iadd: exec_iadd(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_isub: exec_isub(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_imul: exec_imul(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_idiv: exec_idiv(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_imod: exec_imod(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_ineg: exec_ineg(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_greater: exec_int_greater(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_less: exec_int_less(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_greater_or_equal: exec_int_greater_or_equal(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_less_or_equal: exec_int_less_or_equal(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_is_positive: exec_int_is_positive(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_is_non_negative: exec_int_is_non_negative(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_int_is_non_zero: exec_int_is_non_zero(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
+    th_iadd: exec_iadd(frame, locals); TH_NEXT();
+    th_isub: exec_isub(frame, locals); TH_NEXT();
+    th_imul: exec_imul(frame, locals); TH_NEXT();
+    th_idiv: exec_idiv(frame, locals); TH_NEXT();
+    th_imod: exec_imod(frame, locals); TH_NEXT();
+    th_ineg: exec_ineg(frame, locals); TH_NEXT();
+    th_int_greater: exec_int_greater(frame, locals); TH_NEXT();
+    th_int_less: exec_int_less(frame, locals); TH_NEXT();
+    th_int_greater_or_equal: exec_int_greater_or_equal(frame, locals); TH_NEXT();
+    th_int_less_or_equal: exec_int_less_or_equal(frame, locals); TH_NEXT();
+    th_int_is_positive: exec_int_is_positive(frame, locals); TH_NEXT();
+    th_int_is_non_negative: exec_int_is_non_negative(frame, locals); TH_NEXT();
+    th_int_is_non_zero: exec_int_is_non_zero(frame, locals); TH_NEXT();
 
-    th_fadd: exec_fadd(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_fsub: exec_fsub(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_fmul: exec_fmul(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_fdiv: exec_fdiv(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_fneg: exec_fneg(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_greater: exec_float_greater(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_less: exec_float_less(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_greater_or_equal: exec_float_greater_or_equal(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_less_or_equal: exec_float_less_or_equal(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_is_positive: exec_float_is_positive(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_is_non_negative: exec_float_is_non_negative(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
-    th_float_is_non_zero: exec_float_is_non_zero(frame, locals); frame->pc += sizeof(void *); TH_NEXT();
+    th_fadd: exec_fadd(frame, locals); TH_NEXT();
+    th_fsub: exec_fsub(frame, locals); TH_NEXT();
+    th_fmul: exec_fmul(frame, locals); TH_NEXT();
+    th_fdiv: exec_fdiv(frame, locals); TH_NEXT();
+    th_fneg: exec_fneg(frame, locals); TH_NEXT();
+    th_float_greater: exec_float_greater(frame, locals); TH_NEXT();
+    th_float_less: exec_float_less(frame, locals); TH_NEXT();
+    th_float_greater_or_equal: exec_float_greater_or_equal(frame, locals); TH_NEXT();
+    th_float_less_or_equal: exec_float_less_or_equal(frame, locals); TH_NEXT();
+    th_float_is_positive: exec_float_is_positive(frame, locals); TH_NEXT();
+    th_float_is_non_negative: exec_float_is_non_negative(frame, locals); TH_NEXT();
+    th_float_is_non_zero: exec_float_is_non_zero(frame, locals); TH_NEXT();
   }
 }
 

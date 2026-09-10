@@ -26,8 +26,6 @@ size_t xvm_frame_count(const xvm_t *xvm);
 
 void xvm_execute(xvm_t *xvm);
 
-void program_build_threaded_codes(program_t *program);
-
 void xvm_gc_maybe_collect(xvm_t *xvm);
 
 void xvm_push_root(xvm_t *xvm, value_t value);

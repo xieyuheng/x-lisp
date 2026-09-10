@@ -9,7 +9,6 @@ struct program_t {
   record_t *functions;
   record_t *primitives;
   record_t *variables;
-  bool threaded_codes_ready;
 };
 
 program_t *make_program(void);

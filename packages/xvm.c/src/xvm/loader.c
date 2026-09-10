@@ -219,8 +219,6 @@ program_t *program_load(const char *pathname) {
   }
   free((void *) fixup_entries);
 
-  program_build_threaded_codes(program);
-
   free(tlv.entries);
   free(bytes);
   return program;
