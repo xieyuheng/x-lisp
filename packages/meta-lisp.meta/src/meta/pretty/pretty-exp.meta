@@ -26,18 +26,6 @@
      (let ((target-op (exp-op-text target))
            (all-elements (cons (pretty-exp target) (list-map pretty-exp args))))
        (ppml/pretty-application target-op all-elements)))
-    ((flow-exp target steps location)
-     (ppml/pretty-syntax "flow"
-       (@list (pretty-exp target))
-       (list-map pretty-exp steps)))
-    ((chain-exp steps location)
-     (ppml/pretty-syntax "chain"
-       (@list)
-       (list-map pretty-exp steps)))
-    ((compose-exp steps location)
-     (ppml/pretty-syntax "compose"
-       (@list)
-       (list-map pretty-exp steps)))
     ((let1-exp name rhs body location)
      (let ((name-str (symbol-to-text name))
            (rhs-node (pretty-exp rhs)))

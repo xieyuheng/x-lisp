@@ -34,28 +34,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "FlowExp": {
-      return M.FlowExp(
-        onExp(exp.target),
-        exp.steps.map((e) => onExp(e)),
-        exp.location,
-      )
-    }
-
-    case "ChainExp": {
-      return M.ChainExp(
-        exp.steps.map((e) => onExp(e)),
-        exp.location,
-      )
-    }
-
-    case "ComposeExp": {
-      return M.ComposeExp(
-        exp.steps.map((e) => onExp(e)),
-        exp.location,
-      )
-    }
-
     case "Let1Exp": {
       return M.Let1Exp(exp.name, onExp(exp.rhs), onExp(exp.body), exp.location)
     }

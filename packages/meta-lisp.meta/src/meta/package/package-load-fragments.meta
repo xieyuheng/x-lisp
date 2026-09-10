@@ -1,10 +1,10 @@
 (module meta)
 
 (define (package-load-fragments package directory)
-  (flow (path-list-recursive directory)
-    (list-each
-      (lambda (name)
-        (when (text-is-suffix ".meta" name)
-          (let ((path (path-join directory name))
-                 (fragment (load-fragment path)))
-            (package-put-fragment path fragment package)))))))
+  (list-each
+    (lambda (name)
+      (when (text-is-suffix ".meta" name)
+        (let ((path (path-join directory name))
+               (fragment (load-fragment path)))
+          (package-put-fragment path fragment package))))
+    (path-list-recursive directory)))

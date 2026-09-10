@@ -41,17 +41,6 @@
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(define (example-flow)
-  (let ((unnested.1 (self/desugar/add1 5))) (self/desugar/double unnested.1)))
-
-(define (example-chain)
-  (let ((unnested.1 (@closure self/desugar/©lambda.example-chain.1)))
-    (unnested.1 5)))
-
-(define (example-compose)
-  (let ((unnested.1 (@closure self/desugar/©lambda.example-compose.1)))
-    (unnested.1 5)))
-
 (define (example-letrec)
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))
@@ -80,14 +69,6 @@
                 (@closure self/desugar/©lambda.example-local-define.2 is-even)))
             (meta-builtin/builtin/box-put unnested.2 is-odd))
           meta-builtin/builtin/void)))))
-
-(define (©lambda.example-chain.1 closure target)
-  (let ((unnested.1 (self/desugar/add1 target)))
-    (self/desugar/double unnested.1)))
-
-(define (©lambda.example-compose.1 closure target)
-  (let ((unnested.1 (self/desugar/double target)))
-    (self/desugar/add1 unnested.1)))
 
 (define (©lambda.example-letrec.1 closure n)
   (let ((is-odd (meta-builtin/builtin/closure-arg 0 closure)))

@@ -33,12 +33,6 @@
 
 (define (example-or a b) (if a meta-builtin/builtin/true b))
 
-(define (example-flow) (double (add1 5)))
-
-(define (example-chain) ((lambda (target) (double (add1 target))) 5))
-
-(define (example-compose) ((lambda (target) (add1 (double target))) 5))
-
 (define (example-letrec)
   (let ((is-even (meta-builtin/builtin/make-box)))
     (let ((is-odd (meta-builtin/builtin/make-box)))

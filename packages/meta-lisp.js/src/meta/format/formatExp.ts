@@ -67,34 +67,6 @@ export function formatExp(exp: M.Exp): string {
       }
     }
 
-    case "FlowExp": {
-      const target = formatExp(exp.target)
-      const steps = formatExps(exp.steps)
-      if (steps === "") {
-        return `(flow ${target})`
-      } else {
-        return `(flow ${target} ${steps})`
-      }
-    }
-
-    case "ChainExp": {
-      const steps = formatExps(exp.steps)
-      if (steps === "") {
-        return `(chain)`
-      } else {
-        return `(chain ${steps})`
-      }
-    }
-
-    case "ComposeExp": {
-      const steps = formatExps(exp.steps)
-      if (steps === "") {
-        return `(compose)`
-      } else {
-        return `(compose ${steps})`
-      }
-    }
-
     case "Let1Exp": {
       const rhs = formatExp(exp.rhs)
       const body = formatBody(exp.body)

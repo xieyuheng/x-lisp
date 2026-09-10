@@ -56,7 +56,8 @@
 (define (collect-defined-names package)
   (collect-names-by-mod
     package
-    (compose set-to-list fragment-names)))
+    (lambda (fragment)
+      (set-to-list (fragment-names fragment)))))
 
 (claim collect-private-names
   (-> package-t
@@ -65,13 +66,13 @@
 (define (collect-private-names package)
   (collect-names-by-mod
     package
-    (chain
-      fragment-stmts
+    (lambda (fragment)
       (list-map-concat
         (lambda (stmt)
           (if (is-private-stmt stmt)
             (private-stmt-names stmt)
-            (@list)))))))
+            (@list)))
+        (fragment-stmts fragment)))))
 
 (claim collect-names-by-mod
   (-> package-t

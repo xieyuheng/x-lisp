@@ -10,9 +10,6 @@ export type Exp =
   | QualifiedVarExp
   | LambdaExp
   | ApplyExp
-  | FlowExp
-  | ChainExp
-  | ComposeExp
   | Let1Exp
   | LetExp
   | LetrecExp
@@ -190,60 +187,6 @@ export function ApplyExp(
     kind: "ApplyExp",
     target,
     args,
-    location,
-  }
-}
-
-export type FlowExp = {
-  kind: "FlowExp"
-  target: Exp
-  steps: Array<Exp>
-  location: SourceLocation
-}
-
-export function FlowExp(
-  target: Exp,
-  steps: Array<Exp>,
-  location: SourceLocation,
-): FlowExp {
-  return {
-    kind: "FlowExp",
-    target,
-    steps,
-    location,
-  }
-}
-
-export type ChainExp = {
-  kind: "ChainExp"
-  steps: Array<Exp>
-  location: SourceLocation
-}
-
-export function ChainExp(
-  steps: Array<Exp>,
-  location: SourceLocation,
-): ChainExp {
-  return {
-    kind: "ChainExp",
-    steps,
-    location,
-  }
-}
-
-export type ComposeExp = {
-  kind: "ComposeExp"
-  steps: Array<Exp>
-  location: SourceLocation
-}
-
-export function ComposeExp(
-  steps: Array<Exp>,
-  location: SourceLocation,
-): ComposeExp {
-  return {
-    kind: "ComposeExp",
-    steps,
     location,
   }
 }

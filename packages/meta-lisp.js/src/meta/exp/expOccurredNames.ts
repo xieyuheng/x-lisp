@@ -62,21 +62,6 @@ export function expOccurredNames(exp: M.Exp): Set<string> {
       )
     }
 
-    case "FlowExp": {
-      return setUnion(
-        expOccurredNames(exp.target),
-        setUnionMany(exp.steps.map(expOccurredNames)),
-      )
-    }
-
-    case "ChainExp": {
-      return setUnionMany(exp.steps.map((s) => expOccurredNames(s)))
-    }
-
-    case "ComposeExp": {
-      return setUnionMany(exp.steps.map((s) => expOccurredNames(s)))
-    }
-
     case "Begin1Exp": {
       return setUnion(expOccurredNames(exp.head), expOccurredNames(exp.body))
     }

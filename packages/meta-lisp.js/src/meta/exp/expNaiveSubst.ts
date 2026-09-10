@@ -133,28 +133,6 @@ export function expNaiveSubst(exp: M.Exp, name: string, rhs: M.Exp): M.Exp {
       )
     }
 
-    case "FlowExp": {
-      return M.FlowExp(
-        expNaiveSubst(exp.target, name, rhs),
-        exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
-        exp.location,
-      )
-    }
-
-    case "ChainExp": {
-      return M.ChainExp(
-        exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
-        exp.location,
-      )
-    }
-
-    case "ComposeExp": {
-      return M.ComposeExp(
-        exp.steps.map((s) => expNaiveSubst(s, name, rhs)),
-        exp.location,
-      )
-    }
-
     case "Begin1Exp": {
       return M.Begin1Exp(
         expNaiveSubst(exp.head, name, rhs),

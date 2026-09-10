@@ -3,10 +3,7 @@ import * as M from "../index.ts"
 import { desugarAnd } from "./desugarAnd.ts"
 import { desugarArray } from "./desugarArray.ts"
 import { desugarBegin } from "./desugarBegin.ts"
-import { desugarChain } from "./desugarChain.ts"
-import { desugarCompose } from "./desugarCompose.ts"
 import { desugarCond } from "./desugarCond.ts"
-import { desugarFlow } from "./desugarFlow.ts"
 import { desugarHash } from "./desugarHash.ts"
 import { desugarLet } from "./desugarLet.ts"
 import { desugarLetrec } from "./desugarLetrec.ts"
@@ -100,18 +97,6 @@ export function desugar(exp: M.Exp): M.Term {
 
     case "CommentExp": {
       return M.QualifiedVarTerm("meta-builtin", "builtin", "void", exp.location)
-    }
-
-    case "FlowExp": {
-      return desugar(desugarFlow(exp.target, exp.steps, exp.location))
-    }
-
-    case "ChainExp": {
-      return desugar(desugarChain(exp.steps, exp.location))
-    }
-
-    case "ComposeExp": {
-      return desugar(desugarCompose(exp.steps, exp.location))
     }
 
     case "Begin1Exp": {

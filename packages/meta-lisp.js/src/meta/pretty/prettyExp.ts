@@ -48,22 +48,6 @@ export function prettyExp(exp: M.Exp): Ppml.Node {
       return Ppml.prettyApplication([target, ...args])
     }
 
-    case "FlowExp": {
-      const target = prettyExp(exp.target)
-      const steps = exp.steps.map(prettyExp)
-      return Ppml.prettySyntax("flow", [target], steps)
-    }
-
-    case "ChainExp": {
-      const steps = exp.steps.map(prettyExp)
-      return Ppml.prettySyntax("chain", [], steps)
-    }
-
-    case "ComposeExp": {
-      const steps = exp.steps.map(prettyExp)
-      return Ppml.prettySyntax("compose", [], steps)
-    }
-
     case "Let1Exp": {
       const binding = Ppml.prettyApplication([
         Ppml.text(exp.name),

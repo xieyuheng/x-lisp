@@ -379,38 +379,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* 'flow target steps)": ({ target, steps }, { location }) => {
-    return M.FlowExp(
-      parseExp(target),
-      S.asListSexp(steps).elements.map(parseExp),
-      location,
-    )
-  },
-
-  "(cons* '顺流 target steps)": ({ target, steps }, { location }) => {
-    return M.FlowExp(
-      parseExp(target),
-      S.asListSexp(steps).elements.map(parseExp),
-      location,
-    )
-  },
-
-  "(cons* 'chain steps)": ({ steps }, { location }) => {
-    return M.ChainExp(S.asListSexp(steps).elements.map(parseExp), location)
-  },
-
-  "(cons* '衔接 steps)": ({ steps }, { location }) => {
-    return M.ChainExp(S.asListSexp(steps).elements.map(parseExp), location)
-  },
-
-  "(cons* 'compose steps)": ({ steps }, { location }) => {
-    return M.ComposeExp(S.asListSexp(steps).elements.map(parseExp), location)
-  },
-
-  "(cons* '复合 steps)": ({ steps }, { location }) => {
-    return M.ComposeExp(S.asListSexp(steps).elements.map(parseExp), location)
-  },
-
   // - The following two cases must be at the end.
 
   "(cons* target args)": ({ target, args }, { location }) => {
