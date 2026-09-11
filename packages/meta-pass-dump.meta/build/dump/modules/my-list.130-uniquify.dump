@@ -27,12 +27,12 @@
 (define (li-head target) (meta-builtin/builtin/array-get target 1))
 
 (define (li-put-head target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (define (li-tail target) (meta-builtin/builtin/array-get target 2))
 
 (define (li-put-tail target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (my-list-head list)
   (if (self/my-list/is-nil list)

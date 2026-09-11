@@ -475,7 +475,6 @@ Higher-order function manipulation.
 
 - [`constant`](function/constant.md) — Return first argument
 - [`identity`](function/identity.md) — Return argument unchanged
-- [`ignore`](function/ignore.md) — Discard return value
 - [`swap`](function/swap.md) — Swap function arguments
 - [`drop`](function/drop.md) — Ignore first argument
 - [`dup`](function/dup.md) — Duplicate argument

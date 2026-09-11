@@ -43,7 +43,7 @@
           (list-each (fragment-stmts fragment)
             (lambda (stmt)
               (if (is-outcome-error (ensure-imported-mod-exists package stmt))
-                (ignore (module-analysis-report-put-outcome report (outcome-error)))
+                (module-analysis-report-put-outcome report (outcome-error))
                 (execute-import package scope stmt)))))))
     (when (hash-has (package-config-compiler (package-config package)) "dump")
       (dump-module-analysis-report report package))
@@ -87,7 +87,7 @@
           (if (hash-has result mod-name)
             (let ((existing (hash-get result mod-name)))
               (list-each (extract fragment) (lambda (name) (set-add existing name))))
-            (ignore (hash-put result mod-name (list-to-set (extract fragment))))))))
+            (hash-put result mod-name (list-to-set (extract fragment)))))))
     result))
 
 (claim lookup-package

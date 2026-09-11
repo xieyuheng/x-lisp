@@ -281,18 +281,15 @@
           (@list (admit-with-type-parameters
              modifier-name
              (pre-type-constructor-parameters type-constructor)
-             (arrow-exp (@list type-exp type) type-exp location)
+             (arrow-exp (@list type-exp type) (qualified-var-exp 'meta-builtin 'builtin 'void-t location) location)
              location)
            (define-function-stmt
               modifier-name
               (@list 'target 'value)
-              (begin-exp
-                (@list (apply-exp
-                   (qualified-var-exp 'meta-builtin 'builtin 'array-put location)
-                   (@list (var-exp 'target location)
-                    (int-exp (iadd index 1) location)
-                    (var-exp 'value location))
-                   location)
-                 (var-exp 'target location))
+              (apply-exp
+                (qualified-var-exp 'meta-builtin 'builtin 'array-put location)
+                (@list (var-exp 'target location)
+                 (int-exp (iadd index 1) location)
+                 (var-exp 'value location))
                 location)
               location))))))))

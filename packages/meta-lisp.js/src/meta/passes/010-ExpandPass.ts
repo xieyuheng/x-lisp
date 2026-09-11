@@ -353,7 +353,7 @@ function expandModifier(
       stmt.typeConstructor.parameters,
       M.ArrowExp(
         [getDataType(stmt), field.type],
-        getDataType(stmt),
+        M.QualifiedVarExp("meta-builtin", "builtin", "void-t", field.location),
         field.location,
       ),
       field.location,
@@ -364,23 +364,17 @@ function expandModifier(
     M.DefineFunctionStmt(
       field.modifierName,
       ["target", "value"],
-      M.BeginExp(
+      M.ApplyExp(
+        M.QualifiedVarExp(
+          "meta-builtin",
+          "builtin",
+          "array-put",
+          field.location,
+        ),
         [
-          M.ApplyExp(
-            M.QualifiedVarExp(
-              "meta-builtin",
-              "builtin",
-              "array-put",
-              field.location,
-            ),
-            [
-              M.VarExp("target", field.location),
-              M.IntExp(BigInt(index + 1), field.location),
-              M.VarExp("value", field.location),
-            ],
-            field.location,
-          ),
           M.VarExp("target", field.location),
+          M.IntExp(BigInt(index + 1), field.location),
+          M.VarExp("value", field.location),
         ],
         field.location,
       ),

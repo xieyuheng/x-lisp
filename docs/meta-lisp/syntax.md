@@ -854,8 +854,8 @@ This generates functions with the following types:
 (claim is-point (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
 (claim point-y (-> point-t float-t))
-(claim point-put-x (-> point-t float-t point-t))
-(claim point-put-y (-> point-t float-t point-t))
+(claim point-put-x (-> point-t float-t void-t))
+(claim point-put-y (-> point-t float-t void-t))
 ```
 
 Usage example:
@@ -895,8 +895,8 @@ This generates functions with the following types:
 (claim is-li (all (E) (-> (my-list-t E) bool-t)))
 (claim li-head (all (E) (-> (my-list-t E) E)))
 (claim li-tail (all (E) (-> (my-list-t E) (my-list-t E))))
-(claim li-put-head (all (E) (-> (my-list-t E) E (my-list-t E))))
-(claim li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+(claim li-put-head (all (E) (-> (my-list-t E) E void-t)))
+(claim li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) void-t)))
 ```
 
 ## (define-struct-type)

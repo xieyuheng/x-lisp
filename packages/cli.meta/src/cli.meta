@@ -71,14 +71,16 @@
 (define (define-route router command)
   (let ((command (parse-route command))
          (routes (router-routes router)))
-    (router-put-routes router (list-append routes (@list command)))))
+    (router-put-routes router (list-append routes (@list command)))
+    router))
 
 (claim define-handler (-> router-t text-t (-> ctx-t void-t) router-t))
 
 (define (define-handler router name handler)
   (let ((handlers (router-handlers router)))
     (hash-put handlers name handler)
-    (router-put-handlers router handlers)))
+    (router-put-handlers router handlers)
+    router))
 
 (claim print-name-and-version (-> router-t void-t))
 

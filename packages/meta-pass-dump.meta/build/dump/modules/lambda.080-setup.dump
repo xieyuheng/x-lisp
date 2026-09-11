@@ -29,10 +29,11 @@
 
 (define (var-term-name target) (meta-builtin/builtin/array-get target 1))
 
-(claim var-term-put-name (-> term-t meta-builtin/builtin/symbol-t term-t))
+(claim var-term-put-name
+  (-> term-t meta-builtin/builtin/symbol-t meta-builtin/builtin/void-t))
 
 (define (var-term-put-name target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (claim apply-term (-> term-t term-t term-t))
 
@@ -59,19 +60,19 @@
 
 (define (apply-term-target target) (meta-builtin/builtin/array-get target 1))
 
-(claim apply-term-put-target (-> term-t term-t term-t))
+(claim apply-term-put-target (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (apply-term-put-target target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (claim apply-term-arg (-> term-t term-t))
 
 (define (apply-term-arg target) (meta-builtin/builtin/array-get target 2))
 
-(claim apply-term-put-arg (-> term-t term-t term-t))
+(claim apply-term-put-arg (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (apply-term-put-arg target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (claim lambda-term (-> meta-builtin/builtin/symbol-t term-t term-t))
 
@@ -100,19 +101,19 @@
   (meta-builtin/builtin/array-get target 1))
 
 (claim lambda-term-put-parameter
-  (-> term-t meta-builtin/builtin/symbol-t term-t))
+  (-> term-t meta-builtin/builtin/symbol-t meta-builtin/builtin/void-t))
 
 (define (lambda-term-put-parameter target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (claim lambda-term-body (-> term-t term-t))
 
 (define (lambda-term-body target) (meta-builtin/builtin/array-get target 2))
 
-(claim lambda-term-put-body (-> term-t term-t term-t))
+(claim lambda-term-put-body (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (lambda-term-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (claim let-term (-> meta-builtin/builtin/symbol-t term-t term-t term-t))
 
@@ -141,28 +142,29 @@
 
 (define (let-term-name target) (meta-builtin/builtin/array-get target 1))
 
-(claim let-term-put-name (-> term-t meta-builtin/builtin/symbol-t term-t))
+(claim let-term-put-name
+  (-> term-t meta-builtin/builtin/symbol-t meta-builtin/builtin/void-t))
 
 (define (let-term-put-name target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (claim let-term-rhs (-> term-t term-t))
 
 (define (let-term-rhs target) (meta-builtin/builtin/array-get target 2))
 
-(claim let-term-put-rhs (-> term-t term-t term-t))
+(claim let-term-put-rhs (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (let-term-put-rhs target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (claim let-term-body (-> term-t term-t))
 
 (define (let-term-body target) (meta-builtin/builtin/array-get target 3))
 
-(claim let-term-put-body (-> term-t term-t term-t))
+(claim let-term-put-body (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (let-term-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 3 value) target))
+  (meta-builtin/builtin/array-put target 3 value))
 
 (claim env-t meta-builtin/builtin/type-t)
 
@@ -223,10 +225,10 @@
 
 (define (closure-value-env target) (meta-builtin/builtin/array-get target 1))
 
-(claim closure-value-put-env (-> value-t env-t value-t))
+(claim closure-value-put-env (-> value-t env-t meta-builtin/builtin/void-t))
 
 (define (closure-value-put-env target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (claim closure-value-parameter (-> value-t meta-builtin/builtin/symbol-t))
 
@@ -234,19 +236,19 @@
   (meta-builtin/builtin/array-get target 2))
 
 (claim closure-value-put-parameter
-  (-> value-t meta-builtin/builtin/symbol-t value-t))
+  (-> value-t meta-builtin/builtin/symbol-t meta-builtin/builtin/void-t))
 
 (define (closure-value-put-parameter target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (claim closure-value-body (-> value-t term-t))
 
 (define (closure-value-body target) (meta-builtin/builtin/array-get target 3))
 
-(claim closure-value-put-body (-> value-t term-t value-t))
+(claim closure-value-put-body (-> value-t term-t meta-builtin/builtin/void-t))
 
 (define (closure-value-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 3 value) target))
+  (meta-builtin/builtin/array-put target 3 value))
 
 (define (evaluate term env)
   (if (self/lambda/is-var-term term)

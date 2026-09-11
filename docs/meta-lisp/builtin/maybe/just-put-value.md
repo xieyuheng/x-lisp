@@ -5,7 +5,7 @@ title: just-put-value
 # Type
 
 ```meta-lisp
-(all (A) (-> (maybe-t A) A (maybe-t A)))
+(all (A) (-> (maybe-t A) A void-t))
 ```
 
 # Description

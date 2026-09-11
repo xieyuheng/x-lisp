@@ -5,10 +5,9 @@
       void-t))
 
 (define (desugar-pass package)
-  (ignore
-    (package-put-fragments
-      package
-      (hash-map-value (package-fragments package) desugar-fragment)))
+  (package-put-fragments
+    package
+    (hash-map-value (package-fragments package) desugar-fragment))
   (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-desugared-fragments package "060-desugar")))
 

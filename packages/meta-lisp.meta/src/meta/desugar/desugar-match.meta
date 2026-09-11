@@ -307,11 +307,11 @@
     (list-each clauses
       (lambda (clause)
         (if (array-is-empty groups)
-          (ignore (array-push groups (@array clause)))
+          (array-push groups (@array clause))
           (let ((last (array-get groups (isub (array-length groups) 1))))
             (if (same-pattern-kind clause (array-get last 0))
-              (ignore (array-push last clause))
-              (ignore (array-push groups (@array clause))))))))
+              (array-push last clause)
+              (array-push groups (@array clause)))))))
     (list-map (array-to-list groups) array-to-list)))
 
 (define (same-pattern-kind x y)

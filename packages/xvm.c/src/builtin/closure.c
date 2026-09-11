@@ -5,7 +5,7 @@ value_t x_closure_put_arg_mut(value_t closure_val, value_t index_val, value_t va
   closure_t *closure = to_closure(closure_val);
   closure->args[index] = value;
   gc_write_barrier((object_t *) closure, value);
-  return x_object(closure);
+  return x_void;
 }
 
 value_t x_closure_arg(value_t index_val, value_t closure_val) {

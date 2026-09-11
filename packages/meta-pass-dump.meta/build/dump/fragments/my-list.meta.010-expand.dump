@@ -33,19 +33,20 @@
 
 (define (li-head target) (meta-builtin/builtin/array-get target 1))
 
-(admit li-put-head (all (E) (-> (my-list-t E) E (my-list-t E))))
+(admit li-put-head (all (E) (-> (my-list-t E) E meta-builtin/builtin/void-t)))
 
 (define (li-put-head target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (admit li-tail (all (E) (-> (my-list-t E) (my-list-t E))))
 
 (define (li-tail target) (meta-builtin/builtin/array-get target 2))
 
-(admit li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+(admit li-put-tail
+  (all (E) (-> (my-list-t E) (my-list-t E) meta-builtin/builtin/void-t)))
 
 (define (li-put-tail target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (my-list-head list) (match list ((li head tail) head)))
 

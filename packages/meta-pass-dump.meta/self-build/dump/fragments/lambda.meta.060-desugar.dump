@@ -41,10 +41,10 @@
 
 (define (var-term-name target) (meta-builtin/builtin/array-get target 1))
 
-(admit var-term-put-name (-> term-t symbol-t term-t))
+(admit var-term-put-name (-> term-t symbol-t meta-builtin/builtin/void-t))
 
 (define (var-term-put-name target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (admit apply-term (-> term-t term-t term-t))
 
@@ -71,19 +71,19 @@
 
 (define (apply-term-target target) (meta-builtin/builtin/array-get target 1))
 
-(admit apply-term-put-target (-> term-t term-t term-t))
+(admit apply-term-put-target (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (apply-term-put-target target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (admit apply-term-arg (-> term-t term-t))
 
 (define (apply-term-arg target) (meta-builtin/builtin/array-get target 2))
 
-(admit apply-term-put-arg (-> term-t term-t term-t))
+(admit apply-term-put-arg (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (apply-term-put-arg target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (admit lambda-term (-> symbol-t term-t term-t))
 
@@ -111,19 +111,20 @@
 (define (lambda-term-parameter target)
   (meta-builtin/builtin/array-get target 1))
 
-(admit lambda-term-put-parameter (-> term-t symbol-t term-t))
+(admit lambda-term-put-parameter
+  (-> term-t symbol-t meta-builtin/builtin/void-t))
 
 (define (lambda-term-put-parameter target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (admit lambda-term-body (-> term-t term-t))
 
 (define (lambda-term-body target) (meta-builtin/builtin/array-get target 2))
 
-(admit lambda-term-put-body (-> term-t term-t term-t))
+(admit lambda-term-put-body (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (lambda-term-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (admit let-term (-> symbol-t term-t term-t term-t))
 
@@ -152,28 +153,28 @@
 
 (define (let-term-name target) (meta-builtin/builtin/array-get target 1))
 
-(admit let-term-put-name (-> term-t symbol-t term-t))
+(admit let-term-put-name (-> term-t symbol-t meta-builtin/builtin/void-t))
 
 (define (let-term-put-name target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (admit let-term-rhs (-> term-t term-t))
 
 (define (let-term-rhs target) (meta-builtin/builtin/array-get target 2))
 
-(admit let-term-put-rhs (-> term-t term-t term-t))
+(admit let-term-put-rhs (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (let-term-put-rhs target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (admit let-term-body (-> term-t term-t))
 
 (define (let-term-body target) (meta-builtin/builtin/array-get target 3))
 
-(admit let-term-put-body (-> term-t term-t term-t))
+(admit let-term-put-body (-> term-t term-t meta-builtin/builtin/void-t))
 
 (define (let-term-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 3 value) target))
+  (meta-builtin/builtin/array-put target 3 value))
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
@@ -220,29 +221,30 @@
 
 (define (closure-value-env target) (meta-builtin/builtin/array-get target 1))
 
-(admit closure-value-put-env (-> value-t env-t value-t))
+(admit closure-value-put-env (-> value-t env-t meta-builtin/builtin/void-t))
 
 (define (closure-value-put-env target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (admit closure-value-parameter (-> value-t symbol-t))
 
 (define (closure-value-parameter target)
   (meta-builtin/builtin/array-get target 2))
 
-(admit closure-value-put-parameter (-> value-t symbol-t value-t))
+(admit closure-value-put-parameter
+  (-> value-t symbol-t meta-builtin/builtin/void-t))
 
 (define (closure-value-put-parameter target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (admit closure-value-body (-> value-t term-t))
 
 (define (closure-value-body target) (meta-builtin/builtin/array-get target 3))
 
-(admit closure-value-put-body (-> value-t term-t value-t))
+(admit closure-value-put-body (-> value-t term-t meta-builtin/builtin/void-t))
 
 (define (closure-value-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 3 value) target))
+  (meta-builtin/builtin/array-put target 3 value))
 
 (define (evaluate term env)
   (if (self/lambda/is-var-term term)

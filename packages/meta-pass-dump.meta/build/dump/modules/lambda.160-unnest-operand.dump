@@ -17,7 +17,7 @@
 (define (var-term-name target) (meta-builtin/builtin/array-get target 1))
 
 (define (var-term-put-name target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (define (apply-term target arg)
   (let ((array (meta-builtin/builtin/make-array)))
@@ -40,12 +40,12 @@
 (define (apply-term-target target) (meta-builtin/builtin/array-get target 1))
 
 (define (apply-term-put-target target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (define (apply-term-arg target) (meta-builtin/builtin/array-get target 2))
 
 (define (apply-term-put-arg target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (lambda-term parameter body)
   (let ((array (meta-builtin/builtin/make-array)))
@@ -69,12 +69,12 @@
   (meta-builtin/builtin/array-get target 1))
 
 (define (lambda-term-put-parameter target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (define (lambda-term-body target) (meta-builtin/builtin/array-get target 2))
 
 (define (lambda-term-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (let-term name rhs body)
   (let ((array (meta-builtin/builtin/make-array)))
@@ -99,17 +99,17 @@
 (define (let-term-name target) (meta-builtin/builtin/array-get target 1))
 
 (define (let-term-put-name target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (define (let-term-rhs target) (meta-builtin/builtin/array-get target 2))
 
 (define (let-term-put-rhs target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (let-term-body target) (meta-builtin/builtin/array-get target 3))
 
 (define (let-term-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 3 value) target))
+  (meta-builtin/builtin/array-put target 3 value))
 
 (define empty-env
   (@closure self/lambda/©wrap.12.meta-builtin.7.builtin.9.make-hash))
@@ -143,18 +143,18 @@
 (define (closure-value-env target) (meta-builtin/builtin/array-get target 1))
 
 (define (closure-value-put-env target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (define (closure-value-parameter target)
   (meta-builtin/builtin/array-get target 2))
 
 (define (closure-value-put-parameter target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (closure-value-body target) (meta-builtin/builtin/array-get target 3))
 
 (define (closure-value-put-body target value)
-  (begin (meta-builtin/builtin/array-put target 3 value) target))
+  (meta-builtin/builtin/array-put target 3 value))
 
 (define (evaluate term env)
   (if (self/lambda/is-var-term term)

@@ -42,19 +42,20 @@
 
 (define (li-head target) (meta-builtin/builtin/array-get target 1))
 
-(claim li-put-head (all (E) (-> (my-list-t E) E (my-list-t E))))
+(claim li-put-head (all (E) (-> (my-list-t E) E meta-builtin/builtin/void-t)))
 
 (define (li-put-head target value)
-  (begin (meta-builtin/builtin/array-put target 1 value) target))
+  (meta-builtin/builtin/array-put target 1 value))
 
 (claim li-tail (all (E) (-> (my-list-t E) (my-list-t E))))
 
 (define (li-tail target) (meta-builtin/builtin/array-get target 2))
 
-(claim li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+(claim li-put-tail
+  (all (E) (-> (my-list-t E) (my-list-t E) meta-builtin/builtin/void-t)))
 
 (define (li-put-tail target value)
-  (begin (meta-builtin/builtin/array-put target 2 value) target))
+  (meta-builtin/builtin/array-put target 2 value))
 
 (define (my-list-head list)
   (if (self/my-list/is-nil list)
