@@ -6,9 +6,9 @@
 
 (define (claim-pass package)
   (let ((outcomes (make-array)))
-    (for-hash-value (package-mods package)
+    (hash-each-value (package-mods package)
       (lambda (mod)
-        (for-hash (mod-claimed mod)
+        (hash-each (mod-claimed mod)
           (lambda (name entry)
             (array-push outcomes (setup-claimed-type mod name entry))))))
     (outcome-conj (array-to-list outcomes))))

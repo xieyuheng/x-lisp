@@ -5,7 +5,7 @@
       void-t))
 
 (define (module-prelude-pass package)
-  (for-hash-value (package-fragments package)
+  (hash-each-value (package-fragments package)
     (module-prelude-fragment package)))
 
 (claim module-prelude-fragment
@@ -13,9 +13,9 @@
       void-t))
 
 (define (module-prelude-fragment package fragment)
-  (for-hash (package-config-prelude (package-config package))
+  (hash-each (package-config-prelude (package-config package))
     (lambda (package-name module-names)
-      (for-list module-names
+      (list-each module-names
         (lambda (module-name)
           (fragment-put-stmts
             fragment

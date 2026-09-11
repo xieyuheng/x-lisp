@@ -5,9 +5,9 @@
       void-t))
 
 (define (qualify-pass package)
-  (for-hash-value (package-mods package)
+  (hash-each-value (package-mods package)
     (lambda (mod)
-      (for-hash (mod-definitions mod)
+      (hash-each (mod-definitions mod)
         (lambda (name definition)
           (mod-put-definition name
             (qualify-definition definition)

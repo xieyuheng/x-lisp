@@ -96,7 +96,7 @@
       exp-t))
 
 (define (desugar-match ctx targets clauses default-exp location)
-  (for-list clauses
+  (list-each clauses
     (lambda (clause)
       (unless (equal (list-length (match-clause-patterns clause)) (list-length targets))
         (error-with-location
@@ -263,7 +263,7 @@
 
 (define (lookup-same-algebraic-type-info ctx clauses)
   (let ((info (lookup-algebraic-type-info-from-clause ctx (car clauses))))
-    (for-list (cdr clauses)
+    (list-each (cdr clauses)
       (lambda (clause)
         (unless (equal info (lookup-algebraic-type-info-from-clause ctx clause))
           (error-with-location
@@ -304,7 +304,7 @@
 
 (define (group-clauses-by-pattern-kind clauses)
   (let ((groups (make-array)))
-    (for-list clauses
+    (list-each clauses
       (lambda (clause)
         (if (array-is-empty groups)
           (ignore (array-push groups (@array clause)))

@@ -5,7 +5,7 @@
       void-t))
 
 (define (expand-pass package)
-  (for-hash-value (package-fragments package)
+  (hash-each-value (package-fragments package)
     (lambda (fragment)
       (fragment-put-stmts
         fragment

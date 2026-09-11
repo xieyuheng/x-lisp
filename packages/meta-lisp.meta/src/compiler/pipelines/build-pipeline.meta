@@ -2,31 +2,31 @@
 
 (define (build-pipeline root-package)
   (let ((closure (meta/package-closure-in-topological-order root-package)))
-    (for-list closure meta/expand-pass)
-    (for-list closure meta/module-prelude-pass)
+    (list-each closure meta/expand-pass)
+    (list-each closure meta/module-prelude-pass)
     (let ((module-reports (make-hash)))
-      (for-list closure
+      (list-each closure
         (lambda (package)
           (hash-put module-reports (meta/package-id package)
             (meta/module-analysis-pass package))))
       (let ((algebraic-reports (make-hash)))
-        (for-list closure
+        (list-each closure
           (lambda (package)
             (hash-put
               algebraic-reports (meta/package-id package)
               (meta/algebraic-analysis-pass package))))
-        (for-list closure
+        (list-each closure
           (lambda (package)
             (meta/lower-match-pass
               (hash-get module-reports (meta/package-id package))
               (hash-get algebraic-reports (meta/package-id package))
               package)))
-        (for-list closure meta/desugar-pass)
-        (for-list closure
+        (list-each closure meta/desugar-pass)
+        (list-each closure
           (lambda (package)
             (meta/module-import-pass
               (hash-get module-reports (meta/package-id package)) package)))
-        (for-list closure meta/setup-pass)
-        (for-list closure meta/claim-pass)
-        (for-list closure meta/qualify-pass)
+        (list-each closure meta/setup-pass)
+        (list-each closure meta/claim-pass)
+        (list-each closure meta/qualify-pass)
         void))))

@@ -36,11 +36,11 @@
 
 (define (module-analysis-pass package)
   (let ((report (make-module-analysis-report (make-hash) (outcome-ok))))
-    (for-hash (package-fragments package)
+    (hash-each (package-fragments package)
       (lambda (path fragment)
         (let ((scope (empty-fragment-scope (fragment-mod-name fragment))))
           (hash-put (module-analysis-report-fragment-scopes report) path scope)
-          (for-list (fragment-stmts fragment)
+          (list-each (fragment-stmts fragment)
             (lambda (stmt)
               (if (is-outcome-error (ensure-imported-mod-exists package stmt))
                 (ignore (module-analysis-report-put-outcome report (outcome-error)))
@@ -81,12 +81,12 @@
 
 (define (collect-names-by-mod package extract)
   (let ((result (make-hash)))
-    (for-hash-value (package-fragments package)
+    (hash-each-value (package-fragments package)
       (lambda (fragment)
         (let ((mod-name (fragment-mod-name fragment)))
           (if (hash-has result mod-name)
             (let ((existing (hash-get result mod-name)))
-              (for-list (extract fragment) (lambda (name) (set-add existing name))))
+              (list-each (extract fragment) (lambda (name) (set-add existing name))))
             (ignore (hash-put result mod-name (list-to-set (extract fragment))))))))
     result))
 
@@ -152,7 +152,7 @@
   (match stmt
     ((import-stmt pkg-name mod-name names location)
      (let ((imported-private-names (lookup-mod-private-names package pkg-name mod-name)))
-       (for-list names
+       (list-each names
          (lambda (name)
            (unless (set-has imported-private-names name)
              (hash-put (fragment-scope-imported-names scope)
@@ -166,7 +166,7 @@
     ((import-all-stmt pkg-name mod-name location)
      (let ((imported-public-names (lookup-mod-public-names package pkg-name mod-name))
            (current-defined-names (lookup-mod-defined-names package 'self (fragment-scope-mod-name scope))))
-       (for-set imported-public-names
+       (set-each imported-public-names
          (lambda (name)
            ;; - why: skip names already defined in the current module,
            ;;   so that local definitions can override imported ones.
@@ -251,7 +251,7 @@
   (let ((lines (make-array)))
     (array-push lines "(module-analysis-report")
     (array-push lines "  (fragment-scopes")
-    (for-list (sort-entries-by-text-key (module-analysis-report-fragment-scopes result))
+    (list-each (sort-entries-by-text-key (module-analysis-report-fragment-scopes result))
       (lambda (entry)
         (let ((path (pair-first entry))
               (scope (pair-second entry)))
@@ -262,7 +262,7 @@
           (if debug
             (begin
               (array-push lines "      (imported-names")
-              (for-list (sort-entries-by-symbol-key (fragment-scope-imported-names scope))
+              (list-each (sort-entries-by-symbol-key (fragment-scope-imported-names scope))
                 (lambda (entry)
                   (let ((name (pair-first entry))
                         (qualified-entry (pair-second entry)))
@@ -274,7 +274,7 @@
                                (symbol-to-text (qualified-name-name qualified-entry)) ")")))))
               (close-top lines)
               (array-push lines "      (imported-prefixes")
-              (for-list (sort-entries-by-symbol-key (fragment-scope-imported-prefixes scope))
+              (list-each (sort-entries-by-symbol-key (fragment-scope-imported-prefixes scope))
                 (lambda (entry)
                   (let ((prefix (pair-first entry))
                         (qualified-prefix (pair-second entry)))

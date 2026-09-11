@@ -480,18 +480,6 @@ Higher-order function manipulation.
 - [`drop`](function/drop.md) — Ignore first argument
 - [`dup`](function/dup.md) — Duplicate argument
 
-## for- Iteration
-
-Data-first versions of `list-each` / `set-each` / `hash-each`.
-Parameter order is `(data fn)`, semantically identical to the corresponding `-each` function.
-
-- [`for-list`](for/for-list.md)
-- [`for-list-index`](for/for-list-index.md)
-- [`for-set`](for/for-set.md)
-- [`for-hash`](for/for-hash.md)
-- [`for-hash-value`](for/for-hash-value.md)
-- [`for-hash-key`](for/for-hash-key.md)
-- [`for-hash-entry`](for/for-hash-entry.md)
 
 ## File I/O
 

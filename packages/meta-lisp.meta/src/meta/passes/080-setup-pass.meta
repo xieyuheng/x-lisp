@@ -5,12 +5,12 @@
       void-t))
 
 (define (setup-pass package)
-  (for-hash (package-fragments package)
+  (hash-each (package-fragments package)
     (lambda (path fragment)
       (let ((mod-name (fragment-mod-name fragment))
              (mod (maybe-else (package-lookup-mod package 'self mod-name) (empty-mod mod-name package))))
         (package-put-mod mod-name mod package)
-        (for-list (fragment-desugared-stmts fragment)
+        (list-each (fragment-desugared-stmts fragment)
           (setup-stmt mod)))))
   (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-mods package "080-setup")))
@@ -22,7 +22,7 @@
 (define (setup-stmt mod stmt)
   (match stmt
     ((exempt-stmt names location)
-     (for-list names (mod-admit mod)))
+     (list-each names (mod-admit mod)))
     ((claim-stmt name type location)
      (mod-claim mod name type))
     ((claim-type-stmt name location)
@@ -62,7 +62,7 @@
            type-constructor
            data-constructors
            location))
-       (for-list data-constructors
+       (list-each data-constructors
          (lambda (data-constructor)
            (hash-put (mod-data-constructors mod) (data-constructor-name data-constructor)
              data-constructor)))))
@@ -75,7 +75,7 @@
          (opaque-type-definition mod name type-constructor representation-type
            (list-map pre-interface-entries make-interface-entry-from-pre)
            location))
-       (for-list pre-interface-entries
+       (list-each pre-interface-entries
          (lambda (entry)
            (match entry
              ((make-pre-interface-entry name type location)
