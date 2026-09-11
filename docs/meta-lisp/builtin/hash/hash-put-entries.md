@@ -5,7 +5,7 @@ title: hash-put-entries
 # Type
 
 ```meta-lisp
-(all (K V) (-> (list-t (pair-t K V)) (hash-t K V) (hash-t K V)))
+(all (K V) (-> (hash-t K V) (list-t (pair-t K V)) (hash-t K V)))
 ```
 
 # Description
@@ -17,7 +17,7 @@ Put entries into a hash table, mutating the hash table in place.
 ```meta-lisp
 (let ((h (@hash)))
   (hash-put-entries
-    (@list (make-pair 'a 1) (make-pair 'b 2))
-    h)
+    h
+    (@list (make-pair 'a 1) (make-pair 'b 2)))
   h)
 ```

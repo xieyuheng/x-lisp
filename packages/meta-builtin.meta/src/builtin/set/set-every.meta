@@ -2,24 +2,24 @@
 
 (claim set-every
   (all (A)
-    (-> (-> A bool-t) (set-t A)
+    (-> (set-t A) (-> A bool-t)
         bool-t)))
 
-(define (set-every p set)
-  (list-every p (set-to-list set)))
+(define (set-every set p)
+  (list-every (set-to-list set) p))
 
 (define-test set-every-test
-  (assert (set-every int-is-non-negative (@set 0 1 2 3)))
-  (assert-not (set-every int-is-non-negative (@set 0 1 -1 2 3))))
+  (assert (set-every (@set 0 1 2 3) int-is-non-negative))
+  (assert-not (set-every (@set 0 1 -1 2 3) int-is-non-negative)))
 
 (claim set-some
   (all (A)
-    (-> (-> A bool-t) (set-t A)
+    (-> (set-t A) (-> A bool-t)
         bool-t)))
 
-(define (set-some p set)
-  (list-some p (set-to-list set)))
+(define (set-some set p)
+  (list-some (set-to-list set) p))
 
 (define-test set-some-test
-  (assert (set-some int-is-non-negative (@set -1 -2 0)))
-  (assert-not (set-some int-is-non-negative (@set -1 -2 -3))))
+  (assert (set-some (@set -1 -2 0) int-is-non-negative))
+  (assert-not (set-some (@set -1 -2 -3) int-is-non-negative)))

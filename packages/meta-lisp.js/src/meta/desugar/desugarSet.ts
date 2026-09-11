@@ -16,7 +16,7 @@ export function desugarSet(
       M.Begin1Exp(
         M.ApplyExp(
           M.QualifiedVarExp("meta-builtin", "builtin", "set-add", location),
-          [element, M.VarExp(freshName, location)],
+          [M.VarExp(freshName, location), element],
           location,
         ),
         body,

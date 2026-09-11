@@ -8,9 +8,9 @@
   (for-hash-value (package-fragments package)
     (lambda (fragment)
       (fragment-put-stmts
-        (list-map-concat expand-stmt (fragment-stmts fragment))
-        fragment)))
-  (when (hash-has "dump" (package-config-compiler (package-config package)))
+        fragment
+        (list-map-concat (fragment-stmts fragment) expand-stmt))))
+  (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-fragments package "010-expand")))
 
 (claim expand-stmt
@@ -23,7 +23,7 @@
      (expand-define-algebraic-type
        (define-algebraic-type-stmt
          type-constructor
-         (list-map (desugar-data-constructor lang) data-constructors)
+         (list-map data-constructors (desugar-data-constructor lang))
          location)))
     ((define-struct-stmt type-constructor fields lang location)
      (let ((type-name (pre-type-constructor-name type-constructor))
@@ -33,7 +33,7 @@
            type-constructor
            (@list (make-explicit-data-constructor
               (make-data-constructor-name lang base-name)
-              (list-map (desugar-data-field lang base-name) fields)
+              (list-map fields (desugar-data-field lang base-name))
               (make-data-predicate-name lang base-name)
               location))
            location))))
@@ -54,7 +54,7 @@
 (define (make-base-name lang type-name location)
   (let ((suffix (if (is-zh lang) "型" "-t")))
     (let ((type-name-text (symbol-to-text type-name)))
-      (unless (text-is-suffix suffix type-name-text)
+      (unless (text-has-suffix type-name-text suffix)
         (error-with-location
           (@text "(make-base-name) type-name must end with "
                    suffix
@@ -62,9 +62,9 @@
           location))
       (text-to-symbol
         (text-slice
-          0 (isub (text-length type-name-text)
-                  (text-length suffix))
-          type-name-text)))))
+          type-name-text 0
+          (isub (text-length type-name-text)
+                  (text-length suffix)))))))
 
 (claim make-data-constructor-name
   (-> lang-t symbol-t
@@ -116,7 +116,7 @@
       (var-exp (pre-type-constructor-name type-constructor) location)
       (apply-exp
         (var-exp (pre-type-constructor-name type-constructor) location)
-        (list-map (lambda (parameter) (var-exp parameter location)) parameters)
+        (list-map parameters (lambda (parameter) (var-exp parameter location)))
         location))))
 
 (claim admit-with-type-parameters
@@ -137,8 +137,8 @@
     (make-explicit-data-constructor
       ctor-name
       (list-map
-        (desugar-data-field lang ctor-name)
-        (pre-data-constructor-fields ctor))
+        (pre-data-constructor-fields ctor)
+        (desugar-data-field lang ctor-name))
       (make-data-predicate-name lang ctor-name)
       (pre-data-constructor-location ctor))))
 
@@ -165,17 +165,17 @@
      (list-concat
        (@list (@list stmt)
         (list-map-concat
+          data-constructors
           (lambda (ctor)
             (list-concat
               (@list (expand-constructor type-constructor ctor)
                (expand-predicate type-constructor ctor)
                (list-map-index-concat
+                 (explicit-data-constructor-fields ctor)
                  (lambda (index field)
                    (list-append
                      (expand-accessor type-constructor ctor index field)
-                     (expand-modifier type-constructor ctor index field)))
-                 (explicit-data-constructor-fields ctor)))))
-          data-constructors))))))
+                     (expand-modifier type-constructor ctor index field)))))))))))))
 
 (claim expand-constructor
   (-> pre-type-constructor-t (explicit-data-constructor-t exp-t)
@@ -188,20 +188,20 @@
         name
         (pre-type-constructor-parameters type-constructor)
         (arrow-exp
-          (list-map explicit-data-field-type fields)
+          (list-map fields explicit-data-field-type)
           (make-type-exp type-constructor location)
           location)
         location)
       (define-function-stmt
         name
-        (list-map explicit-data-field-name fields)
+        (list-map fields explicit-data-field-name)
         (array-exp
           (cons (symbol-exp name location)
                 (list-map
+                  fields
                   (lambda (field)
                     (var-exp (explicit-data-field-name field)
-                             (explicit-data-field-location field)))
-                  fields))
+                             (explicit-data-field-location field)))))
           location)
         location)))))
 
@@ -232,7 +232,7 @@
              location)
            (apply-exp
              (qualified-var-exp 'meta-builtin 'builtin 'equal location)
-             (@list (apply-exp (qualified-var-exp 'meta-builtin 'builtin 'array-get location) (@list (int-exp 0 location) (var-exp 'value location)) location)
+             (@list (apply-exp (qualified-var-exp 'meta-builtin 'builtin 'array-get location) (@list (var-exp 'value location) (int-exp 0 location)) location)
               (symbol-exp name location))
              location))
           location)
@@ -259,8 +259,8 @@
           (@list 'target)
           (apply-exp
             (qualified-var-exp 'meta-builtin 'builtin 'array-get location)
-            (@list (int-exp (iadd index 1) location)
-             (var-exp 'target location))
+            (@list (var-exp 'target location)
+             (int-exp (iadd index 1) location))
             location)
           location))))))
 
@@ -281,17 +281,17 @@
           (@list (admit-with-type-parameters
              modifier-name
              (pre-type-constructor-parameters type-constructor)
-             (arrow-exp (@list type type-exp) type-exp location)
+             (arrow-exp (@list type-exp type) type-exp location)
              location)
            (define-function-stmt
               modifier-name
-              (@list 'value 'target)
+              (@list 'target 'value)
               (begin-exp
                 (@list (apply-exp
                    (qualified-var-exp 'meta-builtin 'builtin 'array-put location)
-                   (@list (int-exp (iadd index 1) location)
-                    (var-exp 'value location)
-                    (var-exp 'target location))
+                   (@list (var-exp 'target location)
+                    (int-exp (iadd index 1) location)
+                    (var-exp 'value location))
                    location)
                  (var-exp 'target location))
                 location)

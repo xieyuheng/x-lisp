@@ -17,10 +17,10 @@
         (x2 (make-box))
         ...
         (xn (make-box)))
-    (box-put e1 x1)
-    (box-put e2 x2)
+    (box-put x1 e1)
+    (box-put x2 e2)
     ...
-    (box-put en xn)
+    (box-put xn en)
     body))
 
 (claim desugar-letrec
@@ -28,16 +28,16 @@
       exp-t))
 
 (define (desugar-letrec bindings body location)
-  (let ((box-bindings (list-map make-box-binding bindings))
-         (box-get-exps (list-map make-box-get-exp bindings))
-         (names (list-map binding-name bindings))
+  (let ((box-bindings (list-map bindings make-box-binding))
+         (box-get-exps (list-map bindings make-box-get-exp))
+         (names (list-map bindings binding-name))
          (exp-box-get-subst (lambda (exp) (exp-naive-subst-many exp names box-get-exps)))
          (new-rhs-exps
            (list-map
+             bindings
              (lambda (binding)
-               (exp-box-get-subst (binding-rhs binding)))
-             bindings))
-         (box-put-exps (list-zip-map make-box-put-exp new-rhs-exps bindings)))
+               (exp-box-get-subst (binding-rhs binding)))))
+         (box-put-exps (list-zip-map new-rhs-exps bindings make-box-put-exp)))
     (let-exp
       box-bindings
       (begin-exp (list-append box-put-exps (@list (exp-box-get-subst body))) location)
@@ -67,7 +67,7 @@
     ((make-binding name _ location)
      (apply-exp
         (qualified-var-exp 'meta-builtin 'builtin 'box-put location)
-       (@list value-exp (var-exp name location))
+       (@list (var-exp name location) value-exp)
        location))))
 
 (claim exp-naive-subst-many
@@ -75,7 +75,7 @@
       exp-t))
 
 (define (exp-naive-subst-many exp names rhs-exps)
-  (list-fold-left exp-naive-subst-pair exp (list-zip names rhs-exps)))
+  (list-fold-left (list-zip names rhs-exps) exp exp-naive-subst-pair))
 
 (claim exp-naive-subst-pair
   (-> exp-t (pair-t symbol-t exp-t)

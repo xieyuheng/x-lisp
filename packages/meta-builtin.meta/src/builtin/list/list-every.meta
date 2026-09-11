@@ -2,28 +2,28 @@
 
 (claim list-every
   (all (A)
-    (-> (-> A bool-t) (list-t A)
+    (-> (list-t A) (-> A bool-t)
         bool-t)))
 
-(define (list-every p list)
+(define (list-every list p)
   (cond ((list-is-empty list) true)
         ((not (p (car list))) false)
-        (else (list-every p (cdr list)))))
+        (else (list-every (cdr list) p))))
 
 (define-test list-every-test
-  (assert (list-every int-is-non-negative (@list 0 1 2 3)))
-  (assert-not (list-every int-is-non-negative (@list 0 1 -1 2 3))))
+  (assert (list-every (@list 0 1 2 3) int-is-non-negative))
+  (assert-not (list-every (@list 0 1 -1 2 3) int-is-non-negative)))
 
 (claim list-some
   (all (A)
-    (-> (-> A bool-t) (list-t A)
+    (-> (list-t A) (-> A bool-t)
         bool-t)))
 
-(define (list-some p list)
+(define (list-some list p)
   (cond ((list-is-empty list) false)
         ((p (car list)) true)
-        (else (list-some p (cdr list)))))
+        (else (list-some (cdr list) p))))
 
 (define-test list-some-test
-  (assert (list-some int-is-non-negative (@list -1 -2 0)))
-  (assert-not (list-some int-is-non-negative (@list -1 -2 -3))))
+  (assert (list-some (@list -1 -2 0) int-is-non-negative))
+  (assert-not (list-some (@list -1 -2 -3) int-is-non-negative)))

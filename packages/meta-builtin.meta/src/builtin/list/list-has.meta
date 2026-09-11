@@ -1,0 +1,15 @@
+(module builtin)
+
+(claim list-has
+  (all (A)
+    (-> (list-t A) A
+        bool-t)))
+
+(define (list-has list x)
+  (cond ((list-is-empty list) false)
+        ((equal x (car list)) true)
+        (else (list-has (cdr list) x))))
+
+(define-test list-has-test
+  (assert (list-has (@list 1 2 3) 2))
+  (assert-not (list-has (@list 1 2 3) 0)))

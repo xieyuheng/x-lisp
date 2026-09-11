@@ -25,19 +25,19 @@
 (claim parse-route (-> text-t route-t))
 
 (define (parse-route command)
-  (let ((tokens (list-filter (negation text-is-blank) (text-split " " command)))
-        (dash-index (list-find-index (equal "--") tokens))
+  (let ((tokens (list-filter (text-split command " ") (negation text-is-blank)))
+        (dash-index (list-find-index tokens (equal "--")))
         (main (if (int-greater-or-equal dash-index 0)
-                (list-take dash-index tokens)
+                (list-take tokens dash-index)
                 tokens))
         (name (car main))
         (rest (cdr main))
-        (first-option-index (list-find-index (text-is-prefix "--") rest))
+        (first-option-index (list-find-index rest (swap text-has-prefix "--")))
         (arg-count (if (int-greater-or-equal first-option-index 0)
                      first-option-index
                      (list-length rest)))
-        (arg-names (list-take arg-count rest))
-        (option-names (list-drop arg-count rest)))
+        (arg-names (list-take rest arg-count))
+        (option-names (list-drop rest arg-count)))
     (make-route command name arg-names option-names)))
 
 (claim route-match (-> route-t (list-t text-t) ctx-t))
@@ -47,22 +47,22 @@
     (cond ((list-is-empty tokens)
            (make-ctx (array-to-list args) options (array-to-list passthrough)))
           ((equal in-passthrough true)
-           (array-push (car tokens) passthrough)
+           (array-push passthrough (car tokens))
            (loop (cdr tokens) args options passthrough true))
           ((equal (car tokens) "--")
            (loop (cdr tokens) args options passthrough true))
-          ((text-is-prefix "-" (car tokens))
+          ((text-has-prefix (car tokens) "-")
            (cond ((list-is-empty (cdr tokens))
-                  (hash-put (car tokens) "" options)
+                  (hash-put options (car tokens) "")
                   (loop (cdr tokens) args options passthrough false))
-                 ((text-is-prefix "-" (car (cdr tokens)))
-                  (hash-put (car tokens) "" options)
+                 ((text-has-prefix (car (cdr tokens)) "-")
+                  (hash-put options (car tokens) "")
                   (loop (cdr tokens) args options passthrough false))
                  (else
-                  (hash-put (car tokens) (car (cdr tokens)) options)
+                  (hash-put options (car tokens) (car (cdr tokens)))
                   (loop (cdr (cdr tokens)) args options passthrough false))))
           (else
-           (array-push (car tokens) args)
+           (array-push args (car tokens))
            (loop (cdr tokens) args options passthrough false))))
   (loop argv (make-array) (make-hash) (make-array) false))
 
@@ -71,27 +71,27 @@
 (define (define-route router command)
   (let ((command (parse-route command))
          (routes (router-routes router)))
-    (router-put-routes (list-append routes (@list command)) router)))
+    (router-put-routes router (list-append routes (@list command)))))
 
 (claim define-handler (-> router-t text-t (-> ctx-t void-t) router-t))
 
 (define (define-handler router name handler)
   (let ((handlers (router-handlers router)))
-    (hash-put name handler handlers)
-    (router-put-handlers handlers router)))
+    (hash-put handlers name handler)
+    (router-put-handlers router handlers)))
 
 (claim print-name-and-version (-> router-t void-t))
 
 (define (print-name-and-version router)
-  (println (text-join " " (@list (router-name router) (router-version router)))))
+  (println (text-join (@list (router-name router) (router-version router)) " ")))
 
 (claim print-commands (-> router-t void-t))
 
 (define (print-commands router)
   (println "commands:")
-  (list-each (lambda (route)
-               (println (text-append "  " (route-command route))))
-    (router-routes router)))
+  (list-each (router-routes router)
+    (lambda (route)
+               (println (text-append "  " (route-command route))))))
 
 (claim router-run (-> router-t (list-t text-t) void-t))
 
@@ -102,16 +102,16 @@
       (print-commands router))
     (let ((name (car argv))
           (tokens (cdr argv)))
-      (match (list-find (lambda (r) (equal (route-name r) name))
-               (router-routes router))
+      (match (list-find (router-routes router)
+               (lambda (r) (equal (route-name r) name)))
         ((just route)
-         (match (hash-get-maybe name (router-handlers router))
+         (match (hash-get-maybe (router-handlers router) name)
            ((just handler) (handler (route-match route tokens)))
            ((nothing)
-            (println (text-join " " (@list "undefined handler:" name)))
+            (println (text-join (@list "undefined handler:" name) " "))
             (exit 1))))
         ((nothing)
-         (println (text-join " " (@list "unknown command:" name)))
+         (println (text-join (@list "unknown command:" name) " "))
          (print-name-and-version router)
          (print-commands router))))))
 
@@ -123,17 +123,17 @@
 (claim arg-get (-> int-t ctx-t text-t))
 
 (define (arg-get i ctx)
-  (list-get i (ctx-args ctx)))
+  (list-get (ctx-args ctx) i))
 
 (claim option-has (-> text-t ctx-t bool-t))
 
 (define (option-has name ctx)
-  (hash-has name (ctx-options ctx)))
+  (hash-has (ctx-options ctx) name))
 
 (claim option-get (-> text-t ctx-t text-t))
 
 (define (option-get name ctx)
-  (hash-get name (ctx-options ctx)))
+  (hash-get (ctx-options ctx) name))
 
 (claim passthrough-count (-> ctx-t int-t))
 
@@ -143,4 +143,4 @@
 (claim passthrough-get (-> int-t ctx-t text-t))
 
 (define (passthrough-get i ctx)
-  (list-get i (ctx-passthrough ctx)))
+  (list-get (ctx-passthrough ctx) i))

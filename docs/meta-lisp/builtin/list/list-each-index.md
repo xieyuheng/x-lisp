@@ -5,7 +5,7 @@ title: list-each-index
 # Type
 
 ```meta-lisp
-(all (A Any) (-> (-> int-t A Any) (list-t A) void-t))
+(all (A Any) (-> (list-t A) (-> int-t A Any) void-t))
 ```
 
 # Description
@@ -16,11 +16,11 @@ Iterate over each element with its index, for side effects.
 
 ```meta-lisp
 (list-each-index
+ (@list 'a 'b 'c)
  (lambda (i x)
    (print i)
    (write ": ")
-   (println x))
- (@list 'a 'b 'c))
+   (println x)))
 ;; Output:
 ;; 0: a
 ;; 1: b

@@ -16,7 +16,7 @@ export function desugarArray(
       M.Begin1Exp(
         M.ApplyExp(
           M.QualifiedVarExp("meta-builtin", "builtin", "array-push", location),
-          [element, M.VarExp(freshName, location)],
+          [M.VarExp(freshName, location), element],
           location,
         ),
         body,

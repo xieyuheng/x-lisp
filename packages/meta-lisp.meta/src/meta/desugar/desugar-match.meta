@@ -107,25 +107,25 @@
   (cond
     ((list-is-empty clauses) default-exp)
     ((list-is-empty targets) (match-clause-body (car clauses)))
-    ((list-every is-var-pattern-clause clauses)
+    ((list-every clauses is-var-pattern-clause)
      (desugar-match
        ctx (cdr targets)
-       (list-map (desugar-var-pattern-clause (car targets)) clauses)
+       (list-map clauses (desugar-var-pattern-clause (car targets)))
        default-exp location))
-    ((list-every is-data-pattern-clause clauses)
+    ((list-every clauses is-data-pattern-clause)
      (cond-exp
        (list-map
+         (group-clauses-by-data-pattern ctx clauses)
          (lambda (group)
            (desugar-data-pattern-clause-group
-             ctx group targets default-exp location))
-         (group-clauses-by-data-pattern ctx clauses))
+             ctx group targets default-exp location)))
        location))
     (else
      (list-fold-right
-       (lambda (group folded)
-         (desugar-match ctx targets group folded location))
+       (group-clauses-by-pattern-kind clauses)
        default-exp
-       (group-clauses-by-pattern-kind clauses)))))
+       (lambda (group folded)
+         (desugar-match ctx targets group folded location))))))
 
 (define (desugar-var-pattern-clause target clause)
   (@comment
@@ -165,15 +165,15 @@
          (infos (algebraic-analysis-report-data-constructor-infos report)))
     (match (lookup-same-algebraic-type-info ctx clauses)
       ((make-algebraic-type-info pkg-name mod-name name constructor-names)
-       (swap list-map constructor-names
+       (list-map constructor-names
          (lambda (ctor-name)
            (let ((key (algebraic-key pkg-name mod-name ctor-name))
-                  (data-constructor-info (hash-get key infos)))
+                  (data-constructor-info (hash-get infos key)))
              (make-data-pattern-clause-group
                data-constructor-info
                (list-filter
-                 (clause-starts-with-data-constructor ctx data-constructor-info)
-                 clauses)))))))))
+                 clauses
+                 (clause-starts-with-data-constructor ctx data-constructor-info))))))))))
 
 (define (clause-starts-with-data-constructor ctx info clause)
   (let ((pattern (car (match-clause-patterns clause))))
@@ -204,12 +204,12 @@
        clauses)
       (define (spread-target target)
         (list-map
+          accessor-names
           (lambda (accessor-name)
             (apply-exp
               (qualified-var-exp pkg-name mod-name accessor-name location)
               (@list target)
-              (exp-location target)))
-          accessor-names))
+              (exp-location target)))))
       (make-cond-clause
         (apply-exp
           (qualified-var-exp pkg-name mod-name predicate-name location)
@@ -218,7 +218,7 @@
        (desugar-match
          ctx
          (list-append (spread-target (car targets)) (cdr targets))
-         (list-map clause-spread-first-data-pattern clauses)
+         (list-map clauses clause-spread-first-data-pattern)
          default-exp location)
        location))))
 
@@ -249,7 +249,7 @@
       ((var-exp name location)
        (let ((scope (desugar-match-ctx-scope ctx))
               (imported-names (fragment-scope-imported-names scope)))
-         (match (hash-get-maybe name imported-names)
+         (match (hash-get-maybe imported-names name)
            ((just qualified-name) qualified-name)
            ((nothing)
             (make-qualified-name
@@ -280,11 +280,11 @@
     (let ((info (lookup-data-constructor-info-from-pattern ctx pattern))
           (report (desugar-match-ctx-algebraic-analysis-report ctx)))
       (hash-get
+        (algebraic-analysis-report-algebraic-type-infos report)
         (algebraic-key
           (data-constructor-info-pkg-name info)
           (data-constructor-info-mod-name info)
-          (data-constructor-info-type-name info))
-        (algebraic-analysis-report-algebraic-type-infos report)))))
+          (data-constructor-info-type-name info))))))
 
 (define (lookup-data-constructor-info-from-pattern ctx pattern)
   (unless (is-data-pattern pattern)
@@ -295,8 +295,8 @@
     ((make-qualified-name pkg-name mod-name name)
      (let ((report (desugar-match-ctx-algebraic-analysis-report ctx)))
        (hash-get
-         (algebraic-key pkg-name mod-name name)
-         (algebraic-analysis-report-data-constructor-infos report))))))
+         (algebraic-analysis-report-data-constructor-infos report)
+         (algebraic-key pkg-name mod-name name))))))
 
 (claim group-clauses-by-pattern-kind
   (-> (list-t match-clause-t)
@@ -307,12 +307,12 @@
     (for-list clauses
       (lambda (clause)
         (if (array-is-empty groups)
-          (ignore (array-push (@array clause) groups))
-          (let ((last (array-get (isub (array-length groups) 1) groups)))
-            (if (same-pattern-kind clause (array-get 0 last))
-              (ignore (array-push clause last))
-              (ignore (array-push (@array clause) groups)))))))
-    (list-map array-to-list (array-to-list groups))))
+          (ignore (array-push groups (@array clause)))
+          (let ((last (array-get groups (isub (array-length groups) 1))))
+            (if (same-pattern-kind clause (array-get last 0))
+              (ignore (array-push last clause))
+              (ignore (array-push groups (@array clause))))))))
+    (list-map (array-to-list groups) array-to-list)))
 
 (define (same-pattern-kind x y)
   (or (equal (is-var-pattern-clause x) (is-var-pattern-clause y))
@@ -325,13 +325,13 @@
        (list-concat
          (@list (@list (text-exp "pattern mismatch on:" location))
           (list-map-concat
+            targets
             (lambda (target)
               (@list (text-exp " " location)
                (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'format location)
                  (@list target)
-                 location)))
-            targets)))
+                 location))))))
        location)
      (desugar-location location))
     location))

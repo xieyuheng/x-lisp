@@ -2,9 +2,9 @@
 
 (claim list-map-index
   (all (A B)
-    (-> (-> int-t A B) (list-t A) (list-t B))))
+    (-> (list-t A) (-> int-t A B) (list-t B))))
 
-(define (list-map-index f list)
+(define (list-map-index list f)
   (list-map-index-aux f list 0))
 
 (claim list-map-index-aux
@@ -18,9 +18,9 @@
           (list-map-index-aux f (cdr list) (iadd i 1)))))
 
 (define-test list-map-index-test
-  (assert-equal (list-map-index (lambda (i x) (iadd i x)) (@list 10 20 30))
+  (assert-equal (list-map-index (@list 10 20 30) (lambda (i x) (iadd i x)))
     (@list 10 21 32))
-  (assert-equal (list-map-index (lambda (i x) i) (@list 'a 'b 'c))
+  (assert-equal (list-map-index (@list 'a 'b 'c) (lambda (i x) i))
     (@list 0 1 2))
-  (assert-equal (list-map-index (lambda (i x) (iadd i x)) (@list))
+  (assert-equal (list-map-index (@list) (lambda (i x) (iadd i x)))
     (@list)))

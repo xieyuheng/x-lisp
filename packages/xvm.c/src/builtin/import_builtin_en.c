@@ -137,8 +137,8 @@ void import_builtin_en(program_t *program) {
   define_primitive_2(program, "meta-builtin/builtin/text-split", x_text_split);
   define_primitive_2(program, "meta-builtin/builtin/text-join", x_text_join);
   define_primitive_3(program, "meta-builtin/builtin/text-replace", x_text_replace);
-  define_primitive_2(program, "meta-builtin/builtin/text-is-prefix", x_text_is_prefix);
-  define_primitive_2(program, "meta-builtin/builtin/text-is-suffix", x_text_is_suffix);
+  define_primitive_2(program, "meta-builtin/builtin/text-has-prefix", x_text_is_prefix);
+  define_primitive_2(program, "meta-builtin/builtin/text-has-suffix", x_text_is_suffix);
   define_primitive_1(program, "meta-builtin/builtin/text-to-upper-case", x_text_to_upper_case);
   define_primitive_1(program, "meta-builtin/builtin/text-to-lower-case", x_text_to_lower_case);
   define_primitive_2(program, "meta-builtin/builtin/text-get-code-point", x_text_get_code_point);
@@ -210,7 +210,7 @@ void import_builtin_en(program_t *program) {
   define_primitive_1(program, "meta-builtin/builtin/set-copy", x_set_copy);
   define_primitive_1(program, "meta-builtin/builtin/set-size", x_set_size);
   define_primitive_1(program, "meta-builtin/builtin/set-is-empty", x_set_is_empty);
-  define_primitive_2(program, "meta-builtin/builtin/set-member", x_set_member);
+  define_primitive_2(program, "meta-builtin/builtin/set-has", x_set_member);
   define_primitive_2(program, "meta-builtin/builtin/set-add", x_set_add_mut);
   define_primitive_2(program, "meta-builtin/builtin/set-copy-add", x_set_add);
   define_primitive_2(program, "meta-builtin/builtin/set-delete", x_set_delete_mut);

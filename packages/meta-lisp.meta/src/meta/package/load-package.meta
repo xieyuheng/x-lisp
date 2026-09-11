@@ -4,7 +4,7 @@
 
 (define (load-package id config-path)
   (let ((resolved-path (path-resolve config-path)))
-    (match (hash-get-maybe resolved-path package-cache)
+    (match (hash-get-maybe package-cache resolved-path)
       ((just pkg) pkg)
       ((nothing)
        (let ((config (load-package-config config-path))
@@ -17,7 +17,7 @@
          (validate-prelude package config)
          (let ((source-directory (package-source-directory package)))
            (package-load-fragments package source-directory)
-           (hash-put resolved-path package package-cache)
+           (hash-put package-cache resolved-path package)
            package))))))
 
 (define (actual-id config id)
@@ -32,38 +32,38 @@
     void))
 
 (define (validate-builtin config)
-  (unless (hash-has "meta-builtin" (package-config-dependencies config))
+  (unless (hash-has (package-config-dependencies config) "meta-builtin")
     (error "[loadPackage] missing required dependency \"meta-builtin\"")))
 
 (define package-serial-numbers (make-hash))
 
 (define (dependency-id dep-resolved)
-  (match (hash-get-maybe dep-resolved package-serial-numbers)
+  (match (hash-get-maybe package-serial-numbers dep-resolved)
     ((just id) id)
     ((nothing)
      (let ((id (text-to-symbol (text-append "pkg-" (format (hash-length package-serial-numbers))))))
-       (hash-put dep-resolved id package-serial-numbers)
+       (hash-put package-serial-numbers dep-resolved id)
        id))))
 
 (define (load-dependencies package root-directory config)
   (hash-each
+    (package-config-dependencies config)
     (lambda (alias dep-path)
       (let ((dep-resolved
               (path-resolve
                 (path-join (path-join root-directory dep-path) "meta-package.json"))))
         (if (equal alias "meta-builtin")
-          (hash-put 'meta-builtin
-            (load-package 'meta-builtin dep-resolved)
-            (package-dependencies package))
-          (hash-put (text-to-symbol alias)
-            (load-package (dependency-id dep-resolved) dep-resolved)
-            (package-dependencies package)))))
-    (package-config-dependencies config)))
+          (hash-put (package-dependencies package)
+            'meta-builtin
+            (load-package 'meta-builtin dep-resolved))
+          (hash-put (package-dependencies package)
+            (text-to-symbol alias)
+            (load-package (dependency-id dep-resolved) dep-resolved)))))))
 
 (define (validate-prelude package config)
   (hash-each-key
+    (package-config-prelude config)
     (lambda (pkg-name)
-      (unless (hash-has (text-to-symbol pkg-name) (package-dependencies package))
+      (unless (hash-has (package-dependencies package) (text-to-symbol pkg-name))
         (error
-          (text-append "[loadPackage] prelude references unknown package: " pkg-name))))
-    (package-config-prelude config)))
+          (text-append "[loadPackage] prelude references unknown package: " pkg-name))))))

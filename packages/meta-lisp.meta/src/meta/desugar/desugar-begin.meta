@@ -14,9 +14,9 @@
      (match (car sequence)
        ((local-define-exp name parameters body head-location)
         (let ((local-defines (collect-adjacent-local-defines sequence (@list)))
-               (remaining (list-drop (list-length local-defines) sequence)))
+               (remaining (list-drop sequence (list-length local-defines))))
           (letrec-exp
-            (list-map desugar-local-define local-defines)
+            (list-map local-defines desugar-local-define)
             (if (list-is-empty remaining)
               (qualified-var-exp 'meta-builtin 'builtin 'void location)
               (desugar-begin remaining location))

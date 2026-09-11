@@ -11,4 +11,4 @@
     ((list-sexp elements location)
      (if (list-is-empty elements)
        "()"
-       (@text "(" (text-join " " (list-map format-sexp elements)) ")")))))
+       (@text "(" (text-join (list-map elements format-sexp) " ") ")")))))

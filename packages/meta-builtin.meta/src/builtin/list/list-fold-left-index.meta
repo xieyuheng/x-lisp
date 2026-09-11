@@ -2,9 +2,9 @@
 
 (claim list-fold-left-index
   (all (E R)
-    (-> (-> int-t R E R) R (list-t E) R)))
+    (-> (list-t E) R (-> int-t R E R) R)))
 
-(define (list-fold-left-index f folded list)
+(define (list-fold-left-index list folded f)
   (list-fold-left-index-aux f folded list 0))
 
 (claim list-fold-left-index-aux
@@ -22,16 +22,16 @@
 (define-test list-fold-left-index-test
   (assert-equal
     (list-fold-left-index
-      (lambda (i folded x) (iadd folded (imul i x)))
-      0 (@list 10 20 30))
+      (@list 10 20 30)
+      0 (lambda (i folded x) (iadd folded (imul i x))))
     80)
   (assert-equal
     (list-fold-left-index
-      (lambda (i folded x) (cons i folded))
-      (@list) (@list 'a 'b 'c))
+      (@list 'a 'b 'c)
+      (@list) (lambda (i folded x) (cons i folded)))
     (@list 2 1 0))
   (assert-equal
     (list-fold-left-index
-      (lambda (i folded x) (iadd folded x))
-      0 (@list))
+      (@list)
+      0 (lambda (i folded x) (iadd folded x)))
     0))

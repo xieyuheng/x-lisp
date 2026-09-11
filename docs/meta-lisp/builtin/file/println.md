@@ -15,7 +15,7 @@ Print any value to standard output followed by a newline.
 # Examples
 
 ```meta-lisp
-(list-each println (@list 1 2 3))
+(list-each (@list 1 2 3) println)
 ;; outputs:
 ;; 1
 ;; 2

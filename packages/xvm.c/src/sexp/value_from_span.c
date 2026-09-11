@@ -3,28 +3,28 @@
 value_t value_from_position(struct position_t position) {
   value_t data = x_make_array();
   value_t tag = x_object(intern_symbol("make-source-position"));
-  x_array_push_mut(tag, data);
-  x_array_push_mut(x_int(position.index), data);
-  x_array_push_mut(x_int(position.row), data);
-  x_array_push_mut(x_int(position.column), data);
+  x_array_push_mut(data, tag);
+  x_array_push_mut(data, x_int(position.index));
+  x_array_push_mut(data, x_int(position.row));
+  x_array_push_mut(data, x_int(position.column));
   return data;
 }
 
 value_t value_from_span(struct span_t span) {
   value_t data = x_make_array();
   value_t tag = x_object(intern_symbol("make-source-span"));
-  x_array_push_mut(tag, data);
-  x_array_push_mut(value_from_position(span.start), data);
-  x_array_push_mut(value_from_position(span.end), data);
+  x_array_push_mut(data, tag);
+  x_array_push_mut(data, value_from_position(span.start));
+  x_array_push_mut(data, value_from_position(span.end));
   return data;
 }
 
 value_t value_from_source_location(struct source_location_t location) {
   value_t data = x_make_array();
   value_t tag = x_object(intern_symbol("make-source-location"));
-  x_array_push_mut(tag, data);
-  x_array_push_mut(x_object(make_xtext(location.pathname)), data);
-  x_array_push_mut(value_from_span(location.span), data);
+  x_array_push_mut(data, tag);
+  x_array_push_mut(data, x_object(make_xtext(location.pathname)));
+  x_array_push_mut(data, value_from_span(location.span));
   return data;
 }
 

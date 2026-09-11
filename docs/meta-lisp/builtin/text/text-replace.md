@@ -15,7 +15,7 @@ Replace all occurrences of `old` with `new` in a text.
 # Examples
 
 ```meta-lisp
-(text-replace "world" "there" "hello world")  ;; => "hello there"
-(text-replace "a" "b" "aaa")                  ;; => "bbb"
-(text-replace "x" "y" "abc")                  ;; => "abc"
+(text-replace "hello world" "world" "there")  ;; => "hello there"
+(text-replace "aaa" "a" "b")                  ;; => "bbb"
+(text-replace "abc" "x" "y")                  ;; => "abc"
 ```

@@ -10,11 +10,11 @@
   (assert-equal "abc\n" (path-read "src/path/file-2.txt"))
 
   (let ((a (list-to-array (path-list "src"))))
-    (array-sort text-compare-lexical a)
-    (list-each println (array-to-list a))
+    (array-sort a text-compare-lexical)
+    (list-each (array-to-list a) println)
     (print "\n"))
 
   (let ((a (list-to-array (path-list-recursive "src"))))
-    (array-sort text-compare-lexical a)
-    (list-each println (array-to-list a))
+    (array-sort a text-compare-lexical)
+    (list-each (array-to-list a) println)
     (print "\n")))

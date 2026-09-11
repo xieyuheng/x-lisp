@@ -20,31 +20,31 @@ value_t x_hash_is_empty(value_t hash) {
   return x_bool(xhash_is_empty(to_xhash(hash)));
 }
 
-value_t x_hash_get(value_t key, value_t hash) {
+value_t x_hash_get(value_t hash, value_t key) {
   return xhash_get(to_xhash(hash), key);
 }
 
-value_t x_hash_has(value_t key, value_t hash) {
+value_t x_hash_has(value_t hash, value_t key) {
   return x_bool(xhash_has(to_xhash(hash), key));
 }
 
-value_t x_hash_put_mut(value_t key, value_t value, value_t hash) {
+value_t x_hash_put_mut(value_t hash, value_t key, value_t value) {
   xhash_put(to_xhash(hash), key, value);
   return x_void;
 }
 
-value_t x_hash_put(value_t key, value_t value, value_t hash) {
+value_t x_hash_put(value_t hash, value_t key, value_t value) {
   value_t copy = x_hash_copy(hash);
   xhash_put(to_xhash(copy), key, value);
   return copy;
 }
 
-value_t x_hash_delete_mut(value_t key, value_t hash) {
+value_t x_hash_delete_mut(value_t hash, value_t key) {
   xhash_delete(to_xhash(hash), key);
   return x_void;
 }
 
-value_t x_hash_delete(value_t key, value_t hash) {
+value_t x_hash_delete(value_t hash, value_t key) {
   value_t copy = x_hash_copy(hash);
   xhash_delete(to_xhash(copy), key);
   return copy;

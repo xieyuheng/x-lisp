@@ -5,7 +5,7 @@ title: array-push
 # Type
 
 ```meta-lisp
-(all (E) (-> E (array-t E) void-t))
+(all (E) (-> (array-t E) E void-t))
 ```
 
 # Description
@@ -16,8 +16,8 @@ Append an element at the end in-place.
 
 ```meta-lisp
 (let ((a (make-array)))
-  (array-push 1 a)
-  (array-push 2 a)
+  (array-push a 1)
+  (array-push a 2)
   a)
 ;; => (@array 1 2)
 ```

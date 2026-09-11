@@ -72,8 +72,8 @@
         (result (make-array)))
     (define-handler router "add"
       (lambda (ctx)
-        (array-push (arg-get 0 ctx) result)
-        (array-push (arg-get 1 ctx) result)
+        (array-push result (arg-get 0 ctx))
+        (array-push result (arg-get 1 ctx))
         void))
     (router-run router (@list "add" "3" "4"))
     (assert-equal (@list "3" "4") (array-to-list result))))

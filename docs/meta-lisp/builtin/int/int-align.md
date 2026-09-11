@@ -15,7 +15,7 @@ Align integer `n` upward to a multiple of `alignment`.
 # Examples
 
 ```meta-lisp
-(int-align 16 8)    ;; => 16
+(int-align 8 16)    ;; => 16
 (int-align 16 16)   ;; => 16
-(int-align 16 24)   ;; => 32
+(int-align 24 16)   ;; => 32
 ```

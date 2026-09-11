@@ -2,8 +2,8 @@
 
 (define (package-dump-mods package tag)
   (hash-each-value
-    (package-dump-mod package tag)
-    (package-mods package)))
+    (package-mods package)
+    (package-dump-mod package tag)))
 
 (define (package-dump-mod package tag mod)
   (let ((width 80)

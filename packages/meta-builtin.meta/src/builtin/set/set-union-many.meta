@@ -6,7 +6,7 @@
         (set-t E))))
 
 (define (set-union-many sets)
-  (list-fold-left set-union (make-set) sets))
+  (list-fold-left sets (make-set) set-union))
 
 (define-test set-union-many-test
   (assert-equal

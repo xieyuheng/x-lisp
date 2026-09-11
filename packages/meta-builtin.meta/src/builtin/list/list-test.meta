@@ -43,9 +43,9 @@
 
   (assert-equal (@set 1 2 3) (list-to-set (@list 1 2 3)))
 
-  (assert-equal (list-get 0 (@list 1 2 3)) 1)
-  (assert-equal (list-get 1 (@list 1 2 3)) 2)
-  (assert-equal (list-get 2 (@list 1 2 3)) 3)
+  (assert-equal (list-get (@list 1 2 3) 0) 1)
+  (assert-equal (list-get (@list 1 2 3) 1) 2)
+  (assert-equal (list-get (@list 1 2 3) 2) 3)
 
   (assert-equal (list-length (@list)) 0)
   (assert-equal (list-length (@list 1 2 3)) 3)
@@ -59,23 +59,23 @@
 
   (let ((fs (the (list-t (-> int-t int-t))
               (@list (iadd 1) (iadd 2) (iadd 3)))))
-    (assert-equal 1 ((list-get 0 fs) 0))
-    (assert-equal 2 ((list-get 1 fs) 0))
-    (assert-equal 3 ((list-get 2 fs) 0))))
+    (assert-equal 1 ((list-get fs 0) 0))
+    (assert-equal 2 ((list-get fs 1) 0))
+    (assert-equal 3 ((list-get fs 2) 0))))
 
 (define-test list-copy-put-test
   (let ((list (@list 0 0 0))
-         (list (list-copy-put 0 1 list))
-         (list (list-copy-put 1 2 list))
-         (list (list-copy-put 2 3 list)))
+         (list (list-copy-put list 0 1))
+         (list (list-copy-put list 1 2))
+         (list (list-copy-put list 2 3)))
     (assert-equal list (@list 1 2 3)))
 
   ;; list-copy-put has NO side effect:
 
   (let ((list (@list 0 0 0)))
-    (list-copy-put 0 1 list)
-    (list-copy-put 1 2 list)
-    (list-copy-put 2 3 list)
+    (list-copy-put list 0 1)
+    (list-copy-put list 1 2)
+    (list-copy-put list 2 3)
     (assert-equal list (@list 0 0 0))))
 
 (define-test list-copy-reverse-test

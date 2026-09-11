@@ -42,54 +42,54 @@ void ignore_line_comments(list_t *tokens) {
 static value_t symbol_sexp(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("symbol-sexp"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t string_sexp(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("text-sexp"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t int_sexp(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("int-sexp"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t float_sexp(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("float-sexp"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t list_sexp(value_t elements, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("list-sexp"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(elements, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, elements);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t make_source_location_sexp(value_t path, value_t span) {
   value_t data = x_make_array();
   value_t tag = x_object(intern_symbol("make-source-location"));
-  x_array_push_mut(tag, data);
-  x_array_push_mut(path, data);
-  x_array_push_mut(span, data);
+  x_array_push_mut(data, tag);
+  x_array_push_mut(data, path);
+  x_array_push_mut(data, span);
   return data;
 }
 

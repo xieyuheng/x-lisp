@@ -6,10 +6,10 @@
 
 (define (desugar-list elements location)
   (list-fold-right
+    elements
+    (qualified-var-exp 'meta-builtin 'builtin 'null location)
     (lambda (element acc)
       (apply-exp
         (qualified-var-exp 'meta-builtin 'builtin 'cons location)
         (@list element acc)
-        location))
-    (qualified-var-exp 'meta-builtin 'builtin 'null location)
-    elements))
+        location))))

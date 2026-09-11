@@ -6,8 +6,8 @@ title: hash-map
 
 ```meta-lisp
 (all (K1 V1 K2 V2)
-  (-> (-> K1 V1 (pair-t K2 V2))
-      (hash-t K1 V1)
+  (-> (hash-t K1 V1)
+      (-> K1 V1 (pair-t K2 V2))
       (hash-t K2 V2)))
 ```
 
@@ -19,7 +19,7 @@ Map a function over keys and values, producing new entries.
 
 ```meta-lisp
 (hash-map
-  (lambda (k v) (make-pair (iadd 1 k) (iadd 1 v)))
-  (@hash 1 2 3 4))
+  (@hash 1 2 3 4)
+  (lambda (k v) (make-pair (iadd 1 k) (iadd 1 v))))
 ;; => (@hash 2 3 4 5)
 ```

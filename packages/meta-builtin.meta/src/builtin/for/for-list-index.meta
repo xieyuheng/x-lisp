@@ -6,7 +6,7 @@
         void-t)))
 
 (define (for-list-index data fn)
-  (list-each-index fn data))
+  (list-each-index data fn))
 
 (define-test for-list-index-test
   (for-list-index (@list 'a 'b 'c)

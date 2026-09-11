@@ -2,17 +2,17 @@
 
 (claim list-zip-map
   (all (A B C)
-    (-> (-> A B C) (list-t A) (list-t B)
+    (-> (list-t A) (list-t B) (-> A B C)
         (list-t C))))
 
-(define (list-zip-map f left right)
+(define (list-zip-map left right f)
   (list-map
+    (list-zip left right)
     (lambda (pair)
       (f (pair-first pair)
-        (pair-second pair)))
-    (list-zip left right)))
+        (pair-second pair)))))
 
 (define-test list-zip-map-test
   (assert-equal
-    (list-zip-map iadd (@list 1 2 3) (@list 10 20 30))
+    (list-zip-map (@list 1 2 3) (@list 10 20 30) iadd)
     (@list 11 22 33)))

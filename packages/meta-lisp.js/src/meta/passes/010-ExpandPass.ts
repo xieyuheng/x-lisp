@@ -277,8 +277,8 @@ function expandPredicate(
                   ctor.location,
                 ),
                 [
-                  M.IntExp(BigInt(0), ctor.location),
                   M.VarExp("value", ctor.location),
+                  M.IntExp(BigInt(0), ctor.location),
                 ],
                 ctor.location,
               ),
@@ -325,8 +325,8 @@ function expandAccessor(
           field.location,
         ),
         [
-          M.IntExp(BigInt(index + 1), field.location),
           M.VarExp("target", field.location),
+          M.IntExp(BigInt(index + 1), field.location),
         ],
         field.location,
       ),
@@ -352,7 +352,7 @@ function expandModifier(
       field.modifierName,
       stmt.typeConstructor.parameters,
       M.ArrowExp(
-        [field.type, getDataType(stmt)],
+        [getDataType(stmt), field.type],
         getDataType(stmt),
         field.location,
       ),
@@ -363,7 +363,7 @@ function expandModifier(
   stmts.push(
     M.DefineFunctionStmt(
       field.modifierName,
-      ["value", "target"],
+      ["target", "value"],
       M.BeginExp(
         [
           M.ApplyExp(
@@ -374,9 +374,9 @@ function expandModifier(
               field.location,
             ),
             [
+              M.VarExp("target", field.location),
               M.IntExp(BigInt(index + 1), field.location),
               M.VarExp("value", field.location),
-              M.VarExp("target", field.location),
             ],
             field.location,
           ),

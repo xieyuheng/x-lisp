@@ -2,10 +2,10 @@
 
 (claim array-each-index
   (all (A Any)
-    (-> (-> int-t A Any) (array-t A)
+    (-> (array-t A) (-> int-t A Any)
         void-t)))
 
-(define (array-each-index f array)
+(define (array-each-index array f)
   (array-each-index-aux f array 0))
 
 (claim array-each-index-aux
@@ -17,15 +17,15 @@
   (if (int-greater-or-equal i (array-length array))
     void
     (begin
-      (f i (array-get i array))
+      (f i (array-get array i))
       (array-each-index-aux f array (iadd i 1)))))
 
 (define-test array-each-index-test
   (let ((a (list-to-array (@list 'a 'b 'c)))
         (result (make-array)))
     (array-each-index
+      a
       (lambda (i x)
-        (array-push (make-pair i x) result))
-      a)
+        (array-push result (make-pair i x))))
     (assert-equal (@list (make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c))
       (array-to-list result))))

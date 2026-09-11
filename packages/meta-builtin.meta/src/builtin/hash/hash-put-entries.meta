@@ -2,36 +2,36 @@
 
 (claim hash-copy-put-entries
   (all (K V)
-    (-> (list-t (pair-t K V)) (hash-t K V)
+    (-> (hash-t K V) (list-t (pair-t K V))
         (hash-t K V))))
 
-(define (hash-copy-put-entries entries hash)
-  (hash-put-entries entries (hash-copy hash)))
+(define (hash-copy-put-entries hash entries)
+  (hash-put-entries (hash-copy hash) entries))
 
 (claim hash-put-entries
   (all (K V)
-    (-> (list-t (pair-t K V)) (hash-t K V)
+    (-> (hash-t K V) (list-t (pair-t K V))
         (hash-t K V))))
 
-(define (hash-put-entries entries hash)
+(define (hash-put-entries hash entries)
   (if (list-is-empty entries)
     hash
     (let ((entry (car entries)))
-      (hash-put (pair-first entry) (pair-second entry) hash)
-      (hash-put-entries (cdr entries) hash))))
+      (hash-put hash (pair-first entry) (pair-second entry))
+      (hash-put-entries hash (cdr entries)))))
 
 (define-test hash-put-entries-test
   (assert-equal
     (@hash 'a 1 'b 2)
-    (hash-copy-put-entries (@list (make-pair 'a 1)
-                            (make-pair 'b 2))
-      (@hash)))
+    (hash-copy-put-entries (@hash)
+      (@list (make-pair 'a 1)
+                            (make-pair 'b 2))))
 
   (let ((hash (@hash)))
     (assert-equal
       (@hash 'a 1 'b 2)
-      (hash-put-entries (@list (make-pair 'a 1)
-                         (make-pair 'b 2))
-        hash))
+      (hash-put-entries hash
+        (@list (make-pair 'a 1)
+                         (make-pair 'b 2))))
     (assert-equal
       (@hash 'a 1 'b 2) hash)))

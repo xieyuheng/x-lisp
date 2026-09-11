@@ -9,5 +9,5 @@
 (claim make-pair (all (A B) (-> A B (pair-t A B))))
 (claim pair-first (all (A B) (-> (pair-t A B) A)))
 (claim pair-second (all (A B) (-> (pair-t A B) B)))
-(claim pair-put-first (all (A B) (-> A (pair-t A B) (pair-t A B))))
-(claim pair-put-second (all (A B) (-> B (pair-t A B) (pair-t A B))))
+(claim pair-put-first (all (A B) (-> (pair-t A B) A (pair-t A B))))
+(claim pair-put-second (all (A B) (-> (pair-t A B) B (pair-t A B))))

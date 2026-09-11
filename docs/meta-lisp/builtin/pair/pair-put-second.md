@@ -5,7 +5,7 @@ title: pair-put-second
 # Type
 
 ```meta-lisp
-(all (A B) (-> B (pair-t A B) (pair-t A B)))
+(all (A B) (-> (pair-t A B) B (pair-t A B)))
 ```
 
 # Description
@@ -16,6 +16,6 @@ Replace the second element of a pair.
 
 ```meta-lisp
 (let ((p (make-pair 1 "hello")))
-  (pair-put-second "world" p)
+  (pair-put-second p "world")
   (pair-second p))  ;; => "world"
 ```

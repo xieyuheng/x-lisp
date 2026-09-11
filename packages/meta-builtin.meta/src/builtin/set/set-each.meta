@@ -2,8 +2,8 @@
 
 (claim set-each
   (all (A Any)
-    (-> (-> A Any) (set-t A)
+    (-> (set-t A) (-> A Any)
         void-t)))
 
-(define (set-each f set)
-  (list-each f (set-to-list set)))
+(define (set-each set f)
+  (list-each (set-to-list set) f))

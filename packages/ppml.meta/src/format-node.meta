@@ -31,11 +31,11 @@
          (if (equal mode 'inline)
            (layout width (iadd cursor (text-length space)) rest
                    (text-append result space))
-           (let ((new-line (text-append "\n" (text-repeat indentation " "))))
+           (let ((new-line (text-append "\n" (text-repeat " " indentation))))
              (layout width indentation rest
                      (text-append result new-line)))))
         ((hard-break-node)
-         (let ((new-line (text-append "\n" (text-repeat indentation " "))))
+         (let ((new-line (text-append "\n" (text-repeat " " indentation))))
            (layout width indentation rest
                    (text-append result new-line))))
         ((group-node child)

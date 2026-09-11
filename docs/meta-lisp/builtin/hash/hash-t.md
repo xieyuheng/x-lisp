@@ -16,5 +16,5 @@ Hash table type constructor. `(hash-t K V)` represents a hash table with key typ
 
 ```meta-lisp
 (claim scores (hash-t text-t int-t))
-(hash-get "alice" (@hash "alice" 95 "bob" 87))  ;; => 95
+(hash-get (@hash "alice" 95 "bob" 87) "alice")  ;; => 95
 ```

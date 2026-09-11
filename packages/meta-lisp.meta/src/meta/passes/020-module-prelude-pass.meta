@@ -18,13 +18,13 @@
       (for-list module-names
         (lambda (module-name)
           (fragment-put-stmts
+            fragment
             (cons
               (import-all-stmt
                 (text-to-symbol package-name)
                 (text-to-symbol module-name)
                 (zero-location (fragment-path fragment)))
-              (fragment-stmts fragment))
-            fragment))))))
+              (fragment-stmts fragment))))))))
 
 (define (zero-location path)
   (make-source-location

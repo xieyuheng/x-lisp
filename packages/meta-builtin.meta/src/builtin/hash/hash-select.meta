@@ -2,83 +2,83 @@
 
 (claim hash-select
   (all (K V)
-    (-> (-> K V bool-t) (hash-t K V)
+    (-> (hash-t K V) (-> K V bool-t)
         (hash-t K V))))
 
-(define (hash-select p hash)
+(define (hash-select hash p)
   (make-hash-from-entries
     (list-filter
-      (lambda (entry) (p (pair-first entry) (pair-second entry)))
-      (hash-entries hash))))
+      (hash-entries hash)
+      (lambda (entry) (p (pair-first entry) (pair-second entry))))))
 
 (claim hash-select-key
   (all (K V)
-    (-> (-> K bool-t) (hash-t K V)
+    (-> (hash-t K V) (-> K bool-t)
         (hash-t K V))))
 
-(define (hash-select-key p hash)
+(define (hash-select-key hash p)
   (make-hash-from-entries
     (list-filter
-      (lambda (entry) (p (pair-first entry)))
-      (hash-entries hash))))
+      (hash-entries hash)
+      (lambda (entry) (p (pair-first entry))))))
 
 (claim hash-select-value
   (all (K V)
-    (-> (-> V bool-t) (hash-t K V)
+    (-> (hash-t K V) (-> V bool-t)
         (hash-t K V))))
 
-(define (hash-select-value p hash)
+(define (hash-select-value hash p)
   (make-hash-from-entries
     (list-filter
-      (lambda (entry) (p (pair-second entry)))
-      (hash-entries hash))))
+      (hash-entries hash)
+      (lambda (entry) (p (pair-second entry))))))
 
 (claim hash-reject
   (all (K V)
-    (-> (-> K V bool-t) (hash-t K V)
+    (-> (hash-t K V) (-> K V bool-t)
         (hash-t K V))))
 
-(define (hash-reject p hash)
-  (hash-select (lambda (key value) (not (p key value)))
-    hash))
+(define (hash-reject hash p)
+  (hash-select hash
+    (lambda (key value) (not (p key value)))))
 
 (claim hash-reject-key
   (all (K V)
-    (-> (-> K bool-t) (hash-t K V)
+    (-> (hash-t K V) (-> K bool-t)
         (hash-t K V))))
 
-(define (hash-reject-key p hash)
-  (hash-select-key (negation p) hash))
+(define (hash-reject-key hash p)
+  (hash-select-key hash (negation p)))
 
 (claim hash-reject-value
   (all (K V)
-    (-> (-> V bool-t) (hash-t K V)
+    (-> (hash-t K V) (-> V bool-t)
         (hash-t K V))))
 
-(define (hash-reject-value p hash)
-  (hash-select-value (negation p) hash))
+(define (hash-reject-value hash p)
+  (hash-select-value hash (negation p)))
 
 (define-test test-hash-select
   (assert-equal
     (@hash 'a 1 'b 2)
-    (hash-select (drop int-is-non-negative) (@hash 'a 1 'b 2 'x -1 'y -2)))
+    (hash-select (@hash 'a 1 'b 2 'x -1 'y -2) (drop int-is-non-negative)))
 
   (assert-equal
     (@hash 'a 1 'b 2)
-    (hash-select-value int-is-non-negative (@hash 'a 1 'b 2 'x -1 'y -2)))
+    (hash-select-value (@hash 'a 1 'b 2 'x -1 'y -2) int-is-non-negative))
 
   (assert-equal
     (@hash 1 'a 2 'b)
-    (hash-select-key int-is-non-negative (@hash 1 'a 2 'b -1 'x -2 'y)))
+    (hash-select-key (@hash 1 'a 2 'b -1 'x -2 'y) int-is-non-negative))
 
   (assert-equal
     (@hash 'x -1 'y -2)
-    (hash-reject (drop int-is-non-negative) (@hash 'a 1 'b 2 'x -1 'y -2)))
+    (hash-reject (@hash 'a 1 'b 2 'x -1 'y -2) (drop int-is-non-negative)))
 
   (assert-equal
     (@hash 'x -1 'y -2)
-    (hash-reject-value int-is-non-negative (@hash 'a 1 'b 2 'x -1 'y -2)))
+    (hash-reject-value (@hash 'a 1 'b 2 'x -1 'y -2) int-is-non-negative))
 
   (assert-equal
     (@hash -1 'x -2 'y)
-    (hash-reject-key int-is-non-negative (@hash 1 'a 2 'b -1 'x -2 'y))))
+    (hash-reject-key (@hash 1 'a 2 'b -1 'x -2 'y) int-is-non-negative)))

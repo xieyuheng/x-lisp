@@ -38,11 +38,11 @@
 
 (claim list-get
   (all (E)
-    (-> int-t (list-t E) E)))
-(define (list-get index list)
+    (-> (list-t E) int-t E)))
+(define (list-get list index)
   (if (equal index 0)
     (car list)
-    (list-get (isub index 1) (cdr list))))
+    (list-get (cdr list) (isub index 1))))
 
 (claim list-last
   (all (E)
@@ -75,8 +75,8 @@
 
 (claim list-copy-put
   (all (E)
-    (-> int-t E (list-t E) (list-t E))))
-(define (list-copy-put index value list)
+    (-> (list-t E) int-t E (list-t E))))
+(define (list-copy-put list index value)
   (list-copy-put-aux index value list null))
 
 (claim list-copy-put-aux
@@ -97,5 +97,5 @@
     (-> (list-t E) (set-t E))))
 (define (list-to-set list)
   (let ((set (make-set)))
-    (list-each (lambda (x) (set-add x set)) list)
+    (list-each list (lambda (x) (set-add set x)))
     set))

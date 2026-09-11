@@ -2,28 +2,28 @@
 
 (claim set-select
   (all (A)
-    (-> (-> A bool-t) (set-t A)
+    (-> (set-t A) (-> A bool-t)
         (set-t A))))
 
-(define (set-select p set)
+(define (set-select set p)
   (let ((new-set (@set)))
     (set-each
+      set
       (lambda (e)
         (when (p e)
-          (set-add e new-set)))
-      set)
+          (set-add new-set e))))
     new-set))
 
 (define-test set-select-test
-  (assert-equal (@set 0 1 2) (set-select int-is-non-negative (@set -2 -1 0 1 2))))
+  (assert-equal (@set 0 1 2) (set-select (@set -2 -1 0 1 2) int-is-non-negative)))
 
 (claim set-reject
   (all (A)
-    (-> (-> A bool-t) (set-t A)
+    (-> (set-t A) (-> A bool-t)
         (set-t A))))
 
-(define (set-reject p set)
-  (set-select (negation p) set))
+(define (set-reject set p)
+  (set-select set (negation p)))
 
 (define-test set-reject-test
-  (assert-equal (@set -1 -2) (set-reject int-is-non-negative (@set -2 -1 0 1 2))))
+  (assert-equal (@set -1 -2) (set-reject (@set -2 -1 0 1 2) int-is-non-negative)))

@@ -18,7 +18,7 @@ Box type constructor. Internally represented as `(array-t E)`.
 (define-opaque-type (box-t E) (array-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put (-> E (box-t E) (box-t E)))
+  (box-put (-> (box-t E) E void-t))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
 
@@ -27,7 +27,7 @@ Box type constructor. Internally represented as `(array-t E)`.
 ```meta-lisp
 (claim make-box (all (E) (-> (box-t E))))
 (claim box-is-empty (all (E) (-> (box-t E) bool-t)))
-(claim box-put (all (E) (-> E (box-t E) (box-t E))))
+(claim box-put (all (E) (-> (box-t E) E void-t)))
 (claim box-get-maybe (all (E) (-> (box-t E) (maybe-t E))))
 (claim box-get (all (E) (-> (box-t E) E)))
 ```
@@ -37,7 +37,7 @@ Box type constructor. Internally represented as `(array-t E)`.
 ```meta-lisp
 (define box (make-box))
 (box-is-empty box)    ;; => true
-(box-put 42 box)
+(box-put box 42)
 (box-is-empty box)    ;; => false
 (box-get-maybe box) ;; => (just 42)
 (box-get box)       ;; => 42

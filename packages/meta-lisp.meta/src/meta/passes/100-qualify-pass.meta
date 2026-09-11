@@ -12,7 +12,7 @@
           (mod-put-definition name
             (qualify-definition definition)
             mod)))))
-  (when (hash-has "dump" (package-config-compiler (package-config package)))
+  (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-mods package "100-qualify")))
 
 (claim qualify-definition
@@ -42,20 +42,20 @@
     ((algebraic-type-definition mod name type-constructor data-constructors location)
      (let ((bound-names (list-to-set (type-constructor-parameters type-constructor))))
        (algebraic-type-definition mod name type-constructor
-         (list-map (qualify-data-constructor bound-names) data-constructors)
+         (list-map data-constructors (qualify-data-constructor bound-names))
          location)))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
      (let ((bound-names (list-to-set (type-constructor-parameters type-constructor))))
        (opaque-type-definition mod name type-constructor
          (qualify-free-var mod bound-names representation-type)
-         (list-map (qualify-interface-entry mod bound-names) interface-entries)
+         (list-map interface-entries (qualify-interface-entry mod bound-names))
          location)))))
 
 (define (qualify-data-constructor bound-names data-constructor)
   (match data-constructor
     ((make-data-constructor mod type-name name fields location)
      (make-data-constructor mod type-name name
-       (list-map (qualify-data-field mod bound-names) fields)
+       (list-map fields (qualify-data-field mod bound-names))
        location))))
 
 (define (qualify-data-field mod bound-names field)
@@ -75,7 +75,7 @@
 (define (qualify-free-var mod bound-names term)
   (match term
     ((var-term name location)
-     (if (set-member name bound-names)
+     (if (set-has bound-names name)
        term
        (qualified-var-term
          (package-id (mod-package mod))
@@ -93,7 +93,7 @@
     ((let1-term name rhs body location)
      (let1-term name
        (qualify-free-var mod bound-names rhs)
-       (qualify-free-var mod (set-copy-add name bound-names) body)
+       (qualify-free-var mod (set-copy-add bound-names name) body)
        location))
     (else
      (term-traverse (qualify-free-var mod bound-names) term))))

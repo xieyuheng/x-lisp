@@ -27,10 +27,10 @@
          (@text "(-> " (format-exp ret-type) ")")
          (@text "(-> " args-str " " (format-exp ret-type) ")"))))
     ((all-exp parameters body location)
-     (@text "(all (" (text-join " " (list-map symbol-to-text parameters)) ") "
+     (@text "(all (" (text-join (list-map parameters symbol-to-text) " ") ") "
               (format-exp body) ")"))
     ((lambda-exp parameters body location)
-     (@text "(lambda (" (text-join " " (list-map symbol-to-text parameters)) ") "
+     (@text "(lambda (" (text-join (list-map parameters symbol-to-text) " ") ") "
               (format-exp body) ")"))
     ((list-exp elements location)
      (if (list-is-empty elements)
@@ -49,7 +49,7 @@
        "(@set)"
        (@text "(@set " (format-exps elements) ")")))
     ((hash-exp entries location)
-     (@text "(@hash " (text-join " " (list-map format-hash-entry entries)) ")"))
+     (@text "(@hash " (text-join (list-map entries format-hash-entry) " ") ")"))
     ((and-exp exps location)
      (@text "(and " (format-exps exps) ")"))
     ((let1-exp name rhs body location)
@@ -68,14 +68,14 @@
     ((comment-exp sexps location)
       (if (list-is-empty sexps)
         (@text "(@comment)")
-        (@text "(@comment " (text-join " " (list-map format-sexp sexps)) ")")))
+        (@text "(@comment " (text-join (list-map sexps format-sexp) " ") ")")))
     ((letrec-exp bindings body location)
      (@text "(letrec (" (format-bindings bindings) ") " (format-exp body) ")"))
     ((local-define-exp name parameters body location)
      (if (list-is-empty parameters)
        (@text "(define " (symbol-to-text name) " " (format-exp body) ")")
        (@text "(define (" (symbol-to-text name) " "
-                (text-join " " (list-map symbol-to-text parameters)) ") "
+                (text-join (list-map parameters symbol-to-text) " ") ") "
                 (format-exp body) ")")))
     ((if-exp condition consequent alternative location)
      (@text "(if " (format-exp condition) " "
@@ -88,18 +88,18 @@
     ((or-exp exps location)
      (@text "(or " (format-exps exps) ")"))
     ((cond-exp clauses location)
-     (@text "(cond " (text-join " " (list-map format-cond-clause clauses)) ")"))
+     (@text "(cond " (text-join (list-map clauses format-cond-clause) " ") ")"))
     ((the-exp type instance location)
      (@text "(the " (format-exp type) " " (format-exp instance) ")"))
     ((match-exp targets clauses location)
-     (let ((clauses-str (text-join " " (list-map format-match-clause clauses))))
+     (let ((clauses-str (text-join (list-map clauses format-match-clause) " ")))
        (if (equal (list-length targets) 1)
          (@text "(match " (format-exp (car targets)) " " clauses-str ")")
          (@text "(multi-match (" (format-exps targets) ") " clauses-str ")"))))
     ))
 
 (define (format-exps exps)
-  (text-join " " (list-map format-exp exps)))
+  (text-join (list-map exps format-exp) " "))
 
 (claim format-exp-body (-> exp-t text-t))
 
@@ -115,7 +115,7 @@
     (else (format-exp exp))))
 
 (define (format-bindings bindings)
-  (text-join " " (list-map format-binding bindings)))
+  (text-join (list-map bindings format-binding) " "))
 
 (define (format-binding binding)
   (@text "(" (symbol-to-text (binding-name binding)) " "

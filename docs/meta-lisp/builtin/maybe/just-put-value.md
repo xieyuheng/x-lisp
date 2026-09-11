@@ -5,7 +5,7 @@ title: just-put-value
 # Type
 
 ```meta-lisp
-(all (A) (-> A (maybe-t A) (maybe-t A)))
+(all (A) (-> (maybe-t A) A (maybe-t A)))
 ```
 
 # Description
@@ -16,6 +16,6 @@ Replace the value in a `just`. Errors if called on `nothing`.
 
 ```meta-lisp
 (let ((m (just 42)))
-  (just-put-value 7 m)
+  (just-put-value m 7)
   (just-value m))  ;; => 7
 ```

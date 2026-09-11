@@ -5,7 +5,7 @@ title: text-slice
 # Type
 
 ```meta-lisp
-(-> int-t int-t text-t text-t)
+(-> text-t int-t int-t text-t)
 ```
 
 # Description
@@ -15,7 +15,7 @@ Extract a substring from `start` (inclusive) to `end` (exclusive). Indices are i
 # Examples
 
 ```meta-lisp
-(text-slice 0 3 "hello")  ;; => "hel"
-(text-slice 1 4 "hello")  ;; => "ell"
-(text-slice 0 0 "hello")  ;; => ""
+(text-slice "hello" 0 3)  ;; => "hel"
+(text-slice "hello" 1 4)  ;; => "ell"
+(text-slice "hello" 0 0)  ;; => ""
 ```

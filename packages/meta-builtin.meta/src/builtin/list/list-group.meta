@@ -2,24 +2,24 @@
 
 (claim list-group
   (all (K V)
-    (-> (-> V K) (list-t V)
+    (-> (list-t V) (-> V K)
         (hash-t K (list-t V)))))
 
-(define (list-group f list)
+(define (list-group list f)
   (let ((new-hash (@hash)))
     (list-each
+      list
       (lambda (value)
         (let ((key (f value)))
-          (unless (hash-has key new-hash)
-            (hash-put key (make-array) new-hash))
-          (let ((group (hash-get key new-hash)))
-            (array-push value group))))
-      list)
-    (hash-map-value array-to-list new-hash)))
+          (unless (hash-has new-hash key)
+            (hash-put new-hash key (make-array)))
+          (let ((group (hash-get new-hash key)))
+            (array-push group value)))))
+    (hash-map-value new-hash array-to-list)))
 
 (define-test list-group-test
   (assert-equal
     (@hash 0 (@list 0 3)
            1 (@list 1 4)
            2 (@list 2 5))
-    (list-group (swap imod 3) (@list 0 1 2 3 4 5))))
+    (list-group (@list 0 1 2 3 4 5) (swap imod 3))))

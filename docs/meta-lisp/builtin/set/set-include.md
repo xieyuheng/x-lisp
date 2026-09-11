@@ -10,12 +10,12 @@ title: set-include
 
 # Description
 
-Check if the first set is included in the second.
+Check if the first set includes the second.
 
 # Examples
 
 ```meta-lisp
-(set-include (@set 1 2) (@set 1 2 3))  ;; => true
-(set-include (@set 1 2 3) (@set 1 2))  ;; => false
-(set-include (@set) (@set 1 2 3))     ;; => true
+(set-include (@set 1 2 3) (@set 1 2))  ;; => true
+(set-include (@set 1 2) (@set 1 2 3))  ;; => false
+(set-include (@set 1 2 3) (@set))     ;; => true
 ```

@@ -25,8 +25,8 @@
         (pair-t (list-t A) (list-t B)))))
 
 (define (list-unzip pairs)
-  (make-pair (list-map pair-first pairs)
-    (list-map pair-second pairs)))
+  (make-pair (list-map pairs pair-first)
+    (list-map pairs pair-second)))
 
 (define-test list-unzip-test
   (assert-equal

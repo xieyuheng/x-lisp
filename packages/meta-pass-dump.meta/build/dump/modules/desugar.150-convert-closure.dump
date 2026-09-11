@@ -40,12 +40,12 @@
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (meta-builtin/builtin/box-put
-         (@closure self/desugar/©lambda.example-letrec.1 is-odd)
-         is-even)
+         is-even
+         (@closure self/desugar/©lambda.example-letrec.1 is-odd))
         (begin
           (meta-builtin/builtin/box-put
-           (@closure self/desugar/©lambda.example-letrec.2 is-even)
-           is-odd)
+           is-odd
+           (@closure self/desugar/©lambda.example-letrec.2 is-even))
           meta-builtin/builtin/void)))))
 
 (define (example-local-define)
@@ -53,12 +53,12 @@
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (meta-builtin/builtin/box-put
-         (@closure self/desugar/©lambda.example-local-define.1 is-odd)
-         is-even)
+         is-even
+         (@closure self/desugar/©lambda.example-local-define.1 is-odd))
         (begin
           (meta-builtin/builtin/box-put
-           (@closure self/desugar/©lambda.example-local-define.2 is-even)
-           is-odd)
+           is-odd
+           (@closure self/desugar/©lambda.example-local-define.2 is-even))
           meta-builtin/builtin/void)))))
 
 (define (©lambda.example-letrec.1 closure n)

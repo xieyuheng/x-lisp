@@ -5,7 +5,7 @@ title: array-each-index
 # Type
 
 ```meta-lisp
-(all (A Any) (-> (-> int-t A Any) (array-t A) void-t))
+(all (A Any) (-> (array-t A) (-> int-t A Any) void-t))
 ```
 
 # Description
@@ -16,6 +16,6 @@ Iterate over the elements with index.
 
 ```meta-lisp
 (array-each-index
-  (lambda (i x) (println (make-pair i x)))
-  (@array 'a 'b))
+  (@array 'a 'b)
+  (lambda (i x) (println (make-pair i x))))
 ```

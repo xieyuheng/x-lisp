@@ -15,7 +15,7 @@ Find the first index of a substring in a text. Returns `-1` if not found.
 # Examples
 
 ```meta-lisp
-(text-find-index "ll" "hello")  ;; => 2
-(text-find-index "x" "hello")   ;; => -1
-(text-find-index "" "hello")    ;; => 0
+(text-find-index "hello" "ll")  ;; => 2
+(text-find-index "hello" "x")   ;; => -1
+(text-find-index "hello" "")    ;; => 0
 ```

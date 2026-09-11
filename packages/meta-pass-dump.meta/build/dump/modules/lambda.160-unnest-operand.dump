@@ -1,115 +1,115 @@
 (define (var-term name)
   (let ((array (meta-builtin/builtin/make-array)))
     (begin
-      (meta-builtin/builtin/array-push var-term array)
-      (begin (meta-builtin/builtin/array-push name array) array))))
+      (meta-builtin/builtin/array-push array var-term)
+      (begin (meta-builtin/builtin/array-push array name) array))))
 
 (define (is-var-term value)
   (if (meta-builtin/builtin/is-array value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/array-length value)))
           (meta-builtin/builtin/equal unnested.1 2))
-      (let ((unnested.2 (meta-builtin/builtin/array-get 0 value)))
+      (let ((unnested.2 (meta-builtin/builtin/array-get value 0)))
         (meta-builtin/builtin/equal unnested.2 var-term))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(define (var-term-name target) (meta-builtin/builtin/array-get 1 target))
+(define (var-term-name target) (meta-builtin/builtin/array-get target 1))
 
-(define (var-term-put-name value target)
-  (begin (meta-builtin/builtin/array-put 1 value target) target))
+(define (var-term-put-name target value)
+  (begin (meta-builtin/builtin/array-put target 1 value) target))
 
 (define (apply-term target arg)
   (let ((array (meta-builtin/builtin/make-array)))
     (begin
-      (meta-builtin/builtin/array-push apply-term array)
+      (meta-builtin/builtin/array-push array apply-term)
       (begin
-        (meta-builtin/builtin/array-push target array)
-        (begin (meta-builtin/builtin/array-push arg array) array)))))
+        (meta-builtin/builtin/array-push array target)
+        (begin (meta-builtin/builtin/array-push array arg) array)))))
 
 (define (is-apply-term value)
   (if (meta-builtin/builtin/is-array value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/array-length value)))
           (meta-builtin/builtin/equal unnested.1 3))
-      (let ((unnested.2 (meta-builtin/builtin/array-get 0 value)))
+      (let ((unnested.2 (meta-builtin/builtin/array-get value 0)))
         (meta-builtin/builtin/equal unnested.2 apply-term))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(define (apply-term-target target) (meta-builtin/builtin/array-get 1 target))
+(define (apply-term-target target) (meta-builtin/builtin/array-get target 1))
 
-(define (apply-term-put-target value target)
-  (begin (meta-builtin/builtin/array-put 1 value target) target))
+(define (apply-term-put-target target value)
+  (begin (meta-builtin/builtin/array-put target 1 value) target))
 
-(define (apply-term-arg target) (meta-builtin/builtin/array-get 2 target))
+(define (apply-term-arg target) (meta-builtin/builtin/array-get target 2))
 
-(define (apply-term-put-arg value target)
-  (begin (meta-builtin/builtin/array-put 2 value target) target))
+(define (apply-term-put-arg target value)
+  (begin (meta-builtin/builtin/array-put target 2 value) target))
 
 (define (lambda-term parameter body)
   (let ((array (meta-builtin/builtin/make-array)))
     (begin
-      (meta-builtin/builtin/array-push lambda-term array)
+      (meta-builtin/builtin/array-push array lambda-term)
       (begin
-        (meta-builtin/builtin/array-push parameter array)
-        (begin (meta-builtin/builtin/array-push body array) array)))))
+        (meta-builtin/builtin/array-push array parameter)
+        (begin (meta-builtin/builtin/array-push array body) array)))))
 
 (define (is-lambda-term value)
   (if (meta-builtin/builtin/is-array value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/array-length value)))
           (meta-builtin/builtin/equal unnested.1 3))
-      (let ((unnested.2 (meta-builtin/builtin/array-get 0 value)))
+      (let ((unnested.2 (meta-builtin/builtin/array-get value 0)))
         (meta-builtin/builtin/equal unnested.2 lambda-term))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
 (define (lambda-term-parameter target)
-  (meta-builtin/builtin/array-get 1 target))
+  (meta-builtin/builtin/array-get target 1))
 
-(define (lambda-term-put-parameter value target)
-  (begin (meta-builtin/builtin/array-put 1 value target) target))
+(define (lambda-term-put-parameter target value)
+  (begin (meta-builtin/builtin/array-put target 1 value) target))
 
-(define (lambda-term-body target) (meta-builtin/builtin/array-get 2 target))
+(define (lambda-term-body target) (meta-builtin/builtin/array-get target 2))
 
-(define (lambda-term-put-body value target)
-  (begin (meta-builtin/builtin/array-put 2 value target) target))
+(define (lambda-term-put-body target value)
+  (begin (meta-builtin/builtin/array-put target 2 value) target))
 
 (define (let-term name rhs body)
   (let ((array (meta-builtin/builtin/make-array)))
     (begin
-      (meta-builtin/builtin/array-push let-term array)
+      (meta-builtin/builtin/array-push array let-term)
       (begin
-        (meta-builtin/builtin/array-push name array)
+        (meta-builtin/builtin/array-push array name)
         (begin
-          (meta-builtin/builtin/array-push rhs array)
-          (begin (meta-builtin/builtin/array-push body array) array))))))
+          (meta-builtin/builtin/array-push array rhs)
+          (begin (meta-builtin/builtin/array-push array body) array))))))
 
 (define (is-let-term value)
   (if (meta-builtin/builtin/is-array value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/array-length value)))
           (meta-builtin/builtin/equal unnested.1 4))
-      (let ((unnested.2 (meta-builtin/builtin/array-get 0 value)))
+      (let ((unnested.2 (meta-builtin/builtin/array-get value 0)))
         (meta-builtin/builtin/equal unnested.2 let-term))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(define (let-term-name target) (meta-builtin/builtin/array-get 1 target))
+(define (let-term-name target) (meta-builtin/builtin/array-get target 1))
 
-(define (let-term-put-name value target)
-  (begin (meta-builtin/builtin/array-put 1 value target) target))
+(define (let-term-put-name target value)
+  (begin (meta-builtin/builtin/array-put target 1 value) target))
 
-(define (let-term-rhs target) (meta-builtin/builtin/array-get 2 target))
+(define (let-term-rhs target) (meta-builtin/builtin/array-get target 2))
 
-(define (let-term-put-rhs value target)
-  (begin (meta-builtin/builtin/array-put 2 value target) target))
+(define (let-term-put-rhs target value)
+  (begin (meta-builtin/builtin/array-put target 2 value) target))
 
-(define (let-term-body target) (meta-builtin/builtin/array-get 3 target))
+(define (let-term-body target) (meta-builtin/builtin/array-get target 3))
 
-(define (let-term-put-body value target)
-  (begin (meta-builtin/builtin/array-put 3 value target) target))
+(define (let-term-put-body target value)
+  (begin (meta-builtin/builtin/array-put target 3 value) target))
 
 (define empty-env
   (@closure self/lambda/©wrap.12.meta-builtin.7.builtin.9.make-hash))
@@ -123,52 +123,52 @@
 (define (closure-value env parameter body)
   (let ((array (meta-builtin/builtin/make-array)))
     (begin
-      (meta-builtin/builtin/array-push closure-value array)
+      (meta-builtin/builtin/array-push array closure-value)
       (begin
-        (meta-builtin/builtin/array-push env array)
+        (meta-builtin/builtin/array-push array env)
         (begin
-          (meta-builtin/builtin/array-push parameter array)
-          (begin (meta-builtin/builtin/array-push body array) array))))))
+          (meta-builtin/builtin/array-push array parameter)
+          (begin (meta-builtin/builtin/array-push array body) array))))))
 
 (define (is-closure-value value)
   (if (meta-builtin/builtin/is-array value)
     (if
         (let ((unnested.1 (meta-builtin/builtin/array-length value)))
           (meta-builtin/builtin/equal unnested.1 4))
-      (let ((unnested.2 (meta-builtin/builtin/array-get 0 value)))
+      (let ((unnested.2 (meta-builtin/builtin/array-get value 0)))
         (meta-builtin/builtin/equal unnested.2 closure-value))
       meta-builtin/builtin/false)
     meta-builtin/builtin/false))
 
-(define (closure-value-env target) (meta-builtin/builtin/array-get 1 target))
+(define (closure-value-env target) (meta-builtin/builtin/array-get target 1))
 
-(define (closure-value-put-env value target)
-  (begin (meta-builtin/builtin/array-put 1 value target) target))
+(define (closure-value-put-env target value)
+  (begin (meta-builtin/builtin/array-put target 1 value) target))
 
 (define (closure-value-parameter target)
-  (meta-builtin/builtin/array-get 2 target))
+  (meta-builtin/builtin/array-get target 2))
 
-(define (closure-value-put-parameter value target)
-  (begin (meta-builtin/builtin/array-put 2 value target) target))
+(define (closure-value-put-parameter target value)
+  (begin (meta-builtin/builtin/array-put target 2 value) target))
 
-(define (closure-value-body target) (meta-builtin/builtin/array-get 3 target))
+(define (closure-value-body target) (meta-builtin/builtin/array-get target 3))
 
-(define (closure-value-put-body value target)
-  (begin (meta-builtin/builtin/array-put 3 value target) target))
+(define (closure-value-put-body target value)
+  (begin (meta-builtin/builtin/array-put target 3 value) target))
 
 (define (evaluate term env)
   (if (self/lambda/is-var-term term)
     (let ((name (self/lambda/var-term-name term)))
       (if
-          (let ((unnested.1 (self/lambda/env-lookup name env)))
+          (let ((unnested.1 (self/lambda/env-lookup env name)))
             (meta-builtin/builtin/is-just unnested.1))
         (let
             ((value
-              (let ((unnested.2 (self/lambda/env-lookup name env)))
+              (let ((unnested.2 (self/lambda/env-lookup env name)))
                 (meta-builtin/builtin/just-value unnested.2))))
           value)
         (if
-            (let ((unnested.3 (self/lambda/env-lookup name env)))
+            (let ((unnested.3 (self/lambda/env-lookup env name)))
               (meta-builtin/builtin/is-nothing unnested.3))
           (let
               ((unnested.4 (meta-builtin/builtin/make-source-position 730 25 18)))
@@ -219,7 +219,7 @@
                 (let
                     ((env.1
                       (let ((unnested.14 (self/lambda/evaluate rhs env)))
-                        (self/lambda/extend-env name.1 unnested.14 env))))
+                        (self/lambda/extend-env env name.1 unnested.14))))
                   (self/lambda/evaluate body.1 env.1)))))
           (let
               ((unnested.15 (meta-builtin/builtin/make-source-position 618 21 3)))
@@ -245,7 +245,7 @@
     (let ((body (self/lambda/closure-value-body target)))
       (let ((parameter (self/lambda/closure-value-parameter target)))
         (let ((env (self/lambda/closure-value-env target)))
-          (let ((unnested.1 (self/lambda/extend-env parameter arg env)))
+          (let ((unnested.1 (self/lambda/extend-env env parameter arg)))
             (self/lambda/evaluate body unnested.1)))))
     (let ((unnested.2 (meta-builtin/builtin/make-source-position 1068 35 3)))
       (let ((unnested.3 (meta-builtin/builtin/make-source-position 1073 35 8)))
@@ -265,5 +265,5 @@
 (define (©wrap.12.meta-builtin.7.builtin.13.hash-copy-put closure x1 x2 x3)
   (meta-builtin/builtin/hash-copy-put x1 x2 x3))
 
-(define (©wrap.12.meta-builtin.7.builtin.14.hash-get-maybe closure key hash)
-  (meta-builtin/builtin/hash-get-maybe key hash))
+(define (©wrap.12.meta-builtin.7.builtin.14.hash-get-maybe closure hash key)
+  (meta-builtin/builtin/hash-get-maybe hash key))

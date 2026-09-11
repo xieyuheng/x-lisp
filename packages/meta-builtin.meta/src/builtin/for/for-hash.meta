@@ -6,7 +6,7 @@
         void-t)))
 
 (define (for-hash-value data fn)
-  (hash-each-value fn data))
+  (hash-each-value data fn))
 
 (claim for-hash-key
   (all (K V Any)
@@ -14,7 +14,7 @@
         void-t)))
 
 (define (for-hash-key data fn)
-  (hash-each-key fn data))
+  (hash-each-key data fn))
 
 (claim for-hash-entry
   (all (K V Any)
@@ -22,7 +22,7 @@
         void-t)))
 
 (define (for-hash-entry data fn)
-  (hash-each-entry fn data))
+  (hash-each-entry data fn))
 
 (claim for-hash
   (all (K V Any)
@@ -30,7 +30,7 @@
         void-t)))
 
 (define (for-hash data fn)
-  (hash-each fn data))
+  (hash-each data fn))
 
 (define-test for-hash-value-test
   (for-hash-value (@hash 1 2 3 4) println))

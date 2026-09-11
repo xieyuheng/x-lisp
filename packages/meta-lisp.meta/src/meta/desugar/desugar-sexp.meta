@@ -29,6 +29,6 @@
     ((list-sexp elements location)
      (apply-exp
        (qualified-var-exp 'meta-builtin 'builtin 'list-sexp location)
-       (@list (list-exp (list-map desugar-sexp elements) location)
+       (@list (list-exp (list-map elements desugar-sexp) location)
         (desugar-location location))
        location))))

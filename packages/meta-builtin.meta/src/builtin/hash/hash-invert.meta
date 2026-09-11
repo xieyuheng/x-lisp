@@ -6,8 +6,8 @@
         (hash-t V K))))
 
 (define (hash-invert hash)
-  (hash-map (lambda (k v) (make-pair v k))
-    hash))
+  (hash-map hash
+    (lambda (k v) (make-pair v k))))
 
 (define-test hash-invert-test
   (assert-equal
@@ -22,10 +22,10 @@
 (define (hash-invert-group hash)
   (let ((new-hash (@hash)))
     (hash-each-value
+      hash
       (lambda (value)
-        (let ((keys (hash-keys (hash-select-value (equal value) hash))))
-          (hash-put value (list-to-set keys) new-hash)))
-      hash)
+        (let ((keys (hash-keys (hash-select-value hash (equal value)))))
+          (hash-put new-hash value (list-to-set keys)))))
     new-hash))
 
 (define-test hash-invert-group-test

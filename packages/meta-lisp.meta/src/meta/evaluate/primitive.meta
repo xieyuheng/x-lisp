@@ -7,7 +7,7 @@
 (claim setup-primitive (-> void-t))
 (define (setup-primitive)
   (when (box-is-empty primitive-initialized)
-    (box-put true primitive-initialized)
+    (box-put primitive-initialized true)
     (define-primitive-variable 'type-t (type-value (type-type)))
     (define-primitive-variable '类型型 (type-value (type-type)))
     (define-primitive-variable 'int-t (type-value (atom-type 'int)))
@@ -67,24 +67,24 @@
   (-> symbol-t (-> (list-t value-t) value-t)
       void-t))
 (define (define-primitive-function name fn)
-  (hash-put name fn primitive-functions)
+  (hash-put primitive-functions name fn)
   void)
 
 (claim define-primitive-variable
   (-> symbol-t value-t
       void-t))
 (define (define-primitive-variable name value)
-  (hash-put name value primitive-variables)
+  (hash-put primitive-variables name value)
   void)
 
 (claim lookup-primitive-function
   (-> symbol-t
       (maybe-t (-> (list-t value-t) value-t))))
 (define (lookup-primitive-function name)
-  (hash-get-maybe name primitive-functions))
+  (hash-get-maybe primitive-functions name))
 
 (claim lookup-primitive-variable
   (-> symbol-t
       (maybe-t value-t)))
 (define (lookup-primitive-variable name)
-  (hash-get-maybe name primitive-variables))
+  (hash-get-maybe primitive-variables name))

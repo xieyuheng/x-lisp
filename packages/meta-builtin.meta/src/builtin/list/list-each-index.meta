@@ -2,9 +2,9 @@
 
 (claim list-each-index
   (all (A Any)
-    (-> (-> int-t A Any) (list-t A) void-t)))
+    (-> (list-t A) (-> int-t A Any) void-t)))
 
-(define (list-each-index f list)
+(define (list-each-index list f)
   (list-each-index-aux f list 0))
 
 (claim list-each-index-aux
@@ -21,8 +21,8 @@
 (define-test list-each-index-test
   (let ((results (make-array)))
     (list-each-index
+      (@list 'a 'b 'c)
       (lambda (i x)
-        (array-push (make-pair i x) results))
-      (@list 'a 'b 'c))
+        (array-push results (make-pair i x))))
     (assert-equal (@list (make-pair 0 'a) (make-pair 1 'b) (make-pair 2 'c))
       (array-to-list results))))

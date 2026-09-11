@@ -70,7 +70,7 @@ export function makeBoxGetExp(binding: M.Binding): M.Exp {
 export function makeBoxPutExp(valueExp: M.Exp, binding: M.Binding): M.Exp {
   return M.ApplyExp(
     M.QualifiedVarExp("meta-builtin", "builtin", "box-put", binding.location),
-    [valueExp, M.VarExp(binding.name, binding.location)],
+    [M.VarExp(binding.name, binding.location), valueExp],
     binding.location,
   )
 }

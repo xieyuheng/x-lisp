@@ -8,11 +8,11 @@
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (let ((mod-name (fragment-mod-name fragment))
-             (mod (maybe-else (empty-mod mod-name package) (package-lookup-mod package 'self mod-name))))
+             (mod (maybe-else (package-lookup-mod package 'self mod-name) (empty-mod mod-name package))))
         (package-put-mod mod-name mod package)
         (for-list (fragment-desugared-stmts fragment)
           (setup-stmt mod)))))
-  (when (hash-has "dump" (package-config-compiler (package-config package)))
+  (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-mods package "080-setup")))
 
 (claim setup-stmt
@@ -27,7 +27,7 @@
      (mod-claim mod name type))
     ((claim-type-stmt name location)
      (let ((type-term (make-type-term-from-parameters (@list) location)))
-       (hash-put name (make-claimed-entry type-term (just (type-type))) (mod-claimed mod))
+       (hash-put (mod-claimed mod) name (make-claimed-entry type-term (just (type-type))))
        void))
     ((admit-stmt name type location)
      (mod-claim mod name type)
@@ -55,7 +55,7 @@
      (let ((name (pre-type-constructor-name pre-type-constructor))
             (type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
             (parameters (type-constructor-parameters type-constructor))
-            (data-constructors (list-map (make-data-constructor-from-explicit mod name) explicit-data-constructors)))
+            (data-constructors (list-map explicit-data-constructors (make-data-constructor-from-explicit mod name))))
        (mod-claim mod name (make-type-term-from-parameters parameters location))
        (mod-define mod name
          (algebraic-type-definition mod name
@@ -64,8 +64,8 @@
            location))
        (for-list data-constructors
          (lambda (data-constructor)
-           (hash-put (data-constructor-name data-constructor) data-constructor
-             (mod-data-constructors mod))))))
+           (hash-put (mod-data-constructors mod) (data-constructor-name data-constructor)
+             data-constructor)))))
     ((define-opaque-type-stmt pre-type-constructor representation-type pre-interface-entries location)
      (let ((name (pre-type-constructor-name pre-type-constructor))
             (type-constructor (make-type-constructor-from-pre mod pre-type-constructor))
@@ -73,7 +73,7 @@
        (mod-claim mod name (make-type-term-from-parameters parameters location))
        (mod-define mod name
          (opaque-type-definition mod name type-constructor representation-type
-           (list-map make-interface-entry-from-pre pre-interface-entries)
+           (list-map pre-interface-entries make-interface-entry-from-pre)
            location))
        (for-list pre-interface-entries
          (lambda (entry)
@@ -81,7 +81,7 @@
              ((make-pre-interface-entry name type location)
               (let ((wrapped-type (make-all-term-from-parameters parameters type location)))
                 (mod-claim mod name wrapped-type)
-                (set-add name (mod-opaque mod)))))))))
+                (set-add (mod-opaque mod) name))))))))
     (else void)))
 
 (define (make-all-term-from-parameters parameters type location)
@@ -93,7 +93,7 @@
   (let ((type-term (qualified-var-term 'meta-builtin 'builtin 'type-t location)))
     (if (list-is-empty parameters)
       type-term
-      (arrow-term (list-map (constant type-term) parameters) type-term location))))
+      (arrow-term (list-map parameters (constant type-term)) type-term location))))
 
 (define (make-type-constructor-from-pre mod pre-type-constructor)
   (match pre-type-constructor
@@ -104,7 +104,7 @@
   (match explicit-data-constructor
     ((make-explicit-data-constructor name fields predicate-name location)
      (make-data-constructor mod type-name name
-       (list-map make-data-field-from-explicit fields)
+       (list-map fields make-data-field-from-explicit)
        location))))
 
 (define (make-data-field-from-explicit field)

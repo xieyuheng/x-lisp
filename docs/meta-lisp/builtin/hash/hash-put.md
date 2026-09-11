@@ -5,7 +5,7 @@ title: hash-put
 # Type
 
 ```meta-lisp
-(all (K V) (-> K V (hash-t K V) (hash-t K V)))
+(all (K V) (-> (hash-t K V) K V (hash-t K V)))
 ```
 
 # Description
@@ -16,7 +16,7 @@ Set a key-value pair, same as `hash-copy-put`.
 
 ```meta-lisp
 (let ((h (@hash "a" 1)))
-  (hash-put "b" 2 h)
+  (hash-put h "b" 2)
   h)
 ;; => (@hash "a" 1 "b" 2)
 ```

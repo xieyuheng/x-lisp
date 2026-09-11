@@ -854,8 +854,8 @@ This generates functions with the following types:
 (claim is-point (-> point-t bool-t))
 (claim point-x (-> point-t float-t))
 (claim point-y (-> point-t float-t))
-(claim point-put-x (-> float-t point-t point-t))
-(claim point-put-y (-> float-t point-t point-t))
+(claim point-put-x (-> point-t float-t point-t))
+(claim point-put-y (-> point-t float-t point-t))
 ```
 
 Usage example:
@@ -895,7 +895,7 @@ This generates functions with the following types:
 (claim is-li (all (E) (-> (my-list-t E) bool-t)))
 (claim li-head (all (E) (-> (my-list-t E) E)))
 (claim li-tail (all (E) (-> (my-list-t E) (my-list-t E))))
-(claim li-put-head (all (E) (-> E (my-list-t E) (my-list-t E))))
+(claim li-put-head (all (E) (-> (my-list-t E) E (my-list-t E))))
 (claim li-put-tail (all (E) (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 ```
 
@@ -1078,7 +1078,7 @@ For example, the builtin `box-t` with internal representation `(array-t E)`:
 (define-opaque-type (box-t E) (array-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put (-> E (box-t E) (box-t E)))
+  (box-put (-> (box-t E) E void-t))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 ```
 
@@ -1087,7 +1087,7 @@ When implementing interface functions, it is equivalent to declaring:
 ```meta-lisp
 (claim make-box (all (E) (-> (array-t E))))
 (claim box-is-empty (all (E) (-> (array-t E) bool-t)))
-(claim box-put (all (E) (-> E (array-t E) (array-t E))))
+(claim box-put (all (E) (-> (array-t E) E void-t)))
 (claim box-get-maybe (all (E) (-> (array-t E) (maybe-t E))))
 ```
 
@@ -1096,10 +1096,10 @@ Thus interface functions can use list APIs internally:
 ```meta-lisp
 (define (make-box) (make-array))
 
-(define (box-put value box)
+(define (box-put box value)
   (if (box-is-empty box)
-    (array-push value box)
-    (array-put 0 value box)))
+    (array-push box value)
+    (array-put box 0 value)))
 ```
 
 When using interface functions, it is equivalent to declaring:
@@ -1107,7 +1107,7 @@ When using interface functions, it is equivalent to declaring:
 ```meta-lisp
 (claim make-box (all (E) (-> (box-t E))))
 (claim box-is-empty (all (E) (-> (box-t E) bool-t)))
-(claim box-put (all (E) (-> E (box-t E) (box-t E))))
+(claim box-put (all (E) (-> (box-t E) E void-t)))
 (claim box-get-maybe (all (E) (-> (box-t E) (maybe-t E))))
 ```
 

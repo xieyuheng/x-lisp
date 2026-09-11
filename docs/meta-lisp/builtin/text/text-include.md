@@ -15,7 +15,7 @@ Check if a text includes a specified substring.
 # Examples
 
 ```meta-lisp
-(text-include "ell" "hello")  ;; => true
-(text-include "xyz" "hello")  ;; => false
-(text-include "" "hello")     ;; => true
+(text-include "hello" "ell")  ;; => true
+(text-include "hello" "xyz")  ;; => false
+(text-include "hello" "")     ;; => true
 ```

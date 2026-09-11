@@ -16,5 +16,5 @@ Get all values of a hash table as a list.
 
 ```meta-lisp
 (let ((values (hash-values (@hash 1 2 3 4))))
-  (list-fold-left iadd 0 values))  ;; => 6
+  (list-fold-left values 0 iadd))  ;; => 6
 ```

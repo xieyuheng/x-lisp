@@ -5,17 +5,17 @@ title: box-put
 # Type
 
 ```meta-lisp
-(all (E) (-> E (box-t E) (box-t E)))
+(all (E) (-> (box-t E) E void-t))
 ```
 
 # Description
 
-Store a value in a box. Mutable operation; also returns the updated box.
+Store a value in a box. Mutable operation.
 
 # Examples
 
 ```meta-lisp
 (define box (make-box))
-(box-put 42 box)
+(box-put box 42)
 (box-get box) ;; => 42
 ```

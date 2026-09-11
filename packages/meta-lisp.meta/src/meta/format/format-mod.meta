@@ -2,12 +2,12 @@
 
 (claim format-mod-stmts (-> mod-t text-t))
 (define (format-mod-stmts mod)
-  (text-join " " (list-map format-stmt (mod-stmts mod))))
+  (text-join (list-map (mod-stmts mod) format-stmt) " "))
 
 (claim format-fragment-stmts (-> (list-t (stmt-t exp-t)) text-t))
 (define (format-fragment-stmts stmts)
-  (text-join "\n\n" (list-map format-stmt stmts)))
+  (text-join (list-map stmts format-stmt) "\n\n"))
 
 (claim format-mod-definitions (-> mod-t text-t))
 (define (format-mod-definitions mod)
-  (text-join " " (list-map format-definition (hash-values (mod-definitions mod)))))
+  (text-join (list-map (hash-values (mod-definitions mod)) format-definition) " "))

@@ -20,27 +20,27 @@ value_t x_set_is_empty(value_t set) {
   return x_bool(xset_is_empty(to_xset(set)));
 }
 
-value_t x_set_member(value_t value, value_t set) {
+value_t x_set_member(value_t set, value_t value) {
   return x_bool(xset_is_member(to_xset(set), value));
 }
 
-value_t x_set_add_mut(value_t value, value_t set) {
+value_t x_set_add_mut(value_t set, value_t value) {
   xset_add(to_xset(set), value);
   return x_void;
 }
 
-value_t x_set_add(value_t value, value_t set) {
+value_t x_set_add(value_t set, value_t value) {
   value_t copy = x_set_copy(set);
   xset_add(to_xset(copy), value);
   return copy;
 }
 
-value_t x_set_delete_mut(value_t value, value_t set) {
+value_t x_set_delete_mut(value_t set, value_t value) {
   xset_delete(to_xset(set), value);
   return x_void;
 }
 
-value_t x_set_delete(value_t value, value_t set) {
+value_t x_set_delete(value_t set, value_t value) {
   value_t copy = x_set_copy(set);
   xset_delete(to_xset(copy), value);
   return copy;
@@ -63,7 +63,7 @@ value_t x_set_difference(value_t lhs, value_t rhs) {
   return x_object(xset_difference(to_xset(lhs), to_xset(rhs)));
 }
 
-value_t x_set_include(value_t subset, value_t set) {
+value_t x_set_include(value_t set, value_t subset) {
   return x_bool(xset_subset(to_xset(subset), to_xset(set)));
 }
 

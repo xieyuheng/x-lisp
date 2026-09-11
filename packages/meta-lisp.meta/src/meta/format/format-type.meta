@@ -38,4 +38,4 @@
               (format-type body-type) ")"))))
 
 (define (format-types types)
-  (text-join " " (list-map format-type types)))
+  (text-join (list-map types format-type) " "))

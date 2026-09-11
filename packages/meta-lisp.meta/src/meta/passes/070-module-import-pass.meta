@@ -9,14 +9,14 @@
   (let ((scopes (module-analysis-report-fragment-scopes report)))
     (for-hash (package-fragments package)
       (lambda (path fragment)
-        (match (hash-get-maybe path scopes)
+        (match (hash-get-maybe scopes path)
           ((just scope)
            (fragment-put-desugared-stmts
-             (list-map (module-import-stmt scope) (fragment-desugared-stmts fragment))
-             fragment))
+             fragment
+             (list-map (fragment-desugared-stmts fragment) (module-import-stmt scope))))
           ((nothing)
            (error (@text "(module-import-pass) missing scope for: " path))))))
-    (when (hash-has "dump" (package-config-compiler (package-config package)))
+    (when (hash-has (package-config-compiler (package-config package)) "dump")
       (package-dump-desugared-fragments package "070-module-import"))))
 
 (claim module-import-stmt
@@ -44,14 +44,14 @@
             (new-scope (scope-filter-bound-names scope bound-names)))
        (define-algebraic-type-stmt
          type-constructor
-         (list-map (module-import-explicit-data-constructor new-scope) data-constructors)
+         (list-map data-constructors (module-import-explicit-data-constructor new-scope))
          location)))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (let ((bound-names (list-to-set (pre-type-constructor-parameters type-constructor)))
             (new-scope (scope-filter-bound-names scope bound-names)))
        (define-opaque-type-stmt type-constructor
          (module-import-term new-scope representation-type)
-         (list-map (module-import-pre-interface-entry new-scope) interface-entries)
+         (list-map interface-entries (module-import-pre-interface-entry new-scope))
          location)))
     (else stmt)))
 
@@ -60,7 +60,7 @@
     ((make-explicit-data-constructor name fields predicate-name location)
      (make-explicit-data-constructor
        name
-       (list-map (module-import-explicit-data-field scope) fields)
+       (list-map fields (module-import-explicit-data-field scope))
        predicate-name
        location))))
 
@@ -90,7 +90,7 @@
   (match term
     ((var-term name location)
      (let ((imported-names (fragment-scope-imported-names scope)))
-       (match (hash-get-maybe name imported-names)
+       (match (hash-get-maybe imported-names name)
          ((just entry)
           (qualified-var-term
             (qualified-name-pkg-name entry)
@@ -100,7 +100,7 @@
          ((nothing) term))))
     ((qualified-var-term pkg-name mod-name name location)
      (let ((imported-prefixes (fragment-scope-imported-prefixes scope)))
-       (match (hash-get-maybe mod-name imported-prefixes)
+       (match (hash-get-maybe imported-prefixes mod-name)
          ((just entry)
           (qualified-var-term
             (qualified-prefix-pkg-name entry)
@@ -141,5 +141,5 @@
     ((make-fragment-scope mod-name imported-names imported-prefixes)
      (make-fragment-scope
        mod-name
-       (hash-reject-key (swap set-member bound-names) imported-names)
+       (hash-reject-key imported-names (lambda (name) (set-has bound-names name)))
        imported-prefixes))))

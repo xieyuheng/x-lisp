@@ -8,8 +8,8 @@
 
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
-  (extend-env (-> symbol-t value-t env-t env-t))
-  (env-lookup (-> symbol-t env-t (maybe-t value-t))))
+  (extend-env (-> env-t symbol-t value-t env-t))
+  (env-lookup (-> env-t symbol-t (maybe-t value-t))))
 
 (define empty-env make-hash)
 (define extend-env hash-copy-put)
@@ -21,7 +21,7 @@
 (define (evaluate term env)
   (match term
     ((var-term name)
-     (match (env-lookup name env)
+     (match (env-lookup env name)
        ((just value) value)
        ((nothing) (error "undefined name"))))
     ((apply-term target arg)
@@ -29,10 +29,10 @@
     ((lambda-term parameter body)
      (closure-value env parameter body))
     ((let-term name rhs body)
-     (let ((env (extend-env name (evaluate rhs env) env)))
+     (let ((env (extend-env env name (evaluate rhs env))))
        (evaluate body env)))))
 
 (define (apply target arg)
   (match target
     ((closure-value env parameter body)
-     (evaluate body (extend-env parameter arg env)))))
+     (evaluate body (extend-env env parameter arg)))))

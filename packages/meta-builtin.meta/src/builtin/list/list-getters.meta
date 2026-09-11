@@ -1,5 +1,5 @@
 (module builtin)
 
-(define (list-first list) (list-get 0 list))
-(define (list-second list) (list-get 1 list))
-(define (list-third list) (list-get 2 list))
+(define (list-first list) (list-get list 0))
+(define (list-second list) (list-get list 1))
+(define (list-third list) (list-get list 2))

@@ -2,36 +2,36 @@
 
 (claim list-take
   (all (A)
-    (-> int-t (list-t A)
+    (-> (list-t A) int-t
         (list-t A))))
 
-(define (list-take n list)
+(define (list-take list n)
   (assert (int-is-non-negative n))
   (if (or (equal n 0) (list-is-empty list))
     (@list)
-    (cons (car list) (list-take (isub n 1) (cdr list)))))
+    (cons (car list) (list-take (cdr list) (isub n 1)))))
 
 (define-test list-take-test
-  (assert-equal (list-take 0 (@list 1 2 3)) (@list))
-  (assert-equal (list-take 1 (@list 1 2 3)) (@list 1))
-  (assert-equal (list-take 2 (@list 1 2 3)) (@list 1 2))
-  (assert-equal (list-take 3 (@list 1 2 3)) (@list 1 2 3))
-  (assert-equal (list-take 4 (@list 1 2 3)) (@list 1 2 3)))
+  (assert-equal (list-take (@list 1 2 3) 0) (@list))
+  (assert-equal (list-take (@list 1 2 3) 1) (@list 1))
+  (assert-equal (list-take (@list 1 2 3) 2) (@list 1 2))
+  (assert-equal (list-take (@list 1 2 3) 3) (@list 1 2 3))
+  (assert-equal (list-take (@list 1 2 3) 4) (@list 1 2 3)))
 
 (claim list-drop
   (all (A)
-    (-> int-t (list-t A)
+    (-> (list-t A) int-t
         (list-t A))))
 
-(define (list-drop n list)
+(define (list-drop list n)
   (assert (int-is-non-negative n))
   (if (or (equal n 0) (list-is-empty list))
     list
-    (list-drop (isub n 1) (cdr list))))
+    (list-drop (cdr list) (isub n 1))))
 
 (define-test list-drop-test
-  (assert-equal (list-drop 0 (@list 1 2 3)) (@list 1 2 3))
-  (assert-equal (list-drop 1 (@list 1 2 3)) (@list 2 3))
-  (assert-equal (list-drop 2 (@list 1 2 3)) (@list 3))
-  (assert-equal (list-drop 3 (@list 1 2 3)) (@list))
-  (assert-equal (list-drop 4 (@list 1 2 3)) (@list)))
+  (assert-equal (list-drop (@list 1 2 3) 0) (@list 1 2 3))
+  (assert-equal (list-drop (@list 1 2 3) 1) (@list 2 3))
+  (assert-equal (list-drop (@list 1 2 3) 2) (@list 3))
+  (assert-equal (list-drop (@list 1 2 3) 3) (@list))
+  (assert-equal (list-drop (@list 1 2 3) 4) (@list)))

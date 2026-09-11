@@ -17,4 +17,4 @@
        (@text mod-name "/" name)))))
 
 (define (format-values values)
-  (text-join " " (list-map format-value values)))
+  (text-join (list-map values format-value) " "))

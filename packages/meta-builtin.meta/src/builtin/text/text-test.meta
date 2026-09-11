@@ -24,59 +24,59 @@
   (assert-equal (@list "123" "" "789") (text-lines "123\n\n789\n"))
   (assert-equal (@list "123" "" "789") (text-lines "123\n\n789"))
 
-  (assert-equal "中" (text-slice 0 1 "中文"))
-  (assert-equal "文" (text-slice 1 2 "中文")))
+  (assert-equal "中" (text-slice "中文" 0 1))
+  (assert-equal "文" (text-slice "中文" 1 2)))
 
 (define-test text-join-test
-  (assert-equal "a.b.c" (text-join "." (@list "a" "b" "c")))
-  (assert-equal "a..b..c" (text-join ".." (@list "a" "b" "c"))))
+  (assert-equal "a.b.c" (text-join (@list "a" "b" "c") "."))
+  (assert-equal "a..b..c" (text-join (@list "a" "b" "c") "..")))
 
 (define-test text-split-test
-  (assert-equal (@list "a" "b" "c") (text-split "." "a.b.c"))
-  (assert-equal (@list "a" "b" "c") (text-split ".." "a..b..c")))
+  (assert-equal (@list "a" "b" "c") (text-split "a.b.c" "."))
+  (assert-equal (@list "a" "b" "c") (text-split "a..b..c" "..")))
 
 (define-test text-replace-test
-  (assert-equal "a/b/c" (text-replace "." "/" "a.b.c")))
+  (assert-equal "a/b/c" (text-replace "a.b.c" "." "/")))
 
-(define-test text-is-prefix-test
-  (assert (text-is-prefix "" "abc"))
-  (assert (text-is-prefix "a" "abc"))
-  (assert (text-is-prefix "ab" "abc"))
-  (assert (text-is-prefix "abc" "abc"))
-  (assert-not (text-is-prefix "abc~" "abc"))
-  (assert-not (text-is-prefix "b" "abc"))
+(define-test text-has-prefix-test
+  (assert (text-has-prefix "abc" ""))
+  (assert (text-has-prefix "abc" "a"))
+  (assert (text-has-prefix "abc" "ab"))
+  (assert (text-has-prefix "abc" "abc"))
+  (assert-not (text-has-prefix "abc" "abc~"))
+  (assert-not (text-has-prefix "abc" "b"))
 
-  (assert (text-is-suffix "" "abc"))
-  (assert (text-is-suffix "c" "abc"))
-  (assert (text-is-suffix "bc" "abc"))
-  (assert (text-is-suffix "abc" "abc"))
-  (assert-not (text-is-suffix "~abc" "abc"))
-  (assert-not (text-is-suffix "b" "abc")))
+  (assert (text-has-suffix "abc" ""))
+  (assert (text-has-suffix "abc" "c"))
+  (assert (text-has-suffix "abc" "bc"))
+  (assert (text-has-suffix "abc" "abc"))
+  (assert-not (text-has-suffix "abc" "~abc"))
+  (assert-not (text-has-suffix "abc" "b")))
 
 (define-test text-to-upper-case-test
   (assert-equal "ABC" (text-to-upper-case "abc"))
   (assert-equal "abc" (text-to-lower-case "ABC")))
 
 (define-test text-get-code-point-test
-  (assert-equal 97 (text-get-code-point 0 "abc"))
-  (assert-equal 98 (text-get-code-point 1 "abc"))
-  (assert-equal 99 (text-get-code-point 2 "abc")))
+  (assert-equal 97 (text-get-code-point "abc" 0))
+  (assert-equal 98 (text-get-code-point "abc" 1))
+  (assert-equal 99 (text-get-code-point "abc" 2)))
 
 (define-test text-include-test
-  (assert (text-include "bb" "aabbcc"))
-  (assert (text-include "ab" "aabbcc"))
-  (assert-not (text-include "ba" "aabbcc")))
+  (assert (text-include "aabbcc" "bb"))
+  (assert (text-include "aabbcc" "ab"))
+  (assert-not (text-include "aabbcc" "ba")))
 
 (define-test text-find-index-test
-  (assert-equal 0 (text-find-index "0" "01234"))
-  (assert-equal 1 (text-find-index "1" "01234"))
-  (assert-equal 2 (text-find-index "2" "01234"))
-  (assert-equal -1 (text-find-index "5" "01234"))
+  (assert-equal 0 (text-find-index "01234" "0"))
+  (assert-equal 1 (text-find-index "01234" "1"))
+  (assert-equal 2 (text-find-index "01234" "2"))
+  (assert-equal -1 (text-find-index "01234" "5"))
 
-  (assert-equal 0 (text-find-index "01" "01234"))
-  (assert-equal 1 (text-find-index "12" "01234"))
-  (assert-equal 2 (text-find-index "23" "01234"))
-  (assert-equal -1 (text-find-index "21" "01234")))
+  (assert-equal 0 (text-find-index "01234" "01"))
+  (assert-equal 1 (text-find-index "01234" "12"))
+  (assert-equal 2 (text-find-index "01234" "23"))
+  (assert-equal -1 (text-find-index "01234" "21")))
 
 (define-test text-trim-test
   (assert-equal "abc  " (text-trim-left "  abc  "))

@@ -12,7 +12,7 @@
   (make-package id root-directory config (make-hash) (make-hash) (make-hash)))
 
 (define (package-put-fragment path fragment package)
-  (hash-put path fragment (package-fragments package)))
+  (hash-put (package-fragments package) path fragment))
 
 (define (package-source-directory package)
   (path-join
@@ -34,13 +34,13 @@
                       (equal pkg-name (package-id package)))
                 (package-mods package)
                 (package-mods
-                  (hash-get pkg-name (package-dependencies package))))))
-    (if (hash-has name mods)
-      (just (hash-get name mods))
+                  (hash-get (package-dependencies package) pkg-name)))))
+    (if (hash-has mods name)
+      (just (hash-get mods name))
       (nothing))))
 
 (define (package-put-mod name mod package)
-  (hash-put name mod (package-mods package)))
+  (hash-put (package-mods package) name mod))
 
 (claim package-closure-in-topological-order
   (-> package-t
@@ -50,9 +50,9 @@
   (let ((results (make-array))
         (seen (@set)))
     (define (collect package)
-      (unless (set-member (package-id package) seen)
-        (set-add (package-id package) seen)
-        (hash-each-value collect (package-dependencies package))
-        (array-push package results)))
+      (unless (set-has seen (package-id package))
+        (set-add seen (package-id package))
+        (hash-each-value (package-dependencies package) collect)
+        (array-push results package)))
     (collect package)
     (array-to-list results)))

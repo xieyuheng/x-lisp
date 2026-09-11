@@ -5,54 +5,54 @@
 static value_t symbol_sexp_zh(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("符号符号算式"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t string_sexp_zh(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("文本符号算式"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t int_sexp_zh(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("整数符号算式"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t float_sexp_zh(value_t content, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("浮点符号算式"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(content, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, content);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t list_sexp_zh(value_t elements, value_t location) {
   value_t sexp = x_make_array();
   value_t tag = x_object(intern_symbol("列表符号算式"));
-  x_array_push_mut(tag, sexp);
-  x_array_push_mut(elements, sexp);
-  x_array_push_mut(location, sexp);
+  x_array_push_mut(sexp, tag);
+  x_array_push_mut(sexp, elements);
+  x_array_push_mut(sexp, location);
   return sexp;
 }
 
 static value_t make_source_location_sexp_zh(value_t path, value_t span) {
   value_t data = x_make_array();
   value_t tag = x_object(intern_symbol("作源码位置"));
-  x_array_push_mut(tag, data);
-  x_array_push_mut(path, data);
-  x_array_push_mut(span, data);
+  x_array_push_mut(data, tag);
+  x_array_push_mut(data, path);
+  x_array_push_mut(data, span);
   return data;
 }
 
@@ -141,8 +141,8 @@ static value_t for_sexp_zh(value_t path, list_t *tokens) {
     }
 
     value_t elements = x_make_array();
-    x_array_push_mut(head, elements);
-    x_array_push_mut(for_sexp_zh(path, tokens), elements);
+    x_array_push_mut(elements, head);
+    x_array_push_mut(elements, for_sexp_zh(path, tokens));
     token_free(token);
     return list_sexp_zh(elements, location);
   }

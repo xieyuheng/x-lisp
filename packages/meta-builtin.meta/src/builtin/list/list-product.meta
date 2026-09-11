@@ -3,8 +3,8 @@
 (define (list-product lhs rhs)
   (list-concat
     (list-map
-      (lambda (left) (list-map (make-pair left) rhs))
-      lhs)))
+      lhs
+      (lambda (left) (list-map rhs (make-pair left))))))
 
 (define-test list-product-test
   (assert-equal

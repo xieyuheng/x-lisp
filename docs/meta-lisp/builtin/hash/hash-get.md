@@ -5,7 +5,7 @@ title: hash-get
 # Type
 
 ```meta-lisp
-(all (K V) (-> K (hash-t K V) V))
+(all (K V) (-> (hash-t K V) K V))
 ```
 
 # Description
@@ -15,6 +15,6 @@ Get value by key. Raises an error if the key does not exist.
 # Examples
 
 ```meta-lisp
-(hash-get "a" (@hash "a" 1 "b" 2))  ;; => 1
+(hash-get (@hash "a" 1 "b" 2) "a")  ;; => 1
 ;; (hash-get "c" (@hash "a" 1 "b" 2))  ;; error: key not found
 ```

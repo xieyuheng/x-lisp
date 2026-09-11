@@ -6,7 +6,7 @@
         void-t)))
 
 (define (for-set data fn)
-  (set-each fn data))
+  (set-each data fn))
 
 (define-test for-set-test
   (for-set (@set 1 2 3) println))

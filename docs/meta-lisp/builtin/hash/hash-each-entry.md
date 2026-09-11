@@ -5,7 +5,7 @@ title: hash-each-entry
 # Type
 
 ```meta-lisp
-(all (K V Any) (-> (-> (pair-t K V) Any) (hash-t K V) void-t))
+(all (K V Any) (-> (hash-t K V) (-> (pair-t K V) Any) void-t))
 ```
 
 # Description
@@ -16,6 +16,6 @@ Iterate over each entry with side effects.
 
 ```meta-lisp
 (hash-each-entry
-  (lambda (entry) (println entry))
-  (@hash 1 2 3 4))
+  (@hash 1 2 3 4)
+  (lambda (entry) (println entry)))
 ```

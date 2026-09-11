@@ -161,9 +161,9 @@ Operations on `text-t`.
 
 ### Search and replace
 
-- [`text-is-prefix`](text/text-is-prefix.md) — Check if prefix
-- [`text-is-suffix`](text/text-is-suffix.md) — Check if suffix
-- [`text-include`](text/text-include.md) — Check if includes substring
+- [`text-has-prefix`](text/text-has-prefix.md) — Check if text has prefix
+- [`text-has-suffix`](text/text-has-suffix.md) — Check if text has suffix
+- [`text-include`](text/text-include.md) — Check if text contains substring
 - [`text-find-index`](text/text-find-index.md) — Find substring position
 - [`text-replace`](text/text-replace.md) — Replace substring
 
@@ -277,7 +277,7 @@ Operations on `(list-t E)` — immutable lists.
 
 - [`list-length`](list/list-length.md) — List length
 - [`list-is-empty`](list/list-is-empty.md) — Check if empty
-- [`list-member`](list/list-member.md) — Check if contains element
+- [`list-has`](list/list-has.md) — Check if list has element
 
 ### Transformation
 
@@ -341,8 +341,8 @@ Operations on `(set-t E)`.
 
 - [`set-size`](set/set-size.md) — Set size
 - [`set-is-empty`](set/set-is-empty.md) — Check if empty
-- [`set-member`](set/set-member.md) — Check if contains element
-- [`set-include`](set/set-include.md) — Check if included
+- [`set-has`](set/set-has.md) — Check if set has element
+- [`set-include`](set/set-include.md) — Check if set includes subset
 
 ### Mutation
 

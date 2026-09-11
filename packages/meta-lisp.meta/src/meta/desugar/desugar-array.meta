@@ -5,21 +5,21 @@
       exp-t))
 
 (define (desugar-array elements location)
-  (let ((used-names (set-union-many (list-map exp-occurred-names elements)))
+  (let ((used-names (set-union-many (list-map elements exp-occurred-names)))
          (fresh-name (generate-relative-fresh-name used-names 'array))
          (make (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'make-array location)
                  (@list)
                  location))
          (body (list-fold-right
+                 elements
+                 (var-exp fresh-name location)
                  (lambda (element acc)
                    (begin1-exp
                      (apply-exp
                        (qualified-var-exp 'meta-builtin 'builtin 'array-push location)
-                       (@list element (var-exp fresh-name location))
+                       (@list (var-exp fresh-name location) element)
                        location)
                      acc
-                     location))
-                 (var-exp fresh-name location)
-                 elements)))
+                     location)))))
     (let1-exp fresh-name make body location)))

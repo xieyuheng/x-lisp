@@ -2,9 +2,9 @@
 
 (define (package-load-fragments package directory)
   (list-each
+    (path-list-recursive directory)
     (lambda (name)
-      (when (text-is-suffix ".meta" name)
+      (when (text-has-suffix name ".meta")
         (let ((path (path-join directory name))
                (fragment (load-fragment path)))
-          (package-put-fragment path fragment package))))
-    (path-list-recursive directory)))
+          (package-put-fragment path fragment package))))))

@@ -5,7 +5,7 @@ title: set-some
 # Type
 
 ```meta-lisp
-(all (A) (-> (-> A bool-t) (set-t A) bool-t))
+(all (A) (-> (set-t A) (-> A bool-t) bool-t))
 ```
 
 # Description
@@ -15,6 +15,6 @@ Check if some element satisfies the predicate.
 # Examples
 
 ```meta-lisp
-(set-some int-is-non-negative (@set -1 0 1))  ;; => true
-(set-some int-is-non-negative (@set -1 -2))   ;; => false
+(set-some (@set -1 0 1) int-is-non-negative)  ;; => true
+(set-some (@set -1 -2) int-is-non-negative)   ;; => false
 ```

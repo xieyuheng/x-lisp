@@ -23,22 +23,22 @@
      (set-union-many (@list (@set name) (exp-occurred-names rhs) (exp-occurred-names body))))
     ((let-exp bindings body location)
      (set-union
-       (set-union-many (list-map binding-occurred-names bindings))
+       (set-union-many (list-map bindings binding-occurred-names))
        (exp-occurred-names body)))
     ((letrec-exp bindings body location)
      (set-union
-       (set-union-many (list-map binding-occurred-names bindings))
+       (set-union-many (list-map bindings binding-occurred-names))
        (exp-occurred-names body)))
     ((local-define-exp name parameters body location)
      (set-union-many (@list (@set name) (list-to-set parameters) (exp-occurred-names body))))
     ((apply-exp target args location)
      (set-union
        (exp-occurred-names target)
-       (set-union-many (list-map exp-occurred-names args))))
+       (set-union-many (list-map args exp-occurred-names))))
     ((begin1-exp head body location)
      (set-union (exp-occurred-names head) (exp-occurred-names body)))
     ((begin-exp sequence location)
-     (set-union-many (list-map exp-occurred-names sequence)))
+     (set-union-many (list-map sequence exp-occurred-names)))
     ((if-exp condition consequent alternative location)
      (set-union-many
        (@list (exp-occurred-names condition)
@@ -53,49 +53,49 @@
        (exp-occurred-names condition)
        (exp-occurred-names alternative)))
     ((and-exp exps location)
-     (set-union-many (list-map exp-occurred-names exps)))
+     (set-union-many (list-map exps exp-occurred-names)))
     ((or-exp exps location)
-     (set-union-many (list-map exp-occurred-names exps)))
+     (set-union-many (list-map exps exp-occurred-names)))
     ((cond-exp clauses location)
      (set-union-many
        (list-map
+         clauses
          (lambda (clause)
            (set-union
              (exp-occurred-names (cond-clause-question clause))
-             (exp-occurred-names (cond-clause-answer clause))))
-         clauses)))
+             (exp-occurred-names (cond-clause-answer clause)))))))
     ((list-exp elements location)
-     (set-union-many (list-map exp-occurred-names elements)))
+     (set-union-many (list-map elements exp-occurred-names)))
     ((array-exp elements location)
-     (set-union-many (list-map exp-occurred-names elements)))
+     (set-union-many (list-map elements exp-occurred-names)))
     ((text-concat-exp elements location)
-     (set-union-many (list-map exp-occurred-names elements)))
+     (set-union-many (list-map elements exp-occurred-names)))
     ((set-exp elements location)
-     (set-union-many (list-map exp-occurred-names elements)))
+     (set-union-many (list-map elements exp-occurred-names)))
     ((hash-exp entries location)
      (set-union-many
        (list-map
+         entries
          (lambda (entry)
            (set-union
              (exp-occurred-names (pair-first entry))
-             (exp-occurred-names (pair-second entry))))
-         entries)))
+             (exp-occurred-names (pair-second entry)))))))
     ((arrow-exp arg-types ret-type location)
      (set-union
-       (set-union-many (list-map exp-occurred-names arg-types))
+       (set-union-many (list-map arg-types exp-occurred-names))
        (exp-occurred-names ret-type)))
     ((the-exp type instance location)
      (set-union (exp-occurred-names type) (exp-occurred-names instance)))
     ((match-exp targets clauses location)
      (set-union
-       (set-union-many (list-map exp-occurred-names targets))
+       (set-union-many (list-map targets exp-occurred-names))
        (set-union-many
          (list-map
+           clauses
            (lambda (clause)
              (set-union
-               (set-union-many (list-map exp-occurred-names (match-clause-patterns clause)))
-               (exp-occurred-names (match-clause-body clause))))
-           clauses))))))
+               (set-union-many (list-map (match-clause-patterns clause) exp-occurred-names))
+               (exp-occurred-names (match-clause-body clause))))))))))
 
 (define (binding-occurred-names binding)
   (match binding

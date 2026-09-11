@@ -2,15 +2,15 @@
 
 (claim set-map
   (all (A B)
-    (-> (-> A B) (set-t A)
+    (-> (set-t A) (-> A B)
         (set-t B))))
 
-(define (set-map f set)
+(define (set-map set f)
   (let ((new-set (make-set)))
-    (set-each (lambda (e) (set-add (f e) new-set)) set)
+    (set-each set (lambda (e) (set-add new-set (f e))))
     new-set))
 
 (define-test set-map-test
   (assert-equal (@set 2 4 6)
-    (set-map (lambda (n) (iadd n n))
-      (@set 1 2 3))))
+    (set-map (@set 1 2 3)
+      (lambda (n) (iadd n n)))))

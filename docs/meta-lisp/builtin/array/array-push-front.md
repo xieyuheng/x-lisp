@@ -5,7 +5,7 @@ title: array-push-front
 # Type
 
 ```meta-lisp
-(all (E) (-> E (array-t E) void-t))
+(all (E) (-> (array-t E) E void-t))
 ```
 
 # Description
@@ -16,7 +16,7 @@ Prepend an element at the front in-place.
 
 ```meta-lisp
 (let ((a (@array 2 3)))
-  (array-push-front 1 a)
+  (array-push-front a 1)
   a)
 ;; => (@array 1 2 3)
 ```

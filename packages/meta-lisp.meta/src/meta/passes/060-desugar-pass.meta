@@ -7,9 +7,9 @@
 (define (desugar-pass package)
   (ignore
     (package-put-fragments
-      (hash-map-value desugar-fragment (package-fragments package))
-      package))
-  (when (hash-has "dump" (package-config-compiler (package-config package)))
+      package
+      (hash-map-value (package-fragments package) desugar-fragment)))
+  (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-desugared-fragments package "060-desugar")))
 
 (claim desugar-fragment
@@ -19,7 +19,7 @@
 (define (desugar-fragment fragment)
   (match fragment
     ((make-fragment mod-name path stmts _)
-     (let ((desugared-stmts (list-map desugar-stmt stmts)))
+     (let ((desugared-stmts (list-map stmts desugar-stmt)))
        (make-fragment mod-name path stmts desugared-stmts)))))
 
 (claim desugar-stmt
@@ -43,13 +43,13 @@
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (define-algebraic-type-stmt
        type-constructor
-       (list-map desugar-explicit-data-constructor data-constructors)
+       (list-map data-constructors desugar-explicit-data-constructor)
        location))
     ((define-opaque-type-stmt type-constructor representation-type interface-entries location)
      (define-opaque-type-stmt
        type-constructor
        (desugar representation-type)
-       (list-map desugar-pre-interface-entry interface-entries)
+       (list-map interface-entries desugar-pre-interface-entry)
        location))
     ;; stmts contain no exp or term — pass through
     ((import-stmt pkg-name mod-name names location)
@@ -87,7 +87,7 @@
     ((make-explicit-data-constructor name fields predicate-name location)
      (make-explicit-data-constructor
        name
-       (list-map desugar-explicit-data-field fields)
+       (list-map fields desugar-explicit-data-field)
        predicate-name
        location))))
 

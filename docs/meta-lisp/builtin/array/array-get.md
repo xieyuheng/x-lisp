@@ -5,7 +5,7 @@ title: array-get
 # Type
 
 ```meta-lisp
-(all (E) (-> int-t (array-t E) E))
+(all (E) (-> (array-t E) int-t E))
 ```
 
 # Description
@@ -15,5 +15,5 @@ Get element by index.
 # Examples
 
 ```meta-lisp
-(array-get 1 (@array 1 2 3))  ;; => 2
+(array-get (@array 1 2 3) 1)  ;; => 2
 ```

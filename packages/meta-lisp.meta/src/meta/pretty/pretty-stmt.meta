@@ -16,7 +16,7 @@
                     (@text pkg-name-str "/" mod-name-str))))
        (ppml/pretty-syntax "import"
          (@list (ppml/text full))
-         (list-map (lambda (n) (ppml/text (symbol-to-text n))) names))))
+         (list-map names (lambda (n) (ppml/text (symbol-to-text n)))))))
     ((import-as-stmt pkg-name mod-name prefix location)
      (let ((mod-name-str (symbol-to-text mod-name))
             (pkg-name-str (symbol-to-text pkg-name))
@@ -36,7 +36,7 @@
          (@list (ppml/text full)) (@list))))
     ((define-function-stmt name parameters body location)
      (let ((name-str (symbol-to-text name))
-            (param-nodes (list-map (lambda (p) (ppml/text (symbol-to-text p))) parameters))
+            (param-nodes (list-map parameters (lambda (p) (ppml/text (symbol-to-text p)))))
             (def-node (ppml/pretty-application (just name-str)
                         (cons (ppml/text name-str) param-nodes))))
        (ppml/pretty-syntax "define"
@@ -52,7 +52,7 @@
        (@list (pretty-body body))))
     ((define-type-stmt name parameters body location)
      (let ((name-str (symbol-to-text name))
-           (params-str (text-join " " (list-map symbol-to-text parameters))))
+           (params-str (text-join (list-map parameters symbol-to-text) " ")))
        (ppml/pretty-syntax "define-type"
          (@list (if (list-is-empty parameters)
             (ppml/text name-str)
@@ -61,16 +61,16 @@
     ((define-enum-stmt type-constructor data-constructors lang location)
      (ppml/pretty-syntax "define-enum"
        (@list (pretty-pre-type-constructor type-constructor))
-       (list-map pretty-pre-data-constructor data-constructors)))
+       (list-map data-constructors pretty-pre-data-constructor)))
     ((define-algebraic-type-stmt type-constructor data-constructors location)
      (ppml/pretty-syntax "define-algebraic-type"
        (@list (pretty-pre-type-constructor type-constructor))
-       (list-map (lambda (ctor) (pretty-explicit-data-constructor pretty-body ctor))
-                 data-constructors)))
+       (list-map data-constructors
+                 (lambda (ctor) (pretty-explicit-data-constructor pretty-body ctor)))))
     ((define-struct-stmt type-constructor fields lang location)
      (ppml/pretty-syntax "define-struct"
        (@list (pretty-pre-type-constructor type-constructor))
-       (list-map pretty-pre-data-field fields)))
+       (list-map fields pretty-pre-data-field)))
     ((define-struct-type-stmt type-constructor data-constructor lang location)
      (ppml/pretty-syntax "define-struct-type"
        (@list (pretty-pre-type-constructor type-constructor))
@@ -79,8 +79,8 @@
      (ppml/pretty-syntax "define-opaque-type"
        (@list (pretty-pre-type-constructor type-constructor)
         (pretty-body representation-type))
-       (list-map (lambda (e) (pretty-pre-interface-entry pretty-body e))
-                 interface-entries)))
+       (list-map interface-entries
+                 (lambda (e) (pretty-pre-interface-entry pretty-body e)))))
     ((claim-stmt name type location)
      (ppml/pretty-syntax "claim"
        (@list (ppml/text (symbol-to-text name)))
@@ -94,10 +94,10 @@
        (@list (pretty-body type))))
     ((private-stmt names location)
      (ppml/pretty-syntax "private" (@list)
-       (list-map (lambda (n) (ppml/text (symbol-to-text n))) names)))
+       (list-map names (lambda (n) (ppml/text (symbol-to-text n))))))
     ((exempt-stmt names location)
      (ppml/pretty-syntax "exempt" (@list)
-       (list-map (lambda (n) (ppml/text (symbol-to-text n))) names)))
+       (list-map names (lambda (n) (ppml/text (symbol-to-text n))))))
     ((declare-module-stmt name location)
      (ppml/pretty-syntax "module"
        (@list (ppml/text (symbol-to-text name))) (@list)))
@@ -110,7 +110,7 @@
        (@list (ppml/text (symbol-to-text name))) (@list)))
     ((comment-stmt sexps location)
      (ppml/pretty-application (just "@comment")
-       (list-map (lambda (sexp) (ppml/text (format-sexp sexp))) sexps)))))
+       (list-map sexps (lambda (sexp) (ppml/text (format-sexp sexp))))))))
 
 ;; Helpers
 
@@ -120,13 +120,13 @@
     (if (list-is-empty params)
       name
       (ppml/pretty-application (just (symbol-to-text (pre-type-constructor-name tc)))
-        (cons name (list-map (lambda (p) (ppml/text (symbol-to-text p))) params))))))
+        (cons name (list-map params (lambda (p) (ppml/text (symbol-to-text p)))))))))
 
 (define (pretty-pre-data-constructor ctor)
   (let ((name (ppml/text (symbol-to-text (pre-data-constructor-name ctor))))
         (fields (pre-data-constructor-fields ctor)))
     (ppml/pretty-application (just (symbol-to-text (pre-data-constructor-name ctor)))
-      (cons name (list-map pretty-pre-data-field fields)))))
+      (cons name (list-map fields pretty-pre-data-field)))))
 
 (define (pretty-pre-data-field field)
   (let ((name (ppml/text (symbol-to-text (pre-data-field-name field))))
@@ -140,8 +140,8 @@
         (pred-str (symbol-to-text (explicit-data-constructor-predicate-name ctor))))
     (let ((field-group (ppml/pretty-application (just name-str)
                           (cons (ppml/text name-str)
-                                (list-map (lambda (f) (pretty-explicit-data-field pretty-body f)) fields))))
-          (accessor-nodes (list-map (lambda (f) (pretty-explicit-data-accessor pretty-body f)) fields)))
+                                (list-map fields (lambda (f) (pretty-explicit-data-field pretty-body f))))))
+          (accessor-nodes (list-map fields (lambda (f) (pretty-explicit-data-accessor pretty-body f)))))
       (ppml/pretty-application (nothing)
         (list-concat (@list (@list field-group (ppml/text pred-str)) accessor-nodes))))))
 

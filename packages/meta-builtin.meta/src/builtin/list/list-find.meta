@@ -2,24 +2,24 @@
 
 (claim list-find
   (all (A)
-    (-> (-> A bool-t) (list-t A)
+    (-> (list-t A) (-> A bool-t)
         (maybe-t A))))
 
-(define (list-find p list)
+(define (list-find list p)
   (cond ((list-is-empty list) (nothing))
         ((p (car list)) (just (car list)))
-        (else (list-find p (cdr list)))))
+        (else (list-find (cdr list) p))))
 
 (define-test list-find-test
-  (assert-equal (just 3) (list-find (lambda (x) (equal x 3)) (@list 1 2 3 4)))
-  (assert-equal (nothing) (list-find is-int (@list 'a 'b 'c 'd))))
+  (assert-equal (just 3) (list-find (@list 1 2 3 4) (lambda (x) (equal x 3))))
+  (assert-equal (nothing) (list-find (@list 'a 'b 'c 'd) is-int)))
 
 (claim list-find-index
   (all (A)
-    (-> (-> A bool-t) (list-t A)
+    (-> (list-t A) (-> A bool-t)
         int-t)))
 
-(define (list-find-index p list)
+(define (list-find-index list p)
   (list-find-index-aux p list 0))
 
 (claim list-find-index-aux
@@ -33,5 +33,5 @@
         (else (list-find-index-aux p (cdr list) (iadd 1 index)))))
 
 (define-test list-find-index-test
-  (assert-equal 2 (list-find-index (lambda (x) (equal x 3)) (@list 1 2 3 4)))
-  (assert-equal -1 (list-find-index is-int (@list 'a 'b 'c 'd))))
+  (assert-equal 2 (list-find-index (@list 1 2 3 4) (lambda (x) (equal x 3))))
+  (assert-equal -1 (list-find-index (@list 'a 'b 'c 'd) is-int)))

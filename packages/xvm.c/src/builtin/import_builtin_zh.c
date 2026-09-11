@@ -137,12 +137,12 @@ void import_builtin_zh(program_t *program) {
   define_primitive_2(program, "meta-builtin/内置/文本分割", x_text_split);
   define_primitive_2(program, "meta-builtin/内置/文本连接", x_text_join);
   define_primitive_3(program, "meta-builtin/内置/文本替换", x_text_replace);
-  define_primitive_2(program, "meta-builtin/内置/文本为前缀", x_text_is_prefix);
-  define_primitive_2(program, "meta-builtin/内置/文本为后缀", x_text_is_suffix);
+  define_primitive_2(program, "meta-builtin/内置/文本有前缀", x_text_is_prefix);
+  define_primitive_2(program, "meta-builtin/内置/文本有后缀", x_text_is_suffix);
   define_primitive_1(program, "meta-builtin/内置/文本转大写", x_text_to_upper_case);
   define_primitive_1(program, "meta-builtin/内置/文本转小写", x_text_to_lower_case);
   define_primitive_2(program, "meta-builtin/内置/文本取码点", x_text_get_code_point);
-  define_primitive_2(program, "meta-builtin/内置/文本含于", x_text_include);
+  define_primitive_2(program, "meta-builtin/内置/文本包含", x_text_include);
   define_primitive_2(program, "meta-builtin/内置/文本查找索引", x_text_find_index);
   define_primitive_1(program, "meta-builtin/内置/文本修剪左端", x_text_trim_left);
   define_primitive_1(program, "meta-builtin/内置/文本修剪右端", x_text_trim_right);
@@ -210,7 +210,7 @@ void import_builtin_zh(program_t *program) {
   define_primitive_1(program, "meta-builtin/内置/集合复制", x_set_copy);
   define_primitive_1(program, "meta-builtin/内置/集合大小", x_set_size);
   define_primitive_1(program, "meta-builtin/内置/集合为空", x_set_is_empty);
-  define_primitive_2(program, "meta-builtin/内置/集合属于", x_set_member);
+  define_primitive_2(program, "meta-builtin/内置/集合有", x_set_member);
   define_primitive_2(program, "meta-builtin/内置/集合添加", x_set_add_mut);
   define_primitive_2(program, "meta-builtin/内置/集合复制添加", x_set_add);
   define_primitive_2(program, "meta-builtin/内置/集合删除", x_set_delete_mut);
@@ -219,7 +219,7 @@ void import_builtin_zh(program_t *program) {
   define_primitive_2(program, "meta-builtin/内置/集合并", x_set_union);
   define_primitive_2(program, "meta-builtin/内置/集合交", x_set_inter);
   define_primitive_2(program, "meta-builtin/内置/集合差", x_set_difference);
-  define_primitive_2(program, "meta-builtin/内置/集合含于", x_set_include);
+  define_primitive_2(program, "meta-builtin/内置/集合包含", x_set_include);
   define_primitive_2(program, "meta-builtin/内置/集合不交", x_set_disjoint);
   define_primitive_1(program, "meta-builtin/内置/集合转列表", x_set_to_list);
 

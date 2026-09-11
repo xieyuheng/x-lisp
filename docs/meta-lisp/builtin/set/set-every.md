@@ -5,7 +5,7 @@ title: set-every
 # Type
 
 ```meta-lisp
-(all (A) (-> (-> A bool-t) (set-t A) bool-t))
+(all (A) (-> (set-t A) (-> A bool-t) bool-t))
 ```
 
 # Description
@@ -15,6 +15,6 @@ Check if all elements satisfy the predicate.
 # Examples
 
 ```meta-lisp
-(set-every int-is-non-negative (@set 0 1 2))  ;; => true
-(set-every int-is-non-negative (@set 0 -1))   ;; => false
+(set-every (@set 0 1 2) int-is-non-negative)  ;; => true
+(set-every (@set 0 -1) int-is-non-negative)   ;; => false
 ```

@@ -58,8 +58,8 @@ function limitArityDefinition(
                 definition.location,
               ),
               [
-                C.IntTerm(BigInt(i), definition.location),
                 C.VarTerm(restName, definition.location),
+                C.IntTerm(BigInt(i), definition.location),
               ],
               definition.location,
             ),

@@ -10,7 +10,7 @@
   (for-hash (package-fragments package)
     (lambda (path fragment)
       (let ((fragment-scopes (module-analysis-report-fragment-scopes module-analysis-report)))
-        (match (hash-get-maybe path fragment-scopes)
+        (match (hash-get-maybe fragment-scopes path)
           ((nothing)
            (error (@text "(lower-match-pass) missing scope for: " path)))
           ((just scope)
@@ -20,9 +20,9 @@
                         algebraic-analysis-report
                         (package-id package))))
              (fragment-put-stmts
-               (list-map (lower-match-stmt ctx) (fragment-stmts fragment))
-               fragment)))))))
-  (when (hash-has "dump" (package-config-compiler (package-config package)))
+               fragment
+               (list-map (fragment-stmts fragment) (lower-match-stmt ctx)))))))))
+  (when (hash-has (package-config-compiler (package-config package)) "dump")
     (package-dump-fragments package "050-lower-match")))
 
 (claim lower-match-stmt
@@ -50,8 +50,8 @@
     ((match-exp targets clauses location)
      (desugar-match
        ctx
-       (list-map (lower-match ctx) targets)
-       (list-map (lower-match-clause ctx) clauses)
+       (list-map targets (lower-match ctx))
+       (list-map clauses (lower-match-clause ctx))
        (make-default-exp targets location)
        location))
     (else
@@ -63,6 +63,6 @@
 
 (define (lower-match-clause ctx clause)
   (make-match-clause
-    (list-map (lower-match ctx) (match-clause-patterns clause))
+    (list-map (match-clause-patterns clause) (lower-match ctx))
     (lower-match ctx (match-clause-body clause))
     (match-clause-location clause)))

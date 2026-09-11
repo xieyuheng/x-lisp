@@ -28,7 +28,7 @@ value_t x_array_pop_mut(value_t array) {
   return xarray_pop(to_xarray(array));
 }
 
-value_t x_array_push_mut(value_t value, value_t array) {
+value_t x_array_push_mut(value_t array, value_t value) {
   xarray_push(to_xarray(array), value);
   return x_void;
 }
@@ -41,12 +41,12 @@ value_t x_array_pop_front_mut(value_t array) {
   return xarray_pop_front(to_xarray(array));
 }
 
-value_t x_array_push_front_mut(value_t value, value_t array) {
+value_t x_array_push_front_mut(value_t array, value_t value) {
   xarray_push_front(to_xarray(array), value);
   return x_void;
 }
 
-value_t x_array_get(value_t index, value_t array) {
+value_t x_array_get(value_t array, value_t index) {
   size_t i = to_int64(index);
   size_t length = array_length(to_xarray(array)->elements);
   if (i >= length) {
@@ -56,7 +56,7 @@ value_t x_array_get(value_t index, value_t array) {
   return xarray_get(to_xarray(array), i);
 }
 
-value_t x_array_put_mut(value_t index, value_t value, value_t array) {
+value_t x_array_put_mut(value_t array, value_t index, value_t value) {
   size_t i = to_int64(index);
   size_t length = array_length(to_xarray(array)->elements);
   if (i >= length) {

@@ -10,14 +10,14 @@
       (lambda (mod)
         (for-hash (mod-claimed mod)
           (lambda (name entry)
-            (array-push (setup-claimed-type mod name entry) outcomes)))))
+            (array-push outcomes (setup-claimed-type mod name entry))))))
     (outcome-conj (array-to-list outcomes))))
 
 (define (setup-claimed-type mod name entry)
-  (cond ((or (set-member name (mod-admitted mod))
-             (hash-has name (mod-definitions mod)))
+  (cond ((or (set-has (mod-admitted mod) name)
+             (hash-has (mod-definitions mod) name))
          (let ((type (evaluate-type mod (empty-env (opaque-mode)) (claimed-entry-term entry))))
-           (claimed-entry-put-type (just type) entry)
+           (claimed-entry-put-type entry (just type))
            (outcome-ok)))
         (else
          (println

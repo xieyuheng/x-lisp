@@ -6,7 +6,7 @@
         void-t)))
 
 (define (for-list data fn)
-  (list-each fn data))
+  (list-each data fn))
 
 (define-test for-list-test
   (for-list (@list 1 2 3) println))

@@ -2,16 +2,16 @@
 
 (claim list-map-index-concat
   (all (A B)
-    (-> (-> int-t A (list-t B))
-        (list-t A)
+    (-> (list-t A)
+        (-> int-t A (list-t B))
         (list-t B))))
 
-(define (list-map-index-concat f list)
-  (list-concat (list-map-index f list)))
+(define (list-map-index-concat list f)
+  (list-concat (list-map-index list f)))
 
 (define-test list-map-index-concat-test
   (assert-equal (@list 0 10 1 20 2 30)
-    (list-map-index-concat (lambda (i x) (@list i x)) (@list 10 20 30)))
+    (list-map-index-concat (@list 10 20 30) (lambda (i x) (@list i x))))
   (assert-equal
     (@list (make-pair 0 'a)
      (make-pair 0 'a)
@@ -19,9 +19,9 @@
      (make-pair 1 'b)
      (make-pair 2 'c)
      (make-pair 2 'c))
-    (list-map-index-concat (lambda (i x) (@list (make-pair i x) (make-pair i x)))
-      (@list 'a 'b 'c)))
+    (list-map-index-concat (@list 'a 'b 'c)
+      (lambda (i x) (@list (make-pair i x) (make-pair i x)))))
   (assert-equal (@list)
-    (list-map-index-concat (lambda (i x) (@list)) (@list 1 2 3)))
+    (list-map-index-concat (@list 1 2 3) (lambda (i x) (@list))))
   (assert-equal (@list)
-    (list-map-index-concat (lambda (i x) (@list i x)) (@list))))
+    (list-map-index-concat (@list) (lambda (i x) (@list i x)))))

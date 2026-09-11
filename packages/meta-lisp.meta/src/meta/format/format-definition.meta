@@ -11,7 +11,7 @@
      (@text "(declare-primitive-variable " (symbol-to-text name) ")"))
     ((function-definition mod name parameters body location)
      (let ((claim-str (format-definition-claim mod name))
-           (params-str (text-join " " (list-map symbol-to-text parameters)))
+           (params-str (text-join (list-map parameters symbol-to-text) " "))
            (body-str (format-term body)))
        (@text claim-str
                 "(define (" (symbol-to-text name) " "
@@ -33,25 +33,25 @@
     ((algebraic-type-definition mod name type-constructor data-constructors location)
      (let ((tc-name (type-constructor-name type-constructor))
            (tc-params (type-constructor-parameters type-constructor))
-           (ctors-str (text-join " " (list-map format-data-constructor data-constructors))))
+           (ctors-str (text-join (list-map data-constructors format-data-constructor) " ")))
        (if (list-is-empty tc-params)
          (@text "(define-enum " (symbol-to-text tc-name) " " ctors-str ")")
          (@text "(define-enum (" (symbol-to-text tc-name) " "
-                  (text-join " " (list-map symbol-to-text tc-params)) ") "
+                  (text-join (list-map tc-params symbol-to-text) " ") ") "
                   ctors-str ")"))))
     ((opaque-type-definition mod name type-constructor representation-type interface-entries location)
      (let ((tc-name (symbol-to-text name))
            (tc-params (type-constructor-parameters type-constructor))
            (repr-str (format-term representation-type))
-           (ifaces-str (text-join " "
-                         (list-map (lambda (entry)
+           (ifaces-str (text-join (list-map interface-entries
+                           (lambda (entry)
                                      (@text "(" (symbol-to-text (interface-entry-name entry)) " "
-                                              (format-term (interface-entry-type entry)) ")"))
-                           interface-entries))))
+                                              (format-term (interface-entry-type entry)) ")")))
+                         " ")))
        (if (list-is-empty tc-params)
          (@text "(define-opaque-type " tc-name " " repr-str " " ifaces-str ")")
          (@text "(define-opaque-type (" tc-name " "
-                  (text-join " " (list-map symbol-to-text tc-params)) ") "
+                  (text-join (list-map tc-params symbol-to-text) " ") ") "
                   repr-str " " ifaces-str ")"))))))
 
 (define (format-data-constructor data-constructor)
@@ -60,14 +60,14 @@
     (if (list-is-empty fields)
       (@text "(" name-str ")")
       (@text "(" name-str " "
-               (text-join " "
-                 (list-map (lambda (field)
+               (text-join (list-map fields
+                   (lambda (field)
                              (let ((fn (symbol-to-text (data-field-name field)))
                                    (ft (format-term (data-field-type field))))
                                (if (equal ft "")
                                  fn
-                                 (@text "(" fn " " ft ")"))))
-                   fields)) ")"))))
+                                 (@text "(" fn " " ft ")")))))
+                 " ") ")"))))
 
 (define (format-definition-claim mod name)
   (let ((claimed-entry (mod-lookup-claimed-entry mod name)))

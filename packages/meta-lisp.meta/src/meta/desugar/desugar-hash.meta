@@ -9,23 +9,23 @@
     (set-union
       (exp-occurred-names (pair-first entry))
       (exp-occurred-names (pair-second entry))))
-  (let ((used-names (set-union-many (list-map entry-used-names entries)))
+  (let ((used-names (set-union-many (list-map entries entry-used-names)))
          (fresh-name (generate-relative-fresh-name used-names 'hash))
          (make (apply-exp
                  (qualified-var-exp 'meta-builtin 'builtin 'make-hash location)
                  (@list)
                  location))
          (body (list-fold-right
+                 entries
+                 (var-exp fresh-name location)
                  (lambda (entry acc)
                    (begin1-exp
                      (apply-exp
                         (qualified-var-exp 'meta-builtin 'builtin 'hash-put location)
-                       (@list (pair-first entry)
-                        (pair-second entry)
-                        (var-exp fresh-name location))
+                       (@list (var-exp fresh-name location)
+                        (pair-first entry)
+                        (pair-second entry))
                        location)
                      acc
-                     location))
-                 (var-exp fresh-name location)
-                 entries)))
+                     location)))))
     (let1-exp fresh-name make body location)))

@@ -2,10 +2,10 @@
 
 (claim array-sort
   (all (E)
-    (-> (-> E E int-t) (array-t E)
+    (-> (array-t E) (-> E E int-t)
         void-t)))
 
-(define (array-sort compare array)
+(define (array-sort array compare)
   (let ((n (array-length array)))
     (array-quicksort compare array 0 (isub n 1))))
 
@@ -26,7 +26,7 @@
         (pair-t int-t int-t))))
 
 (define (array-quicksort-partition compare array lo hi)
-  (let ((pivot (array-get (idiv (iadd lo hi) 2) array)))
+  (let ((pivot (array-get array (idiv (iadd lo hi) 2))))
     (array-quicksort-partition-aux compare array pivot lo lo hi)))
 
 (claim array-quicksort-partition-aux
@@ -37,7 +37,7 @@
 (define (array-quicksort-partition-aux compare array pivot index less greater)
   (if (int-greater index greater)
     (make-pair (isub less 1) (iadd greater 1))
-    (let ((cmp (compare (array-get index array) pivot)))
+    (let ((cmp (compare (array-get array index) pivot)))
       (cond
         ((int-less cmp 0)
          (array-swap index less array)
@@ -49,35 +49,35 @@
          (array-quicksort-partition-aux compare array pivot (iadd index 1) less greater))))))
 
 (define (array-swap i j array)
-  (let ((x (array-get i array))
-        (y (array-get j array)))
-    (array-put i y array)
-    (array-put j x array)))
+  (let ((x (array-get array i))
+        (y (array-get array j)))
+    (array-put array i y)
+    (array-put array j x)))
 
 (define-test array-sort-test
   ;; int ascending
 
   (let ((a (make-array)))
-    (array-push 2 a)
-    (array-push 3 a)
-    (array-push 1 a)
-    (array-sort int-compare-ascending a)
+    (array-push a 2)
+    (array-push a 3)
+    (array-push a 1)
+    (array-sort a int-compare-ascending)
     (assert-equal (@list 1 2 3) (array-to-list a)))
 
   ;; int descending
 
   (let ((a (list-to-array (@list 2 3 1))))
-    (array-sort int-compare-descending a)
+    (array-sort a int-compare-descending)
     (assert-equal (@list 3 2 1) (array-to-list a)))
 
   ;; float ascending
 
   (let ((a (list-to-array (@list 2.0 3.0 1.0))))
-    (array-sort float-compare-ascending a)
+    (array-sort a float-compare-ascending)
     (assert-equal (@list 1.0 2.0 3.0) (array-to-list a)))
 
   ;; text lexical
 
   (let ((a (list-to-array (@list "b" "c" "a"))))
-    (array-sort text-compare-lexical a)
+    (array-sort a text-compare-lexical)
     (assert-equal (@list "a" "b" "c") (array-to-list a))))

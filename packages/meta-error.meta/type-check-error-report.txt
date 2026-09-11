@@ -74,13 +74,13 @@ src/let/heterogeneous-list-error.meta:4:23 -- unification fail
    |                       ~~~~~~~~~~~~   
  5 | 
 
-src/let/value-restriction-error.meta:5:24 -- unification fail
-  inferred type: (list-t text-t)
-  expected type: (list-t int-t)
+src/let/value-restriction-error.meta:5:27 -- unification fail
+  inferred type: (-> int-t int-t)
+  expected type: (-> text-t A)
  3 | (define-test value-restriction-test
  4 |   (the (list-t int-t)
- 5 |     (list-map (iadd 1) (@list "x"))))
-   |                        ~~~~~~~~~~~    
+ 5 |     (list-map (@list "x") (iadd 1))))
+   |                           ~~~~~~~~    
  6 | 
 
 src/location/underline-width-error.meta:3:13 -- undefined variable

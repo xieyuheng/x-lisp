@@ -3,7 +3,7 @@
 (define-opaque-type (box-t E) (array-t E)
   (make-box (-> (box-t E)))
   (box-is-empty (-> (box-t E) bool-t))
-  (box-put (-> E (box-t E) void-t))
+  (box-put (-> (box-t E) E void-t))
   (box-get-maybe (-> (box-t E) (maybe-t E))))
 
 (define (make-box)
@@ -12,15 +12,15 @@
 (define (box-is-empty box)
   (array-is-empty box))
 
-(define (box-put value box)
+(define (box-put box value)
   (if (box-is-empty box)
-    (array-push value box)
-    (array-put 0 value box)))
+    (array-push box value)
+    (array-put box 0 value)))
 
 (define (box-get-maybe box)
   (if (box-is-empty box)
     (nothing)
-    (just (array-get 0 box))))
+    (just (array-get box 0))))
 
 (claim box-get
   (all (E)
@@ -48,7 +48,7 @@
   (let ((box (make-box)))
     (assert (box-is-empty box))
     (assert-equal (nothing) (box-get-maybe box))
-    (box-put 42 box)
+    (box-put box 42)
     (assert-not (box-is-empty box))
     (assert-equal 42 (box-get box))
     (assert-equal (just 42) (box-get-maybe box))))

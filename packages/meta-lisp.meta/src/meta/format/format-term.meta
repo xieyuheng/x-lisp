@@ -25,10 +25,10 @@
      (let ((args-str (format-terms arg-types)))
        (@text "(-> " args-str " " (format-term ret-type) ")")))
     ((all-term parameters body location)
-     (@text "(all (" (text-join " " (list-map symbol-to-text parameters)) ") "
+     (@text "(all (" (text-join (list-map parameters symbol-to-text) " ") ") "
               (format-term body) ")"))
     ((lambda-term parameters body location)
-     (@text "(lambda (" (text-join " " (list-map symbol-to-text parameters)) ") "
+     (@text "(lambda (" (text-join (list-map parameters symbol-to-text) " ") ") "
               (format-term body) ")"))
     ((let1-term name rhs body location)
      (@text "(let ((" (symbol-to-text name) " " (format-term rhs) ")) "
@@ -43,4 +43,4 @@
      (@text "(the " (format-term type) " " (format-term instance) ")"))))
 
 (define (format-terms terms)
-  (text-join " " (list-map format-term terms)))
+  (text-join (list-map terms format-term) " "))

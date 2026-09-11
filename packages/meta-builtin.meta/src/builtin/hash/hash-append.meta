@@ -8,10 +8,10 @@
 (define (hash-append hash rest)
   (let ((new-hash (hash-copy hash)))
     (hash-each
+      rest
       (lambda (key value)
-        (hash-put key value new-hash)
-        void)
-      rest)
+        (hash-put new-hash key value)
+        void))
     new-hash))
 
 (define-test hash-append-test

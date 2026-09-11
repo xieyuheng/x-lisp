@@ -16,7 +16,7 @@ value_t x_text_is_blank(value_t string) {
   return x_bool(string_is_blank(xtext_string(to_xtext(string))));
 }
 
-value_t x_text_slice(value_t start, value_t end, value_t string) {
+value_t x_text_slice(value_t string, value_t start, value_t end) {
   const text_t *text = xtext_text(to_xtext(string));
   return x_object(
     make_xtext_take_text(
@@ -76,7 +76,7 @@ value_t x_text_lines(value_t string) {
   return list_builder_result(&result);
 }
 
-value_t x_text_split(value_t delimiter, value_t string) {
+value_t x_text_split(value_t string, value_t delimiter) {
   const text_t *text = xtext_text(to_xtext(string));
   const char *delimiter_string = xtext_string(to_xtext(delimiter));
   list_builder_t result = list_builder_empty();
@@ -90,7 +90,7 @@ value_t x_text_split(value_t delimiter, value_t string) {
   return list_builder_result(&result);
 }
 
-value_t x_text_join(value_t separator, value_t list) {
+value_t x_text_join(value_t list, value_t separator) {
   buffer_t *buffer = make_buffer();
   bool first = true;
   while (is_cons(list)) {
@@ -108,7 +108,7 @@ value_t x_text_join(value_t separator, value_t list) {
   return result;
 }
 
-value_t x_text_replace(value_t pattern, value_t replacement, value_t string) {
+value_t x_text_replace(value_t string, value_t pattern, value_t replacement) {
   const text_t *text = xtext_text(to_xtext(string));
   const char *pattern_string = xtext_string(to_xtext(pattern));
   const char *replacement_string = xtext_string(to_xtext(replacement));
@@ -128,14 +128,14 @@ value_t x_text_replace(value_t pattern, value_t replacement, value_t string) {
   return result;
 }
 
-value_t x_text_is_prefix(value_t prefix, value_t string) {
+value_t x_text_is_prefix(value_t string, value_t prefix) {
   return x_bool(
     string_starts_with(
       xtext_string(to_xtext(string)),
       xtext_string(to_xtext(prefix))));
 }
 
-value_t x_text_is_suffix(value_t suffix, value_t string) {
+value_t x_text_is_suffix(value_t string, value_t suffix) {
   return x_bool(
     string_ends_with(
       xtext_string(to_xtext(string)),
@@ -156,21 +156,21 @@ value_t x_text_to_lower_case(value_t string) {
         xtext_string(to_xtext(string)))));
 }
 
-value_t x_text_get_code_point(value_t index, value_t string) {
+value_t x_text_get_code_point(value_t string, value_t index) {
   return x_int(
     text_get_code_point(
       xtext_text(to_xtext(string)),
       to_int64(index)));
 }
 
-value_t x_text_include(value_t substring, value_t string) {
+value_t x_text_include(value_t string, value_t substring) {
   return x_bool(
     string_contains(
       xtext_string(to_xtext(string)),
       xtext_string(to_xtext(substring))));
 }
 
-value_t x_text_find_index(value_t substring, value_t string) {
+value_t x_text_find_index(value_t string, value_t substring) {
   return x_int(
     text_find_subtext_index(
       xtext_text(to_xtext(string)),

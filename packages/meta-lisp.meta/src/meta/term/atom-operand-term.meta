@@ -14,7 +14,7 @@
      (is-atom-operand-term body))
     ((apply-term target args location)
      ;; subterms of apply-term should be atom-term
-     (and (is-atom-term target) (list-every is-atom-term args)))
+     (and (is-atom-term target) (list-every args is-atom-term)))
     ((let1-term name rhs body location)
      (and (is-atom-operand-term rhs) (is-atom-operand-term body)))
     ((begin1-term head body location)
@@ -24,7 +24,7 @@
           (is-atom-operand-term consequent)
           (is-atom-operand-term alternative)))
     ((arrow-term arg-types ret-type location)
-     (and (list-every is-atom-operand-term arg-types)
+     (and (list-every arg-types is-atom-operand-term)
           (is-atom-operand-term ret-type)))
     ((the-term type instance location)
      (and (is-atom-operand-term type)

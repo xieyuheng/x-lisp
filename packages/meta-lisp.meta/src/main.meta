@@ -19,14 +19,14 @@
   (let ((config-path (get-config-path ctx))
          (package (meta/load-package 'self config-path))
          (compiler (meta/package-config-compiler (meta/package-config package))))
-    (when (cli/option-has "--dump" ctx) (hash-put "dump" "true" compiler))
+    (when (cli/option-has "--dump" ctx) (hash-put compiler "dump" "true"))
     (compiler/check-pipeline package)))
 
 (define (handle-build ctx)
   (let ((config-path (get-config-path ctx))
          (package (meta/load-package 'self config-path))
          (compiler (meta/package-config-compiler (meta/package-config package))))
-    (when (cli/option-has "--dump" ctx) (hash-put "dump" "true" compiler))
+    (when (cli/option-has "--dump" ctx) (hash-put compiler "dump" "true"))
     (compiler/build-pipeline package)))
 
 

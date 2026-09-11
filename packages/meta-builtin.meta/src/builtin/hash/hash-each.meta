@@ -2,55 +2,55 @@
 
 (claim hash-each-value
   (all (K V Any)
-    (-> (-> V Any) (hash-t K V)
+    (-> (hash-t K V) (-> V Any)
         void-t)))
 
-(define (hash-each-value f hash)
-  (list-each f (hash-values hash)))
+(define (hash-each-value hash f)
+  (list-each (hash-values hash) f))
 
 (claim hash-each-key
   (all (K V Any)
-    (-> (-> K Any) (hash-t K V)
+    (-> (hash-t K V) (-> K Any)
         void-t)))
 
-(define (hash-each-key f hash)
-  (list-each f (hash-keys hash)))
+(define (hash-each-key hash f)
+  (list-each (hash-keys hash) f))
 
 (claim hash-each-entry
   (all (K V Any)
-    (-> (-> (pair-t K V) Any) (hash-t K V)
+    (-> (hash-t K V) (-> (pair-t K V) Any)
         void-t)))
 
-(define (hash-each-entry f hash)
-  (list-each f (hash-entries hash)))
+(define (hash-each-entry hash f)
+  (list-each (hash-entries hash) f))
 
 (claim hash-each
   (all (K V Any)
-    (-> (-> K V Any) (hash-t K V)
+    (-> (hash-t K V) (-> K V Any)
         void-t)))
 
-(define (hash-each f hash)
-  (list-each (lambda (entry) (f (pair-first entry) (pair-second entry)))
-    (hash-entries hash)))
+(define (hash-each hash f)
+  (list-each (hash-entries hash)
+    (lambda (entry) (f (pair-first entry) (pair-second entry)))))
 
 (define-test hash-each-value-test
   (hash-each-value
-    (lambda (value) (println value))
-    (@hash 1 2 3 4)))
+    (@hash 1 2 3 4)
+    (lambda (value) (println value))))
 
 (define-test hash-each-key-test
   (hash-each-key
-    (lambda (key) (println key))
-    (@hash 1 2 3 4)))
+    (@hash 1 2 3 4)
+    (lambda (key) (println key))))
 
 (define-test hash-each-entry-test
   (hash-each-entry
-    (lambda (entry) (println entry))
-    (@hash 1 2 3 4)))
+    (@hash 1 2 3 4)
+    (lambda (entry) (println entry))))
 
 (define-test hash-each-test
   (hash-each
+    (@hash 1 2 3 4)
     (lambda (key value)
       (println key)
-      (println value))
-    (@hash 1 2 3 4)))
+      (println value))))

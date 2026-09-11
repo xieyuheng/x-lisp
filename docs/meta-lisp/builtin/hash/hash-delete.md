@@ -5,7 +5,7 @@ title: hash-delete
 # Type
 
 ```meta-lisp
-(all (K V) (-> K (hash-t K V) (hash-t K V)))
+(all (K V) (-> (hash-t K V) K (hash-t K V)))
 ```
 
 # Description
@@ -16,7 +16,7 @@ Delete a key-value pair. Mutates the hash table in place.
 
 ```meta-lisp
 (let ((h (@hash "a" 1 "b" 2 "c" 3)))
-  (hash-delete "a" h)
+  (hash-delete h "a")
   h)
 ;; => (@hash "b" 2 "c" 3)
 ```

@@ -39,13 +39,13 @@
     (for-hash (package-fragments package)
       (lambda (path fragment)
         (let ((scope (empty-fragment-scope (fragment-mod-name fragment))))
-          (hash-put path scope (module-analysis-report-fragment-scopes report))
+          (hash-put (module-analysis-report-fragment-scopes report) path scope)
           (for-list (fragment-stmts fragment)
             (lambda (stmt)
               (if (is-outcome-error (ensure-imported-mod-exists package stmt))
-                (ignore (module-analysis-report-put-outcome (outcome-error) report))
+                (ignore (module-analysis-report-put-outcome report (outcome-error)))
                 (execute-import package scope stmt)))))))
-    (when (hash-has "dump" (package-config-compiler (package-config package)))
+    (when (hash-has (package-config-compiler (package-config package)) "dump")
       (dump-module-analysis-report report package))
     report))
 
@@ -68,11 +68,11 @@
     package
     (lambda (fragment)
       (list-map-concat
+        (fragment-stmts fragment)
         (lambda (stmt)
           (if (is-private-stmt stmt)
             (private-stmt-names stmt)
-            (@list)))
-        (fragment-stmts fragment)))))
+            (@list)))))))
 
 (claim collect-names-by-mod
   (-> package-t
@@ -84,10 +84,10 @@
     (for-hash-value (package-fragments package)
       (lambda (fragment)
         (let ((mod-name (fragment-mod-name fragment)))
-          (if (hash-has mod-name result)
-            (let ((existing (hash-get mod-name result)))
-              (for-list (extract fragment) (lambda (name) (set-add name existing))))
-            (ignore (hash-put mod-name (list-to-set (extract fragment)) result))))))
+          (if (hash-has result mod-name)
+            (let ((existing (hash-get result mod-name)))
+              (for-list (extract fragment) (lambda (name) (set-add existing name))))
+            (ignore (hash-put result mod-name (list-to-set (extract fragment))))))))
     result))
 
 (claim lookup-package
@@ -97,7 +97,7 @@
 (define (lookup-package package pkg-name)
   (if (equal pkg-name 'self)
     package
-    (hash-get pkg-name (package-dependencies package))))
+    (hash-get (package-dependencies package) pkg-name)))
 
 (claim lookup-mod-defined-names
   (-> package-t symbol-t symbol-t
@@ -106,8 +106,8 @@
 (define (lookup-mod-defined-names package pkg-name mod-name)
   (let ((target (lookup-package package pkg-name))
          (defined (collect-defined-names target)))
-    (if (hash-has mod-name defined)
-      (hash-get mod-name defined)
+    (if (hash-has defined mod-name)
+      (hash-get defined mod-name)
       (make-set))))
 
 (claim lookup-mod-private-names
@@ -117,8 +117,8 @@
 (define (lookup-mod-private-names package pkg-name mod-name)
   (let ((target (lookup-package package pkg-name))
          (private (collect-private-names target)))
-    (if (hash-has mod-name private)
-      (hash-get mod-name private)
+    (if (hash-has private mod-name)
+      (hash-get private mod-name)
       (make-set))))
 
 (claim lookup-mod-public-names
@@ -154,14 +154,14 @@
      (let ((imported-private-names (lookup-mod-private-names package pkg-name mod-name)))
        (for-list names
          (lambda (name)
-           (unless (set-member name imported-private-names)
-             (hash-put name
-               (make-qualified-name pkg-name mod-name name)
-               (fragment-scope-imported-names scope)))))))
+           (unless (set-has imported-private-names name)
+             (hash-put (fragment-scope-imported-names scope)
+               name
+               (make-qualified-name pkg-name mod-name name)))))))
     ((import-as-stmt pkg-name mod-name prefix location)
-     (hash-put prefix
-       (make-qualified-prefix pkg-name mod-name)
-       (fragment-scope-imported-prefixes scope))
+     (hash-put (fragment-scope-imported-prefixes scope)
+       prefix
+       (make-qualified-prefix pkg-name mod-name))
      void)
     ((import-all-stmt pkg-name mod-name location)
      (let ((imported-public-names (lookup-mod-public-names package pkg-name mod-name))
@@ -170,10 +170,10 @@
          (lambda (name)
            ;; - why: skip names already defined in the current module,
            ;;   so that local definitions can override imported ones.
-           (unless (set-member name current-defined-names)
-             (hash-put name
-               (make-qualified-name pkg-name mod-name name)
-               (fragment-scope-imported-names scope)))))))
+           (unless (set-has current-defined-names name)
+             (hash-put (fragment-scope-imported-names scope)
+               name
+               (make-qualified-name pkg-name mod-name name)))))))
     (else void)))
 
 (claim ensure-mod-exists
@@ -187,11 +187,11 @@
         (println (format-message-with-location message location))
         (outcome-error))
       (outcome-ok))
-    (if (not (hash-has pkg-name (package-dependencies package)))
+    (if (not (hash-has (package-dependencies package) pkg-name))
       (let ((message (@text "undefined package: " (symbol-to-text pkg-name))))
         (println (format-message-with-location message location))
         (outcome-error))
-      (let ((dependency (hash-get pkg-name (package-dependencies package))))
+      (let ((dependency (hash-get (package-dependencies package) pkg-name)))
         (if (not (has-fragment-of-mod-name (hash-values (package-fragments dependency)) mod-name))
           (let ((message (@text "undefined module: " (symbol-to-text pkg-name) "/" (symbol-to-text mod-name))))
             (println (format-message-with-location message location))
@@ -204,30 +204,30 @@
 
 (define (has-fragment-of-mod-name fragments mod-name)
   (list-some
+    fragments
     (lambda (fragment)
-      (equal (fragment-mod-name fragment) mod-name))
-    fragments))
+      (equal (fragment-mod-name fragment) mod-name))))
 
 (define (close-top lines)
   (let ((i (isub (array-length lines) 1)))
-    (array-put i (@text (array-get i lines) ")") lines)))
+    (array-put lines i (@text (array-get lines i) ")"))))
 
 (define (sort-entries-by-symbol-key entries)
   (let ((array (list-to-array (hash-entries entries))))
     (array-sort
+      array
       (lambda (a b)
         (text-compare-lexical
           (symbol-to-text (pair-first a))
-          (symbol-to-text (pair-first b))))
-      array)
+          (symbol-to-text (pair-first b)))))
     (array-to-list array)))
 
 (define (sort-entries-by-text-key entries)
   (let ((array (list-to-array (hash-entries entries))))
     (array-sort
+      array
       (lambda (a b)
-        (text-compare-lexical (pair-first a) (pair-first b)))
-      array)
+        (text-compare-lexical (pair-first a) (pair-first b))))
     (array-to-list array)))
 
 (define (format-name-value entry debug)
@@ -237,10 +237,10 @@
       (let ((names (pair-second entry)))
         (let ((array (list-to-array (set-to-list names))))
           (array-sort
+            array
             (lambda (a b)
-              (text-compare-lexical (symbol-to-text a) (symbol-to-text b)))
-            array)
-          (text-join " " (list-map symbol-to-text (array-to-list array)))))
+              (text-compare-lexical (symbol-to-text a) (symbol-to-text b))))
+          (text-join (list-map (array-to-list array) symbol-to-text) " ")))
       (format (set-size (pair-second entry))))))
 
 (claim format-module-analysis-report
@@ -249,52 +249,52 @@
 
 (define (format-module-analysis-report result debug)
   (let ((lines (make-array)))
-    (array-push "(module-analysis-report" lines)
-    (array-push "  (fragment-scopes" lines)
+    (array-push lines "(module-analysis-report")
+    (array-push lines "  (fragment-scopes")
     (for-list (sort-entries-by-text-key (module-analysis-report-fragment-scopes result))
       (lambda (entry)
         (let ((path (pair-first entry))
               (scope (pair-second entry)))
-          (array-push (@text "    (\"" path "\"") lines)
+          (array-push lines (@text "    (\"" path "\""))
           (array-push
-            (@text "      (mod-name " (symbol-to-text (fragment-scope-mod-name scope)) ")")
-            lines)
+            lines
+            (@text "      (mod-name " (symbol-to-text (fragment-scope-mod-name scope)) ")"))
           (if debug
             (begin
-              (array-push "      (imported-names" lines)
+              (array-push lines "      (imported-names")
               (for-list (sort-entries-by-symbol-key (fragment-scope-imported-names scope))
                 (lambda (entry)
                   (let ((name (pair-first entry))
                         (qualified-entry (pair-second entry)))
                     (array-push
+                      lines
                       (@text "        (" (symbol-to-text name) " "
                                (symbol-to-text (qualified-name-pkg-name qualified-entry)) "/"
                                (symbol-to-text (qualified-name-mod-name qualified-entry)) "/"
-                               (symbol-to-text (qualified-name-name qualified-entry)) ")")
-                      lines))))
+                               (symbol-to-text (qualified-name-name qualified-entry)) ")")))))
               (close-top lines)
-              (array-push "      (imported-prefixes" lines)
+              (array-push lines "      (imported-prefixes")
               (for-list (sort-entries-by-symbol-key (fragment-scope-imported-prefixes scope))
                 (lambda (entry)
                   (let ((prefix (pair-first entry))
                         (qualified-prefix (pair-second entry)))
                     (array-push
+                      lines
                       (@text "        (" (symbol-to-text prefix) " "
                                (symbol-to-text (qualified-prefix-pkg-name qualified-prefix)) "/"
-                               (symbol-to-text (qualified-prefix-mod-name qualified-prefix)) ")")
-                      lines))))
+                               (symbol-to-text (qualified-prefix-mod-name qualified-prefix)) ")")))))
               (close-top lines))
             (begin
               (array-push
-                (@text "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")")
-                lines)
+                lines
+                (@text "      (imported-names " (format (hash-length (fragment-scope-imported-names scope))) ")"))
               (array-push
-                (@text "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")")
-                lines)))
+                lines
+                (@text "      (imported-prefixes " (format (hash-length (fragment-scope-imported-prefixes scope))) ")"))))
           (close-top lines))))
     (close-top lines)
     (close-top lines)
-    (text-join "\n" (array-to-list lines))))
+    (text-join (array-to-list lines) "\n")))
 
 (claim dump-module-analysis-report
   (-> module-analysis-report-t package-t

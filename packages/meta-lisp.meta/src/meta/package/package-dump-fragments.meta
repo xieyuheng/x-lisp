@@ -2,8 +2,8 @@
 
 (define (package-dump-fragments package tag)
   (hash-each
-    (package-dump-fragment package tag)
-    (package-fragments package)))
+    (package-fragments package)
+    (package-dump-fragment package tag)))
 
 (define (package-dump-fragment package tag path fragment)
   (let ((width 80)

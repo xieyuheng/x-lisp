@@ -38,20 +38,20 @@
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (meta-builtin/builtin/box-put
+         is-even
          (lambda (n)
            (if (meta-builtin/builtin/equal n 0)
              meta-builtin/builtin/true
              ((meta-builtin/builtin/box-get is-odd)
-              (meta-builtin/builtin/isub n 1))))
-         is-even)
+              (meta-builtin/builtin/isub n 1)))))
         (begin
           (meta-builtin/builtin/box-put
+           is-odd
            (lambda (n)
              (if (meta-builtin/builtin/equal n 0)
                meta-builtin/builtin/false
                ((meta-builtin/builtin/box-get is-even)
-                (meta-builtin/builtin/isub n 1))))
-           is-odd)
+                (meta-builtin/builtin/isub n 1)))))
           meta-builtin/builtin/void)))))
 
 (define (example-local-define)
@@ -59,18 +59,18 @@
     (let ((is-odd (meta-builtin/builtin/make-box)))
       (begin
         (meta-builtin/builtin/box-put
+         is-even
          (lambda (n)
            (if (meta-builtin/builtin/equal n 0)
              meta-builtin/builtin/true
              ((meta-builtin/builtin/box-get is-odd)
-              (meta-builtin/builtin/isub n 1))))
-         is-even)
+              (meta-builtin/builtin/isub n 1)))))
         (begin
           (meta-builtin/builtin/box-put
+           is-odd
            (lambda (n)
              (if (meta-builtin/builtin/equal n 0)
                meta-builtin/builtin/false
                ((meta-builtin/builtin/box-get is-even)
-                (meta-builtin/builtin/isub n 1))))
-           is-odd)
+                (meta-builtin/builtin/isub n 1)))))
           meta-builtin/builtin/void)))))

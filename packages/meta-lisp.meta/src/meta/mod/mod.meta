@@ -17,12 +17,12 @@
   (outcome-error))
 
 (define (outcome-conj outcomes)
-  (if (list-every (equal (outcome-ok)) outcomes)
+  (if (list-every outcomes (equal (outcome-ok)))
     (outcome-ok)
     (outcome-error)))
 
 (define (outcome-disj outcomes)
-  (if (list-some (equal (outcome-ok)) outcomes)
+  (if (list-some outcomes (equal (outcome-ok)))
     (outcome-ok)
     (outcome-error)))
 
@@ -50,7 +50,7 @@
       void-t))
 
 (define (mod-put-definition name definition mod)
-  (hash-put name definition (mod-definitions mod))
+  (hash-put (mod-definitions mod) name definition)
   void)
 
 (claim mod-lookup-definition
@@ -59,8 +59,8 @@
 
 (define (mod-lookup-definition mod name)
   (let ((definitions (mod-definitions mod)))
-    (if (hash-has name definitions)
-      (just (hash-get name definitions))
+    (if (hash-has definitions name)
+      (just (hash-get definitions name))
       (nothing))))
 
 (claim mod-lookup-claimed-type
@@ -69,8 +69,8 @@
 
 (define (mod-lookup-claimed-type mod name)
   (let ((claimed (mod-claimed mod)))
-    (if (hash-has name claimed)
-      (let ((entry (hash-get name claimed)))
+    (if (hash-has claimed name)
+      (let ((entry (hash-get claimed name)))
         (claimed-entry-type entry))
       (nothing))))
 
@@ -80,8 +80,8 @@
 
 (define (mod-lookup-claimed-entry mod name)
   (let ((claimed (mod-claimed mod)))
-    (if (hash-has name claimed)
-      (just (hash-get name claimed))
+    (if (hash-has claimed name)
+      (just (hash-get claimed name))
       (nothing))))
 
 (claim mod-lookup-inferred-type
@@ -90,8 +90,8 @@
 
 (define (mod-lookup-inferred-type mod name)
   (let ((inferred (mod-inferred-types mod)))
-    (if (hash-has name inferred)
-      (just (hash-get name inferred))
+    (if (hash-has inferred name)
+      (just (hash-get inferred name))
       (nothing))))
 
 (claim mod-claim
@@ -99,7 +99,7 @@
       void-t))
 
 (define (mod-claim mod name term)
-  (match (hash-get-maybe name (mod-claimed mod))
+  (match (hash-get-maybe (mod-claimed mod) name)
     ((just previous)
      (error-with-location
        (@text
@@ -110,7 +110,7 @@
            (term-location (claimed-entry-term previous))))
        (term-location term)))
     ((nothing)
-     (hash-put name (make-claimed-entry term (nothing)) (mod-claimed mod))
+     (hash-put (mod-claimed mod) name (make-claimed-entry term (nothing)))
      void)))
 
 (claim mod-admit
@@ -118,7 +118,7 @@
       void-t))
 
 (define (mod-admit mod name)
-  (set-add name (mod-admitted mod))
+  (set-add (mod-admitted mod) name)
   void)
 
 (claim mod-define
@@ -127,11 +127,11 @@
 
 (define (mod-define mod name definition)
   (let ((definitions (mod-definitions mod)))
-    (if (hash-has name definitions)
+    (if (hash-has definitions name)
       (error (@text
                "[mod-define] name already defined"
                "\n  name: " (symbol-to-text name)))
-      (hash-put name definition definitions)))
+      (hash-put definitions name definition)))
   void)
 
 (claim mod-put-inferred-type
@@ -139,7 +139,7 @@
       void-t))
 
 (define (mod-put-inferred-type mod name type)
-  (hash-put name type (mod-inferred-types mod))
+  (hash-put (mod-inferred-types mod) name type)
   void)
 
 (claim mod-is-checked
@@ -148,8 +148,8 @@
 
 (define (mod-is-checked mod name)
   (let ((states (mod-definition-states mod)))
-    (if (hash-has name states)
-      (definition-state-is-checked (hash-get name states))
+    (if (hash-has states name)
+      (definition-state-is-checked (hash-get states name))
       false)))
 
 (claim mod-mark-checked
@@ -157,7 +157,7 @@
       void-t))
 
 (define (mod-mark-checked mod name)
-  (hash-put name (make-definition-state true (outcome-ok)) (mod-definition-states mod))
+  (hash-put (mod-definition-states mod) name (make-definition-state true (outcome-ok)))
   void)
 
 (claim mod-outcome
@@ -166,8 +166,8 @@
 
 (define (mod-outcome mod name)
   (let ((states (mod-definition-states mod)))
-    (if (hash-has name states)
-      (definition-state-outcome (hash-get name states))
+    (if (hash-has states name)
+      (definition-state-outcome (hash-get states name))
       (outcome-ok))))
 
 (claim mod-mark-outcome
@@ -176,12 +176,12 @@
 
 (define (mod-mark-outcome mod name value)
   (let ((states (mod-definition-states mod)))
-    (if (hash-has name states)
-      (let ((state (hash-get name states)))
-        (hash-put name
+    (if (hash-has states name)
+      (let ((state (hash-get states name)))
+        (hash-put states
+          name
           (make-definition-state
             (definition-state-is-checked state)
-            value)
-          states))
-      (hash-put name (make-definition-state false value) states)))
+            value)))
+      (hash-put states name (make-definition-state false value))))
   void)

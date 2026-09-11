@@ -20,14 +20,14 @@
 
 (define (parse-special-form-stmt tag sexps location)
   (cond
-    ((list-member tag '(define 定义))
+    ((list-has '(define 定义) tag)
      (cond ((is-list-sexp (car sexps))
             (@comment
               (define (<name> <parameter> ...)
                 <body>))
             (define-function-stmt
               (symbol-sexp-content (car (list-sexp-elements (car sexps))))
-              (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
+              (list-map (cdr (list-sexp-elements (car sexps))) symbol-sexp-content)
               (parse-body (cdr sexps) location)
               location))
            (else
@@ -37,21 +37,21 @@
               (symbol-sexp-content (car sexps))
               (parse-body (cdr sexps) location)
               location))))
-    ((list-member tag '(define-test 定义测试))
+    ((list-has '(define-test 定义测试) tag)
      (@comment
        (define-test <test-name> <body>))
      (define-test-stmt
        (symbol-sexp-content (car sexps))
        (parse-body (cdr sexps) location)
        location))
-    ((list-member tag '(define-type 定义类型))
+    ((list-has '(define-type 定义类型) tag)
      (cond ((is-list-sexp (car sexps))
             (@comment
               (define-type (<type-name> <type-parameter> ...)
                 <body>))
             (define-type-stmt
               (symbol-sexp-content (car (list-sexp-elements (car sexps))))
-              (list-map symbol-sexp-content (cdr (list-sexp-elements (car sexps))))
+              (list-map (cdr (list-sexp-elements (car sexps))) symbol-sexp-content)
               (parse-body (cdr sexps) location)
               location))
            (else
@@ -63,34 +63,34 @@
               (@list)
               (parse-body (cdr sexps) location)
               location))))
-    ((list-member tag '(exempt 免检))
+    ((list-has '(exempt 免检) tag)
      (@comment
        (exempt <name> ...))
      (exempt-stmt
-       (list-map symbol-sexp-content sexps)
+       (list-map sexps symbol-sexp-content)
        location))
-    ((list-member tag '(private 私有))
+    ((list-has '(private 私有) tag)
      (@comment
        (private <name> ...))
      (private-stmt
-       (list-map symbol-sexp-content sexps)
+       (list-map sexps symbol-sexp-content)
        location))
-    ((list-member tag '(module 模块))
+    ((list-has '(module 模块) tag)
      (@comment
        (module <module-name>))
      (declare-module-stmt
        (symbol-sexp-content (car sexps))
        location))
-    ((list-member tag '(import 导入))
+    ((list-has '(import 导入) tag)
      (@comment
        (import <module-name> <name> ...))
      (let ((source (parse-import-source (car sexps))))
        (import-stmt
          (pair-first source)
          (pair-second source)
-         (list-map symbol-sexp-content (cdr sexps))
+         (list-map (cdr sexps) symbol-sexp-content)
          location)))
-    ((list-member tag '(import-as 导入为))
+    ((list-has '(import-as 导入为) tag)
      (@comment
        (import-as <module-name> <prefix>))
      (let ((source (parse-import-source (car sexps))))
@@ -99,7 +99,7 @@
          (pair-second source)
          (symbol-sexp-content (car (cdr sexps)))
          location)))
-    ((list-member tag '(import-all 全导入))
+    ((list-has '(import-all 全导入) tag)
      (@comment
        (import-all <module-name>))
      (let ((source (parse-import-source (car sexps))))
@@ -107,7 +107,7 @@
          (pair-first source)
          (pair-second source)
          location)))
-    ((list-member tag '(define-enum 定义枚举))
+    ((list-has '(define-enum 定义枚举) tag)
      (@comment
        (define-enum <type-name>
          (<constructor-name> (<field-name> <type>) ...)
@@ -117,10 +117,10 @@
          ...))
      (define-enum-stmt
        (parse-pre-type-constructor (car sexps))
-       (list-map parse-pre-data-constructor (cdr sexps))
+       (list-map (cdr sexps) parse-pre-data-constructor)
        (if (equal tag '定义枚举) (zh) (en))
        location))
-    ((list-member tag '(define-algebraic-type 定义代数类型))
+    ((list-has '(define-algebraic-type 定义代数类型) tag)
      (@comment
        (define-algebraic-type <type-name>
          ((<constructor-name> (<field-name> <type>) ...)
@@ -136,13 +136,13 @@
          ...))
      (define-algebraic-type-stmt
        (parse-pre-type-constructor (car sexps))
-       (list-map (lambda (sexp)
+       (list-map (cdr sexps)
+         (lambda (sexp)
                    (match sexp
                      ((list-sexp elements location)
-                      (parse-explicit-data-constructor elements location))))
-         (cdr sexps))
+                      (parse-explicit-data-constructor elements location)))))
        location))
-    ((list-member tag '(define-struct 定义结构))
+    ((list-has '(define-struct 定义结构) tag)
      (@comment
        (define-struct <type-name>
          (<field-name> <type>)
@@ -152,10 +152,10 @@
          ...))
      (define-struct-stmt
        (parse-pre-type-constructor (car sexps))
-       (list-map parse-pre-data-field (cdr sexps))
+       (list-map (cdr sexps) parse-pre-data-field)
        (if (equal tag '定义结构) (zh) (en))
        location))
-    ((list-member tag '(define-struct-type 定义结构类型))
+    ((list-has '(define-struct-type 定义结构类型) tag)
      (@comment
        (define-struct-type <type-name>
          (<constructor-name> (<field-name> <type>) ...)
@@ -172,7 +172,7 @@
        (parse-explicit-data-constructor (cdr sexps) location)
        (if (equal tag '定义结构类型) (zh) (en))
        location))
-    ((list-member tag '(define-opaque-type 定义黑盒类型))
+    ((list-has '(define-opaque-type 定义黑盒类型) tag)
      (@comment
        (define-opaque-type <type-name> <representation-type>
          (<interface-name> <interface-type>)
@@ -184,22 +184,22 @@
        (define-opaque-type-stmt
          type-constructor
          (parse-exp (car (cdr sexps)))
-         (list-map parse-pre-interface-entry (cdr (cdr sexps)))
+         (list-map (cdr (cdr sexps)) parse-pre-interface-entry)
          location)))
-    ((list-member tag '(claim 声明))
+    ((list-has '(claim 声明) tag)
      (@comment
        (claim <name> <type>))
      (claim-stmt
        (symbol-sexp-content (car sexps))
        (parse-exp (car (cdr sexps)))
        location))
-    ((list-member tag '(claim-type 声明类型))
+    ((list-has '(claim-type 声明类型) tag)
      (@comment
        (claim-type <type-name>))
      (claim-type-stmt
        (symbol-sexp-content (car sexps))
        location))
-    ((list-member tag '(admit 承认))
+    ((list-has '(admit 承认) tag)
      (equal tag 'admit)
      (@comment
        (admit <name> <type>))
@@ -207,20 +207,20 @@
        (symbol-sexp-content (car sexps))
        (parse-exp (car (cdr sexps)))
        location))
-    ((list-member tag '(declare-primitive-function 声明基本函数))
+    ((list-has '(declare-primitive-function 声明基本函数) tag)
      (@comment
        (declare-primitive-function <name> <arity>))
      (declare-primitive-function-stmt
        (symbol-sexp-content (car sexps))
        (int-sexp-content (car (cdr sexps)))
        location))
-    ((list-member tag '(declare-primitive-variable 声明基本变量))
+    ((list-has '(declare-primitive-variable 声明基本变量) tag)
      (@comment
        (declare-primitive-variable <name>))
      (declare-primitive-variable-stmt
        (symbol-sexp-content (car sexps))
        location))
-    ((list-member tag '(@comment @注释))
+    ((list-has '(@comment @注释) tag)
      (@comment
        (@comment <sexp> ...))
      (comment-stmt sexps location))))
@@ -234,7 +234,7 @@
     ((list-sexp sexps location)
      (make-pre-type-constructor
        (symbol-sexp-content (car sexps))
-       (list-map symbol-sexp-content (cdr sexps))
+       (list-map (cdr sexps) symbol-sexp-content)
        location))
     ((symbol-sexp content location)
      (make-pre-type-constructor content (@list) location))))
@@ -248,7 +248,7 @@
     ((list-sexp sexps location)
      (make-pre-data-constructor
        (symbol-sexp-content (car sexps))
-       (list-map parse-pre-data-field (cdr sexps))
+       (list-map (cdr sexps) parse-pre-data-field)
        location))))
 
 (claim parse-pre-data-field
@@ -278,11 +278,11 @@
 (define (parse-import-source sexp)
   (let ((raw (symbol-sexp-content sexp))
          (raw-text (symbol-to-text raw))
-         (parts (text-split "/" raw-text)))
+         (parts (text-split raw-text "/")))
     (if (equal (list-length parts) 1)
       (make-pair 'self raw)
-      (make-pair (text-to-symbol (list-get 0 parts))
-        (text-to-symbol (list-get 1 parts))))))
+      (make-pair (text-to-symbol (list-get parts 0))
+        (text-to-symbol (list-get parts 1))))))
 
 (claim parse-explicit-data-constructor
   (-> (list-t sexp-t) source-location-t
@@ -299,8 +299,8 @@
     (make-explicit-data-constructor
       (pre-data-constructor-name data-constructor)
       (list-map
-        (resolve-explicit-data-field field-interface-table)
-        (pre-data-constructor-fields data-constructor))
+        (pre-data-constructor-fields data-constructor)
+        (resolve-explicit-data-field field-interface-table))
       (symbol-sexp-content (car (cdr sexps)))
       location)))
 
@@ -339,6 +339,6 @@
     (let ((entry (list-sexp-elements (car table))))
       (if (equal (symbol-sexp-content (car entry)) name)
         (if (int-greater (list-length entry) 2)
-          (just (symbol-sexp-content (car (list-drop 2 entry))))
+          (just (symbol-sexp-content (car (list-drop entry 2))))
           (nothing))
         (find-field-modifier-name name (cdr table) location)))))

@@ -5,29 +5,29 @@
 
   (let ((a (make-array)))
     (assert (array-is-empty a))
-    (array-push 1 a)
-    (array-push 2 a)
-    (array-push 3 a)
+    (array-push a 1)
+    (array-push a 2)
+    (array-push a 3)
     (assert-not (array-is-empty a))
     (assert-equal 3 (array-length a))
-    (assert-equal 1 (array-get 0 a))
-    (assert-equal 2 (array-get 1 a))
-    (assert-equal 3 (array-get 2 a)))
+    (assert-equal 1 (array-get a 0))
+    (assert-equal 2 (array-get a 1))
+    (assert-equal 3 (array-get a 2)))
 
   ;; put / pop
 
   (let ((a (make-array)))
-    (array-push 1 a)
-    (array-put 0 10 a)
-    (assert-equal 10 (array-get 0 a))
+    (array-push a 1)
+    (array-put a 0 10)
+    (assert-equal 10 (array-get a 0))
     (assert-equal 10 (array-pop a))
     (assert (array-is-empty a)))
 
   ;; push-front / pop-front
 
   (let ((a (make-array)))
-    (array-push 2 a)
-    (array-push-front 1 a)
+    (array-push a 2)
+    (array-push-front a 1)
     (assert-equal 1 (array-pop-front a))
     (assert-equal 2 (array-pop-front a))
     (assert (array-is-empty a)))
@@ -35,17 +35,17 @@
   ;; copy is not shared
 
   (let ((a (make-array)))
-    (array-push 1 a)
+    (array-push a 1)
     (let ((b (array-copy a)))
-      (array-push 2 a)
+      (array-push a 2)
       (assert-equal 1 (array-length b))))
 
   ;; reverse
 
   (let ((a (make-array)))
-    (array-push 1 a)
-    (array-push 2 a)
-    (array-push 3 a)
+    (array-push a 1)
+    (array-push a 2)
+    (array-push a 3)
     (array-reverse a)
     (assert-equal (@list 3 2 1) (array-to-list a)))
 
@@ -53,7 +53,7 @@
 
   (assert (is-array (@array 1 2 3)))
   (assert-equal 3 (array-length (@array 1 2 3)))
-  (assert-equal 1 (array-get 0 (@array 1 2 3)))
+  (assert-equal 1 (array-get (@array 1 2 3) 0))
   (assert-equal (@list 1 2 3) (array-to-list (@array 1 2 3)))
 
   ;; conversions

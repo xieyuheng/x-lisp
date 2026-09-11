@@ -2,17 +2,17 @@
 
 (claim list-filter
   (all (A)
-    (-> (-> A bool-t) (list-t A)
+    (-> (list-t A) (-> A bool-t)
         (list-t A))))
 
-(define (list-filter p list)
+(define (list-filter list p)
   (cond ((list-is-empty list) list)
         ((p (car list))
-         (cons (car list) (list-filter p (cdr list))))
+         (cons (car list) (list-filter (cdr list) p)))
         (else
-         (list-filter p (cdr list)))))
+         (list-filter (cdr list) p))))
 
 (define-test list-filter-test
   (assert-equal
-    (list-filter (negation (equal 0)) (@list 0 1 0 2 0 3))
+    (list-filter (@list 0 1 0 2 0 3) (negation (equal 0)))
     (@list 1 2 3)))

@@ -5,7 +5,7 @@ title: list-some
 # Type
 
 ```meta-lisp
-(all (A) (-> (-> A bool-t) (list-t A) bool-t))
+(all (A) (-> (list-t A) (-> A bool-t) bool-t))
 ```
 
 # Description
@@ -15,6 +15,6 @@ Check if some element satisfies the predicate. Returns `false` for an empty list
 # Examples
 
 ```meta-lisp
-(list-some int-is-non-negative (@list -1 0 1))  ;; => true
-(list-some int-is-non-negative (@list -1 -2))   ;; => false
+(list-some (@list -1 0 1) int-is-non-negative)  ;; => true
+(list-some (@list -1 -2) int-is-non-negative)   ;; => false
 ```
