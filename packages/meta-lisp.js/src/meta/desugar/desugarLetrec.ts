@@ -34,7 +34,7 @@ export function desugarLetrec(
   const expBoxGetSubst = (exp: M.Exp) =>
     expNaiveSubstMany(exp, names, boxGetExps)
   const newRhsExps = bindings.map((binding) => expBoxGetSubst(binding.rhs))
-  const boxPutExps = arrayMapZip(makeBoxPutExp, newRhsExps, bindings)
+  const boxPutExps = arrayMapZip(newRhsExps, bindings, makeBoxPutExp)
   return M.LetExp(
     boxBindings,
     M.BeginExp([...boxPutExps, expBoxGetSubst(body)], location),
