@@ -20,6 +20,7 @@ router.defineHandlers({
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
+    M.setLang(pkg.config.language ?? "en")
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
 
@@ -39,6 +40,7 @@ router.defineHandlers({
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
+    M.setLang(pkg.config.language ?? "en")
     if ("--dump" in options) pkg.config.compiler.dump = "true"
     M.validateCompilerOptions(pkg.config.compiler)
 

@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import { langKeyword } from "../language/Lang.ts"
 import * as M from "../index.ts"
 
 export function formatStmt<E>(
@@ -11,7 +12,7 @@ export function formatStmt<E>(
         stmt.pkgName === "self"
           ? stmt.modName
           : `${stmt.pkgName}/${stmt.modName}`
-      return `(import ${modName} ${stmt.names.join(" ")})`
+      return `(${langKeyword("import", "导入")} ${modName} ${stmt.names.join(" ")})`
     }
 
     case "ImportAsStmt": {
@@ -19,7 +20,7 @@ export function formatStmt<E>(
         stmt.pkgName === "self"
           ? stmt.modName
           : `${stmt.pkgName}/${stmt.modName}`
-      return `(import-as ${modName} ${stmt.prefix})`
+      return `(${langKeyword("import-as", "导入为")} ${modName} ${stmt.prefix})`
     }
 
     case "ImportAllStmt": {
@@ -27,23 +28,23 @@ export function formatStmt<E>(
         stmt.pkgName === "self"
           ? stmt.modName
           : `${stmt.pkgName}/${stmt.modName}`
-      return `(import-all ${modName})`
+      return `(${langKeyword("import-all", "全导入")} ${modName})`
     }
 
     case "DefineFunctionStmt": {
       const parameters = stmt.parameters.join(" ")
       const body = formatBody(stmt.body)
-      return `(define (${stmt.name} ${parameters}) ${body})`
+      return `(${langKeyword("define", "定义")} (${stmt.name} ${parameters}) ${body})`
     }
 
     case "DefineVariableStmt": {
       const body = formatBody(stmt.body)
-      return `(define ${stmt.name} ${body})`
+      return `(${langKeyword("define", "定义")} ${stmt.name} ${body})`
     }
 
     case "DefineTestStmt": {
       const body = formatBody(stmt.body)
-      return `(define-test ${stmt.name} ${body})`
+      return `(${langKeyword("define-test", "定义测试")} ${stmt.name} ${body})`
     }
 
     case "DefineTypeStmt": {
@@ -52,7 +53,7 @@ export function formatStmt<E>(
           ? `(${stmt.name} ${stmt.parameters.join(" ")})`
           : `(${stmt.name} )`
       const body = formatBody(stmt.body)
-      return `(define-type ${params} ${body})`
+      return `(${langKeyword("define-type", "定义类型")} ${params} ${body})`
     }
 
     case "DefineEnumStmt": {
@@ -60,18 +61,18 @@ export function formatStmt<E>(
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
-      return `(define-enum ${type} ${constructors})`
+      return `(${langKeyword("define-enum", "定义枚举")} ${type} ${constructors})`
     }
 
     case "DefineStructStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
       const fields = stmt.fields.map(formatDataField).join(" ")
-      return `(define-struct ${type} ${fields})`
+      return `(${langKeyword("define-struct", "定义结构")} ${type} ${fields})`
     }
 
     case "DefineStructTypeStmt": {
       const type = formatTypeConstructor(stmt.typeConstructor)
-      return `(define-struct-type ${type} ${formatExplicitDataConstructor(stmt.dataConstructor, formatBody)})`
+      return `(${langKeyword("define-struct-type", "定义结构类型")} ${type} ${formatExplicitDataConstructor(stmt.dataConstructor, formatBody)})`
     }
 
     case "DefineOpaqueTypeStmt": {
@@ -82,7 +83,7 @@ export function formatStmt<E>(
       const ifaces = stmt.interfaceEntries
         .map(({ name, type }) => `(${name} ${formatBody(type)})`)
         .join(" ")
-      return `(define-opaque-type ${params} ${repr} ${ifaces})`
+      return `(${langKeyword("define-opaque-type", "定义黑盒类型")} ${params} ${repr} ${ifaces})`
     }
 
     case "DefineAlgebraicTypeStmt": {
@@ -90,45 +91,46 @@ export function formatStmt<E>(
       const constructors = stmt.dataConstructors
         .map((ctor) => formatExplicitDataConstructor(ctor, formatBody))
         .join(" ")
-      return `(define-algebraic-type ${type} ${constructors})`
+      return `(${langKeyword("define-algebraic-type", "定义代数类型")} ${type} ${constructors})`
     }
 
     case "ClaimStmt": {
-      return `(claim ${stmt.name} ${formatBody(stmt.type)})`
+      return `(${langKeyword("claim", "声明")} ${stmt.name} ${formatBody(stmt.type)})`
     }
 
     case "ClaimTypeStmt": {
-      return `(claim-type ${stmt.name})`
+      return `(${langKeyword("claim-type", "声明类型")} ${stmt.name})`
     }
 
     case "AdmitStmt": {
-      return `(admit ${stmt.name} ${formatBody(stmt.type)})`
+      return `(${langKeyword("admit", "承认")} ${stmt.name} ${formatBody(stmt.type)})`
     }
 
     case "ExemptStmt": {
-      return `(exempt ${stmt.names.join(" ")})`
+      return `(${langKeyword("exempt", "免检")} ${stmt.names.join(" ")})`
     }
 
     case "PrivateStmt": {
-      return `(private ${stmt.names.join(" ")})`
+      return `(${langKeyword("private", "私有")} ${stmt.names.join(" ")})`
     }
 
     case "DeclareModuleStmt": {
-      return `(module ${stmt.name})`
+      return `(${langKeyword("module", "模块")} ${stmt.name})`
     }
 
     case "DeclarePrimitiveFunctionStmt": {
-      return `(declare-primitive-function ${stmt.name} ${stmt.arity})`
+      return `(${langKeyword("declare-primitive-function", "声明基本函数")} ${stmt.name} ${stmt.arity})`
     }
 
     case "DeclarePrimitiveVariableStmt": {
-      return `(declare-primitive-variable ${stmt.name})`
+      return `(${langKeyword("declare-primitive-variable", "声明基本变量")} ${stmt.name})`
     }
 
     case "CommentStmt": {
-      if (stmt.sexps.length === 0) return `(@comment)`
+      if (stmt.sexps.length === 0)
+        return `(${langKeyword("@comment", "@注释")})`
       const content = stmt.sexps.map(S.formatSexp).join(" ")
-      return `(@comment ${content})`
+      return `(${langKeyword("@comment", "@注释")} ${content})`
     }
   }
 }

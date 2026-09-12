@@ -105,11 +105,15 @@ function checkExplicitDataConstructor(
 function checkName(name: string, location: S.SourceLocation): M.Outcome {
   if (!name.startsWith("©")) return "OutcomeOk"
 
-  writeln(
-    S.sourceLocationReport(
-      location,
-      `reserved global name starts with "©": ${name}`,
-    ),
-  )
+  if (M.lang === "zh") {
+    writeln(S.sourceLocationReport(location, `全局保留名以 "©" 开头：${name}`))
+  } else {
+    writeln(
+      S.sourceLocationReport(
+        location,
+        `reserved global name starts with "©": ${name}`,
+      ),
+    )
+  }
   return "OutcomeError"
 }

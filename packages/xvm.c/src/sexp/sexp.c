@@ -132,14 +132,14 @@ static value_t for_list(const char *end, list_t *tokens) {
   }
 }
 
-void write_as_sexp(buffer_t *buffer, value_t sexp) {
+void write_as_sexp(buffer_t *buffer, value_t sexp, lang_t lang) {
   if (is_symbol(sexp)) {
     write_string(buffer, symbol_string(to_symbol(sexp)));
     return;
   }
 
   if (is_atom(sexp)) {
-    write_atom(buffer, sexp);
+    write_atom(buffer, sexp, lang);
     return;
   }
 
@@ -153,13 +153,13 @@ void write_as_sexp(buffer_t *buffer, value_t sexp) {
     bool first = true;
     while (is_cons(sexp)) {
       if (!first) write_string(buffer, " ");
-      write_as_sexp(buffer, to_cons(sexp)->car);
+      write_as_sexp(buffer, to_cons(sexp)->car, lang);
       first = false;
       sexp = to_cons(sexp)->cdr;
     }
     if (!is_null(sexp)) {
       who_printf("[write_as_sexp] cdr of a list should be a list: ");
-      print_value(sexp);
+      print_value(sexp, lang);
       printf("\n");
       exit(1);
     }
@@ -171,16 +171,16 @@ void write_as_sexp(buffer_t *buffer, value_t sexp) {
     xset_t *xset = to_xset(sexp);
     set_iter_t iter;
     set_iter_init(&iter, xset->set);
-    write_string(buffer, "(@set");
+    write_string(buffer, lang == LANG_ZH ? "(@集合" : "(@set");
     const hash_entry_t *entry = set_iter_next_entry(&iter);
     if (entry) {
-      write_as_sexp(buffer, (value_t) entry->value);
+      write_as_sexp(buffer, (value_t) entry->value, lang);
       entry = set_iter_next_entry(&iter);
     }
 
     while (entry) {
       write_string(buffer, " ");
-      write_as_sexp(buffer, (value_t) entry->value);
+      write_as_sexp(buffer, (value_t) entry->value, lang);
       entry = set_iter_next_entry(&iter);
     }
 
@@ -190,22 +190,22 @@ void write_as_sexp(buffer_t *buffer, value_t sexp) {
 
   if (is_xhash(sexp)) {
     xhash_t *xhash = to_xhash(sexp);
-    write_string(buffer, "(@hash");
+    write_string(buffer, lang == LANG_ZH ? "(@散列" : "(@hash");
     hash_iter_t iter;
     hash_iter_init(&iter, xhash->hash);
     const hash_entry_t *entry = hash_iter_next_entry(&iter);
     if (entry) {
-      write_as_sexp(buffer, (value_t) entry->key);
+      write_as_sexp(buffer, (value_t) entry->key, lang);
       write_string(buffer, " ");
-      write_as_sexp(buffer, (value_t) entry->value);
+      write_as_sexp(buffer, (value_t) entry->value, lang);
       entry = hash_iter_next_entry(&iter);
     }
 
     while (entry) {
       write_string(buffer, " ");
-      write_as_sexp(buffer, (value_t) entry->key);
+      write_as_sexp(buffer, (value_t) entry->key, lang);
       write_string(buffer, " ");
-      write_as_sexp(buffer, (value_t) entry->value);
+      write_as_sexp(buffer, (value_t) entry->value, lang);
       entry = hash_iter_next_entry(&iter);
     }
 
@@ -213,6 +213,6 @@ void write_as_sexp(buffer_t *buffer, value_t sexp) {
     return;
   }
 
-  who_printf("non sexp value: "); print_value(sexp); printf("\n");
+  who_printf("non sexp value: "); print_value(sexp, lang); printf("\n");
   exit(1);
 }

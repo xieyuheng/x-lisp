@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import { langKeyword } from "../language/Lang.ts"
 import * as M from "../index.ts"
 
 export function formatExps(exps: Array<M.Exp>): string {
@@ -48,13 +49,13 @@ export function formatExp(exp: M.Exp): string {
     case "LambdaExp": {
       const parameters = formatParameters(exp.parameters)
       const body = formatBody(exp.body)
-      return `(lambda (${parameters}) ${body})`
+      return `(${langKeyword("lambda", "函")} (${parameters}) ${body})`
     }
 
     case "AllExp": {
       const parameters = formatParameters(exp.parameters)
       const body = formatExp(exp.body)
-      return `(all (${parameters}) ${body})`
+      return `(${langKeyword("all", "泛型")} (${parameters}) ${body})`
     }
 
     case "ApplyExp": {
@@ -70,83 +71,83 @@ export function formatExp(exp: M.Exp): string {
     case "Let1Exp": {
       const rhs = formatExp(exp.rhs)
       const body = formatBody(exp.body)
-      return `(let ((${exp.name} ${rhs})) ${body})`
+      return `(${langKeyword("let", "令")} ((${exp.name} ${rhs})) ${body})`
     }
 
     case "LetExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
-      return `(let (${bindings}) ${body})`
+      return `(${langKeyword("let", "令")} (${bindings}) ${body})`
     }
 
     case "LetrecExp": {
       const bindings = exp.bindings.map(formatBinding).join(" ")
       const body = formatBody(exp.body)
-      return `(letrec (${bindings}) ${body})`
+      return `(${langKeyword("letrec", "递归令")} (${bindings}) ${body})`
     }
 
     case "LocalDefineExp": {
       if (exp.parameters.length > 0) {
         const params = exp.parameters.join(" ")
-        return `(define (${exp.name} ${params}) ${formatBody(exp.body)})`
+        return `(${langKeyword("define", "定义")} (${exp.name} ${params}) ${formatBody(exp.body)})`
       } else {
-        return `(define ${exp.name} ${formatBody(exp.body)})`
+        return `(${langKeyword("define", "定义")} ${exp.name} ${formatBody(exp.body)})`
       }
     }
 
     case "Begin1Exp": {
       const head = formatExp(exp.head)
       const body = formatBody(exp.body)
-      return `(begin ${head} ${body})`
+      return `(${langKeyword("begin", "循序")} ${head} ${body})`
     }
 
     case "BeginExp": {
       const sequence = formatExps(exp.sequence)
-      return `(begin ${sequence})`
+      return `(${langKeyword("begin", "循序")} ${sequence})`
     }
 
     case "IfExp": {
-      return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
+      return `(${langKeyword("if", "若")} ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
     }
 
     case "WhenExp": {
-      return `(when ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
+      return `(${langKeyword("when", "当")} ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
     }
 
     case "UnlessExp": {
-      return `(unless ${formatExp(exp.condition)} ${formatExp(exp.alternative)})`
+      return `(${langKeyword("unless", "除非")} ${formatExp(exp.condition)} ${formatExp(exp.alternative)})`
     }
 
     case "AndExp": {
       const exps = formatExps(exp.exps)
       if (exps === "") {
-        return `(and)`
+        return `(${langKeyword("and", "且")})`
       } else {
-        return `(and ${exps})`
+        return `(${langKeyword("and", "且")} ${exps})`
       }
     }
 
     case "OrExp": {
       const exps = formatExps(exp.exps)
       if (exps === "") {
-        return `(or)`
+        return `(${langKeyword("or", "或")})`
       } else {
-        return `(or ${exps})`
+        return `(${langKeyword("or", "或")} ${exps})`
       }
     }
 
     case "CondExp": {
       const clauses = exp.clauses.map(formatCondClause)
-      return `(cond ${clauses.join(" ")})`
+      return `(${langKeyword("cond", "若则")} ${clauses.join(" ")})`
     }
 
     case "ListExp": {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
-        return `(@list)`
+        return `(${langKeyword("@list", "@列表")})`
       } else {
-        return `(@list ${elements})`
+        return `(${langKeyword("@list", "@列表")} ${elements})`
       }
     }
 
@@ -154,24 +155,24 @@ export function formatExp(exp: M.Exp): string {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
-        return `(@array)`
+        return `(${langKeyword("@array", "@数组")})`
       } else {
-        return `(@array ${elements})`
+        return `(${langKeyword("@array", "@数组")} ${elements})`
       }
     }
 
     case "TextConcatExp": {
       const elements = formatExps(exp.elements)
       if (elements === "") {
-        return `(@text)`
+        return `(${langKeyword("@text", "@文本")})`
       } else {
-        return `(@text ${elements})`
+        return `(${langKeyword("@text", "@文本")} ${elements})`
       }
     }
 
     case "SetExp": {
       const elements = formatExps(exp.elements)
-      return `(@set ${elements})`
+      return `(${langKeyword("@set", "@集合")} ${elements})`
     }
 
     case "HashExp": {
@@ -179,18 +180,18 @@ export function formatExp(exp: M.Exp): string {
         .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
         .join(" ")
       if (entries === "") {
-        return `(@hash)`
+        return `(${langKeyword("@hash", "@散列")})`
       } else {
-        return `(@hash ${entries})`
+        return `(${langKeyword("@hash", "@散列")} ${entries})`
       }
     }
 
     case "QuoteExp": {
-      return `(@quote ${S.formatSexp(exp.sexp)})`
+      return `(${langKeyword("@quote", "@引用")} ${S.formatSexp(exp.sexp)})`
     }
 
     case "SexpExp": {
-      return `(@sexp ${S.formatSexp(exp.sexp)})`
+      return `(${langKeyword("@sexp", "@符号算式")} ${S.formatSexp(exp.sexp)})`
     }
 
     case "ArrowExp": {
@@ -204,20 +205,20 @@ export function formatExp(exp: M.Exp): string {
     }
 
     case "TheExp": {
-      return `(the ${formatExp(exp.type)} ${formatExp(exp.instance)})`
+      return `(${langKeyword("the", "型例")} ${formatExp(exp.type)} ${formatExp(exp.instance)})`
     }
 
     case "CommentExp": {
-      if (exp.sexps.length === 0) return `(@comment)`
+      if (exp.sexps.length === 0) return `(${langKeyword("@comment", "@注释")})`
       const content = exp.sexps.map(S.formatSexp).join(" ")
-      return `(@comment ${content})`
+      return `(${langKeyword("@comment", "@注释")} ${content})`
     }
 
     case "MatchExp": {
       if (exp.targets.length === 1) {
         const target = formatExp(exp.targets[0])
         const clauses = formatMatchClauses(exp.clauses)
-        return `(match ${target} ${clauses})`
+        return `(${langKeyword("match", "匹配")} ${target} ${clauses})`
       } else {
         const targets = exp.targets.map(formatExp).join(" ")
         const clauses = formatMatchClauses(exp.clauses)
@@ -255,7 +256,7 @@ export function formatBody(body: M.Exp): string {
   if (body.kind === "Begin1Exp") {
     return `${formatExp(body.head)} ${formatBody(body.body)}`
   } else if (body.kind === "Let1Exp") {
-    return `(let ((${body.name} ${formatExp(body.rhs)})) ${formatBody(body.body)})`
+    return `(${langKeyword("let", "令")} ((${body.name} ${formatExp(body.rhs)})) ${formatBody(body.body)})`
   } else if (body.kind === "BeginExp") {
     return formatExps(body.sequence)
   } else {
@@ -267,7 +268,7 @@ export function formatTermBody(body: M.Term): string {
   if (body.kind === "Begin1Term") {
     return `${M.formatTerm(body.head)} ${formatTermBody(body.body)}`
   } else if (body.kind === "Let1Term") {
-    return `(let ((${body.name} ${M.formatTerm(body.rhs)})) ${formatTermBody(body.body)})`
+    return `(${langKeyword("let", "令")} ((${body.name} ${M.formatTerm(body.rhs)})) ${formatTermBody(body.body)})`
   } else {
     return M.formatTerm(body)
   }

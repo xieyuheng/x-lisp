@@ -33,11 +33,19 @@ export function checkAssignable(
       const prettyUnknownSubst = M.generatePrettyUnknownSubst(sourceTypes)
       inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
       type = M.substDeepWalk(prettyUnknownSubst, type)
-      const message =
-        `arrow type arity mismatch` +
-        `\n  inferred type: ${M.formatType(inferredType)}` +
-        `\n  expected type: ${M.formatType(type)}`
-      return M.Left({ term, message })
+      if (M.lang === "zh") {
+        const message =
+          `箭头类型元数不匹配` +
+          `\n  推导类型：${M.formatType(inferredType)}` +
+          `\n  期望类型：${M.formatType(type)}`
+        return M.Left({ term, message })
+      } else {
+        const message =
+          `arrow type arity mismatch` +
+          `\n  inferred type: ${M.formatType(inferredType)}` +
+          `\n  expected type: ${M.formatType(type)}`
+        return M.Left({ term, message })
+      }
     }
   }
 
@@ -60,11 +68,19 @@ export function checkSubstInstance(
     const prettyUnknownSubst = M.generatePrettyUnknownSubst(sourceTypes)
     inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
     type = M.substDeepWalk(prettyUnknownSubst, type)
-    const message =
-      `expected type is not a substitution instance of inferred type` +
-      `\n  inferred type: ${M.formatType(inferredType)}` +
-      `\n  expected type: ${M.formatType(type)}`
-    return M.Left({ term: term, message })
+    if (M.lang === "zh") {
+      const message =
+        `期望类型不是推导类型的代换实例` +
+        `\n  推导类型：${M.formatType(inferredType)}` +
+        `\n  期望类型：${M.formatType(type)}`
+      return M.Left({ term: term, message })
+    } else {
+      const message =
+        `expected type is not a substitution instance of inferred type` +
+        `\n  inferred type: ${M.formatType(inferredType)}` +
+        `\n  expected type: ${M.formatType(type)}`
+      return M.Left({ term: term, message })
+    }
   }
 
   return M.Right(undefined)
@@ -100,11 +116,19 @@ export function checkUnify(
     const prettyUnknownSubst = M.generatePrettyUnknownSubst(sourceTypes)
     inferredType = M.substDeepWalk(prettyUnknownSubst, inferredType)
     type = M.substDeepWalk(prettyUnknownSubst, type)
-    const message =
-      `unification fail` +
-      `\n  inferred type: ${M.formatType(inferredType)}` +
-      `\n  expected type: ${M.formatType(type)}`
-    return M.Left({ term: term, message })
+    if (M.lang === "zh") {
+      const message =
+        `类型统一失败` +
+        `\n  推导类型：${M.formatType(inferredType)}` +
+        `\n  期望类型：${M.formatType(type)}`
+      return M.Left({ term: term, message })
+    } else {
+      const message =
+        `unification fail` +
+        `\n  inferred type: ${M.formatType(inferredType)}` +
+        `\n  expected type: ${M.formatType(type)}`
+      return M.Left({ term: term, message })
+    }
   }
 
   M.ctxPutSubst(ctx, newSubst)

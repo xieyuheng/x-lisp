@@ -46,7 +46,7 @@ hash_code_t value_hash_code(value_t value) {
     if (object->header.class->hash_code_fn) {
       return object->header.class->hash_code_fn(object);
     } else {
-      who_printf("unhandled object: "); print_value(value); printf("\n");
+      who_printf("unhandled object: "); print_value(value, LANG_EN); printf("\n");
       exit(1);
     }
   }
@@ -55,7 +55,7 @@ hash_code_t value_hash_code(value_t value) {
     return value;
   }
 
-  who_printf("unhandled value: "); print_value(value); printf("\n");
+  who_printf("unhandled value: "); print_value(value, LANG_EN); printf("\n");
   exit(1);
 }
 
@@ -92,8 +92,8 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
       return compare_fn(to_object(lhs), to_object(rhs));
     } else {
       who_printf("unhandled objects\n");
-      printf("  lhs: "); print_value(lhs); printf("\n");
-      printf("  rhs: "); print_value(rhs); printf("\n");
+      printf("  lhs: "); print_value(lhs, LANG_EN); printf("\n");
+      printf("  rhs: "); print_value(rhs, LANG_EN); printf("\n");
     }
   }
 
@@ -104,12 +104,12 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
   }
 
   who_printf("unhandled values\n");
-  printf("  lhs: "); print_value(lhs); printf("\n");
-  printf("  rhs: "); print_value(rhs); printf("\n");
+  printf("  lhs: "); print_value(lhs, LANG_EN); printf("\n");
+  printf("  rhs: "); print_value(rhs, LANG_EN); printf("\n");
   exit(1);
 }
 
-void write_atom(buffer_t *buffer, value_t value) {
+void write_atom(buffer_t *buffer, value_t value, lang_t lang) {
   assert(is_atom(value));
 
   if (is_int(value)) {
@@ -145,29 +145,29 @@ void write_atom(buffer_t *buffer, value_t value) {
   }
 
   if (is_true(value)) {
-    write_string(buffer, "#t");
+    write_string(buffer, lang == LANG_ZH ? "#真" : "#t");
     return;
   }
 
   if (is_false(value)) {
-    write_string(buffer, "#f");
+    write_string(buffer, lang == LANG_ZH ? "#假" : "#f");
     return;
   }
 
   if (is_void(value)) {
-    write_string(buffer, "#void");
+    write_string(buffer, lang == LANG_ZH ? "#空值" : "#void");
     return;
   }
 }
 
 void write_value_in_ctx(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   if (is_atom(value)) {
-    write_atom(buffer, value);
+    write_atom(buffer, value, ctx->lang);
     return;
   }
 
   if (is_null(value)) {
-    write_template(buffer, "#null");
+    write_template(buffer, ctx->lang == LANG_ZH ? "#空列表" : "#null");
     return;
   }
 
@@ -191,8 +191,9 @@ void write_value_in_ctx(buffer_t *buffer, object_circle_ctx_t *ctx, value_t valu
   return;
 }
 
-void write_value(buffer_t *buffer, value_t value) {
+void write_value(buffer_t *buffer, value_t value, lang_t lang) {
   object_circle_ctx_t *ctx = make_object_circle_ctx();
+  ctx->lang = lang;
   if (is_object(value)) {
     object_circle_collect(ctx, to_object(value));
     set_clear(ctx->occurred_objects);
@@ -202,9 +203,9 @@ void write_value(buffer_t *buffer, value_t value) {
   object_circle_ctx_free(ctx);
 }
 
-void print_value(value_t value) {
+void print_value(value_t value, lang_t lang) {
   buffer_t *buffer = make_buffer();
-  write_value(buffer, value);
+  write_value(buffer, value, lang);
   buffer_write(buffer, stdout);
   buffer_free(buffer);
 }

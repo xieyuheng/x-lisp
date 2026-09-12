@@ -79,7 +79,7 @@ void import_builtin_zh(program_t *program) {
   define_primitive_1(program, "meta-builtin/内置/为原子", x_is_atom);
   define_primitive_2(program, "meta-builtin/内置/相同", x_same);
   define_primitive_2(program, "meta-builtin/内置/相等", x_equal);
-  define_primitive_1(program, "meta-builtin/内置/呈现", x_format);
+  define_primitive_1(program, "meta-builtin/内置/呈现", x_format_zh);
   define_primitive_1(program, "meta-builtin/内置/散列码", x_hash_code);
   define_primitive_2(program, "meta-builtin/内置/全序比较", x_total_compare);
 
@@ -91,8 +91,8 @@ void import_builtin_zh(program_t *program) {
   define_primitive_1(program, "meta-builtin/内置/文件读", x_file_read);
   define_primitive_2(program, "meta-builtin/内置/文件写", x_file_write);
   define_primitive_2(program, "meta-builtin/内置/文件写行", x_file_writeln);
-  define_primitive_1(program, "meta-builtin/内置/打印", x_print);
-  define_primitive_1(program, "meta-builtin/内置/打印行", x_println);
+  define_primitive_1(program, "meta-builtin/内置/打印", x_print_zh);
+  define_primitive_1(program, "meta-builtin/内置/打印行", x_println_zh);
 
   // path
 
@@ -225,24 +225,24 @@ void import_builtin_zh(program_t *program) {
 
   // assert
 
-  define_primitive_1(program, "meta-builtin/内置/断言", x_assert);
-  define_primitive_1(program, "meta-builtin/内置/断言非", x_assert_not);
-  define_primitive_2(program, "meta-builtin/内置/断言相等", x_assert_equal);
-  define_primitive_2(program, "meta-builtin/内置/断言不等", x_assert_not_equal);
-  define_primitive_2(program, "meta-builtin/内置/定位断言", x_assert_with_location);
-  define_primitive_2(program, "meta-builtin/内置/定位断言非", x_assert_not_with_location);
-  define_primitive_3(program, "meta-builtin/内置/定位断言相等", x_assert_equal_with_location);
-  define_primitive_3(program, "meta-builtin/内置/定位断言不等", x_assert_not_equal_with_location);
+  define_primitive_1(program, "meta-builtin/内置/断言", x_assert_zh);
+  define_primitive_1(program, "meta-builtin/内置/断言非", x_assert_not_zh);
+  define_primitive_2(program, "meta-builtin/内置/断言相等", x_assert_equal_zh);
+  define_primitive_2(program, "meta-builtin/内置/断言不等", x_assert_not_equal_zh);
+  define_primitive_2(program, "meta-builtin/内置/定位断言", x_assert_with_location_zh);
+  define_primitive_2(program, "meta-builtin/内置/定位断言非", x_assert_not_with_location_zh);
+  define_primitive_3(program, "meta-builtin/内置/定位断言相等", x_assert_equal_with_location_zh);
+  define_primitive_3(program, "meta-builtin/内置/定位断言不等", x_assert_not_equal_with_location_zh);
 
   // error
 
-  define_primitive_1(program, "meta-builtin/内置/报错", x_error);
-  define_primitive_2(program, "meta-builtin/内置/定位报错", x_error_with_location);
+  define_primitive_1(program, "meta-builtin/内置/报错", x_error_zh);
+  define_primitive_2(program, "meta-builtin/内置/定位报错", x_error_with_location_zh);
 
   // sexp
 
   define_primitive_2(program, "meta-builtin/内置/解析符号算式", x_parse_sexps_zh);
-  define_primitive_1(program, "meta-builtin/内置/呈现为符号算式", x_format_as_sexp);
+  define_primitive_1(program, "meta-builtin/内置/呈现为符号算式", x_format_as_sexp_zh);
   define_primitive_2(program, "meta-builtin/内置/呈现定位消息", x_format_message_with_location);
 
   // json

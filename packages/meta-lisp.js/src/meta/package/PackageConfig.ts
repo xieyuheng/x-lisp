@@ -1,11 +1,13 @@
 import * as z from "zod"
 
+import { type Lang } from "../language/Lang.ts"
 import type { CompilerOptions } from "./CompilerOptions.ts"
 
 export type PackageConfig = {
   name: string
   version: string
   entry?: string
+  language?: Lang
   build: {
     "source-directory": string
     "output-directory": string
@@ -19,6 +21,7 @@ export const PackageConfigSchema = z.object({
   name: z.string(),
   version: z.string(),
   entry: z.string().optional(),
+  language: z.enum(["zh", "en"]).optional(),
   build: z.object({
     "source-directory": z.string(),
     "output-directory": z.string(),

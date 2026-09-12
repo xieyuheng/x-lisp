@@ -61,7 +61,7 @@ symbol_t *to_symbol(value_t value) {
       who_printf("expected symbol, tag: %ld\n", (int64_t) value_tag(value));
     }
     who_printf("  value: ");
-    print_value(value);
+    print_value(value, LANG_EN);
     printf("\n");
     exit(1);
   }

@@ -123,14 +123,25 @@ export function modExempt(mod: Mod, name: string): void {
 export function modClaim(mod: Mod, name: string, term: M.Term): void {
   const previous = mod.claimed.get(name)
   if (previous) {
-    let message = `[modClaim] name already claimed`
-    message += `\n  name: ${name}`
-    message += `\n`
-    message += S.sourceLocationReport(
-      previous.term.location,
-      `previous claim`,
-    ).trim()
-    throw new S.ErrorWithSourceLocation(message, term.location)
+    if (M.lang === "zh") {
+      let message = `[modClaim] 名字已被声明`
+      message += `\n  名字：${name}`
+      message += `\n`
+      message += S.sourceLocationReport(
+        previous.term.location,
+        `之前的声明`,
+      ).trim()
+      throw new S.ErrorWithSourceLocation(message, term.location)
+    } else {
+      let message = `[modClaim] name already claimed`
+      message += `\n  name: ${name}`
+      message += `\n`
+      message += S.sourceLocationReport(
+        previous.term.location,
+        `previous claim`,
+      ).trim()
+      throw new S.ErrorWithSourceLocation(message, term.location)
+    }
   }
 
   mod.claimed.set(name, { term })

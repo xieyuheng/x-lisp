@@ -4,3 +4,4 @@
 #include "../../cli.c/src/index.h"
 
 #include "config.h"
+#include "lang.h"

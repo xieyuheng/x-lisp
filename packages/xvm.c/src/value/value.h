@@ -9,7 +9,7 @@ bool equal(value_t lhs, value_t rhs);
 hash_code_t value_hash_code(value_t value);
 ordering_t value_total_compare(value_t lhs, value_t rhs);
 
-void write_atom(buffer_t *buffer, value_t value);
+void write_atom(buffer_t *buffer, value_t value, lang_t lang);
 void write_value_in_ctx(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value);
-void write_value(buffer_t *buffer, value_t value);
-void print_value(value_t value);
+void write_value(buffer_t *buffer, value_t value, lang_t lang);
+void print_value(value_t value, lang_t lang);

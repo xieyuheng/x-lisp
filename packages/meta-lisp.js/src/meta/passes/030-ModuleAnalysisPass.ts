@@ -130,12 +130,22 @@ function ensureModExists(
       if (fragment.modName === modName) return "OutcomeOk"
     }
 
-    writeln(S.sourceLocationReport(location, `undefined module: ${modName}`))
+    if (M.lang === "zh") {
+      writeln(S.sourceLocationReport(location, `未定义的模块：${modName}`))
+    } else {
+      writeln(S.sourceLocationReport(location, `undefined module: ${modName}`))
+    }
     return "OutcomeError"
   } else {
     const dependency = pkg.dependencies.get(pkgName)
     if (!dependency) {
-      writeln(S.sourceLocationReport(location, `undefined package: ${pkgName}`))
+      if (M.lang === "zh") {
+        writeln(S.sourceLocationReport(location, `未定义的包：${pkgName}`))
+      } else {
+        writeln(
+          S.sourceLocationReport(location, `undefined package: ${pkgName}`),
+        )
+      }
       return "OutcomeError"
     }
 
@@ -143,12 +153,18 @@ function ensureModExists(
       if (fragment.modName === modName) return "OutcomeOk"
     }
 
-    writeln(
-      S.sourceLocationReport(
-        location,
-        `undefined module: ${pkgName}/${modName}`,
-      ),
-    )
+    if (M.lang === "zh") {
+      writeln(
+        S.sourceLocationReport(location, `未定义的模块：${pkgName}/${modName}`),
+      )
+    } else {
+      writeln(
+        S.sourceLocationReport(
+          location,
+          `undefined module: ${pkgName}/${modName}`,
+        ),
+      )
+    }
     return "OutcomeError"
   }
 }

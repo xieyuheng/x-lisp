@@ -1,7 +1,8 @@
 import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.js"
+import { type Lang } from "../language/Lang.ts"
 import * as M from "../index.ts"
 
-export type Lang = "zh" | "en"
+export type { Lang }
 
 export type Stmt<E> =
   | ImportStmt

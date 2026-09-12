@@ -7,4 +7,6 @@ x_fn_1_t x_file_read;
 x_fn_2_t x_file_write;
 x_fn_2_t x_file_writeln;
 x_fn_1_t x_print;
+x_fn_1_t x_print_zh;
 x_fn_1_t x_println;
+x_fn_1_t x_println_zh;

@@ -99,17 +99,12 @@ bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
 }
 
 void write_xset(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self) {
-  write_template(buffer, "(@set");
+  write_template(buffer, ctx->lang == LANG_ZH ? "(@集合" : "(@set");
 
   set_iter_t iter;
   set_iter_init(&iter, self->set);
 
   const hash_entry_t *entry = set_iter_next_entry(&iter);
-  if (entry) {
-    write_value_in_ctx(buffer, ctx, (value_t) entry->value);
-    entry = set_iter_next_entry(&iter);
-  }
-
   while (entry) {
     write_template(buffer, " ");
     write_value_in_ctx(buffer, ctx, (value_t) entry->value);

@@ -59,7 +59,7 @@ inline value_t xhash_get(const xhash_t *self, value_t key) {
   hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
   if (!entry) {
     who_printf("undefined key: ");
-    print_value(key);
+    print_value(key, LANG_EN);
     printf("\n");
     exit(1);
   }
@@ -125,7 +125,7 @@ static void write_xhash_entries(buffer_t *buffer, object_circle_ctx_t *ctx, cons
 }
 
 void write_xhash(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self) {
-  write_template(buffer, "(@hash");
+  write_template(buffer, ctx->lang == LANG_ZH ? "(@散列" : "(@hash");
   write_xhash_entries(buffer, ctx, self);
   write_template(buffer, ")");
 }

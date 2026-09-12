@@ -698,7 +698,7 @@ void xvm_inspect(xvm_t *xvm) {
     size_t local_count = iter.local_count;
     print_string("[");
     for (size_t j = 0; j < local_count; j++) {
-      print_value(locals[j]);
+      print_value(locals[j], LANG_EN);
       print_string(" ");
     }
     print_string("] ");

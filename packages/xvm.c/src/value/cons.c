@@ -69,7 +69,7 @@ bool cons_equal(const cons_t *lhs, const cons_t *rhs) {
 }
 
 void write_cons(buffer_t *buffer, object_circle_ctx_t *ctx, const cons_t *self) {
-  write_template(buffer, "(@list");
+  write_template(buffer, ctx->lang == LANG_ZH ? "(@列表" : "(@list");
   const cons_t *cell = self;
   while (true) {
     write_template(buffer, " ");

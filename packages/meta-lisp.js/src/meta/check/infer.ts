@@ -79,9 +79,15 @@ export function infer(
         term.modName,
       )
       if (qualifiedMod === undefined) {
-        let message = `undefined module prefix`
-        message += `\n  from package: ${mod.pkg.rootDirectory}`
-        throw new S.ErrorWithSourceLocation(message, term.location)
+        if (M.lang === "zh") {
+          let message = `未定义的模块前缀`
+          message += `\n  来自包：${mod.pkg.rootDirectory}`
+          throw new S.ErrorWithSourceLocation(message, term.location)
+        } else {
+          let message = `undefined module prefix`
+          message += `\n  from package: ${mod.pkg.rootDirectory}`
+          throw new S.ErrorWithSourceLocation(message, term.location)
+        }
       }
       return inferLookup(
         qualifiedMod,
@@ -354,11 +360,19 @@ function inferLookup(
 
   const definition = M.modLookupDefinition(mod, name)
   if (definition === undefined) {
-    let message = `undefined variable`
-    message += `\n  package id: ${mod.pkg.id}`
-    message += `\n  module name: ${mod.name}`
-    message += `\n  name: ${name}`
-    return M.Left(TypeError(originalTerm, message))
+    if (M.lang === "zh") {
+      let message = `未定义的变量`
+      message += `\n  包 id：${mod.pkg.id}`
+      message += `\n  模块名：${mod.name}`
+      message += `\n  名字：${name}`
+      return M.Left(TypeError(originalTerm, message))
+    } else {
+      let message = `undefined variable`
+      message += `\n  package id: ${mod.pkg.id}`
+      message += `\n  module name: ${mod.name}`
+      message += `\n  name: ${name}`
+      return M.Left(TypeError(originalTerm, message))
+    }
   }
 
   {

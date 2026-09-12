@@ -8,7 +8,15 @@ value_t x_parse_sexps(value_t path, value_t string) {
 
 value_t x_format_as_sexp(value_t sexp) {
   buffer_t *buffer = make_buffer();
-  write_as_sexp(buffer, sexp);
+  write_as_sexp(buffer, sexp, LANG_EN);
+  value_t result = x_object(make_xtext_take(buffer_to_string(buffer)));
+  buffer_free(buffer);
+  return result;
+}
+
+value_t x_format_as_sexp_zh(value_t sexp) {
+  buffer_t *buffer = make_buffer();
+  write_as_sexp(buffer, sexp, LANG_ZH);
   value_t result = x_object(make_xtext_take(buffer_to_string(buffer)));
   buffer_free(buffer);
   return result;

@@ -5,6 +5,8 @@
 struct object_circle_ctx_t {
   set_t *occurred_objects;
   hash_t *circle_indexes;
+  // 输出语言 —— 值打印采用哪套容器关键字与字面量。
+  lang_t lang;
 };
 
 object_circle_ctx_t *make_object_circle_ctx(void);

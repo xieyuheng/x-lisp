@@ -277,7 +277,7 @@ static void write_json_value(buffer_t *buffer, value_t json) {
   } else if (string_equal(tag, "number-json")) {
     value_t n = xarray_get(xs, 1);
     if (is_float(n)) {
-      write_atom(buffer, n);
+      write_atom(buffer, n, LANG_EN);
     } else {
       write_template(buffer, "%ld", to_int64(n));
     }

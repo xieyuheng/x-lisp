@@ -24,10 +24,18 @@ function setupClaimedType(
     entry.type = type
     return "OutcomeOk"
   } else {
-    let message = `undefined claimed name`
-    message += `\n  module: ${mod.name}`
-    message += `\n  name: ${name}`
-    writeln(S.sourceLocationReport(entry.term.location, message))
-    return "OutcomeError"
+    if (M.lang === "zh") {
+      let message = `未声明的名字`
+      message += `\n  模块：${mod.name}`
+      message += `\n  名字：${name}`
+      writeln(S.sourceLocationReport(entry.term.location, message))
+      return "OutcomeError"
+    } else {
+      let message = `undefined claimed name`
+      message += `\n  module: ${mod.name}`
+      message += `\n  name: ${name}`
+      writeln(S.sourceLocationReport(entry.term.location, message))
+      return "OutcomeError"
+    }
   }
 }

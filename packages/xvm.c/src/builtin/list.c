@@ -7,7 +7,7 @@ value_t x_is_any_list(value_t value) {
 value_t x_car(value_t list) {
   if (!is_cons(list)) {
     who_printf("(car) of non-list value: ");
-    print_value(list);
+    print_value(list, LANG_EN);
     printf("\n");
     exit(1);
   }
@@ -17,7 +17,7 @@ value_t x_car(value_t list) {
 value_t x_cdr(value_t list) {
   if (!is_cons(list)) {
     who_printf("(cdr) of non-list value: ");
-    print_value(list);
+    print_value(list, LANG_EN);
     printf("\n");
     exit(1);
   }

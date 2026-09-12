@@ -33,18 +33,32 @@ value_t x_file_writeln(value_t file, value_t string) {
   return x_void;
 }
 
-value_t x_print(value_t x) {
+static value_t print_impl(value_t x, lang_t lang) {
   if (is_xtext(x)) {
     print_string(xtext_string(to_xtext(x)));
   } else {
-    print_value(x);
+    print_value(x, lang);
   }
 
   return x_void;
 }
 
+value_t x_print(value_t x) {
+  return print_impl(x, LANG_EN);
+}
+
+value_t x_print_zh(value_t x) {
+  return print_impl(x, LANG_ZH);
+}
+
 value_t x_println(value_t x) {
-  x_print(x);
+  print_impl(x, LANG_EN);
+  printf("\n");
+  return x_void;
+}
+
+value_t x_println_zh(value_t x) {
+  print_impl(x, LANG_ZH);
   printf("\n");
   return x_void;
 }

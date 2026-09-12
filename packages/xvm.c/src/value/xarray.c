@@ -95,9 +95,9 @@ static void write_xarray_elements(buffer_t *buffer, object_circle_ctx_t *ctx, co
 
 void write_xarray(buffer_t *buffer, object_circle_ctx_t *ctx, const xarray_t *self) {
   if (array_is_empty(self->elements)) {
-    write_template(buffer, "(@array)");
+    write_template(buffer, ctx->lang == LANG_ZH ? "(@数组)" : "(@array)");
   } else {
-    write_template(buffer, "(@array ");
+    write_template(buffer, ctx->lang == LANG_ZH ? "(@数组 " : "(@array ");
     write_xarray_elements(buffer, ctx, self);
     write_template(buffer, ")");
   }

@@ -4,6 +4,7 @@ object_circle_ctx_t *make_object_circle_ctx(void) {
   object_circle_ctx_t *self = new(object_circle_ctx_t);
   self->occurred_objects = make_set();
   self->circle_indexes = make_hash();
+  self->lang = LANG_EN;
   return self;
 }
 

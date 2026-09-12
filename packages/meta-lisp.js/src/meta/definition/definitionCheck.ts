@@ -61,8 +61,13 @@ export function definitionCheck(definition: M.Definition): M.Outcome {
     case "PrimitiveVariableDeclaration": {
       const type = M.modLookupClaimedType(mod, name)
       if (!type && !mod.exempted.has(name)) {
-        const errorMessage = `unclaimed primitive definition: ${definition.name}`
-        writeln(S.sourceLocationReport(definition.location, errorMessage))
+        if (M.lang === "zh") {
+          const errorMessage = `未声明的原语定义：${definition.name}`
+          writeln(S.sourceLocationReport(definition.location, errorMessage))
+        } else {
+          const errorMessage = `unclaimed primitive definition: ${definition.name}`
+          writeln(S.sourceLocationReport(definition.location, errorMessage))
+        }
         // Even for unclaimed primitive, it is not a CheckError:
         // the error is about missing claim, not type mismatch.
         // We still set checked to avoid repeating.

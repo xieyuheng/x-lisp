@@ -226,7 +226,7 @@ static void write_json_value_zh(buffer_t *buffer, value_t json) {
   } else if (string_equal(tag, "数字结森")) {
     value_t n = xarray_get(xs, 1);
     if (is_float(n)) {
-      write_atom(buffer, n);
+      write_atom(buffer, n, LANG_EN);
     } else {
       write_template(buffer, "%ld", to_int64(n));
     }
