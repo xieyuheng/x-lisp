@@ -1,9 +1,19 @@
 #include "index.h"
 
+static void xtext_copy(object_t *dest, const object_t *src,
+                       object_forward_value_fn_t *forward);
+static void xtext_forward(object_t *self, object_forward_value_fn_t *forward);
+static void xtext_destroy(object_t *self);
+
 struct xtext_t {
   struct object_header_t header;
   text_t *text;
 };
+
+static size_t xtext_inner_bytes(object_t *self_) {
+  xtext_t *self = (xtext_t *) self_;
+  return text_length(self->text) * sizeof(code_point_t);
+}
 
 const object_class_t xtext_class = {
   .name = "text",
@@ -12,6 +22,10 @@ const object_class_t xtext_class = {
   .hash_code_fn = (object_hash_code_fn_t *) xtext_hash_code,
   .compare_fn = (object_compare_fn_t *) xtext_compare,
   .free_fn = (free_fn_t *) xtext_free,
+  .copy_fn = (object_copy_fn_t *) xtext_copy,
+  .forward_fn = (object_forward_fn_t *) xtext_forward,
+  .destroy_fn = (object_destroy_fn_t *) xtext_destroy,
+  .inner_bytes_fn = (object_inner_bytes_fn_t *) xtext_inner_bytes,
 };
 
 static record_t *static_xtext_record = NULL;
@@ -35,7 +49,7 @@ xtext_t *make_static_xtext(const char *string) {
 }
 
 xtext_t *make_xtext_take_text(text_t *text) {
-  xtext_t *self = new(xtext_t);
+  xtext_t *self = gc_new(sizeof(xtext_t));
   self->header.class = &xtext_class;
   self->text = text;
   gc_add_object(global_gc, (object_t *) self);
@@ -50,8 +64,25 @@ xtext_t *make_xtext(const char *string) {
   return make_xtext_take(string_copy(string));
 }
 
-void xtext_free(xtext_t *self) {
+static void xtext_copy(object_t *dest_, const object_t *src_,
+                       object_forward_value_fn_t *forward) {
+  (void) forward;
+  xtext_t *dest = (xtext_t *) dest_;
+  const xtext_t *src = (const xtext_t *) src_;
+  dest->text = src->text;   // - transfer ownership
+}
+
+static void xtext_forward(object_t *self, object_forward_value_fn_t *forward) {
+  (void) self; (void) forward;
+}
+
+static void xtext_destroy(object_t *self_) {
+  xtext_t *self = (xtext_t *) self_;
   text_free(self->text);
+}
+
+void xtext_free(xtext_t *self) {
+  xtext_destroy((object_t *) self);
   free(self);
 }
 

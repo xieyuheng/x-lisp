@@ -1,15 +1,29 @@
 #include "index.h"
 
+static void closure_copy(object_t *dest, const object_t *src,
+                         object_forward_value_fn_t *forward);
+static void closure_forward(object_t *self, object_forward_value_fn_t *forward);
+static size_t closure_inner_bytes(object_t *self_) {
+  closure_t *self = (closure_t *) self_;
+  return self->size * sizeof(value_t);
+}
+
+static void closure_destroy(object_t *self);
+
 const object_class_t closure_class = {
   .name = "closure",
   .equal_fn = (object_equal_fn_t *) closure_equal,
   .write_fn = (object_write_fn_t *) write_closure,
   .free_fn = (free_fn_t *) closure_free,
   .for_each_child_fn = (object_for_each_child_fn_t *) closure_for_each_child,
+  .copy_fn = (object_copy_fn_t *) closure_copy,
+  .forward_fn = (object_forward_fn_t *) closure_forward,
+  .destroy_fn = (object_destroy_fn_t *) closure_destroy,
+  .inner_bytes_fn = (object_inner_bytes_fn_t *) closure_inner_bytes,
 };
 
 closure_t *make_closure(function_t *function, size_t size) {
-  closure_t *self = new(closure_t);
+  closure_t *self = gc_new(sizeof(closure_t));
   self->header.class = &closure_class;
   self->function = function;
   self->size = size;
@@ -41,8 +55,34 @@ closure_t *make_static_closure(function_t *function) {
   return self;
 }
 
-void closure_free(closure_t *self) {
+static void closure_copy(object_t *dest_, const object_t *src_,
+                         object_forward_value_fn_t *forward) {
+  closure_t *dest = (closure_t *) dest_;
+  const closure_t *src = (const closure_t *) src_;
+  dest->function = src->function;
+  dest->size = src->size;
+  dest->args = allocate_pointers(src->size);
+  for (size_t i = 0; i < src->size; i++) {
+    dest->args[i] = forward(src->args[i]);
+  }
+  free(src->args);
+}
+
+static void closure_forward(object_t *self_,
+                            object_forward_value_fn_t *forward) {
+  closure_t *self = (closure_t *) self_;
+  for (size_t i = 0; i < self->size; i++) {
+    self->args[i] = forward(self->args[i]);
+  }
+}
+
+static void closure_destroy(object_t *self_) {
+  closure_t *self = (closure_t *) self_;
   free(self->args);
+}
+
+void closure_free(closure_t *self) {
+  closure_destroy((object_t *) self);
   free(self);
 }
 

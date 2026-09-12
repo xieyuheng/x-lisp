@@ -18,6 +18,7 @@ size_t gc_object_count(gc_t *self);
 size_t gc_young_count(gc_t *self);
 size_t gc_old_count(gc_t *self);
 
+void *gc_new(size_t size);
 void gc_add_object(gc_t *self, object_t *object);
 void gc_remember(gc_t *self, object_t *object);
 

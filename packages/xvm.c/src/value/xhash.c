@@ -1,5 +1,16 @@
 #include "index.h"
 
+static void xhash_gc_copy(object_t *dest, const object_t *src,
+                       object_forward_value_fn_t *forward);
+static void xhash_forward(object_t *self, object_forward_value_fn_t *forward);
+static size_t xhash_inner_bytes(object_t *self_) {
+  xhash_t *self = (xhash_t *) self_;
+  return hash_length(self->hash) * 2 * sizeof(value_t);
+}
+
+static void xhash_destroy(object_t *self);
+static void xhash_init_hash(hash_t *hash);
+
 const object_class_t xhash_class = {
   .name = "hash",
   .equal_fn = (object_equal_fn_t *) xhash_equal,
@@ -8,6 +19,10 @@ const object_class_t xhash_class = {
   .compare_fn = (object_compare_fn_t *) xhash_compare,
   .free_fn = (free_fn_t *) xhash_free,
   .for_each_child_fn = (object_for_each_child_fn_t *) xhash_for_each_child,
+  .copy_fn = (object_copy_fn_t *) xhash_gc_copy,
+  .forward_fn = (object_forward_fn_t *) xhash_forward,
+  .destroy_fn = (object_destroy_fn_t *) xhash_destroy,
+  .inner_bytes_fn = (object_inner_bytes_fn_t *) xhash_inner_bytes,
 };
 
 static hash_code_t value_hash_fn(const void *key) {
@@ -19,17 +34,62 @@ static bool value_equal_fn(const void *lhs, const void *rhs) {
 }
 
 xhash_t *make_xhash(void) {
-  xhash_t *self = new(xhash_t);
+  xhash_t *self = gc_new(sizeof(xhash_t));
   self->header.class = &xhash_class;
   self->hash = make_hash();
-  hash_put_hash_fn(self->hash, (hash_fn_t *) value_hash_fn);
-  hash_put_key_equal_fn(self->hash, (equal_fn_t *) value_equal_fn);
+  xhash_init_hash(self->hash);
   gc_add_object(global_gc, (object_t *) self);
   return self;
 }
 
-void xhash_free(xhash_t *self) {
+static void xhash_init_hash(hash_t *hash) {
+  hash_put_hash_fn(hash, (hash_fn_t *) value_hash_fn);
+  hash_put_key_equal_fn(hash, (equal_fn_t *) value_equal_fn);
+}
+
+static void xhash_destroy(object_t *self_) {
+  xhash_t *self = (xhash_t *) self_;
   hash_free(self->hash);
+}
+
+static void xhash_gc_copy(object_t *dest_, const object_t *src_,
+                       object_forward_value_fn_t *forward) {
+  xhash_t *dest = (xhash_t *) dest_;
+  const xhash_t *src = (const xhash_t *) src_;
+  dest->hash = make_hash();
+  xhash_init_hash(dest->hash);
+  hash_iter_t iter;
+  hash_iter_init(&iter, src->hash);
+  const hash_entry_t *entry = hash_iter_next_entry(&iter);
+  while (entry) {
+    hash_put(dest->hash,
+             (void *) forward((value_t) entry->key),
+             (void *) forward((value_t) entry->value));
+    entry = hash_iter_next_entry(&iter);
+  }
+  hash_free(src->hash);
+}
+
+static void xhash_forward(object_t *self_,
+                          object_forward_value_fn_t *forward) {
+  xhash_t *self = (xhash_t *) self_;
+  hash_t *new_hash = make_hash();
+  xhash_init_hash(new_hash);
+  hash_iter_t iter;
+  hash_iter_init(&iter, self->hash);
+  const hash_entry_t *entry = hash_iter_next_entry(&iter);
+  while (entry) {
+    hash_put(new_hash,
+             (void *) forward((value_t) entry->key),
+             (void *) forward((value_t) entry->value));
+    entry = hash_iter_next_entry(&iter);
+  }
+  hash_free(self->hash);
+  self->hash = new_hash;
+}
+
+void xhash_free(xhash_t *self) {
+  xhash_destroy((object_t *) self);
   free(self);
 }
 

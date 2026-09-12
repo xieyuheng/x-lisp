@@ -212,7 +212,7 @@ void write_json_zh(buffer_t *buffer, value_t json) {
 static void write_json_value_zh(buffer_t *buffer, value_t json) {
   assert(is_xarray(json));
   xarray_t *xs = to_xarray(json);
-  assert(!array_is_empty(xs->elements));
+  assert(!xarray_is_empty(xs));
 
   value_t tag_value = xarray_get(xs, 0);
   assert(is_symbol(tag_value));
@@ -236,7 +236,7 @@ static void write_json_value_zh(buffer_t *buffer, value_t json) {
   } else if (string_equal(tag, "数组结森")) {
     write_string(buffer, "[");
     value_t elements = xarray_get(xs, 1);
-    size_t length = array_length(to_xarray(elements)->elements);
+    size_t length = xarray_length(to_xarray(elements));
     for (size_t i = 0; i < length; i++) {
       if (i > 0) write_string(buffer, ", ");
       write_json_value_zh(buffer, xarray_get(to_xarray(elements), i));

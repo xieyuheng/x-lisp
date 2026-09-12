@@ -1,5 +1,10 @@
 #include "index.h"
 
+static void xfile_copy(object_t *dest, const object_t *src,
+                       object_forward_value_fn_t *forward);
+static void xfile_forward(object_t *self, object_forward_value_fn_t *forward);
+static void xfile_destroy(object_t *self);
+
 const object_class_t xfile_class = {
   .name = "file",
   .equal_fn = (object_equal_fn_t *) xfile_equal,
@@ -7,10 +12,13 @@ const object_class_t xfile_class = {
   .hash_code_fn = (object_hash_code_fn_t *) xfile_hash_code,
   .compare_fn = (object_compare_fn_t *) xfile_compare,
   .free_fn = (free_fn_t *) xfile_free,
+  .copy_fn = (object_copy_fn_t *) xfile_copy,
+  .forward_fn = (object_forward_fn_t *) xfile_forward,
+  .destroy_fn = (object_destroy_fn_t *) xfile_destroy,
 };
 
 xfile_t *make_xfile(file_t *file) {
-  xfile_t *self = new(xfile_t);
+  xfile_t *self = gc_new(sizeof(xfile_t));
   self->header.class = &xfile_class;
   self->file = file;
   self->is_open = true;
@@ -35,12 +43,30 @@ xfile_t *make_static_xfile(file_t *file) {
   return self;
 }
 
-void xfile_free(xfile_t *self) {
+static void xfile_copy(object_t *dest_, const object_t *src_,
+                       object_forward_value_fn_t *forward) {
+  (void) forward;
+  xfile_t *dest = (xfile_t *) dest_;
+  const xfile_t *src = (const xfile_t *) src_;
+  dest->file = src->file;
+  dest->is_open = src->is_open;
+  dest->pathname = src->pathname;   // - transfer ownership
+}
+
+static void xfile_forward(object_t *self, object_forward_value_fn_t *forward) {
+  (void) self; (void) forward;
+}
+
+static void xfile_destroy(object_t *self_) {
+  xfile_t *self = (xfile_t *) self_;
   xfile_close(self);
   if (self->pathname) {
     string_free(self->pathname);
   }
+}
 
+void xfile_free(xfile_t *self) {
+  xfile_destroy((object_t *) self);
   free(self);
 }
 

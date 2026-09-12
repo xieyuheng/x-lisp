@@ -4,6 +4,7 @@
 
 array_t *make_array(void);
 void array_purge(array_t *self);
+void array_clear(array_t *self);
 void array_free(array_t *self);
 
 void array_put_free_fn(array_t *self, free_fn_t *free_fn);

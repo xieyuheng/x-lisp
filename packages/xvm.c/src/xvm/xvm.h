@@ -9,7 +9,9 @@ struct xvm_t {
   size_t frame_top;
   size_t frame_count;
   size_t break_depth;
-  stack_t *root_stack;
+  value_t *root_stack;
+  size_t root_count;
+  size_t root_capacity;
 };
 
 xvm_t *make_xvm(program_t *program);

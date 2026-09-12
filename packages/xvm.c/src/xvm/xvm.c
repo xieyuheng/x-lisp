@@ -115,13 +115,15 @@ xvm_t *make_xvm(program_t *program) {
   self->frame_top = 0;
   self->frame_count = 0;
   self->break_depth = 0;
-  self->root_stack = make_stack();
+  self->root_stack = NULL;
+  self->root_count = 0;
+  self->root_capacity = 0;
   return self;
 }
 
 void xvm_free(xvm_t *self) {
   free(self->frame_bytes);
-  stack_free(self->root_stack);
+  free(self->root_stack);
   free(self);
 }
 
@@ -134,11 +136,19 @@ value_t xvm_result(const xvm_t *self) {
 }
 
 void xvm_push_root(xvm_t *xvm, value_t value) {
-  stack_push(xvm->root_stack, (void *) value);
+  if (xvm->root_count == xvm->root_capacity) {
+    size_t capacity = xvm->root_capacity == 0 ? 16 : xvm->root_capacity * 2;
+    xvm->root_stack = reallocate(
+      xvm->root_stack,
+      xvm->root_capacity * sizeof(value_t),
+      capacity * sizeof(value_t));
+    xvm->root_capacity = capacity;
+  }
+  xvm->root_stack[xvm->root_count++] = value;
 }
 
 void xvm_drop_root(xvm_t *xvm) {
-  stack_pop(xvm->root_stack);
+  xvm->root_count--;
 }
 
 size_t xvm_frame_count(const xvm_t *xvm) {
@@ -639,9 +649,7 @@ static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {
     value_t *locals = frame_locals(frame);
     size_t local_count = iter.local_count;
     for (size_t j = 0; j < local_count; j++) {
-      if (is_object(locals[j])) {
-        array_push(roots, to_object(locals[j]));
-      }
+      array_push(roots, &locals[j]);
     }
     frame = frame_iter_next(&iter);
   }
@@ -652,10 +660,7 @@ static void xvm_gc_roots_in_program(xvm_t *xvm, array_t *roots) {
   record_iter_init(&iter, xvm_program(xvm)->variables);
   value_t *slot = record_iter_next_value(&iter);
   while (slot) {
-    value_t value = *slot;
-    if (is_object(value)) {
-      array_push(roots, to_object(value));
-    }
+    array_push(roots, slot);
     slot = record_iter_next_value(&iter);
   }
 }
@@ -665,17 +670,11 @@ static array_t *xvm_gc_roots(xvm_t *xvm) {
   xvm_gc_roots_in_frame_buffer(xvm, roots);
   xvm_gc_roots_in_program(xvm, roots);
 
-  for (size_t i = 0; i < stack_length(xvm->root_stack); i++) {
-    value_t value = (value_t) stack_get(xvm->root_stack, i);
-    if (is_object(value)) {
-      array_push(roots, to_object(value));
-    }
+  for (size_t i = 0; i < xvm->root_count; i++) {
+    array_push(roots, &xvm->root_stack[i]);
   }
 
-  if (is_object(xvm->result)) {
-    array_push(roots, to_object(xvm->result));
-  }
-
+  array_push(roots, &xvm->result);
   return roots;
 }
 

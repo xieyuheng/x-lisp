@@ -39,6 +39,12 @@ void array_purge(array_t *self) {
   self->back = 0;
 }
 
+void array_clear(array_t *self) {
+  assert(self);
+  self->front = 0;
+  self->back = 0;
+}
+
 void array_free(array_t *self) {
   array_purge(self);
   free(self->values);

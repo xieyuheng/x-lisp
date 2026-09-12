@@ -1,5 +1,9 @@
 #include "index.h"
 
+static void cons_copy(object_t *dest, const object_t *src,
+                      object_forward_value_fn_t *forward);
+static void cons_forward(object_t *self, object_forward_value_fn_t *forward);
+
 const object_class_t cons_class = {
   .name = "cons",
   .equal_fn = (object_equal_fn_t *) cons_equal,
@@ -8,10 +12,27 @@ const object_class_t cons_class = {
   .compare_fn = (object_compare_fn_t *) cons_compare,
   .free_fn = (free_fn_t *) cons_free,
   .for_each_child_fn = (object_for_each_child_fn_t *) cons_for_each_child,
+  .copy_fn = (object_copy_fn_t *) cons_copy,
+  .forward_fn = (object_forward_fn_t *) cons_forward,
+  .destroy_fn = NULL,
 };
 
+static void cons_copy(object_t *dest_, const object_t *src_,
+                      object_forward_value_fn_t *forward) {
+  cons_t *dest = (cons_t *) dest_;
+  const cons_t *src = (const cons_t *) src_;
+  dest->car = forward(src->car);
+  dest->cdr = forward(src->cdr);
+}
+
+static void cons_forward(object_t *self_, object_forward_value_fn_t *forward) {
+  cons_t *self = (cons_t *) self_;
+  self->car = forward(self->car);
+  self->cdr = forward(self->cdr);
+}
+
 cons_t *make_cons(value_t car, value_t cdr) {
-  cons_t *self = new(cons_t);
+  cons_t *self = gc_new(sizeof(cons_t));
   self->header.class = &cons_class;
   self->car = car;
   self->cdr = cdr;

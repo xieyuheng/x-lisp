@@ -1,5 +1,16 @@
 #include "index.h"
 
+static void xset_gc_copy(object_t *dest, const object_t *src,
+                      object_forward_value_fn_t *forward);
+static void xset_forward(object_t *self, object_forward_value_fn_t *forward);
+static size_t xset_inner_bytes(object_t *self_) {
+  xset_t *self = (xset_t *) self_;
+  return set_size(self->set) * sizeof(value_t);
+}
+
+static void xset_destroy(object_t *self);
+static void xset_init_set(set_t *set);
+
 const object_class_t xset_class = {
   .name = "set",
   .equal_fn = (object_equal_fn_t *) xset_equal,
@@ -8,6 +19,10 @@ const object_class_t xset_class = {
   .compare_fn = (object_compare_fn_t *) xset_compare,
   .free_fn = (free_fn_t *) xset_free,
   .for_each_child_fn = (object_for_each_child_fn_t *) xset_for_each_child,
+  .copy_fn = (object_copy_fn_t *) xset_gc_copy,
+  .forward_fn = (object_forward_fn_t *) xset_forward,
+  .destroy_fn = (object_destroy_fn_t *) xset_destroy,
+  .inner_bytes_fn = (object_inner_bytes_fn_t *) xset_inner_bytes,
 };
 
 static hash_code_t value_hash_fn(const void *key) {
@@ -19,17 +34,58 @@ static bool value_equal_fn(const void *lhs, const void *rhs) {
 }
 
 xset_t *make_xset(void) {
-  xset_t *self = new(xset_t);
+  xset_t *self = gc_new(sizeof(xset_t));
   self->header.class = &xset_class;
   self->set = make_set();
-  set_put_hash_fn(self->set, (hash_fn_t *) value_hash_fn);
-  set_put_equal_fn(self->set, (equal_fn_t *) value_equal_fn);
+  xset_init_set(self->set);
   gc_add_object(global_gc, (object_t *) self);
   return self;
 }
 
-void xset_free(xset_t *self) {
+static void xset_init_set(set_t *set) {
+  set_put_hash_fn(set, (hash_fn_t *) value_hash_fn);
+  set_put_equal_fn(set, (equal_fn_t *) value_equal_fn);
+}
+
+static void xset_destroy(object_t *self_) {
+  xset_t *self = (xset_t *) self_;
   set_free(self->set);
+}
+
+static void xset_gc_copy(object_t *dest_, const object_t *src_,
+                      object_forward_value_fn_t *forward) {
+  xset_t *dest = (xset_t *) dest_;
+  const xset_t *src = (const xset_t *) src_;
+  dest->set = make_set();
+  xset_init_set(dest->set);
+  set_iter_t iter;
+  set_iter_init(&iter, src->set);
+  const hash_entry_t *entry = set_iter_next_entry(&iter);
+  while (entry) {
+    set_add(dest->set, (void *) forward((value_t) entry->value));
+    entry = set_iter_next_entry(&iter);
+  }
+  set_free(src->set);
+}
+
+static void xset_forward(object_t *self_,
+                         object_forward_value_fn_t *forward) {
+  xset_t *self = (xset_t *) self_;
+  set_t *new_set = make_set();
+  xset_init_set(new_set);
+  set_iter_t iter;
+  set_iter_init(&iter, self->set);
+  const hash_entry_t *entry = set_iter_next_entry(&iter);
+  while (entry) {
+    set_add(new_set, (void *) forward((value_t) entry->value));
+    entry = set_iter_next_entry(&iter);
+  }
+  set_free(self->set);
+  self->set = new_set;
+}
+
+void xset_free(xset_t *self) {
+  xset_destroy((object_t *) self);
   free(self);
 }
 
