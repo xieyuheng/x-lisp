@@ -1,6 +1,7 @@
 {
   "name": "元语例子",
   "version": "0.1.0",
+  "language": "zh",
   "build": {
     "source-directory": "src",
     "output-directory": "build"

@@ -1,6 +1,7 @@
 {
   "name": "命令行",
   "version": "0.1.0",
+  "language": "zh",
   "build": {
     "source-directory": "src",
     "output-directory": "build"
