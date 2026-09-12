@@ -362,7 +362,7 @@ function inferLookup(
   if (definition === undefined) {
     if (M.lang === "zh") {
       let message = `未定义的变量`
-      message += `\n  包 id：${mod.pkg.id}`
+      message += `\n  包标识：${mod.pkg.id}`
       message += `\n  模块名：${mod.name}`
       message += `\n  名字：${name}`
       return M.Left(TypeError(originalTerm, message))
