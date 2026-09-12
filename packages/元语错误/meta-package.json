@@ -1,0 +1,15 @@
+{
+  "name": "元语错误",
+  "version": "0.1.0",
+  "language": "zh",
+  "build": {
+    "source-directory": "src",
+    "output-directory": "build"
+  },
+  "dependencies": {
+    "meta-builtin": "../meta-builtin.meta"
+  },
+  "prelude": {
+    "meta-builtin": ["内置"]
+  }
+}

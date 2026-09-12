@@ -4,13 +4,13 @@ import * as M from "../index.ts"
 // 对应中英对照表中 int-t / 整数型 等成对注册的内置类型，
 // 见 evaluate/primitive.ts 的 setupPrimitive。
 const atomTypeZhNames: Record<string, string> = {
-  int: "整数",
-  float: "浮点",
-  text: "文本",
-  symbol: "符号",
-  bool: "真假",
-  void: "空值",
-  file: "文件",
+  int: "整数型",
+  float: "浮点型",
+  text: "文本型",
+  symbol: "符号型",
+  bool: "真假型",
+  void: "空值型",
+  file: "文件型",
 }
 
 export function formatTypes(types: Array<M.Type>): string {
@@ -39,7 +39,7 @@ export function formatType(type: M.Type): string {
       if (M.lang === "zh") {
         const zh = atomTypeZhNames[type.name]
         if (zh !== undefined) {
-          return `${zh}-t`
+          return zh
         } else {
           return `${type.name}-t`
         }

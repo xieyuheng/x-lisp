@@ -44,3 +44,4 @@ pnpm install
 # bootstrap compiler type check error snapshot
 
 ./scripts/run-in.sh meta-error.meta test.sh
+./scripts/run-in.sh 元语错误 test.sh
