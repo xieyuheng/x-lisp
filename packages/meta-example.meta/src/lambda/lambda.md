@@ -1,5 +1,6 @@
 ---
 title: lambda calculus interpreter
+module: lambda
 ---
 
 # interpreter
@@ -7,8 +8,6 @@ title: lambda calculus interpreter
 The aim of an interpreter is to evaluate term to value in a given environment.
 
 ```meta-lisp
-(module lambda)
-
 (claim evaluate (-> term-t env-t value-t))
 ```
 
@@ -22,8 +21,6 @@ The term of lambda calculus has:
 - **let**: `(let-term name rhs body)` — evaluates `rhs`, extends the environment with `name`, then evaluates `body`.
 
 ```meta-lisp
-(module lambda)
-
 (define-enum term-t
   (var-term (name symbol-t))
   (apply-term (target term-t) (arg term-t))
@@ -34,8 +31,6 @@ The term of lambda calculus has:
 The value of lambda calculus can only be closure.
 
 ```meta-lisp
-(module lambda)
-
 (define-enum value-t
   (closure-value (env env-t) (parameter symbol-t) (body term-t)))
 ```
@@ -43,8 +38,6 @@ The value of lambda calculus can only be closure.
 Environment is a key-value map from name to value.
 
 ```meta-lisp
-(module lambda)
-
 (define-opaque-type env-t (hash-t symbol-t value-t)
   (empty-env (-> env-t))
   (extend-env (-> env-t symbol-t value-t env-t))
@@ -60,8 +53,6 @@ Environment is a key-value map from name to value.
 The evaluate function can be defined with the help of apply.
 
 ```meta-lisp
-(module lambda)
-
 (define (evaluate term env)
   (match term
     ((var-term name)
@@ -85,8 +76,6 @@ The evaluate function can be defined with the help of apply.
 # test
 
 ```meta-lisp
-(module lambda)
-
 (define (evaluate-and-print term)
   (println (evaluate term (empty-env))))
 
