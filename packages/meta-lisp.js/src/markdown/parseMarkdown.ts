@@ -1,16 +1,11 @@
 import * as S from "@xieyuheng/sexp.js"
-import { parse as parseYaml } from "yaml"
+import { parseFrontMatterKv } from "../front-matter/index.ts"
 
 export type MarkdownDocument = {
   path: string
   text: string
-  frontMatter?: MarkdownFrontMatter
+  frontMatter?: Map<string, string>
   codeBlocks: Array<MarkdownCodeBlock>
-}
-
-export type MarkdownFrontMatter = {
-  raw: string
-  data: unknown
 }
 
 export type MarkdownCodeBlock = {
@@ -30,7 +25,7 @@ type Line = {
 }
 
 type FrontMatterResult = {
-  frontMatter?: MarkdownFrontMatter
+  frontMatter?: Map<string, string>
   nextLineIndex: number
 }
 
@@ -41,7 +36,7 @@ type OpeningFence = {
 
 export function parseMarkdown(text: string, path: string): MarkdownDocument {
   const lines = scanLines(text)
-  const frontMatterResult = parseFrontMatter(text, path, lines)
+  const frontMatterResult = parseMarkdownFrontMatter(text, lines)
   const codeBlocks: Array<MarkdownCodeBlock> = []
 
   let lineIndex = frontMatterResult.nextLineIndex
@@ -145,9 +140,8 @@ function scanLines(text: string): Array<Line> {
   return lines
 }
 
-function parseFrontMatter(
+function parseMarkdownFrontMatter(
   text: string,
-  path: string,
   lines: Array<Line>,
 ): FrontMatterResult {
   if (lines.length === 0) return { nextLineIndex: 0 }
@@ -160,25 +154,10 @@ function parseFrontMatter(
 
   const closingLine = lines[closingLineIndex]
   const raw = text.slice(openingLine.nextCursor, closingLine.cursor)
-
-  let data: unknown = undefined
-  if (raw.trim() !== "") {
-    try {
-      data = parseYaml(raw)
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error)
-      throw new S.ErrorWithSourceLocation(
-        message,
-        S.createSourceLocation(
-          path,
-          makeSpan(openingLine.start, closingLine.end),
-        ),
-      )
-    }
-  }
+  const frontMatter = parseFrontMatterKv(raw)
 
   return {
-    frontMatter: { raw, data },
+    frontMatter,
     nextLineIndex: closingLineIndex + 1,
   }
 }

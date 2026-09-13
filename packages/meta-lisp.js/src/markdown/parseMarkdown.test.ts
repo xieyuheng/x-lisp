@@ -29,13 +29,12 @@ test("single meta-lisp code block", () => {
   })
 })
 
-test("front matter is parsed as yaml", () => {
+test("front matter is parsed as simple key value", () => {
   const text = [
     "---",
     "title: Test",
-    "list:",
-    "  - a",
-    "  - b",
+    'author: "Ada"',
+    "count: 3",
     "---",
     "",
     "```meta-lisp",
@@ -46,15 +45,15 @@ test("front matter is parsed as yaml", () => {
 
   const document = parseMarkdown(text, path)
   assert.ok(document.frontMatter)
-  assert.deepEqual(document.frontMatter.data, {
-    title: "Test",
-    list: ["a", "b"],
-  })
-  assert.equal(document.frontMatter.raw, "title: Test\nlist:\n  - a\n  - b\n")
+  assert.deepEqual(Array.from(document.frontMatter), [
+    ["title", "Test"],
+    ["author", "Ada"],
+    ["count", "3"],
+  ])
   assert.equal(document.codeBlocks.length, 1)
   assert.deepEqual(document.codeBlocks[0].contentStart, {
     index: text.indexOf("(module foo)"),
-    row: 8,
+    row: 7,
     column: 0,
   })
 })
@@ -154,18 +153,24 @@ test("unclosed fence reports the opening fence location", () => {
   )
 })
 
-test("invalid yaml reports the front matter location", () => {
-  const text = "---\na: [1,\n---\n"
+test("front matter ignores unsupported lines", () => {
+  const text = [
+    "---",
+    "module: a",
+    'module: "b"',
+    "nested:",
+    "  x: y",
+    "plain text",
+    "---",
+    "",
+  ].join("\n")
+  const document = parseMarkdown(text, path)
 
-  assert.throws(
-    () => parseMarkdown(text, path),
-    (error: unknown) => {
-      assert.ok(error instanceof S.ErrorWithSourceLocation)
-      assert.equal(error.location.span.start.row, 0)
-      assert.equal(error.location.span.start.column, 0)
-      return true
-    },
-  )
+  assert.ok(document.frontMatter)
+  assert.equal(document.frontMatter.get("module"), "b")
+  assert.equal(document.frontMatter.get("nested"), "")
+  assert.equal(document.frontMatter.has("x"), false)
+  assert.equal(document.frontMatter.has("plain text"), false)
 })
 
 test("unclosed front matter is not treated as front matter", () => {
@@ -182,7 +187,7 @@ test("crlf line endings are preserved in code block content", () => {
   const document = parseMarkdown(text, path)
 
   assert.ok(document.frontMatter)
-  assert.deepEqual(document.frontMatter.data, { title: "T" })
+  assert.equal(document.frontMatter.get("title"), "T")
   assert.equal(document.codeBlocks[0].content, "(module foo)\r\n")
   assert.deepEqual(document.codeBlocks[0].contentStart, {
     index: text.indexOf("(module foo)"),
@@ -208,16 +213,16 @@ test("front matter may end with three dots", () => {
   const document = parseMarkdown(text, path)
 
   assert.ok(document.frontMatter)
-  assert.deepEqual(document.frontMatter.data, { title: "Test" })
+  assert.equal(document.frontMatter.get("title"), "Test")
   assert.equal(document.codeBlocks.length, 1)
 })
 
-test("empty front matter has undefined data", () => {
+test("empty front matter has empty entries", () => {
   const text = "---\n---\n"
   const document = parseMarkdown(text, path)
 
   assert.ok(document.frontMatter)
-  assert.equal(document.frontMatter.data, undefined)
+  assert.equal(document.frontMatter.size, 0)
   assert.equal(document.codeBlocks.length, 0)
 })
 
