@@ -22,6 +22,7 @@
     "@xieyuheng/sexp.js": "workspace:*",
     "@xieyuheng/std.js": "workspace:*",
     "@xieyuheng/xvm-lisp.js": "workspace:*",
+    "yaml": "^2.9.1",
     "zod": "^4.6.2"
   },
   "devDependencies": {
