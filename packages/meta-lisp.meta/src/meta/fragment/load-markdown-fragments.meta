@@ -1,0 +1,67 @@
+(module meta)
+
+(define (load-markdown-fragments path)
+  (let ((code (path-read path))
+        (document (parse-markdown path code))
+        (default-mod-name
+          (hash-get-maybe
+            (markdown-document-front-matter document)
+            "module"))
+        (blocks (markdown-document-code-blocks document)))
+    (list-map-concat
+      blocks
+      (lambda (block)
+        (load-markdown-fragment path default-mod-name block)))))
+
+(define (load-markdown-fragment path default-mod-name block)
+  (if (not (equal (markdown-code-block-language block) "meta-lisp"))
+    (@list)
+    (let ((sexps
+            (parse-sexps
+              path
+              (markdown-code-block-content-start block)
+              (markdown-code-block-content block)))
+          (stmts (list-map sexps parse-stmt)))
+      (@list
+        (make-fragment
+          (@text path "#block-" (format-int (markdown-code-block-index block)))
+          path
+          (just (markdown-code-block-index block))
+          (resolve-markdown-mod-name path default-mod-name block stmts)
+          stmts
+          (@list))))))
+
+(define (resolve-markdown-mod-name path default-mod-name block stmts)
+  (let ((module-declarations
+          (list-filter stmts is-declare-module-stmt)))
+    (cond
+      ((int-greater-or-equal (list-length module-declarations) 2)
+       (match (list-head module-declarations)
+         ((declare-module-stmt name location)
+          (error-with-location
+            "(load-markdown-fragment) multiple module declarations in one code block"
+            location))))
+      ((not (list-is-empty module-declarations))
+       (match (list-head module-declarations)
+         ((declare-module-stmt name location) name)))
+      (else
+       (match default-mod-name
+         ((just name)
+          (if (text-is-empty name)
+            (error-with-location
+              "(load-markdown-fragment) empty module in front matter"
+              (statement-location-for-block path block stmts))
+            (text-to-symbol name)))
+         ((nothing)
+          (error-with-location
+            "(load-markdown-fragment) expect (module) statement in code block"
+            (statement-location-for-block path block stmts))))))))
+
+(define (statement-location-for-block path block stmts)
+  (if (list-is-empty stmts)
+    (make-source-location
+      path
+      (make-source-span
+        (markdown-code-block-content-start block)
+        (markdown-code-block-content-start block)))
+    (stmt-location (list-head stmts))))

@@ -1,15 +1,15 @@
 (module meta)
 
 (define (package-dump-fragments package tag)
-  (hash-each
+  (hash-each-value
     (package-fragments package)
-    (package-dump-fragment package tag)))
+    (lambda (fragment)
+      (package-dump-fragment package tag fragment))))
 
-(define (package-dump-fragment package tag path fragment)
+(define (package-dump-fragment package tag fragment)
   (let ((width 80)
          (code (pretty-fragment-stmts width (fragment-stmts fragment)))
-         (source-directory (package-source-directory package))
-         (name (path-relative source-directory path))
+         (name (package-fragment-dump-name package fragment))
          (dump-directory (path-join (package-output-directory package) "dump"))
          (dump-path (@text dump-directory "/fragments/" name "." tag ".dump")))
     (println (@text "[" tag "] " (path-relative-to-cwd dump-path)))

@@ -1,0 +1,11 @@
+(define (square x) (meta-builtin/builtin/imul x x))
+
+(define-test square-test
+  (meta-builtin/builtin/assert-equal-with-location
+   9
+   (self/markdown/square 3)
+   (meta-builtin/builtin/make-source-location
+    "src/markdown.md"
+    (meta-builtin/builtin/make-source-span
+     (meta-builtin/builtin/make-source-position 115 10 2)
+     (meta-builtin/builtin/make-source-position 142 10 29)))))

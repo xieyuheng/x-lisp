@@ -8,14 +8,14 @@
 (define (module-import-pass report package)
   (let ((scopes (module-analysis-report-fragment-scopes report)))
     (hash-each (package-fragments package)
-      (lambda (path fragment)
-        (match (hash-get-maybe scopes path)
+      (lambda (fragment-id fragment)
+        (match (hash-get-maybe scopes fragment-id)
           ((just scope)
            (fragment-put-desugared-stmts
              fragment
              (list-map (fragment-desugared-stmts fragment) (module-import-stmt scope))))
           ((nothing)
-           (error (@text "(module-import-pass) missing scope for: " path))))))
+           (error (@text "(module-import-pass) missing scope for: " fragment-id))))))
     (when (hash-has (package-config-compiler (package-config package)) "dump")
       (package-dump-desugared-fragments package "070-module-import"))))
 

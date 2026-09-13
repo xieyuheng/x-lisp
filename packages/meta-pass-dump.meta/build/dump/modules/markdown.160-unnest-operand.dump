@@ -1,0 +1,18 @@
+(define (square x) (meta-builtin/builtin/imul x x))
+
+(define-test square-test
+  (let ((unnested.1 (self/markdown/square 3)))
+    (let ((unnested.2 (meta-builtin/builtin/make-source-position 115 10 2)))
+      (let ((unnested.3 (meta-builtin/builtin/make-source-position 142 10 29)))
+        (let
+            ((unnested.4
+              (meta-builtin/builtin/make-source-span unnested.2 unnested.3)))
+          (let
+              ((unnested.5
+                (meta-builtin/builtin/make-source-location
+                 "src/markdown.md"
+                 unnested.4)))
+            (meta-builtin/builtin/assert-equal-with-location
+             9
+             unnested.1
+             unnested.5)))))))

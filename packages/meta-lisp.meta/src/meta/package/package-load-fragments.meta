@@ -4,7 +4,10 @@
   (list-each
     (path-list-recursive directory)
     (lambda (name)
-      (when (text-has-suffix name ".meta")
-        (let ((path (path-join directory name))
-               (fragment (load-fragment path)))
-          (package-put-fragment path fragment package))))))
+      (when (or (text-has-suffix name ".meta")
+                (text-has-suffix name ".md"))
+        (let ((path (path-join directory name)))
+          (list-each
+            (load-fragments path)
+            (lambda (fragment)
+              (package-put-fragment fragment package))))))))

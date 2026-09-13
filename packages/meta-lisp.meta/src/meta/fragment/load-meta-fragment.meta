@@ -1,0 +1,23 @@
+(module meta)
+
+(define (load-meta-fragment path)
+  (let ((code (path-read path))
+        (sexps (parse-sexps path (make-source-position 0 0 0) code))
+        (stmts (list-map sexps parse-stmt))
+        (module-declarations
+          (list-filter stmts is-declare-module-stmt)))
+    (cond
+      ((list-is-empty module-declarations)
+       (error "(load-meta-fragment) expect (module) statement in fragment"))
+      ((int-less 1 (list-length module-declarations))
+       (error "(load-meta-fragment) multiple module declarations in fragment"))
+      (else
+       (match (list-head module-declarations)
+         ((declare-module-stmt name location)
+          (make-fragment
+            path
+            path
+            (nothing)
+            name
+            stmts
+            (@list))))))))

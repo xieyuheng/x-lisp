@@ -11,8 +11,27 @@
 (define (empty-package id root-directory config)
   (make-package id root-directory config (make-hash) (make-hash) (make-hash)))
 
-(define (package-put-fragment path fragment package)
-  (hash-put (package-fragments package) path fragment))
+(define (package-put-fragment fragment package)
+  (hash-put (package-fragments package)
+    (fragment-id fragment)
+    fragment))
+
+(define (format-block-index index)
+  (let ((text (format-int index))
+        (length (text-length text)))
+    (if (int-less length 4)
+      (text-append (text-repeat "0" (isub 4 length)) text)
+      text)))
+
+(define (package-fragment-dump-name package fragment)
+  (let ((name
+          (path-relative
+            (package-source-directory package)
+            (fragment-path fragment))))
+    (match (fragment-block-index fragment)
+      ((nothing) name)
+      ((just index)
+       (@text name ".block-" (format-block-index index))))))
 
 (define (package-source-directory package)
   (path-join

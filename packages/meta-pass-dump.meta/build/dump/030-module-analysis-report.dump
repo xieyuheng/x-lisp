@@ -52,6 +52,14 @@
       (mod-name limit-arity)
       (imported-names 520)
       (imported-prefixes 0))
+    ("src/markdown.md#block-0"
+      (mod-name markdown)
+      (imported-names 520)
+      (imported-prefixes 0))
+    ("src/markdown.md#block-1"
+      (mod-name markdown)
+      (imported-names 520)
+      (imported-prefixes 0))
     ("src/module-lib.meta"
       (mod-name module-lib)
       (imported-names 520)

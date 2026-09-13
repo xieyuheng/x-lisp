@@ -1,0 +1,3 @@
+(import-all meta-builtin/builtin)
+
+(define-test square-test (meta-builtin/builtin/assert-equal 9 (square 3)))

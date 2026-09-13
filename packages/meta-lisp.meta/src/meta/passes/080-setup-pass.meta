@@ -5,8 +5,8 @@
       void-t))
 
 (define (setup-pass package)
-  (hash-each (package-fragments package)
-    (lambda (path fragment)
+  (hash-each-value (package-fragments package)
+    (lambda (fragment)
       (let ((mod-name (fragment-mod-name fragment))
              (mod (maybe-else (package-lookup-mod package 'self mod-name) (empty-mod mod-name package))))
         (package-put-mod mod-name mod package)

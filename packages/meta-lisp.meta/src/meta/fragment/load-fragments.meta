@@ -1,0 +1,10 @@
+(module meta)
+
+(define (load-fragments path)
+  (cond
+    ((text-has-suffix path ".md")
+     (load-markdown-fragments path))
+    ((text-has-suffix path ".meta")
+     (@list (load-meta-fragment path)))
+    (else
+     (error (@text "[load-fragments] unexpected source file extension: " path)))))

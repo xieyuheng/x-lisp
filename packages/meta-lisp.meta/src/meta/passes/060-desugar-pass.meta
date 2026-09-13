@@ -17,9 +17,9 @@
 
 (define (desugar-fragment fragment)
   (match fragment
-    ((make-fragment mod-name path stmts _)
+    ((make-fragment id path block-index mod-name stmts _)
      (let ((desugared-stmts (list-map stmts desugar-stmt)))
-       (make-fragment mod-name path stmts desugared-stmts)))))
+       (make-fragment id path block-index mod-name stmts desugared-stmts)))))
 
 (claim desugar-stmt
   (-> (stmt-t exp-t)

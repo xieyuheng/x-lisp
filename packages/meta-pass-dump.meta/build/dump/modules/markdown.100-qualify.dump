@@ -1,0 +1,4 @@
+(define (square x) (meta-builtin/builtin/imul x x))
+
+(define-test square-test
+  (meta-builtin/builtin/assert-equal 9 (self/markdown/square 3)))

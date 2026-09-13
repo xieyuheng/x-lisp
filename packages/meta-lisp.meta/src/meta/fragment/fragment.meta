@@ -1,7 +1,9 @@
 (module meta)
 
 (define-struct fragment-t
-  (mod-name symbol-t)
+  (id text-t)
   (path text-t)
+  (block-index (maybe-t int-t))
+  (mod-name symbol-t)
   (stmts (list-t (stmt-t exp-t)))
   (desugared-stmts (list-t (stmt-t term-t))))
