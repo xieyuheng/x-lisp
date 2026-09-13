@@ -1,0 +1,21 @@
+(module meta)
+
+(define-test parse-front-matter-kv-test
+  (let ((entries (parse-front-matter-kv "module: lambda\ntitle: interpreter\n")))
+    (assert-equal "lambda" (hash-get entries "module"))
+    (assert-equal "interpreter" (hash-get entries "title"))))
+
+(define-test parse-front-matter-kv-quotes-test
+  (let ((entries (parse-front-matter-kv "module: \"lambda\"\ntitle: 'interpreter'\n")))
+    (assert-equal "lambda" (hash-get entries "module"))
+    (assert-equal "interpreter" (hash-get entries "title"))))
+
+(define-test parse-front-matter-kv-last-wins-test
+  (let ((entries (parse-front-matter-kv "module: a\nmodule: b\n")))
+    (assert-equal "b" (hash-get entries "module"))))
+
+(define-test parse-front-matter-kv-ignore-test
+  (let ((entries (parse-front-matter-kv "module: lambda\n  nested: value\nplain text\n")))
+    (assert-equal "lambda" (hash-get entries "module"))
+    (assert-not (hash-has entries "nested"))
+    (assert-not (hash-has entries "plain text"))))

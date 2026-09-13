@@ -1,0 +1,244 @@
+(module meta)
+
+(claim parse-markdown (-> text-t text-t markdown-document-t))
+
+(define (parse-markdown path text)
+  (let ((lines (markdown-lines (text-lines text) 0 0)))
+    (let ((split (split-front-matter lines)))
+      (make-markdown-document
+        (front-matter-split-front-matter split)
+        (parse-code-blocks
+          path
+          (front-matter-split-rest-lines split)
+          0
+          (@list))))))
+
+(claim markdown-lines
+  (-> (list-t text-t) int-t int-t
+      (list-t markdown-line-t)))
+
+(define (markdown-lines lines row offset)
+  (if (list-is-empty lines)
+    (@list)
+    (let ((line (car lines))
+          (rest (cdr lines)))
+      (cons
+        (make-markdown-line line (make-source-position offset row 0))
+        (markdown-lines
+          rest
+          (iadd row 1)
+          (iadd offset (iadd (text-length line) 1)))))))
+
+(claim markdown-line-end (-> markdown-line-t source-position-t))
+
+(define (markdown-line-end line)
+  (let ((start (markdown-line-start line))
+        (length (text-length (markdown-line-text line))))
+    (make-source-position
+      (iadd (source-position-index start) length)
+      (source-position-row start)
+      (iadd (source-position-column start) length))))
+
+(claim split-front-matter
+  (-> (list-t markdown-line-t)
+      front-matter-split-t))
+
+(define (split-front-matter lines)
+  (if (or (list-is-empty lines)
+          (not (equal (text-trim-end (markdown-line-text (car lines))) "---")))
+    (make-front-matter-split (make-hash) lines)
+    (find-front-matter-close lines (cdr lines) (@list))))
+
+(claim find-front-matter-close
+  (-> (list-t markdown-line-t)
+      (list-t markdown-line-t)
+      (list-t markdown-line-t)
+      front-matter-split-t))
+
+(define (find-front-matter-close original-lines lines collected)
+  (if (list-is-empty lines)
+    (make-front-matter-split (make-hash) original-lines)
+    (let ((line (car lines)))
+      (if (is-front-matter-close (markdown-line-text line))
+        (make-front-matter-split
+          (parse-front-matter-kv
+            (join-markdown-line-texts (list-copy-reverse collected)))
+          (cdr lines))
+        (find-front-matter-close
+          original-lines
+          (cdr lines)
+          (cons line collected))))))
+
+(claim is-front-matter-close (-> text-t bool-t))
+
+(define (is-front-matter-close line)
+  (or (equal (text-trim-end line) "---")
+      (equal (text-trim-end line) "...")))
+
+(claim join-markdown-line-texts
+  (-> (list-t markdown-line-t) text-t))
+
+(define (join-markdown-line-texts lines)
+  (text-join (list-map lines markdown-line-text) "\n"))
+
+(claim parse-code-blocks
+  (-> text-t
+      (list-t markdown-line-t)
+      int-t
+      (list-t markdown-code-block-t)
+      (list-t markdown-code-block-t)))
+
+(define (parse-code-blocks path lines index blocks)
+  (if (list-is-empty lines)
+    (list-copy-reverse blocks)
+    (let ((line (car lines)))
+      (match (parse-opening-fence (markdown-line-text line))
+        ((nothing)
+         (parse-code-blocks path (cdr lines) index blocks))
+        ((just opening)
+         (parse-code-block path opening line (cdr lines) index blocks))))))
+
+(claim parse-code-block
+  (-> text-t
+      opening-fence-t
+      markdown-line-t
+      (list-t markdown-line-t)
+      int-t
+      (list-t markdown-code-block-t)
+      (list-t markdown-code-block-t)))
+
+(define (parse-code-block path opening opening-line lines index blocks)
+  (let ((fence-char
+          (text-slice (opening-fence-fence-text opening) 0 1))
+        (fence-length
+          (text-length (opening-fence-fence-text opening))))
+    (match (scan-code-block-lines lines fence-char fence-length (@list))
+      ((nothing)
+       (error-with-location
+         "unclosed fenced code block"
+         (make-source-location
+           path
+           (make-source-span
+             (markdown-line-start opening-line)
+             (markdown-line-end opening-line)))))
+      ((just result)
+       (let ((content-lines
+               (list-copy-reverse
+                 (code-block-scan-result-content-lines result)))
+             (closing-line
+               (code-block-scan-result-closing-line result))
+             (rest-lines
+               (code-block-scan-result-rest-lines result))
+             (info (opening-fence-info opening)))
+         (let ((block
+                 (make-markdown-code-block
+                   index
+                   info
+                   (first-word info)
+                   (join-code-block-content content-lines)
+                   (if (list-is-empty content-lines)
+                     (markdown-line-start closing-line)
+                     (markdown-line-start (car content-lines))))))
+           (parse-code-blocks
+             path
+             rest-lines
+             (iadd index 1)
+             (cons block blocks))))))))
+
+(claim scan-code-block-lines
+  (-> (list-t markdown-line-t)
+      text-t
+      int-t
+      (list-t markdown-line-t)
+      (maybe-t code-block-scan-result-t)))
+
+(define (scan-code-block-lines lines fence-char fence-length content-lines)
+  (if (list-is-empty lines)
+    (nothing)
+    (let ((line (car lines)))
+      (if (is-closing-fence
+            (markdown-line-text line)
+            fence-char
+            fence-length)
+        (just
+          (make-code-block-scan-result
+            content-lines
+            line
+            (cdr lines)))
+        (scan-code-block-lines
+          (cdr lines)
+          fence-char
+          fence-length
+          (cons line content-lines))))))
+
+(claim join-code-block-content
+  (-> (list-t markdown-line-t) text-t))
+
+(define (join-code-block-content lines)
+  (if (list-is-empty lines)
+    ""
+    (text-append
+      (text-join (list-map lines markdown-line-text) "\n")
+      "\n")))
+
+(claim parse-opening-fence
+  (-> text-t (maybe-t opening-fence-t)))
+
+(define (parse-opening-fence line)
+  (let ((index (skip-spaces line 0)))
+    (if (int-greater-or-equal index (text-length line))
+      (nothing)
+      (let ((fence-char (text-slice line index (iadd index 1))))
+        (if (or (equal fence-char "`")
+                (equal fence-char "~"))
+          (let ((end (scan-fence-run line index fence-char)))
+            (if (int-less (isub end index) 3)
+              (nothing)
+              (just
+                (make-opening-fence
+                  (text-slice line index end)
+                  (text-trim
+                    (text-slice line end (text-length line)))))))
+          (nothing))))))
+
+(claim scan-fence-run (-> text-t int-t text-t int-t))
+
+(define (scan-fence-run line index fence-char)
+  (if (and (int-less index (text-length line))
+           (equal (text-slice line index (iadd index 1)) fence-char))
+    (scan-fence-run line (iadd index 1) fence-char)
+    index))
+
+(claim skip-spaces (-> text-t int-t int-t))
+
+(define (skip-spaces line index)
+  (if (and (int-less index 3)
+           (int-less index (text-length line))
+           (equal (text-slice line index (iadd index 1)) " "))
+    (skip-spaces line (iadd index 1))
+    index))
+
+(claim is-closing-fence (-> text-t text-t int-t bool-t))
+
+(define (is-closing-fence line fence-char fence-length)
+  (let ((index (skip-spaces line 0))
+        (end (scan-fence-run line index fence-char))
+        (rest (text-slice line end (text-length line))))
+    (and (int-greater-or-equal (isub end index) fence-length)
+         (or (text-is-empty rest)
+             (text-is-blank rest)))))
+
+(claim first-word (-> text-t text-t))
+
+(define (first-word text)
+  (text-to-lower-case
+    (take-first-word (text-trim-start text) 0)))
+
+(claim take-first-word (-> text-t int-t text-t))
+
+(define (take-first-word text index)
+  (if (or (int-greater-or-equal index (text-length text))
+          (equal (text-slice text index (iadd index 1)) " ")
+          (equal (text-slice text index (iadd index 1)) "\t"))
+    (text-slice text 0 index)
+    (take-first-word text (iadd index 1))))

@@ -1,0 +1,44 @@
+(module meta)
+
+(define-type front-matter-t (hash-t text-t text-t))
+
+(claim parse-front-matter-kv (-> text-t front-matter-t))
+
+(define (parse-front-matter-kv raw)
+  (let ((entries (make-hash)))
+    (list-each (text-lines raw)
+      (lambda (line)
+        (parse-front-matter-kv-line entries line)))
+    entries))
+
+(claim parse-front-matter-kv-line
+  (-> front-matter-t text-t void-t))
+
+(define (parse-front-matter-kv-line entries line)
+  (unless (or (text-has-prefix line " ")
+              (text-has-prefix line "\t"))
+    (let ((colon-index (text-find-index line ":")))
+      (unless (equal colon-index -1)
+        (let ((key (text-trim (text-slice line 0 colon-index))))
+          (unless (text-is-empty key)
+            (hash-put
+              entries
+              key
+              (parse-front-matter-kv-value
+                (text-slice line
+                  (iadd colon-index 1)
+                  (text-length line))))))))))
+
+(claim parse-front-matter-kv-value (-> text-t text-t))
+
+(define (parse-front-matter-kv-value text)
+  (let ((value (text-trim text))
+        (length (text-length value)))
+    (if (int-less-or-equal length 1)
+      value
+      (let ((first (text-slice value 0 1))
+            (last (text-slice value (isub length 1) length)))
+        (if (or (and (equal first "\"") (equal last "\""))
+                (and (equal first "'") (equal last "'")))
+          (text-slice value 1 (isub length 1))
+          value)))))

@@ -1,0 +1,50 @@
+(module meta)
+
+(define-test parse-markdown-code-block-test
+  (let ((document (parse-markdown "test" "```meta-lisp\n(module foo)\n```\n")))
+    (let ((blocks (markdown-document-code-blocks document)))
+      (assert-equal 1 (list-length blocks))
+      (let ((block (list-head blocks)))
+        (assert-equal 0 (markdown-code-block-index block))
+        (assert-equal "meta-lisp" (markdown-code-block-info block))
+        (assert-equal "meta-lisp" (markdown-code-block-language block))
+        (assert-equal "(module foo)\n" (markdown-code-block-content block))
+        (assert-equal 13 (source-position-index
+                           (markdown-code-block-content-start block)))
+        (assert-equal 1 (source-position-row
+                          (markdown-code-block-content-start block)))
+        (assert-equal 0 (source-position-column
+                          (markdown-code-block-content-start block)))))))
+
+(define-test parse-markdown-front-matter-test
+  (let ((document
+          (parse-markdown
+            "test"
+            "---\nmodule: lambda\n---\n\n```meta-lisp\n(module lambda)\n```\n")))
+    (assert-equal "lambda"
+      (hash-get (markdown-document-front-matter document) "module"))
+    (assert-equal 1
+      (list-length (markdown-document-code-blocks document)))))
+
+(define-test parse-markdown-multiple-code-blocks-test
+  (let ((document
+          (parse-markdown
+            "test"
+            "```meta-lisp\n(a)\n```\n\n```scheme\n(b)\n```\n\n~~~meta-lisp\n(c)\n~~~\n")))
+    (let ((blocks (markdown-document-code-blocks document)))
+      (assert-equal 3 (list-length blocks))
+      (assert-equal (@list "meta-lisp" "scheme" "meta-lisp")
+        (list-map blocks markdown-code-block-language))
+      (assert-equal (@list "(a)\n" "(b)\n" "(c)\n")
+        (list-map blocks markdown-code-block-content)))))
+
+(define-test parse-markdown-long-fence-test
+  (let ((document (parse-markdown "test" "````meta-lisp\n```\n````\n")))
+    (let ((block (list-head (markdown-document-code-blocks document))))
+      (assert-equal "meta-lisp" (markdown-code-block-language block))
+      (assert-equal "```\n" (markdown-code-block-content block)))))
+
+(define-test parse-markdown-unclosed-front-matter-test
+  (let ((document (parse-markdown "test" "---\nmodule: foo\n```meta-lisp\n(module foo)\n```\n")))
+    (assert-equal 0 (hash-length (markdown-document-front-matter document)))
+    (assert-equal 1 (list-length (markdown-document-code-blocks document)))))

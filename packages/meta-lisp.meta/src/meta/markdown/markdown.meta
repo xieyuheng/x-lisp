@@ -1,0 +1,29 @@
+(module meta)
+
+(define-struct opening-fence-t
+  (fence-text text-t)
+  (info text-t))
+
+(define-struct markdown-code-block-t
+  (index int-t)
+  (info text-t)
+  (language text-t)
+  (content text-t)
+  (content-start source-position-t))
+
+(define-struct markdown-document-t
+  (front-matter front-matter-t)
+  (code-blocks (list-t markdown-code-block-t)))
+
+(define-struct markdown-line-t
+  (text text-t)
+  (start source-position-t))
+
+(define-struct front-matter-split-t
+  (front-matter front-matter-t)
+  (rest-lines (list-t markdown-line-t)))
+
+(define-struct code-block-scan-result-t
+  (content-lines (list-t markdown-line-t))
+  (closing-line markdown-line-t)
+  (rest-lines (list-t markdown-line-t)))
