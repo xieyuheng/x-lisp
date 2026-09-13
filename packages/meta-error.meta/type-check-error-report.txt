@@ -93,6 +93,16 @@ src/location/underline-width-error.meta:3:13 -- undefined variable
    |                ~~~~~~  
  4 | 
 
+src/markdown/type-error.md:11:14 -- expected type is not a substitution instance of inferred type
+  inferred type: text-t
+  expected type: int-t
+  9 | 
+ 10 | (define-test markdown-type-error-test
+ 11 |   (the int-t "hello"))
+    |              ~~~~~~~   
+ 12 | ```
+ 13 | 
+
 src/module/nat-private-type-error.meta:8:17 -- undefined variable
   package id: self
   module name: nat-private-type-error
