@@ -5,7 +5,7 @@ import { findModuleDeclarations } from "./findModuleDeclarations.ts"
 
 export function loadMetaFragment(path: string): M.Fragment {
   const code = fs.readFileSync(path, "utf-8")
-  const sexps = S.parseSexps(code, { path })
+  const sexps = S.parseSexps({ path }, code)
   const stmts = sexps.map(M.parseStmt)
   const modName = resolveMetaModName(path, stmts)
 

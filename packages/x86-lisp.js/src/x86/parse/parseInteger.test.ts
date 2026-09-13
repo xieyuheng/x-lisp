@@ -6,7 +6,7 @@ import { parseInstr } from "./parseInstr.ts"
 import { parseOperand } from "./parseOperand.ts"
 
 function parse(text: string): S.Sexp {
-  return S.parseSexp(text, { path: "test" })
+  return S.parseSexp({ path: "test" }, text)
 }
 
 test("parseOperand: hex / bin / oct integers", () => {

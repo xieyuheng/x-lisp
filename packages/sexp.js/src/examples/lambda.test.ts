@@ -52,7 +52,7 @@ const keywords = ["lambda", "let"]
 
 function assertParse(text: string, exp: Exp): void {
   const path = "test:lambda"
-  assert.deepStrictEqual(parseExp(S.parseSexp(text, { path })), exp)
+  assert.deepStrictEqual(parseExp(S.parseSexp({ path }, text)), exp)
 }
 
 test("examples/lambda", () => {
@@ -76,7 +76,7 @@ test("examples/lambda", () => {
 function assertErrorWithSourceLocation(text: string): string {
   try {
     const path = "test:lambda"
-    parseExp(S.parseSexp(text, { path }))
+    parseExp(S.parseSexp({ path }, text))
     return ""
   } catch (error) {
     return errorReport(error)

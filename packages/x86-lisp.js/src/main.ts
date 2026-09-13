@@ -17,7 +17,7 @@ router.defineRoutes(["assemble <input> <output>"])
 router.defineHandlers({
   assemble: ({ args: [input, output] }) => {
     const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps(code, { path: input })
+    const sexps = S.parseSexps({ path: input }, code)
     const stmts = sexps.map((s) => X86.parseStmt(s))
     const program = X86.createProgram()
     X86.BuildPipeline(program, stmts)

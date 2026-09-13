@@ -4,7 +4,7 @@ import * as S from "../index.ts"
 
 test("parse -- origin for an atom", () => {
   const origin = { index: 100, row: 10, column: 5 }
-  const sexp = S.parseSexp("abc", { path: "test.md", origin })
+  const sexp = S.parseSexp({ path: "test.md", origin }, "abc")
 
   assert.deepEqual(sexp.location.span.start, origin)
   assert.deepEqual(sexp.location.span.end, {
@@ -16,10 +16,13 @@ test("parse -- origin for an atom", () => {
 
 test("parse -- origin across lines", () => {
   const text = "(a\nb)"
-  const sexp = S.parseSexp(text, {
-    path: "test.md",
-    origin: { index: 50, row: 5, column: 2 },
-  })
+  const sexp = S.parseSexp(
+    {
+      path: "test.md",
+      origin: { index: 50, row: 5, column: 2 },
+    },
+    text,
+  )
 
   assert.deepEqual(sexp.location.span.start, {
     index: 50,
@@ -34,7 +37,7 @@ test("parse -- origin across lines", () => {
 })
 
 test("parse -- origin without origin is unchanged", () => {
-  const sexp = S.parseSexp("abc", { path: "test.md" })
+  const sexp = S.parseSexp({ path: "test.md" }, "abc")
 
   assert.deepEqual(sexp.location.span.start, S.initPosition())
   assert.deepEqual(sexp.location.span.end, {
@@ -49,10 +52,13 @@ test("parse -- origin for an error", () => {
 
   assert.throws(
     () =>
-      S.parseSexp(text, {
-        path: "test.md",
-        origin: { index: 20, row: 2, column: 3 },
-      }),
+      S.parseSexp(
+        {
+          path: "test.md",
+          origin: { index: 20, row: 2, column: 3 },
+        },
+        text,
+      ),
     (error: unknown) => {
       assert.ok(error instanceof S.ErrorWithSourceLocation)
       assert.deepEqual(error.location.span.start, {

@@ -3,7 +3,7 @@ import * as S from "../index.ts"
 
 type Result = { sexp: S.Sexp; next: number }
 
-export type ParserOptions = {
+export type ParserConfig = {
   path: string
   origin?: S.Position
 }
@@ -11,8 +11,8 @@ export type ParserOptions = {
 export class Parser {
   lexer: S.Lexer
 
-  constructor(options: ParserOptions) {
-    this.lexer = new S.Lexer(options)
+  constructor(config: ParserConfig) {
+    this.lexer = new S.Lexer(config)
   }
 
   parse(text: string): Array<S.Sexp> {

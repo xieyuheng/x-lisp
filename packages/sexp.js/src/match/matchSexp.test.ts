@@ -9,10 +9,10 @@ function assertMatch(
   sexpInput: string | S.Sexp,
   expectedSubst: S.Subst,
 ): void {
-  const pattern = S.parseSexp(patternInput, testOptions)
+  const pattern = S.parseSexp(testOptions, patternInput)
   const sexp =
     typeof sexpInput === "string"
-      ? S.parseSexp(sexpInput, testOptions)
+      ? S.parseSexp(testOptions, sexpInput)
       : sexpInput
   const subst = S.matchSexp("NormalMode", pattern, sexp)({})
   assert(subst)
@@ -22,8 +22,8 @@ function assertMatch(
 function assertMatchFail(patternInput: string, sexpInput: string): void {
   const subst = S.matchSexp(
     "NormalMode",
-    S.parseSexp(patternInput, testOptions),
-    S.parseSexp(sexpInput, testOptions),
+    S.parseSexp(testOptions, patternInput),
+    S.parseSexp(testOptions, sexpInput),
   )({})
   assert.deepStrictEqual(subst, undefined)
 }

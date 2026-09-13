@@ -12,7 +12,7 @@ export function matcher<A>(
   patternText: string,
   f: MatcherCallback<A>,
 ): Matcher<A> {
-  const pattern = S.parseSexp(patternText, { path: "[matcher]" })
+  const pattern = S.parseSexp({ path: "[matcher]" }, patternText)
   return (sexp) => {
     const subst = S.matchSexp("NormalMode", pattern, sexp)({})
     if (!subst) return undefined

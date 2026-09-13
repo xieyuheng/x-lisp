@@ -21,7 +21,7 @@ router.defineHandlers({
       input = "/dev/stdin"
     }
     const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps(code, { path: input })
+    const sexps = S.parseSexps({ path: input }, code)
     const program = B.parseProgram(sexps)
     const text = Ppml.formatNode(B.prettyProgram(program), { width: 80 }) + "\n"
     process.stdout.write(text)

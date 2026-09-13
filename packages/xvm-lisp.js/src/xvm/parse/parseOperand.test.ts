@@ -5,7 +5,7 @@ import { formatOperand } from "../format/formatOperand.ts"
 import { parseOperand } from "./parseOperand.ts"
 
 test("parseOperand / formatOperand: u16 operand", () => {
-  const sexp = S.parseSexp("(u16 1)", { path: "test" })
+  const sexp = S.parseSexp({ path: "test" }, "(u16 1)")
   const operand = parseOperand(sexp)
 
   assert.equal(operand.kind, "U16Operand")

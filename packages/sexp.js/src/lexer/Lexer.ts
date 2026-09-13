@@ -10,9 +10,9 @@ export class Lexer {
   text: string = ""
   path: string
 
-  constructor(options: S.ParserOptions) {
-    this.path = options.path
-    this.positionOrigin = options.origin ?? S.initPosition()
+  constructor(config: S.ParserConfig) {
+    this.path = config.path
+    this.positionOrigin = config.origin ?? S.initPosition()
     this.position = { ...this.positionOrigin }
   }
 

@@ -2,7 +2,7 @@ import { test } from "node:test"
 import * as S from "../index.ts"
 
 function assertParse(text: string, expected: S.Sexp): void {
-  const sexp = S.parseSexp(text, { path: "[assertParse]" })
+  const sexp = S.parseSexp({ path: "[assertParse]" }, text)
   const ok = S.sexpEqual(expected, sexp)
   if (!ok) {
     let message = `[assertParse] fail\n`

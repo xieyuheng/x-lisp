@@ -32,10 +32,13 @@ function parseMarkdownBlockStmts(
   path: string,
   block: MarkdownCodeBlock,
 ): Array<M.Stmt<M.Exp>> {
-  const sexps = S.parseSexps(block.content, {
-    path,
-    origin: block.contentStart,
-  })
+  const sexps = S.parseSexps(
+    {
+      path,
+      origin: block.contentStart,
+    },
+    block.content,
+  )
 
   return sexps.map(M.parseStmt)
 }

@@ -27,7 +27,7 @@ router.defineHandlers({
       input = "/dev/stdin"
     }
     const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps(code, { path: input })
+    const sexps = S.parseSexps({ path: input }, code)
     const program = Xvm.parseProgram(sexps)
     const text =
       Ppml.formatNode(Xvm.prettyProgram(program), { width: 80 }) + "\n"
@@ -41,7 +41,7 @@ router.defineHandlers({
 
   assemble: ({ args: [input, output] }) => {
     const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps(code, { path: input })
+    const sexps = S.parseSexps({ path: input }, code)
     const program = Xvm.parseProgram(sexps)
     const exe = Xvm.assembleProgram(program)
     const tlv = Xvm.encodeExe(exe)
