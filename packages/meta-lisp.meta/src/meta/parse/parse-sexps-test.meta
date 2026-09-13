@@ -1,0 +1,31 @@
+(module meta)
+
+(define-test parse-sexps-origin-test
+  (let ((location (sexp-location (list-head (parse-sexps
+                                              "test"
+                                              (make-source-position 10 2 3)
+                                              "a"))))
+        (span (source-location-span location))
+        (start (source-span-start span))
+        (end (source-span-end span)))
+    (assert-equal 10 (source-position-index start))
+    (assert-equal 2 (source-position-row start))
+    (assert-equal 3 (source-position-column start))
+    (assert-equal 11 (source-position-index end))
+    (assert-equal 2 (source-position-row end))
+    (assert-equal 4 (source-position-column end))))
+
+(define-test parse-sexps-origin-across-lines-test
+  (let ((location (sexp-location (list-head (parse-sexps
+                                              "test"
+                                              (make-source-position 10 2 3)
+                                              "(a\nb)"))))
+        (span (source-location-span location))
+        (start (source-span-start span))
+        (end (source-span-end span)))
+    (assert-equal 10 (source-position-index start))
+    (assert-equal 2 (source-position-row start))
+    (assert-equal 3 (source-position-column start))
+    (assert-equal 15 (source-position-index end))
+    (assert-equal 3 (source-position-row end))
+    (assert-equal 2 (source-position-column end))))
