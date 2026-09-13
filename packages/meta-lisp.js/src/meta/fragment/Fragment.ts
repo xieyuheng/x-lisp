@@ -1,8 +1,10 @@
 import * as M from "../index.ts"
 
 export type Fragment = {
-  modName: string
+  id: string
   path: string
+  blockIndex?: number
+  modName: string
   stmts: Array<M.Stmt<M.Exp>>
   desugaredStmts: Array<M.Stmt<M.Term>>
 }

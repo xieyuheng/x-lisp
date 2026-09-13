@@ -2,7 +2,8 @@ import * as S from "../index.ts"
 import { consume } from "./consume.ts"
 
 export class Lexer {
-  position: S.Position = S.initPosition()
+  position: S.Position
+  positionOrigin: S.Position
   // `cursor` counts code units, while `position` counts characters,
   // so that a span index is a character index, not a code unit index.
   cursor: number = 0
@@ -11,12 +12,14 @@ export class Lexer {
 
   constructor(options: S.ParserOptions) {
     this.path = options.path
+    this.positionOrigin = options.origin ?? S.initPosition()
+    this.position = { ...this.positionOrigin }
   }
 
   lex(text: string): Array<S.Token> {
     this.text = text
 
-    this.position = S.initPosition()
+    this.position = { ...this.positionOrigin }
     this.cursor = 0
 
     const tokens: Array<S.Token> = []

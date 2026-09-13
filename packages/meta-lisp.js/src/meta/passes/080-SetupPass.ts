@@ -3,7 +3,7 @@ import { range } from "@xieyuheng/std.js/range"
 import * as M from "../../meta/index.ts"
 
 export function SetupPass(pkg: M.Package): void {
-  for (const [path, fragment] of pkg.fragments) {
+  for (const [fragmentId, fragment] of pkg.fragments) {
     const mod =
       M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
       M.createMod(fragment.modName, pkg)

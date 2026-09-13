@@ -99,12 +99,17 @@ export function packageAddMod(pkg: Package, mod: M.Mod): void {
   pkg.mods.set(mod.name, mod)
 }
 
-export function packagePutFragment(
+export function packagePutFragment(pkg: Package, fragment: M.Fragment): void {
+  pkg.fragments.set(fragment.id, fragment)
+}
+
+export function packageFragmentDumpName(
   pkg: Package,
-  path: string,
   fragment: M.Fragment,
-): void {
-  pkg.fragments.set(path, fragment)
+): string {
+  const name = Path.relative(packageSourceDirectory(pkg), fragment.path)
+  if (fragment.blockIndex === undefined) return name
+  return `${name}.block-${String(fragment.blockIndex).padStart(4, "0")}`
 }
 
 export function packageMods(pkg: Package): Array<M.Mod> {

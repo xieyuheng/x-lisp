@@ -6,10 +6,10 @@ export function LowerMatchPass(
   moduleReport: Passes.ModuleAnalysisReport,
   algebraicReport: Passes.AlgebraicAnalysisReport,
 ): void {
-  for (const [path, fragment] of pkg.fragments) {
-    const scope = moduleReport.fragmentScopes.get(path)
+  for (const [fragmentId, fragment] of pkg.fragments) {
+    const scope = moduleReport.fragmentScopes.get(fragmentId)
     if (!scope) {
-      throw new Error(`[LowerMatchPass] missing scope for: ${path}`)
+      throw new Error(`[LowerMatchPass] missing scope for: ${fragmentId}`)
     }
     const ctx = M.makeDesugarMatchCtx(
       scope,

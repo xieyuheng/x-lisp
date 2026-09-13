@@ -5,14 +5,14 @@ export function ModuleImportPass(
   pkg: M.Package,
   report: Passes.ModuleAnalysisReport,
 ): void {
-  for (const [path, fragment] of pkg.fragments) {
-    const scope = report.fragmentScopes.get(path)
+  for (const [fragmentId, fragment] of pkg.fragments) {
+    const scope = report.fragmentScopes.get(fragmentId)
     if (scope) {
       fragment.desugaredStmts = fragment.desugaredStmts.map((stmt) =>
         moduleImportStmt(scope, stmt),
       )
     } else {
-      let message = `[ModuleImportPass] missing scope for: ${path}`
+      let message = `[ModuleImportPass] missing scope for: ${fragmentId}`
       throw new Error(message)
     }
   }

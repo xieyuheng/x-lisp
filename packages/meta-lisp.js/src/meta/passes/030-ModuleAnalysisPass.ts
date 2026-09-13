@@ -31,9 +31,9 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
     outcome: "OutcomeOk",
   }
 
-  for (const [path, fragment] of pkg.fragments) {
+  for (const [fragmentId, fragment] of pkg.fragments) {
     const scope = createFragmentScope(fragment.modName)
-    fragmentScopes.set(path, scope)
+    fragmentScopes.set(fragmentId, scope)
     for (const stmt of fragment.stmts) {
       if (ensureImportedModExists(pkg, stmt) === "OutcomeError") {
         moduleAnalysisReport.outcome = "OutcomeError"
@@ -259,8 +259,8 @@ function formatModuleAnalysisReport(
   lines.push("(module-analysis-report")
 
   lines.push("  (fragment-scopes")
-  for (const [path, scope] of sortedEntries(result.fragmentScopes)) {
-    lines.push(`    ("${path}"`)
+  for (const [fragmentId, scope] of sortedEntries(result.fragmentScopes)) {
+    lines.push(`    ("${fragmentId}"`)
     lines.push(`      (mod-name ${scope.modName})`)
     if (debug) {
       lines.push("      (imported-names")

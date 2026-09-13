@@ -9,14 +9,13 @@ import Path from "node:path"
 import * as M from "../index.ts"
 import {
   type Package,
+  packageFragmentDumpName,
   packageOutputDirectory,
-  packageSourceDirectory,
 } from "./Package.ts"
 
 export function packageDumpDesugaredFragments(pkg: Package, tag: string): void {
   for (const fragment of pkg.fragments.values()) {
-    const sourceDirectory = packageSourceDirectory(pkg)
-    const name = Path.relative(sourceDirectory, fragment.path)
+    const name = packageFragmentDumpName(pkg, fragment)
     const textWidth = 80
     const stmtsCode = M.formatPrettyFragmentDesugaredStmts(
       textWidth,

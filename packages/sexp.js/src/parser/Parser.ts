@@ -5,6 +5,7 @@ type Result = { sexp: S.Sexp; next: number }
 
 export type ParserOptions = {
   path: string
+  origin?: S.Position
 }
 
 export class Parser {
