@@ -1,0 +1,1 @@
+(@list (@array 'symbol-sexp 'a (@array 'make-source-location "*" (@array 'make-source-span (@array 'make-source-position 10 2 3) (@array 'make-source-position 11 2 4)))) (@array 'symbol-sexp 'b (@array 'make-source-location "*" (@array 'make-source-span (@array 'make-source-position 12 3 0) (@array 'make-source-position 13 3 1)))))

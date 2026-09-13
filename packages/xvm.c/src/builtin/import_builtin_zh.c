@@ -241,7 +241,7 @@ void import_builtin_zh(program_t *program) {
 
   // sexp
 
-  define_primitive_2(program, "meta-builtin/内置/解析符号算式", x_parse_sexps_zh);
+  define_primitive_3(program, "meta-builtin/内置/解析符号算式", x_parse_sexps_zh);
   define_primitive_1(program, "meta-builtin/内置/呈现为符号算式", x_format_as_sexp_zh);
   define_primitive_2(program, "meta-builtin/内置/呈现定位消息", x_format_message_with_location);
 

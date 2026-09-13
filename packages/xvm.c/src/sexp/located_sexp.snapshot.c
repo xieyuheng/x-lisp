@@ -1,7 +1,8 @@
 #include "index.h"
 
 static void echo(const char *string) {
-  x_println(parse_located_sexps("*", string));
+  struct position_t origin = { .index = 0, .row = 0, .column = 0 };
+  x_println(parse_located_sexps("*", origin, string));
 }
 
 int main(void) {

@@ -1,8 +1,9 @@
 #include "index.h"
 
-value_t x_parse_sexps(value_t path, value_t string) {
+value_t x_parse_sexps(value_t path, value_t origin, value_t string) {
   return parse_located_sexps(
     xtext_string(to_xtext(path)),
+    value_to_position(origin),
     xtext_string(to_xtext(string)));
 }
 
@@ -33,8 +34,9 @@ value_t x_format_message_with_location(value_t message, value_t location) {
   return result;
 }
 
-value_t x_parse_sexps_zh(value_t path, value_t string) {
+value_t x_parse_sexps_zh(value_t path, value_t origin, value_t string) {
   return parse_located_sexps_zh(
     xtext_string(to_xtext(path)),
+    value_to_position(origin),
     xtext_string(to_xtext(string)));
 }

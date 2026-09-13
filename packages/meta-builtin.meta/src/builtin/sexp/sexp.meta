@@ -7,6 +7,7 @@
   (float-sexp (content float-t) (location source-location-t))
   (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
 
-(declare-primitive-function parse-sexps 2)
+(declare-primitive-function parse-sexps 3)
 
-(claim parse-sexps (-> text-t text-t (list-t sexp-t)))
+(claim parse-sexps
+  (-> text-t source-position-t text-t (list-t sexp-t)))

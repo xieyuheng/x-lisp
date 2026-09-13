@@ -241,7 +241,7 @@ void import_builtin_en(program_t *program) {
 
   // sexp
 
-  define_primitive_2(program, "meta-builtin/builtin/parse-sexps", x_parse_sexps);
+  define_primitive_3(program, "meta-builtin/builtin/parse-sexps", x_parse_sexps);
   define_primitive_1(program, "meta-builtin/builtin/format-as-sexp", x_format_as_sexp);
   define_primitive_2(program, "meta-builtin/builtin/format-message-with-location", x_format_message_with_location);
 

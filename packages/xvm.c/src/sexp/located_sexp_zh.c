@@ -62,8 +62,10 @@ static value_t for_sexp_zh(value_t path, list_t *tokens);
 static value_t for_elements_zh(value_t path, const char *end, list_t *tokens,
                                struct span_t *out_end_span);
 
-value_t parse_located_sexps_zh(const char *pathname, const char *string) {
+value_t parse_located_sexps_zh(const char *pathname, struct position_t origin,
+                               const char *string) {
   lexer_t *lexer = make_lexer(string);
+  lexer->position = origin;
   lexer->line_comment_introducer = ";";
   list_t *tokens = lexer_lex(lexer);
   lexer_free(lexer);

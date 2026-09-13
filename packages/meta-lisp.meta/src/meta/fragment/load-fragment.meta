@@ -2,7 +2,8 @@
 
 (define (load-fragment path)
   (let ((code (path-read path))
-         (sexps (parse-sexps path code))
+         (sexps
+          (parse-sexps path (make-source-position 0 0 0) code))
          (stmts (list-map sexps parse-stmt))
          (module-stmt (list-find stmts is-declare-module-stmt)))
     (match module-stmt
