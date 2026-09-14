@@ -4,10 +4,6 @@ set -e
 
 # stage1 -- js/ts bootstrap compiler
 
-# prepare
-
-pnpm install
-
 # ts format
 
 ./scripts/run-in.sh std.js format.sh
