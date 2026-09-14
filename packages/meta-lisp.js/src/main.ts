@@ -20,48 +20,50 @@ router.defineHandlers({
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
-    M.setLang(pkg.config.language ?? "en")
-    if ("--dump" in options) pkg.config.compiler.dump = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-
-    const closure = M.packageClosureInTopologicalOrder(pkg)
-    let outcome: M.Outcome = "OutcomeOk"
-
-    for (const current of closure) {
-      if (M.CheckPipeline(current) === "OutcomeError") {
-        outcome = "OutcomeError"
-      }
-    }
-
-    if (outcome === "OutcomeError") process.exit(2)
+    configurePackage(pkg, options)
+    checkPackage(pkg)
   },
 
   build: ({ options }) => {
     const configPath =
       options["--config"] || Path.join(process.cwd(), "meta-package.json")
     const pkg = M.loadPackage("self", configPath)
-    M.setLang(pkg.config.language ?? "en")
-    if ("--dump" in options) pkg.config.compiler.dump = "true"
-    M.validateCompilerOptions(pkg.config.compiler)
-
-    const closure = M.packageClosureInTopologicalOrder(pkg)
-    let outcome: M.Outcome = "OutcomeOk"
-
-    for (const current of closure) {
-      if (M.CheckPipeline(current) === "OutcomeError") {
-        outcome = "OutcomeError"
-      }
-    }
-
-    if (outcome === "OutcomeError") process.exit(2)
-
-    for (const current of closure) {
-      M.CorePipeline(current)
-    }
-
-    XvmBackend.BuildPipeline(pkg)
+    configurePackage(pkg, options)
+    checkPackage(pkg)
+    buildPackage(pkg)
   },
 })
+
+function configurePackage(
+  pkg: M.Package,
+  options: Record<string, string>,
+): void {
+  M.setLang(pkg.config.language ?? "en")
+  if ("--dump" in options) pkg.config.compiler.dump = "true"
+  M.validateCompilerOptions(pkg.config.compiler)
+}
+
+function checkPackage(pkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(pkg)
+  let outcome: M.Outcome = "OutcomeOk"
+
+  for (const current of closure) {
+    if (M.CheckPipeline(current) === "OutcomeError") {
+      outcome = "OutcomeError"
+    }
+  }
+
+  if (outcome === "OutcomeError") process.exit(2)
+}
+
+function buildPackage(pkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(pkg)
+  for (const current of closure) {
+    M.CorePipeline(current)
+  }
+
+  XvmBackend.BuildPipeline(pkg)
+}
 
 try {
   await router.run(process.argv.slice(2))
