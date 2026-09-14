@@ -22,7 +22,7 @@
     "@xieyuheng/sexp.js": "workspace:*",
     "@xieyuheng/std.js": "workspace:*",
     "@xieyuheng/xvm-lisp.js": "workspace:*",
-    "zod": "^4.6.2"
+    "zod": "^4.6.4"
   },
   "devDependencies": {
     "@types/node": "^26.5.1",
