@@ -8,8 +8,8 @@
     (assert (list-is-empty (route-option-names route)))))
 
 (define-test parse-route-option-test
-  (let ((route (parse-route "mul --x --y -- mul two numbers")))
-    (assert-equal "mul --x --y -- mul two numbers" (route-command route))
+  (let ((route (parse-route "mul --x <number> --y <number> -- mul two numbers")))
+    (assert-equal "mul --x <number> --y <number> -- mul two numbers" (route-command route))
     (assert-equal "mul" (route-name route))
     (assert (list-is-empty (route-arg-names route)))
     (assert-equal (@list "--x" "--y") (route-option-names route))))

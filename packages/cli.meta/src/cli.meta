@@ -37,7 +37,8 @@
                      first-option-index
                      (list-length rest)))
         (arg-names (list-take rest arg-count))
-        (option-names (list-drop rest arg-count)))
+        ;; text between option names can be viewed as option docs
+        (option-names (list-filter (list-drop rest arg-count) (swap text-has-prefix "--"))))
     (make-route command name arg-names option-names)))
 
 (claim route-match (-> route-t (list-t text-t) ctx-t))

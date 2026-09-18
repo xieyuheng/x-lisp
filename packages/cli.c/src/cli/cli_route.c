@@ -20,12 +20,19 @@ cli_route_t *cli_parse_route(const char *command) {
       break;
     }
 
-    if (string_starts_with(word, "-")) {
-      passed_args_p = true;
-      array_push(self->option_names, word);
+    if (!passed_args_p) {
+      if (string_starts_with(word, "-")) {
+        passed_args_p = true;
+        array_push(self->option_names, word);
+      } else {
+        array_push(self->arg_names, word);
+      }
     } else {
-      assert(!passed_args_p);
-      array_push(self->arg_names, word);
+      if (string_starts_with(word, "-")) {
+        array_push(self->option_names, word);
+      } else {
+        // text between option names can be viewed as option docs
+      }
     }
 
     word = string_next_word(command, &cursor);

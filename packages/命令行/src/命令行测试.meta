@@ -8,8 +8,8 @@
     (断言 (列表为空 (路由选项名列表 路由)))))
 
 (定义测试 解析路由选项测试
-  (令 ((路由 (解析路由 "mul --x --y -- mul two numbers")))
-    (断言相等 "mul --x --y -- mul two numbers" (路由命令 路由))
+  (令 ((路由 (解析路由 "mul --x <number> --y <number> -- mul two numbers")))
+    (断言相等 "mul --x <number> --y <number> -- mul two numbers" (路由命令 路由))
     (断言相等 "mul" (路由名称 路由))
     (断言 (列表为空 (路由参数名列表 路由)))
     (断言相等 (@列表 "--x" "--y") (路由选项名列表 路由))))

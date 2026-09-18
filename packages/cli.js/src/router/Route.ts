@@ -28,10 +28,9 @@ export function parseRoute(command: string): Route {
     const word = words.shift() as string
     if (word.startsWith("-")) {
       optionNames.push(word)
-    } else {
-      words.unshift(word)
-      break
     }
+
+    // text between option names can be viewed as option docs
   }
 
   return {

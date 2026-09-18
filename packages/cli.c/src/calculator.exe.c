@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
   cli_define_route(router, "hello -- say hello");
   cli_define_route(router, "add x y -- add two numbers");
-  cli_define_route(router, "mul --x --y -- mul two numbers");
+  cli_define_route(router, "mul --x <number> --y <number> -- mul two numbers");
   cli_define_route(router, "bye -- say bye bye");
   cli_define_route(router, "passthrough -- print passthrough args");
 
