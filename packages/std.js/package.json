@@ -16,8 +16,8 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@types/node": "^26.5.1",
-    "prettier": "^3.9.6",
+    "@types/node": "^26.6.1",
+    "prettier": "^3.9.7",
     "typescript": "^7.0.2"
   }
 }
