@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node
 
-import * as cli from "@xieyuheng/cli.js"
+import * as Cli from "@xieyuheng/cli.js"
 import * as S from "@xieyuheng/sexp.js"
 import { errorReport } from "@xieyuheng/std.js/error"
 import { getPackageJson } from "@xieyuheng/std.js/node"
@@ -11,7 +11,7 @@ import * as M from "./meta/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cli.createRouter("meta-lisp.js", version)
+const router = Cli.createRouter("meta-lisp.js", version)
 
 router.defineRoutes(["check --config --dump", "build --config --dump"])
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node
 
-import * as cli from "@xieyuheng/cli.js"
+import * as Cli from "@xieyuheng/cli.js"
 import * as Ppml from "@xieyuheng/ppml.js"
 import * as S from "@xieyuheng/sexp.js"
 import { errorReport } from "@xieyuheng/std.js/error"
@@ -12,7 +12,7 @@ import * as Xvm from "./xvm/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cli.createRouter("xvm-lisp.js", version)
+const router = Cli.createRouter("xvm-lisp.js", version)
 
 router.defineRoutes([
   "format <input>",
