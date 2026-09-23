@@ -11,7 +11,7 @@ export function CheckPass(pkg: M.Package): M.Outcome {
   let outcome: M.Outcome = "OutcomeOk"
 
   for (const mod of pkg.mods.values()) {
-    const coreMod = C.createMod(mod.name, pkg)
+    const coreMod = C.makeMod(mod.name, pkg)
 
     for (const definition of mod.definitions.values()) {
       if (M.definitionCheck(definition) === "OutcomeError")

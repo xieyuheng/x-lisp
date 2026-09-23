@@ -16,7 +16,7 @@ type State = {
   usedNames: Set<string>
 }
 
-function createState(usedNames: Set<string>): State {
+function makeState(usedNames: Set<string>): State {
   return { usedNames }
 }
 
@@ -29,7 +29,7 @@ function unnestOperandDefinition(definition: C.Definition): null {
 
     case "FunctionDefinition": {
       const usedNames = new Set(definition.parameters)
-      const state = createState(usedNames)
+      const state = makeState(usedNames)
       definition.body = unnestOperandTerm(state, definition.body)
       return null
     }
@@ -37,7 +37,7 @@ function unnestOperandDefinition(definition: C.Definition): null {
     case "VariableDefinition":
     case "TestDefinition": {
       const usedNames = new Set<string>()
-      const state = createState(usedNames)
+      const state = makeState(usedNames)
       definition.body = unnestOperandTerm(state, definition.body)
       return null
     }

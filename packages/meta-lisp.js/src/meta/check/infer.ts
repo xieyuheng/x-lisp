@@ -108,8 +108,8 @@ export function infer(
       if (M.isLeft(targetResult)) return targetResult
       const targetInferred = targetResult.right
 
-      const argTypes = term.args.map((_) => M.createFreshVarType("A"))
-      const retType = M.createFreshVarType("R")
+      const argTypes = term.args.map((_) => M.makeFreshVarType("A"))
+      const retType = M.makeFreshVarType("R")
       const arrowType = M.ArrowType(argTypes, retType)
 
       const unifyResult = M.checkUnify(
@@ -216,8 +216,8 @@ export function infer(
     }
 
     case "LambdaTerm": {
-      const argTypes = term.parameters.map((_) => M.createFreshVarType("A"))
-      const retType = M.createFreshVarType("R")
+      const argTypes = term.parameters.map((_) => M.makeFreshVarType("A"))
+      const retType = M.makeFreshVarType("R")
       const type = M.ArrowType(argTypes, retType)
       const bodyResult = M.check(
         mod,
@@ -242,7 +242,7 @@ export function infer(
     }
 
     case "IfTerm": {
-      const type = M.createFreshVarType("X")
+      const type = M.makeFreshVarType("X")
       const conditionResult = M.check(
         mod,
         ctx,

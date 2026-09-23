@@ -230,7 +230,7 @@ function tryInferDefinitionBody(
   name: string,
   exp: M.Term,
 ): M.Outcome {
-  const freshVarType = M.createFreshVarType(name)
+  const freshVarType = M.makeFreshVarType(name)
   // - why: for recursive function — put `name -> freshVarType`
   //   into ctx so that the function body can refer to itself recursively.
   const ctx = M.ctxPut(M.emptyCtx(), name, freshVarType)

@@ -2,7 +2,7 @@ import Path from "node:path"
 import * as M from "../index.ts"
 import {
   type Package,
-  createPackage,
+  makePackage,
   packageAddMod,
   packageSourceDirectory,
 } from "./Package.ts"
@@ -29,7 +29,7 @@ export function loadPackage(id: string, configPath: string): Package {
 
   const config = loadPackageConfig(configPath)
   const rootDirectory = Path.resolve(Path.dirname(configPath))
-  const pkg = createPackage(actualId(config, id), rootDirectory, config)
+  const pkg = makePackage(actualId(config, id), rootDirectory, config)
 
   if (config.name === "meta-builtin") setupBuiltinPackage(pkg)
 
@@ -47,7 +47,7 @@ function actualId(config: PackageConfig, id: string): string {
 
 function setupBuiltinPackage(pkg: Package): void {
   M.setupPrimitive()
-  const mod = M.createMod("builtin", pkg)
+  const mod = M.makeMod("builtin", pkg)
   packageAddMod(pkg, mod)
 }
 

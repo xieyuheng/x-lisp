@@ -3,7 +3,7 @@ import * as X86 from "../index.ts"
 import { parseData } from "./parseData.ts"
 import { parseIntegerSexp } from "./parseInteger.ts"
 
-const parseOperandRouter: S.Router<X86.Operand> = S.createRouter<X86.Operand>({
+const parseOperandRouter: S.Router<X86.Operand> = S.makeRouter<X86.Operand>({
   "`(reg ,name)": ({ name }, { location }) => {
     return X86.RegOperand(S.asSymbolSexp(name).content)
   },

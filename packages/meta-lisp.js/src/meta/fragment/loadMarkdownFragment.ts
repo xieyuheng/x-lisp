@@ -68,7 +68,7 @@ function resolveMarkdownBlockModName(
     message += `\n  path: ${path}`
     const location =
       stmts[0]?.location ??
-      S.createSourceLocation(path, {
+      S.makeSourceLocation(path, {
         start: block.contentStart,
         end: block.contentStart,
       })

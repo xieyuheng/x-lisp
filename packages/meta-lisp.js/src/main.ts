@@ -11,7 +11,7 @@ import * as M from "./meta/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = Cli.createRouter("meta-lisp.js", version)
+const router = Cli.makeRouter("meta-lisp.js", version)
 
 router.defineRoutes(["check --config --dump", "build --config --dump"])
 

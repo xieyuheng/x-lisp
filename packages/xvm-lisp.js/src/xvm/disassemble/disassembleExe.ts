@@ -4,11 +4,11 @@ import {
   VariableDeclaration,
 } from "../definition/Definition.ts"
 import { type Exe } from "../exe/Exe.ts"
-import { createProgram, type Program } from "../program/Program.ts"
+import { makeProgram, type Program } from "../program/Program.ts"
 import { disassembleFunction } from "./disassembleFunction.ts"
 
 export function disassembleExe(exe: Exe): Program {
-  const program = createProgram()
+  const program = makeProgram()
 
   for (const variable of exe.variables) {
     program.definitions.set(variable.name, VariableDeclaration(variable.name))

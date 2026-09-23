@@ -16,7 +16,7 @@ export type Package = {
   dependencies: Map<string, Package>
 }
 
-export function createPackage(
+export function makePackage(
   id: string,
   rootDirectory: string,
   config: PackageConfig,

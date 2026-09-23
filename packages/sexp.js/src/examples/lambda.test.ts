@@ -31,7 +31,7 @@ function Let(name: string, rhs: Exp, body: Exp): Let {
   return { kind: "Let", name, rhs, body }
 }
 
-const parseExp: S.Router<Exp> = S.createRouter<Exp>({
+const parseExp: S.Router<Exp> = S.makeRouter<Exp>({
   "`(lambda (,name) ,ret)": ({ name, ret }) =>
     Lambda(S.asSymbolSexp(name).content, parseExp(ret)),
   "`(let ((,name ,rhs)) ,body)": ({ name, rhs, body }) =>

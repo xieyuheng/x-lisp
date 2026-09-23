@@ -13,7 +13,7 @@ export function isVarPattern(exp: M.Exp): exp is M.VarExp {
   return exp.kind === "VarExp"
 }
 
-export function createVarPattern(name: string, location: S.SourceLocation) {
+export function makeVarPattern(name: string, location: S.SourceLocation) {
   return M.VarExp(name, location)
 }
 
@@ -33,7 +33,7 @@ export function isDataPattern(exp: M.Exp): exp is M.ApplyExp {
   return exp.args.every((e) => isPattern(e))
 }
 
-export function createDataPattern(
+export function makeDataPattern(
   dataConstructor: M.DataConstructor,
   args: Array<M.Exp>,
   location: S.SourceLocation,

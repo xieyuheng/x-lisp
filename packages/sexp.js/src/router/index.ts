@@ -1,1 +1,1 @@
-export * from "./createRouter.ts"
+export * from "./makeRouter.ts"

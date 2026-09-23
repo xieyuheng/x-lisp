@@ -8,7 +8,7 @@ export type Mod = {
   pkg: M.Package
 }
 
-export function createMod(name: string, pkg: M.Package): Mod {
+export function makeMod(name: string, pkg: M.Package): Mod {
   return {
     name,
     definitions: new Map(),

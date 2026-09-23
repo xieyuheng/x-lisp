@@ -11,7 +11,7 @@ export function parseBody(body: S.Sexp, location: S.SourceLocation): M.Exp {
   }
 }
 
-export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
+export const parseExp: S.Router<M.Exp> = S.makeRouter<M.Exp>({
   "(cons* 'lambda parameters body)": ({ parameters, body }, { sexp }) => {
     const keyword = S.asListSexp(sexp).elements[0]
     return M.LambdaExp(
@@ -419,13 +419,13 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   },
 })
 
-const parseBinding = S.createRouter<M.Binding>({
+const parseBinding = S.makeRouter<M.Binding>({
   "`(,name ,rhs)": ({ name, rhs }, { location }) => {
     return M.Binding(S.asSymbolSexp(name).content, parseExp(rhs), location)
   },
 })
 
-const parseCondClause = S.createRouter<M.CondClause>({
+const parseCondClause = S.makeRouter<M.CondClause>({
   "(cons* question body)": ({ question, body }, { location }) => {
     if (question.kind === "SymbolSexp" && question.content === "else") {
       return M.CondClause(
@@ -449,7 +449,7 @@ const parseCondClause = S.createRouter<M.CondClause>({
   },
 })
 
-const parseMatchClause = S.createRouter<M.MatchClause>({
+const parseMatchClause = S.makeRouter<M.MatchClause>({
   "(cons* pattern body)": ({ pattern, body }, { location }) =>
     M.MatchClause(
       [parseExp(pattern)],
@@ -458,7 +458,7 @@ const parseMatchClause = S.createRouter<M.MatchClause>({
     ),
 })
 
-const parseMatchManyClause = S.createRouter<M.MatchClause>({
+const parseMatchManyClause = S.makeRouter<M.MatchClause>({
   "(cons* patterns body)": ({ patterns, body }, { location }) =>
     M.MatchClause(
       S.asListSexp(patterns).elements.map(parseExp),

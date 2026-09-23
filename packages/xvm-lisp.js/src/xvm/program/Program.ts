@@ -4,7 +4,7 @@ export type Program = {
   definitions: Map<string, Definition>
 }
 
-export function createProgram(): Program {
+export function makeProgram(): Program {
   return {
     definitions: new Map(),
   }

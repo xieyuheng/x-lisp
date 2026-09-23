@@ -6,7 +6,7 @@ export type Program = {
   claims: Map<string, Type>
 }
 
-export function createProgram(): Program {
+export function makeProgram(): Program {
   return {
     definitions: new Map(),
     claims: new Map(),

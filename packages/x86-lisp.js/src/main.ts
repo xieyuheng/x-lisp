@@ -10,7 +10,7 @@ import * as X86 from "./x86/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = Cli.createRouter("x86-lisp.js", version)
+const router = Cli.makeRouter("x86-lisp.js", version)
 
 router.defineRoutes(["assemble <input> <output>"])
 
@@ -19,7 +19,7 @@ router.defineHandlers({
     const code = fs.readFileSync(input, "utf-8")
     const sexps = S.parseSexps({ path: input }, code)
     const stmts = sexps.map((s) => X86.parseStmt(s))
-    const program = X86.createProgram()
+    const program = X86.makeProgram()
     X86.BuildPipeline(program, stmts)
     const object = X86.assembleObject(program)
     const buf = X86.emitElfObject(object)

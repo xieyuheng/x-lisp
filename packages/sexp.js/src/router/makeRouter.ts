@@ -3,7 +3,7 @@ import * as S from "../index.ts"
 export type Router<A> = (sexp: S.Sexp) => A
 export type Routes<A> = Record<string, S.MatcherCallback<A>>
 
-export function createRouter<A>(routes: Routes<A>): Router<A> {
+export function makeRouter<A>(routes: Routes<A>): Router<A> {
   const matchers = Object.entries(routes).map(([patternText, f]) =>
     S.matcher(patternText, f),
   )

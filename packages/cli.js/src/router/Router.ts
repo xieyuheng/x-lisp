@@ -6,7 +6,7 @@ export type RouterOptions = {
   middleware?: Middleware
 }
 
-export function createRouter(
+export function makeRouter(
   name: string,
   version: string,
   options: RouterOptions = {},

@@ -4,7 +4,7 @@ import { allocatingPrimitivesEn } from "./allocating-primitives-en.ts"
 import { allocatingPrimitivesZh } from "./allocating-primitives-zh.ts"
 
 export function SelectInstructionPass(program: B.Program): Xvm.Program {
-  const xvmProgram = Xvm.createProgram()
+  const xvmProgram = Xvm.makeProgram()
 
   for (const [name, definition] of program.definitions) {
     switch (definition.kind) {

@@ -5,10 +5,7 @@ export type SourceLocation = {
   span: S.Span
 }
 
-export function createSourceLocation(
-  path: string,
-  span: S.Span,
-): SourceLocation {
+export function makeSourceLocation(path: string, span: S.Span): SourceLocation {
   return {
     path,
     span,
@@ -16,7 +13,7 @@ export function createSourceLocation(
 }
 
 export function zeroLocation(path: string): SourceLocation {
-  return createSourceLocation(path, {
+  return makeSourceLocation(path, {
     start: S.initPosition(),
     end: S.initPosition(),
   })
@@ -33,5 +30,5 @@ export function sourceLocationUnion(
     throw new S.ErrorWithSourceLocation(message, lhs)
   }
 
-  return createSourceLocation(lhs.path, S.spanUnion(lhs.span, rhs.span))
+  return makeSourceLocation(lhs.path, S.spanUnion(lhs.span, rhs.span))
 }

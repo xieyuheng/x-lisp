@@ -6,7 +6,7 @@ export function SetupPass(pkg: M.Package): void {
   for (const [fragmentId, fragment] of pkg.fragments) {
     const mod =
       M.packageLookupMod(pkg, pkg.id, fragment.modName) ||
-      M.createMod(fragment.modName, pkg)
+      M.makeMod(fragment.modName, pkg)
 
     M.packageAddMod(pkg, mod)
 

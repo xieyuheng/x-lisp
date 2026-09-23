@@ -11,7 +11,7 @@ import * as B from "./basic/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = Cli.createRouter("basic-lisp.js", version)
+const router = Cli.makeRouter("basic-lisp.js", version)
 
 router.defineRoutes(["format <input>"])
 

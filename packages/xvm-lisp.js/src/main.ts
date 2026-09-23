@@ -12,7 +12,7 @@ import * as Xvm from "./xvm/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = Cli.createRouter("xvm-lisp.js", version)
+const router = Cli.makeRouter("xvm-lisp.js", version)
 
 router.defineRoutes([
   "format <input>",

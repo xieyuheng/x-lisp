@@ -4,7 +4,7 @@ import { parseDefinition } from "./parseDefinition.ts"
 import { parseType } from "./parseType.ts"
 
 export function parseProgram(sexps: Array<S.Sexp>): B.Program {
-  const program = B.createProgram()
+  const program = B.makeProgram()
   for (const sexp of sexps) {
     const list = S.asListSexp(sexp)
     const head = S.asSymbolSexp(list.elements[0])

@@ -32,7 +32,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   }
 
   for (const [fragmentId, fragment] of pkg.fragments) {
-    const scope = createFragmentScope(fragment.modName)
+    const scope = makeFragmentScope(fragment.modName)
     fragmentScopes.set(fragmentId, scope)
     for (const stmt of fragment.stmts) {
       if (ensureImportedModExists(pkg, stmt) === "OutcomeError") {
@@ -50,7 +50,7 @@ export function ModuleAnalysisPass(pkg: M.Package): ModuleAnalysisReport {
   return moduleAnalysisReport
 }
 
-function createFragmentScope(modName: ModName): FragmentScope {
+function makeFragmentScope(modName: ModName): FragmentScope {
   return {
     modName,
     importedNames: new Map(),

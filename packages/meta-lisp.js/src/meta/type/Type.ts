@@ -291,7 +291,7 @@ function generateVarTypeSerialNumber(name: string): bigint {
   }
 }
 
-export function createFreshVarType(name: string): VarType {
+export function makeFreshVarType(name: string): VarType {
   return VarType(name, generateVarTypeSerialNumber(name))
 }
 
@@ -350,7 +350,7 @@ export function arrowTypeArity(type: Type): number {
 export function allTypeFreshSelf(type: AllType): AllType {
   const varTypes = type.varTypes
   const bodyType = type.bodyType
-  const newVarTypes = varTypes.map((vt) => createFreshVarType(vt.name))
+  const newVarTypes = varTypes.map((vt) => makeFreshVarType(vt.name))
   const substMap = new Map<VarType, VarType>()
   for (const i of range(varTypes.length)) {
     substMap.set(varTypes[i], newVarTypes[i])

@@ -3,7 +3,7 @@ import * as Xvm from "../index.ts"
 import { parseDefinition } from "./parseDefinition.ts"
 
 export function parseProgram(sexps: Array<S.Sexp>): Xvm.Program {
-  const program = Xvm.createProgram()
+  const program = Xvm.makeProgram()
   for (const sexp of sexps) {
     const list = S.asListSexp(sexp)
     const head = S.asSymbolSexp(list.elements[0]).content

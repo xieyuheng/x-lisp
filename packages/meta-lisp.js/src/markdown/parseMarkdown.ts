@@ -67,7 +67,7 @@ export function parseMarkdown(text: string, path: string): MarkdownDocument {
       message += `\n  fence: ${fenceText}`
       throw new S.ErrorWithSourceLocation(
         message,
-        S.createSourceLocation(path, lineSpan(openingLine)),
+        S.makeSourceLocation(path, lineSpan(openingLine)),
       )
     }
 

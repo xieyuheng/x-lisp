@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { parseBody, parseExp } from "./parseExp.ts"
 
-export const parseStmt = S.createRouter<M.Stmt<M.Exp>>({
+export const parseStmt = S.makeRouter<M.Stmt<M.Exp>>({
   "(cons* 'define (cons* name parameters) body)": (
     { name, parameters, body },
     { sexp },
@@ -507,7 +507,7 @@ function parseImportSource(rawModName: string): {
   }
 }
 
-const parseTypeConstructor = S.createRouter<M.PreTypeConstructor>({
+const parseTypeConstructor = S.makeRouter<M.PreTypeConstructor>({
   "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {
       name: S.asSymbolSexp(name).content,
@@ -527,7 +527,7 @@ const parseTypeConstructor = S.createRouter<M.PreTypeConstructor>({
   },
 })
 
-const parseDataConstructor = S.createRouter<M.PreDataConstructor>({
+const parseDataConstructor = S.makeRouter<M.PreDataConstructor>({
   "(cons* name fields)": ({ name, fields }, { location }) => {
     return {
       name: S.asSymbolSexp(name).content,
@@ -537,7 +537,7 @@ const parseDataConstructor = S.createRouter<M.PreDataConstructor>({
   },
 })
 
-const parseDataField = S.createRouter<M.PreDataField>({
+const parseDataField = S.makeRouter<M.PreDataField>({
   "`(,name ,exp)": ({ name, exp }, { location }) => {
     return {
       name: S.asSymbolSexp(name).content,
@@ -547,7 +547,7 @@ const parseDataField = S.createRouter<M.PreDataField>({
   },
 })
 
-const parseExplicitDataConstructor = S.createRouter<
+const parseExplicitDataConstructor = S.makeRouter<
   M.ExplicitDataConstructor<M.Exp>
 >({
   "(cons* group predicate accessors)": (

@@ -6,7 +6,7 @@ import * as C from "../../core/index.ts"
 import * as M from "../../meta/index.ts"
 
 export function ExplicateControlPass(pkg: M.Package): B.Program {
-  const basicProgram = B.createProgram()
+  const basicProgram = B.makeProgram()
 
   for (const orderedPkg of M.packageClosureInTopologicalOrder(pkg)) {
     for (const mod of orderedPkg.coreMods.values()) {
@@ -63,7 +63,7 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
         C.termOccurredNames(definition.body),
         new Set(definition.parameters),
       )
-      const state = createState(definition.mod.pkg, usedNames)
+      const state = makeState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
 
@@ -88,7 +88,7 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
 
     case "TestDefinition": {
       const usedNames = C.termOccurredNames(definition.body)
-      const state = createState(definition.mod.pkg, usedNames)
+      const state = makeState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = explicateInTail(state, definition.body)
@@ -104,7 +104,7 @@ function explicateDefinition(definition: C.Definition): Array<B.Definition> {
 
     case "VariableDefinition": {
       const usedNames = C.termOccurredNames(definition.body)
-      const state = createState(definition.mod.pkg, usedNames)
+      const state = makeState(definition.mod.pkg, usedNames)
       const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = explicateInTail(state, definition.body)
@@ -122,7 +122,7 @@ function generateSetupVariables(
   pkg: M.Package,
   variableNames: Array<string>,
 ): B.FunctionDefinition {
-  const state = createState(pkg, new Set())
+  const state = makeState(pkg, new Set())
   const block = B.Block("body", [])
   addBlock(state, block)
 
@@ -151,7 +151,7 @@ function generateRunTests(
   pkg: M.Package,
   testNames: Set<string>,
 ): B.FunctionDefinition {
-  const state = createState(pkg, new Set())
+  const state = makeState(pkg, new Set())
   const block = B.Block("body", [])
   addBlock(state, block)
 
@@ -179,7 +179,7 @@ type State = {
   blocks: Map<string, B.Block>
 }
 
-function createState(pkg: M.Package, usedNames: Set<string>): State {
+function makeState(pkg: M.Package, usedNames: Set<string>): State {
   return {
     pkg,
     usedNames,

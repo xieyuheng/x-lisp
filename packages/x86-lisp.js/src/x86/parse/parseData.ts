@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as X86 from "../index.ts"
 import { parseIntegerSexp } from "./parseInteger.ts"
 
-export const parseData: S.Router<X86.Data> = S.createRouter<X86.Data>({
+export const parseData: S.Router<X86.Data> = S.makeRouter<X86.Data>({
   "(cons* 'struct rest)": ({ rest }, { location }) => {
     const elements = S.asListSexp(rest).elements
     if (elements.length < 2) {

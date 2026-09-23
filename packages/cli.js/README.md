@@ -19,7 +19,7 @@ function logger(): Cli.Middleware {
   }
 }
 
-const router = Cli.createRouter("calculator", "0.1.0", {
+const router = Cli.makeRouter("calculator", "0.1.0", {
   middleware: [logger()],
 })
 

@@ -3,7 +3,7 @@ import * as X86 from "../index.ts"
 import { parseData } from "./parseData.ts"
 import { parseInstr } from "./parseInstr.ts"
 
-export const parseStmt: S.Router<X86.Stmt> = S.createRouter<X86.Stmt>({
+export const parseStmt: S.Router<X86.Stmt> = S.makeRouter<X86.Stmt>({
   "(cons* 'define-code name body)": ({ name, body }, { location }) => {
     const bodyElements = S.asListSexp(body).elements
     const parsedInstrs = bodyElements.map((sexp) => parseCodeItem(sexp))
