@@ -23,11 +23,6 @@ const router = Cli.makeRouter("calculator", "0.1.0", {
   middleware: [logger()],
 })
 
-router.defineRoutes([
-  "add x y -- secretly double the args",
-  "mul --x --y",
-])
-
 function doubleArgs(): Cli.Middleware {
   return (ctx, next) => {
     ctx.args = ctx.args.map((arg) => String(Number(arg) * 2))
@@ -35,17 +30,29 @@ function doubleArgs(): Cli.Middleware {
   }
 }
 
-router.defineHandlers({
-  add: {
-    middleware: [doubleArgs()],
-    handler({ args: [x, y] }) {
-      console.log(Number(x) + Number(y))
+router.defineRoutes([
+  {
+    path: ["add"],
+    args: ["x", "y"],
+    description: "secretly double the args",
+    handler: {
+      middleware: [doubleArgs()],
+      handler({ args: [x, y] }: Cli.HandlerContext) {
+        console.log(Number(x) + Number(y))
+      },
     },
   },
-  mul: (options) => {
-    console.log(Number(options["--x"]) * Number(options["--y"]))
+  {
+    path: ["mul"],
+    options: {
+      "--x": { valueName: "x" },
+      "--y": { valueName: "y" },
+    },
+    handler({ options }: Cli.HandlerContext) {
+      console.log(Number(options["--x"]) * Number(options["--y"]))
+    },
   },
-})
+])
 
 try {
   await router.run(process.argv.slice(2))
@@ -53,6 +60,27 @@ try {
   console.log(error)
   process.exit(1)
 }
+```
+
+## Nested commands
+
+```typescript
+router.defineRoutes([
+  {
+    path: ["provider", "list"],
+    description: "list supported providers",
+    handler: makeProviderListHandler(),
+  },
+  {
+    path: ["model", "enable"],
+    args: ["model-name"],
+    options: {
+      "--provider": { valueName: "provider-name" },
+    },
+    description: "enable a model",
+    handler: makeModelEnableHandler(),
+  },
+])
 ```
 
 ## License

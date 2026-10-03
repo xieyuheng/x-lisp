@@ -1,21 +1,24 @@
 import type { MaybePromise } from "@xieyuheng/std.js/promise"
 import { applyMiddleware, type Middleware } from "./Middleware.ts"
-import type { Route } from "./Route.ts"
+import type { Route, RouteInput } from "./Route.ts"
 import type { Router } from "./Router.ts"
 
-export type HandlerArgs = Array<any>
-export type HandlerOptions = Record<string, any>
+export type HandlerArgs = Array<string>
+export type HandlerArgValues = RouteInput["argValues"]
+export type HandlerOptions = RouteInput["options"]
 export type HandlerResult = MaybePromise<any>
 
 export type HandlerContext = {
   router: Router
   route: Route
+
+  path: Array<string>
   tokens: Array<string>
+
   args: HandlerArgs
+  argValues: HandlerArgValues
   options: HandlerOptions
 }
-
-export type Handlers = Record<string, Handler>
 
 export type Handler = HandlerFunction | HandlerObject
 

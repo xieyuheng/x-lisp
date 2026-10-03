@@ -12,20 +12,22 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = Cli.makeRouter("x86-lisp.js", version)
 
-router.defineRoutes(["assemble <input> <output>"])
-
-router.defineHandlers({
-  assemble: ({ args: [input, output] }) => {
-    const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps({ path: input }, code)
-    const stmts = sexps.map((s) => X86.parseStmt(s))
-    const program = X86.makeProgram()
-    X86.BuildPipeline(program, stmts)
-    const object = X86.assembleObject(program)
-    const buf = X86.emitElfObject(object)
-    fs.writeFileSync(output, buf)
+router.defineRoutes([
+  {
+    path: ["assemble"],
+    args: ["input", "output"],
+    handler: ({ args: [input, output] }) => {
+      const code = fs.readFileSync(input, "utf-8")
+      const sexps = S.parseSexps({ path: input }, code)
+      const stmts = sexps.map((s) => X86.parseStmt(s))
+      const program = X86.makeProgram()
+      X86.BuildPipeline(program, stmts)
+      const object = X86.assembleObject(program)
+      const buf = X86.emitElfObject(object)
+      fs.writeFileSync(output, buf)
+    },
   },
-})
+])
 
 try {
   await router.run(process.argv.slice(2))

@@ -13,33 +13,55 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = Cli.makeRouter("meta-lisp.js", version)
 
-router.defineRoutes(["check --config --dump", "build --config --dump"])
-
-router.defineHandlers({
-  check: ({ options }) => {
-    const configPath =
-      options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
-    configurePackage(pkg, options)
-    checkPackage(pkg)
+router.defineRoutes([
+  {
+    path: ["check"],
+    options: {
+      "--config": { valueName: "path" },
+      "--dump": {},
+    },
+    handler: ({ options }) => {
+      const configPath =
+        readOptionalString(options, "--config") ??
+        Path.join(process.cwd(), "meta-package.json")
+      const pkg = M.loadPackage("self", configPath)
+      configurePackage(pkg, options)
+      checkPackage(pkg)
+    },
   },
-
-  build: ({ options }) => {
-    const configPath =
-      options["--config"] || Path.join(process.cwd(), "meta-package.json")
-    const pkg = M.loadPackage("self", configPath)
-    configurePackage(pkg, options)
-    checkPackage(pkg)
-    buildPackage(pkg)
+  {
+    path: ["build"],
+    options: {
+      "--config": { valueName: "path" },
+      "--dump": {},
+    },
+    handler: ({ options }) => {
+      const configPath =
+        readOptionalString(options, "--config") ??
+        Path.join(process.cwd(), "meta-package.json")
+      const pkg = M.loadPackage("self", configPath)
+      configurePackage(pkg, options)
+      checkPackage(pkg)
+      buildPackage(pkg)
+    },
   },
-})
+])
 
-function configurePackage(
-  pkg: M.Package,
-  options: Record<string, string>,
-): void {
+function readOptionalString(
+  options: Record<string, unknown>,
+  name: string,
+): string | undefined {
+  const value = options[name]
+  if (typeof value !== "string" || value === "") {
+    return undefined
+  }
+
+  return value
+}
+
+function configurePackage(pkg: M.Package, options: Cli.HandlerOptions): void {
   M.setLang(pkg.config.language ?? "en")
-  if ("--dump" in options) pkg.config.compiler.dump = "true"
+  if (Object.hasOwn(options, "--dump")) pkg.config.compiler.dump = "true"
   M.validateCompilerOptions(pkg.config.compiler)
 }
 

@@ -13,20 +13,23 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = Cli.makeRouter("basic-lisp.js", version)
 
-router.defineRoutes(["format <input>"])
-
-router.defineHandlers({
-  format: ({ args: [input] }) => {
-    if (input === "-") {
-      input = "/dev/stdin"
-    }
-    const code = fs.readFileSync(input, "utf-8")
-    const sexps = S.parseSexps({ path: input }, code)
-    const program = B.parseProgram(sexps)
-    const text = Ppml.formatNode(B.prettyProgram(program), { width: 80 }) + "\n"
-    process.stdout.write(text)
+router.defineRoutes([
+  {
+    path: ["format"],
+    args: ["input"],
+    handler: ({ args: [input] }) => {
+      if (input === "-") {
+        input = "/dev/stdin"
+      }
+      const code = fs.readFileSync(input, "utf-8")
+      const sexps = S.parseSexps({ path: input }, code)
+      const program = B.parseProgram(sexps)
+      const text =
+        Ppml.formatNode(B.prettyProgram(program), { width: 80 }) + "\n"
+      process.stdout.write(text)
+    },
   },
-})
+])
 
 try {
   await router.run(process.argv.slice(2))
