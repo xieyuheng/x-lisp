@@ -1,6 +1,7 @@
 {
   "name": "@xieyuheng/meta-lisp.js",
   "version": "0.1.4",
+  "private": true,
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./src/index.ts",
