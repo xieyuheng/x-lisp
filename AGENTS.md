@@ -12,7 +12,7 @@ AI agent 应用中文回答用户的问题。
 
 # 子项目
 
-**JS/TS monorepo**（`pnpm-workspace.yaml` — `packages/*.js`）：
+**JS/TS monorepo**（根目录 `package.json` 的 `workspaces` — `packages/*.js`）：
 
 - [std.js] — 基础库
 - [cli.js] — CLI 框架
@@ -38,7 +38,7 @@ AI agent 应用中文回答用户的问题。
 
 # 依赖链
 
-1. `pnpm install`
+1. `npm install`
 2. C：[std.c] → [cli.c] → [xvm.c]
 3. JS：[std.js] → [cli.js]/[ppml.js]/[sexp.js] → [basic-lisp.js]/[xvm-lisp.js] → [meta-lisp.js]
    （[x86-lisp.js] 独立于编译器，不参与编译管线）

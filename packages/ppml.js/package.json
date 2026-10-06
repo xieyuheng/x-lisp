@@ -13,7 +13,7 @@
     "trailingComma": "all"
   },
   "dependencies": {
-    "@xieyuheng/std.js": "workspace:*"
+    "@xieyuheng/std.js": "*"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",

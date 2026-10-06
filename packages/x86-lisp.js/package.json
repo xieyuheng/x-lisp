@@ -17,10 +17,10 @@
     "trailingComma": "all"
   },
   "dependencies": {
-    "@xieyuheng/cli.js": "workspace:*",
-    "@xieyuheng/ppml.js": "workspace:*",
-    "@xieyuheng/sexp.js": "workspace:*",
-    "@xieyuheng/std.js": "workspace:*"
+    "@xieyuheng/cli.js": "*",
+    "@xieyuheng/ppml.js": "*",
+    "@xieyuheng/sexp.js": "*",
+    "@xieyuheng/std.js": "*"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",

@@ -1,0 +1,8 @@
+{
+  "name": "x-lisp",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "workspaces": [
+    "packages/*.js"
+  ]
+}
