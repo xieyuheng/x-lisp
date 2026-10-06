@@ -3,7 +3,6 @@
   "version": "0.4.3",
   "license": "GPL-3.0-or-later",
   "type": "module",
-  "repository": "github:xieyuheng/meta-lisp",
   "main": "src/index.ts",
   "files": [
     "src"

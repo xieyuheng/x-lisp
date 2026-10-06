@@ -1,7 +1,6 @@
 {
   "name": "@xieyuheng/std.js",
   "version": "0.2.4",
-  "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "exports": {

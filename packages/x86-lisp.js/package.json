@@ -1,7 +1,6 @@
 {
   "name": "@xieyuheng/x86-lisp.js",
   "version": "0.1.0",
-  "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./src/index.ts",
