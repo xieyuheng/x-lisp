@@ -51,25 +51,3 @@ void os_free_page_aligned(void *pointer);
 uint64_t os_monotonic_nanoseconds(void);
 void os_sleep_nanoseconds(uint64_t nanoseconds);
 
-// - thread
-
-typedef void (os_thread_fn_t)(void *arg);
-
-os_thread_handle_t os_thread_start(os_thread_fn_t *thread_fn, void *arg);
-void os_thread_join(os_thread_handle_t handle);
-
-// - mutex
-
-void os_mutex_init(os_mutex_t *self);
-void os_mutex_destroy(os_mutex_t *self);
-void os_mutex_lock(os_mutex_t *self);
-bool os_mutex_try_lock(os_mutex_t *self);
-void os_mutex_unlock(os_mutex_t *self);
-
-// - spinlock
-
-void os_spinlock_init(os_spinlock_t *self);
-void os_spinlock_destroy(os_spinlock_t *self);
-void os_spinlock_lock(os_spinlock_t *self);
-bool os_spinlock_try_lock(os_spinlock_t *self);
-void os_spinlock_unlock(os_spinlock_t *self);
