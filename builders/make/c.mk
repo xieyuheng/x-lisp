@@ -36,17 +36,19 @@ ldflags += -fsanitize=thread
 cflags += -fsanitize=thread
 endif
 
-sources = $(shell find src -name '*.c' -not -name '*.test.c' -not -name '*.snapshot.c' -not -name '*.exe.c')
+platform_exclude := *.windows.c
+
+sources = $(shell find src -name '*.c' -not -name '*.test.c' -not -name '*.snapshot.c' -not -name '*.exe.c' -not -name '$(platform_exclude)')
 objects = $(patsubst %.c, %.o, $(sources))
 headers = $(shell find src -name '*.h')
 
-test_sources = $(shell find src -name '*.test.c')
+test_sources = $(shell find src -name '*.test.c' -not -name '$(platform_exclude)')
 tests = $(patsubst %.c, %, $(test_sources))
 
-snapshot_sources = $(shell find src -name '*.snapshot.c')
+snapshot_sources = $(shell find src -name '*.snapshot.c' -not -name '$(platform_exclude)')
 snapshots = $(patsubst %.c, %, $(snapshot_sources))
 
-exe_sources = $(shell find src -name '*.exe.c')
+exe_sources = $(shell find src -name '*.exe.c' -not -name '$(platform_exclude)')
 exes = $(patsubst %.c, %, $(exe_sources))
 
 parallel = parallel -v --halt now,fail=1

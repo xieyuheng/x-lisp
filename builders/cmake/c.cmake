@@ -8,6 +8,18 @@
 
 set(X_LISP_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}" CACHE INTERNAL "Path to builders/cmake")
 
+function(x_filter_platform_sources sources_var)
+  if(WIN32)
+    set(exclude_regex "\\.posix\\.c$")
+  else()
+    set(exclude_regex "\\.windows\\.c$")
+  endif()
+
+  set(filtered "${${sources_var}}")
+  list(FILTER filtered EXCLUDE REGEX "${exclude_regex}")
+  set(${sources_var} "${filtered}" PARENT_SCOPE)
+endfunction()
+
 function(x_add_c_package name)
   cmake_parse_arguments(ARG "" "" "DEPS" ${ARGN})
 
@@ -18,6 +30,7 @@ function(x_add_c_package name)
   list(FILTER sources EXCLUDE REGEX "\\.test\\.c$")
   list(FILTER sources EXCLUDE REGEX "\\.snapshot\\.c$")
   list(FILTER sources EXCLUDE REGEX "\\.exe\\.c$")
+  x_filter_platform_sources(sources)
 
   add_library(${target} STATIC ${sources})
   target_include_directories(${target} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -29,6 +42,7 @@ function(x_add_c_package name)
 
   file(GLOB_RECURSE test_sources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.test.c")
+  x_filter_platform_sources(test_sources)
   foreach(test_source IN LISTS test_sources)
     get_filename_component(test_file "${test_source}" NAME)
     string(REPLACE ".test.c" "" test_name "${test_file}")
@@ -40,6 +54,7 @@ function(x_add_c_package name)
 
   file(GLOB_RECURSE snapshot_sources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.snapshot.c")
+  x_filter_platform_sources(snapshot_sources)
   foreach(snapshot_source IN LISTS snapshot_sources)
     get_filename_component(snapshot_file "${snapshot_source}" NAME)
     string(REPLACE ".snapshot.c" "" snapshot_name "${snapshot_file}")
@@ -58,6 +73,7 @@ function(x_add_c_package name)
 
   file(GLOB_RECURSE exe_sources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.exe.c")
+  x_filter_platform_sources(exe_sources)
   foreach(exe_source IN LISTS exe_sources)
     get_filename_component(exe_file "${exe_source}" NAME)
     string(REPLACE ".exe.c" "" exe_name "${exe_file}")
