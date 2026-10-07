@@ -15,7 +15,7 @@ if (Test-Path $buildDump) {
     $relative = $file.FullName.Substring($buildDump.Length + 1)
     $counterpart = Join-Path $selfBuildDump $relative
     if (Test-Path $counterpart) {
-      git --no-pager diff --no-index -- $file.FullName $counterpart
+      git -c core.autocrlf=false --no-pager diff --no-index -- $file.FullName $counterpart
       if ($LASTEXITCODE -ne 0) { $result = 1 }
     }
   }
