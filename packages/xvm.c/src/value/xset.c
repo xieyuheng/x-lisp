@@ -107,20 +107,20 @@ bool xset_is_empty(const xset_t *self) {
   return set_is_empty(self->set);
 }
 
-inline bool xset_is_member(const xset_t *self, value_t value) {
+extern inline bool xset_is_member(const xset_t *self, value_t value) {
   return set_member(self->set, (void *) value);
 }
 
-inline void xset_add(xset_t *self, value_t value) {
+extern inline void xset_add(xset_t *self, value_t value) {
   set_add(self->set, (void *) value);
   gc_write_barrier((object_t *) self, value);
 }
 
-inline bool xset_delete(xset_t *self, value_t value) {
+extern inline bool xset_delete(xset_t *self, value_t value) {
   return set_delete(self->set, (void *) value);
 }
 
-inline void xset_clear(xset_t *self) {
+extern inline void xset_clear(xset_t *self) {
   set_clear(self->set);
 }
 

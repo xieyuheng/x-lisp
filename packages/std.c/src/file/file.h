@@ -3,7 +3,7 @@
 file_t *open_file_or_fail(const char *pathname, const char *mode);
 void file_close(file_t *file);
 int file_raw_fd(file_t *file);
-off_t file_size(file_t *file);
+int64_t file_size(file_t *file);
 
 char *file_read_string(file_t *file);
 

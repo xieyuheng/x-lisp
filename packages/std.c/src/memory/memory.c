@@ -4,22 +4,22 @@
 // is always a multiple of eight (or sixteen on 64-bit systems).
 // -- https://www.gnu.org/software/libc/manual/html_node/Aligned-Memory-Blocks.html
 
-inline bool pointer_is_8_bytes_aligned(void *pointer) {
+extern inline bool pointer_is_8_bytes_aligned(void *pointer) {
   return (((uintptr_t) pointer) & ((uintptr_t) 0x7)) == 0;
 }
 
-inline void *allocate(size_t size) {
+extern inline void *allocate(size_t size) {
   void *pointer = calloc(1, size);
   assert(pointer);
   assert(pointer_is_8_bytes_aligned(pointer));
   return pointer;
 }
 
-inline void *allocate_pointers(size_t size) {
+extern inline void *allocate_pointers(size_t size) {
   return allocate(size * sizeof(void *));
 }
 
-inline void *reallocate(void *pointer, size_t old_size, size_t new_size) {
+extern inline void *reallocate(void *pointer, size_t old_size, size_t new_size) {
   void *new_pointer = realloc(pointer, new_size);
   assert(new_pointer);
   assert(pointer_is_8_bytes_aligned(new_pointer));
@@ -27,7 +27,7 @@ inline void *reallocate(void *pointer, size_t old_size, size_t new_size) {
   return new_pointer;
 }
 
-inline void *reallocate_pointers(void *pointer, size_t old_size, size_t new_size) {
+extern inline void *reallocate_pointers(void *pointer, size_t old_size, size_t new_size) {
   size_t unit_size = sizeof(void *);
   void *new_pointer = realloc(pointer, new_size * unit_size);
   assert(new_pointer);
@@ -37,38 +37,39 @@ inline void *reallocate_pointers(void *pointer, size_t old_size, size_t new_size
   return new_pointer;
 }
 
-inline bool pointer_is_page_aligned(void *pointer) {
-  size_t page_size = sysconf(_SC_PAGE_SIZE);
+extern inline bool pointer_is_page_aligned(void *pointer) {
+  size_t page_size = os_page_size();
   return (((uintptr_t) pointer) % page_size) == 0;
 }
 
-inline void *allocate_page_aligned(size_t size) {
-  size_t page_size = sysconf(_SC_PAGE_SIZE);
-  assert(page_size > 0);
-  size_t real_size = ((size / page_size) + 1) * page_size;
-  void *pointer = aligned_alloc(page_size, real_size);
-  memory_clear(pointer, real_size);
+extern inline void *allocate_page_aligned(size_t size) {
+  void *pointer = os_allocate_page_aligned(size);
   assert(pointer);
   assert(pointer_is_8_bytes_aligned(pointer));
   assert(pointer_is_page_aligned(pointer));
+  memory_clear(pointer, size);
   return pointer;
 }
 
-inline void memory_clear(void *pointer, size_t size) {
+extern inline void free_page_aligned(void *pointer) {
+  os_free_page_aligned(pointer);
+}
+
+extern inline void memory_clear(void *pointer, size_t size) {
   memset(pointer, 0, size);
 }
 
-inline void memory_copy(void* dest, const void* src, size_t n) {
+extern inline void memory_copy(void* dest, const void* src, size_t n) {
   memcpy(dest, src, n);
 }
 
-inline void memory_copy_reverse(void* dest, const void* src, size_t n) {
+extern inline void memory_copy_reverse(void* dest, const void* src, size_t n) {
   const uint8_t *s = (const uint8_t *) src + n - 1;
   uint8_t *d = (uint8_t *) dest;
   while (n--) *d++ = *s--;
 }
 
-inline bool memory_is_little_endian(void) {
+extern inline bool memory_is_little_endian(void) {
   uint16_t one = 0x0001;
   uint8_t first_byte = *((uint8_t *) &one);
   return first_byte == 0x01;

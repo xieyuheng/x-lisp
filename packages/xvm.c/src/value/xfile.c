@@ -71,14 +71,14 @@ void xfile_free(xfile_t *self) {
 }
 
 xfile_t *open_input_xfile(char *pathname) {
-  file_t *file = open_file_or_fail(pathname, "r");
+  file_t *file = open_file_or_fail(pathname, "rb");
   xfile_t *xfile = make_xfile(file);
   xfile->pathname = pathname;
   return xfile;
 }
 
 xfile_t *open_output_xfile(char *pathname) {
-  file_t *file = open_file_or_fail(pathname, "w");
+  file_t *file = open_file_or_fail(pathname, "wb");
   xfile_t *xfile = make_xfile(file);
   xfile->pathname = pathname;
   return xfile;

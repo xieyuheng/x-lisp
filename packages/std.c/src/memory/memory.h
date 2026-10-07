@@ -14,6 +14,7 @@ bool pointer_is_page_aligned(void *pointer);
 
 // aligned to page to avoid false sharing
 void *allocate_page_aligned(size_t size);
+void free_page_aligned(void *pointer);
 
 void memory_clear(void *pointer, size_t size);
 

@@ -1,36 +1,26 @@
 #include "index.h"
 
 bool fs_exists(const char *pathname) {
-  return access(pathname, F_OK) != -1;
+  return os_path_exists(pathname);
 }
 
 bool fs_is_file(const char *pathname) {
-  if (!fs_exists(pathname)) return false;
-
-  struct stat st;
-  if (stat(pathname, &st) == -1) return false;
-
-  return S_ISREG(st.st_mode);
+  return os_path_is_file(pathname);
 }
 
 bool fs_is_directory(const char *pathname) {
-  if (!fs_exists(pathname)) return false;
-
-  struct stat st;
-  if (stat(pathname, &st) == -1) return false;
-
-  return S_ISDIR(st.st_mode);
+  return os_path_is_directory(pathname);
 }
 
 char *fs_read(const char *pathname) {
-  file_t *file = open_file_or_fail(pathname, "r");
+  file_t *file = open_file_or_fail(pathname, "rb");
   char *string = (char *) file_read_bytes(file);
   file_close(file);
   return string;
 }
 
 void fs_write(const char *pathname, const char *string) {
-  file_t *file = open_file_or_fail(pathname, "w");
+  file_t *file = open_file_or_fail(pathname, "wb");
   file_write_string(file, string);
   file_close(file);
 }
@@ -40,9 +30,7 @@ static void fs_make_directory(const char *pathname) {
     assert(fs_is_directory(pathname));
     return;
   } else {
-    int ok = mkdir(pathname, 0777);
-    assert(ok == 0);
-    return;
+    assert(os_make_directory(pathname));
   }
 }
 
@@ -60,7 +48,6 @@ static void fs_ensure_directory_recur(path_t *path) {
   fs_ensure_directory_recur(path);
   path_push_segment(path, segment);
   fs_make_directory(path_raw_string(path));
-  return;
 }
 
 void fs_ensure_directory(const char *pathname) {
@@ -82,27 +69,23 @@ void fs_ensure_file(const char *pathname) {
 void fs_delete_file(const char *pathname) {
   if (fs_exists(pathname)) {
     assert(fs_is_file(pathname));
-    int ok = unlink(pathname);
-    assert(ok == 0);
+    assert(os_delete_file(pathname));
   }
 }
 
 void fs_delete_directory(const char *pathname) {
   if (fs_exists(pathname)) {
     assert(fs_is_directory(pathname));
-    int ok = rmdir(pathname);
-    assert(ok == 0);
+    assert(os_delete_directory(pathname));
   }
 }
 
 void fs_delete(const char *pathname) {
   if (fs_exists(pathname)) {
-    int ok = remove(pathname);
-    assert(ok == 0);
+    assert(os_delete(pathname));
   }
 }
 
 void fs_rename(const char *old_pathname, const char *new_pathname) {
-  int ok = rename(old_pathname, new_pathname);
-  assert(ok == 0);
+  assert(os_rename(old_pathname, new_pathname));
 }

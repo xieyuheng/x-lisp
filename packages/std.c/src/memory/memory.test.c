@@ -64,7 +64,7 @@ int main(void) {
     void *pointer = allocate_page_aligned(10);
     assert(pointer_is_8_bytes_aligned(pointer));
     assert(pointer_is_page_aligned(pointer));
-    free(pointer);
+    free_page_aligned(pointer);
   }
 
   {
@@ -83,7 +83,7 @@ int main(void) {
     assert(pointer_is_page_aligned(v));
     v->x = 0.1;
     v->y = 0.1;
-    free(v);
+    free_page_aligned(v);
   }
 
   {

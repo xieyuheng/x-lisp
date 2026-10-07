@@ -39,3 +39,9 @@ GTAGS
 
 # macOS
 .DS_Store
+
+# cmake
+/build/
+/build-*/
+/cmake-build-*/
+/out/

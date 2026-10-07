@@ -1,7 +1,7 @@
 #pragma once
 
 struct thread_t {
-  pthread_t pthread;
+  os_thread_handle_t handle;
   thread_fn_t *thread_fn;
   void *arg;
   thread_pool_t *thread_pool;

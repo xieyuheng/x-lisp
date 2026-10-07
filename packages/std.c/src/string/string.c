@@ -53,14 +53,56 @@ hash_code_t string_hash_code(const char *self) {
   return code;
 }
 
+static bool string_parse_binary_int64(const char *self, int64_t *result) {
+  const char *cursor = self;
+  int sign = 1;
+
+  if (*cursor == '+' || *cursor == '-') {
+    if (*cursor == '-') sign = -1;
+    cursor++;
+  }
+
+  if (cursor[0] != '0' || (cursor[1] != 'b' && cursor[1] != 'B')) {
+    return false;
+  }
+
+  cursor += 2;
+  if (*cursor == '\0') return false;
+
+  uint64_t magnitude = 0;
+  while (*cursor != '\0') {
+    if (*cursor < '0' || *cursor > '1') return false;
+    magnitude = magnitude * 2 + (uint64_t) (*cursor - '0');
+    cursor++;
+  }
+
+  *result = sign * (int64_t) magnitude;
+  return true;
+}
+
+static bool string_parse_binary_uint64(const char *self, uint64_t *result) {
+  int64_t value = 0;
+  if (!string_parse_binary_int64(self, &value)) return false;
+  *result = (uint64_t) value;
+  return true;
+}
+
 bool string_is_int_with_base(const char *self, size_t base) {
+  if (base == 2) {
+    int64_t result = 0;
+    if (string_parse_binary_int64(self, &result)) return true;
+  }
+
   char *end = NULL;
-  strtol(self, &end, base);
+  strtol(self, &end, (int) base);
   if (end == self) return false;
   return *end == '\0';
 }
 
 bool string_is_int(const char *self) {
+  int64_t result = 0;
+  if (string_parse_binary_int64(self, &result)) return true;
+
   char *end = NULL;
   strtol(self, &end, 0);
   if (end == self) return false;
@@ -68,21 +110,37 @@ bool string_is_int(const char *self) {
 }
 
 int64_t string_parse_int_with_base(const char *self, size_t base) {
+  if (base == 2) {
+    int64_t result = 0;
+    if (string_parse_binary_int64(self, &result)) return result;
+  }
+
   char *end = NULL;
-  return strtol(self, &end, base);
+  return strtol(self, &end, (int) base);
 }
 
 uint64_t string_parse_uint_with_base(const char *self, size_t base) {
+  if (base == 2) {
+    uint64_t result = 0;
+    if (string_parse_binary_uint64(self, &result)) return result;
+  }
+
   char *end = NULL;
-  return strtoul(self, &end, base);
+  return strtoul(self, &end, (int) base);
 }
 
 int64_t string_parse_int(const char *self) {
+  int64_t result = 0;
+  if (string_parse_binary_int64(self, &result)) return result;
+
   char *end = NULL;
   return strtol(self, &end, 0);
 }
 
 uint64_t string_parse_uint(const char *self) {
+  uint64_t result = 0;
+  if (string_parse_binary_uint64(self, &result)) return result;
+
   char *end = NULL;
   return strtoul(self, &end, 0);
 }

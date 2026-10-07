@@ -11,7 +11,7 @@ allocator_t *make_allocator(size_t cache_size) {
 void allocator_free(allocator_t *self) {
   mutex_free(self->mutex);
   stack_free(self->stack);
-  free(self);
+  free_page_aligned(self);
 }
 
 void *allocator_maybe_allocate(allocator_t *self, stack_t *stack) {

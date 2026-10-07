@@ -3,21 +3,99 @@
 struct path_t {
   stack_t *segment_stack;
   char *string;
+  char *root;
   bool is_absolute;
 };
+
+static void path_update_string(path_t *self);
+static void path_execute(path_t *self, char *segment);
+
+static char *path_normalize_separators(const char *string) {
+  char *result = string_copy(string);
+  for (size_t i = 0; result[i] != '\0'; i++) {
+    if (result[i] == '\\') result[i] = '/';
+  }
+  return result;
+}
+
+static void path_clear(path_t *self) {
+  while (!stack_is_empty(self->segment_stack)) {
+    string_free(stack_pop(self->segment_stack));
+  }
+  string_free(self->root);
+  self->root = string_copy("");
+  self->is_absolute = false;
+}
+
+static size_t path_unc_root_length(const char *string) {
+  const char *p = string + 2;
+  const char *server_end = p;
+  while (*server_end != '\0' && *server_end != '/') server_end++;
+  if (*server_end != '/') return 2;
+
+  const char *share = server_end + 1;
+  const char *share_end = share;
+  while (*share_end != '\0' && *share_end != '/') share_end++;
+  return (size_t) (share_end - string);
+}
+
+static void path_assign(path_t *self, const char *string) {
+  char *normalized = path_normalize_separators(string);
+  path_clear(self);
+
+  const char *cursor = normalized;
+
+  if (isalpha((unsigned char) normalized[0]) &&
+      normalized[1] == ':' &&
+      normalized[2] == '/') {
+    self->is_absolute = true;
+    self->root = string_substring(normalized, 0, 2);
+    cursor = normalized + 3;
+  } else if (normalized[0] == '/' && normalized[1] == '/' && normalized[2] != '/') {
+    self->is_absolute = true;
+    size_t root_length = path_unc_root_length(normalized);
+    self->root = string_substring(normalized, 0, root_length);
+    cursor = normalized + root_length;
+  } else if (normalized[0] == '/') {
+    self->is_absolute = true;
+    self->root = string_copy("");
+    cursor = normalized + 1;
+  } else {
+    self->is_absolute = false;
+    self->root = string_copy("");
+    cursor = normalized;
+  }
+
+  while (*cursor != '\0') {
+    while (*cursor == '/') cursor++;
+    if (*cursor == '\0') break;
+
+    const char *end = cursor;
+    while (*end != '\0' && *end != '/') end++;
+
+    char *segment = string_substring(cursor, 0, (size_t) (end - cursor));
+    path_execute(self, segment);
+    cursor = end;
+  }
+
+  string_free(normalized);
+  path_update_string(self);
+}
 
 path_t *make_path(const char *string) {
   path_t *self = new(path_t);
   self->segment_stack = make_string_stack();
-  if (string_starts_with(string, "/"))
-    self->is_absolute = true;
-  path_join(self, string);
+  self->string = string_copy("");
+  self->root = string_copy("");
+  self->is_absolute = false;
+  path_assign(self, string);
   return self;
 }
 
 void path_free(path_t *self) {
   stack_free(self->segment_stack);
   string_free(self->string);
+  string_free(self->root);
   free(self);
 }
 
@@ -25,14 +103,15 @@ char *path_into_string(path_t *self) {
   char *result = self->string;
   self->string = NULL;
   stack_free(self->segment_stack);
+  string_free(self->root);
   free(self);
   return result;
 }
 
 path_t *make_cwd_path(void) {
-  char *cwd = getcwd(NULL, 0);
+  char *cwd = os_getcwd();
   path_t *cwd_path = make_path(cwd);
-  string_free(cwd);
+  free(cwd);
   return cwd_path;
 }
 
@@ -55,7 +134,7 @@ bool path_equal(path_t *x, path_t *y) {
 typedef struct {
   const char *string;
   char *segment;
-}  entry_t;
+} entry_t;
 
 static entry_t *next_segment(const char *string) {
   if (string_is_empty(string))
@@ -74,43 +153,46 @@ static entry_t *next_segment(const char *string) {
   if (string_length(entry->string) > 0)
     entry->string++;
 
-  entry->segment = string_substring(string, 0, index);
+  entry->segment = string_substring(string, 0, (size_t) index);
   return entry;
 }
 
 static void path_update_string(path_t *self) {
   size_t length = stack_length(self->segment_stack);
-  size_t size = 0;
+  char *string = string_copy("");
+
+  if (path_is_absolute(self)) {
+    if (self->root[0] != '\0') {
+      char *next = string_append(string, self->root);
+      string_free(string);
+      string = next;
+
+      if (length > 0 || string_ends_with(self->root, ":")) {
+        next = string_append(string, "/");
+        string_free(string);
+        string = next;
+      }
+    } else {
+      char *next = string_append(string, "/");
+      string_free(string);
+      string = next;
+    }
+  }
+
   for (size_t i = 0; i < length; i++) {
     char *segment = stack_get(self->segment_stack, i);
-    size += string_length(segment);
-    size += 1;
+    if (i > 0) {
+      char *next = string_append(string, "/");
+      string_free(string);
+      string = next;
+    }
+    char *next = string_append(string, segment);
+    string_free(string);
+    string = next;
   }
 
   string_free(self->string);
-  char *string = NULL;
-  if (path_is_absolute(self)) {
-    // one more for ending \0
-    self->string = allocate(size + 1 + 1);
-    self->string[0] = '/';
-    string = self->string + 1;
-  } else {
-    // one more for ending \0
-    self->string = allocate(size + 1);
-    string = self->string;
-  }
-
-  for (size_t i = 0; i < length; i++) {
-    char *segment = stack_get(self->segment_stack, i);
-    strcat(string, segment);
-    string += string_length(segment);
-    if (i == length - 1) {
-      string[0] = '\0';
-    } else {
-      string[0] = '/';
-      string++;
-    }
-  }
+  self->string = string;
 }
 
 static void path_execute(path_t *self, char *segment) {
@@ -132,15 +214,39 @@ static void path_execute(path_t *self, char *segment) {
   }
 }
 
-void path_join(path_t *self, const char *string) {
-  entry_t *entry = next_segment(string);
-  while (entry) {
-    path_execute(self, entry->segment);
-    string = entry->string;
-    free(entry);
-    entry = next_segment(string);
+static bool path_string_is_absolute_drive_or_unc(const char *string) {
+  if (isalpha((unsigned char) string[0]) &&
+      string[1] == ':' &&
+      (string[2] == '/' || string[2] == '\\')) {
+    return true;
   }
 
+  return (string[0] == '/' && string[1] == '/' && string[2] != '/') ||
+         (string[0] == '\\' && string[1] == '\\' && string[2] != '\\');
+}
+
+void path_join(path_t *self, const char *string) {
+  if (path_string_is_absolute_drive_or_unc(string)) {
+    path_assign(self, string);
+    return;
+  }
+
+  char *normalized = path_normalize_separators(string);
+  const char *cursor = normalized;
+
+  while (*cursor != '\0') {
+    while (*cursor == '/') cursor++;
+    if (*cursor == '\0') break;
+
+    const char *end = cursor;
+    while (*end != '\0' && *end != '/') end++;
+
+    char *segment = string_substring(cursor, 0, (size_t) (end - cursor));
+    path_execute(self, segment);
+    cursor = end;
+  }
+
+  string_free(normalized);
   path_update_string(self);
 }
 
@@ -205,6 +311,18 @@ path_t *path_relative(const path_t *from, const path_t *to) {
   if (!((path_is_relative(from) && path_is_relative(to)) ||
         (path_is_absolute(from) && path_is_absolute(to)))) {
     who_printf("from and to must be both absolute or both relative\n");
+    who_printf("  from: %s\n", path_raw_string(from));
+    who_printf("  to: %s\n", path_raw_string(to));
+    exit(1);
+  }
+
+  const char *from_root = from->root ? from->root : "";
+  const char *to_root = to->root ? to->root : "";
+  bool roots_match = string_equal(from_root, to_root) ||
+    from_root[0] == '\0' ||
+    to_root[0] == '\0';
+  if (!roots_match) {
+    who_printf("from and to must have the same root\n");
     who_printf("  from: %s\n", path_raw_string(from));
     who_printf("  to: %s\n", path_raw_string(to));
     exit(1);

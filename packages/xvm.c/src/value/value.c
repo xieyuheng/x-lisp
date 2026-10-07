@@ -2,7 +2,7 @@
 
 extern void write_string_escaped(buffer_t *buffer, const char *s);
 
-inline tag_t value_tag(value_t value) {
+extern inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
 

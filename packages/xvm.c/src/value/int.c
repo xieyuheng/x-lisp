@@ -2,44 +2,44 @@
 
 // int64_t but truncate the lower 3 bits
 
-inline value_t x_int(int64_t target) {
+extern inline value_t x_int(int64_t target) {
   return (target << 3) | X_INT;
 }
 
-inline bool is_int(value_t value) {
+extern inline bool is_int(value_t value) {
   return value_tag(value) == X_INT;
 }
 
-inline int64_t to_int64(value_t value) {
+extern inline int64_t to_int64(value_t value) {
   assert(is_int(value));
   return ((int64_t) value) >> 3;
 }
 
-inline value_t x_is_int(value_t value) {
+extern inline value_t x_is_int(value_t value) {
   return x_bool(is_int(value));
 }
 
-inline value_t x_ineg(value_t x) {
+extern inline value_t x_ineg(value_t x) {
   return x_int(-to_int64(x));
 }
 
-inline value_t x_iadd(value_t x, value_t y) {
+extern inline value_t x_iadd(value_t x, value_t y) {
   return x_int(to_int64(x) + to_int64(y));
 }
 
-inline value_t x_isub(value_t x, value_t y) {
+extern inline value_t x_isub(value_t x, value_t y) {
   return x_int(to_int64(x) - to_int64(y));
 }
 
-inline value_t x_imul(value_t x, value_t y) {
+extern inline value_t x_imul(value_t x, value_t y) {
   return x_int(to_int64(x) * to_int64(y));
 }
 
-inline value_t x_idiv(value_t x, value_t y) {
+extern inline value_t x_idiv(value_t x, value_t y) {
   return x_int(to_int64(x) / to_int64(y));
 }
 
-inline value_t x_imod(value_t x, value_t y) {
+extern inline value_t x_imod(value_t x, value_t y) {
   return x_int(to_int64(x) % to_int64(y));
 }
 
@@ -99,7 +99,7 @@ value_t x_int_compare_descending(value_t x, value_t y) {
   }
 }
 
-inline value_t x_int_to_float(value_t x) {
+extern inline value_t x_int_to_float(value_t x) {
   if (!x_is_int(x)) {
     who_printf("type mismatch\n");
     exit(1);

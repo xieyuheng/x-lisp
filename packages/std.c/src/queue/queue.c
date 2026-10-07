@@ -68,11 +68,11 @@ void queue_purge(queue_t *self) {
 void queue_free(queue_t *self) {
   queue_purge(self);
   free(self->values);
-  free(self->front_cursor);
-  free(self->back_cursor);
-  free(self->cached_front_cursor);
-  free(self->cached_back_cursor);
-  free(self);
+  free_page_aligned(self->front_cursor);
+  free_page_aligned(self->back_cursor);
+  free_page_aligned(self->cached_front_cursor);
+  free_page_aligned(self->cached_back_cursor);
+  free_page_aligned(self);
 }
 
 void queue_put_free_fn(queue_t *self, free_fn_t *free_fn) {

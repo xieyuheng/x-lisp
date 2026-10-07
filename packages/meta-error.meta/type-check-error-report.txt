@@ -1,4 +1,4 @@
-src/adt/adt-type-error.meta:4:18 -- unification fail
+src\adt\adt-type-error.meta:4:18 -- unification fail
   inferred type: adt-b/point-t
   expected type: adt-a/point-t
  2 | 
@@ -7,17 +7,7 @@ src/adt/adt-type-error.meta:4:18 -- unification fail
    |                  ~~~~~~~~~~~~~~~~~~~~~~   
  5 | 
 
-src/function/Y-type-error.meta:8:19 -- unification fail
-  inferred type: (-> A B)
-  expected type: A
-  6 | 
-  7 | (define (Y f)
-  8 |   ((lambda (u) (u u))
-    |                   ~   
-  9 |    (lambda (x) (f (lambda (t) ((x x) t))))))
- 10 | 
-
-src/function/arrow-shape-error.meta:10:2 -- arrow type arity mismatch
+src\function\arrow-shape-error.meta:10:2 -- arrow type arity mismatch
   inferred type: (-> A B C D)
   expected type: (-> (-> E F G) F E G)
   8 |     (-> (-> A B C) (-> B A C))))
@@ -27,7 +17,7 @@ src/function/arrow-shape-error.meta:10:2 -- arrow type arity mismatch
  11 | 
  12 | (claim drop
 
-src/function/arrow-shape-error.meta:16:2 -- arrow type arity mismatch
+src\function\arrow-shape-error.meta:16:2 -- arrow type arity mismatch
   inferred type: (-> A B)
   expected type: (-> (-> C D) E C D)
  14 |     (-> (-> A B) C A B)))
@@ -37,7 +27,7 @@ src/function/arrow-shape-error.meta:16:2 -- arrow type arity mismatch
  17 |   (lambda (dropped x) (f x)))
  18 | 
 
-src/function/arrow-shape-error.meta:23:2 -- arrow type arity mismatch
+src\function\arrow-shape-error.meta:23:2 -- arrow type arity mismatch
   inferred type: (-> A B)
   expected type: (-> (-> C C D) C D)
  21 |     (-> (-> A A B) A B)))
@@ -47,7 +37,7 @@ src/function/arrow-shape-error.meta:23:2 -- arrow type arity mismatch
  24 |   (lambda (x) (f x x)))
  25 | 
 
-src/function/identity-type-error-1.meta:7:2 -- expected type is not a substitution instance of inferred type
+src\function\identity-type-error-1.meta:7:2 -- expected type is not a substitution instance of inferred type
   inferred type: (-> A A)
   expected type: (-> B C)
  5 |     (-> A B)))
@@ -56,7 +46,7 @@ src/function/identity-type-error-1.meta:7:2 -- expected type is not a substituti
    |  ~~~~~~                 
  8 | 
 
-src/function/identity-type-error-2.meta:11:29 -- expected type is not a substitution instance of inferred type
+src\function\identity-type-error-2.meta:11:29 -- expected type is not a substitution instance of inferred type
   inferred type: (-> A A)
   expected type: (-> B C)
   9 | (define-test identity-test
@@ -65,7 +55,17 @@ src/function/identity-type-error-2.meta:11:29 -- expected type is not a substitu
     |                             ~~~~~~~~   
  12 | 
 
-src/let/heterogeneous-list-error.meta:4:23 -- unification fail
+src\function\Y-type-error.meta:8:19 -- unification fail
+  inferred type: (-> A B)
+  expected type: A
+  6 | 
+  7 | (define (Y f)
+  8 |   ((lambda (u) (u u))
+    |                   ~   
+  9 |    (lambda (x) (f (lambda (t) ((x x) t))))))
+ 10 | 
+
+src\let\heterogeneous-list-error.meta:4:23 -- unification fail
   inferred type: (list-t int-t)
   expected type: (list-t symbol-t)
  2 | 
@@ -74,7 +74,7 @@ src/let/heterogeneous-list-error.meta:4:23 -- unification fail
    |                       ~~~~~~~~~~~~   
  5 | 
 
-src/let/value-restriction-error.meta:5:27 -- unification fail
+src\let\value-restriction-error.meta:5:27 -- unification fail
   inferred type: (-> int-t int-t)
   expected type: (-> text-t A)
  3 | (define-test value-restriction-test
@@ -83,7 +83,7 @@ src/let/value-restriction-error.meta:5:27 -- unification fail
    |                           ~~~~~~~~    
  6 | 
 
-src/location/underline-width-error.meta:3:13 -- undefined variable
+src\location\underline-width-error.meta:3:13 -- undefined variable
   package id: self
   module name: underline-width-error
   name: 不存在
@@ -93,7 +93,7 @@ src/location/underline-width-error.meta:3:13 -- undefined variable
    |                ~~~~~~  
  4 | 
 
-src/markdown/type-error.md:11:14 -- expected type is not a substitution instance of inferred type
+src\markdown\type-error.md:11:14 -- expected type is not a substitution instance of inferred type
   inferred type: text-t
   expected type: int-t
   9 | 
@@ -103,7 +103,7 @@ src/markdown/type-error.md:11:14 -- expected type is not a substitution instance
  12 | ```
  13 | 
 
-src/module/nat-private-type-error.meta:8:17 -- undefined variable
+src\module\nat-private-type-error.meta:8:17 -- undefined variable
   package id: self
   module name: nat-private-type-error
   name: two
@@ -113,7 +113,7 @@ src/module/nat-private-type-error.meta:8:17 -- undefined variable
    |                 ~~~     
  9 | 
 
-src/opaque-type/box-as-list-error.meta:4:16 -- unification fail
+src\opaque-type\box-as-list-error.meta:4:16 -- unification fail
   inferred type: (builtin/box-t A)
   expected type: (list-t B)
  2 | 

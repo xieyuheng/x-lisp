@@ -1,10 +1,7 @@
 #include "index.h"
 
 double test_time_millisecond(void) {
-  struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
-  double millisecond = ts.tv_sec * 1000 + ts.tv_nsec * 1e-6;
-  return millisecond;
+  return (double) os_monotonic_nanoseconds() / 1e6;
 }
 
 double test_time_millisecond_passed(double start_millisecond) {

@@ -56,7 +56,8 @@ value_t x_exit(value_t status) {
 }
 
 value_t x_current_directory(void) {
-  char *cwd = getcwd(NULL, 0);
+  char *cwd = os_getcwd();
+  assert(cwd);
   return x_object(make_xtext_take(cwd));
 }
 

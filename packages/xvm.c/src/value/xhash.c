@@ -111,11 +111,11 @@ bool xhash_is_empty(const xhash_t *self) {
   return hash_is_empty(self->hash);
 }
 
-inline bool xhash_has(const xhash_t *self, value_t key) {
+extern inline bool xhash_has(const xhash_t *self, value_t key) {
   return hash_has(self->hash, (void *) key);
 }
 
-inline value_t xhash_get(const xhash_t *self, value_t key) {
+extern inline value_t xhash_get(const xhash_t *self, value_t key) {
   hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
   if (!entry) {
     who_printf("undefined key: ");
@@ -127,13 +127,13 @@ inline value_t xhash_get(const xhash_t *self, value_t key) {
   return (value_t) entry->value;
 }
 
-inline void xhash_put(xhash_t *self, value_t key, value_t value) {
+extern inline void xhash_put(xhash_t *self, value_t key, value_t value) {
   hash_put(self->hash, (void *) key, (void *) value);
   gc_write_barrier((object_t *) self, key);
   gc_write_barrier((object_t *) self, value);
 }
 
-inline void xhash_delete(xhash_t *self, value_t key) {
+extern inline void xhash_delete(xhash_t *self, value_t key) {
   hash_delete(self->hash, (void *) key);
 }
 

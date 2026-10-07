@@ -11,12 +11,12 @@ static void thread_fn(thread_t *thread) {
       mutex_lock(mutex);
 
       global_count++;
-      sleep(0);
+      os_sleep_nanoseconds(0);
 
       mutex_unlock(mutex);
     }
 
-    sleep(0);
+    os_sleep_nanoseconds(0);
     count++;
   }
 }

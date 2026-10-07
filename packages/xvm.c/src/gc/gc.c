@@ -1,6 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
-
 #include "index.h"
 #include "../value/object.h"
 
@@ -80,9 +78,7 @@ struct gc_t {
 };
 
 static double now_s(void) {
-  struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
-  return (double) ts.tv_sec + (double) ts.tv_nsec / 1e9;
+  return time_second();
 }
 
 static size_t align8(size_t size) {

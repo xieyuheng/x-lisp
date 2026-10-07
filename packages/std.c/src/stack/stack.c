@@ -28,35 +28,35 @@ stack_t *make_stack_with(free_fn_t *free_fn) {
   return self;
 }
 
-inline size_t stack_length(const stack_t *self) {
+extern inline size_t stack_length(const stack_t *self) {
   return array_length(self->array);
 }
 
-inline bool stack_is_empty(const stack_t *self) {
+extern inline bool stack_is_empty(const stack_t *self) {
   return array_is_empty(self->array);
 }
 
-inline void *stack_top(stack_t *self) {
+extern inline void *stack_top(stack_t *self) {
   return array_top(self->array);
 }
 
-inline void *stack_pop(stack_t *self) {
+extern inline void *stack_pop(stack_t *self) {
   return array_pop(self->array);
 }
 
-inline void stack_push(stack_t *self, void *value) {
+extern inline void stack_push(stack_t *self, void *value) {
   array_push(self->array, value);
 }
 
-inline void *stack_get(const stack_t *self, size_t index) {
+extern inline void *stack_get(const stack_t *self, size_t index) {
   return array_get(self->array, index);
 }
 
-inline void *stack_pick(const stack_t *self, size_t index) {
+extern inline void *stack_pick(const stack_t *self, size_t index) {
   return array_pick(self->array, index);
 }
 
-inline void stack_tuck_n(stack_t *self, void *target, size_t n) {
+extern inline void stack_tuck_n(stack_t *self, void *target, size_t n) {
   list_t *value_list = make_list();
   for (size_t i = 0; i < n; i++) {
     void *value = stack_pop(self);

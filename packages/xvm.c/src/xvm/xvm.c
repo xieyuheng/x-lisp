@@ -1,4 +1,5 @@
 #include "index.h"
+#include "execute_switch_cases.h"
 
 typedef enum {
   OP_MOVE = 0x01,
@@ -155,7 +156,7 @@ size_t xvm_frame_count(const xvm_t *xvm) {
   return xvm->frame_count;
 }
 
-inline frame_t *xvm_current_frame(xvm_t *xvm) {
+extern inline frame_t *xvm_current_frame(xvm_t *xvm) {
   if (xvm->frame_count == 0) return NULL;
   return (frame_t *)(xvm->frame_bytes + xvm->frame_offset);
 }
@@ -267,7 +268,8 @@ static void xvm_tail_call_replace(xvm_t *xvm, function_t *fn,
   frame_t *current = xvm_current_frame(xvm);
   size_t prev_frame_offset = current->prev_frame_offset;
 
-  value_t saved[argc > 0 ? argc : 1];
+  assert(argc < 256);
+  value_t saved[256];
   if (args) {
     value_t *current_locals = frame_locals(current);
     for (size_t i = 0; i < argc; i++) {
@@ -440,13 +442,19 @@ DEFINE_UNARY_OP(float_is_non_zero, x_float_non_zero)
 static void *dispatch_table[256];
 static bool dispatch_table_ready = false;
 
+#if defined(_MSC_VER)
+#define TH_DISPATCH() switch (frame->pc[0]) { TH_DISPATCH_CASES }
+#define TH_NEXT() goto th_dispatch
+#else
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
-
 #define TH_DISPATCH() goto *dispatch_table[frame->pc[0]]
 #define TH_NEXT() goto *dispatch_table[frame->pc[0]]
+#endif
 
 void xvm_execute(xvm_t *xvm) {
+
+#ifndef _MSC_VER
   if (!dispatch_table_ready) {
     dispatch_table[OP_MOVE] = &&th_move;
     dispatch_table[OP_LOAD_INT] = &&th_load_value;
@@ -538,6 +546,7 @@ void xvm_execute(xvm_t *xvm) {
 
     dispatch_table_ready = true;
   }
+#endif
 
   assert(xvm->break_depth <= xvm->frame_count);
 
@@ -545,6 +554,7 @@ void xvm_execute(xvm_t *xvm) {
     frame_t *frame = xvm_current_frame(xvm);
     value_t *locals = frame_locals(frame);
 
+    th_dispatch:
     TH_DISPATCH();
 
     th_move: exec_move(frame, locals); TH_NEXT();
@@ -638,7 +648,9 @@ void xvm_execute(xvm_t *xvm) {
   }
 }
 
+#ifndef _MSC_VER
 #pragma GCC diagnostic pop
+#endif
 
 
 static void xvm_gc_roots_in_frame_buffer(xvm_t *xvm, array_t *roots) {

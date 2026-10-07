@@ -138,7 +138,7 @@ char *buffer_to_string(const buffer_t *self) {
 }
 
 void buffer_read(buffer_t *self, file_t *file) {
-  off_t size = file_size(file);
+  int64_t size = file_size(file);
   buffer_ensure_capacity(self, size);
   uint8_t *bytes = buffer_raw_bytes(self);
   size_t nbytes = fread(bytes, 1, size, file);
@@ -155,7 +155,7 @@ void buffer_write_and_free(buffer_t *self, file_t *file) {
   buffer_free(self);
 }
 
-[[noreturn]] void buffer_write_and_exit(buffer_t *self, file_t *file, int status) {
+_Noreturn void buffer_write_and_exit(buffer_t *self, file_t *file, int status) {
   buffer_write(self, file);
   buffer_free(self);
   exit(status);

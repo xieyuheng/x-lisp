@@ -1,6 +1,7 @@
 #pragma once
 
 #include "control/index.h"
+#include "os/index.h"
 #include "test/index.h"
 #include "memory/index.h"
 #include "char/index.h"

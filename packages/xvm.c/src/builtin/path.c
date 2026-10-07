@@ -16,8 +16,9 @@ value_t x_path_directory_name(value_t string) {
   path_t *path = make_path(xtext_string(to_xtext(string)));
   if (path_segment_length(path) == 0) {
     if (path_is_absolute(path)) {
+      char *result = string_copy(path_raw_string(path));
       path_free(path);
-      return x_object(make_xtext("/"));
+      return x_object(make_xtext_take(result));
     } else {
       path_free(path);
       return x_object(make_xtext("."));
@@ -64,11 +65,17 @@ value_t x_path_stem(value_t string) {
 }
 
 value_t x_path_is_absolute(value_t string) {
-  return x_bool(string_starts_with(xtext_string(to_xtext(string)), "/"));
+  path_t *path = make_path(xtext_string(to_xtext(string)));
+  bool result = path_is_absolute(path);
+  path_free(path);
+  return x_bool(result);
 }
 
 value_t x_path_is_relative(value_t string) {
-  return x_bool(!string_starts_with(xtext_string(to_xtext(string)), "/"));
+  path_t *path = make_path(xtext_string(to_xtext(string)));
+  bool result = path_is_relative(path);
+  path_free(path);
+  return x_bool(result);
 }
 
 value_t x_path_join(value_t left, value_t right) {

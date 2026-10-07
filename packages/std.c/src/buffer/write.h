@@ -24,8 +24,15 @@
  * 如果格式串和参数类型不匹配，编译时会给出警告。
  */
 
+#if defined(__GNUC__) || defined(__clang__)
+#define X_PRINTF_FORMAT(string_index, first_to_check) \
+  __attribute__((format(printf, string_index, first_to_check)))
+#else
+#define X_PRINTF_FORMAT(string_index, first_to_check)
+#endif
+
 void write_template(buffer_t *buffer, const char *template, ...)
-  __attribute__((format(printf, 2, 3)));
+  X_PRINTF_FORMAT(2, 3);
 
 void write_int(buffer_t *buffer, int64_t n);
 void write_uint(buffer_t *buffer, uint64_t n);
