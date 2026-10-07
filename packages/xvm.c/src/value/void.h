@@ -1,6 +1,6 @@
 #pragma once
 
-#define x_void ((value_t) 0b10110)
+#define x_void ((value_t) 0x16) // 0b10110
 
 bool is_void(value_t value);
 

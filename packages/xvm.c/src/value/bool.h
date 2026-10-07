@@ -1,7 +1,7 @@
 #pragma once
 
-#define x_true  ((value_t) 0b01110)
-#define x_false ((value_t) 0b00110)
+#define x_true  ((value_t) 0x0e) // 0b01110
+#define x_false ((value_t) 0x06) // 0b00110
 
 value_t x_bool(bool target);
 bool is_bool(value_t value);

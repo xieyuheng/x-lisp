@@ -7,7 +7,7 @@
 在仓库根目录配置并构建：
 
 ```powershell
-cmake -S . -B build/windows -G "Visual Studio 17 2022" -A x64
+cmake -S . -B build/windows -A x64
 cmake --build build/windows --config Release --parallel
 ctest --test-dir build/windows -C Release --output-on-failure
 ```
@@ -48,7 +48,7 @@ x_add_c_package(cli.c DEPS std.c)
 
 ## Windows / MSVC 约定
 
-- 使用 Visual Studio generator，不使用 Ninja
+- 使用 CMake 自动选择的 Visual Studio generator，不使用 Ninja
 - 使用 MSVC `cl.exe`
 - 源码按 UTF-8 读取（`/utf-8`）
 - 开启 C11 atomics（`/experimental:c11atomics`）

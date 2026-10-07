@@ -5,17 +5,17 @@ typedef uint64_t value_t;
 // value = 61 bits payload + 3 bits tag.
 
 #define PAYLOAD_MASK ((uint64_t) 0xfffffffffffffff8)
-#define TAG_MASK ((uint64_t) 0b111)
+#define TAG_MASK ((uint64_t) 0x7) // 0b111
 
 typedef enum {
-  X_INT     = 0b000,
-  X_FLOAT     = 0b001,
+  X_INT     = 0x0, // 0b000
+  X_FLOAT     = 0x1, // 0b001
   //      = 0b010,
   //      = 0b011,
   //      = 0b100,
   //      = 0b101,
-  X_IMMEDIATE   = 0b110,
-  X_OBJECT    = 0b111,
+  X_IMMEDIATE   = 0x6, // 0b110
+  X_OBJECT    = 0x7, // 0b111
 } tag_t;
 
 // function pointer types for builtin primitives

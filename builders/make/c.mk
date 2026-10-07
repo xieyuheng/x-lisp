@@ -6,7 +6,7 @@ ld = ld
 #cc = clang
 #ld = ld.lld
 
-cflags = -std=c23
+cflags = -std=c17
 cflags += -g
 cflags += -O3
 cflags += -falign-functions=8
