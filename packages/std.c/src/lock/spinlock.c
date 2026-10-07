@@ -8,7 +8,8 @@ spinlock_t *make_spinlock(void) {
 
 void spinlock_free(spinlock_t *self) {
   os_spinlock_destroy(self);
-  free(self);
+  // We need to cast pointer to volatile data to normal pointer.
+  free((void *) self);
 }
 
 void spinlock_lock(spinlock_t *self) {

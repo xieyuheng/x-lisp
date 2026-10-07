@@ -131,32 +131,6 @@ bool path_equal(path_t *x, path_t *y) {
   return string_equal(path_raw_string(x), path_raw_string(y));
 }
 
-typedef struct {
-  const char *string;
-  char *segment;
-} entry_t;
-
-static entry_t *next_segment(const char *string) {
-  if (string_is_empty(string))
-    return NULL;
-
-  int index = string_find_char_index(string, '/');
-  if (index == -1) {
-    entry_t *entry = new(entry_t);
-    entry->string = string + string_length(string);
-    entry->segment = string_copy(string);
-    return entry;
-  }
-
-  entry_t *entry = new(entry_t);
-  entry->string = string + index;
-  if (string_length(entry->string) > 0)
-    entry->string++;
-
-  entry->segment = string_substring(string, 0, (size_t) index);
-  return entry;
-}
-
 static void path_update_string(path_t *self) {
   size_t length = stack_length(self->segment_stack);
   char *string = string_copy("");

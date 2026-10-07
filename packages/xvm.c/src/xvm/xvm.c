@@ -268,7 +268,6 @@ static void xvm_tail_call_replace(xvm_t *xvm, function_t *fn,
   frame_t *current = xvm_current_frame(xvm);
   size_t prev_frame_offset = current->prev_frame_offset;
 
-  assert(argc < 256);
   value_t saved[256];
   if (args) {
     value_t *current_locals = frame_locals(current);
@@ -554,7 +553,9 @@ void xvm_execute(xvm_t *xvm) {
     frame_t *frame = xvm_current_frame(xvm);
     value_t *locals = frame_locals(frame);
 
+#if defined(_MSC_VER)
     th_dispatch:
+#endif
     TH_DISPATCH();
 
     th_move: exec_move(frame, locals); TH_NEXT();
