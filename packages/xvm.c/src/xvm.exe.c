@@ -34,7 +34,7 @@ static void handle_test(cli_ctx_t *ctx) {
   program_free(program);
 }
 
-int main(int argc, char *argv[]) {
+static int xvm_main(int argc, char *argv[]) {
   sanity_check();
   setbuf(stdout, NULL);
   setbuf(stderr, NULL);
@@ -54,3 +54,45 @@ int main(int argc, char *argv[]) {
   cli_router_free(router);
   return 0;
 }
+
+#if defined(_WIN32)
+
+// Windows passes argv as UTF-16; convert it to UTF-8 for the rest of the VM.
+static char *xvm_utf16_to_utf8(const wchar_t *wide) {
+  int size = WideCharToMultiByte(CP_UTF8, 0, wide, -1, NULL, 0, NULL, NULL);
+  if (size == 0) return NULL;
+
+  char *string = malloc((size_t) size);
+  if (!string) return NULL;
+
+  WideCharToMultiByte(CP_UTF8, 0, wide, -1, string, size, NULL, NULL);
+  return string;
+}
+
+int wmain(int argc, wchar_t *wargv[]) {
+  char **argv = calloc((size_t) argc + 1, sizeof(char *));
+  if (!argv) return 1;
+
+  for (int i = 0; i < argc; i++) {
+    argv[i] = xvm_utf16_to_utf8(wargv[i]);
+    if (!argv[i]) {
+      for (int j = 0; j < i; j++) free(argv[j]);
+      free(argv);
+      return 1;
+    }
+  }
+
+  int status = xvm_main(argc, argv);
+
+  for (int i = 0; i < argc; i++) free(argv[i]);
+  free(argv);
+  return status;
+}
+
+#else
+
+int main(int argc, char *argv[]) {
+  return xvm_main(argc, argv);
+}
+
+#endif
