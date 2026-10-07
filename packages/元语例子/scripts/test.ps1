@@ -2,11 +2,14 @@
 #Requires -Version 7.3
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
+. (Join-Path $PSScriptRoot '../../../builders/scripts/init-utf8.ps1')
 $packageRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $xvm = Join-Path $PSScriptRoot '../../../bin/xvm.ps1'
-& $xvm test (Join-Path $packageRoot 'build/bundle.xvm.exe')
+& $xvm test 'build/bundle.xvm.exe'
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-$helper = Join-Path $PSScriptRoot '../../../builders/scripts/run-native-to-file.ps1'
-$pwsh = (Get-Command pwsh).Source
+
+$output = & (Join-Path $PSScriptRoot 'test-cli.ps1')
+$text = if ($null -eq $output) { '' } else { ($output | ForEach-Object { $_.ToString() }) -join "`n" }
+if ($text.Length -gt 0) { $text += "`n" }
 $out = Join-Path $PSScriptRoot 'test-cli.sh.out'
-& $helper -FilePath $pwsh -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $PSScriptRoot 'test-cli.ps1')) -OutputPath $out
+[System.IO.File]::WriteAllText($out, $text, (New-Object System.Text.UTF8Encoding($false)))

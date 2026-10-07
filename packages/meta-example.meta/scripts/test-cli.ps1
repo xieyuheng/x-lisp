@@ -2,9 +2,10 @@
 #Requires -Version 7.3
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
+. (Join-Path $PSScriptRoot '../../../builders/scripts/init-utf8.ps1')
 $root = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 $xvm = Join-Path $root 'bin/xvm.ps1'
-$exe = Join-Path $PSScriptRoot '../build/bundle.xvm.exe'
+$exe = 'build/bundle.xvm.exe'
 
 Write-Output '=== hello ==='
 & $xvm run $exe -- hello
