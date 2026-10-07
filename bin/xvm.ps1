@@ -12,7 +12,10 @@ if (-not (Test-Path $exe)) {
 
 $forward = @($Rest)
 if ($Rest.Count -ge 2 -and $Rest[0] -eq 'run' -and ($Rest.Count -lt 3 -or $Rest[2] -ne '--')) {
-  $forward = @($Rest[0], $Rest[1], '--') + @($Rest[2..($Rest.Count - 1)])
+  $forward = @($Rest[0], $Rest[1], '--')
+  if ($Rest.Count -gt 2) {
+    $forward += @($Rest[2..($Rest.Count - 1)])
+  }
 }
 
 & $exe @forward
