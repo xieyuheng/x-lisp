@@ -1,5 +1,4 @@
 #include "index.h"
-#include "../stack/index.h"
 
 fs_recursive_iter_t *fs_make_recursive_iter(const char *pathname) {
   fs_recursive_iter_t *self = new(fs_recursive_iter_t);

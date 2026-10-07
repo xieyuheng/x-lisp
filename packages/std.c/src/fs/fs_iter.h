@@ -1,8 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "../os/index.h"
-#include "../path/index.h"
 
 struct fs_iter_t {
   os_dir_t *dir;

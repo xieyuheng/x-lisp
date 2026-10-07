@@ -1,3 +1,8 @@
 #pragma once
 
-#include "../int/index.h"
+#include <assert.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../test/index.h"

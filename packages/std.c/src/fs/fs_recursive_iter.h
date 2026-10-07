@@ -1,8 +1,6 @@
 #pragma once
 
 #include "types.h"
-#include "../stack/index.h"
-#include "../path/index.h"
 
 struct fs_recursive_iter_t {
   stack_t *stack;
