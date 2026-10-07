@@ -3,7 +3,6 @@
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
 . (Join-Path $PSScriptRoot '../../../builders/scripts/init-utf8.ps1')
-$packageRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $xvm = Join-Path $PSScriptRoot '../../../bin/xvm.ps1'
 & $xvm test 'build/bundle.xvm.exe'
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
