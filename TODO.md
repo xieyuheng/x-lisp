@@ -1,3 +1,5 @@
+# meta-lisp.js / meta-lisp.meta
+
 我们之前为 meta-lisp 语言实现了 markdown 支持，
 可以直接把 .md 后缀的文件作为源代码文件，
 把里面带有 meta-lisp 标记的 code block 作为源代码。
@@ -20,6 +22,8 @@
 这样可以保持简单，
 并且一个 .md 文件中的 import 依赖语句，
 可以在 code block 之间传递。
+
+先给出方案。
 
 # 文学式编程
 

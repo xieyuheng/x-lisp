@@ -63,3 +63,6 @@ date: 2026-10-08
 
 package 和 module 和 file 之间的关系，
 看来还是有待讨论的。
+
+在 AI agent 可以维护代码的时代，
+人们可能已经不需要依赖外部的 package 了。
