@@ -1,27 +1,28 @@
 import * as S from "@xieyuheng/sexp.js"
+import fs from "node:fs"
+import { parseMarkdown } from "../../markdown/index.ts"
 import type { MarkdownCodeBlock } from "../../markdown/index.ts"
 import * as M from "../index.ts"
-import { findModuleDeclarations } from "./findModuleDeclarations.ts"
 
-export function loadMarkdownFragment(
-  path: string,
-  block: MarkdownCodeBlock,
-  defaultModName: string | undefined,
-): M.Fragment | undefined {
-  if (block.language !== "meta-lisp") return undefined
+export function loadMarkdownFragment(path: string): M.Fragment | undefined {
+  const code = fs.readFileSync(path, "utf-8")
+  const document = parseMarkdown(code, path)
+  const blocks = document.codeBlocks.filter(
+    (block) => block.language === "meta-lisp",
+  )
 
-  const stmts = parseMarkdownBlockStmts(path, block)
-  const modName = resolveMarkdownBlockModName(
+  if (blocks.length === 0) return undefined
+
+  const stmts = blocks.flatMap((block) => parseMarkdownBlockStmts(path, block))
+  const modName = resolveMarkdownModName(
     path,
-    block,
-    stmts,
-    defaultModName,
+    blocks[0],
+    document.frontMatter?.get("module"),
   )
 
   return {
-    id: `${path}#block-${block.index}`,
+    id: path,
     path,
-    blockIndex: block.index,
     modName,
     stmts,
     desugaredStmts: [],
@@ -43,42 +44,29 @@ function parseMarkdownBlockStmts(
   return sexps.map(M.parseStmt)
 }
 
-function resolveMarkdownBlockModName(
+function resolveMarkdownModName(
   path: string,
   block: MarkdownCodeBlock,
-  stmts: Array<M.Stmt<M.Exp>>,
-  defaultModName: string | undefined,
+  modName: string | undefined,
 ): string {
-  const moduleDeclarations = findModuleDeclarations(stmts)
-
-  if (moduleDeclarations.length > 1) {
-    let message = `[loadMarkdownFragment] multiple module declarations in one code block`
-    message += `\n  path: ${path}`
-    message += `\n  modules: ${moduleDeclarations
-      .map((declaration) => declaration.name)
-      .join(", ")}`
-    throw new S.ErrorWithSourceLocation(message, moduleDeclarations[0].location)
-  }
-
-  const explicitModName = moduleDeclarations[0]?.name
-  const modName = explicitModName ?? defaultModName
-
   if (modName === undefined) {
-    let message = `[loadMarkdownFragment] expect (module) statement in code block`
+    let message = `[loadMarkdownFragment] expect "module" in front matter`
     message += `\n  path: ${path}`
-    const location =
-      stmts[0]?.location ??
-      S.makeSourceLocation(path, {
-        start: block.contentStart,
-        end: block.contentStart,
-      })
+    const location = S.makeSourceLocation(path, {
+      start: block.contentStart,
+      end: block.contentStart,
+    })
     throw new S.ErrorWithSourceLocation(message, location)
   }
 
   if (modName === "") {
     let message = `[loadMarkdownFragment] empty module in front matter`
     message += `\n  path: ${path}`
-    throw new S.ErrorWithSourceLocation(message, S.zeroLocation(path))
+    const location = S.makeSourceLocation(path, {
+      start: block.contentStart,
+      end: block.contentStart,
+    })
+    throw new S.ErrorWithSourceLocation(message, location)
   }
 
   return modName

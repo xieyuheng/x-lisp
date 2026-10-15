@@ -1,3 +1,5 @@
 (import-all meta-builtin/builtin)
 
+(define (square x) (imul x x))
+
 (define-test square-test (assert-equal 9 (square 3)))

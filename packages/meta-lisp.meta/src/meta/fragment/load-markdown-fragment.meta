@@ -1,0 +1,54 @@
+(module meta)
+
+(define (load-markdown-fragment path)
+  (let ((code (path-read path))
+        (document (parse-markdown path code))
+        (mod-name
+          (hash-get-maybe
+            (markdown-document-front-matter document)
+            "module"))
+        (blocks
+          (list-filter
+            (markdown-document-code-blocks document)
+            (lambda (block)
+              (equal (markdown-code-block-language block) "meta-lisp")))))
+    (if (list-is-empty blocks)
+      (nothing)
+      (just
+        (make-fragment
+          path
+          path
+          (resolve-markdown-mod-name path (list-head blocks) mod-name)
+          (list-map-concat
+            blocks
+            (lambda (block)
+              (parse-markdown-block-stmts path block)))
+          (@list))))))
+
+(define (parse-markdown-block-stmts path block)
+  (list-map
+    (parse-sexps
+      path
+      (markdown-code-block-content-start block)
+      (markdown-code-block-content block))
+    parse-stmt))
+
+(define (resolve-markdown-mod-name path block mod-name)
+  (match mod-name
+    ((just name)
+     (if (text-is-empty name)
+       (error-with-location
+         "(load-markdown-fragment) empty module in front matter"
+         (block-content-location path block))
+       (text-to-symbol name)))
+    ((nothing)
+     (error-with-location
+       "(load-markdown-fragment) expect module in front matter"
+       (block-content-location path block)))))
+
+(define (block-content-location path block)
+  (make-source-location
+    path
+    (make-source-span
+      (markdown-code-block-content-start block)
+      (markdown-code-block-content-start block))))

@@ -107,9 +107,7 @@ export function packageFragmentDumpName(
   pkg: Package,
   fragment: M.Fragment,
 ): string {
-  const name = Path.relative(packageSourceDirectory(pkg), fragment.path)
-  if (fragment.blockIndex === undefined) return name
-  return `${name}.block-${String(fragment.blockIndex).padStart(4, "0")}`
+  return Path.relative(packageSourceDirectory(pkg), fragment.path)
 }
 
 export function packageMods(pkg: Package): Array<M.Mod> {

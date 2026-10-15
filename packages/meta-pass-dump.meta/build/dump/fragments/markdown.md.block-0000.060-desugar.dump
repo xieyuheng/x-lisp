@@ -1,3 +1,0 @@
-(import-all meta-builtin/builtin)
-
-(define (square x) (imul x x))
