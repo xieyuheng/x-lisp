@@ -3,3 +3,4 @@ packages:
   - "packages/*.vitepress"
 allowBuilds:
   esbuild: true
+  workerd: true
