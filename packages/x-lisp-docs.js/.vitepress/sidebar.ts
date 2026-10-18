@@ -3,6 +3,11 @@ import { basename, join } from "node:path"
 import matter from "gray-matter"
 import type { DefaultTheme } from "vitepress"
 
+export type SidebarOptions = {
+  indexFiles: string[]
+  depth?: number
+}
+
 function titleOf(file: string): string {
   const { data, content } = matter(readFileSync(file, "utf8"))
 
@@ -22,8 +27,10 @@ function isDirectory(entry: { isDirectory(): boolean }): boolean {
 export function sidebarFor(
   dir: string,
   base: string,
-  indexFiles: string[] = ["index.md"],
+  options: SidebarOptions,
 ): DefaultTheme.SidebarItem[] {
+  const { indexFiles, depth = 1 } = options
+
   return readdirSync(dir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() || entry.name.endsWith(".md"))
     .sort((a, b) => {
@@ -40,8 +47,11 @@ export function sidebarFor(
       if (entry.isDirectory()) {
         return {
           text: entry.name,
-          collapsed: true,
-          items: sidebarFor(join(dir, entry.name), `${base}${entry.name}/`),
+          ...(depth > 1 ? { collapsed: true } : {}),
+          items: sidebarFor(join(dir, entry.name), `${base}${entry.name}/`, {
+            indexFiles,
+            depth: depth + 1,
+          }),
         }
       }
 

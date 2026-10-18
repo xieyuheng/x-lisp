@@ -20,7 +20,7 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: [(link) => link.includes("../../diary/")],
   title: "x-lisp",
-  description: "x-lisp / meta-lisp documentation",
+  description: "x-lisp documentation",
 
   rewrites: {
     "meta-lisp/README.md": "meta-lisp/index.md",
@@ -61,20 +61,23 @@ export default defineConfig({
     ],
 
     sidebar: {
-      "/meta-lisp/": sidebarFor(resolve(docsDir, "meta-lisp"), "/meta-lisp/", [
-        "index.md",
-        "README.md",
-      ]),
+      "/meta-lisp/": sidebarFor(resolve(docsDir, "meta-lisp"), "/meta-lisp/", {
+        indexFiles: ["index.md", "README.md"],
+      }),
       "/basic-lisp/": sidebarFor(
         resolve(docsDir, "basic-lisp"),
         "/basic-lisp/",
+        { indexFiles: ["index.md"] },
       ),
-      "/xvm-lisp/": sidebarFor(resolve(docsDir, "xvm-lisp"), "/xvm-lisp/"),
-      "/x86-lisp/": sidebarFor(resolve(docsDir, "x86-lisp"), "/x86-lisp/"),
-      "/元语/": sidebarFor(resolve(docsDir, "元语"), "/元语/", [
-        "index.md",
-        "说明.md",
-      ]),
+      "/xvm-lisp/": sidebarFor(resolve(docsDir, "xvm-lisp"), "/xvm-lisp/", {
+        indexFiles: ["index.md"],
+      }),
+      "/x86-lisp/": sidebarFor(resolve(docsDir, "x86-lisp"), "/x86-lisp/", {
+        indexFiles: ["index.md"],
+      }),
+      "/元语/": sidebarFor(resolve(docsDir, "元语"), "/元语/", {
+        indexFiles: ["index.md", "说明.md"],
+      }),
     },
 
     search: {
