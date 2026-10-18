@@ -1,5 +1,5 @@
 ---
-title: can not view symbol as string
+title: 不能把 symbol 当作 string
 author: xieyuheng
 date: 2025-07-31
 ---
