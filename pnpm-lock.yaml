@@ -125,7 +125,7 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/x-lisp-docs.ts:
+  packages/x-lisp-docs.vitepress:
     devDependencies:
       '@types/node':
         specifier: ^26.6.5

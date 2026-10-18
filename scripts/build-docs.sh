@@ -2,4 +2,4 @@
 
 set -e
 
-./scripts/run-in.sh x-lisp-docs.ts build.sh
+./scripts/run-in.sh x-lisp-docs.vitepress build.sh

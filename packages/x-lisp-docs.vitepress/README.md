@@ -1,4 +1,4 @@
-# x-lisp-docs.ts
+# x-lisp-docs.vitepress
 
 VitePress documentation site.
 
