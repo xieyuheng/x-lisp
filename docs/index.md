@@ -3,12 +3,12 @@ layout: home
 hero:
   name: x-lisp
   text: programming language collection
-  tagline: languages based on the Lisp syntax framework
+  tagline: languages based on the lisp syntax framework
 ---
 
-### [meta-lisp](meta-lisp/)
+## [meta-lisp](meta-lisp/)
 
-A minimalist statically typed Lisp.
+A minimalist statically typed lisp.
 
 ```meta-lisp
 (module math)
@@ -28,30 +28,6 @@ A minimalist statically typed Lisp.
   (assert-equal 24 (factorial 4))
   (assert-equal 120 (factorial 5))
   (assert-equal 720 (factorial 6)))
-```
-
-### [元语](元语/)
-
-「元语」is the Chinese translation of meta-lisp and supports programming in Chinese.
-
-```meta-lisp
-(模块 数学)
-
-(声明 阶乘 (-> 整数型 整数型))
-
-(定义 (阶乘 数)
-  (若 (整数小于等于 数 1)
-    1
-    (整数乘 (阶乘 (整数减 数 1)) 数)))
-
-(定义测试 阶乘测试
-  (断言相等 1 (阶乘 0))
-  (断言相等 1 (阶乘 1))
-  (断言相等 2 (阶乘 2))
-  (断言相等 6 (阶乘 3))
-  (断言相等 24 (阶乘 4))
-  (断言相等 120 (阶乘 5))
-  (断言相等 720 (阶乘 6)))
 ```
 
 ## [basic-lisp](basic-lisp/syntax)
@@ -76,7 +52,7 @@ SSA IR.
     (return value.1)))
 ```
 
-### [xvm-lisp](xvm-lisp/syntax)
+## [xvm-lisp](xvm-lisp/syntax)
 
 XVM virtual machine.
 
@@ -98,20 +74,15 @@ XVM virtual machine.
   (return value.1))
 ```
 
-### [x86-lisp](x86-lisp/syntax)
+## [x86-lisp](x86-lisp/syntax)
 
-x86-64 assembly with Lisp syntax.
+x86-64 assembly with lisp syntax.
 
 ```x86-lisp
 ; conditional branch
 ;
 ;   10 > 3, takes is-greater path, returns 1
 ;
-; Encodings exercised:
-;   mov reg, imm32 — C7 /0
-;   cmp reg, reg   — 3B /r  (REX.W + 3B + ModRM mod=3)
-;   j cc label     — 0F 8x rel32  (condition code: g)
-;   ret            — C3
 
 (define-code main
   (mov (reg rax) 10)

@@ -3,12 +3,12 @@ layout: home
 hero:
   name: x-lisp
   text: 编程语言集合
-  tagline: 基于 Lisp 语法框架的编程语言
+  tagline: 基于 lisp 语法框架的编程语言
 ---
 
-### [meta-lisp](../meta-lisp/)
+## [meta-lisp](../meta-lisp/)
 
-极简的静态类型 Lisp。
+极简的静态类型 lisp。
 
 ```meta-lisp
 (module math)
@@ -30,7 +30,7 @@ hero:
   (assert-equal 720 (factorial 6)))
 ```
 
-### [元语](../元语/)
+## [元语](../元语/)
 
 meta-lisp 中文翻译为「元语」。<br />
 支持中文编程。
@@ -77,7 +77,7 @@ SSA 中间表示。
     (return value.1)))
 ```
 
-### [xvm-lisp](../xvm-lisp/syntax)
+## [xvm-lisp](../xvm-lisp/syntax)
 
 XVM 虚拟机。
 
@@ -99,20 +99,15 @@ XVM 虚拟机。
   (return value.1))
 ```
 
-### [x86-lisp](../x86-lisp/syntax)
+## [x86-lisp](../x86-lisp/syntax)
 
-使用 Lisp 语法的 x86-64 汇编。
+使用 lisp 语法的 x86-64 汇编。
 
 ```x86-lisp
 ; conditional branch
 ;
 ;   10 > 3, takes is-greater path, returns 1
 ;
-; Encodings exercised:
-;   mov reg, imm32 — C7 /0
-;   cmp reg, reg   — 3B /r  (REX.W + 3B + ModRM mod=3)
-;   j cc label     — 0F 8x rel32  (condition code: g)
-;   ret            — C3
 
 (define-code main
   (mov (reg rax) 10)
