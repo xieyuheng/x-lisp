@@ -13,7 +13,7 @@ date: 2026-06-10
 
 - 零外部依赖——不依赖 GNU as、NASM 等
 - 生成「native code blob + metadata」数据结构
-- 汇编器用 TypeScript 实现（[meta-lisp.js] 内）
+- 汇编器用 TypeScript 实现（[meta-lisp.ts] 内）
 - 汇编语言是 meta-lisp 编译器后端（代码生成 + 寄存器分配）的 target IR
 - 二进制布局与 C `__attribute__((packed))` struct 兼容
 

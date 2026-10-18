@@ -1,0 +1,32 @@
+{
+  "name": "@xieyuheng/meta-lisp.ts",
+  "version": "0.1.4",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "main": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "bin": {
+    "meta-lisp.ts": "src/main.ts"
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "@xieyuheng/basic-lisp.ts": "workspace:*",
+    "@xieyuheng/cli.ts": "workspace:*",
+    "@xieyuheng/ppml.ts": "workspace:*",
+    "@xieyuheng/sexp.ts": "workspace:*",
+    "@xieyuheng/std.ts": "workspace:*",
+    "@xieyuheng/xvm-lisp.ts": "workspace:*",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2"
+  }
+}

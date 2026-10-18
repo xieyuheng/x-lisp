@@ -1,0 +1,36 @@
+import {
+  callWithFile,
+  fileWrite,
+  openOutputFile,
+  writeln,
+} from "@xieyuheng/std.ts/file"
+import { pathRelativeToCwd } from "@xieyuheng/std.ts/path"
+import Path from "node:path"
+import * as M from "../index.ts"
+import {
+  type Package,
+  packageFragmentDumpName,
+  packageOutputDirectory,
+} from "./Package.ts"
+
+export function packageDumpDesugaredFragments(pkg: Package, tag: string): void {
+  for (const fragment of pkg.fragments.values()) {
+    const name = packageFragmentDumpName(pkg, fragment)
+    const textWidth = 80
+    const stmtsCode = M.formatPrettyFragmentDesugaredStmts(
+      textWidth,
+      fragment.desugaredStmts,
+    )
+    const code = `${stmtsCode}`
+    const directory = Path.join(
+      packageOutputDirectory(pkg),
+      "dump",
+      "fragments",
+    )
+    const dumpPath = `${directory}/${name}.${tag}.dump`
+    writeln(`[${tag}] ${pathRelativeToCwd(dumpPath)}`)
+    callWithFile(openOutputFile(dumpPath), (file) => {
+      fileWrite(file, code)
+    })
+  }
+}

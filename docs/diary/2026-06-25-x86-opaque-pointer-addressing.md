@@ -56,7 +56,7 @@ load/store 仍然带类型。**opaque 化的只是指针值，struct 类型作�
 
 # 现状分析：我们的 `(pointer-t T)` 的 `T` 是冗余的
 
-考察 [meta-lisp.js] 中 `(address <name> <field> ...)` 的实现（`computePathOffset`）：
+考察 [meta-lisp.ts] 中 `(address <name> <field> ...)` 的实现（`computePathOffset`）：
 
 ```
 currentType = claim 类型(name)            ; name 是数据块（通常 claim 成 struct，值类型）
@@ -169,7 +169,7 @@ slot 的布局——而这两处的类型都能由 `(struct entry-t …)` **字�
 - assemble/layout：路径偏移逻辑 → `offset-of` 求值；emit/匿名 slot 用 struct 字面量类型。
 - check：指针 opaque 化的相应校验调整。
 - encode：disp 来源从数字字面量改为常量表达式求值结果。
-- codegen（[meta-lisp.js] 的 X86CodegenPass）：用 `address` + `offset-of` 取代字段路径与手写偏移。
+- codegen（[meta-lisp.ts] 的 X86CodegenPass）：用 `address` + `offset-of` 取代字段路径与手写偏移。
 - `.x86.asm` fixture 迁移；更新设计文档。
 
 # 留待后续

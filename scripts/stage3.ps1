@@ -12,6 +12,6 @@ Set-Location (Join-Path $PSScriptRoot '..')
 ./scripts/run-in.ps1 meta-math.meta test
 ./scripts/run-in.ps1 cli.meta test
 ./scripts/run-in.ps1 meta-example.meta test
-./scripts/run-in.ps1 元语数学 test
-./scripts/run-in.ps1 命令行 test
-./scripts/run-in.ps1 元语例子 test
+./scripts/run-in.ps1 元语数学.meta test
+./scripts/run-in.ps1 命令行.meta test
+./scripts/run-in.ps1 元语例子.meta test

@@ -1,0 +1,673 @@
+import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.ts"
+import { type Lang } from "../index.ts"
+
+export type Exp =
+  | SymbolExp
+  | StringExp
+  | IntExp
+  | FloatExp
+  | VarExp
+  | QualifiedVarExp
+  | LambdaExp
+  | ApplyExp
+  | Let1Exp
+  | LetExp
+  | LetrecExp
+  | LocalDefineExp
+  | Begin1Exp
+  | BeginExp
+  | IfExp
+  | WhenExp
+  | UnlessExp
+  | AndExp
+  | OrExp
+  | CondExp
+  | ListExp
+  | ArrayExp
+  | TextConcatExp
+  | SetExp
+  | HashExp
+  | QuoteExp
+  | SexpExp
+  | ArrowExp
+  | TheExp
+  | AllExp
+  | MatchExp
+  | CommentExp
+
+export type CommentExp = {
+  kind: "CommentExp"
+  sexps: Array<Sexp>
+  location: SourceLocation
+}
+
+export function CommentExp(
+  sexps: Array<Sexp>,
+  location: SourceLocation,
+): CommentExp {
+  return {
+    kind: "CommentExp",
+    sexps,
+    location,
+  }
+}
+
+export type SymbolExp = {
+  kind: "SymbolExp"
+  content: string
+  location: SourceLocation
+}
+
+export function SymbolExp(
+  content: string,
+  location: SourceLocation,
+): SymbolExp {
+  return {
+    kind: "SymbolExp",
+    content,
+    location,
+  }
+}
+
+export type StringExp = {
+  kind: "StringExp"
+  content: string
+  location: SourceLocation
+}
+
+export function StringExp(
+  content: string,
+  location: SourceLocation,
+): StringExp {
+  return {
+    kind: "StringExp",
+    content,
+    location,
+  }
+}
+
+export type IntExp = {
+  kind: "IntExp"
+  content: bigint
+  location: SourceLocation
+}
+
+export function IntExp(content: bigint, location: SourceLocation): IntExp {
+  return {
+    kind: "IntExp",
+    content,
+    location,
+  }
+}
+
+export type FloatExp = {
+  kind: "FloatExp"
+  content: number
+  location: SourceLocation
+}
+
+export function FloatExp(content: number, location: SourceLocation): FloatExp {
+  return {
+    kind: "FloatExp",
+    content,
+    location,
+  }
+}
+
+export type VarExp = {
+  kind: "VarExp"
+  name: string
+  location: SourceLocation
+}
+
+export function VarExp(name: string, location: SourceLocation): VarExp {
+  return {
+    kind: "VarExp",
+    name,
+    location,
+  }
+}
+
+export type QualifiedVarExp = {
+  kind: "QualifiedVarExp"
+  pkgName: string
+  modName: string
+  name: string
+  location: SourceLocation
+}
+
+export function QualifiedVarExp(
+  pkgName: string,
+  modName: string,
+  name: string,
+  location: SourceLocation,
+): QualifiedVarExp {
+  return {
+    kind: "QualifiedVarExp",
+    pkgName,
+    modName,
+    name,
+    location,
+  }
+}
+
+export type LambdaExp = {
+  kind: "LambdaExp"
+  parameters: Array<string>
+  body: Exp
+  location: SourceLocation
+}
+
+export function LambdaExp(
+  parameters: Array<string>,
+  body: Exp,
+  location: SourceLocation,
+): LambdaExp {
+  return {
+    kind: "LambdaExp",
+    parameters,
+    body,
+    location,
+  }
+}
+
+export type ApplyExp = {
+  kind: "ApplyExp"
+  target: Exp
+  args: Array<Exp>
+  location: SourceLocation
+}
+
+export function ApplyExp(
+  target: Exp,
+  args: Array<Exp>,
+  location: SourceLocation,
+): ApplyExp {
+  return {
+    kind: "ApplyExp",
+    target,
+    args,
+    location,
+  }
+}
+
+export type Let1Exp = {
+  kind: "Let1Exp"
+  name: string
+  rhs: Exp
+  body: Exp
+  location: SourceLocation
+}
+
+export function Let1Exp(
+  name: string,
+  rhs: Exp,
+  body: Exp,
+  location: SourceLocation,
+): Let1Exp {
+  return {
+    kind: "Let1Exp",
+    name,
+    rhs,
+    body,
+    location,
+  }
+}
+
+export type Binding = {
+  name: string
+  rhs: Exp
+  location: SourceLocation
+}
+
+export function Binding(
+  name: string,
+  rhs: Exp,
+  location: SourceLocation,
+): Binding {
+  return {
+    name,
+    rhs,
+    location,
+  }
+}
+
+export type LetExp = {
+  kind: "LetExp"
+  bindings: Array<Binding>
+  body: Exp
+  location: SourceLocation
+}
+
+export function LetExp(
+  bindings: Array<Binding>,
+  body: Exp,
+  location: SourceLocation,
+): LetExp {
+  return {
+    kind: "LetExp",
+    bindings,
+    body,
+    location,
+  }
+}
+
+export type LetrecExp = {
+  kind: "LetrecExp"
+  bindings: Array<Binding>
+  body: Exp
+  location: SourceLocation
+}
+
+export function LetrecExp(
+  bindings: Array<Binding>,
+  body: Exp,
+  location: SourceLocation,
+): LetrecExp {
+  return {
+    kind: "LetrecExp",
+    bindings,
+    body,
+    location,
+  }
+}
+
+export type LocalDefineExp = {
+  kind: "LocalDefineExp"
+  name: string
+  parameters: Array<string>
+  body: Exp
+  location: SourceLocation
+}
+
+export function LocalDefineExp(
+  name: string,
+  parameters: Array<string>,
+  body: Exp,
+  location: SourceLocation,
+): LocalDefineExp {
+  return {
+    kind: "LocalDefineExp",
+    name,
+    parameters,
+    body,
+    location,
+  }
+}
+
+export type Begin1Exp = {
+  kind: "Begin1Exp"
+  head: Exp
+  body: Exp
+  location: SourceLocation
+}
+
+export function Begin1Exp(
+  head: Exp,
+  body: Exp,
+  location: SourceLocation,
+): Begin1Exp {
+  return {
+    kind: "Begin1Exp",
+    head,
+    body,
+    location,
+  }
+}
+
+export type BeginExp = {
+  kind: "BeginExp"
+  sequence: Array<Exp>
+  location: SourceLocation
+}
+
+export function BeginExp(
+  sequence: Array<Exp>,
+  location: SourceLocation,
+): BeginExp {
+  return {
+    kind: "BeginExp",
+    sequence,
+    location,
+  }
+}
+
+export type IfExp = {
+  kind: "IfExp"
+  condition: Exp
+  consequent: Exp
+  alternative: Exp
+  location: SourceLocation
+}
+
+export function IfExp(
+  condition: Exp,
+  consequent: Exp,
+  alternative: Exp,
+  location: SourceLocation,
+): IfExp {
+  return {
+    kind: "IfExp",
+    condition,
+    consequent,
+    alternative,
+    location,
+  }
+}
+
+export type WhenExp = {
+  kind: "WhenExp"
+  condition: Exp
+  consequent: Exp
+  location: SourceLocation
+}
+
+export function WhenExp(
+  condition: Exp,
+  consequent: Exp,
+  location: SourceLocation,
+): WhenExp {
+  return {
+    kind: "WhenExp",
+    condition,
+    consequent,
+    location,
+  }
+}
+
+export type UnlessExp = {
+  kind: "UnlessExp"
+  condition: Exp
+  alternative: Exp
+  location: SourceLocation
+}
+
+export function UnlessExp(
+  condition: Exp,
+  alternative: Exp,
+  location: SourceLocation,
+): UnlessExp {
+  return {
+    kind: "UnlessExp",
+    condition,
+    alternative,
+    location,
+  }
+}
+
+export type AndExp = {
+  kind: "AndExp"
+  exps: Array<Exp>
+  location: SourceLocation
+}
+
+export function AndExp(exps: Array<Exp>, location: SourceLocation): AndExp {
+  return {
+    kind: "AndExp",
+    exps,
+    location,
+  }
+}
+
+export type OrExp = {
+  kind: "OrExp"
+  exps: Array<Exp>
+  location: SourceLocation
+}
+
+export function OrExp(exps: Array<Exp>, location: SourceLocation): OrExp {
+  return {
+    kind: "OrExp",
+    exps,
+    location,
+  }
+}
+
+export type CondExp = {
+  kind: "CondExp"
+  clauses: Array<CondClause>
+  location: SourceLocation
+}
+
+export type CondClause = {
+  question: Exp
+  answer: Exp
+  location: SourceLocation
+}
+
+export function CondClause(
+  question: Exp,
+  answer: Exp,
+  location: SourceLocation,
+): CondClause {
+  return {
+    question,
+    answer,
+    location,
+  }
+}
+
+export function CondExp(
+  clauses: Array<CondClause>,
+  location: SourceLocation,
+): CondExp {
+  return {
+    kind: "CondExp",
+    clauses,
+    location,
+  }
+}
+
+export type ListExp = {
+  kind: "ListExp"
+  elements: Array<Exp>
+  location: SourceLocation
+}
+
+export function ListExp(
+  elements: Array<Exp>,
+  location: SourceLocation,
+): ListExp {
+  return {
+    kind: "ListExp",
+    elements,
+    location,
+  }
+}
+
+export type ArrayExp = {
+  kind: "ArrayExp"
+  elements: Array<Exp>
+  location: SourceLocation
+}
+
+export function ArrayExp(
+  elements: Array<Exp>,
+  location: SourceLocation,
+): ArrayExp {
+  return {
+    kind: "ArrayExp",
+    elements,
+    location,
+  }
+}
+
+export type TextConcatExp = {
+  kind: "TextConcatExp"
+  elements: Array<Exp>
+  location: SourceLocation
+}
+
+export function TextConcatExp(
+  elements: Array<Exp>,
+  location: SourceLocation,
+): TextConcatExp {
+  return {
+    kind: "TextConcatExp",
+    elements,
+    location,
+  }
+}
+
+export type SetExp = {
+  kind: "SetExp"
+  elements: Array<Exp>
+  location: SourceLocation
+}
+
+export function SetExp(elements: Array<Exp>, location: SourceLocation): SetExp {
+  return {
+    kind: "SetExp",
+    elements,
+    location,
+  }
+}
+
+export type HashExp = {
+  kind: "HashExp"
+  entries: Array<{ key: Exp; value: Exp }>
+  location: SourceLocation
+}
+
+export function HashExp(
+  entries: Array<{ key: Exp; value: Exp }>,
+  location: SourceLocation,
+): HashExp {
+  return {
+    kind: "HashExp",
+    entries,
+    location,
+  }
+}
+
+export type QuoteExp = {
+  kind: "QuoteExp"
+  sexp: Sexp
+  location: SourceLocation
+}
+
+export function QuoteExp(sexp: Sexp, location: SourceLocation): QuoteExp {
+  return {
+    kind: "QuoteExp",
+    sexp,
+    location,
+  }
+}
+
+export type SexpExp = {
+  kind: "SexpExp"
+  sexp: Sexp
+  lang: Lang
+  location: SourceLocation
+}
+
+export function SexpExp(
+  sexp: Sexp,
+  lang: Lang,
+  location: SourceLocation,
+): SexpExp {
+  return {
+    kind: "SexpExp",
+    sexp,
+    lang,
+    location,
+  }
+}
+
+export type ArrowExp = {
+  kind: "ArrowExp"
+  argTypes: Array<Exp>
+  retType: Exp
+  location: SourceLocation
+}
+
+export function ArrowExp(
+  argTypes: Array<Exp>,
+  retType: Exp,
+  location: SourceLocation,
+): ArrowExp {
+  return {
+    kind: "ArrowExp",
+    argTypes,
+    retType,
+    location,
+  }
+}
+
+export type TheExp = {
+  kind: "TheExp"
+  type: Exp
+  instance: Exp
+  location: SourceLocation
+}
+
+export function TheExp(
+  type: Exp,
+  instance: Exp,
+  location: SourceLocation,
+): TheExp {
+  return {
+    kind: "TheExp",
+    type,
+    instance,
+    location,
+  }
+}
+
+export type AllExp = {
+  kind: "AllExp"
+  parameters: Array<string>
+  body: Exp
+  location: SourceLocation
+}
+
+export function AllExp(
+  parameters: Array<string>,
+  body: Exp,
+  location: SourceLocation,
+): AllExp {
+  return {
+    kind: "AllExp",
+    parameters,
+    body,
+    location,
+  }
+}
+
+export type MatchExp = {
+  kind: "MatchExp"
+  targets: Array<Exp>
+  clauses: Array<MatchClause>
+  location: SourceLocation
+}
+
+export type MatchClause = {
+  patterns: Array<Exp>
+  body: Exp
+  location: SourceLocation
+}
+
+export function MatchClause(
+  patterns: Array<Exp>,
+  body: Exp,
+  location: SourceLocation,
+): MatchClause {
+  return {
+    patterns,
+    body,
+    location,
+  }
+}
+
+export function MatchExp(
+  targets: Array<Exp>,
+  clauses: Array<MatchClause>,
+  location: SourceLocation,
+): MatchExp {
+  return {
+    kind: "MatchExp",
+    targets,
+    clauses,
+    location,
+  }
+}

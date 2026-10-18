@@ -4,7 +4,7 @@ authors: [xieyuheng, deepseek]
 date: 2026-07-09
 ---
 
-`ExplicateControlPass`（[meta-lisp.js] pass 170）是 meta-lisp 编译流程的
+`ExplicateControlPass`（[meta-lisp.ts] pass 170）是 meta-lisp 编译流程的
 第二次 IR 降级——将 `Term` IR 转换为 basic IR。
 核心任务是把嵌套的控制流结构消解为扁平的 basic block + 线性指令。
 

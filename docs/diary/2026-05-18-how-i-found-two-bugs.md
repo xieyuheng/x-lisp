@@ -204,7 +204,7 @@ function definitionQualifiedName(definition: M.Definition): string {
 用 grep 搜索 `equal?` 在编译器代码中的硬编码引用：
 
 ```
-grep "equal?" projects/meta-lisp.js/src/meta/passes/
+grep "equal?" projects/meta-lisp.ts/src/meta/passes/
 ```
 
 在 `140-ExplicateControlPass.ts:282` 找到：

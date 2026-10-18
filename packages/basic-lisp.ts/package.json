@@ -1,0 +1,30 @@
+{
+  "name": "@xieyuheng/basic-lisp.ts",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "main": "./src/index.ts",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "bin": {
+    "basic-lisp.ts": "src/main.ts"
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "@xieyuheng/cli.ts": "workspace:*",
+    "@xieyuheng/ppml.ts": "workspace:*",
+    "@xieyuheng/sexp.ts": "workspace:*",
+    "@xieyuheng/std.ts": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2"
+  }
+}

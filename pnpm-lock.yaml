@@ -6,20 +6,20 @@ settings:
 
 importers:
 
-  packages/basic-lisp.js:
+  packages/basic-lisp.ts:
     dependencies:
-      '@xieyuheng/cli.js':
+      '@xieyuheng/cli.ts':
         specifier: workspace:*
-        version: link:../cli.js
-      '@xieyuheng/ppml.js':
+        version: link:../cli.ts
+      '@xieyuheng/ppml.ts':
         specifier: workspace:*
-        version: link:../ppml.js
-      '@xieyuheng/sexp.js':
+        version: link:../ppml.ts
+      '@xieyuheng/sexp.ts':
         specifier: workspace:*
-        version: link:../sexp.js
-      '@xieyuheng/std.js':
+        version: link:../sexp.ts
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
+        version: link:../std.ts
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -31,11 +31,11 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/cli.js:
+  packages/cli.ts:
     dependencies:
-      '@xieyuheng/std.js':
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
+        version: link:../std.ts
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -47,26 +47,26 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/meta-lisp.js:
+  packages/meta-lisp.ts:
     dependencies:
-      '@xieyuheng/basic-lisp.js':
+      '@xieyuheng/basic-lisp.ts':
         specifier: workspace:*
-        version: link:../basic-lisp.js
-      '@xieyuheng/cli.js':
+        version: link:../basic-lisp.ts
+      '@xieyuheng/cli.ts':
         specifier: workspace:*
-        version: link:../cli.js
-      '@xieyuheng/ppml.js':
+        version: link:../cli.ts
+      '@xieyuheng/ppml.ts':
         specifier: workspace:*
-        version: link:../ppml.js
-      '@xieyuheng/sexp.js':
+        version: link:../ppml.ts
+      '@xieyuheng/sexp.ts':
         specifier: workspace:*
-        version: link:../sexp.js
-      '@xieyuheng/std.js':
+        version: link:../sexp.ts
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
-      '@xieyuheng/xvm-lisp.js':
+        version: link:../std.ts
+      '@xieyuheng/xvm-lisp.ts':
         specifier: workspace:*
-        version: link:../xvm-lisp.js
+        version: link:../xvm-lisp.ts
       zod:
         specifier: ^4.6.7
         version: 4.6.7
@@ -81,11 +81,11 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/ppml.js:
+  packages/ppml.ts:
     dependencies:
-      '@xieyuheng/std.js':
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
+        version: link:../std.ts
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -97,11 +97,11 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/sexp.js:
+  packages/sexp.ts:
     dependencies:
-      '@xieyuheng/std.js':
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
+        version: link:../std.ts
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -113,7 +113,7 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/std.js:
+  packages/std.ts:
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -125,7 +125,7 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/x-lisp-docs.js:
+  packages/x-lisp-docs.ts:
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -143,20 +143,20 @@ importers:
         specifier: ^3.5.44
         version: 3.5.44(typescript@7.0.2)
 
-  packages/x86-lisp.js:
+  packages/x86-lisp.ts:
     dependencies:
-      '@xieyuheng/cli.js':
+      '@xieyuheng/cli.ts':
         specifier: workspace:*
-        version: link:../cli.js
-      '@xieyuheng/ppml.js':
+        version: link:../cli.ts
+      '@xieyuheng/ppml.ts':
         specifier: workspace:*
-        version: link:../ppml.js
-      '@xieyuheng/sexp.js':
+        version: link:../ppml.ts
+      '@xieyuheng/sexp.ts':
         specifier: workspace:*
-        version: link:../sexp.js
-      '@xieyuheng/std.js':
+        version: link:../sexp.ts
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
+        version: link:../std.ts
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
@@ -168,20 +168,20 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
-  packages/xvm-lisp.js:
+  packages/xvm-lisp.ts:
     dependencies:
-      '@xieyuheng/cli.js':
+      '@xieyuheng/cli.ts':
         specifier: workspace:*
-        version: link:../cli.js
-      '@xieyuheng/ppml.js':
+        version: link:../cli.ts
+      '@xieyuheng/ppml.ts':
         specifier: workspace:*
-        version: link:../ppml.js
-      '@xieyuheng/sexp.js':
+        version: link:../ppml.ts
+      '@xieyuheng/sexp.ts':
         specifier: workspace:*
-        version: link:../sexp.js
-      '@xieyuheng/std.js':
+        version: link:../sexp.ts
+      '@xieyuheng/std.ts':
         specifier: workspace:*
-        version: link:../std.js
+        version: link:../std.ts
     devDependencies:
       '@types/node':
         specifier: ^26.6.5

@@ -2,4 +2,4 @@
 
 set -e
 
-./bin/meta-lisp.js check
+./bin/meta-lisp.ts check

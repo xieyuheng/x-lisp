@@ -11,7 +11,7 @@ date: 2026-09-07
 - 本次实验基于 commit `2f3b51a9b`，在性能较弱的笔记本电脑上测试。
 - 测试例子为 `meta-lisp.meta` 的 `check` -- 自举编译器检查自身源码：
   - 用 `bin/meta-lisp.meta` 跑 xvm 编译器；
-  - 用 `bin/meta-lisp.js` 跑 node.js 编译器。
+  - 用 `bin/meta-lisp.ts` 跑 node.js 编译器。
 - 实验方式 perf 硬件计数。
 
 实验环境：
@@ -26,7 +26,7 @@ CPU: Intel(R) Core(TM) i7-10510U (8) @ 4.90 GHz
 
 注意事项：
 
-- [meta-lisp.js] 测试时，暂时注释调 LocatePass/CheckPass 这些 pass，
+- [meta-lisp.ts] 测试时，暂时注释调 LocatePass/CheckPass 这些 pass，
   因为 [meta-lisp.meta] 还未实现这些 pass。
 
 实验结果：
@@ -54,7 +54,7 @@ CPU: Intel(R) Core(TM) i7-10510U (8) @ 4.90 GHz
 - 测试例子同为 `meta-lisp.meta` 的 `check`（自举编译器检查自身源码）：
   - `bin/meta-lisp.meta check` → xvm 后端；
   - `bin/x86 run build/main.x86.exe -- check` → x86 后端（无 GC）；
-  - `bin/meta-lisp.js check` → node 后端。
+  - `bin/meta-lisp.ts check` → node 后端。
 - 按原实验注意事项，node 测试时注释掉 `LocatePass`/`CheckPass`
   （[meta-lisp.meta] 的 check-pipeline 只实现到 `100-qualify-pass`）。
 - xvm（gc off）由临时把 [xvm.c] 的 `th_gc` 改为 no-op 得到，其余代码不变。
@@ -156,9 +156,9 @@ CPU: Intel(R) Core(TM) Ultra 9 185H (12+8+2) @ 5.10 GHz
 # x86
 (cd packages/meta-lisp.meta && ../../bin/x86 run build/main.x86.exe -- check)
 
-# node：注释掉 packages/meta-lisp.js/src/meta/pipelines/CheckPipeline.ts
+# node：注释掉 packages/meta-lisp.ts/src/meta/pipelines/CheckPipeline.ts
 #   中的 M.LocatePass(pkg) 与 M.CheckPass(pkg) 之后
-(cd packages/meta-lisp.meta && ../../bin/meta-lisp.js check)
+(cd packages/meta-lisp.meta && ../../bin/meta-lisp.ts check)
 
 # xvm（gc off）：把 packages/xvm.c/src/xvm/xvm.c 的
 #   th_gc: xvm_gc_maybe_collect(xvm); ...

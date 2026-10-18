@@ -1,0 +1,13 @@
+import type { SourceLocation } from "@xieyuheng/sexp.ts"
+import * as M from "../index.ts"
+
+export function desugarTextConcat(
+  elements: Array<M.Exp>,
+  location: SourceLocation,
+): M.Exp {
+  return M.ApplyExp(
+    M.QualifiedVarExp("meta-builtin", "builtin", "text-concat", location),
+    [M.ListExp(elements, location)],
+    location,
+  )
+}

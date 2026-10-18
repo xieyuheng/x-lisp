@@ -1,0 +1,42 @@
+#!/usr/bin/env -S node
+
+import * as Cli from "@xieyuheng/cli.ts"
+import * as S from "@xieyuheng/sexp.ts"
+import { errorReport } from "@xieyuheng/std.ts/error"
+import { getPackageJson } from "@xieyuheng/std.ts/node"
+import * as fs from "node:fs"
+import { fileURLToPath } from "node:url"
+import * as X86 from "./x86/index.ts"
+
+const { version } = getPackageJson(fileURLToPath(import.meta.url))
+
+const router = Cli.makeRouter("x86-lisp.ts", version)
+
+router.defineRoutes([
+  {
+    path: ["assemble"],
+    args: ["input", "output"],
+    handler: ({ args: [input, output] }) => {
+      const code = fs.readFileSync(input, "utf-8")
+      const sexps = S.parseSexps({ path: input }, code)
+      const stmts = sexps.map((s) => X86.parseStmt(s))
+      const program = X86.makeProgram()
+      X86.BuildPipeline(program, stmts)
+      const object = X86.assembleObject(program)
+      const buf = X86.emitElfObject(object)
+      fs.writeFileSync(output, buf)
+    },
+  },
+])
+
+try {
+  await router.run(process.argv.slice(2))
+} catch (error) {
+  if (error instanceof S.ErrorWithSourceLocation) {
+    console.log(errorReport(error))
+  } else {
+    console.error(error)
+  }
+
+  process.exit(1)
+}

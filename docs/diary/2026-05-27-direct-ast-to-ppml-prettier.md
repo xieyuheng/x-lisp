@@ -8,7 +8,7 @@ date: 2026-05-27
 
 ## 背景
 
-`meta-lisp.js` 的 `check --dump` 耗时约 25s。
+`meta-lisp.ts` 的 `check --dump` 耗时约 25s。
 性能分析显示其中 **98.6% 的时间花在 `formatPrettySexpByFormat` 内部的 `parseSexps()`** 上。
 
 当前 dump 的格式化流程：
@@ -53,16 +53,16 @@ AST (Exp/Stmt/Definition)
 
 ## 关键文件
 
-所有路径相对于 `projects/meta-lisp.js/`：
+所有路径相对于 `projects/meta-lisp.ts/`：
 
 ### ppml 接口
-- `../../ppml.js/src/ppml/Node.ts` — 节点类型
-- `../../ppml.js/src/ppml/nodeHelper.ts` — 构造辅助函数（text、br、group、indent、concat、flex、wrap、nil）
-- `../../ppml.js/src/ppml/format.ts` — `Ppml.format(node, { width })`
+- `../../ppml.ts/src/ppml/Node.ts` — 节点类型
+- `../../ppml.ts/src/ppml/nodeHelper.ts` — 构造辅助函数（text、br、group、indent、concat、flex、wrap、nil）
+- `../../ppml.ts/src/ppml/format.ts` — `Ppml.format(node, { width })`
 
 ### 参考实现（sexp 渲染器，需模仿其布局策略）
-- `../../sexp.js/src/pretty/formatPrettySexp.ts` — `prettySexp` 将 `S.Sexp` 映射为 `Ppml.Node`
-- `../../sexp.js/src/pretty/formatPrettySexpByFormat.ts` — **待替换的入口**
+- `../../sexp.ts/src/pretty/formatPrettySexp.ts` — `prettySexp` 将 `S.Sexp` 映射为 `Ppml.Node`
+- `../../sexp.ts/src/pretty/formatPrettySexpByFormat.ts` — **待替换的入口**
 
 ### AST 相关
 - `src/meta/pretty/sexpConfig.ts` — 49 个关键字的 header length 映射

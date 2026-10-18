@@ -13,9 +13,9 @@ $packages = @(
   'meta-math.meta',
   'cli.meta',
   'meta-example.meta',
-  '元语数学',
-  '命令行',
-  '元语例子'
+  '元语数学.meta',
+  '命令行.meta',
+  '元语例子.meta'
 )
 
 foreach ($package in $packages) {

@@ -8,4 +8,4 @@ parallel="parallel -v --halt now,fail=1"
 
 # meta build
 
-$parallel ./scripts/run-in.sh {} build.sh ::: meta-builtin.meta meta-math.meta cli.meta meta-example.meta 元语数学 命令行 元语例子
+$parallel ./scripts/run-in.sh {} build.sh ::: meta-builtin.meta meta-math.meta cli.meta meta-example.meta 元语数学.meta 命令行.meta 元语例子.meta

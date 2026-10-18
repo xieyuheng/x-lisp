@@ -5,7 +5,7 @@ date: 2026-07-05
 ---
 
 假设要用 region based memory allocation 来实现编译器，
-参考现在的 [meta-lisp.js] 中对 meta-lisp 编译器的实现，
+参考现在的 [meta-lisp.ts] 中对 meta-lisp 编译器的实现，
 分析编译器中所有用到 value 的生命周期。
 
 # 编译流程（6 阶段，3 次 IR 降级）

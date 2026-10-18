@@ -1,0 +1,117 @@
+import * as S from "@xieyuheng/sexp.ts"
+import * as B from "../index.ts"
+import { parseOperand } from "./parseOperand.ts"
+
+export function parseInstr(sexp: S.Sexp): B.Instr {
+  const list = S.asListSexp(sexp)
+  const elements = list.elements
+  const head = S.asSymbolSexp(elements[0])
+
+  if (head.content === "=") {
+    const innerListIndex = elements.findIndex((e) => S.isListSexp(e))
+    if (innerListIndex === -1) {
+      throw new S.ErrorWithSourceLocation(
+        `[parseInstr] expected inner list after '=', got: ${S.formatSexp(sexp)}`,
+        sexp.location,
+      )
+    }
+
+    const output: Array<B.Cell> = []
+    for (let i = 1; i < innerListIndex; i++) {
+      const id = S.asSymbolSexp(elements[i]).content
+      output.push(B.Cell(id))
+    }
+
+    const innerList = S.asListSexp(elements[innerListIndex])
+    const innerElements = innerList.elements
+    const op = S.asSymbolSexp(innerElements[0]).content
+
+    const rest = innerElements.slice(1)
+    const input = parseInput(rest)
+    const attributes = parseAttributes(rest)
+
+    return B.Instr(op, output, input, attributes)
+  }
+
+  const op = S.asSymbolSexp(elements[0]).content
+  const rest = elements.slice(1)
+  const input = parseInput(rest)
+  const attributes = parseAttributes(rest)
+  return B.Instr(op, [], input, attributes)
+}
+
+function parseInput(sexps: Array<S.Sexp>): Array<B.Cell> {
+  const input: Array<B.Cell> = []
+  let i = 0
+  while (i < sexps.length) {
+    if (isAttributeKey(sexps[i])) {
+      i += 2
+    } else {
+      input.push(parseOperand(sexps[i]))
+      i += 1
+    }
+  }
+  return input
+}
+
+function parseAttributes(sexps: Array<S.Sexp>): Record<string, B.Attribute> {
+  const attributes: Record<string, B.Attribute> = {}
+  let i = 0
+  while (i < sexps.length) {
+    if (!isAttributeKey(sexps[i])) {
+      i += 1
+      continue
+    }
+    const attributeKey = attributeKeyName(sexps[i])
+    const valueSexp = sexps[i + 1]
+    if (valueSexp === undefined) {
+      throw new S.ErrorWithSourceLocation(
+        `[parseInstr] missing value for attribute :${attributeKey}`,
+        sexps[i].location,
+      )
+    }
+    attributes[attributeKey] = parseAttribute(valueSexp)
+    i += 2
+  }
+  return attributes
+}
+
+function isAttributeKey(sexp: S.Sexp): boolean {
+  return S.isSymbolSexp(sexp) && sexp.content.startsWith(":")
+}
+
+function attributeKeyName(sexp: S.Sexp): string {
+  return S.asSymbolSexp(sexp).content.slice(1)
+}
+
+function parseAttribute(sexp: S.Sexp): B.Attribute {
+  if (S.isSymbolSexp(sexp)) {
+    return B.SymbolAttribute(sexp.content)
+  }
+
+  if (S.isIntSexp(sexp)) {
+    return B.IntAttribute(sexp.content)
+  }
+
+  if (S.isFloatSexp(sexp)) {
+    return B.FloatAttribute(sexp.content)
+  }
+
+  if (S.isStringSexp(sexp)) {
+    return B.StringAttribute(sexp.content)
+  }
+
+  if (S.isListSexp(sexp)) {
+    if (sexp.elements.length === 1 && S.isSymbolSexp(sexp.elements[0])) {
+      const name = sexp.elements[0].content
+      if (name === "true") return B.BoolAttribute(true)
+      if (name === "false") return B.BoolAttribute(false)
+    }
+    return B.ListAttribute(sexp.elements.map(parseAttribute))
+  }
+
+  throw new S.ErrorWithSourceLocation(
+    `[parseAttribute] unknown attribute value: ${S.formatSexp(sexp)}`,
+    (sexp as S.Sexp).location,
+  )
+}

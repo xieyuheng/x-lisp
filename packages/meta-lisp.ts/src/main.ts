@@ -1,0 +1,100 @@
+#!/usr/bin/env -S node
+
+import * as Cli from "@xieyuheng/cli.ts"
+import * as S from "@xieyuheng/sexp.ts"
+import { errorReport } from "@xieyuheng/std.ts/error"
+import { getPackageJson } from "@xieyuheng/std.ts/node"
+import Path from "node:path"
+import { fileURLToPath } from "node:url"
+import * as XvmBackend from "./xvm-backend/index.ts"
+import * as M from "./meta/index.ts"
+
+const { version } = getPackageJson(fileURLToPath(import.meta.url))
+
+const router = Cli.makeRouter("meta-lisp.ts", version)
+
+router.defineRoutes([
+  {
+    path: ["check"],
+    options: {
+      "--config": { valueName: "path" },
+      "--dump": {},
+    },
+    handler: ({ options }) => {
+      const configPath =
+        readOptionalString(options, "--config") ??
+        Path.join(process.cwd(), "meta-package.json")
+      const pkg = M.loadPackage("self", configPath)
+      configurePackage(pkg, options)
+      checkPackage(pkg)
+    },
+  },
+  {
+    path: ["build"],
+    options: {
+      "--config": { valueName: "path" },
+      "--dump": {},
+    },
+    handler: ({ options }) => {
+      const configPath =
+        readOptionalString(options, "--config") ??
+        Path.join(process.cwd(), "meta-package.json")
+      const pkg = M.loadPackage("self", configPath)
+      configurePackage(pkg, options)
+      checkPackage(pkg)
+      buildPackage(pkg)
+    },
+  },
+])
+
+function readOptionalString(
+  options: Record<string, unknown>,
+  name: string,
+): string | undefined {
+  const value = options[name]
+  if (typeof value !== "string" || value === "") {
+    return undefined
+  }
+
+  return value
+}
+
+function configurePackage(pkg: M.Package, options: Cli.HandlerOptions): void {
+  M.setLang(pkg.config.language ?? "en")
+  if (Object.hasOwn(options, "--dump")) pkg.config.compiler.dump = "true"
+  M.validateCompilerOptions(pkg.config.compiler)
+}
+
+function checkPackage(pkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(pkg)
+  let outcome: M.Outcome = "OutcomeOk"
+
+  for (const current of closure) {
+    if (M.CheckPipeline(current) === "OutcomeError") {
+      outcome = "OutcomeError"
+    }
+  }
+
+  if (outcome === "OutcomeError") process.exit(2)
+}
+
+function buildPackage(pkg: M.Package): void {
+  const closure = M.packageClosureInTopologicalOrder(pkg)
+  for (const current of closure) {
+    M.CorePipeline(current)
+  }
+
+  XvmBackend.BuildPipeline(pkg)
+}
+
+try {
+  await router.run(process.argv.slice(2))
+} catch (error) {
+  if (error instanceof S.ErrorWithSourceLocation) {
+    console.log(errorReport(error))
+  } else {
+    console.error(error)
+  }
+
+  process.exit(1)
+}

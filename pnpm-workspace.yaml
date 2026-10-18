@@ -1,4 +1,4 @@
 packages:
-  - "packages/*.js"
+  - "packages/*.ts"
 allowBuilds:
   esbuild: true
