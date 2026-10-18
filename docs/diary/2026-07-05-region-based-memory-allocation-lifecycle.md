@@ -22,7 +22,7 @@ date: 2026-07-05
 
 阶段 0：解析（Parse）
 - 文件 I/O → 字符串 → S表达式解析 → `Stmt<Exp>[]`
-- 创建：Sexp 节点、Stmt<Exp>、Exp AST
+- 创建：Sexp 节点、`Stmt<Exp>`、Exp AST
 
 Pass 010-050：前端变换（Expand / Prelude / ModuleAnalysis / AlgebraicAnalysis / LowerMatch）
 - 展开语法糖（define-enum、define-struct 等）
@@ -34,7 +34,7 @@ Pass 060：脱糖（Desugar）—— 第一次 IR 降级
 - Exp（~40 变体）→ Term（~15 变体）
 - 关键转换：Let/Letrec → Let1，Begin → Begin1，And/Or → If，
   @list/@set/@hash → 展开，Pipe/Chain → 展开
-- 创建：全新的 Stmt<Term>[]、Term 树
+- 创建：全新的 `Stmt<Term>[]`、Term 树
 
 Pass 070-080：模块处理（ModuleImport / Setup）
 - 导入符号解析：VarTerm → QualifiedVarTerm
@@ -102,8 +102,8 @@ Cod = Codegen
 
 | Arena | 名称 | 创建时机 | 销毁时机 | 分配对象 |
 |-------|------|---------|---------|---------|
-| src | 源码层 | Parse 开始 | Desugar 结束后 | Sexp, Stmt<Exp>, Exp AST, 分析报告 |
-| core | 核心 IR | Desugar 开始 | ExplicateControl 结束后 | Stmt<Term>, Term IR, Mod, Definition, Type |
+| src | 源码层 | Parse 开始 | Desugar 结束后 | Sexp, `Stmt<Exp>`, Exp AST, 分析报告 |
+| core | 核心 IR | Desugar 开始 | ExplicateControl 结束后 | `Stmt<Term>`, Term IR, Mod, Definition, Type |
 | basic | 基本层 | ExplicateControl 开始 | Codegen 结束后 | B.Mod, B.Block, B.Instr, B.Exp |
 | output | 输出层 | Codegen 开始 | 文件写出后 | Xvm.Mod / X86.Mod / 指令 / 操作数 |
 

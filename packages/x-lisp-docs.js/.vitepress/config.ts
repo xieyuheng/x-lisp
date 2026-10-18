@@ -18,7 +18,6 @@ export default defineConfig({
   cacheDir: resolve(repoRoot, "build/docs-cache"),
 
   cleanUrls: true,
-  ignoreDeadLinks: [(link) => link.includes("../../diary/")],
   title: "x-lisp",
   description: "x-lisp documentation",
 
@@ -48,6 +47,10 @@ export default defineConfig({
       "basic-lisp": "scheme",
       "xvm-lisp": "asm",
       "x86-lisp": "asm",
+      sml: "ocaml",
+      li: "scheme",
+      llvm: "asm",
+      "calcit-lang": "scheme",
     },
   },
 
@@ -58,6 +61,7 @@ export default defineConfig({
       { text: "xvm-lisp", link: "/xvm-lisp/syntax" },
       { text: "x86-lisp", link: "/x86-lisp/syntax" },
       { text: "元语", link: "/元语/" },
+      { text: "开发日志", link: "/diary/" },
     ],
 
     sidebar: {
@@ -77,6 +81,9 @@ export default defineConfig({
       }),
       "/元语/": sidebarFor(resolve(docsDir, "元语"), "/元语/", {
         indexFiles: ["index.md", "说明.md"],
+      }),
+      "/diary/": sidebarFor(resolve(docsDir, "diary"), "/diary/", {
+        indexFiles: ["index.md"],
       }),
     },
 

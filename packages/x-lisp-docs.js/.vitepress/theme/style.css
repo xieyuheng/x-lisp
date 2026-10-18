@@ -1,9 +1,24 @@
+.x-doc-header {
+  margin-bottom: 24px;
+}
+
 .x-doc-title {
-  margin: 0 0 20px;
+  margin: 0;
   font-size: 28px;
   font-weight: 600;
   line-height: 40px;
   letter-spacing: -0.02em;
+}
+
+.x-doc-meta {
+  margin-top: 8px;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.x-doc-meta time {
+  font-variant-numeric: tabular-nums;
 }
 
 @media (min-width: 768px) {
