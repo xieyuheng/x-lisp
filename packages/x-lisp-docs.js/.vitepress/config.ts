@@ -21,6 +21,23 @@ export default defineConfig({
   title: "x-lisp",
   description: "x-lisp documentation",
 
+  locales: {
+    root: {
+      label: "English",
+      lang: "en-US",
+      link: "/",
+      title: "x-lisp",
+      description: "x-lisp documentation",
+    },
+    zh: {
+      label: "中文",
+      lang: "zh-CN",
+      link: "/zh/",
+      title: "x-lisp",
+      description: "x-lisp 文档",
+    },
+  },
+
   rewrites: {
     "meta-lisp/README.md": "meta-lisp/index.md",
     "元语/说明.md": "元语/index.md",
@@ -91,6 +108,9 @@ export default defineConfig({
     search: {
       provider: "local",
     },
+
+    i18nRouting: false,
+    langMenuLabel: "Change language / 切换语言",
 
     outline: {
       level: [2, 3],

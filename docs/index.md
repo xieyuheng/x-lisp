@@ -1,13 +1,12 @@
 ---
 layout: home
-
 hero:
   name: x-lisp
   text: programming language collection
-  tagline: languages based on lisp syntax framework
+  tagline: languages based on the Lisp syntax framework
 ---
 
-### [meta-lisp](meta-lisp)
+### [meta-lisp](meta-lisp/)
 
 A minimalist statically typed Lisp.
 
@@ -31,10 +30,9 @@ A minimalist statically typed Lisp.
   (assert-equal 720 (factorial 6)))
 ```
 
-### [元语](元语)
+### [元语](元语/)
 
-meta-lisp 中文翻译为「元语」。<br />
-支持中文编程。
+「元语」is the Chinese translation of meta-lisp and supports programming in Chinese.
 
 ```meta-lisp
 (模块 数学)
@@ -102,7 +100,7 @@ XVM virtual machine.
 
 ### [x86-lisp](x86-lisp/syntax)
 
-x86-64 assembly with lisp syntax.
+x86-64 assembly with Lisp syntax.
 
 ```x86-lisp
 ; conditional branch
