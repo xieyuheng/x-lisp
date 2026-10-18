@@ -73,7 +73,6 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: "开发日志", link: "/diary/" },
       {
         text: "GitHub",
         link: "https://github.com/xieyuheng/x-lisp",

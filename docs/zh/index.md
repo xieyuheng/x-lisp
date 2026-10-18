@@ -4,6 +4,10 @@ hero:
   name: x-lisp
   text: 编程语言集合
   tagline: 基于 lisp 语法框架的编程语言
+  actions:
+  - theme: alt
+    text: 开发日志
+    link: ../diary/
 ---
 
 ## [meta-lisp](../meta-lisp/)
