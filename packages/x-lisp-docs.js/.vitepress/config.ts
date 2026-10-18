@@ -56,12 +56,13 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: "meta-lisp", link: "/meta-lisp/" },
-      { text: "basic-lisp", link: "/basic-lisp/syntax" },
-      { text: "xvm-lisp", link: "/xvm-lisp/syntax" },
-      { text: "x86-lisp", link: "/x86-lisp/syntax" },
-      { text: "元语", link: "/元语/" },
       { text: "开发日志", link: "/diary/" },
+      {
+        text: "GitHub",
+        link: "https://github.com/xieyuheng/x-lisp",
+        target: "_blank",
+        rel: "noreferrer",
+      },
     ],
 
     sidebar: {
