@@ -1,0 +1,13 @@
+.x-doc-title {
+  margin: 0 0 20px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .x-doc-title {
+    font-size: 32px;
+  }
+}
