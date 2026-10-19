@@ -130,6 +130,9 @@ importers:
       '@types/node':
         specifier: ^26.6.5
         version: 26.6.5
+      '@xieyuheng/x-lisp-shiki.ts':
+        specifier: workspace:*
+        version: link:../x-lisp-shiki.ts
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -148,6 +151,18 @@ importers:
       wrangler:
         specifier: ^4.151.1
         version: 4.151.1(@types/node@26.6.5)
+
+  packages/x-lisp-shiki.ts:
+    devDependencies:
+      oxfmt:
+        specifier: 0.73.0
+        version: 0.73.0
+      shiki:
+        specifier: 4.5.0
+        version: 4.5.0
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
 
   packages/x86-lisp.ts:
     dependencies:

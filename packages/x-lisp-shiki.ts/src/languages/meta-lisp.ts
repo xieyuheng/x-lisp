@@ -1,12 +1,14 @@
 import type { LanguageInput } from "shiki"
 
-const escapeRegExp = (value: string) =>
-  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+import {
+  alternation,
+  commentRule,
+  name,
+  numberRule,
+  qualifiedName,
+  stringRule,
+} from "../shared/regexp.ts"
 
-const alternation = (values: string[]) => values.map(escapeRegExp).join("|")
-
-// Keep these lists in sync with
-// /home/xyh/.emacs.d/deps/meta-lisp-mode/meta-lisp-font-lock.el.
 const specialForms = [
   "define",
   "lambda",
@@ -102,17 +104,17 @@ const atForms = [
   "@数组",
 ]
 
-const builtinConstants = ["true", "false", "void", "真", "假", "空"]
+const builtinConstants = ["true", "false", "void", "真", "假", "空", "空值"]
 
 const valueDefinitionKeywords = [
   "define",
   "定义",
   "claim",
   "声明",
-  "define-test",
-  "定义测试",
   "claim-type",
   "声明类型",
+  "define-test",
+  "定义测试",
   "admit",
   "承认",
   "declare-primitive-function",
@@ -121,26 +123,36 @@ const valueDefinitionKeywords = [
   "声明基本变量",
 ]
 
-// Meta-lisp symbols may contain a wide range of punctuation, but not
-// parentheses, quotes, semicolons, or whitespace.
-const name = String.raw`[\p{L}\p{N}_$%&*+\-.<=>!?@#|]+`
-const qualifiedName = String.raw`${name}(?:/${name})*`
+const typeDefinitionKeywords = [
+  "define-type",
+  "定义类型",
+  "define-enum",
+  "定义枚举",
+  "define-struct",
+  "定义结构",
+  "define-struct-type",
+  "定义结构类型",
+  "define-opaque-type",
+  "定义黑盒类型",
+  "define-algebraic-type",
+  "定义代数类型",
+]
 
 export const MetaLisp = {
   name: "meta-lisp",
   scopeName: "source.meta-lisp",
   fileTypes: [".meta"],
-  // VitePress loads `languageAlias` values as bundled Shiki language
-  // names. Aliases for this custom grammar therefore live here.
-  aliases: ["basic-lisp", "xvm-lisp", "x86-lisp"],
 
   patterns: [
     { include: "#comments" },
     { include: "#strings" },
-    { include: "#definitions" },
+    { include: "#value-definitions" },
+    { include: "#type-definitions" },
+    { include: "#module-declarations" },
     { include: "#at-comment" },
     { include: "#at-forms" },
     { include: "#special-forms" },
+    { include: "#cond-else" },
     { include: "#quoted-symbols" },
     { include: "#keywords" },
     { include: "#builtin-constants" },
@@ -150,33 +162,41 @@ export const MetaLisp = {
   ],
 
   repository: {
-    comments: {
-      match: ";.*$",
-      name: "comment.line.semicolon.meta-lisp",
-    },
-
-    strings: {
-      begin: '"',
-      end: '"',
-      name: "string.quoted.double.meta-lisp",
-      patterns: [
-        {
-          match: String.raw`\\.`,
-          name: "constant.character.escape.meta-lisp",
-        },
-      ],
-    },
+    comments: commentRule("meta-lisp"),
+    strings: stringRule("meta-lisp"),
 
     // (define foo ...)
     // (define (foo args...) ...)
     // (claim foo ...)
     // (声明 foo ...)
-    definitions: {
+    "value-definitions": {
       match: String.raw`(\()\s*(${alternation(valueDefinitionKeywords)})(?=\s)\s*(?:\(\s*)?(${qualifiedName})`,
       captures: {
         "1": { name: "punctuation.section.list.begin.meta-lisp" },
         "2": { name: "keyword.control.meta-lisp" },
         "3": { name: "entity.name.function.meta-lisp" },
+      },
+    },
+
+    // (define-type point-t ...)
+    // (define-struct (pair-t A B) ...)
+    // (定义枚举 exp-t ...)
+    "type-definitions": {
+      match: String.raw`(\()\s*(${alternation(typeDefinitionKeywords)})(?=\s)\s*(?:\(\s*)?(${qualifiedName})`,
+      captures: {
+        "1": { name: "punctuation.section.list.begin.meta-lisp" },
+        "2": { name: "keyword.control.meta-lisp" },
+        "3": { name: "entity.name.type.meta-lisp" },
+      },
+    },
+
+    // (module sample) / (模块 示例)
+    "module-declarations": {
+      match: String.raw`(\()\s*(module|模块)(?=\s)\s*(${qualifiedName})`,
+      captures: {
+        "1": { name: "punctuation.section.list.begin.meta-lisp" },
+        "2": { name: "keyword.control.meta-lisp" },
+        "3": { name: "entity.name.namespace.meta-lisp" },
       },
     },
 
@@ -205,6 +225,12 @@ export const MetaLisp = {
         "1": { name: "punctuation.section.list.begin.meta-lisp" },
         "2": { name: "keyword.control.meta-lisp" },
       },
+    },
+
+    // else / 否则 in cond clauses
+    "cond-else": {
+      match: String.raw`(?<!${name})(else|否则)(?!${name})`,
+      name: "keyword.control.meta-lisp",
     },
 
     // 'foo / 'text-t
@@ -236,9 +262,8 @@ export const MetaLisp = {
       name: "entity.name.type.meta-lisp",
     },
 
-    numbers: {
-      match: String.raw`(?<!${name})-?\d+(?:\.\d+)?(?!${name})`,
-      name: "constant.numeric.meta-lisp",
-    },
+    numbers: numberRule("meta-lisp"),
   },
 } satisfies LanguageInput
+
+export default MetaLisp

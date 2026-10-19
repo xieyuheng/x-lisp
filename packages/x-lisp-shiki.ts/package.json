@@ -1,0 +1,23 @@
+{
+  "name": "@xieyuheng/x-lisp-shiki.ts",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./meta-lisp": "./src/languages/meta-lisp.ts",
+    "./basic-lisp": "./src/languages/basic-lisp.ts",
+    "./xvm-lisp": "./src/languages/xvm-lisp.ts",
+    "./x86-lisp": "./src/languages/x86-lisp.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "devDependencies": {
+    "oxfmt": "0.73.0",
+    "shiki": "4.5.0",
+    "typescript": "^7.0.2"
+  }
+}

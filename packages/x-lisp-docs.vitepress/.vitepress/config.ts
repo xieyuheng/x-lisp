@@ -2,9 +2,12 @@ import { createRequire } from "node:module"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { BasicLisp } from "@xieyuheng/x-lisp-shiki.ts/basic-lisp"
+import { MetaLisp } from "@xieyuheng/x-lisp-shiki.ts/meta-lisp"
+import { X86Lisp } from "@xieyuheng/x-lisp-shiki.ts/x86-lisp"
+import { XvmLisp } from "@xieyuheng/x-lisp-shiki.ts/xvm-lisp"
 import { defineConfig } from "vitepress"
 
-import { MetaLisp } from "./languages/meta-lisp"
 import { demoteBodyHeadings } from "./markdown/demote-body-headings"
 import { sidebarFor } from "./sidebar"
 
@@ -59,13 +62,8 @@ export default defineConfig({
     config(md) {
       demoteBodyHeadings(md)
     },
-    languages: [MetaLisp],
-    // Aliases to the custom meta-lisp grammar are declared in
-    // ./languages/meta-lisp.ts, because VitePress resolves languageAlias
-    // values as bundled Shiki language names.
+    languages: [MetaLisp, BasicLisp, XvmLisp, X86Lisp],
     languageAlias: {
-      "xvm-lisp": "asm",
-      "x86-lisp": "asm",
       "calcit-lang": "clojure",
       sml: "ocaml",
       llvm: "asm",
