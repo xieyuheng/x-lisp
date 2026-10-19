@@ -1,5 +1,5 @@
-import { type Term } from "./Term.ts"
 import { isAtomTerm } from "./isAtomTerm.ts"
+import { type Term } from "./Term.ts"
 
 export function isAtomOperandTerm(term: Term): boolean {
   switch (term.kind) {

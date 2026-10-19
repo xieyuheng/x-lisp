@@ -1,7 +1,8 @@
+import * as B from "@xieyuheng/basic-lisp.ts"
 import * as S from "@xieyuheng/sexp.ts"
 import { arrayConcat, arrayUnzip } from "@xieyuheng/std.ts/array"
 import { setUnion } from "@xieyuheng/std.ts/set"
-import * as B from "@xieyuheng/basic-lisp.ts"
+
 import * as C from "../../core/index.ts"
 import * as M from "../../meta/index.ts"
 

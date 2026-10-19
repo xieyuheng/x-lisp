@@ -1,4 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.ts"
+
 import * as X86 from "../index.ts"
 
 export function prettyData(data: X86.Data): Ppml.Node {

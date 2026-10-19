@@ -1,5 +1,7 @@
 import Path from "node:path"
+
 import * as M from "../index.ts"
+import { loadPackageConfig } from "./loadPackageConfig.ts"
 import {
   type Package,
   makePackage,
@@ -7,7 +9,6 @@ import {
   packageSourceDirectory,
 } from "./Package.ts"
 import { type PackageConfig } from "./PackageConfig.ts"
-import { loadPackageConfig } from "./loadPackageConfig.ts"
 import { packageLoadFragments } from "./packageLoadFragments.ts"
 
 const packageCache = new Map<string, Package>()

@@ -1,4 +1,5 @@
 import { setUnion, setUnionMany } from "@xieyuheng/std.ts/set"
+
 import * as M from "../index.ts"
 
 export function termOccurredNames(term: M.Term): Set<string> {

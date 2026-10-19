@@ -1,11 +1,13 @@
 #!/usr/bin/env -S node
 
+import * as fs from "node:fs"
+import { fileURLToPath } from "node:url"
+
 import * as Cli from "@xieyuheng/cli.ts"
 import * as S from "@xieyuheng/sexp.ts"
 import { errorReport } from "@xieyuheng/std.ts/error"
 import { getPackageJson } from "@xieyuheng/std.ts/node"
-import * as fs from "node:fs"
-import { fileURLToPath } from "node:url"
+
 import * as X86 from "./x86/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))

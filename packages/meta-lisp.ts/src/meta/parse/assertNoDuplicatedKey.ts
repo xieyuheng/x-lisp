@@ -1,5 +1,6 @@
-import * as S from "@xieyuheng/sexp.ts"
 import assert from "node:assert"
+
+import * as S from "@xieyuheng/sexp.ts"
 
 export function assertNoDuplicatedKey(entries: Array<[string, S.Sexp]>): void {
   for (const [key, group] of Object.entries(

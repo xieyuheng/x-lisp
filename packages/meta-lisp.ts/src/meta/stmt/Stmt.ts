@@ -1,6 +1,7 @@
 import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.ts"
-import { type Lang } from "../language/Lang.ts"
+
 import * as M from "../index.ts"
+import { type Lang } from "../language/Lang.ts"
 
 export type { Lang }
 

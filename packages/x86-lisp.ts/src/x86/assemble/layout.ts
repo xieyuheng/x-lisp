@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.ts"
+
 import { lookupStructDefinition } from "../check/check.ts"
 import type { EncodedInstruction } from "../encode/index.ts"
 import { formatType } from "../format/formatType.ts"

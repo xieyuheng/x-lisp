@@ -1,12 +1,14 @@
 #!/usr/bin/env -S node
 
+import * as fs from "node:fs"
+import { fileURLToPath } from "node:url"
+
 import * as Cli from "@xieyuheng/cli.ts"
 import * as Ppml from "@xieyuheng/ppml.ts"
 import * as S from "@xieyuheng/sexp.ts"
 import { errorReport } from "@xieyuheng/std.ts/error"
 import { getPackageJson } from "@xieyuheng/std.ts/node"
-import * as fs from "node:fs"
-import { fileURLToPath } from "node:url"
+
 import * as Tlv from "./tlv/index.ts"
 import * as Xvm from "./xvm/index.ts"
 

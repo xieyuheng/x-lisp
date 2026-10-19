@@ -4,6 +4,7 @@ import {
   writeU64LE,
   writeU8LE,
 } from "@xieyuheng/std.ts/binary"
+
 import { type Exe } from "../exe/Exe.ts"
 import {
   type FixupType,

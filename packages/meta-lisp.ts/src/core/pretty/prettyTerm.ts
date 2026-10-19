@@ -1,4 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.ts"
+
 import { type Term } from "../term/Term.ts"
 
 export function prettyTerm(term: Term): Ppml.Node {

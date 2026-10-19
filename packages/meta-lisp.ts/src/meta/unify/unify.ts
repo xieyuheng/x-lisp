@@ -1,4 +1,5 @@
 import { range } from "@xieyuheng/std.ts/range"
+
 import * as M from "../index.ts"
 import { occurCheck } from "./occurCheck.ts"
 

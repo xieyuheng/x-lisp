@@ -1,9 +1,11 @@
-import { errorReport } from "@xieyuheng/std.ts/error"
-import { snapshot } from "@xieyuheng/std.ts/snapshot"
 import assert from "node:assert"
 import Path from "node:path"
 import { test } from "node:test"
 import { fileURLToPath } from "node:url"
+
+import { errorReport } from "@xieyuheng/std.ts/error"
+import { snapshot } from "@xieyuheng/std.ts/snapshot"
+
 import * as S from "../index.ts"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))

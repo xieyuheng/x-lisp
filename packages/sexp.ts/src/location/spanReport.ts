@@ -1,5 +1,6 @@
 import { leftPad } from "@xieyuheng/std.ts/format"
 import { codePointDisplayWidth, stringIsBlank } from "@xieyuheng/std.ts/string"
+
 import { type Span } from "./Span.ts"
 
 type Line = {

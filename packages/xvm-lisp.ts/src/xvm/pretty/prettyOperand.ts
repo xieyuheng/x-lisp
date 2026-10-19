@@ -1,4 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.ts"
+
 import { type Operand } from "../operand/index.ts"
 
 export function prettyOperand(operand: Operand): Ppml.Node {

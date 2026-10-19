@@ -1,5 +1,7 @@
-import { arrayDedup } from "@xieyuheng/std.ts/array"
 import assert from "node:assert"
+
+import { arrayDedup } from "@xieyuheng/std.ts/array"
+
 import * as M from "../index.ts"
 
 // - ctxPut uses spread ({...ctx}) to create new Ctx for scoped bindings.

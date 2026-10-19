@@ -1,4 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.ts"
+
 import { type Definition } from "../definition/Definition.ts"
 import { prettyTerm } from "./prettyTerm.ts"
 

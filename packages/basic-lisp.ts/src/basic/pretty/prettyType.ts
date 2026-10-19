@@ -1,4 +1,5 @@
 import * as Ppml from "@xieyuheng/ppml.ts"
+
 import * as B from "../index.ts"
 
 export function prettyType(type: B.Type): Ppml.Node {

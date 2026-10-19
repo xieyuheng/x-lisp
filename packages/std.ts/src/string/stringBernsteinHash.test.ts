@@ -1,5 +1,6 @@
 import assert from "node:assert"
 import { test } from "node:test"
+
 import { stringBernsteinHash } from "./stringBernsteinHash.ts"
 
 test("stringBernsteinHash", () => {

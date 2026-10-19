@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.ts"
+
 import type { Instr } from "../instr/index.ts"
 import { CC_CODES } from "./cc.ts"
 import { MOD_REG, modRM } from "./modrm.ts"

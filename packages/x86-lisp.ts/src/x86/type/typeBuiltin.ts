@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.ts"
+
 import { PrimitiveTypeDefinition } from "../definition/Definition.ts"
 import type { Program } from "../program/index.ts"
 

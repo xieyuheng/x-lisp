@@ -1,6 +1,8 @@
+import assert from "node:assert"
+
 import * as S from "@xieyuheng/sexp.ts"
 import { setUnionMany } from "@xieyuheng/std.ts/set"
-import assert from "node:assert"
+
 import * as M from "../index.ts"
 
 export function isPattern(exp: M.Exp): boolean {

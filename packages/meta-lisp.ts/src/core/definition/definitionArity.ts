@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.ts"
+
 import { type Definition } from "./Definition.ts"
 
 export function definitionArity(definition: Definition): number {

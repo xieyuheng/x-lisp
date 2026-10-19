@@ -1,4 +1,5 @@
 import { jsonParseString } from "@xieyuheng/std.ts/json"
+
 import { ErrorWithSourceLocation } from "../../errors/ErrorWithSourceLocation.ts"
 import { positionForwardChar } from "../../location/Position.ts"
 import * as S from "../index.ts"

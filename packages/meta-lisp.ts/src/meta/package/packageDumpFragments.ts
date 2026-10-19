@@ -1,3 +1,5 @@
+import Path from "node:path"
+
 import {
   callWithFile,
   fileWrite,
@@ -5,7 +7,7 @@ import {
   writeln,
 } from "@xieyuheng/std.ts/file"
 import { pathRelativeToCwd } from "@xieyuheng/std.ts/path"
-import Path from "node:path"
+
 import * as M from "../index.ts"
 import {
   type Package,

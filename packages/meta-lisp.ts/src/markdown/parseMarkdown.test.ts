@@ -1,6 +1,8 @@
-import * as S from "@xieyuheng/sexp.ts"
 import assert from "node:assert/strict"
 import { test } from "node:test"
+
+import * as S from "@xieyuheng/sexp.ts"
+
 import { parseMarkdown } from "./parseMarkdown.ts"
 
 const path = "test.md"

@@ -1,4 +1,5 @@
 import assert from "node:assert"
+
 import * as S from "../index.ts"
 
 export type Matcher<A> = (sexp: S.Sexp) => A | undefined

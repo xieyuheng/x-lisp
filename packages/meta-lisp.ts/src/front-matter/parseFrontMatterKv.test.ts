@@ -1,5 +1,6 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
+
 import { parseFrontMatterKv } from "./parseFrontMatterKv.ts"
 
 test("front matter -- simple key value", () => {

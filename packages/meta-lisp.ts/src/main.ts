@@ -1,13 +1,15 @@
 #!/usr/bin/env -S node
 
+import Path from "node:path"
+import { fileURLToPath } from "node:url"
+
 import * as Cli from "@xieyuheng/cli.ts"
 import * as S from "@xieyuheng/sexp.ts"
 import { errorReport } from "@xieyuheng/std.ts/error"
 import { getPackageJson } from "@xieyuheng/std.ts/node"
-import Path from "node:path"
-import { fileURLToPath } from "node:url"
-import * as XvmBackend from "./xvm-backend/index.ts"
+
 import * as M from "./meta/index.ts"
+import * as XvmBackend from "./xvm-backend/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 

@@ -1,12 +1,14 @@
+import * as fs from "node:fs"
+
+import * as B from "@xieyuheng/basic-lisp.ts"
 import {
   callWithFile,
   fileWriteln,
   openOutputFile,
 } from "@xieyuheng/std.ts/file"
-import * as fs from "node:fs"
-import * as B from "@xieyuheng/basic-lisp.ts"
-import * as M from "../../meta/index.ts"
 import * as Xvm from "@xieyuheng/xvm-lisp.ts"
+
+import * as M from "../../meta/index.ts"
 import * as XvmBackend from "../passes/index.ts"
 
 export function BuildPipeline(rootPkg: M.Package): void {

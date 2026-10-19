@@ -1,5 +1,7 @@
-import { range } from "@xieyuheng/std.ts/range"
 import assert from "node:assert"
+
+import { range } from "@xieyuheng/std.ts/range"
+
 import * as M from "../index.ts"
 
 export type Subst = EmptySubst | ConsSubst

@@ -1,5 +1,6 @@
 import assert from "node:assert"
 import { test } from "node:test"
+
 import * as S from "../index.ts"
 
 const testOptions = { path: "[matchSexp.test]" }

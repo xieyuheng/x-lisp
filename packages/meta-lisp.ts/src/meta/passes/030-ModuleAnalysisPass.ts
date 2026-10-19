@@ -1,9 +1,11 @@
-import * as S from "@xieyuheng/sexp.ts"
-import { writeln } from "@xieyuheng/std.ts/file"
-import { setDifference } from "@xieyuheng/std.ts/set"
 import assert from "node:assert"
 import fs from "node:fs"
 import Path from "node:path"
+
+import * as S from "@xieyuheng/sexp.ts"
+import { writeln } from "@xieyuheng/std.ts/file"
+import { setDifference } from "@xieyuheng/std.ts/set"
+
 import * as M from "../../meta/index.ts"
 
 export type ModuleAnalysisReport = {

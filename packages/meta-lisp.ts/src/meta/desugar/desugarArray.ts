@@ -1,5 +1,6 @@
 import type { SourceLocation } from "@xieyuheng/sexp.ts"
 import { setUnionMany } from "@xieyuheng/std.ts/set"
+
 import { expOccurredNames } from "../exp/expOccurredNames.ts"
 import * as M from "../index.ts"
 import { generateRelativeFreshName } from "./generateRelativeFreshName.ts"

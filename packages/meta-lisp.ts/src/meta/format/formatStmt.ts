@@ -1,6 +1,7 @@
 import * as S from "@xieyuheng/sexp.ts"
-import { langKeyword } from "../language/Lang.ts"
+
 import * as M from "../index.ts"
+import { langKeyword } from "../language/Lang.ts"
 
 export function formatStmt<E>(
   stmt: M.Stmt<E>,

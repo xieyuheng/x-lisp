@@ -1,4 +1,5 @@
 import type { MaybePromise } from "@xieyuheng/std.ts/promise"
+
 import { applyMiddleware, type Middleware } from "./Middleware.ts"
 import type { Route, RouteInput } from "./Route.ts"
 import type { Router } from "./Router.ts"

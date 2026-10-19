@@ -1,5 +1,7 @@
-import { pathRelativeToCwd } from "@xieyuheng/std.ts/path"
 import fs from "node:fs"
+
+import { pathRelativeToCwd } from "@xieyuheng/std.ts/path"
+
 import * as S from "../index.ts"
 
 export function sourceLocationReport(

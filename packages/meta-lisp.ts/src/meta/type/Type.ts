@@ -1,4 +1,5 @@
 import { range } from "@xieyuheng/std.ts/range"
+
 import * as M from "../index.ts"
 
 export type Type =

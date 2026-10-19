@@ -1,4 +1,5 @@
 import { setUnionMany } from "@xieyuheng/std.ts/set"
+
 import { type Term } from "./Term.ts"
 
 export function termFreeNames(

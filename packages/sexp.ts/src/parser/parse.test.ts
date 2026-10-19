@@ -1,4 +1,5 @@
 import { test } from "node:test"
+
 import * as S from "../index.ts"
 
 function assertParse(text: string, expected: S.Sexp): void {

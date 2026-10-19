@@ -1,5 +1,6 @@
-import { writeln } from "@xieyuheng/std.ts/file"
 import * as S from "@xieyuheng/sexp.ts"
+import { writeln } from "@xieyuheng/std.ts/file"
+
 import * as M from "../../meta/index.ts"
 
 // CheckReservedNamesPass

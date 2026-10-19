@@ -1,6 +1,8 @@
-import * as S from "@xieyuheng/sexp.ts"
 import assert from "node:assert/strict"
 import { test } from "node:test"
+
+import * as S from "@xieyuheng/sexp.ts"
+
 import { deriveOpSize, operandSize } from "../encode/size.ts"
 import { parseInstr } from "./parseInstr.ts"
 import { parseOperand } from "./parseOperand.ts"

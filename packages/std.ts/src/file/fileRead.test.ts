@@ -1,6 +1,7 @@
 import Path from "node:path"
 import { test } from "node:test"
 import { fileURLToPath } from "node:url"
+
 import { snapshot } from "../snapshot/index.ts"
 import { fileRead, openInputFile } from "./index.ts"
 

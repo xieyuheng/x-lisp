@@ -1,4 +1,5 @@
 import fs from "node:fs"
+
 import type { File } from "./File.ts"
 
 export function fileRead(file: File): string {

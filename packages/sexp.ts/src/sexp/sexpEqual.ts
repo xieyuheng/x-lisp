@@ -1,4 +1,5 @@
 import { arrayZip } from "@xieyuheng/std.ts/array"
+
 import * as S from "../index.ts"
 
 export function sexpEqual(x: S.Sexp, y: S.Sexp): boolean {

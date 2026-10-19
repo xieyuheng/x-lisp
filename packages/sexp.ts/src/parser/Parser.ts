@@ -1,4 +1,5 @@
 import { stringIsBigInt, stringIsNumber } from "@xieyuheng/std.ts/string"
+
 import * as S from "../index.ts"
 
 type Result = { sexp: S.Sexp; next: number }

@@ -1,5 +1,7 @@
-import * as S from "@xieyuheng/sexp.ts"
 import fs from "node:fs"
+
+import * as S from "@xieyuheng/sexp.ts"
+
 import { parseMarkdown } from "../../markdown/index.ts"
 import type { MarkdownCodeBlock } from "../../markdown/index.ts"
 import * as M from "../index.ts"
