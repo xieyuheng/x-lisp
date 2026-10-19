@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url"
 
 import { defineConfig } from "vitepress"
 
+import { MetaLisp } from "./languages/meta-lisp"
 import { demoteBodyHeadings } from "./markdown/demote-body-headings"
 import { sidebarFor } from "./sidebar"
 
@@ -58,15 +59,16 @@ export default defineConfig({
     config(md) {
       demoteBodyHeadings(md)
     },
+    languages: [MetaLisp],
+    // Aliases to the custom meta-lisp grammar are declared in
+    // ./languages/meta-lisp.ts, because VitePress resolves languageAlias
+    // values as bundled Shiki language names.
     languageAlias: {
-      "meta-lisp": "scheme",
-      "basic-lisp": "scheme",
       "xvm-lisp": "asm",
       "x86-lisp": "asm",
+      "calcit-lang": "clojure",
       sml: "ocaml",
-      li: "scheme",
       llvm: "asm",
-      "calcit-lang": "scheme",
     },
   },
 

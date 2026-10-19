@@ -52,7 +52,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 在写行注释的时候 lisp 程序员通常写两个 `;;`。
 
-```scheme
+```basic-lisp
 ;; 注释
 (= result int64-t (iadd a b))  ;; 行尾注释
 ```
@@ -61,7 +61,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 有输出 cell 的指令：
 
-```scheme
+```basic-lisp
 (= <cell> (<op> <cell> ... :<key> <attribute> ...))
 ```
 
@@ -72,17 +72,17 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 未来支持多输出 cell 可以用如下语法支持：
 
-```scheme
+```basic-lisp
 (= <cell> ... (<op> <cell> ... :<key> <attribute> ...))
 ```
 
 无输出 cell 的指令，如 terminator 和副作用指令：
 
-```scheme
+```basic-lisp
 (<op> <cell> ... :<key> <attribute> ...)
 ```
 
-```scheme
+```basic-lisp
 (= sum (iadd a b))
 (branch cond :then-label then :else-label else)
 ```
@@ -93,7 +93,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 基本块由标号和指令序列组成：
 
-```scheme
+```basic-lisp
 (block <label>
   <instr>
   ...)
@@ -103,7 +103,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 - `instrs` 的最后一条指令必须为 terminator 类指令。
 - 用 `(argument :index N)` 获取函数参数。
 
-```scheme
+```basic-lisp
 (block body
   (= a (argument :index 0))
   (= b (argument :index 1))
@@ -144,7 +144,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 ## 函数类型
 
-```scheme
+```basic-lisp
 (-> <arg-type> ... <ret-type>)
 ```
 
@@ -152,7 +152,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 例如：
 
-```scheme
+```basic-lisp
 (-> int64-t)
 (-> pointer-t int64-t)
 (-> float64-t float64-t float64-t)
@@ -161,7 +161,7 @@ basic-lisp 是 meta-lisp 编译器的**底层中间表示**（IR），
 
 未来需要支持多返回值类型可以用 `(values)` 语法：
 
-```scheme
+```basic-lisp
 (-> int64-t int64-t (values int64-t int64-t))
 ```
 
@@ -203,7 +203,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (claim)
 
-```scheme
+```basic-lisp
 (claim <name> <type>)
 ```
 
@@ -211,14 +211,14 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 函数用 `(-> ...)` arrow-type：
 
-```scheme
+```basic-lisp
 (claim add-or-sub (-> value-t value-t value-t value-t))
 (claim identity (-> int64-t int64-t))
 ```
 
 变量用具体类型：
 
-```scheme
+```basic-lisp
 (claim origin point-t)
 (claim counter int64-t)
 ```
@@ -227,7 +227,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (define-function)
 
-```scheme
+```basic-lisp
 (define-function (<name> <parameter> ...)
   <block>
   ...)
@@ -240,7 +240,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 - 第一个 block 是 entry block。
 - 参数通过 `(argument :index N)` 获取，参数名与签名列表一致。
 
-```scheme
+```basic-lisp
 (claim add1 (-> int64-t int64-t))
 
 (define-function (add1 n)
@@ -253,7 +253,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (define-variable)
 
-```scheme
+```basic-lisp
 (define-variable <name>)        ;; 无初始化，或运行时初始化
 (define-variable <name> <data>)  ;; 静态初始化
 ```
@@ -263,7 +263,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 - 完整类型由同名 `(claim)` 提供。
 - 带 `<data>` 时以数据描述数据段内存布局，静态初始化。
 
-```scheme
+```basic-lisp
 (claim origin point-t)
 (define-variable origin
   (struct point-t
@@ -276,7 +276,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (define-struct)
 
-```scheme
+```basic-lisp
 (define-struct <type-name>
   (<field-name> <type>)
   ...)
@@ -288,7 +288,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 - 字段列表是有序的，决定各字段偏移与总大小。
 - 布局为 packed -- 字段间无 padding。
 
-```scheme
+```basic-lisp
 (define-struct point-t
   (x int64-t)
   (y int64-t))
@@ -301,7 +301,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (extern-function)
 
-```scheme
+```basic-lisp
 (extern-function <name>)
 ```
 
@@ -311,7 +311,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 - 外部函数的实现在编译单元外部（如运行时原生函数、动态链接库等）。
 - 仅在已存在同名 `(claim)` 时有效。
 
-```scheme
+```basic-lisp
 (claim malloc (-> int64-t pointer-t))
 (extern-function malloc)
 
@@ -321,7 +321,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (extern-variable)
 
-```scheme
+```basic-lisp
 (extern-variable <name>)
 ```
 
@@ -331,7 +331,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 - 外部变量的实现在编译单元外部（如运行时提供的全局变量）。
 - 仅在已存在同名 `(claim)` 时有效。
 
-```scheme
+```basic-lisp
 (claim errno int64-t)
 (extern-variable errno)
 ```
@@ -344,7 +344,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 整数：
 
-```scheme
+```basic-lisp
 42
 -1
 0
@@ -352,14 +352,14 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 浮点数：
 
-```scheme
+```basic-lisp
 3.14
 -2.5
 ```
 
 字符串：
 
-```scheme
+```basic-lisp
 "hello"
 "world"
 ```
@@ -369,20 +369,20 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (address)
 
-```scheme
+```basic-lisp
 (address <name>)
 ```
 
 对已定义符号的地址引用。
 
-```scheme
+```basic-lisp
 (address origin)
 (address ©str.0)
 ```
 
 ## (struct)
 
-```scheme
+```basic-lisp
 (struct <type-name>
   (<field> <data>)
   ...)
@@ -392,7 +392,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 例如：
 
-```scheme
+```basic-lisp
 (define-variable origin
   (struct point-t
     (x 0)
@@ -401,13 +401,13 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (pointer)
 
-```scheme
+```basic-lisp
 (pointer <data>)
 ```
 
 指向匿名数据的指针。
 
-```scheme
+```basic-lisp
 (pointer
   (struct node-t
     (value 1)
@@ -416,13 +416,13 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 ## (array)
 
-```scheme
+```basic-lisp
 (array <data> ...)
 ```
 
 定长有序数组。
 
-```scheme
+```basic-lisp
 (array 1 2 3)
 (array
   (address ©str.0)
@@ -431,7 +431,7 @@ cell 在 instruction 中，被代表 propagator 的 op 连接起来，形成传�
 
 # 例子
 
-```scheme
+```basic-lisp
 (claim add1 (-> int64-t int64-t))
 (define-function (add1 n)
   (block body

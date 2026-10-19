@@ -38,7 +38,7 @@ title: 指令
 
 `movzx` 常与 `set` 搭配，将条件判断产生的 1 字节 0/1 扩展为完整 64 位布尔值：
 
-```scheme
+```x86-lisp
 (set (cc g) (reg al))
 (movzx (reg rax) (reg al))
 ```
@@ -79,7 +79,7 @@ title: 指令
 
 `j` 示例：
 
-```scheme
+```x86-lisp
 (j (cc g) (label is-greater))
 ```
 
@@ -104,7 +104,7 @@ title: 指令
 
 `lea` 示例：
 
-```scheme
+```x86-lisp
 (lea (reg rax) (mem (reg rbp) -8))
 (lea (reg rcx) (mem (reg rbx) (* (reg rax) 8)))
 ```

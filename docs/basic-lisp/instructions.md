@@ -123,7 +123,7 @@ title: 指令
 
 `branch` 的条件为 `bool-t`，为真时跳转到 `:then-label`，否则跳转到 `:else-label`。
 
-```scheme
+```basic-lisp
 (branch cond :then-label positive :else-label non-positive)
 ```
 
@@ -141,7 +141,7 @@ title: 指令
 
 `call` 的第一个输入是目标函数地址，`apply` 的第一个输入是动态函数值，其余输入都是参数列表。
 
-```scheme
+```basic-lisp
 (= result (call add-addr a b))
 (= result (apply fn arg1 arg2))
 ```
@@ -150,7 +150,7 @@ title: 指令
 
 语义分别与 `call` / `apply` 相同，但当前栈帧会被回收，且是 terminator 指令。
 
-```scheme
+```basic-lisp
 (tail-call address x y)
 (tail-apply fn arg1 arg2)
 ```
@@ -166,7 +166,7 @@ title: 指令
 
 `use` 从合并点读取值，`:type` 声明结果类型；`provide` 向对应 `:use-site` 写入值。多个 `provide` 可对应同一个 `use`。
 
-```scheme
+```basic-lisp
 (block then
   (= tagged-sum (tag-int sum))
   (provide tagged-sum :use-site result)

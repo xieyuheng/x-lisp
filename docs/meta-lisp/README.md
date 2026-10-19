@@ -17,7 +17,7 @@ A LISP with type system.
 
 ## Examples
 
-```scheme
+```meta-lisp
 (module math)
 
 (claim square (-> int-t int-t))
@@ -29,7 +29,7 @@ A LISP with type system.
   (assert-equal 81 (square (square 3))))
 ```
 
-```scheme
+```meta-lisp
 (module math)
 
 (claim gcd (-> int-t int-t int-t))
@@ -44,7 +44,7 @@ A LISP with type system.
   (assert-equal 4 (gcd 12 8)))
 ```
 
-```scheme
+```meta-lisp
 (module math)
 
 (claim factorial (-> int-t int-t))
@@ -63,7 +63,7 @@ A LISP with type system.
   (assert-equal 120 (factorial 5)))
 ```
 
-```scheme
+```meta-lisp
 (module example)
 
 (define-enum term-t

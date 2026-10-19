@@ -67,14 +67,14 @@ x86-lisp 是 x86-64 的 Lisp 语法汇编。
 
 x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写两个分号 `;;`。
 
-```scheme
+```x86-lisp
 ;; 这是一条注释
 (mov (reg rax) 42)  ;; 行尾注释
 ```
 
 # 指令
 
-```scheme
+```x86-lisp
 (<op> <operand> ...)
 ```
 
@@ -91,7 +91,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 - 控制流按指令顺序流动；若没有 `ret` / `jmp`，会继续执行后面的指令。
 - 一个函数的入口就是第一个可执行指令，不需要显式的入口标记。
 
-```scheme
+```x86-lisp
 (define-code main
   (mov (reg rax) 10)
   (mov (reg rcx) 3)
@@ -108,7 +108,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (define-code)
 
-```scheme
+```x86-lisp
 (define-code <name>
   <instr-or-label>
   ...)
@@ -118,7 +118,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 例如：
 
-```scheme
+```x86-lisp
 (define-code add1
   (mov (reg rax) (mem (reg rbp) 16))
   (add (reg rax) 1)
@@ -127,7 +127,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (define-struct)
 
-```scheme
+```x86-lisp
 (define-struct <type-name>
   (<field-name> <type>)
   ...)
@@ -138,7 +138,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 - 类型名按惯例以 `-t` 结尾。
 - 字段间无 padding。
 
-```scheme
+```x86-lisp
 (define-struct point-t
   (x int64-t)
   (y int64-t))
@@ -146,13 +146,13 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (define-data)
 
-```scheme
+```x86-lisp
 (define-data <name> <data>)
 ```
 
 例如：
 
-```scheme
+```x86-lisp
 (define-data origin
   (struct point-t
     (x 0)
@@ -161,13 +161,13 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (define-space)
 
-```scheme
+```x86-lisp
 (define-space <name> <size>)
 ```
 
 分配未初始化内存。
 
-```scheme
+```x86-lisp
 (define-space buffer 4096)
 (define-space stack 16384)
 ```
@@ -178,7 +178,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (reg)
 
-```scheme
+```x86-lisp
 (reg <name>)
 ```
 
@@ -186,20 +186,20 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 常见寄存器：`rax`、`rbx`、`rcx`、`rdx`、`rsi`、`rdi`、`rbp`、`rsp`、`r8`-`r15`。
 
-```scheme
+```x86-lisp
 (reg rax)
 (reg r15)
 ```
 
 ## (label)
 
-```scheme
+```x86-lisp
 (label <name>)
 ```
 
 代码标签引用 -- 专用于 **rel32** 域（`jmp` / `call` / `j` 的跳转目标）。
 
-```scheme
+```x86-lisp
 (label is-greater)
 (label merge)
 ```
@@ -208,13 +208,13 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (address)
 
-```scheme
+```x86-lisp
 (address <name>)
 ```
 
 符号地址作为 64-bit 立即数（`movabs` + 修正）。
 
-```scheme
+```x86-lisp
 (address origin)
 (address chain)
 ```
@@ -224,7 +224,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 内存操作数。**size**（`byte` / `word` / `dword` / `qword`，对应 1 / 2 / 4 / 8 字节）
 是可选的首参数：
 
-```scheme
+```x86-lisp
 (mem <size> <address-or-reg …>)
 ```
 
@@ -234,14 +234,14 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 **rip-相对寻址**：
 
-```scheme
+```x86-lisp
 (mem (address <name>))
 (mem byte (address <name>))
 ```
 
 编码为 `[rip + disp32]`。
 
-```scheme
+```x86-lisp
 (mem (address origin))
 (mem byte (address buffer))
 ```
@@ -250,7 +250,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 第一个参数（size 之后）为 `(reg <base>)`，支持完整 SIB。
 
-```scheme
+```x86-lisp
 (mem (reg <base>) (<index> | (* <index> <scale>)) [<disp>])
 (mem dword (reg <base>) -8)
 ```
@@ -261,7 +261,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
   省略 `(* ...)` 时 scale 默认 `1`。
 - `disp`：可选，整数或 `(offset-of ...)`。
 
-```scheme
+```x86-lisp
 (mem (reg rbp))                             ;; [rbp]
 (mem (reg rbp) -8)                          ;; [rbp - 8]
 (mem dword (reg rbp) -8)                    ;; [rbp - 8] dword
@@ -278,7 +278,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 立即数（8 字节 movabs）。它是未打 tag 的常数——需要 tagged 值时配合 `and`/`or`
 的 tag 位操作（对应编译器 `float64` → `tag-float` 的输出模式）。
 
-```scheme
+```x86-lisp
 (mov (reg rax) 3.14)                  ;; movabs rax, 0x40091EB851EB851F
 (mov (mem qword (reg rbp) -8) 3.14)   ;; movabs rax, bits; mov [rbp-8], rax
 ```
@@ -287,7 +287,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (cc)
 
-```scheme
+```x86-lisp
 (cc <code>)
 ```
 
@@ -306,14 +306,14 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 | `a`  | above            |
 | `ae` | above or equal   |
 
-```scheme
+```x86-lisp
 (cc e)
 (cc l)
 ```
 
 ## (var)
 
-```scheme
+```x86-lisp
 (var <name>)
 ```
 
@@ -323,19 +323,19 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 
 ## (extern)
 
-```scheme
+```x86-lisp
 (extern <name>)
 ```
 
 外部符号引用（如 libc 函数、syscall 入口），由外部修正处理。
 
-```scheme
+```x86-lisp
 (extern printf)
 ```
 
 ## (fixup)
 
-```scheme
+```x86-lisp
 (fixup <type> <name>)
 ```
 
@@ -352,7 +352,7 @@ x86-lisp 使用 Lisp 风格的行注释，以 `;` 开头直到行尾。通常写
 | `symbol-value` | 64-bit    | `R_X86_64_64`    | 作为普通符号由链接器解析          |
 | 其他自定义     | 64-bit    | `R_X86_64_64`    | 作为普通符号由链接器解析          |
 
-```scheme
+```x86-lisp
 (mov (reg rax) (fixup symbol-value foo))
 ```
 
@@ -411,7 +411,7 @@ cmp r/m, imm        → 同上
 
 裸 `(struct ...)` 和 `(array ...)` 不支持 -- 报错。
 
-```scheme
+```x86-lisp
 (mov (reg rax) "hello")                           ;; 匿名字符串 → mem
 (mov (reg rcx) 42)                                ;; 立即数
 (mov (reg rax) (pointer (struct point-t (x 0) (y 0))))  ;; 匿名 struct + mem
@@ -481,13 +481,13 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 ## 数组类型
 
-```scheme
+```x86-lisp
 (array-t <element-type> <length>)
 ```
 
 `(array-t <T> <N>)` 是定长数组 -- `N` 个连续 `<T>` 元素，总大小 = `sizeof(T) * N`。
 
-```scheme
+```x86-lisp
 (array-t uint8-t 256)
 (array-t int64-t 10)
 (array-t pointer-t 8)
@@ -501,7 +501,7 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 支持十进制、十六进制（`0x`）、二进制（`0b`）、八进制（`0o`）前缀，可带符号：
 
-```scheme
+```x86-lisp
 42
 -1
 0x61
@@ -513,14 +513,14 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 ## 字符串
 
-```scheme
+```x86-lisp
 "hello"
 ""
 ```
 
 ## (struct)
 
-```scheme
+```x86-lisp
 (struct <name>
   (<field> <data>)
   ...)
@@ -528,7 +528,7 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 例如：
 
-```scheme
+```x86-lisp
 (struct point-t
   (x 0)
   (y 0))
@@ -536,38 +536,38 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 ## (pointer)
 
-```scheme
+```x86-lisp
 (pointer <data>)
 ```
 
 编译期创建匿名 data slot 存放 `<data>`，产出为指向它的指针。
 
-```scheme
+```x86-lisp
 (pointer (struct node-t (value 1) (next 0)))
 ```
 
 ## (array)
 
-```scheme
+```x86-lisp
 (array <data> ...)
 ```
 
 例如：
 
-```scheme
+```x86-lisp
 (array 1 2 3 4 5)
 (array "a" "b" "c")
 ```
 
 ## 符号地址
 
-```scheme
+```x86-lisp
 (address <name>)
 ```
 
 例如：
 
-```scheme
+```x86-lisp
 (address factorial)
 ```
 
@@ -577,7 +577,7 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 ## 整数位移
 
-```scheme
+```x86-lisp
 8
 -8
 16
@@ -587,13 +587,13 @@ pointer 和 string 字段的目标（匿名的 data slot）由汇编器自动分
 
 ## (offset-of)
 
-```scheme
+```x86-lisp
 (offset-of <struct-type> <field> ...)
 ```
 
 沿 `struct-type` 的字段路径逐级累加偏移，求值为字节数。
 
-```scheme
+```x86-lisp
 (offset-of point-t y)            ;; point-t 中 y 字段的字节偏移
 (offset-of node-a-t next)        ;; node-a-t 中 next 字段的字节偏移
 ```
