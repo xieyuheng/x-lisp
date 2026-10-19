@@ -8,16 +8,12 @@
   "files": [
     "src"
   ],
-  "prettier": {
-    "semi": false,
-    "trailingComma": "all"
-  },
   "dependencies": {
     "@xieyuheng/std.ts": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
-    "prettier": "^3.9.10",
+    "oxfmt": "0.73.0",
     "typescript": "^7.0.2"
   }
 }

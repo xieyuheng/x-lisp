@@ -1,4 +1,4 @@
-// prettier-ignore
+// oxfmt-ignore
 export const CC_CODES: Record<string, number> = {
   o: 0,   no: 1,
   b: 2,  nae: 2,   c: 2,    ae: 3,  nb: 3,   nc: 3,

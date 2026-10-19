@@ -1,5 +1,10 @@
 export type Data =
-  AddressData | IntData | StringData | StructData | PointerData | ArrayData
+  | AddressData
+  | IntData
+  | StringData
+  | StructData
+  | PointerData
+  | ArrayData
 
 export type AddressData = {
   kind: "AddressData"

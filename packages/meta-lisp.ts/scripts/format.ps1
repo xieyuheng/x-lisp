@@ -3,4 +3,4 @@
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
 Set-Location (Join-Path $PSScriptRoot '..')
-npx.cmd prettier src --write
+npx.cmd oxfmt src --write

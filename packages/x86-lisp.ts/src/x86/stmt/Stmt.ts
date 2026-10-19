@@ -3,7 +3,10 @@ import type { Instr } from "../instr/index.ts"
 import type { Type } from "../type/index.ts"
 
 export type Stmt =
-  DefineCodeStmt | DefineDataStmt | DefineStructStmt | DefineSpaceStmt
+  | DefineCodeStmt
+  | DefineDataStmt
+  | DefineStructStmt
+  | DefineSpaceStmt
 
 export type DefineCodeStmt = {
   kind: "DefineCodeStmt"

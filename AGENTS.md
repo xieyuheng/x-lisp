@@ -65,7 +65,7 @@ AI agent 应用中文回答用户的问题。
 
 - Node 原生 test runner（`node --test`），测试与源码同目录（`src/**/*.test.ts`）
 - ESM only，相对 import 必须带 `.ts` 扩展名，Node 内置模块用 `node:` 前缀
-- Prettier 格式化（配置内联在 `package.json`），无 ESLint
+- Oxfmt 格式化（每个 package 的 `.oxfmtrc.json`），无 ESLint
 
 ### 编码规范
 

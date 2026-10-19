@@ -23,7 +23,7 @@ function r(
   ]
 }
 
-// prettier-ignore
+// oxfmt-ignore
 const REG_TABLE: Record<string, RegInfo> = Object.fromEntries([
   // 64-bit low
   r("rax", 0, false), r("rcx", 1, false), r("rdx", 2, false), r("rbx", 3, false),

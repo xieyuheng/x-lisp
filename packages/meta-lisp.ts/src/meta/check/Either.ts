@@ -1,5 +1,6 @@
 export type Either<L, R> =
-  { kind: "Left"; left: L } | { kind: "Right"; right: R }
+  | { kind: "Left"; left: L }
+  | { kind: "Right"; right: R }
 
 export function Left<L, R>(left: L): Either<L, R> {
   return { kind: "Left", left }

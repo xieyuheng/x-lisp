@@ -109,7 +109,7 @@ function locateSpecialApply(term: M.Term): M.Term {
   }
 }
 
-// prettier-ignore
+// oxfmt-ignore
 const locateTable: Array<{
   modName: string
   source: string

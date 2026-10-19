@@ -12,10 +12,6 @@
   "bin": {
     "x86-lisp.ts": "src/main.ts"
   },
-  "prettier": {
-    "semi": false,
-    "trailingComma": "all"
-  },
   "dependencies": {
     "@xieyuheng/cli.ts": "workspace:*",
     "@xieyuheng/ppml.ts": "workspace:*",
@@ -24,7 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
-    "prettier": "^3.9.10",
+    "oxfmt": "0.73.0",
     "typescript": "^7.0.2"
   }
 }
