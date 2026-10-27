@@ -1,9 +1,9 @@
-[ [English](README.md) | [中文](README.zh.md) ]
+# x-lisp
 
-## Contents
+编程语言集合。
 
-- [meta-lisp](docs/meta-lisp/README.md)
+- 主页：<https://lisp.xieyuheng.com>
 
-## License
+## 开源协议
 
 [GPLv3](LICENSE)
