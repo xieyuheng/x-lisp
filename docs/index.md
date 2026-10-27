@@ -10,7 +10,7 @@ hero:
     link: diary/
 ---
 
-## [meta-lisp](meta-lisp)
+## [meta-lisp](meta-lisp/)
 
 极简的静态类型 lisp。
 
@@ -34,7 +34,7 @@ hero:
   (assert-equal 720 (factorial 6)))
 ```
 
-## [元语](元语)
+## [元语](元语/)
 
 meta-lisp 中文翻译为「元语」。<br />
 支持中文编程。

@@ -45,7 +45,7 @@ over-engineering 会产生新的伪需求，
 
 # 关于汇编语言的设计
 
-```li
+```txt
 put factorial/arity 1
 fn factorial :local-store 0 :n
 fn factorial :label :body
