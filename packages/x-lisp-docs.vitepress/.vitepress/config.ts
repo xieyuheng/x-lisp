@@ -20,27 +20,10 @@ const vueServerRenderer = require.resolve("vue/server-renderer")
 
 export default defineConfig({
   srcDir: docsDir,
+  appearance: "force-dark",
   cleanUrls: true,
   title: "x-lisp",
-  description: "x-lisp documentation",
-
-  locales: {
-    root: {
-      label: "English",
-      lang: "en-US",
-      link: "/",
-      title: "x-lisp",
-      description: "x-lisp documentation",
-    },
-    zh: {
-      label: "中文",
-      lang: "zh-CN",
-      link: "/zh/",
-      title: "x-lisp",
-      description: "x-lisp 文档",
-    },
-  },
-
+  description: "编程语言集合",
   rewrites: {
     "meta-lisp/README.md": "meta-lisp/index.md",
     "元语/说明.md": "元语/index.md",
@@ -71,47 +54,40 @@ export default defineConfig({
   },
 
   themeConfig: {
-    nav: [
-      {
-        text: "GitHub",
-        link: "https://github.com/xieyuheng/x-lisp",
-        target: "_blank",
-        rel: "noreferrer",
-      },
-    ],
-
-    sidebar: {
-      "/meta-lisp/": sidebarFor(resolve(docsDir, "meta-lisp"), "/meta-lisp/", {
-        indexFiles: ["index.md", "README.md"],
-      }),
-      "/basic-lisp/": sidebarFor(
-        resolve(docsDir, "basic-lisp"),
-        "/basic-lisp/",
-        { indexFiles: ["index.md"] },
-      ),
-      "/xvm-lisp/": sidebarFor(resolve(docsDir, "xvm-lisp"), "/xvm-lisp/", {
-        indexFiles: ["index.md"],
-      }),
-      "/x86-lisp/": sidebarFor(resolve(docsDir, "x86-lisp"), "/x86-lisp/", {
-        indexFiles: ["index.md"],
-      }),
-      "/元语/": sidebarFor(resolve(docsDir, "元语"), "/元语/", {
-        indexFiles: ["index.md", "说明.md"],
-      }),
-      "/diary/": sidebarFor(resolve(docsDir, "diary"), "/diary/", {
-        indexFiles: ["index.md"],
-      }),
-    },
-
-    search: {
-      provider: "local",
-    },
-
+    search: { provider: "local" },
     i18nRouting: false,
-    langMenuLabel: "Change language / 切换语言",
-
-    outline: {
-      level: [2, 3],
-    },
+    outline: { level: [2, 3] },
+    sidebar: makeSideBar(docsDir),
+    socialLinks: [
+      {
+        icon: "github",
+        link: "https://github.com/xieyuheng/x-lisp"
+      }
+    ],
   },
 })
+
+function makeSideBar(docsDir: string) {
+  return {
+    "/meta-lisp/": sidebarFor(resolve(docsDir, "meta-lisp"), "/meta-lisp/", {
+      indexFiles: ["index.md", "README.md"],
+    }),
+    "/basic-lisp/": sidebarFor(
+      resolve(docsDir, "basic-lisp"),
+      "/basic-lisp/",
+      { indexFiles: ["index.md"] },
+    ),
+    "/xvm-lisp/": sidebarFor(resolve(docsDir, "xvm-lisp"), "/xvm-lisp/", {
+      indexFiles: ["index.md"],
+    }),
+    "/x86-lisp/": sidebarFor(resolve(docsDir, "x86-lisp"), "/x86-lisp/", {
+      indexFiles: ["index.md"],
+    }),
+    "/元语/": sidebarFor(resolve(docsDir, "元语"), "/元语/", {
+      indexFiles: ["index.md", "说明.md"],
+    }),
+    "/diary/": sidebarFor(resolve(docsDir, "diary"), "/diary/", {
+      indexFiles: ["index.md"],
+    }),
+  }
+}

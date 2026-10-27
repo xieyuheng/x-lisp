@@ -2,13 +2,17 @@
 layout: home
 hero:
   name: x-lisp
-  text: programming language collection
-  tagline: languages based on the lisp syntax framework
+  text: 编程语言集合
+  tagline: 基于 LISP 语法框架的编程语言
+  actions:
+  - theme: alt
+    text: 开发日志
+    link: diary/
 ---
 
-## [meta-lisp](meta-lisp/)
+## [meta-lisp](meta-lisp)
 
-A minimalist statically typed lisp.
+极简的静态类型 lisp。
 
 ```meta-lisp
 (module math)
@@ -30,9 +34,34 @@ A minimalist statically typed lisp.
   (assert-equal 720 (factorial 6)))
 ```
 
+## [元语](元语)
+
+meta-lisp 中文翻译为「元语」。<br />
+支持中文编程。
+
+```meta-lisp
+(模块 数学)
+
+(声明 阶乘 (-> 整数型 整数型))
+
+(定义 (阶乘 数)
+  (若 (整数小于等于 数 1)
+    1
+    (整数乘 (阶乘 (整数减 数 1)) 数)))
+
+(定义测试 阶乘测试
+  (断言相等 1 (阶乘 0))
+  (断言相等 1 (阶乘 1))
+  (断言相等 2 (阶乘 2))
+  (断言相等 6 (阶乘 3))
+  (断言相等 24 (阶乘 4))
+  (断言相等 120 (阶乘 5))
+  (断言相等 720 (阶乘 6)))
+```
+
 ## [basic-lisp](basic-lisp/syntax)
 
-SSA IR.
+SSA 中间表示。
 
 ```basic-lisp
 (define-function (math/factorial n)
@@ -54,7 +83,7 @@ SSA IR.
 
 ## [xvm-lisp](xvm-lisp/syntax)
 
-XVM virtual machine.
+XVM 虚拟机。
 
 ```xvm-lisp
 (define-function (math/factorial n)
@@ -76,7 +105,7 @@ XVM virtual machine.
 
 ## [x86-lisp](x86-lisp/syntax)
 
-x86-64 assembly with lisp syntax.
+使用 lisp 语法的 x86-64 汇编。
 
 ```x86-lisp
 ; conditional branch
