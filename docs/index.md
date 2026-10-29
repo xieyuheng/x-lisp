@@ -12,6 +12,10 @@ hero:
 - [basic-lisp](basic-lisp/syntax)
 - [xvm-lisp](xvm-lisp/syntax)
 
+## 开发日志
+
+记录设计决策的[开发日志](diary/)。
+
 ## 代码例子
 
 [meta-lisp](meta-lisp/) 是极简的静态类型 lisp。
