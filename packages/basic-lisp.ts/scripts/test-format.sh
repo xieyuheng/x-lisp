@@ -4,4 +4,4 @@ set -e
 
 parallel="parallel -v --halt now,fail=1"
 
-find lib -name "*.basic" | $parallel ./bin/basic-lisp.ts format {} ">" {}.format
+find lib -name "*.basic" | $parallel ../../bin/basic-lisp.ts format {} ">" {}.format

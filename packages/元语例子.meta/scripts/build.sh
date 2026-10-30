@@ -4,4 +4,4 @@ set -e
 
 rm -rf build
 
-./bin/meta-lisp.ts build
+../../bin/meta-lisp.ts build

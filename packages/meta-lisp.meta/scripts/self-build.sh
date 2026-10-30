@@ -4,4 +4,4 @@ set -e
 
 rm -rf self-build
 
-./bin/meta-lisp.meta build --config self-meta-package.json
+../../bin/meta-lisp.meta build --config self-meta-package.json

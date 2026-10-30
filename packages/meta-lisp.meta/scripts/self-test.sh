@@ -2,4 +2,4 @@
 
 set -e
 
-# ./bin/xvm test build/bundle.xvm.exe
+# ../../bin/xvm test build/bundle.xvm.exe

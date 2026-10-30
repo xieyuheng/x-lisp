@@ -2,4 +2,4 @@
 
 set -e
 
-./bin/meta-lisp.meta check
+../../bin/meta-lisp.meta check

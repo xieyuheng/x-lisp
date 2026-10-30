@@ -2,7 +2,7 @@
 
 set -e
 
-xvm=./bin/xvm
+xvm=../../bin/xvm
 xvm_exe=build/bundle.xvm.exe
 
 echo "=== hello ==="

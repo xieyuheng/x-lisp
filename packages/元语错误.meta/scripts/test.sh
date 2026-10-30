@@ -2,4 +2,4 @@
 
 set -e
 
-./bin/meta-lisp.ts check > type-check-error-report.txt || true
+../../bin/meta-lisp.ts check > type-check-error-report.txt || true

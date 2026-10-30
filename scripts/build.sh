@@ -7,6 +7,3 @@ cd "$(dirname "$0")/.."
 ./scripts/run-in.sh std.c build.sh
 ./scripts/run-in.sh cli.c build.sh
 ./scripts/run-in.sh xvm.c build.sh
-
-# meta libraries
-./scripts/run-in.sh meta-builtin.meta build.sh

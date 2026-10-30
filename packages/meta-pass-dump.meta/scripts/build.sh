@@ -6,7 +6,7 @@ set -e
 
 rm -rf build
 
-./bin/meta-lisp.ts build
+../../bin/meta-lisp.ts build
 
 ./scripts/sanitize-dump.sh build
 
@@ -14,6 +14,6 @@ rm -rf build
 
 rm -rf self-build
 
-./bin/meta-lisp.meta build --config self-meta-package.json
+../../bin/meta-lisp.meta build --config self-meta-package.json
 
 ./scripts/sanitize-dump.sh self-build
