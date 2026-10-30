@@ -12,10 +12,6 @@ hero:
 - [basic-lisp](basic-lisp/syntax)
 - [xvm-lisp](xvm-lisp/syntax)
 
-## 开发日志
-
-记录设计决策的[开发日志](diary/)。
-
 ## 代码例子
 
 [meta-lisp](meta-lisp/) 是极简的静态类型 lisp。
@@ -101,3 +97,93 @@ hero:
   (imul value.1 value.2 n)
   (return value.1))
 ```
+
+## 开发日志
+
+记录设计决策的[开发日志](diary/)。
+
+## 安装
+
+x-lisp 采用基于源码的发布方式。克隆源码后，在仓库内构建并运行，不安装 npm package，也不会把可执行文件安装到系统目录。
+
+当前文档覆盖 Linux；Windows 构建方式稍后补充。
+
+### 环境要求
+
+必要依赖：
+
+- `git`
+- `bash`
+- `node`、`pnpm`
+- `gcc`、`ld`、`make`
+- `find`、`readlink`
+
+可选依赖（测试与开发使用）：
+
+- `parallel`
+- `nasm`、`ndisasm`
+- `xxd`、`objcopy`
+- `realpath`
+
+可选命令只用于运行完整测试 `./scripts/all.sh`。
+
+### 构建
+
+```sh
+git clone https://github.com/xieyuheng/x-lisp.git
+cd x-lisp
+
+./scripts/prepare.sh
+./scripts/build.sh
+```
+
+`prepare.sh` 会检查必需命令并运行：
+
+```sh
+pnpm install --frozen-lockfile
+```
+
+`build.sh` 会构建 C 运行时，
+以及 `packages/meta-builtin.meta`。
+
+### 使用
+
+把仓库的 `bin/` 加入 `PATH`：
+
+```sh
+export PATH="$PWD/bin:$PATH"
+```
+
+然后可以直接运行：
+
+```sh
+./bin/meta-lisp.ts
+./bin/xvm
+./bin/xvm-lisp.ts
+./bin/x86-lisp.ts
+./bin/basic-lisp.ts
+```
+
+不带参数运行这些入口会打印命令帮助。
+
+### 完整测试
+
+构建完成后，可以运行完整测试：
+
+```sh
+./scripts/all.sh
+```
+
+运行前请确保可选命令已安装。
+
+### 更新与卸载
+
+更新源码后重新执行：
+
+```sh
+./scripts/prepare.sh
+./scripts/build.sh
+```
+
+卸载时删除源码目录即可；
+项目不会在源码目录之外留下安装产物。
