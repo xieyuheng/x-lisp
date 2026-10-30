@@ -108,7 +108,7 @@ x-lisp 采用基于源码的发布方式。克隆源码后，在仓库内构建�
 
 当前文档覆盖 Linux；Windows 构建方式稍后补充。
 
-### 环境要求
+### 依赖
 
 必要依赖：
 
@@ -143,30 +143,56 @@ cd x-lisp
 pnpm install --frozen-lockfile
 ```
 
-`build.sh` 会构建 C 运行时，
-以及 `packages/meta-builtin.meta`。
+`build.sh` 会构建 C 运行时。
 
-### 使用
-
-把仓库的 `bin/` 加入 `PATH`：
+可执行文件在 `./bin`：
 
 ```sh
-export PATH="$PWD/bin:$PATH"
-```
-
-然后可以直接运行：
-
-```sh
-./bin/meta-lisp.ts
-./bin/xvm
-./bin/xvm-lisp.ts
-./bin/x86-lisp.ts
-./bin/basic-lisp.ts
+./bin/meta-lisp.ts  # 编译器
+./bin/xvm           # 运行时虚拟机
 ```
 
 不带参数运行这些入口会打印命令帮助。
 
-### 完整测试
+```sh
+$ ./bin/meta-lisp.ts
+meta-lisp.ts 0.1.4
+commands:
+  check --config <path> --dump
+  build --config <path> --dump
+```
+
+```sh
+$ ./bin/xvm
+xvm 0.1.0
+commands:
+  run file.xvm.exe
+  test file.xvm.exe
+```
+
+### 例子
+
+`packages/meta-builtin.meta` 这个 package
+包含了 meta-lisp 的所有内置函数。
+
+```sh
+cd packages/meta-builtin.meta
+
+../../bin/meta-lisp.ts build
+../../bin/xvm test build/bundle.xvm.exe
+```
+
+`packages/meta-example.meta` 这个 package
+是一个 meta-lisp 项目的测试用例。
+
+```sh
+cd packages/meta-example.meta
+
+../../bin/meta-lisp.ts build
+../../bin/xvm test build/bundle.xvm.exe
+```
+
+### 测试
 
 构建完成后，可以运行完整测试：
 
@@ -176,7 +202,7 @@ export PATH="$PWD/bin:$PATH"
 
 运行前请确保可选命令已安装。
 
-### 更新与卸载
+### 更新
 
 更新源码后重新执行：
 
@@ -184,6 +210,8 @@ export PATH="$PWD/bin:$PATH"
 ./scripts/prepare.sh
 ./scripts/build.sh
 ```
+
+### 卸载
 
 卸载时删除源码目录即可；
 项目不会在源码目录之外留下安装产物。
