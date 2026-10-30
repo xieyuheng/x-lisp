@@ -131,6 +131,7 @@ x-lisp 采用基于源码的发布方式。克隆源码后，在仓库内构建�
 
 ```sh
 git clone https://github.com/xieyuheng/x-lisp.git
+
 cd x-lisp
 
 ./scripts/prepare.sh
@@ -145,14 +146,9 @@ pnpm install --frozen-lockfile
 
 `build.sh` 会构建 C 运行时。
 
-可执行文件在 `./bin`：
+可执行文件保存在 `./bin`。
 
-```sh
-./bin/meta-lisp.ts  # 编译器
-./bin/xvm           # 运行时虚拟机
-```
-
-不带参数运行这些入口会打印命令帮助。
+编译器：
 
 ```sh
 $ ./bin/meta-lisp.ts
@@ -161,6 +157,8 @@ commands:
   check --config <path> --dump
   build --config <path> --dump
 ```
+
+字节码解释器：
 
 ```sh
 $ ./bin/xvm
@@ -203,6 +201,12 @@ cd packages/meta-example.meta
 运行前请确保可选命令已安装。
 
 ### 更新
+
+更新源码：
+
+```sh
+git pull
+```
 
 更新源码后重新执行：
 
