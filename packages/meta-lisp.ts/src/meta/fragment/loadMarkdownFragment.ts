@@ -6,12 +6,16 @@ import { parseMarkdown } from "../../markdown/index.ts"
 import type { MarkdownCodeBlock } from "../../markdown/index.ts"
 import * as M from "../index.ts"
 
+function isMetaLispCodeBlock(block: MarkdownCodeBlock): boolean {
+  return (
+    block.language === "meta-lisp" && !block.info.split(" ").includes("skip")
+  )
+}
+
 export function loadMarkdownFragment(path: string): M.Fragment | undefined {
   const code = fs.readFileSync(path, "utf-8")
   const document = parseMarkdown(code, path)
-  const blocks = document.codeBlocks.filter(
-    (block) => block.language === "meta-lisp",
-  )
+  const blocks = document.codeBlocks.filter(isMetaLispCodeBlock)
 
   if (blocks.length === 0) return undefined
 

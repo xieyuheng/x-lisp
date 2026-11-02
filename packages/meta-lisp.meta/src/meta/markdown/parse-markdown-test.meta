@@ -26,6 +26,17 @@
     (assert-equal 1
       (list-length (markdown-document-code-blocks document)))))
 
+(define-test is-meta-lisp-code-block-test
+  (let ((document
+          (parse-markdown
+            "test"
+            "```meta-lisp\n(a)\n```\n\n```meta-lisp skip\n(b)\n```\n\n```meta-lisp title=foo\n(c)\n```\n")))
+    (assert-equal
+      (@list true false true)
+      (list-map
+        (markdown-document-code-blocks document)
+        is-meta-lisp-code-block))))
+
 (define-test parse-markdown-multiple-code-blocks-test
   (let ((document
           (parse-markdown

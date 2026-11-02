@@ -1,5 +1,13 @@
 (module meta)
 
+(define (is-meta-lisp-code-block block)
+  (and
+    (equal (markdown-code-block-language block) "meta-lisp")
+    (not
+      (list-has
+        (text-split (markdown-code-block-info block) " ")
+        "skip"))))
+
 (define (load-markdown-fragment path)
   (let ((code (path-read path))
         (document (parse-markdown path code))
@@ -10,8 +18,7 @@
         (blocks
           (list-filter
             (markdown-document-code-blocks document)
-            (lambda (block)
-              (equal (markdown-code-block-language block) "meta-lisp")))))
+            is-meta-lisp-code-block)))
     (if (list-is-empty blocks)
       (nothing)
       (just
