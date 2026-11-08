@@ -4,47 +4,62 @@ subtitle: 学习 Niklaus Wirth 的方法
 module: stepwise
 ---
 
+- [问题](#问题)
+- [试错法](#试错法)
+- [部分解与回溯](#部分解与回溯)
+- [约束条件](#约束条件)
+- [递归搜索](#递归搜索)
+- [打印棋盘](#打印棋盘)
+
 # 问题
 
-给定一个 8 × 8 的棋盘，放置 8 个皇后，使得任意两个皇后都不能互相攻击：
+给定一个 8 × 8 的棋盘，放置 8 个皇后，
+使得任意两个皇后都不能互相攻击：
 
 - 不能位于同一行；
 - 不能位于同一列；
-- 不能位于同一条主对角线；
-- 不能位于同一条副对角线。
+- 不能位于同一条对角线。
 
-这个问题适合用试错法解决。设候选解的集合为 `A`，条件为 `p`，那么一个解就是满足 `(x in A) and p(x)` 的 `x`。
+# 试错
 
-本文中的伪代码用 `skip` 标记，不参与编译；最终的 `meta-lisp` 代码会被收集、编译并测试。
+这个问题适合用「试错法」解决。
+设候选解的集合为 `A`，约束条件为 `p`，
+那么一个解就是满足 `(x in A) and p(x)` 的 `x`。
 
-# 试错与预选
-
-最直接的程序会不断生成 `A` 中的候选解，直到找到一个满足 `p` 的解：
+最直接的程序会不断生成 `A` 中的候选解，
+直到找到一个满足 `p` 的解：
 
 ```meta-lisp skip
 (define (trial-and-error)
-  (let ((candidate (generate-next-candidate)))
-    (cond
-      ((no-more-candidates?) (nothing))
-      ((candidate-is-solution? candidate) (just candidate))
-      (else (trial-and-error)))))
+  (unless (has-no-more-candidate)
+    (let ((candidate (generate-next-candidate)))
+      (cond
+        ((candidate-is-solution candidate)
+         (collection-solution candidate))
+        (else (trial-and-error))))))
 ```
 
 但是 `A` 通常非常大，穷举所有候选解并逐个检查 `p` 并不现实。
 
-一个重要的改进是把条件拆成两个条件：
+一个重要的改进是把约束条件拆成两个条件：
 
 ```text
 p = q and r
 ```
 
-其中 `r` 用来快速排除明显不可能成功的候选，`q` 再检查剩余条件。令：
+其中 `r` 用来快速排除明显不可能成功的候选，
+`q` 再检查剩余约束条件。
+
+令：
 
 ```text
 Br = { x | (x in A) and r(x) }
 ```
 
-于是只需要生成 `Br` 中的元素，而不是生成整个 `A`。对于 8 皇后问题，`r` 可以是：
+于是只需要生成 `Br` 中的元素，
+而不是生成整个 `A`。
+
+对于 8 皇后问题，`r` 可以是：
 
 - 每一列恰好有一个皇后。
 
@@ -53,189 +68,290 @@ Br = { x | (x in A) and r(x) }
 - 每一行至多有一个皇后；
 - 每一条对角线上至多有一个皇后。
 
-这样，候选集从所有棋盘布局缩小为逐行放置的安全布局。
+这样，候选集从所有棋盘布局，
+缩小为逐列放置皇后的布局。
 
 # 部分解与回溯
 
 把潜在的解写成：
 
 ```text
-[x1, x2, ..., xn]
+x1 x2 ... x8
 ```
 
-其中 `xi` 表示第 `i` 行皇后所在的列。于是可以引入部分解：
+其中 `xi` 表示第 `i` 列皇后所在的行坐标。
+我们采纳[代数记谱法](https://en.wikipedia.org/wiki/Algebraic_notation_(chess))，从下向上数行，并且从 1 开始数。
+
+比如：
 
 ```text
-[x1]
-[x1, x2]
-[x1, x2, ..., xk]
+4 2 7 3 6 8 5 1
+```
+
+代表：
+
+```text
+. . . . . . . Q
+. Q . . . . . .
+. . . Q . . . .
+Q . . . . . . .
+. . . . . . Q .
+. . . . Q . . .
+. . Q . . . . .
+. . . . . Q . .
+```
+
+于是可以引入部分解：
+
+```text
+x1
+x1 x2
+x1 x2 ... xk
 ```
 
 一个关键观察是：
 
-> 如果一个部分解已经不满足安全性条件，那么无论怎样继续扩展它，都不可能得到完整解。
+> 如果一个部分解已经不满足约束条件，
+> 那么无论怎样继续扩展它，
+> 都不可能得到完整解。
 
-因此，搜索可以在发现冲突时立即回退。回溯可以用深度优先搜索实现，而深度优先搜索可以在递归过程中自然实现，不需要额外分配内存来保存搜索状态。
+因此，搜索可以在发现冲突时立即回退。
+回溯可以用深度优先搜索实现，
+而深度优先搜索可以在递归过程中自然实现，
+不需要额外分配内存来保存搜索状态。
 
-一般的递归搜索骨架可以写成：
+在代码中我们可以称「部分解」为 `state`：
+
+```meta-lisp
+(define-type state-t (list-t int-t))
+```
+
+这样我们需要实现的，
+就是一个以 state 为节点的，
+深度优先的「解法树」（solution tree）搜索。
+
+这是 `trial-and-error` 的一个递归变体：
 
 ```meta-lisp skip
-(define (search state)
-  (if (complete? state)
-    (@list state)
-    (list-map-concat
-      (next-states state)
-      search)))
+(define (search-solutions progress solutions)
+  (if (is-finished progress)
+    solutions
+    (search-solutions
+      (step-progress progress)
+      (list-map-concat solutions generate-next-solutions))))
 ```
 
-这里 `list-map-concat` 等价于 `concatMap`。递归树就是搜索树，而函数调用栈就是回溯栈。
+对于我们问题而言，
+从树中的一个节点，
+生成所有子节点的函数可以称作
+`generate-next-states`。
 
-# 数据结构
+除了处理 8 × 8 的棋盘外，
+我们显然也想处理一般的 n x n 棋盘，
+所以我们引入一个 `size` 参数。
 
-我们用列号列表表示部分解。列表中最新的选择放在最前面：
+`generate-next-states` 要用到这个 `size` 参数，
+才能知道分支的个数：
+
+```meta-lisp
+(claim generate-next-states
+  (-> int-t state-t (list-t state-t)))
+```
+
+初步的实现方式是：
+
+```meta-lisp skip
+(define (generate-next-states size state)
+  (list-map (list-range size)
+    (lambda (i) (cons (iadd 1 i) state))))
+```
+
+这里我们发现，
+为了在生成新 state 的过程中，
+为了能用到更高效的 `cons`，
+而不是每次都用 `list-append` 来复制 list，
+state 作为列表保存部分解中元素的顺序必须是反向的。
+
+部分解：
 
 ```text
-placed = (@list column-of-last-row ... column-of-first-row)
+x1 x2 x3
 ```
 
-例如，`(@list 3 1 0)` 表示：
+需要被表示为如下 state：
 
-- 第 0 行皇后在第 1 列；
-- 第 1 行皇后在第 3 列；
-- 第 2 行皇后在第 0 列。
+```meta-lisp skip
+(@list x3 x2 x1)
+```
 
-列表长度就是已经处理的行数。搜索完成时再反转列表，使输出顺序与棋盘从上到下的行顺序一致。
+# 约束条件
 
-这种表示让程序和数据结构的细化保持同步：递归深度对应行，候选值对应列，部分解对应已经放置的皇后。
+判断一个新放置的皇后是满足约束条件时，
+需要检查它和所有已放置皇后的关系。
 
-# 安全性判断
+同一行的检查很直接。
+对角线检查可以用行列距离表示：
+两个皇后如果在同一条对角线上，
+它们的列距离必须等于行距离。
 
-判断一个新皇后是否安全时，需要检查它和所有已放置皇后的关系。
-
-同一列的检查很直接。对角线检查可以用行列距离表示：两个皇后如果在同一条对角线上，它们的列距离必须等于行距离。
+部分解都是暂时满足约束条件的，
+所以我们需要一个函数来判断新放置的皇后，
+是否与已有的部分解中的某个皇后相互冲突。
 
 ```meta-lisp
-(claim int-distance (-> int-t int-t int-t))
-
-(define (int-distance x y)
-  (int-max (isub x y) (isub y x)))
-
-(claim safe? (-> (list-t int-t) int-t int-t bool-t))
-
-(define (safe? placed column distance)
-  (cond
-    ((list-is-empty placed) true)
-    ((equal column (car placed)) false)
-    ((equal distance (int-distance column (car placed))) false)
-    (else (safe? (cdr placed) column (iadd distance 1)))))
+(claim is-valid-new-column
+  (-> state-t int-t
+      bool-t))
 ```
 
-因为 `placed` 中最新放置的皇后在最前面，所以递归时 `distance` 从 1 开始递增，恰好对应新皇后与已有皇后之间的行距离。
-
-# 生成候选列
-
-预选条件 `r` 在这里具体化为：在下一行中，只保留与当前部分解不冲突的列。
+列距离可以由行坐标之差给出，
+行举例可以由递归时的列表 index 给出。
 
 ```meta-lisp
-(claim candidate-columns (-> int-t (list-t int-t) (list-t int-t)))
+(define (is-valid-new-column state new)
+  (list-every
+    (list-map-index state
+      (lambda (i old)
+        (and (not (equal new old))
+             (not (equal (iabs new old) (iadd 1 i))))))
+    (equal true)))
 
-(define (candidate-columns n placed)
-  (list-filter
-    (list-range n)
-    (lambda (column) (safe? placed column 1))))
+(define (iabs x y)
+  (if (int-greater x y)
+    (isub x y)
+    (isub y x)))
 ```
 
-`list-range` 生成 `0` 到 `n - 1` 的列号，`list-filter` 只保留安全的选择。这正是 Wirth 所说的预选策略。
+下面我们改进 `generate-next-states`，
+使其在生成分支的时候，
+直接过滤掉不满足约束条件的分支：
+
+```meta-lisp
+(define (generate-next-states size state)
+  (list-map-concat (list-range size)
+    (lambda (i)
+      (let ((new (iadd 1 i)))
+        (if (is-valid-new-column state new)
+          (@list (cons new state))
+          (@list))))))
+```
 
 # 递归搜索
 
-现在把部分解、预选和递归组合起来：
+遵循之前的递归搜索的范式：
 
-- 如果已经处理完所有行，就得到一个完整解；
-- 否则，枚举所有安全候选列，并对每个候选列递归处理下一行；
-- 用 `list-map-concat` 把所有分支得到的解连接成一个列表。
-
-```meta-lisp
-(claim search-queens
-  (-> int-t int-t (list-t int-t) (list-t (list-t int-t))))
-
-(define (search-queens n row placed)
-  (if (equal row n)
-    (@list (list-copy-reverse placed))
-    (list-map-concat
-      (candidate-columns n placed)
-      (lambda (column)
-        (search-queens n (iadd row 1) (cons column placed))))))
-
-(claim queens (-> int-t (list-t (list-t int-t))))
-
-(define (queens n)
-  (search-queens n 0 (@list)))
+```meta-lisp skip
+(define (search-solutions progress solutions)
+  (if (is-finished progress)
+    solutions
+    (search-solutions
+      (step-progress progress)
+      (list-map-concat solutions generate-next-solutions))))
 ```
 
-`queens` 返回所有解，而不仅仅是第一个解。它对应 Wirth 文章后半部分讨论的广义 8 皇后问题。
+我们可以实现针对我们问题的具体递归搜索：
+
+```meta-lisp
+(claim n-queens (-> int-t (list-t state-t)))
+
+(define (n-queens n)
+  (search-queens n 0 (@list (@list))))
+
+(claim search-queens
+  (-> int-t int-t (list-t state-t)
+      (list-t state-t)))
+
+(define (search-queens size length states)
+  (if (equal length size)
+    states
+    (search-queens
+      size (iadd 1 length)
+      (list-map-concat states (generate-next-states size)))))
+```
+
+我们知道 8 皇后问题有 92 个解，可以用来做测试：
+
+```meta-lisp
+(define-test n-queens-test
+  (assert-equal 1 (list-length (n-queens 1)))
+  (assert-equal 0 (list-length (n-queens 2)))
+  (assert-equal 2 (list-length (n-queens 4)))
+  (assert-equal 92 (list-length (n-queens 8))))
+```
 
 # 打印棋盘
 
-为了观察结果，还需要把列号列表渲染成棋盘。
+为了更好地观察结果，可以把行号列表打印成棋盘。
 
-```meta-lisp
-(claim solution-row-text (-> int-t int-t text-t))
-
-(define (solution-row-text n column)
-  (text-join
-    (list-map
-      (list-range n)
-      (lambda (index) (if (equal index column) "Q" ".")))
-    " "))
-
-(claim solution-to-text (-> int-t (list-t int-t) text-t))
-
-(define (solution-to-text n solution)
-  (text-join
-    (list-map solution (lambda (column) (solution-row-text n column)))
-    "\n"))
-```
-
-每一行用 `Q` 表示皇后，用 `.` 表示空格。行与行之间用换行符连接。
-
-# 验证
-
-下面的测试检查小规模问题的解的数量，并验证 4 皇后问题的第一个解的棋盘文本。最后打印 8 皇后问题的第一个解。
-
-```meta-lisp
-(define-test queens-test
-  (assert-equal 1 (list-length (queens 1)))
-  (assert-equal 0 (list-length (queens 2)))
-  (assert-equal 2 (list-length (queens 4)))
-  (assert-equal 92 (list-length (queens 8)))
-  (assert-equal
-    ". Q . .\n. . . Q\nQ . . .\n. . Q ."
-    (solution-to-text 4 (list-head (queens 4))))
-  (println (solution-to-text 8 (list-head (queens 8)))))
-```
-
-8 皇后问题一共有 92 个解。第一个解的棋盘输出为：
+例如：
 
 ```text
-Q . . . . . . .
-. . . . Q . . .
 . . . . . . . Q
-. . . . . Q . .
-. . Q . . . . .
-. . . . . . Q .
 . Q . . . . . .
 . . . Q . . . .
+Q . . . . . . .
+. . . . . . Q .
+. . . . Q . . .
+. . Q . . . . .
+. . . . . Q . .
 ```
 
-# 结论
+```meta-lisp
+(define-type board-t (list-t (list-t text-t)))
 
-这个例子展示了逐步细化的几个要点：
+(define (format-board board)
+  (text-join (list-map board format-board-row) "\n"))
 
-1. 程序构造是一系列细化步骤。每一步把一个任务分解成若干子任务，同时细化子任务之间传递的数据结构。
-2. 预选条件把庞大的候选集缩小为容易生成、容易检查的安全候选集。
-3. 部分解配合递归，可以自然地表达深度优先搜索和回溯，不需要显式的可变搜索状态。
-4. 程序与数据结构需要并行细化。选择「最新选择在前的列号列表」之后，安全性判断、候选生成和最终输出都变得直接。
-5. 伪代码可以先用问题域中自然的表示，再逐步变成可执行的 `meta-lisp` 代码。
+(define (format-board-row row)
+  (text-join row " "))
+```
 
-与 Wirth 的原始程序相比，这里的最终实现不使用可变的 `board`、`pointer` 和显式的 `repeat` / `regress`。回溯由递归调用栈完成，搜索树由 `list-map-concat` 展开。这正是 meta-lisp 风格的递归算法。
+下面用 `state-to-board` 把 state 转化为棋盘，
+注意列的列表要转化为行的列表。
+
+```meta-lisp
+(claim state-to-board (-> state-t board-t))
+
+(define (state-to-board state)
+  (let ((size (list-length state)))
+    (list-map (list-range size)
+      (state-to-board-row state))))
+
+(define (state-to-board-row state index)
+  (let ((row (iadd 1 index)))
+    (list-map state
+      (lambda (queen-row)
+        (if (equal row queen-row) "Q" ".")))))
+```
+
+```meta-lisp
+(define-test n-queens-board-test
+  (assert-equal
+    (format-board (state-to-board (car (n-queens 4))))
+    (text-join
+      (@list
+        ". Q . ."
+        ". . . Q"
+        "Q . . ."
+        ". . Q .")
+      "\n"))
+  (println (car (n-queens 8)))
+  (println (format-board (state-to-board (car (n-queens 8))))))
+```
+
+打印的结果为：
+
+```text
+4 2 7 3 6 8 5 1
+```
+
+```text
+. . . . . . . Q
+. Q . . . . . .
+. . . Q . . . .
+Q . . . . . . .
+. . . . . . Q .
+. . . . Q . . .
+. . Q . . . . .
+. . . . . Q . .
+```

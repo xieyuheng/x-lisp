@@ -1,7 +1,3 @@
-# xvm
-
-[xvm.c] review xvm.c 代码
-
 # self-hosting
 
 [meta-lisp.meta] [review] env.meta
@@ -16,6 +12,10 @@
 [meta-lisp.meta] 160-unnest-operand-pass.meta
 [meta-lisp.meta] 170-explicate-control-pass.meta
 [meta-lisp.meta] 180-codegen-pass.meta
+
+# xvm
+
+[xvm.c] review xvm.c 代码
 
 # 游戏引擎
 
