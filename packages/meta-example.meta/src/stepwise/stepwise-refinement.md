@@ -1,15 +1,24 @@
 ---
-title: 通过逐步细化进行程序开发
-subtitle: 学习 Niklaus Wirth 的方法
+title: 逐步精细
 module: stepwise
+date: 2026-11-08
 ---
 
+- [题解](#题解)
 - [问题](#问题)
 - [试错法](#试错法)
 - [部分解与回溯](#部分解与回溯)
 - [约束条件](#约束条件)
 - [递归搜索](#递归搜索)
 - [打印棋盘](#打印棋盘)
+
+# 题解
+
+本问取自 Niklaus Wirth 写于 1971 的论文
+"Program Development by Stepwise Refinement"。
+
+尝试把「逐步精细」（Stepwise Refinement）方法，
+和基于 markdown 的「文学式编程」相结合。
 
 # 问题
 
